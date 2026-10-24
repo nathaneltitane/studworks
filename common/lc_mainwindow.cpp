@@ -3482,6 +3482,8 @@ void lcMainWindow::HandleCommand(lcCommandId CommandId)
 
 	case LC_VIEW_TOGGLE_PREVIEW_AXIS_ICON:
 		TogglePreviewAxisIcon();
+		break;
+
 	case LC_FILE_TOGGLE_LOAD_PIECES_BEFORE_SHOWING:
 		ToggleLoadPiecesBeforeShowing();
 		break;

@@ -1529,6 +1529,9 @@ const lcCommand gCommands[] =
 		QT_TRANSLATE_NOOP("Action", "View.Preview.ToggleAxisIcon"),
 		QT_TRANSLATE_NOOP("Menu", "Preview Axis Icon"),
 		QT_TRANSLATE_NOOP("Status", "Toggle the axis icon in the pieces preview"),
+		"",
+		""
+	},
 	// LC_FILE_TOGGLE_LOAD_PIECES_BEFORE_SHOWING
 	{
 		QT_TRANSLATE_NOOP("Action", "File.ToggleLoadPiecesBeforeShowing"),
