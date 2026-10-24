@@ -427,6 +427,7 @@ void lcMainWindow::CreateMenus()
 	mViewpointMenu->addAction(mActions[LC_VIEW_VIEWPOINT_HOME]);
 	mViewpointMenu->addSeparator();
 	mViewpointMenu->addAction(mActions[LC_VIEW_STEP_VIEW_EDIT]);
+	mViewpointMenu->addAction(mActions[LC_VIEW_STEP_VIEW_REMOVE]);
 	mViewpointMenu->addAction(mActions[LC_VIEW_STEP_VIEW_TOGGLE_FOLLOW]);
 	mViewpointMenu->addSeparator();
 	mViewpointMenu->addAction(mActions[LC_VIEW_NORMAL_TO_FACE]);
@@ -3866,6 +3867,11 @@ void lcMainWindow::HandleCommand(lcCommandId CommandId)
 
 	case LC_VIEW_STEP_VIEW_EDIT:
 		ShowStepViewDialog();
+		break;
+
+	case LC_VIEW_STEP_VIEW_REMOVE:
+		if (ActiveModel)
+			ActiveModel->SetStepView(ActiveModel->GetCurrentStep(), std::nullopt);
 		break;
 
 	case LC_VIEW_STEP_VIEW_TOGGLE_FOLLOW:
