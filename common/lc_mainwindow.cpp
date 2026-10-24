@@ -3,6 +3,9 @@
 #include <QPrintDialog>
 #include <QPrintPreviewDialog>
 #include "lc_partselectionwidget.h"
+#ifdef LC_ENABLE_TERMINAL
+#include "lc_terminalwidget.h"
+#endif
 #include "lc_propertieswidget.h"
 #include "lc_timelinewidget.h"
 #include "lc_viewwidget.h"
@@ -526,6 +529,7 @@ void lcMainWindow::CreateMenus()
 	ToolBarsMenu->addAction(mActions[LC_VIEW_TOOLBAR_PROPERTIES]);
 	ToolBarsMenu->addAction(mActions[LC_VIEW_TOOLBAR_TIMELINE]);
 	ToolBarsMenu->addAction(mActions[LC_VIEW_TOOLBAR_PREVIEW]);
+	ToolBarsMenu->addAction(mActions[LC_VIEW_TOOLBAR_TERMINAL]);
 	ToolBarsMenu->addSeparator();
 	ToolBarsMenu->addAction(mActions[LC_VIEW_TOOLBAR_STANDARD]);
 	ToolBarsMenu->addAction(mActions[LC_VIEW_TOOLBAR_TOOLS]);
@@ -821,6 +825,7 @@ void lcMainWindow::CreateToolBars()
 	addDockWidget(Qt::RightDockWidgetArea, mTimelineToolBar);
 
 	CreatePreviewWidget();
+	CreateTerminalWidget();
 
 	tabifyDockWidget(mPartsToolBar, mPropertiesToolBar);
 	tabifyDockWidget(mPropertiesToolBar, mTimelineToolBar);
@@ -851,6 +856,24 @@ void lcMainWindow::PreviewPiece(lcPieceData* PieceData, int ColorCode, bool Show
 		mPreviewToolBar->show();
 
 	mPreviewWidget->SetCurrentPiece(PieceData, ColorCode);
+}
+
+void lcMainWindow::CreateTerminalWidget()
+{
+#ifdef LC_ENABLE_TERMINAL
+	mTerminalToolBar = new QDockWidget(tr("Terminal"), this);
+	mTerminalToolBar->setObjectName("TerminalToolBar");
+	mTerminalToolBar->setWhatsThis(tr("<p><b>Terminal</b></p><p>An embedded Konsole terminal that starts in the folder of the current model.</p>"));
+	lcSetupWidgetHelp(mTerminalToolBar, nullptr);
+	mTerminalToolBar->setWidget(new lcTerminalWidget(mTerminalToolBar));
+	addDockWidget(Qt::BottomDockWidgetArea, mTerminalToolBar);
+	mTerminalToolBar->hide();
+
+	connect(mTerminalToolBar, &QDockWidget::topLevelChanged, this, &lcMainWindow::EnableWindowFlags);
+#else
+	// Without KDE Frameworks there is no terminal to show.
+	mActions[LC_VIEW_TOOLBAR_TERMINAL]->setVisible(false);
+#endif
 }
 
 void lcMainWindow::CreatePreviewWidget()
@@ -1210,6 +1233,7 @@ QMenu* lcMainWindow::createPopupMenu()
 	Menu->addAction(mActions[LC_VIEW_TOOLBAR_PROPERTIES]);
 	Menu->addAction(mActions[LC_VIEW_TOOLBAR_TIMELINE]);
 	Menu->addAction(mActions[LC_VIEW_TOOLBAR_PREVIEW]);
+	Menu->addAction(mActions[LC_VIEW_TOOLBAR_TERMINAL]);
 	Menu->addSeparator();
 	Menu->addAction(mActions[LC_VIEW_TOOLBAR_STANDARD]);
 	Menu->addAction(mActions[LC_VIEW_TOOLBAR_TOOLS]);
@@ -1228,6 +1252,7 @@ void lcMainWindow::UpdateDockWidgetActions()
 	mActions[LC_VIEW_TOOLBAR_TOOLS]->setChecked(mToolsToolBar->isVisible());
 	mActions[LC_VIEW_TOOLBAR_TIME]->setChecked(mTimeToolBar->isVisible());
 	mActions[LC_VIEW_TOOLBAR_PREVIEW]->setChecked(mPreviewToolBar->isVisible());
+	mActions[LC_VIEW_TOOLBAR_TERMINAL]->setChecked(mTerminalToolBar && mTerminalToolBar->isVisible());
 }
 
 void lcMainWindow::UpdateGamepads()
@@ -2655,6 +2680,14 @@ void lcMainWindow::UpdateTitle()
 {
 	setWindowModified(lcGetActiveProject()->IsModified());
 	setWindowFilePath(lcGetActiveProject()->GetTitle());
+
+#ifdef LC_ENABLE_TERMINAL
+	// Keep the terminal in the folder of the current model.
+	const QString FileName = lcGetActiveProject()->GetFileName();
+
+	if (mTerminalToolBar && !FileName.isEmpty())
+		static_cast<lcTerminalWidget*>(mTerminalToolBar->widget())->SetDirectory(QFileInfo(FileName).absolutePath());
+#endif
 }
 
 void lcMainWindow::UpdateModified(bool Modified)
@@ -3198,6 +3231,11 @@ void lcMainWindow::HandleCommand(lcCommandId CommandId)
 
 	case LC_VIEW_TOOLBAR_PREVIEW:
 		ToggleDockWidget(mPreviewToolBar);
+		break;
+
+	case LC_VIEW_TOOLBAR_TERMINAL:
+		if (mTerminalToolBar)
+			ToggleDockWidget(mTerminalToolBar);
 		break;
 
 	case LC_VIEW_FULLSCREEN:

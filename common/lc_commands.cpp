@@ -1308,6 +1308,14 @@ const lcCommand gCommands[] =
 		"",
 		""
 	},
+	// LC_VIEW_TOOLBAR_TERMINAL
+	{
+		QT_TRANSLATE_NOOP("Action", "View.Toolbars.Terminal"),
+		QT_TRANSLATE_NOOP("Menu", "Terminal"),
+		QT_TRANSLATE_NOOP("Status", "Toggle the Terminal panel"),
+		"",
+		""
+	},
 	// LC_VIEW_FULLSCREEN
 	{
 		QT_TRANSLATE_NOOP("Action", "View.FullScreen"),

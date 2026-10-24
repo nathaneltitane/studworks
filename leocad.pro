@@ -22,6 +22,14 @@ qtHaveModule(gamepad) {
 	DEFINES += LC_ENABLE_GAMEPAD
 }
 
+# Optional embedded Konsole terminal on systems with KDE Frameworks.
+qtHaveModule(KParts) {
+	QT += KParts
+	DEFINES += LC_ENABLE_TERMINAL
+	SOURCES += common/lc_terminalwidget.cpp
+	HEADERS += common/lc_terminalwidget.h
+}
+
 INCLUDEPATH += qt common
 CONFIG += precompile_header incremental c++17 force_debug_info
 
