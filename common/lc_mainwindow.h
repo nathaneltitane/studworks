@@ -204,6 +204,7 @@ public:
 	void SetTool(lcTool Tool);
 	void SetTransformType(lcTransformType TransformType);
 	void SetColorIndex(int ColorIndex);
+	void ToggleFirstPieceAtOrigin();
 	int GetInsertColorIndex() const;
 	void SetLastInsertedColorIndex(int ColorIndex);
 	void SetInsertColorMode(lcInsertColorMode InsertColorMode);

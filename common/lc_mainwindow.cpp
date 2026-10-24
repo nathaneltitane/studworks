@@ -301,6 +301,7 @@ void lcMainWindow::CreateActions()
 	mActions[LC_EDIT_SNAP_ANGLE_TOGGLE]->setCheckable(true);
 	mActions[LC_VIEW_CAMERA_NONE]->setCheckable(true);
 	mActions[LC_VIEW_TIME_ADD_KEYS]->setCheckable(true);
+	mActions[LC_PIECE_TOGGLE_FIRST_AT_ORIGIN]->setCheckable(true);
 
 	for (int ActionIndex = LC_VIEW_TOOLBAR_FIRST; ActionIndex <= LC_VIEW_TOOLBAR_LAST; ActionIndex++)
 		mActions[ActionIndex]->setCheckable(true);
@@ -554,6 +555,11 @@ void lcMainWindow::CreateMenus()
 
 	QMenu* PieceMenu = menuBar()->addMenu(tr("&Piece"));
 	PieceMenu->addAction(mActions[LC_PIECE_INSERT]);
+	PieceMenu->addAction(mActions[LC_PIECE_TOGGLE_FIRST_AT_ORIGIN]);
+	connect(PieceMenu, &QMenu::aboutToShow, this, [this]()
+	{
+		mActions[LC_PIECE_TOGGLE_FIRST_AT_ORIGIN]->setChecked(lcGetPreferences().mFirstPieceAtOrigin);
+	});
 	PieceMenu->addAction(mActions[LC_PIECE_DELETE]);
 	PieceMenu->addAction(mActions[LC_PIECE_DUPLICATE]);
 	PieceMenu->addAction(mActions[LC_PIECE_PAINT_SELECTED]);
@@ -2005,6 +2011,7 @@ void lcMainWindow::ModelViewOptionsMenuAboutToShow()
 	AddMenuCommand(Menu, tr("Axis Icon"), LC_VIEW_TOGGLE_AXIS_ICON, Preferences.mDrawAxes);
 	AddMenuCommand(Menu, tr("Base Grid"), LC_VIEW_TOGGLE_GRID, Preferences.mGridEnabled);
 	AddMenuCommand(Menu, tr("Fade Previous Steps"), LC_VIEW_FADE_PREVIOUS_STEPS, Preferences.mFadeSteps);
+	AddMenuCommand(Menu, tr("Insert First Piece at Origin"), LC_PIECE_TOGGLE_FIRST_AT_ORIGIN, Preferences.mFirstPieceAtOrigin);
 
 	Menu->addSeparator();
 
@@ -2325,6 +2332,14 @@ void lcMainWindow::SetTool(lcTool Tool)
 		Action->setChecked(true);
 
 	lcView::UpdateAllViews();
+}
+
+void lcMainWindow::ToggleFirstPieceAtOrigin()
+{
+	lcGetPreferences().mFirstPieceAtOrigin = !lcGetPreferences().mFirstPieceAtOrigin;
+	lcSetProfileInt(LC_PROFILE_FIRST_PIECE_AT_ORIGIN, lcGetPreferences().mFirstPieceAtOrigin);
+
+	mActions[LC_PIECE_TOGGLE_FIRST_AT_ORIGIN]->setChecked(lcGetPreferences().mFirstPieceAtOrigin);
 }
 
 void lcMainWindow::SetColorIndex(int ColorIndex)
@@ -3893,6 +3908,10 @@ void lcMainWindow::HandleCommand(lcCommandId CommandId)
 	case LC_PIECE_INSERT:
 		if (ActiveModel)
 			ActiveModel->AddPiece(nullptr, LC_PIECE_SECTION_INVALID);
+		break;
+
+	case LC_PIECE_TOGGLE_FIRST_AT_ORIGIN:
+		ToggleFirstPieceAtOrigin();
 		break;
 
 	case LC_PIECE_DELETE:
