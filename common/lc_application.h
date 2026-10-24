@@ -132,6 +132,7 @@ public:
 	bool mDrawGridOrigin;
 	bool mDrawGridHeightXZ;
 	bool mDrawGridHeightYZ;
+	bool mGridHeightBehindModel;
 	bool mFixedAxes;
 	bool mViewSphereEnabled;
 	lcViewSphereLocation mViewSphereLocation;

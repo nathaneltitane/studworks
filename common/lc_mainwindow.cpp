@@ -2012,6 +2012,7 @@ void lcMainWindow::ModelViewOptionsMenuAboutToShow()
 	AddMenuCommand(Menu, tr("Base Grid"), LC_VIEW_TOGGLE_GRID, Preferences.mGridEnabled);
 	AddMenuCommand(Menu, tr("XZ Height Grid"), LC_VIEW_GRID_TOGGLE_HEIGHT_XZ, Preferences.mDrawGridHeightXZ);
 	AddMenuCommand(Menu, tr("YZ Height Grid"), LC_VIEW_GRID_TOGGLE_HEIGHT_YZ, Preferences.mDrawGridHeightYZ);
+	AddMenuCommand(Menu, tr("Height Grids Behind Model"), LC_VIEW_GRID_TOGGLE_HEIGHT_BEHIND, Preferences.mGridHeightBehindModel);
 	AddMenuCommand(Menu, tr("Fade Previous Steps"), LC_VIEW_FADE_PREVIOUS_STEPS, Preferences.mFadeSteps);
 	AddMenuCommand(Menu, tr("Insert First Piece at Origin"), LC_PIECE_TOGGLE_FIRST_AT_ORIGIN, Preferences.mFirstPieceAtOrigin);
 
@@ -3724,6 +3725,12 @@ void lcMainWindow::HandleCommand(lcCommandId CommandId)
 	case LC_VIEW_GRID_TOGGLE_HEIGHT_YZ:
 		lcGetPreferences().mDrawGridHeightYZ = !lcGetPreferences().mDrawGridHeightYZ;
 		lcSetProfileInt(LC_PROFILE_GRID_HEIGHT_YZ, lcGetPreferences().mDrawGridHeightYZ);
+		lcView::UpdateAllViews();
+		break;
+
+	case LC_VIEW_GRID_TOGGLE_HEIGHT_BEHIND:
+		lcGetPreferences().mGridHeightBehindModel = !lcGetPreferences().mGridHeightBehindModel;
+		lcSetProfileInt(LC_PROFILE_GRID_HEIGHT_BEHIND_MODEL, lcGetPreferences().mGridHeightBehindModel);
 		lcView::UpdateAllViews();
 		break;
 

@@ -1436,6 +1436,14 @@ const lcCommand gCommands[] =
 		"",
 		""
 	},
+	// LC_VIEW_GRID_TOGGLE_HEIGHT_BEHIND
+	{
+		QT_TRANSLATE_NOOP("Action", "View.Grid.ToggleHeightBehindModel"),
+		QT_TRANSLATE_NOOP("Menu", "Height Grids Behind Model"),
+		QT_TRANSLATE_NOOP("Status", "Toggle drawing the height grids behind the model instead of through the origin axes"),
+		"",
+		""
+	},
 	// LC_VIEW_TERMINAL_TOGGLE_FOLLOW_MODEL
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Terminal.ToggleFollowModel"),
