@@ -1,5 +1,6 @@
 #include "lc_global.h"
 #include "lc_terminalwidget.h"
+#include "lc_shortcuts.h"
 #include <KParts/ReadOnlyPart>
 #include <KPluginFactory>
 #include <KPluginMetaData>
@@ -13,6 +14,34 @@ lcTerminalWidget::lcTerminalWidget(QWidget* Parent)
 	mLayout->setContentsMargins(0, 0, 0, 0);
 
 	mDirectory = QDir::homePath();
+
+	qApp->installEventFilter(this);
+}
+
+bool lcTerminalWidget::eventFilter(QObject* Object, QEvent* Event)
+{
+	if (Event->type() != QEvent::ShortcutOverride)
+		return false;
+
+	QWidget* Widget = qobject_cast<QWidget*>(Object);
+
+	if (!Widget || !isAncestorOf(Widget))
+		return false;
+
+	// Keys typed in the terminal go to the shell instead of triggering LeoCAD shortcuts.
+	QKeyEvent* KeyEvent = static_cast<QKeyEvent*>(Event);
+	const QKeySequence KeySequence(static_cast<int>(KeyEvent->modifiers() & ~Qt::KeypadModifier) | KeyEvent->key());
+
+	for (const QString& Shortcut : gKeyboardShortcuts.mShortcuts)
+	{
+		if (!Shortcut.isEmpty() && QKeySequence(Shortcut).matches(KeySequence) == QKeySequence::ExactMatch)
+		{
+			Event->accept();
+			return true;
+		}
+	}
+
+	return false;
 }
 
 void lcTerminalWidget::showEvent(QShowEvent* Event)

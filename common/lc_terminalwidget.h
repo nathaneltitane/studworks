@@ -17,6 +17,7 @@ public:
 protected:
 	void CreateTerminal();
 	void showEvent(QShowEvent* Event) override;
+	bool eventFilter(QObject* Object, QEvent* Event) override;
 
 	QPointer<KParts::ReadOnlyPart> mPart;
 	QVBoxLayout* mLayout = nullptr;
