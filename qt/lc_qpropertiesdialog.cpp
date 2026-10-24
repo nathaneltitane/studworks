@@ -34,6 +34,19 @@ private:
 	lcPartsTableWidget* mPartsTable;
 };
 
+class lcPartsThumbnailDelegate : public QStyledItemDelegate
+{
+public:
+	using QStyledItemDelegate::QStyledItemDelegate;
+
+protected:
+	void initStyleOption(QStyleOptionViewItem* Option, const QModelIndex& Index) const override
+	{
+		QStyledItemDelegate::initStyleOption(Option, Index);
+		Option->decorationAlignment = Qt::AlignCenter;
+	}
+};
+
 lcPartsTableWidget::lcPartsTableWidget(QWidget* Parent)
 	: QTableWidget(Parent)
 {
@@ -41,13 +54,16 @@ lcPartsTableWidget::lcPartsTableWidget(QWidget* Parent)
 
 void lcPartsTableWidget::FreezePartColumns()
 {
-	setColumnWidth(0, qMax(sizeHintForColumn(0), horizontalHeader()->sectionSizeHint(0)));
-	mPartColumnWidth = qMax(sizeHintForColumn(1), horizontalHeader()->sectionSizeHint(1));
-	horizontalHeader()->setSectionResizeMode(0, QHeaderView::Fixed);
-	horizontalHeader()->setSectionResizeMode(1, QHeaderView::Fixed);
+	// The thumbnail sits in a column of its own so copied cells only hold text.
+	setItemDelegateForColumn(0, new lcPartsThumbnailDelegate(this));
+	setColumnWidth(0, iconSize().width() + 8);
+	setColumnWidth(1, qMax(sizeHintForColumn(1), horizontalHeader()->sectionSizeHint(1)));
+	mPartColumnWidth = qMax(sizeHintForColumn(2), horizontalHeader()->sectionSizeHint(2));
+	for (int Column = 0; Column < 3; Column++)
+		horizontalHeader()->setSectionResizeMode(Column, QHeaderView::Fixed);
 	setTextElideMode(Qt::ElideRight);
 	for (int Row = 0; Row < rowCount(); Row++)
-		if (QTableWidgetItem* Item = item(Row, 1))
+		if (QTableWidgetItem* Item = item(Row, 2))
 			Item->setToolTip(Item->text());
 
 	// Both views share the data and selection, so sorting and row highlights stay in sync.
@@ -59,6 +75,7 @@ void lcPartsTableWidget::FreezePartColumns()
 	mFrozenColumn->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	mFrozenColumn->setTextElideMode(Qt::ElideRight);
 	mFrozenColumn->setIconSize(iconSize());
+	mFrozenColumn->setItemDelegateForColumn(0, new lcPartsThumbnailDelegate(mFrozenColumn));
 	mFrozenColumn->setFocusPolicy(Qt::NoFocus);
 	mFrozenColumn->setFocusProxy(this);
 	mFrozenColumn->setFrameShape(QFrame::NoFrame);
@@ -74,7 +91,7 @@ void lcPartsTableWidget::FreezePartColumns()
 	setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
 	mFrozenColumn->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
 
-	for (int Column = 2; Column < columnCount(); Column++)
+	for (int Column = 3; Column < columnCount(); Column++)
 		mFrozenColumn->hideColumn(Column);
 
 	for (int Row = 0; Row < rowCount(); Row++)
@@ -88,7 +105,7 @@ void lcPartsTableWidget::FreezePartColumns()
 	});
 	connect(horizontalHeader(), &QHeaderView::sectionResized, this, [this](int Column, int, int)
 	{
-		if (Column < 2)
+		if (Column < 3)
 			UpdateFrozenGeometry();
 	});
 	connect(horizontalHeader(), &QHeaderView::sortIndicatorChanged, mFrozenColumn->horizontalHeader(), &QHeaderView::setSortIndicator);
@@ -160,19 +177,19 @@ void lcPartsTableWidget::UpdateFrozenGeometry()
 		return;
 
 	// Reserve at least half the viewport for counts, while letting short names use less space.
-	const int PartWidth = qMin(mPartColumnWidth, qMax(1, viewport()->width() / 2 - columnWidth(0)));
-	if (columnWidth(1) != PartWidth)
-		setColumnWidth(1, PartWidth);
+	const int PartWidth = qMin(mPartColumnWidth, qMax(1, viewport()->width() / 2 - columnWidth(0) - columnWidth(1)));
+	if (columnWidth(2) != PartWidth)
+		setColumnWidth(2, PartWidth);
 
-	mFrozenColumn->setColumnWidth(0, columnWidth(0));
-	mFrozenColumn->setColumnWidth(1, columnWidth(1));
+	for (int Column = 0; Column < 3; Column++)
+		mFrozenColumn->setColumnWidth(Column, columnWidth(Column));
 	mFrozenColumn->horizontalHeader()->setFixedHeight(horizontalHeader()->height());
 	mFrozenColumn->setGeometry(viewport()->geometry().x(), frameWidth(), GetFrozenWidth(), viewport()->height() + horizontalHeader()->height());
 }
 
 int lcPartsTableWidget::GetFrozenWidth() const
 {
-	return columnWidth(0) + columnWidth(1);
+	return columnWidth(0) + columnWidth(1) + columnWidth(2);
 }
 
 void lcPartsTableWidget::focusInEvent(QFocusEvent* Event)
@@ -193,7 +210,7 @@ void lcPartsTableWidget::resizeEvent(QResizeEvent* Event)
 
 void lcPartsTableWidget::EnsureCountVisible(const QModelIndex& Index)
 {
-	if (mFrozenColumn && Index.column() > 1 && visualRect(Index).left() < GetFrozenWidth())
+	if (mFrozenColumn && Index.column() > 2 && visualRect(Index).left() < GetFrozenWidth())
 		horizontalScrollBar()->setValue(horizontalScrollBar()->value() + visualRect(Index).left() - GetFrozenWidth());
 }
 
@@ -206,7 +223,7 @@ QModelIndex lcPartsTableWidget::moveCursor(CursorAction Action, Qt::KeyboardModi
 
 void lcPartsTableWidget::scrollTo(const QModelIndex& Index, ScrollHint Hint)
 {
-	if (!mFrozenColumn || Index.column() > 1)
+	if (!mFrozenColumn || Index.column() > 2)
 	{
 		QTableWidget::scrollTo(Index, Hint);
 		EnsureCountVisible(Index);
@@ -238,7 +255,10 @@ public:
 		if (((const lcPartsTableWidgetItem&)Other).mLast)
 			return true;
 
-		if (column() > 1)
+		if (column() == 0)
+			return data(Qt::UserRole).toString() < Other.data(Qt::UserRole).toString();
+
+		if (column() > 2)
 		{
 			int Count = data(Qt::UserRole).toInt();
 			int OtherCount = Other.data(Qt::UserRole).toInt();
@@ -283,6 +303,7 @@ lcPropertiesDialog::lcPropertiesDialog(QWidget* Parent, lcPropertiesDialogOption
 	std::vector<int> ColorColumns(gColorList.size());
 	int ColorCount = 0;
 
+	HorizontalLabels.append(QString());
 	HorizontalLabels.append(tr("ID"));
 	HorizontalLabels.append(tr("Piece"));
 
@@ -301,7 +322,7 @@ lcPropertiesDialog::lcPropertiesDialog(QWidget* Parent, lcPropertiesDialogOption
 	const int ThumbnailSize = 32;
 	PartsTable->setIconSize(QSize(ThumbnailSize, ThumbnailSize));
 	PartsTable->verticalHeader()->setDefaultSectionSize(qMax(PartsTable->verticalHeader()->defaultSectionSize(), ThumbnailSize + 4));
-	PartsTable->setColumnCount(ColorCount + 3);
+	PartsTable->setColumnCount(ColorCount + 4);
 	PartsTable->setRowCount((int)PartsList.size() + 1);
 	PartsTable->setHorizontalHeaderLabels(HorizontalLabels);
 	PartsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
@@ -321,9 +342,11 @@ lcPropertiesDialog::lcPropertiesDialog(QWidget* Parent, lcPropertiesDialogOption
 		if (PieceId.endsWith(QLatin1String(".dat"), Qt::CaseInsensitive))
 			PieceId.chop(4);
 
-		lcPartsTableWidgetItem* IdItem = new lcPartsTableWidgetItem(PieceId);
-		PartsTable->setItem(Row, 0, IdItem);
-		PartsTable->setItem(Row, 1, new lcPartsTableWidgetItem(PieceData->m_strDescription));
+		lcPartsTableWidgetItem* ThumbnailItem = new lcPartsTableWidgetItem(QString());
+		ThumbnailItem->setData(Qt::UserRole, PieceId);
+		PartsTable->setItem(Row, 0, ThumbnailItem);
+		PartsTable->setItem(Row, 1, new lcPartsTableWidgetItem(PieceId));
+		PartsTable->setItem(Row, 2, new lcPartsTableWidgetItem(PieceData->m_strDescription));
 
 		int ThumbnailColor = gDefaultColor, ThumbnailCount = 0;
 
@@ -334,7 +357,7 @@ lcPropertiesDialog::lcPropertiesDialog(QWidget* Parent, lcPropertiesDialogOption
 
 			lcPartsTableWidgetItem* Item = new lcPartsTableWidgetItem(Count, locale());
 			Item->setTextAlignment(Qt::AlignCenter);
-			PartsTable->setItem(Row, ColorColumns[ColorIndex] + 2, Item);
+			PartsTable->setItem(Row, ColorColumns[ColorIndex] + 3, Item);
 
 			if (Count > ThumbnailCount)
 			{
@@ -349,12 +372,12 @@ lcPropertiesDialog::lcPropertiesDialog(QWidget* Parent, lcPropertiesDialogOption
 
 		// The thumbnail shows the piece in the color it is used the most.
 		auto [ThumbnailId, Thumbnail] = ThumbnailManager->RequestThumbnail(const_cast<lcPieceData*>(PieceData), ThumbnailColor, ThumbnailSize, devicePixelRatioF());
-		mThumbnails.emplace_back(ThumbnailId, IdItem);
+		mThumbnails.emplace_back(ThumbnailId, ThumbnailItem);
 
 		if (!Thumbnail.isNull())
-			IdItem->setData(Qt::DecorationRole, Thumbnail);
+			ThumbnailItem->setData(Qt::DecorationRole, Thumbnail);
 
-		for (int Column = 0; Column <= ColorCount + 1; Column++)
+		for (int Column = 0; Column <= ColorCount + 2; Column++)
 			if (!PartsTable->item(Row, Column))
 				PartsTable->setItem(Row, Column, new lcPartsTableWidgetItem(QString()));
 
@@ -365,15 +388,19 @@ lcPropertiesDialog::lcPropertiesDialog(QWidget* Parent, lcPropertiesDialogOption
 	Item->mLast = true;
 	PartsTable->setItem((int)InfoTotals.size(), 0, Item);
 
-	Item = new lcPartsTableWidgetItem(tr("Total"));
+	Item = new lcPartsTableWidgetItem(QString());
 	Item->mLast = true;
 	PartsTable->setItem((int)InfoTotals.size(), 1, Item);
+
+	Item = new lcPartsTableWidgetItem(tr("Total"));
+	Item->mLast = true;
+	PartsTable->setItem((int)InfoTotals.size(), 2, Item);
 
 	for (Row = 0; Row < (int)InfoTotals.size(); Row++)
 	{
 		Item = new lcPartsTableWidgetItem(InfoTotals[Row], locale());
 		Item->setTextAlignment(Qt::AlignCenter);
-		PartsTable->setItem(Row, ColorCount + 2, Item);
+		PartsTable->setItem(Row, ColorCount + 3, Item);
 	}
 
 	for (int ColorIndex = 0; ColorIndex < ColorCount; ColorIndex++)
@@ -381,13 +408,13 @@ lcPropertiesDialog::lcPropertiesDialog(QWidget* Parent, lcPropertiesDialogOption
 		Item = new lcPartsTableWidgetItem(ColorTotals[ColorIndex], locale());
 		Item->mLast = true;
 		Item->setTextAlignment(Qt::AlignCenter);
-		PartsTable->setItem((int)InfoTotals.size(), ColorIndex + 2, Item);
+		PartsTable->setItem((int)InfoTotals.size(), ColorIndex + 3, Item);
 	}
 
 	Item = new lcPartsTableWidgetItem(Total, locale());
 	Item->mLast = true;
 	Item->setTextAlignment(Qt::AlignCenter);
-	PartsTable->setItem((int)InfoTotals.size(), ColorCount + 2, Item);
+	PartsTable->setItem((int)InfoTotals.size(), ColorCount + 3, Item);
 
 	ui->PartsTable->FreezePartColumns();
 

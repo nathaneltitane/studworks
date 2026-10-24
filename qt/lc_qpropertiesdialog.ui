@@ -147,7 +147,7 @@
           <string>View piece quantities by color; click a column heading to sort.</string>
          </property>
          <property name="whatsThis">
-          <string>&lt;p&gt;&lt;b&gt;Pieces&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The table counts pieces across all steps, including pieces inside submodels. The ID column shows each piece's number and a thumbnail in its most used color. Color columns show quantities, and totals summarize each piece, each color, and the whole model. Click a column heading to sort. The ID and piece-name columns stay visible while you scroll horizontally. Counts cannot be edited here.&lt;/p&gt;</string>
+          <string>&lt;p&gt;&lt;b&gt;Pieces&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The table counts pieces across all steps, including pieces inside submodels. The first column shows a thumbnail of each piece in its most used color, and the ID column shows its number. Color columns show quantities, and totals summarize each piece, each color, and the whole model. Click a column heading to sort. The thumbnail, ID and piece-name columns stay visible while you scroll horizontally. Counts cannot be edited here.&lt;/p&gt;</string>
          </property>
          <property name="accessibleName">
           <string>Pieces</string>
