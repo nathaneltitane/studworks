@@ -2937,7 +2937,7 @@ void lcMainWindow::UpdateSnap()
 
 	const bool MoveSnapped = mMoveSnapEnabled && (mMoveXYSnapIndex || mMoveZSnapIndex);
 	const QString Move = MoveSnapped ? tr("Move: XY %1, Z %2").arg(MenuText(LC_EDIT_SNAP_MOVE_XY0 + mMoveXYSnapIndex), MenuText(LC_EDIT_SNAP_MOVE_Z0 + mMoveZSnapIndex)) : tr("Move: Free");
-	const QString Rotate = GetAngleSnap() != 0.0f ? tr("Rotate: %1 degrees").arg(lcFormatDoubleLocalized(GetAngleSnap(), locale(), 'g', 6)) : tr("Rotate: Free");
+	const QString Rotate = GetAngleSnap() != 0.0f ? tr("Rotate: %1 deg.").arg(lcFormatDoubleLocalized(GetAngleSnap(), locale(), 'g', 6)) : tr("Rotate: Free");
 	const QString Axes = mRelativeTransform ? tr("Relative axes") : tr("Absolute axes");
 	const QString Pivot = GetSeparateTransform() ? tr("Rotate separately") : tr("Rotate together");
 
