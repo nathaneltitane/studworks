@@ -253,11 +253,14 @@ public:
 
 	bool operator<(const QTableWidgetItem& Other) const override
 	{
+		// Keep the total row at the bottom in both sort orders.
+		const bool Descending = tableWidget() && tableWidget()->horizontalHeader()->sortIndicatorOrder() == Qt::DescendingOrder;
+
 		if (mLast)
-			return false;
+			return Descending;
 
 		if (((const lcPartsTableWidgetItem&)Other).mLast)
-			return true;
+			return !Descending;
 
 		if (column() == 0)
 			return data(Qt::UserRole).toString() < Other.data(Qt::UserRole).toString();
