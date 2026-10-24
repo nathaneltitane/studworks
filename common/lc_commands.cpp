@@ -1404,6 +1404,22 @@ const lcCommand gCommands[] =
 		"",
 		""
 	},
+	// LC_VIEW_TERMINAL_TOGGLE_FOLLOW_MODEL
+	{
+		QT_TRANSLATE_NOOP("Action", "View.Terminal.ToggleFollowModel"),
+		QT_TRANSLATE_NOOP("Menu", "Follow Model Folder"),
+		QT_TRANSLATE_NOOP("Status", "Toggle changing the terminal to the folder of each model that is opened"),
+		"",
+		""
+	},
+	// LC_VIEW_TERMINAL_GO_TO_MODEL_FOLDER
+	{
+		QT_TRANSLATE_NOOP("Action", "View.Terminal.GoToModelFolder"),
+		QT_TRANSLATE_NOOP("Menu", "Go to Model Folder"),
+		QT_TRANSLATE_NOOP("Status", "Change the terminal to the folder of the current model"),
+		"",
+		""
+	},
 	// LC_PIECE_INSERT
 	{
 		QT_TRANSLATE_NOOP("Action", "Piece.Insert"),

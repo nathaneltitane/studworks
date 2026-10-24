@@ -873,6 +873,20 @@ void lcMainWindow::CreateTerminalWidget()
 #else
 	// Without KDE Frameworks there is no terminal to show.
 	mActions[LC_VIEW_TOOLBAR_TERMINAL]->setVisible(false);
+	mActions[LC_VIEW_TERMINAL_TOGGLE_FOLLOW_MODEL]->setVisible(false);
+	mActions[LC_VIEW_TERMINAL_GO_TO_MODEL_FOLDER]->setVisible(false);
+#endif
+}
+
+void lcMainWindow::UpdateTerminalDirectory(bool Force)
+{
+#ifdef LC_ENABLE_TERMINAL
+	const QString FileName = lcGetActiveProject()->GetFileName();
+
+	if (mTerminalToolBar && !FileName.isEmpty())
+		static_cast<lcTerminalWidget*>(mTerminalToolBar->widget())->SetDirectory(QFileInfo(FileName).absolutePath(), Force);
+#else
+	Q_UNUSED(Force);
 #endif
 }
 
@@ -2681,13 +2695,8 @@ void lcMainWindow::UpdateTitle()
 	setWindowModified(lcGetActiveProject()->IsModified());
 	setWindowFilePath(lcGetActiveProject()->GetTitle());
 
-#ifdef LC_ENABLE_TERMINAL
-	// Keep the terminal in the folder of the current model.
-	const QString FileName = lcGetActiveProject()->GetFileName();
-
-	if (mTerminalToolBar && !FileName.isEmpty())
-		static_cast<lcTerminalWidget*>(mTerminalToolBar->widget())->SetDirectory(QFileInfo(FileName).absolutePath());
-#endif
+	if (lcGetPreferences().mTerminalFollowModel)
+		UpdateTerminalDirectory(false);
 }
 
 void lcMainWindow::UpdateModified(bool Modified)
@@ -3282,6 +3291,18 @@ void lcMainWindow::HandleCommand(lcCommandId CommandId)
 
 	case LC_VIEW_FADE_PREVIOUS_STEPS:
 		ToggleFadePreviousSteps();
+		break;
+
+	case LC_VIEW_TERMINAL_TOGGLE_FOLLOW_MODEL:
+		lcGetPreferences().mTerminalFollowModel = !lcGetPreferences().mTerminalFollowModel;
+		lcSetProfileInt(LC_PROFILE_TERMINAL_FOLLOW_MODEL, lcGetPreferences().mTerminalFollowModel);
+
+		if (lcGetPreferences().mTerminalFollowModel)
+			UpdateTerminalDirectory(false);
+		break;
+
+	case LC_VIEW_TERMINAL_GO_TO_MODEL_FOLDER:
+		UpdateTerminalDirectory(true);
 		break;
 
 	case LC_PIECE_INSERT:
