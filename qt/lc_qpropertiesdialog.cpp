@@ -292,7 +292,7 @@ lcPropertiesDialog::lcPropertiesDialog(QWidget* Parent, lcPropertiesDialogOption
 	ui->CommentsEdit->setText(mOptions->Properties.mComments);
 
 	const lcVector3 Dimensions = Options->BoundingBox.Max - Options->BoundingBox.Min;
-	QString Format = tr("%1 x %2 x %3 cm\n%4 x %5 x %6 inches\n%7 x %8 x %9 LDU");
+	QString Format = tr("%1 x %2 x %3 cm - %4 x %5 x %6 inches - %7 x %8 x %9 LDU");
 	QString Measurements = Format.arg(lcFormatDoubleLocalized(Dimensions.x * 0.04, locale(), 'f', 2), lcFormatDoubleLocalized(Dimensions.y * 0.04, locale(), 'f', 2), lcFormatDoubleLocalized(Dimensions.z * 0.04, locale(), 'f', 2),
 	                                  lcFormatDoubleLocalized(Dimensions.x / 64.0, locale(), 'f', 2), lcFormatDoubleLocalized(Dimensions.y / 64.0, locale(), 'f', 2), lcFormatDoubleLocalized(Dimensions.z / 64.0, locale(), 'f', 2),
 	                                  lcFormatDoubleLocalized(Dimensions.x, locale(), 'f', 2), lcFormatDoubleLocalized(Dimensions.y, locale(), 'f', 2), lcFormatDoubleLocalized(Dimensions.z, locale(), 'f', 2));
