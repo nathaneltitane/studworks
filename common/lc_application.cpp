@@ -69,6 +69,7 @@ void lcPreferences::LoadDefaults()
 	mAxisZColor = lcGetProfileUInt(LC_PROFILE_AXIS_Z_COLOR);
 	mAutoLoadMostRecent = lcGetProfileInt(LC_PROFILE_AUTOLOAD_MOSTRECENT);
 	mRestoreTabLayout = lcGetProfileInt(LC_PROFILE_RESTORE_TAB_LAYOUT);
+	mInsertColorMode = static_cast<lcInsertColorMode>(qBound(0, lcGetProfileInt(LC_PROFILE_INSERT_COLOR_MODE), static_cast<int>(lcInsertColorMode::LastInsertedColor)));
 	mWatchFileChanges = lcGetProfileInt(LC_PROFILE_WATCH_FILE_CHANGES);
 	mLoadPiecesBeforeShowing = lcGetProfileInt(LC_PROFILE_LOAD_PIECES_BEFORE_SHOWING);
 	mColorTheme = lcGetProfileColorTheme();
@@ -142,6 +143,7 @@ void lcPreferences::SaveDefaults()
 	lcSetProfileUInt(LC_PROFILE_AXIS_Z_COLOR, mAxisZColor);
 	lcSetProfileInt(LC_PROFILE_AUTOLOAD_MOSTRECENT, mAutoLoadMostRecent);
 	lcSetProfileInt(LC_PROFILE_RESTORE_TAB_LAYOUT, mRestoreTabLayout);
+	lcSetProfileInt(LC_PROFILE_INSERT_COLOR_MODE, static_cast<int>(mInsertColorMode));
 	lcSetProfileInt(LC_PROFILE_WATCH_FILE_CHANGES, mWatchFileChanges);
 	lcSetProfileInt(LC_PROFILE_LOAD_PIECES_BEFORE_SHOWING, mLoadPiecesBeforeShowing);
 	lcSetProfileColorTheme(mColorTheme);

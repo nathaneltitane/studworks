@@ -26,6 +26,13 @@ enum class lcHighlightRenderMode
 	Tint
 };
 
+enum class lcInsertColorMode
+{
+	CurrentColor,
+	SelectedPieceColor,
+	LastInsertedColor
+};
+
 enum class lcAxisIconLocation
 {
 	TopLeft,
@@ -135,6 +142,7 @@ public:
 	quint32 mAxisZColor;
 	bool mAutoLoadMostRecent;
 	bool mRestoreTabLayout;
+	lcInsertColorMode mInsertColorMode;
 	bool mWatchFileChanges;
 	bool mLoadPiecesBeforeShowing;
 	lcColorTheme mColorTheme;

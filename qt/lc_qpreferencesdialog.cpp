@@ -148,6 +148,7 @@ lcPreferencesDialog::lcPreferencesDialog(QWidget* Parent, lcPreferencesDialogOpt
 	ui->fixedDirectionKeys->setChecked(mOptions->Preferences.mFixedAxes);
 	ui->autoLoadMostRecent->setChecked(mOptions->Preferences.mAutoLoadMostRecent);
 	ui->RestoreTabLayout->setChecked(mOptions->Preferences.mRestoreTabLayout);
+	ui->InsertColorMode->setCurrentIndex(static_cast<int>(mOptions->Preferences.mInsertColorMode));
 	ui->WatchFileChanges->setChecked(mOptions->Preferences.mWatchFileChanges);
 	ui->LoadPiecesBeforeShowing->setChecked(mOptions->Preferences.mLoadPiecesBeforeShowing);
 	ui->AutomateEdgeColor->setChecked(mOptions->Preferences.mAutomateEdgeColor);
@@ -431,6 +432,7 @@ void lcPreferencesDialog::accept()
 	mOptions->Preferences.mFixedAxes = ui->fixedDirectionKeys->isChecked();
 	mOptions->Preferences.mAutoLoadMostRecent = ui->autoLoadMostRecent->isChecked();
 	mOptions->Preferences.mRestoreTabLayout = ui->RestoreTabLayout->isChecked();
+	mOptions->Preferences.mInsertColorMode = static_cast<lcInsertColorMode>(ui->InsertColorMode->currentIndex());
 	mOptions->Preferences.mWatchFileChanges = ui->WatchFileChanges->isChecked();
 	mOptions->Preferences.mLoadPiecesBeforeShowing = ui->LoadPiecesBeforeShowing->isChecked();
 
