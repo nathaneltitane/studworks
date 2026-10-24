@@ -2436,7 +2436,18 @@ void lcModel::EndEditHistory()
 
 void lcModel::LoadModelPropertiesState(const lcModelProperties& ModelProperties)
 {
+	const bool StepViewsChanged = mProperties.mStepViews != ModelProperties.mStepViews;
 	mProperties = ModelProperties;
+
+	// Undo and redo of step views update the Timeline and turn the view again.
+	if (StepViewsChanged && gMainWindow && !mIsPreview)
+	{
+		gMainWindow->UpdateTimeline(false, false);
+
+		if (lcGetPreferences().mFollowStepViews)
+			for (lcView* View : lcView::GetModelViews(this))
+				View->ApplyStepView();
+	}
 
 	if (gMainWindow)
 		gMainWindow->GetPreviewWidget()->UpdatePreview();
@@ -2737,12 +2748,7 @@ void lcModel::SetStepView(lcStep Step, const std::optional<lcStepView>& StepView
 	SetModelProperties(Properties);
 	EndHistorySequence(tr("Set Step View"));
 
-	gMainWindow->UpdateTimeline(false, false);
 	SetCurrentStep(mCurrentStep);
-
-	if (lcGetPreferences().mFollowStepViews)
-		for (lcView* View : lcView::GetModelViews(this))
-			View->ApplyStepView();
 }
 
 std::optional<lcStepView> lcModel::GetEffectiveStepView(lcStep Step) const
