@@ -1436,6 +1436,14 @@ const lcCommand gCommands[] =
 		"",
 		""
 	},
+	// LC_VIEW_NORMAL_TO_FACE
+	{
+		QT_TRANSLATE_NOOP("Action", "View.NormalToFace"),
+		QT_TRANSLATE_NOOP("Menu", "Normal to Face"),
+		QT_TRANSLATE_NOOP("Status", "Click a face to align the view straight on to it"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Normal to Face</b></p><p>Click a face of any piece, including pieces inside submodels, to point the camera straight at it. The model is not changed. Press Esc to cancel.</p>"),
+		""
+	},
 	// LC_VIEW_GRID_TOGGLE_HEIGHT_XZ
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Grid.ToggleHeightXZ"),
