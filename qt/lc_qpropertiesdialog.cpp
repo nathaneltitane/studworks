@@ -62,9 +62,6 @@ void lcPartsTableWidget::FreezePartColumns()
 	for (int Column = 0; Column < 3; Column++)
 		horizontalHeader()->setSectionResizeMode(Column, QHeaderView::Fixed);
 	setTextElideMode(Qt::ElideRight);
-	for (int Row = 0; Row < rowCount(); Row++)
-		if (QTableWidgetItem* Item = item(Row, 2))
-			Item->setToolTip(Item->text());
 
 	// Both views share the data and selection, so sorting and row highlights stay in sync.
 	mFrozenColumn = new lcFrozenPartsView(this);
@@ -97,11 +94,11 @@ void lcPartsTableWidget::FreezePartColumns()
 	for (int Row = 0; Row < rowCount(); Row++)
 		mFrozenColumn->setRowHeight(Row, rowHeight(Row));
 
-	// The total label spans the thumbnail and ID columns, the total row always sorts last.
+	// The total label spans the thumbnail, ID and piece columns, the total row always sorts last.
 	if (rowCount() > 0)
 	{
-		setSpan(rowCount() - 1, 0, 1, 2);
-		mFrozenColumn->setSpan(rowCount() - 1, 0, 1, 2);
+		setSpan(rowCount() - 1, 0, 1, 3);
+		mFrozenColumn->setSpan(rowCount() - 1, 0, 1, 3);
 	}
 
 	connect(verticalScrollBar(), &QScrollBar::valueChanged, mFrozenColumn->verticalScrollBar(), &QScrollBar::setValue);
@@ -183,10 +180,9 @@ void lcPartsTableWidget::UpdateFrozenGeometry()
 	if (!mFrozenColumn)
 		return;
 
-	// Reserve at least half the viewport for counts, while letting short names use less space.
-	const int PartWidth = qMin(mPartColumnWidth, qMax(1, viewport()->width() / 2 - columnWidth(0) - columnWidth(1)));
-	if (columnWidth(2) != PartWidth)
-		setColumnWidth(2, PartWidth);
+	// The piece column always shows the full description.
+	if (columnWidth(2) != mPartColumnWidth)
+		setColumnWidth(2, mPartColumnWidth);
 
 	for (int Column = 0; Column < 3; Column++)
 		mFrozenColumn->setColumnWidth(Column, columnWidth(Column));
@@ -285,6 +281,7 @@ lcPropertiesDialog::lcPropertiesDialog(QWidget* Parent, lcPropertiesDialogOption
 	lcSetupDialogHelp(this, ui->buttonBox);
 
 	setWindowTitle(tr("%1 Properties").arg(mOptions->Properties.mFileName));
+	setWindowState(windowState() | Qt::WindowMaximized);
 
 	ui->DescriptionEdit->setText(mOptions->Properties.mDescription);
 	ui->AuthorEdit->setText(mOptions->Properties.mAuthor);
