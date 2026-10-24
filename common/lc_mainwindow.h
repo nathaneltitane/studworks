@@ -337,6 +337,7 @@ protected:
 	void ShowSelectDialog();
 	void ShowResultError(const lcResult<void>& Result, const QString& Title);
 	void CreatePreviewWidget();
+	void CreateTerminalWidget();
 
 	bool OpenProjectFile(const QString& FileName);
 	void AddRecentFile(const QString& FileName);
@@ -379,6 +380,7 @@ protected:
 	QToolBar* mToolsToolBar = nullptr;
 	QToolBar* mTimeToolBar = nullptr;
 	QDockWidget* mPreviewToolBar = nullptr;
+	QDockWidget* mTerminalToolBar = nullptr;
 	QDockWidget* mPartsToolBar = nullptr;
 	QDockWidget* mColorsToolBar = nullptr;
 	QDockWidget* mPropertiesToolBar = nullptr;
