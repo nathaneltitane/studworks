@@ -1162,6 +1162,16 @@
             </item>
            </widget>
           </item>
+          <item row="2" column="0" colspan="4">
+           <widget class="QCheckBox" name="FollowStepViewsCheckBox">
+            <property name="toolTip">
+             <string>Turn the view to each step's view rotation (MLCAD ROTSTEP) when changing steps.</string>
+            </property>
+            <property name="text">
+             <string>Follow step views</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
@@ -3279,6 +3289,7 @@
   <tabstop>ViewSphereLocationCombo</tabstop>
   <tabstop>AxisIconCheckBox</tabstop>
   <tabstop>AxisIconLocationCombo</tabstop>
+  <tabstop>FollowStepViewsCheckBox</tabstop>
   <tabstop>gridStuds</tabstop>
   <tabstop>gridLines</tabstop>
   <tabstop>gridLineSpacing</tabstop>

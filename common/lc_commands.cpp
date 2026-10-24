@@ -1436,6 +1436,22 @@ const lcCommand gCommands[] =
 		"",
 		""
 	},
+	// LC_VIEW_STEP_VIEW_EDIT
+	{
+		QT_TRANSLATE_NOOP("Action", "View.StepView.Edit"),
+		QT_TRANSLATE_NOOP("Menu", "Step View..."),
+		QT_TRANSLATE_NOOP("Status", "Set the view rotation of the current step"),
+		"",
+		""
+	},
+	// LC_VIEW_STEP_VIEW_TOGGLE_FOLLOW
+	{
+		QT_TRANSLATE_NOOP("Action", "View.StepView.ToggleFollow"),
+		QT_TRANSLATE_NOOP("Menu", "Follow Step Views"),
+		QT_TRANSLATE_NOOP("Status", "Toggle turning the view to each step's view rotation when changing steps"),
+		"",
+		""
+	},
 	// LC_VIEW_NORMAL_TO_FACE
 	{
 		QT_TRANSLATE_NOOP("Action", "View.NormalToFace"),

@@ -234,6 +234,7 @@ public:
 	void ToggleAxisIcon();
 	void ToggleGrid();
 	void ToggleFadePreviousSteps();
+	void ShowStepViewDialog();
 	void SetHighlightRenderMode(lcHighlightRenderMode HighlightRenderMode);
 	void ToggleAutomateEdgeColor();
 	void SetStudStyle(lcStudStyle StudStyle);

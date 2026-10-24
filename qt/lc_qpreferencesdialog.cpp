@@ -216,6 +216,7 @@ lcPreferencesDialog::lcPreferencesDialog(QWidget* Parent, lcPreferencesDialogOpt
 	ui->GridHeightYZCheckBox->setChecked(mOptions->Preferences.mDrawGridHeightYZ);
 	ui->GridHeightBehindCheckBox->setChecked(mOptions->Preferences.mGridHeightBehindModel);
 	ui->AxisIconCheckBox->setChecked(mOptions->Preferences.mDrawAxes);
+	ui->FollowStepViewsCheckBox->setChecked(mOptions->Preferences.mFollowStepViews);
 
 	ui->AxisIconLocationCombo->setCurrentIndex((int)mOptions->Preferences.mAxisIconLocation);
 
@@ -481,6 +482,7 @@ void lcPreferencesDialog::accept()
 
 	mOptions->Preferences.mBackgroundGradient = ui->BackgroundGradientRadio->isChecked();
 	mOptions->Preferences.mDrawAxes = ui->AxisIconCheckBox->isChecked();
+	mOptions->Preferences.mFollowStepViews = ui->FollowStepViewsCheckBox->isChecked();
 	mOptions->Preferences.mAxisIconLocation = (lcAxisIconLocation)ui->AxisIconLocationCombo->currentIndex();
 	mOptions->Preferences.mViewSphereEnabled = ui->ViewSphereSizeCombo->currentIndex() > 0;
 	mOptions->Preferences.mViewSphereLocation = (lcViewSphereLocation)ui->ViewSphereLocationCombo->currentIndex();
