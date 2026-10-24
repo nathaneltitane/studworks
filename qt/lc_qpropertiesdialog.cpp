@@ -337,7 +337,7 @@ lcPropertiesDialog::lcPropertiesDialog(QWidget* Parent, lcPropertiesDialogOption
 
 	std::vector<int> InfoTotals(PartsList.size());
 	std::vector<int> ColorTotals(ColorCount);
-	int Row = 0, Total = 0;
+	int Row = 0, Total = 0, UniqueCount = 0;
 	lcThumbnailManager* ThumbnailManager = lcGetPiecesLibrary()->GetThumbnailManager();
 
 	connect(ThumbnailManager, &lcThumbnailManager::ThumbnailReady, this, &lcPropertiesDialog::ThumbnailReady);
@@ -373,6 +373,7 @@ lcPropertiesDialog::lcPropertiesDialog(QWidget* Parent, lcPropertiesDialogOption
 				ThumbnailCount = Count;
 			}
 
+			UniqueCount++;
 			InfoTotals[Row] += Count;
 			ColorTotals[ColorColumns[ColorIndex]] += Count;
 			Total += Count;
@@ -425,6 +426,8 @@ lcPropertiesDialog::lcPropertiesDialog(QWidget* Parent, lcPropertiesDialogOption
 	PartsTable->setItem((int)InfoTotals.size(), ColorCount + 3, Item);
 
 	ui->PartsTable->FreezePartColumns();
+
+	ui->PiecesCountLabel->setText(tr("Unique pieces: %1 - Total pieces: %2").arg(lcFormatIntegerLocalized(UniqueCount, locale()), lcFormatIntegerLocalized(Total, locale())));
 
 	ui->ExportBrickLinkButton->setEnabled(!PartsList.empty());
 	ui->ExportCSVButton->setEnabled(!PartsList.empty());

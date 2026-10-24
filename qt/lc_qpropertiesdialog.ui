@@ -175,6 +175,13 @@
        <item>
         <layout class="QHBoxLayout" name="ExportLayout">
          <item>
+          <widget class="QLabel" name="PiecesCountLabel">
+           <property name="toolTip">
+            <string>Unique pieces count each piece and color combination once; total pieces count every piece in the model.</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <spacer name="ExportSpacer">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
