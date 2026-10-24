@@ -217,6 +217,9 @@ public:
 	void ToggleAxisIcon();
 	void ToggleGrid();
 	void ToggleFadePreviousSteps();
+	void SetHighlightRenderMode(lcHighlightRenderMode HighlightRenderMode);
+	void ToggleAutomateEdgeColor();
+	void SetStudStyle(lcStudStyle StudStyle);
 	void ToggleEdgeLines(lcRenderTarget Target);
 	void ToggleConditionalLines(lcRenderTarget Target);
 	void ToggleSyncRendering(lcRenderTarget Target);
