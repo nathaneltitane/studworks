@@ -315,7 +315,7 @@ lcPropertiesDialog::lcPropertiesDialog(QWidget* Parent, lcPropertiesDialogOption
 
 	for (const auto& PartIt : PartsList)
 	{
-		lcPieceData* PieceData = PartIt.first;
+		const lcPieceData* PieceData = PartIt.first;
 		QString PieceId = PieceData->mFileName;
 
 		if (PieceId.endsWith(QLatin1String(".dat"), Qt::CaseInsensitive))
@@ -348,7 +348,7 @@ lcPropertiesDialog::lcPropertiesDialog(QWidget* Parent, lcPropertiesDialogOption
 		}
 
 		// The thumbnail shows the piece in the color it is used the most.
-		auto [ThumbnailId, Thumbnail] = ThumbnailManager->RequestThumbnail(PieceData, ThumbnailColor, ThumbnailSize, devicePixelRatioF());
+		auto [ThumbnailId, Thumbnail] = ThumbnailManager->RequestThumbnail(const_cast<lcPieceData*>(PieceData), ThumbnailColor, ThumbnailSize, devicePixelRatioF());
 		mThumbnails.emplace_back(ThumbnailId, IdItem);
 
 		if (!Thumbnail.isNull())
