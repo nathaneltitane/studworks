@@ -5,6 +5,10 @@
 #include "lc_colors.h"
 #include "lc_application.h"
 #include "lc_piecedata.h"
+#include "lc_library.h"
+#include "lc_thumbnailmanager.h"
+#include "lc_bricklink.h"
+#include "project.h"
 
 class lcFrozenPartsView : public QTableView
 {
@@ -35,13 +39,15 @@ lcPartsTableWidget::lcPartsTableWidget(QWidget* Parent)
 {
 }
 
-void lcPartsTableWidget::FreezePartColumn()
+void lcPartsTableWidget::FreezePartColumns()
 {
-	mPartColumnWidth = qMax(sizeHintForColumn(0), horizontalHeader()->sectionSizeHint(0));
+	setColumnWidth(0, qMax(sizeHintForColumn(0), horizontalHeader()->sectionSizeHint(0)));
+	mPartColumnWidth = qMax(sizeHintForColumn(1), horizontalHeader()->sectionSizeHint(1));
 	horizontalHeader()->setSectionResizeMode(0, QHeaderView::Fixed);
+	horizontalHeader()->setSectionResizeMode(1, QHeaderView::Fixed);
 	setTextElideMode(Qt::ElideRight);
 	for (int Row = 0; Row < rowCount(); Row++)
-		if (QTableWidgetItem* Item = item(Row, 0))
+		if (QTableWidgetItem* Item = item(Row, 1))
 			Item->setToolTip(Item->text());
 
 	// Both views share the data and selection, so sorting and row highlights stay in sync.
@@ -52,6 +58,7 @@ void lcPartsTableWidget::FreezePartColumn()
 	mFrozenColumn->setSelectionMode(selectionMode());
 	mFrozenColumn->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	mFrozenColumn->setTextElideMode(Qt::ElideRight);
+	mFrozenColumn->setIconSize(iconSize());
 	mFrozenColumn->setFocusPolicy(Qt::NoFocus);
 	mFrozenColumn->setFocusProxy(this);
 	mFrozenColumn->setFrameShape(QFrame::NoFrame);
@@ -67,7 +74,7 @@ void lcPartsTableWidget::FreezePartColumn()
 	setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
 	mFrozenColumn->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
 
-	for (int Column = 1; Column < columnCount(); Column++)
+	for (int Column = 2; Column < columnCount(); Column++)
 		mFrozenColumn->hideColumn(Column);
 
 	for (int Row = 0; Row < rowCount(); Row++)
@@ -81,15 +88,15 @@ void lcPartsTableWidget::FreezePartColumn()
 	});
 	connect(horizontalHeader(), &QHeaderView::sectionResized, this, [this](int Column, int, int)
 	{
-		if (Column == 0)
+		if (Column < 2)
 			UpdateFrozenGeometry();
 	});
 	connect(horizontalHeader(), &QHeaderView::sortIndicatorChanged, mFrozenColumn->horizontalHeader(), &QHeaderView::setSortIndicator);
-	connect(mFrozenColumn->horizontalHeader(), &QHeaderView::sectionClicked, this, [this](int)
+	connect(mFrozenColumn->horizontalHeader(), &QHeaderView::sectionClicked, this, [this](int Column)
 	{
-		const Qt::SortOrder Order = horizontalHeader()->sortIndicatorSection() == 0 && horizontalHeader()->sortIndicatorOrder() == Qt::AscendingOrder
+		const Qt::SortOrder Order = horizontalHeader()->sortIndicatorSection() == Column && horizontalHeader()->sortIndicatorOrder() == Qt::AscendingOrder
 			? Qt::DescendingOrder : Qt::AscendingOrder;
-		horizontalHeader()->setSortIndicator(0, Order);
+		horizontalHeader()->setSortIndicator(Column, Order);
 	});
 	mFrozenColumn->horizontalHeader()->setSortIndicator(horizontalHeader()->sortIndicatorSection(), horizontalHeader()->sortIndicatorOrder());
 
@@ -153,13 +160,19 @@ void lcPartsTableWidget::UpdateFrozenGeometry()
 		return;
 
 	// Reserve at least half the viewport for counts, while letting short names use less space.
-	const int PartWidth = qMin(mPartColumnWidth, qMax(1, viewport()->width() / 2));
-	if (columnWidth(0) != PartWidth)
-		setColumnWidth(0, PartWidth);
+	const int PartWidth = qMin(mPartColumnWidth, qMax(1, viewport()->width() / 2 - columnWidth(0)));
+	if (columnWidth(1) != PartWidth)
+		setColumnWidth(1, PartWidth);
 
 	mFrozenColumn->setColumnWidth(0, columnWidth(0));
+	mFrozenColumn->setColumnWidth(1, columnWidth(1));
 	mFrozenColumn->horizontalHeader()->setFixedHeight(horizontalHeader()->height());
-	mFrozenColumn->setGeometry(viewport()->geometry().x(), frameWidth(), columnWidth(0), viewport()->height() + horizontalHeader()->height());
+	mFrozenColumn->setGeometry(viewport()->geometry().x(), frameWidth(), GetFrozenWidth(), viewport()->height() + horizontalHeader()->height());
+}
+
+int lcPartsTableWidget::GetFrozenWidth() const
+{
+	return columnWidth(0) + columnWidth(1);
 }
 
 void lcPartsTableWidget::focusInEvent(QFocusEvent* Event)
@@ -180,8 +193,8 @@ void lcPartsTableWidget::resizeEvent(QResizeEvent* Event)
 
 void lcPartsTableWidget::EnsureCountVisible(const QModelIndex& Index)
 {
-	if (mFrozenColumn && Index.column() > 0 && visualRect(Index).left() < columnWidth(0))
-		horizontalScrollBar()->setValue(horizontalScrollBar()->value() + visualRect(Index).left() - columnWidth(0));
+	if (mFrozenColumn && Index.column() > 1 && visualRect(Index).left() < GetFrozenWidth())
+		horizontalScrollBar()->setValue(horizontalScrollBar()->value() + visualRect(Index).left() - GetFrozenWidth());
 }
 
 QModelIndex lcPartsTableWidget::moveCursor(CursorAction Action, Qt::KeyboardModifiers Modifiers)
@@ -193,7 +206,7 @@ QModelIndex lcPartsTableWidget::moveCursor(CursorAction Action, Qt::KeyboardModi
 
 void lcPartsTableWidget::scrollTo(const QModelIndex& Index, ScrollHint Hint)
 {
-	if (!mFrozenColumn || Index.column() > 0)
+	if (!mFrozenColumn || Index.column() > 1)
 	{
 		QTableWidget::scrollTo(Index, Hint);
 		EnsureCountVisible(Index);
@@ -225,7 +238,7 @@ public:
 		if (((const lcPartsTableWidgetItem&)Other).mLast)
 			return true;
 
-		if (column() > 0)
+		if (column() > 1)
 		{
 			int Count = data(Qt::UserRole).toInt();
 			int OtherCount = Other.data(Qt::UserRole).toInt();
@@ -270,6 +283,7 @@ lcPropertiesDialog::lcPropertiesDialog(QWidget* Parent, lcPropertiesDialogOption
 	std::vector<int> ColorColumns(gColorList.size());
 	int ColorCount = 0;
 
+	HorizontalLabels.append(tr("ID"));
 	HorizontalLabels.append(tr("Piece"));
 
 	for (size_t ColorIndex = 0; ColorIndex < gColorList.size(); ColorIndex++)
@@ -284,7 +298,10 @@ lcPropertiesDialog::lcPropertiesDialog(QWidget* Parent, lcPropertiesDialogOption
 	HorizontalLabels.append(tr("Total"));
 
 	QTableWidget* PartsTable = ui->PartsTable;
-	PartsTable->setColumnCount(ColorCount + 2);
+	const int ThumbnailSize = 32;
+	PartsTable->setIconSize(QSize(ThumbnailSize, ThumbnailSize));
+	PartsTable->verticalHeader()->setDefaultSectionSize(qMax(PartsTable->verticalHeader()->defaultSectionSize(), ThumbnailSize + 4));
+	PartsTable->setColumnCount(ColorCount + 3);
 	PartsTable->setRowCount((int)PartsList.size() + 1);
 	PartsTable->setHorizontalHeaderLabels(HorizontalLabels);
 	PartsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
@@ -292,10 +309,23 @@ lcPropertiesDialog::lcPropertiesDialog(QWidget* Parent, lcPropertiesDialogOption
 	std::vector<int> InfoTotals(PartsList.size());
 	std::vector<int> ColorTotals(ColorCount);
 	int Row = 0, Total = 0;
+	lcThumbnailManager* ThumbnailManager = lcGetPiecesLibrary()->GetThumbnailManager();
+
+	connect(ThumbnailManager, &lcThumbnailManager::ThumbnailReady, this, &lcPropertiesDialog::ThumbnailReady);
 
 	for (const auto& PartIt : PartsList)
 	{
-		PartsTable->setItem(Row, 0, new lcPartsTableWidgetItem(PartIt.first->m_strDescription));
+		lcPieceData* PieceData = PartIt.first;
+		QString PieceId = PieceData->mFileName;
+
+		if (PieceId.endsWith(QLatin1String(".dat"), Qt::CaseInsensitive))
+			PieceId.chop(4);
+
+		lcPartsTableWidgetItem* IdItem = new lcPartsTableWidgetItem(PieceId);
+		PartsTable->setItem(Row, 0, IdItem);
+		PartsTable->setItem(Row, 1, new lcPartsTableWidgetItem(PieceData->m_strDescription));
+
+		int ThumbnailColor = gDefaultColor, ThumbnailCount = 0;
 
 		for (const auto& ColorIt : PartIt.second)
 		{
@@ -304,29 +334,46 @@ lcPropertiesDialog::lcPropertiesDialog(QWidget* Parent, lcPropertiesDialogOption
 
 			lcPartsTableWidgetItem* Item = new lcPartsTableWidgetItem(Count, locale());
 			Item->setTextAlignment(Qt::AlignCenter);
-			PartsTable->setItem(Row, ColorColumns[ColorIndex] + 1, Item);
+			PartsTable->setItem(Row, ColorColumns[ColorIndex] + 2, Item);
+
+			if (Count > ThumbnailCount)
+			{
+				ThumbnailColor = ColorIndex;
+				ThumbnailCount = Count;
+			}
 
 			InfoTotals[Row] += Count;
 			ColorTotals[ColorColumns[ColorIndex]] += Count;
 			Total += Count;
 		}
 
-		for (int Column = 0; Column <= ColorCount; Column++)
+		// The thumbnail shows the piece in the color it is used the most.
+		auto [ThumbnailId, Thumbnail] = ThumbnailManager->RequestThumbnail(PieceData, ThumbnailColor, ThumbnailSize, devicePixelRatioF());
+		mThumbnails.emplace_back(ThumbnailId, IdItem);
+
+		if (!Thumbnail.isNull())
+			IdItem->setData(Qt::DecorationRole, Thumbnail);
+
+		for (int Column = 0; Column <= ColorCount + 1; Column++)
 			if (!PartsTable->item(Row, Column))
 				PartsTable->setItem(Row, Column, new lcPartsTableWidgetItem(QString()));
 
 		Row++;
 	}
 
-	lcPartsTableWidgetItem* Item = new lcPartsTableWidgetItem(tr("Total"));
+	lcPartsTableWidgetItem* Item = new lcPartsTableWidgetItem(QString());
 	Item->mLast = true;
 	PartsTable->setItem((int)InfoTotals.size(), 0, Item);
+
+	Item = new lcPartsTableWidgetItem(tr("Total"));
+	Item->mLast = true;
+	PartsTable->setItem((int)InfoTotals.size(), 1, Item);
 
 	for (Row = 0; Row < (int)InfoTotals.size(); Row++)
 	{
 		Item = new lcPartsTableWidgetItem(InfoTotals[Row], locale());
 		Item->setTextAlignment(Qt::AlignCenter);
-		PartsTable->setItem(Row, ColorCount + 1, Item);
+		PartsTable->setItem(Row, ColorCount + 2, Item);
 	}
 
 	for (int ColorIndex = 0; ColorIndex < ColorCount; ColorIndex++)
@@ -334,20 +381,81 @@ lcPropertiesDialog::lcPropertiesDialog(QWidget* Parent, lcPropertiesDialogOption
 		Item = new lcPartsTableWidgetItem(ColorTotals[ColorIndex], locale());
 		Item->mLast = true;
 		Item->setTextAlignment(Qt::AlignCenter);
-		PartsTable->setItem((int)InfoTotals.size(), ColorIndex + 1, Item);
+		PartsTable->setItem((int)InfoTotals.size(), ColorIndex + 2, Item);
 	}
 
 	Item = new lcPartsTableWidgetItem(Total, locale());
 	Item->mLast = true;
 	Item->setTextAlignment(Qt::AlignCenter);
-	PartsTable->setItem((int)InfoTotals.size(), ColorCount + 1, Item);
+	PartsTable->setItem((int)InfoTotals.size(), ColorCount + 2, Item);
 
-	ui->PartsTable->FreezePartColumn();
+	ui->PartsTable->FreezePartColumns();
+
+	ui->ExportBrickLinkButton->setEnabled(!PartsList.empty());
+	ui->ExportCSVButton->setEnabled(!PartsList.empty());
+
+	connect(ui->ExportBrickLinkButton, &QPushButton::clicked, this, &lcPropertiesDialog::ExportBrickLink);
+	connect(ui->ExportCSVButton, &QPushButton::clicked, this, &lcPropertiesDialog::ExportCSV);
 }
 
 lcPropertiesDialog::~lcPropertiesDialog()
 {
+	lcThumbnailManager* ThumbnailManager = lcGetPiecesLibrary()->GetThumbnailManager();
+
+	for (const auto& [ThumbnailId, Item] : mThumbnails)
+		ThumbnailManager->ReleaseThumbnail(ThumbnailId);
+
 	delete ui;
+}
+
+void lcPropertiesDialog::ThumbnailReady(lcPartThumbnailId ThumbnailId, QPixmap Pixmap)
+{
+	for (const auto& [Id, Item] : mThumbnails)
+		if (Id == ThumbnailId)
+			Item->setData(Qt::DecorationRole, Pixmap);
+}
+
+QString lcPropertiesDialog::GetExportFileName(const QString& Extension, const QString& Title, const QString& Filter)
+{
+	const Project* Project = lcGetActiveProject();
+	const QString ProjectFileName = Project ? Project->GetFileName() : QString();
+	QString FileName = QFileInfo(mOptions->Properties.mFileName).completeBaseName();
+
+	if (FileName.isEmpty())
+		FileName = tr("Pieces");
+
+	FileName += "." + Extension;
+
+	if (!ProjectFileName.isEmpty())
+		FileName = QFileInfo(ProjectFileName).absoluteDir().filePath(FileName);
+
+	return QFileDialog::getSaveFileName(this, Title, FileName, Filter);
+}
+
+void lcPropertiesDialog::ExportBrickLink()
+{
+	const QString FileName = GetExportFileName("xml", tr("Export BrickLink"), tr("XML Files (*.xml);;All Files (*.*)"));
+
+	if (FileName.isEmpty())
+		return;
+
+	lcResult<void> Result = lcExportBrickLink(FileName, mOptions->PartsList);
+
+	if (!Result && !Result.error().isEmpty())
+		QMessageBox::warning(this, tr("Export BrickLink"), Result.error());
+}
+
+void lcPropertiesDialog::ExportCSV()
+{
+	const QString FileName = GetExportFileName("csv", tr("Export CSV"), tr("CSV Files (*.csv);;All Files (*.*)"));
+
+	if (FileName.isEmpty())
+		return;
+
+	lcResult<void> Result = lcExportCSV(FileName, mOptions->PartsList);
+
+	if (!Result && !Result.error().isEmpty())
+		QMessageBox::warning(this, tr("Export CSV"), Result.error());
 }
 
 void lcPropertiesDialog::accept()
