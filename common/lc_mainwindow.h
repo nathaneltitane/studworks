@@ -225,6 +225,7 @@ public:
 	void TogglePreviewViewSphere();
 	void TogglePreviewAxisIcon();
 	void UpdatePartsRendering();
+	void ToggleLoadPiecesBeforeShowing();
 
 	void NewProject();
 	bool OpenProject(const QString& FileName);

@@ -70,6 +70,7 @@ void lcPreferences::LoadDefaults()
 	mAutoLoadMostRecent = lcGetProfileInt(LC_PROFILE_AUTOLOAD_MOSTRECENT);
 	mRestoreTabLayout = lcGetProfileInt(LC_PROFILE_RESTORE_TAB_LAYOUT);
 	mWatchFileChanges = lcGetProfileInt(LC_PROFILE_WATCH_FILE_CHANGES);
+	mLoadPiecesBeforeShowing = lcGetProfileInt(LC_PROFILE_LOAD_PIECES_BEFORE_SHOWING);
 	mColorTheme = lcGetProfileColorTheme();
 	mPreviewViewSphereEnabled = lcGetProfileInt(LC_PROFILE_PREVIEW_VIEW_SPHERE_ENABLED);
 	mPreviewViewSphereSize = lcGetProfileInt(LC_PROFILE_PREVIEW_VIEW_SPHERE_SIZE);
@@ -142,6 +143,7 @@ void lcPreferences::SaveDefaults()
 	lcSetProfileInt(LC_PROFILE_AUTOLOAD_MOSTRECENT, mAutoLoadMostRecent);
 	lcSetProfileInt(LC_PROFILE_RESTORE_TAB_LAYOUT, mRestoreTabLayout);
 	lcSetProfileInt(LC_PROFILE_WATCH_FILE_CHANGES, mWatchFileChanges);
+	lcSetProfileInt(LC_PROFILE_LOAD_PIECES_BEFORE_SHOWING, mLoadPiecesBeforeShowing);
 	lcSetProfileColorTheme(mColorTheme);
 	lcSetProfileInt(LC_PROFILE_PREVIEW_VIEW_SPHERE_ENABLED, mPreviewViewSphereEnabled);
 	lcSetProfileInt(LC_PROFILE_PREVIEW_VIEW_SPHERE_SIZE, mPreviewViewSphereSize);
