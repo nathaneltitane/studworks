@@ -1,6 +1,8 @@
 #include "lc_global.h"
 #include "lc_terminalwidget.h"
 #include "lc_shortcuts.h"
+#include "lc_mainwindow.h"
+#include "lc_application.h"
 #include <KParts/ReadOnlyPart>
 #include <KPluginFactory>
 #include <KPluginMetaData>
@@ -12,6 +14,24 @@ lcTerminalWidget::lcTerminalWidget(QWidget* Parent)
 {
 	mLayout = new QVBoxLayout(this);
 	mLayout->setContentsMargins(0, 0, 0, 0);
+	mLayout->setSpacing(0);
+
+	QHBoxLayout* OptionsLayout = new QHBoxLayout();
+	OptionsLayout->setContentsMargins(0, 0, 0, 0);
+	OptionsLayout->addStretch(1);
+	mLayout->addLayout(OptionsLayout);
+
+	QToolButton* OptionsButton = new QToolButton(this);
+	OptionsButton->setIcon(QIcon(":/resources/gear_in.png"));
+	OptionsButton->setToolTip(tr("Configure the terminal."));
+	OptionsButton->setAccessibleName(tr("Terminal Options"));
+	OptionsButton->setPopupMode(QToolButton::InstantPopup);
+	OptionsButton->setAutoRaise(true);
+	OptionsLayout->addWidget(OptionsButton);
+
+	QMenu* OptionsMenu = new QMenu(OptionsButton);
+	OptionsButton->setMenu(OptionsMenu);
+	connect(OptionsMenu, &QMenu::aboutToShow, this, &lcTerminalWidget::OptionsMenuAboutToShow);
 
 	mDirectory = QDir::homePath();
 
@@ -85,9 +105,27 @@ void lcTerminalWidget::CreateTerminal()
 	});
 }
 
-void lcTerminalWidget::SetDirectory(const QString& Directory)
+void lcTerminalWidget::OptionsMenuAboutToShow()
 {
-	if (Directory.isEmpty() || Directory == mDirectory)
+	QMenu* Menu = qobject_cast<QMenu*>(sender());
+	Menu->clear();
+
+	QAction* FollowModel = Menu->addAction(tr("Follow Model Folder"), this, []()
+	{
+		gMainWindow->HandleCommand(LC_VIEW_TERMINAL_TOGGLE_FOLLOW_MODEL);
+	});
+	FollowModel->setCheckable(true);
+	FollowModel->setChecked(lcGetPreferences().mTerminalFollowModel);
+
+	Menu->addAction(tr("Go to Model Folder"), this, []()
+	{
+		gMainWindow->HandleCommand(LC_VIEW_TERMINAL_GO_TO_MODEL_FOLDER);
+	});
+}
+
+void lcTerminalWidget::SetDirectory(const QString& Directory, bool Force)
+{
+	if (Directory.isEmpty() || (Directory == mDirectory && !Force))
 		return;
 
 	mDirectory = Directory;

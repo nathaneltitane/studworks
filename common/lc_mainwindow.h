@@ -338,6 +338,7 @@ protected:
 	void ShowResultError(const lcResult<void>& Result, const QString& Title);
 	void CreatePreviewWidget();
 	void CreateTerminalWidget();
+	void UpdateTerminalDirectory(bool Force);
 
 	bool OpenProjectFile(const QString& FileName);
 	void AddRecentFile(const QString& FileName);

@@ -142,6 +142,7 @@ public:
 	quint32 mAxisZColor;
 	bool mAutoLoadMostRecent;
 	bool mRestoreTabLayout;
+	bool mTerminalFollowModel;
 	lcInsertColorMode mInsertColorMode;
 	bool mWatchFileChanges;
 	bool mLoadPiecesBeforeShowing;
