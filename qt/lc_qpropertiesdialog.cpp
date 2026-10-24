@@ -242,6 +242,7 @@ public:
 		: QTableWidgetItem(Text, Type)
 	{
 		mLast = false;
+		setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 	}
 
 	lcPartsTableWidgetItem(int Count, QLocale Locale)
