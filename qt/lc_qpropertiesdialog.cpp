@@ -56,7 +56,7 @@ void lcPartsTableWidget::FreezePartColumns()
 {
 	// The thumbnail sits in a column of its own so copied cells only hold text.
 	setItemDelegateForColumn(0, new lcPartsThumbnailDelegate(this));
-	setColumnWidth(0, iconSize().width() + 8);
+	setColumnWidth(0, qMax(iconSize().width() + 8, horizontalHeader()->sectionSizeHint(0)));
 	setColumnWidth(1, qMax(sizeHintForColumn(1), horizontalHeader()->sectionSizeHint(1)));
 	mPartColumnWidth = qMax(sizeHintForColumn(2), horizontalHeader()->sectionSizeHint(2));
 	for (int Column = 0; Column < 3; Column++)
@@ -307,7 +307,7 @@ lcPropertiesDialog::lcPropertiesDialog(QWidget* Parent, lcPropertiesDialogOption
 	std::vector<int> ColorColumns(gColorList.size());
 	int ColorCount = 0;
 
-	HorizontalLabels.append(QString());
+	HorizontalLabels.append(tr("Preview"));
 	HorizontalLabels.append(tr("ID"));
 	HorizontalLabels.append(tr("Piece"));
 
