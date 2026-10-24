@@ -97,6 +97,13 @@ void lcPartsTableWidget::FreezePartColumns()
 	for (int Row = 0; Row < rowCount(); Row++)
 		mFrozenColumn->setRowHeight(Row, rowHeight(Row));
 
+	// The total label spans the thumbnail and ID columns, the total row always sorts last.
+	if (rowCount() > 0)
+	{
+		setSpan(rowCount() - 1, 0, 1, 2);
+		mFrozenColumn->setSpan(rowCount() - 1, 0, 1, 2);
+	}
+
 	connect(verticalScrollBar(), &QScrollBar::valueChanged, mFrozenColumn->verticalScrollBar(), &QScrollBar::setValue);
 	connect(mFrozenColumn->verticalScrollBar(), &QScrollBar::valueChanged, verticalScrollBar(), &QScrollBar::setValue);
 	connect(verticalHeader(), &QHeaderView::sectionResized, this, [this](int Row, int, int Height)
@@ -384,7 +391,7 @@ lcPropertiesDialog::lcPropertiesDialog(QWidget* Parent, lcPropertiesDialogOption
 		Row++;
 	}
 
-	lcPartsTableWidgetItem* Item = new lcPartsTableWidgetItem(QString());
+	lcPartsTableWidgetItem* Item = new lcPartsTableWidgetItem(tr("Total"));
 	Item->mLast = true;
 	PartsTable->setItem((int)InfoTotals.size(), 0, Item);
 
@@ -392,7 +399,7 @@ lcPropertiesDialog::lcPropertiesDialog(QWidget* Parent, lcPropertiesDialogOption
 	Item->mLast = true;
 	PartsTable->setItem((int)InfoTotals.size(), 1, Item);
 
-	Item = new lcPartsTableWidgetItem(tr("Total"));
+	Item = new lcPartsTableWidgetItem(QString());
 	Item->mLast = true;
 	PartsTable->setItem((int)InfoTotals.size(), 2, Item);
 
