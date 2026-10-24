@@ -213,7 +213,9 @@ void lcPreferences::SaveRenderTarget(lcRenderTarget Target) const
 
 void lcPreferences::SetInterfaceColors(lcColorTheme ColorTheme)
 {
-	if (ColorTheme == lcColorTheme::Dark)
+	const bool SystemDark = ColorTheme == lcColorTheme::System && gApplication && gApplication->IsSystemPaletteDark();
+
+	if (ColorTheme == lcColorTheme::Dark || SystemDark)
 	{
 		mTextColor = LC_RGBA(214, 220, 227, 255);
 		mTextHaloColor = LC_RGBA(17, 19, 24, 160);
@@ -252,6 +254,7 @@ lcApplication::lcApplication(int& Argc, char** Argv)
 
 	gApplication = this;
 	mDefaultStyle = style()->objectName();
+	mDefaultPalette = QApplication::palette();
 
 	lcProfileInit();
 
@@ -299,6 +302,7 @@ void lcApplication::UpdateStyle()
 		Palette.setColor(QPalette::Disabled, QPalette::ButtonText, QColor(128, 128, 128));
 
 		QApplication::setPalette(Palette);
+		mCustomStyleApplied = true;
 
 		QFile StylesheetFile(QLatin1String(":/stylesheet/stylesheet.qss"));
 
@@ -308,12 +312,23 @@ void lcApplication::UpdateStyle()
 			qApp->setStyleSheet(Stylesheet);
 		}
 	}
-	else
+	else if (mCustomStyleApplied)
 	{
+		// Restore the desktop style and colors exactly as the system provided them.
 		QApplication::setStyle(mDefaultStyle);
-		QApplication::setPalette(qApp->style()->standardPalette());
+		QApplication::setPalette(mDefaultPalette);
 		qApp->setStyleSheet(QString());
+
+		mCustomStyleApplied = false;
 	}
+}
+
+bool lcApplication::IsDarkTheme() const
+{
+	if (mPreferences.mColorTheme == lcColorTheme::Dark)
+		return true;
+
+	return IsSystemPaletteDark();
 }
 
 void lcApplication::SaveTabLayout() const

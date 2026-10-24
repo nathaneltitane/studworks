@@ -243,6 +243,11 @@ class lcApplication : public QApplication
 	Q_OBJECT
 
 public:
+	bool IsDarkTheme() const;
+	bool IsSystemPaletteDark() const
+	{
+		return mDefaultPalette.color(QPalette::Window).lightness() < 128;
+	}
 	lcApplication(int& Argc, char** Argv);
 	~lcApplication();
 
@@ -276,6 +281,8 @@ protected:
 	QString GetTabLayoutKey() const;
 
 	QString mDefaultStyle;
+	QPalette mDefaultPalette;
+	bool mCustomStyleApplied = false;
 };
 
 extern lcApplication* gApplication;
