@@ -264,7 +264,7 @@ void lcPreferences::SetInterfaceColors(lcColorTheme ColorTheme)
 lcApplication::lcApplication(int& Argc, char** Argv)
 	: QApplication(Argc, Argv)
 {
-	setApplicationDisplayName(QLatin1String("LeoCAD"));
+	setApplicationDisplayName(QLatin1String("LeoCAD +"));
 
 	gApplication = this;
 	mDefaultStyle = style()->objectName();
@@ -854,9 +854,9 @@ lcCommandLineOptions lcApplication::ParseCommandLineOptions()
 		else if (Option == QLatin1String("-v") || Option == QLatin1String("--version"))
 		{
 #ifdef LC_CONTINUOUS_BUILD
-			Options.StdOut += tr("LeoCAD Continuous Build %1\n").arg(QT_STRINGIFY(LC_CONTINUOUS_BUILD));
+			Options.StdOut += tr("LeoCAD + Continuous Build %1\n").arg(QT_STRINGIFY(LC_CONTINUOUS_BUILD));
 #else
-			Options.StdOut += tr("LeoCAD Version %1\n").arg(LC_VERSION_TEXT);
+			Options.StdOut += tr("LeoCAD + Version %1\n").arg(LC_VERSION_TEXT);
 #endif
 			Options.StdOut += tr("Compiled %1\n").arg(__DATE__);
 			Options.Exit = true;
@@ -1084,9 +1084,9 @@ lcStartupMode lcApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 		QString Message;
 
 		if (mLibrary->LoadBuiltinPieceLibrary())
-			Message = tr("LeoCAD could not find a compatible Pieces Library so only a small number of pieces will be available.\n\nPlease visit https://www.leocad.org for information on how to download and install a library.");
+			Message = tr("LeoCAD + could not find a compatible Pieces Library so only a small number of pieces will be available.\n\nPlease visit https://www.leocad.org for information on how to download and install a library.");
 		else
-			Message = tr("LeoCAD could not load Pieces Library.\n\nPlease visit https://www.leocad.org for information on how to download and install a library.");
+			Message = tr("LeoCAD + could not load Pieces Library.\n\nPlease visit https://www.leocad.org for information on how to download and install a library.");
 
 		if (gMainWindow)
 			QMessageBox::warning(gMainWindow, tr("Load Pieces Library"), Message);
@@ -1543,7 +1543,7 @@ void lcApplication::ShowPreferencesDialog()
 	lcSetProfileStudStyle(Options.StudStyle);
 
 	if (LanguageChanged || LibraryChanged || AAChanged)
-		QMessageBox::information(gMainWindow, tr("Preferences"), tr("Some changes will only take effect the next time you start LeoCAD."));
+		QMessageBox::information(gMainWindow, tr("Preferences"), tr("Some changes will only take effect the next time you start LeoCAD +."));
 
 	if (Options.CategoriesModified)
 	{

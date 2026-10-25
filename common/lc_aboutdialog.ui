@@ -3,7 +3,7 @@
  <class>lcAboutDialog</class>
  <widget class="QDialog" name="lcAboutDialog">
   <property name="whatsThis">
-   <string>&lt;p&gt;&lt;b&gt;About LeoCAD&lt;/b&gt;&lt;/p&gt;&lt;p&gt;View the LeoCAD version and system information. The Qt and OpenGL details can help diagnose display problems. Select text in System Information to copy it when reporting a problem. The website link opens in your browser.&lt;/p&gt;</string>
+   <string>&lt;p&gt;&lt;b&gt;About LeoCAD +&lt;/b&gt;&lt;/p&gt;&lt;p&gt;View the LeoCAD + version and system information. The Qt and OpenGL details can help diagnose display problems. Select text in System Information to copy it when reporting a problem. The website link opens in your browser.&lt;/p&gt;</string>
   </property>
   <property name="geometry">
    <rect>
@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>About LeoCAD</string>
+   <string>About LeoCAD +</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -42,17 +42,17 @@
          <item>
           <widget class="QLabel" name="version">
            <property name="toolTip">
-            <string>LeoCAD version running on this computer.</string>
+            <string>LeoCAD + version running on this computer.</string>
            </property>
            <property name="text">
-            <string>LeoCAD Version 0.00.0</string>
+            <string>LeoCAD + Version 0.00.0</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QLabel" name="label_4">
            <property name="text">
-            <string>LeoCAD is a free application for creating virtual LEGO models.</string>
+            <string>LeoCAD + is a free application for creating virtual LEGO models.</string>
            </property>
            <property name="wordWrap">
             <bool>true</bool>
