@@ -39,7 +39,7 @@ lcPreviewDockWidget::lcPreviewDockWidget(QMainWindow* Parent)
 {
 	mPreview = new lcPreview();
 
-	// the view sits in a container so it can keep a square shape inside any panel size
+	// the view sits in a container that can keep it square
 	mViewContainer = new QWidget(this);
 	mViewContainer->installEventFilter(this);
 	setCentralWidget(mViewContainer);
@@ -137,54 +137,30 @@ void lcPreviewDockWidget::SetSquareViewport(bool SquareViewport)
 void lcPreviewDockWidget::UpdateSquareViewport()
 {
 	UpdateViewGeometry();
-	mViewContainer->update();
 }
 
 void lcPreviewDockWidget::UpdateViewGeometry()
 {
-	QRect ViewRect = mViewContainer->rect();
-
+	// a square preview sizes the panel to fit, the height follows the width like the colors panel
 	if (lcGetPreferences().mPreviewSquareViewport)
 	{
-		const int Side = qMin(ViewRect.width(), ViewRect.height());
-		ViewRect = QRect(ViewRect.x() + (ViewRect.width() - Side) / 2, ViewRect.y() + (ViewRect.height() - Side) / 2, Side, Side);
+		setMinimumHeight(0);
+		mViewContainer->setFixedHeight(mViewContainer->width());
+	}
+	else
+	{
+		mViewContainer->setMinimumHeight(0);
+		mViewContainer->setMaximumHeight(QWIDGETSIZE_MAX);
+		setMinimumHeight(200);
 	}
 
-	mViewWidget->setGeometry(ViewRect);
+	mViewWidget->setGeometry(mViewContainer->rect());
 }
 
 bool lcPreviewDockWidget::eventFilter(QObject* Object, QEvent* Event)
 {
 	if (Object == mViewContainer && Event->type() == QEvent::Resize)
 		UpdateViewGeometry();
-
-	// fill the space around a square view with the view background so the panel looks seamless
-	if (Object == mViewContainer && Event->type() == QEvent::Paint)
-	{
-		const lcPreferences& Preferences = lcGetPreferences();
-		QPainter Painter(mViewContainer);
-
-		auto OpaqueColor = [](quint32 Color)
-		{
-			QColor OpaqueColor = lcQColorFromRGBA(Color);
-			OpaqueColor.setAlpha(255);
-			return OpaqueColor;
-		};
-
-		if (Preferences.mBackgroundGradient)
-		{
-			const QRect ViewRect = mViewWidget->geometry();
-			QLinearGradient Gradient(0.0, ViewRect.top(), 0.0, ViewRect.bottom());
-
-			Gradient.setColorAt(0.0, OpaqueColor(Preferences.mBackgroundGradientColorTop));
-			Gradient.setColorAt(1.0, OpaqueColor(Preferences.mBackgroundGradientColorBottom));
-			Painter.fillRect(mViewContainer->rect(), Gradient);
-		}
-		else
-			Painter.fillRect(mViewContainer->rect(), OpaqueColor(Preferences.mBackgroundSolidColor));
-
-		return true;
-	}
 
 	return QMainWindow::eventFilter(Object, Event);
 }
