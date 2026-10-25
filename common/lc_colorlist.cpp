@@ -4,6 +4,7 @@
 #include "lc_library.h"
 #include "lc_colors.h"
 #include "lc_collapsiblewidget.h"
+#include "lc_qutils.h"
 
 lcColorList::lcColorList(QWidget* Parent, bool AllowNoColor)
 	: QWidget(Parent), mAllowNoColor(AllowNoColor)
@@ -86,8 +87,9 @@ int lcColorList::GetHeightForWidth(int Width, int* Columns, int* Rows) const
 
 int lcColorList::GetGroupHeaderHeight(const lcColorListGroup& Group) const
 {
+	// Headers get the same space around their button as the panel toolbar rows.
 	if (Group.Button)
-		return Group.Button->sizeHint().height();
+		return qMax(lcGetPanelToolBarHeight(this), Group.Button->sizeHint().height() + 4);
 
 	return qMax(QFontMetrics(font()).boundingRect(Group.Name).height(), 16) + 4;
 }
@@ -118,7 +120,8 @@ void lcColorList::UpdateRects()
 
 		if (Group.Button)
 		{
-			Group.Button->setGeometry(Group.Rect);
+			const int Margin = (Group.Rect.height() - Group.Button->sizeHint().height()) / 2;
+			Group.Button->setGeometry(Group.Rect.adjusted(0, Margin, 0, -Margin));
 			Group.Button->show();
 		}
 

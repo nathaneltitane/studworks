@@ -184,6 +184,9 @@ class lcInstructionsDialog : public QMainWindow
 public:
 	lcInstructionsDialog(QWidget* Parent, Project* Project);
 
+public slots:
+	void ModelChanged();
+
 protected slots:
 	void ShowPrintDialog();
 	void PageSetupChanged();
@@ -194,6 +197,7 @@ protected:
 	void UpdatePageList();
 
 	Project* mProject = nullptr;
+	bool mUpdatePending = false;
 
 	int mCurrentPageNumber;
 	lcInstructions* mInstructions;

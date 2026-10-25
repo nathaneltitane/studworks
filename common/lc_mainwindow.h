@@ -294,10 +294,17 @@ public:
 	std::optional<lcVector3> GetTransformAmount();
 
 	bool eventFilter(QObject* Object, QEvent* Event) override;
+	void SnapPartsDock();
 
 	int mColorIndex;
 	int mLastInsertedColorIndex = -1;
 	QAction* mActions[LC_NUM_COMMANDS] = {};
+
+signals:
+	void ModelContentsChanged();
+
+public:
+	void CloseInstructionsDialog();
 
 public slots:
 	void ProjectFileChanged(const QString& Path);
@@ -399,6 +406,8 @@ protected:
 	QDockWidget* mPreviewToolBar = nullptr;
 	QDockWidget* mTerminalToolBar = nullptr;
 	QDockWidget* mPartsToolBar = nullptr;
+	QPointer<QMainWindow> mInstructionsDialog;
+	bool mPartsSnapPending = false;
 	QDockWidget* mColorsToolBar = nullptr;
 	QDockWidget* mPropertiesToolBar = nullptr;
 	QDockWidget* mTimelineToolBar = nullptr;

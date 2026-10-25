@@ -245,6 +245,13 @@ void lcInstructions::RemoveBlankPage(size_t PageIndex)
 	emit PageLayoutChanged();
 }
 
+void lcInstructions::Update()
+{
+	CreatePages();
+
+	emit PageLayoutChanged();
+}
+
 void lcInstructions::SetPageSetup(const lcInstructionsPageSetup& PageSetup)
 {
 	mPageSetup = PageSetup;
@@ -415,9 +422,11 @@ void lcInstructions::AddDefaultPages(lcModel* Model, std::vector<const lcModel*>
 	lcInstructionsPage Page;
 	int Row = 0, Column = 0;
 
-	lcInstructionsModel InstructionModel;
-	InstructionModel.StepProperties.resize(LastStep + 1);
-	mModels.emplace(Model, std::move(InstructionModel));
+	// Models keep their step settings and gain entries for steps added since.
+	std::vector<lcInstructionsProperties>& StepProperties = mModels[Model].StepProperties;
+
+	if (StepProperties.size() < LastStep + 1)
+		StepProperties.resize(LastStep + 1);
 
 	for (lcStep Step = 1; Step <= LastStep; Step++)
 	{

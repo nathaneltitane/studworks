@@ -1124,6 +1124,21 @@ void lcInstructionsDialog::UpdatePageList()
 	CurrentThumbnailChanged(Row);
 }
 
+void lcInstructionsDialog::ModelChanged()
+{
+	// Several edits in a row rebuild the pages once, after the current event.
+	if (mUpdatePending)
+		return;
+
+	mUpdatePending = true;
+
+	QTimer::singleShot(0, this, [this]()
+	{
+		mUpdatePending = false;
+		mInstructions->Update();
+	});
+}
+
 void lcInstructionsDialog::PageSetupChanged()
 {
 	UpdatePageList();

@@ -74,7 +74,9 @@ void lcViewSphere::CreateResources(lcContext* Context)
 
 	QImage PainterImage(SourceCellSize, SourceCellSize, QImage::Format_ARGB32);
 	QPainter Painter;
-	QFont Font("Helvetica", 36);
+	// View sphere labels use the interface font, rendered large for the distance field texture.
+	QFont Font = QGuiApplication::font();
+	Font.setPointSize(36);
 	QImage AtlasImage(AtlasWidth, AtlasHeight, QImage::Format_Alpha8);
 	AtlasImage.fill(0);
 

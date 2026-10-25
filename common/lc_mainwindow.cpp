@@ -95,6 +95,7 @@ void lcMainWindow::CreateWidgets()
 
 	mModelTabWidget = new QTabWidget();
 	mModelTabWidget->tabBar()->installEventFilter(this);
+	qApp->installEventFilter(this);
 	mModelTabWidget->tabBar()->setMovable(true);
 	mModelTabWidget->tabBar()->setTabsClosable(true);
 	mModelTabWidget->tabBar()->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -790,6 +791,7 @@ void lcMainWindow::CreateToolBars()
 
 
 	mPartsToolBar = new QDockWidget(tr("Pieces"), this);
+	mPartsToolBar->installEventFilter(this);
 	mPartsToolBar->setObjectName("PartsToolbar");
 	mPartsToolBar->setWhatsThis(tr("<p><b>Pieces</b></p><p>Choose a category or palette and filter its pieces. Selecting a piece prepares it for insertion; drag it into the model view to place it. Double-click a piece to open its preview. Options controls filtering, thumbnails, and list display.</p>"));
 	lcSetupWidgetHelp(mPartsToolBar, nullptr);
@@ -839,9 +841,17 @@ void lcMainWindow::CreateToolBars()
 	mColorList->setAccessibleName(tr("LDraw Colors"));
 
 	// The panel is always exactly as tall as the color button and the tiles.
-	connect(mColorList, &lcColorList::HeightChanged, this, [ColorWidget, ColorLayout]()
+	connect(mColorList, &lcColorList::HeightChanged, this, [this, ColorWidget, ColorLayout]()
 	{
-		ColorWidget->setFixedHeight(ColorLayout->sizeHint().height());
+		// Recompute from the current rows, then let the dock follow so it grows and shrinks with the tiles.
+		ColorLayout->invalidate();
+		const int Height = ColorLayout->sizeHint().height();
+		const int TitleHeight = mColorsToolBar->height() - ColorWidget->height();
+
+		ColorWidget->setFixedHeight(Height);
+
+		if (!mColorsToolBar->isFloating() && mColorsToolBar->isVisible())
+			resizeDocks({ mColorsToolBar }, { Height + TitleHeight }, Qt::Vertical);
 	});
 
 	mColorsToolBar->setWidget(ColorWidget);
@@ -983,7 +993,11 @@ void lcMainWindow::CreateToolBars()
 			QScrollArea* ScrollArea = new QScrollArea(mMinifigToolBar);
 			ScrollArea->setFrameShape(QFrame::NoFrame);
 			ScrollArea->setWidgetResizable(true);
-			ScrollArea->setWidget(new lcMinifigDialog(ScrollArea, true));
+			lcMinifigDialog* MinifigDialog = new lcMinifigDialog(ScrollArea, true);
+			ScrollArea->setWidget(MinifigDialog);
+
+			// The panel is never taller than the editor, extra height goes to the other panels.
+			ScrollArea->setMaximumHeight(MinifigDialog->sizeHint().height() + 2 * ScrollArea->frameWidth());
 			mMinifigToolBar->setWidget(ScrollArea);
 		}
 	});
@@ -1053,6 +1067,22 @@ void lcMainWindow::UpdateTerminalDirectory(bool Force)
 #endif
 }
 
+void lcMainWindow::SnapPartsDock()
+{
+	if (!mPartsToolBar || mPartsToolBar->isFloating() || !mPartSelectionWidget)
+		return;
+
+	const Qt::DockWidgetArea Area = dockWidgetArea(mPartsToolBar);
+
+	if (Area != Qt::LeftDockWidgetArea && Area != Qt::RightDockWidgetArea)
+		return;
+
+	const int Delta = mPartSelectionWidget->GetTileSnapDelta();
+
+	if (Delta)
+		resizeDocks({ mPartsToolBar }, { mPartsToolBar->width() + Delta }, Qt::Horizontal);
+}
+
 void lcMainWindow::CreatePreviewWidget()
 {
 	mPreviewWidget  = new lcPreviewDockWidget(this);
@@ -1070,9 +1100,18 @@ void lcMainWindow::CreatePreviewWidget()
 
 bool lcMainWindow::eventFilter(QObject* Object, QEvent* Event)
 {
-	QTabBar* TabBar = mModelTabWidget->tabBar();
+	// Resizing the pieces panel by hand snaps it to whole tiles once the mouse is released.
+	if (Object == mPartsToolBar && Event->type() == QEvent::Resize && QApplication::mouseButtons() != Qt::NoButton)
+		mPartsSnapPending = true;
+	else if (Event->type() == QEvent::MouseButtonRelease && mPartsSnapPending)
+	{
+		mPartsSnapPending = false;
+		QTimer::singleShot(0, this, &lcMainWindow::SnapPartsDock);
+	}
 
-	if (Object == TabBar)
+	QTabBar* TabBar = mModelTabWidget ? mModelTabWidget->tabBar() : nullptr;
+
+	if (TabBar && Object == TabBar)
 	{
 		if (Event->type() == QEvent::MouseButtonPress)
 		{
@@ -1816,10 +1855,25 @@ void lcMainWindow::ShowInstructionsDialog()
 {
 	lcGetActiveProject()->GetMainModel()->WaitForAssets();
 
+	// The instructions window stays open beside the model and follows its changes.
+	if (mInstructionsDialog)
+	{
+		mInstructionsDialog->raise();
+		mInstructionsDialog->activateWindow();
+		return;
+	}
+
 	lcInstructionsDialog* Dialog = new lcInstructionsDialog(this, lcGetActiveProject());
-	Dialog->setWindowModality(Qt::ApplicationModal);
 	Dialog->setAttribute(Qt::WA_DeleteOnClose);
+	connect(this, &lcMainWindow::ModelContentsChanged, Dialog, &lcInstructionsDialog::ModelChanged);
+	mInstructionsDialog = Dialog;
 	Dialog->show();
+}
+
+void lcMainWindow::CloseInstructionsDialog()
+{
+	if (mInstructionsDialog)
+		delete mInstructionsDialog;
 }
 
 void lcMainWindow::ShowPrintDialog()
@@ -2175,6 +2229,10 @@ void lcMainWindow::AddRenderTargetActions(QMenu* Menu, lcRenderTarget Target)
 
 	case lcRenderTarget::Preview:
 		Commands = { LC_VIEW_TOGGLE_PREVIEW_SYNC_RENDERING, LC_VIEW_PREVIEW_SHADING_WIREFRAME, LC_VIEW_PREVIEW_SHADING_FLAT, LC_VIEW_PREVIEW_SHADING_DEFAULT_LIGHTS, LC_VIEW_TOGGLE_PREVIEW_EDGE_LINES, LC_VIEW_TOGGLE_PREVIEW_CONDITIONAL_LINES };
+		break;
+
+	case lcRenderTarget::Minifig:
+		Commands = { LC_VIEW_TOGGLE_MINIFIG_SYNC_RENDERING, LC_VIEW_MINIFIG_SHADING_WIREFRAME, LC_VIEW_MINIFIG_SHADING_FLAT, LC_VIEW_MINIFIG_SHADING_DEFAULT_LIGHTS, LC_VIEW_TOGGLE_MINIFIG_EDGE_LINES, LC_VIEW_TOGGLE_MINIFIG_CONDITIONAL_LINES };
 		break;
 
 	case lcRenderTarget::Pieces:
@@ -3050,6 +3108,8 @@ void lcMainWindow::UpdateSelectedObjects(bool SelectionChanged)
 void lcMainWindow::UpdateTimeline(bool Clear, bool UpdateItems)
 {
 	mTimelineWidget->Update(Clear, UpdateItems);
+
+	emit ModelContentsChanged();
 }
 
 void lcMainWindow::UpdatePaste(bool Enabled)
@@ -4145,6 +4205,30 @@ void lcMainWindow::HandleCommand(lcCommandId CommandId)
 
 	case LC_VIEW_TOGGLE_PIECES_SYNC_RENDERING:
 		ToggleSyncRendering(lcRenderTarget::Pieces);
+		break;
+
+	case LC_VIEW_TOGGLE_MINIFIG_SYNC_RENDERING:
+		ToggleSyncRendering(lcRenderTarget::Minifig);
+		break;
+
+	case LC_VIEW_MINIFIG_SHADING_WIREFRAME:
+		SetTargetShadingMode(lcRenderTarget::Minifig, lcShadingMode::Wireframe);
+		break;
+
+	case LC_VIEW_MINIFIG_SHADING_FLAT:
+		SetTargetShadingMode(lcRenderTarget::Minifig, lcShadingMode::Flat);
+		break;
+
+	case LC_VIEW_MINIFIG_SHADING_DEFAULT_LIGHTS:
+		SetTargetShadingMode(lcRenderTarget::Minifig, lcShadingMode::DefaultLights);
+		break;
+
+	case LC_VIEW_TOGGLE_MINIFIG_EDGE_LINES:
+		ToggleEdgeLines(lcRenderTarget::Minifig);
+		break;
+
+	case LC_VIEW_TOGGLE_MINIFIG_CONDITIONAL_LINES:
+		ToggleConditionalLines(lcRenderTarget::Minifig);
 		break;
 
 	case LC_VIEW_PIECES_SHADING_WIREFRAME:

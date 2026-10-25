@@ -209,7 +209,12 @@ static lcProfileEntry gProfileEntries[LC_NUM_PROFILE_KEYS] =
 	lcProfileEntry("Instructions", "MarginBottom", 36.0f),                                     // LC_PROFILE_INSTRUCTIONS_MARGIN_BOTTOM
 	lcProfileEntry("Instructions", "PageUnits", 3),                                            // LC_PROFILE_INSTRUCTIONS_PAGE_UNITS
 	lcProfileEntry("Instructions", "MarginUnits", 3),                                          // LC_PROFILE_INSTRUCTIONS_MARGIN_UNITS
-	lcProfileEntry("Settings", "PreviewSquareViewport", 0)                                     // LC_PROFILE_PREVIEW_SQUARE_VIEWPORT
+	lcProfileEntry("Settings", "PreviewSquareViewport", 0),                                    // LC_PROFILE_PREVIEW_SQUARE_VIEWPORT
+	lcProfileEntry("Settings", "MinifigSyncRendering", 1),                                     // LC_PROFILE_MINIFIG_SYNC_RENDERING
+	lcProfileEntry("Settings", "MinifigShadingMode", static_cast<int>(lcShadingMode::DefaultLights)), // LC_PROFILE_MINIFIG_SHADING_MODE
+	lcProfileEntry("Settings", "MinifigDrawEdgeLines", 1),                                     // LC_PROFILE_MINIFIG_DRAW_EDGE_LINES
+	lcProfileEntry("Settings", "MinifigDrawConditionalLines", 1),                              // LC_PROFILE_MINIFIG_DRAW_CONDITIONAL_LINES
+	lcProfileEntry("Settings", "MinifigLineWidth", 1.0f)                                       // LC_PROFILE_MINIFIG_LINE_WIDTH
 };
 
 void lcProfileInit()

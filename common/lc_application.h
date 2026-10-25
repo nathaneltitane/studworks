@@ -53,7 +53,8 @@ enum class lcRenderTarget
 {
 	ModelView,
 	Preview,
-	Pieces
+	Pieces,
+	Minifig
 };
 
 struct lcTargetRenderSettings
@@ -88,12 +89,12 @@ public:
 
 	lcTargetRenderSettings& GetTargetRenderSettings(lcRenderTarget Target)
 	{
-		return Target == lcRenderTarget::Pieces ? mPiecesRendering : mPreviewRendering;
+		return Target == lcRenderTarget::Pieces ? mPiecesRendering : Target == lcRenderTarget::Minifig ? mMinifigRendering : mPreviewRendering;
 	}
 
 	const lcTargetRenderSettings& GetTargetRenderSettings(lcRenderTarget Target) const
 	{
-		return Target == lcRenderTarget::Pieces ? mPiecesRendering : mPreviewRendering;
+		return Target == lcRenderTarget::Pieces ? mPiecesRendering : Target == lcRenderTarget::Minifig ? mMinifigRendering : mPreviewRendering;
 	}
 
 	int mMouseSensitivity;
@@ -119,6 +120,7 @@ public:
 	bool mAllowLOD;
 	lcTargetRenderSettings mPreviewRendering;
 	lcTargetRenderSettings mPiecesRendering;
+	lcTargetRenderSettings mMinifigRendering;
 	float mMeshLODDistance;
 	bool mFadeSteps;
 	quint32 mFadeStepsColor;

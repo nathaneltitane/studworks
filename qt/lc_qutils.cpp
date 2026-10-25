@@ -5,6 +5,7 @@
 #include "lc_model.h"
 #include "lc_piecedata.h"
 #include "lc_string.h"
+#include <QPrintDialog>
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -26,6 +27,47 @@ QPoint lcGetPopupPosition(const QPoint& Position, const QSize& Size, const QPoin
 	const int Y = qBound(AvailableGeometry.top(), Position.y(), qMax(AvailableGeometry.top(), AvailableGeometry.bottom() - Size.height() + 1));
 
 	return QPoint(X, Y);
+}
+
+bool lcWindowGeometryFilter::eventFilter(QObject* Object, QEvent* Event)
+{
+	if (Event->type() != QEvent::Show || !Object->isWidgetType())
+		return false;
+
+	QWidget* Window = static_cast<QWidget*>(Object);
+
+	if (!Window->isWindow() || Window->property("lcInitialGeometry").toBool())
+		return false;
+
+	// Only dialogs and secondary main windows, the standard Qt dialogs size themselves and the main window restores its own geometry.
+	const bool IsDialog = qobject_cast<QDialog*>(Window) && !qobject_cast<QMessageBox*>(Window) && !qobject_cast<QInputDialog*>(Window) && !qobject_cast<QProgressDialog*>(Window) &&
+		!qobject_cast<QFileDialog*>(Window) && !qobject_cast<QColorDialog*>(Window) && !qobject_cast<QFontDialog*>(Window) && !qobject_cast<QPrintDialog*>(Window);
+	const bool IsSecondaryWindow = qobject_cast<QMainWindow*>(Window) && Window->parentWidget();
+
+	if (!IsDialog && !IsSecondaryWindow)
+		return false;
+
+	Window->setProperty("lcInitialGeometry", true);
+
+	QWidget* Parent = Window->parentWidget() ? Window->parentWidget()->window() : nullptr;
+	QScreen* Screen = Parent ? Parent->screen() : Window->screen();
+
+	if (!Screen)
+		return false;
+
+	// A quarter of the available screen, never smaller than the contents need and never larger than the screen.
+	const QRect Available = Screen->availableGeometry();
+	QSize Size = QSize(Available.width() / 4, Available.height() / 4).expandedTo(Window->sizeHint()).expandedTo(Window->minimumSizeHint());
+	Size = Size.boundedTo(Available.size());
+
+	QRect Geometry(QPoint(0, 0), Size);
+	Geometry.moveCenter(Parent ? Parent->geometry().center() : Available.center());
+	Geometry.moveLeft(qBound(Available.left(), Geometry.left(), Available.right() - Size.width() + 1));
+	Geometry.moveTop(qBound(Available.top(), Geometry.top(), Available.bottom() - Size.height() + 1));
+
+	Window->setGeometry(Geometry);
+
+	return false;
 }
 
 int lcGetPanelToolBarHeight(const QWidget* Widget)

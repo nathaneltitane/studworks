@@ -711,7 +711,7 @@ const lcCommand gCommands[] =
 	// LC_EDIT_SNAP_ORBIT_TOGGLE
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapAngle.ToggleOrbit"),
-		QT_TRANSLATE_NOOP("Menu", "Snap Camera Orbit"),
+		QT_TRANSLATE_NOOP("Menu", "Camera Snap Enabled"),
 		QT_TRANSLATE_NOOP("Status", "Toggle orbiting the camera in steps of the rotation snap angle"),
 		"",
 		""
@@ -1841,6 +1841,54 @@ const lcCommand gCommands[] =
 		QT_TRANSLATE_NOOP("Action", "View.Pieces.ToggleConditionalLines"),
 		QT_TRANSLATE_NOOP("Menu", "Pieces Conditional Lines"),
 		QT_TRANSLATE_NOOP("Status", "Toggle conditional lines in the pieces list"),
+		"",
+		""
+	},
+	// LC_VIEW_TOGGLE_MINIFIG_SYNC_RENDERING
+	{
+		QT_TRANSLATE_NOOP("Action", "View.Minifig.ToggleSyncRendering"),
+		QT_TRANSLATE_NOOP("Menu", "Minifigure Uses Model View Settings"),
+		QT_TRANSLATE_NOOP("Status", "Toggle using the model view rendering settings in the minifigure preview"),
+		"",
+		""
+	},
+	// LC_VIEW_MINIFIG_SHADING_WIREFRAME
+	{
+		QT_TRANSLATE_NOOP("Action", "View.Minifig.Shade.Wireframe"),
+		QT_TRANSLATE_NOOP("Menu", "Minifigure Wireframe"),
+		QT_TRANSLATE_NOOP("Status", "Display the minifigure preview as a wireframe"),
+		"",
+		""
+	},
+	// LC_VIEW_MINIFIG_SHADING_FLAT
+	{
+		QT_TRANSLATE_NOOP("Action", "View.Minifig.Shade.Flat"),
+		QT_TRANSLATE_NOOP("Menu", "Minifigure Flat Shading"),
+		QT_TRANSLATE_NOOP("Status", "Display the minifigure preview with flat shading"),
+		"",
+		""
+	},
+	// LC_VIEW_MINIFIG_SHADING_DEFAULT_LIGHTS
+	{
+		QT_TRANSLATE_NOOP("Action", "View.Minifig.Shade.DefaultLights"),
+		QT_TRANSLATE_NOOP("Menu", "Minifigure Default Lights"),
+		QT_TRANSLATE_NOOP("Status", "Display the minifigure preview with the default lights"),
+		"",
+		""
+	},
+	// LC_VIEW_TOGGLE_MINIFIG_EDGE_LINES
+	{
+		QT_TRANSLATE_NOOP("Action", "View.Minifig.ToggleEdgeLines"),
+		QT_TRANSLATE_NOOP("Menu", "Minifigure Edge Lines"),
+		QT_TRANSLATE_NOOP("Status", "Toggle edge lines in the minifigure preview"),
+		"",
+		""
+	},
+	// LC_VIEW_TOGGLE_MINIFIG_CONDITIONAL_LINES
+	{
+		QT_TRANSLATE_NOOP("Action", "View.Minifig.ToggleConditionalLines"),
+		QT_TRANSLATE_NOOP("Menu", "Minifigure Conditional Lines"),
+		QT_TRANSLATE_NOOP("Status", "Toggle conditional lines in the minifigure preview"),
 		"",
 		""
 	},
