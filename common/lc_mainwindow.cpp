@@ -835,7 +835,14 @@ void lcMainWindow::CreateToolBars()
 	connect(mMinifigToolBar, &QDockWidget::visibilityChanged, this, [this](bool Visible)
 	{
 		if (Visible && !mMinifigToolBar->widget())
-			mMinifigToolBar->setWidget(new lcMinifigDialog(mMinifigToolBar, true));
+		{
+			// scroll the minifigure editor when the panel is smaller than its contents
+			QScrollArea* ScrollArea = new QScrollArea(mMinifigToolBar);
+			ScrollArea->setFrameShape(QFrame::NoFrame);
+			ScrollArea->setWidgetResizable(true);
+			ScrollArea->setWidget(new lcMinifigDialog(ScrollArea, true));
+			mMinifigToolBar->setWidget(ScrollArea);
+		}
 	});
 
 	tabifyDockWidget(mPartsToolBar, mPropertiesToolBar);
