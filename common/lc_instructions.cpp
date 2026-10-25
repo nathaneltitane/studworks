@@ -42,10 +42,16 @@ lcInstructions::lcInstructions(Project* Project)
 	mStepProperties[static_cast<int>(lcInstructionsPropertyType::PLIFont)].Value = QFont("Arial", 16, QFont::Bold).toString();
 	mStepProperties[static_cast<int>(lcInstructionsPropertyType::PLITextColor)].Value = LC_RGBA(0, 0, 0, 255);
 	mStepProperties[static_cast<int>(lcInstructionsPropertyType::PLIBorderColor)].Value = LC_RGBA(0, 0, 0, 255);
-//	mStepProperties[static_cast<int>(lcInstructionsPropertyType::PLIBorderWidth)].Value = 2.0f;
+	mStepProperties[static_cast<int>(lcInstructionsPropertyType::PLIBorderWidth)].Value = 0;
 //	mStepProperties[static_cast<int>(lcInstructionsPropertyType::PLIBorderRound)].Value = true;
+	mStepProperties[static_cast<int>(lcInstructionsPropertyType::PLIShowCounts)].Value = true;
+	mStepProperties[static_cast<int>(lcInstructionsPropertyType::PLISortOrder)].Value = static_cast<int>(lcPartsListSort::Color);
+	mStepProperties[static_cast<int>(lcInstructionsPropertyType::ShowStepDividers)].Value = true;
+	mStepProperties[static_cast<int>(lcInstructionsPropertyType::StepDividerColor)].Value = LC_RGBA(0, 0, 0, 255);
+	mStepProperties[static_cast<int>(lcInstructionsPropertyType::StepDividerWidth)].Value = 2;
+	mStepProperties[static_cast<int>(lcInstructionsPropertyType::ShowBillOfMaterials)].Value = false;
 
-	static_assert(static_cast<int>(lcInstructionsPropertyType::Count) == 9, "Missing default property");
+	static_assert(static_cast<int>(lcInstructionsPropertyType::Count) == 16, "Missing default property");
 
 	CreatePages();
 }
@@ -72,6 +78,20 @@ QString lcInstructions::GetPropertyLabel(lcInstructionsPropertyType Type)
 			return tr("Text Color:");
 		case lcInstructionsPropertyType::PLIBorderColor:
 			return tr("Border Color:");
+		case lcInstructionsPropertyType::PLIBorderWidth:
+			return tr("Border Width:");
+		case lcInstructionsPropertyType::PLIShowCounts:
+			return tr("Show Piece Counts");
+		case lcInstructionsPropertyType::PLISortOrder:
+			return tr("Sort By:");
+		case lcInstructionsPropertyType::ShowStepDividers:
+			return tr("Show Step Dividers");
+		case lcInstructionsPropertyType::StepDividerColor:
+			return tr("Divider Color:");
+		case lcInstructionsPropertyType::StepDividerWidth:
+			return tr("Divider Width:");
+		case lcInstructionsPropertyType::ShowBillOfMaterials:
+			return tr("Show Bill of Materials");
 		case lcInstructionsPropertyType::Count:
 			break;
 	}
@@ -114,6 +134,12 @@ bool lcInstructions::GetBoolProperty(lcInstructionsPropertyType Type, lcModel* M
 {
 	QVariant Value = GetProperty(Type, Model, Step);
 	return Value.toBool();
+}
+
+int lcInstructions::GetIntProperty(lcInstructionsPropertyType Type, lcModel* Model, lcStep Step) const
+{
+	QVariant Value = GetProperty(Type, Model, Step);
+	return Value.toInt();
 }
 
 QColor lcInstructions::GetColorProperty(lcInstructionsPropertyType Type, lcModel* Model, lcStep Step) const
@@ -160,6 +186,11 @@ void lcInstructions::SetDefaultBool(lcInstructionsPropertyType Type, bool Enable
 	SetDefaultProperty(Type, Enabled);
 }
 
+void lcInstructions::SetDefaultInt(lcInstructionsPropertyType Type, int Value)
+{
+	SetDefaultProperty(Type, Value);
+}
+
 void lcInstructions::SetDefaultColor(lcInstructionsPropertyType Type, const QColor& Color)
 {
 	SetDefaultProperty(Type, lcRGBAFromQColor(Color));
@@ -179,7 +210,24 @@ void lcInstructions::SetDefaultProperty(lcInstructionsPropertyType Type, const Q
 
 	Property.Value = Value;
 
-	emit StepSettingsChanged(nullptr, 0);
+	// dividers and the bill of materials change the page layout instead of a single step
+	switch (Type)
+	{
+	case lcInstructionsPropertyType::ShowBillOfMaterials:
+		CreatePages();
+		emit PageLayoutChanged();
+		break;
+
+	case lcInstructionsPropertyType::ShowStepDividers:
+	case lcInstructionsPropertyType::StepDividerColor:
+	case lcInstructionsPropertyType::StepDividerWidth:
+		emit PageLayoutChanged();
+		break;
+
+	default:
+		emit StepSettingsChanged(nullptr, 0);
+		break;
+	}
 }
 
 void lcInstructions::CreatePages()
@@ -193,7 +241,16 @@ void lcInstructions::CreatePages()
 		lcModel* Model = mProject->GetMainModel();
 
 		if (Model)
+		{
 			AddDefaultPages(Model, AddedModels);
+
+			if (GetBoolProperty(lcInstructionsPropertyType::ShowBillOfMaterials, nullptr, 0))
+			{
+				lcInstructionsPage Page;
+				Page.BillOfMaterials = Model;
+				mPages.emplace_back(std::move(Page));
+			}
+		}
 	}
 }
 

@@ -19,6 +19,13 @@ enum class lcImageBackground
 	Opaque
 };
 
+enum class lcPartsListSort
+{
+	Color,
+	Name,
+	PartId
+};
+
 enum class lcCameraProjection;
 struct lcSetInventoryItem;
 struct lcModelHistoryEditState;
@@ -394,7 +401,7 @@ public:
 	void AddSubModelRenderMeshes(lcScene* Scene, const lcMatrix44& WorldMatrix, int DefaultColorIndex, lcRenderMeshState RenderMeshState, bool ParentActive) const;
 	QImage GetStepImage(bool Zoom, int Width, int Height, lcStep Step);
 	// Empty inventory succeeds with a null image; rendering failures return an error.
-	lcResult<QImage> GetPartsListImage(int MaxWidth, lcStep Step, quint32 BackgroundColor, QFont Font, QColor TextColor, bool KeepMissingParts) const;
+	lcResult<QImage> GetPartsListImage(int MaxWidth, lcStep Step, quint32 BackgroundColor, QFont Font, QColor TextColor, bool KeepMissingParts, bool ShowCounts = true, lcPartsListSort Sort = lcPartsListSort::Color) const;
 	lcResult<void> SaveStepImages(const QString& BaseName, bool AddStepSuffix, bool Zoom, int Width, int Height, lcStep Start, lcStep End, lcImageBackground Background);
 
 	void RayTest(lcObjectRayTest& ObjectRayTest) const;

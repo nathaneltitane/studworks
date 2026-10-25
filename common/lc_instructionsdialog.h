@@ -73,12 +73,20 @@ public:
 		return mStep;
 	}
 
+	void SetBillOfMaterials(int MaxWidth)
+	{
+		mBillOfMaterials = true;
+		mMaxWidth = MaxWidth;
+	}
+
 	void Update();
 
 protected:
 	lcInstructions* mInstructions = nullptr;
 	lcModel* mModel = nullptr;
 	lcStep mStep = 1;
+	bool mBillOfMaterials = false;
+	int mMaxWidth = 300;
 };
 
 class lcInstructionsPageWidget : public QGraphicsView
@@ -147,6 +155,8 @@ public:
 
 protected:
 	void AddBoolProperty(lcInstructionsPropertyType Type);
+	void AddIntProperty(lcInstructionsPropertyType Type, int Minimum, int Maximum);
+	void AddSortProperty(lcInstructionsPropertyType Type);
 	void AddColorProperty(lcInstructionsPropertyType Type);
 	void AddFontProperty(lcInstructionsPropertyType Type);
 

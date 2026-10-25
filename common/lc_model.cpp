@@ -1807,7 +1807,7 @@ lcResult<QImage> lcModel::RenderStepImageWithReadyAssets(bool Zoom, int Width, i
 	return Image;
 }
 
-lcResult<QImage> lcModel::GetPartsListImage(int MaxWidth, lcStep Step, quint32 BackgroundColor, QFont Font, QColor TextColor, bool KeepMissingParts) const
+lcResult<QImage> lcModel::GetPartsListImage(int MaxWidth, lcStep Step, quint32 BackgroundColor, QFont Font, QColor TextColor, bool KeepMissingParts, bool ShowCounts, lcPartsListSort Sort) const
 {
 	lcScopedGLContextState GLState;
 
@@ -1863,8 +1863,24 @@ lcResult<QImage> lcModel::GetPartsListImage(int MaxWidth, lcStep Step, quint32 B
 		return Image;
 	}
 
-	auto ImageCompare = [](const lcPartsListImage& Image1, const lcPartsListImage& Image2)
+	auto ImageCompare = [Sort](const lcPartsListImage& Image1, const lcPartsListImage& Image2)
 	{
+		switch (Sort)
+		{
+		case lcPartsListSort::Color:
+			break;
+
+		case lcPartsListSort::Name:
+			if (int Compare = strcmp(Image1.PieceData->m_strDescription, Image2.PieceData->m_strDescription))
+				return Compare < 0;
+			return Image1.ColorIndex < Image2.ColorIndex;
+
+		case lcPartsListSort::PartId:
+			if (int Compare = strcmp(Image1.PieceData->mFileName, Image2.PieceData->mFileName))
+				return Compare < 0;
+			return Image1.ColorIndex < Image2.ColorIndex;
+		}
+
 		if (Image1.ColorIndex != Image2.ColorIndex)
 			return Image1.ColorIndex < Image2.ColorIndex;
 
@@ -2028,7 +2044,7 @@ lcResult<QImage> lcModel::GetPartsListImage(int MaxWidth, lcStep Step, quint32 B
 
 	DummyPainter.setFont(Font);
 	QFontMetrics FontMetrics = DummyPainter.fontMetrics();
-	const int Ascent = FontMetrics.ascent();
+	const int Ascent = ShowCounts ? FontMetrics.ascent() : 0;
 
 	int CurrentHeight = 0;
 	int ImageWidth = MaxWidth;
@@ -2087,7 +2103,9 @@ lcResult<QImage> lcModel::GetPartsListImage(int MaxWidth, lcStep Step, quint32 B
 	{
 		const QPoint Position = Image.Position + QPoint(20, 20);
 		Painter.drawImage(Position, Image.Thumbnail, Image.Bounds);
-		Painter.drawText(QPoint(Position.x(), Position.y() + Image.Bounds.height() + Ascent), QString::number(Image.Count) + 'x');
+
+		if (ShowCounts)
+			Painter.drawText(QPoint(Position.x(), Position.y() + Image.Bounds.height() + Ascent), QString::number(Image.Count) + 'x');
 	}
 
 	Painter.end();
