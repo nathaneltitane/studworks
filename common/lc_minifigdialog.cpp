@@ -28,11 +28,12 @@ lcMinifigDialog::lcMinifigDialog(QWidget* Parent, bool Docked)
 		ui->buttonBox->hide();
 	}
 
-	// Help comes from What's This and F1 instead of a help button.
-	lcSetupDialogHelp(this, nullptr);
-
+	// Help comes from What's This and F1 instead of a help button, the panel already provides F1 when docked.
 	if (!mDocked)
+	{
+		lcSetupDialogHelp(this, nullptr);
 		setWindowFlag(Qt::WindowContextHelpButtonHint, true);
+	}
 
 	QGridLayout* MinifigLayout = ui->MinifigLayout;
 
