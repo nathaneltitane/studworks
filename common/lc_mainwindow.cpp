@@ -780,9 +780,8 @@ void lcMainWindow::CreateToolBars()
 	QVBoxLayout* ColorLayout = new QVBoxLayout(ColorWidget);
 	ColorLayout->setContentsMargins(0, 0, 0, 0);
 
-	QHBoxLayout* ColorButtonLayout = new QHBoxLayout();
-	ColorButtonLayout->setContentsMargins(0, 0, 0, 0);
-	ColorLayout->addLayout(ColorButtonLayout);
+	QToolBar* ColorToolBar = lcCreatePanelToolBar(ColorWidget);
+	ColorLayout->addWidget(ColorToolBar);
 
 	mColorButton = new QToolButton(ColorWidget);
 	mColorButton->setAutoRaise(true);
@@ -791,20 +790,12 @@ void lcMainWindow::CreateToolBars()
 	mColorButton->setToolTip(tr("Apply the current color to selected pieces."));
 	mColorButton->setAccessibleName(tr("Change Selection Color"));
 	mColorButton->setWhatsThis(tr("<p><b>Change Selection Color</b></p><p>Apply the current color to selected pieces. Choosing a swatch sets the current color; this button applies that color to the selection.</p>"));
-	ColorButtonLayout->addWidget(mColorButton);
+	ColorToolBar->addWidget(mColorButton);
 
 	connect(mColorButton, &QToolButton::clicked, this, &lcMainWindow::ColorButtonClicked);
 
-	QToolButton* ColorOptionsButton = new QToolButton(ColorWidget);
-	ColorOptionsButton->setIcon(QIcon(":/resources/gear_in.png"));
-	ColorOptionsButton->setToolTip(tr("Choose how inserted pieces are colored."));
-	ColorOptionsButton->setAccessibleName(tr("Color Options"));
-	ColorOptionsButton->setPopupMode(QToolButton::InstantPopup);
-	ColorOptionsButton->setAutoRaise(true);
-	ColorButtonLayout->addWidget(ColorOptionsButton);
-
-	QMenu* ColorOptionsMenu = new QMenu(ColorOptionsButton);
-	ColorOptionsButton->setMenu(ColorOptionsMenu);
+	QMenu* ColorOptionsMenu = new QMenu(ColorToolBar);
+	lcAddPanelOptionsButton(ColorToolBar, ColorOptionsMenu, tr("Choose how inserted pieces are colored."), tr("Color Options"));
 	connect(ColorOptionsMenu, &QMenu::aboutToShow, this, &lcMainWindow::ColorOptionsMenuAboutToShow);
 
 	ColorLayout->addWidget(mColorList);
@@ -835,29 +826,27 @@ void lcMainWindow::CreateToolBars()
 	mPropertiesWidget = new lcPropertiesWidget(PropertiesScrollArea);
 	PropertiesScrollArea->setWidget(mPropertiesWidget);
 
-	QHBoxLayout* TransformLayout = new QHBoxLayout;
-	QWidget* TransformWidget = new QWidget();
-	TransformWidget->setLayout(TransformLayout);
+	QToolBar* TransformWidget = lcCreatePanelToolBar(PropertiesWidget);
 
 	QToolButton* TransformButton = new QToolButton(TransformWidget);
 	TransformButton->setDefaultAction(mActions[LC_EDIT_TRANSFORM]);
 	TransformButton->setPopupMode(QToolButton::InstantPopup);
 	TransformButton->setToolTip(tr("Choose absolute or relative translation or rotation."));
 	TransformButton->setWhatsThis(tr("<p><b>Apply Transform</b></p><p>Choose the translation or rotation mode, enter X/Y/Z values, and press Enter to apply them. Translation values use LDraw units; rotation values use degrees.</p>"));
-	TransformLayout->addWidget(TransformButton);
+	TransformWidget->addWidget(TransformButton);
 
 	mTransformXEdit = new lcTransformLineEdit();
 	mTransformXEdit->setAccessibleName(tr("Transform X"));
 	mTransformXEdit->setToolTip(tr("Enter the X translation in LDraw units or rotation in degrees."));
-	TransformLayout->addWidget(mTransformXEdit);
+	TransformWidget->addWidget(mTransformXEdit);
 	mTransformYEdit = new lcTransformLineEdit();
 	mTransformYEdit->setAccessibleName(tr("Transform Y"));
 	mTransformYEdit->setToolTip(tr("Enter the Y translation in LDraw units or rotation in degrees."));
-	TransformLayout->addWidget(mTransformYEdit);
+	TransformWidget->addWidget(mTransformYEdit);
 	mTransformZEdit = new lcTransformLineEdit();
 	mTransformZEdit->setAccessibleName(tr("Transform Z"));
 	mTransformZEdit->setToolTip(tr("Enter the Z translation in LDraw units or rotation in degrees."));
-	TransformLayout->addWidget(mTransformZEdit);
+	TransformWidget->addWidget(mTransformZEdit);
 
 	PropertiesLayout->addWidget(TransformWidget);
 

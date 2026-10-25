@@ -1,5 +1,6 @@
 #include "lc_global.h"
 #include "lc_partselectionwidget.h"
+#include "lc_qutils.h"
 #include "lc_partpalettedialog.h"
 #include "lc_profile.h"
 #include "lc_application.h"
@@ -976,15 +977,14 @@ lcPartSelectionWidget::lcPartSelectionWidget(bool IsPopup, QWidget* Parent)
 	CategoriesLayout->setContentsMargins(0, 0, 0, 0);
 	CategoriesGroupWidget->setLayout(CategoriesLayout);
 
-	QHBoxLayout* FilterCategoriesLayout = new QHBoxLayout();
-	FilterCategoriesLayout->setContentsMargins(0, 0, 0, 0);
-	CategoriesLayout->addLayout(FilterCategoriesLayout);
+	QToolBar* FilterCategoriesToolBar = lcCreatePanelToolBar(CategoriesGroupWidget);
+	CategoriesLayout->addWidget(FilterCategoriesToolBar);
 
 	mFilterCategoriesWidget = new QLineEdit(CategoriesGroupWidget);
 	mFilterCategoriesWidget->setPlaceholderText(tr("Filter Categories"));
 	mFilterCategoriesWidget->setAccessibleName(tr("Filter Categories"));
 	mFilterCategoriesWidget->setToolTip(tr("Filter category names to narrow the category list."));
-	FilterCategoriesLayout->addWidget(mFilterCategoriesWidget);
+	FilterCategoriesToolBar->addWidget(mFilterCategoriesWidget);
 
 	mFilterCaseAction = new QAction();
 	mFilterCaseAction->setIcon(QIcon(":/resources/case.png"));
@@ -993,9 +993,7 @@ lcPartSelectionWidget::lcPartSelectionWidget(bool IsPopup, QWidget* Parent)
 	mFilterCaseAction->setChecked(false);
 	connect(mFilterCaseAction, &QAction::triggered, this, &lcPartSelectionWidget::FilterCaseTriggered);
 
-	QToolButton* FilterCaseButton = new QToolButton();
-	FilterCaseButton->setDefaultAction(mFilterCaseAction);
-	FilterCategoriesLayout->addWidget(FilterCaseButton);
+	FilterCategoriesToolBar->addAction(mFilterCaseAction);
 
 	mCategoriesWidget = new QTreeWidget(mSplitter);
 	mCategoriesWidget->setHeaderHidden(true);
@@ -1012,25 +1010,17 @@ lcPartSelectionWidget::lcPartSelectionWidget(bool IsPopup, QWidget* Parent)
 	PartsLayout->setContentsMargins(0, 0, 0, 0);
 	PartsGroupWidget->setLayout(PartsLayout);
 
-	QHBoxLayout* SearchLayout = new QHBoxLayout();
-	SearchLayout->setContentsMargins(0, 0, 0, 0);
-	PartsLayout->addLayout(SearchLayout);
+	QToolBar* SearchToolBar = lcCreatePanelToolBar(PartsGroupWidget);
+	PartsLayout->addWidget(SearchToolBar);
 
 	mFilterWidget = new QLineEdit(PartsGroupWidget);
 	mFilterWidget->setPlaceholderText(tr("Filter Pieces"));
 	mFilterWidget->setAccessibleName(tr("Filter Pieces"));
 	mFilterWidget->setToolTip(tr("Filter the displayed pieces using the matching options."));
-	SearchLayout->addWidget(mFilterWidget);
-
-	QToolButton* OptionsButton = new QToolButton();
-	OptionsButton->setIcon(QIcon(":/resources/gear_in.png"));
-	OptionsButton->setToolTip(tr("Configure piece filtering and list display."));
-	OptionsButton->setAccessibleName(tr("Piece List Options"));
-	OptionsButton->setPopupMode(QToolButton::InstantPopup);
-	SearchLayout->addWidget(OptionsButton);
+	SearchToolBar->addWidget(mFilterWidget);
 
 	QMenu* OptionsMenu = new QMenu(this);
-	OptionsButton->setMenu(OptionsMenu);
+	lcAddPanelOptionsButton(SearchToolBar, OptionsMenu, tr("Configure piece filtering and list display."), tr("Piece List Options"));
 	connect(OptionsMenu, &QMenu::aboutToShow, this, &lcPartSelectionWidget::OptionsMenuAboutToShow);
 
 	mPartsWidget = new lcPartSelectionListView(PartsGroupWidget, this);

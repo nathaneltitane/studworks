@@ -20,6 +20,11 @@ std::optional<float> lcParseFloatLocalized(const QString& Value, QLocale Locale)
 void lcSetupDialogHelp(QDialog* Dialog, QDialogButtonBox* ButtonBox);
 void lcSetupWidgetHelp(QWidget* Root, QDialogButtonBox* ButtonBox);
 
+// Panel headers share the look of the preview toolbar so every panel has the same spacing.
+QToolBar* lcCreatePanelToolBar(QWidget* Parent);
+void lcAddPanelToolBarSpacer(QToolBar* ToolBar);
+QToolButton* lcAddPanelOptionsButton(QToolBar* ToolBar, QMenu* Menu, const QString& ToolTip, const QString& AccessibleName);
+
 // ScreenPosition selects the monitor independently of the desired popup position.
 QPoint lcGetPopupPosition(const QPoint& Position, const QSize& Size, const QPoint& ScreenPosition);
 

@@ -28,6 +28,38 @@ QPoint lcGetPopupPosition(const QPoint& Position, const QSize& Size, const QPoin
 	return QPoint(X, Y);
 }
 
+QToolBar* lcCreatePanelToolBar(QWidget* Parent)
+{
+	QToolBar* ToolBar = new QToolBar(Parent);
+
+	ToolBar->setMovable(false);
+	ToolBar->setFloatable(false);
+	ToolBar->setContextMenuPolicy(Qt::PreventContextMenu);
+
+	return ToolBar;
+}
+
+void lcAddPanelToolBarSpacer(QToolBar* ToolBar)
+{
+	QWidget* Spacer = new QWidget(ToolBar);
+	Spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+	ToolBar->addWidget(Spacer);
+}
+
+QToolButton* lcAddPanelOptionsButton(QToolBar* ToolBar, QMenu* Menu, const QString& ToolTip, const QString& AccessibleName)
+{
+	QToolButton* OptionsButton = new QToolButton(ToolBar);
+
+	OptionsButton->setIcon(QIcon(":/resources/gear_in.png"));
+	OptionsButton->setToolTip(ToolTip);
+	OptionsButton->setAccessibleName(AccessibleName);
+	OptionsButton->setPopupMode(QToolButton::InstantPopup);
+	OptionsButton->setMenu(Menu);
+	ToolBar->addWidget(OptionsButton);
+
+	return OptionsButton;
+}
+
 void lcSetupWidgetHelp(QWidget* Root, QDialogButtonBox* ButtonBox)
 {
 	const auto ShowHelp = [Root](QWidget* Widget)

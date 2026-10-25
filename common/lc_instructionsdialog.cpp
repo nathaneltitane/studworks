@@ -344,21 +344,12 @@ lcInstructionsPageListWidget::lcInstructionsPageListWidget(QWidget* Parent, lcIn
 	QVBoxLayout* Layout = new QVBoxLayout(CentralWidget);
 	Layout->setContentsMargins(0, 0, 0, 0);
 
-	QHBoxLayout* ButtonsLayout = new QHBoxLayout();
-	ButtonsLayout->setContentsMargins(0, 0, 0, 0);
-	Layout->addLayout(ButtonsLayout);
-
-	ButtonsLayout->addStretch(1);
-
-	QToolButton* OptionsButton = new QToolButton();
-	OptionsButton->setIcon(QIcon(":/resources/gear_in.png"));
-	OptionsButton->setToolTip(tr("Page options"));
-	OptionsButton->setAccessibleName(tr("Page Options"));
-	OptionsButton->setPopupMode(QToolButton::InstantPopup);
-	ButtonsLayout->addWidget(OptionsButton);
+	QToolBar* OptionsToolBar = lcCreatePanelToolBar(CentralWidget);
+	lcAddPanelToolBarSpacer(OptionsToolBar);
+	Layout->addWidget(OptionsToolBar);
 
 	QMenu* OptionsMenu = new QMenu(this);
-	OptionsButton->setMenu(OptionsMenu);
+	lcAddPanelOptionsButton(OptionsToolBar, OptionsMenu, tr("Page options"), tr("Page Options"));
 
 	QAction* PageSetupAction = OptionsMenu->addAction(tr("Page Setup..."));
 	PageSetupAction->setToolTip(tr("Choose the page size, orientation and margins"));
@@ -502,20 +493,12 @@ lcInstructionsPropertiesWidget::lcInstructionsPropertiesWidget(QWidget* Parent, 
 	QGridLayout* Layout = new QGridLayout(CentralWidget);
 	Layout->setContentsMargins(0, 0, 0, 0);
 
-	QHBoxLayout* ButtonsLayout = new QHBoxLayout();
-	ButtonsLayout->setContentsMargins(0, 0, 0, 0);
-	ButtonsLayout->addStretch(1);
-	Layout->addLayout(ButtonsLayout, 0, 0, 1, -1);
-
-	QToolButton* OptionsButton = new QToolButton();
-	OptionsButton->setIcon(QIcon(":/resources/gear_in.png"));
-	OptionsButton->setToolTip(tr("Properties options"));
-	OptionsButton->setAccessibleName(tr("Properties Options"));
-	OptionsButton->setPopupMode(QToolButton::InstantPopup);
-	ButtonsLayout->addWidget(OptionsButton);
+	QToolBar* OptionsToolBar = lcCreatePanelToolBar(CentralWidget);
+	lcAddPanelToolBarSpacer(OptionsToolBar);
+	Layout->addWidget(OptionsToolBar, 0, 0, 1, -1);
 
 	QMenu* OptionsMenu = new QMenu(this);
-	OptionsButton->setMenu(OptionsMenu);
+	lcAddPanelOptionsButton(OptionsToolBar, OptionsMenu, tr("Properties options"), tr("Properties Options"));
 
 	// changes apply to the defaults for now, model and step overrides are planned
 	QMenu* ScopeMenu = OptionsMenu->addMenu(tr("Apply Changes To"));

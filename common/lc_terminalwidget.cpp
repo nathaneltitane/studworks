@@ -1,5 +1,6 @@
 #include "lc_global.h"
 #include "lc_terminalwidget.h"
+#include "lc_qutils.h"
 #include "lc_shortcuts.h"
 #include "lc_mainwindow.h"
 #include "lc_application.h"
@@ -17,21 +18,12 @@ lcTerminalWidget::lcTerminalWidget(QWidget* Parent)
 	mLayout->setContentsMargins(0, 0, 0, 0);
 	mLayout->setSpacing(0);
 
-	QHBoxLayout* OptionsLayout = new QHBoxLayout();
-	OptionsLayout->setContentsMargins(0, 0, 0, 0);
-	OptionsLayout->addStretch(1);
-	mLayout->addLayout(OptionsLayout);
+	QToolBar* OptionsToolBar = lcCreatePanelToolBar(this);
+	lcAddPanelToolBarSpacer(OptionsToolBar);
+	mLayout->addWidget(OptionsToolBar);
 
-	QToolButton* OptionsButton = new QToolButton(this);
-	OptionsButton->setIcon(QIcon(":/resources/gear_in.png"));
-	OptionsButton->setToolTip(tr("Configure the terminal."));
-	OptionsButton->setAccessibleName(tr("Terminal Options"));
-	OptionsButton->setPopupMode(QToolButton::InstantPopup);
-	OptionsButton->setAutoRaise(true);
-	OptionsLayout->addWidget(OptionsButton);
-
-	QMenu* OptionsMenu = new QMenu(OptionsButton);
-	OptionsButton->setMenu(OptionsMenu);
+	QMenu* OptionsMenu = new QMenu(OptionsToolBar);
+	lcAddPanelOptionsButton(OptionsToolBar, OptionsMenu, tr("Configure the terminal."), tr("Terminal Options"));
 	connect(OptionsMenu, &QMenu::aboutToShow, this, &lcTerminalWidget::OptionsMenuAboutToShow);
 
 	mDirectory = QDir::homePath();
