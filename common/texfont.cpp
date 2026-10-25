@@ -35,7 +35,8 @@ bool TexFont::Initialize(lcContext* Context)
 	QImage Image(mTextureWidth, mTextureHeight, QImage::Format_Alpha8);
 	Image.fill(0);
 
-	QFont Font(QStringLiteral("Arial"));
+	// Overlay text uses the interface font, rendered large for the distance field texture.
+	QFont Font = QGuiApplication::font();
 	Font.setPixelSize(56);
 	Font.setStyleStrategy(QFont::PreferAntialias);
 	const QFontMetrics Metrics(Font);

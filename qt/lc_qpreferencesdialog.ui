@@ -131,7 +131,7 @@
              <string>Choose a custom minifigure settings file, or leave empty to use the built-in choices.</string>
             </property>
             <property name="text">
-             <string>Minifig Settings:</string>
+             <string>Minifigure Settings:</string>
             </property>
             <property name="buddy">
              <cstring>MinifigSettingsEdit</cstring>
@@ -395,7 +395,7 @@
              <string>Open the most recently used file when LeoCAD+ starts.</string>
             </property>
             <property name="text">
-             <string>Open most recent file on startup</string>
+             <string>Open Most Recent File on Startup</string>
             </property>
            </widget>
           </item>
@@ -405,7 +405,7 @@
              <string>Restore saved model tabs and view layouts when opening a model.</string>
             </property>
             <property name="text">
-             <string>Restore tab layout</string>
+             <string>Restore Tab Layout</string>
             </property>
            </widget>
           </item>
@@ -415,7 +415,7 @@
              <string>Ask to reload the model when its file is changed by another application. Use File &gt; Reload to reload it manually.</string>
             </property>
             <property name="text">
-             <string>Watch for file changes</string>
+             <string>Watch for File Changes</string>
             </property>
            </widget>
           </item>
@@ -425,7 +425,7 @@
              <string>Wait until every piece of a model is loaded before showing it, instead of showing pieces as they load.</string>
             </property>
             <property name="text">
-             <string>Load all pieces before showing a model</string>
+             <string>Load All Pieces Before Showing a Model</string>
             </property>
            </widget>
           </item>
@@ -492,7 +492,7 @@
              <string>Place the first piece of an empty model at 0, 0, 0 instead of where it is dropped.</string>
             </property>
             <property name="text">
-             <string>Insert first piece at origin</string>
+             <string>Insert First Piece at Origin</string>
             </property>
            </widget>
           </item>
@@ -598,7 +598,7 @@
              <cstring>studStyleCombo</cstring>
             </property>
             <property name="text">
-             <string>Stud Style</string>
+             <string>Stud Style:</string>
             </property>
            </widget>
           </item>
@@ -1178,7 +1178,7 @@
              <string>Turn the view to each step's view rotation (MLCAD ROTSTEP) when changing steps.</string>
             </property>
             <property name="text">
-             <string>Follow step views</string>
+             <string>Follow Step Views</string>
             </property>
            </widget>
           </item>
@@ -1217,7 +1217,7 @@
              <string>Show base-grid lines at the specified spacing.</string>
             </property>
             <property name="text">
-             <string>Draw lines every</string>
+             <string>Draw Lines Every</string>
             </property>
            </widget>
           </item>
@@ -1243,7 +1243,7 @@
              <string>Emphasize the base-grid lines through the model origin.</string>
             </property>
             <property name="text">
-             <string>Draw origin lines</string>
+             <string>Draw Origin Lines</string>
             </property>
            </widget>
           </item>
@@ -1253,7 +1253,7 @@
              <string>Draw a vertical grid on the XZ plane through the X axis with lines every plate height.</string>
             </property>
             <property name="text">
-             <string>Draw XZ height grid</string>
+             <string>Draw XZ Height Grid</string>
             </property>
            </widget>
           </item>
@@ -1263,7 +1263,7 @@
              <string>Draw a vertical grid on the YZ plane through the Y axis with lines every plate height.</string>
             </property>
             <property name="text">
-             <string>Draw YZ height grid</string>
+             <string>Draw YZ Height Grid</string>
             </property>
            </widget>
           </item>
@@ -1273,7 +1273,7 @@
              <string>Draw the height grids on the side of the model facing away from the camera instead of through the origin axes.</string>
             </property>
             <property name="text">
-             <string>Draw height grids behind the model</string>
+             <string>Draw Height Grids Behind the Model</string>
             </property>
            </widget>
           </item>
@@ -1283,7 +1283,7 @@
              <string>Show stud positions on the base grid.</string>
             </property>
             <property name="text">
-             <string>Draw studs</string>
+             <string>Draw Studs</string>
             </property>
            </widget>
           </item>
@@ -1302,7 +1302,7 @@
              <string>Use the model view rendering settings for the pieces list and parts list images.</string>
             </property>
             <property name="text">
-             <string>Use model view settings</string>
+             <string>Use Model View Settings</string>
             </property>
            </widget>
           </item>
@@ -1534,7 +1534,7 @@
              <string>Use the model view rendering settings for the pieces preview.</string>
             </property>
             <property name="text">
-             <string>Use model view settings</string>
+             <string>Use Model View Settings</string>
             </property>
            </widget>
           </item>

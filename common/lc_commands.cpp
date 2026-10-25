@@ -711,7 +711,7 @@ const lcCommand gCommands[] =
 	// LC_EDIT_SNAP_ORBIT_TOGGLE
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapAngle.ToggleOrbit"),
-		QT_TRANSLATE_NOOP("Menu", "Snap Camera Orbit"),
+		QT_TRANSLATE_NOOP("Menu", "Camera Snap Enabled"),
 		QT_TRANSLATE_NOOP("Status", "Toggle orbiting the camera in steps of the rotation snap angle"),
 		"",
 		""
