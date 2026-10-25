@@ -491,7 +491,6 @@ void lcMainWindow::CreateMenus()
 	RenderMenu->addAction(mActions[LC_FILE_RENDER_BLENDER]);
 	RenderMenu->addAction(mActions[LC_FILE_RENDER_OPEN_IN_BLENDER]);
 #endif
-	FileMenu->addAction(mActions[LC_FILE_INSTRUCTIONS]);
 	FileMenu->addAction(mActions[LC_FILE_PRINT]);
 	FileMenu->addAction(mActions[LC_FILE_PRINT_PREVIEW]);
 	FileMenu->addSeparator();
@@ -504,6 +503,7 @@ void lcMainWindow::CreateMenus()
 
 	QMenu* EditMenu = menuBar()->addMenu(tr("&Edit"));
 	EditMenu->addAction(mActions[LC_VIEW_PREFERENCES]);
+	EditMenu->addAction(mActions[LC_FILE_INSTRUCTIONS]);
 	EditMenu->addSeparator();
 	EditMenu->addAction(mActions[LC_EDIT_UNDO]);
 	EditMenu->addAction(mActions[LC_EDIT_REDO]);
