@@ -141,7 +141,9 @@ lcMinifigDialog::lcMinifigDialog(QWidget* Parent, bool Docked)
 	ViewWidget->setToolTip(tr("Preview of the chosen pieces, colors, and pose."));
 	ViewWidget->setWhatsThis(tr("<p><b>Minifigure Preview</b></p><p>Check the assembled minifigure as you change pieces, colors, or angles. Choose OK to add this configuration to the current model.</p>"));
 	ViewWidget->setMinimumWidth(100);
+	ViewWidget->installEventFilter(this);
 	PreviewLayout->addWidget(ViewWidget);
+	mViewWidget = ViewWidget;
 
 	mView->MakeCurrent();
 
@@ -193,6 +195,22 @@ void lcMinifigDialog::accept()
 
 	if (Model)
 		Model->AddMinifig(mMinifigWizard->mMinifig);
+}
+
+bool lcMinifigDialog::eventFilter(QObject* Object, QEvent* Event)
+{
+	// Fit the figure again whenever the preview changes size so it is never cut off.
+	if (Object == mViewWidget && Event->type() == QEvent::Resize)
+		QTimer::singleShot(0, this, &lcMinifigDialog::FitPreview);
+
+	return QDialog::eventFilter(Object, Event);
+}
+
+void lcMinifigDialog::FitPreview()
+{
+	// The whole figure stays in view, whatever pieces and angles are chosen.
+	mView->ZoomExtents(lcGeometryBoundsMode::IncludeFallback, false);
+	mView->Redraw();
 }
 
 void lcMinifigDialog::reject()
@@ -295,7 +313,7 @@ void lcMinifigDialog::TemplateComboBoxCurrentTextChanged(const QString& Template
 		}
 	}
 
-	mView->Redraw();
+	FitPreview();
 }
 
 void lcMinifigDialog::TemplateSaveButtonClicked()
@@ -450,7 +468,7 @@ void lcMinifigDialog::PieceButtonClicked()
 
 	mView->MakeCurrent();
 	mMinifigWizard->SetPieceData(ItemIndex, NewPiece);
-	mView->Redraw();
+	FitPreview();
 
 	if (NewPiece)
 	{
@@ -494,5 +512,5 @@ void lcMinifigDialog::AngleChanged(double Value)
 	int ItemIndex = static_cast<int>(std::distance(mSpinBoxes.begin(), Search));
 
 	mMinifigWizard->SetAngle(ItemIndex, Value);
-	mView->Redraw();
+	FitPreview();
 }

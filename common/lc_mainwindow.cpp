@@ -1,6 +1,7 @@
 #include "lc_global.h"
 #include "lc_mainwindow.h"
 #include "lc_minifigdialog.h"
+#include "lc_doublespinbox.h"
 #include <QPrintDialog>
 #include <QPrintPreviewDialog>
 #include "lc_partselectionwidget.h"
@@ -875,17 +876,27 @@ void lcMainWindow::CreateToolBars()
 	lcSetupPanelButton(TransformNameButton);
 	TransformNameButton->setFixedSize(lcGetPanelButtonSize());
 
-	mTransformXEdit = new lcTransformLineEdit();
+	// Transform values use the same spin boxes as the position and rotation rows.
+	mTransformXEdit = new lcDoubleSpinBox(TransformWidget);
+	mTransformXEdit->setRange(-FLT_MAX, FLT_MAX);
+	mTransformXEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	mTransformXEdit->setMinimumWidth(mTransformXEdit->fontMetrics().horizontalAdvance(QLatin1String("-000")) + 24);
 	mTransformXEdit->setAccessibleName(tr("Transform X"));
 	mTransformXEdit->setToolTip(tr("Enter the X translation in LDraw units or rotation in degrees."));
 	lcSetupPanelEdit(mTransformXEdit);
 	TransformWidget->addWidget(mTransformXEdit);
-	mTransformYEdit = new lcTransformLineEdit();
+	mTransformYEdit = new lcDoubleSpinBox(TransformWidget);
+	mTransformYEdit->setRange(-FLT_MAX, FLT_MAX);
+	mTransformYEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	mTransformYEdit->setMinimumWidth(mTransformYEdit->fontMetrics().horizontalAdvance(QLatin1String("-000")) + 24);
 	mTransformYEdit->setAccessibleName(tr("Transform Y"));
 	mTransformYEdit->setToolTip(tr("Enter the Y translation in LDraw units or rotation in degrees."));
 	lcSetupPanelEdit(mTransformYEdit);
 	TransformWidget->addWidget(mTransformYEdit);
-	mTransformZEdit = new lcTransformLineEdit();
+	mTransformZEdit = new lcDoubleSpinBox(TransformWidget);
+	mTransformZEdit->setRange(-FLT_MAX, FLT_MAX);
+	mTransformZEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	mTransformZEdit->setMinimumWidth(mTransformZEdit->fontMetrics().horizontalAdvance(QLatin1String("-000")) + 24);
 	mTransformZEdit->setAccessibleName(tr("Transform Z"));
 	mTransformZEdit->setToolTip(tr("Enter the Z translation in LDraw units or rotation in degrees."));
 	lcSetupPanelEdit(mTransformZEdit);
@@ -927,9 +938,9 @@ void lcMainWindow::CreateToolBars()
 		QTimer::singleShot(0, UpdatePropertiesHeight);
 	});
 
-	connect(mTransformXEdit, &QLineEdit::returnPressed, mActions[LC_EDIT_TRANSFORM], &QAction::trigger);
-	connect(mTransformYEdit, &QLineEdit::returnPressed, mActions[LC_EDIT_TRANSFORM], &QAction::trigger);
-	connect(mTransformZEdit, &QLineEdit::returnPressed, mActions[LC_EDIT_TRANSFORM], &QAction::trigger);
+	connect(mTransformXEdit, &lcDoubleSpinBox::ReturnKeyPressed, mActions[LC_EDIT_TRANSFORM], &QAction::trigger);
+	connect(mTransformYEdit, &lcDoubleSpinBox::ReturnKeyPressed, mActions[LC_EDIT_TRANSFORM], &QAction::trigger);
+	connect(mTransformZEdit, &lcDoubleSpinBox::ReturnKeyPressed, mActions[LC_EDIT_TRANSFORM], &QAction::trigger);
 
 	mPropertiesToolBar->setWidget(PropertiesWidget);
 	addDockWidget(Qt::RightDockWidgetArea, mPropertiesToolBar);
@@ -2720,33 +2731,7 @@ void lcMainWindow::SetInsertPieceData(lcPieceData* PieceData)
 
 std::optional<lcVector3> lcMainWindow::GetTransformAmount()
 {
-	QLineEdit* Edits[] = { mTransformXEdit, mTransformYEdit, mTransformZEdit };
-	lcVector3 Values;
-
-	for (int Axis = 0; Axis < 3; Axis++)
-	{
-		QLineEdit* Edit = Edits[Axis];
-		const QString Text = Edit->text().trimmed();
-
-		if (Text.isEmpty())
-		{
-			Values[Axis] = 0.0f;
-			continue;
-		}
-
-		const std::optional<float> Value = lcParseFloatLocalized(Text, Edit->locale());
-
-		if (!Value)
-		{
-			QMessageBox::information(this, tr("Transform"), tr("Please enter a valid value for '%1'.").arg(Edit->accessibleName()));
-			Edit->setFocus();
-			return std::nullopt;
-		}
-
-		Values[Axis] = *Value;
-	}
-
-	return Values;
+	return lcVector3(mTransformXEdit->value(), mTransformYEdit->value(), mTransformZEdit->value());
 }
 
 void lcMainWindow::SplitView(Qt::Orientation Orientation)

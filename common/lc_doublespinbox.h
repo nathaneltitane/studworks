@@ -26,6 +26,7 @@ signals:
 	void EditingStarted();
 	void EditingCanceled();
 	void EditingFinished();
+	void ReturnKeyPressed();
 
 protected slots:
 	void ValueChanged();
