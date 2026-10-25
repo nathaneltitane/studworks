@@ -99,16 +99,12 @@ void lcMainWindow::CreateWidgets()
 	mModelTabWidget->tabBar()->setContextMenuPolicy(Qt::CustomContextMenu);
 	setCentralWidget(mModelTabWidget);
 
-	QToolButton* ModelViewOptionsButton = new QToolButton(mModelTabWidget);
-	ModelViewOptionsButton->setIcon(QIcon(":/resources/gear_in.png"));
-	ModelViewOptionsButton->setToolTip(tr("Configure the model view display and rendering."));
-	ModelViewOptionsButton->setAccessibleName(tr("Model View Options"));
-	ModelViewOptionsButton->setPopupMode(QToolButton::InstantPopup);
-	lcSetupPanelButton(ModelViewOptionsButton);
-	mModelTabWidget->setCornerWidget(ModelViewOptionsButton, Qt::TopRightCorner);
+	// The options button sits in a panel toolbar so it has the same spacing as the options buttons of the panels.
+	QToolBar* ModelViewToolBar = lcCreatePanelToolBar(mModelTabWidget);
+	QMenu* ModelViewOptionsMenu = new QMenu(ModelViewToolBar);
+	lcAddPanelOptionsButton(ModelViewToolBar, ModelViewOptionsMenu, tr("Configure the model view display and rendering."), tr("Model View Options"));
+	mModelTabWidget->setCornerWidget(ModelViewToolBar, Qt::TopRightCorner);
 
-	QMenu* ModelViewOptionsMenu = new QMenu(ModelViewOptionsButton);
-	ModelViewOptionsButton->setMenu(ModelViewOptionsMenu);
 	connect(ModelViewOptionsMenu, &QMenu::aboutToShow, this, &lcMainWindow::ModelViewOptionsMenuAboutToShow);
 
 	connect(mModelTabWidget->tabBar(), &QTabBar::tabCloseRequested, this, &lcMainWindow::ModelTabClosed);
