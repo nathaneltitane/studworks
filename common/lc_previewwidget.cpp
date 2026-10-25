@@ -11,6 +11,29 @@
 #include "lc_mainwindow.h"
 #include "lc_profile.h"
 
+// a label that shortens its text with an ellipsis so the toolbar never overflows
+class lcPreviewLabel : public QLabel
+{
+public:
+	QSize minimumSizeHint() const override
+	{
+		return QSize(0, QLabel::minimumSizeHint().height());
+	}
+
+protected:
+	void paintEvent(QPaintEvent* Event) override
+	{
+		Q_UNUSED(Event);
+
+		QPainter Painter(this);
+		const QRect TextRect = contentsRect().adjusted(margin(), margin(), -margin(), -margin());
+		const QString ElidedText = fontMetrics().elidedText(text(), Qt::ElideRight, TextRect.width());
+
+		Painter.setPen(palette().color(foregroundRole()));
+		Painter.drawText(TextRect, Qt::AlignLeft | Qt::AlignVCenter, ElidedText);
+	}
+};
+
 lcPreviewDockWidget::lcPreviewDockWidget(QMainWindow* Parent)
 	: QMainWindow(Parent)
 {
@@ -37,7 +60,8 @@ lcPreviewDockWidget::lcPreviewDockWidget(QMainWindow* Parent)
 	connect(mLockAction, &QAction::triggered, this, &lcPreviewDockWidget::SetPreviewLock);
 	SetPreviewLock();
 
-	mLabel = new QLabel();
+	mLabel = new lcPreviewLabel();
+	mLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
 	lcPiecesLibrary* Library = lcGetPiecesLibrary();
 	connect(Library, &lcPiecesLibrary::PartLoaded, this, [this](lcPieceData*)
@@ -67,10 +91,6 @@ lcPreviewDockWidget::lcPreviewDockWidget(QMainWindow* Parent)
 	if (QToolButton* LockButton = qobject_cast<QToolButton*>(mToolBar->widgetForAction(mLockAction)))
 		LockButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
 	mToolBar->addWidget(mLabel);
-
-	QWidget* Spacer = new QWidget(mToolBar);
-	Spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-	mToolBar->addWidget(Spacer);
 
 	QToolButton* OptionsButton = new QToolButton(mToolBar);
 	OptionsButton->setIcon(QIcon(":/resources/gear_in.png"));
