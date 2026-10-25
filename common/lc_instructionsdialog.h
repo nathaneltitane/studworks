@@ -4,6 +4,10 @@
 
 class lcInstructionsPropertiesWidget;
 
+// File printing and the instructions window print the same instruction pages.
+void lcSetupInstructionsPrinter(lcInstructions* Instructions, QPrinter* Printer);
+void lcPrintInstructions(lcInstructions* Instructions, QPrinter* Printer);
+
 class lcInstructionsStepImageItem : public QGraphicsPixmapItem
 {
 public:

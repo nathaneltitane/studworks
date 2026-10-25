@@ -976,36 +976,27 @@ lcInstructionsDialog::lcInstructionsDialog(QWidget* Parent, Project* Project)
 	connect(mInstructions, &lcInstructions::PageLayoutChanged, this, &lcInstructionsDialog::PageSetupChanged);
 }
 
-void lcInstructionsDialog::ShowPrintDialog()
+void lcSetupInstructionsPrinter(lcInstructions* Instructions, QPrinter* Printer)
 {
 #ifndef QT_NO_PRINTER
-	int PageCount = static_cast<int>(mInstructions->mPages.size());
-
-	QPrinter Printer(QPrinter::HighResolution);
-	Printer.setFromTo(1, PageCount + 1);
-
-	// print on paper matching the page setup, the page already includes its margins
-	const lcInstructionsPageSetup& PageSetup = mInstructions->mPageSetup;
+	// Print on paper matching the page setup, the pages already include their margins.
+	const lcInstructionsPageSetup& PageSetup = Instructions->mPageSetup;
 	const QSizeF PageSize(qMin(PageSetup.Width, PageSetup.Height), qMax(PageSetup.Width, PageSetup.Height));
 	const QPageLayout::Orientation Orientation = PageSetup.Width > PageSetup.Height ? QPageLayout::Landscape : QPageLayout::Portrait;
 
-	Printer.setPageLayout(QPageLayout(QPageSize(PageSize, QPageSize::Point), Orientation, QMarginsF()));
-	Printer.setFullPage(true);
-
-	QPrintDialog PrintDialog(&Printer, this);
-
-	if (PrintDialog.exec() == QDialog::Accepted)
-		Print(&Printer);
+	Printer->setPageLayout(QPageLayout(QPageSize(PageSize, QPageSize::Point), Orientation, QMarginsF()));
+	Printer->setFullPage(true);
+	Printer->setFromTo(1, static_cast<int>(Instructions->mPages.size()));
 #endif
 }
 
-void lcInstructionsDialog::Print(QPrinter* Printer)
+void lcPrintInstructions(lcInstructions* Instructions, QPrinter* Printer)
 {
 #ifndef QT_NO_PRINTER
 	int DocCopies;
 	int PageCopies;
 
-	const int PageCount = static_cast<int>(mInstructions->mPages.size());
+	const int PageCount = static_cast<int>(Instructions->mPages.size());
 
 	if (Printer->collateCopies())
 	{
@@ -1040,7 +1031,7 @@ void lcInstructionsDialog::Print(QPrinter* Printer)
 		Ascending = false;
 	}
 
-	QGraphicsScene* Scene = new QGraphicsScene();
+	QGraphicsScene Scene;
 	QPainter Painter(Printer);
 	bool FirstPage = true;
 
@@ -1053,22 +1044,17 @@ void lcInstructionsDialog::Print(QPrinter* Printer)
 			for (int PageCopy = 0; PageCopy < PageCopies; PageCopy++)
 			{
 				if (Printer->printerState() == QPrinter::Aborted || Printer->printerState() == QPrinter::Error)
-				{
-					delete Scene;
-
 					return;
-				}
 
 				if (!FirstPage)
 					Printer->newPage();
 				else
 					FirstPage = false;
 
-				const lcInstructionsPage* InstructionsPage = &mInstructions->mPages[Page - 1];
-				lcUpdateInstructionsPageScene(mInstructions, InstructionsPage, Scene);
+				lcUpdateInstructionsPageScene(Instructions, &Instructions->mPages[Page - 1], &Scene);
 
-				// stretch the page over the whole sheet so the background reaches every edge
-				Scene->render(&Painter, QRectF(0.0, 0.0, Printer->width(), Printer->height()), Scene->sceneRect(), Qt::IgnoreAspectRatio);
+				// Stretch the page over the whole sheet so the background reaches every edge.
+				Scene.render(&Painter, QRectF(0.0, 0.0, Printer->width(), Printer->height()), Scene.sceneRect(), Qt::IgnoreAspectRatio);
 			}
 
 			if (Page == ToPage)
@@ -1080,9 +1066,25 @@ void lcInstructionsDialog::Print(QPrinter* Printer)
 				Page--;
 		}
 	}
-
-	delete Scene;
 #endif
+}
+
+void lcInstructionsDialog::ShowPrintDialog()
+{
+#ifndef QT_NO_PRINTER
+	QPrinter Printer(QPrinter::HighResolution);
+	lcSetupInstructionsPrinter(mInstructions, &Printer);
+
+	QPrintDialog PrintDialog(&Printer, this);
+
+	if (PrintDialog.exec() == QDialog::Accepted)
+		Print(&Printer);
+#endif
+}
+
+void lcInstructionsDialog::Print(QPrinter* Printer)
+{
+	lcPrintInstructions(mInstructions, Printer);
 }
 
 void lcInstructionsDialog::UpdatePageList()
