@@ -33,6 +33,7 @@ protected:
 	QAction* mLockAction;
 	QWidget* mViewContainer;
 	QToolBar* mToolBar = nullptr;
+	QToolBar* mLabelToolBar = nullptr;
 	QLabel* mLabel;
 	lcPreview* mPreview;
 	lcViewWidget* mViewWidget;

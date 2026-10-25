@@ -31,7 +31,7 @@ protected:
 		const QString ElidedText = fontMetrics().elidedText(text(), Qt::ElideRight, TextRect.width());
 
 		Painter.setPen(palette().color(foregroundRole()));
-		Painter.drawText(TextRect, Qt::AlignLeft | Qt::AlignVCenter, ElidedText);
+		Painter.drawText(TextRect, alignment(), ElidedText);
 	}
 };
 
@@ -64,6 +64,7 @@ lcPreviewDockWidget::lcPreviewDockWidget(QMainWindow* Parent)
 	mLabel = new lcPreviewLabel();
 	mLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 	mLabel->setContentsMargins(8, 0, 8, 0);
+	mLabel->setAlignment(Qt::AlignCenter);
 
 	lcPiecesLibrary* Library = lcGetPiecesLibrary();
 	connect(Library, &lcPiecesLibrary::PartLoaded, this, [this](lcPieceData*)
@@ -88,14 +89,15 @@ lcPreviewDockWidget::lcPreviewDockWidget(QMainWindow* Parent)
 	mToolBar->setWhatsThis(mLockAction->whatsThis());
 	mToolBar->setMovable(false);
 	lcSetPanelToolBarMargins(mToolBar);
-	mToolBar->addAction(mLockAction);
-	mToolBar->widgetForAction(mLockAction)->setWhatsThis(mLockAction->whatsThis());
 
-	if (QToolButton* LockButton = qobject_cast<QToolButton*>(mToolBar->widgetForAction(mLockAction)))
-		LockButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
-
-	lcSetupPanelAction(mToolBar, mLockAction);
-	mToolBar->addWidget(mLabel);
+	// Nothing else sits beside it, so the lock button reaches up to the options button.
+	QToolButton* LockButton = new QToolButton(mToolBar);
+	LockButton->setDefaultAction(mLockAction);
+	LockButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
+	LockButton->setWhatsThis(mLockAction->whatsThis());
+	mToolBar->addWidget(LockButton);
+	lcSetupPanelButton(LockButton);
+	LockButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
 	QToolButton* OptionsButton = new QToolButton(mToolBar);
 	OptionsButton->setIcon(QIcon(":/resources/gear_in.png"));
@@ -111,6 +113,14 @@ lcPreviewDockWidget::lcPreviewDockWidget(QMainWindow* Parent)
 
 	if (mToolBar->isHidden())
 		mToolBar->show();
+
+	// The name of the previewed piece gets its own full width row below the buttons.
+	addToolBarBreak();
+	mLabelToolBar = addToolBar(tr("Piece Name"));
+	mLabelToolBar->setObjectName("PieceNameToolbar");
+	mLabelToolBar->setMovable(false);
+	lcSetPanelToolBarMargins(mLabelToolBar);
+	mLabelToolBar->addWidget(mLabel);
 }
 
 void lcPreviewDockWidget::OptionsMenuAboutToShow()
@@ -148,7 +158,7 @@ void lcPreviewDockWidget::UpdateViewGeometry()
 {
 	// a square preview sizes the panel to fit, the height follows the width like the colors panel
 	if (lcGetPreferences().mPreviewSquareViewport && mToolBar)
-		setFixedHeight(mViewContainer->width() + mToolBar->sizeHint().height());
+		setFixedHeight(mViewContainer->width() + mToolBar->sizeHint().height() + (mLabelToolBar ? mLabelToolBar->sizeHint().height() : 0));
 	else
 	{
 		setMinimumHeight(200);
