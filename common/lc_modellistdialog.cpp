@@ -1,5 +1,6 @@
 #include "lc_global.h"
 #include "lc_qutils.h"
+#include "lc_string.h"
 #include "lc_modellistdialog.h"
 #include "ui_lc_modellistdialog.h"
 #include "project.h"
@@ -265,11 +266,31 @@ void lcModelListDialog::DuplicateModelClicked()
 		for (int ItemIdx = 0; ItemIdx < ui->ModelList->count(); ItemIdx++)
 			ModelNames.append(ui->ModelList->item(ItemIdx)->text());
 
-		QString Name = CurrentItem->text();
+		// A copy keeps the name and takes the next free three digit number, Car.ldr becomes Car 001.ldr.
+		QString BaseName = CurrentItem->text();
+		QString Extension;
+		const qsizetype ExtensionStart = BaseName.lastIndexOf(QLatin1Char('.'));
+
+		if (ExtensionStart > 0)
+		{
+			Extension = BaseName.mid(ExtensionStart);
+			BaseName.truncate(ExtensionStart);
+		}
+
+		static const QRegularExpression NumberSuffix(QLatin1String(" #?\\d+$"));
+		BaseName.remove(NumberSuffix);
+
+		const QString Prefix = BaseName + QLatin1Char(' ');
+		int Number = 0;
+
+		for (const QString& ModelName : ModelNames)
+			Number = qMax(Number, lcGetDefaultNameNumber(ModelName, Prefix));
+
+		QString Name;
 
 		do
 		{
-			Name = tr("Copy of ") + Name;
+			Name = lcFormatDefaultName(Prefix, ++Number) + Extension;
 		} while (ModelNames.contains(Name, Qt::CaseInsensitive));
 
 		Name = lcGetActiveProject()->GetNewModelName(this, tr("Duplicate Submodel"), Name, ModelNames);
