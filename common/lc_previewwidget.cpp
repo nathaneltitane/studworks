@@ -142,16 +142,12 @@ void lcPreviewDockWidget::UpdateSquareViewport()
 void lcPreviewDockWidget::UpdateViewGeometry()
 {
 	// a square preview sizes the panel to fit, the height follows the width like the colors panel
-	if (lcGetPreferences().mPreviewSquareViewport)
-	{
-		setMinimumHeight(0);
-		mViewContainer->setFixedHeight(mViewContainer->width());
-	}
+	if (lcGetPreferences().mPreviewSquareViewport && mToolBar)
+		setFixedHeight(mViewContainer->width() + mToolBar->sizeHint().height());
 	else
 	{
-		mViewContainer->setMinimumHeight(0);
-		mViewContainer->setMaximumHeight(QWIDGETSIZE_MAX);
 		setMinimumHeight(200);
+		setMaximumHeight(QWIDGETSIZE_MAX);
 	}
 
 	mViewWidget->setGeometry(mViewContainer->rect());
