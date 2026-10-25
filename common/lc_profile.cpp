@@ -214,7 +214,8 @@ static lcProfileEntry gProfileEntries[LC_NUM_PROFILE_KEYS] =
 	lcProfileEntry("Settings", "MinifigShadingMode", static_cast<int>(lcShadingMode::DefaultLights)), // LC_PROFILE_MINIFIG_SHADING_MODE
 	lcProfileEntry("Settings", "MinifigDrawEdgeLines", 1),                                     // LC_PROFILE_MINIFIG_DRAW_EDGE_LINES
 	lcProfileEntry("Settings", "MinifigDrawConditionalLines", 1),                              // LC_PROFILE_MINIFIG_DRAW_CONDITIONAL_LINES
-	lcProfileEntry("Settings", "MinifigLineWidth", 1.0f)                                       // LC_PROFILE_MINIFIG_LINE_WIDTH
+	lcProfileEntry("Settings", "MinifigLineWidth", 1.0f),                                      // LC_PROFILE_MINIFIG_LINE_WIDTH
+	lcProfileEntry("Settings", "PiecesSnapToTiles", 1)                                         // LC_PROFILE_PIECES_SNAP_TO_TILES
 };
 
 void lcProfileInit()

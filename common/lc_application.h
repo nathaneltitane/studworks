@@ -149,6 +149,7 @@ public:
 	bool mAutoLoadMostRecent;
 	bool mRestoreTabLayout;
 	bool mFirstPieceAtOrigin;
+	bool mPiecesSnapToTiles;
 	bool mTerminalFollowModel;
 	lcInsertColorMode mInsertColorMode;
 	bool mWatchFileChanges;

@@ -1892,6 +1892,14 @@ const lcCommand gCommands[] =
 		"",
 		""
 	},
+	// LC_VIEW_PIECES_TOGGLE_SNAP_TO_TILES
+	{
+		QT_TRANSLATE_NOOP("Action", "View.Pieces.ToggleSnapToTiles"),
+		QT_TRANSLATE_NOOP("Menu", "Snap Panel Width to Tiles"),
+		QT_TRANSLATE_NOOP("Status", "Toggle snapping the pieces panel width to whole thumbnail tiles"),
+		"",
+		""
+	},
 	// LC_VIEW_TOGGLE_PREVIEW_VIEW_SPHERE
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Preview.ToggleViewSphere"),

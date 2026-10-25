@@ -149,6 +149,7 @@ lcPreferencesDialog::lcPreferencesDialog(QWidget* Parent, lcPreferencesDialogOpt
 	ui->autoLoadMostRecent->setChecked(mOptions->Preferences.mAutoLoadMostRecent);
 	ui->RestoreTabLayout->setChecked(mOptions->Preferences.mRestoreTabLayout);
 	ui->FirstPieceAtOrigin->setChecked(mOptions->Preferences.mFirstPieceAtOrigin);
+	ui->PiecesSnapToTiles->setChecked(mOptions->Preferences.mPiecesSnapToTiles);
 	ui->InsertColorMode->setCurrentIndex(static_cast<int>(mOptions->Preferences.mInsertColorMode));
 	ui->WatchFileChanges->setChecked(mOptions->Preferences.mWatchFileChanges);
 	ui->LoadPiecesBeforeShowing->setChecked(mOptions->Preferences.mLoadPiecesBeforeShowing);
@@ -439,6 +440,7 @@ void lcPreferencesDialog::accept()
 	mOptions->Preferences.mAutoLoadMostRecent = ui->autoLoadMostRecent->isChecked();
 	mOptions->Preferences.mRestoreTabLayout = ui->RestoreTabLayout->isChecked();
 	mOptions->Preferences.mFirstPieceAtOrigin = ui->FirstPieceAtOrigin->isChecked();
+	mOptions->Preferences.mPiecesSnapToTiles = ui->PiecesSnapToTiles->isChecked();
 	mOptions->Preferences.mInsertColorMode = static_cast<lcInsertColorMode>(ui->InsertColorMode->currentIndex());
 	mOptions->Preferences.mWatchFileChanges = ui->WatchFileChanges->isChecked();
 	mOptions->Preferences.mLoadPiecesBeforeShowing = ui->LoadPiecesBeforeShowing->isChecked();
