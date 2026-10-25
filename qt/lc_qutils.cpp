@@ -28,10 +28,32 @@ QPoint lcGetPopupPosition(const QPoint& Position, const QSize& Size, const QPoin
 	return QPoint(X, Y);
 }
 
+int lcGetPanelToolBarHeight(const QWidget* Widget)
+{
+	// As tall as a panel title bar, the text plus the padding and border of the title.
+	return Widget->fontMetrics().height() + 16;
+}
+
+void lcSetPanelToolBarMargins(QToolBar* ToolBar)
+{
+	// No padding above or below, the title bar height is enough unless a text box needs more.
+	ToolBar->setStyleSheet(QLatin1String("QToolBar { padding-top: 0px; padding-bottom: 0px; }"));
+	ToolBar->setMinimumHeight(lcGetPanelToolBarHeight(ToolBar));
+}
+
+void lcSetupPanelButton(QToolButton* Button)
+{
+	// Panel buttons are flat and sized to their content like the toolbar buttons of the preview.
+	Button->setAutoRaise(true);
+	Button->setFocusPolicy(Qt::NoFocus);
+	Button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+}
+
 QToolBar* lcCreatePanelToolBar(QWidget* Parent)
 {
 	QToolBar* ToolBar = new QToolBar(Parent);
 
+	lcSetPanelToolBarMargins(ToolBar);
 	ToolBar->setMovable(false);
 	ToolBar->setFloatable(false);
 	ToolBar->setContextMenuPolicy(Qt::PreventContextMenu);
@@ -55,6 +77,7 @@ QToolButton* lcAddPanelOptionsButton(QToolBar* ToolBar, QMenu* Menu, const QStri
 	OptionsButton->setAccessibleName(AccessibleName);
 	OptionsButton->setPopupMode(QToolButton::InstantPopup);
 	OptionsButton->setMenu(Menu);
+	lcSetupPanelButton(OptionsButton);
 	ToolBar->addWidget(OptionsButton);
 
 	return OptionsButton;

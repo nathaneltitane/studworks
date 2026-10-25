@@ -784,13 +784,13 @@ void lcMainWindow::CreateToolBars()
 	ColorLayout->addWidget(ColorToolBar);
 
 	mColorButton = new QToolButton(ColorWidget);
-	mColorButton->setAutoRaise(true);
 	mColorButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-	mColorButton->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Maximum);
+	lcSetupPanelButton(mColorButton);
 	mColorButton->setToolTip(tr("Apply the current color to selected pieces."));
 	mColorButton->setAccessibleName(tr("Change Selection Color"));
 	mColorButton->setWhatsThis(tr("<p><b>Change Selection Color</b></p><p>Apply the current color to selected pieces. Choosing a swatch sets the current color; this button applies that color to the selection.</p>"));
 	ColorToolBar->addWidget(mColorButton);
+	lcAddPanelToolBarSpacer(ColorToolBar);
 
 	connect(mColorButton, &QToolButton::clicked, this, &lcMainWindow::ColorButtonClicked);
 
@@ -831,6 +831,7 @@ void lcMainWindow::CreateToolBars()
 	QToolButton* TransformButton = new QToolButton(TransformWidget);
 	TransformButton->setDefaultAction(mActions[LC_EDIT_TRANSFORM]);
 	TransformButton->setPopupMode(QToolButton::InstantPopup);
+	lcSetupPanelButton(TransformButton);
 	TransformButton->setToolTip(tr("Choose absolute or relative translation or rotation."));
 	TransformButton->setWhatsThis(tr("<p><b>Apply Transform</b></p><p>Choose the translation or rotation mode, enter X/Y/Z values, and press Enter to apply them. Translation values use LDraw units; rotation values use degrees.</p>"));
 	TransformWidget->addWidget(TransformButton);

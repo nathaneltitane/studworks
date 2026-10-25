@@ -21,6 +21,9 @@ void lcSetupDialogHelp(QDialog* Dialog, QDialogButtonBox* ButtonBox);
 void lcSetupWidgetHelp(QWidget* Root, QDialogButtonBox* ButtonBox);
 
 // Panel headers share the look of the preview toolbar so every panel has the same spacing.
+int lcGetPanelToolBarHeight(const QWidget* Widget);
+void lcSetPanelToolBarMargins(QToolBar* ToolBar);
+void lcSetupPanelButton(QToolButton* Button);
 QToolBar* lcCreatePanelToolBar(QWidget* Parent);
 void lcAddPanelToolBarSpacer(QToolBar* ToolBar);
 QToolButton* lcAddPanelOptionsButton(QToolBar* ToolBar, QMenu* Menu, const QString& ToolTip, const QString& AccessibleName);

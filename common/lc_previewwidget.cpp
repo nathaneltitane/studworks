@@ -10,6 +10,7 @@
 #include "lc_view.h"
 #include "lc_mainwindow.h"
 #include "lc_profile.h"
+#include "lc_qutils.h"
 
 // a label that shortens its text with an ellipsis so the toolbar never overflows
 class lcPreviewLabel : public QLabel
@@ -86,6 +87,7 @@ lcPreviewDockWidget::lcPreviewDockWidget(QMainWindow* Parent)
 	mToolBar->setStatusTip(tr("Preview Toolbar"));
 	mToolBar->setWhatsThis(mLockAction->whatsThis());
 	mToolBar->setMovable(false);
+	lcSetPanelToolBarMargins(mToolBar);
 	mToolBar->addAction(mLockAction);
 	mToolBar->widgetForAction(mLockAction)->setWhatsThis(mLockAction->whatsThis());
 
