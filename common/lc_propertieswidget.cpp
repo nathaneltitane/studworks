@@ -822,6 +822,10 @@ void lcPropertiesWidget::AddStepNumberProperty(lcObjectPropertyId PropertyId, co
 
 	connect(Widget, &QLineEdit::editingFinished, this, &lcPropertiesWidget::StepNumberChanged);
 
+	// An empty removal step keeps the piece for the rest of the model.
+	if (PropertyId == lcObjectPropertyId::PieceStepHide)
+		Widget->setPlaceholderText(tr("Never"));
+
 	mLayout->addWidget(Widget, mLayoutRow, 2);
 
 	mCurrentCategory->Properties.push_back(PropertyId);
@@ -1261,8 +1265,8 @@ void lcPropertiesWidget::CreateWidgets()
 
 	AddSpacing();
 
-	AddStepNumberProperty(lcObjectPropertyId::PieceStepShow, tr("Show"), tr("Step when piece is added to the model"), false);
-	AddStepNumberProperty(lcObjectPropertyId::PieceStepHide, tr("Hide"), tr("Step when piece is hidden"), false);
+	AddStepNumberProperty(lcObjectPropertyId::PieceStepShow, tr("Added in Step"), tr("Step when the piece is added to the model"), false);
+	AddStepNumberProperty(lcObjectPropertyId::PieceStepHide, tr("Removed in Step"), tr("Step when the piece is removed from the model, leave empty to keep it until the end"), false);
 
 	AddSpacing();
 
