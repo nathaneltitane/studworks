@@ -575,7 +575,6 @@ void lcMainWindow::CreateMenus()
 	PieceMenu->addAction(mActions[LC_PIECE_DUPLICATE]);
 	PieceMenu->addAction(mActions[LC_PIECE_PAINT_SELECTED]);
 	PieceMenu->addAction(mActions[LC_PIECE_ARRAY]);
-	PieceMenu->addAction(mActions[LC_PIECE_MINIFIG_WIZARD]);
 	PieceMenu->addAction(mActions[LC_PIECE_RESET_PIVOT_POINT]);
 	PieceMenu->addAction(mActions[LC_PIECE_REMOVE_KEY_FRAMES]);
 	PieceMenu->addSeparator();
@@ -596,9 +595,10 @@ void lcMainWindow::CreateMenus()
 	PieceMenu->addAction(mActions[LC_PIECE_UNHIDE_SELECTED]);
 	PieceMenu->addAction(mActions[LC_PIECE_UNHIDE_ALL]);
 
-	QMenu* ModelMenu = menuBar()->addMenu(tr("Sub&model"));
+	QMenu* ModelMenu = menuBar()->addMenu(tr("&Models"));
 	ModelMenu->addAction(mActions[LC_MODEL_PROPERTIES]);
 	ModelMenu->addAction(mActions[LC_MODEL_NEW]);
+	ModelMenu->addAction(mActions[LC_PIECE_MINIFIG_WIZARD]);
 	ModelMenu->addAction(mActions[LC_MODEL_LIST]);
 	ModelMenu->addSeparator();
 	for (int ModelIdx = LC_MODEL_FIRST; ModelIdx <= LC_MODEL_LAST; ModelIdx++)
@@ -2957,8 +2957,11 @@ void lcMainWindow::UpdateSelectedObjects(bool SelectionChanged)
 	}
 
 	mStatusBarLabel->setText(Message);
-	lcVector3 Position;
-	lcGetActiveModel()->GetFocusPosition(Position);
+
+	lcVector3 Position(0.0f, 0.0f, 0.0f);
+
+	if (ActiveModel)
+		ActiveModel->GetFocusPosition(Position);
 
 	// Name the focused object so the coordinates are clearly its position.
 	QString Object;
@@ -2993,9 +2996,13 @@ void lcMainWindow::UpdatePaste(bool Enabled)
 
 void lcMainWindow::UpdateCurrentStep()
 {
-	lcModel* Model = lcGetActiveModel();
-	lcStep CurrentStep = Model->GetCurrentStep();
-	lcStep LastStep = Model->GetLastStep();
+	lcModel* ActiveModel = GetActiveModel();
+
+	if (!ActiveModel)
+		return;
+
+	lcStep CurrentStep = ActiveModel->GetCurrentStep();
+	lcStep LastStep = ActiveModel->GetLastStep();
 
 	mActions[LC_VIEW_TIME_FIRST]->setEnabled(CurrentStep != 1);
 	mActions[LC_VIEW_TIME_PREVIOUS]->setEnabled(CurrentStep > 1);
@@ -4246,14 +4253,7 @@ void lcMainWindow::HandleCommand(lcCommandId CommandId)
 
 	case LC_PIECE_EDIT_END_SUBMODEL:
 		if (ActiveView)
-		{
 			ActiveView->SetTopSubmodelActive();
-			if (ActiveModel)
-			{
-				std::vector<lcModel*> UpdatedModels;
-				ActiveModel->UpdatePieceData(UpdatedModels);
-			}
-		}
 		break;
 
 	case LC_PIECE_EDIT_SELECTED_SUBMODEL:
@@ -4391,15 +4391,18 @@ void lcMainWindow::HandleCommand(lcCommandId CommandId)
 		break;
 
 	case LC_VIEW_TIME_INSERT_BEFORE:
-		lcGetActiveModel()->InsertStepAction(lcGetActiveModel()->GetCurrentStep());
+		if (ActiveModel)
+			ActiveModel->InsertStepAction(ActiveModel->GetCurrentStep());
 		break;
 
 	case LC_VIEW_TIME_INSERT_AFTER:
-		lcGetActiveModel()->InsertStepAction(lcGetActiveModel()->GetCurrentStep() + 1);
+		if (ActiveModel)
+			ActiveModel->InsertStepAction(ActiveModel->GetCurrentStep() + 1);
 		break;
 
 	case LC_VIEW_TIME_DELETE:
-		lcGetActiveModel()->RemoveStepAction(lcGetActiveModel()->GetCurrentStep());
+		if (ActiveModel)
+			ActiveModel->RemoveStepAction(ActiveModel->GetCurrentStep());
 		break;
 
 	case LC_VIEW_VIEWPOINT_FRONT:
@@ -4467,7 +4470,8 @@ void lcMainWindow::HandleCommand(lcCommandId CommandId)
 		break;
 
 	case LC_MODEL_PROPERTIES:
-		lcGetActiveModel()->ShowPropertiesDialog();
+		if (ActiveModel)
+			ActiveModel->ShowPropertiesDialog();
 		break;
 
 	case LC_MODEL_LIST:

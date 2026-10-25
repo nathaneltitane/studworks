@@ -1706,9 +1706,13 @@ void lcModel::GetScene(lcScene* Scene, const lcCamera* ViewCamera, bool AllowHig
 
 void lcModel::AddSubModelRenderMeshes(lcScene* Scene, const lcMatrix44& WorldMatrix, int DefaultColorIndex, lcRenderMeshState RenderMeshState, bool ParentActive) const
 {
+	const bool Editing = ParentActive || Scene->IsModelEditing(this);
+
 	for (const std::unique_ptr<lcPiece>& Piece : mPieces)
 	{
-		if (Piece->IsVisibleInSubModel())
+		const bool Visible = Editing ? (Piece->IsSelected() || Piece->IsVisible(mCurrentStep)) : Piece->IsVisibleInSubModel();
+
+		if (Visible)
 		{
 			if (Piece->IsFocused())
 				UpdateTrainTrackConnections(Piece.get(), false);
@@ -2733,7 +2737,13 @@ lcStep lcModel::GetLastStep() const
 	lcStep Step = 1;
 
 	for (const std::unique_ptr<lcPiece>& Piece : mPieces)
-		Step = lcMax(Step, Piece->GetStepShow());
+		Step = lcMax(Step, Piece->GetLastStep());
+
+	for (const std::unique_ptr<lcCamera>& Camera : mCameras)
+		Step = lcMax(Step, Camera->GetLastStep());
+
+	for (const std::unique_ptr<lcLight>& Light : mLights)
+		Step = lcMax(Step, Light->GetLastStep());
 
 	return Step;
 }

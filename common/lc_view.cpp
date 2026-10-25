@@ -105,7 +105,10 @@ void lcView::MakeCurrent()
 void lcView::Redraw()
 {
 	if (mWidget)
+	{
+		mWidget->UpdateModelEditingPath();
 		mWidget->update();
+	}
 }
 
 void lcView::SetOffscreenContext()
@@ -145,17 +148,57 @@ lcModel* lcView::GetActiveModel() const
 	return !mActiveSubmodelInstance ? mModel : mActiveSubmodelInstance->mPieceData->GetModel();
 }
 
+std::vector<lcModel*> lcView::GetModelEditingPath() const
+{
+	std::vector<lcModel*> Models = { mModel };
+
+	for (const lcPiece* Piece : mSubmodelEditingPath)
+		Models.push_back(Piece->mPieceData->GetModel());
+
+	return Models;
+}
+
+void lcView::RestoreModelEditingContext()
+{
+	mModel->SetActive(true);
+	mActiveSubmodelTransform = lcMatrix44Identity();
+
+	for (lcPiece* Piece : mSubmodelEditingPath)
+	{
+		mActiveSubmodelTransform = lcMul(Piece->mModelWorld, mActiveSubmodelTransform);
+		Piece->mPieceData->GetModel()->SetActive(true);
+	}
+}
+
+void lcView::SetSubmodelActive(size_t Depth)
+{
+	if (Depth > mSubmodelEditingPath.size())
+		return;
+
+	StopTracking(true);
+
+	const std::vector<lcModel*> EditingModels = GetModelEditingPath();
+
+	for (size_t Index = EditingModels.size(); Index > Depth + 1; Index--)
+		EditingModels[Index - 1]->SetActive(false);
+
+	std::vector<lcModel*> UpdatedModels;
+	for (size_t Index = EditingModels.size(); Index > Depth + 1; Index--)
+		EditingModels[Index - 1]->UpdatePieceData(UpdatedModels);
+
+	mSubmodelEditingPath.resize(Depth);
+	mActiveSubmodelInstance = nullptr;
+
+	if (!mSubmodelEditingPath.empty())
+		mActiveSubmodelInstance = mSubmodelEditingPath.back();
+
+	RestoreModelEditingContext();
+	GetActiveModel()->UpdateInterface();
+}
+
 void lcView::SetTopSubmodelActive()
 {
-	lcModel* ActiveModel = GetActiveModel();
-
-	if (mActiveSubmodelInstance)
-	{
-		ActiveModel->SetActive(false);
-		mActiveSubmodelInstance = nullptr;
-	}
-
-	GetActiveModel()->UpdateInterface();
+	SetSubmodelActive(0);
 }
 
 void lcView::SetSelectedSubmodelActive()
@@ -163,26 +206,23 @@ void lcView::SetSelectedSubmodelActive()
 	lcModel* ActiveModel = GetActiveModel();
 	lcObject* Object = ActiveModel->GetFocusObject();
 
-	if (mActiveSubmodelInstance)
-	{
-		ActiveModel->SetActive(false);
-		mActiveSubmodelInstance = nullptr;
-	}
+	if (!Object || !Object->IsPiece())
+		return;
 
-	if (Object && Object->IsPiece())
-	{
-		lcPiece* Piece = (lcPiece*)Object;
+	lcPiece* Piece = (lcPiece*)Object;
 
-		if (Piece->mPieceData->IsModel())
-		{
-			mActiveSubmodelTransform = lcMatrix44Identity();
-			mModel->GetPieceWorldMatrix(Piece, mActiveSubmodelTransform);
-			mActiveSubmodelInstance = Piece;
-			ActiveModel = mActiveSubmodelInstance->mPieceData->GetModel();
-			ActiveModel->SetActive(true);
-			RemoveCamera();
-		}
-	}
+	if (!Piece->mPieceData->IsModel())
+		return;
+
+	// Keep ancestor models at their chosen steps so the selected instance stays in place.
+	mSubmodelEditingPath.push_back(Piece);
+	mActiveSubmodelInstance = Piece;
+
+	ActiveModel = mActiveSubmodelInstance->mPieceData->GetModel();
+	ActiveModel->SetTemporaryStep(ActiveModel->GetLastStep());
+	RestoreModelEditingContext();
+
+	RemoveCamera();
 
 	GetActiveModel()->UpdateInterface();
 }
@@ -423,6 +463,7 @@ void lcView::ShowFindReplaceWidget(bool Replace)
 	delete mFindWidget;
 	mFindReplaceParams = lcFindReplaceParams();
 	mFindWidget = new lcFindReplaceWidget(mWidget, GetActiveModel(), Replace);
+	mWidget->SetFindReplaceWidget(mFindWidget);
 }
 
 lcVector3 lcView::GetMoveDirection(const lcVector3& Direction) const
@@ -1020,7 +1061,7 @@ void lcView::OnDraw()
 
 	mScene->Begin(mCamera->mWorldView);
 
-	mScene->SetActiveSubmodelInstance(mActiveSubmodelInstance, mActiveSubmodelTransform);
+	mScene->SetActiveSubmodelInstance(mActiveSubmodelInstance, mActiveSubmodelTransform, GetModelEditingPath());
 	mScene->SetDrawInterface(DrawInterface);
 
 	bool DrawInsertPreview = DrawInterface && std::any_of(mViews.begin(), mViews.end(), [](lcView* View){ return View->mTrackTool == lcTrackTool::Insert; });

@@ -235,6 +235,9 @@ public:
 	void SetMouseModifiers(Qt::KeyboardModifiers MouseModifiers);
 
 	lcModel* GetActiveModel() const;
+	std::vector<lcModel*> GetModelEditingPath() const;
+	void RestoreModelEditingContext();
+	void SetSubmodelActive(size_t Depth);
 	void SetTopSubmodelActive();
 	void SetSelectedSubmodelActive();
 
@@ -401,6 +404,7 @@ protected:
 	lcModel* mModel = nullptr;
 	lcPiece* mActiveSubmodelInstance = nullptr;
 	lcMatrix44 mActiveSubmodelTransform;
+	std::vector<lcPiece*> mSubmodelEditingPath;
 
 	lcCamera* mCamera = nullptr;
 
