@@ -34,6 +34,15 @@ void lcCollapsibleWidgetButton::SetCollapsible(bool Collapsible)
 	UpdateIcon();
 }
 
+void lcCollapsibleWidgetButton::SetExpanded(bool Expanded)
+{
+	if (mExpanded == Expanded)
+		return;
+
+	mExpanded = Expanded;
+	UpdateIcon();
+}
+
 void lcCollapsibleWidgetButton::UpdateIcon()
 {
 	// Fixed headers show no expand arrow.

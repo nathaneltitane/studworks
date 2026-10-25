@@ -9,6 +9,7 @@ public:
 
 	void Collapse();
 	void SetCollapsible(bool Collapsible);
+	void SetExpanded(bool Expanded);
 
 	bool IsExpanded() const
 	{

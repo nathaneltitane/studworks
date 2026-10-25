@@ -1,5 +1,7 @@
 #pragma once
 
+class lcCollapsibleWidgetButton;
+
 struct lcColorListCell
 {
 	QRect Rect;
@@ -11,6 +13,7 @@ struct lcColorListGroup
 	QRect Rect;
 	QString Name;
 	std::vector<size_t> Cells;
+	lcCollapsibleWidgetButton* Button = nullptr;
 	bool Collapsed = false;
 };
 
@@ -38,6 +41,8 @@ protected slots:
 
 protected:
 	void UpdateCells();
+	void SetGroupCollapsed(int GroupIndex, bool Collapsed);
+	int GetGroupHeaderHeight(const lcColorListGroup& Group) const;
 	void UpdateRects();
 	void SelectCell(size_t CellIndex);
 
