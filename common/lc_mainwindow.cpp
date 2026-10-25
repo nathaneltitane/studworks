@@ -993,7 +993,11 @@ void lcMainWindow::CreateToolBars()
 			QScrollArea* ScrollArea = new QScrollArea(mMinifigToolBar);
 			ScrollArea->setFrameShape(QFrame::NoFrame);
 			ScrollArea->setWidgetResizable(true);
-			ScrollArea->setWidget(new lcMinifigDialog(ScrollArea, true));
+			lcMinifigDialog* MinifigDialog = new lcMinifigDialog(ScrollArea, true);
+			ScrollArea->setWidget(MinifigDialog);
+
+			// The panel is never taller than the editor, extra height goes to the other panels.
+			ScrollArea->setMaximumHeight(MinifigDialog->sizeHint().height() + 2 * ScrollArea->frameWidth());
 			mMinifigToolBar->setWidget(ScrollArea);
 		}
 	});
@@ -1851,10 +1855,25 @@ void lcMainWindow::ShowInstructionsDialog()
 {
 	lcGetActiveProject()->GetMainModel()->WaitForAssets();
 
+	// The instructions window stays open beside the model and follows its changes.
+	if (mInstructionsDialog)
+	{
+		mInstructionsDialog->raise();
+		mInstructionsDialog->activateWindow();
+		return;
+	}
+
 	lcInstructionsDialog* Dialog = new lcInstructionsDialog(this, lcGetActiveProject());
-	Dialog->setWindowModality(Qt::ApplicationModal);
 	Dialog->setAttribute(Qt::WA_DeleteOnClose);
+	connect(this, &lcMainWindow::ModelContentsChanged, Dialog, &lcInstructionsDialog::ModelChanged);
+	mInstructionsDialog = Dialog;
 	Dialog->show();
+}
+
+void lcMainWindow::CloseInstructionsDialog()
+{
+	if (mInstructionsDialog)
+		delete mInstructionsDialog;
 }
 
 void lcMainWindow::ShowPrintDialog()
@@ -3089,6 +3108,8 @@ void lcMainWindow::UpdateSelectedObjects(bool SelectionChanged)
 void lcMainWindow::UpdateTimeline(bool Clear, bool UpdateItems)
 {
 	mTimelineWidget->Update(Clear, UpdateItems);
+
+	emit ModelContentsChanged();
 }
 
 void lcMainWindow::UpdatePaste(bool Enabled)

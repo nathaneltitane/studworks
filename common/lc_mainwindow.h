@@ -300,6 +300,12 @@ public:
 	int mLastInsertedColorIndex = -1;
 	QAction* mActions[LC_NUM_COMMANDS] = {};
 
+signals:
+	void ModelContentsChanged();
+
+public:
+	void CloseInstructionsDialog();
+
 public slots:
 	void ProjectFileChanged(const QString& Path);
 	void ModelViewOptionsMenuAboutToShow();
@@ -400,6 +406,7 @@ protected:
 	QDockWidget* mPreviewToolBar = nullptr;
 	QDockWidget* mTerminalToolBar = nullptr;
 	QDockWidget* mPartsToolBar = nullptr;
+	QPointer<QMainWindow> mInstructionsDialog;
 	bool mPartsSnapPending = false;
 	QDockWidget* mColorsToolBar = nullptr;
 	QDockWidget* mPropertiesToolBar = nullptr;

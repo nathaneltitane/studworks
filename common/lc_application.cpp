@@ -385,6 +385,9 @@ void lcApplication::SetProject(Project* Project)
 	{
 		gMainWindow->RemoveAllModelTabs();
 
+		// The instructions belong to the project being replaced.
+		gMainWindow->CloseInstructionsDialog();
+
 		if (gMainWindow->GetPreviewWidget())
 			gMainWindow->GetPreviewWidget()->ClearPreview();
 	}

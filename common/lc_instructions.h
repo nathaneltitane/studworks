@@ -127,6 +127,7 @@ public:
 	void InsertBlankPage(size_t PageIndex);
 	void RemoveBlankPage(size_t PageIndex);
 	void SetPageSetup(const lcInstructionsPageSetup& PageSetup);
+	void Update();
 	lcInstructionsDirection GetPageDirection() const;
 
 	bool GetBoolProperty(lcInstructionsPropertyType Type, lcModel* Model, lcStep Step) const;
