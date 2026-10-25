@@ -818,6 +818,7 @@ void lcMainWindow::CreateToolBars()
 	QWidget* PropertiesWidget = new QWidget(mPropertiesToolBar);
 	QVBoxLayout* PropertiesLayout = new QVBoxLayout(PropertiesWidget);
 	PropertiesLayout->setContentsMargins(0, 0, 0, 0);
+	PropertiesLayout->setSpacing(0);
 
 	QScrollArea* PropertiesScrollArea = new QScrollArea(PropertiesWidget);
 	PropertiesScrollArea->setWidgetResizable(true);
@@ -839,14 +840,17 @@ void lcMainWindow::CreateToolBars()
 	mTransformXEdit = new lcTransformLineEdit();
 	mTransformXEdit->setAccessibleName(tr("Transform X"));
 	mTransformXEdit->setToolTip(tr("Enter the X translation in LDraw units or rotation in degrees."));
+	lcSetupPanelEdit(mTransformXEdit);
 	TransformWidget->addWidget(mTransformXEdit);
 	mTransformYEdit = new lcTransformLineEdit();
 	mTransformYEdit->setAccessibleName(tr("Transform Y"));
 	mTransformYEdit->setToolTip(tr("Enter the Y translation in LDraw units or rotation in degrees."));
+	lcSetupPanelEdit(mTransformYEdit);
 	TransformWidget->addWidget(mTransformYEdit);
 	mTransformZEdit = new lcTransformLineEdit();
 	mTransformZEdit->setAccessibleName(tr("Transform Z"));
 	mTransformZEdit->setToolTip(tr("Enter the Z translation in LDraw units or rotation in degrees."));
+	lcSetupPanelEdit(mTransformZEdit);
 	TransformWidget->addWidget(mTransformZEdit);
 
 	PropertiesLayout->addWidget(TransformWidget);

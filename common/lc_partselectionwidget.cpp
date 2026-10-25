@@ -984,6 +984,7 @@ lcPartSelectionWidget::lcPartSelectionWidget(bool IsPopup, QWidget* Parent)
 	mFilterCategoriesWidget->setPlaceholderText(tr("Filter Categories"));
 	mFilterCategoriesWidget->setAccessibleName(tr("Filter Categories"));
 	mFilterCategoriesWidget->setToolTip(tr("Filter category names to narrow the category list."));
+	lcSetupPanelEdit(mFilterCategoriesWidget);
 	FilterCategoriesToolBar->addWidget(mFilterCategoriesWidget);
 
 	mFilterCaseAction = new QAction();
@@ -1018,6 +1019,7 @@ lcPartSelectionWidget::lcPartSelectionWidget(bool IsPopup, QWidget* Parent)
 	mFilterWidget->setPlaceholderText(tr("Filter Pieces"));
 	mFilterWidget->setAccessibleName(tr("Filter Pieces"));
 	mFilterWidget->setToolTip(tr("Filter the displayed pieces using the matching options."));
+	lcSetupPanelEdit(mFilterWidget);
 	SearchToolBar->addWidget(mFilterWidget);
 
 	QMenu* OptionsMenu = new QMenu(this);

@@ -26,6 +26,7 @@ void lcSetPanelToolBarMargins(QToolBar* ToolBar);
 QSize lcGetPanelButtonSize();
 void lcSetupPanelButton(QToolButton* Button);
 void lcSetupPanelAction(QToolBar* ToolBar, QAction* Action);
+void lcSetupPanelEdit(QWidget* Edit);
 QToolBar* lcCreatePanelToolBar(QWidget* Parent);
 void lcAddPanelToolBarSpacer(QToolBar* ToolBar);
 QToolButton* lcAddPanelOptionsButton(QToolBar* ToolBar, QMenu* Menu, const QString& ToolTip, const QString& AccessibleName);

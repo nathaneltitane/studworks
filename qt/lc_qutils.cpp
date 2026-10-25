@@ -76,6 +76,12 @@ void lcSetupPanelButton(QToolButton* Button)
 		Button->setFixedHeight(ButtonSize.height());
 }
 
+void lcSetupPanelEdit(QWidget* Edit)
+{
+	// Text boxes in panel toolbars are as tall as the buttons so the rows have even spacing.
+	Edit->setFixedHeight(lcGetPanelButtonSize().height());
+}
+
 void lcSetupPanelAction(QToolBar* ToolBar, QAction* Action)
 {
 	QToolButton* Button = qobject_cast<QToolButton*>(ToolBar->widgetForAction(Action));
