@@ -915,23 +915,22 @@ QSize lcPartSelectionListView::sizeHint() const
 int lcPartSelectionListView::GetTileSnapDelta() const
 {
 	// Measure the laid out first row, so margins, spacing, scaling and the wrapping of the view are all included.
-	if (viewMode() != QListView::IconMode || model()->rowCount() < 2)
+	if (viewMode() != QListView::IconMode || model()->rowCount() < 1)
 		return 0;
 
 	const QRect FirstRect = visualRect(model()->index(0, 0));
-	const QRect SecondRect = visualRect(model()->index(1, 0));
+	const QRect SecondRect = model()->rowCount() > 1 ? visualRect(model()->index(1, 0)) : QRect();
+	const bool SingleColumn = !SecondRect.isValid() || SecondRect.top() != FirstRect.top();
 
-	if (SecondRect.top() != FirstRect.top())
-		return 0;
-
-	const int Pitch = SecondRect.left() - FirstRect.left();
+	// With a single column the tile width and spacing give the pitch, otherwise the distance between tiles does.
+	const int Pitch = SingleColumn ? FirstRect.width() + spacing() : SecondRect.left() - FirstRect.left();
 
 	if (Pitch <= 0)
 		return 0;
 
-	QRect LastRect = SecondRect;
+	QRect LastRect = SingleColumn ? FirstRect : SecondRect;
 
-	for (int Row = 2; Row < model()->rowCount(); Row++)
+	for (int Row = 2; !SingleColumn && Row < model()->rowCount(); Row++)
 	{
 		const QRect Rect = visualRect(model()->index(Row, 0));
 
@@ -1336,6 +1335,9 @@ void lcPartSelectionWidget::OptionsMenuAboutToShow()
 	QAction* PartAliases = Menu->addAction(tr("Show Piece Aliases"), mPartsWidget, &lcPartSelectionListView::TogglePartAliases);
 	PartAliases->setCheckable(true);
 	PartAliases->setChecked(ListModel->GetShowPartAliases());
+
+	if (!mIsPopup)
+		gMainWindow->AddMenuCommand(Menu, tr("Snap Panel Width to Tiles"), LC_VIEW_PIECES_TOGGLE_SNAP_TO_TILES, lcGetPreferences().mPiecesSnapToTiles);
 
 	Menu->addSeparator();
 

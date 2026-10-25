@@ -1063,7 +1063,7 @@ void lcMainWindow::UpdateTerminalDirectory(bool Force)
 
 void lcMainWindow::SnapPartsDock()
 {
-	if (!mPartsToolBar || mPartsToolBar->isFloating() || !mPartSelectionWidget)
+	if (!lcGetPreferences().mPiecesSnapToTiles || !mPartsToolBar || mPartsToolBar->isFloating() || !mPartSelectionWidget)
 		return;
 
 	const Qt::DockWidgetArea Area = dockWidgetArea(mPartsToolBar);
@@ -4237,6 +4237,12 @@ void lcMainWindow::HandleCommand(lcCommandId CommandId)
 
 	case LC_VIEW_TOGGLE_MINIFIG_CONDITIONAL_LINES:
 		ToggleConditionalLines(lcRenderTarget::Minifig);
+		break;
+
+	case LC_VIEW_PIECES_TOGGLE_SNAP_TO_TILES:
+		lcGetPreferences().mPiecesSnapToTiles = !lcGetPreferences().mPiecesSnapToTiles;
+		lcSetProfileInt(LC_PROFILE_PIECES_SNAP_TO_TILES, lcGetPreferences().mPiecesSnapToTiles);
+		SnapPartsDock();
 		break;
 
 	case LC_VIEW_PIECES_SHADING_WIREFRAME:
