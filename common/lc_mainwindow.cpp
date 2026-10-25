@@ -901,7 +901,15 @@ void lcMainWindow::CreateToolBars()
 
 	mTimelineWidget = new lcTimelineWidget(mTimelineToolBar);
 
-	mTimelineToolBar->setWidget(mTimelineWidget);
+	// The steps of the selected piece are edited below the timeline.
+	QWidget* TimelinePanel = new QWidget(mTimelineToolBar);
+	QVBoxLayout* TimelineLayout = new QVBoxLayout(TimelinePanel);
+	TimelineLayout->setContentsMargins(0, 0, 0, 0);
+	TimelineLayout->setSpacing(0);
+	TimelineLayout->addWidget(mTimelineWidget);
+	TimelineLayout->addWidget(mPropertiesWidget->GetStepRowsWidget());
+
+	mTimelineToolBar->setWidget(TimelinePanel);
 	addDockWidget(Qt::RightDockWidgetArea, mTimelineToolBar);
 
 	CreatePreviewWidget();

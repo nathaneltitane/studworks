@@ -21,6 +21,11 @@ public:
 		return mTransformRows;
 	}
 
+	QWidget* GetStepRowsWidget() const
+	{
+		return mStepRows;
+	}
+
 signals:
 	void LayoutChanged();
 
@@ -111,7 +116,10 @@ protected:
 	void AddFloatProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames, float Min, float Max);
 	void AddVectorProperty(const std::array<lcObjectPropertyId, 3>& PropertyIds, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames, float Min, float Max);
 	void AddIntegerProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames, int Min, int Max);
+	QLineEdit* CreateStepNumberEditor(lcObjectPropertyId PropertyId, const QString& ToolTip);
 	void AddStepNumberProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames);
+	void AddStepRangeProperty(lcObjectPropertyId ShowPropertyId, lcObjectPropertyId HidePropertyId);
+	QToolButton* CreateRowNameButton(QToolBar* ToolBar, const QString& Name);
 	void AddStringProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames);
 	void AddStringListProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames, const QStringList& Strings);
 	void AddColorProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames);
@@ -157,6 +165,7 @@ protected:
 	QGridLayout* mLayout = nullptr;
 	QWidget* mTransformRows = nullptr;
 	QVBoxLayout* mTransformRowsLayout = nullptr;
+	QWidget* mStepRows = nullptr;
 	int mLayoutRow = 0;
 
 	LayoutMode mLayoutMode = LayoutMode::Count;

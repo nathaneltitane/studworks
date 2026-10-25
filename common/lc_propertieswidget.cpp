@@ -667,15 +667,7 @@ void lcPropertiesWidget::AddVectorProperty(const std::array<lcObjectPropertyId, 
 	QToolBar* ToolBar = lcCreatePanelToolBar(mTransformRows);
 	mTransformRowsLayout->addWidget(ToolBar);
 
-	// A button with the first letter of the name takes the place of the transform button so the boxes line up.
-	QToolButton* NameButton = new QToolButton(ToolBar);
-	NameButton->setText(Text.left(1));
-	NameButton->setToolTip(Text);
-	NameButton->setAccessibleName(Text);
-	NameButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
-	ToolBar->addWidget(NameButton);
-	lcSetupPanelButton(NameButton);
-	NameButton->setFixedSize(lcGetPanelButtonSize());
+	CreateRowNameButton(ToolBar, Text);
 
 	const QString AxisNames[3] = { tr("X"), tr("Y"), tr("Z") };
 
@@ -813,10 +805,8 @@ void lcPropertiesWidget::UpdateStepNumber(lcObjectPropertyId PropertyId, lcStep 
 	UpdateKeyFrameWidget(PropertyId);
 }
 
-void lcPropertiesWidget::AddStepNumberProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames)
+QLineEdit* lcPropertiesWidget::CreateStepNumberEditor(lcObjectPropertyId PropertyId, const QString& ToolTip)
 {
-	AddLabel(PropertyId, Text, ToolTip);
-
 	QLineEdit* Widget = new QLineEdit(this);
 	Widget->setToolTip(ToolTip);
 
@@ -826,16 +816,63 @@ void lcPropertiesWidget::AddStepNumberProperty(lcObjectPropertyId PropertyId, co
 	if (PropertyId == lcObjectPropertyId::PieceStepHide)
 		Widget->setPlaceholderText(tr("Never"));
 
-	mLayout->addWidget(Widget, mLayoutRow, 2);
-
 	mCurrentCategory->Properties.push_back(PropertyId);
 	mPropertyWidgets[static_cast<int>(PropertyId)].Editor = Widget;
 	mPropertyWidgets[static_cast<int>(PropertyId)].Category = mCurrentCategory->Category;
+
+	return Widget;
+}
+
+void lcPropertiesWidget::AddStepNumberProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames)
+{
+	AddLabel(PropertyId, Text, ToolTip);
+
+	mLayout->addWidget(CreateStepNumberEditor(PropertyId, ToolTip), mLayoutRow, 2);
 
 	if (SupportsKeyFrames)
 		AddKeyFrameWidget(PropertyId);
 
 	mLayoutRow++;
+}
+
+void lcPropertiesWidget::AddStepRangeProperty(lcObjectPropertyId ShowPropertyId, lcObjectPropertyId HidePropertyId)
+{
+	// The steps a piece is added and removed in share a row below the timeline, formatted like the transform rows.
+	QToolBar* ToolBar = lcCreatePanelToolBar(mStepRows);
+	mStepRows->layout()->addWidget(ToolBar);
+
+	CreateRowNameButton(ToolBar, tr("Steps"));
+
+	const std::pair<lcObjectPropertyId, QString> Editors[2] =
+	{
+		{ ShowPropertyId, tr("Added in Step") },
+		{ HidePropertyId, tr("Removed in Step") }
+	};
+
+	for (const auto& [PropertyId, Name] : Editors)
+	{
+		const QString ToolTip = PropertyId == HidePropertyId ? tr("Step when the piece is removed from the model, leave empty to keep it until the end") : tr("Step when the piece is added to the model");
+		QLineEdit* Widget = CreateStepNumberEditor(PropertyId, tr("%1: %2").arg(Name, ToolTip));
+		Widget->setAccessibleName(Name);
+		Widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+		lcSetupPanelEdit(Widget);
+		ToolBar->addWidget(Widget);
+	}
+}
+
+QToolButton* lcPropertiesWidget::CreateRowNameButton(QToolBar* ToolBar, const QString& Name)
+{
+	// A button with the first letter of the name takes the place of the transform button so the boxes line up.
+	QToolButton* NameButton = new QToolButton(ToolBar);
+	NameButton->setText(Name.left(1));
+	NameButton->setToolTip(Name);
+	NameButton->setAccessibleName(Name);
+	NameButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
+	ToolBar->addWidget(NameButton);
+	lcSetupPanelButton(NameButton);
+	NameButton->setFixedSize(lcGetPanelButtonSize());
+
+	return NameButton;
 }
 
 void lcPropertiesWidget::StringChanged()
@@ -1256,6 +1293,11 @@ void lcPropertiesWidget::CreateWidgets()
 	mTransformRowsLayout = new QVBoxLayout(mTransformRows);
 	mTransformRowsLayout->setContentsMargins(0, 0, 0, 0);
 	mTransformRowsLayout->setSpacing(0);
+
+	mStepRows = new QWidget(this);
+	QVBoxLayout* StepRowsLayout = new QVBoxLayout(mStepRows);
+	StepRowsLayout->setContentsMargins(0, 0, 0, 0);
+	StepRowsLayout->setSpacing(0);
 	mLayout->setColumnStretch(2, 1);
 
 	AddCategory(CategoryIndex::Piece, tr("Piece"), false);
@@ -1265,8 +1307,7 @@ void lcPropertiesWidget::CreateWidgets()
 
 	AddSpacing();
 
-	AddStepNumberProperty(lcObjectPropertyId::PieceStepShow, tr("Added in Step"), tr("Step when the piece is added to the model"), false);
-	AddStepNumberProperty(lcObjectPropertyId::PieceStepHide, tr("Removed in Step"), tr("Step when the piece is removed from the model, leave empty to keep it until the end"), false);
+	AddStepRangeProperty(lcObjectPropertyId::PieceStepShow, lcObjectPropertyId::PieceStepHide);
 
 	AddSpacing();
 
