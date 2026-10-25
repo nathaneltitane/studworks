@@ -270,6 +270,7 @@ public:
 	void SetViewpoint(const lcVector3& Position);
 	void SetViewpoint(const lcVector3& Position, const lcVector3& Target, const lcVector3& Up);
 	void ApplyStepView();
+	void ApplyStepView(lcStep Step);
 	lcVector3 GetStepViewAngles() const;
 	void SetCameraAngles(float Latitude, float Longitude);
 	void SetDefaultCamera();

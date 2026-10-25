@@ -2067,10 +2067,15 @@ static void lcGetStepViewBase(lcStepViewMode Mode, lcVector3& Direction, lcVecto
 
 void lcView::ApplyStepView()
 {
+	ApplyStepView(mModel->GetCurrentStep());
+}
+
+void lcView::ApplyStepView(lcStep Step)
+{
 	if (mViewType != lcViewType::View)
 		return;
 
-	const std::optional<lcStepView> StepView = mModel->GetEffectiveStepView(mModel->GetCurrentStep());
+	const std::optional<lcStepView> StepView = mModel->GetEffectiveStepView(Step);
 
 	// Steps without a view use the default view, but only in models that use step views.
 	if (!StepView)

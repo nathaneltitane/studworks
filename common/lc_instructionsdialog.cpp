@@ -22,6 +22,9 @@ void lcInstructionsStepImageItem::Update()
 	View.SetBackgroundColorOverride(lcRGBAFromQColor(mInstructions->GetColorProperty(lcInstructionsPropertyType::StepBackgroundColor, mModel, mStep)));
 	View.SetSize(mWidth, mHeight);
 
+	// show each step from its rotation step view, like the model view does while stepping
+	View.ApplyStepView(mStep);
+
 	std::vector<QImage> Images = View.GetStepImages(mStep, mStep);
 
 	if (!Images.empty())
