@@ -9,7 +9,7 @@ lcCollapsibleWidgetButton::lcCollapsibleWidgetButton(const QString& Title, QWidg
 	: QToolButton(Parent)
 {
 	setText(Title);
-	setAutoRaise(true);
+	setAutoRaise(false);
 	setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 	setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Maximum);
 	setFocusPolicy(Qt::NoFocus);

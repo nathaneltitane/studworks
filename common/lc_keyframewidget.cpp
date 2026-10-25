@@ -22,15 +22,12 @@ void lcKeyFrameWidget::paintEvent(QPaintEvent* PaintEvent)
 
 	QPainter Painter(this);
 
-	// Drawn as a flat tool button like the panel options buttons, with the keyframe diamond as its icon.
+	// Drawn as an outlined tool button the size of the panel options buttons, with the keyframe diamond as its icon.
 	QStyleOptionToolButton Option;
 	Option.initFrom(this);
 	Option.subControls = QStyle::SC_ToolButton;
 	Option.toolButtonStyle = Qt::ToolButtonIconOnly;
-	Option.state |= QStyle::State_AutoRaise;
-
-	if (underMouse() && isEnabled())
-		Option.state |= QStyle::State_Raised;
+	Option.state |= QStyle::State_Raised;
 
 	if (isDown())
 		Option.state |= QStyle::State_Sunken;

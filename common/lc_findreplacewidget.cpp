@@ -33,12 +33,12 @@ lcFindReplaceWidget::lcFindReplaceWidget(QWidget* Parent, lcModel* Model, bool R
 	Layout->addWidget(mFindPartComboBox, 0, 2);
 
 	QToolButton* FindNextButton = new QToolButton(this);
-	FindNextButton->setAutoRaise(true);
+	FindNextButton->setAutoRaise(false);
 	FindNextButton->setDefaultAction(gMainWindow->mActions[LC_EDIT_FIND_NEXT]);
 	Layout->addWidget(FindNextButton, 0, 3);
 
 	QToolButton* FindAllButton = new QToolButton(this);
-	FindAllButton->setAutoRaise(true);
+	FindAllButton->setAutoRaise(false);
 	FindAllButton->setDefaultAction(gMainWindow->mActions[LC_EDIT_FIND_ALL]);
 	Layout->addWidget(FindAllButton, 0, 4);
 
@@ -74,12 +74,12 @@ lcFindReplaceWidget::lcFindReplaceWidget(QWidget* Parent, lcModel* Model, bool R
 		Layout->addWidget(mReplacePartButton, 1, 2);
 
 		QToolButton* ReplaceNextButton = new QToolButton(this);
-		ReplaceNextButton->setAutoRaise(true);
+		ReplaceNextButton->setAutoRaise(false);
 		ReplaceNextButton->setDefaultAction(gMainWindow->mActions[LC_EDIT_REPLACE_NEXT]);
 		Layout->addWidget(ReplaceNextButton, 1, 3);
 
 		QToolButton* ReplaceAllButton = new QToolButton(this);
-		ReplaceAllButton->setAutoRaise(true);
+		ReplaceAllButton->setAutoRaise(false);
 		ReplaceAllButton->setDefaultAction(gMainWindow->mActions[LC_EDIT_REPLACE_ALL]);
 		Layout->addWidget(ReplaceAllButton, 1, 4);
 
@@ -91,7 +91,7 @@ lcFindReplaceWidget::lcFindReplaceWidget(QWidget* Parent, lcModel* Model, bool R
 	}
 
 	QToolButton* CloseButton = new QToolButton(this);
-	CloseButton->setAutoRaise(true);
+	CloseButton->setAutoRaise(false);
 	CloseButton->setIcon(QIcon(":/stylesheet/close.svg"));
 	CloseButton->setToolTip(tr("Close"));
 	Layout->addWidget(CloseButton, 0, 5);

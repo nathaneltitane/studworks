@@ -57,7 +57,7 @@ lcViewWidget::lcViewWidget(QWidget* Parent, lcView* View)
 		mEndEditingButton->setIcon(QIcon(":/stylesheet/close.svg"));
 		mEndEditingButton->setAccessibleName(tr("End Editing"));
 		mEndEditingButton->setToolTip(tr("Return to editing the tab's model."));
-		mEndEditingButton->setAutoRaise(true);
+		mEndEditingButton->setAutoRaise(false);
 		EditingLayout->addWidget(mEndEditingButton);
 		mOverlayLayout->addWidget(mModelEditingBar);
 
