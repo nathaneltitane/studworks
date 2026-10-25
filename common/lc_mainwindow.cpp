@@ -578,6 +578,22 @@ void lcMainWindow::CreateMenus()
 	HelpMenu->addSeparator();
 #endif
 	HelpMenu->addAction(mActions[LC_HELP_ABOUT]);
+
+	// The menu bar menus show text only, the toolbars keep the icons.
+	std::function<void(QMenu*)> HideMenuIcons = [&HideMenuIcons](QMenu* Menu)
+	{
+		for (QAction* Action : Menu->actions())
+		{
+			Action->setIconVisibleInMenu(false);
+
+			if (Action->menu())
+				HideMenuIcons(Action->menu());
+		}
+	};
+
+	for (QAction* MenuAction : menuBar()->actions())
+		if (MenuAction->menu())
+			HideMenuIcons(MenuAction->menu());
 }
 
 void lcMainWindow::CreateToolBars()
