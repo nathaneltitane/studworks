@@ -790,7 +790,9 @@ void lcMainWindow::CreateToolBars()
 	mColorButton->setWhatsThis(tr("<p><b>Change Selection Color</b></p><p>Apply the current color to selected pieces. Choosing a swatch sets the current color; this button applies that color to the selection.</p>"));
 	ColorToolBar->addWidget(mColorButton);
 	lcSetupPanelButton(mColorButton);
-	lcAddPanelToolBarSpacer(ColorToolBar);
+
+	// Nothing else sits in the header, so the button reaches up to the options button.
+	mColorButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
 	connect(mColorButton, &QToolButton::clicked, this, &lcMainWindow::ColorButtonClicked);
 
