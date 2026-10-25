@@ -97,6 +97,7 @@ void lcDoubleSpinBox::FinishEditing()
 void lcDoubleSpinBox::ReturnPressed()
 {
 	FinishEditing();
+	emit ReturnKeyPressed();
 }
 
 bool lcDoubleSpinBox::eventFilter(QObject* Object, QEvent* Event)

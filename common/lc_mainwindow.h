@@ -15,6 +15,7 @@ class lcColorList;
 class lcPropertiesWidget;
 class lcTimelineWidget;
 class lcElidedLabel;
+class lcDoubleSpinBox;
 class lcSpinnerWidget;
 enum class lcRenderDialogMode;
 
@@ -408,9 +409,9 @@ protected:
 	QToolButton* mColorButton = nullptr;
 	lcPropertiesWidget* mPropertiesWidget = nullptr;
 	lcTimelineWidget* mTimelineWidget = nullptr;
-	QLineEdit* mTransformXEdit = nullptr;
-	QLineEdit* mTransformYEdit = nullptr;
-	QLineEdit* mTransformZEdit = nullptr;
+	lcDoubleSpinBox* mTransformXEdit = nullptr;
+	lcDoubleSpinBox* mTransformYEdit = nullptr;
+	lcDoubleSpinBox* mTransformZEdit = nullptr;
 	lcPreviewDockWidget* mPreviewWidget = nullptr;
 
 	lcElidedLabel* mStatusBarLabel = nullptr;

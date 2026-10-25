@@ -35,12 +35,15 @@ protected slots:
 	void AngleChanged(double Value);
 
 protected:
+	bool eventFilter(QObject* Object, QEvent* Event) override;
+	void FitPreview();
 	void UpdateTemplateCombo();
 	void SetCurrentTemplateModified();
 
 	Ui::lcMinifigDialog* ui;
 
 	lcView* mView;
+	QWidget* mViewWidget = nullptr;
 	std::array<QToolButton*, LC_MFW_NUMITEMS> mPieceButtons;
 	std::array<lcColorPicker*, LC_MFW_NUMITEMS> mColorPickers;
 	std::array<lcDoubleSpinBox*, LC_MFW_NUMITEMS> mSpinBoxes;

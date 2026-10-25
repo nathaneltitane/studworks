@@ -736,7 +736,7 @@ void lcPropertiesWidget::AddVectorProperty(const std::array<lcObjectPropertyId, 
 
 		// Share the row equally instead of reserving room for the largest possible value.
 		Widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-		Widget->setMinimumWidth(Widget->fontMetrics().horizontalAdvance(QLatin1String("-0000.00")));
+		Widget->setMinimumWidth(Widget->fontMetrics().horizontalAdvance(QLatin1String("-000")) + 24);
 		lcSetupPanelEdit(Widget);
 		ToolBar->addWidget(Widget);
 	}
