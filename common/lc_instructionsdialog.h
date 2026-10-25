@@ -173,6 +173,7 @@ protected slots:
 
 protected:
 	void Print(QPrinter* Printer);
+	void UpdatePageList();
 
 	Project* mProject = nullptr;
 
@@ -185,8 +186,6 @@ protected:
 
 	QToolBar* mPageSettingsToolBar = nullptr;
 	QAction* mPrintAction = nullptr;
-	QAction* mVerticalPageAction = nullptr;
-	QAction* mHorizontalPageAction = nullptr;
 	QSpinBox* mRowsSpinBox = nullptr;
 	QSpinBox* mColumnsSpinBox = nullptr;
 };

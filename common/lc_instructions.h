@@ -98,6 +98,7 @@ public:
 
 	void SetDefaultPageSettings(const lcInstructionsPageSettings& PageSettings);
 	void SetPageSetup(const lcInstructionsPageSetup& PageSetup);
+	lcInstructionsDirection GetPageDirection() const;
 
 	bool GetBoolProperty(lcInstructionsPropertyType Type, lcModel* Model, lcStep Step) const;
 	QColor GetColorProperty(lcInstructionsPropertyType Type, lcModel* Model, lcStep Step) const;
