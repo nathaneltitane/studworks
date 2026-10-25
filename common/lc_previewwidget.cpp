@@ -22,7 +22,9 @@ lcPreviewDockWidget::lcPreviewDockWidget(QMainWindow* Parent)
 	setCentralWidget(mViewContainer);
 
 	mViewWidget = new lcViewWidget(mViewContainer, mPreview);
-	mViewWidget->installEventFilter(this);
+
+	// the preview blends into its panel without a viewport border
+	mPreview->SetDrawViewportBorder(false);
 	mViewWidget->setAccessibleName(tr("Piece Preview"));
 	mViewWidget->setToolTip(tr("Inspect the previewed piece without placing it in the model."));
 	setMinimumSize(200, 200);
@@ -128,8 +130,6 @@ void lcPreviewDockWidget::UpdateViewGeometry()
 		ViewRect = QRect(ViewRect.x() + (ViewRect.width() - Side) / 2, ViewRect.y() + (ViewRect.height() - Side) / 2, Side, Side);
 	}
 
-	// a square view leaves its border to the panel so no outline shows inside it
-	mPreview->SetDrawViewportBorder(!lcGetPreferences().mPreviewSquareViewport);
 	mViewWidget->setGeometry(ViewRect);
 }
 
@@ -137,9 +137,6 @@ bool lcPreviewDockWidget::eventFilter(QObject* Object, QEvent* Event)
 {
 	if (Object == mViewContainer && Event->type() == QEvent::Resize)
 		UpdateViewGeometry();
-
-	if (Object == mViewWidget && (Event->type() == QEvent::FocusIn || Event->type() == QEvent::FocusOut))
-		mViewContainer->update();
 
 	// fill the space around a square view with the view background so the panel looks seamless
 	if (Object == mViewContainer && Event->type() == QEvent::Paint)
@@ -165,9 +162,6 @@ bool lcPreviewDockWidget::eventFilter(QObject* Object, QEvent* Event)
 		}
 		else
 			Painter.fillRect(mViewContainer->rect(), OpaqueColor(Preferences.mBackgroundSolidColor));
-
-		Painter.setPen(OpaqueColor(mPreview->IsLastFocused() ? Preferences.mActiveViewColor : Preferences.mInactiveViewColor));
-		Painter.drawRect(mViewContainer->rect().adjusted(0, 0, -1, -1));
 
 		return true;
 	}
