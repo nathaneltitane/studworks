@@ -26,7 +26,7 @@ lcPreviewDockWidget::lcPreviewDockWidget(QMainWindow* Parent)
 	mViewWidget->setToolTip(tr("Inspect the previewed piece without placing it in the model."));
 	setMinimumSize(200, 200);
 
-	mLockAction = new QAction(QIcon(":/resources/action_preview_unlocked.png"),tr("Lock Preview"), this);
+	mLockAction = new QAction(tr("Lock Preview"), this);
 	mLockAction->setWhatsThis(tr("<p><b>Lock Preview</b></p><p>Keep the current piece in the preview while you browse other pieces. Unlock Preview allows the display to update again. An empty preview cannot be locked.</p>"));
 	mLockAction->setCheckable(true);
 	mLockAction->setChecked(false);
@@ -60,6 +60,9 @@ lcPreviewDockWidget::lcPreviewDockWidget(QMainWindow* Parent)
 	mToolBar->setMovable(false);
 	mToolBar->addAction(mLockAction);
 	mToolBar->widgetForAction(mLockAction)->setWhatsThis(mLockAction->whatsThis());
+
+	if (QToolButton* LockButton = qobject_cast<QToolButton*>(mToolBar->widgetForAction(mLockAction)))
+		LockButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
 	mToolBar->addSeparator();
 	mToolBar->addWidget(mLabel);
 
@@ -362,13 +365,12 @@ void lcPreviewDockWidget::SetPreviewLock()
 		return;
 	}
 
-	QIcon LockIcon(Locked ? ":/resources/action_preview_locked.png" : ":/resources/action_preview_unlocked.png");
 	QString StatusTip(Locked
 		? tr("Unlock the preview display to enable updates")
 		: tr("Lock the preview display to disable updates"));
 
-	mLockAction->setToolTip(Locked ? tr("Unlock Preview") : tr("Lock Preview"));
-	mLockAction->setIcon(LockIcon);
+	mLockAction->setText(Locked ? tr("Unlock Preview") : tr("Lock Preview"));
+	mLockAction->setToolTip(mLockAction->text());
 	mLockAction->setStatusTip(StatusTip);
 }
 
