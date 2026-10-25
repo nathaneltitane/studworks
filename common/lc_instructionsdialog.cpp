@@ -279,13 +279,21 @@ lcInstructionsPageListWidget::lcInstructionsPageListWidget(QWidget* Parent, lcIn
 	ButtonsLayout->setContentsMargins(0, 0, 0, 0);
 	Layout->addLayout(ButtonsLayout);
 
-	QToolButton* PageSetupButton = new QToolButton();
-	PageSetupButton->setText(tr("Page Setup"));
-	ButtonsLayout->addWidget(PageSetupButton);
-
-	connect(PageSetupButton, &QToolButton::clicked, this, &lcInstructionsPageListWidget::ShowPageSetupDialog);
-
 	ButtonsLayout->addStretch(1);
+
+	QToolButton* OptionsButton = new QToolButton();
+	OptionsButton->setIcon(QIcon(":/resources/gear_in.png"));
+	OptionsButton->setToolTip(tr("Page options"));
+	OptionsButton->setAccessibleName(tr("Page Options"));
+	OptionsButton->setPopupMode(QToolButton::InstantPopup);
+	ButtonsLayout->addWidget(OptionsButton);
+
+	QMenu* OptionsMenu = new QMenu(this);
+	OptionsButton->setMenu(OptionsMenu);
+
+	QAction* PageSetupAction = OptionsMenu->addAction(tr("Page Setup..."));
+	PageSetupAction->setToolTip(tr("Choose the page size, orientation and margins"));
+	connect(PageSetupAction, &QAction::triggered, this, &lcInstructionsPageListWidget::ShowPageSetupDialog);
 
 	/*
 	lcCollapsibleWidget* SetupWidget = new lcCollapsibleWidget(tr("Page Setup"), CentralWidget);
@@ -392,20 +400,87 @@ lcInstructionsPropertiesWidget::lcInstructionsPropertiesWidget(QWidget* Parent, 
 	QGridLayout* Layout = new QGridLayout(CentralWidget);
 	Layout->setContentsMargins(0, 0, 0, 0);
 
-	QComboBox* ScopeComboBox = new QComboBox(CentralWidget);
-	ScopeComboBox->addItems(QStringList() << tr("Default") << tr("Current Model") << tr("Current Step Only") << tr("Current Step Forward"));
+	QHBoxLayout* ButtonsLayout = new QHBoxLayout();
+	ButtonsLayout->setContentsMargins(0, 0, 0, 0);
+	ButtonsLayout->addStretch(1);
+	Layout->addLayout(ButtonsLayout, 0, 0, 1, -1);
 
-	Layout->addWidget(new QLabel(tr("Scope:")), 0, 0);
-	Layout->addWidget(ScopeComboBox, 0, 1);
+	QToolButton* OptionsButton = new QToolButton();
+	OptionsButton->setIcon(QIcon(":/resources/gear_in.png"));
+	OptionsButton->setToolTip(tr("Properties options"));
+	OptionsButton->setAccessibleName(tr("Properties Options"));
+	OptionsButton->setPopupMode(QToolButton::InstantPopup);
+	ButtonsLayout->addWidget(OptionsButton);
 
-	QComboBox* PresetComboBox = new QComboBox(CentralWidget);
+	QMenu* OptionsMenu = new QMenu(this);
+	OptionsButton->setMenu(OptionsMenu);
 
-	Layout->addWidget(new QLabel(tr("Preset:")), 1, 0);
-	Layout->addWidget(PresetComboBox, 1, 1);
+	// changes apply to the defaults for now, model and step overrides are planned
+	QMenu* ScopeMenu = OptionsMenu->addMenu(tr("Apply Changes To"));
+	QActionGroup* ScopeGroup = new QActionGroup(ScopeMenu);
+	const QStringList ScopeNames = { tr("All Steps"), tr("Current Model"), tr("Current Step Only"), tr("Current Step Forward") };
+
+	for (int ScopeIndex = 0; ScopeIndex < ScopeNames.size(); ScopeIndex++)
+	{
+		QAction* ScopeAction = ScopeMenu->addAction(ScopeNames[ScopeIndex]);
+		ScopeAction->setCheckable(true);
+		ScopeAction->setChecked(ScopeIndex == 0);
+		ScopeAction->setEnabled(ScopeIndex == 0);
+		ScopeGroup->addAction(ScopeAction);
+	}
 
 	Layout->setRowStretch(3, 1);
 
 	SelectionChanged(nullptr);
+}
+
+void lcInstructionsPropertiesWidget::AddPageLayoutProperties()
+{
+	const lcInstructionsPageSettings PageSettings = mInstructions->GetPageSettings(mPageIndex);
+	int Row = mPropertiesLayout->rowCount();
+
+	auto AddSpinBox = [this, &Row](const QString& Label, int Value, const QString& ToolTip)
+	{
+		QLabel* SpinBoxLabel = new QLabel(Label);
+		mPropertiesLayout->addWidget(SpinBoxLabel, Row, 0);
+
+		QSpinBox* SpinBox = new QSpinBox();
+		SpinBox->setRange(1, 10);
+		SpinBox->setValue(Value);
+		SpinBox->setKeyboardTracking(false);
+		SpinBox->setToolTip(ToolTip);
+		SpinBox->setWhatsThis(tr("Steps fill landscape pages across each row and portrait pages down each column, following the orientation chosen in Page Setup."));
+		SpinBoxLabel->setBuddy(SpinBox);
+		mPropertiesLayout->addWidget(SpinBox, Row, 1);
+		Row++;
+
+		return SpinBox;
+	};
+
+	QSpinBox* RowsSpinBox = AddSpinBox(tr("Rows:"), PageSettings.Rows, tr("Number of step rows on this page"));
+	QSpinBox* ColumnsSpinBox = AddSpinBox(tr("Columns:"), PageSettings.Columns, tr("Number of step columns on this page"));
+
+	auto PageLayoutChanged = [this, RowsSpinBox, ColumnsSpinBox]()
+	{
+		mInstructions->SetPageSettings(mPageIndex, RowsSpinBox->value(), ColumnsSpinBox->value());
+	};
+
+	connect(RowsSpinBox, qOverload<int>(&QSpinBox::valueChanged), this, PageLayoutChanged);
+	connect(ColumnsSpinBox, qOverload<int>(&QSpinBox::valueChanged), this, PageLayoutChanged);
+
+	QPushButton* ApplyAllButton = new QPushButton(tr("Apply to All Pages"));
+	ApplyAllButton->setToolTip(tr("Use this number of rows and columns on every page"));
+	mPropertiesLayout->addWidget(ApplyAllButton, Row, 0, 1, -1);
+
+	connect(ApplyAllButton, &QPushButton::clicked, [this, RowsSpinBox, ColumnsSpinBox]()
+	{
+		lcInstructionsPageSettings DefaultPageSettings;
+
+		DefaultPageSettings.Rows = RowsSpinBox->value();
+		DefaultPageSettings.Columns = ColumnsSpinBox->value();
+
+		mInstructions->SetDefaultPageSettings(DefaultPageSettings);
+	});
 }
 
 void lcInstructionsPropertiesWidget::AddBoolProperty(lcInstructionsPropertyType Type)
@@ -422,6 +497,10 @@ void lcInstructionsPropertiesWidget::AddBoolProperty(lcInstructionsPropertyType 
 	connect(CheckBox, &QToolButton::toggled, [this, Type](bool Checked)
 	{
 		mInstructions->SetDefaultBool(Type, Checked);
+
+		// the element fonts are only editable without the document font
+		if (Type == lcInstructionsPropertyType::UseDocumentFont)
+			UpdateWidget();
 	});
 }
 
@@ -521,6 +600,8 @@ void lcInstructionsPropertiesWidget::AddColorProperty(lcInstructionsPropertyType
 			case lcInstructionsPropertyType::ShowStepDividers:
 			case lcInstructionsPropertyType::StepDividerWidth:
 			case lcInstructionsPropertyType::ShowBillOfMaterials:
+			case lcInstructionsPropertyType::UseDocumentFont:
+			case lcInstructionsPropertyType::DocumentFont:
 //			case lcInstructionsPropertyType::StepPLIBorderRound:
 			case lcInstructionsPropertyType::Count:
 				break;
@@ -547,6 +628,12 @@ void lcInstructionsPropertiesWidget::AddFontProperty(lcInstructionsPropertyType 
 	QToolButton* FontButton = new QToolButton();
 	mPropertiesLayout->addWidget(FontButton, Row, 1);
 
+	if (Type != lcInstructionsPropertyType::DocumentFont && mInstructions->GetBoolProperty(lcInstructionsPropertyType::UseDocumentFont, mModel, mStep))
+	{
+		FontButton->setEnabled(false);
+		FontButton->setToolTip(tr("The document font is used for all text"));
+	}
+
 	auto UpdateButton = [this, Type, FontButton]()
 	{
 		QFont Font = mInstructions->GetFontProperty(Type, mModel, mStep);
@@ -570,6 +657,10 @@ void lcInstructionsPropertiesWidget::AddFontProperty(lcInstructionsPropertyType 
 				Title = tr("Select Pieces List Font");
 				break;
 
+			case lcInstructionsPropertyType::DocumentFont:
+				Title = tr("Select Document Font");
+				break;
+
 			case lcInstructionsPropertyType::ShowStepNumber:
 			case lcInstructionsPropertyType::ShowStepPLI:
 			case lcInstructionsPropertyType::StepNumberColor:
@@ -584,6 +675,7 @@ void lcInstructionsPropertiesWidget::AddFontProperty(lcInstructionsPropertyType 
 			case lcInstructionsPropertyType::ShowStepDividers:
 			case lcInstructionsPropertyType::StepDividerWidth:
 			case lcInstructionsPropertyType::ShowBillOfMaterials:
+			case lcInstructionsPropertyType::UseDocumentFont:
 			case lcInstructionsPropertyType::Count:
 				break;
 		}
@@ -606,6 +698,23 @@ void lcInstructionsPropertiesWidget::SelectionChanged(QGraphicsItem* FocusItem)
 	if (mWidget && mFocusItem == FocusItem)
 		return;
 
+	mFocusItem = FocusItem;
+	UpdateWidget();
+}
+
+void lcInstructionsPropertiesWidget::SetCurrentPage(int PageIndex)
+{
+	mPageIndex = PageIndex;
+
+	// the page properties show the layout of the current page
+	if (!mFocusItem)
+		UpdateWidget();
+}
+
+void lcInstructionsPropertiesWidget::UpdateWidget()
+{
+	QGraphicsItem* FocusItem = mFocusItem;
+
 	// the old widget may be the one whose signal led here, so delete it later
 	if (mWidget)
 	{
@@ -614,7 +723,6 @@ void lcInstructionsPropertiesWidget::SelectionChanged(QGraphicsItem* FocusItem)
 	}
 
 	mWidget = nullptr;
-	mFocusItem = FocusItem;
 	mModel = nullptr;
 	mStep = 1;
 
@@ -642,6 +750,13 @@ void lcInstructionsPropertiesWidget::SelectionChanged(QGraphicsItem* FocusItem)
 	if (!FocusItem)
 	{
 		CreatePropertyWidget(tr("Page Properties"));
+
+		AddSection(tr("Document"));
+		AddBoolProperty(lcInstructionsPropertyType::UseDocumentFont);
+		AddFontProperty(lcInstructionsPropertyType::DocumentFont);
+
+		AddSection(tr("Steps per Page"));
+		AddPageLayoutProperties();
 
 		AddSection(tr("Page"));
 		AddBoolProperty(lcInstructionsPropertyType::ShowStepDividers);
@@ -747,31 +862,6 @@ lcInstructionsDialog::lcInstructionsDialog(QWidget* Parent, Project* Project)
 	mPrintAction = mPageSettingsToolBar->addAction(tr("Print..."));
 	mPrintAction->setToolTip(tr("Print the instruction pages"));
 
-	mPageSettingsToolBar->addSeparator();
-	mPageSettingsToolBar->addWidget(new QLabel(tr("Steps per page:"), mPageSettingsToolBar));
-
-	QLabel* RowsLabel = new QLabel(tr("Rows:"), mPageSettingsToolBar);
-	RowsLabel->setContentsMargins(6, 0, 3, 0);
-	mPageSettingsToolBar->addWidget(RowsLabel);
-
-	mRowsSpinBox = new QSpinBox(mPageSettingsToolBar);
-	mRowsSpinBox->setRange(1, 10);
-	mRowsSpinBox->setToolTip(tr("Number of step rows on each page"));
-	RowsLabel->setBuddy(mRowsSpinBox);
-	mPageSettingsToolBar->addWidget(mRowsSpinBox);
-
-	QLabel* ColumnsLabel = new QLabel(tr("Columns:"), mPageSettingsToolBar);
-	ColumnsLabel->setContentsMargins(6, 0, 3, 0);
-	mPageSettingsToolBar->addWidget(ColumnsLabel);
-
-	mColumnsSpinBox = new QSpinBox(mPageSettingsToolBar);
-	mColumnsSpinBox->setRange(1, 10);
-	mColumnsSpinBox->setToolTip(tr("Number of step columns on each page"));
-	ColumnsLabel->setBuddy(mColumnsSpinBox);
-	mPageSettingsToolBar->addWidget(mColumnsSpinBox);
-	mColumnsSpinBox->setWhatsThis(tr("Steps fill landscape pages across each row and portrait pages down each column, following the orientation chosen in Page Setup."));
-	mRowsSpinBox->setWhatsThis(mColumnsSpinBox->whatsThis());
-
 	for (size_t PageNumber = 0; PageNumber < mInstructions->mPages.size(); PageNumber++)
 		mPageListWidget->mThumbnailsWidget->addItem(QString(tr("Page %1")).arg(lcFormatIntegerLocalized(PageNumber + 1, locale())));
 
@@ -781,8 +871,6 @@ lcInstructionsDialog::lcInstructionsDialog(QWidget* Parent, Project* Project)
 	connect(mPrintAction, &QAction::triggered, this, &lcInstructionsDialog::ShowPrintDialog);
 	connect(mInstructions, &lcInstructions::PageSetupChanged, this, &lcInstructionsDialog::PageSetupChanged);
 	connect(mInstructions, &lcInstructions::PageLayoutChanged, this, &lcInstructionsDialog::PageSetupChanged);
-	connect(mRowsSpinBox, qOverload<int>(&QSpinBox::valueChanged), this, &lcInstructionsDialog::UpdatePageSettings);
-	connect(mColumnsSpinBox, qOverload<int>(&QSpinBox::valueChanged), this, &lcInstructionsDialog::UpdatePageSettings);
 }
 
 void lcInstructionsDialog::ShowPrintDialog()
@@ -893,18 +981,6 @@ void lcInstructionsDialog::Print(QPrinter* Printer)
 #endif
 }
 
-void lcInstructionsDialog::UpdatePageSettings()
-{
-	lcInstructionsPageSettings PageSettings;
-
-	PageSettings.Rows = mRowsSpinBox->value();
-	PageSettings.Columns = mColumnsSpinBox->value();
-
-	mInstructions->SetDefaultPageSettings(PageSettings);
-
-	UpdatePageList();
-}
-
 void lcInstructionsDialog::UpdatePageList()
 {
 	QListWidget* ThumbnailsWidget = mPageListWidget->mThumbnailsWidget;
@@ -936,16 +1012,7 @@ void lcInstructionsDialog::CurrentThumbnailChanged(int Index)
 	}
 
 	const lcInstructionsPage* Page = &mInstructions->mPages[Index];
-//	const lcInstructionsPageSettings& PageSettings = Page->Settings;
-	const lcInstructionsPageSettings& PageSettings = mInstructions->mPageSettings;
 
 	mPageWidget->SetCurrentPage(Page);
-
-	mRowsSpinBox->blockSignals(true);
-	mRowsSpinBox->setValue(PageSettings.Rows);
-	mRowsSpinBox->blockSignals(false);
-
-	mColumnsSpinBox->blockSignals(true);
-	mColumnsSpinBox->setValue(PageSettings.Columns);
-	mColumnsSpinBox->blockSignals(false);
+	mPropertiesWidget->SetCurrentPage(Index);
 }

@@ -50,8 +50,10 @@ lcInstructions::lcInstructions(Project* Project)
 	mStepProperties[static_cast<int>(lcInstructionsPropertyType::StepDividerColor)].Value = LC_RGBA(0, 0, 0, 255);
 	mStepProperties[static_cast<int>(lcInstructionsPropertyType::StepDividerWidth)].Value = 2;
 	mStepProperties[static_cast<int>(lcInstructionsPropertyType::ShowBillOfMaterials)].Value = false;
+	mStepProperties[static_cast<int>(lcInstructionsPropertyType::UseDocumentFont)].Value = false;
+	mStepProperties[static_cast<int>(lcInstructionsPropertyType::DocumentFont)].Value = QFont("Arial", 16).toString();
 
-	static_assert(static_cast<int>(lcInstructionsPropertyType::Count) == 16, "Missing default property");
+	static_assert(static_cast<int>(lcInstructionsPropertyType::Count) == 18, "Missing default property");
 
 	CreatePages();
 }
@@ -92,6 +94,10 @@ QString lcInstructions::GetPropertyLabel(lcInstructionsPropertyType Type)
 			return tr("Divider Width:");
 		case lcInstructionsPropertyType::ShowBillOfMaterials:
 			return tr("Show Bill of Materials");
+		case lcInstructionsPropertyType::UseDocumentFont:
+			return tr("Use Document Font");
+		case lcInstructionsPropertyType::DocumentFont:
+			return tr("Font:");
 		case lcInstructionsPropertyType::Count:
 			break;
 	}
@@ -103,8 +109,38 @@ void lcInstructions::SetDefaultPageSettings(const lcInstructionsPageSettings& Pa
 {
 	mPageSettings = PageSettings;
 	mPageSettings.Direction = GetPageDirection();
+	mPageSettingsOverrides.clear();
 
 	CreatePages();
+
+	emit PageLayoutChanged();
+}
+
+lcInstructionsPageSettings lcInstructions::GetPageSettings(size_t PageIndex) const
+{
+	std::map<size_t, lcInstructionsPageSettings>::const_iterator SettingsIt = mPageSettingsOverrides.find(PageIndex);
+	lcInstructionsPageSettings PageSettings = SettingsIt != mPageSettingsOverrides.end() ? SettingsIt->second : mPageSettings;
+
+	PageSettings.Direction = GetPageDirection();
+
+	return PageSettings;
+}
+
+void lcInstructions::SetPageSettings(size_t PageIndex, int Rows, int Columns)
+{
+	// each page can hold its own number of steps, following pages flow on from it
+	lcInstructionsPageSettings PageSettings = GetPageSettings(PageIndex);
+
+	if (PageSettings.Rows == Rows && PageSettings.Columns == Columns)
+		return;
+
+	PageSettings.Rows = Rows;
+	PageSettings.Columns = Columns;
+	mPageSettingsOverrides[PageIndex] = PageSettings;
+
+	CreatePages();
+
+	emit PageLayoutChanged();
 }
 
 lcInstructionsDirection lcInstructions::GetPageDirection() const
@@ -150,6 +186,10 @@ QColor lcInstructions::GetColorProperty(lcInstructionsPropertyType Type, lcModel
 
 QFont lcInstructions::GetFontProperty(lcInstructionsPropertyType Type, lcModel* Model, lcStep Step) const
 {
+	// the document font replaces every element font to keep the instructions uniform
+	if (Type != lcInstructionsPropertyType::DocumentFont && GetBoolProperty(lcInstructionsPropertyType::UseDocumentFont, Model, Step))
+		Type = lcInstructionsPropertyType::DocumentFont;
+
 	QVariant Value = GetProperty(Type, Model, Step);
 	QFont Font;
 	Font.fromString(Value.toString());
@@ -297,28 +337,36 @@ void lcInstructions::AddDefaultPages(lcModel* Model, std::vector<const lcModel*>
 				AddDefaultPages(SubModel, AddedModels);
 		}
 
+		if (Page.Steps.empty())
+		{
+			Page.Settings = GetPageSettings(mPages.size());
+			Row = 0;
+			Column = 0;
+		}
+
+		const lcInstructionsPageSettings PageSettings = Page.Settings;
 		lcInstructionsStep InstructionsStep;
 
 		InstructionsStep.Model = Model;
 		InstructionsStep.Step = Step;
 
-		const double Width = 1.0 / (double)mPageSettings.Columns;
-		const double Height = 1.0 / (double)mPageSettings.Rows;
+		const double Width = 1.0 / (double)PageSettings.Columns;
+		const double Height = 1.0 / (double)PageSettings.Rows;
 		InstructionsStep.Rect = QRectF(Column * Width, Row * Height, Width, Height);
 
 		Page.Steps.push_back(std::move(InstructionsStep));
 
-		if (mPageSettings.Direction == lcInstructionsDirection::Horizontal)
+		if (PageSettings.Direction == lcInstructionsDirection::Horizontal)
 		{
 			Column++;
 
-			if (Column == mPageSettings.Columns)
+			if (Column == PageSettings.Columns)
 			{
 				Row++;
 				Column = 0;
 			}
 
-			if (Row == mPageSettings.Rows)
+			if (Row == PageSettings.Rows)
 			{
 				mPages.emplace_back(std::move(Page));
 				Row = 0;
@@ -329,13 +377,13 @@ void lcInstructions::AddDefaultPages(lcModel* Model, std::vector<const lcModel*>
 		{
 			Row++;
 
-			if (Row == mPageSettings.Rows)
+			if (Row == PageSettings.Rows)
 			{
 				Row = 0;
 				Column++;
 			}
 
-			if (Column == mPageSettings.Columns)
+			if (Column == PageSettings.Columns)
 			{
 				mPages.emplace_back(std::move(Page));
 				Row = 0;
