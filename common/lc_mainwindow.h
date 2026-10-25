@@ -294,6 +294,7 @@ public:
 	std::optional<lcVector3> GetTransformAmount();
 
 	bool eventFilter(QObject* Object, QEvent* Event) override;
+	void SnapPartsDock();
 
 	int mColorIndex;
 	int mLastInsertedColorIndex = -1;
@@ -399,6 +400,7 @@ protected:
 	QDockWidget* mPreviewToolBar = nullptr;
 	QDockWidget* mTerminalToolBar = nullptr;
 	QDockWidget* mPartsToolBar = nullptr;
+	bool mPartsSnapPending = false;
 	QDockWidget* mColorsToolBar = nullptr;
 	QDockWidget* mPropertiesToolBar = nullptr;
 	QDockWidget* mTimelineToolBar = nullptr;

@@ -204,6 +204,7 @@ public:
 	QSize sizeHint() const override;
 	QSize GetCellSize() const;
 	QSize GetPreferredSize(int MaximumWidth) const;
+	int GetTileSnapDelta() const;
 
 	void SetCategory(lcPartCategoryType Type, int Index);
 	void SetCustomParts(const std::vector<std::pair<lcPieceData*, std::string>>& Parts, int ColorIndex);
@@ -294,6 +295,11 @@ public:
 	bool GetIsPopup() const
 	{
 		return mIsPopup;
+	}
+
+	int GetTileSnapDelta() const
+	{
+		return mPartsWidget ? mPartsWidget->GetTileSnapDelta() : 0;
 	}
 
 	int GetColorIndex() const

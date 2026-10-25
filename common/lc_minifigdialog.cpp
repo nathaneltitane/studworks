@@ -51,7 +51,7 @@ lcMinifigDialog::lcMinifigDialog(QWidget* Parent, bool Docked)
 	std::copy(std::begin(Labels), std::end(Labels), mSectionNames.begin());
 
 	// The neck spans the top, the other sections stack on both sides of the preview.
-	constexpr int FirstSideRow = 2;
+	constexpr int FirstSideRow = 1;
 	int LeftRow = FirstSideRow, RightRow = FirstSideRow;
 
 	for (int ItemIndex = 0; ItemIndex < LC_MFW_NUMITEMS; ItemIndex++)
@@ -91,18 +91,9 @@ lcMinifigDialog::lcMinifigDialog(QWidget* Parent, bool Docked)
 			connect(SpinBox, QOverload<double>::of(&lcDoubleSpinBox::valueChanged), this, &lcMinifigDialog::AngleChanged);
 		}
 
-		QLabel* Label = new QLabel(Labels[ItemIndex], this);
-		Label->setBuddy(PieceButton);
-		Label->setToolTip(tr("Choose the piece for %1, or None to omit it.").arg(Labels[ItemIndex]));
-		Label->setWhatsThis(PieceButton->whatsThis());
-
-		// Each section is a label above [Color] [Selection] [Angle], the selection takes the space left over.
-		auto AddRow = [MinifigLayout, Label, PieceButton, ColorPicker, SpinBox](int& Row, int Column, int ColumnCount)
+		// Each section is [Color] [Selection] [Angle], the selection takes the space left over and names the section when empty.
+		auto AddRow = [MinifigLayout, PieceButton, ColorPicker, SpinBox](int& Row, int Column, int ColumnCount)
 		{
-			if (Row > FirstSideRow)
-				MinifigLayout->setRowMinimumHeight(Row++, 2);
-
-			MinifigLayout->addWidget(Label, Row++, Column, 1, ColumnCount);
 			MinifigLayout->addWidget(ColorPicker, Row, Column);
 			MinifigLayout->addWidget(PieceButton, Row, Column + 1, 1, SpinBox ? ColumnCount - 2 : ColumnCount - 1);
 

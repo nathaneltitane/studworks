@@ -95,6 +95,7 @@ void lcMainWindow::CreateWidgets()
 
 	mModelTabWidget = new QTabWidget();
 	mModelTabWidget->tabBar()->installEventFilter(this);
+	qApp->installEventFilter(this);
 	mModelTabWidget->tabBar()->setMovable(true);
 	mModelTabWidget->tabBar()->setTabsClosable(true);
 	mModelTabWidget->tabBar()->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -790,6 +791,7 @@ void lcMainWindow::CreateToolBars()
 
 
 	mPartsToolBar = new QDockWidget(tr("Pieces"), this);
+	mPartsToolBar->installEventFilter(this);
 	mPartsToolBar->setObjectName("PartsToolbar");
 	mPartsToolBar->setWhatsThis(tr("<p><b>Pieces</b></p><p>Choose a category or palette and filter its pieces. Selecting a piece prepares it for insertion; drag it into the model view to place it. Double-click a piece to open its preview. Options controls filtering, thumbnails, and list display.</p>"));
 	lcSetupWidgetHelp(mPartsToolBar, nullptr);
@@ -839,9 +841,17 @@ void lcMainWindow::CreateToolBars()
 	mColorList->setAccessibleName(tr("LDraw Colors"));
 
 	// The panel is always exactly as tall as the color button and the tiles.
-	connect(mColorList, &lcColorList::HeightChanged, this, [ColorWidget, ColorLayout]()
+	connect(mColorList, &lcColorList::HeightChanged, this, [this, ColorWidget, ColorLayout]()
 	{
-		ColorWidget->setFixedHeight(ColorLayout->sizeHint().height());
+		// Recompute from the current rows, then let the dock follow so it grows and shrinks with the tiles.
+		ColorLayout->invalidate();
+		const int Height = ColorLayout->sizeHint().height();
+		const int TitleHeight = mColorsToolBar->height() - ColorWidget->height();
+
+		ColorWidget->setFixedHeight(Height);
+
+		if (!mColorsToolBar->isFloating() && mColorsToolBar->isVisible())
+			resizeDocks({ mColorsToolBar }, { Height + TitleHeight }, Qt::Vertical);
 	});
 
 	mColorsToolBar->setWidget(ColorWidget);
@@ -1053,6 +1063,22 @@ void lcMainWindow::UpdateTerminalDirectory(bool Force)
 #endif
 }
 
+void lcMainWindow::SnapPartsDock()
+{
+	if (!mPartsToolBar || mPartsToolBar->isFloating() || !mPartSelectionWidget)
+		return;
+
+	const Qt::DockWidgetArea Area = dockWidgetArea(mPartsToolBar);
+
+	if (Area != Qt::LeftDockWidgetArea && Area != Qt::RightDockWidgetArea)
+		return;
+
+	const int Delta = mPartSelectionWidget->GetTileSnapDelta();
+
+	if (Delta)
+		resizeDocks({ mPartsToolBar }, { mPartsToolBar->width() + Delta }, Qt::Horizontal);
+}
+
 void lcMainWindow::CreatePreviewWidget()
 {
 	mPreviewWidget  = new lcPreviewDockWidget(this);
@@ -1070,9 +1096,18 @@ void lcMainWindow::CreatePreviewWidget()
 
 bool lcMainWindow::eventFilter(QObject* Object, QEvent* Event)
 {
-	QTabBar* TabBar = mModelTabWidget->tabBar();
+	// Resizing the pieces panel by hand snaps it to whole tiles once the mouse is released.
+	if (Object == mPartsToolBar && Event->type() == QEvent::Resize && QApplication::mouseButtons() != Qt::NoButton)
+		mPartsSnapPending = true;
+	else if (Event->type() == QEvent::MouseButtonRelease && mPartsSnapPending)
+	{
+		mPartsSnapPending = false;
+		QTimer::singleShot(0, this, &lcMainWindow::SnapPartsDock);
+	}
 
-	if (Object == TabBar)
+	QTabBar* TabBar = mModelTabWidget ? mModelTabWidget->tabBar() : nullptr;
+
+	if (TabBar && Object == TabBar)
 	{
 		if (Event->type() == QEvent::MouseButtonPress)
 		{

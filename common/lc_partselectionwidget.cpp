@@ -912,6 +912,30 @@ QSize lcPartSelectionListView::sizeHint() const
 	return GetPreferredSize(QWIDGETSIZE_MAX);
 }
 
+int lcPartSelectionListView::GetTileSnapDelta() const
+{
+	// The tile pitch comes from the laid out tiles, so margins, spacing and scaling are included.
+	if (viewMode() != QListView::IconMode || model()->rowCount() < 2)
+		return 0;
+
+	const QRect FirstRect = visualRect(model()->index(0, 0));
+	const QRect SecondRect = visualRect(model()->index(1, 0));
+
+	if (SecondRect.top() != FirstRect.top())
+		return 0;
+
+	const int Pitch = SecondRect.left() - FirstRect.left();
+	const int Offset = FirstRect.left() + horizontalOffset();
+	const int Available = viewport()->width() - Offset;
+
+	if (Pitch <= 0)
+		return 0;
+
+	const int Columns = qMax(qRound((float)Available / (float)Pitch), 1);
+
+	return Columns * Pitch - Available;
+}
+
 QSize lcPartSelectionListView::GetPreferredSize(int MaximumWidth) const
 {
 	if (model()->rowCount() == 0 && (mListModel->GetIconSize() == NoIconSize || mListModel->IsListMode()))
