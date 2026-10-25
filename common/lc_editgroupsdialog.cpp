@@ -1,5 +1,6 @@
 #include "lc_global.h"
 #include "lc_qutils.h"
+#include "lc_string.h"
 #include "lc_editgroupsdialog.h"
 #include "ui_lc_editgroupsdialog.h"
 #include "lc_model.h"
@@ -93,7 +94,7 @@ void lcEditGroupsDialog::NewGroupClicked()
 	if (!CurrentItem)
 		CurrentItem = ui->treeWidget->invisibleRootItem();
 
-	QString Prefix = tr("Group #");
+	const QString Prefix = tr("Group ");
 	int MaxIndex = 0;
 
 	std::function<void(QTreeWidgetItem*)> ScanGroups = [&ScanGroups, &Prefix, &MaxIndex](QTreeWidgetItem* ParentItem)
@@ -106,14 +107,7 @@ void lcEditGroupsDialog::NewGroupClicked()
 			{
 				QString Name = ChildItem->text(0);
 
-				if (Name.startsWith(Prefix))
-				{
-					bool Ok = false;
-					int GroupNumber = Name.mid(Prefix.length()).toInt(&Ok);
-
-					if (Ok && GroupNumber > MaxIndex)
-						MaxIndex = GroupNumber;
-				}
+				MaxIndex = qMax(MaxIndex, lcGetDefaultNameNumber(Name, Prefix));
 
 				ScanGroups(ChildItem);
 			}
@@ -122,7 +116,7 @@ void lcEditGroupsDialog::NewGroupClicked()
 
 	ScanGroups(ui->treeWidget->invisibleRootItem());
 
-	QString Name = Prefix + QString::number(MaxIndex + 1);
+	QString Name = lcFormatDefaultName(Prefix, MaxIndex + 1);
 
 	QTreeWidgetItem* GroupItem = new QTreeWidgetItem(CurrentItem, QStringList(Name));
 	GroupItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled | Qt::ItemIsEditable);

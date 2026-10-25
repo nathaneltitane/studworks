@@ -1,5 +1,6 @@
 #include "lc_global.h"
 #include "lc_math.h"
+#include "lc_string.h"
 #include <string.h>
 #include <stdio.h>
 #include <math.h>
@@ -175,7 +176,7 @@ void lcLight::CreateName(const std::vector<std::unique_ptr<lcLight>>& Lights)
 		break;
 
 	case lcLightType::Spot:
-		Prefix = QLatin1String("Spotlight ");
+		Prefix = QLatin1String("Spot Light ");
 		break;
 
 	case lcLightType::Directional:
@@ -191,20 +192,9 @@ void lcLight::CreateName(const std::vector<std::unique_ptr<lcLight>>& Lights)
 	}
 
 	for (const std::unique_ptr<lcLight>& Light : Lights)
-	{
-		QString LightName = Light->GetName();
+		MaxLightNumber = qMax(MaxLightNumber, lcGetDefaultNameNumber(Light->GetName(), Prefix));
 
-		if (LightName.startsWith(Prefix))
-		{
-			bool Ok = false;
-			int LightNumber = LightName.mid(Prefix.size()).toInt(&Ok);
-
-			if (Ok && LightNumber > MaxLightNumber)
-				MaxLightNumber = LightNumber;
-		}
-	}
-
-	mName = Prefix + QString::number(MaxLightNumber + 1);
+	mName = lcFormatDefaultName(Prefix, MaxLightNumber + 1);
 }
 
 bool lcLight::ParseLDrawLine(QTextStream& Stream)

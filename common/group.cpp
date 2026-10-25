@@ -1,5 +1,6 @@
 #include "lc_global.h"
 #include <stdlib.h>
+#include "lc_string.h"
 #include "group.h"
 #include "lc_file.h"
 
@@ -43,23 +44,12 @@ void lcGroup::CreateName(const std::vector<std::unique_ptr<lcGroup>>& Groups)
 	}
 
 	int Max = 0;
-	QString Prefix = QApplication::tr("Group #");
-	const qsizetype Length = Prefix.length();
+	const QString Prefix = QApplication::tr("Group ");
 
 	for (const std::unique_ptr<lcGroup>& Group : Groups)
-	{
-		const QString& Name = Group->mName;
+		Max = qMax(Max, lcGetDefaultNameNumber(Group->mName, Prefix));
 
-		if (Name.startsWith(Prefix))
-		{
-			bool Ok = false;
-			int GroupNumber = Name.mid(Length).toInt(&Ok);
-			if (Ok && GroupNumber > Max)
-				Max = GroupNumber;
-		}
-	}
-
-	mName = Prefix + QString::number(Max + 1);
+	mName = lcFormatDefaultName(Prefix, Max + 1);
 }
 
 lcGroupHistoryState lcGroup::GetHistoryState() const
