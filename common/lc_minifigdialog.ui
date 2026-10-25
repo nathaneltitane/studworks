@@ -54,7 +54,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="TemplateSaveButton">
+       <widget class="QToolButton" name="TemplateSaveButton">
         <property name="toolTip">
          <string>Save the current minifigure configuration as a named template.</string>
         </property>
@@ -67,7 +67,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="TemplateDeleteButton">
+       <widget class="QToolButton" name="TemplateDeleteButton">
         <property name="toolTip">
          <string>Delete the selected saved template.</string>
         </property>
@@ -80,7 +80,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="TemplateImportButton">
+       <widget class="QToolButton" name="TemplateImportButton">
         <property name="toolTip">
          <string>Add templates from a .minifig file.</string>
         </property>
@@ -93,7 +93,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="TemplateExportButton">
+       <widget class="QToolButton" name="TemplateExportButton">
         <property name="toolTip">
          <string>Save the entire template collection to a .minifig file.</string>
         </property>

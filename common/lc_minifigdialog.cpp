@@ -25,9 +25,14 @@ lcMinifigDialog::lcMinifigDialog(QWidget* Parent, bool Docked)
 		setWindowFlags(Qt::Widget);
 		ui->buttonBox->setStandardButtons(QDialogButtonBox::NoButton);
 
-		QPushButton* AddButton = ui->buttonBox->addButton(tr("Add to Model"), QDialogButtonBox::ActionRole);
+		// Add to Model sits on the template row, so the panel needs no button row.
+		QToolButton* AddButton = new QToolButton(ui->TemplateGroup);
+		AddButton->setText(tr("Add to Model"));
 		AddButton->setToolTip(tr("Add this minifigure to the current model"));
-		connect(AddButton, &QPushButton::clicked, this, &lcMinifigDialog::accept);
+		connect(AddButton, &QToolButton::clicked, this, &lcMinifigDialog::accept);
+		ui->horizontalLayout_2->addWidget(AddButton);
+		lcSetupPanelButton(AddButton);
+		ui->buttonBox->hide();
 	}
 
 	// Help comes from What's This and F1 instead of a help button.
@@ -37,6 +42,11 @@ lcMinifigDialog::lcMinifigDialog(QWidget* Parent, bool Docked)
 		setWindowFlag(Qt::WindowContextHelpButtonHint, true);
 
 	QGridLayout* MinifigLayout = ui->MinifigLayout;
+
+	// Rows sit close together and extra height goes below the panel instead of between rows.
+	MinifigLayout->setContentsMargins(0, 0, 0, 0);
+	MinifigLayout->setVerticalSpacing(2);
+	ui->verticalLayout->addStretch(1);
 
 	bool HasSpinBox[LC_MFW_NUMITEMS] = { true, true, true, false, false, false, false, true, true, true, true, true, true, true, true, true, true };
 	bool IsLeft[LC_MFW_NUMITEMS] = { true, true, true, true, false, false, false, false, true, false, true, false, true, false, true, false, true };
@@ -168,6 +178,13 @@ lcMinifigDialog::lcMinifigDialog(QWidget* Parent, bool Docked)
 	ui->horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
 	ui->TemplateComboBox->setPlaceholderText(tr("Templates"));
 
+	// The template row uses the compact panel buttons so it fits beside Add to Model.
+	ui->TemplateComboBox->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
+	ui->TemplateComboBox->setMinimumContentsLength(8);
+
+	for (QToolButton* Button : { ui->TemplateSaveButton, ui->TemplateDeleteButton, ui->TemplateImportButton, ui->TemplateExportButton })
+		lcSetupPanelButton(Button);
+
 	// The options button holds the preview rendering settings, like the other preview panels.
 	QToolButton* OptionsButton = new QToolButton(ui->TemplateGroup);
 	OptionsButton->setIcon(QIcon(":/resources/gear_in.png"));
@@ -182,10 +199,10 @@ lcMinifigDialog::lcMinifigDialog(QWidget* Parent, bool Docked)
 	connect(OptionsMenu, &QMenu::aboutToShow, this, &lcMinifigDialog::OptionsMenuAboutToShow);
 
 	connect(ui->TemplateComboBox, &QComboBox::currentTextChanged, this, &lcMinifigDialog::TemplateComboBoxCurrentTextChanged);
-	connect(ui->TemplateSaveButton, &QPushButton::clicked, this, &lcMinifigDialog::TemplateSaveButtonClicked);
-	connect(ui->TemplateDeleteButton, &QPushButton::clicked, this, &lcMinifigDialog::TemplateDeleteButtonClicked);
-	connect(ui->TemplateImportButton, &QPushButton::clicked, this, &lcMinifigDialog::TemplateImportButtonClicked);
-	connect(ui->TemplateExportButton, &QPushButton::clicked, this, &lcMinifigDialog::TemplateExportButtonClicked);
+	connect(ui->TemplateSaveButton, &QToolButton::clicked, this, &lcMinifigDialog::TemplateSaveButtonClicked);
+	connect(ui->TemplateDeleteButton, &QToolButton::clicked, this, &lcMinifigDialog::TemplateDeleteButtonClicked);
+	connect(ui->TemplateImportButton, &QToolButton::clicked, this, &lcMinifigDialog::TemplateImportButtonClicked);
+	connect(ui->TemplateExportButton, &QToolButton::clicked, this, &lcMinifigDialog::TemplateExportButtonClicked);
 }
 
 void lcMinifigDialog::accept()
@@ -286,7 +303,11 @@ void lcMinifigDialog::UpdateTemplateCombo()
 
 	if (ui->TemplateComboBox->count())
 		ui->TemplateComboBox->insertSeparator(ui->TemplateComboBox->count());
-	ui->TemplateComboBox->addItem(MinifigWizard::GetDefaultTemplateName());
+	// The built-in template keeps its stored name and is shown as Default Template.
+	ui->TemplateComboBox->addItem(tr("Default Template"));
+
+	if (CurrentName == MinifigWizard::GetDefaultTemplateName())
+		CurrentName = tr("Default Template");
 
 	// Without a current template the selector shows its name as a placeholder.
 	if (mCurrentTemplateName.isEmpty())
@@ -295,8 +316,9 @@ void lcMinifigDialog::UpdateTemplateCombo()
 		ui->TemplateComboBox->setCurrentText(CurrentName);
 }
 
-void lcMinifigDialog::TemplateComboBoxCurrentTextChanged(const QString& TemplateName)
+void lcMinifigDialog::TemplateComboBoxCurrentTextChanged(const QString& DisplayName)
 {
+	const QString TemplateName = DisplayName == tr("Default Template") ? MinifigWizard::GetDefaultTemplateName() : DisplayName;
 	const auto& Templates = mMinifigWizard->GetTemplates();
 	const auto& Position = Templates.find(TemplateName);
 
