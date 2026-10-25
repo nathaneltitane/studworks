@@ -1688,135 +1688,9 @@ void lcMainWindow::ReloadProjectFile(const QString& FileName)
 
 void lcMainWindow::Print(QPrinter* Printer)
 {
-#ifndef QT_NO_PRINTER
 	lcGetActiveProject()->GetMainModel()->WaitForAssets();
 
-	int DocCopies;
-	int PageCopies;
-
-	lcInstructions* Instructions = lcGetActiveProject()->GetInstructions();
-	const int PageCount = static_cast<int>(Instructions->mPages.size());
-
-	if (Printer->collateCopies())
-	{
-		DocCopies = 1;
-		PageCopies = Printer->supportsMultipleCopies() ? 1 : Printer->copyCount();
-	}
-	else
-	{
-		DocCopies = Printer->supportsMultipleCopies() ? 1 : Printer->copyCount();
-		PageCopies = 1;
-	}
-
-	int FromPage = Printer->fromPage();
-	int ToPage = Printer->toPage();
-	bool Ascending = true;
-
-	if (FromPage == 0 && ToPage == 0)
-	{
-		FromPage = 1;
-		ToPage = PageCount;
-	}
-
-	FromPage = qMax(1, FromPage);
-	ToPage = qMin(PageCount, ToPage);
-
-	if (ToPage < FromPage)
-		return;
-
-	if (Printer->pageOrder() == QPrinter::LastPageFirst)
-	{
-		int Tmp = FromPage;
-		FromPage = ToPage;
-		ToPage = Tmp;
-		Ascending = false;
-	}
-
-	QRect PageRect = Printer->pageLayout().paintRectPixels(Printer->resolution());
-	const int Resolution = Printer->resolution();
-	const int Margin = Resolution / 2; // todo: user setting
-	QRect MarginRect = QRect(PageRect.left() + Margin, PageRect.top() + Margin, PageRect.width() - Margin * 2, PageRect.height() - Margin * 2);
-
-	QPainter Painter(Printer);
-	bool FirstPage = true;
-	// TODO: option to print background
-
-	for (int DocCopy = 0; DocCopy < DocCopies; DocCopy++)
-	{
-		int Page = FromPage;
-
-		for (;;)
-		{
-			for (int PageCopy = 0; PageCopy < PageCopies; PageCopy++)
-			{
-				if (Printer->printerState() == QPrinter::Aborted || Printer->printerState() == QPrinter::Error)
-					return;
-
-				if (!FirstPage)
-					Printer->newPage();
-				else
-					FirstPage = false;
-
-				int StepWidth = MarginRect.width();
-				int StepHeight = MarginRect.height();
-
-				const lcInstructionsPage& PageLayout = Instructions->mPages[Page - 1];
-
-				if (PageLayout.Steps.empty())
-					continue;
-
-				lcModel* Model = PageLayout.Steps[0].Model;
-				lcStep Step = PageLayout.Steps[0].Step;
-				QImage Image = Model->GetStepImage(false, StepWidth, StepHeight, Step);
-
-				if (Image.isNull())
-				{
-					Printer->abort();
-					return;
-				}
-
-				Painter.drawImage(MarginRect.left(), MarginRect.top(), Image);
-
-				// TODO: add print options somewhere but Qt doesn't allow changes to the page setup dialog
-//				DWORD dwPrint = theApp.GetProfileInt("Settings","Print", PRINT_NUMBERS|PRINT_BORDER);
-
-//				if (print text)
-				{
-					QFont Font("Helvetica", 96);
-					Painter.setFont(Font);
-
-					QFontMetrics FontMetrics(Font);
-
-					int TextMargin = Resolution / 2;
-					QRect TextRect = QRect(MarginRect.left() + TextMargin, MarginRect.top() + TextMargin, MarginRect.width() - TextMargin * 2, MarginRect.height() - TextMargin * 2);
-
-					Painter.drawText(TextRect, Qt::AlignTop | Qt::AlignLeft, QString::number(Step));
-				}
-/*
-//				if (print border)
-				{
-					QPen BlackPen(Qt::black, 2);
-					Painter.setPen(BlackPen);
-
-					Painter.drawLine(MarginRect.left(), MarginRect.top(), MarginRect.right(), MarginRect.top());
-					Painter.drawLine(MarginRect.left(), MarginRect.bottom(), MarginRect.right(), MarginRect.bottom());
-					Painter.drawLine(MarginRect.left(), MarginRect.top(), MarginRect.left(), MarginRect.bottom());
-					Painter.drawLine(MarginRect.right(), MarginRect.top(), MarginRect.right(), MarginRect.bottom());
-				}
-*/
-				// TODO: print header and footer
-			}
-
-			if (Page == ToPage)
-				break;
-
-			if (Ascending)
-				Page++;
-			else
-				Page--;
-		}
-	}
-#endif
+	lcPrintInstructions(lcGetActiveProject()->GetInstructions(), Printer);
 }
 
 void lcMainWindow::ShowUpdatesDialog()
@@ -1889,10 +1763,12 @@ void lcMainWindow::ShowPrintDialog()
 	lcGetActiveProject()->GetMainModel()->WaitForAssets();
 
 #ifndef QT_NO_PRINTER
-	int PageCount = static_cast<int>(lcGetActiveProject()->GetInstructions()->mPages.size());
+	// Printing uses the instruction pages and their page setup, rebuilt from the current model.
+	lcInstructions* Instructions = lcGetActiveProject()->GetInstructions();
+	Instructions->Update();
 
 	QPrinter Printer(QPrinter::HighResolution);
-	Printer.setFromTo(1, PageCount + 1);
+	lcSetupInstructionsPrinter(Instructions, &Printer);
 
 	QPrintDialog PrintDialog(&Printer, this);
 
@@ -2934,10 +2810,13 @@ void lcMainWindow::TogglePrintPreview()
 #ifndef QT_NO_PRINTER
 	// todo: print preview inside main window
 
-	int PageCount = static_cast<int>(lcGetActiveProject()->GetInstructions()->mPages.size());
+	lcGetActiveProject()->GetMainModel()->WaitForAssets();
+
+	lcInstructions* Instructions = lcGetActiveProject()->GetInstructions();
+	Instructions->Update();
 
 	QPrinter Printer(QPrinter::ScreenResolution);
-	Printer.setFromTo(1, PageCount + 1);
+	lcSetupInstructionsPrinter(Instructions, &Printer);
 
 	QPrintPreviewDialog Preview(&Printer, this);
 	connect(&Preview, &QPrintPreviewDialog::paintRequested, this, &lcMainWindow::Print);
