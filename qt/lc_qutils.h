@@ -33,6 +33,9 @@ protected:
 	bool eventFilter(QObject* Object, QEvent* Event) override;
 };
 
+// Keeps a panel exactly as tall as its contents, updated whenever its layout changes.
+void lcFitHeightToContents(QWidget* Widget);
+
 // Panel headers share the look of the preview toolbar so every panel has the same spacing.
 int lcGetPanelToolBarHeight(const QWidget* Widget);
 void lcSetPanelToolBarMargins(QToolBar* ToolBar);

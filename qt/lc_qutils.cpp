@@ -70,6 +70,33 @@ bool lcWindowGeometryFilter::eventFilter(QObject* Object, QEvent* Event)
 	return false;
 }
 
+class lcFitHeightFilter : public QObject
+{
+public:
+	explicit lcFitHeightFilter(QWidget* Widget)
+		: QObject(Widget)
+	{
+	}
+
+protected:
+	bool eventFilter(QObject* Object, QEvent* Event) override
+	{
+		if (Event->type() == QEvent::LayoutRequest)
+		{
+			QWidget* Widget = static_cast<QWidget*>(Object);
+			Widget->setFixedHeight(Widget->sizeHint().height());
+		}
+
+		return false;
+	}
+};
+
+void lcFitHeightToContents(QWidget* Widget)
+{
+	Widget->setFixedHeight(Widget->sizeHint().height());
+	Widget->installEventFilter(new lcFitHeightFilter(Widget));
+}
+
 int lcGetPanelToolBarHeight(const QWidget* Widget)
 {
 	// As tall as a panel title bar, the text plus the padding and border of the title.
