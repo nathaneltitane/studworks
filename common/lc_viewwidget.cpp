@@ -438,6 +438,12 @@ void lcViewWidget::mouseDoubleClickEvent(QMouseEvent* MouseEvent)
 	}
 }
 
+void lcViewWidget::contextMenuEvent(QContextMenuEvent* ContextMenuEvent)
+{
+	// Views show their own menu when the right button is released, so the press is never a panel menu that would stop a drag.
+	ContextMenuEvent->accept();
+}
+
 void lcViewWidget::mouseMoveEvent(QMouseEvent* MouseEvent)
 {
 	float DeviceScale = GetDeviceScale();
