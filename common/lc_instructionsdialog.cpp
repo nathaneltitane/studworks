@@ -155,7 +155,7 @@ static void lcUpdateInstructionsPageScene(lcInstructions* Instructions, const lc
 		return;
 
 	const lcInstructionsPageSetup& PageSetup = Instructions->mPageSetup;
-	//	Scene->setSceneRect(0, 0, mInstructions->mPageSetup.Width, mInstructions->mPageSetup.Height);
+	Scene->setSceneRect(0, 0, PageSetup.Width, PageSetup.Height);
 
 	QGraphicsRectItem* PageItem = Scene->addRect(QRectF(0.0f, 0.0f, PageSetup.Width, PageSetup.Height), QPen(Qt::black), QBrush(Qt::white));
 	PageItem->setFlag(QGraphicsItem::ItemClipsChildrenToShape, true);
@@ -182,7 +182,22 @@ void lcInstructionsPageWidget::SetCurrentPage(const lcInstructionsPage* Page)
 {
 	QGraphicsScene* Scene = scene();
 
+	mPage = Page;
 	lcUpdateInstructionsPageScene(mInstructions, Page, Scene);
+	FitPage();
+}
+
+void lcInstructionsPageWidget::resizeEvent(QResizeEvent* Event)
+{
+	QGraphicsView::resizeEvent(Event);
+	FitPage();
+}
+
+void lcInstructionsPageWidget::FitPage()
+{
+	// show the whole page whatever its size, from small paper to large screen formats
+	if (mPage)
+		fitInView(sceneRect().adjusted(-10.0, -10.0, 10.0, 10.0), Qt::KeepAspectRatio);
 }
 
 lcInstructionsPageListWidget::lcInstructionsPageListWidget(QWidget* Parent, lcInstructions* Instructions)
@@ -293,10 +308,13 @@ lcInstructionsPageListWidget::lcInstructionsPageListWidget(QWidget* Parent, lcIn
 
 void lcInstructionsPageListWidget::ShowPageSetupDialog()
 {
-	lcPageSetupDialog Dialog(this, &mInstructions->mPageSetup);
+	lcInstructionsPageSetup PageSetup = mInstructions->mPageSetup;
+	lcPageSetupDialog Dialog(this, &PageSetup);
 
 	if (Dialog.exec() != QDialog::Accepted)
 		return;
+
+	mInstructions->SetPageSetup(PageSetup);
 }
 
 lcInstructionsPropertiesWidget::lcInstructionsPropertiesWidget(QWidget* Parent, lcInstructions* Instructions)
@@ -588,6 +606,7 @@ lcInstructionsDialog::lcInstructionsDialog(QWidget* Parent, Project* Project)
 	mPageListWidget->mThumbnailsWidget->setCurrentRow(0);
 
 	connect(mPrintAction, &QAction::triggered, this, &lcInstructionsDialog::ShowPrintDialog);
+	connect(mInstructions, &lcInstructions::PageSetupChanged, this, &lcInstructionsDialog::PageSetupChanged);
 	connect(mVerticalPageAction, &QAction::toggled, this, &lcInstructionsDialog::UpdatePageSettings);
 	connect(mHorizontalPageAction, &QAction::toggled, this, &lcInstructionsDialog::UpdatePageSettings);
 	connect(mRowsSpinBox, qOverload<int>(&QSpinBox::valueChanged), this, &lcInstructionsDialog::UpdatePageSettings);
@@ -601,6 +620,14 @@ void lcInstructionsDialog::ShowPrintDialog()
 
 	QPrinter Printer(QPrinter::HighResolution);
 	Printer.setFromTo(1, PageCount + 1);
+
+	// print on paper matching the page setup, the page already includes its margins
+	const lcInstructionsPageSetup& PageSetup = mInstructions->mPageSetup;
+	const QSizeF PageSize(qMin(PageSetup.Width, PageSetup.Height), qMax(PageSetup.Width, PageSetup.Height));
+	const QPageLayout::Orientation Orientation = PageSetup.Width > PageSetup.Height ? QPageLayout::Landscape : QPageLayout::Portrait;
+
+	Printer.setPageLayout(QPageLayout(QPageSize(PageSize, QPageSize::Point), Orientation, QMarginsF()));
+	Printer.setFullPage(true);
 
 	QPrintDialog PrintDialog(&Printer, this);
 
@@ -716,6 +743,11 @@ void lcInstructionsDialog::UpdatePageSettings()
 //	mThumbnailsWidget->setCurrentRow(0);
 
 //	mPageWidget->SetCurrentPage(Page);
+}
+
+void lcInstructionsDialog::PageSetupChanged()
+{
+	CurrentThumbnailChanged(mPageListWidget->mThumbnailsWidget->currentRow());
 }
 
 void lcInstructionsDialog::CurrentThumbnailChanged(int Index)

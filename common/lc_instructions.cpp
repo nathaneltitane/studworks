@@ -4,18 +4,30 @@
 #include "lc_model.h"
 #include "piece.h"
 #include "lc_piecedata.h"
+#include "lc_profile.h"
 
 const float lcInstructions::mDisplayDPI = 72.0f;
 
 lcInstructions::lcInstructions(Project* Project)
 	: mProject(Project)
 {
-	mPageSetup.Width = 8.5f * mDisplayDPI;
-	mPageSetup.Height = 11.0f * mDisplayDPI;
-	mPageSetup.MarginLeft = 0.5 * mDisplayDPI;
-	mPageSetup.MarginRight = 0.5 * mDisplayDPI;
-	mPageSetup.MarginTop = 0.5 * mDisplayDPI;
-	mPageSetup.MarginBottom = 0.5 * mDisplayDPI;
+	// Page sizes are stored in points, 1/72 inch, which is also one pixel of the page scene.
+	mPageSetup.Width = lcGetProfileFloat(LC_PROFILE_INSTRUCTIONS_PAGE_WIDTH);
+	mPageSetup.Height = lcGetProfileFloat(LC_PROFILE_INSTRUCTIONS_PAGE_HEIGHT);
+	mPageSetup.MarginLeft = lcGetProfileFloat(LC_PROFILE_INSTRUCTIONS_MARGIN_LEFT);
+	mPageSetup.MarginRight = lcGetProfileFloat(LC_PROFILE_INSTRUCTIONS_MARGIN_RIGHT);
+	mPageSetup.MarginTop = lcGetProfileFloat(LC_PROFILE_INSTRUCTIONS_MARGIN_TOP);
+	mPageSetup.MarginBottom = lcGetProfileFloat(LC_PROFILE_INSTRUCTIONS_MARGIN_BOTTOM);
+
+	if (mPageSetup.Width < 1.0f || mPageSetup.Height < 1.0f || mPageSetup.MarginLeft + mPageSetup.MarginRight >= mPageSetup.Width || mPageSetup.MarginTop + mPageSetup.MarginBottom >= mPageSetup.Height)
+	{
+		mPageSetup.Width = 8.5f * mDisplayDPI;
+		mPageSetup.Height = 11.0f * mDisplayDPI;
+		mPageSetup.MarginLeft = 0.5 * mDisplayDPI;
+		mPageSetup.MarginRight = 0.5 * mDisplayDPI;
+		mPageSetup.MarginTop = 0.5 * mDisplayDPI;
+		mPageSetup.MarginBottom = 0.5 * mDisplayDPI;
+	}
 
 	mPageSettings.Rows = 1;
 	mPageSettings.Columns = 1;
@@ -72,6 +84,20 @@ void lcInstructions::SetDefaultPageSettings(const lcInstructionsPageSettings& Pa
 	mPageSettings = PageSettings;
 
 	CreatePages();
+}
+
+void lcInstructions::SetPageSetup(const lcInstructionsPageSetup& PageSetup)
+{
+	mPageSetup = PageSetup;
+
+	lcSetProfileFloat(LC_PROFILE_INSTRUCTIONS_PAGE_WIDTH, mPageSetup.Width);
+	lcSetProfileFloat(LC_PROFILE_INSTRUCTIONS_PAGE_HEIGHT, mPageSetup.Height);
+	lcSetProfileFloat(LC_PROFILE_INSTRUCTIONS_MARGIN_LEFT, mPageSetup.MarginLeft);
+	lcSetProfileFloat(LC_PROFILE_INSTRUCTIONS_MARGIN_RIGHT, mPageSetup.MarginRight);
+	lcSetProfileFloat(LC_PROFILE_INSTRUCTIONS_MARGIN_TOP, mPageSetup.MarginTop);
+	lcSetProfileFloat(LC_PROFILE_INSTRUCTIONS_MARGIN_BOTTOM, mPageSetup.MarginBottom);
+
+	emit PageSetupChanged();
 }
 
 bool lcInstructions::GetBoolProperty(lcInstructionsPropertyType Type, lcModel* Model, lcStep Step) const
