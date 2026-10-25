@@ -93,6 +93,10 @@ void lcTerminalWidget::CreateTerminal()
 		DockWidget->setWindowTitle(DockWidget->windowTitle().remove('&'));
 	}
 
+	// Never shorter than two lines of the fixed width font so the prompt is not clipped.
+	const QFontMetrics Metrics(QFontDatabase::systemFont(QFontDatabase::FixedFont));
+	mPart->widget()->setMinimumHeight(2 * Metrics.lineSpacing() + 8);
+
 	mLayout->addWidget(mPart->widget());
 	setFocusProxy(mPart->widget());
 

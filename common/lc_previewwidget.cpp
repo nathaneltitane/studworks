@@ -69,7 +69,8 @@ lcPreviewDockWidget::lcPreviewDockWidget(QMainWindow* Parent)
 	mPreview->SetDrawViewportBorder(false);
 	mViewWidget->setAccessibleName(tr("Piece Preview"));
 	mViewWidget->setToolTip(tr("Inspect the previewed piece without placing it in the model."));
-	setMinimumSize(200, 200);
+	// Small enough to stack with other panels, the header rows and a few rows of view stay visible.
+	setMinimumSize(200, 4 * lcGetPanelToolBarHeight(this));
 
 	mLockAction = new QAction(tr("Lock Preview"), this);
 	mLockAction->setWhatsThis(tr("<p><b>Lock Preview</b></p><p>Keep the current piece in the preview while you browse other pieces. Unlock Preview allows the display to update again. An empty preview cannot be locked.</p>"));
@@ -178,7 +179,7 @@ void lcPreviewDockWidget::UpdateViewGeometry()
 		setFixedHeight(mViewContainer->width() + mToolBar->sizeHint().height() + (mLabelToolBar ? mLabelToolBar->sizeHint().height() : 0));
 	else
 	{
-		setMinimumHeight(200);
+		setMinimumHeight(4 * lcGetPanelToolBarHeight(this));
 		setMaximumHeight(QWIDGETSIZE_MAX);
 	}
 
