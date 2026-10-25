@@ -76,7 +76,7 @@
       <item row="2" column="1" colspan="3">
        <widget class="QComboBox" name="UnitsComboBox">
         <property name="toolTip">
-         <string>Units used for the size and margins. A pixel is 1/72 inch, one pixel of the page image.</string>
+         <string>Units used for the page size. A pixel is 1/72 inch, one pixel of the page image. Choosing a preset selects the units that match it.</string>
         </property>
        </widget>
       </item>
@@ -179,6 +179,23 @@
       <item row="1" column="3">
        <widget class="QDoubleSpinBox" name="BottomSpinBox"/>
       </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="MarginUnitsLabel">
+        <property name="text">
+         <string>Units:</string>
+        </property>
+        <property name="buddy">
+         <cstring>MarginUnitsComboBox</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1" colspan="3">
+       <widget class="QComboBox" name="MarginUnitsComboBox">
+        <property name="toolTip">
+         <string>Units used for the margins, metric or imperial. Choosing a preset selects the units that match it.</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -205,6 +222,7 @@
   <tabstop>RightSpinBox</tabstop>
   <tabstop>TopSpinBox</tabstop>
   <tabstop>BottomSpinBox</tabstop>
+  <tabstop>MarginUnitsComboBox</tabstop>
  </tabstops>
  <resources/>
  <connections>

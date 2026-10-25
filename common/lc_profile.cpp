@@ -207,7 +207,8 @@ static lcProfileEntry gProfileEntries[LC_NUM_PROFILE_KEYS] =
 	lcProfileEntry("Instructions", "MarginRight", 36.0f),                                      // LC_PROFILE_INSTRUCTIONS_MARGIN_RIGHT
 	lcProfileEntry("Instructions", "MarginTop", 36.0f),                                        // LC_PROFILE_INSTRUCTIONS_MARGIN_TOP
 	lcProfileEntry("Instructions", "MarginBottom", 36.0f),                                     // LC_PROFILE_INSTRUCTIONS_MARGIN_BOTTOM
-	lcProfileEntry("Instructions", "PageUnits", 3)                                             // LC_PROFILE_INSTRUCTIONS_PAGE_UNITS
+	lcProfileEntry("Instructions", "PageUnits", 3),                                            // LC_PROFILE_INSTRUCTIONS_PAGE_UNITS
+	lcProfileEntry("Instructions", "MarginUnits", 3)                                           // LC_PROFILE_INSTRUCTIONS_MARGIN_UNITS
 };
 
 void lcProfileInit()
