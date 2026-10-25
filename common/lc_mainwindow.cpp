@@ -99,11 +99,33 @@ void lcMainWindow::CreateWidgets()
 	mModelTabWidget->tabBar()->setContextMenuPolicy(Qt::CustomContextMenu);
 	setCentralWidget(mModelTabWidget);
 
-	// The options button sits in a panel toolbar so it has the same spacing as the options buttons of the panels.
-	QToolBar* ModelViewToolBar = lcCreatePanelToolBar(mModelTabWidget);
-	QMenu* ModelViewOptionsMenu = new QMenu(ModelViewToolBar);
-	lcAddPanelOptionsButton(ModelViewToolBar, ModelViewOptionsMenu, tr("Configure the model view display and rendering."), tr("Model View Options"));
-	mModelTabWidget->setCornerWidget(ModelViewToolBar, Qt::TopRightCorner);
+	// Model tabs and the view below them each get a complete outline so neither looks cut off.
+	// They are as tall as the panel buttons and centered in a bar as tall as the panel headers.
+	const int TabHeight = lcGetPanelButtonSize().height();
+	const int TabMargin = qMax((lcGetPanelToolBarHeight(mModelTabWidget) - TabHeight) / 2, 0);
+
+	mModelTabWidget->setStyleSheet(QString(
+		"QTabWidget::pane { border: 1px solid palette(mid); }"
+		"QTabBar::tab { border: 1px solid palette(mid); border-radius: 3px; padding: 0px 8px; min-height: %1px; margin: %2px 2px %2px 0px; }"
+		"QTabBar::tab:selected { background: palette(button); }"
+		"QTabBar::tab:!selected { background: palette(window); }").arg(TabHeight - 2).arg(TabMargin));
+
+	// The options button uses the same margins as the tabs so both line up in the tab bar.
+	QWidget* ModelViewCorner = new QWidget(mModelTabWidget);
+	QHBoxLayout* ModelViewCornerLayout = new QHBoxLayout(ModelViewCorner);
+	ModelViewCornerLayout->setContentsMargins(0, TabMargin, TabMargin, TabMargin);
+
+	QToolButton* ModelViewOptionsButton = new QToolButton(ModelViewCorner);
+	ModelViewOptionsButton->setIcon(QIcon(":/resources/gear_in.png"));
+	ModelViewOptionsButton->setToolTip(tr("Configure the model view display and rendering."));
+	ModelViewOptionsButton->setAccessibleName(tr("Model View Options"));
+	ModelViewOptionsButton->setPopupMode(QToolButton::InstantPopup);
+	lcSetupPanelButton(ModelViewOptionsButton);
+	ModelViewCornerLayout->addWidget(ModelViewOptionsButton, 0, Qt::AlignVCenter);
+
+	QMenu* ModelViewOptionsMenu = new QMenu(ModelViewOptionsButton);
+	ModelViewOptionsButton->setMenu(ModelViewOptionsMenu);
+	mModelTabWidget->setCornerWidget(ModelViewCorner, Qt::TopRightCorner);
 
 	connect(ModelViewOptionsMenu, &QMenu::aboutToShow, this, &lcMainWindow::ModelViewOptionsMenuAboutToShow);
 
