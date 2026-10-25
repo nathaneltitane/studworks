@@ -20,6 +20,19 @@ std::optional<float> lcParseFloatLocalized(const QString& Value, QLocale Locale)
 void lcSetupDialogHelp(QDialog* Dialog, QDialogButtonBox* ButtonBox);
 void lcSetupWidgetHelp(QWidget* Root, QDialogButtonBox* ButtonBox);
 
+// Gives dialogs and secondary windows a usable size the first time they are shown.
+class lcWindowGeometryFilter : public QObject
+{
+public:
+	explicit lcWindowGeometryFilter(QObject* Parent)
+		: QObject(Parent)
+	{
+	}
+
+protected:
+	bool eventFilter(QObject* Object, QEvent* Event) override;
+};
+
 // Panel headers share the look of the preview toolbar so every panel has the same spacing.
 int lcGetPanelToolBarHeight(const QWidget* Widget);
 void lcSetPanelToolBarMargins(QToolBar* ToolBar);

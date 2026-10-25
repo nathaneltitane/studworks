@@ -278,6 +278,8 @@ lcApplication::lcApplication(int& Argc, char** Argv)
 	lcProfileInit();
 
 	mPreferences.LoadDefaults();
+
+	installEventFilter(new lcWindowGeometryFilter(this));
 }
 
 lcApplication::~lcApplication()
