@@ -14,9 +14,9 @@ lcAboutDialog::lcAboutDialog(QWidget* Parent)
 	lcSetupDialogHelp(this, ui->buttonBox);
 
 #ifdef LC_CONTINUOUS_BUILD
-	ui->version->setText(tr("LeoCAD + Continuous Build %1").arg(QString::fromLatin1(QT_STRINGIFY(LC_CONTINUOUS_BUILD))));
+	ui->version->setText(tr("LeoCAD+ Continuous Build %1").arg(QString::fromLatin1(QT_STRINGIFY(LC_CONTINUOUS_BUILD))));
 #else
-	ui->version->setText(tr("LeoCAD + Version %1").arg(QString::fromLatin1(LC_VERSION_TEXT)));
+	ui->version->setText(tr("LeoCAD+ Version %1").arg(QString::fromLatin1(LC_VERSION_TEXT)));
 #endif
 
 	lcViewWidget* Widget = gMainWindow->GetActiveView()->GetWidget();

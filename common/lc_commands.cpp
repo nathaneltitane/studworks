@@ -8,7 +8,7 @@ const lcCommand gCommands[] =
 		QT_TRANSLATE_NOOP("Action", "File.New"),
 		QT_TRANSLATE_NOOP("Menu", "&New"),
 		QT_TRANSLATE_NOOP("Status", "Create a new model"),
-		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>New Model</b></p><p>Create a new, empty model. If the current model has unsaved changes, LeoCAD + asks whether to save them before replacing it.</p>"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>New Model</b></p><p>Create a new, empty model. If the current model has unsaved changes, LeoCAD+ asks whether to save them before replacing it.</p>"),
 		"Ctrl+N"
 	},
 	// LC_FILE_OPEN
@@ -32,7 +32,7 @@ const lcCommand gCommands[] =
 		QT_TRANSLATE_NOOP("Action", "File.Reload"),
 		QT_TRANSLATE_NOOP("Menu", "&Reload"),
 		QT_TRANSLATE_NOOP("Status", "Reload the current model from disk"),
-		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Reload Model</b></p><p>Read the current model file again from disk, replacing the model in LeoCAD +. If the model has unsaved changes, LeoCAD + asks before discarding them.</p>"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Reload Model</b></p><p>Read the current model file again from disk, replacing the model in LeoCAD+. If the model has unsaved changes, LeoCAD+ asks before discarding them.</p>"),
 		""
 	},
 	// LC_FILE_TOGGLE_WATCH_FILE_CHANGES
@@ -1576,7 +1576,7 @@ const lcCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "File.ToggleOpenMostRecent"),
 		QT_TRANSLATE_NOOP("Menu", "Open Most Recent File on Startup"),
-		QT_TRANSLATE_NOOP("Status", "Toggle opening the most recently used file when LeoCAD + starts"),
+		QT_TRANSLATE_NOOP("Status", "Toggle opening the most recently used file when LeoCAD+ starts"),
 		"",
 		""
 	},

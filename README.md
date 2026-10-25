@@ -10,7 +10,7 @@ Useful? Star the repository - it helps others find it.
 
 ---
 
-[[ LeoCAD + // Project Page ]](https://github.com/nathaneltitane/leocad-plus)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;[ Version // 2026-10-25 ]
+[[ LeoCAD+ // Project Page ]](https://github.com/nathaneltitane/leocad-plus)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;[ Version // 2026-10-25 ]
 
 ---
 
@@ -18,7 +18,7 @@ Useful? Star the repository - it helps others find it.
 
 10-25-2026 ↴
 
-- LeoCAD + is now its own project, built on top of [LeoCAD](https://github.com/leozide/leocad)
+- LeoCAD+ is now its own project, built on top of [LeoCAD](https://github.com/leozide/leocad)
 - Default names use a three digit number and no number sign: 'Group 001', 'Minifigure 001', 'Submodel 001.ldr', 'Camera 001', 'Spot Light 001'
 - Duplicated submodels take the next free number instead of 'Copy of': 'Car.ldr' becomes 'Car 001.ldr'
 - Panels share one look: headers, buttons, text boxes and spacing follow the options (gear) button
@@ -37,12 +37,12 @@ Useful? Star the repository - it helps others find it.
 
 ---
 
-### Welcome to [LeoCAD +](https://github.com/nathaneltitane/leocad-plus)
+### Welcome to [LeoCAD+](https://github.com/nathaneltitane/leocad-plus)
 
-LeoCAD + is an enhanced build of [LeoCAD](https://www.leocad.org), the free CAD program for creating virtual LEGO® models with the [LDraw](https://www.ldraw.org) parts library.
+LeoCAD+ is an enhanced build of [LeoCAD](https://www.leocad.org), the free CAD program for creating virtual LEGO® models with the [LDraw](https://www.ldraw.org) parts library.
 It keeps LeoCAD's file format and settings, so models open in either program and nothing needs to be migrated.
 
-Everything LeoCAD does, LeoCAD + does too - with a reworked interface and a set of modeling and instructions features on top:
+Everything LeoCAD does, LeoCAD+ does too - with a reworked interface and a set of modeling and instructions features on top:
 
 - **Panels** ↴
   - Uniform panel headers, buttons and text boxes, all sized from the options (gear) button
@@ -91,17 +91,17 @@ Everything LeoCAD does, LeoCAD + does too - with a reworked interface and a set 
 
 ### Credits:
 
-LeoCAD + is based on [LeoCAD](https://github.com/leozide/leocad) by Leonardo Zide and its contributors - see 'docs/CREDITS.txt'.
+LeoCAD+ is based on [LeoCAD](https://github.com/leozide/leocad) by Leonardo Zide and its contributors - see 'docs/CREDITS.txt'.
 
 ### License:
 
-LeoCAD + is free software released under the GNU General Public License version 2, the same license as LeoCAD - see 'docs/COPYING.txt'.
+LeoCAD+ is free software released under the GNU General Public License version 2, the same license as LeoCAD - see 'docs/COPYING.txt'.
 
 LEGO® is a trademark of the LEGO Group, which does not sponsor, authorize or endorse this project.
 
 ### Repositories:
 
-[LeoCAD](https://github.com/leozide/leocad) as the application on which LeoCAD + is built.
+[LeoCAD](https://github.com/leozide/leocad) as the application on which LeoCAD+ is built.
 
 [LDraw](https://www.ldraw.org) for the parts library and file format.
 
@@ -131,7 +131,7 @@ LEGO® is a trademark of the LEGO Group, which does not sponsor, authorize or en
 
 ---
 
-[[ LeoCAD + // Project Page ]](https://github.com/nathaneltitane/leocad-plus)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;[ Version // 2026-10-25 ]
+[[ LeoCAD+ // Project Page ]](https://github.com/nathaneltitane/leocad-plus)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;[ Version // 2026-10-25 ]
 
 ---
 
