@@ -25,13 +25,6 @@ lcMinifigDialog::lcMinifigDialog(QWidget* Parent, bool Docked)
 		setWindowFlags(Qt::Widget);
 		ui->buttonBox->setStandardButtons(QDialogButtonBox::NoButton);
 
-		// Add to Model sits on the template row, so the panel needs no button row.
-		QToolButton* AddButton = new QToolButton(ui->TemplateGroup);
-		AddButton->setText(tr("Add to Model"));
-		AddButton->setToolTip(tr("Add this minifigure to the current model"));
-		connect(AddButton, &QToolButton::clicked, this, &lcMinifigDialog::accept);
-		ui->horizontalLayout_2->addWidget(AddButton);
-		lcSetupPanelButton(AddButton);
 		ui->buttonBox->hide();
 	}
 
@@ -182,8 +175,31 @@ lcMinifigDialog::lcMinifigDialog(QWidget* Parent, bool Docked)
 	ui->TemplateComboBox->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
 	ui->TemplateComboBox->setMinimumContentsLength(8);
 
-	for (QToolButton* Button : { ui->TemplateSaveButton, ui->TemplateDeleteButton, ui->TemplateImportButton, ui->TemplateExportButton })
+	// The template buttons and Add to Model share a row below the selector and split its width.
+	QWidget* TemplateButtons = new QWidget(this);
+	QHBoxLayout* TemplateButtonsLayout = new QHBoxLayout(TemplateButtons);
+	TemplateButtonsLayout->setContentsMargins(0, 0, 0, 0);
+	ui->verticalLayout->insertWidget(ui->verticalLayout->indexOf(ui->TemplateGroup) + 1, TemplateButtons);
+
+	std::vector<QToolButton*> RowButtons = { ui->TemplateSaveButton, ui->TemplateDeleteButton, ui->TemplateImportButton, ui->TemplateExportButton };
+
+	if (mDocked)
+	{
+		QToolButton* AddButton = new QToolButton(TemplateButtons);
+		AddButton->setText(tr("Add to Model"));
+		AddButton->setToolTip(tr("Add this minifigure to the current model"));
+		connect(AddButton, &QToolButton::clicked, this, &lcMinifigDialog::accept);
+		RowButtons.push_back(AddButton);
+	}
+
+	for (QToolButton* Button : RowButtons)
+	{
+		TemplateButtonsLayout->addWidget(Button);
+		Button->setToolButtonStyle(Qt::ToolButtonTextOnly);
 		lcSetupPanelButton(Button);
+		Button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+		Button->setMinimumWidth(0);
+	}
 
 	// The options button holds the preview rendering settings, like the other preview panels.
 	QToolButton* OptionsButton = new QToolButton(ui->TemplateGroup);
