@@ -26,7 +26,10 @@ lcPropertiesWidget::lcPropertiesWidget(QWidget* Parent)
 
 		const QString Name = tr("%1: %2").arg(mCategoryWidgets[static_cast<int>(Property.Category)].Title, Property.Label->text());
 		Property.Label->setBuddy(Property.Editor);
-		Property.Editor->setAccessibleName(Name);
+
+		if (Property.Editor->accessibleName().isEmpty())
+			Property.Editor->setAccessibleName(Name);
+
 		Property.Editor->setWhatsThis(Property.Editor->toolTip());
 		Property.Label->setWhatsThis(Property.Editor->whatsThis());
 
@@ -74,6 +77,15 @@ bool lcPropertiesWidget::event(QEvent* Event)
 		emit LayoutChanged();
 
 	return Result;
+}
+
+bool lcPropertiesWidget::eventFilter(QObject* Object, QEvent* Event)
+{
+	// The transform rows sit below the panel, so their changes also resize it.
+	if (Object == mTransformRows && Event->type() == QEvent::LayoutRequest)
+		emit LayoutChanged();
+
+	return QWidget::eventFilter(Object, Event);
 }
 
 void lcPropertiesWidget::CategoryStateChanged(bool Expanded)
@@ -185,16 +197,21 @@ void lcPropertiesWidget::UpdateKeyFrameWidget(lcObjectPropertyId PropertyId)
 	}
 }
 
-void lcPropertiesWidget::AddKeyFrameWidget(lcObjectPropertyId PropertyId)
+lcKeyFrameWidget* lcPropertiesWidget::CreateKeyFrameWidget(lcObjectPropertyId PropertyId)
 {
 	lcKeyFrameWidget* Widget = new lcKeyFrameWidget(this);
 	Widget->setToolTip(tr("Toggle Keyframe"));
 
 	connect(Widget, &QCheckBox::stateChanged, this, &lcPropertiesWidget::KeyFrameChanged);
 
-	mLayout->addWidget(Widget, mLayoutRow, 3);
-
 	mPropertyWidgets[static_cast<int>(PropertyId)].KeyFrame = Widget;
+
+	return Widget;
+}
+
+void lcPropertiesWidget::AddKeyFrameWidget(lcObjectPropertyId PropertyId)
+{
+	mLayout->addWidget(CreateKeyFrameWidget(PropertyId), mLayoutRow, 3);
 }
 
 std::pair<QVariant, bool> lcPropertiesWidget::GetUpdateValue(lcObjectPropertyId PropertyId)
@@ -607,10 +624,8 @@ void lcPropertiesWidget::UpdateFloat(lcObjectPropertyId PropertyId, float Value)
 	UpdateKeyFrameWidget(PropertyId);
 }
 
-void lcPropertiesWidget::AddFloatProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames, float Min, float Max)
+lcDoubleSpinBox* lcPropertiesWidget::CreateFloatEditor(lcObjectPropertyId PropertyId, const QString& ToolTip, float Min, float Max)
 {
-	AddLabel(PropertyId, Text, ToolTip);
-
 	lcDoubleSpinBox* Widget = new lcDoubleSpinBox(this);
 	Widget->setToolTip(ToolTip);
 
@@ -626,16 +641,61 @@ void lcPropertiesWidget::AddFloatProperty(lcObjectPropertyId PropertyId, const Q
 	connect(Widget, &lcDoubleSpinBox::valueChanged, this, &lcPropertiesWidget::FloatChanged);
 #endif
 
-	mLayout->addWidget(Widget, mLayoutRow, 2);
-
 	mCurrentCategory->Properties.push_back(PropertyId);
 	mPropertyWidgets[static_cast<int>(PropertyId)].Editor = Widget;
 	mPropertyWidgets[static_cast<int>(PropertyId)].Category = mCurrentCategory->Category;
+
+	return Widget;
+}
+
+void lcPropertiesWidget::AddFloatProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames, float Min, float Max)
+{
+	AddLabel(PropertyId, Text, ToolTip);
+
+	lcDoubleSpinBox* Widget = CreateFloatEditor(PropertyId, ToolTip, Min, Max);
+	mLayout->addWidget(Widget, mLayoutRow, 2);
 
 	if (SupportsKeyFrames)
 		AddKeyFrameWidget(PropertyId);
 
 	mLayoutRow++;
+}
+
+void lcPropertiesWidget::AddVectorProperty(const std::array<lcObjectPropertyId, 3>& PropertyIds, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames, float Min, float Max)
+{
+	// The X, Y and Z values share a row below the panel like the transform boxes, with one keyframe since they are keyed together.
+	QToolBar* ToolBar = lcCreatePanelToolBar(mTransformRows);
+	mTransformRowsLayout->addWidget(ToolBar);
+
+	// An inactive button with the first letter of the name takes the place of the transform button so the boxes line up.
+	QToolButton* NameButton = new QToolButton(ToolBar);
+	NameButton->setText(Text.left(1));
+	NameButton->setToolTip(Text);
+	NameButton->setAccessibleName(Text);
+	NameButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
+	ToolBar->addWidget(NameButton);
+	lcSetupPanelButton(NameButton);
+	NameButton->setFixedSize(lcGetPanelButtonSize());
+
+	// It only names the row, so it ignores the mouse.
+	NameButton->setAttribute(Qt::WA_TransparentForMouseEvents);
+
+	const QString AxisNames[3] = { tr("X"), tr("Y"), tr("Z") };
+
+	for (int Axis = 0; Axis < 3; Axis++)
+	{
+		lcDoubleSpinBox* Widget = CreateFloatEditor(PropertyIds[Axis], tr("%1 (%2)").arg(ToolTip, AxisNames[Axis]), Min, Max);
+		Widget->setAccessibleName(tr("%1 %2").arg(Text, AxisNames[Axis]));
+
+		// Share the row equally instead of reserving room for the largest possible value.
+		Widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+		Widget->setMinimumWidth(Widget->fontMetrics().horizontalAdvance(QLatin1String("-0000.00")));
+		lcSetupPanelEdit(Widget);
+		ToolBar->addWidget(Widget);
+	}
+
+	if (SupportsKeyFrames)
+		ToolBar->addWidget(CreateKeyFrameWidget(PropertyIds[0]));
 }
 
 void lcPropertiesWidget::IntegerChanged()
@@ -1189,6 +1249,12 @@ void lcPropertiesWidget::CreateWidgets()
 {
 	mLayout = new QGridLayout(this);
 	mLayout->setVerticalSpacing(1);
+
+	mTransformRows = new QWidget(this);
+	mTransformRows->installEventFilter(this);
+	mTransformRowsLayout = new QVBoxLayout(mTransformRows);
+	mTransformRowsLayout->setContentsMargins(0, 0, 0, 0);
+	mTransformRowsLayout->setSpacing(0);
 	mLayout->setColumnStretch(2, 1);
 
 	AddCategory(CategoryIndex::Piece, tr("Piece"), false);
@@ -1277,15 +1343,8 @@ void lcPropertiesWidget::CreateWidgets()
 
 	AddCategory(CategoryIndex::ObjectTransform, tr("Transform"), false);
 
-	AddFloatProperty(lcObjectPropertyId::ObjectPositionX, tr("Position X"), tr("Position of the object"), true, -FLT_MAX, FLT_MAX);
-	AddFloatProperty(lcObjectPropertyId::ObjectPositionY, tr("Y"), tr("Position of the object"), true, -FLT_MAX, FLT_MAX);
-	AddFloatProperty(lcObjectPropertyId::ObjectPositionZ, tr("Z"), tr("Position of the object"), true, -FLT_MAX, FLT_MAX);
-
-	AddSpacing();
-
-	AddFloatProperty(lcObjectPropertyId::ObjectRotationX, tr("Rotation X"), tr("Rotation of the object in degrees"), true, -FLT_MAX, FLT_MAX);
-	AddFloatProperty(lcObjectPropertyId::ObjectRotationY, tr("Y"), tr("Rotation of the object in degrees"), true, -FLT_MAX, FLT_MAX);
-	AddFloatProperty(lcObjectPropertyId::ObjectRotationZ, tr("Z"), tr("Rotation of the object in degrees"), true, -FLT_MAX, FLT_MAX);
+	AddVectorProperty({ lcObjectPropertyId::ObjectPositionX, lcObjectPropertyId::ObjectPositionY, lcObjectPropertyId::ObjectPositionZ }, tr("Position"), tr("Position of the object"), true, -FLT_MAX, FLT_MAX);
+	AddVectorProperty({ lcObjectPropertyId::ObjectRotationX, lcObjectPropertyId::ObjectRotationY, lcObjectPropertyId::ObjectRotationZ }, tr("Rotation"), tr("Rotation of the object in degrees"), true, -FLT_MAX, FLT_MAX);
 
 	AddSpacing();
 
@@ -1359,7 +1418,13 @@ void lcPropertiesWidget::SetPropertyWidgetsVisible(lcObjectPropertyId PropertyId
 		Property.Label->setVisible(Visible);
 
 	if (Property.Editor)
+	{
 		Property.Editor->setVisible(Visible);
+
+		// Editors sharing a row also show or hide the row.
+		if (Property.Editor->parentWidget() != this)
+			Property.Editor->parentWidget()->setVisible(Visible);
+	}
 
 	if (Property.KeyFrame)
 		Property.KeyFrame->setVisible(Visible);

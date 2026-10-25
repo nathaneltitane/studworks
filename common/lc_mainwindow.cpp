@@ -853,6 +853,7 @@ void lcMainWindow::CreateToolBars()
 	lcSetupPanelEdit(mTransformZEdit);
 	TransformWidget->addWidget(mTransformZEdit);
 
+	PropertiesLayout->addWidget(mPropertiesWidget->GetTransformRowsWidget());
 	PropertiesLayout->addWidget(TransformWidget);
 
 	// The panel is always exactly as tall as the rows it shows, so nothing is cut off or scrolled.
@@ -863,7 +864,7 @@ void lcMainWindow::CreateToolBars()
 		const int Margin = 6;
 		const int ScrollHeight = mPropertiesWidget->sizeHint().height() + 2 * PropertiesScrollArea->frameWidth() + Margin;
 		const QMargins Margins = PropertiesLayout->contentsMargins();
-		const int PanelHeight = ScrollHeight + PropertiesLayout->spacing() + TransformWidget->sizeHint().height() + Margins.top() + Margins.bottom();
+		const int PanelHeight = ScrollHeight + mPropertiesWidget->GetTransformRowsWidget()->sizeHint().height() + TransformWidget->sizeHint().height() + Margins.top() + Margins.bottom();
 
 		PropertiesScrollArea->setFixedHeight(ScrollHeight);
 		PropertiesWidget->setFixedHeight(PanelHeight);

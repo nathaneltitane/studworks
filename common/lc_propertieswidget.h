@@ -4,6 +4,7 @@
 #include "lc_math.h"
 
 class lcCollapsibleWidgetButton;
+class lcDoubleSpinBox;
 class lcKeyFrameWidget;
 
 class lcPropertiesWidget : public QWidget
@@ -14,6 +15,11 @@ public:
 	lcPropertiesWidget(QWidget* Parent);
 
 	void Update(const std::vector<lcObject*>& Selection, lcObject* Focus);
+
+	QWidget* GetTransformRowsWidget() const
+	{
+		return mTransformRows;
+	}
 
 signals:
 	void LayoutChanged();
@@ -95,11 +101,15 @@ protected:
 
 	void AddCategory(CategoryIndex Index, const QString& Title, bool Collapsible);
 	bool event(QEvent* Event) override;
+	bool eventFilter(QObject* Object, QEvent* Event) override;
 	void AddSpacing();
 	void AddLabel(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip);
+	lcKeyFrameWidget* CreateKeyFrameWidget(lcObjectPropertyId PropertyId);
 	void AddKeyFrameWidget(lcObjectPropertyId PropertyId);
 	void AddBoolProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames);
+	lcDoubleSpinBox* CreateFloatEditor(lcObjectPropertyId PropertyId, const QString& ToolTip, float Min, float Max);
 	void AddFloatProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames, float Min, float Max);
+	void AddVectorProperty(const std::array<lcObjectPropertyId, 3>& PropertyIds, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames, float Min, float Max);
 	void AddIntegerProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames, int Min, int Max);
 	void AddStepNumberProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames);
 	void AddStringProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames);
@@ -145,6 +155,8 @@ protected:
 
 	CategoryWidgets* mCurrentCategory = nullptr;
 	QGridLayout* mLayout = nullptr;
+	QWidget* mTransformRows = nullptr;
+	QVBoxLayout* mTransformRowsLayout = nullptr;
 	int mLayoutRow = 0;
 
 	LayoutMode mLayoutMode = LayoutMode::Count;
