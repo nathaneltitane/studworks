@@ -1471,6 +1471,10 @@ void lcMainWindow::Print(QPrinter* Printer)
 				int StepHeight = MarginRect.height();
 
 				const lcInstructionsPage& PageLayout = Instructions->mPages[Page - 1];
+
+				if (PageLayout.Steps.empty())
+					continue;
+
 				lcModel* Model = PageLayout.Steps[0].Model;
 				lcStep Step = PageLayout.Steps[0].Step;
 				QImage Image = Model->GetStepImage(false, StepWidth, StepHeight, Step);

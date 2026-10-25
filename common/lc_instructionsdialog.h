@@ -141,7 +141,12 @@ public:
 	QListWidget* mThumbnailsWidget = nullptr;
 
 protected:
+	void OptionsMenuAboutToShow();
+
 	lcInstructions* mInstructions;
+	QAction* mInsertBlankBeforeAction = nullptr;
+	QAction* mInsertBlankAfterAction = nullptr;
+	QAction* mRemoveBlankAction = nullptr;
 };
 
 class lcInstructionsPropertiesWidget : public QDockWidget
