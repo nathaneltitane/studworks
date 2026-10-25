@@ -23,20 +23,24 @@ lcMinifigDialog::lcMinifigDialog(QWidget* Parent, bool Docked)
 	if (mDocked)
 	{
 		setWindowFlags(Qt::Widget);
-		ui->buttonBox->setStandardButtons(QDialogButtonBox::Help);
+		ui->buttonBox->setStandardButtons(QDialogButtonBox::NoButton);
 
 		QPushButton* AddButton = ui->buttonBox->addButton(tr("Add to Model"), QDialogButtonBox::ActionRole);
 		AddButton->setToolTip(tr("Add this minifigure to the current model"));
 		connect(AddButton, &QPushButton::clicked, this, &lcMinifigDialog::accept);
 	}
 
-	lcSetupDialogHelp(this, ui->buttonBox);
+	// Help comes from What's This and F1 instead of a help button.
+	lcSetupDialogHelp(this, nullptr);
+
+	if (!mDocked)
+		setWindowFlag(Qt::WindowContextHelpButtonHint, true);
 
 	QGridLayout* MinifigLayout = ui->MinifigLayout;
 
 	bool HasSpinBox[LC_MFW_NUMITEMS] = { true, true, true, false, false, false, false, true, true, true, true, true, true, true, true, true, true };
 	bool IsLeft[LC_MFW_NUMITEMS] = { true, true, true, true, false, false, false, false, true, false, true, false, true, false, true, false, true };
-	int LeftRow = 0, RightRow = 2;
+	const int NeckIndex = 3;
 
 	QString Labels[LC_MFW_NUMITEMS] =
 	{
@@ -44,26 +48,21 @@ lcMinifigDialog::lcMinifigDialog(QWidget* Parent, bool Docked)
 		tr("Left Hand Accessory"), tr("Right Hand Accessory"), tr("Left Leg"), tr("Right Leg"), tr("Left Leg Accessory"), tr("Right Leg Accessory")
 	};
 
-	QSizePolicy PieceButtonSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-	PieceButtonSizePolicy.setHorizontalStretch(2);
-	PieceButtonSizePolicy.setVerticalStretch(0);
+	std::copy(std::begin(Labels), std::end(Labels), mSectionNames.begin());
 
-	QPixmap Pixmap(1, 1);
-	Pixmap.fill(QColor::fromRgba64(0, 0, 0, 0));
+	// The neck spans the top, the other sections stack on both sides of the preview.
+	constexpr int FirstSideRow = 2;
+	int LeftRow = FirstSideRow, RightRow = FirstSideRow;
 
 	for (int ItemIndex = 0; ItemIndex < LC_MFW_NUMITEMS; ItemIndex++)
 	{
-		bool Left = IsLeft[ItemIndex];
-
 		lcElidableToolButton* PieceButton = new lcElidableToolButton(this);
 		mPieceButtons[ItemIndex] = PieceButton;
-		PieceButton->setSizePolicy(PieceButtonSizePolicy);
-		PieceButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-		PieceButton->setIcon(Pixmap);
+		PieceButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+		PieceButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
 		PieceButton->setObjectName(QString("MinifigPiece%1").arg(ItemIndex));
 		PieceButton->setAccessibleName(tr("%1 piece").arg(Labels[ItemIndex]));
-		PieceButton->setToolTip(tr("Choose the piece for %1, or None to omit it.").arg(Labels[ItemIndex]));
-		PieceButton->setWhatsThis(tr("<p><b>Choose Piece</b></p><p>Choose a piece for this section of the minifigure. Select None to omit it. The preview updates when you select a different piece.</p>"));
+		PieceButton->setWhatsThis(tr("<p><b>Choose Piece</b></p><p>Choose a piece for this section of the minifigure. Select None to omit it, the selector then shows the name of the section. The preview updates when you select a different piece.</p>"));
 
 		connect(PieceButton, &QToolButton::clicked, this, &lcMinifigDialog::PieceButtonClicked);
 
@@ -94,41 +93,47 @@ lcMinifigDialog::lcMinifigDialog(QWidget* Parent, bool Docked)
 
 		QLabel* Label = new QLabel(Labels[ItemIndex], this);
 		Label->setBuddy(PieceButton);
-		Label->setToolTip(PieceButton->toolTip());
+		Label->setToolTip(tr("Choose the piece for %1, or None to omit it.").arg(Labels[ItemIndex]));
 		Label->setWhatsThis(PieceButton->whatsThis());
 
-		auto AddRow=[MinifigLayout, Label, PieceButton, ColorPicker, SpinBox](int& Row, int Column)
+		// Each section is a label above [Color] [Selection] [Angle], the selection takes the space left over.
+		auto AddRow = [MinifigLayout, Label, PieceButton, ColorPicker, SpinBox](int& Row, int Column, int ColumnCount)
 		{
-			if (Row)
-			{
+			if (Row > FirstSideRow)
 				MinifigLayout->setRowMinimumHeight(Row++, 2);
-			}
 
-			MinifigLayout->addWidget(Label, Row++, Column + 0, 1, 3);
-			MinifigLayout->addWidget(PieceButton, Row, Column + 0);
-			MinifigLayout->addWidget(ColorPicker, Row, Column + 1);
+			MinifigLayout->addWidget(Label, Row++, Column, 1, ColumnCount);
+			MinifigLayout->addWidget(ColorPicker, Row, Column);
+			MinifigLayout->addWidget(PieceButton, Row, Column + 1, 1, SpinBox ? ColumnCount - 2 : ColumnCount - 1);
 
 			if (SpinBox)
-				MinifigLayout->addWidget(SpinBox, Row, Column + 2);
+				MinifigLayout->addWidget(SpinBox, Row, Column + ColumnCount - 1);
 
 			Row++;
 		};
 
-		if (Left)
-			AddRow(LeftRow, 0);
+		if (ItemIndex == NeckIndex)
+		{
+			int NeckRow = 0;
+			AddRow(NeckRow, 0, 7);
+		}
+		else if (IsLeft[ItemIndex])
+			AddRow(LeftRow, 0, 3);
 		else
-			AddRow(RightRow, 4);
+			AddRow(RightRow, 4, 3);
 	}
 
+	MinifigLayout->setColumnStretch(1, 1);
+	MinifigLayout->setColumnStretch(3, 1);
+	MinifigLayout->setColumnStretch(5, 1);
+
+	// The preview is as tall as the stacked section rows beside it.
 	QFrame* PreviewFrame = new QFrame(ui->widget);
-	QSizePolicy PreviewSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-	PreviewSizePolicy.setHorizontalStretch(3);
-	PreviewSizePolicy.setVerticalStretch(0);
-	PreviewFrame->setSizePolicy(PreviewSizePolicy);
+	PreviewFrame->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Ignored);
 	PreviewFrame->setFrameShape(QFrame::NoFrame);
 	PreviewFrame->setFrameShadow(QFrame::Plain);
 
-	MinifigLayout->addWidget(PreviewFrame, 0, 3, -1, 1);
+	MinifigLayout->addWidget(PreviewFrame, FirstSideRow, 3, qMax(LeftRow, RightRow) - FirstSideRow, 1);
 
 	QGridLayout* PreviewLayout = new QGridLayout(PreviewFrame);
 	PreviewLayout->setContentsMargins(0, 0, 0, 0);
@@ -152,14 +157,7 @@ lcMinifigDialog::lcMinifigDialog(QWidget* Parent, bool Docked)
 
 	for (int ItemIndex = 0; ItemIndex < LC_MFW_NUMITEMS; ItemIndex++)
 	{
-		const std::vector<lcMinifigPieceInfo>& PieceList = mMinifigWizard->mSettings[ItemIndex];
-		int PieceIndex = mMinifigWizard->GetSelectionIndex(ItemIndex);
-		QToolButton* PieceButton = mPieceButtons[ItemIndex];
-
-		if (mMinifigWizard->mMinifig.PieceData[ItemIndex])
-			PieceButton->setText(PieceList[PieceIndex].Description);
-		else
-			PieceButton->setText(tr("None"));
+		UpdatePieceButton(ItemIndex);
 
 		lcColorPicker* ColorPicker = mColorPickers[ItemIndex];
 		QSignalBlocker ColorPickerBlocker(ColorPicker);
@@ -170,11 +168,27 @@ lcMinifigDialog::lcMinifigDialog(QWidget* Parent, bool Docked)
 	UpdateTemplateCombo();
 
 	mMinifigWizard->Calculate();
-	mView->GetCamera()->SetViewpoint(lcVector3(0.0f, -270.0f, 90.0f));
+	mView->GetCamera()->SetViewpoint(lcViewpoint::Front);
 	mView->ZoomExtents(lcGeometryBoundsMode::IncludeFallback, false);
 
 	if (QPushButton* OkButton = ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok))
 		OkButton->setFocus();
+
+	ui->horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
+	ui->TemplateComboBox->setPlaceholderText(tr("Templates"));
+
+	// The options button holds the preview rendering settings, like the other preview panels.
+	QToolButton* OptionsButton = new QToolButton(ui->TemplateGroup);
+	OptionsButton->setIcon(QIcon(":/resources/gear_in.png"));
+	OptionsButton->setToolTip(tr("Configure the minifigure preview rendering."));
+	OptionsButton->setAccessibleName(tr("Minifigure Preview Options"));
+	OptionsButton->setPopupMode(QToolButton::InstantPopup);
+	lcSetupPanelButton(OptionsButton);
+	ui->horizontalLayout_2->addWidget(OptionsButton);
+
+	QMenu* OptionsMenu = new QMenu(OptionsButton);
+	OptionsButton->setMenu(OptionsMenu);
+	connect(OptionsMenu, &QMenu::aboutToShow, this, &lcMinifigDialog::OptionsMenuAboutToShow);
 
 	connect(ui->TemplateComboBox, &QComboBox::currentTextChanged, this, &lcMinifigDialog::TemplateComboBoxCurrentTextChanged);
 	connect(ui->TemplateSaveButton, &QPushButton::clicked, this, &lcMinifigDialog::TemplateSaveButtonClicked);
@@ -213,6 +227,38 @@ void lcMinifigDialog::FitPreview()
 	mView->Redraw();
 }
 
+void lcMinifigDialog::UpdatePieceButton(int ItemIndex)
+{
+	QToolButton* PieceButton = mPieceButtons[ItemIndex];
+	const lcPieceData* PieceData = mMinifigWizard->mMinifig.PieceData[ItemIndex].Get();
+	QString Description;
+
+	for (const lcMinifigPieceInfo& PieceInfo : mMinifigWizard->mSettings[ItemIndex])
+	{
+		if (PieceData && PieceInfo.PieceData == PieceData)
+		{
+			Description = PieceInfo.Description;
+			break;
+		}
+	}
+
+	// An empty section shows its name like a placeholder, a chosen piece shows its full name in the tool tip.
+	QPalette Palette = PieceButton->palette();
+	Palette.setColor(QPalette::ButtonText, Description.isEmpty() ? palette().color(QPalette::PlaceholderText) : palette().color(QPalette::ButtonText));
+	PieceButton->setPalette(Palette);
+
+	PieceButton->setText(Description.isEmpty() ? mSectionNames[ItemIndex] : Description);
+	PieceButton->setToolTip(Description.isEmpty() ? tr("Choose the piece for %1, or None to omit it.").arg(mSectionNames[ItemIndex]) : tr("%1: %2").arg(mSectionNames[ItemIndex], Description));
+}
+
+void lcMinifigDialog::OptionsMenuAboutToShow()
+{
+	QMenu* Menu = qobject_cast<QMenu*>(sender());
+	Menu->clear();
+
+	gMainWindow->AddRenderTargetActions(Menu, lcRenderTarget::Minifig);
+}
+
 void lcMinifigDialog::reject()
 {
 	if (!mDocked)
@@ -230,9 +276,6 @@ void lcMinifigDialog::UpdateTemplateCombo()
 	QSignalBlocker Blocker(ui->TemplateComboBox);
 
 	ui->TemplateComboBox->clear();
-
-	if (mCurrentTemplateName.isEmpty())
-		ui->TemplateComboBox->addItem(QString());
 
 	QString CurrentName = mCurrentTemplateName;
 
@@ -254,7 +297,11 @@ void lcMinifigDialog::UpdateTemplateCombo()
 		ui->TemplateComboBox->insertSeparator(ui->TemplateComboBox->count());
 	ui->TemplateComboBox->addItem(MinifigWizard::GetDefaultTemplateName());
 
-	ui->TemplateComboBox->setCurrentText(CurrentName);
+	// Without a current template the selector shows its name as a placeholder.
+	if (mCurrentTemplateName.isEmpty())
+		ui->TemplateComboBox->setCurrentIndex(-1);
+	else
+		ui->TemplateComboBox->setCurrentText(CurrentName);
 }
 
 void lcMinifigDialog::TemplateComboBoxCurrentTextChanged(const QString& TemplateName)
@@ -278,26 +325,7 @@ void lcMinifigDialog::TemplateComboBoxCurrentTextChanged(const QString& Template
 
 	for (int PartIdx = 0; PartIdx < LC_MFW_NUMITEMS; PartIdx++)
 	{
-		if (!Template.Parts[PartIdx].isEmpty())
-		{
-			lcPieceData* PieceData = mMinifigWizard->mMinifig.PieceData[PartIdx].Get();
-
-			if (PieceData)
-			{
-				for (const lcMinifigPieceInfo& MinifigPieceInfo : mMinifigWizard->mSettings[PartIdx])
-				{
-					if (PieceData == MinifigPieceInfo.PieceData)
-					{
-						mPieceButtons[PartIdx]->setText(MinifigPieceInfo.Description);
-						break;
-					}
-				}
-			}
-		}
-		else
-		{
-			mPieceButtons[PartIdx]->setText(tr("None"));
-		}
+		UpdatePieceButton(PartIdx);
 
 		QSignalBlocker ColorBlocker(mColorPickers[PartIdx]);
 
@@ -470,17 +498,7 @@ void lcMinifigDialog::PieceButtonClicked()
 	mMinifigWizard->SetPieceData(ItemIndex, NewPiece);
 	FitPreview();
 
-	if (NewPiece)
-	{
-		const std::vector<lcMinifigPieceInfo>& PieceList = mMinifigWizard->mSettings[ItemIndex];
-		int PieceIndex = mMinifigWizard->GetSelectionIndex(ItemIndex);
-
-		PieceButton->setText(PieceList[PieceIndex].Description);
-	}
-	else
-	{
-		PieceButton->setText(tr("None"));
-	}
+	UpdatePieceButton(ItemIndex);
 }
 
 void lcMinifigDialog::ColorChanged(int Index)

@@ -2177,6 +2177,10 @@ void lcMainWindow::AddRenderTargetActions(QMenu* Menu, lcRenderTarget Target)
 		Commands = { LC_VIEW_TOGGLE_PREVIEW_SYNC_RENDERING, LC_VIEW_PREVIEW_SHADING_WIREFRAME, LC_VIEW_PREVIEW_SHADING_FLAT, LC_VIEW_PREVIEW_SHADING_DEFAULT_LIGHTS, LC_VIEW_TOGGLE_PREVIEW_EDGE_LINES, LC_VIEW_TOGGLE_PREVIEW_CONDITIONAL_LINES };
 		break;
 
+	case lcRenderTarget::Minifig:
+		Commands = { LC_VIEW_TOGGLE_MINIFIG_SYNC_RENDERING, LC_VIEW_MINIFIG_SHADING_WIREFRAME, LC_VIEW_MINIFIG_SHADING_FLAT, LC_VIEW_MINIFIG_SHADING_DEFAULT_LIGHTS, LC_VIEW_TOGGLE_MINIFIG_EDGE_LINES, LC_VIEW_TOGGLE_MINIFIG_CONDITIONAL_LINES };
+		break;
+
 	case lcRenderTarget::Pieces:
 		Commands = { LC_VIEW_TOGGLE_PIECES_SYNC_RENDERING, LC_VIEW_PIECES_SHADING_WIREFRAME, LC_VIEW_PIECES_SHADING_FLAT, LC_VIEW_PIECES_SHADING_DEFAULT_LIGHTS, LC_VIEW_TOGGLE_PIECES_EDGE_LINES, LC_VIEW_TOGGLE_PIECES_CONDITIONAL_LINES };
 		break;
@@ -4145,6 +4149,30 @@ void lcMainWindow::HandleCommand(lcCommandId CommandId)
 
 	case LC_VIEW_TOGGLE_PIECES_SYNC_RENDERING:
 		ToggleSyncRendering(lcRenderTarget::Pieces);
+		break;
+
+	case LC_VIEW_TOGGLE_MINIFIG_SYNC_RENDERING:
+		ToggleSyncRendering(lcRenderTarget::Minifig);
+		break;
+
+	case LC_VIEW_MINIFIG_SHADING_WIREFRAME:
+		SetTargetShadingMode(lcRenderTarget::Minifig, lcShadingMode::Wireframe);
+		break;
+
+	case LC_VIEW_MINIFIG_SHADING_FLAT:
+		SetTargetShadingMode(lcRenderTarget::Minifig, lcShadingMode::Flat);
+		break;
+
+	case LC_VIEW_MINIFIG_SHADING_DEFAULT_LIGHTS:
+		SetTargetShadingMode(lcRenderTarget::Minifig, lcShadingMode::DefaultLights);
+		break;
+
+	case LC_VIEW_TOGGLE_MINIFIG_EDGE_LINES:
+		ToggleEdgeLines(lcRenderTarget::Minifig);
+		break;
+
+	case LC_VIEW_TOGGLE_MINIFIG_CONDITIONAL_LINES:
+		ToggleConditionalLines(lcRenderTarget::Minifig);
 		break;
 
 	case LC_VIEW_PIECES_SHADING_WIREFRAME:

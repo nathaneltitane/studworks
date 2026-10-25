@@ -37,6 +37,8 @@ protected slots:
 protected:
 	bool eventFilter(QObject* Object, QEvent* Event) override;
 	void FitPreview();
+	void UpdatePieceButton(int ItemIndex);
+	void OptionsMenuAboutToShow();
 	void UpdateTemplateCombo();
 	void SetCurrentTemplateModified();
 
@@ -44,6 +46,7 @@ protected:
 
 	lcView* mView;
 	QWidget* mViewWidget = nullptr;
+	std::array<QString, LC_MFW_NUMITEMS> mSectionNames;
 	std::array<QToolButton*, LC_MFW_NUMITEMS> mPieceButtons;
 	std::array<lcColorPicker*, LC_MFW_NUMITEMS> mColorPickers;
 	std::array<lcDoubleSpinBox*, LC_MFW_NUMITEMS> mSpinBoxes;

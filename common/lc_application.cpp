@@ -47,6 +47,7 @@ void lcPreferences::LoadDefaults()
 	mLineWidth = lcGetProfileFloat(LC_PROFILE_LINE_WIDTH);
 	LoadRenderTarget(lcRenderTarget::Preview);
 	LoadRenderTarget(lcRenderTarget::Pieces);
+	LoadRenderTarget(lcRenderTarget::Minifig);
 	mAllowLOD = lcGetProfileInt(LC_PROFILE_ALLOW_LOD);
 	mMeshLODDistance = lcGetProfileFloat(LC_PROFILE_LOD_DISTANCE);
 	mFadeSteps = lcGetProfileInt(LC_PROFILE_FADE_STEPS);
@@ -128,6 +129,7 @@ void lcPreferences::SaveDefaults()
 	lcSetProfileFloat(LC_PROFILE_LINE_WIDTH, mLineWidth);
 	SaveRenderTarget(lcRenderTarget::Preview);
 	SaveRenderTarget(lcRenderTarget::Pieces);
+	SaveRenderTarget(lcRenderTarget::Minifig);
 	lcSetProfileInt(LC_PROFILE_ALLOW_LOD, mAllowLOD);
 	lcSetProfileFloat(LC_PROFILE_LOD_DISTANCE, mMeshLODDistance);
 	lcSetProfileInt(LC_PROFILE_FADE_STEPS, mFadeSteps);
@@ -195,6 +197,9 @@ struct lcRenderTargetProfileKeys
 
 static lcRenderTargetProfileKeys lcGetRenderTargetProfileKeys(lcRenderTarget Target)
 {
+	if (Target == lcRenderTarget::Minifig)
+		return { LC_PROFILE_MINIFIG_SYNC_RENDERING, LC_PROFILE_MINIFIG_SHADING_MODE, LC_PROFILE_MINIFIG_DRAW_EDGE_LINES, LC_PROFILE_MINIFIG_DRAW_CONDITIONAL_LINES, LC_PROFILE_MINIFIG_LINE_WIDTH };
+
 	if (Target == lcRenderTarget::Pieces)
 		return { LC_PROFILE_PIECES_SYNC_RENDERING, LC_PROFILE_PIECES_SHADING_MODE, LC_PROFILE_PIECES_DRAW_EDGE_LINES, LC_PROFILE_PIECES_DRAW_CONDITIONAL_LINES, LC_PROFILE_PIECES_LINE_WIDTH };
 

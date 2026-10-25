@@ -1044,8 +1044,10 @@ void lcView::OnDraw()
 
 	if (mViewType == lcViewType::PartsList)
 		RenderTarget = lcRenderTarget::Pieces;
-	else if (mViewType == lcViewType::Preview || mViewType == lcViewType::Minifig)
+	else if (mViewType == lcViewType::Preview)
 		RenderTarget = lcRenderTarget::Preview;
+	else if (mViewType == lcViewType::Minifig)
+		RenderTarget = lcRenderTarget::Minifig;
 
 	const lcRenderSettings RenderSettings = Preferences.GetRenderSettings(RenderTarget);
 	lcShadingMode ShadingMode = RenderSettings.ShadingMode;
@@ -3735,11 +3737,17 @@ void lcView::OnMouseMove()
 		break;
 
 	case lcTrackTool::OrbitY:
-		ActiveModel->UpdateOrbitTool(mCamera, 0.0f, 0.1f * MouseSensitivity * (mMouseY - mMouseDownY));
+		// The minifigure preview only turns around its vertical axis.
+		if (mViewType != lcViewType::Minifig)
+			ActiveModel->UpdateOrbitTool(mCamera, 0.0f, 0.1f * MouseSensitivity * (mMouseY - mMouseDownY));
 		break;
 
 	case lcTrackTool::OrbitXY:
-		ActiveModel->UpdateOrbitTool(mCamera, 0.1f * MouseSensitivity * (mMouseX - mMouseDownX), 0.1f * MouseSensitivity * (mMouseY - mMouseDownY));
+		ActiveModel->UpdateOrbitTool(mCamera, 0.1f * MouseSensitivity * (mMouseX - mMouseDownX), mViewType == lcViewType::Minifig ? 0.0f : 0.1f * MouseSensitivity * (mMouseY - mMouseDownY));
+
+		// Keep the whole minifigure in view while it turns.
+		if (mViewType == lcViewType::Minifig)
+			ZoomExtents(lcGeometryBoundsMode::IncludeFallback, false);
 		break;
 
 	case lcTrackTool::Roll:
