@@ -2,6 +2,14 @@
 
 #include "lc_math.h"
 
+enum class lcInstructionsPageUnits
+{
+	Pixels,
+	Millimeters,
+	Centimeters,
+	Inches
+};
+
 struct lcInstructionsPageSetup
 {
 	float Width;
@@ -89,6 +97,7 @@ public:
 	static QString GetPropertyLabel(lcInstructionsPropertyType Type);
 
 	void SetDefaultPageSettings(const lcInstructionsPageSettings& PageSettings);
+	void SetPageSetup(const lcInstructionsPageSetup& PageSetup);
 
 	bool GetBoolProperty(lcInstructionsPropertyType Type, lcModel* Model, lcStep Step) const;
 	QColor GetColorProperty(lcInstructionsPropertyType Type, lcModel* Model, lcStep Step) const;
@@ -108,6 +117,7 @@ public:
 
 signals:
 	void StepSettingsChanged(lcModel* Model, lcStep Step);
+	void PageSetupChanged();
 
 protected:
 	void CreatePages();

@@ -90,6 +90,10 @@ public:
 
 	void SetCurrentPage(const lcInstructionsPage* Page);
 
+protected:
+	void resizeEvent(QResizeEvent* Event) override;
+	void FitPage();
+
 protected slots:
 	void StepSettingsChanged(lcModel* Model, lcStep Step);
 	void SelectionChanged();
@@ -97,6 +101,7 @@ protected slots:
 protected:
 	lcInstructions* mInstructions;
 	lcInstructionsPropertiesWidget* mPropertiesWidget;
+	const lcInstructionsPage* mPage = nullptr;
 };
 
 class lcInstructionsPageListWidget : public QDockWidget
@@ -163,6 +168,7 @@ public:
 protected slots:
 	void ShowPrintDialog();
 	void UpdatePageSettings();
+	void PageSetupChanged();
 	void CurrentThumbnailChanged(int Index);
 
 protected:

@@ -199,7 +199,15 @@ static lcProfileEntry gProfileEntries[LC_NUM_PROFILE_KEYS] =
 	lcProfileEntry("Settings", "DarkEdgeColor", LC_RGBA(27, 42, 52, 255)),                     // LC_PROFILE_DARK_EDGE_COLOR
 	lcProfileEntry("Settings", "PartEdgeContrast", 0.5f),                                      // LC_PROFILE_PART_EDGE_CONTRAST
 	lcProfileEntry("Settings", "PartColorValueLDIndex", 0.5f),                                 // LC_PROFILE_PART_COLOR_VALUE_LD_INDEX
-	lcProfileEntry("Settings", "AutomateEdgeColor", 0)                                         // LC_PROFILE_AUTOMATE_EDGE_COLOR
+	lcProfileEntry("Settings", "AutomateEdgeColor", 0),                                        // LC_PROFILE_AUTOMATE_EDGE_COLOR
+
+	lcProfileEntry("Instructions", "PageWidth", 612.0f),                                       // LC_PROFILE_INSTRUCTIONS_PAGE_WIDTH
+	lcProfileEntry("Instructions", "PageHeight", 792.0f),                                      // LC_PROFILE_INSTRUCTIONS_PAGE_HEIGHT
+	lcProfileEntry("Instructions", "MarginLeft", 36.0f),                                       // LC_PROFILE_INSTRUCTIONS_MARGIN_LEFT
+	lcProfileEntry("Instructions", "MarginRight", 36.0f),                                      // LC_PROFILE_INSTRUCTIONS_MARGIN_RIGHT
+	lcProfileEntry("Instructions", "MarginTop", 36.0f),                                        // LC_PROFILE_INSTRUCTIONS_MARGIN_TOP
+	lcProfileEntry("Instructions", "MarginBottom", 36.0f),                                     // LC_PROFILE_INSTRUCTIONS_MARGIN_BOTTOM
+	lcProfileEntry("Instructions", "PageUnits", 3)                                             // LC_PROFILE_INSTRUCTIONS_PAGE_UNITS
 };
 
 void lcProfileInit()
