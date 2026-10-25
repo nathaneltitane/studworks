@@ -62,6 +62,7 @@ lcPreviewDockWidget::lcPreviewDockWidget(QMainWindow* Parent)
 
 	mLabel = new lcPreviewLabel();
 	mLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+	mLabel->setContentsMargins(8, 0, 8, 0);
 
 	lcPiecesLibrary* Library = lcGetPiecesLibrary();
 	connect(Library, &lcPiecesLibrary::PartLoaded, this, [this](lcPieceData*)
