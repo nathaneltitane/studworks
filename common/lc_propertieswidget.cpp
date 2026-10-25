@@ -1361,11 +1361,7 @@ void lcPropertiesWidget::AddPieceIdProperty(lcObjectPropertyId PropertyId, const
 	lcElidableToolButton* Widget = new lcElidableToolButton(this);
 	Widget->setToolTip(ToolTip);
 	Widget->setAccessibleName(Text);
-	Widget->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-
-	QPixmap Pixmap(1, 1);
-	Pixmap.fill(QColor::fromRgba64(0, 0, 0, 0));
-	Widget->setIcon(Pixmap);
+	Widget->setToolButtonStyle(Qt::ToolButtonTextOnly);
 
 	connect(Widget, &QToolButton::clicked, this, &lcPropertiesWidget::PieceIdButtonClicked);
 
