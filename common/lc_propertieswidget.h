@@ -28,6 +28,11 @@ public:
 
 	bool HasVisibleRows() const;
 
+protected:
+	void UpdatePieceColorSwatch();
+
+public:
+
 signals:
 	void LayoutChanged();
 
@@ -170,6 +175,8 @@ protected:
 	QVBoxLayout* mTransformRowsLayout = nullptr;
 	QWidget* mStepRows = nullptr;
 	QToolButton* mPieceColorSwatch = nullptr;
+	std::vector<QWidget*> mPieceRowSlots;
+	QColor mPieceColorSwatchColor;
 	int mLayoutRow = 0;
 
 	LayoutMode mLayoutMode = LayoutMode::Count;

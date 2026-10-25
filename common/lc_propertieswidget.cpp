@@ -79,6 +79,34 @@ bool lcPropertiesWidget::event(QEvent* Event)
 	return Result;
 }
 
+void lcPropertiesWidget::UpdatePieceColorSwatch()
+{
+	if (!mPieceColorSwatch || mPieceRowSlots.size() < 2)
+		return;
+
+	// The swatch spans the slots at the start of the piece and color rows.
+	QWidget* FirstSlot = mPieceRowSlots.front();
+	QWidget* LastSlot = mPieceRowSlots.back();
+	const QRect SwatchRect(FirstSlot->mapTo(mTransformRows, QPoint(0, 0)), LastSlot->mapTo(mTransformRows, LastSlot->rect().bottomRight()));
+	// The color fills the button inside its border.
+	const QSize IconSize = (SwatchRect.size() - QSize(8, 8)).expandedTo(QSize(1, 1));
+
+	mPieceColorSwatch->setGeometry(SwatchRect);
+	mPieceColorSwatch->setIconSize(IconSize);
+
+	if (mPieceColorSwatchColor.isValid())
+	{
+		QPixmap Pixmap(IconSize);
+		Pixmap.fill(mPieceColorSwatchColor);
+		mPieceColorSwatch->setIcon(Pixmap);
+	}
+	else
+		mPieceColorSwatch->setIcon(QIcon());
+
+	mPieceColorSwatch->setVisible(LastSlot->isVisible());
+	mPieceColorSwatch->raise();
+}
+
 bool lcPropertiesWidget::HasVisibleRows() const
 {
 	// Rows moved below the panel or the timeline do not count, only the rows of the list itself.
@@ -98,6 +126,22 @@ bool lcPropertiesWidget::eventFilter(QObject* Object, QEvent* Event)
 	// The transform rows sit below the panel, so their changes also resize it.
 	if (Object == mTransformRows && Event->type() == QEvent::LayoutRequest)
 		emit LayoutChanged();
+
+	if (std::find(mPieceRowSlots.begin(), mPieceRowSlots.end(), Object) != mPieceRowSlots.end())
+	{
+		switch (Event->type())
+		{
+		case QEvent::Move:
+		case QEvent::Resize:
+		case QEvent::Show:
+		case QEvent::Hide:
+			UpdatePieceColorSwatch();
+			break;
+
+		default:
+			break;
+		}
+	}
 
 	return QWidget::eventFilter(Object, Event);
 }
@@ -880,6 +924,13 @@ QToolBar* lcPropertiesWidget::AddTransformRowButton(QToolButton* Button)
 	QToolBar* ToolBar = lcCreatePanelToolBar(mTransformRows);
 	mTransformRowsLayout->addWidget(ToolBar);
 
+	// An empty slot keeps the button in line with the transform boxes, the color swatch covers the slots.
+	QWidget* Slot = new QWidget(ToolBar);
+	Slot->setFixedSize(lcGetPanelButtonSize());
+	Slot->installEventFilter(this);
+	ToolBar->addWidget(Slot);
+	mPieceRowSlots.push_back(Slot);
+
 	ToolBar->addWidget(Button);
 	lcSetupPanelButton(Button);
 	Button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -1196,8 +1247,8 @@ void lcPropertiesWidget::UpdatePieceColor(lcObjectPropertyId PropertyId)
 	// With nothing selected the button only names what it edits.
 	if (!mFocusObject && mSelection.empty())
 	{
-		if (mPieceColorSwatch)
-			mPieceColorSwatch->setIcon(QIcon());
+		mPieceColorSwatchColor = QColor();
+		UpdatePieceColorSwatch();
 
 		ColorButton->setText(tr("Color"));
 		UpdateKeyFrameWidget(PropertyId);
@@ -1210,8 +1261,8 @@ void lcPropertiesWidget::UpdatePieceColor(lcObjectPropertyId PropertyId)
 	Pixmap.fill(Color);
 
 	// The color shows in the swatch button so the name stays centered.
-	if (mPieceColorSwatch)
-		mPieceColorSwatch->setIcon(Pixmap);
+	mPieceColorSwatchColor = Color;
+	UpdatePieceColorSwatch();
 
 	ColorButton->setText(Partial ? tr("Multiple Colors") : gColorList[ColorIndex].Name);
 
@@ -1227,14 +1278,13 @@ void lcPropertiesWidget::AddPieceColorProperty(lcObjectPropertyId PropertyId, co
 
 	connect(Widget, &QToolButton::clicked, this, &lcPropertiesWidget::PieceColorButtonClicked);
 
-	QToolBar* ToolBar = AddTransformRowButton(Widget);
+	AddTransformRowButton(Widget);
 
-	// A square button on the left shows the color and opens the same color choice.
-	mPieceColorSwatch = new QToolButton(ToolBar);
+	// A button left of the piece and color rows shows the color and opens the same color choice.
+	mPieceColorSwatch = new QToolButton(mTransformRows);
 	mPieceColorSwatch->setToolTip(ToolTip);
 	mPieceColorSwatch->setAccessibleName(tr("%1 Swatch").arg(Text));
-	ToolBar->insertWidget(ToolBar->actions().first(), mPieceColorSwatch);
-	lcSetupPanelButton(mPieceColorSwatch);
+	mPieceColorSwatch->setFocusPolicy(Qt::NoFocus);
 
 	connect(mPieceColorSwatch, &QToolButton::clicked, Widget, &QToolButton::click);
 
