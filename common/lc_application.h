@@ -145,6 +145,7 @@ public:
 	int mPreviewViewSphereSize;
 	lcViewSphereLocation mPreviewViewSphereLocation;
 	int mDrawPreviewAxis;
+	bool mPreviewSquareViewport;
 
 	bool mStudCylinderColorEnabled;
 	quint32 mStudCylinderColor;

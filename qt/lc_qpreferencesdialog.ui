@@ -887,6 +887,16 @@
             </property>
            </widget>
           </item>
+          <item row="2" column="2" colspan="2">
+           <widget class="QCheckBox" name="PreviewSquareViewportCheckBox">
+            <property name="toolTip">
+             <string>Keep the piece preview square, with a 1:1 width to height ratio, whatever the panel size.</string>
+            </property>
+            <property name="text">
+             <string>Square Viewport</string>
+            </property>
+           </widget>
+          </item>
           <item row="0" column="2">
            <widget class="QLabel" name="ViewSphereLocationLabel">
             <property name="toolTip">
@@ -2988,6 +2998,7 @@
   <tabstop>PreviewEdgeLines</tabstop>
   <tabstop>PreviewConditionalLines</tabstop>
   <tabstop>PreviewLineWidthSlider</tabstop>
+  <tabstop>PreviewSquareViewportCheckBox</tabstop>
   <tabstop>BackgroundSolidRadio</tabstop>
   <tabstop>BackgroundSolidColorButton</tabstop>
   <tabstop>BackgroundGradientRadio</tabstop>

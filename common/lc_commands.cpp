@@ -1524,6 +1524,14 @@ const lcCommand gCommands[] =
 		"",
 		""
 	},
+	// LC_VIEW_PREVIEW_TOGGLE_SQUARE
+	{
+		QT_TRANSLATE_NOOP("Action", "View.Preview.ToggleSquareViewport"),
+		QT_TRANSLATE_NOOP("Menu", "Square Viewport"),
+		QT_TRANSLATE_NOOP("Status", "Keep the piece preview at a 1:1 ratio"),
+		"",
+		""
+	},
 	// LC_PIECE_INSERT
 	{
 		QT_TRANSLATE_NOOP("Action", "Piece.Insert"),
