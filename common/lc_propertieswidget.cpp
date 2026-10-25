@@ -1198,6 +1198,7 @@ void lcPropertiesWidget::CreateWidgets()
 {
 	mLayout = new QGridLayout(this);
 	mLayout->setVerticalSpacing(1);
+	mLayout->setColumnStretch(2, 1);
 
 	AddCategory(CategoryIndex::Piece, tr("Piece"), false);
 
@@ -1296,6 +1297,27 @@ void lcPropertiesWidget::CreateWidgets()
 	AddFloatProperty(lcObjectPropertyId::ObjectRotationZ, tr("Z"), tr("Rotation of the object in degrees"), true, -FLT_MAX, FLT_MAX);
 
 	AddSpacing();
+
+	// Editors without a keyframe button reach into its column so every row ends at the same right edge.
+	for (PropertyWidgets& Property : mPropertyWidgets)
+	{
+		if (!Property.Editor || Property.KeyFrame)
+			continue;
+
+		const int Index = mLayout->indexOf(Property.Editor);
+
+		if (Index < 0)
+			continue;
+
+		int Row, Column, RowSpan, ColumnSpan;
+		mLayout->getItemPosition(Index, &Row, &Column, &RowSpan, &ColumnSpan);
+
+		if (Column != 2 || ColumnSpan != 1)
+			continue;
+
+		mLayout->removeWidget(Property.Editor);
+		mLayout->addWidget(Property.Editor, Row, 2, 1, 2);
+	}
 
 	mLayout->setRowStretch(mLayout->rowCount(), 1);
 }

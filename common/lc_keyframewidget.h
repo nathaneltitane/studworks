@@ -7,10 +7,7 @@ class lcKeyFrameWidget : public QCheckBox
 public:
 	lcKeyFrameWidget(QWidget* Parent);
 
-	QSize sizeHint() const override
-	{
-		return QSize(15, 15);
-	}
+	QSize sizeHint() const override;
 
 	void paintEvent(QPaintEvent* PaintEvent) override;
 };

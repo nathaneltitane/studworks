@@ -1,12 +1,19 @@
 #include "lc_global.h"
 #include "lc_keyframewidget.h"
+#include "lc_qutils.h"
 
 lcKeyFrameWidget::lcKeyFrameWidget(QWidget* Parent)
 	: QCheckBox(Parent)
 {
 	setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-	setFocusPolicy(Qt::ClickFocus);
+	setFocusPolicy(Qt::NoFocus);
+	setAttribute(Qt::WA_Hover);
 	setCheckable(true);
+}
+
+QSize lcKeyFrameWidget::sizeHint() const
+{
+	return lcGetPanelButtonSize();
 }
 
 void lcKeyFrameWidget::paintEvent(QPaintEvent* PaintEvent)
@@ -15,16 +22,32 @@ void lcKeyFrameWidget::paintEvent(QPaintEvent* PaintEvent)
 
 	QPainter Painter(this);
 
-	QRect Rect = rect();
-	Painter.fillRect(Rect, palette().brush(QPalette::Window));
+	// Drawn as a flat tool button like the panel options buttons, with the keyframe diamond as its icon.
+	QStyleOptionToolButton Option;
+	Option.initFrom(this);
+	Option.subControls = QStyle::SC_ToolButton;
+	Option.toolButtonStyle = Qt::ToolButtonIconOnly;
+	Option.state |= QStyle::State_AutoRaise;
+
+	if (underMouse() && isEnabled())
+		Option.state |= QStyle::State_Raised;
+
+	if (isDown())
+		Option.state |= QStyle::State_Sunken;
+
+	style()->drawComplexControl(QStyle::CC_ToolButton, &Option, &Painter, this);
 
 	Qt::CheckState State = checkState();
-	Painter.setPen(hasFocus() ? palette().color(QPalette::Highlight) : palette().color(QPalette::Shadow));
+	Painter.setRenderHint(QPainter::Antialiasing);
+	Painter.setPen(palette().color(QPalette::Shadow));
 
 	if (State != Qt::PartiallyChecked)
 		Painter.setBrush(palette().color(QPalette::Text));
 
-	Rect = (State != Qt::Unchecked) ? QRect(1, 1, 13, 13) : QRect(4, 4, 7, 7);
+	const QPoint ButtonCenter = rect().center();
+	const int Size = (State != Qt::Unchecked) ? 13 : 7;
+	QRect Rect(0, 0, Size, Size);
+	Rect.moveCenter(ButtonCenter);
 	const QPoint Center = Rect.center();
 
 	QPoint Points[4] =
