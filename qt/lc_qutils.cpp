@@ -63,10 +63,10 @@ QSize lcGetPanelButtonSize()
 
 void lcSetupPanelButton(QToolButton* Button)
 {
-	// Panel buttons are outlined, icon buttons are as large as the gear and text buttons as tall.
+	// Panel buttons are flat, icon buttons are as large as the gear and text buttons as tall.
 	const QSize ButtonSize = lcGetPanelButtonSize();
 
-	Button->setAutoRaise(false);
+	Button->setAutoRaise(true);
 	Button->setFocusPolicy(Qt::NoFocus);
 	Button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
@@ -118,8 +118,8 @@ QToolButton* lcAddPanelOptionsButton(QToolBar* ToolBar, QMenu* Menu, const QStri
 	OptionsButton->setAccessibleName(AccessibleName);
 	OptionsButton->setPopupMode(QToolButton::InstantPopup);
 	OptionsButton->setMenu(Menu);
-	ToolBar->addWidget(OptionsButton);
 	lcSetupPanelButton(OptionsButton);
+	ToolBar->addWidget(OptionsButton);
 
 	return OptionsButton;
 }
