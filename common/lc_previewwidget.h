@@ -18,15 +18,20 @@ public:
 	void RefreshModel(const lcModel* Model);
 	void RefreshAfterAssetChange(const std::vector<lcPieceData*>& ChangedPieces);
 	void RebindPieceData(lcPieceData* Previous, lcPieceData* Replacement);
+	void SetSquareViewport(bool SquareViewport);
+	void UpdateSquareViewport();
 
 protected slots:
 	void SetPreviewLock();
 	void OptionsMenuAboutToShow();
 
 protected:
+	bool eventFilter(QObject* Object, QEvent* Event) override;
 	void RefreshPendingAssets();
+	void UpdateViewGeometry();
 
 	QAction* mLockAction;
+	QWidget* mViewContainer;
 	QToolBar* mToolBar;
 	QLabel* mLabel;
 	lcPreview* mPreview;

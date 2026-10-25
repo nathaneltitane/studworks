@@ -83,6 +83,7 @@ void lcPreferences::LoadDefaults()
 	mPreviewViewSphereSize = lcGetProfileInt(LC_PROFILE_PREVIEW_VIEW_SPHERE_SIZE);
 	mPreviewViewSphereLocation = lcGetProfilePreviewViewSphereLocation();
 	mDrawPreviewAxis = lcGetProfileInt(LC_PROFILE_PREVIEW_DRAW_AXES);
+	mPreviewSquareViewport = lcGetProfileInt(LC_PROFILE_PREVIEW_SQUARE_VIEWPORT);
 	mStudCylinderColorEnabled = lcGetProfileInt(LC_PROFILE_STUD_CYLINDER_COLOR_ENABLED);
 	mStudCylinderColor = lcGetProfileUInt(LC_PROFILE_STUD_CYLINDER_COLOR);
 	mPartEdgeColorEnabled = lcGetProfileInt(LC_PROFILE_PART_EDGE_COLOR_ENABLED);
@@ -163,6 +164,7 @@ void lcPreferences::SaveDefaults()
 	lcSetProfileInt(LC_PROFILE_PREVIEW_VIEW_SPHERE_SIZE, mPreviewViewSphereSize);
 	lcSetProfilePreviewViewSphereLocation(mPreviewViewSphereLocation);
 	lcSetProfileInt(LC_PROFILE_PREVIEW_DRAW_AXES, mDrawPreviewAxis);
+	lcSetProfileInt(LC_PROFILE_PREVIEW_SQUARE_VIEWPORT, mPreviewSquareViewport);
 	lcSetProfileInt(LC_PROFILE_STUD_CYLINDER_COLOR_ENABLED, mStudCylinderColorEnabled);
 	lcSetProfileUInt(LC_PROFILE_STUD_CYLINDER_COLOR, mStudCylinderColor);
 	lcSetProfileInt(LC_PROFILE_PART_EDGE_COLOR_ENABLED, mPartEdgeColorEnabled);
@@ -1527,6 +1529,8 @@ void lcApplication::ShowPreferencesDialog()
 		mProject->UpdateFileWatcher();
 	if (PiecesRenderingChanged && gMainWindow && gMainWindow->GetPartSelectionWidget())
 		gMainWindow->GetPartSelectionWidget()->UpdateThumbnails();
+	if (gMainWindow && gMainWindow->GetPreviewWidget())
+		gMainWindow->GetPreviewWidget()->UpdateSquareViewport();
 
 	lcSetProfileString(LC_PROFILE_DEFAULT_AUTHOR_NAME, Options.DefaultAuthor);
 	lcSetProfileString(LC_PROFILE_PARTS_LIBRARY, Options.LibraryPath);

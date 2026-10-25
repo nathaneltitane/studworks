@@ -249,6 +249,7 @@ lcPreferencesDialog::lcPreferencesDialog(QWidget* Parent, lcPreferencesDialogOpt
 		ui->ViewSphereSizeCombo->setCurrentIndex(0);
 
 	ui->PreviewAxisIconCheckBox->setChecked(mOptions->Preferences.mDrawPreviewAxis);
+	ui->PreviewSquareViewportCheckBox->setChecked(mOptions->Preferences.mPreviewSquareViewport);
 
 	ui->PreviewViewSphereLocationCombo->setCurrentIndex((int)mOptions->Preferences.mPreviewViewSphereLocation);
 
@@ -506,6 +507,7 @@ void lcPreferencesDialog::accept()
 	mOptions->StudStyle = static_cast<lcStudStyle>(ui->studStyleCombo->currentIndex());
 
 	mOptions->Preferences.mDrawPreviewAxis = ui->PreviewAxisIconCheckBox->isChecked();
+	mOptions->Preferences.mPreviewSquareViewport = ui->PreviewSquareViewportCheckBox->isChecked();
 	mOptions->Preferences.mPreviewViewSphereEnabled = ui->PreviewViewSphereSizeCombo->currentIndex() > 0;
 	mOptions->Preferences.mPreviewViewSphereLocation = (lcViewSphereLocation)ui->PreviewViewSphereLocationCombo->currentIndex();
 

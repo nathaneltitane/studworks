@@ -4132,6 +4132,11 @@ void lcMainWindow::HandleCommand(lcCommandId CommandId)
 		ToggleLoadPiecesBeforeShowing();
 		break;
 
+	case LC_VIEW_PREVIEW_TOGGLE_SQUARE:
+		if (mPreviewWidget)
+			mPreviewWidget->SetSquareViewport(!lcGetPreferences().mPreviewSquareViewport);
+		break;
+
 	case LC_PIECE_INSERT:
 		if (ActiveModel)
 			ActiveModel->AddPiece(nullptr, LC_PIECE_SECTION_INVALID);
