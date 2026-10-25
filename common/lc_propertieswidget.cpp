@@ -79,6 +79,20 @@ bool lcPropertiesWidget::event(QEvent* Event)
 	return Result;
 }
 
+bool lcPropertiesWidget::HasVisibleRows() const
+{
+	// Rows moved below the panel or the timeline do not count, only the rows of the list itself.
+	for (const PropertyWidgets& Property : mPropertyWidgets)
+		if (Property.Editor && Property.Editor->parentWidget() == this && !Property.Editor->isHidden())
+			return true;
+
+	for (const CategoryWidgets& Category : mCategoryWidgets)
+		if (Category.Button && !Category.Button->isHidden())
+			return true;
+
+	return false;
+}
+
 bool lcPropertiesWidget::eventFilter(QObject* Object, QEvent* Event)
 {
 	// The transform rows sit below the panel, so their changes also resize it.
@@ -860,6 +874,17 @@ void lcPropertiesWidget::AddStepRangeProperty(lcObjectPropertyId ShowPropertyId,
 	}
 }
 
+void lcPropertiesWidget::AddTransformRowButton(QToolButton* Button)
+{
+	// A button filling a whole row below the panel, without a label like the transform rows.
+	QToolBar* ToolBar = lcCreatePanelToolBar(mTransformRows);
+	mTransformRowsLayout->addWidget(ToolBar);
+
+	ToolBar->addWidget(Button);
+	lcSetupPanelButton(Button);
+	Button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+}
+
 QToolButton* lcPropertiesWidget::CreateRowNameButton(QToolBar* ToolBar, const QString& Name)
 {
 	// A button with the first letter of the name takes the place of the transform button so the boxes line up.
@@ -1166,6 +1191,15 @@ void lcPropertiesWidget::UpdatePieceColor(lcObjectPropertyId PropertyId)
 
 	std::tie(Value, Partial) = GetUpdateValue(PropertyId);
 
+	// With nothing selected the button only names what it edits.
+	if (!mFocusObject && mSelection.empty())
+	{
+		ColorButton->setIcon(QIcon());
+		ColorButton->setText(tr("Color"));
+		UpdateKeyFrameWidget(PropertyId);
+		return;
+	}
+
 	const int ColorIndex = Value.toInt();
 	QColor Color = Partial ? QColor(128, 128, 128) : QColor::fromRgbF(gColorList[ColorIndex].Value[0], gColorList[ColorIndex].Value[1], gColorList[ColorIndex].Value[2]);
 	QPixmap Pixmap(14, 14);
@@ -1179,16 +1213,14 @@ void lcPropertiesWidget::UpdatePieceColor(lcObjectPropertyId PropertyId)
 
 void lcPropertiesWidget::AddPieceColorProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames)
 {
-	AddLabel(PropertyId, Text, ToolTip);
-
 	QToolButton* Widget = new QToolButton(this);
 	Widget->setToolTip(ToolTip);
+	Widget->setAccessibleName(Text);
 	Widget->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-	Widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
 	connect(Widget, &QToolButton::clicked, this, &lcPropertiesWidget::PieceColorButtonClicked);
 
-	mLayout->addWidget(Widget, mLayoutRow, 2);
+	AddTransformRowButton(Widget);
 
 	mCurrentCategory->Properties.push_back(PropertyId);
 	mPropertyWidgets[static_cast<int>(PropertyId)].Editor = Widget;
@@ -1219,6 +1251,8 @@ void lcPropertiesWidget::UpdatePieceId(lcObjectPropertyId PropertyId)
 		PieceIdButton->setText(tr("Multiple Pieces"));
 	else if (PieceData)
 		PieceIdButton->setText(PieceData->m_strDescription);
+	else
+		PieceIdButton->setText(tr("Piece"));
 
 	UpdateKeyFrameWidget(PropertyId);
 }
@@ -1258,12 +1292,10 @@ void lcPropertiesWidget::PieceIdButtonClicked()
 
 void lcPropertiesWidget::AddPieceIdProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames)
 {
-	AddLabel(PropertyId, Text, ToolTip);
-
 	lcElidableToolButton* Widget = new lcElidableToolButton(this);
 	Widget->setToolTip(ToolTip);
+	Widget->setAccessibleName(Text);
 	Widget->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-	Widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
 	QPixmap Pixmap(1, 1);
 	Pixmap.fill(QColor::fromRgba64(0, 0, 0, 0));
@@ -1271,7 +1303,7 @@ void lcPropertiesWidget::AddPieceIdProperty(lcObjectPropertyId PropertyId, const
 
 	connect(Widget, &QToolButton::clicked, this, &lcPropertiesWidget::PieceIdButtonClicked);
 
-	mLayout->addWidget(Widget, mLayoutRow, 2);
+	AddTransformRowButton(Widget);
 
 	mCurrentCategory->Properties.push_back(PropertyId);
 	mPropertyWidgets[static_cast<int>(PropertyId)].Editor = Widget;

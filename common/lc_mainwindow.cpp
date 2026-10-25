@@ -872,8 +872,12 @@ void lcMainWindow::CreateToolBars()
 
 	auto UpdatePropertiesHeight = [this, PropertiesWidget, PropertiesLayout, PropertiesScrollArea, TransformWidget]()
 	{
+		// The list is hidden when all shown properties are in the rows below it.
+		const bool ShowList = mPropertiesWidget->HasVisibleRows();
 		const int Margin = 6;
-		const int ScrollHeight = mPropertiesWidget->sizeHint().height() + 2 * PropertiesScrollArea->frameWidth() + Margin;
+		const int ScrollHeight = ShowList ? mPropertiesWidget->sizeHint().height() + 2 * PropertiesScrollArea->frameWidth() + Margin : 0;
+
+		PropertiesScrollArea->setVisible(ShowList);
 		const QMargins Margins = PropertiesLayout->contentsMargins();
 		const int PanelHeight = ScrollHeight + mPropertiesWidget->GetTransformRowsWidget()->sizeHint().height() + TransformWidget->sizeHint().height() + Margins.top() + Margins.bottom();
 

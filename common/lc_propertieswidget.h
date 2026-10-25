@@ -26,6 +26,8 @@ public:
 		return mStepRows;
 	}
 
+	bool HasVisibleRows() const;
+
 signals:
 	void LayoutChanged();
 
@@ -120,6 +122,7 @@ protected:
 	void AddStepNumberProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames);
 	void AddStepRangeProperty(lcObjectPropertyId ShowPropertyId, lcObjectPropertyId HidePropertyId);
 	QToolButton* CreateRowNameButton(QToolBar* ToolBar, const QString& Name);
+	void AddTransformRowButton(QToolButton* Button);
 	void AddStringProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames);
 	void AddStringListProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames, const QStringList& Strings);
 	void AddColorProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames);
