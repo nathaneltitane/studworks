@@ -102,8 +102,8 @@ lcPreviewDockWidget::lcPreviewDockWidget(QMainWindow* Parent)
 	OptionsButton->setToolTip(tr("Configure the pieces preview."));
 	OptionsButton->setAccessibleName(tr("Pieces Preview Options"));
 	OptionsButton->setPopupMode(QToolButton::InstantPopup);
-	lcSetupPanelButton(OptionsButton);
 	mToolBar->addWidget(OptionsButton);
+	lcSetupPanelButton(OptionsButton);
 
 	QMenu* OptionsMenu = new QMenu(this);
 	OptionsButton->setMenu(OptionsMenu);
