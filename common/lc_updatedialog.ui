@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>LeoCAD + Updates</string>
+   <string>LeoCAD+ Updates</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

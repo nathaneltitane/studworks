@@ -3,7 +3,7 @@
  <class>lcPreferencesDialog</class>
  <widget class="QDialog" name="lcPreferencesDialog">
   <property name="whatsThis">
-   <string>&lt;p&gt;&lt;b&gt;Preferences&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Configure the application, display, colors, piece categories, and keyboard and mouse shortcuts. Choose OK to save the changes or Cancel to discard edits in Preferences. Language, piece-library, and antialiasing changes may require restarting LeoCAD +.&lt;/p&gt;&lt;p&gt;Export buttons write files immediately. Blender add-on settings have their own Apply action and can configure Blender before you close Preferences.&lt;/p&gt;</string>
+   <string>&lt;p&gt;&lt;b&gt;Preferences&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Configure the application, display, colors, piece categories, and keyboard and mouse shortcuts. Choose OK to save the changes or Cancel to discard edits in Preferences. Language, piece-library, and antialiasing changes may require restarting LeoCAD+.&lt;/p&gt;&lt;p&gt;Export buttons write files immediately. Blender add-on settings have their own Apply action and can configure Blender before you close Preferences.&lt;/p&gt;</string>
   </property>
   <property name="geometry">
    <rect>
@@ -42,7 +42,7 @@
           <item row="0" column="0">
            <widget class="QLabel" name="label_5">
             <property name="toolTip">
-             <string>Choose a piece-library folder or supported archive to load after restarting LeoCAD +.</string>
+             <string>Choose a piece-library folder or supported archive to load after restarting LeoCAD+.</string>
             </property>
             <property name="text">
              <string>Pieces Library:</string>
@@ -60,7 +60,7 @@
                <string>Pieces Library</string>
               </property>
               <property name="toolTip">
-               <string>Choose a piece-library folder or supported archive to load after restarting LeoCAD +.</string>
+               <string>Choose a piece-library folder or supported archive to load after restarting LeoCAD+.</string>
               </property>
              </widget>
             </item>
@@ -248,7 +248,7 @@
           <item row="1" column="0">
            <widget class="QLabel" name="label_19">
             <property name="toolTip">
-             <string>Choose the interface language used after restarting LeoCAD +.</string>
+             <string>Choose the interface language used after restarting LeoCAD+.</string>
             </property>
             <property name="text">
              <string>Language:</string>
@@ -264,7 +264,7 @@
              <string>Language</string>
             </property>
             <property name="toolTip">
-             <string>Choose the interface language used after restarting LeoCAD +.</string>
+             <string>Choose the interface language used after restarting LeoCAD+.</string>
             </property>
             <item>
              <property name="text">
@@ -392,7 +392,7 @@
           <item row="1" column="0" colspan="2">
            <widget class="QCheckBox" name="autoLoadMostRecent">
             <property name="toolTip">
-             <string>Open the most recently used file when LeoCAD + starts.</string>
+             <string>Open the most recently used file when LeoCAD+ starts.</string>
             </property>
             <property name="text">
              <string>Open most recent file on startup</string>
@@ -518,7 +518,7 @@
           <item row="0" column="0">
            <widget class="QCheckBox" name="antiAliasing">
             <property name="toolTip">
-             <string>Smooth jagged edges in model views; changes require restarting LeoCAD +.</string>
+             <string>Smooth jagged edges in model views; changes require restarting LeoCAD+.</string>
             </property>
             <property name="text">
              <string>Anti-aliasing</string>
