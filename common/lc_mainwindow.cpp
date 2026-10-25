@@ -598,11 +598,12 @@ void lcMainWindow::CreateMenus()
 	QMenu* ModelMenu = menuBar()->addMenu(tr("&Models"));
 	ModelMenu->addAction(mActions[LC_MODEL_PROPERTIES]);
 	ModelMenu->addAction(mActions[LC_MODEL_NEW]);
-	ModelMenu->addAction(mActions[LC_PIECE_MINIFIG_WIZARD]);
 	ModelMenu->addAction(mActions[LC_MODEL_LIST]);
 	ModelMenu->addSeparator();
 	for (int ModelIdx = LC_MODEL_FIRST; ModelIdx <= LC_MODEL_LAST; ModelIdx++)
 		ModelMenu->addAction(mActions[ModelIdx]);
+	ModelMenu->addSeparator();
+	ModelMenu->addAction(mActions[LC_PIECE_MINIFIG_WIZARD]);
 
 	QMenu* HelpMenu = menuBar()->addMenu(tr("&Help"));
 	HelpMenu->addAction(mActions[LC_HELP_WHATS_THIS]);
