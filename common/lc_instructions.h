@@ -64,6 +64,9 @@ enum class lcInstructionsPropertyType
 	ShowBillOfMaterials,
 	UseDocumentFont,
 	DocumentFont,
+	ShowCoverPage,
+	CoverTitleFont,
+	PageBackgroundColor,
 	Count
 };
 
@@ -84,11 +87,23 @@ struct lcInstructionsStep
 	lcInstructionsProperties Properties;
 };
 
+enum class lcInstructionsPageType
+{
+	Steps,
+	Cover,
+	BillOfMaterials,
+	Blank
+};
+
+using lcInstructionsStepKey = std::pair<lcModel*, lcStep>;
+
 struct lcInstructionsPage
 {
 	lcInstructionsPageSettings Settings;
 	std::vector<lcInstructionsStep> Steps;
-	lcModel* BillOfMaterials = nullptr;
+	lcInstructionsPageType Type = lcInstructionsPageType::Steps;
+	lcModel* Model = nullptr;
+	lcInstructionsStepKey BlankKey = { nullptr, 0 };
 };
 
 struct lcInstructionsModel
@@ -108,6 +123,9 @@ public:
 	void SetDefaultPageSettings(const lcInstructionsPageSettings& PageSettings);
 	lcInstructionsPageSettings GetPageSettings(size_t PageIndex) const;
 	void SetPageSettings(size_t PageIndex, int Rows, int Columns);
+	bool CanInsertBlankPage(size_t PageIndex) const;
+	void InsertBlankPage(size_t PageIndex);
+	void RemoveBlankPage(size_t PageIndex);
 	void SetPageSetup(const lcInstructionsPageSetup& PageSetup);
 	lcInstructionsDirection GetPageDirection() const;
 
@@ -124,7 +142,8 @@ public:
 //protected:
 	std::vector<lcInstructionsPage> mPages;
 	lcInstructionsPageSettings mPageSettings;
-	std::map<size_t, lcInstructionsPageSettings> mPageSettingsOverrides;
+	std::map<lcInstructionsStepKey, lcInstructionsPageSettings> mPageSettingsOverrides;
+	std::multiset<lcInstructionsStepKey> mBlankPages;
 	lcInstructionsPageSetup mPageSetup;
 	lcInstructionsProperties mStepProperties;
 
@@ -138,6 +157,9 @@ signals:
 protected:
 	void CreatePages();
 	void AddDefaultPages(lcModel* Model, std::vector<const lcModel*>& AddedModels);
+	void AddBlankPages(lcInstructionsPage& Page, const lcInstructionsStepKey& Key);
+	lcInstructionsPageSettings GetStepPageSettings(const lcInstructionsStepKey& Key) const;
+	bool GetPageKey(size_t PageIndex, lcInstructionsStepKey& Key) const;
 
 	QVariant GetProperty(lcInstructionsPropertyType Type, lcModel* Model, lcStep Step) const;
 	void SetDefaultProperty(lcInstructionsPropertyType Type, const QVariant& Value);

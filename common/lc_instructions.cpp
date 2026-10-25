@@ -49,11 +49,14 @@ lcInstructions::lcInstructions(Project* Project)
 	mStepProperties[static_cast<int>(lcInstructionsPropertyType::ShowStepDividers)].Value = true;
 	mStepProperties[static_cast<int>(lcInstructionsPropertyType::StepDividerColor)].Value = LC_RGBA(0, 0, 0, 255);
 	mStepProperties[static_cast<int>(lcInstructionsPropertyType::StepDividerWidth)].Value = 2;
-	mStepProperties[static_cast<int>(lcInstructionsPropertyType::ShowBillOfMaterials)].Value = false;
+	mStepProperties[static_cast<int>(lcInstructionsPropertyType::ShowBillOfMaterials)].Value = true;
 	mStepProperties[static_cast<int>(lcInstructionsPropertyType::UseDocumentFont)].Value = false;
 	mStepProperties[static_cast<int>(lcInstructionsPropertyType::DocumentFont)].Value = QFont("Arial", 16).toString();
+	mStepProperties[static_cast<int>(lcInstructionsPropertyType::ShowCoverPage)].Value = true;
+	mStepProperties[static_cast<int>(lcInstructionsPropertyType::CoverTitleFont)].Value = QFont("Arial", 48, QFont::Bold).toString();
+	mStepProperties[static_cast<int>(lcInstructionsPropertyType::PageBackgroundColor)].Value = LC_RGBA(255, 255, 255, 255);
 
-	static_assert(static_cast<int>(lcInstructionsPropertyType::Count) == 18, "Missing default property");
+	static_assert(static_cast<int>(lcInstructionsPropertyType::Count) == 21, "Missing default property");
 
 	CreatePages();
 }
@@ -98,6 +101,12 @@ QString lcInstructions::GetPropertyLabel(lcInstructionsPropertyType Type)
 			return tr("Use Document Font");
 		case lcInstructionsPropertyType::DocumentFont:
 			return tr("Font:");
+		case lcInstructionsPropertyType::ShowCoverPage:
+			return tr("Show Cover Page");
+		case lcInstructionsPropertyType::CoverTitleFont:
+			return tr("Title Font:");
+		case lcInstructionsPropertyType::PageBackgroundColor:
+			return tr("Background Color:");
 		case lcInstructionsPropertyType::Count:
 			break;
 	}
@@ -116,9 +125,52 @@ void lcInstructions::SetDefaultPageSettings(const lcInstructionsPageSettings& Pa
 	emit PageLayoutChanged();
 }
 
-lcInstructionsPageSettings lcInstructions::GetPageSettings(size_t PageIndex) const
+lcInstructionsDirection lcInstructions::GetPageDirection() const
 {
-	std::map<size_t, lcInstructionsPageSettings>::const_iterator SettingsIt = mPageSettingsOverrides.find(PageIndex);
+	// landscape pages fill rows across first, portrait pages fill columns down first
+	return mPageSetup.Width > mPageSetup.Height ? lcInstructionsDirection::Horizontal : lcInstructionsDirection::Vertical;
+}
+
+bool lcInstructions::GetPageKey(size_t PageIndex, lcInstructionsStepKey& Key) const
+{
+	// pages are found by their first step so their settings follow them when other pages change
+	if (PageIndex >= mPages.size())
+	{
+		lcModel* Model = mProject ? mProject->GetMainModel() : nullptr;
+
+		if (!Model)
+			return false;
+
+		Key = { Model, Model->GetLastStep() + 1 };
+		return true;
+	}
+
+	const lcInstructionsPage& Page = mPages[PageIndex];
+
+	switch (Page.Type)
+	{
+	case lcInstructionsPageType::Steps:
+		Key = { Page.Steps.front().Model, Page.Steps.front().Step };
+		return true;
+
+	case lcInstructionsPageType::Blank:
+		Key = Page.BlankKey;
+		return true;
+
+	case lcInstructionsPageType::BillOfMaterials:
+		Key = { Page.Model, Page.Model->GetLastStep() + 1 };
+		return true;
+
+	case lcInstructionsPageType::Cover:
+		break;
+	}
+
+	return false;
+}
+
+lcInstructionsPageSettings lcInstructions::GetStepPageSettings(const lcInstructionsStepKey& Key) const
+{
+	std::map<lcInstructionsStepKey, lcInstructionsPageSettings>::const_iterator SettingsIt = mPageSettingsOverrides.find(Key);
 	lcInstructionsPageSettings PageSettings = SettingsIt != mPageSettingsOverrides.end() ? SettingsIt->second : mPageSettings;
 
 	PageSettings.Direction = GetPageDirection();
@@ -126,27 +178,71 @@ lcInstructionsPageSettings lcInstructions::GetPageSettings(size_t PageIndex) con
 	return PageSettings;
 }
 
+lcInstructionsPageSettings lcInstructions::GetPageSettings(size_t PageIndex) const
+{
+	if (PageIndex < mPages.size() && mPages[PageIndex].Type == lcInstructionsPageType::Steps)
+		return mPages[PageIndex].Settings;
+
+	return GetStepPageSettings({ nullptr, 0 });
+}
+
 void lcInstructions::SetPageSettings(size_t PageIndex, int Rows, int Columns)
 {
 	// each page can hold its own number of steps, following pages flow on from it
-	lcInstructionsPageSettings PageSettings = GetPageSettings(PageIndex);
+	if (PageIndex >= mPages.size() || mPages[PageIndex].Type != lcInstructionsPageType::Steps)
+		return;
+
+	lcInstructionsPageSettings PageSettings = mPages[PageIndex].Settings;
 
 	if (PageSettings.Rows == Rows && PageSettings.Columns == Columns)
 		return;
 
+	lcInstructionsStepKey Key;
+	GetPageKey(PageIndex, Key);
+
 	PageSettings.Rows = Rows;
 	PageSettings.Columns = Columns;
-	mPageSettingsOverrides[PageIndex] = PageSettings;
+	mPageSettingsOverrides[Key] = PageSettings;
 
 	CreatePages();
 
 	emit PageLayoutChanged();
 }
 
-lcInstructionsDirection lcInstructions::GetPageDirection() const
+bool lcInstructions::CanInsertBlankPage(size_t PageIndex) const
 {
-	// landscape pages fill rows across first, portrait pages fill columns down first
-	return mPageSetup.Width > mPageSetup.Height ? lcInstructionsDirection::Horizontal : lcInstructionsDirection::Vertical;
+	lcInstructionsStepKey Key;
+	return GetPageKey(PageIndex, Key);
+}
+
+void lcInstructions::InsertBlankPage(size_t PageIndex)
+{
+	// the blank page goes before the page at this index and stays with its first step
+	lcInstructionsStepKey Key;
+
+	if (!GetPageKey(PageIndex, Key))
+		return;
+
+	mBlankPages.insert(Key);
+
+	CreatePages();
+
+	emit PageLayoutChanged();
+}
+
+void lcInstructions::RemoveBlankPage(size_t PageIndex)
+{
+	if (PageIndex >= mPages.size() || mPages[PageIndex].Type != lcInstructionsPageType::Blank)
+		return;
+
+	std::multiset<lcInstructionsStepKey>::iterator BlankIt = mBlankPages.find(mPages[PageIndex].BlankKey);
+
+	if (BlankIt != mBlankPages.end())
+		mBlankPages.erase(BlankIt);
+
+	CreatePages();
+
+	emit PageLayoutChanged();
 }
 
 void lcInstructions::SetPageSetup(const lcInstructionsPageSetup& PageSetup)
@@ -254,10 +350,15 @@ void lcInstructions::SetDefaultProperty(lcInstructionsPropertyType Type, const Q
 	switch (Type)
 	{
 	case lcInstructionsPropertyType::ShowBillOfMaterials:
+	case lcInstructionsPropertyType::ShowCoverPage:
 		CreatePages();
 		emit PageLayoutChanged();
 		break;
 
+	case lcInstructionsPropertyType::UseDocumentFont:
+	case lcInstructionsPropertyType::DocumentFont:
+	case lcInstructionsPropertyType::CoverTitleFont:
+	case lcInstructionsPropertyType::PageBackgroundColor:
 	case lcInstructionsPropertyType::ShowStepDividers:
 	case lcInstructionsPropertyType::StepDividerColor:
 	case lcInstructionsPropertyType::StepDividerWidth:
@@ -282,12 +383,21 @@ void lcInstructions::CreatePages()
 
 		if (Model)
 		{
+			if (GetBoolProperty(lcInstructionsPropertyType::ShowCoverPage, nullptr, 0))
+			{
+				lcInstructionsPage Page;
+				Page.Type = lcInstructionsPageType::Cover;
+				Page.Model = Model;
+				mPages.emplace_back(std::move(Page));
+			}
+
 			AddDefaultPages(Model, AddedModels);
 
 			if (GetBoolProperty(lcInstructionsPropertyType::ShowBillOfMaterials, nullptr, 0))
 			{
 				lcInstructionsPage Page;
-				Page.BillOfMaterials = Model;
+				Page.Type = lcInstructionsPageType::BillOfMaterials;
+				Page.Model = Model;
 				mPages.emplace_back(std::move(Page));
 			}
 		}
@@ -337,9 +447,11 @@ void lcInstructions::AddDefaultPages(lcModel* Model, std::vector<const lcModel*>
 				AddDefaultPages(SubModel, AddedModels);
 		}
 
+		AddBlankPages(Page, { Model, Step });
+
 		if (Page.Steps.empty())
 		{
-			Page.Settings = GetPageSettings(mPages.size());
+			Page.Settings = GetStepPageSettings({ Model, Step });
 			Row = 0;
 			Column = 0;
 		}
@@ -392,6 +504,31 @@ void lcInstructions::AddDefaultPages(lcModel* Model, std::vector<const lcModel*>
 		}
 	}
 
+	AddBlankPages(Page, { Model, LastStep + 1 });
+
 	if (!Page.Steps.empty())
 		mPages.emplace_back(std::move(Page));
+}
+
+void lcInstructions::AddBlankPages(lcInstructionsPage& Page, const lcInstructionsStepKey& Key)
+{
+	const size_t BlankCount = mBlankPages.count(Key);
+
+	if (!BlankCount)
+		return;
+
+	// a blank page breaks the flow, the steps before it end their page
+	if (!Page.Steps.empty())
+	{
+		mPages.emplace_back(std::move(Page));
+		Page = lcInstructionsPage();
+	}
+
+	for (size_t BlankIndex = 0; BlankIndex < BlankCount; BlankIndex++)
+	{
+		lcInstructionsPage BlankPage;
+		BlankPage.Type = lcInstructionsPageType::Blank;
+		BlankPage.BlankKey = Key;
+		mPages.emplace_back(std::move(BlankPage));
+	}
 }
