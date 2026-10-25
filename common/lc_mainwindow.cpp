@@ -865,24 +865,15 @@ void lcMainWindow::CreateToolBars()
 
 	QToolBar* TransformWidget = lcCreatePanelToolBar(PropertiesWidget);
 
-	// The transform button shows a T like the P and R buttons of the position and rotation rows.
-	QAction* TransformModeAction = mActions[LC_EDIT_TRANSFORM];
-	QToolButton* TransformButton = new QToolButton(TransformWidget);
-	TransformButton->setText(tr("T"));
-	TransformButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
-	TransformButton->setMenu(TransformModeAction->menu());
-	TransformButton->setPopupMode(QToolButton::InstantPopup);
-	TransformButton->setEnabled(TransformModeAction->isEnabled());
-
-	connect(TransformModeAction, &QAction::changed, TransformButton, [TransformModeAction, TransformButton]()
-	{
-		TransformButton->setEnabled(TransformModeAction->isEnabled());
-	});
-	TransformButton->setToolTip(tr("Choose absolute or relative translation or rotation."));
-	TransformButton->setWhatsThis(tr("<p><b>Apply Transform</b></p><p>Choose the translation or rotation mode, enter X/Y/Z values, and press Enter to apply them. Translation values use LDraw units; rotation values use degrees.</p>"));
-	TransformWidget->addWidget(TransformButton);
-	lcSetupPanelButton(TransformButton);
-	TransformButton->setFixedSize(lcGetPanelButtonSize());
+	// A T names the row like the P and R buttons of the position and rotation rows.
+	QToolButton* TransformNameButton = new QToolButton(TransformWidget);
+	TransformNameButton->setText(tr("T"));
+	TransformNameButton->setToolTip(tr("Transform"));
+	TransformNameButton->setAccessibleName(tr("Transform"));
+	TransformNameButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
+	TransformWidget->addWidget(TransformNameButton);
+	lcSetupPanelButton(TransformNameButton);
+	TransformNameButton->setFixedSize(lcGetPanelButtonSize());
 
 	mTransformXEdit = new lcTransformLineEdit();
 	mTransformXEdit->setAccessibleName(tr("Transform X"));
@@ -899,6 +890,16 @@ void lcMainWindow::CreateToolBars()
 	mTransformZEdit->setToolTip(tr("Enter the Z translation in LDraw units or rotation in degrees."));
 	lcSetupPanelEdit(mTransformZEdit);
 	TransformWidget->addWidget(mTransformZEdit);
+
+	// The transform mode button sits under the keyframe buttons and shows the current mode.
+	QToolButton* TransformButton = new QToolButton(TransformWidget);
+	TransformButton->setDefaultAction(mActions[LC_EDIT_TRANSFORM]);
+	TransformButton->setPopupMode(QToolButton::InstantPopup);
+	TransformButton->setToolTip(tr("Choose absolute or relative translation or rotation."));
+	TransformButton->setWhatsThis(tr("<p><b>Apply Transform</b></p><p>Choose the translation or rotation mode, enter X/Y/Z values, and press Enter to apply them. Translation values use LDraw units; rotation values use degrees.</p>"));
+	TransformWidget->addWidget(TransformButton);
+	lcSetupPanelButton(TransformButton);
+	TransformButton->setFixedSize(lcGetPanelButtonSize());
 
 	PropertiesLayout->addWidget(mPropertiesWidget->GetTransformRowsWidget());
 	PropertiesLayout->addWidget(TransformWidget);
