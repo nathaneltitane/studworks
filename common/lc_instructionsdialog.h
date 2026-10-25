@@ -152,8 +152,11 @@ public:
 	lcInstructionsPropertiesWidget(QWidget* Parent, lcInstructions* Instructions);
 
 	void SelectionChanged(QGraphicsItem* FocusItem);
+	void SetCurrentPage(int PageIndex);
 
 protected:
+	void UpdateWidget();
+	void AddPageLayoutProperties();
 	void AddBoolProperty(lcInstructionsPropertyType Type);
 	void AddIntProperty(lcInstructionsPropertyType Type, int Minimum, int Maximum);
 	void AddSortProperty(lcInstructionsPropertyType Type);
@@ -164,6 +167,7 @@ protected:
 	QGridLayout* mPropertiesLayout = nullptr;
 	lcInstructions* mInstructions = nullptr;
 	QGraphicsItem* mFocusItem = nullptr;
+	int mPageIndex = 0;
 	lcModel* mModel = nullptr;
 	lcStep mStep = 1;
 };
@@ -177,7 +181,6 @@ public:
 
 protected slots:
 	void ShowPrintDialog();
-	void UpdatePageSettings();
 	void PageSetupChanged();
 	void CurrentThumbnailChanged(int Index);
 
@@ -196,6 +199,4 @@ protected:
 
 	QToolBar* mPageSettingsToolBar = nullptr;
 	QAction* mPrintAction = nullptr;
-	QSpinBox* mRowsSpinBox = nullptr;
-	QSpinBox* mColumnsSpinBox = nullptr;
 };

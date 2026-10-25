@@ -62,6 +62,8 @@ enum class lcInstructionsPropertyType
 	StepDividerColor,
 	StepDividerWidth,
 	ShowBillOfMaterials,
+	UseDocumentFont,
+	DocumentFont,
 	Count
 };
 
@@ -84,7 +86,7 @@ struct lcInstructionsStep
 
 struct lcInstructionsPage
 {
-//	lcInstructionsPageSettings Settings;
+	lcInstructionsPageSettings Settings;
 	std::vector<lcInstructionsStep> Steps;
 	lcModel* BillOfMaterials = nullptr;
 };
@@ -104,6 +106,8 @@ public:
 	static QString GetPropertyLabel(lcInstructionsPropertyType Type);
 
 	void SetDefaultPageSettings(const lcInstructionsPageSettings& PageSettings);
+	lcInstructionsPageSettings GetPageSettings(size_t PageIndex) const;
+	void SetPageSettings(size_t PageIndex, int Rows, int Columns);
 	void SetPageSetup(const lcInstructionsPageSetup& PageSetup);
 	lcInstructionsDirection GetPageDirection() const;
 
@@ -120,6 +124,7 @@ public:
 //protected:
 	std::vector<lcInstructionsPage> mPages;
 	lcInstructionsPageSettings mPageSettings;
+	std::map<size_t, lcInstructionsPageSettings> mPageSettingsOverrides;
 	lcInstructionsPageSetup mPageSetup;
 	lcInstructionsProperties mStepProperties;
 
