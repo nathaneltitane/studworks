@@ -667,7 +667,7 @@ void lcPropertiesWidget::AddVectorProperty(const std::array<lcObjectPropertyId, 
 	QToolBar* ToolBar = lcCreatePanelToolBar(mTransformRows);
 	mTransformRowsLayout->addWidget(ToolBar);
 
-	// An inactive button with the first letter of the name takes the place of the transform button so the boxes line up.
+	// A button with the first letter of the name takes the place of the transform button so the boxes line up.
 	QToolButton* NameButton = new QToolButton(ToolBar);
 	NameButton->setText(Text.left(1));
 	NameButton->setToolTip(Text);
@@ -676,9 +676,6 @@ void lcPropertiesWidget::AddVectorProperty(const std::array<lcObjectPropertyId, 
 	ToolBar->addWidget(NameButton);
 	lcSetupPanelButton(NameButton);
 	NameButton->setFixedSize(lcGetPanelButtonSize());
-
-	// It only names the row, so it ignores the mouse.
-	NameButton->setAttribute(Qt::WA_TransparentForMouseEvents);
 
 	const QString AxisNames[3] = { tr("X"), tr("Y"), tr("Z") };
 
