@@ -1583,7 +1583,7 @@ const lcCommand gCommands[] =
 	// LC_PIECE_MINIFIG_WIZARD
 	{
 		QT_TRANSLATE_NOOP("Action", "Piece.MinifigWizard"),
-		QT_TRANSLATE_NOOP("Menu", "Minifig &Wizard..."),
+		QT_TRANSLATE_NOOP("Menu", "Configure &Minifigure..."),
 		QT_TRANSLATE_NOOP("Status", "Add a new minifig to the model"),
 		"",
 		""
