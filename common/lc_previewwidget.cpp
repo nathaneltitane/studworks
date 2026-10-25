@@ -93,6 +93,8 @@ lcPreviewDockWidget::lcPreviewDockWidget(QMainWindow* Parent)
 
 	if (QToolButton* LockButton = qobject_cast<QToolButton*>(mToolBar->widgetForAction(mLockAction)))
 		LockButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
+
+	lcSetupPanelAction(mToolBar, mLockAction);
 	mToolBar->addWidget(mLabel);
 
 	QToolButton* OptionsButton = new QToolButton(mToolBar);
@@ -100,6 +102,7 @@ lcPreviewDockWidget::lcPreviewDockWidget(QMainWindow* Parent)
 	OptionsButton->setToolTip(tr("Configure the pieces preview."));
 	OptionsButton->setAccessibleName(tr("Pieces Preview Options"));
 	OptionsButton->setPopupMode(QToolButton::InstantPopup);
+	lcSetupPanelButton(OptionsButton);
 	mToolBar->addWidget(OptionsButton);
 
 	QMenu* OptionsMenu = new QMenu(this);

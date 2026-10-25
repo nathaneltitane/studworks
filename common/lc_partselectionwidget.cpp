@@ -994,6 +994,7 @@ lcPartSelectionWidget::lcPartSelectionWidget(bool IsPopup, QWidget* Parent)
 	connect(mFilterCaseAction, &QAction::triggered, this, &lcPartSelectionWidget::FilterCaseTriggered);
 
 	FilterCategoriesToolBar->addAction(mFilterCaseAction);
+	lcSetupPanelAction(FilterCategoriesToolBar, mFilterCaseAction);
 
 	mCategoriesWidget = new QTreeWidget(mSplitter);
 	mCategoriesWidget->setHeaderHidden(true);

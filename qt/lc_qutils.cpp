@@ -41,12 +41,47 @@ void lcSetPanelToolBarMargins(QToolBar* ToolBar)
 	ToolBar->setMinimumHeight(lcGetPanelToolBarHeight(ToolBar));
 }
 
+QSize lcGetPanelButtonSize()
+{
+	// Every panel button is sized after the options gear button of a panel toolbar.
+	static QSize ButtonSize;
+
+	if (!ButtonSize.isValid())
+	{
+		QToolBar ToolBar;
+		QToolButton* Button = new QToolButton(&ToolBar);
+
+		Button->setIcon(QIcon(":/resources/gear_in.png"));
+		Button->setAutoRaise(true);
+		ToolBar.addWidget(Button);
+
+		ButtonSize = Button->sizeHint();
+	}
+
+	return ButtonSize;
+}
+
 void lcSetupPanelButton(QToolButton* Button)
 {
-	// Panel buttons are flat and sized to their content like the toolbar buttons of the preview.
+	// Panel buttons are flat, icon buttons are as large as the gear and text buttons as tall.
+	const QSize ButtonSize = lcGetPanelButtonSize();
+
 	Button->setAutoRaise(true);
 	Button->setFocusPolicy(Qt::NoFocus);
 	Button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+
+	if (Button->toolButtonStyle() == Qt::ToolButtonIconOnly)
+		Button->setFixedSize(ButtonSize);
+	else
+		Button->setFixedHeight(ButtonSize.height());
+}
+
+void lcSetupPanelAction(QToolBar* ToolBar, QAction* Action)
+{
+	QToolButton* Button = qobject_cast<QToolButton*>(ToolBar->widgetForAction(Action));
+
+	if (Button)
+		lcSetupPanelButton(Button);
 }
 
 QToolBar* lcCreatePanelToolBar(QWidget* Parent)

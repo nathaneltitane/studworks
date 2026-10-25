@@ -1,5 +1,6 @@
 #include "lc_global.h"
 #include "lc_collapsiblewidget.h"
+#include "lc_qutils.h"
 
 QImage lcCollapsibleWidgetButton::mExpandedIcon;
 QImage lcCollapsibleWidgetButton::mCollapsedIcon;
@@ -12,6 +13,7 @@ lcCollapsibleWidgetButton::lcCollapsibleWidgetButton(const QString& Title, QWidg
 	setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 	setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Maximum);
 	setFocusPolicy(Qt::NoFocus);
+	setFixedHeight(lcGetPanelButtonSize().height());
 
 	UpdateIcon();
 

@@ -24,7 +24,7 @@ lcPropertiesWidget::lcPropertiesWidget(QWidget* Parent)
 		if (!Property.Editor || !Property.Label)
 			continue;
 
-		const QString Name = tr("%1: %2").arg(mCategoryWidgets[static_cast<int>(Property.Category)].Button->text(), Property.Label->text());
+		const QString Name = tr("%1: %2").arg(mCategoryWidgets[static_cast<int>(Property.Category)].Title, Property.Label->text());
 		Property.Label->setBuddy(Property.Editor);
 		Property.Editor->setAccessibleName(Name);
 		Property.Editor->setWhatsThis(Property.Editor->toolTip());
@@ -95,17 +95,29 @@ void lcPropertiesWidget::AddCategory(CategoryIndex Index, const QString& Title, 
 	mCurrentCategory = &mCategoryWidgets[static_cast<int>(Index)];
 	mCurrentCategory->Category = Index;
 
-	lcCollapsibleWidgetButton* CategoryButton = new lcCollapsibleWidgetButton(Title);
-	CategoryButton->SetCollapsible(Collapsible);
+	mCurrentCategory->Title = Title;
 
+	// Fixed categories show a plain title, only collapsible ones use the collapsible button.
 	if (Collapsible)
+	{
+		lcCollapsibleWidgetButton* CategoryButton = new lcCollapsibleWidgetButton(Title);
 		CategoryButton->setToolTip(tr("Expand or collapse the %1 properties.").arg(Title));
 
-	mLayout->addWidget(CategoryButton, mLayoutRow, 0, 1, -1);
-	mCurrentCategory->Button = CategoryButton;
+		mCurrentCategory->Button = CategoryButton;
+		mCurrentCategory->Header = CategoryButton;
 
-	connect(CategoryButton, &lcCollapsibleWidgetButton::StateChanged, this, &lcPropertiesWidget::CategoryStateChanged);
+		connect(CategoryButton, &lcCollapsibleWidgetButton::StateChanged, this, &lcPropertiesWidget::CategoryStateChanged);
+	}
+	else
+	{
+		QLabel* TitleLabel = new QLabel(Title);
+		TitleLabel->setAlignment(Qt::AlignCenter);
+		TitleLabel->setFixedHeight(lcGetPanelButtonSize().height());
 
+		mCurrentCategory->Header = TitleLabel;
+	}
+
+	mLayout->addWidget(mCurrentCategory->Header, mLayoutRow, 0, 1, -1);
 	mLayoutRow++;
 }
 
@@ -1321,7 +1333,9 @@ void lcPropertiesWidget::SetPropertyVisible(lcObjectPropertyId PropertyId, bool 
 	PropertyWidgets& Property = mPropertyWidgets[static_cast<int>(PropertyId)];
 	Property.Visible = Visible;
 
-	SetPropertyWidgetsVisible(PropertyId, Visible && mCategoryWidgets[static_cast<int>(Property.Category)].Button->IsExpanded());
+	const CategoryWidgets& Category = mCategoryWidgets[static_cast<int>(Property.Category)];
+
+	SetPropertyWidgetsVisible(PropertyId, Visible && (!Category.Button || Category.Button->IsExpanded()));
 }
 
 void lcPropertiesWidget::SetPropertyWidgetsVisible(lcObjectPropertyId PropertyId, bool Visible)
@@ -1342,9 +1356,9 @@ void lcPropertiesWidget::SetCategoryVisible(CategoryIndex Index, bool Visible)
 {
 	CategoryWidgets& Category = mCategoryWidgets[static_cast<int>(Index)];
 
-	Category.Button->setVisible(Visible);
+	Category.Header->setVisible(Visible);
 
-	SetCategoryWidgetsVisible(Category, Visible && Category.Button->IsExpanded());
+	SetCategoryWidgetsVisible(Category, Visible && (!Category.Button || Category.Button->IsExpanded()));
 }
 
 void lcPropertiesWidget::SetEmpty()
