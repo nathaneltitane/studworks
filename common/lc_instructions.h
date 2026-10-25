@@ -53,9 +53,15 @@ enum class lcInstructionsPropertyType
 	PLIFont,
 	PLITextColor,
 	PLIBorderColor,
-//	PLIBorderWidth,
+	PLIBorderWidth,
 //	PLIBorderRound,
 	// pli: spacing and margins, text alignment
+	PLIShowCounts,
+	PLISortOrder,
+	ShowStepDividers,
+	StepDividerColor,
+	StepDividerWidth,
+	ShowBillOfMaterials,
 	Count
 };
 
@@ -80,6 +86,7 @@ struct lcInstructionsPage
 {
 //	lcInstructionsPageSettings Settings;
 	std::vector<lcInstructionsStep> Steps;
+	lcModel* BillOfMaterials = nullptr;
 };
 
 struct lcInstructionsModel
@@ -101,10 +108,12 @@ public:
 	lcInstructionsDirection GetPageDirection() const;
 
 	bool GetBoolProperty(lcInstructionsPropertyType Type, lcModel* Model, lcStep Step) const;
+	int GetIntProperty(lcInstructionsPropertyType Type, lcModel* Model, lcStep Step) const;
 	QColor GetColorProperty(lcInstructionsPropertyType Type, lcModel* Model, lcStep Step) const;
 	QFont GetFontProperty(lcInstructionsPropertyType Type, lcModel* Model, lcStep Step) const;
 
 	void SetDefaultBool(lcInstructionsPropertyType Type, bool Enabled);
+	void SetDefaultInt(lcInstructionsPropertyType Type, int Value);
 	void SetDefaultColor(lcInstructionsPropertyType Type, const QColor& Color);
 	void SetDefaultFont(lcInstructionsPropertyType Type, const QFont& Font);
 
@@ -119,6 +128,7 @@ public:
 signals:
 	void StepSettingsChanged(lcModel* Model, lcStep Step);
 	void PageSetupChanged();
+	void PageLayoutChanged();
 
 protected:
 	void CreatePages();

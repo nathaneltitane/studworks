@@ -56,7 +56,8 @@ lcInstructionsPartsListItem::lcInstructionsPartsListItem(QGraphicsItem* Parent, 
 
 void lcInstructionsPartsListItem::Update()
 {
-	bool Visible = mInstructions->GetBoolProperty(lcInstructionsPropertyType::ShowStepPLI, mModel, mStep);
+	// the bill of materials uses the pieces list settings but is shown whenever its page exists
+	bool Visible = mBillOfMaterials || mInstructions->GetBoolProperty(lcInstructionsPropertyType::ShowStepPLI, mModel, mStep);
 	setVisible(Visible);
 
 	if (!Visible)
@@ -65,8 +66,10 @@ void lcInstructionsPartsListItem::Update()
 	QColor BackgroundColor = mInstructions->GetColorProperty(lcInstructionsPropertyType::PLIBackgroundColor, mModel, mStep);
 	QFont Font = mInstructions->GetFontProperty(lcInstructionsPropertyType::PLIFont, mModel, mStep);
 	QColor TextColor = mInstructions->GetColorProperty(lcInstructionsPropertyType::PLITextColor, mModel, mStep);
+	const bool ShowCounts = mInstructions->GetBoolProperty(lcInstructionsPropertyType::PLIShowCounts, mModel, mStep);
+	const lcPartsListSort Sort = static_cast<lcPartsListSort>(mInstructions->GetIntProperty(lcInstructionsPropertyType::PLISortOrder, mModel, mStep));
 
-	const lcResult<QImage> PartsImage = mModel->GetPartsListImage(300, mStep, lcRGBAFromQColor(BackgroundColor), Font, TextColor, false);
+	const lcResult<QImage> PartsImage = mModel->GetPartsListImage(mMaxWidth, mBillOfMaterials ? 0 : mStep, lcRGBAFromQColor(BackgroundColor), Font, TextColor, false, ShowCounts, Sort);
 
 	if (!PartsImage)
 	{
@@ -78,7 +81,19 @@ void lcInstructionsPartsListItem::Update()
 		return;
 	}
 
-	setPixmap(QPixmap::fromImage(PartsImage.value()));
+	QImage Image = PartsImage.value();
+	const int BorderWidth = mInstructions->GetIntProperty(lcInstructionsPropertyType::PLIBorderWidth, mModel, mStep);
+
+	if (BorderWidth > 0 && !Image.isNull())
+	{
+		QPainter Painter(&Image);
+		QPen Pen(mInstructions->GetColorProperty(lcInstructionsPropertyType::PLIBorderColor, mModel, mStep), BorderWidth);
+		Pen.setJoinStyle(Qt::MiterJoin);
+		Painter.setPen(Pen);
+		Painter.drawRect(QRectF(BorderWidth / 2.0, BorderWidth / 2.0, Image.width() - BorderWidth, Image.height() - BorderWidth));
+	}
+
+	setPixmap(QPixmap::fromImage(Image));
 }
 
 lcInstructionsPageWidget::lcInstructionsPageWidget(QWidget* Parent, lcInstructions* Instructions, lcInstructionsPropertiesWidget* PropertiesWidget)
@@ -161,6 +176,56 @@ static void lcUpdateInstructionsPageScene(lcInstructions* Instructions, const lc
 	PageItem->setFlag(QGraphicsItem::ItemClipsChildrenToShape, true);
 
 	QRectF MarginsRect(PageSetup.MarginLeft, PageSetup.MarginTop, PageSetup.Width - PageSetup.MarginLeft - PageSetup.MarginRight, PageSetup.Height - PageSetup.MarginTop - PageSetup.MarginBottom);
+
+	if (Page->BillOfMaterials)
+	{
+		lcInstructionsPartsListItem* PartsImageItem = new lcInstructionsPartsListItem(PageItem, Instructions, Page->BillOfMaterials, 0);
+		PartsImageItem->SetBillOfMaterials(MarginsRect.width());
+		PartsImageItem->setPos(MarginsRect.topLeft());
+		PartsImageItem->Update();
+
+		return;
+	}
+
+	// draw a divider between neighboring steps, across rows and down columns
+	if (!Page->Steps.empty())
+	{
+		const lcInstructionsStep& FirstStep = Page->Steps.front();
+
+		if (Instructions->GetBoolProperty(lcInstructionsPropertyType::ShowStepDividers, FirstStep.Model, FirstStep.Step))
+		{
+			const int DividerWidth = Instructions->GetIntProperty(lcInstructionsPropertyType::StepDividerWidth, FirstStep.Model, FirstStep.Step);
+			const QPen DividerPen(Instructions->GetColorProperty(lcInstructionsPropertyType::StepDividerColor, FirstStep.Model, FirstStep.Step), DividerWidth);
+			const qreal Inset = 10.0;
+
+			auto IsNear = [](qreal Value1, qreal Value2)
+			{
+				return qAbs(Value1 - Value2) < 0.0001;
+			};
+
+			for (const lcInstructionsStep& Step : Page->Steps)
+			{
+				const QRectF& Rect = Step.Rect;
+
+				for (const lcInstructionsStep& Other : Page->Steps)
+				{
+					const QRectF& OtherRect = Other.Rect;
+
+					if (IsNear(OtherRect.left(), Rect.right()) && IsNear(OtherRect.top(), Rect.top()))
+					{
+						const qreal X = MarginsRect.left() + MarginsRect.width() * Rect.right();
+						Scene->addLine(X, MarginsRect.top() + MarginsRect.height() * Rect.top() + Inset, X, MarginsRect.top() + MarginsRect.height() * Rect.bottom() - Inset, DividerPen)->setParentItem(PageItem);
+					}
+
+					if (IsNear(OtherRect.top(), Rect.bottom()) && IsNear(OtherRect.left(), Rect.left()))
+					{
+						const qreal Y = MarginsRect.top() + MarginsRect.height() * Rect.bottom();
+						Scene->addLine(MarginsRect.left() + MarginsRect.width() * Rect.left() + Inset, Y, MarginsRect.left() + MarginsRect.width() * Rect.right() - Inset, Y, DividerPen)->setParentItem(PageItem);
+					}
+				}
+			}
+		}
+	}
 
 	for (const lcInstructionsStep& Step : Page->Steps)
 	{
@@ -339,6 +404,8 @@ lcInstructionsPropertiesWidget::lcInstructionsPropertiesWidget(QWidget* Parent, 
 	Layout->addWidget(PresetComboBox, 1, 1);
 
 	Layout->setRowStretch(3, 1);
+
+	SelectionChanged(nullptr);
 }
 
 void lcInstructionsPropertiesWidget::AddBoolProperty(lcInstructionsPropertyType Type)
@@ -355,6 +422,42 @@ void lcInstructionsPropertiesWidget::AddBoolProperty(lcInstructionsPropertyType 
 	connect(CheckBox, &QToolButton::toggled, [this, Type](bool Checked)
 	{
 		mInstructions->SetDefaultBool(Type, Checked);
+	});
+}
+
+void lcInstructionsPropertiesWidget::AddIntProperty(lcInstructionsPropertyType Type, int Minimum, int Maximum)
+{
+	const QString Label = mInstructions->GetPropertyLabel(Type);
+	const int Row = mPropertiesLayout->rowCount();
+
+	mPropertiesLayout->addWidget(new QLabel(Label), Row, 0);
+
+	QSpinBox* SpinBox = new QSpinBox();
+	SpinBox->setRange(Minimum, Maximum);
+	SpinBox->setValue(mInstructions->GetIntProperty(Type, mModel, mStep));
+	mPropertiesLayout->addWidget(SpinBox, Row, 1);
+
+	connect(SpinBox, qOverload<int>(&QSpinBox::valueChanged), [this, Type](int Value)
+	{
+		mInstructions->SetDefaultInt(Type, Value);
+	});
+}
+
+void lcInstructionsPropertiesWidget::AddSortProperty(lcInstructionsPropertyType Type)
+{
+	const QString Label = mInstructions->GetPropertyLabel(Type);
+	const int Row = mPropertiesLayout->rowCount();
+
+	mPropertiesLayout->addWidget(new QLabel(Label), Row, 0);
+
+	QComboBox* ComboBox = new QComboBox();
+	ComboBox->addItems(QStringList() << tr("Color") << tr("Name") << tr("Part ID"));
+	ComboBox->setCurrentIndex(mInstructions->GetIntProperty(Type, mModel, mStep));
+	mPropertiesLayout->addWidget(ComboBox, Row, 1);
+
+	connect(ComboBox, qOverload<int>(&QComboBox::currentIndexChanged), [this, Type](int Index)
+	{
+		mInstructions->SetDefaultInt(Type, Index);
 	});
 }
 
@@ -404,11 +507,20 @@ void lcInstructionsPropertiesWidget::AddColorProperty(lcInstructionsPropertyType
 				Title = tr("Select Pieces List Text Color");
 				break;
 
+			case lcInstructionsPropertyType::StepDividerColor:
+				Title = tr("Select Step Divider Color");
+				break;
+
 			case lcInstructionsPropertyType::ShowStepNumber:
 			case lcInstructionsPropertyType::ShowStepPLI:
 			case lcInstructionsPropertyType::StepNumberFont:
 			case lcInstructionsPropertyType::PLIFont:
-//			case lcInstructionsPropertyType::StepPLIBorderWidth:
+			case lcInstructionsPropertyType::PLIBorderWidth:
+			case lcInstructionsPropertyType::PLIShowCounts:
+			case lcInstructionsPropertyType::PLISortOrder:
+			case lcInstructionsPropertyType::ShowStepDividers:
+			case lcInstructionsPropertyType::StepDividerWidth:
+			case lcInstructionsPropertyType::ShowBillOfMaterials:
 //			case lcInstructionsPropertyType::StepPLIBorderRound:
 			case lcInstructionsPropertyType::Count:
 				break;
@@ -465,6 +577,13 @@ void lcInstructionsPropertiesWidget::AddFontProperty(lcInstructionsPropertyType 
 			case lcInstructionsPropertyType::PLIBackgroundColor:
 			case lcInstructionsPropertyType::PLITextColor:
 			case lcInstructionsPropertyType::PLIBorderColor:
+			case lcInstructionsPropertyType::StepDividerColor:
+			case lcInstructionsPropertyType::PLIBorderWidth:
+			case lcInstructionsPropertyType::PLIShowCounts:
+			case lcInstructionsPropertyType::PLISortOrder:
+			case lcInstructionsPropertyType::ShowStepDividers:
+			case lcInstructionsPropertyType::StepDividerWidth:
+			case lcInstructionsPropertyType::ShowBillOfMaterials:
 			case lcInstructionsPropertyType::Count:
 				break;
 		}
@@ -472,7 +591,7 @@ void lcInstructionsPropertiesWidget::AddFontProperty(lcInstructionsPropertyType 
 		bool Ok = false;
 
 		QFont Font = mInstructions->GetFontProperty(Type, mModel, mStep);
-		Font = QFontDialog::getFont(&Ok, Font, this, tr("Select Step Number Font"));
+		Font = QFontDialog::getFont(&Ok, Font, this, Title);
 
 		if (Ok)
 		{
@@ -484,17 +603,20 @@ void lcInstructionsPropertiesWidget::AddFontProperty(lcInstructionsPropertyType 
 
 void lcInstructionsPropertiesWidget::SelectionChanged(QGraphicsItem* FocusItem)
 {
-	if (mFocusItem == FocusItem)
+	if (mWidget && mFocusItem == FocusItem)
 		return;
 
-	delete mWidget;
+	// the old widget may be the one whose signal led here, so delete it later
+	if (mWidget)
+	{
+		mWidget->hide();
+		mWidget->deleteLater();
+	}
+
 	mWidget = nullptr;
 	mFocusItem = FocusItem;
 	mModel = nullptr;
 	mStep = 1;
-
-	if (!FocusItem)
-		return;
 
 	auto CreatePropertyWidget = [this](const QString& Title)
 	{
@@ -506,6 +628,45 @@ void lcInstructionsPropertiesWidget::SelectionChanged(QGraphicsItem* FocusItem)
 		mPropertiesLayout = new QGridLayout();
 		mWidget->SetChildLayout(mPropertiesLayout);
 	};
+
+	auto AddSection = [this](const QString& Title)
+	{
+		QLabel* Label = new QLabel(Title);
+		QFont Font = Label->font();
+		Font.setBold(true);
+		Label->setFont(Font);
+		mPropertiesLayout->addWidget(Label, mPropertiesLayout->rowCount(), 0, 1, -1);
+	};
+
+	// with nothing selected, show the defaults for every page
+	if (!FocusItem)
+	{
+		CreatePropertyWidget(tr("Page Properties"));
+
+		AddSection(tr("Page"));
+		AddBoolProperty(lcInstructionsPropertyType::ShowStepDividers);
+		AddColorProperty(lcInstructionsPropertyType::StepDividerColor);
+		AddIntProperty(lcInstructionsPropertyType::StepDividerWidth, 1, 20);
+		AddBoolProperty(lcInstructionsPropertyType::ShowBillOfMaterials);
+
+		AddSection(tr("Step"));
+		AddBoolProperty(lcInstructionsPropertyType::ShowStepNumber);
+		AddFontProperty(lcInstructionsPropertyType::StepNumberFont);
+		AddColorProperty(lcInstructionsPropertyType::StepNumberColor);
+		AddColorProperty(lcInstructionsPropertyType::StepBackgroundColor);
+
+		AddSection(tr("Pieces List"));
+		AddBoolProperty(lcInstructionsPropertyType::ShowStepPLI);
+		AddBoolProperty(lcInstructionsPropertyType::PLIShowCounts);
+		AddSortProperty(lcInstructionsPropertyType::PLISortOrder);
+		AddFontProperty(lcInstructionsPropertyType::PLIFont);
+		AddColorProperty(lcInstructionsPropertyType::PLITextColor);
+		AddColorProperty(lcInstructionsPropertyType::PLIBackgroundColor);
+		AddColorProperty(lcInstructionsPropertyType::PLIBorderColor);
+		AddIntProperty(lcInstructionsPropertyType::PLIBorderWidth, 0, 20);
+
+		return;
+	}
 
 	lcInstructionsStepImageItem* ImageItem = dynamic_cast<lcInstructionsStepImageItem*>(FocusItem);
 
@@ -551,7 +712,9 @@ void lcInstructionsPropertiesWidget::SelectionChanged(QGraphicsItem* FocusItem)
 		AddFontProperty(lcInstructionsPropertyType::PLIFont);
 		AddColorProperty(lcInstructionsPropertyType::PLITextColor);
 		AddColorProperty(lcInstructionsPropertyType::PLIBorderColor);
-//		PLIBorderWidth,
+		AddIntProperty(lcInstructionsPropertyType::PLIBorderWidth, 0, 20);
+		AddBoolProperty(lcInstructionsPropertyType::PLIShowCounts);
+		AddSortProperty(lcInstructionsPropertyType::PLISortOrder);
 //		PLIBorderRound,
 
 		return;
@@ -587,16 +750,24 @@ lcInstructionsDialog::lcInstructionsDialog(QWidget* Parent, Project* Project)
 	mPageSettingsToolBar->addSeparator();
 	mPageSettingsToolBar->addWidget(new QLabel(tr("Steps per page:"), mPageSettingsToolBar));
 
+	QLabel* RowsLabel = new QLabel(tr("Rows:"), mPageSettingsToolBar);
+	RowsLabel->setContentsMargins(6, 0, 3, 0);
+	mPageSettingsToolBar->addWidget(RowsLabel);
+
 	mRowsSpinBox = new QSpinBox(mPageSettingsToolBar);
 	mRowsSpinBox->setRange(1, 10);
-	mRowsSpinBox->setPrefix(tr("Rows: "));
 	mRowsSpinBox->setToolTip(tr("Number of step rows on each page"));
+	RowsLabel->setBuddy(mRowsSpinBox);
 	mPageSettingsToolBar->addWidget(mRowsSpinBox);
+
+	QLabel* ColumnsLabel = new QLabel(tr("Columns:"), mPageSettingsToolBar);
+	ColumnsLabel->setContentsMargins(6, 0, 3, 0);
+	mPageSettingsToolBar->addWidget(ColumnsLabel);
 
 	mColumnsSpinBox = new QSpinBox(mPageSettingsToolBar);
 	mColumnsSpinBox->setRange(1, 10);
-	mColumnsSpinBox->setPrefix(tr("Columns: "));
 	mColumnsSpinBox->setToolTip(tr("Number of step columns on each page"));
+	ColumnsLabel->setBuddy(mColumnsSpinBox);
 	mPageSettingsToolBar->addWidget(mColumnsSpinBox);
 	mColumnsSpinBox->setWhatsThis(tr("Steps fill landscape pages across each row and portrait pages down each column, following the orientation chosen in Page Setup."));
 	mRowsSpinBox->setWhatsThis(mColumnsSpinBox->whatsThis());
@@ -609,6 +780,7 @@ lcInstructionsDialog::lcInstructionsDialog(QWidget* Parent, Project* Project)
 
 	connect(mPrintAction, &QAction::triggered, this, &lcInstructionsDialog::ShowPrintDialog);
 	connect(mInstructions, &lcInstructions::PageSetupChanged, this, &lcInstructionsDialog::PageSetupChanged);
+	connect(mInstructions, &lcInstructions::PageLayoutChanged, this, &lcInstructionsDialog::PageSetupChanged);
 	connect(mRowsSpinBox, qOverload<int>(&QSpinBox::valueChanged), this, &lcInstructionsDialog::UpdatePageSettings);
 	connect(mColumnsSpinBox, qOverload<int>(&QSpinBox::valueChanged), this, &lcInstructionsDialog::UpdatePageSettings);
 }
