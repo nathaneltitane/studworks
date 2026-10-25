@@ -3,6 +3,7 @@
 #include "lc_view.h"
 
 class lcPreview;
+class lcPreviewNameEdit;
 
 class lcPreviewDockWidget : public QMainWindow
 {
@@ -34,7 +35,7 @@ protected:
 	QWidget* mViewContainer;
 	QToolBar* mToolBar = nullptr;
 	QToolBar* mLabelToolBar = nullptr;
-	QLabel* mLabel;
+	lcPreviewNameEdit* mLabel;
 	lcPreview* mPreview;
 	lcViewWidget* mViewWidget;
 	bool mRefreshingModel = false;

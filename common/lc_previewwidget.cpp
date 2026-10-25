@@ -12,27 +12,45 @@
 #include "lc_profile.h"
 #include "lc_qutils.h"
 
-// a label that shortens its text with an ellipsis so the toolbar never overflows
-class lcPreviewLabel : public QLabel
+// a read-only box like the panel text boxes that shortens the name with an ellipsis to fit
+class lcPreviewNameEdit : public QLineEdit
 {
 public:
+	lcPreviewNameEdit()
+	{
+		setReadOnly(true);
+		setFocusPolicy(Qt::NoFocus);
+		setAlignment(Qt::AlignCenter);
+	}
+
+	void SetName(const QString& Name)
+	{
+		mName = Name;
+		setToolTip(Name);
+		UpdateText();
+	}
+
 	QSize minimumSizeHint() const override
 	{
-		return QSize(0, QLabel::minimumSizeHint().height());
+		return QSize(0, QLineEdit::minimumSizeHint().height());
 	}
 
 protected:
-	void paintEvent(QPaintEvent* Event) override
+	void resizeEvent(QResizeEvent* Event) override
 	{
-		Q_UNUSED(Event);
-
-		QPainter Painter(this);
-		const QRect TextRect = contentsRect().adjusted(margin(), margin(), -margin(), -margin());
-		const QString ElidedText = fontMetrics().elidedText(text(), Qt::ElideRight, TextRect.width());
-
-		Painter.setPen(palette().color(foregroundRole()));
-		Painter.drawText(TextRect, alignment(), ElidedText);
+		QLineEdit::resizeEvent(Event);
+		UpdateText();
 	}
+
+	void UpdateText()
+	{
+		const QMargins Margins = textMargins();
+		const int Width = contentsRect().width() - Margins.left() - Margins.right() - 8;
+
+		setText(fontMetrics().elidedText(mName, Qt::ElideRight, qMax(Width, 0)));
+	}
+
+	QString mName;
 };
 
 lcPreviewDockWidget::lcPreviewDockWidget(QMainWindow* Parent)
@@ -61,10 +79,9 @@ lcPreviewDockWidget::lcPreviewDockWidget(QMainWindow* Parent)
 	connect(mLockAction, &QAction::triggered, this, &lcPreviewDockWidget::SetPreviewLock);
 	SetPreviewLock();
 
-	mLabel = new lcPreviewLabel();
-	mLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-	mLabel->setContentsMargins(8, 0, 8, 0);
-	mLabel->setAlignment(Qt::AlignCenter);
+	mLabel = new lcPreviewNameEdit();
+	mLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	lcSetupPanelEdit(mLabel);
 
 	lcPiecesLibrary* Library = lcGetPiecesLibrary();
 	connect(Library, &lcPiecesLibrary::PartLoaded, this, [this](lcPieceData*)
@@ -183,7 +200,7 @@ bool lcPreviewDockWidget::SetCurrentPiece(lcPieceData* PieceData, int ColorCode)
 
 	mAssetRefreshPending = false;
 	mRefitAfterAssetLoad = true;
-	mLabel->setText(tr("Loading..."));
+	mLabel->SetName(tr("Loading..."));
 
 	if (mPreview->SetCurrentPiece(PieceData, ColorCode))
 	{
@@ -192,7 +209,7 @@ bool lcPreviewDockWidget::SetCurrentPiece(lcPieceData* PieceData, int ColorCode)
 	}
 
 	mViewWidget->show();
-	mLabel->setText(tr("Preview unavailable"));
+	mLabel->SetName(tr("Preview unavailable"));
 
 	return false;
 }
@@ -208,7 +225,7 @@ void lcPreviewDockWidget::UpdatePreview()
 void lcPreviewDockWidget::RefreshDescription()
 {
 	mPreview->RefreshDescription();
-	mLabel->setText(mPreview->GetDescription());
+	mLabel->SetName(mPreview->GetDescription());
 }
 
 void lcPreviewDockWidget::RefreshModel(const lcModel* Model)
@@ -283,7 +300,7 @@ void lcPreviewDockWidget::RefreshPendingAssets()
 		{
 			mAssetRefreshPending = false;
 			mViewWidget->hide();
-			mLabel->setText(tr("Preview unavailable"));
+			mLabel->SetName(tr("Preview unavailable"));
 			return;
 		}
 
@@ -291,7 +308,7 @@ void lcPreviewDockWidget::RefreshPendingAssets()
 		{
 			mAssetRefreshPending = true;
 			mViewWidget->hide();
-			mLabel->setText(tr("Loading..."));
+			mLabel->SetName(tr("Loading..."));
 			return;
 		}
 	}
@@ -302,7 +319,7 @@ void lcPreviewDockWidget::RefreshPendingAssets()
 		{
 			mAssetRefreshPending = true;
 			mViewWidget->hide();
-			mLabel->setText(tr("Loading..."));
+			mLabel->SetName(tr("Loading..."));
 			return;
 		}
 
@@ -310,7 +327,7 @@ void lcPreviewDockWidget::RefreshPendingAssets()
 		{
 			mAssetRefreshPending = false;
 			mViewWidget->hide();
-			mLabel->setText(tr("Preview unavailable"));
+			mLabel->SetName(tr("Preview unavailable"));
 			return;
 		}
 	}
@@ -323,7 +340,7 @@ void lcPreviewDockWidget::RefreshPendingAssets()
 	mViewWidget->show();
 	mPreview->RefreshDescription();
 	mPreview->Redraw();
-	mLabel->setText(mPreview->GetDescription());
+	mLabel->SetName(mPreview->GetDescription());
 }
 
 void lcPreviewDockWidget::RebindPieceData(lcPieceData* Previous, lcPieceData* Replacement)
@@ -350,7 +367,7 @@ void lcPreviewDockWidget::RebindPieceData(lcPieceData* Previous, lcPieceData* Re
 	else
 	{
 		mViewWidget->show();
-		mLabel->setText(tr("Preview unavailable"));
+		mLabel->SetName(tr("Preview unavailable"));
 	}
 }
 
@@ -362,7 +379,7 @@ void lcPreviewDockWidget::ClearPreview()
 	if (mPreview->GetModel()->GetPieces().size())
 		mPreview->ClearPreview();
 
-	mLabel->setText(QString());
+	mLabel->SetName(QString());
 }
 
 void lcPreviewDockWidget::SetPreviewLock()
