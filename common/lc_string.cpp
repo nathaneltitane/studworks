@@ -80,3 +80,28 @@ size_t lcstrcat(char* dest, const char* source, size_t size)
 
 	return (dlen + (s - source));
 }
+
+QString lcFormatDefaultName(const QString& Prefix, int Number)
+{
+	// Default names are a word and a three digit number, such as Group 001.
+	return Prefix + QString::number(Number).rightJustified(3, QLatin1Char('0'));
+}
+
+int lcGetDefaultNameNumber(const QString& Name, const QString& Prefix)
+{
+	if (!Name.startsWith(Prefix))
+		return 0;
+
+	// Older default names put a number sign before the number.
+	QString NumberString = Name.mid(Prefix.length());
+
+	if (NumberString.startsWith(QLatin1Char('#')))
+		NumberString.remove(0, 1);
+
+	int Length = 0;
+
+	while (Length < NumberString.length() && NumberString.at(Length).isDigit())
+		Length++;
+
+	return NumberString.left(Length).toInt();
+}

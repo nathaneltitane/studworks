@@ -271,24 +271,13 @@ QString Project::GetNewModelName(QWidget* ParentWidget, const QString& DialogTit
 
 	if (Name.isEmpty())
 	{
-		const QString Prefix = tr("Submodel #");
+		const QString Prefix = tr("Submodel ");
 		int Max = 0;
 
-		for (int ModelIdx = 0; ModelIdx < ExistingModels.size(); ModelIdx++)
-		{
-			const QString& ExistingName = ExistingModels[ModelIdx];
+		for (const QString& ExistingName : ExistingModels)
+			Max = qMax(Max, lcGetDefaultNameNumber(ExistingName, Prefix));
 
-			if (ExistingName.startsWith(Prefix))
-			{
-				QString NumberString = ExistingName.mid(Prefix.length());
-				QTextStream Stream(&NumberString);
-				int Number;
-				Stream >> Number;
-				Max = qMax(Max, Number);
-			}
-		}
-
-		Name = Prefix + QString::number(Max + 1) + ".ldr";
+		Name = lcFormatDefaultName(Prefix, Max + 1) + QLatin1String(".ldr");
 	}
 
 	for (;;)

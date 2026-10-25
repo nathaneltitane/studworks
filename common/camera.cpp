@@ -1,5 +1,6 @@
 #include "lc_global.h"
 #include "lc_math.h"
+#include "lc_string.h"
 #include <stdlib.h>
 #include <math.h>
 #include <float.h>
@@ -134,23 +135,12 @@ void lcCamera::CreateName(const std::vector<std::unique_ptr<lcCamera>>& Cameras)
 	}
 
 	int MaxCameraNumber = 0;
-	const QLatin1String Prefix("Camera ");
+	const QString Prefix = QLatin1String("Camera ");
 
 	for (const std::unique_ptr<lcCamera>& Camera : Cameras)
-	{
-		QString CameraName = Camera->GetName();
+		MaxCameraNumber = qMax(MaxCameraNumber, lcGetDefaultNameNumber(Camera->GetName(), Prefix));
 
-		if (CameraName.startsWith(Prefix))
-		{
-			bool Ok = false;
-			int CameraNumber = CameraName.mid(Prefix.size()).toInt(&Ok);
-
-			if (Ok && CameraNumber > MaxCameraNumber)
-				MaxCameraNumber = CameraNumber;
-		}
-	}
-
-	mName = Prefix + QString::number(MaxCameraNumber + 1);
+	mName = lcFormatDefaultName(Prefix, MaxCameraNumber + 1);
 }
 
 bool lcCamera::SetProjection(lcCameraProjection CameraProjection)

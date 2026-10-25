@@ -1361,7 +1361,7 @@ bool lcModel::LoadLDD(const QString& FileData)
 
 	for (const std::vector<lcPiece*>& Group : Groups)
 	{
-		lcGroup* NewGroup = AddGroup(tr("Group #"), nullptr);
+		lcGroup* NewGroup = AddGroup(tr("Group "), nullptr);
 		for (lcPiece* Piece : Group)
 			Piece->SetGroup(NewGroup);
 	}
@@ -2916,7 +2916,7 @@ void lcModel::GroupSelection()
 		return;
 	}
 
-	lcGroupDialog Dialog(gMainWindow, GetGroupName(tr("Group #")), mGroups);
+	lcGroupDialog Dialog(gMainWindow, GetGroupName(tr("Group ")), mGroups);
 
 	if (Dialog.exec() != QDialog::Accepted)
 		return;
@@ -3137,23 +3137,12 @@ void lcModel::ShowEditGroupsDialog()
 
 QString lcModel::GetGroupName(const QString& Prefix)
 {
-	const qsizetype Length = Prefix.length();
 	int Max = 0;
 
 	for (const std::unique_ptr<lcGroup>& Group : mGroups)
-	{
-		const QString& Name = Group->mName;
+		Max = qMax(Max, lcGetDefaultNameNumber(Group->mName, Prefix));
 
-		if (Name.startsWith(Prefix))
-		{
-			bool Ok = false;
-			int GroupNumber = Name.mid(Length).toInt(&Ok);
-			if (Ok && GroupNumber > Max)
-				Max = GroupNumber;
-		}
-	}
-
-	return Prefix + QString::number(Max + 1);
+	return lcFormatDefaultName(Prefix, Max + 1);
 }
 
 void lcModel::RemoveEmptyGroups()
@@ -6432,7 +6421,7 @@ void lcModel::AddMinifig(const lcMinifig& Minifig)
 	BeginHistorySequence();
 	BeginEditHistory();
 
-	lcGroup* Group = AddGroup(tr("Minifig #"), nullptr);
+	lcGroup* Group = AddGroup(tr("Minifigure "), nullptr);
 	std::vector<lcObject*> Pieces;
 
 	Pieces.reserve(LC_MFW_NUMITEMS);
