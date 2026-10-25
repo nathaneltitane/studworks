@@ -989,16 +989,10 @@ void lcMainWindow::CreateToolBars()
 	{
 		if (Visible && !mMinifigToolBar->widget())
 		{
-			// scroll the minifigure editor when the panel is smaller than its contents
-			QScrollArea* ScrollArea = new QScrollArea(mMinifigToolBar);
-			ScrollArea->setFrameShape(QFrame::NoFrame);
-			ScrollArea->setWidgetResizable(true);
-			lcMinifigDialog* MinifigDialog = new lcMinifigDialog(ScrollArea, true);
-			ScrollArea->setWidget(MinifigDialog);
-
-			// The panel is never taller than the editor, extra height goes to the other panels.
-			ScrollArea->setMaximumHeight(MinifigDialog->sizeHint().height() + 2 * ScrollArea->frameWidth());
-			mMinifigToolBar->setWidget(ScrollArea);
+			// The panel is exactly as tall as the editor wherever it is docked.
+			lcMinifigDialog* MinifigDialog = new lcMinifigDialog(mMinifigToolBar, true);
+			lcFitHeightToContents(MinifigDialog);
+			mMinifigToolBar->setWidget(MinifigDialog);
 		}
 	});
 
