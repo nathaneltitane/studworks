@@ -408,6 +408,7 @@ protected:
 	QDockWidget* mPartsToolBar = nullptr;
 	QPointer<QMainWindow> mInstructionsDialog;
 	bool mPartsSnapPending = false;
+	bool mPartsSnapRetried = false;
 	QDockWidget* mColorsToolBar = nullptr;
 	QDockWidget* mPropertiesToolBar = nullptr;
 	QDockWidget* mTimelineToolBar = nullptr;

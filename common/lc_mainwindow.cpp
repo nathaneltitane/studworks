@@ -1073,8 +1073,22 @@ void lcMainWindow::SnapPartsDock()
 
 	const int Delta = mPartSelectionWidget->GetTileSnapDelta();
 
-	if (Delta)
-		resizeDocks({ mPartsToolBar }, { mPartsToolBar->width() + Delta }, Qt::Horizontal);
+	if (!Delta)
+		return;
+
+	resizeDocks({ mPartsToolBar }, { mPartsToolBar->width() + Delta }, Qt::Horizontal);
+
+	// Check once more after the tiles are laid out again in case the view wraps differently than measured.
+	if (!mPartsSnapRetried)
+	{
+		mPartsSnapRetried = true;
+
+		QTimer::singleShot(0, this, [this]()
+		{
+			SnapPartsDock();
+			mPartsSnapRetried = false;
+		});
+	}
 }
 
 void lcMainWindow::CreatePreviewWidget()

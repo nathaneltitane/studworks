@@ -914,7 +914,7 @@ QSize lcPartSelectionListView::sizeHint() const
 
 int lcPartSelectionListView::GetTileSnapDelta() const
 {
-	// The tile pitch comes from the laid out tiles, so margins, spacing and scaling are included.
+	// Measure the laid out first row, so margins, spacing, scaling and the wrapping of the view are all included.
 	if (viewMode() != QListView::IconMode || model()->rowCount() < 2)
 		return 0;
 
@@ -925,15 +925,28 @@ int lcPartSelectionListView::GetTileSnapDelta() const
 		return 0;
 
 	const int Pitch = SecondRect.left() - FirstRect.left();
-	const int Offset = FirstRect.left() + horizontalOffset();
-	const int Available = viewport()->width() - Offset;
 
 	if (Pitch <= 0)
 		return 0;
 
-	const int Columns = qMax(qRound((float)Available / (float)Pitch), 1);
+	QRect LastRect = SecondRect;
 
-	return Columns * Pitch - Available;
+	for (int Row = 2; Row < model()->rowCount(); Row++)
+	{
+		const QRect Rect = visualRect(model()->index(Row, 0));
+
+		if (Rect.top() != FirstRect.top())
+			break;
+
+		LastRect = Rect;
+	}
+
+	// The space after the last tile of the row, beyond a right margin matching the left one. The view only fits
+	// another tile with at least one pixel to spare, so the snapped width keeps that pixel.
+	const int Leftover = viewport()->width() - (LastRect.left() + Pitch) - FirstRect.left() - 1;
+
+	// Trim a small leftover, or widen to fit one more tile when most of one already fits.
+	return Leftover * 2 < Pitch ? -Leftover : Pitch - Leftover;
 }
 
 QSize lcPartSelectionListView::GetPreferredSize(int MaximumWidth) const
