@@ -598,21 +598,8 @@ lcInstructionsDialog::lcInstructionsDialog(QWidget* Parent, Project* Project)
 	mColumnsSpinBox->setPrefix(tr("Columns: "));
 	mColumnsSpinBox->setToolTip(tr("Number of step columns on each page"));
 	mPageSettingsToolBar->addWidget(mColumnsSpinBox);
-
-	mPageSettingsToolBar->addSeparator();
-	mPageSettingsToolBar->addWidget(new QLabel(tr("Step order:"), mPageSettingsToolBar));
-
-	mHorizontalPageAction = mPageSettingsToolBar->addAction(tr("Horizontal"));
-	mHorizontalPageAction->setCheckable(true);
-	mHorizontalPageAction->setToolTip(tr("Place steps across each row before starting the next row"));
-
-	mVerticalPageAction = mPageSettingsToolBar->addAction(tr("Vertical"));
-	mVerticalPageAction->setCheckable(true);
-	mVerticalPageAction->setToolTip(tr("Place steps down each column before starting the next column"));
-
-	QActionGroup* PageDirectionGroup = new QActionGroup(mPageSettingsToolBar);
-	PageDirectionGroup->addAction(mVerticalPageAction);
-	PageDirectionGroup->addAction(mHorizontalPageAction);
+	mColumnsSpinBox->setWhatsThis(tr("Steps fill landscape pages across each row and portrait pages down each column, following the orientation chosen in Page Setup."));
+	mRowsSpinBox->setWhatsThis(mColumnsSpinBox->whatsThis());
 
 	for (size_t PageNumber = 0; PageNumber < mInstructions->mPages.size(); PageNumber++)
 		mPageListWidget->mThumbnailsWidget->addItem(QString(tr("Page %1")).arg(lcFormatIntegerLocalized(PageNumber + 1, locale())));
@@ -622,8 +609,6 @@ lcInstructionsDialog::lcInstructionsDialog(QWidget* Parent, Project* Project)
 
 	connect(mPrintAction, &QAction::triggered, this, &lcInstructionsDialog::ShowPrintDialog);
 	connect(mInstructions, &lcInstructions::PageSetupChanged, this, &lcInstructionsDialog::PageSetupChanged);
-	connect(mVerticalPageAction, &QAction::toggled, this, &lcInstructionsDialog::UpdatePageSettings);
-	connect(mHorizontalPageAction, &QAction::toggled, this, &lcInstructionsDialog::UpdatePageSettings);
 	connect(mRowsSpinBox, qOverload<int>(&QSpinBox::valueChanged), this, &lcInstructionsDialog::UpdatePageSettings);
 	connect(mColumnsSpinBox, qOverload<int>(&QSpinBox::valueChanged), this, &lcInstructionsDialog::UpdatePageSettings);
 }
@@ -743,15 +728,15 @@ void lcInstructionsDialog::UpdatePageSettings()
 	PageSettings.Rows = mRowsSpinBox->value();
 	PageSettings.Columns = mColumnsSpinBox->value();
 
-	if (mHorizontalPageAction->isChecked())
-		PageSettings.Direction = lcInstructionsDirection::Horizontal;
-	else
-		PageSettings.Direction = lcInstructionsDirection::Vertical;
+	mInstructions->SetDefaultPageSettings(PageSettings);
 
+	UpdatePageList();
+}
+
+void lcInstructionsDialog::UpdatePageList()
+{
 	QListWidget* ThumbnailsWidget = mPageListWidget->mThumbnailsWidget;
 	const int CurrentRow = qMax(ThumbnailsWidget->currentRow(), 0);
-
-	mInstructions->SetDefaultPageSettings(PageSettings);
 
 	// rebuild the page list and keep showing a page, the old pages no longer exist
 	QSignalBlocker Blocker(ThumbnailsWidget);
@@ -767,7 +752,7 @@ void lcInstructionsDialog::UpdatePageSettings()
 
 void lcInstructionsDialog::PageSetupChanged()
 {
-	CurrentThumbnailChanged(mPageListWidget->mThumbnailsWidget->currentRow());
+	UpdatePageList();
 }
 
 void lcInstructionsDialog::CurrentThumbnailChanged(int Index)
@@ -783,19 +768,6 @@ void lcInstructionsDialog::CurrentThumbnailChanged(int Index)
 	const lcInstructionsPageSettings& PageSettings = mInstructions->mPageSettings;
 
 	mPageWidget->SetCurrentPage(Page);
-
-	if (PageSettings.Direction == lcInstructionsDirection::Horizontal)
-	{
-		mHorizontalPageAction->blockSignals(true);
-		mHorizontalPageAction->setChecked(true);
-		mHorizontalPageAction->blockSignals(false);
-	}
-	else
-	{
-		mVerticalPageAction->blockSignals(true);
-		mVerticalPageAction->setChecked(true);
-		mVerticalPageAction->blockSignals(false);
-	}
 
 	mRowsSpinBox->blockSignals(true);
 	mRowsSpinBox->setValue(PageSettings.Rows);

@@ -31,7 +31,7 @@ lcInstructions::lcInstructions(Project* Project)
 
 	mPageSettings.Rows = 1;
 	mPageSettings.Columns = 1;
-	mPageSettings.Direction = lcInstructionsDirection::Horizontal;
+	mPageSettings.Direction = GetPageDirection();
 
 	mStepProperties[static_cast<int>(lcInstructionsPropertyType::ShowStepNumber)].Value = true;
 	mStepProperties[static_cast<int>(lcInstructionsPropertyType::ShowStepPLI)].Value = true;
@@ -82,8 +82,15 @@ QString lcInstructions::GetPropertyLabel(lcInstructionsPropertyType Type)
 void lcInstructions::SetDefaultPageSettings(const lcInstructionsPageSettings& PageSettings)
 {
 	mPageSettings = PageSettings;
+	mPageSettings.Direction = GetPageDirection();
 
 	CreatePages();
+}
+
+lcInstructionsDirection lcInstructions::GetPageDirection() const
+{
+	// landscape pages fill rows across first, portrait pages fill columns down first
+	return mPageSetup.Width > mPageSetup.Height ? lcInstructionsDirection::Horizontal : lcInstructionsDirection::Vertical;
 }
 
 void lcInstructions::SetPageSetup(const lcInstructionsPageSetup& PageSetup)
@@ -96,6 +103,9 @@ void lcInstructions::SetPageSetup(const lcInstructionsPageSetup& PageSetup)
 	lcSetProfileFloat(LC_PROFILE_INSTRUCTIONS_MARGIN_RIGHT, mPageSetup.MarginRight);
 	lcSetProfileFloat(LC_PROFILE_INSTRUCTIONS_MARGIN_TOP, mPageSetup.MarginTop);
 	lcSetProfileFloat(LC_PROFILE_INSTRUCTIONS_MARGIN_BOTTOM, mPageSetup.MarginBottom);
+
+	mPageSettings.Direction = GetPageDirection();
+	CreatePages();
 
 	emit PageSetupChanged();
 }
