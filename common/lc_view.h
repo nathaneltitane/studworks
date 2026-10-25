@@ -206,6 +206,11 @@ public:
 		return mCameraRotationMouseAngle;
 	}
 
+	void SetDrawViewportBorder(bool DrawBorder)
+	{
+		mDrawViewportBorder = DrawBorder;
+	}
+
 	void SetBackgroundColorOverride(quint32 BackgroundColor)
 	{
 		mOverrideBackgroundColor = true;
@@ -395,6 +400,7 @@ protected:
 	QSize mOutlineAttemptSize;
 	QPointer<QOpenGLContext> mOutlineGLContext;
 	bool mOverrideBackgroundColor = false;
+	bool mDrawViewportBorder = true;
 	quint32 mBackgroundColor = 0;
 
 	std::unique_ptr<lcScene> mScene;

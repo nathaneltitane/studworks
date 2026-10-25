@@ -1381,9 +1381,12 @@ void lcView::DrawViewport() const
 
 	float Verts[8] = { 0.0f, 0.0f, Width - 1.0f, 0.0f, Width - 1.0f, Height - 1.0f, 0.0f, Height - 1.0f };
 
-	mContext->SetVertexBufferPointer(Verts);
-	mContext->SetVertexFormatPosition(2);
-	mContext->DrawPrimitives(GL_LINE_LOOP, 0, 4);
+	if (mDrawViewportBorder)
+	{
+		mContext->SetVertexBufferPointer(Verts);
+		mContext->SetVertexFormatPosition(2);
+		mContext->DrawPrimitives(GL_LINE_LOOP, 0, 4);
+	}
 
 	QString CameraName = mCamera->GetName();
 
