@@ -91,7 +91,9 @@ lcPageSetupDialog::lcPageSetupDialog(QWidget* Parent, lcInstructionsPageSetup* P
 {
 	ui->setupUi(this);
 
-	ui->UnitsComboBox->addItems(QStringList() << tr("Pixels") << tr("Millimeters") << tr("Centimeters") << tr("Inches"));
+	const QStringList UnitNames = QStringList() << tr("Pixels") << tr("Millimeters") << tr("Centimeters") << tr("Inches");
+	ui->UnitsComboBox->addItems(UnitNames);
+	ui->MarginUnitsComboBox->addItems(UnitNames);
 
 	ui->PresetComboBox->addItem(tr("Custom"), -1);
 
@@ -114,9 +116,16 @@ lcPageSetupDialog::lcPageSetupDialog(QWidget* Parent, lcInstructionsPageSetup* P
 	for (QDoubleSpinBox* SpinBox : { ui->WidthSpinBox, ui->HeightSpinBox, ui->LeftSpinBox, ui->RightSpinBox, ui->TopSpinBox, ui->BottomSpinBox })
 		connect(SpinBox, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &lcPageSetupDialog::SizeEdited);
 
-	const int Units = lcGetProfileInt(LC_PROFILE_INSTRUCTIONS_PAGE_UNITS);
-	mUnits = Units >= 0 && Units <= static_cast<int>(lcInstructionsPageUnits::Inches) ? static_cast<lcInstructionsPageUnits>(Units) : lcInstructionsPageUnits::Inches;
+	auto GetProfileUnits = [](LC_PROFILE_KEY Key)
+	{
+		const int Units = lcGetProfileInt(Key);
+		return Units >= 0 && Units <= static_cast<int>(lcInstructionsPageUnits::Inches) ? static_cast<lcInstructionsPageUnits>(Units) : lcInstructionsPageUnits::Inches;
+	};
+
+	mUnits = GetProfileUnits(LC_PROFILE_INSTRUCTIONS_PAGE_UNITS);
+	mMarginUnits = GetProfileUnits(LC_PROFILE_INSTRUCTIONS_MARGIN_UNITS);
 	ui->UnitsComboBox->setCurrentIndex(static_cast<int>(mUnits));
+	ui->MarginUnitsComboBox->setCurrentIndex(static_cast<int>(mMarginUnits));
 
 	UpdateSpinBoxes();
 	UpdatePreset();
@@ -124,6 +133,7 @@ lcPageSetupDialog::lcPageSetupDialog(QWidget* Parent, lcInstructionsPageSetup* P
 
 	connect(ui->PresetComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, &lcPageSetupDialog::PresetChanged);
 	connect(ui->UnitsComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, &lcPageSetupDialog::UnitsChanged);
+	connect(ui->MarginUnitsComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, &lcPageSetupDialog::MarginUnitsChanged);
 	connect(ui->PortraitButton, &QRadioButton::toggled, this, &lcPageSetupDialog::OrientationChanged);
 }
 
@@ -142,23 +152,19 @@ void lcPageSetupDialog::accept()
 
 	*mPageSetup = mPoints;
 	lcSetProfileInt(LC_PROFILE_INSTRUCTIONS_PAGE_UNITS, static_cast<int>(mUnits));
+	lcSetProfileInt(LC_PROFILE_INSTRUCTIONS_MARGIN_UNITS, static_cast<int>(mMarginUnits));
 
 	QDialog::accept();
 }
 
-float lcPageSetupDialog::GetUnitScale() const
-{
-	return lcGetPageUnitScale(mUnits);
-}
-
 void lcPageSetupDialog::UpdateSpinBoxes()
 {
-	const float Scale = GetUnitScale();
-	const int Decimals = mUnits == lcInstructionsPageUnits::Pixels ? 0 : mUnits == lcInstructionsPageUnits::Millimeters ? 1 : 2;
-	const QString Suffix = QLatin1Char(' ') + lcGetPageUnitSuffix(mUnits);
-
-	auto SetValue = [Scale, Decimals, &Suffix](QDoubleSpinBox* SpinBox, float Points, float Minimum)
+	auto SetValue = [](QDoubleSpinBox* SpinBox, lcInstructionsPageUnits Units, float Points, float Minimum)
 	{
+		const float Scale = lcGetPageUnitScale(Units);
+		const int Decimals = Units == lcInstructionsPageUnits::Pixels ? 0 : Units == lcInstructionsPageUnits::Millimeters ? 1 : 2;
+		const QString Suffix = QLatin1Char(' ') + lcGetPageUnitSuffix(Units);
+
 		QSignalBlocker Blocker(SpinBox);
 		SpinBox->setDecimals(Decimals);
 		SpinBox->setSuffix(Suffix);
@@ -167,12 +173,12 @@ void lcPageSetupDialog::UpdateSpinBoxes()
 		SpinBox->setValue(Points / Scale);
 	};
 
-	SetValue(ui->WidthSpinBox, mPoints.Width, 1.0f);
-	SetValue(ui->HeightSpinBox, mPoints.Height, 1.0f);
-	SetValue(ui->LeftSpinBox, mPoints.MarginLeft, 0.0f);
-	SetValue(ui->RightSpinBox, mPoints.MarginRight, 0.0f);
-	SetValue(ui->TopSpinBox, mPoints.MarginTop, 0.0f);
-	SetValue(ui->BottomSpinBox, mPoints.MarginBottom, 0.0f);
+	SetValue(ui->WidthSpinBox, mUnits, mPoints.Width, 1.0f);
+	SetValue(ui->HeightSpinBox, mUnits, mPoints.Height, 1.0f);
+	SetValue(ui->LeftSpinBox, mMarginUnits, mPoints.MarginLeft, 0.0f);
+	SetValue(ui->RightSpinBox, mMarginUnits, mPoints.MarginRight, 0.0f);
+	SetValue(ui->TopSpinBox, mMarginUnits, mPoints.MarginTop, 0.0f);
+	SetValue(ui->BottomSpinBox, mMarginUnits, mPoints.MarginBottom, 0.0f);
 }
 
 void lcPageSetupDialog::UpdatePreset()
@@ -237,13 +243,22 @@ void lcPageSetupDialog::PresetChanged(int Index)
 		mPoints.Height = Landscape ? Short : Long;
 	}
 
-	if (SwitchUnits)
+	// metric presets use metric units and imperial presets inches, keeping centimeters if already chosen
+	auto GetPresetUnits = [&Preset](lcInstructionsPageUnits Units)
 	{
-		mUnits = Preset.Units;
+		if (Preset.Units == lcInstructionsPageUnits::Millimeters && Units == lcInstructionsPageUnits::Centimeters)
+			return Units;
 
-		QSignalBlocker Blocker(ui->UnitsComboBox);
-		ui->UnitsComboBox->setCurrentIndex(static_cast<int>(mUnits));
-	}
+		return Preset.Units;
+	};
+
+	mUnits = GetPresetUnits(mUnits);
+	mMarginUnits = GetPresetUnits(mMarginUnits);
+
+	QSignalBlocker UnitsBlocker(ui->UnitsComboBox);
+	ui->UnitsComboBox->setCurrentIndex(static_cast<int>(mUnits));
+	QSignalBlocker MarginUnitsBlocker(ui->MarginUnitsComboBox);
+	ui->MarginUnitsComboBox->setCurrentIndex(static_cast<int>(mMarginUnits));
 
 	UpdateSpinBoxes();
 	UpdateOrientation();
@@ -252,6 +267,13 @@ void lcPageSetupDialog::PresetChanged(int Index)
 void lcPageSetupDialog::UnitsChanged(int Index)
 {
 	mUnits = static_cast<lcInstructionsPageUnits>(Index);
+
+	UpdateSpinBoxes();
+}
+
+void lcPageSetupDialog::MarginUnitsChanged(int Index)
+{
+	mMarginUnits = static_cast<lcInstructionsPageUnits>(Index);
 
 	UpdateSpinBoxes();
 }
@@ -270,14 +292,15 @@ void lcPageSetupDialog::OrientationChanged()
 
 void lcPageSetupDialog::SizeEdited()
 {
-	const float Scale = GetUnitScale();
+	const float Scale = lcGetPageUnitScale(mUnits);
+	const float MarginScale = lcGetPageUnitScale(mMarginUnits);
 
 	mPoints.Width = ui->WidthSpinBox->value() * Scale;
 	mPoints.Height = ui->HeightSpinBox->value() * Scale;
-	mPoints.MarginLeft = ui->LeftSpinBox->value() * Scale;
-	mPoints.MarginRight = ui->RightSpinBox->value() * Scale;
-	mPoints.MarginTop = ui->TopSpinBox->value() * Scale;
-	mPoints.MarginBottom = ui->BottomSpinBox->value() * Scale;
+	mPoints.MarginLeft = ui->LeftSpinBox->value() * MarginScale;
+	mPoints.MarginRight = ui->RightSpinBox->value() * MarginScale;
+	mPoints.MarginTop = ui->TopSpinBox->value() * MarginScale;
+	mPoints.MarginBottom = ui->BottomSpinBox->value() * MarginScale;
 
 	UpdatePreset();
 	UpdateOrientation();

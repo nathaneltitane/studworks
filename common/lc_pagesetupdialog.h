@@ -21,11 +21,11 @@ public slots:
 protected slots:
 	void PresetChanged(int Index);
 	void UnitsChanged(int Index);
+	void MarginUnitsChanged(int Index);
 	void OrientationChanged();
 	void SizeEdited();
 
 private:
-	float GetUnitScale() const;
 	void UpdateSpinBoxes();
 	void UpdatePreset();
 	void UpdateOrientation();
@@ -34,4 +34,5 @@ private:
 	lcInstructionsPageSetup* mPageSetup;
 	lcInstructionsPageSetup mPoints;
 	lcInstructionsPageUnits mUnits = lcInstructionsPageUnits::Inches;
+	lcInstructionsPageUnits mMarginUnits = lcInstructionsPageUnits::Inches;
 };
