@@ -7,6 +7,7 @@
 #include <KPluginFactory>
 #include <KPluginMetaData>
 #include <KShell>
+#include <KAcceleratorManager>
 #include <kde_terminal_interface.h>
 
 lcTerminalWidget::lcTerminalWidget(QWidget* Parent)
@@ -90,6 +91,15 @@ void lcTerminalWidget::CreateTerminal()
 
 	if (!mPart)
 		return;
+
+	// the konsole part adds keyboard accelerators to the panel titles, which show as '&' when a panel floats
+	const QList<QDockWidget*> DockWidgets = window()->findChildren<QDockWidget*>();
+
+	for (QDockWidget* DockWidget : DockWidgets)
+	{
+		KAcceleratorManager::setNoAccel(DockWidget);
+		DockWidget->setWindowTitle(DockWidget->windowTitle().remove('&'));
+	}
 
 	mLayout->addWidget(mPart->widget());
 	setFocusProxy(mPart->widget());
