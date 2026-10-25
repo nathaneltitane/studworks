@@ -15,10 +15,14 @@ class lcMinifigDialog : public QDialog
 	Q_OBJECT
 
 public:
-	explicit lcMinifigDialog(QWidget* Parent);
+	explicit lcMinifigDialog(QWidget* Parent, bool Docked = false);
 	virtual ~lcMinifigDialog();
 
 	MinifigWizard* mMinifigWizard;
+
+public slots:
+	void accept() override;
+	void reject() override;
 
 protected slots:
 	void TemplateComboBoxCurrentTextChanged(const QString& TemplateName);
@@ -43,4 +47,5 @@ protected:
 
 	QString mCurrentTemplateName;
 	bool mCurrentTemplateModified = false;
+	bool mDocked = false;
 };

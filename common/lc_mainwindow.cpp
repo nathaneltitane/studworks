@@ -1,5 +1,6 @@
 #include "lc_global.h"
 #include "lc_mainwindow.h"
+#include "lc_minifigdialog.h"
 #include <QPrintDialog>
 #include <QPrintPreviewDialog>
 #include "lc_partselectionwidget.h"
@@ -526,6 +527,7 @@ void lcMainWindow::CreateMenus()
 	ToolBarsMenu->addAction(mActions[LC_VIEW_TOOLBAR_PROPERTIES]);
 	ToolBarsMenu->addAction(mActions[LC_VIEW_TOOLBAR_TIMELINE]);
 	ToolBarsMenu->addAction(mActions[LC_VIEW_TOOLBAR_PREVIEW]);
+	ToolBarsMenu->addAction(mActions[LC_VIEW_TOOLBAR_MINIFIG]);
 	ToolBarsMenu->addSeparator();
 	ToolBarsMenu->addAction(mActions[LC_VIEW_TOOLBAR_STANDARD]);
 	ToolBarsMenu->addAction(mActions[LC_VIEW_TOOLBAR_TOOLS]);
@@ -562,11 +564,10 @@ void lcMainWindow::CreateMenus()
 	ModelMenu->addAction(mActions[LC_MODEL_PROPERTIES]);
 	ModelMenu->addAction(mActions[LC_MODEL_NEW]);
 	ModelMenu->addAction(mActions[LC_MODEL_LIST]);
+	ModelMenu->addAction(mActions[LC_PIECE_MINIFIG_WIZARD]);
 	ModelMenu->addSeparator();
 	for (int ModelIdx = LC_MODEL_FIRST; ModelIdx <= LC_MODEL_LAST; ModelIdx++)
 		ModelMenu->addAction(mActions[ModelIdx]);
-	ModelMenu->addSeparator();
-	ModelMenu->addAction(mActions[LC_PIECE_MINIFIG_WIZARD]);
 
 	QMenu* HelpMenu = menuBar()->addMenu(tr("&Help"));
 	HelpMenu->addAction(mActions[LC_HELP_WHATS_THIS]);
@@ -823,14 +824,30 @@ void lcMainWindow::CreateToolBars()
 
 	CreatePreviewWidget();
 
+	// the minifigure panel is filled when first shown, once the pieces library is loaded
+	mMinifigToolBar = new QDockWidget(tr("Minifigure"), this);
+	mMinifigToolBar->setObjectName("MinifigToolbar");
+	mMinifigToolBar->setWhatsThis(tr("<p><b>Minifigure</b></p><p>Choose the pieces, colors and pose of a minifigure, then add it to the current model. The panel keeps its settings so you can add several variations.</p>"));
+	lcSetupWidgetHelp(mMinifigToolBar, nullptr);
+	addDockWidget(Qt::RightDockWidgetArea, mMinifigToolBar);
+	mMinifigToolBar->hide();
+
+	connect(mMinifigToolBar, &QDockWidget::visibilityChanged, this, [this](bool Visible)
+	{
+		if (Visible && !mMinifigToolBar->widget())
+			mMinifigToolBar->setWidget(new lcMinifigDialog(mMinifigToolBar, true));
+	});
+
 	tabifyDockWidget(mPartsToolBar, mPropertiesToolBar);
 	tabifyDockWidget(mPropertiesToolBar, mTimelineToolBar);
 	tabifyDockWidget(mTimelineToolBar, mPreviewToolBar);
+	tabifyDockWidget(mPreviewToolBar, mMinifigToolBar);
 
 	connect(mPropertiesToolBar, &QDockWidget::topLevelChanged, this, &lcMainWindow::EnableWindowFlags);
 	connect(mTimelineToolBar, &QDockWidget::topLevelChanged, this, &lcMainWindow::EnableWindowFlags);
 	connect(mPartsToolBar, &QDockWidget::topLevelChanged, this, &lcMainWindow::EnableWindowFlags);
 	connect(mColorsToolBar, &QDockWidget::topLevelChanged, this, &lcMainWindow::EnableWindowFlags);
+	connect(mMinifigToolBar, &QDockWidget::topLevelChanged, this, &lcMainWindow::EnableWindowFlags);
 
 	mPartsToolBar->raise();
 }
@@ -1211,6 +1228,7 @@ QMenu* lcMainWindow::createPopupMenu()
 	Menu->addAction(mActions[LC_VIEW_TOOLBAR_PROPERTIES]);
 	Menu->addAction(mActions[LC_VIEW_TOOLBAR_TIMELINE]);
 	Menu->addAction(mActions[LC_VIEW_TOOLBAR_PREVIEW]);
+	Menu->addAction(mActions[LC_VIEW_TOOLBAR_MINIFIG]);
 	Menu->addSeparator();
 	Menu->addAction(mActions[LC_VIEW_TOOLBAR_STANDARD]);
 	Menu->addAction(mActions[LC_VIEW_TOOLBAR_TOOLS]);
@@ -1229,6 +1247,7 @@ void lcMainWindow::UpdateDockWidgetActions()
 	mActions[LC_VIEW_TOOLBAR_TOOLS]->setChecked(mToolsToolBar->isVisible());
 	mActions[LC_VIEW_TOOLBAR_TIME]->setChecked(mTimeToolBar->isVisible());
 	mActions[LC_VIEW_TOOLBAR_PREVIEW]->setChecked(mPreviewToolBar->isVisible());
+	mActions[LC_VIEW_TOOLBAR_MINIFIG]->setChecked(mMinifigToolBar->isVisible());
 }
 
 void lcMainWindow::UpdateGamepads()
@@ -3206,6 +3225,10 @@ void lcMainWindow::HandleCommand(lcCommandId CommandId)
 
 	case LC_VIEW_TOOLBAR_PREVIEW:
 		ToggleDockWidget(mPreviewToolBar);
+		break;
+
+	case LC_VIEW_TOOLBAR_MINIFIG:
+		ToggleDockWidget(mMinifigToolBar);
 		break;
 
 	case LC_VIEW_FULLSCREEN:
