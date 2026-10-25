@@ -66,7 +66,6 @@ lcPreviewDockWidget::lcPreviewDockWidget(QMainWindow* Parent)
 
 	if (QToolButton* LockButton = qobject_cast<QToolButton*>(mToolBar->widgetForAction(mLockAction)))
 		LockButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
-	mToolBar->addSeparator();
 	mToolBar->addWidget(mLabel);
 
 	QWidget* Spacer = new QWidget(mToolBar);
