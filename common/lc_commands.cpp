@@ -1348,6 +1348,14 @@ const lcCommand gCommands[] =
 		"",
 		""
 	},
+	// LC_VIEW_TOOLBAR_MINIFIG
+	{
+		QT_TRANSLATE_NOOP("Action", "View.Toolbars.Minifigure"),
+		QT_TRANSLATE_NOOP("Menu", "Minifigure"),
+		QT_TRANSLATE_NOOP("Status", "Toggle the Minifigure Toolbar"),
+		"",
+		""
+	},
 	// LC_VIEW_FULLSCREEN
 	{
 		QT_TRANSLATE_NOOP("Action", "View.FullScreen"),

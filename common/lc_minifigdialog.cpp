@@ -12,11 +12,24 @@
 #include "lc_doublespinbox.h"
 #include "lc_qutils.h"
 #include "lc_partselectionpopup.h"
+#include "lc_mainwindow.h"
 
-lcMinifigDialog::lcMinifigDialog(QWidget* Parent)
-	: QDialog(Parent), ui(new Ui::lcMinifigDialog)
+lcMinifigDialog::lcMinifigDialog(QWidget* Parent, bool Docked)
+	: QDialog(Parent), ui(new Ui::lcMinifigDialog), mDocked(Docked)
 {
 	ui->setupUi(this);
+
+	// docked in a panel the dialog stays open and adds each minifigure to the current model
+	if (mDocked)
+	{
+		setWindowFlags(Qt::Widget);
+		ui->buttonBox->setStandardButtons(QDialogButtonBox::Help);
+
+		QPushButton* AddButton = ui->buttonBox->addButton(tr("Add to Model"), QDialogButtonBox::ActionRole);
+		AddButton->setToolTip(tr("Add this minifigure to the current model"));
+		connect(AddButton, &QPushButton::clicked, this, &lcMinifigDialog::accept);
+	}
+
 	lcSetupDialogHelp(this, ui->buttonBox);
 
 	QGridLayout* MinifigLayout = ui->MinifigLayout;
@@ -158,13 +171,34 @@ lcMinifigDialog::lcMinifigDialog(QWidget* Parent)
 	mView->GetCamera()->SetViewpoint(lcVector3(0.0f, -270.0f, 90.0f));
 	mView->ZoomExtents(lcGeometryBoundsMode::IncludeFallback, false);
 
-	ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok)->setFocus();
+	if (QPushButton* OkButton = ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok))
+		OkButton->setFocus();
 
 	connect(ui->TemplateComboBox, &QComboBox::currentTextChanged, this, &lcMinifigDialog::TemplateComboBoxCurrentTextChanged);
 	connect(ui->TemplateSaveButton, &QPushButton::clicked, this, &lcMinifigDialog::TemplateSaveButtonClicked);
 	connect(ui->TemplateDeleteButton, &QPushButton::clicked, this, &lcMinifigDialog::TemplateDeleteButtonClicked);
 	connect(ui->TemplateImportButton, &QPushButton::clicked, this, &lcMinifigDialog::TemplateImportButtonClicked);
 	connect(ui->TemplateExportButton, &QPushButton::clicked, this, &lcMinifigDialog::TemplateExportButtonClicked);
+}
+
+void lcMinifigDialog::accept()
+{
+	if (!mDocked)
+	{
+		QDialog::accept();
+		return;
+	}
+
+	lcModel* Model = gMainWindow ? gMainWindow->GetActiveModel() : nullptr;
+
+	if (Model)
+		Model->AddMinifig(mMinifigWizard->mMinifig);
+}
+
+void lcMinifigDialog::reject()
+{
+	if (!mDocked)
+		QDialog::reject();
 }
 
 lcMinifigDialog::~lcMinifigDialog()

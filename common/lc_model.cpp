@@ -6422,6 +6422,11 @@ void lcModel::ShowMinifigDialog()
 	if (Dialog.exec() != QDialog::Accepted)
 		return;
 
+	AddMinifig(Dialog.mMinifigWizard->mMinifig);
+}
+
+void lcModel::AddMinifig(const lcMinifig& Minifig)
+{
 	gMainWindow->GetActiveView()->MakeCurrent();
 
 	BeginHistorySequence();
@@ -6429,7 +6434,6 @@ void lcModel::ShowMinifigDialog()
 
 	lcGroup* Group = AddGroup(tr("Minifig #"), nullptr);
 	std::vector<lcObject*> Pieces;
-	lcMinifig& Minifig = Dialog.mMinifigWizard->mMinifig;
 
 	Pieces.reserve(LC_MFW_NUMITEMS);
 
