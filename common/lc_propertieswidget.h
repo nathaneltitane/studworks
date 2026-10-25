@@ -75,7 +75,6 @@ protected:
 	struct CategoryWidgets
 	{
 		lcCollapsibleWidgetButton* Button = nullptr;
-		QWidget* Header = nullptr;
 		QString Title;
 		std::vector<lcObjectPropertyId> Properties;
 		std::vector<int> SpacingRows;

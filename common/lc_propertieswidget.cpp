@@ -97,27 +97,18 @@ void lcPropertiesWidget::AddCategory(CategoryIndex Index, const QString& Title, 
 
 	mCurrentCategory->Title = Title;
 
-	// Fixed categories show a plain title, only collapsible ones use the collapsible button.
-	if (Collapsible)
-	{
-		lcCollapsibleWidgetButton* CategoryButton = new lcCollapsibleWidgetButton(Title);
-		CategoryButton->setToolTip(tr("Expand or collapse the %1 properties.").arg(Title));
+	// Only collapsible categories have a header, the title still names their properties for accessibility.
+	if (!Collapsible)
+		return;
 
-		mCurrentCategory->Button = CategoryButton;
-		mCurrentCategory->Header = CategoryButton;
+	lcCollapsibleWidgetButton* CategoryButton = new lcCollapsibleWidgetButton(Title);
+	CategoryButton->setToolTip(tr("Expand or collapse the %1 properties.").arg(Title));
 
-		connect(CategoryButton, &lcCollapsibleWidgetButton::StateChanged, this, &lcPropertiesWidget::CategoryStateChanged);
-	}
-	else
-	{
-		QLabel* TitleLabel = new QLabel(Title);
-		TitleLabel->setAlignment(Qt::AlignCenter);
-		TitleLabel->setFixedHeight(lcGetPanelButtonSize().height());
+	mCurrentCategory->Button = CategoryButton;
 
-		mCurrentCategory->Header = TitleLabel;
-	}
+	connect(CategoryButton, &lcCollapsibleWidgetButton::StateChanged, this, &lcPropertiesWidget::CategoryStateChanged);
 
-	mLayout->addWidget(mCurrentCategory->Header, mLayoutRow, 0, 1, -1);
+	mLayout->addWidget(CategoryButton, mLayoutRow, 0, 1, -1);
 	mLayoutRow++;
 }
 
@@ -1378,7 +1369,8 @@ void lcPropertiesWidget::SetCategoryVisible(CategoryIndex Index, bool Visible)
 {
 	CategoryWidgets& Category = mCategoryWidgets[static_cast<int>(Index)];
 
-	Category.Header->setVisible(Visible);
+	if (Category.Button)
+		Category.Button->setVisible(Visible);
 
 	SetCategoryWidgetsVisible(Category, Visible && (!Category.Button || Category.Button->IsExpanded()));
 }
