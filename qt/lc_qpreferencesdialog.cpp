@@ -57,7 +57,7 @@ lcPreferencesDialog::lcPreferencesDialog(QWidget* Parent, lcPreferencesDialogOpt
 	connect(ui->ConditionalLinesCheckBox, &QCheckBox::toggled, this, &lcPreferencesDialog::ConditionalLinesCheckBoxToggled);
 	connect(ui->LineWidthSlider, QOverload<int>::of(&QSlider::valueChanged), this, &lcPreferencesDialog::LineWidthSliderValueChanged);
 
-	for (lcRenderTarget Target : { lcRenderTarget::Preview, lcRenderTarget::Pieces })
+	for (lcRenderTarget Target : { lcRenderTarget::Preview, lcRenderTarget::Pieces, lcRenderTarget::Minifig })
 	{
 		const lcRenderTargetWidgets Widgets = GetRenderTargetWidgets(Target);
 
@@ -188,7 +188,7 @@ lcPreferencesDialog::lcPreferencesDialog(QWidget* Parent, lcPreferencesDialogOpt
 	ui->LineWidthSlider->setRange(0, (mLineWidthRange[1] - mLineWidthRange[0]) / mLineWidthGranularity);
 	ui->LineWidthSlider->setValue((mOptions->Preferences.mLineWidth - mLineWidthRange[0]) / mLineWidthGranularity);
 
-	for (lcRenderTarget Target : { lcRenderTarget::Preview, lcRenderTarget::Pieces })
+	for (lcRenderTarget Target : { lcRenderTarget::Preview, lcRenderTarget::Pieces, lcRenderTarget::Minifig })
 	{
 		const lcRenderTargetWidgets Widgets = GetRenderTargetWidgets(Target);
 		const lcTargetRenderSettings& TargetSettings = mOptions->Preferences.GetTargetRenderSettings(Target);
@@ -289,7 +289,7 @@ lcPreferencesDialog::lcPreferencesDialog(QWidget* Parent, lcPreferencesDialogOpt
 		DefaultLightsItem->setToolTip(Message);
 		ui->ShadingMode->setToolTip(Message);
 
-		for (lcRenderTarget Target : { lcRenderTarget::Preview, lcRenderTarget::Pieces })
+		for (lcRenderTarget Target : { lcRenderTarget::Preview, lcRenderTarget::Pieces, lcRenderTarget::Minifig })
 		{
 			QComboBox* TargetShadingMode = GetRenderTargetWidgets(Target).ShadingMode;
 			QStandardItemModel* TargetShadingModel = qobject_cast<QStandardItemModel*>(TargetShadingMode->model());
@@ -458,7 +458,7 @@ void lcPreferencesDialog::accept()
 	mOptions->Preferences.mDrawConditionalLines = ui->ConditionalLinesCheckBox->isChecked();
 	mOptions->Preferences.mLineWidth = mLineWidthRange[0] + static_cast<float>(ui->LineWidthSlider->value()) * mLineWidthGranularity;
 
-	for (lcRenderTarget Target : { lcRenderTarget::Preview, lcRenderTarget::Pieces })
+	for (lcRenderTarget Target : { lcRenderTarget::Preview, lcRenderTarget::Pieces, lcRenderTarget::Minifig })
 	{
 		const lcRenderTargetWidgets Widgets = GetRenderTargetWidgets(Target);
 		lcTargetRenderSettings& TargetSettings = mOptions->Preferences.GetTargetRenderSettings(Target);
@@ -797,6 +797,9 @@ void lcPreferencesDialog::LineWidthSliderValueChanged()
 
 lcPreferencesDialog::lcRenderTargetWidgets lcPreferencesDialog::GetRenderTargetWidgets(lcRenderTarget Target) const
 {
+	if (Target == lcRenderTarget::Minifig)
+		return { ui->MinifigSyncRendering, ui->MinifigShadingModeLabel, ui->MinifigShadingMode, ui->MinifigEdgeLines, ui->MinifigConditionalLines, ui->MinifigLineWidthTitle, ui->MinifigLineWidthSlider, ui->MinifigLineWidthLabel };
+
 	if (Target == lcRenderTarget::Pieces)
 		return { ui->PiecesSyncRendering, ui->PiecesShadingModeLabel, ui->PiecesShadingMode, ui->PiecesEdgeLines, ui->PiecesConditionalLines, ui->PiecesLineWidthTitle, ui->PiecesLineWidthSlider, ui->PiecesLineWidthLabel };
 
@@ -805,7 +808,7 @@ lcPreferencesDialog::lcRenderTargetWidgets lcPreferencesDialog::GetRenderTargetW
 
 void lcPreferencesDialog::RenderTargetChanged()
 {
-	for (lcRenderTarget Target : { lcRenderTarget::Preview, lcRenderTarget::Pieces })
+	for (lcRenderTarget Target : { lcRenderTarget::Preview, lcRenderTarget::Pieces, lcRenderTarget::Minifig })
 	{
 		const lcRenderTargetWidgets Widgets = GetRenderTargetWidgets(Target);
 		const bool Enable = !Widgets.SyncRendering->isChecked();

@@ -444,7 +444,7 @@
              <string>Move pieces along fixed model axes instead of view-relative directions.</string>
             </property>
             <property name="text">
-             <string>Fixed direction keys</string>
+             <string>Fixed Direction Keys</string>
             </property>
            </widget>
           </item>
@@ -1020,16 +1020,7 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="2" colspan="2">
-           <widget class="QCheckBox" name="PreviewSquareViewportCheckBox">
-            <property name="toolTip">
-             <string>Keep the piece preview square, with a 1:1 width to height ratio, whatever the panel size.</string>
-            </property>
-            <property name="text">
-             <string>Square Viewport</string>
-            </property>
-           </widget>
-          </item>
+          
           <item row="0" column="2">
            <widget class="QLabel" name="ViewSphereLocationLabel">
             <property name="toolTip">
@@ -1429,6 +1420,16 @@
           <string>Pieces Preview</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_6">
+          <item row="2" column="2" colspan="2">
+           <widget class="QCheckBox" name="PreviewSquareViewportCheckBox">
+            <property name="toolTip">
+             <string>Keep the piece preview square, with a 1:1 width to height ratio, whatever the panel size.</string>
+            </property>
+            <property name="text">
+             <string>Square Viewport</string>
+            </property>
+           </widget>
+          </item>
           <item row="2" column="0" colspan="2">
            <widget class="QCheckBox" name="PreviewAxisIconCheckBox">
             <property name="toolTip">
@@ -1634,6 +1635,134 @@
           </item>
           <item row="7" column="2">
            <widget class="QLabel" name="PreviewLineWidthLabel">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+<item>
+        <widget class="QGroupBox" name="MinifigGroup">
+         <property name="title">
+          <string>Minifigure Preview</string>
+         </property>
+         <layout class="QGridLayout" name="MinifigLayout">
+          
+          
+          
+          
+          
+          <item row="1" column="4">
+           <spacer name="MinifigSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="3" column="0" colspan="3">
+           <widget class="QCheckBox" name="MinifigSyncRendering">
+            <property name="toolTip">
+             <string>Use the model view rendering settings for the minifigure preview.</string>
+            </property>
+            <property name="text">
+             <string>Use Model View Settings</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="MinifigShadingModeLabel">
+            <property name="toolTip">
+             <string>Choose how pieces are drawn in the minifigure preview.</string>
+            </property>
+            <property name="text">
+             <string>Shading Mode:</string>
+            </property>
+            <property name="buddy">
+             <cstring>MinifigShadingMode</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QComboBox" name="MinifigShadingMode">
+            <property name="accessibleName">
+             <string>Minifigure Shading Mode</string>
+            </property>
+            <property name="toolTip">
+             <string>Choose how pieces are drawn in the minifigure preview.</string>
+            </property>
+            <item>
+             <property name="text">
+              <string>Wireframe</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Flat Shading</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Default Lights</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QCheckBox" name="MinifigEdgeLines">
+            <property name="toolTip">
+             <string>Draw edge lines on pieces in the minifigure preview.</string>
+            </property>
+            <property name="text">
+             <string>Edge Lines</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QCheckBox" name="MinifigConditionalLines">
+            <property name="toolTip">
+             <string>Draw conditional lines on pieces in the minifigure preview.</string>
+            </property>
+            <property name="text">
+             <string>Conditional Lines</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0">
+           <widget class="QLabel" name="MinifigLineWidthTitle">
+            <property name="toolTip">
+             <string>Set the line width used in the minifigure preview.</string>
+            </property>
+            <property name="text">
+             <string>Line Width:</string>
+            </property>
+            <property name="buddy">
+             <cstring>MinifigLineWidthSlider</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="1">
+           <widget class="QSlider" name="MinifigLineWidthSlider">
+            <property name="accessibleName">
+             <string>Minifigure Line Width</string>
+            </property>
+            <property name="toolTip">
+             <string>Set the line width used in the minifigure preview.</string>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="2">
+           <widget class="QLabel" name="MinifigLineWidthLabel">
             <property name="text">
              <string/>
             </property>
