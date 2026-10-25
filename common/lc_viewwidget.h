@@ -41,6 +41,7 @@ protected:
 	void mouseReleaseEvent(QMouseEvent* MouseEvent) override;
 	void mouseDoubleClickEvent(QMouseEvent* MouseEvent) override;
 	void mouseMoveEvent(QMouseEvent* MouseEvent) override;
+	void contextMenuEvent(QContextMenuEvent* ContextMenuEvent) override;
 	void wheelEvent(QWheelEvent* WheelEvent) override;
 	void leaveEvent(QEvent* Event) override;
 	void dragEnterEvent(QDragEnterEvent* DragEnterEvent) override;
