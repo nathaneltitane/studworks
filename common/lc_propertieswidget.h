@@ -122,7 +122,7 @@ protected:
 	void AddStepNumberProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames);
 	void AddStepRangeProperty(lcObjectPropertyId ShowPropertyId, lcObjectPropertyId HidePropertyId);
 	QToolButton* CreateRowNameButton(QToolBar* ToolBar, const QString& Name);
-	void AddTransformRowButton(QToolButton* Button);
+	QToolBar* AddTransformRowButton(QToolButton* Button);
 	void AddStringProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames);
 	void AddStringListProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames, const QStringList& Strings);
 	void AddColorProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames);
@@ -169,6 +169,7 @@ protected:
 	QWidget* mTransformRows = nullptr;
 	QVBoxLayout* mTransformRowsLayout = nullptr;
 	QWidget* mStepRows = nullptr;
+	QToolButton* mPieceColorSwatch = nullptr;
 	int mLayoutRow = 0;
 
 	LayoutMode mLayoutMode = LayoutMode::Count;

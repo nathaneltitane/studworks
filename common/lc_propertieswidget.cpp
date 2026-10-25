@@ -874,7 +874,7 @@ void lcPropertiesWidget::AddStepRangeProperty(lcObjectPropertyId ShowPropertyId,
 	}
 }
 
-void lcPropertiesWidget::AddTransformRowButton(QToolButton* Button)
+QToolBar* lcPropertiesWidget::AddTransformRowButton(QToolButton* Button)
 {
 	// A button filling a whole row below the panel, without a label like the transform rows.
 	QToolBar* ToolBar = lcCreatePanelToolBar(mTransformRows);
@@ -883,6 +883,8 @@ void lcPropertiesWidget::AddTransformRowButton(QToolButton* Button)
 	ToolBar->addWidget(Button);
 	lcSetupPanelButton(Button);
 	Button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+	return ToolBar;
 }
 
 QToolButton* lcPropertiesWidget::CreateRowNameButton(QToolBar* ToolBar, const QString& Name)
@@ -1194,7 +1196,9 @@ void lcPropertiesWidget::UpdatePieceColor(lcObjectPropertyId PropertyId)
 	// With nothing selected the button only names what it edits.
 	if (!mFocusObject && mSelection.empty())
 	{
-		ColorButton->setIcon(QIcon());
+		if (mPieceColorSwatch)
+			mPieceColorSwatch->setIcon(QIcon());
+
 		ColorButton->setText(tr("Color"));
 		UpdateKeyFrameWidget(PropertyId);
 		return;
@@ -1205,8 +1209,11 @@ void lcPropertiesWidget::UpdatePieceColor(lcObjectPropertyId PropertyId)
 	QPixmap Pixmap(14, 14);
 	Pixmap.fill(Color);
 
-	ColorButton->setIcon(Pixmap);
-	ColorButton->setText(Partial ? tr(" Multiple Colors") : QString("  ") + gColorList[ColorIndex].Name);
+	// The color shows in the swatch button so the name stays centered.
+	if (mPieceColorSwatch)
+		mPieceColorSwatch->setIcon(Pixmap);
+
+	ColorButton->setText(Partial ? tr("Multiple Colors") : gColorList[ColorIndex].Name);
 
 	UpdateKeyFrameWidget(PropertyId);
 }
@@ -1216,11 +1223,20 @@ void lcPropertiesWidget::AddPieceColorProperty(lcObjectPropertyId PropertyId, co
 	QToolButton* Widget = new QToolButton(this);
 	Widget->setToolTip(ToolTip);
 	Widget->setAccessibleName(Text);
-	Widget->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+	Widget->setToolButtonStyle(Qt::ToolButtonTextOnly);
 
 	connect(Widget, &QToolButton::clicked, this, &lcPropertiesWidget::PieceColorButtonClicked);
 
-	AddTransformRowButton(Widget);
+	QToolBar* ToolBar = AddTransformRowButton(Widget);
+
+	// A square button on the left shows the color and opens the same color choice.
+	mPieceColorSwatch = new QToolButton(ToolBar);
+	mPieceColorSwatch->setToolTip(ToolTip);
+	mPieceColorSwatch->setAccessibleName(tr("%1 Swatch").arg(Text));
+	ToolBar->insertWidget(ToolBar->actions().first(), mPieceColorSwatch);
+	lcSetupPanelButton(mPieceColorSwatch);
+
+	connect(mPieceColorSwatch, &QToolButton::clicked, Widget, &QToolButton::click);
 
 	mCurrentCategory->Properties.push_back(PropertyId);
 	mPropertyWidgets[static_cast<int>(PropertyId)].Editor = Widget;
