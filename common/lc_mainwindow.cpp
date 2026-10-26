@@ -865,7 +865,8 @@ void lcMainWindow::CreateToolBars()
 	QWidget* PropertiesWidget = new QWidget(mPropertiesToolBar);
 	QVBoxLayout* PropertiesLayout = new QVBoxLayout(PropertiesWidget);
 
-	// The property grid scrolls only when the panel cannot get the height of all its rows, without a frame so it lines up with the rows below.
+	// The rows naming the object come first, then the other values, then the position and rotation rows.
+	// The other values scroll only when the panel cannot get the height of all its rows, without a frame so they line up with the rows around them.
 	QScrollArea* PropertiesScrollArea = new QScrollArea(PropertiesWidget);
 	PropertiesScrollArea->setFrameShape(QFrame::NoFrame);
 	PropertiesScrollArea->setWidgetResizable(true);
@@ -873,6 +874,7 @@ void lcMainWindow::CreateToolBars()
 
 	mPropertiesWidget = new lcPropertiesWidget(PropertiesScrollArea);
 	PropertiesScrollArea->setWidget(mPropertiesWidget);
+	PropertiesLayout->insertWidget(0, mPropertiesWidget->GetIdentityRowsWidget());
 
 	QWidget* TransformWidget = lcCreatePanelRow(PropertiesWidget);
 
@@ -889,27 +891,21 @@ void lcMainWindow::CreateToolBars()
 	// Transform values use the same spin boxes as the position and rotation rows.
 	mTransformXEdit = new lcDoubleSpinBox(TransformWidget);
 	mTransformXEdit->setRange(-FLT_MAX, FLT_MAX);
-	mTransformXEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	mTransformXEdit->setMinimumWidth(mTransformXEdit->fontMetrics().horizontalAdvance(QLatin1String("-000")) + 24);
 	mTransformXEdit->setAccessibleName(tr("Transform X"));
 	mTransformXEdit->setToolTip(tr("Enter the X translation in LDraw units or rotation in degrees."));
-	lcSetupPanelEdit(mTransformXEdit);
+	lcSetupPanelSpinBox(mTransformXEdit);
 	lcAddPanelRowWidget(TransformWidget, mTransformXEdit);
 	mTransformYEdit = new lcDoubleSpinBox(TransformWidget);
 	mTransformYEdit->setRange(-FLT_MAX, FLT_MAX);
-	mTransformYEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	mTransformYEdit->setMinimumWidth(mTransformYEdit->fontMetrics().horizontalAdvance(QLatin1String("-000")) + 24);
 	mTransformYEdit->setAccessibleName(tr("Transform Y"));
 	mTransformYEdit->setToolTip(tr("Enter the Y translation in LDraw units or rotation in degrees."));
-	lcSetupPanelEdit(mTransformYEdit);
+	lcSetupPanelSpinBox(mTransformYEdit);
 	lcAddPanelRowWidget(TransformWidget, mTransformYEdit);
 	mTransformZEdit = new lcDoubleSpinBox(TransformWidget);
 	mTransformZEdit->setRange(-FLT_MAX, FLT_MAX);
-	mTransformZEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	mTransformZEdit->setMinimumWidth(mTransformZEdit->fontMetrics().horizontalAdvance(QLatin1String("-000")) + 24);
 	mTransformZEdit->setAccessibleName(tr("Transform Z"));
 	mTransformZEdit->setToolTip(tr("Enter the Z translation in LDraw units or rotation in degrees."));
-	lcSetupPanelEdit(mTransformZEdit);
+	lcSetupPanelSpinBox(mTransformZEdit);
 	lcAddPanelRowWidget(TransformWidget, mTransformZEdit);
 
 	// The transform mode button sits under the keyframe buttons and shows the current mode.
@@ -928,29 +924,33 @@ void lcMainWindow::CreateToolBars()
 	// The panel is as tall as the rows it shows, and shrinks with a scrolling grid when the panels around it need the room.
 	auto UpdatePropertiesHeight = [this, PropertiesWidget, PropertiesLayout, PropertiesScrollArea, TransformWidget]()
 	{
-		// The grid is hidden when all shown properties are in the rows below it.
-		const bool ShowGrid = mPropertiesWidget->HasVisibleRows();
-		const int GridHeight = ShowGrid ? mPropertiesWidget->sizeHint().height() : 0;
-		const int MinimumGridHeight = qMin(GridHeight, lcGetPanelButtonSize().height());
+		// The scrolling rows are hidden when all shown properties are in the fixed rows.
+		const bool ShowList = mPropertiesWidget->HasVisibleRows();
+		const int ListHeight = ShowList ? mPropertiesWidget->sizeHint().height() : 0;
+		const int MinimumListHeight = qMin(ListHeight, lcGetPanelButtonSize().height());
 
 		// The full height adds the layout margins and the standard spacing between the shown rows, measured
 		// without growing any widget so the window never grows on the way.
 		const QMargins Margins = PropertiesLayout->contentsMargins();
 		const int Spacing = lcGetLayoutSpacing(PropertiesWidget, Qt::Vertical);
-		const QWidget* TransformRows = mPropertiesWidget->GetTransformRowsWidget();
 		int PanelHeight = Margins.top() + Margins.bottom() + TransformWidget->sizeHint().height();
 
-		if (!TransformRows->isHidden())
-			PanelHeight += TransformRows->sizeHint().height() + Spacing;
+		for (const QWidget* Rows : { mPropertiesWidget->GetIdentityRowsWidget(), mPropertiesWidget->GetTransformRowsWidget() })
+			if (!Rows->isHidden())
+				PanelHeight += Rows->sizeHint().height() + Spacing;
 
-		if (ShowGrid)
-			PanelHeight += GridHeight + Spacing;
+		if (ShowList)
+			PanelHeight += ListHeight + Spacing;
 
-		PropertiesScrollArea->setVisible(ShowGrid);
-		PropertiesScrollArea->setMinimumHeight(MinimumGridHeight);
-		PropertiesScrollArea->setMaximumHeight(GridHeight);
-		PropertiesWidget->setMinimumHeight(PanelHeight - GridHeight + MinimumGridHeight);
+		PropertiesScrollArea->setVisible(ShowList);
+		PropertiesScrollArea->setMinimumHeight(MinimumListHeight);
+		PropertiesScrollArea->setMaximumHeight(ListHeight);
+		PropertiesWidget->setMinimumHeight(PanelHeight - ListHeight + MinimumListHeight);
 		PropertiesWidget->setMaximumHeight(PanelHeight);
+
+		// A docked panel keeps its height when its rows change, so ask for all of it, the panels around it give up what they can spare.
+		if (!mPropertiesToolBar->isFloating() && mPropertiesToolBar->isVisible())
+			resizeDocks({ mPropertiesToolBar }, { PanelHeight + mPropertiesToolBar->height() - PropertiesWidget->height() }, Qt::Vertical);
 	};
 
 	connect(mPropertiesWidget, &lcPropertiesWidget::LayoutChanged, this, [UpdatePropertiesHeight]()

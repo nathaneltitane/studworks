@@ -212,6 +212,39 @@ void lcSetupPanelEdit(QWidget* Edit)
 	Edit->setFixedHeight(lcGetPanelButtonSize().height());
 }
 
+void lcSetupPanelSpinBox(QAbstractSpinBox* SpinBox)
+{
+	// Spin boxes are wide enough for a short value with the name and unit shown in them.
+	QString Prefix, Suffix;
+
+	if (const QDoubleSpinBox* DoubleSpinBox = qobject_cast<const QDoubleSpinBox*>(SpinBox))
+	{
+		Prefix = DoubleSpinBox->prefix();
+		Suffix = DoubleSpinBox->suffix();
+	}
+	else if (const QSpinBox* IntegerSpinBox = qobject_cast<const QSpinBox*>(SpinBox))
+	{
+		Prefix = IntegerSpinBox->prefix();
+		Suffix = IntegerSpinBox->suffix();
+	}
+
+	QStyleOptionSpinBox Option;
+	Option.initFrom(SpinBox);
+	Option.rect = QRect(QPoint(0, 0), SpinBox->sizeHint());
+	Option.subControls = QStyle::SC_SpinBoxUp | QStyle::SC_SpinBoxDown | QStyle::SC_SpinBoxFrame | QStyle::SC_SpinBoxEditField;
+	Option.frame = SpinBox->hasFrame();
+
+	const QRect EditRect = SpinBox->style()->subControlRect(QStyle::CC_SpinBox, &Option, QStyle::SC_SpinBoxEditField, SpinBox);
+	const int Decoration = Option.rect.width() - EditRect.width();
+
+	// Equal stretch gives the boxes of a row the same width whatever their text.
+	QSizePolicy SizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	SizePolicy.setHorizontalStretch(1);
+	SpinBox->setSizePolicy(SizePolicy);
+	SpinBox->setMinimumWidth(SpinBox->fontMetrics().horizontalAdvance(Prefix + QLatin1String("-000") + Suffix) + Decoration);
+	lcSetupPanelEdit(SpinBox);
+}
+
 int lcGetLayoutSpacing(const QWidget* Widget, Qt::Orientation Orientation)
 {
 	// The spacing a standard layout uses, for widgets that place their children themselves.

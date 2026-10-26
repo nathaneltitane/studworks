@@ -68,6 +68,7 @@ QSize lcGetPanelButtonSize();
 int lcGetLayoutSpacing(const QWidget* Widget, Qt::Orientation Orientation);
 void lcSetupPanelButton(QToolButton* Button);
 void lcSetupPanelEdit(QWidget* Edit);
+void lcSetupPanelSpinBox(QAbstractSpinBox* SpinBox);
 QWidget* lcCreatePanelRow(QWidget* Parent);
 void lcAddPanelRowWidget(QWidget* Row, QWidget* Widget);
 void lcAddPanelRowStretch(QWidget* Row);

@@ -21,21 +21,14 @@ lcPropertiesWidget::lcPropertiesWidget(QWidget* Parent)
 
 	for (PropertyWidgets& Property : mPropertyWidgets)
 	{
-		if (!Property.Editor || !Property.Label)
+		if (!Property.Editor)
 			continue;
 
-		const QString Name = tr("%1: %2").arg(mCategoryWidgets[static_cast<int>(Property.Category)].Title, Property.Label->text());
-		Property.Label->setBuddy(Property.Editor);
-
-		if (Property.Editor->accessibleName().isEmpty())
-			Property.Editor->setAccessibleName(Name);
-
 		Property.Editor->setWhatsThis(Property.Editor->toolTip());
-		Property.Label->setWhatsThis(Property.Editor->whatsThis());
 
 		if (Property.KeyFrame)
 		{
-			Property.KeyFrame->setAccessibleName(tr("Keyframe for %1").arg(Name));
+			Property.KeyFrame->setAccessibleName(tr("Keyframe for %1").arg(Property.Editor->accessibleName()));
 			Property.KeyFrame->setWhatsThis(tr("<p><b>Property Keyframe</b></p><p>Enable or remove a keyframe for this property at the current building step. Keyframes let the property's value change between steps.</p>"));
 		}
 	}
@@ -43,6 +36,7 @@ lcPropertiesWidget::lcPropertiesWidget(QWidget* Parent)
 	SetLayoutMode(LayoutMode::Piece);
 	setEnabled(false);
 }
+
 
 lcObjectPropertyId lcPropertiesWidget::GetEditorWidgetPropertyId(QWidget* Widget) const
 {
@@ -79,72 +73,8 @@ bool lcPropertiesWidget::event(QEvent* Event)
 	return Result;
 }
 
-void lcPropertiesWidget::UpdatePieceColorSwatch()
-{
-	if (!mPieceColorSwatch || mPieceRowSlots.size() < 2)
-		return;
 
-	// The swatch spans the slots at the start of the piece and color rows.
-	QWidget* FirstSlot = mPieceRowSlots.front();
-	QWidget* LastSlot = mPieceRowSlots.back();
-	const QRect SwatchRect(FirstSlot->mapTo(mTransformRows, QPoint(0, 0)), LastSlot->mapTo(mTransformRows, LastSlot->rect().bottomRight()));
-	// The color fills the button inside its border.
-	const QSize IconSize = (SwatchRect.size() - QSize(8, 8)).expandedTo(QSize(1, 1));
 
-	mPieceColorSwatch->setGeometry(SwatchRect);
-	mPieceColorSwatch->setIconSize(IconSize);
-
-	if (mPieceColorSwatchColor.isValid())
-	{
-		QPixmap Pixmap(IconSize);
-		Pixmap.fill(mPieceColorSwatchColor);
-		mPieceColorSwatch->setIcon(Pixmap);
-	}
-	else
-		mPieceColorSwatch->setIcon(QIcon());
-
-	mPieceColorSwatch->setVisible(LastSlot->isVisible());
-	mPieceColorSwatch->raise();
-}
-
-bool lcPropertiesWidget::HasVisibleRows() const
-{
-	// Rows moved below the panel or the timeline do not count, only the rows of the list itself.
-	for (const PropertyWidgets& Property : mPropertyWidgets)
-		if (Property.Editor && Property.Editor->parentWidget() == this && !Property.Editor->isHidden())
-			return true;
-
-	for (const CategoryWidgets& Category : mCategoryWidgets)
-		if (Category.Button && !Category.Button->isHidden())
-			return true;
-
-	return false;
-}
-
-bool lcPropertiesWidget::eventFilter(QObject* Object, QEvent* Event)
-{
-	// The transform rows sit below the panel, so their changes also resize it.
-	if (Object == mTransformRows && Event->type() == QEvent::LayoutRequest)
-		emit LayoutChanged();
-
-	if (std::find(mPieceRowSlots.begin(), mPieceRowSlots.end(), Object) != mPieceRowSlots.end())
-	{
-		switch (Event->type())
-		{
-		case QEvent::Move:
-		case QEvent::Resize:
-		case QEvent::Show:
-		case QEvent::Hide:
-			UpdatePieceColorSwatch();
-			break;
-
-		default:
-			break;
-		}
-	}
-
-	return QWidget::eventFilter(Object, Event);
-}
 
 void lcPropertiesWidget::CategoryStateChanged(bool Expanded)
 {
@@ -160,45 +90,8 @@ void lcPropertiesWidget::CategoryStateChanged(bool Expanded)
 	}
 }
 
-void lcPropertiesWidget::AddCategory(CategoryIndex Index, const QString& Title, bool Collapsible)
-{
-	mCurrentCategory = &mCategoryWidgets[static_cast<int>(Index)];
-	mCurrentCategory->Category = Index;
 
-	mCurrentCategory->Title = Title;
 
-	// Only collapsible categories have a header, the title still names their properties for accessibility.
-	if (!Collapsible)
-		return;
-
-	lcCollapsibleWidgetButton* CategoryButton = new lcCollapsibleWidgetButton(Title);
-	CategoryButton->setToolTip(tr("Expand or collapse the %1 properties.").arg(Title));
-
-	mCurrentCategory->Button = CategoryButton;
-
-	connect(CategoryButton, &lcCollapsibleWidgetButton::StateChanged, this, &lcPropertiesWidget::CategoryStateChanged);
-
-	mLayout->addWidget(CategoryButton, mLayoutRow, 0, 1, -1);
-	mLayoutRow++;
-}
-
-void lcPropertiesWidget::AddSpacing()
-{
-	mLayout->setRowMinimumHeight(mLayoutRow, 5);
-	mCurrentCategory->SpacingRows.push_back(mLayoutRow);
-	mLayoutRow++;
-}
-
-void lcPropertiesWidget::AddLabel(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip)
-{
-	QLabel* Label = new QLabel(Text, this);
-	Label->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
-	Label->setToolTip(ToolTip);
-
-	mLayout->addWidget(Label, mLayoutRow, 1);
-
-	mPropertyWidgets[static_cast<int>(PropertyId)].Label = Label;
-}
 
 void lcPropertiesWidget::KeyFrameChanged()
 {
@@ -255,22 +148,7 @@ void lcPropertiesWidget::UpdateKeyFrameWidget(lcObjectPropertyId PropertyId)
 	}
 }
 
-lcKeyFrameWidget* lcPropertiesWidget::CreateKeyFrameWidget(lcObjectPropertyId PropertyId)
-{
-	lcKeyFrameWidget* Widget = new lcKeyFrameWidget(this);
-	Widget->setToolTip(tr("Toggle Keyframe"));
 
-	connect(Widget, &QCheckBox::stateChanged, this, &lcPropertiesWidget::KeyFrameChanged);
-
-	mPropertyWidgets[static_cast<int>(PropertyId)].KeyFrame = Widget;
-
-	return Widget;
-}
-
-void lcPropertiesWidget::AddKeyFrameWidget(lcObjectPropertyId PropertyId)
-{
-	mLayout->addWidget(CreateKeyFrameWidget(PropertyId), mLayoutRow, 3);
-}
 
 std::pair<QVariant, bool> lcPropertiesWidget::GetUpdateValue(lcObjectPropertyId PropertyId)
 {
@@ -305,7 +183,7 @@ std::pair<QVariant, bool> lcPropertiesWidget::GetUpdateValue(lcObjectPropertyId 
 
 void lcPropertiesWidget::BoolChanged()
 {
-	QCheckBox* Widget = qobject_cast<QCheckBox*>(sender());
+	QAbstractButton* Widget = qobject_cast<QAbstractButton*>(sender());
 	lcObjectPropertyId PropertyId = GetEditorWidgetPropertyId(Widget);
 
 	if (PropertyId == lcObjectPropertyId::Count)
@@ -322,45 +200,24 @@ void lcPropertiesWidget::BoolChanged()
 
 void lcPropertiesWidget::UpdateBool(lcObjectPropertyId PropertyId)
 {
-	QCheckBox* CheckBox = qobject_cast<QCheckBox*>(mPropertyWidgets[static_cast<int>(PropertyId)].Editor);
+	QAbstractButton* Button = qobject_cast<QAbstractButton*>(mPropertyWidgets[static_cast<int>(PropertyId)].Editor);
 
-	if (!CheckBox)
+	if (!Button)
 		return;
 
-	QSignalBlocker Blocker(CheckBox);
+	QSignalBlocker Blocker(Button);
 	QVariant Value;
 	bool Partial;
 
 	std::tie(Value, Partial) = GetUpdateValue(PropertyId);
 
-	if (Partial)
-		CheckBox->setCheckState(Qt::PartiallyChecked);
-	else
-		CheckBox->setCheckState(Value.toBool() ? Qt::Checked : Qt::Unchecked);
+	// A toggle button has no third state, differing values are named instead.
+	Button->setChecked(!Partial && Value.toBool());
+	Button->setText(Partial ? tr("%1: Multiple Values").arg(Button->accessibleName()) : Button->accessibleName());
 
 	UpdateKeyFrameWidget(PropertyId);
 }
 
-void lcPropertiesWidget::AddBoolProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames)
-{
-	AddLabel(PropertyId, Text, ToolTip);
-
-	QCheckBox* Widget = new QCheckBox(this);
-	Widget->setToolTip(ToolTip);
-
-	connect(Widget, &QCheckBox::stateChanged, this, &lcPropertiesWidget::BoolChanged);
-
-	mLayout->addWidget(Widget, mLayoutRow, 2);
-
-	mCurrentCategory->Properties.push_back(PropertyId);
-	mPropertyWidgets[static_cast<int>(PropertyId)].Category = mCurrentCategory->Category;
-	mPropertyWidgets[static_cast<int>(PropertyId)].Editor = Widget;
-
-	if (SupportsKeyFrames)
-		AddKeyFrameWidget(PropertyId);
-
-	mLayoutRow++;
-}
 
 void lcPropertiesWidget::FloatEditingStarted()
 {
@@ -682,141 +539,58 @@ void lcPropertiesWidget::UpdateFloat(lcObjectPropertyId PropertyId, float Value)
 	UpdateKeyFrameWidget(PropertyId);
 }
 
-lcDoubleSpinBox* lcPropertiesWidget::CreateFloatEditor(lcObjectPropertyId PropertyId, const QString& ToolTip, float Min, float Max)
-{
-	lcDoubleSpinBox* Widget = new lcDoubleSpinBox(this);
-	Widget->setToolTip(ToolTip);
 
-	Widget->setRange(Min, Max);
 
-	connect(Widget, &lcDoubleSpinBox::EditingStarted, this, &lcPropertiesWidget::FloatEditingStarted);
-	connect(Widget, &lcDoubleSpinBox::EditingCanceled, this, &lcPropertiesWidget::FloatEditingCanceled);
-	connect(Widget, &lcDoubleSpinBox::EditingFinished, this, &lcPropertiesWidget::FloatEditingFinished);
-
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-	connect(Widget, QOverload<double>::of(&lcDoubleSpinBox::valueChanged), this, &lcPropertiesWidget::FloatChanged);
-#else
-	connect(Widget, &lcDoubleSpinBox::valueChanged, this, &lcPropertiesWidget::FloatChanged);
-#endif
-
-	mCurrentCategory->Properties.push_back(PropertyId);
-	mPropertyWidgets[static_cast<int>(PropertyId)].Editor = Widget;
-	mPropertyWidgets[static_cast<int>(PropertyId)].Category = mCurrentCategory->Category;
-
-	return Widget;
-}
-
-void lcPropertiesWidget::AddFloatProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames, float Min, float Max)
-{
-	AddLabel(PropertyId, Text, ToolTip);
-
-	lcDoubleSpinBox* Widget = CreateFloatEditor(PropertyId, ToolTip, Min, Max);
-	mLayout->addWidget(Widget, mLayoutRow, 2);
-
-	if (SupportsKeyFrames)
-		AddKeyFrameWidget(PropertyId);
-
-	mLayoutRow++;
-}
-
-void lcPropertiesWidget::AddVectorProperty(const std::array<lcObjectPropertyId, 3>& PropertyIds, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames, float Min, float Max)
-{
-	// The X, Y and Z values share a row below the panel like the transform boxes, with one keyframe since they are keyed together.
-	QWidget* Row = lcCreatePanelRow(mTransformRows);
-	mTransformRowsLayout->addWidget(Row);
-
-	CreateRowNameButton(Row, Text);
-
-	const QString AxisNames[3] = { tr("X"), tr("Y"), tr("Z") };
-
-	for (int Axis = 0; Axis < 3; Axis++)
-	{
-		lcDoubleSpinBox* Widget = CreateFloatEditor(PropertyIds[Axis], tr("%1 (%2)").arg(ToolTip, AxisNames[Axis]), Min, Max);
-		Widget->setAccessibleName(tr("%1 %2").arg(Text, AxisNames[Axis]));
-
-		// Share the row equally instead of reserving room for the largest possible value.
-		Widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-		Widget->setMinimumWidth(Widget->fontMetrics().horizontalAdvance(QLatin1String("-000")) + 24);
-		lcSetupPanelEdit(Widget);
-		lcAddPanelRowWidget(Row, Widget);
-	}
-
-	if (SupportsKeyFrames)
-		lcAddPanelRowWidget(Row, CreateKeyFrameWidget(PropertyIds[0]));
-}
 
 void lcPropertiesWidget::IntegerChanged()
 {
-	// todo: switch to spinner and support mouse drag
-	QLineEdit* LineEdit = qobject_cast<QLineEdit*>(sender());
-	lcObjectPropertyId PropertyId = GetEditorWidgetPropertyId(LineEdit);
+	QSpinBox* SpinBox = qobject_cast<QSpinBox*>(sender());
+	lcObjectPropertyId PropertyId = GetEditorWidgetPropertyId(SpinBox);
 
 	if (PropertyId == lcObjectPropertyId::Count)
 		return;
 
 	lcModel* Model = gMainWindow->GetActiveModel();
 
-	if (!Model)
+	// The value below the range only stands for differing values.
+	if (!Model || (SpinBox->value() == SpinBox->minimum() && !SpinBox->specialValueText().isEmpty()))
 		return;
 
-	bool Ok;
-	const int Value = LineEdit->validator()->locale().toInt(LineEdit->text(), &Ok);
-
-	if (!Ok || !LineEdit->hasAcceptableInput())
-		return;
-
-	Model->SetObjectsProperty(mFocusObject ? std::vector<lcObject*>{ mFocusObject } : mSelection, PropertyId, Value);
+	Model->SetObjectsProperty(mFocusObject ? std::vector<lcObject*>{ mFocusObject } : mSelection, PropertyId, SpinBox->value());
 }
 
 void lcPropertiesWidget::UpdateInteger(lcObjectPropertyId PropertyId)
 {
-	QLineEdit* LineEdit = qobject_cast<QLineEdit*>(mPropertyWidgets[static_cast<int>(PropertyId)].Editor);
+	QSpinBox* SpinBox = qobject_cast<QSpinBox*>(mPropertyWidgets[static_cast<int>(PropertyId)].Editor);
 
-	if (!LineEdit)
+	if (!SpinBox)
 		return;
 
-	QSignalBlocker Blocker(LineEdit);
+	QSignalBlocker Blocker(SpinBox);
 	QVariant Value;
 	bool Partial;
 
 	std::tie(Value, Partial) = GetUpdateValue(PropertyId);
 
+	// Differing values show as text on a value below the range, which leaves the range when edited.
+	const int Minimum = SpinBox->specialValueText().isEmpty() ? SpinBox->minimum() : SpinBox->minimum() + 1;
+
 	if (Partial)
 	{
-		LineEdit->clear();
-		LineEdit->setPlaceholderText(tr("Multiple Values"));
+		SpinBox->setMinimum(Minimum - 1);
+		SpinBox->setSpecialValueText(tr("%1Multiple Values").arg(SpinBox->prefix()));
+		SpinBox->setValue(Minimum - 1);
 	}
 	else
 	{
-		LineEdit->setText(lcFormatIntegerLocalized(Value.toInt(), LineEdit->validator()->locale()));
-		LineEdit->setPlaceholderText(QString());
+		SpinBox->setSpecialValueText(QString());
+		SpinBox->setMinimum(Minimum);
+		SpinBox->setValue(Value.toInt());
 	}
 
 	UpdateKeyFrameWidget(PropertyId);
 }
 
-void lcPropertiesWidget::AddIntegerProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames, int Min, int Max)
-{
-	AddLabel(PropertyId, Text, ToolTip);
-
-	QLineEdit* Widget = new QLineEdit(this);
-	Widget->setToolTip(ToolTip);
-
-	Widget->setValidator(new QIntValidator(Min, Max, Widget));
-
-	connect(Widget, &QLineEdit::editingFinished, this, &lcPropertiesWidget::IntegerChanged);
-
-	mLayout->addWidget(Widget, mLayoutRow, 2);
-
-	mCurrentCategory->Properties.push_back(PropertyId);
-	mPropertyWidgets[static_cast<int>(PropertyId)].Editor = Widget;
-	mPropertyWidgets[static_cast<int>(PropertyId)].Category = mCurrentCategory->Category;
-
-	if (SupportsKeyFrames)
-		AddKeyFrameWidget(PropertyId);
-
-	mLayoutRow++;
-}
 
 void lcPropertiesWidget::StepNumberChanged()
 {
@@ -863,95 +637,10 @@ void lcPropertiesWidget::UpdateStepNumber(lcObjectPropertyId PropertyId, lcStep 
 	UpdateKeyFrameWidget(PropertyId);
 }
 
-QLineEdit* lcPropertiesWidget::CreateStepNumberEditor(lcObjectPropertyId PropertyId, const QString& ToolTip)
-{
-	QLineEdit* Widget = new QLineEdit(this);
-	Widget->setToolTip(ToolTip);
 
-	connect(Widget, &QLineEdit::editingFinished, this, &lcPropertiesWidget::StepNumberChanged);
 
-	// An empty removal step keeps the piece for the rest of the model.
-	if (PropertyId == lcObjectPropertyId::PieceStepHide)
-		Widget->setPlaceholderText(tr("Never"));
 
-	mCurrentCategory->Properties.push_back(PropertyId);
-	mPropertyWidgets[static_cast<int>(PropertyId)].Editor = Widget;
-	mPropertyWidgets[static_cast<int>(PropertyId)].Category = mCurrentCategory->Category;
 
-	return Widget;
-}
-
-void lcPropertiesWidget::AddStepNumberProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames)
-{
-	AddLabel(PropertyId, Text, ToolTip);
-
-	mLayout->addWidget(CreateStepNumberEditor(PropertyId, ToolTip), mLayoutRow, 2);
-
-	if (SupportsKeyFrames)
-		AddKeyFrameWidget(PropertyId);
-
-	mLayoutRow++;
-}
-
-void lcPropertiesWidget::AddStepRangeProperty(lcObjectPropertyId ShowPropertyId, lcObjectPropertyId HidePropertyId)
-{
-	// The steps a piece is added and removed in share a row below the timeline, formatted like the transform rows.
-	QWidget* Row = lcCreatePanelRow(mStepRows);
-	mStepRows->layout()->addWidget(Row);
-
-	CreateRowNameButton(Row, tr("Steps"));
-
-	const std::pair<lcObjectPropertyId, QString> Editors[2] =
-	{
-		{ ShowPropertyId, tr("Added in Step") },
-		{ HidePropertyId, tr("Removed in Step") }
-	};
-
-	for (const auto& [PropertyId, Name] : Editors)
-	{
-		const QString ToolTip = PropertyId == HidePropertyId ? tr("Step when the piece is removed from the model, leave empty to keep it until the end") : tr("Step when the piece is added to the model");
-		QLineEdit* Widget = CreateStepNumberEditor(PropertyId, tr("%1: %2").arg(Name, ToolTip));
-		Widget->setAccessibleName(Name);
-		Widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-		lcSetupPanelEdit(Widget);
-		lcAddPanelRowWidget(Row, Widget);
-	}
-}
-
-QWidget* lcPropertiesWidget::AddTransformRowButton(QToolButton* Button)
-{
-	// A button filling a whole row below the panel, without a label like the transform rows.
-	QWidget* Row = lcCreatePanelRow(mTransformRows);
-	mTransformRowsLayout->addWidget(Row);
-
-	// An empty slot keeps the button in line with the transform boxes, the color swatch covers the slots.
-	QWidget* Slot = new QWidget(Row);
-	Slot->setFixedSize(lcGetPanelButtonSize());
-	Slot->installEventFilter(this);
-	lcAddPanelRowWidget(Row, Slot);
-	mPieceRowSlots.push_back(Slot);
-
-	lcAddPanelRowWidget(Row, Button);
-	lcSetupPanelButton(Button);
-	Button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-
-	return Row;
-}
-
-QToolButton* lcPropertiesWidget::CreateRowNameButton(QWidget* Row, const QString& Name)
-{
-	// A button with the first letter of the name takes the place of the transform button so the boxes line up.
-	QToolButton* NameButton = new QToolButton(Row);
-	NameButton->setText(Name.left(1));
-	NameButton->setToolTip(Name);
-	NameButton->setAccessibleName(Name);
-	NameButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
-	lcAddPanelRowWidget(Row, NameButton);
-	lcSetupPanelButton(NameButton);
-	NameButton->setFixedSize(lcGetPanelButtonSize());
-
-	return NameButton;
-}
 
 void lcPropertiesWidget::StringChanged()
 {
@@ -991,32 +680,12 @@ void lcPropertiesWidget::UpdateString(lcObjectPropertyId PropertyId)
 	else
 	{
 		LineEdit->setText(Value.toString());
-		LineEdit->setPlaceholderText(QString());
+		LineEdit->setPlaceholderText(LineEdit->accessibleName());
 	}
 
 	UpdateKeyFrameWidget(PropertyId);
 }
 
-void lcPropertiesWidget::AddStringProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames)
-{
-	AddLabel(PropertyId, Text, ToolTip);
-
-	QLineEdit* Widget = new QLineEdit(this);
-	Widget->setToolTip(ToolTip);
-
-	connect(Widget, &QLineEdit::editingFinished, this, &lcPropertiesWidget::StringChanged);
-
-	mLayout->addWidget(Widget, mLayoutRow, 2);
-
-	mCurrentCategory->Properties.push_back(PropertyId);
-	mPropertyWidgets[static_cast<int>(PropertyId)].Editor = Widget;
-	mPropertyWidgets[static_cast<int>(PropertyId)].Category = mCurrentCategory->Category;
-
-	if (SupportsKeyFrames)
-		AddKeyFrameWidget(PropertyId);
-
-	mLayoutRow++;
-}
 
 void lcPropertiesWidget::StringListChanged(int Value)
 {
@@ -1066,27 +735,6 @@ void lcPropertiesWidget::UpdateStringList(lcObjectPropertyId PropertyId)
 	UpdateKeyFrameWidget(PropertyId);
 }
 
-void lcPropertiesWidget::AddStringListProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames, const QStringList& Strings)
-{
-	AddLabel(PropertyId, Text, ToolTip);
-
-	QComboBox* Widget = new QComboBox(this);
-	Widget->setToolTip(ToolTip);
-	Widget->addItems(Strings);
-
-	connect(Widget, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &lcPropertiesWidget::StringListChanged);
-
-	mLayout->addWidget(Widget, mLayoutRow, 2);
-
-	mCurrentCategory->Properties.push_back(PropertyId);
-	mPropertyWidgets[static_cast<int>(PropertyId)].Editor = Widget;
-	mPropertyWidgets[static_cast<int>(PropertyId)].Category = mCurrentCategory->Category;
-
-	if (SupportsKeyFrames)
-		AddKeyFrameWidget(PropertyId);
-
-	mLayoutRow++;
-}
 
 void lcPropertiesWidget::ColorButtonClicked()
 {
@@ -1150,37 +798,16 @@ void lcPropertiesWidget::UpdateColor(lcObjectPropertyId PropertyId)
 	std::tie(Value, Partial) = GetUpdateValue(PropertyId);
 
 	QColor Color = Partial ? QColor(128, 128, 128) : lcQColorFromVector3(Value.value<lcVector3>());
-	QPixmap Pixmap(14, 14);
-	Pixmap.fill(Color);
 
-	ColorButton->setIcon(Pixmap);
-	ColorButton->setText(Partial ? tr(" Multiple Colors") : QString("  ") + Color.name());
+	// The color shows in the light block so the name stays centered like the piece color.
+	mIdentityBlocks[static_cast<int>(IdentityIndex::Light)].Color = Color;
+	UpdateIdentityBlock(mIdentityBlocks[static_cast<int>(IdentityIndex::Light)]);
+
+	ColorButton->setText(Partial ? tr("Multiple Colors") : Color.name());
 
 	UpdateKeyFrameWidget(PropertyId);
 }
 
-void lcPropertiesWidget::AddColorProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames)
-{
-	AddLabel(PropertyId, Text, ToolTip);
-
-	QToolButton* Widget = new QToolButton(this);
-	Widget->setToolTip(ToolTip);
-	Widget->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-	Widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-
-	connect(Widget, &QToolButton::clicked, this, &lcPropertiesWidget::ColorButtonClicked);
-
-	mLayout->addWidget(Widget, mLayoutRow, 2);
-
-	mCurrentCategory->Properties.push_back(PropertyId);
-	mPropertyWidgets[static_cast<int>(PropertyId)].Editor = Widget;
-	mPropertyWidgets[static_cast<int>(PropertyId)].Category = mCurrentCategory->Category;
-
-	if (SupportsKeyFrames)
-		AddKeyFrameWidget(PropertyId);
-
-	mLayoutRow++;
-}
 
 void lcPropertiesWidget::PieceColorChanged(int ColorIndex)
 {
@@ -1247,8 +874,8 @@ void lcPropertiesWidget::UpdatePieceColor(lcObjectPropertyId PropertyId)
 	// With nothing selected the button only names what it edits.
 	if (!mFocusObject && mSelection.empty())
 	{
-		mPieceColorSwatchColor = QColor();
-		UpdatePieceColorSwatch();
+		mIdentityBlocks[static_cast<int>(IdentityIndex::Piece)].Color = QColor();
+		UpdateIdentityBlock(mIdentityBlocks[static_cast<int>(IdentityIndex::Piece)]);
 
 		ColorButton->setText(tr("Color"));
 		UpdateKeyFrameWidget(PropertyId);
@@ -1257,46 +884,15 @@ void lcPropertiesWidget::UpdatePieceColor(lcObjectPropertyId PropertyId)
 
 	const int ColorIndex = Value.toInt();
 	QColor Color = Partial ? QColor(128, 128, 128) : QColor::fromRgbF(gColorList[ColorIndex].Value[0], gColorList[ColorIndex].Value[1], gColorList[ColorIndex].Value[2]);
-	QPixmap Pixmap(14, 14);
-	Pixmap.fill(Color);
-
 	// The color shows in the swatch button so the name stays centered.
-	mPieceColorSwatchColor = Color;
-	UpdatePieceColorSwatch();
+	mIdentityBlocks[static_cast<int>(IdentityIndex::Piece)].Color = Color;
+	UpdateIdentityBlock(mIdentityBlocks[static_cast<int>(IdentityIndex::Piece)]);
 
 	ColorButton->setText(Partial ? tr("Multiple Colors") : gColorList[ColorIndex].Name);
 
 	UpdateKeyFrameWidget(PropertyId);
 }
 
-void lcPropertiesWidget::AddPieceColorProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames)
-{
-	QToolButton* Widget = new QToolButton(this);
-	Widget->setToolTip(ToolTip);
-	Widget->setAccessibleName(Text);
-	Widget->setToolButtonStyle(Qt::ToolButtonTextOnly);
-
-	connect(Widget, &QToolButton::clicked, this, &lcPropertiesWidget::PieceColorButtonClicked);
-
-	AddTransformRowButton(Widget);
-
-	// A button left of the piece and color rows shows the color and opens the same color choice.
-	mPieceColorSwatch = new QToolButton(mTransformRows);
-	mPieceColorSwatch->setToolTip(ToolTip);
-	mPieceColorSwatch->setAccessibleName(tr("%1 Swatch").arg(Text));
-	mPieceColorSwatch->setFocusPolicy(Qt::NoFocus);
-
-	connect(mPieceColorSwatch, &QToolButton::clicked, Widget, &QToolButton::click);
-
-	mCurrentCategory->Properties.push_back(PropertyId);
-	mPropertyWidgets[static_cast<int>(PropertyId)].Editor = Widget;
-	mPropertyWidgets[static_cast<int>(PropertyId)].Category = mCurrentCategory->Category;
-
-	if (SupportsKeyFrames)
-		AddKeyFrameWidget(PropertyId);
-
-	mLayoutRow++;
-}
 
 void lcPropertiesWidget::UpdatePieceId(lcObjectPropertyId PropertyId)
 {
@@ -1356,155 +952,511 @@ void lcPropertiesWidget::PieceIdButtonClicked()
 	}
 }
 
-void lcPropertiesWidget::AddPieceIdProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames)
+
+
+bool lcPropertiesWidget::HasVisibleRows() const
+{
+	// Only the scrolling rows count, the identity and transform rows sit outside the list.
+	for (int Index = 0; Index < mSettingsLayout->count(); Index++)
+	{
+		const QWidget* Widget = mSettingsLayout->itemAt(Index)->widget();
+
+		if (Widget && !Widget->isHidden())
+			return true;
+	}
+
+	return false;
+}
+
+bool lcPropertiesWidget::eventFilter(QObject* Object, QEvent* Event)
+{
+	// The identity and transform rows sit outside the list, so their changes also resize the panel.
+	if ((Object == mIdentityRows || Object == mTransformRows) && Event->type() == QEvent::LayoutRequest)
+		emit LayoutChanged();
+
+	// The rows move as rows above them show or hide, the block follows the rows holding its slots.
+	for (IdentityBlock& Block : mIdentityBlocks)
+	{
+		if (std::find_if(Block.Slots.begin(), Block.Slots.end(), [Object](const QWidget* Slot) { return Slot->parentWidget() == Object; }) == Block.Slots.end())
+			continue;
+
+		switch (Event->type())
+		{
+		case QEvent::Move:
+		case QEvent::Resize:
+		case QEvent::Show:
+		case QEvent::Hide:
+			UpdateIdentityBlock(Block);
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	return QWidget::eventFilter(Object, Event);
+}
+
+void lcPropertiesWidget::UpdateIdentityBlock(IdentityBlock& Block)
+{
+	if (!Block.Swatch)
+		return;
+
+	// The block spans the shown identity rows, the color fills the button inside its border.
+	QWidget* FirstSlot = nullptr;
+	QWidget* LastSlot = nullptr;
+
+	for (QWidget* Slot : Block.Slots)
+	{
+		if (Slot->parentWidget()->isHidden())
+			continue;
+
+		if (!FirstSlot)
+			FirstSlot = Slot;
+
+		LastSlot = Slot;
+	}
+
+	if (!FirstSlot || !LastSlot->isVisible())
+	{
+		Block.Swatch->hide();
+		return;
+	}
+
+	const QRect SwatchRect(FirstSlot->mapTo(mIdentityRows, QPoint(0, 0)), LastSlot->mapTo(mIdentityRows, LastSlot->rect().bottomRight()));
+	const int Inset = lcGetLayoutSpacing(this, Qt::Horizontal);
+	const QSize IconSize = (SwatchRect.size() - QSize(Inset, Inset)).expandedTo(QSize(1, 1));
+
+	Block.Swatch->setGeometry(SwatchRect);
+	Block.Swatch->setIconSize(IconSize);
+
+	if (Block.Color.isValid())
+	{
+		QPixmap Pixmap(IconSize);
+		Pixmap.fill(Block.Color);
+		Block.Swatch->setIcon(Pixmap);
+	}
+	else
+		Block.Swatch->setIcon(QIcon());
+
+	Block.Swatch->show();
+	Block.Swatch->raise();
+}
+
+void lcPropertiesWidget::UpdateRowVisible(QWidget* Row)
+{
+	if (!Row)
+		return;
+
+	// A row shows while any of its values is shown, a lone value fills the row.
+	bool Visible = false;
+
+	for (const PropertyWidgets& Property : mPropertyWidgets)
+		if (Property.Row == Row && Property.Editor && !Property.Editor->isHidden())
+			Visible = true;
+
+	Row->setVisible(Visible);
+}
+
+void lcPropertiesWidget::AddCategory(CategoryIndex Index, const QString& Title, bool Collapsible)
+{
+	mCurrentCategory = &mCategoryWidgets[static_cast<int>(Index)];
+	mCurrentCategory->Category = Index;
+
+	mCurrentCategory->Title = Title;
+
+	// Only collapsible categories have a header, the title still names their properties for accessibility.
+	if (!Collapsible)
+		return;
+
+	lcCollapsibleWidgetButton* CategoryButton = new lcCollapsibleWidgetButton(Title, this);
+	CategoryButton->setToolTip(tr("Expand or collapse the %1 properties.").arg(Title));
+
+	mCurrentCategory->Button = CategoryButton;
+
+	connect(CategoryButton, &lcCollapsibleWidgetButton::StateChanged, this, &lcPropertiesWidget::CategoryStateChanged);
+
+	mSettingsLayout->addWidget(CategoryButton);
+}
+
+void lcPropertiesWidget::RegisterEditor(lcObjectPropertyId PropertyId, QWidget* Editor, const QString& Name, const QString& ToolTip)
+{
+	Editor->setToolTip(ToolTip);
+	Editor->setAccessibleName(Name);
+
+	mCurrentCategory->Properties.push_back(PropertyId);
+	mPropertyWidgets[static_cast<int>(PropertyId)].Editor = Editor;
+	mPropertyWidgets[static_cast<int>(PropertyId)].Category = mCurrentCategory->Category;
+}
+
+lcKeyFrameWidget* lcPropertiesWidget::CreateKeyFrameWidget(lcObjectPropertyId PropertyId)
+{
+	lcKeyFrameWidget* Widget = new lcKeyFrameWidget(this);
+	Widget->setToolTip(tr("Toggle Keyframe"));
+
+	connect(Widget, &QCheckBox::stateChanged, this, &lcPropertiesWidget::KeyFrameChanged);
+
+	mPropertyWidgets[static_cast<int>(PropertyId)].KeyFrame = Widget;
+
+	return Widget;
+}
+
+lcDoubleSpinBox* lcPropertiesWidget::CreateFloatEditor(lcObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip, float Min, float Max, bool ShowName, const QString& Suffix)
+{
+	lcDoubleSpinBox* Widget = new lcDoubleSpinBox(this);
+	RegisterEditor(PropertyId, Widget, Name, ToolTip);
+
+	Widget->setRange(Min, Max);
+
+	// Single values carry their name and unit, the letter of a vector row names its boxes.
+	if (ShowName)
+		Widget->setPrefix(Name + QLatin1Char(' '));
+
+	Widget->setSuffix(Suffix);
+	lcSetupPanelSpinBox(Widget);
+
+	connect(Widget, &lcDoubleSpinBox::EditingStarted, this, &lcPropertiesWidget::FloatEditingStarted);
+	connect(Widget, &lcDoubleSpinBox::EditingCanceled, this, &lcPropertiesWidget::FloatEditingCanceled);
+	connect(Widget, &lcDoubleSpinBox::EditingFinished, this, &lcPropertiesWidget::FloatEditingFinished);
+
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+	connect(Widget, QOverload<double>::of(&lcDoubleSpinBox::valueChanged), this, &lcPropertiesWidget::FloatChanged);
+#else
+	connect(Widget, &lcDoubleSpinBox::valueChanged, this, &lcPropertiesWidget::FloatChanged);
+#endif
+
+	return Widget;
+}
+
+QSpinBox* lcPropertiesWidget::CreateIntegerEditor(lcObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip, int Min, int Max)
+{
+	QSpinBox* Widget = new QSpinBox(this);
+	RegisterEditor(PropertyId, Widget, Name, ToolTip);
+
+	Widget->setRange(Min, Max);
+	Widget->setPrefix(Name + QLatin1Char(' '));
+	lcSetupPanelSpinBox(Widget);
+
+	// Applied on every change like the other value boxes, so the arrows take effect at once.
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+	connect(Widget, QOverload<int>::of(&QSpinBox::valueChanged), this, &lcPropertiesWidget::IntegerChanged);
+#else
+	connect(Widget, &QSpinBox::valueChanged, this, &lcPropertiesWidget::IntegerChanged);
+#endif
+
+	return Widget;
+}
+
+QLineEdit* lcPropertiesWidget::CreateStepNumberEditor(lcObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip)
+{
+	QLineEdit* Widget = new QLineEdit(this);
+	RegisterEditor(PropertyId, Widget, Name, ToolTip);
+	Widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	lcSetupPanelEdit(Widget);
+
+	connect(Widget, &QLineEdit::editingFinished, this, &lcPropertiesWidget::StepNumberChanged);
+
+	// An empty removal step keeps the piece for the rest of the model.
+	if (PropertyId == lcObjectPropertyId::PieceStepHide)
+		Widget->setPlaceholderText(tr("Never"));
+
+	return Widget;
+}
+
+QLineEdit* lcPropertiesWidget::CreateStringEditor(lcObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip)
+{
+	QLineEdit* Widget = new QLineEdit(this);
+	RegisterEditor(PropertyId, Widget, Name, ToolTip);
+	Widget->setPlaceholderText(Name);
+	Widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	lcSetupPanelEdit(Widget);
+
+	connect(Widget, &QLineEdit::editingFinished, this, &lcPropertiesWidget::StringChanged);
+
+	return Widget;
+}
+
+QComboBox* lcPropertiesWidget::CreateStringListEditor(lcObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip, const QStringList& Strings)
+{
+	QComboBox* Widget = new QComboBox(this);
+	RegisterEditor(PropertyId, Widget, Name, ToolTip);
+	Widget->addItems(Strings);
+	Widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	lcSetupPanelEdit(Widget);
+
+	connect(Widget, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &lcPropertiesWidget::StringListChanged);
+
+	return Widget;
+}
+
+QToolButton* lcPropertiesWidget::CreateColorEditor(lcObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip)
+{
+	QToolButton* Widget = new QToolButton(this);
+	RegisterEditor(PropertyId, Widget, Name, ToolTip);
+	Widget->setToolButtonStyle(Qt::ToolButtonTextOnly);
+	lcSetupPanelButton(Widget);
+	Widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+	connect(Widget, &QToolButton::clicked, this, &lcPropertiesWidget::ColorButtonClicked);
+
+	return Widget;
+}
+
+QToolButton* lcPropertiesWidget::CreateToggleEditor(lcObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip)
+{
+	QToolButton* Widget = new QToolButton(this);
+	RegisterEditor(PropertyId, Widget, Name, ToolTip);
+	Widget->setText(Name);
+	Widget->setCheckable(true);
+	Widget->setToolButtonStyle(Qt::ToolButtonTextOnly);
+	lcSetupPanelButton(Widget);
+	Widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+	connect(Widget, &QToolButton::toggled, this, &lcPropertiesWidget::BoolChanged);
+
+	return Widget;
+}
+
+QToolButton* lcPropertiesWidget::CreatePieceIdEditor(lcObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip)
 {
 	lcElidableToolButton* Widget = new lcElidableToolButton(this);
-	Widget->setToolTip(ToolTip);
-	Widget->setAccessibleName(Text);
+	RegisterEditor(PropertyId, Widget, Name, ToolTip);
 	Widget->setToolButtonStyle(Qt::ToolButtonTextOnly);
+	lcSetupPanelButton(Widget);
+	Widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
 	connect(Widget, &QToolButton::clicked, this, &lcPropertiesWidget::PieceIdButtonClicked);
 
-	AddTransformRowButton(Widget);
+	return Widget;
+}
 
-	mCurrentCategory->Properties.push_back(PropertyId);
-	mPropertyWidgets[static_cast<int>(PropertyId)].Editor = Widget;
-	mPropertyWidgets[static_cast<int>(PropertyId)].Category = mCurrentCategory->Category;
+QToolButton* lcPropertiesWidget::CreatePieceColorEditor(lcObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip)
+{
+	QToolButton* Widget = new QToolButton(this);
+	RegisterEditor(PropertyId, Widget, Name, ToolTip);
+	Widget->setToolButtonStyle(Qt::ToolButtonTextOnly);
+	lcSetupPanelButton(Widget);
+	Widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-	if (SupportsKeyFrames)
-		AddKeyFrameWidget(PropertyId);
+	connect(Widget, &QToolButton::clicked, this, &lcPropertiesWidget::PieceColorButtonClicked);
 
-	mLayoutRow++;
+	return Widget;
+}
+
+QToolButton* lcPropertiesWidget::CreateRowNameButton(QWidget* Row, const QString& Letter, const QString& Name)
+{
+	// A button with a letter for the row takes the place of the transform button so the boxes line up.
+	QToolButton* NameButton = new QToolButton(Row);
+	NameButton->setText(Letter);
+	NameButton->setToolTip(Name);
+	NameButton->setAccessibleName(Name);
+	NameButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
+	lcAddPanelRowWidget(Row, NameButton);
+	lcSetupPanelButton(NameButton);
+	NameButton->setFixedSize(lcGetPanelButtonSize());
+
+	return NameButton;
+}
+
+QWidget* lcPropertiesWidget::AddValueRow(QWidget* Container, const QString& Letter, const QString& Name, const std::vector<RowEditor>& Editors)
+{
+	QWidget* Row = lcCreatePanelRow(Container);
+	Container->layout()->addWidget(Row);
+
+	CreateRowNameButton(Row, Letter, Name);
+
+	for (const RowEditor& Editor : Editors)
+	{
+		Editor.Editor->setParent(Row);
+		lcAddPanelRowWidget(Row, Editor.Editor);
+		mPropertyWidgets[static_cast<int>(GetEditorWidgetPropertyId(Editor.Editor))].Row = Row;
+
+		if (Editor.KeyFrameId != lcObjectPropertyId::Count)
+			lcAddPanelRowWidget(Row, CreateKeyFrameWidget(Editor.KeyFrameId));
+	}
+
+	return Row;
+}
+
+void lcPropertiesWidget::AddVectorRow(QWidget* Container, const std::array<lcObjectPropertyId, 3>& PropertyIds, const QString& Letter, const QString& Name, const QString& ToolTip, bool SupportsKeyFrames, float Min, float Max)
+{
+	// The X, Y and Z values share a row with one keyframe since they are keyed together.
+	const QString AxisNames[3] = { tr("X"), tr("Y"), tr("Z") };
+	std::vector<RowEditor> Editors;
+
+	for (int Axis = 0; Axis < 3; Axis++)
+	{
+		lcDoubleSpinBox* Widget = CreateFloatEditor(PropertyIds[Axis], tr("%1 %2").arg(Name, AxisNames[Axis]), tr("%1 (%2)").arg(ToolTip, AxisNames[Axis]), Min, Max, false);
+		Editors.push_back({ Widget, Axis == 2 && SupportsKeyFrames ? PropertyIds[0] : lcObjectPropertyId::Count });
+	}
+
+	AddValueRow(Container, Letter, Name, Editors);
+}
+
+void lcPropertiesWidget::AddIdentityRow(IdentityIndex Index, QWidget* Editor, lcObjectPropertyId KeyFrameId)
+{
+	// A full width row without a name, the block on the left spans the slots of all the identity rows of the object.
+	IdentityBlock& Block = mIdentityBlocks[static_cast<int>(Index)];
+	QWidget* Row = lcCreatePanelRow(mIdentityRows);
+	mIdentityRows->layout()->addWidget(Row);
+
+	QWidget* Slot = new QWidget(Row);
+	Slot->setFixedSize(lcGetPanelButtonSize());
+	lcAddPanelRowWidget(Row, Slot);
+	Row->installEventFilter(this);
+	Block.Slots.push_back(Slot);
+
+	Editor->setParent(Row);
+	lcAddPanelRowWidget(Row, Editor);
+
+	const lcObjectPropertyId PropertyId = GetEditorWidgetPropertyId(Editor);
+	mPropertyWidgets[static_cast<int>(PropertyId)].Row = Row;
+
+	if (KeyFrameId != lcObjectPropertyId::Count)
+		lcAddPanelRowWidget(Row, CreateKeyFrameWidget(KeyFrameId));
+
+	if (!Block.Swatch)
+	{
+		// Placed over the slots once the rows are laid out, hidden until then.
+		Block.Swatch = new QToolButton(mIdentityRows);
+		Block.Swatch->setFocusPolicy(Qt::NoFocus);
+		Block.Swatch->setAttribute(Qt::WA_TransparentForMouseEvents);
+		Block.Swatch->hide();
+	}
+
+	// Objects with a color open the same color choice from the block.
+	if (PropertyId == lcObjectPropertyId::PieceColor || PropertyId == lcObjectPropertyId::LightColor)
+	{
+		Block.Swatch->setAttribute(Qt::WA_TransparentForMouseEvents, false);
+		Block.Swatch->setToolTip(Editor->toolTip());
+		Block.Swatch->setAccessibleName(tr("%1 Swatch").arg(Editor->accessibleName()));
+		connect(Block.Swatch, &QToolButton::clicked, static_cast<QToolButton*>(Editor), &QToolButton::click);
+	}
 }
 
 void lcPropertiesWidget::CreateWidgets()
 {
-	// The grid sits in the panel layout, which provides the margins.
-	mLayout = new QGridLayout(this);
-	mLayout->setContentsMargins(0, 0, 0, 0);
+	// The rows sit in the panel layout, which provides the margins.
+	mSettingsLayout = new QVBoxLayout(this);
+	mSettingsLayout->setContentsMargins(0, 0, 0, 0);
+
+	mIdentityRows = new QWidget(this);
+	mIdentityRows->installEventFilter(this);
+	QVBoxLayout* IdentityRowsLayout = new QVBoxLayout(mIdentityRows);
+	IdentityRowsLayout->setContentsMargins(0, 0, 0, 0);
 
 	mTransformRows = new QWidget(this);
 	mTransformRows->installEventFilter(this);
-	mTransformRowsLayout = new QVBoxLayout(mTransformRows);
-	mTransformRowsLayout->setContentsMargins(0, 0, 0, 0);
+	QVBoxLayout* TransformRowsLayout = new QVBoxLayout(mTransformRows);
+	TransformRowsLayout->setContentsMargins(0, 0, 0, 0);
 
 	mStepRows = new QWidget(this);
 	QVBoxLayout* StepRowsLayout = new QVBoxLayout(mStepRows);
 	StepRowsLayout->setContentsMargins(0, 0, 0, 0);
-	mLayout->setColumnStretch(2, 1);
 
 	AddCategory(CategoryIndex::Piece, tr("Piece"), false);
 
-	AddPieceIdProperty(lcObjectPropertyId::PieceId, tr("Piece"), tr("Piece ID"), false);
-	AddPieceColorProperty(lcObjectPropertyId::PieceColor, tr("Color"), tr("Piece color"), false);
+	AddIdentityRow(IdentityIndex::Piece, CreatePieceIdEditor(lcObjectPropertyId::PieceId, tr("Piece"), tr("Piece ID")));
+	AddIdentityRow(IdentityIndex::Piece, CreatePieceColorEditor(lcObjectPropertyId::PieceColor, tr("Color"), tr("Piece color")));
 
-	AddSpacing();
-
-	AddStepRangeProperty(lcObjectPropertyId::PieceStepShow, lcObjectPropertyId::PieceStepHide);
-
-	AddSpacing();
+	AddValueRow(mStepRows, tr("S"), tr("Steps"),
+	{
+		{ CreateStepNumberEditor(lcObjectPropertyId::PieceStepShow, tr("Added in Step"), tr("Added in Step: Step when the piece is added to the model")) },
+		{ CreateStepNumberEditor(lcObjectPropertyId::PieceStepHide, tr("Removed in Step"), tr("Removed in Step: Step when the piece is removed from the model, leave empty to keep it until the end")) }
+	});
 
 	AddCategory(CategoryIndex::Camera, tr("Camera"), false);
 
-	AddStringProperty(lcObjectPropertyId::CameraName, tr("Name"), tr("Camera name"), false);
-	AddStringListProperty(lcObjectPropertyId::CameraProjection, tr("Projection"), tr("Camera projection"), false, lcCamera::GetCameraProjectionStrings());
+	AddIdentityRow(IdentityIndex::Camera, CreateStringEditor(lcObjectPropertyId::CameraName, tr("Name"), tr("Camera name")));
+	AddIdentityRow(IdentityIndex::Camera, CreateStringListEditor(lcObjectPropertyId::CameraProjection, tr("Projection"), tr("Camera projection"), lcCamera::GetCameraProjectionStrings()));
 
-	AddSpacing();
-
-	AddFloatProperty(lcObjectPropertyId::CameraFOV, tr("FOV"), tr("Field of view in degrees"), false, 0.1f, 179.9f);
-	AddFloatProperty(lcObjectPropertyId::CameraNear, tr("Near"), tr("Near clipping distance"), false, 0.1f, FLT_MAX);
-	AddFloatProperty(lcObjectPropertyId::CameraFar, tr("Far"), tr("Far clipping distance"), false, 0.1f, FLT_MAX);
-
-	AddSpacing();
+	AddValueRow(this, tr("F"), tr("Field of View and Clipping"),
+	{
+		{ CreateFloatEditor(lcObjectPropertyId::CameraFOV, tr("FOV"), tr("Field of view in degrees"), 0.1f, 179.9f, true, tr("°")) },
+		{ CreateFloatEditor(lcObjectPropertyId::CameraNear, tr("Near"), tr("Near clipping distance"), 0.1f, FLT_MAX, true) },
+		{ CreateFloatEditor(lcObjectPropertyId::CameraFar, tr("Far"), tr("Far clipping distance"), 0.1f, FLT_MAX, true) }
+	});
 
 	AddCategory(CategoryIndex::CameraTransform, tr("Transform"), false);
 
-	AddFloatProperty(lcObjectPropertyId::CameraPositionX, tr("Position X"), tr("Camera position"), true, -FLT_MAX, FLT_MAX);
-	AddFloatProperty(lcObjectPropertyId::CameraPositionY, tr("Y"), tr("Camera position"), true, -FLT_MAX, FLT_MAX);
-	AddFloatProperty(lcObjectPropertyId::CameraPositionZ, tr("Z"), tr("Camera position"), true, -FLT_MAX, FLT_MAX);
-
-	AddSpacing();
-
-	AddFloatProperty(lcObjectPropertyId::CameraTargetX, tr("Target X"), tr("Camera target position"), true, -FLT_MAX, FLT_MAX);
-	AddFloatProperty(lcObjectPropertyId::CameraTargetY, tr("Y"), tr("Camera target position"), true, -FLT_MAX, FLT_MAX);
-	AddFloatProperty(lcObjectPropertyId::CameraTargetZ, tr("Z"), tr("Camera target position"), true, -FLT_MAX, FLT_MAX);
-
-	AddSpacing();
-
-	AddFloatProperty(lcObjectPropertyId::CameraUpX, tr("Up X"), tr("Camera up direction"), true, -FLT_MAX, FLT_MAX);
-	AddFloatProperty(lcObjectPropertyId::CameraUpY, tr("Y"), tr("Camera up direction"), true, -FLT_MAX, FLT_MAX);
-	AddFloatProperty(lcObjectPropertyId::CameraUpZ, tr("Z"), tr("Camera up direction"), true, -FLT_MAX, FLT_MAX);
-
-	AddSpacing();
+	AddVectorRow(mTransformRows, { lcObjectPropertyId::CameraPositionX, lcObjectPropertyId::CameraPositionY, lcObjectPropertyId::CameraPositionZ }, tr("P"), tr("Position"), tr("Camera position"), true, -FLT_MAX, FLT_MAX);
+	AddVectorRow(mTransformRows, { lcObjectPropertyId::CameraTargetX, lcObjectPropertyId::CameraTargetY, lcObjectPropertyId::CameraTargetZ }, tr("L"), tr("Look At"), tr("Camera target position"), true, -FLT_MAX, FLT_MAX);
+	AddVectorRow(mTransformRows, { lcObjectPropertyId::CameraUpX, lcObjectPropertyId::CameraUpY, lcObjectPropertyId::CameraUpZ }, tr("U"), tr("Up"), tr("Camera up direction"), true, -FLT_MAX, FLT_MAX);
 
 	AddCategory(CategoryIndex::Light, tr("Light"), false);
 
-	AddStringProperty(lcObjectPropertyId::LightName, tr("Name"), tr("Light name"), false);
-	AddStringListProperty(lcObjectPropertyId::LightType, tr("Type"), tr("Light type"), false, lcLight::GetLightTypeStrings());
+	AddIdentityRow(IdentityIndex::Light, CreateStringEditor(lcObjectPropertyId::LightName, tr("Name"), tr("Light name")));
+	AddIdentityRow(IdentityIndex::Light, CreateStringListEditor(lcObjectPropertyId::LightType, tr("Type"), tr("Light type"), lcLight::GetLightTypeStrings()));
+	AddIdentityRow(IdentityIndex::Light, CreateStringListEditor(lcObjectPropertyId::LightAreaShape, tr("Area Shape"), tr("The shape of the area light"), lcLight::GetAreaShapeStrings()));
+	AddIdentityRow(IdentityIndex::Light, CreateColorEditor(lcObjectPropertyId::LightColor, tr("Color"), tr("Light color")), lcObjectPropertyId::LightColor);
+	AddIdentityRow(IdentityIndex::Light, CreateToggleEditor(lcObjectPropertyId::LightCastShadow, tr("Cast Shadow"), tr("Cast a shadow from this light")));
 
-	AddSpacing();
+	AddValueRow(this, tr("A"), tr("Spotlight Angles"),
+	{
+		{ CreateFloatEditor(lcObjectPropertyId::LightSpotConeAngle, tr("Cone"), tr("Angle in degrees of the spotlight's beam"), 0.0f, 179.9f, true, tr("°")), lcObjectPropertyId::LightSpotConeAngle },
+		{ CreateFloatEditor(lcObjectPropertyId::LightSpotPenumbraAngle, tr("Penumbra"), tr("Angle in degrees over which the intensity of the spotlight falls off to zero"), 0.0f, 179.9f, true, tr("°")), lcObjectPropertyId::LightSpotPenumbraAngle }
+	});
 
-	AddColorProperty(lcObjectPropertyId::LightColor, tr("Color"), tr("Light color"), true);
-	AddBoolProperty(lcObjectPropertyId::LightCastShadow, tr("Cast Shadow"), tr("Cast a shadow from this light"), false);
-
-	AddSpacing();
-
-	AddFloatProperty(lcObjectPropertyId::LightSpotConeAngle, tr("Cone Angle"), tr("Angle in degrees of the spotlight's beam"), true, 0.0f, 179.9f);
-	AddFloatProperty(lcObjectPropertyId::LightSpotPenumbraAngle, tr("Penumbra Angle"), tr("Angle in degrees over which the intensity of the spotlight falls off to zero"), true, 0.0f, 179.9f);
-	AddStringListProperty(lcObjectPropertyId::LightAreaShape, tr("Area Shape"), tr("The shape of the area light"), false, lcLight::GetAreaShapeStrings());
-	AddFloatProperty(lcObjectPropertyId::LightAreaSizeX, tr("Size X"), tr("The width of the area light"), true, 0.0f, FLT_MAX);
-	AddFloatProperty(lcObjectPropertyId::LightAreaSizeY, tr("Y"), tr("The height of the area light"), true, 0.0f, FLT_MAX);
-
-	AddSpacing();
+	AddValueRow(this, tr("S"), tr("Area Size"),
+	{
+		{ CreateFloatEditor(lcObjectPropertyId::LightAreaSizeX, tr("Size X"), tr("The width of the area light"), 0.0f, FLT_MAX, true), lcObjectPropertyId::LightAreaSizeX },
+		{ CreateFloatEditor(lcObjectPropertyId::LightAreaSizeY, tr("Y"), tr("The height of the area light"), 0.0f, FLT_MAX, true), lcObjectPropertyId::LightAreaSizeY }
+	});
 
 	AddCategory(CategoryIndex::LightBlender, tr("Blender Settings"), true);
 
-	AddFloatProperty(lcObjectPropertyId::LightBlenderPower, tr("Power"), tr("Power of the light in watts"), true, 0.0f, FLT_MAX);
-	AddFloatProperty(lcObjectPropertyId::LightBlenderRadius, tr("Radius"), tr("Shadow soft size"), true, 0.0f, FLT_MAX);
-	AddFloatProperty(lcObjectPropertyId::LightBlenderAngle, tr("Angle"), tr("Angular diameter of the light"), true, 0.0f, 180.0f);
-
-	AddSpacing();
+	AddValueRow(this, tr("B"), tr("Blender"),
+	{
+		{ CreateFloatEditor(lcObjectPropertyId::LightBlenderPower, tr("Power"), tr("Power of the light in watts"), 0.0f, FLT_MAX, true, tr(" W")), lcObjectPropertyId::LightBlenderPower },
+		{ CreateFloatEditor(lcObjectPropertyId::LightBlenderRadius, tr("Radius"), tr("Shadow soft size"), 0.0f, FLT_MAX, true), lcObjectPropertyId::LightBlenderRadius },
+		{ CreateFloatEditor(lcObjectPropertyId::LightBlenderAngle, tr("Angle"), tr("Angular diameter of the light"), 0.0f, 180.0f, true, tr("°")), lcObjectPropertyId::LightBlenderAngle }
+	});
 
 	AddCategory(CategoryIndex::LightPOVRay, tr("POV-Ray Settings"), true);
 
-	AddFloatProperty(lcObjectPropertyId::LightPOVRayPower, tr("Power"), tr("Power of the light (multiplicative factor)"), true, 0.0f, FLT_MAX);
-	AddFloatProperty(lcObjectPropertyId::LightPOVRayFadeDistance, tr("Fade Distance"), tr("The distance at which the full light intensity arrives"), true, 0.0f, FLT_MAX);
-	AddFloatProperty(lcObjectPropertyId::LightPOVRayFadePower, tr("Fade Power"), tr("Light falloff rate"), true, 0.0f, FLT_MAX);
-	AddFloatProperty(lcObjectPropertyId::LightPOVRaySpotTightness, tr("Tightness"), tr("Additional exponential spotlight edge softening"), true, 0.0f, FLT_MAX);
-	AddIntegerProperty(lcObjectPropertyId::LightPOVRayAreaGridX, tr("Grid X"), tr("Number of point sources along the X axis (1 to 64)."), true, 1, LC_MAX_AREA_LIGHT_GRID);
-	AddIntegerProperty(lcObjectPropertyId::LightPOVRayAreaGridY, tr("Y"), tr("Number of point sources along the Y axis (1 to 64)."), true, 1, LC_MAX_AREA_LIGHT_GRID);
+	AddValueRow(this, tr("V"), tr("POV-Ray"),
+	{
+		{ CreateFloatEditor(lcObjectPropertyId::LightPOVRayPower, tr("Power"), tr("Power of the light (multiplicative factor)"), 0.0f, FLT_MAX, true), lcObjectPropertyId::LightPOVRayPower },
+		{ CreateFloatEditor(lcObjectPropertyId::LightPOVRaySpotTightness, tr("Tightness"), tr("Additional exponential spotlight edge softening"), 0.0f, FLT_MAX, true), lcObjectPropertyId::LightPOVRaySpotTightness }
+	});
 
-	AddSpacing();
+	AddValueRow(this, tr("F"), tr("Fade"),
+	{
+		{ CreateFloatEditor(lcObjectPropertyId::LightPOVRayFadeDistance, tr("Fade Distance"), tr("The distance at which the full light intensity arrives"), 0.0f, FLT_MAX, true), lcObjectPropertyId::LightPOVRayFadeDistance },
+		{ CreateFloatEditor(lcObjectPropertyId::LightPOVRayFadePower, tr("Fade Power"), tr("Light falloff rate"), 0.0f, FLT_MAX, true), lcObjectPropertyId::LightPOVRayFadePower }
+	});
+
+	AddValueRow(this, tr("G"), tr("Area Grid"),
+	{
+		{ CreateIntegerEditor(lcObjectPropertyId::LightPOVRayAreaGridX, tr("Grid X"), tr("Number of point sources along the X axis (1 to 64)."), 1, LC_MAX_AREA_LIGHT_GRID), lcObjectPropertyId::LightPOVRayAreaGridX },
+		{ CreateIntegerEditor(lcObjectPropertyId::LightPOVRayAreaGridY, tr("Y"), tr("Number of point sources along the Y axis (1 to 64)."), 1, LC_MAX_AREA_LIGHT_GRID), lcObjectPropertyId::LightPOVRayAreaGridY }
+	});
 
 	AddCategory(CategoryIndex::ObjectTransform, tr("Transform"), false);
 
-	AddVectorProperty({ lcObjectPropertyId::ObjectPositionX, lcObjectPropertyId::ObjectPositionY, lcObjectPropertyId::ObjectPositionZ }, tr("Position"), tr("Position of the object"), true, -FLT_MAX, FLT_MAX);
-	AddVectorProperty({ lcObjectPropertyId::ObjectRotationX, lcObjectPropertyId::ObjectRotationY, lcObjectPropertyId::ObjectRotationZ }, tr("Rotation"), tr("Rotation of the object in degrees"), true, -FLT_MAX, FLT_MAX);
+	AddVectorRow(mTransformRows, { lcObjectPropertyId::ObjectPositionX, lcObjectPropertyId::ObjectPositionY, lcObjectPropertyId::ObjectPositionZ }, tr("P"), tr("Position"), tr("Position of the object"), true, -FLT_MAX, FLT_MAX);
+	AddVectorRow(mTransformRows, { lcObjectPropertyId::ObjectRotationX, lcObjectPropertyId::ObjectRotationY, lcObjectPropertyId::ObjectRotationZ }, tr("R"), tr("Rotation"), tr("Rotation of the object in degrees"), true, -FLT_MAX, FLT_MAX);
 
-	AddSpacing();
+	mSettingsLayout->addStretch(1);
+}
 
-	// Editors without a keyframe button reach into its column so every row ends at the same right edge.
-	for (PropertyWidgets& Property : mPropertyWidgets)
-	{
-		if (!Property.Editor || Property.KeyFrame)
-			continue;
+void lcPropertiesWidget::SetCategoryWidgetsVisible(CategoryWidgets& Category, bool Visible)
+{
+	for (lcObjectPropertyId PropertyId : Category.Properties)
+		SetPropertyWidgetsVisible(PropertyId, Visible && mPropertyWidgets[static_cast<int>(PropertyId)].Visible);
+}
 
-		const int Index = mLayout->indexOf(Property.Editor);
+void lcPropertiesWidget::SetPropertyWidgetsVisible(lcObjectPropertyId PropertyId, bool Visible)
+{
+	PropertyWidgets& Property = mPropertyWidgets[static_cast<int>(PropertyId)];
 
-		if (Index < 0)
-			continue;
+	if (Property.Editor)
+		Property.Editor->setVisible(Visible);
 
-		int Row, Column, RowSpan, ColumnSpan;
-		mLayout->getItemPosition(Index, &Row, &Column, &RowSpan, &ColumnSpan);
+	if (Property.KeyFrame)
+		Property.KeyFrame->setVisible(Visible);
 
-		if (Column != 2 || ColumnSpan != 1)
-			continue;
-
-		mLayout->removeWidget(Property.Editor);
-		mLayout->addWidget(Property.Editor, Row, 2, 1, 2);
-	}
-
-	mLayout->setRowStretch(mLayout->rowCount(), 1);
+	UpdateRowVisible(Property.Row);
 }
 
 void lcPropertiesWidget::SetLayoutMode(LayoutMode Mode)
@@ -1524,16 +1476,11 @@ void lcPropertiesWidget::SetLayoutMode(LayoutMode Mode)
 	SetCategoryVisible(CategoryIndex::LightBlender, IsLight);
 	SetCategoryVisible(CategoryIndex::LightPOVRay, IsLight);
 	SetCategoryVisible(CategoryIndex::ObjectTransform, IsPiece || IsLight);
+
+	for (IdentityBlock& Block : mIdentityBlocks)
+		UpdateIdentityBlock(Block);
 }
 
-void lcPropertiesWidget::SetCategoryWidgetsVisible(CategoryWidgets& Category, bool Visible)
-{
-	for (lcObjectPropertyId PropertyId : Category.Properties)
-		SetPropertyWidgetsVisible(PropertyId, Visible && mPropertyWidgets[static_cast<int>(PropertyId)].Visible);
-
-	for (int Row : Category.SpacingRows)
-		mLayout->setRowMinimumHeight(Row, Visible ? 5 : 0);
-}
 
 void lcPropertiesWidget::SetPropertyVisible(lcObjectPropertyId PropertyId, bool Visible)
 {
@@ -1545,25 +1492,6 @@ void lcPropertiesWidget::SetPropertyVisible(lcObjectPropertyId PropertyId, bool 
 	SetPropertyWidgetsVisible(PropertyId, Visible && (!Category.Button || Category.Button->IsExpanded()));
 }
 
-void lcPropertiesWidget::SetPropertyWidgetsVisible(lcObjectPropertyId PropertyId, bool Visible)
-{
-	PropertyWidgets& Property = mPropertyWidgets[static_cast<int>(PropertyId)];
-
-	if (Property.Label)
-		Property.Label->setVisible(Visible);
-
-	if (Property.Editor)
-	{
-		Property.Editor->setVisible(Visible);
-
-		// Editors sharing a row also show or hide the row.
-		if (Property.Editor->parentWidget() != this)
-			Property.Editor->parentWidget()->setVisible(Visible);
-	}
-
-	if (Property.KeyFrame)
-		Property.KeyFrame->setVisible(Visible);
-}
 
 void lcPropertiesWidget::SetCategoryVisible(CategoryIndex Index, bool Visible)
 {
@@ -1821,6 +1749,10 @@ void lcPropertiesWidget::SetLight(const std::vector<lcObject*>& Selection, lcObj
 	const bool IsSquare = (LightAreaShape == lcLightAreaShape::Square || LightAreaShape == lcLightAreaShape::Disk);
 	SetPropertyVisible(lcObjectPropertyId::LightAreaSizeX, IsAreaLight);
 	SetPropertyVisible(lcObjectPropertyId::LightAreaSizeY, IsAreaLight && !IsSquare);
+
+	// Square and disk shapes have a single size.
+	if (lcDoubleSpinBox* SizeXEditor = qobject_cast<lcDoubleSpinBox*>(mPropertyWidgets[static_cast<int>(lcObjectPropertyId::LightAreaSizeX)].Editor))
+		SizeXEditor->setPrefix(IsSquare ? tr("Size ") : tr("Size X "));
 
 	SetPropertyVisible(lcObjectPropertyId::LightPOVRayAreaGridX, IsAreaLight);
 	SetPropertyVisible(lcObjectPropertyId::LightPOVRayAreaGridY, IsAreaLight);
