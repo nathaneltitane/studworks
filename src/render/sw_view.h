@@ -98,7 +98,7 @@ enum class swViewType
 {
 	View,
 	Preview,
-	Minifig,
+	MinifigureBuilder,
 	PartsList,
 	Count
 };

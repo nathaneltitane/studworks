@@ -1,6 +1,6 @@
 #include "sw_global.h"
 #include "sw_main_window.h"
-#include "sw_minifigure_dialog.h"
+#include "sw_minifigure_builder_widget.h"
 #include "sw_double_spin_box.h"
 #include <QPrintDialog>
 #include <QPrintPreviewDialog>
@@ -578,7 +578,7 @@ void swMainWindow::CreateMenus()
 	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_PROPERTIES]);
 	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_TIMELINE]);
 	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_PREVIEW]);
-	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_MINIFIGURE]);
+	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_MINIFIGURE_BUILDER]);
 	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_TERMINAL]);
 	ToolBarsMenu->addSeparator();
 	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_STANDARD]);
@@ -621,7 +621,7 @@ void swMainWindow::CreateMenus()
 	ModelMenu->addAction(mActions[SW_MODEL_PROPERTIES]);
 	ModelMenu->addAction(mActions[SW_MODEL_NEW]);
 	ModelMenu->addAction(mActions[SW_MODEL_LIST]);
-	ModelMenu->addAction(mActions[SW_PIECE_MINIFIGURE_WIZARD]);
+	ModelMenu->addAction(mActions[SW_PIECE_MINIFIGURE_BUILDER]);
 	ModelMenu->addSeparator();
 	for (int ModelIdx = SW_MODEL_FIRST; ModelIdx <= SW_MODEL_LAST; ModelIdx++)
 		ModelMenu->addAction(mActions[ModelIdx]);
@@ -981,35 +981,35 @@ void swMainWindow::CreateToolBars()
 	CreatePreviewWidget();
 	CreateTerminalWidget();
 
-	// the minifigure panel is filled when first shown, once the pieces library is loaded
-	mMinifigToolBar = new QDockWidget(tr("Minifigure"), this);
-	mMinifigToolBar->setObjectName("MinifigToolbar");
-	mMinifigToolBar->setWhatsThis(tr("<p><b>Minifigure</b></p><p>Choose the pieces, colors and pose of a minifigure, then add it to the current model. The panel keeps its settings so you can add several variations.</p>"));
-	swSetupWidgetHelp(mMinifigToolBar, nullptr);
-	addDockWidget(Qt::RightDockWidgetArea, mMinifigToolBar);
-	mMinifigToolBar->hide();
+	// the minifigure builder panel is filled when first shown, once the pieces library is loaded
+	mMinifigureBuilderToolBar = new QDockWidget(tr("Minifigure Builder"), this);
+	mMinifigureBuilderToolBar->setObjectName("MinifigToolbar");
+	mMinifigureBuilderToolBar->setWhatsThis(tr("<p><b>Minifigure Builder</b></p><p>Choose the pieces, colors and pose of a minifigure, then add it to the current model. The panel keeps its settings so you can add several variations.</p>"));
+	swSetupWidgetHelp(mMinifigureBuilderToolBar, nullptr);
+	addDockWidget(Qt::RightDockWidgetArea, mMinifigureBuilderToolBar);
+	mMinifigureBuilderToolBar->hide();
 
-	connect(mMinifigToolBar, &QDockWidget::visibilityChanged, this, [this](bool Visible)
+	connect(mMinifigureBuilderToolBar, &QDockWidget::visibilityChanged, this, [this](bool Visible)
 	{
-		if (Visible && !mMinifigToolBar->widget())
+		if (Visible && !mMinifigureBuilderToolBar->widget())
 		{
 			// The panel is exactly as tall as the editor wherever it is docked.
-			swMinifigureDialog* MinifigDialog = new swMinifigureDialog(mMinifigToolBar);
-			swFitHeightToContents(MinifigDialog);
-			mMinifigToolBar->setWidget(MinifigDialog);
+			swMinifigureBuilderWidget* MinifigureBuilderWidget = new swMinifigureBuilderWidget(mMinifigureBuilderToolBar);
+			swFitHeightToContents(MinifigureBuilderWidget);
+			mMinifigureBuilderToolBar->setWidget(MinifigureBuilderWidget);
 		}
 	});
 
 	tabifyDockWidget(mPartsToolBar, mPropertiesToolBar);
 	tabifyDockWidget(mPropertiesToolBar, mTimelineToolBar);
 	tabifyDockWidget(mTimelineToolBar, mPreviewToolBar);
-	tabifyDockWidget(mPreviewToolBar, mMinifigToolBar);
+	tabifyDockWidget(mPreviewToolBar, mMinifigureBuilderToolBar);
 
 	connect(mPropertiesToolBar, &QDockWidget::topLevelChanged, this, &swMainWindow::EnableWindowFlags);
 	connect(mTimelineToolBar, &QDockWidget::topLevelChanged, this, &swMainWindow::EnableWindowFlags);
 	connect(mPartsToolBar, &QDockWidget::topLevelChanged, this, &swMainWindow::EnableWindowFlags);
 	connect(mColorsToolBar, &QDockWidget::topLevelChanged, this, &swMainWindow::EnableWindowFlags);
-	connect(mMinifigToolBar, &QDockWidget::topLevelChanged, this, &swMainWindow::EnableWindowFlags);
+	connect(mMinifigureBuilderToolBar, &QDockWidget::topLevelChanged, this, &swMainWindow::EnableWindowFlags);
 
 	mPartsToolBar->raise();
 }
@@ -1461,7 +1461,7 @@ QMenu* swMainWindow::createPopupMenu()
 	Menu->addAction(mActions[SW_VIEW_TOOLBAR_PROPERTIES]);
 	Menu->addAction(mActions[SW_VIEW_TOOLBAR_TIMELINE]);
 	Menu->addAction(mActions[SW_VIEW_TOOLBAR_PREVIEW]);
-	Menu->addAction(mActions[SW_VIEW_TOOLBAR_MINIFIGURE]);
+	Menu->addAction(mActions[SW_VIEW_TOOLBAR_MINIFIGURE_BUILDER]);
 	Menu->addAction(mActions[SW_VIEW_TOOLBAR_TERMINAL]);
 	Menu->addSeparator();
 	Menu->addAction(mActions[SW_VIEW_TOOLBAR_STANDARD]);
@@ -1481,7 +1481,7 @@ void swMainWindow::UpdateDockWidgetActions()
 	mActions[SW_VIEW_TOOLBAR_TOOLS]->setChecked(mToolsToolBar->isVisible());
 	mActions[SW_VIEW_TOOLBAR_TIME]->setChecked(mTimeToolBar->isVisible());
 	mActions[SW_VIEW_TOOLBAR_PREVIEW]->setChecked(mPreviewToolBar->isVisible());
-	mActions[SW_VIEW_TOOLBAR_MINIFIGURE]->setChecked(mMinifigToolBar->isVisible());
+	mActions[SW_VIEW_TOOLBAR_MINIFIGURE_BUILDER]->setChecked(mMinifigureBuilderToolBar->isVisible());
 	mActions[SW_VIEW_TOOLBAR_TERMINAL]->setChecked(mTerminalToolBar && mTerminalToolBar->isVisible());
 }
 
@@ -2113,8 +2113,8 @@ void swMainWindow::AddRenderTargetActions(QMenu* Menu, swRenderTarget Target)
 		Commands = { SW_VIEW_TOGGLE_PREVIEW_SYNCHRONIZED_RENDERING, SW_VIEW_PREVIEW_SHADING_WIREFRAME, SW_VIEW_PREVIEW_SHADING_FLAT, SW_VIEW_PREVIEW_SHADING_DEFAULT_LIGHTS, SW_VIEW_TOGGLE_PREVIEW_EDGE_LINES, SW_VIEW_TOGGLE_PREVIEW_CONDITIONAL_LINES };
 		break;
 
-	case swRenderTarget::Minifig:
-		Commands = { SW_VIEW_TOGGLE_MINIFIGURE_SYNCHRONIZED_RENDERING, SW_VIEW_MINIFIGURE_SHADING_WIREFRAME, SW_VIEW_MINIFIGURE_SHADING_FLAT, SW_VIEW_MINIFIGURE_SHADING_DEFAULT_LIGHTS, SW_VIEW_TOGGLE_MINIFIGURE_EDGE_LINES, SW_VIEW_TOGGLE_MINIFIGURE_CONDITIONAL_LINES };
+	case swRenderTarget::MinifigureBuilder:
+		Commands = { SW_VIEW_TOGGLE_MINIFIGURE_BUILDER_SYNCHRONIZED_RENDERING, SW_VIEW_MINIFIGURE_BUILDER_SHADING_WIREFRAME, SW_VIEW_MINIFIGURE_BUILDER_SHADING_FLAT, SW_VIEW_MINIFIGURE_BUILDER_SHADING_DEFAULT_LIGHTS, SW_VIEW_TOGGLE_MINIFIGURE_BUILDER_EDGE_LINES, SW_VIEW_TOGGLE_MINIFIGURE_BUILDER_CONDITIONAL_LINES };
 		break;
 
 	case swRenderTarget::Pieces:
@@ -3841,8 +3841,8 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 			ToggleDockWidget(mTerminalToolBar);
 		break;
 
-	case SW_VIEW_TOOLBAR_MINIFIGURE:
-		ToggleDockWidget(mMinifigToolBar);
+	case SW_VIEW_TOOLBAR_MINIFIGURE_BUILDER:
+		ToggleDockWidget(mMinifigureBuilderToolBar);
 		break;
 
 	case SW_VIEW_FULL_SCREEN:
@@ -4092,28 +4092,28 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 		ToggleSyncRendering(swRenderTarget::Pieces);
 		break;
 
-	case SW_VIEW_TOGGLE_MINIFIGURE_SYNCHRONIZED_RENDERING:
-		ToggleSyncRendering(swRenderTarget::Minifig);
+	case SW_VIEW_TOGGLE_MINIFIGURE_BUILDER_SYNCHRONIZED_RENDERING:
+		ToggleSyncRendering(swRenderTarget::MinifigureBuilder);
 		break;
 
-	case SW_VIEW_MINIFIGURE_SHADING_WIREFRAME:
-		SetTargetShadingMode(swRenderTarget::Minifig, swShadingMode::Wireframe);
+	case SW_VIEW_MINIFIGURE_BUILDER_SHADING_WIREFRAME:
+		SetTargetShadingMode(swRenderTarget::MinifigureBuilder, swShadingMode::Wireframe);
 		break;
 
-	case SW_VIEW_MINIFIGURE_SHADING_FLAT:
-		SetTargetShadingMode(swRenderTarget::Minifig, swShadingMode::Flat);
+	case SW_VIEW_MINIFIGURE_BUILDER_SHADING_FLAT:
+		SetTargetShadingMode(swRenderTarget::MinifigureBuilder, swShadingMode::Flat);
 		break;
 
-	case SW_VIEW_MINIFIGURE_SHADING_DEFAULT_LIGHTS:
-		SetTargetShadingMode(swRenderTarget::Minifig, swShadingMode::DefaultLights);
+	case SW_VIEW_MINIFIGURE_BUILDER_SHADING_DEFAULT_LIGHTS:
+		SetTargetShadingMode(swRenderTarget::MinifigureBuilder, swShadingMode::DefaultLights);
 		break;
 
-	case SW_VIEW_TOGGLE_MINIFIGURE_EDGE_LINES:
-		ToggleEdgeLines(swRenderTarget::Minifig);
+	case SW_VIEW_TOGGLE_MINIFIGURE_BUILDER_EDGE_LINES:
+		ToggleEdgeLines(swRenderTarget::MinifigureBuilder);
 		break;
 
-	case SW_VIEW_TOGGLE_MINIFIGURE_CONDITIONAL_LINES:
-		ToggleConditionalLines(swRenderTarget::Minifig);
+	case SW_VIEW_TOGGLE_MINIFIGURE_BUILDER_CONDITIONAL_LINES:
+		ToggleConditionalLines(swRenderTarget::MinifigureBuilder);
 		break;
 
 	case SW_VIEW_PIECES_TOGGLE_SNAP_TO_TILES:
@@ -4278,9 +4278,9 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 			ActiveModel->RotateSelectedObjects(ActiveView->GetMoveDirection(swVector3(0.0f, 0.0f, -swMaximum(GetAngleSnap(), 1.0f))), swModelTransformFlag::Relative | swModelTransformFlag::Checkpoint, swModelHistoryEditMerge::KeyboardRotate);
 		break;
 
-	case SW_PIECE_MINIFIGURE_WIZARD:
-		mMinifigToolBar->show();
-		mMinifigToolBar->raise();
+	case SW_PIECE_MINIFIGURE_BUILDER:
+		mMinifigureBuilderToolBar->show();
+		mMinifigureBuilderToolBar->raise();
 		break;
 
 	case SW_PIECE_ARRAY:

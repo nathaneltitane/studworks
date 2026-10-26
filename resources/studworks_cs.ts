@@ -3012,9 +3012,9 @@
     </message>
 </context>
 <context>
-    <name>swMinifigureWizard</name>
+    <name>swMinifigureBuilder</name>
     <message>
-        <location filename="../src/core/sw_minifigure.cpp" line="65"/>
+        <location filename="../src/core/sw_minifigure_builder.cpp" line="65"/>
         <source>Default</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">Výchozí</translation>
@@ -10254,343 +10254,343 @@ Informace o tom, jak stáhnout a nainstalovat knihovnu, naleznete na adrese http
     </message>
 </context>
 <context>
-    <name>swMinifigureDialog</name>
+    <name>swMinifigureBuilderWidget</name>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="6"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="6"/>
         <source>&lt;p&gt;&lt;b&gt;Minifig Wizard&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Build a minifigure by choosing its pieces, colors, and pose. The preview updates as you make changes. Choose OK to insert the minifigure into the current model, or Cancel to close without inserting it.&lt;/p&gt;&lt;p&gt;Templates let you reuse a configuration. Saved, deleted, and imported templates are retained even if you cancel the wizard.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Průvodce minifigem&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Postavte si minifigurku výběrem jejích dílků, barev a pózy. Náhled se aktualizuje při provádění změn. Zvolte OK pro vložení minifigurky do aktuálního modelu nebo Zrušit pro zavření bez vložení.&lt;/p&gt;&lt;p&gt;Šablony vám umožňují znovu použít konfiguraci. Uložené, odstraněné a importované šablony zůstanou zachovány, i když zrušíte průvodce.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="17"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="17"/>
         <source>Minifig Wizard</source>
         <translation type="unfinished">Průvodce Minifig</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="23"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="23"/>
         <source>&lt;p&gt;&lt;b&gt;Minifigure Pieces&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Each section has a piece selector and a color button. Some sections also have a rotation control in degrees. Choose None in a piece selector to omit that piece.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Dílky minifigurek&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Každá sekce má výběr figur a tlačítko barvy. Některé sekce mají také ovládání rotace ve stupních. Chcete-li daný díl vynechat, zvolte Žádný ve výběru dílu.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="31"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="31"/>
         <source>&lt;p&gt;&lt;b&gt;Templates&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Load a saved configuration of pieces, colors, and angles, or save the current configuration under a name. Choosing another template replaces the current preview configuration.&lt;/p&gt;&lt;p&gt;Changes to the preview are not saved as a template until you use Save. Template operations are retained when the wizard closes, including after Cancel.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Šablony&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Načtěte uloženou konfiguraci dílů, barev a úhlů nebo uložte aktuální konfiguraci pod názvem. Výběr jiné šablony nahradí aktuální konfiguraci náhledu.&lt;/p&gt;&lt;p&gt;Změny náhledu se neuloží jako šablona, ​​dokud nepoužijete možnost Uložit. Operace se šablonami jsou zachovány, když se průvodce zavře, včetně po zrušení.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="40"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="40"/>
         <source>Templates</source>
         <translation type="unfinished">Šablony</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="46"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="46"/>
         <source>Load a saved configuration of pieces, colors, and angles.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Načtěte uloženou konfiguraci dílů, barev a úhlů.</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="49"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="49"/>
         <source>Minifigure Template</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Šablona minifigurky</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="62"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="62"/>
         <source>Save the current minifigure configuration as a named template.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Uložte aktuální konfiguraci minifigurky jako pojmenovanou šablonu.</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="65"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="65"/>
         <source>&lt;p&gt;&lt;b&gt;Save Template&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Enter a name for the current pieces, colors, and pose. Reusing an existing name asks before replacing that template. The Default template cannot be overwritten.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Uložit šablonu&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Zadejte název pro aktuální kousky, barvy a pózu. Opětovné použití existujícího názvu se před nahrazením šablony zeptá. Výchozí šablonu nelze přepsat.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="68"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="68"/>
         <source>Save...</source>
         <translation type="unfinished">Uložit...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="75"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="75"/>
         <source>Delete the selected saved template.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Odstraňte vybranou uloženou šablonu.</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="78"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="78"/>
         <source>&lt;p&gt;&lt;b&gt;Delete Template&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Remove the selected named template after confirmation. This does not remove pieces from the preview or an existing model. The Default template cannot be deleted.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Odstranit šablonu&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Po potvrzení odeberte vybranou pojmenovanou šablonu. Toto neodstraní díly z náhledu nebo existujícího modelu. Výchozí šablonu nelze smazat.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="81"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="81"/>
         <source>Delete...</source>
         <translation type="unfinished">Odstranit...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="88"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="88"/>
         <source>Add templates from a .minifig file.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Přidejte šablony ze souboru .minifig.</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="91"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="91"/>
         <source>&lt;p&gt;&lt;b&gt;Import Templates&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Add saved configurations from a .minifig file to the template collection. Existing template names are kept when the imported file contains the same names.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Import šablon&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Přidejte uložené konfigurace ze souboru .minifig do kolekce šablon. Stávající názvy šablon jsou zachovány, pokud importovaný soubor obsahuje stejné názvy.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="94"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="94"/>
         <source>Import...</source>
         <translation type="unfinished">Importovat...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="101"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="101"/>
         <source>Save the entire template collection to a .minifig file.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Uložte celou kolekci šablon do souboru .minifig.</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="104"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="104"/>
         <source>&lt;p&gt;&lt;b&gt;Export Templates&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Write all templates to a .minifig file for backup or sharing. Export includes the entire collection, not just the selected template.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Export šablon&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Zapište všechny šablony do souboru .minifig pro zálohování nebo sdílení. Export zahrnuje celou kolekci, nejen vybranou šablonu.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="107"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="107"/>
         <source>Export...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Vývozní...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="30"/>
         <source>Hat</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Čepice</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="30"/>
         <source>Hat Accessory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Kloboukový doplněk</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="30"/>
         <source>Head</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Hlava</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="30"/>
         <source>Neck</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Krk</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="30"/>
         <source>Torso</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Trup</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="30"/>
         <source>Hip</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Hip</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="30"/>
         <source>Hip Accessory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Příslušenství pro kyčle</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="30"/>
         <source>Left Arm</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Levá paže</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="30"/>
         <source>Right Arm</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Pravá paže</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="30"/>
         <source>Left Hand</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Levá ruka</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="30"/>
         <source>Right Hand</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Pravá ruka</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="31"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="31"/>
         <source>Left Hand Accessory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Příslušenství pro levou ruku</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="31"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="31"/>
         <source>Right Hand Accessory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Příslušenství pro pravou ruku</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="31"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="31"/>
         <source>Left Leg</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Levá noha</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="31"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="31"/>
         <source>Right Leg</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Pravá noha</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="31"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="31"/>
         <source>Left Leg Accessory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Příslušenství pro levou nohu</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="31"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="31"/>
         <source>Right Leg Accessory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Příslušenství k pravé noze</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="51"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="51"/>
         <source>%1 piece</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 díl</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="52"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="52"/>
         <source>Choose the piece for %1, or None to omit it.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Vyberte díl pro %1, nebo zvolte Žádný, chcete-li jej vynechat.</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="53"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="53"/>
         <source>&lt;p&gt;&lt;b&gt;Choose Piece&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a piece for this section of the minifigure. Select None to omit it. The preview updates when you select a different piece.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Vyberte dílek&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Vyberte dílek pro tuto část minifigurky. Chcete-li jej vynechat, vyberte možnost Žádný. Náhled se aktualizuje, když vyberete jiný díl.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="60"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="60"/>
         <source>%1 color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 barva</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="61"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="61"/>
         <source>Choose the color for %1.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Vyberte barvu pro %1.</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="62"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="62"/>
         <source>&lt;p&gt;&lt;b&gt;Choose Color&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Change the color of this minifigure piece. The preview updates immediately, and saving a template includes the chosen color.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Vyberte barvu&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Změňte barvu tohoto dílku minifigurky. Náhled se okamžitě aktualizuje a uložení šablony obsahuje vybranou barvu.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="75"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="75"/>
         <source>%1 rotation</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 otočení</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="76"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="76"/>
         <source>Rotate %1, in degrees (-360 to 360).</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Otočit %1 ve stupních (-360 až 360).</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="77"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="77"/>
         <source>&lt;p&gt;&lt;b&gt;Rotation&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Adjust this piece&apos;s angle to pose the minifigure. Values range from -360 to 360 degrees. The available rotation depends on the selected minifigure section.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Otáčení&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Upravte úhel tohoto dílku, abyste postavili minifigurku. Hodnoty se pohybují od -360 do 360 stupňů. Dostupná rotace závisí na vybrané sekci minifigurky.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="127"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="127"/>
         <source>Minifigure Preview</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Náhled minifigurky</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="128"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="128"/>
         <source>Preview of the chosen pieces, colors, and pose.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Náhled vybraných dílů, barev a pózy.</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="129"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="129"/>
         <source>&lt;p&gt;&lt;b&gt;Minifigure Preview&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Check the assembled minifigure as you change pieces, colors, or angles. Choose OK to add this configuration to the current model.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Náhled minifigurky&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Kontrolujte sestavenou minifigurku, jak měníte dílky, barvy nebo úhly. Zvolte OK pro přidání této konfigurace do aktuálního modelu.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="271"/>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="278"/>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="284"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="271"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="278"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="284"/>
         <source>Save Template</source>
         <translation type="unfinished">Uložit šablonu</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="271"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="271"/>
         <source>Template Name:</source>
         <translation type="unfinished">Název šablony:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="278"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="278"/>
         <source>Template name cannot be empty.</source>
         <translation type="unfinished">Název šablony nesmí být prázdný.</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="284"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="284"/>
         <source>Cannot overwrite the default template.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Výchozí šablonu nelze přepsat.</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="290"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="290"/>
         <source>Are you sure you want to overwrite the template &apos;%1&apos;?</source>
         <translation type="unfinished">Opravdu chcete přepsat tuto šablonu &apos;%1&apos;?</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="291"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="291"/>
         <source>Overwrite Template</source>
         <translation type="unfinished">Přepsat šablonu</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="319"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="319"/>
         <source>Are you sure you want to delete the template &apos;%1&apos;?</source>
         <translation type="unfinished">Opravdu chcete odstranit tuto šablonu &apos;%1&apos;?</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="321"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="321"/>
         <source>Delete Template</source>
         <translation type="unfinished">Odstranit šablonu</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="334"/>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="343"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="334"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="343"/>
         <source>Import Templates</source>
         <translation type="unfinished">Importovat šablony</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="334"/>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="355"/>
-        <source>Minifig Template Files (*.minifig);;All Files (*.*)</source>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="334"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="355"/>
+        <source>Minifigure Template Files (*.minifig);;All Files (*.*)</source>
         <translation type="unfinished">Šablona Minifig souborů (*.minifig);;všechny soubory (*.*)</translation>
     </message>
     <message>
@@ -10598,30 +10598,30 @@ Informace o tom, jak stáhnout a nainstalovat knihovnu, naleznete na adrese http
         <translation type="obsolete">Chyba</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="343"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="343"/>
         <source>Error reading file &apos;%1&apos;:
 %2</source>
         <translation type="unfinished">Chyba při čtení souboru &apos;%1&apos;:
 %2</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="355"/>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="364"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="355"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="364"/>
         <source>Export Templates</source>
         <translation type="unfinished">Exportovat šablony</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="364"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="364"/>
         <source>Error writing to file &apos;%1&apos;:
 %2</source>
         <translation type="unfinished">Chyba zápisu do souboru &apos;%1&apos;:
 %2</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="147"/>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="247"/>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="399"/>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="430"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="147"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="247"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="399"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="430"/>
         <source>None</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">Žádné</translation>
@@ -12556,7 +12556,7 @@ Informace o tom, jak stáhnout a nainstalovat knihovnu, naleznete na adrese http
     <message>
         <location filename="../src/ui/sw_preferences_dialog.ui" line="295"/>
         <location filename="../src/ui/sw_preferences_dialog.ui" line="313"/>
-        <source>Choose a custom minifigure settings file, or leave empty to use the built-in choices.</source>
+        <source>Choose a custom minifigure builder settings file, or leave empty to use the built-in choices.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Vyberte si vlastní soubor s nastavením minifigurky nebo ponechte prázdné, abyste mohli použít vestavěné možnosti.</translation>
     </message>
@@ -12568,7 +12568,7 @@ Informace o tom, jak stáhnout a nainstalovat knihovnu, naleznete na adrese http
     </message>
     <message>
         <location filename="../src/ui/sw_preferences_dialog.ui" line="320"/>
-        <source>Choose a minifigure settings INI file.</source>
+        <source>Choose a minifigure builder settings INI file.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Vyberte soubor INI nastavení minifigurky.</translation>
     </message>
@@ -13893,7 +13893,7 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../src/ui/sw_preferences_dialog.cpp" line="496"/>
-        <source>Select Minifig Settings File</source>
+        <source>Select Minifigure Builder Settings File</source>
         <translation>Vyberte soubor nastavení Minifig</translation>
     </message>
     <message>
@@ -15110,7 +15110,7 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
         <translation type="vanished">Importovat šablony</translation>
     </message>
     <message>
-        <source>Minifig Template Files (*.minifig);;All Files (*.*)</source>
+        <source>Minifigure Template Files (*.minifig);;All Files (*.*)</source>
         <translation type="vanished">Šablona Minifig souborů (*.minifig);;všechny soubory (*.*)</translation>
     </message>
     <message>

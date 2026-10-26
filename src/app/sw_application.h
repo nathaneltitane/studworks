@@ -54,7 +54,7 @@ enum class swRenderTarget
 	ModelView,
 	Preview,
 	Pieces,
-	Minifig
+	MinifigureBuilder
 };
 
 struct swTargetRenderSettings
@@ -89,12 +89,12 @@ public:
 
 	swTargetRenderSettings& GetTargetRenderSettings(swRenderTarget Target)
 	{
-		return Target == swRenderTarget::Pieces ? mPiecesRendering : Target == swRenderTarget::Minifig ? mMinifigRendering : mPreviewRendering;
+		return Target == swRenderTarget::Pieces ? mPiecesRendering : Target == swRenderTarget::MinifigureBuilder ? mMinifigureBuilderRendering : mPreviewRendering;
 	}
 
 	const swTargetRenderSettings& GetTargetRenderSettings(swRenderTarget Target) const
 	{
-		return Target == swRenderTarget::Pieces ? mPiecesRendering : Target == swRenderTarget::Minifig ? mMinifigRendering : mPreviewRendering;
+		return Target == swRenderTarget::Pieces ? mPiecesRendering : Target == swRenderTarget::MinifigureBuilder ? mMinifigureBuilderRendering : mPreviewRendering;
 	}
 
 	int mMouseSensitivity;
@@ -120,7 +120,7 @@ public:
 	bool mAllowLOD;
 	swTargetRenderSettings mPreviewRendering;
 	swTargetRenderSettings mPiecesRendering;
-	swTargetRenderSettings mMinifigRendering;
+	swTargetRenderSettings mMinifigureBuilderRendering;
 	float mMeshLODDistance;
 	bool mFadeSteps;
 	quint32 mFadeStepsColor;

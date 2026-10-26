@@ -47,16 +47,16 @@ struct swMinifigureTemplate
 	float Angles[SW_MINIFIGURE_ITEM_COUNT];
 };
 
-class swMinifigureWizard
+class swMinifigureBuilder
 {
 public:
-	swMinifigureWizard();
-	~swMinifigureWizard();
+	swMinifigureBuilder();
+	~swMinifigureBuilder();
 
-	swMinifigureWizard(const swMinifigureWizard&) = delete;
-	swMinifigureWizard(swMinifigureWizard&&) = delete;
-	swMinifigureWizard& operator=(const swMinifigureWizard&) = delete;
-	swMinifigureWizard& operator=(swMinifigureWizard&&) = delete;
+	swMinifigureBuilder(const swMinifigureBuilder&) = delete;
+	swMinifigureBuilder(swMinifigureBuilder&&) = delete;
+	swMinifigureBuilder& operator=(const swMinifigureBuilder&) = delete;
+	swMinifigureBuilder& operator=(swMinifigureBuilder&&) = delete;
 
 	swModel* GetModel() const
 	{
@@ -84,7 +84,7 @@ public:
 
 	std::vector<swMinifigurePieceInformation> mSettings[SW_MINIFIGURE_ITEM_COUNT];
 
-	swMinifigure mMinifig;
+	swMinifigure mMinifigure;
 
 protected:
 	void LoadSettings();

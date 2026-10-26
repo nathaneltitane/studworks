@@ -3364,9 +3364,9 @@
     </message>
 </context>
 <context>
-    <name>swMinifigureWizard</name>
+    <name>swMinifigureBuilder</name>
     <message>
-        <location filename="../src/core/sw_minifigure.cpp" line="65"/>
+        <location filename="../src/core/sw_minifigure_builder.cpp" line="65"/>
         <source>Default</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">За замовчуванням</translation>
@@ -10752,343 +10752,343 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
 </context>
 <context>
-    <name>swMinifigureDialog</name>
+    <name>swMinifigureBuilderWidget</name>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="6"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="6"/>
         <source>&lt;p&gt;&lt;b&gt;Minifig Wizard&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Build a minifigure by choosing its pieces, colors, and pose. The preview updates as you make changes. Choose OK to insert the minifigure into the current model, or Cancel to close without inserting it.&lt;/p&gt;&lt;p&gt;Templates let you reuse a configuration. Saved, deleted, and imported templates are retained even if you cancel the wizard.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Майстер мініфігурок&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Створіть мініфігурку, вибравши її частини, кольори та позу. Попередній перегляд оновлюється, коли ви вносите зміни. Виберіть «ОК», щоб вставити мініфігурку в поточну модель, або «Скасувати», щоб закрити, не вставляючи її.&lt;/p&gt;&lt;p&gt;Шаблони дозволяють повторно використовувати конфігурацію. Збережені, видалені та імпортовані шаблони зберігаються, навіть якщо ви скасуєте майстер.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="17"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="17"/>
         <source>Minifig Wizard</source>
         <translation type="unfinished">Майстерня Мініфігур</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="23"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="23"/>
         <source>&lt;p&gt;&lt;b&gt;Minifigure Pieces&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Each section has a piece selector and a color button. Some sections also have a rotation control in degrees. Choose None in a piece selector to omit that piece.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Деталі мініфігурок&lt;/b&gt;&lt;/p&gt;&lt;p&gt;У кожному розділі є перемикач елементів і кнопка кольору. Деякі розділи також мають контроль обертання в градусах. Щоб пропустити цю частину, виберіть «Немає» у селекторі частин.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="31"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="31"/>
         <source>&lt;p&gt;&lt;b&gt;Templates&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Load a saved configuration of pieces, colors, and angles, or save the current configuration under a name. Choosing another template replaces the current preview configuration.&lt;/p&gt;&lt;p&gt;Changes to the preview are not saved as a template until you use Save. Template operations are retained when the wizard closes, including after Cancel.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Шаблони&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Завантажте збережену конфігурацію частин, кольорів і кутів або збережіть поточну конфігурацію під іменем. Вибір іншого шаблону замінює поточну конфігурацію попереднього перегляду.&lt;/p&gt;&lt;p&gt;Зміни попереднього перегляду не зберігаються як шаблон, доки ви не скористаєтеся кнопкою «Зберегти». Операції з шаблоном зберігаються після закриття майстра, зокрема після скасування.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="40"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="40"/>
         <source>Templates</source>
         <translation type="unfinished">Шаблони</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="46"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="46"/>
         <source>Load a saved configuration of pieces, colors, and angles.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Завантажте збережену конфігурацію частин, кольорів і кутів.</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="49"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="49"/>
         <source>Minifigure Template</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Шаблон мініфігурки</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="62"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="62"/>
         <source>Save the current minifigure configuration as a named template.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Збережіть поточну конфігурацію мініфігурки як іменований шаблон.</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="65"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="65"/>
         <source>&lt;p&gt;&lt;b&gt;Save Template&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Enter a name for the current pieces, colors, and pose. Reusing an existing name asks before replacing that template. The Default template cannot be overwritten.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Зберегти шаблон&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Введіть назву для поточних фігур, кольорів і пози. Повторне використання існуючої назви запитує перед заміною цього шаблону. Шаблон за замовчуванням не можна перезаписати.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="68"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="68"/>
         <source>Save...</source>
         <translation type="unfinished">Зберегти...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="75"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="75"/>
         <source>Delete the selected saved template.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Видалити вибраний збережений шаблон.</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="78"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="78"/>
         <source>&lt;p&gt;&lt;b&gt;Delete Template&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Remove the selected named template after confirmation. This does not remove pieces from the preview or an existing model. The Default template cannot be deleted.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Видалити шаблон&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Видалити вибраний іменований шаблон після підтвердження. Це не видаляє частини з попереднього перегляду або наявної моделі. Шаблон за замовчуванням не можна видалити.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="81"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="81"/>
         <source>Delete...</source>
         <translation type="unfinished">Видалити...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="88"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="88"/>
         <source>Add templates from a .minifig file.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Додайте шаблони з файлу .minifig.</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="91"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="91"/>
         <source>&lt;p&gt;&lt;b&gt;Import Templates&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Add saved configurations from a .minifig file to the template collection. Existing template names are kept when the imported file contains the same names.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Імпортувати шаблони&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Додайте збережені конфігурації з файлу .minifig до колекції шаблонів. Існуючі імена шаблонів зберігаються, якщо імпортований файл містить ті самі імена.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="94"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="94"/>
         <source>Import...</source>
         <translation type="unfinished">Імпортувати...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="101"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="101"/>
         <source>Save the entire template collection to a .minifig file.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Збережіть всю колекцію шаблонів у файлі .minifig.</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="104"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="104"/>
         <source>&lt;p&gt;&lt;b&gt;Export Templates&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Write all templates to a .minifig file for backup or sharing. Export includes the entire collection, not just the selected template.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Експорт шаблонів&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Запишіть усі шаблони у файл .minifig для резервного копіювання або спільного використання. Експорт включає всю колекцію, а не лише вибраний шаблон.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="107"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="107"/>
         <source>Export...</source>
         <translation type="unfinished">Експортувати...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="30"/>
         <source>Hat</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Капелюх</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="30"/>
         <source>Hat Accessory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Капелюх аксесуар</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="30"/>
         <source>Head</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Голова</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="30"/>
         <source>Neck</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Шия</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="30"/>
         <source>Torso</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">тулуб</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="30"/>
         <source>Hip</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Стегно</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="30"/>
         <source>Hip Accessory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Стегна аксесуар</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="30"/>
         <source>Left Arm</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ліва рука</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="30"/>
         <source>Right Arm</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Права рука</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="30"/>
         <source>Left Hand</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ліва рука</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="30"/>
         <source>Right Hand</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Права рука</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="31"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="31"/>
         <source>Left Hand Accessory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Аксесуар для лівої руки</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="31"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="31"/>
         <source>Right Hand Accessory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Аксесуар для правої руки</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="31"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="31"/>
         <source>Left Leg</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ліва нога</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="31"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="31"/>
         <source>Right Leg</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Права нога</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="31"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="31"/>
         <source>Left Leg Accessory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Аксесуар для лівої ноги</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="31"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="31"/>
         <source>Right Leg Accessory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Аксесуар для правої ноги</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="51"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="51"/>
         <source>%1 piece</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 шт</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="52"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="52"/>
         <source>Choose the piece for %1, or None to omit it.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Виберіть деталь для %1 або «Немає», щоб пропустити її.</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="53"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="53"/>
         <source>&lt;p&gt;&lt;b&gt;Choose Piece&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a piece for this section of the minifigure. Select None to omit it. The preview updates when you select a different piece.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Виберіть деталь&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Виберіть деталь для цієї частини мініфігурки. Виберіть «Немає», щоб пропустити його. Попередній перегляд оновлюється, коли ви вибираєте іншу частину.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="60"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="60"/>
         <source>%1 color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 колір</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="61"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="61"/>
         <source>Choose the color for %1.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Виберіть колір для %1.</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="62"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="62"/>
         <source>&lt;p&gt;&lt;b&gt;Choose Color&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Change the color of this minifigure piece. The preview updates immediately, and saving a template includes the chosen color.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Виберіть колір&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Змініть колір цієї мініфігурки. Попередній перегляд оновлюється негайно, а збереження шаблону включає вибраний колір.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="75"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="75"/>
         <source>%1 rotation</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 обертання</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="76"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="76"/>
         <source>Rotate %1, in degrees (-360 to 360).</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Повернути %1 у градусах (від -360 до 360).</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="77"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="77"/>
         <source>&lt;p&gt;&lt;b&gt;Rotation&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Adjust this piece&apos;s angle to pose the minifigure. Values range from -360 to 360 degrees. The available rotation depends on the selected minifigure section.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Обертання&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Відрегулюйте кут цього елемента, щоб позувати мініфігурку. Діапазон значень від -360 до 360 градусів. Доступне обертання залежить від вибраного розділу мініфігурки.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="127"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="127"/>
         <source>Minifigure Preview</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Попередній перегляд мініфігурки</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="128"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="128"/>
         <source>Preview of the chosen pieces, colors, and pose.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Попередній перегляд вибраних фігур, кольорів і пози.</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="129"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="129"/>
         <source>&lt;p&gt;&lt;b&gt;Minifigure Preview&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Check the assembled minifigure as you change pieces, colors, or angles. Choose OK to add this configuration to the current model.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Попередній перегляд мініфігурки&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Перевіряйте зібрану мініфігурку, змінюючи деталі, кольори чи кути. Виберіть OK, щоб додати цю конфігурацію до поточної моделі.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="271"/>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="278"/>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="284"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="271"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="278"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="284"/>
         <source>Save Template</source>
         <translation type="unfinished">Зберегти шаблон</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="271"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="271"/>
         <source>Template Name:</source>
         <translation type="unfinished">Назва шаблона:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="278"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="278"/>
         <source>Template name cannot be empty.</source>
         <translation type="unfinished">Шаблон не може бути порожнім.</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="284"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="284"/>
         <source>Cannot overwrite the default template.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Неможливо перезаписати шаблон за замовчуванням.</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="290"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="290"/>
         <source>Are you sure you want to overwrite the template &apos;%1&apos;?</source>
         <translation type="unfinished">Ви впевнені що хочете перезаписати шаблон &apos;%1&apos;?</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="291"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="291"/>
         <source>Overwrite Template</source>
         <translation type="unfinished">Перезаписати шаблон</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="319"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="319"/>
         <source>Are you sure you want to delete the template &apos;%1&apos;?</source>
         <translation type="unfinished">Ви впевнені що хочете видалити шаблон &apos;%1&apos;?</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="321"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="321"/>
         <source>Delete Template</source>
         <translation type="unfinished">Видалити шаблон</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="334"/>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="343"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="334"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="343"/>
         <source>Import Templates</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Імпорт шаблонів</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="334"/>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="355"/>
-        <source>Minifig Template Files (*.minifig);;All Files (*.*)</source>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="334"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="355"/>
+        <source>Minifigure Template Files (*.minifig);;All Files (*.*)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Файли шаблонів Minifig (*.minifig);;Усі файли (*.*)</translation>
     </message>
@@ -11097,31 +11097,31 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="obsolete">Помилка</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="343"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="343"/>
         <source>Error reading file &apos;%1&apos;:
 %2</source>
         <translation type="unfinished">Помилка читання файла &apos;%1&apos;:
 %2</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="355"/>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="364"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="355"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="364"/>
         <source>Export Templates</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Експортувати шаблони</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="364"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="364"/>
         <source>Error writing to file &apos;%1&apos;:
 %2</source>
         <translation type="unfinished">Помилка запису у файл &apos;%1&apos;:
 %2</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="147"/>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="247"/>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="399"/>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="430"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="147"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="247"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="399"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="430"/>
         <source>None</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Жодного</translation>
@@ -12919,7 +12919,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     <message>
         <location filename="../src/ui/sw_preferences_dialog.ui" line="295"/>
         <location filename="../src/ui/sw_preferences_dialog.ui" line="313"/>
-        <source>Choose a custom minifigure settings file, or leave empty to use the built-in choices.</source>
+        <source>Choose a custom minifigure builder settings file, or leave empty to use the built-in choices.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Виберіть власний файл налаштувань мініфігурки або залиште порожнім, щоб скористатися вбудованими параметрами.</translation>
     </message>
@@ -12931,7 +12931,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../src/ui/sw_preferences_dialog.ui" line="320"/>
-        <source>Choose a minifigure settings INI file.</source>
+        <source>Choose a minifigure builder settings INI file.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Виберіть INI-файл налаштувань мініфігурки.</translation>
     </message>
@@ -14270,7 +14270,7 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../src/ui/sw_preferences_dialog.cpp" line="496"/>
-        <source>Select Minifig Settings File</source>
+        <source>Select Minifigure Builder Settings File</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Виберіть файл налаштувань Minifig</translation>
     </message>

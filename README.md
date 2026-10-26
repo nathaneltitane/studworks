@@ -39,7 +39,7 @@ Useful? Star the repository - it helps others find it.
 - Instructions: paper and screen presets, metric or imperial units and margins, orientation-based step order
 - Instructions: cover page, bill of materials, blank page breaks, step dividers, document font and full page background
 - Instructions: steps per page set for each page, pieces list counts, sort order and border
-- Minifigure panel: dock the minifigure editor and add several variations to the model
+- Minifigure Builder panel: build a minifigure, dock the builder and add several variations to the model
 - Piece preview: optional square viewport that sizes the panel to fit
 - Models menu: 'Configure Minifigure...', Preferences and Instructions moved to the Edit menu
 
@@ -56,7 +56,7 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
   - Uniform panel headers, buttons and text boxes, all sized from the options (gear) button
   - Collapsible color groups, square color tiles and a color options menu
   - Properties panel with compact position, rotation and transform rows and a spanning color swatch
-  - Dockable Minifigure panel, optional embedded terminal panel and a square piece preview
+  - Dockable Minifigure Builder panel, optional embedded terminal panel and a square piece preview
   - Panels dock side by side in any area
 
 - **Modeling** ↴

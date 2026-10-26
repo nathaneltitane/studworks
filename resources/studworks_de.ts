@@ -3259,9 +3259,9 @@
     </message>
 </context>
 <context>
-    <name>swMinifigureWizard</name>
+    <name>swMinifigureBuilder</name>
     <message>
-        <location filename="../src/core/sw_minifigure.cpp" line="65"/>
+        <location filename="../src/core/sw_minifigure_builder.cpp" line="65"/>
         <source>Default</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Standard</translation>
@@ -10509,344 +10509,344 @@ Bitte lesen sie unter https://github.com/nathaneltitane/studworks nach wie man e
     </message>
 </context>
 <context>
-    <name>swMinifigureDialog</name>
+    <name>swMinifigureBuilderWidget</name>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="6"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="6"/>
         <source>&lt;p&gt;&lt;b&gt;Minifig Wizard&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Build a minifigure by choosing its pieces, colors, and pose. The preview updates as you make changes. Choose OK to insert the minifigure into the current model, or Cancel to close without inserting it.&lt;/p&gt;&lt;p&gt;Templates let you reuse a configuration. Saved, deleted, and imported templates are retained even if you cancel the wizard.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Minifiguren-Assistent&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Bauen Sie eine Minifigur, indem Sie ihre Teile, Farben und Pose auswählen. Die Vorschau wird aktualisiert, wenn Sie Änderungen vornehmen. Wählen Sie „OK“, um die Minifigur in das aktuelle Modell einzufügen, oder „Abbrechen“, um zu schließen, ohne sie einzufügen.&lt;/p&gt;&lt;p&gt;Mit Vorlagen können Sie eine Konfiguration wiederverwenden. Gespeicherte, gelöschte und importierte Vorlagen bleiben auch dann erhalten, wenn Sie den Assistenten abbrechen.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="17"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="17"/>
         <source>Minifig Wizard</source>
         <translation type="unfinished">Minifig Assistent</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="23"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="23"/>
         <source>&lt;p&gt;&lt;b&gt;Minifigure Pieces&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Each section has a piece selector and a color button. Some sections also have a rotation control in degrees. Choose None in a piece selector to omit that piece.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Minifigurenteile&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Jeder Abschnitt verfügt über eine Teileauswahl und eine Farbtaste. Einige Abschnitte verfügen auch über eine Rotationssteuerung in Grad. Wählen Sie „Keine“ in einer Teileauswahl, um dieses Teil wegzulassen.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="31"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="31"/>
         <source>&lt;p&gt;&lt;b&gt;Templates&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Load a saved configuration of pieces, colors, and angles, or save the current configuration under a name. Choosing another template replaces the current preview configuration.&lt;/p&gt;&lt;p&gt;Changes to the preview are not saved as a template until you use Save. Template operations are retained when the wizard closes, including after Cancel.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Vorlagen&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Laden Sie eine gespeicherte Konfiguration von Teilen, Farben und Winkeln oder speichern Sie die aktuelle Konfiguration unter einem Namen. Durch die Auswahl einer anderen Vorlage wird die aktuelle Vorschaukonfiguration ersetzt.&lt;/p&gt;&lt;p&gt;Änderungen an der Vorschau werden erst dann als Vorlage gespeichert, wenn Sie „Speichern“ verwenden. Vorlagenvorgänge bleiben erhalten, wenn der Assistent geschlossen wird, auch nach Abbrechen.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="40"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="40"/>
         <source>Templates</source>
         <translation type="unfinished">Vorlagen</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="46"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="46"/>
         <source>Load a saved configuration of pieces, colors, and angles.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Laden Sie eine gespeicherte Konfiguration von Teilen, Farben und Winkeln.</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="49"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="49"/>
         <source>Minifigure Template</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Minifiguren-Vorlage</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="62"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="62"/>
         <source>Save the current minifigure configuration as a named template.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Speichern Sie die aktuelle Minifigurenkonfiguration als benannte Vorlage.</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="65"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="65"/>
         <source>&lt;p&gt;&lt;b&gt;Save Template&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Enter a name for the current pieces, colors, and pose. Reusing an existing name asks before replacing that template. The Default template cannot be overwritten.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Vorlage speichern&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Geben Sie einen Namen für die aktuellen Teile, Farben und Posen ein. Wenn Sie einen vorhandenen Namen wiederverwenden, müssen Sie vor dem Ersetzen dieser Vorlage fragen. Die Standardvorlage kann nicht überschrieben werden.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="68"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="68"/>
         <source>Save...</source>
         <translation type="unfinished">Speichern...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="75"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="75"/>
         <source>Delete the selected saved template.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Löschen Sie die ausgewählte gespeicherte Vorlage.</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="78"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="78"/>
         <source>&lt;p&gt;&lt;b&gt;Delete Template&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Remove the selected named template after confirmation. This does not remove pieces from the preview or an existing model. The Default template cannot be deleted.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Vorlage löschen&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Entfernen Sie die ausgewählte benannte Vorlage nach der Bestätigung. Dadurch werden keine Teile aus der Vorschau oder einem vorhandenen Modell entfernt. Die Standardvorlage kann nicht gelöscht werden.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="81"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="81"/>
         <source>Delete...</source>
         <translation type="unfinished">Löschen…</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="88"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="88"/>
         <source>Add templates from a .minifig file.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Fügen Sie Vorlagen aus einer .minifig-Datei hinzu.</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="91"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="91"/>
         <source>&lt;p&gt;&lt;b&gt;Import Templates&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Add saved configurations from a .minifig file to the template collection. Existing template names are kept when the imported file contains the same names.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Vorlagen importieren&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Gespeicherte Konfigurationen aus einer .minifig-Datei zur Vorlagensammlung hinzufügen. Vorhandene Vorlagennamen bleiben erhalten, wenn die importierte Datei dieselben Namen enthält.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="94"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="94"/>
         <source>Import...</source>
         <translation type="unfinished">Importieren…</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="101"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="101"/>
         <source>Save the entire template collection to a .minifig file.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Speichern Sie die gesamte Vorlagensammlung in einer .minifig-Datei.</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="104"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="104"/>
         <source>&lt;p&gt;&lt;b&gt;Export Templates&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Write all templates to a .minifig file for backup or sharing. Export includes the entire collection, not just the selected template.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Vorlagen exportieren&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Schreiben Sie alle Vorlagen zur Sicherung oder Freigabe in eine .minifig-Datei. Der Export umfasst die gesamte Sammlung, nicht nur die ausgewählte Vorlage.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.ui" line="107"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.ui" line="107"/>
         <source>Export...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Export...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="30"/>
         <source>Hat</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Hut</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="30"/>
         <source>Hat Accessory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Hut-Accessoire</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="30"/>
         <source>Head</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Kopf</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="30"/>
         <source>Neck</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Nacken</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="30"/>
         <source>Torso</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Torso</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="30"/>
         <source>Hip</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Hüfte</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="30"/>
         <source>Hip Accessory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Hüftaccessoire</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="30"/>
         <source>Left Arm</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Linker Arm</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="30"/>
         <source>Right Arm</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Rechter Arm</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="30"/>
         <source>Left Hand</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Linke Hand</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="30"/>
         <source>Right Hand</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Rechte Hand</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="31"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="31"/>
         <source>Left Hand Accessory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Zubehör für die linke Hand</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="31"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="31"/>
         <source>Right Hand Accessory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Zubehör für die rechte Hand</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="31"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="31"/>
         <source>Left Leg</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Linkes Bein</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="31"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="31"/>
         <source>Right Leg</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Rechtes Bein</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="31"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="31"/>
         <source>Left Leg Accessory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Zubehör für das linke Bein</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="31"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="31"/>
         <source>Right Leg Accessory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Zubehör für das rechte Bein</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="51"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="51"/>
         <source>%1 piece</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 Teil</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="52"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="52"/>
         <source>Choose the piece for %1, or None to omit it.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Wählen Sie das Teil für %1 oder „Keine“, um es wegzulassen.</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="53"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="53"/>
         <source>&lt;p&gt;&lt;b&gt;Choose Piece&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a piece for this section of the minifigure. Select None to omit it. The preview updates when you select a different piece.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Teil auswählen&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Wählen Sie ein Teil für diesen Abschnitt der Minifigur. Wählen Sie „Keine“, um es wegzulassen. Die Vorschau wird aktualisiert, wenn Sie ein anderes Teil auswählen.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="60"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="60"/>
         <source>%1 color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 Farbe</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="61"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="61"/>
         <source>Choose the color for %1.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Wählen Sie die Farbe für %1.</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="62"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="62"/>
         <source>&lt;p&gt;&lt;b&gt;Choose Color&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Change the color of this minifigure piece. The preview updates immediately, and saving a template includes the chosen color.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Farbe wählen&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Ändern Sie die Farbe dieses Minifigurenteils. Die Vorschau wird sofort aktualisiert und das Speichern einer Vorlage enthält die ausgewählte Farbe.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="75"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="75"/>
         <source>%1 rotation</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 Drehung</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="76"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="76"/>
         <source>Rotate %1, in degrees (-360 to 360).</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Drehen Sie %1 in Grad (-360 bis 360).</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="77"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="77"/>
         <source>&lt;p&gt;&lt;b&gt;Rotation&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Adjust this piece&apos;s angle to pose the minifigure. Values range from -360 to 360 degrees. The available rotation depends on the selected minifigure section.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Rotation&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Passen Sie den Winkel dieses Teils an, um die Minifigur in die richtige Position zu bringen. Die Werte liegen zwischen -360 und 360 Grad. Die verfügbare Drehung hängt vom ausgewählten Minifigurenabschnitt ab.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="127"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="127"/>
         <source>Minifigure Preview</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Minifiguren-Vorschau</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="128"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="128"/>
         <source>Preview of the chosen pieces, colors, and pose.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Vorschau der ausgewählten Teile, Farben und Posen.</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="129"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="129"/>
         <source>&lt;p&gt;&lt;b&gt;Minifigure Preview&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Check the assembled minifigure as you change pieces, colors, or angles. Choose OK to add this configuration to the current model.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Minifiguren-Vorschau&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Überprüfen Sie die zusammengebaute Minifigur, während Sie Teile, Farben oder Winkel ändern. Wählen Sie „OK“, um diese Konfiguration zum aktuellen Modell hinzuzufügen.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="271"/>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="278"/>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="284"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="271"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="278"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="284"/>
         <source>Save Template</source>
         <translation type="unfinished">Vorlage Speichern</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="271"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="271"/>
         <source>Template Name:</source>
         <translation type="unfinished">Vorlagenname:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="278"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="278"/>
         <source>Template name cannot be empty.</source>
         <translation type="unfinished">Vorlagenname darf nicht leer sein.</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="284"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="284"/>
         <source>Cannot overwrite the default template.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Die Standardvorlage kann nicht überschrieben werden.</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="290"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="290"/>
         <source>Are you sure you want to overwrite the template &apos;%1&apos;?</source>
         <translation type="unfinished">Sind sie sicher das sie die Vorlage &apos;%1&apos; überschreiben wollen?</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="291"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="291"/>
         <source>Overwrite Template</source>
         <translation type="unfinished">Vorlage Überschreiben</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="319"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="319"/>
         <source>Are you sure you want to delete the template &apos;%1&apos;?</source>
         <translation type="unfinished">Sind sie sicher das sie die Vorlage &apos;%1&apos; löschen wollen?</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="321"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="321"/>
         <source>Delete Template</source>
         <translation type="unfinished">Vorlage Löschen</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="334"/>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="343"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="334"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="343"/>
         <source>Import Templates</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Vorlagen importieren</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="334"/>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="355"/>
-        <source>Minifig Template Files (*.minifig);;All Files (*.*)</source>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="334"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="355"/>
+        <source>Minifigure Template Files (*.minifig);;All Files (*.*)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Minifig-Vorlagendateien (*.minifig);;Alle Dateien (*.*)</translation>
     </message>
@@ -10855,7 +10855,7 @@ Bitte lesen sie unter https://github.com/nathaneltitane/studworks nach wie man e
         <translation type="obsolete">Fehler</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="343"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="343"/>
         <source>Error reading file &apos;%1&apos;:
 %2</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -10863,24 +10863,24 @@ Bitte lesen sie unter https://github.com/nathaneltitane/studworks nach wie man e
 %2</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="355"/>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="364"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="355"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="364"/>
         <source>Export Templates</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Vorlagen exportieren</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="364"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="364"/>
         <source>Error writing to file &apos;%1&apos;:
 %2</source>
         <translation type="unfinished">Fehler beim Schreiben der Datei » %1 « :
 %2</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="147"/>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="247"/>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="399"/>
-        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="430"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="147"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="247"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="399"/>
+        <location filename="../src/ui/sw_minifigure_builder_widget.cpp" line="430"/>
         <source>None</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">Keine</translation>
@@ -13033,7 +13033,7 @@ Bitte lesen sie unter https://github.com/nathaneltitane/studworks nach wie man e
     <message>
         <location filename="../src/ui/sw_preferences_dialog.ui" line="295"/>
         <location filename="../src/ui/sw_preferences_dialog.ui" line="313"/>
-        <source>Choose a custom minifigure settings file, or leave empty to use the built-in choices.</source>
+        <source>Choose a custom minifigure builder settings file, or leave empty to use the built-in choices.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Wählen Sie eine benutzerdefinierte Minifiguren-Einstellungsdatei oder lassen Sie sie leer, um die integrierten Optionen zu verwenden.</translation>
     </message>
@@ -13045,7 +13045,7 @@ Bitte lesen sie unter https://github.com/nathaneltitane/studworks nach wie man e
     </message>
     <message>
         <location filename="../src/ui/sw_preferences_dialog.ui" line="320"/>
-        <source>Choose a minifigure settings INI file.</source>
+        <source>Choose a minifigure builder settings INI file.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Wählen Sie eine INI-Datei mit den Minifigureneinstellungen.</translation>
     </message>
@@ -14143,7 +14143,7 @@ Nicht unterstützte Grafikkarten verwenden Gesichtstönung und farbige Kanten.</
     </message>
     <message>
         <location filename="../src/ui/sw_preferences_dialog.cpp" line="496"/>
-        <source>Select Minifig Settings File</source>
+        <source>Select Minifigure Builder Settings File</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Wählen Sie Minifig-Einstellungsdatei</translation>
     </message>

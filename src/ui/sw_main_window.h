@@ -411,7 +411,7 @@ protected:
 	QDockWidget* mColorsToolBar = nullptr;
 	QDockWidget* mPropertiesToolBar = nullptr;
 	QDockWidget* mTimelineToolBar = nullptr;
-	QDockWidget* mMinifigToolBar = nullptr;
+	QDockWidget* mMinifigureBuilderToolBar = nullptr;
 
 	swPartSelectionWidget* mPartSelectionWidget = nullptr;
 	swColorList* mColorList = nullptr;

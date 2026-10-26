@@ -45,7 +45,7 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	connect(ui->partsLibraryBrowse, &QPushButton::clicked, this, &swPreferencesDialog::PartsLibraryBrowseClicked);
 	connect(ui->partsArchiveBrowse, &QPushButton::clicked, this, &swPreferencesDialog::PartsArchiveBrowseClicked);
 	connect(ui->ColorConfigBrowseButton, &QPushButton::clicked, this, &swPreferencesDialog::ColorConfigBrowseButtonClicked);
-	connect(ui->MinifigSettingsBrowseButton, &QPushButton::clicked, this, &swPreferencesDialog::MinifigSettingsBrowseButtonClicked);
+	connect(ui->MinifigureBuilderSettingsBrowseButton, &QPushButton::clicked, this, &swPreferencesDialog::MinifigureBuilderSettingsBrowseButtonClicked);
 	connect(ui->povrayExecutableBrowse, &QPushButton::clicked, this, &swPreferencesDialog::PovrayExecutableBrowseClicked);
 	connect(ui->lgeoPathBrowse, &QPushButton::clicked, this, &swPreferencesDialog::LgeoPathBrowseClicked);
 	connect(ui->ColorTheme, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &swPreferencesDialog::ColorThemeCurrentIndexChanged);
@@ -57,7 +57,7 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	connect(ui->ConditionalLinesCheckBox, &QCheckBox::toggled, this, &swPreferencesDialog::ConditionalLinesCheckBoxToggled);
 	connect(ui->LineWidthSlider, QOverload<int>::of(&QSlider::valueChanged), this, &swPreferencesDialog::LineWidthSliderValueChanged);
 
-	for (swRenderTarget Target : { swRenderTarget::Preview, swRenderTarget::Pieces, swRenderTarget::Minifig })
+	for (swRenderTarget Target : { swRenderTarget::Preview, swRenderTarget::Pieces, swRenderTarget::MinifigureBuilder })
 	{
 		const swRenderTargetWidgets Widgets = GetRenderTargetWidgets(Target);
 
@@ -128,7 +128,7 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 
 	ui->partsLibrary->setText(mOptions->LibraryPath);
 	ui->ColorConfigEdit->setText(mOptions->ColorConfigPath);
-	ui->MinifigSettingsEdit->setText(mOptions->MinifigSettingsPath);
+	ui->MinifigureBuilderSettingsEdit->setText(mOptions->MinifigureBuilderSettingsPath);
 	ui->povrayExecutable->setText(mOptions->POVRayPath);
 	ui->lgeoPath->setText(mOptions->LGEOPath);
 	ui->authorName->setText(mOptions->DefaultAuthor);
@@ -187,7 +187,7 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	ui->LineWidthSlider->setRange(0, (mLineWidthRange[1] - mLineWidthRange[0]) / mLineWidthGranularity);
 	ui->LineWidthSlider->setValue((mOptions->Preferences.mLineWidth - mLineWidthRange[0]) / mLineWidthGranularity);
 
-	for (swRenderTarget Target : { swRenderTarget::Preview, swRenderTarget::Pieces, swRenderTarget::Minifig })
+	for (swRenderTarget Target : { swRenderTarget::Preview, swRenderTarget::Pieces, swRenderTarget::MinifigureBuilder })
 	{
 		const swRenderTargetWidgets Widgets = GetRenderTargetWidgets(Target);
 		const swTargetRenderSettings& TargetSettings = mOptions->Preferences.GetTargetRenderSettings(Target);
@@ -288,7 +288,7 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 		DefaultLightsItem->setToolTip(Message);
 		ui->ShadingMode->setToolTip(Message);
 
-		for (swRenderTarget Target : { swRenderTarget::Preview, swRenderTarget::Pieces, swRenderTarget::Minifig })
+		for (swRenderTarget Target : { swRenderTarget::Preview, swRenderTarget::Pieces, swRenderTarget::MinifigureBuilder })
 		{
 			QComboBox* TargetShadingMode = GetRenderTargetWidgets(Target).ShadingMode;
 			QStandardItemModel* TargetShadingModel = qobject_cast<QStandardItemModel*>(TargetShadingMode->model());
@@ -420,7 +420,7 @@ void swPreferencesDialog::accept()
 	}
 
 	mOptions->LibraryPath = ui->partsLibrary->text();
-	mOptions->MinifigSettingsPath = ui->MinifigSettingsEdit->text();
+	mOptions->MinifigureBuilderSettingsPath = ui->MinifigureBuilderSettingsEdit->text();
 	mOptions->ColorConfigPath = ui->ColorConfigEdit->text();
 	mOptions->POVRayPath = ui->povrayExecutable->text();
 	mOptions->LGEOPath = ui->lgeoPath->text();
@@ -456,7 +456,7 @@ void swPreferencesDialog::accept()
 	mOptions->Preferences.mDrawConditionalLines = ui->ConditionalLinesCheckBox->isChecked();
 	mOptions->Preferences.mLineWidth = mLineWidthRange[0] + static_cast<float>(ui->LineWidthSlider->value()) * mLineWidthGranularity;
 
-	for (swRenderTarget Target : { swRenderTarget::Preview, swRenderTarget::Pieces, swRenderTarget::Minifig })
+	for (swRenderTarget Target : { swRenderTarget::Preview, swRenderTarget::Pieces, swRenderTarget::MinifigureBuilder })
 	{
 		const swRenderTargetWidgets Widgets = GetRenderTargetWidgets(Target);
 		swTargetRenderSettings& TargetSettings = mOptions->Preferences.GetTargetRenderSettings(Target);
@@ -566,12 +566,12 @@ void swPreferencesDialog::ColorConfigBrowseButtonClicked()
 		ui->ColorConfigEdit->setText(QDir::toNativeSeparators(Result));
 }
 
-void swPreferencesDialog::MinifigSettingsBrowseButtonClicked()
+void swPreferencesDialog::MinifigureBuilderSettingsBrowseButtonClicked()
 {
-	QString Result = QFileDialog::getOpenFileName(this, tr("Select Minifig Settings File"), ui->MinifigSettingsEdit->text(), tr("Settings Files (*.ini);;All Files (*.*)"));
+	QString Result = QFileDialog::getOpenFileName(this, tr("Select Minifigure Builder Settings File"), ui->MinifigureBuilderSettingsEdit->text(), tr("Settings Files (*.ini);;All Files (*.*)"));
 
 	if (!Result.isEmpty())
-		ui->MinifigSettingsEdit->setText(QDir::toNativeSeparators(Result));
+		ui->MinifigureBuilderSettingsEdit->setText(QDir::toNativeSeparators(Result));
 }
 
 void swPreferencesDialog::PovrayExecutableBrowseClicked()
@@ -795,8 +795,8 @@ void swPreferencesDialog::LineWidthSliderValueChanged()
 
 swPreferencesDialog::swRenderTargetWidgets swPreferencesDialog::GetRenderTargetWidgets(swRenderTarget Target) const
 {
-	if (Target == swRenderTarget::Minifig)
-		return { ui->MinifigSyncRendering, ui->MinifigShadingModeLabel, ui->MinifigShadingMode, ui->MinifigEdgeLines, ui->MinifigConditionalLines, ui->MinifigLineWidthTitle, ui->MinifigLineWidthSlider, ui->MinifigLineWidthLabel };
+	if (Target == swRenderTarget::MinifigureBuilder)
+		return { ui->MinifigureBuilderSyncRendering, ui->MinifigureBuilderShadingModeLabel, ui->MinifigureBuilderShadingMode, ui->MinifigureBuilderEdgeLines, ui->MinifigureBuilderConditionalLines, ui->MinifigureBuilderLineWidthTitle, ui->MinifigureBuilderLineWidthSlider, ui->MinifigureBuilderLineWidthLabel };
 
 	if (Target == swRenderTarget::Pieces)
 		return { ui->PiecesSyncRendering, ui->PiecesShadingModeLabel, ui->PiecesShadingMode, ui->PiecesEdgeLines, ui->PiecesConditionalLines, ui->PiecesLineWidthTitle, ui->PiecesLineWidthSlider, ui->PiecesLineWidthLabel };
@@ -806,7 +806,7 @@ swPreferencesDialog::swRenderTargetWidgets swPreferencesDialog::GetRenderTargetW
 
 void swPreferencesDialog::RenderTargetChanged()
 {
-	for (swRenderTarget Target : { swRenderTarget::Preview, swRenderTarget::Pieces, swRenderTarget::Minifig })
+	for (swRenderTarget Target : { swRenderTarget::Preview, swRenderTarget::Pieces, swRenderTarget::MinifigureBuilder })
 	{
 		const swRenderTargetWidgets Widgets = GetRenderTargetWidgets(Target);
 		const bool Enable = !Widgets.SyncRendering->isChecked();

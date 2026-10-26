@@ -120,7 +120,7 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Settings", "ProjectsPath", ""),                                            // SW_PROFILE_PROJECTS_PATH
 	swProfileEntry("Settings", "PartsLibrary", ""),                                            // SW_PROFILE_PARTS_LIBRARY
 	swProfileEntry("Settings", "PartPalettes"),                                                // SW_PROFILE_PART_PALETTES
-	swProfileEntry("Settings", "MinifigSettings", ""),                                         // SW_PROFILE_MINIFIGURE_SETTINGS
+	swProfileEntry("Settings", "MinifigSettings", ""),                                         // SW_PROFILE_MINIFIGURE_BUILDER_SETTINGS
 	swProfileEntry("Settings", "ColorConfig", ""),                                             // SW_PROFILE_COLOR_CONFIGURATION
 	swProfileEntry("Settings", "Shortcuts"),                                                   // SW_PROFILE_KEYBOARD_SHORTCUTS
 	swProfileEntry("Settings", "MouseShortcuts", QStringList()),                               // SW_PROFILE_MOUSE_SHORTCUTS
@@ -209,11 +209,11 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Instructions", "PageUnits", 3),                                            // SW_PROFILE_INSTRUCTIONS_PAGE_UNITS
 	swProfileEntry("Instructions", "MarginUnits", 3),                                          // SW_PROFILE_INSTRUCTIONS_MARGIN_UNITS
 	swProfileEntry("Settings", "PreviewSquareViewport", 0),                                    // SW_PROFILE_PREVIEW_SQUARE_VIEWPORT
-	swProfileEntry("Settings", "MinifigSyncRendering", 1),                                     // SW_PROFILE_MINIFIGURE_SYNCHRONIZED_RENDERING
-	swProfileEntry("Settings", "MinifigShadingMode", static_cast<int>(swShadingMode::DefaultLights)), // SW_PROFILE_MINIFIGURE_SHADING_MODE
-	swProfileEntry("Settings", "MinifigDrawEdgeLines", 1),                                     // SW_PROFILE_MINIFIGURE_DRAW_EDGE_LINES
-	swProfileEntry("Settings", "MinifigDrawConditionalLines", 1),                              // SW_PROFILE_MINIFIGURE_DRAW_CONDITIONAL_LINES
-	swProfileEntry("Settings", "MinifigLineWidth", 1.0f),                                      // SW_PROFILE_MINIFIGURE_LINE_WIDTH
+	swProfileEntry("Settings", "MinifigSyncRendering", 1),                                     // SW_PROFILE_MINIFIGURE_BUILDER_SYNCHRONIZED_RENDERING
+	swProfileEntry("Settings", "MinifigShadingMode", static_cast<int>(swShadingMode::DefaultLights)), // SW_PROFILE_MINIFIGURE_BUILDER_SHADING_MODE
+	swProfileEntry("Settings", "MinifigDrawEdgeLines", 1),                                     // SW_PROFILE_MINIFIGURE_BUILDER_DRAW_EDGE_LINES
+	swProfileEntry("Settings", "MinifigDrawConditionalLines", 1),                              // SW_PROFILE_MINIFIGURE_BUILDER_DRAW_CONDITIONAL_LINES
+	swProfileEntry("Settings", "MinifigLineWidth", 1.0f),                                      // SW_PROFILE_MINIFIGURE_BUILDER_LINE_WIDTH
 	swProfileEntry("Settings", "PiecesSnapToTiles", 1),                                        // SW_PROFILE_PIECES_SNAP_TO_TILES
 	swProfileEntry("Settings", "RebrickableApiKey", "")                                        // SW_PROFILE_REBRICKABLE_API_KEY
 };

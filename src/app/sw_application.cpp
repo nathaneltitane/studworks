@@ -47,7 +47,7 @@ void swPreferences::LoadDefaults()
 	mLineWidth = swGetProfileFloat(SW_PROFILE_LINE_WIDTH);
 	LoadRenderTarget(swRenderTarget::Preview);
 	LoadRenderTarget(swRenderTarget::Pieces);
-	LoadRenderTarget(swRenderTarget::Minifig);
+	LoadRenderTarget(swRenderTarget::MinifigureBuilder);
 	mAllowLOD = swGetProfileInteger(SW_PROFILE_ALLOW_LOD);
 	mMeshLODDistance = swGetProfileFloat(SW_PROFILE_LOD_DISTANCE);
 	mFadeSteps = swGetProfileInteger(SW_PROFILE_FADE_STEPS);
@@ -130,7 +130,7 @@ void swPreferences::SaveDefaults()
 	swSetProfileFloat(SW_PROFILE_LINE_WIDTH, mLineWidth);
 	SaveRenderTarget(swRenderTarget::Preview);
 	SaveRenderTarget(swRenderTarget::Pieces);
-	SaveRenderTarget(swRenderTarget::Minifig);
+	SaveRenderTarget(swRenderTarget::MinifigureBuilder);
 	swSetProfileInteger(SW_PROFILE_ALLOW_LOD, mAllowLOD);
 	swSetProfileFloat(SW_PROFILE_LOD_DISTANCE, mMeshLODDistance);
 	swSetProfileInteger(SW_PROFILE_FADE_STEPS, mFadeSteps);
@@ -199,8 +199,8 @@ struct swRenderTargetProfileKeys
 
 static swRenderTargetProfileKeys swGetRenderTargetProfileKeys(swRenderTarget Target)
 {
-	if (Target == swRenderTarget::Minifig)
-		return { SW_PROFILE_MINIFIGURE_SYNCHRONIZED_RENDERING, SW_PROFILE_MINIFIGURE_SHADING_MODE, SW_PROFILE_MINIFIGURE_DRAW_EDGE_LINES, SW_PROFILE_MINIFIGURE_DRAW_CONDITIONAL_LINES, SW_PROFILE_MINIFIGURE_LINE_WIDTH };
+	if (Target == swRenderTarget::MinifigureBuilder)
+		return { SW_PROFILE_MINIFIGURE_BUILDER_SYNCHRONIZED_RENDERING, SW_PROFILE_MINIFIGURE_BUILDER_SHADING_MODE, SW_PROFILE_MINIFIGURE_BUILDER_DRAW_EDGE_LINES, SW_PROFILE_MINIFIGURE_BUILDER_DRAW_CONDITIONAL_LINES, SW_PROFILE_MINIFIGURE_BUILDER_LINE_WIDTH };
 
 	if (Target == swRenderTarget::Pieces)
 		return { SW_PROFILE_PIECES_SYNCHRONIZED_RENDERING, SW_PROFILE_PIECES_SHADING_MODE, SW_PROFILE_PIECES_DRAW_EDGE_LINES, SW_PROFILE_PIECES_DRAW_CONDITIONAL_LINES, SW_PROFILE_PIECES_LINE_WIDTH };
@@ -1482,7 +1482,7 @@ void swApplication::ShowPreferencesDialog()
 	Options.Preferences = mPreferences;
 
 	Options.LibraryPath = swGetProfileString(SW_PROFILE_PARTS_LIBRARY);
-	Options.MinifigSettingsPath = swGetProfileString(SW_PROFILE_MINIFIGURE_SETTINGS);
+	Options.MinifigureBuilderSettingsPath = swGetProfileString(SW_PROFILE_MINIFIGURE_BUILDER_SETTINGS);
 	Options.ColorConfigPath = swGetProfileString(SW_PROFILE_COLOR_CONFIGURATION);
 	Options.POVRayPath = swGetProfileString(SW_PROFILE_POVRAY_PATH);
 	Options.LGEOPath = swGetProfileString(SW_PROFILE_POVRAY_LGEO_PATH);
@@ -1545,7 +1545,7 @@ void swApplication::ShowPreferencesDialog()
 
 	swSetProfileString(SW_PROFILE_DEFAULT_AUTHOR_NAME, Options.DefaultAuthor);
 	swSetProfileString(SW_PROFILE_PARTS_LIBRARY, Options.LibraryPath);
-	swSetProfileString(SW_PROFILE_MINIFIGURE_SETTINGS, Options.MinifigSettingsPath);
+	swSetProfileString(SW_PROFILE_MINIFIGURE_BUILDER_SETTINGS, Options.MinifigureBuilderSettingsPath);
 	swSetProfileString(SW_PROFILE_POVRAY_PATH, Options.POVRayPath);
 	swSetProfileString(SW_PROFILE_POVRAY_LGEO_PATH, Options.LGEOPath);
 	swSetProfileString(SW_PROFILE_LANGUAGE, Options.Language);

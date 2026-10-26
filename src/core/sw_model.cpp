@@ -14,7 +14,7 @@
 #include "sw_file.h"
 #include "sw_piece_data.h"
 #include "sw_view.h"
-#include "sw_minifigure.h"
+#include "sw_minifigure_builder.h"
 #include "sw_array_dialog.h"
 #include "sw_group_dialog.h"
 #include "sw_edit_groups_dialog.h"
@@ -6415,7 +6415,7 @@ void swModel::ShowArrayDialog()
 	gMainWindow->UpdateTimeline(false, false);
 }
 
-void swModel::AddMinifig(const swMinifigure& Minifig)
+void swModel::AddMinifigure(const swMinifigure& Minifigure)
 {
 	gMainWindow->GetActiveView()->MakeCurrent();
 
@@ -6429,13 +6429,13 @@ void swModel::AddMinifig(const swMinifigure& Minifig)
 
 	for (int PartIndex = 0; PartIndex < SW_MINIFIGURE_ITEM_COUNT; PartIndex++)
 	{
-		if (!Minifig.PieceData[PartIndex])
+		if (!Minifigure.PieceData[PartIndex])
 			continue;
 
-		swPiece* Piece = new swPiece(Minifig.PieceData[PartIndex]);
+		swPiece* Piece = new swPiece(Minifigure.PieceData[PartIndex]);
 
-		Piece->Initialize(Minifig.Matrices[PartIndex], mCurrentStep);
-		Piece->SetColorIndex(Minifig.ColorIndices[PartIndex]);
+		Piece->Initialize(Minifigure.Matrices[PartIndex], mCurrentStep);
+		Piece->SetColorIndex(Minifigure.ColorIndices[PartIndex]);
 		Piece->SetGroup(Group);
 		AddPiece(Piece);
 		Piece->UpdatePosition(mCurrentStep);
@@ -6447,12 +6447,12 @@ void swModel::AddMinifig(const swMinifigure& Minifig)
 
 	SetSelectionAndFocus(Pieces, nullptr, 0, swSelectionMode::Single);
 
-	EndHistorySequence(tr("Add Minifig"));
+	EndHistorySequence(tr("Add Minifigure"));
 
 	gMainWindow->UpdateTimeline(false, false);
 }
 
-void swModel::SetMinifig(const swMinifigure& Minifig)
+void swModel::SetMinifigure(const swMinifigure& Minifigure)
 {
 	DeleteModel();
 
@@ -6461,13 +6461,13 @@ void swModel::SetMinifig(const swMinifigure& Minifig)
 
 	for (int PartIdx = 0; PartIdx < SW_MINIFIGURE_ITEM_COUNT; PartIdx++)
 	{
-		if (!Minifig.PieceData[PartIdx])
+		if (!Minifigure.PieceData[PartIdx])
 			continue;
 
-		swPiece* Piece = new swPiece(Minifig.PieceData[PartIdx]);
+		swPiece* Piece = new swPiece(Minifigure.PieceData[PartIdx]);
 
-		Piece->Initialize(Minifig.Matrices[PartIdx], 1);
-		Piece->SetColorIndex(Minifig.ColorIndices[PartIdx]);
+		Piece->Initialize(Minifigure.Matrices[PartIdx], 1);
+		Piece->SetColorIndex(Minifigure.ColorIndices[PartIdx]);
 		AddPiece(Piece);
 		Piece->UpdatePosition(1);
 

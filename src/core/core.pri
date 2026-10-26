@@ -7,7 +7,7 @@ SOURCES += \
 	$$PWD/sw_filter.cpp \
 	$$PWD/sw_group.cpp \
 	$$PWD/sw_light.cpp \
-	$$PWD/sw_minifigure.cpp \
+	$$PWD/sw_minifigure_builder.cpp \
 	$$PWD/sw_model.cpp \
 	$$PWD/sw_model_history.cpp \
 	$$PWD/sw_object.cpp \
@@ -23,7 +23,7 @@ HEADERS += \
 	$$PWD/sw_group.h \
 	$$PWD/sw_light.h \
 	$$PWD/sw_math.h \
-	$$PWD/sw_minifigure.h \
+	$$PWD/sw_minifigure_builder.h \
 	$$PWD/sw_model.h \
 	$$PWD/sw_model_history.h \
 	$$PWD/sw_object.h \

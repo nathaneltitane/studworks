@@ -380,7 +380,7 @@ public:
 	bool LoadInventory(const std::vector<swSetInventoryItem>& SetInventory);
 	void Merge(std::unique_ptr<swModel> Other);
 
-	void SetMinifig(const swMinifigure& Minifig);
+	void SetMinifigure(const swMinifigure& Minifigure);
 	void SetPreviewPieceData(swPieceData* PieceData, int ColorIndex);
 
 	swResult<void> Cut();
@@ -519,7 +519,7 @@ public:
 
 	void ShowPropertiesDialog();
 	void ShowArrayDialog();
-	void AddMinifig(const swMinifigure& Minifig);
+	void AddMinifigure(const swMinifigure& Minifigure);
 	void UpdateInterface();
 
 protected:

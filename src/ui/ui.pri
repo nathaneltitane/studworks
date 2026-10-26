@@ -21,7 +21,7 @@ SOURCES += \
 	$$PWD/sw_keyframe_widget.cpp \
 	$$PWD/sw_ladder_widget.cpp \
 	$$PWD/sw_main_window.cpp \
-	$$PWD/sw_minifigure_dialog.cpp \
+	$$PWD/sw_minifigure_builder_widget.cpp \
 	$$PWD/sw_model_list_dialog.cpp \
 	$$PWD/sw_page_setup_dialog.cpp \
 	$$PWD/sw_part_palette_dialog.cpp \
@@ -57,7 +57,7 @@ HEADERS += \
 	$$PWD/sw_keyframe_widget.h \
 	$$PWD/sw_ladder_widget.h \
 	$$PWD/sw_main_window.h \
-	$$PWD/sw_minifigure_dialog.h \
+	$$PWD/sw_minifigure_builder_widget.h \
 	$$PWD/sw_model_list_dialog.h \
 	$$PWD/sw_page_setup_dialog.h \
 	$$PWD/sw_part_palette_dialog.h \
@@ -82,7 +82,7 @@ FORMS += \
 	$$PWD/sw_group_dialog.ui \
 	$$PWD/sw_html_dialog.ui \
 	$$PWD/sw_image_dialog.ui \
-	$$PWD/sw_minifigure_dialog.ui \
+	$$PWD/sw_minifigure_builder_widget.ui \
 	$$PWD/sw_model_list_dialog.ui \
 	$$PWD/sw_page_setup_dialog.ui \
 	$$PWD/sw_part_palette_dialog.ui \

@@ -128,32 +128,32 @@
           <item row="2" column="0">
            <widget class="QLabel" name="label_18">
             <property name="toolTip">
-             <string>Choose a custom minifigure settings file, or leave empty to use the built-in choices.</string>
+             <string>Choose a custom minifigure builder settings file, or leave empty to use the built-in choices.</string>
             </property>
             <property name="text">
-             <string>Minifigure Settings:</string>
+             <string>Minifigure Builder Settings:</string>
             </property>
             <property name="buddy">
-             <cstring>MinifigSettingsEdit</cstring>
+             <cstring>MinifigureBuilderSettingsEdit</cstring>
             </property>
            </widget>
           </item>
           <item row="2" column="1">
-           <layout class="QHBoxLayout" name="MinifigSettingsLayout">
+           <layout class="QHBoxLayout" name="MinifigureBuilderSettingsLayout">
             <item>
-             <widget class="QLineEdit" name="MinifigSettingsEdit">
+             <widget class="QLineEdit" name="MinifigureBuilderSettingsEdit">
               <property name="accessibleName">
-               <string>Minifig Settings</string>
+               <string>Minifigure Builder Settings</string>
               </property>
               <property name="toolTip">
-               <string>Choose a custom minifigure settings file, or leave empty to use the built-in choices.</string>
+               <string>Choose a custom minifigure builder settings file, or leave empty to use the built-in choices.</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QToolButton" name="MinifigSettingsBrowseButton">
+             <widget class="QToolButton" name="MinifigureBuilderSettingsBrowseButton">
               <property name="toolTip">
-               <string>Choose a minifigure settings INI file.</string>
+               <string>Choose a minifigure builder settings INI file.</string>
               </property>
               <property name="text">
                <string>...</string>
@@ -1606,18 +1606,18 @@
         </widget>
        </item>
 <item>
-        <widget class="QGroupBox" name="MinifigGroup">
+        <widget class="QGroupBox" name="MinifigureBuilderGroup">
          <property name="title">
-          <string>Minifigure Preview</string>
+          <string>Minifigure Builder Preview</string>
          </property>
-         <layout class="QGridLayout" name="MinifigLayout">
+         <layout class="QGridLayout" name="MinifigureBuilderLayout">
           
           
           
           
           
           <item row="1" column="4">
-           <spacer name="MinifigSpacer">
+           <spacer name="MinifigureBuilderSpacer">
             <property name="orientation">
              <enum>Qt::Orientation::Horizontal</enum>
             </property>
@@ -1630,9 +1630,9 @@
            </spacer>
           </item>
           <item row="3" column="0" colspan="3">
-           <widget class="QCheckBox" name="MinifigSyncRendering">
+           <widget class="QCheckBox" name="MinifigureBuilderSyncRendering">
             <property name="toolTip">
-             <string>Use the model view rendering settings for the minifigure preview.</string>
+             <string>Use the model view rendering settings for the minifigure builder preview.</string>
             </property>
             <property name="text">
              <string>Use Model View Settings</string>
@@ -1640,25 +1640,25 @@
            </widget>
           </item>
           <item row="4" column="0">
-           <widget class="QLabel" name="MinifigShadingModeLabel">
+           <widget class="QLabel" name="MinifigureBuilderShadingModeLabel">
             <property name="toolTip">
-             <string>Choose how pieces are drawn in the minifigure preview.</string>
+             <string>Choose how pieces are drawn in the minifigure builder preview.</string>
             </property>
             <property name="text">
              <string>Shading Mode:</string>
             </property>
             <property name="buddy">
-             <cstring>MinifigShadingMode</cstring>
+             <cstring>MinifigureBuilderShadingMode</cstring>
             </property>
            </widget>
           </item>
           <item row="4" column="1">
-           <widget class="QComboBox" name="MinifigShadingMode">
+           <widget class="QComboBox" name="MinifigureBuilderShadingMode">
             <property name="accessibleName">
-             <string>Minifigure Shading Mode</string>
+             <string>Minifigure Builder Shading Mode</string>
             </property>
             <property name="toolTip">
-             <string>Choose how pieces are drawn in the minifigure preview.</string>
+             <string>Choose how pieces are drawn in the minifigure builder preview.</string>
             </property>
             <item>
              <property name="text">
@@ -1678,9 +1678,9 @@
            </widget>
           </item>
           <item row="5" column="0">
-           <widget class="QCheckBox" name="MinifigEdgeLines">
+           <widget class="QCheckBox" name="MinifigureBuilderEdgeLines">
             <property name="toolTip">
-             <string>Draw edge lines on pieces in the minifigure preview.</string>
+             <string>Draw edge lines on pieces in the minifigure builder preview.</string>
             </property>
             <property name="text">
              <string>Edge Lines</string>
@@ -1688,9 +1688,9 @@
            </widget>
           </item>
           <item row="6" column="0">
-           <widget class="QCheckBox" name="MinifigConditionalLines">
+           <widget class="QCheckBox" name="MinifigureBuilderConditionalLines">
             <property name="toolTip">
-             <string>Draw conditional lines on pieces in the minifigure preview.</string>
+             <string>Draw conditional lines on pieces in the minifigure builder preview.</string>
             </property>
             <property name="text">
              <string>Conditional Lines</string>
@@ -1698,25 +1698,25 @@
            </widget>
           </item>
           <item row="7" column="0">
-           <widget class="QLabel" name="MinifigLineWidthTitle">
+           <widget class="QLabel" name="MinifigureBuilderLineWidthTitle">
             <property name="toolTip">
-             <string>Set the line width used in the minifigure preview.</string>
+             <string>Set the line width used in the minifigure builder preview.</string>
             </property>
             <property name="text">
              <string>Line Width:</string>
             </property>
             <property name="buddy">
-             <cstring>MinifigLineWidthSlider</cstring>
+             <cstring>MinifigureBuilderLineWidthSlider</cstring>
             </property>
            </widget>
           </item>
           <item row="7" column="1">
-           <widget class="QSlider" name="MinifigLineWidthSlider">
+           <widget class="QSlider" name="MinifigureBuilderLineWidthSlider">
             <property name="accessibleName">
-             <string>Minifigure Line Width</string>
+             <string>Minifigure Builder Line Width</string>
             </property>
             <property name="toolTip">
-             <string>Set the line width used in the minifigure preview.</string>
+             <string>Set the line width used in the minifigure builder preview.</string>
             </property>
             <property name="orientation">
              <enum>Qt::Orientation::Horizontal</enum>
@@ -1724,7 +1724,7 @@
            </widget>
           </item>
           <item row="7" column="2">
-           <widget class="QLabel" name="MinifigLineWidthLabel">
+           <widget class="QLabel" name="MinifigureBuilderLineWidthLabel">
             <property name="text">
              <string/>
             </property>
@@ -3361,8 +3361,8 @@
   <tabstop>partsArchiveBrowse</tabstop>
   <tabstop>ColorConfigEdit</tabstop>
   <tabstop>ColorConfigBrowseButton</tabstop>
-  <tabstop>MinifigSettingsEdit</tabstop>
-  <tabstop>MinifigSettingsBrowseButton</tabstop>
+  <tabstop>MinifigureBuilderSettingsEdit</tabstop>
+  <tabstop>MinifigureBuilderSettingsBrowseButton</tabstop>
   <tabstop>povrayExecutable</tabstop>
   <tabstop>povrayExecutableBrowse</tabstop>
   <tabstop>lgeoPath</tabstop>

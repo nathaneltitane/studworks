@@ -2,7 +2,7 @@
 
 > Commit relevant release changes after each related phase, keeping each commit limited to that phase and using a clear message. Suggested groups include minifig settings, CI/library links, and version/documentation updates. Keep this checklist uncommitted when it is being used as private working notes. Do not mark steps as completed in this file.
 
-1. Update Minifig Wizard settings:
+1. Update Minifigure Builder settings:
    - Go to [MLCad INI Download](https://www.ldraw.org/mlcad-ini-download.html) and download the latest ZIP file.
    - Unzip it and update `resources/minifig.ini` with the new `MLCad.ini`.
    - Keep the existing minifig sections; exclude unrelated sections such as `[SCAN_ORDER]` and `[LSYNTH]`.

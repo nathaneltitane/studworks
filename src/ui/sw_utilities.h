@@ -63,7 +63,7 @@ protected:
 	static swBlockingProgress* mActive;
 };
 
-// Panel rows are plain widgets with a standard row layout, so every panel has the spacing of the minifigure panel.
+// Panel rows are plain widgets with a standard row layout, so every panel has the spacing of the minifigure builder panel.
 QSize swGetPanelButtonSize();
 int swGetLayoutSpacing(const QWidget* Widget, Qt::Orientation Orientation);
 void swSetupPanelButton(QToolButton* Button);

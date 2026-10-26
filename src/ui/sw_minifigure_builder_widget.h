@@ -1,24 +1,24 @@
 #pragma once
 
-#include "sw_minifigure.h"
+#include "sw_minifigure_builder.h"
 
 class swColorPicker;
 class swDoubleSpinBox;
 
 namespace Ui
 {
-class swMinifigureDialog;
+class swMinifigureBuilderWidget;
 }
 
-class swMinifigureDialog : public QWidget
+class swMinifigureBuilderWidget : public QWidget
 {
 	Q_OBJECT
 
 public:
-	explicit swMinifigureDialog(QWidget* Parent);
-	virtual ~swMinifigureDialog();
+	explicit swMinifigureBuilderWidget(QWidget* Parent);
+	virtual ~swMinifigureBuilderWidget();
 
-	swMinifigureWizard* mMinifigWizard;
+	swMinifigureBuilder* mMinifigureBuilder;
 
 protected slots:
 	void AddToModel();
@@ -39,7 +39,7 @@ protected:
 	void UpdateTemplateCombo();
 	void SetCurrentTemplateModified();
 
-	Ui::swMinifigureDialog* ui;
+	Ui::swMinifigureBuilderWidget* ui;
 
 	swView* mView;
 	QWidget* mViewWidget = nullptr;

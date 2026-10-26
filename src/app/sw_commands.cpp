@@ -1348,11 +1348,11 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
-	// SW_VIEW_TOOLBAR_MINIFIGURE
+	// SW_VIEW_TOOLBAR_MINIFIGURE_BUILDER
 	{
-		QT_TRANSLATE_NOOP("Action", "View.Toolbars.Minifigure"),
-		QT_TRANSLATE_NOOP("Menu", "Minifigure"),
-		QT_TRANSLATE_NOOP("Status", "Toggle the Minifigure Toolbar"),
+		QT_TRANSLATE_NOOP("Action", "View.Toolbars.MinifigureBuilder"),
+		QT_TRANSLATE_NOOP("Menu", "Minifigure Builder"),
+		QT_TRANSLATE_NOOP("Status", "Toggle the Minifigure Builder Panel"),
 		"",
 		""
 	},
@@ -1844,51 +1844,51 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
-	// SW_VIEW_TOGGLE_MINIFIGURE_SYNCHRONIZED_RENDERING
+	// SW_VIEW_TOGGLE_MINIFIGURE_BUILDER_SYNCHRONIZED_RENDERING
 	{
-		QT_TRANSLATE_NOOP("Action", "View.Minifig.ToggleSyncRendering"),
-		QT_TRANSLATE_NOOP("Menu", "Minifigure Uses Model View Settings"),
-		QT_TRANSLATE_NOOP("Status", "Toggle using the model view rendering settings in the minifigure preview"),
+		QT_TRANSLATE_NOOP("Action", "View.MinifigureBuilder.ToggleSyncRendering"),
+		QT_TRANSLATE_NOOP("Menu", "Minifigure Builder Uses Model View Settings"),
+		QT_TRANSLATE_NOOP("Status", "Toggle using the model view rendering settings in the minifigure builder preview"),
 		"",
 		""
 	},
-	// SW_VIEW_MINIFIGURE_SHADING_WIREFRAME
+	// SW_VIEW_MINIFIGURE_BUILDER_SHADING_WIREFRAME
 	{
-		QT_TRANSLATE_NOOP("Action", "View.Minifig.Shade.Wireframe"),
-		QT_TRANSLATE_NOOP("Menu", "Minifigure Wireframe"),
-		QT_TRANSLATE_NOOP("Status", "Display the minifigure preview as a wireframe"),
+		QT_TRANSLATE_NOOP("Action", "View.MinifigureBuilder.Shade.Wireframe"),
+		QT_TRANSLATE_NOOP("Menu", "Minifigure Builder Wireframe"),
+		QT_TRANSLATE_NOOP("Status", "Display the minifigure builder preview as a wireframe"),
 		"",
 		""
 	},
-	// SW_VIEW_MINIFIGURE_SHADING_FLAT
+	// SW_VIEW_MINIFIGURE_BUILDER_SHADING_FLAT
 	{
-		QT_TRANSLATE_NOOP("Action", "View.Minifig.Shade.Flat"),
-		QT_TRANSLATE_NOOP("Menu", "Minifigure Flat Shading"),
-		QT_TRANSLATE_NOOP("Status", "Display the minifigure preview with flat shading"),
+		QT_TRANSLATE_NOOP("Action", "View.MinifigureBuilder.Shade.Flat"),
+		QT_TRANSLATE_NOOP("Menu", "Minifigure Builder Flat Shading"),
+		QT_TRANSLATE_NOOP("Status", "Display the minifigure builder preview with flat shading"),
 		"",
 		""
 	},
-	// SW_VIEW_MINIFIGURE_SHADING_DEFAULT_LIGHTS
+	// SW_VIEW_MINIFIGURE_BUILDER_SHADING_DEFAULT_LIGHTS
 	{
-		QT_TRANSLATE_NOOP("Action", "View.Minifig.Shade.DefaultLights"),
-		QT_TRANSLATE_NOOP("Menu", "Minifigure Default Lights"),
-		QT_TRANSLATE_NOOP("Status", "Display the minifigure preview with the default lights"),
+		QT_TRANSLATE_NOOP("Action", "View.MinifigureBuilder.Shade.DefaultLights"),
+		QT_TRANSLATE_NOOP("Menu", "Minifigure Builder Default Lights"),
+		QT_TRANSLATE_NOOP("Status", "Display the minifigure builder preview with the default lights"),
 		"",
 		""
 	},
-	// SW_VIEW_TOGGLE_MINIFIGURE_EDGE_LINES
+	// SW_VIEW_TOGGLE_MINIFIGURE_BUILDER_EDGE_LINES
 	{
-		QT_TRANSLATE_NOOP("Action", "View.Minifig.ToggleEdgeLines"),
-		QT_TRANSLATE_NOOP("Menu", "Minifigure Edge Lines"),
-		QT_TRANSLATE_NOOP("Status", "Toggle edge lines in the minifigure preview"),
+		QT_TRANSLATE_NOOP("Action", "View.MinifigureBuilder.ToggleEdgeLines"),
+		QT_TRANSLATE_NOOP("Menu", "Minifigure Builder Edge Lines"),
+		QT_TRANSLATE_NOOP("Status", "Toggle edge lines in the minifigure builder preview"),
 		"",
 		""
 	},
-	// SW_VIEW_TOGGLE_MINIFIGURE_CONDITIONAL_LINES
+	// SW_VIEW_TOGGLE_MINIFIGURE_BUILDER_CONDITIONAL_LINES
 	{
-		QT_TRANSLATE_NOOP("Action", "View.Minifig.ToggleConditionalLines"),
-		QT_TRANSLATE_NOOP("Menu", "Minifigure Conditional Lines"),
-		QT_TRANSLATE_NOOP("Status", "Toggle conditional lines in the minifigure preview"),
+		QT_TRANSLATE_NOOP("Action", "View.MinifigureBuilder.ToggleConditionalLines"),
+		QT_TRANSLATE_NOOP("Menu", "Minifigure Builder Conditional Lines"),
+		QT_TRANSLATE_NOOP("Status", "Toggle conditional lines in the minifigure builder preview"),
 		"",
 		""
 	},
@@ -2124,11 +2124,11 @@ const swCommand gCommands[] =
 		"",
 		"Shift+PgDown"
 	},
-	// SW_PIECE_MINIFIGURE_WIZARD
+	// SW_PIECE_MINIFIGURE_BUILDER
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.MinifigWizard"),
-		QT_TRANSLATE_NOOP("Menu", "Configure &Minifigure..."),
-		QT_TRANSLATE_NOOP("Status", "Show the Minifigure panel to build a minifigure and add it to the model"),
+		QT_TRANSLATE_NOOP("Action", "Piece.MinifigureBuilder"),
+		QT_TRANSLATE_NOOP("Menu", "&Minifigure Builder"),
+		QT_TRANSLATE_NOOP("Status", "Show the Minifigure Builder panel to build a minifigure and add it to the model"),
 		"",
 		""
 	},

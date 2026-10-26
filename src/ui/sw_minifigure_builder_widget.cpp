@@ -1,9 +1,9 @@
 #include "sw_global.h"
-#include "sw_minifigure_dialog.h"
-#include "ui_sw_minifigure_dialog.h"
+#include "sw_minifigure_builder_widget.h"
+#include "ui_sw_minifigure_builder_widget.h"
 #include "sw_view_widget.h"
 #include "sw_color_picker.h"
-#include "sw_minifigure.h"
+#include "sw_minifigure_builder.h"
 #include "sw_piece_data.h"
 #include "sw_library.h"
 #include "sw_view.h"
@@ -14,16 +14,16 @@
 #include "sw_part_selection_popup.h"
 #include "sw_main_window.h"
 
-swMinifigureDialog::swMinifigureDialog(QWidget* Parent)
-	: QWidget(Parent), ui(new Ui::swMinifigureDialog)
+swMinifigureBuilderWidget::swMinifigureBuilderWidget(QWidget* Parent)
+	: QWidget(Parent), ui(new Ui::swMinifigureBuilderWidget)
 {
-	// The minifigure panel stays open and adds each minifigure to the current model, F1 help comes from the panel.
+	// The Minifigure Builder panel stays open and adds each minifigure to the current model, F1 help comes from the panel.
 	ui->setupUi(this);
 
-	QGridLayout* MinifigLayout = ui->MinifigLayout;
+	QGridLayout* MinifigureBuilderLayout = ui->MinifigureBuilderLayout;
 
 	// Extra height goes below the panel instead of between rows.
-	MinifigLayout->setContentsMargins(0, 0, 0, 0);
+	MinifigureBuilderLayout->setContentsMargins(0, 0, 0, 0);
 	ui->verticalLayout->addStretch(1);
 
 	bool HasSpinBox[SW_MINIFIGURE_ITEM_COUNT] = { true, true, true, false, false, false, false, true, true, true, true, true, true, true, true, true, true };
@@ -48,20 +48,20 @@ swMinifigureDialog::swMinifigureDialog(QWidget* Parent)
 		mPieceButtons[ItemIndex] = PieceButton;
 		PieceButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 		PieceButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
-		PieceButton->setObjectName(QString("MinifigPiece%1").arg(ItemIndex));
+		PieceButton->setObjectName(QString("MinifigureBuilderPiece%1").arg(ItemIndex));
 		PieceButton->setAccessibleName(tr("%1 piece").arg(Labels[ItemIndex]));
 		PieceButton->setWhatsThis(tr("<p><b>Choose Piece</b></p><p>Choose a piece for this section of the minifigure. Select None to omit it, the selector then shows the name of the section. The preview updates when you select a different piece.</p>"));
 
-		connect(PieceButton, &QToolButton::clicked, this, &swMinifigureDialog::PieceButtonClicked);
+		connect(PieceButton, &QToolButton::clicked, this, &swMinifigureBuilderWidget::PieceButtonClicked);
 
 		swColorPicker* ColorPicker = new swColorPicker(this);
 		mColorPickers[ItemIndex] = ColorPicker;
-		ColorPicker->setObjectName(QString("MinifigColor%1").arg(ItemIndex));
+		ColorPicker->setObjectName(QString("MinifigureBuilderColor%1").arg(ItemIndex));
 		ColorPicker->setAccessibleName(tr("%1 color").arg(Labels[ItemIndex]));
 		ColorPicker->setToolTip(tr("Choose the color for %1.").arg(Labels[ItemIndex]));
 		ColorPicker->setWhatsThis(tr("<p><b>Choose Color</b></p><p>Change the color of this minifigure piece. The preview updates immediately, and saving a template includes the chosen color.</p>"));
 
-		connect(ColorPicker, &swColorPicker::ColorChanged, this, &swMinifigureDialog::ColorChanged);
+		connect(ColorPicker, &swColorPicker::ColorChanged, this, &swMinifigureBuilderWidget::ColorChanged);
 
 		swDoubleSpinBox* SpinBox = HasSpinBox[ItemIndex] ? new swDoubleSpinBox(this) : nullptr;
 		mSpinBoxes[ItemIndex] = SpinBox;
@@ -71,22 +71,22 @@ swMinifigureDialog::swMinifigureDialog(QWidget* Parent)
 			SpinBox->setRange(-360.0, 360.0);
 			SpinBox->SetSnap(swFloatPropertySnap::Rotation);
 			SpinBox->setSingleStep(5.0);
-			SpinBox->setObjectName(QString("MinifigRotation%1").arg(ItemIndex));
+			SpinBox->setObjectName(QString("MinifigureBuilderRotation%1").arg(ItemIndex));
 			SpinBox->setAccessibleName(tr("%1 rotation").arg(Labels[ItemIndex]));
 			SpinBox->setToolTip(tr("Rotate %1, in degrees (-360 to 360).").arg(Labels[ItemIndex]));
 			SpinBox->setWhatsThis(tr("<p><b>Rotation</b></p><p>Adjust this piece's angle to pose the minifigure. Values range from -360 to 360 degrees. The available rotation depends on the selected minifigure section.</p>"));
 
-			connect(SpinBox, QOverload<double>::of(&swDoubleSpinBox::valueChanged), this, &swMinifigureDialog::AngleChanged);
+			connect(SpinBox, QOverload<double>::of(&swDoubleSpinBox::valueChanged), this, &swMinifigureBuilderWidget::AngleChanged);
 		}
 
 		// Each section is [Color] [Selection] [Angle], the selection takes the space left over and names the section when empty.
-		auto AddRow = [MinifigLayout, PieceButton, ColorPicker, SpinBox](int& Row, int Column, int ColumnCount)
+		auto AddRow = [MinifigureBuilderLayout, PieceButton, ColorPicker, SpinBox](int& Row, int Column, int ColumnCount)
 		{
-			MinifigLayout->addWidget(ColorPicker, Row, Column);
-			MinifigLayout->addWidget(PieceButton, Row, Column + 1, 1, SpinBox ? ColumnCount - 2 : ColumnCount - 1);
+			MinifigureBuilderLayout->addWidget(ColorPicker, Row, Column);
+			MinifigureBuilderLayout->addWidget(PieceButton, Row, Column + 1, 1, SpinBox ? ColumnCount - 2 : ColumnCount - 1);
 
 			if (SpinBox)
-				MinifigLayout->addWidget(SpinBox, Row, Column + ColumnCount - 1);
+				MinifigureBuilderLayout->addWidget(SpinBox, Row, Column + ColumnCount - 1);
 
 			Row++;
 		};
@@ -102,9 +102,9 @@ swMinifigureDialog::swMinifigureDialog(QWidget* Parent)
 			AddRow(RightRow, 4, 3);
 	}
 
-	MinifigLayout->setColumnStretch(1, 1);
-	MinifigLayout->setColumnStretch(3, 1);
-	MinifigLayout->setColumnStretch(5, 1);
+	MinifigureBuilderLayout->setColumnStretch(1, 1);
+	MinifigureBuilderLayout->setColumnStretch(3, 1);
+	MinifigureBuilderLayout->setColumnStretch(5, 1);
 
 	// The preview is as tall as the stacked section rows beside it.
 	QFrame* PreviewFrame = new QFrame(ui->widget);
@@ -112,18 +112,18 @@ swMinifigureDialog::swMinifigureDialog(QWidget* Parent)
 	PreviewFrame->setFrameShape(QFrame::NoFrame);
 	PreviewFrame->setFrameShadow(QFrame::Plain);
 
-	MinifigLayout->addWidget(PreviewFrame, FirstSideRow, 3, qMax(LeftRow, RightRow) - FirstSideRow, 1);
+	MinifigureBuilderLayout->addWidget(PreviewFrame, FirstSideRow, 3, qMax(LeftRow, RightRow) - FirstSideRow, 1);
 
 	QGridLayout* PreviewLayout = new QGridLayout(PreviewFrame);
 	PreviewLayout->setContentsMargins(0, 0, 0, 0);
 
-	mMinifigWizard = new swMinifigureWizard();
-	mView = new swView(swViewType::Minifig, mMinifigWizard->GetModel());
+	mMinifigureBuilder = new swMinifigureBuilder();
+	mView = new swView(swViewType::MinifigureBuilder, mMinifigureBuilder->GetModel());
 
 	swViewWidget* ViewWidget = new swViewWidget(nullptr, mView);
-	ViewWidget->setAccessibleName(tr("Minifigure Preview"));
+	ViewWidget->setAccessibleName(tr("Minifigure Builder Preview"));
 	ViewWidget->setToolTip(tr("Preview of the chosen pieces, colors, and pose."));
-	ViewWidget->setWhatsThis(tr("<p><b>Minifigure Preview</b></p><p>Check the assembled minifigure as you change pieces, colors, or angles. Choose OK to add this configuration to the current model.</p>"));
+	ViewWidget->setWhatsThis(tr("<p><b>Minifigure Builder Preview</b></p><p>Check the assembled minifigure as you change pieces, colors, or angles. Choose Add to Model to add it to the current model.</p>"));
 	ViewWidget->setMinimumWidth(100);
 	ViewWidget->installEventFilter(this);
 	PreviewLayout->addWidget(ViewWidget);
@@ -131,8 +131,8 @@ swMinifigureDialog::swMinifigureDialog(QWidget* Parent)
 
 	mView->MakeCurrent();
 
-	mCurrentTemplateName = swMinifigureWizard::GetDefaultTemplateName();
-	mMinifigWizard->LoadTemplate(mCurrentTemplateName);
+	mCurrentTemplateName = swMinifigureBuilder::GetDefaultTemplateName();
+	mMinifigureBuilder->LoadTemplate(mCurrentTemplateName);
 
 	for (int ItemIndex = 0; ItemIndex < SW_MINIFIGURE_ITEM_COUNT; ItemIndex++)
 	{
@@ -141,12 +141,12 @@ swMinifigureDialog::swMinifigureDialog(QWidget* Parent)
 		swColorPicker* ColorPicker = mColorPickers[ItemIndex];
 		QSignalBlocker ColorPickerBlocker(ColorPicker);
 
-		ColorPicker->SetCurrentColor(mMinifigWizard->mMinifig.ColorIndices[ItemIndex]);
+		ColorPicker->SetCurrentColor(mMinifigureBuilder->mMinifigure.ColorIndices[ItemIndex]);
 	}
 
 	UpdateTemplateCombo();
 
-	mMinifigWizard->Calculate();
+	mMinifigureBuilder->Calculate();
 	mView->GetCamera()->SetViewpoint(swViewpoint::Front);
 	mView->ZoomExtents(swGeometryBoundsMode::IncludeFallback, false);
 
@@ -168,7 +168,7 @@ swMinifigureDialog::swMinifigureDialog(QWidget* Parent)
 	QToolButton* AddButton = new QToolButton(TemplateButtons);
 	AddButton->setText(tr("Add to Model"));
 	AddButton->setToolTip(tr("Add this minifigure to the current model"));
-	connect(AddButton, &QToolButton::clicked, this, &swMinifigureDialog::AddToModel);
+	connect(AddButton, &QToolButton::clicked, this, &swMinifigureBuilderWidget::AddToModel);
 	RowButtons.push_back(AddButton);
 
 	for (QToolButton* Button : RowButtons)
@@ -183,54 +183,54 @@ swMinifigureDialog::swMinifigureDialog(QWidget* Parent)
 	// The options button holds the preview rendering settings, like the other preview panels.
 	QToolButton* OptionsButton = new QToolButton(ui->TemplateGroup);
 	OptionsButton->setIcon(QIcon(":/resources/gear_in.png"));
-	OptionsButton->setToolTip(tr("Configure the minifigure preview rendering."));
-	OptionsButton->setAccessibleName(tr("Minifigure Preview Options"));
+	OptionsButton->setToolTip(tr("Configure the minifigure builder preview rendering."));
+	OptionsButton->setAccessibleName(tr("Minifigure Builder Preview Options"));
 	OptionsButton->setPopupMode(QToolButton::InstantPopup);
 	swSetupPanelButton(OptionsButton);
 	ui->horizontalLayout_2->addWidget(OptionsButton);
 
 	QMenu* OptionsMenu = new QMenu(OptionsButton);
 	OptionsButton->setMenu(OptionsMenu);
-	connect(OptionsMenu, &QMenu::aboutToShow, this, &swMinifigureDialog::OptionsMenuAboutToShow);
+	connect(OptionsMenu, &QMenu::aboutToShow, this, &swMinifigureBuilderWidget::OptionsMenuAboutToShow);
 
-	connect(ui->TemplateComboBox, &QComboBox::currentTextChanged, this, &swMinifigureDialog::TemplateComboBoxCurrentTextChanged);
-	connect(ui->TemplateSaveButton, &QToolButton::clicked, this, &swMinifigureDialog::TemplateSaveButtonClicked);
-	connect(ui->TemplateDeleteButton, &QToolButton::clicked, this, &swMinifigureDialog::TemplateDeleteButtonClicked);
-	connect(ui->TemplateImportButton, &QToolButton::clicked, this, &swMinifigureDialog::TemplateImportButtonClicked);
-	connect(ui->TemplateExportButton, &QToolButton::clicked, this, &swMinifigureDialog::TemplateExportButtonClicked);
+	connect(ui->TemplateComboBox, &QComboBox::currentTextChanged, this, &swMinifigureBuilderWidget::TemplateComboBoxCurrentTextChanged);
+	connect(ui->TemplateSaveButton, &QToolButton::clicked, this, &swMinifigureBuilderWidget::TemplateSaveButtonClicked);
+	connect(ui->TemplateDeleteButton, &QToolButton::clicked, this, &swMinifigureBuilderWidget::TemplateDeleteButtonClicked);
+	connect(ui->TemplateImportButton, &QToolButton::clicked, this, &swMinifigureBuilderWidget::TemplateImportButtonClicked);
+	connect(ui->TemplateExportButton, &QToolButton::clicked, this, &swMinifigureBuilderWidget::TemplateExportButtonClicked);
 }
 
-void swMinifigureDialog::AddToModel()
+void swMinifigureBuilderWidget::AddToModel()
 {
 	swModel* Model = gMainWindow ? gMainWindow->GetActiveModel() : nullptr;
 
 	if (Model)
-		Model->AddMinifig(mMinifigWizard->mMinifig);
+		Model->AddMinifigure(mMinifigureBuilder->mMinifigure);
 }
 
-bool swMinifigureDialog::eventFilter(QObject* Object, QEvent* Event)
+bool swMinifigureBuilderWidget::eventFilter(QObject* Object, QEvent* Event)
 {
 	// Fit the figure again whenever the preview changes size so it is never cut off.
 	if (Object == mViewWidget && Event->type() == QEvent::Resize)
-		QTimer::singleShot(0, this, &swMinifigureDialog::FitPreview);
+		QTimer::singleShot(0, this, &swMinifigureBuilderWidget::FitPreview);
 
 	return QWidget::eventFilter(Object, Event);
 }
 
-void swMinifigureDialog::FitPreview()
+void swMinifigureBuilderWidget::FitPreview()
 {
 	// The whole figure stays in view, whatever pieces and angles are chosen.
 	mView->ZoomExtents(swGeometryBoundsMode::IncludeFallback, false);
 	mView->Redraw();
 }
 
-void swMinifigureDialog::UpdatePieceButton(int ItemIndex)
+void swMinifigureBuilderWidget::UpdatePieceButton(int ItemIndex)
 {
 	QToolButton* PieceButton = mPieceButtons[ItemIndex];
-	const swPieceData* PieceData = mMinifigWizard->mMinifig.PieceData[ItemIndex].Get();
+	const swPieceData* PieceData = mMinifigureBuilder->mMinifigure.PieceData[ItemIndex].Get();
 	QString Description;
 
-	for (const swMinifigurePieceInformation& PieceInfo : mMinifigWizard->mSettings[ItemIndex])
+	for (const swMinifigurePieceInformation& PieceInfo : mMinifigureBuilder->mSettings[ItemIndex])
 	{
 		if (PieceData && PieceInfo.PieceData == PieceData)
 		{
@@ -248,21 +248,21 @@ void swMinifigureDialog::UpdatePieceButton(int ItemIndex)
 	PieceButton->setToolTip(Description.isEmpty() ? tr("Choose the piece for %1, or None to omit it.").arg(mSectionNames[ItemIndex]) : tr("%1: %2").arg(mSectionNames[ItemIndex], Description));
 }
 
-void swMinifigureDialog::OptionsMenuAboutToShow()
+void swMinifigureBuilderWidget::OptionsMenuAboutToShow()
 {
 	QMenu* Menu = qobject_cast<QMenu*>(sender());
 	Menu->clear();
 
-	gMainWindow->AddRenderTargetActions(Menu, swRenderTarget::Minifig);
+	gMainWindow->AddRenderTargetActions(Menu, swRenderTarget::MinifigureBuilder);
 }
 
-swMinifigureDialog::~swMinifigureDialog()
+swMinifigureBuilderWidget::~swMinifigureBuilderWidget()
 {
-	delete mMinifigWizard;
+	delete mMinifigureBuilder;
 	delete ui;
 }
 
-void swMinifigureDialog::UpdateTemplateCombo()
+void swMinifigureBuilderWidget::UpdateTemplateCombo()
 {
 	QSignalBlocker Blocker(ui->TemplateComboBox);
 
@@ -270,9 +270,9 @@ void swMinifigureDialog::UpdateTemplateCombo()
 
 	QString CurrentName = mCurrentTemplateName;
 
-	for (const auto& [Name, Template] : mMinifigWizard->GetTemplates())
+	for (const auto& [Name, Template] : mMinifigureBuilder->GetTemplates())
 	{
-		if (Name == swMinifigureWizard::GetDefaultTemplateName())
+		if (Name == swMinifigureBuilder::GetDefaultTemplateName())
 			continue;
 
 		if (mCurrentTemplateModified && Name == mCurrentTemplateName)
@@ -289,7 +289,7 @@ void swMinifigureDialog::UpdateTemplateCombo()
 	// The built-in template keeps its stored name and is shown as Default Template.
 	ui->TemplateComboBox->addItem(tr("Default Template"));
 
-	if (CurrentName == swMinifigureWizard::GetDefaultTemplateName())
+	if (CurrentName == swMinifigureBuilder::GetDefaultTemplateName())
 		CurrentName = tr("Default Template");
 
 	// Without a current template the selector shows its name as a placeholder.
@@ -299,10 +299,10 @@ void swMinifigureDialog::UpdateTemplateCombo()
 		ui->TemplateComboBox->setCurrentText(CurrentName);
 }
 
-void swMinifigureDialog::TemplateComboBoxCurrentTextChanged(const QString& DisplayName)
+void swMinifigureBuilderWidget::TemplateComboBoxCurrentTextChanged(const QString& DisplayName)
 {
-	const QString TemplateName = DisplayName == tr("Default Template") ? swMinifigureWizard::GetDefaultTemplateName() : DisplayName;
-	const auto& Templates = mMinifigWizard->GetTemplates();
+	const QString TemplateName = DisplayName == tr("Default Template") ? swMinifigureBuilder::GetDefaultTemplateName() : DisplayName;
+	const auto& Templates = mMinifigureBuilder->GetTemplates();
 	const auto& Position = Templates.find(TemplateName);
 
 	if (Position == Templates.end())
@@ -317,7 +317,7 @@ void swMinifigureDialog::TemplateComboBoxCurrentTextChanged(const QString& Displ
 
 	mView->MakeCurrent();
 
-	mMinifigWizard->LoadTemplate(TemplateName);
+	mMinifigureBuilder->LoadTemplate(TemplateName);
 
 	for (int PartIdx = 0; PartIdx < SW_MINIFIGURE_ITEM_COUNT; PartIdx++)
 	{
@@ -340,7 +340,7 @@ void swMinifigureDialog::TemplateComboBoxCurrentTextChanged(const QString& Displ
 	FitPreview();
 }
 
-void swMinifigureDialog::TemplateSaveButtonClicked()
+void swMinifigureBuilderWidget::TemplateSaveButtonClicked()
 {
 	QString CurrentName = mCurrentTemplateName;
 	bool Ok;
@@ -355,13 +355,13 @@ void swMinifigureDialog::TemplateSaveButtonClicked()
 		return;
 	}
 
-	if (TemplateName == swMinifigureWizard::GetDefaultTemplateName())
+	if (TemplateName == swMinifigureBuilder::GetDefaultTemplateName())
 	{
 		QMessageBox::information(this, tr("Save Template"), tr("Cannot overwrite the default template."));
 		return;
 	}
 
-	if (mMinifigWizard->GetTemplates().count(TemplateName))
+	if (mMinifigureBuilder->GetTemplates().count(TemplateName))
 	{
 		QString Question = tr("Are you sure you want to overwrite the template '%1'?").arg(TemplateName);
 		if (QMessageBox::question(this, tr("Overwrite Template"), Question, QMessageBox::Yes | QMessageBox::No) != QMessageBox::Yes)
@@ -372,13 +372,13 @@ void swMinifigureDialog::TemplateSaveButtonClicked()
 
 	for (int ItemIndex = 0; ItemIndex < SW_MINIFIGURE_ITEM_COUNT; ItemIndex++)
 	{
-		Template.Parts[ItemIndex] = mMinifigWizard->mSettings[ItemIndex][mMinifigWizard->GetSelectionIndex(ItemIndex)].PieceData->mFileName;
+		Template.Parts[ItemIndex] = mMinifigureBuilder->mSettings[ItemIndex][mMinifigureBuilder->GetSelectionIndex(ItemIndex)].PieceData->mFileName;
 		Template.ColorCodes[ItemIndex] = mColorPickers[ItemIndex]->GetCurrentColorCode();
 		QDoubleSpinBox* AngleSpinBox = mSpinBoxes[ItemIndex];
 		Template.Angles[ItemIndex] = AngleSpinBox ? AngleSpinBox->value() : 0.0f;
 	}
 
-	mMinifigWizard->SaveTemplate(TemplateName, Template);
+	mMinifigureBuilder->SaveTemplate(TemplateName, Template);
 
 	mCurrentTemplateName = TemplateName;
 	mCurrentTemplateModified = false;
@@ -386,9 +386,9 @@ void swMinifigureDialog::TemplateSaveButtonClicked()
 	UpdateTemplateCombo();
 }
 
-void swMinifigureDialog::TemplateDeleteButtonClicked()
+void swMinifigureBuilderWidget::TemplateDeleteButtonClicked()
 {
-	if (mCurrentTemplateName.isEmpty() || mCurrentTemplateName == swMinifigureWizard::GetDefaultTemplateName())
+	if (mCurrentTemplateName.isEmpty() || mCurrentTemplateName == swMinifigureBuilder::GetDefaultTemplateName())
 		return;
 
 	QString Template = mCurrentTemplateName;
@@ -397,7 +397,7 @@ void swMinifigureDialog::TemplateDeleteButtonClicked()
 	if (QMessageBox::question(this, tr("Delete Template"), Question, QMessageBox::Yes | QMessageBox::No) != QMessageBox::Yes)
 		return;
 
-	mMinifigWizard->DeleteTemplate(Template);
+	mMinifigureBuilder->DeleteTemplate(Template);
 
 	mCurrentTemplateName.clear();
 	mCurrentTemplateModified = false;
@@ -405,9 +405,9 @@ void swMinifigureDialog::TemplateDeleteButtonClicked()
 	UpdateTemplateCombo();
 }
 
-void swMinifigureDialog::TemplateImportButtonClicked()
+void swMinifigureBuilderWidget::TemplateImportButtonClicked()
 {
-	QString FileName = QFileDialog::getOpenFileName(this, tr("Import Templates"), "", tr("Minifig Template Files (*.minifig);;All Files (*.*)"));
+	QString FileName = QFileDialog::getOpenFileName(this, tr("Import Templates"), "", tr("Minifigure Template Files (*.minifig);;All Files (*.*)"));
 
 	if (FileName.isEmpty())
 		return;
@@ -421,14 +421,14 @@ void swMinifigureDialog::TemplateImportButtonClicked()
 	}
 
 	QByteArray FileData = File.readAll();
-	mMinifigWizard->AddTemplatesJson(FileData);
+	mMinifigureBuilder->AddTemplatesJson(FileData);
 
 	UpdateTemplateCombo();
 }
 
-void swMinifigureDialog::TemplateExportButtonClicked()
+void swMinifigureBuilderWidget::TemplateExportButtonClicked()
 {
-	QString FileName = QFileDialog::getSaveFileName(this, tr("Export Templates"), "", tr("Minifig Template Files (*.minifig);;All Files (*.*)"));
+	QString FileName = QFileDialog::getSaveFileName(this, tr("Export Templates"), "", tr("Minifigure Template Files (*.minifig);;All Files (*.*)"));
 
 	if (FileName.isEmpty())
 		return;
@@ -441,19 +441,19 @@ void swMinifigureDialog::TemplateExportButtonClicked()
 		return;
 	}
 
-	QByteArray Templates = mMinifigWizard->GetTemplatesJson();
+	QByteArray Templates = mMinifigureBuilder->GetTemplatesJson();
 	File.write(Templates);
 }
 
-void swMinifigureDialog::SetCurrentTemplateModified()
+void swMinifigureBuilderWidget::SetCurrentTemplateModified()
 {
-	if (mCurrentTemplateName == swMinifigureWizard::GetDefaultTemplateName())
+	if (mCurrentTemplateName == swMinifigureBuilder::GetDefaultTemplateName())
 		mCurrentTemplateName.clear();
 	else
 		mCurrentTemplateModified = true;
 }
 
-void swMinifigureDialog::PieceButtonClicked()
+void swMinifigureBuilderWidget::PieceButtonClicked()
 {
 	QToolButton* PieceButton = qobject_cast<QToolButton*>(sender());
 
@@ -466,19 +466,19 @@ void swMinifigureDialog::PieceButtonClicked()
 		return;
 
 	int ItemIndex = static_cast<int>(std::distance(mPieceButtons.begin(), Search));
-	swPieceData* CurrentPieceData = mMinifigWizard->mMinifig.PieceData[ItemIndex].Get();
+	swPieceData* CurrentPieceData = mMinifigureBuilder->mMinifigure.PieceData[ItemIndex].Get();
 
 	QPoint Position = PieceButton->mapToGlobal(PieceButton->rect().bottomLeft());
 	std::vector<std::pair<swPieceData*, std::string>> Parts;
 
-	Parts.reserve(mMinifigWizard->mSettings[ItemIndex].size());
+	Parts.reserve(mMinifigureBuilder->mSettings[ItemIndex].size());
 	Parts.emplace_back(nullptr, tr("None").toStdString());
 
-	for (const swMinifigurePieceInformation& Setting : mMinifigWizard->mSettings[ItemIndex])
+	for (const swMinifigurePieceInformation& Setting : mMinifigureBuilder->mSettings[ItemIndex])
 		if (Setting.PieceData)
 			Parts.emplace_back(Setting.PieceData, Setting.Description);
 
-	int ColorIndex = mMinifigWizard->mMinifig.ColorIndices[ItemIndex];
+	int ColorIndex = mMinifigureBuilder->mMinifigure.ColorIndices[ItemIndex];
 
 	std::optional<swPieceData*> Result = swShowPartSelectionPopup(CurrentPieceData, Parts, ColorIndex, PieceButton, Position);
 
@@ -491,13 +491,13 @@ void swMinifigureDialog::PieceButtonClicked()
 	UpdateTemplateCombo();
 
 	mView->MakeCurrent();
-	mMinifigWizard->SetPieceData(ItemIndex, NewPiece);
+	mMinifigureBuilder->SetPieceData(ItemIndex, NewPiece);
 	FitPreview();
 
 	UpdatePieceButton(ItemIndex);
 }
 
-void swMinifigureDialog::ColorChanged(int Index)
+void swMinifigureBuilderWidget::ColorChanged(int Index)
 {
 	std::array<swColorPicker*, SW_MINIFIGURE_ITEM_COUNT>::iterator Search = std::find(mColorPickers.begin(), mColorPickers.end(), sender());
 
@@ -509,11 +509,11 @@ void swMinifigureDialog::ColorChanged(int Index)
 
 	int ItemIndex = static_cast<int>(std::distance(mColorPickers.begin(), Search));
 
-	mMinifigWizard->SetColorIndex(ItemIndex, Index);
+	mMinifigureBuilder->SetColorIndex(ItemIndex, Index);
 	mView->Redraw();
 }
 
-void swMinifigureDialog::AngleChanged(double Value)
+void swMinifigureBuilderWidget::AngleChanged(double Value)
 {
 	std::array<swDoubleSpinBox*, SW_MINIFIGURE_ITEM_COUNT>::iterator Search = std::find(mSpinBoxes.begin(), mSpinBoxes.end(), sender());
 
@@ -525,6 +525,6 @@ void swMinifigureDialog::AngleChanged(double Value)
 
 	int ItemIndex = static_cast<int>(std::distance(mSpinBoxes.begin(), Search));
 
-	mMinifigWizard->SetAngle(ItemIndex, Value);
+	mMinifigureBuilder->SetAngle(ItemIndex, Value);
 	FitPreview();
 }

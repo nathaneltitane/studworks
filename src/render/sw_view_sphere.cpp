@@ -39,7 +39,7 @@ void swViewSphere::UpdateSettings()
 		mLocation = Preferences.mPreviewViewSphereLocation;
 		break;
 
-	case swViewType::Minifig:
+	case swViewType::MinifigureBuilder:
 	case swViewType::PartsList:
 	case swViewType::Count:
 		break;

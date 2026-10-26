@@ -1046,8 +1046,8 @@ void swView::OnDraw()
 		RenderTarget = swRenderTarget::Pieces;
 	else if (mViewType == swViewType::Preview)
 		RenderTarget = swRenderTarget::Preview;
-	else if (mViewType == swViewType::Minifig)
-		RenderTarget = swRenderTarget::Minifig;
+	else if (mViewType == swViewType::MinifigureBuilder)
+		RenderTarget = swRenderTarget::MinifigureBuilder;
 
 	const swRenderSettings RenderSettings = Preferences.GetRenderSettings(RenderTarget);
 	swShadingMode ShadingMode = RenderSettings.ShadingMode;
@@ -1427,7 +1427,7 @@ void swView::DrawAxes() const
 				return;
 			break;
 
-		case swViewType::Minifig:
+		case swViewType::MinifigureBuilder:
 		case swViewType::PartsList:
 		case swViewType::Count:
 			return;
@@ -3738,15 +3738,15 @@ void swView::OnMouseMove()
 
 	case swTrackTool::OrbitY:
 		// The minifigure preview only turns around its vertical axis.
-		if (mViewType != swViewType::Minifig)
+		if (mViewType != swViewType::MinifigureBuilder)
 			ActiveModel->UpdateOrbitTool(mCamera, 0.0f, 0.1f * MouseSensitivity * (mMouseY - mMouseDownY));
 		break;
 
 	case swTrackTool::OrbitXY:
-		ActiveModel->UpdateOrbitTool(mCamera, 0.1f * MouseSensitivity * (mMouseX - mMouseDownX), mViewType == swViewType::Minifig ? 0.0f : 0.1f * MouseSensitivity * (mMouseY - mMouseDownY));
+		ActiveModel->UpdateOrbitTool(mCamera, 0.1f * MouseSensitivity * (mMouseX - mMouseDownX), mViewType == swViewType::MinifigureBuilder ? 0.0f : 0.1f * MouseSensitivity * (mMouseY - mMouseDownY));
 
 		// Keep the whole minifigure in view while it turns.
-		if (mViewType == swViewType::Minifig)
+		if (mViewType == swViewType::MinifigureBuilder)
 			ZoomExtents(swGeometryBoundsMode::IncludeFallback, false);
 		break;
 

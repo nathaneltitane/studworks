@@ -10,7 +10,7 @@ struct swPreferencesDialogOptions
 
 	QString LibraryPath;
 	QString ColorConfigPath;
-	QString MinifigSettingsPath;
+	QString MinifigureBuilderSettingsPath;
 	QString POVRayPath;
 	QString LGEOPath;
 	QString DefaultAuthor;
@@ -61,7 +61,7 @@ private slots:
 	void PartsLibraryBrowseClicked();
 	void PartsArchiveBrowseClicked();
 	void ColorConfigBrowseButtonClicked();
-	void MinifigSettingsBrowseButtonClicked();
+	void MinifigureBuilderSettingsBrowseButtonClicked();
 	void PovrayExecutableBrowseClicked();
 	void LgeoPathBrowseClicked();
 	void ColorThemeCurrentIndexChanged(int Index);

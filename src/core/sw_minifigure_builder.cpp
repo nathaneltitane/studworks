@@ -1,5 +1,5 @@
 #include "sw_global.h"
-#include "sw_minifigure.h"
+#include "sw_minifigure_builder.h"
 #include "sw_colors.h"
 #include "sw_piece_data.h"
 #include "sw_model.h"
@@ -9,7 +9,7 @@
 #include "sw_profile.h"
 #include "sw_string.h"
 
-const char* swMinifigureWizard::mSectionNames[SW_MINIFIGURE_ITEM_COUNT] =
+const char* swMinifigureBuilder::mSectionNames[SW_MINIFIGURE_ITEM_COUNT] =
 {
 	"HATS",   // SW_MINIFIGURE_HATS
 	"HATS2",  // SW_MINIFIGURE_HATS2
@@ -30,7 +30,7 @@ const char* swMinifigureWizard::mSectionNames[SW_MINIFIGURE_ITEM_COUNT] =
 	"LLEGA",  // SW_MINIFIGURE_LEFT_LEG_ACCESSORY
 };
 
-swMinifigureWizard::swMinifigureWizard()
+swMinifigureBuilder::swMinifigureBuilder()
 	: mModel(new swModel(QString(), nullptr, false))
 {
 	LoadSettings();
@@ -49,25 +49,25 @@ swMinifigureWizard::swMinifigureWizard()
 
 	for (int PartIndex = 0; PartIndex < SW_MINIFIGURE_ITEM_COUNT; PartIndex++)
 	{
-		mMinifig.ColorIndices[PartIndex] = gDefaultColor;
-		mMinifig.Angles[PartIndex] = 0.0f;
-		mMinifig.Matrices[PartIndex] = swMatrix44Identity();
+		mMinifigure.ColorIndices[PartIndex] = gDefaultColor;
+		mMinifigure.Angles[PartIndex] = 0.0f;
+		mMinifigure.Matrices[PartIndex] = swMatrix44Identity();
 	}
 }
 
-swMinifigureWizard::~swMinifigureWizard()
+swMinifigureBuilder::~swMinifigureBuilder()
 {
 	SaveTemplates();
 }
 
-QString swMinifigureWizard::GetDefaultTemplateName()
+QString swMinifigureBuilder::GetDefaultTemplateName()
 {
-	return QCoreApplication::translate("swMinifigureWizard", "Default");
+	return QCoreApplication::translate("swMinifigureBuilder", "Default");
 }
 
-void swMinifigureWizard::LoadSettings()
+void swMinifigureBuilder::LoadSettings()
 {
-	QString CustomSettingsPath = swGetProfileString(SW_PROFILE_MINIFIGURE_SETTINGS);
+	QString CustomSettingsPath = swGetProfileString(SW_PROFILE_MINIFIGURE_BUILDER_SETTINGS);
 
 	if (!CustomSettingsPath.isEmpty())
 	{
@@ -80,13 +80,13 @@ void swMinifigureWizard::LoadSettings()
 		}
 	}
 
-	swDiskFile MinifigFile(":/resources/minifig.ini");
+	swDiskFile MinifigureBuilderSettingsFile(":/resources/minifig.ini");
 
-	if (MinifigFile.Open(QIODevice::ReadOnly))
-		ParseSettings(MinifigFile);
+	if (MinifigureBuilderSettingsFile.Open(QIODevice::ReadOnly))
+		ParseSettings(MinifigureBuilderSettingsFile);
 }
 
-void swMinifigureWizard::ParseSettings(swFile& Settings)
+void swMinifigureBuilder::ParseSettings(swFile& Settings)
 {
 	for (int SectionIndex = 0; SectionIndex < SW_MINIFIGURE_ITEM_COUNT; SectionIndex++)
 	{
@@ -111,12 +111,12 @@ void swMinifigureWizard::ParseSettings(swFile& Settings)
 
 		if (!FoundSection)
 		{
-			swMinifigurePieceInformation MinifigInfo;
-			swstrcpy(MinifigInfo.Description, "None");
-			MinifigInfo.Offset = swMatrix44Identity();
-			MinifigInfo.PieceData = nullptr;
+			swMinifigurePieceInformation MinifigurePieceInformation;
+			swstrcpy(MinifigurePieceInformation.Description, "None");
+			MinifigurePieceInformation.Offset = swMatrix44Identity();
+			MinifigurePieceInformation.PieceData = nullptr;
 
-			InfoArray.emplace_back(std::move(MinifigInfo));
+			InfoArray.emplace_back(std::move(MinifigurePieceInformation));
 			continue;
 		}
 
@@ -173,17 +173,17 @@ void swMinifigureWizard::ParseSettings(swFile& Settings)
 			OffsetMatrix[14] = -Mat[10];
 			OffsetMatrix[13] =  Mat[11];
 
-			swMinifigurePieceInformation MinifigInfo;
-			swstrcpy(MinifigInfo.Description, DescriptionStart);
-			MinifigInfo.Offset = Offset;
-			MinifigInfo.PieceData = PieceData;
+			swMinifigurePieceInformation MinifigurePieceInformation;
+			swstrcpy(MinifigurePieceInformation.Description, DescriptionStart);
+			MinifigurePieceInformation.Offset = Offset;
+			MinifigurePieceInformation.PieceData = PieceData;
 
-			InfoArray.emplace_back(std::move(MinifigInfo));
+			InfoArray.emplace_back(std::move(MinifigurePieceInformation));
 		}
 	}
 }
 
-void swMinifigureWizard::LoadTemplate(const QString& TemplateName)
+void swMinifigureBuilder::LoadTemplate(const QString& TemplateName)
 {
 	const std::map<QString, swMinifigureTemplate>::iterator& TemplateIt = mTemplates.find(TemplateName);
 
@@ -195,19 +195,19 @@ void swMinifigureWizard::LoadTemplate(const QString& TemplateName)
 
 	for (int PartIndex = 0; PartIndex < SW_MINIFIGURE_ITEM_COUNT; PartIndex++)
 	{
-		mMinifig.ColorIndices[PartIndex] = swGetColorIndex(Template.ColorCodes[PartIndex]);
-		mMinifig.Angles[PartIndex] = Template.Angles[PartIndex];
-		mMinifig.Matrices[PartIndex] = swMatrix44Identity();
+		mMinifigure.ColorIndices[PartIndex] = swGetColorIndex(Template.ColorCodes[PartIndex]);
+		mMinifigure.Angles[PartIndex] = Template.Angles[PartIndex];
+		mMinifigure.Matrices[PartIndex] = swMatrix44Identity();
 
-		mMinifig.PieceData[PartIndex] = Library->AcquirePieceData(Template.Parts[PartIndex].toLatin1(), nullptr, false, false);
+		mMinifigure.PieceData[PartIndex] = Library->AcquirePieceData(Template.Parts[PartIndex].toLatin1(), nullptr, false, false);
 
-		if (mMinifig.PieceData[PartIndex])
-			Library->RequestPieceDataLoad(mMinifig.PieceData[PartIndex].Get(), swLoadPriority::Normal);
+		if (mMinifigure.PieceData[PartIndex])
+			Library->RequestPieceDataLoad(mMinifigure.PieceData[PartIndex].Get(), swLoadPriority::Normal);
 	}
 
 	std::vector<swPieceDataReference> RequiredPieceData;
 
-	for (const swPieceDataReference& PieceData : mMinifig.PieceData)
+	for (const swPieceDataReference& PieceData : mMinifigure.PieceData)
 		if (PieceData)
 			RequiredPieceData.push_back(PieceData);
 
@@ -216,17 +216,17 @@ void swMinifigureWizard::LoadTemplate(const QString& TemplateName)
 	Calculate();
 }
 
-void swMinifigureWizard::SaveTemplate(const QString& TemplateName, const swMinifigureTemplate& Template)
+void swMinifigureBuilder::SaveTemplate(const QString& TemplateName, const swMinifigureTemplate& Template)
 {
 	mTemplates[TemplateName] = Template;
 }
 
-void swMinifigureWizard::DeleteTemplate(const QString& TemplateName)
+void swMinifigureBuilder::DeleteTemplate(const QString& TemplateName)
 {
 	mTemplates.erase(TemplateName);
 }
 
-void swMinifigureWizard::AddTemplatesJson(const QByteArray& TemplateData)
+void swMinifigureBuilder::AddTemplatesJson(const QByteArray& TemplateData)
 {
 	QJsonDocument Document = QJsonDocument::fromJson(TemplateData);
 	QJsonObject RootObject = Document.object();
@@ -260,7 +260,7 @@ void swMinifigureWizard::AddTemplatesJson(const QByteArray& TemplateData)
 	}
 }
 
-QByteArray swMinifigureWizard::GetTemplatesJson() const
+QByteArray swMinifigureBuilder::GetTemplatesJson() const
 {
 	QJsonObject TemplatesObject;
 
@@ -290,7 +290,7 @@ QByteArray swMinifigureWizard::GetTemplatesJson() const
 	return QJsonDocument(RootObject).toJson();
 }
 
-void swMinifigureWizard::LoadTemplates()
+void swMinifigureBuilder::LoadTemplates()
 {
 	mTemplates.clear();
 
@@ -301,21 +301,21 @@ void swMinifigureWizard::LoadTemplates()
 	AddTemplatesJson(TemplateData);
 }
 
-void swMinifigureWizard::SaveTemplates()
+void swMinifigureBuilder::SaveTemplates()
 {
 	QSettings Settings;
 	Settings.beginGroup("Minifig");
 	Settings.setValue("Templates", GetTemplatesJson());
 }
 
-void swMinifigureWizard::Calculate()
+void swMinifigureBuilder::Calculate()
 {
 	float HeadOffset = 0.0f;
 	swMatrix44 Root, Mat, Mat2;
 
-	const swPieceDataReference* PieceData = mMinifig.PieceData;
-	const float* Angles = mMinifig.Angles;
-	swMatrix44* Matrices = mMinifig.Matrices;
+	const swPieceDataReference* PieceData = mMinifigure.PieceData;
+	const float* Angles = mMinifigure.Angles;
+	swMatrix44* Matrices = mMinifigure.Matrices;
 
 	const bool DroidTorso = PieceData[SW_MINIFIGURE_BODY] && !qstricmp(PieceData[SW_MINIFIGURE_BODY]->mFileName, "30375.dat");
 	const bool SkeletonTorso = PieceData[SW_MINIFIGURE_BODY] && !qstricmp(PieceData[SW_MINIFIGURE_BODY]->mFileName, "6260.dat");
@@ -476,40 +476,40 @@ void swMinifigureWizard::Calculate()
 		Matrices[SW_MINIFIGURE_LEFT_LEG_ACCESSORY] = swMultiply(Mat, Matrices[SW_MINIFIGURE_LEFT_LEG]);
 	}
 
-	mModel->SetMinifig(mMinifig);
+	mModel->SetMinifigure(mMinifigure);
 }
 
-int swMinifigureWizard::GetSelectionIndex(int Type) const
+int swMinifigureBuilder::GetSelectionIndex(int Type) const
 {
 	const std::vector<swMinifigurePieceInformation>& InfoArray = mSettings[Type];
 
 	for (size_t Index = 0; Index < InfoArray.size(); Index++)
-		if (InfoArray[Index].PieceData == mMinifig.PieceData[Type])
+		if (InfoArray[Index].PieceData == mMinifigure.PieceData[Type])
 			return (int)Index;
 
 	return 0;
 }
 
-void swMinifigureWizard::SetPieceData(int Type, swPieceData* PieceData)
+void swMinifigureBuilder::SetPieceData(int Type, swPieceData* PieceData)
 {
-	mMinifig.PieceData[Type] = swPieceDataReference(PieceData);
+	mMinifigure.PieceData[Type] = swPieceDataReference(PieceData);
 
-	if (mMinifig.PieceData[Type])
-		swGetPiecesLibrary()->WaitForPieceData(mMinifig.PieceData[Type]);
+	if (mMinifigure.PieceData[Type])
+		swGetPiecesLibrary()->WaitForPieceData(mMinifigure.PieceData[Type]);
 
 	Calculate();
 }
 
-void swMinifigureWizard::SetColorIndex(int Type, int ColorIndex)
+void swMinifigureBuilder::SetColorIndex(int Type, int ColorIndex)
 {
-	mMinifig.ColorIndices[Type] = ColorIndex;
+	mMinifigure.ColorIndices[Type] = ColorIndex;
 
 	Calculate();
 }
 
-void swMinifigureWizard::SetAngle(int Type, float Angle)
+void swMinifigureBuilder::SetAngle(int Type, float Angle)
 {
-	mMinifig.Angles[Type] = Angle;
+	mMinifigure.Angles[Type] = Angle;
 
 	Calculate();
 }
