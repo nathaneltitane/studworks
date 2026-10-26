@@ -347,7 +347,6 @@ protected:
 	void SetActiveView(swView* ActiveView);
 	void ToggleDockWidget(QWidget* DockWidget);
 	void SplitView(Qt::Orientation Orientation);
-	void ShowUpdatesDialog();
 	void ShowAboutDialog();
 	void ShowHTMLDialog();
 	void ShowExportPOVRayDialog();

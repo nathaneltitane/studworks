@@ -69,7 +69,7 @@ typedef quint32 swStep;
 #define SW_VERSION_MAJOR 26
 #define SW_VERSION_MINOR 9
 #define SW_VERSION_PATCH 0
-#define SW_VERSION_TEXT "2026-10-25"
+#define SW_VERSION_TEXT "2026-10-26"
 
 // Forward declarations.
 class Project;

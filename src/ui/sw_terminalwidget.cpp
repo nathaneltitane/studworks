@@ -39,7 +39,7 @@ bool swTerminalWidget::eventFilter(QObject* Object, QEvent* Event)
 	if (!Widget || !isAncestorOf(Widget))
 		return false;
 
-	// Keys typed in the terminal go to the shell instead of triggering LeoCAD shortcuts.
+	// Keys typed in the terminal go to the shell instead of triggering StudWorks shortcuts.
 	QKeyEvent* KeyEvent = static_cast<QKeyEvent*>(Event);
 	const QKeySequence KeySequence(static_cast<int>(KeyEvent->modifiers() & ~Qt::KeypadModifier) | KeyEvent->key());
 

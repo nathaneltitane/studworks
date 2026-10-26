@@ -96,7 +96,7 @@
         <file>resources/time_next.png</file>
         <file>resources/time_previous.png</file>
         <file>resources/time_stop.png</file>
-        <file alias="resources/leocad.png">tools/icon/64x64/apps/leocad.png</file>
+        <file alias="resources/studworks.png">tools/icon/64x64/apps/studworks.png</file>
         <file>resources/help_homepage.png</file>
         <file>resources/view_zoomextents.png</file>
         <file>resources/view_split_horizontal.png</file>
@@ -124,15 +124,15 @@
         <file>resources/ldraw.xml</file>
         <file>resources/ldraw2bl.txt</file>
         <file>resources/traintrack.json</file>
-        <file>resources/leocad_cs.qm</file>
-        <file>resources/leocad_de.qm</file>
-        <file>resources/leocad_en.qm</file>
-        <file>resources/leocad_es.qm</file>
-        <file>resources/leocad_fr.qm</file>
-        <file>resources/leocad_pt.qm</file>
-        <file>resources/leocad_ru.qm</file>
-        <file>resources/leocad_uk.qm</file>
-        <file>resources/leocad_zh_CN.qm</file>
+        <file>resources/studworks_cs.qm</file>
+        <file>resources/studworks_de.qm</file>
+        <file>resources/studworks_en.qm</file>
+        <file>resources/studworks_es.qm</file>
+        <file>resources/studworks_fr.qm</file>
+        <file>resources/studworks_pt.qm</file>
+        <file>resources/studworks_ru.qm</file>
+        <file>resources/studworks_uk.qm</file>
+        <file>resources/studworks_zh_CN.qm</file>
         <file>resources/shaders/fakelit_color_ps.glsl</file>
         <file>resources/shaders/fakelit_color_vs.glsl</file>
         <file>resources/shaders/fakelit_texture_decal_ps.glsl</file>

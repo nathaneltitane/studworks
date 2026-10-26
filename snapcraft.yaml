@@ -1,15 +1,15 @@
-name: leocad
+name: studworks
 base: core18
-adopt-info: leocad
+adopt-info: studworks
 version: '26.09'
 
 grade: stable
 confinement: strict
 
 apps:
-  leocad:
-    common-id: org.leocad.LeoCAD
-    command: leocad
+  studworks:
+    common-id: io.github.nathaneltitane.StudWorks
+    command: studworks
     plugs:
       - home
       - opengl
@@ -18,7 +18,7 @@ apps:
       - kde-neon
 
 parts:
-  leocad:
+  studworks:
     plugin: qmake
     build-packages:
       - qtbase5-dev
@@ -31,11 +31,11 @@ parts:
       - libqt5concurrent5
       - libqt5printsupport5
       - libqt5xml5
-    source: https://github.com/leozide/leocad/archive/v26.09.tar.gz
-    parse-info: [usr/share/metainfo/org.leocad.LeoCAD.appdata.xml]
+    source: https://github.com/nathaneltitane/studworks/archive/v26.09.tar.gz
+    parse-info: [usr/share/metainfo/io.github.nathaneltitane.StudWorks.appdata.xml]
   library:
     source: .
     plugin: dump
     override-build: |
-      mkdir -p $SNAPCRAFT_PART_INSTALL/usr/share/leocad
-      cp library.bin $SNAPCRAFT_PART_INSTALL/usr/share/leocad/library.bin
+      mkdir -p $SNAPCRAFT_PART_INSTALL/usr/share/studworks
+      cp library.bin $SNAPCRAFT_PART_INSTALL/usr/share/studworks/library.bin

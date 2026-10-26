@@ -13,7 +13,6 @@
 #include "sw_viewwidget.h"
 #include "sw_colorlist.h"
 #include "sw_utils.h"
-#include "sw_updatedialog.h"
 #include "sw_aboutdialog.h"
 #include "sw_selectdialog.h"
 #include "sw_setsdatabasedialog.h"
@@ -82,7 +81,7 @@ swMainWindow::~swMainWindow()
 void swMainWindow::CreateWidgets()
 {
 	setAcceptDrops(true);
-	setWindowIcon(QIcon(":/resources/leocad.png"));
+	setWindowIcon(QIcon(":/resources/studworks.png"));
 	setWindowFilePath(QString());
 
 	CreateActions();
@@ -631,9 +630,6 @@ void swMainWindow::CreateMenus()
 	HelpMenu->addAction(mActions[SW_HELP_WHATS_THIS]);
 	HelpMenu->addAction(mActions[SW_HELP_HOMEPAGE]);
 	HelpMenu->addAction(mActions[SW_HELP_BUG_REPORT]);
-#if !SW_DISABLE_UPDATE_CHECK
-	HelpMenu->addAction(mActions[SW_HELP_UPDATES]);
-#endif
 #ifndef Q_OS_MACOS
 	HelpMenu->addSeparator();
 #endif
@@ -1562,7 +1558,7 @@ void swMainWindow::ModelTabChanged(int Index)
 
 void swMainWindow::ClipboardChanged()
 {
-	const QString MimeType = QLatin1String("application/vnd.leocad-clipboard");
+	const QString MimeType = QLatin1String("application/vnd.studworks-clipboard");
 	const QMimeData* MimeData = QApplication::clipboard()->mimeData();
 	QByteArray ClipboardData;
 
@@ -1699,12 +1695,6 @@ void swMainWindow::Print(QPrinter* Printer)
 	swGetActiveProject()->GetMainModel()->WaitForAssets();
 
 	swPrintInstructions(swGetActiveProject()->GetInstructions(), Printer);
-}
-
-void swMainWindow::ShowUpdatesDialog()
-{
-	swUpdateDialog Dialog(this, false);
-	Dialog.exec();
 }
 
 void swMainWindow::ShowAboutDialog()
@@ -4587,15 +4577,11 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 		break;
 
 	case SW_HELP_HOMEPAGE:
-		QDesktopServices::openUrl(QUrl("https://www.leocad.org/"));
+		QDesktopServices::openUrl(QUrl("https://github.com/nathaneltitane/studworks"));
 		break;
 
 	case SW_HELP_BUG_REPORT:
-		QDesktopServices::openUrl(QUrl("https://github.com/leozide/leocad/issues"));
-		break;
-
-	case SW_HELP_UPDATES:
-		ShowUpdatesDialog();
+		QDesktopServices::openUrl(QUrl("https://github.com/nathaneltitane/studworks/issues"));
 		break;
 
 	case SW_HELP_ABOUT:

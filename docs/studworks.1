@@ -1,17 +1,17 @@
-.TH LEOCAD 1 "18 September 2026"
+.TH STUDWORKS 1 "18 September 2026"
 .\" NAME should be all caps, SECTION should be 1-8, maybe w/ subsection
 .\" other params are allowed: see man(7), man(1)
 .SH NAME
-LeoCAD \- CAD program for LEGO models.
+StudWorks \- CAD program for LEGO models.
 .SH SYNOPSIS
-\fIleocad \fR[\fIOPTIONS\fR] [\fIINFILE\fR]
+\fIstudworks \fR[\fIOPTIONS\fR] [\fIINFILE\fR]
 .SH "DESCRIPTION"
-\fILeoCAD \fR is a CAD program for creating virtual LEGO models. It
+\fIStudWorks \fR is a CAD program for creating virtual LEGO models. It
 has an easy to use interface and includes thousands of different
 parts in its library.
 
 .SH OPTIONS
-Below is a summary of all of the options that \fILeoCAD\fR
+Below is a summary of all of the options that \fIStudWorks\fR
 accepts. Many options have two equivalent names, one of
 which is a single letter preceded by -, and the other of
 which is a long name preceded by --. Brackets ([ and ])
@@ -81,7 +81,7 @@ Set the camera angles in degrees around the model.
 
 .TP
 .BI "\-\-camera\-position " x " " y " " z "  " tx " " ty " " tz "  " ux " " uy " " uz
-Set the camera position, target and up vector using the \fILeoCAD\fR coordinate system.
+Set the camera position, target and up vector using the \fIStudWorks\fR coordinate system.
 
 .TP
 .BI "\-\-camera\-position-ldraw " x " " y " " z "  " tx " " ty " " tz "  " ux " " uy " " uz
@@ -200,26 +200,26 @@ Output version information and exit.
 Display a brief usage synopsis and exit.
 
 .SH ENVIRONMENT
-``LEOCAD_LIB'' may be set to the path of the parts library.
+``STUDWORKS_LIB'' may be set to the path of the parts library.
 
 .SH EXAMPLES
 .PP
- $ leocad car.lcd \-i car.png \-w 640 \-h 480
+ $ studworks car.lcd \-i car.png \-w 640 \-h 480
 .PP
-This will start LeoCAD, load the file "car.lcd," create a png called
+This will start StudWorks, load the file "car.lcd," create a png called
 "car.png" with a resolution of 640x480 and exit when done.
 
 .SH FILES
 .TP
-.I ~/.config/LeoCAD Software/LeoCAD.conf
+.I ~/.config/StudWorks/StudWorks.conf
 User preferences file
 
 .SH BUGS
-If you find any bugs please report them at https://github.com/leozide/leocad/issues
+If you find any bugs please report them at https://github.com/nathaneltitane/studworks/issues
 
 .SH AUTHOR
-\fILeoCAD \fRis written by Leonardo Zide <leozide@gmail.com>.
-You can visit the LeoCAD homepage at https://www.leocad.org/
+\fIStudWorks \fRis based on LeoCAD, written by Leonardo Zide <leozide@gmail.com>.
+You can visit the StudWorks homepage at https://github.com/nathaneltitane/studworks/
 
 This manual page was originally written by Patrick Mahoney <pat7@gmx.net>,
 for the Debian GNU/Linux system (but may be used by others).

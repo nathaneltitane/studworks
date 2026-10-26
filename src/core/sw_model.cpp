@@ -25,6 +25,12 @@
 #include "sw_string.h"
 #include <locale.h>
 
+// Models carry LeoCAD meta commands, StudWorks writes them unchanged and also reads its own name.
+static bool swIsMetaCommand(const QString& Token)
+{
+	return Token == QLatin1String("!LEOCAD") || Token == QLatin1String("!STUDWORKS");
+}
+
 void swModelProperties::LoadDefaults()
 {
 	mAuthor = swGetProfileString(SW_PROFILE_DEFAULT_AUTHOR_NAME);
@@ -63,7 +69,7 @@ bool swModelProperties::ParseLDrawHeader(QString Line, bool FirstLine)
 	const int StartPos = LineStream.pos();
 	LineStream >> Token;
 
-	if (Token == QLatin1String("!LEOCAD"))
+	if (swIsMetaCommand(Token))
 		return false;
 
 	if (Token == QLatin1String("Name:"))
@@ -903,7 +909,7 @@ void swModel::LoadLDraw(QIODevice& Device, Project* Project)
 				continue;
 			}
 
-			if (Token != QLatin1String("!LEOCAD"))
+			if (!swIsMetaCommand(Token))
 			{
 				mFileLines.append(OriginalLine);
 

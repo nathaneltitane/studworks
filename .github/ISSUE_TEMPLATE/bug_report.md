@@ -25,10 +25,10 @@ If applicable, add screenshots to help explain your problem.
 
 **Version (please complete the following information):**
  - OS: [e.g. Windows 10, Ubuntu, macOS]
- - LeoCAD Version [e.g. 19.07 or continuous]
+ - StudWorks Version [e.g. 19.07 or continuous]
 
 **Crash information:**
-Some versions of LeoCAD will show a message that they saved a minidump file when they crash, if you see this message please attach the file.
+Some versions of StudWorks will show a message that they saved a minidump file when they crash, if you see this message please attach the file.
 
 **Additional context**
 Add any other context about the problem here. If you're seeing a graphical issue, adding a screenshot of the About Dialog may help.

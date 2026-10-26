@@ -271,7 +271,7 @@ void swPreferences::SetInterfaceColors(swColorTheme ColorTheme)
 swApplication::swApplication(int& Argc, char** Argv)
 	: QApplication(Argc, Argv)
 {
-	setApplicationDisplayName(QLatin1String("LeoCAD+"));
+	setApplicationDisplayName(QLatin1String("StudWorks"));
 
 	gApplication = this;
 	mDefaultStyle = style()->objectName();
@@ -426,7 +426,7 @@ void swApplication::ExportClipboard(const QByteArray& Clipboard)
 {
 	QMimeData* MimeData = new QMimeData();
 
-	MimeData->setData("application/vnd.leocad-clipboard", Clipboard);
+	MimeData->setData("application/vnd.studworks-clipboard", Clipboard);
 	QApplication::clipboard()->setMimeData(MimeData);
 
 	SetClipboard(Clipboard);
@@ -441,7 +441,7 @@ bool swApplication::LoadPartsLibrary(const QList<QPair<QString, bool>>& LibraryP
 
 	if (!OnlyUsePaths)
 	{
-		char* EnvPath = getenv("LEOCAD_LIB");
+		char* EnvPath = getenv("STUDWORKS_LIB");
 
 		if (EnvPath && EnvPath[0])
 			return mLibrary->Load(EnvPath, ShowProgress, false);
@@ -866,16 +866,16 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 		else if (Option == QLatin1String("-v") || Option == QLatin1String("--version"))
 		{
 #ifdef SW_CONTINUOUS_BUILD
-			Options.StdOut += tr("LeoCAD+ Continuous Build %1\n").arg(QT_STRINGIFY(SW_CONTINUOUS_BUILD));
+			Options.StdOut += tr("StudWorks Continuous Build %1\n").arg(QT_STRINGIFY(SW_CONTINUOUS_BUILD));
 #else
-			Options.StdOut += tr("LeoCAD+ Version %1\n").arg(SW_VERSION_TEXT);
+			Options.StdOut += tr("StudWorks Version %1\n").arg(SW_VERSION_TEXT);
 #endif
 			Options.StdOut += tr("Compiled %1\n").arg(__DATE__);
 			Options.Exit = true;
 		}
 		else if (Option == QLatin1String("-?") || Option == QLatin1String("--help"))
 		{
-			Options.StdOut += tr("Usage: leocad [options] [file]\n");
+			Options.StdOut += tr("Usage: studworks [options] [file]\n");
 			Options.StdOut += tr("  [options] can be:\n");
 			Options.StdOut += tr("  -l, --libpath <path>: Set the Pieces Library location to path.\n");
 			Options.StdOut += tr("  -i, --image <outfile.ext>: Save a picture in the format specified by ext and exit.\n");
@@ -1096,9 +1096,9 @@ swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 		QString Message;
 
 		if (mLibrary->LoadBuiltinPieceLibrary())
-			Message = tr("LeoCAD+ could not find a compatible Pieces Library so only a small number of pieces will be available.\n\nPlease visit https://www.leocad.org for information on how to download and install a library.");
+			Message = tr("StudWorks could not find a compatible Pieces Library so only a small number of pieces will be available.\n\nPlease visit https://library.ldraw.org for information on how to download and install a library.");
 		else
-			Message = tr("LeoCAD+ could not load Pieces Library.\n\nPlease visit https://www.leocad.org for information on how to download and install a library.");
+			Message = tr("StudWorks could not load Pieces Library.\n\nPlease visit https://library.ldraw.org for information on how to download and install a library.");
 
 		if (gMainWindow)
 			QMessageBox::warning(gMainWindow, tr("Load Pieces Library"), Message);
@@ -1488,7 +1488,6 @@ void swApplication::ShowPreferencesDialog()
 	Options.LGEOPath = swGetProfileString(SW_PROFILE_POVRAY_LGEO_PATH);
 	Options.DefaultAuthor = swGetProfileString(SW_PROFILE_DEFAULT_AUTHOR_NAME);
 	Options.Language = swGetProfileString(SW_PROFILE_LANGUAGE);
-	Options.CheckForUpdates = swGetProfileInt(SW_PROFILE_CHECK_UPDATES);
 
 	Options.AASamples = CurrentAASamples;
 	Options.StudStyle = CurrentStudStyle;
@@ -1550,12 +1549,11 @@ void swApplication::ShowPreferencesDialog()
 	swSetProfileString(SW_PROFILE_POVRAY_PATH, Options.POVRayPath);
 	swSetProfileString(SW_PROFILE_POVRAY_LGEO_PATH, Options.LGEOPath);
 	swSetProfileString(SW_PROFILE_LANGUAGE, Options.Language);
-	swSetProfileInt(SW_PROFILE_CHECK_UPDATES, Options.CheckForUpdates);
 	swSetProfileInt(SW_PROFILE_ANTIALIASING_SAMPLES, Options.AASamples);
 	swSetProfileStudStyle(Options.StudStyle);
 
 	if (LanguageChanged || LibraryChanged || AAChanged)
-		QMessageBox::information(gMainWindow, tr("Preferences"), tr("Some changes will only take effect the next time you start LeoCAD+."));
+		QMessageBox::information(gMainWindow, tr("Preferences"), tr("Some changes will only take effect the next time you start StudWorks."));
 
 	if (Options.CategoriesModified)
 	{

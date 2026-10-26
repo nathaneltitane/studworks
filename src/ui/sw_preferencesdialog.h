@@ -15,7 +15,6 @@ struct swPreferencesDialogOptions
 	QString LGEOPath;
 	QString DefaultAuthor;
 	QString Language;
-	int CheckForUpdates;
 
 	int AASamples;
 	swStudStyle StudStyle;

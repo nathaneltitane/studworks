@@ -4,6 +4,7 @@
 #include "ui_sw_setsdatabasedialog.h"
 #include "sw_http.h"
 #include "project.h"
+#include "sw_profile.h"
 
 swSetsDatabaseDialog::swSetsDatabaseDialog(QWidget* Parent)
 	: QDialog(Parent),
@@ -20,7 +21,25 @@ swSetsDatabaseDialog::swSetsDatabaseDialog(QWidget* Parent)
 	connect(mHttpManager, &swHttpManager::DownloadFinished, this, &swSetsDatabaseDialog::DownloadFinished);
 	connect(ui->SearchButton, &QPushButton::clicked, this, &swSetsDatabaseDialog::SearchButtonClicked);
 
-	mKeyListReply = mHttpManager->DownloadFile(QLatin1String("https://www.leocad.org/rebrickable.json"));
+	mApiKey = swGetProfileString(SW_PROFILE_REBRICKABLE_API_KEY);
+}
+
+bool swSetsDatabaseDialog::EnsureApiKey()
+{
+	if (!mApiKey.isEmpty())
+		return true;
+
+	// Set inventories come from Rebrickable, which needs a personal API key from the account settings.
+	bool Ok = false;
+	const QString Key = QInputDialog::getText(this, tr("Rebrickable API Key"), tr("Set inventories are downloaded from Rebrickable.\nEnter your Rebrickable API key, available for free from your account settings at rebrickable.com:"), QLineEdit::Normal, QString(), &Ok).trimmed();
+
+	if (!Ok || Key.isEmpty())
+		return false;
+
+	mApiKey = Key;
+	swSetProfileString(SW_PROFILE_REBRICKABLE_API_KEY, mApiKey);
+
+	return true;
 }
 
 swSetsDatabaseDialog::~swSetsDatabaseDialog()
@@ -103,6 +122,9 @@ void swSetsDatabaseDialog::accept()
 
 	QString SetNum = Current->text(0);
 
+	if (!EnsureApiKey())
+		return;
+
 	QProgressDialog ProgressDialog(this);
 	ProgressDialog.setWindowTitle(tr("Downloading"));
 	ProgressDialog.setLabelText(tr("Downloading set inventory"));
@@ -111,8 +133,7 @@ void swSetsDatabaseDialog::accept()
 	ProgressDialog.setValue(0);
 	ProgressDialog.show();
 
-	int KeyIndex = QTime::currentTime().msec() % mKeys.size();
-	QString DownloadUrl = QString("https://rebrickable.com/api/v3/lego/sets/%1/parts/?key=%2&page_size=1000").arg(SetNum, mKeys[KeyIndex]);
+	QString DownloadUrl = QString("https://rebrickable.com/api/v3/lego/sets/%1/parts/?key=%2&page_size=1000").arg(SetNum, mApiKey);
 
 	mInventoryReply = mHttpManager->DownloadFile(DownloadUrl);
 
@@ -135,12 +156,6 @@ void swSetsDatabaseDialog::accept()
 void swSetsDatabaseDialog::Finished(int Result)
 {
 	Q_UNUSED(Result);
-
-	if (mKeyListReply)
-	{
-		mKeyListReply->abort();
-		mKeyListReply->deleteLater();
-	}
 }
 
 void swSetsDatabaseDialog::SearchButtonClicked()
@@ -153,6 +168,9 @@ void swSetsDatabaseDialog::SearchButtonClicked()
 		return;
 	}
 
+	if (!EnsureApiKey())
+		return;
+
 	QProgressDialog ProgressDialog(this);
 	ProgressDialog.setWindowTitle(tr("Searching"));
 	ProgressDialog.setLabelText(tr("Connecting to server"));
@@ -161,19 +179,7 @@ void swSetsDatabaseDialog::SearchButtonClicked()
 	ProgressDialog.setValue(0);
 	ProgressDialog.show();
 
-	while (mKeyListReply)
-	{
-		QApplication::processEvents();
-
-		if (ProgressDialog.wasCanceled())
-			return;
-	}
-
-	if (mKeys.isEmpty())
-		return;
-
-	int KeyIndex = QTime::currentTime().msec() % mKeys.size();
-	QString SearchUrl = QString("https://rebrickable.com/api/v3/lego/sets/?search=%1&key=%2").arg(Keyword, mKeys[KeyIndex]);
+	QString SearchUrl = QString("https://rebrickable.com/api/v3/lego/sets/?search=%1&key=%2").arg(Keyword, mApiKey);
 
 	mSearchReply = mHttpManager->DownloadFile(SearchUrl);
 
@@ -193,33 +199,7 @@ void swSetsDatabaseDialog::SearchButtonClicked()
 
 void swSetsDatabaseDialog::DownloadFinished(swHttpReply* Reply)
 {
-	if (Reply == mKeyListReply)
-	{
-		if (!Reply->error())
-		{
-			QJsonDocument Document = QJsonDocument::fromJson(Reply->readAll());
-			QJsonObject Root = Document.object();
-
-			int Version = Root["Version"].toInt();
-
-			if (Version == 1)
-			{
-				const QJsonArray Keys = Root["Keys"].toArray();
-
-				for (const QJsonValue& Key : Keys)
-					mKeys.append(Key.toString());
-			}
-		}
-
-		if (mKeys.isEmpty())
-		{
-			QMessageBox::warning(this, tr("Import Set Inventory"), tr("Error connecting to server."));
-			close();
-		}
-
-		mKeyListReply = nullptr;
-	}
-	else if (Reply == mSearchReply)
+	if (Reply == mSearchReply)
 	{
 		QTreeWidget* SetsTree = ui->SetsTree;
 		SetsTree->clear();

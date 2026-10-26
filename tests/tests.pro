@@ -1,5 +1,5 @@
 TEMPLATE = app
-TARGET = leocad_tests
+TARGET = studworks_tests
 
 CONFIG += console testcase c++17
 CONFIG -= app_bundle

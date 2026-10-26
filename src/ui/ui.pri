@@ -36,8 +36,7 @@ SOURCES += \
 	$$PWD/sw_selectdialog.cpp \
 	$$PWD/sw_setsdatabasedialog.cpp \
 	$$PWD/sw_spinnerwidget.cpp \
-	$$PWD/sw_timelinewidget.cpp \
-	$$PWD/sw_updatedialog.cpp
+	$$PWD/sw_timelinewidget.cpp
 
 HEADERS += \
 	$$PWD/sw_aboutdialog.h \
@@ -73,8 +72,7 @@ HEADERS += \
 	$$PWD/sw_selectdialog.h \
 	$$PWD/sw_setsdatabasedialog.h \
 	$$PWD/sw_spinnerwidget.h \
-	$$PWD/sw_timelinewidget.h \
-	$$PWD/sw_updatedialog.h
+	$$PWD/sw_timelinewidget.h
 
 FORMS += \
 	$$PWD/sw_aboutdialog.ui \
@@ -92,8 +90,7 @@ FORMS += \
 	$$PWD/sw_propertiesdialog.ui \
 	$$PWD/sw_renderdialog.ui \
 	$$PWD/sw_selectdialog.ui \
-	$$PWD/sw_setsdatabasedialog.ui \
-	$$PWD/sw_updatedialog.ui
+	$$PWD/sw_setsdatabasedialog.ui
 
 # Optional embedded Konsole terminal on systems with KDE Frameworks.
 qtHaveModule(KParts) {

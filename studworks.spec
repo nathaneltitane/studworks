@@ -17,8 +17,8 @@
 %endif
 
 Summary: CAD program for creating virtual LEGO models
-Name: leocad
-URL: https://leocad.org
+Name: studworks
+URL: https://github.com/nathaneltitane/studworks
 %if 0%{?suse_version} || 0%{?sles_version}
 Group: Productivity/Graphics/Viewers
 %endif
@@ -156,26 +156,26 @@ application.
 
 %prep
 cd $RPM_SOURCE_DIR
-if [ -s leocad.tar.gz ] ; then
-	if [ -d leocad ] ; then rm -rf leocad ; fi
-	tar zxf leocad.tar.gz
+if [ -s studworks.tar.gz ] ; then
+	if [ -d studworks ] ; then rm -rf studworks ; fi
+	tar zxf studworks.tar.gz
 else
-	if [ -f leocad-git.tar.gz ] ; then
-		if [ -d leocad ] ; then rm -rf leocad ; fi
-		mkdir leocad
-		cd leocad
-		tar zxf ../leocad-git.tar.gz --strip=1
-	elif [ -d leocad ] ; then
-		cd leocad
+	if [ -f studworks-git.tar.gz ] ; then
+		if [ -d studworks ] ; then rm -rf studworks ; fi
+		mkdir studworks
+		cd studworks
+		tar zxf ../studworks-git.tar.gz --strip=1
+	elif [ -d studworks ] ; then
+		cd studworks
 		git pull
 		cd ..
 	else
-		git clone https://github.com/leozide/leocad
+		git clone https://github.com/nathaneltitane/studworks
 	fi
 fi
 
 %build
-cd $RPM_SOURCE_DIR/leocad
+cd $RPM_SOURCE_DIR/studworks
 %ifarch i386 i486 i586 i686
 %define qplatform linux-g++-32
 %endif
@@ -216,64 +216,64 @@ make clean
 make TESTING="$RPM_OPT_FLAGS"
 %if 0%{?qt5}
 if which lrelease-qt5 >/dev/null 2>/dev/null ; then
-        lrelease-qt5 leocad.pro
+        lrelease-qt5 studworks.pro
 else
-        lrelease leocad.pro
+        lrelease studworks.pro
 fi
 %else
 if which lrelease-qt4 >/dev/null 2>/dev/null ; then
-	lrelease-qt4 leocad.pro
+	lrelease-qt4 studworks.pro
 else
-	lrelease leocad.pro
+	lrelease studworks.pro
 fi
 %endif
 %if 0%{?qt5} != 1
 %endif
 
 %install
-cd $RPM_SOURCE_DIR/leocad
+cd $RPM_SOURCE_DIR/studworks
 install -d $RPM_BUILD_ROOT%{_bindir}
-install -d $RPM_BUILD_ROOT%{_datadir}/leocad
+install -d $RPM_BUILD_ROOT%{_datadir}/studworks
 install -d $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/mimetypes
 install -d $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/apps
 install -d $RPM_BUILD_ROOT%{_mandir}/man1
-install -m 755 build/release/leocad $RPM_BUILD_ROOT%{_bindir}/leocad
-install -m 644 docs/README.md $RPM_BUILD_ROOT%{_datadir}/leocad/README.md
-install -m 644 docs/CREDITS.txt $RPM_BUILD_ROOT%{_datadir}/leocad/CREDITS.txt
-install -m 644 docs/COPYING.txt $RPM_BUILD_ROOT%{_datadir}/leocad/COPYING.txt
-install -m 644 docs/leocad.1 $RPM_BUILD_ROOT%{_mandir}/man1/leocad.1
-gzip -f $RPM_BUILD_ROOT%{_mandir}/man1/leocad.1
+install -m 755 build/release/studworks $RPM_BUILD_ROOT%{_bindir}/studworks
+install -m 644 docs/README.md $RPM_BUILD_ROOT%{_datadir}/studworks/README.md
+install -m 644 docs/CREDITS.txt $RPM_BUILD_ROOT%{_datadir}/studworks/CREDITS.txt
+install -m 644 docs/COPYING.txt $RPM_BUILD_ROOT%{_datadir}/studworks/COPYING.txt
+install -m 644 docs/studworks.1 $RPM_BUILD_ROOT%{_mandir}/man1/studworks.1
+gzip -f $RPM_BUILD_ROOT%{_mandir}/man1/studworks.1
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/mime/packages/
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/applications/
-install -m 644 qt/leocad.xml  \
-				$RPM_BUILD_ROOT%{_datadir}/mime/packages/leocad.xml
-install -m 644 qt/leocad.desktop \
-				$RPM_BUILD_ROOT%{_datadir}/applications/leocad.desktop
+install -m 644 qt/studworks.xml  \
+				$RPM_BUILD_ROOT%{_datadir}/mime/packages/studworks.xml
+install -m 644 qt/studworks.desktop \
+				$RPM_BUILD_ROOT%{_datadir}/applications/studworks.desktop
 install -m 644 tools/icon/scalable/mimetypes/application-vnd.leocad.svg \
 				$RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/mimetypes/application-vnd.leocad.svg
-install -m 644 tools/icon/scalable/apps/leocad.svg \
-				$RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/apps/leocad.svg
+install -m 644 tools/icon/scalable/apps/studworks.svg \
+				$RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/apps/studworks.svg
 %if 0%{?suse_version}
-%suse_update_desktop_file leocad Graphics
+%suse_update_desktop_file studworks Graphics
 %endif
 
 %files
 %if 0%{?sles_version} || 0%{?suse_version}
 %defattr(-,root,root)
 %endif
-%{_bindir}/leocad
-%dir %{_datadir}/leocad
-%doc %{_datadir}/leocad/README.md
-%doc %{_datadir}/leocad/CREDITS.txt
-%doc %{_datadir}/leocad/COPYING.txt
-%{_datadir}/mime/packages/leocad.xml
-%{_datadir}/applications/leocad.desktop
+%{_bindir}/studworks
+%dir %{_datadir}/studworks
+%doc %{_datadir}/studworks/README.md
+%doc %{_datadir}/studworks/CREDITS.txt
+%doc %{_datadir}/studworks/COPYING.txt
+%{_datadir}/mime/packages/studworks.xml
+%{_datadir}/applications/studworks.desktop
 %{_datadir}/icons/hicolor/scalable/mimetypes/application-vnd.leocad.svg
-%{_datadir}/icons/hicolor/scalable/apps/leocad.svg
+%{_datadir}/icons/hicolor/scalable/apps/studworks.svg
 %if 0%{?mdkversion} || 0%{?mageia}
-%{_mandir}/man1/leocad.1.xz
+%{_mandir}/man1/studworks.1.xz
 %else
-%{_mandir}/man1/leocad.1.gz
+%{_mandir}/man1/studworks.1.gz
 %endif
 
 %clean
@@ -281,11 +281,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %changelog
 * Sun Jan 30 2022 - sT331h0rs3 (at) gmail.com 0.92
-- Actualize LeoCAD version
+- Actualize StudWorks version
 
 * Sat May 08 2021 - sT331h0rs3 (at) gmail.com 0.91
 - Build with Qt5 by default
-- Actualize LeoCAD version
+- Actualize StudWorks version
 - Fix paths to SVG files
 
 * Tue Sep 16 2016 - pbartfai (at) stardust.hu 0.90

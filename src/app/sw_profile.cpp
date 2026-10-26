@@ -117,7 +117,6 @@ static swProfileEntry gProfileEntries[SW_NUM_PROFILE_KEYS] =
 
 	swProfileEntry("Settings", "Language", ""),                                                // SW_PROFILE_LANGUAGE
 	swProfileEntry("Settings", "ColorTheme", static_cast<int>(swColorTheme::Dark)),            // SW_PROFILE_COLOR_THEME
-	swProfileEntry("Settings", "CheckUpdates", 1),                                             // SW_PROFILE_CHECK_UPDATES
 	swProfileEntry("Settings", "ProjectsPath", ""),                                            // SW_PROFILE_PROJECTS_PATH
 	swProfileEntry("Settings", "PartsLibrary", ""),                                            // SW_PROFILE_PARTS_LIBRARY
 	swProfileEntry("Settings", "PartPalettes"),                                                // SW_PROFILE_PART_PALETTES
@@ -215,7 +214,8 @@ static swProfileEntry gProfileEntries[SW_NUM_PROFILE_KEYS] =
 	swProfileEntry("Settings", "MinifigDrawEdgeLines", 1),                                     // SW_PROFILE_MINIFIG_DRAW_EDGE_LINES
 	swProfileEntry("Settings", "MinifigDrawConditionalLines", 1),                              // SW_PROFILE_MINIFIG_DRAW_CONDITIONAL_LINES
 	swProfileEntry("Settings", "MinifigLineWidth", 1.0f),                                      // SW_PROFILE_MINIFIG_LINE_WIDTH
-	swProfileEntry("Settings", "PiecesSnapToTiles", 1)                                         // SW_PROFILE_PIECES_SNAP_TO_TILES
+	swProfileEntry("Settings", "PiecesSnapToTiles", 1),                                        // SW_PROFILE_PIECES_SNAP_TO_TILES
+	swProfileEntry("Settings", "RebrickableApiKey", "")                                        // SW_PROFILE_REBRICKABLE_API_KEY
 };
 
 void swProfileInit()

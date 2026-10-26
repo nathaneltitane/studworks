@@ -3,7 +3,7 @@
  <class>swPreferencesDialog</class>
  <widget class="QDialog" name="swPreferencesDialog">
   <property name="whatsThis">
-   <string>&lt;p&gt;&lt;b&gt;Preferences&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Configure the application, display, colors, piece categories, and keyboard and mouse shortcuts. Choose OK to save the changes or Cancel to discard edits in Preferences. Language, piece-library, and antialiasing changes may require restarting LeoCAD+.&lt;/p&gt;&lt;p&gt;Export buttons write files immediately. Blender add-on settings have their own Apply action and can configure Blender before you close Preferences.&lt;/p&gt;</string>
+   <string>&lt;p&gt;&lt;b&gt;Preferences&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Configure the application, display, colors, piece categories, and keyboard and mouse shortcuts. Choose OK to save the changes or Cancel to discard edits in Preferences. Language, piece-library, and antialiasing changes may require restarting StudWorks.&lt;/p&gt;&lt;p&gt;Export buttons write files immediately. Blender add-on settings have their own Apply action and can configure Blender before you close Preferences.&lt;/p&gt;</string>
   </property>
   <property name="geometry">
    <rect>
@@ -42,7 +42,7 @@
           <item row="0" column="0">
            <widget class="QLabel" name="label_5">
             <property name="toolTip">
-             <string>Choose a piece-library folder or supported archive to load after restarting LeoCAD+.</string>
+             <string>Choose a piece-library folder or supported archive to load after restarting StudWorks.</string>
             </property>
             <property name="text">
              <string>Pieces Library:</string>
@@ -60,7 +60,7 @@
                <string>Pieces Library</string>
               </property>
               <property name="toolTip">
-               <string>Choose a piece-library folder or supported archive to load after restarting LeoCAD+.</string>
+               <string>Choose a piece-library folder or supported archive to load after restarting StudWorks.</string>
               </property>
              </widget>
             </item>
@@ -70,7 +70,7 @@
                <string>Choose a piece-library folder.</string>
               </property>
               <property name="icon">
-               <iconset resource="../leocad.qrc">
+               <iconset resource="../../studworks.qrc">
                 <normaloff>:/resources/file_open.png</normaloff>:/resources/file_open.png</iconset>
               </property>
              </widget>
@@ -81,7 +81,7 @@
                <string>Choose a piece-library ZIP or BIN archive.</string>
               </property>
               <property name="icon">
-               <iconset resource="../leocad.qrc">
+               <iconset resource="../../studworks.qrc">
                 <normaloff>:/resources/archive.png</normaloff>:/resources/archive.png</iconset>
               </property>
              </widget>
@@ -248,7 +248,7 @@
           <item row="1" column="0">
            <widget class="QLabel" name="label_19">
             <property name="toolTip">
-             <string>Choose the interface language used after restarting LeoCAD+.</string>
+             <string>Choose the interface language used after restarting StudWorks.</string>
             </property>
             <property name="text">
              <string>Language:</string>
@@ -264,51 +264,13 @@
              <string>Language</string>
             </property>
             <property name="toolTip">
-             <string>Choose the interface language used after restarting LeoCAD+.</string>
+             <string>Choose the interface language used after restarting StudWorks.</string>
             </property>
             <item>
              <property name="text">
               <string>Default</string>
              </property>
             </item>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QComboBox" name="checkForUpdates">
-            <property name="accessibleName">
-             <string>Check for Updates</string>
-            </property>
-            <property name="toolTip">
-             <string>Choose how often to check automatically for application and piece-library updates.</string>
-            </property>
-            <item>
-             <property name="text">
-              <string>Never</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Once a day</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Once a week</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_10">
-            <property name="toolTip">
-             <string>Choose how often to check automatically for application and piece-library updates.</string>
-            </property>
-            <property name="text">
-             <string>Check for Updates:</string>
-            </property>
-            <property name="buddy">
-             <cstring>checkForUpdates</cstring>
-            </property>
            </widget>
           </item>
           <item row="1" column="2">
@@ -392,7 +354,7 @@
           <item row="1" column="0" colspan="2">
            <widget class="QCheckBox" name="autoLoadMostRecent">
             <property name="toolTip">
-             <string>Open the most recently used file when LeoCAD+ starts.</string>
+             <string>Open the most recently used file when StudWorks starts.</string>
             </property>
             <property name="text">
              <string>Open Most Recent File on Startup</string>
@@ -518,7 +480,7 @@
           <item row="0" column="0">
            <widget class="QCheckBox" name="antiAliasing">
             <property name="toolTip">
-             <string>Smooth jagged edges in model views; changes require restarting LeoCAD+.</string>
+             <string>Smooth jagged edges in model views; changes require restarting StudWorks.</string>
             </property>
             <property name="text">
              <string>Anti-aliasing</string>
@@ -3407,7 +3369,6 @@
   <tabstop>lgeoPathBrowse</tabstop>
   <tabstop>ColorTheme</tabstop>
   <tabstop>Language</tabstop>
-  <tabstop>checkForUpdates</tabstop>
   <tabstop>authorName</tabstop>
   <tabstop>autoLoadMostRecent</tabstop>
   <tabstop>RestoreTabLayout</tabstop>
@@ -3515,7 +3476,7 @@
   <tabstop>mouseSensitivity</tabstop>
  </tabstops>
  <resources>
-  <include location="../leocad.qrc"/>
+  <include location="../../studworks.qrc"/>
  </resources>
  <connections>
   <connection>

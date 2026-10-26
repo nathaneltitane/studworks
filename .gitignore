@@ -30,11 +30,11 @@ Debug*
 .qmake.stash
 Makefile
 library.bin
-leocad_plugin_import.cpp
-leocad_resource.*
+studworks_plugin_import.cpp
+studworks_resource.*
 povray
 uic_wrapper.bat
 /tools/setup/*.exe
 appdir
-LeoCAD-Windows*.exe
+StudWorks-Windows*.exe
 *.snap

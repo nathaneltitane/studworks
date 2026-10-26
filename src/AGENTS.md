@@ -1,6 +1,6 @@
 # Code instructions
 
-- Keep the file lists in `leocad.pro` alphabetically sorted within their existing groups.
+- Keep the file lists in `studworks.pro` alphabetically sorted within their existing groups.
 - Get Qt and std includes through the precompiled header, `sw_global.h`.
 - Prefer std containers, use Qt containers where a Qt API boundary makes them useful.
 - Prefer `swstrcpy()` and `swstrcat()` from `sw_string.h` for bounded C-string copies and concatenation. Use the array overloads when possible; avoid `strncpy()` plus manual null termination. Keep standard functions where no suitable `lc` helper exists.

@@ -144,21 +144,21 @@ swRenderDialog::~swRenderDialog()
 
 QString swRenderDialog::GetStdOutFileName() const
 {
-	QString LogFile = mDialogMode == swRenderDialogMode::RenderPOVRay ? QLatin1String("leocad-povray-render.out") : QLatin1String("leocad-blender-render.out");
+	QString LogFile = mDialogMode == swRenderDialogMode::RenderPOVRay ? QLatin1String("studworks-povray-render.out") : QLatin1String("studworks-blender-render.out");
 
 	return QDir(QDir::tempPath()).absoluteFilePath(LogFile);
 }
 
 QString swRenderDialog::GetStdErrFileName() const
 {
-	QString LogFile = mDialogMode == swRenderDialogMode::RenderPOVRay ? QLatin1String("leocad-povray-render.err") : QLatin1String("leocad-blender-render.err");
+	QString LogFile = mDialogMode == swRenderDialogMode::RenderPOVRay ? QLatin1String("studworks-povray-render.err") : QLatin1String("studworks-blender-render.err");
 
 	return QDir(QDir::tempPath()).absoluteFilePath(LogFile);
 }
 
 QString swRenderDialog::GetPOVFileName() const
 {
-	return QDir(QDir::tempPath()).absoluteFilePath("leocad-render.pov");
+	return QDir(QDir::tempPath()).absoluteFilePath("studworks-render.pov");
 }
 
 void swRenderDialog::CloseProcess()

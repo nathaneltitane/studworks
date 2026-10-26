@@ -1,6 +1,5 @@
 #include "sw_global.h"
 #include "sw_application.h"
-#include "sw_updatedialog.h"
 #include "sw_profile.h"
 #include "sw_piecedata.h"
 #include <QApplication>
@@ -60,11 +59,11 @@ static LONG WINAPI swSehHandler(PEXCEPTION_POINTERS ExceptionPointers)
 	if (WriteDump)
 	{
 		TCHAR Message[_MAX_PATH + 256];
-		lstrcpy(Message, TEXT("LeoCAD just crashed. Crash information was saved to the file '"));
+		lstrcpy(Message, TEXT("StudWorks just crashed. Crash information was saved to the file '"));
 		lstrcat(Message, gMinidumpPath);
 		lstrcat(Message, TEXT("', please send it to the developers for debugging."));
 
-		MessageBox(nullptr, Message, TEXT("LeoCAD"), MB_OK);
+		MessageBox(nullptr, Message, TEXT("StudWorks"), MB_OK);
 	}
 
 	return EXCEPTION_EXECUTE_HANDLER;
@@ -73,7 +72,7 @@ static LONG WINAPI swSehHandler(PEXCEPTION_POINTERS ExceptionPointers)
 static void swSehInit()
 {
 	if (GetTempPath(SW_ARRAY_COUNT(gMinidumpPath), gMinidumpPath))
-		lstrcat(gMinidumpPath, TEXT("leocad.dmp"));
+		lstrcat(gMinidumpPath, TEXT("studworks.dmp"));
 
 	SetUnhandledExceptionFilter(swSehHandler);
 }
@@ -87,25 +86,25 @@ static void swRegisterShellFileTypes()
 	if (GetShortPathName(LongModulePath, ModulePath, _MAX_PATH) == 0)
 		lstrcpy(ModulePath, LongModulePath);
 
-	if (RegSetValue(HKEY_CLASSES_ROOT, TEXT("LeoCAD.Project"), REG_SZ, TEXT("LeoCAD Model"), lstrlen(TEXT("LeoCAD Model")) * sizeof(TCHAR)) != ERROR_SUCCESS)
+	if (RegSetValue(HKEY_CLASSES_ROOT, TEXT("StudWorks.Project"), REG_SZ, TEXT("StudWorks Model"), lstrlen(TEXT("StudWorks Model")) * sizeof(TCHAR)) != ERROR_SUCCESS)
 		return;
 
 	lstrcpy(Temp, ModulePath);
 	lstrcat(Temp, TEXT(",0"));
-	if (RegSetValue(HKEY_CLASSES_ROOT, TEXT("LeoCAD.Project\\DefaultIcon"), REG_SZ, Temp, lstrlen(Temp) * sizeof(TCHAR)) != ERROR_SUCCESS)
+	if (RegSetValue(HKEY_CLASSES_ROOT, TEXT("StudWorks.Project\\DefaultIcon"), REG_SZ, Temp, lstrlen(Temp) * sizeof(TCHAR)) != ERROR_SUCCESS)
 		return;
 
 	lstrcpy(Temp, ModulePath);
 	lstrcat(Temp, TEXT(" \"%1\""));
-	if (RegSetValue(HKEY_CLASSES_ROOT, TEXT("LeoCAD.Project\\shell\\open\\command"), REG_SZ, Temp, lstrlen(Temp) * sizeof(TCHAR)) != ERROR_SUCCESS)
+	if (RegSetValue(HKEY_CLASSES_ROOT, TEXT("StudWorks.Project\\shell\\open\\command"), REG_SZ, Temp, lstrlen(Temp) * sizeof(TCHAR)) != ERROR_SUCCESS)
 		return;
 
 	LONG Size = 2 * _MAX_PATH;
 	LONG Result = RegQueryValue(HKEY_CLASSES_ROOT, TEXT(".lcd"), Temp, &Size);
 
-	if (Result != ERROR_SUCCESS || !lstrlen(Temp) || lstrcmp(Temp, TEXT("LeoCAD.Project")))
+	if (Result != ERROR_SUCCESS || !lstrlen(Temp) || lstrcmp(Temp, TEXT("StudWorks.Project")))
 	{
-		if (RegSetValue(HKEY_CLASSES_ROOT, TEXT(".lcd"), REG_SZ, TEXT("LeoCAD.Project"), lstrlen(TEXT("LeoCAD.Project")) * sizeof(TCHAR)) != ERROR_SUCCESS)
+		if (RegSetValue(HKEY_CLASSES_ROOT, TEXT(".lcd"), REG_SZ, TEXT("StudWorks.Project"), lstrlen(TEXT("StudWorks.Project")) * sizeof(TCHAR)) != ERROR_SUCCESS)
 			return;
 
 		HKEY Key;
@@ -136,14 +135,65 @@ static void swInitializeSurfaceFormat(int argc, char* argv[])
 	}
 }
 
-int main(int argc, char *argv[])
+static void swCopyFolder(const QString& Source, const QString& Destination)
 {
-	QCoreApplication::setOrganizationDomain(QLatin1String("leocad.org"));
+	QDir().mkpath(Destination);
+
+	for (const QFileInfo& Entry : QDir(Source).entryInfoList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot | QDir::Hidden))
+	{
+		const QString Target = QDir(Destination).filePath(Entry.fileName());
+
+		if (Entry.isDir())
+			swCopyFolder(Entry.absoluteFilePath(), Target);
+		else
+			QFile::copy(Entry.absoluteFilePath(), Target);
+	}
+}
+
+static void swMigrateLeoCADData()
+{
+	// The first start takes over the LeoCAD settings and data, later starts only use their own.
+	QSettings Settings;
+
+	if (!Settings.allKeys().isEmpty())
+		return;
+
+	const QString OrganizationName = QCoreApplication::organizationName();
+	const QString ApplicationName = QCoreApplication::applicationName();
+	const QString DataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
+
 	QCoreApplication::setOrganizationName(QLatin1String("LeoCAD Software"));
 	QCoreApplication::setApplicationName(QLatin1String("LeoCAD"));
-	QCoreApplication::setApplicationVersion(QLatin1String(SW_VERSION_TEXT));
-	QGuiApplication::setDesktopFileName(QLatin1String("leocad"));
 
+	// Stored lists of numbers can only be read once their type is known, nothing has registered it this early.
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+	qRegisterMetaTypeStreamOperators<QList<int>>("QList<int>");
+#endif
+
+	QSettings OldSettings;
+	const QString OldDataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
+
+	for (const QString& Key : OldSettings.allKeys())
+		Settings.setValue(Key, OldSettings.value(Key));
+
+	QCoreApplication::setOrganizationName(OrganizationName);
+	QCoreApplication::setApplicationName(ApplicationName);
+
+	if (QDir(OldDataPath).exists() && !QDir(DataPath).exists())
+		swCopyFolder(OldDataPath, DataPath);
+
+	Settings.sync();
+}
+
+int main(int argc, char *argv[])
+{
+	QCoreApplication::setOrganizationDomain(QLatin1String("nathaneltitane.github.io"));
+	QCoreApplication::setOrganizationName(QLatin1String("StudWorks"));
+	QCoreApplication::setApplicationName(QLatin1String("StudWorks"));
+	QCoreApplication::setApplicationVersion(QLatin1String(SW_VERSION_TEXT));
+	QGuiApplication::setDesktopFileName(QLatin1String("studworks"));
+
+	swMigrateLeoCADData();
 	swInitializeSurfaceFormat(argc, argv);
 
 	QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
@@ -174,11 +224,11 @@ int main(int argc, char *argv[])
 
 	// Supply English plural forms when a locale has no translation for a numerus message.
 	QTranslator EnglishTranslator;
-	if (EnglishTranslator.load("leocad_en", ":/resources"))
+	if (EnglishTranslator.load("studworks_en", ":/resources"))
 		Application.installTranslator(&EnglishTranslator);
 
 	QTranslator Translator;
-	if (Translator.load("leocad_" + Locale.name(), ":/resources"))
+	if (Translator.load("studworks_" + Locale.name(), ":/resources"))
 		Application.installTranslator(&Translator);
 
 	qRegisterMetaType<swPieceData*>("swPieceData*");
@@ -199,7 +249,7 @@ int main(int argc, char *argv[])
 #endif
 
 #ifdef Q_OS_LINUX
-	LibraryPaths += qMakePair(QDir::cleanPath(QCoreApplication::applicationDirPath() + "/../share/leocad/library.bin"), true);
+	LibraryPaths += qMakePair(QDir::cleanPath(QCoreApplication::applicationDirPath() + "/../share/studworks/library.bin"), true);
 #endif
 
 #ifdef Q_OS_MAC
@@ -224,10 +274,6 @@ int main(int argc, char *argv[])
 
 	if (StartupMode == swStartupMode::ShowWindow)
 	{
-#if !SW_DISABLE_UPDATE_CHECK
-		swDoInitialUpdateCheck();
-#endif
-
 		ExecReturn = Application.exec();
 	}
 

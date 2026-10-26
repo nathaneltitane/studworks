@@ -1,6 +1,6 @@
-# LeoCAD tests
+# StudWorks tests
 
-All tests run in one Qt Test executable, `leocad_tests`. The current tests cover
+All tests run in one Qt Test executable, `studworks_tests`. The current tests cover
 object history, property-key comparisons, and the final animation key after
 step insertion, removal, and key deletion, including 8,000 deterministic
 randomized undo/redo and merge transitions.
@@ -26,11 +26,11 @@ On Windows, use the make tool for the selected Qt kit, such as `nmake`.
 To list test functions or run one function directly:
 
 ```sh
-./leocad_tests -functions
-./leocad_tests HistoryStoresOnlyChangedObjects
+./studworks_tests -functions
+./studworks_tests HistoryStoresOnlyChangedObjects
 ```
 
-On Windows, the executable is `leocad_tests.exe` and may be in `release/`.
+On Windows, the executable is `studworks_tests.exe` and may be in `release/`.
 `make check` handles the configured executable location.
 
 To write both console output and a JUnit report:

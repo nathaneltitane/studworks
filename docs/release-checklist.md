@@ -26,17 +26,17 @@
    - Update the library ZIP links in `appveyor.yml` and `.github/workflows/continuous.yml` to the old release.
 
 6. Update the release version in the current `YY.MM` format:
-   - `leocad.pro`
+   - `studworks.pro`
    - `src/sw_global.h`
    - `src/ui/Info.plist`
    - `snapcraft.yaml`
-   - `leocad.spec`
-   - `tools/setup/leocad.appdata.xml`
-   - In `tools/setup/leocad.appdata.xml`, add the new release entry; do not replace the existing release history.
+   - `studworks.spec`
+   - `tools/setup/studworks.appdata.xml`
+   - In `tools/setup/studworks.appdata.xml`, add the new release entry; do not replace the existing release history.
 
 7. Update translations
 
-8. Update `docs/README.md` and `docs/leocad.1`
+8. Update `docs/README.md` and `docs/studworks.1`
 
 9. Configure the release build and artifacts:
    - Set skip_tags to false in `appveyor.yml`.
@@ -56,19 +56,19 @@
    - Remove the build-on-tags setting from `appveyor.yml`.
    - Update the library ZIP links in `appveyor.yml` and `.github/workflows/continuous.yml` to the new release.
 
-13. Update the [official Flathub LeoCAD repository](https://github.com/flathub/org.leocad.LeoCAD):
+13. Update the [official Flathub StudWorks repository](https://github.com/flathub/io.github.nathaneltitane.StudWorks):
    - If you do not have write access, fork this official repository; do not use a fork of the generic `flathub/flathub` repository.
-   - Update [`org.leocad.LeoCAD.json`](https://github.com/flathub/org.leocad.LeoCAD/blob/master/org.leocad.LeoCAD.json) to the new LeoCAD tag, commit, and library ZIP URL.
-   - Update files under [`patches/`](https://github.com/flathub/org.leocad.LeoCAD/tree/master/patches) if required, then submit the Flathub changes.
+   - Update [`io.github.nathaneltitane.StudWorks.json`](https://github.com/flathub/io.github.nathaneltitane.StudWorks/blob/master/io.github.nathaneltitane.StudWorks.json) to the new StudWorks tag, commit, and library ZIP URL.
+   - Update files under [`patches/`](https://github.com/flathub/io.github.nathaneltitane.StudWorks/tree/master/patches) if required, then submit the Flathub changes.
 
 14. Update the Homebrew cask:
-   - Update [`Casks/l/leocad.rb`](https://github.com/Homebrew/homebrew-cask/blob/HEAD/Casks/l/leocad.rb) in the Homebrew cask repository.
-   - Set the new version and SHA-256 for `LeoCAD-macOS-YY.MM.dmg`.
+   - Update [`Casks/l/studworks.rb`](https://github.com/Homebrew/homebrew-cask/blob/HEAD/Casks/l/studworks.rb) in the Homebrew cask repository.
+   - Set the new version and SHA-256 for `StudWorks-macOS-YY.MM.dmg`.
    - Resolve the current Gatekeeper issue if it still disables the cask.
 
 15. Update the Windows package manager:
-   - Update package ID `LeonardoZide.LeoCAD` in `microsoft/winget-pkgs`.
-   - Use the [existing manifest folder](https://github.com/microsoft/winget-pkgs/tree/master/manifests/l/LeonardoZide/LeoCAD/25.09) as the template and add the new three-file manifest set under `manifests/l/LeonardoZide/LeoCAD/<version>/`.
+   - Update package ID `LeonardoZide.StudWorks` in `microsoft/winget-pkgs`.
+   - Use the [existing manifest folder](https://github.com/microsoft/winget-pkgs/tree/master/manifests/l/LeonardoZide/StudWorks/25.09) as the template and add the new three-file manifest set under `manifests/l/LeonardoZide/StudWorks/<version>/`.
    - Follow the [WinGet authoring instructions](https://github.com/microsoft/winget-pkgs/blob/master/doc/Authoring.md), validate the manifest, and submit a pull request.
 
 16. Update Snapcraft on Linux:

@@ -10,16 +10,16 @@
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>lcd</string>
-				<string>leocad</string>
+				<string>studworks</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
-			<string>leocad_document.icns</string>
+			<string>studworks_document.icns</string>
 			<key>CFBundleTypeMIMETypes</key>
 			<array>
 				<string>application/vnd.leocad</string>
 			</array>
 			<key>CFBundleTypeName</key>
-			<string>LeoCAD Project</string>
+			<string>StudWorks Project</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>LSTypeIsPackage</key>
@@ -35,7 +35,7 @@
 				<string>mpd</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
-			<string>leocad_document.icns</string>
+			<string>studworks_document.icns</string>
 			<key>CFBundleTypeMIMETypes</key>
 			<array>
 				<string>application/x-ldraw</string>
@@ -51,11 +51,11 @@
 		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
-	<string>LeoCAD</string>
+	<string>StudWorks</string>
 	<key>CFBundleIconFile</key>
-	<string>leocad.icns</string>
+	<string>studworks.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.leozide.leocad</string>
+	<string>io.github.nathaneltitane.studworks</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
@@ -65,9 +65,9 @@
 	<key>CFBundleVersion</key>
 	<string>26.09.0</string>
 	<key>CFBundleDisplayName</key>
-	<string>LeoCAD</string>
+	<string>StudWorks</string>
 	<key>CFBundleName</key>
-	<string>LeoCAD</string>
+	<string>StudWorks</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 </dict>

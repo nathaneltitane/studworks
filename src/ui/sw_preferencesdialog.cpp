@@ -144,7 +144,6 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 			break;
 		}
 	}
-	ui->checkForUpdates->setCurrentIndex(mOptions->CheckForUpdates);
 	ui->fixedDirectionKeys->setChecked(mOptions->Preferences.mFixedAxes);
 	ui->autoLoadMostRecent->setChecked(mOptions->Preferences.mAutoLoadMostRecent);
 	ui->RestoreTabLayout->setChecked(mOptions->Preferences.mRestoreTabLayout);
@@ -435,7 +434,6 @@ void swPreferencesDialog::accept()
 		Language = 0;
 	mOptions->Language = gLanguageLocales[Language];
 
-	mOptions->CheckForUpdates = ui->checkForUpdates->currentIndex();
 	mOptions->Preferences.mFixedAxes = ui->fixedDirectionKeys->isChecked();
 	mOptions->Preferences.mAutoLoadMostRecent = ui->autoLoadMostRecent->isChecked();
 	mOptions->Preferences.mRestoreTabLayout = ui->RestoreTabLayout->isChecked();

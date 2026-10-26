@@ -1,24 +1,32 @@
-![leocad-plus](https://raw.githubusercontent.com/nathaneltitane/leocad-plus/main/leocad-plus.svg)
+![studworks](https://raw.githubusercontent.com/nathaneltitane/studworks/main/studworks.svg)
 
 [![Donate](https://img.shields.io/badge/Paypal-2f343f.svg?style=for-the-badge&logo=paypal&label=Donate)](https://www.paypal.com/donate?hosted_button_id=ZW3CDCANHJCWJ)<br>
 Show your appreciation with a PayPal donation!
 
 ---
 
-[![Star](https://img.shields.io/github/stars/nathaneltitane/leocad-plus.svg?style=for-the-badge&logo=github&label=Star&color=2f343f)](https://github.com/nathaneltitane/leocad-plus)<br>
+[![Star](https://img.shields.io/github/stars/nathaneltitane/studworks.svg?style=for-the-badge&logo=github&label=Star&color=2f343f)](https://github.com/nathaneltitane/studworks)<br>
 Useful? Star the repository - it helps others find it.
 
 ---
 
-[[ LeoCAD+ // Project Page ]](https://github.com/nathaneltitane/leocad-plus)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;[ Version // 2026-10-25 ]
+[[ StudWorks // Project Page ]](https://github.com/nathaneltitane/studworks)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;[ Version // 2026-10-26 ]
 
 ---
 
 ### NOTICE
 
+10-26-2026 ↴
+
+- LeoCAD+ is now StudWorks, its own project built on [LeoCAD](https://github.com/leozide/leocad)
+- Code split into modules: app, core, library, render, io and ui
+- Settings, part palettes and minifigure templates are copied from LeoCAD on the first start
+- Models keep LeoCAD's file format and open in either program
+- Set inventories use your own free Rebrickable API key, asked for once
+- Light and camera properties follow the piece layout: named rows, values with their names and units, one keyframe per value
+
 10-25-2026 ↴
 
-- LeoCAD+ is now its own project, built on top of [LeoCAD](https://github.com/leozide/leocad)
 - Default names use a three digit number and no number sign: 'Group 001', 'Minifigure 001', 'Submodel 001.ldr', 'Camera 001', 'Spot Light 001'
 - Duplicated submodels take the next free number instead of 'Copy of': 'Car.ldr' becomes 'Car 001.ldr'
 - Panels share one look: headers, buttons, text boxes and spacing follow the options (gear) button
@@ -37,12 +45,12 @@ Useful? Star the repository - it helps others find it.
 
 ---
 
-### Welcome to [LeoCAD+](https://github.com/nathaneltitane/leocad-plus)
+### Welcome to [StudWorks](https://github.com/nathaneltitane/studworks)
 
-LeoCAD+ is an enhanced build of [LeoCAD](https://www.leocad.org), the free CAD program for creating virtual LEGO® models with the [LDraw](https://www.ldraw.org) parts library.
-It keeps LeoCAD's file format and settings, so models open in either program and nothing needs to be migrated.
+StudWorks is a free CAD program for creating virtual LEGO® models with the [LDraw](https://www.ldraw.org) parts library, built on [LeoCAD](https://github.com/leozide/leocad).
+It keeps LeoCAD's file format, so models open in either program, and copies LeoCAD's settings on the first start.
 
-Everything LeoCAD does, LeoCAD+ does too - with a reworked interface and a set of modeling and instructions features on top:
+Everything LeoCAD does, StudWorks does too - with a reworked interface and a set of modeling and instructions features on top:
 
 - **Panels** ↴
   - Uniform panel headers, buttons and text boxes, all sized from the options (gear) button
@@ -78,36 +86,36 @@ Everything LeoCAD does, LeoCAD+ does too - with a reworked interface and a set o
   - Build ↴
 
     ```
-    git clone https://github.com/nathaneltitane/leocad-plus
-    mkdir leocad-plus-build && cd leocad-plus-build
-    qmake ../leocad-plus/leocad.pro
+    git clone https://github.com/nathaneltitane/studworks
+    mkdir studworks-build && cd studworks-build
+    qmake ../studworks/studworks.pro
     make -j"$(nproc)"
     ```
 
   - Run ↴
-    - Start 'build/release/leocad' and point Preferences to an [LDraw parts library](https://library.ldraw.org/updates?latest) if none is found.
+    - Start 'build/release/studworks' and point Preferences to an [LDraw parts library](https://library.ldraw.org/updates?latest) if none is found.
 
 ---
 
 ### Credits:
 
-LeoCAD+ is based on [LeoCAD](https://github.com/leozide/leocad) by Leonardo Zide and its contributors - see 'docs/CREDITS.txt'.
+StudWorks is based on [LeoCAD](https://github.com/leozide/leocad) by Leonardo Zide and its contributors - see 'docs/CREDITS.txt'.
 
 ### License:
 
-LeoCAD+ is free software released under the GNU General Public License version 2, the same license as LeoCAD - see 'docs/COPYING.txt'.
+StudWorks is free software released under the GNU General Public License version 2, the same license as LeoCAD - see 'docs/COPYING.txt'.
 
 LEGO® is a trademark of the LEGO Group, which does not sponsor, authorize or endorse this project.
 
 ### Repositories:
 
-[LeoCAD](https://github.com/leozide/leocad) as the application on which LeoCAD+ is built.
+[LeoCAD](https://github.com/leozide/leocad) as the application on which StudWorks is built.
 
 [LDraw](https://www.ldraw.org) for the parts library and file format.
 
 ### Reports:
 
-[Submit bug report or feature request](https://github.com/nathaneltitane/leocad-plus/issues)
+[Submit bug report or feature request](https://github.com/nathaneltitane/studworks/issues)
 
 ### Projects:
 
@@ -131,7 +139,7 @@ LEGO® is a trademark of the LEGO Group, which does not sponsor, authorize or en
 
 ---
 
-[[ LeoCAD+ // Project Page ]](https://github.com/nathaneltitane/leocad-plus)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;[ Version // 2026-10-25 ]
+[[ StudWorks // Project Page ]](https://github.com/nathaneltitane/studworks)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;[ Version // 2026-10-26 ]
 
 ---
 
@@ -140,5 +148,5 @@ Show your appreciation with a PayPal donation!
 
 ---
 
-[![Star](https://img.shields.io/github/stars/nathaneltitane/leocad-plus.svg?style=for-the-badge&logo=github&label=Star&color=2f343f)](https://github.com/nathaneltitane/leocad-plus)<br>
+[![Star](https://img.shields.io/github/stars/nathaneltitane/studworks.svg?style=for-the-badge&logo=github&label=Star&color=2f343f)](https://github.com/nathaneltitane/studworks)<br>
 Useful? Star the repository - it helps others find it.

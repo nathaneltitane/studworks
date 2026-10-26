@@ -29,35 +29,35 @@ for:
     - qmake -tp vc
 
     build:
-      project: leocad.vcxproj
+      project: studworks.vcxproj
       verbosity: minimal
 
     after_build:
-    - 7z a symbols.zip build/release/leocad.exe build/release/leocad.pdb
+    - 7z a symbols.zip build/release/studworks.exe build/release/studworks.pdb
     - mkdir appdir
-    - copy build\release\leocad.exe appdir
+    - copy build\release\studworks.exe appdir
     - copy docs\readme.md appdir\readme.txt
-    - appveyor DownloadFile https://github.com/leozide/leocad/releases/download/v26.09/Library-26.08.zip -FileName library.zip
+    - appveyor DownloadFile https://library.ldraw.org/library/updates/complete.zip -FileName library.zip
     - 7z e library.zip
     - copy library.bin appdir\\library.bin
     - appveyor DownloadFile https://github.com/leozide/povray/releases/download/build1/povconsole32-sse2.exe -FileName appdir\povconsole32-sse2.exe
-    - windeployqt appdir\leocad.exe
-    - copy tools\setup\leocad.nsi .
+    - windeployqt appdir\studworks.exe
+    - copy tools\setup\studworks.nsi .
     - copy tools\setup\setup.ico .
     - 'copy "%VCINSTALLDIR%Redist\MSVC\v143\vc_redist.x64.exe" appdir\vc_redist.x64.exe'
-    - '"C:\Program Files (x86)\NSIS\makensis.exe" /V4 /DX64 "/XOutFile LeoCAD-Windows-%VERSION%.exe" leocad.nsi'
+    - '"C:\Program Files (x86)\NSIS\makensis.exe" /V4 /DX64 "/XOutFile StudWorks-Windows-%VERSION%.exe" studworks.nsi'
     - set TRAVIS_TAG=%APPVEYOR_REPO_TAG_NAME%
     - set TRAVIS_REPO_SLUG=%APPVEYOR_REPO_NAME%
     - set TRAVIS_COMMIT=%APPVEYOR_REPO_COMMIT%
     - set UPLOADTOOL_ISPRERELEASE=1
     - appveyor DownloadFile https://github.com/probonopd/uploadtool/raw/master/upload.sh
-    - if not defined APPVEYOR_PULL_REQUEST_NUMBER (bash upload.sh LeoCAD*.exe)
+    - if not defined APPVEYOR_PULL_REQUEST_NUMBER (bash upload.sh StudWorks*.exe)
 
     artifacts:
     - path: symbols.zip
       name: symbols
-    - path: LeoCAD-Windows-$(VERSION).exe
-      name: leocad
+    - path: StudWorks-Windows-$(VERSION).exe
+      name: studworks
       
   -
     matrix:
@@ -79,12 +79,12 @@ for:
       
     after_build:
       - make install INSTALL_ROOT=AppDir
-      - appveyor DownloadFile https://github.com/leozide/leocad/releases/download/v26.09/Library-26.08.zip -FileName library.zip
+      - appveyor DownloadFile https://library.ldraw.org/library/updates/complete.zip -FileName library.zip
       - unzip library.zip
-      - mkdir -p AppDir/usr/share/leocad
-      - mv library.bin AppDir/usr/share/leocad/library.bin
-      - cp qt/leocad.desktop AppDir/leocad.desktop
-      - cp tools/icon/256x256/apps/leocad.png AppDir/leocad.png
+      - mkdir -p AppDir/usr/share/studworks
+      - mv library.bin AppDir/usr/share/studworks/library.bin
+      - cp qt/studworks.desktop AppDir/studworks.desktop
+      - cp tools/icon/256x256/apps/studworks.png AppDir/studworks.png
       - cp tools/setup/AppRun AppDir
       - chmod a+x AppDir/AppRun
       - appveyor DownloadFile https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
@@ -95,14 +95,14 @@ for:
       - ./linuxdeployqt*.AppImage --appimage-extract
       - export PATH=$(readlink -f ./squashfs-root/usr/bin/):$PATH
       - ./squashfs-root/usr/bin/appimagetool AppDir/
-      - mv ./LeoCAD-$VERSION-x86_64.AppImage ./LeoCAD-Linux-$VERSION-x86_64.AppImage 
-      - 'curl -s -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/leozide/leocad/commits/master -o repo.txt'
+      - mv ./StudWorks-$VERSION-x86_64.AppImage ./StudWorks-Linux-$VERSION-x86_64.AppImage 
+      - 'curl -s -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/nathaneltitane/studworks/commits/master -o repo.txt'
       - 'export REMOTE=$(grep -Po ''(?<=: \")(([a-z0-9])\w+)(?=\")'' -m 1 repo.txt)'
       - export LOCAL=$(git rev-parse HEAD)
       - export UPLOADTOOL_ISPRERELEASE=1
       - if [[ "$REMOTE" != "$LOCAL" ]]; then echo "Build no longer current. $REMOTE vs $LOCAL - aborting upload."; exit 0; fi;
       - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
-      - bash upload.sh LeoCAD*.AppImage*
+      - bash upload.sh StudWorks*.AppImage*
 
   -
     matrix:
@@ -116,7 +116,7 @@ for:
       - export TRAVIS_COMMIT=$APPVEYOR_REPO_COMMIT
       - appveyor DownloadFile https://github.com/leozide/povray/releases/download/build1/povray
       - chmod +x povray
-      - appveyor DownloadFile https://github.com/leozide/leocad/releases/download/v26.09/Library-26.08.zip -FileName library.zip
+      - appveyor DownloadFile https://library.ldraw.org/library/updates/complete.zip -FileName library.zip
       - unzip library.zip
      
     build_script:
@@ -125,12 +125,12 @@ for:
     
     after_build:
       - cd build/release
-      - macdeployqt LeoCAD.app -dmg
-      - mv LeoCAD.dmg LeoCAD-macOS-$(git rev-parse --short HEAD).dmg
-      - 'curl -s -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/leozide/leocad/commits/master -o repo.txt' 
+      - macdeployqt StudWorks.app -dmg
+      - mv StudWorks.dmg StudWorks-macOS-$(git rev-parse --short HEAD).dmg
+      - 'curl -s -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/nathaneltitane/studworks/commits/master -o repo.txt' 
       - "export REMOTE=$(awk -F'\"' '/\"sha\"[[:space:]]*:/ { print $(NF-1); exit }' repo.txt)"
       - export LOCAL=$(git rev-parse HEAD)
       - export UPLOADTOOL_ISPRERELEASE=1
       - if [[ "$REMOTE" != "$LOCAL" ]]; then echo "Build no longer current. $REMOTE vs $LOCAL - aborting upload."; exit 0; fi;
       - appveyor DownloadFile https://github.com/probonopd/uploadtool/raw/master/upload.sh
-      - bash upload.sh LeoCAD*.dmg*
+      - bash upload.sh StudWorks*.dmg*

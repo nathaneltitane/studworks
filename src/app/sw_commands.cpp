@@ -8,7 +8,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("Action", "File.New"),
 		QT_TRANSLATE_NOOP("Menu", "&New"),
 		QT_TRANSLATE_NOOP("Status", "Create a new model"),
-		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>New Model</b></p><p>Create a new, empty model. If the current model has unsaved changes, LeoCAD+ asks whether to save them before replacing it.</p>"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>New Model</b></p><p>Create a new, empty model. If the current model has unsaved changes, StudWorks asks whether to save them before replacing it.</p>"),
 		"Ctrl+N"
 	},
 	// SW_FILE_OPEN
@@ -32,7 +32,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("Action", "File.Reload"),
 		QT_TRANSLATE_NOOP("Menu", "&Reload"),
 		QT_TRANSLATE_NOOP("Status", "Reload the current model from disk"),
-		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Reload Model</b></p><p>Read the current model file again from disk, replacing the model in LeoCAD+. If the model has unsaved changes, LeoCAD+ asks before discarding them.</p>"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Reload Model</b></p><p>Read the current model file again from disk, replacing the model in StudWorks. If the model has unsaved changes, StudWorks asks before discarding them.</p>"),
 		""
 	},
 	// SW_FILE_TOGGLE_WATCH_FILE_CHANGES
@@ -1576,7 +1576,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "File.ToggleOpenMostRecent"),
 		QT_TRANSLATE_NOOP("Menu", "Open Most Recent File on Startup"),
-		QT_TRANSLATE_NOOP("Status", "Toggle opening the most recently used file when LeoCAD+ starts"),
+		QT_TRANSLATE_NOOP("Status", "Toggle opening the most recently used file when StudWorks starts"),
 		"",
 		""
 	},
@@ -2623,8 +2623,8 @@ const swCommand gCommands[] =
 	// SW_HELP_HOMEPAGE
 	{
 		QT_TRANSLATE_NOOP("Action", "Help.HomePage"),
-		QT_TRANSLATE_NOOP("Menu", "LeoCAD &Home Page"),
-		QT_TRANSLATE_NOOP("Status", "Open LeoCAD's home page on the internet using your default web browser"),
+		QT_TRANSLATE_NOOP("Menu", "StudWorks &Home Page"),
+		QT_TRANSLATE_NOOP("Status", "Open StudWorks' home page on the internet using your default web browser"),
 		"",
 		""
 	},
@@ -2632,15 +2632,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "Help.BugReport"),
 		QT_TRANSLATE_NOOP("Menu", "Report a Bug"),
-		QT_TRANSLATE_NOOP("Status", "Open LeoCAD's bug report form on your default web browser"),
-		"",
-		""
-	},
-	// SW_HELP_UPDATES
-	{
-		QT_TRANSLATE_NOOP("Action", "Help.Updates"),
-		QT_TRANSLATE_NOOP("Menu", "Check for &Updates..."),
-		QT_TRANSLATE_NOOP("Status", "Check if a newer LeoCAD version or pieces library has been released"),
+		QT_TRANSLATE_NOOP("Status", "Open StudWorks' bug report form on your default web browser"),
 		"",
 		""
 	},

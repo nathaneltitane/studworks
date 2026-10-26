@@ -31,10 +31,11 @@ public slots:
 protected:
 	swHttpManager* mHttpManager;
 
-	swHttpReply* mKeyListReply;
-	swHttpReply* mSearchReply;
-	swHttpReply* mInventoryReply;
-	QStringList mKeys;
+	bool EnsureApiKey();
+
+	swHttpReply* mSearchReply = nullptr;
+	swHttpReply* mInventoryReply = nullptr;
+	QString mApiKey;
 	QByteArray mInventory;
 
 	Ui::swSetsDatabaseDialog* ui;

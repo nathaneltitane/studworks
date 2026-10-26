@@ -3,7 +3,7 @@
  <class>swAboutDialog</class>
  <widget class="QDialog" name="swAboutDialog">
   <property name="whatsThis">
-   <string>&lt;p&gt;&lt;b&gt;About LeoCAD+&lt;/b&gt;&lt;/p&gt;&lt;p&gt;View the LeoCAD+ version and system information. The Qt and OpenGL details can help diagnose display problems. Select text in System Information to copy it when reporting a problem. The website link opens in your browser.&lt;/p&gt;</string>
+   <string>&lt;p&gt;&lt;b&gt;About StudWorks&lt;/b&gt;&lt;/p&gt;&lt;p&gt;View the StudWorks version and system information. The Qt and OpenGL details can help diagnose display problems. Select text in System Information to copy it when reporting a problem. The website link opens in your browser.&lt;/p&gt;</string>
   </property>
   <property name="geometry">
    <rect>
@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>About LeoCAD+</string>
+   <string>About StudWorks</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -27,7 +27,7 @@
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap resource="../leocad.qrc">:/resources/leocad.png</pixmap>
+          <pixmap resource="../../studworks.qrc">:/resources/studworks.png</pixmap>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -42,17 +42,17 @@
          <item>
           <widget class="QLabel" name="version">
            <property name="toolTip">
-            <string>LeoCAD+ version running on this computer.</string>
+            <string>StudWorks version running on this computer.</string>
            </property>
            <property name="text">
-            <string>LeoCAD+ Version 0.00.0</string>
+            <string>StudWorks Version 0.00.0</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QLabel" name="label_4">
            <property name="text">
-            <string>LeoCAD+ is a free application for creating virtual LEGO models.</string>
+            <string>StudWorks is a free application for creating virtual LEGO models. Based on LeoCAD by Leonardo Zide, released under the GNU General Public License version 2.</string>
            </property>
            <property name="wordWrap">
             <bool>true</bool>
@@ -62,10 +62,10 @@
          <item>
           <widget class="QLabel" name="label_2">
            <property name="toolTip">
-            <string>Open the LeoCAD website in your browser.</string>
+            <string>Open the StudWorks project page in your browser.</string>
            </property>
            <property name="text">
-            <string notr="true">&lt;a href=&quot;https://www.leocad.org&quot;&gt;https://www.leocad.org&lt;/a&gt;</string>
+            <string notr="true">&lt;a href=&quot;https://github.com/nathaneltitane/studworks&quot;&gt;https://github.com/nathaneltitane/studworks&lt;/a&gt;</string>
            </property>
            <property name="openExternalLinks">
             <bool>true</bool>
@@ -122,7 +122,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../leocad.qrc"/>
+  <include location="../../studworks.qrc"/>
  </resources>
  <connections>
   <connection>

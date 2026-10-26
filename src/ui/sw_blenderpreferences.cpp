@@ -22,6 +22,7 @@ const auto SkipEmptyParts = QString::SplitBehavior::SkipEmptyParts;
 
 const QLatin1String LineEnding("\r\n");
 
+// The add-on runs in its LeoCAD mode, the name is part of the add-on interface.
 #define SW_PRODUCTNAME_STR                 "LeoCAD"
 #define SW_BLENDER_ADDON                   "ImportLDraw"
 #define SW_BLENDER_ADDON_MM                "ImportLDrawMM"
@@ -3614,7 +3615,7 @@ int swBlenderPreferences::ShowMessage(QWidget* Parent, const QString& Header,  c
 	Box.setWindowIcon(QIcon());
 	if (!Icon)
 	{
-		QPixmap Pixmap = QPixmap(":/resources/leocad.png");
+		QPixmap Pixmap = QPixmap(":/resources/studworks.png");
 		Box.setIconPixmap (Pixmap);
 	}
 	else
