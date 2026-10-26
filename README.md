@@ -19,7 +19,7 @@ Useful? Star the repository - it helps others find it.
 10-26-2026 ↴
 
 - LeoCAD+ is now StudWorks, its own project built on [LeoCAD](https://github.com/leozide/leocad)
-- Code split into modules: app, core, library, render, io and ui
+- Code split into modules: application, core, library, rendering, input_output and interface
 - Settings, part palettes and minifigure templates are copied from LeoCAD on the first start
 - Models keep LeoCAD's file format and open in either program
 - Set inventories use your own free Rebrickable API key, asked for once

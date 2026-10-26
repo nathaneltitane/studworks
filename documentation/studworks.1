@@ -1,4 +1,4 @@
-.TH STUDWORKS 1 "18 September 2026"
+.TH STUDWORKS 1 "26 October 2026"
 .\" NAME should be all caps, SECTION should be 1-8, maybe w/ subsection
 .\" other params are allowed: see man(7), man(1)
 .SH NAME
@@ -142,9 +142,19 @@ Set the width of the edge lines.
 AntiAliasing sample size (1, 2, 4, or 8).
 
 .TP
+\fB\-nscc\fR,\ \fB\-\-disable\-stud\-cylinder\-color
+.br
+Disable high contrast stud cylinder color.
+
+.TP
 \fB\-scc \fI#AARRGGBB\fR,\ \fB\-\-stud\-cylinder\-color\ \fI#AARRGGBB
 .br
 High contrast stud cylinder color.
+
+.TP
+\fB\-nec\fR,\ \fB\-\-disable\-edge\-color
+.br
+Disable high contrast edge color.
 
 .TP
 \fB\-ec \fI#AARRGGBB\fR,\ \fB\-\-edge\-color\ \fI#AARRGGBB
@@ -152,9 +162,19 @@ High contrast stud cylinder color.
 High contrast edge color.
 
 .TP
+\fB\-nbec\fR,\ \fB\-\-disable\-black\-edge\-color
+.br
+Disable high contrast edge color for black parts.
+
+.TP
 \fB\-bec \fI#AARRGGBB\fR,\ \fB\-\-black\-edge\-color\ \fI#AARRGGBB
 .br
 High contrast edge color for black parts.
+
+.TP
+\fB\-ndec\fR,\ \fB\-\-disable\-dark\-edge\-color
+.br
+Disable high contrast edge color for dark color parts.
 
 .TP
 \fB\-dec \fI#AARRGGBB\fR,\ \fB\-\-dark\-edge\-color\ \fI#AARRGGBB
@@ -164,12 +184,12 @@ High contrast edge color for dark color parts.
 .TP
 \fB\-aec,\ \fB\-\-automate\-edge\-color
 .br
-Enable automatically adjusted edge colors.\
+Enable automatically adjusted edge colors.
 
 .TP
 \fB\-cc \fIfloat\fR,\ \fB\-\-color\-contrast\ \fIfloat
 .br
-Set the near and far clipping planes used to render images (1 <= \fInear\fR < \fIfar\fR).
+Set the color contrast value, between 0.0 and 1.0.
 
 .TP
 \fB\-ldv \fIfloat\fR,\ \fB\-\-light\-dark\-value\ \fIfloat
@@ -177,22 +197,27 @@ Set the near and far clipping planes used to render images (1 <= \fInear\fR < \f
 Set the value to indicate a light or dark color.
 
 .TP
-\fB\-obj \fR[\fIoutfile.obj\fR]
+\fB\-obj \fR[\fIoutfile.obj\fR],\ \fB\-\-export\-wavefront \fR[\fIoutfile.obj\fR]
 .br
 Exports the model to wavefront format.
 
 .TP
-\fB\-3ds \fR[\fIoutfile.3ds\fR]
+\fB\-3ds \fR[\fIoutfile.3ds\fR],\ \fB\-\-export\-3ds \fR[\fIoutfile.3ds\fR]
 .br
 Exports the model to 3DS format.
 
 .TP
-\fB\-dae \fR[\fIoutfile.dae\fR]
+\fB\-dae \fR[\fIoutfile.dae\fR],\ \fB\-\-export\-collada \fR[\fIoutfile.dae\fR]
 .br
 Exports the model to COLLADA DAE format.
 
 .TP
-\fB\-html \fR[\fIpath\fR]
+\fB\-csv \fR[\fIoutfile.csv\fR],\ \fB\-\-export\-csv \fR[\fIoutfile.csv\fR]
+.br
+Exports the list of pieces used in CSV format.
+
+.TP
+\fB\-html \fR[\fIpath\fR],\ \fB\-\-export\-html \fR[\fIpath\fR]
 .br
 Creates an HTML page for the model.
 

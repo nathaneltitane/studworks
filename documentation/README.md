@@ -1,75 +1,39 @@
 # About StudWorks
 
-StudWorks is a CAD program for creating virtual LEGO(R) models. It's available
-for free under the GNU Public License v2 and works on the Windows, Linux
-and macOS Operating Systems.
+StudWorks is a free CAD program for creating virtual LEGO(R) models with the
+LDraw parts library, built on LeoCAD. It is released under the GNU General
+Public License version 2 and runs on Linux, Windows and macOS.
+
+Models keep LeoCAD's file format and open in either program. LeoCAD's
+settings, part palettes and minifigure templates are copied on the first start.
 
 
-# Installation
+# Building
 
-You can download the latest version of StudWorks and its Parts Library from
-the main website at https://github.com/nathaneltitane/studworks
+StudWorks is built from source. Install a C++ compiler, Qt 5 (widgets, OpenGL,
+print support, network, xml and concurrent modules) and the zlib development
+package, then run:
 
-It's recommended that you install the latest drivers for your video card
-since StudWorks uses OpenGL to take advantage of hardware acceleration for
-rendering.
+    git clone https://github.com/nathaneltitane/studworks
+    mkdir studworks-build && cd studworks-build
+    qmake ../studworks/studworks.pro
+    make -j"$(nproc)"
 
-## StudWorks for Windows
+Start build/release/studworks. If no parts library is found, download one from
+https://library.ldraw.org/updates?latest and point Preferences to it, or set
+the STUDWORKS_LIB environment variable.
 
-  Download the latest StudWorks-Windows.exe to your computer, double click on
-  the icon to launch the installer and follow the instructions.
-
-## StudWorks for macOS
-
-  Download the latest StudWorks-macOS.dmg to your computer, double click on
-  the icon to open the archive, copy StudWorks.app to your Applications folder
-  and then launch it from there.
-
-## StudWorks for Linux
-
-There are multiple ways to install StudWorks on Linux.
-
-* Snap Store
-  
-  You can find StudWorks in your distribution's Snap Store. Alternatively, you
-  can enter `sudo snap install studworks` to install it using the command line.
-
-* AppImage
-
-  Download the latest StudWorks-Linux.AppImage, make the file executable
-  (`chmod +x`) and run it.
-
-* Flatpak
-
-  You can also install StudWorks releases as a Flatpak from Flathub:
-    https://flathub.org/apps/details/io.github.nathaneltitane.StudWorks
-
-  Note: there might be a delay for new releases to appear there. If
-  you have it already installed, it will be updated.
-
-* From source
-
-  If you prefer to compile StudWorks yourself, go to the GitHub releases page
-  at https://github.com/nathaneltitane/studworks/releases/latest and download the
-  source archive from there. If you do not already have a Parts Library
-  installed, you will need to download one and follow the installation
-  instructions. More information on how to compile your own executable is
-  available in the Documentation section of https://github.com/nathaneltitane/studworks
+Installing the latest video card drivers is recommended, since StudWorks uses
+OpenGL for hardware accelerated rendering.
 
 
 # Online Resources
 
-New users can find an overview of the features and how to build StudWorks in the
-project README at https://github.com/nathaneltitane/studworks.
-
-- Website:
+- Project page:
   https://github.com/nathaneltitane/studworks
 
-- GitHub page:
-  https://github.com/nathaneltitane/studworks
-
-- Unstable builds:
-  https://github.com/nathaneltitane/studworks/releases/tag/continuous
+- Bug reports and feature requests:
+  https://github.com/nathaneltitane/studworks/issues
 
 
 # Legal Disclaimer

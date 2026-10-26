@@ -130,8 +130,7 @@ canonicalizes disk paths. The project directory is passed separately to acquisit
 so the manager preserves temporary-texture metadata without searching files itself.
 Library texture APIs forward reference changes and decoding to the manager.
 The project overload of `AcquireTexture()` gathers the explicit project's context
-without starting decoding or waiting. `FindTexture(Source)` only borrows an already
-registered texture by its resolved source; it performs no source search or creation.
+without starting decoding or waiting; an existing texture for the same source is reused.
 `RequestTextureLoad()` starts or promotes work, and `WaitForTexture()` explicitly
 waits through decoding and upload. Texture requests,
 priority promotion, cancellation, upload/retries, and part dependency settlement
@@ -444,9 +443,8 @@ are safe. `==` and `!=` compare pointer identity between handles or with a
 borrowed pointer in either order, including null, without changing reference counts.
 Use `Get()` when passing a borrowed pointer to an API.
 
-Textures use the same lookup/acquisition convention: `FindTexture(Source)` borrows
-a registered identity and `AcquireTexture()` returns a scoped reference without
-loading. `RequestTextureLoad()` only schedules work; `WaitForTexture()` explicitly
+Textures have no borrowed lookup: `AcquireTexture()` reuses or creates the identity
+for a source and returns a scoped reference without loading. `RequestTextureLoad()` only schedules work; `WaitForTexture()` explicitly
 waits through decoding and upload and accepts `const swTextureReference&`, matching
 the piece wait API. Both require the caller to retain the texture.
 Mesh texture sections own `swTextureReference` handles, so section copies retain and
@@ -576,7 +574,7 @@ adds strict failure reporting. During shutdown, the loader's private
 
 | Need | API and lifetime contract |
 | --- | --- |
-| Find a registered identity | `FindPieceData(Name, Project)` or `FindTexture(Source)`. Borrowed lookup only, with no I/O or creation. |
+| Find a registered identity | `FindPieceData(Name, Project)`. Borrowed lookup only, with no I/O or creation. |
 | Resolve or create a piece identity | `AcquirePieceData(Name, Project, CreateMissing, SearchProjectFolder)` returns a scoped reference without ensuring mesh readiness. |
 | Start ordinary asynchronous work | Retain the identity, then call `RequestPieceDataLoad()` with `swLoadPriority::Low` for background work or `Normal` for model/view work. Existing owners need no extra reference for another request. |
 | Retain and synchronously load one identity | Keep an `swPieceDataReference` from `AcquirePieceData()`, then call `WaitForPieceData(PieceDataRef)` and check its return value. |
