@@ -768,7 +768,7 @@ void lcAssetLoader::WaitForCompletionOrRetry()
 	}
 }
 
-bool lcAssetLoader::WaitForPieces(const std::vector<lcPieceData*>& Pieces)
+bool lcAssetLoader::WaitForPieces(const std::vector<lcPieceData*>& Pieces, const std::function<void(int, int)>& Progress)
 {
 	Q_ASSERT(QThread::currentThread() == thread());
 
@@ -802,6 +802,16 @@ bool lcAssetLoader::WaitForPieces(const std::vector<lcPieceData*>& Pieces)
 		for (;;)
 		{
 			ProcessCompletions();
+
+			if (Progress)
+			{
+				const int Finished = static_cast<int>(std::count_if(Requests.begin(), Requests.end(), [](const std::shared_ptr<PieceRequest>& Request)
+				{
+					return Request->IsFinished();
+				}));
+
+				Progress(Finished, static_cast<int>(Requests.size()));
+			}
 
 			if (mStopping || RequestedPiece->IsFinished())
 				break;

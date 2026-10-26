@@ -36,6 +36,33 @@ protected:
 // Keeps a panel exactly as tall as its contents, updated whenever its layout changes.
 void lcFitHeightToContents(QWidget* Widget);
 
+// Shows a modal progress dialog for a blocking task once it lasts longer than a moment.
+class lcBlockingProgress
+{
+	Q_DECLARE_TR_FUNCTIONS(lcBlockingProgress);
+
+public:
+	lcBlockingProgress(const QString& Title, const QString& Label, bool Cancelable);
+	~lcBlockingProgress();
+
+	lcBlockingProgress(const lcBlockingProgress&) = delete;
+	lcBlockingProgress& operator=(const lcBlockingProgress&) = delete;
+
+	void SetProgress(int Value, int Maximum);
+	bool IsCanceled() const;
+
+protected:
+	QString mTitle;
+	QString mLabel;
+	bool mCancelable;
+	bool mNested;
+	QElapsedTimer mTimer;
+	QElapsedTimer mUpdateTimer;
+	QProgressDialog* mDialog = nullptr;
+
+	static lcBlockingProgress* mActive;
+};
+
 // Panel headers share the look of the preview toolbar so every panel has the same spacing.
 int lcGetPanelToolBarHeight(const QWidget* Widget);
 void lcSetPanelToolBarMargins(QToolBar* ToolBar);

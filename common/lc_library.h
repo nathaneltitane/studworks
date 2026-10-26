@@ -160,7 +160,7 @@ public:
 	// Starts or promotes loading, then waits. Adds no consumer references; false means failure/cancellation.
 	// Does not traverse container children or wait for per-instance synth geometry.
 	bool WaitForPieceData(const lcPieceDataRef& PieceDataRef);
-	bool WaitForPieceData(const std::vector<lcPieceDataRef>& PieceDataRefs);
+	bool WaitForPieceData(const std::vector<lcPieceDataRef>& PieceDataRefs, const std::function<void(int, int)>& Progress = nullptr);
 
 	// Also settles container children/synths and updates bounds; the caller retains the identity.
 	bool EnsurePieceDataAssetsReady(const lcPieceDataRef& PieceData);

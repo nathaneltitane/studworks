@@ -97,6 +97,76 @@ void lcFitHeightToContents(QWidget* Widget)
 	Widget->installEventFilter(new lcFitHeightFilter(Widget));
 }
 
+lcBlockingProgress* lcBlockingProgress::mActive = nullptr;
+
+lcBlockingProgress::lcBlockingProgress(const QString& Title, const QString& Label, bool Cancelable)
+	: mTitle(Title), mLabel(Label), mCancelable(Cancelable)
+{
+	// A wait started while another one shows its progress is part of the same task.
+	mNested = mActive != nullptr;
+
+	if (!mNested)
+		mActive = this;
+
+	mTimer.start();
+}
+
+lcBlockingProgress::~lcBlockingProgress()
+{
+	delete mDialog;
+
+	if (mActive == this)
+		mActive = nullptr;
+}
+
+void lcBlockingProgress::SetProgress(int Value, int Maximum)
+{
+	if (mNested)
+		return;
+
+	if (!mDialog)
+	{
+		// Short tasks finish without a dialog flashing on screen.
+		if (Value >= Maximum || mTimer.elapsed() < 400)
+			return;
+
+		mDialog = new QProgressDialog(QApplication::activeWindow());
+		mDialog->setWindowTitle(mTitle);
+		mDialog->setLabelText(mLabel);
+		mDialog->setWindowModality(Qt::ApplicationModal);
+		mDialog->setMinimumDuration(0);
+		mDialog->setAutoClose(false);
+		mDialog->setAutoReset(false);
+
+		QProgressBar* Bar = new QProgressBar(mDialog);
+		Bar->setFormat(tr("%v of %m"));
+		mDialog->setBar(Bar);
+
+		if (!mCancelable)
+		{
+			mDialog->setCancelButton(nullptr);
+			mDialog->setWindowFlags(mDialog->windowFlags() & ~Qt::WindowCloseButtonHint);
+		}
+
+		mDialog->setRange(0, Maximum);
+		mDialog->show();
+		mUpdateTimer.invalidate();
+	}
+
+	// Updates are throttled, each one runs the event loop to repaint the dialog.
+	if (mUpdateTimer.isValid() && mUpdateTimer.elapsed() < 50 && Value < Maximum)
+		return;
+
+	mUpdateTimer.start();
+	mDialog->setMaximum(Maximum);
+	mDialog->setValue(Value);
+}
+
+bool lcBlockingProgress::IsCanceled() const
+{
+	return mDialog && mDialog->wasCanceled();
+}
+
 int lcGetPanelToolBarHeight(const QWidget* Widget)
 {
 	// As tall as a panel title bar, the text plus the padding and border of the title.
