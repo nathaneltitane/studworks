@@ -45,8 +45,8 @@ package() {
 				${pkgdir}/usr/share/mime/packages/studworks.xml
   install -m 644 qt/studworks.desktop \
 				${pkgdir}/usr/share/applications/studworks.desktop
-  install -m 644 resources/icons/scalable/mimetypes/application-vnd.leocad.svg \
-				${pkgdir}/usr/share/icons/hicolor/scalable/mimetypes/application-vnd.leocad.svg
+  install -m 644 resources/icons/scalable/mimetypes/application-vnd.studworks.svg \
+				${pkgdir}/usr/share/icons/hicolor/scalable/mimetypes/application-vnd.studworks.svg
   make INSTALL_ROOT="${pkgdir}" install
 }
 

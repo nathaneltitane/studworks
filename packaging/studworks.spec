@@ -249,8 +249,8 @@ install -m 644 qt/studworks.xml  \
 				$RPM_BUILD_ROOT%{_datadir}/mime/packages/studworks.xml
 install -m 644 qt/studworks.desktop \
 				$RPM_BUILD_ROOT%{_datadir}/applications/studworks.desktop
-install -m 644 resources/icons/scalable/mimetypes/application-vnd.leocad.svg \
-				$RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/mimetypes/application-vnd.leocad.svg
+install -m 644 resources/icons/scalable/mimetypes/application-vnd.studworks.svg \
+				$RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/mimetypes/application-vnd.studworks.svg
 install -m 644 resources/icons/scalable/apps/studworks.svg \
 				$RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/apps/studworks.svg
 %if 0%{?suse_version}
@@ -268,7 +268,7 @@ install -m 644 resources/icons/scalable/apps/studworks.svg \
 %doc %{_datadir}/studworks/COPYING.txt
 %{_datadir}/mime/packages/studworks.xml
 %{_datadir}/applications/studworks.desktop
-%{_datadir}/icons/hicolor/scalable/mimetypes/application-vnd.leocad.svg
+%{_datadir}/icons/hicolor/scalable/mimetypes/application-vnd.studworks.svg
 %{_datadir}/icons/hicolor/scalable/apps/studworks.svg
 %if 0%{?mdkversion} || 0%{?mageia}
 %{_mandir}/man1/studworks.1.xz

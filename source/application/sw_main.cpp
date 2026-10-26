@@ -150,9 +150,9 @@ static void swCopyFolder(const QString& Source, const QString& Destination)
 	}
 }
 
-static void swMigrateLeoCADData()
+static void swMigrateEarlierSettings()
 {
-	// The first start takes over the LeoCAD settings and data, later starts only use their own.
+	// The first start takes over the settings and data stored under the earlier application name, later starts only use their own.
 	QSettings Settings;
 
 	if (!Settings.allKeys().isEmpty())
@@ -193,7 +193,7 @@ int main(int argc, char *argv[])
 	QCoreApplication::setApplicationVersion(QLatin1String(SW_VERSION_TEXT));
 	QGuiApplication::setDesktopFileName(QLatin1String("studworks"));
 
-	swMigrateLeoCADData();
+	swMigrateEarlierSettings();
 	swInitializeSurfaceFormat(argc, argv);
 
 	QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);

@@ -2007,7 +2007,7 @@ swResult<QByteArray> Project::SerializeModel(const swModel* Root, bool SelectedO
 		Append(Data->RawBlock);
 
 	if (SelectedOnly)
-		Output.prepend("0 !LEOCAD CLIPBOARD PROJECT " + mClipboardIdentity.toString().toUtf8() + "\r\n");
+		Output.prepend("0 !STUDWORKS CLIPBOARD PROJECT " + mClipboardIdentity.toString().toUtf8() + "\r\n");
 
 	return Output;
 }
@@ -2019,7 +2019,7 @@ swResult<swModel*> Project::ImportClipboard(const QByteArray& FileData)
 	swGetPiecesLibrary()->ReleaseProjectPieceData(&Source);
 	Source.SetDeferModelMeshRequests(true);
 	Source.mFileName = mFileName;
-	const QByteArray Marker("0 !LEOCAD CLIPBOARD PROJECT ");
+	const QByteArray Marker("0 !STUDWORKS CLIPBOARD PROJECT ");
 	const QByteArray FirstLine = FileData.left(FileData.indexOf('\n') == -1 ? FileData.size() : FileData.indexOf('\n')).trimmed();
 	const bool SameProject = FirstLine.startsWith(Marker) && QUuid(QString::fromUtf8(FirstLine.mid(Marker.size()))) == mClipboardIdentity;
 	Source.LoadLDrawDocument(FileData, this, SameProject);

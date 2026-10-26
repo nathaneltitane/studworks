@@ -25,7 +25,7 @@
 #include "sw_string.h"
 #include <locale.h>
 
-// Models carry LeoCAD meta commands, StudWorks writes them unchanged and also reads its own name.
+// Meta commands are written with the established tag so models stay compatible, both tags are read.
 static bool swIsMetaCommand(const QString& Token)
 {
 	return Token == QLatin1String("!LEOCAD") || Token == QLatin1String("!STUDWORKS");

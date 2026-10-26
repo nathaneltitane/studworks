@@ -11,7 +11,7 @@ Exec=studworks %f
 Terminal=false
 Type=Application
 Icon=studworks
-MimeType=application/vnd.leocad;application/x-ldraw;application/x-multi-part-ldraw;application/x-multipart-ldraw;application/x-ldlite;
+MimeType=application/vnd.studworks;application/x-ldraw;application/x-multi-part-ldraw;application/x-multipart-ldraw;application/x-ldlite;
 Categories=Graphics;3DGraphics;Education;
 Keywords=CAD;LEGO;LDraw;
 

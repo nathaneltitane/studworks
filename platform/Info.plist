@@ -16,7 +16,7 @@
 			<string>studworks_document.icns</string>
 			<key>CFBundleTypeMIMETypes</key>
 			<array>
-				<string>application/vnd.leocad</string>
+				<string>application/vnd.studworks</string>
 			</array>
 			<key>CFBundleTypeName</key>
 			<string>StudWorks Project</string>

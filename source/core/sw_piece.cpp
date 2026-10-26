@@ -215,7 +215,7 @@ bool swPiece::FileLoad(swFile& file, Project* Project)
 
 	version = file.ReadU8();
 
-	if (version > 12) // LeoCAD 0.80
+	if (version > 12) // file format of version 0.80
 		return false;
 
 	const float PositionScale = (version < 12) ? 25.0f : 1.0f;

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>
-	<mime-type type="application/vnd.leocad">
+	<mime-type type="application/vnd.studworks">
 		<comment>StudWorks Project</comment>
 		<magic priority="90">
 			<match type="string" offset="0" value="StudWorks 0.">

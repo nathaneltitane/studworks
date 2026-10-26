@@ -22,8 +22,7 @@ const auto SkipEmptyParts = QString::SplitBehavior::SkipEmptyParts;
 
 const QLatin1String LineEnding("\r\n");
 
-// The add-on runs in its LeoCAD mode, the name is part of the add-on interface.
-#define SW_PRODUCT_NAME_STRING                 "LeoCAD"
+#define SW_PRODUCT_NAME_STRING                 "StudWorks"
 #define SW_BLENDER_ADDON                   "ImportLDraw"
 #define SW_BLENDER_ADDON_MM                "ImportLDrawMM"
 #define SW_BLENDER_ADDON_FILE              "LDrawBlenderRenderAddons.zip"

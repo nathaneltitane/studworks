@@ -12,7 +12,7 @@
 #define SW_CAMERA_POSITION_EDGE 7.5f
 #define SW_CAMERA_TARGET_EDGE 7.5f
 
-#define SW_CAMERA_SAVE_VERSION 7 // LeoCAD 0.80
+#define SW_CAMERA_SAVE_VERSION 7 // file format of version 0.80
 
 swCamera::swCamera()
     : swObject(swObjectType::Camera)
