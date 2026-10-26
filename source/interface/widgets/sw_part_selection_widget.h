@@ -288,6 +288,7 @@ public:
 	void LoadState(QSettings& Settings);
 	void SaveState(QSettings& Settings);
 	void SetOrientation(Qt::Orientation Orientation);
+	void SnapCategoriesWidth();
 	void SetCurrentPart(swPieceData* PieceData);
 	void SetCategory(swPartCategoryType Type, int Index);
 	void SetCustomParts(const std::vector<std::pair<swPieceData*, std::string>>& Parts, int ColorIndex);
@@ -372,6 +373,7 @@ protected:
 
 	void resizeEvent(QResizeEvent* Event) override;
 	bool event(QEvent* Event) override;
+	bool eventFilter(QObject* Object, QEvent* Event) override;
 
 	QTreeWidget* mCategoriesWidget = nullptr;
 	QLineEdit* mFilterCategoriesWidget = nullptr;
@@ -383,5 +385,6 @@ protected:
 	QSplitter* mSplitter = nullptr;
 	QTreeWidgetItem* mAllPartsCategoryItem = nullptr;
 	std::vector<swPartPalette> mPartPalettes;
+	Qt::DockWidgetArea mDockArea = Qt::NoDockWidgetArea;
 	bool mIsPopup = false;
 };

@@ -1928,7 +1928,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Pieces.ToggleSnapToTiles"),
 		QT_TRANSLATE_NOOP("Menu", "Snap Panel Width to Tiles"),
-		QT_TRANSLATE_NOOP("Status", "Toggle snapping the pieces panel width to whole thumbnail tiles"),
+		QT_TRANSLATE_NOOP("Status", "Toggle snapping the pieces panel width to whole thumbnail tiles and the categories to the longest name"),
 		"",
 		""
 	},

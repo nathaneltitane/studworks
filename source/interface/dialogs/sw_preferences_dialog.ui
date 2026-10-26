@@ -1409,7 +1409,7 @@
           <item row="5" column="0" colspan="3">
            <widget class="QCheckBox" name="PiecesSnapToTiles">
             <property name="toolTip">
-             <string>Snap the width of the docked pieces panel to whole thumbnail tiles after resizing it.</string>
+             <string>Snap the width of the docked pieces panel to whole thumbnail tiles after resizing it, and the categories to the longest category name when docked on top or bottom.</string>
             </property>
             <property name="text">
              <string>Snap Panel Width to Tiles</string>

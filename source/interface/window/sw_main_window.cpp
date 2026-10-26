@@ -1084,7 +1084,10 @@ void swMainWindow::SnapPartsDock()
 	const Qt::DockWidgetArea Area = dockWidgetArea(mPartsToolBar);
 
 	if (Area != Qt::LeftDockWidgetArea && Area != Qt::RightDockWidgetArea)
+	{
+		mPartSelectionWidget->SnapCategoriesWidth();
 		return;
+	}
 
 	const int Delta = mPartSelectionWidget->GetTileSnapDelta();
 

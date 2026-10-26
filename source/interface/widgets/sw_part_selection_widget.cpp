@@ -1092,6 +1092,17 @@ swPartSelectionWidget::swPartSelectionWidget(bool IsPopup, QWidget* Parent)
 
 	mSplitter->setStretchFactor(0, 0);
 	mSplitter->setStretchFactor(1, 1);
+
+	// Dragging the splitter by hand snaps the categories back to the longest name once the mouse is released.
+	mSplitter->handle(1)->installEventFilter(this);
+}
+
+bool swPartSelectionWidget::eventFilter(QObject* Object, QEvent* Event)
+{
+	if (Object == mSplitter->handle(1) && Event->type() == QEvent::MouseButtonRelease)
+		QTimer::singleShot(0, this, &swPartSelectionWidget::SnapCategoriesWidth);
+
+	return QWidget::eventFilter(Object, Event);
 }
 
 bool swPartSelectionWidget::event(QEvent* Event)
@@ -1190,12 +1201,56 @@ void swPartSelectionWidget::SetOrientation(Qt::Orientation Orientation)
 	mSplitter->setSizes(Sizes);
 }
 
+void swPartSelectionWidget::SnapCategoriesWidth()
+{
+	QDockWidget* DockWidget = qobject_cast<QDockWidget*>(parent());
+
+	if (mIsPopup || !swGetPreferences().mPiecesSnapToTiles || !DockWidget || DockWidget->isFloating())
+		return;
+
+	if ((mDockArea != Qt::TopDockWidgetArea && mDockArea != Qt::BottomDockWidgetArea) || mSplitter->orientation() != Qt::Horizontal || mSplitter->widget(0)->isHidden())
+		return;
+
+	// Measure every category, including the ones hidden by the filter, so filtering never changes the width.
+	QStyleOptionViewItem Option;
+	Option.initFrom(mCategoriesWidget);
+	Option.widget = mCategoriesWidget;
+	Option.font = mCategoriesWidget->font();
+
+	QAbstractItemModel* Model = mCategoriesWidget->model();
+	int TextWidth = 0;
+
+	for (int Row = 0; Row < Model->rowCount(); Row++)
+		TextWidth = qMax(TextWidth, mCategoriesWidget->itemDelegate()->sizeHint(Option, Model->index(Row, 0)).width());
+
+	if (!TextWidth)
+		return;
+
+	int Width = TextWidth + 2 * mCategoriesWidget->frameWidth();
+	if (mCategoriesWidget->verticalScrollBar()->isVisible())
+		Width += mCategoriesWidget->verticalScrollBar()->width();
+
+	Width = qMax(Width, mSplitter->widget(0)->minimumSizeHint().width());
+
+	QList<int> Sizes = mSplitter->sizes();
+
+	if (Sizes.size() != 2 || Sizes[0] == Width)
+		return;
+
+	const int Length = Sizes[0] + Sizes[1];
+	mSplitter->setSizes({ Width, Length - Width });
+}
+
 void swPartSelectionWidget::DockLocationChanged(Qt::DockWidgetArea Area)
 {
+	mDockArea = Area;
+
 	if (Area == Qt::LeftDockWidgetArea || Area == Qt::RightDockWidgetArea)
 		mSplitter->setOrientation(Qt::Vertical);
 	else
 		mSplitter->setOrientation(Qt::Horizontal);
+
+	QTimer::singleShot(0, this, &swPartSelectionWidget::SnapCategoriesWidth);
 }
 
 void swPartSelectionWidget::resizeEvent(QResizeEvent* Event)
@@ -1632,6 +1687,8 @@ void swPartSelectionWidget::UpdateCategories()
 
 	if (CurrentItem)
 		mCategoriesWidget->setCurrentItem(CurrentItem);
+
+	QTimer::singleShot(0, this, &swPartSelectionWidget::SnapCategoriesWidth);
 }
 
 void swPartSelectionWidget::UpdateModels()
