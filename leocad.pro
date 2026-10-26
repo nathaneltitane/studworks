@@ -26,11 +26,8 @@ qtHaveModule(gamepad) {
 qtHaveModule(KParts) {
 	QT += KParts
 	DEFINES += LC_ENABLE_TERMINAL
-	SOURCES += common/lc_terminalwidget.cpp
-	HEADERS += common/lc_terminalwidget.h
 }
 
-INCLUDEPATH += qt common
 CONFIG += precompile_header incremental c++17 force_debug_info
 
 win32 {
@@ -49,15 +46,15 @@ win32 {
 win32-msvc* {
 	QMAKE_CXXFLAGS_WARN_ON += /W4 -wd4100
 	QMAKE_CXXFLAGS *= /MP
-	PRECOMPILED_HEADER = common/lc_global.h
-	PRECOMPILED_SOURCE = common/lc_global.cpp
+	PRECOMPILED_HEADER = src/app/lc_global.h
+	PRECOMPILED_SOURCE = src/app/lc_global.cpp
 	DEFINES += _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE=1 _CRT_NONSTDC_NO_WARNINGS=1
 	INCLUDEPATH += $$[QT_INSTALL_HEADERS]/QtZlib
 	QMAKE_LFLAGS += /INCREMENTAL
 	LIBS += -ladvapi32 -lshell32 -lopengl32 -luser32
 	QMAKE_CXXFLAGS += /we4834
 } else {
-	PRECOMPILED_HEADER = common/lc_global.h
+	PRECOMPILED_HEADER = src/app/lc_global.h
 	LIBS += -lz
 	QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter -Wshadow
 	QMAKE_CXXFLAGS += -Werror=unused-result
@@ -133,7 +130,7 @@ unix:!macx {
 	man.path = $$MAN_DIR
 	man.files = docs/leocad.1
 	desktop.path = $$DESKTOP_DIR
-	desktop.files = qt/leocad.desktop
+	desktop.files = platform/leocad.desktop
 	icons.path = $$ICON_DIR/hicolor
 	icons.files += tools/icon/128x128
 	icons.files += tools/icon/16x16
@@ -145,7 +142,7 @@ unix:!macx {
 	icons.files += tools/icon/64x64
 	icons.files += tools/icon/scalable
 	mime.path = $$MIME_DIR
-	mime.files = qt/leocad.xml
+	mime.files = platform/leocad.xml
 	appdata.path = $$APPDATA_DIR
 	appdata.files = tools/setup/org.leocad.LeoCAD.appdata.xml
 
@@ -162,7 +159,7 @@ unix:!macx {
 
 macx {
 	ICON = resources/leocad.icns
-	QMAKE_INFO_PLIST = qt/Info.plist
+	QMAKE_INFO_PLIST = platform/Info.plist
 
 	document_icon.files += $$_PRO_FILE_PWD_/resources/leocad_document.icns
 	document_icon.path = Contents/Resources
@@ -180,191 +177,13 @@ ios {
 	DEFINES += LC_DISABLE_BLENDER=1
 }
 
-SOURCES += \
-	common/camera.cpp \
-	common/group.cpp \
-	common/lc_aboutdialog.cpp \
-	common/lc_application.cpp \
-	common/lc_arraydialog.cpp \
-	common/lc_assetloader.cpp \
-	common/lc_assettypes.cpp \
-	common/lc_blenderpreferences.cpp \
-	common/lc_bricklink.cpp \
-	common/lc_category.cpp \
-	common/lc_categorydialog.cpp \
-	common/lc_collapsiblewidget.cpp \
-	common/lc_colorlist.cpp \
-	common/lc_colorpicker.cpp \
-	common/lc_colors.cpp \
-	common/lc_commands.cpp \
-	common/lc_context.cpp \
-	common/lc_doublespinbox.cpp \
-	common/lc_edgecolordialog.cpp \
-	common/lc_editgroupsdialog.cpp \
-	common/lc_file.cpp \
-	common/lc_filter.cpp \
-	common/lc_findreplacewidget.cpp \
-	common/lc_glextensions.cpp \
-	common/lc_groupdialog.cpp \
-	common/lc_htmldialog.cpp \
-	common/lc_http.cpp \
-	common/lc_imagedialog.cpp \
-	common/lc_instructions.cpp \
-	common/lc_instructionsdialog.cpp \
-	common/lc_keyframewidget.cpp \
-	common/lc_ladderwidget.cpp \
-	common/lc_library.cpp \
-	common/lc_lxf.cpp \
-	common/lc_mainwindow.cpp \
-	common/lc_mesh.cpp \
-	common/lc_meshloader.cpp \
-	common/lc_minifigdialog.cpp \
-	common/lc_model.cpp \
-	common/lc_modelhistory.cpp \
-	common/lc_modellistdialog.cpp \
-	common/lc_objectproperty.cpp \
-	common/lc_pagesetupdialog.cpp \
-	common/lc_partpalettedialog.cpp \
-	common/lc_partselectionpopup.cpp \
-	common/lc_partselectionwidget.cpp \
-	common/lc_piecedata.cpp \
-	common/lc_piecemanager.cpp \
-	common/lc_previewwidget.cpp \
-	common/lc_profile.cpp \
-	common/lc_propertieswidget.cpp \
-	common/lc_scene.cpp \
-	common/lc_selectdialog.cpp \
-	common/lc_setsdatabasedialog.cpp \
-	common/lc_shortcuts.cpp \
-	common/lc_spinnerwidget.cpp \
-	common/lc_string.cpp \
-	common/lc_stringcache.cpp \
-	common/lc_synth.cpp \
-	common/lc_texture.cpp \
-	common/lc_texturemanager.cpp \
-	common/lc_thumbnailmanager.cpp \
-	common/lc_timelinewidget.cpp \
-	common/lc_traintrack.cpp \
-	common/lc_updatedialog.cpp \
-	common/lc_view.cpp \
-	common/lc_viewmanipulator.cpp \
-	common/lc_viewsphere.cpp \
-	common/lc_viewwidget.cpp \
-	common/lc_zipfile.cpp \
-	common/light.cpp \
-	common/minifig.cpp \
-	common/object.cpp \
-	common/piece.cpp \
-	common/project.cpp \
-	common/texfont.cpp \
-	qt/lc_qpreferencesdialog.cpp \
-	qt/lc_qpropertiesdialog.cpp \
-	qt/lc_qutils.cpp \
-	qt/lc_renderdialog.cpp \
-	qt/qtmain.cpp
-HEADERS += \
-	common/camera.h \
-	common/group.h \
-	common/lc_aboutdialog.h \
-	common/lc_application.h \
-	common/lc_arraydialog.h \
-	common/lc_assetloader.h \
-	common/lc_assettypes.h \
-	common/lc_blenderpreferences.h \
-	common/lc_bricklink.h \
-	common/lc_category.h \
-	common/lc_categorydialog.h \
-	common/lc_collapsiblewidget.h \
-	common/lc_colorlist.h \
-	common/lc_colorpicker.h \
-	common/lc_colors.h \
-	common/lc_commands.h \
-	common/lc_context.h \
-	common/lc_doublespinbox.h \
-	common/lc_edgecolordialog.h \
-	common/lc_editgroupsdialog.h \
-	common/lc_file.h \
-	common/lc_filter.h \
-	common/lc_findreplacewidget.h \
-	common/lc_glextensions.h \
-	common/lc_global.h \
-	common/lc_groupdialog.h \
-	common/lc_htmldialog.h \
-	common/lc_http.h \
-	common/lc_imagedialog.h \
-	common/lc_instructions.h \
-	common/lc_instructionsdialog.h \
-	common/lc_keyframewidget.h \
-	common/lc_ladderwidget.h \
-	common/lc_library.h \
-	common/lc_lxf.h \
-	common/lc_mainwindow.h \
-	common/lc_math.h \
-	common/lc_mesh.h \
-	common/lc_meshloader.h \
-	common/lc_minifigdialog.h \
-	common/lc_model.h \
-	common/lc_modelhistory.h \
-	common/lc_modellistdialog.h \
-	common/lc_objecthistory.h \
-	common/lc_objectproperty.h \
-	common/lc_pagesetupdialog.h \
-	common/lc_partpalettedialog.h \
-	common/lc_partselectionpopup.h \
-	common/lc_partselectionwidget.h \
-	common/lc_piecedata.h \
-	common/lc_piecemanager.h \
-	common/lc_previewwidget.h \
-	common/lc_profile.h \
-	common/lc_propertieswidget.h \
-	common/lc_result.h \
-	common/lc_scene.h \
-	common/lc_selectdialog.h \
-	common/lc_setsdatabasedialog.h \
-	common/lc_shortcuts.h \
-	common/lc_spinnerwidget.h \
-	common/lc_string.h \
-	common/lc_stringcache.h \
-	common/lc_synth.h \
-	common/lc_texture.h \
-	common/lc_texturemanager.h \
-	common/lc_thumbnailmanager.h \
-	common/lc_timelinewidget.h \
-	common/lc_traintrack.h \
-	common/lc_updatedialog.h \
-	common/lc_view.h \
-	common/lc_viewmanipulator.h \
-	common/lc_viewsphere.h \
-	common/lc_viewwidget.h \
-	common/lc_zipfile.h \
-	common/light.h \
-	common/minifig.h \
-	common/object.h \
-	common/piece.h \
-	common/project.h \
-	common/texfont.h \
-	qt/lc_qpreferencesdialog.h \
-	qt/lc_qpropertiesdialog.h \
-	qt/lc_qutils.h \
-	qt/lc_renderdialog.h
-FORMS += \
-	common/lc_aboutdialog.ui \
-	common/lc_arraydialog.ui \
-	common/lc_categorydialog.ui \
-	common/lc_editgroupsdialog.ui \
-	common/lc_groupdialog.ui \
-	common/lc_htmldialog.ui \
-	common/lc_imagedialog.ui \
-	common/lc_minifigdialog.ui \
-	common/lc_modellistdialog.ui \
-	common/lc_pagesetupdialog.ui \
-	common/lc_partpalettedialog.ui \
-	common/lc_selectdialog.ui \
-	common/lc_setsdatabasedialog.ui \
-	common/lc_updatedialog.ui \
-	qt/lc_qpropertiesdialog.ui \
-	qt/lc_qpreferencesdialog.ui \
-	qt/lc_renderdialog.ui
+include(src/app/app.pri)
+include(src/core/core.pri)
+include(src/library/library.pri)
+include(src/render/render.pri)
+include(src/io/io.pri)
+include(src/ui/ui.pri)
+
 OTHER_FILES +=
 RESOURCES += leocad.qrc resources/stylesheet/stylesheet.qrc
 

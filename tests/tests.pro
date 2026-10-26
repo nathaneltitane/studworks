@@ -10,12 +10,12 @@ greaterThan(QT_MAJOR_VERSION, 5) {
 	QT += openglwidgets
 }
 
-INCLUDEPATH += ../common
+INCLUDEPATH += ../src/app ../src/core ../src/library ../src/render ../src/io ../src/ui
 
 HEADERS += lc_tests.h
 
 SOURCES += \
-	../common/lc_objectproperty.cpp \
+	../src/core/lc_objectproperty.cpp \
 	lc_objecthistory_test.cpp \
 	lc_objectproperty_test.cpp \
 	main.cpp
