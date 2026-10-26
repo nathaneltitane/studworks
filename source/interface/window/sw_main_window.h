@@ -230,6 +230,7 @@ public:
 	void SetRelativeTransform(bool RelativeTransform);
 	void SetSeparateTransform(bool SelectionTransform);
 	void SetShadingMode(swShadingMode ShadingMode);
+	void SetLightingStyle(swLightingStyle LightingStyle);
 	void SetSelectionMode(swSelectionMode SelectionMode);
 	void ToggleViewSphere();
 	void ToggleAxisIcon();

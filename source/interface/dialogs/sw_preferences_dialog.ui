@@ -70,8 +70,8 @@
                <string>Choose a piece-library folder.</string>
               </property>
               <property name="icon">
-               <iconset resource="../../studworks.qrc">
-                <normaloff>:/resources/file_open.png</normaloff>:/resources/file_open.png</iconset>
+               <iconset resource="../../../studworks.qrc">
+                <normaloff>:/resources/interface/toolbars/standard/file_open.png</normaloff>:/resources/interface/toolbars/standard/file_open.png</iconset>
               </property>
              </widget>
             </item>
@@ -81,8 +81,8 @@
                <string>Choose a piece-library ZIP or BIN archive.</string>
               </property>
               <property name="icon">
-               <iconset resource="../../studworks.qrc">
-                <normaloff>:/resources/archive.png</normaloff>:/resources/archive.png</iconset>
+               <iconset resource="../../../studworks.qrc">
+                <normaloff>:/resources/interface/dialogs/archive.png</normaloff>:/resources/interface/dialogs/archive.png</iconset>
               </property>
              </widget>
             </item>
@@ -658,6 +658,49 @@
             <item>
              <property name="text">
               <string>Default Lights</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="LightingStyleLabel">
+            <property name="toolTip">
+             <string>Choose how the Default Lights shading mode lights pieces in every view: Standard uses one light with a soft highlight, Studio adds fill and rim lights, Matte drops the highlights and Toon uses flat cel shading bands.</string>
+            </property>
+            <property name="buddy">
+             <cstring>LightingStyle</cstring>
+            </property>
+            <property name="text">
+             <string>Lighting Style:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QComboBox" name="LightingStyle">
+            <property name="accessibleName">
+             <string>Lighting Style</string>
+            </property>
+            <property name="toolTip">
+             <string>Choose how the Default Lights shading mode lights pieces in every view: Standard uses one light with a soft highlight, Studio adds fill and rim lights, Matte drops the highlights and Toon uses flat cel shading bands.</string>
+            </property>
+            <item>
+             <property name="text">
+              <string>Standard</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Studio</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Matte</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Toon</string>
              </property>
             </item>
            </widget>
@@ -3384,6 +3427,7 @@
   <tabstop>studStyleCombo</tabstop>
   <tabstop>HighContrastButton</tabstop>
   <tabstop>ShadingMode</tabstop>
+  <tabstop>LightingStyle</tabstop>
   <tabstop>FadeSteps</tabstop>
   <tabstop>FadeStepsColor</tabstop>
   <tabstop>HighlightNewParts</tabstop>

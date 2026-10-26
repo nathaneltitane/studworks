@@ -16,7 +16,7 @@ static bool swLoadLDrawXML(std::map<int, int>& MaterialTable, std::map<int, std:
 		Data = File.readAll();
 	else
 	{
-		QFile DefaultFile(":/resources/ldraw.xml");
+		QFile DefaultFile(":/resources/data/ldraw.xml");
 
 		if (DefaultFile.open(QIODevice::ReadOnly))
 			Data = DefaultFile.readAll();

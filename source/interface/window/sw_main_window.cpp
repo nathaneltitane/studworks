@@ -118,7 +118,7 @@ void swMainWindow::CreateWidgets()
 	ModelViewCornerLayout->setContentsMargins(0, TabMargin, TabMargin, TabMargin);
 
 	QToolButton* ModelViewOptionsButton = new QToolButton(ModelViewCorner);
-	ModelViewOptionsButton->setIcon(QIcon(":/resources/gear_in.png"));
+	ModelViewOptionsButton->setIcon(QIcon(":/resources/interface/widgets/gear_in.png"));
 	ModelViewOptionsButton->setToolTip(tr("Configure the model view display and rendering."));
 	ModelViewOptionsButton->setAccessibleName(tr("Model View Options"));
 	ModelViewOptionsButton->setPopupMode(QToolButton::InstantPopup);
@@ -167,158 +167,158 @@ void swMainWindow::CreateActions()
 	mActions[SW_FILE_SAVE]->setToolTip(tr("Save Model"));
 
 	QIcon FileNewIcon;
-	FileNewIcon.addFile(":/resources/file_new.png");
-	FileNewIcon.addFile(":/resources/file_new_16.png");
+	FileNewIcon.addFile(":/resources/interface/toolbars/standard/file_new.png");
+	FileNewIcon.addFile(":/resources/interface/toolbars/standard/file_new_16.png");
 	mActions[SW_FILE_NEW]->setIcon(FileNewIcon);
 
 	QIcon FileSaveIcon;
-	FileSaveIcon.addFile(":/resources/file_save.png");
-	FileSaveIcon.addFile(":/resources/file_save_16.png");
+	FileSaveIcon.addFile(":/resources/interface/toolbars/standard/file_save.png");
+	FileSaveIcon.addFile(":/resources/interface/toolbars/standard/file_save_16.png");
 	mActions[SW_FILE_SAVE]->setIcon(FileSaveIcon);
 
 	QIcon FileOpenIcon;
-	FileOpenIcon.addFile(":/resources/file_open.png");
-	FileOpenIcon.addFile(":/resources/file_open_16.png");
+	FileOpenIcon.addFile(":/resources/interface/toolbars/standard/file_open.png");
+	FileOpenIcon.addFile(":/resources/interface/toolbars/standard/file_open_16.png");
 	mActions[SW_FILE_OPEN]->setIcon(FileOpenIcon);
 
 	QIcon FilePrintIcon;
-	FilePrintIcon.addFile(":/resources/file_print.png");
-	FilePrintIcon.addFile(":/resources/file_print_16.png");
+	FilePrintIcon.addFile(":/resources/interface/menus/file_print.png");
+	FilePrintIcon.addFile(":/resources/interface/menus/file_print_16.png");
 	mActions[SW_FILE_PRINT]->setIcon(FilePrintIcon);
 
 	QIcon FilePrintPreviewIcon;
-	FilePrintPreviewIcon.addFile(":/resources/file_print_preview.png");
-	FilePrintPreviewIcon.addFile(":/resources/file_print_preview_16.png");
+	FilePrintPreviewIcon.addFile(":/resources/interface/menus/file_print_preview.png");
+	FilePrintPreviewIcon.addFile(":/resources/interface/menus/file_print_preview_16.png");
 	mActions[SW_FILE_PRINT_PREVIEW]->setIcon(FilePrintPreviewIcon);
 
 	QIcon EditUndoIcon;
-	EditUndoIcon.addFile(":/resources/edit_undo.png");
-	EditUndoIcon.addFile(":/resources/edit_undo_16.png");
+	EditUndoIcon.addFile(":/resources/interface/toolbars/standard/edit_undo.png");
+	EditUndoIcon.addFile(":/resources/interface/toolbars/standard/edit_undo_16.png");
 	mActions[SW_EDIT_UNDO]->setIcon(EditUndoIcon);
 
 	QIcon EditRedoIcon;
-	EditRedoIcon.addFile(":/resources/edit_redo.png");
-	EditRedoIcon.addFile(":/resources/edit_redo_16.png");
+	EditRedoIcon.addFile(":/resources/interface/toolbars/standard/edit_redo.png");
+	EditRedoIcon.addFile(":/resources/interface/toolbars/standard/edit_redo_16.png");
 	mActions[SW_EDIT_REDO]->setIcon(EditRedoIcon);
 
 	QIcon EditCutIcon;
-	EditCutIcon.addFile(":/resources/edit_cut.png");
-	EditCutIcon.addFile(":/resources/edit_cut_16.png");
+	EditCutIcon.addFile(":/resources/interface/menus/edit_cut.png");
+	EditCutIcon.addFile(":/resources/interface/menus/edit_cut_16.png");
 	mActions[SW_EDIT_CUT]->setIcon(EditCutIcon);
 
 	QIcon EditCopyIcon;
-	EditCopyIcon.addFile(":/resources/edit_copy.png");
-	EditCopyIcon.addFile(":/resources/edit_copy_16.png");
+	EditCopyIcon.addFile(":/resources/interface/menus/edit_copy.png");
+	EditCopyIcon.addFile(":/resources/interface/menus/edit_copy_16.png");
 	mActions[SW_EDIT_COPY]->setIcon(EditCopyIcon);
 
 	QIcon EditPasteIcon;
-	EditPasteIcon.addFile(":/resources/edit_paste.png");
-	EditPasteIcon.addFile(":/resources/edit_paste_16.png");
+	EditPasteIcon.addFile(":/resources/interface/menus/edit_paste.png");
+	EditPasteIcon.addFile(":/resources/interface/menus/edit_paste_16.png");
 	mActions[SW_EDIT_PASTE]->setIcon(EditPasteIcon);
 
 	QIcon EditActionInsertIcon;
-	EditActionInsertIcon.addFile(":/resources/action_insert.png");
-	EditActionInsertIcon.addFile(":/resources/action_insert_16.png");
+	EditActionInsertIcon.addFile(":/resources/interface/toolbars/tools/action_insert.png");
+	EditActionInsertIcon.addFile(":/resources/interface/toolbars/tools/action_insert_16.png");
 	mActions[SW_EDIT_ACTION_INSERT]->setIcon(EditActionInsertIcon);
 
 	QIcon EditActionLightIcon;
-	EditActionLightIcon.addFile(":/resources/action_light.png");
-	EditActionLightIcon.addFile(":/resources/action_light_16.png");
+	EditActionLightIcon.addFile(":/resources/interface/toolbars/tools/action_light.png");
+	EditActionLightIcon.addFile(":/resources/interface/toolbars/tools/action_light_16.png");
 	mActions[SW_EDIT_ACTION_POINT_LIGHT]->setIcon(EditActionLightIcon);
 
 	QIcon EditActionSpotLightIcon;
-	EditActionSpotLightIcon.addFile(":/resources/action_spotlight.png");
-	EditActionSpotLightIcon.addFile(":/resources/action_spotlight_16.png");
+	EditActionSpotLightIcon.addFile(":/resources/interface/toolbars/tools/action_spotlight.png");
+	EditActionSpotLightIcon.addFile(":/resources/interface/toolbars/tools/action_spotlight_16.png");
 	mActions[SW_EDIT_ACTION_SPOTLIGHT]->setIcon(EditActionSpotLightIcon);
 
 	QIcon EditActionSunlightIcon;
-	EditActionSunlightIcon.addFile(":/resources/action_sunlight.png");
-	EditActionSunlightIcon.addFile(":/resources/action_sunlight_16.png");
+	EditActionSunlightIcon.addFile(":/resources/interface/toolbars/tools/action_sunlight.png");
+	EditActionSunlightIcon.addFile(":/resources/interface/toolbars/tools/action_sunlight_16.png");
 	mActions[SW_EDIT_ACTION_DIRECTIONAL_LIGHT]->setIcon(EditActionSunlightIcon);
 
 	QIcon EditActionArealightIcon;
-	EditActionArealightIcon.addFile(":/resources/action_arealight.png");
-	EditActionArealightIcon.addFile(":/resources/action_arealight_16.png");
+	EditActionArealightIcon.addFile(":/resources/interface/toolbars/tools/action_arealight.png");
+	EditActionArealightIcon.addFile(":/resources/interface/toolbars/tools/action_arealight_16.png");
 	mActions[SW_EDIT_ACTION_AREA_LIGHT]->setIcon(EditActionArealightIcon);
 
 	QIcon EditActionSelectIcon;
-	EditActionSelectIcon.addFile(":/resources/action_select.png");
-	EditActionSelectIcon.addFile(":/resources/action_select_16.png");
+	EditActionSelectIcon.addFile(":/resources/interface/toolbars/tools/action_select.png");
+	EditActionSelectIcon.addFile(":/resources/interface/toolbars/tools/action_select_16.png");
 	mActions[SW_EDIT_ACTION_SELECT]->setIcon(EditActionSelectIcon);
 
 	QIcon EditActionMoveIcon;
-	EditActionMoveIcon.addFile(":/resources/action_move.png");
-	EditActionMoveIcon.addFile(":/resources/action_move_16.png");
+	EditActionMoveIcon.addFile(":/resources/interface/toolbars/tools/action_move.png");
+	EditActionMoveIcon.addFile(":/resources/interface/toolbars/tools/action_move_16.png");
 	mActions[SW_EDIT_ACTION_MOVE]->setIcon(EditActionMoveIcon);
 
 	QIcon EditActionRotateIcon;
-	EditActionRotateIcon.addFile(":/resources/action_rotate.png");
-	EditActionRotateIcon.addFile(":/resources/action_rotate_16.png");
+	EditActionRotateIcon.addFile(":/resources/interface/toolbars/tools/action_rotate.png");
+	EditActionRotateIcon.addFile(":/resources/interface/toolbars/tools/action_rotate_16.png");
 	mActions[SW_EDIT_ACTION_ROTATE]->setIcon(EditActionRotateIcon);
 
 	QIcon EditActionDeleteIcon;
-	EditActionDeleteIcon.addFile(":/resources/action_delete.png");
-	EditActionDeleteIcon.addFile(":/resources/action_delete_16.png");
+	EditActionDeleteIcon.addFile(":/resources/interface/toolbars/tools/action_delete.png");
+	EditActionDeleteIcon.addFile(":/resources/interface/toolbars/tools/action_delete_16.png");
 	mActions[SW_EDIT_ACTION_DELETE]->setIcon(EditActionDeleteIcon);
 
 	QIcon EditActionPaintIcon;
-	EditActionPaintIcon.addFile(":/resources/action_paint.png");
-	EditActionPaintIcon.addFile(":/resources/action_paint_16.png");
+	EditActionPaintIcon.addFile(":/resources/interface/toolbars/tools/action_paint.png");
+	EditActionPaintIcon.addFile(":/resources/interface/toolbars/tools/action_paint_16.png");
 	mActions[SW_EDIT_ACTION_PAINT]->setIcon(EditActionPaintIcon);
 
 	QIcon EditActionColorPickerIcon;
-	EditActionColorPickerIcon.addFile(":/resources/action_color_picker.png");
-	EditActionColorPickerIcon.addFile(":/resources/action_color_picker_16.png");
+	EditActionColorPickerIcon.addFile(":/resources/interface/toolbars/tools/action_color_picker.png");
+	EditActionColorPickerIcon.addFile(":/resources/interface/toolbars/tools/action_color_picker_16.png");
 	mActions[SW_EDIT_ACTION_COLOR_PICKER]->setIcon(EditActionColorPickerIcon);
 
 	QIcon EditActionZoomIcon;
-	EditActionZoomIcon.addFile(":/resources/action_zoom.png");
-	EditActionZoomIcon.addFile(":/resources/action_zoom_16.png");
+	EditActionZoomIcon.addFile(":/resources/interface/toolbars/tools/action_zoom.png");
+	EditActionZoomIcon.addFile(":/resources/interface/toolbars/tools/action_zoom_16.png");
 	mActions[SW_EDIT_ACTION_ZOOM]->setIcon(EditActionZoomIcon);
 
 	QIcon EditActionPanIcon;
-	EditActionPanIcon.addFile(":/resources/action_pan.png");
-	EditActionPanIcon.addFile(":/resources/action_pan_16.png");
+	EditActionPanIcon.addFile(":/resources/interface/toolbars/tools/action_pan.png");
+	EditActionPanIcon.addFile(":/resources/interface/toolbars/tools/action_pan_16.png");
 	mActions[SW_EDIT_ACTION_PAN]->setIcon(EditActionPanIcon);
 
 	QIcon FileRenderPOVRayIcon;
-	FileRenderPOVRayIcon.addFile(":/resources/file_render_povray.png");
-	FileRenderPOVRayIcon.addFile(":/resources/file_render_povray_16.png");
+	FileRenderPOVRayIcon.addFile(":/resources/interface/menus/file_render_povray.png");
+	FileRenderPOVRayIcon.addFile(":/resources/interface/menus/file_render_povray_16.png");
 	mActions[SW_FILE_RENDER_POVRAY]->setIcon(FileRenderPOVRayIcon);
 
 	QIcon FileRenderBlenderIcon;
-	FileRenderBlenderIcon.addFile(":/resources/file_render_blender.png");
-	FileRenderBlenderIcon.addFile(":/resources/file_render_blender_16.png");
+	FileRenderBlenderIcon.addFile(":/resources/interface/menus/file_render_blender.png");
+	FileRenderBlenderIcon.addFile(":/resources/interface/menus/file_render_blender_16.png");
 	mActions[SW_FILE_RENDER_BLENDER]->setIcon(FileRenderBlenderIcon);
 
 	QIcon FileOpenInBlenderIcon;
-	FileOpenInBlenderIcon.addFile(":/resources/file_render_open_in_blender.png");
-	FileOpenInBlenderIcon.addFile(":/resources/file_render_open_in_blender_16.png");
+	FileOpenInBlenderIcon.addFile(":/resources/interface/menus/file_render_open_in_blender.png");
+	FileOpenInBlenderIcon.addFile(":/resources/interface/menus/file_render_open_in_blender_16.png");
 	mActions[SW_FILE_RENDER_OPEN_IN_BLENDER]->setIcon(FileOpenInBlenderIcon);
 
-	mActions[SW_EDIT_ACTION_CAMERA]->setIcon(QIcon(":/resources/action_camera.png"));
-	mActions[SW_EDIT_ACTION_ROTATE_VIEW]->setIcon(QIcon(":/resources/action_rotate_view.png"));
-	mActions[SW_EDIT_ACTION_ROLL]->setIcon(QIcon(":/resources/action_roll.png"));
-	mActions[SW_EDIT_ACTION_ZOOM_REGION]->setIcon(QIcon(":/resources/action_zoom_region.png"));
-	mActions[SW_EDIT_FIND]->setIcon(QIcon(":/resources/edit_find.png"));
-	mActions[SW_EDIT_FIND_NEXT]->setIcon(QIcon(":/resources/edit_find_next.png"));
-	mActions[SW_EDIT_FIND_PREVIOUS]->setIcon(QIcon(":/resources/edit_find_previous.png"));
-	mActions[SW_EDIT_FIND_ALL]->setIcon(QIcon(":/resources/edit_find_all.png"));
-	mActions[SW_EDIT_REPLACE_NEXT]->setIcon(QIcon(":/resources/edit_replace_next.png"));
-	mActions[SW_EDIT_REPLACE_ALL]->setIcon(QIcon(":/resources/edit_replace_all.png"));
-	mActions[SW_PIECE_SHOW_EARLIER]->setIcon(QIcon(":/resources/piece_show_earlier.png"));
-	mActions[SW_PIECE_SHOW_LATER]->setIcon(QIcon(":/resources/piece_show_later.png"));
-	mActions[SW_VIEW_SPLIT_HORIZONTAL]->setIcon(QIcon(":/resources/view_split_horizontal.png"));
-	mActions[SW_VIEW_SPLIT_VERTICAL]->setIcon(QIcon(":/resources/view_split_vertical.png"));
-	mActions[SW_VIEW_ZOOM_IN]->setIcon(QIcon(":/resources/view_zoomin.png"));
-	mActions[SW_VIEW_ZOOM_OUT]->setIcon(QIcon(":/resources/view_zoomout.png"));
-	mActions[SW_VIEW_ZOOM_EXTENTS]->setIcon(QIcon(":/resources/view_zoomextents.png"));
-	mActions[SW_VIEW_TIME_FIRST]->setIcon(QIcon(":/resources/time_first.png"));
-	mActions[SW_VIEW_TIME_PREVIOUS]->setIcon(QIcon(":/resources/time_previous.png"));
-	mActions[SW_VIEW_TIME_NEXT]->setIcon(QIcon(":/resources/time_next.png"));
-	mActions[SW_VIEW_TIME_LAST]->setIcon(QIcon(":/resources/time_last.png"));
-	mActions[SW_VIEW_TIME_ADD_KEYS]->setIcon(QIcon(":/resources/time_add_keys.png"));
-	mActions[SW_HELP_HOME_PAGE]->setIcon(QIcon(":/resources/help_homepage.png"));
+	mActions[SW_EDIT_ACTION_CAMERA]->setIcon(QIcon(":/resources/interface/toolbars/tools/action_camera.png"));
+	mActions[SW_EDIT_ACTION_ROTATE_VIEW]->setIcon(QIcon(":/resources/interface/toolbars/tools/action_rotate_view.png"));
+	mActions[SW_EDIT_ACTION_ROLL]->setIcon(QIcon(":/resources/interface/toolbars/tools/action_roll.png"));
+	mActions[SW_EDIT_ACTION_ZOOM_REGION]->setIcon(QIcon(":/resources/interface/toolbars/tools/action_zoom_region.png"));
+	mActions[SW_EDIT_FIND]->setIcon(QIcon(":/resources/interface/menus/edit_find.png"));
+	mActions[SW_EDIT_FIND_NEXT]->setIcon(QIcon(":/resources/interface/menus/edit_find_next.png"));
+	mActions[SW_EDIT_FIND_PREVIOUS]->setIcon(QIcon(":/resources/interface/menus/edit_find_previous.png"));
+	mActions[SW_EDIT_FIND_ALL]->setIcon(QIcon(":/resources/interface/menus/edit_find_all.png"));
+	mActions[SW_EDIT_REPLACE_NEXT]->setIcon(QIcon(":/resources/interface/menus/edit_replace_next.png"));
+	mActions[SW_EDIT_REPLACE_ALL]->setIcon(QIcon(":/resources/interface/menus/edit_replace_all.png"));
+	mActions[SW_PIECE_SHOW_EARLIER]->setIcon(QIcon(":/resources/interface/menus/piece_show_earlier.png"));
+	mActions[SW_PIECE_SHOW_LATER]->setIcon(QIcon(":/resources/interface/menus/piece_show_later.png"));
+	mActions[SW_VIEW_SPLIT_HORIZONTAL]->setIcon(QIcon(":/resources/interface/menus/view_split_horizontal.png"));
+	mActions[SW_VIEW_SPLIT_VERTICAL]->setIcon(QIcon(":/resources/interface/menus/view_split_vertical.png"));
+	mActions[SW_VIEW_ZOOM_IN]->setIcon(QIcon(":/resources/interface/menus/view_zoomin.png"));
+	mActions[SW_VIEW_ZOOM_OUT]->setIcon(QIcon(":/resources/interface/menus/view_zoomout.png"));
+	mActions[SW_VIEW_ZOOM_EXTENTS]->setIcon(QIcon(":/resources/interface/menus/view_zoomextents.png"));
+	mActions[SW_VIEW_TIME_FIRST]->setIcon(QIcon(":/resources/interface/toolbars/time/time_first.png"));
+	mActions[SW_VIEW_TIME_PREVIOUS]->setIcon(QIcon(":/resources/interface/toolbars/time/time_previous.png"));
+	mActions[SW_VIEW_TIME_NEXT]->setIcon(QIcon(":/resources/interface/toolbars/time/time_next.png"));
+	mActions[SW_VIEW_TIME_LAST]->setIcon(QIcon(":/resources/interface/toolbars/time/time_last.png"));
+	mActions[SW_VIEW_TIME_ADD_KEYS]->setIcon(QIcon(":/resources/interface/toolbars/time/time_add_keys.png"));
+	mActions[SW_HELP_HOME_PAGE]->setIcon(QIcon(":/resources/interface/menus/help_homepage.png"));
 
 	mActions[SW_EDIT_SNAP_MOVE_TOGGLE]->setCheckable(true);
 	mActions[SW_EDIT_SNAP_ANGLE_TOGGLE]->setCheckable(true);
@@ -404,6 +404,13 @@ void swMainWindow::CreateActions()
 		ActionShadingGroup->addAction(mActions[ActionIdx]);
 	}
 
+	QActionGroup* ActionLightingGroup = new QActionGroup(this);
+	for (int ActionIdx = SW_VIEW_LIGHTING_FIRST; ActionIdx <= SW_VIEW_LIGHTING_LAST; ActionIdx++)
+	{
+		mActions[ActionIdx]->setCheckable(true);
+		ActionLightingGroup->addAction(mActions[ActionIdx]);
+	}
+
 	QActionGroup* SelectionModeGroup = new QActionGroup(this);
 	for (int ActionIdx = SW_EDIT_SELECTION_MODE_FIRST; ActionIdx <= SW_EDIT_SELECTION_MODE_LAST; ActionIdx++)
 	{
@@ -462,6 +469,10 @@ void swMainWindow::CreateMenus()
 	mShadingMenu->addAction(mActions[SW_VIEW_SHADING_WIREFRAME]);
 	mShadingMenu->addAction(mActions[SW_VIEW_SHADING_FLAT]);
 	mShadingMenu->addAction(mActions[SW_VIEW_SHADING_DEFAULT_LIGHTS]);
+	mShadingMenu->addSeparator();
+
+	for (int ActionIdx = SW_VIEW_LIGHTING_FIRST; ActionIdx <= SW_VIEW_LIGHTING_LAST; ActionIdx++)
+		mShadingMenu->addAction(mActions[ActionIdx]);
 
 	mToolsMenu = new QMenu(tr("Tools"), this);
 	mToolsMenu->addAction(mActions[SW_EDIT_ACTION_INSERT]);
@@ -662,7 +673,7 @@ void swMainWindow::CreateToolBars()
 	SelectionModeAction->setStatusTip(tr("Change selection mode"));
 	SelectionModeAction->setToolTip(tr("Choose which related pieces are included when selecting a piece."));
 	SelectionModeAction->setWhatsThis(tr("<p><b>Selection Mode</b></p><p>Choose the rule applied when you pick a piece in the model view. Single selects that piece; the other modes include matching piece types, matching colors, or both. For example, color selection lets you pick matching red pieces without selecting each one separately.</p>"));
-	SelectionModeAction->setIcon(QIcon(":/resources/action_select.png"));
+	SelectionModeAction->setIcon(QIcon(":/resources/interface/toolbars/tools/action_select.png"));
 	SelectionModeAction->setMenu(mSelectionModeMenu);
 
 	mTransformMenu = new QMenu(tr("Transform"), this);
@@ -676,7 +687,7 @@ void swMainWindow::CreateToolBars()
 	TransformAction->setStatusTip(tr("Transform Options"));
 	TransformAction->setToolTip(tr("Choose coordinate axes and whether selected pieces rotate together."));
 	TransformAction->setWhatsThis(tr("<p><b>Transform Options</b></p><p>Choose the axes and pivot used for interactive transforms. Relative Transforms uses the focused object's orientation, so movement along X follows that object's local X axis. Absolute Transforms uses the model axes. Rotate Together rotates the selection around a shared pivot; Rotate Separately rotates each piece around its own origin.</p>"));
-	TransformAction->setIcon(QIcon(":/resources/edit_transform_relative.png"));
+	TransformAction->setIcon(QIcon(":/resources/interface/toolbars/standard/edit_transform_relative.png"));
 	TransformAction->setMenu(mTransformMenu);
 
 	QMenu* SnapXYMenu = new QMenu(tr("Snap XY"), this);
@@ -697,7 +708,7 @@ void swMainWindow::CreateToolBars()
 	MoveAction->setStatusTip(tr("Snap translations to fixed intervals"));
 	MoveAction->setToolTip(tr("Choose movement snapping intervals for XY and Z."));
 	MoveAction->setWhatsThis(tr("<p><b>Movement Snap</b></p><p>Choose how far objects move in each snapped increment. XY controls movement across the base plane; Z controls vertical movement, so they can use different intervals. Turn snapping off for free placement, then enable it again when you need consistent spacing.</p>"));
-	MoveAction->setIcon(QIcon(":/resources/edit_snap_move.png"));
+	MoveAction->setIcon(QIcon(":/resources/interface/toolbars/standard/edit_snap_move.png"));
 	MoveAction->setMenu(SnapMenu);
 
 	QMenu* SnapAngleMenu = new QMenu(tr("Snap Angle Menu"), this);
@@ -712,7 +723,7 @@ void swMainWindow::CreateToolBars()
 	AngleAction->setStatusTip(tr("Snap rotations to fixed intervals"));
 	AngleAction->setToolTip(tr("Choose the rotation snapping interval."));
 	AngleAction->setWhatsThis(tr("<p><b>Rotation Snap</b></p><p>Choose an angle increment for interactive rotation. For example, a 90-degree increment is useful for quarter turns, while smaller increments allow finer alignment. Turn snapping off for free rotation without fixed angle increments.</p>"));
-	AngleAction->setIcon(QIcon(":/resources/edit_snap_angle.png"));
+	AngleAction->setIcon(QIcon(":/resources/interface/toolbars/standard/edit_snap_angle.png"));
 	AngleAction->setMenu(SnapAngleMenu);
 
 	mStandardToolBar = addToolBar(tr("Standard"));
@@ -1240,6 +1251,9 @@ void swMainWindow::CreateStatusBar()
 	QStatusBar* StatusBar = new QStatusBar(this);
 	setStatusBar(StatusBar);
 
+	// Keep the rightmost item one standard spacing away from the window edge.
+	StatusBar->setContentsMargins(0, 0, swGetLayoutSpacing(StatusBar, Qt::Horizontal), 0);
+
 	mStatusBarLabel = new swElidedLabel();
 	StatusBar->addWidget(mStatusBarLabel, 1);
 
@@ -1250,7 +1264,7 @@ void swMainWindow::CreateStatusBar()
 	mStatusLoadFailureLabel = new QLabel();
 	constexpr int WarningIconSize = 14;
 	const QSize WarningPixelSize = QSize(WarningIconSize, WarningIconSize) * devicePixelRatioF();
-	QPixmap WarningPixmap = QIcon(QStringLiteral(":/resources/warning.svg")).pixmap(WarningPixelSize);
+	QPixmap WarningPixmap = QIcon(QStringLiteral(":/resources/interface/widgets/warning.svg")).pixmap(WarningPixelSize);
 	WarningPixmap = WarningPixmap.scaled(WarningPixelSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 	WarningPixmap.setDevicePixelRatio(devicePixelRatioF());
 	mStatusLoadFailureLabel->setPixmap(WarningPixmap);
@@ -1838,6 +1852,16 @@ void swMainWindow::SetShadingMode(swShadingMode ShadingMode)
 	UpdatePartsRendering();
 }
 
+void swMainWindow::SetLightingStyle(swLightingStyle LightingStyle)
+{
+	swGetPreferences().mLightingStyle = LightingStyle;
+	swSetProfileLightingStyle(LightingStyle);
+
+	UpdateShadingMode();
+
+	UpdatePartsRendering();
+}
+
 void swMainWindow::SetSelectionMode(swSelectionMode SelectionMode)
 {
 	mSelectionMode = SelectionMode;
@@ -2134,6 +2158,17 @@ void swMainWindow::AddRenderTargetActions(QMenu* Menu, swRenderTarget Target)
 	ShadingGroup->addAction(AddMenuCommand(ShadingMenu, tr("Wireframe"), Commands.Wireframe, RenderSettings.ShadingMode == swShadingMode::Wireframe));
 	ShadingGroup->addAction(AddMenuCommand(ShadingMenu, tr("Flat Shading"), Commands.Flat, RenderSettings.ShadingMode == swShadingMode::Flat));
 	ShadingGroup->addAction(AddMenuCommand(ShadingMenu, tr("Default Lights"), Commands.DefaultLights, RenderSettings.ShadingMode == swShadingMode::DefaultLights));
+	ShadingMenu->addSeparator();
+
+	// the lighting style is shared by every target
+	const char* const LightingNames[] = { QT_TR_NOOP("Standard Lighting"), QT_TR_NOOP("Studio Lighting"), QT_TR_NOOP("Matte Lighting"), QT_TR_NOOP("Toon Lighting") };
+	QActionGroup* LightingGroup = new QActionGroup(ShadingMenu);
+
+	for (int ActionIdx = SW_VIEW_LIGHTING_FIRST; ActionIdx <= SW_VIEW_LIGHTING_LAST; ActionIdx++)
+	{
+		const int StyleIndex = ActionIdx - SW_VIEW_LIGHTING_FIRST;
+		LightingGroup->addAction(AddMenuCommand(ShadingMenu, tr(LightingNames[StyleIndex]), static_cast<swCommandId>(ActionIdx), static_cast<int>(Preferences.mLightingStyle) == StyleIndex));
+	}
 
 	AddMenuCommand(Menu, tr("Edge Lines"), Commands.EdgeLines, RenderSettings.DrawEdgeLines);
 	AddMenuCommand(Menu, tr("Conditional Lines"), Commands.ConditionalLines, RenderSettings.DrawConditionalLines);
@@ -2648,10 +2683,10 @@ void swMainWindow::SetTransformType(swTransformType TransformType)
 
 	constexpr const char* IconNames[] =
 	{
-		":/resources/edit_transform_absolute_translation.png",
-		":/resources/edit_transform_relative_translation.png",
-		":/resources/edit_transform_absolute_rotation.png",
-		":/resources/edit_transform_relative_rotation.png"
+		":/resources/interface/toolbars/standard/edit_transform_absolute_translation.png",
+		":/resources/interface/toolbars/standard/edit_transform_relative_translation.png",
+		":/resources/interface/toolbars/standard/edit_transform_absolute_rotation.png",
+		":/resources/interface/toolbars/standard/edit_transform_relative_rotation.png"
 	};
 
 	SW_ARRAY_SIZE_CHECK(IconNames, swTransformType::Count);
@@ -3185,6 +3220,7 @@ void swMainWindow::ProjectionMenuAboutToShow()
 void swMainWindow::UpdateShadingMode()
 {
 	mActions[SW_VIEW_SHADING_FIRST + static_cast<int>(swGetPreferences().mShadingMode)]->setChecked(true);
+	mActions[SW_VIEW_LIGHTING_FIRST + static_cast<int>(swGetPreferences().mLightingStyle)]->setChecked(true);
 }
 
 void swMainWindow::UpdateSelectionMode()
@@ -3863,6 +3899,22 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 
 	case SW_VIEW_SHADING_DEFAULT_LIGHTS:
 		SetShadingMode(swShadingMode::DefaultLights);
+		break;
+
+	case SW_VIEW_LIGHTING_STANDARD:
+		SetLightingStyle(swLightingStyle::Standard);
+		break;
+
+	case SW_VIEW_LIGHTING_STUDIO:
+		SetLightingStyle(swLightingStyle::Studio);
+		break;
+
+	case SW_VIEW_LIGHTING_MATTE:
+		SetLightingStyle(swLightingStyle::Matte);
+		break;
+
+	case SW_VIEW_LIGHTING_TOON:
+		SetLightingStyle(swLightingStyle::Toon);
 		break;
 
 	case SW_VIEW_PROJECTION_PERSPECTIVE:

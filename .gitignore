@@ -16,7 +16,7 @@
 *.ldr
 *.dat
 *.mpd
-!/resources/*.ldr
+!/resources/data/*.ldr
 *.dae
 *.3ds
 *.obj

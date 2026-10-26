@@ -4,6 +4,8 @@
 #include "sw_mesh.h"
 #include "sw_result.h"
 
+enum class swLightingStyle;
+
 class swVertexBuffer
 {
 public:
@@ -83,6 +85,7 @@ struct swProgram
 	GLint HighlightParamsLocation;
 	GLint OutlineParamsLocation;
 	GLint TextHaloColorLocation;
+	GLint LightingStyleLocation;
 };
 
 enum class swPolygonOffset
@@ -226,6 +229,15 @@ public:
 		mColorDirty = true;
 	}
 
+	void SetLightingStyle(swLightingStyle LightingStyle)
+	{
+		if (LightingStyle == mLightingStyle)
+			return;
+
+		mLightingStyle = LightingStyle;
+		mLightingStyleDirty = true;
+	}
+
 	void SetTextHaloColor(const swVector4& Color)
 	{
 		mTextHaloColor = Color;
@@ -322,6 +334,7 @@ protected:
 	swMatrix44 mViewProjectionMatrix;
 	swVector4 mHighlightParams[4];
 	swVector4 mOutlineParams[4];
+	swLightingStyle mLightingStyle;
 	bool mColorDirty;
 	bool mTextHaloColorDirty;
 	bool mWorldMatrixDirty;
@@ -330,6 +343,7 @@ protected:
 	bool mViewProjectionMatrixDirty;
 	bool mHighlightParamsDirty;
 	bool mOutlineParamsDirty;
+	bool mLightingStyleDirty;
 
 	static std::unique_ptr<QOpenGLContext> mOffscreenContext;
 	static std::unique_ptr<QOffscreenSurface> mOffscreenSurface;

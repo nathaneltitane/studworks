@@ -224,11 +224,11 @@ int main(int argc, char *argv[])
 
 	// Supply English plural forms when a locale has no translation for a numerus message.
 	QTranslator EnglishTranslator;
-	if (EnglishTranslator.load("studworks_en", ":/resources"))
+	if (EnglishTranslator.load("studworks_en", ":/resources/translations"))
 		Application.installTranslator(&EnglishTranslator);
 
 	QTranslator Translator;
-	if (Translator.load("studworks_" + Locale.name(), ":/resources"))
+	if (Translator.load("studworks_" + Locale.name(), ":/resources/translations"))
 		Application.installTranslator(&Translator);
 
 	qRegisterMetaType<swPieceData*>("swPieceData*");

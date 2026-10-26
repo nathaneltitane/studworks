@@ -4,17 +4,17 @@
 
 1. Update Minifigure Builder settings:
 	- Go to [MLCad INI Download](https://www.ldraw.org/mlcad-ini-download.html) and download the latest ZIP file.
-	- Unzip it and update `resources/minifig.ini` with the new `MLCad.ini`.
+	- Unzip it and update `resources/data/minifig.ini` with the new `MLCad.ini`.
 	- Keep the existing minifig sections; exclude unrelated sections such as `[SCAN_ORDER]` and `[LSYNTH]`.
 	- Keep the version, support, and acknowledgements comments at the top; trim other comments and extra spaces.
 
 2. Update color definitions:
 	- Download [`LDConfig.ldr`](https://library.ldraw.org/library/official/LDConfig.ldr).
-	- Copy it to `resources/ldconfig.ldr`.
+	- Copy it to `resources/data/ldconfig.ldr`.
 
-3. Update `resources/ldraw.xml`.
+3. Update `resources/data/ldraw.xml`.
 
-4. Update `resources/traintrack.json`.
+4. Update `resources/data/traintrack.json`.
 
 5. Update Parts Library:
 	- Go to [LDraw library updates](https://library.ldraw.org/updates?latest) and download `complete.zip`.

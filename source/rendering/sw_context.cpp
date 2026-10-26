@@ -102,6 +102,7 @@ swContext::swContext()
 	mOutlineParams[1] = swVector4(0.0f, 0.0f, 0.0f, 0.0f);
 	mOutlineParams[2] = swVector4(0.0f, 0.0f, 0.0f, 0.0f);
 	mOutlineParams[3] = swVector4(0.0f, 0.0f, 0.0f, 0.0f);
+	mLightingStyle = swLightingStyle::Standard;
 	mColorDirty = false;
 	mTextHaloColorDirty = false;
 	mWorldMatrixDirty = false;
@@ -259,15 +260,36 @@ swResult<void> swContext::CreateShaderPrograms()
 "#define SW_SHADER_PRECISION mediump\n"
 #endif
 
+// lighting styles follow swLightingStyle: standard, studio, matte, toon
 "#define SW_PIXEL_FAKE_LIGHTING \\\n"
 "		SW_SHADER_PRECISION vec3 Normal = normalize(PixelNormal); \\\n"
 "		SW_SHADER_PRECISION vec3 LightDirection = normalize(PixelPosition - LightPosition); \\\n"
 "		SW_SHADER_PRECISION vec3 VertexToEye = normalize(EyePosition - PixelPosition); \\\n"
 "		SW_SHADER_PRECISION vec3 LightReflect = normalize(reflect(-LightDirection, Normal)); \\\n"
+"		SW_SHADER_PRECISION float KeyLight = abs(dot(Normal, LightDirection)); \\\n"
 "		SW_SHADER_PRECISION float Specular = abs(dot(VertexToEye, LightReflect)); \\\n"
-"		Specular = min(pow(Specular, 8.0), 1.0) * 0.25; \\\n"
-"		SW_SHADER_PRECISION vec3 SpecularColor = vec3(Specular, Specular, Specular); \\\n"
-"		SW_SHADER_PRECISION float Diffuse = min(abs(dot(Normal, LightDirection)) * 0.6 + 0.65, 1.0);\n"
+"		SW_SHADER_PRECISION float Diffuse = min(KeyLight * 0.6 + 0.65, 1.0); \\\n"
+"		SW_SHADER_PRECISION float Rim = 0.0; \\\n"
+"		if (LightingStyle == 1) \\\n"
+"		{ \\\n"
+"			SW_SHADER_PRECISION float FillLight = abs(dot(Normal, VertexToEye)); \\\n"
+"			Rim = pow(1.0 - FillLight, 4.0) * 0.18; \\\n"
+"			Diffuse = min(0.42 + KeyLight * 0.4 + FillLight * 0.28, 1.0); \\\n"
+"			Specular = min(pow(Specular, 24.0), 1.0) * 0.35; \\\n"
+"		} \\\n"
+"		else if (LightingStyle == 2) \\\n"
+"		{ \\\n"
+"			Diffuse = KeyLight * 0.4 + 0.6; \\\n"
+"			Specular = 0.0; \\\n"
+"		} \\\n"
+"		else if (LightingStyle == 3) \\\n"
+"		{ \\\n"
+"			Diffuse = KeyLight > 0.8 ? 1.0 : (KeyLight > 0.4 ? 0.8 : 0.6); \\\n"
+"			Specular = Specular > 0.985 ? 0.3 : 0.0; \\\n"
+"		} \\\n"
+"		else \\\n"
+"			Specular = min(pow(Specular, 8.0), 1.0) * 0.25; \\\n"
+"		SW_SHADER_PRECISION vec3 SpecularColor = vec3(Specular + Rim, Specular + Rim, Specular + Rim);\n"
 	};
 
 	const char* const VertexShaders[] =
@@ -468,6 +490,7 @@ swResult<void> swContext::CreateShaderPrograms()
 		mPrograms[MaterialType].HighlightParamsLocation = glGetUniformLocation(Program, "HighlightParams");
 		mPrograms[MaterialType].OutlineParamsLocation = glGetUniformLocation(Program, "OutlineParams");
 		mPrograms[MaterialType].TextHaloColorLocation = glGetUniformLocation(Program, "TextHaloColor");
+		mPrograms[MaterialType].LightingStyleLocation = glGetUniformLocation(Program, "LightingStyle");
 
 		const GLint TextureLocation = glGetUniformLocation(Program, "Texture");
 
@@ -860,6 +883,7 @@ void swContext::SetMaterial(swMaterialType MaterialType)
 	mHighlightParamsDirty = true;
 	mOutlineParamsDirty = true;
 	mTextHaloColorDirty = true;
+	mLightingStyleDirty = true;
 }
 
 void swContext::SetViewport(int x, int y, int Width, int Height)
@@ -1616,6 +1640,12 @@ void swContext::FlushState()
 	{
 		glUniform4fv(Program.MaterialColorLocation, 1, mColor.GetFloats());
 		mColorDirty = false;
+	}
+
+	if (mLightingStyleDirty && Program.LightingStyleLocation != -1)
+	{
+		glUniform1i(Program.LightingStyleLocation, static_cast<GLint>(mLightingStyle));
+		mLightingStyleDirty = false;
 	}
 
 	if (mTextHaloColorDirty && Program.TextHaloColorLocation != -1)

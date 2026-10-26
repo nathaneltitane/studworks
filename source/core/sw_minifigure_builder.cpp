@@ -80,7 +80,7 @@ void swMinifigureBuilder::LoadSettings()
 		}
 	}
 
-	swDiskFile MinifigureBuilderSettingsFile(":/resources/minifig.ini");
+	swDiskFile MinifigureBuilderSettingsFile(":/resources/data/minifig.ini");
 
 	if (MinifigureBuilderSettingsFile.Open(QIODevice::ReadOnly))
 		ParseSettings(MinifigureBuilderSettingsFile);

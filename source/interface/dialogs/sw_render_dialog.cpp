@@ -126,7 +126,7 @@ swRenderDialog::swRenderDialog(QWidget* Parent, swRenderDialogMode RenderDialogM
 		}
 		else
 		{
-			QImage Image(QPixmap(":/resources/file_render_blender_logo_1280x720.png").toImage());
+			QImage Image(QPixmap(":/resources/interface/dialogs/file_render_blender_logo_1280x720.png").toImage());
 			Image = Image.convertToFormat(QImage::Format_ARGB32_Premultiplied);
 			ui->preview->SetImage(Image);
 		}

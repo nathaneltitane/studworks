@@ -277,6 +277,7 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	ui->studStyleCombo->setCurrentIndex(static_cast<int>(mOptions->StudStyle));
 
 	ui->ShadingMode->setCurrentIndex(static_cast<int>(mOptions->Preferences.mShadingMode));
+	ui->LightingStyle->setCurrentIndex(static_cast<int>(mOptions->Preferences.mLightingStyle));
 
 	if (!swContext::SupportsDefaultLights())
 	{
@@ -287,6 +288,10 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 		const QString Message = tr("Default Lights is unavailable. Flat shading is used instead.");
 		DefaultLightsItem->setToolTip(Message);
 		ui->ShadingMode->setToolTip(Message);
+
+		ui->LightingStyle->setEnabled(false);
+		ui->LightingStyleLabel->setEnabled(false);
+		ui->LightingStyle->setToolTip(Message);
 
 		for (swRenderTarget Target : { swRenderTarget::Preview, swRenderTarget::Pieces, swRenderTarget::MinifigureBuilder })
 		{
@@ -502,6 +507,7 @@ void swPreferencesDialog::accept()
 	}
 
 	mOptions->Preferences.mShadingMode = (swShadingMode)ui->ShadingMode->currentIndex();
+	mOptions->Preferences.mLightingStyle = static_cast<swLightingStyle>(ui->LightingStyle->currentIndex());
 	mOptions->Preferences.mHighlightRenderMode = static_cast<swHighlightRenderMode>(ui->HighlightRenderMode->currentIndex());
 
 	mOptions->StudStyle = static_cast<swStudStyle>(ui->studStyleCombo->currentIndex());

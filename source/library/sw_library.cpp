@@ -657,13 +657,13 @@ void swPiecesLibrary::UpdateStudStyleSource()
 	const QLatin1String FileNames[] =
 	{
 		QLatin1String(""),								  // Plain
-		QLatin1String(":/resources/studlogo1.zip"),		  // ThinLinesLogo
-		QLatin1String(":/resources/studlogo2.zip"),		  // OutlineLogo
-		QLatin1String(":/resources/studlogo3.zip"),		  // SharpTopLogo
-		QLatin1String(":/resources/studlogo4.zip"),		  // RoundedTopLogo
-		QLatin1String(":/resources/studlogo5.zip"),		  // FlattenedLogo
-		QLatin1String(":/resources/studslegostyle1.zip"), // HighContrast
-		QLatin1String(":/resources/studslegostyle2.zip")  // HighContrastLogo
+		QLatin1String(":/resources/data/studlogo1.zip"),		  // ThinLinesLogo
+		QLatin1String(":/resources/data/studlogo2.zip"),		  // OutlineLogo
+		QLatin1String(":/resources/data/studlogo3.zip"),		  // SharpTopLogo
+		QLatin1String(":/resources/data/studlogo4.zip"),		  // RoundedTopLogo
+		QLatin1String(":/resources/data/studlogo5.zip"),		  // FlattenedLogo
+		QLatin1String(":/resources/data/studslegostyle1.zip"), // HighContrast
+		QLatin1String(":/resources/data/studslegostyle2.zip")  // HighContrastLogo
 	};
 
 	SW_ARRAY_SIZE_CHECK(FileNames, swStudStyle::Count);
@@ -2383,7 +2383,7 @@ std::string swPiecesLibrary::GetPartId(const swPieceData* PieceData) const
 
 bool swPiecesLibrary::LoadBuiltinPieceLibrary()
 {
-	std::unique_ptr<swDiskFile> File(new swDiskFile(":/resources/library.zip"));
+	std::unique_ptr<swDiskFile> File(new swDiskFile(":/resources/data/library.zip"));
 
 	if (!File->Open(QIODevice::ReadOnly) || !OpenArchive(std::move(File), swZipFileType::Official))
 		return false;

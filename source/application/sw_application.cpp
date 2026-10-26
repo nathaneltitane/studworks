@@ -27,6 +27,7 @@ void swPreferences::LoadDefaults()
 	mFixedAxes = swGetProfileInteger(SW_PROFILE_FIXED_AXES);
 	mMouseSensitivity = swGetProfileInteger(SW_PROFILE_MOUSE_SENSITIVITY);
 	mShadingMode = swGetProfileShadingMode();
+	mLightingStyle = swGetProfileLightingStyle();
 	mHighlightRenderMode = swGetProfileHighlightRenderMode();
 	mBackgroundGradient = swGetProfileInteger(SW_PROFILE_BACKGROUND_GRADIENT);
 	mBackgroundSolidColor = swGetProfileUnsignedInteger(SW_PROFILE_BACKGROUND_COLOR);
@@ -110,6 +111,7 @@ void swPreferences::SaveDefaults()
 	swSetProfileInteger(SW_PROFILE_FIXED_AXES, mFixedAxes);
 	swSetProfileInteger(SW_PROFILE_MOUSE_SENSITIVITY, mMouseSensitivity);
 	swSetProfileShadingMode(mShadingMode);
+	swSetProfileLightingStyle(mLightingStyle);
 	swSetProfileHighlightRenderMode(mHighlightRenderMode);
 	swSetProfileInteger(SW_PROFILE_DRAW_AXES, mDrawAxes);
 	swSetProfileInteger(SW_PROFILE_FOLLOW_STEP_VIEWS, mFollowStepViews);
@@ -471,6 +473,7 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 	Options.ImageWidth = swGetProfileInteger(SW_PROFILE_IMAGE_WIDTH);
 	Options.ImageHeight = swGetProfileInteger(SW_PROFILE_IMAGE_HEIGHT);
 	Options.ShadingMode = Preferences.mShadingMode;
+	Options.LightingStyle = Preferences.mLightingStyle;
 	Options.LineWidth = Preferences.mLineWidth;
 	Options.AASamples = swGetProfileInteger(SW_PROFILE_ANTIALIASING_SAMPLES);
 	Options.StudStyle = swGetProfileStudStyle();
@@ -821,6 +824,27 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 				}
 			}
 		}
+		else if (Option == QLatin1String("--lighting"))
+		{
+			QString LightingString;
+
+			if (ParseString(LightingString, true))
+			{
+				if (LightingString == QLatin1String("standard"))
+					Options.LightingStyle = swLightingStyle::Standard;
+				else if (LightingString == QLatin1String("studio"))
+					Options.LightingStyle = swLightingStyle::Studio;
+				else if (LightingString == QLatin1String("matte"))
+					Options.LightingStyle = swLightingStyle::Matte;
+				else if (LightingString == QLatin1String("toon"))
+					Options.LightingStyle = swLightingStyle::Toon;
+				else
+				{
+					Options.StdErr += tr("Invalid parameter value specified for the '%1' option: '%2'.\n").arg(Option, LightingString);
+					Options.ParseOK = false;
+				}
+			}
+		}
 		else if (Option == QLatin1String("--line-width"))
 			ParseFloat(Options.LineWidth, 0.0f, 10.0f);
 		else if (Option == QLatin1String("--aa-samples"))
@@ -899,6 +923,7 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 			Options.StdOut += tr("  --no-highlight: Do not highlight pieces in the steps they appear.\n");
 			Options.StdOut += tr("  --highlight-color <#AARRGGBB>: Rendering color for highlighted pieces.\n");
 			Options.StdOut += tr("  --shading <mode>: Select shading mode for rendering (wireframe, flat, default, full).\n");
+			Options.StdOut += tr("  --lighting <style>: Select the lighting style of the default shading (standard, studio, matte, toon).\n");
 			Options.StdOut += tr("  --line-width <width>: Set the width of the edge lines.\n");
 			Options.StdOut += tr("  --aa-samples <samples>: Anti-aliasing sample size (1, 2, 4, or 8).\n");
 			Options.StdOut += tr("  -ss, --stud-style <style>: Set the stud style (0=No style, 1=LDraw single wire, 2=LDraw double wire, 3=LDraw raised floating, 4=LDraw raised rounded, 5=LDraw subtle rounded, 6=LEGO no logo, 7=LEGO single wire).\n");
@@ -1078,6 +1103,7 @@ swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 	}
 
 	mPreferences.mShadingMode = Options.ShadingMode;
+	mPreferences.mLightingStyle = Options.LightingStyle;
 	mPreferences.mLineWidth = Options.LineWidth;
 	mPreferences.mStudCylinderColorEnabled = Options.StudCylinderColorEnabled;
 	mPreferences.mStudCylinderColor = Options.StudCylinderColor;
@@ -1528,7 +1554,8 @@ void swApplication::ShowPreferencesDialog()
 	const swRenderSettings OldPiecesRendering = mPreferences.GetRenderSettings(swRenderTarget::Pieces);
 	const swRenderSettings NewPiecesRendering = Options.Preferences.GetRenderSettings(swRenderTarget::Pieces);
 	const bool PiecesRenderingChanged = OldPiecesRendering.ShadingMode != NewPiecesRendering.ShadingMode || OldPiecesRendering.DrawEdgeLines != NewPiecesRendering.DrawEdgeLines ||
-		OldPiecesRendering.DrawConditionalLines != NewPiecesRendering.DrawConditionalLines || OldPiecesRendering.LineWidth != NewPiecesRendering.LineWidth;
+		OldPiecesRendering.DrawConditionalLines != NewPiecesRendering.DrawConditionalLines || OldPiecesRendering.LineWidth != NewPiecesRendering.LineWidth ||
+		Options.Preferences.mLightingStyle != mPreferences.mLightingStyle;
 
 
 	mPreferences = Options.Preferences;

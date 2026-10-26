@@ -177,7 +177,7 @@ QSize swGetPanelButtonSize()
 		QToolBar ToolBar;
 		QToolButton* Button = new QToolButton(&ToolBar);
 
-		Button->setIcon(QIcon(":/resources/gear_in.png"));
+		Button->setIcon(QIcon(":/resources/interface/widgets/gear_in.png"));
 		Button->setAutoRaise(true);
 		ToolBar.addWidget(Button);
 
@@ -289,7 +289,7 @@ QToolButton* swAddPanelOptionsButton(QWidget* Row, QMenu* Menu, const QString& T
 {
 	QToolButton* OptionsButton = new QToolButton(Row);
 
-	OptionsButton->setIcon(QIcon(":/resources/gear_in.png"));
+	OptionsButton->setIcon(QIcon(":/resources/interface/widgets/gear_in.png"));
 	OptionsButton->setToolTip(ToolTip);
 	OptionsButton->setAccessibleName(AccessibleName);
 	OptionsButton->setPopupMode(QToolButton::InstantPopup);

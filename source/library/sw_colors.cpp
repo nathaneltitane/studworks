@@ -365,7 +365,7 @@ bool swLoadColorFile(swFile& File, swStudStyle StudStyle)
 
 void swLoadDefaultColors(swStudStyle StudStyle)
 {
-	swDiskFile ConfigFile(":/resources/ldconfig.ldr");
+	swDiskFile ConfigFile(":/resources/data/ldconfig.ldr");
 
 	if (ConfigFile.Open(QIODevice::ReadOnly))
 		swLoadColorFile(ConfigFile, StudStyle);

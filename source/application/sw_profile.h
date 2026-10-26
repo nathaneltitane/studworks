@@ -3,6 +3,7 @@
 #define SW_IMAGE_TRANSPARENT 0x2000
 
 enum class swShadingMode;
+enum class swLightingStyle;
 enum class swHighlightRenderMode;
 enum class swAxisIconLocation;
 enum class swViewSphereLocation;
@@ -23,6 +24,7 @@ enum SW_PROFILE_KEY
 	SW_PROFILE_HIGHLIGHT_NEW_PARTS,
 	SW_PROFILE_HIGHLIGHT_NEW_PARTS_COLOR,
 	SW_PROFILE_SHADING_MODE,
+	SW_PROFILE_LIGHTING_STYLE,
 	SW_PROFILE_HIGHLIGHT_RENDER_MODE,
 	SW_PROFILE_BACKGROUND_GRADIENT,
 	SW_PROFILE_BACKGROUND_COLOR,
@@ -215,6 +217,9 @@ void swSetProfileBuffer(SW_PROFILE_KEY Key, const QByteArray& Buffer);
 
 swShadingMode swGetProfileShadingMode(SW_PROFILE_KEY Key = SW_PROFILE_SHADING_MODE);
 void swSetProfileShadingMode(swShadingMode Value, SW_PROFILE_KEY Key = SW_PROFILE_SHADING_MODE);
+
+swLightingStyle swGetProfileLightingStyle();
+void swSetProfileLightingStyle(swLightingStyle Value);
 
 swHighlightRenderMode swGetProfileHighlightRenderMode();
 void swSetProfileHighlightRenderMode(swHighlightRenderMode Value);

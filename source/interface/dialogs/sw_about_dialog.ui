@@ -27,7 +27,7 @@
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap resource="../../studworks.qrc">:/resources/studworks.png</pixmap>
+          <pixmap resource="../../../studworks.qrc">:/resources/studworks.png</pixmap>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>

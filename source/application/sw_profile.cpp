@@ -62,6 +62,7 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Settings", "HighlightNewParts", 0),                                                    // SW_PROFILE_HIGHLIGHT_NEW_PARTS
 	swProfileEntry("Settings", "HighlightNewPartsColor", SW_RGBA(255, 242, 0, 192)),                       // SW_PROFILE_HIGHLIGHT_NEW_PARTS_COLOR
 	swProfileEntry("Settings", "ShadingMode", static_cast<int>(swShadingMode::DefaultLights)),             // SW_PROFILE_SHADING_MODE
+	swProfileEntry("Settings", "LightingStyle", static_cast<int>(swLightingStyle::Standard)),               // SW_PROFILE_LIGHTING_STYLE
 	swProfileEntry("Settings", "HighlightRenderMode", static_cast<int>(swHighlightRenderMode::Outline)),      // SW_PROFILE_HIGHLIGHT_RENDER_MODE
 	swProfileEntry("Settings", "BackgroundGradient", false),                                               // SW_PROFILE_BACKGROUND_GRADIENT
 	swProfileEntry("Settings", "BackgroundColor", SW_RGB(49, 52, 55)),                                     // SW_PROFILE_BACKGROUND_COLOR
@@ -388,6 +389,14 @@ constexpr swProfileEnumerationValue<swShadingMode> ShadingModeValues[] =
 	{ swShadingMode::Full, "Full", 3 }
 };
 
+constexpr swProfileEnumerationValue<swLightingStyle> LightingStyleValues[] =
+{
+	{ swLightingStyle::Standard, "Standard", 0 },
+	{ swLightingStyle::Studio, "Studio", 1 },
+	{ swLightingStyle::Matte, "Matte", 2 },
+	{ swLightingStyle::Toon, "Toon", 3 }
+};
+
 constexpr swProfileEnumerationValue<swHighlightRenderMode> HighlightRenderModeValues[] =
 {
 	{ swHighlightRenderMode::Outline, "Outline", 0 },
@@ -490,6 +499,16 @@ swShadingMode swGetProfileShadingMode(SW_PROFILE_KEY Key)
 void swSetProfileShadingMode(swShadingMode Value, SW_PROFILE_KEY Key)
 {
 	swWriteProfileEnumeration(Key, Value, ShadingModeValues);
+}
+
+swLightingStyle swGetProfileLightingStyle()
+{
+	return swReadProfileEnumeration(SW_PROFILE_LIGHTING_STYLE, LightingStyleValues);
+}
+
+void swSetProfileLightingStyle(swLightingStyle Value)
+{
+	swWriteProfileEnumeration(SW_PROFILE_LIGHTING_STYLE, Value, LightingStyleValues);
 }
 
 swHighlightRenderMode swGetProfileHighlightRenderMode()

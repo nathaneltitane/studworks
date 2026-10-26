@@ -1967,6 +1967,7 @@ swResult<QImage> swModel::GetPartsListImage(int MaxWidth, swStep Step, quint32 B
 			ShadingMode = swShadingMode::Flat;
 
 		Scene.SetShadingMode(ShadingMode);
+		Scene.SetLightingStyle(swGetPreferences().mLightingStyle);
 		Scene.SetLineSettings(RenderSettings.DrawEdgeLines, RenderSettings.DrawConditionalLines, RenderSettings.LineWidth);
 		Scene.SetRequireCompleteAssets(true);
 		Scene.SetAllowLOD(false);
@@ -5242,10 +5243,10 @@ void swModel::FocusOrDeselectObjectAction(swObject* Object, uint32_t Section, sw
 
 	if (Object)
 	{
-		if (!Object->IsFocused(Section))
-			SetFocus(Object, Section, SelectionMode);
+		if (Object->IsFocused(Section) || (Object->IsPiece() && Object->IsSelected()))
+			RemoveFromSelection({ Object });
 		else
-			SetFocus(nullptr, ~0U, SelectionMode);
+			SetFocus(Object, Section, SelectionMode);
 	}
 	else
 	{

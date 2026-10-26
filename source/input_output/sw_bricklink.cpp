@@ -18,7 +18,7 @@ static QJsonDocument swLoadBrickLinkMapping()
 		Data = File.readAll();
 	else
 	{
-		QFile DefaultFile(":/resources/ldraw2bl.txt");
+		QFile DefaultFile(":/resources/data/ldraw2bl.txt");
 
 		if (DefaultFile.open(QIODevice::ReadOnly))
 			Data = DefaultFile.readAll();

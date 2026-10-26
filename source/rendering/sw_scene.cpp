@@ -12,6 +12,7 @@ swScene::swScene()
 {
 	mHighlightRenderMode = swHighlightRenderMode::Tint;
 	mShadingMode = swShadingMode::DefaultLights;
+	mLightingStyle = swLightingStyle::Standard;
 	mMeshLODDistance = 250.0f;
 }
 
@@ -438,6 +439,7 @@ void swScene::Draw(swContext* Context, const std::function<void()>& PreTransluce
 	swGetPiecesLibrary()->UpdateBuffers(Context);
 
 	Context->SetViewMatrix(mViewMatrix);
+	Context->SetLightingStyle(mLightingStyle);
 
 	const bool DrawLines = mDrawEdgeLines && mLineWidth > 0.0f;
 	const bool DrawConditional = mDrawConditionalLines && mLineWidth > 0.0f && swContext::SupportsMaterial(swMaterialType::UnlitColorConditional);

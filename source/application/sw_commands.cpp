@@ -1396,6 +1396,38 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+	// SW_VIEW_LIGHTING_STANDARD
+	{
+		QT_TRANSLATE_NOOP("Action", "View.Lighting.Standard"),
+		QT_TRANSLATE_NOOP("Menu", "&Standard Lighting"),
+		QT_TRANSLATE_NOOP("Status", "Use a single light with soft highlights for the default lights"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Standard Lighting</b></p><p>Light pieces drawn with the Default Lights shading mode using one light above the camera with a soft highlight. This is the classic look.</p>"),
+		""
+	},
+	// SW_VIEW_LIGHTING_STUDIO
+	{
+		QT_TRANSLATE_NOOP("Action", "View.Lighting.Studio"),
+		QT_TRANSLATE_NOOP("Menu", "St&udio Lighting"),
+		QT_TRANSLATE_NOOP("Status", "Use key, fill and rim lights for the default lights"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Studio Lighting</b></p><p>Light pieces drawn with the Default Lights shading mode using a key light, a fill light from the camera and a rim light that brightens silhouette edges, for a softer, more photographic look.</p>"),
+		""
+	},
+	// SW_VIEW_LIGHTING_MATTE
+	{
+		QT_TRANSLATE_NOOP("Action", "View.Lighting.Matte"),
+		QT_TRANSLATE_NOOP("Menu", "&Matte Lighting"),
+		QT_TRANSLATE_NOOP("Status", "Use the default lights without highlights"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Matte Lighting</b></p><p>Light pieces drawn with the Default Lights shading mode without specular highlights, so colors stay flat and true while surfaces keep their shading.</p>"),
+		""
+	},
+	// SW_VIEW_LIGHTING_TOON
+	{
+		QT_TRANSLATE_NOOP("Action", "View.Lighting.Toon"),
+		QT_TRANSLATE_NOOP("Menu", "&Toon Lighting"),
+		QT_TRANSLATE_NOOP("Status", "Use banded cel shading for the default lights"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Toon Lighting</b></p><p>Light pieces drawn with the Default Lights shading mode in a few flat brightness bands with a sharp highlight, for a cartoon look that pairs well with edge lines.</p>"),
+		""
+	},
 	// SW_VIEW_PROJECTION_PERSPECTIVE
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Projection.Perspective"),

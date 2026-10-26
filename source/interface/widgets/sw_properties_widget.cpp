@@ -1785,6 +1785,10 @@ void swPropertiesWidget::Update(const std::vector<swObject*>& Selection, swObjec
 	mSelection.clear();
 	setEnabled(true);
 
+	// edit the whole selection when more than one object is selected
+	if (Selection.size() > 1)
+		Focus = nullptr;
+
 	LayoutMode Mode = LayoutMode::Empty;
 
 	if (Focus)

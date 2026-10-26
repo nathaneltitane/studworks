@@ -3,6 +3,7 @@
 #include "sw_mesh.h"
 
 enum class swHighlightRenderMode;
+enum class swLightingStyle;
 
 enum class swRenderMeshState : int
 {
@@ -112,6 +113,11 @@ public:
 		mShadingMode = ShadingMode;
 	}
 
+	void SetLightingStyle(swLightingStyle LightingStyle)
+	{
+		mLightingStyle = LightingStyle;
+	}
+
 	void SetLineSettings(bool DrawEdgeLines, bool DrawConditionalLines, float LineWidth)
 	{
 		mDrawEdgeLines = DrawEdgeLines;
@@ -180,6 +186,7 @@ protected:
 	swPiece* mActiveSubmodelInstance = nullptr;
 	std::vector<swModel*> mModelEditingPath;
 	swShadingMode mShadingMode;
+	swLightingStyle mLightingStyle;
 	bool mDrawInterface = false;
 	swHighlightRenderMode mHighlightRenderMode;
 	bool mRequireCompleteAssets = false;

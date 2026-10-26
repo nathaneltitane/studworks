@@ -5,6 +5,7 @@ SW_PIXEL_OUTPUT
 uniform mediump vec4 MaterialColor;
 uniform mediump vec3 LightPosition;
 uniform mediump vec3 EyePosition;
+uniform mediump int LightingStyle;
 
 void main()
 {

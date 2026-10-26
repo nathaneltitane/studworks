@@ -14,6 +14,14 @@ enum class swShadingMode
 	Full
 };
 
+enum class swLightingStyle
+{
+	Standard,
+	Studio,
+	Matte,
+	Toon
+};
+
 enum class swColorTheme
 {
 	Dark,
@@ -99,6 +107,7 @@ public:
 
 	int mMouseSensitivity;
 	swShadingMode mShadingMode;
+	swLightingStyle mLightingStyle;
 	swHighlightRenderMode mHighlightRenderMode;
 	bool mBackgroundGradient;
 	quint32 mBackgroundSolidColor;
@@ -206,6 +215,7 @@ struct swCommandLineOptions
 	int ImageHeight;
 	int AASamples;
 	swShadingMode ShadingMode;
+	swLightingStyle LightingStyle;
 	float LineWidth;
 	swStudStyle StudStyle;
 	swStep ImageStart;

@@ -88,7 +88,7 @@ APPVEYOR_REPO_COMMIT = $$(APPVEYOR_REPO_COMMIT)
 	}
 }
 
-TSFILES = resources/studworks_cs.ts resources/studworks_de.ts resources/studworks_en.ts resources/studworks_es.ts resources/studworks_fr.ts resources/studworks_pt.ts resources/studworks_ru.ts resources/studworks_uk.ts resources/studworks_zh_CN.ts
+TSFILES = resources/translations/studworks_cs.ts resources/translations/studworks_de.ts resources/translations/studworks_en.ts resources/translations/studworks_es.ts resources/translations/studworks_fr.ts resources/translations/studworks_pt.ts resources/translations/studworks_ru.ts resources/translations/studworks_uk.ts resources/translations/studworks_zh_CN.ts
 lrelease.input = TSFILES
 lrelease.output = ${QMAKE_FILE_PATH}/${QMAKE_FILE_BASE}.qm
 lrelease.commands = $$QMAKE_LRELEASE -silent ${QMAKE_FILE_IN} -qm ${QMAKE_FILE_PATH}/${QMAKE_FILE_BASE}.qm
@@ -180,8 +180,8 @@ include(source/input_output/input_output.pri)
 include(source/interface/interface.pri)
 
 OTHER_FILES +=
-RESOURCES += studworks.qrc resources/stylesheet/stylesheet.qrc
+RESOURCES += studworks.qrc resources/interface/stylesheet/stylesheet.qrc
 
 !win32 {
-	TRANSLATIONS = resources/studworks_cs.ts resources/studworks_de.ts resources/studworks_en.ts resources/studworks_es.ts resources/studworks_fr.ts resources/studworks_pt.ts resources/studworks_ru.ts resources/studworks_uk.ts resources/studworks_zh_CN.ts
+	TRANSLATIONS = resources/translations/studworks_cs.ts resources/translations/studworks_de.ts resources/translations/studworks_en.ts resources/translations/studworks_es.ts resources/translations/studworks_fr.ts resources/translations/studworks_pt.ts resources/translations/studworks_ru.ts resources/translations/studworks_uk.ts resources/translations/studworks_zh_CN.ts
 }

@@ -18,7 +18,7 @@ and composite-control help with the widgets. Do not translate static data before
 application translators are installed. New catalog entries remain unfinished
 until reviewed, following the existing translation policy. Refresh affected
 catalogs after changing UI strings, preserving existing translations and review
-status. Maintain `resources/studworks_en.ts` with `lupdate -pluralonly`. Keep the
+status. Maintain `resources/translations/studworks_en.ts` with `lupdate -pluralonly`. Keep the
 current build policy of including nonempty unfinished translations.
 
 Add the standard Help button to the dialog's button box, then call

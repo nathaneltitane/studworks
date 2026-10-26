@@ -41,6 +41,7 @@ swMinifigureBuilderWidget::swMinifigureBuilderWidget(QWidget* Parent)
 	// The neck spans the top, the other sections stack on both sides of the preview.
 	constexpr int FirstSideRow = 1;
 	int LeftRow = FirstSideRow, RightRow = FirstSideRow;
+	QHBoxLayout* NeckLayout = nullptr;
 
 	for (int ItemIndex = 0; ItemIndex < SW_MINIFIGURE_ITEM_COUNT; ItemIndex++)
 	{
@@ -93,8 +94,11 @@ swMinifigureBuilderWidget::swMinifigureBuilderWidget(QWidget* Parent)
 
 		if (ItemIndex == NeckIndex)
 		{
-			int NeckRow = 0;
-			AddRow(NeckRow, 0, 7);
+			// the neck shares the top row with the options button in the top right corner
+			MinifigureBuilderLayout->addWidget(ColorPicker, 0, 0);
+			NeckLayout = new QHBoxLayout();
+			NeckLayout->addWidget(PieceButton);
+			MinifigureBuilderLayout->addLayout(NeckLayout, 0, 1, 1, 6);
 		}
 		else if (IsLeft[ItemIndex])
 			AddRow(LeftRow, 0, 3);
@@ -181,13 +185,13 @@ swMinifigureBuilderWidget::swMinifigureBuilderWidget(QWidget* Parent)
 	}
 
 	// The options button holds the preview rendering settings, like the other preview panels.
-	QToolButton* OptionsButton = new QToolButton(ui->TemplateGroup);
-	OptionsButton->setIcon(QIcon(":/resources/gear_in.png"));
+	QToolButton* OptionsButton = new QToolButton(this);
+	OptionsButton->setIcon(QIcon(":/resources/interface/widgets/gear_in.png"));
 	OptionsButton->setToolTip(tr("Configure the minifigure builder preview rendering."));
 	OptionsButton->setAccessibleName(tr("Minifigure Builder Preview Options"));
 	OptionsButton->setPopupMode(QToolButton::InstantPopup);
 	swSetupPanelButton(OptionsButton);
-	ui->horizontalLayout_2->addWidget(OptionsButton);
+	NeckLayout->addWidget(OptionsButton);
 
 	QMenu* OptionsMenu = new QMenu(OptionsButton);
 	OptionsButton->setMenu(OptionsMenu);

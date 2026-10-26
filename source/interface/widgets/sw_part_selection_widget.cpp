@@ -577,7 +577,11 @@ swPartSelectionListView::swPartSelectionListView(QWidget* Parent, swPartSelectio
 	swPartSelectionItemDelegate* ItemDelegate = new swPartSelectionItemDelegate(this, mListModel);
 	setItemDelegate(ItemDelegate);
 
-	connect(this, &QListView::doubleClicked, this, &swPartSelectionListView::DoubleClicked);
+	// the popup picks with a single click
+	if (mPartSelectionWidget && mPartSelectionWidget->GetIsPopup())
+		connect(this, &QListView::clicked, this, &swPartSelectionListView::DoubleClicked);
+	else
+		connect(this, &QListView::doubleClicked, this, &swPartSelectionListView::DoubleClicked);
 	connect(this, &QListView::customContextMenuRequested, this, &swPartSelectionListView::CustomContextMenuRequested);
 
 	connect(gApplication, &swApplication::RendererInitialized, this, &swPartSelectionListView::UpdateIconSize);
@@ -1028,7 +1032,7 @@ swPartSelectionWidget::swPartSelectionWidget(bool IsPopup, QWidget* Parent)
 	swAddPanelRowWidget(FilterCategoriesRow, mFilterCategoriesWidget);
 
 	mFilterCaseAction = new QAction();
-	mFilterCaseAction->setIcon(QIcon(":/resources/case.png"));
+	mFilterCaseAction->setIcon(QIcon(":/resources/interface/widgets/case.png"));
 	mFilterCaseAction->setToolTip(tr("Match Case"));
 	mFilterCaseAction->setCheckable(true);
 	mFilterCaseAction->setChecked(false);

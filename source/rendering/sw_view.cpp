@@ -1055,6 +1055,7 @@ void swView::OnDraw()
 		ShadingMode = swShadingMode::Flat;
 
 	mScene->SetShadingMode(ShadingMode);
+	mScene->SetLightingStyle(Preferences.mLightingStyle);
 	mScene->SetLineSettings(RenderSettings.DrawEdgeLines, RenderSettings.DrawConditionalLines, RenderSettings.LineWidth);
 	mScene->SetAllowLOD(Preferences.mAllowLOD && mWidget != nullptr);
 	mScene->SetRequireCompleteAssets(static_cast<bool>(mRenderFramebuffer));
@@ -2415,29 +2416,29 @@ void swView::SetCursor(swCursor CursorType)
 
 	constexpr swCursorInformation Cursors[] =
 	{
-		{  0,  0, "" },                                 // swCursor::Hidden
-		{  0,  0, "" },                                 // swCursor::Default
-		{  8,  3, ":/resources/cursor_insert" },        // swCursor::Brick
-		{ 15, 15, ":/resources/cursor_light" },         // swCursor::PointLight
-		{  7, 10, ":/resources/cursor_spotlight" },     // swCursor::SpotLight
-		{ 15, 15, ":/resources/cursor_sunlight" },      // swCursor::DirectionalLight
-		{ 15, 15, ":/resources/cursor_arealight" },     // swCursor::AreaLight
-		{ 15,  9, ":/resources/cursor_camera" },        // swCursor::Camera
-		{  0,  2, ":/resources/cursor_select" },        // swCursor::Select
-		{  0,  2, ":/resources/cursor_select_add" },    // swCursor::SelectAdd
-		{  0,  2, ":/resources/cursor_select_remove" }, // swCursor::SelectRemove
-		{ 15, 15, ":/resources/cursor_move" },          // swCursor::Move
-		{ 15, 15, ":/resources/cursor_rotate" },        // swCursor::Rotate
-		{ 15, 15, ":/resources/cursor_rotatex" },       // swCursor::RotateX
-		{ 15, 15, ":/resources/cursor_rotatey" },       // swCursor::RotateY
-		{  0, 10, ":/resources/cursor_delete" },        // swCursor::Delete
-		{ 14, 14, ":/resources/cursor_paint" },         // swCursor::Paint
-		{  1, 13, ":/resources/cursor_color_picker" },  // swCursor::ColorPicker
-		{ 15, 15, ":/resources/cursor_zoom" },          // swCursor::Zoom
-		{  9,  9, ":/resources/cursor_zoom_region" },   // swCursor::ZoomRegion
-		{ 15, 15, ":/resources/cursor_pan" },           // swCursor::Pan
-		{ 15, 15, ":/resources/cursor_roll" },          // swCursor::Roll
-		{ 15, 15, ":/resources/cursor_rotate_view" },   // swCursor::RotateView
+		{  0,  0, "" },                                                   // swCursor::Hidden
+		{  0,  0, "" },                                                   // swCursor::Default
+		{  8,  3, ":/resources/interface/cursors/cursor_insert" },        // swCursor::Brick
+		{ 15, 15, ":/resources/interface/cursors/cursor_light" },         // swCursor::PointLight
+		{  7, 10, ":/resources/interface/cursors/cursor_spotlight" },     // swCursor::SpotLight
+		{ 15, 15, ":/resources/interface/cursors/cursor_sunlight" },      // swCursor::DirectionalLight
+		{ 15, 15, ":/resources/interface/cursors/cursor_arealight" },     // swCursor::AreaLight
+		{ 15,  9, ":/resources/interface/cursors/cursor_camera" },        // swCursor::Camera
+		{  0,  2, ":/resources/interface/cursors/cursor_select" },        // swCursor::Select
+		{  0,  2, ":/resources/interface/cursors/cursor_select_add" },    // swCursor::SelectAdd
+		{  0,  2, ":/resources/interface/cursors/cursor_select_remove" }, // swCursor::SelectRemove
+		{ 15, 15, ":/resources/interface/cursors/cursor_move" },          // swCursor::Move
+		{ 15, 15, ":/resources/interface/cursors/cursor_rotate" },        // swCursor::Rotate
+		{ 15, 15, ":/resources/interface/cursors/cursor_rotatex" },       // swCursor::RotateX
+		{ 15, 15, ":/resources/interface/cursors/cursor_rotatey" },       // swCursor::RotateY
+		{  0, 10, ":/resources/interface/cursors/cursor_delete" },        // swCursor::Delete
+		{ 14, 14, ":/resources/interface/cursors/cursor_paint" },         // swCursor::Paint
+		{  1, 13, ":/resources/interface/cursors/cursor_color_picker" },  // swCursor::ColorPicker
+		{ 15, 15, ":/resources/interface/cursors/cursor_zoom" },          // swCursor::Zoom
+		{  9,  9, ":/resources/interface/cursors/cursor_zoom_region" },   // swCursor::ZoomRegion
+		{ 15, 15, ":/resources/interface/cursors/cursor_pan" },           // swCursor::Pan
+		{ 15, 15, ":/resources/interface/cursors/cursor_roll" },          // swCursor::Roll
+		{ 15, 15, ":/resources/interface/cursors/cursor_rotate_view" },   // swCursor::RotateView
 	};
 
 	SW_ARRAY_SIZE_CHECK(Cursors, swCursor::Count);
@@ -3230,6 +3231,9 @@ void swView::OnLeftButtonDown()
 	if (mViewSphere->OnLeftButtonDown())
 		return;
 
+	// pick the tool with the modifiers held at the press
+	UpdateTrackTool();
+
 	swTrackTool OverrideTool = GetOverrideTrackTool(Qt::LeftButton);
 
 	if (OverrideTool != swTrackTool::None)
@@ -3268,18 +3272,6 @@ void swView::OnLeftButtonDoubleClick()
 
 		return;
 	}
-
-	swObjectSection ObjectSection = FindObjectUnderPointer(false, false);
-
-	if (mMouseModifiers & Qt::ControlModifier)
-		ActiveModel->FocusOrDeselectObjectAction(ObjectSection.Object, ObjectSection.Section, gMainWindow->GetSelectionMode());
-	else if (mMouseModifiers & Qt::ShiftModifier)
-	{
-		if (ObjectSection.Object)
-			ActiveModel->RemoveFromSelectionAction({ ObjectSection.Object });
-	}
-	else
-		ActiveModel->SetSelectionAndFocusAction(std::vector<swObject*>(), ObjectSection.Object, ObjectSection.Section, gMainWindow->GetSelectionMode());
 }
 
 void swView::OnMiddleButtonDown()
