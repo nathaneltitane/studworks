@@ -20,7 +20,8 @@ public:
 	// Promote and wait for requests active at entry; false means a request failed or was cancelled.
 	// The library checks final asset readiness, including identities with no active request.
 	// Adds no consumer references and does not traverse container children or generated meshes.
-	bool WaitForPieces(const std::vector<lcPieceData*>& Pieces);
+	// Progress receives the finished and total request counts while waiting.
+	bool WaitForPieces(const std::vector<lcPieceData*>& Pieces, const std::function<void(int, int)>& Progress = nullptr);
 
 	// Called when the last consumer releases the piece. Cancels queued work and reports it to the library;
 	// running work finishes privately and is discarded if the piece is still unused.

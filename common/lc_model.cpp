@@ -508,7 +508,13 @@ void lcModel::WaitForAssets() const
 	const std::vector<lcPieceDataRef> RequiredPieceData = GetRequiredPieceData();
 	lcPiecesLibrary* Library = lcGetPiecesLibrary();
 
-	Library->WaitForPieceData(RequiredPieceData);
+	lcBlockingProgress Progress(tr("Loading"), tr("Loading pieces..."), false);
+
+	Library->WaitForPieceData(RequiredPieceData, [&Progress](int Finished, int Total)
+	{
+		Progress.SetProgress(Finished, Total);
+	});
+
 	Library->WaitForSynthMeshes(GetRequiredSynthPieces());
 
 	// Temporary minifigure and thumbnail models have no container piece to update.

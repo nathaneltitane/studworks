@@ -976,9 +976,9 @@ lcInstructionsDialog::lcInstructionsDialog(QWidget* Parent, Project* Project)
 	connect(mInstructions, &lcInstructions::PageLayoutChanged, this, &lcInstructionsDialog::PageSetupChanged);
 }
 
-void lcSetupInstructionsPrinter(lcInstructions* Instructions, QPrinter* Printer)
-{
 #ifndef QT_NO_PRINTER
+static void lcSetInstructionsPageLayout(lcInstructions* Instructions, QPrinter* Printer)
+{
 	// Print on paper matching the page setup, the pages already include their margins.
 	const lcInstructionsPageSetup& PageSetup = Instructions->mPageSetup;
 	const QSizeF PageSize(qMin(PageSetup.Width, PageSetup.Height), qMax(PageSetup.Width, PageSetup.Height));
@@ -986,6 +986,13 @@ void lcSetupInstructionsPrinter(lcInstructions* Instructions, QPrinter* Printer)
 
 	Printer->setPageLayout(QPageLayout(QPageSize(PageSize, QPageSize::Point), Orientation, QMarginsF()));
 	Printer->setFullPage(true);
+}
+#endif
+
+void lcSetupInstructionsPrinter(lcInstructions* Instructions, QPrinter* Printer)
+{
+#ifndef QT_NO_PRINTER
+	lcSetInstructionsPageLayout(Instructions, Printer);
 	Printer->setFromTo(1, static_cast<int>(Instructions->mPages.size()));
 #endif
 }
@@ -997,6 +1004,10 @@ void lcPrintInstructions(lcInstructions* Instructions, QPrinter* Printer)
 	int PageCopies;
 
 	const int PageCount = static_cast<int>(Instructions->mPages.size());
+
+	// The print dialog resets the paper when printing to a file, a file always gets the page setup paper.
+	if (Printer->outputFormat() == QPrinter::PdfFormat)
+		lcSetInstructionsPageLayout(Instructions, Printer);
 
 	if (Printer->collateCopies())
 	{
@@ -1031,6 +1042,17 @@ void lcPrintInstructions(lcInstructions* Instructions, QPrinter* Printer)
 		Ascending = false;
 	}
 
+	// Pages keep their proportions on any paper, centered on a sheet filled with the page background.
+	const lcInstructionsPageSetup& PageSetup = Instructions->mPageSetup;
+	const QRectF SheetRect(0.0, 0.0, Printer->width(), Printer->height());
+	const QSizeF PageSize = QSizeF(PageSetup.Width, PageSetup.Height).scaled(SheetRect.size(), Qt::KeepAspectRatio);
+	const QRectF PageRect(QPointF((SheetRect.width() - PageSize.width()) / 2.0, (SheetRect.height() - PageSize.height()) / 2.0), PageSize);
+	const QColor BackgroundColor = Instructions->GetColorProperty(lcInstructionsPropertyType::PageBackgroundColor, nullptr, 0);
+
+	const int SheetCount = DocCopies * PageCopies * (qAbs(ToPage - FromPage) + 1);
+	int SheetsPrinted = 0;
+	lcBlockingProgress Progress(QCoreApplication::translate("lcInstructionsDialog", "Printing"), QCoreApplication::translate("lcInstructionsDialog", "Printing pages..."), true);
+
 	QGraphicsScene Scene;
 	QPainter Painter(Printer);
 	bool FirstPage = true;
@@ -1046,6 +1068,20 @@ void lcPrintInstructions(lcInstructions* Instructions, QPrinter* Printer)
 				if (Printer->printerState() == QPrinter::Aborted || Printer->printerState() == QPrinter::Error)
 					return;
 
+				Progress.SetProgress(SheetsPrinted++, SheetCount);
+
+				if (Progress.IsCanceled())
+				{
+					Printer->abort();
+					Painter.end();
+
+					// A canceled file would otherwise be left with only the pages printed so far.
+					if (Printer->outputFormat() == QPrinter::PdfFormat)
+						QFile::remove(Printer->outputFileName());
+
+					return;
+				}
+
 				if (!FirstPage)
 					Printer->newPage();
 				else
@@ -1053,8 +1089,8 @@ void lcPrintInstructions(lcInstructions* Instructions, QPrinter* Printer)
 
 				lcUpdateInstructionsPageScene(Instructions, &Instructions->mPages[Page - 1], &Scene);
 
-				// Stretch the page over the whole sheet so the background reaches every edge.
-				Scene.render(&Painter, QRectF(0.0, 0.0, Printer->width(), Printer->height()), Scene.sceneRect(), Qt::IgnoreAspectRatio);
+				Painter.fillRect(SheetRect, BackgroundColor);
+				Scene.render(&Painter, PageRect, Scene.sceneRect(), Qt::KeepAspectRatio);
 			}
 
 			if (Page == ToPage)

@@ -1445,7 +1445,7 @@ bool lcPiecesLibrary::WaitForPieceData(const lcPieceDataRef& PieceDataRef)
 	return RequestsSucceeded && PieceDataRef->mState == lcAssetState::Loaded;
 }
 
-bool lcPiecesLibrary::WaitForPieceData(const std::vector<lcPieceDataRef>& PieceDataRefs)
+bool lcPiecesLibrary::WaitForPieceData(const std::vector<lcPieceDataRef>& PieceDataRefs, const std::function<void(int, int)>& Progress)
 {
 	Q_ASSERT(QThread::currentThread() == thread());
 
@@ -1460,7 +1460,7 @@ bool lcPiecesLibrary::WaitForPieceData(const std::vector<lcPieceDataRef>& PieceD
 		Pieces.push_back(PieceDataRef.Get());
 	}
 
-	const bool RequestsSucceeded = mAssetLoader->WaitForPieces(Pieces);
+	const bool RequestsSucceeded = mAssetLoader->WaitForPieces(Pieces, Progress);
 
 	for (const lcPieceDataRef& PieceDataRef : PieceDataRefs)
 		if (PieceDataRef->mState != lcAssetState::Loaded)
