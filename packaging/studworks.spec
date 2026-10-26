@@ -238,10 +238,10 @@ install -d $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/mimetypes
 install -d $RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/apps
 install -d $RPM_BUILD_ROOT%{_mandir}/man1
 install -m 755 build/release/studworks $RPM_BUILD_ROOT%{_bindir}/studworks
-install -m 644 docs/README.md $RPM_BUILD_ROOT%{_datadir}/studworks/README.md
-install -m 644 docs/CREDITS.txt $RPM_BUILD_ROOT%{_datadir}/studworks/CREDITS.txt
-install -m 644 docs/COPYING.txt $RPM_BUILD_ROOT%{_datadir}/studworks/COPYING.txt
-install -m 644 docs/studworks.1 $RPM_BUILD_ROOT%{_mandir}/man1/studworks.1
+install -m 644 documentation/README.md $RPM_BUILD_ROOT%{_datadir}/studworks/README.md
+install -m 644 documentation/CREDITS.txt $RPM_BUILD_ROOT%{_datadir}/studworks/CREDITS.txt
+install -m 644 documentation/COPYING.txt $RPM_BUILD_ROOT%{_datadir}/studworks/COPYING.txt
+install -m 644 documentation/studworks.1 $RPM_BUILD_ROOT%{_mandir}/man1/studworks.1
 gzip -f $RPM_BUILD_ROOT%{_mandir}/man1/studworks.1
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/mime/packages/
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/applications/
@@ -249,9 +249,9 @@ install -m 644 qt/studworks.xml  \
 				$RPM_BUILD_ROOT%{_datadir}/mime/packages/studworks.xml
 install -m 644 qt/studworks.desktop \
 				$RPM_BUILD_ROOT%{_datadir}/applications/studworks.desktop
-install -m 644 tools/icon/scalable/mimetypes/application-vnd.leocad.svg \
+install -m 644 resources/icons/scalable/mimetypes/application-vnd.leocad.svg \
 				$RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/mimetypes/application-vnd.leocad.svg
-install -m 644 tools/icon/scalable/apps/studworks.svg \
+install -m 644 resources/icons/scalable/apps/studworks.svg \
 				$RPM_BUILD_ROOT%{_datadir}/icons/hicolor/scalable/apps/studworks.svg
 %if 0%{?suse_version}
 %suse_update_desktop_file studworks Graphics

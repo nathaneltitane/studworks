@@ -76,12 +76,12 @@ new evidence and update this record with any agreed change.
 
 | Owner | Responsibility | Source |
 | --- | --- | --- |
-| `swPiecesLibrary` | Acquisition/lifetime facade, source discovery, texture file indexes, archives, primitive and mesh caches, settings, shared mesh buffers, and loader coordination. Owns the piece and texture managers and supplies archive readers. | [sw_library.h](../src/sw_library.h), [sw_library.cpp](../src/sw_library.cpp) |
-| `swPieceManager` | Piece creation/reuse, library/local registrations and project indexes, normalization/renaming, references, zero-reference unload/deletion, temporary cleanup, sparse errors, synchronized registry access, ordered teardown, borrowed snapshots and copied include-source metadata. No source discovery or scheduling. | [sw_piece_manager.h](../src/sw_piece_manager.h), [sw_piece_manager.cpp](../src/sw_piece_manager.cpp) |
-| `swTextureManager` | Texture identities and references, snapshots, and private CPU decoding of resolved sources. | [sw_texture_manager.h](../src/sw_texture_manager.h), [sw_texture_manager.cpp](../src/sw_texture_manager.cpp) |
-| `swAssetLoader` | Pending requests, worker scheduling, private results, texture upload, publication, cancellation, readiness waits, and deferred settlement notifications. | [sw_asset_loader.h](../src/sw_asset_loader.h), [sw_asset_loader.cpp](../src/sw_asset_loader.cpp) |
-| `swPieceData` / `swTexture` | Published geometry or texture data, readiness state, and asset metadata. | [sw_piece_data.h](../src/sw_piece_data.h), [sw_texture.h](../src/sw_texture.h) |
-| Projects, models, and views | Project-local names, required-asset traversal, generated-piece ownership, bounds, fallback display, cameras, and redraws. | [sw_project.cpp](../src/sw_project.cpp), [sw_model.cpp](../src/sw_model.cpp), [sw_piece.cpp](../src/sw_piece.cpp) |
+| `swPiecesLibrary` | Acquisition/lifetime facade, source discovery, texture file indexes, archives, primitive and mesh caches, settings, shared mesh buffers, and loader coordination. Owns the piece and texture managers and supplies archive readers. | [sw_library.h](../source/library/sw_library.h), [sw_library.cpp](../source/library/sw_library.cpp) |
+| `swPieceManager` | Piece creation/reuse, library/local registrations and project indexes, normalization/renaming, references, zero-reference unload/deletion, temporary cleanup, sparse errors, synchronized registry access, ordered teardown, borrowed snapshots and copied include-source metadata. No source discovery or scheduling. | [sw_piece_manager.h](../source/library/sw_piece_manager.h), [sw_piece_manager.cpp](../source/library/sw_piece_manager.cpp) |
+| `swTextureManager` | Texture identities and references, snapshots, and private CPU decoding of resolved sources. | [sw_texture_manager.h](../source/library/sw_texture_manager.h), [sw_texture_manager.cpp](../source/library/sw_texture_manager.cpp) |
+| `swAssetLoader` | Pending requests, worker scheduling, private results, texture upload, publication, cancellation, readiness waits, and deferred settlement notifications. | [sw_asset_loader.h](../source/library/sw_asset_loader.h), [sw_asset_loader.cpp](../source/library/sw_asset_loader.cpp) |
+| `swPieceData` / `swTexture` | Published geometry or texture data, readiness state, and asset metadata. | [sw_piece_data.h](../source/library/sw_piece_data.h), [sw_texture.h](../source/library/sw_texture.h) |
+| Projects, models, and views | Project-local names, required-asset traversal, generated-piece ownership, bounds, fallback display, cameras, and redraws. | [sw_project.cpp](../source/core/sw_project.cpp), [sw_model.cpp](../source/core/sw_model.cpp), [sw_piece.cpp](../source/core/sw_piece.cpp) |
 
 The library owns the loader. Call library entry points from the UI thread for
 asset acquisition, release, scheduling, waiting, and invalidation. Workers use
@@ -240,7 +240,7 @@ conflicting submodels, transfers local registrations, and preserves source
 directories. Renames update live instance IDs and undo/redo snapshots. Deletion
 and project teardown unregister borrowed index entries; they must not leave
 lookup pointers to deleted objects. These paths are in
-[sw_project.cpp](../src/sw_project.cpp) and [sw_model.cpp](../src/sw_model.cpp).
+[sw_project.cpp](../source/core/sw_project.cpp) and [sw_model.cpp](../source/core/sw_model.cpp).
 
 ### Active project file monitoring
 
@@ -516,8 +516,8 @@ check an atomic cancellation flag and stale results cannot replace newer meshes.
 Initial generation displays a cube. Control-point edits retain the previous
 generated mesh until replacement settles; that older mesh does not satisfy a
 wait for the new generation. Settlement holds the base `swPieceData` through its
-deferred notification. See [sw_synthesis.cpp](../src/sw_synthesis.cpp) and
-[sw_piece.cpp](../src/sw_piece.cpp).
+deferred notification. See [sw_synthesis.cpp](../source/library/sw_synthesis.cpp) and
+[sw_piece.cpp](../source/core/sw_piece.cpp).
 
 Interactive fallback rendering, bounds, ray/box picking, and selection outlines
 use the same displayed geometry and keep the original instance identity. A
@@ -600,9 +600,9 @@ its recursive pieces and per-instance synths, or use the model-level API.
 | Ordinary LDraw/LDD opening and interactive views | Parse and queue, then return. Draw shared fallback cubes for unavailable geometry; recurse through available children. Update bounds and redraw as assets settle without automatically refitting the camera. |
 | Inventory import | Wait for required geometry before computing persistent placement; failure prevents using cube bounds as final layout. |
 | Insertion layout | Wait for required geometry before computing persistent placement; failed geometry uses fallback boxes. |
-| Preview | Wait for its recursive requirements and generated meshes; failure rejects the preview. See [sw_preview_widget.cpp](../src/sw_preview_widget.cpp). |
-| Thumbnail manager | Acquire required assets asynchronously. Missing library geometry/textures produce an error thumbnail. Pending generated meshes delay rendering; synth failure can use a loaded library mesh. See [sw_thumbnail_manager.cpp](../src/sw_thumbnail_manager.cpp). |
-| OBJ, COLLADA, 3DS, POV-Ray export | Wait for model requirements, then omit failed meshes and failed generated geometry. Empty output is allowed. Render/write failures still report errors. See [sw_project.cpp](../src/sw_project.cpp). |
+| Preview | Wait for its recursive requirements and generated meshes; failure rejects the preview. See [sw_preview_widget.cpp](../source/interface/sw_preview_widget.cpp). |
+| Thumbnail manager | Acquire required assets asynchronously. Missing library geometry/textures produce an error thumbnail. Pending generated meshes delay rendering; synth failure can use a loaded library mesh. See [sw_thumbnail_manager.cpp](../source/library/sw_thumbnail_manager.cpp). |
+| OBJ, COLLADA, 3DS, POV-Ray export | Wait for model requirements, then omit failed meshes and failed generated geometry. Empty output is allowed. Render/write failures still report errors. See [sw_project.cpp](../source/core/sw_project.cpp). |
 | Saved images, screenshots, HTML, instructions, printing | Wait for settlement, then render available geometry without loading cubes. HTML parts lists retain missing entries and quantities with blank thumbnails; instruction parts lists omit unavailable thumbnails. Actual rendering/writing failures still fail the operation. |
 | Model save, CSV, BrickLink inventory | Save references or inventory data without requiring successful geometry loading. |
 
@@ -621,8 +621,8 @@ Automatic output fitting uses `swGeometryBoundsMode::AvailableOnly`;
 interactive fitting uses `IncludeFallback`. A whole-model wait can
 conservatively include later steps even when output requests an earlier step.
 Scene flags preventing fallback cubes do not themselves initiate a wait or
-guarantee success. See [sw_view.cpp](../src/sw_view.cpp) and
-[sw_scene.h](../src/sw_scene.h).
+guarantee success. See [sw_view.cpp](../source/rendering/sw_view.cpp) and
+[sw_scene.h](../source/rendering/sw_scene.h).
 
 `SetRequireCompleteAssets(true)` suppresses unavailable fallback geometry and
 marks missing assets in the scene; `SetRequireGeneratedMeshes(true)` also excludes

@@ -34,7 +34,7 @@ studworks_plugin_import.cpp
 studworks_resource.*
 povray
 uic_wrapper.bat
-/tools/setup/*.exe
+/packaging/*.exe
 appdir
 StudWorks-Windows*.exe
 *.snap

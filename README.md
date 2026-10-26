@@ -99,11 +99,11 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
 
 ### Credits:
 
-StudWorks is based on [LeoCAD](https://github.com/leozide/leocad) by Leonardo Zide and its contributors - see 'docs/CREDITS.txt'.
+StudWorks is based on [LeoCAD](https://github.com/leozide/leocad) by Leonardo Zide and its contributors - see 'documentation/CREDITS.txt'.
 
 ### License:
 
-StudWorks is free software released under the GNU General Public License version 2, the same license as LeoCAD - see 'docs/COPYING.txt'.
+StudWorks is free software released under the GNU General Public License version 2, the same license as LeoCAD - see 'documentation/COPYING.txt'.
 
 LEGO® is a trademark of the LEGO Group, which does not sponsor, authorize or endorse this project.
 

@@ -6,7 +6,7 @@ struct swPieceControlPoint;
 
 // Owned by swPiecesLibrary. Instance methods run on the UI thread and schedule private worker builds;
 // UI-thread completion processing resolves colors, uploads textures, and publishes meshes.
-// See docs/asset-loading.md for readiness, ownership, and caller policies.
+// See documentation/asset-loading.md for readiness, ownership, and caller policies.
 class swAssetLoader : public QObject
 {
 public:

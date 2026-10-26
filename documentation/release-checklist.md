@@ -27,16 +27,16 @@
 
 6. Update the release version in the current `YY.MM` format:
    - `studworks.pro`
-   - `src/sw_global.h`
-   - `src/ui/Info.plist`
+   - `source/application/sw_global.h`
+   - `platform/Info.plist`
    - `snapcraft.yaml`
-   - `studworks.spec`
-   - `tools/setup/studworks.appdata.xml`
-   - In `tools/setup/studworks.appdata.xml`, add the new release entry; do not replace the existing release history.
+   - `packaging/studworks.spec`
+   - `packaging/io.github.nathaneltitane.StudWorks.appdata.xml`
+   - In `packaging/io.github.nathaneltitane.StudWorks.appdata.xml`, add the new release entry; do not replace the existing release history.
 
 7. Update translations
 
-8. Update `docs/README.md` and `docs/studworks.1`
+8. Update `documentation/README.md` and `documentation/studworks.1`
 
 9. Configure the release build and artifacts:
    - Set skip_tags to false in `appveyor.yml`.

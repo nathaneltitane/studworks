@@ -84,8 +84,8 @@ for:
       - mkdir -p AppDir/usr/share/studworks
       - mv library.bin AppDir/usr/share/studworks/library.bin
       - cp qt/studworks.desktop AppDir/studworks.desktop
-      - cp tools/icon/256x256/apps/studworks.png AppDir/studworks.png
-      - cp tools/setup/AppRun AppDir
+      - cp resources/icons/256x256/apps/studworks.png AppDir/studworks.png
+      - cp packaging/AppRun AppDir
       - chmod a+x AppDir/AppRun
       - appveyor DownloadFile https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
       - chmod a+x linuxdeployqt*.AppImage 

@@ -59,8 +59,8 @@ There are multiple ways to install StudWorks on Linux.
 
 # Online Resources
 
-New users should read the online tutorial located at
-https://github.com/nathaneltitane/studworks/docs/tutorial1.html to learn how to use StudWorks.
+New users can find an overview of the features and how to build StudWorks in the
+project README at https://github.com/nathaneltitane/studworks.
 
 - Website:
   https://github.com/nathaneltitane/studworks

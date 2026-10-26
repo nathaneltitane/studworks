@@ -46,15 +46,15 @@ win32 {
 win32-msvc* {
 	QMAKE_CXXFLAGS_WARN_ON += /W4 -wd4100
 	QMAKE_CXXFLAGS *= /MP
-	PRECOMPILED_HEADER = src/app/sw_global.h
-	PRECOMPILED_SOURCE = src/app/sw_global.cpp
+	PRECOMPILED_HEADER = source/application/sw_global.h
+	PRECOMPILED_SOURCE = source/application/sw_global.cpp
 	DEFINES += _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE=1 _CRT_NONSTDC_NO_WARNINGS=1
 	INCLUDEPATH += $$[QT_INSTALL_HEADERS]/QtZlib
 	QMAKE_LFLAGS += /INCREMENTAL
 	LIBS += -ladvapi32 -lshell32 -lopengl32 -luser32
 	QMAKE_CXXFLAGS += /we4834
 } else {
-	PRECOMPILED_HEADER = src/app/sw_global.h
+	PRECOMPILED_HEADER = source/application/sw_global.h
 	LIBS += -lz
 	QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter -Wshadow
 	QMAKE_CXXFLAGS += -Werror=unused-result
@@ -126,25 +126,25 @@ unix:!macx {
 
 	target.path = $$BIN_DIR
 	docs.path = $$DOCS_DIR
-	docs.files = docs/README.md docs/CREDITS.txt docs/COPYING.txt
+	docs.files = documentation/README.md documentation/CREDITS.txt documentation/COPYING.txt
 	man.path = $$MAN_DIR
-	man.files = docs/studworks.1
+	man.files = documentation/studworks.1
 	desktop.path = $$DESKTOP_DIR
 	desktop.files = platform/studworks.desktop
 	icons.path = $$ICON_DIR/hicolor
-	icons.files += tools/icon/128x128
-	icons.files += tools/icon/16x16
-	icons.files += tools/icon/24x24
-	icons.files += tools/icon/256x256
-	icons.files += tools/icon/32x32
-	icons.files += tools/icon/48x48
-	icons.files += tools/icon/512x512
-	icons.files += tools/icon/64x64
-	icons.files += tools/icon/scalable
+	icons.files += resources/icons/128x128
+	icons.files += resources/icons/16x16
+	icons.files += resources/icons/24x24
+	icons.files += resources/icons/256x256
+	icons.files += resources/icons/32x32
+	icons.files += resources/icons/48x48
+	icons.files += resources/icons/512x512
+	icons.files += resources/icons/64x64
+	icons.files += resources/icons/scalable
 	mime.path = $$MIME_DIR
 	mime.files = platform/studworks.xml
 	appdata.path = $$APPDATA_DIR
-	appdata.files = tools/setup/io.github.nathaneltitane.StudWorks.appdata.xml
+	appdata.files = packaging/io.github.nathaneltitane.StudWorks.appdata.xml
 
 	INSTALLS += target docs man desktop icons mime appdata
 
@@ -172,12 +172,12 @@ ios {
 	DEFINES += SW_DISABLE_BLENDER=1
 }
 
-include(src/app/app.pri)
-include(src/core/core.pri)
-include(src/library/library.pri)
-include(src/render/render.pri)
-include(src/io/io.pri)
-include(src/ui/ui.pri)
+include(source/application/application.pri)
+include(source/core/core.pri)
+include(source/library/library.pri)
+include(source/rendering/rendering.pri)
+include(source/input_output/input_output.pri)
+include(source/interface/interface.pri)
 
 OTHER_FILES +=
 RESOURCES += studworks.qrc resources/stylesheet/stylesheet.qrc

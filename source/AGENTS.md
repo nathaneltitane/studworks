@@ -20,5 +20,5 @@
 
 # Dialog help and translations
 
-- Follow `docs/dialog-help.md` when adding or changing dialog controls, including help text, label buddies, and Help/F1 behavior.
+- Follow `documentation/dialog-help.md` when adding or changing dialog controls, including help text, label buddies, and Help/F1 behavior.
 - Keep UI strings translatable.

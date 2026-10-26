@@ -10,12 +10,12 @@ greaterThan(QT_MAJOR_VERSION, 5) {
 	QT += openglwidgets
 }
 
-INCLUDEPATH += ../src/app ../src/core ../src/library ../src/render ../src/io ../src/ui
+INCLUDEPATH += ../source/application ../source/core ../source/library ../source/rendering ../source/input_output ../source/interface
 
 HEADERS += sw_tests.h
 
 SOURCES += \
-	../src/core/sw_object_property.cpp \
+	../source/core/sw_object_property.cpp \
 	sw_object_history_test.cpp \
 	sw_object_property_test.cpp \
 	main.cpp
