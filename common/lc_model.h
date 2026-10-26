@@ -519,7 +519,6 @@ public:
 
 	void ShowPropertiesDialog();
 	void ShowArrayDialog();
-	void ShowMinifigDialog();
 	void AddMinifig(const lcMinifig& Minifig);
 	void UpdateInterface();
 

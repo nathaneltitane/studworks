@@ -990,7 +990,7 @@ void lcMainWindow::CreateToolBars()
 		if (Visible && !mMinifigToolBar->widget())
 		{
 			// The panel is exactly as tall as the editor wherever it is docked.
-			lcMinifigDialog* MinifigDialog = new lcMinifigDialog(mMinifigToolBar, true);
+			lcMinifigDialog* MinifigDialog = new lcMinifigDialog(mMinifigToolBar);
 			lcFitHeightToContents(MinifigDialog);
 			mMinifigToolBar->setWidget(MinifigDialog);
 		}
@@ -2103,12 +2103,12 @@ void lcMainWindow::AddRenderTargetActions(QMenu* Menu, lcRenderTarget Target)
 		lcCommandId ConditionalLines;
 	};
 
-	lcRenderTargetCommands Commands;
+	// The model view commands, the other targets replace them with their own.
+	lcRenderTargetCommands Commands = { LC_NUM_COMMANDS, LC_VIEW_SHADING_WIREFRAME, LC_VIEW_SHADING_FLAT, LC_VIEW_SHADING_DEFAULT_LIGHTS, LC_VIEW_TOGGLE_EDGE_LINES, LC_VIEW_TOGGLE_CONDITIONAL_LINES };
 
 	switch (Target)
 	{
 	case lcRenderTarget::ModelView:
-		Commands = { LC_NUM_COMMANDS, LC_VIEW_SHADING_WIREFRAME, LC_VIEW_SHADING_FLAT, LC_VIEW_SHADING_DEFAULT_LIGHTS, LC_VIEW_TOGGLE_EDGE_LINES, LC_VIEW_TOGGLE_CONDITIONAL_LINES };
 		break;
 
 	case lcRenderTarget::Preview:
@@ -4281,8 +4281,8 @@ void lcMainWindow::HandleCommand(lcCommandId CommandId)
 		break;
 
 	case LC_PIECE_MINIFIG_WIZARD:
-		if (ActiveModel)
-			ActiveModel->ShowMinifigDialog();
+		mMinifigToolBar->show();
+		mMinifigToolBar->raise();
 		break;
 
 	case LC_PIECE_ARRAY:
