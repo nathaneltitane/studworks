@@ -16,7 +16,6 @@ lcTerminalWidget::lcTerminalWidget(QWidget* Parent)
 {
 	mLayout = new QVBoxLayout(this);
 	mLayout->setContentsMargins(0, 0, 0, 0);
-	mLayout->setSpacing(0);
 
 	QToolBar* OptionsToolBar = lcCreatePanelToolBar(this);
 	lcAddPanelToolBarSpacer(OptionsToolBar);

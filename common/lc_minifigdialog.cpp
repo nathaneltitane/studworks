@@ -22,9 +22,8 @@ lcMinifigDialog::lcMinifigDialog(QWidget* Parent)
 
 	QGridLayout* MinifigLayout = ui->MinifigLayout;
 
-	// Rows sit close together and extra height goes below the panel instead of between rows.
+	// Extra height goes below the panel instead of between rows.
 	MinifigLayout->setContentsMargins(0, 0, 0, 0);
-	MinifigLayout->setVerticalSpacing(2);
 	ui->verticalLayout->addStretch(1);
 
 	bool HasSpinBox[LC_MFW_NUMITEMS] = { true, true, true, false, false, false, false, true, true, true, true, true, true, true, true, true, true };

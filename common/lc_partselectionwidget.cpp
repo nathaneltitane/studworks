@@ -1011,7 +1011,6 @@ lcPartSelectionWidget::lcPartSelectionWidget(bool IsPopup, QWidget* Parent)
 
 	QVBoxLayout* CategoriesLayout = new QVBoxLayout();
 	CategoriesLayout->setContentsMargins(0, 0, 0, 0);
-	CategoriesLayout->setSpacing(0);
 	CategoriesGroupWidget->setLayout(CategoriesLayout);
 
 	QToolBar* FilterCategoriesToolBar = lcCreatePanelToolBar(CategoriesGroupWidget);
@@ -1047,7 +1046,6 @@ lcPartSelectionWidget::lcPartSelectionWidget(bool IsPopup, QWidget* Parent)
 
 	QVBoxLayout* PartsLayout = new QVBoxLayout();
 	PartsLayout->setContentsMargins(0, 0, 0, 0);
-	PartsLayout->setSpacing(0);
 	PartsGroupWidget->setLayout(PartsLayout);
 
 	QToolBar* SearchToolBar = lcCreatePanelToolBar(PartsGroupWidget);

@@ -865,7 +865,6 @@ void lcMainWindow::CreateToolBars()
 	QWidget* PropertiesWidget = new QWidget(mPropertiesToolBar);
 	QVBoxLayout* PropertiesLayout = new QVBoxLayout(PropertiesWidget);
 	PropertiesLayout->setContentsMargins(0, 0, 0, 0);
-	PropertiesLayout->setSpacing(0);
 
 	QScrollArea* PropertiesScrollArea = new QScrollArea(PropertiesWidget);
 	PropertiesScrollArea->setWidgetResizable(true);
@@ -928,7 +927,7 @@ void lcMainWindow::CreateToolBars()
 	// The panel is always exactly as tall as the rows it shows, so nothing is cut off or scrolled.
 	PropertiesScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-	auto UpdatePropertiesHeight = [this, PropertiesWidget, PropertiesLayout, PropertiesScrollArea, TransformWidget]()
+	auto UpdatePropertiesHeight = [this, PropertiesWidget, PropertiesLayout, PropertiesScrollArea]()
 	{
 		// The list is hidden when all shown properties are in the rows below it.
 		const bool ShowList = mPropertiesWidget->HasVisibleRows();
@@ -936,11 +935,11 @@ void lcMainWindow::CreateToolBars()
 		const int ScrollHeight = ShowList ? mPropertiesWidget->sizeHint().height() + 2 * PropertiesScrollArea->frameWidth() + Margin : 0;
 
 		PropertiesScrollArea->setVisible(ShowList);
-		const QMargins Margins = PropertiesLayout->contentsMargins();
-		const int PanelHeight = ScrollHeight + mPropertiesWidget->GetTransformRowsWidget()->sizeHint().height() + TransformWidget->sizeHint().height() + Margins.top() + Margins.bottom();
-
 		PropertiesScrollArea->setFixedHeight(ScrollHeight);
-		PropertiesWidget->setFixedHeight(PanelHeight);
+
+		// The layout adds its own spacing between the shown rows.
+		PropertiesLayout->invalidate();
+		PropertiesWidget->setFixedHeight(PropertiesLayout->sizeHint().height());
 	};
 
 	connect(mPropertiesWidget, &lcPropertiesWidget::LayoutChanged, this, [UpdatePropertiesHeight]()
@@ -967,7 +966,6 @@ void lcMainWindow::CreateToolBars()
 	QWidget* TimelinePanel = new QWidget(mTimelineToolBar);
 	QVBoxLayout* TimelineLayout = new QVBoxLayout(TimelinePanel);
 	TimelineLayout->setContentsMargins(0, 0, 0, 0);
-	TimelineLayout->setSpacing(0);
 	TimelineLayout->addWidget(mTimelineWidget);
 	TimelineLayout->addWidget(mPropertiesWidget->GetStepRowsWidget());
 
