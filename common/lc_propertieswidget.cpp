@@ -1380,18 +1380,15 @@ void lcPropertiesWidget::AddPieceIdProperty(lcObjectPropertyId PropertyId, const
 void lcPropertiesWidget::CreateWidgets()
 {
 	mLayout = new QGridLayout(this);
-	mLayout->setVerticalSpacing(1);
 
 	mTransformRows = new QWidget(this);
 	mTransformRows->installEventFilter(this);
 	mTransformRowsLayout = new QVBoxLayout(mTransformRows);
 	mTransformRowsLayout->setContentsMargins(0, 0, 0, 0);
-	mTransformRowsLayout->setSpacing(0);
 
 	mStepRows = new QWidget(this);
 	QVBoxLayout* StepRowsLayout = new QVBoxLayout(mStepRows);
 	StepRowsLayout->setContentsMargins(0, 0, 0, 0);
-	StepRowsLayout->setSpacing(0);
 	mLayout->setColumnStretch(2, 1);
 
 	AddCategory(CategoryIndex::Piece, tr("Piece"), false);

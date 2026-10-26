@@ -10,21 +10,18 @@ namespace Ui
 class lcMinifigDialog;
 }
 
-class lcMinifigDialog : public QDialog
+class lcMinifigDialog : public QWidget
 {
 	Q_OBJECT
 
 public:
-	explicit lcMinifigDialog(QWidget* Parent, bool Docked = false);
+	explicit lcMinifigDialog(QWidget* Parent);
 	virtual ~lcMinifigDialog();
 
 	MinifigWizard* mMinifigWizard;
 
-public slots:
-	void accept() override;
-	void reject() override;
-
 protected slots:
+	void AddToModel();
 	void TemplateComboBoxCurrentTextChanged(const QString& TemplateName);
 	void TemplateSaveButtonClicked();
 	void TemplateDeleteButtonClicked();
@@ -53,5 +50,4 @@ protected:
 
 	QString mCurrentTemplateName;
 	bool mCurrentTemplateModified = false;
-	bool mDocked = false;
 };

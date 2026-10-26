@@ -16,7 +16,6 @@
 #include "lc_view.h"
 #include "minifig.h"
 #include "lc_arraydialog.h"
-#include "lc_minifigdialog.h"
 #include "lc_groupdialog.h"
 #include "lc_editgroupsdialog.h"
 #include "lc_qpropertiesdialog.h"
@@ -6408,16 +6407,6 @@ void lcModel::ShowArrayDialog()
 	EndHistorySequence(tr("Piece Array"));
 
 	gMainWindow->UpdateTimeline(false, false);
-}
-
-void lcModel::ShowMinifigDialog()
-{
-	lcMinifigDialog Dialog(gMainWindow);
-
-	if (Dialog.exec() != QDialog::Accepted)
-		return;
-
-	AddMinifig(Dialog.mMinifigWizard->mMinifig);
 }
 
 void lcModel::AddMinifig(const lcMinifig& Minifig)

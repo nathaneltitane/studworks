@@ -865,7 +865,6 @@ void lcMainWindow::CreateToolBars()
 	QWidget* PropertiesWidget = new QWidget(mPropertiesToolBar);
 	QVBoxLayout* PropertiesLayout = new QVBoxLayout(PropertiesWidget);
 	PropertiesLayout->setContentsMargins(0, 0, 0, 0);
-	PropertiesLayout->setSpacing(0);
 
 	QScrollArea* PropertiesScrollArea = new QScrollArea(PropertiesWidget);
 	PropertiesScrollArea->setWidgetResizable(true);
@@ -928,7 +927,7 @@ void lcMainWindow::CreateToolBars()
 	// The panel is always exactly as tall as the rows it shows, so nothing is cut off or scrolled.
 	PropertiesScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-	auto UpdatePropertiesHeight = [this, PropertiesWidget, PropertiesLayout, PropertiesScrollArea, TransformWidget]()
+	auto UpdatePropertiesHeight = [this, PropertiesWidget, PropertiesLayout, PropertiesScrollArea]()
 	{
 		// The list is hidden when all shown properties are in the rows below it.
 		const bool ShowList = mPropertiesWidget->HasVisibleRows();
@@ -936,11 +935,11 @@ void lcMainWindow::CreateToolBars()
 		const int ScrollHeight = ShowList ? mPropertiesWidget->sizeHint().height() + 2 * PropertiesScrollArea->frameWidth() + Margin : 0;
 
 		PropertiesScrollArea->setVisible(ShowList);
-		const QMargins Margins = PropertiesLayout->contentsMargins();
-		const int PanelHeight = ScrollHeight + mPropertiesWidget->GetTransformRowsWidget()->sizeHint().height() + TransformWidget->sizeHint().height() + Margins.top() + Margins.bottom();
-
 		PropertiesScrollArea->setFixedHeight(ScrollHeight);
-		PropertiesWidget->setFixedHeight(PanelHeight);
+
+		// The layout adds its own spacing between the shown rows.
+		PropertiesLayout->invalidate();
+		PropertiesWidget->setFixedHeight(PropertiesLayout->sizeHint().height());
 	};
 
 	connect(mPropertiesWidget, &lcPropertiesWidget::LayoutChanged, this, [UpdatePropertiesHeight]()
@@ -967,7 +966,6 @@ void lcMainWindow::CreateToolBars()
 	QWidget* TimelinePanel = new QWidget(mTimelineToolBar);
 	QVBoxLayout* TimelineLayout = new QVBoxLayout(TimelinePanel);
 	TimelineLayout->setContentsMargins(0, 0, 0, 0);
-	TimelineLayout->setSpacing(0);
 	TimelineLayout->addWidget(mTimelineWidget);
 	TimelineLayout->addWidget(mPropertiesWidget->GetStepRowsWidget());
 
@@ -990,7 +988,7 @@ void lcMainWindow::CreateToolBars()
 		if (Visible && !mMinifigToolBar->widget())
 		{
 			// The panel is exactly as tall as the editor wherever it is docked.
-			lcMinifigDialog* MinifigDialog = new lcMinifigDialog(mMinifigToolBar, true);
+			lcMinifigDialog* MinifigDialog = new lcMinifigDialog(mMinifigToolBar);
 			lcFitHeightToContents(MinifigDialog);
 			mMinifigToolBar->setWidget(MinifigDialog);
 		}
@@ -2103,12 +2101,12 @@ void lcMainWindow::AddRenderTargetActions(QMenu* Menu, lcRenderTarget Target)
 		lcCommandId ConditionalLines;
 	};
 
-	lcRenderTargetCommands Commands;
+	// The model view commands, the other targets replace them with their own.
+	lcRenderTargetCommands Commands = { LC_NUM_COMMANDS, LC_VIEW_SHADING_WIREFRAME, LC_VIEW_SHADING_FLAT, LC_VIEW_SHADING_DEFAULT_LIGHTS, LC_VIEW_TOGGLE_EDGE_LINES, LC_VIEW_TOGGLE_CONDITIONAL_LINES };
 
 	switch (Target)
 	{
 	case lcRenderTarget::ModelView:
-		Commands = { LC_NUM_COMMANDS, LC_VIEW_SHADING_WIREFRAME, LC_VIEW_SHADING_FLAT, LC_VIEW_SHADING_DEFAULT_LIGHTS, LC_VIEW_TOGGLE_EDGE_LINES, LC_VIEW_TOGGLE_CONDITIONAL_LINES };
 		break;
 
 	case lcRenderTarget::Preview:
@@ -4281,8 +4279,8 @@ void lcMainWindow::HandleCommand(lcCommandId CommandId)
 		break;
 
 	case LC_PIECE_MINIFIG_WIZARD:
-		if (ActiveModel)
-			ActiveModel->ShowMinifigDialog();
+		mMinifigToolBar->show();
+		mMinifigToolBar->raise();
 		break;
 
 	case LC_PIECE_ARRAY:

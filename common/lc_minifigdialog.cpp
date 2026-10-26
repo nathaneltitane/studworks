@@ -14,32 +14,16 @@
 #include "lc_partselectionpopup.h"
 #include "lc_mainwindow.h"
 
-lcMinifigDialog::lcMinifigDialog(QWidget* Parent, bool Docked)
-	: QDialog(Parent), ui(new Ui::lcMinifigDialog), mDocked(Docked)
+lcMinifigDialog::lcMinifigDialog(QWidget* Parent)
+	: QWidget(Parent), ui(new Ui::lcMinifigDialog)
 {
+	// The minifigure panel stays open and adds each minifigure to the current model, F1 help comes from the panel.
 	ui->setupUi(this);
-
-	// docked in a panel the dialog stays open and adds each minifigure to the current model
-	if (mDocked)
-	{
-		setWindowFlags(Qt::Widget);
-		ui->buttonBox->setStandardButtons(QDialogButtonBox::NoButton);
-
-		ui->buttonBox->hide();
-	}
-
-	// Help comes from What's This and F1 instead of a help button, the panel already provides F1 when docked.
-	if (!mDocked)
-	{
-		lcSetupDialogHelp(this, nullptr);
-		setWindowFlag(Qt::WindowContextHelpButtonHint, true);
-	}
 
 	QGridLayout* MinifigLayout = ui->MinifigLayout;
 
-	// Rows sit close together and extra height goes below the panel instead of between rows.
+	// Extra height goes below the panel instead of between rows.
 	MinifigLayout->setContentsMargins(0, 0, 0, 0);
-	MinifigLayout->setVerticalSpacing(2);
 	ui->verticalLayout->addStretch(1);
 
 	bool HasSpinBox[LC_MFW_NUMITEMS] = { true, true, true, false, false, false, false, true, true, true, true, true, true, true, true, true, true };
@@ -166,9 +150,6 @@ lcMinifigDialog::lcMinifigDialog(QWidget* Parent, bool Docked)
 	mView->GetCamera()->SetViewpoint(lcViewpoint::Front);
 	mView->ZoomExtents(lcGeometryBoundsMode::IncludeFallback, false);
 
-	if (QPushButton* OkButton = ui->buttonBox->button(QDialogButtonBox::StandardButton::Ok))
-		OkButton->setFocus();
-
 	ui->horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
 	ui->TemplateComboBox->setPlaceholderText(tr("Templates"));
 
@@ -184,14 +165,11 @@ lcMinifigDialog::lcMinifigDialog(QWidget* Parent, bool Docked)
 
 	std::vector<QToolButton*> RowButtons = { ui->TemplateSaveButton, ui->TemplateDeleteButton, ui->TemplateImportButton, ui->TemplateExportButton };
 
-	if (mDocked)
-	{
-		QToolButton* AddButton = new QToolButton(TemplateButtons);
-		AddButton->setText(tr("Add to Model"));
-		AddButton->setToolTip(tr("Add this minifigure to the current model"));
-		connect(AddButton, &QToolButton::clicked, this, &lcMinifigDialog::accept);
-		RowButtons.push_back(AddButton);
-	}
+	QToolButton* AddButton = new QToolButton(TemplateButtons);
+	AddButton->setText(tr("Add to Model"));
+	AddButton->setToolTip(tr("Add this minifigure to the current model"));
+	connect(AddButton, &QToolButton::clicked, this, &lcMinifigDialog::AddToModel);
+	RowButtons.push_back(AddButton);
 
 	for (QToolButton* Button : RowButtons)
 	{
@@ -222,14 +200,8 @@ lcMinifigDialog::lcMinifigDialog(QWidget* Parent, bool Docked)
 	connect(ui->TemplateExportButton, &QToolButton::clicked, this, &lcMinifigDialog::TemplateExportButtonClicked);
 }
 
-void lcMinifigDialog::accept()
+void lcMinifigDialog::AddToModel()
 {
-	if (!mDocked)
-	{
-		QDialog::accept();
-		return;
-	}
-
 	lcModel* Model = gMainWindow ? gMainWindow->GetActiveModel() : nullptr;
 
 	if (Model)
@@ -242,7 +214,7 @@ bool lcMinifigDialog::eventFilter(QObject* Object, QEvent* Event)
 	if (Object == mViewWidget && Event->type() == QEvent::Resize)
 		QTimer::singleShot(0, this, &lcMinifigDialog::FitPreview);
 
-	return QDialog::eventFilter(Object, Event);
+	return QWidget::eventFilter(Object, Event);
 }
 
 void lcMinifigDialog::FitPreview()
@@ -282,12 +254,6 @@ void lcMinifigDialog::OptionsMenuAboutToShow()
 	Menu->clear();
 
 	gMainWindow->AddRenderTargetActions(Menu, lcRenderTarget::Minifig);
-}
-
-void lcMinifigDialog::reject()
-{
-	if (!mDocked)
-		QDialog::reject();
 }
 
 lcMinifigDialog::~lcMinifigDialog()
