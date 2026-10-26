@@ -16,6 +16,11 @@ public:
 
 	void Update(const std::vector<lcObject*>& Selection, lcObject* Focus);
 
+	QWidget* GetIdentityRowsWidget() const
+	{
+		return mIdentityRows;
+	}
+
 	QWidget* GetTransformRowsWidget() const
 	{
 		return mTransformRows;
@@ -27,11 +32,6 @@ public:
 	}
 
 	bool HasVisibleRows() const;
-
-protected:
-	void UpdatePieceColorSwatch();
-
-public:
 
 signals:
 	void LayoutChanged();
@@ -90,22 +90,44 @@ protected:
 		Count
 	};
 
+	enum class IdentityIndex
+	{
+		Piece,
+		Camera,
+		Light,
+		Count
+	};
+
 	struct CategoryWidgets
 	{
 		lcCollapsibleWidgetButton* Button = nullptr;
 		QString Title;
 		std::vector<lcObjectPropertyId> Properties;
-		std::vector<int> SpacingRows;
 		CategoryIndex Category;
 	};
 
 	struct PropertyWidgets
 	{
-		QLabel* Label = nullptr;
 		QWidget* Editor = nullptr;
+		QWidget* Row = nullptr;
 		lcKeyFrameWidget* KeyFrame = nullptr;
 		CategoryIndex Category;
 		bool Visible = true;
+	};
+
+	// Full width rows naming the object, with a block spanning them on the left that shows the color when there is one.
+	struct IdentityBlock
+	{
+		std::vector<QWidget*> Slots;
+		QToolButton* Swatch = nullptr;
+		QColor Color;
+	};
+
+	// An editor in a row, followed by the keyframe button of a property when it is keyed on its own or for the row.
+	struct RowEditor
+	{
+		QWidget* Editor;
+		lcObjectPropertyId KeyFrameId = lcObjectPropertyId::Count;
 	};
 
 	lcObjectPropertyId GetEditorWidgetPropertyId(QWidget* Widget) const;
@@ -114,25 +136,23 @@ protected:
 	void AddCategory(CategoryIndex Index, const QString& Title, bool Collapsible);
 	bool event(QEvent* Event) override;
 	bool eventFilter(QObject* Object, QEvent* Event) override;
-	void AddSpacing();
-	void AddLabel(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip);
+	void RegisterEditor(lcObjectPropertyId PropertyId, QWidget* Editor, const QString& Name, const QString& ToolTip);
 	lcKeyFrameWidget* CreateKeyFrameWidget(lcObjectPropertyId PropertyId);
-	void AddKeyFrameWidget(lcObjectPropertyId PropertyId);
-	void AddBoolProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames);
-	lcDoubleSpinBox* CreateFloatEditor(lcObjectPropertyId PropertyId, const QString& ToolTip, float Min, float Max);
-	void AddFloatProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames, float Min, float Max);
-	void AddVectorProperty(const std::array<lcObjectPropertyId, 3>& PropertyIds, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames, float Min, float Max);
-	void AddIntegerProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames, int Min, int Max);
-	QLineEdit* CreateStepNumberEditor(lcObjectPropertyId PropertyId, const QString& ToolTip);
-	void AddStepNumberProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames);
-	void AddStepRangeProperty(lcObjectPropertyId ShowPropertyId, lcObjectPropertyId HidePropertyId);
-	QToolButton* CreateRowNameButton(QWidget* Row, const QString& Name);
-	QWidget* AddTransformRowButton(QToolButton* Button);
-	void AddStringProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames);
-	void AddStringListProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames, const QStringList& Strings);
-	void AddColorProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames);
-	void AddPieceColorProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames);
-	void AddPieceIdProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames);
+	lcDoubleSpinBox* CreateFloatEditor(lcObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip, float Min, float Max, bool ShowName, const QString& Suffix = QString());
+	QSpinBox* CreateIntegerEditor(lcObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip, int Min, int Max);
+	QLineEdit* CreateStepNumberEditor(lcObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip);
+	QLineEdit* CreateStringEditor(lcObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip);
+	QComboBox* CreateStringListEditor(lcObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip, const QStringList& Strings);
+	QToolButton* CreateColorEditor(lcObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip);
+	QToolButton* CreateToggleEditor(lcObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip);
+	QToolButton* CreatePieceIdEditor(lcObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip);
+	QToolButton* CreatePieceColorEditor(lcObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip);
+	QWidget* AddValueRow(QWidget* Container, const QString& Letter, const QString& Name, const std::vector<RowEditor>& Editors);
+	void AddVectorRow(QWidget* Container, const std::array<lcObjectPropertyId, 3>& PropertyIds, const QString& Letter, const QString& Name, const QString& ToolTip, bool SupportsKeyFrames, float Min, float Max);
+	void AddIdentityRow(IdentityIndex Index, QWidget* Editor, lcObjectPropertyId KeyFrameId = lcObjectPropertyId::Count);
+	QToolButton* CreateRowNameButton(QWidget* Row, const QString& Letter, const QString& Name);
+	void UpdateIdentityBlock(IdentityBlock& Block);
+	void UpdateRowVisible(QWidget* Row);
 
 	std::pair<QVariant, bool> GetUpdateValue(lcObjectPropertyId PropertyId);
 
@@ -170,14 +190,11 @@ protected:
 	std::array<CategoryWidgets, static_cast<int>(CategoryIndex::Count)> mCategoryWidgets = {};
 
 	CategoryWidgets* mCurrentCategory = nullptr;
-	QGridLayout* mLayout = nullptr;
+	QVBoxLayout* mSettingsLayout = nullptr;
+	QWidget* mIdentityRows = nullptr;
 	QWidget* mTransformRows = nullptr;
-	QVBoxLayout* mTransformRowsLayout = nullptr;
 	QWidget* mStepRows = nullptr;
-	QToolButton* mPieceColorSwatch = nullptr;
-	std::vector<QWidget*> mPieceRowSlots;
-	QColor mPieceColorSwatchColor;
-	int mLayoutRow = 0;
+	std::array<IdentityBlock, static_cast<int>(IdentityIndex::Count)> mIdentityBlocks;
 
 	LayoutMode mLayoutMode = LayoutMode::Count;
 };
