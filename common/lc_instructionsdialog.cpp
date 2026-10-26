@@ -4,7 +4,6 @@
 #include "project.h"
 #include "lc_model.h"
 #include "lc_view.h"
-#include "camera.h"
 #include "lc_collapsiblewidget.h"
 #include "lc_qutils.h"
 
@@ -31,11 +30,6 @@ void lcInstructionsStepImageItem::Update()
 
 	// Frame the complete model whatever the main view zoom, so no step or cover image is clipped.
 	View.ZoomExtentsAtStep(mModel->GetLastStep(), lcGeometryBoundsMode::IncludeFallback, false);
-
-	// Back away a little so the model does not touch the image edges, camera zoom moves 5 units per step.
-	lcCamera* Camera = View.GetCamera();
-	const float Distance = lcLength(Camera->mPosition - Camera->mTargetPosition);
-	Camera->Zoom(-Distance * 0.05f / 5.0f, mStep, false);
 
 	std::vector<QImage> Images = View.GetStepImages(mStep, mStep);
 
