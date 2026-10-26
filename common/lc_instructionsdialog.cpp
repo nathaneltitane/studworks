@@ -4,6 +4,7 @@
 #include "project.h"
 #include "lc_model.h"
 #include "lc_view.h"
+#include "camera.h"
 #include "lc_collapsiblewidget.h"
 #include "lc_qutils.h"
 
@@ -22,8 +23,19 @@ void lcInstructionsStepImageItem::Update()
 	View.SetBackgroundColorOverride(lcRGBAFromQColor(mInstructions->GetColorProperty(lcInstructionsPropertyType::StepBackgroundColor, mModel, mStep)));
 	View.SetSize(mWidth, mHeight);
 
+	// Work on a copy of the main view camera, fitting the image must not move a model camera.
+	View.SetCamera(View.GetCamera(), true);
+
 	// show each step from its rotation step view, like the model view does while stepping
 	View.ApplyStepView(mStep);
+
+	// Frame the complete model whatever the main view zoom, so no step or cover image is clipped.
+	View.ZoomExtentsAtStep(mModel->GetLastStep(), lcGeometryBoundsMode::IncludeFallback, false);
+
+	// Back away a little so the model does not touch the image edges, camera zoom moves 5 units per step.
+	lcCamera* Camera = View.GetCamera();
+	const float Distance = lcLength(Camera->mPosition - Camera->mTargetPosition);
+	Camera->Zoom(-Distance * 0.05f / 5.0f, mStep, false);
 
 	std::vector<QImage> Images = View.GetStepImages(mStep, mStep);
 
