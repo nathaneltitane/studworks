@@ -1,23 +1,23 @@
 #include "sw_global.h"
 #include "sw_library.h"
-#include "sw_assetloader.h"
-#include "sw_thumbnailmanager.h"
-#include "sw_zipfile.h"
+#include "sw_asset_loader.h"
+#include "sw_thumbnail_manager.h"
+#include "sw_zip_file.h"
 #include "sw_file.h"
-#include "sw_piecedata.h"
-#include "sw_piecemanager.h"
+#include "sw_piece_data.h"
+#include "sw_piece_manager.h"
 #include "sw_colors.h"
 #include "sw_texture.h"
-#include "sw_texturemanager.h"
+#include "sw_texture_manager.h"
 #include "sw_category.h"
 #include "sw_application.h"
 #include "sw_context.h"
-#include "sw_glextensions.h"
-#include "sw_synth.h"
-#include "sw_traintrack.h"
-#include "project.h"
+#include "sw_opengl_extensions.h"
+#include "sw_synthesis.h"
+#include "sw_train_track.h"
+#include "sw_project.h"
 #include "sw_profile.h"
-#include "sw_meshloader.h"
+#include "sw_mesh_loader.h"
 #include "sw_model.h"
 #include "sw_view.h"
 #include "sw_string.h"
@@ -148,11 +148,11 @@ std::string swPiecesLibrary::NormalizePieceDataName(const char* PieceName)
 	return swPieceManager::NormalizePieceDataName(PieceName);
 }
 
-swPieceDataRef swPiecesLibrary::AcquireModelPieceData(const char* PieceName, Project* Project, bool& Reused)
+swPieceDataReference swPiecesLibrary::AcquireModelPieceData(const char* PieceName, Project* Project, bool& Reused)
 {
 	swPieceData* PieceData = mPieceManager->AcquireModelPieceData(PieceName, Project, Reused);
 
-	swPieceDataRef PieceDataRef = swPieceDataRef::Adopt(PieceData, this);
+	swPieceDataReference PieceDataRef = swPieceDataReference::Adopt(PieceData, this);
 
 	if (Reused)
 		InvalidatePieceDataLoad(PieceData);
@@ -192,7 +192,7 @@ swPieceData* swPiecesLibrary::FindPieceData(const char* PieceName, Project* Curr
 	return mPieceManager->FindPieceData(Name, CurrentProject);
 }
 
-swPieceDataRef swPiecesLibrary::AcquirePieceData(const char* PieceName, Project* CurrentProject, bool CreateMissing, bool SearchProjectFolder)
+swPieceDataReference swPiecesLibrary::AcquirePieceData(const char* PieceName, Project* CurrentProject, bool CreateMissing, bool SearchProjectFolder)
 {
 	Q_ASSERT(QThread::currentThread() == thread());
 
@@ -200,7 +200,7 @@ swPieceDataRef swPiecesLibrary::AcquirePieceData(const char* PieceName, Project*
 	QString LoadError;
 
 	if (swPieceData* PieceData = FindPieceData(PieceName, CurrentProject))
-		return swPieceDataRef(PieceData, this);
+		return swPieceDataReference(PieceData, this);
 
 	if (CurrentProject && SearchProjectFolder && !CurrentProject->GetFileName().isEmpty())
 		ProjectPath = QFileInfo(CurrentProject->GetFileName()).absolutePath();
@@ -219,7 +219,7 @@ swPieceDataRef swPiecesLibrary::AcquirePieceData(const char* PieceName, Project*
 
 				PieceData->CreateProject(ExternalProject.value(), PieceName);
 
-				return swPieceDataRef(PieceData, this);
+				return swPieceDataReference(PieceData, this);
 			}
 			else
 				LoadError = ExternalProject.error();
@@ -232,10 +232,10 @@ swPieceDataRef swPiecesLibrary::AcquirePieceData(const char* PieceName, Project*
 
 		PieceData->SetFailed(LoadError.isEmpty() ? tr("Could not find piece '%1'.").arg(QString::fromLatin1(PieceName)) : LoadError);
 
-		return swPieceDataRef(PieceData, this);
+		return swPieceDataReference(PieceData, this);
 	}
 
-	return swPieceDataRef();
+	return swPieceDataReference();
 }
 
 bool swPiecesLibrary::RemapProjectPieceData(swPieceData* PieceData, const QString& ProjectDirectory, bool IsPreview)
@@ -275,7 +275,7 @@ bool swPiecesLibrary::RemapProjectPieceData(swPieceData* PieceData, const QStrin
 	return true;
 }
 
-swTextureRef swPiecesLibrary::AcquireTexture(const char* TextureName, Project* CurrentProject, bool SearchProjectFolder)
+swTextureReference swPiecesLibrary::AcquireTexture(const char* TextureName, Project* CurrentProject, bool SearchProjectFolder)
 {
 	QString ProjectPath;
 
@@ -353,7 +353,7 @@ swFileSource swPiecesLibrary::ResolveTextureSource(const char* TextureName, cons
 
 	ProjectPath.clear();
 
-	if (!TextureName[0] || strlen(TextureName) >= SW_TEXTURE_NAME_LEN)
+	if (!TextureName[0] || strlen(TextureName) >= SW_TEXTURE_NAME_LENGTH)
 		return swFileSource();
 
 	const bool ArchiveLibrary = static_cast<bool>(mZipFiles[static_cast<int>(swZipFileType::Official)]);
@@ -441,12 +441,12 @@ swFileSource swPiecesLibrary::ResolveTextureSource(const char* TextureName, cons
 	return Source;
 }
 
-swTextureRef swPiecesLibrary::AcquireTexture(const char* TextureName, const std::vector<QString>& SearchDirectories, const std::map<QString, std::shared_ptr<const swEmbeddedData>>& EmbeddedData, swFileSource& Source)
+swTextureReference swPiecesLibrary::AcquireTexture(const char* TextureName, const std::vector<QString>& SearchDirectories, const std::map<QString, std::shared_ptr<const swEmbeddedData>>& EmbeddedData, swFileSource& Source)
 {
 	QString ProjectPath;
 	Source = ResolveTextureSource(TextureName, SearchDirectories, EmbeddedData, ProjectPath);
 
-	return swTextureRef::Adopt(mTextureManager->AcquireTexture(TextureName, Source, ProjectPath), this);
+	return swTextureReference::Adopt(mTextureManager->AcquireTexture(TextureName, Source, ProjectPath), this);
 }
 
 void swPiecesLibrary::RequestTextureLoad(swTexture* Texture, swLoadPriority LoadPriority)
@@ -456,7 +456,7 @@ void swPiecesLibrary::RequestTextureLoad(swTexture* Texture, swLoadPriority Load
 	mAssetLoader->RequestTextureLoad(Texture, Texture->mSource, LoadPriority);
 }
 
-bool swPiecesLibrary::WaitForTexture(const swTextureRef& TextureRef)
+bool swPiecesLibrary::WaitForTexture(const swTextureReference& TextureRef)
 {
 	Q_ASSERT(QThread::currentThread() == thread());
 
@@ -496,7 +496,7 @@ swResult<std::unique_ptr<swFile>> swPiecesLibrary::OpenFile(const swFileSource& 
 			return swUnexpected(tr("Invalid Base64 data for embedded file '%1'.").arg(Data.FileName));
 
 		const QByteArray Bytes = QByteArray::fromBase64(Data.EncodedData);
-		std::unique_ptr<swMemFile> File(new swMemFile);
+		std::unique_ptr<swMemoryFile> File(new swMemoryFile);
 
 		if (File->WriteBuffer(Bytes.constData(), Bytes.size()) != static_cast<size_t>(Bytes.size()))
 			return swUnexpected(tr("Could not read embedded file '%1'.").arg(Data.FileName));
@@ -518,7 +518,7 @@ swResult<std::unique_ptr<swFile>> swPiecesLibrary::OpenFile(const swFileSource& 
 	if (Source.ArchiveType < 0 || Source.ArchiveType >= static_cast<int>(swZipFileType::Count) || Source.ArchiveIndex < 0)
 		return swUnexpected(tr("Invalid archive file source."));
 
-	std::unique_ptr<swMemFile> File(new swMemFile);
+	std::unique_ptr<swMemoryFile> File(new swMemoryFile);
 
 	// Source archives are stable until workers are drained; extraction locks
 	// the selected archive internally without serializing unrelated archives.
@@ -565,15 +565,15 @@ bool swPiecesLibrary::Load(const QString& LibraryPath, bool ShowProgress, bool O
 
 	UpdateStudStyleSource();
 	swLoadDefaultCategories();
-	swSynthInit();
-	swTrainTrackInfo::Initialize(this);
+	swSynthesisInitialize();
+	swTrainTrackInformation::Initialize(this);
 
 	return true;
 }
 
 void swPiecesLibrary::LoadColors()
 {
-	QString CustomColorsPath = swGetProfileString(SW_PROFILE_COLOR_CONFIG);
+	QString CustomColorsPath = swGetProfileString(SW_PROFILE_COLOR_CONFIGURATION);
 
 	if (!CustomColorsPath.isEmpty())
 	{
@@ -589,7 +589,7 @@ void swPiecesLibrary::LoadColors()
 
 	if (mZipFiles[static_cast<int>(swZipFileType::Official)])
 	{
-		swMemFile ColorFile;
+		swMemoryFile ColorFile;
 
 		if (!mZipFiles[static_cast<int>(swZipFileType::Official)]->ExtractFile("ldraw/ldconfig.ldr", ColorFile) || !swLoadColorFile(ColorFile, mStudStyle))
 			swLoadDefaultColors(mStudStyle);
@@ -698,7 +698,7 @@ bool swPiecesLibrary::OpenArchive(std::unique_ptr<swFile> File, swZipFileType Zi
 
 	for (quint32 FileIdx = 0; FileIdx < ZipFile->mFiles.size(); FileIdx++)
 	{
-		swZipFileInfo& FileInfo = ZipFile->mFiles[FileIdx];
+		swZipFileInformation& FileInfo = ZipFile->mFiles[FileIdx];
 		const std::string NormalizedName = NormalizePieceDataName(FileInfo.file_name);
 		const char* Name = NormalizedName.c_str();
 
@@ -789,7 +789,7 @@ void swPiecesLibrary::ReadArchiveDescriptions(const QString& OfficialFileName, c
 
 	if (!LoadCacheIndex(IndexFileName))
 	{
-		swMemFile PieceFile;
+		swMemoryFile PieceFile;
 
 		for (swPieceData* PieceData : mPieceManager->GetLibraryPieceData())
 		{
@@ -904,7 +904,7 @@ bool swPiecesLibrary::OpenDirectory(const QDir& LibraryDir, bool ShowProgress)
 void swPiecesLibrary::ReadDirectoryDescriptions(const QFileInfoList (&FileLists)[static_cast<int>(swLibraryFolderType::Count)], bool ShowProgress)
 {
 	QString IndexFileName = QFileInfo(QDir(mCachePath), QLatin1String("index")).absoluteFilePath();
-	swMemFile IndexFile;
+	swMemoryFile IndexFile;
 
 	struct CachedDescription
 	{
@@ -1055,7 +1055,7 @@ void swPiecesLibrary::ReadDirectoryDescriptions(const QFileInfoList (&FileLists)
 
 		ClassifyPieces(FilePaths);
 
-		swMemFile NewIndexFile;
+		swMemoryFile NewIndexFile;
 
 		NewIndexFile.WriteQString(mLibraryDir.absolutePath());
 		NewIndexFile.WriteU32(static_cast<quint32>(Jobs.size()));
@@ -1079,7 +1079,7 @@ void swPiecesLibrary::ReadDirectoryDescriptions(const QFileInfoList (&FileLists)
 	}
 }
 
-bool swPiecesLibrary::ReadCacheFile(const QString& FileName, swMemFile& CacheFile, CacheType Type)
+bool swPiecesLibrary::ReadCacheFile(const QString& FileName, swMemoryFile& CacheFile, CacheType Type)
 {
 	QFile File(FileName);
 
@@ -1125,7 +1125,7 @@ bool swPiecesLibrary::ReadCacheFile(const QString& FileName, swMemFile& CacheFil
 	return true;
 }
 
-bool swPiecesLibrary::WriteCacheFile(const QString& FileName, const swMemFile& CacheFile, CacheType Type)
+bool swPiecesLibrary::WriteCacheFile(const QString& FileName, const swMemoryFile& CacheFile, CacheType Type)
 {
 	if (CacheFile.GetLength() > static_cast<size_t>(std::numeric_limits<int>::max()))
 		return false;
@@ -1155,7 +1155,7 @@ bool swPiecesLibrary::WriteCacheFile(const QString& FileName, const swMemFile& C
 	return !CompressedData.isEmpty() && File.write(CompressedData) == CompressedData.size();
 }
 
-bool swPiecesLibrary::ReadIndexString(swMemFile& File, std::string& String)
+bool swPiecesLibrary::ReadIndexString(swMemoryFile& File, std::string& String)
 {
 	quint8 Length;
 
@@ -1167,7 +1167,7 @@ bool swPiecesLibrary::ReadIndexString(swMemFile& File, std::string& String)
 	return File.ReadBuffer(String.data(), Length) == Length;
 }
 
-bool swPiecesLibrary::WriteIndexString(swMemFile& File, const std::string& String)
+bool swPiecesLibrary::WriteIndexString(swMemoryFile& File, const std::string& String)
 {
 	if (String.size() > 255)
 		return false;
@@ -1218,7 +1218,7 @@ std::string swPiecesLibrary::ReadAliasTarget(swFile& File)
 
 		const QByteArray Name = Stream.readAll().trimmed().toLatin1();
 
-		if (Name.isEmpty() || Name.size() >= SW_PIECE_NAME_LEN)
+		if (Name.isEmpty() || Name.size() >= SW_PIECE_NAME_LENGTH)
 			return std::string();
 
 		Target = NormalizePieceDataName(Name.constData());
@@ -1327,7 +1327,7 @@ void swPiecesLibrary::ClassifyPieces(const DirectoryFilePaths& FilePaths)
 
 bool swPiecesLibrary::LoadCacheIndex(const QString& FileName)
 {
-	swMemFile IndexFile;
+	swMemoryFile IndexFile;
 
 	if (!ReadCacheFile(FileName, IndexFile, CacheType::Archive))
 		return false;
@@ -1351,7 +1351,7 @@ bool swPiecesLibrary::LoadCacheIndex(const QString& FileName)
 
 bool swPiecesLibrary::SaveArchiveCacheIndex(const QString& FileName)
 {
-	swMemFile IndexFile;
+	swMemoryFile IndexFile;
 
 	const quint32 NumFiles = (quint32)mPieceManager->GetLibraryPieceDataCount();
 
@@ -1394,7 +1394,7 @@ void swPiecesLibrary::RequestPieceDataLoad(swPieceData* PieceData, swLoadPriorit
 		else
 		{
 			const swBoundingBox& ModelBox = PieceData->GetBoundingBox();
-			PieceData->SetBoundingBox(swMin(ModelBox.Min, Box.Min), swMax(ModelBox.Max, Box.Max));
+			PieceData->SetBoundingBox(swMinimum(ModelBox.Min, Box.Min), swMaximum(ModelBox.Max, Box.Max));
 		}
 	}
 
@@ -1415,7 +1415,7 @@ void swPiecesLibrary::NotifyAssetStatusChanged()
 	emit AssetStatusChanged();
 }
 
-bool swPiecesLibrary::EnsurePieceDataAssetsReady(const swPieceDataRef& PieceData)
+bool swPiecesLibrary::EnsurePieceDataAssetsReady(const swPieceDataReference& PieceData)
 {
 	const bool PieceReady = WaitForPieceData(PieceData);
 
@@ -1433,7 +1433,7 @@ bool swPiecesLibrary::EnsurePieceDataAssetsReady(const swPieceDataRef& PieceData
 	return PieceReady;
 }
 
-bool swPiecesLibrary::WaitForPieceData(const swPieceDataRef& PieceDataRef)
+bool swPiecesLibrary::WaitForPieceData(const swPieceDataReference& PieceDataRef)
 {
 	Q_ASSERT(QThread::currentThread() == thread());
 
@@ -1445,14 +1445,14 @@ bool swPiecesLibrary::WaitForPieceData(const swPieceDataRef& PieceDataRef)
 	return RequestsSucceeded && PieceDataRef->mState == swAssetState::Loaded;
 }
 
-bool swPiecesLibrary::WaitForPieceData(const std::vector<swPieceDataRef>& PieceDataRefs, const std::function<void(int, int)>& Progress)
+bool swPiecesLibrary::WaitForPieceData(const std::vector<swPieceDataReference>& PieceDataRefs, const std::function<void(int, int)>& Progress)
 {
 	Q_ASSERT(QThread::currentThread() == thread());
 
 	std::vector<swPieceData*> Pieces;
 	Pieces.reserve(PieceDataRefs.size());
 
-	for (const swPieceDataRef& PieceDataRef : PieceDataRefs)
+	for (const swPieceDataReference& PieceDataRef : PieceDataRefs)
 	{
 		if (PieceDataRef->mState == swAssetState::Unloaded)
 			RequestPieceDataLoad(PieceDataRef.Get(), swLoadPriority::Blocking);
@@ -1462,7 +1462,7 @@ bool swPiecesLibrary::WaitForPieceData(const std::vector<swPieceDataRef>& PieceD
 
 	const bool RequestsSucceeded = mAssetLoader->WaitForPieces(Pieces, Progress);
 
-	for (const swPieceDataRef& PieceDataRef : PieceDataRefs)
+	for (const swPieceDataReference& PieceDataRef : PieceDataRefs)
 		if (PieceDataRef->mState != swAssetState::Loaded)
 			return false;
 
@@ -1474,7 +1474,7 @@ void swPiecesLibrary::RequestSynthMesh(swPiece* Piece)
 	Q_ASSERT(QThread::currentThread() == thread());
 
 	swPieceData* PieceData = Piece->mPieceData.Get();
-	std::shared_ptr<const swSynthInfo> SynthInfo = PieceData ? PieceData->GetSynthInfoShared() : nullptr;
+	std::shared_ptr<const swSynthesisInformation> SynthInfo = PieceData ? PieceData->GetSynthInfoShared() : nullptr;
 
 	if (!SynthInfo)
 	{
@@ -1658,7 +1658,7 @@ swPieceBuildResult swPiecesLibrary::BuildPieceData(const swPieceSourceSnapshot& 
 
 	if (!Source.InlineModel && Source.ZipFileType != swZipFileType::Count && mZipFiles[static_cast<int>(Source.ZipFileType)])
 	{
-		swMemFile CacheData;
+		swMemoryFile CacheData;
 
 		if (ReadCacheFile(Source.CachePath, CacheData, CacheType::Archive))
 		{
@@ -1684,7 +1684,7 @@ swPieceBuildResult swPiecesLibrary::BuildPieceData(const swPieceSourceSnapshot& 
 
 	if (Source.InlineModel)
 	{
-		swMemFile PieceFile;
+		swMemoryFile PieceFile;
 
 		for (const QString& Line : Source.InlineMeshLines)
 		{
@@ -1696,7 +1696,7 @@ swPieceBuildResult swPiecesLibrary::BuildPieceData(const swPieceSourceSnapshot& 
 
 		PieceFile.Seek(0, SEEK_SET);
 
-		if (!MeshLoader.LoadMesh(PieceFile, SW_MESHDATA_SHARED))
+		if (!MeshLoader.LoadMesh(PieceFile, SW_MESH_DATA_SHARED))
 		{
 			Result.Error = tr("Could not load model geometry '%1'.").arg(Source.FileName);
 
@@ -1724,7 +1724,7 @@ swPieceBuildResult swPiecesLibrary::BuildPieceData(const swPieceSourceSnapshot& 
 			const swResult<std::unique_ptr<swFile>> File = OpenFile(FileSource);
 
 			if (File)
-				Loaded = MeshLoader.LoadMesh(*File.value(), SW_MESHDATA_SHARED);
+				Loaded = MeshLoader.LoadMesh(*File.value(), SW_MESH_DATA_SHARED);
 		}
 		else
 		{
@@ -1733,7 +1733,7 @@ swPieceBuildResult swPiecesLibrary::BuildPieceData(const swPieceSourceSnapshot& 
 			const swResult<std::unique_ptr<swFile>> File = OpenFile(FileSource);
 
 			if (File)
-				Loaded = MeshLoader.LoadMesh(*File.value(), SW_MESHDATA_SHARED);
+				Loaded = MeshLoader.LoadMesh(*File.value(), SW_MESH_DATA_SHARED);
 
 			// Directory loading retries unofficial geometry after an open or parse failure.
 			if (mHasUnofficial && !Loaded)
@@ -1744,7 +1744,7 @@ swPieceBuildResult swPiecesLibrary::BuildPieceData(const swPieceSourceSnapshot& 
 				const swResult<std::unique_ptr<swFile>> UnofficialFile = OpenFile(FileSource);
 
 				if (UnofficialFile)
-					Loaded = MeshLoader.LoadMesh(*UnofficialFile.value(), SW_MESHDATA_SHARED);
+					Loaded = MeshLoader.LoadMesh(*UnofficialFile.value(), SW_MESH_DATA_SHARED);
 			}
 		}
 
@@ -1775,7 +1775,7 @@ void swPiecesLibrary::SaveBuiltPieceDataCache(const swPieceSourceSnapshot& Sourc
 	if (Source.ZipFileType == swZipFileType::Count)
 		return;
 
-	swMemFile MeshData;
+	swMemoryFile MeshData;
 
 	const qint32 Flags = MeshCacheSettingsKey(Source.StudStyle, Source.StudCylinderColorEnabled);
 
@@ -2238,7 +2238,7 @@ swResult<void> swPiecesLibrary::LoadPrimitiveData(swLibraryPrimitive* Primitive)
 	{
 		if (strncmp(Primitive->mName, "8/", 2)) // todo: low LOD for loose file libraries
 		{
-			char Name[SW_PIECE_NAME_LEN];
+			char Name[SW_PIECE_NAME_LENGTH];
 			swstrcpy(Name, "8/");
 			swstrcat(Name, Primitive->mName);
 			swstrupr(Name);
@@ -2252,7 +2252,7 @@ swResult<void> swPiecesLibrary::LoadPrimitiveData(swLibraryPrimitive* Primitive)
 	if (!File)
 		return LoadFailed(File.error());
 
-	if (!MeshLoader.LoadMesh(*File.value(), LowPrimitive ? SW_MESHDATA_HIGH : SW_MESHDATA_SHARED))
+	if (!MeshLoader.LoadMesh(*File.value(), LowPrimitive ? SW_MESH_DATA_HIGH : SW_MESH_DATA_SHARED))
 		return LoadFailed(MeshLoader.GetError());
 
 	if (LowPrimitive)
@@ -2262,7 +2262,7 @@ swResult<void> swPiecesLibrary::LoadPrimitiveData(swLibraryPrimitive* Primitive)
 		if (!LowFile)
 			return LoadFailed(LowFile.error());
 
-		if (!MeshLoader.LoadMesh(*LowFile.value(), SW_MESHDATA_LOW))
+		if (!MeshLoader.LoadMesh(*LowFile.value(), SW_MESH_DATA_LOW))
 			return LoadFailed(MeshLoader.GetError());
 	}
 
@@ -2353,7 +2353,7 @@ std::vector<swPieceData*> swPiecesLibrary::GetVisibleTrainTrackParts(const swTra
 
 	for (swPieceData* PieceData : mPieceManager->GetLibraryPieceData())
 	{
-		swTrainTrackInfo* TrainTrackInfo = PieceData->GetTrainTrackInfo();
+		swTrainTrackInformation* TrainTrackInfo = PieceData->GetTrainTrackInfo();
 
 		if (TrainTrackInfo && TrainTrackInfo->IsVisible() && TrainTrackInfo->CanConnectTo(ConnectionType, true))
 			Parts.emplace_back(PieceData);
@@ -2388,7 +2388,7 @@ bool swPiecesLibrary::LoadBuiltinPieceLibrary()
 	if (!File->Open(QIODevice::ReadOnly) || !OpenArchive(std::move(File), swZipFileType::Official))
 		return false;
 
-	swMemFile PieceFile;
+	swMemoryFile PieceFile;
 
 	for (swPieceData* PieceData : mPieceManager->GetLibraryPieceData())
 	{
@@ -2418,8 +2418,8 @@ bool swPiecesLibrary::LoadBuiltinPieceLibrary()
 	UpdateLoadingMeshColors();
 	UpdateStudStyleSource();
 	swLoadDefaultCategories(true);
-	swSynthInit();
-	swTrainTrackInfo::Initialize(this);
+	swSynthesisInitialize();
+	swTrainTrackInformation::Initialize(this);
 
 	return true;
 }

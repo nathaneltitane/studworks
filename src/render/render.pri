@@ -4,22 +4,22 @@ INCLUDEPATH += $$PWD
 
 SOURCES += \
 	$$PWD/sw_context.cpp \
-	$$PWD/sw_glextensions.cpp \
+	$$PWD/sw_opengl_extensions.cpp \
 	$$PWD/sw_scene.cpp \
-	$$PWD/sw_stringcache.cpp \
+	$$PWD/sw_string_cache.cpp \
+	$$PWD/sw_texture_font.cpp \
 	$$PWD/sw_view.cpp \
-	$$PWD/sw_viewmanipulator.cpp \
-	$$PWD/sw_viewsphere.cpp \
-	$$PWD/sw_viewwidget.cpp \
-	$$PWD/texfont.cpp
+	$$PWD/sw_view_manipulator.cpp \
+	$$PWD/sw_view_sphere.cpp \
+	$$PWD/sw_view_widget.cpp
 
 HEADERS += \
 	$$PWD/sw_context.h \
-	$$PWD/sw_glextensions.h \
+	$$PWD/sw_opengl_extensions.h \
 	$$PWD/sw_scene.h \
-	$$PWD/sw_stringcache.h \
+	$$PWD/sw_string_cache.h \
+	$$PWD/sw_texture_font.h \
 	$$PWD/sw_view.h \
-	$$PWD/sw_viewmanipulator.h \
-	$$PWD/sw_viewsphere.h \
-	$$PWD/sw_viewwidget.h \
-	$$PWD/texfont.h
+	$$PWD/sw_view_manipulator.h \
+	$$PWD/sw_view_sphere.h \
+	$$PWD/sw_view_widget.h

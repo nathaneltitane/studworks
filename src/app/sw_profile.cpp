@@ -2,11 +2,11 @@
 #include "sw_profile.h"
 #include "sw_context.h"
 #include "sw_model.h"
-#include "project.h"
-#include "sw_viewsphere.h"
-#include "sw_renderdialog.h"
+#include "sw_project.h"
+#include "sw_view_sphere.h"
+#include "sw_render_dialog.h"
 #include "sw_library.h"
-#include "sw_partselectionwidget.h"
+#include "sw_part_selection_widget.h"
 #include "sw_colors.h"
 
 swProfileEntry::swProfileEntry(const char* Section, const char* Key, int DefaultValue)
@@ -51,7 +51,7 @@ swProfileEntry::swProfileEntry(const char* Section, const char* Key)
 	mDefault = QByteArray();
 }
 
-static swProfileEntry gProfileEntries[SW_NUM_PROFILE_KEYS] =
+static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 {
 	swProfileEntry("Settings", "FixedAxes", false),                                                        // SW_PROFILE_FIXED_AXES
 	swProfileEntry("Settings", "LineWidth", 1.0f),                                                         // SW_PROFILE_LINE_WIDTH
@@ -79,12 +79,12 @@ static swProfileEntry gProfileEntries[SW_NUM_PROFILE_KEYS] =
 	swProfileEntry("Settings", "InactiveViewColor", SW_RGBA(69, 69, 69, 255)),                             // SW_PROFILE_INACTIVE_VIEW_COLOR
 	swProfileEntry("Settings", "DrawEdgeLines", 1),                                                        // SW_PROFILE_DRAW_EDGE_LINES
 	swProfileEntry("Settings", "DrawConditionalLines", 1),                                                 // SW_PROFILE_DRAW_CONDITIONAL_LINES
-	swProfileEntry("Settings", "PreviewSyncRendering", 1),                                                   // SW_PROFILE_PREVIEW_SYNC_RENDERING
+	swProfileEntry("Settings", "PreviewSyncRendering", 1),                                                   // SW_PROFILE_PREVIEW_SYNCHRONIZED_RENDERING
 	swProfileEntry("Settings", "PreviewShadingMode", static_cast<int>(swShadingMode::DefaultLights)),        // SW_PROFILE_PREVIEW_SHADING_MODE
 	swProfileEntry("Settings", "PreviewDrawEdgeLines", 1),                                                   // SW_PROFILE_PREVIEW_DRAW_EDGE_LINES
 	swProfileEntry("Settings", "PreviewDrawConditionalLines", 1),                                            // SW_PROFILE_PREVIEW_DRAW_CONDITIONAL_LINES
 	swProfileEntry("Settings", "PreviewLineWidth", 1.0f),                                                    // SW_PROFILE_PREVIEW_LINE_WIDTH
-	swProfileEntry("Settings", "PiecesSyncRendering", 1),                                                    // SW_PROFILE_PIECES_SYNC_RENDERING
+	swProfileEntry("Settings", "PiecesSyncRendering", 1),                                                    // SW_PROFILE_PIECES_SYNCHRONIZED_RENDERING
 	swProfileEntry("Settings", "PiecesShadingMode", static_cast<int>(swShadingMode::DefaultLights)),         // SW_PROFILE_PIECES_SHADING_MODE
 	swProfileEntry("Settings", "PiecesDrawEdgeLines", 1),                                                    // SW_PROFILE_PIECES_DRAW_EDGE_LINES
 	swProfileEntry("Settings", "PiecesDrawConditionalLines", 1),                                             // SW_PROFILE_PIECES_DRAW_CONDITIONAL_LINES
@@ -120,8 +120,8 @@ static swProfileEntry gProfileEntries[SW_NUM_PROFILE_KEYS] =
 	swProfileEntry("Settings", "ProjectsPath", ""),                                            // SW_PROFILE_PROJECTS_PATH
 	swProfileEntry("Settings", "PartsLibrary", ""),                                            // SW_PROFILE_PARTS_LIBRARY
 	swProfileEntry("Settings", "PartPalettes"),                                                // SW_PROFILE_PART_PALETTES
-	swProfileEntry("Settings", "MinifigSettings", ""),                                         // SW_PROFILE_MINIFIG_SETTINGS
-	swProfileEntry("Settings", "ColorConfig", ""),                                             // SW_PROFILE_COLOR_CONFIG
+	swProfileEntry("Settings", "MinifigSettings", ""),                                         // SW_PROFILE_MINIFIGURE_SETTINGS
+	swProfileEntry("Settings", "ColorConfig", ""),                                             // SW_PROFILE_COLOR_CONFIGURATION
 	swProfileEntry("Settings", "Shortcuts"),                                                   // SW_PROFILE_KEYBOARD_SHORTCUTS
 	swProfileEntry("Settings", "MouseShortcuts", QStringList()),                               // SW_PROFILE_MOUSE_SHORTCUTS
 	swProfileEntry("Settings", "Categories"),                                                  // SW_PROFILE_CATEGORIES
@@ -129,7 +129,7 @@ static swProfileEntry gProfileEntries[SW_NUM_PROFILE_KEYS] =
 	swProfileEntry("Settings", "RecentFile2", ""),                                             // SW_PROFILE_RECENT_FILE2
 	swProfileEntry("Settings", "RecentFile3", ""),                                             // SW_PROFILE_RECENT_FILE3
 	swProfileEntry("Settings", "RecentFile4", ""),                                             // SW_PROFILE_RECENT_FILE4
-	swProfileEntry("Settings", "AutoLoadMostRecent", false),                                   // SW_PROFILE_AUTOLOAD_MOSTRECENT
+	swProfileEntry("Settings", "AutoLoadMostRecent", false),                                   // SW_PROFILE_AUTO_LOAD_MOST_RECENT
 	swProfileEntry("Settings", "RestoreTabLayout", true),                                      // SW_PROFILE_RESTORE_TAB_LAYOUT
 	swProfileEntry("Settings", "AngleSnapCustom", 7.5f),                                       // SW_PROFILE_ANGLE_SNAP_CUSTOM
 	swProfileEntry("Settings", "OrbitSnap", false),                                            // SW_PROFILE_ORBIT_SNAP
@@ -138,23 +138,23 @@ static swProfileEntry gProfileEntries[SW_NUM_PROFILE_KEYS] =
 	swProfileEntry("Settings", "InsertColorMode", 0),                                          // SW_PROFILE_INSERT_COLOR_MODE
 	swProfileEntry("Settings", "WatchFileChanges", true),                                      // SW_PROFILE_WATCH_FILE_CHANGES
 	swProfileEntry("Settings", "LoadPiecesBeforeShowing", false),                              // SW_PROFILE_LOAD_PIECES_BEFORE_SHOWING
-	swProfileEntry("Settings", "AutosaveInterval", 10),                                        // SW_PROFILE_AUTOSAVE_INTERVAL
+	swProfileEntry("Settings", "AutosaveInterval", 10),                                        // SW_PROFILE_AUTO_SAVE_INTERVAL
 	swProfileEntry("Settings", "MouseSensitivity", 11),                                        // SW_PROFILE_MOUSE_SENSITIVITY
 	swProfileEntry("Settings", "ImageWidth", 1280),                                            // SW_PROFILE_IMAGE_WIDTH
 	swProfileEntry("Settings", "ImageHeight", 720),                                            // SW_PROFILE_IMAGE_HEIGHT
 	swProfileEntry("Settings", "ImageExtension", ".png"),                                      // SW_PROFILE_IMAGE_EXTENSION
 	swProfileEntry("Settings", "PartsListIcons", 64),                                          // SW_PROFILE_PARTS_LIST_ICONS
 	swProfileEntry("Settings", "PartsListNames", 1),                                           // SW_PROFILE_PARTS_LIST_NAMES
-	swProfileEntry("Settings", "PartsListFixedColor", static_cast<uint>(SW_COLOR_NOCOLOR)),                                     // SW_PROFILE_PARTS_LIST_COLOR
+	swProfileEntry("Settings", "PartsListFixedColor", static_cast<uint>(SW_COLOR_NO_COLOR)),                                     // SW_PROFILE_PARTS_LIST_COLOR
 	swProfileEntry("Settings", "PartsListColorLocked", false),                                // SW_PROFILE_PARTS_LIST_COLOR_LOCKED
 	swProfileEntry("Settings", "PartsListDecorated", 1),                                       // SW_PROFILE_PARTS_LIST_DECORATED
 	swProfileEntry("Settings", "PartsListAliases", 1),                                         // SW_PROFILE_PARTS_LIST_ALIASES
-	swProfileEntry("Settings", "PartsListListMode", 0),                                        // SW_PROFILE_PARTS_LIST_LISTMODE
+	swProfileEntry("Settings", "PartsListListMode", 0),                                        // SW_PROFILE_PARTS_LIST_LIST_MODE
 	swProfileEntry("Settings", "PartsPopupIcons", 64),                                             // SW_PROFILE_PARTS_POPUP_ICONS
 	swProfileEntry("Settings", "PartsPopupNames", 1),                                              // SW_PROFILE_PARTS_POPUP_NAMES
 	swProfileEntry("Settings", "PartsPopupDecorated", 1),                                          // SW_PROFILE_PARTS_POPUP_DECORATED
 	swProfileEntry("Settings", "PartsPopupAliases", 1),                                            // SW_PROFILE_PARTS_POPUP_ALIASES
-	swProfileEntry("Settings", "PartsPopupListMode", 0),                                           // SW_PROFILE_PARTS_POPUP_LISTMODE
+	swProfileEntry("Settings", "PartsPopupListMode", 0),                                           // SW_PROFILE_PARTS_POPUP_LIST_MODE
 	swProfileEntry("Settings", "PartsListPartFilter", static_cast<int>(swPartFilterType::Default)),                                      // SW_PROFILE_PARTS_LIST_PART_FILTER
 	swProfileEntry("Settings", "PartsListCaseSensitiveFilter", 0),                             // SW_PROFILE_PARTS_LIST_CASE_SENSITIVE_FILTER
 	swProfileEntry("Settings", "PartsListFileNameFilter", 1),                                  // SW_PROFILE_PARTS_LIST_FILE_NAME_FILTER
@@ -164,7 +164,7 @@ static swProfileEntry gProfileEntries[SW_NUM_PROFILE_KEYS] =
 	swProfileEntry("Defaults", "Author", ""),                                                  // SW_PROFILE_DEFAULT_AUTHOR_NAME
 	swProfileEntry("Defaults", "AmbientColor", SW_RGB(75, 75, 75)),                            // SW_PROFILE_DEFAULT_AMBIENT_COLOR
 
-	swProfileEntry("HTML", "Options", SW_HTML_SINGLEPAGE),                                     // SW_PROFILE_HTML_OPTIONS
+	swProfileEntry("HTML", "Options", SW_HTML_SINGLE_PAGE),                                     // SW_PROFILE_HTML_OPTIONS
 	swProfileEntry("HTML", "ImageOptions", SW_IMAGE_TRANSPARENT),                              // SW_PROFILE_HTML_IMAGE_OPTIONS
 	swProfileEntry("HTML", "ImageWidth", 640),                                                 // SW_PROFILE_HTML_IMAGE_WIDTH
 	swProfileEntry("HTML", "ImageHeight", 480),                                                // SW_PROFILE_HTML_IMAGE_HEIGHT
@@ -177,7 +177,7 @@ static swProfileEntry gProfileEntries[SW_NUM_PROFILE_KEYS] =
 	swProfileEntry("Render", "Quality", (int)swPOVRayRenderQuality::High),                     // SW_PROFILE_RENDER_QUALITY
 
 	swProfileEntry("Blender", "Path", ""),                                                     // SW_PROFILE_BLENDER_PATH
-	swProfileEntry("Blender", "LDrawConfigPath", ""),                                          // SW_PROFILE_BLENDER_LDRAW_CONFIG_PATH
+	swProfileEntry("Blender", "LDrawConfigPath", ""),                                          // SW_PROFILE_BLENDER_LDRAW_CONFIGURATION_PATH
 	swProfileEntry("Blender", "Version", ""),                                                  // SW_PROFILE_BLENDER_VERSION
 	swProfileEntry("Blender", "AddonVersion", ""),                                             // SW_PROFILE_BLENDER_ADDON_VERSION
 	swProfileEntry("Blender", "AddonVersionCheck", 1),                                         // SW_PROFILE_BLENDER_ADDON_VERSION_CHECK
@@ -209,16 +209,16 @@ static swProfileEntry gProfileEntries[SW_NUM_PROFILE_KEYS] =
 	swProfileEntry("Instructions", "PageUnits", 3),                                            // SW_PROFILE_INSTRUCTIONS_PAGE_UNITS
 	swProfileEntry("Instructions", "MarginUnits", 3),                                          // SW_PROFILE_INSTRUCTIONS_MARGIN_UNITS
 	swProfileEntry("Settings", "PreviewSquareViewport", 0),                                    // SW_PROFILE_PREVIEW_SQUARE_VIEWPORT
-	swProfileEntry("Settings", "MinifigSyncRendering", 1),                                     // SW_PROFILE_MINIFIG_SYNC_RENDERING
-	swProfileEntry("Settings", "MinifigShadingMode", static_cast<int>(swShadingMode::DefaultLights)), // SW_PROFILE_MINIFIG_SHADING_MODE
-	swProfileEntry("Settings", "MinifigDrawEdgeLines", 1),                                     // SW_PROFILE_MINIFIG_DRAW_EDGE_LINES
-	swProfileEntry("Settings", "MinifigDrawConditionalLines", 1),                              // SW_PROFILE_MINIFIG_DRAW_CONDITIONAL_LINES
-	swProfileEntry("Settings", "MinifigLineWidth", 1.0f),                                      // SW_PROFILE_MINIFIG_LINE_WIDTH
+	swProfileEntry("Settings", "MinifigSyncRendering", 1),                                     // SW_PROFILE_MINIFIGURE_SYNCHRONIZED_RENDERING
+	swProfileEntry("Settings", "MinifigShadingMode", static_cast<int>(swShadingMode::DefaultLights)), // SW_PROFILE_MINIFIGURE_SHADING_MODE
+	swProfileEntry("Settings", "MinifigDrawEdgeLines", 1),                                     // SW_PROFILE_MINIFIGURE_DRAW_EDGE_LINES
+	swProfileEntry("Settings", "MinifigDrawConditionalLines", 1),                              // SW_PROFILE_MINIFIGURE_DRAW_CONDITIONAL_LINES
+	swProfileEntry("Settings", "MinifigLineWidth", 1.0f),                                      // SW_PROFILE_MINIFIGURE_LINE_WIDTH
 	swProfileEntry("Settings", "PiecesSnapToTiles", 1),                                        // SW_PROFILE_PIECES_SNAP_TO_TILES
 	swProfileEntry("Settings", "RebrickableApiKey", "")                                        // SW_PROFILE_REBRICKABLE_API_KEY
 };
 
-void swProfileInit()
+void swProfileInitialize()
 {
 	gProfileEntries[SW_PROFILE_PROJECTS_PATH].mDefault = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
 }
@@ -231,7 +231,7 @@ void swRemoveProfileKey(SW_PROFILE_KEY Key)
 	Settings.remove(QString("%1/%2").arg(Entry.mSection, Entry.mKey));
 }
 
-int swGetProfileInt(SW_PROFILE_KEY Key)
+int swGetProfileInteger(SW_PROFILE_KEY Key)
 {
 	swProfileEntry& Entry = gProfileEntries[Key];
 	int* DefaultInt = std::get_if<int>(&Entry.mDefault);
@@ -253,7 +253,7 @@ int swGetProfileInt(SW_PROFILE_KEY Key)
 	return DefaultValue;
 }
 
-uint swGetProfileUInt(SW_PROFILE_KEY Key)
+uint swGetProfileUnsignedInteger(SW_PROFILE_KEY Key)
 {
 	swProfileEntry& Entry = gProfileEntries[Key];
 	uint* DefaultUInt = std::get_if<uint>(&Entry.mDefault);
@@ -320,7 +320,7 @@ QByteArray swGetProfileBuffer(SW_PROFILE_KEY Key)
 	return Settings.value(QString("%1/%2").arg(Entry.mSection, Entry.mKey)).toByteArray();
 }
 
-void swSetProfileInt(SW_PROFILE_KEY Key, int Value)
+void swSetProfileInteger(SW_PROFILE_KEY Key, int Value)
 {
 	swProfileEntry& Entry = gProfileEntries[Key];
 	QSettings Settings;
@@ -328,7 +328,7 @@ void swSetProfileInt(SW_PROFILE_KEY Key, int Value)
 	Settings.setValue(QString("%1/%2").arg(Entry.mSection, Entry.mKey), Value);
 }
 
-void swSetProfileUInt(SW_PROFILE_KEY Key, uint Value)
+void swSetProfileUnsignedInteger(SW_PROFILE_KEY Key, uint Value)
 {
 	swProfileEntry& Entry = gProfileEntries[Key];
 	QSettings Settings;
@@ -372,7 +372,7 @@ void swSetProfileBuffer(SW_PROFILE_KEY Key, const QByteArray& Buffer)
 }
 
 template<typename Enum>
-struct swProfileEnumValue
+struct swProfileEnumerationValue
 {
 	Enum Value;
 	const char* Token;
@@ -380,7 +380,7 @@ struct swProfileEnumValue
 };
 
 // Tokens and legacy numbers remain stable when enum members are reordered.
-constexpr swProfileEnumValue<swShadingMode> ShadingModeValues[] =
+constexpr swProfileEnumerationValue<swShadingMode> ShadingModeValues[] =
 {
 	{ swShadingMode::Wireframe, "Wireframe", 0 },
 	{ swShadingMode::Flat, "Flat", 1 },
@@ -388,13 +388,13 @@ constexpr swProfileEnumValue<swShadingMode> ShadingModeValues[] =
 	{ swShadingMode::Full, "Full", 3 }
 };
 
-constexpr swProfileEnumValue<swHighlightRenderMode> HighlightRenderModeValues[] =
+constexpr swProfileEnumerationValue<swHighlightRenderMode> HighlightRenderModeValues[] =
 {
 	{ swHighlightRenderMode::Outline, "Outline", 0 },
 	{ swHighlightRenderMode::Tint, "Tint", 1 }
 };
 
-constexpr swProfileEnumValue<swAxisIconLocation> AxisIconLocationValues[] =
+constexpr swProfileEnumerationValue<swAxisIconLocation> AxisIconLocationValues[] =
 {
 	{ swAxisIconLocation::TopLeft, "TopLeft", 0 },
 	{ swAxisIconLocation::TopRight, "TopRight", 1 },
@@ -402,7 +402,7 @@ constexpr swProfileEnumValue<swAxisIconLocation> AxisIconLocationValues[] =
 	{ swAxisIconLocation::BottomRight, "BottomRight", 3 }
 };
 
-constexpr swProfileEnumValue<swViewSphereLocation> ViewSphereLocationValues[] =
+constexpr swProfileEnumerationValue<swViewSphereLocation> ViewSphereLocationValues[] =
 {
 	{ swViewSphereLocation::TopLeft, "TopLeft", 0 },
 	{ swViewSphereLocation::TopRight, "TopRight", 1 },
@@ -410,13 +410,13 @@ constexpr swProfileEnumValue<swViewSphereLocation> ViewSphereLocationValues[] =
 	{ swViewSphereLocation::BottomRight, "BottomRight", 3 }
 };
 
-constexpr swProfileEnumValue<swColorTheme> ColorThemeValues[] =
+constexpr swProfileEnumerationValue<swColorTheme> ColorThemeValues[] =
 {
 	{ swColorTheme::Dark, "Dark", 0 },
 	{ swColorTheme::System, "System", 1 }
 };
 
-constexpr swProfileEnumValue<swStudStyle> StudStyleValues[] =
+constexpr swProfileEnumerationValue<swStudStyle> StudStyleValues[] =
 {
 	{ swStudStyle::Plain, "Plain", 0 },
 	{ swStudStyle::ThinLinesLogo, "ThinLinesLogo", 1 },
@@ -428,13 +428,13 @@ constexpr swProfileEnumValue<swStudStyle> StudStyleValues[] =
 	{ swStudStyle::HighContrastLogo, "HighContrastLogo", 7 }
 };
 
-constexpr swProfileEnumValue<swPartFilterType> PartFilterTypeValues[] =
+constexpr swProfileEnumerationValue<swPartFilterType> PartFilterTypeValues[] =
 {
 	{ swPartFilterType::Default, "Default", 0 },
 	{ swPartFilterType::RegularExpression, "RegularExpression", 1 }
 };
 
-constexpr swProfileEnumValue<swPOVRayRenderQuality> RenderQualityValues[] =
+constexpr swProfileEnumerationValue<swPOVRayRenderQuality> RenderQualityValues[] =
 {
 	{ swPOVRayRenderQuality::Low, "Low", 0 },
 	{ swPOVRayRenderQuality::Medium, "Medium", 1 },
@@ -442,13 +442,13 @@ constexpr swProfileEnumValue<swPOVRayRenderQuality> RenderQualityValues[] =
 };
 
 template<typename Enum, size_t N>
-static Enum swReadProfileEnum(SW_PROFILE_KEY Key, const swProfileEnumValue<Enum> (&Values)[N])
+static Enum swReadProfileEnumeration(SW_PROFILE_KEY Key, const swProfileEnumerationValue<Enum> (&Values)[N])
 {
 	const swProfileEntry& Entry = gProfileEntries[Key];
 	const Enum Default = static_cast<Enum>(std::get<int>(Entry.mDefault));
 	const QString Token = QSettings().value(QString("%1/%2").arg(Entry.mSection, Entry.mKey)).toString();
 
-	for (const swProfileEnumValue<Enum>& Value : Values)
+	for (const swProfileEnumerationValue<Enum>& Value : Values)
 	{
 		if (Token == QLatin1String(Value.Token))
 			return Value.Value;
@@ -459,7 +459,7 @@ static Enum swReadProfileEnum(SW_PROFILE_KEY Key, const swProfileEnumValue<Enum>
 
 	if (Valid)
 	{
-		for (const swProfileEnumValue<Enum>& Value : Values)
+		for (const swProfileEnumerationValue<Enum>& Value : Values)
 		{
 			if (LegacyValue == Value.LegacyValue)
 				return Value.Value;
@@ -470,9 +470,9 @@ static Enum swReadProfileEnum(SW_PROFILE_KEY Key, const swProfileEnumValue<Enum>
 }
 
 template<typename Enum, size_t N>
-static void swWriteProfileEnum(SW_PROFILE_KEY Key, Enum Value, const swProfileEnumValue<Enum> (&Values)[N])
+static void swWriteProfileEnumeration(SW_PROFILE_KEY Key, Enum Value, const swProfileEnumerationValue<Enum> (&Values)[N])
 {
-	for (const swProfileEnumValue<Enum>& Entry : Values)
+	for (const swProfileEnumerationValue<Enum>& Entry : Values)
 	{
 		if (Value == Entry.Value)
 		{
@@ -484,90 +484,90 @@ static void swWriteProfileEnum(SW_PROFILE_KEY Key, Enum Value, const swProfileEn
 
 swShadingMode swGetProfileShadingMode(SW_PROFILE_KEY Key)
 {
-	return swReadProfileEnum(Key, ShadingModeValues);
+	return swReadProfileEnumeration(Key, ShadingModeValues);
 }
 
 void swSetProfileShadingMode(swShadingMode Value, SW_PROFILE_KEY Key)
 {
-	swWriteProfileEnum(Key, Value, ShadingModeValues);
+	swWriteProfileEnumeration(Key, Value, ShadingModeValues);
 }
 
 swHighlightRenderMode swGetProfileHighlightRenderMode()
 {
-	return swReadProfileEnum(SW_PROFILE_HIGHLIGHT_RENDER_MODE, HighlightRenderModeValues);
+	return swReadProfileEnumeration(SW_PROFILE_HIGHLIGHT_RENDER_MODE, HighlightRenderModeValues);
 }
 
 void swSetProfileHighlightRenderMode(swHighlightRenderMode Value)
 {
-	swWriteProfileEnum(SW_PROFILE_HIGHLIGHT_RENDER_MODE, Value, HighlightRenderModeValues);
+	swWriteProfileEnumeration(SW_PROFILE_HIGHLIGHT_RENDER_MODE, Value, HighlightRenderModeValues);
 }
 
 swAxisIconLocation swGetProfileAxisIconLocation()
 {
-	return swReadProfileEnum(SW_PROFILE_DRAW_AXES_LOCATION, AxisIconLocationValues);
+	return swReadProfileEnumeration(SW_PROFILE_DRAW_AXES_LOCATION, AxisIconLocationValues);
 }
 
 void swSetProfileAxisIconLocation(swAxisIconLocation Value)
 {
-	swWriteProfileEnum(SW_PROFILE_DRAW_AXES_LOCATION, Value, AxisIconLocationValues);
+	swWriteProfileEnumeration(SW_PROFILE_DRAW_AXES_LOCATION, Value, AxisIconLocationValues);
 }
 
 swViewSphereLocation swGetProfileViewSphereLocation()
 {
-	return swReadProfileEnum(SW_PROFILE_VIEW_SPHERE_LOCATION, ViewSphereLocationValues);
+	return swReadProfileEnumeration(SW_PROFILE_VIEW_SPHERE_LOCATION, ViewSphereLocationValues);
 }
 
 void swSetProfileViewSphereLocation(swViewSphereLocation Value)
 {
-	swWriteProfileEnum(SW_PROFILE_VIEW_SPHERE_LOCATION, Value, ViewSphereLocationValues);
+	swWriteProfileEnumeration(SW_PROFILE_VIEW_SPHERE_LOCATION, Value, ViewSphereLocationValues);
 }
 
 swColorTheme swGetProfileColorTheme()
 {
-	return swReadProfileEnum(SW_PROFILE_COLOR_THEME, ColorThemeValues);
+	return swReadProfileEnumeration(SW_PROFILE_COLOR_THEME, ColorThemeValues);
 }
 
 void swSetProfileColorTheme(swColorTheme Value)
 {
-	swWriteProfileEnum(SW_PROFILE_COLOR_THEME, Value, ColorThemeValues);
+	swWriteProfileEnumeration(SW_PROFILE_COLOR_THEME, Value, ColorThemeValues);
 }
 
 swStudStyle swGetProfileStudStyle()
 {
-	return swReadProfileEnum(SW_PROFILE_STUD_STYLE, StudStyleValues);
+	return swReadProfileEnumeration(SW_PROFILE_STUD_STYLE, StudStyleValues);
 }
 
 void swSetProfileStudStyle(swStudStyle Value)
 {
-	swWriteProfileEnum(SW_PROFILE_STUD_STYLE, Value, StudStyleValues);
+	swWriteProfileEnumeration(SW_PROFILE_STUD_STYLE, Value, StudStyleValues);
 }
 
 swPartFilterType swGetProfilePartFilterType()
 {
-	return swReadProfileEnum(SW_PROFILE_PARTS_LIST_PART_FILTER, PartFilterTypeValues);
+	return swReadProfileEnumeration(SW_PROFILE_PARTS_LIST_PART_FILTER, PartFilterTypeValues);
 }
 
 void swSetProfilePartFilterType(swPartFilterType Value)
 {
-	swWriteProfileEnum(SW_PROFILE_PARTS_LIST_PART_FILTER, Value, PartFilterTypeValues);
+	swWriteProfileEnumeration(SW_PROFILE_PARTS_LIST_PART_FILTER, Value, PartFilterTypeValues);
 }
 
 swPOVRayRenderQuality swGetProfileRenderQuality()
 {
-	return swReadProfileEnum(SW_PROFILE_RENDER_QUALITY, RenderQualityValues);
+	return swReadProfileEnumeration(SW_PROFILE_RENDER_QUALITY, RenderQualityValues);
 }
 
 void swSetProfileRenderQuality(swPOVRayRenderQuality Value)
 {
-	swWriteProfileEnum(SW_PROFILE_RENDER_QUALITY, Value, RenderQualityValues);
+	swWriteProfileEnumeration(SW_PROFILE_RENDER_QUALITY, Value, RenderQualityValues);
 }
 
 swViewSphereLocation swGetProfilePreviewViewSphereLocation()
 {
-	return swReadProfileEnum(SW_PROFILE_PREVIEW_VIEW_SPHERE_LOCATION, ViewSphereLocationValues);
+	return swReadProfileEnumeration(SW_PROFILE_PREVIEW_VIEW_SPHERE_LOCATION, ViewSphereLocationValues);
 }
 
 void swSetProfilePreviewViewSphereLocation(swViewSphereLocation Value)
 {
-	swWriteProfileEnum(SW_PROFILE_PREVIEW_VIEW_SPHERE_LOCATION, Value, ViewSphereLocationValues);
+	swWriteProfileEnumeration(SW_PROFILE_PREVIEW_VIEW_SPHERE_LOCATION, Value, ViewSphereLocationValues);
 }

@@ -3,10 +3,10 @@
 #include <math.h>
 #include <float.h>
 
-#define SW_DTOR (static_cast<float>(M_PI / 180))
-#define SW_RTOD (static_cast<float>(180 / M_PI))
+#define SW_DEGREES_TO_RADIANS (static_cast<float>(M_PI / 180))
+#define SW_RADIANS_TO_DEGREES (static_cast<float>(180 / M_PI))
 #define SW_PI (static_cast<float>(M_PI))
-#define SW_2PI (static_cast<float>(2 * M_PI))
+#define SW_TWO_PI (static_cast<float>(2 * M_PI))
 #define SW_RGB_EPSILON (static_cast<float>(0.5f / 255.0f))
 
 inline constexpr float SW_EPSILON = 0.0001f;
@@ -31,13 +31,13 @@ inline QColor swQColorFromRGBA(quint32 RGBA)
 }
 
 template<typename T>
-inline T swMin(const T& a, const T& b)
+inline T swMinimum(const T& a, const T& b)
 {
 	return a < b ? a : b;
 }
 
 template<typename T>
-inline T swMax(const T& a, const T& b)
+inline T swMaximum(const T& a, const T& b)
 {
 	return a > b ? a : b;
 }
@@ -635,13 +635,13 @@ inline swVector3 swCross(const swVector3& a, const swVector3& b)
 }
 
 template<>
-inline swVector3 swMin<swVector3>(const swVector3& a, const swVector3& b)
+inline swVector3 swMinimum<swVector3>(const swVector3& a, const swVector3& b)
 {
 	return swVector3(a.x < b.x ? a.x : b.x, a.y < b.y ? a.y : b.y, a.z < b.z ? a.z : b.z);
 }
 
 template<>
-inline swVector3 swMax<swVector3>(const swVector3& a, const swVector3& b)
+inline swVector3 swMaximum<swVector3>(const swVector3& a, const swVector3& b)
 {
 	return swVector3(a.x > b.x ? a.x : b.x, a.y > b.y ? a.y : b.y, a.z > b.z ? a.z : b.z);
 }
@@ -795,45 +795,45 @@ inline swVector3 swLinearToSRGB(const swVector3& Color)
 	return swVector3(r, g, b);
 }
 
-inline swVector3 swMul(const swVector3& a, const swMatrix33& b)
+inline swVector3 swMultiply(const swVector3& a, const swMatrix33& b)
 {
 	return b.r[0] * a[0] + b.r[1] * a[1] + b.r[2] * a[2];
 }
 
-inline swVector3 swMul31(const swVector3& a, const swMatrix44& b)
+inline swVector3 swMultiply31(const swVector3& a, const swMatrix44& b)
 {
 	swVector4 v = b.r[0] * a[0] + b.r[1] * a[1] + b.r[2] * a[2] + b.r[3];
 
 	return swVector3(v[0], v[1], v[2]);
 }
 
-inline swVector3 swMul31(const swVector4& a, const swMatrix44& b)
+inline swVector3 swMultiply31(const swVector4& a, const swMatrix44& b)
 {
 	swVector4 v = b.r[0] * a[0] + b.r[1] * a[1] + b.r[2] * a[2] + b.r[3];
 
 	return swVector3(v[0], v[1], v[2]);
 }
 
-inline swVector3 swMul30(const swVector3& a, const swMatrix44& b)
+inline swVector3 swMultiply30(const swVector3& a, const swMatrix44& b)
 {
 	swVector4 v = b.r[0] * a[0] + b.r[1] * a[1] + b.r[2] * a[2];
 
 	return swVector3(v[0], v[1], v[2]);
 }
 
-inline swVector3 swMul30(const swVector4& a, const swMatrix44& b)
+inline swVector3 swMultiply30(const swVector4& a, const swMatrix44& b)
 {
 	swVector4 v = b.r[0] * a[0] + b.r[1] * a[1] + b.r[2] * a[2];
 
 	return swVector3(v[0], v[1], v[2]);
 }
 
-inline swVector4 swMul4(const swVector4& a, const swMatrix44& b)
+inline swVector4 swMultiply4(const swVector4& a, const swMatrix44& b)
 {
 	return b.r[0] * a[0] + b.r[1] * a[1] + b.r[2] * a[2] + b.r[3] * a[3];
 }
 
-inline swMatrix33 swMul(const swMatrix33& a, const swMatrix33& b)
+inline swMatrix33 swMultiply(const swMatrix33& a, const swMatrix33& b)
 {
 	const swVector3 Col0(b.r[0][0], b.r[1][0], b.r[2][0]);
 	const swVector3 Col1(b.r[0][1], b.r[1][1], b.r[2][1]);
@@ -846,7 +846,7 @@ inline swMatrix33 swMul(const swMatrix33& a, const swMatrix33& b)
 	return swMatrix33(Ret0, Ret1, Ret2);
 }
 
-inline swMatrix44 swMul(const swMatrix44& a, const swMatrix44& b)
+inline swMatrix44 swMultiply(const swMatrix44& a, const swMatrix44& b)
 {
 	swMatrix44 Result;
 
@@ -1039,9 +1039,9 @@ inline swVector3 swMatrix33ToEulerAngles(const swMatrix33& RotMat)
 
 	swVector3 Rot(atan2f(SinRoll, CosRoll), atan2f(SinPitch, CosPitch), atan2f(SinYaw, CosYaw));
 
-	if (Rot[0] < 0) Rot[0] += SW_2PI;
-	if (Rot[1] < 0) Rot[1] += SW_2PI;
-	if (Rot[2] < 0) Rot[2] += SW_2PI;
+	if (Rot[0] < 0) Rot[0] += SW_TWO_PI;
+	if (Rot[1] < 0) Rot[1] += SW_TWO_PI;
+	if (Rot[2] < 0) Rot[2] += SW_TWO_PI;
 
 	return Rot;
 }
@@ -1209,7 +1209,7 @@ inline swMatrix44 swMatrix44Perspective(float FoVy, float Aspect, float Near, fl
 	return swMatrix44Frustum(Left, Right, Bottom, Top, Near, Far);
 }
 
-inline swMatrix44 swMatrix44Ortho(float Left, float Right, float Bottom, float Top, float Near, float Far)
+inline swMatrix44 swMatrix44Orthographic(float Left, float Right, float Bottom, float Top, float Near, float Far)
 {
 	swMatrix44 m;
 
@@ -1387,9 +1387,9 @@ inline swVector3 swMatrix44ToEulerAngles(const swMatrix44& RotMat)
 
 	swVector3 Rot(atan2f(SinRoll, CosRoll), atan2f(SinPitch, CosPitch), atan2f(SinYaw, CosYaw));
 
-	if (Rot[0] < 0) Rot[0] += SW_2PI;
-	if (Rot[1] < 0) Rot[1] += SW_2PI;
-	if (Rot[2] < 0) Rot[2] += SW_2PI;
+	if (Rot[0] < 0) Rot[0] += SW_TWO_PI;
+	if (Rot[1] < 0) Rot[1] += SW_TWO_PI;
+	if (Rot[2] < 0) Rot[2] += SW_TWO_PI;
 
 	return Rot;
 }
@@ -1414,7 +1414,7 @@ inline swMatrix44 swMatrix44AffineInverse(const swMatrix44& m)
 	Inv.r[1] = swVector4(m.r[0][1], m.r[1][1], m.r[2][1], m.r[1][3]);
 	Inv.r[2] = swVector4(m.r[0][2], m.r[1][2], m.r[2][2], m.r[2][3]);
 
-	swVector3 Trans = -swMul30(m.r[3], Inv);
+	swVector3 Trans = -swMultiply30(m.r[3], Inv);
 	Inv.r[3] = swVector4(Trans[0], Trans[1], Trans[2], 1.0f);
 
 	return Inv;
@@ -1605,7 +1605,7 @@ inline swVector4 swQuaternionMultiply(const swVector4& a, const swVector4& b)
 	return swVector4(x, y, z, w);
 }
 
-inline swVector3 swQuaternionMul(const swVector3& a, const swVector4& b)
+inline swVector3 swQuaternionRotateVector(const swVector3& a, const swVector4& b)
 {
 	// Faster to transform to a matrix and multiply.
 	const float Tx  = 2.0f*b[0];
@@ -1634,8 +1634,8 @@ inline swVector3 swProjectPoint(const swVector3& Point, const swMatrix44& ModelV
 {
 	swVector4 Tmp;
 
-	Tmp = swMul4(swVector4(Point[0], Point[1], Point[2], 1.0f), ModelView);
-	Tmp = swMul4(Tmp, Projection);
+	Tmp = swMultiply4(swVector4(Point[0], Point[1], Point[2], 1.0f), ModelView);
+	Tmp = swMultiply4(Tmp, Projection);
 
 	// Normalize.
 	Tmp /= Tmp[3];
@@ -1647,7 +1647,7 @@ inline swVector3 swProjectPoint(const swVector3& Point, const swMatrix44& ModelV
 inline swVector3 swUnprojectPoint(const swVector3& Point, const swMatrix44& ModelView, const swMatrix44& Projection, const int (&Viewport)[4])
 {
 	// Calculate the screen to model transform.
-	const swMatrix44 Transform = swMatrix44Inverse(swMul(ModelView, Projection));
+	const swMatrix44 Transform = swMatrix44Inverse(swMultiply(ModelView, Projection));
 
 	swVector4 Tmp;
 
@@ -1657,7 +1657,7 @@ inline swVector3 swUnprojectPoint(const swVector3& Point, const swMatrix44& Mode
 	Tmp[2] = Point[2] * 2.0f - 1.0f;
 	Tmp[3] = 1.0f;
 
-	Tmp = swMul4(Tmp, Transform);
+	Tmp = swMultiply4(Tmp, Transform);
 
 	if (Tmp[3] != 0.0f)
 		Tmp /= Tmp[3];
@@ -1668,7 +1668,7 @@ inline swVector3 swUnprojectPoint(const swVector3& Point, const swMatrix44& Mode
 inline void swUnprojectPoints(swVector3* Points, int NumPoints, const swMatrix44& ModelView, const swMatrix44& Projection, const int (&Viewport)[4])
 {
 	// Calculate the screen to model transform.
-	const swMatrix44 Transform = swMatrix44Inverse(swMul(ModelView, Projection));
+	const swMatrix44 Transform = swMatrix44Inverse(swMultiply(ModelView, Projection));
 
 	for (int i = 0; i < NumPoints; i++)
 	{
@@ -1680,7 +1680,7 @@ inline void swUnprojectPoints(swVector3* Points, int NumPoints, const swMatrix44
 		Tmp[2] = Points[i][2] * 2.0f - 1.0f;
 		Tmp[3] = 1.0f;
 
-		Tmp = swMul4(Tmp, Transform);
+		Tmp = swMultiply4(Tmp, Transform);
 
 		if (Tmp[3] != 0.0f)
 			Tmp /= Tmp[3];
@@ -1691,7 +1691,7 @@ inline void swUnprojectPoints(swVector3* Points, int NumPoints, const swMatrix44
 
 inline void swGetFrustumPlanes(const swMatrix44& WorldView, const swMatrix44& Projection, swVector4 (&Planes)[6])
 {
-	swMatrix44 WorldProj = swMul(WorldView, Projection);
+	swMatrix44 WorldProj = swMultiply(WorldView, Projection);
 
 	Planes[0][0] = (WorldProj[0][0] - WorldProj[0][3]) * -1;
 	Planes[0][1] = (WorldProj[1][0] - WorldProj[1][3]) * -1;
@@ -1821,7 +1821,7 @@ inline bool swLineSegmentPlaneIntersection(swVector3* Intersection, const swVect
 	return true;
 }
 
-inline bool swLineTriangleMinIntersection(const swVector3& p1, const swVector3& p2, const swVector3& p3, const swVector3& Start, const swVector3& End, float* MinDist, swVector3* Intersection)
+inline bool swLineTriangleMinimumIntersection(const swVector3& p1, const swVector3& p2, const swVector3& p3, const swVector3& Start, const swVector3& End, float* MinDist, swVector3* Intersection)
 {
 	// Calculate the polygon plane.
 	const swVector3 PlaneNormal = swCross(p1 - p2, p3 - p2);
@@ -1860,7 +1860,7 @@ inline bool swLineTriangleMinIntersection(const swVector3& p1, const swVector3& 
 	a2 = swDot(pa2, pa3);
 	a3 = swDot(pa3, pa1);
 
-	const float total = (acosf(a1) + acosf(a2) + acosf(a3)) * SW_RTOD;
+	const float total = (acosf(a1) + acosf(a2) + acosf(a3)) * SW_RADIANS_TO_DEGREES;
 
 	if (fabs(total - 360) <= 0.001f)
 	{
@@ -2083,7 +2083,7 @@ inline bool swSphereRayIntersection(const swVector3& Center, float Radius, const
 	return true;
 }
 
-inline bool swSphereRayMinIntersectDistance(const swVector3& Center, float Radius, const swVector3& Start, const swVector3& End, float* Dist)
+inline bool swSphereRayMinimumIntersectDistance(const swVector3& Center, float Radius, const swVector3& Start, const swVector3& End, float* Dist)
 {
 	const swVector3 Dir = Center - Start;
 	const float LengthSquaredDir = swLengthSquared(Dir);
@@ -2115,7 +2115,7 @@ inline bool swSphereRayMinIntersectDistance(const swVector3& Center, float Radiu
 	}
 }
 
-inline bool swConeRayMinIntersectDistance(const swVector3& Tip, const swVector3& Direction, float Radius, float Height, const swVector3& Start, const swVector3& End, float* Dist)
+inline bool swConeRayMinimumIntersectDistance(const swVector3& Tip, const swVector3& Direction, float Radius, float Height, const swVector3& Start, const swVector3& End, float* Dist)
 {
 	const swVector3 v = End - Start;
 	const swVector3 h = Direction;
@@ -2169,7 +2169,7 @@ inline bool swConeRayMinIntersectDistance(const swVector3& Tip, const swVector3&
 	return false;
 }
 
-inline bool swCylinderRayMinIntersectDistance(float Radius, float Height, const swVector3& Start, const swVector3& End, float* Dist)
+inline bool swCylinderRayMinimumIntersectDistance(float Radius, float Height, const swVector3& Start, const swVector3& End, float* Dist)
 {
 	swVector4 BottomPlane(0.0f, 0.0f, 1.0f, 0.0f);
 	swVector3 Intersection;

@@ -1,9 +1,9 @@
 #pragma once
 
-#define SW_TEXTURE_WRAPU         0x01
-#define SW_TEXTURE_WRAPV         0x02
+#define SW_TEXTURE_WRAP_U         0x01
+#define SW_TEXTURE_WRAP_V         0x02
 #define SW_TEXTURE_MIPMAPS       0x04
-#define SW_TEXTURE_CUBEMAP       0x08
+#define SW_TEXTURE_CUBE_MAP       0x08
 
 #define SW_TEXTURE_POINT         0x00
 #define SW_TEXTURE_LINEAR        0x10
@@ -13,9 +13,9 @@
 #define SW_TEXTURE_FILTER_MASK   0xf0
 #define SW_TEXTURE_FILTER_SHIFT  4
 
-#define SW_TEXTURE_NAME_LEN 256
+#define SW_TEXTURE_NAME_LENGTH 256
 
-#include "sw_assettypes.h"
+#include "sw_asset_types.h"
 
 class swTexture
 {
@@ -105,7 +105,7 @@ public:
 
 	int mWidth;
 	int mHeight;
-	char mName[SW_TEXTURE_NAME_LEN] = {};
+	char mName[SW_TEXTURE_NAME_LENGTH] = {};
 	swFileSource mSource;
 	GLuint mTexture = 0;
 	swAssetState mState = swAssetState::Unloaded;

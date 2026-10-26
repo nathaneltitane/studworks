@@ -1,16 +1,16 @@
 #include "sw_global.h"
 #include "sw_context.h"
-#include "sw_glextensions.h"
+#include "sw_opengl_extensions.h"
 #include "sw_mesh.h"
 #include "sw_texture.h"
 #include "sw_colors.h"
-#include "sw_mainwindow.h"
+#include "sw_main_window.h"
 #include "sw_library.h"
-#include "texfont.h"
+#include "sw_texture_font.h"
 #include "sw_view.h"
-#include "sw_viewsphere.h"
-#include "sw_viewmanipulator.h"
-#include "sw_stringcache.h"
+#include "sw_view_sphere.h"
+#include "sw_view_manipulator.h"
+#include "sw_string_cache.h"
 #include "sw_scene.h"
 
 #ifdef SW_OPENGLES
@@ -415,15 +415,15 @@ swResult<void> swContext::CreateShaderPrograms()
 		glAttachShader(Program, VertexShader);
 		glAttachShader(Program, FragmentShader);
 
-		glBindAttribLocation(Program, static_cast<int>(swProgramAttrib::Position), "VertexPosition");
-		glBindAttribLocation(Program, static_cast<int>(swProgramAttrib::Normal), "VertexNormal");
-		glBindAttribLocation(Program, static_cast<int>(swProgramAttrib::TexCoord), "VertexTexCoord");
-		glBindAttribLocation(Program, static_cast<int>(swProgramAttrib::Color), "VertexColor");
+		glBindAttribLocation(Program, static_cast<int>(swProgramAttribute::Position), "VertexPosition");
+		glBindAttribLocation(Program, static_cast<int>(swProgramAttribute::Normal), "VertexNormal");
+		glBindAttribLocation(Program, static_cast<int>(swProgramAttribute::TexCoord), "VertexTexCoord");
+		glBindAttribLocation(Program, static_cast<int>(swProgramAttribute::Color), "VertexColor");
 
-		glBindAttribLocation(Program, static_cast<int>(swProgramAttrib::ControlPoint1), "VertexPosition1");
-		glBindAttribLocation(Program, static_cast<int>(swProgramAttrib::ControlPoint2), "VertexPosition2");
-		glBindAttribLocation(Program, static_cast<int>(swProgramAttrib::ControlPoint3), "VertexPosition3");
-		glBindAttribLocation(Program, static_cast<int>(swProgramAttrib::ControlPoint4), "VertexPosition4");
+		glBindAttribLocation(Program, static_cast<int>(swProgramAttribute::ControlPoint1), "VertexPosition1");
+		glBindAttribLocation(Program, static_cast<int>(swProgramAttribute::ControlPoint2), "VertexPosition2");
+		glBindAttribLocation(Program, static_cast<int>(swProgramAttribute::ControlPoint3), "VertexPosition3");
+		glBindAttribLocation(Program, static_cast<int>(swProgramAttribute::ControlPoint4), "VertexPosition4");
 
 		glLinkProgram(Program);
 
@@ -557,23 +557,23 @@ void swContext::SetDefaultState()
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER_ARB, 0);
 	}
 
-	SetVertexAttribPointer(swProgramAttrib::Position, 3, GL_FLOAT, false, 0, nullptr);
-	EnableVertexAttrib(swProgramAttrib::Position);
+	SetVertexAttribPointer(swProgramAttribute::Position, 3, GL_FLOAT, false, 0, nullptr);
+	EnableVertexAttrib(swProgramAttribute::Position);
 
-	DisableVertexAttrib(swProgramAttrib::Normal);
-	SetVertexAttribPointer(swProgramAttrib::Normal, 4, GL_BYTE, true, 0, nullptr);
-	DisableVertexAttrib(swProgramAttrib::TexCoord);
-	SetVertexAttribPointer(swProgramAttrib::TexCoord, 2, GL_FLOAT, false, 0, nullptr);
-	DisableVertexAttrib(swProgramAttrib::Color);
-	SetVertexAttribPointer(swProgramAttrib::Color, 4, GL_FLOAT, false, 0, nullptr);
+	DisableVertexAttrib(swProgramAttribute::Normal);
+	SetVertexAttribPointer(swProgramAttribute::Normal, 4, GL_BYTE, true, 0, nullptr);
+	DisableVertexAttrib(swProgramAttribute::TexCoord);
+	SetVertexAttribPointer(swProgramAttribute::TexCoord, 2, GL_FLOAT, false, 0, nullptr);
+	DisableVertexAttrib(swProgramAttribute::Color);
+	SetVertexAttribPointer(swProgramAttribute::Color, 4, GL_FLOAT, false, 0, nullptr);
 
 	mVertexBufferObject = 0;
 	mIndexBufferObject = 0;
 	mVertexBufferPointer = nullptr;
 	mIndexBufferPointer = nullptr;
 
-	for (int AttribIndex = 0; AttribIndex < static_cast<int>(swProgramAttrib::Count); AttribIndex++)
-		mVertexAttribState[AttribIndex] = swVertexAttribState();
+	for (int AttribIndex = 0; AttribIndex < static_cast<int>(swProgramAttribute::Count); AttribIndex++)
+		mVertexAttribState[AttribIndex] = swVertexAttributeState();
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	mTexture2D = 0;
@@ -1067,7 +1067,7 @@ bool swContext::UploadTexture(swTexture* Texture)
 
 	const auto FinishUpload = [this, Flags, UnpackAlignment](bool Success)
 	{
-		if ((Flags & SW_TEXTURE_CUBEMAP) == 0)
+		if ((Flags & SW_TEXTURE_CUBE_MAP) == 0)
 			ClearTexture2D();
 		else
 			ClearTextureCubeMap();
@@ -1080,7 +1080,7 @@ bool swContext::UploadTexture(swTexture* Texture)
 
 	unsigned int Faces, Target;
 
-	if ((Flags & SW_TEXTURE_CUBEMAP) == 0)
+	if ((Flags & SW_TEXTURE_CUBE_MAP) == 0)
 	{
 		Faces = 1;
 		Target = GL_TEXTURE_2D;
@@ -1093,12 +1093,12 @@ bool swContext::UploadTexture(swTexture* Texture)
 		BindTextureCubeMap(Texture);
 	}
 
-	glTexParameteri(Target, GL_TEXTURE_WRAP_S, (Flags & SW_TEXTURE_WRAPU) ? GL_REPEAT : GL_CLAMP_TO_EDGE);
-	glTexParameteri(Target, GL_TEXTURE_WRAP_T, (Flags & SW_TEXTURE_WRAPV) ? GL_REPEAT : GL_CLAMP_TO_EDGE);
+	glTexParameteri(Target, GL_TEXTURE_WRAP_S, (Flags & SW_TEXTURE_WRAP_U) ? GL_REPEAT : GL_CLAMP_TO_EDGE);
+	glTexParameteri(Target, GL_TEXTURE_WRAP_T, (Flags & SW_TEXTURE_WRAP_V) ? GL_REPEAT : GL_CLAMP_TO_EDGE);
 	glTexParameteri(Target, GL_TEXTURE_MIN_FILTER, Filters[MipIndex][FilterIndex]);
 	glTexParameteri(Target, GL_TEXTURE_MAG_FILTER, Filters[1][FilterIndex]);
 
-	if (Flags & SW_TEXTURE_CUBEMAP)
+	if (Flags & SW_TEXTURE_CUBE_MAP)
 	{
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -1106,7 +1106,7 @@ bool swContext::UploadTexture(swTexture* Texture)
 	}
 
 	if (gSupportsAnisotropic && FilterFlags == SW_TEXTURE_ANISOTROPIC)
-		glTexParameterf(Target, GL_TEXTURE_MAX_ANISOTROPY_EXT, swMin(4.0f, gMaxAnisotropy));
+		glTexParameterf(Target, GL_TEXTURE_MAX_ANISOTROPY_EXT, swMinimum(4.0f, gMaxAnisotropy));
 
 	int Format;
 	switch (Texture->GetImage(0).format())
@@ -1124,7 +1124,7 @@ bool swContext::UploadTexture(swTexture* Texture)
 		break;
 	}
 
-	if (Flags & SW_TEXTURE_CUBEMAP)
+	if (Flags & SW_TEXTURE_CUBE_MAP)
 		Target = GL_TEXTURE_CUBE_MAP_POSITIVE_X;
 
 	const bool LoadMipmaps = (Flags & SW_TEXTURE_MIPMAPS) || FilterFlags >= SW_TEXTURE_BILINEAR;
@@ -1162,8 +1162,8 @@ bool swContext::UploadTexture(swTexture* Texture)
 				int PrevWidth = Width;
 				int PrevHeight = Height;
 
-				Width = swMax(1, Width >> 1);
-				Height = swMax(1, Height >> 1);
+				Width = swMaximum(1, Width >> 1);
+				Height = swMaximum(1, Height >> 1);
 				int RowStride = Width * Components;
 
 				if (!HasMipmaps)
@@ -1171,12 +1171,12 @@ bool swContext::UploadTexture(swTexture* Texture)
 					for (int y = 0; y < Height; y++)
 					{
 						int SrcY0 = y * 2;
-						int SrcY1 = swMin(SrcY0 + 1, PrevHeight - 1);
+						int SrcY1 = swMinimum(SrcY0 + 1, PrevHeight - 1);
 
 						for (int x = 0; x < Width; x++)
 						{
 							int SrcX0 = x * 2;
-							int SrcX1 = swMin(SrcX0 + 1, PrevWidth - 1);
+							int SrcX1 = swMinimum(SrcX0 + 1, PrevWidth - 1);
 
 							for (int c = 0; c < Components; c++)
 							{
@@ -1344,14 +1344,14 @@ void swContext::ClearVertexBuffer()
 		mVertexBufferObject = 0;
 	}
 
-	SetVertexAttribPointer(swProgramAttrib::Position, 3, GL_FLOAT, false, 0, nullptr);
+	SetVertexAttribPointer(swProgramAttribute::Position, 3, GL_FLOAT, false, 0, nullptr);
 
-	DisableVertexAttrib(swProgramAttrib::Normal);
-	SetVertexAttribPointer(swProgramAttrib::Normal, 4, GL_BYTE, true, 0, nullptr);
-	DisableVertexAttrib(swProgramAttrib::TexCoord);
-	SetVertexAttribPointer(swProgramAttrib::TexCoord, 2, GL_FLOAT, false, 0, nullptr);
-	DisableVertexAttrib(swProgramAttrib::Color);
-	SetVertexAttribPointer(swProgramAttrib::Color, 4, GL_FLOAT, false, 0, nullptr);
+	DisableVertexAttrib(swProgramAttribute::Normal);
+	SetVertexAttribPointer(swProgramAttribute::Normal, 4, GL_BYTE, true, 0, nullptr);
+	DisableVertexAttrib(swProgramAttribute::TexCoord);
+	SetVertexAttribPointer(swProgramAttribute::TexCoord, 2, GL_FLOAT, false, 0, nullptr);
+	DisableVertexAttrib(swProgramAttribute::Color);
+	SetVertexAttribPointer(swProgramAttribute::Color, 4, GL_FLOAT, false, 0, nullptr);
 }
 
 void swContext::SetVertexBuffer(swVertexBuffer VertexBuffer)
@@ -1384,10 +1384,10 @@ void swContext::SetVertexBufferPointer(const void* VertexBuffer)
 	mVertexBufferPointer = (char*)VertexBuffer;
 }
 
-void swContext::SetVertexAttribPointer(swProgramAttrib Attrib, GLint Size, GLenum Type, GLboolean Normalized, GLsizei Stride, const void* Pointer)
+void swContext::SetVertexAttribPointer(swProgramAttribute Attrib, GLint Size, GLenum Type, GLboolean Normalized, GLsizei Stride, const void* Pointer)
 {
 	const int Index = static_cast<int>(Attrib);
-	swVertexAttribState& State = mVertexAttribState[Index];
+	swVertexAttributeState& State = mVertexAttribState[Index];
 
 	if (State.Size != Size || State.Type != Type || State.Normalized != Normalized || State.Stride != Stride || State.Pointer != Pointer || State.VertexBufferObject != mVertexBufferObject)
 	{
@@ -1402,10 +1402,10 @@ void swContext::SetVertexAttribPointer(swProgramAttrib Attrib, GLint Size, GLenu
 	}
 }
 
-void swContext::EnableVertexAttrib(swProgramAttrib Attrib)
+void swContext::EnableVertexAttrib(swProgramAttribute Attrib)
 {
 	const int Index = static_cast<int>(Attrib);
-	swVertexAttribState& State = mVertexAttribState[Index];
+	swVertexAttributeState& State = mVertexAttribState[Index];
 
 	if (!State.Enabled)
 	{
@@ -1414,10 +1414,10 @@ void swContext::EnableVertexAttrib(swProgramAttrib Attrib)
 	}
 }
 
-void swContext::DisableVertexAttrib(swProgramAttrib Attrib)
+void swContext::DisableVertexAttrib(swProgramAttribute Attrib)
 {
 	const int Index = static_cast<int>(Attrib);
-	swVertexAttribState& State = mVertexAttribState[Index];
+	swVertexAttributeState& State = mVertexAttribState[Index];
 
 	if (State.Enabled)
 	{
@@ -1431,10 +1431,10 @@ void swContext::SetVertexFormatPosition(int PositionSize)
 	const int VertexSize = PositionSize * sizeof(float);
 	const char* VertexBufferPointer = mVertexBufferPointer;
 
-	SetVertexAttribPointer(swProgramAttrib::Position, PositionSize, GL_FLOAT, false, VertexSize, VertexBufferPointer);
-	DisableVertexAttrib(swProgramAttrib::Normal);
-	DisableVertexAttrib(swProgramAttrib::TexCoord);
-	DisableVertexAttrib(swProgramAttrib::Color);
+	SetVertexAttribPointer(swProgramAttribute::Position, PositionSize, GL_FLOAT, false, VertexSize, VertexBufferPointer);
+	DisableVertexAttrib(swProgramAttribute::Normal);
+	DisableVertexAttrib(swProgramAttribute::TexCoord);
+	DisableVertexAttrib(swProgramAttribute::Color);
 }
 
 void swContext::SetVertexFormatConditional(int BufferOffset)
@@ -1442,14 +1442,14 @@ void swContext::SetVertexFormatConditional(int BufferOffset)
 	constexpr int VertexSize = 12 * sizeof(float);
 	const char* VertexBufferPointer = mVertexBufferPointer + BufferOffset;
 
-	SetVertexAttribPointer(swProgramAttrib::ControlPoint1, 3, GL_FLOAT, false, VertexSize, VertexBufferPointer);
-	EnableVertexAttrib(swProgramAttrib::ControlPoint1);
-	SetVertexAttribPointer(swProgramAttrib::ControlPoint2, 3, GL_FLOAT, false, VertexSize, VertexBufferPointer + 3 * sizeof(float));
-	EnableVertexAttrib(swProgramAttrib::ControlPoint2);
-	SetVertexAttribPointer(swProgramAttrib::ControlPoint3, 3, GL_FLOAT, false, VertexSize, VertexBufferPointer + 6 * sizeof(float));
-	EnableVertexAttrib(swProgramAttrib::ControlPoint3);
-	SetVertexAttribPointer(swProgramAttrib::ControlPoint4, 3, GL_FLOAT, false, VertexSize, VertexBufferPointer + 9 * sizeof(float));
-	EnableVertexAttrib(swProgramAttrib::ControlPoint4);
+	SetVertexAttribPointer(swProgramAttribute::ControlPoint1, 3, GL_FLOAT, false, VertexSize, VertexBufferPointer);
+	EnableVertexAttrib(swProgramAttribute::ControlPoint1);
+	SetVertexAttribPointer(swProgramAttribute::ControlPoint2, 3, GL_FLOAT, false, VertexSize, VertexBufferPointer + 3 * sizeof(float));
+	EnableVertexAttrib(swProgramAttribute::ControlPoint2);
+	SetVertexAttribPointer(swProgramAttribute::ControlPoint3, 3, GL_FLOAT, false, VertexSize, VertexBufferPointer + 6 * sizeof(float));
+	EnableVertexAttrib(swProgramAttribute::ControlPoint3);
+	SetVertexAttribPointer(swProgramAttribute::ControlPoint4, 3, GL_FLOAT, false, VertexSize, VertexBufferPointer + 9 * sizeof(float));
+	EnableVertexAttrib(swProgramAttribute::ControlPoint4);
 }
 
 void swContext::SetVertexFormat(int BufferOffset, int PositionSize, int NormalSize, int TexCoordSize, int ColorSize, bool EnableNormals)
@@ -1459,38 +1459,38 @@ void swContext::SetVertexFormat(int BufferOffset, int PositionSize, int NormalSi
 
 	int Offset = 0;
 
-	SetVertexAttribPointer(swProgramAttrib::Position, PositionSize, GL_FLOAT, false, VertexSize, VertexBufferPointer);
-	EnableVertexAttrib(swProgramAttrib::Position);
+	SetVertexAttribPointer(swProgramAttribute::Position, PositionSize, GL_FLOAT, false, VertexSize, VertexBufferPointer);
+	EnableVertexAttrib(swProgramAttribute::Position);
 
 	Offset += PositionSize * sizeof(float);
 
 	if (NormalSize && EnableNormals)
 	{
-		SetVertexAttribPointer(swProgramAttrib::Normal, 4, GL_BYTE, true, VertexSize, VertexBufferPointer + Offset);
-		EnableVertexAttrib(swProgramAttrib::Normal);
+		SetVertexAttribPointer(swProgramAttribute::Normal, 4, GL_BYTE, true, VertexSize, VertexBufferPointer + Offset);
+		EnableVertexAttrib(swProgramAttribute::Normal);
 	}
 	else
-		DisableVertexAttrib(swProgramAttrib::Normal);
+		DisableVertexAttrib(swProgramAttribute::Normal);
 
 	Offset += NormalSize * sizeof(quint32);
 
 	if (TexCoordSize)
 	{
-		SetVertexAttribPointer(swProgramAttrib::TexCoord, TexCoordSize, GL_FLOAT, false, VertexSize, VertexBufferPointer + Offset);
-		EnableVertexAttrib(swProgramAttrib::TexCoord);
+		SetVertexAttribPointer(swProgramAttribute::TexCoord, TexCoordSize, GL_FLOAT, false, VertexSize, VertexBufferPointer + Offset);
+		EnableVertexAttrib(swProgramAttribute::TexCoord);
 	}
 	else
-		DisableVertexAttrib(swProgramAttrib::TexCoord);
+		DisableVertexAttrib(swProgramAttribute::TexCoord);
 
 	Offset += TexCoordSize * sizeof(float);
 
 	if (ColorSize)
 	{
-		SetVertexAttribPointer(swProgramAttrib::Color, ColorSize, GL_UNSIGNED_BYTE, true, VertexSize, VertexBufferPointer + Offset);
-		EnableVertexAttrib(swProgramAttrib::Color);
+		SetVertexAttribPointer(swProgramAttribute::Color, ColorSize, GL_UNSIGNED_BYTE, true, VertexSize, VertexBufferPointer + Offset);
+		EnableVertexAttrib(swProgramAttribute::Color);
 	}
 	else
-		DisableVertexAttrib(swProgramAttrib::Color);
+		DisableVertexAttrib(swProgramAttribute::Color);
 }
 
 void swContext::ClearIndexBuffer()
@@ -1581,7 +1581,7 @@ void swContext::FlushState()
 	{
 		if (mViewProjectionMatrixDirty)
 		{
-			mViewProjectionMatrix = swMul(mViewMatrix, mProjectionMatrix);
+			mViewProjectionMatrix = swMultiply(mViewMatrix, mProjectionMatrix);
 			mViewProjectionMatrixDirty = false;
 		}
 
@@ -1594,11 +1594,11 @@ void swContext::FlushState()
 		if (mViewMatrixDirty)
 		{
 			const swMatrix44 InverseViewMatrix = swMatrix44AffineInverse(mViewMatrix);
-			swVector3 ViewPosition = swMul30(-mViewMatrix.GetTranslation(), InverseViewMatrix);
+			swVector3 ViewPosition = swMultiply30(-mViewMatrix.GetTranslation(), InverseViewMatrix);
 
 			if (Program.LightPositionLocation != -1)
 			{
-				swVector3 LightPosition = ViewPosition + swMul30(swVector3(300.0f, 300.0f, 0.0f), InverseViewMatrix);
+				swVector3 LightPosition = ViewPosition + swMultiply30(swVector3(300.0f, 300.0f, 0.0f), InverseViewMatrix);
 				glUniform3fv(Program.LightPositionLocation, 1, LightPosition.GetFloats());
 			}
 
@@ -1606,7 +1606,7 @@ void swContext::FlushState()
 				glUniform3fv(Program.EyePositionLocation, 1, ViewPosition.GetFloats());
 		}
 
-		glUniformMatrix4fv(Program.WorldViewProjectionMatrixLocation, 1, false, swMul(mWorldMatrix, mViewProjectionMatrix).GetFloats());
+		glUniformMatrix4fv(Program.WorldViewProjectionMatrixLocation, 1, false, swMultiply(mWorldMatrix, mViewProjectionMatrix).GetFloats());
 		mWorldMatrixDirty = false;
 		mViewMatrixDirty = false;
 		mProjectionMatrixDirty = false;

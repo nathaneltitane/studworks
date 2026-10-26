@@ -1,9 +1,9 @@
 #pragma once
 
 #include "sw_context.h"
-#include "sw_meshloader.h"
+#include "sw_mesh_loader.h"
 #include "sw_result.h"
-#include "sw_assettypes.h"
+#include "sw_asset_types.h"
 
 struct swTrainTrackConnectionType;
 class swZipFile;
@@ -68,7 +68,7 @@ public:
 	}
 
 	QString mFileName;
-	char mName[SW_MAXNAME];
+	char mName[SW_MAXIMUM_NAME];
 	swZipFileType mZipFileType;
 	quint32 mZipFileIndex;
 	swPrimitiveState mState;
@@ -132,11 +132,11 @@ public:
 	swPieceData* FindPieceData(const char* PieceName, Project* Project);
 
 	// Resolves or creates an identity and returns one scoped reference; does not ensure readiness.
-	swPieceDataRef AcquirePieceData(const char* PieceName, Project* Project, bool CreateMissing, bool SearchProjectFolder);
+	swPieceDataReference AcquirePieceData(const char* PieceName, Project* Project, bool CreateMissing, bool SearchProjectFolder);
 
 	// Creates or reuses a local identity and returns one scoped reference for the model.
 	// Reused data is invalidated before returning.
-	swPieceDataRef AcquireModelPieceData(const char* PieceName, Project* Project, bool& Reused);
+	swPieceDataReference AcquireModelPieceData(const char* PieceName, Project* Project, bool& Reused);
 
 	// Renames the model identity and its index key, rejecting collisions in the same scope.
 	bool RenameModelPieceData(swPieceData* PieceData, const char* NewName);
@@ -159,11 +159,11 @@ public:
 
 	// Starts or promotes loading, then waits. Adds no consumer references; false means failure/cancellation.
 	// Does not traverse container children or wait for per-instance synth geometry.
-	bool WaitForPieceData(const swPieceDataRef& PieceDataRef);
-	bool WaitForPieceData(const std::vector<swPieceDataRef>& PieceDataRefs, const std::function<void(int, int)>& Progress = nullptr);
+	bool WaitForPieceData(const swPieceDataReference& PieceDataRef);
+	bool WaitForPieceData(const std::vector<swPieceDataReference>& PieceDataRefs, const std::function<void(int, int)>& Progress = nullptr);
 
 	// Also settles container children/synths and updates bounds; the caller retains the identity.
-	bool EnsurePieceDataAssetsReady(const swPieceDataRef& PieceData);
+	bool EnsurePieceDataAssetsReady(const swPieceDataReference& PieceData);
 
 	// Obsoletes pending work and resets readiness without acquiring a reference.
 	void InvalidatePieceDataLoad(swPieceData* PieceData);
@@ -177,14 +177,14 @@ public:
 	void ClearPieceDataLoadError(const swPieceData* PieceData);
 
 	// Resolves or creates a texture and returns one scoped reference without decoding or uploading.
-	swTextureRef AcquireTexture(const char* TextureName, Project* CurrentProject, bool SearchProjectFolder);
-	swTextureRef AcquireTexture(const char* TextureName, const std::vector<QString>& SearchDirectories, const std::map<QString, std::shared_ptr<const swEmbeddedData>>& EmbeddedData, swFileSource& Source);
+	swTextureReference AcquireTexture(const char* TextureName, Project* CurrentProject, bool SearchProjectFolder);
+	swTextureReference AcquireTexture(const char* TextureName, const std::vector<QString>& SearchDirectories, const std::map<QString, std::shared_ptr<const swEmbeddedData>>& EmbeddedData, swFileSource& Source);
 
 	// Starts or promotes asynchronous loading; the caller retains the texture. Never waits.
 	void RequestTextureLoad(swTexture* Texture, swLoadPriority LoadPriority);
 
 	// Starts or promotes loading, then waits for settlement; the caller retains the texture.
-	bool WaitForTexture(const swTextureRef& TextureRef);
+	bool WaitForTexture(const swTextureReference& TextureRef);
 
 	// Replaces pending generation for this instance; snapshots control points for workers.
 	void RequestSynthMesh(swPiece* Piece);
@@ -265,7 +265,7 @@ signals:
 
 protected:
 	friend class swAssetLoader;
-	template<typename T> friend class swAssetRef;
+	template<typename T> friend class swAssetReference;
 
 	// Drains the loader and clears pieces before sources, textures and archives.
 	// Consumers must release references before teardown; the library remains alive during callbacks.
@@ -325,8 +325,8 @@ protected:
 
 	// Reads/writes Qt-compressed caches with version, size and payload checksum validation.
 	// Archive caches also validate source archive sizes and modification times.
-	bool ReadCacheFile(const QString& FileName, swMemFile& CacheFile, CacheType Type);
-	bool WriteCacheFile(const QString& FileName, const swMemFile& CacheFile, CacheType Type);
+	bool ReadCacheFile(const QString& FileName, swMemoryFile& CacheFile, CacheType Type);
+	bool WriteCacheFile(const QString& FileName, const swMemoryFile& CacheFile, CacheType Type);
 
 	// Restores/saves descriptions and patterned parent IDs in library index order.
 	bool LoadCacheIndex(const QString& FileName);
@@ -360,8 +360,8 @@ protected:
 	static std::string ReadAliasTarget(swFile& File);
 
 	// Description cache strings are bounded to the piece name/description length limit.
-	static bool ReadIndexString(swMemFile& File, std::string& String);
-	static bool WriteIndexString(swMemFile& File, const std::string& String);
+	static bool ReadIndexString(swMemoryFile& File, std::string& String);
+	static bool WriteIndexString(swMemoryFile& File, const std::string& String);
 
 	// Library directory, archive readers and primitive sources; workers drain before replacement or teardown.
 	QDir mLibraryDir;

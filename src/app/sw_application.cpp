@@ -3,16 +3,16 @@
 #include "sw_application.h"
 #include "sw_library.h"
 #include "sw_profile.h"
-#include "project.h"
-#include "sw_mainwindow.h"
-#include "sw_preferencesdialog.h"
-#include "sw_partselectionwidget.h"
+#include "sw_project.h"
+#include "sw_main_window.h"
+#include "sw_preferences_dialog.h"
+#include "sw_part_selection_widget.h"
 #include "sw_shortcuts.h"
 #include "sw_view.h"
-#include "camera.h"
-#include "sw_previewwidget.h"
+#include "sw_camera.h"
+#include "sw_preview_widget.h"
 #include "sw_colors.h"
-#include "sw_utils.h"
+#include "sw_utilities.h"
 
 #ifdef Q_OS_WIN
 #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
@@ -24,168 +24,168 @@ swApplication* gApplication;
 
 void swPreferences::LoadDefaults()
 {
-	mFixedAxes = swGetProfileInt(SW_PROFILE_FIXED_AXES);
-	mMouseSensitivity = swGetProfileInt(SW_PROFILE_MOUSE_SENSITIVITY);
+	mFixedAxes = swGetProfileInteger(SW_PROFILE_FIXED_AXES);
+	mMouseSensitivity = swGetProfileInteger(SW_PROFILE_MOUSE_SENSITIVITY);
 	mShadingMode = swGetProfileShadingMode();
 	mHighlightRenderMode = swGetProfileHighlightRenderMode();
-	mBackgroundGradient = swGetProfileInt(SW_PROFILE_BACKGROUND_GRADIENT);
-	mBackgroundSolidColor = swGetProfileUInt(SW_PROFILE_BACKGROUND_COLOR);
-	mBackgroundGradientColorTop = swGetProfileUInt(SW_PROFILE_GRADIENT_COLOR_TOP);
-	mBackgroundGradientColorBottom = swGetProfileUInt(SW_PROFILE_GRADIENT_COLOR_BOTTOM);
-	mDrawAxes = swGetProfileInt(SW_PROFILE_DRAW_AXES);
-	mFollowStepViews = swGetProfileInt(SW_PROFILE_FOLLOW_STEP_VIEWS);
+	mBackgroundGradient = swGetProfileInteger(SW_PROFILE_BACKGROUND_GRADIENT);
+	mBackgroundSolidColor = swGetProfileUnsignedInteger(SW_PROFILE_BACKGROUND_COLOR);
+	mBackgroundGradientColorTop = swGetProfileUnsignedInteger(SW_PROFILE_GRADIENT_COLOR_TOP);
+	mBackgroundGradientColorBottom = swGetProfileUnsignedInteger(SW_PROFILE_GRADIENT_COLOR_BOTTOM);
+	mDrawAxes = swGetProfileInteger(SW_PROFILE_DRAW_AXES);
+	mFollowStepViews = swGetProfileInteger(SW_PROFILE_FOLLOW_STEP_VIEWS);
 	mAxisIconLocation = swGetProfileAxisIconLocation();
-	mTextColor = swGetProfileUInt(SW_PROFILE_TEXT_COLOR);
-	mTextHaloColor = swGetProfileUInt(SW_PROFILE_TEXT_HALO_COLOR);
-	mMarqueeBorderColor = swGetProfileUInt(SW_PROFILE_MARQUEE_BORDER_COLOR);
-	mMarqueeFillColor = swGetProfileUInt(SW_PROFILE_MARQUEE_FILL_COLOR);
-	mOverlayColor = swGetProfileUInt(SW_PROFILE_OVERLAY_COLOR);
-	mActiveViewColor = swGetProfileUInt(SW_PROFILE_ACTIVE_VIEW_COLOR);
-	mInactiveViewColor = swGetProfileUInt(SW_PROFILE_INACTIVE_VIEW_COLOR);
-	mDrawEdgeLines = swGetProfileInt(SW_PROFILE_DRAW_EDGE_LINES);
-	mDrawConditionalLines = swGetProfileInt(SW_PROFILE_DRAW_CONDITIONAL_LINES);
+	mTextColor = swGetProfileUnsignedInteger(SW_PROFILE_TEXT_COLOR);
+	mTextHaloColor = swGetProfileUnsignedInteger(SW_PROFILE_TEXT_HALO_COLOR);
+	mMarqueeBorderColor = swGetProfileUnsignedInteger(SW_PROFILE_MARQUEE_BORDER_COLOR);
+	mMarqueeFillColor = swGetProfileUnsignedInteger(SW_PROFILE_MARQUEE_FILL_COLOR);
+	mOverlayColor = swGetProfileUnsignedInteger(SW_PROFILE_OVERLAY_COLOR);
+	mActiveViewColor = swGetProfileUnsignedInteger(SW_PROFILE_ACTIVE_VIEW_COLOR);
+	mInactiveViewColor = swGetProfileUnsignedInteger(SW_PROFILE_INACTIVE_VIEW_COLOR);
+	mDrawEdgeLines = swGetProfileInteger(SW_PROFILE_DRAW_EDGE_LINES);
+	mDrawConditionalLines = swGetProfileInteger(SW_PROFILE_DRAW_CONDITIONAL_LINES);
 	mLineWidth = swGetProfileFloat(SW_PROFILE_LINE_WIDTH);
 	LoadRenderTarget(swRenderTarget::Preview);
 	LoadRenderTarget(swRenderTarget::Pieces);
 	LoadRenderTarget(swRenderTarget::Minifig);
-	mAllowLOD = swGetProfileInt(SW_PROFILE_ALLOW_LOD);
+	mAllowLOD = swGetProfileInteger(SW_PROFILE_ALLOW_LOD);
 	mMeshLODDistance = swGetProfileFloat(SW_PROFILE_LOD_DISTANCE);
-	mFadeSteps = swGetProfileInt(SW_PROFILE_FADE_STEPS);
-	mFadeStepsColor = swGetProfileUInt(SW_PROFILE_FADE_STEPS_COLOR);
-	mHighlightNewParts = swGetProfileInt(SW_PROFILE_HIGHLIGHT_NEW_PARTS);
-	mHighlightNewPartsColor = swGetProfileUInt(SW_PROFILE_HIGHLIGHT_NEW_PARTS_COLOR);
-	mDrawGridStuds = swGetProfileInt(SW_PROFILE_GRID_STUDS);
-	mGridStudColor = swGetProfileUInt(SW_PROFILE_GRID_STUD_COLOR);
-	mDrawGridLines = swGetProfileInt(SW_PROFILE_GRID_LINES);
-	mGridLineSpacing = swGetProfileInt(SW_PROFILE_GRID_LINE_SPACING);
-	mGridLineColor = swGetProfileUInt(SW_PROFILE_GRID_LINE_COLOR);
-	mDrawGridOrigin = swGetProfileInt(SW_PROFILE_GRID_ORIGIN);
-	mDrawGridHeightXZ = swGetProfileInt(SW_PROFILE_GRID_HEIGHT_XZ);
-	mDrawGridHeightYZ = swGetProfileInt(SW_PROFILE_GRID_HEIGHT_YZ);
-	mGridHeightBehindModel = swGetProfileInt(SW_PROFILE_GRID_HEIGHT_BEHIND_MODEL);
-	mViewSphereEnabled = swGetProfileInt(SW_PROFILE_VIEW_SPHERE_ENABLED);
+	mFadeSteps = swGetProfileInteger(SW_PROFILE_FADE_STEPS);
+	mFadeStepsColor = swGetProfileUnsignedInteger(SW_PROFILE_FADE_STEPS_COLOR);
+	mHighlightNewParts = swGetProfileInteger(SW_PROFILE_HIGHLIGHT_NEW_PARTS);
+	mHighlightNewPartsColor = swGetProfileUnsignedInteger(SW_PROFILE_HIGHLIGHT_NEW_PARTS_COLOR);
+	mDrawGridStuds = swGetProfileInteger(SW_PROFILE_GRID_STUDS);
+	mGridStudColor = swGetProfileUnsignedInteger(SW_PROFILE_GRID_STUD_COLOR);
+	mDrawGridLines = swGetProfileInteger(SW_PROFILE_GRID_LINES);
+	mGridLineSpacing = swGetProfileInteger(SW_PROFILE_GRID_LINE_SPACING);
+	mGridLineColor = swGetProfileUnsignedInteger(SW_PROFILE_GRID_LINE_COLOR);
+	mDrawGridOrigin = swGetProfileInteger(SW_PROFILE_GRID_ORIGIN);
+	mDrawGridHeightXZ = swGetProfileInteger(SW_PROFILE_GRID_HEIGHT_XZ);
+	mDrawGridHeightYZ = swGetProfileInteger(SW_PROFILE_GRID_HEIGHT_YZ);
+	mGridHeightBehindModel = swGetProfileInteger(SW_PROFILE_GRID_HEIGHT_BEHIND_MODEL);
+	mViewSphereEnabled = swGetProfileInteger(SW_PROFILE_VIEW_SPHERE_ENABLED);
 	mViewSphereLocation = swGetProfileViewSphereLocation();
-	mViewSphereSize = swGetProfileInt(SW_PROFILE_VIEW_SPHERE_SIZE);
-	mViewSphereColor = swGetProfileUInt(SW_PROFILE_VIEW_SPHERE_COLOR);
-	mViewSphereTextColor = swGetProfileUInt(SW_PROFILE_VIEW_SPHERE_TEXT_COLOR);
-	mViewSphereHighlightColor = swGetProfileUInt(SW_PROFILE_VIEW_SPHERE_HIGHLIGHT_COLOR);
-	mAxisXColor = swGetProfileUInt(SW_PROFILE_AXIS_X_COLOR);
-	mAxisYColor = swGetProfileUInt(SW_PROFILE_AXIS_Y_COLOR);
-	mAxisZColor = swGetProfileUInt(SW_PROFILE_AXIS_Z_COLOR);
-	mAutoLoadMostRecent = swGetProfileInt(SW_PROFILE_AUTOLOAD_MOSTRECENT);
-	mRestoreTabLayout = swGetProfileInt(SW_PROFILE_RESTORE_TAB_LAYOUT);
-	mFirstPieceAtOrigin = swGetProfileInt(SW_PROFILE_FIRST_PIECE_AT_ORIGIN);
-	mPiecesSnapToTiles = swGetProfileInt(SW_PROFILE_PIECES_SNAP_TO_TILES);
-	mTerminalFollowModel = swGetProfileInt(SW_PROFILE_TERMINAL_FOLLOW_MODEL);
-	mInsertColorMode = static_cast<swInsertColorMode>(qBound(0, swGetProfileInt(SW_PROFILE_INSERT_COLOR_MODE), static_cast<int>(swInsertColorMode::LastInsertedColor)));
-	mWatchFileChanges = swGetProfileInt(SW_PROFILE_WATCH_FILE_CHANGES);
-	mLoadPiecesBeforeShowing = swGetProfileInt(SW_PROFILE_LOAD_PIECES_BEFORE_SHOWING);
+	mViewSphereSize = swGetProfileInteger(SW_PROFILE_VIEW_SPHERE_SIZE);
+	mViewSphereColor = swGetProfileUnsignedInteger(SW_PROFILE_VIEW_SPHERE_COLOR);
+	mViewSphereTextColor = swGetProfileUnsignedInteger(SW_PROFILE_VIEW_SPHERE_TEXT_COLOR);
+	mViewSphereHighlightColor = swGetProfileUnsignedInteger(SW_PROFILE_VIEW_SPHERE_HIGHLIGHT_COLOR);
+	mAxisXColor = swGetProfileUnsignedInteger(SW_PROFILE_AXIS_X_COLOR);
+	mAxisYColor = swGetProfileUnsignedInteger(SW_PROFILE_AXIS_Y_COLOR);
+	mAxisZColor = swGetProfileUnsignedInteger(SW_PROFILE_AXIS_Z_COLOR);
+	mAutoLoadMostRecent = swGetProfileInteger(SW_PROFILE_AUTO_LOAD_MOST_RECENT);
+	mRestoreTabLayout = swGetProfileInteger(SW_PROFILE_RESTORE_TAB_LAYOUT);
+	mFirstPieceAtOrigin = swGetProfileInteger(SW_PROFILE_FIRST_PIECE_AT_ORIGIN);
+	mPiecesSnapToTiles = swGetProfileInteger(SW_PROFILE_PIECES_SNAP_TO_TILES);
+	mTerminalFollowModel = swGetProfileInteger(SW_PROFILE_TERMINAL_FOLLOW_MODEL);
+	mInsertColorMode = static_cast<swInsertColorMode>(qBound(0, swGetProfileInteger(SW_PROFILE_INSERT_COLOR_MODE), static_cast<int>(swInsertColorMode::LastInsertedColor)));
+	mWatchFileChanges = swGetProfileInteger(SW_PROFILE_WATCH_FILE_CHANGES);
+	mLoadPiecesBeforeShowing = swGetProfileInteger(SW_PROFILE_LOAD_PIECES_BEFORE_SHOWING);
 	mColorTheme = swGetProfileColorTheme();
-	mPreviewViewSphereEnabled = swGetProfileInt(SW_PROFILE_PREVIEW_VIEW_SPHERE_ENABLED);
-	mPreviewViewSphereSize = swGetProfileInt(SW_PROFILE_PREVIEW_VIEW_SPHERE_SIZE);
+	mPreviewViewSphereEnabled = swGetProfileInteger(SW_PROFILE_PREVIEW_VIEW_SPHERE_ENABLED);
+	mPreviewViewSphereSize = swGetProfileInteger(SW_PROFILE_PREVIEW_VIEW_SPHERE_SIZE);
 	mPreviewViewSphereLocation = swGetProfilePreviewViewSphereLocation();
-	mDrawPreviewAxis = swGetProfileInt(SW_PROFILE_PREVIEW_DRAW_AXES);
-	mPreviewSquareViewport = swGetProfileInt(SW_PROFILE_PREVIEW_SQUARE_VIEWPORT);
-	mStudCylinderColorEnabled = swGetProfileInt(SW_PROFILE_STUD_CYLINDER_COLOR_ENABLED);
-	mStudCylinderColor = swGetProfileUInt(SW_PROFILE_STUD_CYLINDER_COLOR);
-	mPartEdgeColorEnabled = swGetProfileInt(SW_PROFILE_PART_EDGE_COLOR_ENABLED);
-	mPartEdgeColor = swGetProfileUInt(SW_PROFILE_PART_EDGE_COLOR);
-	mBlackEdgeColorEnabled = swGetProfileInt(SW_PROFILE_BLACK_EDGE_COLOR_ENABLED);
-	mBlackEdgeColor = swGetProfileUInt(SW_PROFILE_BLACK_EDGE_COLOR);
-	mDarkEdgeColorEnabled = swGetProfileInt(SW_PROFILE_DARK_EDGE_COLOR_ENABLED);
-	mDarkEdgeColor = swGetProfileUInt(SW_PROFILE_DARK_EDGE_COLOR);
+	mDrawPreviewAxis = swGetProfileInteger(SW_PROFILE_PREVIEW_DRAW_AXES);
+	mPreviewSquareViewport = swGetProfileInteger(SW_PROFILE_PREVIEW_SQUARE_VIEWPORT);
+	mStudCylinderColorEnabled = swGetProfileInteger(SW_PROFILE_STUD_CYLINDER_COLOR_ENABLED);
+	mStudCylinderColor = swGetProfileUnsignedInteger(SW_PROFILE_STUD_CYLINDER_COLOR);
+	mPartEdgeColorEnabled = swGetProfileInteger(SW_PROFILE_PART_EDGE_COLOR_ENABLED);
+	mPartEdgeColor = swGetProfileUnsignedInteger(SW_PROFILE_PART_EDGE_COLOR);
+	mBlackEdgeColorEnabled = swGetProfileInteger(SW_PROFILE_BLACK_EDGE_COLOR_ENABLED);
+	mBlackEdgeColor = swGetProfileUnsignedInteger(SW_PROFILE_BLACK_EDGE_COLOR);
+	mDarkEdgeColorEnabled = swGetProfileInteger(SW_PROFILE_DARK_EDGE_COLOR_ENABLED);
+	mDarkEdgeColor = swGetProfileUnsignedInteger(SW_PROFILE_DARK_EDGE_COLOR);
 	mPartEdgeContrast = swGetProfileFloat(SW_PROFILE_PART_EDGE_CONTRAST);
 	mPartColorValueLDIndex = swGetProfileFloat(SW_PROFILE_PART_COLOR_VALUE_LD_INDEX);
-	mAutomateEdgeColor = swGetProfileInt(SW_PROFILE_AUTOMATE_EDGE_COLOR);
-	mObjectSelectedColor = swGetProfileUInt(SW_PROFILE_OBJECT_SELECTED_COLOR);
-	mObjectFocusedColor = swGetProfileUInt(SW_PROFILE_OBJECT_FOCUSED_COLOR);
-	mCameraColor = swGetProfileUInt(SW_PROFILE_CAMERA_COLOR);
-	mLightColor = swGetProfileUInt(SW_PROFILE_LIGHT_COLOR);
-	mControlPointColor = swGetProfileUInt(SW_PROFILE_CONTROL_POINT_COLOR);
-	mControlPointFocusedColor = swGetProfileUInt(SW_PROFILE_CONTROL_POINT_FOCUSED_COLOR);
+	mAutomateEdgeColor = swGetProfileInteger(SW_PROFILE_AUTOMATE_EDGE_COLOR);
+	mObjectSelectedColor = swGetProfileUnsignedInteger(SW_PROFILE_OBJECT_SELECTED_COLOR);
+	mObjectFocusedColor = swGetProfileUnsignedInteger(SW_PROFILE_OBJECT_FOCUSED_COLOR);
+	mCameraColor = swGetProfileUnsignedInteger(SW_PROFILE_CAMERA_COLOR);
+	mLightColor = swGetProfileUnsignedInteger(SW_PROFILE_LIGHT_COLOR);
+	mControlPointColor = swGetProfileUnsignedInteger(SW_PROFILE_CONTROL_POINT_COLOR);
+	mControlPointFocusedColor = swGetProfileUnsignedInteger(SW_PROFILE_CONTROL_POINT_FOCUSED_COLOR);
 }
 
 void swPreferences::SaveDefaults()
 {
-	swSetProfileInt(SW_PROFILE_FIXED_AXES, mFixedAxes);
-	swSetProfileInt(SW_PROFILE_MOUSE_SENSITIVITY, mMouseSensitivity);
+	swSetProfileInteger(SW_PROFILE_FIXED_AXES, mFixedAxes);
+	swSetProfileInteger(SW_PROFILE_MOUSE_SENSITIVITY, mMouseSensitivity);
 	swSetProfileShadingMode(mShadingMode);
 	swSetProfileHighlightRenderMode(mHighlightRenderMode);
-	swSetProfileInt(SW_PROFILE_DRAW_AXES, mDrawAxes);
-	swSetProfileInt(SW_PROFILE_FOLLOW_STEP_VIEWS, mFollowStepViews);
+	swSetProfileInteger(SW_PROFILE_DRAW_AXES, mDrawAxes);
+	swSetProfileInteger(SW_PROFILE_FOLLOW_STEP_VIEWS, mFollowStepViews);
 	swSetProfileAxisIconLocation(mAxisIconLocation);
-	swSetProfileUInt(SW_PROFILE_TEXT_COLOR, mTextColor);
-	swSetProfileUInt(SW_PROFILE_TEXT_HALO_COLOR, mTextHaloColor);
-	swSetProfileInt(SW_PROFILE_BACKGROUND_GRADIENT, mBackgroundGradient);
-	swSetProfileUInt(SW_PROFILE_BACKGROUND_COLOR, mBackgroundSolidColor);
-	swSetProfileUInt(SW_PROFILE_GRADIENT_COLOR_TOP, mBackgroundGradientColorTop);
-	swSetProfileUInt(SW_PROFILE_GRADIENT_COLOR_BOTTOM, mBackgroundGradientColorBottom);
-	swSetProfileUInt(SW_PROFILE_MARQUEE_BORDER_COLOR, mMarqueeBorderColor);
-	swSetProfileUInt(SW_PROFILE_MARQUEE_FILL_COLOR, mMarqueeFillColor);
-	swSetProfileUInt(SW_PROFILE_OVERLAY_COLOR, mOverlayColor);
-	swSetProfileUInt(SW_PROFILE_ACTIVE_VIEW_COLOR, mActiveViewColor);
-	swSetProfileUInt(SW_PROFILE_INACTIVE_VIEW_COLOR, mInactiveViewColor);
-	swSetProfileInt(SW_PROFILE_DRAW_EDGE_LINES, mDrawEdgeLines);
-	swSetProfileInt(SW_PROFILE_DRAW_CONDITIONAL_LINES, mDrawConditionalLines);
+	swSetProfileUnsignedInteger(SW_PROFILE_TEXT_COLOR, mTextColor);
+	swSetProfileUnsignedInteger(SW_PROFILE_TEXT_HALO_COLOR, mTextHaloColor);
+	swSetProfileInteger(SW_PROFILE_BACKGROUND_GRADIENT, mBackgroundGradient);
+	swSetProfileUnsignedInteger(SW_PROFILE_BACKGROUND_COLOR, mBackgroundSolidColor);
+	swSetProfileUnsignedInteger(SW_PROFILE_GRADIENT_COLOR_TOP, mBackgroundGradientColorTop);
+	swSetProfileUnsignedInteger(SW_PROFILE_GRADIENT_COLOR_BOTTOM, mBackgroundGradientColorBottom);
+	swSetProfileUnsignedInteger(SW_PROFILE_MARQUEE_BORDER_COLOR, mMarqueeBorderColor);
+	swSetProfileUnsignedInteger(SW_PROFILE_MARQUEE_FILL_COLOR, mMarqueeFillColor);
+	swSetProfileUnsignedInteger(SW_PROFILE_OVERLAY_COLOR, mOverlayColor);
+	swSetProfileUnsignedInteger(SW_PROFILE_ACTIVE_VIEW_COLOR, mActiveViewColor);
+	swSetProfileUnsignedInteger(SW_PROFILE_INACTIVE_VIEW_COLOR, mInactiveViewColor);
+	swSetProfileInteger(SW_PROFILE_DRAW_EDGE_LINES, mDrawEdgeLines);
+	swSetProfileInteger(SW_PROFILE_DRAW_CONDITIONAL_LINES, mDrawConditionalLines);
 	swSetProfileFloat(SW_PROFILE_LINE_WIDTH, mLineWidth);
 	SaveRenderTarget(swRenderTarget::Preview);
 	SaveRenderTarget(swRenderTarget::Pieces);
 	SaveRenderTarget(swRenderTarget::Minifig);
-	swSetProfileInt(SW_PROFILE_ALLOW_LOD, mAllowLOD);
+	swSetProfileInteger(SW_PROFILE_ALLOW_LOD, mAllowLOD);
 	swSetProfileFloat(SW_PROFILE_LOD_DISTANCE, mMeshLODDistance);
-	swSetProfileInt(SW_PROFILE_FADE_STEPS, mFadeSteps);
-	swSetProfileUInt(SW_PROFILE_FADE_STEPS_COLOR, mFadeStepsColor);
-	swSetProfileInt(SW_PROFILE_HIGHLIGHT_NEW_PARTS, mHighlightNewParts);
-	swSetProfileUInt(SW_PROFILE_HIGHLIGHT_NEW_PARTS_COLOR, mHighlightNewPartsColor);
-	swSetProfileInt(SW_PROFILE_GRID_STUDS, mDrawGridStuds);
-	swSetProfileUInt(SW_PROFILE_GRID_STUD_COLOR, mGridStudColor);
-	swSetProfileInt(SW_PROFILE_GRID_LINES, mDrawGridLines);
-	swSetProfileInt(SW_PROFILE_GRID_LINE_SPACING, mGridLineSpacing);
-	swSetProfileUInt(SW_PROFILE_GRID_LINE_COLOR, mGridLineColor);
-	swSetProfileInt(SW_PROFILE_GRID_ORIGIN, mDrawGridOrigin);
-	swSetProfileInt(SW_PROFILE_GRID_HEIGHT_XZ, mDrawGridHeightXZ);
-	swSetProfileInt(SW_PROFILE_GRID_HEIGHT_YZ, mDrawGridHeightYZ);
-	swSetProfileInt(SW_PROFILE_GRID_HEIGHT_BEHIND_MODEL, mGridHeightBehindModel);
-	swSetProfileInt(SW_PROFILE_VIEW_SPHERE_ENABLED, mViewSphereEnabled);
+	swSetProfileInteger(SW_PROFILE_FADE_STEPS, mFadeSteps);
+	swSetProfileUnsignedInteger(SW_PROFILE_FADE_STEPS_COLOR, mFadeStepsColor);
+	swSetProfileInteger(SW_PROFILE_HIGHLIGHT_NEW_PARTS, mHighlightNewParts);
+	swSetProfileUnsignedInteger(SW_PROFILE_HIGHLIGHT_NEW_PARTS_COLOR, mHighlightNewPartsColor);
+	swSetProfileInteger(SW_PROFILE_GRID_STUDS, mDrawGridStuds);
+	swSetProfileUnsignedInteger(SW_PROFILE_GRID_STUD_COLOR, mGridStudColor);
+	swSetProfileInteger(SW_PROFILE_GRID_LINES, mDrawGridLines);
+	swSetProfileInteger(SW_PROFILE_GRID_LINE_SPACING, mGridLineSpacing);
+	swSetProfileUnsignedInteger(SW_PROFILE_GRID_LINE_COLOR, mGridLineColor);
+	swSetProfileInteger(SW_PROFILE_GRID_ORIGIN, mDrawGridOrigin);
+	swSetProfileInteger(SW_PROFILE_GRID_HEIGHT_XZ, mDrawGridHeightXZ);
+	swSetProfileInteger(SW_PROFILE_GRID_HEIGHT_YZ, mDrawGridHeightYZ);
+	swSetProfileInteger(SW_PROFILE_GRID_HEIGHT_BEHIND_MODEL, mGridHeightBehindModel);
+	swSetProfileInteger(SW_PROFILE_VIEW_SPHERE_ENABLED, mViewSphereEnabled);
 	swSetProfileViewSphereLocation(mViewSphereLocation);
-	swSetProfileInt(SW_PROFILE_VIEW_SPHERE_SIZE, mViewSphereSize);
-	swSetProfileUInt(SW_PROFILE_VIEW_SPHERE_COLOR, mViewSphereColor);
-	swSetProfileUInt(SW_PROFILE_VIEW_SPHERE_TEXT_COLOR, mViewSphereTextColor);
-	swSetProfileUInt(SW_PROFILE_VIEW_SPHERE_HIGHLIGHT_COLOR, mViewSphereHighlightColor);
-	swSetProfileUInt(SW_PROFILE_AXIS_X_COLOR, mAxisXColor);
-	swSetProfileUInt(SW_PROFILE_AXIS_Y_COLOR, mAxisYColor);
-	swSetProfileUInt(SW_PROFILE_AXIS_Z_COLOR, mAxisZColor);
-	swSetProfileInt(SW_PROFILE_AUTOLOAD_MOSTRECENT, mAutoLoadMostRecent);
-	swSetProfileInt(SW_PROFILE_RESTORE_TAB_LAYOUT, mRestoreTabLayout);
-	swSetProfileInt(SW_PROFILE_FIRST_PIECE_AT_ORIGIN, mFirstPieceAtOrigin);
-	swSetProfileInt(SW_PROFILE_PIECES_SNAP_TO_TILES, mPiecesSnapToTiles);
-	swSetProfileInt(SW_PROFILE_TERMINAL_FOLLOW_MODEL, mTerminalFollowModel);
-	swSetProfileInt(SW_PROFILE_INSERT_COLOR_MODE, static_cast<int>(mInsertColorMode));
-	swSetProfileInt(SW_PROFILE_WATCH_FILE_CHANGES, mWatchFileChanges);
-	swSetProfileInt(SW_PROFILE_LOAD_PIECES_BEFORE_SHOWING, mLoadPiecesBeforeShowing);
+	swSetProfileInteger(SW_PROFILE_VIEW_SPHERE_SIZE, mViewSphereSize);
+	swSetProfileUnsignedInteger(SW_PROFILE_VIEW_SPHERE_COLOR, mViewSphereColor);
+	swSetProfileUnsignedInteger(SW_PROFILE_VIEW_SPHERE_TEXT_COLOR, mViewSphereTextColor);
+	swSetProfileUnsignedInteger(SW_PROFILE_VIEW_SPHERE_HIGHLIGHT_COLOR, mViewSphereHighlightColor);
+	swSetProfileUnsignedInteger(SW_PROFILE_AXIS_X_COLOR, mAxisXColor);
+	swSetProfileUnsignedInteger(SW_PROFILE_AXIS_Y_COLOR, mAxisYColor);
+	swSetProfileUnsignedInteger(SW_PROFILE_AXIS_Z_COLOR, mAxisZColor);
+	swSetProfileInteger(SW_PROFILE_AUTO_LOAD_MOST_RECENT, mAutoLoadMostRecent);
+	swSetProfileInteger(SW_PROFILE_RESTORE_TAB_LAYOUT, mRestoreTabLayout);
+	swSetProfileInteger(SW_PROFILE_FIRST_PIECE_AT_ORIGIN, mFirstPieceAtOrigin);
+	swSetProfileInteger(SW_PROFILE_PIECES_SNAP_TO_TILES, mPiecesSnapToTiles);
+	swSetProfileInteger(SW_PROFILE_TERMINAL_FOLLOW_MODEL, mTerminalFollowModel);
+	swSetProfileInteger(SW_PROFILE_INSERT_COLOR_MODE, static_cast<int>(mInsertColorMode));
+	swSetProfileInteger(SW_PROFILE_WATCH_FILE_CHANGES, mWatchFileChanges);
+	swSetProfileInteger(SW_PROFILE_LOAD_PIECES_BEFORE_SHOWING, mLoadPiecesBeforeShowing);
 	swSetProfileColorTheme(mColorTheme);
-	swSetProfileInt(SW_PROFILE_PREVIEW_VIEW_SPHERE_ENABLED, mPreviewViewSphereEnabled);
-	swSetProfileInt(SW_PROFILE_PREVIEW_VIEW_SPHERE_SIZE, mPreviewViewSphereSize);
+	swSetProfileInteger(SW_PROFILE_PREVIEW_VIEW_SPHERE_ENABLED, mPreviewViewSphereEnabled);
+	swSetProfileInteger(SW_PROFILE_PREVIEW_VIEW_SPHERE_SIZE, mPreviewViewSphereSize);
 	swSetProfilePreviewViewSphereLocation(mPreviewViewSphereLocation);
-	swSetProfileInt(SW_PROFILE_PREVIEW_DRAW_AXES, mDrawPreviewAxis);
-	swSetProfileInt(SW_PROFILE_PREVIEW_SQUARE_VIEWPORT, mPreviewSquareViewport);
-	swSetProfileInt(SW_PROFILE_STUD_CYLINDER_COLOR_ENABLED, mStudCylinderColorEnabled);
-	swSetProfileUInt(SW_PROFILE_STUD_CYLINDER_COLOR, mStudCylinderColor);
-	swSetProfileInt(SW_PROFILE_PART_EDGE_COLOR_ENABLED, mPartEdgeColorEnabled);
-	swSetProfileUInt(SW_PROFILE_PART_EDGE_COLOR, mPartEdgeColor);
-	swSetProfileInt(SW_PROFILE_BLACK_EDGE_COLOR_ENABLED, mBlackEdgeColorEnabled);
-	swSetProfileUInt(SW_PROFILE_BLACK_EDGE_COLOR, mBlackEdgeColor);
-	swSetProfileInt(SW_PROFILE_DARK_EDGE_COLOR_ENABLED, mDarkEdgeColorEnabled);
-	swSetProfileUInt(SW_PROFILE_DARK_EDGE_COLOR, mDarkEdgeColor);
+	swSetProfileInteger(SW_PROFILE_PREVIEW_DRAW_AXES, mDrawPreviewAxis);
+	swSetProfileInteger(SW_PROFILE_PREVIEW_SQUARE_VIEWPORT, mPreviewSquareViewport);
+	swSetProfileInteger(SW_PROFILE_STUD_CYLINDER_COLOR_ENABLED, mStudCylinderColorEnabled);
+	swSetProfileUnsignedInteger(SW_PROFILE_STUD_CYLINDER_COLOR, mStudCylinderColor);
+	swSetProfileInteger(SW_PROFILE_PART_EDGE_COLOR_ENABLED, mPartEdgeColorEnabled);
+	swSetProfileUnsignedInteger(SW_PROFILE_PART_EDGE_COLOR, mPartEdgeColor);
+	swSetProfileInteger(SW_PROFILE_BLACK_EDGE_COLOR_ENABLED, mBlackEdgeColorEnabled);
+	swSetProfileUnsignedInteger(SW_PROFILE_BLACK_EDGE_COLOR, mBlackEdgeColor);
+	swSetProfileInteger(SW_PROFILE_DARK_EDGE_COLOR_ENABLED, mDarkEdgeColorEnabled);
+	swSetProfileUnsignedInteger(SW_PROFILE_DARK_EDGE_COLOR, mDarkEdgeColor);
 	swSetProfileFloat(SW_PROFILE_PART_EDGE_CONTRAST, mPartEdgeContrast);
 	swSetProfileFloat(SW_PROFILE_PART_COLOR_VALUE_LD_INDEX, mPartColorValueLDIndex);
-	swSetProfileInt(SW_PROFILE_AUTOMATE_EDGE_COLOR, mAutomateEdgeColor);
-	swSetProfileUInt(SW_PROFILE_OBJECT_SELECTED_COLOR, mObjectSelectedColor);
-	swSetProfileUInt(SW_PROFILE_OBJECT_FOCUSED_COLOR, mObjectFocusedColor);
-	swSetProfileUInt(SW_PROFILE_CAMERA_COLOR, mCameraColor);
-	swSetProfileUInt(SW_PROFILE_LIGHT_COLOR, mLightColor);
-	swSetProfileUInt(SW_PROFILE_CONTROL_POINT_COLOR, mControlPointColor);
-	swSetProfileUInt(SW_PROFILE_CONTROL_POINT_FOCUSED_COLOR, mControlPointFocusedColor);
+	swSetProfileInteger(SW_PROFILE_AUTOMATE_EDGE_COLOR, mAutomateEdgeColor);
+	swSetProfileUnsignedInteger(SW_PROFILE_OBJECT_SELECTED_COLOR, mObjectSelectedColor);
+	swSetProfileUnsignedInteger(SW_PROFILE_OBJECT_FOCUSED_COLOR, mObjectFocusedColor);
+	swSetProfileUnsignedInteger(SW_PROFILE_CAMERA_COLOR, mCameraColor);
+	swSetProfileUnsignedInteger(SW_PROFILE_LIGHT_COLOR, mLightColor);
+	swSetProfileUnsignedInteger(SW_PROFILE_CONTROL_POINT_COLOR, mControlPointColor);
+	swSetProfileUnsignedInteger(SW_PROFILE_CONTROL_POINT_FOCUSED_COLOR, mControlPointFocusedColor);
 }
 
 struct swRenderTargetProfileKeys
@@ -200,12 +200,12 @@ struct swRenderTargetProfileKeys
 static swRenderTargetProfileKeys swGetRenderTargetProfileKeys(swRenderTarget Target)
 {
 	if (Target == swRenderTarget::Minifig)
-		return { SW_PROFILE_MINIFIG_SYNC_RENDERING, SW_PROFILE_MINIFIG_SHADING_MODE, SW_PROFILE_MINIFIG_DRAW_EDGE_LINES, SW_PROFILE_MINIFIG_DRAW_CONDITIONAL_LINES, SW_PROFILE_MINIFIG_LINE_WIDTH };
+		return { SW_PROFILE_MINIFIGURE_SYNCHRONIZED_RENDERING, SW_PROFILE_MINIFIGURE_SHADING_MODE, SW_PROFILE_MINIFIGURE_DRAW_EDGE_LINES, SW_PROFILE_MINIFIGURE_DRAW_CONDITIONAL_LINES, SW_PROFILE_MINIFIGURE_LINE_WIDTH };
 
 	if (Target == swRenderTarget::Pieces)
-		return { SW_PROFILE_PIECES_SYNC_RENDERING, SW_PROFILE_PIECES_SHADING_MODE, SW_PROFILE_PIECES_DRAW_EDGE_LINES, SW_PROFILE_PIECES_DRAW_CONDITIONAL_LINES, SW_PROFILE_PIECES_LINE_WIDTH };
+		return { SW_PROFILE_PIECES_SYNCHRONIZED_RENDERING, SW_PROFILE_PIECES_SHADING_MODE, SW_PROFILE_PIECES_DRAW_EDGE_LINES, SW_PROFILE_PIECES_DRAW_CONDITIONAL_LINES, SW_PROFILE_PIECES_LINE_WIDTH };
 
-	return { SW_PROFILE_PREVIEW_SYNC_RENDERING, SW_PROFILE_PREVIEW_SHADING_MODE, SW_PROFILE_PREVIEW_DRAW_EDGE_LINES, SW_PROFILE_PREVIEW_DRAW_CONDITIONAL_LINES, SW_PROFILE_PREVIEW_LINE_WIDTH };
+	return { SW_PROFILE_PREVIEW_SYNCHRONIZED_RENDERING, SW_PROFILE_PREVIEW_SHADING_MODE, SW_PROFILE_PREVIEW_DRAW_EDGE_LINES, SW_PROFILE_PREVIEW_DRAW_CONDITIONAL_LINES, SW_PROFILE_PREVIEW_LINE_WIDTH };
 }
 
 void swPreferences::LoadRenderTarget(swRenderTarget Target)
@@ -213,10 +213,10 @@ void swPreferences::LoadRenderTarget(swRenderTarget Target)
 	const swRenderTargetProfileKeys Keys = swGetRenderTargetProfileKeys(Target);
 	swTargetRenderSettings& TargetSettings = GetTargetRenderSettings(Target);
 
-	TargetSettings.SyncRendering = swGetProfileInt(Keys.SyncRendering);
+	TargetSettings.SyncRendering = swGetProfileInteger(Keys.SyncRendering);
 	TargetSettings.Settings.ShadingMode = swGetProfileShadingMode(Keys.ShadingMode);
-	TargetSettings.Settings.DrawEdgeLines = swGetProfileInt(Keys.DrawEdgeLines);
-	TargetSettings.Settings.DrawConditionalLines = swGetProfileInt(Keys.DrawConditionalLines);
+	TargetSettings.Settings.DrawEdgeLines = swGetProfileInteger(Keys.DrawEdgeLines);
+	TargetSettings.Settings.DrawConditionalLines = swGetProfileInteger(Keys.DrawConditionalLines);
 	TargetSettings.Settings.LineWidth = swGetProfileFloat(Keys.LineWidth);
 }
 
@@ -225,10 +225,10 @@ void swPreferences::SaveRenderTarget(swRenderTarget Target) const
 	const swRenderTargetProfileKeys Keys = swGetRenderTargetProfileKeys(Target);
 	const swTargetRenderSettings& TargetSettings = GetTargetRenderSettings(Target);
 
-	swSetProfileInt(Keys.SyncRendering, TargetSettings.SyncRendering);
+	swSetProfileInteger(Keys.SyncRendering, TargetSettings.SyncRendering);
 	swSetProfileShadingMode(TargetSettings.Settings.ShadingMode, Keys.ShadingMode);
-	swSetProfileInt(Keys.DrawEdgeLines, TargetSettings.Settings.DrawEdgeLines);
-	swSetProfileInt(Keys.DrawConditionalLines, TargetSettings.Settings.DrawConditionalLines);
+	swSetProfileInteger(Keys.DrawEdgeLines, TargetSettings.Settings.DrawEdgeLines);
+	swSetProfileInteger(Keys.DrawConditionalLines, TargetSettings.Settings.DrawConditionalLines);
 	swSetProfileFloat(Keys.LineWidth, TargetSettings.Settings.LineWidth);
 }
 
@@ -243,7 +243,7 @@ void swPreferences::SetInterfaceColors(swColorTheme ColorTheme)
 		mBackgroundSolidColor = SW_RGB(49, 52, 55);
 		mBackgroundGradientColorTop = SW_RGB(0, 0, 191);
 		mBackgroundGradientColorBottom = SW_RGB(255, 255, 255);
-		mOverlayColor = swGetProfileUInt(SW_PROFILE_OVERLAY_COLOR);
+		mOverlayColor = swGetProfileUnsignedInteger(SW_PROFILE_OVERLAY_COLOR);
 		mActiveViewColor = SW_RGBA(41, 128, 185, 255);
 		mGridStudColor = SW_RGBA(24, 24, 24, 192);
 		mGridLineColor = SW_RGBA(24, 24, 24, 255);
@@ -277,7 +277,7 @@ swApplication::swApplication(int& Argc, char** Argv)
 	mDefaultStyle = style()->objectName();
 	mDefaultPalette = QApplication::palette();
 
-	swProfileInit();
+	swProfileInitialize();
 
 	mPreferences.LoadDefaults();
 
@@ -468,11 +468,11 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 
 	Options.FadeSteps = Preferences.mFadeSteps;
 	Options.ImageHighlight = Preferences.mHighlightNewParts;
-	Options.ImageWidth = swGetProfileInt(SW_PROFILE_IMAGE_WIDTH);
-	Options.ImageHeight = swGetProfileInt(SW_PROFILE_IMAGE_HEIGHT);
+	Options.ImageWidth = swGetProfileInteger(SW_PROFILE_IMAGE_WIDTH);
+	Options.ImageHeight = swGetProfileInteger(SW_PROFILE_IMAGE_HEIGHT);
 	Options.ShadingMode = Preferences.mShadingMode;
 	Options.LineWidth = Preferences.mLineWidth;
-	Options.AASamples = swGetProfileInt(SW_PROFILE_ANTIALIASING_SAMPLES);
+	Options.AASamples = swGetProfileInteger(SW_PROFILE_ANTIALIASING_SAMPLES);
 	Options.StudStyle = swGetProfileStudStyle();
 	Options.ImageStart = 0;
 	Options.ImageEnd = 0;
@@ -678,13 +678,13 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 			ParseString(Options.ImageName, false);
 		}
 		else if (Option == QLatin1String("-w") || Option == QLatin1String("--width"))
-			ParseInteger(Options.ImageWidth, 1, SW_MAX_IMAGE_DIMENSION);
+			ParseInteger(Options.ImageWidth, 1, SW_MAXIMUM_IMAGE_DIMENSION);
 		else if (Option == QLatin1String("-h") || Option == QLatin1String("--height"))
-			ParseInteger(Options.ImageHeight, 1, SW_MAX_IMAGE_DIMENSION);
+			ParseInteger(Options.ImageHeight, 1, SW_MAXIMUM_IMAGE_DIMENSION);
 		else if (Option == QLatin1String("-f") || Option == QLatin1String("--from"))
-			ParseUnsigned(Options.ImageStart, 1, SW_STEP_MAX);
+			ParseUnsigned(Options.ImageStart, 1, SW_STEP_MAXIMUM);
 		else if (Option == QLatin1String("-t") || Option == QLatin1String("--to"))
-			ParseUnsigned(Options.ImageEnd, 1, SW_STEP_MAX);
+			ParseUnsigned(Options.ImageEnd, 1, SW_STEP_MAXIMUM);
 		else if (Option == QLatin1String("-s") || Option == QLatin1String("--submodel"))
 			ParseString(Options.ModelName, true);
 		else if (Option == QLatin1String("-c") || Option == QLatin1String("--camera"))
@@ -1115,7 +1115,7 @@ swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 	Project* NewProject = new Project();
 	SetProject(NewProject);
 
-	if (!SaveAndExit && Options.ProjectName.isEmpty() && swGetProfileInt(SW_PROFILE_AUTOLOAD_MOSTRECENT))
+	if (!SaveAndExit && Options.ProjectName.isEmpty() && swGetProfileInteger(SW_PROFILE_AUTO_LOAD_MOST_RECENT))
 		Options.ProjectName = swGetProfileString(SW_PROFILE_RECENT_FILE1);
 
 	bool ProjectLoaded = false;
@@ -1476,14 +1476,14 @@ void swApplication::Shutdown()
 void swApplication::ShowPreferencesDialog()
 {
 	swPreferencesDialogOptions Options;
-	int CurrentAASamples = swGetProfileInt(SW_PROFILE_ANTIALIASING_SAMPLES);
+	int CurrentAASamples = swGetProfileInteger(SW_PROFILE_ANTIALIASING_SAMPLES);
 	swStudStyle CurrentStudStyle = swGetPiecesLibrary()->GetStudStyle();
 
 	Options.Preferences = mPreferences;
 
 	Options.LibraryPath = swGetProfileString(SW_PROFILE_PARTS_LIBRARY);
-	Options.MinifigSettingsPath = swGetProfileString(SW_PROFILE_MINIFIG_SETTINGS);
-	Options.ColorConfigPath = swGetProfileString(SW_PROFILE_COLOR_CONFIG);
+	Options.MinifigSettingsPath = swGetProfileString(SW_PROFILE_MINIFIGURE_SETTINGS);
+	Options.ColorConfigPath = swGetProfileString(SW_PROFILE_COLOR_CONFIGURATION);
 	Options.POVRayPath = swGetProfileString(SW_PROFILE_POVRAY_PATH);
 	Options.LGEOPath = swGetProfileString(SW_PROFILE_POVRAY_LGEO_PATH);
 	Options.DefaultAuthor = swGetProfileString(SW_PROFILE_DEFAULT_AUTHOR_NAME);
@@ -1509,7 +1509,7 @@ void swApplication::ShowPreferencesDialog()
 
 	bool LanguageChanged = Options.Language != swGetProfileString(SW_PROFILE_LANGUAGE);
 	bool LibraryChanged = Options.LibraryPath != swGetProfileString(SW_PROFILE_PARTS_LIBRARY);
-	bool ColorConfigChanged = Options.ColorConfigPath != swGetProfileString(SW_PROFILE_COLOR_CONFIG);
+	bool ColorConfigChanged = Options.ColorConfigPath != swGetProfileString(SW_PROFILE_COLOR_CONFIGURATION);
 	bool AAChanged = CurrentAASamples != Options.AASamples;
 	bool StudStyleChanged = CurrentStudStyle != Options.StudStyle;
 	bool StudCylinderColorEnabledChanged = Options.Preferences.mStudCylinderColorEnabled != mPreferences.mStudCylinderColorEnabled;
@@ -1545,11 +1545,11 @@ void swApplication::ShowPreferencesDialog()
 
 	swSetProfileString(SW_PROFILE_DEFAULT_AUTHOR_NAME, Options.DefaultAuthor);
 	swSetProfileString(SW_PROFILE_PARTS_LIBRARY, Options.LibraryPath);
-	swSetProfileString(SW_PROFILE_MINIFIG_SETTINGS, Options.MinifigSettingsPath);
+	swSetProfileString(SW_PROFILE_MINIFIGURE_SETTINGS, Options.MinifigSettingsPath);
 	swSetProfileString(SW_PROFILE_POVRAY_PATH, Options.POVRayPath);
 	swSetProfileString(SW_PROFILE_POVRAY_LGEO_PATH, Options.LGEOPath);
 	swSetProfileString(SW_PROFILE_LANGUAGE, Options.Language);
-	swSetProfileInt(SW_PROFILE_ANTIALIASING_SAMPLES, Options.AASamples);
+	swSetProfileInteger(SW_PROFILE_ANTIALIASING_SAMPLES, Options.AASamples);
 	swSetProfileStudStyle(Options.StudStyle);
 
 	if (LanguageChanged || LibraryChanged || AAChanged)
@@ -1594,7 +1594,7 @@ void swApplication::ShowPreferencesDialog()
 
 	// UpdateStudStyleAndColors() reloads colors too; both paths must see the newly selected config.
 	if (ColorConfigChanged)
-		swSetProfileString(SW_PROFILE_COLOR_CONFIG, Options.ColorConfigPath);
+		swSetProfileString(SW_PROFILE_COLOR_CONFIGURATION, Options.ColorConfigPath);
 
 	if (StudStyleChanged || StudCylinderColorEnabledChanged)
 		swGetPiecesLibrary()->UpdateStudStyleAndColors(Options.StudStyle, Options.Preferences.mStudCylinderColorEnabled);

@@ -5,7 +5,7 @@
 #include <sys/stat.h>
 #include "sw_file.h"
 
-swMemFile::swMemFile()
+swMemoryFile::swMemoryFile()
 {
 	mGrowBytes = 1024;
 	mPosition = 0;
@@ -14,12 +14,12 @@ swMemFile::swMemFile()
 	mBuffer = nullptr;
 }
 
-swMemFile::~swMemFile()
+swMemoryFile::~swMemoryFile()
 {
-	swMemFile::Close();
+	swMemoryFile::Close();
 }
 
-void swMemFile::Seek(qint64 Offset, int From)
+void swMemoryFile::Seek(qint64 Offset, int From)
 {
 	if (From == SEEK_SET)
 		mPosition = Offset;
@@ -29,12 +29,12 @@ void swMemFile::Seek(qint64 Offset, int From)
 		mPosition = mFileSize + Offset;
 }
 
-long swMemFile::GetPosition() const
+long swMemoryFile::GetPosition() const
 {
 	return (long)mPosition;
 }
 
-void swMemFile::SetLength(size_t NewLength)
+void swMemoryFile::SetLength(size_t NewLength)
 {
 	if (NewLength > mBufferSize)
 		GrowFile(NewLength);
@@ -45,12 +45,12 @@ void swMemFile::SetLength(size_t NewLength)
 	mFileSize = NewLength;
 }
 
-size_t swMemFile::GetLength() const
+size_t swMemoryFile::GetLength() const
 {
 	return mFileSize;
 }
 
-void swMemFile::Close()
+void swMemoryFile::Close()
 {
 	if (!mBuffer)
 		return;
@@ -62,7 +62,7 @@ void swMemFile::Close()
 	mBuffer = nullptr;
 }
 
-size_t swMemFile::ReadBuffer(void* Buffer, size_t Bytes)
+size_t swMemoryFile::ReadBuffer(void* Buffer, size_t Bytes)
 {
 	if (Bytes == 0 || mPosition > mFileSize)
 		return 0;
@@ -80,7 +80,7 @@ size_t swMemFile::ReadBuffer(void* Buffer, size_t Bytes)
 	return BytesToRead;
 }
 
-size_t swMemFile::WriteBuffer(const void* Buffer, size_t Bytes)
+size_t swMemoryFile::WriteBuffer(const void* Buffer, size_t Bytes)
 {
 	if (Bytes == 0)
 		return 0;
@@ -98,7 +98,7 @@ size_t swMemFile::WriteBuffer(const void* Buffer, size_t Bytes)
 	return Bytes;
 }
 
-void swMemFile::GrowFile(size_t NewLength)
+void swMemoryFile::GrowFile(size_t NewLength)
 {
 	if (NewLength <= mBufferSize)
 		return;
@@ -120,7 +120,7 @@ void swMemFile::GrowFile(size_t NewLength)
 	mBufferSize = NewLength;
 }
 
-char* swMemFile::ReadLine(char* Buffer, size_t BufferSize)
+char* swMemoryFile::ReadLine(char* Buffer, size_t BufferSize)
 {
 	int BytesRead = 0;
 	unsigned char ch;

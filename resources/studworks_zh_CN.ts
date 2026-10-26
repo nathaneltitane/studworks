@@ -1345,13 +1345,13 @@
 <context>
     <name>Camera Projection</name>
     <message>
-        <location filename="../src/core/camera.cpp" line="63"/>
+        <location filename="../src/core/sw_camera.cpp" line="63"/>
         <source>Perspective</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">看法</translation>
     </message>
     <message>
-        <location filename="../src/core/camera.cpp" line="66"/>
+        <location filename="../src/core/sw_camera.cpp" line="66"/>
         <source>Orthographic</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">正字法</translation>
@@ -1360,145 +1360,145 @@
 <context>
     <name>Checkpoint</name>
     <message>
-        <location filename="../src/core/object.cpp" line="21"/>
+        <location filename="../src/core/sw_object.cpp" line="21"/>
         <source>Change Piece</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">更改零件</translation>
     </message>
     <message>
-        <location filename="../src/core/object.cpp" line="24"/>
+        <location filename="../src/core/sw_object.cpp" line="24"/>
         <source>Change Piece Color</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">更改零件颜色</translation>
     </message>
     <message>
-        <location filename="../src/core/object.cpp" line="31"/>
+        <location filename="../src/core/sw_object.cpp" line="31"/>
         <source>Rename Camera</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">重命名相机</translation>
     </message>
     <message>
-        <location filename="../src/core/object.cpp" line="34"/>
+        <location filename="../src/core/sw_object.cpp" line="34"/>
         <source>Change Camera Projection</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">更改相机投影</translation>
     </message>
     <message>
-        <location filename="../src/core/object.cpp" line="37"/>
+        <location filename="../src/core/sw_object.cpp" line="37"/>
         <source>Change Camera FOV</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">更改相机视场角</translation>
     </message>
     <message>
-        <location filename="../src/core/object.cpp" line="40"/>
+        <location filename="../src/core/sw_object.cpp" line="40"/>
         <source>Change Camera Near Plane</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">更改相机近裁剪面</translation>
     </message>
     <message>
-        <location filename="../src/core/object.cpp" line="43"/>
+        <location filename="../src/core/sw_object.cpp" line="43"/>
         <source>Change Camera Far Plane</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">更改相机远裁剪面</translation>
     </message>
     <message>
-        <location filename="../src/core/object.cpp" line="57"/>
+        <location filename="../src/core/sw_object.cpp" line="57"/>
         <source>Rename Light</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">重命名光</translation>
     </message>
     <message>
-        <location filename="../src/core/object.cpp" line="60"/>
+        <location filename="../src/core/sw_object.cpp" line="60"/>
         <source>Change Light Type</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">改变灯光类型</translation>
     </message>
     <message>
-        <location filename="../src/core/object.cpp" line="63"/>
+        <location filename="../src/core/sw_object.cpp" line="63"/>
         <source>Change Light Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">改变灯光颜色</translation>
     </message>
     <message>
-        <location filename="../src/core/object.cpp" line="66"/>
+        <location filename="../src/core/sw_object.cpp" line="66"/>
         <source>Change Light Blender Power</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">改变灯Blender电源</translation>
     </message>
     <message>
-        <location filename="../src/core/object.cpp" line="69"/>
+        <location filename="../src/core/sw_object.cpp" line="69"/>
         <source>Change Light POV-Ray Power</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">改变灯POV-Ray电源</translation>
     </message>
     <message>
-        <location filename="../src/core/object.cpp" line="72"/>
+        <location filename="../src/core/sw_object.cpp" line="72"/>
         <source>Change Light Shadow</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">改变光影</translation>
     </message>
     <message>
-        <location filename="../src/core/object.cpp" line="75"/>
+        <location filename="../src/core/sw_object.cpp" line="75"/>
         <source>Change Light POV-Ray Fade Distance</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">改变灯光 POV-Ray 淡入淡出距离</translation>
     </message>
     <message>
-        <location filename="../src/core/object.cpp" line="78"/>
+        <location filename="../src/core/sw_object.cpp" line="78"/>
         <source>Change Light POV-Ray Fade Power</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">改变灯光 POV-Ray 淡入淡出功率</translation>
     </message>
     <message>
-        <location filename="../src/core/object.cpp" line="81"/>
+        <location filename="../src/core/sw_object.cpp" line="81"/>
         <source>Change Light Blender Radius</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">更改灯光 Blender 半径</translation>
     </message>
     <message>
-        <location filename="../src/core/object.cpp" line="84"/>
+        <location filename="../src/core/sw_object.cpp" line="84"/>
         <source>Change Light Blender Angle</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">改变灯光Blender角度</translation>
     </message>
     <message>
-        <location filename="../src/core/object.cpp" line="87"/>
+        <location filename="../src/core/sw_object.cpp" line="87"/>
         <source>Change Area Light X Size</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">更改区域光 X 尺寸</translation>
     </message>
     <message>
-        <location filename="../src/core/object.cpp" line="90"/>
+        <location filename="../src/core/sw_object.cpp" line="90"/>
         <source>Change Area Light Y Size</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">更改区域光 Y 尺寸</translation>
     </message>
     <message>
-        <location filename="../src/core/object.cpp" line="93"/>
+        <location filename="../src/core/sw_object.cpp" line="93"/>
         <source>Change Spot Light Cone Angle</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">更改聚光灯锥角</translation>
     </message>
     <message>
-        <location filename="../src/core/object.cpp" line="96"/>
+        <location filename="../src/core/sw_object.cpp" line="96"/>
         <source>Change Spot Light Penumbra Angle</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">更改聚光灯半影角度</translation>
     </message>
     <message>
-        <location filename="../src/core/object.cpp" line="99"/>
+        <location filename="../src/core/sw_object.cpp" line="99"/>
         <source>Change Spot Light POV-Ray Tightness</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">改变聚光灯POV-Ray密封性</translation>
     </message>
     <message>
-        <location filename="../src/core/object.cpp" line="102"/>
+        <location filename="../src/core/sw_object.cpp" line="102"/>
         <source>Change Area Light Shape</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">更改区域光形状</translation>
     </message>
     <message>
-        <location filename="../src/core/object.cpp" line="106"/>
+        <location filename="../src/core/sw_object.cpp" line="106"/>
         <source>Change Area Light POV-Ray Grid</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">更改区域光 POV-Ray 网格</translation>
@@ -1507,25 +1507,25 @@
 <context>
     <name>Light Shapes</name>
     <message>
-        <location filename="../src/core/light.cpp" line="76"/>
+        <location filename="../src/core/sw_light.cpp" line="76"/>
         <source>Rectangle</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">长方形</translation>
     </message>
     <message>
-        <location filename="../src/core/light.cpp" line="79"/>
+        <location filename="../src/core/sw_light.cpp" line="79"/>
         <source>Square</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">正方形</translation>
     </message>
     <message>
-        <location filename="../src/core/light.cpp" line="82"/>
+        <location filename="../src/core/sw_light.cpp" line="82"/>
         <source>Disk</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">磁盘</translation>
     </message>
     <message>
-        <location filename="../src/core/light.cpp" line="85"/>
+        <location filename="../src/core/sw_light.cpp" line="85"/>
         <source>Ellipse</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">椭圆</translation>
@@ -1534,25 +1534,25 @@
 <context>
     <name>Light Types</name>
     <message>
-        <location filename="../src/core/light.cpp" line="43"/>
+        <location filename="../src/core/sw_light.cpp" line="43"/>
         <source>Point Light</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">点光源</translation>
     </message>
     <message>
-        <location filename="../src/core/light.cpp" line="46"/>
+        <location filename="../src/core/sw_light.cpp" line="46"/>
         <source>Spot Light</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">聚光灯</translation>
     </message>
     <message>
-        <location filename="../src/core/light.cpp" line="49"/>
+        <location filename="../src/core/sw_light.cpp" line="49"/>
         <source>Directional Light</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">定向光</translation>
     </message>
     <message>
-        <location filename="../src/core/light.cpp" line="52"/>
+        <location filename="../src/core/sw_light.cpp" line="52"/>
         <source>Area Light</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">区域光</translation>
@@ -2928,9 +2928,9 @@
     </message>
 </context>
 <context>
-    <name>MinifigWizard</name>
+    <name>swMinifigureWizard</name>
     <message>
-        <location filename="../src/core/minifig.cpp" line="65"/>
+        <location filename="../src/core/sw_minifigure.cpp" line="65"/>
         <source>Default</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">默认</translation>
@@ -3045,7 +3045,7 @@
         <translation type="vanished">加载文件 &apos;%1&apos; 时出错:文件格式无法识别。</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="1613"/>
+        <location filename="../src/core/sw_project.cpp" line="1613"/>
         <source>Merged </source>
         <translation>合并的 </translation>
     </message>
@@ -3054,66 +3054,66 @@
         <translation type="vanished">StudWorks</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="2636"/>
-        <location filename="../src/core/project.cpp" line="2944"/>
+        <location filename="../src/core/sw_project.cpp" line="2636"/>
+        <location filename="../src/core/sw_project.cpp" line="2944"/>
         <source>Nothing to export.</source>
         <translation>没有可导出的内容。</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="2200"/>
+        <location filename="../src/core/sw_project.cpp" line="2200"/>
         <source>Export 3D Studio</source>
         <translation>导出 3D Studio</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="330"/>
+        <location filename="../src/core/sw_project.cpp" line="330"/>
         <source>A piece named &apos;%1&apos; already exists in this project. Please enter a unique name.</source>
         <oldsource>A piece named &apos;%1&apos; already exists in this project, please enter a unique name.</oldsource>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">此项目中已存在名为 '%1' 的零件，请输入不同的名称。</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="414"/>
-        <location filename="../src/core/project.cpp" line="441"/>
-        <location filename="../src/core/project.cpp" line="498"/>
+        <location filename="../src/core/sw_project.cpp" line="414"/>
+        <location filename="../src/core/sw_project.cpp" line="441"/>
+        <location filename="../src/core/sw_project.cpp" line="498"/>
         <source>A piece named &apos;%1&apos; already exists in this project.</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">此项目中已存在名为 '%1' 的零件。</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="414"/>
-        <location filename="../src/core/project.cpp" line="441"/>
-        <location filename="../src/core/project.cpp" line="498"/>
+        <location filename="../src/core/sw_project.cpp" line="414"/>
+        <location filename="../src/core/sw_project.cpp" line="441"/>
+        <location filename="../src/core/sw_project.cpp" line="498"/>
         <source>Submodels</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">子模型</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="474"/>
+        <location filename="../src/core/sw_project.cpp" line="474"/>
         <source>Model &apos;%1&apos; was deleted.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">型号 '%1' 已删除。</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="772"/>
+        <location filename="../src/core/sw_project.cpp" line="772"/>
         <source>Embedded data has no filename.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">嵌入数据没有文件名。</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="826"/>
+        <location filename="../src/core/sw_project.cpp" line="826"/>
         <source>Unexpected statement in embedded data &apos;%1&apos;.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">嵌入数据 '%1' 中存在意外语句。</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="861"/>
+        <location filename="../src/core/sw_project.cpp" line="861"/>
         <source>Duplicate model &apos;%1&apos; was ignored; model names are case-insensitive.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">重复模型 '%1' 被忽略；型号名称不区分大小写。</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="1072"/>
-        <location filename="../src/core/project.cpp" line="1081"/>
+        <location filename="../src/core/sw_project.cpp" line="1072"/>
+        <location filename="../src/core/sw_project.cpp" line="1081"/>
         <source>Error reading file &apos;%1&apos;:
 %2</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -3121,15 +3121,15 @@
 %2</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="1072"/>
-        <location filename="../src/core/project.cpp" line="1081"/>
-        <location filename="../src/core/project.cpp" line="1137"/>
+        <location filename="../src/core/sw_project.cpp" line="1072"/>
+        <location filename="../src/core/sw_project.cpp" line="1081"/>
+        <location filename="../src/core/sw_project.cpp" line="1137"/>
         <source>Load Model</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">加载模型</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="1137"/>
+        <location filename="../src/core/sw_project.cpp" line="1137"/>
         <source>Error loading file &apos;%1&apos;:
 File format is not recognized.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -3137,108 +3137,108 @@ File format is not recognized.</source>
  文件格式无法识别。</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="1234"/>
+        <location filename="../src/core/sw_project.cpp" line="1234"/>
         <source>Could not write all model data.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">无法写入所有模型数据。</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="1465"/>
+        <location filename="../src/core/sw_project.cpp" line="1465"/>
         <source>Merging would change texture &apos;%1&apos; used by model &apos;%2&apos;. Rename the conflicting texture before merging.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">合并将更改模型 '%2' 使用的纹理 '%1'。在合并之前重命名冲突的纹理。</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="1503"/>
+        <location filename="../src/core/sw_project.cpp" line="1503"/>
         <source>Both projects contain different embedded data named &apos;%1&apos;. Rename one before merging.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">这两个项目都包含名为 '%1' 的不同嵌入数据。合并前重命名。</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="1571"/>
-        <location filename="../src/core/project.cpp" line="1583"/>
+        <location filename="../src/core/sw_project.cpp" line="1571"/>
+        <location filename="../src/core/sw_project.cpp" line="1583"/>
         <source>Both projects contain different pieces named &apos;%1&apos;. Rename one before merging.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">这两个项目都包含名为 '%1' 的不同部分。合并前重命名。</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="1613"/>
+        <location filename="../src/core/sw_project.cpp" line="1613"/>
         <source>Merged %1 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">合并%1 </translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="1633"/>
+        <location filename="../src/core/sw_project.cpp" line="1633"/>
         <source>Could not reserve submodel name &apos;%1&apos;.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">无法保留子型号名称 '%1'。</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="1866"/>
+        <location filename="../src/core/sw_project.cpp" line="1866"/>
         <source>Cannot export different submodels named &apos;%1&apos;.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">无法导出名为 '%1' 的不同子模型。</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="1916"/>
+        <location filename="../src/core/sw_project.cpp" line="1916"/>
         <source>Could not serialize all model data.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">无法序列化所有模型数据。</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="1954"/>
+        <location filename="../src/core/sw_project.cpp" line="1954"/>
         <source>Cannot export different embedded data named &apos;%1&apos;.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">无法导出名为 '%1' 的不同嵌入数据。</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="2015"/>
+        <location filename="../src/core/sw_project.cpp" line="2015"/>
         <source>Clipboard contains no model.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">剪贴板不包含模型。</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="2200"/>
+        <location filename="../src/core/sw_project.cpp" line="2200"/>
         <source>3DS Files (*.3ds);;All Files (*.*)</source>
         <translation>3DS 文件 (*.3ds);;所有文件 (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="2208"/>
-        <location filename="../src/core/project.cpp" line="2658"/>
-        <location filename="../src/core/project.cpp" line="2955"/>
-        <location filename="../src/core/project.cpp" line="3291"/>
-        <location filename="../src/core/project.cpp" line="4025"/>
-        <location filename="../src/core/project.cpp" line="4038"/>
+        <location filename="../src/core/sw_project.cpp" line="2208"/>
+        <location filename="../src/core/sw_project.cpp" line="2658"/>
+        <location filename="../src/core/sw_project.cpp" line="2955"/>
+        <location filename="../src/core/sw_project.cpp" line="3291"/>
+        <location filename="../src/core/sw_project.cpp" line="4025"/>
+        <location filename="../src/core/sw_project.cpp" line="4038"/>
         <source>Could not open file &apos;%1&apos; for writing.</source>
         <translation>无法打开文件 &apos;%1&apos; 进行写入。</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="2638"/>
+        <location filename="../src/core/sw_project.cpp" line="2638"/>
         <source>Export BrickLink</source>
         <translation>导出 BrickLink</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="2638"/>
+        <location filename="../src/core/sw_project.cpp" line="2638"/>
         <source>XML Files (*.xml);;All Files (*.*)</source>
         <translation>XML 文件 (*.xml);;所有文件 (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="2650"/>
+        <location filename="../src/core/sw_project.cpp" line="2650"/>
         <source>Export COLLADA</source>
         <translation>导出 COLLADA</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="2650"/>
+        <location filename="../src/core/sw_project.cpp" line="2650"/>
         <source>COLLADA Files (*.dae);;All Files (*.*)</source>
         <translation>COLLADA 文件 (*.dae);;所有文件 (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="2946"/>
+        <location filename="../src/core/sw_project.cpp" line="2946"/>
         <source>Export CSV</source>
         <translation>导出 CSV</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="2946"/>
+        <location filename="../src/core/sw_project.cpp" line="2946"/>
         <source>CSV Files (*.csv);;All Files (*.*)</source>
         <translation>CSV 文件 (*.csv);;所有文件 (*.*)</translation>
     </message>
@@ -3247,70 +3247,70 @@ File format is not recognized.</source>
         <translation type="vanished">创建图片错误.</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="3283"/>
+        <location filename="../src/core/sw_project.cpp" line="3283"/>
         <source>Export POV-Ray</source>
         <translation>导出 POV-Ray</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="3283"/>
+        <location filename="../src/core/sw_project.cpp" line="3283"/>
         <source>POV-Ray Files (*.pov);;All Files (*.*)</source>
         <translation>POV-Ray 文件 (*.pov);;所有文件 (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="3728"/>
-        <location filename="../src/core/project.cpp" line="3778"/>
+        <location filename="../src/core/sw_project.cpp" line="3728"/>
+        <location filename="../src/core/sw_project.cpp" line="3778"/>
         <source>Could not find LGEO files in folder &apos;%1&apos;.</source>
         <translation>在文件夹 &apos;%1&apos; 中找不到 LGEO 文件。</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="4016"/>
+        <location filename="../src/core/sw_project.cpp" line="4016"/>
         <source>Export Wavefront</source>
         <translation>导出 Wavefront</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="4016"/>
+        <location filename="../src/core/sw_project.cpp" line="4016"/>
         <source>Wavefront Files (*.obj);;All Files (*.*)</source>
         <translation>Wavefront 文件 (*.obj);;所有文件 (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="1222"/>
-        <location filename="../src/core/project.cpp" line="1234"/>
-        <location filename="../src/core/project.cpp" line="1245"/>
-        <location filename="../src/core/project.cpp" line="2098"/>
-        <location filename="../src/core/project.cpp" line="2114"/>
-        <location filename="../src/core/project.cpp" line="3083"/>
-        <location filename="../src/core/project.cpp" line="3109"/>
-        <location filename="../src/core/project.cpp" line="3147"/>
-        <location filename="../src/core/project.cpp" line="3169"/>
-        <location filename="../src/core/project.cpp" line="3205"/>
-        <location filename="../src/core/project.cpp" line="3239"/>
+        <location filename="../src/core/sw_project.cpp" line="1222"/>
+        <location filename="../src/core/sw_project.cpp" line="1234"/>
+        <location filename="../src/core/sw_project.cpp" line="1245"/>
+        <location filename="../src/core/sw_project.cpp" line="2098"/>
+        <location filename="../src/core/sw_project.cpp" line="2114"/>
+        <location filename="../src/core/sw_project.cpp" line="3083"/>
+        <location filename="../src/core/sw_project.cpp" line="3109"/>
+        <location filename="../src/core/sw_project.cpp" line="3147"/>
+        <location filename="../src/core/sw_project.cpp" line="3169"/>
+        <location filename="../src/core/sw_project.cpp" line="3205"/>
+        <location filename="../src/core/sw_project.cpp" line="3239"/>
         <source>Error writing to file &apos;%1&apos;:
 %2</source>
         <translation>写入文件 &apos;%1&apos; 时出错:
 %2</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="187"/>
+        <location filename="../src/core/sw_project.cpp" line="187"/>
         <source>New Model.ldr</source>
         <translation>新建模型.ldr</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="187"/>
+        <location filename="../src/core/sw_project.cpp" line="187"/>
         <source>New Model.mpd</source>
         <translation>新建模型.mpd</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="266"/>
+        <location filename="../src/core/sw_project.cpp" line="266"/>
         <source>Submodel #</source>
         <translation>子模型 #</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="290"/>
+        <location filename="../src/core/sw_project.cpp" line="290"/>
         <source>Submodel Name:</source>
         <translation>子模型名称:</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="297"/>
+        <location filename="../src/core/sw_project.cpp" line="297"/>
         <source>The submodel name cannot be empty.</source>
         <translation>子模型名称不能为空。</translation>
     </message>
@@ -3319,13 +3319,13 @@ File format is not recognized.</source>
         <translation type="vanished">子模型已存在</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="317"/>
+        <location filename="../src/core/sw_project.cpp" line="317"/>
         <source>A submodel named &apos;%1&apos; already exists. Please enter a unique name.</source>
         <oldsource>A submodel named &apos;%1&apos; already exists, please enter a unique name.</oldsource>
         <translation type="unfinished">名为 &apos;%1&apos; 的子模型已存在，请输入唯一名称。</translation>
     </message>
     <message>
-        <location filename="../src/core/project.cpp" line="348"/>
+        <location filename="../src/core/sw_project.cpp" line="348"/>
         <source>New Submodel</source>
         <translation>新建子模型</translation>
     </message>
@@ -3333,7 +3333,7 @@ File format is not recognized.</source>
 <context>
     <name>QApplication</name>
     <message>
-        <location filename="../src/core/group.cpp" line="46"/>
+        <location filename="../src/core/sw_group.cpp" line="46"/>
         <source>Group #</source>
         <translation>组 #</translation>
     </message>
@@ -3378,13 +3378,13 @@ File format is not recognized.</source>
         <translation type="obsolete">错误</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="3572"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="3572"/>
         <source>Existing file &apos;%1&apos; detected.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">检测到现有文件 '%1'。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="3573"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="3573"/>
         <source>&apos;%1&apos;&lt;br&gt;This file already exists.&lt;br&gt;Replace existing file?</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">'%1'&lt;br&gt;此文件已存在。&lt;br&gt;替换现有文件？</translation>
@@ -3496,1201 +3496,1201 @@ File format is not recognized.</source>
  附加设置的完整选择。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="83"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="148"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="83"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="148"/>
         <source>%1 can specify camera definitions within the LDraw data. Choose to load them or ignore them.</source>
         <oldsource>%1 can specify camera definitions within the ldraw data. Choose to load them or ignore them.</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 可以在 ldraw 数据中指定相机定义。选择加载它们或忽略它们。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="84"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="150"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="84"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="150"/>
         <source>%1 can specify point and sunlight definitions within the LDraw data. Choose to load them or ignore them.</source>
         <oldsource>%1 can specify point and sunlight definitions within the ldraw data. Choose to load them or ignore them.</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 可以在 ldraw 数据中指定点和阳光定义。选择加载它们或忽略它们。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="76"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="138"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="76"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="138"/>
         <source>Add Environment</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">添加环境</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="77"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="77"/>
         <source>Add Piece Gap</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">添加零件间隙</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="77"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="77"/>
         <source>Add a small space between each piece</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">在零件之间添加少量间隙</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="96"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="179"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="96"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="179"/>
         <source>Add any archive (zip) libraries in the LDraw file path to the library search list - impacts performance</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">将 LDraw 文件路径中的任何存档 (zip) 库添加到库搜索列表 - 影响性能</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="78"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="78"/>
         <source>Adds a Bevel modifier for rounding off sharp edges</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">添加斜角修改器以圆化锐边</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="138"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="138"/>
         <source>Adds a ground plane and environment texture</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">添加地平面和环境纹理</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="76"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="76"/>
         <source>Adds a ground plane and environment texture (affects &apos;Photo-realistic&apos; look only)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">添加地平面和环境纹理（仅影响“照片真实感”外观）</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="159"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="159"/>
         <source>Adds a keyframe that shows the piece at the moment in the timeline</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">添加关键帧，使零件在时间轴中的指定时刻出现</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="107"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="107"/>
         <source>Amount of space between each piece (default 0.2mm)</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">零件之间的间隙大小（默认 0.2mm）</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="199"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="199"/>
         <source>Apply import scaling to mesh - Recommended for rendering, Apply import scaling to object - Recommended for piece editing</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">将导入缩放应用于网格 - 建议用于渲染，将导入缩放应用于对象 - 建议用于片段编辑</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="153"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="153"/>
         <source>BFC</source>
         <translatorcomment>Technical identifier or nonlinguistic text; intentionally retained unchanged.</translatorcomment>
         <translation type="unfinished">BFC</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="78"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="139"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="78"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="139"/>
         <source>Bevel Edges</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">斜边</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="183"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="183"/>
         <source>Bevel Segments</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">斜角段</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="184"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="184"/>
         <source>Bevel Weight</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">斜角重量</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="104"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="185"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="104"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="185"/>
         <source>Bevel Width</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">斜角宽度</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="139"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="139"/>
         <source>Bevel edges. Can cause some pieces to render incorrectly.</source>
         <oldsource>Bevel edges. Can cause some pieces to render incorrectly</oldsource>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">对边缘进行倒角。可能导致某些零件渲染不正确</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="183"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="183"/>
         <source>Bevel segments</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">斜角段</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="184"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="184"/>
         <source>Bevel weight</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">坡口重量</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="61"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="61"/>
         <source>Blender Path</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender 路径</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="62"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="62"/>
         <source>Blendfile Path</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">混合文件路径</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="154"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="154"/>
         <source>CLEAR Command</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">清除命令</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="105"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="186"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="105"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="186"/>
         <source>Camera Border Percent</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">相机边框百分比</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="142"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="144"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="142"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="144"/>
         <source>Case-sensitive Filesystem</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">区分大小写的文件系统</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="129"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="129"/>
         <source>Centered at Origin on Ground|Centered at Origin</source>
         <oldsource>Centered At Origin On Ground|Centered At Origin</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">以地面原点为中心|以原点为中心</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="196"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="196"/>
         <source>Chosen Logo</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择标志</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="113"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="197"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="113"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="197"/>
         <source>Color Scheme</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">配色方案</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="113"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="197"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="113"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="197"/>
         <source>Color scheme options - Realistic (lgeo), Original (LDConfig), Alternate (LDCfgalt), Custom (User Defined)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">配色方案选项 - 真实 (lgeo)、原始 (LDConfig)、替代 (LDCfgalt)、自定义（用户定义）</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="160"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="160"/>
         <source>Create collection for individual steps</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">为各个步骤创建集合</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="85"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="85"/>
         <source>Creates a Blender Object for each and every stud (WARNING: can be slow to import and edit in Blender if there are lots of studs)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">为每个螺柱创建一个 Blender 对象（警告：如果有很多螺柱，在 Blender 中导入和编辑可能会很慢）</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="80"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="146"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="80"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="146"/>
         <source>Crop Image</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">裁剪图像</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="80"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="146"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="80"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="146"/>
         <source>Crop the image border at opaque content. Requires transparent background set to True.</source>
         <oldsource>Crop the image border at opaque content. Requires transparent background set to True</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">在不透明内容处裁剪图像边框。需要将透明背景设置为 True</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="81"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="81"/>
         <source>Curved Walls</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">弧形墙</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="64"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="64"/>
         <source>Custom LDConfig Path</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">自定义 LDConfig 路径</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="106"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="106"/>
         <source>Default Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">默认颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="147"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="147"/>
         <source>Display Logo</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">显示标志</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="95"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="171"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="95"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="171"/>
         <source>Display Render Window</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">显示渲染窗口</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="147"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="147"/>
         <source>Display the logo on the stud</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">在螺柱上显示徽标</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="162"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="162"/>
         <source>Don&apos;t import studs</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">不导入螺柱</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="89"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="89"/>
         <source>Each object has a five-digit prefix, e.g., 00001_car. This keeps the list in its proper order.</source>
         <oldsource>Each object has a five digit prefix eg. 00001_car. This keeps the list in it&apos;s proper order</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">每个对象都有一个五位数字的前缀，例如。 00001_汽车。这使列表保持正确的顺序</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="63"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="63"/>
         <source>Environment Texture Path</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">环境纹理路径</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="144"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="144"/>
         <source>Filesystem case sensitivity defaults to false on Windows and macOS. Set to true if the LDraw path is case-sensitive on a case-insensitive filesystem.</source>
         <oldsource>Filesystem case sensitive defaults to false Windows and MacOS. Set true if LDraw path set to case-sensitive on case-insensitive filesystem.</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">文件系统区分大小写，Windows 和 MacOS 默认为 false。如果 LDraw 路径在不区分大小写的文件系统上设置为区分大小写，则设置为 true。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="142"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="142"/>
         <source>Filesystem is case sensitive. Defaults to true on Linux.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">文件系统区分大小写。在 Linux 上默认为 true。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="82"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="82"/>
         <source>Flatten Hierarchy</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">扁平化层次结构</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="114"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="114"/>
         <source>Flex Pieces Source</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">柔性零件来源</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="194"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="194"/>
         <source>Frame to add the first STEP meta command</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">添加第一个 STEP 元命令的框架</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="187"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="187"/>
         <source>Frames per Step</source>
         <oldsource>Frames Per Step</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">每步帧数</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="187"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="187"/>
         <source>Frames per step</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">每步帧数</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="66"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="66"/>
         <source>Full directory path to LSynth primitives - specify if not using default bundled in add-on</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">LSynth 原语的完整目录路径 - 指定是否不使用附加组件中捆绑的默认值</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="67"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="67"/>
         <source>Full directory path to stud logo primitives - if stud logo enabled, specify if unofficial pieces not used or not using default bundled in add-on</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">螺柱徽标基元的完整目录路径 - 如果启用螺柱徽标，请指定是否未使用非官方部分或不使用附加组件中捆绑的默认值</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="65"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="65"/>
         <source>Full directory path to the LDraw pieces library (download from https://library.ldraw.org)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">LDraw 件库的完整目录路径（从 https://library.ldraw.org) 下载</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="63"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="63"/>
         <source>Full file path to .exr environment texture file - specify if not using default bundled in add-on</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">.exr 环境纹理文件的完整文件路径 - 指定是否不使用附加组件中捆绑的默认值</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="61"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="61"/>
         <source>Full file path to Blender application executable</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender 应用程序可执行文件的完整文件路径</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="62"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="62"/>
         <source>Full file path to a supplement .blend file - specify to append additional settings</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">补充 .blend 文件的完整文件路径 - 指定附加其他设置</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="64"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="64"/>
         <source>Full file path to custom LDConfig file - specify if not %1 alternate LDConfig file</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">自定义 LDConfig 文件的完整文件路径 - 指定是否为 %1 备用 LDConfig 文件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="69"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="69"/>
         <source>Full file path to the Stud.io LDraw Custom Pieces</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Stud.io LDraw 自定义零件的完整文件路径</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="68"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="68"/>
         <source>Full file path to the Stud.io LDraw Pieces Library (download from https://www.bricklink.com/v3/studio/download.page)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Stud.io LDraw 作品库的完整文件路径（从 https://www.bricklink.com/v3/studio/download.page) 下载</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="155"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="155"/>
         <source>GROUP Command</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">组命令</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="188"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="188"/>
         <source>Gap Scale</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">间隙量表</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="107"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="107"/>
         <source>Gap Width</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">间隙宽度</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="154"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="154"/>
         <source>Hides all pieces in the timeline up to where this command is encountered</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">隐藏时间线中直到遇到此命令的所有片段</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="199"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="199"/>
         <source>How to Scale Pieces</source>
         <oldsource>How To Scale Pieces</oldsource>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">零件缩放方式</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="87"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="87"/>
         <source>Identical pieces (of the same type and color) share the same mesh</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">相同类型和颜色的零件共享同一网格</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="109"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="193"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="109"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="193"/>
         <source>Image Height</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">图像高度</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="110"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="110"/>
         <source>Image Scale</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">图像比例</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="108"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="192"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="108"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="192"/>
         <source>Image Width</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">图像宽度</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="83"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="148"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="83"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="148"/>
         <source>Import Cameras</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">导入相机</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="149"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="149"/>
         <source>Import Edges</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">导入边线</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="149"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="149"/>
         <source>Import LDraw edges as edges</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">将 LDraw 边导入为边</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="84"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="150"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="84"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="150"/>
         <source>Import Lights</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">进口灯</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="189"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="189"/>
         <source>Import Scale</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">进口规模</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="82"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="82"/>
         <source>In Scene Outline, all pieces are placed directly below the root - there&apos;s no tree of submodels</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">在场景轮廓中，所有片段都直接放置在根下方 - 没有子模型树</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="85"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="85"/>
         <source>Instance Studs</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">实例螺柱</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="86"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="151"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="86"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="151"/>
         <source>Keep Aspect Ratio</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">保持纵横比</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="65"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="65"/>
         <source>LDraw Directory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">LDraw 目录</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="66"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="66"/>
         <source>LSynth Directory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">LSynth 目录</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="126"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="126"/>
         <source>LSynth|LDCad|LDCad and LSynth</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">LSynth|LDCad|LDCad 和 LSynth</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="87"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="87"/>
         <source>Link Like Pieces</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">链接相同零件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="115"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="115"/>
         <source>Logo Version</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">标志版本</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="116"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="116"/>
         <source>Look</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">看</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="208"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="208"/>
         <source>Low Resolution Primitives|Standard Primitives|High Resolution Primitives</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">低分辨率基元|标准基元|高分辨率基元</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="86"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="151"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="86"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="151"/>
         <source>Maintain the aspect ratio when resizing the output image - this attribute is not passed to Blender</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">调整输出图像大小时保持宽高比 - 此属性不会传递给 Blender</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="152"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="152"/>
         <source>Make Gaps</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">留出间隙</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="152"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="152"/>
         <source>Make small gaps between bricks. A small gap is more realistic.</source>
         <oldsource>Make small gaps between bricks. A small gap is more realistic</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">在砖块之间留出小间隙。小差距更真实</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="81"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="81"/>
         <source>Makes surfaces look slightly concave, for interesting reflections</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">使表面看起来略凹，以获得有趣的反射</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="190"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="190"/>
         <source>Maximum distance between elements to merge</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">要合并的元素之间的最大距离</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="190"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="190"/>
         <source>Merge Distance</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">合并距离</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="170"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="170"/>
         <source>Merge vertices that are within a certain distance.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">合并一定距离内的顶点。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="94"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="170"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="94"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="170"/>
         <source>No Duplicate Vertices</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">没有重复的顶点</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="162"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="162"/>
         <source>No Studs</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">无螺柱</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="156"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="158"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="156"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="158"/>
         <source>Not implemented</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">未实施</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="89"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="89"/>
         <source>Number Objects</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">数字对象</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="102"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="181"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="102"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="181"/>
         <source>Output all messages while working, else only show warnings and errors</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">工作时输出所有消息，否则仅显示警告和错误</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="90"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="163"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="90"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="163"/>
         <source>Overwrite Image</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">覆盖图像</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="91"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="91"/>
         <source>Overwrite existing material with the same name</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">覆盖同名的现有材料</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="92"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="92"/>
         <source>Overwrite existing mesh with the same name</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">覆盖同名的现有网格</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="156"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="156"/>
         <source>PAUSE Command</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">暂停命令</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="157"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="157"/>
         <source>PRINT/WRITE Command</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">打印/写入命令</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="88"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="88"/>
         <source>Parent Minifigs</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">父母小人仔</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="165"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="165"/>
         <source>Parent to Empty</source>
         <oldsource>Parent To Empty</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">父级为空</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="165"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="165"/>
         <source>Parent the model to an empty</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">将模型父级设置为空</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="128"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="128"/>
         <source>Photorealistic|LEGO Instructions</source>
         <oldsource>Photo Realistic|Lego Instructions</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">照片逼真|Lego 说明</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="116"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="116"/>
         <source>Photorealistic or schematic instruction look</source>
         <oldsource>Photo-realistic or Schematic &apos;Instruction&apos; look</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">照片般真实或示意性的“指令”外观</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="88"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="88"/>
         <source>Pieces of minifigs are automatically parented to each other in a hierarchy</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">小人仔在层次结构中自动成为彼此的父级</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="93"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="164"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="93"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="164"/>
         <source>Position Camera</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">定位相机</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="117"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="117"/>
         <source>Position Object</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">位置对象</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="93"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="164"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="93"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="164"/>
         <source>Position the camera to show the whole model</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">放置相机以显示整个模型</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="166"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="166"/>
         <source>Prefer Stud.io Library</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">更喜欢 Stud.io 库</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="167"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="167"/>
         <source>Prefer Unofficial Pieces</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">优先使用非官方零件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="157"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="157"/>
         <source>Prints PRINT/WRITE META commands to the system console.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">将 PRINT/WRITE META 命令打印到系统控制台。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="155"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="155"/>
         <source>Process GROUP meta commands</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">处理 GROUP 元命令</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="153"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="153"/>
         <source>Process LDraw Back Face Culling meta commands</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">处理 LDraw 背面剔除元命令</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="161"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="161"/>
         <source>Process TEXMAP and DATA meta commands</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">处理 TEXMAP 和 DATA 元命令</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="168"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="168"/>
         <source>Profile</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">轮廓</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="168"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="168"/>
         <source>Profile import performance</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">配置文件导入性能</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="206"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="206"/>
         <source>Raised flattened logo geometry (3)|Raised rounded logo geometry (4)|Subtle rounded logo geometry (5)</source>
         <oldsource>Raised flattened logo geometry(3)|Raised rounded logo geometry(4)|Subtle rounded logo geometry(5)</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">凸起的扁平徽标几何形状(3)|凸起的圆形徽标几何形状(4)|微妙的圆形徽标几何形状(5)</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="125"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="207"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="125"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="207"/>
         <source>Realistic Colors|Original LDraw Colors|Alternate LDraw Colors|Custom Colors</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">真实颜色|原始颜色LDraw颜色|替代颜色LDraw颜色|自定义颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="169"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="169"/>
         <source>Recalculate Normals</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">重新计算法线</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="131"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="131"/>
         <source>Recalculate Normals|Two Faces Back to Back</source>
         <oldsource>Recalculate Normals|Two Faces Back To Back</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">重新计算法线|两个面背靠背</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="169"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="169"/>
         <source>Recalculate normals. Not recommended if BFC processing is active.</source>
         <oldsource>Recalculate normals. Not recommended if BFC processing is active</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">重新计算法线。如果 BFC 处理处于活动状态，则不推荐</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="94"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="94"/>
         <source>Remove duplicate vertices (recommended)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">删除重复的顶点（推荐）</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="180"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="180"/>
         <source>Render LDraw edges using freestyle</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">使用自由式渲染 LDraw 边缘</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="111"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="191"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="111"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="191"/>
         <source>Render Percentage</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">渲染百分比</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="48"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="48"/>
         <source>&lt;p&gt;&lt;b&gt;Blender LDraw Add-on Settings&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Configure Blender and its LDraw import and render add-ons. Choose the Blender executable first. Editing its path or changing an import module can configure the add-on immediately.&lt;/p&gt;&lt;p&gt;Choose an import module, then adjust its library paths and rendering options. TN and MM have separate settings. Use the scroll bar to reach all options; Show Paths and Hide Paths control the paths section.&lt;/p&gt;&lt;p&gt;Image dimensions and render percentage start with the values from the Render dialog. Crop Image calculates dimensions for the current model. Choose Apply to save the paths and settings and close this dialog. Reset restores the last applied values or system defaults.&lt;/p&gt;&lt;p&gt;Cancel closes without applying pending path and setting edits. Add-on installation, module configuration, and the update-check preference can take effect before Apply.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Blender LDraw 插件设置&lt;/b&gt;&lt;/p&gt;&lt;p&gt;配置 Blender 及其 LDraw 导入和渲染插件。首先选择 Blender 可执行文件。编辑其路径或更改导入模块可以立即配置插件。&lt;/p&gt;&lt;p&gt;选择导入模块，然后调整其库路径和渲染选项。 TN和MM有单独的设置。使用滚动条到达所有选项；显示路径和隐藏路径控制路径部分。&lt;/p&gt;&lt;p&gt;图像尺寸和渲染百分比从“渲染”对话框中的值开始。裁剪图像计算当前模型的尺寸。选择“应用”以保存路径和设置并关闭此对话框。重置将恢复上次应用的值或系统默认值。&lt;/p&gt;&lt;p&gt;取消将关闭，而不应用挂起的路径和设置编辑。插件安装、模块配置和更新检查首选项可以在应用之前生效。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="118"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="198"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="118"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="198"/>
         <source>Resolution</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">解决</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="118"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="198"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="118"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="198"/>
         <source>Resolution of piece primitives, i.e., how much geometry they have</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">零件基元的分辨率，即其几何细节的数量</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="119"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="119"/>
         <source>Resolve Normals</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">解析法线</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="127"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="127"/>
         <source>Rounded (4)|Flattened (3)|Subtle Rounded (5)</source>
         <oldsource>Rounded(4)|Flattened(3)|Subtle Rounded(5)</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">圆角(4)|扁平化(3)|微妙圆角(5)</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="158"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="158"/>
         <source>SAVE Command</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">保存命令</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="159"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="159"/>
         <source>STEP Command</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">步骤命令</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="160"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="160"/>
         <source>STEP Groups</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">步骤组</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="209"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="209"/>
         <source>Scale Mesh|Scale Object</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">缩放网格|缩放对象</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="188"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="188"/>
         <source>Scale individual pieces by this much to create the gap</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">按此比例缩放各个零件以产生间隙</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="97"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="172"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="97"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="172"/>
         <source>Search Additional Paths</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">搜索其他路径</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="166"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="166"/>
         <source>Search for pieces in Stud.io library first</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">优先在 Stud.io 零件库中查找零件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="167"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="167"/>
         <source>Search for unofficial pieces first</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">优先查找非官方零件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="173"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="173"/>
         <source>Set Step End Frame</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">设置步骤结束帧</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="174"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="174"/>
         <source>Set Timeline Markers</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">设置时间线标记</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="173"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="173"/>
         <source>Set the end frame to the last step</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">将结束帧设置为最后一步</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="174"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="174"/>
         <source>Set timeline markers for meta commands</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">为元命令设置时间线标记</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="110"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="110"/>
         <source>Sets a scale for the model (1.0 = real life scale)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">设置模型的比例（1.0 = 现实生活比例）</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="106"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="106"/>
         <source>Sets the default piece color using LDraw color code</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">使用 LDraw 颜色代码设置默认零件颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="109"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="193"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="109"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="193"/>
         <source>Sets the rendered image height in pixels - from current step image, label shows config setting.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">设置渲染图像的高度（以像素为单位） - 从当前步骤图像开始，标签显示配置设置。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="111"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="191"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="111"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="191"/>
         <source>Sets the rendered image percentage scale for its pixel resolution - updated from current step, label shows config setting.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">设置其像素分辨率的渲染图像百分比比例 - 从当前步骤更新，标签显示配置设置。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="108"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="192"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="108"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="192"/>
         <source>Sets the rendered image width in pixels - from current step image, label shows config setting.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">设置渲染图像宽度（以像素为单位） - 从当前步骤图像开始，标签显示配置设置。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="175"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="175"/>
         <source>Shade Smooth</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">阴影光滑</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="101"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="101"/>
         <source>Shows the LEGO logo on each stud (at the expense of some extra geometry and import time)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">在每个螺柱上显示 LEGO 徽标（以一些额外的几何形状和导入时间为代价）</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="98"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="98"/>
         <source>Smooth Shading</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">平滑阴影</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="200"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="200"/>
         <source>Smooth Type</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">光滑型</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="98"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="98"/>
         <source>Smooth faces and add an edge-split modifier (recommended)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">平滑面并添加边缘分割修改器（推荐）</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="210"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="210"/>
         <source>Smooth piece faces with edge split modifier|Auto-smooth piece faces|Split during initial mesh processing</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">使用边缘分割修改器平滑零件面|自动平滑零件面|在初始网格处理期间分割</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="119"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="119"/>
         <source>Some older LDraw pieces have faces with ambiguous normals. This specifies what to do with them.</source>
         <oldsource>Some older LDraw pieces have faces with ambiguous normals, this specifies what to do with them</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">一些旧的 LDraw 部件的法线不明确，这指定了如何处理它们</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="114"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="114"/>
         <source>Source used to create flexible pieces - string, hoses, etc. (LDCad, LSynth, or both)</source>
         <oldsource>Source used to create flexible pieces - string, hoses etc. (LDCad, LSynth or both</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">用于创建柔性部件的源 - 绳子、软管等（LDCad、LSynth 或两者</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="95"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="171"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="95"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="171"/>
         <source>Specify whether to display the render window during Blender user interface image file render</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">指定在Blender用户界面图像文件渲染期间是否显示渲染窗口</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="90"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="163"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="90"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="163"/>
         <source>Specify whether to overwrite an existing rendered image file</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">指定是否覆盖现有的渲染图像文件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="176"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="176"/>
         <source>Specify whether to render a background</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">指定是否渲染背景</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="99"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="99"/>
         <source>Specify whether to render a background (affects the photorealistic look only)</source>
         <oldsource>Specify whether to render a background (affects &apos;Photo-realistic look only)</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">指定是否渲染背景（仅影响“照片真实感外观”）</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="97"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="172"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="97"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="172"/>
         <source>Specify whether to search additional LDraw paths</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">指定是否搜索附加 LDraw 路径</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="79"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="140"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="79"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="140"/>
         <source>Specify whether to treat the .blend file as being loaded from a trusted source</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">指定是否将 .blend 文件视为从可信源加载</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="100"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="100"/>
         <source>Specify whether to use pieces from the LDraw unofficial pieces library path</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">指定是否使用 LDraw 非官方件库路径中的件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="177"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="177"/>
         <source>Split shortcut pieces into their constituent pieces as if they were models</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">将快捷方式片段拆分为其组成片段，就像它们是模型一样</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="130"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="130"/>
         <source>Standard Primitives|High Resolution Primitives|Low Resolution Primitives</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">标准基元|高分辨率基元|低分辨率基元</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="194"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="194"/>
         <source>Starting Step Frame</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">起始步框</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="67"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="67"/>
         <source>Stud Logo Directory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">螺柱标志目录</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="69"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="69"/>
         <source>Stud.io Custom Pieces Path</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Stud.io 自定义零件路径</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="68"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="68"/>
         <source>Stud.io LDraw Path</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Stud.io LDraw 路径</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="161"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="161"/>
         <source>TEXMAP and DATA Command</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">TEXMAP 和 DATA 命令</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="117"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="117"/>
         <source>The object is centered at the origin, and on the ground plane</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">对象以原点为中心，位于地平面上</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="99"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="176"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="99"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="176"/>
         <source>Transparent Background</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">透明背景</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="177"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="177"/>
         <source>Treat Shortcuts as Models</source>
         <oldsource>Treat Shortcuts As Models</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">将快捷方式视为模型</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="178"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="178"/>
         <source>Triangulate Faces</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">三角面</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="178"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="178"/>
         <source>Triangulate all faces</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">对所有面进行三角测量</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="79"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="140"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="79"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="140"/>
         <source>Trusted Blend File</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">可信混合文件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="96"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="179"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="96"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="179"/>
         <source>Use Archive Libraries</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">使用存档库</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="91"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="91"/>
         <source>Use Existing Material</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">使用现有材料</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="92"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="92"/>
         <source>Use Existing Mesh</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">使用现有网格</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="180"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="180"/>
         <source>Use Freestyle Edges</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">使用自由式边缘</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="101"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="101"/>
         <source>Use Logo Studs</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">使用徽标饰钉</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="100"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="100"/>
         <source>Use Unofficial Pieces</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">使用非官方零件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="200"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="200"/>
         <source>Use either autosmooth or an edge split modifier to smooth piece faces</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">使用自动平滑或边缘分割修改器平滑零件表面</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="175"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="175"/>
         <source>Use flat or smooth shading for piece faces</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">对零件表面使用平面或平滑着色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="102"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="181"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="102"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="181"/>
         <source>Verbose Output</source>
         <oldsource>Verbose output</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">详细输出</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="189"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="189"/>
         <source>What scale to import at. Full scale is 1.0 and is so huge that it is unwieldy in the viewport.</source>
         <oldsource>What scale to import at. Full scale is 1.0 and is so huge that it is unwieldy in the viewport</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">以什么规模进口。全比例为 1.0，太大以至于在视口中难以操作</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="186"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="186"/>
         <source>When positioning the camera, include a (percentage) border around the model in the render</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">定位相机时，在渲染中的模型周围包含（百分比）边框</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="105"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="105"/>
         <source>When positioning the camera, include a (percentage) border leeway around the model in the rendered image</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">定位相机时，在渲染图像中的模型周围包含（百分比）边界余量</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="196"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="196"/>
         <source>Which logo to display. logo and logo2 aren&apos;t used and are only included for completeness.</source>
         <oldsource>Which logo to display. logo and logo2 aren&apos;t used and are only included for completeness</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">显示哪个标志。未使用 logo 和 logo2，仅出于完整性考虑而将其包含在内</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="115"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="115"/>
         <source>Which version of the logo to use (&apos;3&apos; (flat), &apos;4&apos; (rounded) or &apos;5&apos; (subtle rounded))</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">使用哪个版本的徽标（“3”（扁平）、“4”（圆形）或“5”（微妙圆形））</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="104"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="185"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="104"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="185"/>
         <source>Width of the beveled edges</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">斜边宽度</translation>
@@ -4701,21 +4701,21 @@ File format is not recognized.</source>
         <translation type="obsolete">错误</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_utils.cpp" line="103"/>
-        <location filename="../src/ui/sw_utils.cpp" line="109"/>
-        <location filename="../src/ui/sw_utils.cpp" line="127"/>
+        <location filename="../src/ui/sw_utilities.cpp" line="103"/>
+        <location filename="../src/ui/sw_utilities.cpp" line="109"/>
+        <location filename="../src/ui/sw_utilities.cpp" line="127"/>
         <source>Stop Blender Process</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">停止 Blender 进程</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_utils.cpp" line="127"/>
+        <location filename="../src/ui/sw_utilities.cpp" line="127"/>
         <source>%1 failed: %2</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 失败：%2</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_instructionsdialog.cpp" line="75"/>
+        <location filename="../src/ui/sw_instructions_dialog.cpp" line="75"/>
         <source>Create Pieces List</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">创建零件列表</translation>
@@ -5890,32 +5890,32 @@ File format is not recognized.</source>
 <context>
     <name>ViewName</name>
     <message>
-        <location filename="../src/render/sw_viewsphere.cpp" line="71"/>
+        <location filename="../src/render/sw_view_sphere.cpp" line="71"/>
         <source>Left</source>
         <translation>左</translation>
     </message>
     <message>
-        <location filename="../src/render/sw_viewsphere.cpp" line="71"/>
+        <location filename="../src/render/sw_view_sphere.cpp" line="71"/>
         <source>Right</source>
         <translation>右</translation>
     </message>
     <message>
-        <location filename="../src/render/sw_viewsphere.cpp" line="71"/>
+        <location filename="../src/render/sw_view_sphere.cpp" line="71"/>
         <source>Back</source>
         <translation>后</translation>
     </message>
     <message>
-        <location filename="../src/render/sw_viewsphere.cpp" line="72"/>
+        <location filename="../src/render/sw_view_sphere.cpp" line="72"/>
         <source>Front</source>
         <translation>前</translation>
     </message>
     <message>
-        <location filename="../src/render/sw_viewsphere.cpp" line="72"/>
+        <location filename="../src/render/sw_view_sphere.cpp" line="72"/>
         <source>Top</source>
         <translation>上</translation>
     </message>
     <message>
-        <location filename="../src/render/sw_viewsphere.cpp" line="72"/>
+        <location filename="../src/render/sw_view_sphere.cpp" line="72"/>
         <source>Bottom</source>
         <translation>下</translation>
     </message>
@@ -6088,63 +6088,63 @@ File format is not recognized.</source>
 <context>
     <name>swAboutDialog</name>
     <message>
-        <location filename="../src/ui/sw_aboutdialog.ui" line="6"/>
+        <location filename="../src/ui/sw_about_dialog.ui" line="6"/>
         <source>&lt;p&gt;&lt;b&gt;About StudWorks&lt;/b&gt;&lt;/p&gt;&lt;p&gt;View the StudWorks version and system information. The Qt and OpenGL details can help diagnose display problems. Select text in System Information to copy it when reporting a problem. The website link opens in your browser.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;关于StudWorks&lt;/b&gt;&lt;/p&gt;&lt;p&gt;查看StudWorks版本和系统信息。 Qt 和 OpenGL 详细信息可以帮助诊断显示问题。选择系统信息中的文本以在报告问题时复制它。网站链接将在您的浏览器中打开。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_aboutdialog.ui" line="17"/>
+        <location filename="../src/ui/sw_about_dialog.ui" line="17"/>
         <source>About StudWorks</source>
         <translation>关于 StudWorks</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_aboutdialog.ui" line="45"/>
+        <location filename="../src/ui/sw_about_dialog.ui" line="45"/>
         <source>StudWorks version running on this computer.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">此计算机上运行的 StudWorks 版本。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_aboutdialog.ui" line="48"/>
+        <location filename="../src/ui/sw_about_dialog.ui" line="48"/>
         <source>StudWorks Version 0.00.0</source>
         <translation>StudWorks 版本 0.00.0</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_aboutdialog.ui" line="55"/>
+        <location filename="../src/ui/sw_about_dialog.ui" line="55"/>
         <source>StudWorks is a free application for creating virtual LEGO models.</source>
         <translation>StudWorks 是一个用于创建虚拟乐高模型的免费应用程序。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_aboutdialog.ui" line="65"/>
+        <location filename="../src/ui/sw_about_dialog.ui" line="65"/>
         <source>Open the StudWorks website in your browser.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">在浏览器中打开 StudWorks 网站。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_aboutdialog.ui" line="82"/>
-        <location filename="../src/ui/sw_aboutdialog.ui" line="97"/>
+        <location filename="../src/ui/sw_about_dialog.ui" line="82"/>
+        <location filename="../src/ui/sw_about_dialog.ui" line="97"/>
         <source>System Information</source>
         <translation>系统信息</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_aboutdialog.ui" line="91"/>
+        <location filename="../src/ui/sw_about_dialog.ui" line="91"/>
         <source>Select and copy system information for a problem report.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择并复制问题报告的系统信息。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_aboutdialog.ui" line="94"/>
+        <location filename="../src/ui/sw_about_dialog.ui" line="94"/>
         <source>&lt;p&gt;&lt;b&gt;System Information&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Shows the Qt runtime and build versions, graphics driver and renderer, OpenGL and shader versions, buffer sizes, and supported graphics features. Select the text and copy it with the standard keyboard shortcut to include it in a problem report.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;系统信息&lt;/b&gt;&lt;/p&gt;&lt;p&gt;显示 Qt 运行时和构建版本、图形驱动程序和渲染器、OpenGL 和着色器版本、缓冲区大小以及支持的图形功能。选择文本并使用标准键盘快捷键将其复制以将其包含在问题报告中。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_aboutdialog.cpp" line="19"/>
+        <location filename="../src/ui/sw_about_dialog.cpp" line="19"/>
         <source>StudWorks Version %1</source>
         <translation>StudWorks 版本 %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_aboutdialog.cpp" line="32"/>
+        <location filename="../src/ui/sw_about_dialog.cpp" line="32"/>
         <source>OpenGL Version %1 (GLSL %2)
 %3 - %4
 
@@ -6175,19 +6175,19 @@ Stencil Buffer: %5 bits
         <translation type="vanished">双缓冲</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_aboutdialog.cpp" line="17"/>
+        <location filename="../src/ui/sw_about_dialog.cpp" line="17"/>
         <source>StudWorks Continuous Build %1</source>
         <translation>StudWorks 持续构建版 %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_aboutdialog.cpp" line="29"/>
+        <location filename="../src/ui/sw_about_dialog.cpp" line="29"/>
         <source>Qt Version %1 (compiled with %2)
 
 </source>
         <translation>Qt 版本 %1 (compiled with %2)</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_aboutdialog.cpp" line="38"/>
+        <location filename="../src/ui/sw_about_dialog.cpp" line="38"/>
         <source>Color Buffer: %1 bits
 Depth Buffer: %2 bits
 Stencil Buffer: %3 bits
@@ -6200,7 +6200,7 @@ Stencil Buffer: %3 bits
 </translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_aboutdialog.cpp" line="41"/>
+        <location filename="../src/ui/sw_about_dialog.cpp" line="41"/>
         <source>Buffers: %1
 Framebuffers: %2
 BlendFuncSeparate: %3
@@ -6227,22 +6227,22 @@ Anisotropic: %5
 </translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_aboutdialog.cpp" line="42"/>
-        <location filename="../src/ui/sw_aboutdialog.cpp" line="43"/>
-        <location filename="../src/ui/sw_aboutdialog.cpp" line="44"/>
+        <location filename="../src/ui/sw_about_dialog.cpp" line="42"/>
+        <location filename="../src/ui/sw_about_dialog.cpp" line="43"/>
+        <location filename="../src/ui/sw_about_dialog.cpp" line="44"/>
         <source>Supported</source>
         <translation>支持</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_aboutdialog.cpp" line="42"/>
-        <location filename="../src/ui/sw_aboutdialog.cpp" line="43"/>
-        <location filename="../src/ui/sw_aboutdialog.cpp" line="44"/>
-        <location filename="../src/ui/sw_aboutdialog.cpp" line="45"/>
+        <location filename="../src/ui/sw_about_dialog.cpp" line="42"/>
+        <location filename="../src/ui/sw_about_dialog.cpp" line="43"/>
+        <location filename="../src/ui/sw_about_dialog.cpp" line="44"/>
+        <location filename="../src/ui/sw_about_dialog.cpp" line="45"/>
         <source>Not supported</source>
         <translation>不支持</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_aboutdialog.cpp" line="45"/>
+        <location filename="../src/ui/sw_about_dialog.cpp" line="45"/>
         <source>Supported (max %1)</source>
         <translation>支持 (最大 %1)</translation>
     </message>
@@ -7114,303 +7114,303 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 <context>
     <name>swArrayDialog</name>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="6"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="6"/>
         <source>&lt;p&gt;&lt;b&gt;Array&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Create repeated copies of the selected pieces using up to three array dimensions. Each row defines a count, an offset, and a rotation increment.&lt;/p&gt;&lt;p&gt;Counts include the original selection. For example, counts of 3, 2, and 1 create five new copies of each selected piece. Set an offset or rotation to keep copies from overlapping.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;数组&lt;/b&gt;&lt;/p&gt;&lt;p&gt;使用最多三个数组维度创建所选零件的重复副本。每行定义一个计数、一个偏移量和一个旋转增量。&lt;/p&gt;&lt;p&gt;计数包括原始选择。例如，计数 3、2 和 1 将为每个选定的零件创建五个新副本。设置偏移或旋转以防止副本重叠。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="17"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="17"/>
         <source>Array</source>
         <translation>阵列</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="25"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="25"/>
         <source>&lt;p&gt;&lt;b&gt;Dimensions&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Each row controls one array dimension, with a count from 1 to 1000. The product of the three counts includes the original selection. A count of 1 adds no copies along that dimension.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;维度&lt;/b&gt;&lt;/p&gt;&lt;p&gt;每一行控制一个数组维度，计数范围为 1 到 1000。三个计数的乘积包括原始选择。计数为 1 时不会沿该维度添加任何副本。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="28"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="28"/>
         <source>Dimensions</source>
         <translation>尺寸</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="36"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="36"/>
         <source>Number of positions in dimension 3, including the original.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">维度 3 中的位置数，包括原始位置。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="39"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="39"/>
         <source>Dimension 3 count</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">维度 3 计数</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="52"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="52"/>
         <source>Number of positions in dimension 1, including the original.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">维度 1 中的位置数，包括原始位置。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="55"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="55"/>
         <source>Dimension 1 count</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">维度 1 计数</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="68"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="68"/>
         <source>Number of positions in dimension 2, including the original.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">维度 2 中的位置数，包括原始位置。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="71"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="71"/>
         <source>Dimension 2 count</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">维度 2 计数</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="89"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="89"/>
         <source>&lt;p&gt;&lt;b&gt;Offsets&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Each row sets the X, Y, and Z displacement per step in the corresponding array dimension. Values use the model axes and LDraw units; 20 units equal one stud width. Negative values reverse the direction.&lt;/p&gt;&lt;p&gt;For a straight row spaced one stud apart along X, use a count greater than 1 and an X offset of 20 in the same row.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;偏移&lt;/b&gt;&lt;/p&gt;&lt;p&gt;每行设置相应数组维度中每步的 X、Y 和 Z 位移。值使用模型轴和 LDraw 单位； 20 个单位等于 1 个螺柱宽度。负值会反转方向。&lt;/p&gt;&lt;p&gt;对于沿 X 方向间隔一个螺柱的直行，请在同一行中使用大于 1 的计数和 20 的 X 偏移。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="92"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="92"/>
         <source>Offsets</source>
         <translation>偏移量</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="98"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="98"/>
         <source>Y offset per step in dimension 1, in LDraw units.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">维度 1 中每步的 Y 偏移量（以 LDraw 单位表示）。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="101"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="101"/>
         <source>Dimension 1 Y offset</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">尺寸 1 Y 偏移</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="108"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="108"/>
         <source>X offset per step in dimension 2, in LDraw units.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">维度 2 中每步的 X 偏移量（以 LDraw 单位表示）。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="111"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="111"/>
         <source>Dimension 2 X offset</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">尺寸 2 X 偏移</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="118"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="118"/>
         <source>X offset per step in dimension 1, in LDraw units.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">维度 1 中每步的 X 偏移量（以 LDraw 单位表示）。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="121"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="121"/>
         <source>Dimension 1 X offset</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">尺寸 1 X 偏移</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="128"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="128"/>
         <source>X offset per step in dimension 3, in LDraw units.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">维度 3 中每步的 X 偏移量（以 LDraw 单位表示）。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="131"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="131"/>
         <source>Dimension 3 X offset</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">尺寸 3 X 偏移</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="138"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="138"/>
         <source>Z offset per step in dimension 1, in LDraw units.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">维度 1 中每步的 Z 偏移量（以 LDraw 单位表示）。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="141"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="141"/>
         <source>Dimension 1 Z offset</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">尺寸 1 Z 偏移</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="148"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="148"/>
         <source>Y offset per step in dimension 2, in LDraw units.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">维度 2 中每步的 Y 偏移量（以 LDraw 单位表示）。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="151"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="151"/>
         <source>Dimension 2 Y offset</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">尺寸 2 Y 偏移</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="158"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="158"/>
         <source>Y offset per step in dimension 3, in LDraw units.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">维度 3 中每步的 Y 偏移量（以 LDraw 单位表示）。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="161"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="161"/>
         <source>Dimension 3 Y offset</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">尺寸 3 Y 偏移</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="168"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="168"/>
         <source>Z offset per step in dimension 2, in LDraw units.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">维度 2 中每步的 Z 偏移量（以 LDraw 单位表示）。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="171"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="171"/>
         <source>Dimension 2 Z offset</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">尺寸 2 Z 偏移</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="178"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="178"/>
         <source>Z offset per step in dimension 3, in LDraw units.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">维度 3 中每步的 Z 偏移量（以 LDraw 单位表示）。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="181"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="181"/>
         <source>Dimension 3 Z offset</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">尺寸 3 Z 偏移</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="191"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="191"/>
         <source>&lt;p&gt;&lt;b&gt;Rotations&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Each row sets the rotation increment around the X, Y, and Z model axes, in degrees, for its array dimension. Rotations from all three dimensions are added, then applied in X, Y, Z order before the offset.&lt;/p&gt;&lt;p&gt;Copies rotate around the focused piece origin, or the selection center when no piece has focus. Negative values reverse the rotation.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;旋转&lt;/b&gt;&lt;/p&gt;&lt;p&gt;每行为其数组维度设置围绕 X、Y 和 Z 模型轴的旋转增量（以度为单位）。添加来自所有三个维度的旋转，然后在偏移之前按 X、Y、Z 顺序应用。&lt;/p&gt;&lt;p&gt;副本围绕聚焦的零件原点旋转，或者在没有零件具有焦点时围绕选择中心旋转。负值反转旋转。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="194"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="194"/>
         <source>Rotations</source>
         <translation>旋转角度</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="200"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="200"/>
         <source>Z rotation per step in dimension 3, in degrees.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">维度 3 中每步的 Z 旋转（以度为单位）。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="203"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="203"/>
         <source>Dimension 3 Z rotation</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">尺寸 3 Z 旋转</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="210"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="210"/>
         <source>X rotation per step in dimension 3, in degrees.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">维度 3 中每步的 X 旋转（以度为单位）。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="213"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="213"/>
         <source>Dimension 3 X rotation</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">尺寸 3 X 旋转</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="220"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="220"/>
         <source>X rotation per step in dimension 1, in degrees.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">维度 1 中每步的 X 旋转（以度为单位）。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="223"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="223"/>
         <source>Dimension 1 X rotation</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">尺寸 1 X 旋转</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="230"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="230"/>
         <source>Z rotation per step in dimension 2, in degrees.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">维度 2 中每步的 Z 旋转（以度为单位）。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="233"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="233"/>
         <source>Dimension 2 Z rotation</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">尺寸 2 Z 旋转</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="240"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="240"/>
         <source>Z rotation per step in dimension 1, in degrees.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">维度 1 中每一步的 Z 旋转（以度为单位）。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="243"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="243"/>
         <source>Dimension 1 Z rotation</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">尺寸 1 Z 轴旋转</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="250"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="250"/>
         <source>X rotation per step in dimension 2, in degrees.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">维度 2 中每步的 X 旋转（以度为单位）。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="253"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="253"/>
         <source>Dimension 2 X rotation</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">尺寸 2 X 旋转</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="260"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="260"/>
         <source>Y rotation per step in dimension 1, in degrees.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">维度 1 中每步的 Y 旋转（以度为单位）。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="263"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="263"/>
         <source>Dimension 1 Y rotation</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">尺寸 1 Y 旋转</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="270"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="270"/>
         <source>Y rotation per step in dimension 2, in degrees.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">维度 2 中每步的 Y 旋转（以度为单位）。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="273"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="273"/>
         <source>Dimension 2 Y rotation</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">尺寸 2 Y 旋转</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="280"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="280"/>
         <source>Y rotation per step in dimension 3, in degrees.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">维度 3 中每步的 Y 旋转（以度为单位）。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.ui" line="283"/>
+        <location filename="../src/ui/sw_array_dialog.ui" line="283"/>
         <source>Dimension 3 Y rotation</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">尺寸 3 Y 旋转</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_arraydialog.cpp" line="75"/>
+        <location filename="../src/ui/sw_array_dialog.cpp" line="75"/>
         <source>Array is empty.</source>
         <translation>阵列为空。</translation>
     </message>
@@ -7418,13 +7418,13 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 <context>
     <name>swAssetLoader</name>
     <message>
-        <location filename="../src/library/sw_assetloader.cpp" line="466"/>
+        <location filename="../src/library/sw_asset_loader.cpp" line="466"/>
         <source>Missing texture &apos;%1&apos;.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">缺少纹理 '%1'。</translation>
     </message>
     <message>
-        <location filename="../src/library/sw_assetloader.cpp" line="609"/>
+        <location filename="../src/library/sw_asset_loader.cpp" line="609"/>
         <source>Could not load piece &apos;%1&apos;.</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">无法加载零件 '%1'。</translation>
@@ -7433,17 +7433,17 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 <context>
     <name>swAutomateEdgeColorDialog</name>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="21"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="21"/>
         <source>Color Preferences</source>
         <translation>颜色偏好</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="27"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="27"/>
         <source>Edge Colors</source>
         <translation>边缘颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="38"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="38"/>
         <source>Contrast:</source>
         <translation>对比度:</translation>
     </message>
@@ -7452,22 +7452,22 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">设置对比度 - 0.50 为中间值。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="52"/>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="81"/>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="116"/>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="134"/>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="152"/>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="170"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="52"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="81"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="116"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="134"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="152"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="170"/>
         <source>Reset</source>
         <translation>重置</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="63"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="63"/>
         <source>Light/Dark Value:</source>
         <translation>亮色/暗色值:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="63"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="63"/>
         <source>Saturation:</source>
         <translation>饱和度:</translation>
     </message>
@@ -7480,161 +7480,161 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">设置边缘色从饱和度调整后的零件颜色中获取的色调或阴影量</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="91"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="91"/>
         <source>High Contrast</source>
         <translation>高对比度</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="106"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="106"/>
         <source>Stud Cylinder Color:</source>
         <translation>凸点柱体颜色:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="124"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="124"/>
         <source>Pieces Edge Color:</source>
         <translation>零件边缘颜色:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="142"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="142"/>
         <source>Black Pieces Edge Color:</source>
         <translation>黑色零件边缘颜色:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="160"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="160"/>
         <source>Dark Pieces Edge Color:</source>
         <translation>深色零件边缘颜色:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="260"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="260"/>
         <source>Select Stud Cylinder Color</source>
         <translation>选择凸点柱体颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="265"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="265"/>
         <source>Select Piece Edge Color</source>
         <translation>选择零件边缘颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="274"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="274"/>
         <source>Automate edge color appears to be enabled.&lt;br&gt;Black pieces edge color will not be accessible.&lt;br&gt;Do you want to continue?</source>
         <translation>自动边缘色似乎已启用。&lt;br&gt;黑色零件边缘颜色将不可用。&lt;br&gt;是否继续？</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="273"/>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="278"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="273"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="278"/>
         <source>Select Black Edge Color</source>
         <translation>选择黑色边缘颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="23"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="23"/>
         <source>&lt;p&gt;&lt;b&gt;High Contrast Edge Colors&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose custom stud and edge colors for high contrast stud styles. Enable an override with its checkbox, then choose its color. Light/Dark Value sets the threshold for dark-piece edge colors. Automated edge colors take precedence over the piece edge overrides.&lt;/p&gt;&lt;p&gt;Choose OK to return changes to Preferences, then choose OK in Preferences to keep them. Cancel discards changes in this dialog. Reset restores an individual control&apos;s default.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;高对比度边缘颜色&lt;/b&gt;&lt;/p&gt;&lt;p&gt;为高对比度螺柱样式选择自定义螺柱和边缘颜色。使用其复选框启用覆盖，然后选择其颜色。亮/暗值设置深色零件边缘颜色的阈值。自动边缘颜色优先于零件边缘覆盖。&lt;/p&gt;&lt;p&gt;选择“确定”将更改返回到“首选项”，然后在“首选项”中选择“确定”以保留它们。取消会放弃此对话框中的更改。重置可恢复单个控件的默认设置。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="24"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="24"/>
         <source>&lt;p&gt;&lt;b&gt;Automated Edge Colors&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Adjust the contrast and saturation used to calculate piece edge colors. Both controls range from 0.00 to 1.00. Reset restores a control to 0.50.&lt;/p&gt;&lt;p&gt;Choose OK to return changes to Preferences, then choose OK in Preferences to keep them. Cancel discards changes in this dialog.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;自动边缘颜色&lt;/b&gt;&lt;/p&gt;&lt;p&gt;调整用于计算零件边缘颜色的对比度和饱和度。两个控件的范围都是从 0.00 到 1.00。重置将控制恢复到 0.50。&lt;/p&gt;&lt;p&gt;选择“确定”将更改返回到“首选项”，然后在“首选项”中选择“确定”以保留它们。取消会放弃此对话框中的更改。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="43"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="43"/>
         <source>Set edge contrast from 0.00 to 1.00 (default 0.50).</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">将边缘对比度设置为 0.00 到 1.00（默认 0.50）。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="44"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="44"/>
         <source>&lt;p&gt;&lt;b&gt;Edge Contrast&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Adjust the contrast used by automated edge colors to distinguish edges from piece surfaces. The range is 0.00 to 1.00; Reset restores 0.50.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;边缘对比度&lt;/b&gt;&lt;/p&gt;&lt;p&gt;调整自动边缘颜色所使用的对比度，以区分边缘与零件表面。范围是0.00到1.00；重置恢复0.50。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="53"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="53"/>
         <source>Restore edge contrast to 0.50.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">将边缘对比度恢复至 0.50。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="69"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="69"/>
         <source>Set the light/dark threshold from 0.00 to 1.00 (default 0.50).</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">将亮/暗阈值设置为 0.00 到 1.00（默认 0.50）。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="70"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="70"/>
         <source>Set edge-color saturation from 0.00 to 1.00 (default 0.50).</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">将边缘颜色饱和度设置为 0.00 到 1.00（默认 0.50）。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="72"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="72"/>
         <source>&lt;p&gt;&lt;b&gt;Light/Dark Value&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Classify piece colors by brightness to choose which pieces receive the dark-piece edge override. Colors below the threshold are treated as dark. A separate enabled black-piece override takes priority for black pieces. The range is 0.00 to 1.00; Reset restores 0.50.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;亮/暗值&lt;/b&gt;&lt;/p&gt;&lt;p&gt;按亮度对零件颜色进行分类，以选择哪些零件接收深色零件边缘覆盖。低于阈值的颜色被视为深色。单独启用的黑色零件覆盖优先处理黑色零件。范围是0.00到1.00；重置恢复0.50。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="73"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="73"/>
         <source>&lt;p&gt;&lt;b&gt;Edge Saturation&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Adjust the tint or shade used to calculate automated edge colors from piece colors. The range is 0.00 to 1.00; Reset restores 0.50.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;边缘饱和度&lt;/b&gt;&lt;/p&gt;&lt;p&gt;调整用于从零件颜色计算自动边缘颜色的色调或阴影。范围是0.00到1.00；重置恢复0.50。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="82"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="82"/>
         <source>Restore the light/dark threshold to 0.50.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">将明/暗阈值恢复为 0.50。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="82"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="82"/>
         <source>Restore edge-color saturation to 0.50.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">将边缘颜色饱和度恢复至 0.50。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="182"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="182"/>
         <source>Enable the custom color for %1.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">为 %1 启用自定义颜色。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="186"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="186"/>
         <source>Restore the default color for %1.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">恢复 %1 的默认颜色。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="191"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="191"/>
         <source>Enable a custom color for stud cylinders in high contrast stud styles, then use the color button to choose it.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">为高对比度螺柱样式的螺柱圆柱体启用自定义颜色，然后使用颜色按钮进行选择。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="193"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="193"/>
         <source>Enable a custom edge color for pieces not covered by the black or dark overrides. Automated edge colors take precedence.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">为未被黑色或深色覆盖覆盖的零件启用自定义边缘颜色。自动边缘颜色优先。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="195"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="195"/>
         <source>Enable a custom edge color for black pieces. This override takes priority over the dark-piece and general edge colors. Automated edge colors take precedence.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">为黑色零件启用自定义边缘颜色。此覆盖优先于暗色和一般边缘颜色。自动边缘颜色优先。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="197"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="197"/>
         <source>Enable a custom edge color for pieces below the light/dark threshold, except black pieces with their own enabled override. Automated edge colors take precedence.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">为低于明/暗阈值的零件启用自定义边缘颜色，但具有自己启用的覆盖的黑色零件除外。自动边缘颜色优先。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="287"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="287"/>
         <source>Automate edge color appears to be enabled.&lt;br&gt;Dark pieces edge color will not be accessible.&lt;br&gt;Do you want to continue?</source>
         <translation>自动边缘色似乎已启用。&lt;br&gt;深色零件边缘颜色将不可用。&lt;br&gt;是否继续？</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="286"/>
-        <location filename="../src/ui/sw_edgecolordialog.cpp" line="291"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="286"/>
+        <location filename="../src/ui/sw_edge_color_dialog.cpp" line="291"/>
         <source>Select Dark Edge Color</source>
         <translation>选择深色边缘颜色</translation>
     </message>
@@ -7642,63 +7642,63 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 <context>
     <name>swBlenderPreferences</name>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="358"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="358"/>
         <source>Blender LDraw Add-on Settings</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender LDraw 附加设置</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="377"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="377"/>
         <source>Blender Executable</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender 可执行文件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="379"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="379"/>
         <source>&lt;p&gt;&lt;b&gt;Blender Executable&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose the Blender executable. Finishing an edit to this path starts Blender configuration and may install or update the LDraw add-on. Configuration must complete before add-on paths and settings become available.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Blender 可执行文件&lt;/b&gt;&lt;/p&gt;&lt;p&gt;选择 Blender 可执行文件。完成对此路径的编辑将启动 Blender 配置，并可能安装或更新 LDraw 附加组件。必须在附加路径和设置可用之前完成配置。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="390"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="390"/>
         <source>Installed Blender version reported during configuration.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">配置期间报告的已安装 Blender 版本。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="391"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="391"/>
         <source>Blender Version</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">搅拌机版本</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="404"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="628"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="785"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="404"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="628"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="785"/>
         <source>Browse...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">浏览...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="407"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="407"/>
         <source>Locate the Blender executable.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">找到 Blender 可执行文件。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="410"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="410"/>
         <source>%1 Blender LDraw Add-on</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 Blender LDraw 附加组件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="412"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="412"/>
         <source>&lt;p&gt;&lt;b&gt;Blender LDraw Add-on&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Update downloads or reconfigures the LDraw add-on. Output opens the configuration log when available. The update-check preference takes effect as soon as you change it.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Blender LDraw 插件&lt;/b&gt;&lt;/p&gt;&lt;p&gt;更新下载或重新配置 LDraw 插件。输出在可用时打开配置日志。更新检查首选项在您更改后立即生效。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="417"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="417"/>
         <source>Prompt to download new add-on version when available</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">提示下载新的附加版本（如有）</translation>
@@ -7709,7 +7709,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="obsolete">%1 Blender LDraw 导入和图像渲染器插件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="440"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="440"/>
         <source>Update</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">更新</translation>
@@ -7720,7 +7720,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="obsolete">更新 %1 Blender LDraw 附加组件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="445"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="445"/>
         <source>Output...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">输出...</translation>
@@ -7731,13 +7731,13 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="obsolete">打开标准输出日志</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="451"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="451"/>
         <source>Enabled Add-on Modules</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">启用附加模块</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="457"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="457"/>
         <source>LDraw Import TN</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">LDraw 进口TN</translation>
@@ -7748,7 +7748,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="obsolete">在 Blender 中启用附加导入模块（改编自 LDraw 由 Toby Nelson 导入）</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="462"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="462"/>
         <source>LDraw Import MM</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">LDraw 导入MM</translation>
@@ -7759,7 +7759,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="obsolete">在Blender中启用附加导入模块（改编自Matthew Morrison的LDraw导入）</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="467"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="467"/>
         <source>%1 Image Render</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 图像渲染</translation>
@@ -7770,99 +7770,99 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="obsolete">Blender 中的附加图像渲染模块</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="499"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1185"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1641"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1718"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="499"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1185"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1641"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1718"/>
         <source>Blender</source>
         <translatorcomment>Technical identifier or nonlinguistic text; intentionally retained unchanged.</translatorcomment>
         <translation type="unfinished">Blender</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="499"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1198"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1727"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="499"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1198"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1727"/>
         <source>Blender Add-on</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender 附加组件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="513"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="513"/>
         <source>Blender not configured.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender 未配置。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="525"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="525"/>
         <source>Add-on not configured - Update.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">未配置附加组件 - 更新。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="527"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="527"/>
         <source>Add-on not configured.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">未配置附加组件。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="601"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="601"/>
         <source>LDraw Import TN Add-on Paths</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">LDraw 导入 TN 附加路径</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="604"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="761"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="604"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="761"/>
         <source>&lt;p&gt;&lt;b&gt;Add-on Paths&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Set the files and folders used by the selected importer. Use Browse to locate an entry. TN and MM use different optional paths. Configure Blender first to enable these controls.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;附加路径&lt;/b&gt;&lt;/p&gt;&lt;p&gt;设置所选导入器使用的文件和文件夹。使用浏览来查找条目。 TN和MM使用不同的可选路径。首先配置 Blender 以启用这些控件。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="629"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="786"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="629"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="786"/>
         <source>Choose a file or folder for %1.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择 %1 的文件或文件夹。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="652"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="809"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="652"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="809"/>
         <source>&lt;p&gt;&lt;b&gt;Import and Render Settings&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Adjust the selected importer&apos;s geometry, materials, camera, and image options. Hover over a control or press F1 for its description. Image width and height are in pixels; render percentage scales the output dimensions.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;导入和渲染设置&lt;/b&gt;&lt;/p&gt;&lt;p&gt;调整所选导入器的几何体、材质、相机和图像选项。将鼠标悬停在控件上或按 F1 查看其说明。图像宽度和高度以像素为单位；渲染百分比缩放输出尺寸。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="655"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="655"/>
         <source>LDraw Import TN Add-on Settings</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">LDraw 导入 TN 附加设置</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="758"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="758"/>
         <source>LDraw Import MM Add-on Paths</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">LDraw 导入 MM 附加路径</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="812"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="812"/>
         <source>LDraw Import MM Add-on Settings</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">LDraw 导入 MM 附加设置</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="976"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="976"/>
         <source>add-on install</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">附加安装</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="988"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="988"/>
         <source>test</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">测试</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1011"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1011"/>
         <source>Cannot start Blender %1 process.
 %2</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -7870,7 +7870,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 %2</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1020"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1020"/>
         <source>Failed to execute Blender %1.
 %2</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -7878,28 +7878,28 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 %2</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1037"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1037"/>
         <source>A simple check to test if the selected file is Blender failed. Please create a %1 GitHub ticket if you are sure the file is Blender 2.8 or newer. The ticket should contain the full path to the Blender executable.</source>
         <oldsource>A simple check to test if the selected file is Blender failed.Please create a %1 GitHub ticket if you are sure the file is Blender 2.8 or newer.The ticket should contain the full path to the Blender executable.</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">测试所选文件是否为 Blender 的简单检查失败。如果您确定文件为 Blender 2.8 或更高版本，请创建 %1 GitHub 票证。该票证应包含 Blender 可执行文件的完整路径。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1059"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1059"/>
         <source>Blender %1 process completed. Version: %2 validated.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender %1 过程已完成。版本：%2 已验证。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1080"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1212"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1080"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1212"/>
         <source>Installing...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">正在安装...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1116"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1310"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1116"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1310"/>
         <source>Error writing to file &apos;%1&apos;:
 %2.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -7907,51 +7907,51 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 %2 时出错。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1130"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1140"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1130"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1140"/>
         <source>Blender test failed.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender 测试失败。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="2035"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="2035"/>
         <source>Save Blender Add-on Output</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">保存 Blender 插件输出</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="2046"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="2046"/>
         <source>Cancel Blender Add-on Installation</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">取消安装 Blender 插件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="2341"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="2341"/>
         <source>&lt;p&gt;&lt;b&gt;Reset Add-on Settings&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose Last Apply to restore the saved paths and settings, or System Default to load the built-in defaults. Choose OK to update the settings form, then Apply in the parent dialog to save them. Cancel keeps the current edits.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;重置附加设置&lt;/b&gt;&lt;/p&gt;&lt;p&gt;选择“上次应用”以恢复保存的路径和设置，或选择“系统默认值”以加载内置默认值。选择“确定”更新设置表单，然后在父对话框中“应用”以保存它们。取消保留当前编辑。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="2346"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="2346"/>
         <source>Restore paths and settings to the last applied values.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">将路径和设置恢复为上次应用的值。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="2349"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="2349"/>
         <source>Replace paths and settings with the built-in defaults.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">将路径和设置替换为内置默认值。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="3129"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="3185"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="3129"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="3185"/>
         <source>Apply Render Settings</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">应用渲染设置</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="3167"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="3167"/>
         <source>Set LDraw Color Scheme</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">设置 LDraw 配色方案</translation>
@@ -7962,20 +7962,20 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="obsolete">%1 Blender LDraw 附加模块</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1149"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1149"/>
         <source>No import module enabled. If you continue, the default import module (Import TN) will be used.&lt;br&gt;If you select No, all add-on modules will be disabled.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">未启用导入模块。如果继续，将使用默认导入模块（导入 TN）。&lt;br&gt;如果选择“否”，将禁用所有附加模块。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1150"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1150"/>
         <source>Continue with the default import module?</source>
         <oldsource>Continue with the default import module ?</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">继续使用默认导入模块吗？</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1176"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1176"/>
         <source>Downloading...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">正在下载...</translation>
@@ -7986,146 +7986,146 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="obsolete">显示 Blender 和 %1 渲染附加版本</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1207"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1207"/>
         <source>Could not find add-on install file: &apos;%1&apos;.</source>
         <oldsource>Could not find add-on install file: &apos;%1&apos;</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">找不到附加安装文件：'%1'</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1207"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1255"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1327"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1708"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1987"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1207"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1255"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1327"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1708"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1987"/>
         <source>Install Blender Add-on</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">安装 Blender 插件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1208"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1208"/>
         <source>Not found.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">未找到。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1234"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1234"/>
         <source>Blender Add-on Install Arguments: &apos;%1&apos; %2</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender 附加安装参数： '%1' %2</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1255"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1255"/>
         <source>Cannot read add-on file &apos;%1&apos;&lt;br&gt;%2</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">无法读取附加文件 '%1'&lt;br&gt;%2</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1324"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1324"/>
         <source>Install failed.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">安装失败。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1327"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1327"/>
         <source>Blender executable not found at &apos;%1&apos;.</source>
         <oldsource>Blender executable not found at &apos;%1&apos;</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">在 '%1' 处找不到 Blender 可执行文件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1353"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="3814"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1353"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="3814"/>
         <source>Extract Blender Add-on</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">解压 Blender 插件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1415"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1415"/>
         <source>Check for Blender Add-on Updates</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">检查 Blender 插件更新</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1709"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1709"/>
         <source>Add-on install failed.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">附加组件安装失败。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1341"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1341"/>
         <source>Extracting...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">正在提取...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="418"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="418"/>
         <source>Check for add-on updates; this preference is saved immediately.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">检查附加更新；该首选项会立即保存。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="431"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="431"/>
         <source>Installed %1 Blender LDraw import and render add-on version.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">已安装 %1 Blender LDraw 导入和渲染附加版本。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="434"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="434"/>
         <source>Blender LDraw Add-on Version</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender LDraw 附加版本</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="441"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="441"/>
         <source>Download or reconfigure the %1 Blender LDraw add-on.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">下载或重新配置 %1 Blender LDraw 插件。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="446"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="446"/>
         <source>Open the standard output log.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">打开标准输出日志。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="454"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="454"/>
         <source>&lt;p&gt;&lt;b&gt;Import and Render Modules&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose TN or MM to select the LDraw importer and its options. Changing the importer configures Blender immediately. The image render module is managed automatically; an import module is required to import or render a model.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;导入和渲染模块&lt;/b&gt;&lt;/p&gt;&lt;p&gt;选择 TN 或 MM 以选择 LDraw 导入器及其选项。更改导入器会立即配置 Blender。图像渲染模块自动管理；需要导入模块来导入或渲染模型。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="458"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="458"/>
         <source>Enable add-on import module (adapted from LDraw Import by Toby Nelson) in Blender.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">在 Blender 中启用附加导入模块（改编自 Toby Nelson 的 LDraw Import）。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="463"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="463"/>
         <source>Enable add-on import module (adapted from LDraw Import by Matthew Morrison) in Blender.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">在 Blender 中启用附加导入模块（改编自 Matthew Morrison 的 LDraw Import）。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="468"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="468"/>
         <source>Add-on image render module in Blender.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender 中的附加图像渲染模块。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1139"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1139"/>
         <source>Test Blender</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">测试 Blender</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1148"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1148"/>
         <source>Configure Blender Add-on</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">配置 Blender 插件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1349"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1349"/>
         <source>Failed to extract &apos;%1&apos; to &apos;%2&apos;.</source>
         <oldsource>Failed to extract &apos;%1&apos; to &apos;%2&apos;</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -8137,7 +8137,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="obsolete">提取附加组件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1415"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1415"/>
         <source>Check latest add-on version failed.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">检查最新附加版本失败。</translation>
@@ -8148,151 +8148,151 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="obsolete">最新附加组件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1428"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1428"/>
         <source>Cannot open add-on archive file: &apos;%1&apos;.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">无法打开附加存档文件：'%1'。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1428"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1436"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1443"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1452"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1496"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1551"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1597"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1600"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1604"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1607"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1610"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1616"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1619"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1625"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1428"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1436"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1443"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1452"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1496"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1551"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1597"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1600"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1604"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1607"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1610"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1616"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1619"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1625"/>
         <source>Update Blender Add-on</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">更新 Blender 插件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1436"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1436"/>
         <source>Cannot extract add-on archive version file: &apos;%1&apos;.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">无法提取附加存档版本文件：'%1'。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1443"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1443"/>
         <source>Cannot read add-on archive version file: &apos;%1&apos;.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">无法读取附加存档版本文件：'%1'。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1452"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1452"/>
         <source>Cannot read add-on version file: &apos;%1&apos;&lt;br&gt;%2.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">无法读取附加版本文件：'%1'&lt;br&gt;%2。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1497"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1497"/>
         <source>Detected %1 Blender LDraw add-on %2. A newer version %3 exists.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">检测到 %1 Blender LDraw 附加组件 %2。存在较新版本 %3。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1498"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1498"/>
         <source>Do you want to download version %1?</source>
         <oldsource>Do you want to download version %1 ?</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">您想下载版本 %1 吗？</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1535"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1535"/>
         <source>Failed to properly remove Blender add-on: &apos;%1&apos;.</source>
         <oldsource>Failed to properly remove Blender add-on: &apos;%1&apos;</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">无法正确删除 Blender 附加组件：'%1'</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1535"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1535"/>
         <source>Remove Existing Add-on</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">删除现有的附加组件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1551"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1551"/>
         <source>Failed to rename existing Blender add-on archive &apos;%1&apos;.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">无法重命名现有 Blender 附加存档 '%1'。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1597"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1597"/>
         <source>Failed to validate Blender add-on file name.&lt;br&gt;Downloaded: &apos;%1&apos;&lt;br&gt;Received: &apos;%2&apos;</source>
         <oldsource>Failed to validate Blender add-on file name&lt;br&gt;Downloaded:&apos;%1&apos;&lt;br&gt;Received:&apos;%2&apos;</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">无法验证 Blender 附加文件名&lt;br&gt;已下载：'%1'&lt;br&gt;已接收：'%2'</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1600"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1600"/>
         <source>Failed to validate Blender add-on SHA hash.&lt;br&gt;Calculated: %1&lt;br&gt;Received: %2</source>
         <oldsource>Failed to validate Blender add-on SHA hash &lt;br&gt;Calculated:%1&lt;br&gt;Received:%2</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">无法验证 Blender 附加 SHA 哈希值 &lt;br&gt; 已计算：%1&lt;br&gt; 已接收：%2</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1604"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1604"/>
         <source>Failed to receive SHA hash for Blender add-on &apos;%1.sha256&apos;.</source>
         <oldsource>Failed to receive SHA hash for Blender add-on &apos;%1.sha256&apos;</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">无法接收 Blender 附加组件 '%1.sha256' 的 SHA 哈希值</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1607"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1607"/>
         <source>Failed to read Blender add-on archive:&lt;br&gt;&apos;%1&apos;:&lt;br&gt;%2</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">无法读取 Blender 附加存档：&lt;br&gt;'%1'：&lt;br&gt;%2</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1610"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1610"/>
         <source>Failed to write Blender add-on archive:&lt;br&gt;&apos;%1&apos;:&lt;br&gt;%2</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">无法写入 Blender 附加存档：&lt;br&gt;'%1'：&lt;br&gt;%2</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1616"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1616"/>
         <source>Failed to remove invalid Blender add-on archive:&lt;br&gt;&apos;%1&apos;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">无法删除无效的 Blender 附加存档：&lt;br&gt;'%1'</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1619"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1619"/>
         <source>Failed to restore Blender add-on archive:&lt;br&gt;&apos;%1&apos; from &apos;%2&apos;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">无法从 '%2' 恢复 Blender 附加存档：&lt;br&gt;'%1'</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1625"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1625"/>
         <source>Failed to download Blender add-on archive:&lt;br&gt;&apos;%1&apos;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">无法下载 Blender 附加存档：&lt;br&gt;'%1'</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1630"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1630"/>
         <source>Download failed.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">下载失败。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1641"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1641"/>
         <source>Blender add-on</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender 附加组件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1664"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1664"/>
         <source>%1 not configured</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 未配置</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1675"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1675"/>
         <source>%1 setup...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 设置...</translation>
@@ -8303,7 +8303,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="obsolete">附加组件安装失败。有关详细信息，请参阅'%1/stderr-blender-add-on-install'。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1705"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1705"/>
         <source>Error: Install failed.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">错误：安装失败。</translation>
@@ -8314,7 +8314,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="obsolete">%1 Blender 附加安装</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1710"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1710"/>
         <source>LDraw add-on install encountered one or more errors. See Show Details...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">LDraw 附加安装遇到一个或多个错误。查看显示详细信息...</translation>
@@ -8325,55 +8325,55 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="obsolete">Blender 版本 %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1833"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1833"/>
         <source>Blender add-on standard output file not found: &apos;%1&apos;.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">未找到 Blender 附加标准输出文件：'%1'。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1833"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1833"/>
         <source>View Blender Add-on Output</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">查看 Blender 插件输出</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1928"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1928"/>
         <source>v%1</source>
         <translatorcomment>Technical identifier or nonlinguistic text; intentionally retained unchanged.</translatorcomment>
         <translation type="unfinished">v%1</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1985"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1985"/>
         <source>errors%1</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">错误%1</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1985"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1985"/>
         <source> and warnings</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished"> 和警告</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1985"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1985"/>
         <source>warnings</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">警告</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1988"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1988"/>
         <source>Add-on install standard output.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">附加安装标准输出。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="1989"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="1989"/>
         <source>LDraw add-on install encountered %1. See Show Details...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">LDraw 附加安装遇到 %1。查看显示详细信息...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="2008"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="2008"/>
         <source>Failed to open log file: &apos;%1&apos;:
 %2</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -8381,7 +8381,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 %2</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="2035"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="2035"/>
         <source>Error writing to %1 file &apos;%2&apos;:
 %3</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -8394,13 +8394,13 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="obsolete">取消 %1 附加安装</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="2047"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="2047"/>
         <source>Are you sure you want to cancel the add-on installation?</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">您确定要取消附加组件安装吗？</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="2340"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="2340"/>
         <source>Add-on Reset</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">附加重置</translation>
@@ -8411,45 +8411,45 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="obsolete">选择如何重置设置。选择是自上次应用以来或系统默认值。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="2345"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="2345"/>
         <source>Last Apply</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">最后申请</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="2348"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="2348"/>
         <source>System Default</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">系统默认值</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="2636"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="2654"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="2636"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="2654"/>
         <source>%1 - Setting (%2)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 - 设置 (%2)</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="2673"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="2678"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="2673"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="2678"/>
         <source>Load Blender Add-on Settings</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">加载 Blender 插件设置</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="2678"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="2678"/>
         <source>Blender config file was not found. Install log check failed:&lt;br&gt;%1:&lt;br&gt;%2</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">未找到 Blender 配置文件。安装日志检查失败：&lt;br&gt;%1:&lt;br&gt;%2</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="2948"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="2948"/>
         <source>Select Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="2963"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="2963"/>
         <source>Locate %1</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">找到%1</translation>
@@ -8460,25 +8460,25 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="obsolete">LDraw 渲染设置冲突</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="3130"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="3130"/>
         <source>Crop image configuration settings conflict were resolved.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">裁剪图像配置设置冲突已解决。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="3131"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="3131"/>
         <source>Keep aspect ratio set to false.&lt;br&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">将宽高比设置为 false.&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="3131"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="3131"/>
         <source>Add environment (backdrop and base plane) set to false.&lt;br&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">添加环境（背景和基础平面）设置为 false.&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="3131"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="3131"/>
         <source>Transparent background set to true.&lt;br&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">透明背景设置为 true.&lt;br&gt;</translation>
@@ -8489,13 +8489,13 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="obsolete">自定义 LDraw 颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="3168"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="3168"/>
         <source>Color scheme &apos;custom&apos; cannot be enabled. Custom LDConfig file not found.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">无法启用配色方案“自定义”。未找到自定义 LDConfig 文件。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="3169"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="3169"/>
         <source>Color scheme &apos;custom&apos; selected but no LDConfig file was specified.&lt;br&gt;The default color scheme &apos;%1&apos; will be used.&lt;br&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择了配色方案“自定义”，但未指定 LDConfig 文件。&lt;br&gt; 将使用默认配色方案 '%1'。&lt;br&gt;</translation>
@@ -8506,56 +8506,56 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="obsolete">修改渲染设置</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="3186"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="3186"/>
         <source>Do you want to accept the modified settings before quitting?</source>
         <oldsource>Do you want to accept the modified settings before quitting ?</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">您想在退出前接受修改后的设置吗？</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="3555"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="3555"/>
         <source>Failed to open Blender parameter file: &apos;%1&apos;:&lt;br&gt;%2</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">无法打开 Blender 参数文件：'%1':&lt;br&gt;%2</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="3558"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="3558"/>
         <source>Export Blender Parameters</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">导出 Blender 参数</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="3571"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="3571"/>
         <source>Replace Existing File</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">替换现有文件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="3643"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="3643"/>
         <source>Do you want to download version </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">您要下载版本吗 </translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="3647"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="3647"/>
         <source>Do not show download new add-on version message again.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">不再显示下载新附加版本消息。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="3666"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="3666"/>
         <source>Add-on download failed.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">附加组件下载失败。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="3666"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="3666"/>
         <source>Download Blender Add-on</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">下载 Blender 插件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="3814"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="3814"/>
         <source>ZipFile entry format (HostOS %1) at index %2 is not supported. Extract terminated.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">不支持索引 %2 处的 ZipFile 条目格式 (HostOS %1)。提取终止。</translation>
@@ -8566,7 +8566,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="obsolete">提取插件</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="3879"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="3879"/>
         <source>%1 of %n files extracted.</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">
@@ -8574,7 +8574,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="3550"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="3550"/>
         <source>Finished writing Blender parameter entries. Processed %n lines in file &apos;%1&apos;.</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">
@@ -8585,45 +8585,45 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 <context>
     <name>swBlenderPreferencesDialog</name>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="227"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="227"/>
         <source>Blender LDraw Add-on Settings</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender LDraw 附加设置</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="240"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="240"/>
         <source>Apply</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">申请</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="241"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="241"/>
         <source>Save the add-on paths and settings and close this dialog.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">保存附加路径和设置并关闭此对话框。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="247"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="301"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="313"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="247"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="301"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="313"/>
         <source>Hide the add-on paths section.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">隐藏附加路径部分。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="253"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="253"/>
         <source>Restore the last applied paths and settings or the system defaults.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">恢复上次应用的路径和设置或系统默认值。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="300"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="300"/>
         <source>Show Paths</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">显示路径</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="301"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="301"/>
         <source>Show the add-on paths section.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">显示附加路径部分。</translation>
@@ -8634,10 +8634,10 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="obsolete">应用附加路径和设置首选项</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="246"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="299"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="300"/>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="312"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="246"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="299"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="300"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="312"/>
         <source>Hide Paths</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">隐藏路径</translation>
@@ -8648,7 +8648,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="obsolete">隐藏附加路径首选项对话框</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_blenderpreferences.cpp" line="251"/>
+        <location filename="../src/ui/sw_blender_preferences.cpp" line="251"/>
         <source>Reset</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">重置</translation>
@@ -8682,64 +8682,64 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 <context>
     <name>swCategoryDialog</name>
     <message>
-        <location filename="../src/ui/sw_categorydialog.ui" line="6"/>
+        <location filename="../src/ui/sw_category_dialog.ui" line="6"/>
         <source>&lt;p&gt;&lt;b&gt;Piece Category&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Name a category and enter the expression used to find its pieces in the library. Both fields are required. Choose OK to return the category changes to Preferences, then choose OK in Preferences to keep them. Cancel discards edits in this dialog.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Keyword Syntax&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Expressions match text in library piece descriptions, ignoring case.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;tt&gt;Brick&lt;/tt&gt;: match this text anywhere in the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^Brick&lt;/tt&gt;: match Brick as a whole word.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;%Brick&lt;/tt&gt;: match Brick at the beginning of the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^%Brick&lt;/tt&gt;: require both a whole word and the beginning of the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A | B&lt;/tt&gt;: match either expression.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A &amp;amp; B&lt;/tt&gt;: match both expressions.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;!A&lt;/tt&gt;: exclude descriptions matching A.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;(A | B)&lt;/tt&gt;: group expressions.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Put spaces around &lt;tt&gt;|&lt;/tt&gt; and &lt;tt&gt;&amp;amp;&lt;/tt&gt;. Use parentheses when combining operators.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Examples&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;tt&gt;^%Brick | ^%Plate&lt;/tt&gt; matches descriptions beginning with the word Brick or Plate.&lt;br&gt;&lt;tt&gt;(^%Brick | ^%Plate) &amp;amp; !Pattern&lt;/tt&gt; also excludes descriptions containing Pattern.&lt;/p&gt;&lt;p&gt;Use the language of the library descriptions for search terms; do not translate the syntax symbols.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;零件类别&lt;/b&gt;&lt;/p&gt;&lt;p&gt;为类别命名，并输入用于在零件库中查找零件的表达式。这两个字段都必须填写。选择“确定”将类别更改返回到“偏好设置”，然后在“偏好设置”中选择“确定”以保存更改。“取消”将放弃此对话框中的更改。&lt;/p&gt;&lt;p&gt;&lt;b&gt;关键字语法&lt;/b&gt;&lt;/p&gt;&lt;p&gt;表达式匹配零件库描述中的文本，不区分大小写。&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;tt&gt;Brick&lt;/tt&gt;: 匹配描述中任意位置的此文本。&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^Brick&lt;/tt&gt;: 将 Brick 作为完整单词匹配。&lt;/li&gt;&lt;li&gt;&lt;tt&gt;%Brick&lt;/tt&gt;: 匹配描述开头的 Brick。&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^%Brick&lt;/tt&gt;: 要求完整单词位于描述开头。&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A | B&lt;/tt&gt;: 匹配任一表达式。&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A &amp;amp; B&lt;/tt&gt;: 匹配两个表达式。&lt;/li&gt;&lt;li&gt;&lt;tt&gt;!A&lt;/tt&gt;: 排除匹配 A 的描述。&lt;/li&gt;&lt;li&gt;&lt;tt&gt;(A | B)&lt;/tt&gt;: 对表达式进行分组。&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;在 &lt;tt&gt;|&lt;/tt&gt; 和 &lt;tt&gt;&amp;amp;&lt;/tt&gt; 两侧添加空格。组合运算符时请使用括号。&lt;/p&gt;&lt;p&gt;&lt;b&gt;示例&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;tt&gt;^%Brick | ^%Plate&lt;/tt&gt; 匹配以单词 Brick 或 Plate 开头的描述。&lt;br&gt;&lt;tt&gt;(^%Brick | ^%Plate) &amp;amp; !Pattern&lt;/tt&gt; 还会排除包含 Pattern 的描述。&lt;/p&gt;&lt;p&gt;搜索词请使用零件库描述的语言；不要翻译语法符号。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_categorydialog.ui" line="17"/>
+        <location filename="../src/ui/sw_category_dialog.ui" line="17"/>
         <source>Category</source>
         <translation>类别</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_categorydialog.ui" line="25"/>
-        <location filename="../src/ui/sw_categorydialog.ui" line="38"/>
+        <location filename="../src/ui/sw_category_dialog.ui" line="25"/>
+        <location filename="../src/ui/sw_category_dialog.ui" line="38"/>
         <source>Enter the category name shown in the piece browser.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">输入零件浏览器中显示的类别名称。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_categorydialog.ui" line="28"/>
+        <location filename="../src/ui/sw_category_dialog.ui" line="28"/>
         <source>Name:</source>
         <translation>名称:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_categorydialog.ui" line="45"/>
-        <location filename="../src/ui/sw_categorydialog.ui" line="61"/>
+        <location filename="../src/ui/sw_category_dialog.ui" line="45"/>
+        <location filename="../src/ui/sw_category_dialog.ui" line="61"/>
         <source>Enter an expression that matches piece descriptions.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">输入与零件描述相匹配的表达式。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_categorydialog.ui" line="48"/>
-        <location filename="../src/ui/sw_categorydialog.ui" line="64"/>
+        <location filename="../src/ui/sw_category_dialog.ui" line="48"/>
+        <location filename="../src/ui/sw_category_dialog.ui" line="64"/>
         <source>&lt;p&gt;&lt;b&gt;Keyword Syntax&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Expressions match text in library piece descriptions, ignoring case.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;tt&gt;Brick&lt;/tt&gt;: match this text anywhere in the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^Brick&lt;/tt&gt;: match Brick as a whole word.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;%Brick&lt;/tt&gt;: match Brick at the beginning of the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^%Brick&lt;/tt&gt;: require both a whole word and the beginning of the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A | B&lt;/tt&gt;: match either expression.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A &amp;amp; B&lt;/tt&gt;: match both expressions.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;!A&lt;/tt&gt;: exclude descriptions matching A.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;(A | B)&lt;/tt&gt;: group expressions.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Put spaces around &lt;tt&gt;|&lt;/tt&gt; and &lt;tt&gt;&amp;amp;&lt;/tt&gt;. Use parentheses when combining operators.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Examples&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;tt&gt;^%Brick | ^%Plate&lt;/tt&gt; matches descriptions beginning with the word Brick or Plate.&lt;br&gt;&lt;tt&gt;(^%Brick | ^%Plate) &amp;amp; !Pattern&lt;/tt&gt; also excludes descriptions containing Pattern.&lt;/p&gt;&lt;p&gt;Use the language of the library descriptions for search terms; do not translate the syntax symbols.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;关键字语法&lt;/b&gt;&lt;/p&gt;&lt;p&gt;表达式匹配零件库描述中的文本，不区分大小写。&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;tt&gt;Brick&lt;/tt&gt;: 匹配描述中任意位置的此文本。&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^Brick&lt;/tt&gt;: 将 Brick 作为完整单词匹配。&lt;/li&gt;&lt;li&gt;&lt;tt&gt;%Brick&lt;/tt&gt;: 匹配描述开头的 Brick。&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^%Brick&lt;/tt&gt;: 要求完整单词位于描述开头。&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A | B&lt;/tt&gt;: 匹配任一表达式。&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A &amp;amp; B&lt;/tt&gt;: 匹配两个表达式。&lt;/li&gt;&lt;li&gt;&lt;tt&gt;!A&lt;/tt&gt;: 排除匹配 A 的描述。&lt;/li&gt;&lt;li&gt;&lt;tt&gt;(A | B)&lt;/tt&gt;: 对表达式进行分组。&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;在 &lt;tt&gt;|&lt;/tt&gt; 和 &lt;tt&gt;&amp;amp;&lt;/tt&gt; 两侧添加空格。组合运算符时请使用括号。&lt;/p&gt;&lt;p&gt;&lt;b&gt;示例&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;tt&gt;^%Brick | ^%Plate&lt;/tt&gt; 匹配以单词 Brick 或 Plate 开头的描述。&lt;br&gt;&lt;tt&gt;(^%Brick | ^%Plate) &amp;amp; !Pattern&lt;/tt&gt; 还会排除包含 Pattern 的描述。&lt;/p&gt;&lt;p&gt;搜索词请使用零件库描述的语言；不要翻译语法符号。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_categorydialog.ui" line="51"/>
+        <location filename="../src/ui/sw_category_dialog.ui" line="51"/>
         <source>Keywords:</source>
         <translation>关键词:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_categorydialog.cpp" line="16"/>
+        <location filename="../src/ui/sw_category_dialog.cpp" line="16"/>
         <source>Edit Category</source>
         <translation>编辑类别</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_categorydialog.cpp" line="18"/>
+        <location filename="../src/ui/sw_category_dialog.cpp" line="18"/>
         <source>New Category</source>
         <translation>新建类别</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_categorydialog.cpp" line="35"/>
+        <location filename="../src/ui/sw_category_dialog.cpp" line="35"/>
         <source>Name cannot be empty.</source>
         <translation>名称不能为空。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_categorydialog.cpp" line="43"/>
+        <location filename="../src/ui/sw_category_dialog.cpp" line="43"/>
         <source>Keywords cannot be empty.</source>
         <translation>关键词不能为空。</translation>
     </message>
@@ -8747,25 +8747,25 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 <context>
     <name>swColorDialogPopup</name>
     <message>
-        <location filename="../src/ui/sw_utils.cpp" line="303"/>
+        <location filename="../src/ui/sw_utilities.cpp" line="303"/>
         <source>Choose Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_utils.cpp" line="304"/>
+        <location filename="../src/ui/sw_utilities.cpp" line="304"/>
         <source>&lt;p&gt;&lt;b&gt;Choose Color&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Pick a color using the swatches or enter its component values. Choose OK to use the selected color, or Cancel to keep the original color. Editing the controls alone does not apply the color.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;选择颜色&lt;/b&gt;&lt;/p&gt;&lt;p&gt;使用样本选择颜色或输入其分量值。选择“确定”以使用所选颜色，或选择“取消”以保留原始颜色。单独编辑控件不会应用颜色。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_utils.cpp" line="314"/>
+        <location filename="../src/ui/sw_utilities.cpp" line="314"/>
         <source>Custom Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">定制颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_utils.cpp" line="315"/>
+        <location filename="../src/ui/sw_utilities.cpp" line="315"/>
         <source>Choose a color or enter its component values.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择一种颜色或输入其成分值。</translation>
@@ -8835,55 +8835,55 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 <context>
     <name>swEditGroupsDialog</name>
     <message>
-        <location filename="../src/ui/sw_editgroupsdialog.ui" line="6"/>
+        <location filename="../src/ui/sw_edit_groups_dialog.ui" line="6"/>
         <source>&lt;p&gt;&lt;b&gt;Edit Groups&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Reorganize the model&apos;s pieces and groups in the tree. Drag pieces or groups into a group, or to the top level to remove them from a parent group. Double-click a group name to rename it.&lt;/p&gt;&lt;p&gt;New Group creates a group inside the selected group, or beside an ungrouped piece. Choose OK to apply the hierarchy, or Cancel to discard the changes. Empty groups are removed when changes are applied.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;编辑组&lt;/b&gt;&lt;/p&gt;&lt;p&gt;重新组织树中模型的零件和组。将零件或组拖入组中，或拖至顶层以将其从父组中删除。双击组名称进行重命名。&lt;/p&gt;&lt;p&gt;新建组会在所选组内或未分组的零件旁边创建一个组。选择“确定”应用层次结构，或选择“取消”放弃更改。应用更改后，空组将被删除。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_editgroupsdialog.ui" line="17"/>
+        <location filename="../src/ui/sw_edit_groups_dialog.ui" line="17"/>
         <source>Edit Groups</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">编辑组</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_editgroupsdialog.ui" line="23"/>
+        <location filename="../src/ui/sw_edit_groups_dialog.ui" line="23"/>
         <source>Drag pieces and groups to reorganize them; double-click a group name to rename it.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">拖动零件和组来重新组织它们；双击组名称可对其进行重命名。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_editgroupsdialog.ui" line="26"/>
+        <location filename="../src/ui/sw_edit_groups_dialog.ui" line="26"/>
         <source>&lt;p&gt;&lt;b&gt;Group Hierarchy&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Drop an item onto a group to make it a member of that group. Move it to the top level to remove its parent group. Only group names can be edited; names must be unique and nonempty.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;组层次结构&lt;/b&gt;&lt;/p&gt;&lt;p&gt;将项目拖放到组中以使其成为该组的成员。将其移至顶层以删除其父组。只能编辑群组名称；名称必须唯一且非空。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_editgroupsdialog.ui" line="29"/>
+        <location filename="../src/ui/sw_edit_groups_dialog.ui" line="29"/>
         <source>Piece and Group Hierarchy</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">零件和组层次结构</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_editgroupsdialog.cpp" line="45"/>
+        <location filename="../src/ui/sw_edit_groups_dialog.cpp" line="45"/>
         <source>&amp;New Group</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">新集团 (&amp;N)</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_editgroupsdialog.cpp" line="46"/>
+        <location filename="../src/ui/sw_edit_groups_dialog.cpp" line="46"/>
         <source>Create a group under the selected group or at the top level.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">在所选组下或顶层创建一个组。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_editgroupsdialog.cpp" line="47"/>
+        <location filename="../src/ui/sw_edit_groups_dialog.cpp" line="47"/>
         <source>&lt;p&gt;&lt;b&gt;New Group&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select a group to create a subgroup inside it. If a piece is selected, the new group is created beside that piece. With no selection, the new group is created at the top level. Rename the new group by editing its name, then drag pieces into it.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;新建组&lt;/b&gt;&lt;/p&gt;&lt;p&gt;选择一个组以在其中创建子组。如果选择了一个零件，则会在该零件旁边创建新组。如果不进行选择，新组将在顶层创建。通过编辑名称来重命名新组，然后将零件拖入其中。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_editgroupsdialog.cpp" line="96"/>
+        <location filename="../src/ui/sw_edit_groups_dialog.cpp" line="96"/>
         <source>Group #</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">组 #</translation>
@@ -8892,47 +8892,47 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 <context>
     <name>swFindReplaceWidget</name>
     <message>
-        <location filename="../src/ui/sw_findreplacewidget.cpp" line="23"/>
+        <location filename="../src/ui/sw_find_replace_widget.cpp" line="23"/>
         <source>Find:</source>
         <translation>查找:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_findreplacewidget.cpp" line="26"/>
+        <location filename="../src/ui/sw_find_replace_widget.cpp" line="26"/>
         <source>Search Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">搜索颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_findreplacewidget.cpp" line="30"/>
+        <location filename="../src/ui/sw_find_replace_widget.cpp" line="30"/>
         <source>Search Piece</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">查找零件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_findreplacewidget.cpp" line="54"/>
+        <location filename="../src/ui/sw_find_replace_widget.cpp" line="54"/>
         <source>Replace:</source>
         <translation>替换:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_findreplacewidget.cpp" line="57"/>
+        <location filename="../src/ui/sw_find_replace_widget.cpp" line="57"/>
         <source>Replacement Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">替换颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_findreplacewidget.cpp" line="64"/>
+        <location filename="../src/ui/sw_find_replace_widget.cpp" line="64"/>
         <source>Replacement Piece</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">替换零件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_findreplacewidget.cpp" line="90"/>
+        <location filename="../src/ui/sw_find_replace_widget.cpp" line="90"/>
         <source>None</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">无</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_findreplacewidget.cpp" line="96"/>
+        <location filename="../src/ui/sw_find_replace_widget.cpp" line="96"/>
         <source>Close</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">关闭</translation>
@@ -8941,42 +8941,42 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 <context>
     <name>swGroupDialog</name>
     <message>
-        <location filename="../src/ui/sw_groupdialog.ui" line="6"/>
+        <location filename="../src/ui/sw_group_dialog.ui" line="6"/>
         <source>&lt;p&gt;&lt;b&gt;Group Pieces&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Name a new group for the selected pieces so you can select and move them together. Choose OK to create it, or Cancel to leave the groups unchanged.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;将零件分组&lt;/b&gt;&lt;/p&gt;&lt;p&gt;为所选零件命名一个新组，以便您可以选择它们并将它们一起移动。选择“确定”来创建它，或选择“取消”来保持组不变。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_groupdialog.ui" line="17"/>
+        <location filename="../src/ui/sw_group_dialog.ui" line="17"/>
         <source>Group</source>
         <translation>组</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_groupdialog.ui" line="25"/>
-        <location filename="../src/ui/sw_groupdialog.ui" line="41"/>
+        <location filename="../src/ui/sw_group_dialog.ui" line="25"/>
+        <location filename="../src/ui/sw_group_dialog.ui" line="41"/>
         <source>Enter a unique, nonempty name for the new group.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">为新组输入唯一的非空名称。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_groupdialog.ui" line="28"/>
-        <location filename="../src/ui/sw_groupdialog.ui" line="44"/>
+        <location filename="../src/ui/sw_group_dialog.ui" line="28"/>
+        <location filename="../src/ui/sw_group_dialog.ui" line="44"/>
         <source>&lt;p&gt;&lt;b&gt;Group Name&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a name that is not already used by another group in this model. The new group contains the selected pieces and their existing groups.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;组名称&lt;/b&gt;&lt;/p&gt;&lt;p&gt;选择一个尚未被此模型中的其他组使用的名称。新组包含选定的零件及其现有组。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_groupdialog.ui" line="31"/>
+        <location filename="../src/ui/sw_group_dialog.ui" line="31"/>
         <source>Name</source>
         <translation>名称</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_groupdialog.cpp" line="27"/>
+        <location filename="../src/ui/sw_group_dialog.cpp" line="27"/>
         <source>Name cannot be empty.</source>
         <translation>名称不能为空。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_groupdialog.cpp" line="35"/>
+        <location filename="../src/ui/sw_group_dialog.cpp" line="35"/>
         <source>A group with this name already exists.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">具有此名称的组已存在。</translation>
@@ -8985,189 +8985,189 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 <context>
     <name>swHTMLDialog</name>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="23"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="23"/>
         <source>HTML Options</source>
         <translation>HTML 选项</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="35"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="35"/>
         <source>General</source>
         <translation>常规</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="49"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="49"/>
         <source>Output Folder:</source>
         <oldsource>Output folder:</oldsource>
         <translation type="unfinished">输出文件夹:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="75"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="75"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="90"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="90"/>
         <source>Transparent image background</source>
         <translation>透明图像背景</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="171"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="171"/>
         <source>Add a step index when using One Step per Page.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">使用每页一个步骤时添加步骤索引。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="181"/>
-        <location filename="../src/ui/sw_htmldialog.ui" line="194"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="181"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="194"/>
         <source>Width of each step image, in pixels.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">每个步骤图像的宽度（以像素为单位）。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="184"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="184"/>
         <source>Width:</source>
         <translation>宽度:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="207"/>
-        <location filename="../src/ui/sw_htmldialog.ui" line="220"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="207"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="220"/>
         <source>Height of each step image, in pixels.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">每个步骤图像的高度（以像素为单位）。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="210"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="210"/>
         <source>Height:</source>
         <translation>高度:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="174"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="174"/>
         <source>Index page</source>
         <translation>索引页面</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="6"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="6"/>
         <source>&lt;p&gt;&lt;b&gt;Export HTML&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Create browser-viewable building instructions and PNG images in the output folder. Choose which models to include, how to organize the step pages, and where to show pieces lists.&lt;/p&gt;&lt;p&gt;Keep the generated HTML and image files together when copying or sharing the instructions.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;导出 HTML&lt;/b&gt;&lt;/p&gt;&lt;p&gt;在输出文件夹中创建浏览器可查看的搭建说明和 PNG 图像。选择要包含的模型、如何组织步骤页面以及在何处显示零件列表。&lt;/p&gt;&lt;p&gt;复制或共享说明时，将生成的 HTML 和图像文件放在一起。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="43"/>
-        <location filename="../src/ui/sw_htmldialog.ui" line="59"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="43"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="59"/>
         <source>Folder for the generated HTML pages and images.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">生成的 HTML 页面和图像的文件夹。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="46"/>
-        <location filename="../src/ui/sw_htmldialog.ui" line="62"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="46"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="62"/>
         <source>&lt;p&gt;&lt;b&gt;Output Folder&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The exporter creates this folder if needed and writes the instruction pages and their images into it. Use a separate folder for each export to keep the generated files together.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;输出文件夹&lt;/b&gt;&lt;/p&gt;&lt;p&gt;导出器根据需要创建此文件夹，并将说明页面及其图像写入其中。每次导出使用单独的文件夹，将生成的文件保存在一起。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="69"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="69"/>
         <source>Choose the folder for the exported instructions.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择导出说明的文件夹。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="72"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="72"/>
         <source>Choose Output Folder</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择输出文件夹</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="84"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="84"/>
         <source>Save step images with a transparent background.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">保存具有透明背景的步骤图像。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="87"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="87"/>
         <source>&lt;p&gt;&lt;b&gt;Transparent Image Background&lt;/b&gt;&lt;/p&gt;&lt;p&gt;When checked, the PNG step images have a transparent background so the page background can show through. When unchecked, they include the configured solid or gradient background with no transparency.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;透明图像背景&lt;/b&gt;&lt;/p&gt;&lt;p&gt;选中后，PNG 步骤图像具有透明背景，因此页面背景可以显示出来。未选中时，它们包括配置的纯色或渐变背景，不透明。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="100"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="100"/>
         <source>&lt;p&gt;&lt;b&gt;Models&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Export all models in the project, only the current model, or the current model with the submodels it references. When several models are exported, an overall index links to their instructions.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;模型&lt;/b&gt;&lt;/p&gt;&lt;p&gt;导出项目中的所有模型、仅导出当前模型或当前模型及其引用的子模型。当导出多个模型时，总体索引会链接到它们的说明。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="103"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="103"/>
         <source>Models</source>
         <translation>模型</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="109"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="109"/>
         <source>Export instructions for every model in the project.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">导出项目中每个模型的说明。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="112"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="112"/>
         <source>All Models</source>
         <translation>所有模型</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="119"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="119"/>
         <source>Export the current model and the submodels it references.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">导出当前模型及其引用的子模型。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="122"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="122"/>
         <source>Current Model and Submodels</source>
         <translation>当前模型和子模型</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="129"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="129"/>
         <source>Export instructions only for the current model.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">仅导出当前型号的说明。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="132"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="132"/>
         <source>Current Model Only</source>
         <translation>仅当前模型</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="142"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="142"/>
         <source>&lt;p&gt;&lt;b&gt;Steps&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Single Page places all steps for each model on one HTML page. One Step per Page creates separate pages with navigation links. In that mode, Index page adds a page linking to the steps.&lt;/p&gt;&lt;p&gt;Width and Height set the step image size in pixels. Use positive dimensions up to 2048 pixels.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;步骤&lt;/b&gt;&lt;/p&gt;&lt;p&gt;单页将每个模型的所有步骤放在一个 HTML 页面上。每页一步创建带有导航链接的单独页面。在该模式下，索引页面添加链接到步骤的页面。&lt;/p&gt;&lt;p&gt;宽度和高度设置步骤图像大小（以像素为单位）。使用最大 2048 像素的正尺寸。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="145"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="145"/>
         <source>Steps</source>
         <translation>步骤</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="151"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="151"/>
         <source>Put all steps for each model on one HTML page.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">将每个模型的所有步骤放在一个 HTML 页面上。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="154"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="154"/>
         <source>Single Page</source>
         <translation>单页</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="161"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="161"/>
         <source>Create a separate HTML page for each step.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">为每个步骤创建一个单独的 HTML 页面。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="164"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="164"/>
         <source>One Step per Page</source>
         <translation>每步一页</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="236"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="236"/>
         <source>&lt;p&gt;&lt;b&gt;Pieces List&lt;/b&gt;&lt;/p&gt;&lt;p&gt;After each step shows the pieces added in that step. At the end shows the complete model inventory after the instructions. You can enable either option, both, or neither.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;零件列表&lt;/b&gt;&lt;/p&gt;&lt;p&gt;每个步骤后都会显示该步骤中添加的零件。最后在说明后显示了完整的模型库存。您可以启用其中一个选项，也可以启用两个选项，或者都不启用。&lt;/p&gt;</translation>
@@ -9177,29 +9177,29 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">高亮新零件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="239"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="239"/>
         <source>Pieces List</source>
         <translation>零件列表</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="245"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="245"/>
         <source>Include a complete pieces list after each model&apos;s instructions.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">在每个型号的说明后附上完整的零件清单。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="248"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="248"/>
         <source>At the end</source>
         <translation>末尾</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="255"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="255"/>
         <source>Include a list of the pieces added in each step.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">包括每个步骤中添加的零件的列表。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.ui" line="258"/>
+        <location filename="../src/ui/sw_html_dialog.ui" line="258"/>
         <source>After each step</source>
         <translation>每步之后</translation>
     </message>
@@ -9212,18 +9212,18 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">创建图片</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.cpp" line="50"/>
+        <location filename="../src/ui/sw_html_dialog.cpp" line="50"/>
         <source>Output folder cannot be empty.</source>
         <translation>输出文件夹不能为空。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.cpp" line="50"/>
+        <location filename="../src/ui/sw_html_dialog.cpp" line="50"/>
         <source>Export HTML</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">导出 HTML</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_htmldialog.cpp" line="70"/>
+        <location filename="../src/ui/sw_html_dialog.cpp" line="70"/>
         <source>Select Output Folder</source>
         <translation>选择输出文件夹</translation>
     </message>
@@ -9231,171 +9231,171 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 <context>
     <name>swImageDialog</name>
     <message>
-        <location filename="../src/ui/sw_imagedialog.ui" line="17"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="17"/>
         <source>Save Image</source>
         <translation>保存图像</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.ui" line="33"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="33"/>
         <source>File Name:</source>
         <oldsource>File name:</oldsource>
         <translation type="unfinished">文件名:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.ui" line="27"/>
-        <location filename="../src/ui/sw_imagedialog.ui" line="43"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="27"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="43"/>
         <source>Path and file name for the exported image.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">导出图像的路径和文件名。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.ui" line="30"/>
-        <location filename="../src/ui/sw_imagedialog.ui" line="46"/>
-        <location filename="../src/ui/sw_imagedialog.ui" line="56"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="30"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="46"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="56"/>
         <source>&lt;p&gt;&lt;b&gt;File Name&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose an output folder, file name, and image extension, such as .png, .jpg, or .bmp.&lt;/p&gt;&lt;p&gt;When saving several steps, the step number is added before the extension. For example, &apos;model.png&apos; becomes &apos;model01.png&apos;, &apos;model02.png&apos;, and so on.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;文件名&lt;/b&gt;&lt;/p&gt;&lt;p&gt;选择输出文件夹、文件名和图像扩展名，例如.png、.jpg或.bmp。&lt;/p&gt;&lt;p&gt;保存多个步骤时，步骤编号将添加在扩展名之前。例如，“model.png”变为“model01.png”、“model02.png”等。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.ui" line="53"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="53"/>
         <source>Choose the image file and format.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择图像文件和格式。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.ui" line="59"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="59"/>
         <source>Choose Image File</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择图像文件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.ui" line="73"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="73"/>
         <source>&lt;p&gt;&lt;b&gt;Dimensions&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Set the exported image width and height in pixels. Each value must be between 1 and 32768. Larger images use more memory and may exceed the graphics hardware limits.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;尺寸&lt;/b&gt;&lt;/p&gt;&lt;p&gt;设置导出图像的宽度和高度（以像素为单位）。每个值必须介于 1 和 32768 之间。较大的图像使用更多内存，并且可能超出图形硬件限制。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.ui" line="76"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="76"/>
         <source>Dimensions</source>
         <translation>尺寸</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.ui" line="82"/>
-        <location filename="../src/ui/sw_imagedialog.ui" line="95"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="82"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="95"/>
         <source>Width of the saved image, in pixels (1 to 32768).</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">已保存图像的宽度，以像素为单位（1 到 32768）。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.ui" line="114"/>
-        <location filename="../src/ui/sw_imagedialog.ui" line="127"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="114"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="127"/>
         <source>Height of the saved image, in pixels (1 to 32768).</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">已保存图像的高度，以像素为单位（1 到 32768）。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.ui" line="149"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="149"/>
         <source>&lt;p&gt;&lt;b&gt;Step Range&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose All Steps, Current Step, or Custom Range. The From and To fields are used only for Custom Range. Both endpoints are included, and To may equal From to save just one step.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;步长范围&lt;/b&gt;&lt;/p&gt;&lt;p&gt;选择所有步长、当前步长或自定义范围。 “从”和“到”字段仅用于自定义范围。两个端点都包含在内，并且 To 可能等于 From 以仅节省一步。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.ui" line="152"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="152"/>
         <source>Step Range</source>
         <translation>步骤范围</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.ui" line="158"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="158"/>
         <source>Save an image for every step in the active model.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">为活动模型中的每个步骤保存图像。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.ui" line="161"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="161"/>
         <source>All Steps</source>
         <translation>所有步骤</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.ui" line="168"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="168"/>
         <source>Save only the current step.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">仅保存当前步骤。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.ui" line="171"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="171"/>
         <source>Current Step</source>
         <translation>当前步骤</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.ui" line="180"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="180"/>
         <source>Save the steps between From and To, including both endpoints.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">保存从和到之间的步骤，包括两个端点。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.ui" line="183"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="183"/>
         <source>Custom Range</source>
         <translation>自定义范围</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.ui" line="196"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="196"/>
         <source>From:</source>
         <translation>从:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.ui" line="190"/>
-        <location filename="../src/ui/sw_imagedialog.ui" line="203"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="190"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="203"/>
         <source>First step to save when Custom Range is selected.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择自定义范围时保存的第一步。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.ui" line="206"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="206"/>
         <source>First Step</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">第一步</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.ui" line="231"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="231"/>
         <source>To:</source>
         <translation>到:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.ui" line="225"/>
-        <location filename="../src/ui/sw_imagedialog.ui" line="238"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="225"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="238"/>
         <source>Last step to save when Custom Range is selected.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择“自定义范围”时要保存的最后一步。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.ui" line="241"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="241"/>
         <source>Last Step</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">最后一步</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.ui" line="85"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="85"/>
         <source>Width:</source>
         <translation>宽度:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.ui" line="6"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="6"/>
         <source>&lt;p&gt;&lt;b&gt;Save Image&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Save images of the active model using the current view. Choose a destination file, image dimensions, and the steps to include.&lt;/p&gt;&lt;p&gt;Saving one step produces one image. Saving several steps produces a separate numbered image for each step.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;保存图像&lt;/b&gt;&lt;/p&gt;&lt;p&gt;使用当前视图保存活动模型的图像。选择目标文件、图像尺寸以及要包含的步骤。&lt;/p&gt;&lt;p&gt;保存一个步骤会生成一张图像。保存多个步骤会为每个步骤生成一个单独的编号图像。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.ui" line="117"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="117"/>
         <source>Height:</source>
         <translation>高度:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.ui" line="62"/>
+        <location filename="../src/ui/sw_image_dialog.ui" line="62"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.cpp" line="39"/>
+        <location filename="../src/ui/sw_image_dialog.cpp" line="39"/>
         <source>Output file cannot be empty.</source>
         <oldsource>Output File cannot be empty.</oldsource>
         <translation type="unfinished">输出文件不能为空。</translation>
@@ -9405,37 +9405,37 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">错误</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.cpp" line="77"/>
+        <location filename="../src/ui/sw_image_dialog.cpp" line="77"/>
         <source>First step must be between 1 and %1.</source>
         <translation>起始步骤必须在 1 和 %1 之间。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.cpp" line="85"/>
+        <location filename="../src/ui/sw_image_dialog.cpp" line="85"/>
         <source>Last step must be between 1 and %1.</source>
         <translation>结束步骤必须在 1 和 %1 之间。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.cpp" line="107"/>
+        <location filename="../src/ui/sw_image_dialog.cpp" line="107"/>
         <source>Supported Image Files (*.bmp *.png *.jpg);;BMP Files (*.bmp);;PNG Files (*.png);;JPEG Files (*.jpg);;All Files (*.*)</source>
         <translation>支持的图像文件 (*.bmp *.png *.jpg);;BMP 文件 (*.bmp);;PNG 文件 (*.png);;JPEG 文件 (*.jpg);;所有文件 (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.cpp" line="91"/>
+        <location filename="../src/ui/sw_image_dialog.cpp" line="91"/>
         <source>Last step must be greater than first step.</source>
         <translation>结束步骤必须大于起始步骤。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.cpp" line="47"/>
+        <location filename="../src/ui/sw_image_dialog.cpp" line="47"/>
         <source>Please enter a width between 1 and 32768.</source>
         <translation>请输入 1 到 32768 之间的宽度。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.cpp" line="55"/>
+        <location filename="../src/ui/sw_image_dialog.cpp" line="55"/>
         <source>Please enter a height between 1 and 32768.</source>
         <translation>请输入 1 到 32768 之间的高度。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_imagedialog.cpp" line="107"/>
+        <location filename="../src/ui/sw_image_dialog.cpp" line="107"/>
         <source>Save Image File</source>
         <translation>保存图像文件</translation>
     </message>
@@ -9479,33 +9479,33 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 <context>
     <name>swInstructionsDialog</name>
     <message>
-        <location filename="../src/ui/sw_instructionsdialog.cpp" line="545"/>
+        <location filename="../src/ui/sw_instructions_dialog.cpp" line="545"/>
         <source>Instructions</source>
         <translation>说明书</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_instructionsdialog.cpp" line="560"/>
+        <location filename="../src/ui/sw_instructions_dialog.cpp" line="560"/>
         <source>Page Settings</source>
         <translation>页面设置</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_instructionsdialog.cpp" line="565"/>
+        <location filename="../src/ui/sw_instructions_dialog.cpp" line="565"/>
         <source>Print</source>
         <translation>打印</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_instructionsdialog.cpp" line="567"/>
+        <location filename="../src/ui/sw_instructions_dialog.cpp" line="567"/>
         <source>Vertical</source>
         <translation>纵向</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_instructionsdialog.cpp" line="570"/>
+        <location filename="../src/ui/sw_instructions_dialog.cpp" line="570"/>
         <source>Horizontal</source>
         <translation>横向</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_instructionsdialog.cpp" line="584"/>
-        <location filename="../src/ui/sw_instructionsdialog.cpp" line="713"/>
+        <location filename="../src/ui/sw_instructions_dialog.cpp" line="584"/>
+        <location filename="../src/ui/sw_instructions_dialog.cpp" line="713"/>
         <source>Page %1</source>
         <translation>第 %1 页</translation>
     </message>
@@ -9513,12 +9513,12 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 <context>
     <name>swInstructionsPageListWidget</name>
     <message>
-        <location filename="../src/ui/sw_instructionsdialog.cpp" line="192"/>
+        <location filename="../src/ui/sw_instructions_dialog.cpp" line="192"/>
         <source>Pages</source>
         <translation>页面</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_instructionsdialog.cpp" line="202"/>
+        <location filename="../src/ui/sw_instructions_dialog.cpp" line="202"/>
         <source>Page Setup</source>
         <translation>页面设置</translation>
     </message>
@@ -9526,88 +9526,88 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 <context>
     <name>swInstructionsPropertiesWidget</name>
     <message>
-        <location filename="../src/ui/sw_instructionsdialog.cpp" line="306"/>
+        <location filename="../src/ui/sw_instructions_dialog.cpp" line="306"/>
         <source>Properties</source>
         <translation>属性</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_instructionsdialog.cpp" line="312"/>
+        <location filename="../src/ui/sw_instructions_dialog.cpp" line="312"/>
         <source>Default</source>
         <translation>默认</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_instructionsdialog.cpp" line="312"/>
+        <location filename="../src/ui/sw_instructions_dialog.cpp" line="312"/>
         <source>Current Model</source>
         <translation>当前模型</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_instructionsdialog.cpp" line="312"/>
+        <location filename="../src/ui/sw_instructions_dialog.cpp" line="312"/>
         <source>Current Step Only</source>
         <translation>仅当前步骤</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_instructionsdialog.cpp" line="312"/>
+        <location filename="../src/ui/sw_instructions_dialog.cpp" line="312"/>
         <source>Current Step Forward</source>
         <translation>当前步骤及之后</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_instructionsdialog.cpp" line="314"/>
+        <location filename="../src/ui/sw_instructions_dialog.cpp" line="314"/>
         <source>Scope:</source>
         <translation>范围:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_instructionsdialog.cpp" line="319"/>
+        <location filename="../src/ui/sw_instructions_dialog.cpp" line="319"/>
         <source>Preset:</source>
         <translation>预设:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_instructionsdialog.cpp" line="369"/>
+        <location filename="../src/ui/sw_instructions_dialog.cpp" line="369"/>
         <source>Select Step Number Color</source>
         <translation>选择步骤编号颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_instructionsdialog.cpp" line="373"/>
+        <location filename="../src/ui/sw_instructions_dialog.cpp" line="373"/>
         <source>Select Step Background Color</source>
         <translation>选择步骤背景颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_instructionsdialog.cpp" line="377"/>
+        <location filename="../src/ui/sw_instructions_dialog.cpp" line="377"/>
         <source>Select Pieces List Background Color</source>
         <translation>选择零件列表背景颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_instructionsdialog.cpp" line="381"/>
+        <location filename="../src/ui/sw_instructions_dialog.cpp" line="381"/>
         <source>Select Pieces List Border Color</source>
         <translation>选择零件列表边框颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_instructionsdialog.cpp" line="385"/>
+        <location filename="../src/ui/sw_instructions_dialog.cpp" line="385"/>
         <source>Select Pieces List Text Color</source>
         <translation>选择零件列表文本颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_instructionsdialog.cpp" line="435"/>
-        <location filename="../src/ui/sw_instructionsdialog.cpp" line="456"/>
+        <location filename="../src/ui/sw_instructions_dialog.cpp" line="435"/>
+        <location filename="../src/ui/sw_instructions_dialog.cpp" line="456"/>
         <source>Select Step Number Font</source>
         <translation>选择步骤编号字体</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_instructionsdialog.cpp" line="439"/>
+        <location filename="../src/ui/sw_instructions_dialog.cpp" line="439"/>
         <source>Select Pieces List Font</source>
         <translation>选择零件列表字体</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_instructionsdialog.cpp" line="495"/>
+        <location filename="../src/ui/sw_instructions_dialog.cpp" line="495"/>
         <source>Step Properties</source>
         <translation>步骤属性</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_instructionsdialog.cpp" line="511"/>
+        <location filename="../src/ui/sw_instructions_dialog.cpp" line="511"/>
         <source>Step Number Properties</source>
         <translation>步骤编号属性</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_instructionsdialog.cpp" line="526"/>
+        <location filename="../src/ui/sw_instructions_dialog.cpp" line="526"/>
         <source>Pieces List Properties</source>
         <translation>零件列表属性</translation>
     </message>
@@ -9615,404 +9615,404 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 <context>
     <name>swMainWindow</name>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="380"/>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="596"/>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="603"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="380"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="596"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="603"/>
         <source>Transform</source>
         <translation>变换</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="387"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="387"/>
         <source>C&amp;ameras</source>
         <translation>相机</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="436"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="436"/>
         <source>&amp;File</source>
         <translation>文件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="448"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="448"/>
         <source>&amp;Export</source>
         <translation>导出</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="474"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="474"/>
         <source>&amp;Edit</source>
         <translation>编辑</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="498"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="498"/>
         <source>&amp;View</source>
         <translation>视图</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="395"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="395"/>
         <source>&amp;Viewpoints</source>
         <translation>视点</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="404"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="404"/>
         <source>Projection</source>
         <translation>投影</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="507"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="507"/>
         <source>Ste&amp;p</source>
         <translation>步骤</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="522"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="522"/>
         <source>T&amp;oolbars</source>
         <translation>工具栏</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="535"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="535"/>
         <source>&amp;Piece</source>
         <translation>零件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="570"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="570"/>
         <source>&amp;Help</source>
         <translation>帮助</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="592"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="592"/>
         <source>&lt;p&gt;&lt;b&gt;Selection Mode&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose the rule applied when you pick a piece in the model view. Single selects that piece; the other modes include matching piece types, matching colors, or both. For example, color selection lets you pick matching red pieces without selecting each one separately.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;选择模式&lt;/b&gt;&lt;/p&gt;&lt;p&gt;选择在模型视图中选取一个零件时应用的规则。单个模式选择该零件；其他模式包括匹配零件类型、匹配颜色或两者兼而有之。例如，颜色选择可让您挑选匹配的红色部分，而无需单独选择每一个。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="604"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="604"/>
         <source>Transform Options</source>
         <translation>变换选项</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="606"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="606"/>
         <source>&lt;p&gt;&lt;b&gt;Transform Options&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose the axes and pivot used for interactive transforms. Relative Transforms uses the focused object&apos;s orientation, so movement along X follows that object&apos;s local X axis. Absolute Transforms uses the model axes. Rotate Together rotates the selection around a shared pivot; Rotate Separately rotates each piece around its own origin.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;变换选项&lt;/b&gt;&lt;/p&gt;&lt;p&gt;选择用于交互式变换的轴和枢轴。相对变换使用聚焦对象的方向，因此沿 X 方向的移动遵循该对象的局部 X 轴。绝对变换使用模型轴。一起旋转围绕共享轴旋转选择；单独旋转将每个零件围绕其自己的原点旋转。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="610"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="610"/>
         <source>Snap XY</source>
         <translation>XY 平面吸附</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="614"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="614"/>
         <source>Snap Z</source>
         <translation>Z 轴吸附</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="618"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="618"/>
         <source>Snap Menu</source>
         <translation>吸附菜单</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="624"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="624"/>
         <source>Movement Snap</source>
         <translation>移动吸附</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="625"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="625"/>
         <source>Snap translations to fixed intervals</source>
         <translation>将平移吸附到固定间隔</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="627"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="627"/>
         <source>&lt;p&gt;&lt;b&gt;Movement Snap&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose how far objects move in each snapped increment. XY controls movement across the base plane; Z controls vertical movement, so they can use different intervals. Turn snapping off for free placement, then enable it again when you need consistent spacing.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;移动捕捉&lt;/b&gt;&lt;/p&gt;&lt;p&gt;选择对象在每个捕捉增量中移动的距离。 XY 控制在基准平面上的移动； Z控制垂直运动，因此它们可以使用不同的间隔。关闭吸附功能以实现自由放置，然后在需要一致间距时再次启用它。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="631"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="631"/>
         <source>Snap Angle Menu</source>
         <translation>角度吸附菜单</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="637"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="637"/>
         <source>Rotation Snap</source>
         <translation>旋转吸附</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="638"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="638"/>
         <source>Snap rotations to fixed intervals</source>
         <translation>将旋转吸附到固定间隔</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="640"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="640"/>
         <source>&lt;p&gt;&lt;b&gt;Rotation Snap&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose an angle increment for interactive rotation. For example, a 90-degree increment is useful for quarter turns, while smaller increments allow finer alignment. Turn snapping off for free rotation without fixed angle increments.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;旋转捕捉&lt;/b&gt;&lt;/p&gt;&lt;p&gt;选择交互式旋转的角度增量。例如，90 度增量对于四分之一圈很有用，而较小的增量则允许更精细的对齐。关闭捕捉功能即可自由旋转，无需固定角度增量。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="644"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="644"/>
         <source>Standard</source>
         <translation>标准</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="415"/>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="673"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="415"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="673"/>
         <source>Tools</source>
         <translation>工具</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="124"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="124"/>
         <source>New Model</source>
         <translation>新建模型</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="125"/>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2669"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="125"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2669"/>
         <source>Open Model</source>
         <translation>打开模型</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="126"/>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2814"/>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2848"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="126"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2814"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2848"/>
         <source>Save Model</source>
         <translation>保存模型</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="410"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="410"/>
         <source>Sh&amp;ading</source>
         <translation>着色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="445"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="445"/>
         <source>&amp;Import</source>
         <translation>导入</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="458"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="458"/>
         <source>&amp;Render</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">使成为 (&amp;R)</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="562"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="562"/>
         <source>Sub&amp;model</source>
         <translation>子模型</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="585"/>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="589"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="585"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="589"/>
         <source>Selection Mode</source>
         <translation>选择模式</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="590"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="590"/>
         <source>Change selection mode</source>
         <translation>更改选择模式</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="591"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="591"/>
         <source>Choose which related pieces are included when selecting a piece.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择零件时选择包含哪些相关零件。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="605"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="605"/>
         <source>Choose coordinate axes and whether selected pieces rotate together.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择坐标轴以及所选零件是否一起旋转。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="626"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="626"/>
         <source>Choose movement snapping intervals for XY and Z.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择 XY 和 Z 的移动捕捉间隔。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="639"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="639"/>
         <source>Choose the rotation snapping interval.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择旋转捕捉间隔。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="664"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="664"/>
         <source>Time</source>
         <translation>时间</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="646"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="646"/>
         <source>&lt;p&gt;&lt;b&gt;Standard Toolbar&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Use file controls to create, open, and save projects, and Undo or Redo to navigate edit history. Before moving or rotating objects, choose the selection rule, coordinate reference, and snapping increments from the four drop-down controls. Help &gt; What&apos;s This? explains individual controls.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;标准工具栏&lt;/b&gt;&lt;/p&gt;&lt;p&gt;使用文件控件创建、打开和保存项目，并使用撤消或重做来导航编辑历史记录。在移动或旋转对象之前，请从四个下拉控件中选择选择规则、坐标参考和捕捉增量。帮助 &gt; 这是什么？解释各个控件。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="666"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="666"/>
         <source>&lt;p&gt;&lt;b&gt;Time Toolbar&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The arrow buttons move through building steps so you can inspect how the model is assembled. They do not change the step assigned to a piece; use the Timeline for that. Add Keys controls whether edits create animation keys at the current step, allowing properties such as position to vary between steps.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;时间工具栏&lt;/b&gt;&lt;/p&gt;&lt;p&gt;使用箭头按钮切换搭建步骤，查看模型的组装过程。这不会改变零件所属的步骤；如需更改，请使用“时间轴”。“添加关键帧”控制编辑操作是否在当前步骤创建动画关键帧，使位置等属性可随步骤变化。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="675"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="675"/>
         <source>&lt;p&gt;&lt;b&gt;Tools Toolbar&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a tool, then use it in the model view. Insertion tools create pieces, lights, or cameras. Editing tools select, transform, remove, or recolor objects. Navigation tools change the viewpoint without changing model geometry. Mouse assignments can be customized in Preferences.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;工具工具栏&lt;/b&gt;&lt;/p&gt;&lt;p&gt;选择一个工具，然后在模型视图中使用它。插入工具可以创建零件、灯光或相机。编辑工具选择、变换、删除对象或重新着色对象。导航工具可以在不改变模型几何形状的情况下改变视点。可以在“首选项”中自定义鼠标分配。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="716"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="716"/>
         <source>Pieces</source>
         <translation>零件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="718"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="718"/>
         <source>&lt;p&gt;&lt;b&gt;Pieces&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a category or palette and filter its pieces. Selecting a piece prepares it for insertion; drag it into the model view to place it. Double-click a piece to open its preview. Options controls filtering, thumbnails, and list display.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;零件&lt;/b&gt;&lt;/p&gt;&lt;p&gt;选择一个类别或调色板并过滤其零件。选择一个零件，准备插入；将其拖到模型视图中进行放置。双击一个零件以打开其预览。选项控制过滤、缩略图和列表显示。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="728"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="728"/>
         <source>Colors</source>
         <translation>颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="730"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="730"/>
         <source>&lt;p&gt;&lt;b&gt;Colors&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose the current LDraw color from the swatches. This color is used when inserting or painting pieces. To recolor selected pieces, use the color button above the swatches. Hover over a swatch for its name and color code.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;颜色&lt;/b&gt;&lt;/p&gt;&lt;p&gt;从样本中选择当前的 LDraw 颜色。这种颜色在插入或绘画零件时使用。要对选定的零件重新着色，请使用样本上方的颜色按钮。将鼠标悬停在样本上即可查看其名称和颜色代码。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="750"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="750"/>
         <source>Apply the current color to selected pieces.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">将当前颜色应用到选定的零件。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="751"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="751"/>
         <source>Change Selection Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">更改选择颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="752"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="752"/>
         <source>&lt;p&gt;&lt;b&gt;Change Selection Color&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Apply the current color to selected pieces. Choosing a swatch sets the current color; this button applies that color to the selection.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;更改选择颜色&lt;/b&gt;&lt;/p&gt;&lt;p&gt;将当前颜色应用于选定的零件。选择样本会设置当前颜色；此按钮将该颜色应用于所选内容。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="758"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="758"/>
         <source>LDraw Colors</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">L绘制颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="763"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="763"/>
         <source>Properties</source>
         <translation>属性</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="765"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="765"/>
         <source>&lt;p&gt;&lt;b&gt;Properties&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Edit properties of the focused object or selection. Available fields depend on whether you select pieces, a camera, or a light. Expand a section to see its fields. Keyframe controls mark properties at the current building step.&lt;/p&gt;&lt;p&gt;The transform fields at the bottom apply an X/Y/Z translation or rotation using the chosen transform mode. Press Enter to apply the values.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;属性&lt;/b&gt;&lt;/p&gt;&lt;p&gt;编辑焦点对象或选择的属性。可用字段取决于您选择的是零件、相机还是灯光。展开某个部分以查看其字段。关键帧控件标记当前构建步骤的属性。&lt;/p&gt;&lt;p&gt;底部的变换字段使用所选变换模式应用 X/Y/Z 平移或旋转。按 Enter 键应用这些值。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="786"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="786"/>
         <source>Choose absolute or relative translation or rotation.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择绝对或相对平移或旋转。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="787"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="787"/>
         <source>&lt;p&gt;&lt;b&gt;Apply Transform&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose the translation or rotation mode, enter X/Y/Z values, and press Enter to apply them. Translation values use LDraw units; rotation values use degrees.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;应用变换&lt;/b&gt;&lt;/p&gt;&lt;p&gt;选择平移或旋转模式，输入 X/Y/Z 值，然后按 Enter 键应用它们。平移值使用 LDraw 单位；旋转值使用度数。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="791"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="791"/>
         <source>Transform X</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">变换X</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="792"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="792"/>
         <source>Enter the X translation in LDraw units or rotation in degrees.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">输入以 LDraw 为单位的 X 平移或以度为单位的旋转。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="795"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="795"/>
         <source>Transform Y</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">变换 Y</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="796"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="796"/>
         <source>Enter the Y translation in LDraw units or rotation in degrees.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">输入 LDraw 单位的 Y 平移或以度为单位的旋转。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="799"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="799"/>
         <source>Transform Z</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">变换 Z</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="800"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="800"/>
         <source>Enter the Z translation in LDraw units or rotation in degrees.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">输入以 LDraw 单位表示的 Z 平移或以度数表示的旋转。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="812"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="812"/>
         <source>Timeline</source>
         <translation>时间线</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="814"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="814"/>
         <source>&lt;p&gt;&lt;b&gt;Timeline&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select a step to make it current, or select piece rows to select those pieces in the model. Drag pieces between steps or reorder them within a step. Right-click for step insertion, removal, movement, and visibility commands.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;时间轴&lt;/b&gt;&lt;/p&gt;&lt;p&gt;选择一个步骤以使其成为当前步骤，或选择零件行以选择模型中的这些零件。在步骤之间拖动零件或在步骤内对它们重新排序。右键单击可执行步骤插入、删除、移动和可见性命令。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="860"/>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="861"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="860"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="861"/>
         <source>Preview</source>
         <translation>预览</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="863"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="863"/>
         <source>&lt;p&gt;&lt;b&gt;Preview&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Inspect a piece without placing it in the model. Double-click a piece in the Pieces dock to preview it. Lock Preview keeps the current preview when the source selection changes; unlock it to allow updates.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;预览&lt;/b&gt;&lt;/p&gt;&lt;p&gt;检查零件而不将其放入模型中。双击零件停靠区中的零件进行预览。当源选择发生变化时，锁定预览保持当前预览；解锁它以允许更新。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="1006"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="1006"/>
         <source>Asset loading failed</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">资源加载失败</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="1107"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="1107"/>
         <source>Could not load piece.</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">无法加载零件。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="1129"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="1129"/>
         <source>Could not generate geometry.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">无法生成几何图形。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="1143"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="1143"/>
         <source>Regenerating synthesized piece geometry.</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">正在重新生成合成零件几何体。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="1145"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="1145"/>
         <source>Loading model pieces (%1 / %2).</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">正在加载模型零件（%1 / %2）。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="1152"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="1152"/>
         <source>The model could not be fully loaded. Some pieces may be missing.
 
 %1</source>
@@ -10025,123 +10025,123 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="1268"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="1268"/>
         <source>Close Other Tabs</source>
         <translation>关闭其他标签页</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="1361"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="1361"/>
         <source>The file &apos;%1&apos; has been modified by another application. Do you want to reload it?</source>
         <oldsource>The file &apos;%1&apos; has been modified by another application, do you want to reload it?</oldsource>
         <translation type="unfinished">文件 &apos;%1&apos; 已被其他应用程序修改，是否重新加载？</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="1367"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="1367"/>
         <source>File Changed</source>
         <translation>文件已更改</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="1549"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="1549"/>
         <source>Export HTML</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">导出 HTML</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="1557"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="1557"/>
         <source>POV-Ray Export</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">POV-Ray 导出</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="1618"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="1618"/>
         <source>Save Image</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">保存图像</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="1630"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="1630"/>
         <source>Nothing to select.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">没什么可选择的。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="1630"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="1630"/>
         <source>Select Objects</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">选择物体</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2345"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2345"/>
         <source>%1 (ID: %2)</source>
         <translation>%1 (ID: %2)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2351"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2351"/>
         <source>%n objects selected</source>
         <translation>
             <numerusform>已选择 %n 个物体</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2355"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2355"/>
         <source> - %1 (ID: %2)</source>
         <translation> - %1 (ID: %2)</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2359"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2359"/>
         <source> in group &apos;%1&apos;</source>
         <translation> 在组 &apos;%1&apos; 中</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2397"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2397"/>
         <source>Step %1</source>
         <translation>步骤 %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2966"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2966"/>
         <source>Export 3DS</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">导出 3DS</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2970"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2970"/>
         <source>Export COLLADA</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">导出 COLLADA</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2978"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2978"/>
         <source>Export BrickLink</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">导出 BrickLink</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2982"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2982"/>
         <source>Export CSV</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">导出 CSV</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2990"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2990"/>
         <source>Export Wavefront</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">导出 Wavefront</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="3040"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="3040"/>
         <source>Cannot Cut Model</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">无法切割模型</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="3045"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="3045"/>
         <source>Cannot Copy Model</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">无法复制模型</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="3050"/>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="3055"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="3050"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="3055"/>
         <source>Cannot Paste Model</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">无法粘贴模型</translation>
@@ -10151,34 +10151,34 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished"> M: %1 %2 R: %3 </translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2456"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2456"/>
         <source>&amp;Undo %1</source>
         <translation>撤销 %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2461"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2461"/>
         <source>&amp;Undo</source>
         <translation>撤销</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2467"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2467"/>
         <source>&amp;Redo %1</source>
         <translation>重做 %1</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2472"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2472"/>
         <source>&amp;Redo</source>
         <translation>重做</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2669"/>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2716"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2669"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2716"/>
         <source>Supported Files (*.lcd *.ldr *.dat *.mpd);;All Files (*.*)</source>
         <translation>支持的文件 (*.lcd *.ldr *.dat *.mpd);;所有文件 (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2716"/>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2751"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2716"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2751"/>
         <source>Merge Model</source>
         <translation>合并模型</translation>
     </message>
@@ -10191,12 +10191,12 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">已合并 %1 个子模型。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2761"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2761"/>
         <source>Import</source>
         <translation>导入</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2761"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2761"/>
         <source>LEGO Digital Designer Files (*.lxf);;All Files (*.*)</source>
         <translation>LEGO Digital Designer 文件 (*.lxf);;所有文件 (*.*)</translation>
     </message>
@@ -10209,12 +10209,12 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">加载错误 &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2812"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2812"/>
         <source>Supported Files (*.mpd);;All Files (*.*)</source>
         <translation>支持的文件 (*.mpd);;所有文件 (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2812"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2812"/>
         <source>Supported Files (*.ldr *.dat *.mpd);;All Files (*.*)</source>
         <translation>支持的文件 (*.ldr *.dat *.mpd);;所有文件 (*.*)</translation>
     </message>
@@ -10223,129 +10223,129 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">错误</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2433"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2433"/>
         <source>Rel</source>
         <translation>相对</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2433"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2433"/>
         <source>Abs</source>
         <translation>绝对</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2434"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2434"/>
         <source> M: %1 %2 R: %3 %4 </source>
         <translation> 移动: %1 %2 旋转: %3 %4 </translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2747"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2747"/>
         <source>Cannot Merge Model</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">无法合并模型</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2824"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2824"/>
         <source>Saving files in LCD format is no longer supported. Please use the LDR or MPD formats instead.</source>
         <oldsource>Saving files in LCD format is no longer supported, please use the LDR or MPD formats instead.</oldsource>
         <translation type="unfinished">不再支持保存为 LCD 格式，请改用 LDR 或 MPD 格式。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2824"/>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2832"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2824"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2832"/>
         <source>Save Project</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">保存项目</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2848"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2848"/>
         <source>Save changes to &apos;%1&apos;?</source>
         <translation>保存对 &apos;%1&apos; 的更改？</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.h" line="114"/>
-        <location filename="../src/ui/sw_mainwindow.h" line="120"/>
+        <location filename="../src/ui/sw_main_window.h" line="114"/>
+        <location filename="../src/ui/sw_main_window.h" line="120"/>
         <source>0</source>
         <translation>0</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.h" line="114"/>
-        <location filename="../src/ui/sw_mainwindow.h" line="120"/>
+        <location filename="../src/ui/sw_main_window.h" line="114"/>
+        <location filename="../src/ui/sw_main_window.h" line="120"/>
         <source>1/20S</source>
         <translation>1/20S</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.h" line="114"/>
-        <location filename="../src/ui/sw_mainwindow.h" line="120"/>
+        <location filename="../src/ui/sw_main_window.h" line="114"/>
+        <location filename="../src/ui/sw_main_window.h" line="120"/>
         <source>1/4S</source>
         <translation>1/4S</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.h" line="114"/>
-        <location filename="../src/ui/sw_mainwindow.h" line="120"/>
+        <location filename="../src/ui/sw_main_window.h" line="114"/>
+        <location filename="../src/ui/sw_main_window.h" line="120"/>
         <source>1F</source>
         <translation>1F</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.h" line="114"/>
-        <location filename="../src/ui/sw_mainwindow.h" line="120"/>
+        <location filename="../src/ui/sw_main_window.h" line="114"/>
+        <location filename="../src/ui/sw_main_window.h" line="120"/>
         <source>1/2S</source>
         <translation>1/2S</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.h" line="114"/>
-        <location filename="../src/ui/sw_mainwindow.h" line="120"/>
+        <location filename="../src/ui/sw_main_window.h" line="114"/>
+        <location filename="../src/ui/sw_main_window.h" line="120"/>
         <source>1S</source>
         <translation>1S</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.h" line="114"/>
+        <location filename="../src/ui/sw_main_window.h" line="114"/>
         <source>2S</source>
         <translation>2S</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.h" line="114"/>
+        <location filename="../src/ui/sw_main_window.h" line="114"/>
         <source>3S</source>
         <translation>3S</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.h" line="114"/>
+        <location filename="../src/ui/sw_main_window.h" line="114"/>
         <source>4S</source>
         <translation>4S</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.h" line="114"/>
+        <location filename="../src/ui/sw_main_window.h" line="114"/>
         <source>8S</source>
         <translation>8S</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.h" line="115"/>
-        <location filename="../src/ui/sw_mainwindow.h" line="121"/>
-        <location filename="../src/ui/sw_mainwindow.h" line="126"/>
+        <location filename="../src/ui/sw_main_window.h" line="115"/>
+        <location filename="../src/ui/sw_main_window.h" line="121"/>
+        <location filename="../src/ui/sw_main_window.h" line="126"/>
         <source>None</source>
         <translation>无</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.h" line="120"/>
+        <location filename="../src/ui/sw_main_window.h" line="120"/>
         <source>1B</source>
         <translation>1B</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.h" line="120"/>
+        <location filename="../src/ui/sw_main_window.h" line="120"/>
         <source>2B</source>
         <translation>2B</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.h" line="120"/>
+        <location filename="../src/ui/sw_main_window.h" line="120"/>
         <source>4B</source>
         <translation>4B</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_mainwindow.h" line="120"/>
+        <location filename="../src/ui/sw_main_window.h" line="120"/>
         <source>8B</source>
         <translation>8B</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/ui/sw_mainwindow.cpp" line="2751"/>
+        <location filename="../src/ui/sw_main_window.cpp" line="2751"/>
         <source>Merged %n submodels.</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">
@@ -10356,348 +10356,348 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 <context>
     <name>swMeshLoader</name>
     <message>
-        <location filename="../src/library/sw_meshloader.cpp" line="1680"/>
+        <location filename="../src/library/sw_mesh_loader.cpp" line="1680"/>
         <source>Could not load included file &apos;%1&apos;.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">无法加载包含的文件 '%1'。</translation>
     </message>
 </context>
 <context>
-    <name>swMinifigDialog</name>
+    <name>swMinifigureDialog</name>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.ui" line="6"/>
+        <location filename="../src/ui/sw_minifigure_dialog.ui" line="6"/>
         <source>&lt;p&gt;&lt;b&gt;Minifig Wizard&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Build a minifigure by choosing its pieces, colors, and pose. The preview updates as you make changes. Choose OK to insert the minifigure into the current model, or Cancel to close without inserting it.&lt;/p&gt;&lt;p&gt;Templates let you reuse a configuration. Saved, deleted, and imported templates are retained even if you cancel the wizard.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;小人仔向导&lt;/b&gt;&lt;/p&gt;&lt;p&gt;通过选择小人仔的零件、颜色和姿势来构建小人仔。当您进行更改时预览会更新。选择“确定”将小人仔插入当前模型，或选择“取消”关闭而不插入。&lt;/p&gt;&lt;p&gt;模板可让您重复使用配置。即使您取消向导，保存、删除和导入的模板也会保留。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.ui" line="17"/>
+        <location filename="../src/ui/sw_minifigure_dialog.ui" line="17"/>
         <source>Minifig Wizard</source>
         <translation>人仔向导</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.ui" line="23"/>
+        <location filename="../src/ui/sw_minifigure_dialog.ui" line="23"/>
         <source>&lt;p&gt;&lt;b&gt;Minifigure Pieces&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Each section has a piece selector and a color button. Some sections also have a rotation control in degrees. Choose None in a piece selector to omit that piece.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;小人仔零件&lt;/b&gt;&lt;/p&gt;&lt;p&gt;每个部分都有一个零件选择器和一个颜色按钮。有些部分还具有以度为单位的旋转控制。在零件选择器中选择“无”以忽略该零件。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.ui" line="31"/>
+        <location filename="../src/ui/sw_minifigure_dialog.ui" line="31"/>
         <source>&lt;p&gt;&lt;b&gt;Templates&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Load a saved configuration of pieces, colors, and angles, or save the current configuration under a name. Choosing another template replaces the current preview configuration.&lt;/p&gt;&lt;p&gt;Changes to the preview are not saved as a template until you use Save. Template operations are retained when the wizard closes, including after Cancel.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;模板&lt;/b&gt;&lt;/p&gt;&lt;p&gt;加载已保存的零件、颜色和角度配置，或以名称保存当前配置。选择另一个模板将替换当前的预览配置。&lt;/p&gt;&lt;p&gt;在使用“保存”之前，对预览所做的更改不会保存为模板。当向导关闭时，包括取消之后，模板操作将被保留。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.ui" line="40"/>
+        <location filename="../src/ui/sw_minifigure_dialog.ui" line="40"/>
         <source>Templates</source>
         <translation>模板</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.ui" line="46"/>
+        <location filename="../src/ui/sw_minifigure_dialog.ui" line="46"/>
         <source>Load a saved configuration of pieces, colors, and angles.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">加载保存的零件、颜色和角度配置。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.ui" line="49"/>
+        <location filename="../src/ui/sw_minifigure_dialog.ui" line="49"/>
         <source>Minifigure Template</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">小人仔模板</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.ui" line="62"/>
+        <location filename="../src/ui/sw_minifigure_dialog.ui" line="62"/>
         <source>Save the current minifigure configuration as a named template.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">将当前小人仔配置保存为命名模板。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.ui" line="65"/>
+        <location filename="../src/ui/sw_minifigure_dialog.ui" line="65"/>
         <source>&lt;p&gt;&lt;b&gt;Save Template&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Enter a name for the current pieces, colors, and pose. Reusing an existing name asks before replacing that template. The Default template cannot be overwritten.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;保存模板&lt;/b&gt;&lt;/p&gt;&lt;p&gt;输入当前零件、颜色和姿势的名称。在替换该模板之前，会询问重用现有名称。默认模板无法被覆盖。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.ui" line="68"/>
+        <location filename="../src/ui/sw_minifigure_dialog.ui" line="68"/>
         <source>Save...</source>
         <translation>保存...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.ui" line="75"/>
+        <location filename="../src/ui/sw_minifigure_dialog.ui" line="75"/>
         <source>Delete the selected saved template.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">删除选定的已保存模板。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.ui" line="78"/>
+        <location filename="../src/ui/sw_minifigure_dialog.ui" line="78"/>
         <source>&lt;p&gt;&lt;b&gt;Delete Template&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Remove the selected named template after confirmation. This does not remove pieces from the preview or an existing model. The Default template cannot be deleted.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;删除模板&lt;/b&gt;&lt;/p&gt;&lt;p&gt;确认后删除选定的命名模板。这不会从预览或现有模型中删除零件。默认模板无法删除。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.ui" line="81"/>
+        <location filename="../src/ui/sw_minifigure_dialog.ui" line="81"/>
         <source>Delete...</source>
         <translation>删除...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.ui" line="88"/>
+        <location filename="../src/ui/sw_minifigure_dialog.ui" line="88"/>
         <source>Add templates from a .minifig file.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">从 .minifig 文件添加模板。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.ui" line="91"/>
+        <location filename="../src/ui/sw_minifigure_dialog.ui" line="91"/>
         <source>&lt;p&gt;&lt;b&gt;Import Templates&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Add saved configurations from a .minifig file to the template collection. Existing template names are kept when the imported file contains the same names.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;导入模板&lt;/b&gt;&lt;/p&gt;&lt;p&gt;将保存的配置从 .minifig 文件添加到模板集合。当导入的文件包含相同名称时，将保留现有模板名称。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.ui" line="94"/>
+        <location filename="../src/ui/sw_minifigure_dialog.ui" line="94"/>
         <source>Import...</source>
         <translation>导入...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.ui" line="101"/>
+        <location filename="../src/ui/sw_minifigure_dialog.ui" line="101"/>
         <source>Save the entire template collection to a .minifig file.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">将整个模板集合保存到 .minifig 文件中。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.ui" line="104"/>
+        <location filename="../src/ui/sw_minifigure_dialog.ui" line="104"/>
         <source>&lt;p&gt;&lt;b&gt;Export Templates&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Write all templates to a .minifig file for backup or sharing. Export includes the entire collection, not just the selected template.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;导出模板&lt;/b&gt;&lt;/p&gt;&lt;p&gt;将所有模板写入 .minifig 文件以进行备份或共享。导出包括整个集合，而不仅仅是选定的模板。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.ui" line="107"/>
+        <location filename="../src/ui/sw_minifigure_dialog.ui" line="107"/>
         <source>Export...</source>
         <translation>导出...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
         <source>Hat</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">帽子</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
         <source>Hat Accessory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">帽子配件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
         <source>Head</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">头</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
         <source>Neck</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">脖子</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
         <source>Torso</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">躯干</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
         <source>Hip</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">时髦的</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
         <source>Hip Accessory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">时尚配饰</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
         <source>Left Arm</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">左臂</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
         <source>Right Arm</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">右臂</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
         <source>Left Hand</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">左手</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="30"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="30"/>
         <source>Right Hand</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">右手</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="31"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="31"/>
         <source>Left Hand Accessory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">左手配件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="31"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="31"/>
         <source>Right Hand Accessory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">右手配件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="31"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="31"/>
         <source>Left Leg</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">左腿</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="31"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="31"/>
         <source>Right Leg</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">右腿</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="31"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="31"/>
         <source>Left Leg Accessory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">左腿配件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="31"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="31"/>
         <source>Right Leg Accessory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">右腿配件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="51"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="51"/>
         <source>%1 piece</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 零件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="52"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="52"/>
         <source>Choose the piece for %1, or None to omit it.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择 %1 的零件，或选择“无”以省略它。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="53"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="53"/>
         <source>&lt;p&gt;&lt;b&gt;Choose Piece&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a piece for this section of the minifigure. Select None to omit it. The preview updates when you select a different piece.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;选择零件&lt;/b&gt;&lt;/p&gt;&lt;p&gt;为小人仔的这个部位选择零件。选择“无”可省略该零件。选择不同零件时，预览会随之更新。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="60"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="60"/>
         <source>%1 color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="61"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="61"/>
         <source>Choose the color for %1.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择 %1 的颜色。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="62"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="62"/>
         <source>&lt;p&gt;&lt;b&gt;Choose Color&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Change the color of this minifigure piece. The preview updates immediately, and saving a template includes the chosen color.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;选择颜色&lt;/b&gt;&lt;/p&gt;&lt;p&gt;更改此小人仔的颜色。预览会立即更新，并保存包含所选颜色的模板。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="75"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="75"/>
         <source>%1 rotation</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 旋转</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="76"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="76"/>
         <source>Rotate %1, in degrees (-360 to 360).</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">旋转 %1，以度为单位（-360 到 360）。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="77"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="77"/>
         <source>&lt;p&gt;&lt;b&gt;Rotation&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Adjust this piece&apos;s angle to pose the minifigure. Values range from -360 to 360 degrees. The available rotation depends on the selected minifigure section.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;旋转&lt;/b&gt;&lt;/p&gt;&lt;p&gt;调整该零件的角度以摆出小人仔的姿势。值范围从 -360 到 360 度。可用的旋转取决于所选的小人仔部分。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="127"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="127"/>
         <source>Minifigure Preview</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">人仔预览</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="128"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="128"/>
         <source>Preview of the chosen pieces, colors, and pose.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">预览所选零件、颜色和姿势。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="129"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="129"/>
         <source>&lt;p&gt;&lt;b&gt;Minifigure Preview&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Check the assembled minifigure as you change pieces, colors, or angles. Choose OK to add this configuration to the current model.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;小人仔预览&lt;/b&gt;&lt;/p&gt;&lt;p&gt;在更改零件、颜色或角度时检查组装好的小人仔。选择“确定”将此配置添加到当前模型。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="271"/>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="278"/>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="284"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="271"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="278"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="284"/>
         <source>Save Template</source>
         <translation>保存模板</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="271"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="271"/>
         <source>Template Name:</source>
         <translation>模板名称:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="278"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="278"/>
         <source>Template name cannot be empty.</source>
         <translation>模板名称不能为空。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="284"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="284"/>
         <source>Cannot overwrite the default template.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">无法覆盖默认模板。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="290"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="290"/>
         <source>Are you sure you want to overwrite the template &apos;%1&apos;?</source>
         <translation>确定要覆盖模板 &apos;%1&apos; 吗？</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="291"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="291"/>
         <source>Overwrite Template</source>
         <translation>覆盖模板</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="319"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="319"/>
         <source>Are you sure you want to delete the template &apos;%1&apos;?</source>
         <translation>确定要删除模板 &apos;%1&apos; 吗？</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="321"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="321"/>
         <source>Delete Template</source>
         <translation>删除模板</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="334"/>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="343"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="334"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="343"/>
         <source>Import Templates</source>
         <translation>导入模板</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="334"/>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="355"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="334"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="355"/>
         <source>Minifig Template Files (*.minifig);;All Files (*.*)</source>
         <translation>人仔模板文件 (*.minifig);;所有文件 (*.*)</translation>
     </message>
@@ -10706,7 +10706,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">错误</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="343"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="343"/>
         <source>Error reading file &apos;%1&apos;:
 %2</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -10714,7 +10714,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 %2</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="364"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="364"/>
         <source>Error writing to file &apos;%1&apos;:
 %2</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
@@ -10726,8 +10726,8 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">读取文件 &apos;%1&apos; 时出错:%2</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="355"/>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="364"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="355"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="364"/>
         <source>Export Templates</source>
         <translation>导出模板</translation>
     </message>
@@ -10737,10 +10737,10 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 %2</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="147"/>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="247"/>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="399"/>
-        <location filename="../src/ui/sw_minifigdialog.cpp" line="430"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="147"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="247"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="399"/>
+        <location filename="../src/ui/sw_minifigure_dialog.cpp" line="430"/>
         <source>None</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">无</translation>
@@ -11332,104 +11332,104 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 <context>
     <name>swModelListDialog</name>
     <message>
-        <location filename="../src/ui/sw_modellistdialog.ui" line="6"/>
+        <location filename="../src/ui/sw_model_list_dialog.ui" line="6"/>
         <source>&lt;p&gt;&lt;b&gt;Submodels&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Manage the models stored in this project. Create, rename, duplicate, delete, or reorder them, then choose OK to apply the changes. Cancel discards the list changes; files already exported remain on disk.&lt;/p&gt;&lt;p&gt;Drag list entries to change their order. Use Set Active to switch to the current list item when applying changes.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;子模型&lt;/b&gt;&lt;/p&gt;&lt;p&gt;管理存储在该项目中的模型。创建、重命名、复制、删除或重新排序它们，然后选择“确定”应用更改。取消放弃列表更改；已导出的文件保留在磁盘上。&lt;/p&gt;&lt;p&gt;拖动列表条目以更改其顺序。应用更改时，使用“设置活动”切换到当前列表项。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_modellistdialog.ui" line="17"/>
-        <location filename="../src/ui/sw_modellistdialog.ui" line="28"/>
+        <location filename="../src/ui/sw_model_list_dialog.ui" line="17"/>
+        <location filename="../src/ui/sw_model_list_dialog.ui" line="28"/>
         <source>Submodels</source>
         <translation>子模型</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_modellistdialog.ui" line="25"/>
+        <location filename="../src/ui/sw_model_list_dialog.ui" line="25"/>
         <source>Select models to manage, or drag them to change their order.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择要管理的模型，或拖动它们以更改其顺序。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_modellistdialog.ui" line="31"/>
+        <location filename="../src/ui/sw_model_list_dialog.ui" line="31"/>
         <source>&lt;p&gt;&lt;b&gt;Model List&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select one or more entries for actions such as Rename, Duplicate, Export, or Delete. Drag entries to reorder them. Double-click an entry to apply the list changes and make that model active.&lt;/p&gt;&lt;p&gt;Names must be unique within the project; capitalization alone does not make a name unique.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;模型列表&lt;/b&gt;&lt;/p&gt;&lt;p&gt;选择一个或多个条目以执行重命名、复制、导出或删除等操作。拖动条目以重新排序。双击条目以应用列表更改并使该模型处于活动状态。&lt;/p&gt;&lt;p&gt;名称在项目中必须是唯一的；仅大写并不能使名称独一无二。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_modellistdialog.ui" line="43"/>
+        <location filename="../src/ui/sw_model_list_dialog.ui" line="43"/>
         <source>Add a new empty submodel to the project.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">将新的空子模型添加到项目中。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_modellistdialog.ui" line="46"/>
+        <location filename="../src/ui/sw_model_list_dialog.ui" line="46"/>
         <source>&amp;New...</source>
         <translation>新建...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_modellistdialog.ui" line="53"/>
+        <location filename="../src/ui/sw_model_list_dialog.ui" line="53"/>
         <source>Remove the selected models from the project.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">从项目中删除选定的模型。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_modellistdialog.ui" line="56"/>
+        <location filename="../src/ui/sw_model_list_dialog.ui" line="56"/>
         <source>&lt;p&gt;&lt;b&gt;Delete Submodels&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Remove the selected entries after confirmation. At least one model must remain. The project is changed when you accept this dialog.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;删除子模型&lt;/b&gt;&lt;/p&gt;&lt;p&gt;确认后删除所选条目。必须至少保留一种模型。当您接受此对话框时，项目将发生更改。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_modellistdialog.ui" line="59"/>
+        <location filename="../src/ui/sw_model_list_dialog.ui" line="59"/>
         <source>D&amp;elete...</source>
         <translation>删除...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_modellistdialog.ui" line="66"/>
+        <location filename="../src/ui/sw_model_list_dialog.ui" line="66"/>
         <source>Choose a unique name for each selected model.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">为每个选定的模型选择一个唯一的名称。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_modellistdialog.ui" line="69"/>
+        <location filename="../src/ui/sw_model_list_dialog.ui" line="69"/>
         <source>&amp;Rename...</source>
         <translation>重命名...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_modellistdialog.ui" line="76"/>
+        <location filename="../src/ui/sw_model_list_dialog.ui" line="76"/>
         <source>Save the selected models to separate LDraw files.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">将选定的模型保存到单独的 LDraw 文件中。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_modellistdialog.ui" line="79"/>
+        <location filename="../src/ui/sw_model_list_dialog.ui" line="79"/>
         <source>&lt;p&gt;&lt;b&gt;Export Submodels&lt;/b&gt;&lt;/p&gt;&lt;p&gt;For one selected model, choose its output file. For several selected models, choose an output folder. Export writes files immediately, even if you later cancel this dialog.&lt;/p&gt;&lt;p&gt;A newly created empty model has nothing to export until the list changes have been applied.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;导出子模型&lt;/b&gt;&lt;/p&gt;&lt;p&gt;对于一个选定的模型，选择其输出文件。对于多个选定的模型，选择一个输出文件夹。即使您稍后取消此对话框，“导出”也会立即写入文件。&lt;/p&gt;&lt;p&gt;在应用列表更改之前，新创建的空模型无法导出任何内容。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_modellistdialog.ui" line="82"/>
+        <location filename="../src/ui/sw_model_list_dialog.ui" line="82"/>
         <source>Export...</source>
         <translation>导出...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_modellistdialog.ui" line="89"/>
+        <location filename="../src/ui/sw_model_list_dialog.ui" line="89"/>
         <source>Create named copies of the selected models.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">创建所选模型的命名副本。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_modellistdialog.ui" line="92"/>
+        <location filename="../src/ui/sw_model_list_dialog.ui" line="92"/>
         <source>Duplicate...</source>
         <translation>复制...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_modellistdialog.ui" line="99"/>
+        <location filename="../src/ui/sw_model_list_dialog.ui" line="99"/>
         <source>Switch to the current list item when applying the changes.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">应用更改时切换到当前列表项。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_modellistdialog.ui" line="102"/>
+        <location filename="../src/ui/sw_model_list_dialog.ui" line="102"/>
         <source>&lt;p&gt;&lt;b&gt;Set Active&lt;/b&gt;&lt;/p&gt;&lt;p&gt;When checked, accepting this dialog makes the current list item the active model for editing. When unchecked, the existing active model is retained if it remains in the project.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;设置活动&lt;/b&gt;&lt;/p&gt;&lt;p&gt;选中后，接受此对话框将使当前列表项成为可编辑的活动模型。取消选中时，如果现有活动模型保留在项目中，则将保留该模型。&lt;/p&gt;</translation>
@@ -11443,12 +11443,12 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">下移</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_modellistdialog.ui" line="105"/>
+        <location filename="../src/ui/sw_model_list_dialog.ui" line="105"/>
         <source>Set Active</source>
         <translation>设为活动</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_modellistdialog.cpp" line="113"/>
+        <location filename="../src/ui/sw_model_list_dialog.cpp" line="113"/>
         <source>New Submodel</source>
         <translation>新建子模型</translation>
     </message>
@@ -11457,27 +11457,27 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">错误</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_modellistdialog.cpp" line="127"/>
+        <location filename="../src/ui/sw_model_list_dialog.cpp" line="127"/>
         <source>The model cannot be empty.</source>
         <translation>模型名称不能为空。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_modellistdialog.cpp" line="141"/>
+        <location filename="../src/ui/sw_model_list_dialog.cpp" line="141"/>
         <source>Are you sure you want to delete the submodel &apos;%1&apos;?</source>
         <translation>确定要删除子模型 &apos;%1&apos; 吗？</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_modellistdialog.cpp" line="127"/>
-        <location filename="../src/ui/sw_modellistdialog.cpp" line="135"/>
-        <location filename="../src/ui/sw_modellistdialog.cpp" line="145"/>
+        <location filename="../src/ui/sw_model_list_dialog.cpp" line="127"/>
+        <location filename="../src/ui/sw_model_list_dialog.cpp" line="135"/>
+        <location filename="../src/ui/sw_model_list_dialog.cpp" line="145"/>
         <source>Delete Submodel</source>
         <translation>删除子模型</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_modellistdialog.cpp" line="135"/>
-        <location filename="../src/ui/sw_modellistdialog.cpp" line="165"/>
-        <location filename="../src/ui/sw_modellistdialog.cpp" line="189"/>
-        <location filename="../src/ui/sw_modellistdialog.cpp" line="257"/>
+        <location filename="../src/ui/sw_model_list_dialog.cpp" line="135"/>
+        <location filename="../src/ui/sw_model_list_dialog.cpp" line="165"/>
+        <location filename="../src/ui/sw_model_list_dialog.cpp" line="189"/>
+        <location filename="../src/ui/sw_model_list_dialog.cpp" line="257"/>
         <source>No submodel selected.</source>
         <translation>未选择子模型。</translation>
     </message>
@@ -11486,16 +11486,16 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">确定要删除 %1 个子模型吗？</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_modellistdialog.cpp" line="165"/>
-        <location filename="../src/ui/sw_modellistdialog.cpp" line="176"/>
+        <location filename="../src/ui/sw_model_list_dialog.cpp" line="165"/>
+        <location filename="../src/ui/sw_model_list_dialog.cpp" line="176"/>
         <source>Rename Submodel</source>
         <translation>重命名子模型</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_modellistdialog.cpp" line="189"/>
-        <location filename="../src/ui/sw_modellistdialog.cpp" line="204"/>
-        <location filename="../src/ui/sw_modellistdialog.cpp" line="219"/>
-        <location filename="../src/ui/sw_modellistdialog.cpp" line="241"/>
+        <location filename="../src/ui/sw_model_list_dialog.cpp" line="189"/>
+        <location filename="../src/ui/sw_model_list_dialog.cpp" line="204"/>
+        <location filename="../src/ui/sw_model_list_dialog.cpp" line="219"/>
+        <location filename="../src/ui/sw_model_list_dialog.cpp" line="241"/>
         <source>Export Submodel</source>
         <translation>导出子模型</translation>
     </message>
@@ -11504,38 +11504,38 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">StudWorks</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_modellistdialog.cpp" line="204"/>
+        <location filename="../src/ui/sw_model_list_dialog.cpp" line="204"/>
         <source>Nothing to export.</source>
         <translation>没有可导出的内容。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_modellistdialog.cpp" line="211"/>
+        <location filename="../src/ui/sw_model_list_dialog.cpp" line="211"/>
         <source>Export Model</source>
         <translation>导出模型</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_modellistdialog.cpp" line="225"/>
+        <location filename="../src/ui/sw_model_list_dialog.cpp" line="225"/>
         <source>Select Export Folder</source>
         <translation>选择导出文件夹</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_modellistdialog.cpp" line="257"/>
-        <location filename="../src/ui/sw_modellistdialog.cpp" line="275"/>
+        <location filename="../src/ui/sw_model_list_dialog.cpp" line="257"/>
+        <location filename="../src/ui/sw_model_list_dialog.cpp" line="275"/>
         <source>Duplicate Submodel</source>
         <translation>复制子模型</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_modellistdialog.cpp" line="272"/>
+        <location filename="../src/ui/sw_model_list_dialog.cpp" line="272"/>
         <source>Copy of </source>
         <translation>副本_</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_modellistdialog.cpp" line="211"/>
+        <location filename="../src/ui/sw_model_list_dialog.cpp" line="211"/>
         <source>Supported Files (*.ldr *.dat);;All Files (*.*)</source>
         <translation>支持的文件 (*.ldr *.dat);;所有文件 (*.*)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/ui/sw_modellistdialog.cpp" line="143"/>
+        <location filename="../src/ui/sw_model_list_dialog.cpp" line="143"/>
         <source>Are you sure you want to delete %n submodels?</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">
@@ -11546,57 +11546,57 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 <context>
     <name>swPageSetupDialog</name>
     <message>
-        <location filename="../src/ui/sw_pagesetupdialog.ui" line="14"/>
+        <location filename="../src/ui/sw_page_setup_dialog.ui" line="14"/>
         <source>Page Setup</source>
         <translation>页面设置</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_pagesetupdialog.ui" line="20"/>
+        <location filename="../src/ui/sw_page_setup_dialog.ui" line="20"/>
         <source>Size</source>
         <translation>尺寸</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_pagesetupdialog.ui" line="32"/>
+        <location filename="../src/ui/sw_page_setup_dialog.ui" line="32"/>
         <source>Width:</source>
         <translation>宽度:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_pagesetupdialog.ui" line="42"/>
+        <location filename="../src/ui/sw_page_setup_dialog.ui" line="42"/>
         <source>Height:</source>
         <translation>高度:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_pagesetupdialog.ui" line="52"/>
+        <location filename="../src/ui/sw_page_setup_dialog.ui" line="52"/>
         <source>Preset:</source>
         <translation>预设:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_pagesetupdialog.ui" line="62"/>
+        <location filename="../src/ui/sw_page_setup_dialog.ui" line="62"/>
         <source>Units:</source>
         <translation>单位:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_pagesetupdialog.ui" line="75"/>
+        <location filename="../src/ui/sw_page_setup_dialog.ui" line="75"/>
         <source>Margins</source>
         <translation>边距</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_pagesetupdialog.ui" line="81"/>
+        <location filename="../src/ui/sw_page_setup_dialog.ui" line="81"/>
         <source>Left:</source>
         <translation>左:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_pagesetupdialog.ui" line="94"/>
+        <location filename="../src/ui/sw_page_setup_dialog.ui" line="94"/>
         <source>Right:</source>
         <translation>右:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_pagesetupdialog.ui" line="107"/>
+        <location filename="../src/ui/sw_page_setup_dialog.ui" line="107"/>
         <source>Top:</source>
         <translation>上:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_pagesetupdialog.ui" line="120"/>
+        <location filename="../src/ui/sw_page_setup_dialog.ui" line="120"/>
         <source>Bottom:</source>
         <translation>下:</translation>
     </message>
@@ -11604,130 +11604,130 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 <context>
     <name>swPartPaletteDialog</name>
     <message>
-        <location filename="../src/ui/sw_partpalettedialog.ui" line="6"/>
+        <location filename="../src/ui/sw_part_palette_dialog.ui" line="6"/>
         <source>&lt;p&gt;&lt;b&gt;Piece Palettes&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Organize reusable collections of pieces in the piece browser. Create, rename, delete, import, or reorder palettes, then choose OK to apply the changes. Cancel discards these palette changes.&lt;/p&gt;&lt;p&gt;Palettes organize piece choices; they do not change pieces already placed in a model.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;零件调色板&lt;/b&gt;&lt;/p&gt;&lt;p&gt;在零件浏览器中组织可重复使用的零件集合。创建、重命名、删除、导入或重新排序调色板，然后选择“确定”应用更改。取消将放弃这些调色板更改。&lt;/p&gt;&lt;p&gt;调色板组织零件选择；他们不会更改已放置在模型中的零件。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partpalettedialog.ui" line="17"/>
-        <location filename="../src/ui/sw_partpalettedialog.ui" line="28"/>
+        <location filename="../src/ui/sw_part_palette_dialog.ui" line="17"/>
+        <location filename="../src/ui/sw_part_palette_dialog.ui" line="28"/>
         <source>Piece Palettes</source>
         <translation>零件库</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partpalettedialog.ui" line="25"/>
+        <location filename="../src/ui/sw_part_palette_dialog.ui" line="25"/>
         <source>Select the palette to rename, delete, or move.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择要重命名、删除或移动的调色板。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partpalettedialog.ui" line="31"/>
+        <location filename="../src/ui/sw_part_palette_dialog.ui" line="31"/>
         <source>&lt;p&gt;&lt;b&gt;Palette List&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select a palette before using Rename, Delete, Move Up, or Move Down. The list order determines the palette order in the piece browser.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;调色板列表&lt;/b&gt;&lt;/p&gt;&lt;p&gt;在使用重命名、删除、上移或下移之前选择一个调色板。列表顺序决定了零件浏览器中的调色板顺序。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partpalettedialog.ui" line="40"/>
+        <location filename="../src/ui/sw_part_palette_dialog.ui" line="40"/>
         <source>Create a new empty piece palette.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">创建一个新的空零件调色板。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partpalettedialog.ui" line="43"/>
+        <location filename="../src/ui/sw_part_palette_dialog.ui" line="43"/>
         <source>New...</source>
         <translation>新建...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partpalettedialog.ui" line="50"/>
+        <location filename="../src/ui/sw_part_palette_dialog.ui" line="50"/>
         <source>Remove the selected palette after confirmation.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">确认后删除所选调色板。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partpalettedialog.ui" line="53"/>
+        <location filename="../src/ui/sw_part_palette_dialog.ui" line="53"/>
         <source>&lt;p&gt;&lt;b&gt;Delete Palette&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Remove the selected palette and its list of piece choices. Library pieces and pieces already used in models are not deleted. At least one palette must remain.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;删除调色板&lt;/b&gt;&lt;/p&gt;&lt;p&gt;删除选定的调色板及其零件选择列表。库零件和模型中已使用的零件不会被删除。必须至少保留一个调色板。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partpalettedialog.ui" line="56"/>
+        <location filename="../src/ui/sw_part_palette_dialog.ui" line="56"/>
         <source>Delete...</source>
         <translation>删除...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partpalettedialog.ui" line="63"/>
+        <location filename="../src/ui/sw_part_palette_dialog.ui" line="63"/>
         <source>Change the name of the selected palette.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">更改所选调色板的名称。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partpalettedialog.ui" line="66"/>
+        <location filename="../src/ui/sw_part_palette_dialog.ui" line="66"/>
         <source>Rename...</source>
         <translation>重命名...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partpalettedialog.ui" line="73"/>
+        <location filename="../src/ui/sw_part_palette_dialog.ui" line="73"/>
         <source>Create a palette from an online set inventory.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">从在线设置库存创建调色板。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partpalettedialog.ui" line="76"/>
+        <location filename="../src/ui/sw_part_palette_dialog.ui" line="76"/>
         <source>&lt;p&gt;&lt;b&gt;Import Palette&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Open Import Set Inventory to search for a set and download its inventory. The new palette uses the set description as its name.&lt;/p&gt;&lt;p&gt;The palette stores piece IDs; inventory colors and quantities are not stored. An internet connection is required.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;导入调色板&lt;/b&gt;&lt;/p&gt;&lt;p&gt;打开导入集库存以搜索集并下载其库存。新调色板使用集合描述作为其名称。&lt;/p&gt;&lt;p&gt;调色板存储零件 ID；不存储库存颜色和数量。需要互联网连接。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partpalettedialog.ui" line="79"/>
+        <location filename="../src/ui/sw_part_palette_dialog.ui" line="79"/>
         <source>Import...</source>
         <translation>导入...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partpalettedialog.ui" line="86"/>
+        <location filename="../src/ui/sw_part_palette_dialog.ui" line="86"/>
         <source>Move the selected palette one position earlier in the list.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">将选定的调色板在列表中移至前面一位。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partpalettedialog.ui" line="89"/>
+        <location filename="../src/ui/sw_part_palette_dialog.ui" line="89"/>
         <source>Move Up</source>
         <translation>上移</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partpalettedialog.ui" line="96"/>
+        <location filename="../src/ui/sw_part_palette_dialog.ui" line="96"/>
         <source>Move the selected palette one position later in the list.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">将所选调色板在列表中后移一位。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partpalettedialog.ui" line="99"/>
+        <location filename="../src/ui/sw_part_palette_dialog.ui" line="99"/>
         <source>Move Down</source>
         <translation>下移</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partpalettedialog.cpp" line="79"/>
+        <location filename="../src/ui/sw_part_palette_dialog.cpp" line="79"/>
         <source>New Piece Palette</source>
         <translation>新建零件库</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partpalettedialog.cpp" line="79"/>
-        <location filename="../src/ui/sw_partpalettedialog.cpp" line="118"/>
+        <location filename="../src/ui/sw_part_palette_dialog.cpp" line="79"/>
+        <location filename="../src/ui/sw_part_palette_dialog.cpp" line="118"/>
         <source>Palette Name:</source>
         <translation>库名称:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partpalettedialog.cpp" line="98"/>
+        <location filename="../src/ui/sw_part_palette_dialog.cpp" line="98"/>
         <source>Are you sure you want to delete the palette &apos;%1&apos;?</source>
         <translation>确定要删除零件库 &apos;%1&apos; 吗？</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partpalettedialog.cpp" line="99"/>
+        <location filename="../src/ui/sw_part_palette_dialog.cpp" line="99"/>
         <source>Delete Piece Palette</source>
         <translation>删除零件库</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partpalettedialog.cpp" line="118"/>
+        <location filename="../src/ui/sw_part_palette_dialog.cpp" line="118"/>
         <source>Rename Piece Palette</source>
         <translation>重命名零件库</translation>
     </message>
@@ -11735,7 +11735,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 <context>
     <name>swPartSelectionListModel</name>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="374"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="374"/>
         <source>Could not load piece &apos;%1&apos;.</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">无法加载零件 '%1'。</translation>
@@ -11744,22 +11744,22 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 <context>
     <name>swPartSelectionListView</name>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="619"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="619"/>
         <source>Add to Palette</source>
         <translation>添加到库</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="630"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="630"/>
         <source>None</source>
         <translation>无</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="634"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="634"/>
         <source>Remove from Palette</source>
         <translation>从库中移除</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="640"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="640"/>
         <source>Open Submodel</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">开放子模型</translation>
@@ -11768,13 +11768,13 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 <context>
     <name>swPartSelectionPopup</name>
     <message>
-        <location filename="../src/ui/sw_partselectionpopup.cpp" line="10"/>
+        <location filename="../src/ui/sw_part_selection_popup.cpp" line="10"/>
         <source>Choose Piece</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择零件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionpopup.cpp" line="11"/>
+        <location filename="../src/ui/sw_part_selection_popup.cpp" line="11"/>
         <source>&lt;p&gt;&lt;b&gt;Choose Piece&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select a piece, then choose OK or double-click it to use it. Cancel keeps the original choice. Filter the list to find a piece; Options controls matching and list display. When None is available, select it to omit the piece.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;选择零件&lt;/b&gt;&lt;/p&gt;&lt;p&gt;选择一个零件，然后选择“确定”或双击它来使用它。取消保留原始选择。过滤列表以找到一个零件；选项控制匹配和列表显示。当“无”可用时，选择它以省略该部分。&lt;/p&gt;</translation>
@@ -11783,14 +11783,14 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 <context>
     <name>swPartSelectionWidget</name>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="984"/>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="985"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="984"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="985"/>
         <source>Filter Categories</source>
         <translation>筛选类别</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="991"/>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="1364"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="991"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="1364"/>
         <source>Match Case</source>
         <translation>区分大小写</translation>
     </message>
@@ -11803,143 +11803,143 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">选项</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="1286"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="1286"/>
         <source>Edit Palettes...</source>
         <translation>编辑零件库...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="1312"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="1312"/>
         <source>Icons</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">图标</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="1316"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="1316"/>
         <source>No Icons</source>
         <translation>无图标</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="1321"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="1321"/>
         <source>Small Icons</source>
         <translation>小图标</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="1326"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="1326"/>
         <source>Medium Icons</source>
         <translation>中图标</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="1331"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="1331"/>
         <source>Large Icons</source>
         <translation>大图标</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="1336"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="1336"/>
         <source>Extra Large Icons</source>
         <translation>超大图标</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="1351"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="1351"/>
         <source>Lock Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">锁色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="1358"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="1358"/>
         <source>Filter</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">筛选</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="1360"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="1360"/>
         <source>Regular Expression</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">正则表达式</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="1370"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="1370"/>
         <source>Piece ID</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">零件编号</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="1375"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="1375"/>
         <source>Piece Description</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">零件描述</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="1295"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="1295"/>
         <source>Show Piece Names</source>
         <translation>显示零件名称</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="986"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="986"/>
         <source>Filter category names to narrow the category list.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">过滤类别名称以缩小类别列表。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="1002"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="1002"/>
         <source>Piece Categories</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">零件类别</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="1003"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="1003"/>
         <source>Choose a category or palette to display its pieces.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择一个类别或调色板来显示其零件。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="1020"/>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="1021"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="1020"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="1021"/>
         <source>Filter Pieces</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">过滤片</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="1022"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="1022"/>
         <source>Filter the displayed pieces using the matching options.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">使用匹配选项过滤显示的零件。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="1027"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="1027"/>
         <source>Configure piece filtering and list display.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">配置零件过滤和列表显示。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="1028"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="1028"/>
         <source>Piece List Options</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">零件清单选项</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="1037"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="1037"/>
         <source>Available Pieces</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">可用零件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="1038"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="1038"/>
         <source>Select a piece from the filtered list.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">从过滤列表中选择一个零件。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="1300"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="1300"/>
         <source>Show Decorated Pieces</source>
         <translation>显示带图案零件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="1304"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="1304"/>
         <source>Show Piece Aliases</source>
         <translation>显示零件别名</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="1345"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="1345"/>
         <source>List Mode</source>
         <translation>列表模式</translation>
     </message>
@@ -11948,22 +11948,22 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">锁定预览颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="1417"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="1417"/>
         <source>Favorites</source>
         <translation>收藏夹</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="1550"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="1550"/>
         <source>All Pieces</source>
         <translation>所有零件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="1556"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="1556"/>
         <source>In Use</source>
         <translation>使用中</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_partselectionwidget.cpp" line="1562"/>
+        <location filename="../src/ui/sw_part_selection_widget.cpp" line="1562"/>
         <source>Submodels</source>
         <translation>子模型</translation>
     </message>
@@ -12103,26 +12103,26 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 <context>
     <name>swPreferencesDialog</name>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="17"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="17"/>
         <source>Preferences</source>
         <translation>偏好设置</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="30"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="30"/>
         <source>General</source>
         <translation>常规</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="163"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="163"/>
         <source>Default Author Name:</source>
         <oldsource>Default author name:</oldsource>
         <translation type="unfinished">默认作者名称:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="286"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="323"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="360"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="397"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="286"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="323"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="360"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="397"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -12131,49 +12131,49 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">自定义零件库:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2664"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2664"/>
         <source>Mouse Sensitivity:</source>
         <oldsource>Mouse sensitivity:</oldsource>
         <translation type="unfinished">鼠标灵敏度:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="101"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="101"/>
         <source>Check for Updates:</source>
         <oldsource>Check for updates:</oldsource>
         <translation type="unfinished">检查更新:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="335"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="335"/>
         <source>PO&amp;V-Ray Executable:</source>
         <translation>POV-Ray 可执行文件:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="80"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="80"/>
         <source>Never</source>
         <translation>从不</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="85"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="85"/>
         <source>Once a day</source>
         <translation>每天一次</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="90"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="90"/>
         <source>Once a week</source>
         <translation>每周一次</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="186"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="186"/>
         <source>Fixed direction keys</source>
         <translation>固定方向键</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="196"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="196"/>
         <source>Open most recent file on startup</source>
         <translation>启动时打开最近的文件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="423"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="423"/>
         <source>Rendering</source>
         <translation>渲染</translation>
     </message>
@@ -12190,131 +12190,131 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">宽度</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="704"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="704"/>
         <source>Anti-aliasing</source>
         <translation>抗锯齿</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="610"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="610"/>
         <source>2x</source>
         <translation>2x</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="615"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="615"/>
         <source>4x</source>
         <translation>4x</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="620"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="620"/>
         <source>8x</source>
         <translation>8x</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="596"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="596"/>
         <source>Shading Mode:</source>
         <translation>着色模式:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="452"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="452"/>
         <source>Wireframe</source>
         <translation>线框</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="457"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="457"/>
         <source>Flat Shading</source>
         <translation>平坦着色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="462"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="462"/>
         <source>Default Lights</source>
         <translation>默认光照</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1038"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1038"/>
         <source>Base Grid</source>
         <translation>基础网格</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1103"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1103"/>
         <source>Draw studs</source>
         <translation>绘制凸点</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1044"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1044"/>
         <source>studs</source>
         <translation>凸点</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1067"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1067"/>
         <source>Draw lines every</source>
         <translation>每格绘制线</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="919"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1172"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1474"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="919"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1172"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1474"/>
         <source>View Sphere</source>
         <translation>视图球</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="926"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1179"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="926"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1179"/>
         <source>Disabled</source>
         <translation>禁用</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="931"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1184"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="931"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1184"/>
         <source>Small</source>
         <translation>小</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="936"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1189"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="936"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1189"/>
         <source>Medium</source>
         <translation>中</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="941"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1194"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="941"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1194"/>
         <source>Large</source>
         <translation>大</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1570"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1570"/>
         <source>Highlight Color:</source>
         <translation>高亮颜色:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1486"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1486"/>
         <source>Color:</source>
         <translation>颜色:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1318"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1528"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1318"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1528"/>
         <source>Text Color:</source>
         <translation>文本颜色:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="899"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="998"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1165"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="899"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="998"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1165"/>
         <source>Location:</source>
         <translation>位置:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="39"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="39"/>
         <source>Application</source>
         <translation>应用程序</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="48"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="48"/>
         <source>Language:</source>
         <translation>语言:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="65"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="65"/>
         <source>Default</source>
         <translation>默认</translation>
     </message>
@@ -12343,64 +12343,64 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">西班牙语</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="127"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="127"/>
         <source>Color Theme:</source>
         <translation>颜色主题:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="144"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="144"/>
         <source>Dark</source>
         <translation>深色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="149"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="149"/>
         <source>System</source>
         <translation>系统</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="203"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="203"/>
         <source>Custom Paths</source>
         <translation>自定义路径</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="212"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="212"/>
         <source>Pieces Library:</source>
         <translation>零件库:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="261"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="261"/>
         <source>Color Configuration:</source>
         <translation>颜色配置:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="298"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="298"/>
         <source>Minifig Settings:</source>
         <translation>人仔设置:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="372"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="372"/>
         <source>&amp;LGEO Library:</source>
         <translation>LGEO 库:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="412"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="412"/>
         <source>Restore tab layout</source>
         <translation>恢复标签页布局</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="561"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="561"/>
         <source>Set the distance in LDraw units at which simpler piece meshes are used.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">设置使用更简单的零件网格的 LDraw 单位距离。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="644"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="717"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="644"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="717"/>
         <source>Stud Style</source>
         <translation>凸点样式</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="473"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="473"/>
         <source>Mesh LOD</source>
         <translation>网格细节级别</translation>
     </message>
@@ -12409,315 +12409,315 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="obsolete">Destacar as novas peças</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="651"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="651"/>
         <source>Plain</source>
         <translation>普通</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="656"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="656"/>
         <source>Thin Lines Logo</source>
         <translation>细线标志</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="661"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="661"/>
         <source>Outline Logo</source>
         <translation>轮廓标志</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="666"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="666"/>
         <source>Sharp Top Logo</source>
         <translation>尖顶标志</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="671"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="671"/>
         <source>Rounded Top Logo</source>
         <translation>圆顶标志</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="676"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="676"/>
         <source>Flattened Logo</source>
         <translation>扁平标志</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="681"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="681"/>
         <source>High Contrast</source>
         <translation>高对比度</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="686"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="686"/>
         <source>High Contrast with Logo</source>
         <translation>高对比度带标志</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="844"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="844"/>
         <source>Settings...</source>
         <translation>设置...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="583"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="583"/>
         <source>Contrast Settings...</source>
         <translation>对比度设置...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="6"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="6"/>
         <source>&lt;p&gt;&lt;b&gt;Preferences&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Configure the application, display, colors, piece categories, and keyboard and mouse shortcuts. Choose OK to save the changes or Cancel to discard edits in Preferences. Language, piece-library, and antialiasing changes may require restarting StudWorks.&lt;/p&gt;&lt;p&gt;Export buttons write files immediately. Blender add-on settings have their own Apply action and can configure Blender before you close Preferences.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;首选项&lt;/b&gt;&lt;/p&gt;&lt;p&gt;配置应用程序、显示、颜色、零件类别以及键盘和鼠标快捷键。选择“确定”保存更改，或选择“取消”放弃在“首选项”中所做的编辑。语言、零件库和抗锯齿更改可能需要重新启动 StudWorks。&lt;/p&gt;&lt;p&gt;导出按钮立即写入文件。 Blender 附加设置有自己的应用操作，可以在关闭首选项之前配置 Blender。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="27"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="27"/>
         <source>&lt;p&gt;&lt;b&gt;General Preferences&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Set application behavior and custom library, configuration, and renderer paths. Leave optional configuration paths empty to use the built-in settings.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;常规首选项&lt;/b&gt;&lt;/p&gt;&lt;p&gt;设置应用程序行为和自定义库、配置和渲染器路径。将可选配置路径留空以使用内置设置。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="45"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="61"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="45"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="61"/>
         <source>Choose the interface language used after restarting StudWorks.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择重启StudWorks后使用的界面语言。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="58"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="58"/>
         <source>Language</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">语言</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="73"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="73"/>
         <source>Check for Updates</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">检查更新</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="76"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="98"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="76"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="98"/>
         <source>Choose how often to check automatically for application and piece-library updates.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择自动检查应用程序和零件库更新的频率。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="124"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="140"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="124"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="140"/>
         <source>Choose the interface theme and optionally reset its colors.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择界面主题并可选择重置其颜色。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="137"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="137"/>
         <source>Color Theme</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">颜色主题</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="160"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="176"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="160"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="176"/>
         <source>Set the author name used for new models.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">设置用于新模型的作者姓名。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="173"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="173"/>
         <source>Default Author Name</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">默认作者姓名</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="183"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="183"/>
         <source>Move pieces along fixed model axes instead of view-relative directions.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">沿着固定模型轴而不是相对于视图的方向移动零件。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="193"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="193"/>
         <source>Open the most recently used file when StudWorks starts.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">StudWorks 启动时打开最近使用的文件。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="209"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="227"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="209"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="227"/>
         <source>Choose a piece-library folder or supported archive to load after restarting StudWorks.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择要在重新启动 StudWorks 后加载的零件库文件夹或支持的存档。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="224"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="224"/>
         <source>Pieces Library</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">零件库</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="234"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="234"/>
         <source>Choose a piece-library folder.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择一个零件库文件夹。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="245"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="245"/>
         <source>Choose a piece-library ZIP or BIN archive.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择零件库 ZIP 或 BIN 存档。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="258"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="276"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="258"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="276"/>
         <source>Choose a custom LDraw color configuration file, or leave empty to use the library colors.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择自定义 LDraw 颜色配置文件，或留空以使用库颜色。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="273"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="273"/>
         <source>Color Configuration</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">颜色配置</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="283"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="283"/>
         <source>Choose a custom LDraw color configuration file.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择自定义 LDraw 颜色配置文件。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="295"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="313"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="295"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="313"/>
         <source>Choose a custom minifigure settings file, or leave empty to use the built-in choices.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择自定义小人仔设置文件，或留空以使用内置选项。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="310"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="310"/>
         <source>Minifig Settings</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">人仔设置</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="320"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="320"/>
         <source>Choose a minifigure settings INI file.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择一个小人仔设置 INI 文件。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="332"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="350"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="332"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="350"/>
         <source>Set the POV-Ray executable used for rendering.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">设置用于渲染的 POV-Ray 可执行文件。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="347"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="347"/>
         <source>POV-Ray Executable</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">POV-Ray 可执行文件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="357"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="357"/>
         <source>Locate the POV-Ray executable.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">找到 POV-Ray 可执行文件。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="369"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="387"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="369"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="387"/>
         <source>Set the LGEO library folder used by POV-Ray exports.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">设置 POV-Ray 导出使用的 LGEO 库文件夹。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="384"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="384"/>
         <source>LGEO Library</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">LGEO 图书馆</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="394"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="394"/>
         <source>Choose the LGEO library folder.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择 LGEO 库文件夹。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="409"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="409"/>
         <source>Restore saved model tabs and view layouts when opening a project.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">打开项目时恢复保存的模型选项卡和视图布局。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="420"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="420"/>
         <source>&lt;p&gt;&lt;b&gt;Rendering Preferences&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Control shading, stud geometry, selection appearance, edges, and step effects. Some options are unavailable when the graphics system does not support them.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;渲染首选项&lt;/b&gt;&lt;/p&gt;&lt;p&gt;控制着色、螺柱几何形状、选区外观、边缘和阶梯效果。某些选项在图形系统不支持时不可用。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="432"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="432"/>
         <source>Previous Step Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">上一步颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="435"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="435"/>
         <source>Choose the tint used for pieces from previous steps.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择用于之前步骤中的零件的色调。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="445"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="445"/>
         <source>Shading Mode</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">着色模式</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="448"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="590"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="448"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="590"/>
         <source>Choose how piece surfaces and edges are drawn in model views.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择如何在模型视图中绘制零件曲面和边线。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="470"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="470"/>
         <source>Use simpler meshes for distant pieces to improve display performance.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">对远处的物体使用更简单的网格来提高显示性能。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="480"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="480"/>
         <source>Tint pieces from previous building steps with the chosen fade color.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">使用所选的褪色颜色对先前构建步骤中的零件进行着色。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="503"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="503"/>
         <source>Highlight pieces introduced in the current building step.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">突出显示当前构建步骤中引入的零件。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="513"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="513"/>
         <source>New Piece Highlight Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">新零件突出显示颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="516"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="516"/>
         <source>Choose the highlight color for pieces in the current step.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择当前步骤中零件的突出显示颜色。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="526"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="526"/>
         <source>Blender LDraw Render</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender LDraw 渲染</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="529"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="628"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="529"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="628"/>
         <source>&lt;p&gt;&lt;b&gt;Blender Add-on Settings&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Open the separate Blender configuration dialog. Its Apply action saves its settings independently of Preferences, and choosing an executable or importer can configure Blender immediately.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Blender 附加设置&lt;/b&gt;&lt;/p&gt;&lt;p&gt;打开单独的 Blender 配置对话框。它的“应用”操作独立于首选项保存其设置，选择可执行文件或导入器可以立即配置 Blender。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="532"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="631"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="532"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="631"/>
         <source>Configure Blender and its LDraw import and render add-ons.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">配置 Blender 及其 LDraw 导入和渲染插件。</translation>
@@ -12733,38 +12733,38 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="obsolete">选择所选零件的突出显示方式。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="558"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="558"/>
         <source>Mesh Detail Distance</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">网格细节距离</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="580"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="580"/>
         <source>Configure colors and the light/dark threshold for high contrast stud styles.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">配置高对比度螺柱样式的颜色和明/暗阈值。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="603"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="603"/>
         <source>Antialiasing Samples</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">抗锯齿示例</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="606"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="606"/>
         <source>Choose the antialiasing sample count; more samples can use more graphics resources.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择抗锯齿样本数；更多样本可以使用更多图形资源。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="647"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="711"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="647"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="711"/>
         <source>Choose stud geometry and the high contrast stud styles.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择螺柱几何形状和高对比度螺柱样式。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="701"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="701"/>
         <source>Smooth jagged edges in model views; changes require restarting StudWorks.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">模型视图中的平滑锯齿状边缘；更改需要重新启动 StudWorks。</translation>
@@ -12775,459 +12775,459 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="obsolete">选择渲染</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="763"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="763"/>
         <source>Draw conditional lines where needed to show curved piece surfaces.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">在需要显示弯曲零件表面的地方绘制条件线。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="786"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="802"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="786"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="802"/>
         <source>Set edge-line width within the range supported by the graphics system.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">将边线宽度设置在图形系统支持的范围内。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="799"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="799"/>
         <source>Line Width</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">线宽</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="821"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="821"/>
         <source>Draw the edge lines defined by each piece.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">画出每个零件定义的边缘线。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="831"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="831"/>
         <source>Calculate edge colors from piece colors instead of using their defined edge colors.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">根据零件颜色计算边缘颜色，而不是使用其定义的边缘颜色。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="841"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="841"/>
         <source>Configure the contrast and saturation used for automated edge colors.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">配置用于自动边缘颜色的对比度和饱和度。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="868"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="868"/>
         <source>&lt;p&gt;&lt;b&gt;View Preferences&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose navigation aids for model views and the piece preview, and configure the base grid. Locations select the corner where each navigation aid appears.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;视图首选项&lt;/b&gt;&lt;/p&gt;&lt;p&gt;选择模型视图和零件预览的导航辅助工具，并配置基本网格。位置选择每个导航辅助工具出现的角落。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="871"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="871"/>
         <source>Views</source>
         <translation>视图</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="877"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="877"/>
         <source>Model Views</source>
         <translation>模型视图</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="883"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="883"/>
         <source>Show the model-axis indicator in model views.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">在模型视图中显示模型轴指示器。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="886"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1122"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="886"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1122"/>
         <source>Axis Icon</source>
         <translation>坐标轴图标</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="893"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="952"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="893"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="952"/>
         <source>Choose the corner for the model-view navigation sphere.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择模型视图导航球体的角点。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="906"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="922"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="906"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="922"/>
         <source>Choose the model-view navigation sphere size, or disable it.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择模型视图导航球体大小，或禁用它。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="912"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1208"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="912"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1208"/>
         <source>View Sphere:</source>
         <translation>视图球:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="949"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1005"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1129"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="949"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1005"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1129"/>
         <source>Location</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">地点</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="956"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1012"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1136"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="956"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1012"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1136"/>
         <source>Top Left</source>
         <translation>左上</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="961"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1017"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1141"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="961"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1017"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1141"/>
         <source>Top Right</source>
         <translation>右上</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="966"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1022"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1146"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="966"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1022"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1146"/>
         <source>Bottom Left</source>
         <translation>左下</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="971"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1027"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1151"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="971"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1027"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1151"/>
         <source>Bottom Right</source>
         <translation>右下</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="992"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1008"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="992"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1008"/>
         <source>Choose the corner for the model-axis indicator.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择模型轴指示器的角点。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1064"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1064"/>
         <source>Show base-grid lines at the specified spacing.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">以指定的间距显示基础网格线。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1074"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1074"/>
         <source>Grid Line Spacing</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">网格线间距</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1077"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1077"/>
         <source>Set base-grid line spacing in studs (minimum 1).</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">设置螺柱中的基础网格线间距（最小 1）。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1090"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1090"/>
         <source>Emphasize the base-grid lines through the model origin.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">强调通过模型原点的基础网格线。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1093"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1093"/>
         <source>Draw origin lines</source>
         <translation>绘制原点线</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1100"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1100"/>
         <source>Show stud positions on the base grid.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">显示基础网格上的螺柱位置。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1113"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1113"/>
         <source>Piece Preview</source>
         <translation>零件预览</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1119"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1119"/>
         <source>Show the model-axis indicator in the piece preview.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">在零件预览中显示模型轴指示器。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1132"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1159"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1132"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1159"/>
         <source>Choose the corner for the piece-preview navigation sphere.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择零件预览导航球体的角落。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1175"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1202"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1175"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1202"/>
         <source>Choose the piece-preview navigation sphere size, or disable it.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择零件预览导航球体大小，或禁用它。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1245"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1245"/>
         <source>&lt;p&gt;&lt;b&gt;Display Colors&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose colors for the background, objects, grid, and interface. These settings control the display; they do not change the LDraw colors assigned to model pieces.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;显示颜色&lt;/b&gt;&lt;/p&gt;&lt;p&gt;选择背景、对象、网格和界面的颜色。这些设置控制显示；它们不会更改分配给模型零件的 LDraw 颜色。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1248"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1248"/>
         <source>Colors</source>
         <translation>颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1260"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1276"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1260"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1276"/>
         <source>Choose the display color for the selection rectangle border.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择选择矩形边框的显示颜色。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1273"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1273"/>
         <source>Marquee Border</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择矩形边框</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1286"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1354"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1286"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1354"/>
         <source>Choose the display color for inactive view borders.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择非活动视图边框的显示颜色。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1299"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1299"/>
         <source>Marquee Fill</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择矩形填充</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1302"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1338"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1302"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1338"/>
         <source>Choose the display color for the selection rectangle fill.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择选择矩形填充的显示颜色。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1312"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1393"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1312"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1393"/>
         <source>Choose the display color for view text.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择视图文本的显示颜色。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1325"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1325"/>
         <source>Text Halo Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">文本光晕颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1328"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1377"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1328"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1377"/>
         <source>Choose the display color for the halo behind view text.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择视图文本后面光环的显示颜色。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1351"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1351"/>
         <source>Inactive View Border</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">非活动视图边框</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1364"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1406"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1364"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1406"/>
         <source>Choose the display color for view overlays.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择视图叠加层的显示颜色。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1390"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1390"/>
         <source>Text Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">文字颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1403"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1403"/>
         <source>Overlay Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">叠加颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1416"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1416"/>
         <source>Active View Border</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">活动视图边框</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1419"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1442"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1419"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1442"/>
         <source>Choose the display color for the active view border.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择活动视图边框的显示颜色。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1480"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1496"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1480"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1496"/>
         <source>Choose the display color for the navigation sphere.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择导航球体的显示颜色。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1522"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1538"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1522"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1538"/>
         <source>Choose the display color for navigation sphere text.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择导航球文本的显示颜色。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1564"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1580"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1564"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1580"/>
         <source>Choose the display color for the highlighted region of the navigation sphere.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择导航球突出显示区域的显示颜色。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1625"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1641"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1625"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1641"/>
         <source>Choose the display color for base-grid lines.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择基本网格线的显示颜色。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1667"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1683"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1667"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1683"/>
         <source>Choose the display color for base-grid stud markers.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择基础网格螺柱标记的显示颜色。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1709"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1709"/>
         <source>Background</source>
         <translation>背景</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1717"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1733"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1717"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1733"/>
         <source>Choose the display color for the top of the background gradient.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择背景渐变顶部的显示颜色。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1723"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1723"/>
         <source>Top Color:</source>
         <translation>顶部颜色:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1759"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1775"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1759"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1775"/>
         <source>Choose the display color for the bottom of the background gradient.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择背景渐变底部的显示颜色。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1765"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1765"/>
         <source>Bottom Color:</source>
         <translation>底部颜色:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1800"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1800"/>
         <source>Use a single color for the model-view background.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">对模型视图背景使用单一颜色。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1803"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1803"/>
         <source>So&amp;lid Color</source>
         <translation>纯色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1810"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1810"/>
         <source>Blend the top and bottom colors in the model-view background.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">混合模型视图背景中的顶部和底部颜色。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1813"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1813"/>
         <source>&amp;Gradient</source>
         <translation>渐变</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1872"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1872"/>
         <source>Light Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">浅色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1914"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1914"/>
         <source>Camera Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">相机颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1940"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1940"/>
         <source>Control Point Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">控制点颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1953"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1953"/>
         <source>Focused Control Point Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">聚焦控制点颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1966"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1966"/>
         <source>Selected Object Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选定的对象颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1979"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1979"/>
         <source>Focused Object Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">聚焦物体颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2631"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2631"/>
         <source>Assign the chosen mouse button and modifiers to the selected tool.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">将选定的鼠标按钮和修饰符分配给选定的工具。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2641"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2641"/>
         <source>Remove the primary mouse shortcut and promote the secondary shortcut.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">删除主要鼠标快捷方式并提升辅助快捷方式。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2658"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2674"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2658"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2674"/>
         <source>Adjust how strongly mouse motion affects navigation.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">调整鼠标运动对导航的影响程度。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2671"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2671"/>
         <source>Mouse Sensitivity</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">鼠标灵敏度</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1254"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1254"/>
         <source>Interface</source>
         <translation>界面</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1292"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1292"/>
         <source>Inactive View Border:</source>
         <translation>非活动视图边框:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1370"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1370"/>
         <source>Overlay Color:</source>
         <translation>叠加色:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1448"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1448"/>
         <source>Active View Border:</source>
         <translation>活动视图边框:</translation>
     </message>
@@ -13240,22 +13240,22 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">坐标轴图标标签:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1266"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1266"/>
         <source>Marquee Border:</source>
         <translation>选框边框:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="506"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="506"/>
         <source>Highlight New Pieces</source>
         <translation>高亮新零件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="483"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="483"/>
         <source>Fade Previous Steps</source>
         <translation>淡化前序步骤</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="535"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="535"/>
         <source>Add-on Settings...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">附加设置...</translation>
@@ -13267,7 +13267,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="obsolete">选择渲染：</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="637"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="637"/>
         <source>Blender LDraw Render:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender LDraw 渲染：</translation>
@@ -13284,636 +13284,636 @@ Unsupported video cards use face tint and colored edges.</source>
  不支持的视频卡使用面部色调和彩色边缘。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="734"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="734"/>
         <source>Outline</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">大纲</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="739"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="739"/>
         <source>Tint and Edges</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">色调和边缘</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="750"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="750"/>
         <source>Lines</source>
         <translation>线条</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="766"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="766"/>
         <source>Conditional Lines</source>
         <translation>条件线</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="792"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="792"/>
         <source>Line Width:</source>
         <translation>线宽:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="824"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="824"/>
         <source>Edge Lines</source>
         <translation>边线</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="834"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="834"/>
         <source>Automate Edge Color</source>
         <translation>自动边缘色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1344"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1344"/>
         <source>Marquee Fill:</source>
         <translation>选框填充:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1383"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1383"/>
         <source>Text Halo Color:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">文字光环颜色：</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1493"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1493"/>
         <source>View Sphere Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">查看球体颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1535"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1535"/>
         <source>View Sphere Text Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">查看球体文本颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1577"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1577"/>
         <source>View Sphere Highlight Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">视图球体突出显示颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1619"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1619"/>
         <source>Grid</source>
         <translation>网格</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1631"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1631"/>
         <source>Lines:</source>
         <translation>线条:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1638"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1638"/>
         <source>Grid Line Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">网格线颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1673"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1673"/>
         <source>Studs:</source>
         <translation>凸点:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1680"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1680"/>
         <source>Grid Stud Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">网格螺柱颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1730"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1730"/>
         <source>Background Top Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">背景顶部颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1772"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1772"/>
         <source>Background Bottom Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">背景底色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1822"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1822"/>
         <source>Background Solid Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">背景纯色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1825"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1825"/>
         <source>Choose the display color for the solid background.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择纯色背景的显示颜色。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1853"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1853"/>
         <source>Objects</source>
         <translation>物体</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1859"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1875"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1859"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1875"/>
         <source>Choose the display color for light-object outlines.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择灯光对象轮廓的显示颜色。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1865"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1865"/>
         <source>Light:</source>
         <translation>光源:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1901"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1982"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1901"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1982"/>
         <source>Choose the display color for the focused object.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择聚焦对象的显示颜色。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1907"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1907"/>
         <source>Focused:</source>
         <translation>焦点物体:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1917"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2018"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1917"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2018"/>
         <source>Choose the display color for camera-object outlines.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择相机对象轮廓的显示颜色。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1927"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1956"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1927"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1956"/>
         <source>Choose the display color for the focused control point.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择聚焦控制点的显示颜色。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1933"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1933"/>
         <source>Control Point Focused:</source>
         <translation>焦点控制点:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1943"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1992"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1943"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1992"/>
         <source>Choose the display color for control points.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择控制点的显示颜色。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1969"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2005"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1969"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2005"/>
         <source>Choose the display color for selected objects.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择所选对象的显示颜色。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="1998"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="1998"/>
         <source>Control Point:</source>
         <translation>控制点:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2011"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2011"/>
         <source>Selected:</source>
         <translation>选定物体:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2024"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2024"/>
         <source>Camera:</source>
         <translation>相机:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2048"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2048"/>
         <source>&lt;p&gt;&lt;b&gt;Piece Categories&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Create, edit, reorder, or import categories for the piece browser. The right-hand list shows pieces matching the selected category. Imported and edited categories are saved when you choose OK in Preferences; Export writes the current list immediately.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;零件类别&lt;/b&gt;&lt;/p&gt;&lt;p&gt;为零件浏览器创建、编辑、重新排序或导入类别。右侧列表显示与所选类别匹配的零件。当您在“首选项”中选择“确定”时，将保存导入和编辑的类别；导出立即写入当前列表。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2051"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2101"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2051"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2101"/>
         <source>Categories</source>
         <translation>类别</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2057"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2057"/>
         <source>Pieces Library Categories</source>
         <translation>零件库类别</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2073"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2073"/>
         <source>Piece Categories</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">零件类别</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2076"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2076"/>
         <source>Select a category to inspect or edit; drag categories to reorder them.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择要检查或编辑的类别；拖动类别以重新排序。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2107"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2107"/>
         <source>Matching Pieces</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">匹配的零件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2110"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2110"/>
         <source>View the library pieces matching the selected category.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">查看与所选类别匹配的库零件。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2141"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2141"/>
         <source>Name</source>
         <translation>名称</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2146"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2146"/>
         <source>Number</source>
         <translation>编号</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2157"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2157"/>
         <source>Replace the category list with categories from a text file.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">将类别列表替换为文本文件中的类别。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2160"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2321"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2494"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2160"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2321"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2494"/>
         <source>Import...</source>
         <translation>导入...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2167"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2167"/>
         <source>Save the current category list to a text file immediately.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">立即将当前类别列表保存到文本文件。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2170"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2331"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2504"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2170"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2331"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2504"/>
         <source>Export...</source>
         <translation>导出...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2177"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2177"/>
         <source>Restore the default category list after confirmation.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">确认后恢复默认类别列表。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2180"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2341"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2514"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2180"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2341"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2514"/>
         <source>Reset...</source>
         <translation>重置...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2205"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2205"/>
         <source>Category</source>
         <translation>类别</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2211"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2211"/>
         <source>Create a category with a name and a keyword expression.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">创建一个具有名称和关键字表达式的类别。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2214"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2214"/>
         <source>New...</source>
         <translation>新建...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2221"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2221"/>
         <source>Edit the selected category name and keyword expression.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">编辑选定的类别名称和关键字表达式。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2224"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2224"/>
         <source>Edit...</source>
         <translation>编辑...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2231"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2231"/>
         <source>Remove the selected category after confirmation.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">确认后删除所选类别。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2234"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2234"/>
         <source>Delete...</source>
         <translation>删除...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2258"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2258"/>
         <source>&lt;p&gt;&lt;b&gt;Keyboard Shortcuts&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select a command, click Key Sequence, press the desired key combination, then choose Assign. Remove clears the selected command&apos;s shortcut. Import replaces the shortcut list; Export writes the current list immediately. Choose OK in Preferences to save changes.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;键盘快捷键&lt;/b&gt;&lt;/p&gt;&lt;p&gt;选择一个命令，单击“按键序列”，按所需的组合键，然后选择“分配”。删除会清除所选命令的快捷方式。导入替换快捷方式列表；导出立即写入当前列表。在“首选项”中选择“确定”以保存更改。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2261"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2261"/>
         <source>Keyboard</source>
         <translation>键盘</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2271"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2271"/>
         <source>Keyboard Shortcuts</source>
         <translation>键盘快捷键</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2277"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2277"/>
         <source>Commands and Keyboard Shortcuts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">命令和键盘快捷键</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2280"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2280"/>
         <source>Select the command whose keyboard shortcut you want to change.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择要更改其键盘快捷键的命令。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2290"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2290"/>
         <source>Command</source>
         <translation>命令</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2295"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2369"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2543"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2295"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2369"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2543"/>
         <source>Shortcut</source>
         <translation>快捷键</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2303"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2303"/>
         <source>Filter Commands</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">过滤命令</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2306"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2306"/>
         <source>Filter commands by name or shortcut.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">按名称或快捷方式过滤命令。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2309"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2309"/>
         <source>Search shortcuts</source>
         <translation>搜索快捷键</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2318"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2318"/>
         <source>Replace keyboard shortcuts with assignments from a text file.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">将键盘快捷键替换为文本文件中的分配。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2328"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2328"/>
         <source>Save the current keyboard shortcuts to a text file immediately.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">立即将当前键盘快捷键保存到文本文件中。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2338"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2338"/>
         <source>Restore the default keyboard shortcuts after confirmation.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">确认后恢复默认键盘快捷键。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2375"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2394"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2375"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2394"/>
         <source>&lt;p&gt;&lt;b&gt;Key Sequence&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Click here and press the key combination you want to assign. Function keys, including F1, are recorded as shortcut candidates in this field. Use the Help button for guidance. Assign asks before replacing a shortcut already used by another command.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;按键序列&lt;/b&gt;&lt;/p&gt;&lt;p&gt;单击此处并按您要分配的组合键。功能键（包括 F1）在此字段中记录为候选快捷键。使用“帮助”按钮获取指导。在替换另一个命令已使用的快捷方式之前，Assign 会询问。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2378"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2397"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2378"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2397"/>
         <source>Press the key combination to assign, then choose Assign.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">按要分配的组合键，然后选择“分配”。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2381"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2381"/>
         <source>Key Se&amp;quence:</source>
         <oldsource>Key se&amp;quence:</oldsource>
         <translation type="unfinished">按键序列:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2391"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2391"/>
         <source>Key Sequence</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">按键顺序</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2404"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2404"/>
         <source>Assign the entered key combination to the selected command.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">将输入的组合键分配给选定的命令。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2414"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2414"/>
         <source>Clear the selected command&apos;s keyboard shortcut.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">清除所选命令的键盘快捷键。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2439"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2439"/>
         <source>&lt;p&gt;&lt;b&gt;Mouse Shortcuts&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select a tool, choose a mouse button and optional modifiers, then choose Assign. Each tool can have two shortcuts; a new assignment becomes the primary shortcut. Remove clears the primary shortcut and promotes the secondary shortcut. Choose OK in Preferences to save changes.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;鼠标快捷键&lt;/b&gt;&lt;/p&gt;&lt;p&gt;选择一个工具，选择鼠标按钮和可选修饰符，然后选择“分配”。每个工具可以有两个快捷键；新的任务成为主要的捷径。删除会清除主要快捷方式并提升辅助快捷方式。在“首选项”中选择“确定”以保存更改。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2442"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2442"/>
         <source>Mouse</source>
         <translation>鼠标</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2450"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2450"/>
         <source>Mouse Shortcuts</source>
         <translation>鼠标快捷键</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2458"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2458"/>
         <source>Tools and Mouse Shortcuts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">工具和鼠标快捷键</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2461"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2461"/>
         <source>Select a tool to edit its primary and secondary mouse shortcuts.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择一个工具来编辑其主要和辅助鼠标快捷键。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2471"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2471"/>
         <source>Action</source>
         <translation>操作</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2476"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2476"/>
         <source>Shortcut 1</source>
         <translation>快捷键 1</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2481"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2481"/>
         <source>Shortcut 2</source>
         <translation>快捷键 2</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2491"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2491"/>
         <source>Replace mouse shortcuts with assignments from a text file.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">用文本文件中的分配替换鼠标快捷键。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2501"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2501"/>
         <source>Save the current mouse shortcuts to a text file immediately.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">立即将当前鼠标快捷方式保存到文本文件中。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2511"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2511"/>
         <source>Restore the default mouse shortcuts after confirmation.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">确认后恢复默认鼠标快捷键。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2551"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2567"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2551"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2567"/>
         <source>Choose the mouse button to assign to the selected tool.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择要分配给所选工具的鼠标按钮。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2557"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2557"/>
         <source>Button:</source>
         <translation>按键:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2564"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2564"/>
         <source>Button</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">按钮</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2571"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2571"/>
         <source>None</source>
         <translation>无</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2576"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2576"/>
         <source>Left</source>
         <translation>左键</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2581"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2581"/>
         <source>Middle</source>
         <translation>中键</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2586"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2586"/>
         <source>Right</source>
         <translation>右键</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2594"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2594"/>
         <source>Modifiers:</source>
         <translation>修饰键:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2601"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2601"/>
         <source>Require the Control modifier for this mouse shortcut.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">此鼠标快捷方式需要 Control 修饰符。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2604"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2604"/>
         <source>Control</source>
         <translation>Ctrl</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2611"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2611"/>
         <source>Require the Alt modifier for this mouse shortcut.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">此鼠标快捷方式需要 Alt 修饰符。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2614"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2614"/>
         <source>Alt</source>
         <translation>Alt</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2621"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2621"/>
         <source>Require the Shift modifier for this mouse shortcut.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">此鼠标快捷键需要 Shift 修饰符。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2624"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2624"/>
         <source>Shift</source>
         <translation>Shift</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2407"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2634"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2407"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2634"/>
         <source>Assign</source>
         <translation>分配</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2417"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="2644"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2417"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="2644"/>
         <source>Remove</source>
         <translation>移除</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="365"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="365"/>
         <source>Grid spacing must be greater than 0.</source>
         <translation>网格间距必须大于 0。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="457"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="457"/>
         <source>Select Pieces Library Folder</source>
         <translation>选择零件库文件夹</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="465"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="465"/>
         <source>Supported Archives (*.zip *.bin);;All Files (*.*)</source>
         <translation>支持的压缩包 (*.zip *.bin);;所有文件 (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="465"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="465"/>
         <source>Select Pieces Library Archive</source>
         <translation>选择零件库压缩包</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="488"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="488"/>
         <source>Select Color Configuration File</source>
         <translation>选择颜色配置文件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="488"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="488"/>
         <source>Settings Files (*.ldr);;All Files (*.*)</source>
         <translation>设置文件 (*.ldr);;所有文件 (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="496"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="496"/>
         <source>Select Minifig Settings File</source>
         <translation>选择人仔设置文件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="496"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="496"/>
         <source>Settings Files (*.ini);;All Files (*.*)</source>
         <translation>设置文件 (*.ini);;所有文件 (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="505"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="505"/>
         <source>Executable Files (*.exe);;All Files (*.*)</source>
         <translation>可执行文件 (*.exe);;所有文件 (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="507"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="507"/>
         <source>All Files (*.*)</source>
         <translation>所有文件 (*.*)</translation>
     </message>
@@ -13922,32 +13922,32 @@ Unsupported video cards use face tint and colored edges.</source>
         <translation type="vanished">打开 POV-Ray</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="518"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="518"/>
         <source>Open LGEO Folder</source>
         <translation>打开 LGEO 文件夹</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="528"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="528"/>
         <source>Reset Colors</source>
         <translation>重置颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="528"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="528"/>
         <source>Would you like to also reset the interface colors to match the color theme?</source>
         <translation>是否同时重置界面颜色以匹配颜色主题？</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="542"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="542"/>
         <source>Select Background Color</source>
         <translation>选择背景颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="547"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="547"/>
         <source>Select Gradient Top Color</source>
         <translation>选择渐变顶部颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="552"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="552"/>
         <source>Select Gradient Bottom Color</source>
         <translation>选择渐变底部颜色</translation>
     </message>
@@ -13956,172 +13956,172 @@ Unsupported video cards use face tint and colored edges.</source>
         <translation type="vanished">选择坐标轴颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="557"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="557"/>
         <source>Select Text Color</source>
         <translation>选择文本颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="562"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="562"/>
         <source>Select Text Halo Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择文本光晕颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="568"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="568"/>
         <source>Select Marquee Border Color</source>
         <translation>选择选框边框颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="573"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="573"/>
         <source>Select Marquee Fill Color</source>
         <translation>选择选框填充颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="579"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="579"/>
         <source>Select Overlay Color</source>
         <translation>选择叠加色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="584"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="584"/>
         <source>Select Active View Color</source>
         <translation>选择活动视图颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="589"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="589"/>
         <source>Select Inactive View Color</source>
         <translation>选择非活动视图颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="594"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="594"/>
         <source>Select Fade Color</source>
         <translation>选择淡化颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="600"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="600"/>
         <source>Select Highlight Color</source>
         <translation>选择高亮颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="606"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="606"/>
         <source>Select Grid Stud Color</source>
         <translation>选择网格凸点颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="612"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="612"/>
         <source>Select Grid Line Color</source>
         <translation>选择网格线颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="617"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="617"/>
         <source>Select View Sphere Color</source>
         <translation>选择视图球颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="622"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="622"/>
         <source>Select View Sphere Text Color</source>
         <translation>选择视图球文本颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="627"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="627"/>
         <source>Select View Sphere Highlight Color</source>
         <translation>选择视图球高亮颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="632"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="632"/>
         <source>Select Object Selected Color</source>
         <translation>选择选定物体颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="637"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="637"/>
         <source>Select Object Focused Color</source>
         <translation>选择焦点物体颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="642"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="642"/>
         <source>Select Camera Color</source>
         <translation>选择相机颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="647"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="647"/>
         <source>Select Light Color</source>
         <translation>选择光源颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="652"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="652"/>
         <source>Select Control Point Color</source>
         <translation>选择控制点颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="658"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="658"/>
         <source>Select Control Point Focused Color</source>
         <translation>选择焦点控制点颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="788"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="788"/>
         <source>Unassigned</source>
         <translation>未分配</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="927"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="927"/>
         <source>Are you sure you want to delete the category &apos;%1&apos;?</source>
         <translation>确定要删除类别 &apos;%1&apos; 吗？</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="928"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="928"/>
         <source>Delete Category</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">删除类别</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="940"/>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="948"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="940"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="948"/>
         <source>Import Categories</source>
         <translation>导入类别</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="940"/>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="959"/>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="1234"/>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="1254"/>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="1426"/>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="1447"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="940"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="959"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="1234"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="1254"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="1426"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="1447"/>
         <source>Text Files (*.txt);;All Files (*.*)</source>
         <translation>文本文件 (*.txt);;所有文件 (*.*)</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="948"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="948"/>
         <source>Error loading categories file.</source>
         <translation>加载类别文件时出错。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="959"/>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="966"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="959"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="966"/>
         <source>Export Categories</source>
         <translation>导出类别</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="966"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="966"/>
         <source>Error saving categories file.</source>
         <translation>保存类别文件时出错。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="973"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="973"/>
         <source>Are you sure you want to load the default categories?</source>
         <translation>确定要加载默认类别吗？</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="973"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="973"/>
         <source>Reset Categories</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">重置类别</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="1179"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="1179"/>
         <source>The shortcut &apos;%1&apos; is already assigned to &apos;%2&apos;. Do you want to replace it?</source>
         <translation>快捷键 &apos;%1&apos; 已分配给 &apos;%2&apos;。是否替换？</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="1458"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="1458"/>
         <source>Reset Mouse Shortcuts</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">重置鼠标快捷方式</translation>
@@ -14131,7 +14131,7 @@ Unsupported video cards use face tint and colored edges.</source>
         <translation type="vanished">导入快捷键</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="1242"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="1242"/>
         <source>Error loading keyboard shortcuts file.</source>
         <translation>加载键盘快捷键文件时出错。</translation>
     </message>
@@ -14140,45 +14140,45 @@ Unsupported video cards use face tint and colored edges.</source>
         <translation type="vanished">导出快捷键</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="1261"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="1261"/>
         <source>Error saving keyboard shortcuts file.</source>
         <translation>保存键盘快捷键文件时出错。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="1268"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="1268"/>
         <source>Are you sure you want to load the default keyboard shortcuts?</source>
         <translation>确定要加载默认键盘快捷键吗？</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="1295"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="1295"/>
         <source>Left Button</source>
         <translation>左键</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="1299"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="1299"/>
         <source>Middle Button</source>
         <translation>中键</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="1303"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="1303"/>
         <source>Right Button</source>
         <translation>右键</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="1181"/>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="1370"/>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="1379"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="1181"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="1370"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="1379"/>
         <source>Override Shortcut</source>
         <translation>覆盖快捷键</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="250"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="250"/>
         <source>Default Lights is unavailable. Flat shading is used instead.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">默认灯光不可用。而是使用平面阴影。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="263"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="263"/>
         <source>View sphere rendering is unavailable.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">视图球体渲染不可用。</translation>
@@ -14189,98 +14189,98 @@ Unsupported video cards use face tint and colored edges.</source>
         <translation type="obsolete">轮廓渲染不可用。将使用面部色彩和彩色边缘。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="510"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="510"/>
         <source>Select POV-Ray Executable</source>
         <translation>选择 POV-Ray 可执行文件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="1242"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="1242"/>
         <source>Import Keyboard Shortcuts</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">导入键盘快捷键</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="1261"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="1261"/>
         <source>Export Keyboard Shortcuts</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">导出键盘快捷键</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="1268"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="1268"/>
         <source>Reset Keyboard Shortcuts</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">重置键盘快捷键</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="1370"/>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="1379"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="1370"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="1379"/>
         <source>This shortcut is already assigned to &apos;%1&apos;. Do you want to replace it?</source>
         <oldsource>This shortcut is already assigned to &apos;%1&apos;, do you want to replace it?</oldsource>
         <translation type="unfinished">此快捷键已分配给 &apos;%1&apos;，是否替换？</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="1234"/>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="1426"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="1234"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="1426"/>
         <source>Import Shortcuts</source>
         <translation>导入快捷键</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="1434"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="1434"/>
         <source>Error loading mouse shortcuts file.</source>
         <translation>加载鼠标快捷键文件时出错。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="1254"/>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="1447"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="1254"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="1447"/>
         <source>Export Shortcuts</source>
         <translation>导出快捷键</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="1434"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="1434"/>
         <source>Import Mouse Shortcuts</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">导入鼠标快捷方式</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="1453"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="1453"/>
         <source>Error saving mouse shortcuts file.</source>
         <translation>保存鼠标快捷键文件时出错。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="1453"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="1453"/>
         <source>Export Mouse Shortcuts</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">导出鼠标快捷方式</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="1458"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="1458"/>
         <source>Are you sure you want to load the default mouse shortcuts?</source>
         <translation>确定要加载默认鼠标快捷键吗？</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="542"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="727"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="542"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="727"/>
         <source>&lt;p&gt;&lt;b&gt;Highlight Style&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose how selected pieces and pieces added in the current step are highlighted in the viewport. Outline uses fading outlines in the selection, focus, or new-piece highlight color. Selected pieces also receive a faint fill over obscured portions. Tint and Edges uses tinted faces and colored edges for selection, and colored edges for new pieces.&lt;/p&gt;&lt;p&gt;New-piece highlighting requires Highlight New Pieces. Wireframe views, image exports, and systems without outline support use Tint and Edges.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="545"/>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="730"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="545"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="730"/>
         <source>Choose how selected pieces and new pieces are highlighted in the viewport.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="724"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="724"/>
         <source>Highlight Style</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.ui" line="548"/>
+        <location filename="../src/ui/sw_preferences_dialog.ui" line="548"/>
         <source>Highlight Style:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_preferencesdialog.cpp" line="286"/>
+        <location filename="../src/ui/sw_preferences_dialog.cpp" line="286"/>
         <source>Outline rendering is unavailable; the Tint and Edges style will be used.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -14288,72 +14288,72 @@ Unsupported video cards use face tint and colored edges.</source>
 <context>
     <name>swPreviewDockWidget</name>
     <message>
-        <location filename="../src/ui/sw_previewwidget.cpp" line="18"/>
+        <location filename="../src/ui/sw_preview_widget.cpp" line="18"/>
         <source>Piece Preview</source>
         <translatorcomment>Translation reused from another context; requires human review.</translatorcomment>
         <translation type="unfinished">零件预览</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_previewwidget.cpp" line="19"/>
+        <location filename="../src/ui/sw_preview_widget.cpp" line="19"/>
         <source>Inspect the previewed piece without placing it in the model.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">检查预览的零件，而不将其放置在模型中。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_previewwidget.cpp" line="22"/>
-        <location filename="../src/ui/sw_previewwidget.cpp" line="266"/>
+        <location filename="../src/ui/sw_preview_widget.cpp" line="22"/>
+        <location filename="../src/ui/sw_preview_widget.cpp" line="266"/>
         <source>Lock Preview</source>
         <translation>锁定预览</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_previewwidget.cpp" line="23"/>
+        <location filename="../src/ui/sw_preview_widget.cpp" line="23"/>
         <source>&lt;p&gt;&lt;b&gt;Lock Preview&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Keep the current piece in the preview while you browse other pieces. Unlock Preview allows the display to update again. An empty preview cannot be locked.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;锁定预览&lt;/b&gt;&lt;/p&gt;&lt;p&gt;在浏览其他零件时将当前零件保留在预览中。解锁预览允许显示再次更新。无法锁定空预览。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_previewwidget.cpp" line="26"/>
+        <location filename="../src/ui/sw_preview_widget.cpp" line="26"/>
         <source>Ctrl+L</source>
         <translation>Ctrl+L</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_previewwidget.cpp" line="49"/>
+        <location filename="../src/ui/sw_preview_widget.cpp" line="49"/>
         <source>Toolbar</source>
         <translation>工具栏</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_previewwidget.cpp" line="51"/>
+        <location filename="../src/ui/sw_preview_widget.cpp" line="51"/>
         <source>Preview Toolbar</source>
         <translation>预览工具栏</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_previewwidget.cpp" line="69"/>
-        <location filename="../src/ui/sw_previewwidget.cpp" line="177"/>
-        <location filename="../src/ui/sw_previewwidget.cpp" line="188"/>
+        <location filename="../src/ui/sw_preview_widget.cpp" line="69"/>
+        <location filename="../src/ui/sw_preview_widget.cpp" line="177"/>
+        <location filename="../src/ui/sw_preview_widget.cpp" line="188"/>
         <source>Loading...</source>
         <translation>加载中...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_previewwidget.cpp" line="78"/>
-        <location filename="../src/ui/sw_previewwidget.cpp" line="169"/>
-        <location filename="../src/ui/sw_previewwidget.cpp" line="196"/>
-        <location filename="../src/ui/sw_previewwidget.cpp" line="236"/>
+        <location filename="../src/ui/sw_preview_widget.cpp" line="78"/>
+        <location filename="../src/ui/sw_preview_widget.cpp" line="169"/>
+        <location filename="../src/ui/sw_preview_widget.cpp" line="196"/>
+        <location filename="../src/ui/sw_preview_widget.cpp" line="236"/>
         <source>Preview unavailable</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">预览不可用</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_previewwidget.cpp" line="263"/>
+        <location filename="../src/ui/sw_preview_widget.cpp" line="263"/>
         <source>Unlock the preview display to enable updates</source>
         <translation>解锁预览显示以启用更新</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_previewwidget.cpp" line="264"/>
+        <location filename="../src/ui/sw_preview_widget.cpp" line="264"/>
         <source>Lock the preview display to disable updates</source>
         <translation>锁定预览显示以禁用更新</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_previewwidget.cpp" line="266"/>
+        <location filename="../src/ui/sw_preview_widget.cpp" line="266"/>
         <source>Unlock Preview</source>
         <translation>解锁预览</translation>
     </message>
@@ -14361,96 +14361,96 @@ Unsupported video cards use face tint and colored edges.</source>
 <context>
     <name>swPropertiesDialog</name>
     <message>
-        <location filename="../src/ui/sw_propertiesdialog.ui" line="6"/>
+        <location filename="../src/ui/sw_properties_dialog.ui" line="6"/>
         <source>&lt;p&gt;&lt;b&gt;Model Properties&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Edit the current model&apos;s author, description, and comments on the Summary tab. Measurements and Pieces Used provide read-only information. Choose OK to apply the metadata changes, or Cancel to discard them.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;模型属性&lt;/b&gt;&lt;/p&gt;&lt;p&gt;在“摘要”选项卡上编辑当前模型的作者、描述和注释。尺寸和使用的件数提供只读信息。选择“确定”应用元数据更改，或选择“取消”放弃它们。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertiesdialog.ui" line="17"/>
+        <location filename="../src/ui/sw_properties_dialog.ui" line="17"/>
         <source>Properties</source>
         <translation>属性</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertiesdialog.ui" line="27"/>
+        <location filename="../src/ui/sw_properties_dialog.ui" line="27"/>
         <source>&lt;p&gt;&lt;b&gt;Model Summary&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Author, description, and comments are stored with this model when the project is saved. Measurements show its overall size.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;模型摘要&lt;/b&gt;&lt;/p&gt;&lt;p&gt;保存项目时，作者、描述和注释将与该模型一起存储。测量显示其整体尺寸。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertiesdialog.ui" line="36"/>
+        <location filename="../src/ui/sw_properties_dialog.ui" line="36"/>
         <source>Summary</source>
         <translation>摘要</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertiesdialog.ui" line="45"/>
-        <location filename="../src/ui/sw_propertiesdialog.ui" line="55"/>
+        <location filename="../src/ui/sw_properties_dialog.ui" line="45"/>
+        <location filename="../src/ui/sw_properties_dialog.ui" line="55"/>
         <source>Enter the author credited in this model.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">输入此模型中注明的作者。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertiesdialog.ui" line="48"/>
+        <location filename="../src/ui/sw_properties_dialog.ui" line="48"/>
         <source>Author:</source>
         <translation>作者:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertiesdialog.ui" line="65"/>
-        <location filename="../src/ui/sw_propertiesdialog.ui" line="75"/>
+        <location filename="../src/ui/sw_properties_dialog.ui" line="65"/>
+        <location filename="../src/ui/sw_properties_dialog.ui" line="75"/>
         <source>Enter a short description of this model.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">输入此模型的简短描述。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertiesdialog.ui" line="68"/>
+        <location filename="../src/ui/sw_properties_dialog.ui" line="68"/>
         <source>Description:</source>
         <translation>描述:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertiesdialog.ui" line="85"/>
-        <location filename="../src/ui/sw_propertiesdialog.ui" line="95"/>
+        <location filename="../src/ui/sw_properties_dialog.ui" line="85"/>
+        <location filename="../src/ui/sw_properties_dialog.ui" line="95"/>
         <source>Enter plain-text notes to store with this model.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">输入纯文本注释以与该模型一起存储。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertiesdialog.ui" line="88"/>
+        <location filename="../src/ui/sw_properties_dialog.ui" line="88"/>
         <source>Comments:</source>
         <translation>注释:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertiesdialog.ui" line="111"/>
-        <location filename="../src/ui/sw_propertiesdialog.ui" line="124"/>
+        <location filename="../src/ui/sw_properties_dialog.ui" line="111"/>
+        <location filename="../src/ui/sw_properties_dialog.ui" line="124"/>
         <source>Overall model dimensions along the X, Y, and Z axes.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">沿 X、Y 和 Z 轴的总体模型尺寸。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertiesdialog.ui" line="114"/>
-        <location filename="../src/ui/sw_propertiesdialog.ui" line="127"/>
+        <location filename="../src/ui/sw_properties_dialog.ui" line="114"/>
+        <location filename="../src/ui/sw_properties_dialog.ui" line="127"/>
         <source>&lt;p&gt;&lt;b&gt;Model Measurements&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The dimensions of the model&apos;s bounding box are shown in centimeters, inches, and LDraw units (LDU). The values are read-only and include pieces across all steps.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;模型测量&lt;/b&gt;&lt;/p&gt;&lt;p&gt;模型边界框的尺寸以厘米、英寸和 LDraw 单位 (LDU) 为单位显示。这些值是只读的，包含所有步骤中的零件。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertiesdialog.ui" line="117"/>
+        <location filename="../src/ui/sw_properties_dialog.ui" line="117"/>
         <source>Measurements:</source>
         <translation>尺寸:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertiesdialog.ui" line="130"/>
+        <location filename="../src/ui/sw_properties_dialog.ui" line="130"/>
         <source>Model Measurements</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">模型测量</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertiesdialog.ui" line="147"/>
+        <location filename="../src/ui/sw_properties_dialog.ui" line="147"/>
         <source>View piece quantities by color; click a column heading to sort.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">按颜色查看件数；单击列标题进行排序。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertiesdialog.ui" line="150"/>
+        <location filename="../src/ui/sw_properties_dialog.ui" line="150"/>
         <source>&lt;p&gt;&lt;b&gt;Pieces Used&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The table counts pieces across all steps, including pieces inside submodels. Color columns show quantities, and totals summarize each piece, each color, and the whole model. Click a column heading to sort. The piece-name column stays visible while you scroll horizontally. Counts cannot be edited here.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;使用的件数&lt;/b&gt;&lt;/p&gt;&lt;p&gt;该表对所有步骤中的件数进行计数，包括子模型内的件数。颜色栏显示数量，总计总结每件、每种颜色和整个模型。单击列标题进行排序。当您水平滚动时，零件名称列保持可见。此处无法编辑计数。&lt;/p&gt;</translation>
@@ -14476,18 +14476,18 @@ Unsupported video cards use face tint and colored edges.</source>
         <translation type="vanished">对于新项目设置默认选项</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertiesdialog.ui" line="141"/>
-        <location filename="../src/ui/sw_propertiesdialog.ui" line="153"/>
+        <location filename="../src/ui/sw_properties_dialog.ui" line="141"/>
+        <location filename="../src/ui/sw_properties_dialog.ui" line="153"/>
         <source>Pieces Used</source>
         <translation>所用零件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertiesdialog.cpp" line="241"/>
+        <location filename="../src/ui/sw_properties_dialog.cpp" line="241"/>
         <source>%1 Properties</source>
         <translation>%1 属性</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertiesdialog.cpp" line="248"/>
+        <location filename="../src/ui/sw_properties_dialog.cpp" line="248"/>
         <source>%1 x %2 x %3 cm
 %4 x %5 x %6 inches
 %7 x %8 x %9 LDU</source>
@@ -14496,13 +14496,13 @@ Unsupported video cards use face tint and colored edges.</source>
 %7 x %8 x %9 LDU</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertiesdialog.cpp" line="267"/>
+        <location filename="../src/ui/sw_properties_dialog.cpp" line="267"/>
         <source>Piece</source>
         <translation>零件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertiesdialog.cpp" line="278"/>
-        <location filename="../src/ui/sw_propertiesdialog.cpp" line="315"/>
+        <location filename="../src/ui/sw_properties_dialog.cpp" line="278"/>
+        <location filename="../src/ui/sw_properties_dialog.cpp" line="315"/>
         <source>Total</source>
         <translation>总计</translation>
     </message>
@@ -14530,471 +14530,471 @@ Unsupported video cards use face tint and colored edges.</source>
 <context>
     <name>swPropertiesWidget</name>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="27"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="27"/>
         <source>%1: %2</source>
         <translatorcomment>Technical identifier or nonlinguistic text; intentionally retained unchanged.</translatorcomment>
         <translation type="unfinished">%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="35"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="35"/>
         <source>Keyframe for %1</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 的关键帧</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="36"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="36"/>
         <source>&lt;p&gt;&lt;b&gt;Property Keyframe&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Enable or remove a keyframe for this property at the current building step. Keyframes let the property&apos;s value change between steps.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;属性关键帧&lt;/b&gt;&lt;/p&gt;&lt;p&gt;在当前构建步骤中启用或删除此属性的关键帧。关键帧让属性值在步骤之间发生变化。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="87"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="87"/>
         <source>Expand or collapse the %1 properties.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">展开或折叠 %1 属性。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="173"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="173"/>
         <source>Toggle Key Frame</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">切换关键帧</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="657"/>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="790"/>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="850"/>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="855"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="657"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="790"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="850"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="855"/>
         <source>Multiple Values</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">多重价值</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="958"/>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1054"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="958"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1054"/>
         <source> Multiple Colors</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished"> 多种颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1098"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1098"/>
         <source>Multiple Pieces</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">多件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1170"/>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1172"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1170"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1172"/>
         <source>Piece</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">零件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1172"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1172"/>
         <source>Piece ID</source>
         <oldsource>Piece Id</oldsource>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">零件编号</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1173"/>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1222"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1173"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1222"/>
         <source>Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1173"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1173"/>
         <source>Piece color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">件颜色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1177"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1177"/>
         <source>Show</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">展示</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1177"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1177"/>
         <source>Step when piece is added to the model</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">将零件添加到模型时的步骤</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1178"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1178"/>
         <source>Hide</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">隐藏</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1178"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1178"/>
         <source>Step when piece is hidden</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">隐藏棋子时的步骤</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1182"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1182"/>
         <source>Camera</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">相机</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1184"/>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1217"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1184"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1217"/>
         <source>Name</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">名称</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1184"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1184"/>
         <source>Camera name</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">相机名称</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1185"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1185"/>
         <source>Projection</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">投影</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1185"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1185"/>
         <source>Camera projection</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">相机投影</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1189"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1189"/>
         <source>FOV</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">视场角</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1189"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1189"/>
         <source>Field of view in degrees</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">视野（以度为单位）</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1190"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1190"/>
         <source>Near</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">近裁剪面</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1190"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1190"/>
         <source>Near clipping distance</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">近剪裁距离</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1191"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1191"/>
         <source>Far</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">远裁剪面</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1191"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1191"/>
         <source>Far clipping distance</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">远剪裁距离</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1195"/>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1254"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1195"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1254"/>
         <source>Transform</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">变换</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1197"/>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1256"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1197"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1256"/>
         <source>Position X</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">位置 X</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1197"/>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1198"/>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1199"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1197"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1198"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1199"/>
         <source>Camera position</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">相机位置</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1198"/>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1204"/>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1210"/>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1231"/>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1250"/>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1257"/>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1263"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1198"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1204"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1210"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1231"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1250"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1257"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1263"/>
         <source>Y</source>
         <translatorcomment>Technical identifier or nonlinguistic text; intentionally retained unchanged.</translatorcomment>
         <translation type="unfinished">Y</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1199"/>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1205"/>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1211"/>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1258"/>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1264"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1199"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1205"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1211"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1258"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1264"/>
         <source>Z</source>
         <translatorcomment>Technical identifier or nonlinguistic text; intentionally retained unchanged.</translatorcomment>
         <translation type="unfinished">Z</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1203"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1203"/>
         <source>Target X</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">目标X</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1203"/>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1204"/>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1205"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1203"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1204"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1205"/>
         <source>Camera target position</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">相机目标位置</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1209"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1209"/>
         <source>Up X</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">向上 X</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1209"/>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1210"/>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1211"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1209"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1210"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1211"/>
         <source>Camera up direction</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">相机上方向向量</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1215"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1215"/>
         <source>Light</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">光</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1217"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1217"/>
         <source>Light name</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">灯名</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1218"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1218"/>
         <source>Type</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">类型</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1218"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1218"/>
         <source>Light type</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">光型</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1222"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1222"/>
         <source>Light color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">浅色</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1223"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1223"/>
         <source>Cast Shadow</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">投射阴影</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1223"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1223"/>
         <source>Cast a shadow from this light</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">从这盏灯投射出阴影</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1227"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1227"/>
         <source>Cone Angle</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">锥角</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1227"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1227"/>
         <source>Angle in degrees of the spot light&apos;s beam</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">聚光灯光束的角度（以度为单位）</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1228"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1228"/>
         <source>Penumbra Angle</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">半影角</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1228"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1228"/>
         <source>Angle in degrees over which the intensity of the spot light falls off to zero</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">聚光灯强度降至零的角度（以度为单位）</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1229"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1229"/>
         <source>Area Shape</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">区域形状</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1229"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1229"/>
         <source>The shape of the area light</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">区域光的形状</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1230"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1230"/>
         <source>Size X</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">尺码 X</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1230"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1230"/>
         <source>The width of the area light</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">区域光的宽度</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1231"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1231"/>
         <source>The height of the area light</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">区域光的高度</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1235"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1235"/>
         <source>Blender Settings</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender 设置</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1237"/>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1245"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1237"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1245"/>
         <source>Power</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">力量</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1237"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1237"/>
         <source>Power of the light in watts</source>
         <oldsource>Power of the light in Watts</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">光的功率（瓦​​）</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1238"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1238"/>
         <source>Radius</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">半径</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1238"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1238"/>
         <source>Shadow soft size</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">阴影软尺寸</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1239"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1239"/>
         <source>Angle</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">角度</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1239"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1239"/>
         <source>Angular diameter of the light</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">光的角直径</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1243"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1243"/>
         <source>POV-Ray Settings</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">POV-Ray 设置</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1245"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1245"/>
         <source>Power of the light (multiplicative factor)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">光功率（乘数）</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1246"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1246"/>
         <source>Fade Distance</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">淡入淡出距离</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1246"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1246"/>
         <source>The distance at which the full light intensity arrives</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">全光强度到达的距离</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1247"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1247"/>
         <source>Fade Power</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">淡入淡出功率</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1247"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1247"/>
         <source>Light falloff rate</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">光衰减率</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1248"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1248"/>
         <source>Tightness</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">松紧度</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1248"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1248"/>
         <source>Additional exponential spot light edge softening</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">额外的指数聚光边缘柔化</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1249"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1249"/>
         <source>Grid X</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">网格X</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1249"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1249"/>
         <source>Number of point sources along the X axis</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">沿 X 轴的点源数量</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1250"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1250"/>
         <source>Number of point sources along the Y axis</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">沿 Y 轴的点源数量</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1256"/>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1257"/>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1258"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1256"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1257"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1258"/>
         <source>Position of the object</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">物体的位置</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1262"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1262"/>
         <source>Rotation X</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">旋转X</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1262"/>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1263"/>
-        <location filename="../src/ui/sw_propertieswidget.cpp" line="1264"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1262"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1263"/>
+        <location filename="../src/ui/sw_properties_widget.cpp" line="1264"/>
         <source>Rotation of the object in degrees</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">物体的旋转（以度为单位）</translation>
@@ -15178,9 +15178,9 @@ Unsupported video cards use face tint and colored edges.</source>
 <context>
     <name>swRenderDialog</name>
     <message>
-        <location filename="../src/ui/sw_renderdialog.ui" line="14"/>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="58"/>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="183"/>
+        <location filename="../src/ui/sw_render_dialog.ui" line="14"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="58"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="183"/>
         <source>Render</source>
         <translation>渲染</translation>
     </message>
@@ -15189,37 +15189,37 @@ Unsupported video cards use face tint and colored edges.</source>
         <translation type="vanished">设置</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="61"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="61"/>
         <source>Settings...</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">设置...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="64"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="64"/>
         <source>View Log...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">查看日志...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="67"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="67"/>
         <source>Show the renderer output and diagnostic messages.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">显示渲染器输出和诊断消息。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="68"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="68"/>
         <source>&lt;p&gt;&lt;b&gt;View Log&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Open the renderer output to investigate a failed render or warnings. This button becomes available when a log has been captured.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;查看日志&lt;/b&gt;&lt;/p&gt;&lt;p&gt;打开渲染器输出以调查失败的渲染或警告。捕获日志后，此按钮将变为可用。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="69"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="69"/>
         <source>&lt;p&gt;&lt;b&gt;Render&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Start the render using the current settings. While rendering, this button becomes Cancel so you can stop the operation.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;渲染&lt;/b&gt;&lt;/p&gt;&lt;p&gt;使用当前设置开始渲染。渲染时，此按钮变为“取消”，以便您可以停止操作。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="79"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="79"/>
         <source>POV-Ray Image Render</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">POV-Ray 图像渲染</translation>
@@ -15230,20 +15230,20 @@ Unsupported video cards use face tint and colored edges.</source>
         <translation type="obsolete">渲染模型</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="88"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="88"/>
         <source>Blender LDraw Import</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender LDraw 导入</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="88"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="88"/>
         <source>Blender Image Render</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender 图像渲染</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="101"/>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="899"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="101"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="899"/>
         <source>Blender not configured. Use Settings to configure.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender 未配置。使用“设置”进行配置。</translation>
@@ -15259,7 +15259,7 @@ Unsupported video cards use face tint and colored edges.</source>
         <translation type="obsolete">Blender 导入设置</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="110"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="110"/>
         <source>Open in Blender</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">在 Blender 中打开</translation>
@@ -15270,7 +15270,7 @@ Unsupported video cards use face tint and colored edges.</source>
         <translation type="obsolete">在 Blender 中导入并打开 LDraw 模型</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="246"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="246"/>
         <source>Exporting Model</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">导出模型</translation>
@@ -15281,85 +15281,85 @@ Unsupported video cards use face tint and colored edges.</source>
         <translation type="obsolete">渲染错误</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="81"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="81"/>
         <source>&lt;p&gt;&lt;b&gt;POV-Ray Image Render&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Render the current model step using POV-Ray. Choose an output image, then use Settings to set its dimensions and quality. Select Render to start.&lt;/p&gt;&lt;p&gt;The preview is scaled to fit the dialog. View Log shows diagnostic output when available.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;POV-Ray 图像渲染&lt;/b&gt;&lt;/p&gt;&lt;p&gt;使用 POV-Ray 渲染当前模型步骤。选择输出图像，然后使用“设置”来设置其尺寸和质量。选择“渲染”开始。&lt;/p&gt;&lt;p&gt;预览将缩放以适合对话框。查看日志显示可用的诊断输出。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="82"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="82"/>
         <source>Render the current model step with POV-Ray.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">使用 POV-Ray 渲染当前模型步骤。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="83"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="83"/>
         <source>Set the POV-Ray image dimensions and render quality.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">设置 POV-Ray 图像尺寸和渲染质量。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="84"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="84"/>
         <source>&lt;p&gt;&lt;b&gt;POV-Ray Settings&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose the image width and height in pixels and the rendering quality. Higher resolution and quality can increase rendering time.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;POV-Ray 设置&lt;/b&gt;&lt;/p&gt;&lt;p&gt;选择图像宽度和高度（以像素为单位）以及渲染质量。更高的分辨率和质量会增加渲染时间。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="89"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="89"/>
         <source>&lt;p&gt;&lt;b&gt;Blender Image Render&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Render the current model step with the Blender LDraw add-on. Configure Blender and its add-on through Settings, choose an output image, then select Render.&lt;/p&gt;&lt;p&gt;The preview is scaled to fit the dialog. View Log shows diagnostic output when available.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Blender 图像渲染&lt;/b&gt;&lt;/p&gt;&lt;p&gt;使用 Blender LDraw 插件渲染当前模型步骤。通过“设置”配置 Blender 及其附加组件，选择输出图像，然后选择“渲染”。&lt;/p&gt;&lt;p&gt;预览会缩放以适合对话框。查看日志显示可用的诊断输出。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="90"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="90"/>
         <source>&lt;p&gt;&lt;b&gt;Blender Settings&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Configure the Blender executable, LDraw import modules, library paths, and render settings. Blender and an import module must be configured before rendering or opening the model.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Blender 设置&lt;/b&gt;&lt;/p&gt;&lt;p&gt;配置 Blender 可执行文件、LDraw 导入模块、库路径和渲染设置。在渲染或打开模型之前，必须配置 Blender 和导入模块。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="101"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="101"/>
         <source>Render the current model step with Blender.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">使用 Blender 渲染当前模型步骤。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="104"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="104"/>
         <source>Configure Blender, its add-on, and render settings.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">配置 Blender、其附加组件和渲染设置。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="108"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="108"/>
         <source>Configure Blender and its LDraw import settings.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">配置 Blender 及其 LDraw 导入设置。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="111"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="111"/>
         <source>&lt;p&gt;&lt;b&gt;Open in Blender&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Export the current model step and open it in Blender for editing. Use Settings to configure Blender and its LDraw import add-on, then select Open in Blender.&lt;/p&gt;&lt;p&gt;This mode does not save a rendered image.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;在 Blender 中打开&lt;/b&gt;&lt;/p&gt;&lt;p&gt;导出当前模型步骤并在 Blender 中打开以进行编辑。使用“设置”来配置 Blender 及其 LDraw 导入插件，然后选择“在 Blender 中打开”。&lt;/p&gt;&lt;p&gt;此模式不会保存渲染图像。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="112"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="112"/>
         <source>&lt;p&gt;&lt;b&gt;Open in Blender&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Import the current model step into Blender for editing. Configure Blender and its LDraw import add-on through Settings if this action is unavailable.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;在 Blender 中打开&lt;/b&gt;&lt;/p&gt;&lt;p&gt;将当前模型步骤导入 Blender 中进行编辑。如果此操作不可用，请通过“设置”配置 Blender 及其 LDraw 导入插件。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="115"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="115"/>
         <source>Import the current model step and open it in Blender.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">导入当前模型步骤并在 Blender 中打开它。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="375"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="375"/>
         <source>Saving Blender Model</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">保存 Blender 模型</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="467"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="467"/>
         <source>Cannot write Blender render script file &apos;%1&apos;:
 %2.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -15367,45 +15367,45 @@ Unsupported video cards use face tint and colored edges.</source>
 %2。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="530"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="530"/>
         <source>errors%1</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">错误%1</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="530"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="530"/>
         <source> and warnings</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished"> 和警告</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="530"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="530"/>
         <source>warnings</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">警告</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="531"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="531"/>
         <source>Open in Blender Output</source>
         <oldsource>Open in Blender output</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">在 Blender 输出中打开</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="532"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="532"/>
         <source>Open in Blender encountered %1. See Show Details...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">在Blender中打开遇到%1。查看显示详细信息...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="561"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="561"/>
         <source>Error starting Blender render process.</source>
         <oldsource>Error starting Blender render process</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">启动 Blender 渲染进程时出错</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="621"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="621"/>
         <source>Failed to open log file: &apos;%1&apos;:
 %2</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -15413,100 +15413,100 @@ Unsupported video cards use face tint and colored edges.</source>
 %2</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="775"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="775"/>
         <source>An error occurred while rendering.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">渲染时发生错误。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="820"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="820"/>
         <source>Render failed.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">渲染失败。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="839"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="839"/>
         <source>POV-Ray Settings</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">POV-Ray 设置</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="840"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="840"/>
         <source>&lt;p&gt;&lt;b&gt;POV-Ray Settings&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Set the output image dimensions and rendering quality. Width and height are in pixels, with a minimum of 16. Larger images and higher quality can take longer to render.&lt;/p&gt;&lt;p&gt;Choose OK to save these settings for subsequent renders, or Cancel to keep the previous settings. This dialog does not start rendering.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;POV-Ray 设置&lt;/b&gt;&lt;/p&gt;&lt;p&gt;设置输出图像尺寸和渲染质量。宽度和高度以像素为单位，最小为 16。较大的图像和较高的质量可能需要更长的渲染时间。&lt;/p&gt;&lt;p&gt;选择“确定”保存这些设置以供后续渲染，或选择“取消”保留以前的设置。该对话框不会开始渲染。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="845"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="845"/>
         <source>Width:</source>
         <translation>宽度:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="849"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="849"/>
         <source>Set the rendered image width in pixels (minimum 16).</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">设置渲染图像宽度（以像素为单位）（最小 16）。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="852"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="852"/>
         <source>Height:</source>
         <translation>高度:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="856"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="856"/>
         <source>Set the rendered image height in pixels (minimum 16).</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">设置渲染图像的高度（以像素为单位）（最小 16）。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="861"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="861"/>
         <source>High</source>
         <translation>高</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="861"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="861"/>
         <source>Medium</source>
         <translation>中</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="861"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="861"/>
         <source>Low</source>
         <translation>低</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="863"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="863"/>
         <source>Choose the rendering quality; higher quality can take longer.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择渲染质量；更高的质量可能需要更长的时间。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="864"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="864"/>
         <source>&lt;p&gt;&lt;b&gt;Rendering Quality&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Low uses POV-Ray&apos;s default quality without additional antialiasing options. Medium uses quality level 5 with antialiasing. High uses quality level 11 with additional antialiasing settings.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;渲染质量&lt;/b&gt;&lt;/p&gt;&lt;p&gt;低使用 POV-Ray 的默认质量，无需额外的抗锯齿选项。中使用质量级别 5 和抗锯齿功能。高使用质量级别 11 以及附加的抗锯齿设置。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="913"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="913"/>
         <source>POV-Ray standard error file not found: &apos;%1&apos;.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">未找到 POV-Ray 标准错误文件：'%1'。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="918"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="918"/>
         <source>Blender standard output file not found: &apos;%1&apos;.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">未找到 Blender 标准输出文件：'%1'。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="923"/>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="931"/>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="940"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="923"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="931"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="940"/>
         <source>Render Log</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">渲染日志</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="931"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="931"/>
         <source>Error opening log file &apos;%1&apos;:
 %2.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -15514,107 +15514,107 @@ Unsupported video cards use face tint and colored edges.</source>
 %2 时出错。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="941"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="941"/>
         <source>&lt;p&gt;&lt;b&gt;Render Log&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Read the renderer output to investigate warnings or a failed render. Select text and copy it with the standard keyboard shortcut when reporting a problem. Close returns to the Render dialog.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;渲染日志&lt;/b&gt;&lt;/p&gt;&lt;p&gt;读取渲染器输出以调查警告或渲染失败。选择文本并在报告问题时使用标准键盘快捷键进行复制。关闭返回“渲染”对话框。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="948"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="948"/>
         <source>Renderer Output</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">渲染器输出</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="949"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="949"/>
         <source>Read and copy renderer output and diagnostic messages.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">读取并复制渲染器输出和诊断消息。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="859"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="859"/>
         <source>Quality:</source>
         <translation>质量:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.ui" line="24"/>
-        <location filename="../src/ui/sw_renderdialog.ui" line="40"/>
+        <location filename="../src/ui/sw_render_dialog.ui" line="24"/>
+        <location filename="../src/ui/sw_render_dialog.ui" line="40"/>
         <source>Path and file name for the rendered image.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">渲染图像的路径和文件名。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.ui" line="27"/>
-        <location filename="../src/ui/sw_renderdialog.ui" line="43"/>
+        <location filename="../src/ui/sw_render_dialog.ui" line="27"/>
+        <location filename="../src/ui/sw_render_dialog.ui" line="43"/>
         <source>&lt;p&gt;&lt;b&gt;Output Image&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose where to save the rendered image and its format, such as PNG, JPEG, or BMP. The output path applies to image rendering; Open in Blender does not use it.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;输出图像&lt;/b&gt;&lt;/p&gt;&lt;p&gt;选择渲染图像的保存位置及其格式，例如 PNG、JPEG 或 BMP。输出路径适用于图像渲染；在 Blender 中打开不使用它。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.ui" line="30"/>
+        <location filename="../src/ui/sw_render_dialog.ui" line="30"/>
         <source>Output:</source>
         <translation>输出:</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.ui" line="50"/>
+        <location filename="../src/ui/sw_render_dialog.ui" line="50"/>
         <source>Choose the rendered image file and format.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择渲染的图像文件和格式。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.ui" line="53"/>
+        <location filename="../src/ui/sw_render_dialog.ui" line="53"/>
         <source>Choose Render Output</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择渲染输出</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.ui" line="56"/>
+        <location filename="../src/ui/sw_render_dialog.ui" line="56"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.ui" line="65"/>
+        <location filename="../src/ui/sw_render_dialog.ui" line="65"/>
         <source>Preview of the rendered image.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">渲染图像的预览。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.ui" line="68"/>
+        <location filename="../src/ui/sw_render_dialog.ui" line="68"/>
         <source>Render Preview</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">渲染预览</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.ui" line="71"/>
+        <location filename="../src/ui/sw_render_dialog.ui" line="71"/>
         <source>&lt;p&gt;&lt;b&gt;Render Preview&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The preview is scaled to fit this area. Changing the dialog size does not change the output resolution; use Settings to change the image dimensions.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;渲染预览&lt;/b&gt;&lt;/p&gt;&lt;p&gt;缩放预览以适合此区域。更改对话框大小不会改变输出分辨率；使用“设置”更改图像尺寸。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.ui" line="78"/>
+        <location filename="../src/ui/sw_render_dialog.ui" line="78"/>
         <source>Progress of the current export or render.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">当前导出或渲染的进度。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.ui" line="81"/>
+        <location filename="../src/ui/sw_render_dialog.ui" line="81"/>
         <source>Render Progress</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">渲染进度</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="191"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="191"/>
         <source>Cancel Render</source>
         <translation>取消渲染</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="191"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="191"/>
         <source>Are you sure you want to cancel the current render?</source>
         <translation>确定要取消当前渲染吗？</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="355"/>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="555"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="355"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="555"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -15623,7 +15623,7 @@ Unsupported video cards use face tint and colored edges.</source>
         <translation type="vanished">错误</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="362"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="362"/>
         <source>Error starting POV-Ray.</source>
         <translation>启动 POV-Ray 时出错。</translation>
     </message>
@@ -15632,7 +15632,7 @@ Unsupported video cards use face tint and colored edges.</source>
         <translation type="vanished">渲染时发生错误。请检查详情或重试。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="798"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="798"/>
         <source>Error writing to file &apos;%1&apos;:
 %2</source>
         <translation>写入文件 &apos;%1&apos; 时出错:
@@ -15645,12 +15645,12 @@ Unsupported video cards use face tint and colored edges.</source>
 %3</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="827"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="827"/>
         <source>Select Output File</source>
         <translation>选择输出文件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_renderdialog.cpp" line="827"/>
+        <location filename="../src/ui/sw_render_dialog.cpp" line="827"/>
         <source>Supported Image Files (*.bmp *.png *.jpg);;BMP Files (*.bmp);;PNG Files (*.png);;JPEG Files (*.jpg);;All Files (*.*)</source>
         <translation>支持的图像文件 (*.bmp *.png *.jpg);;BMP 文件 (*.bmp);;PNG 文件 (*.png);;JPEG 文件 (*.jpg);;所有文件 (*.*)</translation>
     </message>
@@ -15669,64 +15669,64 @@ Unsupported video cards use face tint and colored edges.</source>
 <context>
     <name>swSelectDialog</name>
     <message>
-        <location filename="../src/ui/sw_selectdialog.ui" line="6"/>
+        <location filename="../src/ui/sw_select_dialog.ui" line="6"/>
         <source>&lt;p&gt;&lt;b&gt;Select Objects&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Use the checkboxes to choose visible pieces, cameras, and lights in the current model. Choose OK to replace the current selection with the checked objects, or Cancel to keep the current selection.&lt;/p&gt;&lt;p&gt;Pieces in the same top-level group are selected together. All, None, and Invert change the checkboxes in this dialog.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;选择对象&lt;/b&gt;&lt;/p&gt;&lt;p&gt;使用复选框选择当前模型中的可见零件、摄像机和灯光。选择“确定”用选中的对象替换当前选择，或选择“取消”保留当前选择。&lt;/p&gt;&lt;p&gt;同一顶级组中的零件将被一起选择。全部、无和反转会更改此对话框中的复选框。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_selectdialog.ui" line="17"/>
+        <location filename="../src/ui/sw_select_dialog.ui" line="17"/>
         <source>Select Objects</source>
         <translation>选择物体</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_selectdialog.ui" line="23"/>
+        <location filename="../src/ui/sw_select_dialog.ui" line="23"/>
         <source>Check the objects to include in the selection.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">检查要包含在选择中的对象。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_selectdialog.ui" line="26"/>
+        <location filename="../src/ui/sw_select_dialog.ui" line="26"/>
         <source>&lt;p&gt;&lt;b&gt;Object List&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The list includes pieces visible in the current step and visible cameras and lights. Expand groups to see their pieces. Checking or clearing a grouped piece applies the same state to all pieces in its top-level group.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;对象列表&lt;/b&gt;&lt;/p&gt;&lt;p&gt;该列表包括当前步骤中可见的零件以及可见的摄像机和灯光。展开组以查看他们的零件。检查或清除分组的零件会将相同的状态应用于其顶级组中的所有零件。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_selectdialog.ui" line="29"/>
+        <location filename="../src/ui/sw_select_dialog.ui" line="29"/>
         <source>Objects to Select</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">要选择的对象</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_selectdialog.ui" line="46"/>
+        <location filename="../src/ui/sw_select_dialog.ui" line="46"/>
         <source>Check every object in the list.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">检查列表中的每个对象。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_selectdialog.ui" line="49"/>
+        <location filename="../src/ui/sw_select_dialog.ui" line="49"/>
         <source>All</source>
         <translation>全部</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_selectdialog.ui" line="56"/>
+        <location filename="../src/ui/sw_select_dialog.ui" line="56"/>
         <source>Clear every object checkbox in the list.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">清除列表中的每个对象复选框。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_selectdialog.ui" line="59"/>
+        <location filename="../src/ui/sw_select_dialog.ui" line="59"/>
         <source>None</source>
         <translation>无</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_selectdialog.ui" line="66"/>
+        <location filename="../src/ui/sw_select_dialog.ui" line="66"/>
         <source>Check unchecked objects and clear checked objects.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">检查未检查的对象并清除检查的对象。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_selectdialog.ui" line="69"/>
+        <location filename="../src/ui/sw_select_dialog.ui" line="69"/>
         <source>Invert</source>
         <translation>反选</translation>
     </message>
@@ -15738,88 +15738,88 @@ Unsupported video cards use face tint and colored edges.</source>
         <translation type="vanished">套装数据库</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_setsdatabasedialog.ui" line="6"/>
+        <location filename="../src/ui/sw_sets_database_dialog.ui" line="6"/>
         <source>&lt;p&gt;&lt;b&gt;Import Set Inventory&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Search the online Rebrickable database by set name or number. Select a result and choose OK, or double-click it, to download the set inventory for the operation that opened this dialog.&lt;/p&gt;&lt;p&gt;An internet connection is required for searching and downloading inventories.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;导入套件库存&lt;/b&gt;&lt;/p&gt;&lt;p&gt;按套件名称或编号搜索在线 Rebrickable 数据库。选择一个结果，然后选择“确定”，或双击它，下载打开此对话框的操作的设置清单。&lt;/p&gt;&lt;p&gt;搜索和下载清单需要互联网连接。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_setsdatabasedialog.ui" line="17"/>
-        <location filename="../src/ui/sw_setsdatabasedialog.cpp" line="100"/>
-        <location filename="../src/ui/sw_setsdatabasedialog.cpp" line="216"/>
+        <location filename="../src/ui/sw_sets_database_dialog.ui" line="17"/>
+        <location filename="../src/ui/sw_sets_database_dialog.cpp" line="100"/>
+        <location filename="../src/ui/sw_sets_database_dialog.cpp" line="216"/>
         <source>Import Set Inventory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">导入套装库存</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_setsdatabasedialog.ui" line="25"/>
+        <location filename="../src/ui/sw_sets_database_dialog.ui" line="25"/>
         <source>Enter a set name or number, then press Enter or choose Search.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">输入设置的名称或号码，然后按 Enter 或选择“搜索”。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_setsdatabasedialog.ui" line="28"/>
-        <location filename="../src/ui/sw_setsdatabasedialog.ui" line="34"/>
+        <location filename="../src/ui/sw_sets_database_dialog.ui" line="28"/>
+        <location filename="../src/ui/sw_sets_database_dialog.ui" line="34"/>
         <source>Set Name or Number</source>
         <translation>套装名称或编号</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_setsdatabasedialog.ui" line="31"/>
+        <location filename="../src/ui/sw_sets_database_dialog.ui" line="31"/>
         <source>&lt;p&gt;&lt;b&gt;Search Sets&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Enter a set number or words from its name. Press Enter or choose Search to retrieve matching sets. Refine the search if the set you want is not listed.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;搜索集&lt;/b&gt;&lt;/p&gt;&lt;p&gt;输入集编号或名称中的单词。按 Enter 或选择“搜索”以检索匹配的集。如果您想要的集合未列出，请优化搜索。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_setsdatabasedialog.ui" line="41"/>
+        <location filename="../src/ui/sw_sets_database_dialog.ui" line="41"/>
         <source>Search the online database using the entered name or number.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">使用输入的姓名或号码搜索在线数据库。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_setsdatabasedialog.ui" line="44"/>
+        <location filename="../src/ui/sw_sets_database_dialog.ui" line="44"/>
         <source>Search</source>
         <translation>搜索</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_setsdatabasedialog.ui" line="53"/>
+        <location filename="../src/ui/sw_sets_database_dialog.ui" line="53"/>
         <source>Select a set to download its piece inventory.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择一组以下载其单零件库存。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_setsdatabasedialog.ui" line="56"/>
+        <location filename="../src/ui/sw_sets_database_dialog.ui" line="56"/>
         <source>Set Search Results</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">设置搜索结果</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_setsdatabasedialog.ui" line="59"/>
+        <location filename="../src/ui/sw_sets_database_dialog.ui" line="59"/>
         <source>&lt;p&gt;&lt;b&gt;Search Results&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Results show the set number, name, release year, and piece count. Select the desired set and choose OK, or double-click its row, to download its inventory.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;搜索结果&lt;/b&gt;&lt;/p&gt;&lt;p&gt;结果显示套装编号、名称、发行年份和件数。选择所需的集合并选择“确定”，或双击其行以下载其清单。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_setsdatabasedialog.ui" line="75"/>
+        <location filename="../src/ui/sw_sets_database_dialog.ui" line="75"/>
         <source>Number</source>
         <translation>编号</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_setsdatabasedialog.ui" line="80"/>
+        <location filename="../src/ui/sw_sets_database_dialog.ui" line="80"/>
         <source>Name</source>
         <translation>名称</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_setsdatabasedialog.ui" line="85"/>
+        <location filename="../src/ui/sw_sets_database_dialog.ui" line="85"/>
         <source>Year</source>
         <translation>年份</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_setsdatabasedialog.ui" line="90"/>
+        <location filename="../src/ui/sw_sets_database_dialog.ui" line="90"/>
         <source>Pieces</source>
         <translation>零件数</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_setsdatabasedialog.ui" line="98"/>
+        <location filename="../src/ui/sw_sets_database_dialog.ui" line="98"/>
         <source>Set data provided by &lt;a href=&quot;https://www.rebrickable.com&quot;&gt;Rebrickable&lt;/a&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">设置 &lt;a href="https://www.rebrickable.com"&gt;Rebrickable&lt;/a&gt; 提供的数据</translation>
@@ -15829,7 +15829,7 @@ Unsupported video cards use face tint and colored edges.</source>
         <translation type="vanished">套装数据库由 &lt;a href=&quot;https://www.rebrickable.com&quot;&gt;Rebrickable&lt;/a&gt; 提供</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_setsdatabasedialog.cpp" line="100"/>
+        <location filename="../src/ui/sw_sets_database_dialog.cpp" line="100"/>
         <source>Please select a set from the list.</source>
         <translation>请从列表中选择一个套装。</translation>
     </message>
@@ -15839,38 +15839,38 @@ Unsupported video cards use face tint and colored edges.</source>
         <translation type="obsolete">Inventory</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_setsdatabasedialog.cpp" line="107"/>
+        <location filename="../src/ui/sw_sets_database_dialog.cpp" line="107"/>
         <source>Downloading</source>
         <translation>下载中</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_setsdatabasedialog.cpp" line="108"/>
+        <location filename="../src/ui/sw_sets_database_dialog.cpp" line="108"/>
         <source>Downloading set inventory</source>
         <translation>正在下载套装清单</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_setsdatabasedialog.cpp" line="152"/>
+        <location filename="../src/ui/sw_sets_database_dialog.cpp" line="152"/>
         <source>Keyword cannot be empty.</source>
         <translation>关键词不能为空。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_setsdatabasedialog.cpp" line="152"/>
+        <location filename="../src/ui/sw_sets_database_dialog.cpp" line="152"/>
         <source>Search Sets</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">搜索套装</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_setsdatabasedialog.cpp" line="157"/>
+        <location filename="../src/ui/sw_sets_database_dialog.cpp" line="157"/>
         <source>Searching</source>
         <translation>搜索中</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_setsdatabasedialog.cpp" line="158"/>
+        <location filename="../src/ui/sw_sets_database_dialog.cpp" line="158"/>
         <source>Connecting to server</source>
         <translation>正在连接服务器</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_setsdatabasedialog.cpp" line="216"/>
+        <location filename="../src/ui/sw_sets_database_dialog.cpp" line="216"/>
         <source>Error connecting to server.</source>
         <translation>连接服务器时出错。</translation>
     </message>
@@ -15880,12 +15880,12 @@ Unsupported video cards use face tint and colored edges.</source>
         <translation type="obsolete">连接套装数据库</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_setsdatabasedialog.cpp" line="263"/>
+        <location filename="../src/ui/sw_sets_database_dialog.cpp" line="263"/>
         <source>Error downloading set inventory.</source>
         <translation>下载套装清单时出错。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_setsdatabasedialog.cpp" line="263"/>
+        <location filename="../src/ui/sw_sets_database_dialog.cpp" line="263"/>
         <source>Download Set Inventory</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">下载套装零件清单</translation>
@@ -15894,7 +15894,7 @@ Unsupported video cards use face tint and colored edges.</source>
 <context>
     <name>swSpinnerWidget</name>
     <message>
-        <location filename="../src/ui/sw_spinnerwidget.cpp" line="9"/>
+        <location filename="../src/ui/sw_spinner_widget.cpp" line="9"/>
         <source>Loading</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">加载中</translation>
@@ -15937,19 +15937,19 @@ Unsupported video cards use face tint and colored edges.</source>
 <context>
     <name>swTimelineWidget</name>
     <message>
-        <location filename="../src/ui/sw_timelinewidget.cpp" line="11"/>
+        <location filename="../src/ui/sw_timeline_widget.cpp" line="11"/>
         <source>Building Steps and Pieces</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">搭建步骤和零件</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_timelinewidget.cpp" line="12"/>
+        <location filename="../src/ui/sw_timeline_widget.cpp" line="12"/>
         <source>Select steps or pieces; drag pieces to reorder them or change their building step.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择步骤或零件；拖动零件以重新排序或更改其构建步骤。</translation>
     </message>
     <message>
-        <location filename="../src/ui/sw_timelinewidget.cpp" line="125"/>
+        <location filename="../src/ui/sw_timeline_widget.cpp" line="125"/>
         <source>Step %1</source>
         <translation>步骤 %1</translation>
     </message>
@@ -16076,22 +16076,22 @@ Unsupported video cards use face tint and colored edges.</source>
 <context>
     <name>swViewWidget</name>
     <message>
-        <location filename="../src/render/sw_viewwidget.cpp" line="43"/>
+        <location filename="../src/render/sw_view_widget.cpp" line="43"/>
         <source>&lt;p&gt;&lt;b&gt;In-place Editing&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The path shows the model being edited inside this view. The last name is the current editing target. Choose an earlier name to edit that ancestor, or the close button to return to the tab&apos;s model.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/render/sw_viewwidget.cpp" line="58"/>
+        <location filename="../src/render/sw_view_widget.cpp" line="58"/>
         <source>End Editing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/render/sw_viewwidget.cpp" line="59"/>
+        <location filename="../src/render/sw_view_widget.cpp" line="59"/>
         <source>Return to editing the tab&apos;s model.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/render/sw_viewwidget.cpp" line="147"/>
+        <location filename="../src/render/sw_view_widget.cpp" line="147"/>
         <source>Editing model: %1</source>
         <translation type="unfinished"></translation>
     </message>

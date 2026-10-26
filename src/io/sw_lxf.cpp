@@ -2,8 +2,8 @@
 #include "sw_lxf.h"
 #include "sw_library.h"
 #include "sw_application.h"
-#include "sw_mainwindow.h"
-#include "piece.h"
+#include "sw_main_window.h"
+#include "sw_piece.h"
 #include "sw_file.h"
 #include <QDomDocument>
 
@@ -151,7 +151,7 @@ bool swImportLXFMLFile(const QString& FileData, Project* Project, std::vector<sw
 				QString LegoID = PartElement.attribute(QLatin1String("designID"));
 				int Material = PartElement.attribute(QLatin1String("materials")).split(',').first().toInt();
 
-				swPieceDataRef PieceData;
+				swPieceDataReference PieceData;
 				const auto BrickIt = BrickTable.find(LegoID.toInt());
 
 				if (BrickIt != BrickTable.end())
@@ -172,9 +172,9 @@ bool swImportLXFMLFile(const QString& FileData, Project* Project, std::vector<sw
 					const swVector3& TransformTranslation = TransformIt->second.first;
 
 					swMatrix44 Transform = swMatrix44FromAxisAngle(swVector3(AxisAngle[0], AxisAngle[1], AxisAngle[2]), -AxisAngle[3]);
-					Transform.SetTranslation(swMul30(-TransformTranslation, Transform));
+					Transform.SetTranslation(swMultiply30(-TransformTranslation, Transform));
 
-					WorldMatrix = swMul(Transform, WorldMatrix);
+					WorldMatrix = swMultiply(Transform, WorldMatrix);
 				}
 
 				WorldMatrix = swMatrix44(swVector4(WorldMatrix[0][0], -WorldMatrix[0][1], -WorldMatrix[0][2], 0.0f), swVector4(-WorldMatrix[1][0], WorldMatrix[1][1], WorldMatrix[1][2], 0.0f),

@@ -4,7 +4,7 @@
 #include "sw_library.h"
 #include "sw_application.h"
 #include "sw_string.h"
-#include "sw_piecedata.h"
+#include "sw_piece_data.h"
 #include "sw_colors.h"
 
 static QJsonDocument swLoadBrickLinkMapping()
@@ -83,7 +83,7 @@ swResult<void> swExportBrickLink(const QString& SaveFileName, const swPartsList&
 
 		for (const auto& ColorIt : PartIt.second)
 		{
-			char FileName[SW_PIECE_NAME_LEN];
+			char FileName[SW_PIECE_NAME_LENGTH];
 			swstrcpy(FileName, PieceData->mFileName);
 			char* Ext = strchr(FileName, '.');
 			if (Ext)

@@ -59,7 +59,7 @@ enum class swMaterialType
 	Count
 };
 
-enum class swProgramAttrib
+enum class swProgramAttribute
 {
 	Position,
 	Normal,
@@ -98,7 +98,7 @@ enum class swDepthFunction
 	Always
 };
 
-struct swVertexAttribState
+struct swVertexAttributeState
 {
 	GLint Size = 0;
 	GLenum Type = 0;
@@ -287,9 +287,9 @@ protected:
 	void FlushState();
 	bool TryShareDepthAttachment(GLuint SourceFramebuffer, QOpenGLFramebufferObject& TargetFramebuffer);
 
-	void SetVertexAttribPointer(swProgramAttrib Attrib, GLint Size, GLenum Type, GLboolean Normalized, GLsizei Stride, const void* Pointer);
-	void EnableVertexAttrib(swProgramAttrib Attrib);
-	void DisableVertexAttrib(swProgramAttrib Attrib);
+	void SetVertexAttribPointer(swProgramAttribute Attrib, GLint Size, GLenum Type, GLboolean Normalized, GLsizei Stride, const void* Pointer);
+	void EnableVertexAttrib(swProgramAttribute Attrib);
+	void DisableVertexAttrib(swProgramAttribute Attrib);
 
 	QOpenGLWidget* mWidget = nullptr;
 	QOpenGLContext* mContext = nullptr;
@@ -301,7 +301,7 @@ protected:
 
 	swMaterialType mMaterialType;
 
-	swVertexAttribState mVertexAttribState[static_cast<int>(swProgramAttrib::Count)];
+	swVertexAttributeState mVertexAttribState[static_cast<int>(swProgramAttribute::Count)];
 
 	GLuint mTexture2D;
 	GLuint mTextureCubeMap;

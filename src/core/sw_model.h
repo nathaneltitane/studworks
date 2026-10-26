@@ -1,9 +1,9 @@
 #pragma once
 
 #include "sw_math.h"
-#include "sw_assettypes.h"
+#include "sw_asset_types.h"
 #include "sw_commands.h"
-#include "sw_objectproperty.h"
+#include "sw_object_property.h"
 #include "sw_result.h"
 
 enum class swGeometryBoundsMode
@@ -40,22 +40,22 @@ class swModelHistoryEdit;
 class swModelHistoryProperties;
 enum class swModelHistoryEditMerge;
 
-#define SW_SEL_NO_PIECES                0x0001 // No pieces in model
-#define SW_SEL_PIECE                    0x0002 // At least 1 piece selected
-#define SW_SEL_CAMERA                   0x0004 // At least 1 camera selected
-#define SW_SEL_LIGHT                    0x0008 // At least 1 light selected
-#define SW_SEL_SELECTED                 0x0010 // At least 1 object selected
-#define SW_SEL_UNSELECTED               0x0020 // At least 1 piece unselected
-#define SW_SEL_HIDDEN                   0x0040 // At least one piece hidden
-#define SW_SEL_HIDDEN_SELECTED          0x0080 // At least one piece selected is hidden
-#define SW_SEL_VISIBLE_SELECTED         0x0100 // At least one piece selected is not hidden
-#define SW_SEL_GROUPED                  0x0200 // At least one piece selected is grouped
-#define SW_SEL_FOCUS_GROUPED            0x0400 // Focused piece is grouped
-#define SW_SEL_CAN_GROUP                0x0800 // Can make a new group
-#define SW_SEL_MODEL_SELECTED           0x1000 // At least one model reference is selected
-#define SW_SEL_CAN_ADD_CONTROL_POINT    0x2000 // Can add control points to focused piece
-#define SW_SEL_CAN_REMOVE_CONTROL_POINT 0x4000 // Can remove control points from focused piece
-#define SW_SEL_TRAIN_TRACK_VISIBLE      0x8000 // Focused piece has train track connections
+#define SW_SELECTION_NO_PIECES                0x0001 // No pieces in model
+#define SW_SELECTION_PIECE                    0x0002 // At least 1 piece selected
+#define SW_SELECTION_CAMERA                   0x0004 // At least 1 camera selected
+#define SW_SELECTION_LIGHT                    0x0008 // At least 1 light selected
+#define SW_SELECTION_SELECTED                 0x0010 // At least 1 object selected
+#define SW_SELECTION_UNSELECTED               0x0020 // At least 1 piece unselected
+#define SW_SELECTION_HIDDEN                   0x0040 // At least one piece hidden
+#define SW_SELECTION_HIDDEN_SELECTED          0x0080 // At least one piece selected is hidden
+#define SW_SELECTION_VISIBLE_SELECTED         0x0100 // At least one piece selected is not hidden
+#define SW_SELECTION_GROUPED                  0x0200 // At least one piece selected is grouped
+#define SW_SELECTION_FOCUS_GROUPED            0x0400 // Focused piece is grouped
+#define SW_SELECTION_CAN_GROUP                0x0800 // Can make a new group
+#define SW_SELECTION_MODEL_SELECTED           0x1000 // At least one model reference is selected
+#define SW_SELECTION_CAN_ADD_CONTROL_POINT    0x2000 // Can add control points to focused piece
+#define SW_SELECTION_CAN_REMOVE_CONTROL_POINT 0x4000 // Can remove control points from focused piece
+#define SW_SELECTION_TRAIN_TRACK_VISIBLE      0x8000 // Focused piece has train track connections
 
 enum class swSelectionMode
 {
@@ -87,22 +87,22 @@ enum class swModelTransformFlag
 Q_DECLARE_FLAGS(swModelTransformFlags, swModelTransformFlag)
 Q_DECLARE_OPERATORS_FOR_FLAGS(swModelTransformFlags)
 
-struct swInsertPieceInfo
+struct swInsertPieceInformation
 {
 	swPieceData* PieceData;
 	swMatrix44 Transform;
 	int ColorIndex;
 };
 
-// Stored insertion previews own their definitions; swInsertPieceInfo remains borrowed.
-struct swPreviewInsertPieceInfo
+// Stored insertion previews own their definitions; swInsertPieceInformation remains borrowed.
+struct swPreviewInsertPieceInformation
 {
-	explicit swPreviewInsertPieceInfo(const swInsertPieceInfo& Info)
+	explicit swPreviewInsertPieceInformation(const swInsertPieceInformation& Info)
 		: PieceData(Info.PieceData), Transform(Info.Transform), ColorIndex(Info.ColorIndex)
 	{
 	}
 
-	swPieceDataRef PieceData;
+	swPieceDataReference PieceData;
 	swMatrix44 Transform;
 	int ColorIndex;
 };
@@ -249,7 +249,7 @@ public:
 	void QueueMeshBuild();
 	void UpdateAllViews() const;
 	void RefreshPreview() const;
-	std::vector<swPieceDataRef> GetRequiredPieceData() const;
+	std::vector<swPieceDataReference> GetRequiredPieceData() const;
 	std::vector<swPiece*> GetRequiredSynthPieces() const;
 	void WaitForAssets() const;
 	swResult<void> EnsureAssetsReady() const;
@@ -380,7 +380,7 @@ public:
 	bool LoadInventory(const std::vector<swSetInventoryItem>& SetInventory);
 	void Merge(std::unique_ptr<swModel> Other);
 
-	void SetMinifig(const swMinifig& Minifig);
+	void SetMinifig(const swMinifigure& Minifig);
 	void SetPreviewPieceData(swPieceData* PieceData, int ColorIndex);
 
 	swResult<void> Cut();
@@ -390,9 +390,9 @@ public:
 	void PaintSelectedPieces();
 	void UpdateTrainTrackConnections(swPiece* TrackPiece, bool IgnoreSelected) const;
 	void UpdateSelectedPiecesTrainTrackConnections();
-	void SetPreviewInsertPieceInfo(std::vector<swInsertPieceInfo>&& PreviewInsertPieceInfo);
+	void SetPreviewInsertPieceInfo(std::vector<swInsertPieceInformation>&& PreviewInsertPieceInfo);
 
-	const std::vector<swPreviewInsertPieceInfo>& GetPreviewInsertPieceInfo() const
+	const std::vector<swPreviewInsertPieceInformation>& GetPreviewInsertPieceInfo() const
 	{
 		return mPreviewInsertPieceInfo;
 	}
@@ -519,7 +519,7 @@ public:
 
 	void ShowPropertiesDialog();
 	void ShowArrayDialog();
-	void AddMinifig(const swMinifig& Minifig);
+	void AddMinifig(const swMinifigure& Minifig);
 	void UpdateInterface();
 
 protected:
@@ -574,7 +574,7 @@ protected:
 	// Their order and the current-directory preference are saved with the model.
 	std::vector<QString> mAssetSourceDirectories;
 	bool mPreferCurrentAssetDirectory = true;
-	swPieceDataRef mPieceData;
+	swPieceDataReference mPieceData;
 
 	bool mIsPreview;
 	bool mActive;
@@ -585,7 +585,7 @@ protected:
 	bool mMouseToolMovePositionValid = false;
 	bool mMouseToolMoveUsesFocus = false;
 	bool mMouseToolFirstMove;
-	std::vector<swPreviewInsertPieceInfo> mPreviewInsertPieceInfo;
+	std::vector<swPreviewInsertPieceInformation> mPreviewInsertPieceInfo;
 
 	std::vector<std::unique_ptr<swPiece>> mPieces;
 	std::vector<std::unique_ptr<swCamera>> mCameras;

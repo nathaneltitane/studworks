@@ -15,7 +15,7 @@ INCLUDEPATH += ../src/app ../src/core ../src/library ../src/render ../src/io ../
 HEADERS += sw_tests.h
 
 SOURCES += \
-	../src/core/sw_objectproperty.cpp \
-	sw_objecthistory_test.cpp \
-	sw_objectproperty_test.cpp \
+	../src/core/sw_object_property.cpp \
+	sw_object_history_test.cpp \
+	sw_object_property_test.cpp \
 	main.cpp

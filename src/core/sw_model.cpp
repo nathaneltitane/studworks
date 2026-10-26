@@ -1,27 +1,27 @@
 #include "sw_global.h"
 #include "sw_model.h"
-#include "sw_modelhistory.h"
-#include "piece.h"
-#include "camera.h"
-#include "light.h"
-#include "group.h"
-#include "project.h"
-#include "sw_mainwindow.h"
+#include "sw_model_history.h"
+#include "sw_piece.h"
+#include "sw_camera.h"
+#include "sw_light.h"
+#include "sw_group.h"
+#include "sw_project.h"
+#include "sw_main_window.h"
 #include "sw_profile.h"
 #include "sw_library.h"
 #include "sw_scene.h"
-#include "sw_traintrack.h"
+#include "sw_train_track.h"
 #include "sw_file.h"
-#include "sw_piecedata.h"
+#include "sw_piece_data.h"
 #include "sw_view.h"
-#include "minifig.h"
-#include "sw_arraydialog.h"
-#include "sw_groupdialog.h"
-#include "sw_editgroupsdialog.h"
-#include "sw_propertiesdialog.h"
-#include "sw_utils.h"
+#include "sw_minifigure.h"
+#include "sw_array_dialog.h"
+#include "sw_group_dialog.h"
+#include "sw_edit_groups_dialog.h"
+#include "sw_properties_dialog.h"
+#include "sw_utilities.h"
 #include "sw_lxf.h"
-#include "sw_previewwidget.h"
+#include "sw_preview_widget.h"
 #include "sw_string.h"
 #include <locale.h>
 
@@ -34,12 +34,12 @@ static bool swIsMetaCommand(const QString& Token)
 void swModelProperties::LoadDefaults()
 {
 	mAuthor = swGetProfileString(SW_PROFILE_DEFAULT_AUTHOR_NAME);
-	mAmbientColor = swVector3FromColor(swGetProfileUInt(SW_PROFILE_DEFAULT_AMBIENT_COLOR));
+	mAmbientColor = swVector3FromColor(swGetProfileUnsignedInteger(SW_PROFILE_DEFAULT_AMBIENT_COLOR));
 }
 
 void swModelProperties::SaveDefaults()
 {
-	swSetProfileUInt(SW_PROFILE_DEFAULT_AMBIENT_COLOR, swColorFromVector3(mAmbientColor));
+	swSetProfileUnsignedInteger(SW_PROFILE_DEFAULT_AMBIENT_COLOR, swColorFromVector3(mAmbientColor));
 }
 
 void swModelProperties::SaveLDraw(QTextStream& Stream) const
@@ -289,7 +289,7 @@ bool swModel::GetPieceWorldMatrix(swPiece* Piece, swMatrix44& ParentWorldMatrix)
 	{
 		if (ModelPiece.get() == Piece)
 		{
-			ParentWorldMatrix = swMul(ModelPiece->mModelWorld, ParentWorldMatrix);
+			ParentWorldMatrix = swMultiply(ModelPiece->mModelWorld, ParentWorldMatrix);
 			return true;
 		}
 
@@ -297,7 +297,7 @@ bool swModel::GetPieceWorldMatrix(swPiece* Piece, swMatrix44& ParentWorldMatrix)
 
 		if (PieceData->IsModel())
 		{
-			swMatrix44 WorldMatrix = swMul(ModelPiece->mModelWorld, ParentWorldMatrix);
+			swMatrix44 WorldMatrix = swMultiply(ModelPiece->mModelWorld, ParentWorldMatrix);
 
 			if (PieceData->GetPieceWorldMatrix(Piece, WorldMatrix))
 			{
@@ -418,7 +418,7 @@ bool swModel::RebindPieceData(swPieceData* Previous, swPieceData* Replacement)
 			return true;
 
 		const QString PieceId = Piece->GetID();
-		Piece->SetPieceData(swPieceDataRef(Replacement), PieceId, false, false);
+		Piece->SetPieceData(swPieceDataReference(Replacement), PieceId, false, false);
 
 		return false;
 	}), mPieces.end());
@@ -446,9 +446,9 @@ void swModel::RefreshPreview() const
 		gMainWindow->GetPreviewWidget()->RefreshModel(this);
 }
 
-std::vector<swPieceDataRef> swModel::GetRequiredPieceData() const
+std::vector<swPieceDataReference> swModel::GetRequiredPieceData() const
 {
-	std::vector<swPieceDataRef> RequiredPieceData;
+	std::vector<swPieceDataReference> RequiredPieceData;
 	std::unordered_set<const swModel*> Visited;
 
 	const std::function<void(const swModel*)> Collect = [&RequiredPieceData, &Visited, &Collect](const swModel* Model)
@@ -461,7 +461,7 @@ std::vector<swPieceDataRef> swModel::GetRequiredPieceData() const
 
 		for (const std::unique_ptr<swPiece>& Piece : Model->mPieces)
 		{
-			const swPieceDataRef& PieceData = Piece->mPieceData;
+			const swPieceDataReference& PieceData = Piece->mPieceData;
 
 			if (PieceData->IsModel())
 				Collect(PieceData->GetModel());
@@ -510,7 +510,7 @@ std::vector<swPiece*> swModel::GetRequiredSynthPieces() const
 
 void swModel::WaitForAssets() const
 {
-	const std::vector<swPieceDataRef> RequiredPieceData = GetRequiredPieceData();
+	const std::vector<swPieceDataReference> RequiredPieceData = GetRequiredPieceData();
 	swPiecesLibrary* Library = swGetPiecesLibrary();
 
 	swBlockingProgress Progress(tr("Loading"), tr("Loading pieces..."), false);
@@ -534,10 +534,10 @@ swResult<void> swModel::EnsureAssetsReady() const
 {
 	WaitForAssets();
 
-	const std::vector<swPieceDataRef> RequiredPieceData = GetRequiredPieceData();
+	const std::vector<swPieceDataReference> RequiredPieceData = GetRequiredPieceData();
 	swPiecesLibrary* Library = swGetPiecesLibrary();
 
-	for (const swPieceDataRef& RequiredData : RequiredPieceData)
+	for (const swPieceDataReference& RequiredData : RequiredPieceData)
 	{
 		if (RequiredData->mState == swAssetState::Loaded)
 			continue;
@@ -595,8 +595,8 @@ void swModel::UpdatePieceData(std::vector<swModel*>& UpdatedModels)
 
 	if (Mesh)
 	{
-		Min = swMin(Min, Mesh->mBoundingBox.Min);
-		Max = swMax(Max, Mesh->mBoundingBox.Max);
+		Min = swMinimum(Min, Mesh->mBoundingBox.Min);
+		Max = swMaximum(Max, Mesh->mBoundingBox.Max);
 	}
 
 	mPieceData->SetBoundingBox(Min, Max);
@@ -1069,7 +1069,7 @@ void swModel::LoadLDraw(QIODevice& Device, Project* Project)
 				if (!CurrentGroups.empty())
 					Piece->SetGroup(CurrentGroups[CurrentGroups.size() - 1]);
 
-				swPieceDataRef PieceData = Library->AcquirePieceData(PartId.toLatin1().constData(), Project, true, true);
+				swPieceDataReference PieceData = Library->AcquirePieceData(PartId.toLatin1().constData(), Project, true, true);
 
 				const float* Matrix = IncludeTransform.GetFloats();
 				const swMatrix44 Transform(swVector4(Matrix[0], Matrix[2], -Matrix[1], 0.0f), swVector4(Matrix[8], Matrix[10], -Matrix[9], 0.0f),
@@ -1175,7 +1175,7 @@ bool swModel::LoadBinary(swFile* file)
 		}
 		else
 		{
-			char name[SW_PIECE_NAME_LEN];
+			char name[SW_PIECE_NAME_LENGTH];
 			swVector3 pos, rot;
 			quint8 color, step, group;
 
@@ -1188,7 +1188,7 @@ bool swModel::LoadBinary(swFile* file)
 			file->ReadU8(&group, 1);
 
 			pos *= 25.0f;
-			swMatrix44 WorldMatrix = swMul(swMatrix44RotationZ(rot[2] * SW_DTOR), swMul(swMatrix44RotationY(rot[1] * SW_DTOR), swMatrix44RotationX(rot[0] * SW_DTOR)));
+			swMatrix44 WorldMatrix = swMultiply(swMatrix44RotationZ(rot[2] * SW_DEGREES_TO_RADIANS), swMultiply(swMatrix44RotationY(rot[1] * SW_DEGREES_TO_RADIANS), swMatrix44RotationX(rot[0] * SW_DEGREES_TO_RADIANS)));
 			WorldMatrix.SetTranslation(pos);
 
 			swPiece* pPiece = new swPiece(Library->AcquirePieceData(name, mProject, true, false));
@@ -1258,7 +1258,7 @@ bool swModel::LoadBinary(swFile* file)
 
 			if (fv < 1.0f)
 			{
-				char Name[SW_MAX_GROUP_NAME + 1];
+				char Name[SW_MAXIMUM_GROUP_NAME + 1];
 				file->ReadBuffer(Name, sizeof(Name));
 				Group->mName = QString::fromUtf8(Name);
 				file->ReadBuffer(&ch, 1);
@@ -1388,7 +1388,7 @@ bool swModel::LoadInventory(const std::vector<swSetInventoryItem>& SetInventory)
 
 	for (const swSetInventoryItem& SetInventoryItem : SetInventory)
 	{
-		const swPieceDataRef PieceData = Library->AcquirePieceData(SetInventoryItem.PartID + ".dat", mProject, true, false);
+		const swPieceDataReference PieceData = Library->AcquirePieceData(SetInventoryItem.PartID + ".dat", mProject, true, false);
 		int Quantity = SetInventoryItem.Quantity;
 
 		while (Quantity--)
@@ -1404,7 +1404,7 @@ bool swModel::LoadInventory(const std::vector<swSetInventoryItem>& SetInventory)
 	if (mPieces.empty())
 		return false;
 
-	std::vector<swPieceDataRef> RequiredPieceData;
+	std::vector<swPieceDataReference> RequiredPieceData;
 
 	RequiredPieceData.reserve(mPieces.size());
 
@@ -1710,7 +1710,7 @@ void swModel::GetScene(swScene* Scene, const swCamera* ViewCamera, bool AllowHig
 
 	if (Scene->GetDrawInsertPreview())
 	{
-		for (const swPreviewInsertPieceInfo& PreviewPieceInfoTransform : mPreviewInsertPieceInfo)
+		for (const swPreviewInsertPieceInformation& PreviewPieceInfoTransform : mPreviewInsertPieceInfo)
 			PreviewPieceInfoTransform.PieceData->AddRenderMeshes(Scene, PreviewPieceInfoTransform.Transform, PreviewPieceInfoTransform.ColorIndex, swRenderMeshState::Preview, false);
 	}
 }
@@ -1734,8 +1734,8 @@ void swModel::AddSubModelRenderMeshes(swScene* Scene, const swMatrix44& WorldMat
 
 	if (Scene->GetDrawInsertPreview())
 	{
-		for (const swPreviewInsertPieceInfo& PreviewPieceInfoTransform : mPreviewInsertPieceInfo)
-			PreviewPieceInfoTransform.PieceData->AddRenderMeshes(Scene, swMul(PreviewPieceInfoTransform.Transform, WorldMatrix), PreviewPieceInfoTransform.ColorIndex, swRenderMeshState::Preview, false);
+		for (const swPreviewInsertPieceInformation& PreviewPieceInfoTransform : mPreviewInsertPieceInfo)
+			PreviewPieceInfoTransform.PieceData->AddRenderMeshes(Scene, swMultiply(PreviewPieceInfoTransform.Transform, WorldMatrix), PreviewPieceInfoTransform.ColorIndex, swRenderMeshState::Preview, false);
 	}
 }
 
@@ -1797,7 +1797,7 @@ swResult<QImage> swModel::RenderStepImageWithReadyAssets(bool Zoom, int Width, i
 		SetTemporaryStep(CurrentStep);
 
 		if (!mActive)
-			CalculateStep(SW_STEP_MAX);
+			CalculateStep(SW_STEP_MAXIMUM);
 
 		return swUnexpected(tr("Error creating images."));
 	}
@@ -1811,7 +1811,7 @@ swResult<QImage> swModel::RenderStepImageWithReadyAssets(bool Zoom, int Width, i
 	SetTemporaryStep(CurrentStep);
 
 	if (!mActive)
-		CalculateStep(SW_STEP_MAX);
+		CalculateStep(SW_STEP_MAXIMUM);
 
 	if (Background == swImageBackground::Opaque)
 		Image = Image.convertToFormat(QImage::Format_RGB32);
@@ -1917,7 +1917,7 @@ swResult<QImage> swModel::GetPartsListImage(int MaxWidth, swStep Step, quint32 B
 
 	float OrthoSize = 200.0f;
 
-	swMatrix44 ProjectionMatrix = swMatrix44Ortho(-OrthoSize, OrthoSize, -OrthoSize, OrthoSize, -5000.0f, 5000.0f);
+	swMatrix44 ProjectionMatrix = swMatrix44Orthographic(-OrthoSize, OrthoSize, -OrthoSize, OrthoSize, -5000.0f, 5000.0f);
 	const swMatrix44 ViewMatrix = swMatrix44LookAt(swVector3(-100.0f, -100.0f, 75.0f), swVector3(0.0f, 0.0f, 0.0f), swVector3(0.0f, 0.0f, 1.0f));
 	const int Viewport[4] = { 0, 0, ThumbnailSize, ThumbnailSize };
 
@@ -1945,7 +1945,7 @@ swResult<QImage> swModel::GetPartsListImage(int MaxWidth, swStep Step, quint32 B
 	if (ExtraPixels)
 	{
 		OrthoSize += ExtraPixels * (2.0f * OrthoSize / ThumbnailSize);
-		ProjectionMatrix = swMatrix44Ortho(-OrthoSize, OrthoSize, -OrthoSize, OrthoSize, -5000.0f, 5000.0f);
+		ProjectionMatrix = swMatrix44Orthographic(-OrthoSize, OrthoSize, -OrthoSize, OrthoSize, -5000.0f, 5000.0f);
 	}
 
 	Context->SetViewport(0, 0, ThumbnailSize, ThumbnailSize);
@@ -2146,7 +2146,7 @@ swResult<void> swModel::SaveStepImages(const QString& BaseName, bool AddStepSuff
 		SetTemporaryStep(CurrentStep);
 
 		if (!mActive)
-			CalculateStep(SW_STEP_MAX);
+			CalculateStep(SW_STEP_MAXIMUM);
 
 		Camera = OutputView->GetCamera();
 	}
@@ -2217,15 +2217,15 @@ bool swModel::SubModelMinIntersectDist(const swVector3& WorldStart, const swVect
 	for (const std::unique_ptr<swPiece>& Piece : mPieces)
 	{
 		const swMatrix44 InverseWorldMatrix = swMatrix44AffineInverse(Piece->mModelWorld);
-		const swVector3 Start = swMul31(WorldStart, InverseWorldMatrix);
-		const swVector3 End = swMul31(WorldEnd, InverseWorldMatrix);
+		const swVector3 Start = swMultiply31(WorldStart, InverseWorldMatrix);
+		const swVector3 End = swMultiply31(WorldEnd, InverseWorldMatrix);
 
 		if (Piece->IsVisibleInSubModel())
 		{
 			if (Piece->MinIntersectDist(Start, End, MinDistance, PieceRayTest))
 			{
 				MinIntersect = true;
-				PieceRayTest.Transform = swMul(PieceRayTest.Transform, Piece->mModelWorld);
+				PieceRayTest.Transform = swMultiply(PieceRayTest.Transform, Piece->mModelWorld);
 			}
 		}
 	}
@@ -2253,9 +2253,9 @@ void swModel::SubModelCompareBoundingBox(const swMatrix44& WorldMatrix, swVector
 
 		for (const swVector3& Corner : Box)
 		{
-			const swVector3 Point = swMul31(Corner, WorldMatrix);
-			Min = swMin(Min, Point);
-			Max = swMax(Max, Point);
+			const swVector3 Point = swMultiply31(Corner, WorldMatrix);
+			Min = swMinimum(Min, Point);
+			Max = swMaximum(Max, Point);
 		}
 	}
 
@@ -2277,7 +2277,7 @@ void swModel::SubModelAddBoundingBoxPoints(const swMatrix44& WorldMatrix, std::v
 		swGetBoxCorners(Mesh->mBoundingBox, Box);
 
 		for (const swVector3& Corner : Box)
-			Points.emplace_back(swMul31(Corner, WorldMatrix));
+			Points.emplace_back(swMultiply31(Corner, WorldMatrix));
 	}
 
 	for (const std::unique_ptr<swPiece>& Piece : mPieces)
@@ -2675,7 +2675,7 @@ quint64 swModel::GetCurrentHistoryRevision() const
 
 void swModel::SetActive(bool Active)
 {
-	CalculateStep(Active ? mCurrentStep : SW_STEP_MAX);
+	CalculateStep(Active ? mCurrentStep : SW_STEP_MAXIMUM);
 	mActive = Active;
 }
 
@@ -2737,7 +2737,7 @@ void swModel::ShowPreviousStep()
 
 void swModel::ShowNextStep()
 {
-	if (mCurrentStep == SW_STEP_MAX)
+	if (mCurrentStep == SW_STEP_MAXIMUM)
 		return;
 
 	SetCurrentStep(mCurrentStep + 1);
@@ -2748,13 +2748,13 @@ swStep swModel::GetLastStep() const
 	swStep Step = 1;
 
 	for (const std::unique_ptr<swPiece>& Piece : mPieces)
-		Step = swMax(Step, Piece->GetLastStep());
+		Step = swMaximum(Step, Piece->GetLastStep());
 
 	for (const std::unique_ptr<swCamera>& Camera : mCameras)
-		Step = swMax(Step, Camera->GetLastStep());
+		Step = swMaximum(Step, Camera->GetLastStep());
 
 	for (const std::unique_ptr<swLight>& Light : mLights)
-		Step = swMax(Step, Light->GetLastStep());
+		Step = swMaximum(Step, Light->GetLastStep());
 
 	return Step;
 }
@@ -3301,7 +3301,7 @@ swPiece* swModel::AddPiece(swPieceData* PieceData, quint32 Section)
 	if (!PieceData)
 		return nullptr;
 
-	const swPieceDataRef PieceDataRef(PieceData);
+	const swPieceDataReference PieceDataRef(PieceData);
 
 	swPiece* Last = mPieces.empty() ? nullptr : mPieces.back().get();
 
@@ -3340,7 +3340,7 @@ swPiece* swModel::AddPiece(swPieceData* PieceData, quint32 Section)
 
 	if (Last)
 	{
-		std::vector<swInsertPieceInfo> TrainTracks;
+		std::vector<swInsertPieceInformation> TrainTracks;
 
 		if (PieceData->GetTrainTrackInfo() && Last->mPieceData->GetTrainTrackInfo())
 		{
@@ -3352,9 +3352,9 @@ swPiece* swModel::AddPiece(swPieceData* PieceData, quint32 Section)
 			if (!Last->IsFocused())
 				UpdateTrainTrackConnections(Last, false);
 
-			TrainTracks = swTrainTrackInfo::GetInsertPieceInfo(Last, PieceData, nullptr, gMainWindow->GetInsertColorIndex(), Section, true, std::nullopt);
+			TrainTracks = swTrainTrackInformation::GetInsertPieceInfo(Last, PieceData, nullptr, gMainWindow->GetInsertColorIndex(), Section, true, std::nullopt);
 
-			for (const swInsertPieceInfo& TrainTrack : TrainTracks)
+			for (const swInsertPieceInformation& TrainTrack : TrainTracks)
 				CreatePiece(TrainTrack.PieceData, TrainTrack.Transform, TrainTrack.ColorIndex);
 		}
 
@@ -3365,7 +3365,7 @@ swPiece* swModel::AddPiece(swPieceData* PieceData, quint32 Section)
 			Dist = SnapPosition(Dist);
 
 			swMatrix44 WorldMatrix = Last->mModelWorld;
-			WorldMatrix.SetTranslation(swMul31(Dist, Last->mModelWorld));
+			WorldMatrix.SetTranslation(swMultiply31(Dist, Last->mModelWorld));
 
 			CreatePiece(PieceData, WorldMatrix, gMainWindow->GetInsertColorIndex());
 		}
@@ -3429,7 +3429,7 @@ void swModel::FocusNextTrainTrack()
 		return;
 
 	swPiece* FocusPiece = (swPiece*)Focus;
-	const swTrainTrackInfo* TrainTrackInfo = FocusPiece->mPieceData->GetTrainTrackInfo();
+	const swTrainTrackInformation* TrainTrackInfo = FocusPiece->mPieceData->GetTrainTrackInfo();
 
 	if (!TrainTrackInfo)
 		return;
@@ -3456,7 +3456,7 @@ void swModel::FocusPreviousTrainTrack()
 		return;
 
 	swPiece* FocusPiece = (swPiece*)Focus;
-	const swTrainTrackInfo* TrainTrackInfo = FocusPiece->mPieceData->GetTrainTrackInfo();
+	const swTrainTrackInformation* TrainTrackInfo = FocusPiece->mPieceData->GetTrainTrackInfo();
 
 	if (!TrainTrackInfo)
 		return;
@@ -3483,7 +3483,7 @@ void swModel::RotateFocusedTrainTrack(int Direction)
 		return;
 
 	swPiece* FocusPiece = (swPiece*)Focus;
-	const swTrainTrackInfo* TrainTrackInfo = FocusPiece->mPieceData->GetTrainTrackInfo();
+	const swTrainTrackInformation* TrainTrackInfo = FocusPiece->mPieceData->GetTrainTrackInfo();
 
 	if (!TrainTrackInfo)
 		return;
@@ -3517,10 +3517,10 @@ void swModel::RotateFocusedTrainTrack(int Direction)
 		}
 	}
 
-	swMatrix44 ConnectionTransform = swMul(TrainTrackInfo->GetConnections()[RotateConnectionIndex].Transform, FocusPiece->mModelWorld);
+	swMatrix44 ConnectionTransform = swMultiply(TrainTrackInfo->GetConnections()[RotateConnectionIndex].Transform, FocusPiece->mModelWorld);
 	int NewConnectionIndex = (RotateConnectionIndex + Direction + static_cast<int>(TrainTrackInfo->GetConnections().size())) % TrainTrackInfo->GetConnections().size();
 
-	Transform = swTrainTrackInfo::CalculateTransformToConnection(ConnectionTransform, FocusPiece->mPieceData.Get(), NewConnectionIndex);
+	Transform = swTrainTrackInformation::CalculateTransformToConnection(ConnectionTransform, FocusPiece->mPieceData.Get(), NewConnectionIndex);
 
 	if (!Transform)
 		return;
@@ -3548,7 +3548,7 @@ void swModel::UpdateTrainTrackConnections(swPiece* TrackPiece, bool IgnoreSelect
 	if (!TrackPiece)
 		return;
 
-	const swTrainTrackInfo* TrainTrackInfo = TrackPiece->mPieceData->GetTrainTrackInfo();
+	const swTrainTrackInformation* TrainTrackInfo = TrackPiece->mPieceData->GetTrainTrackInfo();
 
 	if (!TrainTrackInfo)
 		return;
@@ -3562,7 +3562,7 @@ void swModel::UpdateTrainTrackConnections(swPiece* TrackPiece, bool IgnoreSelect
 			continue;
 
 		for (int ConnectionIndex = 0; ConnectionIndex < ConnectionCount; ConnectionIndex++)
-			if (!Connections[ConnectionIndex] && swTrainTrackInfo::GetPieceConnectionIndex(TrackPiece, ConnectionIndex, Piece.get()) != -1)
+			if (!Connections[ConnectionIndex] && swTrainTrackInformation::GetPieceConnectionIndex(TrackPiece, ConnectionIndex, Piece.get()) != -1)
 				Connections[ConnectionIndex] = true;
 	}
 
@@ -3579,7 +3579,7 @@ void swModel::UpdateSelectedPiecesTrainTrackConnections()
 
 	for (swPiece* TrackPiece : TrackPieces)
 	{
-		const swTrainTrackInfo* TrainTrackInfo = TrackPiece->mPieceData->GetTrainTrackInfo();
+		const swTrainTrackInformation* TrainTrackInfo = TrackPiece->mPieceData->GetTrainTrackInfo();
 		const int ConnectionCount = static_cast<int>(TrainTrackInfo->GetConnections().size());
 		std::vector<bool> Connections(ConnectionCount, false);
 
@@ -3589,7 +3589,7 @@ void swModel::UpdateSelectedPiecesTrainTrackConnections()
 				continue;
 
 			for (int ConnectionIndex = 0; ConnectionIndex < ConnectionCount; ConnectionIndex++)
-				if (!Connections[ConnectionIndex] && swTrainTrackInfo::GetPieceConnectionIndex(TrackPiece, ConnectionIndex, CheckPiece) != -1)
+				if (!Connections[ConnectionIndex] && swTrainTrackInformation::GetPieceConnectionIndex(TrackPiece, ConnectionIndex, CheckPiece) != -1)
 					Connections[ConnectionIndex] = true;
 		}
 
@@ -3597,16 +3597,16 @@ void swModel::UpdateSelectedPiecesTrainTrackConnections()
 	}
 }
 
-void swModel::SetPreviewInsertPieceInfo(std::vector<swInsertPieceInfo>&& PreviewInsertPieceInfo)
+void swModel::SetPreviewInsertPieceInfo(std::vector<swInsertPieceInformation>&& PreviewInsertPieceInfo)
 {
 	swPiecesLibrary* Library = swGetPiecesLibrary();
-	std::vector<swPieceDataRef> RequiredPieceData;
-	std::vector<swPreviewInsertPieceInfo> PreviewPieces;
+	std::vector<swPieceDataReference> RequiredPieceData;
+	std::vector<swPreviewInsertPieceInformation> PreviewPieces;
 
 	RequiredPieceData.reserve(PreviewInsertPieceInfo.size());
 	PreviewPieces.reserve(PreviewInsertPieceInfo.size());
 
-	for (const swInsertPieceInfo& InfoTransform : PreviewInsertPieceInfo)
+	for (const swInsertPieceInformation& InfoTransform : PreviewInsertPieceInfo)
 	{
 		PreviewPieces.emplace_back(InfoTransform);
 		Library->RequestPieceDataLoad(InfoTransform.PieceData, swLoadPriority::Normal);
@@ -3800,7 +3800,7 @@ void swModel::ShowSelectedPiecesLater()
 		{
 			swStep Step = Piece->GetStepShow();
 
-			if (Step < SW_STEP_MAX)
+			if (Step < SW_STEP_MAXIMUM)
 			{
 				Step++;
 				Piece->SetStepShow(Step);
@@ -3958,7 +3958,7 @@ void swModel::MoveSelectionToModel(swModel* Model)
 
 	std::vector<swPiece*> Pieces;
 	swPiece* ModelPiece = nullptr;
-	swStep FirstStep = SW_STEP_MAX;
+	swStep FirstStep = SW_STEP_MAXIMUM;
 	swVector3 Min(FLT_MAX, FLT_MAX, FLT_MAX), Max(-FLT_MAX, -FLT_MAX, -FLT_MAX);
 
 	for (size_t PieceIndex = 0; PieceIndex < mPieces.size(); )
@@ -4058,7 +4058,7 @@ void swModel::InlineSelectedModels()
 				ColorIndex = Piece->GetColorIndex();
 
 			NewPiece->SetPieceData(ModelPiece->mPieceData, ModelPiece->GetID(), true, true);
-			NewPiece->Initialize(swMul(ModelPiece->mModelWorld, Piece->mModelWorld), Piece->GetStepShow());
+			NewPiece->Initialize(swMultiply(ModelPiece->mModelWorld, Piece->mModelWorld), Piece->GetStepShow());
 			NewPiece->SetColorIndex(ColorIndex);
 			NewPiece->UpdatePosition(mCurrentStep);
 
@@ -4168,7 +4168,7 @@ void swModel::MoveSelectedObjects(const swVector3& PieceDistance, const swVector
 
 	if (PieceDistance.LengthSquared() >= 0.001f)
 	{
-		swVector3 TransformedPieceDistance = swMul(PieceDistance, RelativeRotation);
+		swVector3 TransformedPieceDistance = swMultiply(PieceDistance, RelativeRotation);
 
 		if (Flags.testFlag(swModelTransformFlag::RotatePivotPoint))
 		{
@@ -4189,7 +4189,7 @@ void swModel::MoveSelectedObjects(const swVector3& PieceDistance, const swVector
 				if (Piece->IsSelected())
 				{
 					if (gMainWindow->GetSeparateTransform())
-						TransformedPieceDistance = swMul(PieceDistance, Piece->GetRelativeRotation());
+						TransformedPieceDistance = swMultiply(PieceDistance, Piece->GetRelativeRotation());
 
 					Piece->MoveSelected(mCurrentStep, gMainWindow->GetAddKeys(), TransformedPieceDistance);
 					Piece->UpdatePosition(mCurrentStep);
@@ -4201,7 +4201,7 @@ void swModel::MoveSelectedObjects(const swVector3& PieceDistance, const swVector
 
 	if (ObjectDistance.LengthSquared() >= 0.001f && !Flags.testFlag(swModelTransformFlag::RotatePivotPoint))
 	{
-		const swVector3 TransformedObjectDistance = swMul(ObjectDistance, RelativeRotation);
+		const swVector3 TransformedObjectDistance = swMultiply(ObjectDistance, RelativeRotation);
 
 		for (const std::unique_ptr<swCamera>& Camera : mCameras)
 		{
@@ -4252,13 +4252,13 @@ void swModel::RotateSelectedObjects(const swVector3& Angles, swModelTransformFla
 	swMatrix33 RotationMatrix = swMatrix33Identity();
 
 	if (Angles[0] != 0.0f)
-		RotationMatrix = swMul(swMatrix33RotationX(Angles[0] * SW_DTOR), RotationMatrix);
+		RotationMatrix = swMultiply(swMatrix33RotationX(Angles[0] * SW_DEGREES_TO_RADIANS), RotationMatrix);
 
 	if (Angles[1] != 0.0f)
-		RotationMatrix = swMul(swMatrix33RotationY(Angles[1] * SW_DTOR), RotationMatrix);
+		RotationMatrix = swMultiply(swMatrix33RotationY(Angles[1] * SW_DEGREES_TO_RADIANS), RotationMatrix);
 
 	if (Angles[2] != 0.0f)
-		RotationMatrix = swMul(swMatrix33RotationZ(Angles[2] * SW_DTOR), RotationMatrix);
+		RotationMatrix = swMultiply(swMatrix33RotationZ(Angles[2] * SW_DEGREES_TO_RADIANS), RotationMatrix);
 
 	RotateSelectedObjects(RotationMatrix, Flags, ModelHistoryEditMerge);
 }
@@ -4306,7 +4306,7 @@ void swModel::RotateSelectedObjects(const swMatrix33& InputRotationMatrix, swMod
 			if (Flags.testFlag(swModelTransformFlag::Relative))
 			{
 				WorldToFocusMatrix = swMatrix33AffineInverse(RelativeRotation);
-				RotationMatrix = swMul(RotationMatrix, RelativeRotation);
+				RotationMatrix = swMultiply(RotationMatrix, RelativeRotation);
 			}
 			else
 				WorldToFocusMatrix = swMatrix33Identity();
@@ -4355,7 +4355,7 @@ void swModel::RotateSelectedObjects(const swMatrix33& InputRotationMatrix, swMod
 					{
 						const swMatrix33 RelativeRotation = Piece->GetRelativeRotation();
 						WorldToFocusMatrix = swMatrix33AffineInverse(RelativeRotation);
-						RelativeRotationMatrix = swMul(RotationMatrix, RelativeRotation);
+						RelativeRotationMatrix = swMultiply(RotationMatrix, RelativeRotation);
 					}
 					else
 					{
@@ -4379,7 +4379,7 @@ void swModel::RotateSelectedObjects(const swMatrix33& InputRotationMatrix, swMod
 					{
 						const swMatrix33 RelativeRotation = Camera->GetRelativeRotation();
 						WorldToFocusMatrix = swMatrix33AffineInverse(RelativeRotation);
-						RelativeRotationMatrix = swMul(RotationMatrix, RelativeRotation);
+						RelativeRotationMatrix = swMultiply(RotationMatrix, RelativeRotation);
 					}
 					else
 					{
@@ -4403,7 +4403,7 @@ void swModel::RotateSelectedObjects(const swMatrix33& InputRotationMatrix, swMod
 					{
 						const swMatrix33 RelativeRotation = Light->GetRelativeRotation();
 						WorldToFocusMatrix = swMatrix33AffineInverse(RelativeRotation);
-						RelativeRotationMatrix = swMul(RotationMatrix, RelativeRotation);
+						RelativeRotationMatrix = swMultiply(RotationMatrix, RelativeRotation);
 					}
 					else
 					{
@@ -4850,7 +4850,7 @@ bool swModel::GetMoveRotateTransform(swVector3& Center, swMatrix33& RelativeRota
 
 		Center += Camera->GetSectionPosition(SW_CAMERA_SECTION_POSITION);
 		Center += Camera->GetSectionPosition(SW_CAMERA_SECTION_TARGET);
-		Center += Camera->GetSectionPosition(SW_CAMERA_SECTION_UPVECTOR);
+		Center += Camera->GetSectionPosition(SW_CAMERA_SECTION_UP_VECTOR);
 		NumSelected += 3;
 	}
 
@@ -4890,13 +4890,13 @@ bool swModel::CanRotateSelection() const
 
 	GetSelectionInformation(&Flags, Selection, &Focus);
 
-	if (Flags & SW_SEL_PIECE)
+	if (Flags & SW_SELECTION_PIECE)
 	{
-		if ((Flags & (SW_SEL_CAMERA | SW_SEL_LIGHT)) == 0)
+		if ((Flags & (SW_SELECTION_CAMERA | SW_SELECTION_LIGHT)) == 0)
 			return true;
 	}
 
-	if ((Flags & (SW_SEL_PIECE | SW_SEL_CAMERA)) == 0)
+	if ((Flags & (SW_SELECTION_PIECE | SW_SELECTION_CAMERA)) == 0)
 	{
 		if (Focus && Focus->IsLight())
 		{
@@ -5132,7 +5132,7 @@ void swModel::GetSelectionInformation(int* Flags, std::vector<swObject*>& Select
 	*Focus = nullptr;
 
 	if (mPieces.empty())
-		*Flags |= SW_SEL_NO_PIECES;
+		*Flags |= SW_SELECTION_NO_PIECES;
 	else
 	{
 		swGroup* Group = nullptr;
@@ -5148,29 +5148,29 @@ void swModel::GetSelectionInformation(int* Flags, std::vector<swObject*>& Select
 					*Focus = Piece.get();
 
 				if (Piece->mPieceData->IsModel())
-					*Flags |= SW_SEL_MODEL_SELECTED;
+					*Flags |= SW_SELECTION_MODEL_SELECTED;
 
 				if (Piece->IsHidden())
-					*Flags |= SW_SEL_HIDDEN | SW_SEL_HIDDEN_SELECTED;
+					*Flags |= SW_SELECTION_HIDDEN | SW_SELECTION_HIDDEN_SELECTED;
 				else
-					*Flags |= SW_SEL_VISIBLE_SELECTED;
+					*Flags |= SW_SELECTION_VISIBLE_SELECTED;
 
-				*Flags |= SW_SEL_PIECE | SW_SEL_SELECTED;
+				*Flags |= SW_SELECTION_PIECE | SW_SELECTION_SELECTED;
 
 				if (Piece->AreTrainTrackConnectionsVisible())
-					*Flags |= SW_SEL_TRAIN_TRACK_VISIBLE;
+					*Flags |= SW_SELECTION_TRAIN_TRACK_VISIBLE;
 
 				if (Piece->CanAddControlPoint())
-					*Flags |= SW_SEL_CAN_ADD_CONTROL_POINT;
+					*Flags |= SW_SELECTION_CAN_ADD_CONTROL_POINT;
 
 				if (Piece->CanRemoveControlPoint())
-					*Flags |= SW_SEL_CAN_REMOVE_CONTROL_POINT;
+					*Flags |= SW_SELECTION_CAN_REMOVE_CONTROL_POINT;
 
 				if (Piece->GetGroup() != nullptr)
 				{
-					*Flags |= SW_SEL_GROUPED;
+					*Flags |= SW_SELECTION_GROUPED;
 					if (Piece->IsFocused())
-						*Flags |= SW_SEL_FOCUS_GROUPED;
+						*Flags |= SW_SELECTION_FOCUS_GROUPED;
 				}
 
 				if (First)
@@ -5181,18 +5181,18 @@ void swModel::GetSelectionInformation(int* Flags, std::vector<swObject*>& Select
 				else
 				{
 					if (Group != Piece->GetGroup())
-						*Flags |= SW_SEL_CAN_GROUP;
+						*Flags |= SW_SELECTION_CAN_GROUP;
 					else
 						if (Group == nullptr)
-							*Flags |= SW_SEL_CAN_GROUP;
+							*Flags |= SW_SELECTION_CAN_GROUP;
 				}
 			}
 			else
 			{
-				*Flags |= SW_SEL_UNSELECTED;
+				*Flags |= SW_SELECTION_UNSELECTED;
 
 				if (Piece->IsHidden())
-					*Flags |= SW_SEL_HIDDEN;
+					*Flags |= SW_SELECTION_HIDDEN;
 			}
 		}
 	}
@@ -5202,7 +5202,7 @@ void swModel::GetSelectionInformation(int* Flags, std::vector<swObject*>& Select
 		if (Camera->IsSelected())
 		{
 			Selection.emplace_back(Camera.get());
-			*Flags |= SW_SEL_SELECTED | SW_SEL_CAMERA;
+			*Flags |= SW_SELECTION_SELECTED | SW_SELECTION_CAMERA;
 
 			if (Camera->IsFocused())
 				*Focus = Camera.get();
@@ -5214,7 +5214,7 @@ void swModel::GetSelectionInformation(int* Flags, std::vector<swObject*>& Select
 		if (Light->IsSelected())
 		{
 			Selection.emplace_back(Light.get());
-			*Flags |= SW_SEL_SELECTED | SW_SEL_LIGHT;
+			*Flags |= SW_SELECTION_SELECTED | SW_SELECTION_LIGHT;
 
 			if (Light->IsFocused())
 				*Focus = Light.get();
@@ -5513,10 +5513,10 @@ void swModel::FindReplacePiece(bool SearchForward, bool FindAll, bool Replace)
 	if (mPieces.empty())
 		return;
 
-	const swFindReplaceParams& Params = swView::GetFindReplaceParams();
+	const swFindReplaceParameters& Params = swView::GetFindReplaceParams();
 
 	const bool ReplacePieceData = Replace && Params.ReplacePieceData;
-	const bool ReplaceColor = Replace && swGetColorCode(Params.ReplaceColorIndex) != SW_COLOR_NOCOLOR;
+	const bool ReplaceColor = Replace && swGetColorCode(Params.ReplaceColorIndex) != SW_COLOR_NO_COLOR;
 
 	// Check if we are supposed to actually replace something
 	const bool Replacing = (ReplaceColor || ReplacePieceData);
@@ -5529,7 +5529,7 @@ void swModel::FindReplacePiece(bool SearchForward, bool FindAll, bool Replace)
 		if (!Params.FindString.isEmpty() && !swstrcasestr(Piece->mPieceData->m_strDescription, Params.FindString.toLatin1()))
 			return false;
 
-		return (swGetColorCode(Params.FindColorIndex) == SW_COLOR_NOCOLOR) || (Piece->GetColorIndex() == Params.FindColorIndex);
+		return (swGetColorCode(Params.FindColorIndex) == SW_COLOR_NO_COLOR) || (Piece->GetColorIndex() == Params.FindColorIndex);
 	};
 
 	auto ReplacePiece = [&Params, ReplacePieceData, ReplaceColor](swPiece* Piece)
@@ -5538,7 +5538,7 @@ void swModel::FindReplacePiece(bool SearchForward, bool FindAll, bool Replace)
 			Piece->SetColorIndex(Params.ReplaceColorIndex);
 
 		if (ReplacePieceData)
-			Piece->SetPieceData(swPieceDataRef(Params.ReplacePieceData), QString(), true, true);
+			Piece->SetPieceData(swPieceDataReference(Params.ReplacePieceData), QString(), true, true);
 	};
 
 	size_t StartIndex = mPieces.size() - 1;
@@ -5822,7 +5822,7 @@ bool swModel::InsertPieceToolClicked()
 
 	swPiece* Piece = nullptr;
 
-	for (const swPreviewInsertPieceInfo& InsertPieceInfo : mPreviewInsertPieceInfo)
+	for (const swPreviewInsertPieceInformation& InsertPieceInfo : mPreviewInsertPieceInfo)
 	{
 		Piece = new swPiece(InsertPieceInfo.PieceData);
 
@@ -5833,7 +5833,7 @@ bool swModel::InsertPieceToolClicked()
 		AddPiece(Piece);
 	}
 
-	SetPreviewInsertPieceInfo(std::vector<swInsertPieceInfo>());
+	SetPreviewInsertPieceInfo(std::vector<swInsertPieceInformation>());
 
 	EndEditHistory();
 
@@ -5951,14 +5951,14 @@ void swModel::UpdateFreeMoveTool(swPiece* MousePiece, const swMatrix44& StartTra
 	{
 		const swVector3 Distance = NewTransform.GetTranslation() - MousePiece->mModelWorld.GetTranslation();
 
-		swMatrix33 RotationMatrix = swMul(swMatrix33AffineInverse(CurrentRotation), NewRotation);
+		swMatrix33 RotationMatrix = swMultiply(swMatrix33AffineInverse(CurrentRotation), NewRotation);
 
 		const swVector3& Center = NewTransform.GetTranslation();
 		swMatrix33 RelativeRotation = MousePiece->GetRelativeRotation();
 
 		swMatrix33 WorldToFocusMatrix = swMatrix33AffineInverse(RelativeRotation);
 		// Rotate() expects the rotation in the focus frame.
-		RotationMatrix = swMul(RelativeRotation, RotationMatrix);
+		RotationMatrix = swMultiply(RelativeRotation, RotationMatrix);
 
 		int Flags;
 		std::vector<swObject*> Selection;
@@ -6020,7 +6020,7 @@ void swModel::UpdateRotateTool(const swVector3& Axis, float Angle, bool Alternat
 	const float Delta = SnapRotation(Angles)[0] - SnapRotation(mMouseToolDistance)[0];
 
 	if (Delta != 0.0f)
-		RotateSelectedObjects(swMatrix33FromAxisAngle(Axis, Delta * SW_DTOR), (Relative ? swModelTransformFlag::Relative : swModelTransformFlag::None) | (AlternateButtonDrag ? swModelTransformFlag::RotatePivotPoint : swModelTransformFlag::None), swModelHistoryEditMerge::None);
+		RotateSelectedObjects(swMatrix33FromAxisAngle(Axis, Delta * SW_DEGREES_TO_RADIANS), (Relative ? swModelTransformFlag::Relative : swModelTransformFlag::None) | (AlternateButtonDrag ? swModelTransformFlag::RotatePivotPoint : swModelTransformFlag::None), swModelHistoryEditMerge::None);
 
 	mMouseToolDistance = Angles;
 	mMouseToolFirstMove = false;
@@ -6155,7 +6155,7 @@ void swModel::UpdateOrbitTool(swCamera* Camera, float MouseX, float MouseY)
 	GetSelectionCenter(Center);
 
 	// With orbit snapping the camera turns in whole steps of the rotation snap angle.
-	const float OrbitSnap = gMainWindow->GetOrbitSnap() * SW_DTOR;
+	const float OrbitSnap = gMainWindow->GetOrbitSnap() * SW_DEGREES_TO_RADIANS;
 
 	if (OrbitSnap > 0.0f)
 	{
@@ -6263,10 +6263,10 @@ void swModel::ZoomExtents(swCamera* Camera, float Aspect, const swMatrix44& Worl
 
 	for (swVector3& Point : Points)
 	{
-		Point = swMul31(Point, WorldMatrix);
+		Point = swMultiply31(Point, WorldMatrix);
 
-		Min = swMin(Point, Min);
-		Max = swMax(Point, Max);
+		Min = swMinimum(Point, Min);
+		Max = swMaximum(Point, Max);
 	}
 
 	const swVector3 Center = (Min + Max) / 2.0f;
@@ -6380,9 +6380,9 @@ void swModel::ShowArrayDialog()
 					ModelWorld = Piece->mModelWorld;
 
 					ModelWorld.r[3] -= swVector4(Center, 0.0f);
-					ModelWorld = swMul(ModelWorld, swMatrix44RotationX(RotationAngles[0] * SW_DTOR));
-					ModelWorld = swMul(ModelWorld, swMatrix44RotationY(RotationAngles[1] * SW_DTOR));
-					ModelWorld = swMul(ModelWorld, swMatrix44RotationZ(RotationAngles[2] * SW_DTOR));
+					ModelWorld = swMultiply(ModelWorld, swMatrix44RotationX(RotationAngles[0] * SW_DEGREES_TO_RADIANS));
+					ModelWorld = swMultiply(ModelWorld, swMatrix44RotationY(RotationAngles[1] * SW_DEGREES_TO_RADIANS));
+					ModelWorld = swMultiply(ModelWorld, swMatrix44RotationZ(RotationAngles[2] * SW_DEGREES_TO_RADIANS));
 					ModelWorld.r[3] += swVector4(Center, 0.0f);
 
 					Position = swVector3(ModelWorld.r[3].x, ModelWorld.r[3].y, ModelWorld.r[3].z);
@@ -6415,7 +6415,7 @@ void swModel::ShowArrayDialog()
 	gMainWindow->UpdateTimeline(false, false);
 }
 
-void swModel::AddMinifig(const swMinifig& Minifig)
+void swModel::AddMinifig(const swMinifigure& Minifig)
 {
 	gMainWindow->GetActiveView()->MakeCurrent();
 
@@ -6425,9 +6425,9 @@ void swModel::AddMinifig(const swMinifig& Minifig)
 	swGroup* Group = AddGroup(tr("Minifigure "), nullptr);
 	std::vector<swObject*> Pieces;
 
-	Pieces.reserve(SW_MFW_NUMITEMS);
+	Pieces.reserve(SW_MINIFIGURE_ITEM_COUNT);
 
-	for (int PartIndex = 0; PartIndex < SW_MFW_NUMITEMS; PartIndex++)
+	for (int PartIndex = 0; PartIndex < SW_MINIFIGURE_ITEM_COUNT; PartIndex++)
 	{
 		if (!Minifig.PieceData[PartIndex])
 			continue;
@@ -6452,14 +6452,14 @@ void swModel::AddMinifig(const swMinifig& Minifig)
 	gMainWindow->UpdateTimeline(false, false);
 }
 
-void swModel::SetMinifig(const swMinifig& Minifig)
+void swModel::SetMinifig(const swMinifigure& Minifig)
 {
 	DeleteModel();
 
 	std::vector<swObject*> Pieces;
-	Pieces.reserve(SW_MFW_NUMITEMS);
+	Pieces.reserve(SW_MINIFIGURE_ITEM_COUNT);
 
-	for (int PartIdx = 0; PartIdx < SW_MFW_NUMITEMS; PartIdx++)
+	for (int PartIdx = 0; PartIdx < SW_MINIFIGURE_ITEM_COUNT; PartIdx++)
 	{
 		if (!Minifig.PieceData[PartIdx])
 			continue;
@@ -6486,8 +6486,8 @@ void swModel::SetPreviewPieceData(swPieceData* PieceData, int ColorIndex)
 	AddPiece(Piece);
 	Piece->UpdatePosition(1);
 
-	mCurrentStep = SW_STEP_MAX;
-	CalculateStep(SW_STEP_MAX);
+	mCurrentStep = SW_STEP_MAXIMUM;
+	CalculateStep(SW_STEP_MAXIMUM);
 }
 
 void swModel::UpdateInterface()

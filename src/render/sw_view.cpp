@@ -1,25 +1,25 @@
 #include "sw_global.h"
 #include "sw_view.h"
-#include "sw_viewwidget.h"
+#include "sw_view_widget.h"
 #include <stdlib.h>
-#include "sw_mainwindow.h"
-#include "light.h"
-#include "camera.h"
-#include "texfont.h"
+#include "sw_main_window.h"
+#include "sw_light.h"
+#include "sw_camera.h"
+#include "sw_texture_font.h"
 #include "sw_texture.h"
-#include "piece.h"
-#include "sw_piecedata.h"
-#include "sw_traintrack.h"
+#include "sw_piece.h"
+#include "sw_piece_data.h"
+#include "sw_train_track.h"
 #include "sw_scene.h"
 #include "sw_context.h"
-#include "sw_viewmanipulator.h"
-#include "sw_viewsphere.h"
-#include "sw_findreplacewidget.h"
+#include "sw_view_manipulator.h"
+#include "sw_view_sphere.h"
+#include "sw_find_replace_widget.h"
 #include "sw_library.h"
-#include "sw_utils.h"
-#include "sw_partselectionpopup.h"
+#include "sw_utilities.h"
+#include "sw_part_selection_popup.h"
 
-swFindReplaceParams swView::mFindReplaceParams;
+swFindReplaceParameters swView::mFindReplaceParams;
 QPointer<swFindReplaceWidget> swView::mFindWidget;
 
 swView* swView::mLastFocusedView;
@@ -165,7 +165,7 @@ void swView::RestoreModelEditingContext()
 
 	for (swPiece* Piece : mSubmodelEditingPath)
 	{
-		mActiveSubmodelTransform = swMul(Piece->mModelWorld, mActiveSubmodelTransform);
+		mActiveSubmodelTransform = swMultiply(Piece->mModelWorld, mActiveSubmodelTransform);
 		Piece->mPieceData->GetModel()->SetActive(true);
 	}
 }
@@ -286,7 +286,7 @@ swMatrix44 swView::GetProjectionMatrix() const
 		float OrthoHeight = mCamera->GetOrthoHeight() / 2.0f;
 		float OrthoWidth = OrthoHeight * AspectRatio;
 
-		return swMatrix44Ortho(-OrthoWidth, OrthoWidth, -OrthoHeight, OrthoHeight, mCamera->m_zNear, mCamera->m_zFar * 4);
+		return swMatrix44Orthographic(-OrthoWidth, OrthoWidth, -OrthoHeight, OrthoHeight, mCamera->m_zNear, mCamera->m_zFar * 4);
 	}
 	else
 		return swMatrix44Perspective(mCamera->m_fovy, AspectRatio, mCamera->m_zNear, mCamera->m_zFar);
@@ -334,7 +334,7 @@ swMatrix44 swView::GetTileProjectionMatrix(int CurrentRow, int CurrentColumn, in
 	double Top = Bottom + (ImageTop - ImageBottom) * CurrentTileHeight / ImageHeight;
 
 	if (mCamera->GetProjection() == swCameraProjection::Orthographic)
-		return swMatrix44Ortho(Left, Right, Bottom, Top, Near, Far);
+		return swMatrix44Orthographic(Left, Right, Bottom, Top, Near, Far);
 	else
 		return swMatrix44Frustum(Left, Right, Bottom, Top, Near, Far);
 }
@@ -351,7 +351,7 @@ void swView::ShowTrainTrackPopup()
 		return;
 
 	swPiece* Piece = (swPiece*)Focus;
-	const swTrainTrackInfo* TrainTrackInfo = Piece->mPieceData->GetTrainTrackInfo();
+	const swTrainTrackInformation* TrainTrackInfo = Piece->mPieceData->GetTrainTrackInfo();
 
 	if (!TrainTrackInfo)
 		return;
@@ -461,7 +461,7 @@ bool swView::CloseFindReplaceDialog()
 void swView::ShowFindReplaceWidget(bool Replace)
 {
 	delete mFindWidget;
-	mFindReplaceParams = swFindReplaceParams();
+	mFindReplaceParams = swFindReplaceParameters();
 	mFindWidget = new swFindReplaceWidget(mWidget, GetActiveModel(), Replace);
 	mWidget->SetFindReplaceWidget(mFindWidget);
 }
@@ -486,9 +486,9 @@ swVector3 swView::GetMoveDirection(const swVector3& Direction) const
 	}
 
 	if (mActiveSubmodelInstance)
-		LocalToWorld = swMul(LocalToWorld, swMatrix33(mActiveSubmodelTransform));
+		LocalToWorld = swMultiply(LocalToWorld, swMatrix33(mActiveSubmodelTransform));
 
-	const swMatrix33 LocalToView = swMul(LocalToWorld, swMatrix33(mCamera->mWorldView));
+	const swMatrix33 LocalToView = swMultiply(LocalToWorld, swMatrix33(mCamera->mWorldView));
 
 	// Choose distinct X/Y axes for screen right and up. Page Up/Down keep
 	// their Z direction regardless of the camera, including bottom views.
@@ -513,8 +513,8 @@ swVector3 swView::GetMoveDirection(const swVector3& Direction) const
 					Right[RightAxis] = float(RightSign);
 					Up[UpAxis] = float(UpSign);
 
-					const swVector3 ViewUp = swMul(Up, LocalToView);
-					const float Score = swMul(Right, LocalToView).x + ViewUp.y;
+					const swVector3 ViewUp = swMultiply(Up, LocalToView);
+					const float Score = swMultiply(Right, LocalToView).x + ViewUp.y;
 					const float Away = -ViewUp.z;
 
 					// In edge-on views, Up moves into the scene along the remaining
@@ -537,8 +537,8 @@ swVector3 swView::GetMoveDirection(const swVector3& Direction) const
 
 void swView::UpdatePiecePreview()
 {
-	const swPieceDataRef PreviewPieceData(gMainWindow->GetInsertPieceData());
-	std::vector<swInsertPieceInfo> InsertPieceInfo;
+	const swPieceDataReference PreviewPieceData(gMainWindow->GetInsertPieceData());
+	std::vector<swInsertPieceInformation> InsertPieceInfo;
 	bool IsConnection;
 
 	if (PreviewPieceData)
@@ -549,7 +549,7 @@ void swView::UpdatePiecePreview()
 	GetActiveModel()->SetPreviewInsertPieceInfo(std::move(InsertPieceInfo));
 }
 
-std::pair<std::vector<swInsertPieceInfo>, bool> swView::GetMouseInsertPieceInfo(bool IgnoreSelected, bool AllowNewPieces, const swPieceDataRef& PieceData, swPiece* MovingPiece) const
+std::pair<std::vector<swInsertPieceInformation>, bool> swView::GetMouseInsertPieceInfo(bool IgnoreSelected, bool AllowNewPieces, const swPieceDataReference& PieceData, swPiece* MovingPiece) const
 {
 	swModel* ActiveModel = GetActiveModel();
 
@@ -560,7 +560,7 @@ std::pair<std::vector<swInsertPieceInfo>, bool> swView::GetMouseInsertPieceInfo(
 
 	// The first piece of an empty model goes to the origin when enabled.
 	if (!MovingPiece && swGetPreferences().mFirstPieceAtOrigin && ActiveModel->GetPieces().empty())
-		return { { swInsertPieceInfo{ PieceData.Get(), swMatrix44Identity(), gMainWindow->GetInsertColorIndex() } }, false };
+		return { { swInsertPieceInformation{ PieceData.Get(), swMatrix44Identity(), gMainWindow->GetInsertColorIndex() } }, false };
 
 	swObjectRayTest ObjectRayTest = RayTest(true, IgnoreSelected);
 
@@ -592,8 +592,8 @@ std::pair<std::vector<swInsertPieceInfo>, bool> swView::GetMouseInsertPieceInfo(
 	if (ObjectRayTest.ObjectSection.Object)
 	{
 		swPiece* MousePiece = reinterpret_cast<swPiece*>(ObjectRayTest.ObjectSection.Object);
-		swTrainTrackInfo* RayTrackInfo = MousePiece->mPieceData->GetTrainTrackInfo();
-		swTrainTrackInfo* InfoTrackInfo = PieceData->GetTrainTrackInfo();
+		swTrainTrackInformation* RayTrackInfo = MousePiece->mPieceData->GetTrainTrackInfo();
+		swTrainTrackInformation* InfoTrackInfo = PieceData->GetTrainTrackInfo();
 
 		if (RayTrackInfo && InfoTrackInfo)
 		{
@@ -602,7 +602,7 @@ std::pair<std::vector<swInsertPieceInfo>, bool> swView::GetMouseInsertPieceInfo(
 			swVector3 ClosestPoint = ObjectRayTest.Start + swNormalize(ObjectRayTest.End - ObjectRayTest.Start) * ObjectRayTest.Distance;
 			quint32 FocusSection = MousePiece->GetFocusSection();
 
-			std::vector<swInsertPieceInfo> TrainTracks = swTrainTrackInfo::GetInsertPieceInfo(MousePiece, PieceData.Get(), MovingPiece, gMainWindow->GetInsertColorIndex(), FocusSection, AllowNewPieces, ClosestPoint);
+			std::vector<swInsertPieceInformation> TrainTracks = swTrainTrackInformation::GetInsertPieceInfo(MousePiece, PieceData.Get(), MovingPiece, gMainWindow->GetInsertColorIndex(), FocusSection, AllowNewPieces, ClosestPoint);
 
 			if (!TrainTracks.empty())
 				return { TrainTracks, true };
@@ -624,14 +624,14 @@ std::pair<std::vector<swInsertPieceInfo>, bool> swView::GetMouseInsertPieceInfo(
 			Position.z -= fabsf(BoundingBox.Max.z);
 
 		if (gMainWindow->GetRelativeTransform())
-			Position = swMul31(ActiveModel->SnapPosition(Position), ObjectRayTest.PieceRayTest.Transform);
+			Position = swMultiply31(ActiveModel->SnapPosition(Position), ObjectRayTest.PieceRayTest.Transform);
 		else
-			Position = ActiveModel->SnapPosition(swMul31(Position, ObjectRayTest.PieceRayTest.Transform));
+			Position = ActiveModel->SnapPosition(swMultiply31(Position, ObjectRayTest.PieceRayTest.Transform));
 
 		swMatrix44 WorldMatrix = ObjectRayTest.PieceRayTest.Transform;
 		WorldMatrix.SetTranslation(Position);
 
-		return { { swInsertPieceInfo{ PieceData.Get(), WorldMatrix, gMainWindow->GetInsertColorIndex() } }, false };
+		return { { swInsertPieceInformation{ PieceData.Get(), WorldMatrix, gMainWindow->GetInsertColorIndex() } }, false };
 	}
 
 	std::array<swVector3, 2> ClickPoints = {{ swVector3((float)mMouseX, (float)mMouseY, 0.0f), swVector3((float)mMouseX, (float)mMouseY, 1.0f) }};
@@ -642,7 +642,7 @@ std::pair<std::vector<swInsertPieceInfo>, bool> swView::GetMouseInsertPieceInfo(
 		swMatrix44 InverseMatrix = swMatrix44AffineInverse(mActiveSubmodelTransform);
 
 		for (swVector3& Point : ClickPoints)
-			Point = swMul31(Point, InverseMatrix);
+			Point = swMultiply31(Point, InverseMatrix);
 	}
 
 	swVector3 Intersection;
@@ -650,7 +650,7 @@ std::pair<std::vector<swInsertPieceInfo>, bool> swView::GetMouseInsertPieceInfo(
 	if (swLineSegmentPlaneIntersection(&Intersection, ClickPoints[0], ClickPoints[1], swVector4(0, 0, 1, BoundingBox.Min.z)))
 	{
 		Intersection = ActiveModel->SnapPosition(Intersection);
-		return { { swInsertPieceInfo{ PieceData.Get(), swMatrix44Translation(Intersection), gMainWindow->GetInsertColorIndex() } }, false };
+		return { { swInsertPieceInformation{ PieceData.Get(), swMatrix44Translation(Intersection), gMainWindow->GetInsertColorIndex() } }, false };
 	}
 
 	swVector3 Position;
@@ -663,10 +663,10 @@ std::pair<std::vector<swInsertPieceInfo>, bool> swView::GetMouseInsertPieceInfo(
 	if (swLineSegmentPlaneIntersection(&Intersection, ClickPoints[0], ClickPoints[1], swVector4(FrontVector, -swDot(FrontVector, Position))))
 	{
 		Intersection = ActiveModel->SnapPosition(Intersection);
-		return { { swInsertPieceInfo{ PieceData.Get(), swMatrix44Translation(Intersection), gMainWindow->GetInsertColorIndex() } }, false };
+		return { { swInsertPieceInformation{ PieceData.Get(), swMatrix44Translation(Intersection), gMainWindow->GetInsertColorIndex() } }, false };
 	}
 
-	return { { swInsertPieceInfo{ PieceData.Get(), swMatrix44Translation(UnprojectPoint(swVector3((float)mMouseX, (float)mMouseY, 0.9f))), gMainWindow->GetInsertColorIndex() } }, false };
+	return { { swInsertPieceInformation{ PieceData.Get(), swMatrix44Translation(UnprojectPoint(swVector3((float)mMouseX, (float)mMouseY, 0.9f))), gMainWindow->GetInsertColorIndex() } }, false };
 }
 
 swVector3 swView::GetCameraLightInsertPosition() const
@@ -681,7 +681,7 @@ swVector3 swView::GetCameraLightInsertPosition() const
 		swMatrix44 InverseMatrix = swMatrix44AffineInverse(mActiveSubmodelTransform);
 
 		for (swVector3& Point : ClickPoints)
-			Point = swMul31(Point, InverseMatrix);
+			Point = swMultiply31(Point, InverseMatrix);
 	}
 
 	swVector3 Min, Max;
@@ -733,8 +733,8 @@ swObjectRayTest swView::RayTest(bool PiecesOnly, bool IgnoreSelected) const
 	{
 		swMatrix44 InverseMatrix = swMatrix44AffineInverse(mActiveSubmodelTransform);
 
-		ObjectRayTest.Start = swMul31(ObjectRayTest.Start, InverseMatrix);
-		ObjectRayTest.End = swMul31(ObjectRayTest.End, InverseMatrix);
+		ObjectRayTest.Start = swMultiply31(ObjectRayTest.Start, InverseMatrix);
+		ObjectRayTest.End = swMultiply31(ObjectRayTest.End, InverseMatrix);
 	}
 
 	ActiveModel->RayTest(ObjectRayTest);
@@ -792,7 +792,7 @@ std::vector<swObject*> swView::FindObjectsInBox(float x1, float y1, float x2, fl
 		swMatrix44 InverseMatrix = swMatrix44AffineInverse(mActiveSubmodelTransform);
 
 		for (swVector3& Point : Corners)
-			Point = swMul31(Point, InverseMatrix);
+			Point = swMultiply31(Point, InverseMatrix);
 	}
 
 	swVector3 PlaneNormals[6];
@@ -856,7 +856,7 @@ std::vector<QImage> swView::GetStepImages(swStep Start, swStep End)
 	mModel->SetTemporaryStep(CurrentStep);
 
 	if (!mModel->IsActive())
-		mModel->CalculateStep(SW_STEP_MAX);
+		mModel->CalculateStep(SW_STEP_MAXIMUM);
 
 	if (RenderFailed && gMainWindow)
 		QMessageBox::warning(gMainWindow, tr("Create Step Images"), tr("Error creating images."));
@@ -1249,7 +1249,7 @@ void swView::OnDraw()
 	{
 		mContext->SetWorldMatrix(swMatrix44Identity());
 		mContext->SetViewMatrix(swMatrix44Translation(swVector3(0.375, 0.375, 0.0)));
-		mContext->SetProjectionMatrix(swMatrix44Ortho(0.0f, mWidth, 0.0f, mHeight, -1.0f, 1.0f));
+		mContext->SetProjectionMatrix(swMatrix44Orthographic(0.0f, mWidth, 0.0f, mHeight, -1.0f, 1.0f));
 
 		QString Line = QString("GPU: %1 CPU: %2").arg(QString::number(QueryAverage / 1000000.0, 'f', 2), QString::number(TimerAverage / 1000000.0, 'f', 2));
 
@@ -1307,7 +1307,7 @@ void swView::DrawBackground(int CurrentTileRow, int TotalTileRows, int CurrentTi
 
 	mContext->SetWorldMatrix(swMatrix44Identity());
 	mContext->SetViewMatrix(swMatrix44Identity());
-	mContext->SetProjectionMatrix(swMatrix44Ortho(0.0f, ViewWidth, 0.0f, ViewHeight, -1.0f, 1.0f));
+	mContext->SetProjectionMatrix(swMatrix44Orthographic(0.0f, ViewWidth, 0.0f, ViewHeight, -1.0f, 1.0f));
 
 	const int TotalHeight = TotalTileRows == 1 ? mHeight : mRenderImage.height();
 	const quint32 TopY = CurrentTileRow * mHeight + CurrentTileHeight;
@@ -1368,7 +1368,7 @@ void swView::DrawViewport() const
 
 	mContext->SetWorldMatrix(swMatrix44Identity());
 	mContext->SetViewMatrix(swMatrix44Translation(swVector3(0.375, 0.375, 0.0)));
-	mContext->SetProjectionMatrix(swMatrix44Ortho(0.0f, Width, 0.0f, Height, -1.0f, 1.0f));
+	mContext->SetProjectionMatrix(swMatrix44Orthographic(0.0f, Width, 0.0f, Height, -1.0f, 1.0f));
 	mContext->SetLineWidth(1.0f);
 
 	mContext->SetDepthWrite(false);
@@ -1401,7 +1401,7 @@ void swView::DrawViewport() const
 
 		mContext->EnableColorBlend(true);
 
-		// TODO: Make TexFont support Unicode camera names instead of converting them to Latin-1.
+		// TODO: Make swTextureFont support Unicode camera names instead of converting them to Latin-1.
 		gTexFont.PrintText(mContext, 3.0f, (float)Height - 1.0f - 6.0f, 0.0f, CameraName.toLatin1().constData());
 
 		mContext->EnableColorBlend(false);
@@ -1492,8 +1492,8 @@ void swView::DrawAxes() const
 	mContext->SetLineWidth(1.0f);
 	mContext->SetMaterial(swMaterialType::UnlitVertexColor);
 	mContext->SetWorldMatrix(swMatrix44Identity());
-	mContext->SetViewMatrix(swMul(WorldViewMatrix, TranslationMatrix));
-	mContext->SetProjectionMatrix(swMatrix44Ortho(0, mWidth / Scale, 0, mHeight / Scale, -50, 50));
+	mContext->SetViewMatrix(swMultiply(WorldViewMatrix, TranslationMatrix));
+	mContext->SetProjectionMatrix(swMatrix44Orthographic(0, mWidth / Scale, 0, mHeight / Scale, -50, 50));
 
 	mContext->SetVertexBufferPointer(Verts);
 	mContext->SetVertexFormat(0, 3, 0, 0, 4, false);
@@ -1511,11 +1511,11 @@ void swView::DrawAxes() const
 	mContext->EnableColorBlend(true);
 
 	float TextBuffer[6 * 5 * 3];
-	swVector3 PosX = swMul30(swVector3(25.0f, 0.0f, 0.0f), WorldViewMatrix);
+	swVector3 PosX = swMultiply30(swVector3(25.0f, 0.0f, 0.0f), WorldViewMatrix);
 	gTexFont.GetGlyphTriangles(PosX.x, PosX.y, PosX.z, 'X', TextBuffer);
-	swVector3 PosY = swMul30(swVector3(0.0f, 25.0f, 0.0f), WorldViewMatrix);
+	swVector3 PosY = swMultiply30(swVector3(0.0f, 25.0f, 0.0f), WorldViewMatrix);
 	gTexFont.GetGlyphTriangles(PosY.x, PosY.y, PosY.z, 'Y', TextBuffer + 5 * 6);
-	swVector3 PosZ = swMul30(swVector3(0.0f, 0.0f, 25.0f), WorldViewMatrix);
+	swVector3 PosZ = swMultiply30(swVector3(0.0f, 0.0f, 25.0f), WorldViewMatrix);
 	gTexFont.GetGlyphTriangles(PosZ.x, PosZ.y, PosZ.z, 'Z', TextBuffer + 5 * 6 * 2);
 
 	mContext->SetVertexBufferPointer(TextBuffer);
@@ -1533,7 +1533,7 @@ void swView::DrawSelectZoomRegionOverlay()
 	mContext->SetMaterial(swMaterialType::UnlitColor);
 	mContext->SetWorldMatrix(swMatrix44Identity());
 	mContext->SetViewMatrix(swMatrix44Translation(swVector3(0.375, 0.375, 0.0)));
-	mContext->SetProjectionMatrix(swMatrix44Ortho(0.0f, mWidth, 0.0f, mHeight, -1.0f, 1.0f));
+	mContext->SetProjectionMatrix(swMatrix44Orthographic(0.0f, mWidth, 0.0f, mHeight, -1.0f, 1.0f));
 	mContext->SetLineWidth(1.0f);
 
 	mContext->EnableDepthTest(false);
@@ -1567,13 +1567,13 @@ void swView::DrawSelectZoomRegionOverlay()
 		Top = pt1y;
 	}
 
-	Left = swMax(Left, 0.0f);
-	Right = swMin(Right, mWidth - 1.0f);
-	Bottom = swMax(Bottom, 0.0f);
-	Top = swMin(Top, mHeight - 1.0f);
+	Left = swMaximum(Left, 0.0f);
+	Right = swMinimum(Right, mWidth - 1.0f);
+	Bottom = swMaximum(Bottom, 0.0f);
+	Top = swMinimum(Top, mHeight - 1.0f);
 
-	float BorderX = swMin(2.0f, Right - Left);
-	float BorderY = swMin(2.0f, Top - Bottom);
+	float BorderX = swMinimum(2.0f, Right - Left);
+	float BorderY = swMinimum(2.0f, Top - Bottom);
 
 	float Verts[14][2] =
 	{
@@ -1624,7 +1624,7 @@ void swView::DrawRotateViewOverlay()
 	mContext->SetMaterial(swMaterialType::UnlitColor);
 	mContext->SetWorldMatrix(swMatrix44Identity());
 	mContext->SetViewMatrix(swMatrix44Translation(swVector3(0.375, 0.375, 0.0)));
-	mContext->SetProjectionMatrix(swMatrix44Ortho(0, w, 0, h, -1, 1));
+	mContext->SetProjectionMatrix(swMatrix44Orthographic(0, w, 0, h, -1, 1));
 	mContext->SetLineWidth(1.0f);
 
 	mContext->EnableDepthTest(false);
@@ -1633,7 +1633,7 @@ void swView::DrawRotateViewOverlay()
 	float Verts[32 * 16 * 2];
 	float* CurVert = Verts;
 
-	float r = swMin(w, h) * 0.35f;
+	float r = swMinimum(w, h) * 0.35f;
 	float cx = x + w / 2.0f;
 	float cy = y + h / 2.0f;
 
@@ -1643,7 +1643,7 @@ void swView::DrawRotateViewOverlay()
 		*CurVert++ = sinf((float)i / 32.0f * (2.0f * SW_PI)) * r + cy;
 	}
 
-	const float OverlayCameraSquareSize = swMax(8.0f, (w + h) / 200.0f);
+	const float OverlayCameraSquareSize = swMaximum(8.0f, (w + h) / 200.0f);
 
 	*CurVert++ = cx + OverlayCameraSquareSize; *CurVert++ = cy + r + OverlayCameraSquareSize;
 	*CurVert++ = cx - OverlayCameraSquareSize; *CurVert++ = cy + r + OverlayCameraSquareSize;
@@ -1689,7 +1689,7 @@ void swView::DrawGrid()
 	if (!Preferences.mGridEnabled)
 		return;
 
-	const int Spacing = swMax(Preferences.mGridLineSpacing, 1);
+	const int Spacing = swMaximum(Preferences.mGridLineSpacing, 1);
 	int MinX, MaxX, MinY, MaxY;
 	swVector3 Min(FLT_MAX, FLT_MAX, FLT_MAX), Max(-FLT_MAX, -FLT_MAX, -FLT_MAX);
 
@@ -1700,21 +1700,21 @@ void swView::DrawGrid()
 	{
 		const swModel* PreviewModel = GetActiveModel();
 
-		for (const swPreviewInsertPieceInfo& PreviewInsertPieceInfo : PreviewModel->GetPreviewInsertPieceInfo())
+		for (const swPreviewInsertPieceInformation& PreviewInsertPieceInfo : PreviewModel->GetPreviewInsertPieceInfo())
 		{
 			swVector3 Points[8];
 			swGetBoxCorners(PreviewInsertPieceInfo.PieceData->GetBoundingBox(), Points);
 			swMatrix44 PreviewTransform = PreviewInsertPieceInfo.Transform;
 
 			if (PreviewModel != mModel)
-				PreviewTransform = swMul(PreviewTransform, mActiveSubmodelTransform);
+				PreviewTransform = swMultiply(PreviewTransform, mActiveSubmodelTransform);
 
 			for (int i = 0; i < 8; i++)
 			{
-				swVector3 Point = swMul31(Points[i], PreviewTransform);
+				swVector3 Point = swMultiply31(Points[i], PreviewTransform);
 
-				Min = swMin(Point, Min);
-				Max = swMax(Point, Max);
+				Min = swMinimum(Point, Min);
+				Max = swMaximum(Point, Max);
 			}
 
 			GridSizeValid = true;
@@ -1732,10 +1732,10 @@ void swView::DrawGrid()
 		MaxX = static_cast<int>(ceilf(swClamp(Max[0] / GridSpacing, -MaxGridExtent + 1.0f, MaxGridExtent - 1.0f))) + 1;
 		MaxY = static_cast<int>(ceilf(swClamp(Max[1] / GridSpacing, -MaxGridExtent + 1.0f, MaxGridExtent - 1.0f))) + 1;
 
-		MinX = swMin(MinX, -2);
-		MinY = swMin(MinY, -2);
-		MaxX = swMax(MaxX, 2);
-		MaxY = swMax(MaxY, 2);
+		MinX = swMinimum(MinX, -2);
+		MinY = swMinimum(MinY, -2);
+		MaxX = swMaximum(MaxX, 2);
+		MaxY = swMaximum(MaxY, 2);
 	}
 	else
 	{
@@ -1884,7 +1884,7 @@ void swView::DrawGrid()
 		const float Right = MaxX * LineSpacing;
 		const float Front = MinY * LineSpacing;
 		const float Back = MaxY * LineSpacing;
-		const int PlateCount = swMax(static_cast<int>(ceilf((GridSizeValid && std::isfinite(Max[2]) ? Max[2] : 0.0f) / PlateHeight)) + 3, 9);
+		const int PlateCount = swMaximum(static_cast<int>(ceilf((GridSizeValid && std::isfinite(Max[2]) ? Max[2] : 0.0f) / PlateHeight)) + 3, 9);
 		const float Top = PlateCount * PlateHeight;
 		const swVector3 CameraPosition = mCamera->mPosition;
 		const bool BehindModel = Preferences.mGridHeightBehindModel;
@@ -2009,7 +2009,7 @@ float swView::GetOverlayScale() const
 	swMatrix44 WorldMatrix = swMatrix44(RelativeRotation, OverlayCenter);
 
 	if (ActiveModel != mModel)
-		WorldMatrix = swMul(WorldMatrix, mActiveSubmodelTransform);
+		WorldMatrix = swMultiply(WorldMatrix, mActiveSubmodelTransform);
 
 	swVector3 ScreenPos = ProjectPoint(WorldMatrix.GetTranslation());
 	ScreenPos[0] += 10.0f;
@@ -2050,7 +2050,7 @@ void swView::EndDrag(bool Accept)
 	mDragState = swDragState::None;
 	UpdateTrackTool();
 
-	ActiveModel->SetPreviewInsertPieceInfo(std::vector<swInsertPieceInfo>());
+	ActiveModel->SetPreviewInsertPieceInfo(std::vector<swInsertPieceInformation>());
 	ActiveModel->UpdateAllViews();
 }
 
@@ -2091,7 +2091,7 @@ void swView::SetViewpoint(const swVector3& Position)
 // Step view angles rotate the model about the LDraw X, Y and Z axes, in that order.
 static swMatrix44 swGetStepViewRotation(const swVector3& Angles)
 {
-	const swMatrix44 Rotation = swMul(swMul(swMatrix44RotationX(Angles.x * SW_DTOR), swMatrix44RotationY(Angles.y * SW_DTOR)), swMatrix44RotationZ(Angles.z * SW_DTOR));
+	const swMatrix44 Rotation = swMultiply(swMultiply(swMatrix44RotationX(Angles.x * SW_DEGREES_TO_RADIANS), swMatrix44RotationY(Angles.y * SW_DEGREES_TO_RADIANS)), swMatrix44RotationZ(Angles.z * SW_DEGREES_TO_RADIANS));
 
 	return swMatrix44LDrawToStudWorks(Rotation);
 }
@@ -2138,8 +2138,8 @@ void swView::ApplyStepView(swStep Step)
 	// Turning the model by the step rotation is the same as turning the camera the opposite way.
 	const swMatrix44 Inverse = swMatrix44Transpose(swGetStepViewRotation(StepView->Angles));
 
-	Direction = swNormalize(swMul30(Direction, Inverse));
-	Up = swNormalize(swMul30(Up, Inverse));
+	Direction = swNormalize(swMultiply30(Direction, Inverse));
+	Up = swNormalize(swMultiply30(Up, Inverse));
 
 	SetViewpoint(Direction * 1250.0f, swVector3(0.0f, 0.0f, 0.0f), Up);
 	ZoomExtents(swGeometryBoundsMode::IncludeFallback, false);
@@ -2158,7 +2158,7 @@ swVector3 swView::GetStepViewAngles() const
 	// The camera frame expressed against the front view frame gives the model rotation.
 	const swMatrix44 Base(swVector4(BaseRight, 0.0f), swVector4(BaseUp, 0.0f), swVector4(BaseDirection, 0.0f), swVector4(0.0f, 0.0f, 0.0f, 1.0f));
 	const swMatrix44 Current(swVector4(Right, 0.0f), swVector4(Up, 0.0f), swVector4(Direction, 0.0f), swVector4(0.0f, 0.0f, 0.0f, 1.0f));
-	const swMatrix44 Rotation = swMatrix44StudWorksToLDraw(swMul(swMatrix44Transpose(Current), Base));
+	const swMatrix44 Rotation = swMatrix44StudWorksToLDraw(swMultiply(swMatrix44Transpose(Current), Base));
 
 	float X, Y, Z;
 	const float SinY = swClamp(-Rotation[0][2], -1.0f, 1.0f);
@@ -2177,7 +2177,7 @@ swVector3 swView::GetStepViewAngles() const
 
 	auto Round = [](float Radians)
 	{
-		return qRound(Radians * SW_RTOD * 100.0f) / 100.0f;
+		return qRound(Radians * SW_RADIANS_TO_DEGREES * 100.0f) / 100.0f;
 	};
 
 	return swVector3(Round(X), Round(Y), Round(Z));
@@ -2334,7 +2334,7 @@ void swView::ZoomExtentsAtStep(swStep Step, swGeometryBoundsMode Mode, bool Adju
 	ActiveModel->SetTemporaryStep(CurrentStep);
 
 	if (!ActiveModel->IsActive())
-		ActiveModel->CalculateStep(SW_STEP_MAX);
+		ActiveModel->CalculateStep(SW_STEP_MAXIMUM);
 }
 
 swCursor swView::GetCursor() const
@@ -2407,13 +2407,13 @@ void swView::SetCursor(swCursor CursorType)
 	if (mCursor == CursorType)
 		return;
 
-	struct swCursorInfo
+	struct swCursorInformation
 	{
 		int x, y;
 		const char* Name;
 	};
 
-	constexpr swCursorInfo Cursors[] =
+	constexpr swCursorInformation Cursors[] =
 	{
 		{  0,  0, "" },                                 // swCursor::Hidden
 		{  0,  0, "" },                                 // swCursor::Default
@@ -2454,7 +2454,7 @@ void swView::SetCursor(swCursor CursorType)
 	}
 	else if (CursorType >= swCursor::First && CursorType < swCursor::Count)
 	{
-		const swCursorInfo& Cursor = Cursors[static_cast<int>(CursorType)];
+		const swCursorInformation& Cursor = Cursors[static_cast<int>(CursorType)];
 		mWidget->setCursor(QCursor(QPixmap(Cursor.Name), Cursor.x, Cursor.y));
 		mCursor = CursorType;
 	}
@@ -2508,15 +2508,15 @@ void swView::PickFaceNormal()
 	{
 		// The hit triangle normal is in the space of the innermost piece, so bring it to the view.
 		swVector3 Point = ObjectRayTest.Start + swNormalize(ObjectRayTest.End - ObjectRayTest.Start) * ObjectRayTest.Distance;
-		swVector3 Normal = swNormalize(swMul30(ObjectRayTest.PieceRayTest.Normal, ObjectRayTest.PieceRayTest.Transform));
+		swVector3 Normal = swNormalize(swMultiply30(ObjectRayTest.PieceRayTest.Normal, ObjectRayTest.PieceRayTest.Transform));
 
 		if (swDot(Normal, ObjectRayTest.Start - Point) < 0.0f)
 			Normal = -Normal;
 
 		if (GetActiveModel() != mModel)
 		{
-			Point = swMul31(Point, mActiveSubmodelTransform);
-			Normal = swNormalize(swMul30(Normal, mActiveSubmodelTransform));
+			Point = swMultiply31(Point, mActiveSubmodelTransform);
+			Normal = swNormalize(swMultiply30(Normal, mActiveSubmodelTransform));
 		}
 
 		const float Distance = swLength(mCamera->mPosition - mCamera->mTargetPosition);
@@ -2687,9 +2687,9 @@ void swView::UpdateTrackTool()
 			int cy = vy + vh / 2;
 
 			float d = sqrtf((float)((cx - x) * (cx - x) + (cy - y) * (cy - y)));
-			float r = swMin(vw, vh) * 0.35f;
+			float r = swMinimum(vw, vh) * 0.35f;
 
-			const float SquareSize = swMax(8.0f, (vw + vh) / 200.0f);
+			const float SquareSize = swMaximum(8.0f, (vw + vh) / 200.0f);
 
 			if ((d < r + SquareSize) && (d > r - SquareSize))
 			{
@@ -2871,7 +2871,7 @@ void swView::StartTracking(swTrackButton TrackButton)
 				swMatrix44 WorldMatrix = swMatrix44(RelativeRotation, OverlayCenter);
 
 			    if (ActiveModel != mModel)
-					WorldMatrix = swMul(WorldMatrix, mActiveSubmodelTransform);
+					WorldMatrix = swMultiply(WorldMatrix, mActiveSubmodelTransform);
 
 				const swVector3 ScreenCenter = ProjectPoint(WorldMatrix.GetTranslation());
 
@@ -2887,13 +2887,13 @@ void swView::StartTracking(swTrackButton TrackButton)
 
 				swMatrix44 WorldMatrix = swMatrix44(RelativeRotation, OverlayCenter);
 				if (ActiveModel != mModel)
-					WorldMatrix = swMul(WorldMatrix, mActiveSubmodelTransform);
+					WorldMatrix = swMultiply(WorldMatrix, mActiveSubmodelTransform);
 
 				mTrackballCenter = ProjectPoint(WorldMatrix.GetTranslation());
 				const swMatrix44 CameraWorldMatrix = swMatrix44AffineInverse(mCamera->mWorldView);
-				const swVector3 CameraRight = swNormalize(swMul30(swVector3(1.0f, 0.0f, 0.0f), CameraWorldMatrix));
+				const swVector3 CameraRight = swNormalize(swMultiply30(swVector3(1.0f, 0.0f, 0.0f), CameraWorldMatrix));
 				const swVector3 RadiusPoint = ProjectPoint(WorldMatrix.GetTranslation() + CameraRight * (2.0f * GetOverlayScale()));
-				mTrackballRadius = swMax(1.0f, swLength(RadiusPoint - mTrackballCenter));
+				mTrackballRadius = swMaximum(1.0f, swLength(RadiusPoint - mTrackballCenter));
 				mTrackballVector = GetTrackballPoint(mMouseX, mMouseY);
 				mTrackballPendingRotation = swMatrix33Identity();
 				mTrackballSnapping = gMainWindow->GetAngleSnap() != 0.0f;
@@ -2983,8 +2983,8 @@ void swView::StopTracking(bool Accept)
 
 			swVector3 Points[6] =
 			{
-				swVector3((mMouseDownX + swMin(mMouseX, mWidth - 1)) / 2, (mMouseDownY + swMin(mMouseY, mHeight - 1)) / 2, 0.0f),
-				swVector3((mMouseDownX + swMin(mMouseX, mWidth - 1)) / 2, (mMouseDownY + swMin(mMouseY, mHeight - 1)) / 2, 1.0f),
+				swVector3((mMouseDownX + swMinimum(mMouseX, mWidth - 1)) / 2, (mMouseDownY + swMinimum(mMouseY, mHeight - 1)) / 2, 0.0f),
+				swVector3((mMouseDownX + swMinimum(mMouseX, mWidth - 1)) / 2, (mMouseDownY + swMinimum(mMouseY, mHeight - 1)) / 2, 1.0f),
 				swVector3((float)mMouseX, (float)mMouseY, 0.0f),
 				swVector3((float)mMouseX, (float)mMouseY, 1.0f),
 				swVector3(mMouseDownX, mMouseDownY, 0.0f),
@@ -3159,7 +3159,7 @@ void swView::OnButtonDown(swTrackButton TrackButton)
 				break;
 
 			swPiece* Piece = (swPiece*)Focus;
-			const swTrainTrackInfo* TrainTrackInfo = Piece->mPieceData->GetTrainTrackInfo();
+			const swTrainTrackInformation* TrainTrackInfo = Piece->mPieceData->GetTrainTrackInfo();
 
 			if (!TrainTrackInfo)
 				break;
@@ -3437,7 +3437,7 @@ void swView::OnMouseMove()
 			swMatrix44 WorldMatrix = swMatrix44(RelativeRotation, OverlayCenter);
 
 			if (ActiveModel != mModel)
-				WorldMatrix = swMul(WorldMatrix, mActiveSubmodelTransform);
+				WorldMatrix = swMultiply(WorldMatrix, mActiveSubmodelTransform);
 
 			const swVector3 Center = WorldMatrix.GetTranslation();
 
@@ -3451,7 +3451,7 @@ void swView::OnMouseMove()
 				else
 					Direction = swVector3(0.0f, 0.0f, 1.0f);
 
-				Direction = swMul30(Direction, WorldMatrix);
+				Direction = swMultiply30(Direction, WorldMatrix);
 
 				swVector3 Intersection;
 				swClosestPointsBetweenLines(Center, Center + Direction, CurrentStart, CurrentEnd, &Intersection, nullptr);
@@ -3460,7 +3460,7 @@ void swView::OnMouseMove()
 				swClosestPointsBetweenLines(Center, Center + Direction, MouseDownStart, MouseDownEnd, &MoveStart, nullptr);
 
 				swVector3 Distance = Intersection - MoveStart;
-				Distance = swMul(Distance, swMatrix33AffineInverse(swMatrix33(WorldMatrix)));
+				Distance = swMultiply(Distance, swMatrix33AffineInverse(swMatrix33(WorldMatrix)));
 				ActiveModel->UpdateMoveTool(Distance, true, mTrackButton != swTrackButton::Left);
 			}
 			else if (mTrackTool == swTrackTool::MoveXY || mTrackTool == swTrackTool::MoveXZ || mTrackTool == swTrackTool::MoveYZ)
@@ -3474,7 +3474,7 @@ void swView::OnMouseMove()
 				else
 					PlaneNormal = swVector3(1.0f, 0.0f, 0.0f);
 
-				PlaneNormal = swMul30(PlaneNormal, WorldMatrix);
+				PlaneNormal = swMultiply30(PlaneNormal, WorldMatrix);
 				swVector4 Plane(PlaneNormal, -swDot(PlaneNormal, Center));
 				swVector3 Intersection;
 
@@ -3485,7 +3485,7 @@ void swView::OnMouseMove()
 					if (swLineSegmentPlaneIntersection(&MoveStart, MouseDownStart, MouseDownEnd, Plane))
 					{
 						swVector3 Distance = Intersection - MoveStart;
-						Distance = swMul(Distance, swMatrix33AffineInverse(swMatrix33(WorldMatrix)));
+						Distance = swMultiply(Distance, swMatrix33AffineInverse(swMatrix33(WorldMatrix)));
 						ActiveModel->UpdateMoveTool(Distance, true, mTrackButton != swTrackButton::Left);
 					}
 				}
@@ -3510,7 +3510,7 @@ void swView::OnMouseMove()
 				else
 					Direction = swVector3(-1.0f, 0.0f, 0.0f);
 
-				Direction = swMul30(Direction, WorldMatrix);
+				Direction = swMultiply30(Direction, WorldMatrix);
 
 				swVector3 Intersection;
 				swClosestPointsBetweenLines(Center, Center + Direction, CurrentStart, CurrentEnd, &Intersection, nullptr);
@@ -3570,16 +3570,16 @@ void swView::OnMouseMove()
 
 			swMatrix44 WorldMatrix = swMatrix44(RelativeRotation, OverlayCenter);
 			if (ActiveModel != mModel)
-				WorldMatrix = swMul(WorldMatrix, mActiveSubmodelTransform);
+				WorldMatrix = swMultiply(WorldMatrix, mActiveSubmodelTransform);
 
 			const swVector3 ScreenCenter = ProjectPoint(WorldMatrix.GetTranslation());
 			const float MouseAngle = atan2f((float)mMouseY - ScreenCenter[1], (float)mMouseX - ScreenCenter[0]);
 			float Angle = mCameraRotationLastMouseAngle - MouseAngle;
 
 			if (Angle > SW_PI)
-				Angle -= SW_2PI;
+				Angle -= SW_TWO_PI;
 			else if (Angle < -SW_PI)
-				Angle += SW_2PI;
+				Angle += SW_TWO_PI;
 
 			mCameraRotationAngle += Angle;
 			mCameraRotationLastMouseAngle = MouseAngle;
@@ -3604,13 +3604,13 @@ void swView::OnMouseMove()
 
 			// The rings rotate with the current gizmo frame, so derive the displayed
 			// axis from the current transform before determining its screen direction.
-			swVector3 DisplayAxis = swNormalize(swMul30(Axis, WorldMatrix));
+			swVector3 DisplayAxis = swNormalize(swMultiply30(Axis, WorldMatrix));
 			if (WorldMatrix.Determinant() < 0.0f)
 				DisplayAxis = -DisplayAxis;
 
 			const swVector3 CameraAxis = swNormalize(mCamera->mTargetPosition - mCamera->mPosition);
 			const float AxisDirection = swDot(DisplayAxis, CameraAxis) < 0.0f ? -1.0f : 1.0f;
-			ActiveModel->UpdateRotateTool(Axis, AxisDirection * mCameraRotationAngle * SW_RTOD, mTrackButton != swTrackButton::Left, true);
+			ActiveModel->UpdateRotateTool(Axis, AxisDirection * mCameraRotationAngle * SW_RADIANS_TO_DEGREES, mTrackButton != swTrackButton::Left, true);
 		}
 		break;
 
@@ -3624,11 +3624,11 @@ void swView::OnMouseMove()
 			{
 				const float Angle = atan2f(AxisLength, swClamp(swDot(mTrackballVector, CurrentVector), -1.0f, 1.0f));
 				const swMatrix44 CameraWorldMatrix = swMatrix44AffineInverse(mCamera->mWorldView);
-				swVector3 RotationAxis = swNormalize(swMul30(LocalAxis, CameraWorldMatrix));
+				swVector3 RotationAxis = swNormalize(swMultiply30(LocalAxis, CameraWorldMatrix));
 				if (ActiveModel != mModel)
 				{
 					const swMatrix44 ActiveSubmodelInverse = swMatrix44AffineInverse(mActiveSubmodelTransform);
-					RotationAxis = swNormalize(swMul30(RotationAxis, ActiveSubmodelInverse));
+					RotationAxis = swNormalize(swMultiply30(RotationAxis, ActiveSubmodelInverse));
 
 					if (ActiveSubmodelInverse.Determinant() < 0.0f)
 						RotationAxis = -RotationAxis;
@@ -3653,16 +3653,16 @@ void swView::OnMouseMove()
 				}
 				else
 				{
-					mTrackballPendingRotation = swMul(mTrackballPendingRotation, IncrementalRotation);
+					mTrackballPendingRotation = swMultiply(mTrackballPendingRotation, IncrementalRotation);
 					mTrackballHasPendingRotation = true;
 					const swVector4 AxisAngle = swMatrix44ToAxisAngle(swMatrix44(mTrackballPendingRotation, swVector3(0.0f, 0.0f, 0.0f)));
-					const float SnappedAngle = ActiveModel->SnapRotation(swVector3(AxisAngle[3] * SW_RTOD, 0.0f, 0.0f))[0];
+					const float SnappedAngle = ActiveModel->SnapRotation(swVector3(AxisAngle[3] * SW_RADIANS_TO_DEGREES, 0.0f, 0.0f))[0];
 
 					if (SnappedAngle != 0.0f)
 					{
-						const swMatrix33 SnappedRotation = swMatrix33FromAxisAngle(swVector3(AxisAngle), SnappedAngle * SW_DTOR);
+						const swMatrix33 SnappedRotation = swMatrix33FromAxisAngle(swVector3(AxisAngle), SnappedAngle * SW_DEGREES_TO_RADIANS);
 						ActiveModel->UpdateRotateTool(SnappedRotation, mTrackButton != swTrackButton::Left, false);
-						mTrackballPendingRotation = swMul(swMatrix33AffineInverse(SnappedRotation), mTrackballPendingRotation);
+						mTrackballPendingRotation = swMultiply(swMatrix33AffineInverse(SnappedRotation), mTrackballPendingRotation);
 						mTrackballHasPendingRotation = swMatrix44ToAxisAngle(swMatrix44(mTrackballPendingRotation, swVector3(0.0f, 0.0f, 0.0f)))[3] > 0.000001f;
 					}
 				}
@@ -3680,7 +3680,7 @@ void swView::OnMouseMove()
 
 			swMatrix44 WorldMatrix = swMatrix44(RelativeRotation, OverlayCenter);
 			if (ActiveModel != mModel)
-				WorldMatrix = swMul(WorldMatrix, mActiveSubmodelTransform);
+				WorldMatrix = swMultiply(WorldMatrix, mActiveSubmodelTransform);
 
 			const swVector3 ScreenCenter = ProjectPoint(WorldMatrix.GetTranslation());
 			const float MouseAngle = atan2f((float)mMouseY - ScreenCenter[1], (float)mMouseX - ScreenCenter[0]);
@@ -3689,9 +3689,9 @@ void swView::OnMouseMove()
 			float Angle = mCameraRotationLastMouseAngle - MouseAngle;
 
 			if (Angle > SW_PI)
-				Angle -= SW_2PI;
+				Angle -= SW_TWO_PI;
 			else if (Angle < -SW_PI)
-				Angle += SW_2PI;
+				Angle += SW_TWO_PI;
 
 			mCameraRotationAngle += Angle;
 			mCameraRotationLastMouseAngle = MouseAngle;
@@ -3700,13 +3700,13 @@ void swView::OnMouseMove()
 			if (ActiveModel != mModel)
 			{
 				const swMatrix44 ActiveSubmodelInverse = swMatrix44AffineInverse(mActiveSubmodelTransform);
-				CameraAxis = swNormalize(swMul30(CameraAxis, ActiveSubmodelInverse));
+				CameraAxis = swNormalize(swMultiply30(CameraAxis, ActiveSubmodelInverse));
 
 				if (ActiveSubmodelInverse.Determinant() < 0.0f)
 					CameraAxis = -CameraAxis;
 			}
 
-			ActiveModel->UpdateRotateTool(CameraAxis, mCameraRotationAngle * SW_RTOD, mTrackButton != swTrackButton::Left, false);
+			ActiveModel->UpdateRotateTool(CameraAxis, mCameraRotationAngle * SW_RADIANS_TO_DEGREES, mTrackButton != swTrackButton::Left, false);
 		}
 		break;
 
@@ -3751,7 +3751,7 @@ void swView::OnMouseMove()
 		break;
 
 	case swTrackTool::Roll:
-		ActiveModel->UpdateRollTool(mCamera, 2.0f * MouseSensitivity * (mMouseX - mMouseDownX) * SW_DTOR);
+		ActiveModel->UpdateRollTool(mCamera, 2.0f * MouseSensitivity * (mMouseX - mMouseDownX) * SW_DEGREES_TO_RADIANS);
 		break;
 
 	case swTrackTool::ZoomRegion:
@@ -3774,7 +3774,7 @@ void swView::OnMouseLeave()
 		swModel* ActiveModel = GetActiveModel();
 
 		if (ActiveModel)
-			ActiveModel->SetPreviewInsertPieceInfo(std::vector<swInsertPieceInfo>());
+			ActiveModel->SetPreviewInsertPieceInfo(std::vector<swInsertPieceInformation>());
 	}
 }
 

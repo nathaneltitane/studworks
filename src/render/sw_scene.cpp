@@ -1,11 +1,11 @@
 #include "sw_global.h"
 #include "sw_scene.h"
 #include "sw_context.h"
-#include "sw_piecedata.h"
+#include "sw_piece_data.h"
 #include "sw_texture.h"
 #include "sw_library.h"
 #include "sw_application.h"
-#include "object.h"
+#include "sw_object.h"
 #include "sw_colors.h"
 
 swScene::swScene()
@@ -68,7 +68,7 @@ void swScene::AddMesh(swMesh* Mesh, const swMatrix44& WorldMatrix, int ColorInde
 	RenderMesh.Mesh = Mesh;
 	RenderMesh.ColorIndex = ColorIndex;
 	RenderMesh.State = State;
-	const float Distance = fabsf(swMul31(WorldMatrix[3], mViewMatrix).z) - mMeshLODDistance;
+	const float Distance = fabsf(swMultiply31(WorldMatrix[3], mViewMatrix).z) - mMeshLODDistance;
 	RenderMesh.LodIndex = mAllowLOD ? RenderMesh.Mesh->GetLodIndex(Distance) : SW_MESH_LOD_HIGH;
 
 	const bool ForceTranslucent = (mTranslucentFade && State == swRenderMeshState::Faded);
@@ -99,7 +99,7 @@ void swScene::AddMesh(swMesh* Mesh, const swMatrix44& WorldMatrix, int ColorInde
 				continue;
 
 			const swVector3 Center = (Section->BoundingBox.Min + Section->BoundingBox.Max) / 2;
-			const float InstanceDistance = fabsf(swMul31(swMul31(Center, WorldMatrix), mViewMatrix).z);
+			const float InstanceDistance = fabsf(swMultiply31(swMultiply31(Center, WorldMatrix), mViewMatrix).z);
 
 			swTranslucentMeshInstance& Instance = mTranslucentMeshes.emplace_back();
 			Instance.Section = Section;

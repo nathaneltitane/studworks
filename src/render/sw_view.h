@@ -1,12 +1,12 @@
 #pragma once
 
-#include "sw_assettypes.h"
+#include "sw_asset_types.h"
 #include "sw_context.h"
 #include "sw_math.h"
 #include "sw_commands.h"
 #include "sw_result.h"
 
-struct swInsertPieceInfo;
+struct swInsertPieceInformation;
 enum class swCameraProjection;
 
 enum class swDragState
@@ -103,7 +103,7 @@ enum class swViewType
 	Count
 };
 
-struct swFindReplaceParams
+struct swFindReplaceParameters
 {
 	swPieceData* FindPieceData = nullptr;
 	QString FindString;
@@ -125,7 +125,7 @@ public:
 	swView& operator=(const swView&) = delete;
 	swView& operator=(swView&&) = delete;
 
-	static swFindReplaceParams& GetFindReplaceParams()
+	static swFindReplaceParameters& GetFindReplaceParams()
 	{
 		return mFindReplaceParams;
 	}
@@ -302,7 +302,7 @@ public:
 	float GetOverlayScale() const;
 	swVector3 GetMoveDirection(const swVector3& Direction) const;
 	void UpdatePiecePreview();
-	std::pair<std::vector<swInsertPieceInfo>, bool> GetMouseInsertPieceInfo(bool IgnoreSelected, bool AllowNewPieces, const swPieceDataRef& PieceData, swPiece* MovingPiece) const;
+	std::pair<std::vector<swInsertPieceInformation>, bool> GetMouseInsertPieceInfo(bool IgnoreSelected, bool AllowNewPieces, const swPieceDataReference& PieceData, swPiece* MovingPiece) const;
 	swVector3 GetCameraLightInsertPosition() const;
 	void GetRayUnderPointer(swVector3& Start, swVector3& End) const;
 	swObjectRayTest RayTest(bool PiecesOnly, bool IgnoreSelected) const;
@@ -418,7 +418,7 @@ protected:
 	int mGridSettings[7];
 
 	static QPointer<swFindReplaceWidget> mFindWidget;
-	static swFindReplaceParams mFindReplaceParams;
+	static swFindReplaceParameters mFindReplaceParams;
 
 	static swView* mLastFocusedView;
 	static std::vector<swView*> mViews;

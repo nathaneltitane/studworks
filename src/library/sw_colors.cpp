@@ -7,7 +7,7 @@
 #include <float.h>
 
 std::vector<swColor> gColorList;
-swColorGroup gColorGroups[SW_NUM_COLORGROUPS];
+swColorGroup gColorGroups[SW_COLOR_GROUP_COUNT];
 int gEdgeColor;
 int gDefaultColor;
 
@@ -88,7 +88,7 @@ static std::vector<swColor> swParseColorFile(swFile& File)
 		Color.Translucent = false;
 		Color.Chrome = false;
 		Color.Rubber = false;
-		Color.Group = SW_COLORGROUP_SOLID;
+		Color.Group = SW_COLOR_GROUP_SOLID;
 		Color.Value[0] = FLT_MAX;
 		Color.Value[1] = FLT_MAX;
 		Color.Value[2] = FLT_MAX;
@@ -155,27 +155,27 @@ static std::vector<swColor> swParseColorFile(swFile& File)
 					Color.Translucent = true;
 
 				if (Value == 128)
-					Color.Group = SW_COLORGROUP_TRANSLUCENT;
+					Color.Group = SW_COLOR_GROUP_TRANSLUCENT;
 				else if (Value != 0)
-					Color.Group = SW_COLORGROUP_SPECIAL;
+					Color.Group = SW_COLOR_GROUP_SPECIAL;
 			}
 			else if (!strcmp(Token, "CHROME"))
 			{
 				Color.Chrome = true;
-				Color.Group = SW_COLORGROUP_SPECIAL;
+				Color.Group = SW_COLOR_GROUP_SPECIAL;
 			}
 			else if (!strcmp(Token, "RUBBER"))
 			{
 				Color.Rubber = true;
-				Color.Group = SW_COLORGROUP_SPECIAL;
+				Color.Group = SW_COLOR_GROUP_SPECIAL;
 			}
 			else if (!strcmp(Token, "PEARLESCENT") || !strcmp(Token, "MATTE_METALIC") || !strcmp(Token, "METAL") || !strcmp(Token, "LUMINANCE"))
 			{
-				Color.Group = SW_COLORGROUP_SPECIAL;
+				Color.Group = SW_COLOR_GROUP_SPECIAL;
 			}
 			else if (!strcmp(Token, "MATERIAL"))
 			{
-				Color.Group = SW_COLORGROUP_SPECIAL;
+				Color.Group = SW_COLOR_GROUP_SPECIAL;
 				break; // Material is always last so ignore it and the rest of the line.
 			}
 		}
@@ -235,7 +235,7 @@ bool swLoadColorFile(swFile& File, swStudStyle StudStyle)
 				FoundStudCylinder = true;
 				break;
 
-			case SW_COLOR_NOCOLOR:
+			case SW_COLOR_NO_COLOR:
 				FoundNoColor = true;
 				break;
 		}
@@ -249,7 +249,7 @@ bool swLoadColorFile(swFile& File, swStudStyle StudStyle)
 		MainColor.Translucent = false;
 		MainColor.Chrome = false;
 		MainColor.Rubber = false;
-		MainColor.Group = SW_COLORGROUP_SOLID;
+		MainColor.Group = SW_COLOR_GROUP_SOLID;
 		MainColor.Value[0] = 1.0f;
 		MainColor.Value[1] = 1.0f;
 		MainColor.Value[2] = 0.5f;
@@ -272,7 +272,7 @@ bool swLoadColorFile(swFile& File, swStudStyle StudStyle)
 		EdgeColor.Translucent = false;
 		EdgeColor.Chrome = false;
 		EdgeColor.Rubber = false;
-		EdgeColor.Group = SW_NUM_COLORGROUPS;
+		EdgeColor.Group = SW_COLOR_GROUP_COUNT;
 		EdgeColor.Value[0] = 0.5f;
 		EdgeColor.Value[1] = 0.5f;
 		EdgeColor.Value[2] = 0.5f;
@@ -296,7 +296,7 @@ bool swLoadColorFile(swFile& File, swStudStyle StudStyle)
 		StudCylinderColor.Translucent = false;
 		StudCylinderColor.Chrome = false;
 		StudCylinderColor.Rubber = false;
-		StudCylinderColor.Group = SW_NUM_COLORGROUPS;
+		StudCylinderColor.Group = SW_COLOR_GROUP_COUNT;
 		StudCylinderColor.Value = swVector4FromColor(Preferences.mStudCylinderColor);
 		StudCylinderColor.Edge = swVector4FromColor(Preferences.mPartEdgeColor);
 		swstrcpy(StudCylinderColor.Name, "Stud Cylinder Color");
@@ -309,11 +309,11 @@ bool swLoadColorFile(swFile& File, swStudStyle StudStyle)
 	{
 		swColor NoColor;
 
-		NoColor.Code = SW_COLOR_NOCOLOR;
+		NoColor.Code = SW_COLOR_NO_COLOR;
 		NoColor.Translucent = false;
 		NoColor.Chrome = false;
 		NoColor.Rubber = false;
-		NoColor.Group = SW_NUM_COLORGROUPS;
+		NoColor.Group = SW_COLOR_GROUP_COUNT;
 		NoColor.Value[0] = 0.5f;
 		NoColor.Value[1] = 0.5f;
 		NoColor.Value[2] = 0.5f;
@@ -329,9 +329,9 @@ bool swLoadColorFile(swFile& File, swStudStyle StudStyle)
 	}
 
 	for (swColor& Color : gColorList)
-		Color.Group = SW_NUM_COLORGROUPS;
+		Color.Group = SW_COLOR_GROUP_COUNT;
 
-	for (int GroupIdx = 0; GroupIdx < SW_NUM_COLORGROUPS; GroupIdx++)
+	for (int GroupIdx = 0; GroupIdx < SW_COLOR_GROUP_COUNT; GroupIdx++)
 		gColorGroups[GroupIdx].Colors.clear();
 
 	gColorGroups[0].Name = QApplication::tr("Solid", "Colors");
@@ -351,7 +351,7 @@ bool swLoadColorFile(swFile& File, swStudStyle StudStyle)
 		else
 			gColorList[ColorIndex] = Color;
 
-		if (Color.Group != SW_NUM_COLORGROUPS)
+		if (Color.Group != SW_COLOR_GROUP_COUNT)
 			gColorGroups[Color.Group].Colors.push_back(ColorIndex);
 
 		if (Color.Code == 16)
@@ -422,10 +422,10 @@ QString swGetColorToolTip(int ColorIndex)
 	QPainter Painter(&Image);
 	Painter.setPen(Qt::darkGray);
 
-	if (Color->Code != SW_COLOR_NOCOLOR)
+	if (Color->Code != SW_COLOR_NO_COLOR)
 		Painter.drawRect(0, 0, Image.width() - 1, Image.height() - 1);
 	else
-		swDrawNoColorRect(Painter, QRect(0, 0, Image.width() - 1, Image.height() - 1));
+		swDrawNoColorRectangle(Painter, QRect(0, 0, Image.width() - 1, Image.height() - 1));
 
 	Painter.end();
 
@@ -437,7 +437,7 @@ QString swGetColorToolTip(int ColorIndex)
 
 	QString Text;
 
-	if (Color->Code != SW_COLOR_NOCOLOR)
+	if (Color->Code != SW_COLOR_NO_COLOR)
 	{
 		const char* format = "<table><tr><td style=\"vertical-align:middle\"><img src=\"data:image/png;base64,%1\"/></td><td>%2 (%3)</td></tr></table>";
 		Text = QString(format).arg(QString(Buffer.data().toBase64()), gColorList[ColorIndex].Name, QString::number(gColorList[ColorIndex].Code));
@@ -452,7 +452,7 @@ QString swGetColorToolTip(int ColorIndex)
 }
 
 
-void swDrawNoColorRect(QPainter& Painter, const QRect& Rect)
+void swDrawNoColorRectangle(QPainter& Painter, const QRect& Rect)
 {
 	Painter.setBrush(Qt::black);
 	Painter.drawRect(Rect);

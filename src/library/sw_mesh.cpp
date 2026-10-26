@@ -18,15 +18,15 @@ swMesh::~swMesh()
 {
 	free(mVertexData);
 	free(mIndexData);
-	for (int LodIdx = 0; LodIdx < SW_NUM_MESH_LODS; LodIdx++)
+	for (int LodIdx = 0; LodIdx < SW_MESH_LOD_COUNT; LodIdx++)
 	{
 		delete[] mLods[LodIdx].Sections;
 	}
 }
 
-void swMesh::Create(quint16(&NumSections)[SW_NUM_MESH_LODS], int VertexCount, int TexturedVertexCount, int ConditionalVertexCount, int IndexCount)
+void swMesh::Create(quint16(&NumSections)[SW_MESH_LOD_COUNT], int VertexCount, int TexturedVertexCount, int ConditionalVertexCount, int IndexCount)
 {
-	for (int LodIdx = 0; LodIdx < SW_NUM_MESH_LODS; LodIdx++)
+	for (int LodIdx = 0; LodIdx < SW_MESH_LOD_COUNT; LodIdx++)
 	{
 		if (NumSections[LodIdx])
 			mLods[LodIdx].Sections = new swMeshSection[NumSections[LodIdx]];
@@ -55,7 +55,7 @@ void swMesh::Create(quint16(&NumSections)[SW_NUM_MESH_LODS], int VertexCount, in
 
 void swMesh::CreateBox()
 {
-	quint16 NumSections[SW_NUM_MESH_LODS];
+	quint16 NumSections[SW_MESH_LOD_COUNT];
 	memset(NumSections, 0, sizeof(NumSections));
 	NumSections[SW_MESH_LOD_HIGH] = 2;
 
@@ -194,7 +194,7 @@ bool swMesh::MinIntersectDist(const swVector3& Start, const swVector3& End, floa
 				const swVector3& v2 = Verts[Indices[Idx + 1]].Position;
 				const swVector3& v3 = Verts[Indices[Idx + 2]].Position;
 
-				if (swLineTriangleMinIntersection(v1, v2, v3, Start, End, &MinDistance, &Intersection))
+				if (swLineTriangleMinimumIntersection(v1, v2, v3, Start, End, &MinDistance, &Intersection))
 				{
 					Hit = true;
 					TriangleNormal = swCross(v2 - v1, v3 - v1);
@@ -212,7 +212,7 @@ bool swMesh::MinIntersectDist(const swVector3& Start, const swVector3& End, floa
 				const swVector3& v2 = Verts[Indices[Idx + 1]].Position;
 				const swVector3& v3 = Verts[Indices[Idx + 2]].Position;
 
-				if (swLineTriangleMinIntersection(v1, v2, v3, Start, End, &MinDistance, &Intersection))
+				if (swLineTriangleMinimumIntersection(v1, v2, v3, Start, End, &MinDistance, &Intersection))
 				{
 					Hit = true;
 					TriangleNormal = swCross(v2 - v1, v3 - v1);
@@ -433,7 +433,7 @@ void swMesh::ExportWavefrontIndices(swFile& File, int DefaultColorIndex, int Ver
 		ExportWavefrontIndices<GLuint>(File, DefaultColorIndex, VertexOffset);
 }
 
-bool swMesh::FileLoad(swMemFile& File)
+bool swMesh::FileLoad(swMemoryFile& File)
 {
 	quint32 FileId, FileVersion, Flags;
 
@@ -448,13 +448,13 @@ bool swMesh::FileLoad(swMemFile& File)
 		return false;
 
 	quint32 VertexCount, TexturedVertexCount, ConditionalVertexCount, IndexCount;
-	quint16 NumLods, NumSections[SW_NUM_MESH_LODS];
+	quint16 NumLods, NumSections[SW_MESH_LOD_COUNT];
 
 	if (File.ReadU32(&VertexCount, 1) != 1 || File.ReadU32(&TexturedVertexCount, 1) != 1 ||
 		File.ReadU32(&ConditionalVertexCount, 1) != 1 || File.ReadU32(&IndexCount, 1) != 1)
 		return false;
 
-	if (File.ReadU16(&NumLods, 1) != 1 || NumLods != SW_NUM_MESH_LODS || File.ReadU16(NumSections, SW_NUM_MESH_LODS) != SW_NUM_MESH_LODS)
+	if (File.ReadU16(&NumLods, 1) != 1 || NumLods != SW_MESH_LOD_COUNT || File.ReadU16(NumSections, SW_MESH_LOD_COUNT) != SW_MESH_LOD_COUNT)
 		return false;
 
 	const quint64 VertexDataSize = static_cast<quint64>(VertexCount) * sizeof(swVertex) + static_cast<quint64>(TexturedVertexCount) * sizeof(swVertexTextured) + static_cast<quint64>(ConditionalVertexCount) * sizeof(swVertexConditional);
@@ -473,7 +473,7 @@ bool swMesh::FileLoad(swMemFile& File)
 	if ((mVertexDataSize && !mVertexData) || (mIndexDataSize && !mIndexData))
 		return false;
 
-	for (int LodIdx = 0; LodIdx < SW_NUM_MESH_LODS; LodIdx++)
+	for (int LodIdx = 0; LodIdx < SW_MESH_LOD_COUNT; LodIdx++)
 	{
 		for (int SectionIdx = 0; SectionIdx < mLods[LodIdx].NumSections; SectionIdx++)
 		{
@@ -501,10 +501,10 @@ bool swMesh::FileLoad(swMemFile& File)
 
 			if (Length)
 			{
-				if (Length >= SW_TEXTURE_NAME_LEN)
+				if (Length >= SW_TEXTURE_NAME_LENGTH)
 					return false;
 
-				char FileName[SW_TEXTURE_NAME_LEN];
+				char FileName[SW_TEXTURE_NAME_LENGTH];
 
 				if (File.ReadBuffer(FileName, Length) != Length)
 					return false;
@@ -583,7 +583,7 @@ void swMesh::FinalizeSections()
 	}
 }
 
-bool swMesh::FileSave(swMemFile& File)
+bool swMesh::FileSave(swMemoryFile& File)
 {
 	File.WriteU32(SW_MESH_FILE_ID);
 	File.WriteU32(SW_MESH_FILE_VERSION);
@@ -598,11 +598,11 @@ bool swMesh::FileSave(swMemFile& File)
 	File.WriteU32(mConditionalVertexCount);
 	File.WriteU32(mIndexDataSize / (mIndexType == GL_UNSIGNED_SHORT ? 2 : 4));
 
-	File.WriteU16(SW_NUM_MESH_LODS);
-	for (int LodIdx = 0; LodIdx < SW_NUM_MESH_LODS; LodIdx++)
+	File.WriteU16(SW_MESH_LOD_COUNT);
+	for (int LodIdx = 0; LodIdx < SW_MESH_LOD_COUNT; LodIdx++)
 		File.WriteU16(mLods[LodIdx].NumSections);
 
-	for (int LodIdx = 0; LodIdx < SW_NUM_MESH_LODS; LodIdx++)
+	for (int LodIdx = 0; LodIdx < SW_MESH_LOD_COUNT; LodIdx++)
 	{
 		for (int SectionIdx = 0; SectionIdx < mLods[LodIdx].NumSections; SectionIdx++)
 		{

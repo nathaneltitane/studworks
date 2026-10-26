@@ -455,16 +455,16 @@ protected:
 	}
 };
 
-class swMemFile : public swFile
+class swMemoryFile : public swFile
 {
 public:
-	swMemFile();
-	virtual ~swMemFile();
+	swMemoryFile();
+	virtual ~swMemoryFile();
 
-	swMemFile(const swMemFile&) = delete;
-	swMemFile(swMemFile&&) = delete;
-	swMemFile& operator=(const swMemFile&) = delete;
-	swMemFile& operator=(swMemFile&&) = delete;
+	swMemoryFile(const swMemoryFile&) = delete;
+	swMemoryFile(swMemoryFile&&) = delete;
+	swMemoryFile& operator=(const swMemoryFile&) = delete;
+	swMemoryFile& operator=(swMemoryFile&&) = delete;
 
 	long GetPosition() const override;
 	void Seek(qint64 Offset, int From) override;

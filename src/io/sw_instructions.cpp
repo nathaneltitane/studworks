@@ -1,9 +1,9 @@
 #include "sw_global.h"
 #include "sw_instructions.h"
-#include "project.h"
+#include "sw_project.h"
 #include "sw_model.h"
-#include "piece.h"
-#include "sw_piecedata.h"
+#include "sw_piece.h"
+#include "sw_piece_data.h"
 #include "sw_profile.h"
 
 const float swInstructions::mDisplayDPI = 72.0f;

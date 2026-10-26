@@ -57,7 +57,7 @@ void swResetDefaultMouseShortcuts()
 
 void swKeyboardShortcuts::Reset()
 {
-	for (int CommandIdx = 0; CommandIdx < SW_NUM_COMMANDS; CommandIdx++)
+	for (int CommandIdx = 0; CommandIdx < SW_COMMAND_COUNT; CommandIdx++)
 		mShortcuts[CommandIdx] = gCommands[CommandIdx].DefaultShortcut;
 }
 
@@ -75,7 +75,7 @@ bool swKeyboardShortcuts::Save(const QString& FileName)
 
 bool swKeyboardShortcuts::Save(QTextStream& Stream)
 {
-	for (int CommandIdx = 0; CommandIdx < SW_NUM_COMMANDS; CommandIdx++)
+	for (int CommandIdx = 0; CommandIdx < SW_COMMAND_COUNT; CommandIdx++)
 	{
 		if (mShortcuts[CommandIdx].isEmpty())
 			continue;
@@ -102,7 +102,7 @@ bool swKeyboardShortcuts::Load(const QString& FileName)
 
 bool swKeyboardShortcuts::Load(QTextStream& Stream)
 {
-	for (int CommandIdx = 0; CommandIdx < SW_NUM_COMMANDS; CommandIdx++)
+	for (int CommandIdx = 0; CommandIdx < SW_COMMAND_COUNT; CommandIdx++)
 		mShortcuts[CommandIdx].clear();
 
 	for (QString Line = Stream.readLine(); !Line.isNull(); Line = Stream.readLine())
@@ -115,11 +115,11 @@ bool swKeyboardShortcuts::Load(QTextStream& Stream)
 		QString Key = Line.left(Equals);
 
 		int CommandIdx;
-		for (CommandIdx = 0; CommandIdx < SW_NUM_COMMANDS; CommandIdx++)
+		for (CommandIdx = 0; CommandIdx < SW_COMMAND_COUNT; CommandIdx++)
 			if (gCommands[CommandIdx].ID == Key)
 				break;
 
-		if (CommandIdx == SW_NUM_COMMANDS)
+		if (CommandIdx == SW_COMMAND_COUNT)
 			continue;
 
 		mShortcuts[CommandIdx] = Line.mid(Equals + 1);

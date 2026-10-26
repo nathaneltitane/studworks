@@ -1,7 +1,7 @@
 #include "sw_global.h"
 #include "sw_texture.h"
 #include "sw_context.h"
-#include "sw_glextensions.h"
+#include "sw_opengl_extensions.h"
 
 swTexture* gGridTexture;
 
@@ -127,7 +127,7 @@ void swTexture::CreateGridTexture()
 	}
 
 	mRefCount = 1;
-	mFlags = SW_TEXTURE_WRAPU | SW_TEXTURE_WRAPV | SW_TEXTURE_MIPMAPS | SW_TEXTURE_ANISOTROPIC;
+	mFlags = SW_TEXTURE_WRAP_U | SW_TEXTURE_WRAP_V | SW_TEXTURE_MIPMAPS | SW_TEXTURE_ANISOTROPIC;
 	mState = swAssetState::Loading;
 
 	swContext* Context = swContext::GetGlobalOffscreenContext();

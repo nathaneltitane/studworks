@@ -3,34 +3,34 @@
 INCLUDEPATH += $$PWD
 
 SOURCES += \
-	$$PWD/camera.cpp \
-	$$PWD/group.cpp \
+	$$PWD/sw_camera.cpp \
 	$$PWD/sw_filter.cpp \
+	$$PWD/sw_group.cpp \
+	$$PWD/sw_light.cpp \
+	$$PWD/sw_minifigure.cpp \
 	$$PWD/sw_model.cpp \
-	$$PWD/sw_modelhistory.cpp \
-	$$PWD/sw_objectproperty.cpp \
+	$$PWD/sw_model_history.cpp \
+	$$PWD/sw_object.cpp \
+	$$PWD/sw_object_property.cpp \
+	$$PWD/sw_piece.cpp \
+	$$PWD/sw_project.cpp \
 	$$PWD/sw_string.cpp \
-	$$PWD/sw_traintrack.cpp \
-	$$PWD/light.cpp \
-	$$PWD/minifig.cpp \
-	$$PWD/object.cpp \
-	$$PWD/piece.cpp \
-	$$PWD/project.cpp
+	$$PWD/sw_train_track.cpp
 
 HEADERS += \
-	$$PWD/camera.h \
-	$$PWD/group.h \
+	$$PWD/sw_camera.h \
 	$$PWD/sw_filter.h \
+	$$PWD/sw_group.h \
+	$$PWD/sw_light.h \
 	$$PWD/sw_math.h \
+	$$PWD/sw_minifigure.h \
 	$$PWD/sw_model.h \
-	$$PWD/sw_modelhistory.h \
-	$$PWD/sw_objecthistory.h \
-	$$PWD/sw_objectproperty.h \
+	$$PWD/sw_model_history.h \
+	$$PWD/sw_object.h \
+	$$PWD/sw_object_history.h \
+	$$PWD/sw_object_property.h \
+	$$PWD/sw_piece.h \
+	$$PWD/sw_project.h \
 	$$PWD/sw_result.h \
 	$$PWD/sw_string.h \
-	$$PWD/sw_traintrack.h \
-	$$PWD/light.h \
-	$$PWD/minifig.h \
-	$$PWD/object.h \
-	$$PWD/piece.h \
-	$$PWD/project.h
+	$$PWD/sw_train_track.h

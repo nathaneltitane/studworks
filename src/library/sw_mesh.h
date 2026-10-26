@@ -1,7 +1,7 @@
 #pragma once
 
 #include "sw_math.h"
-#include "sw_assettypes.h"
+#include "sw_asset_types.h"
 
 enum swMeshPrimitiveType
 {
@@ -9,7 +9,7 @@ enum swMeshPrimitiveType
 	SW_MESH_TRIANGLES = 0x02,
 	SW_MESH_TEXTURED_TRIANGLES = 0x08,
 	SW_MESH_CONDITIONAL_LINES = 0x10,
-	SW_MESH_NUM_PRIMITIVE_TYPES
+	SW_MESH_PRIMITIVE_TYPE_COUNT
 };
 
 struct swVertex
@@ -39,7 +39,7 @@ struct swMeshSection
 	int DrawOffset; // Index-buffer byte offset, or first conditional vertex.
 	int DrawCount;  // Index count, or conditional vertex count.
 	swMeshPrimitiveType PrimitiveType;
-	swTextureRef Texture;
+	swTextureReference Texture;
 	QString TextureName;
 	swBoundingBox BoundingBox;
 	float Radius;
@@ -55,7 +55,7 @@ enum
 {
 	SW_MESH_LOD_HIGH,
 	SW_MESH_LOD_LOW,
-	SW_NUM_MESH_LODS
+	SW_MESH_LOD_COUNT
 };
 
 enum class swMeshFlag
@@ -82,11 +82,11 @@ public:
 	swMesh& operator=(const swMesh&) = delete;
 	swMesh& operator=(swMesh&&) = delete;
 
-	void Create(quint16 (&NumSections)[SW_NUM_MESH_LODS], int VertexCount, int TexturedVertexCount, int ConditionalVertexCount, int IndexCount);
+	void Create(quint16 (&NumSections)[SW_MESH_LOD_COUNT], int VertexCount, int TexturedVertexCount, int ConditionalVertexCount, int IndexCount);
 	void CreateBox();
 
-	bool FileLoad(swMemFile& File);
-	bool FileSave(swMemFile& File);
+	bool FileLoad(swMemoryFile& File);
+	bool FileSave(swMemoryFile& File);
 
 	// Set colors and flags, then sort sections using the current palette on the UI thread.
 	// Converts stored color codes to indices once, before publishing the mesh.
@@ -125,7 +125,7 @@ public:
 		return reinterpret_cast<swVertexConditional*>(static_cast<char*>(mVertexData) + mNumVertices * sizeof(swVertex) + mNumTexturedVertices * sizeof(swVertexTextured));
 	}
 
-	swMeshLod mLods[SW_NUM_MESH_LODS];
+	swMeshLod mLods[SW_MESH_LOD_COUNT];
 	swBoundingBox mBoundingBox;
 	float mRadius = 0.0f;
 	swMeshFlags mFlags;

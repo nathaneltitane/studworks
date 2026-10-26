@@ -51,7 +51,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Save Model</b></p><p>Save the model and its submodels to disk. The first save asks for a filename. Use Save As to save a separate copy under another name.</p>"),
 		"Ctrl+S"
 	},
-	// SW_FILE_SAVEAS
+	// SW_FILE_SAVE_AS
 	{
 		QT_TRANSLATE_NOOP("Action", "File.SaveAs"),
 		QT_TRANSLATE_NOOP("Menu", "Save &As..."),
@@ -1348,7 +1348,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
-	// SW_VIEW_TOOLBAR_MINIFIG
+	// SW_VIEW_TOOLBAR_MINIFIGURE
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Toolbars.Minifigure"),
 		QT_TRANSLATE_NOOP("Menu", "Minifigure"),
@@ -1356,7 +1356,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
-	// SW_VIEW_FULLSCREEN
+	// SW_VIEW_FULL_SCREEN
 	{
 		QT_TRANSLATE_NOOP("Action", "View.FullScreen"),
 		QT_TRANSLATE_NOOP("Menu", "&Full Screen"),
@@ -1404,7 +1404,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
-	// SW_VIEW_PROJECTION_ORTHO
+	// SW_VIEW_PROJECTION_ORTHOGRAPHIC
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Projection.Orthographic"),
 		QT_TRANSLATE_NOOP("Menu", "&Orthographic"),
@@ -1748,7 +1748,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
-	// SW_VIEW_TOGGLE_PREVIEW_SYNC_RENDERING
+	// SW_VIEW_TOGGLE_PREVIEW_SYNCHRONIZED_RENDERING
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Preview.ToggleSyncRendering"),
 		QT_TRANSLATE_NOOP("Menu", "Preview Uses Model View Settings"),
@@ -1796,7 +1796,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
-	// SW_VIEW_TOGGLE_PIECES_SYNC_RENDERING
+	// SW_VIEW_TOGGLE_PIECES_SYNCHRONIZED_RENDERING
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Pieces.ToggleSyncRendering"),
 		QT_TRANSLATE_NOOP("Menu", "Pieces Use Model View Settings"),
@@ -1844,7 +1844,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
-	// SW_VIEW_TOGGLE_MINIFIG_SYNC_RENDERING
+	// SW_VIEW_TOGGLE_MINIFIGURE_SYNCHRONIZED_RENDERING
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Minifig.ToggleSyncRendering"),
 		QT_TRANSLATE_NOOP("Menu", "Minifigure Uses Model View Settings"),
@@ -1852,7 +1852,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
-	// SW_VIEW_MINIFIG_SHADING_WIREFRAME
+	// SW_VIEW_MINIFIGURE_SHADING_WIREFRAME
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Minifig.Shade.Wireframe"),
 		QT_TRANSLATE_NOOP("Menu", "Minifigure Wireframe"),
@@ -1860,7 +1860,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
-	// SW_VIEW_MINIFIG_SHADING_FLAT
+	// SW_VIEW_MINIFIGURE_SHADING_FLAT
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Minifig.Shade.Flat"),
 		QT_TRANSLATE_NOOP("Menu", "Minifigure Flat Shading"),
@@ -1868,7 +1868,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
-	// SW_VIEW_MINIFIG_SHADING_DEFAULT_LIGHTS
+	// SW_VIEW_MINIFIGURE_SHADING_DEFAULT_LIGHTS
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Minifig.Shade.DefaultLights"),
 		QT_TRANSLATE_NOOP("Menu", "Minifigure Default Lights"),
@@ -1876,7 +1876,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
-	// SW_VIEW_TOGGLE_MINIFIG_EDGE_LINES
+	// SW_VIEW_TOGGLE_MINIFIGURE_EDGE_LINES
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Minifig.ToggleEdgeLines"),
 		QT_TRANSLATE_NOOP("Menu", "Minifigure Edge Lines"),
@@ -1884,7 +1884,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
-	// SW_VIEW_TOGGLE_MINIFIG_CONDITIONAL_LINES
+	// SW_VIEW_TOGGLE_MINIFIGURE_CONDITIONAL_LINES
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Minifig.ToggleConditionalLines"),
 		QT_TRANSLATE_NOOP("Menu", "Minifigure Conditional Lines"),
@@ -2028,7 +2028,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
-	// SW_PIECE_MOVE_PLUSX
+	// SW_PIECE_MOVE_PLUS_X
 	{
 		QT_TRANSLATE_NOOP("Action", "Piece.Move.PlusX"),
 		QT_TRANSLATE_NOOP("Menu", "Move +X"),
@@ -2036,7 +2036,7 @@ const swCommand gCommands[] =
 		"",
 		"Down"
 	},
-	// SW_PIECE_MOVE_MINUSX
+	// SW_PIECE_MOVE_MINUS_X
 	{
 		QT_TRANSLATE_NOOP("Action", "Piece.Move.MinusX"),
 		QT_TRANSLATE_NOOP("Menu", "Move -X"),
@@ -2044,7 +2044,7 @@ const swCommand gCommands[] =
 		"",
 		"Up"
 	},
-	// SW_PIECE_MOVE_PLUSY
+	// SW_PIECE_MOVE_PLUS_Y
 	{
 		QT_TRANSLATE_NOOP("Action", "Piece.Move.PlusY"),
 		QT_TRANSLATE_NOOP("Menu", "Move +Y"),
@@ -2052,7 +2052,7 @@ const swCommand gCommands[] =
 		"",
 		"Right"
 	},
-	// SW_PIECE_MOVE_MINUSY
+	// SW_PIECE_MOVE_MINUS_Y
 	{
 		QT_TRANSLATE_NOOP("Action", "Piece.Move.MinusY"),
 		QT_TRANSLATE_NOOP("Menu", "Move -Y"),
@@ -2060,7 +2060,7 @@ const swCommand gCommands[] =
 		"",
 		"Left"
 	},
-	// SW_PIECE_MOVE_PLUSZ
+	// SW_PIECE_MOVE_PLUS_Z
 	{
 		QT_TRANSLATE_NOOP("Action", "Piece.Move.PlusZ"),
 		QT_TRANSLATE_NOOP("Menu", "Move +Z"),
@@ -2068,7 +2068,7 @@ const swCommand gCommands[] =
 		"",
 		"PgUp"
 	},
-	// SW_PIECE_MOVE_MINUSZ
+	// SW_PIECE_MOVE_MINUS_Z
 	{
 		QT_TRANSLATE_NOOP("Action", "Piece.Move.MinusZ"),
 		QT_TRANSLATE_NOOP("Menu", "Move -Z"),
@@ -2076,7 +2076,7 @@ const swCommand gCommands[] =
 		"",
 		"PgDown"
 	},
-	// SW_PIECE_ROTATE_PLUSX
+	// SW_PIECE_ROTATE_PLUS_X
 	{
 		QT_TRANSLATE_NOOP("Action", "Piece.Rotate.PlusX"),
 		QT_TRANSLATE_NOOP("Menu", "Rotate +X"),
@@ -2084,7 +2084,7 @@ const swCommand gCommands[] =
 		"",
 		"Shift+Down"
 	},
-	// SW_PIECE_ROTATE_MINUSX
+	// SW_PIECE_ROTATE_MINUS_X
 	{
 		QT_TRANSLATE_NOOP("Action", "Piece.Rotate.MinusX"),
 		QT_TRANSLATE_NOOP("Menu", "Rotate -X"),
@@ -2092,7 +2092,7 @@ const swCommand gCommands[] =
 		"",
 		"Shift+Up"
 	},
-	// SW_PIECE_ROTATE_PLUSY
+	// SW_PIECE_ROTATE_PLUS_Y
 	{
 		QT_TRANSLATE_NOOP("Action", "Piece.Rotate.PlusY"),
 		QT_TRANSLATE_NOOP("Menu", "Rotate +Y"),
@@ -2100,7 +2100,7 @@ const swCommand gCommands[] =
 		"",
 		"Shift+Right"
 	},
-	// SW_PIECE_ROTATE_MINUSY
+	// SW_PIECE_ROTATE_MINUS_Y
 	{
 		QT_TRANSLATE_NOOP("Action", "Piece.Rotate.MinusY"),
 		QT_TRANSLATE_NOOP("Menu", "Rotate -Y"),
@@ -2108,7 +2108,7 @@ const swCommand gCommands[] =
 		"",
 		"Shift+Left"
 	},
-	// SW_PIECE_ROTATE_PLUSZ
+	// SW_PIECE_ROTATE_PLUS_Z
 	{
 		QT_TRANSLATE_NOOP("Action", "Piece.Rotate.PlusZ"),
 		QT_TRANSLATE_NOOP("Menu", "Rotate +Z"),
@@ -2116,7 +2116,7 @@ const swCommand gCommands[] =
 		"",
 		"Shift+PgUp"
 	},
-	// SW_PIECE_ROTATE_MINUSZ
+	// SW_PIECE_ROTATE_MINUS_Z
 	{
 		QT_TRANSLATE_NOOP("Action", "Piece.Rotate.MinusZ"),
 		QT_TRANSLATE_NOOP("Menu", "Rotate -Z"),
@@ -2124,7 +2124,7 @@ const swCommand gCommands[] =
 		"",
 		"Shift+PgDown"
 	},
-	// SW_PIECE_MINIFIG_WIZARD
+	// SW_PIECE_MINIFIGURE_WIZARD
 	{
 		QT_TRANSLATE_NOOP("Action", "Piece.MinifigWizard"),
 		QT_TRANSLATE_NOOP("Menu", "Configure &Minifigure..."),
@@ -2620,7 +2620,7 @@ const swCommand gCommands[] =
 		"",
 		"Shift+F1"
 	},
-	// SW_HELP_HOMEPAGE
+	// SW_HELP_HOME_PAGE
 	{
 		QT_TRANSLATE_NOOP("Action", "Help.HomePage"),
 		QT_TRANSLATE_NOOP("Menu", "StudWorks &Home Page"),
@@ -2702,7 +2702,7 @@ const swCommand gCommands[] =
 	}
 };
 
-SW_ARRAY_SIZE_CHECK(gCommands, SW_NUM_COMMANDS);
+SW_ARRAY_SIZE_CHECK(gCommands, SW_COMMAND_COUNT);
 
 const char* gToolNames[] =
 {

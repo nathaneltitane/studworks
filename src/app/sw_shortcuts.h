@@ -11,7 +11,7 @@ public:
 	bool Load(const QString& FileName);
 	bool Load(QTextStream& Stream);
 
-	QString mShortcuts[SW_NUM_COMMANDS];
+	QString mShortcuts[SW_COMMAND_COUNT];
 };
 
 extern swKeyboardShortcuts gKeyboardShortcuts;

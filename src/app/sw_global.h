@@ -59,11 +59,11 @@ class QPrinter;
 #endif
 
 // Old defines and declarations.
-#define SW_MAXPATH 1024
-#define SW_MAXNAME 1000
+#define SW_MAXIMUM_PATH 1024
+#define SW_MAXIMUM_NAME 1000
 
 typedef quint32 swStep;
-#define SW_STEP_MAX 0xffffffff
+#define SW_STEP_MAXIMUM 0xffffffff
 
 // Version number.
 #define SW_VERSION_MAJOR 26
@@ -84,11 +84,11 @@ enum class swLightAreaShape;
 class swGroup;
 class swModelHistory;
 class swPieceData;
-class swSynthInfo;
-class swTrainTrackInfo;
+class swSynthesisInformation;
+class swTrainTrackInformation;
 typedef std::map<const swPieceData*, std::map<int, int>> swPartsList;
 struct swModelPartsEntry;
-struct swMinifig;
+struct swMinifigure;
 enum class swViewpoint;
 enum class swShadingMode;
 enum class swStudStyle;
@@ -104,7 +104,7 @@ class swMatrix33;
 class swMatrix44;
 
 class swFindReplaceWidget;
-struct swFindReplaceParams;
+struct swFindReplaceParameters;
 class swCollapsibleWidget;
 class swViewWidget;
 class swView;
@@ -128,7 +128,7 @@ class swTextureManager;
 class swPieceManager;
 
 class swFile;
-class swMemFile;
+class swMemoryFile;
 class swDiskFile;
 
 #endif

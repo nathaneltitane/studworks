@@ -2,9 +2,9 @@
 
 #include "sw_math.h"
 
-#define SW_MAX_COLOR_NAME 64
+#define SW_MAXIMUM_COLOR_NAME 64
 #define SW_COLOR_DIRECT 0x80000000
-#define SW_COLOR_NOCOLOR 0xffffffff
+#define SW_COLOR_NO_COLOR 0xffffffff
 #define SW_STUD_CYLINDER_COLOR_CODE 4242
 
 struct swColor
@@ -17,16 +17,16 @@ struct swColor
 	bool Adjusted = false;
 	swVector4 Value;
 	swVector4 Edge;
-	char Name[SW_MAX_COLOR_NAME];
-	char SafeName[SW_MAX_COLOR_NAME];
+	char Name[SW_MAXIMUM_COLOR_NAME];
+	char SafeName[SW_MAXIMUM_COLOR_NAME];
 };
 
 enum
 {
-	SW_COLORGROUP_SOLID,
-	SW_COLORGROUP_TRANSLUCENT,
-	SW_COLORGROUP_SPECIAL,
-	SW_NUM_COLORGROUPS
+	SW_COLOR_GROUP_SOLID,
+	SW_COLOR_GROUP_TRANSLUCENT,
+	SW_COLOR_GROUP_SPECIAL,
+	SW_COLOR_GROUP_COUNT
 };
 
 struct swColorGroup
@@ -36,7 +36,7 @@ struct swColorGroup
 };
 
 extern std::vector<swColor> gColorList;
-extern swColorGroup gColorGroups[SW_NUM_COLORGROUPS];
+extern swColorGroup gColorGroups[SW_COLOR_GROUP_COUNT];
 extern int gEdgeColor;
 extern int gDefaultColor;
 
@@ -77,4 +77,4 @@ inline bool swIsColorRubber(size_t ColorIndex)
 }
 
 QString swGetColorToolTip(int ColorIndex);
-void swDrawNoColorRect(QPainter& Painter, const QRect& Rect);
+void swDrawNoColorRectangle(QPainter& Painter, const QRect& Rect);

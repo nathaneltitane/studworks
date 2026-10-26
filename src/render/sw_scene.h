@@ -131,7 +131,7 @@ public:
 
 	swMatrix44 ApplyActiveSubmodelTransform(const swMatrix44& WorldMatrix) const
 	{
-		return !mActiveSubmodelInstance ? WorldMatrix : swMul(WorldMatrix, mActiveSubmodelTransform);
+		return !mActiveSubmodelInstance ? WorldMatrix : swMultiply(WorldMatrix, mActiveSubmodelTransform);
 	}
 
 	void Begin(const swMatrix44& ViewMatrix);
