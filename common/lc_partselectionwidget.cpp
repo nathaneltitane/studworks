@@ -1007,21 +1007,25 @@ lcPartSelectionWidget::lcPartSelectionWidget(bool IsPopup, QWidget* Parent)
 	mSplitter->setOrientation(Qt::Vertical);
 	mSplitter->setChildrenCollapsible(false);
 
+	// The handle leaves the gap a standard layout leaves between rows, like everywhere else in the panels.
+	mSplitter->setHandleWidth(lcGetLayoutSpacing(this, Qt::Vertical));
+
 	QWidget* CategoriesGroupWidget = new QWidget(mSplitter);
 
+	// Both halves sit in the splitter inside the panel layout, which provides the margins.
 	QVBoxLayout* CategoriesLayout = new QVBoxLayout();
 	CategoriesLayout->setContentsMargins(0, 0, 0, 0);
 	CategoriesGroupWidget->setLayout(CategoriesLayout);
 
-	QToolBar* FilterCategoriesToolBar = lcCreatePanelToolBar(CategoriesGroupWidget);
-	CategoriesLayout->addWidget(FilterCategoriesToolBar);
+	QWidget* FilterCategoriesRow = lcCreatePanelRow(CategoriesGroupWidget);
+	CategoriesLayout->addWidget(FilterCategoriesRow);
 
 	mFilterCategoriesWidget = new QLineEdit(CategoriesGroupWidget);
 	mFilterCategoriesWidget->setPlaceholderText(tr("Filter Categories"));
 	mFilterCategoriesWidget->setAccessibleName(tr("Filter Categories"));
 	mFilterCategoriesWidget->setToolTip(tr("Filter category names to narrow the category list."));
 	lcSetupPanelEdit(mFilterCategoriesWidget);
-	FilterCategoriesToolBar->addWidget(mFilterCategoriesWidget);
+	lcAddPanelRowWidget(FilterCategoriesRow, mFilterCategoriesWidget);
 
 	mFilterCaseAction = new QAction();
 	mFilterCaseAction->setIcon(QIcon(":/resources/case.png"));
@@ -1030,8 +1034,7 @@ lcPartSelectionWidget::lcPartSelectionWidget(bool IsPopup, QWidget* Parent)
 	mFilterCaseAction->setChecked(false);
 	connect(mFilterCaseAction, &QAction::triggered, this, &lcPartSelectionWidget::FilterCaseTriggered);
 
-	FilterCategoriesToolBar->addAction(mFilterCaseAction);
-	lcSetupPanelAction(FilterCategoriesToolBar, mFilterCaseAction);
+	lcAddPanelActionButton(FilterCategoriesRow, mFilterCaseAction);
 
 	mCategoriesWidget = new QTreeWidget(mSplitter);
 	mCategoriesWidget->setHeaderHidden(true);
@@ -1048,18 +1051,18 @@ lcPartSelectionWidget::lcPartSelectionWidget(bool IsPopup, QWidget* Parent)
 	PartsLayout->setContentsMargins(0, 0, 0, 0);
 	PartsGroupWidget->setLayout(PartsLayout);
 
-	QToolBar* SearchToolBar = lcCreatePanelToolBar(PartsGroupWidget);
-	PartsLayout->addWidget(SearchToolBar);
+	QWidget* SearchRow = lcCreatePanelRow(PartsGroupWidget);
+	PartsLayout->addWidget(SearchRow);
 
 	mFilterWidget = new QLineEdit(PartsGroupWidget);
 	mFilterWidget->setPlaceholderText(tr("Filter Pieces"));
 	mFilterWidget->setAccessibleName(tr("Filter Pieces"));
 	mFilterWidget->setToolTip(tr("Filter the displayed pieces using the matching options."));
 	lcSetupPanelEdit(mFilterWidget);
-	SearchToolBar->addWidget(mFilterWidget);
+	lcAddPanelRowWidget(SearchRow, mFilterWidget);
 
 	QMenu* OptionsMenu = new QMenu(this);
-	lcAddPanelOptionsButton(SearchToolBar, OptionsMenu, tr("Configure piece filtering and list display."), tr("Piece List Options"));
+	lcAddPanelOptionsButton(SearchRow, OptionsMenu, tr("Configure piece filtering and list display."), tr("Piece List Options"));
 	connect(OptionsMenu, &QMenu::aboutToShow, this, &lcPartSelectionWidget::OptionsMenuAboutToShow);
 
 	mPartsWidget = new lcPartSelectionListView(PartsGroupWidget, this);
@@ -1070,7 +1073,6 @@ lcPartSelectionWidget::lcPartSelectionWidget(bool IsPopup, QWidget* Parent)
 	PartsLayout->addWidget(mPartsWidget);
 
 	QHBoxLayout* Layout = new QHBoxLayout(this);
-	Layout->setContentsMargins(0, 0, 0, 0);
 	Layout->addWidget(mSplitter);
 	setLayout(Layout);
 

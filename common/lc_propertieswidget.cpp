@@ -722,10 +722,10 @@ void lcPropertiesWidget::AddFloatProperty(lcObjectPropertyId PropertyId, const Q
 void lcPropertiesWidget::AddVectorProperty(const std::array<lcObjectPropertyId, 3>& PropertyIds, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames, float Min, float Max)
 {
 	// The X, Y and Z values share a row below the panel like the transform boxes, with one keyframe since they are keyed together.
-	QToolBar* ToolBar = lcCreatePanelToolBar(mTransformRows);
-	mTransformRowsLayout->addWidget(ToolBar);
+	QWidget* Row = lcCreatePanelRow(mTransformRows);
+	mTransformRowsLayout->addWidget(Row);
 
-	CreateRowNameButton(ToolBar, Text);
+	CreateRowNameButton(Row, Text);
 
 	const QString AxisNames[3] = { tr("X"), tr("Y"), tr("Z") };
 
@@ -738,11 +738,11 @@ void lcPropertiesWidget::AddVectorProperty(const std::array<lcObjectPropertyId, 
 		Widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 		Widget->setMinimumWidth(Widget->fontMetrics().horizontalAdvance(QLatin1String("-000")) + 24);
 		lcSetupPanelEdit(Widget);
-		ToolBar->addWidget(Widget);
+		lcAddPanelRowWidget(Row, Widget);
 	}
 
 	if (SupportsKeyFrames)
-		ToolBar->addWidget(CreateKeyFrameWidget(PropertyIds[0]));
+		lcAddPanelRowWidget(Row, CreateKeyFrameWidget(PropertyIds[0]));
 }
 
 void lcPropertiesWidget::IntegerChanged()
@@ -896,10 +896,10 @@ void lcPropertiesWidget::AddStepNumberProperty(lcObjectPropertyId PropertyId, co
 void lcPropertiesWidget::AddStepRangeProperty(lcObjectPropertyId ShowPropertyId, lcObjectPropertyId HidePropertyId)
 {
 	// The steps a piece is added and removed in share a row below the timeline, formatted like the transform rows.
-	QToolBar* ToolBar = lcCreatePanelToolBar(mStepRows);
-	mStepRows->layout()->addWidget(ToolBar);
+	QWidget* Row = lcCreatePanelRow(mStepRows);
+	mStepRows->layout()->addWidget(Row);
 
-	CreateRowNameButton(ToolBar, tr("Steps"));
+	CreateRowNameButton(Row, tr("Steps"));
 
 	const std::pair<lcObjectPropertyId, QString> Editors[2] =
 	{
@@ -914,39 +914,39 @@ void lcPropertiesWidget::AddStepRangeProperty(lcObjectPropertyId ShowPropertyId,
 		Widget->setAccessibleName(Name);
 		Widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 		lcSetupPanelEdit(Widget);
-		ToolBar->addWidget(Widget);
+		lcAddPanelRowWidget(Row, Widget);
 	}
 }
 
-QToolBar* lcPropertiesWidget::AddTransformRowButton(QToolButton* Button)
+QWidget* lcPropertiesWidget::AddTransformRowButton(QToolButton* Button)
 {
 	// A button filling a whole row below the panel, without a label like the transform rows.
-	QToolBar* ToolBar = lcCreatePanelToolBar(mTransformRows);
-	mTransformRowsLayout->addWidget(ToolBar);
+	QWidget* Row = lcCreatePanelRow(mTransformRows);
+	mTransformRowsLayout->addWidget(Row);
 
 	// An empty slot keeps the button in line with the transform boxes, the color swatch covers the slots.
-	QWidget* Slot = new QWidget(ToolBar);
+	QWidget* Slot = new QWidget(Row);
 	Slot->setFixedSize(lcGetPanelButtonSize());
 	Slot->installEventFilter(this);
-	ToolBar->addWidget(Slot);
+	lcAddPanelRowWidget(Row, Slot);
 	mPieceRowSlots.push_back(Slot);
 
-	ToolBar->addWidget(Button);
+	lcAddPanelRowWidget(Row, Button);
 	lcSetupPanelButton(Button);
 	Button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-	return ToolBar;
+	return Row;
 }
 
-QToolButton* lcPropertiesWidget::CreateRowNameButton(QToolBar* ToolBar, const QString& Name)
+QToolButton* lcPropertiesWidget::CreateRowNameButton(QWidget* Row, const QString& Name)
 {
 	// A button with the first letter of the name takes the place of the transform button so the boxes line up.
-	QToolButton* NameButton = new QToolButton(ToolBar);
+	QToolButton* NameButton = new QToolButton(Row);
 	NameButton->setText(Name.left(1));
 	NameButton->setToolTip(Name);
 	NameButton->setAccessibleName(Name);
 	NameButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
-	ToolBar->addWidget(NameButton);
+	lcAddPanelRowWidget(Row, NameButton);
 	lcSetupPanelButton(NameButton);
 	NameButton->setFixedSize(lcGetPanelButtonSize());
 
@@ -1379,7 +1379,9 @@ void lcPropertiesWidget::AddPieceIdProperty(lcObjectPropertyId PropertyId, const
 
 void lcPropertiesWidget::CreateWidgets()
 {
+	// The grid sits in the panel layout, which provides the margins.
 	mLayout = new QGridLayout(this);
+	mLayout->setContentsMargins(0, 0, 0, 0);
 
 	mTransformRows = new QWidget(this);
 	mTransformRows->installEventFilter(this);

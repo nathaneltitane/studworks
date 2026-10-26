@@ -42,7 +42,7 @@ protected slots:
 protected:
 	void UpdateCells();
 	void SetGroupCollapsed(int GroupIndex, bool Collapsed);
-	int GetGroupHeaderHeight(const lcColorListGroup& Group) const;
+	int GetGroupHeaderHeight(const lcColorListGroup& Group, bool FirstGroup) const;
 	void UpdateRects();
 	void SelectCell(size_t CellIndex);
 

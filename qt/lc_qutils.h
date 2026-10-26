@@ -63,16 +63,16 @@ protected:
 	static lcBlockingProgress* mActive;
 };
 
-// Panel headers share the look of the preview toolbar so every panel has the same spacing.
-int lcGetPanelToolBarHeight(const QWidget* Widget);
-void lcSetPanelToolBarMargins(QToolBar* ToolBar);
+// Panel rows are plain widgets with a standard row layout, so every panel has the spacing of the minifigure panel.
 QSize lcGetPanelButtonSize();
+int lcGetLayoutSpacing(const QWidget* Widget, Qt::Orientation Orientation);
 void lcSetupPanelButton(QToolButton* Button);
-void lcSetupPanelAction(QToolBar* ToolBar, QAction* Action);
 void lcSetupPanelEdit(QWidget* Edit);
-QToolBar* lcCreatePanelToolBar(QWidget* Parent);
-void lcAddPanelToolBarSpacer(QToolBar* ToolBar);
-QToolButton* lcAddPanelOptionsButton(QToolBar* ToolBar, QMenu* Menu, const QString& ToolTip, const QString& AccessibleName);
+QWidget* lcCreatePanelRow(QWidget* Parent);
+void lcAddPanelRowWidget(QWidget* Row, QWidget* Widget);
+void lcAddPanelRowStretch(QWidget* Row);
+QToolButton* lcAddPanelActionButton(QWidget* Row, QAction* Action);
+QToolButton* lcAddPanelOptionsButton(QWidget* Row, QMenu* Menu, const QString& ToolTip, const QString& AccessibleName);
 
 // ScreenPosition selects the monitor independently of the desired popup position.
 QPoint lcGetPopupPosition(const QPoint& Position, const QSize& Size, const QPoint& ScreenPosition);

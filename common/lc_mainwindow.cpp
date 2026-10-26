@@ -102,9 +102,10 @@ void lcMainWindow::CreateWidgets()
 	setCentralWidget(mModelTabWidget);
 
 	// Model tabs and the view below them each get a complete outline so neither looks cut off.
-	// They are as tall as the panel buttons and centered in a bar as tall as the panel headers.
+	// They are as tall as the panel buttons and centered in a bar as tall as the panel title bars.
 	const int TabHeight = lcGetPanelButtonSize().height();
-	const int TabMargin = qMax((lcGetPanelToolBarHeight(mModelTabWidget) - TabHeight) / 2, 0);
+	const int TitleBarHeight = mModelTabWidget->fontMetrics().height() + 2 * style()->pixelMetric(QStyle::PM_DockWidgetTitleMargin);
+	const int TabMargin = qMax((TitleBarHeight - TabHeight) / 2, 0);
 
 	mModelTabWidget->setStyleSheet(QString(
 		"QTabWidget::pane { border: 1px solid palette(mid); }"
@@ -815,17 +816,16 @@ void lcMainWindow::CreateToolBars()
 	QWidget* ColorWidget = new QWidget(mColorsToolBar);
 
 	QVBoxLayout* ColorLayout = new QVBoxLayout(ColorWidget);
-	ColorLayout->setContentsMargins(0, 0, 0, 0);
 
-	QToolBar* ColorToolBar = lcCreatePanelToolBar(ColorWidget);
-	ColorLayout->addWidget(ColorToolBar);
+	QWidget* ColorRow = lcCreatePanelRow(ColorWidget);
+	ColorLayout->addWidget(ColorRow);
 
 	mColorButton = new QToolButton(ColorWidget);
 	mColorButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 	mColorButton->setToolTip(tr("Apply the current color to selected pieces."));
 	mColorButton->setAccessibleName(tr("Change Selection Color"));
 	mColorButton->setWhatsThis(tr("<p><b>Change Selection Color</b></p><p>Apply the current color to selected pieces. Choosing a swatch sets the current color; this button applies that color to the selection.</p>"));
-	ColorToolBar->addWidget(mColorButton);
+	lcAddPanelRowWidget(ColorRow, mColorButton);
 	lcSetupPanelButton(mColorButton);
 
 	// Nothing else sits in the header, so the button reaches up to the options button.
@@ -833,8 +833,8 @@ void lcMainWindow::CreateToolBars()
 
 	connect(mColorButton, &QToolButton::clicked, this, &lcMainWindow::ColorButtonClicked);
 
-	QMenu* ColorOptionsMenu = new QMenu(ColorToolBar);
-	lcAddPanelOptionsButton(ColorToolBar, ColorOptionsMenu, tr("Choose how inserted pieces are colored."), tr("Color Options"));
+	QMenu* ColorOptionsMenu = new QMenu(ColorRow);
+	lcAddPanelOptionsButton(ColorRow, ColorOptionsMenu, tr("Choose how inserted pieces are colored."), tr("Color Options"));
 	connect(ColorOptionsMenu, &QMenu::aboutToShow, this, &lcMainWindow::ColorOptionsMenuAboutToShow);
 
 	ColorLayout->addWidget(mColorList);
@@ -864,16 +864,17 @@ void lcMainWindow::CreateToolBars()
 
 	QWidget* PropertiesWidget = new QWidget(mPropertiesToolBar);
 	QVBoxLayout* PropertiesLayout = new QVBoxLayout(PropertiesWidget);
-	PropertiesLayout->setContentsMargins(0, 0, 0, 0);
 
+	// The property grid scrolls only when the panel cannot get the height of all its rows, without a frame so it lines up with the rows below.
 	QScrollArea* PropertiesScrollArea = new QScrollArea(PropertiesWidget);
+	PropertiesScrollArea->setFrameShape(QFrame::NoFrame);
 	PropertiesScrollArea->setWidgetResizable(true);
 	PropertiesLayout->addWidget(PropertiesScrollArea);
 
 	mPropertiesWidget = new lcPropertiesWidget(PropertiesScrollArea);
 	PropertiesScrollArea->setWidget(mPropertiesWidget);
 
-	QToolBar* TransformWidget = lcCreatePanelToolBar(PropertiesWidget);
+	QWidget* TransformWidget = lcCreatePanelRow(PropertiesWidget);
 
 	// A T names the row like the P and R buttons of the position and rotation rows.
 	QToolButton* TransformNameButton = new QToolButton(TransformWidget);
@@ -881,7 +882,7 @@ void lcMainWindow::CreateToolBars()
 	TransformNameButton->setToolTip(tr("Transform"));
 	TransformNameButton->setAccessibleName(tr("Transform"));
 	TransformNameButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
-	TransformWidget->addWidget(TransformNameButton);
+	lcAddPanelRowWidget(TransformWidget, TransformNameButton);
 	lcSetupPanelButton(TransformNameButton);
 	TransformNameButton->setFixedSize(lcGetPanelButtonSize());
 
@@ -893,7 +894,7 @@ void lcMainWindow::CreateToolBars()
 	mTransformXEdit->setAccessibleName(tr("Transform X"));
 	mTransformXEdit->setToolTip(tr("Enter the X translation in LDraw units or rotation in degrees."));
 	lcSetupPanelEdit(mTransformXEdit);
-	TransformWidget->addWidget(mTransformXEdit);
+	lcAddPanelRowWidget(TransformWidget, mTransformXEdit);
 	mTransformYEdit = new lcDoubleSpinBox(TransformWidget);
 	mTransformYEdit->setRange(-FLT_MAX, FLT_MAX);
 	mTransformYEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -901,7 +902,7 @@ void lcMainWindow::CreateToolBars()
 	mTransformYEdit->setAccessibleName(tr("Transform Y"));
 	mTransformYEdit->setToolTip(tr("Enter the Y translation in LDraw units or rotation in degrees."));
 	lcSetupPanelEdit(mTransformYEdit);
-	TransformWidget->addWidget(mTransformYEdit);
+	lcAddPanelRowWidget(TransformWidget, mTransformYEdit);
 	mTransformZEdit = new lcDoubleSpinBox(TransformWidget);
 	mTransformZEdit->setRange(-FLT_MAX, FLT_MAX);
 	mTransformZEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -909,7 +910,7 @@ void lcMainWindow::CreateToolBars()
 	mTransformZEdit->setAccessibleName(tr("Transform Z"));
 	mTransformZEdit->setToolTip(tr("Enter the Z translation in LDraw units or rotation in degrees."));
 	lcSetupPanelEdit(mTransformZEdit);
-	TransformWidget->addWidget(mTransformZEdit);
+	lcAddPanelRowWidget(TransformWidget, mTransformZEdit);
 
 	// The transform mode button sits under the keyframe buttons and shows the current mode.
 	QToolButton* TransformButton = new QToolButton(TransformWidget);
@@ -917,29 +918,39 @@ void lcMainWindow::CreateToolBars()
 	TransformButton->setPopupMode(QToolButton::InstantPopup);
 	TransformButton->setToolTip(tr("Choose absolute or relative translation or rotation."));
 	TransformButton->setWhatsThis(tr("<p><b>Apply Transform</b></p><p>Choose the translation or rotation mode, enter X/Y/Z values, and press Enter to apply them. Translation values use LDraw units; rotation values use degrees.</p>"));
-	TransformWidget->addWidget(TransformButton);
+	lcAddPanelRowWidget(TransformWidget, TransformButton);
 	lcSetupPanelButton(TransformButton);
 	TransformButton->setFixedSize(lcGetPanelButtonSize());
 
 	PropertiesLayout->addWidget(mPropertiesWidget->GetTransformRowsWidget());
 	PropertiesLayout->addWidget(TransformWidget);
 
-	// The panel is always exactly as tall as the rows it shows, so nothing is cut off or scrolled.
-	PropertiesScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
-	auto UpdatePropertiesHeight = [this, PropertiesWidget, PropertiesLayout, PropertiesScrollArea]()
+	// The panel is as tall as the rows it shows, and shrinks with a scrolling grid when the panels around it need the room.
+	auto UpdatePropertiesHeight = [this, PropertiesWidget, PropertiesLayout, PropertiesScrollArea, TransformWidget]()
 	{
-		// The list is hidden when all shown properties are in the rows below it.
-		const bool ShowList = mPropertiesWidget->HasVisibleRows();
-		const int Margin = 6;
-		const int ScrollHeight = ShowList ? mPropertiesWidget->sizeHint().height() + 2 * PropertiesScrollArea->frameWidth() + Margin : 0;
+		// The grid is hidden when all shown properties are in the rows below it.
+		const bool ShowGrid = mPropertiesWidget->HasVisibleRows();
+		const int GridHeight = ShowGrid ? mPropertiesWidget->sizeHint().height() : 0;
+		const int MinimumGridHeight = qMin(GridHeight, lcGetPanelButtonSize().height());
 
-		PropertiesScrollArea->setVisible(ShowList);
-		PropertiesScrollArea->setFixedHeight(ScrollHeight);
+		// The full height adds the layout margins and the standard spacing between the shown rows, measured
+		// without growing any widget so the window never grows on the way.
+		const QMargins Margins = PropertiesLayout->contentsMargins();
+		const int Spacing = lcGetLayoutSpacing(PropertiesWidget, Qt::Vertical);
+		const QWidget* TransformRows = mPropertiesWidget->GetTransformRowsWidget();
+		int PanelHeight = Margins.top() + Margins.bottom() + TransformWidget->sizeHint().height();
 
-		// The layout adds its own spacing between the shown rows.
-		PropertiesLayout->invalidate();
-		PropertiesWidget->setFixedHeight(PropertiesLayout->sizeHint().height());
+		if (!TransformRows->isHidden())
+			PanelHeight += TransformRows->sizeHint().height() + Spacing;
+
+		if (ShowGrid)
+			PanelHeight += GridHeight + Spacing;
+
+		PropertiesScrollArea->setVisible(ShowGrid);
+		PropertiesScrollArea->setMinimumHeight(MinimumGridHeight);
+		PropertiesScrollArea->setMaximumHeight(GridHeight);
+		PropertiesWidget->setMinimumHeight(PanelHeight - GridHeight + MinimumGridHeight);
+		PropertiesWidget->setMaximumHeight(PanelHeight);
 	};
 
 	connect(mPropertiesWidget, &lcPropertiesWidget::LayoutChanged, this, [UpdatePropertiesHeight]()
@@ -965,7 +976,6 @@ void lcMainWindow::CreateToolBars()
 	// The steps of the selected piece are edited below the timeline.
 	QWidget* TimelinePanel = new QWidget(mTimelineToolBar);
 	QVBoxLayout* TimelineLayout = new QVBoxLayout(TimelinePanel);
-	TimelineLayout->setContentsMargins(0, 0, 0, 0);
 	TimelineLayout->addWidget(mTimelineWidget);
 	TimelineLayout->addWidget(mPropertiesWidget->GetStepRowsWidget());
 

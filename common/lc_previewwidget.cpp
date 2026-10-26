@@ -53,15 +53,14 @@ protected:
 	QString mName;
 };
 
-lcPreviewDockWidget::lcPreviewDockWidget(QMainWindow* Parent)
-	: QMainWindow(Parent)
+lcPreviewDockWidget::lcPreviewDockWidget(QWidget* Parent)
+	: QWidget(Parent)
 {
 	mPreview = new lcPreview();
 
 	// the view sits in a container that can keep it square
 	mViewContainer = new QWidget(this);
 	mViewContainer->installEventFilter(this);
-	setCentralWidget(mViewContainer);
 
 	mViewWidget = new lcViewWidget(mViewContainer, mPreview);
 
@@ -70,7 +69,7 @@ lcPreviewDockWidget::lcPreviewDockWidget(QMainWindow* Parent)
 	mViewWidget->setAccessibleName(tr("Piece Preview"));
 	mViewWidget->setToolTip(tr("Inspect the previewed piece without placing it in the model."));
 	// Small enough to stack with other panels, the header rows and a few rows of view stay visible.
-	setMinimumSize(200, 4 * lcGetPanelToolBarHeight(this));
+	setMinimumSize(200, 4 * lcGetPanelButtonSize().height());
 
 	mLockAction = new QAction(tr("Lock Preview"), this);
 	mLockAction->setWhatsThis(tr("<p><b>Lock Preview</b></p><p>Keep the current piece in the preview while you browse other pieces. Unlock Preview allows the display to update again. An empty preview cannot be locked.</p>"));
@@ -101,44 +100,25 @@ lcPreviewDockWidget::lcPreviewDockWidget(QMainWindow* Parent)
 			RefreshPendingAssets();
 	});
 
-	mToolBar = addToolBar(tr("Toolbar"));
-	mToolBar->setObjectName("Toolbar");
-	mToolBar->setStatusTip(tr("Preview Toolbar"));
-	mToolBar->setWhatsThis(mLockAction->whatsThis());
-	mToolBar->setMovable(false);
-	lcSetPanelToolBarMargins(mToolBar);
+	// The button row, the name of the previewed piece and the view are stacked like the other panels.
+	QVBoxLayout* Layout = new QVBoxLayout(this);
+
+	QWidget* ButtonRow = lcCreatePanelRow(this);
+	Layout->addWidget(ButtonRow);
 
 	// Nothing else sits beside it, so the lock button reaches up to the options button.
-	QToolButton* LockButton = new QToolButton(mToolBar);
-	LockButton->setDefaultAction(mLockAction);
+	QToolButton* LockButton = lcAddPanelActionButton(ButtonRow, mLockAction);
 	LockButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
 	LockButton->setWhatsThis(mLockAction->whatsThis());
-	mToolBar->addWidget(LockButton);
 	lcSetupPanelButton(LockButton);
 	LockButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-	QToolButton* OptionsButton = new QToolButton(mToolBar);
-	OptionsButton->setIcon(QIcon(":/resources/gear_in.png"));
-	OptionsButton->setToolTip(tr("Configure the pieces preview."));
-	OptionsButton->setAccessibleName(tr("Pieces Preview Options"));
-	OptionsButton->setPopupMode(QToolButton::InstantPopup);
-	mToolBar->addWidget(OptionsButton);
-	lcSetupPanelButton(OptionsButton);
-
 	QMenu* OptionsMenu = new QMenu(this);
-	OptionsButton->setMenu(OptionsMenu);
+	lcAddPanelOptionsButton(ButtonRow, OptionsMenu, tr("Configure the pieces preview."), tr("Pieces Preview Options"));
 	connect(OptionsMenu, &QMenu::aboutToShow, this, &lcPreviewDockWidget::OptionsMenuAboutToShow);
 
-	if (mToolBar->isHidden())
-		mToolBar->show();
-
-	// The name of the previewed piece gets its own full width row below the buttons.
-	addToolBarBreak();
-	mLabelToolBar = addToolBar(tr("Piece Name"));
-	mLabelToolBar->setObjectName("PieceNameToolbar");
-	mLabelToolBar->setMovable(false);
-	lcSetPanelToolBarMargins(mLabelToolBar);
-	mLabelToolBar->addWidget(mLabel);
+	Layout->addWidget(mLabel);
+	Layout->addWidget(mViewContainer, 1);
 }
 
 void lcPreviewDockWidget::OptionsMenuAboutToShow()
@@ -175,11 +155,11 @@ void lcPreviewDockWidget::UpdateSquareViewport()
 void lcPreviewDockWidget::UpdateViewGeometry()
 {
 	// a square preview sizes the panel to fit, the height follows the width like the colors panel
-	if (lcGetPreferences().mPreviewSquareViewport && mToolBar)
-		setFixedHeight(mViewContainer->width() + mToolBar->sizeHint().height() + (mLabelToolBar ? mLabelToolBar->sizeHint().height() : 0));
+	if (lcGetPreferences().mPreviewSquareViewport)
+		setFixedHeight(height() - mViewContainer->height() + mViewContainer->width());
 	else
 	{
-		setMinimumHeight(4 * lcGetPanelToolBarHeight(this));
+		setMinimumHeight(4 * lcGetPanelButtonSize().height());
 		setMaximumHeight(QWIDGETSIZE_MAX);
 	}
 
@@ -191,7 +171,7 @@ bool lcPreviewDockWidget::eventFilter(QObject* Object, QEvent* Event)
 	if (Object == mViewContainer && Event->type() == QEvent::Resize)
 		UpdateViewGeometry();
 
-	return QMainWindow::eventFilter(Object, Event);
+	return QWidget::eventFilter(Object, Event);
 }
 
 bool lcPreviewDockWidget::SetCurrentPiece(lcPieceData* PieceData, int ColorCode)

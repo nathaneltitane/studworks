@@ -15,14 +15,13 @@ lcTerminalWidget::lcTerminalWidget(QWidget* Parent)
 	: QWidget(Parent)
 {
 	mLayout = new QVBoxLayout(this);
-	mLayout->setContentsMargins(0, 0, 0, 0);
 
-	QToolBar* OptionsToolBar = lcCreatePanelToolBar(this);
-	lcAddPanelToolBarSpacer(OptionsToolBar);
-	mLayout->addWidget(OptionsToolBar);
+	QWidget* OptionsRow = lcCreatePanelRow(this);
+	lcAddPanelRowStretch(OptionsRow);
+	mLayout->addWidget(OptionsRow);
 
-	QMenu* OptionsMenu = new QMenu(OptionsToolBar);
-	lcAddPanelOptionsButton(OptionsToolBar, OptionsMenu, tr("Configure the terminal."), tr("Terminal Options"));
+	QMenu* OptionsMenu = new QMenu(OptionsRow);
+	lcAddPanelOptionsButton(OptionsRow, OptionsMenu, tr("Configure the terminal."), tr("Terminal Options"));
 	connect(OptionsMenu, &QMenu::aboutToShow, this, &lcTerminalWidget::OptionsMenuAboutToShow);
 
 	mDirectory = QDir::homePath();

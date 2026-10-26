@@ -5,12 +5,12 @@
 class lcPreview;
 class lcPreviewNameEdit;
 
-class lcPreviewDockWidget : public QMainWindow
+class lcPreviewDockWidget : public QWidget
 {
 	Q_OBJECT
 
 public:
-	explicit lcPreviewDockWidget(QMainWindow* Parent);
+	explicit lcPreviewDockWidget(QWidget* Parent);
 
 	bool SetCurrentPiece(lcPieceData* PieceData, int ColorCode);
 	void ClearPreview();
@@ -33,8 +33,6 @@ protected:
 
 	QAction* mLockAction;
 	QWidget* mViewContainer;
-	QToolBar* mToolBar = nullptr;
-	QToolBar* mLabelToolBar = nullptr;
 	lcPreviewNameEdit* mLabel;
 	lcPreview* mPreview;
 	lcViewWidget* mViewWidget;

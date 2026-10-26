@@ -64,8 +64,8 @@ int lcColorList::GetHeightForWidth(int Width, int* Columns, int* Rows) const
 	QFontMetrics Metrics(font());
 	int TextHeight = 0;
 
-	for (const lcColorListGroup& Group : mGroups)
-		TextHeight += GetGroupHeaderHeight(Group);
+	for (size_t GroupIdx = 0; GroupIdx < mGroups.size(); GroupIdx++)
+		TextHeight += GetGroupHeaderHeight(mGroups[GroupIdx], GroupIdx == 0);
 
 	// Tiles are always square: the width sets the tile size and the rows set the height.
 	const int TargetCellSize = Metrics.height() * 3 / 2;
@@ -85,13 +85,13 @@ int lcColorList::GetHeightForWidth(int Width, int* Columns, int* Rows) const
 	return TextHeight + qCeil((float)Width / (float)ColumnCount * RowCount);
 }
 
-int lcColorList::GetGroupHeaderHeight(const lcColorListGroup& Group) const
+int lcColorList::GetGroupHeaderHeight(const lcColorListGroup& Group, bool FirstGroup) const
 {
-	// Headers get the same space around their button as the panel toolbar rows.
-	if (Group.Button)
-		return qMax(lcGetPanelToolBarHeight(this), Group.Button->sizeHint().height() + 4);
+	// Headers are spaced like the rows of a standard layout, above unless first and below unless collapsed.
+	const int Spacing = lcGetLayoutSpacing(this, Qt::Vertical);
+	const int ButtonHeight = Group.Button ? Group.Button->sizeHint().height() : QFontMetrics(font()).height();
 
-	return qMax(QFontMetrics(font()).boundingRect(Group.Name).height(), 16) + 4;
+	return (FirstGroup ? 0 : Spacing) + ButtonHeight + (Group.Collapsed ? 0 : Spacing);
 }
 
 void lcColorList::UpdateRects()
@@ -110,18 +110,19 @@ void lcColorList::UpdateRects()
 	int CurCell = 0;
 	float GroupY = 0.0f;
 
-	for (lcColorListGroup& Group : mGroups)
+	for (size_t GroupIdx = 0; GroupIdx < mGroups.size(); GroupIdx++)
 	{
+		lcColorListGroup& Group = mGroups[GroupIdx];
 		int CurColumn = 0;
 		int NumRows = 0;
 
-		Group.Rect = QRect(0, (int)GroupY, width(), GetGroupHeaderHeight(Group));
+		Group.Rect = QRect(0, (int)GroupY, width(), GetGroupHeaderHeight(Group, GroupIdx == 0));
 		GroupY += Group.Rect.height();
 
 		if (Group.Button)
 		{
-			const int Margin = (Group.Rect.height() - Group.Button->sizeHint().height()) / 2;
-			Group.Button->setGeometry(Group.Rect.adjusted(0, Margin, 0, -Margin));
+			const int Top = Group.Rect.top() + (GroupIdx == 0 ? 0 : lcGetLayoutSpacing(this, Qt::Vertical));
+			Group.Button->setGeometry(QRect(0, Top, width(), Group.Button->sizeHint().height()));
 			Group.Button->show();
 		}
 

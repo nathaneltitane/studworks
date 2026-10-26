@@ -126,8 +126,8 @@ protected:
 	QLineEdit* CreateStepNumberEditor(lcObjectPropertyId PropertyId, const QString& ToolTip);
 	void AddStepNumberProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames);
 	void AddStepRangeProperty(lcObjectPropertyId ShowPropertyId, lcObjectPropertyId HidePropertyId);
-	QToolButton* CreateRowNameButton(QToolBar* ToolBar, const QString& Name);
-	QToolBar* AddTransformRowButton(QToolButton* Button);
+	QToolButton* CreateRowNameButton(QWidget* Row, const QString& Name);
+	QWidget* AddTransformRowButton(QToolButton* Button);
 	void AddStringProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames);
 	void AddStringListProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames, const QStringList& Strings);
 	void AddColorProperty(lcObjectPropertyId PropertyId, const QString& Text, const QString& ToolTip, bool SupportsKeyFrames);
