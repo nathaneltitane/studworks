@@ -1,13 +1,13 @@
-#include "lc_global.h"
+#include "sw_global.h"
 #include "minifig.h"
-#include "lc_colors.h"
-#include "lc_piecedata.h"
-#include "lc_model.h"
-#include "lc_library.h"
-#include "lc_application.h"
-#include "lc_file.h"
-#include "lc_profile.h"
-#include "lc_string.h"
+#include "sw_colors.h"
+#include "sw_piecedata.h"
+#include "sw_model.h"
+#include "sw_library.h"
+#include "sw_application.h"
+#include "sw_file.h"
+#include "sw_profile.h"
+#include "sw_string.h"
 
 const char* MinifigWizard::mSectionNames[LC_MFW_NUMITEMS] =
 {

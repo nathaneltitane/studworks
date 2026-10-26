@@ -1,12 +1,12 @@
-#include "lc_global.h"
-#include "lc_math.h"
-#include "lc_string.h"
+#include "sw_global.h"
+#include "sw_math.h"
+#include "sw_string.h"
 #include <string.h>
 #include <stdio.h>
 #include <math.h>
 #include "light.h"
-#include "lc_application.h"
-#include "lc_context.h"
+#include "sw_application.h"
+#include "sw_context.h"
 
 #define LC_LIGHT_SPHERE_RADIUS 5.0f
 #define LC_LIGHT_TARGET_RADIUS 2.5f

@@ -12,10 +12,10 @@ greaterThan(QT_MAJOR_VERSION, 5) {
 
 INCLUDEPATH += ../src/app ../src/core ../src/library ../src/render ../src/io ../src/ui
 
-HEADERS += lc_tests.h
+HEADERS += sw_tests.h
 
 SOURCES += \
-	../src/core/lc_objectproperty.cpp \
-	lc_objecthistory_test.cpp \
-	lc_objectproperty_test.cpp \
+	../src/core/sw_objectproperty.cpp \
+	sw_objecthistory_test.cpp \
+	sw_objectproperty_test.cpp \
 	main.cpp

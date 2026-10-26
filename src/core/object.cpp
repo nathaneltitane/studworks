@@ -1,4 +1,4 @@
-#include "lc_global.h"
+#include "sw_global.h"
 #include "object.h"
 
 lcObjectId lcObject::mNextId;

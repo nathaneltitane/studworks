@@ -1,8 +1,8 @@
-#include "lc_global.h"
-#include "lc_application.h"
-#include "lc_updatedialog.h"
-#include "lc_profile.h"
-#include "lc_piecedata.h"
+#include "sw_global.h"
+#include "sw_application.h"
+#include "sw_updatedialog.h"
+#include "sw_profile.h"
+#include "sw_piecedata.h"
 #include <QApplication>
 #include <locale.h>
 

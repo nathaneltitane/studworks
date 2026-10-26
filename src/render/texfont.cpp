@@ -1,8 +1,8 @@
-#include "lc_global.h"
+#include "sw_global.h"
 #include <string.h>
 #include "texfont.h"
-#include "lc_context.h"
-#include "lc_texture.h"
+#include "sw_context.h"
+#include "sw_texture.h"
 
 static const unsigned char GlyphData[] =
 {

@@ -3,15 +3,15 @@
 INCLUDEPATH += $$PWD
 
 SOURCES += \
-	$$PWD/lc_bricklink.cpp \
-	$$PWD/lc_file.cpp \
-	$$PWD/lc_http.cpp \
-	$$PWD/lc_instructions.cpp \
-	$$PWD/lc_lxf.cpp
+	$$PWD/sw_bricklink.cpp \
+	$$PWD/sw_file.cpp \
+	$$PWD/sw_http.cpp \
+	$$PWD/sw_instructions.cpp \
+	$$PWD/sw_lxf.cpp
 
 HEADERS += \
-	$$PWD/lc_bricklink.h \
-	$$PWD/lc_file.h \
-	$$PWD/lc_http.h \
-	$$PWD/lc_instructions.h \
-	$$PWD/lc_lxf.h
+	$$PWD/sw_bricklink.h \
+	$$PWD/sw_file.h \
+	$$PWD/sw_http.h \
+	$$PWD/sw_instructions.h \
+	$$PWD/sw_lxf.h

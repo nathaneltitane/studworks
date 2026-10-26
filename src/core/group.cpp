@@ -1,8 +1,8 @@
-#include "lc_global.h"
+#include "sw_global.h"
 #include <stdlib.h>
-#include "lc_string.h"
+#include "sw_string.h"
 #include "group.h"
-#include "lc_file.h"
+#include "sw_file.h"
 
 lcGroupId lcGroup::mNextId;
 

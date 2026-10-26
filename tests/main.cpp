@@ -1,3 +1,3 @@
-#include "lc_tests.h"
+#include "sw_tests.h"
 
 QTEST_GUILESS_MAIN(lcTests)

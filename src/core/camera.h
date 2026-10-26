@@ -1,7 +1,7 @@
 #pragma once
 
 #include "object.h"
-#include "lc_math.h"
+#include "sw_math.h"
 
 enum class lcViewpoint
 {

@@ -46,15 +46,15 @@ win32 {
 win32-msvc* {
 	QMAKE_CXXFLAGS_WARN_ON += /W4 -wd4100
 	QMAKE_CXXFLAGS *= /MP
-	PRECOMPILED_HEADER = src/app/lc_global.h
-	PRECOMPILED_SOURCE = src/app/lc_global.cpp
+	PRECOMPILED_HEADER = src/app/sw_global.h
+	PRECOMPILED_SOURCE = src/app/sw_global.cpp
 	DEFINES += _CRT_SECURE_NO_WARNINGS _CRT_SECURE_NO_DEPRECATE=1 _CRT_NONSTDC_NO_WARNINGS=1
 	INCLUDEPATH += $$[QT_INSTALL_HEADERS]/QtZlib
 	QMAKE_LFLAGS += /INCREMENTAL
 	LIBS += -ladvapi32 -lshell32 -lopengl32 -luser32
 	QMAKE_CXXFLAGS += /we4834
 } else {
-	PRECOMPILED_HEADER = src/app/lc_global.h
+	PRECOMPILED_HEADER = src/app/sw_global.h
 	LIBS += -lz
 	QMAKE_CXXFLAGS_WARN_ON += -Wno-unused-parameter -Wshadow
 	QMAKE_CXXFLAGS += -Werror=unused-result

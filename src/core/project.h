@@ -1,8 +1,8 @@
 #pragma once
 
-#include "lc_application.h"
-#include "lc_assettypes.h"
-#include "lc_result.h"
+#include "sw_application.h"
+#include "sw_assettypes.h"
+#include "sw_result.h"
 
 #define LC_HTML_SINGLEPAGE    0x01
 #define LC_HTML_INDEX         0x02

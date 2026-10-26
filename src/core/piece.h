@@ -3,9 +3,9 @@
 class lcPieceData;
 
 #include "object.h"
-#include "lc_colors.h"
-#include "lc_math.h"
-#include "lc_assettypes.h"
+#include "sw_colors.h"
+#include "sw_math.h"
+#include "sw_assettypes.h"
 
 #define LC_MAX_CONTROL_POINTS 1000
 

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "lc_math.h"
-#include "lc_assettypes.h"
+#include "sw_math.h"
+#include "sw_assettypes.h"
 
 enum LC_MFW_TYPES
 {

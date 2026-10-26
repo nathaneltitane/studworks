@@ -1,7 +1,7 @@
 #pragma once
 
-#include "lc_math.h"
-#include "lc_objectproperty.h"
+#include "sw_math.h"
+#include "sw_objectproperty.h"
 
 enum class lcObjectType
 {

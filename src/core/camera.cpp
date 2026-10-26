@@ -1,13 +1,13 @@
-#include "lc_global.h"
-#include "lc_math.h"
-#include "lc_string.h"
+#include "sw_global.h"
+#include "sw_math.h"
+#include "sw_string.h"
 #include <stdlib.h>
 #include <math.h>
 #include <float.h>
-#include "lc_file.h"
+#include "sw_file.h"
 #include "camera.h"
-#include "lc_application.h"
-#include "lc_context.h"
+#include "sw_application.h"
+#include "sw_context.h"
 
 #define LC_CAMERA_POSITION_EDGE 7.5f
 #define LC_CAMERA_TARGET_EDGE 7.5f

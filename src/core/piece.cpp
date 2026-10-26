@@ -1,22 +1,22 @@
-#include "lc_global.h"
-#include "lc_mesh.h"
-#include "lc_colors.h"
+#include "sw_global.h"
+#include "sw_mesh.h"
+#include "sw_colors.h"
 #include <string.h>
 #include <stdio.h>
 #include <math.h>
-#include "lc_piecedata.h"
+#include "sw_piecedata.h"
 #include "piece.h"
 #include "group.h"
-#include "lc_file.h"
-#include "lc_application.h"
-#include "lc_library.h"
-#include "lc_context.h"
-#include "lc_scene.h"
-#include "lc_qutils.h"
-#include "lc_synth.h"
-#include "lc_traintrack.h"
-#include "lc_string.h"
-#include "lc_model.h"
+#include "sw_file.h"
+#include "sw_application.h"
+#include "sw_library.h"
+#include "sw_context.h"
+#include "sw_scene.h"
+#include "sw_utils.h"
+#include "sw_synth.h"
+#include "sw_traintrack.h"
+#include "sw_string.h"
+#include "sw_model.h"
 
 constexpr float LC_PIECE_CONTROL_POINT_SIZE = 10.0f;
 
