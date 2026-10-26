@@ -348,14 +348,13 @@ lcInstructionsPageListWidget::lcInstructionsPageListWidget(QWidget* Parent, lcIn
 	setWindowTitle(tr("Pages"));
 
 	QVBoxLayout* Layout = new QVBoxLayout(CentralWidget);
-	Layout->setContentsMargins(0, 0, 0, 0);
 
-	QToolBar* OptionsToolBar = lcCreatePanelToolBar(CentralWidget);
-	lcAddPanelToolBarSpacer(OptionsToolBar);
-	Layout->addWidget(OptionsToolBar);
+	QWidget* OptionsRow = lcCreatePanelRow(CentralWidget);
+	lcAddPanelRowStretch(OptionsRow);
+	Layout->addWidget(OptionsRow);
 
 	QMenu* OptionsMenu = new QMenu(this);
-	lcAddPanelOptionsButton(OptionsToolBar, OptionsMenu, tr("Page options"), tr("Page Options"));
+	lcAddPanelOptionsButton(OptionsRow, OptionsMenu, tr("Page options"), tr("Page Options"));
 
 	QAction* PageSetupAction = OptionsMenu->addAction(tr("Page Setup..."));
 	PageSetupAction->setToolTip(tr("Choose the page size, orientation and margins"));
@@ -497,14 +496,13 @@ lcInstructionsPropertiesWidget::lcInstructionsPropertiesWidget(QWidget* Parent, 
 	setWindowTitle(tr("Properties"));
 
 	QGridLayout* Layout = new QGridLayout(CentralWidget);
-	Layout->setContentsMargins(0, 0, 0, 0);
 
-	QToolBar* OptionsToolBar = lcCreatePanelToolBar(CentralWidget);
-	lcAddPanelToolBarSpacer(OptionsToolBar);
-	Layout->addWidget(OptionsToolBar, 0, 0, 1, -1);
+	QWidget* OptionsRow = lcCreatePanelRow(CentralWidget);
+	lcAddPanelRowStretch(OptionsRow);
+	Layout->addWidget(OptionsRow, 0, 0, 1, -1);
 
 	QMenu* OptionsMenu = new QMenu(this);
-	lcAddPanelOptionsButton(OptionsToolBar, OptionsMenu, tr("Properties options"), tr("Properties Options"));
+	lcAddPanelOptionsButton(OptionsRow, OptionsMenu, tr("Properties options"), tr("Properties Options"));
 
 	// changes apply to the defaults for now, model and step overrides are planned
 	QMenu* ScopeMenu = OptionsMenu->addMenu(tr("Apply Changes To"));

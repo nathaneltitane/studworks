@@ -167,19 +167,6 @@ bool lcBlockingProgress::IsCanceled() const
 	return mDialog && mDialog->wasCanceled();
 }
 
-int lcGetPanelToolBarHeight(const QWidget* Widget)
-{
-	// As tall as a panel title bar, the text plus the padding and border of the title.
-	return Widget->fontMetrics().height() + 16;
-}
-
-void lcSetPanelToolBarMargins(QToolBar* ToolBar)
-{
-	// No padding above or below, the title bar height is enough unless a text box needs more.
-	ToolBar->setStyleSheet(QLatin1String("QToolBar { padding-top: 0px; padding-bottom: 0px; }"));
-	ToolBar->setMinimumHeight(lcGetPanelToolBarHeight(ToolBar));
-}
-
 QSize lcGetPanelButtonSize()
 {
 	// Every panel button is sized after the options gear button of a panel toolbar.
@@ -212,7 +199,11 @@ void lcSetupPanelButton(QToolButton* Button)
 	if (Button->toolButtonStyle() == Qt::ToolButtonIconOnly)
 		Button->setFixedSize(ButtonSize);
 	else
+	{
+		Button->setMinimumWidth(0);
+		Button->setMaximumWidth(QWIDGETSIZE_MAX);
 		Button->setFixedHeight(ButtonSize.height());
+	}
 }
 
 void lcSetupPanelEdit(QWidget* Edit)
@@ -221,43 +212,56 @@ void lcSetupPanelEdit(QWidget* Edit)
 	Edit->setFixedHeight(lcGetPanelButtonSize().height());
 }
 
-void lcSetupPanelAction(QToolBar* ToolBar, QAction* Action)
+int lcGetLayoutSpacing(const QWidget* Widget, Qt::Orientation Orientation)
 {
-	QToolButton* Button = qobject_cast<QToolButton*>(ToolBar->widgetForAction(Action));
+	// The spacing a standard layout uses, for widgets that place their children themselves.
+	QStyle* Style = Widget->style();
+	const int Spacing = Style->pixelMetric(Orientation == Qt::Vertical ? QStyle::PM_LayoutVerticalSpacing : QStyle::PM_LayoutHorizontalSpacing, nullptr, Widget);
 
-	if (Button)
-		lcSetupPanelButton(Button);
+	return Spacing >= 0 ? Spacing : Style->layoutSpacing(QSizePolicy::DefaultType, QSizePolicy::DefaultType, Orientation, nullptr, Widget);
 }
 
-QToolBar* lcCreatePanelToolBar(QWidget* Parent)
+QWidget* lcCreatePanelRow(QWidget* Parent)
 {
-	QToolBar* ToolBar = new QToolBar(Parent);
+	// The row sits inside the panel layout, which provides the margins, the row keeps the standard spacing.
+	QWidget* Row = new QWidget(Parent);
+	QHBoxLayout* Layout = new QHBoxLayout(Row);
+	Layout->setContentsMargins(0, 0, 0, 0);
 
-	lcSetPanelToolBarMargins(ToolBar);
-	ToolBar->setMovable(false);
-	ToolBar->setFloatable(false);
-	ToolBar->setContextMenuPolicy(Qt::PreventContextMenu);
-
-	return ToolBar;
+	return Row;
 }
 
-void lcAddPanelToolBarSpacer(QToolBar* ToolBar)
+void lcAddPanelRowWidget(QWidget* Row, QWidget* Widget)
 {
-	QWidget* Spacer = new QWidget(ToolBar);
-	Spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-	ToolBar->addWidget(Spacer);
+	Row->layout()->addWidget(Widget);
 }
 
-QToolButton* lcAddPanelOptionsButton(QToolBar* ToolBar, QMenu* Menu, const QString& ToolTip, const QString& AccessibleName)
+void lcAddPanelRowStretch(QWidget* Row)
 {
-	QToolButton* OptionsButton = new QToolButton(ToolBar);
+	static_cast<QHBoxLayout*>(Row->layout())->addStretch(1);
+}
+
+QToolButton* lcAddPanelActionButton(QWidget* Row, QAction* Action)
+{
+	QToolButton* Button = new QToolButton(Row);
+
+	Button->setDefaultAction(Action);
+	lcAddPanelRowWidget(Row, Button);
+	lcSetupPanelButton(Button);
+
+	return Button;
+}
+
+QToolButton* lcAddPanelOptionsButton(QWidget* Row, QMenu* Menu, const QString& ToolTip, const QString& AccessibleName)
+{
+	QToolButton* OptionsButton = new QToolButton(Row);
 
 	OptionsButton->setIcon(QIcon(":/resources/gear_in.png"));
 	OptionsButton->setToolTip(ToolTip);
 	OptionsButton->setAccessibleName(AccessibleName);
 	OptionsButton->setPopupMode(QToolButton::InstantPopup);
 	OptionsButton->setMenu(Menu);
-	ToolBar->addWidget(OptionsButton);
+	lcAddPanelRowWidget(Row, OptionsButton);
 	lcSetupPanelButton(OptionsButton);
 
 	return OptionsButton;
