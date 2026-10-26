@@ -42,7 +42,7 @@ make check TESTARGS="-o test-results.xml,junitxml -o -,txt"
 ## Add tests
 
 1. Declare a named `void` function under `private slots` in `sw_tests.h`.
-2. Define it in the relevant test source file as `void lcTests::FunctionName()`.
+2. Define it in the relevant test source file as `void swTests::FunctionName()`.
 3. If adding a new source file, list it in `tests.pro`.
 
 Use `QVERIFY`, `QCOMPARE`, or other Qt Test checks so assertions remain active in

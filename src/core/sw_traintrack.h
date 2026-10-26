@@ -2,34 +2,34 @@
 
 #include "sw_math.h"
 
-class lcPiece;
-class lcPiecesLibrary;
-class lcPieceData;
-struct lcInsertPieceInfo;
+class swPiece;
+class swPiecesLibrary;
+class swPieceData;
+struct swInsertPieceInfo;
 
-enum class lcTrainTrackConnectionSleeper
+enum class swTrainTrackConnectionSleeper
 {
 	None,
 	HasSleeper,
 	NeedsSleeper
 };
 
-struct lcTrainTrackConnectionType
+struct swTrainTrackConnectionType
 {
 	size_t Group;
-	lcTrainTrackConnectionSleeper Sleeper;
+	swTrainTrackConnectionSleeper Sleeper;
 };
 
-struct lcTrainTrackConnection
+struct swTrainTrackConnection
 {
-	lcMatrix44 Transform;
-	lcTrainTrackConnectionType Type;
+	swMatrix44 Transform;
+	swTrainTrackConnectionType Type;
 };
 
-class lcTrainTrackInfo
+class swTrainTrackInfo
 {
 public:
-	lcTrainTrackInfo(const std::vector<lcTrainTrackConnection> &Connections, int Color, bool Visible)
+	swTrainTrackInfo(const std::vector<swTrainTrackConnection> &Connections, int Color, bool Visible)
 		: mConnections(Connections), mColorCode(Color), mVisible(Visible)
 	{
 	}
@@ -44,20 +44,20 @@ public:
 		return mVisible;
 	}
 
-	static void Initialize(lcPiecesLibrary* Library);
-	static std::vector<lcInsertPieceInfo> GetInsertPieceInfo(lcPiece* CurrentPiece, lcPieceData* PieceData, lcPiece* MovingPiece, int ColorIndex, quint32 PreferredSection, bool AllowNewPieces, std::optional<lcVector3> ClosestPoint);
-	static std::optional<lcMatrix44> GetConnectionTransform(lcPieceData* CurrentPieceData, const lcMatrix44& CurrentTransform, quint32 CurrentConnectionIndex, lcPieceData* PieceData, quint32 NewConnectionIndex);
-	static std::optional<lcMatrix44> CalculateTransformToConnection(const lcMatrix44& ConnectionTransform, lcPieceData* PieceData, quint32 ConnectionIndex);
-	static int GetPieceConnectionIndex(const lcPiece* Piece1, int ConnectionIndex1, const lcPiece* Piece2);
+	static void Initialize(swPiecesLibrary* Library);
+	static std::vector<swInsertPieceInfo> GetInsertPieceInfo(swPiece* CurrentPiece, swPieceData* PieceData, swPiece* MovingPiece, int ColorIndex, quint32 PreferredSection, bool AllowNewPieces, std::optional<swVector3> ClosestPoint);
+	static std::optional<swMatrix44> GetConnectionTransform(swPieceData* CurrentPieceData, const swMatrix44& CurrentTransform, quint32 CurrentConnectionIndex, swPieceData* PieceData, quint32 NewConnectionIndex);
+	static std::optional<swMatrix44> CalculateTransformToConnection(const swMatrix44& ConnectionTransform, swPieceData* PieceData, quint32 ConnectionIndex);
+	static int GetPieceConnectionIndex(const swPiece* Piece1, int ConnectionIndex1, const swPiece* Piece2);
 
-	const std::vector<lcTrainTrackConnection>& GetConnections() const
+	const std::vector<swTrainTrackConnection>& GetConnections() const
 	{
 		return mConnections;
 	}
 
-	bool CanConnectTo(const lcTrainTrackConnectionType& ConnectionType, bool AllowNewPieces) const
+	bool CanConnectTo(const swTrainTrackConnectionType& ConnectionType, bool AllowNewPieces) const
 	{
-		for (const lcTrainTrackConnection& Connection : mConnections)
+		for (const swTrainTrackConnection& Connection : mConnections)
 			if (AreConnectionsCompatible(Connection.Type, ConnectionType, AllowNewPieces))
 				return true;
 
@@ -65,29 +65,29 @@ public:
 	}
 
 protected:
-	static bool AreConnectionsCompatible(const lcTrainTrackConnectionType& a, const lcTrainTrackConnectionType& b, bool AllowNewPieces)
+	static bool AreConnectionsCompatible(const swTrainTrackConnectionType& a, const swTrainTrackConnectionType& b, bool AllowNewPieces)
 	{
 		if (a.Group != b.Group)
 			return false;
 
 		switch (a.Sleeper)
 		{
-		case lcTrainTrackConnectionSleeper::None:
-			return b.Sleeper == lcTrainTrackConnectionSleeper::None;
+		case swTrainTrackConnectionSleeper::None:
+			return b.Sleeper == swTrainTrackConnectionSleeper::None;
 
-		case lcTrainTrackConnectionSleeper::HasSleeper:
-			return b.Sleeper == lcTrainTrackConnectionSleeper::NeedsSleeper;
+		case swTrainTrackConnectionSleeper::HasSleeper:
+			return b.Sleeper == swTrainTrackConnectionSleeper::NeedsSleeper;
 
-		case lcTrainTrackConnectionSleeper::NeedsSleeper:
-			return b.Sleeper == lcTrainTrackConnectionSleeper::HasSleeper || (AllowNewPieces && b.Sleeper == lcTrainTrackConnectionSleeper::NeedsSleeper);
+		case swTrainTrackConnectionSleeper::NeedsSleeper:
+			return b.Sleeper == swTrainTrackConnectionSleeper::HasSleeper || (AllowNewPieces && b.Sleeper == swTrainTrackConnectionSleeper::NeedsSleeper);
 		}
 
 		return false;
 	}
 
-	std::vector<lcTrainTrackConnection> mConnections;
+	std::vector<swTrainTrackConnection> mConnections;
 	int mColorCode = 16;
 	bool mVisible = false;
 
-	static std::map<size_t, lcPieceData*> mSleepers;
+	static std::map<size_t, swPieceData*> mSleepers;
 };

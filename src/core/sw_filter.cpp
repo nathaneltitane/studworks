@@ -2,7 +2,7 @@
 #include "sw_filter.h"
 #include "sw_string.h"
 
-lcFilter::lcFilter(const std::string_view FilterString)
+swFilter::swFilter(const std::string_view FilterString)
 {
 	size_t TokenStart = std::string_view::npos;
 	FilterOp Op = FilterOp::Or;
@@ -75,13 +75,13 @@ lcFilter::lcFilter(const std::string_view FilterString)
 	EndToken(FilterString.size());
 }
 
-bool lcFilter::Match(const char* String) const
+bool swFilter::Match(const char* String) const
 {
 	bool CurrentMatch = mFilterParts.empty();
 
 	for (const FilterPart& FilterPart : mFilterParts)
 	{
-		bool Match = FilterPart.Wildcard ? FastWildCompare(String, FilterPart.String.c_str()) : lcstrcasestr(String, FilterPart.String.c_str()) != nullptr;
+		bool Match = FilterPart.Wildcard ? FastWildCompare(String, FilterPart.String.c_str()) : swstrcasestr(String, FilterPart.String.c_str()) != nullptr;
 
 		switch (FilterPart.Op)
 		{
@@ -124,7 +124,7 @@ bool lcFilter::Match(const char* String) const
 // For each '*' wildcard, seeks out a matching sequence of any characters
 // beyond it.  Otherwise compares the strings a character at a time.
 //
-bool lcFilter::FastWildCompare(const char* Tame, const char* Wild)
+bool swFilter::FastWildCompare(const char* Tame, const char* Wild)
 {
     const char* WildSequence;  // Points to prospective wild string match after '*'
     const char* TameSequence;  // Points to prospective tame string match

@@ -3,11 +3,11 @@
 #include "ui_sw_arraydialog.h"
 #include "sw_utils.h"
 
-lcArrayDialog::lcArrayDialog(QWidget* Parent)
-	: QDialog(Parent), ui(new Ui::lcArrayDialog)
+swArrayDialog::swArrayDialog(QWidget* Parent)
+	: QDialog(Parent), ui(new Ui::swArrayDialog)
 {
 	ui->setupUi(this);
-	lcSetupDialogHelp(this, ui->buttonBox);
+	swSetupDialogHelp(this, ui->buttonBox);
 
 	ui->offset1x->setValidator(new QDoubleValidator(ui->offset1x));
 	ui->offset1y->setValidator(new QDoubleValidator(ui->offset1y));
@@ -31,38 +31,38 @@ lcArrayDialog::lcArrayDialog(QWidget* Parent)
 	mCounts[0] = 10;
 	mCounts[1] = 1;
 	mCounts[2] = 1;
-	mOffsets[0] = mOffsets[1] = mOffsets[2] = lcVector3(0.0f, 0.0f, 0.0f);
-	mRotations[0] = mRotations[1] = mRotations[2] = lcVector3(0.0f, 0.0f, 0.0f);
+	mOffsets[0] = mOffsets[1] = mOffsets[2] = swVector3(0.0f, 0.0f, 0.0f);
+	mRotations[0] = mRotations[1] = mRotations[2] = swVector3(0.0f, 0.0f, 0.0f);
 
 	ui->count1->setValue(mCounts[0]);
 	ui->count2->setValue(mCounts[1]);
 	ui->count3->setValue(mCounts[2]);
-	ui->offset1x->setText(lcFormatFloatLocalized(mOffsets[0].x, locale()));
-	ui->offset1y->setText(lcFormatFloatLocalized(mOffsets[0].y, locale()));
-	ui->offset1z->setText(lcFormatFloatLocalized(mOffsets[0].z, locale()));
-	ui->offset2x->setText(lcFormatFloatLocalized(mOffsets[1].x, locale()));
-	ui->offset2y->setText(lcFormatFloatLocalized(mOffsets[1].y, locale()));
-	ui->offset2z->setText(lcFormatFloatLocalized(mOffsets[1].z, locale()));
-	ui->offset3x->setText(lcFormatFloatLocalized(mOffsets[2].x, locale()));
-	ui->offset3y->setText(lcFormatFloatLocalized(mOffsets[2].y, locale()));
-	ui->offset3z->setText(lcFormatFloatLocalized(mOffsets[2].z, locale()));
-	ui->rotation1x->setText(lcFormatFloatLocalized(mRotations[0].x, locale()));
-	ui->rotation1y->setText(lcFormatFloatLocalized(mRotations[0].y, locale()));
-	ui->rotation1z->setText(lcFormatFloatLocalized(mRotations[0].z, locale()));
-	ui->rotation2x->setText(lcFormatFloatLocalized(mRotations[1].x, locale()));
-	ui->rotation2y->setText(lcFormatFloatLocalized(mRotations[1].y, locale()));
-	ui->rotation2z->setText(lcFormatFloatLocalized(mRotations[1].z, locale()));
-	ui->rotation3x->setText(lcFormatFloatLocalized(mRotations[2].x, locale()));
-	ui->rotation3y->setText(lcFormatFloatLocalized(mRotations[2].y, locale()));
-	ui->rotation3z->setText(lcFormatFloatLocalized(mRotations[2].z, locale()));
+	ui->offset1x->setText(swFormatFloatLocalized(mOffsets[0].x, locale()));
+	ui->offset1y->setText(swFormatFloatLocalized(mOffsets[0].y, locale()));
+	ui->offset1z->setText(swFormatFloatLocalized(mOffsets[0].z, locale()));
+	ui->offset2x->setText(swFormatFloatLocalized(mOffsets[1].x, locale()));
+	ui->offset2y->setText(swFormatFloatLocalized(mOffsets[1].y, locale()));
+	ui->offset2z->setText(swFormatFloatLocalized(mOffsets[1].z, locale()));
+	ui->offset3x->setText(swFormatFloatLocalized(mOffsets[2].x, locale()));
+	ui->offset3y->setText(swFormatFloatLocalized(mOffsets[2].y, locale()));
+	ui->offset3z->setText(swFormatFloatLocalized(mOffsets[2].z, locale()));
+	ui->rotation1x->setText(swFormatFloatLocalized(mRotations[0].x, locale()));
+	ui->rotation1y->setText(swFormatFloatLocalized(mRotations[0].y, locale()));
+	ui->rotation1z->setText(swFormatFloatLocalized(mRotations[0].z, locale()));
+	ui->rotation2x->setText(swFormatFloatLocalized(mRotations[1].x, locale()));
+	ui->rotation2y->setText(swFormatFloatLocalized(mRotations[1].y, locale()));
+	ui->rotation2z->setText(swFormatFloatLocalized(mRotations[1].z, locale()));
+	ui->rotation3x->setText(swFormatFloatLocalized(mRotations[2].x, locale()));
+	ui->rotation3y->setText(swFormatFloatLocalized(mRotations[2].y, locale()));
+	ui->rotation3z->setText(swFormatFloatLocalized(mRotations[2].z, locale()));
 }
 
-lcArrayDialog::~lcArrayDialog()
+swArrayDialog::~swArrayDialog()
 {
 	delete ui;
 }
 
-void lcArrayDialog::accept()
+void swArrayDialog::accept()
 {
 	int Counts[3];
 
@@ -89,14 +89,14 @@ void lcArrayDialog::accept()
 			{ ui->rotation3x, ui->rotation3y, ui->rotation3z }
 		}
 	};
-	lcVector3 Values[2][3];
+	swVector3 Values[2][3];
 
 	for (int Type = 0; Type < 2; Type++)
 		for (int Dimension = 0; Dimension < 3; Dimension++)
 			for (int Axis = 0; Axis < 3; Axis++)
 			{
 				QLineEdit* Edit = Edits[Type][Dimension][Axis];
-				const std::optional<float> Value = lcParseFloatLocalized(Edit->text(), Edit->validator()->locale());
+				const std::optional<float> Value = swParseFloatLocalized(Edit->text(), Edit->validator()->locale());
 
 				if (!Value || !Edit->hasAcceptableInput())
 				{

@@ -6,21 +6,21 @@
 #include "sw_setsdatabasedialog.h"
 #include "project.h"
 
-lcPartPaletteDialog::lcPartPaletteDialog(QWidget* Parent, std::vector<lcPartPalette>& PartPalettes)
-	: QDialog(Parent), ui(new Ui::lcPartPaletteDialog), mPartPalettes(PartPalettes)
+swPartPaletteDialog::swPartPaletteDialog(QWidget* Parent, std::vector<swPartPalette>& PartPalettes)
+	: QDialog(Parent), ui(new Ui::swPartPaletteDialog), mPartPalettes(PartPalettes)
 {
     ui->setupUi(this);
-	lcSetupDialogHelp(this, ui->buttonBox);
+	swSetupDialogHelp(this, ui->buttonBox);
 
-	connect(ui->NewButton, &QPushButton::clicked, this, &lcPartPaletteDialog::NewButtonClicked);
-	connect(ui->DeleteButton, &QPushButton::clicked, this, &lcPartPaletteDialog::DeleteButtonClicked);
-	connect(ui->RenameButton, &QPushButton::clicked, this, &lcPartPaletteDialog::RenameButtonClicked);
-	connect(ui->ImportButton, &QPushButton::clicked, this, &lcPartPaletteDialog::ImportButtonClicked);
-	connect(ui->MoveUpButton, &QPushButton::clicked, this, &lcPartPaletteDialog::MoveUpButtonClicked);
-	connect(ui->MoveDownButton, &QPushButton::clicked, this, &lcPartPaletteDialog::MoveDownButtonClicked);
-	connect(ui->PaletteList, QOverload<int>::of(&QListWidget::currentRowChanged), this, &lcPartPaletteDialog::PaletteListCurrentRowChanged);
+	connect(ui->NewButton, &QPushButton::clicked, this, &swPartPaletteDialog::NewButtonClicked);
+	connect(ui->DeleteButton, &QPushButton::clicked, this, &swPartPaletteDialog::DeleteButtonClicked);
+	connect(ui->RenameButton, &QPushButton::clicked, this, &swPartPaletteDialog::RenameButtonClicked);
+	connect(ui->ImportButton, &QPushButton::clicked, this, &swPartPaletteDialog::ImportButtonClicked);
+	connect(ui->MoveUpButton, &QPushButton::clicked, this, &swPartPaletteDialog::MoveUpButtonClicked);
+	connect(ui->MoveDownButton, &QPushButton::clicked, this, &swPartPaletteDialog::MoveDownButtonClicked);
+	connect(ui->PaletteList, QOverload<int>::of(&QListWidget::currentRowChanged), this, &swPartPaletteDialog::PaletteListCurrentRowChanged);
 
-	for (const lcPartPalette& Palette : PartPalettes)
+	for (const swPartPalette& Palette : PartPalettes)
 	{
 		QListWidgetItem* Item = new QListWidgetItem(Palette.Name);
 		Item->setData(Qt::UserRole, QVariant::fromValue<uintptr_t>(reinterpret_cast<uintptr_t>(&Palette)));
@@ -31,15 +31,15 @@ lcPartPaletteDialog::lcPartPaletteDialog(QWidget* Parent, std::vector<lcPartPale
 	UpdateButtons();
 }
 
-lcPartPaletteDialog::~lcPartPaletteDialog()
+swPartPaletteDialog::~swPartPaletteDialog()
 {
-	for (lcPartPalette* Palette : mImportedPalettes)
+	for (swPartPalette* Palette : mImportedPalettes)
 		delete Palette;
 
 	delete ui;
 }
 
-void lcPartPaletteDialog::UpdateButtons()
+void swPartPaletteDialog::UpdateButtons()
 {
 	int CurrentPalette = ui->PaletteList->currentRow();
 	int PaletteCount = ui->PaletteList->count();
@@ -49,17 +49,17 @@ void lcPartPaletteDialog::UpdateButtons()
 	ui->MoveDownButton->setEnabled(PaletteCount > 1 && CurrentPalette < PaletteCount - 1);
 }
 
-void lcPartPaletteDialog::accept()
+void swPartPaletteDialog::accept()
 {
-	std::vector<lcPartPalette> PartPalettes;
+	std::vector<swPartPalette> PartPalettes;
 	PartPalettes.reserve(ui->PaletteList->count());
 
 	for (int ItemIdx = 0; ItemIdx < ui->PaletteList->count(); ItemIdx++)
 	{
 		QListWidgetItem* Item = ui->PaletteList->item(ItemIdx);
-		lcPartPalette* OldPalette = reinterpret_cast<lcPartPalette*>(Item->data(Qt::UserRole).value<uintptr_t>());
+		swPartPalette* OldPalette = reinterpret_cast<swPartPalette*>(Item->data(Qt::UserRole).value<uintptr_t>());
 
-		lcPartPalette Palette;
+		swPartPalette Palette;
 		Palette.Name = Item->text();
 		if (OldPalette)
 			Palette.Parts = std::move(OldPalette->Parts);
@@ -72,7 +72,7 @@ void lcPartPaletteDialog::accept()
 	QDialog::accept();
 }
 
-void lcPartPaletteDialog::NewButtonClicked()
+void swPartPaletteDialog::NewButtonClicked()
 {
 	bool Ok = false;
 
@@ -88,7 +88,7 @@ void lcPartPaletteDialog::NewButtonClicked()
 	UpdateButtons();
 }
 
-void lcPartPaletteDialog::DeleteButtonClicked()
+void swPartPaletteDialog::DeleteButtonClicked()
 {
 	QList<QListWidgetItem*>	SelectedItems = ui->PaletteList->selectedItems();
 
@@ -105,7 +105,7 @@ void lcPartPaletteDialog::DeleteButtonClicked()
 	UpdateButtons();
 }
 
-void lcPartPaletteDialog::RenameButtonClicked()
+void swPartPaletteDialog::RenameButtonClicked()
 {
 	QList<QListWidgetItem*>	SelectedItems = ui->PaletteList->selectedItems();
 
@@ -124,20 +124,20 @@ void lcPartPaletteDialog::RenameButtonClicked()
 		SelectedItems[0]->setText(Name);
 }
 
-void lcPartPaletteDialog::ImportButtonClicked()
+void swPartPaletteDialog::ImportButtonClicked()
 {
-	lcSetsDatabaseDialog Dialog(this);
+	swSetsDatabaseDialog Dialog(this);
 
 	if (Dialog.exec() != QDialog::Accepted)
 		return;
 
-	lcPartPalette* Palette = new lcPartPalette;
+	swPartPalette* Palette = new swPartPalette;
 	Palette->Name = Dialog.GetSetDescription();
 	mImportedPalettes.push_back(Palette);
 
-	std::vector<lcSetInventoryItem> Inventory = Dialog.GetSetInventory();
+	std::vector<swSetInventoryItem> Inventory = Dialog.GetSetInventory();
 
-	for (const lcSetInventoryItem& Item : Inventory)
+	for (const swSetInventoryItem& Item : Inventory)
 	{
 		Palette->Parts.push_back(Item.PartID.toUpper().toStdString() + ".DAT");
 	}
@@ -149,7 +149,7 @@ void lcPartPaletteDialog::ImportButtonClicked()
 	UpdateButtons();
 }
 
-void lcPartPaletteDialog::MoveUpButtonClicked()
+void swPartPaletteDialog::MoveUpButtonClicked()
 {
 	QList<QListWidgetItem*>	SelectedItems = ui->PaletteList->selectedItems();
 
@@ -168,7 +168,7 @@ void lcPartPaletteDialog::MoveUpButtonClicked()
 	UpdateButtons();
 }
 
-void lcPartPaletteDialog::MoveDownButtonClicked()
+void swPartPaletteDialog::MoveDownButtonClicked()
 {
 	QList<QListWidgetItem*>	SelectedItems = ui->PaletteList->selectedItems();
 
@@ -184,7 +184,7 @@ void lcPartPaletteDialog::MoveDownButtonClicked()
 	UpdateButtons();
 }
 
-void lcPartPaletteDialog::PaletteListCurrentRowChanged(int CurrentRow)
+void swPartPaletteDialog::PaletteListCurrentRowChanged(int CurrentRow)
 {
 	Q_UNUSED(CurrentRow);
 

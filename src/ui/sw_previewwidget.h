@@ -2,23 +2,23 @@
 
 #include "sw_view.h"
 
-class lcPreview;
-class lcPreviewNameEdit;
+class swPreview;
+class swPreviewNameEdit;
 
-class lcPreviewDockWidget : public QWidget
+class swPreviewDockWidget : public QWidget
 {
 	Q_OBJECT
 
 public:
-	explicit lcPreviewDockWidget(QWidget* Parent);
+	explicit swPreviewDockWidget(QWidget* Parent);
 
-	bool SetCurrentPiece(lcPieceData* PieceData, int ColorCode);
+	bool SetCurrentPiece(swPieceData* PieceData, int ColorCode);
 	void ClearPreview();
 	void UpdatePreview();
 	void RefreshDescription();
-	void RefreshModel(const lcModel* Model);
-	void RefreshAfterAssetChange(const std::vector<lcPieceData*>& ChangedPieces);
-	void RebindPieceData(lcPieceData* Previous, lcPieceData* Replacement);
+	void RefreshModel(const swModel* Model);
+	void RefreshAfterAssetChange(const std::vector<swPieceData*>& ChangedPieces);
+	void RebindPieceData(swPieceData* Previous, swPieceData* Replacement);
 	void SetSquareViewport(bool SquareViewport);
 	void UpdateSquareViewport();
 
@@ -33,18 +33,18 @@ protected:
 
 	QAction* mLockAction;
 	QWidget* mViewContainer;
-	lcPreviewNameEdit* mLabel;
-	lcPreview* mPreview;
-	lcViewWidget* mViewWidget;
+	swPreviewNameEdit* mLabel;
+	swPreview* mPreview;
+	swViewWidget* mViewWidget;
 	bool mRefreshingModel = false;
 	bool mAssetRefreshPending = false;
 	bool mRefitAfterAssetLoad = true;
 };
 
-class lcPreview : public lcView
+class swPreview : public swView
 {
 public:
-	lcPreview();
+	swPreview();
 
 	QString GetDescription() const
 	{
@@ -59,7 +59,7 @@ public:
 	void ClearPreview();
 	void UpdatePreview();
 	void RefreshDescription();
-	bool SetCurrentPiece(lcPieceData* PieceData, int ColorCode);
+	bool SetCurrentPiece(swPieceData* PieceData, int ColorCode);
 
 protected:
 	std::unique_ptr<Project> mLoader;

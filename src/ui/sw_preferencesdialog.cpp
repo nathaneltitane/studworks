@@ -20,11 +20,11 @@ static const char* gLanguageLocales[] =
 	"", "cs_CZ", "de_DE", "en_US", "fr_FR", "pt_PT", "es_ES", "zh_CN"
 };
 
-lcPreferencesDialog::lcPreferencesDialog(QWidget* Parent, lcPreferencesDialogOptions* Options)
-	: QDialog(Parent), mOptions(Options), ui(new Ui::lcPreferencesDialog)
+swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOptions* Options)
+	: QDialog(Parent), mOptions(Options), ui(new Ui::swPreferencesDialog)
 {
 	ui->setupUi(this);
-	lcSetupDialogHelp(this, ui->buttonBox);
+	swSetupDialogHelp(this, ui->buttonBox);
 
 #if defined(Q_OS_WIN) || defined(Q_OS_MACOS)
 	ui->povrayLabel->hide();
@@ -42,89 +42,89 @@ lcPreferencesDialog::lcPreferencesDialog(QWidget* Parent, lcPreferencesDialogOpt
 	ui->Language->addItem("Espa\u00f1ol");
 	ui->Language->addItem("\u7b80\u4f53\u4e2d\u6587");
 
-	connect(ui->partsLibraryBrowse, &QPushButton::clicked, this, &lcPreferencesDialog::PartsLibraryBrowseClicked);
-	connect(ui->partsArchiveBrowse, &QPushButton::clicked, this, &lcPreferencesDialog::PartsArchiveBrowseClicked);
-	connect(ui->ColorConfigBrowseButton, &QPushButton::clicked, this, &lcPreferencesDialog::ColorConfigBrowseButtonClicked);
-	connect(ui->MinifigSettingsBrowseButton, &QPushButton::clicked, this, &lcPreferencesDialog::MinifigSettingsBrowseButtonClicked);
-	connect(ui->povrayExecutableBrowse, &QPushButton::clicked, this, &lcPreferencesDialog::PovrayExecutableBrowseClicked);
-	connect(ui->lgeoPathBrowse, &QPushButton::clicked, this, &lcPreferencesDialog::LgeoPathBrowseClicked);
-	connect(ui->ColorTheme, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &lcPreferencesDialog::ColorThemeCurrentIndexChanged);
-	connect(ui->AutomateEdgeColor, &QCheckBox::toggled, this, &lcPreferencesDialog::AutomateEdgeColorToggled);
-	connect(ui->BlenderAddonSettingsButton, &QPushButton::clicked, this, &lcPreferencesDialog::BlenderAddonSettingsButtonClicked);
-	connect(ui->studStyleCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &lcPreferencesDialog::StudStyleComboCurrentIndexChanged);
-	connect(ui->antiAliasing, &QCheckBox::toggled, this, &lcPreferencesDialog::AntiAliasingToggled);
-	connect(ui->edgeLines, &QCheckBox::toggled, this, &lcPreferencesDialog::EdgeLinesToggled);
-	connect(ui->ConditionalLinesCheckBox, &QCheckBox::toggled, this, &lcPreferencesDialog::ConditionalLinesCheckBoxToggled);
-	connect(ui->LineWidthSlider, QOverload<int>::of(&QSlider::valueChanged), this, &lcPreferencesDialog::LineWidthSliderValueChanged);
+	connect(ui->partsLibraryBrowse, &QPushButton::clicked, this, &swPreferencesDialog::PartsLibraryBrowseClicked);
+	connect(ui->partsArchiveBrowse, &QPushButton::clicked, this, &swPreferencesDialog::PartsArchiveBrowseClicked);
+	connect(ui->ColorConfigBrowseButton, &QPushButton::clicked, this, &swPreferencesDialog::ColorConfigBrowseButtonClicked);
+	connect(ui->MinifigSettingsBrowseButton, &QPushButton::clicked, this, &swPreferencesDialog::MinifigSettingsBrowseButtonClicked);
+	connect(ui->povrayExecutableBrowse, &QPushButton::clicked, this, &swPreferencesDialog::PovrayExecutableBrowseClicked);
+	connect(ui->lgeoPathBrowse, &QPushButton::clicked, this, &swPreferencesDialog::LgeoPathBrowseClicked);
+	connect(ui->ColorTheme, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &swPreferencesDialog::ColorThemeCurrentIndexChanged);
+	connect(ui->AutomateEdgeColor, &QCheckBox::toggled, this, &swPreferencesDialog::AutomateEdgeColorToggled);
+	connect(ui->BlenderAddonSettingsButton, &QPushButton::clicked, this, &swPreferencesDialog::BlenderAddonSettingsButtonClicked);
+	connect(ui->studStyleCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &swPreferencesDialog::StudStyleComboCurrentIndexChanged);
+	connect(ui->antiAliasing, &QCheckBox::toggled, this, &swPreferencesDialog::AntiAliasingToggled);
+	connect(ui->edgeLines, &QCheckBox::toggled, this, &swPreferencesDialog::EdgeLinesToggled);
+	connect(ui->ConditionalLinesCheckBox, &QCheckBox::toggled, this, &swPreferencesDialog::ConditionalLinesCheckBoxToggled);
+	connect(ui->LineWidthSlider, QOverload<int>::of(&QSlider::valueChanged), this, &swPreferencesDialog::LineWidthSliderValueChanged);
 
-	for (lcRenderTarget Target : { lcRenderTarget::Preview, lcRenderTarget::Pieces, lcRenderTarget::Minifig })
+	for (swRenderTarget Target : { swRenderTarget::Preview, swRenderTarget::Pieces, swRenderTarget::Minifig })
 	{
-		const lcRenderTargetWidgets Widgets = GetRenderTargetWidgets(Target);
+		const swRenderTargetWidgets Widgets = GetRenderTargetWidgets(Target);
 
-		connect(Widgets.SyncRendering, &QCheckBox::toggled, this, &lcPreferencesDialog::RenderTargetChanged);
-		connect(Widgets.EdgeLines, &QCheckBox::toggled, this, &lcPreferencesDialog::RenderTargetChanged);
-		connect(Widgets.ConditionalLines, &QCheckBox::toggled, this, &lcPreferencesDialog::RenderTargetChanged);
-		connect(Widgets.LineWidthSlider, QOverload<int>::of(&QSlider::valueChanged), this, &lcPreferencesDialog::RenderTargetChanged);
+		connect(Widgets.SyncRendering, &QCheckBox::toggled, this, &swPreferencesDialog::RenderTargetChanged);
+		connect(Widgets.EdgeLines, &QCheckBox::toggled, this, &swPreferencesDialog::RenderTargetChanged);
+		connect(Widgets.ConditionalLines, &QCheckBox::toggled, this, &swPreferencesDialog::RenderTargetChanged);
+		connect(Widgets.LineWidthSlider, QOverload<int>::of(&QSlider::valueChanged), this, &swPreferencesDialog::RenderTargetChanged);
 	}
 
-	connect(ui->MeshLODSlider, QOverload<int>::of(&QSlider::valueChanged), this, &lcPreferencesDialog::MeshLODSliderValueChanged);
-	connect(ui->FadeSteps, &QCheckBox::toggled, this, &lcPreferencesDialog::FadeStepsToggled);
-	connect(ui->HighlightNewParts, &QCheckBox::toggled, this, &lcPreferencesDialog::HighlightNewPartsToggled);
-	connect(ui->gridStuds, &QCheckBox::toggled, this, &lcPreferencesDialog::GridStudsToggled);
-	connect(ui->gridLines, &QCheckBox::toggled, this, &lcPreferencesDialog::GridLinesToggled);
-	connect(ui->ViewSphereSizeCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &lcPreferencesDialog::ViewSphereSizeComboCurrentIndexChanged);
-	connect(ui->PreviewViewSphereSizeCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &lcPreferencesDialog::PreviewViewSphereSizeComboCurrentIndexChanged);
-	connect(ui->newCategory, &QPushButton::clicked, this, &lcPreferencesDialog::NewCategoryClicked);
-	connect(ui->editCategory, &QPushButton::clicked, this, &lcPreferencesDialog::EditCategoryClicked);
-	connect(ui->deleteCategory, &QPushButton::clicked, this, &lcPreferencesDialog::DeleteCategoryClicked);
-	connect(ui->importCategories, &QPushButton::clicked, this, &lcPreferencesDialog::ImportCategoriesClicked);
-	connect(ui->exportCategories, &QPushButton::clicked, this, &lcPreferencesDialog::ExportCategoriesClicked);
-	connect(ui->resetCategories, &QPushButton::clicked, this, &lcPreferencesDialog::ResetCategoriesClicked);
-	connect(ui->shortcutAssign, &QPushButton::clicked, this, &lcPreferencesDialog::ShortcutAssignClicked);
-	connect(ui->shortcutRemove, &QPushButton::clicked, this, &lcPreferencesDialog::ShortcutRemoveClicked);
-	connect(ui->shortcutsImport, &QPushButton::clicked, this, &lcPreferencesDialog::ShortcutsImportClicked);
-	connect(ui->shortcutsExport, &QPushButton::clicked, this, &lcPreferencesDialog::ShortcutsExportClicked);
-	connect(ui->shortcutsReset, &QPushButton::clicked, this, &lcPreferencesDialog::ShortcutsResetClicked);
-	connect(ui->KeyboardFilterEdit, &QLineEdit::textEdited, this, &lcPreferencesDialog::KeyboardFilterEditTextEdited);
-	connect(ui->mouseAssign, &QPushButton::clicked, this, &lcPreferencesDialog::MouseAssignClicked);
-	connect(ui->mouseRemove, &QPushButton::clicked, this, &lcPreferencesDialog::MouseRemoveClicked);
-	connect(ui->MouseImportButton, &QPushButton::clicked, this, &lcPreferencesDialog::MouseImportButtonClicked);
-	connect(ui->MouseExportButton, &QPushButton::clicked, this, &lcPreferencesDialog::MouseExportButtonClicked);
-	connect(ui->mouseReset, &QPushButton::clicked, this, &lcPreferencesDialog::MouseResetClicked);
+	connect(ui->MeshLODSlider, QOverload<int>::of(&QSlider::valueChanged), this, &swPreferencesDialog::MeshLODSliderValueChanged);
+	connect(ui->FadeSteps, &QCheckBox::toggled, this, &swPreferencesDialog::FadeStepsToggled);
+	connect(ui->HighlightNewParts, &QCheckBox::toggled, this, &swPreferencesDialog::HighlightNewPartsToggled);
+	connect(ui->gridStuds, &QCheckBox::toggled, this, &swPreferencesDialog::GridStudsToggled);
+	connect(ui->gridLines, &QCheckBox::toggled, this, &swPreferencesDialog::GridLinesToggled);
+	connect(ui->ViewSphereSizeCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &swPreferencesDialog::ViewSphereSizeComboCurrentIndexChanged);
+	connect(ui->PreviewViewSphereSizeCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &swPreferencesDialog::PreviewViewSphereSizeComboCurrentIndexChanged);
+	connect(ui->newCategory, &QPushButton::clicked, this, &swPreferencesDialog::NewCategoryClicked);
+	connect(ui->editCategory, &QPushButton::clicked, this, &swPreferencesDialog::EditCategoryClicked);
+	connect(ui->deleteCategory, &QPushButton::clicked, this, &swPreferencesDialog::DeleteCategoryClicked);
+	connect(ui->importCategories, &QPushButton::clicked, this, &swPreferencesDialog::ImportCategoriesClicked);
+	connect(ui->exportCategories, &QPushButton::clicked, this, &swPreferencesDialog::ExportCategoriesClicked);
+	connect(ui->resetCategories, &QPushButton::clicked, this, &swPreferencesDialog::ResetCategoriesClicked);
+	connect(ui->shortcutAssign, &QPushButton::clicked, this, &swPreferencesDialog::ShortcutAssignClicked);
+	connect(ui->shortcutRemove, &QPushButton::clicked, this, &swPreferencesDialog::ShortcutRemoveClicked);
+	connect(ui->shortcutsImport, &QPushButton::clicked, this, &swPreferencesDialog::ShortcutsImportClicked);
+	connect(ui->shortcutsExport, &QPushButton::clicked, this, &swPreferencesDialog::ShortcutsExportClicked);
+	connect(ui->shortcutsReset, &QPushButton::clicked, this, &swPreferencesDialog::ShortcutsResetClicked);
+	connect(ui->KeyboardFilterEdit, &QLineEdit::textEdited, this, &swPreferencesDialog::KeyboardFilterEditTextEdited);
+	connect(ui->mouseAssign, &QPushButton::clicked, this, &swPreferencesDialog::MouseAssignClicked);
+	connect(ui->mouseRemove, &QPushButton::clicked, this, &swPreferencesDialog::MouseRemoveClicked);
+	connect(ui->MouseImportButton, &QPushButton::clicked, this, &swPreferencesDialog::MouseImportButtonClicked);
+	connect(ui->MouseExportButton, &QPushButton::clicked, this, &swPreferencesDialog::MouseExportButtonClicked);
+	connect(ui->mouseReset, &QPushButton::clicked, this, &swPreferencesDialog::MouseResetClicked);
 
-	connect(ui->BackgroundSolidColorButton, &QToolButton::clicked, this, &lcPreferencesDialog::ColorButtonClicked);
-	connect(ui->BackgroundGradient1ColorButton, &QToolButton::clicked, this, &lcPreferencesDialog::ColorButtonClicked);
-	connect(ui->BackgroundGradient2ColorButton, &QToolButton::clicked, this, &lcPreferencesDialog::ColorButtonClicked);
-	connect(ui->ActiveViewColorButton, &QToolButton::clicked, this, &lcPreferencesDialog::ColorButtonClicked);
-	connect(ui->InactiveViewColorButton, &QToolButton::clicked, this, &lcPreferencesDialog::ColorButtonClicked);
-	connect(ui->TextHaloColorButton, &QToolButton::clicked, this, &lcPreferencesDialog::ColorButtonClicked);
-	connect(ui->TextColorButton, &QToolButton::clicked, this, &lcPreferencesDialog::ColorButtonClicked);
-	connect(ui->MarqueeBorderColorButton, &QToolButton::clicked, this, &lcPreferencesDialog::ColorButtonClicked);
-	connect(ui->MarqueeFillColorButton, &QToolButton::clicked, this, &lcPreferencesDialog::ColorButtonClicked);
-	connect(ui->OverlayColorButton, &QToolButton::clicked, this, &lcPreferencesDialog::ColorButtonClicked);
-	connect(ui->FadeStepsColor, &QToolButton::clicked, this, &lcPreferencesDialog::ColorButtonClicked);
-	connect(ui->HighlightNewPartsColor, &QToolButton::clicked, this, &lcPreferencesDialog::ColorButtonClicked);
-	connect(ui->gridStudColor, &QToolButton::clicked, this, &lcPreferencesDialog::ColorButtonClicked);
-	connect(ui->gridLineColor, &QToolButton::clicked, this, &lcPreferencesDialog::ColorButtonClicked);
-	connect(ui->ViewSphereColorButton, &QToolButton::clicked, this, &lcPreferencesDialog::ColorButtonClicked);
-	connect(ui->ViewSphereTextColorButton, &QToolButton::clicked, this, &lcPreferencesDialog::ColorButtonClicked);
-	connect(ui->ViewSphereHighlightColorButton, &QToolButton::clicked, this, &lcPreferencesDialog::ColorButtonClicked);
-	connect(ui->AxisXColorButton, &QToolButton::clicked, this, &lcPreferencesDialog::ColorButtonClicked);
-	connect(ui->AxisYColorButton, &QToolButton::clicked, this, &lcPreferencesDialog::ColorButtonClicked);
-	connect(ui->AxisZColorButton, &QToolButton::clicked, this, &lcPreferencesDialog::ColorButtonClicked);
-	connect(ui->ObjectSelectedColorButton, &QToolButton::clicked, this, &lcPreferencesDialog::ColorButtonClicked);
-	connect(ui->ObjectFocusedColorButton, &QToolButton::clicked, this, &lcPreferencesDialog::ColorButtonClicked);
-	connect(ui->CameraColorButton, &QToolButton::clicked, this, &lcPreferencesDialog::ColorButtonClicked);
-	connect(ui->LightColorButton, &QToolButton::clicked, this, &lcPreferencesDialog::ColorButtonClicked);
-	connect(ui->ControlPointColorButton, &QToolButton::clicked, this, &lcPreferencesDialog::ColorButtonClicked);
-	connect(ui->ControlPointFocusedColorButton, &QToolButton::clicked, this, &lcPreferencesDialog::ColorButtonClicked);
-	connect(ui->categoriesTree, &QTreeWidget::itemSelectionChanged, this, &lcPreferencesDialog::UpdateParts);
-	connect(ui->categoriesTree->model(), &QAbstractItemModel::rowsInserted, this, &lcPreferencesDialog::CategoriesDropped);
+	connect(ui->BackgroundSolidColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->BackgroundGradient1ColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->BackgroundGradient2ColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->ActiveViewColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->InactiveViewColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->TextHaloColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->TextColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->MarqueeBorderColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->MarqueeFillColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->OverlayColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->FadeStepsColor, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->HighlightNewPartsColor, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->gridStudColor, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->gridLineColor, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->ViewSphereColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->ViewSphereTextColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->ViewSphereHighlightColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->AxisXColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->AxisYColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->AxisZColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->ObjectSelectedColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->ObjectFocusedColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->CameraColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->LightColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->ControlPointColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->ControlPointFocusedColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->categoriesTree, &QTreeWidget::itemSelectionChanged, this, &swPreferencesDialog::UpdateParts);
+	connect(ui->categoriesTree->model(), &QAbstractItemModel::rowsInserted, this, &swPreferencesDialog::CategoriesDropped);
 	ui->shortcutEdit->installEventFilter(this);
-	connect(ui->commandList, &QTreeWidget::currentItemChanged, this, &lcPreferencesDialog::CommandChanged);
-	connect(ui->mouseTree, &QTreeWidget::currentItemChanged, this, &lcPreferencesDialog::MouseTreeItemChanged);
-	connect(ui->HighContrastButton, &QToolButton::clicked, this, &lcPreferencesDialog::AutomateEdgeColor);
-	connect(ui->AutomateEdgeColorButton, &QToolButton::clicked, this, &lcPreferencesDialog::AutomateEdgeColor);
+	connect(ui->commandList, &QTreeWidget::currentItemChanged, this, &swPreferencesDialog::CommandChanged);
+	connect(ui->mouseTree, &QTreeWidget::currentItemChanged, this, &swPreferencesDialog::MouseTreeItemChanged);
+	connect(ui->HighContrastButton, &QToolButton::clicked, this, &swPreferencesDialog::AutomateEdgeColor);
+	connect(ui->AutomateEdgeColorButton, &QToolButton::clicked, this, &swPreferencesDialog::AutomateEdgeColor);
 
 	ui->partsLibrary->setText(mOptions->LibraryPath);
 	ui->ColorConfigEdit->setText(mOptions->ColorConfigPath);
@@ -136,7 +136,7 @@ lcPreferencesDialog::lcPreferencesDialog(QWidget* Parent, lcPreferencesDialogOpt
 	const bool ColorThemeBlocked = ui->ColorTheme->blockSignals(true);
 	ui->ColorTheme->setCurrentIndex(static_cast<int>(mOptions->Preferences.mColorTheme));
 	ui->ColorTheme->blockSignals(ColorThemeBlocked);
-	for (unsigned int LanguageIdx = 0; LanguageIdx < LC_ARRAY_COUNT(gLanguageLocales); LanguageIdx++)
+	for (unsigned int LanguageIdx = 0; LanguageIdx < SW_ARRAY_COUNT(gLanguageLocales); LanguageIdx++)
 	{
 		if (mOptions->Language == gLanguageLocales[LanguageIdx])
 		{
@@ -165,11 +165,11 @@ lcPreferencesDialog::lcPreferencesDialog(QWidget* Parent, lcPreferencesDialogOpt
 	ui->edgeLines->setChecked(mOptions->Preferences.mDrawEdgeLines);
 	ui->ConditionalLinesCheckBox->setChecked(mOptions->Preferences.mDrawConditionalLines);
 
-	lcViewWidget* Widget = gMainWindow->GetActiveView()->GetWidget();
+	swViewWidget* Widget = gMainWindow->GetActiveView()->GetWidget();
 	QOpenGLContext* Context = Widget->context();
 	QOpenGLFunctions* Functions = Context->functions();
 
-#ifndef LC_OPENGLES
+#ifndef SW_OPENGLES
 	if (QSurfaceFormat::defaultFormat().samples() > 1)
 	{
 		Functions->glGetFloatv(GL_SMOOTH_LINE_WIDTH_RANGE, mLineWidthRange);
@@ -188,10 +188,10 @@ lcPreferencesDialog::lcPreferencesDialog(QWidget* Parent, lcPreferencesDialogOpt
 	ui->LineWidthSlider->setRange(0, (mLineWidthRange[1] - mLineWidthRange[0]) / mLineWidthGranularity);
 	ui->LineWidthSlider->setValue((mOptions->Preferences.mLineWidth - mLineWidthRange[0]) / mLineWidthGranularity);
 
-	for (lcRenderTarget Target : { lcRenderTarget::Preview, lcRenderTarget::Pieces, lcRenderTarget::Minifig })
+	for (swRenderTarget Target : { swRenderTarget::Preview, swRenderTarget::Pieces, swRenderTarget::Minifig })
 	{
-		const lcRenderTargetWidgets Widgets = GetRenderTargetWidgets(Target);
-		const lcTargetRenderSettings& TargetSettings = mOptions->Preferences.GetTargetRenderSettings(Target);
+		const swRenderTargetWidgets Widgets = GetRenderTargetWidgets(Target);
+		const swTargetRenderSettings& TargetSettings = mOptions->Preferences.GetTargetRenderSettings(Target);
 
 		Widgets.SyncRendering->setChecked(TargetSettings.SyncRendering);
 		Widgets.ShadingMode->setCurrentIndex(static_cast<int>(TargetSettings.Settings.ShadingMode));
@@ -210,8 +210,8 @@ lcPreferencesDialog::lcPreferencesDialog(QWidget* Parent, lcPreferencesDialogOpt
 	ui->HighlightNewParts->setChecked(mOptions->Preferences.mHighlightNewParts);
 	ui->gridStuds->setChecked(mOptions->Preferences.mDrawGridStuds);
 	ui->gridLines->setChecked(mOptions->Preferences.mDrawGridLines);
-	ui->gridLineSpacing->setValidator(new QIntValidator(1, LC_MAX_GRID_LINE_SPACING, ui->gridLineSpacing));
-	ui->gridLineSpacing->setText(lcFormatIntegerLocalized(mOptions->Preferences.mGridLineSpacing, ui->gridLineSpacing->validator()->locale()));
+	ui->gridLineSpacing->setValidator(new QIntValidator(1, SW_MAX_GRID_LINE_SPACING, ui->gridLineSpacing));
+	ui->gridLineSpacing->setText(swFormatIntegerLocalized(mOptions->Preferences.mGridLineSpacing, ui->gridLineSpacing->validator()->locale()));
 	ui->GridOriginCheckBox->setChecked(mOptions->Preferences.mDrawGridOrigin);
 	ui->GridHeightXZCheckBox->setChecked(mOptions->Preferences.mDrawGridHeightXZ);
 	ui->GridHeightYZCheckBox->setChecked(mOptions->Preferences.mDrawGridHeightYZ);
@@ -279,28 +279,28 @@ lcPreferencesDialog::lcPreferencesDialog(QWidget* Parent, lcPreferencesDialogOpt
 
 	ui->ShadingMode->setCurrentIndex(static_cast<int>(mOptions->Preferences.mShadingMode));
 
-	if (!lcContext::SupportsDefaultLights())
+	if (!swContext::SupportsDefaultLights())
 	{
 		QStandardItemModel* ShadingModel = qobject_cast<QStandardItemModel*>(ui->ShadingMode->model());
-		QStandardItem* DefaultLightsItem = ShadingModel->item(static_cast<int>(lcShadingMode::DefaultLights));
+		QStandardItem* DefaultLightsItem = ShadingModel->item(static_cast<int>(swShadingMode::DefaultLights));
 		DefaultLightsItem->setEnabled(false);
 
 		const QString Message = tr("Default Lights is unavailable. Flat shading is used instead.");
 		DefaultLightsItem->setToolTip(Message);
 		ui->ShadingMode->setToolTip(Message);
 
-		for (lcRenderTarget Target : { lcRenderTarget::Preview, lcRenderTarget::Pieces, lcRenderTarget::Minifig })
+		for (swRenderTarget Target : { swRenderTarget::Preview, swRenderTarget::Pieces, swRenderTarget::Minifig })
 		{
 			QComboBox* TargetShadingMode = GetRenderTargetWidgets(Target).ShadingMode;
 			QStandardItemModel* TargetShadingModel = qobject_cast<QStandardItemModel*>(TargetShadingMode->model());
-			QStandardItem* TargetDefaultLightsItem = TargetShadingModel->item(static_cast<int>(lcShadingMode::DefaultLights));
+			QStandardItem* TargetDefaultLightsItem = TargetShadingModel->item(static_cast<int>(swShadingMode::DefaultLights));
 			TargetDefaultLightsItem->setEnabled(false);
 			TargetDefaultLightsItem->setToolTip(Message);
 			TargetShadingMode->setToolTip(Message);
 		}
 	}
 
-	if (!lcContext::SupportsMaterial(lcMaterialType::UnlitViewSphere))
+	if (!swContext::SupportsMaterial(swMaterialType::UnlitViewSphere))
 	{
 		const std::array<QWidget*, 7> Controls =
 		{
@@ -320,16 +320,16 @@ lcPreferencesDialog::lcPreferencesDialog(QWidget* Parent, lcPreferencesDialogOpt
 	bool OutlineSupported = false;
 
 	{
-		lcScopedGLContextState GLState;
-		lcView* View = Widget->GetView();
+		swScopedGLContextState GLState;
+		swView* View = Widget->GetView();
 		View->MakeCurrent();
 		OutlineSupported = View->PrepareOutlineFramebuffers();
 	}
 
 	if (!OutlineSupported)
 	{
-		mOptions->Preferences.mHighlightRenderMode = lcHighlightRenderMode::Tint;
-		lcGetPreferences().mHighlightRenderMode = lcHighlightRenderMode::Tint;
+		mOptions->Preferences.mHighlightRenderMode = swHighlightRenderMode::Tint;
+		swGetPreferences().mHighlightRenderMode = swHighlightRenderMode::Tint;
 		ui->HighlightRenderMode->setToolTip(tr("Outline rendering is unavailable; the Tint and Edges style will be used."));
 		ui->HighlightRenderModeLabel->setToolTip(ui->HighlightRenderMode->toolTip());
 	}
@@ -342,7 +342,7 @@ lcPreferencesDialog::lcPreferencesDialog(QWidget* Parent, lcPreferencesDialogOpt
 	{
 		QPixmap Pixmap(12, 12);
 
-		Pixmap.fill(QColor(LC_RGBA_RED(Color), LC_RGBA_GREEN(Color), LC_RGBA_BLUE(Color)));
+		Pixmap.fill(QColor(SW_RGBA_RED(Color), SW_RGBA_GREEN(Color), SW_RGBA_BLUE(Color)));
 		Button->setIcon(Pixmap);
 	};
 
@@ -391,7 +391,7 @@ lcPreferencesDialog::lcPreferencesDialog(QWidget* Parent, lcPreferencesDialogOpt
 	ui->categoriesTree->setCurrentItem(ui->categoriesTree->topLevelItem(0));
 
 	UpdateCommandList();
-	new lcTreeWidgetColumnStretcher(ui->commandList, 0);
+	new swTreeWidgetColumnStretcher(ui->commandList, 0);
 	CommandChanged(nullptr);
 
 	UpdateMouseTree();
@@ -405,18 +405,18 @@ lcPreferencesDialog::lcPreferencesDialog(QWidget* Parent, lcPreferencesDialogOpt
 			Label->setToolTip(Control->toolTip());
 }
 
-lcPreferencesDialog::~lcPreferencesDialog()
+swPreferencesDialog::~swPreferencesDialog()
 {
 	delete ui;
 }
 
-void lcPreferencesDialog::accept()
+void swPreferencesDialog::accept()
 {
 	bool Ok;
 	int GridLineSpacing = ui->gridLineSpacing->validator()->locale().toInt(ui->gridLineSpacing->text(), &Ok);
 	if (!Ok || !ui->gridLineSpacing->hasAcceptableInput())
 	{
-		QMessageBox::information(this, windowTitle(), tr("Grid spacing must be between 1 and %1 studs.").arg(QString::number(LC_MAX_GRID_LINE_SPACING)));
+		QMessageBox::information(this, windowTitle(), tr("Grid spacing must be between 1 and %1 studs.").arg(QString::number(SW_MAX_GRID_LINE_SPACING)));
 		return;
 	}
 
@@ -427,11 +427,11 @@ void lcPreferencesDialog::accept()
 	mOptions->LGEOPath = ui->lgeoPath->text();
 	mOptions->DefaultAuthor = ui->authorName->text();
 	mOptions->Preferences.mMouseSensitivity = ui->mouseSensitivity->value();
-	mOptions->Preferences.mColorTheme = static_cast<lcColorTheme>(ui->ColorTheme->currentIndex());
+	mOptions->Preferences.mColorTheme = static_cast<swColorTheme>(ui->ColorTheme->currentIndex());
 	mOptions->Preferences.mAutomateEdgeColor = ui->AutomateEdgeColor->isChecked();
 
 	int Language = ui->Language->currentIndex();
-	if (Language < 0 || Language > static_cast<int>(LC_ARRAY_COUNT(gLanguageLocales)))
+	if (Language < 0 || Language > static_cast<int>(SW_ARRAY_COUNT(gLanguageLocales)))
 		Language = 0;
 	mOptions->Language = gLanguageLocales[Language];
 
@@ -441,7 +441,7 @@ void lcPreferencesDialog::accept()
 	mOptions->Preferences.mRestoreTabLayout = ui->RestoreTabLayout->isChecked();
 	mOptions->Preferences.mFirstPieceAtOrigin = ui->FirstPieceAtOrigin->isChecked();
 	mOptions->Preferences.mPiecesSnapToTiles = ui->PiecesSnapToTiles->isChecked();
-	mOptions->Preferences.mInsertColorMode = static_cast<lcInsertColorMode>(ui->InsertColorMode->currentIndex());
+	mOptions->Preferences.mInsertColorMode = static_cast<swInsertColorMode>(ui->InsertColorMode->currentIndex());
 	mOptions->Preferences.mWatchFileChanges = ui->WatchFileChanges->isChecked();
 	mOptions->Preferences.mLoadPiecesBeforeShowing = ui->LoadPiecesBeforeShowing->isChecked();
 
@@ -458,13 +458,13 @@ void lcPreferencesDialog::accept()
 	mOptions->Preferences.mDrawConditionalLines = ui->ConditionalLinesCheckBox->isChecked();
 	mOptions->Preferences.mLineWidth = mLineWidthRange[0] + static_cast<float>(ui->LineWidthSlider->value()) * mLineWidthGranularity;
 
-	for (lcRenderTarget Target : { lcRenderTarget::Preview, lcRenderTarget::Pieces, lcRenderTarget::Minifig })
+	for (swRenderTarget Target : { swRenderTarget::Preview, swRenderTarget::Pieces, swRenderTarget::Minifig })
 	{
-		const lcRenderTargetWidgets Widgets = GetRenderTargetWidgets(Target);
-		lcTargetRenderSettings& TargetSettings = mOptions->Preferences.GetTargetRenderSettings(Target);
+		const swRenderTargetWidgets Widgets = GetRenderTargetWidgets(Target);
+		swTargetRenderSettings& TargetSettings = mOptions->Preferences.GetTargetRenderSettings(Target);
 
 		TargetSettings.SyncRendering = Widgets.SyncRendering->isChecked();
-		TargetSettings.Settings.ShadingMode = static_cast<lcShadingMode>(Widgets.ShadingMode->currentIndex());
+		TargetSettings.Settings.ShadingMode = static_cast<swShadingMode>(Widgets.ShadingMode->currentIndex());
 		TargetSettings.Settings.DrawEdgeLines = Widgets.EdgeLines->isChecked();
 		TargetSettings.Settings.DrawConditionalLines = Widgets.ConditionalLines->isChecked();
 		TargetSettings.Settings.LineWidth = mLineWidthRange[0] + static_cast<float>(Widgets.LineWidthSlider->value()) * mLineWidthGranularity;
@@ -486,9 +486,9 @@ void lcPreferencesDialog::accept()
 	mOptions->Preferences.mBackgroundGradient = ui->BackgroundGradientRadio->isChecked();
 	mOptions->Preferences.mDrawAxes = ui->AxisIconCheckBox->isChecked();
 	mOptions->Preferences.mFollowStepViews = ui->FollowStepViewsCheckBox->isChecked();
-	mOptions->Preferences.mAxisIconLocation = (lcAxisIconLocation)ui->AxisIconLocationCombo->currentIndex();
+	mOptions->Preferences.mAxisIconLocation = (swAxisIconLocation)ui->AxisIconLocationCombo->currentIndex();
 	mOptions->Preferences.mViewSphereEnabled = ui->ViewSphereSizeCombo->currentIndex() > 0;
-	mOptions->Preferences.mViewSphereLocation = (lcViewSphereLocation)ui->ViewSphereLocationCombo->currentIndex();
+	mOptions->Preferences.mViewSphereLocation = (swViewSphereLocation)ui->ViewSphereLocationCombo->currentIndex();
 
 	switch (ui->ViewSphereSizeCombo->currentIndex())
 	{
@@ -503,15 +503,15 @@ void lcPreferencesDialog::accept()
 		break;
 	}
 
-	mOptions->Preferences.mShadingMode = (lcShadingMode)ui->ShadingMode->currentIndex();
-	mOptions->Preferences.mHighlightRenderMode = static_cast<lcHighlightRenderMode>(ui->HighlightRenderMode->currentIndex());
+	mOptions->Preferences.mShadingMode = (swShadingMode)ui->ShadingMode->currentIndex();
+	mOptions->Preferences.mHighlightRenderMode = static_cast<swHighlightRenderMode>(ui->HighlightRenderMode->currentIndex());
 
-	mOptions->StudStyle = static_cast<lcStudStyle>(ui->studStyleCombo->currentIndex());
+	mOptions->StudStyle = static_cast<swStudStyle>(ui->studStyleCombo->currentIndex());
 
 	mOptions->Preferences.mDrawPreviewAxis = ui->PreviewAxisIconCheckBox->isChecked();
 	mOptions->Preferences.mPreviewSquareViewport = ui->PreviewSquareViewportCheckBox->isChecked();
 	mOptions->Preferences.mPreviewViewSphereEnabled = ui->PreviewViewSphereSizeCombo->currentIndex() > 0;
-	mOptions->Preferences.mPreviewViewSphereLocation = (lcViewSphereLocation)ui->PreviewViewSphereLocationCombo->currentIndex();
+	mOptions->Preferences.mPreviewViewSphereLocation = (swViewSphereLocation)ui->PreviewViewSphereLocationCombo->currentIndex();
 
 	switch (ui->PreviewViewSphereSizeCombo->currentIndex())
 	{
@@ -529,7 +529,7 @@ void lcPreferencesDialog::accept()
 	QDialog::accept();
 }
 
-void lcPreferencesDialog::PartsLibraryBrowseClicked()
+void swPreferencesDialog::PartsLibraryBrowseClicked()
 {
 	QString Result = QFileDialog::getExistingDirectory(this, tr("Select Pieces Library Folder"), ui->partsLibrary->text());
 
@@ -537,7 +537,7 @@ void lcPreferencesDialog::PartsLibraryBrowseClicked()
 		ui->partsLibrary->setText(QDir::toNativeSeparators(Result));
 }
 
-void lcPreferencesDialog::PartsArchiveBrowseClicked()
+void swPreferencesDialog::PartsArchiveBrowseClicked()
 {
 	QString Result = QFileDialog::getOpenFileName(this, tr("Select Pieces Library Archive"), ui->partsLibrary->text(), tr("Supported Archives (*.zip *.bin);;All Files (*.*)"));
 
@@ -545,22 +545,22 @@ void lcPreferencesDialog::PartsArchiveBrowseClicked()
 		ui->partsLibrary->setText(QDir::toNativeSeparators(Result));
 }
 
-void lcPreferencesDialog::BlenderAddonSettingsButtonClicked()
+void swPreferencesDialog::BlenderAddonSettingsButtonClicked()
 {
-#ifndef LC_DISABLE_BLENDER
+#ifndef SW_DISABLE_BLENDER
 	int Width = 1280;
 	int Height = 720;
 	double Scale = 1.0f;
 
-	lcBlenderPreferencesDialog::GetBlenderPreferences(
+	swBlenderPreferencesDialog::GetBlenderPreferences(
 		Width,
 		Height,
 		Scale,
 		this);
-#endif // !LC_BLENDER_DISABLED
+#endif // !SW_BLENDER_DISABLED
 }
 
-void lcPreferencesDialog::ColorConfigBrowseButtonClicked()
+void swPreferencesDialog::ColorConfigBrowseButtonClicked()
 {
 	QString Result = QFileDialog::getOpenFileName(this, tr("Select Color Configuration File"), ui->ColorConfigEdit->text(), tr("Settings Files (*.ldr);;All Files (*.*)"));
 
@@ -568,7 +568,7 @@ void lcPreferencesDialog::ColorConfigBrowseButtonClicked()
 		ui->ColorConfigEdit->setText(QDir::toNativeSeparators(Result));
 }
 
-void lcPreferencesDialog::MinifigSettingsBrowseButtonClicked()
+void swPreferencesDialog::MinifigSettingsBrowseButtonClicked()
 {
 	QString Result = QFileDialog::getOpenFileName(this, tr("Select Minifig Settings File"), ui->MinifigSettingsEdit->text(), tr("Settings Files (*.ini);;All Files (*.*)"));
 
@@ -576,7 +576,7 @@ void lcPreferencesDialog::MinifigSettingsBrowseButtonClicked()
 		ui->MinifigSettingsEdit->setText(QDir::toNativeSeparators(Result));
 }
 
-void lcPreferencesDialog::PovrayExecutableBrowseClicked()
+void swPreferencesDialog::PovrayExecutableBrowseClicked()
 {
 #ifdef Q_OS_WIN
 	QString filter(tr("Executable Files (*.exe);;All Files (*.*)"));
@@ -590,7 +590,7 @@ void lcPreferencesDialog::PovrayExecutableBrowseClicked()
 		ui->povrayExecutable->setText(QDir::toNativeSeparators(Result));
 }
 
-void lcPreferencesDialog::LgeoPathBrowseClicked()
+void swPreferencesDialog::LgeoPathBrowseClicked()
 {
 	QString Result = QFileDialog::getExistingDirectory(this, tr("Open LGEO Folder"), ui->lgeoPath->text());
 
@@ -598,15 +598,15 @@ void lcPreferencesDialog::LgeoPathBrowseClicked()
 		ui->lgeoPath->setText(QDir::toNativeSeparators(Result));
 }
 
-void lcPreferencesDialog::ColorThemeCurrentIndexChanged(int Index)
+void swPreferencesDialog::ColorThemeCurrentIndexChanged(int Index)
 {
 	Q_UNUSED(Index);
 
 	if (QMessageBox::question(this, tr("Reset Colors"), tr("Would you like to also reset the interface colors to match the color theme?")) == QMessageBox::Yes)
-		mOptions->Preferences.SetInterfaceColors(static_cast<lcColorTheme>(ui->ColorTheme->currentIndex()));
+		mOptions->Preferences.SetInterfaceColors(static_cast<swColorTheme>(ui->ColorTheme->currentIndex()));
 }
 
-void lcPreferencesDialog::ColorButtonClicked()
+void swPreferencesDialog::ColorButtonClicked()
 {
 	QObject* Button = sender();
 	QString Title;
@@ -753,13 +753,13 @@ void lcPreferencesDialog::ColorButtonClicked()
 	else
 		return;
 
-	QColor OldColor = QColor(LC_RGBA_RED(*Color), LC_RGBA_GREEN(*Color), LC_RGBA_BLUE(*Color), LC_RGBA_ALPHA(*Color));
+	QColor OldColor = QColor(SW_RGBA_RED(*Color), SW_RGBA_GREEN(*Color), SW_RGBA_BLUE(*Color), SW_RGBA_ALPHA(*Color));
 	QColor NewColor = QColorDialog::getColor(OldColor, this, Title, DialogOptions);
 
 	if (NewColor == OldColor || !NewColor.isValid())
 		return;
 
-	*Color = LC_RGBA(NewColor.red(), NewColor.green(), NewColor.blue(), NewColor.alpha());
+	*Color = SW_RGBA(NewColor.red(), NewColor.green(), NewColor.blue(), NewColor.alpha());
 
 	QPixmap pix(12, 12);
 
@@ -768,12 +768,12 @@ void lcPreferencesDialog::ColorButtonClicked()
 	((QToolButton*)Button)->setIcon(pix);
 }
 
-void lcPreferencesDialog::AntiAliasingToggled()
+void swPreferencesDialog::AntiAliasingToggled()
 {
 	ui->antiAliasingSamples->setEnabled(ui->antiAliasing->isChecked());
 }
 
-void lcPreferencesDialog::EdgeLinesToggled()
+void swPreferencesDialog::EdgeLinesToggled()
 {
 	const bool Enable = ui->edgeLines->isChecked() || ui->ConditionalLinesCheckBox->isChecked();
 
@@ -781,7 +781,7 @@ void lcPreferencesDialog::EdgeLinesToggled()
 	ui->LineWidthLabel->setEnabled(Enable);
 }
 
-void lcPreferencesDialog::ConditionalLinesCheckBoxToggled()
+void swPreferencesDialog::ConditionalLinesCheckBoxToggled()
 {
 	const bool Enable = ui->edgeLines->isChecked() || ui->ConditionalLinesCheckBox->isChecked();
 
@@ -789,28 +789,28 @@ void lcPreferencesDialog::ConditionalLinesCheckBoxToggled()
 	ui->LineWidthLabel->setEnabled(Enable);
 }
 
-void lcPreferencesDialog::LineWidthSliderValueChanged()
+void swPreferencesDialog::LineWidthSliderValueChanged()
 {
 	float Value = mLineWidthRange[0] + static_cast<float>(ui->LineWidthSlider->value()) * mLineWidthGranularity;
-	ui->LineWidthLabel->setText(lcFormatDoubleLocalized(Value, locale(), 'g', 6));
+	ui->LineWidthLabel->setText(swFormatDoubleLocalized(Value, locale(), 'g', 6));
 }
 
-lcPreferencesDialog::lcRenderTargetWidgets lcPreferencesDialog::GetRenderTargetWidgets(lcRenderTarget Target) const
+swPreferencesDialog::swRenderTargetWidgets swPreferencesDialog::GetRenderTargetWidgets(swRenderTarget Target) const
 {
-	if (Target == lcRenderTarget::Minifig)
+	if (Target == swRenderTarget::Minifig)
 		return { ui->MinifigSyncRendering, ui->MinifigShadingModeLabel, ui->MinifigShadingMode, ui->MinifigEdgeLines, ui->MinifigConditionalLines, ui->MinifigLineWidthTitle, ui->MinifigLineWidthSlider, ui->MinifigLineWidthLabel };
 
-	if (Target == lcRenderTarget::Pieces)
+	if (Target == swRenderTarget::Pieces)
 		return { ui->PiecesSyncRendering, ui->PiecesShadingModeLabel, ui->PiecesShadingMode, ui->PiecesEdgeLines, ui->PiecesConditionalLines, ui->PiecesLineWidthTitle, ui->PiecesLineWidthSlider, ui->PiecesLineWidthLabel };
 
 	return { ui->PreviewSyncRendering, ui->PreviewShadingModeLabel, ui->PreviewShadingMode, ui->PreviewEdgeLines, ui->PreviewConditionalLines, ui->PreviewLineWidthTitle, ui->PreviewLineWidthSlider, ui->PreviewLineWidthLabel };
 }
 
-void lcPreferencesDialog::RenderTargetChanged()
+void swPreferencesDialog::RenderTargetChanged()
 {
-	for (lcRenderTarget Target : { lcRenderTarget::Preview, lcRenderTarget::Pieces, lcRenderTarget::Minifig })
+	for (swRenderTarget Target : { swRenderTarget::Preview, swRenderTarget::Pieces, swRenderTarget::Minifig })
 	{
-		const lcRenderTargetWidgets Widgets = GetRenderTargetWidgets(Target);
+		const swRenderTargetWidgets Widgets = GetRenderTargetWidgets(Target);
 		const bool Enable = !Widgets.SyncRendering->isChecked();
 		const bool EnableLineWidth = Enable && (Widgets.EdgeLines->isChecked() || Widgets.ConditionalLines->isChecked());
 
@@ -823,60 +823,60 @@ void lcPreferencesDialog::RenderTargetChanged()
 		Widgets.LineWidthLabel->setEnabled(EnableLineWidth);
 
 		float Value = mLineWidthRange[0] + static_cast<float>(Widgets.LineWidthSlider->value()) * mLineWidthGranularity;
-		Widgets.LineWidthLabel->setText(lcFormatDoubleLocalized(Value, locale(), 'g', 6));
+		Widgets.LineWidthLabel->setText(swFormatDoubleLocalized(Value, locale(), 'g', 6));
 	}
 }
 
-void lcPreferencesDialog::MeshLODSliderValueChanged()
+void swPreferencesDialog::MeshLODSliderValueChanged()
 {
 	float Value = ui->MeshLODSlider->value() * mMeshLODMultiplier;
-	ui->MeshLODLabel->setText(lcFormatIntegerLocalized(static_cast<int>(Value), locale()));
+	ui->MeshLODLabel->setText(swFormatIntegerLocalized(static_cast<int>(Value), locale()));
 }
 
-void lcPreferencesDialog::FadeStepsToggled()
+void swPreferencesDialog::FadeStepsToggled()
 {
 	ui->FadeStepsColor->setEnabled(ui->FadeSteps->isChecked());
 }
 
-void lcPreferencesDialog::HighlightNewPartsToggled()
+void swPreferencesDialog::HighlightNewPartsToggled()
 {
 	ui->HighlightNewPartsColor->setEnabled(ui->HighlightNewParts->isChecked());
 }
 
-void lcPreferencesDialog::GridStudsToggled()
+void swPreferencesDialog::GridStudsToggled()
 {
 	ui->gridStudColor->setEnabled(ui->gridStuds->isChecked());
 }
 
-void lcPreferencesDialog::GridLinesToggled()
+void swPreferencesDialog::GridLinesToggled()
 {
 	ui->gridLineColor->setEnabled(ui->gridLines->isChecked());
 	ui->gridLineSpacing->setEnabled(ui->gridLines->isChecked());
 }
 
-void lcPreferencesDialog::PreviewViewSphereSizeComboCurrentIndexChanged(int Index)
+void swPreferencesDialog::PreviewViewSphereSizeComboCurrentIndexChanged(int Index)
 {
-	ui->PreviewViewSphereLocationCombo->setEnabled(Index != 0 && lcContext::SupportsMaterial(lcMaterialType::UnlitViewSphere));
+	ui->PreviewViewSphereLocationCombo->setEnabled(Index != 0 && swContext::SupportsMaterial(swMaterialType::UnlitViewSphere));
 }
 
-void lcPreferencesDialog::ViewSphereSizeComboCurrentIndexChanged(int Index)
+void swPreferencesDialog::ViewSphereSizeComboCurrentIndexChanged(int Index)
 {
-	ui->ViewSphereLocationCombo->setEnabled(Index != 0 && lcContext::SupportsMaterial(lcMaterialType::UnlitViewSphere));
+	ui->ViewSphereLocationCombo->setEnabled(Index != 0 && swContext::SupportsMaterial(swMaterialType::UnlitViewSphere));
 }
 
-void lcPreferencesDialog::AutomateEdgeColorToggled()
+void swPreferencesDialog::AutomateEdgeColorToggled()
 {
 	ui->AutomateEdgeColorButton->setEnabled(ui->AutomateEdgeColor->isChecked());
 }
 
-void lcPreferencesDialog::StudStyleComboCurrentIndexChanged(int Index)
+void swPreferencesDialog::StudStyleComboCurrentIndexChanged(int Index)
 {
-	ui->HighContrastButton->setEnabled(lcIsHighContrast(static_cast<lcStudStyle>(Index)));
+	ui->HighContrastButton->setEnabled(swIsHighContrast(static_cast<swStudStyle>(Index)));
 }
 
-void lcPreferencesDialog::AutomateEdgeColor()
+void swPreferencesDialog::AutomateEdgeColor()
 {
-	lcAutomateEdgeColorDialog Dialog(this, sender() == ui->HighContrastButton);
+	swAutomateEdgeColorDialog Dialog(this, sender() == ui->HighContrastButton);
 
 	if (Dialog.exec() == QDialog::Accepted)
 	{
@@ -893,12 +893,12 @@ void lcPreferencesDialog::AutomateEdgeColor()
 	}
 }
 
-void lcPreferencesDialog::UpdateCategories()
+void swPreferencesDialog::UpdateCategories()
 {
 	QTreeWidgetItem* CategoryItem;
 	QTreeWidget* CategoriesTree = ui->categoriesTree;
 
-	disconnect(ui->categoriesTree->model(), &QAbstractItemModel::rowsInserted, this, &lcPreferencesDialog::CategoriesDropped);
+	disconnect(ui->categoriesTree->model(), &QAbstractItemModel::rowsInserted, this, &swPreferencesDialog::CategoriesDropped);
 
 	CategoriesTree->clear();
 
@@ -913,12 +913,12 @@ void lcPreferencesDialog::UpdateCategories()
 	CategoryItem->setData(0, CategoryRole, QVariant(-1));
 	CategoryItem->setFlags(CategoryItem->flags() & ~Qt::ItemFlag::ItemIsDropEnabled);
 
-	connect(ui->categoriesTree->model(), &QAbstractItemModel::rowsInserted, this, &lcPreferencesDialog::CategoriesDropped);
+	connect(ui->categoriesTree->model(), &QAbstractItemModel::rowsInserted, this, &swPreferencesDialog::CategoriesDropped);
 }
 
-void lcPreferencesDialog::UpdateParts()
+void swPreferencesDialog::UpdateParts()
 {
-	lcPiecesLibrary* Library = lcGetPiecesLibrary();
+	swPiecesLibrary* Library = swGetPiecesLibrary();
 	QTreeWidget* Tree = ui->partsTree;
 
 	Tree->clear();
@@ -933,11 +933,11 @@ void lcPreferencesDialog::UpdateParts()
 
 	if (CategoryIndex != -1)
 	{
-		std::vector<lcPieceData*> SingleParts, GroupedParts;
+		std::vector<swPieceData*> SingleParts, GroupedParts;
 
 		Library->GetCategoryEntries(mOptions->Categories[CategoryIndex].Keywords.constData(), false, SingleParts, GroupedParts);
 
-		for (lcPieceData* PieceData : SingleParts)
+		for (swPieceData* PieceData : SingleParts)
 		{
 			QStringList RowList(PieceData->m_strDescription);
 			RowList.append(PieceData->mFileName);
@@ -947,7 +947,7 @@ void lcPreferencesDialog::UpdateParts()
 	}
 	else
 	{
-		for (lcPieceData* PieceData : Library->GetParts())
+		for (swPieceData* PieceData : Library->GetParts())
 		{
 			for (CategoryIndex = 0; CategoryIndex < static_cast<int>(mOptions->Categories.size()); CategoryIndex++)
 			{
@@ -969,13 +969,13 @@ void lcPreferencesDialog::UpdateParts()
 	Tree->resizeColumnToContents(1);
 }
 
-void lcPreferencesDialog::CategoriesDropped(const QModelIndex& Parent, int First, int Last)
+void swPreferencesDialog::CategoriesDropped(const QModelIndex& Parent, int First, int Last)
 {
 	Q_UNUSED(Parent);
 	Q_UNUSED(First);
 	Q_UNUSED(Last);
 
-	std::vector<lcLibraryCategory> Categories;
+	std::vector<swLibraryCategory> Categories;
 
 	for (int Row = 0; Row < ui->categoriesTree->topLevelItemCount(); Row++)
 	{
@@ -994,11 +994,11 @@ void lcPreferencesDialog::CategoriesDropped(const QModelIndex& Parent, int First
 	mOptions->Categories = std::move(Categories);
 }
 
-void lcPreferencesDialog::NewCategoryClicked()
+void swPreferencesDialog::NewCategoryClicked()
 {
-	lcLibraryCategory Category;
+	swLibraryCategory Category;
 
-	lcCategoryDialog Dialog(this, &Category);
+	swCategoryDialog Dialog(this, &Category);
 	if (Dialog.exec() != QDialog::Accepted)
 		return;
 
@@ -1010,7 +1010,7 @@ void lcPreferencesDialog::NewCategoryClicked()
 	ui->categoriesTree->setCurrentItem(ui->categoriesTree->topLevelItem(static_cast<int>(mOptions->Categories.size()) - 1));
 }
 
-void lcPreferencesDialog::EditCategoryClicked()
+void swPreferencesDialog::EditCategoryClicked()
 {
 	QList<QTreeWidgetItem*> SelectedItems = ui->categoriesTree->selectedItems();
 
@@ -1023,7 +1023,7 @@ void lcPreferencesDialog::EditCategoryClicked()
 	if (CategoryIndex == -1)
 		return;
 
-	lcCategoryDialog Dialog(this, &mOptions->Categories[CategoryIndex]);
+	swCategoryDialog Dialog(this, &mOptions->Categories[CategoryIndex]);
 
 	if (Dialog.exec() != QDialog::Accepted)
 		return;
@@ -1035,7 +1035,7 @@ void lcPreferencesDialog::EditCategoryClicked()
 	ui->categoriesTree->setCurrentItem(ui->categoriesTree->topLevelItem(CategoryIndex));
 }
 
-void lcPreferencesDialog::DeleteCategoryClicked()
+void swPreferencesDialog::DeleteCategoryClicked()
 {
 	QList<QTreeWidgetItem*> selectedItems = ui->categoriesTree->selectedItems();
 
@@ -1059,15 +1059,15 @@ void lcPreferencesDialog::DeleteCategoryClicked()
 	UpdateCategories();
 }
 
-void lcPreferencesDialog::ImportCategoriesClicked()
+void swPreferencesDialog::ImportCategoriesClicked()
 {
 	QString FileName = QFileDialog::getOpenFileName(this, tr("Import Categories"), "", tr("Text Files (*.txt);;All Files (*.*)"));
 
 	if (FileName.isEmpty())
 		return;
 
-	std::vector<lcLibraryCategory> Categories;
-	if (!lcLoadCategories(FileName, Categories))
+	std::vector<swLibraryCategory> Categories;
+	if (!swLoadCategories(FileName, Categories))
 	{
 		QMessageBox::warning(this, tr("Import Categories"), tr("Error loading categories file."));
 		return;
@@ -1078,26 +1078,26 @@ void lcPreferencesDialog::ImportCategoriesClicked()
 	mOptions->CategoriesDefault = false;
 }
 
-void lcPreferencesDialog::ExportCategoriesClicked()
+void swPreferencesDialog::ExportCategoriesClicked()
 {
 	QString FileName = QFileDialog::getSaveFileName(this, tr("Export Categories"), "", tr("Text Files (*.txt);;All Files (*.*)"));
 
 	if (FileName.isEmpty())
 		return;
 
-	if (!lcSaveCategories(FileName, mOptions->Categories))
+	if (!swSaveCategories(FileName, mOptions->Categories))
 	{
 		QMessageBox::warning(this, tr("Export Categories"), tr("Error saving categories file."));
 		return;
 	}
 }
 
-void lcPreferencesDialog::ResetCategoriesClicked()
+void swPreferencesDialog::ResetCategoriesClicked()
 {
 	if (QMessageBox::question(this, tr("Reset Categories"), tr("Are you sure you want to load the default categories?"), QMessageBox::Yes | QMessageBox::No) != QMessageBox::Yes)
 		return;
 
-	lcResetCategories(mOptions->Categories);
+	swResetCategories(mOptions->Categories);
 
 	mOptions->CategoriesModified = true;
 	mOptions->CategoriesDefault = true;
@@ -1105,7 +1105,7 @@ void lcPreferencesDialog::ResetCategoriesClicked()
 	UpdateCategories();
 }
 
-bool lcPreferencesDialog::eventFilter(QObject* Object, QEvent* Event)
+bool swPreferencesDialog::eventFilter(QObject* Object, QEvent* Event)
 {
 	Q_UNUSED(Object);
 
@@ -1146,12 +1146,12 @@ bool lcPreferencesDialog::eventFilter(QObject* Object, QEvent* Event)
 	return QDialog::eventFilter(Object, Event);
 }
 
-void lcPreferencesDialog::UpdateCommandList()
+void swPreferencesDialog::UpdateCommandList()
 {
 	ui->commandList->clear();
 	QMap<QString, QTreeWidgetItem*> Sections;
 
-	for (unsigned int ActionIndex = 0; ActionIndex < LC_NUM_COMMANDS; ActionIndex++)
+	for (unsigned int ActionIndex = 0; ActionIndex < SW_NUM_COMMANDS; ActionIndex++)
 	{
 		if (!gCommands[ActionIndex].ID[0])
 			continue;
@@ -1218,7 +1218,7 @@ void lcPreferencesDialog::UpdateCommandList()
 	}
 }
 
-void lcPreferencesDialog::SetShortcutModified(QTreeWidgetItem* TreeItem, bool Modified)
+void swPreferencesDialog::SetShortcutModified(QTreeWidgetItem* TreeItem, bool Modified)
 {
 	QFont Font = TreeItem->font(0);
 	Font.setItalic(Modified);
@@ -1227,7 +1227,7 @@ void lcPreferencesDialog::SetShortcutModified(QTreeWidgetItem* TreeItem, bool Mo
 	TreeItem->setFont(1, Font);
 }
 
-void lcPreferencesDialog::CommandChanged(QTreeWidgetItem* Current)
+void swPreferencesDialog::CommandChanged(QTreeWidgetItem* Current)
 {
 	if (!Current || !Current->data(0, Qt::UserRole).isValid())
 	{
@@ -1243,7 +1243,7 @@ void lcPreferencesDialog::CommandChanged(QTreeWidgetItem* Current)
 	ui->shortcutEdit->setText(Key.toString(QKeySequence::NativeText));
 }
 
-void lcPreferencesDialog::KeyboardFilterEditTextEdited(const QString& Text)
+void swPreferencesDialog::KeyboardFilterEditTextEdited(const QString& Text)
 {
 	if (Text.isEmpty())
 	{
@@ -1276,7 +1276,7 @@ void lcPreferencesDialog::KeyboardFilterEditTextEdited(const QString& Text)
 	}
 }
 
-void lcPreferencesDialog::ShortcutAssignClicked()
+void swPreferencesDialog::ShortcutAssignClicked()
 {
 	QTreeWidgetItem* CurrentItem = ui->commandList->currentItem();
 
@@ -1284,16 +1284,16 @@ void lcPreferencesDialog::ShortcutAssignClicked()
 		return;
 
 	uint ShortcutIndex = CurrentItem->data(0, Qt::UserRole).toUInt();
-	QString (&Shortcuts)[LC_NUM_COMMANDS] = mOptions->KeyboardShortcuts.mShortcuts;
+	QString (&Shortcuts)[SW_NUM_COMMANDS] = mOptions->KeyboardShortcuts.mShortcuts;
 
-	if (ShortcutIndex >= LC_ARRAY_COUNT(Shortcuts))
+	if (ShortcutIndex >= SW_ARRAY_COUNT(Shortcuts))
 		return;
 
 	QString NewShortcut = ui->shortcutEdit->text();
 
 	if (!NewShortcut.isEmpty())
 	{
-		for (uint ExistingIndex = 0; ExistingIndex < LC_ARRAY_COUNT(Shortcuts); ExistingIndex++)
+		for (uint ExistingIndex = 0; ExistingIndex < SW_ARRAY_COUNT(Shortcuts); ExistingIndex++)
 		{
 			QKeySequence Sequence(Shortcuts[ExistingIndex]);
 
@@ -1346,21 +1346,21 @@ void lcPreferencesDialog::ShortcutAssignClicked()
 	mOptions->KeyboardShortcutsDefault = false;
 }
 
-void lcPreferencesDialog::ShortcutRemoveClicked()
+void swPreferencesDialog::ShortcutRemoveClicked()
 {
 	ui->shortcutEdit->setText(QString());
 
 	ShortcutAssignClicked();
 }
 
-void lcPreferencesDialog::ShortcutsImportClicked()
+void swPreferencesDialog::ShortcutsImportClicked()
 {
 	QString FileName = QFileDialog::getOpenFileName(this, tr("Import Shortcuts"), "", tr("Text Files (*.txt);;All Files (*.*)"));
 
 	if (FileName.isEmpty())
 		return;
 
-	lcKeyboardShortcuts Shortcuts;
+	swKeyboardShortcuts Shortcuts;
 	if (!Shortcuts.Load(FileName))
 	{
 		QMessageBox::warning(this, tr("Import Keyboard Shortcuts"), tr("Error loading keyboard shortcuts file."));
@@ -1373,7 +1373,7 @@ void lcPreferencesDialog::ShortcutsImportClicked()
 	mOptions->KeyboardShortcutsDefault = false;
 }
 
-void lcPreferencesDialog::ShortcutsExportClicked()
+void swPreferencesDialog::ShortcutsExportClicked()
 {
 	QString FileName = QFileDialog::getSaveFileName(this, tr("Export Shortcuts"), "", tr("Text Files (*.txt);;All Files (*.*)"));
 
@@ -1387,7 +1387,7 @@ void lcPreferencesDialog::ShortcutsExportClicked()
 	}
 }
 
-void lcPreferencesDialog::ShortcutsResetClicked()
+void swPreferencesDialog::ShortcutsResetClicked()
 {
 	if (QMessageBox::question(this, tr("Reset Keyboard Shortcuts"), tr("Are you sure you want to load the default keyboard shortcuts?"), QMessageBox::Yes | QMessageBox::No) != QMessageBox::Yes)
 		return;
@@ -1399,15 +1399,15 @@ void lcPreferencesDialog::ShortcutsResetClicked()
 	mOptions->KeyboardShortcutsDefault = true;
 }
 
-void lcPreferencesDialog::UpdateMouseTree()
+void swPreferencesDialog::UpdateMouseTree()
 {
 	ui->mouseTree->clear();
 
-	for (int ToolIdx = 0; ToolIdx < static_cast<int>(lcTool::Count); ToolIdx++)
+	for (int ToolIdx = 0; ToolIdx < static_cast<int>(swTool::Count); ToolIdx++)
 		UpdateMouseTreeItem(ToolIdx);
 }
 
-void lcPreferencesDialog::UpdateMouseTreeItem(int ItemIndex)
+void swPreferencesDialog::UpdateMouseTreeItem(int ItemIndex)
 {
 	auto GetShortcutText = [](Qt::MouseButton Button, Qt::KeyboardModifiers Modifiers)
 	{
@@ -1447,7 +1447,7 @@ void lcPreferencesDialog::UpdateMouseTreeItem(int ItemIndex)
 		new QTreeWidgetItem(ui->mouseTree, QStringList() << tr(gToolNames[ItemIndex]) << Shortcut1 << Shortcut2);
 }
 
-void lcPreferencesDialog::MouseAssignClicked()
+void swPreferencesDialog::MouseAssignClicked()
 {
 	QTreeWidgetItem* Current = ui->mouseTree->currentItem();
 
@@ -1484,7 +1484,7 @@ void lcPreferencesDialog::MouseAssignClicked()
 		if (ui->mouseAlt->isChecked())
 			Modifiers |= Qt::AltModifier;
 
-		for (int ToolIdx = 0; ToolIdx < static_cast<int>(lcTool::Count); ToolIdx++)
+		for (int ToolIdx = 0; ToolIdx < static_cast<int>(swTool::Count); ToolIdx++)
 		{
 			if (ToolIdx == ButtonIndex)
 				continue;
@@ -1525,7 +1525,7 @@ void lcPreferencesDialog::MouseAssignClicked()
 	UpdateMouseTreeItem(ItemIndex);
 }
 
-void lcPreferencesDialog::MouseRemoveClicked()
+void swPreferencesDialog::MouseRemoveClicked()
 {
 	QTreeWidgetItem* Current = ui->mouseTree->currentItem();
 
@@ -1545,14 +1545,14 @@ void lcPreferencesDialog::MouseRemoveClicked()
 	MouseTreeItemChanged(Current);
 }
 
-void lcPreferencesDialog::MouseImportButtonClicked()
+void swPreferencesDialog::MouseImportButtonClicked()
 {
 	QString FileName = QFileDialog::getOpenFileName(this, tr("Import Shortcuts"), "", tr("Text Files (*.txt);;All Files (*.*)"));
 
 	if (FileName.isEmpty())
 		return;
 
-	lcMouseShortcuts Shortcuts;
+	swMouseShortcuts Shortcuts;
 	if (!Shortcuts.Load(FileName))
 	{
 		QMessageBox::warning(this, tr("Import Mouse Shortcuts"), tr("Error loading mouse shortcuts file."));
@@ -1566,7 +1566,7 @@ void lcPreferencesDialog::MouseImportButtonClicked()
 	mOptions->MouseShortcutsDefault = false;
 }
 
-void lcPreferencesDialog::MouseExportButtonClicked()
+void swPreferencesDialog::MouseExportButtonClicked()
 {
 	QString FileName = QFileDialog::getSaveFileName(this, tr("Export Shortcuts"), "", tr("Text Files (*.txt);;All Files (*.*)"));
 
@@ -1577,7 +1577,7 @@ void lcPreferencesDialog::MouseExportButtonClicked()
 		QMessageBox::warning(this, tr("Export Mouse Shortcuts"), tr("Error saving mouse shortcuts file."));
 }
 
-void lcPreferencesDialog::MouseResetClicked()
+void swPreferencesDialog::MouseResetClicked()
 {
 	if (QMessageBox::question(this, tr("Reset Mouse Shortcuts"), tr("Are you sure you want to load the default mouse shortcuts?"), QMessageBox::Yes | QMessageBox::No) != QMessageBox::Yes)
 		return;
@@ -1589,7 +1589,7 @@ void lcPreferencesDialog::MouseResetClicked()
 	mOptions->MouseShortcutsDefault = true;
 }
 
-void lcPreferencesDialog::MouseTreeItemChanged(QTreeWidgetItem* Current)
+void swPreferencesDialog::MouseTreeItemChanged(QTreeWidgetItem* Current)
 {
 	if (!Current)
 	{

@@ -1,4 +1,4 @@
-LC_PIXEL_OUTPUT
+SW_PIXEL_OUTPUT
 
 uniform mediump vec4 MaterialColor;
 

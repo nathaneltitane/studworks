@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>lcModelListDialog</class>
- <widget class="QDialog" name="lcModelListDialog">
+ <class>swModelListDialog</class>
+ <widget class="QDialog" name="swModelListDialog">
   <property name="whatsThis">
    <string>&lt;p&gt;&lt;b&gt;Submodels&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Manage the model and its submodels. Create, rename, duplicate, delete, or reorder entries, then choose OK to apply the changes. Cancel discards the list changes; files already exported remain on disk.&lt;/p&gt;&lt;p&gt;Drag list entries to change their order. Use Set Active to switch to the current list item when applying changes.&lt;/p&gt;</string>
   </property>
@@ -149,7 +149,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>lcModelListDialog</receiver>
+   <receiver>swModelListDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -165,7 +165,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>lcModelListDialog</receiver>
+   <receiver>swModelListDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

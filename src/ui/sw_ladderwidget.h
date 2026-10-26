@@ -1,14 +1,14 @@
 #pragma once
 
-enum class lcFloatPropertySnap;
+enum class swFloatPropertySnap;
 
-class lcLadderWidget: public QWidget
+class swLadderWidget: public QWidget
 {
 	Q_OBJECT
 
 public:
-	lcLadderWidget(QAbstractSpinBox* SpinBox, lcFloatPropertySnap Snap);
-	virtual ~lcLadderWidget() = default;
+	swLadderWidget(QAbstractSpinBox* SpinBox, swFloatPropertySnap Snap);
+	virtual ~swLadderWidget() = default;
 
 	void Show();
 
@@ -26,7 +26,7 @@ protected slots:
 	void FinishEditing();
 
 protected:
-	void CalculateSteps(lcFloatPropertySnap Snap);
+	void CalculateSteps(swFloatPropertySnap Snap);
 	void UpdateMousePosition();
 
 	void paintEvent(QPaintEvent* PaintEvent) override;

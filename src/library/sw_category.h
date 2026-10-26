@@ -1,21 +1,21 @@
 #pragma once
 
-struct lcLibraryCategory
+struct swLibraryCategory
 {
 	QString Name;
 	QByteArray Keywords;
 };
 
-extern std::vector<lcLibraryCategory> gCategories;
+extern std::vector<swLibraryCategory> gCategories;
 
-void lcResetDefaultCategories();
-void lcLoadDefaultCategories(bool BuiltInLibrary = false);
-void lcSaveDefaultCategories();
+void swResetDefaultCategories();
+void swLoadDefaultCategories(bool BuiltInLibrary = false);
+void swSaveDefaultCategories();
 
-void lcResetCategories(std::vector<lcLibraryCategory>& Categories, bool BuiltInLibrary = false);
-bool lcLoadCategories(const QString& FileName, std::vector<lcLibraryCategory>& Categories);
-bool lcLoadCategories(const QByteArray& Buffer, std::vector<lcLibraryCategory>& Categories);
-bool lcSaveCategories(const QString& FileName, const std::vector<lcLibraryCategory>& Categories);
-bool lcSaveCategories(QTextStream& Stream, const std::vector<lcLibraryCategory>& Categories);
+void swResetCategories(std::vector<swLibraryCategory>& Categories, bool BuiltInLibrary = false);
+bool swLoadCategories(const QString& FileName, std::vector<swLibraryCategory>& Categories);
+bool swLoadCategories(const QByteArray& Buffer, std::vector<swLibraryCategory>& Categories);
+bool swSaveCategories(const QString& FileName, const std::vector<swLibraryCategory>& Categories);
+bool swSaveCategories(QTextStream& Stream, const std::vector<swLibraryCategory>& Categories);
 
-bool lcMatchCategory(const char* PieceName, const char* Expression);
+bool swMatchCategory(const char* PieceName, const char* Expression);

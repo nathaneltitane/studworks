@@ -3,37 +3,37 @@
 #include "sw_math.h"
 #include "sw_mesh.h"
 
-class lcLibraryMeshData;
-class lcMeshLoader;
+class swLibraryMeshData;
+class swMeshLoader;
 
-enum lcMeshDataType
+enum swMeshDataType
 {
-	LC_MESHDATA_HIGH,
-	LC_MESHDATA_LOW,
-	LC_MESHDATA_SHARED,
-	LC_NUM_MESHDATA_TYPES
+	SW_MESHDATA_HIGH,
+	SW_MESHDATA_LOW,
+	SW_MESHDATA_SHARED,
+	SW_NUM_MESHDATA_TYPES
 };
 
-struct lcMeshLoaderVertex
+struct swMeshLoaderVertex
 {
-	lcVector3 Position;
-	lcVector3 Normal;
+	swVector3 Position;
+	swVector3 Normal;
 	float NormalWeight;
 };
 
-struct lcMeshLoaderTexturedVertex
+struct swMeshLoaderTexturedVertex
 {
-	lcVector3 Position;
-	lcVector3 Normal;
-	lcVector2 TexCoords;
+	swVector3 Position;
+	swVector3 Normal;
+	swVector2 TexCoords;
 };
 
-struct lcMeshLoaderConditionalVertex
+struct swMeshLoaderConditionalVertex
 {
-	lcVector3 Position[4];
+	swVector3 Position[4];
 };
 
-enum class lcMeshLoaderMaterialType
+enum class swMeshLoaderMaterialType
 {
 	Solid,
 	Planar,
@@ -41,53 +41,53 @@ enum class lcMeshLoaderMaterialType
 	Spherical
 };
 
-struct lcMeshLoaderTextureParams
+struct swMeshLoaderTextureParams
 {
-	lcMeshLoaderMaterialType Type = lcMeshLoaderMaterialType::Solid;
-	lcVector3 Points[3] = {};
+	swMeshLoaderMaterialType Type = swMeshLoaderMaterialType::Solid;
+	swVector3 Points[3] = {};
 	float Angles[2] = {};
-	char Name[LC_MAXPATH] = {};
+	char Name[SW_MAXPATH] = {};
 };
 
-struct lcMeshLoaderMaterial : public lcMeshLoaderTextureParams
+struct swMeshLoaderMaterial : public swMeshLoaderTextureParams
 {
 	quint32 Color = 16;
 };
 
-class lcMeshLoaderSection
+class swMeshLoaderSection
 {
 public:
-	lcMeshLoaderSection(lcMeshPrimitiveType PrimitiveType, lcMeshLoaderMaterial* Material)
+	swMeshLoaderSection(swMeshPrimitiveType PrimitiveType, swMeshLoaderMaterial* Material)
 		: mMaterial(Material), mPrimitiveType(PrimitiveType)
 	{
 		mIndices.reserve(1024);
 	}
 
-	lcMeshLoaderMaterial* mMaterial;
-	lcMeshPrimitiveType mPrimitiveType;
+	swMeshLoaderMaterial* mMaterial;
+	swMeshPrimitiveType mPrimitiveType;
 	std::vector<quint32> mIndices;
 };
 
-struct lcMeshLoaderFinalSection
+struct swMeshLoaderFinalSection
 {
 	quint32 Color;
-	lcMeshPrimitiveType PrimitiveType;
+	swMeshPrimitiveType PrimitiveType;
 	char Name[256];
 };
 
-struct lcMeshLoaderTextureMap : public lcMeshLoaderTextureParams
+struct swMeshLoaderTextureMap : public swMeshLoaderTextureParams
 {
 	bool Fallback = false;
 	bool Next = false;
 };
 
-class lcMeshLoaderTypeData
+class swMeshLoaderTypeData
 {
 public:
-	lcMeshLoaderTypeData() = default;
+	swMeshLoaderTypeData() = default;
 
-	lcMeshLoaderTypeData(const lcMeshLoaderTypeData&) = delete;
-	lcMeshLoaderTypeData& operator=(const lcMeshLoaderTypeData&) = delete;
+	swMeshLoaderTypeData(const swMeshLoaderTypeData&) = delete;
+	swMeshLoaderTypeData& operator=(const swMeshLoaderTypeData&) = delete;
 
 	bool IsEmpty() const
 	{
@@ -101,48 +101,48 @@ public:
 		mConditionalVertices.clear();
 	}
 
-	void SetMeshData(lcLibraryMeshData* MeshData)
+	void SetMeshData(swLibraryMeshData* MeshData)
 	{
 		mMeshData = MeshData;
 	}
 
-	lcMeshLoaderSection* AddSection(lcMeshPrimitiveType PrimitiveType, lcMeshLoaderMaterial* Material);
+	swMeshLoaderSection* AddSection(swMeshPrimitiveType PrimitiveType, swMeshLoaderMaterial* Material);
 
-	quint32 AddVertex(const lcVector3& Position, bool Optimize);
-	quint32 AddVertex(const lcVector3& Position, const lcVector3& Normal, float NormalWeight, bool Optimize);
-	quint32 AddConditionalVertex(const lcVector3 (&Position)[4]);
+	quint32 AddVertex(const swVector3& Position, bool Optimize);
+	quint32 AddVertex(const swVector3& Position, const swVector3& Normal, float NormalWeight, bool Optimize);
+	quint32 AddConditionalVertex(const swVector3 (&Position)[4]);
 
-	void ProcessLine(int LineType, lcMeshLoaderMaterial* Material, bool WindingCCW, lcVector3 (&Vertices)[4], bool Optimize);
+	void ProcessLine(int LineType, swMeshLoaderMaterial* Material, bool WindingCCW, swVector3 (&Vertices)[4], bool Optimize);
 
-	void AddMeshData(const lcMeshLoaderTypeData& Data, const lcMatrix44& Transform, quint32 CurrentColorCode, bool InvertWinding, bool InvertNormals, lcMeshLoaderTextureMap* TextureMap);
-	void AddMeshDataNoDuplicateCheck(const lcMeshLoaderTypeData& Data, const lcMatrix44& Transform, quint32 CurrentColorCode, bool InvertWinding, bool InvertNormals, lcMeshLoaderTextureMap* TextureMap);
+	void AddMeshData(const swMeshLoaderTypeData& Data, const swMatrix44& Transform, quint32 CurrentColorCode, bool InvertWinding, bool InvertNormals, swMeshLoaderTextureMap* TextureMap);
+	void AddMeshDataNoDuplicateCheck(const swMeshLoaderTypeData& Data, const swMatrix44& Transform, quint32 CurrentColorCode, bool InvertWinding, bool InvertNormals, swMeshLoaderTextureMap* TextureMap);
 
-	std::vector<std::unique_ptr<lcMeshLoaderSection>> mSections;
-	std::vector<lcMeshLoaderVertex> mVertices;
-	std::vector<lcMeshLoaderConditionalVertex> mConditionalVertices;
+	std::vector<std::unique_ptr<swMeshLoaderSection>> mSections;
+	std::vector<swMeshLoaderVertex> mVertices;
+	std::vector<swMeshLoaderConditionalVertex> mConditionalVertices;
 
 protected:
-	lcLibraryMeshData* mMeshData = nullptr;
+	swLibraryMeshData* mMeshData = nullptr;
 };
 
-class lcLibraryMeshData
+class swLibraryMeshData
 {
 public:
-	lcLibraryMeshData()
+	swLibraryMeshData()
 	{
 		mHasTextures = false;
 		mHasStyleStud = false;
 
-		for (lcMeshLoaderTypeData& Data : mData)
+		for (swMeshLoaderTypeData& Data : mData)
 			Data.SetMeshData(this);
 	}
 
-	lcLibraryMeshData(const lcLibraryMeshData&) = delete;
-	lcLibraryMeshData& operator=(const lcLibraryMeshData&) = delete;
+	swLibraryMeshData(const swLibraryMeshData&) = delete;
+	swLibraryMeshData& operator=(const swLibraryMeshData&) = delete;
 
 	bool IsEmpty() const
 	{
-		for (const lcMeshLoaderTypeData& Data : mData)
+		for (const swMeshLoaderTypeData& Data : mData)
 			if (!Data.IsEmpty())
 				return false;
 
@@ -151,7 +151,7 @@ public:
 
 	void Clear()
 	{
-		for (lcMeshLoaderTypeData& Data : mData)
+		for (swMeshLoaderTypeData& Data : mData)
 			Data.Clear();
 
 		mMaterials.clear();
@@ -160,45 +160,45 @@ public:
 		mHasStyleStud = false;
 	}
 
-	void SetMeshLoader(lcMeshLoader* MeshLoader)
+	void SetMeshLoader(swMeshLoader* MeshLoader)
 	{
 		mMeshLoader = MeshLoader;
 	}
 
 	// Build private geometry with color codes; the UI thread calls FinalizeSections().
-	lcMesh* CreateMesh(const std::atomic_bool* Cancelled);
-	void AddVertices(lcMeshDataType MeshDataType, size_t VertexCount, int* BaseVertex, lcMeshLoaderVertex** VertexBuffer);
-	void AddIndices(lcMeshDataType MeshDataType, lcMeshPrimitiveType PrimitiveType, quint32 ColorCode, size_t IndexCount, quint32** IndexBuffer);
-	void AddMeshData(const lcLibraryMeshData& Data, const lcMatrix44& Transform, quint32 CurrentColorCode, bool InvertWinding, bool InvertNormals, lcMeshLoaderTextureMap* TextureMap, lcMeshDataType OverrideDestIndex);
-	void AddMeshDataNoDuplicateCheck(const lcLibraryMeshData& Data, const lcMatrix44& Transform, quint32 CurrentColorCode, bool InvertWinding, bool InvertNormals, lcMeshLoaderTextureMap* TextureMap, lcMeshDataType OverrideDestIndex);
+	swMesh* CreateMesh(const std::atomic_bool* Cancelled);
+	void AddVertices(swMeshDataType MeshDataType, size_t VertexCount, int* BaseVertex, swMeshLoaderVertex** VertexBuffer);
+	void AddIndices(swMeshDataType MeshDataType, swMeshPrimitiveType PrimitiveType, quint32 ColorCode, size_t IndexCount, quint32** IndexBuffer);
+	void AddMeshData(const swLibraryMeshData& Data, const swMatrix44& Transform, quint32 CurrentColorCode, bool InvertWinding, bool InvertNormals, swMeshLoaderTextureMap* TextureMap, swMeshDataType OverrideDestIndex);
+	void AddMeshDataNoDuplicateCheck(const swLibraryMeshData& Data, const swMatrix44& Transform, quint32 CurrentColorCode, bool InvertWinding, bool InvertNormals, swMeshLoaderTextureMap* TextureMap, swMeshDataType OverrideDestIndex);
 
-	lcMeshLoaderMaterial* GetMaterial(quint32 ColorCode);
-	lcMeshLoaderMaterial* GetTexturedMaterial(quint32 ColorCode, const lcMeshLoaderTextureParams& TextureMap);
+	swMeshLoaderMaterial* GetMaterial(quint32 ColorCode);
+	swMeshLoaderMaterial* GetTexturedMaterial(quint32 ColorCode, const swMeshLoaderTextureParams& TextureMap);
 
-	std::array<lcMeshLoaderTypeData, LC_NUM_MESHDATA_TYPES> mData;
+	std::array<swMeshLoaderTypeData, SW_NUM_MESHDATA_TYPES> mData;
 	bool mHasTextures;
 	bool mHasStyleStud;
 
 protected:
-	lcMeshLoader* mMeshLoader = nullptr;
-	std::vector<std::unique_ptr<lcMeshLoaderMaterial>> mMaterials;
-	std::vector<lcMeshLoaderTexturedVertex> mTexturedVertices;
+	swMeshLoader* mMeshLoader = nullptr;
+	std::vector<std::unique_ptr<swMeshLoaderMaterial>> mMaterials;
+	std::vector<swMeshLoaderTexturedVertex> mTexturedVertices;
 
 	void GenerateTexturedVertices();
-	void GeneratePlanarTexcoords(lcMeshLoaderSection* Section, const lcMeshLoaderTypeData& Data);
-	void GenerateCylindricalTexcoords(lcMeshLoaderSection* Section, const lcMeshLoaderTypeData& Data);
-	void GenerateSphericalTexcoords(lcMeshLoaderSection* Section, const lcMeshLoaderTypeData& Data);
-	quint32 AddTexturedVertex(const lcVector3& Position, const lcVector3& Normal, const lcVector2& TexCoords);
+	void GeneratePlanarTexcoords(swMeshLoaderSection* Section, const swMeshLoaderTypeData& Data);
+	void GenerateCylindricalTexcoords(swMeshLoaderSection* Section, const swMeshLoaderTypeData& Data);
+	void GenerateSphericalTexcoords(swMeshLoaderSection* Section, const swMeshLoaderTypeData& Data);
+	quint32 AddTexturedVertex(const swVector3& Position, const swVector3& Normal, const swVector2& TexCoords);
 
 	template<typename IndexType>
-	bool WriteSections(lcMesh* Mesh, const std::vector<lcMeshLoaderFinalSection> (&FinalSections)[LC_NUM_MESH_LODS], int (&BaseVertices)[LC_NUM_MESHDATA_TYPES], const std::atomic_bool* Cancelled);
+	bool WriteSections(swMesh* Mesh, const std::vector<swMeshLoaderFinalSection> (&FinalSections)[SW_NUM_MESH_LODS], int (&BaseVertices)[SW_NUM_MESHDATA_TYPES], const std::atomic_bool* Cancelled);
 
-	static bool UpdateMeshBoundingBox(lcMesh* Mesh, const std::atomic_bool* Cancelled);
+	static bool UpdateMeshBoundingBox(swMesh* Mesh, const std::atomic_bool* Cancelled);
 	template<typename IndexType>
-	static bool UpdateMeshSectionBoundingBox(const lcMesh* Mesh, const lcMeshSection& Section, lcVector3& SectionMin, lcVector3& SectionMax, const std::atomic_bool* Cancelled);
+	static bool UpdateMeshSectionBoundingBox(const swMesh* Mesh, const swMeshSection& Section, swVector3& SectionMin, swVector3& SectionMax, const std::atomic_bool* Cancelled);
 };
 
-enum class lcMeshLoaderFlag
+enum class swMeshLoaderFlag
 {
 	None = 0,
 	Optimize = 1 << 0,
@@ -206,32 +206,32 @@ enum class lcMeshLoaderFlag
 	RequireAllIncludes = 1 << 2
 };
 
-Q_DECLARE_FLAGS(lcMeshLoaderFlags, lcMeshLoaderFlag)
-Q_DECLARE_OPERATORS_FOR_FLAGS(lcMeshLoaderFlags)
+Q_DECLARE_FLAGS(swMeshLoaderFlags, swMeshLoaderFlag)
+Q_DECLARE_OPERATORS_FOR_FLAGS(swMeshLoaderFlags)
 
-class lcMeshLoader
+class swMeshLoader
 {
 public:
-	lcMeshLoader(lcLibraryMeshData& MeshData, Project* CurrentProject, lcMeshLoaderFlags Flags);
+	swMeshLoader(swLibraryMeshData& MeshData, Project* CurrentProject, swMeshLoaderFlags Flags);
 
-	bool LoadMesh(lcFile& File, lcMeshDataType MeshDataType);
+	bool LoadMesh(swFile& File, swMeshDataType MeshDataType);
 	static std::vector<std::string> GetTextureReferences(const QByteArray& FileData);
 	const QString& GetError() const { return mError; }
 	void SetCancellationFlag(const std::atomic_bool* Cancelled) { mCancelled = Cancelled; }
-	bool SearchProjectFolder() const { return mFlags.testFlag(lcMeshLoaderFlag::SearchProjectFolder); }
+	bool SearchProjectFolder() const { return mFlags.testFlag(swMeshLoaderFlag::SearchProjectFolder); }
 
 	Project* mCurrentProject;
 
 protected:
 	static bool ParseTextureName(const char* Text, char* Name, size_t NameSize, const char** EndOfName);
-	bool ReadMeshData(lcFile& File, const lcMatrix44& CurrentTransform, quint32 CurrentColorCode, bool InvertWinding, lcMeshDataType MeshDataType);
+	bool ReadMeshData(swFile& File, const swMatrix44& CurrentTransform, quint32 CurrentColorCode, bool InvertWinding, swMeshDataType MeshDataType);
 
-	std::vector<lcMeshLoaderTextureMap> mTextureStack;
+	std::vector<swMeshLoaderTextureMap> mTextureStack;
 
-	lcLibraryMeshData& mMeshData;
-	lcMeshLoaderFlags mFlags;
+	swLibraryMeshData& mMeshData;
+	swMeshLoaderFlags mFlags;
 	const std::atomic_bool* mCancelled = nullptr;
 	QString mError;
 
-	Q_DECLARE_TR_FUNCTIONS(lcMeshLoader)
+	Q_DECLARE_TR_FUNCTIONS(swMeshLoader)
 };

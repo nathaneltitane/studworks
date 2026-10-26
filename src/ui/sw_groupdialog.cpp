@@ -4,21 +4,21 @@
 #include "ui_sw_groupdialog.h"
 #include "group.h"
 
-lcGroupDialog::lcGroupDialog(QWidget* Parent, const QString& Name, const std::vector<std::unique_ptr<lcGroup>>& Groups)
-    : QDialog(Parent), mGroups(Groups), ui(new Ui::lcGroupDialog)
+swGroupDialog::swGroupDialog(QWidget* Parent, const QString& Name, const std::vector<std::unique_ptr<swGroup>>& Groups)
+    : QDialog(Parent), mGroups(Groups), ui(new Ui::swGroupDialog)
 {
 	ui->setupUi(this);
-	lcSetupDialogHelp(this, ui->buttonBox);
+	swSetupDialogHelp(this, ui->buttonBox);
 
 	ui->name->setText(Name);
 }
 
-lcGroupDialog::~lcGroupDialog()
+swGroupDialog::~swGroupDialog()
 {
 	delete ui;
 }
 
-void lcGroupDialog::accept()
+void swGroupDialog::accept()
 {
 	QString Name = ui->name->text();
 
@@ -28,7 +28,7 @@ void lcGroupDialog::accept()
 		return;
 	}
 
-	for (const std::unique_ptr<lcGroup>& Group : mGroups)
+	for (const std::unique_ptr<swGroup>& Group : mGroups)
 	{
 		if (Group->mName == Name)
 		{

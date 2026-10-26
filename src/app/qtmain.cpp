@@ -26,7 +26,7 @@
 
 static TCHAR gMinidumpPath[_MAX_PATH];
 
-static LONG WINAPI lcSehHandler(PEXCEPTION_POINTERS ExceptionPointers)
+static LONG WINAPI swSehHandler(PEXCEPTION_POINTERS ExceptionPointers)
 {
 	if (IsDebuggerPresent())
 		return EXCEPTION_CONTINUE_SEARCH;
@@ -70,15 +70,15 @@ static LONG WINAPI lcSehHandler(PEXCEPTION_POINTERS ExceptionPointers)
 	return EXCEPTION_EXECUTE_HANDLER;
 }
 
-static void lcSehInit()
+static void swSehInit()
 {
-	if (GetTempPath(LC_ARRAY_COUNT(gMinidumpPath), gMinidumpPath))
+	if (GetTempPath(SW_ARRAY_COUNT(gMinidumpPath), gMinidumpPath))
 		lstrcat(gMinidumpPath, TEXT("leocad.dmp"));
 
-	SetUnhandledExceptionFilter(lcSehHandler);
+	SetUnhandledExceptionFilter(swSehHandler);
 }
 
-static void lcRegisterShellFileTypes()
+static void swRegisterShellFileTypes()
 {
 	TCHAR ModulePath[_MAX_PATH], LongModulePath[_MAX_PATH];
 	TCHAR Temp[2*_MAX_PATH];
@@ -123,10 +123,10 @@ static void lcRegisterShellFileTypes()
 
 #endif
 
-static void lcInitializeSurfaceFormat(int argc, char* argv[])
+static void swInitializeSurfaceFormat(int argc, char* argv[])
 {
 	QCoreApplication Application(argc, argv);
-	const lcCommandLineOptions Options = lcApplication::ParseCommandLineOptions();
+	const swCommandLineOptions Options = swApplication::ParseCommandLineOptions();
 
 	if (Options.ParseOK && Options.AASamples > 1)
 	{
@@ -141,16 +141,16 @@ int main(int argc, char *argv[])
 	QCoreApplication::setOrganizationDomain(QLatin1String("leocad.org"));
 	QCoreApplication::setOrganizationName(QLatin1String("LeoCAD Software"));
 	QCoreApplication::setApplicationName(QLatin1String("LeoCAD"));
-	QCoreApplication::setApplicationVersion(QLatin1String(LC_VERSION_TEXT));
+	QCoreApplication::setApplicationVersion(QLatin1String(SW_VERSION_TEXT));
 	QGuiApplication::setDesktopFileName(QLatin1String("leocad"));
 
-	lcInitializeSurfaceFormat(argc, argv);
+	swInitializeSurfaceFormat(argc, argv);
 
 	QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
 
-	lcApplication Application(argc, argv);
+	swApplication Application(argc, argv);
 
-	QString Language = lcGetProfileString(LC_PROFILE_LANGUAGE);
+	QString Language = swGetProfileString(SW_PROFILE_LANGUAGE);
 	QLocale Locale;
 
 	if (!Language.isEmpty())
@@ -181,19 +181,19 @@ int main(int argc, char *argv[])
 	if (Translator.load("leocad_" + Locale.name(), ":/resources"))
 		Application.installTranslator(&Translator);
 
-	qRegisterMetaType<lcPieceData*>("lcPieceData*");
+	qRegisterMetaType<swPieceData*>("swPieceData*");
 	qRegisterMetaType<QList<int> >("QList<int>");
-	qRegisterMetaType<lcVector3>("lcVector3");
+	qRegisterMetaType<swVector3>("swVector3");
 #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
 	qRegisterMetaTypeStreamOperators<QList<int> >("QList<int>");
-	QMetaType::registerComparators<lcVector3>();
+	QMetaType::registerComparators<swVector3>();
 #endif
 
 	QList<QPair<QString, bool>> LibraryPaths;
 
 #ifdef Q_OS_WIN
-	lcRegisterShellFileTypes();
-	lcSehInit();
+	swRegisterShellFileTypes();
+	swSehInit();
 
 	LibraryPaths += qMakePair(QDir::cleanPath(QCoreApplication::applicationDirPath() + "/library.bin"), true);
 #endif
@@ -206,15 +206,15 @@ int main(int argc, char *argv[])
 	LibraryPaths += qMakePair(QDir::cleanPath(QCoreApplication::applicationDirPath() + "/../../Contents/Resources/library.bin"), true);
 #endif
 
-#ifdef LC_LDRAW_LIBRARY_PATH
-	LibraryPaths += qMakePair(QString::fromLatin1(LC_LDRAW_LIBRARY_PATH), false);
+#ifdef SW_LDRAW_LIBRARY_PATH
+	LibraryPaths += qMakePair(QString::fromLatin1(SW_LDRAW_LIBRARY_PATH), false);
 #endif
 
 	setlocale(LC_NUMERIC, "C");
 
-	lcStartupMode StartupMode = Application.Initialize(LibraryPaths);
+	swStartupMode StartupMode = Application.Initialize(LibraryPaths);
 
-	if (StartupMode == lcStartupMode::Error)
+	if (StartupMode == swStartupMode::Error)
 	{
 		Application.Shutdown();
 		return 1;
@@ -222,10 +222,10 @@ int main(int argc, char *argv[])
 
 	int ExecReturn = 0;
 
-	if (StartupMode == lcStartupMode::ShowWindow)
+	if (StartupMode == swStartupMode::ShowWindow)
 	{
-#if !LC_DISABLE_UPDATE_CHECK
-		lcDoInitialUpdateCheck();
+#if !SW_DISABLE_UPDATE_CHECK
+		swDoInitialUpdateCheck();
 #endif
 
 		ExecReturn = Application.exec();

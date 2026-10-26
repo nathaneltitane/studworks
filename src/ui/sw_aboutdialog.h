@@ -1,17 +1,17 @@
 #pragma once
 
 namespace Ui {
-class lcAboutDialog;
+class swAboutDialog;
 }
 
-class lcAboutDialog : public QDialog
+class swAboutDialog : public QDialog
 {
 	Q_OBJECT
 
 public:
-	explicit lcAboutDialog(QWidget* Parent);
-	virtual ~lcAboutDialog();
+	explicit swAboutDialog(QWidget* Parent);
+	virtual ~swAboutDialog();
 
 private:
-	Ui::lcAboutDialog* ui;
+	Ui::swAboutDialog* ui;
 };

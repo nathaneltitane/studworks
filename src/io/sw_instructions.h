@@ -2,7 +2,7 @@
 
 #include "sw_math.h"
 
-enum class lcInstructionsPageUnits
+enum class swInstructionsPageUnits
 {
 	Pixels,
 	Millimeters,
@@ -10,7 +10,7 @@ enum class lcInstructionsPageUnits
 	Inches
 };
 
-struct lcInstructionsPageSetup
+struct swInstructionsPageSetup
 {
 	float Width;
 	float Height;
@@ -20,20 +20,20 @@ struct lcInstructionsPageSetup
 	float MarginBottom;
 };
 
-enum class lcInstructionsDirection
+enum class swInstructionsDirection
 {
 	Horizontal,
 	Vertical
 };
 
-struct lcInstructionsPageSettings
+struct swInstructionsPageSettings
 {
 	int Rows;
 	int Columns;
-	lcInstructionsDirection Direction;
+	swInstructionsDirection Direction;
 };
 
-enum class lcInstructionsPropertyMode
+enum class swInstructionsPropertyMode
 {
 	NotSet,
 	Default,
@@ -42,7 +42,7 @@ enum class lcInstructionsPropertyMode
 	StepOnly
 };
 
-enum class lcInstructionsPropertyType
+enum class swInstructionsPropertyType
 {
 	ShowStepNumber,
 	ShowStepPLI,
@@ -70,24 +70,24 @@ enum class lcInstructionsPropertyType
 	Count
 };
 
-struct lcInstructionsProperty
+struct swInstructionsProperty
 {
-	lcInstructionsPropertyMode Mode = lcInstructionsPropertyMode::NotSet;
+	swInstructionsPropertyMode Mode = swInstructionsPropertyMode::NotSet;
 	QVariant Value;
 };
 
-using lcInstructionsProperties = std::array<lcInstructionsProperty, static_cast<int>(lcInstructionsPropertyType::Count)>;
+using swInstructionsProperties = std::array<swInstructionsProperty, static_cast<int>(swInstructionsPropertyType::Count)>;
 
-struct lcInstructionsStep
+struct swInstructionsStep
 {
 	QRectF Rect;
-	lcModel* Model;
-	lcStep Step;
+	swModel* Model;
+	swStep Step;
 
-	lcInstructionsProperties Properties;
+	swInstructionsProperties Properties;
 };
 
-enum class lcInstructionsPageType
+enum class swInstructionsPageType
 {
 	Steps,
 	Cover,
@@ -95,75 +95,75 @@ enum class lcInstructionsPageType
 	Blank
 };
 
-using lcInstructionsStepKey = std::pair<lcModel*, lcStep>;
+using swInstructionsStepKey = std::pair<swModel*, swStep>;
 
-struct lcInstructionsPage
+struct swInstructionsPage
 {
-	lcInstructionsPageSettings Settings;
-	std::vector<lcInstructionsStep> Steps;
-	lcInstructionsPageType Type = lcInstructionsPageType::Steps;
-	lcModel* Model = nullptr;
-	lcInstructionsStepKey BlankKey = { nullptr, 0 };
+	swInstructionsPageSettings Settings;
+	std::vector<swInstructionsStep> Steps;
+	swInstructionsPageType Type = swInstructionsPageType::Steps;
+	swModel* Model = nullptr;
+	swInstructionsStepKey BlankKey = { nullptr, 0 };
 };
 
-struct lcInstructionsModel
+struct swInstructionsModel
 {
-	std::vector<lcInstructionsProperties> StepProperties;
+	std::vector<swInstructionsProperties> StepProperties;
 };
 
-class lcInstructions : public QObject
+class swInstructions : public QObject
 {
 	Q_OBJECT
 
 public:
-	lcInstructions(Project* Project = nullptr);
+	swInstructions(Project* Project = nullptr);
 
-	static QString GetPropertyLabel(lcInstructionsPropertyType Type);
+	static QString GetPropertyLabel(swInstructionsPropertyType Type);
 
-	void SetDefaultPageSettings(const lcInstructionsPageSettings& PageSettings);
-	lcInstructionsPageSettings GetPageSettings(size_t PageIndex) const;
+	void SetDefaultPageSettings(const swInstructionsPageSettings& PageSettings);
+	swInstructionsPageSettings GetPageSettings(size_t PageIndex) const;
 	void SetPageSettings(size_t PageIndex, int Rows, int Columns);
 	bool CanInsertBlankPage(size_t PageIndex) const;
 	void InsertBlankPage(size_t PageIndex);
 	void RemoveBlankPage(size_t PageIndex);
-	void SetPageSetup(const lcInstructionsPageSetup& PageSetup);
+	void SetPageSetup(const swInstructionsPageSetup& PageSetup);
 	void Update();
-	lcInstructionsDirection GetPageDirection() const;
+	swInstructionsDirection GetPageDirection() const;
 
-	bool GetBoolProperty(lcInstructionsPropertyType Type, lcModel* Model, lcStep Step) const;
-	int GetIntProperty(lcInstructionsPropertyType Type, lcModel* Model, lcStep Step) const;
-	QColor GetColorProperty(lcInstructionsPropertyType Type, lcModel* Model, lcStep Step) const;
-	QFont GetFontProperty(lcInstructionsPropertyType Type, lcModel* Model, lcStep Step) const;
+	bool GetBoolProperty(swInstructionsPropertyType Type, swModel* Model, swStep Step) const;
+	int GetIntProperty(swInstructionsPropertyType Type, swModel* Model, swStep Step) const;
+	QColor GetColorProperty(swInstructionsPropertyType Type, swModel* Model, swStep Step) const;
+	QFont GetFontProperty(swInstructionsPropertyType Type, swModel* Model, swStep Step) const;
 
-	void SetDefaultBool(lcInstructionsPropertyType Type, bool Enabled);
-	void SetDefaultInt(lcInstructionsPropertyType Type, int Value);
-	void SetDefaultColor(lcInstructionsPropertyType Type, const QColor& Color);
-	void SetDefaultFont(lcInstructionsPropertyType Type, const QFont& Font);
+	void SetDefaultBool(swInstructionsPropertyType Type, bool Enabled);
+	void SetDefaultInt(swInstructionsPropertyType Type, int Value);
+	void SetDefaultColor(swInstructionsPropertyType Type, const QColor& Color);
+	void SetDefaultFont(swInstructionsPropertyType Type, const QFont& Font);
 
 //protected:
-	std::vector<lcInstructionsPage> mPages;
-	lcInstructionsPageSettings mPageSettings;
-	std::map<lcInstructionsStepKey, lcInstructionsPageSettings> mPageSettingsOverrides;
-	std::multiset<lcInstructionsStepKey> mBlankPages;
-	lcInstructionsPageSetup mPageSetup;
-	lcInstructionsProperties mStepProperties;
+	std::vector<swInstructionsPage> mPages;
+	swInstructionsPageSettings mPageSettings;
+	std::map<swInstructionsStepKey, swInstructionsPageSettings> mPageSettingsOverrides;
+	std::multiset<swInstructionsStepKey> mBlankPages;
+	swInstructionsPageSetup mPageSetup;
+	swInstructionsProperties mStepProperties;
 
-	std::map<lcModel*, lcInstructionsModel> mModels;
+	std::map<swModel*, swInstructionsModel> mModels;
 
 signals:
-	void StepSettingsChanged(lcModel* Model, lcStep Step);
+	void StepSettingsChanged(swModel* Model, swStep Step);
 	void PageSetupChanged();
 	void PageLayoutChanged();
 
 protected:
 	void CreatePages();
-	void AddDefaultPages(lcModel* Model, std::vector<const lcModel*>& AddedModels);
-	void AddBlankPages(lcInstructionsPage& Page, const lcInstructionsStepKey& Key);
-	lcInstructionsPageSettings GetStepPageSettings(const lcInstructionsStepKey& Key) const;
-	bool GetPageKey(size_t PageIndex, lcInstructionsStepKey& Key) const;
+	void AddDefaultPages(swModel* Model, std::vector<const swModel*>& AddedModels);
+	void AddBlankPages(swInstructionsPage& Page, const swInstructionsStepKey& Key);
+	swInstructionsPageSettings GetStepPageSettings(const swInstructionsStepKey& Key) const;
+	bool GetPageKey(size_t PageIndex, swInstructionsStepKey& Key) const;
 
-	QVariant GetProperty(lcInstructionsPropertyType Type, lcModel* Model, lcStep Step) const;
-	void SetDefaultProperty(lcInstructionsPropertyType Type, const QVariant& Value);
+	QVariant GetProperty(swInstructionsPropertyType Type, swModel* Model, swStep Step) const;
+	void SetDefaultProperty(swInstructionsPropertyType Type, const QVariant& Value);
 
 	Project* mProject = nullptr;
 

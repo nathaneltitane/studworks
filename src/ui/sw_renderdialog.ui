@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>lcRenderDialog</class>
- <widget class="QDialog" name="lcRenderDialog">
+ <class>swRenderDialog</class>
+ <widget class="QDialog" name="swRenderDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -60,7 +60,7 @@
       </layout>
      </item>
      <item>
-      <widget class="lcRenderPreviewWidget" name="preview" native="true">
+      <widget class="swRenderPreviewWidget" name="preview" native="true">
        <property name="toolTip">
         <string>Preview of the rendered image.</string>
        </property>
@@ -101,7 +101,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>lcRenderPreviewWidget</class>
+   <class>swRenderPreviewWidget</class>
    <extends>QWidget</extends>
    <header>sw_renderdialog.h</header>
    <container>1</container>

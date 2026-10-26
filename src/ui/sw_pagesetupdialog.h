@@ -4,16 +4,16 @@
 
 namespace Ui
 {
-class lcPageSetupDialog;
+class swPageSetupDialog;
 }
 
-class lcPageSetupDialog : public QDialog
+class swPageSetupDialog : public QDialog
 {
 	Q_OBJECT
 
 public:
-	lcPageSetupDialog(QWidget* Parent, lcInstructionsPageSetup* PageSetup);
-	~lcPageSetupDialog();
+	swPageSetupDialog(QWidget* Parent, swInstructionsPageSetup* PageSetup);
+	~swPageSetupDialog();
 
 public slots:
 	void accept() override;
@@ -30,9 +30,9 @@ private:
 	void UpdatePreset();
 	void UpdateOrientation();
 
-	Ui::lcPageSetupDialog* ui;
-	lcInstructionsPageSetup* mPageSetup;
-	lcInstructionsPageSetup mPoints;
-	lcInstructionsPageUnits mUnits = lcInstructionsPageUnits::Inches;
-	lcInstructionsPageUnits mMarginUnits = lcInstructionsPageUnits::Inches;
+	Ui::swPageSetupDialog* ui;
+	swInstructionsPageSetup* mPageSetup;
+	swInstructionsPageSetup mPoints;
+	swInstructionsPageUnits mUnits = swInstructionsPageUnits::Inches;
+	swInstructionsPageUnits mMarginUnits = swInstructionsPageUnits::Inches;
 };

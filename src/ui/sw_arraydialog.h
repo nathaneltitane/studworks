@@ -3,25 +3,25 @@
 #include "sw_math.h"
 
 namespace Ui {
-class lcArrayDialog;
+class swArrayDialog;
 }
 
-class lcArrayDialog : public QDialog
+class swArrayDialog : public QDialog
 {
 	Q_OBJECT
 
 public:
-	lcArrayDialog(QWidget* Parent);
-	virtual ~lcArrayDialog();
+	swArrayDialog(QWidget* Parent);
+	virtual ~swArrayDialog();
 
 	int mCounts[3];
-	lcVector3 mOffsets[3];
-	lcVector3 mRotations[3];
+	swVector3 mOffsets[3];
+	swVector3 mRotations[3];
 
 public slots:
 	void accept() override;
 
 private:
-	Ui::lcArrayDialog* ui;
+	Ui::swArrayDialog* ui;
 };
 

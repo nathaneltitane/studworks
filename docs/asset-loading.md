@@ -19,7 +19,7 @@ path and receives no special queue priority.
 
 The status-bar spinner is visible while the active project has pending pieces
 or generated meshes. Its tooltip reports loading counts, or regeneration when
-only synth work remains. Counts describe unique required `lcPieceData` identities
+only synth work remains. Counts describe unique required `swPieceData` identities
 plus generated piece instances, not the number of placed bricks or global jobs.
 Requirements include all project models and their nested dependencies, not just
 the visible step. The spinner hides immediately when work settles; there is no
@@ -27,10 +27,10 @@ the visible step. The spinner hides immediately when work settles; there is no
 until the project's failures disappear or the project changes.
 
 Views redraw and update bounds as results arrive, but keep the user's camera.
-Interactive and output camera fits go through `lcView::ZoomExtents()`, with
+Interactive and output camera fits go through `swView::ZoomExtents()`, with
 fallback geometry included for interactive views and only available geometry
 included for outputs. The view delegates fitting and saved camera undo history
-to `lcModel::ZoomExtents()`. `lcView::ZoomExtentsAtStep()` restores the model's
+to `swModel::ZoomExtents()`. `swView::ZoomExtentsAtStep()` restores the model's
 current step after fitting.
 The adjustment flag passes through view, model, and camera. The camera adjusts
 clipping after updating its fitted position, using the fit's transformed bounding
@@ -64,7 +64,7 @@ new evidence and update this record with any agreed change.
 | Keep identity registries in the library-owned piece/texture managers; the library coordinates sources, lifetimes and shared buffers, and its loader owns pending work. | One registry and one completion path avoid competing lifetime/readiness authorities. Do not create a second asset registry in the loader. |
 | Use the existing Qt worker pool and shared offscreen GL context, with UI-thread publication. | Reuses existing infrastructure and keeps model mutation, color registration, upload, and rendering sequential. Do not publish assets from workers or introduce a separate renderer/context for loading. |
 | Use promotion-only priorities and existing reference counts. | Models open at their last step; precise consumer demotion added bookkeeping for little demonstrated benefit. Per-consumer pointer maps, step-based priorities, outgoing-project demotion, and scoped priority removal were deliberately set aside. Accept briefly elevated work after a requesting view closes. |
-| Treat missing geometry as `Failed`; keep structural type and library membership separate. | A separate Placeholder/Missing type or readiness value duplicates failure state. Cubes are shared display fallbacks, not stored asset meshes. Library membership is established explicitly by the `lcPieceData` constructor. |
+| Treat missing geometry as `Failed`; keep structural type and library membership separate. | A separate Placeholder/Missing type or readiness value duplicates failure state. Cubes are shared display fallbacks, not stored asset meshes. Library membership is established explicitly by the `swPieceData` constructor. |
 | Require all includes and textures for successful asset loading; never cache an erroneous mesh as successful. | Partial private builds must not masquerade as ready assets. Permissive output is a caller policy that omits failed assets, not relaxed loader success criteria. |
 | Allow model outputs to save available geometry after waiting. | Geometry exports, HTML, images, instructions, and printing do not reject the whole operation because an asset failed. Actual rendering/file failures remain errors. Strict previews and thumbnail fallback rules remain separate. |
 | Keep missing HTML parts-list entries with empty thumbnails and quantities. | Missing geometry must not erase the inventory entry or substitute a loading cube. Instruction parts lists currently omit unavailable thumbnails. |
@@ -76,12 +76,12 @@ new evidence and update this record with any agreed change.
 
 | Owner | Responsibility | Source |
 | --- | --- | --- |
-| `lcPiecesLibrary` | Acquisition/lifetime facade, source discovery, texture file indexes, archives, primitive and mesh caches, settings, shared mesh buffers, and loader coordination. Owns the piece and texture managers and supplies archive readers. | [lc_library.h](../common/lc_library.h), [lc_library.cpp](../common/lc_library.cpp) |
-| `lcPieceManager` | Piece creation/reuse, library/local registrations and project indexes, normalization/renaming, references, zero-reference unload/deletion, temporary cleanup, sparse errors, synchronized registry access, ordered teardown, borrowed snapshots and copied include-source metadata. No source discovery or scheduling. | [lc_piecemanager.h](../common/lc_piecemanager.h), [lc_piecemanager.cpp](../common/lc_piecemanager.cpp) |
-| `lcTextureManager` | Texture identities and references, snapshots, and private CPU decoding of resolved sources. | [lc_texturemanager.h](../common/lc_texturemanager.h), [lc_texturemanager.cpp](../common/lc_texturemanager.cpp) |
-| `lcAssetLoader` | Pending requests, worker scheduling, private results, texture upload, publication, cancellation, readiness waits, and deferred settlement notifications. | [lc_assetloader.h](../common/lc_assetloader.h), [lc_assetloader.cpp](../common/lc_assetloader.cpp) |
-| `lcPieceData` / `lcTexture` | Published geometry or texture data, readiness state, and asset metadata. | [lc_piecedata.h](../common/lc_piecedata.h), [lc_texture.h](../common/lc_texture.h) |
-| Projects, models, and views | Project-local names, required-asset traversal, generated-piece ownership, bounds, fallback display, cameras, and redraws. | [project.cpp](../common/project.cpp), [lc_model.cpp](../common/lc_model.cpp), [piece.cpp](../common/piece.cpp) |
+| `swPiecesLibrary` | Acquisition/lifetime facade, source discovery, texture file indexes, archives, primitive and mesh caches, settings, shared mesh buffers, and loader coordination. Owns the piece and texture managers and supplies archive readers. | [sw_library.h](../src/sw_library.h), [sw_library.cpp](../src/sw_library.cpp) |
+| `swPieceManager` | Piece creation/reuse, library/local registrations and project indexes, normalization/renaming, references, zero-reference unload/deletion, temporary cleanup, sparse errors, synchronized registry access, ordered teardown, borrowed snapshots and copied include-source metadata. No source discovery or scheduling. | [sw_piecemanager.h](../src/sw_piecemanager.h), [sw_piecemanager.cpp](../src/sw_piecemanager.cpp) |
+| `swTextureManager` | Texture identities and references, snapshots, and private CPU decoding of resolved sources. | [sw_texturemanager.h](../src/sw_texturemanager.h), [sw_texturemanager.cpp](../src/sw_texturemanager.cpp) |
+| `swAssetLoader` | Pending requests, worker scheduling, private results, texture upload, publication, cancellation, readiness waits, and deferred settlement notifications. | [sw_assetloader.h](../src/sw_assetloader.h), [sw_assetloader.cpp](../src/sw_assetloader.cpp) |
+| `swPieceData` / `swTexture` | Published geometry or texture data, readiness state, and asset metadata. | [sw_piecedata.h](../src/sw_piecedata.h), [sw_texture.h](../src/sw_texture.h) |
+| Projects, models, and views | Project-local names, required-asset traversal, generated-piece ownership, bounds, fallback display, cameras, and redraws. | [project.cpp](../src/project.cpp), [sw_model.cpp](../src/sw_model.cpp), [piece.cpp](../src/piece.cpp) |
 
 The library owns the loader. Call library entry points from the UI thread for
 asset acquisition, release, scheduling, waiting, and invalidation. Workers use
@@ -123,7 +123,7 @@ The texture manager is owned by the library and owns the only texture registry.
 `AcquireTexture()` resolves embedded data, project-directory files, and
 indexed library files in the library, then asks the manager to acquire an identity
 for that resolved source. The explicit-search acquisition overload returns the
-source snapshot alongside the scoped `lcTextureRef`, so callers can pass it to
+source snapshot alongside the scoped `swTextureRef`, so callers can pass it to
 loader requests without reading texture fields.
 Resolution preserves the prefixed search order and
 canonicalizes disk paths. The project directory is passed separately to acquisition
@@ -135,12 +135,12 @@ registered texture by its resolved source; it performs no source search or creat
 `RequestTextureLoad()` starts or promotes work, and `WaitForTexture()` explicitly
 waits through decoding and upload. Texture requests,
 priority promotion, cancellation, upload/retries, and part dependency settlement
-remain in `lcAssetLoader`; its requests retain `lcTextureRef` handles, explicitly
+remain in `swAssetLoader`; its requests retain `swTextureRef` handles, explicitly
 reset on the UI thread before worker-shared request storage can be destroyed.
-Shared readiness, priority, file-source and piece-source snapshots, build results, and `lcTextureLoadError` live in `lc_assettypes.h`. Stud-style and
-archive-type enums remain in `lc_library.h` and are forward-declared by the shared
+Shared readiness, priority, file-source and piece-source snapshots, build results, and `swTextureLoadError` live in `sw_assettypes.h`. Stud-style and
+archive-type enums remain in `sw_library.h` and are forward-declared by the shared
 header; the piece snapshot constructor supplies their defaults out of line.
-`lcTexture::mSource` stores the source identity; copies for workers do not snapshot
+`swTexture::mSource` stores the source identity; copies for workers do not snapshot
 file contents. Texture names, project directories, and temporary flags remain separate.
 Loader dependency requests receive the resolved source explicitly. Direct library
 request/wait wrappers copy the texture's source on the UI thread. The loader uses
@@ -149,11 +149,11 @@ references use its internal `AddTextureReference()` and `ReleaseTexture()`
 primitives.
 
 The library calls `OpenFile()` on the reading thread and passes the opened
-`lcFile&` to the texture manager for decoding. `BuildTextureData()` continues to
+`swFile&` to the texture manager for decoding. `BuildTextureData()` continues to
 run on a worker, so file opening and archive extraction stay on that worker. The
 manager stores no file-reader callback or library instance.
-Success returns an owned `lcFile` positioned at zero: disk sources retain
-an open `lcDiskFile`, archive entries and decoded embedded data use `lcMemFile`.
+Success returns an owned `swFile` positioned at zero: disk sources retain
+an open `swDiskFile`, archive entries and decoded embedded data use `swMemFile`.
 Opening never searches for another source or parses its contents.
 `OpenPieceDataFile()` and `OpenPrimitiveFile()` return the same owning result for
 includes and use `OpenFile()` for disk/archive access. Piece include lookup keeps
@@ -163,7 +163,7 @@ whether a missing include is fatal from `RequireAllIncludes`. Directory piece
 building still retries unofficial geometry after an official open or parse failure. Failures carry
 an error; the caller retains the result while consuming the file. Archive access
 is unlocked before image decoding, and returned memory files are independent of
-their archive or embedded source. Each `lcZipFile` serializes its own extraction;
+their archive or embedded source. Each `swZipFile` serializes its own extraction;
 the library adds no archive-wide mutex. Archive replacement and closure remain
 protected by draining/pausing workers first. Texture identities use the
 manager's own mutex; source indexes and source resolution belong to the library.
@@ -171,7 +171,7 @@ Library unload drains loader work, destroys meshes that release texture referenc
 clears the texture manager, then closes archives. Workers must be drained before
 the manager is cleared or archive indexes are replaced.
 
-`lcTextureManager::DecodeTextureData(lcFile&)` decodes disk files through their existing `QFile` and
+`swTextureManager::DecodeTextureData(swFile&)` decodes disk files through their existing `QFile` and
 memory files through `QImage::loadFromData()`, without an additional device adapter
 or disk-to-memory copy. Disk cursor restoration runs on success and failure;
 memory decoding leaves the cursor unchanged and validates the remaining buffer
@@ -192,7 +192,7 @@ the caller's unpack alignment on every exit. Pack alignment is left unchanged.
 callers upload explicitly, while the loader controls upload attempts and retries.
 `SetImages()` retains cube-map faces and supplied mip levels.
 
-`lcTexture::SetFailed()` assigns readiness and failure diagnostics together,
+`swTexture::SetFailed()` assigns readiness and failure diagnostics together,
 clearing stale details when none are supplied. Decoding and upload failures use
 the same setter. It retains decoded pixels for bounded upload
 retries; terminal request handling explicitly discards them when required.
@@ -201,9 +201,9 @@ retries; terminal request handling explicitly discards them when required.
 the supplied project's name index or the shared library registry. It does no file
 I/O, creates no identities, and acquires no reference.
 `AcquirePieceData(Name, Project, CreateMissing, SearchProjectFolder)` resolves
-or creates an identity and returns one scoped `lcPieceDataRef`, without ensuring mesh
+or creates an identity and returns one scoped `swPieceDataRef`, without ensuring mesh
 readiness. It may load an external project beside the current project; creating a
-missing identity records `Failed`. `lcPieceDataRef(Piece)` retains an
+missing identity records `Failed`. `swPieceDataRef(Piece)` retains an
 existing borrowed identity, and accepts null. `AcquireModelPieceData()` returns
 one scoped reference for the model to adopt using `Release()`.
 Library membership is independent of readiness and
@@ -213,7 +213,7 @@ texture search directories are snapshotted before dispatch.
 
 ### Project-local identities and source paths
 
-`Project::mPieceIndex` maps normalized local filenames to borrowed `lcPieceData`
+`Project::mPieceIndex` maps normalized local filenames to borrowed `swPieceData`
 pointers. "Project-local names" means lookup visibility, not object ownership:
 the piece manager tracks local identities separately in `mProjectPieces`, and reference
 counts govern their lifetime. Models know their owning project from construction;
@@ -240,13 +240,13 @@ conflicting submodels, transfers local registrations, and preserves source
 directories. Renames update live instance IDs and undo/redo snapshots. Deletion
 and project teardown unregister borrowed index entries; they must not leave
 lookup pointers to deleted objects. These paths are in
-[project.cpp](../common/project.cpp) and [lc_model.cpp](../common/lc_model.cpp).
+[project.cpp](../src/project.cpp) and [sw_model.cpp](../src/sw_model.cpp).
 
 ### Active project file monitoring
 
 Only the active project's own file is watched. Preview projects, loading
 candidates, and referenced model projects do not register filesystem watches.
-`lcApplication::SetProject()` activates the new project's watcher after changing
+`swApplication::SetProject()` activates the new project's watcher after changing
 the active project. Loaded bytes and committed saves establish its content hash
 baseline, so unchanged rewrites, metadata updates, and own saves do not prompt.
 
@@ -266,7 +266,7 @@ events.
 
 ```mermaid
 flowchart LR
-    subgraph Part["lcPieceData readiness (library)"]
+    subgraph Part["swPieceData readiness (library)"]
         U[Unloaded] --> L[Loading]
         L --> R[Loaded]
         L --> F[Failed]
@@ -282,16 +282,16 @@ flowchart LR
     end
 ```
 
-The library owns `lcPieceData` readiness. `Loading` covers queued work, worker execution,
+The library owns `swPieceData` readiness. `Loading` covers queued work, worker execution,
 and texture dependencies; callers do not observe the loader's scheduling states.
-The loader never writes `lcPieceData::mState`: the library marks accepted loads,
+The loader never writes `swPieceData::mState`: the library marks accepted loads,
 publishes success or failure, and resets current cancellations to `Unloaded`.
 Disposal of an obsolete request never changes a replacement's readiness.
-`lcPieceData` initializes readiness and maintains it during structural operations
+`swPieceData` initializes readiness and maintains it during structural operations
 such as unloading or model/project reassignment.
 
 The diagram shows the normal paths. Parsing or synth generation and geometry
-conversion run consecutively in one worker job. Intermediate `lcLibraryMeshData`
+conversion run consecutively in one worker job. Intermediate `swLibraryMeshData`
 stays local to the library's `BuildPieceData()` or the synth definition's `BuildMesh()`;
 both return a private converted mesh for UI-thread finalization.
 Invalidation or unloading resets readiness; cancellation and stale-result disposal
@@ -316,7 +316,7 @@ texture. CPU pixels, `HasImageData()`, and `!NeedsUpload()` do not establish
 readiness. The completion pump uploads through the global shared offscreen
 context without requiring the part to be drawn. Upload failures retry at most
 three times, with 50 ms and 200 ms delays; decoding failures settle immediately.
-Loader-decoded textures receive `LC_TEXTURE_MIPMAPS`.
+Loader-decoded textures receive `SW_TEXTURE_MIPMAPS`.
 
 Textures use the same `Unloaded`, `Loading`, `Loaded`, and `Failed` readiness states
 as pieces. `Loading` spans queueing, decoding, upload, and retries; detailed progress
@@ -331,17 +331,17 @@ decoded texture pixels or decode failures to the library for publication; textur
 upload scheduling and retries remain in the loader. Request states, cleanup, and
 deferred notification scheduling belong to the loader.
 
-**Container readiness is not recursive readiness.** A Project `lcPieceData`, or a
+**Container readiness is not recursive readiness.** A Project `swPieceData`, or a
 Model without direct geometry, can be `Loaded` while its children are pending
 or failed. Models with directly embedded geometry have their own mesh request.
-Use `lcModel::GetRequiredPieceData()` and `GetRequiredSynthPieces()` for recursive
+Use `swModel::GetRequiredPieceData()` and `GetRequiredSynthPieces()` for recursive
 requirements, including nested and external models, with cycle protection.
 
 ### Diagnostics and retries
 
 Part error text lives in the piece manager's sparse `mPieceDataLoadErrors` map, queried
 through `GetPieceDataLoadError()`, rather than an empty string in every library part.
-`lcPieceData::Unload()` clears its sparse error through the existing library facade
+`swPieceData::Unload()` clears its sparse error through the existing library facade
 before releasing resources, so manager deletion and direct unload cannot leave a
 stale error for a retained or recycled identity.
 Synth error text lives in the library's live-instance registry and is available
@@ -352,7 +352,7 @@ unloaded, deleted, invalidated, or successfully rebuilt.
 Pointer-keyed errors must not survive destruction and later attach
 to a different object allocated at the same address.
 
-Textures store a compact `lcTextureLoadError` enum. `lcTexture::GetLoadError()`
+Textures store a compact `swTextureLoadError` enum. `swTexture::GetLoadError()`
 translates it into user-facing text when reporting a
 dependency failure. Missing includes and texture names remain in diagnostics;
 an empty error string alone does not prove readiness. Preserve translatable
@@ -409,7 +409,7 @@ file identity, so same-name PNGs in different project directories remain distinc
 
 Mesh cache validity includes the cache format, source checksums, stud style, and
 stud-cylinder color setting. Style flags propagate through nested primitive
-includes. `LoadPrimitive()` returns `lcResult<void>` with include errors and
+includes. `LoadPrimitive()` returns `swResult<void>` with include errors and
 clears partial data on failure, so failed primitive builds cannot seed a later
 successful mesh with incomplete cached geometry.
 
@@ -431,8 +431,8 @@ buffer upload is not part of asset readiness.
 
 ## References, cancellation, and generated geometry
 
-`lcPieceDataRef` and `lcTextureRef` alias the shared `lcAssetRef<T>` template in
-`lc_assettypes.h`. Both are copyable scoped references.
+`swPieceDataRef` and `swTextureRef` alias the shared `swAssetRef<T>` template in
+`sw_assettypes.h`. Both are copyable scoped references.
 Construction from a borrowed pointer and copying acquire one reference; moving
 transfers the reference without retaining it. Assignment retains the new identity
 before releasing the old one. Destruction or `Reset()` releases one reference
@@ -447,19 +447,19 @@ Use `Get()` when passing a borrowed pointer to an API.
 Textures use the same lookup/acquisition convention: `FindTexture(Source)` borrows
 a registered identity and `AcquireTexture()` returns a scoped reference without
 loading. `RequestTextureLoad()` only schedules work; `WaitForTexture()` explicitly
-waits through decoding and upload and accepts `const lcTextureRef&`, matching
+waits through decoding and upload and accepts `const swTextureRef&`, matching
 the piece wait API. Both require the caller to retain the texture.
-Mesh texture sections own `lcTextureRef` handles, so section copies retain and
+Mesh texture sections own `swTextureRef` handles, so section copies retain and
 moves transfer ownership. The library's add/release primitives are internal to
 scoped reference management.
 
-`lcPiece::SetPieceData()` accepts an `lcPieceDataRef` by value, adopts that
+`swPiece::SetPieceData()` accepts an `swPieceDataRef` by value, adopts that
 reference, and releases the previous identity. Passing an lvalue copies and retains;
 passing a moved handle transfers the reference. Its raw-pointer constructor is a
 borrowing convenience that acquires its own reference. Placed pieces and models
 store their definition handles directly, as do the current selection, minifig
 parts, and thumbnail dependencies. Stored insertion previews use owning
-`lcPreviewInsertPieceInfo` entries, while transient `lcInsertPieceInfo` queries
+`swPreviewInsertPieceInfo` entries, while transient `swInsertPieceInfo` queries
 remain borrowed. Project-remapping owners also retain scoped references.
 `AddPieceDataReference()` is the internal retain primitive used by the scoped reference.
 
@@ -469,11 +469,11 @@ Repeated requests add no consumer references. Callers retain the identity while
 they need it. Use `WaitForPieceData()` or `EnsurePieceDataAssetsReady()`
 for synchronous loading. Both wait APIs take handles by const reference without acquiring consumer
 references. Callers retain every required identity and its owner throughout the
-wait. `lcModel::GetRequiredPieceData()` and its project counterpart return
+wait. `swModel::GetRequiredPieceData()` and its project counterpart return
 owning handle vectors, deduplicated by identity; releasing a result releases its
 snapshot references.
 
-A part request owns an additional in-flight `lcPieceDataRef`; synth notifications also
+A part request owns an additional in-flight `swPieceDataRef`; synth notifications also
 own a scoped definition reference.
 `HasOtherReferences()` reports whether a nonempty handle shares its asset with
 another reference. Piece/synth notification and texture request checks interpret
@@ -490,7 +490,7 @@ then releases it. Library piece identities can remain in the library after their
 geometry unloads; unreferenced local leaf identities can be deleted. Model and
 external-project containers have their own teardown rules.
 
-The piece manager unregisters identities before deleting them. `lcPieceData::Unload()`
+The piece manager unregisters identities before deleting them. `swPieceData::Unload()`
 clears its sparse error and resources: it releases its mesh and owned external project,
 detaches its borrowed model pointer, and resets readiness and bounds. It never
 unregisters or deletes itself; the destructor uses the same resource cleanup.
@@ -503,10 +503,10 @@ without releasing another mesh's texture. Failed assets remain terminal while
 retained; drawing does not retry them. Explicit invalidation or unloading can
 permit a later request.
 
-Synth meshes are **per `lcPiece` instance**, separate from the shared library
+Synth meshes are **per `swPiece` instance**, separate from the shared library
 mesh. The library's `RequestSynthMesh()` copies control points and retains the shared
-synth definition, passing both snapshots and the base `lcPieceData` identity to the loader.
-The loader treats `lcPiece` pointers as identities without reading instance fields.
+synth definition, passing both snapshots and the base `swPieceData` identity to the loader.
+The loader treats `swPiece` pointers as identities without reading instance fields.
 The library tracks live synth instances, including completed and failed generations,
 so settings changes can refresh them. Instances unregister before destruction.
 The library retains settled generation errors; the loader owns pending
@@ -515,9 +515,9 @@ Replacing or deleting the piece cancels its old request; workers
 check an atomic cancellation flag and stale results cannot replace newer meshes.
 Initial generation displays a cube. Control-point edits retain the previous
 generated mesh until replacement settles; that older mesh does not satisfy a
-wait for the new generation. Settlement holds the base `lcPieceData` through its
-deferred notification. See [lc_synth.cpp](../common/lc_synth.cpp) and
-[piece.cpp](../common/piece.cpp).
+wait for the new generation. Settlement holds the base `swPieceData` through its
+deferred notification. See [sw_synth.cpp](../src/sw_synth.cpp) and
+[piece.cpp](../src/piece.cpp).
 
 Interactive fallback rendering, bounds, ray/box picking, and selection outlines
 use the same displayed geometry and keep the original instance identity. A
@@ -533,7 +533,7 @@ ownership.
 Priorities only promote: `Low < Normal < Blocking`. Ordinary thumbnail
 requests start Low; asynchronous model pieces and generated meshes start
 Normal, regardless of step. Synchronous waits promote their required requests
-and pending texture dependencies to Blocking. The same `lcLoadPriority` enum
+and pending texture dependencies to Blocking. The same `swLoadPriority` enum
 is used at the loading entry point and throughout the scheduler. `RequestPieceDataLoad()`
 only starts or promotes work and never waits, even with Blocking priority. Call
 `WaitForPieceData()` or `EnsurePieceDataAssetsReady()` for synchronous loading.
@@ -563,11 +563,11 @@ promotes and waits for queued generations of the specified instances; callers
 start generations with `RequestSynthMesh()`. The loader retains the requests present
 at wait entry and reports their outcomes; the library combines those outcomes with
 final asset readiness, including assets with no pending request. Synth fallback
-error text is produced by library publication. `lcPieceData` pointers are identities
+error text is produced by library publication. `swPieceData` pointers are identities
 to the loader; it does not read their fields or call their methods.
 The loader's `WaitForTexture()` starts
 or promotes decoding as needed and waits through upload and retries.
-`lcModel::WaitForAssets()` combines recursive part and synth waits and updates
+`swModel::WaitForAssets()` combines recursive part and synth waits and updates
 bounds, but deliberately ignores their failure results. `EnsureAssetsReady()`
 adds strict failure reporting. During shutdown, the loader's private
 `WaitForAllWork()` drains pending work and joins workers; it is not a scoped success check.
@@ -578,19 +578,19 @@ adds strict failure reporting. During shutdown, the loader's private
 | --- | --- |
 | Find a registered identity | `FindPieceData(Name, Project)` or `FindTexture(Source)`. Borrowed lookup only, with no I/O or creation. |
 | Resolve or create a piece identity | `AcquirePieceData(Name, Project, CreateMissing, SearchProjectFolder)` returns a scoped reference without ensuring mesh readiness. |
-| Start ordinary asynchronous work | Retain the identity, then call `RequestPieceDataLoad()` with `lcLoadPriority::Low` for background work or `Normal` for model/view work. Existing owners need no extra reference for another request. |
-| Retain and synchronously load one identity | Keep an `lcPieceDataRef` from `AcquirePieceData()`, then call `WaitForPieceData(PieceDataRef)` and check its return value. |
-| Retain without starting work | `lcPieceDataRef(Piece)` or `lcTextureRef(Texture)` returns a scoped reference to an existing identity. This does not make the asset ready. |
+| Start ordinary asynchronous work | Retain the identity, then call `RequestPieceDataLoad()` with `swLoadPriority::Low` for background work or `Normal` for model/view work. Existing owners need no extra reference for another request. |
+| Retain and synchronously load one identity | Keep an `swPieceDataRef` from `AcquirePieceData()`, then call `WaitForPieceData(PieceDataRef)` and check its return value. |
+| Retain without starting work | `swPieceDataRef(Piece)` or `swTextureRef(Texture)` returns a scoped reference to an existing identity. This does not make the asset ready. |
 | Wait for an explicit part set | `WaitForPieceData(PieceDataRefs)` (use `WaitForPieceData(PieceDataRef)` for one identity), check the boolean for strict consumers. Retain every identity and its owner throughout the wait; this call acquires no consumer references. |
 | Wait for one identity and its container geometry | `EnsurePieceDataAssetsReady()` settles the identity, then delegates recursive children, synths, and bounds to the model/project API. Retain the identity and its owner throughout. |
 | Wait for a model, including nested synths | `WaitForAssets()` for permissive output; `EnsureAssetsReady()` for strict preview-style failure reporting. Keep the model and its pieces alive throughout. |
-| Replace/wait for generated geometry | `RequestSynthMesh()` / `WaitForSynthMeshes()`. Supply live `lcPiece` instances; a shared part mesh or a retained previous generated mesh is not readiness for the replacement. |
-| Acquire a texture directly | Keep an `lcTextureRef` from `AcquireTexture()`. Use `RequestTextureLoad()` to start asynchronous work or `WaitForTexture()` to ensure readiness. Acquisition alone does not decode or upload. |
+| Replace/wait for generated geometry | `RequestSynthMesh()` / `WaitForSynthMeshes()`. Supply live `swPiece` instances; a shared part mesh or a retained previous generated mesh is not readiness for the replacement. |
+| Acquire a texture directly | Keep an `swTextureRef` from `AcquireTexture()`. Use `RequestTextureLoad()` to start asynchronous work or `WaitForTexture()` to ensure readiness. Acquisition alone does not decode or upload. |
 
 Scoped waits may process unrelated completions while pumping publication, but
 their completion condition depends only on the requested assets. They cannot
 preempt a worker already parsing, converting, or decoding another asset. Waiting
-on a single container `lcPieceData` is insufficient for a submodel preview: collect
+on a single container `swPieceData` is insufficient for a submodel preview: collect
 its recursive pieces and per-instance synths, or use the model-level API.
 
 ## Caller policies
@@ -600,9 +600,9 @@ its recursive pieces and per-instance synths, or use the model-level API.
 | Ordinary LDraw/LDD opening and interactive views | Parse and queue, then return. Draw shared fallback cubes for unavailable geometry; recurse through available children. Update bounds and redraw as assets settle without automatically refitting the camera. |
 | Inventory import | Wait for required geometry before computing persistent placement; failure prevents using cube bounds as final layout. |
 | Insertion layout | Wait for required geometry before computing persistent placement; failed geometry uses fallback boxes. |
-| Preview | Wait for its recursive requirements and generated meshes; failure rejects the preview. See [lc_previewwidget.cpp](../common/lc_previewwidget.cpp). |
-| Thumbnail manager | Acquire required assets asynchronously. Missing library geometry/textures produce an error thumbnail. Pending generated meshes delay rendering; synth failure can use a loaded library mesh. See [lc_thumbnailmanager.cpp](../common/lc_thumbnailmanager.cpp). |
-| OBJ, COLLADA, 3DS, POV-Ray export | Wait for model requirements, then omit failed meshes and failed generated geometry. Empty output is allowed. Render/write failures still report errors. See [project.cpp](../common/project.cpp). |
+| Preview | Wait for its recursive requirements and generated meshes; failure rejects the preview. See [sw_previewwidget.cpp](../src/sw_previewwidget.cpp). |
+| Thumbnail manager | Acquire required assets asynchronously. Missing library geometry/textures produce an error thumbnail. Pending generated meshes delay rendering; synth failure can use a loaded library mesh. See [sw_thumbnailmanager.cpp](../src/sw_thumbnailmanager.cpp). |
+| OBJ, COLLADA, 3DS, POV-Ray export | Wait for model requirements, then omit failed meshes and failed generated geometry. Empty output is allowed. Render/write failures still report errors. See [project.cpp](../src/project.cpp). |
 | Saved images, screenshots, HTML, instructions, printing | Wait for settlement, then render available geometry without loading cubes. HTML parts lists retain missing entries and quantities with blank thumbnails; instruction parts lists omit unavailable thumbnails. Actual rendering/writing failures still fail the operation. |
 | Model save, CSV, BrickLink inventory | Save references or inventory data without requiring successful geometry loading. |
 
@@ -617,12 +617,12 @@ including current synth generations, and repeats picking before placement. If
 loading fails, both dragging and insertion use the available or fallback
 geometry rather than rejecting placement.
 
-Automatic output fitting uses `lcGeometryBoundsMode::AvailableOnly`;
+Automatic output fitting uses `swGeometryBoundsMode::AvailableOnly`;
 interactive fitting uses `IncludeFallback`. A whole-model wait can
 conservatively include later steps even when output requests an earlier step.
 Scene flags preventing fallback cubes do not themselves initiate a wait or
-guarantee success. See [lc_view.cpp](../common/lc_view.cpp) and
-[lc_scene.h](../common/lc_scene.h).
+guarantee success. See [sw_view.cpp](../src/sw_view.cpp) and
+[sw_scene.h](../src/sw_scene.h).
 
 `SetRequireCompleteAssets(true)` suppresses unavailable fallback geometry and
 marks missing assets in the scene; `SetRequireGeneratedMeshes(true)` also excludes
@@ -632,11 +632,11 @@ uses these exclusion rules without making missing assets an operation-wide error
 Do not infer readiness from a successfully allocated framebuffer or a nonempty
 image: it may still contain only the available portion of a model.
 
-Thumbnail identity is based on `lcPieceData`, not just its filename. Pending
+Thumbnail identity is based on `swPieceData`, not just its filename. Pending
 thumbnails retain recursive requirements and receive settlement notifications.
 Category resets release thumbnail IDs before repopulating the list. The submodel
 category excludes models that include the active model, preventing recursive
-insertion. `lcThumbnailManager::RefreshPieces()` refreshes affected identities
+insertion. `swThumbnailManager::RefreshPieces()` refreshes affected identities
 and requirements after Save As remapping; preserve that refresh when changing
 sources without changing pointers. The preview dock's `RefreshModel()` checks
 its recursive requirements and respects its lock; it refreshes a displayed
@@ -655,7 +655,7 @@ success and failure; texture upload preserves the previous context/surface.
 `Project::GetModelParts()` is the settled, flattened geometry list used by 3D
 exporters. Entries carry an explicit mesh for generated or directly embedded
 geometry, including root geometry; exporters must prefer that mesh over the
-shared `lcPieceData` mesh. Failed entries and unfinished/failed synth replacements
+shared `swPieceData` mesh. Failed entries and unfinished/failed synth replacements
 are filtered out. A retained editing mesh is not exported as the new generation.
 This list is separate from `GetPartsList()` inventory traversal: changing export
 collection must not remove missing references from inventories or turn direct

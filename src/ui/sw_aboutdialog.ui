@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>lcAboutDialog</class>
- <widget class="QDialog" name="lcAboutDialog">
+ <class>swAboutDialog</class>
+ <widget class="QDialog" name="swAboutDialog">
   <property name="whatsThis">
    <string>&lt;p&gt;&lt;b&gt;About LeoCAD+&lt;/b&gt;&lt;/p&gt;&lt;p&gt;View the LeoCAD+ version and system information. The Qt and OpenGL details can help diagnose display problems. Select text in System Information to copy it when reporting a problem. The website link opens in your browser.&lt;/p&gt;</string>
   </property>
@@ -128,7 +128,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>lcAboutDialog</receiver>
+   <receiver>swAboutDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -144,7 +144,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>lcAboutDialog</receiver>
+   <receiver>swAboutDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

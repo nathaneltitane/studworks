@@ -6533,7 +6533,7 @@ Le format du fichier n'est pas reconnu.</translation>
     </message>
 </context>
 <context>
-    <name>lcAboutDialog</name>
+    <name>swAboutDialog</name>
     <message>
         <location filename="../common/lc_aboutdialog.ui" line="6"/>
         <source>&lt;p&gt;&lt;b&gt;About LeoCAD&lt;/b&gt;&lt;/p&gt;&lt;p&gt;View the LeoCAD version and system information. The Qt and OpenGL details can help diagnose display problems. Select text in System Information to copy it when reporting a problem. The website link opens in your browser.&lt;/p&gt;</source>
@@ -6682,7 +6682,7 @@ Anisotrope : %4</translation>
     </message>
 </context>
 <context>
-    <name>lcApplication</name>
+    <name>swApplication</name>
     <message>
         <source>LeoCAD</source>
         <translation type="vanished">LeoCAD</translation>
@@ -7261,7 +7261,7 @@ SVP visitez https://www.leocad.org pour apprendre comment télécharger et insta
     </message>
 </context>
 <context>
-    <name>lcArrayDialog</name>
+    <name>swArrayDialog</name>
     <message>
         <location filename="../common/lc_arraydialog.ui" line="6"/>
         <source>&lt;p&gt;&lt;b&gt;Array&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Create repeated copies of the selected pieces using up to three array dimensions. Each row defines a count, an offset, and a rotation increment.&lt;/p&gt;&lt;p&gt;Counts include the original selection. For example, counts of 3, 2, and 1 create five new copies of each selected piece. Set an offset or rotation to keep copies from overlapping.&lt;/p&gt;</source>
@@ -7565,7 +7565,7 @@ SVP visitez https://www.leocad.org pour apprendre comment télécharger et insta
     </message>
 </context>
 <context>
-    <name>lcAssetLoader</name>
+    <name>swAssetLoader</name>
     <message>
         <location filename="../common/lc_assetloader.cpp" line="466"/>
         <source>Missing texture &apos;%1&apos;.</source>
@@ -7580,7 +7580,7 @@ SVP visitez https://www.leocad.org pour apprendre comment télécharger et insta
     </message>
 </context>
 <context>
-    <name>lcAutomateEdgeColorDialog</name>
+    <name>swAutomateEdgeColorDialog</name>
     <message>
         <location filename="../common/lc_edgecolordialog.cpp" line="21"/>
         <source>Color Preferences</source>
@@ -7808,7 +7808,7 @@ SVP visitez https://www.leocad.org pour apprendre comment télécharger et insta
     </message>
 </context>
 <context>
-    <name>lcBlenderPreferences</name>
+    <name>swBlenderPreferences</name>
     <message>
         <location filename="../common/lc_blenderpreferences.cpp" line="358"/>
         <source>Blender LDraw Add-on Settings</source>
@@ -8753,7 +8753,7 @@ SVP visitez https://www.leocad.org pour apprendre comment télécharger et insta
     </message>
 </context>
 <context>
-    <name>lcBlenderPreferencesDialog</name>
+    <name>swBlenderPreferencesDialog</name>
     <message>
         <location filename="../common/lc_blenderpreferences.cpp" line="227"/>
         <source>Blender LDraw Add-on Settings</source>
@@ -8850,7 +8850,7 @@ SVP visitez https://www.leocad.org pour apprendre comment télécharger et insta
     </message>
 </context>
 <context>
-    <name>lcCategoryDialog</name>
+    <name>swCategoryDialog</name>
     <message>
         <location filename="../common/lc_categorydialog.ui" line="6"/>
         <source>&lt;p&gt;&lt;b&gt;Piece Category&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Name a category and enter the expression used to find its pieces in the library. Both fields are required. Choose OK to return the category changes to Preferences, then choose OK in Preferences to keep them. Cancel discards edits in this dialog.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Keyword Syntax&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Expressions match text in library piece descriptions, ignoring case.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;tt&gt;Brick&lt;/tt&gt;: match this text anywhere in the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^Brick&lt;/tt&gt;: match Brick as a whole word.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;%Brick&lt;/tt&gt;: match Brick at the beginning of the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^%Brick&lt;/tt&gt;: require both a whole word and the beginning of the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A | B&lt;/tt&gt;: match either expression.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A &amp;amp; B&lt;/tt&gt;: match both expressions.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;!A&lt;/tt&gt;: exclude descriptions matching A.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;(A | B)&lt;/tt&gt;: group expressions.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Put spaces around &lt;tt&gt;|&lt;/tt&gt; and &lt;tt&gt;&amp;amp;&lt;/tt&gt;. Use parentheses when combining operators.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Examples&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;tt&gt;^%Brick | ^%Plate&lt;/tt&gt; matches descriptions beginning with the word Brick or Plate.&lt;br&gt;&lt;tt&gt;(^%Brick | ^%Plate) &amp;amp; !Pattern&lt;/tt&gt; also excludes descriptions containing Pattern.&lt;/p&gt;&lt;p&gt;Use the language of the library descriptions for search terms; do not translate the syntax symbols.&lt;/p&gt;</source>
@@ -8915,7 +8915,7 @@ SVP visitez https://www.leocad.org pour apprendre comment télécharger et insta
     </message>
 </context>
 <context>
-    <name>lcColorDialogPopup</name>
+    <name>swColorDialogPopup</name>
     <message>
         <location filename="../qt/lc_qutils.cpp" line="303"/>
         <source>Choose Color</source>
@@ -8942,7 +8942,7 @@ SVP visitez https://www.leocad.org pour apprendre comment télécharger et insta
     </message>
 </context>
 <context>
-    <name>lcContext</name>
+    <name>swContext</name>
     <message>
         <location filename="../common/lc_context.cpp" line="143"/>
         <source>OpenGL shader support is required.</source>
@@ -9003,7 +9003,7 @@ SVP visitez https://www.leocad.org pour apprendre comment télécharger et insta
     </message>
 </context>
 <context>
-    <name>lcEditGroupsDialog</name>
+    <name>swEditGroupsDialog</name>
     <message>
         <location filename="../common/lc_editgroupsdialog.ui" line="6"/>
         <source>&lt;p&gt;&lt;b&gt;Edit Groups&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Reorganize the model&apos;s pieces and groups in the tree. Drag pieces or groups into a group, or to the top level to remove them from a parent group. Double-click a group name to rename it.&lt;/p&gt;&lt;p&gt;New Group creates a group inside the selected group, or beside an ungrouped piece. Choose OK to apply the hierarchy, or Cancel to discard the changes. Empty groups are removed when changes are applied.&lt;/p&gt;</source>
@@ -9062,7 +9062,7 @@ SVP visitez https://www.leocad.org pour apprendre comment télécharger et insta
     </message>
 </context>
 <context>
-    <name>lcFindReplaceWidget</name>
+    <name>swFindReplaceWidget</name>
     <message>
         <location filename="../common/lc_findreplacewidget.cpp" line="23"/>
         <source>Find:</source>
@@ -9113,7 +9113,7 @@ SVP visitez https://www.leocad.org pour apprendre comment télécharger et insta
     </message>
 </context>
 <context>
-    <name>lcGroupDialog</name>
+    <name>swGroupDialog</name>
     <message>
         <location filename="../common/lc_groupdialog.ui" line="6"/>
         <source>&lt;p&gt;&lt;b&gt;Group Pieces&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Name a new group for the selected pieces so you can select and move them together. Choose OK to create it, or Cancel to leave the groups unchanged.&lt;/p&gt;</source>
@@ -9157,7 +9157,7 @@ SVP visitez https://www.leocad.org pour apprendre comment télécharger et insta
     </message>
 </context>
 <context>
-    <name>lcHTMLDialog</name>
+    <name>swHTMLDialog</name>
     <message>
         <location filename="../common/lc_htmldialog.ui" line="23"/>
         <source>HTML Options</source>
@@ -9403,7 +9403,7 @@ SVP visitez https://www.leocad.org pour apprendre comment télécharger et insta
     </message>
 </context>
 <context>
-    <name>lcImageDialog</name>
+    <name>swImageDialog</name>
     <message>
         <location filename="../common/lc_imagedialog.ui" line="17"/>
         <source>Save Image</source>
@@ -9615,7 +9615,7 @@ SVP visitez https://www.leocad.org pour apprendre comment télécharger et insta
     </message>
 </context>
 <context>
-    <name>lcInstructions</name>
+    <name>swInstructions</name>
     <message>
         <location filename="../common/lc_instructions.cpp" line="46"/>
         <source>Show Step Number</source>
@@ -9657,7 +9657,7 @@ SVP visitez https://www.leocad.org pour apprendre comment télécharger et insta
     </message>
 </context>
 <context>
-    <name>lcInstructionsDialog</name>
+    <name>swInstructionsDialog</name>
     <message>
         <location filename="../common/lc_instructionsdialog.cpp" line="545"/>
         <source>Instructions</source>
@@ -9697,7 +9697,7 @@ SVP visitez https://www.leocad.org pour apprendre comment télécharger et insta
     </message>
 </context>
 <context>
-    <name>lcInstructionsPageListWidget</name>
+    <name>swInstructionsPageListWidget</name>
     <message>
         <location filename="../common/lc_instructionsdialog.cpp" line="192"/>
         <source>Pages</source>
@@ -9712,7 +9712,7 @@ SVP visitez https://www.leocad.org pour apprendre comment télécharger et insta
     </message>
 </context>
 <context>
-    <name>lcInstructionsPropertiesWidget</name>
+    <name>swInstructionsPropertiesWidget</name>
     <message>
         <location filename="../common/lc_instructionsdialog.cpp" line="306"/>
         <source>Properties</source>
@@ -9817,7 +9817,7 @@ SVP visitez https://www.leocad.org pour apprendre comment télécharger et insta
     </message>
 </context>
 <context>
-    <name>lcMainWindow</name>
+    <name>swMainWindow</name>
     <message>
         <location filename="../common/lc_mainwindow.cpp" line="380"/>
         <location filename="../common/lc_mainwindow.cpp" line="596"/>
@@ -10571,7 +10571,7 @@ SVP visitez https://www.leocad.org pour apprendre comment télécharger et insta
     </message>
 </context>
 <context>
-    <name>lcMeshLoader</name>
+    <name>swMeshLoader</name>
     <message>
         <location filename="../common/lc_meshloader.cpp" line="1680"/>
         <source>Could not load included file &apos;%1&apos;.</source>
@@ -10580,7 +10580,7 @@ SVP visitez https://www.leocad.org pour apprendre comment télécharger et insta
     </message>
 </context>
 <context>
-    <name>lcMinifigDialog</name>
+    <name>swMinifigDialog</name>
     <message>
         <location filename="../common/lc_minifigdialog.ui" line="6"/>
         <source>&lt;p&gt;&lt;b&gt;Minifig Wizard&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Build a minifigure by choosing its pieces, colors, and pose. The preview updates as you make changes. Choose OK to insert the minifigure into the current model, or Cancel to close without inserting it.&lt;/p&gt;&lt;p&gt;Templates let you reuse a configuration. Saved, deleted, and imported templates are retained even if you cancel the wizard.&lt;/p&gt;</source>
@@ -10966,7 +10966,7 @@ SVP visitez https://www.leocad.org pour apprendre comment télécharger et insta
     </message>
 </context>
 <context>
-    <name>lcModel</name>
+    <name>swModel</name>
     <message>
         <source>Pasting</source>
         <translation type="vanished">Collage</translation>
@@ -11498,7 +11498,7 @@ SVP visitez https://www.leocad.org pour apprendre comment télécharger et insta
     </message>
 </context>
 <context>
-    <name>lcModelListDialog</name>
+    <name>swModelListDialog</name>
     <message>
         <location filename="../common/lc_modellistdialog.ui" line="6"/>
         <source>&lt;p&gt;&lt;b&gt;Submodels&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Manage the models stored in this project. Create, rename, duplicate, delete, or reorder them, then choose OK to apply the changes. Cancel discards the list changes; files already exported remain on disk.&lt;/p&gt;&lt;p&gt;Drag list entries to change their order. Use Set Active to switch to the current list item when applying changes.&lt;/p&gt;</source>
@@ -11725,7 +11725,7 @@ SVP visitez https://www.leocad.org pour apprendre comment télécharger et insta
     </message>
 </context>
 <context>
-    <name>lcPageSetupDialog</name>
+    <name>swPageSetupDialog</name>
     <message>
         <location filename="../common/lc_pagesetupdialog.ui" line="14"/>
         <source>Page Setup</source>
@@ -11793,7 +11793,7 @@ SVP visitez https://www.leocad.org pour apprendre comment télécharger et insta
     </message>
 </context>
 <context>
-    <name>lcPartPaletteDialog</name>
+    <name>swPartPaletteDialog</name>
     <message>
         <location filename="../common/lc_partpalettedialog.ui" line="6"/>
         <source>&lt;p&gt;&lt;b&gt;Piece Palettes&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Organize reusable collections of pieces in the piece browser. Create, rename, delete, import, or reorder palettes, then choose OK to apply the changes. Cancel discards these palette changes.&lt;/p&gt;&lt;p&gt;Palettes organize piece choices; they do not change pieces already placed in a model.&lt;/p&gt;</source>
@@ -11933,7 +11933,7 @@ SVP visitez https://www.leocad.org pour apprendre comment télécharger et insta
     </message>
 </context>
 <context>
-    <name>lcPartSelectionListModel</name>
+    <name>swPartSelectionListModel</name>
     <message>
         <location filename="../common/lc_partselectionwidget.cpp" line="374"/>
         <source>Could not load piece &apos;%1&apos;.</source>
@@ -11942,7 +11942,7 @@ SVP visitez https://www.leocad.org pour apprendre comment télécharger et insta
     </message>
 </context>
 <context>
-    <name>lcPartSelectionListView</name>
+    <name>swPartSelectionListView</name>
     <message>
         <location filename="../common/lc_partselectionwidget.cpp" line="619"/>
         <source>Add to Palette</source>
@@ -11968,7 +11968,7 @@ SVP visitez https://www.leocad.org pour apprendre comment télécharger et insta
     </message>
 </context>
 <context>
-    <name>lcPartSelectionPopup</name>
+    <name>swPartSelectionPopup</name>
     <message>
         <location filename="../common/lc_partselectionpopup.cpp" line="10"/>
         <source>Choose Piece</source>
@@ -11983,7 +11983,7 @@ SVP visitez https://www.leocad.org pour apprendre comment télécharger et insta
     </message>
 </context>
 <context>
-    <name>lcPartSelectionWidget</name>
+    <name>swPartSelectionWidget</name>
     <message>
         <location filename="../common/lc_partselectionwidget.cpp" line="984"/>
         <location filename="../common/lc_partselectionwidget.cpp" line="985"/>
@@ -12180,7 +12180,7 @@ SVP visitez https://www.leocad.org pour apprendre comment télécharger et insta
     </message>
 </context>
 <context>
-    <name>lcPiecesLibrary</name>
+    <name>swPiecesLibrary</name>
     <message>
         <location filename="../common/lc_library.cpp" line="169"/>
         <source>External project include cycle at &apos;%1&apos;.</source>
@@ -12314,7 +12314,7 @@ SVP visitez https://www.leocad.org pour apprendre comment télécharger et insta
     </message>
 </context>
 <context>
-    <name>lcPreferencesDialog</name>
+    <name>swPreferencesDialog</name>
     <message>
         <location filename="../qt/lc_qpreferencesdialog.ui" line="17"/>
         <source>Preferences</source>
@@ -14577,7 +14577,7 @@ Les cartes vidéo non prises en charge utilisent une teinte de visage et des bor
     </message>
 </context>
 <context>
-    <name>lcPreviewDockWidget</name>
+    <name>swPreviewDockWidget</name>
     <message>
         <location filename="../common/lc_previewwidget.cpp" line="18"/>
         <source>Piece Preview</source>
@@ -14658,7 +14658,7 @@ Les cartes vidéo non prises en charge utilisent une teinte de visage et des bor
     </message>
 </context>
 <context>
-    <name>lcPropertiesDialog</name>
+    <name>swPropertiesDialog</name>
     <message>
         <location filename="../qt/lc_qpropertiesdialog.ui" line="6"/>
         <source>&lt;p&gt;&lt;b&gt;Model Properties&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Edit the current model&apos;s author, description, and comments on the Summary tab. Measurements and Pieces Used provide read-only information. Choose OK to apply the metadata changes, or Cancel to discard them.&lt;/p&gt;</source>
@@ -14833,7 +14833,7 @@ Les cartes vidéo non prises en charge utilisent une teinte de visage et des bor
     </message>
 </context>
 <context>
-    <name>lcPropertiesWidget</name>
+    <name>swPropertiesWidget</name>
     <message>
         <location filename="../common/lc_propertieswidget.cpp" line="27"/>
         <source>%1: %2</source>
@@ -15306,7 +15306,7 @@ Les cartes vidéo non prises en charge utilisent une teinte de visage et des bor
     </message>
 </context>
 <context>
-    <name>lcQFindDialog</name>
+    <name>swQFindDialog</name>
     <message>
         <source>Find</source>
         <translation type="vanished">Rechercher</translation>
@@ -15325,7 +15325,7 @@ Les cartes vidéo non prises en charge utilisent une teinte de visage et des bor
     </message>
 </context>
 <context>
-    <name>lcQMinifigDialog</name>
+    <name>swQMinifigDialog</name>
     <message>
         <source>Minifig Wizard</source>
         <translation type="vanished">Assistant de minifig</translation>
@@ -15336,7 +15336,7 @@ Les cartes vidéo non prises en charge utilisent une teinte de visage et des bor
     </message>
 </context>
 <context>
-    <name>lcQPropertiesTree</name>
+    <name>swQPropertiesTree</name>
     <message>
         <source>Property</source>
         <translation type="vanished">Propriété</translation>
@@ -15423,7 +15423,7 @@ Les cartes vidéo non prises en charge utilisent une teinte de visage et des bor
     </message>
 </context>
 <context>
-    <name>lcRenderDialog</name>
+    <name>swRenderDialog</name>
     <message>
         <location filename="../qt/lc_renderdialog.ui" line="14"/>
         <location filename="../qt/lc_renderdialog.cpp" line="58"/>
@@ -15901,14 +15901,14 @@ Les cartes vidéo non prises en charge utilisent une teinte de visage et des bor
     </message>
 </context>
 <context>
-    <name>lcSelectByColorDialog</name>
+    <name>swSelectByColorDialog</name>
     <message>
         <source>Color:</source>
         <translation type="obsolete">Couleur :</translation>
     </message>
 </context>
 <context>
-    <name>lcSelectDialog</name>
+    <name>swSelectDialog</name>
     <message>
         <location filename="../common/lc_selectdialog.ui" line="6"/>
         <source>&lt;p&gt;&lt;b&gt;Select Objects&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Use the checkboxes to choose visible pieces, cameras, and lights in the current model. Choose OK to replace the current selection with the checked objects, or Cancel to keep the current selection.&lt;/p&gt;&lt;p&gt;Pieces in the same top-level group are selected together. All, None, and Invert change the checkboxes in this dialog.&lt;/p&gt;</source>
@@ -15973,7 +15973,7 @@ Les cartes vidéo non prises en charge utilisent une teinte de visage et des bor
     </message>
 </context>
 <context>
-    <name>lcSetsDatabaseDialog</name>
+    <name>swSetsDatabaseDialog</name>
     <message>
         <source>Sets Database</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -16146,7 +16146,7 @@ Les cartes vidéo non prises en charge utilisent une teinte de visage et des bor
     </message>
 </context>
 <context>
-    <name>lcSpinnerWidget</name>
+    <name>swSpinnerWidget</name>
     <message>
         <location filename="../common/lc_spinnerwidget.cpp" line="9"/>
         <source>Loading</source>
@@ -16155,7 +16155,7 @@ Les cartes vidéo non prises en charge utilisent une teinte de visage et des bor
     </message>
 </context>
 <context>
-    <name>lcTexture</name>
+    <name>swTexture</name>
     <message>
         <location filename="../common/lc_texture.cpp" line="199"/>
         <source>Could not load texture &apos;%1&apos;.</source>
@@ -16189,7 +16189,7 @@ Les cartes vidéo non prises en charge utilisent une teinte de visage et des bor
     </message>
 </context>
 <context>
-    <name>lcTimelineWidget</name>
+    <name>swTimelineWidget</name>
     <message>
         <location filename="../common/lc_timelinewidget.cpp" line="11"/>
         <source>Building Steps and Pieces</source>
@@ -16209,7 +16209,7 @@ Les cartes vidéo non prises en charge utilisent une teinte de visage et des bor
     </message>
 </context>
 <context>
-    <name>lcUpdateDialog</name>
+    <name>swUpdateDialog</name>
     <message>
         <location filename="../common/lc_updatedialog.ui" line="6"/>
         <source>&lt;p&gt;&lt;b&gt;Check for Updates&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Check online for a newer LeoCAD version and, when an official library is loaded, new pieces. The result appears in this dialog. An internet connection is required.&lt;/p&gt;&lt;p&gt;Use the download link to open the release page in your browser. This dialog does not install updates. Ignore suppresses automatic notifications for this update information; a manual update check still shows the result. Close dismisses the dialog.&lt;/p&gt;</source>
@@ -16288,7 +16288,7 @@ Les cartes vidéo non prises en charge utilisent une teinte de visage et des bor
     </message>
 </context>
 <context>
-    <name>lcView</name>
+    <name>swView</name>
     <message>
         <source>LeoCAD</source>
         <translation type="obsolete">LeoCAD</translation>
@@ -16320,7 +16320,7 @@ Les cartes vidéo non prises en charge utilisent une teinte de visage et des bor
     </message>
 </context>
 <context>
-    <name>lcViewWidget</name>
+    <name>swViewWidget</name>
     <message>
         <location filename="../common/lc_viewwidget.cpp" line="43"/>
         <source>&lt;p&gt;&lt;b&gt;In-place Editing&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The path shows the model being edited inside this view. The last name is the current editing target. Choose an earlier name to edit that ancestor, or the close button to return to the tab&apos;s model.&lt;/p&gt;</source>

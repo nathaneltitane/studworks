@@ -2,52 +2,52 @@
 
 #include "sw_assettypes.h"
 
-struct lcPieceControlPoint;
+struct swPieceControlPoint;
 
-// Owned by lcPiecesLibrary. Instance methods run on the UI thread and schedule private worker builds;
+// Owned by swPiecesLibrary. Instance methods run on the UI thread and schedule private worker builds;
 // UI-thread completion processing resolves colors, uploads textures, and publishes meshes.
 // See docs/asset-loading.md for readiness, ownership, and caller policies.
-class lcAssetLoader : public QObject
+class swAssetLoader : public QObject
 {
 public:
-	lcAssetLoader(lcPiecesLibrary* Library);
-	~lcAssetLoader() override;
+	swAssetLoader(swPiecesLibrary* Library);
+	~swAssetLoader() override;
 
 	// Queue or promote a piece the library has marked Loading. Adds no consumer reference.
 	// Priority controls scheduling only; the library handles blocking waits and asset readiness.
-	void RequestPieceLoad(lcPieceData* PieceData, lcLoadPriority LoadPriority);
+	void RequestPieceLoad(swPieceData* PieceData, swLoadPriority LoadPriority);
 
 	// Promote and wait for requests active at entry; false means a request failed or was cancelled.
 	// The library checks final asset readiness, including identities with no active request.
 	// Adds no consumer references and does not traverse container children or generated meshes.
 	// Progress receives the finished and total request counts while waiting.
-	bool WaitForPieces(const std::vector<lcPieceData*>& Pieces, const std::function<void(int, int)>& Progress = nullptr);
+	bool WaitForPieces(const std::vector<swPieceData*>& Pieces, const std::function<void(int, int)>& Progress = nullptr);
 
 	// Called when the last consumer releases the piece. Cancels queued work and reports it to the library;
 	// running work finishes privately and is discarded if the piece is still unused.
-	void CancelPieceLoad(lcPieceData* PieceData);
+	void CancelPieceLoad(swPieceData* PieceData);
 
 	// Discard pending load results and notifications after the library invalidates readiness.
 	// Asset meshes, readiness, and errors belong to the library.
-	void InvalidatePieceLoad(lcPieceData* PieceData);
+	void InvalidatePieceLoad(swPieceData* PieceData);
 
 	// Build this instance's generated mesh from definition/control-point snapshots supplied by the library.
 	// Cancel any older request and keep the previous mesh visible while the replacement is built.
-	void RequestSynthMesh(lcPiece* Piece, lcPieceData* PieceData, std::shared_ptr<const lcSynthInfo> SynthInfo, std::vector<lcPieceControlPoint> ControlPoints);
+	void RequestSynthMesh(swPiece* Piece, swPieceData* PieceData, std::shared_ptr<const swSynthInfo> SynthInfo, std::vector<swPieceControlPoint> ControlPoints);
 
 	// Promote and wait for generations active at entry; false means a generation failed or was cancelled.
 	// The library checks final generated-mesh readiness. The caller keeps the instances alive through the wait.
-	bool WaitForSynthMeshes(const std::vector<lcPiece*>& Pieces);
+	bool WaitForSynthMeshes(const std::vector<swPiece*>& Pieces);
 
 	// Cancel this instance's generation and suppress its deferred notifications.
 	// Running jobs stop cooperatively; any published mesh is kept.
-	void CancelSynthMesh(lcPiece* Piece);
+	void CancelSynthMesh(swPiece* Piece);
 
 	// Start or promote decoding as needed, then wait through upload and retries. The caller retains the texture.
-	bool WaitForTexture(lcTexture* Texture, lcFileSource Source);
+	bool WaitForTexture(swTexture* Texture, swFileSource Source);
 
 	// Queue or promote decoding without waiting or acquiring a consumer reference.
-	void RequestTextureLoad(lcTexture* Texture, lcFileSource Source, lcLoadPriority LoadPriority);
+	void RequestTextureLoad(swTexture* Texture, swFileSource Source, swLoadPriority LoadPriority);
 
 	// True while piece, texture, or generated-mesh requests or worker completions remain unsettled.
 	// Includes paused work and upload retries; deferred notifications alone do not count.
@@ -75,7 +75,7 @@ private:
 
 	struct RequestBase
 	{
-		lcLoadPriority LoadPriority;
+		swLoadPriority LoadPriority;
 		qint64 QueuedAt;
 		RequestState State = RequestState::Queued;
 
@@ -90,9 +90,9 @@ private:
 	// One worker job builds and converts geometry; textures settle before publication.
 	struct PieceRequest : RequestBase
 	{
-		lcPieceDataRef PieceData;
-		lcPieceSourceSnapshot Source;
-		std::unique_ptr<lcMesh> StagedMesh;
+		swPieceDataRef PieceData;
+		swPieceSourceSnapshot Source;
+		std::unique_ptr<swMesh> StagedMesh;
 		bool EmptyGeometry = false;
 		bool SaveCache = false;
 		QString Error;
@@ -102,8 +102,8 @@ private:
 	// Reset on the UI thread before worker-shared request storage can be destroyed.
 	struct TextureRequest : RequestBase
 	{
-		lcTextureRef Texture;
-		lcFileSource Source;
+		swTextureRef Texture;
+		swFileSource Source;
 		int UploadAttempts = 0;
 		qint64 RetryAt = 0;
 	};
@@ -112,39 +112,39 @@ private:
 	// Cancelled is also checked during expensive generation and conversion.
 	struct SynthRequest : RequestBase
 	{
-		lcPiece* Piece;
-		lcPieceData* PieceData; // Borrowed from the instance until cancellation or publication.
-		std::shared_ptr<const lcSynthInfo> SynthInfo;
-		std::vector<lcPieceControlPoint> ControlPoints;
+		swPiece* Piece;
+		swPieceData* PieceData; // Borrowed from the instance until cancellation or publication.
+		std::shared_ptr<const swSynthInfo> SynthInfo;
+		std::vector<swPieceControlPoint> ControlPoints;
 		std::atomic_bool Cancelled = false;
-		std::unique_ptr<lcMesh> StagedMesh;
+		std::unique_ptr<swMesh> StagedMesh;
 		QString Error;
 	};
 
-	using PieceRequestMap = std::map<lcPieceData*, std::shared_ptr<PieceRequest>>;
-	using TextureRequestMap = std::map<lcTexture*, std::shared_ptr<TextureRequest>>;
-	using SynthRequestMap = std::map<lcPiece*, std::shared_ptr<SynthRequest>>;
+	using PieceRequestMap = std::map<swPieceData*, std::shared_ptr<PieceRequest>>;
+	using TextureRequestMap = std::map<swTexture*, std::shared_ptr<TextureRequest>>;
+	using SynthRequestMap = std::map<swPiece*, std::shared_ptr<SynthRequest>>;
 
 	// Workers hand off one private result here; no live asset is published by a worker.
 	struct Completion
 	{
 		std::shared_ptr<PieceRequest> RequestedPiece;
-		lcPieceBuildResult PieceResult;
+		swPieceBuildResult PieceResult;
 		std::shared_ptr<TextureRequest> RequestedTexture;
-		lcTextureBuildResult TextureResult;
+		swTextureBuildResult TextureResult;
 		std::shared_ptr<SynthRequest> RequestedSynth;
-		std::unique_ptr<lcMesh> SynthMesh;
+		std::unique_ptr<swMesh> SynthMesh;
 	};
 
 	// Retains the base identity; cancellation makes delivery safe after instance deletion.
 	struct SynthNotification
 	{
 		std::shared_ptr<SynthRequest> RequestedSynth;
-		lcPieceDataRef PieceData;
+		swPieceDataRef PieceData;
 	};
 
 	// Promote requests on the UI thread.
-	void PromotePiecePriority(const std::shared_ptr<PieceRequest>& RequestedPiece, lcLoadPriority LoadPriority);
+	void PromotePiecePriority(const std::shared_ptr<PieceRequest>& RequestedPiece, swLoadPriority LoadPriority);
 
 	// Fill available job slots using queued request priority and age.
 	void DispatchJobs();
@@ -159,8 +159,8 @@ private:
 	void ProcessTextureCompletion(Completion& Completed);
 
 	// Mesh texture dependencies: true means settled; failures are reported in Error.
-	bool ResolveAndQueueMeshTextures(lcMesh& Mesh, const lcPieceSourceSnapshot& Source, lcLoadPriority LoadPriority, QString& Error);
-	static bool MeshTexturesSettled(const lcMesh& Mesh, QString& Error);
+	bool ResolveAndQueueMeshTextures(swMesh& Mesh, const swPieceSourceSnapshot& Source, swLoadPriority LoadPriority, QString& Error);
+	static bool MeshTexturesSettled(const swMesh& Mesh, QString& Error);
 
 	// Texture upload, bounded retries, and dependency settlement.
 	void UploadTextureRequest(const std::shared_ptr<TextureRequest>& RequestedTexture);
@@ -191,7 +191,7 @@ private:
 	// Stop dispatch, cancel pending work, join workers, and release loader-owned references.
 	void Shutdown();
 
-	lcPiecesLibrary* const mLibrary;
+	swPiecesLibrary* const mLibrary;
 
 	// UI-thread scheduling state.
 	PieceRequestMap mPieceRequests;
@@ -219,5 +219,5 @@ private:
 	std::deque<std::shared_ptr<PieceRequest>> mPieceNotifications;
 	std::deque<SynthNotification> mSynthNotifications;
 
-	Q_DECLARE_TR_FUNCTIONS(lcAssetLoader)
+	Q_DECLARE_TR_FUNCTIONS(swAssetLoader)
 };

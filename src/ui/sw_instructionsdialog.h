@@ -2,23 +2,23 @@
 
 #include "sw_instructions.h"
 
-class lcInstructionsPropertiesWidget;
+class swInstructionsPropertiesWidget;
 
 // File printing and the instructions window print the same instruction pages.
-void lcSetupInstructionsPrinter(lcInstructions* Instructions, QPrinter* Printer);
-void lcPrintInstructions(lcInstructions* Instructions, QPrinter* Printer);
+void swSetupInstructionsPrinter(swInstructions* Instructions, QPrinter* Printer);
+void swPrintInstructions(swInstructions* Instructions, QPrinter* Printer);
 
-class lcInstructionsStepImageItem : public QGraphicsPixmapItem
+class swInstructionsStepImageItem : public QGraphicsPixmapItem
 {
 public:
-	lcInstructionsStepImageItem(QGraphicsItem* Parent, lcInstructions* Instructions, lcModel* Model, lcStep Step);
+	swInstructionsStepImageItem(QGraphicsItem* Parent, swInstructions* Instructions, swModel* Model, swStep Step);
 
-	lcModel* GetModel() const
+	swModel* GetModel() const
 	{
 		return mModel;
 	}
 
-	lcStep GetStep() const
+	swStep GetStep() const
 	{
 		return mStep;
 	}
@@ -32,24 +32,24 @@ public:
 	void Update();
 
 protected:
-	lcInstructions* mInstructions = nullptr;
-	lcModel* mModel = nullptr;
-	lcStep mStep = 1;
+	swInstructions* mInstructions = nullptr;
+	swModel* mModel = nullptr;
+	swStep mStep = 1;
 	int mWidth = 1;
 	int mHeight = 1;
 };
 
-class lcInstructionsStepNumberItem : public QGraphicsSimpleTextItem
+class swInstructionsStepNumberItem : public QGraphicsSimpleTextItem
 {
 public:
-	lcInstructionsStepNumberItem(QGraphicsItem* Parent, lcInstructions* Instructions, lcModel* Model, lcStep Step);
+	swInstructionsStepNumberItem(QGraphicsItem* Parent, swInstructions* Instructions, swModel* Model, swStep Step);
 
-	lcModel* GetModel() const
+	swModel* GetModel() const
 	{
 		return mModel;
 	}
 
-	lcStep GetStep() const
+	swStep GetStep() const
 	{
 		return mStep;
 	}
@@ -57,22 +57,22 @@ public:
 	void Update();
 
 protected:
-	lcInstructions* mInstructions = nullptr;
-	lcModel* mModel = nullptr;
-	lcStep mStep = 1;
+	swInstructions* mInstructions = nullptr;
+	swModel* mModel = nullptr;
+	swStep mStep = 1;
 };
 
-class lcInstructionsPartsListItem : public QGraphicsPixmapItem
+class swInstructionsPartsListItem : public QGraphicsPixmapItem
 {
 public:
-	lcInstructionsPartsListItem(QGraphicsItem* Parent, lcInstructions* Instructions, lcModel* Model, lcStep Step);
+	swInstructionsPartsListItem(QGraphicsItem* Parent, swInstructions* Instructions, swModel* Model, swStep Step);
 
-	lcModel* GetModel() const
+	swModel* GetModel() const
 	{
 		return mModel;
 	}
 
-	lcStep GetStep() const
+	swStep GetStep() const
 	{
 		return mStep;
 	}
@@ -86,42 +86,42 @@ public:
 	void Update();
 
 protected:
-	lcInstructions* mInstructions = nullptr;
-	lcModel* mModel = nullptr;
-	lcStep mStep = 1;
+	swInstructions* mInstructions = nullptr;
+	swModel* mModel = nullptr;
+	swStep mStep = 1;
 	bool mBillOfMaterials = false;
 	int mMaxWidth = 300;
 };
 
-class lcInstructionsPageWidget : public QGraphicsView
+class swInstructionsPageWidget : public QGraphicsView
 {
 	Q_OBJECT
 
 public:
-	lcInstructionsPageWidget(QWidget* Parent, lcInstructions* Instructions, lcInstructionsPropertiesWidget* PropertiesWidget);
+	swInstructionsPageWidget(QWidget* Parent, swInstructions* Instructions, swInstructionsPropertiesWidget* PropertiesWidget);
 
-	void SetCurrentPage(const lcInstructionsPage* Page);
+	void SetCurrentPage(const swInstructionsPage* Page);
 
 protected:
 	void resizeEvent(QResizeEvent* Event) override;
 	void FitPage();
 
 protected slots:
-	void StepSettingsChanged(lcModel* Model, lcStep Step);
+	void StepSettingsChanged(swModel* Model, swStep Step);
 	void SelectionChanged();
 
 protected:
-	lcInstructions* mInstructions;
-	lcInstructionsPropertiesWidget* mPropertiesWidget;
-	const lcInstructionsPage* mPage = nullptr;
+	swInstructions* mInstructions;
+	swInstructionsPropertiesWidget* mPropertiesWidget;
+	const swInstructionsPage* mPage = nullptr;
 };
 
-class lcInstructionsPageListWidget : public QDockWidget
+class swInstructionsPageListWidget : public QDockWidget
 {
 	Q_OBJECT
 
 public:
-	lcInstructionsPageListWidget(QWidget* Parent, lcInstructions* Instructions);
+	swInstructionsPageListWidget(QWidget* Parent, swInstructions* Instructions);
 
 protected slots:
 	void ShowPageSetupDialog();
@@ -147,18 +147,18 @@ public:
 protected:
 	void OptionsMenuAboutToShow();
 
-	lcInstructions* mInstructions;
+	swInstructions* mInstructions;
 	QAction* mInsertBlankBeforeAction = nullptr;
 	QAction* mInsertBlankAfterAction = nullptr;
 	QAction* mRemoveBlankAction = nullptr;
 };
 
-class lcInstructionsPropertiesWidget : public QDockWidget
+class swInstructionsPropertiesWidget : public QDockWidget
 {
 	Q_OBJECT
 
 public:
-	lcInstructionsPropertiesWidget(QWidget* Parent, lcInstructions* Instructions);
+	swInstructionsPropertiesWidget(QWidget* Parent, swInstructions* Instructions);
 
 	void SelectionChanged(QGraphicsItem* FocusItem);
 	void SetCurrentPage(int PageIndex);
@@ -166,27 +166,27 @@ public:
 protected:
 	void UpdateWidget();
 	void AddPageLayoutProperties();
-	void AddBoolProperty(lcInstructionsPropertyType Type);
-	void AddIntProperty(lcInstructionsPropertyType Type, int Minimum, int Maximum);
-	void AddSortProperty(lcInstructionsPropertyType Type);
-	void AddColorProperty(lcInstructionsPropertyType Type);
-	void AddFontProperty(lcInstructionsPropertyType Type);
+	void AddBoolProperty(swInstructionsPropertyType Type);
+	void AddIntProperty(swInstructionsPropertyType Type, int Minimum, int Maximum);
+	void AddSortProperty(swInstructionsPropertyType Type);
+	void AddColorProperty(swInstructionsPropertyType Type);
+	void AddFontProperty(swInstructionsPropertyType Type);
 
-	lcCollapsibleWidget* mWidget = nullptr;
+	swCollapsibleWidget* mWidget = nullptr;
 	QGridLayout* mPropertiesLayout = nullptr;
-	lcInstructions* mInstructions = nullptr;
+	swInstructions* mInstructions = nullptr;
 	QGraphicsItem* mFocusItem = nullptr;
 	int mPageIndex = 0;
-	lcModel* mModel = nullptr;
-	lcStep mStep = 1;
+	swModel* mModel = nullptr;
+	swStep mStep = 1;
 };
 
-class lcInstructionsDialog : public QMainWindow
+class swInstructionsDialog : public QMainWindow
 {
 	Q_OBJECT
 
 public:
-	lcInstructionsDialog(QWidget* Parent, Project* Project);
+	swInstructionsDialog(QWidget* Parent, Project* Project);
 
 public slots:
 	void ModelChanged();
@@ -204,11 +204,11 @@ protected:
 	bool mUpdatePending = false;
 
 	int mCurrentPageNumber;
-	lcInstructions* mInstructions;
+	swInstructions* mInstructions;
 
-	lcInstructionsPageWidget* mPageWidget = nullptr;
-	lcInstructionsPageListWidget* mPageListWidget = nullptr;
-	lcInstructionsPropertiesWidget* mPropertiesWidget = nullptr;
+	swInstructionsPageWidget* mPageWidget = nullptr;
+	swInstructionsPageListWidget* mPageListWidget = nullptr;
+	swInstructionsPropertiesWidget* mPropertiesWidget = nullptr;
 
 	QToolBar* mPageSettingsToolBar = nullptr;
 	QAction* mPrintAction = nullptr;

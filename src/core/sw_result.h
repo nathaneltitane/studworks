@@ -4,15 +4,15 @@
 
 #include <stdexcept>
 
-class lcUnexpected
+class swUnexpected
 {
 public:
-	explicit lcUnexpected(const QString& Error)
+	explicit swUnexpected(const QString& Error)
 	    : mError(Error)
 	{
 	}
 
-	explicit lcUnexpected(QString&& Error)
+	explicit swUnexpected(QString&& Error)
 	    : mError(std::move(Error))
 	{
 	}
@@ -32,35 +32,35 @@ protected:
 };
 
 template <typename T>
-class [[nodiscard]] lcResult
+class [[nodiscard]] swResult
 {
 	using internal_t = std::conditional_t<std::is_void_v<T>, char, T>;
 
 public:
 	template <typename U = T, typename = std::enable_if_t<!std::is_void_v<U> && std::is_convertible_v<U, T>>>
-	lcResult(U&& Value)
+	swResult(U&& Value)
 	    : mStorage(std::in_place_index<0>, std::forward<U>(Value))
 	{
 	}
 
 	template <typename U = T, typename = std::enable_if_t<std::is_void_v<U>>>
-	lcResult()
+	swResult()
 	    : mStorage(std::in_place_index<0>)
 	{
 	}
 
-	lcResult(lcUnexpected&& Unexpected)
+	swResult(swUnexpected&& Unexpected)
 	    : mStorage(std::in_place_index<1>, std::move(Unexpected))
 	{
 	}
 
-	lcResult(const lcResult& Other) = default;
-	lcResult& operator=(const lcResult& Other) = default;
+	swResult(const swResult& Other) = default;
+	swResult& operator=(const swResult& Other) = default;
 
-	lcResult(lcResult&& Other) = default;
-	lcResult& operator=(lcResult&& Other) = default;
+	swResult(swResult&& Other) = default;
+	swResult& operator=(swResult&& Other) = default;
 
-	~lcResult() = default;
+	~swResult() = default;
 
 	bool has_value() const
 	{
@@ -76,7 +76,7 @@ public:
 	constexpr const U& value() const
 	{
 		if (!has_value())
-			throw std::logic_error("bad lcResult access");
+			throw std::logic_error("bad swResult access");
 
 		return std::get<0>(mStorage);
 	}
@@ -84,11 +84,11 @@ public:
 	constexpr const QString& error() const
 	{
 		if (mStorage.index() != 1)
-			throw std::logic_error("bad lcResult access");
+			throw std::logic_error("bad swResult access");
 
 		return std::get<1>(mStorage).error();
 	}
 
 protected:
-	std::variant<internal_t, lcUnexpected> mStorage;
+	std::variant<internal_t, swUnexpected> mStorage;
 };

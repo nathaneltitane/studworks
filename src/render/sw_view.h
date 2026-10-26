@@ -6,17 +6,17 @@
 #include "sw_commands.h"
 #include "sw_result.h"
 
-struct lcInsertPieceInfo;
-enum class lcCameraProjection;
+struct swInsertPieceInfo;
+enum class swCameraProjection;
 
-enum class lcDragState
+enum class swDragState
 {
 	None,
 	Piece,
 	Color
 };
 
-enum class lcCursor
+enum class swCursor
 {
 	First,
 	Hidden = First,
@@ -45,7 +45,7 @@ enum class lcCursor
 	Count
 };
 
-enum class lcTrackButton
+enum class swTrackButton
 {
 	None,
 	Left,
@@ -53,7 +53,7 @@ enum class lcTrackButton
 	Right
 };
 
-enum class lcTrackTool
+enum class swTrackTool
 {
 	None,
 	Insert,
@@ -94,7 +94,7 @@ enum class lcTrackTool
 	Count
 };
 
-enum class lcViewType
+enum class swViewType
 {
 	View,
 	Preview,
@@ -103,44 +103,44 @@ enum class lcViewType
 	Count
 };
 
-struct lcFindReplaceParams
+struct swFindReplaceParams
 {
-	lcPieceData* FindPieceData = nullptr;
+	swPieceData* FindPieceData = nullptr;
 	QString FindString;
 	int FindColorIndex = 0;
-	lcPieceData* ReplacePieceData = nullptr;
+	swPieceData* ReplacePieceData = nullptr;
 	int ReplaceColorIndex = 0;
 };
 
-class lcView : public QObject
+class swView : public QObject
 {
 	Q_OBJECT
 
 public:
-	lcView(lcViewType ViewType, lcModel* Model);
-	~lcView();
+	swView(swViewType ViewType, swModel* Model);
+	~swView();
 
-	lcView(const lcView&) = delete;
-	lcView(lcView&&) = delete;
-	lcView& operator=(const lcView&) = delete;
-	lcView& operator=(lcView&&) = delete;
+	swView(const swView&) = delete;
+	swView(swView&&) = delete;
+	swView& operator=(const swView&) = delete;
+	swView& operator=(swView&&) = delete;
 
-	static lcFindReplaceParams& GetFindReplaceParams()
+	static swFindReplaceParams& GetFindReplaceParams()
 	{
 		return mFindReplaceParams;
 	}
 
-	lcModel* GetModel() const
+	swModel* GetModel() const
 	{
 		return mModel;
 	}
 
-	lcViewType GetViewType() const
+	swViewType GetViewType() const
 	{
 		return mViewType;
 	}
 
-	lcCamera* GetCamera() const
+	swCamera* GetCamera() const
 	{
 		return mCamera;
 	}
@@ -152,7 +152,7 @@ public:
 
 	bool IsTracking() const
 	{
-		return mTrackButton != lcTrackButton::None;
+		return mTrackButton != swTrackButton::None;
 	}
 
 	int GetWidth() const
@@ -171,12 +171,12 @@ public:
 		mHeight = Height;
 	}
 
-	lcViewWidget* GetWidget() const
+	swViewWidget* GetWidget() const
 	{
 		return mWidget;
 	}
 
-	void SetWidget(lcViewWidget* Widget)
+	void SetWidget(swViewWidget* Widget)
 	{
 		mWidget = Widget;
 	}
@@ -217,17 +217,17 @@ public:
 		mBackgroundColor = BackgroundColor;
 	}
 
-	lcMatrix44 GetActiveSubmodelTransform() const
+	swMatrix44 GetActiveSubmodelTransform() const
 	{
 		return mActiveSubmodelTransform;
 	}
 
-	static std::vector<lcView*> GetModelViews(const lcModel* Model);
+	static std::vector<swView*> GetModelViews(const swModel* Model);
 	static void UpdateProjectViews(const Project* Project);
 	static void UpdateAllViews();
 
-	static void CreateResources(lcContext* Context);
-	static void DestroyResources(lcContext* Context);
+	static void CreateResources(swContext* Context);
+	static void DestroyResources(swContext* Context);
 
 	void MakeCurrent();
 	bool PrepareOutlineFramebuffers();
@@ -239,8 +239,8 @@ public:
 	void SetMousePosition(int MouseX, int MouseY);
 	void SetMouseModifiers(Qt::KeyboardModifiers MouseModifiers);
 
-	lcModel* GetActiveModel() const;
-	std::vector<lcModel*> GetModelEditingPath() const;
+	swModel* GetActiveModel() const;
+	std::vector<swModel*> GetModelEditingPath() const;
 	void RestoreModelEditingContext();
 	void SetSubmodelActive(size_t Depth);
 	void SetTopSubmodelActive();
@@ -262,7 +262,7 @@ public:
 	void OnMouseMove();
 	void OnMouseLeave();
 	void OnMouseWheel(float Direction);
-	void BeginDrag(lcDragState DragState);
+	void BeginDrag(swDragState DragState);
 	void EndDrag(bool Accept);
 
 	void UpdateCursor();
@@ -274,24 +274,24 @@ public:
 	void CancelTrackingOrClearSelectionAction();
 	void StartFaceNormalPick();
 
-	void SetViewpoint(lcViewpoint Viewpoint);
-	void SetViewpoint(const lcVector3& Position);
-	void SetViewpoint(const lcVector3& Position, const lcVector3& Target, const lcVector3& Up);
+	void SetViewpoint(swViewpoint Viewpoint);
+	void SetViewpoint(const swVector3& Position);
+	void SetViewpoint(const swVector3& Position, const swVector3& Target, const swVector3& Up);
 	void ApplyStepView();
-	void ApplyStepView(lcStep Step);
-	lcVector3 GetStepViewAngles() const;
+	void ApplyStepView(swStep Step);
+	swVector3 GetStepViewAngles() const;
 	void SetCameraAngles(float Latitude, float Longitude);
 	void SetDefaultCamera();
-	void SetCamera(lcCamera* Camera, bool ForceCopy);
+	void SetCamera(swCamera* Camera, bool ForceCopy);
 	void SetCamera(const QString& CameraName);
 	void SetCameraIndex(size_t CameraIndex);
 
-	void SetCameraProjection(lcCameraProjection CameraProjection);
+	void SetCameraProjection(swCameraProjection CameraProjection);
 	void LookAt();
-	void MoveCamera(const lcVector3& Direction);
+	void MoveCamera(const swVector3& Direction);
 	void Zoom(float Amount);
-	void ZoomExtents(lcGeometryBoundsMode Mode, bool AdjustFarPlane);
-	void ZoomExtentsAtStep(lcStep Step, lcGeometryBoundsMode Mode, bool AdjustFarPlane);
+	void ZoomExtents(swGeometryBoundsMode Mode, bool AdjustFarPlane);
+	void ZoomExtentsAtStep(swStep Step, swGeometryBoundsMode Mode, bool AdjustFarPlane);
 
 	void RemoveCamera();
 	void ShowContextMenu() const;
@@ -300,19 +300,19 @@ public:
 
 	float GetUIScale() const;
 	float GetOverlayScale() const;
-	lcVector3 GetMoveDirection(const lcVector3& Direction) const;
+	swVector3 GetMoveDirection(const swVector3& Direction) const;
 	void UpdatePiecePreview();
-	std::pair<std::vector<lcInsertPieceInfo>, bool> GetMouseInsertPieceInfo(bool IgnoreSelected, bool AllowNewPieces, const lcPieceDataRef& PieceData, lcPiece* MovingPiece) const;
-	lcVector3 GetCameraLightInsertPosition() const;
-	void GetRayUnderPointer(lcVector3& Start, lcVector3& End) const;
-	lcObjectRayTest RayTest(bool PiecesOnly, bool IgnoreSelected) const;
-	lcObjectSection FindObjectUnderPointer(bool PiecesOnly, bool IgnoreSelected) const;
-	std::vector<lcObject*> FindObjectsInBox(float x1, float y1, float x2, float y2) const;
+	std::pair<std::vector<swInsertPieceInfo>, bool> GetMouseInsertPieceInfo(bool IgnoreSelected, bool AllowNewPieces, const swPieceDataRef& PieceData, swPiece* MovingPiece) const;
+	swVector3 GetCameraLightInsertPosition() const;
+	void GetRayUnderPointer(swVector3& Start, swVector3& End) const;
+	swObjectRayTest RayTest(bool PiecesOnly, bool IgnoreSelected) const;
+	swObjectSection FindObjectUnderPointer(bool PiecesOnly, bool IgnoreSelected) const;
+	std::vector<swObject*> FindObjectsInBox(float x1, float y1, float x2, float y2) const;
 
-	lcVector3 ProjectPoint(const lcVector3& Point) const;
-	lcVector3 UnprojectPoint(const lcVector3& Point) const;
-	void UnprojectPoints(lcVector3* Points, int NumPoints) const;
-	lcMatrix44 GetProjectionMatrix() const;
+	swVector3 ProjectPoint(const swVector3& Point) const;
+	swVector3 UnprojectPoint(const swVector3& Point) const;
+	void UnprojectPoints(swVector3* Points, int NumPoints) const;
+	swMatrix44 GetProjectionMatrix() const;
 
 	bool BeginRenderToImage(int Width, int Height);
 	void EndRenderToImage();
@@ -320,10 +320,10 @@ public:
 	void BindRenderFramebuffer();
 	void UnbindRenderFramebuffer();
 	QImage GetRenderFramebufferImage() const;
-	std::vector<QImage> GetStepImages(lcStep Start, lcStep End);
-	lcResult<void> SaveStepImages(const QString& BaseName, bool AddStepSuffix, lcStep Start, lcStep End, std::function<void(const QString&)> ProgressCallback);
+	std::vector<QImage> GetStepImages(swStep Start, swStep End);
+	swResult<void> SaveStepImages(const QString& BaseName, bool AddStepSuffix, swStep Start, swStep End, std::function<void(const QString&)> ProgressCallback);
 
-	lcContext* mContext = nullptr;
+	swContext* mContext = nullptr;
 
 signals:
 	void FocusReceived();
@@ -340,25 +340,25 @@ protected:
 	void DrawRotateViewOverlay();
 	void DrawGrid();
 
-	lcMatrix44 GetTileProjectionMatrix(int CurrentRow, int CurrentColumn, int CurrentTileWidth, int CurrentTileHeight) const;
+	swMatrix44 GetTileProjectionMatrix(int CurrentRow, int CurrentColumn, int CurrentTileWidth, int CurrentTileHeight) const;
 
-	lcCursor GetCursor() const;
-	void SetCursor(lcCursor Cursor);
-	lcTool GetCurrentTool() const;
+	swCursor GetCursor() const;
+	void SetCursor(swCursor Cursor);
+	swTool GetCurrentTool() const;
 	void UpdateTrackTool();
-	lcTrackTool GetOverrideTrackTool(Qt::MouseButton Button) const;
-	void StartTracking(lcTrackButton TrackButton);
-	void OnButtonDown(lcTrackButton TrackButton);
+	swTrackTool GetOverrideTrackTool(Qt::MouseButton Button) const;
+	void StartTracking(swTrackButton TrackButton);
+	void OnButtonDown(swTrackButton TrackButton);
 	void StartPan(int x, int y);
 	void UpdatePan(int x, int y);
-	lcVector3 GetTrackballPoint(int x, int y) const;
+	swVector3 GetTrackballPoint(int x, int y) const;
 
 	void ShowTrainTrackPopup();
 
-	lcViewWidget* mWidget = nullptr;
+	swViewWidget* mWidget = nullptr;
 	int mWidth = 1;
 	int mHeight = 1;
-	lcViewType mViewType;
+	swViewType mViewType;
 
 	int mMouseX = 0;
 	int mMouseY = 0;
@@ -367,29 +367,29 @@ protected:
 	float mCameraRotationMouseAngle = 0.0f;
 	float mCameraRotationLastMouseAngle = 0.0f;
 	float mCameraRotationAngle = 0.0f;
-	lcVector3 mTrackballCenter;
-	lcVector3 mTrackballVector;
+	swVector3 mTrackballCenter;
+	swVector3 mTrackballVector;
 	float mTrackballRadius = 1.0f;
-	lcMatrix33 mTrackballPendingRotation = lcMatrix33Identity();
+	swMatrix33 mTrackballPendingRotation = swMatrix33Identity();
 	bool mTrackballSnapping = false;
 	bool mTrackballHasPendingRotation = false;
 	Qt::KeyboardModifiers mMouseModifiers = Qt::NoModifier;
 
 	bool mTrackUpdated = false;
 	bool mToolClicked = false;
-	lcTrackTool mTrackTool = lcTrackTool::None;
-	lcTrackButton mTrackButton = lcTrackButton::None;
-	lcCursor mCursor = lcCursor::Default;
+	swTrackTool mTrackTool = swTrackTool::None;
+	swTrackButton mTrackButton = swTrackButton::None;
+	swCursor mCursor = swCursor::Default;
 	bool mPickingFaceNormal = false;
 
 	void PickFaceNormal();
 	void StopFaceNormalPick();
 
-	lcDragState mDragState;
+	swDragState mDragState;
 	bool mTrackToolFromOverlay;
 	quint32 mTrackToolSection = ~0U;
-	lcMatrix44 mMouseDownTransform;
-	lcPiece* mMouseDownPiece = nullptr;
+	swMatrix44 mMouseDownTransform;
+	swPiece* mMouseDownPiece = nullptr;
 	int mPanX = 0;
 	int mPanY = 0;
 
@@ -403,23 +403,23 @@ protected:
 	bool mDrawViewportBorder = true;
 	quint32 mBackgroundColor = 0;
 
-	std::unique_ptr<lcScene> mScene;
-	std::unique_ptr<lcViewManipulator> mViewManipulator;
-	std::unique_ptr<lcViewSphere> mViewSphere;
+	std::unique_ptr<swScene> mScene;
+	std::unique_ptr<swViewManipulator> mViewManipulator;
+	std::unique_ptr<swViewSphere> mViewSphere;
 
-	lcModel* mModel = nullptr;
-	lcPiece* mActiveSubmodelInstance = nullptr;
-	lcMatrix44 mActiveSubmodelTransform;
-	std::vector<lcPiece*> mSubmodelEditingPath;
+	swModel* mModel = nullptr;
+	swPiece* mActiveSubmodelInstance = nullptr;
+	swMatrix44 mActiveSubmodelTransform;
+	std::vector<swPiece*> mSubmodelEditingPath;
 
-	lcCamera* mCamera = nullptr;
+	swCamera* mCamera = nullptr;
 
-	lcVertexBuffer mGridBuffer;
+	swVertexBuffer mGridBuffer;
 	int mGridSettings[7];
 
-	static QPointer<lcFindReplaceWidget> mFindWidget;
-	static lcFindReplaceParams mFindReplaceParams;
+	static QPointer<swFindReplaceWidget> mFindWidget;
+	static swFindReplaceParams mFindReplaceParams;
 
-	static lcView* mLastFocusedView;
-	static std::vector<lcView*> mViews;
+	static swView* mLastFocusedView;
+	static std::vector<swView*> mViews;
 };

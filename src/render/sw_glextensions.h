@@ -1,6 +1,6 @@
 #pragma once
 
-void lcInitializeGLExtensions(const QOpenGLContext* Context);
+void swInitializeGLExtensions(const QOpenGLContext* Context);
 
 extern bool gSupportsVertexBufferObject;
 extern bool gSupportsFramebufferObject;

@@ -2,7 +2,7 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en_US" sourcelanguage="en_US">
 <context>
-    <name>lcBlenderPreferences</name>
+    <name>swBlenderPreferences</name>
     <message numerus="yes">
         <location filename="../common/lc_blenderpreferences.cpp" line="3910"/>
         <source>%1 of %n files extracted.</source>
@@ -21,7 +21,7 @@
     </message>
 </context>
 <context>
-    <name>lcMainWindow</name>
+    <name>swMainWindow</name>
     <message numerus="yes">
         <location filename="../common/lc_mainwindow.cpp" line="2376"/>
         <source>%n objects selected</source>
@@ -40,7 +40,7 @@
     </message>
 </context>
 <context>
-    <name>lcModel</name>
+    <name>swModel</name>
     <message numerus="yes">
         <location filename="../common/lc_model.cpp" line="5458"/>
         <source>Replace Pieces</source>
@@ -51,7 +51,7 @@
     </message>
 </context>
 <context>
-    <name>lcModelListDialog</name>
+    <name>swModelListDialog</name>
     <message numerus="yes">
         <location filename="../common/lc_modellistdialog.cpp" line="143"/>
         <source>Are you sure you want to delete %n submodels?</source>

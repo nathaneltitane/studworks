@@ -7,37 +7,37 @@
 #include "sw_texture.h"
 
 template<>
-void lcAssetRef<lcPieceData>::Retain(lcPieceData* Asset, lcPiecesLibrary* Library)
+void swAssetRef<swPieceData>::Retain(swPieceData* Asset, swPiecesLibrary* Library)
 {
 	Library->AddPieceDataReference(Asset);
 }
 
 template<>
-void lcAssetRef<lcPieceData>::Release(lcPieceData* Asset, lcPiecesLibrary* Library)
+void swAssetRef<swPieceData>::Release(swPieceData* Asset, swPiecesLibrary* Library)
 {
 	Library->ReleasePieceData(Asset);
 }
 
 template<>
-void lcAssetRef<lcTexture>::Retain(lcTexture* Asset, lcPiecesLibrary* Library)
+void swAssetRef<swTexture>::Retain(swTexture* Asset, swPiecesLibrary* Library)
 {
 	Library->AddTextureReference(Asset);
 }
 
 template<>
-void lcAssetRef<lcTexture>::Release(lcTexture* Asset, lcPiecesLibrary* Library)
+void swAssetRef<swTexture>::Release(swTexture* Asset, swPiecesLibrary* Library)
 {
 	Library->ReleaseTexture(Asset);
 }
 
 template<typename T>
-lcAssetRef<T>::lcAssetRef(T* Asset)
-	: lcAssetRef(Asset, Asset ? lcGetPiecesLibrary() : nullptr)
+swAssetRef<T>::swAssetRef(T* Asset)
+	: swAssetRef(Asset, Asset ? swGetPiecesLibrary() : nullptr)
 {
 }
 
 template<typename T>
-lcAssetRef<T>::lcAssetRef(T* Asset, lcPiecesLibrary* Library)
+swAssetRef<T>::swAssetRef(T* Asset, swPiecesLibrary* Library)
 	: mAsset(Asset), mLibrary(Library)
 {
 	if (mAsset)
@@ -48,19 +48,19 @@ lcAssetRef<T>::lcAssetRef(T* Asset, lcPiecesLibrary* Library)
 }
 
 template<typename T>
-lcAssetRef<T>::lcAssetRef(const lcAssetRef& OtherRef)
-	: lcAssetRef(OtherRef.mAsset, OtherRef.mLibrary)
+swAssetRef<T>::swAssetRef(const swAssetRef& OtherRef)
+	: swAssetRef(OtherRef.mAsset, OtherRef.mLibrary)
 {
 }
 
 template<typename T>
-lcAssetRef<T>::lcAssetRef(lcAssetRef&& OtherRef) noexcept
+swAssetRef<T>::swAssetRef(swAssetRef&& OtherRef) noexcept
 	: mAsset(std::exchange(OtherRef.mAsset, nullptr)), mLibrary(std::exchange(OtherRef.mLibrary, nullptr))
 {
 }
 
 template<typename T>
-lcAssetRef<T>::~lcAssetRef()
+swAssetRef<T>::~swAssetRef()
 {
 	if (mAsset)
 	{
@@ -70,11 +70,11 @@ lcAssetRef<T>::~lcAssetRef()
 }
 
 template<typename T>
-lcAssetRef<T>& lcAssetRef<T>::operator=(const lcAssetRef& OtherRef)
+swAssetRef<T>& swAssetRef<T>::operator=(const swAssetRef& OtherRef)
 {
 	if (this != &OtherRef)
 	{
-		lcAssetRef CopyRef(OtherRef);
+		swAssetRef CopyRef(OtherRef);
 		Swap(CopyRef);
 	}
 
@@ -82,11 +82,11 @@ lcAssetRef<T>& lcAssetRef<T>::operator=(const lcAssetRef& OtherRef)
 }
 
 template<typename T>
-lcAssetRef<T>& lcAssetRef<T>::operator=(lcAssetRef&& OtherRef) noexcept
+swAssetRef<T>& swAssetRef<T>::operator=(swAssetRef&& OtherRef) noexcept
 {
 	if (this != &OtherRef)
 	{
-		lcAssetRef MovedRef(std::move(OtherRef));
+		swAssetRef MovedRef(std::move(OtherRef));
 		Swap(MovedRef);
 	}
 
@@ -94,7 +94,7 @@ lcAssetRef<T>& lcAssetRef<T>::operator=(lcAssetRef&& OtherRef) noexcept
 }
 
 template<typename T>
-bool lcAssetRef<T>::HasOtherReferences() const
+bool swAssetRef<T>::HasOtherReferences() const
 {
 	Q_ASSERT(!mAsset || (mLibrary && QThread::currentThread() == mLibrary->thread()));
 
@@ -102,48 +102,48 @@ bool lcAssetRef<T>::HasOtherReferences() const
 }
 
 template<typename T>
-void lcAssetRef<T>::Reset()
+void swAssetRef<T>::Reset()
 {
-	lcAssetRef EmptyRef;
+	swAssetRef EmptyRef;
 	Swap(EmptyRef);
 }
 
 template<typename T>
-T* lcAssetRef<T>::Release()
+T* swAssetRef<T>::Release()
 {
 	mLibrary = nullptr;
 	return std::exchange(mAsset, nullptr);
 }
 
 template<typename T>
-void lcAssetRef<T>::Swap(lcAssetRef& OtherRef) noexcept
+void swAssetRef<T>::Swap(swAssetRef& OtherRef) noexcept
 {
 	std::swap(mAsset, OtherRef.mAsset);
 	std::swap(mLibrary, OtherRef.mLibrary);
 }
 
 template<typename T>
-lcAssetRef<T> lcAssetRef<T>::Adopt(T* Asset, lcPiecesLibrary* Library)
+swAssetRef<T> swAssetRef<T>::Adopt(T* Asset, swPiecesLibrary* Library)
 {
 	Q_ASSERT(!Asset || (Library && QThread::currentThread() == Library->thread()));
 
-	lcAssetRef AssetRef;
+	swAssetRef AssetRef;
 	AssetRef.mAsset = Asset;
 	AssetRef.mLibrary = Library;
 	return AssetRef;
 }
 
-template class lcAssetRef<lcPieceData>;
-template class lcAssetRef<lcTexture>;
+template class swAssetRef<swPieceData>;
+template class swAssetRef<swTexture>;
 
-lcPieceSourceSnapshot::lcPieceSourceSnapshot()
-	: ZipFileType(lcZipFileType::Count), StudStyle(lcStudStyle::Plain)
+swPieceSourceSnapshot::swPieceSourceSnapshot()
+	: ZipFileType(swZipFileType::Count), StudStyle(swStudStyle::Plain)
 {
 }
 
-lcPieceBuildResult::lcPieceBuildResult() = default;
-lcPieceBuildResult::~lcPieceBuildResult() = default;
-lcPieceBuildResult::lcPieceBuildResult(lcPieceBuildResult&&) noexcept = default;
-lcPieceBuildResult& lcPieceBuildResult::operator=(lcPieceBuildResult&&) noexcept = default;
+swPieceBuildResult::swPieceBuildResult() = default;
+swPieceBuildResult::~swPieceBuildResult() = default;
+swPieceBuildResult::swPieceBuildResult(swPieceBuildResult&&) noexcept = default;
+swPieceBuildResult& swPieceBuildResult::operator=(swPieceBuildResult&&) noexcept = default;
 
-lcTextureBuildResult::~lcTextureBuildResult() = default;
+swTextureBuildResult::~swTextureBuildResult() = default;

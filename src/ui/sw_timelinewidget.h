@@ -1,12 +1,12 @@
 #pragma once
 
-class lcTimelineWidget : public QTreeWidget
+class swTimelineWidget : public QTreeWidget
 {
 	Q_OBJECT
 
 public:
-	lcTimelineWidget(QWidget* Parent);
-	~lcTimelineWidget();
+	swTimelineWidget(QWidget* Parent);
+	~swTimelineWidget();
 
 	void Update(bool Clear, bool UpdateItems);
 	void UpdateSelection();
@@ -33,7 +33,7 @@ protected:
 	void UpdateCurrentStepItem();
 
 	QMap<int, QIcon> mIcons;
-	QMap<lcPiece*, QTreeWidgetItem*> mItems;
+	QMap<swPiece*, QTreeWidgetItem*> mItems;
 	QTreeWidgetItem* mCurrentStepItem;
 	bool mIgnoreUpdates;
 };

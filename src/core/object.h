@@ -3,96 +3,96 @@
 #include "sw_math.h"
 #include "sw_objectproperty.h"
 
-enum class lcObjectType
+enum class swObjectType
 {
 	Piece,
 	Camera,
 	Light
 };
 
-enum class lcObjectId : uint32_t;
+enum class swObjectId : uint32_t;
 
-struct lcObjectSection
+struct swObjectSection
 {
-	lcObject* Object = nullptr;
+	swObject* Object = nullptr;
 	quint32 Section = 0;
 };
 
-struct lcPieceRayTest
+struct swPieceRayTest
 {
-	const lcPieceData* PieceData = nullptr;
-	lcMatrix44 Transform;
-	lcVector3 Plane;
-	lcVector3 Normal = lcVector3(0.0f, 0.0f, 1.0f);
+	const swPieceData* PieceData = nullptr;
+	swMatrix44 Transform;
+	swVector3 Plane;
+	swVector3 Normal = swVector3(0.0f, 0.0f, 1.0f);
 };
 
-struct lcObjectRayTest
+struct swObjectRayTest
 {
-	lcCamera* ViewCamera;
+	swCamera* ViewCamera;
 	bool PiecesOnly;
 	bool IgnoreSelected;
-	lcVector3 Start;
-	lcVector3 End;
+	swVector3 Start;
+	swVector3 End;
 	float Distance = FLT_MAX;
-	lcObjectSection ObjectSection;
-	lcPieceRayTest PieceRayTest;
+	swObjectSection ObjectSection;
+	swPieceRayTest PieceRayTest;
 };
 
-struct lcObjectBoxTest
+struct swObjectBoxTest
 {
-	lcCamera* ViewCamera;
-	lcVector4 Planes[6];
-	std::vector<lcObject*> Objects;
+	swCamera* ViewCamera;
+	swVector4 Planes[6];
+	std::vector<swObject*> Objects;
 };
 
-#define LC_OBJECT_TRANSFORM_MOVE_X    0x001
-#define LC_OBJECT_TRANSFORM_MOVE_Y    0x002
-#define LC_OBJECT_TRANSFORM_MOVE_Z    0x004
-#define LC_OBJECT_TRANSFORM_MOVE_XYZ (LC_OBJECT_TRANSFORM_MOVE_X | LC_OBJECT_TRANSFORM_MOVE_Y | LC_OBJECT_TRANSFORM_MOVE_Z)
-#define LC_OBJECT_TRANSFORM_ROTATE_X  0x010
-#define LC_OBJECT_TRANSFORM_ROTATE_Y  0x020
-#define LC_OBJECT_TRANSFORM_ROTATE_Z  0x040
-#define LC_OBJECT_TRANSFORM_ROTATE_XYZ (LC_OBJECT_TRANSFORM_ROTATE_X | LC_OBJECT_TRANSFORM_ROTATE_Y | LC_OBJECT_TRANSFORM_ROTATE_Z)
-#define LC_OBJECT_TRANSFORM_SCALE_X   0x100
-#define LC_OBJECT_TRANSFORM_SCALE_Y   0x200
-#define LC_OBJECT_TRANSFORM_SCALE_Z   0x400
-#define LC_OBJECT_TRANSFORM_SCALE_XYZ (LC_OBJECT_TRANSFORM_SCALE_X | LC_OBJECT_TRANSFORM_SCALE_Y | LC_OBJECT_TRANSFORM_SCALE_Z)
+#define SW_OBJECT_TRANSFORM_MOVE_X    0x001
+#define SW_OBJECT_TRANSFORM_MOVE_Y    0x002
+#define SW_OBJECT_TRANSFORM_MOVE_Z    0x004
+#define SW_OBJECT_TRANSFORM_MOVE_XYZ (SW_OBJECT_TRANSFORM_MOVE_X | SW_OBJECT_TRANSFORM_MOVE_Y | SW_OBJECT_TRANSFORM_MOVE_Z)
+#define SW_OBJECT_TRANSFORM_ROTATE_X  0x010
+#define SW_OBJECT_TRANSFORM_ROTATE_Y  0x020
+#define SW_OBJECT_TRANSFORM_ROTATE_Z  0x040
+#define SW_OBJECT_TRANSFORM_ROTATE_XYZ (SW_OBJECT_TRANSFORM_ROTATE_X | SW_OBJECT_TRANSFORM_ROTATE_Y | SW_OBJECT_TRANSFORM_ROTATE_Z)
+#define SW_OBJECT_TRANSFORM_SCALE_X   0x100
+#define SW_OBJECT_TRANSFORM_SCALE_Y   0x200
+#define SW_OBJECT_TRANSFORM_SCALE_Z   0x400
+#define SW_OBJECT_TRANSFORM_SCALE_XYZ (SW_OBJECT_TRANSFORM_SCALE_X | SW_OBJECT_TRANSFORM_SCALE_Y | SW_OBJECT_TRANSFORM_SCALE_Z)
 
-#define LC_OBJECT_SECTION_INVALID 0xffffffff
+#define SW_OBJECT_SECTION_INVALID 0xffffffff
 
-class lcObject
+class swObject
 {
 public:
-	lcObject(lcObjectType ObjectType);
-	virtual ~lcObject();
+	swObject(swObjectType ObjectType);
+	virtual ~swObject();
 
-	lcObject(const lcObject&) = delete;
-	lcObject(lcObject&&) = delete;
-	lcObject& operator=(const lcObject&) = delete;
-	lcObject& operator=(lcObject&&) = delete;
+	swObject(const swObject&) = delete;
+	swObject(swObject&&) = delete;
+	swObject& operator=(const swObject&) = delete;
+	swObject& operator=(swObject&&) = delete;
 
 public:
 	bool IsPiece() const
 	{
-		return mObjectType == lcObjectType::Piece;
+		return mObjectType == swObjectType::Piece;
 	}
 
 	bool IsCamera() const
 	{
-		return mObjectType == lcObjectType::Camera;
+		return mObjectType == swObjectType::Camera;
 	}
 
 	bool IsLight() const
 	{
-		return mObjectType == lcObjectType::Light;
+		return mObjectType == swObjectType::Light;
 	}
 
-	lcObjectType GetType() const
+	swObjectType GetType() const
 	{
 		return mObjectType;
 	}
 
-	lcObjectId GetId() const
+	swObjectId GetId() const
 	{
 		return mId;
 	}
@@ -107,12 +107,12 @@ public:
 		mSelected = Selected;
 
 		if (!Selected)
-			mFocusedSection = LC_OBJECT_SECTION_INVALID;
+			mFocusedSection = SW_OBJECT_SECTION_INVALID;
 	}
 
 	bool IsFocused() const
 	{
-		return mFocusedSection != LC_OBJECT_SECTION_INVALID;
+		return mFocusedSection != SW_OBJECT_SECTION_INVALID;
 	}
 
 	bool IsFocused(quint32 Section) const
@@ -128,7 +128,7 @@ public:
 			mSelected = true;
 		}
 		else
-			mFocusedSection = LC_OBJECT_SECTION_INVALID;
+			mFocusedSection = SW_OBJECT_SECTION_INVALID;
 	}
 
 	quint32 GetFocusSection() const
@@ -136,29 +136,29 @@ public:
 		return mFocusedSection;
 	}
 
-	virtual void UpdatePosition(lcStep Step) = 0;
+	virtual void UpdatePosition(swStep Step) = 0;
 	virtual quint32 GetAllowedTransforms() const = 0;
-	virtual lcVector3 GetSectionPosition(quint32 Section) const = 0;
-	virtual void RayTest(lcObjectRayTest& ObjectRayTest) const = 0;
-	virtual void BoxTest(lcObjectBoxTest& ObjectBoxTest) const = 0;
-	virtual void DrawInterface(lcContext* Context, const lcScene& Scene) const = 0;
-	virtual QVariant GetPropertyValue(lcObjectPropertyId PropertyId) const = 0;
-	virtual bool SetPropertyValue(lcObjectPropertyId PropertyId, lcStep Step, bool AddKey, QVariant Value) = 0;
-	virtual bool HasKeyFrame(lcObjectPropertyId PropertyId, lcStep Time) const = 0;
-	virtual lcStep GetLastStep() const = 0;
-	virtual bool SetKeyFrame(lcObjectPropertyId PropertyId, lcStep Time, bool KeyFrame) = 0;
+	virtual swVector3 GetSectionPosition(quint32 Section) const = 0;
+	virtual void RayTest(swObjectRayTest& ObjectRayTest) const = 0;
+	virtual void BoxTest(swObjectBoxTest& ObjectBoxTest) const = 0;
+	virtual void DrawInterface(swContext* Context, const swScene& Scene) const = 0;
+	virtual QVariant GetPropertyValue(swObjectPropertyId PropertyId) const = 0;
+	virtual bool SetPropertyValue(swObjectPropertyId PropertyId, swStep Step, bool AddKey, QVariant Value) = 0;
+	virtual bool HasKeyFrame(swObjectPropertyId PropertyId, swStep Time) const = 0;
+	virtual swStep GetLastStep() const = 0;
+	virtual bool SetKeyFrame(swObjectPropertyId PropertyId, swStep Time, bool KeyFrame) = 0;
 	virtual void RemoveKeyFrames() = 0;
 	virtual QString GetName() const = 0;
-	static QString GetCheckpointString(lcObjectPropertyId PropertyId);
+	static QString GetCheckpointString(swObjectPropertyId PropertyId);
 
 private:
-	lcObjectType mObjectType;
+	swObjectType mObjectType;
 
 protected:
 	bool mHidden = false;
 	bool mSelected = false;
-	quint32 mFocusedSection = LC_OBJECT_SECTION_INVALID;
-	lcObjectId mId = static_cast<lcObjectId>(0);
+	quint32 mFocusedSection = SW_OBJECT_SECTION_INVALID;
+	swObjectId mId = static_cast<swObjectId>(0);
 
-	static lcObjectId mNextId;
+	static swObjectId mNextId;
 };

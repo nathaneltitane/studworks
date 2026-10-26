@@ -3,28 +3,28 @@
 #include <QObject>
 
 class QLocale;
-class lcPartSelectionWidget;
-class lcPartSelectionListView;
-struct lcTrainTrackConnectionType;
+class swPartSelectionWidget;
+class swPartSelectionListView;
+struct swTrainTrackConnectionType;
 
-constexpr int LC_MAX_IMAGE_DIMENSION = 32768;
-constexpr int LC_MAX_GRID_LINE_SPACING = 10000;
-constexpr int LC_MAX_AREA_LIGHT_GRID = 64;
+constexpr int SW_MAX_IMAGE_DIMENSION = 32768;
+constexpr int SW_MAX_GRID_LINE_SPACING = 10000;
+constexpr int SW_MAX_AREA_LIGHT_GRID = 64;
 
-QString lcFormatValue(float Value, int Precision);
-QString lcFormatFloatLocalized(float Value, QLocale Locale);
-QString lcFormatDoubleLocalized(double Value, QLocale Locale, char Format, int Precision);
-QString lcFormatIntegerLocalized(qlonglong Value, QLocale Locale);
-std::optional<float> lcParseFloatLocalized(const QString& Value, QLocale Locale);
+QString swFormatValue(float Value, int Precision);
+QString swFormatFloatLocalized(float Value, QLocale Locale);
+QString swFormatDoubleLocalized(double Value, QLocale Locale, char Format, int Precision);
+QString swFormatIntegerLocalized(qlonglong Value, QLocale Locale);
+std::optional<float> swParseFloatLocalized(const QString& Value, QLocale Locale);
 
-void lcSetupDialogHelp(QDialog* Dialog, QDialogButtonBox* ButtonBox);
-void lcSetupWidgetHelp(QWidget* Root, QDialogButtonBox* ButtonBox);
+void swSetupDialogHelp(QDialog* Dialog, QDialogButtonBox* ButtonBox);
+void swSetupWidgetHelp(QWidget* Root, QDialogButtonBox* ButtonBox);
 
 // Gives dialogs and secondary windows a usable size the first time they are shown.
-class lcWindowGeometryFilter : public QObject
+class swWindowGeometryFilter : public QObject
 {
 public:
-	explicit lcWindowGeometryFilter(QObject* Parent)
+	explicit swWindowGeometryFilter(QObject* Parent)
 		: QObject(Parent)
 	{
 	}
@@ -34,19 +34,19 @@ protected:
 };
 
 // Keeps a panel exactly as tall as its contents, updated whenever its layout changes.
-void lcFitHeightToContents(QWidget* Widget);
+void swFitHeightToContents(QWidget* Widget);
 
 // Shows a modal progress dialog for a blocking task once it lasts longer than a moment.
-class lcBlockingProgress
+class swBlockingProgress
 {
-	Q_DECLARE_TR_FUNCTIONS(lcBlockingProgress);
+	Q_DECLARE_TR_FUNCTIONS(swBlockingProgress);
 
 public:
-	lcBlockingProgress(const QString& Title, const QString& Label, bool Cancelable);
-	~lcBlockingProgress();
+	swBlockingProgress(const QString& Title, const QString& Label, bool Cancelable);
+	~swBlockingProgress();
 
-	lcBlockingProgress(const lcBlockingProgress&) = delete;
-	lcBlockingProgress& operator=(const lcBlockingProgress&) = delete;
+	swBlockingProgress(const swBlockingProgress&) = delete;
+	swBlockingProgress& operator=(const swBlockingProgress&) = delete;
 
 	void SetProgress(int Value, int Maximum);
 	bool IsCanceled() const;
@@ -60,39 +60,39 @@ protected:
 	QElapsedTimer mUpdateTimer;
 	QProgressDialog* mDialog = nullptr;
 
-	static lcBlockingProgress* mActive;
+	static swBlockingProgress* mActive;
 };
 
 // Panel rows are plain widgets with a standard row layout, so every panel has the spacing of the minifigure panel.
-QSize lcGetPanelButtonSize();
-int lcGetLayoutSpacing(const QWidget* Widget, Qt::Orientation Orientation);
-void lcSetupPanelButton(QToolButton* Button);
-void lcSetupPanelEdit(QWidget* Edit);
-void lcSetupPanelSpinBox(QAbstractSpinBox* SpinBox);
-QWidget* lcCreatePanelRow(QWidget* Parent);
-void lcAddPanelRowWidget(QWidget* Row, QWidget* Widget);
-void lcAddPanelRowStretch(QWidget* Row);
-QToolButton* lcAddPanelActionButton(QWidget* Row, QAction* Action);
-QToolButton* lcAddPanelOptionsButton(QWidget* Row, QMenu* Menu, const QString& ToolTip, const QString& AccessibleName);
+QSize swGetPanelButtonSize();
+int swGetLayoutSpacing(const QWidget* Widget, Qt::Orientation Orientation);
+void swSetupPanelButton(QToolButton* Button);
+void swSetupPanelEdit(QWidget* Edit);
+void swSetupPanelSpinBox(QAbstractSpinBox* SpinBox);
+QWidget* swCreatePanelRow(QWidget* Parent);
+void swAddPanelRowWidget(QWidget* Row, QWidget* Widget);
+void swAddPanelRowStretch(QWidget* Row);
+QToolButton* swAddPanelActionButton(QWidget* Row, QAction* Action);
+QToolButton* swAddPanelOptionsButton(QWidget* Row, QMenu* Menu, const QString& ToolTip, const QString& AccessibleName);
 
 // ScreenPosition selects the monitor independently of the desired popup position.
-QPoint lcGetPopupPosition(const QPoint& Position, const QSize& Size, const QPoint& ScreenPosition);
+QPoint swGetPopupPosition(const QPoint& Position, const QSize& Size, const QPoint& ScreenPosition);
 
 #ifdef Q_OS_WIN
 
 #include <windows.h>
 
-int lcTerminateChildProcess(QWidget* Parent, const qint64 Pid, const qint64 Ppid);
-bool lcRunElevatedProcess(const LPCWSTR ExeName, const LPCWSTR Arguments, const LPCWSTR WorkingFolder);
+int swTerminateChildProcess(QWidget* Parent, const qint64 Pid, const qint64 Ppid);
+bool swRunElevatedProcess(const LPCWSTR ExeName, const LPCWSTR Arguments, const LPCWSTR WorkingFolder);
 
 #endif
 
-class lcTreeWidgetColumnStretcher : public QObject
+class swTreeWidgetColumnStretcher : public QObject
 {
 	Q_OBJECT
 
 public:
-	lcTreeWidgetColumnStretcher(QTreeWidget* TreeWidget, int ColumnToStretch);
+	swTreeWidgetColumnStretcher(QTreeWidget* TreeWidget, int ColumnToStretch);
 
 	bool eventFilter(QObject* Object, QEvent* Event) override;
 
@@ -105,7 +105,7 @@ private:
 	int mStretchWidth;
 };
 
-class lcSmallLineEdit : public QLineEdit
+class swSmallLineEdit : public QLineEdit
 {
 	Q_OBJECT
 
@@ -124,7 +124,7 @@ public:
 	}
 };
 
-class lcTransformLineEdit : public lcSmallLineEdit
+class swTransformLineEdit : public swSmallLineEdit
 {
 	Q_OBJECT
 
@@ -161,12 +161,12 @@ protected:
 	}
 };
 
-class lcStepValidator : public QIntValidator
+class swStepValidator : public QIntValidator
 {
 	Q_OBJECT
 
 public:
-	lcStepValidator(lcStep Min, lcStep Max, bool AllowEmpty, QObject* Parent)
+	swStepValidator(swStep Min, swStep Max, bool AllowEmpty, QObject* Parent)
 		: QIntValidator(1, INT_MAX, Parent), mMin(Min), mMax(Max), mAllowEmpty(AllowEmpty)
 	{
 	}
@@ -177,7 +177,7 @@ public:
 			return Acceptable;
 
 		bool Ok;
-		lcStep Step = locale().toUInt(Input, &Ok);
+		swStep Step = locale().toUInt(Input, &Ok);
 
 		if (Ok)
 			return (Step >= mMin && Step <= mMax) ? Acceptable : Invalid;
@@ -186,17 +186,17 @@ public:
 	}
 
 protected:
-	lcStep mMin;
-	lcStep mMax;
+	swStep mMin;
+	swStep mMax;
 	bool mAllowEmpty;
 };
 
-class lcElidableToolButton : public QToolButton
+class swElidableToolButton : public QToolButton
 {
 	Q_OBJECT
 
 public:
-	lcElidableToolButton(QWidget* Parent)
+	swElidableToolButton(QWidget* Parent)
 		: QToolButton(Parent)
 	{
 	}
@@ -229,29 +229,29 @@ protected:
 	}
 };
 
-class lcPieceIdStringModel : public QAbstractListModel
+class swPieceIdStringModel : public QAbstractListModel
 {
 	Q_OBJECT
 
 public:
-	lcPieceIdStringModel(lcModel* Model, QObject* Parent);
+	swPieceIdStringModel(swModel* Model, QObject* Parent);
 
-	QModelIndex Index(lcPieceData* PieceData) const;
+	QModelIndex Index(swPieceData* PieceData) const;
 	std::vector<bool> GetFilteredRows(const QString& FilterText) const;
 
 	int rowCount(const QModelIndex& Parent = QModelIndex()) const override;
 	QVariant data(const QModelIndex& Index, int Role = Qt::DisplayRole) const override;
 
 protected:
-	std::vector<lcPieceData*> mSortedPieces;
+	std::vector<swPieceData*> mSortedPieces;
 };
 
-class lcColorDialogPopup : public QWidget
+class swColorDialogPopup : public QWidget
 {
 	Q_OBJECT
 
 public:
-	lcColorDialogPopup(const QColor& InitialColor, QWidget* Parent);
+	swColorDialogPopup(const QColor& InitialColor, QWidget* Parent);
 
 signals:
 	void ColorSelected(QColor Color);

@@ -4,7 +4,7 @@
 #undef DeleteFile
 #endif
 
-class lcFile;
+class swFile;
 
 // Date/time info.
 struct tm_unz
@@ -18,7 +18,7 @@ struct tm_unz
 };
 
 // Information about a file in the zipfile.
-struct lcZipFileInfo
+struct swZipFileInfo
 {
 	quint16 version;              // version made by                 2 bytes
 	quint16 version_needed;       // version needed to extract       2 bytes
@@ -40,32 +40,32 @@ struct lcZipFileInfo
 	char file_name[256];
 	tm_unz tmu_date;
 
-	lcMemFile* write_buffer;
+	swMemFile* write_buffer;
 	bool deleted;
 };
 
-class lcZipFile
+class swZipFile
 {
 public:
-	lcZipFile();
-	~lcZipFile();
+	swZipFile();
+	~swZipFile();
 
-	lcZipFile(const lcZipFile&) = delete;
-	lcZipFile(lcZipFile&&) = delete;
-	lcZipFile& operator=(const lcZipFile&) = delete;
-	lcZipFile& operator=(lcZipFile&&) = delete;
+	swZipFile(const swZipFile&) = delete;
+	swZipFile(swZipFile&&) = delete;
+	swZipFile& operator=(const swZipFile&) = delete;
+	swZipFile& operator=(swZipFile&&) = delete;
 
 	bool OpenRead(const QString& FileName);
-	bool OpenRead(std::unique_ptr<lcFile> File);
+	bool OpenRead(std::unique_ptr<swFile> File);
 	bool OpenWrite(const QString& FileName);
 
 	// Returns the first case-insensitive filename match in archive order.
 	std::optional<quint32> FindFileIndex(const char* FileName) const;
 
-	bool ExtractFile(quint32 FileIndex, lcMemFile& File, quint32 MaxLength = 0xffffffff);
-	bool ExtractFile(const char* FileName, lcMemFile& File, quint32 MaxLength = 0xffffffff);
+	bool ExtractFile(quint32 FileIndex, swMemFile& File, quint32 MaxLength = 0xffffffff);
+	bool ExtractFile(const char* FileName, swMemFile& File, quint32 MaxLength = 0xffffffff);
 
-	std::vector<lcZipFileInfo> mFiles;
+	std::vector<swZipFileInfo> mFiles;
 
 protected:
 	bool Open();
@@ -75,7 +75,7 @@ protected:
 	bool CheckFileCoherencyHeader(int FileIndex, quint32* SizeVar, quint64* OffsetLocalExtraField, quint32* SizeLocalExtraField);
 
 	QMutex mMutex;
-	std::unique_ptr<lcFile> mFile;
+	std::unique_ptr<swFile> mFile;
 
 	bool mModified;
 	bool mZip64;

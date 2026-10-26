@@ -1,6 +1,6 @@
 #pragma once
 
-enum class lcObjectPropertyId
+enum class swObjectPropertyId
 {
 	PieceId,
 	PieceColor,
@@ -47,7 +47,7 @@ enum class lcObjectPropertyId
 	Count
 };
 
-enum class lcFloatPropertySnap
+enum class swFloatPropertySnap
 {
 	Auto,
 	PiecePositionXY,
@@ -57,24 +57,24 @@ enum class lcFloatPropertySnap
 };
 
 template<typename T>
-struct lcObjectPropertyKey
+struct swObjectPropertyKey
 {
-	lcStep Step;
+	swStep Step;
 	T Value;
 
-	bool operator==(const lcObjectPropertyKey& Other) const
+	bool operator==(const swObjectPropertyKey& Other) const
 	{
 		return Step == Other.Step && Value == Other.Value;
 	}
 };
 
 template<typename T>
-class lcObjectProperty
+class swObjectProperty
 {
 public:
-	lcObjectProperty() = default;
+	swObjectProperty() = default;
 
-	explicit lcObjectProperty(const T& DefaultValue)
+	explicit swObjectProperty(const T& DefaultValue)
 		: mValue(DefaultValue)
 	{
 	}
@@ -84,7 +84,7 @@ public:
 		return mValue;
 	}
 
-	bool operator==(const lcObjectProperty& Other) const
+	bool operator==(const swObjectProperty& Other) const
 	{
 		return mValue == Other.mValue && mKeys == Other.mKeys;
 	}
@@ -99,22 +99,22 @@ public:
 		mKeys.clear();
 	}
 
-	lcStep GetLastKeyFrame() const
+	swStep GetLastKeyFrame() const
 	{
 		return mKeys.empty() ? 0 : mKeys.back().Step;
 	}
 
-	void Update(lcStep Step);
-	bool ChangeKey(const T& Value, lcStep Step, bool AddKey);
-	void InsertTime(lcStep Start, lcStep Time);
-	void RemoveTime(lcStep Start, lcStep Time);
-	bool HasKeyFrame(lcStep Time) const;
-	bool SetKeyFrame(lcStep Time, bool KeyFrame);
+	void Update(swStep Step);
+	bool ChangeKey(const T& Value, swStep Step, bool AddKey);
+	void InsertTime(swStep Start, swStep Time);
+	void RemoveTime(swStep Start, swStep Time);
+	bool HasKeyFrame(swStep Time) const;
+	bool SetKeyFrame(swStep Time, bool KeyFrame);
 
 	void Save(QTextStream& Stream, const char* ObjectName, const char* VariableName, bool SaveEmpty) const;
 	bool Load(QTextStream& Stream, const QString& Token, const char* VariableName);
 
 protected:
 	T mValue;
-	std::vector<lcObjectPropertyKey<T>> mKeys;
+	std::vector<swObjectPropertyKey<T>> mKeys;
 };

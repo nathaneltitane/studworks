@@ -2,26 +2,26 @@
 
 namespace Ui
 {
-	class lcModelListDialog;
+	class swModelListDialog;
 }
 
-struct lcModelListDialogEntry
+struct swModelListDialogEntry
 {
 	QString Name;
-	lcModel* ExistingModel;
-	lcModel* DuplicateSource;
+	swModel* ExistingModel;
+	swModel* DuplicateSource;
 };
 
-class lcModelListDialog : public QDialog
+class swModelListDialog : public QDialog
 {
 	Q_OBJECT
 
 public:
-	lcModelListDialog(QWidget* Parent, const std::vector<std::unique_ptr<lcModel>>& Models);
-	~lcModelListDialog();
+	swModelListDialog(QWidget* Parent, const std::vector<std::unique_ptr<swModel>>& Models);
+	~swModelListDialog();
 
 	int GetActiveModelIndex() const;
-	std::vector<lcModelListDialogEntry> GetResults() const;
+	std::vector<swModelListDialogEntry> GetResults() const;
 
 public slots:
 	void accept() override;
@@ -38,6 +38,6 @@ private slots:
 private:
 	QListWidgetItem* mActiveModelItem;
 	void UpdateButtons();
-	Ui::lcModelListDialog* ui;
+	Ui::swModelListDialog* ui;
 };
 

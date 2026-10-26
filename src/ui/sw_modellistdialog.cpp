@@ -7,38 +7,38 @@
 #include "sw_profile.h"
 #include "sw_model.h"
 
-enum class lcModelListRole
+enum class swModelListRole
 {
 	ExistingModel = Qt::UserRole,
 	DuplicateModel
 };
 
-lcModelListDialog::lcModelListDialog(QWidget* Parent, const std::vector<std::unique_ptr<lcModel>>& Models)
-	: QDialog(Parent), ui(new Ui::lcModelListDialog)
+swModelListDialog::swModelListDialog(QWidget* Parent, const std::vector<std::unique_ptr<swModel>>& Models)
+	: QDialog(Parent), ui(new Ui::swModelListDialog)
 {
 	mActiveModelItem = nullptr;
 
 	ui->setupUi(this);
-	lcSetupDialogHelp(this, ui->buttonBox);
+	swSetupDialogHelp(this, ui->buttonBox);
 
-	connect(ui->NewModel, &QPushButton::clicked, this, &lcModelListDialog::NewModelClicked);
-	connect(ui->DeleteModel, &QPushButton::clicked, this, &lcModelListDialog::DeleteModelClicked);
-	connect(ui->RenameModel, &QPushButton::clicked, this, &lcModelListDialog::RenameModelClicked);
-	connect(ui->ExportModel, &QPushButton::clicked, this, &lcModelListDialog::ExportModelClicked);
-	connect(ui->DuplicateModel, &QPushButton::clicked, this, &lcModelListDialog::DuplicateModelClicked);
-	connect(ui->ModelList, &QListWidget::itemDoubleClicked, this, &lcModelListDialog::ModelListItemDoubleClicked);
-	connect(ui->ModelList, &QListWidget::itemSelectionChanged, this, &lcModelListDialog::ModelListItemSelectionChanged);
+	connect(ui->NewModel, &QPushButton::clicked, this, &swModelListDialog::NewModelClicked);
+	connect(ui->DeleteModel, &QPushButton::clicked, this, &swModelListDialog::DeleteModelClicked);
+	connect(ui->RenameModel, &QPushButton::clicked, this, &swModelListDialog::RenameModelClicked);
+	connect(ui->ExportModel, &QPushButton::clicked, this, &swModelListDialog::ExportModelClicked);
+	connect(ui->DuplicateModel, &QPushButton::clicked, this, &swModelListDialog::DuplicateModelClicked);
+	connect(ui->ModelList, &QListWidget::itemDoubleClicked, this, &swModelListDialog::ModelListItemDoubleClicked);
+	connect(ui->ModelList, &QListWidget::itemSelectionChanged, this, &swModelListDialog::ModelListItemSelectionChanged);
 
 	ui->ModelList->setDefaultDropAction(Qt::DropAction::MoveAction);
 	ui->ModelList->setDragDropMode(QAbstractItemView::DragDropMode::InternalMove);
 
-	lcModel* ActiveModel = lcGetActiveProject()->GetActiveModel();
+	swModel* ActiveModel = swGetActiveProject()->GetActiveModel();
 	int ActiveModelIndex = -1;
 
-	for (const std::unique_ptr<lcModel>& Model : Models)
+	for (const std::unique_ptr<swModel>& Model : Models)
 	{
 		QListWidgetItem* Item = new QListWidgetItem(Model->GetProperties().mFileName);
-		Item->setData(static_cast<int>(lcModelListRole::ExistingModel), QVariant::fromValue<uintptr_t>((uintptr_t)Model.get()));
+		Item->setData(static_cast<int>(swModelListRole::ExistingModel), QVariant::fromValue<uintptr_t>((uintptr_t)Model.get()));
 		ui->ModelList->addItem(Item);
 
 		if (Model.get() == ActiveModel)
@@ -54,30 +54,30 @@ lcModelListDialog::lcModelListDialog(QWidget* Parent, const std::vector<std::uni
 	UpdateButtons();
 }
 
-lcModelListDialog::~lcModelListDialog()
+swModelListDialog::~swModelListDialog()
 {
 	delete ui;
 }
 
-int lcModelListDialog::GetActiveModelIndex() const
+int swModelListDialog::GetActiveModelIndex() const
 {
 	return ui->ModelList->row(mActiveModelItem);
 }
 
-std::vector<lcModelListDialogEntry> lcModelListDialog::GetResults() const
+std::vector<swModelListDialogEntry> swModelListDialog::GetResults() const
 {
-	std::vector<lcModelListDialogEntry> Models;
+	std::vector<swModelListDialogEntry> Models;
 	Models.reserve(ui->ModelList->count());
 
 	for (int ItemIdx = 0; ItemIdx < ui->ModelList->count(); ItemIdx++)
 	{
 		QListWidgetItem* Item = ui->ModelList->item(ItemIdx);
 
-		lcModelListDialogEntry Entry;
+		swModelListDialogEntry Entry;
 
 		Entry.Name = Item->text();
-		Entry.ExistingModel = reinterpret_cast<lcModel*>(Item->data(static_cast<int>(lcModelListRole::ExistingModel)).value<uintptr_t>());
-		Entry.DuplicateSource = reinterpret_cast<lcModel*>(Item->data(static_cast<int>(lcModelListRole::DuplicateModel)).value<uintptr_t>());
+		Entry.ExistingModel = reinterpret_cast<swModel*>(Item->data(static_cast<int>(swModelListRole::ExistingModel)).value<uintptr_t>());
+		Entry.DuplicateSource = reinterpret_cast<swModel*>(Item->data(static_cast<int>(swModelListRole::DuplicateModel)).value<uintptr_t>());
 
 		Models.emplace_back(Entry);
 	}
@@ -85,7 +85,7 @@ std::vector<lcModelListDialogEntry> lcModelListDialog::GetResults() const
 	return Models;
 }
 
-void lcModelListDialog::UpdateButtons()
+void swModelListDialog::UpdateButtons()
 {
 	int ModelCount = ui->ModelList->count();
 
@@ -93,7 +93,7 @@ void lcModelListDialog::UpdateButtons()
 	ui->SetActiveModel->setEnabled(ui->ModelList->currentItem() != nullptr);
 }
 
-void lcModelListDialog::accept()
+void swModelListDialog::accept()
 {
 	if (ui->SetActiveModel->isChecked())
 		mActiveModelItem = ui->ModelList->currentItem();
@@ -104,14 +104,14 @@ void lcModelListDialog::accept()
 	QDialog::accept();
 }
 
-void lcModelListDialog::NewModelClicked()
+void swModelListDialog::NewModelClicked()
 {
 	QStringList ModelNames;
 
 	for (int ItemIdx = 0; ItemIdx < ui->ModelList->count(); ItemIdx++)
 		ModelNames.append(ui->ModelList->item(ItemIdx)->text());
 
-	QString Name = lcGetActiveProject()->GetNewModelName(this, tr("New Submodel"), QString(), ModelNames);
+	QString Name = swGetActiveProject()->GetNewModelName(this, tr("New Submodel"), QString(), ModelNames);
 
 	if (Name.isEmpty())
 		return;
@@ -121,7 +121,7 @@ void lcModelListDialog::NewModelClicked()
 	UpdateButtons();
 }
 
-void lcModelListDialog::DeleteModelClicked()
+void swModelListDialog::DeleteModelClicked()
 {
 	if (ui->ModelList->count() == 1)
 	{
@@ -157,7 +157,7 @@ void lcModelListDialog::DeleteModelClicked()
 	UpdateButtons();
 }
 
-void lcModelListDialog::RenameModelClicked()
+void swModelListDialog::RenameModelClicked()
 {
 	const QList<QListWidgetItem*> SelectedItems = ui->ModelList->selectedItems();
 
@@ -174,14 +174,14 @@ void lcModelListDialog::RenameModelClicked()
 		for (int ItemIdx = 0; ItemIdx < ui->ModelList->count(); ItemIdx++)
 			ModelNames.append(ui->ModelList->item(ItemIdx)->text());
 
-		QString Name = lcGetActiveProject()->GetNewModelName(this, tr("Rename Submodel"), CurrentItem->text(), ModelNames);
+		QString Name = swGetActiveProject()->GetNewModelName(this, tr("Rename Submodel"), CurrentItem->text(), ModelNames);
 
 		if (!Name.isEmpty())
 			CurrentItem->setText(Name);
 	}
 }
 
-void lcModelListDialog::ExportModelClicked()
+void swModelListDialog::ExportModelClicked()
 {
 	const QList<QListWidgetItem*> SelectedItems = ui->ModelList->selectedItems();
 
@@ -194,11 +194,11 @@ void lcModelListDialog::ExportModelClicked()
 	if (SelectedItems.size() == 1)
 	{
 		QListWidgetItem* CurrentItem = SelectedItems[0];
-		lcModel* Model = (lcModel*)CurrentItem->data(static_cast<int>(lcModelListRole::ExistingModel)).value<uintptr_t>();
+		swModel* Model = (swModel*)CurrentItem->data(static_cast<int>(swModelListRole::ExistingModel)).value<uintptr_t>();
 
 		if (!Model)
 		{
-			Model = (lcModel*)CurrentItem->data(static_cast<int>(lcModelListRole::DuplicateModel)).value<uintptr_t>();
+			Model = (swModel*)CurrentItem->data(static_cast<int>(swModelListRole::DuplicateModel)).value<uintptr_t>();
 
 			if (!Model)
 			{
@@ -207,35 +207,35 @@ void lcModelListDialog::ExportModelClicked()
 			}
 		}
 
-		QString SaveFileName = QFileInfo(QDir(lcGetProfileString(LC_PROFILE_PROJECTS_PATH)), CurrentItem->text()).absoluteFilePath();
+		QString SaveFileName = QFileInfo(QDir(swGetProfileString(SW_PROFILE_PROJECTS_PATH)), CurrentItem->text()).absoluteFilePath();
 
 		SaveFileName = QFileDialog::getSaveFileName(this, tr("Export Model"), SaveFileName, tr("Supported Files (*.ldr *.dat);;All Files (*.*)"));
 
 		if (SaveFileName.isEmpty())
 			return;
 
-		lcResult<void> ExportResult = lcGetActiveProject()->ExportModel(SaveFileName, Model);
+		swResult<void> ExportResult = swGetActiveProject()->ExportModel(SaveFileName, Model);
 
 		if (!ExportResult && !ExportResult.error().isEmpty())
 			QMessageBox::warning(this, tr("Export Submodel"), ExportResult.error());
 
-		lcSetProfileString(LC_PROFILE_PROJECTS_PATH, QFileInfo(SaveFileName).absolutePath());
+		swSetProfileString(SW_PROFILE_PROJECTS_PATH, QFileInfo(SaveFileName).absolutePath());
 	}
 	else
 	{
-		QString Folder = QFileDialog::getExistingDirectory(this, tr("Select Export Folder"), lcGetProfileString(LC_PROFILE_PROJECTS_PATH));
+		QString Folder = QFileDialog::getExistingDirectory(this, tr("Select Export Folder"), swGetProfileString(SW_PROFILE_PROJECTS_PATH));
 
 		for (QListWidgetItem* CurrentItem : SelectedItems)
 		{
-			lcModel* Model = (lcModel*)CurrentItem->data(static_cast<int>(lcModelListRole::ExistingModel)).value<uintptr_t>();
+			swModel* Model = (swModel*)CurrentItem->data(static_cast<int>(swModelListRole::ExistingModel)).value<uintptr_t>();
 
 			if (!Model)
-				Model = (lcModel*)CurrentItem->data(static_cast<int>(lcModelListRole::DuplicateModel)).value<uintptr_t>();
+				Model = (swModel*)CurrentItem->data(static_cast<int>(swModelListRole::DuplicateModel)).value<uintptr_t>();
 
 			if (Model)
 			{
 				QString SaveFileName = QFileInfo(QDir(Folder), CurrentItem->text()).absoluteFilePath();
-				lcResult<void> ExportResult = lcGetActiveProject()->ExportModel(SaveFileName, Model);
+				swResult<void> ExportResult = swGetActiveProject()->ExportModel(SaveFileName, Model);
 
 				if (!ExportResult && !ExportResult.error().isEmpty())
 				{
@@ -245,11 +245,11 @@ void lcModelListDialog::ExportModelClicked()
 			}
 		}
 
-		lcSetProfileString(LC_PROFILE_PROJECTS_PATH, Folder);
+		swSetProfileString(SW_PROFILE_PROJECTS_PATH, Folder);
 	}
 }
 
-void lcModelListDialog::DuplicateModelClicked()
+void swModelListDialog::DuplicateModelClicked()
 {
 	const QList<QListWidgetItem*> SelectedItems = ui->ModelList->selectedItems();
 
@@ -284,39 +284,39 @@ void lcModelListDialog::DuplicateModelClicked()
 		int Number = 0;
 
 		for (const QString& ModelName : ModelNames)
-			Number = qMax(Number, lcGetDefaultNameNumber(ModelName, Prefix));
+			Number = qMax(Number, swGetDefaultNameNumber(ModelName, Prefix));
 
 		QString Name;
 
 		do
 		{
-			Name = lcFormatDefaultName(Prefix, ++Number) + Extension;
+			Name = swFormatDefaultName(Prefix, ++Number) + Extension;
 		} while (ModelNames.contains(Name, Qt::CaseInsensitive));
 
-		Name = lcGetActiveProject()->GetNewModelName(this, tr("Duplicate Submodel"), Name, ModelNames);
+		Name = swGetActiveProject()->GetNewModelName(this, tr("Duplicate Submodel"), Name, ModelNames);
 
 		if (Name.isEmpty())
 			continue;
 
 		QListWidgetItem* Item = new QListWidgetItem(Name);
-		uintptr_t ExistingModel = CurrentItem->data(static_cast<int>(lcModelListRole::ExistingModel)).value<uintptr_t>();
+		uintptr_t ExistingModel = CurrentItem->data(static_cast<int>(swModelListRole::ExistingModel)).value<uintptr_t>();
 		if (!ExistingModel)
-			ExistingModel = CurrentItem->data(static_cast<int>(lcModelListRole::DuplicateModel)).value<uintptr_t>();
-		Item->setData(static_cast<int>(lcModelListRole::DuplicateModel), QVariant::fromValue<uintptr_t>(ExistingModel));
+			ExistingModel = CurrentItem->data(static_cast<int>(swModelListRole::DuplicateModel)).value<uintptr_t>();
+		Item->setData(static_cast<int>(swModelListRole::DuplicateModel), QVariant::fromValue<uintptr_t>(ExistingModel));
 		ui->ModelList->addItem(Item);
 	}
 
 	UpdateButtons();
 }
 
-void lcModelListDialog::ModelListItemDoubleClicked(QListWidgetItem* Item)
+void swModelListDialog::ModelListItemDoubleClicked(QListWidgetItem* Item)
 {
 	mActiveModelItem = Item;
 
 	accept();
 }
 
-void lcModelListDialog::ModelListItemSelectionChanged()
+void swModelListDialog::ModelListItemSelectionChanged()
 {
 	UpdateButtons();
 }

@@ -2,7 +2,7 @@
 
 #include "sw_commands.h"
 
-class lcKeyboardShortcuts
+class swKeyboardShortcuts
 {
 public:
 	void Reset();
@@ -11,16 +11,16 @@ public:
 	bool Load(const QString& FileName);
 	bool Load(QTextStream& Stream);
 
-	QString mShortcuts[LC_NUM_COMMANDS];
+	QString mShortcuts[SW_NUM_COMMANDS];
 };
 
-extern lcKeyboardShortcuts gKeyboardShortcuts;
+extern swKeyboardShortcuts gKeyboardShortcuts;
 
-void lcLoadDefaultKeyboardShortcuts();
-void lcSaveDefaultKeyboardShortcuts();
-void lcResetDefaultKeyboardShortcuts();
+void swLoadDefaultKeyboardShortcuts();
+void swSaveDefaultKeyboardShortcuts();
+void swResetDefaultKeyboardShortcuts();
 
-class lcMouseShortcuts
+class swMouseShortcuts
 {
 public:
 	void Reset();
@@ -29,9 +29,9 @@ public:
 	bool Load(const QString& FileName);
 	bool Load(const QStringList& Shortcuts);
 
-	lcTool GetTool(Qt::MouseButton Button, Qt::KeyboardModifiers Modifiers) const;
+	swTool GetTool(Qt::MouseButton Button, Qt::KeyboardModifiers Modifiers) const;
 
-	struct lcToolShortcut
+	struct swToolShortcut
 	{
 		Qt::KeyboardModifiers Modifiers1;
 		Qt::MouseButton Button1;
@@ -39,15 +39,15 @@ public:
 		Qt::MouseButton Button2;
 	};
 
-	lcToolShortcut mShortcuts[static_cast<int>(lcTool::Count)];
+	swToolShortcut mShortcuts[static_cast<int>(swTool::Count)];
 
 private:
 	void Clear();
 };
 
-extern lcMouseShortcuts gMouseShortcuts;
+extern swMouseShortcuts gMouseShortcuts;
 
-void lcLoadDefaultMouseShortcuts();
-void lcSaveDefaultMouseShortcuts();
-void lcResetDefaultMouseShortcuts();
+void swLoadDefaultMouseShortcuts();
+void swSaveDefaultMouseShortcuts();
+void swResetDefaultMouseShortcuts();
 

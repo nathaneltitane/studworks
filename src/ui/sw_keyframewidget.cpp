@@ -2,7 +2,7 @@
 #include "sw_keyframewidget.h"
 #include "sw_utils.h"
 
-lcKeyFrameWidget::lcKeyFrameWidget(QWidget* Parent)
+swKeyFrameWidget::swKeyFrameWidget(QWidget* Parent)
 	: QCheckBox(Parent)
 {
 	setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -11,12 +11,12 @@ lcKeyFrameWidget::lcKeyFrameWidget(QWidget* Parent)
 	setCheckable(true);
 }
 
-QSize lcKeyFrameWidget::sizeHint() const
+QSize swKeyFrameWidget::sizeHint() const
 {
-	return lcGetPanelButtonSize();
+	return swGetPanelButtonSize();
 }
 
-void lcKeyFrameWidget::paintEvent(QPaintEvent* PaintEvent)
+void swKeyFrameWidget::paintEvent(QPaintEvent* PaintEvent)
 {
 	Q_UNUSED(PaintEvent);
 

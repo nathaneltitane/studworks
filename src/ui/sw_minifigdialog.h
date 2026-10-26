@@ -2,21 +2,21 @@
 
 #include "minifig.h"
 
-class lcColorPicker;
-class lcDoubleSpinBox;
+class swColorPicker;
+class swDoubleSpinBox;
 
 namespace Ui
 {
-class lcMinifigDialog;
+class swMinifigDialog;
 }
 
-class lcMinifigDialog : public QWidget
+class swMinifigDialog : public QWidget
 {
 	Q_OBJECT
 
 public:
-	explicit lcMinifigDialog(QWidget* Parent);
-	virtual ~lcMinifigDialog();
+	explicit swMinifigDialog(QWidget* Parent);
+	virtual ~swMinifigDialog();
 
 	MinifigWizard* mMinifigWizard;
 
@@ -39,14 +39,14 @@ protected:
 	void UpdateTemplateCombo();
 	void SetCurrentTemplateModified();
 
-	Ui::lcMinifigDialog* ui;
+	Ui::swMinifigDialog* ui;
 
-	lcView* mView;
+	swView* mView;
 	QWidget* mViewWidget = nullptr;
-	std::array<QString, LC_MFW_NUMITEMS> mSectionNames;
-	std::array<QToolButton*, LC_MFW_NUMITEMS> mPieceButtons;
-	std::array<lcColorPicker*, LC_MFW_NUMITEMS> mColorPickers;
-	std::array<lcDoubleSpinBox*, LC_MFW_NUMITEMS> mSpinBoxes;
+	std::array<QString, SW_MFW_NUMITEMS> mSectionNames;
+	std::array<QToolButton*, SW_MFW_NUMITEMS> mPieceButtons;
+	std::array<swColorPicker*, SW_MFW_NUMITEMS> mColorPickers;
+	std::array<swDoubleSpinBox*, SW_MFW_NUMITEMS> mSpinBoxes;
 
 	QString mCurrentTemplateName;
 	bool mCurrentTemplateModified = false;

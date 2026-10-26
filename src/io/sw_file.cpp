@@ -5,7 +5,7 @@
 #include <sys/stat.h>
 #include "sw_file.h"
 
-lcMemFile::lcMemFile()
+swMemFile::swMemFile()
 {
 	mGrowBytes = 1024;
 	mPosition = 0;
@@ -14,12 +14,12 @@ lcMemFile::lcMemFile()
 	mBuffer = nullptr;
 }
 
-lcMemFile::~lcMemFile()
+swMemFile::~swMemFile()
 {
-	lcMemFile::Close();
+	swMemFile::Close();
 }
 
-void lcMemFile::Seek(qint64 Offset, int From)
+void swMemFile::Seek(qint64 Offset, int From)
 {
 	if (From == SEEK_SET)
 		mPosition = Offset;
@@ -29,12 +29,12 @@ void lcMemFile::Seek(qint64 Offset, int From)
 		mPosition = mFileSize + Offset;
 }
 
-long lcMemFile::GetPosition() const
+long swMemFile::GetPosition() const
 {
 	return (long)mPosition;
 }
 
-void lcMemFile::SetLength(size_t NewLength)
+void swMemFile::SetLength(size_t NewLength)
 {
 	if (NewLength > mBufferSize)
 		GrowFile(NewLength);
@@ -45,12 +45,12 @@ void lcMemFile::SetLength(size_t NewLength)
 	mFileSize = NewLength;
 }
 
-size_t lcMemFile::GetLength() const
+size_t swMemFile::GetLength() const
 {
 	return mFileSize;
 }
 
-void lcMemFile::Close()
+void swMemFile::Close()
 {
 	if (!mBuffer)
 		return;
@@ -62,7 +62,7 @@ void lcMemFile::Close()
 	mBuffer = nullptr;
 }
 
-size_t lcMemFile::ReadBuffer(void* Buffer, size_t Bytes)
+size_t swMemFile::ReadBuffer(void* Buffer, size_t Bytes)
 {
 	if (Bytes == 0 || mPosition > mFileSize)
 		return 0;
@@ -80,7 +80,7 @@ size_t lcMemFile::ReadBuffer(void* Buffer, size_t Bytes)
 	return BytesToRead;
 }
 
-size_t lcMemFile::WriteBuffer(const void* Buffer, size_t Bytes)
+size_t swMemFile::WriteBuffer(const void* Buffer, size_t Bytes)
 {
 	if (Bytes == 0)
 		return 0;
@@ -98,7 +98,7 @@ size_t lcMemFile::WriteBuffer(const void* Buffer, size_t Bytes)
 	return Bytes;
 }
 
-void lcMemFile::GrowFile(size_t NewLength)
+void swMemFile::GrowFile(size_t NewLength)
 {
 	if (NewLength <= mBufferSize)
 		return;
@@ -120,7 +120,7 @@ void lcMemFile::GrowFile(size_t NewLength)
 	mBufferSize = NewLength;
 }
 
-char* lcMemFile::ReadLine(char* Buffer, size_t BufferSize)
+char* swMemFile::ReadLine(char* Buffer, size_t BufferSize)
 {
 	int BytesRead = 0;
 	unsigned char ch;

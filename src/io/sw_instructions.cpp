@@ -6,18 +6,18 @@
 #include "sw_piecedata.h"
 #include "sw_profile.h"
 
-const float lcInstructions::mDisplayDPI = 72.0f;
+const float swInstructions::mDisplayDPI = 72.0f;
 
-lcInstructions::lcInstructions(Project* Project)
+swInstructions::swInstructions(Project* Project)
 	: mProject(Project)
 {
 	// Page sizes are stored in points, 1/72 inch, which is also one pixel of the page scene.
-	mPageSetup.Width = lcGetProfileFloat(LC_PROFILE_INSTRUCTIONS_PAGE_WIDTH);
-	mPageSetup.Height = lcGetProfileFloat(LC_PROFILE_INSTRUCTIONS_PAGE_HEIGHT);
-	mPageSetup.MarginLeft = lcGetProfileFloat(LC_PROFILE_INSTRUCTIONS_MARGIN_LEFT);
-	mPageSetup.MarginRight = lcGetProfileFloat(LC_PROFILE_INSTRUCTIONS_MARGIN_RIGHT);
-	mPageSetup.MarginTop = lcGetProfileFloat(LC_PROFILE_INSTRUCTIONS_MARGIN_TOP);
-	mPageSetup.MarginBottom = lcGetProfileFloat(LC_PROFILE_INSTRUCTIONS_MARGIN_BOTTOM);
+	mPageSetup.Width = swGetProfileFloat(SW_PROFILE_INSTRUCTIONS_PAGE_WIDTH);
+	mPageSetup.Height = swGetProfileFloat(SW_PROFILE_INSTRUCTIONS_PAGE_HEIGHT);
+	mPageSetup.MarginLeft = swGetProfileFloat(SW_PROFILE_INSTRUCTIONS_MARGIN_LEFT);
+	mPageSetup.MarginRight = swGetProfileFloat(SW_PROFILE_INSTRUCTIONS_MARGIN_RIGHT);
+	mPageSetup.MarginTop = swGetProfileFloat(SW_PROFILE_INSTRUCTIONS_MARGIN_TOP);
+	mPageSetup.MarginBottom = swGetProfileFloat(SW_PROFILE_INSTRUCTIONS_MARGIN_BOTTOM);
 
 	if (mPageSetup.Width < 1.0f || mPageSetup.Height < 1.0f || mPageSetup.MarginLeft + mPageSetup.MarginRight >= mPageSetup.Width || mPageSetup.MarginTop + mPageSetup.MarginBottom >= mPageSetup.Height)
 	{
@@ -33,88 +33,88 @@ lcInstructions::lcInstructions(Project* Project)
 	mPageSettings.Columns = 1;
 	mPageSettings.Direction = GetPageDirection();
 
-	mStepProperties[static_cast<int>(lcInstructionsPropertyType::ShowStepNumber)].Value = true;
-	mStepProperties[static_cast<int>(lcInstructionsPropertyType::ShowStepPLI)].Value = true;
-	mStepProperties[static_cast<int>(lcInstructionsPropertyType::StepNumberFont)].Value = QFont("Arial", 72).toString();
-	mStepProperties[static_cast<int>(lcInstructionsPropertyType::StepNumberColor)].Value = LC_RGBA(0, 0, 0, 255);
-	mStepProperties[static_cast<int>(lcInstructionsPropertyType::StepBackgroundColor)].Value = LC_RGBA(255, 255, 255, 0);
-	mStepProperties[static_cast<int>(lcInstructionsPropertyType::PLIBackgroundColor)].Value = LC_RGBA(255, 255, 255, 255);
-	mStepProperties[static_cast<int>(lcInstructionsPropertyType::PLIFont)].Value = QFont("Arial", 16, QFont::Bold).toString();
-	mStepProperties[static_cast<int>(lcInstructionsPropertyType::PLITextColor)].Value = LC_RGBA(0, 0, 0, 255);
-	mStepProperties[static_cast<int>(lcInstructionsPropertyType::PLIBorderColor)].Value = LC_RGBA(0, 0, 0, 255);
-	mStepProperties[static_cast<int>(lcInstructionsPropertyType::PLIBorderWidth)].Value = 0;
-//	mStepProperties[static_cast<int>(lcInstructionsPropertyType::PLIBorderRound)].Value = true;
-	mStepProperties[static_cast<int>(lcInstructionsPropertyType::PLIShowCounts)].Value = true;
-	mStepProperties[static_cast<int>(lcInstructionsPropertyType::PLISortOrder)].Value = static_cast<int>(lcPartsListSort::Color);
-	mStepProperties[static_cast<int>(lcInstructionsPropertyType::ShowStepDividers)].Value = true;
-	mStepProperties[static_cast<int>(lcInstructionsPropertyType::StepDividerColor)].Value = LC_RGBA(0, 0, 0, 255);
-	mStepProperties[static_cast<int>(lcInstructionsPropertyType::StepDividerWidth)].Value = 2;
-	mStepProperties[static_cast<int>(lcInstructionsPropertyType::ShowBillOfMaterials)].Value = true;
-	mStepProperties[static_cast<int>(lcInstructionsPropertyType::UseDocumentFont)].Value = false;
-	mStepProperties[static_cast<int>(lcInstructionsPropertyType::DocumentFont)].Value = QFont("Arial", 16).toString();
-	mStepProperties[static_cast<int>(lcInstructionsPropertyType::ShowCoverPage)].Value = true;
-	mStepProperties[static_cast<int>(lcInstructionsPropertyType::CoverTitleFont)].Value = QFont("Arial", 48, QFont::Bold).toString();
-	mStepProperties[static_cast<int>(lcInstructionsPropertyType::PageBackgroundColor)].Value = LC_RGBA(255, 255, 255, 255);
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::ShowStepNumber)].Value = true;
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::ShowStepPLI)].Value = true;
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::StepNumberFont)].Value = QFont("Arial", 72).toString();
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::StepNumberColor)].Value = SW_RGBA(0, 0, 0, 255);
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::StepBackgroundColor)].Value = SW_RGBA(255, 255, 255, 0);
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::PLIBackgroundColor)].Value = SW_RGBA(255, 255, 255, 255);
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::PLIFont)].Value = QFont("Arial", 16, QFont::Bold).toString();
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::PLITextColor)].Value = SW_RGBA(0, 0, 0, 255);
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::PLIBorderColor)].Value = SW_RGBA(0, 0, 0, 255);
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::PLIBorderWidth)].Value = 0;
+//	mStepProperties[static_cast<int>(swInstructionsPropertyType::PLIBorderRound)].Value = true;
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::PLIShowCounts)].Value = true;
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::PLISortOrder)].Value = static_cast<int>(swPartsListSort::Color);
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::ShowStepDividers)].Value = true;
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::StepDividerColor)].Value = SW_RGBA(0, 0, 0, 255);
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::StepDividerWidth)].Value = 2;
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::ShowBillOfMaterials)].Value = true;
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::UseDocumentFont)].Value = false;
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::DocumentFont)].Value = QFont("Arial", 16).toString();
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::ShowCoverPage)].Value = true;
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::CoverTitleFont)].Value = QFont("Arial", 48, QFont::Bold).toString();
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::PageBackgroundColor)].Value = SW_RGBA(255, 255, 255, 255);
 
-	static_assert(static_cast<int>(lcInstructionsPropertyType::Count) == 21, "Missing default property");
+	static_assert(static_cast<int>(swInstructionsPropertyType::Count) == 21, "Missing default property");
 
 	CreatePages();
 }
 
-QString lcInstructions::GetPropertyLabel(lcInstructionsPropertyType Type)
+QString swInstructions::GetPropertyLabel(swInstructionsPropertyType Type)
 {
 	switch (Type)
 	{
-		case lcInstructionsPropertyType::ShowStepNumber:
+		case swInstructionsPropertyType::ShowStepNumber:
 			return tr("Show Step Number");
-		case lcInstructionsPropertyType::ShowStepPLI:
+		case swInstructionsPropertyType::ShowStepPLI:
 			return tr("Show Pieces List");
-		case lcInstructionsPropertyType::StepNumberFont:
+		case swInstructionsPropertyType::StepNumberFont:
 			return tr("Font:");
-		case lcInstructionsPropertyType::StepNumberColor:
+		case swInstructionsPropertyType::StepNumberColor:
 			return tr("Text Color:");
-		case lcInstructionsPropertyType::StepBackgroundColor:
+		case swInstructionsPropertyType::StepBackgroundColor:
 			return tr("Background Color:");
-		case lcInstructionsPropertyType::PLIBackgroundColor:
+		case swInstructionsPropertyType::PLIBackgroundColor:
 			return tr("Background Color:");
-		case lcInstructionsPropertyType::PLIFont:
+		case swInstructionsPropertyType::PLIFont:
 			return tr("Font:");
-		case lcInstructionsPropertyType::PLITextColor:
+		case swInstructionsPropertyType::PLITextColor:
 			return tr("Text Color:");
-		case lcInstructionsPropertyType::PLIBorderColor:
+		case swInstructionsPropertyType::PLIBorderColor:
 			return tr("Border Color:");
-		case lcInstructionsPropertyType::PLIBorderWidth:
+		case swInstructionsPropertyType::PLIBorderWidth:
 			return tr("Border Width:");
-		case lcInstructionsPropertyType::PLIShowCounts:
+		case swInstructionsPropertyType::PLIShowCounts:
 			return tr("Show Piece Counts");
-		case lcInstructionsPropertyType::PLISortOrder:
+		case swInstructionsPropertyType::PLISortOrder:
 			return tr("Sort By:");
-		case lcInstructionsPropertyType::ShowStepDividers:
+		case swInstructionsPropertyType::ShowStepDividers:
 			return tr("Show Step Dividers");
-		case lcInstructionsPropertyType::StepDividerColor:
+		case swInstructionsPropertyType::StepDividerColor:
 			return tr("Divider Color:");
-		case lcInstructionsPropertyType::StepDividerWidth:
+		case swInstructionsPropertyType::StepDividerWidth:
 			return tr("Divider Width:");
-		case lcInstructionsPropertyType::ShowBillOfMaterials:
+		case swInstructionsPropertyType::ShowBillOfMaterials:
 			return tr("Show Bill of Materials");
-		case lcInstructionsPropertyType::UseDocumentFont:
+		case swInstructionsPropertyType::UseDocumentFont:
 			return tr("Use Document Font");
-		case lcInstructionsPropertyType::DocumentFont:
+		case swInstructionsPropertyType::DocumentFont:
 			return tr("Font:");
-		case lcInstructionsPropertyType::ShowCoverPage:
+		case swInstructionsPropertyType::ShowCoverPage:
 			return tr("Show Cover Page");
-		case lcInstructionsPropertyType::CoverTitleFont:
+		case swInstructionsPropertyType::CoverTitleFont:
 			return tr("Title Font:");
-		case lcInstructionsPropertyType::PageBackgroundColor:
+		case swInstructionsPropertyType::PageBackgroundColor:
 			return tr("Background Color:");
-		case lcInstructionsPropertyType::Count:
+		case swInstructionsPropertyType::Count:
 			break;
 	}
 
 	return QString();
 }
 
-void lcInstructions::SetDefaultPageSettings(const lcInstructionsPageSettings& PageSettings)
+void swInstructions::SetDefaultPageSettings(const swInstructionsPageSettings& PageSettings)
 {
 	mPageSettings = PageSettings;
 	mPageSettings.Direction = GetPageDirection();
@@ -125,18 +125,18 @@ void lcInstructions::SetDefaultPageSettings(const lcInstructionsPageSettings& Pa
 	emit PageLayoutChanged();
 }
 
-lcInstructionsDirection lcInstructions::GetPageDirection() const
+swInstructionsDirection swInstructions::GetPageDirection() const
 {
 	// landscape pages fill rows across first, portrait pages fill columns down first
-	return mPageSetup.Width > mPageSetup.Height ? lcInstructionsDirection::Horizontal : lcInstructionsDirection::Vertical;
+	return mPageSetup.Width > mPageSetup.Height ? swInstructionsDirection::Horizontal : swInstructionsDirection::Vertical;
 }
 
-bool lcInstructions::GetPageKey(size_t PageIndex, lcInstructionsStepKey& Key) const
+bool swInstructions::GetPageKey(size_t PageIndex, swInstructionsStepKey& Key) const
 {
 	// pages are found by their first step so their settings follow them when other pages change
 	if (PageIndex >= mPages.size())
 	{
-		lcModel* Model = mProject ? mProject->GetMainModel() : nullptr;
+		swModel* Model = mProject ? mProject->GetMainModel() : nullptr;
 
 		if (!Model)
 			return false;
@@ -145,59 +145,59 @@ bool lcInstructions::GetPageKey(size_t PageIndex, lcInstructionsStepKey& Key) co
 		return true;
 	}
 
-	const lcInstructionsPage& Page = mPages[PageIndex];
+	const swInstructionsPage& Page = mPages[PageIndex];
 
 	switch (Page.Type)
 	{
-	case lcInstructionsPageType::Steps:
+	case swInstructionsPageType::Steps:
 		Key = { Page.Steps.front().Model, Page.Steps.front().Step };
 		return true;
 
-	case lcInstructionsPageType::Blank:
+	case swInstructionsPageType::Blank:
 		Key = Page.BlankKey;
 		return true;
 
-	case lcInstructionsPageType::BillOfMaterials:
+	case swInstructionsPageType::BillOfMaterials:
 		Key = { Page.Model, Page.Model->GetLastStep() + 1 };
 		return true;
 
-	case lcInstructionsPageType::Cover:
+	case swInstructionsPageType::Cover:
 		break;
 	}
 
 	return false;
 }
 
-lcInstructionsPageSettings lcInstructions::GetStepPageSettings(const lcInstructionsStepKey& Key) const
+swInstructionsPageSettings swInstructions::GetStepPageSettings(const swInstructionsStepKey& Key) const
 {
-	std::map<lcInstructionsStepKey, lcInstructionsPageSettings>::const_iterator SettingsIt = mPageSettingsOverrides.find(Key);
-	lcInstructionsPageSettings PageSettings = SettingsIt != mPageSettingsOverrides.end() ? SettingsIt->second : mPageSettings;
+	std::map<swInstructionsStepKey, swInstructionsPageSettings>::const_iterator SettingsIt = mPageSettingsOverrides.find(Key);
+	swInstructionsPageSettings PageSettings = SettingsIt != mPageSettingsOverrides.end() ? SettingsIt->second : mPageSettings;
 
 	PageSettings.Direction = GetPageDirection();
 
 	return PageSettings;
 }
 
-lcInstructionsPageSettings lcInstructions::GetPageSettings(size_t PageIndex) const
+swInstructionsPageSettings swInstructions::GetPageSettings(size_t PageIndex) const
 {
-	if (PageIndex < mPages.size() && mPages[PageIndex].Type == lcInstructionsPageType::Steps)
+	if (PageIndex < mPages.size() && mPages[PageIndex].Type == swInstructionsPageType::Steps)
 		return mPages[PageIndex].Settings;
 
 	return GetStepPageSettings({ nullptr, 0 });
 }
 
-void lcInstructions::SetPageSettings(size_t PageIndex, int Rows, int Columns)
+void swInstructions::SetPageSettings(size_t PageIndex, int Rows, int Columns)
 {
 	// each page can hold its own number of steps, following pages flow on from it
-	if (PageIndex >= mPages.size() || mPages[PageIndex].Type != lcInstructionsPageType::Steps)
+	if (PageIndex >= mPages.size() || mPages[PageIndex].Type != swInstructionsPageType::Steps)
 		return;
 
-	lcInstructionsPageSettings PageSettings = mPages[PageIndex].Settings;
+	swInstructionsPageSettings PageSettings = mPages[PageIndex].Settings;
 
 	if (PageSettings.Rows == Rows && PageSettings.Columns == Columns)
 		return;
 
-	lcInstructionsStepKey Key;
+	swInstructionsStepKey Key;
 	GetPageKey(PageIndex, Key);
 
 	PageSettings.Rows = Rows;
@@ -209,16 +209,16 @@ void lcInstructions::SetPageSettings(size_t PageIndex, int Rows, int Columns)
 	emit PageLayoutChanged();
 }
 
-bool lcInstructions::CanInsertBlankPage(size_t PageIndex) const
+bool swInstructions::CanInsertBlankPage(size_t PageIndex) const
 {
-	lcInstructionsStepKey Key;
+	swInstructionsStepKey Key;
 	return GetPageKey(PageIndex, Key);
 }
 
-void lcInstructions::InsertBlankPage(size_t PageIndex)
+void swInstructions::InsertBlankPage(size_t PageIndex)
 {
 	// the blank page goes before the page at this index and stays with its first step
-	lcInstructionsStepKey Key;
+	swInstructionsStepKey Key;
 
 	if (!GetPageKey(PageIndex, Key))
 		return;
@@ -230,12 +230,12 @@ void lcInstructions::InsertBlankPage(size_t PageIndex)
 	emit PageLayoutChanged();
 }
 
-void lcInstructions::RemoveBlankPage(size_t PageIndex)
+void swInstructions::RemoveBlankPage(size_t PageIndex)
 {
-	if (PageIndex >= mPages.size() || mPages[PageIndex].Type != lcInstructionsPageType::Blank)
+	if (PageIndex >= mPages.size() || mPages[PageIndex].Type != swInstructionsPageType::Blank)
 		return;
 
-	std::multiset<lcInstructionsStepKey>::iterator BlankIt = mBlankPages.find(mPages[PageIndex].BlankKey);
+	std::multiset<swInstructionsStepKey>::iterator BlankIt = mBlankPages.find(mPages[PageIndex].BlankKey);
 
 	if (BlankIt != mBlankPages.end())
 		mBlankPages.erase(BlankIt);
@@ -245,23 +245,23 @@ void lcInstructions::RemoveBlankPage(size_t PageIndex)
 	emit PageLayoutChanged();
 }
 
-void lcInstructions::Update()
+void swInstructions::Update()
 {
 	CreatePages();
 
 	emit PageLayoutChanged();
 }
 
-void lcInstructions::SetPageSetup(const lcInstructionsPageSetup& PageSetup)
+void swInstructions::SetPageSetup(const swInstructionsPageSetup& PageSetup)
 {
 	mPageSetup = PageSetup;
 
-	lcSetProfileFloat(LC_PROFILE_INSTRUCTIONS_PAGE_WIDTH, mPageSetup.Width);
-	lcSetProfileFloat(LC_PROFILE_INSTRUCTIONS_PAGE_HEIGHT, mPageSetup.Height);
-	lcSetProfileFloat(LC_PROFILE_INSTRUCTIONS_MARGIN_LEFT, mPageSetup.MarginLeft);
-	lcSetProfileFloat(LC_PROFILE_INSTRUCTIONS_MARGIN_RIGHT, mPageSetup.MarginRight);
-	lcSetProfileFloat(LC_PROFILE_INSTRUCTIONS_MARGIN_TOP, mPageSetup.MarginTop);
-	lcSetProfileFloat(LC_PROFILE_INSTRUCTIONS_MARGIN_BOTTOM, mPageSetup.MarginBottom);
+	swSetProfileFloat(SW_PROFILE_INSTRUCTIONS_PAGE_WIDTH, mPageSetup.Width);
+	swSetProfileFloat(SW_PROFILE_INSTRUCTIONS_PAGE_HEIGHT, mPageSetup.Height);
+	swSetProfileFloat(SW_PROFILE_INSTRUCTIONS_MARGIN_LEFT, mPageSetup.MarginLeft);
+	swSetProfileFloat(SW_PROFILE_INSTRUCTIONS_MARGIN_RIGHT, mPageSetup.MarginRight);
+	swSetProfileFloat(SW_PROFILE_INSTRUCTIONS_MARGIN_TOP, mPageSetup.MarginTop);
+	swSetProfileFloat(SW_PROFILE_INSTRUCTIONS_MARGIN_BOTTOM, mPageSetup.MarginBottom);
 
 	mPageSettings.Direction = GetPageDirection();
 	CreatePages();
@@ -269,29 +269,29 @@ void lcInstructions::SetPageSetup(const lcInstructionsPageSetup& PageSetup)
 	emit PageSetupChanged();
 }
 
-bool lcInstructions::GetBoolProperty(lcInstructionsPropertyType Type, lcModel* Model, lcStep Step) const
+bool swInstructions::GetBoolProperty(swInstructionsPropertyType Type, swModel* Model, swStep Step) const
 {
 	QVariant Value = GetProperty(Type, Model, Step);
 	return Value.toBool();
 }
 
-int lcInstructions::GetIntProperty(lcInstructionsPropertyType Type, lcModel* Model, lcStep Step) const
+int swInstructions::GetIntProperty(swInstructionsPropertyType Type, swModel* Model, swStep Step) const
 {
 	QVariant Value = GetProperty(Type, Model, Step);
 	return Value.toInt();
 }
 
-QColor lcInstructions::GetColorProperty(lcInstructionsPropertyType Type, lcModel* Model, lcStep Step) const
+QColor swInstructions::GetColorProperty(swInstructionsPropertyType Type, swModel* Model, swStep Step) const
 {
 	QVariant Value = GetProperty(Type, Model, Step);
-	return lcQColorFromRGBA(Value.toUInt());
+	return swQColorFromRGBA(Value.toUInt());
 }
 
-QFont lcInstructions::GetFontProperty(lcInstructionsPropertyType Type, lcModel* Model, lcStep Step) const
+QFont swInstructions::GetFontProperty(swInstructionsPropertyType Type, swModel* Model, swStep Step) const
 {
 	// the document font replaces every element font to keep the instructions uniform
-	if (Type != lcInstructionsPropertyType::DocumentFont && GetBoolProperty(lcInstructionsPropertyType::UseDocumentFont, Model, Step))
-		Type = lcInstructionsPropertyType::DocumentFont;
+	if (Type != swInstructionsPropertyType::DocumentFont && GetBoolProperty(swInstructionsPropertyType::UseDocumentFont, Model, Step))
+		Type = swInstructionsPropertyType::DocumentFont;
 
 	QVariant Value = GetProperty(Type, Model, Step);
 	QFont Font;
@@ -299,23 +299,23 @@ QFont lcInstructions::GetFontProperty(lcInstructionsPropertyType Type, lcModel* 
 	return Font;
 }
 
-QVariant lcInstructions::GetProperty(lcInstructionsPropertyType Type, lcModel* Model, lcStep Step) const
+QVariant swInstructions::GetProperty(swInstructionsPropertyType Type, swModel* Model, swStep Step) const
 {
 	QVariant Value = mStepProperties[static_cast<int>(Type)].Value;
 
-	std::map<lcModel*, lcInstructionsModel>::const_iterator ModelIt = mModels.find(Model);
+	std::map<swModel*, swInstructionsModel>::const_iterator ModelIt = mModels.find(Model);
 
 	if (ModelIt == mModels.end())
 		return Value;
 
-	const lcInstructionsModel& InstructionModel = ModelIt->second;
+	const swInstructionsModel& InstructionModel = ModelIt->second;
 
-	for (lcStep StepIndex = 0; StepIndex <= Step; StepIndex++)
+	for (swStep StepIndex = 0; StepIndex <= Step; StepIndex++)
 	{
-		const lcInstructionsProperties& Properties = InstructionModel.StepProperties[StepIndex];
-		const lcInstructionsProperty& Property = Properties[static_cast<int>(Type)];
+		const swInstructionsProperties& Properties = InstructionModel.StepProperties[StepIndex];
+		const swInstructionsProperty& Property = Properties[static_cast<int>(Type)];
 
-		if (Property.Mode == lcInstructionsPropertyMode::NotSet || (Property.Mode == lcInstructionsPropertyMode::StepOnly && StepIndex != Step))
+		if (Property.Mode == swInstructionsPropertyMode::NotSet || (Property.Mode == swInstructionsPropertyMode::StepOnly && StepIndex != Step))
 			continue;
 
 		Value = Property.Value;
@@ -324,29 +324,29 @@ QVariant lcInstructions::GetProperty(lcInstructionsPropertyType Type, lcModel* M
 	return Value;
 }
 
-void lcInstructions::SetDefaultBool(lcInstructionsPropertyType Type, bool Enabled)
+void swInstructions::SetDefaultBool(swInstructionsPropertyType Type, bool Enabled)
 {
 	SetDefaultProperty(Type, Enabled);
 }
 
-void lcInstructions::SetDefaultInt(lcInstructionsPropertyType Type, int Value)
+void swInstructions::SetDefaultInt(swInstructionsPropertyType Type, int Value)
 {
 	SetDefaultProperty(Type, Value);
 }
 
-void lcInstructions::SetDefaultColor(lcInstructionsPropertyType Type, const QColor& Color)
+void swInstructions::SetDefaultColor(swInstructionsPropertyType Type, const QColor& Color)
 {
-	SetDefaultProperty(Type, lcRGBAFromQColor(Color));
+	SetDefaultProperty(Type, swRGBAFromQColor(Color));
 }
 
-void lcInstructions::SetDefaultFont(lcInstructionsPropertyType Type, const QFont& Font)
+void swInstructions::SetDefaultFont(swInstructionsPropertyType Type, const QFont& Font)
 {
 	SetDefaultProperty(Type, Font.toString());
 }
 
-void lcInstructions::SetDefaultProperty(lcInstructionsPropertyType Type, const QVariant& Value)
+void swInstructions::SetDefaultProperty(swInstructionsPropertyType Type, const QVariant& Value)
 {
-	lcInstructionsProperty& Property = mStepProperties[static_cast<int>(Type)];
+	swInstructionsProperty& Property = mStepProperties[static_cast<int>(Type)];
 
 	if (Property.Value == Value)
 		return;
@@ -356,19 +356,19 @@ void lcInstructions::SetDefaultProperty(lcInstructionsPropertyType Type, const Q
 	// dividers and the bill of materials change the page layout instead of a single step
 	switch (Type)
 	{
-	case lcInstructionsPropertyType::ShowBillOfMaterials:
-	case lcInstructionsPropertyType::ShowCoverPage:
+	case swInstructionsPropertyType::ShowBillOfMaterials:
+	case swInstructionsPropertyType::ShowCoverPage:
 		CreatePages();
 		emit PageLayoutChanged();
 		break;
 
-	case lcInstructionsPropertyType::UseDocumentFont:
-	case lcInstructionsPropertyType::DocumentFont:
-	case lcInstructionsPropertyType::CoverTitleFont:
-	case lcInstructionsPropertyType::PageBackgroundColor:
-	case lcInstructionsPropertyType::ShowStepDividers:
-	case lcInstructionsPropertyType::StepDividerColor:
-	case lcInstructionsPropertyType::StepDividerWidth:
+	case swInstructionsPropertyType::UseDocumentFont:
+	case swInstructionsPropertyType::DocumentFont:
+	case swInstructionsPropertyType::CoverTitleFont:
+	case swInstructionsPropertyType::PageBackgroundColor:
+	case swInstructionsPropertyType::ShowStepDividers:
+	case swInstructionsPropertyType::StepDividerColor:
+	case swInstructionsPropertyType::StepDividerWidth:
 		emit PageLayoutChanged();
 		break;
 
@@ -378,32 +378,32 @@ void lcInstructions::SetDefaultProperty(lcInstructionsPropertyType Type, const Q
 	}
 }
 
-void lcInstructions::CreatePages()
+void swInstructions::CreatePages()
 {
 	mPages.clear();
 
 	if (mProject)
 	{
-		std::vector<const lcModel*> AddedModels;
+		std::vector<const swModel*> AddedModels;
 
-		lcModel* Model = mProject->GetMainModel();
+		swModel* Model = mProject->GetMainModel();
 
 		if (Model)
 		{
-			if (GetBoolProperty(lcInstructionsPropertyType::ShowCoverPage, nullptr, 0))
+			if (GetBoolProperty(swInstructionsPropertyType::ShowCoverPage, nullptr, 0))
 			{
-				lcInstructionsPage Page;
-				Page.Type = lcInstructionsPageType::Cover;
+				swInstructionsPage Page;
+				Page.Type = swInstructionsPageType::Cover;
 				Page.Model = Model;
 				mPages.emplace_back(std::move(Page));
 			}
 
 			AddDefaultPages(Model, AddedModels);
 
-			if (GetBoolProperty(lcInstructionsPropertyType::ShowBillOfMaterials, nullptr, 0))
+			if (GetBoolProperty(swInstructionsPropertyType::ShowBillOfMaterials, nullptr, 0))
 			{
-				lcInstructionsPage Page;
-				Page.Type = lcInstructionsPageType::BillOfMaterials;
+				swInstructionsPage Page;
+				Page.Type = swInstructionsPageType::BillOfMaterials;
 				Page.Model = Model;
 				mPages.emplace_back(std::move(Page));
 			}
@@ -411,32 +411,32 @@ void lcInstructions::CreatePages()
 	}
 }
 
-void lcInstructions::AddDefaultPages(lcModel* Model, std::vector<const lcModel*>& AddedModels)
+void swInstructions::AddDefaultPages(swModel* Model, std::vector<const swModel*>& AddedModels)
 {
 	if (std::find(AddedModels.begin(), AddedModels.end(), Model) != AddedModels.end())
 		return;
 
 	AddedModels.push_back(Model);
 
-	const lcStep LastStep = Model->GetLastStep();
-	lcInstructionsPage Page;
+	const swStep LastStep = Model->GetLastStep();
+	swInstructionsPage Page;
 	int Row = 0, Column = 0;
 
 	// Models keep their step settings and gain entries for steps added since.
-	std::vector<lcInstructionsProperties>& StepProperties = mModels[Model].StepProperties;
+	std::vector<swInstructionsProperties>& StepProperties = mModels[Model].StepProperties;
 
 	if (StepProperties.size() < LastStep + 1)
 		StepProperties.resize(LastStep + 1);
 
-	for (lcStep Step = 1; Step <= LastStep; Step++)
+	for (swStep Step = 1; Step <= LastStep; Step++)
 	{
-		std::set<lcModel*> StepSubModels;
+		std::set<swModel*> StepSubModels;
 
-		for (const std::unique_ptr<lcPiece>& Piece : Model->GetPieces())
+		for (const std::unique_ptr<swPiece>& Piece : Model->GetPieces())
 		{
 			if (!Piece->IsHidden() && Piece->GetStepShow() == Step && Piece->mPieceData->IsModel())
 			{
-				lcModel* SubModel = Piece->mPieceData->GetModel();
+				swModel* SubModel = Piece->mPieceData->GetModel();
 
 				if (std::find(AddedModels.begin(), AddedModels.end(), SubModel) == AddedModels.end())
 					StepSubModels.insert(SubModel);
@@ -452,7 +452,7 @@ void lcInstructions::AddDefaultPages(lcModel* Model, std::vector<const lcModel*>
 				Column = 0;
 			}
 
-			for (lcModel* SubModel : StepSubModels)
+			for (swModel* SubModel : StepSubModels)
 				AddDefaultPages(SubModel, AddedModels);
 		}
 
@@ -465,8 +465,8 @@ void lcInstructions::AddDefaultPages(lcModel* Model, std::vector<const lcModel*>
 			Column = 0;
 		}
 
-		const lcInstructionsPageSettings PageSettings = Page.Settings;
-		lcInstructionsStep InstructionsStep;
+		const swInstructionsPageSettings PageSettings = Page.Settings;
+		swInstructionsStep InstructionsStep;
 
 		InstructionsStep.Model = Model;
 		InstructionsStep.Step = Step;
@@ -477,7 +477,7 @@ void lcInstructions::AddDefaultPages(lcModel* Model, std::vector<const lcModel*>
 
 		Page.Steps.push_back(std::move(InstructionsStep));
 
-		if (PageSettings.Direction == lcInstructionsDirection::Horizontal)
+		if (PageSettings.Direction == swInstructionsDirection::Horizontal)
 		{
 			Column++;
 
@@ -519,7 +519,7 @@ void lcInstructions::AddDefaultPages(lcModel* Model, std::vector<const lcModel*>
 		mPages.emplace_back(std::move(Page));
 }
 
-void lcInstructions::AddBlankPages(lcInstructionsPage& Page, const lcInstructionsStepKey& Key)
+void swInstructions::AddBlankPages(swInstructionsPage& Page, const swInstructionsStepKey& Key)
 {
 	const size_t BlankCount = mBlankPages.count(Key);
 
@@ -530,13 +530,13 @@ void lcInstructions::AddBlankPages(lcInstructionsPage& Page, const lcInstruction
 	if (!Page.Steps.empty())
 	{
 		mPages.emplace_back(std::move(Page));
-		Page = lcInstructionsPage();
+		Page = swInstructionsPage();
 	}
 
 	for (size_t BlankIndex = 0; BlankIndex < BlankCount; BlankIndex++)
 	{
-		lcInstructionsPage BlankPage;
-		BlankPage.Type = lcInstructionsPageType::Blank;
+		swInstructionsPage BlankPage;
+		BlankPage.Type = swInstructionsPageType::Blank;
 		BlankPage.BlankKey = Key;
 		mPages.emplace_back(std::move(BlankPage));
 	}

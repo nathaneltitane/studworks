@@ -12,15 +12,15 @@
 #include "sw_mainwindow.h"
 #include "texfont.h"
 
-lcVertexBuffer lcViewManipulator::mRotateMoveVertexBuffer;
-lcIndexBuffer lcViewManipulator::mRotateMoveIndexBuffer;
-lcVector3 lcViewManipulator::mRotateMoveVertices[51 + 138 + 10 + 74 + 28 + 24];
+swVertexBuffer swViewManipulator::mRotateMoveVertexBuffer;
+swIndexBuffer swViewManipulator::mRotateMoveIndexBuffer;
+swVector3 swViewManipulator::mRotateMoveVertices[51 + 138 + 10 + 74 + 28 + 24];
 
-lcVector4 lcViewManipulator::GetAxisColor(int AxisIndex, bool Selected)
+swVector4 swViewManipulator::GetAxisColor(int AxisIndex, bool Selected)
 {
-	const lcPreferences& Preferences = lcGetPreferences();
+	const swPreferences& Preferences = swGetPreferences();
 	const quint32 AxisColors[3] = { Preferences.mAxisXColor, Preferences.mAxisYColor, Preferences.mAxisZColor };
-	lcVector4 Color = lcVector4FromColor(AxisColors[AxisIndex]);
+	swVector4 Color = swVector4FromColor(AxisColors[AxisIndex]);
 
 	// Selected handles use a lighter version of the axis color.
 	if (Selected)
@@ -32,7 +32,7 @@ lcVector4 lcViewManipulator::GetAxisColor(int AxisIndex, bool Selected)
 
 	return Color;
 }
-const GLushort lcViewManipulator::mRotateMoveIndices[mIndexCount] =
+const GLushort swViewManipulator::mRotateMoveIndices[mIndexCount] =
 {
 	// Move X
 	0, 1, 2, 0, 2, 3, 0, 3, 4, 0, 4, 5, 0, 5, 6, 0, 6, 7, 0, 7, 8, 0, 8, 1,
@@ -76,12 +76,12 @@ const GLushort lcViewManipulator::mRotateMoveIndices[mIndexCount] =
 	308, 304, 303, 307, 308, 303, 301, 304, 308, 301, 308, 305, 307, 303, 302, 306, 307, 302
 };
 
-lcViewManipulator::lcViewManipulator(lcView* View)
+swViewManipulator::swViewManipulator(swView* View)
 	: mView(View)
 {
 }
 
-void lcViewManipulator::CreateResources(lcContext* Context)
+void swViewManipulator::CreateResources(swContext* Context)
 {
 	float* CurVert = mRotateMoveVertices[0].GetFloats();
 
@@ -100,8 +100,8 @@ void lcViewManipulator::CreateResources(lcContext* Context)
 	for (int EdgeIndex = 0; EdgeIndex < 8; EdgeIndex++)
 	{
 		*CurVert++ = OverlayMoveArrowCapSize;
-		*CurVert++ = cosf(LC_2PI * EdgeIndex / 8) * OverlayArrowCapRadius;
-		*CurVert++ = sinf(LC_2PI * EdgeIndex / 8) * OverlayArrowCapRadius;
+		*CurVert++ = cosf(SW_2PI * EdgeIndex / 8) * OverlayArrowCapRadius;
+		*CurVert++ = sinf(SW_2PI * EdgeIndex / 8) * OverlayArrowCapRadius;
 	}
 
 	*CurVert++ = 0.0f; *CurVert++ = -OverlayArrowBodyRadius; *CurVert++ = 0.0f;
@@ -132,8 +132,8 @@ void lcViewManipulator::CreateResources(lcContext* Context)
 
 	for (int EdgeIndex = 0; EdgeIndex < 8; EdgeIndex++)
 	{
-		*CurVert++ = cosf(LC_2PI * EdgeIndex / 8) * OverlayArrowCapRadius;
-		*CurVert++ = sinf(LC_2PI * EdgeIndex / 8) * OverlayArrowCapRadius + OverlayRotateArrowEnd - OverlayArrowCapRadius;
+		*CurVert++ = cosf(SW_2PI * EdgeIndex / 8) * OverlayArrowCapRadius;
+		*CurVert++ = sinf(SW_2PI * EdgeIndex / 8) * OverlayArrowCapRadius + OverlayRotateArrowEnd - OverlayArrowCapRadius;
 		*CurVert++ = OverlayRotateArrowCenter;
 	}
 
@@ -141,17 +141,17 @@ void lcViewManipulator::CreateResources(lcContext* Context)
 
 	for (int EdgeIndex = 0; EdgeIndex < 8; EdgeIndex++)
 	{
-		*CurVert++ = cosf(LC_2PI * EdgeIndex / 8) * OverlayArrowCapRadius;
+		*CurVert++ = cosf(SW_2PI * EdgeIndex / 8) * OverlayArrowCapRadius;
 		*CurVert++ = OverlayRotateArrowCenter;
-		*CurVert++ = sinf(LC_2PI * EdgeIndex / 8) * OverlayArrowCapRadius + OverlayRotateArrowEnd - OverlayArrowCapRadius;
+		*CurVert++ = sinf(SW_2PI * EdgeIndex / 8) * OverlayArrowCapRadius + OverlayRotateArrowEnd - OverlayArrowCapRadius;
 	}
 
 	for (int EdgeIndex = 0; EdgeIndex < 7; EdgeIndex++)
 	{
 		const float Radius1 = OverlayRotateArrowEnd - OverlayArrowCapRadius - OverlayRotateArrowCenter - OverlayArrowBodyRadius;
 		const float Radius2 = OverlayRotateArrowEnd - OverlayArrowCapRadius - OverlayRotateArrowCenter + OverlayArrowBodyRadius;
-		float x = cosf(LC_2PI / 4 * EdgeIndex / 6);
-		float y = sinf(LC_2PI / 4 * EdgeIndex / 6);
+		float x = cosf(SW_2PI / 4 * EdgeIndex / 6);
+		float y = sinf(SW_2PI / 4 * EdgeIndex / 6);
 
 		*CurVert++ = 0.0f;
 		*CurVert++ = OverlayRotateArrowCenter + x * Radius1;
@@ -164,8 +164,8 @@ void lcViewManipulator::CreateResources(lcContext* Context)
 	for (int EdgeIndex = 0; EdgeIndex < 7; EdgeIndex++)
 	{
 		const float Radius = OverlayRotateArrowEnd - OverlayArrowCapRadius - OverlayRotateArrowCenter;
-		float x = cosf(LC_2PI / 4 * EdgeIndex / 6);
-		float y = sinf(LC_2PI / 4 * EdgeIndex / 6);
+		float x = cosf(SW_2PI / 4 * EdgeIndex / 6);
+		float y = sinf(SW_2PI / 4 * EdgeIndex / 6);
 
 		*CurVert++ = -OverlayArrowBodyRadius;
 		*CurVert++ = OverlayRotateArrowCenter + x * Radius;
@@ -214,16 +214,16 @@ void lcViewManipulator::CreateResources(lcContext* Context)
 	for (int EdgeIndex = 0; EdgeIndex < 8; EdgeIndex++)
 	{
 		*CurVert++ = OverlayTrainTrackCenter;
-		*CurVert++ = sinf(LC_2PI * EdgeIndex / 8) * OverlayArrowCapRadius + OverlayTrainTrackEnd + OverlayTrainTrackDistance - OverlayArrowCapRadius;
-		*CurVert++ = cosf(LC_2PI * EdgeIndex / 8) * OverlayArrowCapRadius;
+		*CurVert++ = sinf(SW_2PI * EdgeIndex / 8) * OverlayArrowCapRadius + OverlayTrainTrackEnd + OverlayTrainTrackDistance - OverlayArrowCapRadius;
+		*CurVert++ = cosf(SW_2PI * EdgeIndex / 8) * OverlayArrowCapRadius;
 	}
 
 	for (int EdgeIndex = 0; EdgeIndex < 7; EdgeIndex++)
 	{
 		const float Radius1 = OverlayTrainTrackEnd - OverlayArrowCapRadius - OverlayTrainTrackCenter - OverlayArrowBodyRadius;
 		const float Radius2 = OverlayTrainTrackEnd - OverlayArrowCapRadius - OverlayTrainTrackCenter + OverlayArrowBodyRadius;
-		float x = cosf(LC_2PI / 4 * EdgeIndex / 6);
-		float y = sinf(LC_2PI / 4 * EdgeIndex / 6);
+		float x = cosf(SW_2PI / 4 * EdgeIndex / 6);
+		float y = sinf(SW_2PI / 4 * EdgeIndex / 6);
 
 		*CurVert++ = OverlayTrainTrackCenter + y * Radius1;
 		*CurVert++ = OverlayTrainTrackCenter + OverlayTrainTrackDistance + x * Radius1;
@@ -236,8 +236,8 @@ void lcViewManipulator::CreateResources(lcContext* Context)
 	for (int EdgeIndex = 0; EdgeIndex < 7; EdgeIndex++)
 	{
 		const float Radius = OverlayTrainTrackEnd - OverlayArrowCapRadius - OverlayTrainTrackCenter;
-		float x = cosf(LC_2PI / 4 * EdgeIndex / 6);
-		float y = sinf(LC_2PI / 4 * EdgeIndex / 6);
+		float x = cosf(SW_2PI / 4 * EdgeIndex / 6);
+		float y = sinf(SW_2PI / 4 * EdgeIndex / 6);
 
 		*CurVert++ = OverlayTrainTrackCenter + y * Radius;
 		*CurVert++ = OverlayTrainTrackCenter + OverlayTrainTrackDistance + x * Radius;
@@ -263,8 +263,8 @@ void lcViewManipulator::CreateResources(lcContext* Context)
 	for (int EdgeIndex = 0; EdgeIndex < 7; EdgeIndex++)
 	{
 		const float Radius = OverlayTrainTrackInsertWidth;
-		float x = cosf(LC_2PI * EdgeIndex / 6);
-		float y = sinf(LC_2PI * EdgeIndex / 6);
+		float x = cosf(SW_2PI * EdgeIndex / 6);
+		float y = sinf(SW_2PI * EdgeIndex / 6);
 
 		*CurVert++ = x * Radius + OverlayTrainTrackInsertDistance;
 		*CurVert++ = OverlayTrainTrackInsertLength;
@@ -278,8 +278,8 @@ void lcViewManipulator::CreateResources(lcContext* Context)
 	for (int EdgeIndex = 0; EdgeIndex < 7; EdgeIndex++)
 	{
 		const float Radius = OverlayTrainTrackInsertWidth;
-		float x = cosf(LC_2PI * EdgeIndex / 6);
-		float y = sinf(LC_2PI * EdgeIndex / 6);
+		float x = cosf(SW_2PI * EdgeIndex / 6);
+		float y = sinf(SW_2PI * EdgeIndex / 6);
 
 		*CurVert++ = OverlayTrainTrackInsertLength + OverlayTrainTrackInsertDistance;
 		*CurVert++ = x * Radius;
@@ -305,37 +305,37 @@ void lcViewManipulator::CreateResources(lcContext* Context)
 	mRotateMoveIndexBuffer = Context->CreateIndexBuffer(sizeof(mRotateMoveIndices), mRotateMoveIndices);
 }
 
-void lcViewManipulator::DestroyResources(lcContext* Context)
+void swViewManipulator::DestroyResources(swContext* Context)
 {
 	Context->DestroyVertexBuffer(mRotateMoveVertexBuffer);
 	Context->DestroyIndexBuffer(mRotateMoveIndexBuffer);
 }
 
-void lcViewManipulator::DrawSelectMove(lcTrackButton TrackButton, lcTrackTool TrackTool, quint32 TrackToolSection)
+void swViewManipulator::DrawSelectMove(swTrackButton TrackButton, swTrackTool TrackTool, quint32 TrackToolSection)
 {
-	const lcCamera* Camera = mView->GetCamera();
-	lcContext* Context = mView->mContext;
+	const swCamera* Camera = mView->GetCamera();
+	swContext* Context = mView->mContext;
 
-	Context->SetMaterial(lcMaterialType::UnlitColor);
+	Context->SetMaterial(swMaterialType::UnlitColor);
 	Context->SetViewMatrix(Camera->mWorldView);
 	Context->SetProjectionMatrix(mView->GetProjectionMatrix());
 
 	Context->EnableDepthTest(false);
 
-	lcVector3 OverlayCenter;
-	lcMatrix33 RelativeRotation;
-	lcModel* ActiveModel = mView->GetActiveModel();
+	swVector3 OverlayCenter;
+	swMatrix33 RelativeRotation;
+	swModel* ActiveModel = mView->GetActiveModel();
 	ActiveModel->GetMoveRotateTransform(OverlayCenter, RelativeRotation);
 	bool AnyPiecesSelected = ActiveModel->AnyPiecesSelected();
-	lcObject* Focus = ActiveModel->GetFocusObject();
+	swObject* Focus = ActiveModel->GetFocusObject();
 
-	lcMatrix44 WorldMatrix = lcMatrix44(RelativeRotation, OverlayCenter);
+	swMatrix44 WorldMatrix = swMatrix44(RelativeRotation, OverlayCenter);
 
 	if (ActiveModel != mView->GetModel())
-		WorldMatrix = lcMul(WorldMatrix, mView->GetActiveSubmodelTransform());
+		WorldMatrix = swMul(WorldMatrix, mView->GetActiveSubmodelTransform());
 
 	const float OverlayScale = mView->GetOverlayScale();
-	WorldMatrix = lcMul(lcMatrix44Scale(lcVector3(OverlayScale, OverlayScale, OverlayScale)), WorldMatrix);
+	WorldMatrix = swMul(swMatrix44Scale(swVector3(OverlayScale, OverlayScale, OverlayScale)), WorldMatrix);
 
 	Context->SetWorldMatrix(WorldMatrix);
 	Context->SetLineWidth(1.0f);
@@ -344,13 +344,13 @@ void lcViewManipulator::DrawSelectMove(lcTrackButton TrackButton, lcTrackTool Tr
 	Context->SetVertexBuffer(mRotateMoveVertexBuffer);
 	Context->SetVertexFormatPosition(3);
 
-	quint32 AllowedTransforms = Focus ? Focus->GetAllowedTransforms() : LC_OBJECT_TRANSFORM_MOVE_X | LC_OBJECT_TRANSFORM_MOVE_Y | LC_OBJECT_TRANSFORM_MOVE_Z | LC_OBJECT_TRANSFORM_ROTATE_X | LC_OBJECT_TRANSFORM_ROTATE_Y | LC_OBJECT_TRANSFORM_ROTATE_Z;
+	quint32 AllowedTransforms = Focus ? Focus->GetAllowedTransforms() : SW_OBJECT_TRANSFORM_MOVE_X | SW_OBJECT_TRANSFORM_MOVE_Y | SW_OBJECT_TRANSFORM_MOVE_Z | SW_OBJECT_TRANSFORM_ROTATE_X | SW_OBJECT_TRANSFORM_ROTATE_Y | SW_OBJECT_TRANSFORM_ROTATE_Z;
 
-	if (TrackButton == lcTrackButton::None)
+	if (TrackButton == swTrackButton::None)
 	{
-		if (AllowedTransforms & LC_OBJECT_TRANSFORM_MOVE_X)
+		if (AllowedTransforms & SW_OBJECT_TRANSFORM_MOVE_X)
 		{
-			if ((TrackTool == lcTrackTool::MoveX) || (TrackTool == lcTrackTool::MoveXY) || (TrackTool == lcTrackTool::MoveXZ))
+			if ((TrackTool == swTrackTool::MoveX) || (TrackTool == swTrackTool::MoveXY) || (TrackTool == swTrackTool::MoveXZ))
 			{
 				Context->SetColor(GetAxisColor(0, true));
 				Context->DrawIndexedPrimitives(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0);
@@ -362,9 +362,9 @@ void lcViewManipulator::DrawSelectMove(lcTrackButton TrackButton, lcTrackTool Tr
 			}
 		}
 
-		if (AllowedTransforms & LC_OBJECT_TRANSFORM_MOVE_Y)
+		if (AllowedTransforms & SW_OBJECT_TRANSFORM_MOVE_Y)
 		{
-			if (((TrackTool == lcTrackTool::MoveY) || (TrackTool == lcTrackTool::MoveXY) || (TrackTool == lcTrackTool::MoveYZ)) && (AllowedTransforms & LC_OBJECT_TRANSFORM_MOVE_Y))
+			if (((TrackTool == swTrackTool::MoveY) || (TrackTool == swTrackTool::MoveXY) || (TrackTool == swTrackTool::MoveYZ)) && (AllowedTransforms & SW_OBJECT_TRANSFORM_MOVE_Y))
 			{
 				Context->SetColor(GetAxisColor(1, true));
 				Context->DrawIndexedPrimitives(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 36 * 2);
@@ -376,9 +376,9 @@ void lcViewManipulator::DrawSelectMove(lcTrackButton TrackButton, lcTrackTool Tr
 			}
 		}
 
-		if (AllowedTransforms & LC_OBJECT_TRANSFORM_MOVE_Z)
+		if (AllowedTransforms & SW_OBJECT_TRANSFORM_MOVE_Z)
 		{
-			if (((TrackTool == lcTrackTool::MoveZ) || (TrackTool == lcTrackTool::MoveXZ) || (TrackTool == lcTrackTool::MoveYZ)) && (AllowedTransforms & LC_OBJECT_TRANSFORM_MOVE_Z))
+			if (((TrackTool == swTrackTool::MoveZ) || (TrackTool == swTrackTool::MoveXZ) || (TrackTool == swTrackTool::MoveYZ)) && (AllowedTransforms & SW_OBJECT_TRANSFORM_MOVE_Z))
 			{
 				Context->SetColor(GetAxisColor(2, true));
 				Context->DrawIndexedPrimitives(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 72 * 2);
@@ -391,11 +391,11 @@ void lcViewManipulator::DrawSelectMove(lcTrackButton TrackButton, lcTrackTool Tr
 		}
 	}
 
-	if (gMainWindow->GetTool() == lcTool::Select && TrackButton == lcTrackButton::None && AnyPiecesSelected)
+	if (gMainWindow->GetTool() == swTool::Select && TrackButton == swTrackButton::None && AnyPiecesSelected)
 	{
-		if (AllowedTransforms & LC_OBJECT_TRANSFORM_ROTATE_X)
+		if (AllowedTransforms & SW_OBJECT_TRANSFORM_ROTATE_X)
 		{
-			if (TrackTool == lcTrackTool::RotateX)
+			if (TrackTool == swTrackTool::RotateX)
 				Context->SetColor(GetAxisColor(0, true));
 			else
 				Context->SetColor(GetAxisColor(0, false));
@@ -403,9 +403,9 @@ void lcViewManipulator::DrawSelectMove(lcTrackButton TrackButton, lcTrackTool Tr
 			Context->DrawIndexedPrimitives(GL_TRIANGLES, 120, GL_UNSIGNED_SHORT, 108 * 2);
 		}
 
-		if (AllowedTransforms & LC_OBJECT_TRANSFORM_ROTATE_Y)
+		if (AllowedTransforms & SW_OBJECT_TRANSFORM_ROTATE_Y)
 		{
-			if (TrackTool == lcTrackTool::RotateY)
+			if (TrackTool == swTrackTool::RotateY)
 				Context->SetColor(GetAxisColor(1, true));
 			else
 				Context->SetColor(GetAxisColor(1, false));
@@ -413,9 +413,9 @@ void lcViewManipulator::DrawSelectMove(lcTrackButton TrackButton, lcTrackTool Tr
 			Context->DrawIndexedPrimitives(GL_TRIANGLES, 120, GL_UNSIGNED_SHORT, (108 + 120) * 2);
 		}
 
-		if (AllowedTransforms & LC_OBJECT_TRANSFORM_ROTATE_Z)
+		if (AllowedTransforms & SW_OBJECT_TRANSFORM_ROTATE_Z)
 		{
-			if (TrackTool == lcTrackTool::RotateZ)
+			if (TrackTool == swTrackTool::RotateZ)
 				Context->SetColor(GetAxisColor(2, true));
 			else
 				Context->SetColor(GetAxisColor(2, false));
@@ -424,17 +424,17 @@ void lcViewManipulator::DrawSelectMove(lcTrackButton TrackButton, lcTrackTool Tr
 		}
 	}
 
-	if ((TrackButton == lcTrackButton::None) && ((TrackTool == lcTrackTool::MoveXY) || (TrackTool == lcTrackTool::MoveXZ) || (TrackTool == lcTrackTool::MoveYZ)))
+	if ((TrackButton == swTrackButton::None) && ((TrackTool == swTrackTool::MoveXY) || (TrackTool == swTrackTool::MoveXZ) || (TrackTool == swTrackTool::MoveYZ)))
 	{
 		Context->EnableColorBlend(true);
 
 		Context->SetColor(0.8f, 0.8f, 0.0f, 0.3f);
 
-		if (TrackTool == lcTrackTool::MoveXY)
+		if (TrackTool == swTrackTool::MoveXY)
 			Context->DrawIndexedPrimitives(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_SHORT, (108 + 360 + 8) * 2);
-		else if (TrackTool == lcTrackTool::MoveXZ)
+		else if (TrackTool == swTrackTool::MoveXZ)
 			Context->DrawIndexedPrimitives(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_SHORT, (108 + 360 + 4) * 2);
-		else if (TrackTool == lcTrackTool::MoveYZ)
+		else if (TrackTool == swTrackTool::MoveYZ)
 			Context->DrawIndexedPrimitives(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_SHORT, (108 + 360) * 2);
 
 		Context->EnableColorBlend(false);
@@ -442,30 +442,30 @@ void lcViewManipulator::DrawSelectMove(lcTrackButton TrackButton, lcTrackTool Tr
 
 	if (Focus && Focus->IsPiece())
 	{
-		lcPiece* Piece = (lcPiece*)Focus;
+		swPiece* Piece = (swPiece*)Focus;
 		quint32 Section = Piece->GetFocusSection();
 
-		if (Section >= LC_PIECE_SECTION_CONTROL_POINT_FIRST && Section <= LC_PIECE_SECTION_CONTROL_POINT_LAST && Piece->mPieceData->GetSynthInfo() && Piece->mPieceData->GetSynthInfo()->IsCurve())
+		if (Section >= SW_PIECE_SECTION_CONTROL_POINT_FIRST && Section <= SW_PIECE_SECTION_CONTROL_POINT_LAST && Piece->mPieceData->GetSynthInfo() && Piece->mPieceData->GetSynthInfo()->IsCurve())
 		{
-			int ControlPointIndex = Section - LC_PIECE_SECTION_CONTROL_POINT_FIRST;
+			int ControlPointIndex = Section - SW_PIECE_SECTION_CONTROL_POINT_FIRST;
 			float Strength = Piece->GetControlPoints()[ControlPointIndex].Scale;
 			const float ScaleStart = 2.0f;
 			float Length = ScaleStart + Strength / OverlayScale;
 			const float OverlayScaleInnerRadius = 0.075f;
 			const float OverlayScaleRadius = 0.125f;
 
-			lcVector3 Verts[38];
+			swVector3 Verts[38];
 			int NumVerts = 0;
 
-			Verts[NumVerts++] = lcVector3(Length - OverlayScaleRadius, 0.0f, 0.0f);
-			Verts[NumVerts++] = lcVector3(OverlayScaleRadius - Length, 0.0f, 0.0f);
+			Verts[NumVerts++] = swVector3(Length - OverlayScaleRadius, 0.0f, 0.0f);
+			Verts[NumVerts++] = swVector3(OverlayScaleRadius - Length, 0.0f, 0.0f);
 
 			float SinTable[9], CosTable[9];
 
 			for (int Step = 0; Step <= 8; Step++)
 			{
-				SinTable[Step] = sinf((float)Step / 8.0f * LC_2PI);
-				CosTable[Step] = cosf((float)Step / 8.0f * LC_2PI);
+				SinTable[Step] = sinf((float)Step / 8.0f * SW_2PI);
+				CosTable[Step] = cosf((float)Step / 8.0f * SW_2PI);
 			}
 
 			for (int Step = 0; Step <= 8; Step++)
@@ -473,8 +473,8 @@ void lcViewManipulator::DrawSelectMove(lcTrackButton TrackButton, lcTrackTool Tr
 				float x = CosTable[Step];
 				float y = SinTable[Step];
 
-				Verts[NumVerts++] = lcVector3(Length + x * OverlayScaleInnerRadius, 0.0f, y * OverlayScaleInnerRadius);
-				Verts[NumVerts++] = lcVector3(Length + x * OverlayScaleRadius, 0.0f, y * OverlayScaleRadius);
+				Verts[NumVerts++] = swVector3(Length + x * OverlayScaleInnerRadius, 0.0f, y * OverlayScaleInnerRadius);
+				Verts[NumVerts++] = swVector3(Length + x * OverlayScaleRadius, 0.0f, y * OverlayScaleRadius);
 			}
 
 			for (int Step = 0; Step <= 8; Step++)
@@ -482,11 +482,11 @@ void lcViewManipulator::DrawSelectMove(lcTrackButton TrackButton, lcTrackTool Tr
 				float x = CosTable[Step];
 				float y = SinTable[Step];
 
-				Verts[NumVerts++] = lcVector3(-Length + x * OverlayScaleInnerRadius, 0.0f, y * OverlayScaleInnerRadius);
-				Verts[NumVerts++] = lcVector3(-Length + x * OverlayScaleRadius, 0.0f, y * OverlayScaleRadius);
+				Verts[NumVerts++] = swVector3(-Length + x * OverlayScaleInnerRadius, 0.0f, y * OverlayScaleInnerRadius);
+				Verts[NumVerts++] = swVector3(-Length + x * OverlayScaleRadius, 0.0f, y * OverlayScaleRadius);
 			}
 
-			if (TrackTool == lcTrackTool::ScalePlus || TrackTool == lcTrackTool::ScaleMinus)
+			if (TrackTool == swTrackTool::ScalePlus || TrackTool == swTrackTool::ScaleMinus)
 				Context->SetColor(0.8f, 0.8f, 0.0f, 0.3f);
 			else
 				Context->SetColor(0.0f, 0.0f, 0.8f, 1.0f);
@@ -499,21 +499,21 @@ void lcViewManipulator::DrawSelectMove(lcTrackButton TrackButton, lcTrackTool Tr
 			Context->DrawPrimitives(GL_TRIANGLE_STRIP, 2, 18);
 			Context->DrawPrimitives(GL_TRIANGLE_STRIP, 20, 18);
 		}
-		else if (Piece->mPieceData->GetTrainTrackInfo() && TrackButton == lcTrackButton::None)
+		else if (Piece->mPieceData->GetTrainTrackInfo() && TrackButton == swTrackButton::None)
 		{
 			DrawTrainTrack(Piece, Context, TrackTool, TrackToolSection);
 		}
 	}
 
-	lcVector3 MoveStartPosition, MoveEndPosition;
+	swVector3 MoveStartPosition, MoveEndPosition;
 	if (ActiveModel->GetMouseToolMovePositions(MoveStartPosition, MoveEndPosition))
 	{
-		const float MoveDistance = lcLength(MoveEndPosition - MoveStartPosition);
+		const float MoveDistance = swLength(MoveEndPosition - MoveStartPosition);
 
 		if (ActiveModel != mView->GetModel())
 		{
-			MoveStartPosition = lcMul31(MoveStartPosition, mView->GetActiveSubmodelTransform());
-			MoveEndPosition = lcMul31(MoveEndPosition, mView->GetActiveSubmodelTransform());
+			MoveStartPosition = swMul31(MoveStartPosition, mView->GetActiveSubmodelTransform());
+			MoveEndPosition = swMul31(MoveEndPosition, mView->GetActiveSubmodelTransform());
 		}
 
 		DrawMoveDistance(TrackButton, TrackTool, MoveStartPosition, MoveEndPosition, MoveDistance);
@@ -522,19 +522,19 @@ void lcViewManipulator::DrawSelectMove(lcTrackButton TrackButton, lcTrackTool Tr
 	Context->EnableDepthTest(true);
 }
 
-void lcViewManipulator::DrawTrainTrack(lcPiece* Piece, lcContext* Context, lcTrackTool TrackTool, quint32 TrackToolSection)
+void swViewManipulator::DrawTrainTrack(swPiece* Piece, swContext* Context, swTrackTool TrackTool, quint32 TrackToolSection)
 {
-	const lcPreferences& Preferences = lcGetPreferences();
-	const lcVector4 TrainTrackColor = lcVector4FromColor(Preferences.mControlPointColor);
+	const swPreferences& Preferences = swGetPreferences();
+	const swVector4 TrainTrackColor = swVector4FromColor(Preferences.mControlPointColor);
 
-	if (Piece->GetFocusSection() >= LC_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST)
+	if (Piece->GetFocusSection() >= SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST)
 	{
-		quint32 ConnectionIndex = Piece->GetFocusSection() - LC_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST;
+		quint32 ConnectionIndex = Piece->GetFocusSection() - SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST;
 		bool CanAdd = !Piece->IsTrainTrackConnected(ConnectionIndex);
 
 		Context->SetColor(TrainTrackColor);
 
-		if (TrackTool == lcTrackTool::RotateTrainTrackRight)
+		if (TrackTool == swTrackTool::RotateTrainTrackRight)
 		{
 			Context->DrawIndexedPrimitives(GL_TRIANGLES, 96, GL_UNSIGNED_SHORT, (108 + 360 + 12 + 96) * 2);
 
@@ -544,7 +544,7 @@ void lcViewManipulator::DrawTrainTrack(lcPiece* Piece, lcContext* Context, lcTra
 			Context->SetColor(0.8f, 0.8f, 0.0f, 1.0f);
 			Context->DrawIndexedPrimitives(GL_TRIANGLES, 96, GL_UNSIGNED_SHORT, (108 + 360 + 12) * 2);
 		}
-		else if (TrackTool == lcTrackTool::RotateTrainTrackLeft)
+		else if (TrackTool == swTrackTool::RotateTrainTrackLeft)
 		{
 			Context->DrawIndexedPrimitives(GL_TRIANGLES, 96, GL_UNSIGNED_SHORT, (108 + 360 + 12) * 2);
 
@@ -554,7 +554,7 @@ void lcViewManipulator::DrawTrainTrack(lcPiece* Piece, lcContext* Context, lcTra
 			Context->SetColor(0.8f, 0.8f, 0.0f, 1.0f);
 			Context->DrawIndexedPrimitives(GL_TRIANGLES, 96, GL_UNSIGNED_SHORT, (108 + 360 + 12 + 96) * 2);
 		}
-		else if (TrackTool == lcTrackTool::InsertTrainTrack)
+		else if (TrackTool == swTrackTool::InsertTrainTrack)
 		{
 			Context->DrawIndexedPrimitives(GL_TRIANGLES, 192, GL_UNSIGNED_SHORT, (108 + 360 + 12) * 2);
 
@@ -574,26 +574,26 @@ void lcViewManipulator::DrawTrainTrack(lcPiece* Piece, lcContext* Context, lcTra
 	}
 	else
 	{
-		const lcTrainTrackInfo* TrainTrackInfo = Piece->mPieceData->GetTrainTrackInfo();
-		const std::vector<lcTrainTrackConnection>& Connections = TrainTrackInfo->GetConnections();
+		const swTrainTrackInfo* TrainTrackInfo = Piece->mPieceData->GetTrainTrackInfo();
+		const std::vector<swTrainTrackConnection>& Connections = TrainTrackInfo->GetConnections();
 
 		for (quint32 ConnectionIndex = 0; ConnectionIndex < Connections.size(); ConnectionIndex++)
 		{
 			if (Piece->IsTrainTrackConnected(ConnectionIndex))
 				continue;
 
-			lcMatrix44 WorldMatrix = lcMul(Connections[ConnectionIndex].Transform, Piece->mModelWorld);
-			lcModel* ActiveModel = mView->GetActiveModel();
+			swMatrix44 WorldMatrix = swMul(Connections[ConnectionIndex].Transform, Piece->mModelWorld);
+			swModel* ActiveModel = mView->GetActiveModel();
 
 			if (ActiveModel != mView->GetModel())
-				WorldMatrix = lcMul(WorldMatrix, mView->GetActiveSubmodelTransform());
+				WorldMatrix = swMul(WorldMatrix, mView->GetActiveSubmodelTransform());
 
 			const float OverlayScale = mView->GetOverlayScale();
-			WorldMatrix = lcMul(lcMatrix44Scale(lcVector3(OverlayScale, OverlayScale, OverlayScale)), WorldMatrix);
+			WorldMatrix = swMul(swMatrix44Scale(swVector3(OverlayScale, OverlayScale, OverlayScale)), WorldMatrix);
 
 			Context->SetWorldMatrix(WorldMatrix);
 
-			if (TrackToolSection == LC_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST + ConnectionIndex && TrackTool != lcTrackTool::SelectTrainTrack)
+			if (TrackToolSection == SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST + ConnectionIndex && TrackTool != swTrackTool::SelectTrainTrack)
 				Context->SetColor(0.8f, 0.8f, 0.0f, 1.0f);
 			else
 				Context->SetColor(TrainTrackColor);
@@ -602,28 +602,28 @@ void lcViewManipulator::DrawTrainTrack(lcPiece* Piece, lcContext* Context, lcTra
 		}
 	}
 
-	const lcVector4 ConnectionColor = lcVector4FromColor(Preferences.mControlPointColor);
-	const lcVector4 ConnectionFocusedColor = lcVector4FromColor(Preferences.mControlPointFocusedColor);
+	const swVector4 ConnectionColor = swVector4FromColor(Preferences.mControlPointColor);
+	const swVector4 ConnectionFocusedColor = swVector4FromColor(Preferences.mControlPointFocusedColor);
 
-	const lcTrainTrackInfo* TrainTrackInfo = Piece->mPieceData->GetTrainTrackInfo();
-	const std::vector<lcTrainTrackConnection>& Connections = TrainTrackInfo->GetConnections();
+	const swTrainTrackInfo* TrainTrackInfo = Piece->mPieceData->GetTrainTrackInfo();
+	const std::vector<swTrainTrackConnection>& Connections = TrainTrackInfo->GetConnections();
 
 	for (quint32 ConnectionIndex = 0; ConnectionIndex < Connections.size(); ConnectionIndex++)
 	{
-		lcMatrix44 WorldMatrix = lcMul(Connections[ConnectionIndex].Transform, Piece->mModelWorld);
-		lcModel* ActiveModel = mView->GetActiveModel();
+		swMatrix44 WorldMatrix = swMul(Connections[ConnectionIndex].Transform, Piece->mModelWorld);
+		swModel* ActiveModel = mView->GetActiveModel();
 
 		if (ActiveModel != mView->GetModel())
-			WorldMatrix = lcMul(WorldMatrix, mView->GetActiveSubmodelTransform());
+			WorldMatrix = swMul(WorldMatrix, mView->GetActiveSubmodelTransform());
 
 		const float OverlayScale = mView->GetOverlayScale();
-		WorldMatrix = lcMul(lcMatrix44Scale(lcVector3(OverlayScale, OverlayScale, OverlayScale)), WorldMatrix);
+		WorldMatrix = swMul(swMatrix44Scale(swVector3(OverlayScale, OverlayScale, OverlayScale)), WorldMatrix);
 
 		Context->SetWorldMatrix(WorldMatrix);
 
-		if (Piece->IsFocused(LC_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST + ConnectionIndex))
+		if (Piece->IsFocused(SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST + ConnectionIndex))
 			Context->SetColor(ConnectionFocusedColor);
-		else if (TrackToolSection == LC_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST + ConnectionIndex && TrackTool == lcTrackTool::SelectTrainTrack)
+		else if (TrackToolSection == SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST + ConnectionIndex && TrackTool == swTrackTool::SelectTrainTrack)
 			Context->SetColor(0.8f, 0.8f, 0.0f, 1.0f);
 		else
 			Context->SetColor(ConnectionColor);
@@ -632,24 +632,24 @@ void lcViewManipulator::DrawTrainTrack(lcPiece* Piece, lcContext* Context, lcTra
 	}
 }
 
-bool lcViewManipulator::GetRotationWorldMatrix(lcMatrix44& WorldMatrix) const
+bool swViewManipulator::GetRotationWorldMatrix(swMatrix44& WorldMatrix) const
 {
-	lcVector3 OverlayCenter;
-	lcMatrix33 RelativeRotation;
-	lcModel* ActiveModel = mView->GetActiveModel();
+	swVector3 OverlayCenter;
+	swMatrix33 RelativeRotation;
+	swModel* ActiveModel = mView->GetActiveModel();
 
 	if (!ActiveModel->GetMoveRotateTransform(OverlayCenter, RelativeRotation))
 		return false;
 
-	WorldMatrix = lcMatrix44(RelativeRotation, OverlayCenter);
+	WorldMatrix = swMatrix44(RelativeRotation, OverlayCenter);
 
 	if (ActiveModel != mView->GetModel())
-		WorldMatrix = lcMul(WorldMatrix, mView->GetActiveSubmodelTransform());
+		WorldMatrix = swMul(WorldMatrix, mView->GetActiveSubmodelTransform());
 
 	return true;
 }
 
-lcTrackTool lcViewManipulator::GetRotationAxis(const lcVector3& LocalIntersection, float Epsilon)
+swTrackTool swViewManipulator::GetRotationAxis(const swVector3& LocalIntersection, float Epsilon)
 {
 	const float dx = fabsf(LocalIntersection[0]);
 	const float dy = fabsf(LocalIntersection[1]);
@@ -658,104 +658,104 @@ lcTrackTool lcViewManipulator::GetRotationAxis(const lcVector3& LocalIntersectio
 	if (dx < dy)
 	{
 		if (dx < dz)
-			return dx < Epsilon ? lcTrackTool::RotateX : lcTrackTool::None;
+			return dx < Epsilon ? swTrackTool::RotateX : swTrackTool::None;
 
-		return dz < Epsilon ? lcTrackTool::RotateZ : lcTrackTool::None;
+		return dz < Epsilon ? swTrackTool::RotateZ : swTrackTool::None;
 	}
 
 	if (dy < dz)
-		return dy < Epsilon ? lcTrackTool::RotateY : lcTrackTool::None;
+		return dy < Epsilon ? swTrackTool::RotateY : swTrackTool::None;
 
-	return dz < Epsilon ? lcTrackTool::RotateZ : lcTrackTool::None;
+	return dz < Epsilon ? swTrackTool::RotateZ : swTrackTool::None;
 }
 
-std::optional<lcViewManipulator::lcRotationDiscInfo> lcViewManipulator::GetRotationDiscInfo(lcTrackTool TrackTool)
+std::optional<swViewManipulator::swRotationDiscInfo> swViewManipulator::GetRotationDiscInfo(swTrackTool TrackTool)
 {
 	switch (TrackTool)
 	{
-	case lcTrackTool::RotateX:
-		return lcRotationDiscInfo{ 0, mOverlayRotateRadius, lcVector4(0.0f, 0.0f, 0.0f, 1.0f), GetAxisColor(0, false), GetAxisColor(0, true), false };
+	case swTrackTool::RotateX:
+		return swRotationDiscInfo{ 0, mOverlayRotateRadius, swVector4(0.0f, 0.0f, 0.0f, 1.0f), GetAxisColor(0, false), GetAxisColor(0, true), false };
 
-	case lcTrackTool::RotateY:
-		return lcRotationDiscInfo{ 1, mOverlayRotateRadius, lcVector4(90.0f, 0.0f, 0.0f, 1.0f), GetAxisColor(1, false), GetAxisColor(1, true), false };
+	case swTrackTool::RotateY:
+		return swRotationDiscInfo{ 1, mOverlayRotateRadius, swVector4(90.0f, 0.0f, 0.0f, 1.0f), GetAxisColor(1, false), GetAxisColor(1, true), false };
 
-	case lcTrackTool::RotateZ:
-		return lcRotationDiscInfo{ 2, mOverlayRotateRadius, lcVector4(90.0f, 0.0f, -1.0f, 0.0f), GetAxisColor(2, false), GetAxisColor(2, true), false };
+	case swTrackTool::RotateZ:
+		return swRotationDiscInfo{ 2, mOverlayRotateRadius, swVector4(90.0f, 0.0f, -1.0f, 0.0f), GetAxisColor(2, false), GetAxisColor(2, true), false };
 
-	case lcTrackTool::RotateCamera:
-		return lcRotationDiscInfo{ 0, mOverlayRotateCameraRadius, lcVector4(0.0f, 0.0f, 0.0f, 1.0f), mColorCamera, mColorCameraSelected, true };
+	case swTrackTool::RotateCamera:
+		return swRotationDiscInfo{ 0, mOverlayRotateCameraRadius, swVector4(0.0f, 0.0f, 0.0f, 1.0f), mColorCamera, mColorCameraSelected, true };
 
 	default:
 		return std::nullopt;
 	}
 }
 
-std::optional<lcViewManipulator::lcMoveAxisInfo> lcViewManipulator::GetMoveAxisInfo(lcTrackTool TrackTool)
+std::optional<swViewManipulator::swMoveAxisInfo> swViewManipulator::GetMoveAxisInfo(swTrackTool TrackTool)
 {
 	switch (TrackTool)
 	{
-	case lcTrackTool::MoveX:
-		return lcMoveAxisInfo{ GetAxisColor(0, true) };
+	case swTrackTool::MoveX:
+		return swMoveAxisInfo{ GetAxisColor(0, true) };
 
-	case lcTrackTool::MoveY:
-		return lcMoveAxisInfo{ GetAxisColor(1, true) };
+	case swTrackTool::MoveY:
+		return swMoveAxisInfo{ GetAxisColor(1, true) };
 
-	case lcTrackTool::MoveZ:
-		return lcMoveAxisInfo{ GetAxisColor(2, true) };
+	case swTrackTool::MoveZ:
+		return swMoveAxisInfo{ GetAxisColor(2, true) };
 
 	default:
 		return std::nullopt;
 	}
 }
 
-lcMatrix44 lcViewManipulator::GetRotationDiscWorldMatrix(const lcRotationDiscInfo& DiscInfo, const lcMatrix44& WorldMatrix) const
+swMatrix44 swViewManipulator::GetRotationDiscWorldMatrix(const swRotationDiscInfo& DiscInfo, const swMatrix44& WorldMatrix) const
 {
 	if (!DiscInfo.CameraFacing)
-		return lcMul(lcMatrix44FromAxisAngle(lcVector3(DiscInfo.Rotation[1], DiscInfo.Rotation[2], DiscInfo.Rotation[3]), DiscInfo.Rotation[0] * LC_DTOR), WorldMatrix);
+		return swMul(swMatrix44FromAxisAngle(swVector3(DiscInfo.Rotation[1], DiscInfo.Rotation[2], DiscInfo.Rotation[3]), DiscInfo.Rotation[0] * SW_DTOR), WorldMatrix);
 
-	lcMatrix44 CameraWorldMatrix = lcMatrix44AffineInverse(mView->GetCamera()->mWorldView);
+	swMatrix44 CameraWorldMatrix = swMatrix44AffineInverse(mView->GetCamera()->mWorldView);
 	CameraWorldMatrix.SetTranslation(WorldMatrix.GetTranslation());
 	return CameraWorldMatrix;
 }
 
-float lcViewManipulator::GetRotationDiscStartAngle(const lcRotationDiscInfo& DiscInfo, const lcMatrix44& DiscWorldMatrix) const
+float swViewManipulator::GetRotationDiscStartAngle(const swRotationDiscInfo& DiscInfo, const swMatrix44& DiscWorldMatrix) const
 {
 	if (DiscInfo.CameraFacing)
-		return mView->GetCameraRotationStartAngle() * LC_RTOD;
+		return mView->GetCameraRotationStartAngle() * SW_RTOD;
 
-	lcVector3 MouseDownRay[2] =
+	swVector3 MouseDownRay[2] =
 	{
-		lcVector3((float)mView->GetMouseDownX(), (float)mView->GetMouseDownY(), 0.0f),
-		lcVector3((float)mView->GetMouseDownX(), (float)mView->GetMouseDownY(), 1.0f)
+		swVector3((float)mView->GetMouseDownX(), (float)mView->GetMouseDownY(), 0.0f),
+		swVector3((float)mView->GetMouseDownX(), (float)mView->GetMouseDownY(), 1.0f)
 	};
 	mView->UnprojectPoints(MouseDownRay, 2);
 
-	const lcVector3 Center = DiscWorldMatrix.GetTranslation();
-	const lcVector3 Normal = lcNormalize(lcMul30(lcVector3(1.0f, 0.0f, 0.0f), DiscWorldMatrix));
-	const lcVector4 Plane(Normal, -lcDot(Normal, Center));
-	lcVector3 Intersection;
+	const swVector3 Center = DiscWorldMatrix.GetTranslation();
+	const swVector3 Normal = swNormalize(swMul30(swVector3(1.0f, 0.0f, 0.0f), DiscWorldMatrix));
+	const swVector4 Plane(Normal, -swDot(Normal, Center));
+	swVector3 Intersection;
 
-	if (!lcLineSegmentPlaneIntersection(&Intersection, MouseDownRay[0], MouseDownRay[1], Plane))
+	if (!swLineSegmentPlaneIntersection(&Intersection, MouseDownRay[0], MouseDownRay[1], Plane))
 		return 0.0f;
 
-	const lcVector3 LocalPoint = lcMul(Intersection - Center, lcMatrix33AffineInverse(lcMatrix33(DiscWorldMatrix)));
-	return -atan2f(LocalPoint[2], LocalPoint[1]) * LC_RTOD;
+	const swVector3 LocalPoint = swMul(Intersection - Center, swMatrix33AffineInverse(swMatrix33(DiscWorldMatrix)));
+	return -atan2f(LocalPoint[2], LocalPoint[1]) * SW_RTOD;
 }
 
-void lcViewManipulator::DrawTrackballHover(const lcMatrix44& WorldMatrix, float OverlayScale) const
+void swViewManipulator::DrawTrackballHover(const swMatrix44& WorldMatrix, float OverlayScale) const
 {
-	lcContext* Context = mView->mContext;
-	lcMatrix44 Mat = lcMatrix44AffineInverse(mView->GetCamera()->mWorldView);
+	swContext* Context = mView->mContext;
+	swMatrix44 Mat = swMatrix44AffineInverse(mView->GetCamera()->mWorldView);
 	Mat.SetTranslation(WorldMatrix.GetTranslation());
 
 	constexpr int SegmentCount = 32;
-	lcVector3 Verts[SegmentCount + 2];
-	Verts[0] = lcVector3(0.0f, 0.0f, 0.0f);
+	swVector3 Verts[SegmentCount + 2];
+	Verts[0] = swVector3(0.0f, 0.0f, 0.0f);
 
 	for (int SegmentIndex = 0; SegmentIndex <= SegmentCount; SegmentIndex++)
 	{
-		const float Angle = LC_2PI * SegmentIndex / SegmentCount;
-		Verts[SegmentIndex + 1] = lcVector3(cosf(Angle) * mOverlayRotateRadius * OverlayScale, sinf(Angle) * mOverlayRotateRadius * OverlayScale, 0.0f);
+		const float Angle = SW_2PI * SegmentIndex / SegmentCount;
+		Verts[SegmentIndex + 1] = swVector3(cosf(Angle) * mOverlayRotateRadius * OverlayScale, sinf(Angle) * mOverlayRotateRadius * OverlayScale, 0.0f);
 	}
 
 	Context->SetColor(mColorTrackball);
@@ -767,22 +767,22 @@ void lcViewManipulator::DrawTrackballHover(const lcMatrix44& WorldMatrix, float 
 	Context->EnableColorBlend(false);
 }
 
-bool lcViewManipulator::DrawRotationDisc(lcTrackButton TrackButton, const lcVector3& MouseToolDistance, const std::optional<lcRotationDiscInfo>& RotationDisc, const lcMatrix44& WorldMatrix, float OverlayScale) const
+bool swViewManipulator::DrawRotationDisc(swTrackButton TrackButton, const swVector3& MouseToolDistance, const std::optional<swRotationDiscInfo>& RotationDisc, const swMatrix44& WorldMatrix, float OverlayScale) const
 {
-	if (lcIsZero(MouseToolDistance) || TrackButton == lcTrackButton::None || !RotationDisc)
+	if (swIsZero(MouseToolDistance) || TrackButton == swTrackButton::None || !RotationDisc)
 		return false;
 
-	lcContext* Context = mView->mContext;
-	const lcRotationDiscInfo& DiscInfo = *RotationDisc;
+	swContext* Context = mView->mContext;
+	const swRotationDiscInfo& DiscInfo = *RotationDisc;
 	const float Radius = DiscInfo.Radius;
-	const lcMatrix44 RotatedWorldMatrix = GetRotationDiscWorldMatrix(DiscInfo, WorldMatrix);
+	const swMatrix44 RotatedWorldMatrix = GetRotationDiscWorldMatrix(DiscInfo, WorldMatrix);
 
 	Context->SetColor(DiscInfo.FillColor[0], DiscInfo.FillColor[1], DiscInfo.FillColor[2], 0.3f);
 	Context->SetWorldMatrix(RotatedWorldMatrix);
 	Context->EnableColorBlend(true);
 
-	lcVector3 Verts[33];
-	Verts[0] = lcVector3(0.0f, 0.0f, 0.0f);
+	swVector3 Verts[33];
+	Verts[0] = swVector3(0.0f, 0.0f, 0.0f);
 	int NumVerts = 1;
 
 	Context->SetVertexBufferPointer(Verts);
@@ -796,9 +796,9 @@ bool lcViewManipulator::DrawRotationDisc(lcTrackButton TrackButton, const lcVect
 	for (int SegmentIndex = 0; SegmentIndex <= SegmentCount; SegmentIndex++)
 	{
 		const float VertexAngle = StartVectorAngle + (DiscInfo.CameraFacing ? -1.0f : 1.0f) * SignedRotationAngle * SegmentIndex / SegmentCount;
-		const float x = cosf(VertexAngle * LC_DTOR) * Radius * OverlayScale;
-		const float y = sinf(VertexAngle * LC_DTOR) * Radius * OverlayScale;
-		Verts[NumVerts++] = DiscInfo.CameraFacing ? lcVector3(x, y, 0.0f) : lcVector3(0.0f, x, y);
+		const float x = cosf(VertexAngle * SW_DTOR) * Radius * OverlayScale;
+		const float y = sinf(VertexAngle * SW_DTOR) * Radius * OverlayScale;
+		Verts[NumVerts++] = DiscInfo.CameraFacing ? swVector3(x, y, 0.0f) : swVector3(0.0f, x, y);
 
 		if (NumVerts == 33)
 		{
@@ -815,14 +815,14 @@ bool lcViewManipulator::DrawRotationDisc(lcTrackButton TrackButton, const lcVect
 	const float VectorWidth = OverlayScale * 0.035f;
 	auto DrawVector = [&](float VectorAngle)
 	{
-		const float AngleRadians = VectorAngle * LC_DTOR;
+		const float AngleRadians = VectorAngle * SW_DTOR;
 		const float Cos = cosf(AngleRadians);
 		const float Sin = sinf(AngleRadians);
-		lcVector3 Direction = DiscInfo.CameraFacing ? lcVector3(Cos, Sin, 0.0f) : lcVector3(0.0f, Cos, Sin);
-		lcVector3 Perpendicular = DiscInfo.CameraFacing ? lcVector3(-Sin, Cos, 0.0f) : lcVector3(0.0f, -Sin, Cos);
+		swVector3 Direction = DiscInfo.CameraFacing ? swVector3(Cos, Sin, 0.0f) : swVector3(0.0f, Cos, Sin);
+		swVector3 Perpendicular = DiscInfo.CameraFacing ? swVector3(-Sin, Cos, 0.0f) : swVector3(0.0f, -Sin, Cos);
 		Direction *= VectorRadius;
 		Perpendicular *= VectorWidth;
-		const lcVector3 VectorVerts[6] =
+		const swVector3 VectorVerts[6] =
 		{
 			Perpendicular, Direction + Perpendicular, Direction - Perpendicular,
 			Perpendicular, Direction - Perpendicular, -Perpendicular
@@ -840,50 +840,50 @@ bool lcViewManipulator::DrawRotationDisc(lcTrackButton TrackButton, const lcVect
 	return true;
 }
 
-void lcViewManipulator::DrawCameraRotationRing(lcTrackButton TrackButton, lcTrackTool TrackTool, const lcMatrix44& WorldMatrix, float OverlayScale) const
+void swViewManipulator::DrawCameraRotationRing(swTrackButton TrackButton, swTrackTool TrackTool, const swMatrix44& WorldMatrix, float OverlayScale) const
 {
-	if (gMainWindow->GetTool() != lcTool::Rotate || (TrackButton != lcTrackButton::None && TrackTool != lcTrackTool::RotateCamera))
+	if (gMainWindow->GetTool() != swTool::Rotate || (TrackButton != swTrackButton::None && TrackTool != swTrackTool::RotateCamera))
 		return;
 
-	lcContext* Context = mView->mContext;
-	lcMatrix44 Mat = lcMatrix44AffineInverse(mView->GetCamera()->mWorldView);
+	swContext* Context = mView->mContext;
+	swMatrix44 Mat = swMatrix44AffineInverse(mView->GetCamera()->mWorldView);
 	Mat.SetTranslation(WorldMatrix.GetTranslation());
 
 	const float HalfWidth = OverlayScale * 0.035f;
 	constexpr int SegmentCount = 48;
-	lcVector3 Verts[(SegmentCount + 1) * 2];
+	swVector3 Verts[(SegmentCount + 1) * 2];
 	int NumVerts = 0;
 
 	for (int SegmentIndex = 0; SegmentIndex <= SegmentCount; SegmentIndex++)
 	{
-		const float Sin = sinf(LC_2PI * SegmentIndex / SegmentCount);
-		const float Cos = cosf(LC_2PI * SegmentIndex / SegmentCount);
-		Verts[NumVerts++] = lcMul31(lcVector3(Sin * (mOverlayRotateCameraRadius * OverlayScale - HalfWidth), Cos * (mOverlayRotateCameraRadius * OverlayScale - HalfWidth), 0.0f), Mat);
-		Verts[NumVerts++] = lcMul31(lcVector3(Sin * (mOverlayRotateCameraRadius * OverlayScale + HalfWidth), Cos * (mOverlayRotateCameraRadius * OverlayScale + HalfWidth), 0.0f), Mat);
+		const float Sin = sinf(SW_2PI * SegmentIndex / SegmentCount);
+		const float Cos = cosf(SW_2PI * SegmentIndex / SegmentCount);
+		Verts[NumVerts++] = swMul31(swVector3(Sin * (mOverlayRotateCameraRadius * OverlayScale - HalfWidth), Cos * (mOverlayRotateCameraRadius * OverlayScale - HalfWidth), 0.0f), Mat);
+		Verts[NumVerts++] = swMul31(swVector3(Sin * (mOverlayRotateCameraRadius * OverlayScale + HalfWidth), Cos * (mOverlayRotateCameraRadius * OverlayScale + HalfWidth), 0.0f), Mat);
 	}
 
-	Context->SetColor(TrackTool == lcTrackTool::RotateCamera ? mColorCameraSelected : mColorCamera);
-	Context->SetWorldMatrix(lcMatrix44Identity());
+	Context->SetColor(TrackTool == swTrackTool::RotateCamera ? mColorCameraSelected : mColorCamera);
+	Context->SetWorldMatrix(swMatrix44Identity());
 	Context->SetVertexBufferPointer(Verts);
 	Context->SetVertexFormatPosition(3);
 	Context->DrawPrimitives(GL_TRIANGLE_STRIP, 0, NumVerts);
 }
 
-void lcViewManipulator::DrawAxisRotationRings(lcTrackButton TrackButton, lcTrackTool TrackTool, bool HasAngle, const lcMatrix44& WorldMatrix, float OverlayScale) const
+void swViewManipulator::DrawAxisRotationRings(swTrackButton TrackButton, swTrackTool TrackTool, bool HasAngle, const swMatrix44& WorldMatrix, float OverlayScale) const
 {
-	const lcCamera* Camera = mView->GetCamera();
-	lcContext* Context = mView->mContext;
-	lcVector3 ViewDir = lcNormalize(Camera->mTargetPosition - Camera->mPosition);
-	const lcMatrix33 WorldToLocalMatrix = lcMatrix33AffineInverse(lcMatrix33(WorldMatrix));
-	ViewDir = lcMul(ViewDir, WorldToLocalMatrix);
-	const lcVector3 FrontVector = lcNormalize(lcMul(lcNormalize(Camera->mTargetPosition - Camera->mPosition), WorldToLocalMatrix));
+	const swCamera* Camera = mView->GetCamera();
+	swContext* Context = mView->mContext;
+	swVector3 ViewDir = swNormalize(Camera->mTargetPosition - Camera->mPosition);
+	const swMatrix33 WorldToLocalMatrix = swMatrix33AffineInverse(swMatrix33(WorldMatrix));
+	ViewDir = swMul(ViewDir, WorldToLocalMatrix);
+	const swVector3 FrontVector = swNormalize(swMul(swNormalize(Camera->mTargetPosition - Camera->mPosition), WorldToLocalMatrix));
 
 	Context->SetWorldMatrix(WorldMatrix);
 
 	for (int PlaneIndex = 0; PlaneIndex < 3; PlaneIndex++)
 	{
-		const bool Selected = static_cast<int>(TrackTool) == static_cast<int>(lcTrackTool::RotateX) + PlaneIndex;
-		if (!Selected && (gMainWindow->GetTool() != lcTool::Rotate || HasAngle || TrackButton != lcTrackButton::None))
+		const bool Selected = static_cast<int>(TrackTool) == static_cast<int>(swTrackTool::RotateX) + PlaneIndex;
+		if (!Selected && (gMainWindow->GetTool() != swTool::Rotate || HasAngle || TrackButton != swTrackButton::None))
 			continue;
 
 		switch (PlaneIndex)
@@ -901,46 +901,46 @@ void lcViewManipulator::DrawAxisRotationRings(lcTrackButton TrackButton, lcTrack
 
 		const float HalfWidth = OverlayScale * 0.035f;
 		constexpr int SegmentCount = 32;
-		lcVector3 Verts[SegmentCount * 6];
+		swVector3 Verts[SegmentCount * 6];
 		int NumVerts = 0;
 
 		for (int SegmentIndex = 0; SegmentIndex < SegmentCount; SegmentIndex++)
 		{
-			const float Sin1 = sinf(LC_2PI * SegmentIndex / SegmentCount);
-			const float Cos1 = cosf(LC_2PI * SegmentIndex / SegmentCount);
-			const float Sin2 = sinf(LC_2PI * (SegmentIndex + 1) / SegmentCount);
-			const float Cos2 = cosf(LC_2PI * (SegmentIndex + 1) / SegmentCount);
-			lcVector3 v1, v2, t1, t2;
+			const float Sin1 = sinf(SW_2PI * SegmentIndex / SegmentCount);
+			const float Cos1 = cosf(SW_2PI * SegmentIndex / SegmentCount);
+			const float Sin2 = sinf(SW_2PI * (SegmentIndex + 1) / SegmentCount);
+			const float Cos2 = cosf(SW_2PI * (SegmentIndex + 1) / SegmentCount);
+			swVector3 v1, v2, t1, t2;
 
 			switch (PlaneIndex)
 			{
 			case 0:
-				v1 = lcVector3(0.0f, Cos1, Sin1);
-				v2 = lcVector3(0.0f, Cos2, Sin2);
-				t1 = lcVector3(0.0f, -Sin1, Cos1);
-				t2 = lcVector3(0.0f, -Sin2, Cos2);
+				v1 = swVector3(0.0f, Cos1, Sin1);
+				v2 = swVector3(0.0f, Cos2, Sin2);
+				t1 = swVector3(0.0f, -Sin1, Cos1);
+				t2 = swVector3(0.0f, -Sin2, Cos2);
 				break;
 			case 1:
-				v1 = lcVector3(Cos1, 0.0f, Sin1);
-				v2 = lcVector3(Cos2, 0.0f, Sin2);
-				t1 = lcVector3(-Sin1, 0.0f, Cos1);
-				t2 = lcVector3(-Sin2, 0.0f, Cos2);
+				v1 = swVector3(Cos1, 0.0f, Sin1);
+				v2 = swVector3(Cos2, 0.0f, Sin2);
+				t1 = swVector3(-Sin1, 0.0f, Cos1);
+				t2 = swVector3(-Sin2, 0.0f, Cos2);
 				break;
 			case 2:
-				v1 = lcVector3(Cos1, Sin1, 0.0f);
-				v2 = lcVector3(Cos2, Sin2, 0.0f);
-				t1 = lcVector3(-Sin1, Cos1, 0.0f);
-				t2 = lcVector3(-Sin2, Cos2, 0.0f);
+				v1 = swVector3(Cos1, Sin1, 0.0f);
+				v2 = swVector3(Cos2, Sin2, 0.0f);
+				t1 = swVector3(-Sin1, Cos1, 0.0f);
+				t2 = swVector3(-Sin2, Cos2, 0.0f);
 				break;
 			}
 
-			if (gMainWindow->GetTool() == lcTool::Rotate && !HasAngle && TrackButton == lcTrackButton::None && lcDot(ViewDir, v1 + v2) > 0.0f)
+			if (gMainWindow->GetTool() == swTool::Rotate && !HasAngle && TrackButton == swTrackButton::None && swDot(ViewDir, v1 + v2) > 0.0f)
 				continue;
 
-			const lcVector3 NodeCenter1 = v1 * (mOverlayRotateRadius * OverlayScale);
-			const lcVector3 NodeCenter2 = v2 * (mOverlayRotateRadius * OverlayScale);
-			lcVector3 ScreenPerpendicular1 = lcCross(FrontVector, t1);
-			lcVector3 ScreenPerpendicular2 = lcCross(FrontVector, t2);
+			const swVector3 NodeCenter1 = v1 * (mOverlayRotateRadius * OverlayScale);
+			const swVector3 NodeCenter2 = v2 * (mOverlayRotateRadius * OverlayScale);
+			swVector3 ScreenPerpendicular1 = swCross(FrontVector, t1);
+			swVector3 ScreenPerpendicular2 = swCross(FrontVector, t2);
 			const float ScreenPerpendicularLengthSquared1 = ScreenPerpendicular1.LengthSquared();
 			const float ScreenPerpendicularLengthSquared2 = ScreenPerpendicular2.LengthSquared();
 
@@ -949,16 +949,16 @@ void lcViewManipulator::DrawAxisRotationRings(lcTrackButton TrackButton, lcTrack
 			else if (ScreenPerpendicularLengthSquared2 < 0.000001f)
 				ScreenPerpendicular2 = ScreenPerpendicular1;
 
-			ScreenPerpendicular1 = lcNormalize(ScreenPerpendicular1);
-			ScreenPerpendicular2 = lcNormalize(ScreenPerpendicular2);
+			ScreenPerpendicular1 = swNormalize(ScreenPerpendicular1);
+			ScreenPerpendicular2 = swNormalize(ScreenPerpendicular2);
 
-			if (lcDot(ScreenPerpendicular1, ScreenPerpendicular2) < 0.0f)
+			if (swDot(ScreenPerpendicular1, ScreenPerpendicular2) < 0.0f)
 				ScreenPerpendicular2 = -ScreenPerpendicular2;
 
-			const lcVector3 Left1 = NodeCenter1 - (ScreenPerpendicular1 * HalfWidth);
-			const lcVector3 Right1 = NodeCenter1 + (ScreenPerpendicular1 * HalfWidth);
-			const lcVector3 Left2 = NodeCenter2 - (ScreenPerpendicular2 * HalfWidth);
-			const lcVector3 Right2 = NodeCenter2 + (ScreenPerpendicular2 * HalfWidth);
+			const swVector3 Left1 = NodeCenter1 - (ScreenPerpendicular1 * HalfWidth);
+			const swVector3 Right1 = NodeCenter1 + (ScreenPerpendicular1 * HalfWidth);
+			const swVector3 Left2 = NodeCenter2 - (ScreenPerpendicular2 * HalfWidth);
+			const swVector3 Right2 = NodeCenter2 + (ScreenPerpendicular2 * HalfWidth);
 
 			Verts[NumVerts++] = Left1;
 			Verts[NumVerts++] = Left2;
@@ -974,31 +974,31 @@ void lcViewManipulator::DrawAxisRotationRings(lcTrackButton TrackButton, lcTrack
 	}
 }
 
-void lcViewManipulator::DrawRotationText(lcTrackButton TrackButton, const lcVector3& MouseToolDistance, const std::optional<lcRotationDiscInfo>& RotationDisc, const lcMatrix44& WorldMatrix, float OverlayScale) const
+void swViewManipulator::DrawRotationText(swTrackButton TrackButton, const swVector3& MouseToolDistance, const std::optional<swRotationDiscInfo>& RotationDisc, const swMatrix44& WorldMatrix, float OverlayScale) const
 {
-	if (TrackButton == lcTrackButton::None || !RotationDisc || !gTexFont.IsLoaded())
+	if (TrackButton == swTrackButton::None || !RotationDisc || !gTexFont.IsLoaded())
 		return;
 
-	lcContext* Context = mView->mContext;
-	const lcRotationDiscInfo& DiscInfo = *RotationDisc;
+	swContext* Context = mView->mContext;
+	const swRotationDiscInfo& DiscInfo = *RotationDisc;
 	const float Angle = MouseToolDistance[DiscInfo.AxisIndex];
-	if (lcIsZero(Angle))
+	if (swIsZero(Angle))
 		return;
 
-	const lcMatrix44 RotatedWorldMatrix = GetRotationDiscWorldMatrix(DiscInfo, WorldMatrix);
+	const swMatrix44 RotatedWorldMatrix = GetRotationDiscWorldMatrix(DiscInfo, WorldMatrix);
 	const float StartAngle = GetRotationDiscStartAngle(DiscInfo, RotatedWorldMatrix);
 	const float StartVectorAngle = DiscInfo.CameraFacing ? StartAngle : -StartAngle;
 	const float MidAngle = StartVectorAngle + (DiscInfo.CameraFacing ? -0.5f : 0.5f) * Angle;
 	const float Radius = DiscInfo.Radius * OverlayScale * 0.5f;
-	const float MidAngleRadians = MidAngle * LC_DTOR;
-	const lcVector3 TextPosition = DiscInfo.CameraFacing ? lcVector3(cosf(MidAngleRadians) * Radius, sinf(MidAngleRadians) * Radius, 0.0f) : lcVector3(0.0f, cosf(MidAngleRadians) * Radius, sinf(MidAngleRadians) * Radius);
-	const lcVector3 ScreenPos = mView->ProjectPoint(lcMul31(TextPosition, RotatedWorldMatrix));
+	const float MidAngleRadians = MidAngle * SW_DTOR;
+	const swVector3 TextPosition = DiscInfo.CameraFacing ? swVector3(cosf(MidAngleRadians) * Radius, sinf(MidAngleRadians) * Radius, 0.0f) : swVector3(0.0f, cosf(MidAngleRadians) * Radius, sinf(MidAngleRadians) * Radius);
+	const swVector3 ScreenPos = mView->ProjectPoint(swMul31(TextPosition, RotatedWorldMatrix));
 	const float UIScale = mView->GetUIScale();
 
-	Context->SetMaterial(lcMaterialType::TextSDF);
-	Context->SetWorldMatrix(lcMatrix44Identity());
-	Context->SetViewMatrix(lcMatrix44Translation(lcVector3(0.375, 0.375, 0.0)));
-	Context->SetProjectionMatrix(lcMatrix44Ortho(0.0f, mView->GetWidth() / UIScale, 0.0f, mView->GetHeight() / UIScale, -1.0f, 1.0f));
+	Context->SetMaterial(swMaterialType::TextSDF);
+	Context->SetWorldMatrix(swMatrix44Identity());
+	Context->SetViewMatrix(swMatrix44Translation(swVector3(0.375, 0.375, 0.0)));
+	Context->SetProjectionMatrix(swMatrix44Ortho(0.0f, mView->GetWidth() / UIScale, 0.0f, mView->GetHeight() / UIScale, -1.0f, 1.0f));
 	Context->BindTexture2D(gTexFont.GetTexture());
 	Context->EnableColorBlend(true);
 
@@ -1007,45 +1007,45 @@ void lcViewManipulator::DrawRotationText(lcTrackButton TrackButton, const lcVect
 
 	int Width, Height;
 	gTexFont.GetStringDimensions(&Width, &Height, Buffer);
-	Context->SetColor(lcVector4FromColor(lcGetPreferences().mTextColor));
-	Context->SetTextHaloColor(lcVector4FromColor(lcGetPreferences().mTextHaloColor));
+	Context->SetColor(swVector4FromColor(swGetPreferences().mTextColor));
+	Context->SetTextHaloColor(swVector4FromColor(swGetPreferences().mTextHaloColor));
 	gTexFont.PrintText(Context, ScreenPos[0] / UIScale - (Width / 2), ScreenPos[1] / UIScale + (Height / 2), 0.0f, Buffer);
 	Context->EnableColorBlend(false);
 }
 
-void lcViewManipulator::DrawMoveDistance(lcTrackButton TrackButton, lcTrackTool TrackTool, const lcVector3& StartPosition, const lcVector3& EndPosition, float MoveDistance) const
+void swViewManipulator::DrawMoveDistance(swTrackButton TrackButton, swTrackTool TrackTool, const swVector3& StartPosition, const swVector3& EndPosition, float MoveDistance) const
 {
-	if (TrackButton == lcTrackButton::None)
+	if (TrackButton == swTrackButton::None)
 		return;
 
-	const std::optional<lcMoveAxisInfo> MoveAxis = GetMoveAxisInfo(TrackTool);
+	const std::optional<swMoveAxisInfo> MoveAxis = GetMoveAxisInfo(TrackTool);
 	if (!MoveAxis)
 		return;
 
-	lcContext* Context = mView->mContext;
-	const lcMoveAxisInfo& AxisInfo = *MoveAxis;
-	const lcVector3 Distance = EndPosition - StartPosition;
-	if (lcIsZero(Distance))
+	swContext* Context = mView->mContext;
+	const swMoveAxisInfo& AxisInfo = *MoveAxis;
+	const swVector3 Distance = EndPosition - StartPosition;
+	if (swIsZero(Distance))
 		return;
 
-	const lcVector3 LineStart = StartPosition;
-	const lcVector3 LineEnd = EndPosition;
-	const lcVector3 TextPosition = (LineStart + LineEnd) * 0.5f;
-	const lcVector3 Direction = lcNormalize(Distance);
-	const lcVector3 CameraFront = lcNormalize(mView->GetCamera()->mTargetPosition - mView->GetCamera()->mPosition);
-	lcVector3 ScreenPerpendicular = lcCross(CameraFront, Direction);
+	const swVector3 LineStart = StartPosition;
+	const swVector3 LineEnd = EndPosition;
+	const swVector3 TextPosition = (LineStart + LineEnd) * 0.5f;
+	const swVector3 Direction = swNormalize(Distance);
+	const swVector3 CameraFront = swNormalize(mView->GetCamera()->mTargetPosition - mView->GetCamera()->mPosition);
+	swVector3 ScreenPerpendicular = swCross(CameraFront, Direction);
 
-	if (lcIsZero(ScreenPerpendicular))
-		ScreenPerpendicular = lcCross(lcVector3(0.0f, 1.0f, 0.0f), Direction);
+	if (swIsZero(ScreenPerpendicular))
+		ScreenPerpendicular = swCross(swVector3(0.0f, 1.0f, 0.0f), Direction);
 
-	if (lcIsZero(ScreenPerpendicular))
-		ScreenPerpendicular = lcCross(lcVector3(1.0f, 0.0f, 0.0f), Direction);
+	if (swIsZero(ScreenPerpendicular))
+		ScreenPerpendicular = swCross(swVector3(1.0f, 0.0f, 0.0f), Direction);
 
-	ScreenPerpendicular = lcNormalize(ScreenPerpendicular) * (mView->GetOverlayScale() * 0.035f);
-	const lcVector3 TickHalfLength = ScreenPerpendicular * 3.0f;
-	const lcVector3 TickHalfWidth = Direction * (mView->GetOverlayScale() * 0.035f);
-	const lcVector3 TextNormal = TickHalfLength;
-	const lcVector3 LineVertices[18] =
+	ScreenPerpendicular = swNormalize(ScreenPerpendicular) * (mView->GetOverlayScale() * 0.035f);
+	const swVector3 TickHalfLength = ScreenPerpendicular * 3.0f;
+	const swVector3 TickHalfWidth = Direction * (mView->GetOverlayScale() * 0.035f);
+	const swVector3 TextNormal = TickHalfLength;
+	const swVector3 LineVertices[18] =
 	{
 		LineStart - ScreenPerpendicular, LineEnd - ScreenPerpendicular, LineStart + ScreenPerpendicular,
 		LineStart + ScreenPerpendicular, LineEnd - ScreenPerpendicular, LineEnd + ScreenPerpendicular,
@@ -1054,9 +1054,9 @@ void lcViewManipulator::DrawMoveDistance(lcTrackButton TrackButton, lcTrackTool 
 		LineEnd - TickHalfLength - TickHalfWidth, LineEnd + TickHalfLength - TickHalfWidth, LineEnd - TickHalfLength + TickHalfWidth,
 		LineEnd - TickHalfLength + TickHalfWidth, LineEnd + TickHalfLength - TickHalfWidth, LineEnd + TickHalfLength + TickHalfWidth
 	};
-	Context->SetMaterial(lcMaterialType::UnlitColor);
+	Context->SetMaterial(swMaterialType::UnlitColor);
 	Context->SetColor(AxisInfo.Color);
-	Context->SetWorldMatrix(lcMatrix44Identity());
+	Context->SetWorldMatrix(swMatrix44Identity());
 	Context->SetVertexBufferPointer(LineVertices);
 	Context->ClearIndexBuffer();
 	Context->SetVertexFormatPosition(3);
@@ -1065,13 +1065,13 @@ void lcViewManipulator::DrawMoveDistance(lcTrackButton TrackButton, lcTrackTool 
 	if (!gTexFont.IsLoaded())
 		return;
 
-	const lcVector3 ScreenPos = mView->ProjectPoint(TextPosition);
+	const swVector3 ScreenPos = mView->ProjectPoint(TextPosition);
 	const float UIScale = mView->GetUIScale();
 
-	Context->SetMaterial(lcMaterialType::TextSDF);
-	Context->SetWorldMatrix(lcMatrix44Identity());
-	Context->SetViewMatrix(lcMatrix44Translation(lcVector3(0.375, 0.375, 0.0)));
-	Context->SetProjectionMatrix(lcMatrix44Ortho(0.0f, mView->GetWidth() / UIScale, 0.0f, mView->GetHeight() / UIScale, -1.0f, 1.0f));
+	Context->SetMaterial(swMaterialType::TextSDF);
+	Context->SetWorldMatrix(swMatrix44Identity());
+	Context->SetViewMatrix(swMatrix44Translation(swVector3(0.375, 0.375, 0.0)));
+	Context->SetProjectionMatrix(swMatrix44Ortho(0.0f, mView->GetWidth() / UIScale, 0.0f, mView->GetHeight() / UIScale, -1.0f, 1.0f));
 	Context->BindTexture2D(gTexFont.GetTexture());
 	Context->EnableColorBlend(true);
 
@@ -1080,13 +1080,13 @@ void lcViewManipulator::DrawMoveDistance(lcTrackButton TrackButton, lcTrackTool 
 
 	int Width, Height;
 	gTexFont.GetStringDimensions(&Width, &Height, Buffer);
-	lcVector3 TextScreenPos(ScreenPos[0] / UIScale, ScreenPos[1] / UIScale, 0.0f);
+	swVector3 TextScreenPos(ScreenPos[0] / UIScale, ScreenPos[1] / UIScale, 0.0f);
 
-	const lcVector3 NormalScreenPos = mView->ProjectPoint(TextPosition + TextNormal);
-	lcVector3 ScreenNormal(NormalScreenPos[0] - ScreenPos[0], NormalScreenPos[1] - ScreenPos[1], 0.0f);
-	const float ScreenNormalLength = lcLength(ScreenNormal);
+	const swVector3 NormalScreenPos = mView->ProjectPoint(TextPosition + TextNormal);
+	swVector3 ScreenNormal(NormalScreenPos[0] - ScreenPos[0], NormalScreenPos[1] - ScreenPos[1], 0.0f);
+	const float ScreenNormalLength = swLength(ScreenNormal);
 
-	if (!lcIsZero(ScreenNormalLength))
+	if (!swIsZero(ScreenNormalLength))
 	{
 		ScreenNormal /= ScreenNormalLength;
 		const float TextRadius = fabsf(ScreenNormal[0]) * Width * 0.5f + fabsf(ScreenNormal[1]) * Height * 0.5f;
@@ -1094,39 +1094,39 @@ void lcViewManipulator::DrawMoveDistance(lcTrackButton TrackButton, lcTrackTool 
 		TextScreenPos += ScreenNormal * (TextRadius + LineRadius + 4.0f);
 	}
 
-	Context->SetColor(lcVector4FromColor(lcGetPreferences().mTextColor));
-	Context->SetTextHaloColor(lcVector4FromColor(lcGetPreferences().mTextHaloColor));
+	Context->SetColor(swVector4FromColor(swGetPreferences().mTextColor));
+	Context->SetTextHaloColor(swVector4FromColor(swGetPreferences().mTextHaloColor));
 	gTexFont.PrintText(Context, TextScreenPos[0] - (Width / 2), TextScreenPos[1] + (Height / 2), 0.0f, Buffer);
 	Context->EnableColorBlend(false);
 }
 
-void lcViewManipulator::DrawRotate(lcTrackButton TrackButton, lcTrackTool TrackTool)
+void swViewManipulator::DrawRotate(swTrackButton TrackButton, swTrackTool TrackTool)
 {
-	const lcCamera* Camera = mView->GetCamera();
-	lcContext* Context = mView->mContext;
+	const swCamera* Camera = mView->GetCamera();
+	swContext* Context = mView->mContext;
 
 	const float OverlayScale = mView->GetOverlayScale();
 
-	Context->SetMaterial(lcMaterialType::UnlitColor);
+	Context->SetMaterial(swMaterialType::UnlitColor);
 	Context->SetViewMatrix(Camera->mWorldView);
 	Context->SetProjectionMatrix(mView->GetProjectionMatrix());
 	Context->SetLineWidth(1.0f);
 
 	Context->EnableDepthTest(false);
 
-	lcModel* ActiveModel = mView->GetActiveModel();
-	lcVector3 MouseToolDistance = ActiveModel->SnapRotation(ActiveModel->GetMouseToolDistance());
-	lcMatrix44 WorldMatrix;
+	swModel* ActiveModel = mView->GetActiveModel();
+	swVector3 MouseToolDistance = ActiveModel->SnapRotation(ActiveModel->GetMouseToolDistance());
+	swMatrix44 WorldMatrix;
 	if (!GetRotationWorldMatrix(WorldMatrix))
 	{
 		Context->EnableDepthTest(true);
 		return;
 	}
 
-	if (TrackButton == lcTrackButton::None && TrackTool == lcTrackTool::RotateTrackBall)
+	if (TrackButton == swTrackButton::None && TrackTool == swTrackTool::RotateTrackBall)
 		DrawTrackballHover(WorldMatrix, OverlayScale);
 
-	const std::optional<lcRotationDiscInfo> RotationDisc = GetRotationDiscInfo(TrackTool);
+	const std::optional<swRotationDiscInfo> RotationDisc = GetRotationDiscInfo(TrackTool);
 
 	const bool HasAngle = DrawRotationDisc(TrackButton, MouseToolDistance, RotationDisc, WorldMatrix, OverlayScale);
 
@@ -1139,88 +1139,88 @@ void lcViewManipulator::DrawRotate(lcTrackButton TrackButton, lcTrackTool TrackT
 	Context->EnableDepthTest(true);
 }
 
-bool lcViewManipulator::IsTrackToolAllowed(lcTrackTool TrackTool, quint32 AllowedTransforms)
+bool swViewManipulator::IsTrackToolAllowed(swTrackTool TrackTool, quint32 AllowedTransforms)
 {
 	switch (TrackTool)
 	{
-		case lcTrackTool::None:
-		case lcTrackTool::Insert:
-		case lcTrackTool::PointLight:
-		case lcTrackTool::SpotLight:
-		case lcTrackTool::DirectionalLight:
-		case lcTrackTool::AreaLight:
-		case lcTrackTool::Camera:
-		case lcTrackTool::Select:
+		case swTrackTool::None:
+		case swTrackTool::Insert:
+		case swTrackTool::PointLight:
+		case swTrackTool::SpotLight:
+		case swTrackTool::DirectionalLight:
+		case swTrackTool::AreaLight:
+		case swTrackTool::Camera:
+		case swTrackTool::Select:
 			return true;
 
-		case lcTrackTool::MoveX:
-			return AllowedTransforms & LC_OBJECT_TRANSFORM_MOVE_X;
+		case swTrackTool::MoveX:
+			return AllowedTransforms & SW_OBJECT_TRANSFORM_MOVE_X;
 
-		case lcTrackTool::MoveY:
-			return AllowedTransforms & LC_OBJECT_TRANSFORM_MOVE_Y;
+		case swTrackTool::MoveY:
+			return AllowedTransforms & SW_OBJECT_TRANSFORM_MOVE_Y;
 
-		case lcTrackTool::MoveZ:
-			return AllowedTransforms & LC_OBJECT_TRANSFORM_MOVE_Z;
+		case swTrackTool::MoveZ:
+			return AllowedTransforms & SW_OBJECT_TRANSFORM_MOVE_Z;
 
-		case lcTrackTool::MoveXY:
-			return (AllowedTransforms & (LC_OBJECT_TRANSFORM_MOVE_X | LC_OBJECT_TRANSFORM_MOVE_Y)) == (LC_OBJECT_TRANSFORM_MOVE_X | LC_OBJECT_TRANSFORM_MOVE_Y);
+		case swTrackTool::MoveXY:
+			return (AllowedTransforms & (SW_OBJECT_TRANSFORM_MOVE_X | SW_OBJECT_TRANSFORM_MOVE_Y)) == (SW_OBJECT_TRANSFORM_MOVE_X | SW_OBJECT_TRANSFORM_MOVE_Y);
 
-		case lcTrackTool::MoveXZ:
-			return (AllowedTransforms & (LC_OBJECT_TRANSFORM_MOVE_X | LC_OBJECT_TRANSFORM_MOVE_Z)) == (LC_OBJECT_TRANSFORM_MOVE_X | LC_OBJECT_TRANSFORM_MOVE_Z);
+		case swTrackTool::MoveXZ:
+			return (AllowedTransforms & (SW_OBJECT_TRANSFORM_MOVE_X | SW_OBJECT_TRANSFORM_MOVE_Z)) == (SW_OBJECT_TRANSFORM_MOVE_X | SW_OBJECT_TRANSFORM_MOVE_Z);
 
-		case lcTrackTool::MoveYZ:
-			return (AllowedTransforms & (LC_OBJECT_TRANSFORM_MOVE_Y | LC_OBJECT_TRANSFORM_MOVE_Z)) == (LC_OBJECT_TRANSFORM_MOVE_Y | LC_OBJECT_TRANSFORM_MOVE_Z);
+		case swTrackTool::MoveYZ:
+			return (AllowedTransforms & (SW_OBJECT_TRANSFORM_MOVE_Y | SW_OBJECT_TRANSFORM_MOVE_Z)) == (SW_OBJECT_TRANSFORM_MOVE_Y | SW_OBJECT_TRANSFORM_MOVE_Z);
 
-		case lcTrackTool::MoveXYZ:
-			return (AllowedTransforms & (LC_OBJECT_TRANSFORM_MOVE_X | LC_OBJECT_TRANSFORM_MOVE_Y | LC_OBJECT_TRANSFORM_MOVE_Z)) == (LC_OBJECT_TRANSFORM_MOVE_X | LC_OBJECT_TRANSFORM_MOVE_Y | LC_OBJECT_TRANSFORM_MOVE_Z);
+		case swTrackTool::MoveXYZ:
+			return (AllowedTransforms & (SW_OBJECT_TRANSFORM_MOVE_X | SW_OBJECT_TRANSFORM_MOVE_Y | SW_OBJECT_TRANSFORM_MOVE_Z)) == (SW_OBJECT_TRANSFORM_MOVE_X | SW_OBJECT_TRANSFORM_MOVE_Y | SW_OBJECT_TRANSFORM_MOVE_Z);
 
-		case lcTrackTool::RotateX:
-			return AllowedTransforms & LC_OBJECT_TRANSFORM_ROTATE_X;
+		case swTrackTool::RotateX:
+			return AllowedTransforms & SW_OBJECT_TRANSFORM_ROTATE_X;
 
-		case lcTrackTool::RotateY:
-			return AllowedTransforms & LC_OBJECT_TRANSFORM_ROTATE_Y;
+		case swTrackTool::RotateY:
+			return AllowedTransforms & SW_OBJECT_TRANSFORM_ROTATE_Y;
 
-		case lcTrackTool::RotateZ:
-			return AllowedTransforms & LC_OBJECT_TRANSFORM_ROTATE_Z;
+		case swTrackTool::RotateZ:
+			return AllowedTransforms & SW_OBJECT_TRANSFORM_ROTATE_Z;
 
-		case lcTrackTool::RotateTrackBall:
-			return (AllowedTransforms & (LC_OBJECT_TRANSFORM_ROTATE_X | LC_OBJECT_TRANSFORM_ROTATE_Y | LC_OBJECT_TRANSFORM_ROTATE_Z)) == (LC_OBJECT_TRANSFORM_ROTATE_X | LC_OBJECT_TRANSFORM_ROTATE_Y | LC_OBJECT_TRANSFORM_ROTATE_Z);
+		case swTrackTool::RotateTrackBall:
+			return (AllowedTransforms & (SW_OBJECT_TRANSFORM_ROTATE_X | SW_OBJECT_TRANSFORM_ROTATE_Y | SW_OBJECT_TRANSFORM_ROTATE_Z)) == (SW_OBJECT_TRANSFORM_ROTATE_X | SW_OBJECT_TRANSFORM_ROTATE_Y | SW_OBJECT_TRANSFORM_ROTATE_Z);
 
-		case lcTrackTool::RotateCamera:
-			return (AllowedTransforms & (LC_OBJECT_TRANSFORM_ROTATE_X | LC_OBJECT_TRANSFORM_ROTATE_Y | LC_OBJECT_TRANSFORM_ROTATE_Z)) == (LC_OBJECT_TRANSFORM_ROTATE_X | LC_OBJECT_TRANSFORM_ROTATE_Y | LC_OBJECT_TRANSFORM_ROTATE_Z);
+		case swTrackTool::RotateCamera:
+			return (AllowedTransforms & (SW_OBJECT_TRANSFORM_ROTATE_X | SW_OBJECT_TRANSFORM_ROTATE_Y | SW_OBJECT_TRANSFORM_ROTATE_Z)) == (SW_OBJECT_TRANSFORM_ROTATE_X | SW_OBJECT_TRANSFORM_ROTATE_Y | SW_OBJECT_TRANSFORM_ROTATE_Z);
 
-		case lcTrackTool::RotateTrainTrackRight:
-		case lcTrackTool::RotateTrainTrackLeft:
-		case lcTrackTool::InsertTrainTrack:
-		case lcTrackTool::SelectTrainTrack:
+		case swTrackTool::RotateTrainTrackRight:
+		case swTrackTool::RotateTrainTrackLeft:
+		case swTrackTool::InsertTrainTrack:
+		case swTrackTool::SelectTrainTrack:
 			return true;
 
-		case lcTrackTool::ScalePlus:
-		case lcTrackTool::ScaleMinus:
-			return AllowedTransforms & (LC_OBJECT_TRANSFORM_SCALE_X | LC_OBJECT_TRANSFORM_SCALE_Y | LC_OBJECT_TRANSFORM_SCALE_Z);
+		case swTrackTool::ScalePlus:
+		case swTrackTool::ScaleMinus:
+			return AllowedTransforms & (SW_OBJECT_TRANSFORM_SCALE_X | SW_OBJECT_TRANSFORM_SCALE_Y | SW_OBJECT_TRANSFORM_SCALE_Z);
 
-		case lcTrackTool::Eraser:
-		case lcTrackTool::Paint:
-		case lcTrackTool::ColorPicker:
-		case lcTrackTool::Zoom:
-		case lcTrackTool::Pan:
-		case lcTrackTool::OrbitX:
-		case lcTrackTool::OrbitY:
-		case lcTrackTool::OrbitXY:
-		case lcTrackTool::Roll:
-		case lcTrackTool::ZoomRegion:
+		case swTrackTool::Eraser:
+		case swTrackTool::Paint:
+		case swTrackTool::ColorPicker:
+		case swTrackTool::Zoom:
+		case swTrackTool::Pan:
+		case swTrackTool::OrbitX:
+		case swTrackTool::OrbitY:
+		case swTrackTool::OrbitXY:
+		case swTrackTool::Roll:
+		case swTrackTool::ZoomRegion:
 			return true;
 
-		case lcTrackTool::Count:
+		case swTrackTool::Count:
 			return false;
 	}
 
 	return false;
 }
 
-std::pair<lcTrackTool, quint32> lcViewManipulator::UpdateSelectMove(lcTrackButton TrackButton)
+std::pair<swTrackTool, quint32> swViewManipulator::UpdateSelectMove(swTrackButton TrackButton)
 {
-	lcModel* ActiveModel = mView->GetActiveModel();
+	swModel* ActiveModel = mView->GetActiveModel();
 	const float OverlayScale = mView->GetOverlayScale();
 	const float OverlayMovePlaneSize = 0.5f * OverlayScale;
 	const float OverlayMoveArrowSize = 1.5f * OverlayScale;
@@ -1229,79 +1229,79 @@ std::pair<lcTrackTool, quint32> lcViewManipulator::UpdateSelectMove(lcTrackButto
 	const float OverlayRotateArrowEnd = 1.5f * OverlayScale;
 	const float OverlayScaleRadius = 0.125f;
 
-	lcTool CurrentTool = gMainWindow->GetTool();
-	lcTrackTool NewTrackTool = (CurrentTool == lcTool::Move) ? lcTrackTool::MoveXYZ : lcTrackTool::Select;
+	swTool CurrentTool = gMainWindow->GetTool();
+	swTrackTool NewTrackTool = (CurrentTool == swTool::Move) ? swTrackTool::MoveXYZ : swTrackTool::Select;
 	quint32 NewTrackSection = ~0U;
 
-	lcVector3 OverlayCenter;
-	lcMatrix33 RelativeRotation;
+	swVector3 OverlayCenter;
+	swMatrix33 RelativeRotation;
 
 	if (!ActiveModel->GetMoveRotateTransform(OverlayCenter, RelativeRotation))
 		return { NewTrackTool, NewTrackSection };
 
-	lcMatrix44 WorldMatrix = lcMatrix44(RelativeRotation, OverlayCenter);
+	swMatrix44 WorldMatrix = swMatrix44(RelativeRotation, OverlayCenter);
 
 	if (ActiveModel != mView->GetModel())
-		WorldMatrix = lcMul(WorldMatrix, mView->GetActiveSubmodelTransform());
+		WorldMatrix = swMul(WorldMatrix, mView->GetActiveSubmodelTransform());
 	OverlayCenter = WorldMatrix.GetTranslation();
 
-	lcVector3 PlaneNormals[3] =
+	swVector3 PlaneNormals[3] =
 	{
-		lcVector3(1.0f, 0.0f, 0.0f),
-		lcVector3(0.0f, 1.0f, 0.0f),
-		lcVector3(0.0f, 0.0f, 1.0f),
+		swVector3(1.0f, 0.0f, 0.0f),
+		swVector3(0.0f, 1.0f, 0.0f),
+		swVector3(0.0f, 0.0f, 1.0f),
 	};
 
 	for (int i = 0; i < 3; i++)
-		PlaneNormals[i] = lcMul30(PlaneNormals[i], WorldMatrix);
+		PlaneNormals[i] = swMul30(PlaneNormals[i], WorldMatrix);
 
 	const int x = mView->GetMouseX();
 	const int y = mView->GetMouseY();
-	lcVector3 StartEnd[2] = { lcVector3((float)x, (float)y, 0.0f), lcVector3((float)x, (float)y, 1.0f) };
+	swVector3 StartEnd[2] = { swVector3((float)x, (float)y, 0.0f), swVector3((float)x, (float)y, 1.0f) };
 	mView->UnprojectPoints(StartEnd, 2);
-	const lcVector3& Start = StartEnd[0];
-	const lcVector3& End = StartEnd[1];
+	const swVector3& Start = StartEnd[0];
+	const swVector3& End = StartEnd[1];
 	float ClosestIntersectionDistance = FLT_MAX;
 
-	lcObject* Focus = ActiveModel->GetFocusObject();
+	swObject* Focus = ActiveModel->GetFocusObject();
 	int ControlPointIndex = -1;
 
 	if (Focus && Focus->IsPiece())
 	{
-		lcPiece* Piece = (lcPiece*)Focus;
+		swPiece* Piece = (swPiece*)Focus;
 
 		if (Piece->mPieceData->GetSynthInfo())
 		{
 			quint32 Section = Piece->GetFocusSection();
 
-			if (Section >= LC_PIECE_SECTION_CONTROL_POINT_FIRST && Section <= LC_PIECE_SECTION_CONTROL_POINT_LAST)
-				ControlPointIndex = Section - LC_PIECE_SECTION_CONTROL_POINT_FIRST;
+			if (Section >= SW_PIECE_SECTION_CONTROL_POINT_FIRST && Section <= SW_PIECE_SECTION_CONTROL_POINT_LAST)
+				ControlPointIndex = Section - SW_PIECE_SECTION_CONTROL_POINT_FIRST;
 		}
 	}
 
-	quint32 AllowedTransforms = Focus ? Focus->GetAllowedTransforms() : LC_OBJECT_TRANSFORM_MOVE_XYZ | LC_OBJECT_TRANSFORM_ROTATE_XYZ;
+	quint32 AllowedTransforms = Focus ? Focus->GetAllowedTransforms() : SW_OBJECT_TRANSFORM_MOVE_XYZ | SW_OBJECT_TRANSFORM_ROTATE_XYZ;
 
 	for (int AxisIndex = 0; AxisIndex < 3; AxisIndex++)
 	{
-		lcVector4 Plane(PlaneNormals[AxisIndex], -lcDot(PlaneNormals[AxisIndex], OverlayCenter));
-		lcVector3 Intersection;
+		swVector4 Plane(PlaneNormals[AxisIndex], -swDot(PlaneNormals[AxisIndex], OverlayCenter));
+		swVector3 Intersection;
 
-		if (!lcLineSegmentPlaneIntersection(&Intersection, Start, End, Plane))
+		if (!swLineSegmentPlaneIntersection(&Intersection, Start, End, Plane))
 			continue;
 
-		float IntersectionDistance = lcLengthSquared(Intersection - Start);
+		float IntersectionDistance = swLengthSquared(Intersection - Start);
 
 		if (IntersectionDistance > ClosestIntersectionDistance)
 			continue;
 
-		lcVector3 Dir(Intersection - OverlayCenter);
+		swVector3 Dir(Intersection - OverlayCenter);
 
-		float Proj1 = lcDot(Dir, PlaneNormals[(AxisIndex + 1) % 3]);
-		float Proj2 = lcDot(Dir, PlaneNormals[(AxisIndex + 2) % 3]);
+		float Proj1 = swDot(Dir, PlaneNormals[(AxisIndex + 1) % 3]);
+		float Proj2 = swDot(Dir, PlaneNormals[(AxisIndex + 2) % 3]);
 
 		if (Proj1 > 0.0f && Proj1 < OverlayMovePlaneSize && Proj2 > 0.0f && Proj2 < OverlayMovePlaneSize)
 		{
-			lcTrackTool PlaneModes[] = { lcTrackTool::MoveYZ, lcTrackTool::MoveXZ, lcTrackTool::MoveXY };
+			swTrackTool PlaneModes[] = { swTrackTool::MoveYZ, swTrackTool::MoveXZ, swTrackTool::MoveXY };
 
 			if (IsTrackToolAllowed(PlaneModes[AxisIndex], AllowedTransforms))
 			{
@@ -1310,9 +1310,9 @@ std::pair<lcTrackTool, quint32> lcViewManipulator::UpdateSelectMove(lcTrackButto
 			}
 		}
 
-		if (CurrentTool == lcTool::Select && Proj1 > OverlayRotateArrowStart && Proj1 < OverlayRotateArrowEnd && Proj2 > OverlayRotateArrowStart && Proj2 < OverlayRotateArrowEnd && ActiveModel->AnyPiecesSelected())
+		if (CurrentTool == swTool::Select && Proj1 > OverlayRotateArrowStart && Proj1 < OverlayRotateArrowEnd && Proj2 > OverlayRotateArrowStart && Proj2 < OverlayRotateArrowEnd && ActiveModel->AnyPiecesSelected())
 		{
-			lcTrackTool PlaneModes[] = { lcTrackTool::RotateX, lcTrackTool::RotateY, lcTrackTool::RotateZ };
+			swTrackTool PlaneModes[] = { swTrackTool::RotateX, swTrackTool::RotateY, swTrackTool::RotateZ };
 
 			if (IsTrackToolAllowed(PlaneModes[AxisIndex], AllowedTransforms))
 			{
@@ -1323,7 +1323,7 @@ std::pair<lcTrackTool, quint32> lcViewManipulator::UpdateSelectMove(lcTrackButto
 
 		if (fabs(Proj1) < OverlayMoveArrowCapRadius && Proj2 > 0.0f && Proj2 < OverlayMoveArrowSize)
 		{
-			lcTrackTool DirModes[] = { lcTrackTool::MoveZ, lcTrackTool::MoveX, lcTrackTool::MoveY };
+			swTrackTool DirModes[] = { swTrackTool::MoveZ, swTrackTool::MoveX, swTrackTool::MoveY };
 
 			if (IsTrackToolAllowed(DirModes[AxisIndex], AllowedTransforms))
 			{
@@ -1334,7 +1334,7 @@ std::pair<lcTrackTool, quint32> lcViewManipulator::UpdateSelectMove(lcTrackButto
 
 		if (fabs(Proj2) < OverlayMoveArrowCapRadius && Proj1 > 0.0f && Proj1 < OverlayMoveArrowSize)
 		{
-			lcTrackTool DirModes[] = { lcTrackTool::MoveY, lcTrackTool::MoveZ, lcTrackTool::MoveX };
+			swTrackTool DirModes[] = { swTrackTool::MoveY, swTrackTool::MoveZ, swTrackTool::MoveX };
 
 			if (IsTrackToolAllowed(DirModes[AxisIndex], AllowedTransforms))
 			{
@@ -1343,7 +1343,7 @@ std::pair<lcTrackTool, quint32> lcViewManipulator::UpdateSelectMove(lcTrackButto
 			}
 		}
 
-		lcPiece* Piece = (lcPiece*)Focus;
+		swPiece* Piece = (swPiece*)Focus;
 
 		if (ControlPointIndex != -1 && Piece->mPieceData->GetSynthInfo()->IsCurve())
 		{
@@ -1355,17 +1355,17 @@ std::pair<lcTrackTool, quint32> lcViewManipulator::UpdateSelectMove(lcTrackButto
 			{
 				if (Proj2 > ScaleStart && Proj2 < ScaleEnd)
 				{
-					if (IsTrackToolAllowed(lcTrackTool::ScalePlus, AllowedTransforms))
+					if (IsTrackToolAllowed(swTrackTool::ScalePlus, AllowedTransforms))
 					{
-						NewTrackTool = lcTrackTool::ScalePlus;
+						NewTrackTool = swTrackTool::ScalePlus;
 						ClosestIntersectionDistance = IntersectionDistance;
 					}
 				}
 				else if (Proj2 < -ScaleStart && Proj2 > -ScaleEnd)
 				{
-					if (IsTrackToolAllowed(lcTrackTool::ScaleMinus, AllowedTransforms))
+					if (IsTrackToolAllowed(swTrackTool::ScaleMinus, AllowedTransforms))
 					{
-						NewTrackTool = lcTrackTool::ScaleMinus;
+						NewTrackTool = swTrackTool::ScaleMinus;
 						ClosestIntersectionDistance = IntersectionDistance;
 					}
 				}
@@ -1374,17 +1374,17 @@ std::pair<lcTrackTool, quint32> lcViewManipulator::UpdateSelectMove(lcTrackButto
 			{
 				if (Proj1 > ScaleStart && Proj1 < ScaleEnd)
 				{
-					if (IsTrackToolAllowed(lcTrackTool::ScalePlus, AllowedTransforms))
+					if (IsTrackToolAllowed(swTrackTool::ScalePlus, AllowedTransforms))
 					{
-						NewTrackTool = lcTrackTool::ScalePlus;
+						NewTrackTool = swTrackTool::ScalePlus;
 						ClosestIntersectionDistance = IntersectionDistance;
 					}
 				}
 				else if (Proj1 < -ScaleStart && Proj1 > -ScaleEnd)
 				{
-					if (IsTrackToolAllowed(lcTrackTool::ScaleMinus, AllowedTransforms))
+					if (IsTrackToolAllowed(swTrackTool::ScaleMinus, AllowedTransforms))
 					{
-						NewTrackTool = lcTrackTool::ScaleMinus;
+						NewTrackTool = swTrackTool::ScaleMinus;
 						ClosestIntersectionDistance = IntersectionDistance;
 					}
 				}
@@ -1392,9 +1392,9 @@ std::pair<lcTrackTool, quint32> lcViewManipulator::UpdateSelectMove(lcTrackButto
 		}
 	}
 
-	if (CurrentTool == lcTool::Select && Focus && Focus->IsPiece() && TrackButton == lcTrackButton::None)
+	if (CurrentTool == swTool::Select && Focus && Focus->IsPiece() && TrackButton == swTrackButton::None)
 	{
-		auto [TrainTrackTool, TrainTrackSection, TrainDistance] = UpdateSelectMoveTrainTrack((lcPiece*)Focus, OverlayScale, Start, End);
+		auto [TrainTrackTool, TrainTrackSection, TrainDistance] = UpdateSelectMoveTrainTrack((swPiece*)Focus, OverlayScale, Start, End);
 
 		if (TrainDistance < ClosestIntersectionDistance)
 		{
@@ -1406,31 +1406,31 @@ std::pair<lcTrackTool, quint32> lcViewManipulator::UpdateSelectMove(lcTrackButto
 	return { NewTrackTool, NewTrackSection };
 }
 
-std::tuple<lcTrackTool, quint32, float> lcViewManipulator::UpdateSelectMoveTrainTrack(lcPiece* Piece, float OverlayScale, const lcVector3& Start, const lcVector3& End) const
+std::tuple<swTrackTool, quint32, float> swViewManipulator::UpdateSelectMoveTrainTrack(swPiece* Piece, float OverlayScale, const swVector3& Start, const swVector3& End) const
 {
-	lcTrackTool NewTrackTool = lcTrackTool::Select;
+	swTrackTool NewTrackTool = swTrackTool::Select;
 	quint32 NewTrackSection = ~0U;
 	float ClosestIntersectionDistance = FLT_MAX;
 
-	const lcTrainTrackInfo* TrainTrackInfo = Piece->mPieceData->GetTrainTrackInfo();
+	const swTrainTrackInfo* TrainTrackInfo = Piece->mPieceData->GetTrainTrackInfo();
 
 	if (!TrainTrackInfo)
 		return { NewTrackTool, NewTrackSection, ClosestIntersectionDistance };
 
-	const std::vector<lcTrainTrackConnection>& Connections = TrainTrackInfo->GetConnections();
+	const std::vector<swTrainTrackConnection>& Connections = TrainTrackInfo->GetConnections();
 
-	auto MinIntersectDist=[&ClosestIntersectionDistance](int FirstIndex, int IndexCount, const lcVector3& LocalStart, const lcVector3& LocalEnd)
+	auto MinIntersectDist=[&ClosestIntersectionDistance](int FirstIndex, int IndexCount, const swVector3& LocalStart, const swVector3& LocalEnd)
 	{
-		lcVector3 Intersection;
+		swVector3 Intersection;
 		bool Hit = false;
 
 		for (int Index = FirstIndex; Index < FirstIndex + IndexCount; Index += 3)
 		{
-			const lcVector3& v1 = mRotateMoveVertices[mRotateMoveIndices[Index]];
-			const lcVector3& v2 = mRotateMoveVertices[mRotateMoveIndices[Index + 1]];
-			const lcVector3& v3 = mRotateMoveVertices[mRotateMoveIndices[Index + 2]];
+			const swVector3& v1 = mRotateMoveVertices[mRotateMoveIndices[Index]];
+			const swVector3& v2 = mRotateMoveVertices[mRotateMoveIndices[Index + 1]];
+			const swVector3& v3 = mRotateMoveVertices[mRotateMoveIndices[Index + 2]];
 
-			if (lcLineTriangleMinIntersection(v1, v2, v3, LocalStart, LocalEnd, &ClosestIntersectionDistance, &Intersection))
+			if (swLineTriangleMinIntersection(v1, v2, v3, LocalStart, LocalEnd, &ClosestIntersectionDistance, &Intersection))
 				Hit = true;
 		}
 
@@ -1439,94 +1439,94 @@ std::tuple<lcTrackTool, quint32, float> lcViewManipulator::UpdateSelectMoveTrain
 
 	for (quint32 ConnectionIndex = 0; ConnectionIndex < Connections.size(); ConnectionIndex++)
 	{
-		lcMatrix44 WorldMatrix = lcMul(Connections[ConnectionIndex].Transform, Piece->mModelWorld);
-		lcModel* ActiveModel = mView->GetActiveModel();
+		swMatrix44 WorldMatrix = swMul(Connections[ConnectionIndex].Transform, Piece->mModelWorld);
+		swModel* ActiveModel = mView->GetActiveModel();
 
 		if (ActiveModel != mView->GetModel())
-			WorldMatrix = lcMul(WorldMatrix, mView->GetActiveSubmodelTransform());
+			WorldMatrix = swMul(WorldMatrix, mView->GetActiveSubmodelTransform());
 
-		lcMatrix44 InverseWorldMatrix = lcMatrix44AffineInverse(WorldMatrix);
-		InverseWorldMatrix = lcMul(InverseWorldMatrix, lcMatrix44Scale(lcVector3(1.0f / OverlayScale, 1.0f / OverlayScale, 1.0f / OverlayScale)));
+		swMatrix44 InverseWorldMatrix = swMatrix44AffineInverse(WorldMatrix);
+		InverseWorldMatrix = swMul(InverseWorldMatrix, swMatrix44Scale(swVector3(1.0f / OverlayScale, 1.0f / OverlayScale, 1.0f / OverlayScale)));
 
-		lcVector3 LocalStart = lcMul31(Start, InverseWorldMatrix);
-		lcVector3 LocalEnd = lcMul31(End, InverseWorldMatrix);
+		swVector3 LocalStart = swMul31(Start, InverseWorldMatrix);
+		swVector3 LocalEnd = swMul31(End, InverseWorldMatrix);
 
 		if (!Piece->IsTrainTrackConnected(ConnectionIndex))
 		{
 			if (MinIntersectDist(mTrainTrackInsertIndexStart, mTrainTrackInsertIndexCount, LocalStart, LocalEnd))
 			{
-				NewTrackTool = lcTrackTool::InsertTrainTrack;
-				NewTrackSection = LC_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST + ConnectionIndex;
+				NewTrackTool = swTrackTool::InsertTrainTrack;
+				NewTrackSection = SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST + ConnectionIndex;
 			}
 		}
 
-		if (Piece->GetFocusSection() >= LC_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST && ConnectionIndex == Piece->GetFocusSection() - LC_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST)
+		if (Piece->GetFocusSection() >= SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST && ConnectionIndex == Piece->GetFocusSection() - SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST)
 		{
 			if (MinIntersectDist(mTrainTrackRotateIndexStart, mTrainTrackRotateIndexCount, LocalStart, LocalEnd))
 			{
-				NewTrackTool = lcTrackTool::RotateTrainTrackRight;
-				NewTrackSection = LC_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST + ConnectionIndex;
+				NewTrackTool = swTrackTool::RotateTrainTrackRight;
+				NewTrackSection = SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST + ConnectionIndex;
 			}
 
 			if (MinIntersectDist(mTrainTrackRotateIndexStart + mTrainTrackRotateIndexCount, mTrainTrackRotateIndexCount, LocalStart, LocalEnd))
 			{
-				NewTrackTool = lcTrackTool::RotateTrainTrackLeft;
-				NewTrackSection = LC_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST + ConnectionIndex;
+				NewTrackTool = swTrackTool::RotateTrainTrackLeft;
+				NewTrackSection = SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST + ConnectionIndex;
 			}
 		}
 
 		if (MinIntersectDist(mTrainTrackConnectionIndexStart, mTrainTrackConnectionIndexCount, LocalStart, LocalEnd))
 		{
-			NewTrackTool = lcTrackTool::SelectTrainTrack;
-			NewTrackSection = LC_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST + ConnectionIndex;
+			NewTrackTool = swTrackTool::SelectTrainTrack;
+			NewTrackSection = SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST + ConnectionIndex;
 		}
 	}
 
 	return { NewTrackTool, NewTrackSection, ClosestIntersectionDistance };
 }
 
-lcTrackTool lcViewManipulator::UpdateRotate()
+swTrackTool swViewManipulator::UpdateRotate()
 {
 	const float OverlayScale = mView->GetOverlayScale();
-	lcMatrix44 WorldMatrix;
+	swMatrix44 WorldMatrix;
 	if (!GetRotationWorldMatrix(WorldMatrix))
-		return lcTrackTool::None;
-	const lcVector3 OverlayCenter = WorldMatrix.GetTranslation();
+		return swTrackTool::None;
+	const swVector3 OverlayCenter = WorldMatrix.GetTranslation();
 
 	const int x = mView->GetMouseX();
 	const int y = mView->GetMouseY();
-	lcVector3 StartEnd[2] = { lcVector3((float)x, (float)y, 0.0f), lcVector3((float)x, (float)y, 1.0f) };
+	swVector3 StartEnd[2] = { swVector3((float)x, (float)y, 0.0f), swVector3((float)x, (float)y, 1.0f) };
 	mView->UnprojectPoints(StartEnd, 2);
 
-	lcVector3 Intersection;
-	const lcMatrix44 InverseWorldMatrix = lcMatrix44AffineInverse(WorldMatrix);
-	const lcVector3 LocalStart = lcMul31(StartEnd[0], InverseWorldMatrix);
-	const lcVector3 LocalEnd = lcMul31(StartEnd[1], InverseWorldMatrix);
-	lcVector3 LocalIntersection;
-	const bool TrackballHit = lcSphereRayIntersection(lcVector3(0.0f, 0.0f, 0.0f), mOverlayRotateRadius * OverlayScale, LocalStart, LocalEnd, LocalIntersection);
+	swVector3 Intersection;
+	const swMatrix44 InverseWorldMatrix = swMatrix44AffineInverse(WorldMatrix);
+	const swVector3 LocalStart = swMul31(StartEnd[0], InverseWorldMatrix);
+	const swVector3 LocalEnd = swMul31(StartEnd[1], InverseWorldMatrix);
+	swVector3 LocalIntersection;
+	const bool TrackballHit = swSphereRayIntersection(swVector3(0.0f, 0.0f, 0.0f), mOverlayRotateRadius * OverlayScale, LocalStart, LocalEnd, LocalIntersection);
 	if (TrackballHit)
 	{
 		const float Epsilon = 0.25f * OverlayScale;
-		const lcTrackTool Axis = GetRotationAxis(LocalIntersection, Epsilon);
-		if (Axis != lcTrackTool::None)
+		const swTrackTool Axis = GetRotationAxis(LocalIntersection, Epsilon);
+		if (Axis != swTrackTool::None)
 			return Axis;
 	}
 
 	// Test the camera-facing ring itself, rather than its bounding sphere, so the
 	// inner gizmo does not accidentally activate this mode.
-	const lcCamera* Camera = mView->GetCamera();
-	const lcVector3 CameraAxis = lcNormalize(Camera->mTargetPosition - Camera->mPosition);
-	const lcVector4 CameraPlane(CameraAxis, -lcDot(CameraAxis, OverlayCenter));
+	const swCamera* Camera = mView->GetCamera();
+	const swVector3 CameraAxis = swNormalize(Camera->mTargetPosition - Camera->mPosition);
+	const swVector4 CameraPlane(CameraAxis, -swDot(CameraAxis, OverlayCenter));
 
-	if (lcLineSegmentPlaneIntersection(&Intersection, StartEnd[0], StartEnd[1], CameraPlane))
+	if (swLineSegmentPlaneIntersection(&Intersection, StartEnd[0], StartEnd[1], CameraPlane))
 	{
 		const float RingRadius = mOverlayRotateCameraRadius * OverlayScale;
 		const float HalfWidth = OverlayScale * 0.075f;
-		const float Distance = lcLength(Intersection - OverlayCenter);
+		const float Distance = swLength(Intersection - OverlayCenter);
 
 		if (fabsf(Distance - RingRadius) <= HalfWidth)
-			return lcTrackTool::RotateCamera;
+			return swTrackTool::RotateCamera;
 	}
 
-	return TrackballHit ? lcTrackTool::RotateTrackBall : lcTrackTool::None;
+	return TrackballHit ? swTrackTool::RotateTrackBall : swTrackTool::None;
 }

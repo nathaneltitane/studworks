@@ -5,12 +5,12 @@
 
 #ifdef Q_OS_WIN
 
-class lcHttpReply : public QThread
+class swHttpReply : public QThread
 {
 	Q_OBJECT
 
 public:
-	lcHttpReply(QObject* Parent, const QString& URL);
+	swHttpReply(QObject* Parent, const QString& URL);
 
 	void run() override;
 
@@ -36,42 +36,42 @@ protected:
 	QString mURL;
 };
 
-class lcHttpManager : public QObject
+class swHttpManager : public QObject
 {
 	Q_OBJECT
 
 public:
-	lcHttpManager(QObject* Owner = nullptr);
+	swHttpManager(QObject* Owner = nullptr);
 
-	lcHttpReply* DownloadFile(const QString& Url);
+	swHttpReply* DownloadFile(const QString& Url);
 
 signals:
-	void DownloadFinished(lcHttpReply* Reply);
+	void DownloadFinished(swHttpReply* Reply);
 };
 
 #else
 
-class lcHttpReply : public QNetworkReply
+class swHttpReply : public QNetworkReply
 {
 	Q_OBJECT
 
-	lcHttpReply(QObject* Parent)
+	swHttpReply(QObject* Parent)
 		: QNetworkReply(Parent)
 	{
 	}
 };
 
-class lcHttpManager : public QNetworkAccessManager
+class swHttpManager : public QNetworkAccessManager
 {
 	Q_OBJECT
 
 public:
-	lcHttpManager(QObject* Owner = nullptr);
+	swHttpManager(QObject* Owner = nullptr);
 
-	lcHttpReply* DownloadFile(const QString& Url);
+	swHttpReply* DownloadFile(const QString& Url);
 
 signals:
-	void DownloadFinished(lcHttpReply* Reply);
+	void DownloadFinished(swHttpReply* Reply);
 
 protected slots:
 	void Finished(QNetworkReply* Reply);

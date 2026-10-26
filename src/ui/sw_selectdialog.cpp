@@ -8,27 +8,27 @@
 #include "light.h"
 #include "group.h"
 
-lcSelectDialog::lcSelectDialog(QWidget* Parent, lcModel* Model)
-	: QDialog(Parent), ui(new Ui::lcSelectDialog)
+swSelectDialog::swSelectDialog(QWidget* Parent, swModel* Model)
+	: QDialog(Parent), ui(new Ui::swSelectDialog)
 {
 	ui->setupUi(this);
-	lcSetupDialogHelp(this, ui->buttonBox);
+	swSetupDialogHelp(this, ui->buttonBox);
 
-	connect(ui->selectAll, &QPushButton::clicked, this, &lcSelectDialog::SelectAllClicked);
-	connect(ui->selectNone, &QPushButton::clicked, this, &lcSelectDialog::SelectNoneClicked);
-	connect(ui->selectInvert, &QPushButton::clicked, this, &lcSelectDialog::SelectInvertClicked);
-	connect(ui->treeWidget, &QTreeWidget::itemChanged, this, &lcSelectDialog::ItemChanged);
+	connect(ui->selectAll, &QPushButton::clicked, this, &swSelectDialog::SelectAllClicked);
+	connect(ui->selectNone, &QPushButton::clicked, this, &swSelectDialog::SelectNoneClicked);
+	connect(ui->selectInvert, &QPushButton::clicked, this, &swSelectDialog::SelectInvertClicked);
+	connect(ui->treeWidget, &QTreeWidget::itemChanged, this, &swSelectDialog::ItemChanged);
 
 	AddChildren(ui->treeWidget->invisibleRootItem(), nullptr, Model);
 	ui->treeWidget->expandAll();
 }
 
-lcSelectDialog::~lcSelectDialog()
+swSelectDialog::~swSelectDialog()
 {
 	delete ui;
 }
 
-void lcSelectDialog::accept()
+void swSelectDialog::accept()
 {
 	mObjects.clear();
 
@@ -44,7 +44,7 @@ void lcSelectDialog::accept()
 		{
 			if (Item->checkState(0) == Qt::Checked)
 			{
-				lcObject* Object = (lcObject*)Item->data(0, IndexRole).value<uintptr_t>();
+				swObject* Object = (swObject*)Item->data(0, IndexRole).value<uintptr_t>();
 				mObjects.emplace_back(Object);
 			}
 		}
@@ -58,7 +58,7 @@ void lcSelectDialog::accept()
 	QDialog::accept();
 }
 
-void lcSelectDialog::SelectAllClicked()
+void swSelectDialog::SelectAllClicked()
 {
 	ui->treeWidget->blockSignals(true);
 
@@ -82,7 +82,7 @@ void lcSelectDialog::SelectAllClicked()
 	ui->treeWidget->blockSignals(false);
 }
 
-void lcSelectDialog::SelectNoneClicked()
+void swSelectDialog::SelectNoneClicked()
 {
 	ui->treeWidget->blockSignals(true);
 
@@ -106,7 +106,7 @@ void lcSelectDialog::SelectNoneClicked()
 	ui->treeWidget->blockSignals(false);
 }
 
-void lcSelectDialog::SelectInvertClicked()
+void swSelectDialog::SelectInvertClicked()
 {
 	ui->treeWidget->blockSignals(true);
 
@@ -130,7 +130,7 @@ void lcSelectDialog::SelectInvertClicked()
 	ui->treeWidget->blockSignals(false);
 }
 
-void lcSelectDialog::ItemChanged(QTreeWidgetItem *item, int column)
+void swSelectDialog::ItemChanged(QTreeWidgetItem *item, int column)
 {
 	Q_UNUSED(column);
 
@@ -173,11 +173,11 @@ void lcSelectDialog::ItemChanged(QTreeWidgetItem *item, int column)
 	ui->treeWidget->blockSignals(false);
 }
 
-void lcSelectDialog::AddChildren(QTreeWidgetItem* ParentItem, lcGroup* ParentGroup, lcModel* Model)
+void swSelectDialog::AddChildren(QTreeWidgetItem* ParentItem, swGroup* ParentGroup, swModel* Model)
 {
-	const std::vector<std::unique_ptr<lcGroup>>& Groups = Model->GetGroups();
+	const std::vector<std::unique_ptr<swGroup>>& Groups = Model->GetGroups();
 
-	for (const std::unique_ptr<lcGroup>& Group : Groups)
+	for (const std::unique_ptr<swGroup>& Group : Groups)
 	{
 		if (Group->mGroup != ParentGroup)
 			continue;
@@ -187,10 +187,10 @@ void lcSelectDialog::AddChildren(QTreeWidgetItem* ParentItem, lcGroup* ParentGro
 		AddChildren(GroupItem, Group.get(), Model);
 	}
 
-	const std::vector<std::unique_ptr<lcPiece>>& Pieces = Model->GetPieces();
-	lcStep currentStep = Model->GetCurrentStep();
+	const std::vector<std::unique_ptr<swPiece>>& Pieces = Model->GetPieces();
+	swStep currentStep = Model->GetCurrentStep();
 
-	for (const std::unique_ptr<lcPiece>& Piece : Pieces)
+	for (const std::unique_ptr<swPiece>& Piece : Pieces)
 	{
 		if (Piece->GetGroup() != ParentGroup || !Piece->IsVisible(currentStep))
 			continue;
@@ -202,9 +202,9 @@ void lcSelectDialog::AddChildren(QTreeWidgetItem* ParentItem, lcGroup* ParentGro
 
 	if (!ParentGroup)
 	{
-		const std::vector<std::unique_ptr<lcCamera>>& Cameras = Model->GetCameras();
+		const std::vector<std::unique_ptr<swCamera>>& Cameras = Model->GetCameras();
 
-		for (const std::unique_ptr<lcCamera>& Camera : Cameras)
+		for (const std::unique_ptr<swCamera>& Camera : Cameras)
 		{
 			if (!Camera->IsVisible())
 				continue;
@@ -214,9 +214,9 @@ void lcSelectDialog::AddChildren(QTreeWidgetItem* ParentItem, lcGroup* ParentGro
 			cameraItem->setCheckState(0, Camera->IsSelected() ? Qt::Checked : Qt::Unchecked);
 		}
 
-		const std::vector<std::unique_ptr<lcLight>>& Lights = Model->GetLights();
+		const std::vector<std::unique_ptr<swLight>>& Lights = Model->GetLights();
 
-		for (const std::unique_ptr<lcLight>& Light : Lights)
+		for (const std::unique_ptr<swLight>& Light : Lights)
 		{
 			if (!Light->IsVisible())
 				continue;

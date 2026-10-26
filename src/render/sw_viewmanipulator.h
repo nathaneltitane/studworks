@@ -4,62 +4,62 @@
 
 #include <optional>
 
-class lcViewManipulator
+class swViewManipulator
 {
 public:
-	lcViewManipulator(lcView* View);
+	swViewManipulator(swView* View);
 
-	void DrawSelectMove(lcTrackButton TrackButton, lcTrackTool TrackTool, quint32 TrackToolSection);
-	void DrawRotate(lcTrackButton TrackButton, lcTrackTool TrackTool);
+	void DrawSelectMove(swTrackButton TrackButton, swTrackTool TrackTool, quint32 TrackToolSection);
+	void DrawRotate(swTrackButton TrackButton, swTrackTool TrackTool);
 
-	std::pair<lcTrackTool, quint32> UpdateSelectMove(lcTrackButton TrackButton);
-	lcTrackTool UpdateRotate();
+	std::pair<swTrackTool, quint32> UpdateSelectMove(swTrackButton TrackButton);
+	swTrackTool UpdateRotate();
 
-	static void CreateResources(lcContext* Context);
-	static void DestroyResources(lcContext* Context);
+	static void CreateResources(swContext* Context);
+	static void DestroyResources(swContext* Context);
 
 protected:
-	struct lcRotationDiscInfo
+	struct swRotationDiscInfo
 	{
 		int AxisIndex;
 		float Radius;
-		lcVector4 Rotation;
-		lcVector4 FillColor;
-		lcVector4 HighlightColor;
+		swVector4 Rotation;
+		swVector4 FillColor;
+		swVector4 HighlightColor;
 		bool CameraFacing;
 	};
 
-	struct lcMoveAxisInfo
+	struct swMoveAxisInfo
 	{
-		lcVector4 Color;
+		swVector4 Color;
 	};
 
-	void DrawTrainTrack(lcPiece* Piece, lcContext* Context, lcTrackTool TrackTool, quint32 TrackToolSection);
-	std::tuple<lcTrackTool, quint32, float> UpdateSelectMoveTrainTrack(lcPiece* Piece, float OverlayScale, const lcVector3& Start, const lcVector3& End) const;
+	void DrawTrainTrack(swPiece* Piece, swContext* Context, swTrackTool TrackTool, quint32 TrackToolSection);
+	std::tuple<swTrackTool, quint32, float> UpdateSelectMoveTrainTrack(swPiece* Piece, float OverlayScale, const swVector3& Start, const swVector3& End) const;
 
-	static bool IsTrackToolAllowed(lcTrackTool TrackTool, quint32 AllowedTransforms);
-	bool GetRotationWorldMatrix(lcMatrix44& WorldMatrix) const;
-	static lcTrackTool GetRotationAxis(const lcVector3& LocalIntersection, float Epsilon);
-	static std::optional<lcRotationDiscInfo> GetRotationDiscInfo(lcTrackTool TrackTool);
-	static std::optional<lcMoveAxisInfo> GetMoveAxisInfo(lcTrackTool TrackTool);
-	lcMatrix44 GetRotationDiscWorldMatrix(const lcRotationDiscInfo& DiscInfo, const lcMatrix44& WorldMatrix) const;
-	float GetRotationDiscStartAngle(const lcRotationDiscInfo& DiscInfo, const lcMatrix44& DiscWorldMatrix) const;
-	void DrawTrackballHover(const lcMatrix44& WorldMatrix, float OverlayScale) const;
-	bool DrawRotationDisc(lcTrackButton TrackButton, const lcVector3& MouseToolDistance, const std::optional<lcRotationDiscInfo>& RotationDisc, const lcMatrix44& WorldMatrix, float OverlayScale) const;
-	void DrawCameraRotationRing(lcTrackButton TrackButton, lcTrackTool TrackTool, const lcMatrix44& WorldMatrix, float OverlayScale) const;
-	void DrawAxisRotationRings(lcTrackButton TrackButton, lcTrackTool TrackTool, bool HasAngle, const lcMatrix44& WorldMatrix, float OverlayScale) const;
-	void DrawRotationText(lcTrackButton TrackButton, const lcVector3& MouseToolDistance, const std::optional<lcRotationDiscInfo>& RotationDisc, const lcMatrix44& WorldMatrix, float OverlayScale) const;
-	void DrawMoveDistance(lcTrackButton TrackButton, lcTrackTool TrackTool, const lcVector3& StartPosition, const lcVector3& EndPosition, float Distance) const;
+	static bool IsTrackToolAllowed(swTrackTool TrackTool, quint32 AllowedTransforms);
+	bool GetRotationWorldMatrix(swMatrix44& WorldMatrix) const;
+	static swTrackTool GetRotationAxis(const swVector3& LocalIntersection, float Epsilon);
+	static std::optional<swRotationDiscInfo> GetRotationDiscInfo(swTrackTool TrackTool);
+	static std::optional<swMoveAxisInfo> GetMoveAxisInfo(swTrackTool TrackTool);
+	swMatrix44 GetRotationDiscWorldMatrix(const swRotationDiscInfo& DiscInfo, const swMatrix44& WorldMatrix) const;
+	float GetRotationDiscStartAngle(const swRotationDiscInfo& DiscInfo, const swMatrix44& DiscWorldMatrix) const;
+	void DrawTrackballHover(const swMatrix44& WorldMatrix, float OverlayScale) const;
+	bool DrawRotationDisc(swTrackButton TrackButton, const swVector3& MouseToolDistance, const std::optional<swRotationDiscInfo>& RotationDisc, const swMatrix44& WorldMatrix, float OverlayScale) const;
+	void DrawCameraRotationRing(swTrackButton TrackButton, swTrackTool TrackTool, const swMatrix44& WorldMatrix, float OverlayScale) const;
+	void DrawAxisRotationRings(swTrackButton TrackButton, swTrackTool TrackTool, bool HasAngle, const swMatrix44& WorldMatrix, float OverlayScale) const;
+	void DrawRotationText(swTrackButton TrackButton, const swVector3& MouseToolDistance, const std::optional<swRotationDiscInfo>& RotationDisc, const swMatrix44& WorldMatrix, float OverlayScale) const;
+	void DrawMoveDistance(swTrackButton TrackButton, swTrackTool TrackTool, const swVector3& StartPosition, const swVector3& EndPosition, float Distance) const;
 
-	lcView* mView = nullptr;
+	swView* mView = nullptr;
 
-	static lcVertexBuffer mRotateMoveVertexBuffer;
-	static lcIndexBuffer mRotateMoveIndexBuffer;
+	static swVertexBuffer mRotateMoveVertexBuffer;
+	static swIndexBuffer mRotateMoveIndexBuffer;
 
-	static lcVector4 GetAxisColor(int AxisIndex, bool Selected);
-	static constexpr lcVector4 mColorCamera = lcVector4(190.0f / 255.0f, 190.0f / 255.0f, 190.0f / 255.0f, 255.0f / 255.0f);
-	static constexpr lcVector4 mColorTrackball = lcVector4(120.0f / 255.0f, 120.0f / 255.0f, 120.0f / 255.0f, 30.0f / 255.0f);
-	static constexpr lcVector4 mColorCameraSelected = lcVector4(230.0f / 255.0f, 230.0f / 255.0f, 230.0f / 255.0f, 255.0f / 255.0f);
+	static swVector4 GetAxisColor(int AxisIndex, bool Selected);
+	static constexpr swVector4 mColorCamera = swVector4(190.0f / 255.0f, 190.0f / 255.0f, 190.0f / 255.0f, 255.0f / 255.0f);
+	static constexpr swVector4 mColorTrackball = swVector4(120.0f / 255.0f, 120.0f / 255.0f, 120.0f / 255.0f, 30.0f / 255.0f);
+	static constexpr swVector4 mColorCameraSelected = swVector4(230.0f / 255.0f, 230.0f / 255.0f, 230.0f / 255.0f, 255.0f / 255.0f);
 
 	static constexpr float mOverlayRotateRadius = 2.0f;
 	static constexpr float mOverlayRotateCameraRadius = 2.5f;
@@ -78,5 +78,5 @@ protected:
 	static constexpr int mTrainTrackConnectionIndexCount = 36;
 	static constexpr int mIndexCount = mTrainTrackConnectionIndexStart + mTrainTrackConnectionIndexCount;
 	static const GLushort mRotateMoveIndices[mIndexCount];
-	static lcVector3 mRotateMoveVertices[51 + 138 + 10 + 74 + 28 + 24];
+	static swVector3 mRotateMoveVertices[51 + 138 + 10 + 74 + 28 + 24];
 };

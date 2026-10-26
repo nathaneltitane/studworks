@@ -4,17 +4,17 @@
 #include "sw_string.h"
 #include "project.h"
 
-lcPieceManager::~lcPieceManager()
+swPieceManager::~swPieceManager()
 {
 	// Library teardown must unregister identities before destroying this registry.
 	Q_ASSERT(mPieces.empty() && mProjectPieces.empty() && mPieceDataLoadErrors.empty());
 }
 
-std::string lcPieceManager::NormalizePieceDataName(const char* PieceName)
+std::string swPieceManager::NormalizePieceDataName(const char* PieceName)
 {
 	std::string Name;
 
-	for (const char* Src = PieceName; *Src && Name.size() < LC_PIECE_NAME_LEN - 1; Src++)
+	for (const char* Src = PieceName; *Src && Name.size() < SW_PIECE_NAME_LEN - 1; Src++)
 	{
 		if (*Src == '\\')
 			Name.push_back('/');
@@ -27,7 +27,7 @@ std::string lcPieceManager::NormalizePieceDataName(const char* PieceName)
 	return Name;
 }
 
-void lcPieceManager::Clear()
+void swPieceManager::Clear()
 {
 	// Workers have drained. External project destruction may reenter through the facade.
 	std::unordered_set<Project*> ExternalProjects;
@@ -47,7 +47,7 @@ void lcPieceManager::Clear()
 		{
 			return Entry.first->IsProject() && ExternalProjects.find(Entry.second) == ExternalProjects.end();
 		});
-		lcPieceData* PieceData = nullptr;
+		swPieceData* PieceData = nullptr;
 
 		if (External != mProjectPieces.end())
 			PieceData = External->first;
@@ -69,12 +69,12 @@ void lcPieceManager::Clear()
 	mErrorMutex.unlock();
 }
 
-lcPieceData* lcPieceManager::FindPieceData(const std::string& Name, Project* OwnerProject) const
+swPieceData* swPieceManager::FindPieceData(const std::string& Name, Project* OwnerProject) const
 {
 	QMutexLocker Lock(&mMutex);
 
 	if (OwnerProject)
-		if (lcPieceData* PieceData = OwnerProject->FindPieceData(Name))
+		if (swPieceData* PieceData = OwnerProject->FindPieceData(Name))
 			return PieceData;
 
 	const auto PieceIt = mPieces.find(Name);
@@ -82,24 +82,24 @@ lcPieceData* lcPieceManager::FindPieceData(const std::string& Name, Project* Own
 	return PieceIt != mPieces.end() ? PieceIt->second : nullptr;
 }
 
-lcPieceData* lcPieceManager::CreateLibraryPieceData(const std::string& Name, const char* FileName)
+swPieceData* swPieceManager::CreateLibraryPieceData(const std::string& Name, const char* FileName)
 {
 	QMutexLocker Lock(&mMutex);
 
-	lcPieceData* PieceData = new lcPieceData(true);
+	swPieceData* PieceData = new swPieceData(true);
 
-	lcstrcpy(PieceData->mFileName, FileName);
+	swstrcpy(PieceData->mFileName, FileName);
 
 	RegisterLibraryPieceData(Name, PieceData);
 
 	return PieceData;
 }
 
-lcPieceData* lcPieceManager::CreatePieceData(const char* PieceName, Project* OwnerProject)
+swPieceData* swPieceManager::CreatePieceData(const char* PieceName, Project* OwnerProject)
 {
 	QMutexLocker Lock(&mMutex);
 
-	lcPieceData* PieceData = new lcPieceData(false);
+	swPieceData* PieceData = new swPieceData(false);
 	const std::string Name = NormalizePieceDataName(PieceName);
 
 	PieceData->CreatePart(PieceName);
@@ -112,11 +112,11 @@ lcPieceData* lcPieceManager::CreatePieceData(const char* PieceName, Project* Own
 	return PieceData;
 }
 
-lcPieceData* lcPieceManager::AcquireModelPieceData(const char* PieceName, Project* OwnerProject, bool& Reused)
+swPieceData* swPieceManager::AcquireModelPieceData(const char* PieceName, Project* OwnerProject, bool& Reused)
 {
 	QMutexLocker Lock(&mMutex);
 
-	lcPieceData* PieceData = OwnerProject->FindPieceData(NormalizePieceDataName(PieceName));
+	swPieceData* PieceData = OwnerProject->FindPieceData(NormalizePieceDataName(PieceName));
 
 	Reused = PieceData && !PieceData->IsModel();
 
@@ -129,14 +129,14 @@ lcPieceData* lcPieceManager::AcquireModelPieceData(const char* PieceName, Projec
 	return PieceData;
 }
 
-void lcPieceManager::AddPieceDataReference(lcPieceData* PieceData)
+void swPieceManager::AddPieceDataReference(swPieceData* PieceData)
 {
 	QMutexLocker Lock(&mMutex);
 
 	PieceData->AddRef();
 }
 
-int lcPieceManager::ReleasePieceData(lcPieceData* PieceData)
+int swPieceManager::ReleasePieceData(swPieceData* PieceData)
 {
 	QMutexLocker Lock(&mMutex);
 
@@ -153,13 +153,13 @@ int lcPieceManager::ReleasePieceData(lcPieceData* PieceData)
 	return Remaining;
 }
 
-void lcPieceManager::RemoveTemporaryPieceData()
+void swPieceManager::RemoveTemporaryPieceData()
 {
 	// Requery after each deletion, since external projects can release other identities.
 	for (;;)
 	{
 		mMutex.lock();
-		lcPieceData* Unused = nullptr;
+		swPieceData* Unused = nullptr;
 
 		for (const auto& [Name, PieceData] : mPieces)
 			if (!PieceData->IsLibraryPiece() && PieceData->GetRefCount() == 0)
@@ -185,7 +185,7 @@ void lcPieceManager::RemoveTemporaryPieceData()
 	}
 }
 
-void lcPieceManager::RemovePieceData(lcPieceData* PieceData)
+void swPieceManager::RemovePieceData(swPieceData* PieceData)
 {
 	mMutex.lock();
 	UnregisterPieceData(PieceData);
@@ -194,7 +194,7 @@ void lcPieceManager::RemovePieceData(lcPieceData* PieceData)
 	delete PieceData;
 }
 
-void lcPieceManager::UnloadPieceData(lcPieceData* PieceData)
+void swPieceManager::UnloadPieceData(swPieceData* PieceData)
 {
 	if (PieceData->IsLibraryPiece())
 		PieceData->Unload();
@@ -202,19 +202,19 @@ void lcPieceManager::UnloadPieceData(lcPieceData* PieceData)
 		RemovePieceData(PieceData);
 }
 
-void lcPieceManager::RegisterLibraryPieceData(const std::string& Name, lcPieceData* PieceData)
+void swPieceManager::RegisterLibraryPieceData(const std::string& Name, swPieceData* PieceData)
 {
 	mPieces[Name] = PieceData;
 }
 
-void lcPieceManager::RegisterProjectPieceData(Project* OwnerProject, const std::string& Name, lcPieceData* PieceData)
+void swPieceManager::RegisterProjectPieceData(Project* OwnerProject, const std::string& Name, swPieceData* PieceData)
 {
 	OwnerProject->RegisterPieceData(Name, PieceData);
 
 	mProjectPieces[PieceData] = OwnerProject;
 }
 
-void lcPieceManager::UnregisterPieceData(lcPieceData* PieceData)
+void swPieceManager::UnregisterPieceData(swPieceData* PieceData)
 {
 	const auto Local = mProjectPieces.find(PieceData);
 
@@ -237,7 +237,7 @@ void lcPieceManager::UnregisterPieceData(lcPieceData* PieceData)
 	}
 }
 
-bool lcPieceManager::RenameModelPieceData(lcPieceData* PieceData, const char* NewName)
+bool swPieceManager::RenameModelPieceData(swPieceData* PieceData, const char* NewName)
 {
 	QMutexLocker Lock(&mMutex);
 
@@ -248,7 +248,7 @@ bool lcPieceManager::RenameModelPieceData(lcPieceData* PieceData, const char* Ne
 	{
 		if (Project* OwnerProject = Local->second)
 		{
-			lcPieceData* Existing = OwnerProject->FindPieceData(Name);
+			swPieceData* Existing = OwnerProject->FindPieceData(Name);
 
 			if (Existing && Existing != PieceData)
 				return false;
@@ -259,7 +259,7 @@ bool lcPieceManager::RenameModelPieceData(lcPieceData* PieceData, const char* Ne
 	}
 	else
 	{
-		lcPieceData* Existing = FindPieceData(Name, nullptr);
+		swPieceData* Existing = FindPieceData(Name, nullptr);
 
 		if (Existing && Existing != PieceData)
 			return false;
@@ -268,17 +268,17 @@ bool lcPieceManager::RenameModelPieceData(lcPieceData* PieceData, const char* Ne
 		RegisterLibraryPieceData(Name, PieceData);
 	}
 
-	lcstrcpy(PieceData->mFileName, NewName);
-	lcstrcpy(PieceData->m_strDescription, NewName);
+	swstrcpy(PieceData->mFileName, NewName);
+	swstrcpy(PieceData->m_strDescription, NewName);
 
 	return true;
 }
 
-void lcPieceManager::ReleaseProjectPieceData(Project* OwnerProject)
+void swPieceManager::ReleaseProjectPieceData(Project* OwnerProject)
 {
 	QMutexLocker Lock(&mMutex);
 
-	std::vector<lcPieceData*> Unused;
+	std::vector<swPieceData*> Unused;
 
 	OwnerProject->ClearPieceDataIndex();
 
@@ -295,15 +295,15 @@ void lcPieceManager::ReleaseProjectPieceData(Project* OwnerProject)
 
 	Lock.unlock();
 
-	for (lcPieceData* PieceData : Unused)
+	for (swPieceData* PieceData : Unused)
 		UnloadPieceData(PieceData);
 }
 
-void lcPieceManager::TransferProjectPieceData(Project* Source, Project* Destination)
+void swPieceManager::TransferProjectPieceData(Project* Source, Project* Destination)
 {
 	QMutexLocker Lock(&mMutex);
 
-	std::vector<lcPieceData*> Unused;
+	std::vector<swPieceData*> Unused;
 
 	Source->TransferPieceDataIndexTo(Destination);
 
@@ -320,18 +320,18 @@ void lcPieceManager::TransferProjectPieceData(Project* Source, Project* Destinat
 
 	Lock.unlock();
 
-	for (lcPieceData* PieceData : Unused)
+	for (swPieceData* PieceData : Unused)
 		UnloadPieceData(PieceData);
 }
 
-size_t lcPieceManager::GetLibraryPieceDataCount() const
+size_t swPieceManager::GetLibraryPieceDataCount() const
 {
 	QMutexLocker Lock(&mMutex);
 
 	return mPieces.size();
 }
 
-std::string lcPieceManager::GetLibraryPieceDataName(const lcPieceData* PieceData) const
+std::string swPieceManager::GetLibraryPieceDataName(const swPieceData* PieceData) const
 {
 	QMutexLocker Lock(&mMutex);
 
@@ -343,11 +343,11 @@ std::string lcPieceManager::GetLibraryPieceDataName(const lcPieceData* PieceData
 	return PieceIt != mPieces.end() ? PieceIt->first : std::string();
 }
 
-std::vector<lcPieceData*> lcPieceManager::GetLibraryPieceData() const
+std::vector<swPieceData*> swPieceManager::GetLibraryPieceData() const
 {
 	QMutexLocker Lock(&mMutex);
 
-	std::vector<lcPieceData*> LibraryPieceData;
+	std::vector<swPieceData*> LibraryPieceData;
 
 	LibraryPieceData.reserve(mPieces.size());
 
@@ -357,11 +357,11 @@ std::vector<lcPieceData*> lcPieceManager::GetLibraryPieceData() const
 	return LibraryPieceData;
 }
 
-std::vector<lcPieceData*> lcPieceManager::GetAllPieceData() const
+std::vector<swPieceData*> swPieceManager::GetAllPieceData() const
 {
 	QMutexLocker Lock(&mMutex);
 
-	std::vector<lcPieceData*> AllPieceData = GetLibraryPieceData();
+	std::vector<swPieceData*> AllPieceData = GetLibraryPieceData();
 	AllPieceData.reserve(AllPieceData.size() + mProjectPieces.size());
 
 	for (const auto& [LocalData, Owner] : mProjectPieces)
@@ -370,11 +370,11 @@ std::vector<lcPieceData*> lcPieceManager::GetAllPieceData() const
 	return AllPieceData;
 }
 
-std::optional<lcPieceManager::FileInfo> lcPieceManager::GetPieceDataFileInfo(const std::string& Name) const
+std::optional<swPieceManager::FileInfo> swPieceManager::GetPieceDataFileInfo(const std::string& Name) const
 {
 	QMutexLocker Lock(&mMutex);
 
-	const lcPieceData* PieceData = FindPieceData(Name, nullptr);
+	const swPieceData* PieceData = FindPieceData(Name, nullptr);
 
 	if (!PieceData)
 		return std::nullopt;
@@ -382,7 +382,7 @@ std::optional<lcPieceManager::FileInfo> lcPieceManager::GetPieceDataFileInfo(con
 	return FileInfo{ PieceData->mFileName, PieceData->mZipFileType, PieceData->mZipFileIndex };
 }
 
-void lcPieceManager::SetPieceDataLoadError(const lcPieceData* PieceData, QString Error)
+void swPieceManager::SetPieceDataLoadError(const swPieceData* PieceData, QString Error)
 {
 	QMutexLocker ErrorLock(&mErrorMutex);
 
@@ -392,7 +392,7 @@ void lcPieceManager::SetPieceDataLoadError(const lcPieceData* PieceData, QString
 		mPieceDataLoadErrors.insert_or_assign(PieceData, std::move(Error));
 }
 
-QString lcPieceManager::GetPieceDataLoadError(const lcPieceData* PieceData) const
+QString swPieceManager::GetPieceDataLoadError(const swPieceData* PieceData) const
 {
 	QMutexLocker ErrorLock(&mErrorMutex);
 
@@ -401,7 +401,7 @@ QString lcPieceManager::GetPieceDataLoadError(const lcPieceData* PieceData) cons
 	return It == mPieceDataLoadErrors.end() ? QString() : It->second;
 }
 
-void lcPieceManager::ClearPieceDataLoadError(const lcPieceData* PieceData)
+void swPieceManager::ClearPieceDataLoadError(const swPieceData* PieceData)
 {
 	QMutexLocker ErrorLock(&mErrorMutex);
 

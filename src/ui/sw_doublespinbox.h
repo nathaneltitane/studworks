@@ -2,16 +2,16 @@
 
 #include "sw_objectproperty.h"
 
-class lcDoubleSpinBox : public QDoubleSpinBox
+class swDoubleSpinBox : public QDoubleSpinBox
 {
 	Q_OBJECT
 
 public:
-	lcDoubleSpinBox(QWidget* Parent);
-	virtual ~lcDoubleSpinBox() = default;
+	swDoubleSpinBox(QWidget* Parent);
+	virtual ~swDoubleSpinBox() = default;
 
 	void SetValue(double Value);
-	void SetSnap(lcFloatPropertySnap Snap);
+	void SetSnap(swFloatPropertySnap Snap);
 
 	QString	textFromValue(double Value) const override;
 	bool eventFilter(QObject* Object, QEvent* Event) override;
@@ -61,5 +61,5 @@ protected:
 	double mLadderWidgetInitialValue = 0.0;
 	QPoint mLastPosition;
 	DragMode mDragMode = DragMode::None;
-	lcFloatPropertySnap mSnap = lcFloatPropertySnap::Auto;
+	swFloatPropertySnap mSnap = swFloatPropertySnap::Auto;
 };

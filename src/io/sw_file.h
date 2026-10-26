@@ -4,24 +4,24 @@
 #include <string.h>
 #include "sw_math.h"
 
-#define LC_FOURCC(ch0, ch1, ch2, ch3) (quint32)((quint32)(quint8)(ch0) | ((quint32)(quint8)(ch1) << 8) | \
+#define SW_FOURCC(ch0, ch1, ch2, ch3) (quint32)((quint32)(quint8)(ch0) | ((quint32)(quint8)(ch1) << 8) | \
 												((quint32)(quint8)(ch2) << 16) | ((quint32)(quint8)(ch3) << 24))
 
-class lcFile
+class swFile
 {
 public:
-	lcFile()
+	swFile()
 	{
 	}
 
-	virtual ~lcFile()
+	virtual ~swFile()
 	{
 	}
 
-	lcFile(const lcFile&) = delete;
-	lcFile(lcFile&&) = delete;
-	lcFile& operator=(const lcFile&) = delete;
-	lcFile& operator=(lcFile&&) = delete;
+	swFile(const swFile&) = delete;
+	swFile(swFile&&) = delete;
+	swFile& operator=(const swFile&) = delete;
+	swFile& operator=(swFile&&) = delete;
 
 	virtual long GetPosition() const = 0;
 	virtual void Seek(qint64 Offset, int From) = 0;
@@ -153,9 +153,9 @@ public:
 		return Value;
 	}
 
-	lcVector3 ReadVector3()
+	swVector3 ReadVector3()
 	{
-		lcVector3 Vector;
+		swVector3 Vector;
 		ReadFloats(Vector.GetFloats(), 3);
 		return Vector;
 	}
@@ -275,7 +275,7 @@ public:
 		return Write64(Buffer, Count);
 	}
 
-	void WriteVector3(const lcVector3& Vector)
+	void WriteVector3(const swVector3& Vector)
 	{
 		WriteFloats(Vector.GetFloats(), 3);
 	}
@@ -455,16 +455,16 @@ protected:
 	}
 };
 
-class lcMemFile : public lcFile
+class swMemFile : public swFile
 {
 public:
-	lcMemFile();
-	virtual ~lcMemFile();
+	swMemFile();
+	virtual ~swMemFile();
 
-	lcMemFile(const lcMemFile&) = delete;
-	lcMemFile(lcMemFile&&) = delete;
-	lcMemFile& operator=(const lcMemFile&) = delete;
-	lcMemFile& operator=(lcMemFile&&) = delete;
+	swMemFile(const swMemFile&) = delete;
+	swMemFile(swMemFile&&) = delete;
+	swMemFile& operator=(const swMemFile&) = delete;
+	swMemFile& operator=(swMemFile&&) = delete;
 
 	long GetPosition() const override;
 	void Seek(qint64 Offset, int From) override;
@@ -486,27 +486,27 @@ public:
 	unsigned char* mBuffer;
 };
 
-class lcDiskFile : public lcFile
+class swDiskFile : public swFile
 {
 public:
-	lcDiskFile()
+	swDiskFile()
 	{
 	}
 
-	lcDiskFile(const QString& FileName)
+	swDiskFile(const QString& FileName)
 		: mFile(FileName)
 	{
 	}
 
-	virtual ~lcDiskFile()
+	virtual ~swDiskFile()
 	{
-		lcDiskFile::Close();
+		swDiskFile::Close();
 	}
 
-	lcDiskFile(const lcDiskFile&) = delete;
-	lcDiskFile(lcDiskFile&&) = delete;
-	lcDiskFile& operator=(const lcDiskFile&) = delete;
-	lcDiskFile& operator=(lcDiskFile&&) = delete;
+	swDiskFile(const swDiskFile&) = delete;
+	swDiskFile(swDiskFile&&) = delete;
+	swDiskFile& operator=(const swDiskFile&) = delete;
+	swDiskFile& operator=(swDiskFile&&) = delete;
 
 	void SetFileName(const QString& FileName)
 	{

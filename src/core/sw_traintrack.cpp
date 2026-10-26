@@ -15,9 +15,9 @@
 // auto replace cross when going over a straight section
 // set focus connection after adding
 
-std::map<size_t, lcPieceData*> lcTrainTrackInfo::mSleepers;
+std::map<size_t, swPieceData*> swTrainTrackInfo::mSleepers;
 
-void lcTrainTrackInfo::Initialize(lcPiecesLibrary* Library)
+void swTrainTrackInfo::Initialize(swPiecesLibrary* Library)
 {
 	QFile ConfigFile(QLatin1String(":/resources/traintrack.json"));
 
@@ -44,31 +44,31 @@ void lcTrainTrackInfo::Initialize(lcPiecesLibrary* Library)
 		QJsonObject JsonPiece = PiecesIt->toObject();
 
 		QJsonArray JsonConnections = JsonPiece["Connections"].toArray();
-		std::vector<lcTrainTrackConnection> Connections;
+		std::vector<swTrainTrackConnection> Connections;
 
 		for (QJsonArray::const_iterator ConnectionIt = JsonConnections.constBegin(); ConnectionIt != JsonConnections.constEnd(); ++ConnectionIt)
 		{
 			QJsonObject JsonConnection = ConnectionIt->toObject();
 
 			QJsonArray JsonPosition = JsonConnection["Position"].toArray();
-			lcVector3 Position(JsonPosition[0].toDouble(), JsonPosition[1].toDouble(), JsonPosition[2].toDouble());
+			swVector3 Position(JsonPosition[0].toDouble(), JsonPosition[1].toDouble(), JsonPosition[2].toDouble());
 
-			float Rotation = JsonConnection["Rotation"].toDouble() * LC_DTOR;
+			float Rotation = JsonConnection["Rotation"].toDouble() * SW_DTOR;
 			QString ConnectionGroup = JsonConnection["Type"].toString();
-			lcTrainTrackConnectionSleeper ConnectionSleeper = lcTrainTrackConnectionSleeper::None;
+			swTrainTrackConnectionSleeper ConnectionSleeper = swTrainTrackConnectionSleeper::None;
 
 			if (ConnectionGroup.startsWith('+'))
 			{
-				ConnectionSleeper = lcTrainTrackConnectionSleeper::NeedsSleeper;
+				ConnectionSleeper = swTrainTrackConnectionSleeper::NeedsSleeper;
 				ConnectionGroup = ConnectionGroup.mid(1);
 			}
 			else if (ConnectionGroup.startsWith('-'))
 			{
-				ConnectionSleeper = lcTrainTrackConnectionSleeper::HasSleeper;
+				ConnectionSleeper = swTrainTrackConnectionSleeper::HasSleeper;
 				ConnectionGroup = ConnectionGroup.mid(1);
 			}
 
-			Connections.emplace_back(lcTrainTrackConnection{ lcMatrix44(lcMatrix33RotationZ(Rotation), Position), { qHash(ConnectionGroup), ConnectionSleeper } });
+			Connections.emplace_back(swTrainTrackConnection{ swMatrix44(swMatrix33RotationZ(Rotation), Position), { qHash(ConnectionGroup), ConnectionSleeper } });
 		}
 
 		int Color = JsonPiece["Color"].toInt(16);
@@ -76,20 +76,20 @@ void lcTrainTrackInfo::Initialize(lcPiecesLibrary* Library)
 
 		for (QJsonArray::const_iterator IDIt = JsonIDs.constBegin(); IDIt != JsonIDs.constEnd(); ++IDIt)
 		{
-			lcPieceData* PieceData = Library->FindPieceData(IDIt->toString().toLatin1(), nullptr);
+			swPieceData* PieceData = Library->FindPieceData(IDIt->toString().toLatin1(), nullptr);
 
 			if (PieceData)
-				PieceData->SetTrainTrackInfo(new lcTrainTrackInfo(Connections, Color, true));
+				PieceData->SetTrainTrackInfo(new swTrainTrackInfo(Connections, Color, true));
 		}
 
 		JsonIDs = JsonPiece["HiddenIDs"].toArray();
 
 		for (QJsonArray::const_iterator IDIt = JsonIDs.constBegin(); IDIt != JsonIDs.constEnd(); ++IDIt)
 		{
-			lcPieceData* PieceData = Library->FindPieceData(IDIt->toString().toLatin1(), nullptr);
+			swPieceData* PieceData = Library->FindPieceData(IDIt->toString().toLatin1(), nullptr);
 
 			if (PieceData)
-				PieceData->SetTrainTrackInfo(new lcTrainTrackInfo(Connections, Color, false));
+				PieceData->SetTrainTrackInfo(new swTrainTrackInfo(Connections, Color, false));
 		}
 	}
 
@@ -102,30 +102,30 @@ void lcTrainTrackInfo::Initialize(lcPiecesLibrary* Library)
 		size_t Group = qHash(SleepersIt.key());
 		QString PartId = SleepersIt->toString();
 
-		lcPieceData* SleeperPieceData = Library->FindPieceData(PartId.toLatin1(), nullptr);
+		swPieceData* SleeperPieceData = Library->FindPieceData(PartId.toLatin1(), nullptr);
 
 		if (SleeperPieceData)
 			mSleepers[Group] = SleeperPieceData;
 	}
 }
 
-int lcTrainTrackInfo::GetPieceConnectionIndex(const lcPiece* Piece1, int ConnectionIndex1, const lcPiece* Piece2)
+int swTrainTrackInfo::GetPieceConnectionIndex(const swPiece* Piece1, int ConnectionIndex1, const swPiece* Piece2)
 {
-	const lcTrainTrackInfo* TrainTrackInfo1 = Piece1->mPieceData->GetTrainTrackInfo();
-	const lcTrainTrackInfo* TrainTrackInfo2 = Piece2->mPieceData->GetTrainTrackInfo();
+	const swTrainTrackInfo* TrainTrackInfo1 = Piece1->mPieceData->GetTrainTrackInfo();
+	const swTrainTrackInfo* TrainTrackInfo2 = Piece2->mPieceData->GetTrainTrackInfo();
 
-	const std::vector<lcTrainTrackConnection>& Connections2 = TrainTrackInfo2->GetConnections();
-	lcMatrix44 Transform1 = lcMul(TrainTrackInfo1->GetConnections()[ConnectionIndex1].Transform, Piece1->mModelWorld);
+	const std::vector<swTrainTrackConnection>& Connections2 = TrainTrackInfo2->GetConnections();
+	swMatrix44 Transform1 = swMul(TrainTrackInfo1->GetConnections()[ConnectionIndex1].Transform, Piece1->mModelWorld);
 
 	for (int ConnectionIndex2 = 0; ConnectionIndex2 < static_cast<int>(Connections2.size()); ConnectionIndex2++)
 	{
-		const lcTrainTrackConnection& Connection2 = Connections2[ConnectionIndex2];
-		const lcMatrix44 Transform2 = lcMul(Connection2.Transform, Piece2->mModelWorld);
+		const swTrainTrackConnection& Connection2 = Connections2[ConnectionIndex2];
+		const swMatrix44 Transform2 = swMul(Connection2.Transform, Piece2->mModelWorld);
 
-		if (lcLengthSquared(Transform1.GetTranslation() - Transform2.GetTranslation()) > 0.1f)
+		if (swLengthSquared(Transform1.GetTranslation() - Transform2.GetTranslation()) > 0.1f)
 			continue;
 
-		float Dot = lcDot3(Transform1[0], Transform2[0]);
+		float Dot = swDot3(Transform1[0], Transform2[0]);
 
 		if (Dot < -0.99f && Dot > -1.01f)
 			return ConnectionIndex2;
@@ -134,10 +134,10 @@ int lcTrainTrackInfo::GetPieceConnectionIndex(const lcPiece* Piece1, int Connect
 	return -1;
 }
 
-std::vector<lcInsertPieceInfo> lcTrainTrackInfo::GetInsertPieceInfo(lcPiece* CurrentPiece, lcPieceData* PieceData, lcPiece* MovingPiece, int ColorIndex, quint32 PreferredSection, bool AllowNewPieces, std::optional<lcVector3> ClosestPoint)
+std::vector<swInsertPieceInfo> swTrainTrackInfo::GetInsertPieceInfo(swPiece* CurrentPiece, swPieceData* PieceData, swPiece* MovingPiece, int ColorIndex, quint32 PreferredSection, bool AllowNewPieces, std::optional<swVector3> ClosestPoint)
 {
-	std::vector<lcInsertPieceInfo> Pieces;
-	const lcTrainTrackInfo* CurrentTrackInfo = CurrentPiece->mPieceData->GetTrainTrackInfo();
+	std::vector<swInsertPieceInfo> Pieces;
+	const swTrainTrackInfo* CurrentTrackInfo = CurrentPiece->mPieceData->GetTrainTrackInfo();
 
 	if (!CurrentTrackInfo || CurrentTrackInfo->GetConnections().empty() || (MovingPiece && PieceData != MovingPiece->mPieceData))
 		return Pieces;
@@ -146,8 +146,8 @@ std::vector<lcInsertPieceInfo> lcTrainTrackInfo::GetInsertPieceInfo(lcPiece* Cur
 
 	if (ClosestPoint)
 	{
-		lcMatrix44 InverseMatrix = lcMatrix44AffineInverse(CurrentPiece->mModelWorld);
-		lcVector3 LocalClosestPoint = lcMul31(ClosestPoint.value(), InverseMatrix);
+		swMatrix44 InverseMatrix = swMatrix44AffineInverse(CurrentPiece->mModelWorld);
+		swVector3 LocalClosestPoint = swMul31(ClosestPoint.value(), InverseMatrix);
 		float BestDistance = FLT_MAX;
 
 		for (quint32 CheckIndex = 0; CheckIndex < CurrentTrackInfo->GetConnections().size(); CheckIndex++)
@@ -157,7 +157,7 @@ std::vector<lcInsertPieceInfo> lcTrainTrackInfo::GetInsertPieceInfo(lcPiece* Cur
 
 			if (MovingPiece)
 			{
-				const std::vector<lcTrainTrackConnection>& MovingConnections = PieceData->GetTrainTrackInfo()->GetConnections();
+				const std::vector<swTrainTrackConnection>& MovingConnections = PieceData->GetTrainTrackInfo()->GetConnections();
 				bool CanConnect = false;
 
 				for (quint32 MovingConnectionIndex = 0; MovingConnectionIndex < MovingConnections.size(); MovingConnectionIndex++)
@@ -192,8 +192,8 @@ std::vector<lcInsertPieceInfo> lcTrainTrackInfo::GetInsertPieceInfo(lcPiece* Cur
 	}
 	else
 	{
-		if (PreferredSection != LC_PIECE_SECTION_INVALID && PreferredSection >= LC_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST)
-			ConnectionIndex = PreferredSection - LC_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST;
+		if (PreferredSection != SW_PIECE_SECTION_INVALID && PreferredSection >= SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST)
+			ConnectionIndex = PreferredSection - SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST;
 
 		quint32 CheckIndex;
 
@@ -207,8 +207,8 @@ std::vector<lcInsertPieceInfo> lcTrainTrackInfo::GetInsertPieceInfo(lcPiece* Cur
 		ConnectionIndex = (ConnectionIndex + CheckIndex) % CurrentTrackInfo->GetConnections().size();
 	}
 
-	const lcTrainTrackConnectionType& CurrentConnectionType = CurrentTrackInfo->GetConnections()[ConnectionIndex].Type;
-	const std::vector<lcTrainTrackConnection>& NewConnections = PieceData->GetTrainTrackInfo()->GetConnections();
+	const swTrainTrackConnectionType& CurrentConnectionType = CurrentTrackInfo->GetConnections()[ConnectionIndex].Type;
+	const std::vector<swTrainTrackConnection>& NewConnections = PieceData->GetTrainTrackInfo()->GetConnections();
 	quint32 NewConnectionIndex;// = ConnectionIndex ? 0 : 1;
 
 	for (NewConnectionIndex = 0; NewConnectionIndex < NewConnections.size(); NewConnectionIndex++)
@@ -218,7 +218,7 @@ std::vector<lcInsertPieceInfo> lcTrainTrackInfo::GetInsertPieceInfo(lcPiece* Cur
 			if (MovingPiece->IsTrainTrackConnected(NewConnectionIndex))
 				continue;
 
-			const std::vector<lcTrainTrackConnection>& MovingConnections = PieceData->GetTrainTrackInfo()->GetConnections();
+			const std::vector<swTrainTrackConnection>& MovingConnections = PieceData->GetTrainTrackInfo()->GetConnections();
 
 			if (AreConnectionsCompatible(CurrentTrackInfo->GetConnections()[ConnectionIndex].Type, MovingConnections[NewConnectionIndex].Type, AllowNewPieces))
 				break;
@@ -233,48 +233,48 @@ std::vector<lcInsertPieceInfo> lcTrainTrackInfo::GetInsertPieceInfo(lcPiece* Cur
 	if (NewConnectionIndex == NewConnections.size())
 		return Pieces;
 
-	if (CurrentConnectionType.Sleeper == lcTrainTrackConnectionSleeper::NeedsSleeper && NewConnections[NewConnectionIndex].Type.Sleeper == lcTrainTrackConnectionSleeper::NeedsSleeper)
+	if (CurrentConnectionType.Sleeper == swTrainTrackConnectionSleeper::NeedsSleeper && NewConnections[NewConnectionIndex].Type.Sleeper == swTrainTrackConnectionSleeper::NeedsSleeper)
 	{
-		std::map<size_t, lcPieceData*>::const_iterator SleeperIt = mSleepers.find(CurrentConnectionType.Group);
+		std::map<size_t, swPieceData*>::const_iterator SleeperIt = mSleepers.find(CurrentConnectionType.Group);
 
 		if (SleeperIt == mSleepers.end())
 			return Pieces;
 
-		lcPieceData* SleeperPieceData = SleeperIt->second;
+		swPieceData* SleeperPieceData = SleeperIt->second;
 
 		if (!SleeperPieceData)
 			return Pieces;
 
-		std::optional<lcMatrix44> SleeperTransform = GetConnectionTransform(CurrentPiece->mPieceData.Get(), CurrentPiece->mModelWorld, ConnectionIndex, SleeperPieceData, 0);
+		std::optional<swMatrix44> SleeperTransform = GetConnectionTransform(CurrentPiece->mPieceData.Get(), CurrentPiece->mModelWorld, ConnectionIndex, SleeperPieceData, 0);
 
 		if (!SleeperTransform)
 			return Pieces;
 
-		std::optional<lcMatrix44> Transform = GetConnectionTransform(SleeperPieceData, SleeperTransform.value(), 1, PieceData, NewConnectionIndex);
+		std::optional<swMatrix44> Transform = GetConnectionTransform(SleeperPieceData, SleeperTransform.value(), 1, PieceData, NewConnectionIndex);
 
 		if (Transform)
 		{
-			Pieces.emplace_back(lcInsertPieceInfo{ SleeperPieceData, SleeperTransform.value(), lcGetColorIndex(SleeperPieceData->GetTrainTrackInfo()->GetColorCode()) });
-			Pieces.emplace_back(lcInsertPieceInfo{ PieceData, Transform.value(), ColorIndex });
+			Pieces.emplace_back(swInsertPieceInfo{ SleeperPieceData, SleeperTransform.value(), swGetColorIndex(SleeperPieceData->GetTrainTrackInfo()->GetColorCode()) });
+			Pieces.emplace_back(swInsertPieceInfo{ PieceData, Transform.value(), ColorIndex });
 		}
 	}
 	else
 	{
-		std::optional<lcMatrix44> Transform = GetConnectionTransform(CurrentPiece->mPieceData.Get(), CurrentPiece->mModelWorld, ConnectionIndex, PieceData, NewConnectionIndex);
+		std::optional<swMatrix44> Transform = GetConnectionTransform(CurrentPiece->mPieceData.Get(), CurrentPiece->mModelWorld, ConnectionIndex, PieceData, NewConnectionIndex);
 
 		if (Transform)
-			Pieces.emplace_back(lcInsertPieceInfo{ PieceData, Transform.value(), ColorIndex });
+			Pieces.emplace_back(swInsertPieceInfo{ PieceData, Transform.value(), ColorIndex });
 	}
 
 	return Pieces;
 }
 
-std::optional<lcMatrix44> lcTrainTrackInfo::GetConnectionTransform(lcPieceData* CurrentPieceData, const lcMatrix44& CurrentTransform, quint32 CurrentConnectionIndex, lcPieceData* PieceData, quint32 NewConnectionIndex)
+std::optional<swMatrix44> swTrainTrackInfo::GetConnectionTransform(swPieceData* CurrentPieceData, const swMatrix44& CurrentTransform, quint32 CurrentConnectionIndex, swPieceData* PieceData, quint32 NewConnectionIndex)
 {
 	if (!CurrentPieceData || !PieceData)
 		return std::nullopt;
 
-	const lcTrainTrackInfo* CurrentTrackInfo = CurrentPieceData->GetTrainTrackInfo();
+	const swTrainTrackInfo* CurrentTrackInfo = CurrentPieceData->GetTrainTrackInfo();
 
 	if (!CurrentTrackInfo || CurrentTrackInfo->GetConnections().empty())
 		return std::nullopt;
@@ -282,48 +282,48 @@ std::optional<lcMatrix44> lcTrainTrackInfo::GetConnectionTransform(lcPieceData* 
 	if (CurrentConnectionIndex >= CurrentTrackInfo->GetConnections().size())
 		return std::nullopt;
 
-	lcTrainTrackInfo* NewTrackInfo = PieceData->GetTrainTrackInfo();
+	swTrainTrackInfo* NewTrackInfo = PieceData->GetTrainTrackInfo();
 
 	if (!NewTrackInfo || NewConnectionIndex >= NewTrackInfo->mConnections.size())
 		return std::nullopt;
 
-	lcMatrix44 Transform;
+	swMatrix44 Transform;
 
-//	if (TrainTrackType != lcTrainTrackType::Left)
+//	if (TrainTrackType != swTrainTrackType::Left)
 //		Transform = NewTrackInfo->mConnections[NewConnectionIndex].Transform;
 //	else
 //	{
-		Transform = lcMatrix44AffineInverse(NewTrackInfo->mConnections[NewConnectionIndex].Transform);
-		Transform = lcMul(Transform, lcMatrix44RotationZ(LC_PI));
+		Transform = swMatrix44AffineInverse(NewTrackInfo->mConnections[NewConnectionIndex].Transform);
+		Transform = swMul(Transform, swMatrix44RotationZ(SW_PI));
 //	}
 
-	Transform = lcMul(Transform, CurrentTrackInfo->GetConnections()[CurrentConnectionIndex].Transform);
-	Transform = lcMul(Transform, CurrentTransform);
+	Transform = swMul(Transform, CurrentTrackInfo->GetConnections()[CurrentConnectionIndex].Transform);
+	Transform = swMul(Transform, CurrentTransform);
 
 	return Transform;
 }
 
-std::optional<lcMatrix44> lcTrainTrackInfo::CalculateTransformToConnection(const lcMatrix44& ConnectionTransform, lcPieceData* PieceData, quint32 ConnectionIndex)
+std::optional<swMatrix44> swTrainTrackInfo::CalculateTransformToConnection(const swMatrix44& ConnectionTransform, swPieceData* PieceData, quint32 ConnectionIndex)
 {
-	lcTrainTrackInfo* TrackInfo = PieceData->GetTrainTrackInfo();
+	swTrainTrackInfo* TrackInfo = PieceData->GetTrainTrackInfo();
 
 	if (!TrackInfo || ConnectionIndex >= TrackInfo->mConnections.size())
 		return std::nullopt;
 
-	lcMatrix44 Transform;
+	swMatrix44 Transform;
 
-//	if (TrainTrackType != lcTrainTrackType::Left)
+//	if (TrainTrackType != swTrainTrackType::Left)
 //		Transform = NewTrackInfo->mConnections[NewConnectionIndex].Transform;
 //	else
 //	{
-		Transform = lcMatrix44AffineInverse(TrackInfo->mConnections[ConnectionIndex].Transform);
-//		Transform = lcMul(Transform, lcMatrix44RotationZ(LC_PI));
+		Transform = swMatrix44AffineInverse(TrackInfo->mConnections[ConnectionIndex].Transform);
+//		Transform = swMul(Transform, swMatrix44RotationZ(SW_PI));
 //	}
 
-	Transform = lcMul(Transform, ConnectionTransform);
+	Transform = swMul(Transform, ConnectionTransform);
 
-//	Transform = lcMul(Transform, CurrentTrackInfo->GetConnections()[CurrentConnectionIndex].Transform);
-//	Transform = lcMul(Transform, CurrentPiece->mModelWorld);
+//	Transform = swMul(Transform, CurrentTrackInfo->GetConnections()[CurrentConnectionIndex].Transform);
+//	Transform = swMul(Transform, CurrentPiece->mModelWorld);
 
 	return Transform;
 }

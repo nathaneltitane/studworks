@@ -3,10 +3,10 @@
 #include "sw_utils.h"
 #include "sw_application.h"
 
-lcAutomateEdgeColorDialog::lcAutomateEdgeColorDialog(QWidget* Parent, bool ShowHighContrastDialog)
+swAutomateEdgeColorDialog::swAutomateEdgeColorDialog(QWidget* Parent, bool ShowHighContrastDialog)
 	:QDialog(Parent)
 {
-	const lcPreferences& Preferences = lcGetPreferences();
+	const swPreferences& Preferences = swGetPreferences();
 	mStudCylinderColorEnabled = Preferences.mStudCylinderColorEnabled;
 	mStudCylinderColor = Preferences.mStudCylinderColor;
 	mPartEdgeColorEnabled = Preferences.mPartEdgeColorEnabled;
@@ -45,14 +45,14 @@ lcAutomateEdgeColorDialog::lcAutomateEdgeColorDialog(QWidget* Parent, bool ShowH
 		PartEdgeContrastLabel->setBuddy(PartEdgeContrastSlider);
 		PartEdgeContrastLabel->setToolTip(PartEdgeContrastSlider->toolTip());
 		PartEdgeContrastLabel->setWhatsThis(PartEdgeContrastSlider->whatsThis());
-		connect(PartEdgeContrastSlider, &QSlider::valueChanged, this, &lcAutomateEdgeColorDialog::SliderValueChanged);
+		connect(PartEdgeContrastSlider, &QSlider::valueChanged, this, &swAutomateEdgeColorDialog::SliderValueChanged);
 		emit PartEdgeContrastSlider->valueChanged(PartEdgeContrastSlider->value());
 
 		ResetPartEdgeContrastButton = new QToolButton(this);
 		ResetPartEdgeContrastButton->setText(tr("Reset"));
 		ResetPartEdgeContrastButton->setToolTip(tr("Restore edge contrast to 0.50."));
 		ResetPartEdgeContrastButton->setWhatsThis(PartEdgeContrastSlider->whatsThis());
-		connect(ResetPartEdgeContrastButton, &QToolButton::clicked, this, &lcAutomateEdgeColorDialog::ResetSliderButtonClicked);
+		connect(ResetPartEdgeContrastButton, &QToolButton::clicked, this, &swAutomateEdgeColorDialog::ResetSliderButtonClicked);
 
 		EdgeSettingsLayout->addWidget(PartEdgeContrastLabel,0,0);
 		EdgeSettingsLayout->addWidget(PartEdgeContrastSlider,0,1);
@@ -74,14 +74,14 @@ lcAutomateEdgeColorDialog::lcAutomateEdgeColorDialog(QWidget* Parent, bool ShowH
 	PartColorValueLDIndexLabel->setBuddy(PartColorValueLDIndexSlider);
 	PartColorValueLDIndexLabel->setToolTip(PartColorValueLDIndexSlider->toolTip());
 	PartColorValueLDIndexLabel->setWhatsThis(PartColorValueLDIndexSlider->whatsThis());
-	connect(PartColorValueLDIndexSlider, &QSlider::valueChanged, this, &lcAutomateEdgeColorDialog::SliderValueChanged);
+	connect(PartColorValueLDIndexSlider, &QSlider::valueChanged, this, &swAutomateEdgeColorDialog::SliderValueChanged);
 	emit PartColorValueLDIndexSlider->valueChanged(PartColorValueLDIndexSlider->value());
 
 	ResetPartColorValueLDIndexButton = new QToolButton(this);
 	ResetPartColorValueLDIndexButton->setText(tr("Reset"));
 	ResetPartColorValueLDIndexButton->setToolTip(ShowHighContrastDialog ? tr("Restore the light/dark threshold to 0.50.") : tr("Restore edge-color saturation to 0.50."));
 	ResetPartColorValueLDIndexButton->setWhatsThis(PartColorValueLDIndexSlider->whatsThis());
-	connect(ResetPartColorValueLDIndexButton, &QToolButton::clicked, this, &lcAutomateEdgeColorDialog::ResetSliderButtonClicked);
+	connect(ResetPartColorValueLDIndexButton, &QToolButton::clicked, this, &swAutomateEdgeColorDialog::ResetSliderButtonClicked);
 
 	EdgeSettingsLayout->addWidget(PartColorValueLDIndexLabel,LDIndexRow,0);
 	EdgeSettingsLayout->addWidget(PartColorValueLDIndexSlider,LDIndexRow,1);
@@ -97,7 +97,7 @@ lcAutomateEdgeColorDialog::lcAutomateEdgeColorDialog(QWidget* Parent, bool ShowH
 	auto SetButtonPixmap = [](quint32 Color, QToolButton* Button)
 	{
 		QPixmap Pixmap(12, 12);
-		QColor ButtonColor(QColor(LC_RGBA_RED(Color), LC_RGBA_GREEN(Color), LC_RGBA_BLUE(Color)));
+		QColor ButtonColor(QColor(SW_RGBA_RED(Color), SW_RGBA_GREEN(Color), SW_RGBA_BLUE(Color)));
 		Pixmap.fill(ButtonColor);
 		Button->setIcon(Pixmap);
 		Button->setToolTip(ButtonColor.name().toUpper());
@@ -105,17 +105,17 @@ lcAutomateEdgeColorDialog::lcAutomateEdgeColorDialog(QWidget* Parent, bool ShowH
 
 	StudCylinderColorEnabledBox = new QCheckBox(tr("Stud Cylinder Color:"), this);
 	StudCylinderColorEnabledBox->setChecked(mStudCylinderColorEnabled);
-	connect(StudCylinderColorEnabledBox, &QCheckBox::clicked, this, &lcAutomateEdgeColorDialog::ColorCheckBoxClicked);
+	connect(StudCylinderColorEnabledBox, &QCheckBox::clicked, this, &swAutomateEdgeColorDialog::ColorCheckBoxClicked);
 
 	StudCylinderColorButton = new QToolButton(this);
 	StudCylinderColorButton->setEnabled(mStudCylinderColorEnabled);
 	SetButtonPixmap(mStudCylinderColor, StudCylinderColorButton);
-	connect(StudCylinderColorButton, &QToolButton::clicked, this, &lcAutomateEdgeColorDialog::ColorButtonClicked);
+	connect(StudCylinderColorButton, &QToolButton::clicked, this, &swAutomateEdgeColorDialog::ColorButtonClicked);
 
 	ResetStudCylinderColorButton = new QToolButton(this);
 	ResetStudCylinderColorButton->setText(tr("Reset"));
 	ResetStudCylinderColorButton->setEnabled(mStudCylinderColorEnabled);
-	connect(ResetStudCylinderColorButton, &QToolButton::clicked, this, &lcAutomateEdgeColorDialog::ResetColorButtonClicked);
+	connect(ResetStudCylinderColorButton, &QToolButton::clicked, this, &swAutomateEdgeColorDialog::ResetColorButtonClicked);
 
 	HighContrastColorLayout->addWidget(StudCylinderColorEnabledBox,0,0);
 	HighContrastColorLayout->addWidget(StudCylinderColorButton,0,1);
@@ -123,17 +123,17 @@ lcAutomateEdgeColorDialog::lcAutomateEdgeColorDialog(QWidget* Parent, bool ShowH
 
 	PartEdgeColorEnabledBox = new QCheckBox(tr("Pieces Edge Color:"), this);
 	PartEdgeColorEnabledBox->setChecked(mPartEdgeColorEnabled);
-	connect(PartEdgeColorEnabledBox, &QCheckBox::clicked, this, &lcAutomateEdgeColorDialog::ColorCheckBoxClicked);
+	connect(PartEdgeColorEnabledBox, &QCheckBox::clicked, this, &swAutomateEdgeColorDialog::ColorCheckBoxClicked);
 
 	PartEdgeColorButton = new QToolButton(this);
 	PartEdgeColorButton->setEnabled(mPartEdgeColorEnabled);
 	SetButtonPixmap(mPartEdgeColor, PartEdgeColorButton);
-	connect(PartEdgeColorButton, &QToolButton::clicked, this, &lcAutomateEdgeColorDialog::ColorButtonClicked);
+	connect(PartEdgeColorButton, &QToolButton::clicked, this, &swAutomateEdgeColorDialog::ColorButtonClicked);
 
 	ResetPartEdgeColorButton = new QToolButton(this);
 	ResetPartEdgeColorButton->setText(tr("Reset"));
 	ResetPartEdgeColorButton->setEnabled(mPartEdgeColorEnabled);
-	connect(ResetPartEdgeColorButton, &QToolButton::clicked, this, &lcAutomateEdgeColorDialog::ResetColorButtonClicked);
+	connect(ResetPartEdgeColorButton, &QToolButton::clicked, this, &swAutomateEdgeColorDialog::ResetColorButtonClicked);
 
 	HighContrastColorLayout->addWidget(PartEdgeColorEnabledBox,1,0);
 	HighContrastColorLayout->addWidget(PartEdgeColorButton,1,1);
@@ -141,17 +141,17 @@ lcAutomateEdgeColorDialog::lcAutomateEdgeColorDialog(QWidget* Parent, bool ShowH
 
 	BlackEdgeColorEnabledBox = new QCheckBox(tr("Black Pieces Edge Color:"), this);
 	BlackEdgeColorEnabledBox->setChecked(mBlackEdgeColorEnabled);
-	connect(BlackEdgeColorEnabledBox, &QCheckBox::clicked, this, &lcAutomateEdgeColorDialog::ColorCheckBoxClicked);
+	connect(BlackEdgeColorEnabledBox, &QCheckBox::clicked, this, &swAutomateEdgeColorDialog::ColorCheckBoxClicked);
 
 	BlackEdgeColorButton = new QToolButton(this);
 	BlackEdgeColorButton->setEnabled(mBlackEdgeColorEnabled);
 	SetButtonPixmap(mBlackEdgeColor, BlackEdgeColorButton);
-	connect(BlackEdgeColorButton, &QToolButton::clicked, this, &lcAutomateEdgeColorDialog::ColorButtonClicked);
+	connect(BlackEdgeColorButton, &QToolButton::clicked, this, &swAutomateEdgeColorDialog::ColorButtonClicked);
 
 	ResetBlackEdgeColorButton = new QToolButton(this);
 	ResetBlackEdgeColorButton->setText(tr("Reset"));
 	ResetBlackEdgeColorButton->setEnabled(mBlackEdgeColorEnabled);
-	connect(ResetBlackEdgeColorButton, &QToolButton::clicked, this, &lcAutomateEdgeColorDialog::ResetColorButtonClicked);
+	connect(ResetBlackEdgeColorButton, &QToolButton::clicked, this, &swAutomateEdgeColorDialog::ResetColorButtonClicked);
 
 	HighContrastColorLayout->addWidget(BlackEdgeColorEnabledBox,2,0);
 	HighContrastColorLayout->addWidget(BlackEdgeColorButton,2,1);
@@ -159,17 +159,17 @@ lcAutomateEdgeColorDialog::lcAutomateEdgeColorDialog(QWidget* Parent, bool ShowH
 
 	DarkEdgeColorEnabledBox = new QCheckBox(tr("Dark Pieces Edge Color:"), this);
 	DarkEdgeColorEnabledBox->setChecked(mDarkEdgeColorEnabled);
-	connect(DarkEdgeColorEnabledBox, &QCheckBox::clicked, this, &lcAutomateEdgeColorDialog::ColorCheckBoxClicked);
+	connect(DarkEdgeColorEnabledBox, &QCheckBox::clicked, this, &swAutomateEdgeColorDialog::ColorCheckBoxClicked);
 
 	DarkEdgeColorButton = new QToolButton(this);
 	DarkEdgeColorButton->setEnabled(mDarkEdgeColorEnabled);
 	SetButtonPixmap(mDarkEdgeColor, DarkEdgeColorButton);
-	connect(DarkEdgeColorButton, &QToolButton::clicked, this, &lcAutomateEdgeColorDialog::ColorButtonClicked);
+	connect(DarkEdgeColorButton, &QToolButton::clicked, this, &swAutomateEdgeColorDialog::ColorButtonClicked);
 
 	ResetDarkEdgeColorButton = new QToolButton(this);
 	ResetDarkEdgeColorButton->setText(tr("Reset"));
 	ResetDarkEdgeColorButton->setEnabled(mDarkEdgeColorEnabled);
-	connect(ResetDarkEdgeColorButton, &QToolButton::clicked, this, &lcAutomateEdgeColorDialog::ResetColorButtonClicked);
+	connect(ResetDarkEdgeColorButton, &QToolButton::clicked, this, &swAutomateEdgeColorDialog::ResetColorButtonClicked);
 
 	HighContrastColorLayout->addWidget(DarkEdgeColorEnabledBox,3,0);
 	HighContrastColorLayout->addWidget(DarkEdgeColorButton,3,1);
@@ -198,14 +198,14 @@ lcAutomateEdgeColorDialog::lcAutomateEdgeColorDialog(QWidget* Parent, bool ShowH
 
 	QDialogButtonBox* buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Help, Qt::Horizontal, this);
 	MainLayout->addWidget(buttonBox);
-	lcSetupDialogHelp(this, buttonBox);
-	QObject::connect(buttonBox, &QDialogButtonBox::accepted, this, &lcAutomateEdgeColorDialog::accept);
-	QObject::connect(buttonBox, &QDialogButtonBox::rejected, this, &lcAutomateEdgeColorDialog::reject);
+	swSetupDialogHelp(this, buttonBox);
+	QObject::connect(buttonBox, &QDialogButtonBox::accepted, this, &swAutomateEdgeColorDialog::accept);
+	QObject::connect(buttonBox, &QDialogButtonBox::rejected, this, &swAutomateEdgeColorDialog::reject);
 
 	setMinimumSize(220,100);
 }
 
-void lcAutomateEdgeColorDialog::ColorCheckBoxClicked()
+void swAutomateEdgeColorDialog::ColorCheckBoxClicked()
 {
 	QObject* CheckBox = sender();
 	if (CheckBox == StudCylinderColorEnabledBox)
@@ -234,21 +234,21 @@ void lcAutomateEdgeColorDialog::ColorCheckBoxClicked()
 	}
 }
 
-void lcAutomateEdgeColorDialog::SliderValueChanged(int Value)
+void swAutomateEdgeColorDialog::SliderValueChanged(int Value)
 {
 	if (sender() == PartEdgeContrastSlider)
 	{
 		mPartEdgeContrast = Value * 0.01f;
-		PartEdgeContrast->setText(lcFormatDoubleLocalized(mPartEdgeContrast, locale(), 'f', 2));
+		PartEdgeContrast->setText(swFormatDoubleLocalized(mPartEdgeContrast, locale(), 'f', 2));
 	}
 	else if (sender() == PartColorValueLDIndexSlider)
 	{
 		mPartColorValueLDIndex = Value * 0.01f;
-		PartColorValueLDIndex->setText(lcFormatDoubleLocalized(mPartColorValueLDIndex, locale(), 'f', 2));
+		PartColorValueLDIndex->setText(swFormatDoubleLocalized(mPartColorValueLDIndex, locale(), 'f', 2));
 	}
 }
 
-void lcAutomateEdgeColorDialog::ColorButtonClicked()
+void swAutomateEdgeColorDialog::ColorButtonClicked()
 {
 	QObject* Button = sender();
 	QString Title;
@@ -267,7 +267,7 @@ void lcAutomateEdgeColorDialog::ColorButtonClicked()
 	}
 	else if (Button == BlackEdgeColorButton)
 	{
-		if (lcGetPreferences().mAutomateEdgeColor)
+		if (swGetPreferences().mAutomateEdgeColor)
 		{
 			QMessageBox msgBox;
 			msgBox.setWindowTitle(tr("Select Black Edge Color"));
@@ -280,7 +280,7 @@ void lcAutomateEdgeColorDialog::ColorButtonClicked()
 	}
 	else if (Button == DarkEdgeColorButton)
 	{
-		if (lcGetPreferences().mAutomateEdgeColor)
+		if (swGetPreferences().mAutomateEdgeColor)
 		{
 			QMessageBox msgBox;
 			msgBox.setWindowTitle(tr("Select Dark Edge Color"));
@@ -294,13 +294,13 @@ void lcAutomateEdgeColorDialog::ColorButtonClicked()
 	else
 		return;
 
-	QColor OldColor = QColor(LC_RGBA_RED(*Color), LC_RGBA_GREEN(*Color), LC_RGBA_BLUE(*Color), LC_RGBA_ALPHA(*Color));
+	QColor OldColor = QColor(SW_RGBA_RED(*Color), SW_RGBA_GREEN(*Color), SW_RGBA_BLUE(*Color), SW_RGBA_ALPHA(*Color));
 	QColor NewColor = QColorDialog::getColor(OldColor, this, Title, DialogOptions);
 
 	if (NewColor == OldColor || !NewColor.isValid())
 		return;
 
-	*Color = LC_RGBA(NewColor.red(), NewColor.green(), NewColor.blue(), NewColor.alpha());
+	*Color = SW_RGBA(NewColor.red(), NewColor.green(), NewColor.blue(), NewColor.alpha());
 
 	QPixmap Pix(12, 12);
 	NewColor.setAlpha(255);
@@ -309,7 +309,7 @@ void lcAutomateEdgeColorDialog::ColorButtonClicked()
 	((QToolButton*)Button)->setToolTip(NewColor.name().toUpper());
 }
 
-void lcAutomateEdgeColorDialog::ResetSliderButtonClicked()
+void swAutomateEdgeColorDialog::ResetSliderButtonClicked()
 {
 	if (sender() == ResetPartEdgeContrastButton)
 	{
@@ -321,7 +321,7 @@ void lcAutomateEdgeColorDialog::ResetSliderButtonClicked()
 	}
 }
 
-void lcAutomateEdgeColorDialog::ResetColorButtonClicked()
+void swAutomateEdgeColorDialog::ResetColorButtonClicked()
 {
 	quint32* Color = nullptr;
 	QPixmap Pix(12, 12);
@@ -330,8 +330,8 @@ void lcAutomateEdgeColorDialog::ResetColorButtonClicked()
 	if (sender() == ResetStudCylinderColorButton)
 	{
 		Color = &mStudCylinderColor;
-		*Color = LC_RGBA(27, 42, 52, 255);
-		ResetColor = QColor(LC_RGBA_RED(*Color), LC_RGBA_GREEN(*Color), LC_RGBA_BLUE(*Color), LC_RGBA_ALPHA(*Color));
+		*Color = SW_RGBA(27, 42, 52, 255);
+		ResetColor = QColor(SW_RGBA_RED(*Color), SW_RGBA_GREEN(*Color), SW_RGBA_BLUE(*Color), SW_RGBA_ALPHA(*Color));
 		Pix.fill(ResetColor);
 		StudCylinderColorButton->setIcon(Pix);
 		StudCylinderColorButton->setToolTip(ResetColor.name().toUpper());
@@ -339,8 +339,8 @@ void lcAutomateEdgeColorDialog::ResetColorButtonClicked()
 	else if (sender() == ResetPartEdgeColorButton)
 	{
 		Color = &mPartEdgeColor;
-		*Color = LC_RGBA(0, 0, 0, 255);
-		ResetColor = QColor(LC_RGBA_RED(*Color), LC_RGBA_GREEN(*Color), LC_RGBA_BLUE(*Color), LC_RGBA_ALPHA(*Color));
+		*Color = SW_RGBA(0, 0, 0, 255);
+		ResetColor = QColor(SW_RGBA_RED(*Color), SW_RGBA_GREEN(*Color), SW_RGBA_BLUE(*Color), SW_RGBA_ALPHA(*Color));
 		Pix.fill(ResetColor);
 		PartEdgeColorButton->setIcon(Pix);
 		PartEdgeColorButton->setToolTip(ResetColor.name().toUpper());
@@ -348,8 +348,8 @@ void lcAutomateEdgeColorDialog::ResetColorButtonClicked()
 	else if (sender() == ResetBlackEdgeColorButton)
 	{
 		Color = &mBlackEdgeColor;
-		*Color = LC_RGBA(255, 255, 255, 255);
-		ResetColor = QColor(LC_RGBA_RED(*Color), LC_RGBA_GREEN(*Color), LC_RGBA_BLUE(*Color), LC_RGBA_ALPHA(*Color));
+		*Color = SW_RGBA(255, 255, 255, 255);
+		ResetColor = QColor(SW_RGBA_RED(*Color), SW_RGBA_GREEN(*Color), SW_RGBA_BLUE(*Color), SW_RGBA_ALPHA(*Color));
 		Pix.fill(ResetColor);
 		BlackEdgeColorButton->setIcon(Pix);
 		BlackEdgeColorButton->setToolTip(ResetColor.name().toUpper());
@@ -357,8 +357,8 @@ void lcAutomateEdgeColorDialog::ResetColorButtonClicked()
 	else if (sender() == ResetDarkEdgeColorButton)
 	{
 		Color = &mDarkEdgeColor;
-		*Color = LC_RGBA(27, 42, 52, 255);
-		ResetColor = QColor(LC_RGBA_RED(*Color), LC_RGBA_GREEN(*Color), LC_RGBA_BLUE(*Color), LC_RGBA_ALPHA(*Color));
+		*Color = SW_RGBA(27, 42, 52, 255);
+		ResetColor = QColor(SW_RGBA_RED(*Color), SW_RGBA_GREEN(*Color), SW_RGBA_BLUE(*Color), SW_RGBA_ALPHA(*Color));
 		Pix.fill(ResetColor);
 		DarkEdgeColorButton->setIcon(Pix);
 		DarkEdgeColorButton->setToolTip(ResetColor.name().toUpper());

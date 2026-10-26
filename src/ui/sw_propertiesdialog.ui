@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>lcPropertiesDialog</class>
- <widget class="QDialog" name="lcPropertiesDialog">
+ <class>swPropertiesDialog</class>
+ <widget class="QDialog" name="swPropertiesDialog">
   <property name="whatsThis">
    <string>&lt;p&gt;&lt;b&gt;Model Properties&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Edit the current model's author, description, and comments on the Summary tab. Measurements and Pieces provide read-only information. Choose OK to apply the metadata changes, or Cancel to discard them.&lt;/p&gt;</string>
   </property>
@@ -142,7 +142,7 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <widget class="lcPartsTableWidget" name="PartsTable">
+        <widget class="swPartsTableWidget" name="PartsTable">
          <property name="toolTip">
           <string>View piece quantities by color; click a column heading to sort.</string>
          </property>
@@ -250,7 +250,7 @@
  </tabstops>
  <customwidgets>
   <customwidget>
-   <class>lcPartsTableWidget</class>
+   <class>swPartsTableWidget</class>
    <extends>QTableWidget</extends>
    <header>sw_propertiesdialog.h</header>
   </customwidget>
@@ -260,7 +260,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>lcPropertiesDialog</receiver>
+   <receiver>swPropertiesDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -276,7 +276,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>lcPropertiesDialog</receiver>
+   <receiver>swPropertiesDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

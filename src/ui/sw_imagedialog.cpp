@@ -4,33 +4,33 @@
 #include "project.h"
 #include "sw_utils.h"
 
-lcImageDialog::lcImageDialog(QWidget* Parent, lcImageDialogOptions* Options)
-    : QDialog(Parent), mOptions(Options), ui(new Ui::lcImageDialog)
+swImageDialog::swImageDialog(QWidget* Parent, swImageDialogOptions* Options)
+    : QDialog(Parent), mOptions(Options), ui(new Ui::swImageDialog)
 {
 	ui->setupUi(this);
-	lcSetupDialogHelp(this, ui->buttonBox);
+	swSetupDialogHelp(this, ui->buttonBox);
 
-	connect(ui->fileNameBrowse, &QPushButton::clicked, this, &lcImageDialog::FileNameBrowseClicked);
+	connect(ui->fileNameBrowse, &QPushButton::clicked, this, &swImageDialog::FileNameBrowseClicked);
 
-	ui->width->setValidator(new QIntValidator(1, LC_MAX_IMAGE_DIMENSION, this));
-	ui->height->setValidator(new QIntValidator(1, LC_MAX_IMAGE_DIMENSION, this));
+	ui->width->setValidator(new QIntValidator(1, SW_MAX_IMAGE_DIMENSION, this));
+	ui->height->setValidator(new QIntValidator(1, SW_MAX_IMAGE_DIMENSION, this));
 	ui->firstStep->setValidator(new QIntValidator(1, mOptions->End, this));
 	ui->lastStep->setValidator(new QIntValidator(1, mOptions->End, this));
 
 	ui->fileName->setText(mOptions->FilePath);
-	ui->width->setText(lcFormatIntegerLocalized(mOptions->Width, ui->width->validator()->locale()));
-	ui->height->setText(lcFormatIntegerLocalized(mOptions->Height, ui->height->validator()->locale()));
-	ui->firstStep->setText(lcFormatIntegerLocalized(mOptions->Start, ui->firstStep->validator()->locale()));
-	ui->lastStep->setText(lcFormatIntegerLocalized(mOptions->End, ui->lastStep->validator()->locale()));
+	ui->width->setText(swFormatIntegerLocalized(mOptions->Width, ui->width->validator()->locale()));
+	ui->height->setText(swFormatIntegerLocalized(mOptions->Height, ui->height->validator()->locale()));
+	ui->firstStep->setText(swFormatIntegerLocalized(mOptions->Start, ui->firstStep->validator()->locale()));
+	ui->lastStep->setText(swFormatIntegerLocalized(mOptions->End, ui->lastStep->validator()->locale()));
 	ui->rangeCurrent->setChecked(true);
 }
 
-lcImageDialog::~lcImageDialog()
+swImageDialog::~swImageDialog()
 {
 	delete ui;
 }
 
-void lcImageDialog::accept()
+void swImageDialog::accept()
 {
 	QString FilePath = ui->fileName->text();
 
@@ -43,7 +43,7 @@ void lcImageDialog::accept()
 	bool Ok;
 	int Width = ui->width->validator()->locale().toInt(ui->width->text(), &Ok);
 
-	if (!Ok || Width < 1 || Width > LC_MAX_IMAGE_DIMENSION)
+	if (!Ok || Width < 1 || Width > SW_MAX_IMAGE_DIMENSION)
 	{
 		QMessageBox::information(this, windowTitle(), tr("Please enter a width between 1 and 32768."));
 		return;
@@ -51,7 +51,7 @@ void lcImageDialog::accept()
 
 	int Height = ui->height->validator()->locale().toInt(ui->height->text(), &Ok);
 
-	if (!Ok || Height < 1 || Height > LC_MAX_IMAGE_DIMENSION)
+	if (!Ok || Height < 1 || Height > SW_MAX_IMAGE_DIMENSION)
 	{
 		QMessageBox::information(this, windowTitle(), tr("Please enter a height between 1 and 32768."));
 		return;
@@ -103,7 +103,7 @@ void lcImageDialog::accept()
 	QDialog::accept();
 }
 
-void lcImageDialog::FileNameBrowseClicked()
+void swImageDialog::FileNameBrowseClicked()
 {
 	QString result = QFileDialog::getSaveFileName(this, tr("Save Image File"), ui->fileName->text(), tr("Supported Image Files (*.bmp *.png *.jpg);;BMP Files (*.bmp);;PNG Files (*.png);;JPEG Files (*.jpg);;All Files (*.*)"));
 

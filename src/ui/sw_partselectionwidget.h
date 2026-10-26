@@ -2,11 +2,11 @@
 
 #include "sw_thumbnailmanager.h"
 
-class lcPartSelectionListModel;
-class lcPartSelectionListView;
-class lcPartSelectionWidget;
+class swPartSelectionListModel;
+class swPartSelectionListView;
+class swPartSelectionWidget;
 
-enum class lcPartCategoryType
+enum class swPartCategoryType
 {
 	AllParts,
 	PartsInUse,
@@ -17,31 +17,31 @@ enum class lcPartCategoryType
 	Count
 };
 
-enum class lcPartCategoryRole
+enum class swPartCategoryRole
 {
 	Type = Qt::UserRole,
 	Index
 };
 
-enum class lcPartFilterType
+enum class swPartFilterType
 {
 	Default,
 	RegularExpression,
 	Count
 };
 
-struct lcPartPalette
+struct swPartPalette
 {
 	QString Name;
 	std::vector<std::string> Parts;
 };
 
-class lcPartSelectionItemDelegate : public QStyledItemDelegate
+class swPartSelectionItemDelegate : public QStyledItemDelegate
 {
 	Q_OBJECT
 
 public:
-	lcPartSelectionItemDelegate(QObject* Parent, lcPartSelectionListModel* ListModel)
+	swPartSelectionItemDelegate(QObject* Parent, swPartSelectionListModel* ListModel)
 		: QStyledItemDelegate(Parent), mListModel(ListModel)
 	{
 	}
@@ -52,39 +52,39 @@ public:
 protected:
 	void initStyleOption(QStyleOptionViewItem* Option, const QModelIndex& Index) const override;
 
-	lcPartSelectionListModel* mListModel;
+	swPartSelectionListModel* mListModel;
 };
 
-struct lcPartSelectionListModelEntry
+struct swPartSelectionListModelEntry
 {
-	lcPieceData* PieceData = nullptr;
+	swPieceData* PieceData = nullptr;
 	std::string Description;
 	int ColorIndex = -1;
 	QPixmap Pixmap;
-	lcPartThumbnailId ThumbnailId = lcPartThumbnailId::Invalid;
+	swPartThumbnailId ThumbnailId = swPartThumbnailId::Invalid;
 };
 
-class lcPartSelectionListModel : public QAbstractListModel
+class swPartSelectionListModel : public QAbstractListModel
 {
 	Q_OBJECT
 
 public:
-	lcPartSelectionListModel(QObject* Parent);
-	~lcPartSelectionListModel();
+	swPartSelectionListModel(QObject* Parent);
+	~swPartSelectionListModel();
 
 	int rowCount(const QModelIndex& Parent = QModelIndex()) const override;
 	QVariant data(const QModelIndex& Index, int Role = Qt::DisplayRole) const override;
 	QVariant headerData(int Section, Qt::Orientation Orientation, int Role = Qt::DisplayRole) const override;
 	Qt::ItemFlags flags(const QModelIndex& Index) const override;
 
-	QModelIndex GetPieceDataIndex(lcPieceData* PieceData) const;
+	QModelIndex GetPieceDataIndex(swPieceData* PieceData) const;
 
-	lcPieceData* GetPieceData(const QModelIndex& Index) const
+	swPieceData* GetPieceData(const QModelIndex& Index) const
 	{
 		return Index.isValid() ? mParts[Index.row()].PieceData : nullptr;
 	}
 
-	lcPieceData* GetPieceData(int Row) const
+	swPieceData* GetPieceData(int Row) const
 	{
 		return mParts[Row].PieceData;
 	}
@@ -99,7 +99,7 @@ public:
 		return mShowPartAliases;
 	}
 
-	lcPartFilterType GetPartFilterType() const
+	swPartFilterType GetPartFilterType() const
 	{
 		return mPartFilterType;
 	}
@@ -152,12 +152,12 @@ public:
 	void SetModelsCategory();
 	void SetPaletteCategory(int SetIndex);
 	void SetCurrentModelCategory();
-	void SetCustomParts(const std::vector<std::pair<lcPieceData*, std::string>>& Parts, int ColorIndex);
+	void SetCustomParts(const std::vector<std::pair<swPieceData*, std::string>>& Parts, int ColorIndex);
 	void SetFilter(const QString& FilterString);
 	void RequestThumbnail(int PartIndex);
 	void SetShowDecoratedParts(bool Show);
 	void SetShowPartAliases(bool Show);
-	void SetPartFilterType(lcPartFilterType Option);
+	void SetPartFilterType(swPartFilterType Option);
 	void SetCaseSensitiveFilter(bool Option);
 	void SetFileNameFilter(bool Option);
 	void SetPartDescriptionFilter(bool Option);
@@ -165,14 +165,14 @@ public:
 	void SetShowPartNames(bool Show);
 
 protected slots:
-	void ThumbnailReady(lcPartThumbnailId ThumbnailId, QPixmap Pixmap);
+	void ThumbnailReady(swPartThumbnailId ThumbnailId, QPixmap Pixmap);
 
 protected:
 	void ReleaseThumbnails();
 
-	lcPartSelectionListView* mListView;
-	std::vector<lcPartSelectionListModelEntry> mParts;
-	lcPartFilterType mPartFilterType;
+	swPartSelectionListView* mListView;
+	std::vector<swPartSelectionListModelEntry> mParts;
+	swPartFilterType mPartFilterType;
 	int mIconSize;
 	float mDeviceScale = 1.0f;
 	bool mColorLocked;
@@ -187,7 +187,7 @@ protected:
 	QString mFilterString;
 };
 
-class lcPartSelectionListView : public QListView
+class swPartSelectionListView : public QListView
 {
 	Q_OBJECT
 
@@ -198,7 +198,7 @@ public:
 	static constexpr int LargeIconSize = 96;
 	static constexpr int ExtraLargeIconSize = 192;
 
-	lcPartSelectionListView(QWidget* Parent, lcPartSelectionWidget* PartSelectionWidget);
+	swPartSelectionListView(QWidget* Parent, swPartSelectionWidget* PartSelectionWidget);
 
 	void startDrag(Qt::DropActions SupportedActions) override;
 	QSize sizeHint() const override;
@@ -206,26 +206,26 @@ public:
 	QSize GetPreferredSize(int MaximumWidth) const;
 	int GetTileSnapDelta() const;
 
-	void SetCategory(lcPartCategoryType Type, int Index);
-	void SetCustomParts(const std::vector<std::pair<lcPieceData*, std::string>>& Parts, int ColorIndex);
-	void SetCurrentPart(lcPieceData* PieceData);
+	void SetCategory(swPartCategoryType Type, int Index);
+	void SetCustomParts(const std::vector<std::pair<swPieceData*, std::string>>& Parts, int ColorIndex);
+	void SetCurrentPart(swPieceData* PieceData);
 
-	lcPieceData* GetCurrentPart() const
+	swPieceData* GetCurrentPart() const
 	{
 		return mListModel->GetPieceData(currentIndex());
 	}
 
-	lcPartSelectionListModel* GetListModel() const
+	swPartSelectionListModel* GetListModel() const
 	{
 		return mListModel;
 	}
 
-	lcPartSelectionWidget* GetPartSelectionWidget() const
+	swPartSelectionWidget* GetPartSelectionWidget() const
 	{
 		return mPartSelectionWidget;
 	}
 
-	lcPieceData* GetContextInfo() const
+	swPieceData* GetContextInfo() const
 	{
 		return mContextPieceData;
 	}
@@ -234,7 +234,7 @@ public:
 	void UpdateViewMode();
 
 signals:
-	void PartPicked(lcPieceData* PieceData);
+	void PartPicked(swPieceData* PieceData);
 	void LayoutChanged();
 
 public slots:
@@ -261,24 +261,24 @@ protected:
 	void SetIconSize(int Size);
 	void UpdateIconSize();
 	void UpdateItemGeometry();
-	void SetPartFilterType(lcPartFilterType Option);
+	void SetPartFilterType(swPartFilterType Option);
 	void keyPressEvent(QKeyEvent* KeyEvent) override;
 
-	lcPartSelectionListModel* mListModel = nullptr;
-	lcPartSelectionWidget* mPartSelectionWidget = nullptr;
-	lcPieceData* mContextPieceData = nullptr;
+	swPartSelectionListModel* mListModel = nullptr;
+	swPartSelectionWidget* mPartSelectionWidget = nullptr;
+	swPieceData* mContextPieceData = nullptr;
 	int mRequestedIconSize = NoIconSize;
-	lcPartCategoryType mCategoryType = lcPartCategoryType::AllParts;
+	swPartCategoryType mCategoryType = swPartCategoryType::AllParts;
 	int mCategoryIndex = 0;
-	std::map<std::pair<lcPartCategoryType, int>, int> mLastCategoryRow;
+	std::map<std::pair<swPartCategoryType, int>, int> mLastCategoryRow;
 };
 
-class lcPartSelectionWidget : public QWidget
+class swPartSelectionWidget : public QWidget
 {
 	Q_OBJECT
 
 public:
-	lcPartSelectionWidget(bool IsPopup, QWidget* Parent);
+	swPartSelectionWidget(bool IsPopup, QWidget* Parent);
 
 	void UpdateThumbnails();
 	void SetDefaultPart();
@@ -288,9 +288,9 @@ public:
 	void LoadState(QSettings& Settings);
 	void SaveState(QSettings& Settings);
 	void SetOrientation(Qt::Orientation Orientation);
-	void SetCurrentPart(lcPieceData* PieceData);
-	void SetCategory(lcPartCategoryType Type, int Index);
-	void SetCustomParts(const std::vector<std::pair<lcPieceData*, std::string>>& Parts, int ColorIndex);
+	void SetCurrentPart(swPieceData* PieceData);
+	void SetCategory(swPartCategoryType Type, int Index);
+	void SetCustomParts(const std::vector<std::pair<swPieceData*, std::string>>& Parts, int ColorIndex);
 
 	bool GetIsPopup() const
 	{
@@ -322,12 +322,12 @@ public:
 		mPartsWidget->GetListModel()->ToggleColorLocked();
 	}
 
-	const std::vector<lcPartPalette>& GetPartPalettes() const
+	const std::vector<swPartPalette>& GetPartPalettes() const
 	{
 		return mPartPalettes;
 	}
 
-	lcPieceData* GetCurrentPart() const
+	swPieceData* GetCurrentPart() const
 	{
 		return mPartsWidget->GetCurrentPart();
 	}
@@ -344,8 +344,8 @@ public:
 	}
 
 signals:
-	void PartPicked(lcPieceData* PieceData);
-	void CurrentPartChanged(lcPieceData* PieceData);
+	void PartPicked(swPieceData* PieceData);
+	void CurrentPartChanged(swPieceData* PieceData);
 	void LayoutChanged();
 
 public slots:
@@ -362,7 +362,7 @@ protected slots:
 	void FilterCategoriesTriggered();
 	void CategoryChanged(QTreeWidgetItem* Current, QTreeWidgetItem* Previous);
 	void PartViewSelectionChanged(const QModelIndex& Current, const QModelIndex& Previous);
-	void PartViewPartPicked(lcPieceData* PieceData);
+	void PartViewPartPicked(swPieceData* PieceData);
 	void OptionsMenuAboutToShow();
 	void EditPartPalettes();
 
@@ -379,9 +379,9 @@ protected:
 	QAction* mFilterCaseAction = nullptr;
 	QLineEdit* mFilterWidget = nullptr;
 	QAction* mFilterAction = nullptr;
-	lcPartSelectionListView* mPartsWidget = nullptr;
+	swPartSelectionListView* mPartsWidget = nullptr;
 	QSplitter* mSplitter = nullptr;
 	QTreeWidgetItem* mAllPartsCategoryItem = nullptr;
-	std::vector<lcPartPalette> mPartPalettes;
+	std::vector<swPartPalette> mPartPalettes;
 	bool mIsPopup = false;
 };

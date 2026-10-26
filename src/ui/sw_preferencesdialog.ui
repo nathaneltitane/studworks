@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>lcPreferencesDialog</class>
- <widget class="QDialog" name="lcPreferencesDialog">
+ <class>swPreferencesDialog</class>
+ <widget class="QDialog" name="swPreferencesDialog">
   <property name="whatsThis">
    <string>&lt;p&gt;&lt;b&gt;Preferences&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Configure the application, display, colors, piece categories, and keyboard and mouse shortcuts. Choose OK to save the changes or Cancel to discard edits in Preferences. Language, piece-library, and antialiasing changes may require restarting LeoCAD+.&lt;/p&gt;&lt;p&gt;Export buttons write files immediately. Blender add-on settings have their own Apply action and can configure Blender before you close Preferences.&lt;/p&gt;</string>
   </property>
@@ -3521,7 +3521,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>lcPreferencesDialog</receiver>
+   <receiver>swPreferencesDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -3537,7 +3537,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>lcPreferencesDialog</receiver>
+   <receiver>swPreferencesDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

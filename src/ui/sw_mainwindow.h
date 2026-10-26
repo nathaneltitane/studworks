@@ -7,24 +7,24 @@
 #include "sw_commands.h"
 #include "sw_model.h"
 
-class lcPartSelectionWidget;
-class lcPreviewDockWidget;
+class swPartSelectionWidget;
+class swPreviewDockWidget;
 class PiecePreview;
-class lcQPartsTree;
-class lcColorList;
-class lcPropertiesWidget;
-class lcTimelineWidget;
-class lcElidedLabel;
-class lcDoubleSpinBox;
-class lcSpinnerWidget;
-enum class lcRenderDialogMode;
+class swQPartsTree;
+class swColorList;
+class swPropertiesWidget;
+class swTimelineWidget;
+class swElidedLabel;
+class swDoubleSpinBox;
+class swSpinnerWidget;
+enum class swRenderDialogMode;
 
-class lcModelTabWidget : public QWidget
+class swModelTabWidget : public QWidget
 {
 	Q_OBJECT
 
 public:
-	lcModelTabWidget(lcModel* Model)
+	swModelTabWidget(swModel* Model)
 	{
 		mModel = Model;
 		mActiveView = nullptr;
@@ -40,49 +40,49 @@ public:
 		return Widget;
 	}
 
-	lcView* GetActiveView() const
+	swView* GetActiveView() const
 	{
 		return mActiveView;
 	}
 
-	void SetActiveView(lcView* ActiveView)
+	void SetActiveView(swView* ActiveView)
 	{
 		mActiveView = ActiveView;
 	}
 
-	void RemoveView(const lcView* View)
+	void RemoveView(const swView* View)
 	{
 		if (View == mActiveView)
 			mActiveView = nullptr;
 	}
 
-	lcModel* GetModel() const
+	swModel* GetModel() const
 	{
 		return mModel;
 	}
 
 protected:
-	lcModel* mModel;
-	lcView* mActiveView;
+	swModel* mModel;
+	swView* mActiveView;
 };
 
-class lcMainWindow : public QMainWindow
+class swMainWindow : public QMainWindow
 {
 	Q_OBJECT
 
 public:
-	lcMainWindow();
-	~lcMainWindow();
+	swMainWindow();
+	~swMainWindow();
 
 	void CreateWidgets();
 	void ScheduleAssetUpdate();
 
-	lcTool GetTool() const
+	swTool GetTool() const
 	{
 		return mTool;
 	}
 
-	lcTransformType GetTransformType() const
+	swTransformType GetTransformType() const
 	{
 		return mTransformType;
 	}
@@ -112,7 +112,7 @@ public:
 	float GetAngleSnapIncrement() const
 	{
 		const float AngleTable[] = { 0.0f, 1.0f, 5.0f, 15.0f, 22.5f, 30.0f, 45.0f, 60.0f, 90.0f, 180.0f };
-		return mAngleSnapIndex < static_cast<int>(LC_ARRAY_COUNT(AngleTable)) ? AngleTable[mAngleSnapIndex] : mAngleSnapCustom;
+		return mAngleSnapIndex < static_cast<int>(SW_ARRAY_COUNT(AngleTable)) ? AngleTable[mAngleSnapIndex] : mAngleSnapCustom;
 	}
 
 	float GetOrbitSnap() const
@@ -144,37 +144,37 @@ public:
 		return mLocalTransform;
 	}
 
-	lcSelectionMode GetSelectionMode() const
+	swSelectionMode GetSelectionMode() const
 	{
 		return mSelectionMode;
 	}
 
-	const lcPieceDataRef& GetInsertPieceData() const
+	const swPieceDataRef& GetInsertPieceData() const
 	{
 		return mInsertPieceData;
 	}
 
-	lcView* GetActiveView() const
+	swView* GetActiveView() const
 	{
-		const lcModelTabWidget* const CurrentTab = mModelTabWidget ? (lcModelTabWidget*)mModelTabWidget->currentWidget() : nullptr;
+		const swModelTabWidget* const CurrentTab = mModelTabWidget ? (swModelTabWidget*)mModelTabWidget->currentWidget() : nullptr;
 		return CurrentTab ? CurrentTab->GetActiveView() : nullptr;
 	}
 
-	lcModel* GetActiveModel() const;
-	lcModelTabWidget* GetTabForView(lcView* View) const;
+	swModel* GetActiveModel() const;
+	swModelTabWidget* GetTabForView(swView* View) const;
 
-	lcModel* GetCurrentTabModel() const
+	swModel* GetCurrentTabModel() const
 	{
-		const lcModelTabWidget* const CurrentTab = (lcModelTabWidget*)mModelTabWidget->currentWidget();
+		const swModelTabWidget* const CurrentTab = (swModelTabWidget*)mModelTabWidget->currentWidget();
 		return CurrentTab ? CurrentTab->GetModel() : nullptr;
 	}
 
-	lcPartSelectionWidget* GetPartSelectionWidget() const
+	swPartSelectionWidget* GetPartSelectionWidget() const
 	{
 		return mPartSelectionWidget;
 	}
 
-	lcPreviewDockWidget* GetPreviewWidget() const
+	swPreviewDockWidget* GetPreviewWidget() const
 	{
 		return mPreviewWidget;
 	}
@@ -208,17 +208,17 @@ public:
 	void RestoreTabLayout(const QByteArray& TabLayout);
 	void RemoveAllModelTabs();
 	void CloseCurrentModelTab();
-	void SetCurrentModelTab(lcModel* Model, bool AdjustFarPlane);
-	void AddView(lcView* View);
-	void RemoveView(lcView* View);
+	void SetCurrentModelTab(swModel* Model, bool AdjustFarPlane);
+	void AddView(swView* View);
+	void RemoveView(swView* View);
 
-	void SetTool(lcTool Tool);
-	void SetTransformType(lcTransformType TransformType);
+	void SetTool(swTool Tool);
+	void SetTransformType(swTransformType TransformType);
 	void SetColorIndex(int ColorIndex);
 	void ToggleFirstPieceAtOrigin();
 	int GetInsertColorIndex() const;
 	void SetLastInsertedColorIndex(int ColorIndex);
-	void SetInsertColorMode(lcInsertColorMode InsertColorMode);
+	void SetInsertColorMode(swInsertColorMode InsertColorMode);
 	void UpdatePiecesColor();
 	void ColorOptionsMenuAboutToShow();
 	void SetMoveSnapEnabled(bool Enabled);
@@ -229,22 +229,22 @@ public:
 	void SetCustomAngleSnap();
 	void SetRelativeTransform(bool RelativeTransform);
 	void SetSeparateTransform(bool SelectionTransform);
-	void SetShadingMode(lcShadingMode ShadingMode);
-	void SetSelectionMode(lcSelectionMode SelectionMode);
+	void SetShadingMode(swShadingMode ShadingMode);
+	void SetSelectionMode(swSelectionMode SelectionMode);
 	void ToggleViewSphere();
 	void ToggleAxisIcon();
 	void ToggleGrid();
 	void ToggleFadePreviousSteps();
 	void ShowStepViewDialog();
-	void SetHighlightRenderMode(lcHighlightRenderMode HighlightRenderMode);
+	void SetHighlightRenderMode(swHighlightRenderMode HighlightRenderMode);
 	void ToggleAutomateEdgeColor();
-	void SetStudStyle(lcStudStyle StudStyle);
-	void ToggleEdgeLines(lcRenderTarget Target);
-	void ToggleConditionalLines(lcRenderTarget Target);
-	void ToggleSyncRendering(lcRenderTarget Target);
-	void SetTargetShadingMode(lcRenderTarget Target, lcShadingMode ShadingMode);
-	void AddRenderTargetActions(QMenu* Menu, lcRenderTarget Target);
-	QAction* AddMenuCommand(QMenu* Menu, const QString& Text, lcCommandId CommandId, bool Checked);
+	void SetStudStyle(swStudStyle StudStyle);
+	void ToggleEdgeLines(swRenderTarget Target);
+	void ToggleConditionalLines(swRenderTarget Target);
+	void ToggleSyncRendering(swRenderTarget Target);
+	void SetTargetShadingMode(swRenderTarget Target, swShadingMode ShadingMode);
+	void AddRenderTargetActions(QMenu* Menu, swRenderTarget Target);
+	QAction* AddMenuCommand(QMenu* Menu, const QString& Text, swCommandId CommandId, bool Checked);
 	void TogglePreviewViewSphere();
 	void TogglePreviewAxisIcon();
 	void UpdatePartsRendering();
@@ -263,7 +263,7 @@ public:
 	void ReloadProjectFile(const QString& FileName);
 	bool SetModelFromFocus();
 	void SetModelFromSelection();
-	void HandleCommand(lcCommandId CommandId);
+	void HandleCommand(swCommandId CommandId);
 
 	void SplitHorizontal();
 	void SplitVertical();
@@ -291,14 +291,14 @@ public:
 	void UpdateModified(bool Modified);
 	void UpdateShortcuts();
 
-	std::optional<lcVector3> GetTransformAmount();
+	std::optional<swVector3> GetTransformAmount();
 
 	bool eventFilter(QObject* Object, QEvent* Event) override;
 	void SnapPartsDock();
 
 	int mColorIndex;
 	int mLastInsertedColorIndex = -1;
-	QAction* mActions[LC_NUM_COMMANDS] = {};
+	QAction* mActions[SW_NUM_COMMANDS] = {};
 
 signals:
 	void ModelContentsChanged();
@@ -309,9 +309,9 @@ public:
 public slots:
 	void ProjectFileChanged(const QString& Path);
 	void ModelViewOptionsMenuAboutToShow();
-	void PreviewPiece(lcPieceData* PieceData, int ColorCode, bool ShowPreview);
+	void PreviewPiece(swPieceData* PieceData, int ColorCode, bool ShowPreview);
 	void TogglePreviewWidget(bool Visible);
-	void SetInsertPieceData(lcPieceData* PieceData);
+	void SetInsertPieceData(swPieceData* PieceData);
 
 protected slots:
 	void FileMenuAboutToShow();
@@ -327,7 +327,7 @@ protected slots:
 	void ClipboardChanged();
 	void ActionTriggered();
 	void ColorChanged(int ColorIndex);
-	void PartListPicked(lcPieceData* PieceData);
+	void PartListPicked(swPieceData* PieceData);
 	void ColorButtonClicked();
 	void Print(QPrinter* Printer);
 	void EnableWindowFlags(bool);
@@ -343,20 +343,20 @@ protected:
 	void CreateToolBars();
 	void CreateStatusBar();
 	void UpdateAssets();
-	lcView* CreateView(lcModel* Model);
-	void SetActiveView(lcView* ActiveView);
+	swView* CreateView(swModel* Model);
+	void SetActiveView(swView* ActiveView);
 	void ToggleDockWidget(QWidget* DockWidget);
 	void SplitView(Qt::Orientation Orientation);
 	void ShowUpdatesDialog();
 	void ShowAboutDialog();
 	void ShowHTMLDialog();
 	void ShowExportPOVRayDialog();
-	void ShowRenderDialog(lcRenderDialogMode RenderDialogMode);
+	void ShowRenderDialog(swRenderDialogMode RenderDialogMode);
 	void ShowInstructionsDialog();
 	void ShowPrintDialog();
 	void ShowImageDialog();
 	void ShowSelectDialog();
-	void ShowResultError(const lcResult<void>& Result, const QString& Title);
+	void ShowResultError(const swResult<void>& Result, const QString& Title);
 	void CreatePreviewWidget();
 	void CreateTerminalWidget();
 	void UpdateTerminalDirectory(bool Force);
@@ -365,11 +365,11 @@ protected:
 	void AddRecentFile(const QString& FileName);
 	void RemoveRecentFile(size_t FileIndex);
 
-	lcModelTabWidget* GetTabWidgetForModel(const lcModel* Model) const
+	swModelTabWidget* GetTabWidgetForModel(const swModel* Model) const
 	{
 		for (int TabIdx = 0; TabIdx < mModelTabWidget->count(); TabIdx++)
 		{
-			lcModelTabWidget* TabWidget = (lcModelTabWidget*)mModelTabWidget->widget(TabIdx);
+			swModelTabWidget* TabWidget = (swModelTabWidget*)mModelTabWidget->widget(TabIdx);
 
 			if (TabWidget->GetModel() == Model)
 				return TabWidget;
@@ -382,8 +382,8 @@ protected:
 	QDateTime mLastGamepadUpdate;
 
 	bool mAddKeys = false;
-	lcTool mTool;
-	lcTransformType mTransformType;
+	swTool mTool;
+	swTransformType mTransformType;
 	bool mMoveSnapEnabled = true;
 	bool mAngleSnapEnabled = true;
 	int mMoveXYSnapIndex;
@@ -393,8 +393,8 @@ protected:
 	bool mOrbitSnapEnabled = false;
 	bool mRelativeTransform = true;
 	bool mLocalTransform = false;
-	lcPieceDataRef mInsertPieceData;
-	lcSelectionMode mSelectionMode;
+	swPieceDataRef mInsertPieceData;
+	swSelectionMode mSelectionMode;
 	int mMousePressTabIndex = -1;
 
 	QAction* mActionFileRecentSeparator = nullptr;
@@ -414,24 +414,24 @@ protected:
 	QDockWidget* mTimelineToolBar = nullptr;
 	QDockWidget* mMinifigToolBar = nullptr;
 
-	lcPartSelectionWidget* mPartSelectionWidget = nullptr;
-	lcColorList* mColorList = nullptr;
+	swPartSelectionWidget* mPartSelectionWidget = nullptr;
+	swColorList* mColorList = nullptr;
 	QToolButton* mColorButton = nullptr;
-	lcPropertiesWidget* mPropertiesWidget = nullptr;
-	lcTimelineWidget* mTimelineWidget = nullptr;
-	lcDoubleSpinBox* mTransformXEdit = nullptr;
-	lcDoubleSpinBox* mTransformYEdit = nullptr;
-	lcDoubleSpinBox* mTransformZEdit = nullptr;
-	lcPreviewDockWidget* mPreviewWidget = nullptr;
+	swPropertiesWidget* mPropertiesWidget = nullptr;
+	swTimelineWidget* mTimelineWidget = nullptr;
+	swDoubleSpinBox* mTransformXEdit = nullptr;
+	swDoubleSpinBox* mTransformYEdit = nullptr;
+	swDoubleSpinBox* mTransformZEdit = nullptr;
+	swPreviewDockWidget* mPreviewWidget = nullptr;
 
-	lcElidedLabel* mStatusBarLabel = nullptr;
+	swElidedLabel* mStatusBarLabel = nullptr;
 	QLabel* mStatusPositionLabel = nullptr;
 	QLabel* mStatusSnapLabel = nullptr;
 	QLabel* mStatusTimeLabel = nullptr;
-	lcSpinnerWidget* mStatusLoadSpinner = nullptr;
+	swSpinnerWidget* mStatusLoadSpinner = nullptr;
 	QLabel* mStatusLoadFailureLabel = nullptr;
 	const Project* mStatusProject = nullptr;
-	std::unordered_set<const lcPieceData*> mStatusRequiredAssets;
+	std::unordered_set<const swPieceData*> mStatusRequiredAssets;
 	bool mAssetUpdateScheduled = false;
 
 	QMenu* mTransformMenu = nullptr;
@@ -445,4 +445,4 @@ protected:
 	std::array<QString, 4> mRecentFiles;
 };
 
-extern class lcMainWindow* gMainWindow;
+extern class swMainWindow* gMainWindow;

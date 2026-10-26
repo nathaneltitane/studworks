@@ -6,41 +6,41 @@
 #include "light.h"
 #include "group.h"
 
-void lcModelHistorySelect::SaveStartState(const lcModel* Model)
+void swModelHistorySelect::SaveStartState(const swModel* Model)
 {
 	SaveState(mStartState, Model);
 }
 
-void lcModelHistorySelect::SaveEndState(const lcModel* Model)
+void swModelHistorySelect::SaveEndState(const swModel* Model)
 {
 	SaveState(mEndState, Model);
 }
 
-void lcModelHistorySelect::LoadStartState(lcModel* Model) const
+void swModelHistorySelect::LoadStartState(swModel* Model) const
 {
 	LoadState(mStartState, Model);
 }
 
-void lcModelHistorySelect::LoadEndState(lcModel* Model) const
+void swModelHistorySelect::LoadEndState(swModel* Model) const
 {
 	LoadState(mEndState, Model);
 }
 
-bool lcModelHistorySelect::StateChanged() const
+bool swModelHistorySelect::StateChanged() const
 {
 	return mStartState != mEndState;
 }
 
-void lcModelHistorySelect::SaveState(lcModelHistorySelectState& State, const lcModel* Model)
+void swModelHistorySelect::SaveState(swModelHistorySelectState& State, const swModel* Model)
 {
-	State = lcModelHistorySelectState();
+	State = swModelHistorySelectState();
 
-	const std::vector<std::unique_ptr<lcPiece>>& Pieces = Model->GetPieces();
+	const std::vector<std::unique_ptr<swPiece>>& Pieces = Model->GetPieces();
 	State.PieceSelection.resize(Pieces.size(), false);
 
 	for (size_t PieceIndex = 0; PieceIndex < Pieces.size(); PieceIndex++)
 	{
-		lcPiece* Piece = Pieces[PieceIndex].get();
+		swPiece* Piece = Pieces[PieceIndex].get();
 
 		if (!Piece->IsSelected())
 			continue;
@@ -51,16 +51,16 @@ void lcModelHistorySelect::SaveState(lcModelHistorySelectState& State, const lcM
 		{
 			State.FocusIndex = PieceIndex;
 			State.FocusSection = Piece->GetFocusSection();
-			State.FocusObjectType = lcObjectType::Piece;
+			State.FocusObjectType = swObjectType::Piece;
 		}
 	}
 
-	const std::vector<std::unique_ptr<lcCamera>>& Cameras = Model->GetCameras();
+	const std::vector<std::unique_ptr<swCamera>>& Cameras = Model->GetCameras();
 	State.CameraSelection.resize(Cameras.size(), false);
 
 	for (size_t CameraIndex = 0; CameraIndex < Cameras.size(); CameraIndex++)
 	{
-		lcCamera* Camera = Cameras[CameraIndex].get();
+		swCamera* Camera = Cameras[CameraIndex].get();
 
 		if (!Camera->IsSelected())
 			continue;
@@ -71,16 +71,16 @@ void lcModelHistorySelect::SaveState(lcModelHistorySelectState& State, const lcM
 		{
 			State.FocusIndex = CameraIndex;
 			State.FocusSection = Camera->GetFocusSection();
-			State.FocusObjectType = lcObjectType::Camera;
+			State.FocusObjectType = swObjectType::Camera;
 		}
 	}
 
-	const std::vector<std::unique_ptr<lcLight>>& Lights = Model->GetLights();
+	const std::vector<std::unique_ptr<swLight>>& Lights = Model->GetLights();
 	State.LightSelection.resize(Lights.size(), false);
 
 	for (size_t LightIndex = 0; LightIndex < Lights.size(); LightIndex++)
 	{
-		lcLight* Light = Lights[LightIndex].get();
+		swLight* Light = Lights[LightIndex].get();
 
 		if (!Light->IsSelected())
 			continue;
@@ -91,27 +91,27 @@ void lcModelHistorySelect::SaveState(lcModelHistorySelectState& State, const lcM
 		{
 			State.FocusIndex = LightIndex;
 			State.FocusSection = Light->GetFocusSection();
-			State.FocusObjectType = lcObjectType::Light;
+			State.FocusObjectType = swObjectType::Light;
 		}
 	}
 }
 
-void lcModelHistorySelect::LoadState(const lcModelHistorySelectState& State, lcModel* Model)
+void swModelHistorySelect::LoadState(const swModelHistorySelectState& State, swModel* Model)
 {
-	const std::vector<std::unique_ptr<lcPiece>>& Pieces = Model->GetPieces();
-	const std::vector<std::unique_ptr<lcCamera>>& Cameras = Model->GetCameras();
-	const std::vector<std::unique_ptr<lcLight>>& Lights = Model->GetLights();
+	const std::vector<std::unique_ptr<swPiece>>& Pieces = Model->GetPieces();
+	const std::vector<std::unique_ptr<swCamera>>& Cameras = Model->GetCameras();
+	const std::vector<std::unique_ptr<swLight>>& Lights = Model->GetLights();
 
 	if (Pieces.size() != State.PieceSelection.size() || Cameras.size() != State.CameraSelection.size() || Lights.size() != State.LightSelection.size())
 		return;
 
 	for (size_t PieceIndex = 0; PieceIndex < Pieces.size(); PieceIndex++)
 	{
-		lcPiece* Piece = Pieces[PieceIndex].get();
+		swPiece* Piece = Pieces[PieceIndex].get();
 
 		Piece->SetSelected(State.PieceSelection[PieceIndex]);
 
-		if (State.FocusObjectType == lcObjectType::Piece && State.FocusIndex == PieceIndex)
+		if (State.FocusObjectType == swObjectType::Piece && State.FocusIndex == PieceIndex)
 			Piece->SetFocused(State.FocusSection, true);
 		else
 			Piece->SetFocused(State.FocusSection, false);
@@ -119,11 +119,11 @@ void lcModelHistorySelect::LoadState(const lcModelHistorySelectState& State, lcM
 
 	for (size_t CameraIndex = 0; CameraIndex < Cameras.size(); CameraIndex++)
 	{
-		lcCamera* Camera = Cameras[CameraIndex].get();
+		swCamera* Camera = Cameras[CameraIndex].get();
 
 		Camera->SetSelected(State.CameraSelection[CameraIndex]);
 
-		if (State.FocusObjectType == lcObjectType::Camera && State.FocusIndex == CameraIndex)
+		if (State.FocusObjectType == swObjectType::Camera && State.FocusIndex == CameraIndex)
 			Camera->SetFocused(State.FocusSection, true);
 		else
 			Camera->SetFocused(State.FocusSection, false);
@@ -131,27 +131,27 @@ void lcModelHistorySelect::LoadState(const lcModelHistorySelectState& State, lcM
 
 	for (size_t LightIndex = 0; LightIndex < Lights.size(); LightIndex++)
 	{
-		lcLight* Light = Lights[LightIndex].get();
+		swLight* Light = Lights[LightIndex].get();
 
 		Light->SetSelected(State.LightSelection[LightIndex]);
 
-		if (State.FocusObjectType == lcObjectType::Light && State.FocusIndex == LightIndex)
+		if (State.FocusObjectType == swObjectType::Light && State.FocusIndex == LightIndex)
 			Light->SetFocused(State.FocusSection, true);
 		else
 			Light->SetFocused(State.FocusSection, false);
 	}
 }
 
-lcModelHistoryEdit::lcModelHistoryEdit(lcModelHistoryEditMergeKey MergeKey)
+swModelHistoryEdit::swModelHistoryEdit(swModelHistoryEditMergeKey MergeKey)
 	: mMergeKey(MergeKey)
 {
 }
 
-lcModelHistoryEdit::~lcModelHistoryEdit()
+swModelHistoryEdit::~swModelHistoryEdit()
 {
 }
 
-void lcModelHistoryEdit::SaveState(lcModelHistoryEditState& State, const lcModel* Model)
+void swModelHistoryEdit::SaveState(swModelHistoryEditState& State, const swModel* Model)
 {
 	State.Groups.Save(Model->GetGroups());
 	State.Pieces.Save(Model->GetPieces());
@@ -159,50 +159,50 @@ void lcModelHistoryEdit::SaveState(lcModelHistoryEditState& State, const lcModel
 	State.Lights.Save(Model->GetLights());
 }
 
-void lcModelHistoryEdit::LoadState(const lcModelHistoryEditState& State, lcModel* Model)
+void swModelHistoryEdit::LoadState(const swModelHistoryEditState& State, swModel* Model)
 {
 	Model->LoadEditHistoryState(State);
 }
 
-void lcModelHistoryEdit::SaveStartState(const lcModel* Model)
+void swModelHistoryEdit::SaveStartState(const swModel* Model)
 {
 	SaveState(mStartState, Model);
 }
 
-void lcModelHistoryEdit::SaveEndState(const lcModel* Model)
+void swModelHistoryEdit::SaveEndState(const swModel* Model)
 {
 	SaveState(mEndState, Model);
 
-	lcObjectHistory<lcGroupHistoryState>::Compact(mStartState.Groups, mEndState.Groups);
-	lcObjectHistory<lcPieceHistoryState>::Compact(mStartState.Pieces, mEndState.Pieces);
-	lcObjectHistory<lcCameraHistoryState>::Compact(mStartState.Cameras, mEndState.Cameras);
-	lcObjectHistory<lcLightHistoryState>::Compact(mStartState.Lights, mEndState.Lights);
+	swObjectHistory<swGroupHistoryState>::Compact(mStartState.Groups, mEndState.Groups);
+	swObjectHistory<swPieceHistoryState>::Compact(mStartState.Pieces, mEndState.Pieces);
+	swObjectHistory<swCameraHistoryState>::Compact(mStartState.Cameras, mEndState.Cameras);
+	swObjectHistory<swLightHistoryState>::Compact(mStartState.Lights, mEndState.Lights);
 }
 
-void lcModelHistoryEdit::LoadStartState(lcModel* Model) const
+void swModelHistoryEdit::LoadStartState(swModel* Model) const
 {
 	LoadState(mStartState, Model);
 }
 
-void lcModelHistoryEdit::LoadEndState(lcModel* Model) const
+void swModelHistoryEdit::LoadEndState(swModel* Model) const
 {
 	LoadState(mEndState, Model);
 }
 
-bool lcModelHistoryEdit::StateChanged() const
+bool swModelHistoryEdit::StateChanged() const
 {
 	return !mStartState.IsEmpty() || !mEndState.IsEmpty();
 }
 
-void lcModelHistoryEdit::RenamePieces(const std::vector<lcModelPieceRename>& Renames, const lcPieceData* ModelPieceData)
+void swModelHistoryEdit::RenamePieces(const std::vector<swModelPieceRename>& Renames, const swPieceData* ModelPieceData)
 {
 	Q_UNUSED(ModelPieceData);
 
-	auto RenamePieceIds = [&Renames](lcModelHistoryEditState& State)
+	auto RenamePieceIds = [&Renames](swModelHistoryEditState& State)
 	{
-		for (lcPieceHistoryState& Piece : State.Pieces.States)
+		for (swPieceHistoryState& Piece : State.Pieces.States)
 		{
-			for (const lcModelPieceRename& Rename : Renames)
+			for (const swModelPieceRename& Rename : Renames)
 			{
 				if (Piece.PieceId.compare(Rename.OldName, Qt::CaseInsensitive) != 0)
 					continue;
@@ -217,56 +217,56 @@ void lcModelHistoryEdit::RenamePieces(const std::vector<lcModelPieceRename>& Ren
 	RenamePieceIds(mEndState);
 }
 
-bool lcModelHistoryEdit::CanMergeWith(const lcModelHistory* Other) const
+bool swModelHistoryEdit::CanMergeWith(const swModelHistory* Other) const
 {
-	const lcModelHistoryEdit* OtherModelHistoryEdit = dynamic_cast<const lcModelHistoryEdit*>(Other);
+	const swModelHistoryEdit* OtherModelHistoryEdit = dynamic_cast<const swModelHistoryEdit*>(Other);
 
-	return OtherModelHistoryEdit && mMergeKey.Operation != lcModelHistoryEditMerge::None && mMergeKey == OtherModelHistoryEdit->mMergeKey;
+	return OtherModelHistoryEdit && mMergeKey.Operation != swModelHistoryEditMerge::None && mMergeKey == OtherModelHistoryEdit->mMergeKey;
 }
 
-void lcModelHistoryEdit::MergeWith(lcModelHistory* Other)
+void swModelHistoryEdit::MergeWith(swModelHistory* Other)
 {
-	lcModelHistoryEdit* OtherModelHistoryEdit = dynamic_cast<lcModelHistoryEdit*>(Other);
+	swModelHistoryEdit* OtherModelHistoryEdit = dynamic_cast<swModelHistoryEdit*>(Other);
 
 	if (!OtherModelHistoryEdit)
 		return;
 
-	lcObjectHistory<lcGroupHistoryState>::Merge(mStartState.Groups, mEndState.Groups, OtherModelHistoryEdit->mStartState.Groups, OtherModelHistoryEdit->mEndState.Groups);
-	lcObjectHistory<lcPieceHistoryState>::Merge(mStartState.Pieces, mEndState.Pieces, OtherModelHistoryEdit->mStartState.Pieces, OtherModelHistoryEdit->mEndState.Pieces);
-	lcObjectHistory<lcCameraHistoryState>::Merge(mStartState.Cameras, mEndState.Cameras, OtherModelHistoryEdit->mStartState.Cameras, OtherModelHistoryEdit->mEndState.Cameras);
-	lcObjectHistory<lcLightHistoryState>::Merge(mStartState.Lights, mEndState.Lights, OtherModelHistoryEdit->mStartState.Lights, OtherModelHistoryEdit->mEndState.Lights);
+	swObjectHistory<swGroupHistoryState>::Merge(mStartState.Groups, mEndState.Groups, OtherModelHistoryEdit->mStartState.Groups, OtherModelHistoryEdit->mEndState.Groups);
+	swObjectHistory<swPieceHistoryState>::Merge(mStartState.Pieces, mEndState.Pieces, OtherModelHistoryEdit->mStartState.Pieces, OtherModelHistoryEdit->mEndState.Pieces);
+	swObjectHistory<swCameraHistoryState>::Merge(mStartState.Cameras, mEndState.Cameras, OtherModelHistoryEdit->mStartState.Cameras, OtherModelHistoryEdit->mEndState.Cameras);
+	swObjectHistory<swLightHistoryState>::Merge(mStartState.Lights, mEndState.Lights, OtherModelHistoryEdit->mStartState.Lights, OtherModelHistoryEdit->mEndState.Lights);
 }
 
-void lcModelHistoryProperties::SaveStartState(const lcModel* Model)
+void swModelHistoryProperties::SaveStartState(const swModel* Model)
 {
 	SaveState(mStartState, Model);
 }
 
-void lcModelHistoryProperties::SaveEndState(const lcModel* Model)
+void swModelHistoryProperties::SaveEndState(const swModel* Model)
 {
 	SaveState(mEndState, Model);
 }
 
-void lcModelHistoryProperties::LoadStartState(lcModel* Model) const
+void swModelHistoryProperties::LoadStartState(swModel* Model) const
 {
 	LoadState(mStartState, Model);
 }
 
-void lcModelHistoryProperties::LoadEndState(lcModel* Model) const
+void swModelHistoryProperties::LoadEndState(swModel* Model) const
 {
 	LoadState(mEndState, Model);
 }
 
-bool lcModelHistoryProperties::StateChanged() const
+bool swModelHistoryProperties::StateChanged() const
 {
 	return mStartState != mEndState;
 }
 
-void lcModelHistoryProperties::RenamePieces(const std::vector<lcModelPieceRename>& Renames, const lcPieceData* ModelPieceData)
+void swModelHistoryProperties::RenamePieces(const std::vector<swModelPieceRename>& Renames, const swPieceData* ModelPieceData)
 {
-	auto RenameModel = [&Renames, ModelPieceData](lcModelProperties& Properties)
+	auto RenameModel = [&Renames, ModelPieceData](swModelProperties& Properties)
 	{
-		for (const lcModelPieceRename& Rename : Renames)
+		for (const swModelPieceRename& Rename : Renames)
 		{
 			if (Rename.PieceData != ModelPieceData || Properties.mFileName.compare(Rename.OldName, Qt::CaseInsensitive) != 0)
 				continue;
@@ -283,12 +283,12 @@ void lcModelHistoryProperties::RenamePieces(const std::vector<lcModelPieceRename
 	RenameModel(mEndState);
 }
 
-void lcModelHistoryProperties::SaveState(lcModelProperties& State, const lcModel* Model)
+void swModelHistoryProperties::SaveState(swModelProperties& State, const swModel* Model)
 {
 	State = Model->GetProperties();
 }
 
-void lcModelHistoryProperties::LoadState(const lcModelProperties& State, lcModel* Model)
+void swModelHistoryProperties::LoadState(const swModelProperties& State, swModel* Model)
 {
 	Model->LoadModelPropertiesState(State);
 }

@@ -19,43 +19,43 @@
 #include "sw_utils.h"
 #include "sw_partselectionpopup.h"
 
-lcFindReplaceParams lcView::mFindReplaceParams;
-QPointer<lcFindReplaceWidget> lcView::mFindWidget;
+swFindReplaceParams swView::mFindReplaceParams;
+QPointer<swFindReplaceWidget> swView::mFindWidget;
 
-lcView* lcView::mLastFocusedView;
-std::vector<lcView*> lcView::mViews;
+swView* swView::mLastFocusedView;
+std::vector<swView*> swView::mViews;
 
-lcView::lcView(lcViewType ViewType, lcModel* Model)
-	: mViewType(ViewType), mScene(new lcScene()), mModel(Model)
+swView::swView(swViewType ViewType, swModel* Model)
+	: mViewType(ViewType), mScene(new swScene()), mModel(Model)
 {
-	mContext = new lcContext();
+	mContext = new swContext();
 	mViews.push_back(this);
 
-	mViewManipulator = std::unique_ptr<lcViewManipulator>(new lcViewManipulator(this));
-	mViewSphere = std::unique_ptr<lcViewSphere>(new lcViewSphere(this));
+	mViewManipulator = std::unique_ptr<swViewManipulator>(new swViewManipulator(this));
+	mViewSphere = std::unique_ptr<swViewSphere>(new swViewSphere(this));
 	memset(mGridSettings, 0, sizeof(mGridSettings));
 
-	mDragState = lcDragState::None;
+	mDragState = swDragState::None;
 	mTrackToolFromOverlay = false;
 
-	lcView* ActiveView = gMainWindow ? gMainWindow->GetActiveView() : nullptr;
+	swView* ActiveView = gMainWindow ? gMainWindow->GetActiveView() : nullptr;
 
 	if (ActiveView)
 		SetCamera(ActiveView->mCamera, false);
 	else
 	{
-		mCamera = new lcCamera(true);
-		mCamera->SetViewpoint(lcViewpoint::Home);
+		mCamera = new swCamera(true);
+		mCamera->SetViewpoint(swViewpoint::Home);
 	}
 }
 
-lcView::~lcView()
+swView::~swView()
 {
 	DestroyOutlineFramebuffers();
 
 	mContext->DestroyVertexBuffer(mGridBuffer);
 
-	if (gMainWindow && mViewType == lcViewType::View)
+	if (gMainWindow && mViewType == swViewType::View)
 		gMainWindow->RemoveView(this);
 
 	if (mCamera && mCamera->IsSimple())
@@ -69,40 +69,40 @@ lcView::~lcView()
 	delete mContext;
 }
 
-std::vector<lcView*> lcView::GetModelViews(const lcModel* Model)
+std::vector<swView*> swView::GetModelViews(const swModel* Model)
 {
-	std::vector<lcView*> Views;
+	std::vector<swView*> Views;
 
-	for (lcView* View : mViews)
+	for (swView* View : mViews)
 		if (View->GetModel() == Model)
 			Views.push_back(View);
 
 	return Views;
 }
 
-void lcView::UpdateProjectViews(const Project* Project)
+void swView::UpdateProjectViews(const Project* Project)
 {
-	for (lcView* View : mViews)
+	for (swView* View : mViews)
 	{
-		const lcModel* ViewModel = View->GetActiveModel();
+		const swModel* ViewModel = View->GetActiveModel();
 
 		if (ViewModel && ViewModel->GetProject() == Project)
 			View->Redraw();
 	}
 }
 
-void lcView::UpdateAllViews()
+void swView::UpdateAllViews()
 {
-	for (lcView* View : mViews)
+	for (swView* View : mViews)
 		View->Redraw();
 }
 
-void lcView::MakeCurrent()
+void swView::MakeCurrent()
 {
 	mContext->MakeCurrent();
 }
 
-void lcView::Redraw()
+void swView::Redraw()
 {
 	if (mWidget)
 	{
@@ -111,12 +111,12 @@ void lcView::Redraw()
 	}
 }
 
-void lcView::SetOffscreenContext()
+void swView::SetOffscreenContext()
 {
 	mContext->SetOffscreenContext();
 }
 
-void lcView::SetFocus(bool Focus)
+void swView::SetFocus(bool Focus)
 {
 	if (Focus)
 	{
@@ -132,57 +132,57 @@ void lcView::SetFocus(bool Focus)
 	}
 }
 
-void lcView::SetMousePosition(int MouseX, int MouseY)
+void swView::SetMousePosition(int MouseX, int MouseY)
 {
 	mMouseX = MouseX;
 	mMouseY = MouseY;
 }
 
-void lcView::SetMouseModifiers(Qt::KeyboardModifiers MouseModifiers)
+void swView::SetMouseModifiers(Qt::KeyboardModifiers MouseModifiers)
 {
 	mMouseModifiers = MouseModifiers;
 }
 
-lcModel* lcView::GetActiveModel() const
+swModel* swView::GetActiveModel() const
 {
 	return !mActiveSubmodelInstance ? mModel : mActiveSubmodelInstance->mPieceData->GetModel();
 }
 
-std::vector<lcModel*> lcView::GetModelEditingPath() const
+std::vector<swModel*> swView::GetModelEditingPath() const
 {
-	std::vector<lcModel*> Models = { mModel };
+	std::vector<swModel*> Models = { mModel };
 
-	for (const lcPiece* Piece : mSubmodelEditingPath)
+	for (const swPiece* Piece : mSubmodelEditingPath)
 		Models.push_back(Piece->mPieceData->GetModel());
 
 	return Models;
 }
 
-void lcView::RestoreModelEditingContext()
+void swView::RestoreModelEditingContext()
 {
 	mModel->SetActive(true);
-	mActiveSubmodelTransform = lcMatrix44Identity();
+	mActiveSubmodelTransform = swMatrix44Identity();
 
-	for (lcPiece* Piece : mSubmodelEditingPath)
+	for (swPiece* Piece : mSubmodelEditingPath)
 	{
-		mActiveSubmodelTransform = lcMul(Piece->mModelWorld, mActiveSubmodelTransform);
+		mActiveSubmodelTransform = swMul(Piece->mModelWorld, mActiveSubmodelTransform);
 		Piece->mPieceData->GetModel()->SetActive(true);
 	}
 }
 
-void lcView::SetSubmodelActive(size_t Depth)
+void swView::SetSubmodelActive(size_t Depth)
 {
 	if (Depth > mSubmodelEditingPath.size())
 		return;
 
 	StopTracking(true);
 
-	const std::vector<lcModel*> EditingModels = GetModelEditingPath();
+	const std::vector<swModel*> EditingModels = GetModelEditingPath();
 
 	for (size_t Index = EditingModels.size(); Index > Depth + 1; Index--)
 		EditingModels[Index - 1]->SetActive(false);
 
-	std::vector<lcModel*> UpdatedModels;
+	std::vector<swModel*> UpdatedModels;
 	for (size_t Index = EditingModels.size(); Index > Depth + 1; Index--)
 		EditingModels[Index - 1]->UpdatePieceData(UpdatedModels);
 
@@ -196,20 +196,20 @@ void lcView::SetSubmodelActive(size_t Depth)
 	GetActiveModel()->UpdateInterface();
 }
 
-void lcView::SetTopSubmodelActive()
+void swView::SetTopSubmodelActive()
 {
 	SetSubmodelActive(0);
 }
 
-void lcView::SetSelectedSubmodelActive()
+void swView::SetSelectedSubmodelActive()
 {
-	lcModel* ActiveModel = GetActiveModel();
-	lcObject* Object = ActiveModel->GetFocusObject();
+	swModel* ActiveModel = GetActiveModel();
+	swObject* Object = ActiveModel->GetFocusObject();
 
 	if (!Object || !Object->IsPiece())
 		return;
 
-	lcPiece* Piece = (lcPiece*)Object;
+	swPiece* Piece = (swPiece*)Object;
 
 	if (!Piece->mPieceData->IsModel())
 		return;
@@ -227,15 +227,15 @@ void lcView::SetSelectedSubmodelActive()
 	GetActiveModel()->UpdateInterface();
 }
 
-void lcView::CreateResources(lcContext* Context)
+void swView::CreateResources(swContext* Context)
 {
 	Q_UNUSED(Context);
 
-	gGridTexture = new lcTexture;
+	gGridTexture = new swTexture;
 	gGridTexture->CreateGridTexture();
 }
 
-void lcView::DestroyResources(lcContext* Context)
+void swView::DestroyResources(swContext* Context)
 {
 	Q_UNUSED(Context);
 
@@ -243,56 +243,56 @@ void lcView::DestroyResources(lcContext* Context)
 	gGridTexture = nullptr;
 }
 
-void lcView::RemoveCamera()
+void swView::RemoveCamera()
 {
 	if (mCamera && mCamera->IsSimple())
 		return;
 
-	lcCamera* Camera = mCamera;
-	mCamera = new lcCamera(true);
+	swCamera* Camera = mCamera;
+	mCamera = new swCamera(true);
 
 	if (Camera)
 		mCamera->CopyPosition(Camera);
 	else
-		mCamera->SetViewpoint(lcViewpoint::Home);
+		mCamera->SetViewpoint(swViewpoint::Home);
 
 	Redraw();
 }
 
-lcVector3 lcView::ProjectPoint(const lcVector3& Point) const
+swVector3 swView::ProjectPoint(const swVector3& Point) const
 {
 	int Viewport[4] = { 0, 0, mWidth, mHeight };
-	return lcProjectPoint(Point, mCamera->mWorldView, GetProjectionMatrix(), Viewport);
+	return swProjectPoint(Point, mCamera->mWorldView, GetProjectionMatrix(), Viewport);
 }
 
-lcVector3 lcView::UnprojectPoint(const lcVector3& Point) const
+swVector3 swView::UnprojectPoint(const swVector3& Point) const
 {
 	int Viewport[4] = { 0, 0, mWidth, mHeight };
-	return lcUnprojectPoint(Point, mCamera->mWorldView, GetProjectionMatrix(), Viewport);
+	return swUnprojectPoint(Point, mCamera->mWorldView, GetProjectionMatrix(), Viewport);
 }
 
-void lcView::UnprojectPoints(lcVector3* Points, int NumPoints) const
+void swView::UnprojectPoints(swVector3* Points, int NumPoints) const
 {
 	int Viewport[4] = { 0, 0, mWidth, mHeight };
-	lcUnprojectPoints(Points, NumPoints, mCamera->mWorldView, GetProjectionMatrix(), Viewport);
+	swUnprojectPoints(Points, NumPoints, mCamera->mWorldView, GetProjectionMatrix(), Viewport);
 }
 
-lcMatrix44 lcView::GetProjectionMatrix() const
+swMatrix44 swView::GetProjectionMatrix() const
 {
 	float AspectRatio = (float)mWidth / (float)mHeight;
 
-	if (mCamera->GetProjection() == lcCameraProjection::Orthographic)
+	if (mCamera->GetProjection() == swCameraProjection::Orthographic)
 	{
 		float OrthoHeight = mCamera->GetOrthoHeight() / 2.0f;
 		float OrthoWidth = OrthoHeight * AspectRatio;
 
-		return lcMatrix44Ortho(-OrthoWidth, OrthoWidth, -OrthoHeight, OrthoHeight, mCamera->m_zNear, mCamera->m_zFar * 4);
+		return swMatrix44Ortho(-OrthoWidth, OrthoWidth, -OrthoHeight, OrthoHeight, mCamera->m_zNear, mCamera->m_zFar * 4);
 	}
 	else
-		return lcMatrix44Perspective(mCamera->m_fovy, AspectRatio, mCamera->m_zNear, mCamera->m_zFar);
+		return swMatrix44Perspective(mCamera->m_fovy, AspectRatio, mCamera->m_zNear, mCamera->m_zFar);
 }
 
-lcMatrix44 lcView::GetTileProjectionMatrix(int CurrentRow, int CurrentColumn, int CurrentTileWidth, int CurrentTileHeight) const
+swMatrix44 swView::GetTileProjectionMatrix(int CurrentRow, int CurrentColumn, int CurrentTileWidth, int CurrentTileHeight) const
 {
 	int ImageWidth = mRenderImage.width();
 	int ImageHeight = mRenderImage.height();
@@ -300,7 +300,7 @@ lcMatrix44 lcView::GetTileProjectionMatrix(int CurrentRow, int CurrentColumn, in
 	double ImageLeft, ImageRight, ImageBottom, ImageTop, Near, Far;
 	double AspectRatio = (double)ImageWidth / (double)ImageHeight;
 
-	if (mCamera->GetProjection() == lcCameraProjection::Orthographic)
+	if (mCamera->GetProjection() == swCameraProjection::Orthographic)
 	{
 		float OrthoHeight = mCamera->GetOrthoHeight() / 2.0f;
 		float OrthoWidth = OrthoHeight * AspectRatio;
@@ -333,37 +333,37 @@ lcMatrix44 lcView::GetTileProjectionMatrix(int CurrentRow, int CurrentColumn, in
 	double Bottom = ImageBottom + (ImageTop - ImageBottom) * (CurrentRow * mHeight) / ImageHeight;
 	double Top = Bottom + (ImageTop - ImageBottom) * CurrentTileHeight / ImageHeight;
 
-	if (mCamera->GetProjection() == lcCameraProjection::Orthographic)
-		return lcMatrix44Ortho(Left, Right, Bottom, Top, Near, Far);
+	if (mCamera->GetProjection() == swCameraProjection::Orthographic)
+		return swMatrix44Ortho(Left, Right, Bottom, Top, Near, Far);
 	else
-		return lcMatrix44Frustum(Left, Right, Bottom, Top, Near, Far);
+		return swMatrix44Frustum(Left, Right, Bottom, Top, Near, Far);
 }
 
-void lcView::ShowTrainTrackPopup()
+void swView::ShowTrainTrackPopup()
 {
-	if (mViewType != lcViewType::View)
+	if (mViewType != swViewType::View)
 		return;
 
-	lcModel* ActiveModel = GetActiveModel();
-	lcObject* Focus = ActiveModel->GetFocusObject();
+	swModel* ActiveModel = GetActiveModel();
+	swObject* Focus = ActiveModel->GetFocusObject();
 
 	if (!Focus || !Focus->IsPiece())
 		return;
 
-	lcPiece* Piece = (lcPiece*)Focus;
-	const lcTrainTrackInfo* TrainTrackInfo = Piece->mPieceData->GetTrainTrackInfo();
+	swPiece* Piece = (swPiece*)Focus;
+	const swTrainTrackInfo* TrainTrackInfo = Piece->mPieceData->GetTrainTrackInfo();
 
 	if (!TrainTrackInfo)
 		return;
 
-	if (mTrackToolSection < LC_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST)
+	if (mTrackToolSection < SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST)
 		return;
 
-	int ConnectionIndex = mTrackToolSection - LC_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST;
-	const lcTrainTrackConnectionType& ConnectionType = TrainTrackInfo->GetConnections()[ConnectionIndex].Type;
-	std::vector<lcPieceData*> TrainTrackParts = lcGetPiecesLibrary()->GetVisibleTrainTrackParts(ConnectionType);
+	int ConnectionIndex = mTrackToolSection - SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST;
+	const swTrainTrackConnectionType& ConnectionType = TrainTrackInfo->GetConnections()[ConnectionIndex].Type;
+	std::vector<swPieceData*> TrainTrackParts = swGetPiecesLibrary()->GetVisibleTrainTrackParts(ConnectionType);
 
-	auto PartSortFunc = [](const lcPieceData* a, const lcPieceData* b)
+	auto PartSortFunc = [](const swPieceData* a, const swPieceData* b)
 	{
 		if (!a)
 			return true;
@@ -376,15 +376,15 @@ void lcView::ShowTrainTrackPopup()
 
 	std::sort(TrainTrackParts.begin(), TrainTrackParts.end(), PartSortFunc);
 
-	std::vector<std::pair<lcPieceData*, std::string>> Parts;
+	std::vector<std::pair<swPieceData*, std::string>> Parts;
 
 	Parts.reserve(TrainTrackParts.size());
 
-	for (lcPieceData* PieceData : TrainTrackParts)
+	for (swPieceData* PieceData : TrainTrackParts)
 		Parts.emplace_back(PieceData, std::string());
 
-	std::optional<lcPieceData*> Result = lcShowPartSelectionPopup(nullptr, Parts, gMainWindow->GetInsertColorIndex(), mWidget, QCursor::pos());
-	lcPieceData* PieceData = Result.has_value() ? Result.value() : nullptr;
+	std::optional<swPieceData*> Result = swShowPartSelectionPopup(nullptr, Parts, gMainWindow->GetInsertColorIndex(), mWidget, QCursor::pos());
+	swPieceData* PieceData = Result.has_value() ? Result.value() : nullptr;
 
 	if (PieceData)
 	{
@@ -397,38 +397,38 @@ void lcView::ShowTrainTrackPopup()
 	mWidget->UpdateMousePosition();
 }
 
-void lcView::ShowContextMenu() const
+void swView::ShowContextMenu() const
 {
-	if (mViewType != lcViewType::View)
+	if (mViewType != swViewType::View)
 		return;
 
 	QAction** Actions = gMainWindow->mActions;
 
 	QMenu* Popup = new QMenu();
 
-	Popup->addAction(Actions[LC_EDIT_CUT]);
-	Popup->addAction(Actions[LC_EDIT_COPY]);
-	Popup->addAction(Actions[LC_EDIT_PASTE]);
-	Popup->addAction(Actions[LC_EDIT_PASTE_STEPS]);
-	Popup->addAction(Actions[LC_PIECE_DUPLICATE]);
+	Popup->addAction(Actions[SW_EDIT_CUT]);
+	Popup->addAction(Actions[SW_EDIT_COPY]);
+	Popup->addAction(Actions[SW_EDIT_PASTE]);
+	Popup->addAction(Actions[SW_EDIT_PASTE_STEPS]);
+	Popup->addAction(Actions[SW_PIECE_DUPLICATE]);
 
 	Popup->addSeparator();
 
-	Popup->addAction(Actions[LC_PIECE_CONTROL_POINT_INSERT]);
-	Popup->addAction(Actions[LC_PIECE_CONTROL_POINT_REMOVE]);
+	Popup->addAction(Actions[SW_PIECE_CONTROL_POINT_INSERT]);
+	Popup->addAction(Actions[SW_PIECE_CONTROL_POINT_REMOVE]);
 
 	Popup->addSeparator();
 
-	Popup->addAction(Actions[LC_PIECE_EDIT_SELECTED_SUBMODEL]);
-	Popup->addAction(Actions[LC_PIECE_EDIT_END_SUBMODEL]);
-	Popup->addAction(Actions[LC_PIECE_VIEW_SELECTED_MODEL]);
-	Popup->addAction(Actions[LC_PIECE_INLINE_SELECTED_MODELS]);
-	Popup->addAction(Actions[LC_PIECE_MOVE_SELECTION_TO_MODEL]);
+	Popup->addAction(Actions[SW_PIECE_EDIT_SELECTED_SUBMODEL]);
+	Popup->addAction(Actions[SW_PIECE_EDIT_END_SUBMODEL]);
+	Popup->addAction(Actions[SW_PIECE_VIEW_SELECTED_MODEL]);
+	Popup->addAction(Actions[SW_PIECE_INLINE_SELECTED_MODELS]);
+	Popup->addAction(Actions[SW_PIECE_MOVE_SELECTION_TO_MODEL]);
 
 	Popup->addSeparator();
 
 	Popup->addMenu(gMainWindow->GetToolsMenu());
-	Popup->addAction(Actions[LC_VIEW_NORMAL_TO_FACE]);
+	Popup->addAction(Actions[SW_VIEW_NORMAL_TO_FACE]);
 	Popup->addMenu(gMainWindow->GetViewpointMenu());
 	Popup->addMenu(gMainWindow->GetCameraMenu());
 	Popup->addMenu(gMainWindow->GetProjectionMenu());
@@ -436,16 +436,16 @@ void lcView::ShowContextMenu() const
 
 	Popup->addSeparator();
 
-	Popup->addAction(Actions[LC_VIEW_SPLIT_HORIZONTAL]);
-	Popup->addAction(Actions[LC_VIEW_SPLIT_VERTICAL]);
-	Popup->addAction(Actions[LC_VIEW_REMOVE_VIEW]);
-	Popup->addAction(Actions[LC_VIEW_RESET_VIEWS]);
+	Popup->addAction(Actions[SW_VIEW_SPLIT_HORIZONTAL]);
+	Popup->addAction(Actions[SW_VIEW_SPLIT_VERTICAL]);
+	Popup->addAction(Actions[SW_VIEW_REMOVE_VIEW]);
+	Popup->addAction(Actions[SW_VIEW_RESET_VIEWS]);
 
 	Popup->exec(QCursor::pos());
 	delete Popup;
 }
 
-bool lcView::CloseFindReplaceDialog()
+bool swView::CloseFindReplaceDialog()
 {
 	if (mFindWidget && (mWidget->hasFocus() || mFindWidget->focusWidget()))
 	{
@@ -458,44 +458,44 @@ bool lcView::CloseFindReplaceDialog()
 	return false;
 }
 
-void lcView::ShowFindReplaceWidget(bool Replace)
+void swView::ShowFindReplaceWidget(bool Replace)
 {
 	delete mFindWidget;
-	mFindReplaceParams = lcFindReplaceParams();
-	mFindWidget = new lcFindReplaceWidget(mWidget, GetActiveModel(), Replace);
+	mFindReplaceParams = swFindReplaceParams();
+	mFindWidget = new swFindReplaceWidget(mWidget, GetActiveModel(), Replace);
 	mWidget->SetFindReplaceWidget(mFindWidget);
 }
 
-lcVector3 lcView::GetMoveDirection(const lcVector3& Direction) const
+swVector3 swView::GetMoveDirection(const swVector3& Direction) const
 {
-	if (lcGetPreferences().mFixedAxes)
+	if (swGetPreferences().mFixedAxes)
 		return Direction;
 
 	// Match the axes used by MoveSelectedObjects/RotateSelectedObjects before
 	// projecting them, so relative transforms do not rotate the mapping again.
-	lcMatrix33 LocalToWorld = GetActiveModel()->GetRelativeRotation();
+	swMatrix33 LocalToWorld = GetActiveModel()->GetRelativeRotation();
 
 	// Separate transforms always use each piece's axes. Use the focused piece
 	// as the reference for the shared keyboard direction.
 	if (gMainWindow->GetSeparateTransform())
 	{
-		lcObject* Focus = GetActiveModel()->GetFocusObject();
+		swObject* Focus = GetActiveModel()->GetFocusObject();
 
 		if (Focus && Focus->IsPiece())
-			LocalToWorld = static_cast<lcPiece*>(Focus)->GetRelativeRotation();
+			LocalToWorld = static_cast<swPiece*>(Focus)->GetRelativeRotation();
 	}
 
 	if (mActiveSubmodelInstance)
-		LocalToWorld = lcMul(LocalToWorld, lcMatrix33(mActiveSubmodelTransform));
+		LocalToWorld = swMul(LocalToWorld, swMatrix33(mActiveSubmodelTransform));
 
-	const lcMatrix33 LocalToView = lcMul(LocalToWorld, lcMatrix33(mCamera->mWorldView));
+	const swMatrix33 LocalToView = swMul(LocalToWorld, swMatrix33(mCamera->mWorldView));
 
 	// Choose distinct X/Y axes for screen right and up. Page Up/Down keep
 	// their Z direction regardless of the camera, including bottom views.
 	float BestScore = -std::numeric_limits<float>::infinity();
 	float BestAway = -std::numeric_limits<float>::infinity();
-	lcVector3 BestRight(1.0f, 0.0f, 0.0f);
-	lcVector3 BestUp(0.0f, 1.0f, 0.0f);
+	swVector3 BestRight(1.0f, 0.0f, 0.0f);
+	swVector3 BestUp(0.0f, 1.0f, 0.0f);
 
 	for (int RightAxis = 0; RightAxis < 2; RightAxis++)
 	{
@@ -508,18 +508,18 @@ lcVector3 lcView::GetMoveDirection(const lcVector3& Direction) const
 			{
 				for (int UpSign : { 1, -1 })
 				{
-					lcVector3 Right(0.0f, 0.0f, 0.0f);
-					lcVector3 Up(0.0f, 0.0f, 0.0f);
+					swVector3 Right(0.0f, 0.0f, 0.0f);
+					swVector3 Up(0.0f, 0.0f, 0.0f);
 					Right[RightAxis] = float(RightSign);
 					Up[UpAxis] = float(UpSign);
 
-					const lcVector3 ViewUp = lcMul(Up, LocalToView);
-					const float Score = lcMul(Right, LocalToView).x + ViewUp.y;
+					const swVector3 ViewUp = swMul(Up, LocalToView);
+					const float Score = swMul(Right, LocalToView).x + ViewUp.y;
 					const float Away = -ViewUp.z;
 
 					// In edge-on views, Up moves into the scene along the remaining
 					// horizontal axis. Retain the first frame on diagonal ties.
-					if (Score > BestScore + LC_EPSILON || (fabsf(Score - BestScore) <= LC_EPSILON && Away > BestAway + LC_EPSILON))
+					if (Score > BestScore + SW_EPSILON || (fabsf(Score - BestScore) <= SW_EPSILON && Away > BestAway + SW_EPSILON))
 					{
 						BestScore = Score;
 						BestAway = Away;
@@ -532,13 +532,13 @@ lcVector3 lcView::GetMoveDirection(const lcVector3& Direction) const
 	}
 
 	// Default bindings are +X = Down, +Y = Right, +Z = Page Up.
-	return BestRight * Direction.y - BestUp * Direction.x + lcVector3(0.0f, 0.0f, Direction.z);
+	return BestRight * Direction.y - BestUp * Direction.x + swVector3(0.0f, 0.0f, Direction.z);
 }
 
-void lcView::UpdatePiecePreview()
+void swView::UpdatePiecePreview()
 {
-	const lcPieceDataRef PreviewPieceData(gMainWindow->GetInsertPieceData());
-	std::vector<lcInsertPieceInfo> InsertPieceInfo;
+	const swPieceDataRef PreviewPieceData(gMainWindow->GetInsertPieceData());
+	std::vector<swInsertPieceInfo> InsertPieceInfo;
 	bool IsConnection;
 
 	if (PreviewPieceData)
@@ -549,37 +549,37 @@ void lcView::UpdatePiecePreview()
 	GetActiveModel()->SetPreviewInsertPieceInfo(std::move(InsertPieceInfo));
 }
 
-std::pair<std::vector<lcInsertPieceInfo>, bool> lcView::GetMouseInsertPieceInfo(bool IgnoreSelected, bool AllowNewPieces, const lcPieceDataRef& PieceData, lcPiece* MovingPiece) const
+std::pair<std::vector<swInsertPieceInfo>, bool> swView::GetMouseInsertPieceInfo(bool IgnoreSelected, bool AllowNewPieces, const swPieceDataRef& PieceData, swPiece* MovingPiece) const
 {
-	lcModel* ActiveModel = GetActiveModel();
+	swModel* ActiveModel = GetActiveModel();
 
-	lcGetPiecesLibrary()->EnsurePieceDataAssetsReady(PieceData);
+	swGetPiecesLibrary()->EnsurePieceDataAssetsReady(PieceData);
 
 	if (MovingPiece && PieceData->GetSynthInfo())
-		lcGetPiecesLibrary()->WaitForSynthMeshes({ MovingPiece });
+		swGetPiecesLibrary()->WaitForSynthMeshes({ MovingPiece });
 
 	// The first piece of an empty model goes to the origin when enabled.
-	if (!MovingPiece && lcGetPreferences().mFirstPieceAtOrigin && ActiveModel->GetPieces().empty())
-		return { { lcInsertPieceInfo{ PieceData.Get(), lcMatrix44Identity(), gMainWindow->GetInsertColorIndex() } }, false };
+	if (!MovingPiece && swGetPreferences().mFirstPieceAtOrigin && ActiveModel->GetPieces().empty())
+		return { { swInsertPieceInfo{ PieceData.Get(), swMatrix44Identity(), gMainWindow->GetInsertColorIndex() } }, false };
 
-	lcObjectRayTest ObjectRayTest = RayTest(true, IgnoreSelected);
+	swObjectRayTest ObjectRayTest = RayTest(true, IgnoreSelected);
 
 	// Settling a hit's geometry can reveal another pending piece behind it, so pick again until the hit is stable.
 	while (ObjectRayTest.ObjectSection.Object)
 	{
-		lcPiece* MousePiece = reinterpret_cast<lcPiece*>(ObjectRayTest.ObjectSection.Object);
-		lcPieceData* MousePieceData = MousePiece->mPieceData.Get();
-		const bool Retest = MousePieceData->mState != lcAssetState::Loaded || MousePieceData->IsModel() || MousePieceData->IsProject() || MousePiece->IsGeneratedMeshPending();
+		swPiece* MousePiece = reinterpret_cast<swPiece*>(ObjectRayTest.ObjectSection.Object);
+		swPieceData* MousePieceData = MousePiece->mPieceData.Get();
+		const bool Retest = MousePieceData->mState != swAssetState::Loaded || MousePieceData->IsModel() || MousePieceData->IsProject() || MousePiece->IsGeneratedMeshPending();
 
-		lcGetPiecesLibrary()->EnsurePieceDataAssetsReady(MousePiece->mPieceData);
+		swGetPiecesLibrary()->EnsurePieceDataAssetsReady(MousePiece->mPieceData);
 
 		if (MousePieceData->GetSynthInfo())
-			lcGetPiecesLibrary()->WaitForSynthMeshes({ MousePiece });
+			swGetPiecesLibrary()->WaitForSynthMeshes({ MousePiece });
 
 		if (!Retest)
 			break;
 
-		lcObjectRayTest ReadyRayTest = RayTest(true, IgnoreSelected);
+		swObjectRayTest ReadyRayTest = RayTest(true, IgnoreSelected);
 		const bool SamePiece = ReadyRayTest.ObjectSection.Object == ObjectRayTest.ObjectSection.Object;
 		ObjectRayTest = ReadyRayTest;
 
@@ -587,28 +587,28 @@ std::pair<std::vector<lcInsertPieceInfo>, bool> lcView::GetMouseInsertPieceInfo(
 			break;
 	}
 
-	const lcBoundingBox& BoundingBox = MovingPiece ? MovingPiece->GetBoundingBox() : PieceData->GetBoundingBox();
+	const swBoundingBox& BoundingBox = MovingPiece ? MovingPiece->GetBoundingBox() : PieceData->GetBoundingBox();
 
 	if (ObjectRayTest.ObjectSection.Object)
 	{
-		lcPiece* MousePiece = reinterpret_cast<lcPiece*>(ObjectRayTest.ObjectSection.Object);
-		lcTrainTrackInfo* RayTrackInfo = MousePiece->mPieceData->GetTrainTrackInfo();
-		lcTrainTrackInfo* InfoTrackInfo = PieceData->GetTrainTrackInfo();
+		swPiece* MousePiece = reinterpret_cast<swPiece*>(ObjectRayTest.ObjectSection.Object);
+		swTrainTrackInfo* RayTrackInfo = MousePiece->mPieceData->GetTrainTrackInfo();
+		swTrainTrackInfo* InfoTrackInfo = PieceData->GetTrainTrackInfo();
 
 		if (RayTrackInfo && InfoTrackInfo)
 		{
 			ActiveModel->UpdateTrainTrackConnections(MousePiece, IgnoreSelected);
 
-			lcVector3 ClosestPoint = ObjectRayTest.Start + lcNormalize(ObjectRayTest.End - ObjectRayTest.Start) * ObjectRayTest.Distance;
+			swVector3 ClosestPoint = ObjectRayTest.Start + swNormalize(ObjectRayTest.End - ObjectRayTest.Start) * ObjectRayTest.Distance;
 			quint32 FocusSection = MousePiece->GetFocusSection();
 
-			std::vector<lcInsertPieceInfo> TrainTracks = lcTrainTrackInfo::GetInsertPieceInfo(MousePiece, PieceData.Get(), MovingPiece, gMainWindow->GetInsertColorIndex(), FocusSection, AllowNewPieces, ClosestPoint);
+			std::vector<swInsertPieceInfo> TrainTracks = swTrainTrackInfo::GetInsertPieceInfo(MousePiece, PieceData.Get(), MovingPiece, gMainWindow->GetInsertColorIndex(), FocusSection, AllowNewPieces, ClosestPoint);
 
 			if (!TrainTracks.empty())
 				return { TrainTracks, true };
 		}
 
-		lcVector3 Position = ObjectRayTest.PieceRayTest.Plane;
+		swVector3 Position = ObjectRayTest.PieceRayTest.Plane;
 
 		if (Position.x > 0.0f)
 			Position.x += fabsf(BoundingBox.Min.x);
@@ -624,83 +624,83 @@ std::pair<std::vector<lcInsertPieceInfo>, bool> lcView::GetMouseInsertPieceInfo(
 			Position.z -= fabsf(BoundingBox.Max.z);
 
 		if (gMainWindow->GetRelativeTransform())
-			Position = lcMul31(ActiveModel->SnapPosition(Position), ObjectRayTest.PieceRayTest.Transform);
+			Position = swMul31(ActiveModel->SnapPosition(Position), ObjectRayTest.PieceRayTest.Transform);
 		else
-			Position = ActiveModel->SnapPosition(lcMul31(Position, ObjectRayTest.PieceRayTest.Transform));
+			Position = ActiveModel->SnapPosition(swMul31(Position, ObjectRayTest.PieceRayTest.Transform));
 
-		lcMatrix44 WorldMatrix = ObjectRayTest.PieceRayTest.Transform;
+		swMatrix44 WorldMatrix = ObjectRayTest.PieceRayTest.Transform;
 		WorldMatrix.SetTranslation(Position);
 
-		return { { lcInsertPieceInfo{ PieceData.Get(), WorldMatrix, gMainWindow->GetInsertColorIndex() } }, false };
+		return { { swInsertPieceInfo{ PieceData.Get(), WorldMatrix, gMainWindow->GetInsertColorIndex() } }, false };
 	}
 
-	std::array<lcVector3, 2> ClickPoints = {{ lcVector3((float)mMouseX, (float)mMouseY, 0.0f), lcVector3((float)mMouseX, (float)mMouseY, 1.0f) }};
+	std::array<swVector3, 2> ClickPoints = {{ swVector3((float)mMouseX, (float)mMouseY, 0.0f), swVector3((float)mMouseX, (float)mMouseY, 1.0f) }};
 	UnprojectPoints(ClickPoints.data(), 2);
 
 	if (ActiveModel != mModel)
 	{
-		lcMatrix44 InverseMatrix = lcMatrix44AffineInverse(mActiveSubmodelTransform);
+		swMatrix44 InverseMatrix = swMatrix44AffineInverse(mActiveSubmodelTransform);
 
-		for (lcVector3& Point : ClickPoints)
-			Point = lcMul31(Point, InverseMatrix);
+		for (swVector3& Point : ClickPoints)
+			Point = swMul31(Point, InverseMatrix);
 	}
 
-	lcVector3 Intersection;
+	swVector3 Intersection;
 
-	if (lcLineSegmentPlaneIntersection(&Intersection, ClickPoints[0], ClickPoints[1], lcVector4(0, 0, 1, BoundingBox.Min.z)))
+	if (swLineSegmentPlaneIntersection(&Intersection, ClickPoints[0], ClickPoints[1], swVector4(0, 0, 1, BoundingBox.Min.z)))
 	{
 		Intersection = ActiveModel->SnapPosition(Intersection);
-		return { { lcInsertPieceInfo{ PieceData.Get(), lcMatrix44Translation(Intersection), gMainWindow->GetInsertColorIndex() } }, false };
+		return { { swInsertPieceInfo{ PieceData.Get(), swMatrix44Translation(Intersection), gMainWindow->GetInsertColorIndex() } }, false };
 	}
 
-	lcVector3 Position;
+	swVector3 Position;
 
 	if (!ActiveModel->GetFocusPosition(Position))
 		Position = ActiveModel->GetSelectionOrModelCenter();
 
-	lcVector3 FrontVector(mCamera->mTargetPosition - mCamera->mPosition);
+	swVector3 FrontVector(mCamera->mTargetPosition - mCamera->mPosition);
 
-	if (lcLineSegmentPlaneIntersection(&Intersection, ClickPoints[0], ClickPoints[1], lcVector4(FrontVector, -lcDot(FrontVector, Position))))
+	if (swLineSegmentPlaneIntersection(&Intersection, ClickPoints[0], ClickPoints[1], swVector4(FrontVector, -swDot(FrontVector, Position))))
 	{
 		Intersection = ActiveModel->SnapPosition(Intersection);
-		return { { lcInsertPieceInfo{ PieceData.Get(), lcMatrix44Translation(Intersection), gMainWindow->GetInsertColorIndex() } }, false };
+		return { { swInsertPieceInfo{ PieceData.Get(), swMatrix44Translation(Intersection), gMainWindow->GetInsertColorIndex() } }, false };
 	}
 
-	return { { lcInsertPieceInfo{ PieceData.Get(), lcMatrix44Translation(UnprojectPoint(lcVector3((float)mMouseX, (float)mMouseY, 0.9f))), gMainWindow->GetInsertColorIndex() } }, false };
+	return { { swInsertPieceInfo{ PieceData.Get(), swMatrix44Translation(UnprojectPoint(swVector3((float)mMouseX, (float)mMouseY, 0.9f))), gMainWindow->GetInsertColorIndex() } }, false };
 }
 
-lcVector3 lcView::GetCameraLightInsertPosition() const
+swVector3 swView::GetCameraLightInsertPosition() const
 {
-	lcModel* ActiveModel = GetActiveModel();
+	swModel* ActiveModel = GetActiveModel();
 
-	std::array<lcVector3, 2> ClickPoints = { { lcVector3((float)mMouseX, (float)mMouseY, 0.0f), lcVector3((float)mMouseX, (float)mMouseY, 1.0f) } };
+	std::array<swVector3, 2> ClickPoints = { { swVector3((float)mMouseX, (float)mMouseY, 0.0f), swVector3((float)mMouseX, (float)mMouseY, 1.0f) } };
 	UnprojectPoints(ClickPoints.data(), 2);
 
 	if (ActiveModel != mModel)
 	{
-		lcMatrix44 InverseMatrix = lcMatrix44AffineInverse(mActiveSubmodelTransform);
+		swMatrix44 InverseMatrix = swMatrix44AffineInverse(mActiveSubmodelTransform);
 
-		for (lcVector3& Point : ClickPoints)
-			Point = lcMul31(Point, InverseMatrix);
+		for (swVector3& Point : ClickPoints)
+			Point = swMul31(Point, InverseMatrix);
 	}
 
-	lcVector3 Min, Max;
-	lcVector3 Center;
+	swVector3 Min, Max;
+	swVector3 Center;
 
 	if (ActiveModel->GetVisiblePiecesBoundingBox(Min, Max))
 		Center = (Min + Max) / 2.0f;
 	else
-		Center = lcVector3(0.0f, 0.0f, 0.0f);
+		Center = swVector3(0.0f, 0.0f, 0.0f);
 
-	return lcRayPointClosestPoint(Center, ClickPoints[0], ClickPoints[1]);
+	return swRayPointClosestPoint(Center, ClickPoints[0], ClickPoints[1]);
 }
 
-void lcView::GetRayUnderPointer(lcVector3& Start, lcVector3& End) const
+void swView::GetRayUnderPointer(swVector3& Start, swVector3& End) const
 {
-	lcVector3 StartEnd[2] =
+	swVector3 StartEnd[2] =
 	{
-		lcVector3((float)mMouseX, (float)mMouseY, 0.0f),
-		lcVector3((float)mMouseX, (float)mMouseY, 1.0f)
+		swVector3((float)mMouseX, (float)mMouseY, 0.0f),
+		swVector3((float)mMouseX, (float)mMouseY, 1.0f)
 	};
 
 	UnprojectPoints(StartEnd, 2);
@@ -709,17 +709,17 @@ void lcView::GetRayUnderPointer(lcVector3& Start, lcVector3& End) const
 	End = StartEnd[1];
 }
 
-lcObjectRayTest lcView::RayTest(bool PiecesOnly, bool IgnoreSelected) const
+swObjectRayTest swView::RayTest(bool PiecesOnly, bool IgnoreSelected) const
 {
-	lcVector3 StartEnd[2] =
+	swVector3 StartEnd[2] =
 	{
-		lcVector3((float)mMouseX, (float)mMouseY, 0.0f),
-		lcVector3((float)mMouseX, (float)mMouseY, 1.0f)
+		swVector3((float)mMouseX, (float)mMouseY, 0.0f),
+		swVector3((float)mMouseX, (float)mMouseY, 1.0f)
 	};
 
 	UnprojectPoints(StartEnd, 2);
 
-	lcObjectRayTest ObjectRayTest;
+	swObjectRayTest ObjectRayTest;
 
 	ObjectRayTest.PiecesOnly = PiecesOnly;
 	ObjectRayTest.IgnoreSelected = IgnoreSelected;
@@ -727,14 +727,14 @@ lcObjectRayTest lcView::RayTest(bool PiecesOnly, bool IgnoreSelected) const
 	ObjectRayTest.Start = StartEnd[0];
 	ObjectRayTest.End = StartEnd[1];
 
-	lcModel* ActiveModel = GetActiveModel();
+	swModel* ActiveModel = GetActiveModel();
 
 	if (ActiveModel != mModel)
 	{
-		lcMatrix44 InverseMatrix = lcMatrix44AffineInverse(mActiveSubmodelTransform);
+		swMatrix44 InverseMatrix = swMatrix44AffineInverse(mActiveSubmodelTransform);
 
-		ObjectRayTest.Start = lcMul31(ObjectRayTest.Start, InverseMatrix);
-		ObjectRayTest.End = lcMul31(ObjectRayTest.End, InverseMatrix);
+		ObjectRayTest.Start = swMul31(ObjectRayTest.Start, InverseMatrix);
+		ObjectRayTest.End = swMul31(ObjectRayTest.End, InverseMatrix);
 	}
 
 	ActiveModel->RayTest(ObjectRayTest);
@@ -742,12 +742,12 @@ lcObjectRayTest lcView::RayTest(bool PiecesOnly, bool IgnoreSelected) const
 	return ObjectRayTest;
 }
 
-lcObjectSection lcView::FindObjectUnderPointer(bool PiecesOnly, bool IgnoreSelected) const
+swObjectSection swView::FindObjectUnderPointer(bool PiecesOnly, bool IgnoreSelected) const
 {
 	return RayTest(PiecesOnly, IgnoreSelected).ObjectSection;
 }
 
-std::vector<lcObject*> lcView::FindObjectsInBox(float x1, float y1, float x2, float y2) const
+std::vector<swObject*> swView::FindObjectsInBox(float x1, float y1, float x2, float y2) const
 {
 	float Left, Top, Bottom, Right;
 
@@ -773,51 +773,51 @@ std::vector<lcObject*> lcView::FindObjectsInBox(float x1, float y1, float x2, fl
 		Bottom = y1;
 	}
 
-	std::array<lcVector3, 6> Corners =
+	std::array<swVector3, 6> Corners =
 	{{
-		lcVector3(Left, Top, 0),
-		lcVector3(Left, Bottom, 0),
-		lcVector3(Right, Bottom, 0),
-		lcVector3(Right, Top, 0),
-		lcVector3(Left, Top, 1),
-		lcVector3(Right, Bottom, 1)
+		swVector3(Left, Top, 0),
+		swVector3(Left, Bottom, 0),
+		swVector3(Right, Bottom, 0),
+		swVector3(Right, Top, 0),
+		swVector3(Left, Top, 1),
+		swVector3(Right, Bottom, 1)
 	}};
 
 	UnprojectPoints(Corners.data(), (int)Corners.size());
 
-	lcModel* ActiveModel = GetActiveModel();
+	swModel* ActiveModel = GetActiveModel();
 
 	if (ActiveModel != mModel)
 	{
-		lcMatrix44 InverseMatrix = lcMatrix44AffineInverse(mActiveSubmodelTransform);
+		swMatrix44 InverseMatrix = swMatrix44AffineInverse(mActiveSubmodelTransform);
 
-		for (lcVector3& Point : Corners)
-			Point = lcMul31(Point, InverseMatrix);
+		for (swVector3& Point : Corners)
+			Point = swMul31(Point, InverseMatrix);
 	}
 
-	lcVector3 PlaneNormals[6];
-	PlaneNormals[0] = lcNormalize(lcCross(Corners[4] - Corners[0], Corners[1] - Corners[0])); // Left
-	PlaneNormals[1] = lcNormalize(lcCross(Corners[5] - Corners[2], Corners[3] - Corners[2])); // Right
-	PlaneNormals[2] = lcNormalize(lcCross(Corners[3] - Corners[0], Corners[4] - Corners[0])); // Top
-	PlaneNormals[3] = lcNormalize(lcCross(Corners[1] - Corners[2], Corners[5] - Corners[2])); // Bottom
-	PlaneNormals[4] = lcNormalize(lcCross(Corners[1] - Corners[0], Corners[3] - Corners[0])); // Front
-	PlaneNormals[5] = lcNormalize(lcCross(Corners[1] - Corners[2], Corners[3] - Corners[2])); // Back
+	swVector3 PlaneNormals[6];
+	PlaneNormals[0] = swNormalize(swCross(Corners[4] - Corners[0], Corners[1] - Corners[0])); // Left
+	PlaneNormals[1] = swNormalize(swCross(Corners[5] - Corners[2], Corners[3] - Corners[2])); // Right
+	PlaneNormals[2] = swNormalize(swCross(Corners[3] - Corners[0], Corners[4] - Corners[0])); // Top
+	PlaneNormals[3] = swNormalize(swCross(Corners[1] - Corners[2], Corners[5] - Corners[2])); // Bottom
+	PlaneNormals[4] = swNormalize(swCross(Corners[1] - Corners[0], Corners[3] - Corners[0])); // Front
+	PlaneNormals[5] = swNormalize(swCross(Corners[1] - Corners[2], Corners[3] - Corners[2])); // Back
 
-	lcObjectBoxTest ObjectBoxTest;
+	swObjectBoxTest ObjectBoxTest;
 	ObjectBoxTest.ViewCamera = mCamera;
-	ObjectBoxTest.Planes[0] = lcVector4(PlaneNormals[0], -lcDot(PlaneNormals[0], Corners[0]));
-	ObjectBoxTest.Planes[1] = lcVector4(PlaneNormals[1], -lcDot(PlaneNormals[1], Corners[5]));
-	ObjectBoxTest.Planes[2] = lcVector4(PlaneNormals[2], -lcDot(PlaneNormals[2], Corners[0]));
-	ObjectBoxTest.Planes[3] = lcVector4(PlaneNormals[3], -lcDot(PlaneNormals[3], Corners[5]));
-	ObjectBoxTest.Planes[4] = lcVector4(PlaneNormals[4], -lcDot(PlaneNormals[4], Corners[0]));
-	ObjectBoxTest.Planes[5] = lcVector4(PlaneNormals[5], -lcDot(PlaneNormals[5], Corners[5]));
+	ObjectBoxTest.Planes[0] = swVector4(PlaneNormals[0], -swDot(PlaneNormals[0], Corners[0]));
+	ObjectBoxTest.Planes[1] = swVector4(PlaneNormals[1], -swDot(PlaneNormals[1], Corners[5]));
+	ObjectBoxTest.Planes[2] = swVector4(PlaneNormals[2], -swDot(PlaneNormals[2], Corners[0]));
+	ObjectBoxTest.Planes[3] = swVector4(PlaneNormals[3], -swDot(PlaneNormals[3], Corners[5]));
+	ObjectBoxTest.Planes[4] = swVector4(PlaneNormals[4], -swDot(PlaneNormals[4], Corners[0]));
+	ObjectBoxTest.Planes[5] = swVector4(PlaneNormals[5], -swDot(PlaneNormals[5], Corners[5]));
 
 	ActiveModel->BoxTest(ObjectBoxTest);
 
 	return ObjectBoxTest.Objects;
 }
 
-std::vector<QImage> lcView::GetStepImages(lcStep Start, lcStep End)
+std::vector<QImage> swView::GetStepImages(swStep Start, swStep End)
 {
 	std::vector<QImage> Images;
 	mModel->WaitForAssets();
@@ -830,10 +830,10 @@ std::vector<QImage> lcView::GetStepImages(lcStep Start, lcStep End)
 		return Images;
 	}
 
-	const lcStep CurrentStep = mModel->GetCurrentStep();
+	const swStep CurrentStep = mModel->GetCurrentStep();
 	bool RenderFailed = false;
 
-	for (lcStep Step = Start; Step <= End; Step++)
+	for (swStep Step = Start; Step <= End; Step++)
 	{
 		mModel->SetTemporaryStep(Step);
 
@@ -856,7 +856,7 @@ std::vector<QImage> lcView::GetStepImages(lcStep Start, lcStep End)
 	mModel->SetTemporaryStep(CurrentStep);
 
 	if (!mModel->IsActive())
-		mModel->CalculateStep(LC_STEP_MAX);
+		mModel->CalculateStep(SW_STEP_MAX);
 
 	if (RenderFailed && gMainWindow)
 		QMessageBox::warning(gMainWindow, tr("Create Step Images"), tr("Error creating images."));
@@ -864,14 +864,14 @@ std::vector<QImage> lcView::GetStepImages(lcStep Start, lcStep End)
 	return Images;
 }
 
-lcResult<void> lcView::SaveStepImages(const QString& BaseName, bool AddStepSuffix, lcStep Start, lcStep End, std::function<void(const QString&)> ProgressCallback)
+swResult<void> swView::SaveStepImages(const QString& BaseName, bool AddStepSuffix, swStep Start, swStep End, std::function<void(const QString&)> ProgressCallback)
 {
 	std::vector<QImage> Images = GetStepImages(Start, End);
 
 	if (Images.size() != static_cast<size_t>(End - Start + 1))
-		return lcUnexpected(tr("Error creating images."));
+		return swUnexpected(tr("Error creating images."));
 
-	for (lcStep Step = Start; Step <= End; Step++)
+	for (swStep Step = Start; Step <= End; Step++)
 	{
 		QString FileName;
 
@@ -886,18 +886,18 @@ lcResult<void> lcView::SaveStepImages(const QString& BaseName, bool AddStepSuffi
 			Writer.setFormat("png");
 
 		if (!Writer.write(Images[Step - Start]))
-			return lcUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, Writer.errorString()));
+			return swUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, Writer.errorString()));
 
 		if (ProgressCallback)
 			ProgressCallback(FileName);
 	}
 
-	return lcResult<void>();
+	return swResult<void>();
 }
 
-bool lcView::BeginRenderToImage(int Width, int Height)
+bool swView::BeginRenderToImage(int Width, int Height)
 {
-	lcContext* Context = lcContext::GetGlobalOffscreenContext();
+	swContext* Context = swContext::GetGlobalOffscreenContext();
 	int MaxTexture = qMin(Context->GetMaxTextureSize(), 2048);
 
 	const int Samples = QSurfaceFormat::defaultFormat().samples();
@@ -929,24 +929,24 @@ bool lcView::BeginRenderToImage(int Width, int Height)
 	return true;
 }
 
-void lcView::EndRenderToImage()
+void swView::EndRenderToImage()
 {
 	mRenderFramebuffer.reset();
 }
 
-QImage lcView::GetRenderImage() const
+QImage swView::GetRenderImage() const
 {
 	return mRenderImage;
 }
 
-void lcView::DestroyOutlineFramebuffers()
+void swView::DestroyOutlineFramebuffers()
 {
 	mOutlineFullFramebuffer.reset();
 	mOutlineVisibleFramebuffer.reset();
 	mOutlineAttemptSize = QSize();
 }
 
-bool lcView::PrepareOutlineFramebuffers()
+bool swView::PrepareOutlineFramebuffers()
 {
 	QOpenGLContext* GLContext = mContext->GetGLContext();
 	
@@ -957,7 +957,7 @@ bool lcView::PrepareOutlineFramebuffers()
 		mOutlineGLContext = GLContext;
 	}
 
-	if (!GLContext || !lcContext::SupportsSelectionOutline() || mWidth <= 0 || mHeight <= 0)
+	if (!GLContext || !swContext::SupportsSelectionOutline() || mWidth <= 0 || mHeight <= 0)
 		return false;
 
 	const QSize Size(mWidth, mHeight);
@@ -965,7 +965,7 @@ bool lcView::PrepareOutlineFramebuffers()
 	if (mOutlineAttemptSize == Size)
 		return mOutlineFullFramebuffer && mOutlineVisibleFramebuffer;
 
-	lcScopedGLContextState GLState;
+	swScopedGLContextState GLState;
 	
 	DestroyOutlineFramebuffers();
 	
@@ -986,7 +986,7 @@ bool lcView::PrepareOutlineFramebuffers()
 	return true;
 }
 
-bool lcView::GenerateOutlineMasks()
+bool swView::GenerateOutlineMasks()
 {
 	if (mOutlineFullFramebuffer && mOutlineVisibleFramebuffer &&
 		mContext->GenerateOutlineMasks(*mScene, *mOutlineFullFramebuffer, *mOutlineVisibleFramebuffer))
@@ -1000,28 +1000,28 @@ bool lcView::GenerateOutlineMasks()
 	return false;
 }
 
-void lcView::BindRenderFramebuffer()
+void swView::BindRenderFramebuffer()
 {
 	mRenderFramebuffer->bind();
 }
 
-void lcView::UnbindRenderFramebuffer()
+void swView::UnbindRenderFramebuffer()
 {
 	mRenderFramebuffer->release();
 }
 
-QImage lcView::GetRenderFramebufferImage() const
+QImage swView::GetRenderFramebufferImage() const
 {
 	return mRenderFramebuffer->toImage();
 }
 
-void lcView::OnDraw()
+void swView::OnDraw()
 {
 	if (!mModel)
 		return;
 
-//#define LC_PROFILE_DRAW
-#ifdef LC_PROFILE_DRAW
+//#define SW_PROFILE_DRAW
+#ifdef SW_PROFILE_DRAW
 	static std::array<GLuint64, 30> QueryResults;
 	static std::array<qint64, 30> TimerResults;
 	static int FrameNumber;
@@ -1036,29 +1036,29 @@ void lcView::OnDraw()
 	Timer.start();
 #endif
 
-	const lcPreferences& Preferences = lcGetPreferences();
+	const swPreferences& Preferences = swGetPreferences();
 	const bool DrawOverlays = mWidget != nullptr;
-	const bool DrawInterface = mWidget != nullptr && mViewType == lcViewType::View;
+	const bool DrawInterface = mWidget != nullptr && mViewType == swViewType::View;
 
-	lcRenderTarget RenderTarget = lcRenderTarget::ModelView;
+	swRenderTarget RenderTarget = swRenderTarget::ModelView;
 
-	if (mViewType == lcViewType::PartsList)
-		RenderTarget = lcRenderTarget::Pieces;
-	else if (mViewType == lcViewType::Preview)
-		RenderTarget = lcRenderTarget::Preview;
-	else if (mViewType == lcViewType::Minifig)
-		RenderTarget = lcRenderTarget::Minifig;
+	if (mViewType == swViewType::PartsList)
+		RenderTarget = swRenderTarget::Pieces;
+	else if (mViewType == swViewType::Preview)
+		RenderTarget = swRenderTarget::Preview;
+	else if (mViewType == swViewType::Minifig)
+		RenderTarget = swRenderTarget::Minifig;
 
-	const lcRenderSettings RenderSettings = Preferences.GetRenderSettings(RenderTarget);
-	lcShadingMode ShadingMode = RenderSettings.ShadingMode;
-	if (ShadingMode == lcShadingMode::Wireframe && !mWidget)
-		ShadingMode = lcShadingMode::Flat;
+	const swRenderSettings RenderSettings = Preferences.GetRenderSettings(RenderTarget);
+	swShadingMode ShadingMode = RenderSettings.ShadingMode;
+	if (ShadingMode == swShadingMode::Wireframe && !mWidget)
+		ShadingMode = swShadingMode::Flat;
 
 	mScene->SetShadingMode(ShadingMode);
 	mScene->SetLineSettings(RenderSettings.DrawEdgeLines, RenderSettings.DrawConditionalLines, RenderSettings.LineWidth);
 	mScene->SetAllowLOD(Preferences.mAllowLOD && mWidget != nullptr);
 	mScene->SetRequireCompleteAssets(static_cast<bool>(mRenderFramebuffer));
-	mScene->SetRequireGeneratedMeshes(mRenderFramebuffer && mViewType != lcViewType::PartsList);
+	mScene->SetRequireGeneratedMeshes(mRenderFramebuffer && mViewType != swViewType::PartsList);
 	mScene->SetLODDistance(Preferences.mMeshLODDistance);
 
 	mScene->Begin(mCamera->mWorldView);
@@ -1066,10 +1066,10 @@ void lcView::OnDraw()
 	mScene->SetActiveSubmodelInstance(mActiveSubmodelInstance, mActiveSubmodelTransform, GetModelEditingPath());
 	mScene->SetDrawInterface(DrawInterface);
 
-	bool DrawInsertPreview = DrawInterface && std::any_of(mViews.begin(), mViews.end(), [](lcView* View){ return View->mTrackTool == lcTrackTool::Insert; });
+	bool DrawInsertPreview = DrawInterface && std::any_of(mViews.begin(), mViews.end(), [](swView* View){ return View->mTrackTool == swTrackTool::Insert; });
 	mScene->SetDrawInsertPreview(DrawInsertPreview);
 	
-	mModel->GetScene(mScene.get(), mCamera, Preferences.mHighlightNewParts, Preferences.mFadeSteps && mViewType == lcViewType::View);
+	mModel->GetScene(mScene.get(), mCamera, Preferences.mHighlightNewParts, Preferences.mFadeSteps && mViewType == swViewType::View);
 
 	mScene->End();
 
@@ -1127,12 +1127,12 @@ void lcView::OnDraw()
 			mContext->SetLineWidth(RenderSettings.LineWidth);
 
 			const bool OutlineEnabled = DrawInterface && !mRenderFramebuffer && mRenderImage.isNull() &&
-				ShadingMode != lcShadingMode::Wireframe && Preferences.mHighlightRenderMode == lcHighlightRenderMode::Outline &&
+				ShadingMode != swShadingMode::Wireframe && Preferences.mHighlightRenderMode == swHighlightRenderMode::Outline &&
 				(mScene->HasSelectedMeshes() || mScene->HasHighlightedMeshes()) && PrepareOutlineFramebuffers();
 			
 			bool OutlineMasksReady = false;
 
-			mScene->SetHighlightRenderMode(OutlineEnabled ? lcHighlightRenderMode::Outline : lcHighlightRenderMode::Tint);
+			mScene->SetHighlightRenderMode(OutlineEnabled ? swHighlightRenderMode::Outline : swHighlightRenderMode::Tint);
 			mScene->Draw(mContext, [this, OutlineEnabled, DrawInterface, &OutlineMasksReady]()
 			{
 				if (OutlineEnabled)
@@ -1147,7 +1147,7 @@ void lcView::OnDraw()
 
 			if (OutlineEnabled && !OutlineMasksReady)
 			{
-				mScene->SetHighlightRenderMode(lcHighlightRenderMode::Tint);
+				mScene->SetHighlightRenderMode(swHighlightRenderMode::Tint);
 				
 				DrawBackground(CurrentTileRow, TotalTileRows, CurrentTileHeight);
 				
@@ -1202,20 +1202,20 @@ void lcView::OnDraw()
 	if (DrawOverlays)
 		DrawAxes();
 
-	if (DrawInterface && mTrackTool != lcTrackTool::Insert)
+	if (DrawInterface && mTrackTool != swTrackTool::Insert)
 	{
-		lcTool Tool = gMainWindow->GetTool();
-		lcModel* ActiveModel = GetActiveModel();
+		swTool Tool = gMainWindow->GetTool();
+		swModel* ActiveModel = GetActiveModel();
 
-		if ((Tool == lcTool::Select || Tool == lcTool::Move) && mTrackButton == lcTrackButton::None && ActiveModel->AnyObjectsSelected())
+		if ((Tool == swTool::Select || Tool == swTool::Move) && mTrackButton == swTrackButton::None && ActiveModel->AnyObjectsSelected())
 			mViewManipulator->DrawSelectMove(mTrackButton, mTrackTool, mTrackToolSection);
-		else if (GetCurrentTool() == lcTool::Move && mTrackButton != lcTrackButton::None)
+		else if (GetCurrentTool() == swTool::Move && mTrackButton != swTrackButton::None)
 			mViewManipulator->DrawSelectMove(mTrackButton, mTrackTool, mTrackToolSection);
-		else if ((Tool == lcTool::Rotate || (Tool == lcTool::Select && mTrackButton != lcTrackButton::None && mTrackTool >= lcTrackTool::RotateX && mTrackTool <= lcTrackTool::RotateCamera)) && ActiveModel->CanRotateSelection())
+		else if ((Tool == swTool::Rotate || (Tool == swTool::Select && mTrackButton != swTrackButton::None && mTrackTool >= swTrackTool::RotateX && mTrackTool <= swTrackTool::RotateCamera)) && ActiveModel->CanRotateSelection())
 			mViewManipulator->DrawRotate(mTrackButton, mTrackTool);
-		else if ((mTrackTool == lcTrackTool::Select || mTrackTool == lcTrackTool::ZoomRegion) && mTrackButton != lcTrackButton::None)
+		else if ((mTrackTool == swTrackTool::Select || mTrackTool == swTrackTool::ZoomRegion) && mTrackButton != swTrackButton::None)
 			DrawSelectZoomRegionOverlay();
-		else if (Tool == lcTool::RotateView && mTrackButton == lcTrackButton::None)
+		else if (Tool == swTool::RotateView && mTrackButton == swTrackButton::None)
 			DrawRotateViewOverlay();
 	}
 
@@ -1226,7 +1226,7 @@ void lcView::OnDraw()
 		DrawViewport();
 	}
 
-#ifdef LC_PROFILE_DRAW
+#ifdef SW_PROFILE_DRAW
 	qint64 TimerElapsed = Timer.nsecsElapsed();
 	Query.end();
 
@@ -1247,15 +1247,15 @@ void lcView::OnDraw()
 
 	if (gTexFont.IsLoaded())
 	{
-		mContext->SetWorldMatrix(lcMatrix44Identity());
-		mContext->SetViewMatrix(lcMatrix44Translation(lcVector3(0.375, 0.375, 0.0)));
-		mContext->SetProjectionMatrix(lcMatrix44Ortho(0.0f, mWidth, 0.0f, mHeight, -1.0f, 1.0f));
+		mContext->SetWorldMatrix(swMatrix44Identity());
+		mContext->SetViewMatrix(swMatrix44Translation(swVector3(0.375, 0.375, 0.0)));
+		mContext->SetProjectionMatrix(swMatrix44Ortho(0.0f, mWidth, 0.0f, mHeight, -1.0f, 1.0f));
 
 		QString Line = QString("GPU: %1 CPU: %2").arg(QString::number(QueryAverage / 1000000.0, 'f', 2), QString::number(TimerAverage / 1000000.0, 'f', 2));
 
-		mContext->SetMaterial(lcMaterialType::TextSDF);
-		mContext->SetColor(lcVector4FromColor(lcGetPreferences().mTextColor));
-		mContext->SetTextHaloColor(lcVector4FromColor(lcGetPreferences().mTextHaloColor));
+		mContext->SetMaterial(swMaterialType::TextSDF);
+		mContext->SetColor(swVector4FromColor(swGetPreferences().mTextColor));
+		mContext->SetTextHaloColor(swVector4FromColor(swGetPreferences().mTextHaloColor));
 		mContext->BindTexture2D(gTexFont.GetTexture());
 
 		mContext->EnableDepthTest(false);
@@ -1273,26 +1273,26 @@ void lcView::OnDraw()
 	mContext->ClearResources();
 }
 
-bool lcView::HasMissingAssets() const
+bool swView::HasMissingAssets() const
 {
 	return mScene->HasMissingAssets();
 }
 
-void lcView::DrawBackground(int CurrentTileRow, int TotalTileRows, int CurrentTileHeight) const
+void swView::DrawBackground(int CurrentTileRow, int TotalTileRows, int CurrentTileHeight) const
 {
 	if (mOverrideBackgroundColor)
 	{
-		lcVector4 BackgroundColor(lcVector4FromColor(mBackgroundColor));
+		swVector4 BackgroundColor(swVector4FromColor(mBackgroundColor));
 		mContext->ClearColorAndDepth(BackgroundColor);
 		return;
 	}
 
-	const lcPreferences& Preferences = lcGetPreferences();
+	const swPreferences& Preferences = swGetPreferences();
 	float Alpha = mContext->IsOffscreen() ? 0.0f : 1.0f;
 
 	if (!Preferences.mBackgroundGradient)
 	{
-		lcVector4 BackgroundColor(lcVector3FromColor(Preferences.mBackgroundSolidColor), Alpha);
+		swVector4 BackgroundColor(swVector3FromColor(Preferences.mBackgroundSolidColor), Alpha);
 		mContext->ClearColorAndDepth(BackgroundColor);
 		return;
 	}
@@ -1305,9 +1305,9 @@ void lcView::DrawBackground(int CurrentTileRow, int TotalTileRows, int CurrentTi
 	float ViewWidth = (float)mWidth;
 	float ViewHeight = (float)mHeight;
 
-	mContext->SetWorldMatrix(lcMatrix44Identity());
-	mContext->SetViewMatrix(lcMatrix44Identity());
-	mContext->SetProjectionMatrix(lcMatrix44Ortho(0.0f, ViewWidth, 0.0f, ViewHeight, -1.0f, 1.0f));
+	mContext->SetWorldMatrix(swMatrix44Identity());
+	mContext->SetViewMatrix(swMatrix44Identity());
+	mContext->SetProjectionMatrix(swMatrix44Ortho(0.0f, ViewWidth, 0.0f, ViewHeight, -1.0f, 1.0f));
 
 	const int TotalHeight = TotalTileRows == 1 ? mHeight : mRenderImage.height();
 	const quint32 TopY = CurrentTileRow * mHeight + CurrentTileHeight;
@@ -1318,12 +1318,12 @@ void lcView::DrawBackground(int CurrentTileRow, int TotalTileRows, int CurrentTi
 	const quint32 ColorTop = Preferences.mBackgroundGradientColorTop;
 	const quint32 ColorBottom = Preferences.mBackgroundGradientColorBottom;
 
-	double TopRed = LC_RGBA_RED(ColorTop);
-	double TopGreen = LC_RGBA_GREEN(ColorTop);
-	double TopBlue = LC_RGBA_BLUE(ColorTop);
-	double BottomRed = LC_RGBA_RED(ColorBottom);
-	double BottomGreen = LC_RGBA_GREEN(ColorBottom);
-	double BottomBlue = LC_RGBA_BLUE(ColorBottom);
+	double TopRed = SW_RGBA_RED(ColorTop);
+	double TopGreen = SW_RGBA_GREEN(ColorTop);
+	double TopBlue = SW_RGBA_BLUE(ColorTop);
+	double BottomRed = SW_RGBA_RED(ColorBottom);
+	double BottomGreen = SW_RGBA_GREEN(ColorBottom);
+	double BottomBlue = SW_RGBA_BLUE(ColorBottom);
 	const double DeltaRed = BottomRed - TopRed;
 	const double DeltaGreen = BottomGreen - TopGreen;
 	const double DeltaBlue = BottomBlue - TopBlue;
@@ -1336,21 +1336,21 @@ void lcView::DrawBackground(int CurrentTileRow, int TotalTileRows, int CurrentTi
 	TopGreen = TopGreen + DeltaGreen * t1;
 	TopBlue = TopBlue + DeltaBlue * t1;
 
-	const quint32 Color1 = LC_RGBA(TopRed, TopGreen, TopBlue, Alpha);
-	const quint32 Color2 = LC_RGBA(BottomRed, BottomGreen, BottomBlue, Alpha);
+	const quint32 Color1 = SW_RGBA(TopRed, TopGreen, TopBlue, Alpha);
+	const quint32 Color2 = SW_RGBA(BottomRed, BottomGreen, BottomBlue, Alpha);
 
-	struct lcBackgroundVertex
+	struct swBackgroundVertex
 	{
 		float x, y;
 		quint32 Color;
 	};
 
-	const lcBackgroundVertex Verts[4] =
+	const swBackgroundVertex Verts[4] =
 	{
 		{ ViewWidth, ViewHeight, Color1 }, { 0.0f, ViewHeight, Color1 }, { 0.0f, 0.0f, Color2 }, { ViewWidth, 0.0f, Color2 }
 	};
 
-	mContext->SetMaterial(lcMaterialType::UnlitVertexColor);
+	mContext->SetMaterial(swMaterialType::UnlitVertexColor);
 	mContext->SetVertexBufferPointer(Verts);
 	mContext->SetVertexFormat(0, 2, 0, 0, 4, false);
 
@@ -1360,26 +1360,26 @@ void lcView::DrawBackground(int CurrentTileRow, int TotalTileRows, int CurrentTi
 	mContext->SetDepthWrite(true);
 }
 
-void lcView::DrawViewport() const
+void swView::DrawViewport() const
 {
 	float Scale = GetUIScale();
 	float Width = mWidth / Scale;
 	float Height = mHeight / Scale;
 
-	mContext->SetWorldMatrix(lcMatrix44Identity());
-	mContext->SetViewMatrix(lcMatrix44Translation(lcVector3(0.375, 0.375, 0.0)));
-	mContext->SetProjectionMatrix(lcMatrix44Ortho(0.0f, Width, 0.0f, Height, -1.0f, 1.0f));
+	mContext->SetWorldMatrix(swMatrix44Identity());
+	mContext->SetViewMatrix(swMatrix44Translation(swVector3(0.375, 0.375, 0.0)));
+	mContext->SetProjectionMatrix(swMatrix44Ortho(0.0f, Width, 0.0f, Height, -1.0f, 1.0f));
 	mContext->SetLineWidth(1.0f);
 
 	mContext->SetDepthWrite(false);
 	mContext->EnableDepthTest(false);
 
-	mContext->SetMaterial(lcMaterialType::UnlitColor);
+	mContext->SetMaterial(swMaterialType::UnlitColor);
 
 	if (mLastFocusedView == this)
-		mContext->SetColor(lcVector4FromColor(lcGetPreferences().mActiveViewColor));
+		mContext->SetColor(swVector4FromColor(swGetPreferences().mActiveViewColor));
 	else
-		mContext->SetColor(lcVector4FromColor(lcGetPreferences().mInactiveViewColor));
+		mContext->SetColor(swVector4FromColor(swGetPreferences().mInactiveViewColor));
 
 	float Verts[8] = { 0.0f, 0.0f, Width - 1.0f, 0.0f, Width - 1.0f, Height - 1.0f, 0.0f, Height - 1.0f };
 
@@ -1394,9 +1394,9 @@ void lcView::DrawViewport() const
 
 	if (!CameraName.isEmpty() && gTexFont.IsLoaded())
 	{
-		mContext->SetMaterial(lcMaterialType::TextSDF);
-		mContext->SetColor(lcVector4FromColor(lcGetPreferences().mTextColor));
-		mContext->SetTextHaloColor(lcVector4FromColor(lcGetPreferences().mTextHaloColor));
+		mContext->SetMaterial(swMaterialType::TextSDF);
+		mContext->SetColor(swVector4FromColor(swGetPreferences().mTextColor));
+		mContext->SetTextHaloColor(swVector4FromColor(swGetPreferences().mTextHaloColor));
 		mContext->BindTexture2D(gTexFont.GetTexture());
 
 		mContext->EnableColorBlend(true);
@@ -1411,31 +1411,31 @@ void lcView::DrawViewport() const
 	mContext->EnableDepthTest(true);
 }
 
-void lcView::DrawAxes() const
+void swView::DrawAxes() const
 {
-	const lcPreferences& Preferences = lcGetPreferences();
+	const swPreferences& Preferences = swGetPreferences();
 
 	switch (mViewType)
 	{
-		case lcViewType::View:
+		case swViewType::View:
 			if (!Preferences.mDrawAxes)
 				return;
 			break;
 
-		case lcViewType::Preview:
+		case swViewType::Preview:
 			if (!Preferences.mDrawPreviewAxis)
 				return;
 			break;
 
-		case lcViewType::Minifig:
-		case lcViewType::PartsList:
-		case lcViewType::Count:
+		case swViewType::Minifig:
+		case swViewType::PartsList:
+		case swViewType::Count:
 			return;
 	}
 
 //	mContext->ClearDepth();
 
-	struct lcAxisVertex
+	struct swAxisVertex
 	{
 		float x, y, z;
 		quint32 Color;
@@ -1445,7 +1445,7 @@ void lcView::DrawAxes() const
 	const quint32 Green = Preferences.mAxisYColor;
 	const quint32 Blue = Preferences.mAxisZColor;
 
-	const lcAxisVertex Verts[30] =
+	const swAxisVertex Verts[30] =
 	{
 		{  0.00f,  0.00f,  0.00f, Red }, { 20.00f,  0.00f,  0.00f, Red }, { 12.00f,  3.00f,  0.00f, Red }, { 12.00f,  2.12f,  2.12f, Red }, { 12.00f,  0.00f,  3.00f, Red },
 		{ 12.00f, -2.12f,  2.12f, Red }, { 12.00f, -3.00f,  0.00f, Red }, { 12.00f, -2.12f, -2.12f, Red }, { 12.00f,  0.00f, -3.00f, Red }, { 12.00f,  2.12f, -2.12f, Red },
@@ -1463,37 +1463,37 @@ void lcView::DrawAxes() const
 		21, 22, 23, 21, 23, 24, 21, 24, 25, 21, 25, 26, 21, 26, 27, 21, 27, 28, 21, 28, 29, 21, 29, 22
 	};
 
-	lcMatrix44 TranslationMatrix;
+	swMatrix44 TranslationMatrix;
 	float Scale = GetUIScale();
 
 	switch (Preferences.mAxisIconLocation)
 	{
 	default:
-	case lcAxisIconLocation::BottomLeft:
-		TranslationMatrix = lcMatrix44Translation(lcVector3(32, 32, 0.0f) / Scale);
+	case swAxisIconLocation::BottomLeft:
+		TranslationMatrix = swMatrix44Translation(swVector3(32, 32, 0.0f) / Scale);
 		break;
 
-	case lcAxisIconLocation::BottomRight:
-		TranslationMatrix = lcMatrix44Translation(lcVector3(mWidth - 36, 32, 0.0f) / Scale);
+	case swAxisIconLocation::BottomRight:
+		TranslationMatrix = swMatrix44Translation(swVector3(mWidth - 36, 32, 0.0f) / Scale);
 		break;
 
-	case lcAxisIconLocation::TopLeft:
-		TranslationMatrix = lcMatrix44Translation(lcVector3(32, mHeight - 36, 0.0f) / Scale);
+	case swAxisIconLocation::TopLeft:
+		TranslationMatrix = swMatrix44Translation(swVector3(32, mHeight - 36, 0.0f) / Scale);
 		break;
 
-	case lcAxisIconLocation::TopRight:
-		TranslationMatrix = lcMatrix44Translation(lcVector3(mWidth - 36, mHeight - 36, 0.0f) / Scale);
+	case swAxisIconLocation::TopRight:
+		TranslationMatrix = swMatrix44Translation(swVector3(mWidth - 36, mHeight - 36, 0.0f) / Scale);
 		break;
 	}
 
-	lcMatrix44 WorldViewMatrix = mCamera->mWorldView;
-	WorldViewMatrix.SetTranslation(lcVector3(0, 0, 0));
+	swMatrix44 WorldViewMatrix = mCamera->mWorldView;
+	WorldViewMatrix.SetTranslation(swVector3(0, 0, 0));
 
 	mContext->SetLineWidth(1.0f);
-	mContext->SetMaterial(lcMaterialType::UnlitVertexColor);
-	mContext->SetWorldMatrix(lcMatrix44Identity());
-	mContext->SetViewMatrix(lcMul(WorldViewMatrix, TranslationMatrix));
-	mContext->SetProjectionMatrix(lcMatrix44Ortho(0, mWidth / Scale, 0, mHeight / Scale, -50, 50));
+	mContext->SetMaterial(swMaterialType::UnlitVertexColor);
+	mContext->SetWorldMatrix(swMatrix44Identity());
+	mContext->SetViewMatrix(swMul(WorldViewMatrix, TranslationMatrix));
+	mContext->SetProjectionMatrix(swMatrix44Ortho(0, mWidth / Scale, 0, mHeight / Scale, -50, 50));
 
 	mContext->SetVertexBufferPointer(Verts);
 	mContext->SetVertexFormat(0, 3, 0, 0, 4, false);
@@ -1505,35 +1505,35 @@ void lcView::DrawAxes() const
 	if (!gTexFont.IsLoaded())
 		return;
 
-	mContext->SetMaterial(lcMaterialType::TextSDF);
+	mContext->SetMaterial(swMaterialType::TextSDF);
 	mContext->SetViewMatrix(TranslationMatrix);
 	mContext->BindTexture2D(gTexFont.GetTexture());
 	mContext->EnableColorBlend(true);
 
 	float TextBuffer[6 * 5 * 3];
-	lcVector3 PosX = lcMul30(lcVector3(25.0f, 0.0f, 0.0f), WorldViewMatrix);
+	swVector3 PosX = swMul30(swVector3(25.0f, 0.0f, 0.0f), WorldViewMatrix);
 	gTexFont.GetGlyphTriangles(PosX.x, PosX.y, PosX.z, 'X', TextBuffer);
-	lcVector3 PosY = lcMul30(lcVector3(0.0f, 25.0f, 0.0f), WorldViewMatrix);
+	swVector3 PosY = swMul30(swVector3(0.0f, 25.0f, 0.0f), WorldViewMatrix);
 	gTexFont.GetGlyphTriangles(PosY.x, PosY.y, PosY.z, 'Y', TextBuffer + 5 * 6);
-	lcVector3 PosZ = lcMul30(lcVector3(0.0f, 0.0f, 25.0f), WorldViewMatrix);
+	swVector3 PosZ = swMul30(swVector3(0.0f, 0.0f, 25.0f), WorldViewMatrix);
 	gTexFont.GetGlyphTriangles(PosZ.x, PosZ.y, PosZ.z, 'Z', TextBuffer + 5 * 6 * 2);
 
 	mContext->SetVertexBufferPointer(TextBuffer);
 	mContext->SetVertexFormat(0, 3, 0, 2, 0, false);
 
-	mContext->SetColor(lcVector4FromColor(lcGetPreferences().mTextColor));
-	mContext->SetTextHaloColor(lcVector4FromColor(lcGetPreferences().mTextHaloColor));
+	mContext->SetColor(swVector4FromColor(swGetPreferences().mTextColor));
+	mContext->SetTextHaloColor(swVector4FromColor(swGetPreferences().mTextHaloColor));
 	mContext->DrawPrimitives(GL_TRIANGLES, 0, 6 * 3);
 
 	mContext->EnableColorBlend(false);
 }
 
-void lcView::DrawSelectZoomRegionOverlay()
+void swView::DrawSelectZoomRegionOverlay()
 {
-	mContext->SetMaterial(lcMaterialType::UnlitColor);
-	mContext->SetWorldMatrix(lcMatrix44Identity());
-	mContext->SetViewMatrix(lcMatrix44Translation(lcVector3(0.375, 0.375, 0.0)));
-	mContext->SetProjectionMatrix(lcMatrix44Ortho(0.0f, mWidth, 0.0f, mHeight, -1.0f, 1.0f));
+	mContext->SetMaterial(swMaterialType::UnlitColor);
+	mContext->SetWorldMatrix(swMatrix44Identity());
+	mContext->SetViewMatrix(swMatrix44Translation(swVector3(0.375, 0.375, 0.0)));
+	mContext->SetProjectionMatrix(swMatrix44Ortho(0.0f, mWidth, 0.0f, mHeight, -1.0f, 1.0f));
 	mContext->SetLineWidth(1.0f);
 
 	mContext->EnableDepthTest(false);
@@ -1567,13 +1567,13 @@ void lcView::DrawSelectZoomRegionOverlay()
 		Top = pt1y;
 	}
 
-	Left = lcMax(Left, 0.0f);
-	Right = lcMin(Right, mWidth - 1.0f);
-	Bottom = lcMax(Bottom, 0.0f);
-	Top = lcMin(Top, mHeight - 1.0f);
+	Left = swMax(Left, 0.0f);
+	Right = swMin(Right, mWidth - 1.0f);
+	Bottom = swMax(Bottom, 0.0f);
+	Top = swMin(Top, mHeight - 1.0f);
 
-	float BorderX = lcMin(2.0f, Right - Left);
-	float BorderY = lcMin(2.0f, Top - Bottom);
+	float BorderX = swMin(2.0f, Right - Left);
+	float BorderY = swMin(2.0f, Top - Bottom);
 
 	float Verts[14][2] =
 	{
@@ -1596,15 +1596,15 @@ void lcView::DrawSelectZoomRegionOverlay()
 	mContext->SetVertexBufferPointer(Verts);
 	mContext->SetVertexFormatPosition(2);
 
-	const lcPreferences& Preferences = lcGetPreferences();
+	const swPreferences& Preferences = swGetPreferences();
 
-	mContext->SetColor(lcVector4FromColor(Preferences.mMarqueeBorderColor));
+	mContext->SetColor(swVector4FromColor(Preferences.mMarqueeBorderColor));
 	mContext->DrawPrimitives(GL_TRIANGLE_STRIP, 0, 10);
 
-	if (LC_RGBA_ALPHA(Preferences.mMarqueeFillColor))
+	if (SW_RGBA_ALPHA(Preferences.mMarqueeFillColor))
 	{
 		mContext->EnableColorBlend(true);
-		mContext->SetColor(lcVector4FromColor(Preferences.mMarqueeFillColor));
+		mContext->SetColor(swVector4FromColor(Preferences.mMarqueeFillColor));
 		mContext->DrawPrimitives(GL_TRIANGLE_STRIP, 10, 4);
 		mContext->EnableColorBlend(false);
 	}
@@ -1612,7 +1612,7 @@ void lcView::DrawSelectZoomRegionOverlay()
 	mContext->EnableDepthTest(true);
 }
 
-void lcView::DrawRotateViewOverlay()
+void swView::DrawRotateViewOverlay()
 {
 	int x, y, w, h;
 
@@ -1621,29 +1621,29 @@ void lcView::DrawRotateViewOverlay()
 	w = mWidth;
 	h = mHeight;
 
-	mContext->SetMaterial(lcMaterialType::UnlitColor);
-	mContext->SetWorldMatrix(lcMatrix44Identity());
-	mContext->SetViewMatrix(lcMatrix44Translation(lcVector3(0.375, 0.375, 0.0)));
-	mContext->SetProjectionMatrix(lcMatrix44Ortho(0, w, 0, h, -1, 1));
+	mContext->SetMaterial(swMaterialType::UnlitColor);
+	mContext->SetWorldMatrix(swMatrix44Identity());
+	mContext->SetViewMatrix(swMatrix44Translation(swVector3(0.375, 0.375, 0.0)));
+	mContext->SetProjectionMatrix(swMatrix44Ortho(0, w, 0, h, -1, 1));
 	mContext->SetLineWidth(1.0f);
 
 	mContext->EnableDepthTest(false);
-	mContext->SetColor(lcVector4FromColor(lcGetPreferences().mOverlayColor));
+	mContext->SetColor(swVector4FromColor(swGetPreferences().mOverlayColor));
 
 	float Verts[32 * 16 * 2];
 	float* CurVert = Verts;
 
-	float r = lcMin(w, h) * 0.35f;
+	float r = swMin(w, h) * 0.35f;
 	float cx = x + w / 2.0f;
 	float cy = y + h / 2.0f;
 
 	for (int i = 0; i < 32; i++)
 	{
-		*CurVert++ = cosf((float)i / 32.0f * (2.0f * LC_PI)) * r + cx;
-		*CurVert++ = sinf((float)i / 32.0f * (2.0f * LC_PI)) * r + cy;
+		*CurVert++ = cosf((float)i / 32.0f * (2.0f * SW_PI)) * r + cx;
+		*CurVert++ = sinf((float)i / 32.0f * (2.0f * SW_PI)) * r + cy;
 	}
 
-	const float OverlayCameraSquareSize = lcMax(8.0f, (w + h) / 200.0f);
+	const float OverlayCameraSquareSize = swMax(8.0f, (w + h) / 200.0f);
 
 	*CurVert++ = cx + OverlayCameraSquareSize; *CurVert++ = cy + r + OverlayCameraSquareSize;
 	*CurVert++ = cx - OverlayCameraSquareSize; *CurVert++ = cy + r + OverlayCameraSquareSize;
@@ -1679,9 +1679,9 @@ void lcView::DrawRotateViewOverlay()
 	mContext->EnableDepthTest(true);
 }
 
-void lcView::DrawGrid()
+void swView::DrawGrid()
 {
-	const lcPreferences& Preferences = lcGetPreferences();
+	const swPreferences& Preferences = swGetPreferences();
 
 	if (!Preferences.mDrawGridStuds && !Preferences.mDrawGridLines && !Preferences.mDrawGridOrigin && !Preferences.mDrawGridHeightXZ && !Preferences.mDrawGridHeightYZ)
 		return;
@@ -1689,32 +1689,32 @@ void lcView::DrawGrid()
 	if (!Preferences.mGridEnabled)
 		return;
 
-	const int Spacing = lcMax(Preferences.mGridLineSpacing, 1);
+	const int Spacing = swMax(Preferences.mGridLineSpacing, 1);
 	int MinX, MaxX, MinY, MaxY;
-	lcVector3 Min(FLT_MAX, FLT_MAX, FLT_MAX), Max(-FLT_MAX, -FLT_MAX, -FLT_MAX);
+	swVector3 Min(FLT_MAX, FLT_MAX, FLT_MAX), Max(-FLT_MAX, -FLT_MAX, -FLT_MAX);
 
 	bool GridSizeValid = mModel->GetVisiblePiecesBoundingBox(Min, Max);
-	bool DrawInsertPreview = std::any_of(mViews.begin(), mViews.end(), [](lcView* View){ return View->mTrackTool == lcTrackTool::Insert; });
+	bool DrawInsertPreview = std::any_of(mViews.begin(), mViews.end(), [](swView* View){ return View->mTrackTool == swTrackTool::Insert; });
 
 	if (DrawInsertPreview)
 	{
-		const lcModel* PreviewModel = GetActiveModel();
+		const swModel* PreviewModel = GetActiveModel();
 
-		for (const lcPreviewInsertPieceInfo& PreviewInsertPieceInfo : PreviewModel->GetPreviewInsertPieceInfo())
+		for (const swPreviewInsertPieceInfo& PreviewInsertPieceInfo : PreviewModel->GetPreviewInsertPieceInfo())
 		{
-			lcVector3 Points[8];
-			lcGetBoxCorners(PreviewInsertPieceInfo.PieceData->GetBoundingBox(), Points);
-			lcMatrix44 PreviewTransform = PreviewInsertPieceInfo.Transform;
+			swVector3 Points[8];
+			swGetBoxCorners(PreviewInsertPieceInfo.PieceData->GetBoundingBox(), Points);
+			swMatrix44 PreviewTransform = PreviewInsertPieceInfo.Transform;
 
 			if (PreviewModel != mModel)
-				PreviewTransform = lcMul(PreviewTransform, mActiveSubmodelTransform);
+				PreviewTransform = swMul(PreviewTransform, mActiveSubmodelTransform);
 
 			for (int i = 0; i < 8; i++)
 			{
-				lcVector3 Point = lcMul31(Points[i], PreviewTransform);
+				swVector3 Point = swMul31(Points[i], PreviewTransform);
 
-				Min = lcMin(Point, Min);
-				Max = lcMax(Point, Max);
+				Min = swMin(Point, Min);
+				Max = swMax(Point, Max);
 			}
 
 			GridSizeValid = true;
@@ -1727,15 +1727,15 @@ void lcView::DrawGrid()
 		constexpr float MaxGridExtent = 10000.0f;
 		const float GridSpacing = 20.0f * Spacing;
 
-		MinX = static_cast<int>(floorf(lcClamp(Min[0] / GridSpacing, -MaxGridExtent + 1.0f, MaxGridExtent - 1.0f))) - 1;
-		MinY = static_cast<int>(floorf(lcClamp(Min[1] / GridSpacing, -MaxGridExtent + 1.0f, MaxGridExtent - 1.0f))) - 1;
-		MaxX = static_cast<int>(ceilf(lcClamp(Max[0] / GridSpacing, -MaxGridExtent + 1.0f, MaxGridExtent - 1.0f))) + 1;
-		MaxY = static_cast<int>(ceilf(lcClamp(Max[1] / GridSpacing, -MaxGridExtent + 1.0f, MaxGridExtent - 1.0f))) + 1;
+		MinX = static_cast<int>(floorf(swClamp(Min[0] / GridSpacing, -MaxGridExtent + 1.0f, MaxGridExtent - 1.0f))) - 1;
+		MinY = static_cast<int>(floorf(swClamp(Min[1] / GridSpacing, -MaxGridExtent + 1.0f, MaxGridExtent - 1.0f))) - 1;
+		MaxX = static_cast<int>(ceilf(swClamp(Max[0] / GridSpacing, -MaxGridExtent + 1.0f, MaxGridExtent - 1.0f))) + 1;
+		MaxY = static_cast<int>(ceilf(swClamp(Max[1] / GridSpacing, -MaxGridExtent + 1.0f, MaxGridExtent - 1.0f))) + 1;
 
-		MinX = lcMin(MinX, -2);
-		MinY = lcMin(MinY, -2);
-		MaxX = lcMax(MaxX, 2);
-		MaxY = lcMax(MaxY, 2);
+		MinX = swMin(MinX, -2);
+		MinY = swMin(MinY, -2);
+		MaxX = swMax(MaxX, 2);
+		MaxY = swMax(MaxY, 2);
 	}
 	else
 	{
@@ -1843,7 +1843,7 @@ void lcView::DrawGrid()
 
 	int BufferOffset = 0;
 	mContext->SetVertexBuffer(mGridBuffer);
-	mContext->SetWorldMatrix(lcMatrix44Identity());
+	mContext->SetWorldMatrix(swMatrix44Identity());
 
 	if (Preferences.mDrawGridStuds)
 	{
@@ -1851,8 +1851,8 @@ void lcView::DrawGrid()
 		mContext->SetDepthWrite(false);
 		mContext->EnableColorBlend(true);
 
-		mContext->SetMaterial(lcMaterialType::UnlitTextureModulate);
-		mContext->SetColor(lcVector4FromColor(Preferences.mGridStudColor));
+		mContext->SetMaterial(swMaterialType::UnlitTextureModulate);
+		mContext->SetColor(swVector4FromColor(Preferences.mGridStudColor));
 
 		mContext->SetVertexFormat(0, 3, 0, 2, 0, false);
 		mContext->DrawPrimitives(GL_TRIANGLE_STRIP, 0, 4);
@@ -1866,8 +1866,8 @@ void lcView::DrawGrid()
 	if (Preferences.mDrawGridLines)
 	{
 		mContext->SetLineWidth(1.0f);
-		mContext->SetMaterial(lcMaterialType::UnlitColor);
-		mContext->SetColor(lcVector4FromColor(Preferences.mGridLineColor));
+		mContext->SetMaterial(swMaterialType::UnlitColor);
+		mContext->SetColor(swVector4FromColor(Preferences.mGridLineColor));
 
 		int NumVerts = 2 * (MaxX - MinX + MaxY - MinY + 2);
 
@@ -1884,12 +1884,12 @@ void lcView::DrawGrid()
 		const float Right = MaxX * LineSpacing;
 		const float Front = MinY * LineSpacing;
 		const float Back = MaxY * LineSpacing;
-		const int PlateCount = lcMax(static_cast<int>(ceilf((GridSizeValid && std::isfinite(Max[2]) ? Max[2] : 0.0f) / PlateHeight)) + 3, 9);
+		const int PlateCount = swMax(static_cast<int>(ceilf((GridSizeValid && std::isfinite(Max[2]) ? Max[2] : 0.0f) / PlateHeight)) + 3, 9);
 		const float Top = PlateCount * PlateHeight;
-		const lcVector3 CameraPosition = mCamera->mPosition;
+		const swVector3 CameraPosition = mCamera->mPosition;
 		const bool BehindModel = Preferences.mGridHeightBehindModel;
 
-		std::vector<lcVector3> Lines;
+		std::vector<swVector3> Lines;
 
 		if (Preferences.mDrawGridHeightXZ)
 		{
@@ -1926,8 +1926,8 @@ void lcView::DrawGrid()
 		}
 
 		mContext->SetLineWidth(1.0f);
-		mContext->SetMaterial(lcMaterialType::UnlitColor);
-		mContext->SetColor(lcVector4FromColor(Preferences.mGridLineColor));
+		mContext->SetMaterial(swMaterialType::UnlitColor);
+		mContext->SetColor(swVector4FromColor(Preferences.mGridLineColor));
 		mContext->SetVertexBufferPointer(Lines.data());
 		mContext->SetVertexFormat(0, 3, 0, 0, 0, false);
 		mContext->DrawPrimitives(GL_LINES, 0, static_cast<int>(Lines.size()));
@@ -1935,7 +1935,7 @@ void lcView::DrawGrid()
 
 	if (Preferences.mDrawGridOrigin)
 	{
-		struct lcGridVertex
+		struct swGridVertex
 		{
 			float x, y;
 			quint32 Color;
@@ -1945,12 +1945,12 @@ void lcView::DrawGrid()
 		const quint32 Green = Preferences.mAxisYColor;
 		const float Scale = 20.0f * Spacing;
 
-		const lcGridVertex Verts[4] =
+		const swGridVertex Verts[4] =
 		{
 			{ 0.0f, MinY * Scale, Green }, { 0.0f, MaxY * Scale, Green }, { MinX * Scale, 0.0f, Red }, { MaxX * Scale, 0.0f, Red }
 		};
 
-		mContext->SetMaterial(lcMaterialType::UnlitVertexColor);
+		mContext->SetMaterial(swMaterialType::UnlitVertexColor);
 		mContext->SetVertexBufferPointer(Verts);
 		mContext->SetVertexFormat(0, 2, 0, 0, 4, false);
 
@@ -1958,210 +1958,210 @@ void lcView::DrawGrid()
 	}
 }
 
-lcTrackTool lcView::GetOverrideTrackTool(Qt::MouseButton Button) const
+swTrackTool swView::GetOverrideTrackTool(Qt::MouseButton Button) const
 {
 	if (mTrackToolFromOverlay)
-		return lcTrackTool::None;
+		return swTrackTool::None;
 
-	lcTool OverrideTool = gMouseShortcuts.GetTool(Button, mMouseModifiers);
+	swTool OverrideTool = gMouseShortcuts.GetTool(Button, mMouseModifiers);
 
-	if (OverrideTool == lcTool::Count)
-		return lcTrackTool::None;
+	if (OverrideTool == swTool::Count)
+		return swTrackTool::None;
 
-	constexpr lcTrackTool TrackToolFromTool[] =
+	constexpr swTrackTool TrackToolFromTool[] =
 	{
-	    lcTrackTool::Insert,           // lcTool::Insert
-	    lcTrackTool::PointLight,       // lcTool::PointLight
-		lcTrackTool::SpotLight,        // lcTool::SpotLight
-		lcTrackTool::DirectionalLight, // lcTool::DirectionalLight
-		lcTrackTool::AreaLight,        // lcTool::AreaLight
-		lcTrackTool::Camera,           // lcTool::Camera
-	    lcTrackTool::Select,           // lcTool::Select
-	    lcTrackTool::MoveXYZ,          // lcTool::Move
-	    lcTrackTool::RotateTrackBall,  // lcTool::Rotate
-	    lcTrackTool::Eraser,           // lcTool::Eraser
-	    lcTrackTool::Paint,            // lcTool::Paint
-	    lcTrackTool::ColorPicker,      // lcTool::ColorPicker
-	    lcTrackTool::Zoom,             // lcTool::Zoom
-	    lcTrackTool::Pan,              // lcTool::Pan
-	    lcTrackTool::OrbitXY,          // lcTool::RotateView
-	    lcTrackTool::Roll,             // lcTool::Roll
-	    lcTrackTool::ZoomRegion        // lcTool::ZoomRegion
+	    swTrackTool::Insert,           // swTool::Insert
+	    swTrackTool::PointLight,       // swTool::PointLight
+		swTrackTool::SpotLight,        // swTool::SpotLight
+		swTrackTool::DirectionalLight, // swTool::DirectionalLight
+		swTrackTool::AreaLight,        // swTool::AreaLight
+		swTrackTool::Camera,           // swTool::Camera
+	    swTrackTool::Select,           // swTool::Select
+	    swTrackTool::MoveXYZ,          // swTool::Move
+	    swTrackTool::RotateTrackBall,  // swTool::Rotate
+	    swTrackTool::Eraser,           // swTool::Eraser
+	    swTrackTool::Paint,            // swTool::Paint
+	    swTrackTool::ColorPicker,      // swTool::ColorPicker
+	    swTrackTool::Zoom,             // swTool::Zoom
+	    swTrackTool::Pan,              // swTool::Pan
+	    swTrackTool::OrbitXY,          // swTool::RotateView
+	    swTrackTool::Roll,             // swTool::Roll
+	    swTrackTool::ZoomRegion        // swTool::ZoomRegion
 	};
 
-	LC_ARRAY_SIZE_CHECK(TrackToolFromTool, lcTool::Count);
+	SW_ARRAY_SIZE_CHECK(TrackToolFromTool, swTool::Count);
 
 	return TrackToolFromTool[static_cast<int>(OverrideTool)];
 }
 
-float lcView::GetUIScale() const
+float swView::GetUIScale() const
 {
 	return mWidget ? mWidget->GetDeviceScale() : 1.0f;
 }
 
-float lcView::GetOverlayScale() const
+float swView::GetOverlayScale() const
 {
-	lcVector3 OverlayCenter;
-	lcMatrix33 RelativeRotation;
-	lcModel* ActiveModel = GetActiveModel();
+	swVector3 OverlayCenter;
+	swMatrix33 RelativeRotation;
+	swModel* ActiveModel = GetActiveModel();
 	ActiveModel->GetMoveRotateTransform(OverlayCenter, RelativeRotation);
 
-	lcMatrix44 WorldMatrix = lcMatrix44(RelativeRotation, OverlayCenter);
+	swMatrix44 WorldMatrix = swMatrix44(RelativeRotation, OverlayCenter);
 
 	if (ActiveModel != mModel)
-		WorldMatrix = lcMul(WorldMatrix, mActiveSubmodelTransform);
+		WorldMatrix = swMul(WorldMatrix, mActiveSubmodelTransform);
 
-	lcVector3 ScreenPos = ProjectPoint(WorldMatrix.GetTranslation());
+	swVector3 ScreenPos = ProjectPoint(WorldMatrix.GetTranslation());
 	ScreenPos[0] += 10.0f;
-	lcVector3 Point = UnprojectPoint(ScreenPos);
+	swVector3 Point = UnprojectPoint(ScreenPos);
 
-	lcVector3 Dist(Point - WorldMatrix.GetTranslation());
+	swVector3 Dist(Point - WorldMatrix.GetTranslation());
 
 	return Dist.Length() * 5.0f * GetUIScale();
 }
 
-void lcView::BeginDrag(lcDragState DragState)
+void swView::BeginDrag(swDragState DragState)
 {
 	mDragState = DragState;
 	UpdateTrackTool();
 }
 
-void lcView::EndDrag(bool Accept)
+void swView::EndDrag(bool Accept)
 {
-	lcModel* ActiveModel = GetActiveModel();
+	swModel* ActiveModel = GetActiveModel();
 
 	if (Accept)
 	{
 		switch (mDragState)
 		{
-		case lcDragState::None:
+		case swDragState::None:
 			break;
 
-		case lcDragState::Piece:
+		case swDragState::Piece:
 			ActiveModel->InsertPieceToolClicked();
 			break;
 
-		case lcDragState::Color:
+		case swDragState::Color:
 			ActiveModel->PaintToolClicked(FindObjectUnderPointer(true, false).Object);
 			break;
 		}
 	}
 
-	mDragState = lcDragState::None;
+	mDragState = swDragState::None;
 	UpdateTrackTool();
 
-	ActiveModel->SetPreviewInsertPieceInfo(std::vector<lcInsertPieceInfo>());
+	ActiveModel->SetPreviewInsertPieceInfo(std::vector<swInsertPieceInfo>());
 	ActiveModel->UpdateAllViews();
 }
 
-void lcView::SetViewpoint(lcViewpoint Viewpoint)
+void swView::SetViewpoint(swViewpoint Viewpoint)
 {
 	if (!mCamera || !mCamera->IsSimple())
 	{
-		lcCamera* OldCamera = mCamera;
+		swCamera* OldCamera = mCamera;
 
-		mCamera = new lcCamera(true);
+		mCamera = new swCamera(true);
 
 		if (OldCamera)
 			mCamera->CopySettings(OldCamera);
 	}
 
 	mCamera->SetViewpoint(Viewpoint);
-	ZoomExtents(lcGeometryBoundsMode::IncludeFallback, false);
+	ZoomExtents(swGeometryBoundsMode::IncludeFallback, false);
 	Redraw();
 }
 
-void lcView::SetViewpoint(const lcVector3& Position)
+void swView::SetViewpoint(const swVector3& Position)
 {
 	if (!mCamera || !mCamera->IsSimple())
 	{
-		lcCamera* OldCamera = mCamera;
+		swCamera* OldCamera = mCamera;
 
-		mCamera = new lcCamera(true);
+		mCamera = new swCamera(true);
 
 		if (OldCamera)
 			mCamera->CopySettings(OldCamera);
 	}
 
 	mCamera->SetViewpoint(Position);
-	ZoomExtents(lcGeometryBoundsMode::IncludeFallback, false);
+	ZoomExtents(swGeometryBoundsMode::IncludeFallback, false);
 	Redraw();
 }
 
 // Step view angles rotate the model about the LDraw X, Y and Z axes, in that order.
-static lcMatrix44 lcGetStepViewRotation(const lcVector3& Angles)
+static swMatrix44 swGetStepViewRotation(const swVector3& Angles)
 {
-	const lcMatrix44 Rotation = lcMul(lcMul(lcMatrix44RotationX(Angles.x * LC_DTOR), lcMatrix44RotationY(Angles.y * LC_DTOR)), lcMatrix44RotationZ(Angles.z * LC_DTOR));
+	const swMatrix44 Rotation = swMul(swMul(swMatrix44RotationX(Angles.x * SW_DTOR), swMatrix44RotationY(Angles.y * SW_DTOR)), swMatrix44RotationZ(Angles.z * SW_DTOR));
 
-	return lcMatrix44LDrawToLeoCAD(Rotation);
+	return swMatrix44LDrawToStudWorks(Rotation);
 }
 
-static void lcGetStepViewBase(lcStepViewMode Mode, lcVector3& Direction, lcVector3& Up)
+static void swGetStepViewBase(swStepViewMode Mode, swVector3& Direction, swVector3& Up)
 {
 	// Relative views start from the home view, absolute views from the front view.
-	if (Mode == lcStepViewMode::Absolute)
+	if (Mode == swStepViewMode::Absolute)
 	{
-		Direction = lcVector3(0.0f, -1.0f, 0.0f);
-		Up = lcVector3(0.0f, 0.0f, 1.0f);
+		Direction = swVector3(0.0f, -1.0f, 0.0f);
+		Up = swVector3(0.0f, 0.0f, 1.0f);
 	}
 	else
 	{
-		Direction = lcNormalize(lcVector3(375.0f, -375.0f, 187.5f));
-		Up = lcNormalize(lcVector3(0.2357f, -0.2357f, 0.94281f));
+		Direction = swNormalize(swVector3(375.0f, -375.0f, 187.5f));
+		Up = swNormalize(swVector3(0.2357f, -0.2357f, 0.94281f));
 	}
 }
 
-void lcView::ApplyStepView()
+void swView::ApplyStepView()
 {
 	ApplyStepView(mModel->GetCurrentStep());
 }
 
-void lcView::ApplyStepView(lcStep Step)
+void swView::ApplyStepView(swStep Step)
 {
-	if (mViewType != lcViewType::View)
+	if (mViewType != swViewType::View)
 		return;
 
-	const std::optional<lcStepView> StepView = mModel->GetEffectiveStepView(Step);
+	const std::optional<swStepView> StepView = mModel->GetEffectiveStepView(Step);
 
 	// Steps without a view use the default view, but only in models that use step views.
 	if (!StepView)
 	{
 		if (!mModel->GetProperties().mStepViews.empty())
-			SetViewpoint(lcViewpoint::Home);
+			SetViewpoint(swViewpoint::Home);
 
 		return;
 	}
 
-	lcVector3 Direction, Up;
-	lcGetStepViewBase(StepView->Mode, Direction, Up);
+	swVector3 Direction, Up;
+	swGetStepViewBase(StepView->Mode, Direction, Up);
 
 	// Turning the model by the step rotation is the same as turning the camera the opposite way.
-	const lcMatrix44 Inverse = lcMatrix44Transpose(lcGetStepViewRotation(StepView->Angles));
+	const swMatrix44 Inverse = swMatrix44Transpose(swGetStepViewRotation(StepView->Angles));
 
-	Direction = lcNormalize(lcMul30(Direction, Inverse));
-	Up = lcNormalize(lcMul30(Up, Inverse));
+	Direction = swNormalize(swMul30(Direction, Inverse));
+	Up = swNormalize(swMul30(Up, Inverse));
 
-	SetViewpoint(Direction * 1250.0f, lcVector3(0.0f, 0.0f, 0.0f), Up);
-	ZoomExtents(lcGeometryBoundsMode::IncludeFallback, false);
+	SetViewpoint(Direction * 1250.0f, swVector3(0.0f, 0.0f, 0.0f), Up);
+	ZoomExtents(swGeometryBoundsMode::IncludeFallback, false);
 }
 
-lcVector3 lcView::GetStepViewAngles() const
+swVector3 swView::GetStepViewAngles() const
 {
-	lcVector3 BaseDirection, BaseUp;
-	lcGetStepViewBase(lcStepViewMode::Absolute, BaseDirection, BaseUp);
+	swVector3 BaseDirection, BaseUp;
+	swGetStepViewBase(swStepViewMode::Absolute, BaseDirection, BaseUp);
 
-	const lcVector3 Direction = lcNormalize(mCamera->mPosition - mCamera->mTargetPosition);
-	const lcVector3 Right = lcNormalize(lcCross(mCamera->mUpVector, Direction));
-	const lcVector3 Up = lcCross(Direction, Right);
-	const lcVector3 BaseRight = lcNormalize(lcCross(BaseUp, BaseDirection));
+	const swVector3 Direction = swNormalize(mCamera->mPosition - mCamera->mTargetPosition);
+	const swVector3 Right = swNormalize(swCross(mCamera->mUpVector, Direction));
+	const swVector3 Up = swCross(Direction, Right);
+	const swVector3 BaseRight = swNormalize(swCross(BaseUp, BaseDirection));
 
 	// The camera frame expressed against the front view frame gives the model rotation.
-	const lcMatrix44 Base(lcVector4(BaseRight, 0.0f), lcVector4(BaseUp, 0.0f), lcVector4(BaseDirection, 0.0f), lcVector4(0.0f, 0.0f, 0.0f, 1.0f));
-	const lcMatrix44 Current(lcVector4(Right, 0.0f), lcVector4(Up, 0.0f), lcVector4(Direction, 0.0f), lcVector4(0.0f, 0.0f, 0.0f, 1.0f));
-	const lcMatrix44 Rotation = lcMatrix44LeoCADToLDraw(lcMul(lcMatrix44Transpose(Current), Base));
+	const swMatrix44 Base(swVector4(BaseRight, 0.0f), swVector4(BaseUp, 0.0f), swVector4(BaseDirection, 0.0f), swVector4(0.0f, 0.0f, 0.0f, 1.0f));
+	const swMatrix44 Current(swVector4(Right, 0.0f), swVector4(Up, 0.0f), swVector4(Direction, 0.0f), swVector4(0.0f, 0.0f, 0.0f, 1.0f));
+	const swMatrix44 Rotation = swMatrix44StudWorksToLDraw(swMul(swMatrix44Transpose(Current), Base));
 
 	float X, Y, Z;
-	const float SinY = lcClamp(-Rotation[0][2], -1.0f, 1.0f);
+	const float SinY = swClamp(-Rotation[0][2], -1.0f, 1.0f);
 	Y = asinf(SinY);
 
 	if (fabsf(SinY) < 0.9999f)
@@ -2177,19 +2177,19 @@ lcVector3 lcView::GetStepViewAngles() const
 
 	auto Round = [](float Radians)
 	{
-		return qRound(Radians * LC_RTOD * 100.0f) / 100.0f;
+		return qRound(Radians * SW_RTOD * 100.0f) / 100.0f;
 	};
 
-	return lcVector3(Round(X), Round(Y), Round(Z));
+	return swVector3(Round(X), Round(Y), Round(Z));
 }
 
-void lcView::SetViewpoint(const lcVector3& Position, const lcVector3& Target, const lcVector3& Up)
+void swView::SetViewpoint(const swVector3& Position, const swVector3& Target, const swVector3& Up)
 {
 	if (!mCamera || !mCamera->IsSimple())
 	{
-		lcCamera* OldCamera = mCamera;
+		swCamera* OldCamera = mCamera;
 
-		mCamera = new lcCamera(true);
+		mCamera = new swCamera(true);
 
 		if (OldCamera)
 			mCamera->CopySettings(OldCamera);
@@ -2199,39 +2199,39 @@ void lcView::SetViewpoint(const lcVector3& Position, const lcVector3& Target, co
 	Redraw();
 }
 
-void lcView::SetCameraAngles(float Latitude, float Longitude)
+void swView::SetCameraAngles(float Latitude, float Longitude)
 {
 	if (!mCamera || !mCamera->IsSimple())
 	{
-		lcCamera* OldCamera = mCamera;
+		swCamera* OldCamera = mCamera;
 
-		mCamera = new lcCamera(true);
+		mCamera = new swCamera(true);
 
 		if (OldCamera)
 			mCamera->CopySettings(OldCamera);
 	}
 
 	mCamera->SetAngles(Latitude, Longitude, 1.0f);
-	ZoomExtents(lcGeometryBoundsMode::IncludeFallback, false);
+	ZoomExtents(swGeometryBoundsMode::IncludeFallback, false);
 	Redraw();
 }
 
-void lcView::SetDefaultCamera()
+void swView::SetDefaultCamera()
 {
 	if (!mCamera || !mCamera->IsSimple())
-		mCamera = new lcCamera(true);
+		mCamera = new swCamera(true);
 
-	mCamera->SetViewpoint(lcViewpoint::Home);
-	ZoomExtents(lcGeometryBoundsMode::IncludeFallback, false);
+	mCamera->SetViewpoint(swViewpoint::Home);
+	ZoomExtents(swGeometryBoundsMode::IncludeFallback, false);
 	Redraw();
 }
 
-void lcView::SetCamera(lcCamera* Camera, bool ForceCopy)
+void swView::SetCamera(swCamera* Camera, bool ForceCopy)
 {
 	if (Camera->IsSimple() || ForceCopy)
 	{
 		if (!mCamera || !mCamera->IsSimple())
-			mCamera = new lcCamera(true);
+			mCamera = new swCamera(true);
 
 		mCamera->CopyPosition(Camera);
 	}
@@ -2244,9 +2244,9 @@ void lcView::SetCamera(lcCamera* Camera, bool ForceCopy)
 	}
 }
 
-void lcView::SetCamera(const QString& CameraName)
+void swView::SetCamera(const QString& CameraName)
 {
-	const std::vector<std::unique_ptr<lcCamera>>& Cameras = mModel->GetCameras();
+	const std::vector<std::unique_ptr<swCamera>>& Cameras = mModel->GetCameras();
 
 	for (size_t CameraIndex = 0; CameraIndex < Cameras.size(); CameraIndex++)
 	{
@@ -2258,20 +2258,20 @@ void lcView::SetCamera(const QString& CameraName)
 	}
 }
 
-void lcView::SetCameraIndex(size_t CameraIndex)
+void swView::SetCameraIndex(size_t CameraIndex)
 {
-	const std::vector<std::unique_ptr<lcCamera>>& Cameras = mModel->GetCameras();
+	const std::vector<std::unique_ptr<swCamera>>& Cameras = mModel->GetCameras();
 
 	if (CameraIndex >= Cameras.size())
 		return;
 
-	lcCamera* Camera = Cameras[CameraIndex].get();
+	swCamera* Camera = Cameras[CameraIndex].get();
 	SetCamera(Camera, false);
 
 	Redraw();
 }
 
-void lcView::SetCameraProjection(lcCameraProjection CameraProjection)
+void swView::SetCameraProjection(swCameraProjection CameraProjection)
 {
 	if (mCamera->IsSimple())
 	{
@@ -2280,192 +2280,192 @@ void lcView::SetCameraProjection(lcCameraProjection CameraProjection)
 	}
 	else
 	{
-		lcModel* ActiveModel = GetActiveModel();
+		swModel* ActiveModel = GetActiveModel();
 
 		if (ActiveModel)
 			ActiveModel->SetCameraProjection(mCamera, CameraProjection);
 	}
 }
 
-void lcView::LookAt()
+void swView::LookAt()
 {
-	lcModel* ActiveModel = GetActiveModel();
+	swModel* ActiveModel = GetActiveModel();
 	if (ActiveModel)
 		ActiveModel->LookAt(mCamera);
 }
 
-void lcView::MoveCamera(const lcVector3& Direction)
+void swView::MoveCamera(const swVector3& Direction)
 {
-	lcModel* ActiveModel = GetActiveModel();
+	swModel* ActiveModel = GetActiveModel();
 	if (ActiveModel)
 		ActiveModel->MoveCamera(mCamera, Direction);
 }
 
-void lcView::Zoom(float Amount)
+void swView::Zoom(float Amount)
 {
-	lcModel* ActiveModel = GetActiveModel();
+	swModel* ActiveModel = GetActiveModel();
 	if (ActiveModel)
 		ActiveModel->Zoom(mCamera, Amount);
 }
 
-void lcView::ZoomExtents(lcGeometryBoundsMode Mode, bool AdjustFarPlane)
+void swView::ZoomExtents(swGeometryBoundsMode Mode, bool AdjustFarPlane)
 {
-	lcModel* ActiveModel = GetActiveModel();
+	swModel* ActiveModel = GetActiveModel();
 
 	if (ActiveModel)
 	{
-		const lcMatrix44 WorldMatrix = mActiveSubmodelInstance ? mActiveSubmodelTransform : lcMatrix44Identity();
+		const swMatrix44 WorldMatrix = mActiveSubmodelInstance ? mActiveSubmodelTransform : swMatrix44Identity();
 
 		ActiveModel->ZoomExtents(mCamera, (float)mWidth / (float)mHeight, WorldMatrix, Mode, AdjustFarPlane);
 	}
 }
 
-void lcView::ZoomExtentsAtStep(lcStep Step, lcGeometryBoundsMode Mode, bool AdjustFarPlane)
+void swView::ZoomExtentsAtStep(swStep Step, swGeometryBoundsMode Mode, bool AdjustFarPlane)
 {
-	lcModel* ActiveModel = GetActiveModel();
+	swModel* ActiveModel = GetActiveModel();
 
 	if (!ActiveModel)
 		return;
 
-	const lcStep CurrentStep = ActiveModel->GetCurrentStep();
+	const swStep CurrentStep = ActiveModel->GetCurrentStep();
 
 	ActiveModel->SetTemporaryStep(Step);
 	ZoomExtents(Mode, AdjustFarPlane);
 	ActiveModel->SetTemporaryStep(CurrentStep);
 
 	if (!ActiveModel->IsActive())
-		ActiveModel->CalculateStep(LC_STEP_MAX);
+		ActiveModel->CalculateStep(SW_STEP_MAX);
 }
 
-lcCursor lcView::GetCursor() const
+swCursor swView::GetCursor() const
 {
-	const lcTool CurrentTool = GetCurrentTool();
-	const bool IsMoveTool = mTrackTool >= lcTrackTool::MoveX && mTrackTool <= lcTrackTool::MoveXYZ;
+	const swTool CurrentTool = GetCurrentTool();
+	const bool IsMoveTool = mTrackTool >= swTrackTool::MoveX && mTrackTool <= swTrackTool::MoveXYZ;
 
-	if (mTrackButton != lcTrackButton::None && mTrackTool != lcTrackTool::Paint && !IsMoveTool && CurrentTool != lcTool::Rotate)
-		return lcCursor::Hidden;
+	if (mTrackButton != swTrackButton::None && mTrackTool != swTrackTool::Paint && !IsMoveTool && CurrentTool != swTool::Rotate)
+		return swCursor::Hidden;
 
-	if (mTrackTool == lcTrackTool::Select)
+	if (mTrackTool == swTrackTool::Select)
 	{
 		if (mMouseModifiers & Qt::ControlModifier)
-			return lcCursor::SelectAdd;
+			return swCursor::SelectAdd;
 
 		if (mMouseModifiers & Qt::ShiftModifier)
-			return lcCursor::SelectRemove;
+			return swCursor::SelectRemove;
 	}
 
-	constexpr lcCursor CursorFromTrackTool[] =
+	constexpr swCursor CursorFromTrackTool[] =
 	{
-		lcCursor::Select,           // lcTrackTool::None
-		lcCursor::Brick,            // lcTrackTool::Insert
-		lcCursor::PointLight,       // lcTrackTool::PointLight
-		lcCursor::SpotLight,        // lcTrackTool::SpotLight
-		lcCursor::DirectionalLight, // lcTrackTool::DirectionalLight
-		lcCursor::AreaLight,        // lcTrackTool::AreaLight
-		lcCursor::Camera,           // lcTrackTool::Camera
-		lcCursor::Select,           // lcTrackTool::Select
-		lcCursor::Default,          // lcTrackTool::MoveX
-		lcCursor::Default,          // lcTrackTool::MoveY
-		lcCursor::Default,          // lcTrackTool::MoveZ
-		lcCursor::Default,          // lcTrackTool::MoveXY
-		lcCursor::Default,          // lcTrackTool::MoveXZ
-		lcCursor::Default,          // lcTrackTool::MoveYZ
-		lcCursor::Default,          // lcTrackTool::MoveXYZ
-		lcCursor::Default,          // lcTrackTool::RotateX
-		lcCursor::Default,          // lcTrackTool::RotateY
-		lcCursor::Default,          // lcTrackTool::RotateZ
-		lcCursor::Default,          // lcTrackTool::RotateTrackBall
-		lcCursor::Default,          // lcTrackTool::RotateCamera
-		lcCursor::Select,           // lcTrackTool::RotateTrainTrackRight
-		lcCursor::Select,           // lcTrackTool::RotateTrainTrackLeft
-		lcCursor::Select,           // lcTrackTool::InsertTrainTrack
-		lcCursor::Select,           // lcTrackTool::SelectTrainTrack
-		lcCursor::Move,             // lcTrackTool::ScalePlus
-		lcCursor::Move,             // lcTrackTool::ScaleMinus
-		lcCursor::Delete,           // lcTrackTool::Eraser
-		lcCursor::Paint,            // lcTrackTool::Paint
-		lcCursor::ColorPicker,      // lcTrackTool::ColorPicker
-		lcCursor::Zoom,             // lcTrackTool::Zoom
-		lcCursor::Pan,              // lcTrackTool::Pan
-		lcCursor::RotateX,          // lcTrackTool::OrbitX
-		lcCursor::RotateY,          // lcTrackTool::OrbitY
-		lcCursor::RotateView,       // lcTrackTool::OrbitXY
-		lcCursor::Roll,             // lcTrackTool::Roll
-		lcCursor::ZoomRegion        // lcTrackTool::ZoomRegion
+		swCursor::Select,           // swTrackTool::None
+		swCursor::Brick,            // swTrackTool::Insert
+		swCursor::PointLight,       // swTrackTool::PointLight
+		swCursor::SpotLight,        // swTrackTool::SpotLight
+		swCursor::DirectionalLight, // swTrackTool::DirectionalLight
+		swCursor::AreaLight,        // swTrackTool::AreaLight
+		swCursor::Camera,           // swTrackTool::Camera
+		swCursor::Select,           // swTrackTool::Select
+		swCursor::Default,          // swTrackTool::MoveX
+		swCursor::Default,          // swTrackTool::MoveY
+		swCursor::Default,          // swTrackTool::MoveZ
+		swCursor::Default,          // swTrackTool::MoveXY
+		swCursor::Default,          // swTrackTool::MoveXZ
+		swCursor::Default,          // swTrackTool::MoveYZ
+		swCursor::Default,          // swTrackTool::MoveXYZ
+		swCursor::Default,          // swTrackTool::RotateX
+		swCursor::Default,          // swTrackTool::RotateY
+		swCursor::Default,          // swTrackTool::RotateZ
+		swCursor::Default,          // swTrackTool::RotateTrackBall
+		swCursor::Default,          // swTrackTool::RotateCamera
+		swCursor::Select,           // swTrackTool::RotateTrainTrackRight
+		swCursor::Select,           // swTrackTool::RotateTrainTrackLeft
+		swCursor::Select,           // swTrackTool::InsertTrainTrack
+		swCursor::Select,           // swTrackTool::SelectTrainTrack
+		swCursor::Move,             // swTrackTool::ScalePlus
+		swCursor::Move,             // swTrackTool::ScaleMinus
+		swCursor::Delete,           // swTrackTool::Eraser
+		swCursor::Paint,            // swTrackTool::Paint
+		swCursor::ColorPicker,      // swTrackTool::ColorPicker
+		swCursor::Zoom,             // swTrackTool::Zoom
+		swCursor::Pan,              // swTrackTool::Pan
+		swCursor::RotateX,          // swTrackTool::OrbitX
+		swCursor::RotateY,          // swTrackTool::OrbitY
+		swCursor::RotateView,       // swTrackTool::OrbitXY
+		swCursor::Roll,             // swTrackTool::Roll
+		swCursor::ZoomRegion        // swTrackTool::ZoomRegion
 	};
 
-	LC_ARRAY_SIZE_CHECK(CursorFromTrackTool, lcTrackTool::Count);
+	SW_ARRAY_SIZE_CHECK(CursorFromTrackTool, swTrackTool::Count);
 
-	if (mTrackTool >= lcTrackTool::None && mTrackTool < lcTrackTool::Count)
+	if (mTrackTool >= swTrackTool::None && mTrackTool < swTrackTool::Count)
 		return CursorFromTrackTool[static_cast<int>(mTrackTool)];
 
-	return lcCursor::Select;
+	return swCursor::Select;
 }
 
-void lcView::SetCursor(lcCursor CursorType)
+void swView::SetCursor(swCursor CursorType)
 {
 	if (mCursor == CursorType)
 		return;
 
-	struct lcCursorInfo
+	struct swCursorInfo
 	{
 		int x, y;
 		const char* Name;
 	};
 
-	constexpr lcCursorInfo Cursors[] =
+	constexpr swCursorInfo Cursors[] =
 	{
-		{  0,  0, "" },                                 // lcCursor::Hidden
-		{  0,  0, "" },                                 // lcCursor::Default
-		{  8,  3, ":/resources/cursor_insert" },        // lcCursor::Brick
-		{ 15, 15, ":/resources/cursor_light" },         // lcCursor::PointLight
-		{  7, 10, ":/resources/cursor_spotlight" },     // lcCursor::SpotLight
-		{ 15, 15, ":/resources/cursor_sunlight" },      // lcCursor::DirectionalLight
-		{ 15, 15, ":/resources/cursor_arealight" },     // lcCursor::AreaLight
-		{ 15,  9, ":/resources/cursor_camera" },        // lcCursor::Camera
-		{  0,  2, ":/resources/cursor_select" },        // lcCursor::Select
-		{  0,  2, ":/resources/cursor_select_add" },    // lcCursor::SelectAdd
-		{  0,  2, ":/resources/cursor_select_remove" }, // lcCursor::SelectRemove
-		{ 15, 15, ":/resources/cursor_move" },          // lcCursor::Move
-		{ 15, 15, ":/resources/cursor_rotate" },        // lcCursor::Rotate
-		{ 15, 15, ":/resources/cursor_rotatex" },       // lcCursor::RotateX
-		{ 15, 15, ":/resources/cursor_rotatey" },       // lcCursor::RotateY
-		{  0, 10, ":/resources/cursor_delete" },        // lcCursor::Delete
-		{ 14, 14, ":/resources/cursor_paint" },         // lcCursor::Paint
-		{  1, 13, ":/resources/cursor_color_picker" },  // lcCursor::ColorPicker
-		{ 15, 15, ":/resources/cursor_zoom" },          // lcCursor::Zoom
-		{  9,  9, ":/resources/cursor_zoom_region" },   // lcCursor::ZoomRegion
-		{ 15, 15, ":/resources/cursor_pan" },           // lcCursor::Pan
-		{ 15, 15, ":/resources/cursor_roll" },          // lcCursor::Roll
-		{ 15, 15, ":/resources/cursor_rotate_view" },   // lcCursor::RotateView
+		{  0,  0, "" },                                 // swCursor::Hidden
+		{  0,  0, "" },                                 // swCursor::Default
+		{  8,  3, ":/resources/cursor_insert" },        // swCursor::Brick
+		{ 15, 15, ":/resources/cursor_light" },         // swCursor::PointLight
+		{  7, 10, ":/resources/cursor_spotlight" },     // swCursor::SpotLight
+		{ 15, 15, ":/resources/cursor_sunlight" },      // swCursor::DirectionalLight
+		{ 15, 15, ":/resources/cursor_arealight" },     // swCursor::AreaLight
+		{ 15,  9, ":/resources/cursor_camera" },        // swCursor::Camera
+		{  0,  2, ":/resources/cursor_select" },        // swCursor::Select
+		{  0,  2, ":/resources/cursor_select_add" },    // swCursor::SelectAdd
+		{  0,  2, ":/resources/cursor_select_remove" }, // swCursor::SelectRemove
+		{ 15, 15, ":/resources/cursor_move" },          // swCursor::Move
+		{ 15, 15, ":/resources/cursor_rotate" },        // swCursor::Rotate
+		{ 15, 15, ":/resources/cursor_rotatex" },       // swCursor::RotateX
+		{ 15, 15, ":/resources/cursor_rotatey" },       // swCursor::RotateY
+		{  0, 10, ":/resources/cursor_delete" },        // swCursor::Delete
+		{ 14, 14, ":/resources/cursor_paint" },         // swCursor::Paint
+		{  1, 13, ":/resources/cursor_color_picker" },  // swCursor::ColorPicker
+		{ 15, 15, ":/resources/cursor_zoom" },          // swCursor::Zoom
+		{  9,  9, ":/resources/cursor_zoom_region" },   // swCursor::ZoomRegion
+		{ 15, 15, ":/resources/cursor_pan" },           // swCursor::Pan
+		{ 15, 15, ":/resources/cursor_roll" },          // swCursor::Roll
+		{ 15, 15, ":/resources/cursor_rotate_view" },   // swCursor::RotateView
 	};
 
-	LC_ARRAY_SIZE_CHECK(Cursors, lcCursor::Count);
+	SW_ARRAY_SIZE_CHECK(Cursors, swCursor::Count);
 
-	if (CursorType == lcCursor::Hidden)
+	if (CursorType == swCursor::Hidden)
 	{
 		mWidget->setCursor(Qt::BlankCursor);
 		mCursor = CursorType;
 	}
-	else if (CursorType == lcCursor::Default)
+	else if (CursorType == swCursor::Default)
 	{
 		mWidget->unsetCursor();
 		mCursor = CursorType;
 	}
-	else if (CursorType >= lcCursor::First && CursorType < lcCursor::Count)
+	else if (CursorType >= swCursor::First && CursorType < swCursor::Count)
 	{
-		const lcCursorInfo& Cursor = Cursors[static_cast<int>(CursorType)];
+		const swCursorInfo& Cursor = Cursors[static_cast<int>(CursorType)];
 		mWidget->setCursor(QCursor(QPixmap(Cursor.Name), Cursor.x, Cursor.y));
 		mCursor = CursorType;
 	}
 	else
 	{
 		mWidget->unsetCursor();
-		mCursor = lcCursor::Default;
+		mCursor = swCursor::Default;
 	}
 }
 
-void lcView::UpdateCursor()
+void swView::UpdateCursor()
 {
 	// Face picking keeps a crosshair until a face is clicked or picking is canceled.
 	if (mPickingFaceNormal)
@@ -2477,12 +2477,12 @@ void lcView::UpdateCursor()
 	SetCursor(GetCursor());
 }
 
-void lcView::StartFaceNormalPick()
+void swView::StartFaceNormalPick()
 {
-	if (mViewType != lcViewType::View || !mWidget)
+	if (mViewType != swViewType::View || !mWidget)
 		return;
 
-	if (mTrackButton != lcTrackButton::None)
+	if (mTrackButton != swTrackButton::None)
 		StopTracking(false);
 
 	mPickingFaceNormal = true;
@@ -2491,36 +2491,36 @@ void lcView::StartFaceNormalPick()
 	gMainWindow->statusBar()->showMessage(tr("Click a face to view it straight on, or press Esc to cancel."));
 }
 
-void lcView::StopFaceNormalPick()
+void swView::StopFaceNormalPick()
 {
 	mPickingFaceNormal = false;
-	mCursor = lcCursor::Count;
+	mCursor = swCursor::Count;
 	UpdateCursor();
 
 	gMainWindow->statusBar()->clearMessage();
 }
 
-void lcView::PickFaceNormal()
+void swView::PickFaceNormal()
 {
-	const lcObjectRayTest ObjectRayTest = RayTest(true, false);
+	const swObjectRayTest ObjectRayTest = RayTest(true, false);
 
 	if (ObjectRayTest.ObjectSection.Object)
 	{
 		// The hit triangle normal is in the space of the innermost piece, so bring it to the view.
-		lcVector3 Point = ObjectRayTest.Start + lcNormalize(ObjectRayTest.End - ObjectRayTest.Start) * ObjectRayTest.Distance;
-		lcVector3 Normal = lcNormalize(lcMul30(ObjectRayTest.PieceRayTest.Normal, ObjectRayTest.PieceRayTest.Transform));
+		swVector3 Point = ObjectRayTest.Start + swNormalize(ObjectRayTest.End - ObjectRayTest.Start) * ObjectRayTest.Distance;
+		swVector3 Normal = swNormalize(swMul30(ObjectRayTest.PieceRayTest.Normal, ObjectRayTest.PieceRayTest.Transform));
 
-		if (lcDot(Normal, ObjectRayTest.Start - Point) < 0.0f)
+		if (swDot(Normal, ObjectRayTest.Start - Point) < 0.0f)
 			Normal = -Normal;
 
 		if (GetActiveModel() != mModel)
 		{
-			Point = lcMul31(Point, mActiveSubmodelTransform);
-			Normal = lcNormalize(lcMul30(Normal, mActiveSubmodelTransform));
+			Point = swMul31(Point, mActiveSubmodelTransform);
+			Normal = swNormalize(swMul30(Normal, mActiveSubmodelTransform));
 		}
 
-		const float Distance = lcLength(mCamera->mPosition - mCamera->mTargetPosition);
-		const lcVector3 Up = fabsf(Normal.z) > 0.99f ? lcVector3(0.0f, 1.0f, 0.0f) : lcVector3(0.0f, 0.0f, 1.0f);
+		const float Distance = swLength(mCamera->mPosition - mCamera->mTargetPosition);
+		const swVector3 Up = fabsf(Normal.z) > 0.99f ? swVector3(0.0f, 1.0f, 0.0f) : swVector3(0.0f, 0.0f, 1.0f);
 
 		SetViewpoint(Point + Normal * Distance, Point, Up);
 	}
@@ -2528,153 +2528,153 @@ void lcView::PickFaceNormal()
 	StopFaceNormalPick();
 }
 
-lcTool lcView::GetCurrentTool() const
+swTool swView::GetCurrentTool() const
 {
-	constexpr lcTool ToolFromTrackTool[] =
+	constexpr swTool ToolFromTrackTool[] =
 	{
-		lcTool::Select,           // lcTrackTool::None
-		lcTool::Insert,           // lcTrackTool::Insert
-		lcTool::PointLight,       // lcTrackTool::PointLight
-		lcTool::SpotLight,        // lcTrackTool::SpotLight
-		lcTool::DirectionalLight, // lcTrackTool::DirectionalLight
-		lcTool::AreaLight,        // lcTrackTool::AreaLight
-		lcTool::Camera,           // lcTrackTool::Camera
-		lcTool::Select,           // lcTrackTool::Select
-		lcTool::Move,             // lcTrackTool::MoveX
-		lcTool::Move,             // lcTrackTool::MoveY
-		lcTool::Move,             // lcTrackTool::MoveZ
-		lcTool::Move,             // lcTrackTool::MoveXY
-		lcTool::Move,             // lcTrackTool::MoveXZ
-		lcTool::Move,             // lcTrackTool::MoveYZ
-		lcTool::Move,             // lcTrackTool::MoveXYZ
-		lcTool::Rotate,           // lcTrackTool::RotateX
-		lcTool::Rotate,           // lcTrackTool::RotateY
-		lcTool::Rotate,           // lcTrackTool::RotateZ
-		lcTool::Rotate,           // lcTrackTool::RotateTrackBall
-		lcTool::Rotate,           // lcTrackTool::RotateCamera
-		lcTool::Rotate,           // lcTrackTool::RotateTrainTrackRight
-		lcTool::Rotate,           // lcTrackTool::RotateTrainTrackLeft
-		lcTool::Insert,           // lcTrackTool::InsertTrainTrack
-		lcTool::Select,           // lcTrackTool::SelectTrainTrack
-		lcTool::Move,             // lcTrackTool::ScalePlus
-		lcTool::Move,             // lcTrackTool::ScaleMinus
-		lcTool::Eraser,           // lcTrackTool::Eraser
-		lcTool::Paint,            // lcTrackTool::Paint
-		lcTool::ColorPicker,      // lcTrackTool::ColorPicker
-		lcTool::Zoom,             // lcTrackTool::Zoom
-		lcTool::Pan,              // lcTrackTool::Pan
-		lcTool::RotateView,       // lcTrackTool::OrbitX
-		lcTool::RotateView,       // lcTrackTool::OrbitY
-		lcTool::RotateView,       // lcTrackTool::OrbitXY
-		lcTool::Roll,             // lcTrackTool::Roll
-		lcTool::ZoomRegion        // lcTrackTool::ZoomRegion
+		swTool::Select,           // swTrackTool::None
+		swTool::Insert,           // swTrackTool::Insert
+		swTool::PointLight,       // swTrackTool::PointLight
+		swTool::SpotLight,        // swTrackTool::SpotLight
+		swTool::DirectionalLight, // swTrackTool::DirectionalLight
+		swTool::AreaLight,        // swTrackTool::AreaLight
+		swTool::Camera,           // swTrackTool::Camera
+		swTool::Select,           // swTrackTool::Select
+		swTool::Move,             // swTrackTool::MoveX
+		swTool::Move,             // swTrackTool::MoveY
+		swTool::Move,             // swTrackTool::MoveZ
+		swTool::Move,             // swTrackTool::MoveXY
+		swTool::Move,             // swTrackTool::MoveXZ
+		swTool::Move,             // swTrackTool::MoveYZ
+		swTool::Move,             // swTrackTool::MoveXYZ
+		swTool::Rotate,           // swTrackTool::RotateX
+		swTool::Rotate,           // swTrackTool::RotateY
+		swTool::Rotate,           // swTrackTool::RotateZ
+		swTool::Rotate,           // swTrackTool::RotateTrackBall
+		swTool::Rotate,           // swTrackTool::RotateCamera
+		swTool::Rotate,           // swTrackTool::RotateTrainTrackRight
+		swTool::Rotate,           // swTrackTool::RotateTrainTrackLeft
+		swTool::Insert,           // swTrackTool::InsertTrainTrack
+		swTool::Select,           // swTrackTool::SelectTrainTrack
+		swTool::Move,             // swTrackTool::ScalePlus
+		swTool::Move,             // swTrackTool::ScaleMinus
+		swTool::Eraser,           // swTrackTool::Eraser
+		swTool::Paint,            // swTrackTool::Paint
+		swTool::ColorPicker,      // swTrackTool::ColorPicker
+		swTool::Zoom,             // swTrackTool::Zoom
+		swTool::Pan,              // swTrackTool::Pan
+		swTool::RotateView,       // swTrackTool::OrbitX
+		swTool::RotateView,       // swTrackTool::OrbitY
+		swTool::RotateView,       // swTrackTool::OrbitXY
+		swTool::Roll,             // swTrackTool::Roll
+		swTool::ZoomRegion        // swTrackTool::ZoomRegion
 	};
 
-	LC_ARRAY_SIZE_CHECK(ToolFromTrackTool, lcTrackTool::Count);
+	SW_ARRAY_SIZE_CHECK(ToolFromTrackTool, swTrackTool::Count);
 
-	if (mTrackTool >= lcTrackTool::None && mTrackTool < lcTrackTool::Count)
+	if (mTrackTool >= swTrackTool::None && mTrackTool < swTrackTool::Count)
 		return ToolFromTrackTool[static_cast<int>(mTrackTool)];
 
-	return lcTool::Select;
+	return swTool::Select;
 }
 
-void lcView::UpdateTrackTool()
+void swView::UpdateTrackTool()
 {
-	if (mViewType != lcViewType::View)
+	if (mViewType != swViewType::View)
 	{
-		mTrackTool = lcTrackTool::None;
+		mTrackTool = swTrackTool::None;
 		UpdateCursor();
 		return;
 	}
 
-	lcTool CurrentTool = gMainWindow->GetTool();
-	lcTrackTool NewTrackTool = mTrackTool;
+	swTool CurrentTool = gMainWindow->GetTool();
+	swTrackTool NewTrackTool = mTrackTool;
 	quint32 NewTrackSection = ~0U;
 	int x = mMouseX;
 	int y = mMouseY;
 	bool Redraw = false;
 	mMouseDownPiece = nullptr;
 	mTrackToolFromOverlay = false;
-	lcModel* ActiveModel = GetActiveModel();
+	swModel* ActiveModel = GetActiveModel();
 
 	switch (CurrentTool)
 	{
-	case lcTool::Insert:
-		NewTrackTool = lcTrackTool::Insert;
+	case swTool::Insert:
+		NewTrackTool = swTrackTool::Insert;
 		break;
 
-	case lcTool::PointLight:
-		NewTrackTool = lcTrackTool::PointLight;
+	case swTool::PointLight:
+		NewTrackTool = swTrackTool::PointLight;
 		break;
 
-	case lcTool::SpotLight:
-		NewTrackTool = lcTrackTool::SpotLight;
+	case swTool::SpotLight:
+		NewTrackTool = swTrackTool::SpotLight;
 		break;
 
-	case lcTool::DirectionalLight:
-		NewTrackTool = lcTrackTool::DirectionalLight;
+	case swTool::DirectionalLight:
+		NewTrackTool = swTrackTool::DirectionalLight;
 		break;
 
-	case lcTool::AreaLight:
-		NewTrackTool = lcTrackTool::AreaLight;
+	case swTool::AreaLight:
+		NewTrackTool = swTrackTool::AreaLight;
 		break;
 
-	case lcTool::Camera:
-		NewTrackTool = lcTrackTool::Camera;
+	case swTool::Camera:
+		NewTrackTool = swTrackTool::Camera;
 		break;
 
-	case lcTool::Select:
-	case lcTool::Move:
+	case swTool::Select:
+	case swTool::Move:
 		{
 			std::tie(NewTrackTool, NewTrackSection) = mViewManipulator->UpdateSelectMove(mTrackButton);
-			mTrackToolFromOverlay = NewTrackTool != lcTrackTool::MoveXYZ && NewTrackTool != lcTrackTool::Select;
+			mTrackToolFromOverlay = NewTrackTool != swTrackTool::MoveXYZ && NewTrackTool != swTrackTool::Select;
 			Redraw = NewTrackTool != mTrackTool || NewTrackSection != mTrackToolSection;
 
-			if (CurrentTool == lcTool::Select && NewTrackTool == lcTrackTool::Select && mMouseModifiers == Qt::NoModifier)
+			if (CurrentTool == swTool::Select && NewTrackTool == swTrackTool::Select && mMouseModifiers == Qt::NoModifier)
 			{
-				lcObjectSection ObjectSection = FindObjectUnderPointer(false, false);
-				lcObject* Object = ObjectSection.Object;
+				swObjectSection ObjectSection = FindObjectUnderPointer(false, false);
+				swObject* Object = ObjectSection.Object;
 
-				if (Object && Object->IsPiece() && ObjectSection.Section == LC_PIECE_SECTION_POSITION && Object->IsSelected())
+				if (Object && Object->IsPiece() && ObjectSection.Section == SW_PIECE_SECTION_POSITION && Object->IsSelected())
 				{
-					lcPiece* Piece = (lcPiece*)Object;
+					swPiece* Piece = (swPiece*)Object;
 					mMouseDownTransform = Piece->mModelWorld;
 					mMouseDownPiece = Piece;
-					NewTrackTool = lcTrackTool::MoveXYZ;
+					NewTrackTool = swTrackTool::MoveXYZ;
 				}
 			}
 		}
 		break;
 
-	case lcTool::Rotate:
+	case swTool::Rotate:
 		{
 			NewTrackTool = mViewManipulator->UpdateRotate();
-			mTrackToolFromOverlay = NewTrackTool != lcTrackTool::RotateTrackBall;
+			mTrackToolFromOverlay = NewTrackTool != swTrackTool::RotateTrackBall;
 			Redraw = NewTrackTool != mTrackTool;
 		}
 		break;
 
-	case lcTool::Eraser:
-		NewTrackTool = lcTrackTool::Eraser;
+	case swTool::Eraser:
+		NewTrackTool = swTrackTool::Eraser;
 		break;
 
-	case lcTool::Paint:
-		NewTrackTool = lcTrackTool::Paint;
+	case swTool::Paint:
+		NewTrackTool = swTrackTool::Paint;
 		break;
 
-	case lcTool::ColorPicker:
-		NewTrackTool = lcTrackTool::ColorPicker;
+	case swTool::ColorPicker:
+		NewTrackTool = swTrackTool::ColorPicker;
 		break;
 
-	case lcTool::Zoom:
-		NewTrackTool = lcTrackTool::Zoom;
+	case swTool::Zoom:
+		NewTrackTool = swTrackTool::Zoom;
 		break;
 
-	case lcTool::Pan:
-		NewTrackTool = lcTrackTool::Pan;
+	case swTool::Pan:
+		NewTrackTool = swTrackTool::Pan;
 		break;
 
-	case lcTool::RotateView:
+	case swTool::RotateView:
 		{
 			int vx, vy, vw, vh;
 
@@ -2687,58 +2687,58 @@ void lcView::UpdateTrackTool()
 			int cy = vy + vh / 2;
 
 			float d = sqrtf((float)((cx - x) * (cx - x) + (cy - y) * (cy - y)));
-			float r = lcMin(vw, vh) * 0.35f;
+			float r = swMin(vw, vh) * 0.35f;
 
-			const float SquareSize = lcMax(8.0f, (vw + vh) / 200.0f);
+			const float SquareSize = swMax(8.0f, (vw + vh) / 200.0f);
 
 			if ((d < r + SquareSize) && (d > r - SquareSize))
 			{
 				if ((cx - x < SquareSize) && (cx - x > -SquareSize))
 				{
-					NewTrackTool = lcTrackTool::OrbitY;
+					NewTrackTool = swTrackTool::OrbitY;
 					mTrackToolFromOverlay = true;
 				}
 
 				if ((cy - y < SquareSize) && (cy - y > -SquareSize))
 				{
-					NewTrackTool = lcTrackTool::OrbitX;
+					NewTrackTool = swTrackTool::OrbitX;
 					mTrackToolFromOverlay = true;
 				}
 			}
 			else
 			{
 				if (d < r)
-					NewTrackTool = lcTrackTool::OrbitXY;
+					NewTrackTool = swTrackTool::OrbitXY;
 				else
-					NewTrackTool = lcTrackTool::Roll;
+					NewTrackTool = swTrackTool::Roll;
 			}
 		}
 		break;
 
-	case lcTool::Roll:
-		NewTrackTool = lcTrackTool::Roll;
+	case swTool::Roll:
+		NewTrackTool = swTrackTool::Roll;
 		break;
 
-	case lcTool::ZoomRegion:
-		NewTrackTool = lcTrackTool::ZoomRegion;
+	case swTool::ZoomRegion:
+		NewTrackTool = swTrackTool::ZoomRegion;
 		break;
 
-	case lcTool::Count:
+	case swTool::Count:
 		break;
 	}
 
 	switch (mDragState)
 	{
-	case lcDragState::None:
+	case swDragState::None:
 		break;
 
-	case lcDragState::Piece:
-		NewTrackTool = lcTrackTool::Insert;
+	case swDragState::Piece:
+		NewTrackTool = swTrackTool::Insert;
 		Redraw = true;
 		break;
 
-	case lcDragState::Color:
-		NewTrackTool = lcTrackTool::Paint;
+	case swDragState::Color:
+		NewTrackTool = swTrackTool::Paint;
 		break;
 	}
 
@@ -2751,65 +2751,65 @@ void lcView::UpdateTrackTool()
 		ActiveModel->UpdateAllViews();
 }
 
-void lcView::StartOrbitTracking()
+void swView::StartOrbitTracking()
 {
-	mTrackTool = lcTrackTool::OrbitXY;
+	mTrackTool = swTrackTool::OrbitXY;
 	UpdateCursor();
-	OnButtonDown(lcTrackButton::Left);
+	OnButtonDown(swTrackButton::Left);
 }
 
-void lcView::StartPanGesture()
+void swView::StartPanGesture()
 {
-	lcModel* ActiveModel = GetActiveModel();
+	swModel* ActiveModel = GetActiveModel();
 
 	StartPan(mWidth / 2, mHeight / 2);
-	ActiveModel->BeginMouseTool(lcTool::Pan, this);
+	ActiveModel->BeginMouseTool(swTool::Pan, this);
 }
 
-void lcView::UpdatePanGesture(int dx, int dy)
+void swView::UpdatePanGesture(int dx, int dy)
 {
 	UpdatePan(mPanX + dx, mPanY + dy);
 }
 
-void lcView::StartPan(int x, int y)
+void swView::StartPan(int x, int y)
 {
 	mPanX = x;
 	mPanY = y;
 }
 
-void lcView::UpdatePan(int x, int y)
+void swView::UpdatePan(int x, int y)
 {
 	if (x == mPanX && y == mPanY)
 		return;
 
-	lcModel* ActiveModel = GetActiveModel();
+	swModel* ActiveModel = GetActiveModel();
 
-	lcVector3 Points[4] =
+	swVector3 Points[4] =
 	{
-	    lcVector3((float)x, (float)y, 0.0f),
-	    lcVector3((float)x, (float)y, 1.0f),
-	    lcVector3(mPanX, mPanY, 0.0f),
-	    lcVector3(mPanX, mPanY, 1.0f)
+	    swVector3((float)x, (float)y, 0.0f),
+	    swVector3((float)x, (float)y, 1.0f),
+	    swVector3(mPanX, mPanY, 0.0f),
+	    swVector3(mPanX, mPanY, 1.0f)
 	};
 
 	UnprojectPoints(Points, 4);
 
-	const lcVector3& CurrentStart = Points[0];
-	const lcVector3& CurrentEnd = Points[1];
-	const lcVector3& MouseDownStart = Points[2];
-	const lcVector3& MouseDownEnd = Points[3];
-	lcVector3 Center = ActiveModel->GetSelectionOrModelCenter();
+	const swVector3& CurrentStart = Points[0];
+	const swVector3& CurrentEnd = Points[1];
+	const swVector3& MouseDownStart = Points[2];
+	const swVector3& MouseDownEnd = Points[3];
+	swVector3 Center = ActiveModel->GetSelectionOrModelCenter();
 
-	lcVector3 PlaneNormal(mCamera->mPosition - mCamera->mTargetPosition);
-	lcVector4 Plane(PlaneNormal, -lcDot(PlaneNormal, Center));
-	lcVector3 Intersection, MoveStart;
+	swVector3 PlaneNormal(mCamera->mPosition - mCamera->mTargetPosition);
+	swVector4 Plane(PlaneNormal, -swDot(PlaneNormal, Center));
+	swVector3 Intersection, MoveStart;
 
-	if (!lcLineSegmentPlaneIntersection(&Intersection, CurrentStart, CurrentEnd, Plane) || !lcLineSegmentPlaneIntersection(&MoveStart, MouseDownStart, MouseDownEnd, Plane))
+	if (!swLineSegmentPlaneIntersection(&Intersection, CurrentStart, CurrentEnd, Plane) || !swLineSegmentPlaneIntersection(&MoveStart, MouseDownStart, MouseDownEnd, Plane))
 	{
-		Center = MouseDownStart + lcNormalize(MouseDownEnd - MouseDownStart) * 10.0f;
-		Plane = lcVector4(PlaneNormal, -lcDot(PlaneNormal, Center));
+		Center = MouseDownStart + swNormalize(MouseDownEnd - MouseDownStart) * 10.0f;
+		Plane = swVector4(PlaneNormal, -swDot(PlaneNormal, Center));
 
-		if (!lcLineSegmentPlaneIntersection(&Intersection, CurrentStart, CurrentEnd, Plane) || !lcLineSegmentPlaneIntersection(&MoveStart, MouseDownStart, MouseDownEnd, Plane))
+		if (!swLineSegmentPlaneIntersection(&Intersection, CurrentStart, CurrentEnd, Plane) || !swLineSegmentPlaneIntersection(&MoveStart, MouseDownStart, MouseDownEnd, Plane))
 			return;
 	}
 
@@ -2819,136 +2819,136 @@ void lcView::UpdatePan(int x, int y)
 	ActiveModel->UpdatePanTool(mCamera, MoveStart - Intersection);
 }
 
-void lcView::EndPanGesture(bool Accept)
+void swView::EndPanGesture(bool Accept)
 {
-	lcModel* ActiveModel = GetActiveModel();
+	swModel* ActiveModel = GetActiveModel();
 
-	ActiveModel->EndMouseTool(lcTool::Pan, this, Accept);
+	ActiveModel->EndMouseTool(swTool::Pan, this, Accept);
 }
 
-lcVector3 lcView::GetTrackballPoint(int x, int y) const
+swVector3 swView::GetTrackballPoint(int x, int y) const
 {
 	const float PointX = ((float)x - mTrackballCenter[0]) / mTrackballRadius;
 	const float PointY = ((float)y - mTrackballCenter[1]) / mTrackballRadius;
 	const float LengthSquared = PointX * PointX + PointY * PointY;
 	const float PointZ = LengthSquared <= 0.5f ? sqrtf(1.0f - LengthSquared) : 0.5f / sqrtf(LengthSquared);
 
-	return lcNormalize(lcVector3(PointX, PointY, PointZ));
+	return swNormalize(swVector3(PointX, PointY, PointZ));
 }
 
-void lcView::StartTracking(lcTrackButton TrackButton)
+void swView::StartTracking(swTrackButton TrackButton)
 {
 	mTrackButton = TrackButton;
 	mTrackUpdated = false;
 	mMouseDownX = mMouseX;
 	mMouseDownY = mMouseY;
 	mCameraRotationAngle = 0.0f;
-	lcTool Tool = GetCurrentTool();
-	lcModel* ActiveModel = GetActiveModel();
+	swTool Tool = GetCurrentTool();
+	swModel* ActiveModel = GetActiveModel();
 
 	switch (Tool)
 	{
-		case lcTool::Insert:
-		case lcTool::PointLight:
-		case lcTool::SpotLight:
-		case lcTool::DirectionalLight:
-		case lcTool::AreaLight:
-		case lcTool::Camera:
-		case lcTool::Select:
+		case swTool::Insert:
+		case swTool::PointLight:
+		case swTool::SpotLight:
+		case swTool::DirectionalLight:
+		case swTool::AreaLight:
+		case swTool::Camera:
+		case swTool::Select:
 			break;
 
-		case lcTool::Move:
-		case lcTool::Rotate:
+		case swTool::Move:
+		case swTool::Rotate:
 			ActiveModel->BeginMouseTool(Tool, this);
 
-			if (mTrackTool == lcTrackTool::RotateX || mTrackTool == lcTrackTool::RotateY || mTrackTool == lcTrackTool::RotateZ || mTrackTool == lcTrackTool::RotateCamera)
+			if (mTrackTool == swTrackTool::RotateX || mTrackTool == swTrackTool::RotateY || mTrackTool == swTrackTool::RotateZ || mTrackTool == swTrackTool::RotateCamera)
 			{
-				lcVector3 OverlayCenter;
-				lcMatrix33 RelativeRotation;
+				swVector3 OverlayCenter;
+				swMatrix33 RelativeRotation;
 
 			    ActiveModel->GetMoveRotateTransform(OverlayCenter, RelativeRotation);
 
-				lcMatrix44 WorldMatrix = lcMatrix44(RelativeRotation, OverlayCenter);
+				swMatrix44 WorldMatrix = swMatrix44(RelativeRotation, OverlayCenter);
 
 			    if (ActiveModel != mModel)
-					WorldMatrix = lcMul(WorldMatrix, mActiveSubmodelTransform);
+					WorldMatrix = swMul(WorldMatrix, mActiveSubmodelTransform);
 
-				const lcVector3 ScreenCenter = ProjectPoint(WorldMatrix.GetTranslation());
+				const swVector3 ScreenCenter = ProjectPoint(WorldMatrix.GetTranslation());
 
 			    mCameraRotationMouseAngle = atan2f((float)mMouseY - ScreenCenter[1], (float)mMouseX - ScreenCenter[0]);
 				mCameraRotationLastMouseAngle = mCameraRotationMouseAngle;
 			}
 
-			if (mTrackTool == lcTrackTool::RotateTrackBall)
+			if (mTrackTool == swTrackTool::RotateTrackBall)
 			{
-				lcVector3 OverlayCenter;
-				lcMatrix33 RelativeRotation;
+				swVector3 OverlayCenter;
+				swMatrix33 RelativeRotation;
 				ActiveModel->GetMoveRotateTransform(OverlayCenter, RelativeRotation);
 
-				lcMatrix44 WorldMatrix = lcMatrix44(RelativeRotation, OverlayCenter);
+				swMatrix44 WorldMatrix = swMatrix44(RelativeRotation, OverlayCenter);
 				if (ActiveModel != mModel)
-					WorldMatrix = lcMul(WorldMatrix, mActiveSubmodelTransform);
+					WorldMatrix = swMul(WorldMatrix, mActiveSubmodelTransform);
 
 				mTrackballCenter = ProjectPoint(WorldMatrix.GetTranslation());
-				const lcMatrix44 CameraWorldMatrix = lcMatrix44AffineInverse(mCamera->mWorldView);
-				const lcVector3 CameraRight = lcNormalize(lcMul30(lcVector3(1.0f, 0.0f, 0.0f), CameraWorldMatrix));
-				const lcVector3 RadiusPoint = ProjectPoint(WorldMatrix.GetTranslation() + CameraRight * (2.0f * GetOverlayScale()));
-				mTrackballRadius = lcMax(1.0f, lcLength(RadiusPoint - mTrackballCenter));
+				const swMatrix44 CameraWorldMatrix = swMatrix44AffineInverse(mCamera->mWorldView);
+				const swVector3 CameraRight = swNormalize(swMul30(swVector3(1.0f, 0.0f, 0.0f), CameraWorldMatrix));
+				const swVector3 RadiusPoint = ProjectPoint(WorldMatrix.GetTranslation() + CameraRight * (2.0f * GetOverlayScale()));
+				mTrackballRadius = swMax(1.0f, swLength(RadiusPoint - mTrackballCenter));
 				mTrackballVector = GetTrackballPoint(mMouseX, mMouseY);
-				mTrackballPendingRotation = lcMatrix33Identity();
+				mTrackballPendingRotation = swMatrix33Identity();
 				mTrackballSnapping = gMainWindow->GetAngleSnap() != 0.0f;
 				mTrackballHasPendingRotation = false;
 			}
 			break;
 
-		case lcTool::Eraser:
-		case lcTool::Paint:
-		case lcTool::ColorPicker:
+		case swTool::Eraser:
+		case swTool::Paint:
+		case swTool::ColorPicker:
 			break;
 
-	    case lcTool::Pan:
+	    case swTool::Pan:
 		    StartPan(mMouseX, mMouseY);
 			ActiveModel->BeginMouseTool(Tool, this);
 		    break;
 
-	    case lcTool::Zoom:
-		case lcTool::RotateView:
-		case lcTool::Roll:
+	    case swTool::Zoom:
+		case swTool::RotateView:
+		case swTool::Roll:
 			ActiveModel->BeginMouseTool(Tool, this);
 			break;
 
-		case lcTool::ZoomRegion:
+		case swTool::ZoomRegion:
 			break;
 
-		case lcTool::Count:
+		case swTool::Count:
 			break;
 	}
 
 	UpdateCursor();
 }
 
-void lcView::StopTracking(bool Accept)
+void swView::StopTracking(bool Accept)
 {
-	if (mTrackButton == lcTrackButton::None)
+	if (mTrackButton == swTrackButton::None)
 		return;
 
-	lcTool Tool = GetCurrentTool();
-	lcModel* ActiveModel = GetActiveModel();
+	swTool Tool = GetCurrentTool();
+	swModel* ActiveModel = GetActiveModel();
 
 	switch (Tool)
 	{
-	case lcTool::Insert:
-	case lcTool::PointLight:
-	case lcTool::SpotLight:
-	case lcTool::DirectionalLight:
-	case lcTool::AreaLight:
-	case lcTool::Camera:
+	case swTool::Insert:
+	case swTool::PointLight:
+	case swTool::SpotLight:
+	case swTool::DirectionalLight:
+	case swTool::AreaLight:
+	case swTool::Camera:
 		break;
 
-	case lcTool::Select:
+	case swTool::Select:
 		if (Accept && mMouseDownX != mMouseX && mMouseDownY != mMouseY)
 		{
-			std::vector<lcObject*> Objects = FindObjectsInBox(mMouseDownX, mMouseDownY, mMouseX, mMouseY);
+			std::vector<swObject*> Objects = FindObjectsInBox(mMouseDownX, mMouseDownY, mMouseX, mMouseY);
 
 			if (mMouseModifiers & Qt::ControlModifier)
 				ActiveModel->AddToSelectionAction(Objects);
@@ -2959,47 +2959,47 @@ void lcView::StopTracking(bool Accept)
 		}
 		break;
 
-	case lcTool::Move:
-	case lcTool::Rotate:
+	case swTool::Move:
+	case swTool::Rotate:
 		ActiveModel->EndMouseTool(Tool, this, Accept);
 		break;
 
-	case lcTool::Eraser:
-	case lcTool::Paint:
-	case lcTool::ColorPicker:
+	case swTool::Eraser:
+	case swTool::Paint:
+	case swTool::ColorPicker:
 		break;
 
-	case lcTool::Zoom:
-	case lcTool::Pan:
-	case lcTool::RotateView:
-	case lcTool::Roll:
+	case swTool::Zoom:
+	case swTool::Pan:
+	case swTool::RotateView:
+	case swTool::Roll:
 		ActiveModel->EndMouseTool(Tool, this, Accept);
 		break;
 
-	case lcTool::ZoomRegion:
+	case swTool::ZoomRegion:
 		{
 			if (mMouseX == mMouseDownX || mMouseY == mMouseDownY)
 				break;
 
-			lcVector3 Points[6] =
+			swVector3 Points[6] =
 			{
-				lcVector3((mMouseDownX + lcMin(mMouseX, mWidth - 1)) / 2, (mMouseDownY + lcMin(mMouseY, mHeight - 1)) / 2, 0.0f),
-				lcVector3((mMouseDownX + lcMin(mMouseX, mWidth - 1)) / 2, (mMouseDownY + lcMin(mMouseY, mHeight - 1)) / 2, 1.0f),
-				lcVector3((float)mMouseX, (float)mMouseY, 0.0f),
-				lcVector3((float)mMouseX, (float)mMouseY, 1.0f),
-				lcVector3(mMouseDownX, mMouseDownY, 0.0f),
-				lcVector3(mMouseDownX, mMouseDownY, 1.0f)
+				swVector3((mMouseDownX + swMin(mMouseX, mWidth - 1)) / 2, (mMouseDownY + swMin(mMouseY, mHeight - 1)) / 2, 0.0f),
+				swVector3((mMouseDownX + swMin(mMouseX, mWidth - 1)) / 2, (mMouseDownY + swMin(mMouseY, mHeight - 1)) / 2, 1.0f),
+				swVector3((float)mMouseX, (float)mMouseY, 0.0f),
+				swVector3((float)mMouseX, (float)mMouseY, 1.0f),
+				swVector3(mMouseDownX, mMouseDownY, 0.0f),
+				swVector3(mMouseDownX, mMouseDownY, 1.0f)
 			};
 
 			UnprojectPoints(Points, 5);
 
-			lcVector3 Center = ActiveModel->GetSelectionOrModelCenter();
+			swVector3 Center = ActiveModel->GetSelectionOrModelCenter();
 
-			lcVector3 PlaneNormal(mCamera->mPosition - mCamera->mTargetPosition);
-			lcVector4 Plane(PlaneNormal, -lcDot(PlaneNormal, Center));
-			lcVector3 Target, Corners[2];
+			swVector3 PlaneNormal(mCamera->mPosition - mCamera->mTargetPosition);
+			swVector4 Plane(PlaneNormal, -swDot(PlaneNormal, Center));
+			swVector3 Target, Corners[2];
 
-			if (lcLineSegmentPlaneIntersection(&Target, Points[0], Points[1], Plane) && lcLineSegmentPlaneIntersection(&Corners[0], Points[2], Points[3], Plane) && lcLineSegmentPlaneIntersection(&Corners[1], Points[3], Points[4], Plane))
+			if (swLineSegmentPlaneIntersection(&Target, Points[0], Points[1], Plane) && swLineSegmentPlaneIntersection(&Corners[0], Points[2], Points[3], Plane) && swLineSegmentPlaneIntersection(&Corners[1], Points[3], Points[4], Plane))
 			{
 				float AspectRatio = (float)mWidth / (float)mHeight;
 				ActiveModel->ZoomRegionToolClicked(this, AspectRatio, Points[0], Target, Corners);
@@ -3007,40 +3007,40 @@ void lcView::StopTracking(bool Accept)
 		}
 		break;
 
-	case lcTool::Count:
+	case swTool::Count:
 		break;
 	}
 
-	mTrackButton = lcTrackButton::None;
+	mTrackButton = swTrackButton::None;
 	UpdateTrackTool();
 	ActiveModel->UpdateAllViews();
 }
 
-void lcView::CancelTrackingOrClearSelectionAction()
+void swView::CancelTrackingOrClearSelectionAction()
 {
 	if (mPickingFaceNormal)
 		StopFaceNormalPick();
-	else if (mTrackButton != lcTrackButton::None)
+	else if (mTrackButton != swTrackButton::None)
 		StopTracking(false);
 	else
 	{
-		lcModel* ActiveModel = GetActiveModel();
+		swModel* ActiveModel = GetActiveModel();
 		if (ActiveModel)
 			ActiveModel->ClearSelectionAction();
 	}
 }
 
-void lcView::OnButtonDown(lcTrackButton TrackButton)
+void swView::OnButtonDown(swTrackButton TrackButton)
 {
-	lcModel* ActiveModel = GetActiveModel();
+	swModel* ActiveModel = GetActiveModel();
 	mToolClicked = false;
 
-	auto AddLight = [this, ActiveModel](lcLightType LightType)
+	auto AddLight = [this, ActiveModel](swLightType LightType)
 	{
 		ActiveModel->InsertLightToolClicked(GetCameraLightInsertPosition(), LightType);
 
 		if ((mMouseModifiers & Qt::ControlModifier) == 0)
-			gMainWindow->SetTool(lcTool::Select);
+			gMainWindow->SetTool(swTool::Select);
 
 		mToolClicked = true;
 		UpdateTrackTool();
@@ -3048,10 +3048,10 @@ void lcView::OnButtonDown(lcTrackButton TrackButton)
 
 	switch (mTrackTool)
 	{
-	case lcTrackTool::None:
+	case swTrackTool::None:
 		break;
 
-	case lcTrackTool::Insert:
+	case swTrackTool::Insert:
 		{
 			UpdatePiecePreview();
 
@@ -3059,44 +3059,44 @@ void lcView::OnButtonDown(lcTrackButton TrackButton)
 				break;
 
 			if ((mMouseModifiers & Qt::ControlModifier) == 0)
-				gMainWindow->SetTool(lcTool::Select);
+				gMainWindow->SetTool(swTool::Select);
 
 			mToolClicked = true;
 			UpdateTrackTool();
 		}
 		break;
 
-	case lcTrackTool::PointLight:
-		AddLight(lcLightType::Point);
+	case swTrackTool::PointLight:
+		AddLight(swLightType::Point);
 		break;
 
-	case lcTrackTool::SpotLight:
-		AddLight(lcLightType::Spot);
+	case swTrackTool::SpotLight:
+		AddLight(swLightType::Spot);
 		break;
 
-	case lcTrackTool::DirectionalLight:
-		AddLight(lcLightType::Directional);
+	case swTrackTool::DirectionalLight:
+		AddLight(swLightType::Directional);
 		break;
 
-	case lcTrackTool::AreaLight:
-		AddLight(lcLightType::Area);
+	case swTrackTool::AreaLight:
+		AddLight(swLightType::Area);
 		break;
 
-	case lcTrackTool::Camera:
+	case swTrackTool::Camera:
         {
             ActiveModel->InsertCameraToolClicked(GetCameraLightInsertPosition());
 
             if ((mMouseModifiers & Qt::ControlModifier) == 0)
-                gMainWindow->SetTool(lcTool::Select);
+                gMainWindow->SetTool(swTool::Select);
 
             mToolClicked = true;
             UpdateTrackTool();
         }
 		break;
 
-	case lcTrackTool::Select:
+	case swTrackTool::Select:
 		{
-			lcObjectSection ObjectSection = FindObjectUnderPointer(false, false);
+			swObjectSection ObjectSection = FindObjectUnderPointer(false, false);
 
 			if (mMouseModifiers & Qt::ControlModifier)
 				ActiveModel->FocusOrDeselectObjectAction(ObjectSection.Object, ObjectSection.Section, gMainWindow->GetSelectionMode());
@@ -3106,43 +3106,43 @@ void lcView::OnButtonDown(lcTrackButton TrackButton)
 				    ActiveModel->RemoveFromSelectionAction({ ObjectSection.Object });
 		    }
 			else
-				ActiveModel->SetSelectionAndFocusAction(std::vector<lcObject*>(), ObjectSection.Object, ObjectSection.Section, gMainWindow->GetSelectionMode());
+				ActiveModel->SetSelectionAndFocusAction(std::vector<swObject*>(), ObjectSection.Object, ObjectSection.Section, gMainWindow->GetSelectionMode());
 
 			StartTracking(TrackButton);
 		}
 		break;
 
-	case lcTrackTool::MoveX:
-	case lcTrackTool::MoveY:
-	case lcTrackTool::MoveZ:
-	case lcTrackTool::MoveXY:
-	case lcTrackTool::MoveXZ:
-	case lcTrackTool::MoveYZ:
-	case lcTrackTool::MoveXYZ:
+	case swTrackTool::MoveX:
+	case swTrackTool::MoveY:
+	case swTrackTool::MoveZ:
+	case swTrackTool::MoveXY:
+	case swTrackTool::MoveXZ:
+	case swTrackTool::MoveYZ:
+	case swTrackTool::MoveXYZ:
 		if (ActiveModel->AnyObjectsSelected())
 			StartTracking(TrackButton);
 		break;
 
-	case lcTrackTool::RotateX:
-	case lcTrackTool::RotateY:
-	case lcTrackTool::RotateZ:
-	case lcTrackTool::RotateTrackBall:
-	case lcTrackTool::RotateCamera:
+	case swTrackTool::RotateX:
+	case swTrackTool::RotateY:
+	case swTrackTool::RotateZ:
+	case swTrackTool::RotateTrackBall:
+	case swTrackTool::RotateCamera:
 		if (ActiveModel->CanRotateSelection())
 			StartTracking(TrackButton);
 		break;
 
-	case lcTrackTool::RotateTrainTrackRight:
-	case lcTrackTool::RotateTrainTrackLeft:
+	case swTrackTool::RotateTrainTrackRight:
+	case swTrackTool::RotateTrainTrackLeft:
 		{
-			ActiveModel->RotateFocusedTrainTrack(mTrackTool == lcTrackTool::RotateTrainTrackRight ? 1 : -1);
+			ActiveModel->RotateFocusedTrainTrack(mTrackTool == swTrackTool::RotateTrainTrackRight ? 1 : -1);
 
 			mToolClicked = true;
 			UpdateTrackTool();
 		}
 		break;
 
-	case lcTrackTool::InsertTrainTrack:
+	case swTrackTool::InsertTrainTrack:
 		{
 			ShowTrainTrackPopup();
 
@@ -3151,69 +3151,69 @@ void lcView::OnButtonDown(lcTrackButton TrackButton)
 		}
 		break;
 
-	case lcTrackTool::SelectTrainTrack:
+	case swTrackTool::SelectTrainTrack:
 		{
-			lcObject* Focus = ActiveModel->GetFocusObject();
+			swObject* Focus = ActiveModel->GetFocusObject();
 
 			if (!Focus || !Focus->IsPiece())
 				break;
 
-			lcPiece* Piece = (lcPiece*)Focus;
-			const lcTrainTrackInfo* TrainTrackInfo = Piece->mPieceData->GetTrainTrackInfo();
+			swPiece* Piece = (swPiece*)Focus;
+			const swTrainTrackInfo* TrainTrackInfo = Piece->mPieceData->GetTrainTrackInfo();
 
 			if (!TrainTrackInfo)
 				break;
 
-			if (mTrackToolSection < LC_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST)
+			if (mTrackToolSection < SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST)
 				break;
 
-			lcObjectSection ObjectSection;
+			swObjectSection ObjectSection;
 
 			ObjectSection.Object = Focus;
 			ObjectSection.Section = mTrackToolSection;
 
-			ActiveModel->SetSelectionAndFocusAction(std::vector<lcObject*>(), ObjectSection.Object, ObjectSection.Section, gMainWindow->GetSelectionMode());
+			ActiveModel->SetSelectionAndFocusAction(std::vector<swObject*>(), ObjectSection.Object, ObjectSection.Section, gMainWindow->GetSelectionMode());
 		}
 		break;
 
-	case lcTrackTool::ScalePlus:
-	case lcTrackTool::ScaleMinus:
+	case swTrackTool::ScalePlus:
+	case swTrackTool::ScaleMinus:
 		if (ActiveModel->AnyPiecesSelected())
 			StartTracking(TrackButton);
 		break;
 
-	case lcTrackTool::Eraser:
+	case swTrackTool::Eraser:
 		ActiveModel->EraserToolClicked(FindObjectUnderPointer(false, false).Object);
 		mToolClicked = true;
 		break;
 
-	case lcTrackTool::Paint:
+	case swTrackTool::Paint:
 		ActiveModel->PaintToolClicked(FindObjectUnderPointer(true, false).Object);
 		StartTracking(TrackButton);
 		mToolClicked = true;
 		break;
 
-	case lcTrackTool::ColorPicker:
+	case swTrackTool::ColorPicker:
 		ActiveModel->ColorPickerToolClicked(FindObjectUnderPointer(true, false).Object);
 		mToolClicked = true;
 		break;
 
-	case lcTrackTool::Zoom:
-	case lcTrackTool::Pan:
-	case lcTrackTool::OrbitX:
-	case lcTrackTool::OrbitY:
-	case lcTrackTool::OrbitXY:
-	case lcTrackTool::Roll:
-	case lcTrackTool::ZoomRegion:
+	case swTrackTool::Zoom:
+	case swTrackTool::Pan:
+	case swTrackTool::OrbitX:
+	case swTrackTool::OrbitY:
+	case swTrackTool::OrbitXY:
+	case swTrackTool::Roll:
+	case swTrackTool::ZoomRegion:
 		StartTracking(TrackButton);
 		break;
 
-	case lcTrackTool::Count:
+	case swTrackTool::Count:
 		break;
 	}
 }
 
-void lcView::OnLeftButtonDown()
+void swView::OnLeftButtonDown()
 {
 	if (mPickingFaceNormal)
 	{
@@ -3221,7 +3221,7 @@ void lcView::OnLeftButtonDown()
 		return;
 	}
 
-	if (mTrackButton != lcTrackButton::None)
+	if (mTrackButton != swTrackButton::None)
 	{
 		StopTracking(false);
 		return;
@@ -3230,38 +3230,38 @@ void lcView::OnLeftButtonDown()
 	if (mViewSphere->OnLeftButtonDown())
 		return;
 
-	lcTrackTool OverrideTool = GetOverrideTrackTool(Qt::LeftButton);
+	swTrackTool OverrideTool = GetOverrideTrackTool(Qt::LeftButton);
 
-	if (OverrideTool != lcTrackTool::None)
+	if (OverrideTool != swTrackTool::None)
 	{
 		mTrackTool = OverrideTool;
 		UpdateCursor();
 	}
 
-	OnButtonDown(lcTrackButton::Left);
+	OnButtonDown(swTrackButton::Left);
 }
 
-void lcView::OnLeftButtonUp()
+void swView::OnLeftButtonUp()
 {
-	StopTracking(mTrackButton == lcTrackButton::Left);
+	StopTracking(mTrackButton == swTrackButton::Left);
 
 	if (mViewSphere->OnLeftButtonUp())
 		return;
 }
 
-void lcView::OnLeftButtonDoubleClick()
+void swView::OnLeftButtonDoubleClick()
 {
-	if (mViewType != lcViewType::View)
+	if (mViewType != swViewType::View)
 	{
-		ZoomExtents(lcGeometryBoundsMode::IncludeFallback, false);
+		ZoomExtents(swGeometryBoundsMode::IncludeFallback, false);
 		return;
 	}
 
-	lcModel* ActiveModel = GetActiveModel();
+	swModel* ActiveModel = GetActiveModel();
 
-	if (mTrackTool == lcTrackTool::RotateTrainTrackRight || mTrackTool == lcTrackTool::RotateTrainTrackLeft)
+	if (mTrackTool == swTrackTool::RotateTrainTrackRight || mTrackTool == swTrackTool::RotateTrainTrackLeft)
 	{
-		ActiveModel->RotateFocusedTrainTrack(mTrackTool == lcTrackTool::RotateTrainTrackRight ? 1 : -1);
+		ActiveModel->RotateFocusedTrainTrack(mTrackTool == swTrackTool::RotateTrainTrackRight ? 1 : -1);
 
 		mToolClicked = true;
 		UpdateTrackTool();
@@ -3269,7 +3269,7 @@ void lcView::OnLeftButtonDoubleClick()
 		return;
 	}
 
-	lcObjectSection ObjectSection = FindObjectUnderPointer(false, false);
+	swObjectSection ObjectSection = FindObjectUnderPointer(false, false);
 
 	if (mMouseModifiers & Qt::ControlModifier)
 		ActiveModel->FocusOrDeselectObjectAction(ObjectSection.Object, ObjectSection.Section, gMainWindow->GetSelectionMode());
@@ -3279,93 +3279,93 @@ void lcView::OnLeftButtonDoubleClick()
 			ActiveModel->RemoveFromSelectionAction({ ObjectSection.Object });
 	}
 	else
-		ActiveModel->SetSelectionAndFocusAction(std::vector<lcObject*>(), ObjectSection.Object, ObjectSection.Section, gMainWindow->GetSelectionMode());
+		ActiveModel->SetSelectionAndFocusAction(std::vector<swObject*>(), ObjectSection.Object, ObjectSection.Section, gMainWindow->GetSelectionMode());
 }
 
-void lcView::OnMiddleButtonDown()
+void swView::OnMiddleButtonDown()
 {
-	if (mTrackButton != lcTrackButton::None)
+	if (mTrackButton != swTrackButton::None)
 	{
 		StopTracking(false);
 		return;
 	}
 
-	lcTrackTool OverrideTool = GetOverrideTrackTool(Qt::MiddleButton);
+	swTrackTool OverrideTool = GetOverrideTrackTool(Qt::MiddleButton);
 
-	if (OverrideTool != lcTrackTool::None)
+	if (OverrideTool != swTrackTool::None)
 	{
 		mTrackTool = OverrideTool;
 		UpdateCursor();
 	}
 
-	OnButtonDown(lcTrackButton::Middle);
+	OnButtonDown(swTrackButton::Middle);
 }
 
-void lcView::OnMiddleButtonUp()
+void swView::OnMiddleButtonUp()
 {
-	StopTracking(mTrackButton == lcTrackButton::Middle);
+	StopTracking(mTrackButton == swTrackButton::Middle);
 }
 
-void lcView::OnRightButtonDown()
+void swView::OnRightButtonDown()
 {
-	if (mTrackButton != lcTrackButton::None)
+	if (mTrackButton != swTrackButton::None)
 	{
 		StopTracking(false);
 		return;
 	}
 
-	lcTrackTool OverrideTool = GetOverrideTrackTool(Qt::RightButton);
+	swTrackTool OverrideTool = GetOverrideTrackTool(Qt::RightButton);
 
-	if (OverrideTool != lcTrackTool::None)
+	if (OverrideTool != swTrackTool::None)
 	{
 		mTrackTool = OverrideTool;
 		UpdateCursor();
 	}
 
-	OnButtonDown(lcTrackButton::Right);
+	OnButtonDown(swTrackButton::Right);
 }
 
-void lcView::OnRightButtonUp()
+void swView::OnRightButtonUp()
 {
-	bool ShowMenu = !mToolClicked && (mTrackButton == lcTrackButton::None || !mTrackUpdated);
+	bool ShowMenu = !mToolClicked && (mTrackButton == swTrackButton::None || !mTrackUpdated);
 
-	if (mTrackButton != lcTrackButton::None)
-		StopTracking(mTrackButton == lcTrackButton::Right);
+	if (mTrackButton != swTrackButton::None)
+		StopTracking(mTrackButton == swTrackButton::Right);
 
 	if (ShowMenu)
 		ShowContextMenu();
 }
 
-void lcView::OnBackButtonDown()
+void swView::OnBackButtonDown()
 {
 }
 
-void lcView::OnBackButtonUp()
+void swView::OnBackButtonUp()
 {
-	gMainWindow->HandleCommand(LC_VIEW_TIME_PREVIOUS);
+	gMainWindow->HandleCommand(SW_VIEW_TIME_PREVIOUS);
 }
 
-void lcView::OnForwardButtonDown()
+void swView::OnForwardButtonDown()
 {
 }
 
-void lcView::OnForwardButtonUp()
+void swView::OnForwardButtonUp()
 {
-	gMainWindow->HandleCommand(LC_VIEW_TIME_NEXT);
+	gMainWindow->HandleCommand(SW_VIEW_TIME_NEXT);
 }
 
-void lcView::OnMouseMove()
+void swView::OnMouseMove()
 {
-	lcModel* ActiveModel = GetActiveModel();
+	swModel* ActiveModel = GetActiveModel();
 
 	if (!ActiveModel)
 		return;
 
-	if (mTrackButton == lcTrackButton::None)
+	if (mTrackButton == swTrackButton::None)
 	{
 		if (mViewSphere->OnMouseMove())
 		{
-			lcTrackTool NewTrackTool = mViewSphere->IsDragging() ? lcTrackTool::OrbitXY : lcTrackTool::None;
+			swTrackTool NewTrackTool = mViewSphere->IsDragging() ? swTrackTool::OrbitXY : swTrackTool::None;
 
 			if (NewTrackTool != mTrackTool)
 			{
@@ -3378,7 +3378,7 @@ void lcView::OnMouseMove()
 
 		UpdateTrackTool();
 
-		if (mTrackTool == lcTrackTool::Insert)
+		if (mTrackTool == swTrackTool::Insert)
 		{
 			UpdatePiecePreview();
 			ActiveModel->UpdateAllViews();
@@ -3388,109 +3388,109 @@ void lcView::OnMouseMove()
 	}
 
 	mTrackUpdated = true;
-	const float MouseSensitivity = 0.5f / (21.0f - lcGetPreferences().mMouseSensitivity);
+	const float MouseSensitivity = 0.5f / (21.0f - swGetPreferences().mMouseSensitivity);
 
 	switch (mTrackTool)
 	{
-	case lcTrackTool::None:
-	case lcTrackTool::Insert:
-	case lcTrackTool::PointLight:
-	case lcTrackTool::SpotLight:
-	case lcTrackTool::DirectionalLight:
-	case lcTrackTool::AreaLight:
-	case lcTrackTool::Camera:
+	case swTrackTool::None:
+	case swTrackTool::Insert:
+	case swTrackTool::PointLight:
+	case swTrackTool::SpotLight:
+	case swTrackTool::DirectionalLight:
+	case swTrackTool::AreaLight:
+	case swTrackTool::Camera:
 		break;
 
-	case lcTrackTool::Select:
+	case swTrackTool::Select:
 		Redraw();
 		break;
 
-	case lcTrackTool::MoveX:
-	case lcTrackTool::MoveY:
-	case lcTrackTool::MoveZ:
-	case lcTrackTool::MoveXY:
-	case lcTrackTool::MoveXZ:
-	case lcTrackTool::MoveYZ:
-	case lcTrackTool::MoveXYZ:
-	case lcTrackTool::ScalePlus:
-	case lcTrackTool::ScaleMinus:
+	case swTrackTool::MoveX:
+	case swTrackTool::MoveY:
+	case swTrackTool::MoveZ:
+	case swTrackTool::MoveXY:
+	case swTrackTool::MoveXZ:
+	case swTrackTool::MoveYZ:
+	case swTrackTool::MoveXYZ:
+	case swTrackTool::ScalePlus:
+	case swTrackTool::ScaleMinus:
 	{
-			lcVector3 Points[4] =
+			swVector3 Points[4] =
 			{
-				lcVector3((float)mMouseX, (float)mMouseY, 0.0f),
-				lcVector3((float)mMouseX, (float)mMouseY, 1.0f),
-				lcVector3(mMouseDownX, mMouseDownY, 0.0f),
-				lcVector3(mMouseDownX, mMouseDownY, 1.0f)
+				swVector3((float)mMouseX, (float)mMouseY, 0.0f),
+				swVector3((float)mMouseX, (float)mMouseY, 1.0f),
+				swVector3(mMouseDownX, mMouseDownY, 0.0f),
+				swVector3(mMouseDownX, mMouseDownY, 1.0f)
 			};
 
 			UnprojectPoints(Points, 4);
 
-			const lcVector3& CurrentStart = Points[0];
-			const lcVector3& CurrentEnd = Points[1];
-			const lcVector3& MouseDownStart = Points[2];
-			const lcVector3& MouseDownEnd = Points[3];
+			const swVector3& CurrentStart = Points[0];
+			const swVector3& CurrentEnd = Points[1];
+			const swVector3& MouseDownStart = Points[2];
+			const swVector3& MouseDownEnd = Points[3];
 
-			lcVector3 OverlayCenter;
-			lcMatrix33 RelativeRotation;
+			swVector3 OverlayCenter;
+			swMatrix33 RelativeRotation;
 			ActiveModel->GetMoveRotateTransform(OverlayCenter, RelativeRotation);
 
-			lcMatrix44 WorldMatrix = lcMatrix44(RelativeRotation, OverlayCenter);
+			swMatrix44 WorldMatrix = swMatrix44(RelativeRotation, OverlayCenter);
 
 			if (ActiveModel != mModel)
-				WorldMatrix = lcMul(WorldMatrix, mActiveSubmodelTransform);
+				WorldMatrix = swMul(WorldMatrix, mActiveSubmodelTransform);
 
-			const lcVector3 Center = WorldMatrix.GetTranslation();
+			const swVector3 Center = WorldMatrix.GetTranslation();
 
-			if (mTrackTool == lcTrackTool::MoveX || mTrackTool == lcTrackTool::MoveY || mTrackTool == lcTrackTool::MoveZ)
+			if (mTrackTool == swTrackTool::MoveX || mTrackTool == swTrackTool::MoveY || mTrackTool == swTrackTool::MoveZ)
 			{
-				lcVector3 Direction;
-				if (mTrackTool == lcTrackTool::MoveX)
-					Direction = lcVector3(1.0f, 0.0f, 0.0f);
-				else if (mTrackTool == lcTrackTool::MoveY)
-					Direction = lcVector3(0.0f, 1.0f, 0.0f);
+				swVector3 Direction;
+				if (mTrackTool == swTrackTool::MoveX)
+					Direction = swVector3(1.0f, 0.0f, 0.0f);
+				else if (mTrackTool == swTrackTool::MoveY)
+					Direction = swVector3(0.0f, 1.0f, 0.0f);
 				else
-					Direction = lcVector3(0.0f, 0.0f, 1.0f);
+					Direction = swVector3(0.0f, 0.0f, 1.0f);
 
-				Direction = lcMul30(Direction, WorldMatrix);
+				Direction = swMul30(Direction, WorldMatrix);
 
-				lcVector3 Intersection;
-				lcClosestPointsBetweenLines(Center, Center + Direction, CurrentStart, CurrentEnd, &Intersection, nullptr);
+				swVector3 Intersection;
+				swClosestPointsBetweenLines(Center, Center + Direction, CurrentStart, CurrentEnd, &Intersection, nullptr);
 
-				lcVector3 MoveStart;
-				lcClosestPointsBetweenLines(Center, Center + Direction, MouseDownStart, MouseDownEnd, &MoveStart, nullptr);
+				swVector3 MoveStart;
+				swClosestPointsBetweenLines(Center, Center + Direction, MouseDownStart, MouseDownEnd, &MoveStart, nullptr);
 
-				lcVector3 Distance = Intersection - MoveStart;
-				Distance = lcMul(Distance, lcMatrix33AffineInverse(lcMatrix33(WorldMatrix)));
-				ActiveModel->UpdateMoveTool(Distance, true, mTrackButton != lcTrackButton::Left);
+				swVector3 Distance = Intersection - MoveStart;
+				Distance = swMul(Distance, swMatrix33AffineInverse(swMatrix33(WorldMatrix)));
+				ActiveModel->UpdateMoveTool(Distance, true, mTrackButton != swTrackButton::Left);
 			}
-			else if (mTrackTool == lcTrackTool::MoveXY || mTrackTool == lcTrackTool::MoveXZ || mTrackTool == lcTrackTool::MoveYZ)
+			else if (mTrackTool == swTrackTool::MoveXY || mTrackTool == swTrackTool::MoveXZ || mTrackTool == swTrackTool::MoveYZ)
 			{
-				lcVector3 PlaneNormal;
+				swVector3 PlaneNormal;
 
-				if (mTrackTool == lcTrackTool::MoveXY)
-					PlaneNormal = lcVector3(0.0f, 0.0f, 1.0f);
-				else if (mTrackTool == lcTrackTool::MoveXZ)
-					PlaneNormal = lcVector3(0.0f, 1.0f, 0.0f);
+				if (mTrackTool == swTrackTool::MoveXY)
+					PlaneNormal = swVector3(0.0f, 0.0f, 1.0f);
+				else if (mTrackTool == swTrackTool::MoveXZ)
+					PlaneNormal = swVector3(0.0f, 1.0f, 0.0f);
 				else
-					PlaneNormal = lcVector3(1.0f, 0.0f, 0.0f);
+					PlaneNormal = swVector3(1.0f, 0.0f, 0.0f);
 
-				PlaneNormal = lcMul30(PlaneNormal, WorldMatrix);
-				lcVector4 Plane(PlaneNormal, -lcDot(PlaneNormal, Center));
-				lcVector3 Intersection;
+				PlaneNormal = swMul30(PlaneNormal, WorldMatrix);
+				swVector4 Plane(PlaneNormal, -swDot(PlaneNormal, Center));
+				swVector3 Intersection;
 
-				if (lcLineSegmentPlaneIntersection(&Intersection, CurrentStart, CurrentEnd, Plane))
+				if (swLineSegmentPlaneIntersection(&Intersection, CurrentStart, CurrentEnd, Plane))
 				{
-					lcVector3 MoveStart;
+					swVector3 MoveStart;
 
-					if (lcLineSegmentPlaneIntersection(&MoveStart, MouseDownStart, MouseDownEnd, Plane))
+					if (swLineSegmentPlaneIntersection(&MoveStart, MouseDownStart, MouseDownEnd, Plane))
 					{
-						lcVector3 Distance = Intersection - MoveStart;
-						Distance = lcMul(Distance, lcMatrix33AffineInverse(lcMatrix33(WorldMatrix)));
-						ActiveModel->UpdateMoveTool(Distance, true, mTrackButton != lcTrackButton::Left);
+						swVector3 Distance = Intersection - MoveStart;
+						Distance = swMul(Distance, swMatrix33AffineInverse(swMatrix33(WorldMatrix)));
+						ActiveModel->UpdateMoveTool(Distance, true, mTrackButton != swTrackButton::Left);
 					}
 				}
 			}
-			else if (mTrackTool == lcTrackTool::MoveXYZ && mMouseDownPiece)
+			else if (mTrackTool == swTrackTool::MoveXYZ && mMouseDownPiece)
 			{
 				if (mMouseDownPiece->mPieceData->GetTrainTrackInfo())
 					ActiveModel->UpdateSelectedPiecesTrainTrackConnections();
@@ -3499,42 +3499,42 @@ void lcView::OnMouseMove()
 
 				if (!PieceInfoTransforms.empty())
 				{
-					ActiveModel->UpdateFreeMoveTool(mMouseDownPiece, mMouseDownTransform, PieceInfoTransforms.back().Transform, IsConnection, mTrackButton != lcTrackButton::Left);
+					ActiveModel->UpdateFreeMoveTool(mMouseDownPiece, mMouseDownTransform, PieceInfoTransforms.back().Transform, IsConnection, mTrackButton != swTrackButton::Left);
 				}
 			}
-			else if (mTrackTool == lcTrackTool::ScalePlus || mTrackTool == lcTrackTool::ScaleMinus)
+			else if (mTrackTool == swTrackTool::ScalePlus || mTrackTool == swTrackTool::ScaleMinus)
 			{
-				lcVector3 Direction;
-				if (mTrackTool == lcTrackTool::ScalePlus)
-					Direction = lcVector3(1.0f, 0.0f, 0.0f);
+				swVector3 Direction;
+				if (mTrackTool == swTrackTool::ScalePlus)
+					Direction = swVector3(1.0f, 0.0f, 0.0f);
 				else
-					Direction = lcVector3(-1.0f, 0.0f, 0.0f);
+					Direction = swVector3(-1.0f, 0.0f, 0.0f);
 
-				Direction = lcMul30(Direction, WorldMatrix);
+				Direction = swMul30(Direction, WorldMatrix);
 
-				lcVector3 Intersection;
-				lcClosestPointsBetweenLines(Center, Center + Direction, CurrentStart, CurrentEnd, &Intersection, nullptr);
+				swVector3 Intersection;
+				swClosestPointsBetweenLines(Center, Center + Direction, CurrentStart, CurrentEnd, &Intersection, nullptr);
 
-				lcObject* Focus = ActiveModel->GetFocusObject();
+				swObject* Focus = ActiveModel->GetFocusObject();
 				if (Focus && Focus->IsPiece())
 				{
-					lcPiece* Piece = (lcPiece*)Focus;
+					swPiece* Piece = (swPiece*)Focus;
 					quint32 Section = Piece->GetFocusSection();
 
-					if (Section >= LC_PIECE_SECTION_CONTROL_POINT_FIRST && Section <= LC_PIECE_SECTION_CONTROL_POINT_LAST)
+					if (Section >= SW_PIECE_SECTION_CONTROL_POINT_FIRST && Section <= SW_PIECE_SECTION_CONTROL_POINT_LAST)
 					{
 						const float ScaleMax = 200.0f;
 						const float OverlayScale = GetOverlayScale();
 						const float ScaleStart = 2.0f * OverlayScale;
 
-						lcVector3 Position = Piece->GetSectionPosition(Section);
-						lcVector3 Start = Position + Direction * ScaleStart;
+						swVector3 Position = Piece->GetSectionPosition(Section);
+						swVector3 Start = Position + Direction * ScaleStart;
 
-						float Distance = lcLength(Intersection - Start);
-						if (lcDot(Direction, Intersection - Start) < 0.0f)
+						float Distance = swLength(Intersection - Start);
+						if (swDot(Direction, Intersection - Start) < 0.0f)
 							Distance = 0.0f;
 
-						float Scale = lcClamp(Distance, 0.1f, ScaleMax);
+						float Scale = swClamp(Distance, 0.1f, ScaleMax);
 
 						ActiveModel->UpdateScaleTool(Scale);
 					}
@@ -3542,128 +3542,128 @@ void lcView::OnMouseMove()
 			}
 			else
 			{
-				lcVector3 PlaneNormal = lcNormalize(mCamera->mTargetPosition - mCamera->mPosition);
-				lcVector4 Plane(PlaneNormal, -lcDot(PlaneNormal, Center));
-				lcVector3 Intersection;
+				swVector3 PlaneNormal = swNormalize(mCamera->mTargetPosition - mCamera->mPosition);
+				swVector4 Plane(PlaneNormal, -swDot(PlaneNormal, Center));
+				swVector3 Intersection;
 
-				if (lcLineSegmentPlaneIntersection(&Intersection, CurrentStart, CurrentEnd, Plane))
+				if (swLineSegmentPlaneIntersection(&Intersection, CurrentStart, CurrentEnd, Plane))
 				{
-					lcVector3 MoveStart;
+					swVector3 MoveStart;
 
-					if (lcLineSegmentPlaneIntersection(&MoveStart, MouseDownStart, MouseDownEnd, Plane))
+					if (swLineSegmentPlaneIntersection(&MoveStart, MouseDownStart, MouseDownEnd, Plane))
 					{
-						lcVector3 Distance = Intersection - MoveStart;
-						ActiveModel->UpdateMoveTool(Distance, true, mTrackButton != lcTrackButton::Left);
+						swVector3 Distance = Intersection - MoveStart;
+						ActiveModel->UpdateMoveTool(Distance, true, mTrackButton != swTrackButton::Left);
 					}
 				}
 			}
 		}
 		break;
 
-	case lcTrackTool::RotateX:
-	case lcTrackTool::RotateY:
-	case lcTrackTool::RotateZ:
+	case swTrackTool::RotateX:
+	case swTrackTool::RotateY:
+	case swTrackTool::RotateZ:
 		{
-			lcVector3 OverlayCenter;
-			lcMatrix33 RelativeRotation;
+			swVector3 OverlayCenter;
+			swMatrix33 RelativeRotation;
 			ActiveModel->GetMoveRotateTransform(OverlayCenter, RelativeRotation);
 
-			lcMatrix44 WorldMatrix = lcMatrix44(RelativeRotation, OverlayCenter);
+			swMatrix44 WorldMatrix = swMatrix44(RelativeRotation, OverlayCenter);
 			if (ActiveModel != mModel)
-				WorldMatrix = lcMul(WorldMatrix, mActiveSubmodelTransform);
+				WorldMatrix = swMul(WorldMatrix, mActiveSubmodelTransform);
 
-			const lcVector3 ScreenCenter = ProjectPoint(WorldMatrix.GetTranslation());
+			const swVector3 ScreenCenter = ProjectPoint(WorldMatrix.GetTranslation());
 			const float MouseAngle = atan2f((float)mMouseY - ScreenCenter[1], (float)mMouseX - ScreenCenter[0]);
 			float Angle = mCameraRotationLastMouseAngle - MouseAngle;
 
-			if (Angle > LC_PI)
-				Angle -= LC_2PI;
-			else if (Angle < -LC_PI)
-				Angle += LC_2PI;
+			if (Angle > SW_PI)
+				Angle -= SW_2PI;
+			else if (Angle < -SW_PI)
+				Angle += SW_2PI;
 
 			mCameraRotationAngle += Angle;
 			mCameraRotationLastMouseAngle = MouseAngle;
 
-			lcVector3 Axis;
+			swVector3 Axis;
 
 			switch (mTrackTool)
 			{
-			case lcTrackTool::RotateX:
-				Axis = lcVector3(1.0f, 0.0f, 0.0f);
+			case swTrackTool::RotateX:
+				Axis = swVector3(1.0f, 0.0f, 0.0f);
 				break;
-			case lcTrackTool::RotateY:
-				Axis = lcVector3(0.0f, 1.0f, 0.0f);
+			case swTrackTool::RotateY:
+				Axis = swVector3(0.0f, 1.0f, 0.0f);
 				break;
-			case lcTrackTool::RotateZ:
-				Axis = lcVector3(0.0f, 0.0f, 1.0f);
+			case swTrackTool::RotateZ:
+				Axis = swVector3(0.0f, 0.0f, 1.0f);
 				break;
 			default:
-				Axis = lcVector3(0.0f, 0.0f, 1.0f);
+				Axis = swVector3(0.0f, 0.0f, 1.0f);
 				break;
 			}
 
 			// The rings rotate with the current gizmo frame, so derive the displayed
 			// axis from the current transform before determining its screen direction.
-			lcVector3 DisplayAxis = lcNormalize(lcMul30(Axis, WorldMatrix));
+			swVector3 DisplayAxis = swNormalize(swMul30(Axis, WorldMatrix));
 			if (WorldMatrix.Determinant() < 0.0f)
 				DisplayAxis = -DisplayAxis;
 
-			const lcVector3 CameraAxis = lcNormalize(mCamera->mTargetPosition - mCamera->mPosition);
-			const float AxisDirection = lcDot(DisplayAxis, CameraAxis) < 0.0f ? -1.0f : 1.0f;
-			ActiveModel->UpdateRotateTool(Axis, AxisDirection * mCameraRotationAngle * LC_RTOD, mTrackButton != lcTrackButton::Left, true);
+			const swVector3 CameraAxis = swNormalize(mCamera->mTargetPosition - mCamera->mPosition);
+			const float AxisDirection = swDot(DisplayAxis, CameraAxis) < 0.0f ? -1.0f : 1.0f;
+			ActiveModel->UpdateRotateTool(Axis, AxisDirection * mCameraRotationAngle * SW_RTOD, mTrackButton != swTrackButton::Left, true);
 		}
 		break;
 
-	case lcTrackTool::RotateTrackBall:
+	case swTrackTool::RotateTrackBall:
 		{
-			const lcVector3 CurrentVector = GetTrackballPoint(mMouseX, mMouseY);
-			const lcVector3 LocalAxis = lcCross(mTrackballVector, CurrentVector);
-			const float AxisLength = lcLength(LocalAxis);
+			const swVector3 CurrentVector = GetTrackballPoint(mMouseX, mMouseY);
+			const swVector3 LocalAxis = swCross(mTrackballVector, CurrentVector);
+			const float AxisLength = swLength(LocalAxis);
 
 			if (AxisLength > 0.0001f)
 			{
-				const float Angle = atan2f(AxisLength, lcClamp(lcDot(mTrackballVector, CurrentVector), -1.0f, 1.0f));
-				const lcMatrix44 CameraWorldMatrix = lcMatrix44AffineInverse(mCamera->mWorldView);
-				lcVector3 RotationAxis = lcNormalize(lcMul30(LocalAxis, CameraWorldMatrix));
+				const float Angle = atan2f(AxisLength, swClamp(swDot(mTrackballVector, CurrentVector), -1.0f, 1.0f));
+				const swMatrix44 CameraWorldMatrix = swMatrix44AffineInverse(mCamera->mWorldView);
+				swVector3 RotationAxis = swNormalize(swMul30(LocalAxis, CameraWorldMatrix));
 				if (ActiveModel != mModel)
 				{
-					const lcMatrix44 ActiveSubmodelInverse = lcMatrix44AffineInverse(mActiveSubmodelTransform);
-					RotationAxis = lcNormalize(lcMul30(RotationAxis, ActiveSubmodelInverse));
+					const swMatrix44 ActiveSubmodelInverse = swMatrix44AffineInverse(mActiveSubmodelTransform);
+					RotationAxis = swNormalize(swMul30(RotationAxis, ActiveSubmodelInverse));
 
 					if (ActiveSubmodelInverse.Determinant() < 0.0f)
 						RotationAxis = -RotationAxis;
 				}
 
-				const lcMatrix33 IncrementalRotation = lcMatrix33FromAxisAngle(RotationAxis, Angle);
+				const swMatrix33 IncrementalRotation = swMatrix33FromAxisAngle(RotationAxis, Angle);
 
 				const bool Snapping = gMainWindow->GetAngleSnap() != 0.0f;
 				if (Snapping != mTrackballSnapping)
 				{
 					if (!Snapping && mTrackballHasPendingRotation)
-						ActiveModel->UpdateRotateTool(mTrackballPendingRotation, mTrackButton != lcTrackButton::Left, false);
+						ActiveModel->UpdateRotateTool(mTrackballPendingRotation, mTrackButton != swTrackButton::Left, false);
 
-					mTrackballPendingRotation = lcMatrix33Identity();
+					mTrackballPendingRotation = swMatrix33Identity();
 					mTrackballSnapping = Snapping;
 					mTrackballHasPendingRotation = false;
 				}
 
 				if (!Snapping)
 				{
-					ActiveModel->UpdateRotateTool(IncrementalRotation, mTrackButton != lcTrackButton::Left, false);
+					ActiveModel->UpdateRotateTool(IncrementalRotation, mTrackButton != swTrackButton::Left, false);
 				}
 				else
 				{
-					mTrackballPendingRotation = lcMul(mTrackballPendingRotation, IncrementalRotation);
+					mTrackballPendingRotation = swMul(mTrackballPendingRotation, IncrementalRotation);
 					mTrackballHasPendingRotation = true;
-					const lcVector4 AxisAngle = lcMatrix44ToAxisAngle(lcMatrix44(mTrackballPendingRotation, lcVector3(0.0f, 0.0f, 0.0f)));
-					const float SnappedAngle = ActiveModel->SnapRotation(lcVector3(AxisAngle[3] * LC_RTOD, 0.0f, 0.0f))[0];
+					const swVector4 AxisAngle = swMatrix44ToAxisAngle(swMatrix44(mTrackballPendingRotation, swVector3(0.0f, 0.0f, 0.0f)));
+					const float SnappedAngle = ActiveModel->SnapRotation(swVector3(AxisAngle[3] * SW_RTOD, 0.0f, 0.0f))[0];
 
 					if (SnappedAngle != 0.0f)
 					{
-						const lcMatrix33 SnappedRotation = lcMatrix33FromAxisAngle(lcVector3(AxisAngle), SnappedAngle * LC_DTOR);
-						ActiveModel->UpdateRotateTool(SnappedRotation, mTrackButton != lcTrackButton::Left, false);
-						mTrackballPendingRotation = lcMul(lcMatrix33AffineInverse(SnappedRotation), mTrackballPendingRotation);
-						mTrackballHasPendingRotation = lcMatrix44ToAxisAngle(lcMatrix44(mTrackballPendingRotation, lcVector3(0.0f, 0.0f, 0.0f)))[3] > 0.000001f;
+						const swMatrix33 SnappedRotation = swMatrix33FromAxisAngle(swVector3(AxisAngle), SnappedAngle * SW_DTOR);
+						ActiveModel->UpdateRotateTool(SnappedRotation, mTrackButton != swTrackButton::Left, false);
+						mTrackballPendingRotation = swMul(swMatrix33AffineInverse(SnappedRotation), mTrackballPendingRotation);
+						mTrackballHasPendingRotation = swMatrix44ToAxisAngle(swMatrix44(mTrackballPendingRotation, swVector3(0.0f, 0.0f, 0.0f)))[3] > 0.000001f;
 					}
 				}
 			}
@@ -3672,113 +3672,113 @@ void lcView::OnMouseMove()
 		}
 		break;
 
-	case lcTrackTool::RotateCamera:
+	case swTrackTool::RotateCamera:
 		{
-			lcVector3 OverlayCenter;
-			lcMatrix33 RelativeRotation;
+			swVector3 OverlayCenter;
+			swMatrix33 RelativeRotation;
 			ActiveModel->GetMoveRotateTransform(OverlayCenter, RelativeRotation);
 
-			lcMatrix44 WorldMatrix = lcMatrix44(RelativeRotation, OverlayCenter);
+			swMatrix44 WorldMatrix = swMatrix44(RelativeRotation, OverlayCenter);
 			if (ActiveModel != mModel)
-				WorldMatrix = lcMul(WorldMatrix, mActiveSubmodelTransform);
+				WorldMatrix = swMul(WorldMatrix, mActiveSubmodelTransform);
 
-			const lcVector3 ScreenCenter = ProjectPoint(WorldMatrix.GetTranslation());
+			const swVector3 ScreenCenter = ProjectPoint(WorldMatrix.GetTranslation());
 			const float MouseAngle = atan2f((float)mMouseY - ScreenCenter[1], (float)mMouseX - ScreenCenter[0]);
 			// Unwrap each clockwise-positive pointer delta so full turns do not flip
 			// when the pointer crosses the opposite side of the ring.
 			float Angle = mCameraRotationLastMouseAngle - MouseAngle;
 
-			if (Angle > LC_PI)
-				Angle -= LC_2PI;
-			else if (Angle < -LC_PI)
-				Angle += LC_2PI;
+			if (Angle > SW_PI)
+				Angle -= SW_2PI;
+			else if (Angle < -SW_PI)
+				Angle += SW_2PI;
 
 			mCameraRotationAngle += Angle;
 			mCameraRotationLastMouseAngle = MouseAngle;
 
-			lcVector3 CameraAxis = lcNormalize(mCamera->mTargetPosition - mCamera->mPosition);
+			swVector3 CameraAxis = swNormalize(mCamera->mTargetPosition - mCamera->mPosition);
 			if (ActiveModel != mModel)
 			{
-				const lcMatrix44 ActiveSubmodelInverse = lcMatrix44AffineInverse(mActiveSubmodelTransform);
-				CameraAxis = lcNormalize(lcMul30(CameraAxis, ActiveSubmodelInverse));
+				const swMatrix44 ActiveSubmodelInverse = swMatrix44AffineInverse(mActiveSubmodelTransform);
+				CameraAxis = swNormalize(swMul30(CameraAxis, ActiveSubmodelInverse));
 
 				if (ActiveSubmodelInverse.Determinant() < 0.0f)
 					CameraAxis = -CameraAxis;
 			}
 
-			ActiveModel->UpdateRotateTool(CameraAxis, mCameraRotationAngle * LC_RTOD, mTrackButton != lcTrackButton::Left, false);
+			ActiveModel->UpdateRotateTool(CameraAxis, mCameraRotationAngle * SW_RTOD, mTrackButton != swTrackButton::Left, false);
 		}
 		break;
 
-	case lcTrackTool::RotateTrainTrackRight:
-	case lcTrackTool::RotateTrainTrackLeft:
-	case lcTrackTool::InsertTrainTrack:
-	case lcTrackTool::SelectTrainTrack:
-	case lcTrackTool::Eraser:
+	case swTrackTool::RotateTrainTrackRight:
+	case swTrackTool::RotateTrainTrackLeft:
+	case swTrackTool::InsertTrainTrack:
+	case swTrackTool::SelectTrainTrack:
+	case swTrackTool::Eraser:
 		break;
 
-	case lcTrackTool::Paint:
+	case swTrackTool::Paint:
 		ActiveModel->PaintToolClicked(FindObjectUnderPointer(true, false).Object);
 		break;
 
-	case lcTrackTool::ColorPicker:
+	case swTrackTool::ColorPicker:
 		break;
 
-	case lcTrackTool::Zoom:
+	case swTrackTool::Zoom:
 		ActiveModel->UpdateZoomTool(mCamera, 2.0f * MouseSensitivity * (mMouseY - mMouseDownY));
 		break;
 
-	case lcTrackTool::Pan:
+	case swTrackTool::Pan:
 		UpdatePan(mMouseX, mMouseY);
 		break;
 
-	case lcTrackTool::OrbitX:
+	case swTrackTool::OrbitX:
 		ActiveModel->UpdateOrbitTool(mCamera, 0.1f * MouseSensitivity * (mMouseX - mMouseDownX), 0.0f);
 		break;
 
-	case lcTrackTool::OrbitY:
+	case swTrackTool::OrbitY:
 		// The minifigure preview only turns around its vertical axis.
-		if (mViewType != lcViewType::Minifig)
+		if (mViewType != swViewType::Minifig)
 			ActiveModel->UpdateOrbitTool(mCamera, 0.0f, 0.1f * MouseSensitivity * (mMouseY - mMouseDownY));
 		break;
 
-	case lcTrackTool::OrbitXY:
-		ActiveModel->UpdateOrbitTool(mCamera, 0.1f * MouseSensitivity * (mMouseX - mMouseDownX), mViewType == lcViewType::Minifig ? 0.0f : 0.1f * MouseSensitivity * (mMouseY - mMouseDownY));
+	case swTrackTool::OrbitXY:
+		ActiveModel->UpdateOrbitTool(mCamera, 0.1f * MouseSensitivity * (mMouseX - mMouseDownX), mViewType == swViewType::Minifig ? 0.0f : 0.1f * MouseSensitivity * (mMouseY - mMouseDownY));
 
 		// Keep the whole minifigure in view while it turns.
-		if (mViewType == lcViewType::Minifig)
-			ZoomExtents(lcGeometryBoundsMode::IncludeFallback, false);
+		if (mViewType == swViewType::Minifig)
+			ZoomExtents(swGeometryBoundsMode::IncludeFallback, false);
 		break;
 
-	case lcTrackTool::Roll:
-		ActiveModel->UpdateRollTool(mCamera, 2.0f * MouseSensitivity * (mMouseX - mMouseDownX) * LC_DTOR);
+	case swTrackTool::Roll:
+		ActiveModel->UpdateRollTool(mCamera, 2.0f * MouseSensitivity * (mMouseX - mMouseDownX) * SW_DTOR);
 		break;
 
-	case lcTrackTool::ZoomRegion:
+	case swTrackTool::ZoomRegion:
 		Redraw();
 		break;
 
-	case lcTrackTool::Count:
+	case swTrackTool::Count:
 		break;
 	}
 }
 
-void lcView::OnMouseLeave()
+void swView::OnMouseLeave()
 {
-	if (mTrackTool == lcTrackTool::Insert)
+	if (mTrackTool == swTrackTool::Insert)
 	{
-		mTrackTool = lcTrackTool::None;
+		mTrackTool = swTrackTool::None;
 
 		UpdateCursor();
 
-		lcModel* ActiveModel = GetActiveModel();
+		swModel* ActiveModel = GetActiveModel();
 
 		if (ActiveModel)
-			ActiveModel->SetPreviewInsertPieceInfo(std::vector<lcInsertPieceInfo>());
+			ActiveModel->SetPreviewInsertPieceInfo(std::vector<swInsertPieceInfo>());
 	}
 }
 
-void lcView::OnMouseWheel(float Direction)
+void swView::OnMouseWheel(float Direction)
 {
 	float Scale = 10.0f;
 

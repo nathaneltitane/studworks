@@ -1,29 +1,29 @@
 #pragma once
 
-class lcCollapsibleWidgetButton;
+class swCollapsibleWidgetButton;
 
-struct lcColorListCell
+struct swColorListCell
 {
 	QRect Rect;
 	int ColorIndex;
 };
 
-struct lcColorListGroup
+struct swColorListGroup
 {
 	QRect Rect;
 	QString Name;
 	std::vector<size_t> Cells;
-	lcCollapsibleWidgetButton* Button = nullptr;
+	swCollapsibleWidgetButton* Button = nullptr;
 	bool Collapsed = false;
 };
 
-class lcColorList : public QWidget
+class swColorList : public QWidget
 {
 	Q_OBJECT
 
 public:
-	lcColorList(QWidget* Parent = nullptr, bool AllowNoColor = false);
-	~lcColorList() = default;
+	swColorList(QWidget* Parent = nullptr, bool AllowNoColor = false);
+	~swColorList() = default;
 
 	QSize sizeHint() const override;
 	int GetHeightForWidth(int Width, int* Columns = nullptr, int* Rows = nullptr) const;
@@ -42,7 +42,7 @@ protected slots:
 protected:
 	void UpdateCells();
 	void SetGroupCollapsed(int GroupIndex, bool Collapsed);
-	int GetGroupHeaderHeight(const lcColorListGroup& Group, bool FirstGroup) const;
+	int GetGroupHeaderHeight(const swColorListGroup& Group, bool FirstGroup) const;
 	void UpdateRects();
 	void SelectCell(size_t CellIndex);
 
@@ -53,8 +53,8 @@ protected:
 	void mouseMoveEvent(QMouseEvent* MouseEvent) override;
 	void keyPressEvent(QKeyEvent* KeyEvent) override;
 
-	std::vector<lcColorListCell> mCells;
-	std::vector<lcColorListGroup> mGroups;
+	std::vector<swColorListCell> mCells;
+	std::vector<swColorListGroup> mGroups;
 
 	size_t mCurrentCell = 0;
 	quint32 mColorCode = 0;

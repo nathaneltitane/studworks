@@ -12,7 +12,7 @@
 #include "sw_utils.h"
 #include "project.h"
 
-#ifndef LC_DISABLE_BLENDER
+#ifndef SW_DISABLE_BLENDER
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
 using Qt::SkipEmptyParts;
@@ -22,28 +22,28 @@ const auto SkipEmptyParts = QString::SplitBehavior::SkipEmptyParts;
 
 const QLatin1String LineEnding("\r\n");
 
-#define LC_PRODUCTNAME_STR                 "LeoCAD"
-#define LC_BLENDER_ADDON                   "ImportLDraw"
-#define LC_BLENDER_ADDON_MM                "ImportLDrawMM"
-#define LC_BLENDER_ADDON_FILE              "LDrawBlenderRenderAddons.zip"
-#define LC_BLENDER_ADDON_INSTALL_FILE      "install_blender_ldraw_addons.py"
-#define LC_BLENDER_ADDON_CONFIG_FILE       "LDrawRendererPreferences.ini"
-#define LC_BLENDER_ADDON_PARAMS_FILE       "LDrawParameters.lst"
+#define SW_PRODUCTNAME_STR                 "LeoCAD"
+#define SW_BLENDER_ADDON                   "ImportLDraw"
+#define SW_BLENDER_ADDON_MM                "ImportLDrawMM"
+#define SW_BLENDER_ADDON_FILE              "LDrawBlenderRenderAddons.zip"
+#define SW_BLENDER_ADDON_INSTALL_FILE      "install_blender_ldraw_addons.py"
+#define SW_BLENDER_ADDON_CONFIG_FILE       "LDrawRendererPreferences.ini"
+#define SW_BLENDER_ADDON_PARAMS_FILE       "LDrawParameters.lst"
 
-#define LC_BLENDER_ADDON_REPO_STR          "https://github.com/trevorsandy"
-#define LC_BLENDER_ADDON_REPO_API_STR      "https://api.github.com/repos/trevorsandy"
-#define LC_BLENDER_ADDON_STR               LC_BLENDER_ADDON_REPO_STR "/blenderldrawrender/"
-#define LC_BLENDER_ADDON_API_STR           LC_BLENDER_ADDON_REPO_API_STR "/blenderldrawrender/"
-#define LC_BLENDER_ADDON_LATEST_URL        LC_BLENDER_ADDON_API_STR "releases/latest"
-#define LC_BLENDER_ADDON_URL               LC_BLENDER_ADDON_STR "releases/latest/download/" LC_BLENDER_ADDON_FILE
-#define LC_BLENDER_ADDON_SHA_HASH_URL      LC_BLENDER_ADDON_URL ".sha256"
+#define SW_BLENDER_ADDON_REPO_STR          "https://github.com/trevorsandy"
+#define SW_BLENDER_ADDON_REPO_API_STR      "https://api.github.com/repos/trevorsandy"
+#define SW_BLENDER_ADDON_STR               SW_BLENDER_ADDON_REPO_STR "/blenderldrawrender/"
+#define SW_BLENDER_ADDON_API_STR           SW_BLENDER_ADDON_REPO_API_STR "/blenderldrawrender/"
+#define SW_BLENDER_ADDON_LATEST_URL        SW_BLENDER_ADDON_API_STR "releases/latest"
+#define SW_BLENDER_ADDON_URL               SW_BLENDER_ADDON_STR "releases/latest/download/" SW_BLENDER_ADDON_FILE
+#define SW_BLENDER_ADDON_SHA_HASH_URL      SW_BLENDER_ADDON_URL ".sha256"
 
-#define LC_THEME_DARK_PALETTE_MIDLIGHT     QColor( 62,  62,  62, 255)
-#define LC_THEME_DEFAULT_PALETTE_LIGHT     QColor(174, 173, 172, 255)
-#define LC_THEME_DARK_DECORATE_QUOTED_TEXT "#81D4FA" // 129, 212, 250, 255
-#define LC_DISABLED_TEXT                   QColor(128, 128, 128, 255)
+#define SW_THEME_DARK_PALETTE_MIDLIGHT     QColor( 62,  62,  62, 255)
+#define SW_THEME_DEFAULT_PALETTE_LIGHT     QColor(174, 173, 172, 255)
+#define SW_THEME_DARK_DECORATE_QUOTED_TEXT "#81D4FA" // 129, 212, 250, 255
+#define SW_DISABLED_TEXT                   QColor(128, 128, 128, 255)
 
-#define LC_RENDER_IMAGE_MAX_SIZE           32768 // pixels
+#define SW_RENDER_IMAGE_MAX_SIZE           32768 // pixels
 
 static constexpr char WhatsThisDescription[] = QT_TRANSLATE_NOOP("QObject",
 	"<p><b>Blender LDraw Add-on Settings</b></p><p>Configure Blender and its LDraw import and render add-ons. "
@@ -54,8 +54,8 @@ static constexpr char WhatsThisDescription[] = QT_TRANSLATE_NOOP("QObject",
 	"Choose Apply to save the paths and settings and close this dialog. Reset restores the last applied values or system defaults.</p>"
 	"<p>Cancel closes without applying pending path and setting edits. Add-on installation, module configuration, and the update-check preference can take effect before Apply.</p>");
 
-lcBlenderPreferences::BlenderPaths  lcBlenderPreferences::mBlenderPaths [NUM_PATHS];
-lcBlenderPreferences::BlenderPaths  lcBlenderPreferences::mDefaultPaths [NUM_PATHS] =
+swBlenderPreferences::BlenderPaths  swBlenderPreferences::mBlenderPaths [NUM_PATHS];
+swBlenderPreferences::BlenderPaths  swBlenderPreferences::mDefaultPaths [NUM_PATHS] =
 {
 	/*                             Key:                  MM Key:               Value:             Label:                                   Tooltip (Description):*/
 	/* 0   PATH_BLENDER        */ {"blenderpath",        "blenderpath",        "",    QT_TRANSLATE_NOOP("QObject", "Blender Path"),             QT_TRANSLATE_NOOP("QObject", "Full file path to Blender application executable")},
@@ -69,8 +69,8 @@ lcBlenderPreferences::BlenderPaths  lcBlenderPreferences::mDefaultPaths [NUM_PAT
 	/* 8   PATH_STUDIO_CUSTOM_PARTS */ {"",              "studiocustompartspath", "", QT_TRANSLATE_NOOP("QObject", "Stud.io Custom Pieces Path"),QT_TRANSLATE_NOOP("QObject", "Full file path to the Stud.io LDraw Custom Pieces")}
 };
 
-lcBlenderPreferences::BlenderSettings  lcBlenderPreferences::mBlenderSettings [NUM_SETTINGS];
-lcBlenderPreferences::BlenderSettings  lcBlenderPreferences::mDefaultSettings [NUM_SETTINGS] =
+swBlenderPreferences::BlenderSettings  swBlenderPreferences::mBlenderSettings [NUM_SETTINGS];
+swBlenderPreferences::BlenderSettings  swBlenderPreferences::mDefaultSettings [NUM_SETTINGS] =
 {
 	/*                                   Key:                              Value:                  Label                                  Tooltip (Description)*/
 	/* 0   LBL_ADD_ENVIRONMENT       */ {"addenvironment",                 "1",        QT_TRANSLATE_NOOP("QObject", "Add Environment"),        QT_TRANSLATE_NOOP("QObject", "Adds a ground plane and environment texture (affects 'Photo-realistic' look only)")},
@@ -119,7 +119,7 @@ lcBlenderPreferences::BlenderSettings  lcBlenderPreferences::mDefaultSettings [N
 	/*41/6 LBL_RESOLVE_NORMALS       */ {"resolvenormals",                 "guess",    QT_TRANSLATE_NOOP("QObject", "Resolve Normals"),        QT_TRANSLATE_NOOP("QObject", "Some older LDraw pieces have faces with ambiguous normals. This specifies what to do with them.")}
 };
 
-lcBlenderPreferences::ComboItems  lcBlenderPreferences::mComboItems [NUM_COMBO_ITEMS] =
+swBlenderPreferences::ComboItems  swBlenderPreferences::mComboItems [NUM_COMBO_ITEMS] =
 {
 	/*    FIRST item set as default        Data                                  Item:   */
 	/* 00 LBL_COLOUR_SCHEME            */ {"lgeo|ldraw|alt|custom",  QT_TRANSLATE_NOOP("QObject", "Realistic Colors|Original LDraw Colors|Alternate LDraw Colors|Custom Colors")},
@@ -131,8 +131,8 @@ lcBlenderPreferences::ComboItems  lcBlenderPreferences::mComboItems [NUM_COMBO_I
 	/* 06 LBL_RESOLVE_NORMALS          */ {"guess|double",           QT_TRANSLATE_NOOP("QObject", "Recalculate Normals|Two Faces Back to Back")}
 };
 
-lcBlenderPreferences::BlenderSettings  lcBlenderPreferences::mBlenderSettingsMM [NUM_SETTINGS_MM];
-lcBlenderPreferences::BlenderSettings  lcBlenderPreferences::mDefaultSettingsMM [NUM_SETTINGS_MM] =
+swBlenderPreferences::BlenderSettings  swBlenderPreferences::mBlenderSettingsMM [NUM_SETTINGS_MM];
+swBlenderPreferences::BlenderSettings  swBlenderPreferences::mDefaultSettingsMM [NUM_SETTINGS_MM] =
 {
 	/*                                                Key:                             Value:                    Label                                    Tooltip (Description)*/
 	/* 00 LBL_ADD_ENVIRONMENT_MM                  */ {"addenvironment",                "1",          QT_TRANSLATE_NOOP("QObject", "Add Environment"),          QT_TRANSLATE_NOOP("QObject", "Adds a ground plane and environment texture")},
@@ -200,7 +200,7 @@ lcBlenderPreferences::BlenderSettings  lcBlenderPreferences::mDefaultSettingsMM 
 	/* 56/04 LBL_SMOOTH_TYPE                      */ {"smoothtype",                    "edge_split", QT_TRANSLATE_NOOP("QObject", "Smooth Type"),              QT_TRANSLATE_NOOP("QObject", "Use either autosmooth or an edge split modifier to smooth piece faces")}
 };
 
-lcBlenderPreferences::ComboItems  lcBlenderPreferences::mComboItemsMM [NUM_COMBO_ITEMS_MM] =
+swBlenderPreferences::ComboItems  swBlenderPreferences::mComboItemsMM [NUM_COMBO_ITEMS_MM] =
 {
 	/*    FIRST item set as default        Data                                  Item: */
 	/* 00 LBL_CHOSEN_LOGO              */ {"logo3|logo4|logo5",                  QT_TRANSLATE_NOOP("QObject", "Raised flattened logo geometry (3)|Raised rounded logo geometry (4)|Subtle rounded logo geometry (5)")},
@@ -210,7 +210,7 @@ lcBlenderPreferences::ComboItems  lcBlenderPreferences::mComboItemsMM [NUM_COMBO
 	/* 04 LBL_SMOOTH_TYPE              */ {"edge_split|auto_smooth|bmesh_split", QT_TRANSLATE_NOOP("QObject", "Smooth piece faces with edge split modifier|Auto-smooth piece faces|Split during initial mesh processing")}
 };
 
-lcBlenderPreferences* gAddonPreferences;
+swBlenderPreferences* gAddonPreferences;
 
 enum AddonEnc
 {
@@ -221,7 +221,7 @@ enum AddonEnc
 	ADDON_FAIL
 };
 
-lcBlenderPreferencesDialog::lcBlenderPreferencesDialog(int Width, int Height, double Scale, QWidget* Parent)
+swBlenderPreferencesDialog::swBlenderPreferencesDialog(int Width, int Height, double Scale, QWidget* Parent)
 	: QDialog(Parent)
 {
 	setWindowTitle(tr("Blender LDraw Add-on Settings"));
@@ -232,7 +232,7 @@ lcBlenderPreferencesDialog::lcBlenderPreferencesDialog(int Width, int Height, do
 	QGroupBox* Box = new QGroupBox(this);
 	Layout->addWidget(Box);
 
-	mPreferences = new lcBlenderPreferences(Width,Height,Scale,Box);
+	mPreferences = new swBlenderPreferences(Width,Height,Scale,Box);
 	setWhatsThis(Box->whatsThis());
 
 	QDialogButtonBox* ButtonBox;
@@ -241,28 +241,28 @@ lcBlenderPreferencesDialog::lcBlenderPreferencesDialog(int Width, int Height, do
 	mApplyButton->setToolTip(tr("Save the add-on paths and settings and close this dialog."));
 	mApplyButton->setEnabled(false);
 	ButtonBox->addButton(mApplyButton, QDialogButtonBox::ActionRole);
-	connect(mApplyButton, &QPushButton::clicked, this, &lcBlenderPreferencesDialog::accept);
+	connect(mApplyButton, &QPushButton::clicked, this, &swBlenderPreferencesDialog::accept);
 
 	mPathsButton = new QPushButton(tr("Hide Paths"), ButtonBox);
 	mPathsButton->setToolTip(tr("Hide the add-on paths section."));
 	ButtonBox->addButton(mPathsButton,QDialogButtonBox::ActionRole);
-	connect(mPathsButton, &QPushButton::clicked, this, &lcBlenderPreferencesDialog::ShowPathsGroup);
+	connect(mPathsButton, &QPushButton::clicked, this, &swBlenderPreferencesDialog::ShowPathsGroup);
 
 	mResetButton = new QPushButton(tr("Reset"), ButtonBox);
 	mResetButton->setEnabled(false);
 	mResetButton->setToolTip(tr("Restore the last applied paths and settings or the system defaults."));
 	ButtonBox->addButton(mResetButton,QDialogButtonBox::ActionRole);
-	connect(mResetButton, &QPushButton::clicked, this, &lcBlenderPreferencesDialog::ResetSettings);
+	connect(mResetButton, &QPushButton::clicked, this, &swBlenderPreferencesDialog::ResetSettings);
 
 	ButtonBox->addButton(QDialogButtonBox::Help);
-	lcSetupDialogHelp(this, ButtonBox);
+	swSetupDialogHelp(this, ButtonBox);
 	ButtonBox->addButton(QDialogButtonBox::Cancel);
-	connect(ButtonBox, &QDialogButtonBox::rejected, this, &lcBlenderPreferencesDialog::reject);
+	connect(ButtonBox, &QDialogButtonBox::rejected, this, &swBlenderPreferencesDialog::reject);
 
-	if (!QFileInfo(lcGetProfileString(LC_PROFILE_BLENDER_LDRAW_CONFIG_PATH)).isReadable() && !lcGetProfileString(LC_PROFILE_BLENDER_IMPORT_MODULE).isEmpty())
+	if (!QFileInfo(swGetProfileString(SW_PROFILE_BLENDER_LDRAW_CONFIG_PATH)).isReadable() && !swGetProfileString(SW_PROFILE_BLENDER_IMPORT_MODULE).isEmpty())
 		mApplyButton->setEnabled(true);
 
-	connect(mPreferences, &lcBlenderPreferences::SettingChangedSig, this, &lcBlenderPreferencesDialog::EnableButton);
+	connect(mPreferences, &swBlenderPreferences::SettingChangedSig, this, &swBlenderPreferencesDialog::EnableButton);
 
 	Layout->addWidget(ButtonBox);
 
@@ -273,13 +273,13 @@ lcBlenderPreferencesDialog::lcBlenderPreferencesDialog(int Width, int Height, do
 	setModal(true);
 }
 
-lcBlenderPreferencesDialog::~lcBlenderPreferencesDialog()
+swBlenderPreferencesDialog::~swBlenderPreferencesDialog()
 {
 }
 
-bool lcBlenderPreferencesDialog::GetBlenderPreferences(int& Width, int& Height, double & Scale, QWidget* Parent)
+bool swBlenderPreferencesDialog::GetBlenderPreferences(int& Width, int& Height, double & Scale, QWidget* Parent)
 {
-	lcBlenderPreferencesDialog* Dialog = new lcBlenderPreferencesDialog(Width,Height,Scale,Parent);
+	swBlenderPreferencesDialog* Dialog = new swBlenderPreferencesDialog(Width,Height,Scale,Parent);
 
 	bool Ok = Dialog->exec() == QDialog::Accepted;
 
@@ -294,7 +294,7 @@ bool lcBlenderPreferencesDialog::GetBlenderPreferences(int& Width, int& Height, 
 	return Ok;
 }
 
-void lcBlenderPreferencesDialog::ShowPathsGroup()
+void swBlenderPreferencesDialog::ShowPathsGroup()
 {
 	const bool HidePaths = mPathsButton->text() == tr("Hide Paths");
 	mPathsButton->setText(HidePaths ? tr("Show Paths") : tr("Hide Paths"));
@@ -302,7 +302,7 @@ void lcBlenderPreferencesDialog::ShowPathsGroup()
 	mPreferences->ShowPathsGroup();
 }
 
-void lcBlenderPreferencesDialog::EnableButton(bool Change)
+void swBlenderPreferencesDialog::EnableButton(bool Change)
 {
 	if (Change)
 	{
@@ -313,12 +313,12 @@ void lcBlenderPreferencesDialog::EnableButton(bool Change)
 	mPathsButton->setToolTip(tr("Hide the add-on paths section."));
 }
 
-void lcBlenderPreferencesDialog::ResetSettings()
+void swBlenderPreferencesDialog::ResetSettings()
 {
 	mPreferences->ResetSettings();
 }
 
-void lcBlenderPreferencesDialog::accept()
+void swBlenderPreferencesDialog::accept()
 {
 	for (QLineEdit* Edit : findChildren<QLineEdit*>())
 	{
@@ -335,13 +335,13 @@ void lcBlenderPreferencesDialog::accept()
 	QDialog::accept();
 }
 
-void lcBlenderPreferencesDialog::reject()
+void swBlenderPreferencesDialog::reject()
 {
 	if (mPreferences->PromptCancel())
 		QDialog::reject();
 }
 
-lcBlenderPreferences::lcBlenderPreferences(int Width, int Height, double Scale, QWidget* Parent)
+swBlenderPreferences::swBlenderPreferences(int Width, int Height, double Scale, QWidget* Parent)
 	: QWidget(Parent)
 {
 	gAddonPreferences = this;
@@ -378,10 +378,10 @@ lcBlenderPreferences::lcBlenderPreferences(int Width, int Height, double Scale, 
 
 	QPalette ReadOnlyPalette = QApplication::palette();
 	if (gApplication->IsDarkTheme())
-		ReadOnlyPalette.setColor(QPalette::Base, LC_THEME_DARK_PALETTE_MIDLIGHT);
+		ReadOnlyPalette.setColor(QPalette::Base, SW_THEME_DARK_PALETTE_MIDLIGHT);
 	else
-		ReadOnlyPalette.setColor(QPalette::Base, LC_THEME_DEFAULT_PALETTE_LIGHT);
-	ReadOnlyPalette.setColor(QPalette::Text, LC_DISABLED_TEXT);
+		ReadOnlyPalette.setColor(QPalette::Base, SW_THEME_DEFAULT_PALETTE_LIGHT);
+	ReadOnlyPalette.setColor(QPalette::Text, SW_DISABLED_TEXT);
 
 	QGroupBox* BlenderExeBox = new QGroupBox(tr("Blender Executable"),mContent);
 	mForm->addRow(BlenderExeBox);
@@ -414,9 +414,9 @@ lcBlenderPreferences::lcBlenderPreferences(int Width, int Height, double Scale, 
 	mExeGridLayout->addWidget(PathBrowseButton,1,2);
 	mPathBrowseButtonList << PathBrowseButton;
 	PathBrowseButton->setToolTip(tr("Locate the Blender executable."));
-	connect(PathBrowseButton, &QPushButton::clicked, this, &lcBlenderPreferences::BrowseBlender);
+	connect(PathBrowseButton, &QPushButton::clicked, this, &swBlenderPreferences::BrowseBlender);
 
-	QGroupBox* BlenderAddonVersionBox = new QGroupBox(tr("%1 Blender LDraw Add-on").arg(LC_PRODUCTNAME_STR),mContent);
+	QGroupBox* BlenderAddonVersionBox = new QGroupBox(tr("%1 Blender LDraw Add-on").arg(SW_PRODUCTNAME_STR),mContent);
 	mForm->addRow(BlenderAddonVersionBox);
 	BlenderAddonVersionBox->setWhatsThis(tr("<p><b>Blender LDraw Add-on</b></p><p>Update downloads or reconfigures the LDraw add-on. Output opens the configuration log when available. The update-check preference takes effect as soon as you change it.</p>"));
 
@@ -425,11 +425,11 @@ lcBlenderPreferences::lcBlenderPreferences(int Width, int Height, double Scale, 
 
 	QCheckBox* AddonVersionCheck = new QCheckBox(tr("Prompt to download new add-on version when available"), BlenderAddonVersionBox);
 	AddonVersionCheck->setToolTip(tr("Check for add-on updates; this preference is saved immediately."));
-	AddonVersionCheck->setChecked(lcGetProfileInt(LC_PROFILE_BLENDER_ADDON_VERSION_CHECK));
+	AddonVersionCheck->setChecked(swGetProfileInt(SW_PROFILE_BLENDER_ADDON_VERSION_CHECK));
 	QObject::connect(AddonVersionCheck, &QCheckBox::stateChanged, [](int State)
 	{
 		 const bool VersionCheck = static_cast<Qt::CheckState>(State) == Qt::CheckState::Checked;
-		 lcSetProfileInt(LC_PROFILE_BLENDER_ADDON_VERSION_CHECK, (int)VersionCheck);
+		 swSetProfileInt(SW_PROFILE_BLENDER_ADDON_VERSION_CHECK, (int)VersionCheck);
 	});
 	mAddonGridLayout->addWidget(AddonVersionCheck,0,0,1,4);
 
@@ -437,7 +437,7 @@ lcBlenderPreferences::lcBlenderPreferences(int Width, int Height, double Scale, 
 	mAddonGridLayout->addWidget(mAddonVersionLabel,1,0);
 
 	mAddonVersionEdit = new QLineEdit(BlenderAddonVersionBox);
-	mAddonVersionEdit->setToolTip(tr("Installed %1 Blender LDraw import and render add-on version.").arg(LC_PRODUCTNAME_STR));
+	mAddonVersionEdit->setToolTip(tr("Installed %1 Blender LDraw import and render add-on version.").arg(SW_PRODUCTNAME_STR));
 	mAddonVersionEdit->setPalette(ReadOnlyPalette);
 	mAddonVersionEdit->setReadOnly(true);
 	mAddonVersionEdit->setAccessibleName(tr("Blender LDraw Add-on Version"));
@@ -447,15 +447,15 @@ lcBlenderPreferences::lcBlenderPreferences(int Width, int Height, double Scale, 
 	mAddonGridLayout->setColumnStretch(1,1/*1 is greater than 0 (default)*/);
 
 	mAddonUpdateButton = new QPushButton(tr("Update"), BlenderAddonVersionBox);
-	mAddonUpdateButton->setToolTip(tr("Download or reconfigure the %1 Blender LDraw add-on.").arg(LC_PRODUCTNAME_STR));
+	mAddonUpdateButton->setToolTip(tr("Download or reconfigure the %1 Blender LDraw add-on.").arg(SW_PRODUCTNAME_STR));
 	mAddonGridLayout->addWidget(mAddonUpdateButton,1,2);
-	connect(mAddonUpdateButton, &QPushButton::clicked, this, &lcBlenderPreferences::UpdateBlenderAddon);
+	connect(mAddonUpdateButton, &QPushButton::clicked, this, &swBlenderPreferences::UpdateBlenderAddon);
 
 	mAddonStdOutButton = new QPushButton(tr("Output..."), BlenderAddonVersionBox);
 	mAddonStdOutButton->setToolTip(tr("Open the standard output log."));
 	mAddonStdOutButton->setEnabled(false);
 	mAddonGridLayout->addWidget(mAddonStdOutButton,1,3);
-	connect(mAddonStdOutButton, &QPushButton::clicked, this, &lcBlenderPreferences::GetStandardOutput);
+	connect(mAddonStdOutButton, &QPushButton::clicked, this, &swBlenderPreferences::GetStandardOutput);
 
 	mModulesBox = new QGroupBox(tr("Enabled Add-on Modules"),mContent);
 	QHBoxLayout* ModulesLayout = new QHBoxLayout(mModulesBox);
@@ -466,21 +466,21 @@ lcBlenderPreferences::lcBlenderPreferences(int Width, int Height, double Scale, 
 	mImportActBox = new QCheckBox(tr("LDraw Import TN"),mModulesBox);
 	mImportActBox->setToolTip(tr("Enable add-on import module (adapted from LDraw Import by Toby Nelson) in Blender."));
 	ModulesLayout->addWidget(mImportActBox);
-	connect(mImportActBox, &QCheckBox::clicked, this, &lcBlenderPreferences::EnableImportModule);
+	connect(mImportActBox, &QCheckBox::clicked, this, &swBlenderPreferences::EnableImportModule);
 
 	mImportMMActBox = new QCheckBox(tr("LDraw Import MM"),mModulesBox);
 	mImportMMActBox->setToolTip(tr("Enable add-on import module (adapted from LDraw Import by Matthew Morrison) in Blender."));
 	ModulesLayout->addWidget(mImportMMActBox);
-	connect(mImportMMActBox, &QCheckBox::clicked, this, &lcBlenderPreferences::EnableImportModule);
+	connect(mImportMMActBox, &QCheckBox::clicked, this, &swBlenderPreferences::EnableImportModule);
 
-	mRenderActBox = new QCheckBox(tr("%1 Image Render").arg(LC_PRODUCTNAME_STR), mModulesBox);
+	mRenderActBox = new QCheckBox(tr("%1 Image Render").arg(SW_PRODUCTNAME_STR), mModulesBox);
 	mRenderActBox->setToolTip(tr("Add-on image render module in Blender."));
 	mRenderActBox->setEnabled(false);
 	ModulesLayout->addWidget(mRenderActBox);
 
 	LoadSettings();
 
-	mConfigured = !lcGetProfileString(LC_PROFILE_BLENDER_IMPORT_MODULE).isEmpty();
+	mConfigured = !swGetProfileString(SW_PROFILE_BLENDER_IMPORT_MODULE).isEmpty();
 
 	const int CtlIdx = PATH_BLENDER;
 	PathLabel->setText(mBlenderPaths[CtlIdx].label);
@@ -500,8 +500,8 @@ lcBlenderPreferences::lcBlenderPreferences(int Width, int Height, double Scale, 
 	{
 		mAddonVersionEdit->setText(mAddonVersion);
 		mRenderActBox->setChecked(true);
-		mImportActBox->setChecked(lcGetProfileString(LC_PROFILE_BLENDER_IMPORT_MODULE) == QLatin1String("TN"));
-		mImportMMActBox->setChecked(lcGetProfileString(LC_PROFILE_BLENDER_IMPORT_MODULE) == QLatin1String("MM"));
+		mImportActBox->setChecked(swGetProfileString(SW_PROFILE_BLENDER_IMPORT_MODULE) == QLatin1String("TN"));
+		mImportMMActBox->setChecked(swGetProfileString(SW_PROFILE_BLENDER_IMPORT_MODULE) == QLatin1String("MM"));
 	}
 
 	QString VersionTextColour = QApplication::palette().text().color().name(),AddonTextColour;
@@ -514,9 +514,9 @@ lcBlenderPreferences::lcBlenderPreferences(int Width, int Height, double Scale, 
 	}
 	else
 	{
-		const QString TextColour = gApplication->IsDarkTheme() ? QLatin1String(LC_THEME_DARK_DECORATE_QUOTED_TEXT) : QLatin1String("blue");
+		const QString TextColour = gApplication->IsDarkTheme() ? QLatin1String(SW_THEME_DARK_DECORATE_QUOTED_TEXT) : QLatin1String("blue");
 
-		bool BlenderConfigured = !lcGetProfileString(LC_PROFILE_BLENDER_PATH).isEmpty();
+		bool BlenderConfigured = !swGetProfileString(SW_PROFILE_BLENDER_PATH).isEmpty();
 		if (!BlenderConfigured)
 		{
 			VersionText = tr("Blender not configured.");
@@ -525,7 +525,7 @@ lcBlenderPreferences::lcBlenderPreferences(int Width, int Height, double Scale, 
 		else
 			mBlenderVersionEdit->setText(mBlenderVersion);
 
-		if (QFileInfo(QString("%1/Blender/%2").arg(mDataDir, LC_BLENDER_ADDON_FILE)).isReadable())
+		if (QFileInfo(QString("%1/Blender/%2").arg(mDataDir, SW_BLENDER_ADDON_FILE)).isReadable())
 		{
 			mModulesBox->setEnabled(false);
 			mImportActBox->setChecked(true);
@@ -555,12 +555,12 @@ lcBlenderPreferences::lcBlenderPreferences(int Width, int Height, double Scale, 
 	Layout->addWidget(ScrollArea);
 }
 
-lcBlenderPreferences::~lcBlenderPreferences()
+swBlenderPreferences::~swBlenderPreferences()
 {
 	gAddonPreferences = nullptr;
 }
 
-void lcBlenderPreferences::ClearGroupBox(QGroupBox* GroupBox)
+void swBlenderPreferences::ClearGroupBox(QGroupBox* GroupBox)
 {
 	int Row = -1;
 	QFormLayout::ItemRole ItemRole = QFormLayout::SpanningRole;
@@ -591,7 +591,7 @@ void lcBlenderPreferences::ClearGroupBox(QGroupBox* GroupBox)
 	delete GroupBoxIitem;
 }
 
-void lcBlenderPreferences::SetupControlHelp(QLabel* Label, QWidget* Control)
+void swBlenderPreferences::SetupControlHelp(QLabel* Label, QWidget* Control)
 {
 	Label->setBuddy(Control);
 	Control->setAccessibleName(Label->text());
@@ -599,7 +599,7 @@ void lcBlenderPreferences::SetupControlHelp(QLabel* Label, QWidget* Control)
 	Label->setWhatsThis(Control->whatsThis());
 }
 
-void lcBlenderPreferences::InitPathsAndSettings()
+void swBlenderPreferences::InitPathsAndSettings()
 {
 	if (!NumSettings())
 		LoadSettings();
@@ -646,8 +646,8 @@ void lcBlenderPreferences::InitPathsAndSettings()
 
 		if (IsVisible)
 		{
-			connect(PathBrowseButton, &QPushButton::clicked, this, &lcBlenderPreferences::BrowseBlender);
-			connect(PathLineEdit, &QLineEdit::editingFinished, this, &lcBlenderPreferences::PathChanged);
+			connect(PathBrowseButton, &QPushButton::clicked, this, &swBlenderPreferences::BrowseBlender);
+			connect(PathLineEdit, &QLineEdit::editingFinished, this, &swBlenderPreferences::PathChanged);
 		}
 	}
 
@@ -684,7 +684,7 @@ void lcBlenderPreferences::InitPathsAndSettings()
 			CheckBox->setToolTip(mBlenderSettings[LblIdx].tooltip);
 			SetupControlHelp(Label, CheckBox);
 			if (LblIdx == LBL_CROP_IMAGE)
-				connect(CheckBox, &QCheckBox::toggled, this, &lcBlenderPreferences::SetModelSize);
+				connect(CheckBox, &QCheckBox::toggled, this, &swBlenderPreferences::SetModelSize);
 			else
 				connect(CheckBox, &QCheckBox::clicked, this, [this]() { SettingIndexChanged(); });
 			mCheckBoxList << CheckBox;
@@ -696,15 +696,15 @@ void lcBlenderPreferences::InitPathsAndSettings()
 			LineEdit->setProperty("ControlID",QVariant(LblIdx));
 			if (LblIdx == LBL_IMAGE_WIDTH || LblIdx == LBL_IMAGE_HEIGHT)
 			{
-				connect(LineEdit, &QLineEdit::textChanged, this, &lcBlenderPreferences::SizeChanged);
-				LineEdit->setValidator(new QIntValidator(1, LC_MAX_IMAGE_DIMENSION));
+				connect(LineEdit, &QLineEdit::textChanged, this, &swBlenderPreferences::SizeChanged);
+				LineEdit->setValidator(new QIntValidator(1, SW_MAX_IMAGE_DIMENSION));
 			}
 			else if(LblIdx == LBL_DEFAULT_COLOUR)
 			{
 				LineEdit->setReadOnly(true);
 				LineEdit->setStyleSheet("Text-align:left");
 				mDefaultColourEditAction = LineEdit->addAction(QIcon(), QLineEdit::TrailingPosition);
-				connect(mDefaultColourEditAction, &QAction::triggered, this, &lcBlenderPreferences::ColorButtonClicked);
+				connect(mDefaultColourEditAction, &QAction::triggered, this, &swBlenderPreferences::ColorButtonClicked);
 			}
 			else
 			{
@@ -715,13 +715,13 @@ void lcBlenderPreferences::InitPathsAndSettings()
 				else
 					LineEdit->setValidator(new QDoubleValidator(0.01,100.0,2));
 				SetNumericText(LineEdit, mBlenderSettings[LblIdx].value);
-				connect(LineEdit, &QLineEdit::textEdited, this, &lcBlenderPreferences::SettingTextChanged);
+				connect(LineEdit, &QLineEdit::textEdited, this, &swBlenderPreferences::SettingTextChanged);
 			}
 			LineEdit->setToolTip(mBlenderSettings[LblIdx].tooltip);
 			SetupControlHelp(Label, LineEdit);
 			mLineEditList << LineEdit;
 			if (LblIdx == LBL_DEFAULT_COLOUR)
-				SetDefaultColor(lcGetColorIndex(mBlenderSettings[LBL_DEFAULT_COLOUR].value.toInt()));
+				SetDefaultColor(swGetColorIndex(mBlenderSettings[LBL_DEFAULT_COLOUR].value.toInt()));
 			mSettingsSubform->addRow(Label,LineEdit);
 		}
 		else
@@ -739,9 +739,9 @@ void lcBlenderPreferences::InitPathsAndSettings()
 			int CurrentIndex = int(ComboBox->findData(QVariant::fromValue(Value)));
 			ComboBox->setCurrentIndex(CurrentIndex);
 			if (LblIdx == LBL_COLOUR_SCHEME)
-				connect(ComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, &lcBlenderPreferences::ValidateColourScheme);
+				connect(ComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, &swBlenderPreferences::ValidateColourScheme);
 			else
-				connect(ComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, &lcBlenderPreferences::SettingIndexChanged);
+				connect(ComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, &swBlenderPreferences::SettingIndexChanged);
 			mComboBoxList << ComboBox;
 			ComboBoxItemsIndex++;
 			mSettingsSubform->addRow(Label,ComboBox);
@@ -756,7 +756,7 @@ void lcBlenderPreferences::InitPathsAndSettings()
 	mSettingsBox->setEnabled(mConfigured);
 }
 
-void lcBlenderPreferences::InitPathsAndSettingsMM()
+void swBlenderPreferences::InitPathsAndSettingsMM()
 {
 	if (!NumSettingsMM())
 		LoadSettings();
@@ -803,8 +803,8 @@ void lcBlenderPreferences::InitPathsAndSettingsMM()
 
 		if (IsVisible)
 		{
-			connect(PathBrowseButton, &QPushButton::clicked, this, &lcBlenderPreferences::BrowseBlender);
-			connect(PathLineEdit, &QLineEdit::editingFinished, this, &lcBlenderPreferences::PathChanged);
+			connect(PathBrowseButton, &QPushButton::clicked, this, &swBlenderPreferences::BrowseBlender);
+			connect(PathLineEdit, &QLineEdit::editingFinished, this, &swBlenderPreferences::PathChanged);
 		}
 	}
 
@@ -841,7 +841,7 @@ void lcBlenderPreferences::InitPathsAndSettingsMM()
 			CheckBox->setToolTip(mBlenderSettingsMM[LblIdx].tooltip);
 			SetupControlHelp(Label, CheckBox);
 			if (LblIdx == LBL_CROP_IMAGE_MM)
-				connect(CheckBox, &QCheckBox::toggled, this, &lcBlenderPreferences::SetModelSize);
+				connect(CheckBox, &QCheckBox::toggled, this, &swBlenderPreferences::SetModelSize);
 			else
 				connect(CheckBox, &QCheckBox::clicked, this, [this]() { SettingIndexChanged(); });
 			mCheckBoxList << CheckBox;
@@ -853,8 +853,8 @@ void lcBlenderPreferences::InitPathsAndSettingsMM()
 			LineEdit->setProperty("ControlID",QVariant(LblIdx));
 			if (LblIdx == LBL_RESOLUTION_WIDTH || LblIdx == LBL_RESOLUTION_HEIGHT)
 			{
-				connect(LineEdit, &QLineEdit::textChanged, this, &lcBlenderPreferences::SizeChanged);
-				LineEdit->setValidator(new QIntValidator(1, LC_MAX_IMAGE_DIMENSION));
+				connect(LineEdit, &QLineEdit::textChanged, this, &swBlenderPreferences::SizeChanged);
+				LineEdit->setValidator(new QIntValidator(1, SW_MAX_IMAGE_DIMENSION));
 			}
 			else
 			{
@@ -867,9 +867,9 @@ void lcBlenderPreferences::InitPathsAndSettingsMM()
 				else if (LblIdx == LBL_BEVEL_WEIGHT || LblIdx == LBL_BEVEL_WIDTH_MM)
 					LineEdit->setValidator(new QDoubleValidator(0.0,10.0,1));
 				else
-					LineEdit->setValidator(new QIntValidator(1, LC_RENDER_IMAGE_MAX_SIZE));
+					LineEdit->setValidator(new QIntValidator(1, SW_RENDER_IMAGE_MAX_SIZE));
 				SetNumericText(LineEdit, mBlenderSettingsMM[LblIdx].value);
-				connect(LineEdit, &QLineEdit::textEdited, this, &lcBlenderPreferences::SettingTextChanged);
+				connect(LineEdit, &QLineEdit::textEdited, this, &swBlenderPreferences::SettingTextChanged);
 			}
 			LineEdit->setToolTip(mBlenderSettingsMM[LblIdx].tooltip);
 			SetupControlHelp(Label, LineEdit);
@@ -891,9 +891,9 @@ void lcBlenderPreferences::InitPathsAndSettingsMM()
 			int CurrentIndex = int(ComboBox->findData(QVariant::fromValue(Value)));
 			ComboBox->setCurrentIndex(CurrentIndex);
 			if (LblIdx == LBL_COLOUR_SCHEME_MM)
-				connect(ComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, &lcBlenderPreferences::ValidateColourScheme);
+				connect(ComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, &swBlenderPreferences::ValidateColourScheme);
 			else
-				connect(ComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, &lcBlenderPreferences::SettingIndexChanged);
+				connect(ComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, &swBlenderPreferences::SettingIndexChanged);
 			mComboBoxList << ComboBox;
 			ComboBoxItemsIndex++;
 			mSettingsSubform->addRow(Label,ComboBox);
@@ -908,7 +908,7 @@ void lcBlenderPreferences::InitPathsAndSettingsMM()
 	mSettingsBox->setEnabled(mConfigured);
 }
 
-void lcBlenderPreferences::UpdateBlenderAddon()
+void swBlenderPreferences::UpdateBlenderAddon()
 {
 	mAddonUpdateButton->setEnabled(false);
 
@@ -919,7 +919,7 @@ void lcBlenderPreferences::UpdateBlenderAddon()
 	connect(mPathLineEditList[PATH_BLENDER], &QLineEdit::editingFinished, this, [this]() { ConfigureBlenderAddon(); });
 }
 
-void lcBlenderPreferences::ConfigureBlenderAddon(bool TestBlender, bool AddonUpdate, bool ModuleChange)
+void swBlenderPreferences::ConfigureBlenderAddon(bool TestBlender, bool AddonUpdate, bool ModuleChange)
 {
 	mProgressBar = nullptr;
 
@@ -945,8 +945,8 @@ void lcBlenderPreferences::ConfigureBlenderAddon(bool TestBlender, bool AddonUpd
 		const QString BlenderDir = QDir::toNativeSeparators(QString("%1/Blender").arg(mDataDir));
 		const QString BlenderConfigDir = QString("%1/setup/addon_setup/config").arg(BlenderDir);
 		const QString BlenderAddonDir = QDir::toNativeSeparators(QString("%1/addons").arg(BlenderDir));
-		const QString BlenderExeCompare = QDir::toNativeSeparators(lcGetProfileString(LC_PROFILE_BLENDER_PATH)).toLower();
-		const QString BlenderInstallFile = QDir::toNativeSeparators(QString("%1/%2").arg(BlenderDir, LC_BLENDER_ADDON_INSTALL_FILE));
+		const QString BlenderExeCompare = QDir::toNativeSeparators(swGetProfileString(SW_PROFILE_BLENDER_PATH)).toLower();
+		const QString BlenderInstallFile = QDir::toNativeSeparators(QString("%1/%2").arg(BlenderDir, SW_BLENDER_ADDON_INSTALL_FILE));
 		const QString BlenderTestString = QLatin1String("###TEST_BLENDER###");
 		QByteArray AddonPathsAndModuleNames;
 		QString Message, ShellProgram;
@@ -960,16 +960,16 @@ void lcBlenderPreferences::ConfigureBlenderAddon(bool TestBlender, bool AddonUpd
 			return;
 
 #ifdef Q_OS_WIN
-		ShellProgram = QLatin1String(LC_WINDOWS_SHELL);
+		ShellProgram = QLatin1String(SW_WINDOWS_SHELL);
 #else
-		ShellProgram = QLatin1String(LC_UNIX_SHELL);
+		ShellProgram = QLatin1String(SW_UNIX_SHELL);
 #endif
 		auto ProcessCommand = [&](ProcEnc Action)
 		{
 #ifdef Q_OS_WIN
 			if (Action == PR_INSTALL)
 			{
-				lcRunElevatedProcess(ShellProgram.toStdWString().c_str(), QString("/C %1").arg(ScriptFile.fileName()).toStdWString().c_str(), BlenderDir.toStdWString().c_str());
+				swRunElevatedProcess(ShellProgram.toStdWString().c_str(), QString("/C %1").arg(ScriptFile.fileName()).toStdWString().c_str(), BlenderDir.toStdWString().c_str());
 
 				mAddonVersionLabel->clear();
 
@@ -986,7 +986,7 @@ void lcBlenderPreferences::ConfigureBlenderAddon(bool TestBlender, bool AddonUpd
 			if (Action == PR_INSTALL)
 			{
 				connect(mProcess, &QProcess::readyReadStandardOutput, this, [this]() { ReadStdOut(); });
-				const QString& LdrawLibPath = QFileInfo(lcGetProfileString(LC_PROFILE_PARTS_LIBRARY)).absolutePath();
+				const QString& LdrawLibPath = QFileInfo(swGetProfileString(SW_PROFILE_PARTS_LIBRARY)).absolutePath();
 				QStringList SystemEnvironment = QProcess::systemEnvironment();
 				SystemEnvironment.prepend("LDRAW_DIRECTORY=" + LdrawLibPath);
 				SystemEnvironment.prepend("ADDONS_TO_LOAD=" + AddonPathsAndModuleNames);
@@ -995,7 +995,7 @@ void lcBlenderPreferences::ConfigureBlenderAddon(bool TestBlender, bool AddonUpd
 			else
 			{
 				ProcessAction = tr("test");
-				disconnect(&mUpdateTimer, &QTimer::timeout, this, &lcBlenderPreferences::Update);
+				disconnect(&mUpdateTimer, &QTimer::timeout, this, &swBlenderPreferences::Update);
 			}
 
 			mProcess->setWorkingDirectory(BlenderDir);
@@ -1039,13 +1039,13 @@ void lcBlenderPreferences::ConfigureBlenderAddon(bool TestBlender, bool AddonUpd
 					while (QTime::currentTime() < Waiting)
 						QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 				}
-				connect(&mUpdateTimer, &QTimer::timeout, this, &lcBlenderPreferences::Update);
+				connect(&mUpdateTimer, &QTimer::timeout, this, &swBlenderPreferences::Update);
 				const QString StdOut = QString(mProcess->readAllStandardOutput());
 				if (!StdOut.contains(BlenderTestString))
 				{
 					Message =  tr("A simple check to test if the selected file is Blender failed. "
 								 "Please create a %1 GitHub ticket if you are sure the file is Blender 2.8 or newer. "
-								 "The ticket should contain the full path to the Blender executable.").arg(LC_PRODUCTNAME_STR);
+								 "The ticket should contain the full path to the Blender executable.").arg(SW_PRODUCTNAME_STR);
 					return PR_FAIL;
 				}
 				else
@@ -1074,7 +1074,7 @@ void lcBlenderPreferences::ConfigureBlenderAddon(bool TestBlender, bool AddonUpd
 			return PR_OK;
 		};
 
-		connect(&mUpdateTimer, &QTimer::timeout, this, &lcBlenderPreferences::Update);
+		connect(&mUpdateTimer, &QTimer::timeout, this, &swBlenderPreferences::Update);
 		mUpdateTimer.start(500);
 
 		QDir ConfigDir(BlenderConfigDir);
@@ -1140,8 +1140,8 @@ void lcBlenderPreferences::ConfigureBlenderAddon(bool TestBlender, bool AddonUpd
 				StatusUpdate(false, TestOk, statusLabel);
 				if (TestOk)
 				{
-					lcSetProfileString(LC_PROFILE_BLENDER_VERSION, mBlenderVersion);
-					lcSetProfileString(LC_PROFILE_BLENDER_PATH, BlenderExe);
+					swSetProfileString(SW_PROFILE_BLENDER_VERSION, mBlenderVersion);
+					swSetProfileString(SW_PROFILE_BLENDER_PATH, BlenderExe);
 				}
 				else
 				{
@@ -1171,7 +1171,7 @@ void lcBlenderPreferences::ConfigureBlenderAddon(bool TestBlender, bool AddonUpd
 			if (TestBlender)
 			{
 				const QString preferredImportModule = mImportActBox->isChecked() ? QString("TN") : mImportMMActBox->isChecked() ? QString("MM") : QString();  // disable all import modules
-				lcSetProfileString(LC_PROFILE_BLENDER_IMPORT_MODULE, preferredImportModule);
+				swSetProfileString(SW_PROFILE_BLENDER_IMPORT_MODULE, preferredImportModule);
 			}
 			else
 				mBlenderVersionEdit->setVisible(AddonUpdate);
@@ -1301,7 +1301,7 @@ void lcBlenderPreferences::ConfigureBlenderAddon(bool TestBlender, bool AddonUpd
 		ScriptFile.setFileName(QString("%1/%2").arg(QDir::tempPath()).arg(ScriptName));
 		if (ScriptFile.open(QIODevice::WriteOnly | QIODevice::Text))
 		{
-			const QString& LdrawLibPath = QFileInfo(lcGetProfileString(LC_PROFILE_PARTS_LIBRARY)).absolutePath();
+			const QString& LdrawLibPath = QFileInfo(swGetProfileString(SW_PROFILE_PARTS_LIBRARY)).absolutePath();
 			QTextStream Stream(&ScriptFile);
 
 			Stream << QLatin1String("@ECHO OFF& SETLOCAL") << Qt::endl;
@@ -1336,7 +1336,7 @@ void lcBlenderPreferences::ConfigureBlenderAddon(bool TestBlender, bool AddonUpd
 		QMessageBox::warning(this, tr("Install Blender Add-on"), tr("Blender executable not found at '%1'.").arg(BlenderExe));
 }
 
-bool lcBlenderPreferences::ExtractBlenderAddon(const QString& BlenderDir)
+bool swBlenderPreferences::ExtractBlenderAddon(const QString& BlenderDir)
 {
 	bool Extracted = false;
 
@@ -1348,14 +1348,14 @@ bool lcBlenderPreferences::ExtractBlenderAddon(const QString& BlenderDir)
 	if (AddonAction == ADDON_EXTRACT)
 	{
 		gAddonPreferences->StatusUpdate(true, false, tr("Extracting..."));
-		const QString BlenderAddonFile = QDir::toNativeSeparators(QString("%1/%2").arg(BlenderDir, LC_BLENDER_ADDON_FILE));
+		const QString BlenderAddonFile = QDir::toNativeSeparators(QString("%1/%2").arg(BlenderDir, SW_BLENDER_ADDON_FILE));
 
 		QString Result;
 		Extracted = gAddonPreferences->ExtractAddon(BlenderAddonFile, Result);
 
 		if (!Extracted)
 		{
-			QString Message = tr("Failed to extract '%1' to '%2'.").arg(LC_BLENDER_ADDON_FILE, BlenderDir);
+			QString Message = tr("Failed to extract '%1' to '%2'.").arg(SW_BLENDER_ADDON_FILE, BlenderDir);
 			if (Result.size())
 				Message.append(" "+Result);
 
@@ -1368,11 +1368,11 @@ bool lcBlenderPreferences::ExtractBlenderAddon(const QString& BlenderDir)
 	return Extracted;
 }
 
-int lcBlenderPreferences::GetBlenderAddon(const QString& BlenderDir)
+int swBlenderPreferences::GetBlenderAddon(const QString& BlenderDir)
 {
 	const QString BlenderAddonDir = QDir::toNativeSeparators(QString("%1/addons").arg(BlenderDir));
-	const QString BlenderAddonFile = QDir::toNativeSeparators(QString("%1/%2").arg(BlenderDir, LC_BLENDER_ADDON_FILE));
-	const QString AddonVersionFile = QDir::toNativeSeparators(QString("%1/%2/__version__.py").arg(BlenderAddonDir, LC_BLENDER_ADDON_RENDER_FOLDER));
+	const QString BlenderAddonFile = QDir::toNativeSeparators(QString("%1/%2").arg(BlenderDir, SW_BLENDER_ADDON_FILE));
+	const QString AddonVersionFile = QDir::toNativeSeparators(QString("%1/%2/__version__.py").arg(BlenderAddonDir, SW_BLENDER_ADDON_RENDER_FOLDER));
 	bool ExtractedAddon = QFileInfo(AddonVersionFile).isReadable();
 	bool BlenderAddonValidated = ExtractedAddon || QFileInfo(BlenderAddonFile).isReadable();
 	AddonEnc AddonAction = ADDON_DOWNLOAD;
@@ -1408,9 +1408,9 @@ int lcBlenderPreferences::GetBlenderAddon(const QString& BlenderDir)
 
 	auto GetBlenderAddonVersionMatch = [&]()
 	{
-		lcHttpManager* HttpManager = new lcHttpManager(gAddonPreferences);
-		connect(HttpManager, &lcHttpManager::DownloadFinished, gAddonPreferences, &lcBlenderPreferences::DownloadFinished);
-		gAddonPreferences->mHttpReply = HttpManager->DownloadFile(QLatin1String(LC_BLENDER_ADDON_LATEST_URL));
+		swHttpManager* HttpManager = new swHttpManager(gAddonPreferences);
+		connect(HttpManager, &swHttpManager::DownloadFinished, gAddonPreferences, &swBlenderPreferences::DownloadFinished);
+		gAddonPreferences->mHttpReply = HttpManager->DownloadFile(QLatin1String(SW_BLENDER_ADDON_LATEST_URL));
 		while (gAddonPreferences->mHttpReply)
 			QApplication::processEvents();
 		if (!gAddonPreferences->mData.isEmpty())
@@ -1428,9 +1428,9 @@ int lcBlenderPreferences::GetBlenderAddon(const QString& BlenderDir)
 		QByteArray Ba;
 		if (!ExtractedAddon)
 		{
-			const char* VersionFile = "addons/" LC_BLENDER_ADDON_RENDER_FOLDER "/__version__.py";
+			const char* VersionFile = "addons/" SW_BLENDER_ADDON_RENDER_FOLDER "/__version__.py";
 
-			lcZipFile ZipFile;
+			swZipFile ZipFile;
 
 			if (!ZipFile.OpenRead(BlenderAddonFile))
 			{
@@ -1438,7 +1438,7 @@ int lcBlenderPreferences::GetBlenderAddon(const QString& BlenderDir)
 				return false;
 			}
 
-			lcMemFile File;
+			swMemFile File;
 
 			if (!ZipFile.ExtractFile(VersionFile, File))
 			{
@@ -1498,12 +1498,12 @@ int lcBlenderPreferences::GetBlenderAddon(const QString& BlenderDir)
 		}
 		else if (gMainWindow)
 		{
-			if (lcGetProfileInt(LC_PROFILE_BLENDER_ADDON_VERSION_CHECK))
+			if (swGetProfileInt(SW_PROFILE_BLENDER_ADDON_VERSION_CHECK))
 			{
 				if (LocalVersion.isEmpty())
 					LocalVersion = gAddonPreferences->mAddonVersion;
 				const QString& Title = tr("Update Blender Add-on");
-				const QString& Header = tr ("Detected %1 Blender LDraw add-on %2. A newer version %3 exists.").arg(LC_PRODUCTNAME_STR, LocalVersion, OnlineVersion);
+				const QString& Header = tr ("Detected %1 Blender LDraw add-on %2. A newer version %3 exists.").arg(SW_PRODUCTNAME_STR, LocalVersion, OnlineVersion);
 				const QString& Body = tr ("Do you want to download version %1?").arg(OnlineVersion);
 				int Exec = ShowMessage(this, Header, Title, Body, QString(), MBB_YES, QMessageBox::NoIcon);
 				if (Exec == QMessageBox::Cancel)
@@ -1546,9 +1546,9 @@ int lcBlenderPreferences::GetBlenderAddon(const QString& BlenderDir)
 	};
 
 	BlenderAddonValidated = false;
-	lcHttpManager* HttpManager = new lcHttpManager(gAddonPreferences);
-	connect(HttpManager, &lcHttpManager::DownloadFinished, gAddonPreferences, &lcBlenderPreferences::DownloadFinished);
-	gAddonPreferences->mHttpReply = HttpManager->DownloadFile(QLatin1String(LC_BLENDER_ADDON_URL));
+	swHttpManager* HttpManager = new swHttpManager(gAddonPreferences);
+	connect(HttpManager, &swHttpManager::DownloadFinished, gAddonPreferences, &swBlenderPreferences::DownloadFinished);
+	gAddonPreferences->mHttpReply = HttpManager->DownloadFile(QLatin1String(SW_BLENDER_ADDON_URL));
 	while (gAddonPreferences->mHttpReply)
 		QApplication::processEvents();
 	if (!gAddonPreferences->mData.isEmpty())
@@ -1588,7 +1588,7 @@ int lcBlenderPreferences::GetBlenderAddon(const QString& BlenderDir)
 				const QString ShaCalculated = Sha256Hash.result().toHex();
 
 				gAddonPreferences->mData.clear();
-				gAddonPreferences->mHttpReply = HttpManager->DownloadFile(QLatin1String(LC_BLENDER_ADDON_SHA_HASH_URL));
+				gAddonPreferences->mHttpReply = HttpManager->DownloadFile(QLatin1String(SW_BLENDER_ADDON_SHA_HASH_URL));
 				while (gAddonPreferences->mHttpReply)
 					QApplication::processEvents();
 				if (!gAddonPreferences->mData.isEmpty())
@@ -1610,7 +1610,7 @@ int lcBlenderPreferences::GetBlenderAddon(const QString& BlenderDir)
 					gAddonPreferences->mData.clear();
 				}
 				else
-					QMessageBox::warning(this, tr("Update Blender Add-on"), tr("Failed to receive SHA hash for Blender add-on '%1.sha256'.").arg(LC_BLENDER_ADDON_FILE));
+					QMessageBox::warning(this, tr("Update Blender Add-on"), tr("Failed to receive SHA hash for Blender add-on '%1.sha256'.").arg(SW_BLENDER_ADDON_FILE));
 			}
 			else
 				QMessageBox::warning(this, tr("Update Blender Add-on"), tr("Failed to read Blender add-on archive:<br>'%1':<br>%2").arg(BlenderAddonFile, File.errorString()));
@@ -1644,7 +1644,7 @@ int lcBlenderPreferences::GetBlenderAddon(const QString& BlenderDir)
 	return AddonAction;
 }
 
-void lcBlenderPreferences::StatusUpdate(bool Addon, bool Error, const QString& Message)
+void swBlenderPreferences::StatusUpdate(bool Addon, bool Error, const QString& Message)
 {
 	QString Label, Colour;
 	const QString Which = Addon ? tr("Blender add-on") : tr("Blender");
@@ -1667,13 +1667,13 @@ void lcBlenderPreferences::StatusUpdate(bool Addon, bool Error, const QString& M
 		if (!Addon)
 			mPathLineEditList[PATH_BLENDER]->text() = QString();
 
-		lcSetProfileString(LC_PROFILE_BLENDER_IMPORT_MODULE, QString());
+		swSetProfileString(SW_PROFILE_BLENDER_IMPORT_MODULE, QString());
 
 		Label  = ! Message.isEmpty() ? Message : tr("%1 not configured").arg(Which);
 		Colour = Message.startsWith("Error:", Qt::CaseInsensitive)
 						? QLatin1String("red")
 						: gApplication->IsDarkTheme()
-							? QLatin1String(LC_THEME_DARK_DECORATE_QUOTED_TEXT)
+							? QLatin1String(SW_THEME_DARK_DECORATE_QUOTED_TEXT)
 							: QLatin1String("blue");
 
 		mDialogCancelled = true;
@@ -1698,7 +1698,7 @@ void lcBlenderPreferences::StatusUpdate(bool Addon, bool Error, const QString& M
 	}
 }
 
-void lcBlenderPreferences::ShowResult()
+void swBlenderPreferences::ShowResult()
 {
 	bool Error;
 	const QString StdErrLog = ReadStdErr(Error);
@@ -1738,8 +1738,8 @@ void lcBlenderPreferences::ShowResult()
 			mAddonVersionEdit->setVisible(true);
 			mModulesBox->setEnabled(true);
 			mAddonUpdateButton->setEnabled(true);
-			lcSetProfileString(LC_PROFILE_BLENDER_VERSION, mBlenderVersion);
-			lcSetProfileString(LC_PROFILE_BLENDER_ADDON_VERSION, mAddonVersion);
+			swSetProfileString(SW_PROFILE_BLENDER_VERSION, mBlenderVersion);
+			swSetProfileString(SW_PROFILE_BLENDER_ADDON_VERSION, mAddonVersion);
 			SetModelSize(true);
 			SaveSettings();
 			mDialogCancelled = false;
@@ -1750,7 +1750,7 @@ void lcBlenderPreferences::ShowResult()
 	mProcess = nullptr;
 }
 
-void lcBlenderPreferences::SetNumericText(QLineEdit* Edit, const QString& Value)
+void swBlenderPreferences::SetNumericText(QLineEdit* Edit, const QString& Value)
 {
 	const QValidator* Validator = Edit->validator();
 	QLocale Locale = Validator->locale();
@@ -1772,7 +1772,7 @@ void lcBlenderPreferences::SetNumericText(QLineEdit* Edit, const QString& Value)
 	Edit->setText(Ok ? Text : Value);
 }
 
-double lcBlenderPreferences::GetNumericValue(const QLineEdit* Edit, bool& Ok)
+double swBlenderPreferences::GetNumericValue(const QLineEdit* Edit, bool& Ok)
 {
 	Ok = false;
 
@@ -1787,7 +1787,7 @@ double lcBlenderPreferences::GetNumericValue(const QLineEdit* Edit, bool& Ok)
 	return Validator->locale().toDouble(Edit->text(), &Ok);
 }
 
-void lcBlenderPreferences::SettingTextChanged(const QString& Value)
+void swBlenderPreferences::SettingTextChanged(const QString& Value)
 {
 	bool Change = false;
 
@@ -1809,7 +1809,7 @@ void lcBlenderPreferences::SettingTextChanged(const QString& Value)
 	}
 }
 
-void lcBlenderPreferences::SettingIndexChanged(int Index)
+void swBlenderPreferences::SettingIndexChanged(int Index)
 {
 	int LblIdx = -1;
 	bool Change = false;
@@ -1850,7 +1850,7 @@ void lcBlenderPreferences::SettingIndexChanged(int Index)
 	emit SettingChangedSig(Change);
 }
 
-void lcBlenderPreferences::PathChanged()
+void swBlenderPreferences::PathChanged()
 {
 	QLineEdit* LineEdit = qobject_cast<QLineEdit*>(sender());
 	if (LineEdit)
@@ -1869,7 +1869,7 @@ void lcBlenderPreferences::PathChanged()
 	}
 }
 
-void lcBlenderPreferences::GetStandardOutput()
+void swBlenderPreferences::GetStandardOutput()
 {
 	const QString LogFile = QString("%1/Blender/stdout-blender-addon-install").arg(mDataDir);
 	QFileInfo FileInfo(LogFile);
@@ -1885,7 +1885,7 @@ void lcBlenderPreferences::GetStandardOutput()
 	QDesktopServices::openUrl(QUrl("file:///"+LogFile, QUrl::TolerantMode));
 }
 
-void lcBlenderPreferences::ReadStdOut(const QString& StdOutput, QString& Errors)
+void swBlenderPreferences::ReadStdOut(const QString& StdOutput, QString& Errors)
 {
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
 	QRegularExpression RxInfo("^INFO: ");
@@ -1995,7 +1995,7 @@ void lcBlenderPreferences::ReadStdOut(const QString& StdOutput, QString& Errors)
 	}
 }
 
-void lcBlenderPreferences::ReadStdOut()
+void swBlenderPreferences::ReadStdOut()
 {
 	const QString& StdOut = QString(mProcess->readAllStandardOutput());
 
@@ -2036,7 +2036,7 @@ void lcBlenderPreferences::ReadStdOut()
 	}
 }
 
-QString lcBlenderPreferences::ReadStdErr(bool& Error) const
+QString swBlenderPreferences::ReadStdErr(bool& Error) const
 {
 	auto CleanLine = [](const QString& Line)
 	{
@@ -2064,7 +2064,7 @@ QString lcBlenderPreferences::ReadStdErr(bool& Error) const
 	return ReturnLines.join(" ");
 }
 
-void lcBlenderPreferences::WriteStdOut()
+void swBlenderPreferences::WriteStdOut()
 {
 	const QString BlenderDir = QString("%1/Blender").arg(mDataDir);
 	QFile File(QString("%1/stdout-blender-addon-install").arg(BlenderDir));
@@ -2080,7 +2080,7 @@ void lcBlenderPreferences::WriteStdOut()
 		QMessageBox::warning(this, tr("Save Blender Add-on Output"), tr("Error writing to %1 file '%2':\n%3").arg("stdout", File.fileName(), File.errorString()));
 }
 
-bool lcBlenderPreferences::PromptCancel()
+bool swBlenderPreferences::PromptCancel()
 {
 #ifndef QT_NO_PROCESS
 	if (mProcess)
@@ -2106,7 +2106,7 @@ bool lcBlenderPreferences::PromptCancel()
 	return true;
 }
 
-void lcBlenderPreferences::Update()
+void swBlenderPreferences::Update()
 {
 #ifndef QT_NO_PROCESS
 	if (!mProcess)
@@ -2118,7 +2118,7 @@ void lcBlenderPreferences::Update()
 	QApplication::processEvents();
 }
 
-void lcBlenderPreferences::Apply(const int Response)
+void swBlenderPreferences::Apply(const int Response)
 {
 	if (Response == QDialog::Accepted)
 	{
@@ -2133,7 +2133,7 @@ void lcBlenderPreferences::Apply(const int Response)
 	}
 }
 
-bool lcBlenderPreferences::SettingsModified(bool Update, const QString& Module)
+bool swBlenderPreferences::SettingsModified(bool Update, const QString& Module)
 {
 	if  (gAddonPreferences->mDialogCancelled)
 		return false;
@@ -2146,7 +2146,7 @@ bool lcBlenderPreferences::SettingsModified(bool Update, const QString& Module)
 						? Module == QLatin1String("MM")
 						: gAddonPreferences->mImportMMActBox->isChecked();
 
-	bool Ok, Modified = !QFileInfo(lcGetProfileString(LC_PROFILE_BLENDER_LDRAW_CONFIG_PATH)).isReadable();
+	bool Ok, Modified = !QFileInfo(swGetProfileString(SW_PROFILE_BLENDER_LDRAW_CONFIG_PATH)).isReadable();
 	qreal _Width = 0.0, _Height = 0.0, _Scale = 0.0, _Value = 0.0, _OldValue = 0.0;
 	QString OldValue;
 
@@ -2318,7 +2318,7 @@ bool lcBlenderPreferences::SettingsModified(bool Update, const QString& Module)
 					{
 						if (CtlIdx == CTL_DEFAULT_COLOUR_EDIT)
 						{
-							_OldValue = lcGetColorIndex(mBlenderSettings[LblIdx].value.toInt());  // colour code
+							_OldValue = swGetColorIndex(mBlenderSettings[LblIdx].value.toInt());  // colour code
 							_Value = gAddonPreferences->mLineEditList[CtlIdx]->property("ColorIndex").toInt(&Ok);
 						}
 						else
@@ -2332,7 +2332,7 @@ bool lcBlenderPreferences::SettingsModified(bool Update, const QString& Module)
 							{
 								if (CtlIdx == CTL_DEFAULT_COLOUR_EDIT)
 								{
-									mBlenderSettings[LblIdx].value = QString::number(lcGetColorCode(qint32(_Value)));
+									mBlenderSettings[LblIdx].value = QString::number(swGetColorCode(qint32(_Value)));
 								}
 								else
 								{
@@ -2375,7 +2375,7 @@ bool lcBlenderPreferences::SettingsModified(bool Update, const QString& Module)
 	return Modified;
 }
 
-void lcBlenderPreferences::ResetSettings()
+void swBlenderPreferences::ResetSettings()
 {
 	BlenderPaths const* Paths = mBlenderPaths;
 	BlenderSettings const* Settings = mBlenderSettings;
@@ -2402,7 +2402,7 @@ void lcBlenderPreferences::ResetSettings()
 	QDialogButtonBox ButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Help,
 							   Qt::Horizontal, Dialog);
 	Layout->addWidget(&ButtonBox);
-	lcSetupDialogHelp(Dialog, &ButtonBox);
+	swSetupDialogHelp(Dialog, &ButtonBox);
 	connect(&ButtonBox, &QDialogButtonBox::accepted, Dialog, &QDialog::accept);
 	connect(&ButtonBox, &QDialogButtonBox::rejected, Dialog, &QDialog::reject);
 
@@ -2416,19 +2416,19 @@ void lcBlenderPreferences::ResetSettings()
 		SettingsMM = mDefaultSettingsMM;
 	}
 
-	mConfigured = !lcGetProfileString(LC_PROFILE_BLENDER_IMPORT_MODULE).isEmpty();
+	mConfigured = !swGetProfileString(SW_PROFILE_BLENDER_IMPORT_MODULE).isEmpty();
 
-	mBlenderPaths[PATH_BLENDER].value = lcGetProfileString(LC_PROFILE_BLENDER_PATH);
-	mBlenderVersion                   = lcGetProfileString(LC_PROFILE_BLENDER_VERSION);
-	mAddonVersion                     = lcGetProfileString(LC_PROFILE_BLENDER_ADDON_VERSION);
+	mBlenderPaths[PATH_BLENDER].value = swGetProfileString(SW_PROFILE_BLENDER_PATH);
+	mBlenderVersion                   = swGetProfileString(SW_PROFILE_BLENDER_VERSION);
+	mAddonVersion                     = swGetProfileString(SW_PROFILE_BLENDER_ADDON_VERSION);
 
 	mBlenderVersionEdit->setText(mBlenderVersion);
 	mAddonVersionEdit->setText(mAddonVersion);
 
 	if (mImportActBox->isChecked())
 	{
-		disconnect(mLineEditList[CTL_IMAGE_HEIGHT_EDIT], &QLineEdit::textChanged, this, &lcBlenderPreferences::SizeChanged);
-		disconnect(mLineEditList[CTL_IMAGE_WIDTH_EDIT], &QLineEdit::textChanged, this, &lcBlenderPreferences::SizeChanged);
+		disconnect(mLineEditList[CTL_IMAGE_HEIGHT_EDIT], &QLineEdit::textChanged, this, &swBlenderPreferences::SizeChanged);
+		disconnect(mLineEditList[CTL_IMAGE_WIDTH_EDIT], &QLineEdit::textChanged, this, &swBlenderPreferences::SizeChanged);
 
 		for (int LblIdx = 0; LblIdx < NumSettings(); LblIdx++)
 		{
@@ -2452,7 +2452,7 @@ void lcBlenderPreferences::ResetSettings()
 					else if (CtlIdx == CTL_RENDER_PERCENTAGE_EDIT)
 						SetNumericText(mLineEditList[CtlIdx], QString::number(mScale * 100));
 					else if (CtlIdx == CTL_DEFAULT_COLOUR_EDIT)
-						SetDefaultColor(lcGetColorIndex(Settings[LBL_DEFAULT_COLOUR].value.toInt()));
+						SetDefaultColor(swGetColorIndex(Settings[LBL_DEFAULT_COLOUR].value.toInt()));
 					else
 						SetNumericText(mLineEditList[CtlIdx], Settings[LblIdx].value);
 					if (LblIdx < LBL_RENDER_PERCENTAGE)
@@ -2474,13 +2474,13 @@ void lcBlenderPreferences::ResetSettings()
 			mPathLineEditList[LblIdx]->setText(Paths[LblIdx].value);
 		}
 
-		connect(mLineEditList[CTL_IMAGE_HEIGHT_EDIT], &QLineEdit::textChanged, this, &lcBlenderPreferences::SizeChanged);
-		connect(mLineEditList[CTL_IMAGE_WIDTH_EDIT], &QLineEdit::textChanged, this, &lcBlenderPreferences::SizeChanged);
+		connect(mLineEditList[CTL_IMAGE_HEIGHT_EDIT], &QLineEdit::textChanged, this, &swBlenderPreferences::SizeChanged);
+		connect(mLineEditList[CTL_IMAGE_WIDTH_EDIT], &QLineEdit::textChanged, this, &swBlenderPreferences::SizeChanged);
 	}
 	else if (mImportMMActBox->isChecked())
 	{
-		disconnect(mLineEditList[CTL_RESOLUTION_HEIGHT_EDIT], &QLineEdit::textChanged, this, &lcBlenderPreferences::SizeChanged);
-		disconnect(mLineEditList[CTL_RESOLUTION_WIDTH_EDIT], &QLineEdit::textChanged, this, &lcBlenderPreferences::SizeChanged);
+		disconnect(mLineEditList[CTL_RESOLUTION_HEIGHT_EDIT], &QLineEdit::textChanged, this, &swBlenderPreferences::SizeChanged);
+		disconnect(mLineEditList[CTL_RESOLUTION_WIDTH_EDIT], &QLineEdit::textChanged, this, &swBlenderPreferences::SizeChanged);
 
 		for (int LblIdx = 0; LblIdx < NumSettingsMM(); LblIdx++)
 		{
@@ -2524,42 +2524,42 @@ void lcBlenderPreferences::ResetSettings()
 			mPathLineEditList[LblIdx]->setText(Paths[LblIdx].value);
 		}
 
-		connect(mLineEditList[CTL_RESOLUTION_HEIGHT_EDIT], &QLineEdit::textChanged, this, &lcBlenderPreferences::SizeChanged);
-		connect(mLineEditList[CTL_RESOLUTION_WIDTH_EDIT], &QLineEdit::textChanged, this, &lcBlenderPreferences::SizeChanged);
+		connect(mLineEditList[CTL_RESOLUTION_HEIGHT_EDIT], &QLineEdit::textChanged, this, &swBlenderPreferences::SizeChanged);
+		connect(mLineEditList[CTL_RESOLUTION_WIDTH_EDIT], &QLineEdit::textChanged, this, &swBlenderPreferences::SizeChanged);
 	}
 
 	emit SettingChangedSig(true);
 }
 
-QString lcBlenderPreferences::TranslateDefaultText(const QString& Source)
+QString swBlenderPreferences::TranslateDefaultText(const QString& Source)
 {
 	QString Text = QCoreApplication::translate("QObject", Source.toUtf8().constData());
 
 	// Default text uses %1 only for the product name; substitute after translation.
 	if (Source.contains(QLatin1String("%1")))
-		Text = Text.arg(QLatin1String(LC_PRODUCTNAME_STR));
+		Text = Text.arg(QLatin1String(SW_PRODUCTNAME_STR));
 
 	return Text;
 }
 
-void lcBlenderPreferences::LoadSettings()
+void swBlenderPreferences::LoadSettings()
 {
 	QStringList const& DataPathList = QStandardPaths::standardLocations(QStandardPaths::AppLocalDataLocation);
 	gAddonPreferences->mDataDir = DataPathList.first();
 
-	if (QFileInfo(lcGetProfileString(LC_PROFILE_BLENDER_PATH)).isReadable())
+	if (QFileInfo(swGetProfileString(SW_PROFILE_BLENDER_PATH)).isReadable())
 	{
-		if (lcGetProfileString(LC_PROFILE_BLENDER_IMPORT_MODULE).isEmpty())
-			lcSetProfileString(LC_PROFILE_BLENDER_IMPORT_MODULE, QLatin1String(LC_BLENDER_ADDON_IMPORT_MODULE));
+		if (swGetProfileString(SW_PROFILE_BLENDER_IMPORT_MODULE).isEmpty())
+			swSetProfileString(SW_PROFILE_BLENDER_IMPORT_MODULE, QLatin1String(SW_BLENDER_ADDON_IMPORT_MODULE));
 	}
 	else
 	{
-		lcSetProfileString(LC_PROFILE_BLENDER_PATH, QString());
-		lcSetProfileString(LC_PROFILE_BLENDER_IMPORT_MODULE, QString());
+		swSetProfileString(SW_PROFILE_BLENDER_PATH, QString());
+		swSetProfileString(SW_PROFILE_BLENDER_IMPORT_MODULE, QString());
 	}
 
-	if (!QDir(QString("%1/Blender/addons/%2").arg(gAddonPreferences->mDataDir, LC_BLENDER_ADDON_RENDER_FOLDER)).isReadable())
-		lcSetProfileString(LC_PROFILE_BLENDER_IMPORT_MODULE, QString());
+	if (!QDir(QString("%1/Blender/addons/%2").arg(gAddonPreferences->mDataDir, SW_BLENDER_ADDON_RENDER_FOLDER)).isReadable())
+		swSetProfileString(SW_PROFILE_BLENDER_IMPORT_MODULE, QString());
 
 	bool UseArchiveLibrary = false;
 	auto LDrawPartsLibrary = [&] (QString const& LDrawPath)
@@ -2581,14 +2581,14 @@ void lcBlenderPreferences::LoadSettings()
 
 	if (!NumPaths())
 	{
-		const QString DefaultBlendFile = QString("%1/Blender/config/%2").arg(gAddonPreferences->mDataDir, LC_BLENDER_ADDON_BLEND_FILE);
+		const QString DefaultBlendFile = QString("%1/Blender/config/%2").arg(gAddonPreferences->mDataDir, SW_BLENDER_ADDON_BLEND_FILE);
 
 		QStringList const AddonPaths = QStringList()
-		/* 0  PATH_BLENDER      */        << lcGetProfileString(LC_PROFILE_BLENDER_PATH)
+		/* 0  PATH_BLENDER      */        << swGetProfileString(SW_PROFILE_BLENDER_PATH)
 		/* 1  PATH_BLENDFILE    */        << (QFileInfo::exists(DefaultBlendFile) ? DefaultBlendFile : QString())
 		/* 2  PATH_ENVIRONMENT  */        << QString()
-		/* 3  PATH_LDCONFIG     */        << lcGetProfileString(LC_PROFILE_COLOR_CONFIG)
-		/* 4  PATH_LDRAW        */        << LDrawPartsLibrary(lcGetProfileString(LC_PROFILE_PARTS_LIBRARY))
+		/* 3  PATH_LDCONFIG     */        << swGetProfileString(SW_PROFILE_COLOR_CONFIG)
+		/* 4  PATH_LDRAW        */        << LDrawPartsLibrary(swGetProfileString(SW_PROFILE_PARTS_LIBRARY))
 		/* 5  PATH_LSYNTH       */        << QString()
 		/* 6  PATH_STUD_LOGO    */        << QString()
 		/* 7  PATH_STUDIO_LDRAW */        << QString()
@@ -2638,7 +2638,7 @@ void lcBlenderPreferences::LoadSettings()
 		}
 	}
 
-	QFileInfo BlenderConfigFileInfo(lcGetProfileString(LC_PROFILE_BLENDER_LDRAW_CONFIG_PATH));
+	QFileInfo BlenderConfigFileInfo(swGetProfileString(SW_PROFILE_BLENDER_LDRAW_CONFIG_PATH));
 
 	if (BlenderConfigFileInfo.exists())
 	{
@@ -2648,7 +2648,7 @@ void lcBlenderPreferences::LoadSettings()
 		{
 			if (LblIdx >= PATH_STUDIO_LDRAW)
 				continue;
-			const QString& Key = QString("%1/%2").arg(LC_BLENDER_ADDON, mBlenderPaths[LblIdx].key);
+			const QString& Key = QString("%1/%2").arg(SW_BLENDER_ADDON, mBlenderPaths[LblIdx].key);
 			const QString& Value = Settings.value(Key, QString()).toString();
 			if (QFileInfo::exists(Value))
 				mBlenderPaths[LblIdx].value = QDir::toNativeSeparators(Value);
@@ -2658,7 +2658,7 @@ void lcBlenderPreferences::LoadSettings()
 		{
 			if (LblIdx == PATH_LSYNTH || LblIdx == PATH_STUD_LOGO)
 				continue;
-			const QString& Key = QString("%1/%2").arg(LC_BLENDER_ADDON_MM, mBlenderPaths[LblIdx].key_mm);
+			const QString& Key = QString("%1/%2").arg(SW_BLENDER_ADDON_MM, mBlenderPaths[LblIdx].key_mm);
 			const QString& Value = Settings.value(Key, QString()).toString();
 			if (QFileInfo::exists(Value))
 				mBlenderPaths[LblIdx].value = QDir::toNativeSeparators(Value);
@@ -2666,7 +2666,7 @@ void lcBlenderPreferences::LoadSettings()
 
 		for (int LblIdx = 0; LblIdx < NumSettings(); LblIdx++)
 		{
-			const QString& Key = QString("%1/%2").arg(LC_BLENDER_ADDON, mBlenderSettings[LblIdx].key);
+			const QString& Key = QString("%1/%2").arg(SW_BLENDER_ADDON, mBlenderSettings[LblIdx].key);
 			const QString& Value = Settings.value(Key, QString()).toString();
 			if (!Value.isEmpty())
 			{
@@ -2684,7 +2684,7 @@ void lcBlenderPreferences::LoadSettings()
 
 		for (int LblIdx = 0; LblIdx < NumSettingsMM(); LblIdx++)
 		{
-			const QString& Key = QString("%1/%2").arg(LC_BLENDER_ADDON_MM, mBlenderSettingsMM[LblIdx].key);
+			const QString& Key = QString("%1/%2").arg(SW_BLENDER_ADDON_MM, mBlenderSettingsMM[LblIdx].key);
 			const QString& Value = Settings.value(Key, QString()).toString();
 			if (!Value.isEmpty())
 			{
@@ -2735,12 +2735,12 @@ void lcBlenderPreferences::LoadSettings()
 	mBlenderSettingsMM[LBL_RESOLUTION_HEIGHT].value = QString::number(gAddonPreferences->mImageHeight);
 	mBlenderSettingsMM[LBL_RENDER_PERCENTAGE_MM].value = QString::number(gAddonPreferences->mScale * 100);
 
-	mBlenderPaths[PATH_BLENDER].value = lcGetProfileString(LC_PROFILE_BLENDER_PATH);
-	gAddonPreferences->mBlenderVersion = lcGetProfileString(LC_PROFILE_BLENDER_VERSION);
-	gAddonPreferences->mAddonVersion = lcGetProfileString(LC_PROFILE_BLENDER_ADDON_VERSION);
+	mBlenderPaths[PATH_BLENDER].value = swGetProfileString(SW_PROFILE_BLENDER_PATH);
+	gAddonPreferences->mBlenderVersion = swGetProfileString(SW_PROFILE_BLENDER_VERSION);
+	gAddonPreferences->mAddonVersion = swGetProfileString(SW_PROFILE_BLENDER_ADDON_VERSION);
 }
 
-void lcBlenderPreferences::SaveSettings()
+void swBlenderPreferences::SaveSettings()
 {
 	if (!NumSettings() || !NumSettingsMM())
 		LoadSettings();
@@ -2749,7 +2749,7 @@ void lcBlenderPreferences::SaveSettings()
 	if (Value.isEmpty())
 		Value = gAddonPreferences->mPathLineEditList[PATH_BLENDER]->text();
 
-	lcSetProfileString(LC_PROFILE_BLENDER_PATH, QDir::toNativeSeparators(Value));
+	swSetProfileString(SW_PROFILE_BLENDER_PATH, QDir::toNativeSeparators(Value));
 
 	Value.clear();
 	if (!gAddonPreferences->mBlenderVersion.isEmpty())
@@ -2761,20 +2761,20 @@ void lcBlenderPreferences::SaveSettings()
 		gAddonPreferences->mAddonVersionEdit->setText(gAddonPreferences->mAddonVersion);
 	}
 
-	lcSetProfileString(LC_PROFILE_BLENDER_VERSION, Value);
+	swSetProfileString(SW_PROFILE_BLENDER_VERSION, Value);
 
-	const QString BlenderConfigDir = QString("%1/Blender/addons/%2/config").arg(gAddonPreferences->mDataDir, LC_BLENDER_ADDON_RENDER_FOLDER);
+	const QString BlenderConfigDir = QString("%1/Blender/addons/%2/config").arg(gAddonPreferences->mDataDir, SW_BLENDER_ADDON_RENDER_FOLDER);
 
-	Value = lcGetProfileString(LC_PROFILE_BLENDER_LDRAW_CONFIG_PATH);
-	if (!Value.contains(LC_BLENDER_ADDON_RENDER_FOLDER))
+	Value = swGetProfileString(SW_PROFILE_BLENDER_LDRAW_CONFIG_PATH);
+	if (!Value.contains(SW_BLENDER_ADDON_RENDER_FOLDER))
 	{
-		Value = QString("%1/%2").arg(BlenderConfigDir, LC_BLENDER_ADDON_CONFIG_FILE);
-		lcSetProfileString(LC_PROFILE_BLENDER_LDRAW_CONFIG_PATH, QDir::toNativeSeparators(Value));
+		Value = QString("%1/%2").arg(BlenderConfigDir, SW_BLENDER_ADDON_CONFIG_FILE);
+		swSetProfileString(SW_PROFILE_BLENDER_LDRAW_CONFIG_PATH, QDir::toNativeSeparators(Value));
 	}
 
 	QString searchDirectoriesKey = QLatin1String("additionalSearchPaths");
 	QString parameterFileKey = QLatin1String("ParameterFile");
-	QString ParameterFile = QString("%1/%2").arg(BlenderConfigDir, LC_BLENDER_ADDON_PARAMS_FILE);
+	QString ParameterFile = QString("%1/%2").arg(BlenderConfigDir, SW_BLENDER_ADDON_PARAMS_FILE);
 
 	QSettings Settings(Value, QSettings::IniFormat);
 
@@ -2782,12 +2782,12 @@ void lcBlenderPreferences::SaveSettings()
 	{
 		if (!QFileInfo::exists(ParameterFile))
 			ExportParameterFile();
-		Value = QDir::toNativeSeparators(QFileInfo(lcGetProfileString(LC_PROFILE_PROJECTS_PATH)).absolutePath());
+		Value = QDir::toNativeSeparators(QFileInfo(swGetProfileString(SW_PROFILE_PROJECTS_PATH)).absolutePath());
 		Settings.setValue(searchDirectoriesKey, QVariant(Value));
 		Settings.endGroup();
 	};
 
-	Settings.beginGroup(LC_BLENDER_ADDON);
+	Settings.beginGroup(SW_BLENDER_ADDON);
 
 	for (int LblIdx = 1/*skip blender executable*/; LblIdx < NumPaths(); LblIdx++)
 	{
@@ -2828,7 +2828,7 @@ void lcBlenderPreferences::SaveSettings()
 
 	concludeSettingsGroup();
 
-	Settings.beginGroup(LC_BLENDER_ADDON_MM);
+	Settings.beginGroup(SW_BLENDER_ADDON_MM);
 
 	for (int LblIdx = 1/*skip blender executable*/; LblIdx < NumPaths(); LblIdx++)
 	{
@@ -2866,11 +2866,11 @@ void lcBlenderPreferences::SaveSettings()
 
 	const QString preferredImportModule = gAddonPreferences->mImportActBox->isChecked() ? QString("TN") : gAddonPreferences->mImportMMActBox->isChecked() ? QString("MM") : QString();
 
-	if (preferredImportModule != lcGetProfileString(LC_PROFILE_BLENDER_IMPORT_MODULE))
-		lcSetProfileString(LC_PROFILE_BLENDER_IMPORT_MODULE, preferredImportModule);
+	if (preferredImportModule != swGetProfileString(SW_PROFILE_BLENDER_IMPORT_MODULE))
+		swSetProfileString(SW_PROFILE_BLENDER_IMPORT_MODULE, preferredImportModule);
 }
 
-void lcBlenderPreferences::EnableImportModule()
+void swBlenderPreferences::EnableImportModule()
 {
 	QString saveImportModule, preferredImportModule;
 	if (sender() == mImportActBox && mImportActBox->isChecked())
@@ -2894,7 +2894,7 @@ void lcBlenderPreferences::EnableImportModule()
 	if (SettingsModified(true, saveImportModule))
 		SaveSettings();
 
-	lcSetProfileString(LC_PROFILE_BLENDER_IMPORT_MODULE, preferredImportModule);
+	swSetProfileString(SW_PROFILE_BLENDER_IMPORT_MODULE, preferredImportModule);
 
 	if (mImportMMActBox->isChecked())
 		InitPathsAndSettingsMM();
@@ -2904,7 +2904,7 @@ void lcBlenderPreferences::EnableImportModule()
 	ConfigureBlenderAddon(false, false, true);
 }
 
-int lcBlenderPreferences::NumSettings(bool DefaultSettings)
+int swBlenderPreferences::NumSettings(bool DefaultSettings)
 {
 	int Size = 0;
 	if (!mBlenderSettings[0].key.isEmpty() || DefaultSettings)
@@ -2912,7 +2912,7 @@ int lcBlenderPreferences::NumSettings(bool DefaultSettings)
 	return Size;
 }
 
-int lcBlenderPreferences::NumSettingsMM(bool DefaultSettings)
+int swBlenderPreferences::NumSettingsMM(bool DefaultSettings)
 {
 	int Size = 0;
 	if (!mBlenderSettingsMM[0].key.isEmpty() || DefaultSettings)
@@ -2920,7 +2920,7 @@ int lcBlenderPreferences::NumSettingsMM(bool DefaultSettings)
 	return Size;
 }
 
-int lcBlenderPreferences::NumPaths(bool DefaultSettings)
+int swBlenderPreferences::NumPaths(bool DefaultSettings)
 {
 	int Size = 0;
 	if (!mBlenderPaths[0].key.isEmpty() || DefaultSettings)
@@ -2928,7 +2928,7 @@ int lcBlenderPreferences::NumPaths(bool DefaultSettings)
 	return Size;
 }
 
-void lcBlenderPreferences::ShowPathsGroup()
+void swBlenderPreferences::ShowPathsGroup()
 {
 	if (mPathsBox->isHidden())
 		mPathsBox->show();
@@ -2938,13 +2938,13 @@ void lcBlenderPreferences::ShowPathsGroup()
 	mContent->adjustSize();
 }
 
-void lcBlenderPreferences::ColorButtonClicked(bool)
+void swBlenderPreferences::ColorButtonClicked(bool)
 {
 	int ColorIndex = mLineEditList[CTL_DEFAULT_COLOUR_EDIT]->property("ColorIndex").toInt();
 
 	QWidget* Parent = mLineEditList[CTL_DEFAULT_COLOUR_EDIT];
-	lcColorPickerPopup* Popup = new lcColorPickerPopup(Parent, ColorIndex);
-	connect(Popup, &lcColorPickerPopup::Selected, this, &lcBlenderPreferences::SetDefaultColor);
+	swColorPickerPopup* Popup = new swColorPickerPopup(Parent, ColorIndex);
+	connect(Popup, &swColorPickerPopup::Selected, this, &swBlenderPreferences::SetDefaultColor);
 	Popup->setMinimumSize(300, 200);
 	Popup->SetPosition(Parent);
 
@@ -2952,12 +2952,12 @@ void lcBlenderPreferences::ColorButtonClicked(bool)
 	Popup->show();
 }
 
-void lcBlenderPreferences::SetDefaultColor(int ColorIndex)
+void swBlenderPreferences::SetDefaultColor(int ColorIndex)
 {
 	QImage Image(12, 12, QImage::Format_ARGB32);
 	Image.fill(0);
 
-	lcColor* Colour =& gColorList[ColorIndex];
+	swColor* Colour =& gColorList[ColorIndex];
 	QPainter Painter(&Image);
 	Painter.setCompositionMode(QPainter::CompositionMode_Source);
 	Painter.setPen(Qt::darkGray);
@@ -2965,7 +2965,7 @@ void lcBlenderPreferences::SetDefaultColor(int ColorIndex)
 	Painter.drawRect(0, 0, Image.width() - 1, Image.height() - 1);
 	Painter.end();
 
-	int const ColourCode = lcGetColorCode(ColorIndex);
+	int const ColourCode = swGetColorCode(ColorIndex);
 	mLineEditList[CTL_DEFAULT_COLOUR_EDIT]->setText(QString("%1 (%2)").arg(Colour->Name).arg(ColourCode));
 	mLineEditList[CTL_DEFAULT_COLOUR_EDIT]->setProperty("ColorIndex", QVariant::fromValue(ColorIndex));
 	mDefaultColourEditAction->setIcon(QPixmap::fromImage(Image));
@@ -2976,7 +2976,7 @@ void lcBlenderPreferences::SetDefaultColor(int ColorIndex)
 	emit SettingChangedSig(Change);
 }
 
-void lcBlenderPreferences::BrowseBlender(bool)
+void swBlenderPreferences::BrowseBlender(bool)
 {
 	for (int LblIdx = 0; LblIdx < NumPaths(); ++LblIdx)
 	{
@@ -3024,7 +3024,7 @@ void lcBlenderPreferences::BrowseBlender(bool)
 	}
 }
 
-void lcBlenderPreferences::SizeChanged(const QString&)
+void swBlenderPreferences::SizeChanged(const QString&)
 {
 	const bool ImportMM = mImportMMActBox->isChecked();
 	const int Keep_Aspect_Ratio = ImportMM ? int(CTL_KEEP_ASPECT_RATIO_BOX_MM) : int(CTL_KEEP_ASPECT_RATIO_BOX);
@@ -3043,25 +3043,25 @@ void lcBlenderPreferences::SizeChanged(const QString&)
 	{
 		if (sender() == mLineEditList[Width_Edit])
 		{
-			disconnect(mLineEditList[Height_Edit], &QLineEdit::textChanged, this, &lcBlenderPreferences::SizeChanged);
+			disconnect(mLineEditList[Height_Edit], &QLineEdit::textChanged, this, &swBlenderPreferences::SizeChanged);
 
 			const QString Height = QString::number(qRound(double(mImageHeight) * NewValue / mImageWidth));
 			SetNumericText(mLineEditList[Height_Edit], Height);
 
 			Change = Settings[Height_Edit].value != Height;
 
-			connect(mLineEditList[Height_Edit], &QLineEdit::textChanged, this, &lcBlenderPreferences::SizeChanged);
+			connect(mLineEditList[Height_Edit], &QLineEdit::textChanged, this, &swBlenderPreferences::SizeChanged);
 		}
 		else if (sender() == mLineEditList[Height_Edit])
 		{
-			disconnect(mLineEditList[Width_Edit], &QLineEdit::textChanged, this, &lcBlenderPreferences::SizeChanged);
+			disconnect(mLineEditList[Width_Edit], &QLineEdit::textChanged, this, &swBlenderPreferences::SizeChanged);
 
 			const QString Width = QString::number(qRound(double(NewValue) * mImageWidth / mImageHeight));
 			SetNumericText(mLineEditList[Width_Edit], Width);
 
 			Change = Settings[Height_Edit].value != Width;
 
-			connect(mLineEditList[Width_Edit], &QLineEdit::textChanged, this, &lcBlenderPreferences::SizeChanged);
+			connect(mLineEditList[Width_Edit], &QLineEdit::textChanged, this, &swBlenderPreferences::SizeChanged);
 		}
 
 		// Change is provided here for consistency only as ImageWidth,
@@ -3071,7 +3071,7 @@ void lcBlenderPreferences::SizeChanged(const QString&)
 	}
 }
 
-void lcBlenderPreferences::SetModelSize(bool Update)
+void swBlenderPreferences::SetModelSize(bool Update)
 {
 	const bool ImportMM = mImportMMActBox->isChecked();
 	const int Crop_Image = ImportMM ? int(CTL_CROP_IMAGE_BOX_MM) : int(CTL_CROP_IMAGE_BOX);
@@ -3089,7 +3089,7 @@ void lcBlenderPreferences::SetModelSize(bool Update)
 
 	const bool CropImage = mCheckBoxList[Crop_Image]->isChecked();
 
-	lcModel* Model = lcGetActiveProject()->GetActiveModel();
+	swModel* Model = swGetActiveProject()->GetActiveModel();
 	if (Model)
 	{
 		struct NativeImage
@@ -3162,8 +3162,8 @@ void lcBlenderPreferences::SetModelSize(bool Update)
 		}
 	}
 
-	disconnect(mLineEditList[Width_Edit], &QLineEdit::textChanged, this, &lcBlenderPreferences::SizeChanged);
-	disconnect(mLineEditList[Height_Edit], &QLineEdit::textChanged, this, &lcBlenderPreferences::SizeChanged);
+	disconnect(mLineEditList[Width_Edit], &QLineEdit::textChanged, this, &swBlenderPreferences::SizeChanged);
+	disconnect(mLineEditList[Height_Edit], &QLineEdit::textChanged, this, &swBlenderPreferences::SizeChanged);
 
 	const QString Width = QString::number(CropImage ? ImageWidth : mImageWidth);
 	const QString Height = QString::number(CropImage ? ImageHeight : mImageHeight);
@@ -3174,11 +3174,11 @@ void lcBlenderPreferences::SetModelSize(bool Update)
 	if (Update)
 		SettingsModified(true);
 
-	connect(mLineEditList[Height_Edit], &QLineEdit::textChanged, this, &lcBlenderPreferences::SizeChanged);
-	connect(mLineEditList[Width_Edit], &QLineEdit::textChanged, this, &lcBlenderPreferences::SizeChanged);
+	connect(mLineEditList[Height_Edit], &QLineEdit::textChanged, this, &swBlenderPreferences::SizeChanged);
+	connect(mLineEditList[Width_Edit], &QLineEdit::textChanged, this, &swBlenderPreferences::SizeChanged);
 }
 
-void lcBlenderPreferences::ValidateColourScheme(int Index)
+void swBlenderPreferences::ValidateColourScheme(int Index)
 {
 	QComboBox* ComboBox = qobject_cast<QComboBox*>(sender());
 	if (!ComboBox)
@@ -3188,7 +3188,7 @@ void lcBlenderPreferences::ValidateColourScheme(int Index)
 	const int Color_Scheme = ImportMM ? int(LBL_COLOUR_SCHEME_MM) : int(LBL_COLOUR_SCHEME);
 	BlenderSettings* Settings = ImportMM ? mBlenderSettingsMM : mBlenderSettings;
 
-	if (ComboBox->itemText(Index) == "custom" && mBlenderPaths[PATH_LDCONFIG].value.isEmpty() && lcGetProfileString(LC_PROFILE_COLOR_CONFIG).isEmpty())
+	if (ComboBox->itemText(Index) == "custom" && mBlenderPaths[PATH_LDCONFIG].value.isEmpty() && swGetProfileString(SW_PROFILE_COLOR_CONFIG).isEmpty())
 	{
 		BlenderSettings const* defaultSettings = ImportMM ? mDefaultSettingsMM : mDefaultSettings;
 		Settings[Color_Scheme].value = defaultSettings[Color_Scheme].value;
@@ -3206,7 +3206,7 @@ void lcBlenderPreferences::ValidateColourScheme(int Index)
 	}
 }
 
-bool lcBlenderPreferences::PromptAccept()
+bool swBlenderPreferences::PromptAccept()
 {
 	if (!gMainWindow)
 		return false;
@@ -3220,7 +3220,7 @@ bool lcBlenderPreferences::PromptAccept()
 	return false;
 }
 
-void lcBlenderPreferences::LoadDefaultParameters(QByteArray& Buffer, int Which)
+void swBlenderPreferences::LoadDefaultParameters(QByteArray& Buffer, int Which)
 {
 	/*
 	# File: BlenderLDrawParameters.lst
@@ -3488,10 +3488,10 @@ void lcBlenderPreferences::LoadDefaultParameters(QByteArray& Buffer, int Which)
 		Buffer.append(DefaultLightedBricks, sizeof(DefaultLightedBricks));
 }
 
-bool lcBlenderPreferences::ExportParameterFile()
+bool swBlenderPreferences::ExportParameterFile()
 {
-	const QString BlenderConfigDir = QString("%1/Blender/addons/%2/config").arg(gAddonPreferences->mDataDir, LC_BLENDER_ADDON_RENDER_FOLDER);
-	const QString ParameterFile = QString("%1/%2").arg(BlenderConfigDir, LC_BLENDER_ADDON_PARAMS_FILE);
+	const QString BlenderConfigDir = QString("%1/Blender/addons/%2/config").arg(gAddonPreferences->mDataDir, SW_BLENDER_ADDON_RENDER_FOLDER);
+	const QString ParameterFile = QString("%1/%2").arg(BlenderConfigDir, SW_BLENDER_ADDON_PARAMS_FILE);
 	QDir ConfigDir(BlenderConfigDir);
 	if(!ConfigDir.exists())
 		ConfigDir.mkpath(".");
@@ -3590,7 +3590,7 @@ bool lcBlenderPreferences::ExportParameterFile()
 	return true;
 }
 
-bool lcBlenderPreferences::OverwriteFile(const QString& File)
+bool swBlenderPreferences::OverwriteFile(const QString& File)
 {
 	QFileInfo fileInfo(File);
 
@@ -3605,7 +3605,7 @@ bool lcBlenderPreferences::OverwriteFile(const QString& File)
 	return (Exec == QMessageBox::Yes);
 }
 
-int lcBlenderPreferences::ShowMessage(QWidget* Parent, const QString& Header,  const QString& Title,  const QString& Body, const QString& Detail, int const Buttons, int const Icon)
+int swBlenderPreferences::ShowMessage(QWidget* Parent, const QString& Header,  const QString& Title,  const QString& Body, const QString& Detail, int const Buttons, int const Icon)
 {
 	if (!gMainWindow)
 		return QMessageBox::Ok;
@@ -3680,14 +3680,14 @@ int lcBlenderPreferences::ShowMessage(QWidget* Parent, const QString& Header,  c
 			bool VersionCheck = true;
 			if (static_cast<Qt::CheckState>(State) == Qt::CheckState::Checked)
 				VersionCheck = false;
-			lcSetProfileInt(LC_PROFILE_BLENDER_ADDON_VERSION_CHECK, (int)VersionCheck);
+			swSetProfileInt(SW_PROFILE_BLENDER_ADDON_VERSION_CHECK, (int)VersionCheck);
 		});
 	}
 
 	return Box.exec();
 }
 
-void lcBlenderPreferences::DownloadFinished(lcHttpReply* Reply)
+void swBlenderPreferences::DownloadFinished(swHttpReply* Reply)
 {
 	if (!Reply->error())
 		mData = Reply->readAll();
@@ -3732,7 +3732,7 @@ enum
 };
 }
 
-bool lcBlenderPreferences::ExtractAddon(const QString FileName, QString& Result)
+bool swBlenderPreferences::ExtractAddon(const QString FileName, QString& Result)
 {
 	enum ZipHostOS
 	{
@@ -3746,12 +3746,12 @@ bool lcBlenderPreferences::ExtractAddon(const QString FileName, QString& Result)
 
 	struct ZipFileInfo
 	{
-		ZipFileInfo(lcZipFileInfo& FileInfo) noexcept
+		ZipFileInfo(swZipFileInfo& FileInfo) noexcept
 			: ZipInfo(FileInfo), isDir(false), isFile(false), isSymLink(false)
 		{
 		}
 		bool IsValid() const noexcept { return isDir || isFile || isSymLink; }
-		lcZipFileInfo& ZipInfo;
+		swZipFileInfo& ZipInfo;
 		QString filePath;
 		uint isDir : 1;
 		uint isFile : 1;
@@ -3783,7 +3783,7 @@ bool lcBlenderPreferences::ExtractAddon(const QString FileName, QString& Result)
 		return Permissions;
 	};
 
-	lcZipFile ZipFile;
+	swZipFile ZipFile;
 
 	if (!ZipFile.OpenRead(FileName))
 		return false;
@@ -3870,7 +3870,7 @@ bool lcBlenderPreferences::ExtractAddon(const QString FileName, QString& Result)
 			continue;
 		}
 
-		lcMemFile MemFile;
+		swMemFile MemFile;
 
 		ZipFile.ExtractFile(FileIdx, MemFile);
 
@@ -3910,4 +3910,4 @@ bool lcBlenderPreferences::ExtractAddon(const QString FileName, QString& Result)
 	return Ok;
 }
 
-#endif // !LC_DISABLE_BLENDER
+#endif // !SW_DISABLE_BLENDER

@@ -4,7 +4,7 @@
 #include "sw_piecedata.h"
 #include "sw_utils.h"
 
-lcPartSelectionPopup::lcPartSelectionPopup(lcPieceData* InitialPart, QWidget* Parent)
+swPartSelectionPopup::swPartSelectionPopup(swPieceData* InitialPart, QWidget* Parent)
 	: QWidget(Parent), mInitialPart(InitialPart)
 {
 	setAccessibleName(tr("Choose Piece"));
@@ -12,35 +12,35 @@ lcPartSelectionPopup::lcPartSelectionPopup(lcPieceData* InitialPart, QWidget* Pa
 
 	QVBoxLayout* Layout = new QVBoxLayout(this);
 
-	mPartSelectionWidget = new lcPartSelectionWidget(true, this);
+	mPartSelectionWidget = new swPartSelectionWidget(true, this);
 	Layout->addWidget(mPartSelectionWidget);
 	mPartSelectionWidget->SetOrientation(Qt::Horizontal);
 
 	mPartSelectionWidget->SetDragEnabled(false);
 
-	connect(mPartSelectionWidget, &lcPartSelectionWidget::PartPicked, this, &lcPartSelectionPopup::Accept);
-	connect(mPartSelectionWidget, &lcPartSelectionWidget::LayoutChanged, this, &lcPartSelectionPopup::ResizeToContents, Qt::QueuedConnection);
+	connect(mPartSelectionWidget, &swPartSelectionWidget::PartPicked, this, &swPartSelectionPopup::Accept);
+	connect(mPartSelectionWidget, &swPartSelectionWidget::LayoutChanged, this, &swPartSelectionPopup::ResizeToContents, Qt::QueuedConnection);
 
 	QDialogButtonBox* ButtonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Help, this);
 	Layout->addWidget(ButtonBox);
-	lcSetupWidgetHelp(this, ButtonBox);
+	swSetupWidgetHelp(this, ButtonBox);
 
-	QObject::connect(ButtonBox, &QDialogButtonBox::accepted, this, &lcPartSelectionPopup::Accept);
-	QObject::connect(ButtonBox, &QDialogButtonBox::rejected, this, &lcPartSelectionPopup::Reject);
+	QObject::connect(ButtonBox, &QDialogButtonBox::accepted, this, &swPartSelectionPopup::Accept);
+	QObject::connect(ButtonBox, &QDialogButtonBox::rejected, this, &swPartSelectionPopup::Reject);
 }
 
-QSize lcPartSelectionPopup::GetPartsViewSizeHint(const lcPartSelectionListView* PartsView, const QSize& PopupSize) const
+QSize swPartSelectionPopup::GetPartsViewSizeHint(const swPartSelectionListView* PartsView, const QSize& PopupSize) const
 {
 	const int WidthOverhead = PopupSize.width() - PartsView->sizeHint().width();
 	const int ViewWidth = qMax(1, qMin(PopupSize.width(), maximumWidth()) - WidthOverhead);
 	return PartsView->GetPreferredSize(ViewWidth);
 }
 
-QSize lcPartSelectionPopup::sizeHint() const
+QSize swPartSelectionPopup::sizeHint() const
 {
 	QSize Size = QWidget::sizeHint();
-	const lcPartSelectionListView* PartsView = mPartSelectionWidget->findChild<lcPartSelectionListView*>();
-	if (!PartsView || PartsView->GetListModel()->GetIconSize() == lcPartSelectionListView::NoIconSize || PartsView->GetListModel()->IsListMode())
+	const swPartSelectionListView* PartsView = mPartSelectionWidget->findChild<swPartSelectionListView*>();
+	if (!PartsView || PartsView->GetListModel()->GetIconSize() == swPartSelectionListView::NoIconSize || PartsView->GetListModel()->IsListMode())
 		return Size;
 
 	const int RowHeight = PartsView->GetCellSize().height();
@@ -57,7 +57,7 @@ QSize lcPartSelectionPopup::sizeHint() const
 	return Size;
 }
 
-void lcPartSelectionPopup::showEvent(QShowEvent* ShowEvent)
+void swPartSelectionPopup::showEvent(QShowEvent* ShowEvent)
 {
 	QWidget::showEvent(ShowEvent);
 
@@ -67,16 +67,16 @@ void lcPartSelectionPopup::showEvent(QShowEvent* ShowEvent)
 	mPartSelectionWidget->FocusPartFilterWidget();
 }
 
-void lcPartSelectionPopup::SetHeightLimit(int Height)
+void swPartSelectionPopup::SetHeightLimit(int Height)
 {
 	mHeightLimit = Height;
 	UpdateHeightLimit();
 }
 
-void lcPartSelectionPopup::UpdateHeightLimit()
+void swPartSelectionPopup::UpdateHeightLimit()
 {
 	int Height = mHeightLimit;
-	const lcPartSelectionListView* PartsView = mPartSelectionWidget->findChild<lcPartSelectionListView*>();
+	const swPartSelectionListView* PartsView = mPartSelectionWidget->findChild<swPartSelectionListView*>();
 	if (PartsView && PartsView->GetListModel()->GetIconSize() && !PartsView->GetListModel()->IsListMode())
 	{
 		const int RowHeight = PartsView->GetCellSize().height();
@@ -103,7 +103,7 @@ void lcPartSelectionPopup::UpdateHeightLimit()
 	}
 }
 
-void lcPartSelectionPopup::Accept()
+void swPartSelectionPopup::Accept()
 {
 	mPickedPiece = mPartSelectionWidget->GetCurrentPart();
 	mAccepted = true;
@@ -111,12 +111,12 @@ void lcPartSelectionPopup::Accept()
 	Close();
 }
 
-void lcPartSelectionPopup::Reject()
+void swPartSelectionPopup::Reject()
 {
 	Close();
 }
 
-void lcPartSelectionPopup::ResizeToContents()
+void swPartSelectionPopup::ResizeToContents()
 {
 	QMenu* Menu = qobject_cast<QMenu*>(parent());
 	if (!Menu || !Menu->isVisible())
@@ -137,10 +137,10 @@ void lcPartSelectionPopup::ResizeToContents()
 		}
 	}
 
-	Menu->move(lcGetPopupPosition(Menu->pos(), Menu->size(), Menu->pos()));
+	Menu->move(swGetPopupPosition(Menu->pos(), Menu->size(), Menu->pos()));
 }
 
-void lcPartSelectionPopup::Close()
+void swPartSelectionPopup::Close()
 {
 	QMenu* Menu = qobject_cast<QMenu*>(parent());
 
@@ -148,16 +148,16 @@ void lcPartSelectionPopup::Close()
 		Menu->close();
 }
 
-std::optional<lcPieceData*> lcShowPartSelectionPopup(lcPieceData* InitialPart, const std::vector<std::pair<lcPieceData*, std::string>>& CustomParts, int ColorIndex, QWidget* Parent, QPoint Position)
+std::optional<swPieceData*> swShowPartSelectionPopup(swPieceData* InitialPart, const std::vector<std::pair<swPieceData*, std::string>>& CustomParts, int ColorIndex, QWidget* Parent, QPoint Position)
 {
 	std::unique_ptr<QMenu> Menu(new QMenu(Parent));
 	QWidgetAction* Action = new QWidgetAction(Menu.get());
-	lcPartSelectionPopup* Popup = new lcPartSelectionPopup(InitialPart, Menu.get());
-	lcPartSelectionWidget* PartSelectionWidget = Popup->GetPartSelectionWidget();
+	swPartSelectionPopup* Popup = new swPartSelectionPopup(InitialPart, Menu.get());
+	swPartSelectionWidget* PartSelectionWidget = Popup->GetPartSelectionWidget();
 
 	if (CustomParts.empty())
 	{
-		PartSelectionWidget->SetCategory(lcPartCategoryType::AllParts, 0);
+		PartSelectionWidget->SetCategory(swPartCategoryType::AllParts, 0);
 		PartSelectionWidget->SetColorIndex(ColorIndex);
 	}
 	else

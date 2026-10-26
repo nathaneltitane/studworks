@@ -20,255 +20,255 @@
 #endif
 #endif
 
-lcApplication* gApplication;
+swApplication* gApplication;
 
-void lcPreferences::LoadDefaults()
+void swPreferences::LoadDefaults()
 {
-	mFixedAxes = lcGetProfileInt(LC_PROFILE_FIXED_AXES);
-	mMouseSensitivity = lcGetProfileInt(LC_PROFILE_MOUSE_SENSITIVITY);
-	mShadingMode = lcGetProfileShadingMode();
-	mHighlightRenderMode = lcGetProfileHighlightRenderMode();
-	mBackgroundGradient = lcGetProfileInt(LC_PROFILE_BACKGROUND_GRADIENT);
-	mBackgroundSolidColor = lcGetProfileUInt(LC_PROFILE_BACKGROUND_COLOR);
-	mBackgroundGradientColorTop = lcGetProfileUInt(LC_PROFILE_GRADIENT_COLOR_TOP);
-	mBackgroundGradientColorBottom = lcGetProfileUInt(LC_PROFILE_GRADIENT_COLOR_BOTTOM);
-	mDrawAxes = lcGetProfileInt(LC_PROFILE_DRAW_AXES);
-	mFollowStepViews = lcGetProfileInt(LC_PROFILE_FOLLOW_STEP_VIEWS);
-	mAxisIconLocation = lcGetProfileAxisIconLocation();
-	mTextColor = lcGetProfileUInt(LC_PROFILE_TEXT_COLOR);
-	mTextHaloColor = lcGetProfileUInt(LC_PROFILE_TEXT_HALO_COLOR);
-	mMarqueeBorderColor = lcGetProfileUInt(LC_PROFILE_MARQUEE_BORDER_COLOR);
-	mMarqueeFillColor = lcGetProfileUInt(LC_PROFILE_MARQUEE_FILL_COLOR);
-	mOverlayColor = lcGetProfileUInt(LC_PROFILE_OVERLAY_COLOR);
-	mActiveViewColor = lcGetProfileUInt(LC_PROFILE_ACTIVE_VIEW_COLOR);
-	mInactiveViewColor = lcGetProfileUInt(LC_PROFILE_INACTIVE_VIEW_COLOR);
-	mDrawEdgeLines = lcGetProfileInt(LC_PROFILE_DRAW_EDGE_LINES);
-	mDrawConditionalLines = lcGetProfileInt(LC_PROFILE_DRAW_CONDITIONAL_LINES);
-	mLineWidth = lcGetProfileFloat(LC_PROFILE_LINE_WIDTH);
-	LoadRenderTarget(lcRenderTarget::Preview);
-	LoadRenderTarget(lcRenderTarget::Pieces);
-	LoadRenderTarget(lcRenderTarget::Minifig);
-	mAllowLOD = lcGetProfileInt(LC_PROFILE_ALLOW_LOD);
-	mMeshLODDistance = lcGetProfileFloat(LC_PROFILE_LOD_DISTANCE);
-	mFadeSteps = lcGetProfileInt(LC_PROFILE_FADE_STEPS);
-	mFadeStepsColor = lcGetProfileUInt(LC_PROFILE_FADE_STEPS_COLOR);
-	mHighlightNewParts = lcGetProfileInt(LC_PROFILE_HIGHLIGHT_NEW_PARTS);
-	mHighlightNewPartsColor = lcGetProfileUInt(LC_PROFILE_HIGHLIGHT_NEW_PARTS_COLOR);
-	mDrawGridStuds = lcGetProfileInt(LC_PROFILE_GRID_STUDS);
-	mGridStudColor = lcGetProfileUInt(LC_PROFILE_GRID_STUD_COLOR);
-	mDrawGridLines = lcGetProfileInt(LC_PROFILE_GRID_LINES);
-	mGridLineSpacing = lcGetProfileInt(LC_PROFILE_GRID_LINE_SPACING);
-	mGridLineColor = lcGetProfileUInt(LC_PROFILE_GRID_LINE_COLOR);
-	mDrawGridOrigin = lcGetProfileInt(LC_PROFILE_GRID_ORIGIN);
-	mDrawGridHeightXZ = lcGetProfileInt(LC_PROFILE_GRID_HEIGHT_XZ);
-	mDrawGridHeightYZ = lcGetProfileInt(LC_PROFILE_GRID_HEIGHT_YZ);
-	mGridHeightBehindModel = lcGetProfileInt(LC_PROFILE_GRID_HEIGHT_BEHIND_MODEL);
-	mViewSphereEnabled = lcGetProfileInt(LC_PROFILE_VIEW_SPHERE_ENABLED);
-	mViewSphereLocation = lcGetProfileViewSphereLocation();
-	mViewSphereSize = lcGetProfileInt(LC_PROFILE_VIEW_SPHERE_SIZE);
-	mViewSphereColor = lcGetProfileUInt(LC_PROFILE_VIEW_SPHERE_COLOR);
-	mViewSphereTextColor = lcGetProfileUInt(LC_PROFILE_VIEW_SPHERE_TEXT_COLOR);
-	mViewSphereHighlightColor = lcGetProfileUInt(LC_PROFILE_VIEW_SPHERE_HIGHLIGHT_COLOR);
-	mAxisXColor = lcGetProfileUInt(LC_PROFILE_AXIS_X_COLOR);
-	mAxisYColor = lcGetProfileUInt(LC_PROFILE_AXIS_Y_COLOR);
-	mAxisZColor = lcGetProfileUInt(LC_PROFILE_AXIS_Z_COLOR);
-	mAutoLoadMostRecent = lcGetProfileInt(LC_PROFILE_AUTOLOAD_MOSTRECENT);
-	mRestoreTabLayout = lcGetProfileInt(LC_PROFILE_RESTORE_TAB_LAYOUT);
-	mFirstPieceAtOrigin = lcGetProfileInt(LC_PROFILE_FIRST_PIECE_AT_ORIGIN);
-	mPiecesSnapToTiles = lcGetProfileInt(LC_PROFILE_PIECES_SNAP_TO_TILES);
-	mTerminalFollowModel = lcGetProfileInt(LC_PROFILE_TERMINAL_FOLLOW_MODEL);
-	mInsertColorMode = static_cast<lcInsertColorMode>(qBound(0, lcGetProfileInt(LC_PROFILE_INSERT_COLOR_MODE), static_cast<int>(lcInsertColorMode::LastInsertedColor)));
-	mWatchFileChanges = lcGetProfileInt(LC_PROFILE_WATCH_FILE_CHANGES);
-	mLoadPiecesBeforeShowing = lcGetProfileInt(LC_PROFILE_LOAD_PIECES_BEFORE_SHOWING);
-	mColorTheme = lcGetProfileColorTheme();
-	mPreviewViewSphereEnabled = lcGetProfileInt(LC_PROFILE_PREVIEW_VIEW_SPHERE_ENABLED);
-	mPreviewViewSphereSize = lcGetProfileInt(LC_PROFILE_PREVIEW_VIEW_SPHERE_SIZE);
-	mPreviewViewSphereLocation = lcGetProfilePreviewViewSphereLocation();
-	mDrawPreviewAxis = lcGetProfileInt(LC_PROFILE_PREVIEW_DRAW_AXES);
-	mPreviewSquareViewport = lcGetProfileInt(LC_PROFILE_PREVIEW_SQUARE_VIEWPORT);
-	mStudCylinderColorEnabled = lcGetProfileInt(LC_PROFILE_STUD_CYLINDER_COLOR_ENABLED);
-	mStudCylinderColor = lcGetProfileUInt(LC_PROFILE_STUD_CYLINDER_COLOR);
-	mPartEdgeColorEnabled = lcGetProfileInt(LC_PROFILE_PART_EDGE_COLOR_ENABLED);
-	mPartEdgeColor = lcGetProfileUInt(LC_PROFILE_PART_EDGE_COLOR);
-	mBlackEdgeColorEnabled = lcGetProfileInt(LC_PROFILE_BLACK_EDGE_COLOR_ENABLED);
-	mBlackEdgeColor = lcGetProfileUInt(LC_PROFILE_BLACK_EDGE_COLOR);
-	mDarkEdgeColorEnabled = lcGetProfileInt(LC_PROFILE_DARK_EDGE_COLOR_ENABLED);
-	mDarkEdgeColor = lcGetProfileUInt(LC_PROFILE_DARK_EDGE_COLOR);
-	mPartEdgeContrast = lcGetProfileFloat(LC_PROFILE_PART_EDGE_CONTRAST);
-	mPartColorValueLDIndex = lcGetProfileFloat(LC_PROFILE_PART_COLOR_VALUE_LD_INDEX);
-	mAutomateEdgeColor = lcGetProfileInt(LC_PROFILE_AUTOMATE_EDGE_COLOR);
-	mObjectSelectedColor = lcGetProfileUInt(LC_PROFILE_OBJECT_SELECTED_COLOR);
-	mObjectFocusedColor = lcGetProfileUInt(LC_PROFILE_OBJECT_FOCUSED_COLOR);
-	mCameraColor = lcGetProfileUInt(LC_PROFILE_CAMERA_COLOR);
-	mLightColor = lcGetProfileUInt(LC_PROFILE_LIGHT_COLOR);
-	mControlPointColor = lcGetProfileUInt(LC_PROFILE_CONTROL_POINT_COLOR);
-	mControlPointFocusedColor = lcGetProfileUInt(LC_PROFILE_CONTROL_POINT_FOCUSED_COLOR);
+	mFixedAxes = swGetProfileInt(SW_PROFILE_FIXED_AXES);
+	mMouseSensitivity = swGetProfileInt(SW_PROFILE_MOUSE_SENSITIVITY);
+	mShadingMode = swGetProfileShadingMode();
+	mHighlightRenderMode = swGetProfileHighlightRenderMode();
+	mBackgroundGradient = swGetProfileInt(SW_PROFILE_BACKGROUND_GRADIENT);
+	mBackgroundSolidColor = swGetProfileUInt(SW_PROFILE_BACKGROUND_COLOR);
+	mBackgroundGradientColorTop = swGetProfileUInt(SW_PROFILE_GRADIENT_COLOR_TOP);
+	mBackgroundGradientColorBottom = swGetProfileUInt(SW_PROFILE_GRADIENT_COLOR_BOTTOM);
+	mDrawAxes = swGetProfileInt(SW_PROFILE_DRAW_AXES);
+	mFollowStepViews = swGetProfileInt(SW_PROFILE_FOLLOW_STEP_VIEWS);
+	mAxisIconLocation = swGetProfileAxisIconLocation();
+	mTextColor = swGetProfileUInt(SW_PROFILE_TEXT_COLOR);
+	mTextHaloColor = swGetProfileUInt(SW_PROFILE_TEXT_HALO_COLOR);
+	mMarqueeBorderColor = swGetProfileUInt(SW_PROFILE_MARQUEE_BORDER_COLOR);
+	mMarqueeFillColor = swGetProfileUInt(SW_PROFILE_MARQUEE_FILL_COLOR);
+	mOverlayColor = swGetProfileUInt(SW_PROFILE_OVERLAY_COLOR);
+	mActiveViewColor = swGetProfileUInt(SW_PROFILE_ACTIVE_VIEW_COLOR);
+	mInactiveViewColor = swGetProfileUInt(SW_PROFILE_INACTIVE_VIEW_COLOR);
+	mDrawEdgeLines = swGetProfileInt(SW_PROFILE_DRAW_EDGE_LINES);
+	mDrawConditionalLines = swGetProfileInt(SW_PROFILE_DRAW_CONDITIONAL_LINES);
+	mLineWidth = swGetProfileFloat(SW_PROFILE_LINE_WIDTH);
+	LoadRenderTarget(swRenderTarget::Preview);
+	LoadRenderTarget(swRenderTarget::Pieces);
+	LoadRenderTarget(swRenderTarget::Minifig);
+	mAllowLOD = swGetProfileInt(SW_PROFILE_ALLOW_LOD);
+	mMeshLODDistance = swGetProfileFloat(SW_PROFILE_LOD_DISTANCE);
+	mFadeSteps = swGetProfileInt(SW_PROFILE_FADE_STEPS);
+	mFadeStepsColor = swGetProfileUInt(SW_PROFILE_FADE_STEPS_COLOR);
+	mHighlightNewParts = swGetProfileInt(SW_PROFILE_HIGHLIGHT_NEW_PARTS);
+	mHighlightNewPartsColor = swGetProfileUInt(SW_PROFILE_HIGHLIGHT_NEW_PARTS_COLOR);
+	mDrawGridStuds = swGetProfileInt(SW_PROFILE_GRID_STUDS);
+	mGridStudColor = swGetProfileUInt(SW_PROFILE_GRID_STUD_COLOR);
+	mDrawGridLines = swGetProfileInt(SW_PROFILE_GRID_LINES);
+	mGridLineSpacing = swGetProfileInt(SW_PROFILE_GRID_LINE_SPACING);
+	mGridLineColor = swGetProfileUInt(SW_PROFILE_GRID_LINE_COLOR);
+	mDrawGridOrigin = swGetProfileInt(SW_PROFILE_GRID_ORIGIN);
+	mDrawGridHeightXZ = swGetProfileInt(SW_PROFILE_GRID_HEIGHT_XZ);
+	mDrawGridHeightYZ = swGetProfileInt(SW_PROFILE_GRID_HEIGHT_YZ);
+	mGridHeightBehindModel = swGetProfileInt(SW_PROFILE_GRID_HEIGHT_BEHIND_MODEL);
+	mViewSphereEnabled = swGetProfileInt(SW_PROFILE_VIEW_SPHERE_ENABLED);
+	mViewSphereLocation = swGetProfileViewSphereLocation();
+	mViewSphereSize = swGetProfileInt(SW_PROFILE_VIEW_SPHERE_SIZE);
+	mViewSphereColor = swGetProfileUInt(SW_PROFILE_VIEW_SPHERE_COLOR);
+	mViewSphereTextColor = swGetProfileUInt(SW_PROFILE_VIEW_SPHERE_TEXT_COLOR);
+	mViewSphereHighlightColor = swGetProfileUInt(SW_PROFILE_VIEW_SPHERE_HIGHLIGHT_COLOR);
+	mAxisXColor = swGetProfileUInt(SW_PROFILE_AXIS_X_COLOR);
+	mAxisYColor = swGetProfileUInt(SW_PROFILE_AXIS_Y_COLOR);
+	mAxisZColor = swGetProfileUInt(SW_PROFILE_AXIS_Z_COLOR);
+	mAutoLoadMostRecent = swGetProfileInt(SW_PROFILE_AUTOLOAD_MOSTRECENT);
+	mRestoreTabLayout = swGetProfileInt(SW_PROFILE_RESTORE_TAB_LAYOUT);
+	mFirstPieceAtOrigin = swGetProfileInt(SW_PROFILE_FIRST_PIECE_AT_ORIGIN);
+	mPiecesSnapToTiles = swGetProfileInt(SW_PROFILE_PIECES_SNAP_TO_TILES);
+	mTerminalFollowModel = swGetProfileInt(SW_PROFILE_TERMINAL_FOLLOW_MODEL);
+	mInsertColorMode = static_cast<swInsertColorMode>(qBound(0, swGetProfileInt(SW_PROFILE_INSERT_COLOR_MODE), static_cast<int>(swInsertColorMode::LastInsertedColor)));
+	mWatchFileChanges = swGetProfileInt(SW_PROFILE_WATCH_FILE_CHANGES);
+	mLoadPiecesBeforeShowing = swGetProfileInt(SW_PROFILE_LOAD_PIECES_BEFORE_SHOWING);
+	mColorTheme = swGetProfileColorTheme();
+	mPreviewViewSphereEnabled = swGetProfileInt(SW_PROFILE_PREVIEW_VIEW_SPHERE_ENABLED);
+	mPreviewViewSphereSize = swGetProfileInt(SW_PROFILE_PREVIEW_VIEW_SPHERE_SIZE);
+	mPreviewViewSphereLocation = swGetProfilePreviewViewSphereLocation();
+	mDrawPreviewAxis = swGetProfileInt(SW_PROFILE_PREVIEW_DRAW_AXES);
+	mPreviewSquareViewport = swGetProfileInt(SW_PROFILE_PREVIEW_SQUARE_VIEWPORT);
+	mStudCylinderColorEnabled = swGetProfileInt(SW_PROFILE_STUD_CYLINDER_COLOR_ENABLED);
+	mStudCylinderColor = swGetProfileUInt(SW_PROFILE_STUD_CYLINDER_COLOR);
+	mPartEdgeColorEnabled = swGetProfileInt(SW_PROFILE_PART_EDGE_COLOR_ENABLED);
+	mPartEdgeColor = swGetProfileUInt(SW_PROFILE_PART_EDGE_COLOR);
+	mBlackEdgeColorEnabled = swGetProfileInt(SW_PROFILE_BLACK_EDGE_COLOR_ENABLED);
+	mBlackEdgeColor = swGetProfileUInt(SW_PROFILE_BLACK_EDGE_COLOR);
+	mDarkEdgeColorEnabled = swGetProfileInt(SW_PROFILE_DARK_EDGE_COLOR_ENABLED);
+	mDarkEdgeColor = swGetProfileUInt(SW_PROFILE_DARK_EDGE_COLOR);
+	mPartEdgeContrast = swGetProfileFloat(SW_PROFILE_PART_EDGE_CONTRAST);
+	mPartColorValueLDIndex = swGetProfileFloat(SW_PROFILE_PART_COLOR_VALUE_LD_INDEX);
+	mAutomateEdgeColor = swGetProfileInt(SW_PROFILE_AUTOMATE_EDGE_COLOR);
+	mObjectSelectedColor = swGetProfileUInt(SW_PROFILE_OBJECT_SELECTED_COLOR);
+	mObjectFocusedColor = swGetProfileUInt(SW_PROFILE_OBJECT_FOCUSED_COLOR);
+	mCameraColor = swGetProfileUInt(SW_PROFILE_CAMERA_COLOR);
+	mLightColor = swGetProfileUInt(SW_PROFILE_LIGHT_COLOR);
+	mControlPointColor = swGetProfileUInt(SW_PROFILE_CONTROL_POINT_COLOR);
+	mControlPointFocusedColor = swGetProfileUInt(SW_PROFILE_CONTROL_POINT_FOCUSED_COLOR);
 }
 
-void lcPreferences::SaveDefaults()
+void swPreferences::SaveDefaults()
 {
-	lcSetProfileInt(LC_PROFILE_FIXED_AXES, mFixedAxes);
-	lcSetProfileInt(LC_PROFILE_MOUSE_SENSITIVITY, mMouseSensitivity);
-	lcSetProfileShadingMode(mShadingMode);
-	lcSetProfileHighlightRenderMode(mHighlightRenderMode);
-	lcSetProfileInt(LC_PROFILE_DRAW_AXES, mDrawAxes);
-	lcSetProfileInt(LC_PROFILE_FOLLOW_STEP_VIEWS, mFollowStepViews);
-	lcSetProfileAxisIconLocation(mAxisIconLocation);
-	lcSetProfileUInt(LC_PROFILE_TEXT_COLOR, mTextColor);
-	lcSetProfileUInt(LC_PROFILE_TEXT_HALO_COLOR, mTextHaloColor);
-	lcSetProfileInt(LC_PROFILE_BACKGROUND_GRADIENT, mBackgroundGradient);
-	lcSetProfileUInt(LC_PROFILE_BACKGROUND_COLOR, mBackgroundSolidColor);
-	lcSetProfileUInt(LC_PROFILE_GRADIENT_COLOR_TOP, mBackgroundGradientColorTop);
-	lcSetProfileUInt(LC_PROFILE_GRADIENT_COLOR_BOTTOM, mBackgroundGradientColorBottom);
-	lcSetProfileUInt(LC_PROFILE_MARQUEE_BORDER_COLOR, mMarqueeBorderColor);
-	lcSetProfileUInt(LC_PROFILE_MARQUEE_FILL_COLOR, mMarqueeFillColor);
-	lcSetProfileUInt(LC_PROFILE_OVERLAY_COLOR, mOverlayColor);
-	lcSetProfileUInt(LC_PROFILE_ACTIVE_VIEW_COLOR, mActiveViewColor);
-	lcSetProfileUInt(LC_PROFILE_INACTIVE_VIEW_COLOR, mInactiveViewColor);
-	lcSetProfileInt(LC_PROFILE_DRAW_EDGE_LINES, mDrawEdgeLines);
-	lcSetProfileInt(LC_PROFILE_DRAW_CONDITIONAL_LINES, mDrawConditionalLines);
-	lcSetProfileFloat(LC_PROFILE_LINE_WIDTH, mLineWidth);
-	SaveRenderTarget(lcRenderTarget::Preview);
-	SaveRenderTarget(lcRenderTarget::Pieces);
-	SaveRenderTarget(lcRenderTarget::Minifig);
-	lcSetProfileInt(LC_PROFILE_ALLOW_LOD, mAllowLOD);
-	lcSetProfileFloat(LC_PROFILE_LOD_DISTANCE, mMeshLODDistance);
-	lcSetProfileInt(LC_PROFILE_FADE_STEPS, mFadeSteps);
-	lcSetProfileUInt(LC_PROFILE_FADE_STEPS_COLOR, mFadeStepsColor);
-	lcSetProfileInt(LC_PROFILE_HIGHLIGHT_NEW_PARTS, mHighlightNewParts);
-	lcSetProfileUInt(LC_PROFILE_HIGHLIGHT_NEW_PARTS_COLOR, mHighlightNewPartsColor);
-	lcSetProfileInt(LC_PROFILE_GRID_STUDS, mDrawGridStuds);
-	lcSetProfileUInt(LC_PROFILE_GRID_STUD_COLOR, mGridStudColor);
-	lcSetProfileInt(LC_PROFILE_GRID_LINES, mDrawGridLines);
-	lcSetProfileInt(LC_PROFILE_GRID_LINE_SPACING, mGridLineSpacing);
-	lcSetProfileUInt(LC_PROFILE_GRID_LINE_COLOR, mGridLineColor);
-	lcSetProfileInt(LC_PROFILE_GRID_ORIGIN, mDrawGridOrigin);
-	lcSetProfileInt(LC_PROFILE_GRID_HEIGHT_XZ, mDrawGridHeightXZ);
-	lcSetProfileInt(LC_PROFILE_GRID_HEIGHT_YZ, mDrawGridHeightYZ);
-	lcSetProfileInt(LC_PROFILE_GRID_HEIGHT_BEHIND_MODEL, mGridHeightBehindModel);
-	lcSetProfileInt(LC_PROFILE_VIEW_SPHERE_ENABLED, mViewSphereEnabled);
-	lcSetProfileViewSphereLocation(mViewSphereLocation);
-	lcSetProfileInt(LC_PROFILE_VIEW_SPHERE_SIZE, mViewSphereSize);
-	lcSetProfileUInt(LC_PROFILE_VIEW_SPHERE_COLOR, mViewSphereColor);
-	lcSetProfileUInt(LC_PROFILE_VIEW_SPHERE_TEXT_COLOR, mViewSphereTextColor);
-	lcSetProfileUInt(LC_PROFILE_VIEW_SPHERE_HIGHLIGHT_COLOR, mViewSphereHighlightColor);
-	lcSetProfileUInt(LC_PROFILE_AXIS_X_COLOR, mAxisXColor);
-	lcSetProfileUInt(LC_PROFILE_AXIS_Y_COLOR, mAxisYColor);
-	lcSetProfileUInt(LC_PROFILE_AXIS_Z_COLOR, mAxisZColor);
-	lcSetProfileInt(LC_PROFILE_AUTOLOAD_MOSTRECENT, mAutoLoadMostRecent);
-	lcSetProfileInt(LC_PROFILE_RESTORE_TAB_LAYOUT, mRestoreTabLayout);
-	lcSetProfileInt(LC_PROFILE_FIRST_PIECE_AT_ORIGIN, mFirstPieceAtOrigin);
-	lcSetProfileInt(LC_PROFILE_PIECES_SNAP_TO_TILES, mPiecesSnapToTiles);
-	lcSetProfileInt(LC_PROFILE_TERMINAL_FOLLOW_MODEL, mTerminalFollowModel);
-	lcSetProfileInt(LC_PROFILE_INSERT_COLOR_MODE, static_cast<int>(mInsertColorMode));
-	lcSetProfileInt(LC_PROFILE_WATCH_FILE_CHANGES, mWatchFileChanges);
-	lcSetProfileInt(LC_PROFILE_LOAD_PIECES_BEFORE_SHOWING, mLoadPiecesBeforeShowing);
-	lcSetProfileColorTheme(mColorTheme);
-	lcSetProfileInt(LC_PROFILE_PREVIEW_VIEW_SPHERE_ENABLED, mPreviewViewSphereEnabled);
-	lcSetProfileInt(LC_PROFILE_PREVIEW_VIEW_SPHERE_SIZE, mPreviewViewSphereSize);
-	lcSetProfilePreviewViewSphereLocation(mPreviewViewSphereLocation);
-	lcSetProfileInt(LC_PROFILE_PREVIEW_DRAW_AXES, mDrawPreviewAxis);
-	lcSetProfileInt(LC_PROFILE_PREVIEW_SQUARE_VIEWPORT, mPreviewSquareViewport);
-	lcSetProfileInt(LC_PROFILE_STUD_CYLINDER_COLOR_ENABLED, mStudCylinderColorEnabled);
-	lcSetProfileUInt(LC_PROFILE_STUD_CYLINDER_COLOR, mStudCylinderColor);
-	lcSetProfileInt(LC_PROFILE_PART_EDGE_COLOR_ENABLED, mPartEdgeColorEnabled);
-	lcSetProfileUInt(LC_PROFILE_PART_EDGE_COLOR, mPartEdgeColor);
-	lcSetProfileInt(LC_PROFILE_BLACK_EDGE_COLOR_ENABLED, mBlackEdgeColorEnabled);
-	lcSetProfileUInt(LC_PROFILE_BLACK_EDGE_COLOR, mBlackEdgeColor);
-	lcSetProfileInt(LC_PROFILE_DARK_EDGE_COLOR_ENABLED, mDarkEdgeColorEnabled);
-	lcSetProfileUInt(LC_PROFILE_DARK_EDGE_COLOR, mDarkEdgeColor);
-	lcSetProfileFloat(LC_PROFILE_PART_EDGE_CONTRAST, mPartEdgeContrast);
-	lcSetProfileFloat(LC_PROFILE_PART_COLOR_VALUE_LD_INDEX, mPartColorValueLDIndex);
-	lcSetProfileInt(LC_PROFILE_AUTOMATE_EDGE_COLOR, mAutomateEdgeColor);
-	lcSetProfileUInt(LC_PROFILE_OBJECT_SELECTED_COLOR, mObjectSelectedColor);
-	lcSetProfileUInt(LC_PROFILE_OBJECT_FOCUSED_COLOR, mObjectFocusedColor);
-	lcSetProfileUInt(LC_PROFILE_CAMERA_COLOR, mCameraColor);
-	lcSetProfileUInt(LC_PROFILE_LIGHT_COLOR, mLightColor);
-	lcSetProfileUInt(LC_PROFILE_CONTROL_POINT_COLOR, mControlPointColor);
-	lcSetProfileUInt(LC_PROFILE_CONTROL_POINT_FOCUSED_COLOR, mControlPointFocusedColor);
+	swSetProfileInt(SW_PROFILE_FIXED_AXES, mFixedAxes);
+	swSetProfileInt(SW_PROFILE_MOUSE_SENSITIVITY, mMouseSensitivity);
+	swSetProfileShadingMode(mShadingMode);
+	swSetProfileHighlightRenderMode(mHighlightRenderMode);
+	swSetProfileInt(SW_PROFILE_DRAW_AXES, mDrawAxes);
+	swSetProfileInt(SW_PROFILE_FOLLOW_STEP_VIEWS, mFollowStepViews);
+	swSetProfileAxisIconLocation(mAxisIconLocation);
+	swSetProfileUInt(SW_PROFILE_TEXT_COLOR, mTextColor);
+	swSetProfileUInt(SW_PROFILE_TEXT_HALO_COLOR, mTextHaloColor);
+	swSetProfileInt(SW_PROFILE_BACKGROUND_GRADIENT, mBackgroundGradient);
+	swSetProfileUInt(SW_PROFILE_BACKGROUND_COLOR, mBackgroundSolidColor);
+	swSetProfileUInt(SW_PROFILE_GRADIENT_COLOR_TOP, mBackgroundGradientColorTop);
+	swSetProfileUInt(SW_PROFILE_GRADIENT_COLOR_BOTTOM, mBackgroundGradientColorBottom);
+	swSetProfileUInt(SW_PROFILE_MARQUEE_BORDER_COLOR, mMarqueeBorderColor);
+	swSetProfileUInt(SW_PROFILE_MARQUEE_FILL_COLOR, mMarqueeFillColor);
+	swSetProfileUInt(SW_PROFILE_OVERLAY_COLOR, mOverlayColor);
+	swSetProfileUInt(SW_PROFILE_ACTIVE_VIEW_COLOR, mActiveViewColor);
+	swSetProfileUInt(SW_PROFILE_INACTIVE_VIEW_COLOR, mInactiveViewColor);
+	swSetProfileInt(SW_PROFILE_DRAW_EDGE_LINES, mDrawEdgeLines);
+	swSetProfileInt(SW_PROFILE_DRAW_CONDITIONAL_LINES, mDrawConditionalLines);
+	swSetProfileFloat(SW_PROFILE_LINE_WIDTH, mLineWidth);
+	SaveRenderTarget(swRenderTarget::Preview);
+	SaveRenderTarget(swRenderTarget::Pieces);
+	SaveRenderTarget(swRenderTarget::Minifig);
+	swSetProfileInt(SW_PROFILE_ALLOW_LOD, mAllowLOD);
+	swSetProfileFloat(SW_PROFILE_LOD_DISTANCE, mMeshLODDistance);
+	swSetProfileInt(SW_PROFILE_FADE_STEPS, mFadeSteps);
+	swSetProfileUInt(SW_PROFILE_FADE_STEPS_COLOR, mFadeStepsColor);
+	swSetProfileInt(SW_PROFILE_HIGHLIGHT_NEW_PARTS, mHighlightNewParts);
+	swSetProfileUInt(SW_PROFILE_HIGHLIGHT_NEW_PARTS_COLOR, mHighlightNewPartsColor);
+	swSetProfileInt(SW_PROFILE_GRID_STUDS, mDrawGridStuds);
+	swSetProfileUInt(SW_PROFILE_GRID_STUD_COLOR, mGridStudColor);
+	swSetProfileInt(SW_PROFILE_GRID_LINES, mDrawGridLines);
+	swSetProfileInt(SW_PROFILE_GRID_LINE_SPACING, mGridLineSpacing);
+	swSetProfileUInt(SW_PROFILE_GRID_LINE_COLOR, mGridLineColor);
+	swSetProfileInt(SW_PROFILE_GRID_ORIGIN, mDrawGridOrigin);
+	swSetProfileInt(SW_PROFILE_GRID_HEIGHT_XZ, mDrawGridHeightXZ);
+	swSetProfileInt(SW_PROFILE_GRID_HEIGHT_YZ, mDrawGridHeightYZ);
+	swSetProfileInt(SW_PROFILE_GRID_HEIGHT_BEHIND_MODEL, mGridHeightBehindModel);
+	swSetProfileInt(SW_PROFILE_VIEW_SPHERE_ENABLED, mViewSphereEnabled);
+	swSetProfileViewSphereLocation(mViewSphereLocation);
+	swSetProfileInt(SW_PROFILE_VIEW_SPHERE_SIZE, mViewSphereSize);
+	swSetProfileUInt(SW_PROFILE_VIEW_SPHERE_COLOR, mViewSphereColor);
+	swSetProfileUInt(SW_PROFILE_VIEW_SPHERE_TEXT_COLOR, mViewSphereTextColor);
+	swSetProfileUInt(SW_PROFILE_VIEW_SPHERE_HIGHLIGHT_COLOR, mViewSphereHighlightColor);
+	swSetProfileUInt(SW_PROFILE_AXIS_X_COLOR, mAxisXColor);
+	swSetProfileUInt(SW_PROFILE_AXIS_Y_COLOR, mAxisYColor);
+	swSetProfileUInt(SW_PROFILE_AXIS_Z_COLOR, mAxisZColor);
+	swSetProfileInt(SW_PROFILE_AUTOLOAD_MOSTRECENT, mAutoLoadMostRecent);
+	swSetProfileInt(SW_PROFILE_RESTORE_TAB_LAYOUT, mRestoreTabLayout);
+	swSetProfileInt(SW_PROFILE_FIRST_PIECE_AT_ORIGIN, mFirstPieceAtOrigin);
+	swSetProfileInt(SW_PROFILE_PIECES_SNAP_TO_TILES, mPiecesSnapToTiles);
+	swSetProfileInt(SW_PROFILE_TERMINAL_FOLLOW_MODEL, mTerminalFollowModel);
+	swSetProfileInt(SW_PROFILE_INSERT_COLOR_MODE, static_cast<int>(mInsertColorMode));
+	swSetProfileInt(SW_PROFILE_WATCH_FILE_CHANGES, mWatchFileChanges);
+	swSetProfileInt(SW_PROFILE_LOAD_PIECES_BEFORE_SHOWING, mLoadPiecesBeforeShowing);
+	swSetProfileColorTheme(mColorTheme);
+	swSetProfileInt(SW_PROFILE_PREVIEW_VIEW_SPHERE_ENABLED, mPreviewViewSphereEnabled);
+	swSetProfileInt(SW_PROFILE_PREVIEW_VIEW_SPHERE_SIZE, mPreviewViewSphereSize);
+	swSetProfilePreviewViewSphereLocation(mPreviewViewSphereLocation);
+	swSetProfileInt(SW_PROFILE_PREVIEW_DRAW_AXES, mDrawPreviewAxis);
+	swSetProfileInt(SW_PROFILE_PREVIEW_SQUARE_VIEWPORT, mPreviewSquareViewport);
+	swSetProfileInt(SW_PROFILE_STUD_CYLINDER_COLOR_ENABLED, mStudCylinderColorEnabled);
+	swSetProfileUInt(SW_PROFILE_STUD_CYLINDER_COLOR, mStudCylinderColor);
+	swSetProfileInt(SW_PROFILE_PART_EDGE_COLOR_ENABLED, mPartEdgeColorEnabled);
+	swSetProfileUInt(SW_PROFILE_PART_EDGE_COLOR, mPartEdgeColor);
+	swSetProfileInt(SW_PROFILE_BLACK_EDGE_COLOR_ENABLED, mBlackEdgeColorEnabled);
+	swSetProfileUInt(SW_PROFILE_BLACK_EDGE_COLOR, mBlackEdgeColor);
+	swSetProfileInt(SW_PROFILE_DARK_EDGE_COLOR_ENABLED, mDarkEdgeColorEnabled);
+	swSetProfileUInt(SW_PROFILE_DARK_EDGE_COLOR, mDarkEdgeColor);
+	swSetProfileFloat(SW_PROFILE_PART_EDGE_CONTRAST, mPartEdgeContrast);
+	swSetProfileFloat(SW_PROFILE_PART_COLOR_VALUE_LD_INDEX, mPartColorValueLDIndex);
+	swSetProfileInt(SW_PROFILE_AUTOMATE_EDGE_COLOR, mAutomateEdgeColor);
+	swSetProfileUInt(SW_PROFILE_OBJECT_SELECTED_COLOR, mObjectSelectedColor);
+	swSetProfileUInt(SW_PROFILE_OBJECT_FOCUSED_COLOR, mObjectFocusedColor);
+	swSetProfileUInt(SW_PROFILE_CAMERA_COLOR, mCameraColor);
+	swSetProfileUInt(SW_PROFILE_LIGHT_COLOR, mLightColor);
+	swSetProfileUInt(SW_PROFILE_CONTROL_POINT_COLOR, mControlPointColor);
+	swSetProfileUInt(SW_PROFILE_CONTROL_POINT_FOCUSED_COLOR, mControlPointFocusedColor);
 }
 
-struct lcRenderTargetProfileKeys
+struct swRenderTargetProfileKeys
 {
-	LC_PROFILE_KEY SyncRendering;
-	LC_PROFILE_KEY ShadingMode;
-	LC_PROFILE_KEY DrawEdgeLines;
-	LC_PROFILE_KEY DrawConditionalLines;
-	LC_PROFILE_KEY LineWidth;
+	SW_PROFILE_KEY SyncRendering;
+	SW_PROFILE_KEY ShadingMode;
+	SW_PROFILE_KEY DrawEdgeLines;
+	SW_PROFILE_KEY DrawConditionalLines;
+	SW_PROFILE_KEY LineWidth;
 };
 
-static lcRenderTargetProfileKeys lcGetRenderTargetProfileKeys(lcRenderTarget Target)
+static swRenderTargetProfileKeys swGetRenderTargetProfileKeys(swRenderTarget Target)
 {
-	if (Target == lcRenderTarget::Minifig)
-		return { LC_PROFILE_MINIFIG_SYNC_RENDERING, LC_PROFILE_MINIFIG_SHADING_MODE, LC_PROFILE_MINIFIG_DRAW_EDGE_LINES, LC_PROFILE_MINIFIG_DRAW_CONDITIONAL_LINES, LC_PROFILE_MINIFIG_LINE_WIDTH };
+	if (Target == swRenderTarget::Minifig)
+		return { SW_PROFILE_MINIFIG_SYNC_RENDERING, SW_PROFILE_MINIFIG_SHADING_MODE, SW_PROFILE_MINIFIG_DRAW_EDGE_LINES, SW_PROFILE_MINIFIG_DRAW_CONDITIONAL_LINES, SW_PROFILE_MINIFIG_LINE_WIDTH };
 
-	if (Target == lcRenderTarget::Pieces)
-		return { LC_PROFILE_PIECES_SYNC_RENDERING, LC_PROFILE_PIECES_SHADING_MODE, LC_PROFILE_PIECES_DRAW_EDGE_LINES, LC_PROFILE_PIECES_DRAW_CONDITIONAL_LINES, LC_PROFILE_PIECES_LINE_WIDTH };
+	if (Target == swRenderTarget::Pieces)
+		return { SW_PROFILE_PIECES_SYNC_RENDERING, SW_PROFILE_PIECES_SHADING_MODE, SW_PROFILE_PIECES_DRAW_EDGE_LINES, SW_PROFILE_PIECES_DRAW_CONDITIONAL_LINES, SW_PROFILE_PIECES_LINE_WIDTH };
 
-	return { LC_PROFILE_PREVIEW_SYNC_RENDERING, LC_PROFILE_PREVIEW_SHADING_MODE, LC_PROFILE_PREVIEW_DRAW_EDGE_LINES, LC_PROFILE_PREVIEW_DRAW_CONDITIONAL_LINES, LC_PROFILE_PREVIEW_LINE_WIDTH };
+	return { SW_PROFILE_PREVIEW_SYNC_RENDERING, SW_PROFILE_PREVIEW_SHADING_MODE, SW_PROFILE_PREVIEW_DRAW_EDGE_LINES, SW_PROFILE_PREVIEW_DRAW_CONDITIONAL_LINES, SW_PROFILE_PREVIEW_LINE_WIDTH };
 }
 
-void lcPreferences::LoadRenderTarget(lcRenderTarget Target)
+void swPreferences::LoadRenderTarget(swRenderTarget Target)
 {
-	const lcRenderTargetProfileKeys Keys = lcGetRenderTargetProfileKeys(Target);
-	lcTargetRenderSettings& TargetSettings = GetTargetRenderSettings(Target);
+	const swRenderTargetProfileKeys Keys = swGetRenderTargetProfileKeys(Target);
+	swTargetRenderSettings& TargetSettings = GetTargetRenderSettings(Target);
 
-	TargetSettings.SyncRendering = lcGetProfileInt(Keys.SyncRendering);
-	TargetSettings.Settings.ShadingMode = lcGetProfileShadingMode(Keys.ShadingMode);
-	TargetSettings.Settings.DrawEdgeLines = lcGetProfileInt(Keys.DrawEdgeLines);
-	TargetSettings.Settings.DrawConditionalLines = lcGetProfileInt(Keys.DrawConditionalLines);
-	TargetSettings.Settings.LineWidth = lcGetProfileFloat(Keys.LineWidth);
+	TargetSettings.SyncRendering = swGetProfileInt(Keys.SyncRendering);
+	TargetSettings.Settings.ShadingMode = swGetProfileShadingMode(Keys.ShadingMode);
+	TargetSettings.Settings.DrawEdgeLines = swGetProfileInt(Keys.DrawEdgeLines);
+	TargetSettings.Settings.DrawConditionalLines = swGetProfileInt(Keys.DrawConditionalLines);
+	TargetSettings.Settings.LineWidth = swGetProfileFloat(Keys.LineWidth);
 }
 
-void lcPreferences::SaveRenderTarget(lcRenderTarget Target) const
+void swPreferences::SaveRenderTarget(swRenderTarget Target) const
 {
-	const lcRenderTargetProfileKeys Keys = lcGetRenderTargetProfileKeys(Target);
-	const lcTargetRenderSettings& TargetSettings = GetTargetRenderSettings(Target);
+	const swRenderTargetProfileKeys Keys = swGetRenderTargetProfileKeys(Target);
+	const swTargetRenderSettings& TargetSettings = GetTargetRenderSettings(Target);
 
-	lcSetProfileInt(Keys.SyncRendering, TargetSettings.SyncRendering);
-	lcSetProfileShadingMode(TargetSettings.Settings.ShadingMode, Keys.ShadingMode);
-	lcSetProfileInt(Keys.DrawEdgeLines, TargetSettings.Settings.DrawEdgeLines);
-	lcSetProfileInt(Keys.DrawConditionalLines, TargetSettings.Settings.DrawConditionalLines);
-	lcSetProfileFloat(Keys.LineWidth, TargetSettings.Settings.LineWidth);
+	swSetProfileInt(Keys.SyncRendering, TargetSettings.SyncRendering);
+	swSetProfileShadingMode(TargetSettings.Settings.ShadingMode, Keys.ShadingMode);
+	swSetProfileInt(Keys.DrawEdgeLines, TargetSettings.Settings.DrawEdgeLines);
+	swSetProfileInt(Keys.DrawConditionalLines, TargetSettings.Settings.DrawConditionalLines);
+	swSetProfileFloat(Keys.LineWidth, TargetSettings.Settings.LineWidth);
 }
 
-void lcPreferences::SetInterfaceColors(lcColorTheme ColorTheme)
+void swPreferences::SetInterfaceColors(swColorTheme ColorTheme)
 {
-	const bool SystemDark = ColorTheme == lcColorTheme::System && gApplication && gApplication->IsSystemPaletteDark();
+	const bool SystemDark = ColorTheme == swColorTheme::System && gApplication && gApplication->IsSystemPaletteDark();
 
-	if (ColorTheme == lcColorTheme::Dark || SystemDark)
+	if (ColorTheme == swColorTheme::Dark || SystemDark)
 	{
-		mTextColor = LC_RGBA(214, 220, 227, 255);
-		mTextHaloColor = LC_RGBA(17, 19, 24, 160);
-		mBackgroundSolidColor = LC_RGB(49, 52, 55);
-		mBackgroundGradientColorTop = LC_RGB(0, 0, 191);
-		mBackgroundGradientColorBottom = LC_RGB(255, 255, 255);
-		mOverlayColor = lcGetProfileUInt(LC_PROFILE_OVERLAY_COLOR);
-		mActiveViewColor = LC_RGBA(41, 128, 185, 255);
-		mGridStudColor = LC_RGBA(24, 24, 24, 192);
-		mGridLineColor = LC_RGBA(24, 24, 24, 255);
-		mViewSphereColor = LC_RGBA(27, 31, 36, 255);
-		mViewSphereTextColor = LC_RGBA(232, 237, 242, 255);
-		mViewSphereHighlightColor = LC_RGBA(41, 128, 185, 255);
+		mTextColor = SW_RGBA(214, 220, 227, 255);
+		mTextHaloColor = SW_RGBA(17, 19, 24, 160);
+		mBackgroundSolidColor = SW_RGB(49, 52, 55);
+		mBackgroundGradientColorTop = SW_RGB(0, 0, 191);
+		mBackgroundGradientColorBottom = SW_RGB(255, 255, 255);
+		mOverlayColor = swGetProfileUInt(SW_PROFILE_OVERLAY_COLOR);
+		mActiveViewColor = SW_RGBA(41, 128, 185, 255);
+		mGridStudColor = SW_RGBA(24, 24, 24, 192);
+		mGridLineColor = SW_RGBA(24, 24, 24, 255);
+		mViewSphereColor = SW_RGBA(27, 31, 36, 255);
+		mViewSphereTextColor = SW_RGBA(232, 237, 242, 255);
+		mViewSphereHighlightColor = SW_RGBA(41, 128, 185, 255);
 	}
 	else
 	{
-		mTextColor = LC_RGBA(24, 33, 43, 255);
-		mTextHaloColor = LC_RGBA(248, 250, 252, 204);
-		mBackgroundSolidColor = LC_RGB(255, 255, 255);
-		mBackgroundGradientColorTop = LC_RGB(54, 72, 95);
-		mBackgroundGradientColorBottom = LC_RGB(49, 52, 55);
-		mOverlayColor = LC_RGBA(0, 0, 0, 255);
-		mActiveViewColor = LC_RGBA(255, 0, 0, 255);
-		mGridStudColor = LC_RGBA(64, 64, 64, 192);
-		mGridLineColor = LC_RGBA(0, 0, 0, 255);
-		mViewSphereColor = LC_RGBA(248, 250, 252, 255);
-		mViewSphereTextColor = LC_RGBA(24, 33, 43, 255);
-		mViewSphereHighlightColor = LC_RGBA(41, 128, 185, 255);
+		mTextColor = SW_RGBA(24, 33, 43, 255);
+		mTextHaloColor = SW_RGBA(248, 250, 252, 204);
+		mBackgroundSolidColor = SW_RGB(255, 255, 255);
+		mBackgroundGradientColorTop = SW_RGB(54, 72, 95);
+		mBackgroundGradientColorBottom = SW_RGB(49, 52, 55);
+		mOverlayColor = SW_RGBA(0, 0, 0, 255);
+		mActiveViewColor = SW_RGBA(255, 0, 0, 255);
+		mGridStudColor = SW_RGBA(64, 64, 64, 192);
+		mGridLineColor = SW_RGBA(0, 0, 0, 255);
+		mViewSphereColor = SW_RGBA(248, 250, 252, 255);
+		mViewSphereTextColor = SW_RGBA(24, 33, 43, 255);
+		mViewSphereHighlightColor = SW_RGBA(41, 128, 185, 255);
 	}
 }
 
-lcApplication::lcApplication(int& Argc, char** Argv)
+swApplication::swApplication(int& Argc, char** Argv)
 	: QApplication(Argc, Argv)
 {
 	setApplicationDisplayName(QLatin1String("LeoCAD+"));
@@ -277,21 +277,21 @@ lcApplication::lcApplication(int& Argc, char** Argv)
 	mDefaultStyle = style()->objectName();
 	mDefaultPalette = QApplication::palette();
 
-	lcProfileInit();
+	swProfileInit();
 
 	mPreferences.LoadDefaults();
 
-	installEventFilter(new lcWindowGeometryFilter(this));
+	installEventFilter(new swWindowGeometryFilter(this));
 }
 
-lcApplication::~lcApplication()
+swApplication::~swApplication()
 {
 	gApplication = nullptr;
 }
 
-void lcApplication::UpdateStyle()
+void swApplication::UpdateStyle()
 {
-	if (mPreferences.mColorTheme == lcColorTheme::Dark)
+	if (mPreferences.mColorTheme == swColorTheme::Dark)
 	{
 		if (!QApplication::setStyle("fusion"))
 			return;
@@ -346,15 +346,15 @@ void lcApplication::UpdateStyle()
 	}
 }
 
-bool lcApplication::IsDarkTheme() const
+bool swApplication::IsDarkTheme() const
 {
-	if (mPreferences.mColorTheme == lcColorTheme::Dark)
+	if (mPreferences.mColorTheme == swColorTheme::Dark)
 		return true;
 
 	return IsSystemPaletteDark();
 }
 
-void lcApplication::SaveTabLayout() const
+void swApplication::SaveTabLayout() const
 {
 	if (!gMainWindow || !mProject || mProject->GetFileName().isEmpty())
 		return;
@@ -365,7 +365,7 @@ void lcApplication::SaveTabLayout() const
 	Settings.setValue(GetTabLayoutKey(), TabLayout);
 }
 
-QString lcApplication::GetTabLayoutKey() const
+QString swApplication::GetTabLayoutKey() const
 {
 	if (mProject)
 	{
@@ -381,7 +381,7 @@ QString lcApplication::GetTabLayoutKey() const
 	return QString();
 }
 
-void lcApplication::SetProject(Project* Project)
+void swApplication::SetProject(Project* Project)
 {
 	SaveTabLayout();
 
@@ -404,7 +404,7 @@ void lcApplication::SetProject(Project* Project)
 		gMainWindow->ScheduleAssetUpdate();
 
 	Project->SetActiveModel(0, true);
-	lcGetPiecesLibrary()->RemoveTemporaryPieceData();
+	swGetPiecesLibrary()->RemoveTemporaryPieceData();
 
 	if (mProject && !mProject->GetFileName().isEmpty() && mPreferences.mRestoreTabLayout)
 	{
@@ -416,13 +416,13 @@ void lcApplication::SetProject(Project* Project)
 	}
 }
 
-void lcApplication::SetClipboard(const QByteArray& Clipboard)
+void swApplication::SetClipboard(const QByteArray& Clipboard)
 {
 	mClipboard = Clipboard;
 	gMainWindow->UpdatePaste(!mClipboard.isEmpty());
 }
 
-void lcApplication::ExportClipboard(const QByteArray& Clipboard)
+void swApplication::ExportClipboard(const QByteArray& Clipboard)
 {
 	QMimeData* MimeData = new QMimeData();
 
@@ -432,10 +432,10 @@ void lcApplication::ExportClipboard(const QByteArray& Clipboard)
 	SetClipboard(Clipboard);
 }
 
-bool lcApplication::LoadPartsLibrary(const QList<QPair<QString, bool>>& LibraryPaths, bool OnlyUsePaths, lcStudStyle StudStyle, bool StudCylinderColorEnabled)
+bool swApplication::LoadPartsLibrary(const QList<QPair<QString, bool>>& LibraryPaths, bool OnlyUsePaths, swStudStyle StudStyle, bool StudCylinderColorEnabled)
 {
 	if (mLibrary == nullptr)
-		mLibrary = new lcPiecesLibrary(StudStyle, StudCylinderColorEnabled);
+		mLibrary = new swPiecesLibrary(StudStyle, StudCylinderColorEnabled);
 
 	const bool ShowProgress = gMainWindow != nullptr;
 
@@ -446,7 +446,7 @@ bool lcApplication::LoadPartsLibrary(const QList<QPair<QString, bool>>& LibraryP
 		if (EnvPath && EnvPath[0])
 			return mLibrary->Load(EnvPath, ShowProgress, false);
 
-		QString CustomPath = lcGetProfileString(LC_PROFILE_PARTS_LIBRARY);
+		QString CustomPath = swGetProfileString(SW_PROFILE_PARTS_LIBRARY);
 
 		if (!CustomPath.isEmpty())
 			return mLibrary->Load(CustomPath, ShowProgress, false);
@@ -459,30 +459,30 @@ bool lcApplication::LoadPartsLibrary(const QList<QPair<QString, bool>>& LibraryP
 	return false;
 }
 
-lcCommandLineOptions lcApplication::ParseCommandLineOptions()
+swCommandLineOptions swApplication::ParseCommandLineOptions()
 {
-	lcPreferences Preferences;
+	swPreferences Preferences;
 	Preferences.LoadDefaults();
 
-	lcCommandLineOptions Options;
+	swCommandLineOptions Options;
 
 	Options.FadeSteps = Preferences.mFadeSteps;
 	Options.ImageHighlight = Preferences.mHighlightNewParts;
-	Options.ImageWidth = lcGetProfileInt(LC_PROFILE_IMAGE_WIDTH);
-	Options.ImageHeight = lcGetProfileInt(LC_PROFILE_IMAGE_HEIGHT);
+	Options.ImageWidth = swGetProfileInt(SW_PROFILE_IMAGE_WIDTH);
+	Options.ImageHeight = swGetProfileInt(SW_PROFILE_IMAGE_HEIGHT);
 	Options.ShadingMode = Preferences.mShadingMode;
 	Options.LineWidth = Preferences.mLineWidth;
-	Options.AASamples = lcGetProfileInt(LC_PROFILE_ANTIALIASING_SAMPLES);
-	Options.StudStyle = lcGetProfileStudStyle();
+	Options.AASamples = swGetProfileInt(SW_PROFILE_ANTIALIASING_SAMPLES);
+	Options.StudStyle = swGetProfileStudStyle();
 	Options.ImageStart = 0;
 	Options.ImageEnd = 0;
-	Options.CameraPosition[0] = lcVector3(0.0f, 0.0f, 0.0f);
-	Options.CameraPosition[1] = lcVector3(0.0f, 0.0f, 0.0f);
-	Options.CameraPosition[2] = lcVector3(0.0f, 0.0f, 0.0f);
-	Options.CameraLatLon = lcVector2(0.0f, 0.0f);
+	Options.CameraPosition[0] = swVector3(0.0f, 0.0f, 0.0f);
+	Options.CameraPosition[1] = swVector3(0.0f, 0.0f, 0.0f);
+	Options.CameraPosition[2] = swVector3(0.0f, 0.0f, 0.0f);
+	Options.CameraLatLon = swVector2(0.0f, 0.0f);
 	Options.FoV = 0.0f;
-	Options.ZPlanes = lcVector2(0.0f, 0.0f);
-	Options.Viewpoint = lcViewpoint::Count;
+	Options.ZPlanes = swVector2(0.0f, 0.0f);
+	Options.Viewpoint = swViewpoint::Count;
 	Options.FadeStepsColor = Preferences.mFadeStepsColor;
 	Options.HighlightColor = Preferences.mHighlightNewPartsColor;
 	Options.StudCylinderColorEnabled = Preferences.mStudCylinderColorEnabled;
@@ -642,7 +642,7 @@ lcCommandLineOptions lcApplication::ParseCommandLineOptions()
 
 				if (ParsedColor.isValid())
 				{
-					Color = LC_RGBA(ParsedColor.red(), ParsedColor.green(), ParsedColor.blue(), ParsedColor.alpha());
+					Color = SW_RGBA(ParsedColor.red(), ParsedColor.green(), ParsedColor.blue(), ParsedColor.alpha());
 					return true;
 				}
 				else
@@ -678,13 +678,13 @@ lcCommandLineOptions lcApplication::ParseCommandLineOptions()
 			ParseString(Options.ImageName, false);
 		}
 		else if (Option == QLatin1String("-w") || Option == QLatin1String("--width"))
-			ParseInteger(Options.ImageWidth, 1, LC_MAX_IMAGE_DIMENSION);
+			ParseInteger(Options.ImageWidth, 1, SW_MAX_IMAGE_DIMENSION);
 		else if (Option == QLatin1String("-h") || Option == QLatin1String("--height"))
-			ParseInteger(Options.ImageHeight, 1, LC_MAX_IMAGE_DIMENSION);
+			ParseInteger(Options.ImageHeight, 1, SW_MAX_IMAGE_DIMENSION);
 		else if (Option == QLatin1String("-f") || Option == QLatin1String("--from"))
-			ParseUnsigned(Options.ImageStart, 1, LC_STEP_MAX);
+			ParseUnsigned(Options.ImageStart, 1, SW_STEP_MAX);
 		else if (Option == QLatin1String("-t") || Option == QLatin1String("--to"))
-			ParseUnsigned(Options.ImageEnd, 1, LC_STEP_MAX);
+			ParseUnsigned(Options.ImageEnd, 1, SW_STEP_MAX);
 		else if (Option == QLatin1String("-s") || Option == QLatin1String("--submodel"))
 			ParseString(Options.ModelName, true);
 		else if (Option == QLatin1String("-c") || Option == QLatin1String("--camera"))
@@ -695,9 +695,9 @@ lcCommandLineOptions lcApplication::ParseCommandLineOptions()
 
 			if (ParseString(ViewpointName, true))
 			{
-				Options.Viewpoint = lcCamera::GetViewpoint(ViewpointName);
+				Options.Viewpoint = swCamera::GetViewpoint(ViewpointName);
 
-				if (Options.Viewpoint == lcViewpoint::Count)
+				if (Options.Viewpoint == swViewpoint::Count)
 				{
 					Options.StdErr += tr("Invalid parameter value specified for the '%1' option: '%2'.\n").arg(Option, ViewpointName);
 					Options.ParseOK = false;
@@ -718,12 +718,12 @@ lcCommandLineOptions lcApplication::ParseCommandLineOptions()
 			{
 				if (Option == QLatin1String("--camera-position-ldraw"))
 				{
-					Options.CameraPosition[0] = lcVector3LDrawToLeoCAD(Options.CameraPosition[0]);
-					Options.CameraPosition[1] = lcVector3LDrawToLeoCAD(Options.CameraPosition[1]);
-					Options.CameraPosition[2] = lcVector3LDrawToLeoCAD(Options.CameraPosition[2]);
+					Options.CameraPosition[0] = swVector3LDrawToStudWorks(Options.CameraPosition[0]);
+					Options.CameraPosition[1] = swVector3LDrawToStudWorks(Options.CameraPosition[1]);
+					Options.CameraPosition[2] = swVector3LDrawToStudWorks(Options.CameraPosition[2]);
 				}
 
-				lcVector3 Front = Options.CameraPosition[1] - Options.CameraPosition[0];
+				swVector3 Front = Options.CameraPosition[1] - Options.CameraPosition[0];
 
 				if (Front.LengthSquared() < 0.1f)
 				{
@@ -735,7 +735,7 @@ lcCommandLineOptions lcApplication::ParseCommandLineOptions()
 					Options.StdErr += tr("Invalid up vector length specified for the '%1' option.\n").arg(Option);
 					Options.ParseOK = false;
 				}
-				else if (fabsf(lcDot(lcNormalize(Front), lcNormalize(Options.CameraPosition[2]))) > 0.99f)
+				else if (fabsf(swDot(swNormalize(Front), swNormalize(Options.CameraPosition[2]))) > 0.99f)
 				{
 					Options.StdErr += tr("The up vector is parallel to the front vector specified for the '%1' option.\n").arg(Option);
 					Options.ParseOK = false;
@@ -807,13 +807,13 @@ lcCommandLineOptions lcApplication::ParseCommandLineOptions()
 			if (ParseString(ShadingString, true))
 			{
 				if (ShadingString == QLatin1String("wireframe"))
-					Options.ShadingMode = lcShadingMode::Wireframe;
+					Options.ShadingMode = swShadingMode::Wireframe;
 				else if (ShadingString == QLatin1String("flat"))
-					Options.ShadingMode = lcShadingMode::Flat;
+					Options.ShadingMode = swShadingMode::Flat;
 				else if (ShadingString == QLatin1String("default"))
-					Options.ShadingMode = lcShadingMode::DefaultLights;
+					Options.ShadingMode = swShadingMode::DefaultLights;
 				else if (ShadingString == QLatin1String("full"))
-					Options.ShadingMode = lcShadingMode::Full;
+					Options.ShadingMode = swShadingMode::Full;
 				else
 				{
 					Options.StdErr += tr("Invalid parameter value specified for the '%1' option: '%2'.\n").arg(Option, ShadingString);
@@ -835,8 +835,8 @@ lcCommandLineOptions lcApplication::ParseCommandLineOptions()
 		{
 			int StudStyle;
 
-			if (ParseInteger(StudStyle, 0, static_cast<int>(lcStudStyle::Count) - 1))
-				Options.StudStyle = static_cast<lcStudStyle>(StudStyle);
+			if (ParseInteger(StudStyle, 0, static_cast<int>(swStudStyle::Count) - 1))
+				Options.StudStyle = static_cast<swStudStyle>(StudStyle);
 		}
 		else if (Option == QLatin1String("-obj") || Option == QLatin1String("--export-wavefront"))
 		{
@@ -865,10 +865,10 @@ lcCommandLineOptions lcApplication::ParseCommandLineOptions()
 		}
 		else if (Option == QLatin1String("-v") || Option == QLatin1String("--version"))
 		{
-#ifdef LC_CONTINUOUS_BUILD
-			Options.StdOut += tr("LeoCAD+ Continuous Build %1\n").arg(QT_STRINGIFY(LC_CONTINUOUS_BUILD));
+#ifdef SW_CONTINUOUS_BUILD
+			Options.StdOut += tr("LeoCAD+ Continuous Build %1\n").arg(QT_STRINGIFY(SW_CONTINUOUS_BUILD));
 #else
-			Options.StdOut += tr("LeoCAD+ Version %1\n").arg(LC_VERSION_TEXT);
+			Options.StdOut += tr("LeoCAD+ Version %1\n").arg(SW_VERSION_TEXT);
 #endif
 			Options.StdOut += tr("Compiled %1\n").arg(__DATE__);
 			Options.Exit = true;
@@ -930,7 +930,7 @@ lcCommandLineOptions lcApplication::ParseCommandLineOptions()
 		}
 	}
 
-	if (Options.AutomateEdgeColor && lcIsHighContrast(Options.StudStyle))
+	if (Options.AutomateEdgeColor && swIsHighContrast(Options.StudStyle))
 	{
 		Options.StdErr += tr("High contrast stud and edge color settings are ignored when -aec or --automate-edge-color is set.\n");
 	}
@@ -946,7 +946,7 @@ lcCommandLineOptions lcApplication::ParseCommandLineOptions()
 			Options.StdErr += Message.arg(QString("--light-dark-value %1").arg(Options.PartColorValueLDIndex));
 	}
 
-	if (!lcIsHighContrast(Options.StudStyle) && !lcIsHighContrast(lcGetProfileStudStyle()))
+	if (!swIsHighContrast(Options.StudStyle) && !swIsHighContrast(swGetProfileStudStyle()))
 	{
 		QString const Message = tr("High contrast stud style is required for the '%1' option but is not enabled.\n");
 
@@ -977,7 +977,7 @@ lcCommandLineOptions lcApplication::ParseCommandLineOptions()
 
 	if (!Options.CameraName.isEmpty())
 	{
-		if (Options.Viewpoint != lcViewpoint::Count)
+		if (Options.Viewpoint != swViewpoint::Count)
 			Options.StdErr += tr("--viewpoint is ignored when --camera is set.\n");
 
 		if (Options.Orthographic)
@@ -989,7 +989,7 @@ lcCommandLineOptions lcApplication::ParseCommandLineOptions()
 		if (Options.SetCameraPosition)
 			Options.StdErr += tr("--camera-position is ignored when --camera is set.\n");
 	}
-	else if (Options.Viewpoint != lcViewpoint::Count)
+	else if (Options.Viewpoint != swViewpoint::Count)
 	{
 		if (Options.SetCameraAngles)
 			Options.StdErr += tr("--camera-angles is ignored when --viewpoint is set.\n");
@@ -1014,9 +1014,9 @@ lcCommandLineOptions lcApplication::ParseCommandLineOptions()
 	return Options;
 }
 
-lcStartupMode lcApplication::Initialize(const QList<QPair<QString, bool>>& LibraryPaths)
+swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& LibraryPaths)
 {
-	lcCommandLineOptions Options = ParseCommandLineOptions();
+	swCommandLineOptions Options = ParseCommandLineOptions();
 	QTextStream StdErr(stderr, QIODevice::WriteOnly);
 	QTextStream StdOut(stdout, QIODevice::WriteOnly);
 
@@ -1033,10 +1033,10 @@ lcStartupMode lcApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 	}
 
 	if (!Options.ParseOK)
-		return lcStartupMode::Error;
+		return swStartupMode::Error;
 
 	if (Options.Exit)
-		return lcStartupMode::Success;
+		return swStartupMode::Success;
 
 	const bool SaveAndExit = (Options.SaveImage || Options.SaveWavefront || Options.Save3DS || Options.SaveCOLLADA || Options.SaveCSV || Options.SaveHTML);
 
@@ -1044,13 +1044,13 @@ lcStartupMode lcApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 	if (Options.SaveImage)
 	{
 		StdErr << tr("Command line image export is not supported on iOS.\n");
-		return lcStartupMode::Error;
+		return swStartupMode::Error;
 	}
 #endif
 
 #ifndef Q_OS_IOS
 	const bool CreateRenderResources = !SaveAndExit || Options.SaveImage || Options.SaveHTML;
-	const lcResult<void> RendererResult = lcContext::InitializeRenderer(CreateRenderResources);
+	const swResult<void> RendererResult = swContext::InitializeRenderer(CreateRenderResources);
 
 	if (!RendererResult)
 	{
@@ -1059,7 +1059,7 @@ lcStartupMode lcApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 		if (!SaveAndExit)
 			QMessageBox::critical(nullptr, tr("Initialize Renderer"), RendererResult.error());
 
-		return lcStartupMode::Error;
+		return swStartupMode::Error;
 	}
 
 	emit RendererInitialized();
@@ -1071,10 +1071,10 @@ lcStartupMode lcApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 	{
 		UpdateStyle();
 
-		gMainWindow = new lcMainWindow();
+		gMainWindow = new swMainWindow();
 
-		lcLoadDefaultKeyboardShortcuts();
-		lcLoadDefaultMouseShortcuts();
+		swLoadDefaultKeyboardShortcuts();
+		swLoadDefaultMouseShortcuts();
 	}
 
 	mPreferences.mShadingMode = Options.ShadingMode;
@@ -1115,8 +1115,8 @@ lcStartupMode lcApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 	Project* NewProject = new Project();
 	SetProject(NewProject);
 
-	if (!SaveAndExit && Options.ProjectName.isEmpty() && lcGetProfileInt(LC_PROFILE_AUTOLOAD_MOSTRECENT))
-		Options.ProjectName = lcGetProfileString(LC_PROFILE_RECENT_FILE1);
+	if (!SaveAndExit && Options.ProjectName.isEmpty() && swGetProfileInt(SW_PROFILE_AUTOLOAD_MOSTRECENT))
+		Options.ProjectName = swGetProfileString(SW_PROFILE_RECENT_FILE1);
 
 	bool ProjectLoaded = false;
 
@@ -1145,11 +1145,11 @@ lcStartupMode lcApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 		if (!Options.ModelName.isEmpty())
 			mProject->SetActiveModel(Options.ModelName, true);
 
-		std::unique_ptr<lcView> ActiveView;
+		std::unique_ptr<swView> ActiveView;
 
 		if (Options.SaveImage)
 		{
-			lcModel* Model;
+			swModel* Model;
 
 			if (!Options.ModelName.isEmpty())
 			{
@@ -1158,13 +1158,13 @@ lcStartupMode lcApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 				if (!Model)
 				{
 					StdErr << tr("Error: model '%1' does not exist.\n").arg(Options.ModelName);
-					return lcStartupMode::Error;
+					return swStartupMode::Error;
 				}
 			}
 			else
 				Model = mProject->GetMainModel();
 
-			ActiveView = std::unique_ptr<lcView>(new lcView(lcViewType::View, Model));
+			ActiveView = std::unique_ptr<swView>(new swView(swViewType::View, Model));
 
 			ActiveView->SetOffscreenContext();
 			ActiveView->MakeCurrent();
@@ -1179,20 +1179,20 @@ lcStartupMode lcApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 				ActiveView->SetCamera(Options.CameraName);
 			else
 			{
-				ActiveView->SetCameraProjection(Options.Orthographic ? lcCameraProjection::Orthographic : lcCameraProjection::Perspective);
+				ActiveView->SetCameraProjection(Options.Orthographic ? swCameraProjection::Orthographic : swCameraProjection::Perspective);
 
 				if (Options.SetFoV)
 					ActiveView->GetCamera()->m_fovy = Options.FoV;
 
 				if (Options.SetZPlanes)
 				{
-					lcCamera* Camera = ActiveView->GetCamera();
+					swCamera* Camera = ActiveView->GetCamera();
 
 					Camera->m_zNear = Options.ZPlanes[0];
 					Camera->m_zFar = Options.ZPlanes[1];
 				}
 
-				if (Options.Viewpoint != lcViewpoint::Count)
+				if (Options.Viewpoint != swViewpoint::Count)
 					ActiveView->SetViewpoint(Options.Viewpoint);
 				else if (Options.SetCameraAngles)
 					ActiveView->SetCameraAngles(Options.CameraLatLon[0], Options.CameraLatLon[1]);
@@ -1203,7 +1203,7 @@ lcStartupMode lcApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 
 		if (Options.SaveImage)
 		{
-			lcModel* ActiveModel = ActiveView->GetModel();
+			swModel* ActiveModel = ActiveView->GetModel();
 
 			if (Options.ImageName.isEmpty())
 				Options.ImageName = mProject->GetImageFileName(true);
@@ -1245,13 +1245,13 @@ lcStartupMode lcApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 
 			ActiveModel->WaitForAssets();
 
-			const bool UsesCameraPosition = Options.SetCameraPosition && Options.Viewpoint == lcViewpoint::Count && !Options.SetCameraAngles;
+			const bool UsesCameraPosition = Options.SetCameraPosition && Options.Viewpoint == swViewpoint::Count && !Options.SetCameraAngles;
 
 			if (Options.CameraName.isEmpty() && !UsesCameraPosition)
 			{
-				const lcStep FitStep = Options.ImageStart == Options.ImageEnd ? Options.ImageStart : ActiveModel->GetLastStep();
+				const swStep FitStep = Options.ImageStart == Options.ImageEnd ? Options.ImageStart : ActiveModel->GetLastStep();
 
-				ActiveView->ZoomExtentsAtStep(FitStep, lcGeometryBoundsMode::AvailableOnly, !Options.SetZPlanes);
+				ActiveView->ZoomExtentsAtStep(FitStep, swGeometryBoundsMode::AvailableOnly, !Options.SetZPlanes);
 			}
 
 			auto ProgressCallback = [&StdOut](const QString& FileName)
@@ -1259,13 +1259,13 @@ lcStartupMode lcApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 				StdOut << tr("Saved '%1'.\n").arg(FileName);
 			};
 
-			const lcResult<void> ImagesSaved = ActiveView->SaveStepImages(Frame, Options.ImageStart != Options.ImageEnd, Options.ImageStart, Options.ImageEnd, ProgressCallback);
+			const swResult<void> ImagesSaved = ActiveView->SaveStepImages(Frame, Options.ImageStart != Options.ImageEnd, Options.ImageStart, Options.ImageEnd, ProgressCallback);
 
 			if (!ImagesSaved)
 			{
 				StdErr << ImagesSaved.error() << '\n';
 
-				return lcStartupMode::Error;
+				return swStartupMode::Error;
 			}
 		}
 
@@ -1290,7 +1290,7 @@ lcStartupMode lcApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 				FileName += ".obj";
 			}
 
-			lcResult<void> ExportResult = mProject->ExportWavefront(FileName);
+			swResult<void> ExportResult = mProject->ExportWavefront(FileName);
 
 			if (ExportResult)
 				StdOut << tr("Saved '%1'.\n").arg(FileName);
@@ -1324,7 +1324,7 @@ lcStartupMode lcApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 				FileName += ".3ds";
 			}
 
-			lcResult<void> ExportResult = mProject->Export3DStudio(FileName);
+			swResult<void> ExportResult = mProject->Export3DStudio(FileName);
 
 			if (ExportResult)
 				StdOut << tr("Saved '%1'.\n").arg(FileName);
@@ -1358,7 +1358,7 @@ lcStartupMode lcApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 				FileName += ".dae";
 			}
 
-			lcResult<void> ExportResult = mProject->ExportCOLLADA(FileName);
+			swResult<void> ExportResult = mProject->ExportCOLLADA(FileName);
 
 			if (ExportResult)
 				StdOut << tr("Saved '%1'.\n").arg(FileName);
@@ -1392,7 +1392,7 @@ lcStartupMode lcApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 				FileName += ".csv";
 			}
 
-			lcResult<void> ExportResult = mProject->ExportCSV(FileName);
+			swResult<void> ExportResult = mProject->ExportCSV(FileName);
 
 			if (ExportResult)
 				StdOut << tr("Saved '%1'.\n").arg(FileName);
@@ -1407,12 +1407,12 @@ lcStartupMode lcApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 
 		if (Options.SaveHTML)
 		{
-			lcHTMLExportOptions HTMLOptions(mProject);
+			swHTMLExportOptions HTMLOptions(mProject);
 
 			if (!Options.SaveHTMLName.isEmpty())
 				HTMLOptions.PathName = Options.SaveHTMLName;
 
-			lcResult<void> ExportResult = mProject->ExportHTML(HTMLOptions);
+			swResult<void> ExportResult = mProject->ExportHTML(HTMLOptions);
 
 			if (ExportResult)
 				StdOut << tr("Saved '%1'.\n").arg(HTMLOptions.PathName);
@@ -1428,17 +1428,17 @@ lcStartupMode lcApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 
 	if (!SaveAndExit)
 	{
-		gMainWindow->SetColorIndex(lcGetColorIndex(7));
+		gMainWindow->SetColorIndex(swGetColorIndex(7));
 		gMainWindow->GetPartSelectionWidget()->SetDefaultPart();
 
 #ifdef Q_OS_IOS
-		const lcResult<void> RendererResult = lcContext::InitializeRenderer(true);
+		const swResult<void> RendererResult = swContext::InitializeRenderer(true);
 
 		if (!RendererResult)
 		{
 			StdErr << RendererResult.error() << '\n';
 			QMessageBox::critical(gMainWindow, tr("Initialize Renderer"), RendererResult.error());
-			return lcStartupMode::Error;
+			return swStartupMode::Error;
 		}
 
 		emit RendererInitialized();
@@ -1454,12 +1454,12 @@ lcStartupMode lcApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 	}
 
 	if (OutputFailed)
-		return lcStartupMode::Error;
+		return swStartupMode::Error;
 
-	return SaveAndExit ? lcStartupMode::Success : lcStartupMode::ShowWindow;
+	return SaveAndExit ? swStartupMode::Success : swStartupMode::ShowWindow;
 }
 
-void lcApplication::Shutdown()
+void swApplication::Shutdown()
 {
 	delete gMainWindow;
 	gMainWindow = nullptr;
@@ -1470,25 +1470,25 @@ void lcApplication::Shutdown()
 	delete mLibrary;
 	mLibrary = nullptr;
 
-	lcContext::ShutdownRenderer();
+	swContext::ShutdownRenderer();
 }
 
-void lcApplication::ShowPreferencesDialog()
+void swApplication::ShowPreferencesDialog()
 {
-	lcPreferencesDialogOptions Options;
-	int CurrentAASamples = lcGetProfileInt(LC_PROFILE_ANTIALIASING_SAMPLES);
-	lcStudStyle CurrentStudStyle = lcGetPiecesLibrary()->GetStudStyle();
+	swPreferencesDialogOptions Options;
+	int CurrentAASamples = swGetProfileInt(SW_PROFILE_ANTIALIASING_SAMPLES);
+	swStudStyle CurrentStudStyle = swGetPiecesLibrary()->GetStudStyle();
 
 	Options.Preferences = mPreferences;
 
-	Options.LibraryPath = lcGetProfileString(LC_PROFILE_PARTS_LIBRARY);
-	Options.MinifigSettingsPath = lcGetProfileString(LC_PROFILE_MINIFIG_SETTINGS);
-	Options.ColorConfigPath = lcGetProfileString(LC_PROFILE_COLOR_CONFIG);
-	Options.POVRayPath = lcGetProfileString(LC_PROFILE_POVRAY_PATH);
-	Options.LGEOPath = lcGetProfileString(LC_PROFILE_POVRAY_LGEO_PATH);
-	Options.DefaultAuthor = lcGetProfileString(LC_PROFILE_DEFAULT_AUTHOR_NAME);
-	Options.Language = lcGetProfileString(LC_PROFILE_LANGUAGE);
-	Options.CheckForUpdates = lcGetProfileInt(LC_PROFILE_CHECK_UPDATES);
+	Options.LibraryPath = swGetProfileString(SW_PROFILE_PARTS_LIBRARY);
+	Options.MinifigSettingsPath = swGetProfileString(SW_PROFILE_MINIFIG_SETTINGS);
+	Options.ColorConfigPath = swGetProfileString(SW_PROFILE_COLOR_CONFIG);
+	Options.POVRayPath = swGetProfileString(SW_PROFILE_POVRAY_PATH);
+	Options.LGEOPath = swGetProfileString(SW_PROFILE_POVRAY_LGEO_PATH);
+	Options.DefaultAuthor = swGetProfileString(SW_PROFILE_DEFAULT_AUTHOR_NAME);
+	Options.Language = swGetProfileString(SW_PROFILE_LANGUAGE);
+	Options.CheckForUpdates = swGetProfileInt(SW_PROFILE_CHECK_UPDATES);
 
 	Options.AASamples = CurrentAASamples;
 	Options.StudStyle = CurrentStudStyle;
@@ -1504,13 +1504,13 @@ void lcApplication::ShowPreferencesDialog()
 	Options.MouseShortcutsModified = false;
 	Options.MouseShortcutsDefault = false;
 
-	lcPreferencesDialog Dialog(gMainWindow, &Options);
+	swPreferencesDialog Dialog(gMainWindow, &Options);
 	if (Dialog.exec() != QDialog::Accepted)
 		return;
 
-	bool LanguageChanged = Options.Language != lcGetProfileString(LC_PROFILE_LANGUAGE);
-	bool LibraryChanged = Options.LibraryPath != lcGetProfileString(LC_PROFILE_PARTS_LIBRARY);
-	bool ColorConfigChanged = Options.ColorConfigPath != lcGetProfileString(LC_PROFILE_COLOR_CONFIG);
+	bool LanguageChanged = Options.Language != swGetProfileString(SW_PROFILE_LANGUAGE);
+	bool LibraryChanged = Options.LibraryPath != swGetProfileString(SW_PROFILE_PARTS_LIBRARY);
+	bool ColorConfigChanged = Options.ColorConfigPath != swGetProfileString(SW_PROFILE_COLOR_CONFIG);
 	bool AAChanged = CurrentAASamples != Options.AASamples;
 	bool StudStyleChanged = CurrentStudStyle != Options.StudStyle;
 	bool StudCylinderColorEnabledChanged = Options.Preferences.mStudCylinderColorEnabled != mPreferences.mStudCylinderColorEnabled;
@@ -1526,8 +1526,8 @@ void lcApplication::ShowPreferencesDialog()
 	EdgeColorSettingsChanged |= Options.Preferences.mDarkEdgeColorEnabled != mPreferences.mDarkEdgeColorEnabled;
 	EdgeColorSettingsChanged |= Options.Preferences.mDarkEdgeColor != mPreferences.mDarkEdgeColor;
 	bool WatchFileChangesChanged = Options.Preferences.mWatchFileChanges != mPreferences.mWatchFileChanges;
-	const lcRenderSettings OldPiecesRendering = mPreferences.GetRenderSettings(lcRenderTarget::Pieces);
-	const lcRenderSettings NewPiecesRendering = Options.Preferences.GetRenderSettings(lcRenderTarget::Pieces);
+	const swRenderSettings OldPiecesRendering = mPreferences.GetRenderSettings(swRenderTarget::Pieces);
+	const swRenderSettings NewPiecesRendering = Options.Preferences.GetRenderSettings(swRenderTarget::Pieces);
 	const bool PiecesRenderingChanged = OldPiecesRendering.ShadingMode != NewPiecesRendering.ShadingMode || OldPiecesRendering.DrawEdgeLines != NewPiecesRendering.DrawEdgeLines ||
 		OldPiecesRendering.DrawConditionalLines != NewPiecesRendering.DrawConditionalLines || OldPiecesRendering.LineWidth != NewPiecesRendering.LineWidth;
 
@@ -1544,15 +1544,15 @@ void lcApplication::ShowPreferencesDialog()
 	if (gMainWindow && gMainWindow->GetPreviewWidget())
 		gMainWindow->GetPreviewWidget()->UpdateSquareViewport();
 
-	lcSetProfileString(LC_PROFILE_DEFAULT_AUTHOR_NAME, Options.DefaultAuthor);
-	lcSetProfileString(LC_PROFILE_PARTS_LIBRARY, Options.LibraryPath);
-	lcSetProfileString(LC_PROFILE_MINIFIG_SETTINGS, Options.MinifigSettingsPath);
-	lcSetProfileString(LC_PROFILE_POVRAY_PATH, Options.POVRayPath);
-	lcSetProfileString(LC_PROFILE_POVRAY_LGEO_PATH, Options.LGEOPath);
-	lcSetProfileString(LC_PROFILE_LANGUAGE, Options.Language);
-	lcSetProfileInt(LC_PROFILE_CHECK_UPDATES, Options.CheckForUpdates);
-	lcSetProfileInt(LC_PROFILE_ANTIALIASING_SAMPLES, Options.AASamples);
-	lcSetProfileStudStyle(Options.StudStyle);
+	swSetProfileString(SW_PROFILE_DEFAULT_AUTHOR_NAME, Options.DefaultAuthor);
+	swSetProfileString(SW_PROFILE_PARTS_LIBRARY, Options.LibraryPath);
+	swSetProfileString(SW_PROFILE_MINIFIG_SETTINGS, Options.MinifigSettingsPath);
+	swSetProfileString(SW_PROFILE_POVRAY_PATH, Options.POVRayPath);
+	swSetProfileString(SW_PROFILE_POVRAY_LGEO_PATH, Options.LGEOPath);
+	swSetProfileString(SW_PROFILE_LANGUAGE, Options.Language);
+	swSetProfileInt(SW_PROFILE_CHECK_UPDATES, Options.CheckForUpdates);
+	swSetProfileInt(SW_PROFILE_ANTIALIASING_SAMPLES, Options.AASamples);
+	swSetProfileStudStyle(Options.StudStyle);
 
 	if (LanguageChanged || LibraryChanged || AAChanged)
 		QMessageBox::information(gMainWindow, tr("Preferences"), tr("Some changes will only take effect the next time you start LeoCAD+."));
@@ -1560,11 +1560,11 @@ void lcApplication::ShowPreferencesDialog()
 	if (Options.CategoriesModified)
 	{
 		if (Options.CategoriesDefault)
-			lcResetDefaultCategories();
+			swResetDefaultCategories();
 		else
 		{
 			gCategories = Options.Categories;
-			lcSaveDefaultCategories();
+			swSaveDefaultCategories();
 		}
 
 		gMainWindow->UpdateCategories();
@@ -1573,11 +1573,11 @@ void lcApplication::ShowPreferencesDialog()
 	if (Options.KeyboardShortcutsModified)
 	{
 		if (Options.KeyboardShortcutsDefault)
-			lcResetDefaultKeyboardShortcuts();
+			swResetDefaultKeyboardShortcuts();
 		else
 		{
 			gKeyboardShortcuts = Options.KeyboardShortcuts;
-			lcSaveDefaultKeyboardShortcuts();
+			swSaveDefaultKeyboardShortcuts();
 		}
 
 		gMainWindow->UpdateShortcuts();
@@ -1586,23 +1586,23 @@ void lcApplication::ShowPreferencesDialog()
 	if (Options.MouseShortcutsModified)
 	{
 		if (Options.MouseShortcutsDefault)
-			lcResetDefaultMouseShortcuts();
+			swResetDefaultMouseShortcuts();
 		else
 		{
 			gMouseShortcuts = Options.MouseShortcuts;
-			lcSaveDefaultMouseShortcuts();
+			swSaveDefaultMouseShortcuts();
 		}
 	}
 
 	// UpdateStudStyleAndColors() reloads colors too; both paths must see the newly selected config.
 	if (ColorConfigChanged)
-		lcSetProfileString(LC_PROFILE_COLOR_CONFIG, Options.ColorConfigPath);
+		swSetProfileString(SW_PROFILE_COLOR_CONFIG, Options.ColorConfigPath);
 
 	if (StudStyleChanged || StudCylinderColorEnabledChanged)
-		lcGetPiecesLibrary()->UpdateStudStyleAndColors(Options.StudStyle, Options.Preferences.mStudCylinderColorEnabled);
+		swGetPiecesLibrary()->UpdateStudStyleAndColors(Options.StudStyle, Options.Preferences.mStudCylinderColorEnabled);
 	else if (ColorConfigChanged || EdgeColorSettingsChanged)
-		lcGetPiecesLibrary()->LoadColors();
+		swGetPiecesLibrary()->LoadColors();
 
 	gMainWindow->SetShadingMode(Options.Preferences.mShadingMode);
-	lcView::UpdateAllViews();
+	swView::UpdateAllViews();
 }

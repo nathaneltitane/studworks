@@ -22,55 +22,55 @@
 #include "sw_string.h"
 #include "sw_colors.h"
 
-lcHTMLExportOptions::lcHTMLExportOptions(const Project* Project)
+swHTMLExportOptions::swHTMLExportOptions(const Project* Project)
 {
 	QString FileName = Project->GetFileName();
 
 	if (!FileName.isEmpty())
 		PathName = QFileInfo(FileName).canonicalPath();
 
-	int ImageOptions = lcGetProfileInt(LC_PROFILE_HTML_IMAGE_OPTIONS);
-	int HTMLOptions = lcGetProfileInt(LC_PROFILE_HTML_OPTIONS);
+	int ImageOptions = swGetProfileInt(SW_PROFILE_HTML_IMAGE_OPTIONS);
+	int HTMLOptions = swGetProfileInt(SW_PROFILE_HTML_OPTIONS);
 
-	TransparentImages = (ImageOptions & LC_IMAGE_TRANSPARENT) != 0;
-	SubModels = (HTMLOptions & (LC_HTML_SUBMODELS)) != 0;
-	CurrentOnly = (HTMLOptions & LC_HTML_CURRENT_ONLY) != 0;
-	SinglePage = (HTMLOptions & LC_HTML_SINGLEPAGE) != 0;
-	IndexPage = (HTMLOptions & LC_HTML_INDEX) != 0;
-	StepImagesWidth = lcGetProfileInt(LC_PROFILE_HTML_IMAGE_WIDTH);
-	StepImagesHeight = lcGetProfileInt(LC_PROFILE_HTML_IMAGE_HEIGHT);
-	PartsListStep = (HTMLOptions & LC_HTML_LISTSTEP) != 0;
-	PartsListEnd = (HTMLOptions & LC_HTML_LISTEND) != 0;
+	TransparentImages = (ImageOptions & SW_IMAGE_TRANSPARENT) != 0;
+	SubModels = (HTMLOptions & (SW_HTML_SUBMODELS)) != 0;
+	CurrentOnly = (HTMLOptions & SW_HTML_CURRENT_ONLY) != 0;
+	SinglePage = (HTMLOptions & SW_HTML_SINGLEPAGE) != 0;
+	IndexPage = (HTMLOptions & SW_HTML_INDEX) != 0;
+	StepImagesWidth = swGetProfileInt(SW_PROFILE_HTML_IMAGE_WIDTH);
+	StepImagesHeight = swGetProfileInt(SW_PROFILE_HTML_IMAGE_HEIGHT);
+	PartsListStep = (HTMLOptions & SW_HTML_LISTSTEP) != 0;
+	PartsListEnd = (HTMLOptions & SW_HTML_LISTEND) != 0;
 }
 
-void lcHTMLExportOptions::SaveDefaults()
+void swHTMLExportOptions::SaveDefaults()
 {
 	int HTMLOptions = 0;
 
 	if (SubModels)
-		HTMLOptions |= LC_HTML_SUBMODELS;
+		HTMLOptions |= SW_HTML_SUBMODELS;
 	if (CurrentOnly)
-		HTMLOptions |= LC_HTML_CURRENT_ONLY;
+		HTMLOptions |= SW_HTML_CURRENT_ONLY;
 	if (SinglePage)
-		HTMLOptions |= LC_HTML_SINGLEPAGE;
+		HTMLOptions |= SW_HTML_SINGLEPAGE;
 	if (IndexPage)
-		HTMLOptions |= LC_HTML_INDEX;
+		HTMLOptions |= SW_HTML_INDEX;
 	if (PartsListStep)
-		HTMLOptions |= LC_HTML_LISTSTEP;
+		HTMLOptions |= SW_HTML_LISTSTEP;
 	if (PartsListEnd)
-		HTMLOptions |= LC_HTML_LISTEND;
+		HTMLOptions |= SW_HTML_LISTEND;
 
-	lcSetProfileInt(LC_PROFILE_HTML_IMAGE_OPTIONS, TransparentImages ? LC_IMAGE_TRANSPARENT : 0);
-	lcSetProfileInt(LC_PROFILE_HTML_OPTIONS, HTMLOptions);
-	lcSetProfileInt(LC_PROFILE_HTML_IMAGE_WIDTH, StepImagesWidth);
-	lcSetProfileInt(LC_PROFILE_HTML_IMAGE_HEIGHT, StepImagesHeight);
+	swSetProfileInt(SW_PROFILE_HTML_IMAGE_OPTIONS, TransparentImages ? SW_IMAGE_TRANSPARENT : 0);
+	swSetProfileInt(SW_PROFILE_HTML_OPTIONS, HTMLOptions);
+	swSetProfileInt(SW_PROFILE_HTML_IMAGE_WIDTH, StepImagesWidth);
+	swSetProfileInt(SW_PROFILE_HTML_IMAGE_HEIGHT, StepImagesHeight);
 }
 
 Project::Project(bool IsPreview)
 	: mIsPreview(IsPreview)
 {
 	mModified = false;
-	mActiveModel = new lcModel(tr(mIsPreview ? "Preview.ldr" : "New Model.ldr"), this, mIsPreview);
+	mActiveModel = new swModel(tr(mIsPreview ? "Preview.ldr" : "New Model.ldr"), this, mIsPreview);
 	mActiveModel->CreatePieceData(this);
 	mActiveModel->SetSaved();
 	mModels.emplace_back(mActiveModel);
@@ -94,24 +94,24 @@ Project::Project(bool IsPreview)
 Project::~Project()
 {
 	mModels.clear();
-	lcGetPiecesLibrary()->ReleaseProjectPieceData(this);
+	swGetPiecesLibrary()->ReleaseProjectPieceData(this);
 }
 
-lcPieceData* Project::FindPieceData(const std::string& Name) const
+swPieceData* Project::FindPieceData(const std::string& Name) const
 {
-	const std::map<std::string, lcPieceData*>::const_iterator It = mPieceIndex.find(Name);
+	const std::map<std::string, swPieceData*>::const_iterator It = mPieceIndex.find(Name);
 
 	return It == mPieceIndex.end() ? nullptr : It->second;
 }
 
-void Project::RegisterPieceData(const std::string& Name, lcPieceData* PieceData)
+void Project::RegisterPieceData(const std::string& Name, swPieceData* PieceData)
 {
 	mPieceIndex[Name] = PieceData;
 }
 
-void Project::UnregisterPieceData(lcPieceData* PieceData)
+void Project::UnregisterPieceData(swPieceData* PieceData)
 {
-	for (std::map<std::string, lcPieceData*>::iterator It = mPieceIndex.begin(); It != mPieceIndex.end();)
+	for (std::map<std::string, swPieceData*>::iterator It = mPieceIndex.begin(); It != mPieceIndex.end();)
 	{
 		if (It->second == PieceData)
 			It = mPieceIndex.erase(It);
@@ -127,7 +127,7 @@ void Project::ClearPieceDataIndex()
 
 void Project::TransferPieceDataIndexTo(Project* Destination)
 {
-	for (const std::map<std::string, lcPieceData*>::value_type& Entry : mPieceIndex)
+	for (const std::map<std::string, swPieceData*>::value_type& Entry : mPieceIndex)
 	{
 		if (!Destination->FindPieceData(Entry.first))
 			Destination->RegisterPieceData(Entry.first, Entry.second);
@@ -136,7 +136,7 @@ void Project::TransferPieceDataIndexTo(Project* Destination)
 	mPieceIndex.clear();
 }
 
-bool Project::CanShareMergePieceData(const lcPieceData* Existing, const lcPieceData* Incoming)
+bool Project::CanShareMergePieceData(const swPieceData* Existing, const swPieceData* Incoming)
 {
 	if (Existing == Incoming)
 		return true;
@@ -147,7 +147,7 @@ bool Project::CanShareMergePieceData(const lcPieceData* Existing, const lcPieceD
 	// The callers have already matched filenames. Two missing part references
 	// can share an identity, while failed library parts and models cannot.
 	if (!Existing->IsProject() && !Incoming->IsProject())
-		return Existing->mState == lcAssetState::Failed && Incoming->mState == lcAssetState::Failed;
+		return Existing->mState == swAssetState::Failed && Incoming->mState == swAssetState::Failed;
 
 	if (!Existing->IsProject() || !Incoming->IsProject())
 		return false;
@@ -158,9 +158,9 @@ bool Project::CanShareMergePieceData(const lcPieceData* Existing, const lcPieceD
 	return !ExistingPath.isEmpty() && ExistingPath == IncomingPath;
 }
 
-lcModel* Project::GetModel(const QString& FileName) const
+swModel* Project::GetModel(const QString& FileName) const
 {
-	for (const std::unique_ptr<lcModel>& Model : mModels)
+	for (const std::unique_ptr<swModel>& Model : mModels)
 		if (Model->GetProperties().mFileName == FileName)
 			return Model.get();
 
@@ -172,7 +172,7 @@ bool Project::IsModified() const
 	if (mModified)
 		return true;
 
-	for (const std::unique_ptr<lcModel>& Model : mModels)
+	for (const std::unique_ptr<swModel>& Model : mModels)
 		if (Model->IsModified())
 			return true;
 
@@ -209,22 +209,22 @@ QString Project::GetImageFileName(bool AllowCurrentFolder) const
 		}
 	}
 
-	return QDir::toNativeSeparators(FileName) + lcGetProfileString(LC_PROFILE_IMAGE_EXTENSION);
+	return QDir::toNativeSeparators(FileName) + swGetProfileString(SW_PROFILE_IMAGE_EXTENSION);
 }
 
-void Project::SetActiveModel(lcModel* ActiveModel, bool UpdateInterface)
+void Project::SetActiveModel(swModel* ActiveModel, bool UpdateInterface)
 {
 	if (!ActiveModel)
 		return;
 
-	for (const std::unique_ptr<lcModel> &Model : mModels)
+	for (const std::unique_ptr<swModel> &Model : mModels)
 		Model->SetActive(Model.get() == ActiveModel);
 
 	if (!mIsPreview)
 	{
-		std::vector<lcModel*> UpdatedModels;
+		std::vector<swModel*> UpdatedModels;
 		UpdatedModels.reserve(mModels.size());
-		for (const std::unique_ptr<lcModel> &Model : mModels)
+		for (const std::unique_ptr<swModel> &Model : mModels)
 			Model->UpdatePieceData(UpdatedModels);
 	}
 
@@ -235,7 +235,7 @@ void Project::SetActiveModel(lcModel* ActiveModel, bool UpdateInterface)
 		gMainWindow->SetCurrentModelTab(mActiveModel, true);
 
 		// Restore the current steps of the editing target and its surrounding ancestors.
-		lcView* EditingView = gMainWindow->GetActiveView();
+		swView* EditingView = gMainWindow->GetActiveView();
 
 		if (EditingView)
 		{
@@ -255,7 +255,7 @@ void Project::SetActiveModel(int ModelIndex, bool UpdateInterface)
 
 void Project::SetActiveModel(const QString& FileName, bool UpdateInterface)
 {
-	for (const std::unique_ptr<lcModel>& Model : mModels)
+	for (const std::unique_ptr<swModel>& Model : mModels)
 	{
 		if (FileName.compare(Model->GetFileName(), Qt::CaseInsensitive) == 0)
 		{
@@ -275,9 +275,9 @@ QString Project::GetNewModelName(QWidget* ParentWidget, const QString& DialogTit
 		int Max = 0;
 
 		for (const QString& ExistingName : ExistingModels)
-			Max = qMax(Max, lcGetDefaultNameNumber(ExistingName, Prefix));
+			Max = qMax(Max, swGetDefaultNameNumber(ExistingName, Prefix));
 
-		Name = lcFormatDefaultName(Prefix, Max + 1) + QLatin1String(".ldr");
+		Name = swFormatDefaultName(Prefix, Max + 1) + QLatin1String(".ldr");
 	}
 
 	for (;;)
@@ -317,9 +317,9 @@ QString Project::GetNewModelName(QWidget* ParentWidget, const QString& DialogTit
 
 		if (!CurrentName.isEmpty())
 		{
-			const std::string PieceName = lcPiecesLibrary::NormalizePieceDataName(Name.toLatin1().constData());
-			lcPieceData* ExistingPiece = FindPieceData(PieceName);
-			lcModel* CurrentModel = GetModel(CurrentName);
+			const std::string PieceName = swPiecesLibrary::NormalizePieceDataName(Name.toLatin1().constData());
+			swPieceData* ExistingPiece = FindPieceData(PieceName);
+			swModel* CurrentModel = GetModel(CurrentName);
 
 			if (ExistingPiece && (!CurrentModel || ExistingPiece != CurrentModel->GetPieceData()) &&
 				(!ExistingPiece->IsModel() || ExistingModels.contains(Name, Qt::CaseInsensitive)))
@@ -335,11 +335,11 @@ QString Project::GetNewModelName(QWidget* ParentWidget, const QString& DialogTit
 	return Name;
 }
 
-lcModel* Project::CreateNewModel(bool ShowModel)
+swModel* Project::CreateNewModel(bool ShowModel)
 {
 	QStringList ModelNames;
 
-	for (const std::unique_ptr<lcModel> &Model : mModels)
+	for (const std::unique_ptr<swModel> &Model : mModels)
 		ModelNames.append(Model->GetProperties().mFileName);
 
 	QString Name = GetNewModelName(gMainWindow, tr("New Submodel"), QString(), ModelNames);
@@ -348,7 +348,7 @@ lcModel* Project::CreateNewModel(bool ShowModel)
 		return nullptr;
 
 	mModified = true;
-	lcModel* Model = new lcModel(Name, this, false);
+	swModel* Model = new swModel(Name, this, false);
 	Model->CreatePieceData(this);
 	Model->SetSaved();
 	mModels.emplace_back(Model);
@@ -357,10 +357,10 @@ lcModel* Project::CreateNewModel(bool ShowModel)
 	{
 		SetActiveModel(mModels.back().get(), true);
 
-		lcView* ActiveView = gMainWindow ? gMainWindow->GetActiveView() : nullptr;
+		swView* ActiveView = gMainWindow ? gMainWindow->GetActiveView() : nullptr;
 
 		if (ActiveView)
-			ActiveView->GetCamera()->SetViewpoint(lcViewpoint::Home);
+			ActiveView->GetCamera()->SetViewpoint(swViewpoint::Home);
 
 		if (gMainWindow)
 			gMainWindow->UpdateTitle();
@@ -373,16 +373,16 @@ lcModel* Project::CreateNewModel(bool ShowModel)
 
 void Project::ShowModelListDialog()
 {
-	lcModelListDialog Dialog(gMainWindow, mModels);
+	swModelListDialog Dialog(gMainWindow, mModels);
 
 	if (Dialog.exec() != QDialog::Accepted)
 		return;
 
-	std::vector<std::unique_ptr<lcModel>> NewModels;
-	std::vector<lcModelListDialogEntry> Results = Dialog.GetResults();
-	std::vector<std::pair<lcPieceData*, lcPieceData*>> Replacements;
-	std::vector<lcModel*> ChangedModels;
-	std::vector<lcModelPieceRename> Renames;
+	std::vector<std::unique_ptr<swModel>> NewModels;
+	std::vector<swModelListDialogEntry> Results = Dialog.GetResults();
+	std::vector<std::pair<swPieceData*, swPieceData*>> Replacements;
+	std::vector<swModel*> ChangedModels;
+	std::vector<swModelPieceRename> Renames;
 	std::set<std::string> FinalNames;
 	int ModelIndex = Dialog.GetActiveModelIndex();
 
@@ -402,9 +402,9 @@ void Project::ShowModelListDialog()
 	}
 
 	// Validate the final names before changing any model or index entry.
-	for (const lcModelListDialogEntry& Entry : Results)
+	for (const swModelListDialogEntry& Entry : Results)
 	{
-		const std::string Name = lcPiecesLibrary::NormalizePieceDataName(Entry.Name.toLatin1().constData());
+		const std::string Name = swPiecesLibrary::NormalizePieceDataName(Entry.Name.toLatin1().constData());
 
 		if (!FinalNames.insert(Name).second)
 		{
@@ -415,22 +415,22 @@ void Project::ShowModelListDialog()
 		if (!Entry.ExistingModel || Entry.ExistingModel->GetFileName() == Entry.Name)
 			continue;
 
-		lcPieceData* Occupant = FindPieceData(Name);
+		swPieceData* Occupant = FindPieceData(Name);
 
 		if (!Occupant || Occupant == Entry.ExistingModel->GetPieceData())
 			continue;
 
-		const bool Vacated = std::any_of(mModels.begin(), mModels.end(), [&Results, Occupant, &Name](const std::unique_ptr<lcModel>& OldModel)
+		const bool Vacated = std::any_of(mModels.begin(), mModels.end(), [&Results, Occupant, &Name](const std::unique_ptr<swModel>& OldModel)
 		{
 			if (OldModel->GetPieceData() != Occupant)
 				return false;
 
-			const std::vector<lcModelListDialogEntry>::const_iterator Result = std::find_if(Results.begin(), Results.end(), [OldModel = OldModel.get()](const lcModelListDialogEntry& CheckEntry)
+			const std::vector<swModelListDialogEntry>::const_iterator Result = std::find_if(Results.begin(), Results.end(), [OldModel = OldModel.get()](const swModelListDialogEntry& CheckEntry)
 			{
 				return CheckEntry.ExistingModel == OldModel;
 			});
 
-			return Result == Results.end() || lcPiecesLibrary::NormalizePieceDataName(Result->Name.toLatin1().constData()) != Name;
+			return Result == Results.end() || swPiecesLibrary::NormalizePieceDataName(Result->Name.toLatin1().constData()) != Name;
 		});
 
 		if (!Vacated)
@@ -441,10 +441,10 @@ void Project::ShowModelListDialog()
 	}
 
 	// Free names being renamed or deleted before applying the new names.
-	for (const std::unique_ptr<lcModel>& OldModel : mModels)
+	for (const std::unique_ptr<swModel>& OldModel : mModels)
 	{
-		const lcModel* Model = OldModel.get();
-		const std::vector<lcModelListDialogEntry>::const_iterator Kept = std::find_if(Results.begin(), Results.end(), [Model](const lcModelListDialogEntry& Entry)
+		const swModel* Model = OldModel.get();
+		const std::vector<swModelListDialogEntry>::const_iterator Kept = std::find_if(Results.begin(), Results.end(), [Model](const swModelListDialogEntry& Entry)
 		{
 			return Entry.ExistingModel == Model;
 		});
@@ -457,16 +457,16 @@ void Project::ShowModelListDialog()
 			continue;
 		}
 
-		const std::string OldName = lcPiecesLibrary::NormalizePieceDataName(Model->GetFileName().toLatin1().constData());
+		const std::string OldName = swPiecesLibrary::NormalizePieceDataName(Model->GetFileName().toLatin1().constData());
 
-		for (const lcModelListDialogEntry& Entry : Results)
+		for (const swModelListDialogEntry& Entry : Results)
 		{
-			if (lcPiecesLibrary::NormalizePieceDataName(Entry.Name.toLatin1().constData()) != OldName)
+			if (swPiecesLibrary::NormalizePieceDataName(Entry.Name.toLatin1().constData()) != OldName)
 				continue;
 
-			// A new model can reuse this lcPieceData. A renamed model keeps its own
-			// lcPieceData, so references to the deleted model are rebound below.
-			lcGetPiecesLibrary()->InvalidatePieceDataLoad(OldModel->GetPieceData());
+			// A new model can reuse this swPieceData. A renamed model keeps its own
+			// swPieceData, so references to the deleted model are rebound below.
+			swGetPiecesLibrary()->InvalidatePieceDataLoad(OldModel->GetPieceData());
 			OldModel->GetPieceData()->DetachContainer();
 			OldModel->GetPieceData()->SetFailed(tr("Model '%1' was deleted.").arg(Model->GetFileName()));
 
@@ -481,16 +481,16 @@ void Project::ShowModelListDialog()
 	}
 
 	// Rename surviving models before loading any duplicates from them.
-	for (const lcModelListDialogEntry& Entry : Results)
+	for (const swModelListDialogEntry& Entry : Results)
 	{
-		lcModel* Model = Entry.ExistingModel;
+		swModel* Model = Entry.ExistingModel;
 
 		if (!Model || Model->GetFileName() == Entry.Name)
 			continue;
 
 		const QString OldName = Model->GetFileName();
 
-		if (!lcGetPiecesLibrary()->RenameModelPieceData(Model->GetPieceData(), Entry.Name.toLatin1().constData()))
+		if (!swGetPiecesLibrary()->RenameModelPieceData(Model->GetPieceData(), Entry.Name.toLatin1().constData()))
 		{
 			QMessageBox::information(gMainWindow, tr("Submodels"), tr("A piece named '%1' already exists in this model.").arg(Entry.Name));
 			return;
@@ -504,24 +504,24 @@ void Project::ShowModelListDialog()
 
 	// Apply original-to-final names together so a later rename cannot rewrite
 	// an earlier rename's history snapshots a second time.
-	for (const std::unique_ptr<lcModel>& Model : mModels)
+	for (const std::unique_ptr<swModel>& Model : mModels)
 		Model->RenamePieces(Renames);
 
-	for (const lcModelListDialogEntry& Entry : Results)
+	for (const swModelListDialogEntry& Entry : Results)
 	{
-		lcModel* Model = Entry.ExistingModel;
+		swModel* Model = Entry.ExistingModel;
 
 		if (!Model)
 		{
-			const lcModel* Source = Entry.DuplicateSource;
+			const swModel* Source = Entry.DuplicateSource;
 
 			if (!Source)
 			{
-				Model = new lcModel(Entry.Name, this, false);
+				Model = new swModel(Entry.Name, this, false);
 			}
 			else
 			{
-				Model = new lcModel(Source->GetProperties().mFileName, this, false);
+				Model = new swModel(Source->GetProperties().mFileName, this, false);
 
 				QByteArray File;
 
@@ -544,9 +544,9 @@ void Project::ShowModelListDialog()
 		NewModels.emplace_back(Model);
 	}
 
-	for (const std::pair<lcPieceData*, lcPieceData*>& Replacement : Replacements)
+	for (const std::pair<swPieceData*, swPieceData*>& Replacement : Replacements)
 	{
-		for (const std::unique_ptr<lcModel>& Model : NewModels)
+		for (const std::unique_ptr<swModel>& Model : NewModels)
 		{
 			if (Model->RebindPieceData(Replacement.first, Replacement.second) && std::find(ChangedModels.begin(), ChangedModels.end(), Model.get()) == ChangedModels.end())
 				ChangedModels.push_back(Model.get());
@@ -558,7 +558,7 @@ void Project::ShowModelListDialog()
 		gMainWindow->GetPreviewWidget()->RebindPieceData(Replacement.first, Replacement.second);
 	}
 
-	for (std::unique_ptr<lcModel>& Model : mModels)
+	for (std::unique_ptr<swModel>& Model : mModels)
 	{
 		if (std::find(NewModels.begin(), NewModels.end(), Model) != NewModels.end())
 			Model.release();
@@ -576,7 +576,7 @@ void Project::ShowModelListDialog()
 	if (!Renames.empty())
 		gMainWindow->GetPreviewWidget()->RefreshDescription();
 
-	for (lcModel* Model : ChangedModels)
+	for (swModel* Model : ChangedModels)
 		Model->RefreshPreview();
 }
 
@@ -600,7 +600,7 @@ Project::FileState Project::ReadFileState(const QString& FileName)
 
 bool Project::HasFileChanged(const QString& Path)
 {
-	if (mIsPreview || this != lcGetActiveProject() || Path.isEmpty() || Path != mFileName)
+	if (mIsPreview || this != swGetActiveProject() || Path.isEmpty() || Path != mFileName)
 		return false;
 
 	UpdateFileWatcher();
@@ -628,7 +628,7 @@ void Project::UpdateFileWatcher()
 {
 	QStringList Files;
 	QStringList Directories;
-	const bool Active = !mIsPreview && this == lcGetActiveProject() && !mFileName.isEmpty() && lcGetPreferences().mWatchFileChanges;
+	const bool Active = !mIsPreview && this == swGetActiveProject() && !mFileName.isEmpty() && swGetPreferences().mWatchFileChanges;
 	const bool WasWatching = !mFileWatcher.files().isEmpty() || !mFileWatcher.directories().isEmpty();
 
 	if (Active)
@@ -683,7 +683,7 @@ void Project::SetFileName(const QString& FileName)
 	UpdateFileWatcher();
 }
 
-bool lcEmbeddedData::HasValidEncoding() const
+bool swEmbeddedData::HasValidEncoding() const
 {
 	const QByteArray& Encoded = EncodedData;
 	int Padding = 0;
@@ -712,15 +712,15 @@ QString Project::NormalizeEmbeddedDataName(const QString& FileName)
 	return QDir::cleanPath(Name).toUpper();
 }
 
-std::shared_ptr<const lcEmbeddedData> Project::FindEmbeddedData(const QString& FileName) const
+std::shared_ptr<const swEmbeddedData> Project::FindEmbeddedData(const QString& FileName) const
 {
 	if (FileName.isEmpty())
-		return std::shared_ptr<const lcEmbeddedData>();
+		return std::shared_ptr<const swEmbeddedData>();
 
 	const auto Entry = mEmbeddedDataIndex.find(NormalizeEmbeddedDataName(FileName));
 
 	if (Entry == mEmbeddedDataIndex.end())
-		return std::shared_ptr<const lcEmbeddedData>();
+		return std::shared_ptr<const swEmbeddedData>();
 
 	return Entry->second;
 }
@@ -742,7 +742,7 @@ void Project::LoadLDrawDocument(const QByteArray& FileData, const Project* Refer
 	QString ModelName;
 	bool HasImplicitContent = false;
 	bool HasImplicitGeometry = false;
-	std::shared_ptr<lcEmbeddedData> Data;
+	std::shared_ptr<swEmbeddedData> Data;
 
 	const auto FinishBlock = [&](qint64 End, bool KeepImplicit)
 	{
@@ -806,7 +806,7 @@ void Project::LoadLDrawDocument(const QByteArray& FileData, const Project* Refer
 			FinishBlock(Pos, HasImplicitGeometry);
 			Type = BlockType::Data;
 			BlockBegin = Pos;
-			Data = std::make_shared<lcEmbeddedData>();
+			Data = std::make_shared<swEmbeddedData>();
 			Data->FileName = LineStream.readAll().trimmed();
 		}
 		else if (LineType == QLatin1String("0") && Meta == QLatin1String("NOFILE"))
@@ -844,11 +844,11 @@ void Project::LoadLDrawDocument(const QByteArray& FileData, const Project* Refer
 	if (ModelBlocks.empty() && mEmbeddedData.empty())
 		ModelBlocks.push_back({ QFileInfo(mFileName).fileName(), 0, 0, 0 });
 
-	std::vector<std::pair<const ModelBlock*, lcModel*>> Models;
+	std::vector<std::pair<const ModelBlock*, swModel*>> Models;
 
 	for (const ModelBlock& Block : ModelBlocks)
 	{
-		const auto Existing = std::find_if(mModels.begin(), mModels.end(), [&Block](const std::unique_ptr<lcModel>& Model)
+		const auto Existing = std::find_if(mModels.begin(), mModels.end(), [&Block](const std::unique_ptr<swModel>& Model)
 		{
 			return Model->GetFileName().compare(Block.FileName, Qt::CaseInsensitive) == 0;
 		});
@@ -863,8 +863,8 @@ void Project::LoadLDrawDocument(const QByteArray& FileData, const Project* Refer
 
 		if (ReuseExistingModels && ReferenceProject && !Models.empty())
 		{
-			const std::string Name = lcPiecesLibrary::NormalizePieceDataName(Block.FileName.toLatin1().constData());
-			lcPieceData* ExistingPieceData = ReferenceProject->FindPieceData(Name);
+			const std::string Name = swPiecesLibrary::NormalizePieceDataName(Block.FileName.toLatin1().constData());
+			swPieceData* ExistingPieceData = ReferenceProject->FindPieceData(Name);
 
 			if (ExistingPieceData && (ExistingPieceData->IsModel() || ExistingPieceData->IsProject()))
 			{
@@ -873,7 +873,7 @@ void Project::LoadLDrawDocument(const QByteArray& FileData, const Project* Refer
 			}
 		}
 
-		std::unique_ptr<lcModel> Model(new lcModel(Block.FileName, this, mIsPreview));
+		std::unique_ptr<swModel> Model(new swModel(Block.FileName, this, mIsPreview));
 		Models.emplace_back(&Block, Model.get());
 		mModels.emplace_back(std::move(Model));
 		mModels.back()->CreatePieceData(this);
@@ -888,7 +888,7 @@ void Project::LoadLDrawDocument(const QByteArray& FileData, const Project* Refer
 				RegisterPieceData(Name, PieceData);
 
 	// Every model and asset is registered before geometry resolves references.
-	for (const std::pair<const ModelBlock*, lcModel*>& Entry : Models)
+	for (const std::pair<const ModelBlock*, swModel*>& Entry : Models)
 	{
 		QBuffer ModelBuffer;
 		ModelBuffer.setData(FileData.mid(Entry.first->Begin, Entry.first->End - Entry.first->Begin));
@@ -903,7 +903,7 @@ void Project::LoadLDrawDocument(const QByteArray& FileData, const Project* Refer
 }
 
 
-QByteArray Project::SerializeModelText(const lcModel* Model, bool SelectedOnly, lcStep LastStep)
+QByteArray Project::SerializeModelText(const swModel* Model, bool SelectedOnly, swStep LastStep)
 {
 	QByteArray Bytes;
 	QTextStream Stream(&Bytes, QIODevice::WriteOnly);
@@ -913,7 +913,7 @@ QByteArray Project::SerializeModelText(const lcModel* Model, bool SelectedOnly, 
 	return Bytes;
 }
 
-QByteArray Project::SerializeStoredModel(const lcModel* Model, const QString& Name, const DocumentBlock* Original, bool NeedsHeader, bool SelectedOnly, lcStep LastStep)
+QByteArray Project::SerializeStoredModel(const swModel* Model, const QString& Name, const DocumentBlock* Original, bool NeedsHeader, bool SelectedOnly, swStep LastStep)
 {
 	const QByteArray Current = SerializeModelText(Model, SelectedOnly, LastStep);
 	const bool Preserve = Original && !SelectedOnly && !LastStep && Current == Original->Baseline;
@@ -979,7 +979,7 @@ bool Project::WriteRaw(QTextStream& Stream, const QByteArray& Bytes)
 	return Stream.status() == QTextStream::Ok;
 }
 
-bool Project::SameEmbeddedData(const lcEmbeddedData& First, const lcEmbeddedData& Second)
+bool Project::SameEmbeddedData(const swEmbeddedData& First, const swEmbeddedData& Second)
 {
 	if (First.Error != Second.Error)
 		return false;
@@ -1037,10 +1037,10 @@ std::vector<QString> Project::GetLoadWarningDetails() const
 				Details.push_back(Detail);
 		}
 
-		for (const std::unique_ptr<lcModel>& Model : Current->mModels)
-			for (const std::unique_ptr<lcPiece>& Piece : Model->GetPieces())
+		for (const std::unique_ptr<swModel>& Model : Current->mModels)
+			for (const std::unique_ptr<swPiece>& Piece : Model->GetPieces())
 			{
-				const lcPieceData* PieceData = Piece->mPieceData.Get();
+				const swPieceData* PieceData = Piece->mPieceData.Get();
 
 				if (!PieceData || !PieceData->IsProject())
 					continue;
@@ -1084,7 +1084,7 @@ bool Project::Load(const QString& FileName, bool ShowErrors)
 	mLoadWarnings.clear();
 	mEmbeddedData.clear();
 	mEmbeddedDataIndex.clear();
-	lcGetPiecesLibrary()->ReleaseProjectPieceData(this);
+	swGetPiecesLibrary()->ReleaseProjectPieceData(this);
 	SetFileName(FileName);
 	QFileInfo FileInfo(FileName);
 	QString Extension = FileInfo.suffix().toLower();
@@ -1112,11 +1112,11 @@ bool Project::Load(const QString& FileName, bool ShowErrors)
 	}
 	else
 	{
-		lcMemFile MemFile;
+		swMemFile MemFile;
 		MemFile.WriteBuffer(FileData.constData(), FileData.size());
 		MemFile.Seek(0, SEEK_SET);
 
-		lcModel* Model = new lcModel(QString(), this, mIsPreview);
+		swModel* Model = new swModel(QString(), this, mIsPreview);
 
 		if (Model->LoadBinary(&MemFile))
 		{
@@ -1137,18 +1137,18 @@ bool Project::Load(const QString& FileName, bool ShowErrors)
 
 	if (mModels.size() == 1)
 	{
-		lcModel* Model = mModels.front().get();
+		swModel* Model = mModels.front().get();
 
 		if (Model->GetProperties().mFileName.isEmpty())
 		{
 			QString ModelName = FileInfo.fileName();
 			int Suffix = 2;
 
-			while (!lcGetPiecesLibrary()->RenameModelPieceData(Model->GetPieceData(), ModelName.toLatin1().constData()))
+			while (!swGetPiecesLibrary()->RenameModelPieceData(Model->GetPieceData(), ModelName.toLatin1().constData()))
 			{
 				const QString FileExtension = FileInfo.suffix().isEmpty() ? QString() : QLatin1Char('.') + FileInfo.suffix();
 				const QString NameSuffix = QLatin1Char(' ') + QString::number(Suffix++) + FileExtension;
-				const int BaseLength = LC_PIECE_NAME_LEN - 1 - NameSuffix.length();
+				const int BaseLength = SW_PIECE_NAME_LEN - 1 - NameSuffix.length();
 				ModelName = FileInfo.completeBaseName().left(BaseLength) + NameSuffix;
 			}
 
@@ -1156,22 +1156,22 @@ bool Project::Load(const QString& FileName, bool ShowErrors)
 		}
 	}
 
-	std::vector<lcModel*> UpdatedModels;
+	std::vector<swModel*> UpdatedModels;
 	UpdatedModels.reserve(mModels.size());
 
-	for (const std::unique_ptr<lcModel>& Model : mModels)
+	for (const std::unique_ptr<swModel>& Model : mModels)
 	{
 		if (mIsPreview)
 		{
-			lcPieceData* PieceData = Model->GetPieceData();
+			swPieceData* PieceData = Model->GetPieceData();
 
 			PieceData->ReleaseMesh();
-			lcGetPiecesLibrary()->InvalidatePieceDataLoad(PieceData);
+			swGetPiecesLibrary()->InvalidatePieceDataLoad(PieceData);
 		}
 		else
 		{
 			if (mDeferModelMeshRequests)
-				lcGetPiecesLibrary()->InvalidatePieceDataLoad(Model->GetPieceData());
+				swGetPiecesLibrary()->InvalidatePieceDataLoad(Model->GetPieceData());
 
 			Model->QueueMeshBuild();
 		}
@@ -1179,7 +1179,7 @@ bool Project::Load(const QString& FileName, bool ShowErrors)
 
 	if (!mIsPreview)
 	{
-		for (const std::unique_ptr<lcModel>& Model : mModels)
+		for (const std::unique_ptr<swModel>& Model : mModels)
 			Model->UpdatePieceData(UpdatedModels);
 	}
 
@@ -1188,9 +1188,9 @@ bool Project::Load(const QString& FileName, bool ShowErrors)
 	return true;
 }
 
-lcResult<void> Project::Save(const QString& FileName)
+swResult<void> Project::Save(const QString& FileName)
 {
-	std::vector<std::pair<lcModel*, lcModelAssetSourceState>> PreviousAssetSources;
+	std::vector<std::pair<swModel*, swModelAssetSourceState>> PreviousAssetSources;
 	const QString SourceDirectory = mFileName.isEmpty() ? QString() : QFileInfo(mFileName).absolutePath();
 	const QString DestinationDirectory = QFileInfo(FileName).absolutePath();
 	const bool DirectoryChanged = SourceDirectory.isEmpty() ||
@@ -1198,7 +1198,7 @@ lcResult<void> Project::Save(const QString& FileName)
 
 	if (DirectoryChanged && !SourceDirectory.isEmpty())
 	{
-		for (const std::unique_ptr<lcModel>& Model : mModels)
+		for (const std::unique_ptr<swModel>& Model : mModels)
 		{
 			PreviousAssetSources.emplace_back(Model.get(), Model->GetAssetSourceState());
 			Model->PreserveAssetSourceDirectory(SourceDirectory, true);
@@ -1207,7 +1207,7 @@ lcResult<void> Project::Save(const QString& FileName)
 
 	const auto RestoreAssetSources = [&PreviousAssetSources]()
 	{
-		for (const std::pair<lcModel*, lcModelAssetSourceState>& Entry : PreviousAssetSources)
+		for (const std::pair<swModel*, swModelAssetSourceState>& Entry : PreviousAssetSources)
 			Entry.first->RestoreAssetSourceState(Entry.second);
 	};
 
@@ -1216,7 +1216,7 @@ lcResult<void> Project::Save(const QString& FileName)
 	if (!File.open(QIODevice::WriteOnly))
 	{
 		RestoreAssetSources();
-		return lcUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, File.errorString()));
+		return swUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, File.errorString()));
 	}
 
 	{
@@ -1228,7 +1228,7 @@ lcResult<void> Project::Save(const QString& FileName)
 		{
 			File.cancelWriting();
 			RestoreAssetSources();
-			return lcUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, tr("Could not write all model data.")));
+			return swUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, tr("Could not write all model data.")));
 		}
 	}
 
@@ -1239,7 +1239,7 @@ lcResult<void> Project::Save(const QString& FileName)
 	{
 		SetFileName(PreviousFileName);
 		RestoreAssetSources();
-		return lcUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, File.errorString()));
+		return swUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, File.errorString()));
 	}
 
 	if (!mIsPreview)
@@ -1255,25 +1255,25 @@ lcResult<void> Project::Save(const QString& FileName)
 
 	if (DirectoryChanged)
 	{
-		lcPiecesLibrary* Library = lcGetPiecesLibrary();
-		std::vector<lcPieceDataRef> LocalPieceData;
-		std::vector<lcPieceData*> ChangedPieces;
+		swPiecesLibrary* Library = swGetPiecesLibrary();
+		std::vector<swPieceDataRef> LocalPieceData;
+		std::vector<swPieceData*> ChangedPieces;
 
-		for (const std::map<std::string, lcPieceData*>::value_type& Entry : mPieceIndex)
+		for (const std::map<std::string, swPieceData*>::value_type& Entry : mPieceIndex)
 		{
-			lcPieceData* PieceData = Entry.second;
+			swPieceData* PieceData = Entry.second;
 
 			if (PieceData->IsModel())
 				continue;
 
-			LocalPieceData.push_back(lcPieceDataRef(PieceData));
+			LocalPieceData.push_back(swPieceDataRef(PieceData));
 		}
 
-		for (const lcPieceDataRef& LocalData : LocalPieceData)
+		for (const swPieceDataRef& LocalData : LocalPieceData)
 			if (Library->RemapProjectPieceData(LocalData.Get(), DestinationDirectory, mIsPreview))
 				ChangedPieces.push_back(LocalData.Get());
 
-		for (const std::unique_ptr<lcModel>& Model : mModels)
+		for (const std::unique_ptr<swModel>& Model : mModels)
 		{
 			if (!Model->HasDirectGeometry())
 				continue;
@@ -1285,16 +1285,16 @@ lcResult<void> Project::Save(const QString& FileName)
 
 		if (!ChangedPieces.empty())
 		{
-			std::vector<lcModel*> UpdatedModels;
+			std::vector<swModel*> UpdatedModels;
 
-			for (const std::unique_ptr<lcModel>& Model : mModels)
+			for (const std::unique_ptr<swModel>& Model : mModels)
 			{
 				Model->UpdatePieceData(UpdatedModels);
 				ChangedPieces.push_back(Model->GetPieceData());
 			}
 
 			Library->GetThumbnailManager()->RefreshPieces(ChangedPieces);
-			lcView::UpdateProjectViews(this);
+			swView::UpdateProjectViews(this);
 
 			if (!mIsPreview && gMainWindow && gMainWindow->GetPreviewWidget())
 				gMainWindow->GetPreviewWidget()->RefreshAfterAssetChange(ChangedPieces);
@@ -1302,24 +1302,24 @@ lcResult<void> Project::Save(const QString& FileName)
 
 	}
 
-	for (const std::unique_ptr<lcModel>& Model : mModels)
+	for (const std::unique_ptr<swModel>& Model : mModels)
 		Model->SetSaved();
 
 	mModified = false;
 
-	return lcResult<void>();
+	return swResult<void>();
 }
 
 bool Project::Save(QTextStream& Stream) const
 {
 	const bool MPD = mModels.size() > 1 || !mEmbeddedData.empty();
-	std::set<const lcModel*> WrittenModels;
-	std::set<const lcEmbeddedData*> WrittenData;
-	std::vector<const lcModel*> OriginalOrder;
+	std::set<const swModel*> WrittenModels;
+	std::set<const swEmbeddedData*> WrittenData;
+	std::vector<const swModel*> OriginalOrder;
 
-	const auto IsPresent = [this](const lcModel* Model)
+	const auto IsPresent = [this](const swModel* Model)
 	{
-		return std::any_of(mModels.begin(), mModels.end(), [Model](const std::unique_ptr<lcModel>& Entry) { return Entry.get() == Model; });
+		return std::any_of(mModels.begin(), mModels.end(), [Model](const std::unique_ptr<swModel>& Entry) { return Entry.get() == Model; });
 	};
 
 	for (const DocumentBlock& Block : mDocumentBlocks)
@@ -1331,7 +1331,7 @@ bool Project::Save(QTextStream& Stream) const
 	for (size_t Index = 0; Index < OriginalOrder.size(); Index++)
 		Reordered |= OriginalOrder[Index] != mModels[Index].get();
 
-	const auto OriginalFor = [this](const lcModel* Model) -> const DocumentBlock*
+	const auto OriginalFor = [this](const swModel* Model) -> const DocumentBlock*
 	{
 		for (const DocumentBlock& Block : mDocumentBlocks)
 			if (Block.Model == Model && !Block.DuplicateModel)
@@ -1366,7 +1366,7 @@ bool Project::Save(QTextStream& Stream) const
 				continue;
 			}
 
-			const lcModel* Model = Reordered ? mModels[NextModel++].get() : Block.Model;
+			const swModel* Model = Reordered ? mModels[NextModel++].get() : Block.Model;
 			Append(SerializeStoredModel(Model, Model->GetFileName(), OriginalFor(Model), mModels.size() > 1, false, 0), true);
 			WrittenModels.insert(Model);
 		}
@@ -1379,7 +1379,7 @@ bool Project::Save(QTextStream& Stream) const
 			Append(Block.Raw, false);
 	}
 
-	for (const std::unique_ptr<lcModel>& Model : mModels)
+	for (const std::unique_ptr<swModel>& Model : mModels)
 	{
 		if (WrittenModels.find(Model.get()) != WrittenModels.end())
 			continue;
@@ -1387,19 +1387,19 @@ bool Project::Save(QTextStream& Stream) const
 		Append(SerializeStoredModel(Model.get(), Model->GetFileName(), OriginalFor(Model.get()), MPD || !mDocumentBlocks.empty(), false, 0), true);
 	}
 
-	for (const std::shared_ptr<const lcEmbeddedData>& Data : mEmbeddedData)
+	for (const std::shared_ptr<const swEmbeddedData>& Data : mEmbeddedData)
 		if (WrittenData.find(Data.get()) == WrittenData.end())
 			Append(Data->RawBlock, true);
 
 	return WriteRaw(Stream, Output);
 }
 
-std::vector<QString> Project::GetMergedAssetDirectories(const lcModel* Model) const
+std::vector<QString> Project::GetMergedAssetDirectories(const swModel* Model) const
 {
 	if (Model->GetProject() == this)
 		return Model->GetAssetSearchDirectories();
 
-	lcModelAssetSourceState State = Model->GetAssetSourceState();
+	swModelAssetSourceState State = Model->GetAssetSourceState();
 	const QString SourceFile = Model->GetProject()->GetFileName();
 	const QString SourceDirectory = SourceFile.isEmpty() ? QString() : QFileInfo(SourceFile).absolutePath();
 
@@ -1421,19 +1421,19 @@ std::vector<QString> Project::GetMergedAssetDirectories(const lcModel* Model) co
 	return State.Directories;
 }
 
-lcResult<void> Project::ValidateMergedTextureBindings(const Project& Source, const std::map<QString, std::shared_ptr<const lcEmbeddedData>>& MergedData, const lcModel* ClipboardRoot) const
+swResult<void> Project::ValidateMergedTextureBindings(const Project& Source, const std::map<QString, std::shared_ptr<const swEmbeddedData>>& MergedData, const swModel* ClipboardRoot) const
 {
-	lcPiecesLibrary* Library = lcGetPiecesLibrary();
+	swPiecesLibrary* Library = swGetPiecesLibrary();
 
-	for (const std::unique_ptr<lcModel>& Model : Source.mModels)
+	for (const std::unique_ptr<swModel>& Model : Source.mModels)
 	{
 		if (Model.get() == ClipboardRoot)
 			continue;
 
-		std::vector<std::string> References = lcMeshLoader::GetTextureReferences(SerializeModelText(Model.get(), false, 0));
+		std::vector<std::string> References = swMeshLoader::GetTextureReferences(SerializeModelText(Model.get(), false, 0));
 
-		if (const lcMesh* Mesh = Model->GetPieceData()->GetMesh())
-			for (const lcMeshLod& Lod : Mesh->mLods)
+		if (const swMesh* Mesh = Model->GetPieceData()->GetMesh())
+			for (const swMeshLod& Lod : Mesh->mLods)
 				for (int SectionIndex = 0; SectionIndex < Lod.NumSections; SectionIndex++)
 					if (!Lod.Sections[SectionIndex].TextureName.isEmpty())
 						References.push_back(Lod.Sections[SectionIndex].TextureName.toLatin1().constData());
@@ -1443,14 +1443,14 @@ lcResult<void> Project::ValidateMergedTextureBindings(const Project& Source, con
 
 		for (const std::string& Name : References)
 		{
-			lcFileSource BeforeSource;
-			lcTextureRef Before = Library->AcquireTexture(Name.c_str(), BeforeDirectories, Source.mEmbeddedDataIndex, BeforeSource);
+			swFileSource BeforeSource;
+			swTextureRef Before = Library->AcquireTexture(Name.c_str(), BeforeDirectories, Source.mEmbeddedDataIndex, BeforeSource);
 
 			if (!Before)
 				continue;
 
-			lcFileSource AfterSource;
-			lcTextureRef After = Library->AcquireTexture(Name.c_str(), AfterDirectories, MergedData, AfterSource);
+			swFileSource AfterSource;
+			swTextureRef After = Library->AcquireTexture(Name.c_str(), AfterDirectories, MergedData, AfterSource);
 			bool Same = bool(After);
 
 			if (Same && BeforeSource.EmbeddedData && AfterSource.EmbeddedData)
@@ -1459,22 +1459,22 @@ lcResult<void> Project::ValidateMergedTextureBindings(const Project& Source, con
 				Same = BeforeSource == AfterSource;
 
 			if (!Same)
-				return lcUnexpected(tr("Merging would change texture '%1' used by model '%2'. Rename the conflicting texture before merging.").arg(QString::fromLatin1(Name.c_str()), Model->GetFileName()));
+				return swUnexpected(tr("Merging would change texture '%1' used by model '%2'. Rename the conflicting texture before merging.").arg(QString::fromLatin1(Name.c_str()), Model->GetFileName()));
 		}
 	}
 
-	return lcResult<void>();
+	return swResult<void>();
 }
 
-lcResult<void> Project::Merge(const std::vector<Project*>& Sources)
+swResult<void> Project::Merge(const std::vector<Project*>& Sources)
 {
 	return MergeInternal(Sources, nullptr);
 }
 
-lcResult<void> Project::MergeInternal(const std::vector<Project*>& Sources, const lcModel* ClipboardRoot)
+swResult<void> Project::MergeInternal(const std::vector<Project*>& Sources, const swModel* ClipboardRoot)
 {
-	lcPiecesLibrary* Library = lcGetPiecesLibrary();
-	std::map<std::string, lcPieceData*> NonModelPieces;
+	swPiecesLibrary* Library = swGetPiecesLibrary();
+	std::map<std::string, swPieceData*> NonModelPieces;
 	std::set<std::string> DestinationModelNames;
 	std::set<std::string> OriginalModelNames;
 	std::set<std::string> PlannedModelNames;
@@ -1482,12 +1482,12 @@ lcResult<void> Project::MergeInternal(const std::vector<Project*>& Sources, cons
 
 	struct ModelPlan
 	{
-		lcModel* Model;
+		swModel* Model;
 		QString FinalName;
 	};
 
 	std::vector<ModelPlan> PlannedModels;
-	std::map<QString, std::shared_ptr<const lcEmbeddedData>> MergedData = mEmbeddedDataIndex;
+	std::map<QString, std::shared_ptr<const swEmbeddedData>> MergedData = mEmbeddedDataIndex;
 
 	// Validate every incoming asset before reserving names or moving models.
 	for (const Project* Source : Sources)
@@ -1497,27 +1497,27 @@ lcResult<void> Project::MergeInternal(const std::vector<Project*>& Sources, cons
 			const auto Existing = MergedData.find(Name);
 
 			if (Existing != MergedData.end() && !SameEmbeddedData(*Existing->second, *Data))
-				return lcUnexpected(tr("Both models contain different embedded data named '%1'. Rename one before merging.").arg(Data->FileName));
+				return swUnexpected(tr("Both models contain different embedded data named '%1'. Rename one before merging.").arg(Data->FileName));
 
 			MergedData.emplace(Name, Data);
 		}
 	}
 
-	const lcResult<void> DestinationBindings = ValidateMergedTextureBindings(*this, MergedData, ClipboardRoot);
+	const swResult<void> DestinationBindings = ValidateMergedTextureBindings(*this, MergedData, ClipboardRoot);
 
 	if (!DestinationBindings)
 		return DestinationBindings;
 
 	for (const Project* Source : Sources)
 	{
-		const lcResult<void> SourceBindings = ValidateMergedTextureBindings(*Source, MergedData, ClipboardRoot);
+		const swResult<void> SourceBindings = ValidateMergedTextureBindings(*Source, MergedData, ClipboardRoot);
 
 		if (!SourceBindings)
 			return SourceBindings;
 	}
 
 
-	for (const std::map<std::string, lcPieceData*>::value_type& Entry : mPieceIndex)
+	for (const std::map<std::string, swPieceData*>::value_type& Entry : mPieceIndex)
 	{
 		if (Entry.second->IsModel())
 			DestinationModelNames.insert(Entry.first);
@@ -1525,18 +1525,18 @@ lcResult<void> Project::MergeInternal(const std::vector<Project*>& Sources, cons
 			NonModelPieces.emplace(Entry.first, Entry.second);
 	}
 
-	for (const std::unique_ptr<lcModel>& Model : mModels)
+	for (const std::unique_ptr<swModel>& Model : mModels)
 	{
-		DestinationModelNames.insert(lcPiecesLibrary::NormalizePieceDataName(Model->GetFileName().toLatin1().constData()));
+		DestinationModelNames.insert(swPiecesLibrary::NormalizePieceDataName(Model->GetFileName().toLatin1().constData()));
 
-		for (const std::unique_ptr<lcPiece>& Piece : Model->GetPieces())
+		for (const std::unique_ptr<swPiece>& Piece : Model->GetPieces())
 		{
 			if (Piece->mPieceData && !Piece->mPieceData->IsModel())
-				NonModelPieces.emplace(lcPiecesLibrary::NormalizePieceDataName(Piece->GetID().toLatin1().constData()), Piece->mPieceData.Get());
+				NonModelPieces.emplace(swPiecesLibrary::NormalizePieceDataName(Piece->GetID().toLatin1().constData()), Piece->mPieceData.Get());
 		}
 	}
 
-	const auto RegisterSourcePiece = [&NonModelPieces, &DestinationModelNames, &ConflictName](const std::string& Name, lcPieceData* PieceData)
+	const auto RegisterSourcePiece = [&NonModelPieces, &DestinationModelNames, &ConflictName](const std::string& Name, swPieceData* PieceData)
 	{
 		if (!PieceData || PieceData->IsModel())
 			return true;
@@ -1547,7 +1547,7 @@ lcResult<void> Project::MergeInternal(const std::vector<Project*>& Sources, cons
 			return false;
 		}
 
-		const std::map<std::string, lcPieceData*>::const_iterator Existing = NonModelPieces.find(Name);
+		const std::map<std::string, swPieceData*>::const_iterator Existing = NonModelPieces.find(Name);
 
 		if (Existing != NonModelPieces.end() && !CanShareMergePieceData(Existing->second, PieceData))
 		{
@@ -1562,22 +1562,22 @@ lcResult<void> Project::MergeInternal(const std::vector<Project*>& Sources, cons
 	// Validate the identities behind every piece name before changing any project.
 	for (Project* Source : Sources)
 	{
-		for (const std::map<std::string, lcPieceData*>::value_type& Entry : Source->mPieceIndex)
+		for (const std::map<std::string, swPieceData*>::value_type& Entry : Source->mPieceIndex)
 		{
 			if (!RegisterSourcePiece(Entry.first, Entry.second))
-				return lcUnexpected(tr("Both models contain different pieces named '%1'. Rename one before merging.").arg(ConflictName));
+				return swUnexpected(tr("Both models contain different pieces named '%1'. Rename one before merging.").arg(ConflictName));
 		}
 
-		for (const std::unique_ptr<lcModel>& Model : Source->mModels)
+		for (const std::unique_ptr<swModel>& Model : Source->mModels)
 		{
-			OriginalModelNames.insert(lcPiecesLibrary::NormalizePieceDataName(Model->GetFileName().toLatin1().constData()));
+			OriginalModelNames.insert(swPiecesLibrary::NormalizePieceDataName(Model->GetFileName().toLatin1().constData()));
 
-			for (const std::unique_ptr<lcPiece>& Piece : Model->GetPieces())
+			for (const std::unique_ptr<swPiece>& Piece : Model->GetPieces())
 			{
-				const std::string Name = lcPiecesLibrary::NormalizePieceDataName(Piece->GetID().toLatin1().constData());
+				const std::string Name = swPiecesLibrary::NormalizePieceDataName(Piece->GetID().toLatin1().constData());
 
 				if (!RegisterSourcePiece(Name, Piece->mPieceData.Get()))
-					return lcUnexpected(tr("Both models contain different pieces named '%1'. Rename one before merging.").arg(ConflictName));
+					return swUnexpected(tr("Both models contain different pieces named '%1'. Rename one before merging.").arg(ConflictName));
 			}
 		}
 	}
@@ -1585,7 +1585,7 @@ lcResult<void> Project::MergeInternal(const std::vector<Project*>& Sources, cons
 	// Pick final model names against the complete set of incoming piece names.
 	for (Project* Source : Sources)
 	{
-		for (const std::unique_ptr<lcModel>& Model : Source->mModels)
+		for (const std::unique_ptr<swModel>& Model : Source->mModels)
 		{
 			const QString OriginalName = Model->GetFileName();
 			QString FinalName = OriginalName;
@@ -1593,7 +1593,7 @@ lcResult<void> Project::MergeInternal(const std::vector<Project*>& Sources, cons
 
 			for (;;)
 			{
-				const std::string Name = lcPiecesLibrary::NormalizePieceDataName(FinalName.toLatin1().constData());
+				const std::string Name = swPiecesLibrary::NormalizePieceDataName(FinalName.toLatin1().constData());
 				const bool ReservedOriginal = FinalName != OriginalName && OriginalModelNames.find(Name) != OriginalModelNames.end();
 				const bool Duplicate = DestinationModelNames.find(Name) != DestinationModelNames.end() || NonModelPieces.find(Name) != NonModelPieces.end() ||
 					PlannedModelNames.find(Name) != PlannedModelNames.end() || ReservedOriginal ||
@@ -1608,7 +1608,7 @@ lcResult<void> Project::MergeInternal(const std::vector<Project*>& Sources, cons
 
 				RenameIndex++;
 				const QString Prefix = RenameIndex == 1 ? tr("Merged ") : tr("Merged %1 ").arg(RenameIndex);
-				FinalName = QString::fromLatin1((Prefix + OriginalName).toLatin1().left(LC_PIECE_NAME_LEN - 1));
+				FinalName = QString::fromLatin1((Prefix + OriginalName).toLatin1().left(SW_PIECE_NAME_LEN - 1));
 			}
 		}
 	}
@@ -1627,7 +1627,7 @@ lcResult<void> Project::MergeInternal(const std::vector<Project*>& Sources, cons
 			for (std::vector<const ModelPlan*>::reverse_iterator It = AppliedRenames.rbegin(); It != AppliedRenames.rend(); It++)
 				Library->RenameModelPieceData((*It)->Model->GetPieceData(), (*It)->Model->GetFileName().toLatin1().constData());
 
-			return lcUnexpected(tr("Could not reserve submodel name '%1'.").arg(Planned.FinalName));
+			return swUnexpected(tr("Could not reserve submodel name '%1'.").arg(Planned.FinalName));
 		}
 
 		AppliedRenames.push_back(&Planned);
@@ -1639,30 +1639,30 @@ lcResult<void> Project::MergeInternal(const std::vector<Project*>& Sources, cons
 
 	for (Project* Source : Sources)
 	{
-		std::vector<lcModelPieceRename> Renames;
-		std::vector<lcModel*> ImportedModels;
+		std::vector<swModelPieceRename> Renames;
+		std::vector<swModel*> ImportedModels;
 
-		for (const std::unique_ptr<lcModel>& Model : Source->mModels)
+		for (const std::unique_ptr<swModel>& Model : Source->mModels)
 		{
-			for (const std::unique_ptr<lcPiece>& Piece : Model->GetPieces())
+			for (const std::unique_ptr<swPiece>& Piece : Model->GetPieces())
 			{
-				lcPieceData* Incoming = Piece->mPieceData.Get();
+				swPieceData* Incoming = Piece->mPieceData.Get();
 
 				if (!Incoming || Incoming->IsModel())
 					continue;
 
-				const std::string Name = lcPiecesLibrary::NormalizePieceDataName(Piece->GetID().toLatin1().constData());
-				lcPieceData* Existing = FindPieceData(Name);
+				const std::string Name = swPiecesLibrary::NormalizePieceDataName(Piece->GetID().toLatin1().constData());
+				swPieceData* Existing = FindPieceData(Name);
 
 				if (!Existing || Existing == Incoming || !CanShareMergePieceData(Existing, Incoming))
 					continue;
 
 				const QString PieceId = Piece->GetID();
-				Piece->SetPieceData(lcPieceDataRef(Existing), PieceId, false, false);
+				Piece->SetPieceData(swPieceDataRef(Existing), PieceId, false, false);
 			}
 		}
 
-		for (std::unique_ptr<lcModel>& Model : Source->mModels)
+		for (std::unique_ptr<swModel>& Model : Source->mModels)
 		{
 			const ModelPlan& Planned = PlannedModels[PlanIndex++];
 
@@ -1678,7 +1678,7 @@ lcResult<void> Project::MergeInternal(const std::vector<Project*>& Sources, cons
 		}
 
 		// Only incoming histories used these original names for the incoming models.
-		for (lcModel* Model : ImportedModels)
+		for (swModel* Model : ImportedModels)
 			Model->RenamePieces(Renames);
 
 		Library->TransferProjectPieceData(Source, this);
@@ -1697,22 +1697,22 @@ lcResult<void> Project::MergeInternal(const std::vector<Project*>& Sources, cons
 	if (!Sources.empty())
 		mModified = true;
 
-	return lcResult<void>();
+	return swResult<void>();
 }
 
 bool Project::ImportLDD(const QString& FileName)
 {
-	lcZipFile ZipFile;
+	swZipFile ZipFile;
 
 	if (!ZipFile.OpenRead(FileName))
 		return false;
 
-	lcMemFile XMLFile;
+	swMemFile XMLFile;
 	if (!ZipFile.ExtractFile("IMAGE100.LXFML", XMLFile))
 		return false;
 
 	QString ModelName = QFileInfo(FileName).completeBaseName();
-	std::unique_ptr<lcModel> NewModel(new lcModel(ModelName, this, false));
+	std::unique_ptr<swModel> NewModel(new swModel(ModelName, this, false));
 
 	if (!NewModel->LoadLDD(QString::fromUtf8((const char*)XMLFile.mBuffer)))
 		return false;
@@ -1725,13 +1725,13 @@ bool Project::ImportLDD(const QString& FileName)
 	mEmbeddedDataIndex.clear();
 	mModels.emplace_back(std::move(NewModel));
 
-	for (const std::unique_ptr<lcModel>& Model : mModels)
+	for (const std::unique_ptr<swModel>& Model : mModels)
 		Model->CreatePieceData(this);
 
-	std::vector<lcModel*> UpdatedModels;
+	std::vector<swModel*> UpdatedModels;
 	UpdatedModels.reserve(mModels.size());
 
-	for (const std::unique_ptr<lcModel>& Model : mModels)
+	for (const std::unique_ptr<swModel>& Model : mModels)
 		Model->UpdatePieceData(UpdatedModels);
 
 	mModified = false;
@@ -1739,12 +1739,12 @@ bool Project::ImportLDD(const QString& FileName)
 	return true;
 }
 
-bool Project::ImportInventory(const std::vector<lcSetInventoryItem>& SetInventory, const QString& Name, const QString& Description)
+bool Project::ImportInventory(const std::vector<swSetInventoryItem>& SetInventory, const QString& Name, const QString& Description)
 {
 	if (SetInventory.empty())
 		return false;
 
-	std::unique_ptr<lcModel> NewModel(new lcModel(Name, this, false));
+	std::unique_ptr<swModel> NewModel(new swModel(Name, this, false));
 
 	if (!NewModel->LoadInventory(SetInventory))
 		return false;
@@ -1758,13 +1758,13 @@ bool Project::ImportInventory(const std::vector<lcSetInventoryItem>& SetInventor
 	mEmbeddedDataIndex.clear();
 	mModels.emplace_back(std::move(NewModel));
 
-	for (const std::unique_ptr<lcModel>& Model : mModels)
+	for (const std::unique_ptr<swModel>& Model : mModels)
 		Model->CreatePieceData(this);
 
-	std::vector<lcModel*> UpdatedModels;
+	std::vector<swModel*> UpdatedModels;
 	UpdatedModels.reserve(mModels.size());
 
-	for (const std::unique_ptr<lcModel>& Model : mModels)
+	for (const std::unique_ptr<swModel>& Model : mModels)
 		Model->UpdatePieceData(UpdatedModels);
 
 	mModified = false;
@@ -1772,41 +1772,41 @@ bool Project::ImportInventory(const std::vector<lcSetInventoryItem>& SetInventor
 	return true;
 }
 
-std::vector<lcModelPartsEntry> Project::GetModelParts()
+std::vector<swModelPartsEntry> Project::GetModelParts()
 {
-	std::vector<lcModelPartsEntry> ModelParts;
+	std::vector<swModelPartsEntry> ModelParts;
 
 	if (mModels.empty())
 		return ModelParts;
 
 	mModels[0]->WaitForAssets();
 
-	struct lcScopedModelSteps
+	struct swScopedModelSteps
 	{
-		std::vector<std::pair<lcModel*, bool>> States;
+		std::vector<std::pair<swModel*, bool>> States;
 
-		~lcScopedModelSteps()
+		~swScopedModelSteps()
 		{
-			for (const std::pair<lcModel*, bool>& State : States)
+			for (const std::pair<swModel*, bool>& State : States)
 				State.first->SetActive(State.second);
 		}
 	};
 
 	// Export completed geometry without changing which models are being edited.
-	lcScopedModelSteps ModelSteps;
+	swScopedModelSteps ModelSteps;
 	ModelSteps.States.reserve(mModels.size());
 
-	for (const std::unique_ptr<lcModel>& Model : mModels)
+	for (const std::unique_ptr<swModel>& Model : mModels)
 	{
 		ModelSteps.States.emplace_back(Model.get(), Model->IsActive());
-		Model->CalculateStep(LC_STEP_MAX);
+		Model->CalculateStep(SW_STEP_MAX);
 	}
 
-	mModels[0]->GetModelParts(lcMatrix44Identity(), gDefaultColor, ModelParts);
+	mModels[0]->GetModelParts(swMatrix44Identity(), gDefaultColor, ModelParts);
 
-	ModelParts.erase(std::remove_if(ModelParts.begin(), ModelParts.end(), [](const lcModelPartsEntry& ModelPart)
+	ModelParts.erase(std::remove_if(ModelParts.begin(), ModelParts.end(), [](const swModelPartsEntry& ModelPart)
 	{
-		return ModelPart.PieceData->mState != lcAssetState::Loaded ||
+		return ModelPart.PieceData->mState != swAssetState::Loaded ||
 			(ModelPart.PieceData->GetSynthInfo() && !ModelPart.Mesh) ||
 			(!ModelPart.Mesh && !ModelPart.PieceData->GetMesh());
 	}), ModelParts.end());
@@ -1814,13 +1814,13 @@ std::vector<lcModelPartsEntry> Project::GetModelParts()
 	return ModelParts;
 }
 
-std::vector<lcPieceDataRef> Project::GetRequiredPieceData() const
+std::vector<swPieceDataRef> Project::GetRequiredPieceData() const
 {
-	std::vector<lcPieceDataRef> RequiredPieceData;
+	std::vector<swPieceDataRef> RequiredPieceData;
 
-	for (const std::unique_ptr<lcModel>& Model : mModels)
+	for (const std::unique_ptr<swModel>& Model : mModels)
 	{
-		std::vector<lcPieceDataRef> ModelPieceData = Model->GetRequiredPieceData();
+		std::vector<swPieceDataRef> ModelPieceData = Model->GetRequiredPieceData();
 		RequiredPieceData.insert(RequiredPieceData.end(), ModelPieceData.begin(), ModelPieceData.end());
 	}
 
@@ -1830,16 +1830,16 @@ std::vector<lcPieceDataRef> Project::GetRequiredPieceData() const
 	return RequiredPieceData;
 }
 
-std::vector<lcPiece*> Project::GetRequiredSynthPieces() const
+std::vector<swPiece*> Project::GetRequiredSynthPieces() const
 {
-	std::vector<lcPiece*> Required;
-	std::unordered_set<lcPiece*> Seen;
+	std::vector<swPiece*> Required;
+	std::unordered_set<swPiece*> Seen;
 
-	for (const std::unique_ptr<lcModel>& Model : mModels)
+	for (const std::unique_ptr<swModel>& Model : mModels)
 	{
-		const std::vector<lcPiece*> ModelRequired = Model->GetRequiredSynthPieces();
+		const std::vector<swPiece*> ModelRequired = Model->GetRequiredSynthPieces();
 
-		for (lcPiece* Piece : ModelRequired)
+		for (swPiece* Piece : ModelRequired)
 			if (Seen.insert(Piece).second)
 				Required.push_back(Piece);
 	}
@@ -1847,28 +1847,28 @@ std::vector<lcPiece*> Project::GetRequiredSynthPieces() const
 	return Required;
 }
 
-lcResult<void> Project::EnsureAssetsReady() const
+swResult<void> Project::EnsureAssetsReady() const
 {
-	const lcModel* Model = GetMainModel();
+	const swModel* Model = GetMainModel();
 
-	return Model ? Model->EnsureAssetsReady() : lcResult<void>();
+	return Model ? Model->EnsureAssetsReady() : swResult<void>();
 }
 
-lcResult<QByteArray> Project::SerializeModel(const lcModel* Root, bool SelectedOnly, lcStep LastStep) const
+swResult<QByteArray> Project::SerializeModel(const swModel* Root, bool SelectedOnly, swStep LastStep) const
 {
 	struct ExportEntry
 	{
-		const lcModel* Model;
+		const swModel* Model;
 		QString Name;
 		bool SelectedOnly;
 	};
 
 	std::vector<ExportEntry> Models;
-	std::map<QString, const lcModel*> Names;
-	std::vector<std::shared_ptr<const lcEmbeddedData>> Assets;
-	std::map<QString, std::shared_ptr<const lcEmbeddedData>> AssetLookup;
+	std::map<QString, const swModel*> Names;
+	std::vector<std::shared_ptr<const swEmbeddedData>> Assets;
+	std::map<QString, std::shared_ptr<const swEmbeddedData>> AssetLookup;
 
-	std::function<lcResult<void>(const lcModel*, const QString&, bool)> Collect = [&](const lcModel* Model, const QString& Name, bool FilterSelection) -> lcResult<void>
+	std::function<swResult<void>(const swModel*, const QString&, bool)> Collect = [&](const swModel* Model, const QString& Name, bool FilterSelection) -> swResult<void>
 	{
 		const QString Key = NormalizeEmbeddedDataName(Name);
 		const auto Existing = Names.find(Key);
@@ -1876,21 +1876,21 @@ lcResult<QByteArray> Project::SerializeModel(const lcModel* Root, bool SelectedO
 		if (Existing != Names.end())
 		{
 			if (Existing->second != Model)
-				return lcUnexpected(tr("Cannot export different submodels named '%1'.").arg(Name));
+				return swUnexpected(tr("Cannot export different submodels named '%1'.").arg(Name));
 
-			return lcResult<void>();
+			return swResult<void>();
 		}
 
 		Names.emplace(Key, Model);
 		Models.push_back({ Model, Name, FilterSelection });
 
-		for (const std::unique_ptr<lcPiece>& Piece : Model->GetPieces())
+		for (const std::unique_ptr<swPiece>& Piece : Model->GetPieces())
 		{
 			if ((FilterSelection && !Piece->IsSelected()) || (LastStep && Piece->GetStepShow() > LastStep))
 				continue;
 
-			const lcPieceData* PieceData = Piece->mPieceData.Get();
-			const lcModel* Child = nullptr;
+			const swPieceData* PieceData = Piece->mPieceData.Get();
+			const swModel* Child = nullptr;
 
 			if (PieceData && PieceData->IsModel())
 				Child = PieceData->GetModel();
@@ -1899,20 +1899,20 @@ lcResult<QByteArray> Project::SerializeModel(const lcModel* Root, bool SelectedO
 
 			if (Child)
 			{
-				const lcResult<void> Result = Collect(Child, Piece->GetID(), false);
+				const swResult<void> Result = Collect(Child, Piece->GetID(), false);
 
 				if (!Result)
 					return Result;
 			}
 		}
 
-		return lcResult<void>();
+		return swResult<void>();
 	};
 
-	const lcResult<void> Collected = Collect(Root, Root->GetFileName(), SelectedOnly);
+	const swResult<void> Collected = Collect(Root, Root->GetFileName(), SelectedOnly);
 
 	if (!Collected)
-		return lcUnexpected(Collected.error());
+		return swUnexpected(Collected.error());
 
 	// A complete model export can retain the original document layout too.
 	bool WholeProject = !SelectedOnly && !LastStep && Root == GetMainModel() && Models.size() == mModels.size();
@@ -1926,7 +1926,7 @@ lcResult<QByteArray> Project::SerializeModel(const lcModel* Root, bool SelectedO
 		QTextStream Stream(&Bytes, QIODevice::WriteOnly);
 
 		if (!Save(Stream))
-			return lcUnexpected(tr("Could not serialize all model data."));
+			return swUnexpected(tr("Could not serialize all model data."));
 
 		Stream.flush();
 		return Bytes;
@@ -1946,7 +1946,7 @@ lcResult<QByteArray> Project::SerializeModel(const lcModel* Root, bool SelectedO
 			Owners.push_back(Owner);
 
 		std::set<QString>& Required = RequiredNames[Owner];
-		const std::vector<std::string> References = lcMeshLoader::GetTextureReferences(SerializeModelText(Entry.Model, Entry.SelectedOnly, LastStep));
+		const std::vector<std::string> References = swMeshLoader::GetTextureReferences(SerializeModelText(Entry.Model, Entry.SelectedOnly, LastStep));
 
 		for (const std::string& Name : References)
 		{
@@ -1955,7 +1955,7 @@ lcResult<QByteArray> Project::SerializeModel(const lcModel* Root, bool SelectedO
 
 			for (const QString& Candidate : Candidates)
 			{
-				const std::shared_ptr<const lcEmbeddedData> Data = Owner->FindEmbeddedData(Candidate);
+				const std::shared_ptr<const swEmbeddedData> Data = Owner->FindEmbeddedData(Candidate);
 
 				if (!Data)
 					continue;
@@ -1964,7 +1964,7 @@ lcResult<QByteArray> Project::SerializeModel(const lcModel* Root, bool SelectedO
 				const auto Existing = AssetLookup.find(Key);
 
 				if (Existing != AssetLookup.end() && !SameEmbeddedData(*Existing->second, *Data))
-					return lcUnexpected(tr("Cannot export different embedded data named '%1'.").arg(Data->FileName));
+					return swUnexpected(tr("Cannot export different embedded data named '%1'.").arg(Data->FileName));
 
 				AssetLookup.emplace(Key, Data);
 				Required.insert(Key);
@@ -1973,7 +1973,7 @@ lcResult<QByteArray> Project::SerializeModel(const lcModel* Root, bool SelectedO
 	}
 
 	for (const Project* Owner : Owners)
-		for (const std::shared_ptr<const lcEmbeddedData>& Data : Owner->mEmbeddedData)
+		for (const std::shared_ptr<const swEmbeddedData>& Data : Owner->mEmbeddedData)
 			if (RequiredNames[Owner].find(NormalizeEmbeddedDataName(Data->FileName)) != RequiredNames[Owner].end())
 				Assets.push_back(Data);
 
@@ -2003,7 +2003,7 @@ lcResult<QByteArray> Project::SerializeModel(const lcModel* Root, bool SelectedO
 		Append(SerializeStoredModel(Entry.Model, Entry.Name, Original, MPD, Entry.SelectedOnly, LastStep));
 	}
 
-	for (const std::shared_ptr<const lcEmbeddedData>& Data : Assets)
+	for (const std::shared_ptr<const swEmbeddedData>& Data : Assets)
 		Append(Data->RawBlock);
 
 	if (SelectedOnly)
@@ -2012,11 +2012,11 @@ lcResult<QByteArray> Project::SerializeModel(const lcModel* Root, bool SelectedO
 	return Output;
 }
 
-lcResult<lcModel*> Project::ImportClipboard(const QByteArray& FileData)
+swResult<swModel*> Project::ImportClipboard(const QByteArray& FileData)
 {
 	Project Source(mIsPreview);
 	Source.mModels.clear();
-	lcGetPiecesLibrary()->ReleaseProjectPieceData(&Source);
+	swGetPiecesLibrary()->ReleaseProjectPieceData(&Source);
 	Source.SetDeferModelMeshRequests(true);
 	Source.mFileName = mFileName;
 	const QByteArray Marker("0 !LEOCAD CLIPBOARD PROJECT ");
@@ -2025,31 +2025,31 @@ lcResult<lcModel*> Project::ImportClipboard(const QByteArray& FileData)
 	Source.LoadLDrawDocument(FileData, this, SameProject);
 
 	if (Source.mModels.empty())
-		return lcUnexpected(tr("Clipboard contains no model."));
+		return swUnexpected(tr("Clipboard contains no model."));
 
-	lcModel* Root = Source.GetMainModel();
+	swModel* Root = Source.GetMainModel();
 
-	for (const std::unique_ptr<lcModel>& Model : Source.mModels)
+	for (const std::unique_ptr<swModel>& Model : Source.mModels)
 		Model->QueueMeshBuild();
 
 	if (Root->GetPieces().empty())
-		return static_cast<lcModel*>(nullptr);
+		return static_cast<swModel*>(nullptr);
 
 	if (SameProject)
 	{
-		std::set<const lcModel*> Reachable;
-		std::function<void(const lcModel*)> Collect = [&](const lcModel* Model)
+		std::set<const swModel*> Reachable;
+		std::function<void(const swModel*)> Collect = [&](const swModel* Model)
 		{
 			if (!Reachable.insert(Model).second)
 				return;
 
-			for (const std::unique_ptr<lcPiece>& Piece : Model->GetPieces())
+			for (const std::unique_ptr<swPiece>& Piece : Model->GetPieces())
 				if (Piece->mPieceData->IsModel() && Piece->mPieceData->GetModel()->GetProject() == &Source)
 					Collect(Piece->mPieceData->GetModel());
 		};
 		Collect(Root);
 
-		Source.mModels.erase(std::remove_if(Source.mModels.begin(), Source.mModels.end(), [&Reachable](const std::unique_ptr<lcModel>& Model)
+		Source.mModels.erase(std::remove_if(Source.mModels.begin(), Source.mModels.end(), [&Reachable](const std::unique_ptr<swModel>& Model)
 		{
 			return Reachable.find(Model.get()) == Reachable.end();
 		}), Source.mModels.end());
@@ -2058,12 +2058,12 @@ lcResult<lcModel*> Project::ImportClipboard(const QByteArray& FileData)
 		// for definitions that were missing and therefore still need importing.
 		std::set<QString> Required;
 
-		for (const std::unique_ptr<lcModel>& Model : Source.mModels)
+		for (const std::unique_ptr<swModel>& Model : Source.mModels)
 		{
 			if (Model.get() == Root)
 				continue;
 
-			for (const std::string& Name : lcMeshLoader::GetTextureReferences(SerializeModelText(Model.get(), false, 0)))
+			for (const std::string& Name : swMeshLoader::GetTextureReferences(SerializeModelText(Model.get(), false, 0)))
 			{
 				const QString Bare = QString::fromLatin1(Name.c_str()) + QLatin1String(".png");
 				Required.insert(NormalizeEmbeddedDataName(Bare));
@@ -2071,7 +2071,7 @@ lcResult<lcModel*> Project::ImportClipboard(const QByteArray& FileData)
 			}
 		}
 
-		Source.mEmbeddedData.erase(std::remove_if(Source.mEmbeddedData.begin(), Source.mEmbeddedData.end(), [&Required](const std::shared_ptr<const lcEmbeddedData>& Data)
+		Source.mEmbeddedData.erase(std::remove_if(Source.mEmbeddedData.begin(), Source.mEmbeddedData.end(), [&Required](const std::shared_ptr<const swEmbeddedData>& Data)
 		{
 			return Required.find(NormalizeEmbeddedDataName(Data->FileName)) == Required.end();
 		}), Source.mEmbeddedData.end());
@@ -2085,48 +2085,48 @@ lcResult<lcModel*> Project::ImportClipboard(const QByteArray& FileData)
 
 	// Clipboard formatting is generated; only retain the actual assets and submodels.
 	Source.mDocumentBlocks.clear();
-	const lcResult<void> Result = MergeInternal({ &Source }, Root);
+	const swResult<void> Result = MergeInternal({ &Source }, Root);
 
 	if (!Result)
-		return lcUnexpected(Result.error());
+		return swUnexpected(Result.error());
 
-	const auto Entry = std::find_if(mModels.begin(), mModels.end(), [Root](const std::unique_ptr<lcModel>& Model) { return Model.get() == Root; });
-	std::unique_ptr<lcModel> Wrapper = std::move(*Entry);
+	const auto Entry = std::find_if(mModels.begin(), mModels.end(), [Root](const std::unique_ptr<swModel>& Model) { return Model.get() == Root; });
+	std::unique_ptr<swModel> Wrapper = std::move(*Entry);
 	mModels.erase(Entry);
 
 	return Wrapper.release();
 }
 
-lcResult<void> Project::ExportCurrentStep(const QString& FileName)
+swResult<void> Project::ExportCurrentStep(const QString& FileName)
 {
-	const lcModel* Model = lcGetActiveModel();
-	const lcResult<QByteArray> Bytes = SerializeModel(Model, false, Model->GetCurrentStep());
+	const swModel* Model = swGetActiveModel();
+	const swResult<QByteArray> Bytes = SerializeModel(Model, false, Model->GetCurrentStep());
 
 	if (!Bytes)
-		return lcUnexpected(Bytes.error());
+		return swUnexpected(Bytes.error());
 
 	QSaveFile File(FileName);
 
 	if (!File.open(QIODevice::WriteOnly) || File.write(Bytes.value()) != Bytes.value().size() || !File.commit())
-		return lcUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, File.errorString()));
+		return swUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, File.errorString()));
 
-	lcSetProfileString(LC_PROFILE_PROJECTS_PATH, QFileInfo(FileName).absolutePath());
-	return lcResult<void>();
+	swSetProfileString(SW_PROFILE_PROJECTS_PATH, QFileInfo(FileName).absolutePath());
+	return swResult<void>();
 }
 
-lcResult<void> Project::ExportModel(const QString& FileName, lcModel* Model) const
+swResult<void> Project::ExportModel(const QString& FileName, swModel* Model) const
 {
-	const lcResult<QByteArray> Bytes = SerializeModel(Model, false, 0);
+	const swResult<QByteArray> Bytes = SerializeModel(Model, false, 0);
 
 	if (!Bytes)
-		return lcUnexpected(Bytes.error());
+		return swUnexpected(Bytes.error());
 
 	QSaveFile File(FileName);
 
 	if (!File.open(QIODevice::WriteOnly) || File.write(Bytes.value()) != Bytes.value().size() || !File.commit())
-		return lcUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, File.errorString()));
+		return swUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, File.errorString()));
 
-	return lcResult<void>();
+	return swResult<void>();
 }
 
 QString Project::MakeExportNameFragment(const QString& Name)
@@ -2206,19 +2206,19 @@ QString Project::GetExportFileName(const QString& FileName, const QString& Defau
 	return QFileDialog::getSaveFileName(gMainWindow, DialogTitle, SaveFileName, DialogFilter);
 }
 
-lcResult<void> Project::Export3DStudio(const QString& FileName)
+swResult<void> Project::Export3DStudio(const QString& FileName)
 {
-	const std::vector<lcModelPartsEntry> ModelParts = GetModelParts();
+	const std::vector<swModelPartsEntry> ModelParts = GetModelParts();
 
 	QString SaveFileName = GetExportFileName(FileName, "3ds", tr("Export 3D Studio"), tr("3DS Files (*.3ds);;All Files (*.*)"));
 
 	if (SaveFileName.isEmpty())
-		return lcUnexpected(QString());
+		return swUnexpected(QString());
 
-	lcDiskFile File(SaveFileName);
+	swDiskFile File(SaveFileName);
 
 	if (!File.Open(QIODevice::WriteOnly))
-		return lcUnexpected(tr("Could not open file '%1' for writing.").arg(SaveFileName));
+		return swUnexpected(tr("Could not open file '%1' for writing.").arg(SaveFileName));
 
 	long M3DStart = File.GetPosition();
 	File.WriteU16(0x4D4D); // CHK_M3DMAGIC
@@ -2241,7 +2241,7 @@ lcResult<void> Project::Export3DStudio(const QString& FileName)
 
 	for (size_t ColorIdx = 0; ColorIdx < gColorList.size(); ColorIdx++)
 	{
-		lcColor* Color = &gColorList[ColorIdx];
+		swColor* Color = &gColorList[ColorIdx];
 
 		snprintf(MaterialName, sizeof(MaterialName), "Material%03d", (int)ColorIdx);
 
@@ -2371,7 +2371,7 @@ lcResult<void> Project::Export3DStudio(const QString& FileName)
 		File.Seek(MaterialEnd, SEEK_SET);
 	}
 
-	const lcModelProperties& Properties = mModels[0]->GetProperties();
+	const swModelProperties& Properties = mModels[0]->GetProperties();
 
 	File.WriteU16(0x0100); // CHK_MASTER_SCALE
 	File.WriteU32(10);
@@ -2424,8 +2424,8 @@ lcResult<void> Project::Export3DStudio(const QString& FileName)
 	File.WriteU16(0x0010); // CHK_COLOR_F
 	File.WriteU32(18);
 
-	const lcPreferences& Preferences = lcGetPreferences();
-	lcVector3 BackgroundSolidColor = lcVector3FromColor(Preferences.mBackgroundSolidColor);
+	const swPreferences& Preferences = swGetPreferences();
+	swVector3 BackgroundSolidColor = swVector3FromColor(Preferences.mBackgroundSolidColor);
 
 	File.WriteFloats(BackgroundSolidColor.GetFloats(), 3);
 
@@ -2442,8 +2442,8 @@ lcResult<void> Project::Export3DStudio(const QString& FileName)
 	File.WriteU16(0x0010); // CHK_COLOR_F
 	File.WriteU32(18);
 
-	const lcVector3 BackgroundGradientColor1 = lcVector3FromColor(Preferences.mBackgroundGradientColorTop);
-	const lcVector3 BackgroundGradientColor2 = lcVector3FromColor(Preferences.mBackgroundGradientColorBottom);
+	const swVector3 BackgroundGradientColor1 = swVector3FromColor(Preferences.mBackgroundGradientColorTop);
+	const swVector3 BackgroundGradientColor2 = swVector3FromColor(Preferences.mBackgroundGradientColorBottom);
 
 	File.WriteFloats(BackgroundGradientColor1.GetFloats(), 3);
 
@@ -2484,9 +2484,9 @@ lcResult<void> Project::Export3DStudio(const QString& FileName)
 	}
 
 	int NumPieces = 0;
-	for (const lcModelPartsEntry& ModelPart : ModelParts)
+	for (const swModelPartsEntry& ModelPart : ModelParts)
 	{
-		lcMesh* Mesh = !ModelPart.Mesh ? ModelPart.PieceData->GetMesh() : ModelPart.Mesh;
+		swMesh* Mesh = !ModelPart.Mesh ? ModelPart.PieceData->GetMesh() : ModelPart.Mesh;
 
 		if (!Mesh || Mesh->mIndexType == GL_UNSIGNED_INT)
 			continue;
@@ -2509,12 +2509,12 @@ lcResult<void> Project::Export3DStudio(const QString& FileName)
 
 		File.WriteU16(Mesh->mNumVertices);
 
-		lcVertex* Verts = (lcVertex*)Mesh->mVertexData;
-		const lcMatrix44& ModelWorld = ModelPart.WorldMatrix;
+		swVertex* Verts = (swVertex*)Mesh->mVertexData;
+		const swMatrix44& ModelWorld = ModelPart.WorldMatrix;
 
 		for (int VertexIdx = 0; VertexIdx < Mesh->mNumVertices; VertexIdx++)
 		{
-			lcVector3 Pos = lcMul31(Verts[VertexIdx].Position, ModelWorld);
+			swVector3 Pos = swMul31(Verts[VertexIdx].Position, ModelWorld);
 			File.WriteFloat(Pos[0]);
 			File.WriteFloat(Pos[1]);
 			File.WriteFloat(Pos[2]);
@@ -2523,7 +2523,7 @@ lcResult<void> Project::Export3DStudio(const QString& FileName)
 		File.WriteU16(0x4160); // CHK_MESH_MATRIX
 		File.WriteU32(54);
 
-		lcMatrix44 Matrix = lcMatrix44Identity();
+		swMatrix44 Matrix = swMatrix44Identity();
 		File.WriteFloats(Matrix[0].GetFloats(), 3);
 		File.WriteFloats(Matrix[1].GetFloats(), 3);
 		File.WriteFloats(Matrix[2].GetFloats(), 3);
@@ -2540,11 +2540,11 @@ lcResult<void> Project::Export3DStudio(const QString& FileName)
 
 		int NumTriangles = 0;
 
-		for (int SectionIdx = 0; SectionIdx < Mesh->mLods[LC_MESH_LOD_HIGH].NumSections; SectionIdx++)
+		for (int SectionIdx = 0; SectionIdx < Mesh->mLods[SW_MESH_LOD_HIGH].NumSections; SectionIdx++)
 		{
-			lcMeshSection* Section = &Mesh->mLods[LC_MESH_LOD_HIGH].Sections[SectionIdx];
+			swMeshSection* Section = &Mesh->mLods[SW_MESH_LOD_HIGH].Sections[SectionIdx];
 
-			if (Section->PrimitiveType != LC_MESH_TRIANGLES && Section->PrimitiveType != LC_MESH_TEXTURED_TRIANGLES)
+			if (Section->PrimitiveType != SW_MESH_TRIANGLES && Section->PrimitiveType != SW_MESH_TEXTURED_TRIANGLES)
 				continue;
 
 			NumTriangles += Section->DrawCount / 3;
@@ -2552,11 +2552,11 @@ lcResult<void> Project::Export3DStudio(const QString& FileName)
 
 		File.WriteU16(NumTriangles);
 
-		for (int SectionIdx = 0; SectionIdx < Mesh->mLods[LC_MESH_LOD_HIGH].NumSections; SectionIdx++)
+		for (int SectionIdx = 0; SectionIdx < Mesh->mLods[SW_MESH_LOD_HIGH].NumSections; SectionIdx++)
 		{
-			lcMeshSection* Section = &Mesh->mLods[LC_MESH_LOD_HIGH].Sections[SectionIdx];
+			swMeshSection* Section = &Mesh->mLods[SW_MESH_LOD_HIGH].Sections[SectionIdx];
 
-			if (Section->PrimitiveType != LC_MESH_TRIANGLES && Section->PrimitiveType != LC_MESH_TEXTURED_TRIANGLES)
+			if (Section->PrimitiveType != SW_MESH_TRIANGLES && Section->PrimitiveType != SW_MESH_TEXTURED_TRIANGLES)
 				continue;
 
 			quint16* Indices = (quint16*)Mesh->mIndexData + Section->DrawOffset / sizeof(quint16);
@@ -2572,11 +2572,11 @@ lcResult<void> Project::Export3DStudio(const QString& FileName)
 
 		NumTriangles = 0;
 
-		for (int SectionIdx = 0; SectionIdx < Mesh->mLods[LC_MESH_LOD_HIGH].NumSections; SectionIdx++)
+		for (int SectionIdx = 0; SectionIdx < Mesh->mLods[SW_MESH_LOD_HIGH].NumSections; SectionIdx++)
 		{
-			lcMeshSection* Section = &Mesh->mLods[LC_MESH_LOD_HIGH].Sections[SectionIdx];
+			swMeshSection* Section = &Mesh->mLods[SW_MESH_LOD_HIGH].Sections[SectionIdx];
 
-			if (Section->PrimitiveType != LC_MESH_TRIANGLES && Section->PrimitiveType != LC_MESH_TEXTURED_TRIANGLES)
+			if (Section->PrimitiveType != SW_MESH_TRIANGLES && Section->PrimitiveType != SW_MESH_TEXTURED_TRIANGLES)
 				continue;
 
 			int MaterialIndex = Section->ColorIndex == gDefaultColor ? ModelPart.ColorIndex : Section->ColorIndex;
@@ -2635,40 +2635,40 @@ lcResult<void> Project::Export3DStudio(const QString& FileName)
 	File.WriteU32(M3DEnd - M3DStart);
 	File.Seek(M3DEnd, SEEK_SET);
 
-	return lcResult<void>();
+	return swResult<void>();
 }
 
-lcResult<void> Project::ExportBrickLink()
+swResult<void> Project::ExportBrickLink()
 {
-	lcPartsList PartsList;
+	swPartsList PartsList;
 
 	if (!mModels.empty())
 		mModels[0]->GetPartsList(gDefaultColor, true, false, PartsList);
 
 	if (PartsList.empty())
-		return lcUnexpected(tr("Nothing to export."));
+		return swUnexpected(tr("Nothing to export."));
 
 	QString SaveFileName = GetExportFileName(QString(), "xml", tr("Export BrickLink"), tr("XML Files (*.xml);;All Files (*.*)"));
 
 	if (SaveFileName.isEmpty())
-		return lcUnexpected(QString());
+		return swUnexpected(QString());
 
-	return lcExportBrickLink(SaveFileName, PartsList);
+	return swExportBrickLink(SaveFileName, PartsList);
 }
 
-lcResult<void> Project::ExportCOLLADA(const QString& FileName)
+swResult<void> Project::ExportCOLLADA(const QString& FileName)
 {
-	const std::vector<lcModelPartsEntry> ModelParts = GetModelParts();
+	const std::vector<swModelPartsEntry> ModelParts = GetModelParts();
 
 	QString SaveFileName = GetExportFileName(FileName, "dae", tr("Export COLLADA"), tr("COLLADA Files (*.dae);;All Files (*.*)"));
 
 	if (SaveFileName.isEmpty())
-		return lcUnexpected(QString());
+		return swUnexpected(QString());
 
 	QFile File(SaveFileName);
 
 	if (!File.open(QIODevice::WriteOnly))
-		return lcUnexpected(tr("Could not open file '%1' for writing.").arg(SaveFileName));
+		return swUnexpected(tr("Could not open file '%1' for writing.").arg(SaveFileName));
 
 	QTextStream Stream(&File);
 
@@ -2700,7 +2700,7 @@ lcResult<void> Project::ExportCOLLADA(const QString& FileName)
 
 	for (size_t ColorIndex = 0; ColorIndex < gColorList.size(); ColorIndex++)
 	{
-		const lcColor& Color = gColorList[ColorIndex];
+		const swColor& Color = gColorList[ColorIndex];
 		const QString& ColorName = ColorIDs[ColorIndex];
 
 		Stream << QString("\t<effect id=\"%1-phong\">\r\n").arg(ColorName);
@@ -2747,12 +2747,12 @@ lcResult<void> Project::ExportCOLLADA(const QString& FileName)
 
 	Stream << "</library_materials>\r\n";
 	Stream << "<library_geometries>\r\n";
-	std::map<const lcMesh*, QString> MeshIDs;
+	std::map<const swMesh*, QString> MeshIDs;
 	std::set<QString> UsedMeshIDs;
 
-	for (const lcModelPartsEntry& ModelPart : ModelParts)
+	for (const swModelPartsEntry& ModelPart : ModelParts)
 	{
-		lcMesh* Mesh = !ModelPart.Mesh ? ModelPart.PieceData->GetMesh() : ModelPart.Mesh;
+		swMesh* Mesh = !ModelPart.Mesh ? ModelPart.PieceData->GetMesh() : ModelPart.Mesh;
 
 		if (!Mesh)
 			continue;
@@ -2771,19 +2771,19 @@ lcResult<void> Project::ExportCOLLADA(const QString& FileName)
 		Stream << QString("\t\t\t<source id=\"%1-pos\">\r\n").arg(ID);
 		Stream << QString("\t\t\t\t<float_array id=\"%1-pos-array\" count=\"%2\">\r\n").arg(ID, QString::number(NumVertices * 3));
 
-		const lcVertex* Verts = static_cast<const lcVertex*>(Mesh->mVertexData);
+		const swVertex* Verts = static_cast<const swVertex*>(Mesh->mVertexData);
 
 		for (int VertexIdx = 0; VertexIdx < Mesh->mNumVertices; VertexIdx++)
 		{
-			const lcVector3& Position = Verts[VertexIdx].Position;
+			const swVector3& Position = Verts[VertexIdx].Position;
 			Stream << QString("\t\t\t\t\t%1 %2 %3\r\n").arg(QString::number(Position.x), QString::number(Position.y), QString::number(Position.z));
 		}
 
-		const lcVertexTextured* TexturedVerts = reinterpret_cast<const lcVertexTextured*>(Verts + Mesh->mNumVertices);
+		const swVertexTextured* TexturedVerts = reinterpret_cast<const swVertexTextured*>(Verts + Mesh->mNumVertices);
 
 		for (int VertexIdx = 0; VertexIdx < Mesh->mNumTexturedVertices; VertexIdx++)
 		{
-			const lcVector3& Position = TexturedVerts[VertexIdx].Position;
+			const swVector3& Position = TexturedVerts[VertexIdx].Position;
 			Stream << QString("\t\t\t\t\t%1 %2 %3\r\n").arg(QString::number(Position.x), QString::number(Position.y), QString::number(Position.z));
 		}
 
@@ -2802,13 +2802,13 @@ lcResult<void> Project::ExportCOLLADA(const QString& FileName)
 
 		for (int VertexIdx = 0; VertexIdx < Mesh->mNumVertices; VertexIdx++)
 		{
-			lcVector3 Normal = lcUnpackNormal(Verts[VertexIdx].Normal);
+			swVector3 Normal = swUnpackNormal(Verts[VertexIdx].Normal);
 			Stream << QString("\t\t\t\t\t%1 %2 %3\r\n").arg(QString::number(Normal.x), QString::number(Normal.y), QString::number(Normal.z));
 		}
 
 		for (int VertexIdx = 0; VertexIdx < Mesh->mNumTexturedVertices; VertexIdx++)
 		{
-			lcVector3 Normal = lcUnpackNormal(TexturedVerts[VertexIdx].Normal);
+			swVector3 Normal = swUnpackNormal(TexturedVerts[VertexIdx].Normal);
 			Stream << QString("\t\t\t\t\t%1 %2 %3\r\n").arg(QString::number(Normal.x), QString::number(Normal.y), QString::number(Normal.z));
 		}
 
@@ -2826,14 +2826,14 @@ lcResult<void> Project::ExportCOLLADA(const QString& FileName)
 		Stream << QString("\t\t\t\t<input semantic=\"POSITION\" source=\"#%1-pos\"/>\r\n").arg(ID);
 		Stream << "\t\t\t</vertices>\r\n";
 
-		for (int SectionIdx = 0; SectionIdx < Mesh->mLods[LC_MESH_LOD_HIGH].NumSections; SectionIdx++)
+		for (int SectionIdx = 0; SectionIdx < Mesh->mLods[SW_MESH_LOD_HIGH].NumSections; SectionIdx++)
 		{
-			lcMeshSection* Section = &Mesh->mLods[LC_MESH_LOD_HIGH].Sections[SectionIdx];
+			swMeshSection* Section = &Mesh->mLods[SW_MESH_LOD_HIGH].Sections[SectionIdx];
 			int Offset = 0;
 
-			if (Section->PrimitiveType == LC_MESH_TRIANGLES)
+			if (Section->PrimitiveType == SW_MESH_TRIANGLES)
 				Offset = 0;
-			else if (Section->PrimitiveType == LC_MESH_TEXTURED_TRIANGLES)
+			else if (Section->PrimitiveType == SW_MESH_TEXTURED_TRIANGLES)
 				Offset = Mesh->mNumVertices;
 			else
 				continue;
@@ -2889,9 +2889,9 @@ lcResult<void> Project::ExportCOLLADA(const QString& FileName)
 	Stream << "<library_visual_scenes>\r\n";
 	Stream << "\t<visual_scene id=\"DefaultScene\">\r\n";
 
-	for (const lcModelPartsEntry& ModelPart : ModelParts)
+	for (const swModelPartsEntry& ModelPart : ModelParts)
 	{
-		lcMesh* Mesh = !ModelPart.Mesh ? ModelPart.PieceData->GetMesh() : ModelPart.Mesh;
+		swMesh* Mesh = !ModelPart.Mesh ? ModelPart.PieceData->GetMesh() : ModelPart.Mesh;
 
 		if (!Mesh)
 			continue;
@@ -2901,7 +2901,7 @@ lcResult<void> Project::ExportCOLLADA(const QString& FileName)
 		Stream << "\t\t<node>\r\n";
 		Stream << "\t\t\t<matrix>\r\n";
 
-		const lcMatrix44& Matrix = ModelPart.WorldMatrix;
+		const swMatrix44& Matrix = ModelPart.WorldMatrix;
 		Stream << QString("\t\t\t\t%1 %2 %3 %4\r\n").arg(QString::number(Matrix[0][0]), QString::number(Matrix[1][0]), QString::number(Matrix[2][0]), QString::number(Matrix[3][0]));
 		Stream << QString("\t\t\t\t%1 %2 %3 %4\r\n").arg(QString::number(Matrix[0][1]), QString::number(Matrix[1][1]), QString::number(Matrix[2][1]), QString::number(Matrix[3][1]));
 		Stream << QString("\t\t\t\t%1 %2 %3 %4\r\n").arg(QString::number(Matrix[0][2]), QString::number(Matrix[1][2]), QString::number(Matrix[2][2]), QString::number(Matrix[3][2]));
@@ -2912,11 +2912,11 @@ lcResult<void> Project::ExportCOLLADA(const QString& FileName)
 		Stream << "\t\t\t\t<bind_material>\r\n";
 		Stream << "\t\t\t\t\t<technique_common>\r\n";
 
-		for (int SectionIdx = 0; SectionIdx < Mesh->mLods[LC_MESH_LOD_HIGH].NumSections; SectionIdx++)
+		for (int SectionIdx = 0; SectionIdx < Mesh->mLods[SW_MESH_LOD_HIGH].NumSections; SectionIdx++)
 		{
-			lcMeshSection* Section = &Mesh->mLods[LC_MESH_LOD_HIGH].Sections[SectionIdx];
+			swMeshSection* Section = &Mesh->mLods[SW_MESH_LOD_HIGH].Sections[SectionIdx];
 
-			if (Section->PrimitiveType != LC_MESH_TRIANGLES && Section->PrimitiveType != LC_MESH_TEXTURED_TRIANGLES)
+			if (Section->PrimitiveType != SW_MESH_TRIANGLES && Section->PrimitiveType != SW_MESH_TEXTURED_TRIANGLES)
 				continue;
 
 			const QString& SourceColorName = ColorIDs[Section->ColorIndex];
@@ -2943,40 +2943,40 @@ lcResult<void> Project::ExportCOLLADA(const QString& FileName)
 
 	Stream << "</COLLADA>\r\n";
 
-	return lcResult<void>();
+	return swResult<void>();
 }
 
-lcResult<void> Project::ExportCSV(const QString& FileName)
+swResult<void> Project::ExportCSV(const QString& FileName)
 {
-	lcPartsList PartsList;
+	swPartsList PartsList;
 
 	if (!mModels.empty())
 		mModels[0]->GetPartsList(gDefaultColor, true, false, PartsList);
 
 	if (PartsList.empty())
-		return lcUnexpected(tr("Nothing to export."));
+		return swUnexpected(tr("Nothing to export."));
 
 	QString SaveFileName = GetExportFileName(FileName, "csv", tr("Export CSV"), tr("CSV Files (*.csv);;All Files (*.*)"));
 
 	if (SaveFileName.isEmpty())
-		return lcUnexpected(QString());
+		return swUnexpected(QString());
 
-	return lcExportCSV(SaveFileName, PartsList);
+	return swExportCSV(SaveFileName, PartsList);
 }
 
-lcResult<void> lcExportCSV(const QString& FileName, const lcPartsList& PartsList)
+swResult<void> swExportCSV(const QString& FileName, const swPartsList& PartsList)
 {
-	lcDiskFile CSVFile(FileName);
+	swDiskFile CSVFile(FileName);
 	char Line[1024];
 
 	if (!CSVFile.Open(QIODevice::WriteOnly))
-		return lcUnexpected(QCoreApplication::translate("Project", "Could not open file '%1' for writing.").arg(FileName));
+		return swUnexpected(QCoreApplication::translate("Project", "Could not open file '%1' for writing.").arg(FileName));
 
 	CSVFile.WriteLine("Part Name,Color,Quantity,Part ID,Color Code\n");
 
 	for (const auto& PartIt : PartsList)
 	{
-		const lcPieceData* PieceData = PartIt.first;
+		const swPieceData* PieceData = PartIt.first;
 
 		for (const auto& ColorIt : PartIt.second)
 		{
@@ -2988,20 +2988,20 @@ lcResult<void> lcExportCSV(const QString& FileName, const lcPartsList& PartsList
 		}
 	}
 
-	return lcResult<void>();
+	return swResult<void>();
 }
 
-lcInstructions* Project::GetInstructions()
+swInstructions* Project::GetInstructions()
 {
 	mInstructions.reset();
-	mInstructions = std::unique_ptr<lcInstructions>(new lcInstructions(this));
+	mInstructions = std::unique_ptr<swInstructions>(new swInstructions(this));
 
 	return mInstructions.get();
 }
 
-lcResult<void> Project::ExportHTML(const lcHTMLExportOptions& Options)
+swResult<void> Project::ExportHTML(const swHTMLExportOptions& Options)
 {
-	std::set<lcModel*> Models;
+	std::set<swModel*> Models;
 
 	if (Options.CurrentOnly)
 		Models.insert(mActiveModel);
@@ -3012,11 +3012,11 @@ lcResult<void> Project::ExportHTML(const lcHTMLExportOptions& Options)
 	}
 	else
 	{
-		for (const std::unique_ptr<lcModel>& Model : mModels)
+		for (const std::unique_ptr<swModel>& Model : mModels)
 			Models.insert(Model.get());
 	}
 
-	for (const lcModel* Model : Models)
+	for (const swModel* Model : Models)
 		Model->WaitForAssets();
 
 	QDir Dir(Options.PathName);
@@ -3060,10 +3060,10 @@ lcResult<void> Project::ExportHTML(const lcHTMLExportOptions& Options)
 	};
 
 	const QString ProjectBaseName = MakeSafeFileName(QFileInfo(ProjectTitle).completeBaseName());
-	std::map<const lcModel*, QString> ModelBaseNames;
+	std::map<const swModel*, QString> ModelBaseNames;
 	int ModelOrdinal = 0;
 
-	for (const std::unique_ptr<lcModel>& Model : mModels)
+	for (const std::unique_ptr<swModel>& Model : mModels)
 	{
 		if (Models.find(Model.get()) == Models.end())
 			continue;
@@ -3076,9 +3076,9 @@ lcResult<void> Project::ExportHTML(const lcHTMLExportOptions& Options)
 		ModelBaseNames.emplace(Model.get(), std::move(BaseName));
 	}
 
-	auto AddPartsListImage = [&Dir](QTextStream& Stream, lcModel* Model, lcStep Step, const QString& BaseName) -> lcResult<void>
+	auto AddPartsListImage = [&Dir](QTextStream& Stream, swModel* Model, swStep Step, const QString& BaseName) -> swResult<void>
 	{
-		lcPartsList PartsList;
+		swPartsList PartsList;
 
 		if (Step == 0)
 			Model->GetPartsList(gDefaultColor, true, false, PartsList);
@@ -3086,23 +3086,23 @@ lcResult<void> Project::ExportHTML(const lcHTMLExportOptions& Options)
 			Model->GetPartsListForStep(Step, gDefaultColor, PartsList, false);
 
 		if (PartsList.empty())
-			return lcResult<void>();
+			return swResult<void>();
 
-		const lcResult<QImage> Image = Model->GetPartsListImage(1024, Step, LC_RGBA(255, 255, 255, 0), QFont("Arial", 16, QFont::Bold), Qt::black, true);
+		const swResult<QImage> Image = Model->GetPartsListImage(1024, Step, SW_RGBA(255, 255, 255, 0), QFont("Arial", 16, QFont::Bold), Qt::black, true);
 
 		if (!Image)
-			return lcUnexpected(Image.error());
+			return swUnexpected(Image.error());
 
 		QString ImageName = BaseName + QLatin1String("-parts.png");
 		QString FileName = QFileInfo(Dir, ImageName).absoluteFilePath();
 		QImageWriter Writer(FileName);
 
 		if (!Writer.write(Image.value()))
-			return lcUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, Writer.errorString()));
+			return swUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, Writer.errorString()));
 
 		Stream << QString::fromLatin1("<p><IMG SRC=\"%1\" /></p><br><br>\r\n").arg(ImageName.toHtmlEscaped());
 
-		return lcResult<void>();
+		return swResult<void>();
 	};
 
 	auto WriteHeader = [](QTextStream& Stream, const QString& Title)
@@ -3115,10 +3115,10 @@ lcResult<void> Project::ExportHTML(const lcHTMLExportOptions& Options)
 
 	const QString CreatedBy = tr("Created by %1").toHtmlEscaped().arg(QLatin1String("<A HREF=\"https://www.leocad.org\">LeoCAD</A>"));
 
-	for (lcModel* Model : Models)
+	for (swModel* Model : Models)
 	{
 		const QString& BaseName = ModelBaseNames.at(Model);
-		lcStep LastStep = Model->GetLastStep();
+		swStep LastStep = Model->GetLastStep();
 		QString PageTitle;
 
 		if (Models.size() > 1)
@@ -3132,20 +3132,20 @@ lcResult<void> Project::ExportHTML(const lcHTMLExportOptions& Options)
 			QFile File(FileName);
 
 			if (!File.open(QIODevice::WriteOnly))
-				return lcUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, File.errorString()));
+				return swUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, File.errorString()));
 
 			QTextStream Stream(&File);
 
 			WriteHeader(Stream, tr("Instructions for %1").arg(PageTitle));
 
-			for (lcStep Step = 1; Step <= LastStep; Step++)
+			for (swStep Step = 1; Step <= LastStep; Step++)
 			{
 				QString StepString = QString::fromLatin1("%1").arg(Step, 2, 10, QLatin1Char('0'));
 				Stream << QString::fromLatin1("<p><IMG SRC=\"%1-%2.png\" ALT=\"%3\" WIDTH=%4 HEIGHT=%5></p><BR><BR>\r\n").arg(BaseName.toHtmlEscaped(), StepString, tr("Step %1").arg(StepString).toHtmlEscaped(), QString::number(Options.StepImagesWidth), QString::number(Options.StepImagesHeight));
 
 				if (Options.PartsListStep)
 				{
-					const lcResult<void> PartsImageSaved = AddPartsListImage(Stream, Model, Step, QString("%1-%2").arg(BaseName, StepString));
+					const swResult<void> PartsImageSaved = AddPartsListImage(Stream, Model, Step, QString("%1-%2").arg(BaseName, StepString));
 
 					if (!PartsImageSaved)
 						return PartsImageSaved;
@@ -3154,7 +3154,7 @@ lcResult<void> Project::ExportHTML(const lcHTMLExportOptions& Options)
 
 			if (Options.PartsListEnd)
 			{
-				const lcResult<void> PartsImageSaved = AddPartsListImage(Stream, Model, 0, BaseName);
+				const swResult<void> PartsImageSaved = AddPartsListImage(Stream, Model, 0, BaseName);
 
 				if (!PartsImageSaved)
 					return PartsImageSaved;
@@ -3170,13 +3170,13 @@ lcResult<void> Project::ExportHTML(const lcHTMLExportOptions& Options)
 				QFile File(FileName);
 
 				if (!File.open(QIODevice::WriteOnly))
-					return lcUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, File.errorString()));
+					return swUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, File.errorString()));
 
 				QTextStream Stream(&File);
 
 				WriteHeader(Stream, tr("Instructions for %1").arg(PageTitle));
 
-				for (lcStep Step = 1; Step <= LastStep; Step++)
+				for (swStep Step = 1; Step <= LastStep; Step++)
 					Stream << QString::fromLatin1("<A HREF=\"%1-%2.html\">%3<BR>\r\n</A>").arg(BaseName, QString("%1").arg(Step, 2, 10, QLatin1Char('0')), tr("Step %1").arg(QString::number(Step)).toHtmlEscaped());
 
 				if (Options.PartsListEnd)
@@ -3185,14 +3185,14 @@ lcResult<void> Project::ExportHTML(const lcHTMLExportOptions& Options)
 				Stream << QString::fromLatin1("</CENTER>\r\n<BR><HR><BR><B><I>%1</I></B><BR></HTML>\r\n").arg(CreatedBy);
 			}
 
-			for (lcStep Step = 1; Step <= LastStep; Step++)
+			for (swStep Step = 1; Step <= LastStep; Step++)
 			{
 				QString StepString = QString::fromLatin1("%1").arg(Step, 2, 10, QLatin1Char('0'));
 				QString FileName = QFileInfo(Dir, QString("%1-%2.html").arg(BaseName, StepString)).absoluteFilePath();
 				QFile File(FileName);
 
 				if (!File.open(QIODevice::WriteOnly))
-					return lcUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, File.errorString()));
+					return swUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, File.errorString()));
 
 				QTextStream Stream(&File);
 
@@ -3201,7 +3201,7 @@ lcResult<void> Project::ExportHTML(const lcHTMLExportOptions& Options)
 
 				if (Options.PartsListStep)
 				{
-					const lcResult<void> PartsImageSaved = AddPartsListImage(Stream, Model, Step, QString("%1-%2").arg(BaseName, StepString));
+					const swResult<void> PartsImageSaved = AddPartsListImage(Stream, Model, Step, QString("%1-%2").arg(BaseName, StepString));
 
 					if (!PartsImageSaved)
 						return PartsImageSaved;
@@ -3228,13 +3228,13 @@ lcResult<void> Project::ExportHTML(const lcHTMLExportOptions& Options)
 				QFile File(FileName);
 
 				if (!File.open(QIODevice::WriteOnly))
-					return lcUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, File.errorString()));
+					return swUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, File.errorString()));
 
 				QTextStream Stream(&File);
 
 				WriteHeader(Stream, tr("Pieces used by %1").arg(PageTitle));
 
-				const lcResult<void> PartsImageSaved = AddPartsListImage(Stream, Model, 0, BaseName);
+				const swResult<void> PartsImageSaved = AddPartsListImage(Stream, Model, 0, BaseName);
 
 				if (!PartsImageSaved)
 					return PartsImageSaved;
@@ -3250,7 +3250,7 @@ lcResult<void> Project::ExportHTML(const lcHTMLExportOptions& Options)
 		}
 
 		QString StepImageBaseName = QFileInfo(Dir, BaseName + QLatin1String("-%1.png")).absoluteFilePath();
-		const lcResult<void> ImagesSaved = Model->SaveStepImages(StepImageBaseName, true, false, Options.StepImagesWidth, Options.StepImagesHeight, 1, LastStep, Options.TransparentImages ? lcImageBackground::Transparent : lcImageBackground::Opaque);
+		const swResult<void> ImagesSaved = Model->SaveStepImages(StepImageBaseName, true, false, Options.StepImagesWidth, Options.StepImagesHeight, 1, LastStep, Options.TransparentImages ? swImageBackground::Transparent : swImageBackground::Opaque);
 
 		if (!ImagesSaved)
 			return ImagesSaved;
@@ -3262,13 +3262,13 @@ lcResult<void> Project::ExportHTML(const lcHTMLExportOptions& Options)
 		QFile File(FileName);
 
 		if (!File.open(QIODevice::WriteOnly))
-			return lcUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, File.errorString()));
+			return swUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, File.errorString()));
 
 		QTextStream Stream(&File);
 
 		WriteHeader(Stream, tr("Instructions for %1").arg(ProjectTitle));
 
-		for (const lcModel* Model : Models)
+		for (const swModel* Model : Models)
 		{
 			const QString& BaseName = ModelBaseNames.at(Model);
 
@@ -3284,11 +3284,11 @@ lcResult<void> Project::ExportHTML(const lcHTMLExportOptions& Options)
 			}
 			else
 			{
-				lcStep LastStep = Model->GetLastStep();
+				swStep LastStep = Model->GetLastStep();
 
 				Stream << QString::fromLatin1("<p>%1</p>").arg(Model->GetProperties().mFileName.toHtmlEscaped());
 
-				for (lcStep Step = 1; Step <= LastStep; Step++)
+				for (swStep Step = 1; Step <= LastStep; Step++)
 					Stream << QString::fromLatin1("<A HREF=\"%1-%2.html\">%3<BR>\r\n</A>").arg(BaseName, QString("%1").arg(Step, 2, 10, QLatin1Char('0')), tr("Step %1").arg(QString::number(Step)).toHtmlEscaped());
 
 				if (Options.PartsListEnd)
@@ -3299,22 +3299,22 @@ lcResult<void> Project::ExportHTML(const lcHTMLExportOptions& Options)
 		Stream << QString::fromLatin1("</CENTER>\r\n<BR><HR><BR><B><I>%1</I></B><BR></HTML>\r\n").arg(CreatedBy);
 	}
 
-	return lcResult<void>();
+	return swResult<void>();
 }
 
-lcResult<void> Project::ExportPOVRay(const QString& FileName)
+swResult<void> Project::ExportPOVRay(const QString& FileName)
 {
-	const std::vector<lcModelPartsEntry> ModelParts = GetModelParts();
+	const std::vector<swModelPartsEntry> ModelParts = GetModelParts();
 
 	QString SaveFileName = GetExportFileName(FileName, QLatin1String("pov"), tr("Export POV-Ray"), tr("POV-Ray Files (*.pov);;All Files (*.*)"));
 
 	if (SaveFileName.isEmpty())
-		return lcUnexpected(QString());
+		return swUnexpected(QString());
 
-	lcDiskFile POVFile(SaveFileName);
+	swDiskFile POVFile(SaveFileName);
 
 	if (!POVFile.Open(QIODevice::WriteOnly))
-		return lcUnexpected(tr("Could not open file '%1' for writing.").arg(SaveFileName));
+		return swUnexpected(tr("Could not open file '%1' for writing.").arg(SaveFileName));
 
 	enum
 	{
@@ -3337,7 +3337,7 @@ lcResult<void> Project::ExportPOVRay(const QString& FileName)
 	char Line[2048];
 
 	snprintf(Line, sizeof(Line), "// Generated By: LeoCAD %s\n// LDraw File: %s\n// Date: %s\n\n",
-			LC_VERSION_TEXT,
+			SW_VERSION_TEXT,
 			mModels[0]->GetProperties().mFileName.toLatin1().constData(),
 			QDateTime::currentDateTime().toString(Qt::ISODate).toLatin1().constData());
 	POVFile.WriteLine(Line);
@@ -3346,14 +3346,14 @@ lcResult<void> Project::ExportPOVRay(const QString& FileName)
 
 	POVFile.WriteLine("global_settings { assumed_gamma 1.0 }\n\n");
 
-	lcPiecesLibrary* Library = lcGetPiecesLibrary();
-	std::map<const lcPieceData*, std::pair<char[LC_PIECE_NAME_LEN + 1], int>> PieceTable;
+	swPiecesLibrary* Library = swGetPiecesLibrary();
+	std::map<const swPieceData*, std::pair<char[SW_PIECE_NAME_LEN + 1], int>> PieceTable;
 	size_t NumColors = gColorList.size();
 	std::vector<std::string> LgeoColorTable(NumColors);
-	std::vector<std::array<char, LC_MAX_COLOR_NAME + 3>> ColorTable(NumColors);
+	std::vector<std::array<char, SW_MAX_COLOR_NAME + 3>> ColorTable(NumColors);
 
-	const std::vector<std::unique_ptr<lcLight>>& Lights = gMainWindow->GetActiveModel()->GetLights();
-	const lcCamera* Camera = gMainWindow->GetActiveView()->GetCamera();
+	const std::vector<std::unique_ptr<swLight>>& Lights = gMainWindow->GetActiveModel()->GetLights();
+	const swCamera* Camera = gMainWindow->GetActiveView()->GetCamera();
 	auto MakeIdentifier = [](const QString& Name, const QString& Fallback)
 	{
 		QString Identifier;
@@ -3372,47 +3372,47 @@ lcResult<void> Project::ExportPOVRay(const QString& FileName)
 	};
 
 	const QString CameraName = MakeIdentifier(QString(Camera->GetName()), QLatin1String("Camera"));
-	const lcVector3& Position = Camera->mPosition;
-	const lcVector3& Target = Camera->mTargetPosition;
-	const lcVector3& Up = Camera->mUpVector;
-	const lcVector3 BackgroundColor = lcVector3FromColor(lcGetPreferences().mBackgroundSolidColor);
-	const lcPOVRayOptions& POVRayOptions = mModels[0]->GetPOVRayOptions();
-	const QString TopModelName = QLatin1String("LC_") + MakeExportNameFragment(QString(mModels[0]->GetFileName()));
-	const QString LGEOPath = lcGetProfileString(LC_PROFILE_POVRAY_LGEO_PATH);
+	const swVector3& Position = Camera->mPosition;
+	const swVector3& Target = Camera->mTargetPosition;
+	const swVector3& Up = Camera->mUpVector;
+	const swVector3 BackgroundColor = swVector3FromColor(swGetPreferences().mBackgroundSolidColor);
+	const swPOVRayOptions& POVRayOptions = mModels[0]->GetPOVRayOptions();
+	const QString TopModelName = QLatin1String("SW_") + MakeExportNameFragment(QString(mModels[0]->GetFileName()));
+	const QString LGEOPath = swGetProfileString(SW_PROFILE_POVRAY_LGEO_PATH);
 	const bool UseLGEO = POVRayOptions.UseLGEO && !LGEOPath.isEmpty();
 	const int TopModelColorCode = 7;
 	QStringList ColorMacros, MaterialColors;
 
-	lcVector3 Min(FLT_MAX, FLT_MAX, FLT_MAX);
-	lcVector3 Max(-FLT_MAX, -FLT_MAX, -FLT_MAX);
+	swVector3 Min(FLT_MAX, FLT_MAX, FLT_MAX);
+	swVector3 Max(-FLT_MAX, -FLT_MAX, -FLT_MAX);
 
 	if (ModelParts.empty())
 	{
-		Min = lcVector3(-10.0f, -10.0f, -10.0f);
-		Max = lcVector3(10.0f, 10.0f, 10.0f);
+		Min = swVector3(-10.0f, -10.0f, -10.0f);
+		Max = swVector3(10.0f, 10.0f, 10.0f);
 	}
 
-	for (const lcModelPartsEntry& ModelPart : ModelParts)
+	for (const swModelPartsEntry& ModelPart : ModelParts)
 	{
-		lcVector3 Points[8];
+		swVector3 Points[8];
 
-		const lcMesh* Mesh = ModelPart.Mesh ? ModelPart.Mesh : ModelPart.PieceData->GetMesh();
-		lcGetBoxCorners(Mesh->mBoundingBox, Points);
+		const swMesh* Mesh = ModelPart.Mesh ? ModelPart.Mesh : ModelPart.PieceData->GetMesh();
+		swGetBoxCorners(Mesh->mBoundingBox, Points);
 
 		for (int PointIdx = 0; PointIdx < 8; PointIdx++)
 		{
-			lcVector3 Point = lcMul31(Points[PointIdx], ModelPart.WorldMatrix);
+			swVector3 Point = swMul31(Points[PointIdx], ModelPart.WorldMatrix);
 
-			Min = lcMin(Point, Min);
-			Max = lcMax(Point, Max);
+			Min = swMin(Point, Min);
+			Max = swMax(Point, Max);
 		}
 	}
 
-	lcVector3 Center = (Min + Max) / 2.0f;
+	swVector3 Center = (Min + Max) / 2.0f;
 	float Radius = (Max - Center).Length() / 25.0f;
-	Center = lcVector3(Center[1], Center[0], Center[2]) / 25.0f;
+	Center = swVector3(Center[1], Center[0], Center[2]) / 25.0f;
 
-	lcVector3 FloorColor = POVRayOptions.FloorColor;
+	swVector3 FloorColor = POVRayOptions.FloorColor;
 	float FloorAmbient = POVRayOptions.FloorAmbient;
 	float FloorDiffuse = POVRayOptions.FloorDiffuse;
 	const char* FloorLocation;
@@ -3434,11 +3434,11 @@ lcResult<void> Project::ExportPOVRay(const QString& FileName)
 		FloorLocation = "MaxZ";
 	}
 
-	for (const std::unique_ptr<lcLight>& Light : Lights)
+	for (const std::unique_ptr<swLight>& Light : Lights)
 	{
-		if (Light->GetLightType() == lcLightType::Area)
+		if (Light->GetLightType() == swLightType::Area)
 		{
-			if (FloorColor == lcVector3(0.8f,0.8f,0.8f))
+			if (FloorColor == swVector3(0.8f,0.8f,0.8f))
 				FloorColor = {1.0f,1.0f,1.0f};
 			if (FloorAmbient == 0.4f)
 				FloorAmbient = 0.0f;
@@ -3558,14 +3558,14 @@ lcResult<void> Project::ExportPOVRay(const QString& FileName)
 			"  }\n"
 			"#end\n"
 			"#end\n\n",
-			static_cast<int>(lcLightType::Point), static_cast<int>(lcLightType::Spot), static_cast<int>(lcLightType::Directional), static_cast<int>(lcLightType::Area));
+			static_cast<int>(swLightType::Point), static_cast<int>(swLightType::Spot), static_cast<int>(swLightType::Directional), static_cast<int>(swLightType::Area));
 	POVFile.WriteLine(Line);
 
-	for (const lcModelPartsEntry& ModelPart : ModelParts)
+	for (const swModelPartsEntry& ModelPart : ModelParts)
 	{
 		int ColorIdx = ModelPart.ColorIndex;
 
-		if (lcIsColorTranslucent(ColorIdx))
+		if (swIsColorTranslucent(ColorIdx))
 		{
 			if (!ColorMacros.contains("TranslucentColor"))
 			{
@@ -3587,7 +3587,7 @@ lcResult<void> Project::ExportPOVRay(const QString& FileName)
 				ColorMacros.append("TranslucentColor");
 			}
 		}
-		else if (lcIsColorChrome(ColorIdx))
+		else if (swIsColorChrome(ColorIdx))
 		{
 			if (!ColorMacros.contains("ChromeColor"))
 			{
@@ -3607,7 +3607,7 @@ lcResult<void> Project::ExportPOVRay(const QString& FileName)
 				ColorMacros.append("ChromeColor");
 			}
 		}
-		else if (lcIsColorRubber(ColorIdx))
+		else if (swIsColorRubber(ColorIdx))
 		{
 			if (!ColorMacros.contains("RubberColor"))
 			{
@@ -3657,16 +3657,16 @@ lcResult<void> Project::ExportPOVRay(const QString& FileName)
 			(CameraName.isEmpty() ? "Camera" : CameraName.toLatin1().constData()));
 	POVFile.WriteLine(Line);
 
-	lcVector3 AreaX(1.0f, 0.0f, 0.0f), AreaY(0.0f, 1.0f, 0.0f);
-	lcVector2i AreaGrid(1, 1);
+	swVector3 AreaX(1.0f, 0.0f, 0.0f), AreaY(0.0f, 1.0f, 0.0f);
+	swVector2i AreaGrid(1, 1);
 	int AreaCircle = 0, Shadowless = 0;
-	lcLightType LightType = lcLightType::Area;
+	swLightType LightType = swLightType::Area;
 	float Power = 0.0f, FadeDistance = 0.0f, FadePower = 0.0f, SpotRadius = 0.0f, SpotFalloff = 0.0f, SpotTightness = 0.0f;
 
 	if (Lights.empty())
 	{
-		const lcVector3 LightTarget(0.0f, 0.0f, 0.0f), LightColor(1.0f, 1.0f, 1.0f);
-		lcVector3 Location[4];
+		const swVector3 LightTarget(0.0f, 0.0f, 0.0f), LightColor(1.0f, 1.0f, 1.0f);
+		swVector3 Location[4];
 
 		Location[0] = {0.0f * Radius + Center[0], -1.5f * Radius + Center[1], -1.5f * Radius + Center[2]};
 		Location[1] = {1.5f * Radius + Center[0], -1.0f * Radius + Center[1],  0.866026f * Radius + Center[2]};
@@ -3695,11 +3695,11 @@ lcResult<void> Project::ExportPOVRay(const QString& FileName)
 	{
 		std::set<QString> UsedLightNames;
 
-		for (const std::unique_ptr<lcLight>& Light : Lights)
+		for (const std::unique_ptr<swLight>& Light : Lights)
 		{
-			const lcVector3 LightPosition = Light->GetPosition();
-			const lcVector3 LightTarget = LightPosition + Light->GetDirection();
-			const lcVector3 LightColor = Light->GetColor();
+			const swVector3 LightPosition = Light->GetPosition();
+			const swVector3 LightTarget = LightPosition + Light->GetDirection();
+			const swVector3 LightColor = Light->GetColor();
 			const QString BaseLightName = MakeIdentifier(QString(Light->GetName()), QLatin1String("Light"));
 			QString LightName = BaseLightName;
 			int LightSuffix = 1;
@@ -3715,10 +3715,10 @@ lcResult<void> Project::ExportPOVRay(const QString& FileName)
 			SpotFalloff = Light->GetSpotConeAngle() / 2.0f;
 			SpotRadius = SpotFalloff - Light->GetSpotPenumbraAngle();
 			SpotTightness = Light->GetSpotPOVRayTightness();
-			AreaCircle = (Light->GetAreaShape() == lcLightAreaShape::Disk || Light->GetAreaShape() == lcLightAreaShape::Ellipse) ? 1 : 0;
-			AreaX = lcVector3(Light->GetWorldMatrix()[0]) * Light->GetAreaSizeX();
-			AreaY = lcVector3(Light->GetWorldMatrix()[1]) * Light->GetAreaSizeY();
-			AreaGrid = lcVector2i(Light->GetAreaPOVRayGridX(), Light->GetAreaPOVRayGridY());
+			AreaCircle = (Light->GetAreaShape() == swLightAreaShape::Disk || Light->GetAreaShape() == swLightAreaShape::Ellipse) ? 1 : 0;
+			AreaX = swVector3(Light->GetWorldMatrix()[0]) * Light->GetAreaSizeX();
+			AreaY = swVector3(Light->GetWorldMatrix()[1]) * Light->GetAreaSizeY();
+			AreaGrid = swVector2i(Light->GetAreaPOVRayGridX(), Light->GetAreaPOVRayGridY());
 
 			snprintf(Line, sizeof(Line),
 					"#ifndef (Skip%s)\n  WriteLight(%i, %i, <%g, %g, %g>, <%g, %g, %g>, <%g, %g, %g>, %g, %g, %g, %g, %g, %g, %i, <%g, %g, %g>, <%g, %g, %g>, %i, %i)\n#end\n\n",
@@ -3748,10 +3748,10 @@ lcResult<void> Project::ExportPOVRay(const QString& FileName)
 
 		POVFile.WriteLine("#include \"lg_defs.inc\"\n\n#include \"lg_color.inc\"\n\n");
 
-		lcDiskFile TableFile(QFileInfo(QDir(LGEOPath), QLatin1String("lg_elements.lst")).absoluteFilePath());
+		swDiskFile TableFile(QFileInfo(QDir(LGEOPath), QLatin1String("lg_elements.lst")).absoluteFilePath());
 
 		if (!TableFile.Open(QIODevice::ReadOnly))
-			return lcUnexpected(tr("Could not find LGEO files in folder '%1'.").arg(LGEOPath));
+			return swUnexpected(tr("Could not find LGEO files in folder '%1'.").arg(LGEOPath));
 
 		while (TableFile.ReadLine(Line, sizeof(Line)))
 		{
@@ -3764,9 +3764,9 @@ lcResult<void> Project::ExportPOVRay(const QString& FileName)
 			if (sscanf(Line,"%128s%128s%10s", Src, Dst, Flags) != 3)
 				continue;
 
-			lcstrcat(Src, ".dat");
+			swstrcat(Src, ".dat");
 
-			lcPieceData* PieceData = Library->FindPieceData(Src, nullptr);
+			swPieceData* PieceData = Library->FindPieceData(Src, nullptr);
 			if (!PieceData)
 				continue;
 
@@ -3774,14 +3774,14 @@ lcResult<void> Project::ExportPOVRay(const QString& FileName)
 
 			if ((LgeoPartFound = strchr(Flags, 'L')))
 			{
-				std::pair<char[LC_PIECE_NAME_LEN + 1], int>& Entry = PieceTable[PieceData];
+				std::pair<char[SW_PIECE_NAME_LEN + 1], int>& Entry = PieceTable[PieceData];
 				Entry.second |= LGEO_PIECE_LGEO;
 				snprintf(Entry.first, sizeof(Entry.first), "lg_%s", Dst);
 			}
 
 			if (strchr(Flags, 'A') && !LgeoPartFound)
 			{
-				std::pair<char[LC_PIECE_NAME_LEN + 1], int>& Entry = PieceTable[PieceData];
+				std::pair<char[SW_PIECE_NAME_LEN + 1], int>& Entry = PieceTable[PieceData];
 				Entry.second |= LGEO_PIECE_AR;
 				snprintf(Entry.first, sizeof(Entry.first), "ar_%s", Dst);
 			}
@@ -3798,10 +3798,10 @@ lcResult<void> Project::ExportPOVRay(const QString& FileName)
 			}
 		}
 
-		lcDiskFile LgeoColorFile(QFileInfo(QDir(LGEOPath), QLatin1String("lg_colors.lst")).absoluteFilePath());
+		swDiskFile LgeoColorFile(QFileInfo(QDir(LGEOPath), QLatin1String("lg_colors.lst")).absoluteFilePath());
 
 		if (!LgeoColorFile.Open(QIODevice::ReadOnly))
-			return lcUnexpected(tr("Could not find LGEO files in folder '%1'.").arg(LGEOPath));
+			return swUnexpected(tr("Could not find LGEO files in folder '%1'.").arg(LGEOPath));
 
 		while (LgeoColorFile.ReadLine(Line, sizeof(Line)))
 		{
@@ -3814,7 +3814,7 @@ lcResult<void> Project::ExportPOVRay(const QString& FileName)
 			if (sscanf(Line,"%d%s%s", &Code, Name, Flags) != 3)
 				continue;
 
-			size_t ColorIndex = lcGetColorIndex(Code);
+			size_t ColorIndex = swGetColorIndex(Code);
 
 			if (ColorIndex >= NumColors)
 				continue;
@@ -3827,32 +3827,32 @@ lcResult<void> Project::ExportPOVRay(const QString& FileName)
 	{
 		if (!ColorTable[ColorIndex][0])
 		{
-			lcColor* Color = &gColorList[ColorIndex];
+			swColor* Color = &gColorList[ColorIndex];
 
 			if (LgeoColorTable[ColorIndex].empty())
 			{
-				snprintf(ColorTable[ColorIndex].data(), ColorTable[ColorIndex].size(), "lc_%s", Color->SafeName);
+				snprintf(ColorTable[ColorIndex].data(), ColorTable[ColorIndex].size(), "sw_%s", Color->SafeName);
 
-				if (lcIsColorTranslucent(ColorIndex))
+				if (swIsColorTranslucent(ColorIndex))
 				{
 					if (!UseLGEO && !MaterialColors.contains(ColorTable[ColorIndex].data()))
 						MaterialColors.append(ColorTable[ColorIndex].data());
 
-					snprintf(Line, sizeof(Line), "#ifndef (lc_%s)\n#declare lc_%s = TranslucentColor(%g, %g, %g, TransFilter)\n#end\n\n",
+					snprintf(Line, sizeof(Line), "#ifndef (sw_%s)\n#declare sw_%s = TranslucentColor(%g, %g, %g, TransFilter)\n#end\n\n",
 							Color->SafeName, Color->SafeName, Color->Value[0], Color->Value[1], Color->Value[2]);
 				}
 				else
 				{
 					const char* MacroName;
 
-					if (lcIsColorChrome(ColorIndex))
+					if (swIsColorChrome(ColorIndex))
 						MacroName = "Chrome";
-					else if (lcIsColorRubber(ColorIndex))
+					else if (swIsColorRubber(ColorIndex))
 						MacroName = "Rubber";
 					else
 						MacroName = "Opaque";
 
-					snprintf(Line, sizeof(Line), "#ifndef (lc_%s)\n#declare lc_%s = %sColor(%g, %g, %g)\n#end\n\n", Color->SafeName, Color->SafeName, MacroName, Color->Value[0], Color->Value[1], Color->Value[2]);
+					snprintf(Line, sizeof(Line), "#ifndef (sw_%s)\n#declare sw_%s = %sColor(%g, %g, %g)\n#end\n\n", Color->SafeName, Color->SafeName, MacroName, Color->Value[0], Color->Value[1], Color->Value[2]);
 				}
 			}
 			else
@@ -3867,16 +3867,16 @@ lcResult<void> Project::ExportPOVRay(const QString& FileName)
 		}
 	};
 
-	for (const lcModelPartsEntry& ModelPart : ModelParts)
+	for (const swModelPartsEntry& ModelPart : ModelParts)
 		AddColorDefinition(ModelPart.ColorIndex);
 
-	AddColorDefinition(lcGetColorIndex(TopModelColorCode));
+	AddColorDefinition(swGetColorIndex(TopModelColorCode));
 
 	std::set<std::string> IncludedLgeoNames;
 
 	if (UseLGEO)
 	{
-		for (const lcModelPartsEntry& ModelPart : ModelParts)
+		for (const swModelPartsEntry& ModelPart : ModelParts)
 		{
 			if (ModelPart.Mesh)
 				continue;
@@ -3885,12 +3885,12 @@ lcResult<void> Project::ExportPOVRay(const QString& FileName)
 			if (Search == PieceTable.end())
 				continue;
 
-			lcMesh* Mesh = ModelPart.PieceData->GetMesh();
+			swMesh* Mesh = ModelPart.PieceData->GetMesh();
 
 			if (!Mesh)
 				continue;
 
-			const std::pair<char[LC_PIECE_NAME_LEN + 1], int>& Entry = Search->second;
+			const std::pair<char[SW_PIECE_NAME_LEN + 1], int>& Entry = Search->second;
 			if (Entry.first[0] && IncludedLgeoNames.insert(Entry.first).second)
 			{
 				snprintf(Line, sizeof(Line), "#include \"%s.inc\" // %s\n", Entry.first, ModelPart.PieceData->m_strDescription);
@@ -3905,35 +3905,35 @@ lcResult<void> Project::ExportPOVRay(const QString& FileName)
 	ColorTablePointer.resize(NumColors);
 	for (size_t ColorIdx = 0; ColorIdx < NumColors; ColorIdx++)
 		ColorTablePointer[ColorIdx] = ColorTable[ColorIdx].data();
-	std::map<const lcMesh*, std::string> MeshNames;
+	std::map<const swMesh*, std::string> MeshNames;
 	std::set<QString> UsedPovNames;
 	UsedPovNames.insert(TopModelName);
 
-	for (const lcColor& Color : gColorList)
-		UsedPovNames.insert(QLatin1String("lc_") + QString::fromLatin1(Color.SafeName));
+	for (const swColor& Color : gColorList)
+		UsedPovNames.insert(QLatin1String("sw_") + QString::fromLatin1(Color.SafeName));
 
-	for (const lcModelPartsEntry& ModelPart : ModelParts)
+	for (const swModelPartsEntry& ModelPart : ModelParts)
 	{
-		lcMesh* Mesh = !ModelPart.Mesh ? ModelPart.PieceData->GetMesh() : ModelPart.Mesh;
+		swMesh* Mesh = !ModelPart.Mesh ? ModelPart.PieceData->GetMesh() : ModelPart.Mesh;
 
 		if (!Mesh)
 			continue;
 
 		if (!ModelPart.Mesh)
 		{
-			const std::map<const lcPieceData*, std::pair<char[LC_PIECE_NAME_LEN + 1], int>>::const_iterator ExistingPiece = PieceTable.find(ModelPart.PieceData);
+			const std::map<const swPieceData*, std::pair<char[SW_PIECE_NAME_LEN + 1], int>>::const_iterator ExistingPiece = PieceTable.find(ModelPart.PieceData);
 
 			if (ExistingPiece != PieceTable.end() && ExistingPiece->second.first[0] &&
 				(ExistingPiece->second.second & (LGEO_PIECE_LGEO | LGEO_PIECE_AR)))
 				continue;
 		}
 
-		std::map<const lcMesh*, std::string>::iterator MeshNameIt = MeshNames.find(Mesh);
+		std::map<const swMesh*, std::string>::iterator MeshNameIt = MeshNames.find(Mesh);
 		const bool Added = MeshNameIt == MeshNames.end();
 
 		if (Added)
 		{
-			const QString BaseName = QLatin1String("lc_") + MakeExportNameFragment(QString::fromUtf8(ModelPart.PieceData->mFileName));
+			const QString BaseName = QLatin1String("sw_") + MakeExportNameFragment(QString::fromUtf8(ModelPart.PieceData->mFileName));
 			const QString Identifier = MakeUniqueExportIdentifier(BaseName, UsedPovNames, QLatin1String("_clear"));
 			MeshNameIt = MeshNames.emplace(Mesh, Identifier.mid(3).toStdString()).first;
 		}
@@ -3942,8 +3942,8 @@ lcResult<void> Project::ExportPOVRay(const QString& FileName)
 
 		if (!ModelPart.Mesh)
 		{
-			std::pair<char[LC_PIECE_NAME_LEN + 1], int>& Entry = PieceTable[ModelPart.PieceData];
-			snprintf(Entry.first, sizeof(Entry.first), "lc_%s", MeshName.c_str());
+			std::pair<char[SW_PIECE_NAME_LEN + 1], int>& Entry = PieceTable[ModelPart.PieceData];
+			snprintf(Entry.first, sizeof(Entry.first), "sw_%s", MeshName.c_str());
 		}
 
 		if (!Added)
@@ -3951,7 +3951,7 @@ lcResult<void> Project::ExportPOVRay(const QString& FileName)
 
 		Mesh->ExportPOVRay(POVFile, MeshName.c_str(), &ColorTablePointer[0]);
 
-		snprintf(Line, sizeof(Line), "#declare lc_%s_clear = lc_%s\n\n", MeshName.c_str(), MeshName.c_str());
+		snprintf(Line, sizeof(Line), "#declare sw_%s_clear = sw_%s\n\n", MeshName.c_str(), MeshName.c_str());
 		POVFile.WriteLine(Line);
 	}
 
@@ -3961,10 +3961,10 @@ lcResult<void> Project::ExportPOVRay(const QString& FileName)
 		POVFile.WriteLine(Line);
 	}
 
-	for (const lcModelPartsEntry& ModelPart : ModelParts)
+	for (const swModelPartsEntry& ModelPart : ModelParts)
 	{
 		int ColorIdx = ModelPart.ColorIndex;
-		const char* Suffix = lcIsColorTranslucent(ColorIdx) ? "_clear" : "";
+		const char* Suffix = swIsColorTranslucent(ColorIdx) ? "_clear" : "";
 		const float* f = ModelPart.WorldMatrix.GetFloats();
 		char Modifier[32];
 		if (UseLGEO || MaterialColors.contains(ColorTable[ColorIdx].data()))
@@ -3973,14 +3973,14 @@ lcResult<void> Project::ExportPOVRay(const QString& FileName)
 			snprintf(Modifier, sizeof(Modifier), "texture");
 		if (!ModelPart.Mesh)
 		{
-			std::pair<char[LC_PIECE_NAME_LEN + 1], int>& Entry = PieceTable[ModelPart.PieceData];
+			std::pair<char[SW_PIECE_NAME_LEN + 1], int>& Entry = PieceTable[ModelPart.PieceData];
 
 			if (!Entry.first[0] && !(Entry.second & LGEO_PIECE_SLOPE))
 			{
-				const std::map<const lcMesh*, std::string>::const_iterator MeshName = MeshNames.find(ModelPart.PieceData->GetMesh());
+				const std::map<const swMesh*, std::string>::const_iterator MeshName = MeshNames.find(ModelPart.PieceData->GetMesh());
 
 				if (MeshName != MeshNames.end())
-					snprintf(Entry.first, sizeof(Entry.first), "lc_%s", MeshName->second.c_str());
+					snprintf(Entry.first, sizeof(Entry.first), "sw_%s", MeshName->second.c_str());
 			}
 
 			if (Entry.second & LGEO_PIECE_SLOPE)
@@ -4006,7 +4006,7 @@ lcResult<void> Project::ExportPOVRay(const QString& FileName)
 		{
 			const std::string& Name = MeshNames.at(ModelPart.Mesh);
 
-			snprintf(Line, sizeof(Line), "  object {\n    lc_%s%s\n    %s { %s }\n    matrix <%g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g>\n  }\n",
+			snprintf(Line, sizeof(Line), "  object {\n    sw_%s%s\n    %s { %s }\n    matrix <%g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g>\n  }\n",
 					Name.c_str(), Suffix, Modifier, ColorTable[ColorIdx].data(), -f[5], -f[4], -f[6], -f[1], -f[0], -f[2], f[9], f[8], f[10], f[13] / 25.0f, f[12] / 25.0f, f[14] / 25.0f);
 		}
 
@@ -4019,7 +4019,7 @@ lcResult<void> Project::ExportPOVRay(const QString& FileName)
 		POVFile.WriteLine(Line);
 
 		snprintf(Line, sizeof(Line), "object {\n  %s\n  %s { %s }\n}\n\n",
-				TopModelName.toLatin1().constData(), (UseLGEO ? "material" : "texture"), ColorTable[lcGetColorIndex(TopModelColorCode)].data());
+				TopModelName.toLatin1().constData(), (UseLGEO ? "material" : "texture"), ColorTable[swGetColorIndex(TopModelColorCode)].data());
 		POVFile.WriteLine(Line);
 	}
 
@@ -4032,23 +4032,23 @@ lcResult<void> Project::ExportPOVRay(const QString& FileName)
 		POVFile.WriteLine(Line);
 	}
 
-	return lcResult<void>();
+	return swResult<void>();
 }
 
-lcResult<void> Project::ExportWavefront(const QString& FileName)
+swResult<void> Project::ExportWavefront(const QString& FileName)
 {
-	const std::vector<lcModelPartsEntry> ModelParts = GetModelParts();
+	const std::vector<swModelPartsEntry> ModelParts = GetModelParts();
 
 	QString SaveFileName = GetExportFileName(FileName, QLatin1String("obj"), tr("Export Wavefront"), tr("Wavefront Files (*.obj);;All Files (*.*)"));
 
 	if (SaveFileName.isEmpty())
-		return lcUnexpected(QString());
+		return swUnexpected(QString());
 
-	lcDiskFile OBJFile(SaveFileName);
+	swDiskFile OBJFile(SaveFileName);
 	char Line[1024];
 
 	if (!OBJFile.Open(QIODevice::WriteOnly))
-		return lcUnexpected(tr("Could not open file '%1' for writing.").arg(SaveFileName));
+		return swUnexpected(tr("Could not open file '%1' for writing.").arg(SaveFileName));
 
 	OBJFile.WriteLine("# Model exported from LeoCAD\n");
 
@@ -4058,14 +4058,14 @@ lcResult<void> Project::ExportWavefront(const QString& FileName)
 	snprintf(Line, sizeof(Line), "#\n\nmtllib %s\n\n", QFileInfo(MaterialFileName).fileName().toLatin1().constData());
 	OBJFile.WriteLine(Line);
 
-	lcDiskFile MaterialFile(MaterialFileName);
+	swDiskFile MaterialFile(MaterialFileName);
 
 	if (!MaterialFile.Open(QIODevice::WriteOnly))
-		return lcUnexpected(tr("Could not open file '%1' for writing.").arg(MaterialFileName));
+		return swUnexpected(tr("Could not open file '%1' for writing.").arg(MaterialFileName));
 
 	MaterialFile.WriteLine("# Colors used by LeoCAD\n\n");
 
-	for (const lcColor& Color : gColorList)
+	for (const swColor& Color : gColorList)
 	{
 		if (Color.Translucent)
 			snprintf(Line, sizeof(Line), "newmtl %s\nKd %.2f %.2f %.2f\nD %.2f\n\n", Color.SafeName, Color.Value[0], Color.Value[1], Color.Value[2], Color.Value[3]);
@@ -4075,56 +4075,56 @@ lcResult<void> Project::ExportWavefront(const QString& FileName)
 		MaterialFile.WriteLine(Line);
 	}
 
-	auto WritePositions=[&Line, &OBJFile](const auto* Verts, int VertexCount, const lcMatrix44& ModelWorld)
+	auto WritePositions=[&Line, &OBJFile](const auto* Verts, int VertexCount, const swMatrix44& ModelWorld)
 	{
 		for (int VertexIndex = 0; VertexIndex < VertexCount; VertexIndex++)
 		{
-			lcVector3 Position = lcMul31(Verts[VertexIndex].Position, ModelWorld);
+			swVector3 Position = swMul31(Verts[VertexIndex].Position, ModelWorld);
 			snprintf(Line, sizeof(Line), "v %.2f %.2f %.2f\n", Position[0], Position[1], Position[2]);
 			OBJFile.WriteLine(Line);
 		}
 	};
 
-	auto WriteNormals=[&Line, &OBJFile](const auto* Verts, int VertexCount, const lcMatrix44& ModelWorld)
+	auto WriteNormals=[&Line, &OBJFile](const auto* Verts, int VertexCount, const swMatrix44& ModelWorld)
 	{
 		for (int VertexIndex = 0; VertexIndex < VertexCount; VertexIndex++)
 		{
-			lcVector3 Normal = lcMul30(lcUnpackNormal(Verts[VertexIndex].Normal), ModelWorld);
+			swVector3 Normal = swMul30(swUnpackNormal(Verts[VertexIndex].Normal), ModelWorld);
 			snprintf(Line, sizeof(Line), "vn %.2f %.2f %.2f\n", Normal[0], Normal[1], Normal[2]);
 			OBJFile.WriteLine(Line);
 		}
 	};
 
-	for (const lcModelPartsEntry& ModelPart : ModelParts)
+	for (const swModelPartsEntry& ModelPart : ModelParts)
 	{
-		lcMesh* Mesh = !ModelPart.Mesh ? ModelPart.PieceData->GetMesh() : ModelPart.Mesh;
+		swMesh* Mesh = !ModelPart.Mesh ? ModelPart.PieceData->GetMesh() : ModelPart.Mesh;
 
 		if (!Mesh)
 			continue;
 
-		const lcVertex* Verts = static_cast<const lcVertex*>(Mesh->mVertexData);
+		const swVertex* Verts = static_cast<const swVertex*>(Mesh->mVertexData);
 
 		WritePositions(Verts, Mesh->mNumVertices, ModelPart.WorldMatrix);
 
-		const lcVertexTextured* VertsTextured = reinterpret_cast<const lcVertexTextured*>(Verts + Mesh->mNumVertices);
+		const swVertexTextured* VertsTextured = reinterpret_cast<const swVertexTextured*>(Verts + Mesh->mNumVertices);
 
 		WritePositions(VertsTextured, Mesh->mNumTexturedVertices, ModelPart.WorldMatrix);
 
 		OBJFile.WriteLine("#\n\n");
 	}
 
-	for (const lcModelPartsEntry& ModelPart : ModelParts)
+	for (const swModelPartsEntry& ModelPart : ModelParts)
 	{
-		lcMesh* Mesh = !ModelPart.Mesh ? ModelPart.PieceData->GetMesh() : ModelPart.Mesh;
+		swMesh* Mesh = !ModelPart.Mesh ? ModelPart.PieceData->GetMesh() : ModelPart.Mesh;
 
 		if (!Mesh)
 			continue;
 
-		const lcVertex* Verts = static_cast<const lcVertex*>(Mesh->mVertexData);
+		const swVertex* Verts = static_cast<const swVertex*>(Mesh->mVertexData);
 
 		WriteNormals(Verts, Mesh->mNumVertices, ModelPart.WorldMatrix);
 
-		const lcVertexTextured* VertsTextured = reinterpret_cast<const lcVertexTextured*>(Verts + Mesh->mNumVertices);
+		const swVertexTextured* VertsTextured = reinterpret_cast<const swVertexTextured*>(Verts + Mesh->mNumVertices);
 
 		WriteNormals(VertsTextured, Mesh->mNumTexturedVertices, ModelPart.WorldMatrix);
 
@@ -4134,9 +4134,9 @@ lcResult<void> Project::ExportWavefront(const QString& FileName)
 	int PieceCount = 0;
 	quint32 BaseVertex = 1;
 
-	for (const lcModelPartsEntry& ModelPart : ModelParts)
+	for (const swModelPartsEntry& ModelPart : ModelParts)
 	{
-		lcMesh* Mesh = !ModelPart.Mesh ? ModelPart.PieceData->GetMesh() : ModelPart.Mesh;
+		swMesh* Mesh = !ModelPart.Mesh ? ModelPart.PieceData->GetMesh() : ModelPart.Mesh;
 
 		if (!Mesh)
 			continue;
@@ -4148,31 +4148,31 @@ lcResult<void> Project::ExportWavefront(const QString& FileName)
 		BaseVertex += Mesh->mNumVertices + Mesh->mNumTexturedVertices;
 	}
 
-	return lcResult<void>();
+	return swResult<void>();
 }
 
-lcResult<void> Project::SaveImage(const lcImageDialogOptions& Options)
+swResult<void> Project::SaveImage(const swImageDialogOptions& Options)
 {
 	QString FilePath = Options.FilePath;
 	QString Extension = QFileInfo(FilePath).suffix();
 
 	if (!Extension.isEmpty())
-		lcSetProfileString(LC_PROFILE_IMAGE_EXTENSION, FilePath.right(Extension.length() + 1));
+		swSetProfileString(SW_PROFILE_IMAGE_EXTENSION, FilePath.right(Extension.length() + 1));
 
 	if (Options.Start != Options.End)
 		FilePath = FilePath.insert(FilePath.length() - Extension.length() - 1, QLatin1String("%1"));
 
-	return mActiveModel->SaveStepImages(FilePath, Options.Start != Options.End, false, Options.Width, Options.Height, Options.Start, Options.End, lcImageBackground::Default);
+	return mActiveModel->SaveStepImages(FilePath, Options.Start != Options.End, false, Options.Width, Options.Height, Options.Start, Options.End, swImageBackground::Default);
 }
 
-void Project::UpdatePieceData(lcPieceData* PieceData) const
+void Project::UpdatePieceData(swPieceData* PieceData) const
 {
 	if (!mModels.empty())
 	{
-		std::vector<lcModel*> UpdatedModels;
+		std::vector<swModel*> UpdatedModels;
 		mModels[0]->UpdatePieceData(UpdatedModels);
 
-		lcBoundingBox BoundingBox = mModels[0]->GetPieceData()->GetBoundingBox();
+		swBoundingBox BoundingBox = mModels[0]->GetPieceData()->GetBoundingBox();
 		PieceData->SetBoundingBox(BoundingBox.Min, BoundingBox.Max);
 	}
 }

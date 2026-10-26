@@ -1,43 +1,43 @@
 #pragma once
 
-enum class lcPOVRayRenderQuality
+enum class swPOVRayRenderQuality
 {
 	Low,
 	Medium,
 	High
 };
 
-enum class lcRenderDialogMode
+enum class swRenderDialogMode
 {
 	RenderPOVRay,
 	RenderBlender,
 	OpenInBlender
 };
 
-#ifndef LC_DISABLE_RENDER_DIALOG
+#ifndef SW_DISABLE_RENDER_DIALOG
 
 namespace Ui {
-class lcRenderDialog;
+class swRenderDialog;
 }
 
-class lcRenderProcess : public QProcess
+class swRenderProcess : public QProcess
 {
 	Q_OBJECT
 
 public:
-	explicit lcRenderProcess(QObject* Parent)
+	explicit swRenderProcess(QObject* Parent)
 		: QProcess(Parent)
 	{
 	}
-	~lcRenderProcess();
+	~swRenderProcess();
 };
 
-class lcRenderPreviewWidget : public QWidget
+class swRenderPreviewWidget : public QWidget
 {
 	Q_OBJECT
 
 public:
-	explicit lcRenderPreviewWidget(QWidget* Parent)
+	explicit swRenderPreviewWidget(QWidget* Parent)
 		: QWidget(Parent)
 	{
 	}
@@ -57,13 +57,13 @@ protected:
 	QImage mScaledImage;
 };
 
-class lcRenderDialog : public QDialog
+class swRenderDialog : public QDialog
 {
 	Q_OBJECT
 
 public:
-	explicit lcRenderDialog(QWidget* Parent, lcRenderDialogMode Mode);
-	virtual ~lcRenderDialog();
+	explicit swRenderDialog(QWidget* Parent, swRenderDialogMode Mode);
+	virtual ~swRenderDialog();
 
 public slots:
 	void reject() override;
@@ -100,31 +100,31 @@ protected:
 	QPushButton* mRenderButton = nullptr;
 	QPushButton* mSettingsButton = nullptr;
 	QPushButton* mLogButton = nullptr;
-	lcRenderProcess* mProcess = nullptr;
+	swRenderProcess* mProcess = nullptr;
 
 	int mWidth = 1280;
 	int mHeight = 720;
-	lcPOVRayRenderQuality mQuality = lcPOVRayRenderQuality::High;
+	swPOVRayRenderQuality mQuality = swPOVRayRenderQuality::High;
 	int mPreviewWidth;
 	int mPreviewHeight;
-	lcRenderDialogMode mDialogMode;
+	swRenderDialogMode mDialogMode;
 	int mBlendProgValue;
 	int mBlendProgMax;
 	double mScale;
 	QString mDataPath;
 
-	Ui::lcRenderDialog* ui;
+	Ui::swRenderDialog* ui;
 };
 
 #else
 
-class lcRenderPreviewWidget : public QWidget
+class swRenderPreviewWidget : public QWidget
 {
 public:
-	explicit lcRenderPreviewWidget(QWidget* Parent)
+	explicit swRenderPreviewWidget(QWidget* Parent)
 	    : QWidget(Parent)
 	{
 	}
 };
 
-#endif // LC_DISABLE_RENDER_DIALOG
+#endif // SW_DISABLE_RENDER_DIALOG

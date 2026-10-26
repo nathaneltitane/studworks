@@ -7,11 +7,11 @@
 #include "sw_texture.h"
 #include "sw_string.h"
 
-static void lcCheckTexCoordsWrap(const lcVector4& Plane2, const lcVector3 (&Positions)[3], lcVector2 (&TexCoords)[3])
+static void swCheckTexCoordsWrap(const swVector4& Plane2, const swVector3 (&Positions)[3], swVector2 (&TexCoords)[3])
 {
-	lcVector2& TexCoords1 = TexCoords[0];
-	lcVector2& TexCoords2 = TexCoords[1];
-	lcVector2& TexCoords3 = TexCoords[2];
+	swVector2& TexCoords1 = TexCoords[0];
+	swVector2& TexCoords2 = TexCoords[1];
+	swVector2& TexCoords3 = TexCoords[2];
 
 	const float u12 = fabsf(TexCoords1.x - TexCoords2.x);
 	const float u13 = fabsf(TexCoords1.x - TexCoords3.x);
@@ -20,9 +20,9 @@ static void lcCheckTexCoordsWrap(const lcVector4& Plane2, const lcVector3 (&Posi
 	if (u12 < 0.5f && u13 < 0.5f && u23 < 0.5f)
 		return;
 
-	const float Dot1 = fabsf(lcDot(Plane2, lcVector4(Positions[0], 1.0f)));
-	const float Dot2 = fabsf(lcDot(Plane2, lcVector4(Positions[1], 1.0f)));
-	const float Dot3 = fabsf(lcDot(Plane2, lcVector4(Positions[2], 1.0f)));
+	const float Dot1 = fabsf(swDot(Plane2, swVector4(Positions[0], 1.0f)));
+	const float Dot2 = fabsf(swDot(Plane2, swVector4(Positions[1], 1.0f)));
+	const float Dot3 = fabsf(swDot(Plane2, swVector4(Positions[2], 1.0f)));
 
 	if (Dot1 > Dot2)
 	{
@@ -64,24 +64,24 @@ static void lcCheckTexCoordsWrap(const lcVector4& Plane2, const lcVector3 (&Posi
 	}
 }
 
-static void lcCheckTexCoordsPole(const lcVector4& FrontPlane, const lcVector4& Plane2, const lcVector3(&Positions)[3], lcVector2(&TexCoords)[3])
+static void swCheckTexCoordsPole(const swVector4& FrontPlane, const swVector4& Plane2, const swVector3(&Positions)[3], swVector2(&TexCoords)[3])
 {
 	int PoleIndex;
 	int EdgeIndex1, EdgeIndex2;
 
-	if (fabsf(lcDot(lcVector4(Positions[0], 1.0f), FrontPlane)) < 0.01f && fabsf(lcDot(lcVector4(Positions[0], 1.0f), Plane2)) < 0.01f)
+	if (fabsf(swDot(swVector4(Positions[0], 1.0f), FrontPlane)) < 0.01f && fabsf(swDot(swVector4(Positions[0], 1.0f), Plane2)) < 0.01f)
 	{
 		PoleIndex = 0;
 		EdgeIndex1 = 1;
 		EdgeIndex2 = 2;
 	}
-	else if (fabsf(lcDot(lcVector4(Positions[1], 1.0f), FrontPlane)) < 0.01f && fabsf(lcDot(lcVector4(Positions[1], 1.0f), Plane2)) < 0.01f)
+	else if (fabsf(swDot(swVector4(Positions[1], 1.0f), FrontPlane)) < 0.01f && fabsf(swDot(swVector4(Positions[1], 1.0f), Plane2)) < 0.01f)
 	{
 		PoleIndex = 1;
 		EdgeIndex1 = 0;
 		EdgeIndex2 = 2;
 	}
-	else if (fabsf(lcDot(lcVector4(Positions[2], 1.0f), FrontPlane)) < 0.01f && fabsf(lcDot(lcVector4(Positions[2], 1.0f), Plane2)) < 0.01f)
+	else if (fabsf(swDot(swVector4(Positions[2], 1.0f), FrontPlane)) < 0.01f && fabsf(swDot(swVector4(Positions[2], 1.0f), Plane2)) < 0.01f)
 	{
 		PoleIndex = 2;
 		EdgeIndex1 = 0;
@@ -90,16 +90,16 @@ static void lcCheckTexCoordsPole(const lcVector4& FrontPlane, const lcVector4& P
 	else
 		return;
 
-	const lcVector3 OppositeEdge = Positions[EdgeIndex2] - Positions[EdgeIndex1];
-	const lcVector3 SideEdge = Positions[PoleIndex] - Positions[EdgeIndex1];
+	const swVector3 OppositeEdge = Positions[EdgeIndex2] - Positions[EdgeIndex1];
+	const swVector3 SideEdge = Positions[PoleIndex] - Positions[EdgeIndex1];
 
-	const float OppositeLength = lcLength(OppositeEdge);
-	const float Projection = lcDot(OppositeEdge, SideEdge) / (OppositeLength * OppositeLength);
+	const float OppositeLength = swLength(OppositeEdge);
+	const float Projection = swDot(OppositeEdge, SideEdge) / (OppositeLength * OppositeLength);
 
 	TexCoords[PoleIndex].x = TexCoords[EdgeIndex1].x + (TexCoords[EdgeIndex2].x - TexCoords[EdgeIndex1].x) * Projection;
 }
 
-static void lcResequenceQuad(int* Indices, int a, int b, int c, int d)
+static void swResequenceQuad(int* Indices, int a, int b, int c, int d)
 {
 	Indices[0] = a;
 	Indices[1] = b;
@@ -107,35 +107,35 @@ static void lcResequenceQuad(int* Indices, int a, int b, int c, int d)
 	Indices[3] = d;
 }
 
-static void lcTestQuad(int (&TriangleIndices)[2][3], const lcVector3 (&Vertices)[4])
+static void swTestQuad(int (&TriangleIndices)[2][3], const swVector3 (&Vertices)[4])
 {
-	const lcVector3 v01 = Vertices[1] - Vertices[0];
-	const lcVector3 v02 = Vertices[2] - Vertices[0];
-	const lcVector3 v03 = Vertices[3] - Vertices[0];
-	const lcVector3 cp1 = lcCross(v01, v02);
-	const lcVector3 cp2 = lcCross(v02, v03);
+	const swVector3 v01 = Vertices[1] - Vertices[0];
+	const swVector3 v02 = Vertices[2] - Vertices[0];
+	const swVector3 v03 = Vertices[3] - Vertices[0];
+	const swVector3 cp1 = swCross(v01, v02);
+	const swVector3 cp2 = swCross(v02, v03);
 
-	if (lcDot(cp1, cp2) > 0.0f)
+	if (swDot(cp1, cp2) > 0.0f)
 		return;
 
-	const lcVector3 v12 = Vertices[2] - Vertices[1];
-	const lcVector3 v13 = Vertices[3] - Vertices[1];
-	const lcVector3 v23 = Vertices[3] - Vertices[2];
+	const swVector3 v12 = Vertices[2] - Vertices[1];
+	const swVector3 v13 = Vertices[3] - Vertices[1];
+	const swVector3 v23 = Vertices[3] - Vertices[2];
 	int QuadIndices[4] = { 0, 1, 2, 3 };
 
-	if (lcDot(lcCross(v12, v01), lcCross(v01, v13)) > 0.0f)
+	if (swDot(swCross(v12, v01), swCross(v01, v13)) > 0.0f)
 	{
-		if (-lcDot(lcCross(v02, v12), lcCross(v12, v23)) > 0.0f)
-			lcResequenceQuad(QuadIndices, 1, 2, 3, 0);
+		if (-swDot(swCross(v02, v12), swCross(v12, v23)) > 0.0f)
+			swResequenceQuad(QuadIndices, 1, 2, 3, 0);
 		else
-			lcResequenceQuad(QuadIndices, 0, 3, 1, 2);
+			swResequenceQuad(QuadIndices, 0, 3, 1, 2);
 	}
 	else
 	{
-		if (-lcDot(lcCross(v02, v12), lcCross(v12, v23)) > 0.0f)
-			lcResequenceQuad(QuadIndices, 0, 1, 3, 2);
+		if (-swDot(swCross(v02, v12), swCross(v12, v23)) > 0.0f)
+			swResequenceQuad(QuadIndices, 0, 1, 3, 2);
 		else
-			lcResequenceQuad(QuadIndices, 1, 2, 3, 0);
+			swResequenceQuad(QuadIndices, 1, 2, 3, 0);
 	}
 
 	TriangleIndices[0][0] = QuadIndices[0];
@@ -147,55 +147,55 @@ static void lcTestQuad(int (&TriangleIndices)[2][3], const lcVector3 (&Vertices)
 	TriangleIndices[1][2] = QuadIndices[0];
 }
 
-constexpr float lcDistanceEpsilon = 0.01f; // Maximum value for 50591.dat
+constexpr float swDistanceEpsilon = 0.01f; // Maximum value for 50591.dat
 
-static bool lcCompareVertices(const lcVector3& Position1, const lcVector3& Position2)
+static bool swCompareVertices(const swVector3& Position1, const swVector3& Position2)
 {
-	return fabsf(Position1.x - Position2.x) < lcDistanceEpsilon && fabsf(Position1.y - Position2.y) < lcDistanceEpsilon && fabsf(Position1.z - Position2.z) < lcDistanceEpsilon;
+	return fabsf(Position1.x - Position2.x) < swDistanceEpsilon && fabsf(Position1.y - Position2.y) < swDistanceEpsilon && fabsf(Position1.z - Position2.z) < swDistanceEpsilon;
 }
 
-lcMeshLoaderSection* lcMeshLoaderTypeData::AddSection(lcMeshPrimitiveType PrimitiveType, lcMeshLoaderMaterial* Material)
+swMeshLoaderSection* swMeshLoaderTypeData::AddSection(swMeshPrimitiveType PrimitiveType, swMeshLoaderMaterial* Material)
 {
-	for (const std::unique_ptr<lcMeshLoaderSection>& Section : mSections)
+	for (const std::unique_ptr<swMeshLoaderSection>& Section : mSections)
 		if (Section->mMaterial == Material && Section->mPrimitiveType == PrimitiveType)
 			return Section.get();
 
-	mSections.emplace_back(new lcMeshLoaderSection(PrimitiveType, Material));
+	mSections.emplace_back(new swMeshLoaderSection(PrimitiveType, Material));
 
 	return mSections.back().get();
 }
 
-quint32 lcMeshLoaderTypeData::AddVertex(const lcVector3& Position, bool Optimize)
+quint32 swMeshLoaderTypeData::AddVertex(const swVector3& Position, bool Optimize)
 {
 	if (Optimize)
 	{
 		for (int VertexIdx = static_cast<int>(mVertices.size()) - 1; VertexIdx >= 0; VertexIdx--)
 		{
-			const lcMeshLoaderVertex& Vertex = mVertices[VertexIdx];
+			const swMeshLoaderVertex& Vertex = mVertices[VertexIdx];
 
-			if (lcCompareVertices(Position, Vertex.Position))
+			if (swCompareVertices(Position, Vertex.Position))
 				return VertexIdx;
 		}
 	}
 
-	lcMeshLoaderVertex& Vertex = mVertices.emplace_back();
+	swMeshLoaderVertex& Vertex = mVertices.emplace_back();
 
 	Vertex.Position = Position;
-	Vertex.Normal = lcVector3(0.0f, 0.0f, 0.0f);
+	Vertex.Normal = swVector3(0.0f, 0.0f, 0.0f);
 	Vertex.NormalWeight = 0.0f;
 
 	return static_cast<quint32>(mVertices.size()) - 1;
 }
 
-quint32 lcMeshLoaderTypeData::AddVertex(const lcVector3& Position, const lcVector3& Normal, float NormalWeight, bool Optimize)
+quint32 swMeshLoaderTypeData::AddVertex(const swVector3& Position, const swVector3& Normal, float NormalWeight, bool Optimize)
 {
 	if (Optimize)
 	{
 		for (int VertexIdx = static_cast<int>(mVertices.size()) - 1; VertexIdx >= 0; VertexIdx--)
 		{
-			lcMeshLoaderVertex& Vertex = mVertices[VertexIdx];
+			swMeshLoaderVertex& Vertex = mVertices[VertexIdx];
 
-			if (lcCompareVertices(Position, Vertex.Position))
+			if (swCompareVertices(Position, Vertex.Position))
 			{
 				if (Vertex.NormalWeight == 0.0f)
 				{
@@ -203,9 +203,9 @@ quint32 lcMeshLoaderTypeData::AddVertex(const lcVector3& Position, const lcVecto
 					Vertex.NormalWeight = NormalWeight;
 					return VertexIdx;
 				}
-				else if (lcDot(Normal, Vertex.Normal) > 0.71f)
+				else if (swDot(Normal, Vertex.Normal) > 0.71f)
 				{
-					Vertex.Normal = lcNormalize(Vertex.Normal * Vertex.NormalWeight + Normal * NormalWeight);
+					Vertex.Normal = swNormalize(Vertex.Normal * Vertex.NormalWeight + Normal * NormalWeight);
 					Vertex.NormalWeight += NormalWeight;
 					return VertexIdx;
 				}
@@ -213,7 +213,7 @@ quint32 lcMeshLoaderTypeData::AddVertex(const lcVector3& Position, const lcVecto
 		}
 	}
 
-	lcMeshLoaderVertex& Vertex = mVertices.emplace_back();
+	swMeshLoaderVertex& Vertex = mVertices.emplace_back();
 
 	Vertex.Position = Position;
 	Vertex.Normal = Normal;
@@ -222,9 +222,9 @@ quint32 lcMeshLoaderTypeData::AddVertex(const lcVector3& Position, const lcVecto
 	return static_cast<quint32>(mVertices.size()) - 1;
 }
 
-quint32 lcMeshLoaderTypeData::AddConditionalVertex(const lcVector3(&Position)[4])
+quint32 swMeshLoaderTypeData::AddConditionalVertex(const swVector3(&Position)[4])
 {
-	lcMeshLoaderConditionalVertex& Vertex = mConditionalVertices.emplace_back();
+	swMeshLoaderConditionalVertex& Vertex = mConditionalVertices.emplace_back();
 
 	Vertex.Position[0] = Position[0];
 	Vertex.Position[1] = Position[1];
@@ -234,39 +234,39 @@ quint32 lcMeshLoaderTypeData::AddConditionalVertex(const lcVector3(&Position)[4]
 	return static_cast<quint32>(mConditionalVertices.size()) - 1;
 }
 
-void lcMeshLoaderTypeData::ProcessLine(int LineType, lcMeshLoaderMaterial* Material, bool WindingCCW, lcVector3 (&Vertices)[4], bool Optimize)
+void swMeshLoaderTypeData::ProcessLine(int LineType, swMeshLoaderMaterial* Material, bool WindingCCW, swVector3 (&Vertices)[4], bool Optimize)
 {
-	constexpr lcMeshPrimitiveType PrimitiveTypes[4] = { LC_MESH_LINES, LC_MESH_TRIANGLES, LC_MESH_TRIANGLES, LC_MESH_CONDITIONAL_LINES };
-	lcMeshPrimitiveType PrimitiveType = PrimitiveTypes[LineType - 2];
+	constexpr swMeshPrimitiveType PrimitiveTypes[4] = { SW_MESH_LINES, SW_MESH_TRIANGLES, SW_MESH_TRIANGLES, SW_MESH_CONDITIONAL_LINES };
+	swMeshPrimitiveType PrimitiveType = PrimitiveTypes[LineType - 2];
 
-	if (Material->Type != lcMeshLoaderMaterialType::Solid && PrimitiveType == LC_MESH_TRIANGLES)
-		PrimitiveType = LC_MESH_TEXTURED_TRIANGLES;
+	if (Material->Type != swMeshLoaderMaterialType::Solid && PrimitiveType == SW_MESH_TRIANGLES)
+		PrimitiveType = SW_MESH_TEXTURED_TRIANGLES;
 
-	lcMeshLoaderSection* Section = AddSection(PrimitiveType, Material);
+	swMeshLoaderSection* Section = AddSection(PrimitiveType, Material);
 
 	if (LineType == 3 || LineType == 4)
 	{
 		int TriangleIndices[2][3] = { { 0, 1, 2 }, { 2, 3, 0 } };
 
 		if (LineType == 4)
-			lcTestQuad(TriangleIndices, Vertices);
+			swTestQuad(TriangleIndices, Vertices);
 
-		lcVector3 Normal = lcNormalize(lcCross(Vertices[1] - Vertices[0], Vertices[2] - Vertices[0]));
+		swVector3 Normal = swNormalize(swCross(Vertices[1] - Vertices[0], Vertices[2] - Vertices[0]));
 
 		if (!WindingCCW)
 			Normal = -Normal;
 
 		for (int TriangleIndex = 0; TriangleIndex < LineType - 2; TriangleIndex++)
 		{
-			const lcVector3& Vertex1 = Vertices[TriangleIndices[TriangleIndex][0]];
-			const lcVector3& Vertex2 = Vertices[TriangleIndices[TriangleIndex][1]];
-			const lcVector3& Vertex3 = Vertices[TriangleIndices[TriangleIndex][2]];
-			const lcVector3 Edge1 = lcNormalize(Vertex2 - Vertex1);
-			const lcVector3 Edge2 = lcNormalize(Vertex3 - Vertex1);
-			const lcVector3 Edge3 = lcNormalize(Vertex3 - Vertex2);
-			const float Angle1 = acosf(lcDot(Edge1, Edge2));
-			const float Angle2 = acosf(lcDot(-Edge1, Edge3));
-			const float Angle3 = LC_PI - Angle1 - Angle2;
+			const swVector3& Vertex1 = Vertices[TriangleIndices[TriangleIndex][0]];
+			const swVector3& Vertex2 = Vertices[TriangleIndices[TriangleIndex][1]];
+			const swVector3& Vertex3 = Vertices[TriangleIndices[TriangleIndex][2]];
+			const swVector3 Edge1 = swNormalize(Vertex2 - Vertex1);
+			const swVector3 Edge2 = swNormalize(Vertex3 - Vertex1);
+			const swVector3 Edge3 = swNormalize(Vertex3 - Vertex2);
+			const float Angle1 = acosf(swDot(Edge1, Edge2));
+			const float Angle2 = acosf(swDot(-Edge1, Edge3));
+			const float Angle3 = SW_PI - Angle1 - Angle2;
 
 			int Indices[3];
 
@@ -318,25 +318,25 @@ void lcMeshLoaderTypeData::ProcessLine(int LineType, lcMeshLoaderMaterial* Mater
 	}
 }
 
-void lcMeshLoaderTypeData::AddMeshData(const lcMeshLoaderTypeData& Data, const lcMatrix44& Transform, quint32 CurrentColorCode, bool InvertWinding, bool InvertNormals, lcMeshLoaderTextureMap* TextureMap)
+void swMeshLoaderTypeData::AddMeshData(const swMeshLoaderTypeData& Data, const swMatrix44& Transform, quint32 CurrentColorCode, bool InvertWinding, bool InvertNormals, swMeshLoaderTextureMap* TextureMap)
 {
-	const std::vector<lcMeshLoaderVertex>& DataVertices = Data.mVertices;
+	const std::vector<swMeshLoaderVertex>& DataVertices = Data.mVertices;
 	std::vector<quint32> IndexRemap;
-	const lcMatrix33 NormalTransform = lcMatrix33Transpose(lcMatrix33(lcMatrix44Inverse(Transform)));
+	const swMatrix33 NormalTransform = swMatrix33Transpose(swMatrix33(swMatrix44Inverse(Transform)));
 
 	IndexRemap.reserve(DataVertices.size());
 	mVertices.reserve(mVertices.size() + DataVertices.size());
 
-	for (const lcMeshLoaderVertex& DataVertex : DataVertices)
+	for (const swMeshLoaderVertex& DataVertex : DataVertices)
 	{
-		const lcVector3 Position = lcMul31(DataVertex.Position, Transform);
+		const swVector3 Position = swMul31(DataVertex.Position, Transform);
 		int Index;
 
 		if (DataVertex.NormalWeight == 0.0f)
 			Index = AddVertex(Position, true);
 		else
 		{
-			lcVector3 Normal = lcNormalize(lcMul(DataVertex.Normal, NormalTransform));
+			swVector3 Normal = swNormalize(swMul(DataVertex.Normal, NormalTransform));
 			if (InvertNormals)
 				Normal = -Normal;
 			Index = AddVertex(Position, Normal, DataVertex.NormalWeight, true);
@@ -349,42 +349,42 @@ void lcMeshLoaderTypeData::AddMeshData(const lcMeshLoaderTypeData& Data, const l
 	std::vector<quint32> ConditionalRemap;
 	ConditionalRemap.reserve(Data.mConditionalVertices.size());
 
-	for (const lcMeshLoaderConditionalVertex& DataVertex : Data.mConditionalVertices)
+	for (const swMeshLoaderConditionalVertex& DataVertex : Data.mConditionalVertices)
 	{
-		lcVector3 Position[4];
+		swVector3 Position[4];
 
-		Position[0] = lcMul31(DataVertex.Position[0], Transform);
-		Position[1] = lcMul31(DataVertex.Position[1], Transform);
-		Position[2] = lcMul31(DataVertex.Position[2], Transform);
-		Position[3] = lcMul31(DataVertex.Position[3], Transform);
+		Position[0] = swMul31(DataVertex.Position[0], Transform);
+		Position[1] = swMul31(DataVertex.Position[1], Transform);
+		Position[2] = swMul31(DataVertex.Position[2], Transform);
+		Position[3] = swMul31(DataVertex.Position[3], Transform);
 
 		const int Index = AddConditionalVertex(Position);
 		ConditionalRemap.emplace_back(Index);
 	}
 
-	for (const std::unique_ptr<lcMeshLoaderSection>& SrcSection : Data.mSections)
+	for (const std::unique_ptr<swMeshLoaderSection>& SrcSection : Data.mSections)
 	{
 		const quint32 ColorCode = SrcSection->mMaterial->Color == 16 ? CurrentColorCode : SrcSection->mMaterial->Color;
-		lcMeshPrimitiveType PrimitiveType = SrcSection->mPrimitiveType;
-		lcMeshLoaderSection* DstSection;
+		swMeshPrimitiveType PrimitiveType = SrcSection->mPrimitiveType;
+		swMeshLoaderSection* DstSection;
 
-		if (SrcSection->mMaterial->Type != lcMeshLoaderMaterialType::Solid)
+		if (SrcSection->mMaterial->Type != swMeshLoaderMaterialType::Solid)
 		{
-			lcMeshLoaderTextureParams DstTextureMap;
+			swMeshLoaderTextureParams DstTextureMap;
 
 			if (TextureMap)
 				DstTextureMap = *TextureMap;
 			else
 				DstTextureMap = *SrcSection->mMaterial;
 
-			for (lcVector3& Point : DstTextureMap.Points)
-				Point = lcMul31(Point, Transform);
+			for (swVector3& Point : DstTextureMap.Points)
+				Point = swMul31(Point, Transform);
 
 			DstSection = AddSection(PrimitiveType, mMeshData->GetTexturedMaterial(ColorCode, DstTextureMap));
 		}
-		else if (TextureMap && SrcSection->mPrimitiveType == LC_MESH_TRIANGLES)
+		else if (TextureMap && SrcSection->mPrimitiveType == SW_MESH_TRIANGLES)
 		{
-			PrimitiveType = LC_MESH_TEXTURED_TRIANGLES;
+			PrimitiveType = SW_MESH_TEXTURED_TRIANGLES;
 
 			DstSection = AddSection(PrimitiveType, mMeshData->GetTexturedMaterial(ColorCode, *TextureMap));
 		}
@@ -395,12 +395,12 @@ void lcMeshLoaderTypeData::AddMeshData(const lcMeshLoaderTypeData& Data, const l
 
 		DstSection->mIndices.reserve(DstSection->mIndices.size() + SrcSection->mIndices.size());
 
-		if (PrimitiveType == LC_MESH_CONDITIONAL_LINES)
+		if (PrimitiveType == SW_MESH_CONDITIONAL_LINES)
 		{
 			for (const quint32 Index : SrcSection->mIndices)
 				DstSection->mIndices.emplace_back(ConditionalRemap[Index]);
 		}
-		else if (!InvertWinding || (PrimitiveType == LC_MESH_LINES))
+		else if (!InvertWinding || (PrimitiveType == SW_MESH_LINES))
 		{
 			for (const quint32 Index : SrcSection->mIndices)
 				DstSection->mIndices.emplace_back(IndexRemap[Index]);
@@ -417,21 +417,21 @@ void lcMeshLoaderTypeData::AddMeshData(const lcMeshLoaderTypeData& Data, const l
 	}
 }
 
-void lcMeshLoaderTypeData::AddMeshDataNoDuplicateCheck(const lcMeshLoaderTypeData& Data, const lcMatrix44& Transform, quint32 CurrentColorCode, bool InvertWinding, bool InvertNormals, lcMeshLoaderTextureMap* TextureMap)
+void swMeshLoaderTypeData::AddMeshDataNoDuplicateCheck(const swMeshLoaderTypeData& Data, const swMatrix44& Transform, quint32 CurrentColorCode, bool InvertWinding, bool InvertNormals, swMeshLoaderTextureMap* TextureMap)
 {
-	const std::vector<lcMeshLoaderVertex>& DataVertices = Data.mVertices;
+	const std::vector<swMeshLoaderVertex>& DataVertices = Data.mVertices;
 	quint32 BaseIndex;
-	const lcMatrix33 NormalTransform = lcMatrix33Transpose(lcMatrix33(lcMatrix44Inverse(Transform)));
+	const swMatrix33 NormalTransform = swMatrix33Transpose(swMatrix33(swMatrix44Inverse(Transform)));
 
 	BaseIndex = static_cast<quint32>(mVertices.size());
 
 	mVertices.reserve(mVertices.size() + DataVertices.size());
 
-	for (const lcMeshLoaderVertex& SrcVertex : DataVertices)
+	for (const swMeshLoaderVertex& SrcVertex : DataVertices)
 	{
-		lcMeshLoaderVertex& DstVertex = mVertices.emplace_back();
-		DstVertex.Position = lcMul31(SrcVertex.Position, Transform);
-		DstVertex.Normal = lcNormalize(lcMul(SrcVertex.Normal, NormalTransform));
+		swMeshLoaderVertex& DstVertex = mVertices.emplace_back();
+		DstVertex.Position = swMul31(SrcVertex.Position, Transform);
+		DstVertex.Normal = swNormalize(swMul(SrcVertex.Normal, NormalTransform));
 		if (InvertNormals)
 			DstVertex.Normal = -DstVertex.Normal;
 		DstVertex.NormalWeight = SrcVertex.NormalWeight;
@@ -440,39 +440,39 @@ void lcMeshLoaderTypeData::AddMeshDataNoDuplicateCheck(const lcMeshLoaderTypeDat
 	mConditionalVertices.reserve(mConditionalVertices.size() + Data.mConditionalVertices.size());
 	const quint32 BaseConditional = static_cast<quint32>(mConditionalVertices.size());
 
-	for (const lcMeshLoaderConditionalVertex& DataVertex : Data.mConditionalVertices)
+	for (const swMeshLoaderConditionalVertex& DataVertex : Data.mConditionalVertices)
 	{
-		lcMeshLoaderConditionalVertex& Vertex = mConditionalVertices.emplace_back();
+		swMeshLoaderConditionalVertex& Vertex = mConditionalVertices.emplace_back();
 
-		Vertex.Position[0] = lcMul31(DataVertex.Position[0], Transform);
-		Vertex.Position[1] = lcMul31(DataVertex.Position[1], Transform);
-		Vertex.Position[2] = lcMul31(DataVertex.Position[2], Transform);
-		Vertex.Position[3] = lcMul31(DataVertex.Position[3], Transform);
+		Vertex.Position[0] = swMul31(DataVertex.Position[0], Transform);
+		Vertex.Position[1] = swMul31(DataVertex.Position[1], Transform);
+		Vertex.Position[2] = swMul31(DataVertex.Position[2], Transform);
+		Vertex.Position[3] = swMul31(DataVertex.Position[3], Transform);
 	}
 
-	for (const std::unique_ptr<lcMeshLoaderSection>& SrcSection : Data.mSections)
+	for (const std::unique_ptr<swMeshLoaderSection>& SrcSection : Data.mSections)
 	{
 		const quint32 ColorCode = SrcSection->mMaterial->Color == 16 ? CurrentColorCode : SrcSection->mMaterial->Color;
-		lcMeshPrimitiveType PrimitiveType = SrcSection->mPrimitiveType;
-		lcMeshLoaderSection* DstSection;
+		swMeshPrimitiveType PrimitiveType = SrcSection->mPrimitiveType;
+		swMeshLoaderSection* DstSection;
 
-		if (SrcSection->mMaterial->Type != lcMeshLoaderMaterialType::Solid)
+		if (SrcSection->mMaterial->Type != swMeshLoaderMaterialType::Solid)
 		{
-			lcMeshLoaderTextureParams DstTextureMap;
+			swMeshLoaderTextureParams DstTextureMap;
 
 			if (TextureMap)
 				DstTextureMap = *TextureMap;
 			else
 				DstTextureMap = *SrcSection->mMaterial;
 
-			for (lcVector3& Point : DstTextureMap.Points)
-				Point = lcMul31(Point, Transform);
+			for (swVector3& Point : DstTextureMap.Points)
+				Point = swMul31(Point, Transform);
 
 			DstSection = AddSection(PrimitiveType, mMeshData->GetTexturedMaterial(ColorCode, DstTextureMap));
 		}
-		else if (TextureMap && SrcSection->mPrimitiveType == LC_MESH_TRIANGLES)
+		else if (TextureMap && SrcSection->mPrimitiveType == SW_MESH_TRIANGLES)
 		{
-			PrimitiveType = LC_MESH_TEXTURED_TRIANGLES;
+			PrimitiveType = SW_MESH_TEXTURED_TRIANGLES;
 
 			DstSection = AddSection(PrimitiveType, mMeshData->GetTexturedMaterial(ColorCode, *TextureMap));
 		}
@@ -483,12 +483,12 @@ void lcMeshLoaderTypeData::AddMeshDataNoDuplicateCheck(const lcMeshLoaderTypeDat
 
 		DstSection->mIndices.reserve(DstSection->mIndices.size() + SrcSection->mIndices.size());
 
-		if (PrimitiveType == LC_MESH_CONDITIONAL_LINES)
+		if (PrimitiveType == SW_MESH_CONDITIONAL_LINES)
 		{
 			for (const quint32 Index : SrcSection->mIndices)
 				DstSection->mIndices.emplace_back(BaseConditional + Index);
 		}
-		else if (!InvertWinding || (PrimitiveType == LC_MESH_LINES))
+		else if (!InvertWinding || (PrimitiveType == SW_MESH_LINES))
 		{
 			for (const quint32 Index : SrcSection->mIndices)
 				DstSection->mIndices.emplace_back(BaseIndex + Index);
@@ -505,9 +505,9 @@ void lcMeshLoaderTypeData::AddMeshDataNoDuplicateCheck(const lcMeshLoaderTypeDat
 	}
 }
 
-void lcLibraryMeshData::AddVertices(lcMeshDataType MeshDataType, size_t VertexCount, int* BaseVertex, lcMeshLoaderVertex** VertexBuffer)
+void swLibraryMeshData::AddVertices(swMeshDataType MeshDataType, size_t VertexCount, int* BaseVertex, swMeshLoaderVertex** VertexBuffer)
 {
-	std::vector<lcMeshLoaderVertex>& Vertices = mData[MeshDataType].mVertices;
+	std::vector<swMeshLoaderVertex>& Vertices = mData[MeshDataType].mVertices;
 	int CurrentSize = static_cast<int>(Vertices.size());
 
 	Vertices.resize(CurrentSize + VertexCount);
@@ -516,9 +516,9 @@ void lcLibraryMeshData::AddVertices(lcMeshDataType MeshDataType, size_t VertexCo
 	*VertexBuffer = &Vertices[CurrentSize];
 }
 
-void lcLibraryMeshData::AddIndices(lcMeshDataType MeshDataType, lcMeshPrimitiveType PrimitiveType, quint32 ColorCode, size_t IndexCount, quint32** IndexBuffer)
+void swLibraryMeshData::AddIndices(swMeshDataType MeshDataType, swMeshPrimitiveType PrimitiveType, quint32 ColorCode, size_t IndexCount, quint32** IndexBuffer)
 {
-	lcMeshLoaderSection* Section = mData[MeshDataType].AddSection(PrimitiveType, GetMaterial(ColorCode));
+	swMeshLoaderSection* Section = mData[MeshDataType].AddSection(PrimitiveType, GetMaterial(ColorCode));
 	std::vector<quint32>& Indices = Section->mIndices;
 	const size_t CurrentSize = Indices.size();
 
@@ -527,46 +527,46 @@ void lcLibraryMeshData::AddIndices(lcMeshDataType MeshDataType, lcMeshPrimitiveT
 	*IndexBuffer = &Indices[CurrentSize];
 }
 
-void lcLibraryMeshData::AddMeshData(const lcLibraryMeshData& Data, const lcMatrix44& Transform, quint32 CurrentColorCode, bool InvertWinding, bool InvertNormals, lcMeshLoaderTextureMap* TextureMap, lcMeshDataType OverrideDestIndex)
+void swLibraryMeshData::AddMeshData(const swLibraryMeshData& Data, const swMatrix44& Transform, quint32 CurrentColorCode, bool InvertWinding, bool InvertNormals, swMeshLoaderTextureMap* TextureMap, swMeshDataType OverrideDestIndex)
 {
-	for (int MeshDataIdx = 0; MeshDataIdx < LC_NUM_MESHDATA_TYPES; MeshDataIdx++)
+	for (int MeshDataIdx = 0; MeshDataIdx < SW_NUM_MESHDATA_TYPES; MeshDataIdx++)
 	{
-		const int DestIndex = OverrideDestIndex == LC_MESHDATA_SHARED ? MeshDataIdx : OverrideDestIndex;
+		const int DestIndex = OverrideDestIndex == SW_MESHDATA_SHARED ? MeshDataIdx : OverrideDestIndex;
 		mData[DestIndex].AddMeshData(Data.mData[MeshDataIdx], Transform, CurrentColorCode, InvertWinding, InvertNormals, TextureMap);
 	}
 
 	mHasTextures |= (Data.mHasTextures || TextureMap);
 }
 
-void lcLibraryMeshData::AddMeshDataNoDuplicateCheck(const lcLibraryMeshData& Data, const lcMatrix44& Transform, quint32 CurrentColorCode, bool InvertWinding, bool InvertNormals, lcMeshLoaderTextureMap* TextureMap, lcMeshDataType OverrideDestIndex)
+void swLibraryMeshData::AddMeshDataNoDuplicateCheck(const swLibraryMeshData& Data, const swMatrix44& Transform, quint32 CurrentColorCode, bool InvertWinding, bool InvertNormals, swMeshLoaderTextureMap* TextureMap, swMeshDataType OverrideDestIndex)
 {
-	for (int MeshDataIdx = 0; MeshDataIdx < LC_NUM_MESHDATA_TYPES; MeshDataIdx++)
+	for (int MeshDataIdx = 0; MeshDataIdx < SW_NUM_MESHDATA_TYPES; MeshDataIdx++)
 	{
-		const int DestIndex = OverrideDestIndex == LC_MESHDATA_SHARED ? MeshDataIdx : OverrideDestIndex;
+		const int DestIndex = OverrideDestIndex == SW_MESHDATA_SHARED ? MeshDataIdx : OverrideDestIndex;
 		mData[DestIndex].AddMeshDataNoDuplicateCheck(Data.mData[MeshDataIdx], Transform, CurrentColorCode, InvertWinding, InvertNormals, TextureMap);
 	}
 
 	mHasTextures |= (Data.mHasTextures || TextureMap);
 }
 
-lcMeshLoaderMaterial* lcLibraryMeshData::GetMaterial(quint32 ColorCode)
+swMeshLoaderMaterial* swLibraryMeshData::GetMaterial(quint32 ColorCode)
 {
-	for (const std::unique_ptr<lcMeshLoaderMaterial>& Material : mMaterials)
-		if (Material->Type == lcMeshLoaderMaterialType::Solid && Material->Color == ColorCode)
+	for (const std::unique_ptr<swMeshLoaderMaterial>& Material : mMaterials)
+		if (Material->Type == swMeshLoaderMaterialType::Solid && Material->Color == ColorCode)
 			return Material.get();
 
-	lcMeshLoaderMaterial* Material = new lcMeshLoaderMaterial();
+	swMeshLoaderMaterial* Material = new swMeshLoaderMaterial();
 	mMaterials.emplace_back(Material);
 
-	Material->Type = lcMeshLoaderMaterialType::Solid;
+	Material->Type = swMeshLoaderMaterialType::Solid;
 	Material->Color = ColorCode;
 
 	return Material;
 }
 
-lcMeshLoaderMaterial* lcLibraryMeshData::GetTexturedMaterial(quint32 ColorCode, const lcMeshLoaderTextureParams& TextureMap)
+swMeshLoaderMaterial* swLibraryMeshData::GetTexturedMaterial(quint32 ColorCode, const swMeshLoaderTextureParams& TextureMap)
 {
-	for (const std::unique_ptr<lcMeshLoaderMaterial>& Material : mMaterials)
+	for (const std::unique_ptr<swMeshLoaderMaterial>& Material : mMaterials)
 	{
 		if (Material->Type != TextureMap.Type || Material->Color != ColorCode)
 			continue;
@@ -577,12 +577,12 @@ lcMeshLoaderMaterial* lcLibraryMeshData::GetTexturedMaterial(quint32 ColorCode, 
 		if (Material->Points[0] != TextureMap.Points[0] || Material->Points[1] != TextureMap.Points[1] || Material->Points[2] != TextureMap.Points[2])
 			continue;
 
-		if (Material->Type == lcMeshLoaderMaterialType::Cylindrical)
+		if (Material->Type == swMeshLoaderMaterialType::Cylindrical)
 		{
 			if (Material->Angles[0] != TextureMap.Angles[0])
 				continue;
 		}
-		else if (Material->Type == lcMeshLoaderMaterialType::Spherical)
+		else if (Material->Type == swMeshLoaderMaterialType::Spherical)
 		{
 			if (Material->Angles[0] != TextureMap.Angles[0] || Material->Angles[1] != TextureMap.Angles[1])
 				continue;
@@ -591,7 +591,7 @@ lcMeshLoaderMaterial* lcLibraryMeshData::GetTexturedMaterial(quint32 ColorCode, 
 		return Material.get();
 	}
 
-	lcMeshLoaderMaterial* Material = new lcMeshLoaderMaterial();
+	swMeshLoaderMaterial* Material = new swMeshLoaderMaterial();
 	mMaterials.emplace_back(Material);
 
 	Material->Type = TextureMap.Type;
@@ -601,22 +601,22 @@ lcMeshLoaderMaterial* lcLibraryMeshData::GetTexturedMaterial(quint32 ColorCode, 
 	Material->Points[2] = TextureMap.Points[2];
 	Material->Angles[0] = TextureMap.Angles[0];
 	Material->Angles[1] = TextureMap.Angles[1];
-	lcstrcpy(Material->Name, TextureMap.Name);
+	swstrcpy(Material->Name, TextureMap.Name);
 
 	return Material;
 }
 
-quint32 lcLibraryMeshData::AddTexturedVertex(const lcVector3& Position, const lcVector3& Normal, const lcVector2& TexCoords)
+quint32 swLibraryMeshData::AddTexturedVertex(const swVector3& Position, const swVector3& Normal, const swVector2& TexCoords)
 {
 	for (int VertexIndex = static_cast<int>(mTexturedVertices.size()) - 1; VertexIndex >= 0; VertexIndex--)
 	{
-		const lcMeshLoaderTexturedVertex& Vertex = mTexturedVertices[VertexIndex];
+		const swMeshLoaderTexturedVertex& Vertex = mTexturedVertices[VertexIndex];
 
 		if (Vertex.Position == Position && Vertex.Normal == Normal && Vertex.TexCoords == TexCoords)
 			return VertexIndex;
 	}
 
-	lcMeshLoaderTexturedVertex& Vertex = mTexturedVertices.emplace_back();
+	swMeshLoaderTexturedVertex& Vertex = mTexturedVertices.emplace_back();
 
 	Vertex.Position = Position;
 	Vertex.Normal = Normal;
@@ -625,144 +625,144 @@ quint32 lcLibraryMeshData::AddTexturedVertex(const lcVector3& Position, const lc
 	return static_cast<quint32>(mTexturedVertices.size()) - 1;
 }
 
-void lcLibraryMeshData::GeneratePlanarTexcoords(lcMeshLoaderSection* Section, const lcMeshLoaderTypeData& Data)
+void swLibraryMeshData::GeneratePlanarTexcoords(swMeshLoaderSection* Section, const swMeshLoaderTypeData& Data)
 {
-	const lcMeshLoaderMaterial* Material = Section->mMaterial;
-	lcVector4 Planes[2];
+	const swMeshLoaderMaterial* Material = Section->mMaterial;
+	swVector4 Planes[2];
 
 	for (int EdgeIdx = 0; EdgeIdx < 2; EdgeIdx++)
 	{
-		lcVector3 Normal = Material->Points[EdgeIdx + 1] - Material->Points[0];
-		const float Length = lcLength(Normal);
+		swVector3 Normal = Material->Points[EdgeIdx + 1] - Material->Points[0];
+		const float Length = swLength(Normal);
 		Normal /= Length;
 
 		Planes[EdgeIdx].x = Normal.x / Length;
 		Planes[EdgeIdx].y = Normal.y / Length;
 		Planes[EdgeIdx].z = Normal.z / Length;
-		Planes[EdgeIdx].w = -lcDot(Normal, Material->Points[0]) / Length;
+		Planes[EdgeIdx].w = -swDot(Normal, Material->Points[0]) / Length;
 	}
 
 	for (quint32& Index : Section->mIndices)
 	{
-		const lcMeshLoaderVertex& SrcVertex = Data.mVertices[Index];
+		const swMeshLoaderVertex& SrcVertex = Data.mVertices[Index];
 
-		const lcVector2 TexCoords(lcDot3(SrcVertex.Position, Planes[0]) + Planes[0].w, lcDot3(SrcVertex.Position, Planes[1]) + Planes[1].w);
+		const swVector2 TexCoords(swDot3(SrcVertex.Position, Planes[0]) + Planes[0].w, swDot3(SrcVertex.Position, Planes[1]) + Planes[1].w);
 
 		Index = AddTexturedVertex(SrcVertex.Position, SrcVertex.Normal, TexCoords);
 	}
 }
 
-void lcLibraryMeshData::GenerateCylindricalTexcoords(lcMeshLoaderSection* Section, const lcMeshLoaderTypeData& Data)
+void swLibraryMeshData::GenerateCylindricalTexcoords(swMeshLoaderSection* Section, const swMeshLoaderTypeData& Data)
 {
-	const lcMeshLoaderMaterial* Material = Section->mMaterial;
-	const lcVector3 Up = Material->Points[0] - Material->Points[1];
-	const float UpLength = lcLength(Up);
-	const lcVector3 Front = lcNormalize(Material->Points[2] - Material->Points[1]);
-	const lcVector3 Plane1Normal = Up / UpLength;
-	const lcVector3 Plane2Normal = lcNormalize(lcCross(Front, Up));
-	const lcVector4 FrontPlane = lcVector4(Front, -lcDot(Front, Material->Points[1]));
-	const lcVector4 Plane1 = lcVector4(Plane1Normal, -lcDot(Plane1Normal, Material->Points[1]));
-	const lcVector4 Plane2 = lcVector4(Plane2Normal, -lcDot(Plane2Normal, Material->Points[1]));
+	const swMeshLoaderMaterial* Material = Section->mMaterial;
+	const swVector3 Up = Material->Points[0] - Material->Points[1];
+	const float UpLength = swLength(Up);
+	const swVector3 Front = swNormalize(Material->Points[2] - Material->Points[1]);
+	const swVector3 Plane1Normal = Up / UpLength;
+	const swVector3 Plane2Normal = swNormalize(swCross(Front, Up));
+	const swVector4 FrontPlane = swVector4(Front, -swDot(Front, Material->Points[1]));
+	const swVector4 Plane1 = swVector4(Plane1Normal, -swDot(Plane1Normal, Material->Points[1]));
+	const swVector4 Plane2 = swVector4(Plane2Normal, -swDot(Plane2Normal, Material->Points[1]));
 	const float Angle = 360.0f / Material->Angles[0];
 
 	for (size_t TriangleIndex = 0; TriangleIndex < Section->mIndices.size(); TriangleIndex += 3)
 	{
-		const lcVector3 Positions[3] =
+		const swVector3 Positions[3] =
 		{
 			Data.mVertices[Section->mIndices[TriangleIndex + 0]].Position,
 			Data.mVertices[Section->mIndices[TriangleIndex + 1]].Position,
 			Data.mVertices[Section->mIndices[TriangleIndex + 2]].Position
 		};
 
-		lcVector2 TexCoords[3];
+		swVector2 TexCoords[3];
 
 		for (int CornerIndex = 0; CornerIndex < 3; CornerIndex++)
 		{
-			const float DotPlane1 = lcDot(lcVector4(Positions[CornerIndex], 1.0f), Plane1);
-			const lcVector3 PointInPlane1 = Positions[CornerIndex] - lcVector3(Plane1) * DotPlane1;
-			const float DotFrontPlane = lcDot(lcVector4(PointInPlane1, 1.0f), FrontPlane);
-			const float DotPlane2 = lcDot(lcVector4(PointInPlane1, 1.0f), Plane2);
-			const float Angle1 = atan2f(DotPlane2, DotFrontPlane) / LC_PI * Angle;
+			const float DotPlane1 = swDot(swVector4(Positions[CornerIndex], 1.0f), Plane1);
+			const swVector3 PointInPlane1 = Positions[CornerIndex] - swVector3(Plane1) * DotPlane1;
+			const float DotFrontPlane = swDot(swVector4(PointInPlane1, 1.0f), FrontPlane);
+			const float DotPlane2 = swDot(swVector4(PointInPlane1, 1.0f), Plane2);
+			const float Angle1 = atan2f(DotPlane2, DotFrontPlane) / SW_PI * Angle;
 
-			TexCoords[CornerIndex].x = lcClamp(0.5f + 0.5f * Angle1, 0.0f, 1.0f);
+			TexCoords[CornerIndex].x = swClamp(0.5f + 0.5f * Angle1, 0.0f, 1.0f);
 			TexCoords[CornerIndex].y = DotPlane1 / UpLength;
 		}
 
-		lcCheckTexCoordsWrap(Plane2, Positions, TexCoords);
+		swCheckTexCoordsWrap(Plane2, Positions, TexCoords);
 
 		for (int CornerIndex = 0; CornerIndex < 3; CornerIndex++)
 			Section->mIndices[TriangleIndex + CornerIndex] = AddTexturedVertex(Positions[CornerIndex], Data.mVertices[Section->mIndices[TriangleIndex + CornerIndex]].Normal, TexCoords[CornerIndex]);
 	}
 }
 
-void lcLibraryMeshData::GenerateSphericalTexcoords(lcMeshLoaderSection* Section, const lcMeshLoaderTypeData& Data)
+void swLibraryMeshData::GenerateSphericalTexcoords(swMeshLoaderSection* Section, const swMeshLoaderTypeData& Data)
 {
-	const lcMeshLoaderMaterial* Material = Section->mMaterial;
-	const lcVector3 Front = lcNormalize(Material->Points[1] - Material->Points[0]);
-	const lcVector3 Plane1Normal = lcNormalize(lcCross(Front, Material->Points[2] - Material->Points[0]));
-	const lcVector3 Plane2Normal = lcNormalize(lcCross(Plane1Normal, Front));
-	const lcVector4 FrontPlane = lcVector4(Front, -lcDot(Front, Material->Points[0]));
-	const lcVector3 Center = Material->Points[0];
-	const lcVector4 Plane1 = lcVector4(Plane1Normal, -lcDot(Plane1Normal, Material->Points[0]));
-	const lcVector4 Plane2 = lcVector4(Plane2Normal, -lcDot(Plane2Normal, Material->Points[0]));
+	const swMeshLoaderMaterial* Material = Section->mMaterial;
+	const swVector3 Front = swNormalize(Material->Points[1] - Material->Points[0]);
+	const swVector3 Plane1Normal = swNormalize(swCross(Front, Material->Points[2] - Material->Points[0]));
+	const swVector3 Plane2Normal = swNormalize(swCross(Plane1Normal, Front));
+	const swVector4 FrontPlane = swVector4(Front, -swDot(Front, Material->Points[0]));
+	const swVector3 Center = Material->Points[0];
+	const swVector4 Plane1 = swVector4(Plane1Normal, -swDot(Plane1Normal, Material->Points[0]));
+	const swVector4 Plane2 = swVector4(Plane2Normal, -swDot(Plane2Normal, Material->Points[0]));
 	const float Angle1 = 360.0f / Material->Angles[0];
 	const float Angle2 = 180.0f / Material->Angles[1];
 
 	for (size_t TriangleIndex = 0; TriangleIndex < Section->mIndices.size(); TriangleIndex += 3)
 	{
-		const lcVector3 Positions[3] =
+		const swVector3 Positions[3] =
 		{
 			Data.mVertices[Section->mIndices[TriangleIndex + 0]].Position,
 			Data.mVertices[Section->mIndices[TriangleIndex + 1]].Position,
 			Data.mVertices[Section->mIndices[TriangleIndex + 2]].Position
 		};
 
-		lcVector2 TexCoords[3];
+		swVector2 TexCoords[3];
 
 		for (int CornerIndex = 0; CornerIndex < 3; CornerIndex++)
 		{
-			const lcVector3 VertexDir = Positions[CornerIndex] - Center;
+			const swVector3 VertexDir = Positions[CornerIndex] - Center;
 
-			const float DotPlane1 = lcDot(lcVector4(Positions[CornerIndex], 1.0f), Plane1);
-			const lcVector3 PointInPlane1 = Positions[CornerIndex] - lcVector3(Plane1) * DotPlane1;
-			const float DotFrontPlane = lcDot(lcVector4(PointInPlane1, 1.0f), FrontPlane);
-			const float DotPlane2 = lcDot(lcVector4(PointInPlane1, 1.0f), Plane2);
+			const float DotPlane1 = swDot(swVector4(Positions[CornerIndex], 1.0f), Plane1);
+			const swVector3 PointInPlane1 = Positions[CornerIndex] - swVector3(Plane1) * DotPlane1;
+			const float DotFrontPlane = swDot(swVector4(PointInPlane1, 1.0f), FrontPlane);
+			const float DotPlane2 = swDot(swVector4(PointInPlane1, 1.0f), Plane2);
 
-			const float AngleX = atan2f(DotPlane2, DotFrontPlane) / LC_PI * Angle1;
+			const float AngleX = atan2f(DotPlane2, DotFrontPlane) / SW_PI * Angle1;
 			TexCoords[CornerIndex].x = 0.5f + 0.5f * AngleX;
 
-			const float AngleY = asinf(DotPlane1 / lcLength(VertexDir)) / LC_PI * Angle2;
+			const float AngleY = asinf(DotPlane1 / swLength(VertexDir)) / SW_PI * Angle2;
 			TexCoords[CornerIndex].y = 0.5f - AngleY;
 		}
 
-		lcCheckTexCoordsWrap(Plane2, Positions, TexCoords);
-		lcCheckTexCoordsPole(FrontPlane, Plane2, Positions, TexCoords);
+		swCheckTexCoordsWrap(Plane2, Positions, TexCoords);
+		swCheckTexCoordsPole(FrontPlane, Plane2, Positions, TexCoords);
 
 		for (int CornerIndex = 0; CornerIndex < 3; CornerIndex++)
 			Section->mIndices[TriangleIndex + CornerIndex] = AddTexturedVertex(Positions[CornerIndex], Data.mVertices[Section->mIndices[TriangleIndex + CornerIndex]].Normal, TexCoords[CornerIndex]);
 	}
 }
 
-void lcLibraryMeshData::GenerateTexturedVertices()
+void swLibraryMeshData::GenerateTexturedVertices()
 {
-	for (lcMeshLoaderTypeData& Data : mData)
+	for (swMeshLoaderTypeData& Data : mData)
 	{
-		for (const std::unique_ptr<lcMeshLoaderSection>& Section : Data.mSections)
+		for (const std::unique_ptr<swMeshLoaderSection>& Section : Data.mSections)
 		{
 			switch (Section->mMaterial->Type)
 			{
-				case lcMeshLoaderMaterialType::Solid:
+				case swMeshLoaderMaterialType::Solid:
 					break;
 
-				case lcMeshLoaderMaterialType::Planar:
+				case swMeshLoaderMaterialType::Planar:
 					GeneratePlanarTexcoords(Section.get(), Data);
 					break;
 
-				case lcMeshLoaderMaterialType::Cylindrical:
+				case swMeshLoaderMaterialType::Cylindrical:
 					GenerateCylindricalTexcoords(Section.get(), Data);
 					break;
 
-				case lcMeshLoaderMaterialType::Spherical:
+				case swMeshLoaderMaterialType::Spherical:
 					GenerateSphericalTexcoords(Section.get(), Data);
 					break;
 			}
@@ -770,61 +770,61 @@ void lcLibraryMeshData::GenerateTexturedVertices()
 	}
 }
 
-lcMesh* lcLibraryMeshData::CreateMesh(const std::atomic_bool* Cancelled)
+swMesh* swLibraryMeshData::CreateMesh(const std::atomic_bool* Cancelled)
 {
 	if (Cancelled && Cancelled->load(std::memory_order_relaxed))
 		return nullptr;
 
-	lcMesh* Mesh = new lcMesh();
+	swMesh* Mesh = new swMesh();
 
-	int BaseVertices[LC_NUM_MESHDATA_TYPES];
+	int BaseVertices[SW_NUM_MESHDATA_TYPES];
 	int NumVertices = 0;
 	int ConditionalVertexCount = 0;
 
-	for (int MeshDataIdx = 0; MeshDataIdx < LC_NUM_MESHDATA_TYPES; MeshDataIdx++)
+	for (int MeshDataIdx = 0; MeshDataIdx < SW_NUM_MESHDATA_TYPES; MeshDataIdx++)
 	{
 		BaseVertices[MeshDataIdx] = NumVertices;
 		NumVertices += static_cast<int>(mData[MeshDataIdx].mVertices.size());
 
-		for (const std::unique_ptr<lcMeshLoaderSection>& Section : mData[MeshDataIdx].mSections)
-			if (Section->mPrimitiveType == LC_MESH_CONDITIONAL_LINES)
+		for (const std::unique_ptr<swMeshLoaderSection>& Section : mData[MeshDataIdx].mSections)
+			if (Section->mPrimitiveType == SW_MESH_CONDITIONAL_LINES)
 				ConditionalVertexCount += static_cast<int>(Section->mIndices.size());
 	}
 
 	if (mHasTextures)
 		GenerateTexturedVertices();
 
-	quint16 NumSections[LC_NUM_MESH_LODS];
+	quint16 NumSections[SW_NUM_MESH_LODS];
 	int NumIndices = 0;
 
-	std::vector<lcMeshLoaderFinalSection> FinalSections[LC_NUM_MESH_LODS];
+	std::vector<swMeshLoaderFinalSection> FinalSections[SW_NUM_MESH_LODS];
 
-	for (int LodIdx = 0; LodIdx < LC_NUM_MESH_LODS; LodIdx++)
+	for (int LodIdx = 0; LodIdx < SW_NUM_MESH_LODS; LodIdx++)
 	{
-		auto AddFinalSection = [](lcMeshLoaderSection* Section, std::vector<lcMeshLoaderFinalSection>& FinalSections)
+		auto AddFinalSection = [](swMeshLoaderSection* Section, std::vector<swMeshLoaderFinalSection>& FinalSections)
 		{
-			for (const lcMeshLoaderFinalSection& FinalSection : FinalSections)
+			for (const swMeshLoaderFinalSection& FinalSection : FinalSections)
 				if (FinalSection.PrimitiveType == Section->mPrimitiveType && FinalSection.Color == Section->mMaterial->Color && !strcmp(FinalSection.Name, Section->mMaterial->Name))
 					return;
 
-			lcMeshLoaderFinalSection& FinalSection = FinalSections.emplace_back();
+			swMeshLoaderFinalSection& FinalSection = FinalSections.emplace_back();
 
 			FinalSection.PrimitiveType = Section->mPrimitiveType;
 			FinalSection.Color = Section->mMaterial->Color;
-			lcstrcpy(FinalSection.Name, Section->mMaterial->Name);
+			swstrcpy(FinalSection.Name, Section->mMaterial->Name);
 		};
 
-		for (const std::unique_ptr<lcMeshLoaderSection>& Section : mData[LC_MESHDATA_SHARED].mSections)
+		for (const std::unique_ptr<swMeshLoaderSection>& Section : mData[SW_MESHDATA_SHARED].mSections)
 		{
-			if (Section->mPrimitiveType != LC_MESH_CONDITIONAL_LINES)
+			if (Section->mPrimitiveType != SW_MESH_CONDITIONAL_LINES)
 				NumIndices += static_cast<int>(Section->mIndices.size());
 
 			AddFinalSection(Section.get(), FinalSections[LodIdx]);
 		}
 
-		for (const std::unique_ptr<lcMeshLoaderSection>& Section : mData[LodIdx].mSections)
+		for (const std::unique_ptr<swMeshLoaderSection>& Section : mData[LodIdx].mSections)
 		{
-			if (Section->mPrimitiveType != LC_MESH_CONDITIONAL_LINES)
+			if (Section->mPrimitiveType != SW_MESH_CONDITIONAL_LINES)
 				NumIndices += static_cast<int>(Section->mIndices.size());
 
 			AddFinalSection(Section.get(), FinalSections[LodIdx]);
@@ -847,9 +847,9 @@ lcMesh* lcLibraryMeshData::CreateMesh(const std::atomic_bool* Cancelled)
 		return nullptr;
 	}
 
-	lcVertex* DstVerts = (lcVertex*)Mesh->mVertexData;
+	swVertex* DstVerts = (swVertex*)Mesh->mVertexData;
 
-	for (const lcMeshLoaderTypeData& Data : mData)
+	for (const swMeshLoaderTypeData& Data : mData)
 	{
 		if (Cancelled && Cancelled->load(std::memory_order_relaxed))
 		{
@@ -859,7 +859,7 @@ lcMesh* lcLibraryMeshData::CreateMesh(const std::atomic_bool* Cancelled)
 
 		size_t VertexIndex = 0;
 
-		for (const lcMeshLoaderVertex& SrcVertex : Data.mVertices)
+		for (const swMeshLoaderVertex& SrcVertex : Data.mVertices)
 		{
 			if ((VertexIndex++ & 1023) == 0 && Cancelled && Cancelled->load(std::memory_order_relaxed))
 			{
@@ -867,20 +867,20 @@ lcMesh* lcLibraryMeshData::CreateMesh(const std::atomic_bool* Cancelled)
 				return nullptr;
 			}
 
-			lcVertex& DstVertex = *DstVerts++;
+			swVertex& DstVertex = *DstVerts++;
 
-			DstVertex.Position = lcVector3LDrawToLeoCAD(SrcVertex.Position);
-			DstVertex.Normal = lcPackNormal(lcVector3LDrawToLeoCAD(SrcVertex.Normal));
+			DstVertex.Position = swVector3LDrawToStudWorks(SrcVertex.Position);
+			DstVertex.Normal = swPackNormal(swVector3LDrawToStudWorks(SrcVertex.Normal));
 		}
 	}
 
-	lcVertexTextured* DstTexturedVerts = (lcVertexTextured*)DstVerts;
+	swVertexTextured* DstTexturedVerts = (swVertexTextured*)DstVerts;
 
 	if (mHasTextures)
 	{
 		size_t VertexIndex = 0;
 
-		for (const lcMeshLoaderTexturedVertex& SrcVertex : mTexturedVertices)
+		for (const swMeshLoaderTexturedVertex& SrcVertex : mTexturedVertices)
 		{
 			if ((VertexIndex++ & 1023) == 0 && Cancelled && Cancelled->load(std::memory_order_relaxed))
 			{
@@ -888,10 +888,10 @@ lcMesh* lcLibraryMeshData::CreateMesh(const std::atomic_bool* Cancelled)
 				return nullptr;
 			}
 
-			lcVertexTextured& DstVertex = *DstTexturedVerts++;
+			swVertexTextured& DstVertex = *DstTexturedVerts++;
 
-			DstVertex.Position = lcVector3LDrawToLeoCAD(SrcVertex.Position);
-			DstVertex.Normal = lcPackNormal(lcVector3LDrawToLeoCAD(SrcVertex.Normal));
+			DstVertex.Position = swVector3LDrawToStudWorks(SrcVertex.Position);
+			DstVertex.Normal = swPackNormal(swVector3LDrawToStudWorks(SrcVertex.Normal));
 			DstVertex.TexCoord = SrcVertex.TexCoords;
 		}
 	}
@@ -917,14 +917,14 @@ lcMesh* lcLibraryMeshData::CreateMesh(const std::atomic_bool* Cancelled)
 
 	// Pack each color/material group as high, shared, low. Either LOD then
 	// occupies one contiguous range without duplicating the shared vertices.
-	std::vector<lcMeshLoaderFinalSection> ConditionalSections;
-	for (int LodIdx = 0; LodIdx < LC_NUM_MESH_LODS; LodIdx++)
-		for (const lcMeshLoaderFinalSection& Section : FinalSections[LodIdx])
+	std::vector<swMeshLoaderFinalSection> ConditionalSections;
+	for (int LodIdx = 0; LodIdx < SW_NUM_MESH_LODS; LodIdx++)
+		for (const swMeshLoaderFinalSection& Section : FinalSections[LodIdx])
 		{
-			if (Section.PrimitiveType != LC_MESH_CONDITIONAL_LINES)
+			if (Section.PrimitiveType != SW_MESH_CONDITIONAL_LINES)
 				continue;
 
-			const auto SameSection = [&Section](const lcMeshLoaderFinalSection& Other)
+			const auto SameSection = [&Section](const swMeshLoaderFinalSection& Other)
 			{
 				return Section.Color == Other.Color && !strcmp(Section.Name, Other.Name);
 			};
@@ -932,57 +932,57 @@ lcMesh* lcLibraryMeshData::CreateMesh(const std::atomic_bool* Cancelled)
 				ConditionalSections.push_back(Section);
 		}
 
-	lcVertexConditional* const ConditionalVertices = (lcVertexConditional*)DstTexturedVerts;
+	swVertexConditional* const ConditionalVertices = (swVertexConditional*)DstTexturedVerts;
 	int ConditionalOffset = 0;
-	for (const lcMeshLoaderFinalSection& FinalSection : ConditionalSections)
+	for (const swMeshLoaderFinalSection& FinalSection : ConditionalSections)
 	{
 		if (Cancelled && Cancelled->load(std::memory_order_relaxed))
 		{
 			delete Mesh;
 			return nullptr;
 		}
-		const auto AppendVertices = [this, &FinalSection, &ConditionalOffset, ConditionalVertices](lcMeshDataType DataType)
+		const auto AppendVertices = [this, &FinalSection, &ConditionalOffset, ConditionalVertices](swMeshDataType DataType)
 		{
-			const lcMeshLoaderTypeData& Data = mData[DataType];
-			for (const std::unique_ptr<lcMeshLoaderSection>& Section : Data.mSections)
+			const swMeshLoaderTypeData& Data = mData[DataType];
+			for (const std::unique_ptr<swMeshLoaderSection>& Section : Data.mSections)
 			{
-				if (Section->mPrimitiveType != LC_MESH_CONDITIONAL_LINES || Section->mMaterial->Color != FinalSection.Color || strcmp(Section->mMaterial->Name, FinalSection.Name))
+				if (Section->mPrimitiveType != SW_MESH_CONDITIONAL_LINES || Section->mMaterial->Color != FinalSection.Color || strcmp(Section->mMaterial->Name, FinalSection.Name))
 					continue;
 
 				for (const quint32 Index : Section->mIndices)
 				{
-					const lcMeshLoaderConditionalVertex& SrcVertex = Data.mConditionalVertices[Index];
-					lcVertexConditional& DstVertex = ConditionalVertices[ConditionalOffset++];
-					DstVertex.Position1 = lcVector3LDrawToLeoCAD(SrcVertex.Position[0]);
-					DstVertex.Position2 = lcVector3LDrawToLeoCAD(SrcVertex.Position[1]);
-					DstVertex.Position3 = lcVector3LDrawToLeoCAD(SrcVertex.Position[2]);
-					DstVertex.Position4 = lcVector3LDrawToLeoCAD(SrcVertex.Position[3]);
+					const swMeshLoaderConditionalVertex& SrcVertex = Data.mConditionalVertices[Index];
+					swVertexConditional& DstVertex = ConditionalVertices[ConditionalOffset++];
+					DstVertex.Position1 = swVector3LDrawToStudWorks(SrcVertex.Position[0]);
+					DstVertex.Position2 = swVector3LDrawToStudWorks(SrcVertex.Position[1]);
+					DstVertex.Position3 = swVector3LDrawToStudWorks(SrcVertex.Position[2]);
+					DstVertex.Position4 = swVector3LDrawToStudWorks(SrcVertex.Position[3]);
 				}
 			}
 		};
 
 		const int HighStart = ConditionalOffset;
-		AppendVertices(LC_MESHDATA_HIGH);
+		AppendVertices(SW_MESHDATA_HIGH);
 		const int SharedStart = ConditionalOffset;
-		AppendVertices(LC_MESHDATA_SHARED);
+		AppendVertices(SW_MESHDATA_SHARED);
 		const int LowStart = ConditionalOffset;
-		AppendVertices(LC_MESHDATA_LOW);
+		AppendVertices(SW_MESHDATA_LOW);
 
-		for (int LodIdx = 0; LodIdx < LC_NUM_MESH_LODS; LodIdx++)
+		for (int LodIdx = 0; LodIdx < SW_NUM_MESH_LODS; LodIdx++)
 			for (size_t SectionIdx = 0; SectionIdx < FinalSections[LodIdx].size(); SectionIdx++)
 			{
-				const lcMeshLoaderFinalSection& Section = FinalSections[LodIdx][SectionIdx];
-				if (Section.PrimitiveType != LC_MESH_CONDITIONAL_LINES || Section.Color != FinalSection.Color || strcmp(Section.Name, FinalSection.Name))
+				const swMeshLoaderFinalSection& Section = FinalSections[LodIdx][SectionIdx];
+				if (Section.PrimitiveType != SW_MESH_CONDITIONAL_LINES || Section.Color != FinalSection.Color || strcmp(Section.Name, FinalSection.Name))
 					continue;
 
-				lcMeshSection& DstSection = Mesh->mLods[LodIdx].Sections[SectionIdx];
-				DstSection.DrawOffset = LodIdx == LC_MESH_LOD_HIGH ? HighStart : SharedStart;
-				DstSection.DrawCount = LodIdx == LC_MESH_LOD_HIGH ? LowStart - HighStart : ConditionalOffset - SharedStart;
+				swMeshSection& DstSection = Mesh->mLods[LodIdx].Sections[SectionIdx];
+				DstSection.DrawOffset = LodIdx == SW_MESH_LOD_HIGH ? HighStart : SharedStart;
+				DstSection.DrawCount = LodIdx == SW_MESH_LOD_HIGH ? LowStart - HighStart : ConditionalOffset - SharedStart;
 			}
 	}
 
 	if (mHasStyleStud)
-		Mesh->mFlags |= lcMeshFlag::HasStyleStud;
+		Mesh->mFlags |= swMeshFlag::HasStyleStud;
 
 	if (Cancelled && Cancelled->load(std::memory_order_relaxed))
 	{
@@ -1000,19 +1000,19 @@ lcMesh* lcLibraryMeshData::CreateMesh(const std::atomic_bool* Cancelled)
 }
 
 template<typename IndexType>
-bool lcLibraryMeshData::WriteSections(lcMesh* Mesh, const std::vector<lcMeshLoaderFinalSection> (&FinalSections)[LC_NUM_MESH_LODS], int(&BaseVertices)[LC_NUM_MESHDATA_TYPES], const std::atomic_bool* Cancelled)
+bool swLibraryMeshData::WriteSections(swMesh* Mesh, const std::vector<swMeshLoaderFinalSection> (&FinalSections)[SW_NUM_MESH_LODS], int(&BaseVertices)[SW_NUM_MESHDATA_TYPES], const std::atomic_bool* Cancelled)
 {
 	int NumIndices = 0;
 
-	for (int LodIdx = 0; LodIdx < LC_NUM_MESH_LODS; LodIdx++)
+	for (int LodIdx = 0; LodIdx < SW_NUM_MESH_LODS; LodIdx++)
 	{
 		for (size_t SectionIndex = 0; SectionIndex < FinalSections[LodIdx].size(); SectionIndex++)
 		{
 			if (Cancelled && Cancelled->load(std::memory_order_relaxed))
 				return false;
 
-			const lcMeshLoaderFinalSection& FinalSection = FinalSections[LodIdx][SectionIndex];
-			lcMeshSection& DstSection = Mesh->mLods[LodIdx].Sections[SectionIndex];
+			const swMeshLoaderFinalSection& FinalSection = FinalSections[LodIdx][SectionIndex];
+			swMeshSection& DstSection = Mesh->mLods[LodIdx].Sections[SectionIndex];
 
 			DstSection.ColorIndex = static_cast<int>(FinalSection.Color);
 			DstSection.PrimitiveType = FinalSection.PrimitiveType;
@@ -1023,15 +1023,15 @@ bool lcLibraryMeshData::WriteSections(lcMesh* Mesh, const std::vector<lcMeshLoad
 
 			IndexType* Index = Mesh->mIndexDataSize ? (IndexType*)Mesh->mIndexData + NumIndices : nullptr;
 
-			const auto AddSection = [&DstSection, &Index, &BaseVertices, Cancelled](lcMeshLoaderSection* SrcSection, lcMeshDataType SrcDataType)
+			const auto AddSection = [&DstSection, &Index, &BaseVertices, Cancelled](swMeshLoaderSection* SrcSection, swMeshDataType SrcDataType)
 			{
-				if (!Index && DstSection.PrimitiveType != LC_MESH_CONDITIONAL_LINES)
+				if (!Index && DstSection.PrimitiveType != SW_MESH_CONDITIONAL_LINES)
 					return SrcSection->mIndices.empty();
 
 				switch (DstSection.PrimitiveType)
 				{
-					case LC_MESH_LINES:
-					case LC_MESH_TRIANGLES:
+					case SW_MESH_LINES:
+					case SW_MESH_TRIANGLES:
 					{
 						const IndexType BaseVertex = BaseVertices[SrcDataType];
 
@@ -1045,10 +1045,10 @@ bool lcLibraryMeshData::WriteSections(lcMesh* Mesh, const std::vector<lcMeshLoad
 					}
 					break;
 
-					case LC_MESH_CONDITIONAL_LINES:
+					case SW_MESH_CONDITIONAL_LINES:
 						return true;
 
-					case LC_MESH_TEXTURED_TRIANGLES:
+					case SW_MESH_TEXTURED_TRIANGLES:
 					{
 						for (size_t IndexIdx = 0; IndexIdx < SrcSection->mIndices.size(); IndexIdx++)
 						{
@@ -1060,7 +1060,7 @@ bool lcLibraryMeshData::WriteSections(lcMesh* Mesh, const std::vector<lcMeshLoad
 					}
 					break;
 
-					case LC_MESH_NUM_PRIMITIVE_TYPES:
+					case SW_MESH_NUM_PRIMITIVE_TYPES:
 						break;
 				}
 
@@ -1069,23 +1069,23 @@ bool lcLibraryMeshData::WriteSections(lcMesh* Mesh, const std::vector<lcMeshLoad
 				return true;
 			};
 
-			for (const std::unique_ptr<lcMeshLoaderSection>& Section : mData[LC_MESHDATA_SHARED].mSections)
+			for (const std::unique_ptr<swMeshLoaderSection>& Section : mData[SW_MESHDATA_SHARED].mSections)
 				if (FinalSection.PrimitiveType == Section->mPrimitiveType && FinalSection.Color == Section->mMaterial->Color && !strcmp(FinalSection.Name, Section->mMaterial->Name))
-					if (!AddSection(Section.get(), LC_MESHDATA_SHARED))
+					if (!AddSection(Section.get(), SW_MESHDATA_SHARED))
 						return false;
 
-			const lcMeshDataType MeshDataType = (LodIdx == LC_MESH_LOD_LOW) ? LC_MESHDATA_LOW : LC_MESHDATA_HIGH;
+			const swMeshDataType MeshDataType = (LodIdx == SW_MESH_LOD_LOW) ? SW_MESHDATA_LOW : SW_MESHDATA_HIGH;
 
-			for (const std::unique_ptr<lcMeshLoaderSection>& Section : mData[MeshDataType].mSections)
+			for (const std::unique_ptr<swMeshLoaderSection>& Section : mData[MeshDataType].mSections)
 				if (FinalSection.PrimitiveType == Section->mPrimitiveType && FinalSection.Color == Section->mMaterial->Color && !strcmp(FinalSection.Name, Section->mMaterial->Name))
 					if (!AddSection(Section.get(), MeshDataType))
 						return false;
 
-			if (DstSection.PrimitiveType != LC_MESH_TRIANGLES && DstSection.PrimitiveType != LC_MESH_TEXTURED_TRIANGLES)
-				Mesh->mFlags |= lcMeshFlag::HasLines;
+			if (DstSection.PrimitiveType != SW_MESH_TRIANGLES && DstSection.PrimitiveType != SW_MESH_TEXTURED_TRIANGLES)
+				Mesh->mFlags |= swMeshFlag::HasLines;
 
-			if (DstSection.PrimitiveType == LC_MESH_TEXTURED_TRIANGLES)
-				Mesh->mFlags |= lcMeshFlag::HasTexture;
+			if (DstSection.PrimitiveType == SW_MESH_TEXTURED_TRIANGLES)
+				Mesh->mFlags |= swMeshFlag::HasTexture;
 
 			NumIndices += DstSection.DrawCount;
 		}
@@ -1094,22 +1094,22 @@ bool lcLibraryMeshData::WriteSections(lcMesh* Mesh, const std::vector<lcMeshLoad
 	return true;
 }
 
-bool lcLibraryMeshData::UpdateMeshBoundingBox(lcMesh* Mesh, const std::atomic_bool* Cancelled)
+bool swLibraryMeshData::UpdateMeshBoundingBox(swMesh* Mesh, const std::atomic_bool* Cancelled)
 {
-	lcVector3 MeshMin(FLT_MAX, FLT_MAX, FLT_MAX), MeshMax(-FLT_MAX, -FLT_MAX, -FLT_MAX);
+	swVector3 MeshMin(FLT_MAX, FLT_MAX, FLT_MAX), MeshMax(-FLT_MAX, -FLT_MAX, -FLT_MAX);
 	bool UpdatedBoundingBox = false;
 
-	for (int LodIdx = 0; LodIdx < LC_NUM_MESH_LODS; LodIdx++)
+	for (int LodIdx = 0; LodIdx < SW_NUM_MESH_LODS; LodIdx++)
 	{
-		lcMeshLod& Lod = Mesh->mLods[LodIdx];
+		swMeshLod& Lod = Mesh->mLods[LodIdx];
 
 		for (int SectionIdx = 0; SectionIdx < Lod.NumSections; SectionIdx++)
 		{
 			if (Cancelled && Cancelled->load(std::memory_order_relaxed))
 				return false;
 
-			lcMeshSection& Section = Lod.Sections[SectionIdx];
-			lcVector3 SectionMin(FLT_MAX, FLT_MAX, FLT_MAX), SectionMax(-FLT_MAX, -FLT_MAX, -FLT_MAX);
+			swMeshSection& Section = Lod.Sections[SectionIdx];
+			swVector3 SectionMin(FLT_MAX, FLT_MAX, FLT_MAX), SectionMax(-FLT_MAX, -FLT_MAX, -FLT_MAX);
 
 			if (Mesh->mIndexType == GL_UNSIGNED_SHORT)
 			{
@@ -1124,105 +1124,105 @@ bool lcLibraryMeshData::UpdateMeshBoundingBox(lcMesh* Mesh, const std::atomic_bo
 
 			Section.BoundingBox.Max = SectionMax;
 			Section.BoundingBox.Min = SectionMin;
-			Section.Radius = lcLength((SectionMax - SectionMin) / 2.0f);
+			Section.Radius = swLength((SectionMax - SectionMin) / 2.0f);
 
-			if (Section.PrimitiveType == LC_MESH_TRIANGLES || Section.PrimitiveType == LC_MESH_TEXTURED_TRIANGLES)
+			if (Section.PrimitiveType == SW_MESH_TRIANGLES || Section.PrimitiveType == SW_MESH_TEXTURED_TRIANGLES)
 			{
 				UpdatedBoundingBox = true;
-				MeshMin = lcMin(SectionMin, MeshMin);
-				MeshMax = lcMax(SectionMax, MeshMax);
+				MeshMin = swMin(SectionMin, MeshMin);
+				MeshMax = swMax(SectionMax, MeshMax);
 			}
 		}
 	}
 
 	if (!UpdatedBoundingBox)
-		MeshMin = MeshMax = lcVector3(0.0f, 0.0f, 0.0f);
+		MeshMin = MeshMax = swVector3(0.0f, 0.0f, 0.0f);
 
 	Mesh->mBoundingBox.Max = MeshMax;
 	Mesh->mBoundingBox.Min = MeshMin;
-	Mesh->mRadius = lcLength((MeshMax - MeshMin) / 2.0f);
+	Mesh->mRadius = swLength((MeshMax - MeshMin) / 2.0f);
 
 	return true;
 }
 
 template<typename IndexType>
-bool lcLibraryMeshData::UpdateMeshSectionBoundingBox(const lcMesh* Mesh, const lcMeshSection& Section, lcVector3& SectionMin, lcVector3& SectionMax, const std::atomic_bool* Cancelled)
+bool swLibraryMeshData::UpdateMeshSectionBoundingBox(const swMesh* Mesh, const swMeshSection& Section, swVector3& SectionMin, swVector3& SectionMax, const std::atomic_bool* Cancelled)
 {
 	switch (Section.PrimitiveType)
 	{
-		case LC_MESH_LINES:
-		case LC_MESH_TRIANGLES:
+		case SW_MESH_LINES:
+		case SW_MESH_TRIANGLES:
 		{
 			const IndexType* IndexBuffer = reinterpret_cast<IndexType*>(static_cast<char*>(Mesh->mIndexData) + Section.DrawOffset);
-			const lcVertex* VertexBuffer = Mesh->GetVertexData();
+			const swVertex* VertexBuffer = Mesh->GetVertexData();
 
 			for (int Index = 0; Index < Section.DrawCount; Index++)
 			{
 				if ((Index & 1023) == 0 && Cancelled && Cancelled->load(std::memory_order_relaxed))
 					return false;
 
-				const lcVector3& Position = VertexBuffer[IndexBuffer[Index]].Position;
-				SectionMin = lcMin(SectionMin, Position);
-				SectionMax = lcMax(SectionMax, Position);
+				const swVector3& Position = VertexBuffer[IndexBuffer[Index]].Position;
+				SectionMin = swMin(SectionMin, Position);
+				SectionMax = swMax(SectionMax, Position);
 			}
 		}
 		break;
 
-		case LC_MESH_CONDITIONAL_LINES:
+		case SW_MESH_CONDITIONAL_LINES:
 		{
-			const lcVertexConditional* VertexBuffer = Mesh->GetConditionalVertexData();
+			const swVertexConditional* VertexBuffer = Mesh->GetConditionalVertexData();
 
 			for (int Index = 0; Index < Section.DrawCount; Index++)
 			{
 				if ((Index & 1023) == 0 && Cancelled && Cancelled->load(std::memory_order_relaxed))
 					return false;
 
-				const lcVector3& Position = VertexBuffer[Section.DrawOffset + Index].Position1;
-				SectionMin = lcMin(SectionMin, Position);
-				SectionMax = lcMax(SectionMax, Position);
+				const swVector3& Position = VertexBuffer[Section.DrawOffset + Index].Position1;
+				SectionMin = swMin(SectionMin, Position);
+				SectionMax = swMax(SectionMax, Position);
 			}
 		}
 		break;
 
-		case LC_MESH_TEXTURED_TRIANGLES:
+		case SW_MESH_TEXTURED_TRIANGLES:
 		{
 			const IndexType* IndexBuffer = reinterpret_cast<IndexType*>(static_cast<char*>(Mesh->mIndexData) + Section.DrawOffset);
-			const lcVertexTextured* VertexBuffer = Mesh->GetTexturedVertexData();
+			const swVertexTextured* VertexBuffer = Mesh->GetTexturedVertexData();
 
 			for (int Index = 0; Index < Section.DrawCount; Index++)
 			{
 				if ((Index & 1023) == 0 && Cancelled && Cancelled->load(std::memory_order_relaxed))
 					return false;
 
-				const lcVector3& Position = VertexBuffer[IndexBuffer[Index]].Position;
-				SectionMin = lcMin(SectionMin, Position);
-				SectionMax = lcMax(SectionMax, Position);
+				const swVector3& Position = VertexBuffer[IndexBuffer[Index]].Position;
+				SectionMin = swMin(SectionMin, Position);
+				SectionMax = swMax(SectionMax, Position);
 			}
 		}
 		break;
 
-		case LC_MESH_NUM_PRIMITIVE_TYPES:
+		case SW_MESH_NUM_PRIMITIVE_TYPES:
 			break;
 	}
 
 	return true;
 }
 
-lcMeshLoader::lcMeshLoader(lcLibraryMeshData& MeshData, Project* CurrentProject, lcMeshLoaderFlags Flags)
+swMeshLoader::swMeshLoader(swLibraryMeshData& MeshData, Project* CurrentProject, swMeshLoaderFlags Flags)
 	: mCurrentProject(CurrentProject), mMeshData(MeshData), mFlags(Flags)
 {
 	MeshData.SetMeshLoader(this);
 }
 
-bool lcMeshLoader::LoadMesh(lcFile& File, lcMeshDataType MeshDataType)
+bool swMeshLoader::LoadMesh(swFile& File, swMeshDataType MeshDataType)
 {
 	mTextureStack.clear();
 	mError.clear();
 
-	return ReadMeshData(File, lcMatrix44Identity(), 16, false, MeshDataType);
+	return ReadMeshData(File, swMatrix44Identity(), 16, false, MeshDataType);
 }
 
-std::vector<std::string> lcMeshLoader::GetTextureReferences(const QByteArray& FileData)
+std::vector<std::string> swMeshLoader::GetTextureReferences(const QByteArray& FileData)
 {
 	std::vector<std::string> Names;
 	const QList<QByteArray> Lines = FileData.split('\n');
@@ -1283,7 +1283,7 @@ std::vector<std::string> lcMeshLoader::GetTextureReferences(const QByteArray& Fi
 			continue;
 
 		const QByteArray Text = Stream.readAll().toLatin1();
-		char Name[LC_TEXTURE_NAME_LEN];
+		char Name[SW_TEXTURE_NAME_LEN];
 
 		const char* End = nullptr;
 
@@ -1304,7 +1304,7 @@ std::vector<std::string> lcMeshLoader::GetTextureReferences(const QByteArray& Fi
 	return Names;
 }
 
-bool lcMeshLoader::ParseTextureName(const char* Text, char* Name, size_t NameSize, const char** EndOfName)
+bool swMeshLoader::ParseTextureName(const char* Text, char* Name, size_t NameSize, const char** EndOfName)
 {
 	while (*Text && *Text <= 32)
 		Text++;
@@ -1323,7 +1323,7 @@ bool lcMeshLoader::ParseTextureName(const char* Text, char* Name, size_t NameSiz
 		if (Character == '\\' && (*Text == '"' || *Text == '\\'))
 			Character = *Text++;
 
-		if (Length + 1 >= NameSize || Length + 1 >= LC_TEXTURE_NAME_LEN)
+		if (Length + 1 >= NameSize || Length + 1 >= SW_TEXTURE_NAME_LEN)
 			return false;
 
 		if (Character >= 'a' && Character <= 'z')
@@ -1348,15 +1348,15 @@ bool lcMeshLoader::ParseTextureName(const char* Text, char* Name, size_t NameSiz
 	return true;
 }
 
-bool lcMeshLoader::ReadMeshData(lcFile& File, const lcMatrix44& CurrentTransform, quint32 CurrentColorCode, bool InvertWinding, lcMeshDataType MeshDataType)
+bool swMeshLoader::ReadMeshData(swFile& File, const swMatrix44& CurrentTransform, quint32 CurrentColorCode, bool InvertWinding, swMeshDataType MeshDataType)
 {
 	char Buffer[1024];
 	char* Line;
 	const size_t TextureStackStart = mTextureStack.size();
 	bool InvertNext = false;
 	bool WindingCCW = !InvertWinding;
-	lcPiecesLibrary* Library = lcGetPiecesLibrary();
-	const bool Optimize = mFlags.testFlag(lcMeshLoaderFlag::Optimize);
+	swPiecesLibrary* Library = swGetPiecesLibrary();
+	const bool Optimize = mFlags.testFlag(swMeshLoaderFlag::Optimize);
 
 	while (File.ReadLine(Buffer, sizeof(Buffer)))
 	{
@@ -1436,11 +1436,11 @@ bool lcMeshLoader::ReadMeshData(lcFile& File, const lcMatrix44& CurrentTransform
 						Token += 7;
 
 						mTextureStack.emplace_back();
-						lcMeshLoaderTextureMap& Map = mTextureStack.back();
-						Map.Type = lcMeshLoaderMaterialType::Planar;
+						swMeshLoaderTextureMap& Map = mTextureStack.back();
+						Map.Type = swMeshLoaderMaterialType::Planar;
 						Map.Next = Next;
 
-						lcVector3 (&Points)[3] = Map.Points;
+						swVector3 (&Points)[3] = Map.Points;
 
 						int NameOffset = 0;
 						const int Parsed = sscanf(Token, "%f %f %f %f %f %f %f %f %f %n", &Points[0].x, &Points[0].y, &Points[0].z, &Points[1].x, &Points[1].y, &Points[1].z, &Points[2].x, &Points[2].y, &Points[2].z, &NameOffset);
@@ -1451,20 +1451,20 @@ bool lcMeshLoader::ReadMeshData(lcFile& File, const lcMatrix44& CurrentTransform
 							continue;
 						}
 
-						Points[0] = lcMul31(Points[0], CurrentTransform);
-						Points[1] = lcMul31(Points[1], CurrentTransform);
-						Points[2] = lcMul31(Points[2], CurrentTransform);
+						Points[0] = swMul31(Points[0], CurrentTransform);
+						Points[1] = swMul31(Points[1], CurrentTransform);
+						Points[2] = swMul31(Points[2], CurrentTransform);
 					}
 					else if (!strcmp(Token, "CYLINDRICAL"))
 					{
 						Token += 12;
 
 						mTextureStack.emplace_back();
-						lcMeshLoaderTextureMap& Map = mTextureStack.back();
-						Map.Type = lcMeshLoaderMaterialType::Cylindrical;
+						swMeshLoaderTextureMap& Map = mTextureStack.back();
+						Map.Type = swMeshLoaderMaterialType::Cylindrical;
 						Map.Next = Next;
 
-						lcVector3 (&Points)[3] = Map.Points;
+						swVector3 (&Points)[3] = Map.Points;
 						float& Angle = Map.Angles[0];
 
 						int NameOffset = 0;
@@ -1476,20 +1476,20 @@ bool lcMeshLoader::ReadMeshData(lcFile& File, const lcMatrix44& CurrentTransform
 							continue;
 						}
 
-						Points[0] = lcMul31(Points[0], CurrentTransform);
-						Points[1] = lcMul31(Points[1], CurrentTransform);
-						Points[2] = lcMul31(Points[2], CurrentTransform);
+						Points[0] = swMul31(Points[0], CurrentTransform);
+						Points[1] = swMul31(Points[1], CurrentTransform);
+						Points[2] = swMul31(Points[2], CurrentTransform);
 					}
 					else if (!strcmp(Token, "SPHERICAL"))
 					{
 						Token += 10;
 
 						mTextureStack.emplace_back();
-						lcMeshLoaderTextureMap& Map = mTextureStack.back();
-						Map.Type = lcMeshLoaderMaterialType::Spherical;
+						swMeshLoaderTextureMap& Map = mTextureStack.back();
+						Map.Type = swMeshLoaderMaterialType::Spherical;
 						Map.Next = Next;
 
-						lcVector3(&Points)[3] = Map.Points;
+						swVector3(&Points)[3] = Map.Points;
 						float& Angle1 = Map.Angles[0];
 						float& Angle2 = Map.Angles[1];
 
@@ -1502,9 +1502,9 @@ bool lcMeshLoader::ReadMeshData(lcFile& File, const lcMatrix44& CurrentTransform
 							continue;
 						}
 
-						Points[0] = lcMul31(Points[0], CurrentTransform);
-						Points[1] = lcMul31(Points[1], CurrentTransform);
-						Points[2] = lcMul31(Points[2], CurrentTransform);
+						Points[0] = swMul31(Points[0], CurrentTransform);
+						Points[1] = swMul31(Points[1], CurrentTransform);
+						Points[2] = swMul31(Points[2], CurrentTransform);
 					}
 				}
 				else if (!strcmp(Token, "FALLBACK"))
@@ -1573,13 +1573,13 @@ bool lcMeshLoader::ReadMeshData(lcFile& File, const lcMatrix44& CurrentTransform
 
 			const quint32 ColorCodeHex = static_cast<quint32>(ParsedHexColorCode);
 			if (ColorCode != ColorCodeHex)
-				ColorCode = ColorCodeHex | LC_COLOR_DIRECT;
+				ColorCode = ColorCodeHex | SW_COLOR_DIRECT;
 		}
 
 		if (ColorCode == 16)
 			ColorCode = CurrentColorCode;
 
-		lcMeshLoaderTextureMap* TextureMap = nullptr;
+		swMeshLoaderTextureMap* TextureMap = nullptr;
 
 		if (!mTextureStack.empty())
 		{
@@ -1601,21 +1601,21 @@ bool lcMeshLoader::ReadMeshData(lcFile& File, const lcMatrix44& CurrentTransform
 		}
 
 		int Dummy;
-		lcVector3 Points[4];
+		swVector3 Points[4];
 		const bool ConsumeNext = mTextureStack.size() > TextureStackStart && mTextureStack.back().Next;
 
 		switch (LineType)
 		{
 		case 1:
 		{
-			char OriginalFileName[LC_MAXPATH];
+			char OriginalFileName[SW_MAXPATH];
 			float fm[12];
 
 			if (sscanf(Line, "%d %i %f %f %f %f %f %f %f %f %f %f %f %f %1023s", &LineType, &Dummy, &fm[0], &fm[1], &fm[2], &fm[3], &fm[4], &fm[5], &fm[6], &fm[7], &fm[8], &fm[9], &fm[10], &fm[11], OriginalFileName) != 15)
 				break;
 
-			char FileName[LC_MAXPATH];
-			lcstrcpy(FileName, OriginalFileName);
+			char FileName[SW_MAXPATH];
+			swstrcpy(FileName, OriginalFileName);
 
 			char* Ch;
 			for (Ch = FileName; *Ch; Ch++)
@@ -1626,16 +1626,16 @@ bool lcMeshLoader::ReadMeshData(lcFile& File, const lcMatrix44& CurrentTransform
 					*Ch = '/';
 			}
 
-			lcLibraryPrimitive* Primitive = !TextureMap ? Library->FindPrimitive(FileName) : nullptr;
-			lcMatrix44 IncludeTransform(lcVector4(fm[3], fm[6], fm[9], 0.0f), lcVector4(fm[4], fm[7], fm[10], 0.0f), lcVector4(fm[5], fm[8], fm[11], 0.0f), lcVector4(fm[0], fm[1], fm[2], 1.0f));
-			IncludeTransform = lcMul(IncludeTransform, CurrentTransform);
+			swLibraryPrimitive* Primitive = !TextureMap ? Library->FindPrimitive(FileName) : nullptr;
+			swMatrix44 IncludeTransform(swVector4(fm[3], fm[6], fm[9], 0.0f), swVector4(fm[4], fm[7], fm[10], 0.0f), swVector4(fm[5], fm[8], fm[11], 0.0f), swVector4(fm[0], fm[1], fm[2], 1.0f));
+			IncludeTransform = swMul(IncludeTransform, CurrentTransform);
 			bool Mirror = IncludeTransform.Determinant() < 0.0f;
 			bool IncludeLoaded = true;
 
 			if (Primitive)
 			{
 				// Read shared loading state under the library's primitive lock.
-				const lcResult<void> Result = Library->LoadPrimitive(Primitive);
+				const swResult<void> Result = Library->LoadPrimitive(Primitive);
 
 				if (!Result)
 				{
@@ -1654,24 +1654,24 @@ bool lcMeshLoader::ReadMeshData(lcFile& File, const lcMatrix44& CurrentTransform
 				}
 				else
 				{
-					const lcResult<std::unique_ptr<lcFile>> IncludeFile = Library->OpenPrimitiveFile(Primitive);
+					const swResult<std::unique_ptr<swFile>> IncludeFile = Library->OpenPrimitiveFile(Primitive);
 
 					if (IncludeFile)
 						IncludeLoaded = ReadMeshData(*IncludeFile.value(), IncludeTransform, ColorCode, Mirror ^ InvertNext, MeshDataType);
 					else
-						IncludeLoaded = !mFlags.testFlag(lcMeshLoaderFlag::RequireAllIncludes);
+						IncludeLoaded = !mFlags.testFlag(swMeshLoaderFlag::RequireAllIncludes);
 				}
 
 				mMeshData.mHasStyleStud |= Primitive->mStudStyle | Primitive->mMeshData.mHasStyleStud;
 			}
 			else
 			{
-				const lcResult<std::unique_ptr<lcFile>> IncludeFile = Library->OpenPieceDataFile(FileName);
+				const swResult<std::unique_ptr<swFile>> IncludeFile = Library->OpenPieceDataFile(FileName);
 
 				if (IncludeFile)
 					IncludeLoaded = ReadMeshData(*IncludeFile.value(), IncludeTransform, ColorCode, Mirror ^ InvertNext, MeshDataType);
 				else
-					IncludeLoaded = !mFlags.testFlag(lcMeshLoaderFlag::RequireAllIncludes);
+					IncludeLoaded = !mFlags.testFlag(swMeshLoaderFlag::RequireAllIncludes);
 			}
 
 			if (!IncludeLoaded)
@@ -1687,8 +1687,8 @@ bool lcMeshLoader::ReadMeshData(lcFile& File, const lcMatrix44& CurrentTransform
 			if (sscanf(Line, "%d %i %f %f %f %f %f %f", &LineType, &Dummy, &Points[0].x, &Points[0].y, &Points[0].z, &Points[1].x, &Points[1].y, &Points[1].z) != 8)
 				break;
 
-			Points[0] = lcMul31(Points[0], CurrentTransform);
-			Points[1] = lcMul31(Points[1], CurrentTransform);
+			Points[0] = swMul31(Points[0], CurrentTransform);
+			Points[1] = swMul31(Points[1], CurrentTransform);
 
 			mMeshData.mData[MeshDataType].ProcessLine(LineType, mMeshData.GetMaterial(ColorCode), WindingCCW, Points, Optimize);
 			break;
@@ -1698,9 +1698,9 @@ bool lcMeshLoader::ReadMeshData(lcFile& File, const lcMatrix44& CurrentTransform
 				   &Points[1].x, &Points[1].y, &Points[1].z, &Points[2].x, &Points[2].y, &Points[2].z) != 11)
 				break;
 
-			Points[0] = lcMul31(Points[0], CurrentTransform);
-			Points[1] = lcMul31(Points[1], CurrentTransform);
-			Points[2] = lcMul31(Points[2], CurrentTransform);
+			Points[0] = swMul31(Points[0], CurrentTransform);
+			Points[1] = swMul31(Points[1], CurrentTransform);
+			Points[2] = swMul31(Points[2], CurrentTransform);
 
 			if (!TextureMap)
 				mMeshData.mData[MeshDataType].ProcessLine(LineType, mMeshData.GetMaterial(ColorCode), WindingCCW, Points, Optimize);
@@ -1717,10 +1717,10 @@ bool lcMeshLoader::ReadMeshData(lcFile& File, const lcMatrix44& CurrentTransform
 				   &Points[1].x, &Points[1].y, &Points[1].z, &Points[2].x, &Points[2].y, &Points[2].z, &Points[3].x, &Points[3].y, &Points[3].z) != 14)
 				break;
 
-			Points[0] = lcMul31(Points[0], CurrentTransform);
-			Points[1] = lcMul31(Points[1], CurrentTransform);
-			Points[2] = lcMul31(Points[2], CurrentTransform);
-			Points[3] = lcMul31(Points[3], CurrentTransform);
+			Points[0] = swMul31(Points[0], CurrentTransform);
+			Points[1] = swMul31(Points[1], CurrentTransform);
+			Points[2] = swMul31(Points[2], CurrentTransform);
+			Points[3] = swMul31(Points[3], CurrentTransform);
 
 			if (!TextureMap)
 				mMeshData.mData[MeshDataType].ProcessLine(LineType, mMeshData.GetMaterial(ColorCode), WindingCCW, Points, Optimize);
@@ -1737,10 +1737,10 @@ bool lcMeshLoader::ReadMeshData(lcFile& File, const lcMatrix44& CurrentTransform
 				   &Points[1].x, &Points[1].y, &Points[1].z, &Points[2].x, &Points[2].y, &Points[2].z, &Points[3].x, &Points[3].y, &Points[3].z) != 14)
 				break;
 
-			Points[0] = lcMul31(Points[0], CurrentTransform);
-			Points[1] = lcMul31(Points[1], CurrentTransform);
-			Points[2] = lcMul31(Points[2], CurrentTransform);
-			Points[3] = lcMul31(Points[3], CurrentTransform);
+			Points[0] = swMul31(Points[0], CurrentTransform);
+			Points[1] = swMul31(Points[1], CurrentTransform);
+			Points[2] = swMul31(Points[2], CurrentTransform);
+			Points[3] = swMul31(Points[3], CurrentTransform);
 
 			mMeshData.mData[MeshDataType].ProcessLine(LineType, mMeshData.GetMaterial(ColorCode), WindingCCW, Points, Optimize);
 			break;

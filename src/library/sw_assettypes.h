@@ -1,28 +1,28 @@
 #pragma once
 
-class lcPieceData;
-class lcTexture;
-class lcPiecesLibrary;
-class lcMesh;
-struct lcEmbeddedData;
-enum class lcStudStyle;
-enum class lcZipFileType;
+class swPieceData;
+class swTexture;
+class swPiecesLibrary;
+class swMesh;
+struct swEmbeddedData;
+enum class swStudStyle;
+enum class swZipFileType;
 
 // Scoped asset reference. Construction from a borrowed pointer and copying retain;
 // moving transfers ownership. Use and destroy on the UI thread before library unload.
 // Ownership operations are instantiated for piece definitions and textures in the cpp.
 template<typename T>
-class lcAssetRef
+class swAssetRef
 {
 public:
-	lcAssetRef() = default;
-	explicit lcAssetRef(T* Asset);
-	lcAssetRef(const lcAssetRef& OtherRef);
-	lcAssetRef(lcAssetRef&& OtherRef) noexcept;
-	~lcAssetRef();
+	swAssetRef() = default;
+	explicit swAssetRef(T* Asset);
+	swAssetRef(const swAssetRef& OtherRef);
+	swAssetRef(swAssetRef&& OtherRef) noexcept;
+	~swAssetRef();
 
-	lcAssetRef& operator=(const lcAssetRef& OtherRef);
-	lcAssetRef& operator=(lcAssetRef&& OtherRef) noexcept;
+	swAssetRef& operator=(const swAssetRef& OtherRef);
+	swAssetRef& operator=(swAssetRef&& OtherRef) noexcept;
 
 	T* Get() const
 	{
@@ -44,37 +44,37 @@ public:
 		return mAsset != nullptr;
 	}
 
-	friend bool operator==(const lcAssetRef& LeftRef, const lcAssetRef& RightRef) noexcept
+	friend bool operator==(const swAssetRef& LeftRef, const swAssetRef& RightRef) noexcept
 	{
 		return LeftRef.mAsset == RightRef.mAsset;
 	}
 
-	friend bool operator!=(const lcAssetRef& LeftRef, const lcAssetRef& RightRef) noexcept
+	friend bool operator!=(const swAssetRef& LeftRef, const swAssetRef& RightRef) noexcept
 	{
 		return !(LeftRef == RightRef);
 	}
 
-	friend bool operator<(const lcAssetRef& LeftRef, const lcAssetRef& RightRef) noexcept
+	friend bool operator<(const swAssetRef& LeftRef, const swAssetRef& RightRef) noexcept
 	{
 		return std::less<T*>()(LeftRef.mAsset, RightRef.mAsset);
 	}
 
-	friend bool operator==(const lcAssetRef& LeftRef, const T* Right) noexcept
+	friend bool operator==(const swAssetRef& LeftRef, const T* Right) noexcept
 	{
 		return LeftRef.mAsset == Right;
 	}
 
-	friend bool operator!=(const lcAssetRef& LeftRef, const T* Right) noexcept
+	friend bool operator!=(const swAssetRef& LeftRef, const T* Right) noexcept
 	{
 		return !(LeftRef == Right);
 	}
 
-	friend bool operator==(const T* Left, const lcAssetRef& RightRef) noexcept
+	friend bool operator==(const T* Left, const swAssetRef& RightRef) noexcept
 	{
 		return Left == RightRef.mAsset;
 	}
 
-	friend bool operator!=(const T* Left, const lcAssetRef& RightRef) noexcept
+	friend bool operator!=(const T* Left, const swAssetRef& RightRef) noexcept
 	{
 		return !(Left == RightRef);
 	}
@@ -84,26 +84,26 @@ public:
 
 	void Reset();
 	T* Release();
-	void Swap(lcAssetRef& OtherRef) noexcept;
+	void Swap(swAssetRef& OtherRef) noexcept;
 
 private:
-	friend class lcPiecesLibrary;
+	friend class swPiecesLibrary;
 
-	lcAssetRef(T* Asset, lcPiecesLibrary* Library);
+	swAssetRef(T* Asset, swPiecesLibrary* Library);
 	// The library uses this only for a reference it has already acquired.
-	static lcAssetRef Adopt(T* Asset, lcPiecesLibrary* Library);
-	static void Retain(T* Asset, lcPiecesLibrary* Library);
-	static void Release(T* Asset, lcPiecesLibrary* Library);
+	static swAssetRef Adopt(T* Asset, swPiecesLibrary* Library);
+	static void Retain(T* Asset, swPiecesLibrary* Library);
+	static void Release(T* Asset, swPiecesLibrary* Library);
 
 	T* mAsset = nullptr;
-	lcPiecesLibrary* mLibrary = nullptr;
+	swPiecesLibrary* mLibrary = nullptr;
 };
 
-using lcPieceDataRef = lcAssetRef<lcPieceData>;
-using lcTextureRef = lcAssetRef<lcTexture>;
+using swPieceDataRef = swAssetRef<swPieceData>;
+using swTextureRef = swAssetRef<swTexture>;
 
 // Asset readiness; detailed scheduling progress belongs to loader requests.
-enum class lcAssetState
+enum class swAssetState
 {
 	Unloaded,
 	Loading,
@@ -113,7 +113,7 @@ enum class lcAssetState
 
 // Scheduling urgency only. Use the library's wait APIs for synchronous loading.
 // Queued requests only promote and keep their priority until completion or cancellation.
-enum class lcLoadPriority
+enum class swLoadPriority
 {
 	Low,      // Background work, such as thumbnails and settings rebuilds.
 	Normal,   // Visible or interactive work.
@@ -122,25 +122,25 @@ enum class lcLoadPriority
 
 // A resolved disk path, archive entry, or embedded file. Copying it does not
 // snapshot file contents; workers open their own file from the copied source.
-struct lcFileSource
+struct swFileSource
 {
-	bool operator==(const lcFileSource& Other) const
+	bool operator==(const swFileSource& Other) const
 	{
 		return EmbeddedData == Other.EmbeddedData && FilePath == Other.FilePath && ArchiveType == Other.ArchiveType && ArchiveIndex == Other.ArchiveIndex;
 	}
 
-	bool operator!=(const lcFileSource& Other) const
+	bool operator!=(const swFileSource& Other) const
 	{
 		return !(*this == Other);
 	}
 
-	std::shared_ptr<const lcEmbeddedData> EmbeddedData;
+	std::shared_ptr<const swEmbeddedData> EmbeddedData;
 	QString FilePath;
 	int ArchiveType = -1;
 	int ArchiveIndex = -1;
 };
 
-enum class lcTextureLoadError
+enum class swTextureLoadError
 {
 	None,
 	DecodeFailed,
@@ -150,52 +150,52 @@ enum class lcTextureLoadError
 };
 
 // Copied on the UI thread so workers do not consult live models or project lookup.
-struct lcPieceSourceSnapshot
+struct swPieceSourceSnapshot
 {
-	lcPieceSourceSnapshot();
+	swPieceSourceSnapshot();
 
 	QString FileName;
 	QString LibraryDirectory;
 	QString CachePath;
 	std::vector<QString> TextureSearchDirectories;
-	std::map<QString, std::shared_ptr<const lcEmbeddedData>> EmbeddedData;
+	std::map<QString, std::shared_ptr<const swEmbeddedData>> EmbeddedData;
 	QStringList InlineMeshLines;
 	bool InlineModel = false;
-	lcZipFileType ZipFileType;
+	swZipFileType ZipFileType;
 	int ZipFileIndex = -1;
-	lcStudStyle StudStyle;
+	swStudStyle StudStyle;
 	bool StudCylinderColorEnabled = false;
 };
 
 // Private worker output; meshes and dependencies are published only on the UI thread.
-struct lcPieceBuildResult
+struct swPieceBuildResult
 {
-	lcPieceBuildResult();
-	~lcPieceBuildResult();
+	swPieceBuildResult();
+	~swPieceBuildResult();
 
-	lcPieceBuildResult(lcPieceBuildResult&&) noexcept;
-	lcPieceBuildResult& operator=(lcPieceBuildResult&&) noexcept;
-	lcPieceBuildResult(const lcPieceBuildResult&) = delete;
-	lcPieceBuildResult& operator=(const lcPieceBuildResult&) = delete;
+	swPieceBuildResult(swPieceBuildResult&&) noexcept;
+	swPieceBuildResult& operator=(swPieceBuildResult&&) noexcept;
+	swPieceBuildResult(const swPieceBuildResult&) = delete;
+	swPieceBuildResult& operator=(const swPieceBuildResult&) = delete;
 
-	std::unique_ptr<lcMesh> Mesh;
+	std::unique_ptr<swMesh> Mesh;
 	bool FromCache = false;
 	bool EmptyGeometry = false;
 	QString Error;
 };
 
 // Image pixels and any error produced while preparing a texture.
-struct lcTextureBuildResult
+struct swTextureBuildResult
 {
-	lcTextureBuildResult() = default;
-	~lcTextureBuildResult();
+	swTextureBuildResult() = default;
+	~swTextureBuildResult();
 
-	lcTextureBuildResult(lcTextureBuildResult&&) = default;
-	lcTextureBuildResult& operator=(lcTextureBuildResult&&) = default;
-	lcTextureBuildResult(const lcTextureBuildResult&) = delete;
-	lcTextureBuildResult& operator=(const lcTextureBuildResult&) = delete;
+	swTextureBuildResult(swTextureBuildResult&&) = default;
+	swTextureBuildResult& operator=(swTextureBuildResult&&) = default;
+	swTextureBuildResult(const swTextureBuildResult&) = delete;
+	swTextureBuildResult& operator=(const swTextureBuildResult&) = delete;
 
 	QImage DecodedImage;
-	lcTextureLoadError Error = lcTextureLoadError::None;
+	swTextureLoadError Error = swTextureLoadError::None;
 	QString ErrorDetails;
 };

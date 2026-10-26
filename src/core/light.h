@@ -3,14 +3,14 @@
 #include "object.h"
 #include "sw_math.h"
 
-enum lcLightSection : quint32
+enum swLightSection : quint32
 {
-	LC_LIGHT_SECTION_INVALID = LC_OBJECT_SECTION_INVALID,
-	LC_LIGHT_SECTION_POSITION = 0,
-	LC_LIGHT_SECTION_TARGET
+	SW_LIGHT_SECTION_INVALID = SW_OBJECT_SECTION_INVALID,
+	SW_LIGHT_SECTION_POSITION = 0,
+	SW_LIGHT_SECTION_TARGET
 };
 
-enum class lcLightType
+enum class swLightType
 {
 	Point,
 	Spot,
@@ -19,7 +19,7 @@ enum class lcLightType
 	Count
 };
 
-enum class lcLightAreaShape
+enum class swLightAreaShape
 {
 	Rectangle,
 	Square,
@@ -28,32 +28,32 @@ enum class lcLightAreaShape
 	Count
 };
 
-struct lcLightHistoryState
+struct swLightHistoryState
 {
-	lcObjectId Id;
+	swObjectId Id;
 	bool Hidden;
 	QString Name;
-	lcLightType LightType;
+	swLightType LightType;
 	bool CastShadow;
-	lcObjectProperty<lcVector3> Position;
-	lcObjectProperty<lcMatrix33> Rotation;
-	lcObjectProperty<lcVector3> Color;
-	lcObjectProperty<float> BlenderPower;
-	lcObjectProperty<float> BlenderRadius;
-	lcObjectProperty<float> BlenderAngle;
-	lcObjectProperty<float> POVRayPower;
-	lcObjectProperty<float> POVRayFadeDistance;
-	lcObjectProperty<float> POVRayFadePower;
-	lcObjectProperty<float> SpotConeAngle;
-	lcObjectProperty<float> SpotPenumbraAngle;
-	lcObjectProperty<float> POVRaySpotTightness;
-	lcLightAreaShape AreaShape;
-	lcObjectProperty<float> AreaSizeX;
-	lcObjectProperty<float> AreaSizeY;
-	lcObjectProperty<int> POVRayAreaGridX;
-	lcObjectProperty<int> POVRayAreaGridY;
+	swObjectProperty<swVector3> Position;
+	swObjectProperty<swMatrix33> Rotation;
+	swObjectProperty<swVector3> Color;
+	swObjectProperty<float> BlenderPower;
+	swObjectProperty<float> BlenderRadius;
+	swObjectProperty<float> BlenderAngle;
+	swObjectProperty<float> POVRayPower;
+	swObjectProperty<float> POVRayFadeDistance;
+	swObjectProperty<float> POVRayFadePower;
+	swObjectProperty<float> SpotConeAngle;
+	swObjectProperty<float> SpotPenumbraAngle;
+	swObjectProperty<float> POVRaySpotTightness;
+	swLightAreaShape AreaShape;
+	swObjectProperty<float> AreaSizeX;
+	swObjectProperty<float> AreaSizeY;
+	swObjectProperty<int> POVRayAreaGridX;
+	swObjectProperty<int> POVRayAreaGridY;
 
-	bool operator==(const lcLightHistoryState& Other) const
+	bool operator==(const swLightHistoryState& Other) const
 	{
 		return Id == Other.Id && Hidden == Other.Hidden && Name == Other.Name && LightType == Other.LightType &&
             CastShadow == Other.CastShadow && Position == Other.Position && Rotation == Other.Rotation && Color == Other.Color &&
@@ -65,122 +65,122 @@ struct lcLightHistoryState
 	}
 };
 
-class lcLight : public lcObject
+class swLight : public swObject
 {
 public:
-	lcLight();
-	lcLight(const lcVector3& Position, lcLightType LightType);
-	virtual ~lcLight() = default;
+	swLight();
+	swLight(const swVector3& Position, swLightType LightType);
+	virtual ~swLight() = default;
 
-	lcLight(const lcLight&) = delete;
-	lcLight(lcLight&&) = delete;
-	lcLight& operator=(const lcLight&) = delete;
-	lcLight& operator=(lcLight&&) = delete;
+	swLight(const swLight&) = delete;
+	swLight(swLight&&) = delete;
+	swLight& operator=(const swLight&) = delete;
+	swLight& operator=(swLight&&) = delete;
 
-	static QString GetLightTypeString(lcLightType LightType);
+	static QString GetLightTypeString(swLightType LightType);
 	static QStringList GetLightTypeStrings();
-	static QString GetAreaShapeString(lcLightAreaShape LightAreaShape);
+	static QString GetAreaShapeString(swLightAreaShape LightAreaShape);
 	static QStringList GetAreaShapeStrings();
 
 	bool IsPointLight() const
 	{
-		return mLightType == lcLightType::Point;
+		return mLightType == swLightType::Point;
 	}
 
 	bool IsSpotLight() const
 	{
-		return mLightType == lcLightType::Spot;
+		return mLightType == swLightType::Spot;
 	}
 
 	bool IsDirectionalLight() const
 	{
-		return mLightType == lcLightType::Directional;
+		return mLightType == swLightType::Directional;
 	}
 
 	bool IsAreaLight() const
 	{
-		return mLightType == lcLightType::Area;
+		return mLightType == swLightType::Area;
 	}
 
-	lcLightType GetLightType() const
+	swLightType GetLightType() const
 	{
 		return mLightType;
 	}
 
-	bool SetLightType(lcLightType LightType);
+	bool SetLightType(swLightType LightType);
 
 	quint32 GetAllowedTransforms() const override
 	{
 		if (IsPointLight())
-			return LC_OBJECT_TRANSFORM_MOVE_XYZ;
+			return SW_OBJECT_TRANSFORM_MOVE_XYZ;
 
 		const quint32 Section = GetFocusSection();
 
-		if (Section == LC_LIGHT_SECTION_POSITION || Section == LC_LIGHT_SECTION_INVALID)
-			return LC_OBJECT_TRANSFORM_MOVE_XYZ | LC_OBJECT_TRANSFORM_ROTATE_XYZ;
+		if (Section == SW_LIGHT_SECTION_POSITION || Section == SW_LIGHT_SECTION_INVALID)
+			return SW_OBJECT_TRANSFORM_MOVE_XYZ | SW_OBJECT_TRANSFORM_ROTATE_XYZ;
 
-		if (Section == LC_LIGHT_SECTION_TARGET)
-			return LC_OBJECT_TRANSFORM_MOVE_XYZ;
+		if (Section == SW_LIGHT_SECTION_TARGET)
+			return SW_OBJECT_TRANSFORM_MOVE_XYZ;
 
 		return 0;
 	}
 
-	lcMatrix33 GetRelativeRotation() const
+	swMatrix33 GetRelativeRotation() const
 	{
 		const quint32 Section = GetFocusSection();
 
-		if (Section == LC_LIGHT_SECTION_POSITION)
-			return lcMatrix33(mWorldMatrix);
+		if (Section == SW_LIGHT_SECTION_POSITION)
+			return swMatrix33(mWorldMatrix);
 		else
-			return lcMatrix33Identity();
+			return swMatrix33Identity();
 	}
 
-	lcVector3 GetSectionPosition(quint32 Section) const override
+	swVector3 GetSectionPosition(quint32 Section) const override
 	{
-		if (Section == LC_LIGHT_SECTION_POSITION)
+		if (Section == SW_LIGHT_SECTION_POSITION)
 			return mWorldMatrix.GetTranslation();
 
-		if (Section == LC_LIGHT_SECTION_TARGET)
-			return lcMul31(lcVector3(0.0f, 0.0f, -mTargetDistance), mWorldMatrix);
+		if (Section == SW_LIGHT_SECTION_TARGET)
+			return swMul31(swVector3(0.0f, 0.0f, -mTargetDistance), mWorldMatrix);
 
-		return lcVector3(0.0f, 0.0f, 0.0f);
+		return swVector3(0.0f, 0.0f, 0.0f);
 	}
 
-	void SetPosition(const lcVector3& Position, lcStep Step, bool AddKey)
+	void SetPosition(const swVector3& Position, swStep Step, bool AddKey)
 	{
 		mPosition.ChangeKey(Position, Step, AddKey);
 	}
 
-	void SetRotation(const lcMatrix33& Rotation, lcStep Step, bool AddKey)
+	void SetRotation(const swMatrix33& Rotation, swStep Step, bool AddKey)
 	{
 		mRotation.ChangeKey(Rotation, Step, AddKey);
 	}
 
-	lcVector3 GetRotationCenter() const
+	swVector3 GetRotationCenter() const
 	{
 		const quint32 Section = GetFocusSection();
 
-		if (Section == LC_LIGHT_SECTION_POSITION || Section == LC_LIGHT_SECTION_INVALID)
+		if (Section == SW_LIGHT_SECTION_POSITION || Section == SW_LIGHT_SECTION_INVALID)
 		{
 			return mWorldMatrix.GetTranslation();
 		}
 		else
 		{
-			return lcMul31(lcVector3(0.0f, 0.0f, -mTargetDistance), mWorldMatrix);
+			return swMul31(swVector3(0.0f, 0.0f, -mTargetDistance), mWorldMatrix);
 		}
 	}
 
-	lcVector3 GetPosition() const
+	swVector3 GetPosition() const
 	{
 		return mWorldMatrix.GetTranslation();
 	}
 
-	lcVector3 GetDirection() const
+	swVector3 GetDirection() const
 	{
-		return -lcVector3(mWorldMatrix[2]);
+		return -swVector3(mWorldMatrix[2]);
 	}
 
-	const lcMatrix44& GetWorldMatrix() const
+	const swMatrix44& GetWorldMatrix() const
 	{
 		return mWorldMatrix;
 	}
@@ -189,125 +189,125 @@ public:
 	bool ParseLDrawLine(QTextStream& Stream);
 
 public:
-	void RayTest(lcObjectRayTest& ObjectRayTest) const override;
-	void BoxTest(lcObjectBoxTest& ObjectBoxTest) const override;
-	void DrawInterface(lcContext* Context, const lcScene& Scene) const override;
-	QVariant GetPropertyValue(lcObjectPropertyId PropertyId) const override;
-	bool SetPropertyValue(lcObjectPropertyId PropertyId, lcStep Step, bool AddKey, QVariant Value) override;
-	bool HasKeyFrame(lcObjectPropertyId PropertyId, lcStep Time) const override;
-	lcStep GetLastStep() const override;
-	bool SetKeyFrame(lcObjectPropertyId PropertyId, lcStep Time, bool KeyFrame) override;
+	void RayTest(swObjectRayTest& ObjectRayTest) const override;
+	void BoxTest(swObjectBoxTest& ObjectBoxTest) const override;
+	void DrawInterface(swContext* Context, const swScene& Scene) const override;
+	QVariant GetPropertyValue(swObjectPropertyId PropertyId) const override;
+	bool SetPropertyValue(swObjectPropertyId PropertyId, swStep Step, bool AddKey, QVariant Value) override;
+	bool HasKeyFrame(swObjectPropertyId PropertyId, swStep Time) const override;
+	swStep GetLastStep() const override;
+	bool SetKeyFrame(swObjectPropertyId PropertyId, swStep Time, bool KeyFrame) override;
 	void RemoveKeyFrames() override;
-	lcLightHistoryState GetHistoryState() const;
-	void SetHistoryState(const lcLightHistoryState& State);
+	swLightHistoryState GetHistoryState() const;
+	void SetHistoryState(const swLightHistoryState& State);
 
-	void InsertTime(lcStep Start, lcStep Time);
-	void RemoveTime(lcStep Start, lcStep Time);
+	void InsertTime(swStep Start, swStep Time);
+	void RemoveTime(swStep Start, swStep Time);
 
 	bool IsVisible() const
 	{
 		return !mHidden;
 	}
 
-	bool SetColor(const lcVector3& Color, lcStep Step, bool AddKey);
+	bool SetColor(const swVector3& Color, swStep Step, bool AddKey);
 
-	lcVector3 GetColor() const
+	swVector3 GetColor() const
 	{
 		return mColor;
 	}
 
-	bool SetPOVRayFadeDistance(float Distance, lcStep Step, bool AddKey);
+	bool SetPOVRayFadeDistance(float Distance, swStep Step, bool AddKey);
 
 	float GetPOVRayFadeDistance() const
 	{
 		return mPOVRayFadeDistance;
 	}
 
-	bool SetPOVRayFadePower(float Power, lcStep Step, bool AddKey);
+	bool SetPOVRayFadePower(float Power, swStep Step, bool AddKey);
 
 	float GetPOVRayFadePower() const
 	{
 		return mPOVRayFadePower;
 	}
 
-	bool SetSpotConeAngle(float Angle, lcStep Step, bool AddKey);
+	bool SetSpotConeAngle(float Angle, swStep Step, bool AddKey);
 
 	float GetSpotConeAngle() const
 	{
 		return mSpotConeAngle;
 	}
 
-	bool SetSpotPenumbraAngle(float Angle, lcStep Step, bool AddKey);
+	bool SetSpotPenumbraAngle(float Angle, swStep Step, bool AddKey);
 
 	float GetSpotPenumbraAngle() const
 	{
 		return mSpotPenumbraAngle;
 	}
 
-	bool SetSpotPOVRayTightness(float Angle, lcStep Step, bool AddKey);
+	bool SetSpotPOVRayTightness(float Angle, swStep Step, bool AddKey);
 
 	float GetSpotPOVRayTightness() const
 	{
 		return mPOVRaySpotTightness;
 	}
 
-	bool SetAreaShape(lcLightAreaShape LightAreaShape);
+	bool SetAreaShape(swLightAreaShape LightAreaShape);
 
-	lcLightAreaShape GetAreaShape() const
+	swLightAreaShape GetAreaShape() const
 	{
 		return mAreaShape;
 	}
 
-	bool SetAreaPOVRayGridX(int AreaGrid, lcStep Step, bool AddKey);
+	bool SetAreaPOVRayGridX(int AreaGrid, swStep Step, bool AddKey);
 
 	int GetAreaPOVRayGridX() const
 	{
 		return mPOVRayAreaGridX;
 	}
 
-	bool SetAreaPOVRayGridY(int AreaGrid, lcStep Step, bool AddKey);
+	bool SetAreaPOVRayGridY(int AreaGrid, swStep Step, bool AddKey);
 
 	int GetAreaPOVRayGridY() const
 	{
 		return mPOVRayAreaGridY;
 	}
 
-	bool SetBlenderRadius(float Radius, lcStep Step, bool AddKey);
+	bool SetBlenderRadius(float Radius, swStep Step, bool AddKey);
 
 	float GetBlenderRadius() const
 	{
 		return mBlenderRadius;
 	}
 
-	bool SetBlenderAngle(float Angle, lcStep Step, bool AddKey);
+	bool SetBlenderAngle(float Angle, swStep Step, bool AddKey);
 
 	float GetBlenderAngle() const
 	{
-		return mBlenderAngle * LC_RTOD;
+		return mBlenderAngle * SW_RTOD;
 	}
 
-	bool SetAreaSizeX(float Size, lcStep Step, bool AddKey);
+	bool SetAreaSizeX(float Size, swStep Step, bool AddKey);
 
 	float GetAreaSizeX() const
 	{
 		return mAreaSizeX;
 	}
 
-	bool SetAreaSizeY(float Size, lcStep Step, bool AddKey);
+	bool SetAreaSizeY(float Size, swStep Step, bool AddKey);
 
 	float GetAreaSizeY() const
 	{
 		return mAreaSizeY;
 	}
 
-	bool SetBlenderPower(float Power, lcStep Step, bool AddKey);
+	bool SetBlenderPower(float Power, swStep Step, bool AddKey);
 
 	float GetBlenderPower() const
 	{
 		return mBlenderPower;
 	}
 
-	bool SetPOVRayPower(float Power, lcStep Step, bool AddKey);
+	bool SetPOVRayPower(float Power, swStep Step, bool AddKey);
 
 	float GetPOVRayPower() const
 	{
@@ -328,47 +328,47 @@ public:
 		return mName;
 	}
 
-	void CompareBoundingBox(lcVector3& Min, lcVector3& Max);
-	void UpdatePosition(lcStep Step) override;
-	void MoveSelected(lcStep Step, bool AddKey, const lcVector3& Distance, bool FirstMove);
-	void Rotate(lcStep Step, bool AddKey, const lcMatrix33& RotationMatrix, const lcVector3& Center, const lcMatrix33& RotationFrame);
-	void CreateName(const std::vector<std::unique_ptr<lcLight>>& Lights);
+	void CompareBoundingBox(swVector3& Min, swVector3& Max);
+	void UpdatePosition(swStep Step) override;
+	void MoveSelected(swStep Step, bool AddKey, const swVector3& Distance, bool FirstMove);
+	void Rotate(swStep Step, bool AddKey, const swMatrix33& RotationMatrix, const swVector3& Center, const swMatrix33& RotationFrame);
+	void CreateName(const std::vector<std::unique_ptr<swLight>>& Lights);
 
 protected:
-	void DrawPointLight(lcContext* Context) const;
-	void DrawSpotLight(lcContext* Context) const;
-	void DrawDirectionalLight(lcContext* Context) const;
-	void DrawAreaLight(lcContext* Context) const;
+	void DrawPointLight(swContext* Context) const;
+	void DrawSpotLight(swContext* Context) const;
+	void DrawDirectionalLight(swContext* Context) const;
+	void DrawAreaLight(swContext* Context) const;
 
-	void SetupLightMatrix(lcContext* Context) const;
-	void DrawSphere(lcContext* Context, const lcVector3& Center, float Radius) const;
-	void DrawCylinder(lcContext* Context, float Radius, float Height) const;
-	void DrawTarget(lcContext* Context) const;
-	void DrawCone(lcContext* Context, float TargetDistance) const;
+	void SetupLightMatrix(swContext* Context) const;
+	void DrawSphere(swContext* Context, const swVector3& Center, float Radius) const;
+	void DrawCylinder(swContext* Context, float Radius, float Height) const;
+	void DrawTarget(swContext* Context) const;
+	void DrawCone(swContext* Context, float TargetDistance) const;
 
 	QString mName;
-	lcLightType mLightType = lcLightType::Point;
+	swLightType mLightType = swLightType::Point;
 	bool mCastShadow = true;
-	lcObjectProperty<lcVector3> mPosition = lcObjectProperty<lcVector3>(lcVector3(0.0f, 0.0f, 0.0f));
-	lcObjectProperty<lcMatrix33> mRotation = lcObjectProperty<lcMatrix33>(lcMatrix33Identity());
-	lcObjectProperty<lcVector3> mColor = lcObjectProperty<lcVector3>(lcVector3(1.0f, 1.0f, 1.0f));
-	lcObjectProperty<float> mBlenderPower = lcObjectProperty<float>(10.0f);
-	lcObjectProperty<float> mBlenderRadius = lcObjectProperty<float>(0.0f);
-	lcObjectProperty<float> mBlenderAngle = lcObjectProperty<float>(0.526f * LC_DTOR);
-	lcObjectProperty<float> mPOVRayPower = lcObjectProperty<float>(1.0f);
-	lcObjectProperty<float> mPOVRayFadeDistance = lcObjectProperty<float>(0.0f);
-	lcObjectProperty<float> mPOVRayFadePower = lcObjectProperty<float>(0.0f);
-	lcObjectProperty<float> mSpotConeAngle = lcObjectProperty<float>(80.0f);
-	lcObjectProperty<float> mSpotPenumbraAngle = lcObjectProperty<float>(0.0f);
-	lcObjectProperty<float> mPOVRaySpotTightness = lcObjectProperty<float>(0.0f);
-	lcLightAreaShape mAreaShape = lcLightAreaShape::Rectangle;
-	lcObjectProperty<float> mAreaSizeX = lcObjectProperty<float>(250.0f);
-	lcObjectProperty<float> mAreaSizeY = lcObjectProperty<float>(250.0f);
-	lcObjectProperty<int> mPOVRayAreaGridX = lcObjectProperty<int>(2);
-	lcObjectProperty<int> mPOVRayAreaGridY = lcObjectProperty<int>(2);
+	swObjectProperty<swVector3> mPosition = swObjectProperty<swVector3>(swVector3(0.0f, 0.0f, 0.0f));
+	swObjectProperty<swMatrix33> mRotation = swObjectProperty<swMatrix33>(swMatrix33Identity());
+	swObjectProperty<swVector3> mColor = swObjectProperty<swVector3>(swVector3(1.0f, 1.0f, 1.0f));
+	swObjectProperty<float> mBlenderPower = swObjectProperty<float>(10.0f);
+	swObjectProperty<float> mBlenderRadius = swObjectProperty<float>(0.0f);
+	swObjectProperty<float> mBlenderAngle = swObjectProperty<float>(0.526f * SW_DTOR);
+	swObjectProperty<float> mPOVRayPower = swObjectProperty<float>(1.0f);
+	swObjectProperty<float> mPOVRayFadeDistance = swObjectProperty<float>(0.0f);
+	swObjectProperty<float> mPOVRayFadePower = swObjectProperty<float>(0.0f);
+	swObjectProperty<float> mSpotConeAngle = swObjectProperty<float>(80.0f);
+	swObjectProperty<float> mSpotPenumbraAngle = swObjectProperty<float>(0.0f);
+	swObjectProperty<float> mPOVRaySpotTightness = swObjectProperty<float>(0.0f);
+	swLightAreaShape mAreaShape = swLightAreaShape::Rectangle;
+	swObjectProperty<float> mAreaSizeX = swObjectProperty<float>(250.0f);
+	swObjectProperty<float> mAreaSizeY = swObjectProperty<float>(250.0f);
+	swObjectProperty<int> mPOVRayAreaGridX = swObjectProperty<int>(2);
+	swObjectProperty<int> mPOVRayAreaGridY = swObjectProperty<int>(2);
 
-	lcVector3 mTargetMovePosition = lcVector3(0.0f, 0.0f, 0.0f);
-	lcMatrix44 mWorldMatrix;
+	swVector3 mTargetMovePosition = swVector3(0.0f, 0.0f, 0.0f);
+	swMatrix44 mWorldMatrix;
 
 	static constexpr float mTargetDistance = 50.0f;
 };

@@ -2,7 +2,7 @@
 
 #include <QtTest/QtTest>
 
-class lcTests : public QObject
+class swTests : public QObject
 {
 	Q_OBJECT
 

@@ -13,10 +13,10 @@
 #include "sw_utils.h"
 
 // a read-only box like the panel text boxes that shortens the name with an ellipsis to fit
-class lcPreviewNameEdit : public QLineEdit
+class swPreviewNameEdit : public QLineEdit
 {
 public:
-	lcPreviewNameEdit()
+	swPreviewNameEdit()
 	{
 		setReadOnly(true);
 		setFocusPolicy(Qt::NoFocus);
@@ -53,48 +53,48 @@ protected:
 	QString mName;
 };
 
-lcPreviewDockWidget::lcPreviewDockWidget(QWidget* Parent)
+swPreviewDockWidget::swPreviewDockWidget(QWidget* Parent)
 	: QWidget(Parent)
 {
-	mPreview = new lcPreview();
+	mPreview = new swPreview();
 
 	// the view sits in a container that can keep it square
 	mViewContainer = new QWidget(this);
 	mViewContainer->installEventFilter(this);
 
-	mViewWidget = new lcViewWidget(mViewContainer, mPreview);
+	mViewWidget = new swViewWidget(mViewContainer, mPreview);
 
 	// the preview blends into its panel without a viewport border
 	mPreview->SetDrawViewportBorder(false);
 	mViewWidget->setAccessibleName(tr("Piece Preview"));
 	mViewWidget->setToolTip(tr("Inspect the previewed piece without placing it in the model."));
 	// Small enough to stack with other panels, the header rows and a few rows of view stay visible.
-	setMinimumSize(200, 4 * lcGetPanelButtonSize().height());
+	setMinimumSize(200, 4 * swGetPanelButtonSize().height());
 
 	mLockAction = new QAction(tr("Lock Preview"), this);
 	mLockAction->setWhatsThis(tr("<p><b>Lock Preview</b></p><p>Keep the current piece in the preview while you browse other pieces. Unlock Preview allows the display to update again. An empty preview cannot be locked.</p>"));
 	mLockAction->setCheckable(true);
 	mLockAction->setChecked(false);
 	mLockAction->setShortcut(tr("Ctrl+L"));
-	connect(mLockAction, &QAction::triggered, this, &lcPreviewDockWidget::SetPreviewLock);
+	connect(mLockAction, &QAction::triggered, this, &swPreviewDockWidget::SetPreviewLock);
 	SetPreviewLock();
 
-	mLabel = new lcPreviewNameEdit();
+	mLabel = new swPreviewNameEdit();
 	mLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	lcSetupPanelEdit(mLabel);
+	swSetupPanelEdit(mLabel);
 
-	lcPiecesLibrary* Library = lcGetPiecesLibrary();
-	connect(Library, &lcPiecesLibrary::PartLoaded, this, [this](lcPieceData*)
+	swPiecesLibrary* Library = swGetPiecesLibrary();
+	connect(Library, &swPiecesLibrary::PartLoaded, this, [this](swPieceData*)
 	{
 		if (mAssetRefreshPending)
 			RefreshPendingAssets();
 	});
-	connect(Library, &lcPiecesLibrary::PartLoadFailed, this, [this](lcPieceData*, const QString&)
+	connect(Library, &swPiecesLibrary::PartLoadFailed, this, [this](swPieceData*, const QString&)
 	{
 		if (mAssetRefreshPending)
 			RefreshPendingAssets();
 	});
-	connect(Library, &lcPiecesLibrary::GeneratedMeshSettled, this, [this](lcPieceData*)
+	connect(Library, &swPiecesLibrary::GeneratedMeshSettled, this, [this](swPieceData*)
 	{
 		if (mAssetRefreshPending)
 			RefreshPendingAssets();
@@ -103,70 +103,70 @@ lcPreviewDockWidget::lcPreviewDockWidget(QWidget* Parent)
 	// The button row, the name of the previewed piece and the view are stacked like the other panels.
 	QVBoxLayout* Layout = new QVBoxLayout(this);
 
-	QWidget* ButtonRow = lcCreatePanelRow(this);
+	QWidget* ButtonRow = swCreatePanelRow(this);
 	Layout->addWidget(ButtonRow);
 
 	// Nothing else sits beside it, so the lock button reaches up to the options button.
-	QToolButton* LockButton = lcAddPanelActionButton(ButtonRow, mLockAction);
+	QToolButton* LockButton = swAddPanelActionButton(ButtonRow, mLockAction);
 	LockButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
 	LockButton->setWhatsThis(mLockAction->whatsThis());
-	lcSetupPanelButton(LockButton);
+	swSetupPanelButton(LockButton);
 	LockButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
 	QMenu* OptionsMenu = new QMenu(this);
-	lcAddPanelOptionsButton(ButtonRow, OptionsMenu, tr("Configure the pieces preview."), tr("Pieces Preview Options"));
-	connect(OptionsMenu, &QMenu::aboutToShow, this, &lcPreviewDockWidget::OptionsMenuAboutToShow);
+	swAddPanelOptionsButton(ButtonRow, OptionsMenu, tr("Configure the pieces preview."), tr("Pieces Preview Options"));
+	connect(OptionsMenu, &QMenu::aboutToShow, this, &swPreviewDockWidget::OptionsMenuAboutToShow);
 
 	Layout->addWidget(mLabel);
 	Layout->addWidget(mViewContainer, 1);
 }
 
-void lcPreviewDockWidget::OptionsMenuAboutToShow()
+void swPreviewDockWidget::OptionsMenuAboutToShow()
 {
 	QMenu* Menu = qobject_cast<QMenu*>(sender());
 	Menu->clear();
 
-	const lcPreferences& Preferences = lcGetPreferences();
+	const swPreferences& Preferences = swGetPreferences();
 
-	gMainWindow->AddMenuCommand(Menu, tr("View Sphere"), LC_VIEW_TOGGLE_PREVIEW_VIEW_SPHERE, Preferences.mPreviewViewSphereEnabled);
-	gMainWindow->AddMenuCommand(Menu, tr("Axis Icon"), LC_VIEW_TOGGLE_PREVIEW_AXIS_ICON, Preferences.mDrawPreviewAxis);
-	gMainWindow->AddMenuCommand(Menu, tr("Square Viewport"), LC_VIEW_PREVIEW_TOGGLE_SQUARE, Preferences.mPreviewSquareViewport);
+	gMainWindow->AddMenuCommand(Menu, tr("View Sphere"), SW_VIEW_TOGGLE_PREVIEW_VIEW_SPHERE, Preferences.mPreviewViewSphereEnabled);
+	gMainWindow->AddMenuCommand(Menu, tr("Axis Icon"), SW_VIEW_TOGGLE_PREVIEW_AXIS_ICON, Preferences.mDrawPreviewAxis);
+	gMainWindow->AddMenuCommand(Menu, tr("Square Viewport"), SW_VIEW_PREVIEW_TOGGLE_SQUARE, Preferences.mPreviewSquareViewport);
 
 	Menu->addSeparator();
 
-	gMainWindow->AddRenderTargetActions(Menu, lcRenderTarget::Preview);
+	gMainWindow->AddRenderTargetActions(Menu, swRenderTarget::Preview);
 }
 
-void lcPreviewDockWidget::SetSquareViewport(bool SquareViewport)
+void swPreviewDockWidget::SetSquareViewport(bool SquareViewport)
 {
-	lcPreferences& Preferences = lcGetPreferences();
+	swPreferences& Preferences = swGetPreferences();
 
 	Preferences.mPreviewSquareViewport = SquareViewport;
-	lcSetProfileInt(LC_PROFILE_PREVIEW_SQUARE_VIEWPORT, SquareViewport);
+	swSetProfileInt(SW_PROFILE_PREVIEW_SQUARE_VIEWPORT, SquareViewport);
 
 	UpdateSquareViewport();
 }
 
-void lcPreviewDockWidget::UpdateSquareViewport()
+void swPreviewDockWidget::UpdateSquareViewport()
 {
 	UpdateViewGeometry();
 }
 
-void lcPreviewDockWidget::UpdateViewGeometry()
+void swPreviewDockWidget::UpdateViewGeometry()
 {
 	// a square preview sizes the panel to fit, the height follows the width like the colors panel
-	if (lcGetPreferences().mPreviewSquareViewport)
+	if (swGetPreferences().mPreviewSquareViewport)
 		setFixedHeight(height() - mViewContainer->height() + mViewContainer->width());
 	else
 	{
-		setMinimumHeight(4 * lcGetPanelButtonSize().height());
+		setMinimumHeight(4 * swGetPanelButtonSize().height());
 		setMaximumHeight(QWIDGETSIZE_MAX);
 	}
 
 	mViewWidget->setGeometry(mViewContainer->rect());
 }
 
-bool lcPreviewDockWidget::eventFilter(QObject* Object, QEvent* Event)
+bool swPreviewDockWidget::eventFilter(QObject* Object, QEvent* Event)
 {
 	if (Object == mViewContainer && Event->type() == QEvent::Resize)
 		UpdateViewGeometry();
@@ -174,7 +174,7 @@ bool lcPreviewDockWidget::eventFilter(QObject* Object, QEvent* Event)
 	return QWidget::eventFilter(Object, Event);
 }
 
-bool lcPreviewDockWidget::SetCurrentPiece(lcPieceData* PieceData, int ColorCode)
+bool swPreviewDockWidget::SetCurrentPiece(swPieceData* PieceData, int ColorCode)
 {
 	if (mLockAction->isChecked())
 		return true;
@@ -195,7 +195,7 @@ bool lcPreviewDockWidget::SetCurrentPiece(lcPieceData* PieceData, int ColorCode)
 	return false;
 }
 
-void lcPreviewDockWidget::UpdatePreview()
+void swPreviewDockWidget::UpdatePreview()
 {
 	mAssetRefreshPending = false;
 	mRefitAfterAssetLoad = true;
@@ -203,18 +203,18 @@ void lcPreviewDockWidget::UpdatePreview()
 	RefreshPendingAssets();
 }
 
-void lcPreviewDockWidget::RefreshDescription()
+void swPreviewDockWidget::RefreshDescription()
 {
 	mPreview->RefreshDescription();
 	mLabel->SetName(mPreview->GetDescription());
 }
 
-void lcPreviewDockWidget::RefreshModel(const lcModel* Model)
+void swPreviewDockWidget::RefreshModel(const swModel* Model)
 {
 	if (mLockAction->isChecked() || mRefreshingModel)
 		return;
 
-	const std::vector<lcPieceDataRef> RequiredPieceData = mPreview->GetModel()->GetRequiredPieceData();
+	const std::vector<swPieceDataRef> RequiredPieceData = mPreview->GetModel()->GetRequiredPieceData();
 
 	if (std::find(RequiredPieceData.begin(), RequiredPieceData.end(), Model->GetPieceData()) == RequiredPieceData.end())
 		return;
@@ -224,17 +224,17 @@ void lcPreviewDockWidget::RefreshModel(const lcModel* Model)
 	if (!mAssetRefreshPending)
 		mRefitAfterAssetLoad = false;
 
-	lcPiecesLibrary* Library = lcGetPiecesLibrary();
+	swPiecesLibrary* Library = swGetPiecesLibrary();
 
-	for (const lcPieceDataRef& RequiredData : RequiredPieceData)
+	for (const swPieceDataRef& RequiredData : RequiredPieceData)
 	{
-		if (RequiredData->mState != lcAssetState::Unloaded)
+		if (RequiredData->mState != swAssetState::Unloaded)
 			continue;
 
-		Library->RequestPieceDataLoad(RequiredData.Get(), lcLoadPriority::Normal);
+		Library->RequestPieceDataLoad(RequiredData.Get(), swLoadPriority::Normal);
 	}
 
-	std::vector<lcModel*> UpdatedModels;
+	std::vector<swModel*> UpdatedModels;
 	mPreview->GetModel()->UpdatePieceData(UpdatedModels);
 
 	RefreshPendingAssets();
@@ -242,20 +242,20 @@ void lcPreviewDockWidget::RefreshModel(const lcModel* Model)
 	mRefreshingModel = false;
 }
 
-void lcPreviewDockWidget::RefreshAfterAssetChange(const std::vector<lcPieceData*>& ChangedPieces)
+void swPreviewDockWidget::RefreshAfterAssetChange(const std::vector<swPieceData*>& ChangedPieces)
 {
 	if (mPreview->GetModel()->GetPieces().empty())
 		return;
 
-	const std::vector<lcPieceDataRef> RequiredPieceData = mPreview->GetModel()->GetRequiredPieceData();
-	bool Affected = std::any_of(RequiredPieceData.begin(), RequiredPieceData.end(), [&ChangedPieces](const lcPieceDataRef& RequiredData)
+	const std::vector<swPieceDataRef> RequiredPieceData = mPreview->GetModel()->GetRequiredPieceData();
+	bool Affected = std::any_of(RequiredPieceData.begin(), RequiredPieceData.end(), [&ChangedPieces](const swPieceDataRef& RequiredData)
 	{
 		return std::find(ChangedPieces.begin(), ChangedPieces.end(), RequiredData) != ChangedPieces.end();
 	});
 
 	if (!Affected)
 	{
-		for (const std::unique_ptr<lcPiece>& Piece : mPreview->GetModel()->GetPieces())
+		for (const std::unique_ptr<swPiece>& Piece : mPreview->GetModel()->GetPieces())
 		{
 			if (std::find(ChangedPieces.begin(), ChangedPieces.end(), Piece->mPieceData) != ChangedPieces.end())
 			{
@@ -271,13 +271,13 @@ void lcPreviewDockWidget::RefreshAfterAssetChange(const std::vector<lcPieceData*
 	RefreshPendingAssets();
 }
 
-void lcPreviewDockWidget::RefreshPendingAssets()
+void swPreviewDockWidget::RefreshPendingAssets()
 {
-	const std::vector<lcPieceDataRef> RequiredPieceData = mPreview->GetModel()->GetRequiredPieceData();
+	const std::vector<swPieceDataRef> RequiredPieceData = mPreview->GetModel()->GetRequiredPieceData();
 
-	for (const lcPieceDataRef& RequiredData : RequiredPieceData)
+	for (const swPieceDataRef& RequiredData : RequiredPieceData)
 	{
-		if (RequiredData->mState == lcAssetState::Failed || RequiredData->mState == lcAssetState::Unloaded)
+		if (RequiredData->mState == swAssetState::Failed || RequiredData->mState == swAssetState::Unloaded)
 		{
 			mAssetRefreshPending = false;
 			mViewWidget->hide();
@@ -285,7 +285,7 @@ void lcPreviewDockWidget::RefreshPendingAssets()
 			return;
 		}
 
-		if (RequiredData->mState != lcAssetState::Loaded)
+		if (RequiredData->mState != swAssetState::Loaded)
 		{
 			mAssetRefreshPending = true;
 			mViewWidget->hide();
@@ -294,7 +294,7 @@ void lcPreviewDockWidget::RefreshPendingAssets()
 		}
 	}
 
-	for (const lcPiece* Piece : mPreview->GetModel()->GetRequiredSynthPieces())
+	for (const swPiece* Piece : mPreview->GetModel()->GetRequiredSynthPieces())
 	{
 		if (Piece->IsGeneratedMeshPending())
 		{
@@ -314,7 +314,7 @@ void lcPreviewDockWidget::RefreshPendingAssets()
 	}
 
 	if (mAssetRefreshPending && mRefitAfterAssetLoad)
-		mPreview->ZoomExtents(lcGeometryBoundsMode::IncludeFallback, false);
+		mPreview->ZoomExtents(swGeometryBoundsMode::IncludeFallback, false);
 
 	mAssetRefreshPending = false;
 	mRefitAfterAssetLoad = true;
@@ -324,11 +324,11 @@ void lcPreviewDockWidget::RefreshPendingAssets()
 	mLabel->SetName(mPreview->GetDescription());
 }
 
-void lcPreviewDockWidget::RebindPieceData(lcPieceData* Previous, lcPieceData* Replacement)
+void swPreviewDockWidget::RebindPieceData(swPieceData* Previous, swPieceData* Replacement)
 {
 	int ColorCode = -1;
 
-	for (const std::unique_ptr<lcPiece>& Piece : mPreview->GetModel()->GetPieces())
+	for (const std::unique_ptr<swPiece>& Piece : mPreview->GetModel()->GetPieces())
 	{
 		if (Piece->mPieceData == Previous)
 		{
@@ -352,7 +352,7 @@ void lcPreviewDockWidget::RebindPieceData(lcPieceData* Previous, lcPieceData* Re
 	}
 }
 
-void lcPreviewDockWidget::ClearPreview()
+void swPreviewDockWidget::ClearPreview()
 {
 	mAssetRefreshPending = false;
 	mRefitAfterAssetLoad = true;
@@ -363,7 +363,7 @@ void lcPreviewDockWidget::ClearPreview()
 	mLabel->SetName(QString());
 }
 
-void lcPreviewDockWidget::SetPreviewLock()
+void swPreviewDockWidget::SetPreviewLock()
 {
 	bool Locked = mLockAction->isChecked();
 
@@ -382,14 +382,14 @@ void lcPreviewDockWidget::SetPreviewLock()
 	mLockAction->setStatusTip(StatusTip);
 }
 
-lcPreview::lcPreview()
-	: lcView(lcViewType::Preview, nullptr), mLoader(new Project(true))
+swPreview::swPreview()
+	: swView(swViewType::Preview, nullptr), mLoader(new Project(true))
 {
 	mLoader->SetActiveModel(0, false);
 	mModel = mLoader->GetActiveModel();
 }
 
-bool lcPreview::SetCurrentPiece(lcPieceData* PieceData, int ColorCode)
+bool swPreview::SetCurrentPiece(swPieceData* PieceData, int ColorCode)
 {
 	if (!PieceData)
 	{
@@ -397,7 +397,7 @@ bool lcPreview::SetCurrentPiece(lcPieceData* PieceData, int ColorCode)
 		return false;
 	}
 
-	for (const std::unique_ptr<lcPiece>& ModelPiece : mModel->GetPieces())
+	for (const std::unique_ptr<swPiece>& ModelPiece : mModel->GetPieces())
 	{
 		if (PieceData == ModelPiece->mPieceData)
 		{
@@ -411,8 +411,8 @@ bool lcPreview::SetCurrentPiece(lcPieceData* PieceData, int ColorCode)
 		}
 	}
 
-	lcPiecesLibrary* Library = lcGetPiecesLibrary();
-	const lcPieceDataRef PieceDataRef(PieceData);
+	swPiecesLibrary* Library = swGetPiecesLibrary();
+	const swPieceDataRef PieceDataRef(PieceData);
 
 	bool Ready = Library->WaitForPieceData(PieceDataRef);
 
@@ -433,18 +433,18 @@ bool lcPreview::SetCurrentPiece(lcPieceData* PieceData, int ColorCode)
 
 	mModel->SelectAllPiecesAction();
 	mModel->DeleteSelectedObjects();
-	mModel->SetPreviewPieceData(PieceData, lcGetColorIndex(ColorCode));
+	mModel->SetPreviewPieceData(PieceData, swGetColorIndex(ColorCode));
 
-	std::vector<lcModel*> UpdatedModels;
+	std::vector<swModel*> UpdatedModels;
 
 	mModel->UpdatePieceData(UpdatedModels);
 
-	ZoomExtents(lcGeometryBoundsMode::IncludeFallback, true);
+	ZoomExtents(swGeometryBoundsMode::IncludeFallback, true);
 
 	return true;
 }
 
-void lcPreview::ClearPreview()
+void swPreview::ClearPreview()
 {
 	mDescription.clear();
 	mIsModel = false;
@@ -452,18 +452,18 @@ void lcPreview::ClearPreview()
 	mLoader->SetActiveModel(0, false);
 	mModel = mLoader->GetActiveModel();
 
-	lcPiecesLibrary* Library = lcGetPiecesLibrary();
+	swPiecesLibrary* Library = swGetPiecesLibrary();
 
 	Library->RemoveTemporaryPieceData();
 	Redraw();
 }
 
-void lcPreview::UpdatePreview()
+void swPreview::UpdatePreview()
 {
-	lcPieceData* PieceData = nullptr;
+	swPieceData* PieceData = nullptr;
 	int ColorCode = -1;
 
-	for (const std::unique_ptr<lcPiece>& ModelPiece : mModel->GetPieces())
+	for (const std::unique_ptr<swPiece>& ModelPiece : mModel->GetPieces())
 	{
 		if (ModelPiece->mPieceData)
 		{
@@ -473,7 +473,7 @@ void lcPreview::UpdatePreview()
 		}
 	}
 
-	lcPieceDataRef PreviousPieceData(PieceData);
+	swPieceDataRef PreviousPieceData(PieceData);
 
 	ClearPreview();
 
@@ -482,9 +482,9 @@ void lcPreview::UpdatePreview()
 
 }
 
-void lcPreview::RefreshDescription()
+void swPreview::RefreshDescription()
 {
-	for (const std::unique_ptr<lcPiece>& Piece : mModel->GetPieces())
+	for (const std::unique_ptr<swPiece>& Piece : mModel->GetPieces())
 	{
 		if (!Piece->mPieceData)
 			continue;

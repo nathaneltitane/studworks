@@ -1,27 +1,27 @@
 #pragma once
 
-struct lcStringCacheEntry
+struct swStringCacheEntry
 {
 	int Left, Right, Top, Bottom;
 };
 
-class lcStringCache
+class swStringCache
 {
 public:
-    lcStringCache();
-	~lcStringCache();
+    swStringCache();
+	~swStringCache();
 
-	void Initialize(lcContext* Context);
+	void Initialize(swContext* Context);
 	void Reset();
 
-	void CacheStrings(lcContext* Context, const QStringList& Strings);
+	void CacheStrings(swContext* Context, const QStringList& Strings);
 	void GetStringDimensions(int* cx, int* cy, const QString& String) const;
-	void DrawStrings(lcContext* Context, const lcMatrix44* Transforms, const QStringList& Strings) const;
+	void DrawStrings(swContext* Context, const swMatrix44* Transforms, const QStringList& Strings) const;
 
 protected:
-	lcTexture* mTexture;
+	swTexture* mTexture;
 
-	std::map<QString, lcStringCacheEntry> mStrings;
+	std::map<QString, swStringCacheEntry> mStrings;
 };
 
-extern lcStringCache gStringCache;
+extern swStringCache gStringCache;

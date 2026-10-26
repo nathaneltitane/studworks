@@ -1,49 +1,49 @@
 #pragma once
 
-#define LC_MAX_GROUP_NAME 64
+#define SW_MAX_GROUP_NAME 64
 
-enum class lcGroupId : uint32_t;
+enum class swGroupId : uint32_t;
 
-constexpr uint32_t LC_GROUP_ID_INVALID = std::numeric_limits<uint32_t>::max();
+constexpr uint32_t SW_GROUP_ID_INVALID = std::numeric_limits<uint32_t>::max();
 
-struct lcGroupHistoryState
+struct swGroupHistoryState
 {
-	lcGroupId Id;
+	swGroupId Id;
 	uint32_t ParentId;
 	QString Name;
 
-	bool operator==(const lcGroupHistoryState& Other) const
+	bool operator==(const swGroupHistoryState& Other) const
 	{
 		return Id == Other.Id && ParentId == Other.ParentId && Name == Other.Name;
 	}
 };
 
-class lcGroup
+class swGroup
 {
 public:
-	lcGroup();
+	swGroup();
 
-	lcGroup* GetTopGroup()
+	swGroup* GetTopGroup()
 	{
 		return mGroup ? mGroup->GetTopGroup() : this;
 	}
 
-	lcGroupId GetId() const
+	swGroupId GetId() const
 	{
 		return mId;
 	}
 
-	void FileLoad(lcFile* File);
-	void CreateName(const std::vector<std::unique_ptr<lcGroup>>& Groups);
+	void FileLoad(swFile* File);
+	void CreateName(const std::vector<std::unique_ptr<swGroup>>& Groups);
 
-	lcGroupHistoryState GetHistoryState() const;
-	void SetHistoryState(const lcGroupHistoryState& State, lcGroup* Parent);
+	swGroupHistoryState GetHistoryState() const;
+	void SetHistoryState(const swGroupHistoryState& State, swGroup* Parent);
 
-	lcGroup* mGroup = nullptr;
+	swGroup* mGroup = nullptr;
 	QString mName;
 
 protected:
-	lcGroupId mId = static_cast<lcGroupId>(0);
+	swGroupId mId = static_cast<swGroupId>(0);
 
-	static lcGroupId mNextId;
+	static swGroupId mNextId;
 };

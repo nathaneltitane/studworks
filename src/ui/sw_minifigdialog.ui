@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>lcMinifigDialog</class>
- <widget class="QWidget" name="lcMinifigDialog">
+ <class>swMinifigDialog</class>
+ <widget class="QWidget" name="swMinifigDialog">
   <property name="whatsThis">
    <string>&lt;p&gt;&lt;b&gt;Minifigure&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Build a minifigure by choosing its pieces, colors, and pose. The preview updates as you make changes. Choose Add to Model to insert the minifigure into the current model.&lt;/p&gt;&lt;p&gt;Templates let you reuse a configuration. Saved, deleted, and imported templates are kept as soon as you change them.&lt;/p&gt;</string>
   </property>

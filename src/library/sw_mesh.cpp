@@ -7,36 +7,36 @@
 #include "sw_application.h"
 #include "sw_library.h"
 
-#define LC_MESH_FILE_ID      LC_FOURCC('M', 'E', 'S', 'H')
-#define LC_MESH_FILE_VERSION 0x0123
+#define SW_MESH_FILE_ID      SW_FOURCC('M', 'E', 'S', 'H')
+#define SW_MESH_FILE_VERSION 0x0123
 
-lcMesh::lcMesh()
+swMesh::swMesh()
 {
 }
 
-lcMesh::~lcMesh()
+swMesh::~swMesh()
 {
 	free(mVertexData);
 	free(mIndexData);
-	for (int LodIdx = 0; LodIdx < LC_NUM_MESH_LODS; LodIdx++)
+	for (int LodIdx = 0; LodIdx < SW_NUM_MESH_LODS; LodIdx++)
 	{
 		delete[] mLods[LodIdx].Sections;
 	}
 }
 
-void lcMesh::Create(quint16(&NumSections)[LC_NUM_MESH_LODS], int VertexCount, int TexturedVertexCount, int ConditionalVertexCount, int IndexCount)
+void swMesh::Create(quint16(&NumSections)[SW_NUM_MESH_LODS], int VertexCount, int TexturedVertexCount, int ConditionalVertexCount, int IndexCount)
 {
-	for (int LodIdx = 0; LodIdx < LC_NUM_MESH_LODS; LodIdx++)
+	for (int LodIdx = 0; LodIdx < SW_NUM_MESH_LODS; LodIdx++)
 	{
 		if (NumSections[LodIdx])
-			mLods[LodIdx].Sections = new lcMeshSection[NumSections[LodIdx]];
+			mLods[LodIdx].Sections = new swMeshSection[NumSections[LodIdx]];
 		mLods[LodIdx].NumSections = NumSections[LodIdx];
 	}
 
 	mNumVertices = VertexCount;
 	mNumTexturedVertices = TexturedVertexCount;
 	mConditionalVertexCount = ConditionalVertexCount;
-	mVertexDataSize = VertexCount * sizeof(lcVertex) + TexturedVertexCount * sizeof(lcVertexTextured) + ConditionalVertexCount * sizeof(lcVertexConditional);
+	mVertexDataSize = VertexCount * sizeof(swVertex) + TexturedVertexCount * sizeof(swVertexTextured) + ConditionalVertexCount * sizeof(swVertexConditional);
 	mVertexData = malloc(mVertexDataSize);
 
 	if (VertexCount < 0x10000 && TexturedVertexCount < 0x10000)
@@ -53,80 +53,80 @@ void lcMesh::Create(quint16(&NumSections)[LC_NUM_MESH_LODS], int VertexCount, in
 	mIndexData = mIndexDataSize ? malloc(mIndexDataSize) : nullptr;
 }
 
-void lcMesh::CreateBox()
+void swMesh::CreateBox()
 {
-	quint16 NumSections[LC_NUM_MESH_LODS];
+	quint16 NumSections[SW_NUM_MESH_LODS];
 	memset(NumSections, 0, sizeof(NumSections));
-	NumSections[LC_MESH_LOD_HIGH] = 2;
+	NumSections[SW_MESH_LOD_HIGH] = 2;
 
 	Create(NumSections, 24, 0, 0, 36 + 24);
 
-	lcVector3 Min(-10.0f, -10.0f, -24.0f);
-	lcVector3 Max(10.0f, 10.0f, 4.0f);
-	mRadius = lcLength(Max - Min) / 2.0f;
+	swVector3 Min(-10.0f, -10.0f, -24.0f);
+	swVector3 Max(10.0f, 10.0f, 4.0f);
+	mRadius = swLength(Max - Min) / 2.0f;
 	mBoundingBox.Min = Min;
 	mBoundingBox.Max = Max;
-	mFlags |= lcMeshFlag::HasDefault | lcMeshFlag::HasLines;
+	mFlags |= swMeshFlag::HasDefault | swMeshFlag::HasLines;
 
-	lcVertex* Verts = (lcVertex*)mVertexData;
+	swVertex* Verts = (swVertex*)mVertexData;
 	quint16* Indices = (quint16*)mIndexData;
 
-	Verts[0].Position = lcVector3(Min[0], Min[1], Min[2]);
-	Verts[0].Normal = lcPackNormal(lcVector3(0.0f, 0.0f, -1.0f));
-	Verts[1].Position = lcVector3(Min[0], Max[1], Min[2]);
-	Verts[1].Normal = lcPackNormal(lcVector3(0.0f, 0.0f, -1.0f));
-	Verts[2].Position = lcVector3(Max[0], Max[1], Min[2]);
-	Verts[2].Normal = lcPackNormal(lcVector3(0.0f, 0.0f, -1.0f));
-	Verts[3].Position = lcVector3(Max[0], Min[1], Min[2]);
-	Verts[3].Normal = lcPackNormal(lcVector3(0.0f, 0.0f, -1.0f));
-	Verts[4].Position = lcVector3(Min[0], Min[1], Max[2]);
-	Verts[4].Normal = lcPackNormal(lcVector3(0.0f, 0.0f, 1.0f));
-	Verts[5].Position = lcVector3(Min[0], Max[1], Max[2]);
-	Verts[5].Normal = lcPackNormal(lcVector3(0.0f, 0.0f, 1.0f));
-	Verts[6].Position = lcVector3(Max[0], Max[1], Max[2]);
-	Verts[6].Normal = lcPackNormal(lcVector3(0.0f, 0.0f, 1.0f));
-	Verts[7].Position = lcVector3(Max[0], Min[1], Max[2]);
-	Verts[7].Normal = lcPackNormal(lcVector3(0.0f, 0.0f, 1.0f));
+	Verts[0].Position = swVector3(Min[0], Min[1], Min[2]);
+	Verts[0].Normal = swPackNormal(swVector3(0.0f, 0.0f, -1.0f));
+	Verts[1].Position = swVector3(Min[0], Max[1], Min[2]);
+	Verts[1].Normal = swPackNormal(swVector3(0.0f, 0.0f, -1.0f));
+	Verts[2].Position = swVector3(Max[0], Max[1], Min[2]);
+	Verts[2].Normal = swPackNormal(swVector3(0.0f, 0.0f, -1.0f));
+	Verts[3].Position = swVector3(Max[0], Min[1], Min[2]);
+	Verts[3].Normal = swPackNormal(swVector3(0.0f, 0.0f, -1.0f));
+	Verts[4].Position = swVector3(Min[0], Min[1], Max[2]);
+	Verts[4].Normal = swPackNormal(swVector3(0.0f, 0.0f, 1.0f));
+	Verts[5].Position = swVector3(Min[0], Max[1], Max[2]);
+	Verts[5].Normal = swPackNormal(swVector3(0.0f, 0.0f, 1.0f));
+	Verts[6].Position = swVector3(Max[0], Max[1], Max[2]);
+	Verts[6].Normal = swPackNormal(swVector3(0.0f, 0.0f, 1.0f));
+	Verts[7].Position = swVector3(Max[0], Min[1], Max[2]);
+	Verts[7].Normal = swPackNormal(swVector3(0.0f, 0.0f, 1.0f));
 
-	Verts[8].Position = lcVector3(Min[0], Min[1], Min[2]);
-	Verts[8].Normal = lcPackNormal(lcVector3(-1.0f, 0.0f, 0.0f));
-	Verts[9].Position = lcVector3(Min[0], Min[1], Max[2]);
-	Verts[9].Normal = lcPackNormal(lcVector3(-1.0f, 0.0f, 0.0f));
-	Verts[10].Position = lcVector3(Min[0], Max[1], Max[2]);
-	Verts[10].Normal = lcPackNormal(lcVector3(-1.0f, 0.0f, 0.0f));
-	Verts[11].Position = lcVector3(Min[0], Max[1], Min[2]);
-	Verts[11].Normal = lcPackNormal(lcVector3(-1.0f, 0.0f, 0.0f));
-	Verts[12].Position = lcVector3(Max[0], Min[1], Min[2]);
-	Verts[12].Normal = lcPackNormal(lcVector3(1.0f, 0.0f, 0.0f));
-	Verts[13].Position = lcVector3(Max[0], Min[1], Max[2]);
-	Verts[13].Normal = lcPackNormal(lcVector3(1.0f, 0.0f, 0.0f));
-	Verts[14].Position = lcVector3(Max[0], Max[1], Max[2]);
-	Verts[14].Normal = lcPackNormal(lcVector3(1.0f, 0.0f, 0.0f));
-	Verts[15].Position = lcVector3(Max[0], Max[1], Min[2]);
-	Verts[15].Normal = lcPackNormal(lcVector3(1.0f, 0.0f, 0.0f));
+	Verts[8].Position = swVector3(Min[0], Min[1], Min[2]);
+	Verts[8].Normal = swPackNormal(swVector3(-1.0f, 0.0f, 0.0f));
+	Verts[9].Position = swVector3(Min[0], Min[1], Max[2]);
+	Verts[9].Normal = swPackNormal(swVector3(-1.0f, 0.0f, 0.0f));
+	Verts[10].Position = swVector3(Min[0], Max[1], Max[2]);
+	Verts[10].Normal = swPackNormal(swVector3(-1.0f, 0.0f, 0.0f));
+	Verts[11].Position = swVector3(Min[0], Max[1], Min[2]);
+	Verts[11].Normal = swPackNormal(swVector3(-1.0f, 0.0f, 0.0f));
+	Verts[12].Position = swVector3(Max[0], Min[1], Min[2]);
+	Verts[12].Normal = swPackNormal(swVector3(1.0f, 0.0f, 0.0f));
+	Verts[13].Position = swVector3(Max[0], Min[1], Max[2]);
+	Verts[13].Normal = swPackNormal(swVector3(1.0f, 0.0f, 0.0f));
+	Verts[14].Position = swVector3(Max[0], Max[1], Max[2]);
+	Verts[14].Normal = swPackNormal(swVector3(1.0f, 0.0f, 0.0f));
+	Verts[15].Position = swVector3(Max[0], Max[1], Min[2]);
+	Verts[15].Normal = swPackNormal(swVector3(1.0f, 0.0f, 0.0f));
 
-	Verts[16].Position = lcVector3(Min[0], Min[1], Min[2]);
-	Verts[16].Normal = lcPackNormal(lcVector3(0.0f, -1.0f, 0.0f));
-	Verts[17].Position = lcVector3(Min[0], Min[1], Max[2]);
-	Verts[17].Normal = lcPackNormal(lcVector3(0.0f, -1.0f, 0.0f));
-	Verts[18].Position = lcVector3(Max[0], Min[1], Max[2]);
-	Verts[18].Normal = lcPackNormal(lcVector3(0.0f, -1.0f, 0.0f));
-	Verts[19].Position = lcVector3(Max[0], Min[1], Min[2]);
-	Verts[19].Normal = lcPackNormal(lcVector3(0.0f, -1.0f, 0.0f));
-	Verts[20].Position = lcVector3(Min[0], Max[1], Min[2]);
-	Verts[20].Normal = lcPackNormal(lcVector3(0.0f, 1.0f, 0.0f));
-	Verts[21].Position = lcVector3(Min[0], Max[1], Max[2]);
-	Verts[21].Normal = lcPackNormal(lcVector3(0.0f, 1.0f, 0.0f));
-	Verts[22].Position = lcVector3(Max[0], Max[1], Max[2]);
-	Verts[22].Normal = lcPackNormal(lcVector3(0.0f, 1.0f, 0.0f));
-	Verts[23].Position = lcVector3(Max[0], Max[1], Min[2]);
-	Verts[23].Normal = lcPackNormal(lcVector3(0.0f, 1.0f, 0.0f));
+	Verts[16].Position = swVector3(Min[0], Min[1], Min[2]);
+	Verts[16].Normal = swPackNormal(swVector3(0.0f, -1.0f, 0.0f));
+	Verts[17].Position = swVector3(Min[0], Min[1], Max[2]);
+	Verts[17].Normal = swPackNormal(swVector3(0.0f, -1.0f, 0.0f));
+	Verts[18].Position = swVector3(Max[0], Min[1], Max[2]);
+	Verts[18].Normal = swPackNormal(swVector3(0.0f, -1.0f, 0.0f));
+	Verts[19].Position = swVector3(Max[0], Min[1], Min[2]);
+	Verts[19].Normal = swPackNormal(swVector3(0.0f, -1.0f, 0.0f));
+	Verts[20].Position = swVector3(Min[0], Max[1], Min[2]);
+	Verts[20].Normal = swPackNormal(swVector3(0.0f, 1.0f, 0.0f));
+	Verts[21].Position = swVector3(Min[0], Max[1], Max[2]);
+	Verts[21].Normal = swPackNormal(swVector3(0.0f, 1.0f, 0.0f));
+	Verts[22].Position = swVector3(Max[0], Max[1], Max[2]);
+	Verts[22].Normal = swPackNormal(swVector3(0.0f, 1.0f, 0.0f));
+	Verts[23].Position = swVector3(Max[0], Max[1], Min[2]);
+	Verts[23].Normal = swPackNormal(swVector3(0.0f, 1.0f, 0.0f));
 
-	lcMeshSection* Section = &mLods[LC_MESH_LOD_HIGH].Sections[0];
+	swMeshSection* Section = &mLods[SW_MESH_LOD_HIGH].Sections[0];
 	Section->ColorIndex = gDefaultColor;
 	Section->DrawOffset = 0;
 	Section->DrawCount = 36;
-	Section->PrimitiveType = LC_MESH_TRIANGLES;
+	Section->PrimitiveType = SW_MESH_TRIANGLES;
 	Section->BoundingBox = mBoundingBox;
 	Section->Radius = mRadius;
 
@@ -148,11 +148,11 @@ void lcMesh::CreateBox()
 	*Indices++ = 23; *Indices++ = 22; *Indices++ = 21;
 	*Indices++ = 23; *Indices++ = 21; *Indices++ = 20;
 
-	Section = &mLods[LC_MESH_LOD_HIGH].Sections[1];
+	Section = &mLods[SW_MESH_LOD_HIGH].Sections[1];
 	Section->ColorIndex = gEdgeColor;
 	Section->DrawOffset = 36 * 2;
 	Section->DrawCount = 24;
-	Section->PrimitiveType = LC_MESH_LINES;
+	Section->PrimitiveType = SW_MESH_LINES;
 	Section->BoundingBox = mBoundingBox;
 	Section->Radius = mRadius;
 
@@ -167,55 +167,55 @@ void lcMesh::CreateBox()
 }
 
 template<typename IndexType>
-bool lcMesh::MinIntersectDist(const lcVector3& Start, const lcVector3& End, float& MinDistance, lcVector3& HitPlane, lcVector3& HitNormal)
+bool swMesh::MinIntersectDist(const swVector3& Start, const swVector3& End, float& MinDistance, swVector3& HitPlane, swVector3& HitNormal)
 {
 	float Distance;
-	lcVector3 IntersectionPlane;
-	lcVector3 TriangleNormal;
+	swVector3 IntersectionPlane;
+	swVector3 TriangleNormal;
 
-	if (!lcBoundingBoxRayIntersectDistance(mBoundingBox.Min, mBoundingBox.Max, Start, End, &Distance, nullptr, &IntersectionPlane) || (Distance >= MinDistance))
+	if (!swBoundingBoxRayIntersectDistance(mBoundingBox.Min, mBoundingBox.Max, Start, End, &Distance, nullptr, &IntersectionPlane) || (Distance >= MinDistance))
 		return false;
 
 	bool Hit = false;
-	lcVector3 Intersection;
+	swVector3 Intersection;
 
-	for (int SectionIdx = 0; SectionIdx < mLods[LC_MESH_LOD_HIGH].NumSections; SectionIdx++)
+	for (int SectionIdx = 0; SectionIdx < mLods[SW_MESH_LOD_HIGH].NumSections; SectionIdx++)
 	{
-		const lcMeshSection* Section = &mLods[LC_MESH_LOD_HIGH].Sections[SectionIdx];
+		const swMeshSection* Section = &mLods[SW_MESH_LOD_HIGH].Sections[SectionIdx];
 
-		if (Section->PrimitiveType == LC_MESH_TRIANGLES)
+		if (Section->PrimitiveType == SW_MESH_TRIANGLES)
 		{
-			const lcVertex* Verts = GetVertexData();
+			const swVertex* Verts = GetVertexData();
 			const IndexType* Indices = (IndexType*)mIndexData + Section->DrawOffset / sizeof(IndexType);
 
 			for (int Idx = 0; Idx < Section->DrawCount; Idx += 3)
 			{
-				const lcVector3& v1 = Verts[Indices[Idx]].Position;
-				const lcVector3& v2 = Verts[Indices[Idx + 1]].Position;
-				const lcVector3& v3 = Verts[Indices[Idx + 2]].Position;
+				const swVector3& v1 = Verts[Indices[Idx]].Position;
+				const swVector3& v2 = Verts[Indices[Idx + 1]].Position;
+				const swVector3& v3 = Verts[Indices[Idx + 2]].Position;
 
-				if (lcLineTriangleMinIntersection(v1, v2, v3, Start, End, &MinDistance, &Intersection))
+				if (swLineTriangleMinIntersection(v1, v2, v3, Start, End, &MinDistance, &Intersection))
 				{
 					Hit = true;
-					TriangleNormal = lcCross(v2 - v1, v3 - v1);
+					TriangleNormal = swCross(v2 - v1, v3 - v1);
 				}
 			}
 		}
-		else if (Section->PrimitiveType == LC_MESH_TEXTURED_TRIANGLES)
+		else if (Section->PrimitiveType == SW_MESH_TEXTURED_TRIANGLES)
 		{
-			const lcVertexTextured* Verts = GetTexturedVertexData();
+			const swVertexTextured* Verts = GetTexturedVertexData();
 			const IndexType* Indices = (IndexType*)mIndexData + Section->DrawOffset / sizeof(IndexType);
 
 			for (int Idx = 0; Idx < Section->DrawCount; Idx += 3)
 			{
-				const lcVector3& v1 = Verts[Indices[Idx]].Position;
-				const lcVector3& v2 = Verts[Indices[Idx + 1]].Position;
-				const lcVector3& v3 = Verts[Indices[Idx + 2]].Position;
+				const swVector3& v1 = Verts[Indices[Idx]].Position;
+				const swVector3& v2 = Verts[Indices[Idx + 1]].Position;
+				const swVector3& v3 = Verts[Indices[Idx + 2]].Position;
 
-				if (lcLineTriangleMinIntersection(v1, v2, v3, Start, End, &MinDistance, &Intersection))
+				if (swLineTriangleMinIntersection(v1, v2, v3, Start, End, &MinDistance, &Intersection))
 				{
 					Hit = true;
-					TriangleNormal = lcCross(v2 - v1, v3 - v1);
+					TriangleNormal = swCross(v2 - v1, v3 - v1);
 				}
 			}
 		}
@@ -224,13 +224,13 @@ bool lcMesh::MinIntersectDist(const lcVector3& Start, const lcVector3& End, floa
 	if (Hit)
 	{
 		HitPlane = IntersectionPlane;
-		HitNormal = lcNormalize(TriangleNormal);
+		HitNormal = swNormalize(TriangleNormal);
 	}
 
 	return Hit;
 }
 
-bool lcMesh::MinIntersectDist(const lcVector3& Start, const lcVector3& End, float& MinDist, lcVector3& HitPlane, lcVector3& HitNormal)
+bool swMesh::MinIntersectDist(const swVector3& Start, const swVector3& End, float& MinDist, swVector3& HitPlane, swVector3& HitNormal)
 {
 	if (mIndexType == GL_UNSIGNED_SHORT)
 		return MinIntersectDist<GLushort>(Start, End, MinDist, HitPlane, HitNormal);
@@ -239,28 +239,28 @@ bool lcMesh::MinIntersectDist(const lcVector3& Start, const lcVector3& End, floa
 }
 
 template<typename IndexType>
-bool lcMesh::IntersectsPlanes(const lcVector4 (&Planes)[6])
+bool swMesh::IntersectsPlanes(const swVector4 (&Planes)[6])
 {
-	for (int SectionIdx = 0; SectionIdx < mLods[LC_MESH_LOD_HIGH].NumSections; SectionIdx++)
+	for (int SectionIdx = 0; SectionIdx < mLods[SW_MESH_LOD_HIGH].NumSections; SectionIdx++)
 	{
-		const lcMeshSection* Section = &mLods[LC_MESH_LOD_HIGH].Sections[SectionIdx];
+		const swMeshSection* Section = &mLods[SW_MESH_LOD_HIGH].Sections[SectionIdx];
 
-		if (Section->PrimitiveType == LC_MESH_TRIANGLES)
+		if (Section->PrimitiveType == SW_MESH_TRIANGLES)
 		{
-			const lcVertex* Verts = GetVertexData();
+			const swVertex* Verts = GetVertexData();
 			const IndexType* Indices = (IndexType*)mIndexData + Section->DrawOffset / sizeof(IndexType);
 
 			for (int Idx = 0; Idx < Section->DrawCount; Idx += 3)
-				if (lcTriangleIntersectsPlanes(Verts[Indices[Idx]].Position, Verts[Indices[Idx+1]].Position, Verts[Indices[Idx+2]].Position, Planes))
+				if (swTriangleIntersectsPlanes(Verts[Indices[Idx]].Position, Verts[Indices[Idx+1]].Position, Verts[Indices[Idx+2]].Position, Planes))
 					return true;
 		}
-		else if (Section->PrimitiveType == LC_MESH_TEXTURED_TRIANGLES)
+		else if (Section->PrimitiveType == SW_MESH_TEXTURED_TRIANGLES)
 		{
-			const lcVertexTextured* Verts = GetTexturedVertexData();
+			const swVertexTextured* Verts = GetTexturedVertexData();
 			const IndexType* Indices = (IndexType*)mIndexData + Section->DrawOffset / sizeof(IndexType);
 
 			for (int Idx = 0; Idx < Section->DrawCount; Idx += 3)
-				if (lcTriangleIntersectsPlanes(Verts[Indices[Idx]].Position, Verts[Indices[Idx+1]].Position, Verts[Indices[Idx+2]].Position, Planes))
+				if (swTriangleIntersectsPlanes(Verts[Indices[Idx]].Position, Verts[Indices[Idx+1]].Position, Verts[Indices[Idx+2]].Position, Planes))
 					return true;
 		}
 	}
@@ -268,7 +268,7 @@ bool lcMesh::IntersectsPlanes(const lcVector4 (&Planes)[6])
 	return false;
 }
 
-bool lcMesh::IntersectsPlanes(const lcVector4 (&Planes)[6])
+bool swMesh::IntersectsPlanes(const swVector4 (&Planes)[6])
 {
 	if (mIndexType == GL_UNSIGNED_SHORT)
 		return IntersectsPlanes<GLushort>(Planes);
@@ -277,33 +277,33 @@ bool lcMesh::IntersectsPlanes(const lcVector4 (&Planes)[6])
 }
 
 template<typename IndexType>
-void lcMesh::ExportPOVRay(lcFile& File, const char* MeshName, const char** ColorTable)
+void swMesh::ExportPOVRay(swFile& File, const char* MeshName, const char** ColorTable)
 {
 	char Line[1024];
 
 	int NumSections = 0;
 
-	for (int SectionIdx = 0; SectionIdx < mLods[LC_MESH_LOD_HIGH].NumSections; SectionIdx++)
+	for (int SectionIdx = 0; SectionIdx < mLods[SW_MESH_LOD_HIGH].NumSections; SectionIdx++)
 	{
-		const lcMeshSection* const Section = &mLods[LC_MESH_LOD_HIGH].Sections[SectionIdx];
+		const swMeshSection* const Section = &mLods[SW_MESH_LOD_HIGH].Sections[SectionIdx];
 
-		if (Section->PrimitiveType == LC_MESH_TRIANGLES || Section->PrimitiveType == LC_MESH_TEXTURED_TRIANGLES)
+		if (Section->PrimitiveType == SW_MESH_TRIANGLES || Section->PrimitiveType == SW_MESH_TEXTURED_TRIANGLES)
 			NumSections++;
 	}
 
 	if (NumSections > 1)
-		snprintf(Line, sizeof(Line), "#declare lc_%s = union {\n", MeshName);
+		snprintf(Line, sizeof(Line), "#declare sw_%s = union {\n", MeshName);
 	else
-		snprintf(Line, sizeof(Line), "#declare lc_%s = mesh {\n", MeshName);
+		snprintf(Line, sizeof(Line), "#declare sw_%s = mesh {\n", MeshName);
 	File.WriteLine(Line);
 
-	for (int SectionIdx = 0; SectionIdx < mLods[LC_MESH_LOD_HIGH].NumSections; SectionIdx++)
+	for (int SectionIdx = 0; SectionIdx < mLods[SW_MESH_LOD_HIGH].NumSections; SectionIdx++)
 	{
-		lcMeshSection* Section = &mLods[LC_MESH_LOD_HIGH].Sections[SectionIdx];
+		swMeshSection* Section = &mLods[SW_MESH_LOD_HIGH].Sections[SectionIdx];
 
-		if (Section->PrimitiveType == LC_MESH_TRIANGLES)
+		if (Section->PrimitiveType == SW_MESH_TRIANGLES)
 		{
-			const lcVertex* Verts = GetVertexData();
+			const swVertex* Verts = GetVertexData();
 			const IndexType* Indices = (IndexType*)mIndexData + Section->DrawOffset / sizeof(IndexType);
 
 			if (NumSections > 1)
@@ -311,21 +311,21 @@ void lcMesh::ExportPOVRay(lcFile& File, const char* MeshName, const char** Color
 
 			for (int Idx = 0; Idx < Section->DrawCount; Idx += 3)
 			{
-				const lcVector3 v1 = Verts[Indices[Idx]].Position / 25.0f;
-				const lcVector3 v2 = Verts[Indices[Idx + 1]].Position / 25.0f;
-				const lcVector3 v3 = Verts[Indices[Idx + 2]].Position / 25.0f;
-				const lcVector3 n1 = lcUnpackNormal(Verts[Indices[Idx]].Normal);
-				const lcVector3 n2 = lcUnpackNormal(Verts[Indices[Idx + 1]].Normal);
-				const lcVector3 n3 = lcUnpackNormal(Verts[Indices[Idx + 2]].Normal);
+				const swVector3 v1 = Verts[Indices[Idx]].Position / 25.0f;
+				const swVector3 v2 = Verts[Indices[Idx + 1]].Position / 25.0f;
+				const swVector3 v3 = Verts[Indices[Idx + 2]].Position / 25.0f;
+				const swVector3 n1 = swUnpackNormal(Verts[Indices[Idx]].Normal);
+				const swVector3 n2 = swUnpackNormal(Verts[Indices[Idx + 1]].Normal);
+				const swVector3 n3 = swUnpackNormal(Verts[Indices[Idx + 2]].Normal);
 
 				snprintf(Line, sizeof(Line), "  smooth_triangle { <%g, %g, %g>, <%g, %g, %g>, <%g, %g, %g>, <%g, %g, %g>, <%g, %g, %g>, <%g, %g, %g> }\n",
 				         -v1.y, -v1.x, v1.z, -n1.y, -n1.x, n1.z, -v2.y, -v2.x, v2.z, -n2.y, -n2.x, n2.z, -v3.y, -v3.x, v3.z, -n3.y, -n3.x, n3.z);
 				File.WriteLine(Line);
 			}
 		}
-		else if (Section->PrimitiveType == LC_MESH_TEXTURED_TRIANGLES)
+		else if (Section->PrimitiveType == SW_MESH_TEXTURED_TRIANGLES)
 		{
-			const lcVertexTextured* Verts = GetTexturedVertexData();
+			const swVertexTextured* Verts = GetTexturedVertexData();
 			const IndexType* Indices = (IndexType*)mIndexData + Section->DrawOffset / sizeof(IndexType);
 
 			if (NumSections > 1)
@@ -333,12 +333,12 @@ void lcMesh::ExportPOVRay(lcFile& File, const char* MeshName, const char** Color
 
 			for (int Idx = 0; Idx < Section->DrawCount; Idx += 3)
 			{
-				const lcVector3 v1 = Verts[Indices[Idx]].Position / 25.0f;
-				const lcVector3 v2 = Verts[Indices[Idx + 1]].Position / 25.0f;
-				const lcVector3 v3 = Verts[Indices[Idx + 2]].Position / 25.0f;
-				const lcVector3 n1 = lcUnpackNormal(Verts[Indices[Idx]].Normal);
-				const lcVector3 n2 = lcUnpackNormal(Verts[Indices[Idx + 1]].Normal);
-				const lcVector3 n3 = lcUnpackNormal(Verts[Indices[Idx + 2]].Normal);
+				const swVector3 v1 = Verts[Indices[Idx]].Position / 25.0f;
+				const swVector3 v2 = Verts[Indices[Idx + 1]].Position / 25.0f;
+				const swVector3 v3 = Verts[Indices[Idx + 2]].Position / 25.0f;
+				const swVector3 n1 = swUnpackNormal(Verts[Indices[Idx]].Normal);
+				const swVector3 n2 = swUnpackNormal(Verts[Indices[Idx + 1]].Normal);
+				const swVector3 n3 = swUnpackNormal(Verts[Indices[Idx + 2]].Normal);
 
 				snprintf(Line, sizeof(Line), "  smooth_triangle { <%g, %g, %g>, <%g, %g, %g>, <%g, %g, %g>, <%g, %g, %g>, <%g, %g, %g>, <%g, %g, %g> }\n",
 				         -v1.y, -v1.x, v1.z, -n1.y, -n1.x, n1.z, -v2.y, -v2.x, v2.z, -n2.y, -n2.x, n2.z, -v3.y, -v3.x, v3.z, -n3.y, -n3.x, n3.z);
@@ -361,7 +361,7 @@ void lcMesh::ExportPOVRay(lcFile& File, const char* MeshName, const char** Color
 	File.WriteLine("}\n\n");
 }
 
-void lcMesh::ExportPOVRay(lcFile& File, const char* MeshName, const char** ColorTable)
+void swMesh::ExportPOVRay(swFile& File, const char* MeshName, const char** ColorTable)
 {
 	if (mIndexType == GL_UNSIGNED_SHORT)
 		ExportPOVRay<GLushort>(File, MeshName, ColorTable);
@@ -370,15 +370,15 @@ void lcMesh::ExportPOVRay(lcFile& File, const char* MeshName, const char** Color
 }
 
 template<typename IndexType>
-void lcMesh::ExportWavefrontIndices(lcFile& File, int DefaultColorIndex, int VertexOffset)
+void swMesh::ExportWavefrontIndices(swFile& File, int DefaultColorIndex, int VertexOffset)
 {
 	char Line[1024];
 
-	for (int SectionIdx = 0; SectionIdx < mLods[LC_MESH_LOD_HIGH].NumSections; SectionIdx++)
+	for (int SectionIdx = 0; SectionIdx < mLods[SW_MESH_LOD_HIGH].NumSections; SectionIdx++)
 	{
-		lcMeshSection* Section = &mLods[LC_MESH_LOD_HIGH].Sections[SectionIdx];
+		swMeshSection* Section = &mLods[SW_MESH_LOD_HIGH].Sections[SectionIdx];
 
-		if (Section->PrimitiveType != LC_MESH_TRIANGLES && Section->PrimitiveType != LC_MESH_TEXTURED_TRIANGLES)
+		if (Section->PrimitiveType != SW_MESH_TRIANGLES && Section->PrimitiveType != SW_MESH_TEXTURED_TRIANGLES)
 			continue;
 
 		IndexType* Indices = (IndexType*)mIndexData + Section->DrawOffset / sizeof(IndexType);
@@ -390,7 +390,7 @@ void lcMesh::ExportWavefrontIndices(lcFile& File, int DefaultColorIndex, int Ver
 
 		File.WriteLine(Line);
 
-		if (Section->PrimitiveType == LC_MESH_TRIANGLES)
+		if (Section->PrimitiveType == SW_MESH_TRIANGLES)
 		{
 			for (int Idx = 0; Idx < Section->DrawCount; Idx += 3)
 			{
@@ -425,7 +425,7 @@ void lcMesh::ExportWavefrontIndices(lcFile& File, int DefaultColorIndex, int Ver
 	File.WriteLine("\n");
 }
 
-void lcMesh::ExportWavefrontIndices(lcFile& File, int DefaultColorIndex, int VertexOffset)
+void swMesh::ExportWavefrontIndices(swFile& File, int DefaultColorIndex, int VertexOffset)
 {
 	if (mIndexType == GL_UNSIGNED_SHORT)
 		ExportWavefrontIndices<GLushort>(File, DefaultColorIndex, VertexOffset);
@@ -433,35 +433,35 @@ void lcMesh::ExportWavefrontIndices(lcFile& File, int DefaultColorIndex, int Ver
 		ExportWavefrontIndices<GLuint>(File, DefaultColorIndex, VertexOffset);
 }
 
-bool lcMesh::FileLoad(lcMemFile& File)
+bool swMesh::FileLoad(swMemFile& File)
 {
 	quint32 FileId, FileVersion, Flags;
 
-	if (File.ReadU32(&FileId, 1) != 1 || FileId != LC_MESH_FILE_ID || File.ReadU32(&FileVersion, 1) != 1 ||
-	    FileVersion != LC_MESH_FILE_VERSION || File.ReadU32(&Flags, 1) != 1)
+	if (File.ReadU32(&FileId, 1) != 1 || FileId != SW_MESH_FILE_ID || File.ReadU32(&FileVersion, 1) != 1 ||
+	    FileVersion != SW_MESH_FILE_VERSION || File.ReadU32(&Flags, 1) != 1)
 		return false;
 
-	mFlags = static_cast<lcMeshFlags>(Flags);
+	mFlags = static_cast<swMeshFlags>(Flags);
 
 	if (File.ReadFloats(mBoundingBox.Min.GetFloats(), 3) != 3 ||
 		File.ReadFloats(mBoundingBox.Max.GetFloats(), 3) != 3 || File.ReadFloats(&mRadius, 1) != 1)
 		return false;
 
 	quint32 VertexCount, TexturedVertexCount, ConditionalVertexCount, IndexCount;
-	quint16 NumLods, NumSections[LC_NUM_MESH_LODS];
+	quint16 NumLods, NumSections[SW_NUM_MESH_LODS];
 
 	if (File.ReadU32(&VertexCount, 1) != 1 || File.ReadU32(&TexturedVertexCount, 1) != 1 ||
 		File.ReadU32(&ConditionalVertexCount, 1) != 1 || File.ReadU32(&IndexCount, 1) != 1)
 		return false;
 
-	if (File.ReadU16(&NumLods, 1) != 1 || NumLods != LC_NUM_MESH_LODS || File.ReadU16(NumSections, LC_NUM_MESH_LODS) != LC_NUM_MESH_LODS)
+	if (File.ReadU16(&NumLods, 1) != 1 || NumLods != SW_NUM_MESH_LODS || File.ReadU16(NumSections, SW_NUM_MESH_LODS) != SW_NUM_MESH_LODS)
 		return false;
 
-	const quint64 VertexDataSize = static_cast<quint64>(VertexCount) * sizeof(lcVertex) + static_cast<quint64>(TexturedVertexCount) * sizeof(lcVertexTextured) + static_cast<quint64>(ConditionalVertexCount) * sizeof(lcVertexConditional);
+	const quint64 VertexDataSize = static_cast<quint64>(VertexCount) * sizeof(swVertex) + static_cast<quint64>(TexturedVertexCount) * sizeof(swVertexTextured) + static_cast<quint64>(ConditionalVertexCount) * sizeof(swVertexConditional);
 	const quint64 IndexElementSize = VertexCount < 0x10000 && TexturedVertexCount < 0x10000 ? sizeof(GLushort) : sizeof(GLuint);
 	const quint64 IndexDataSize = static_cast<quint64>(IndexCount) * IndexElementSize;
 	constexpr quint64 MinimumSectionSize = 3 * sizeof(quint32) + sizeof(quint16) + 7 * sizeof(float) + sizeof(quint16);
-	const quint64 MinimumSectionsSize = static_cast<quint64>(NumSections[LC_MESH_LOD_HIGH] + NumSections[LC_MESH_LOD_LOW]) * MinimumSectionSize;
+	const quint64 MinimumSectionsSize = static_cast<quint64>(NumSections[SW_MESH_LOD_HIGH] + NumSections[SW_MESH_LOD_LOW]) * MinimumSectionSize;
 	const long Position = File.GetPosition();
 
 	if (VertexDataSize > std::numeric_limits<uint>::max() || IndexDataSize > std::numeric_limits<uint>::max() || Position < 0 || static_cast<size_t>(Position) > File.GetLength() ||
@@ -473,11 +473,11 @@ bool lcMesh::FileLoad(lcMemFile& File)
 	if ((mVertexDataSize && !mVertexData) || (mIndexDataSize && !mIndexData))
 		return false;
 
-	for (int LodIdx = 0; LodIdx < LC_NUM_MESH_LODS; LodIdx++)
+	for (int LodIdx = 0; LodIdx < SW_NUM_MESH_LODS; LodIdx++)
 	{
 		for (int SectionIdx = 0; SectionIdx < mLods[LodIdx].NumSections; SectionIdx++)
 		{
-			lcMeshSection& Section = mLods[LodIdx].Sections[SectionIdx];
+			swMeshSection& Section = mLods[LodIdx].Sections[SectionIdx];
 
 			quint32 ColorCode, DrawOffset, DrawCount;
 			quint16 PrimtiveType, Length;
@@ -489,7 +489,7 @@ bool lcMesh::FileLoad(lcMemFile& File)
 			Section.ColorIndex = static_cast<int>(ColorCode);
 			Section.DrawOffset = DrawOffset;
 			Section.DrawCount = DrawCount;
-			Section.PrimitiveType = (lcMeshPrimitiveType)PrimtiveType;
+			Section.PrimitiveType = (swMeshPrimitiveType)PrimtiveType;
 
 			if (File.ReadFloats(Section.BoundingBox.Min.GetFloats(), 3) != 3 ||
 				File.ReadFloats(Section.BoundingBox.Max.GetFloats(), 3) != 3 ||
@@ -501,10 +501,10 @@ bool lcMesh::FileLoad(lcMemFile& File)
 
 			if (Length)
 			{
-				if (Length >= LC_TEXTURE_NAME_LEN)
+				if (Length >= SW_TEXTURE_NAME_LEN)
 					return false;
 
-				char FileName[LC_TEXTURE_NAME_LEN];
+				char FileName[SW_TEXTURE_NAME_LEN];
 
 				if (File.ReadBuffer(FileName, Length) != Length)
 					return false;
@@ -533,47 +533,47 @@ bool lcMesh::FileLoad(lcMemFile& File)
 	return true;
 }
 
-void lcMesh::FinalizeSections()
+void swMesh::FinalizeSections()
 {
-	mFlags &= ~(lcMeshFlag::HasDefault | lcMeshFlag::HasSolid | lcMeshFlag::HasTranslucent);
+	mFlags &= ~(swMeshFlag::HasDefault | swMeshFlag::HasSolid | swMeshFlag::HasTranslucent);
 
-	for (lcMeshLod& Lod : mLods)
+	for (swMeshLod& Lod : mLods)
 	{
 		for (int SectionIdx = 0; SectionIdx < Lod.NumSections; SectionIdx++)
 		{
-			lcMeshSection& Section = Lod.Sections[SectionIdx];
-			Section.ColorIndex = lcGetColorIndex(static_cast<quint32>(Section.ColorIndex));
+			swMeshSection& Section = Lod.Sections[SectionIdx];
+			Section.ColorIndex = swGetColorIndex(static_cast<quint32>(Section.ColorIndex));
 
-			if (Section.PrimitiveType != LC_MESH_TRIANGLES && Section.PrimitiveType != LC_MESH_TEXTURED_TRIANGLES)
+			if (Section.PrimitiveType != SW_MESH_TRIANGLES && Section.PrimitiveType != SW_MESH_TEXTURED_TRIANGLES)
 				continue;
 
 			if (Section.ColorIndex == gDefaultColor)
-				mFlags |= lcMeshFlag::HasDefault;
-			else if (lcIsColorTranslucent(Section.ColorIndex))
-				mFlags |= lcMeshFlag::HasTranslucent;
+				mFlags |= swMeshFlag::HasDefault;
+			else if (swIsColorTranslucent(Section.ColorIndex))
+				mFlags |= swMeshFlag::HasTranslucent;
 			else
-				mFlags |= lcMeshFlag::HasSolid;
+				mFlags |= swMeshFlag::HasSolid;
 		}
 
 		if (Lod.NumSections > 1)
-			std::sort(Lod.Sections, Lod.Sections + Lod.NumSections, [](const lcMeshSection& Left, const lcMeshSection& Right)
+			std::sort(Lod.Sections, Lod.Sections + Lod.NumSections, [](const swMeshSection& Left, const swMeshSection& Right)
 			{
 				if (Left.PrimitiveType != Right.PrimitiveType)
 				{
-					const lcMeshPrimitiveType PrimitiveOrder[] =
+					const swMeshPrimitiveType PrimitiveOrder[] =
 					{
-						LC_MESH_TRIANGLES,
-						LC_MESH_TEXTURED_TRIANGLES,
-						LC_MESH_LINES,
-						LC_MESH_CONDITIONAL_LINES
+						SW_MESH_TRIANGLES,
+						SW_MESH_TEXTURED_TRIANGLES,
+						SW_MESH_LINES,
+						SW_MESH_CONDITIONAL_LINES
 					};
 
 					return std::find(std::begin(PrimitiveOrder), std::end(PrimitiveOrder), Left.PrimitiveType) <
 						std::find(std::begin(PrimitiveOrder), std::end(PrimitiveOrder), Right.PrimitiveType);
 				}
 
-				const bool LeftTranslucent = lcIsColorTranslucent(Left.ColorIndex);
-				const bool RightTranslucent = lcIsColorTranslucent(Right.ColorIndex);
+				const bool LeftTranslucent = swIsColorTranslucent(Left.ColorIndex);
+				const bool RightTranslucent = swIsColorTranslucent(Right.ColorIndex);
 
 				if (LeftTranslucent != RightTranslucent)
 					return !LeftTranslucent;
@@ -583,10 +583,10 @@ void lcMesh::FinalizeSections()
 	}
 }
 
-bool lcMesh::FileSave(lcMemFile& File)
+bool swMesh::FileSave(swMemFile& File)
 {
-	File.WriteU32(LC_MESH_FILE_ID);
-	File.WriteU32(LC_MESH_FILE_VERSION);
+	File.WriteU32(SW_MESH_FILE_ID);
+	File.WriteU32(SW_MESH_FILE_VERSION);
 
 	File.WriteU32(mFlags);
 	File.WriteVector3(mBoundingBox.Min);
@@ -598,17 +598,17 @@ bool lcMesh::FileSave(lcMemFile& File)
 	File.WriteU32(mConditionalVertexCount);
 	File.WriteU32(mIndexDataSize / (mIndexType == GL_UNSIGNED_SHORT ? 2 : 4));
 
-	File.WriteU16(LC_NUM_MESH_LODS);
-	for (int LodIdx = 0; LodIdx < LC_NUM_MESH_LODS; LodIdx++)
+	File.WriteU16(SW_NUM_MESH_LODS);
+	for (int LodIdx = 0; LodIdx < SW_NUM_MESH_LODS; LodIdx++)
 		File.WriteU16(mLods[LodIdx].NumSections);
 
-	for (int LodIdx = 0; LodIdx < LC_NUM_MESH_LODS; LodIdx++)
+	for (int LodIdx = 0; LodIdx < SW_NUM_MESH_LODS; LodIdx++)
 	{
 		for (int SectionIdx = 0; SectionIdx < mLods[LodIdx].NumSections; SectionIdx++)
 		{
-			const lcMeshSection& Section = mLods[LodIdx].Sections[SectionIdx];
+			const swMeshSection& Section = mLods[LodIdx].Sections[SectionIdx];
 
-			File.WriteU32(lcGetColorCode(Section.ColorIndex));
+			File.WriteU32(swGetColorCode(Section.ColorIndex));
 			File.WriteU32(Section.DrawOffset);
 			File.WriteU32(Section.DrawCount);
 			File.WriteU16(Section.PrimitiveType);
@@ -629,7 +629,7 @@ bool lcMesh::FileSave(lcMemFile& File)
 		}
 	}
 
-	File.WriteBuffer(mVertexData, mNumVertices * sizeof(lcVertex) + mNumTexturedVertices * sizeof(lcVertexTextured) + mConditionalVertexCount * sizeof(lcVertexConditional));
+	File.WriteBuffer(mVertexData, mNumVertices * sizeof(swVertex) + mNumTexturedVertices * sizeof(swVertexTextured) + mConditionalVertexCount * sizeof(swVertexConditional));
 
 	if (mIndexType == GL_UNSIGNED_SHORT)
 		File.WriteU16((quint16*)mIndexData, mIndexDataSize / 2);
@@ -639,13 +639,13 @@ bool lcMesh::FileSave(lcMemFile& File)
 	return true;
 }
 
-int lcMesh::GetLodIndex(float Distance) const
+int swMesh::GetLodIndex(float Distance) const
 {
-	if (lcGetPiecesLibrary()->GetStudStyle() != lcStudStyle::Plain) // todo: support low lod studs
-		return LC_MESH_LOD_HIGH;
+	if (swGetPiecesLibrary()->GetStudStyle() != swStudStyle::Plain) // todo: support low lod studs
+		return SW_MESH_LOD_HIGH;
 
-	if (mLods[LC_MESH_LOD_LOW].NumSections && (Distance > mRadius))
-		return LC_MESH_LOD_LOW;
+	if (mLods[SW_MESH_LOD_LOW].NumSections && (Distance > mRadius))
+		return SW_MESH_LOD_LOW;
 	else
-		return LC_MESH_LOD_HIGH;
+		return SW_MESH_LOD_HIGH;
 }

@@ -1,6 +1,6 @@
-LC_VERTEX_INPUT vec3 VertexPosition;
-LC_VERTEX_INPUT vec4 VertexColor;
-LC_VERTEX_OUTPUT vec4 PixelColor;
+SW_VERTEX_INPUT vec3 VertexPosition;
+SW_VERTEX_INPUT vec4 VertexColor;
+SW_VERTEX_OUTPUT vec4 PixelColor;
 
 uniform mat4 WorldViewProjectionMatrix;
 

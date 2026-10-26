@@ -3,34 +3,34 @@
 #include "sw_string.h"
 #include "sw_profile.h"
 
-std::vector<lcLibraryCategory> gCategories;
+std::vector<swLibraryCategory> gCategories;
 
-void lcResetDefaultCategories()
+void swResetDefaultCategories()
 {
-	lcResetCategories(gCategories);
+	swResetCategories(gCategories);
 
-	lcRemoveProfileKey(LC_PROFILE_CATEGORIES);
+	swRemoveProfileKey(SW_PROFILE_CATEGORIES);
 }
 
-void lcLoadDefaultCategories(bool BuiltInLibrary)
+void swLoadDefaultCategories(bool BuiltInLibrary)
 {
-	QByteArray Buffer = lcGetProfileBuffer(LC_PROFILE_CATEGORIES);
+	QByteArray Buffer = swGetProfileBuffer(SW_PROFILE_CATEGORIES);
 
-	if (Buffer.isEmpty() || !lcLoadCategories(Buffer, gCategories))
-		lcResetCategories(gCategories, BuiltInLibrary);
+	if (Buffer.isEmpty() || !swLoadCategories(Buffer, gCategories))
+		swResetCategories(gCategories, BuiltInLibrary);
 }
 
-void lcSaveDefaultCategories()
+void swSaveDefaultCategories()
 {
 	QByteArray ByteArray;
 	QTextStream Stream(&ByteArray, QIODevice::WriteOnly);
 
-	lcSaveCategories(Stream, gCategories);
+	swSaveCategories(Stream, gCategories);
 
-	lcSetProfileBuffer(LC_PROFILE_CATEGORIES, ByteArray);
+	swSetProfileBuffer(SW_PROFILE_CATEGORIES, ByteArray);
 }
 
-void lcResetCategories(std::vector<lcLibraryCategory>& Categories, bool BuiltInLibrary)
+void swResetCategories(std::vector<swLibraryCategory>& Categories, bool BuiltInLibrary)
 {
 	const char DefaultCategories[] =
 	{
@@ -83,10 +83,10 @@ void lcResetCategories(std::vector<lcLibraryCategory>& Categories, bool BuiltInL
 	else
 		Buffer.append(DefaultCategories, sizeof(DefaultCategories));
 
-	lcLoadCategories(Buffer, Categories);
+	swLoadCategories(Buffer, Categories);
 }
 
-bool lcLoadCategories(const QString& FileName, std::vector<lcLibraryCategory>& Categories)
+bool swLoadCategories(const QString& FileName, std::vector<swLibraryCategory>& Categories)
 {
 	QFile File(FileName);
 
@@ -95,10 +95,10 @@ bool lcLoadCategories(const QString& FileName, std::vector<lcLibraryCategory>& C
 
 	QByteArray FileData = File.readAll();
 
-	return lcLoadCategories(FileData, Categories);
+	return swLoadCategories(FileData, Categories);
 }
 
-bool lcLoadCategories(const QByteArray& Buffer, std::vector<lcLibraryCategory>& Categories)
+bool swLoadCategories(const QByteArray& Buffer, std::vector<swLibraryCategory>& Categories)
 {
 	Categories.clear();
 
@@ -114,7 +114,7 @@ bool lcLoadCategories(const QByteArray& Buffer, std::vector<lcLibraryCategory>& 
 		QString Name = Line.left(Equals);
 		QString Keywords = Line.mid(Equals + 1);
 
-		lcLibraryCategory Category;
+		swLibraryCategory Category;
 
 		Category.Name = Name;
 		Category.Keywords = Keywords.toLatin1();
@@ -125,7 +125,7 @@ bool lcLoadCategories(const QByteArray& Buffer, std::vector<lcLibraryCategory>& 
 	return true;
 }
 
-bool lcSaveCategories(const QString& FileName, const std::vector<lcLibraryCategory>& Categories)
+bool swSaveCategories(const QString& FileName, const std::vector<swLibraryCategory>& Categories)
 {
 	QFile File(FileName);
 
@@ -134,14 +134,14 @@ bool lcSaveCategories(const QString& FileName, const std::vector<lcLibraryCatego
 
 	QTextStream Stream(&File);
 
-	return lcSaveCategories(Stream, Categories);
+	return swSaveCategories(Stream, Categories);
 }
 
-bool lcSaveCategories(QTextStream& Stream, const std::vector<lcLibraryCategory>& Categories)
+bool swSaveCategories(QTextStream& Stream, const std::vector<swLibraryCategory>& Categories)
 {
 	QString Format("%1=%2\r\n");
 
-	for (const lcLibraryCategory& Category : Categories)
+	for (const swLibraryCategory& Category : Categories)
 		Stream << Format.arg(Category.Name, QString::fromLatin1(Category.Keywords));
 
 	Stream.flush();
@@ -149,7 +149,7 @@ bool lcSaveCategories(QTextStream& Stream, const std::vector<lcLibraryCategory>&
 	return true;
 }
 
-bool lcMatchCategory(const char* PieceName, const char* Expression)
+bool swMatchCategory(const char* PieceName, const char* Expression)
 {
 	// Check if we need to split the test expression.
 	const char* p = Expression;
@@ -158,7 +158,7 @@ bool lcMatchCategory(const char* PieceName, const char* Expression)
 	{
 		if (*p == '!')
 		{
-			return !lcMatchCategory(PieceName, p + 1);
+			return !swMatchCategory(PieceName, p + 1);
 		}
 		else if (*p == '(')
 		{
@@ -188,9 +188,9 @@ bool lcMatchCategory(const char* PieceName, const char* Expression)
 			std::string RightStr(p + 1);
 
 			if (*p == '|')
-				return lcMatchCategory(PieceName, LeftStr.c_str()) || lcMatchCategory(PieceName, RightStr.c_str());
+				return swMatchCategory(PieceName, LeftStr.c_str()) || swMatchCategory(PieceName, RightStr.c_str());
 			else
-				return lcMatchCategory(PieceName, LeftStr.c_str()) && lcMatchCategory(PieceName, RightStr.c_str());
+				return swMatchCategory(PieceName, LeftStr.c_str()) && swMatchCategory(PieceName, RightStr.c_str());
 		}
 
 		p++;
@@ -221,7 +221,7 @@ bool lcMatchCategory(const char* PieceName, const char* Expression)
 				while (c);
 
 				std::string SubExpression(Start + 1, p - Start - 2);
-				return lcMatchCategory(PieceName, SubExpression.c_str());
+				return swMatchCategory(PieceName, SubExpression.c_str());
 			}
 
 			p++;
@@ -261,7 +261,7 @@ bool lcMatchCategory(const char* PieceName, const char* Expression)
 	if (!Word[0])
 		return false;
 
-	const char* Result = lcstrcasestr(PieceName, Word);
+	const char* Result = swstrcasestr(PieceName, Word);
 
 	if (!Result)
 		return false;

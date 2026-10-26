@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>lcHTMLDialog</class>
- <widget class="QDialog" name="lcHTMLDialog">
+ <class>swHTMLDialog</class>
+ <widget class="QDialog" name="swHTMLDialog">
   <property name="whatsThis">
    <string>&lt;p&gt;&lt;b&gt;Export HTML&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Create browser-viewable building instructions and PNG images in the output folder. Choose which models to include, how to organize the step pages, and where to show pieces lists.&lt;/p&gt;&lt;p&gt;Keep the generated HTML and image files together when copying or sharing the instructions.&lt;/p&gt;</string>
   </property>
@@ -294,7 +294,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>lcHTMLDialog</receiver>
+   <receiver>swHTMLDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -310,7 +310,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>lcHTMLDialog</receiver>
+   <receiver>swHTMLDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

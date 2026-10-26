@@ -3,7 +3,7 @@
 #include "object.h"
 #include "sw_math.h"
 
-enum class lcViewpoint
+enum class swViewpoint
 {
 	Front,
 	Back,
@@ -15,36 +15,36 @@ enum class lcViewpoint
 	Count
 };
 
-enum class lcCameraProjection
+enum class swCameraProjection
 {
 	Perspective,
 	Orthographic,
 	Count
 };
 
-enum lcCameraSection : quint32
+enum swCameraSection : quint32
 {
-	LC_CAMERA_SECTION_INVALID = LC_OBJECT_SECTION_INVALID,
-	LC_CAMERA_SECTION_POSITION = 0,
-	LC_CAMERA_SECTION_TARGET,
-	LC_CAMERA_SECTION_UPVECTOR
+	SW_CAMERA_SECTION_INVALID = SW_OBJECT_SECTION_INVALID,
+	SW_CAMERA_SECTION_POSITION = 0,
+	SW_CAMERA_SECTION_TARGET,
+	SW_CAMERA_SECTION_UPVECTOR
 };
 
-struct lcCameraHistoryState
+struct swCameraHistoryState
 {
-	lcObjectId Id;
+	swObjectId Id;
 	bool Hidden;
 	bool Simple;
 	float Fovy;
 	float NearPlane;
 	float FarPlane;
-	lcCameraProjection Projection;
-	lcObjectProperty<lcVector3> Position;
-	lcObjectProperty<lcVector3> TargetPosition;
-	lcObjectProperty<lcVector3> UpVector;
+	swCameraProjection Projection;
+	swObjectProperty<swVector3> Position;
+	swObjectProperty<swVector3> TargetPosition;
+	swObjectProperty<swVector3> UpVector;
 	QString Name;
 
-	bool operator==(const lcCameraHistoryState& Other) const
+	bool operator==(const swCameraHistoryState& Other) const
 	{
 		return Id == Other.Id && Hidden == Other.Hidden && Simple == Other.Simple && Fovy == Other.Fovy &&
             NearPlane == Other.NearPlane && FarPlane == Other.FarPlane && Projection == Other.Projection &&
@@ -52,22 +52,22 @@ struct lcCameraHistoryState
 	}
 };
 
-class lcCamera : public lcObject
+class swCamera : public swObject
 {
 public:
-	lcCamera();
-	lcCamera(bool Simple);
-	lcCamera(bool Simple, const lcVector3& Position, const lcVector3& TargetPosition);
-	virtual ~lcCamera();
+	swCamera();
+	swCamera(bool Simple);
+	swCamera(bool Simple, const swVector3& Position, const swVector3& TargetPosition);
+	virtual ~swCamera();
 
-	lcCamera(const lcCamera&) = delete;
-	lcCamera(lcCamera&&) = delete;
-	lcCamera& operator=(const lcCamera&) = delete;
-	lcCamera& operator=(lcCamera&&) = delete;
+	swCamera(const swCamera&) = delete;
+	swCamera(swCamera&&) = delete;
+	swCamera& operator=(const swCamera&) = delete;
+	swCamera& operator=(swCamera&&) = delete;
 
-	static QString GetCameraProjectionString(lcCameraProjection CameraProjection);
+	static QString GetCameraProjectionString(swCameraProjection CameraProjection);
 	static QStringList GetCameraProjectionStrings();
-	static lcViewpoint GetViewpoint(const QString& ViewpointName);
+	static swViewpoint GetViewpoint(const QString& ViewpointName);
 
 	QString GetName() const override
 	{
@@ -75,60 +75,60 @@ public:
 	}
 
 	bool SetName(const QString& Name);
-	void CreateName(const std::vector<std::unique_ptr<lcCamera>>& Cameras);
+	void CreateName(const std::vector<std::unique_ptr<swCamera>>& Cameras);
 
 	bool IsSimple() const
 	{
 		return mSimple;
 	}
 
-	lcCameraProjection GetProjection() const
+	swCameraProjection GetProjection() const
 	{
 		return mProjection;
 	}
 
-	bool SetProjection(lcCameraProjection CameraProjection);
+	bool SetProjection(swCameraProjection CameraProjection);
 	bool SetFOV(float Fovy);
 	bool SetNearPlane(float NearPlane);
 	bool SetFarPlane(float FarPlane);
 
 	quint32 GetAllowedTransforms() const override
 	{
-		return LC_OBJECT_TRANSFORM_MOVE_XYZ;
+		return SW_OBJECT_TRANSFORM_MOVE_XYZ;
 	}
 
-	lcVector3 GetSectionPosition(quint32 Section) const override
+	swVector3 GetSectionPosition(quint32 Section) const override
 	{
 		switch (Section)
 		{
-		case LC_CAMERA_SECTION_POSITION:
+		case SW_CAMERA_SECTION_POSITION:
 			return mPosition;
 
-		case LC_CAMERA_SECTION_TARGET:
+		case SW_CAMERA_SECTION_TARGET:
 			return mTargetPosition;
 
-		case LC_CAMERA_SECTION_UPVECTOR:
-			return lcMul31(lcVector3(0, 25, 0), lcMatrix44AffineInverse(mWorldView));
+		case SW_CAMERA_SECTION_UPVECTOR:
+			return swMul31(swVector3(0, 25, 0), swMatrix44AffineInverse(mWorldView));
 		}
 
-		return lcVector3(0.0f, 0.0f, 0.0f);
+		return swVector3(0.0f, 0.0f, 0.0f);
 	}
 
-	lcMatrix33 GetRelativeRotation() const
+	swMatrix33 GetRelativeRotation() const
 	{
 		const quint32 Section = GetFocusSection();
 
-		if (Section == LC_CAMERA_SECTION_POSITION)
-			return lcMatrix33(mWorldView);
+		if (Section == SW_CAMERA_SECTION_POSITION)
+			return swMatrix33(mWorldView);
 		else
-			return lcMatrix33Identity();
+			return swMatrix33Identity();
 	}
 
-	lcVector3 GetRotationCenter() const
+	swVector3 GetRotationCenter() const
 	{
 		const quint32 Section = GetFocusSection();
 
-		if (Section != LC_CAMERA_SECTION_TARGET)
+		if (Section != SW_CAMERA_SECTION_TARGET)
 		{
 			return mPosition;
 		}
@@ -157,17 +157,17 @@ public:
 		mHidden = Hidden;
 	}
 
-	void SetPosition(const lcVector3& Position, lcStep Step, bool AddKey)
+	void SetPosition(const swVector3& Position, swStep Step, bool AddKey)
 	{
 		mPosition.ChangeKey(Position, Step, AddKey);
 	}
 
-	void SetTargetPosition(const lcVector3& TargetPosition, lcStep Step, bool AddKey)
+	void SetTargetPosition(const swVector3& TargetPosition, swStep Step, bool AddKey)
 	{
 		mTargetPosition.ChangeKey(TargetPosition, Step, AddKey);
 	}
 
-	void SetUpVector(const lcVector3& UpVector, lcStep Step, bool AddKey)
+	void SetUpVector(const swVector3& UpVector, swStep Step, bool AddKey)
 	{
 		mUpVector.ChangeKey(UpVector, Step, AddKey);
 	}
@@ -179,46 +179,46 @@ public:
 		//   a = 2 atan(------) => ~ a = --- => d = af
 		//                2f              f
 		const float f = (mPosition - mTargetPosition).Length();
-		return (m_fovy * f) * (LC_PI / 180.0f);
+		return (m_fovy * f) * (SW_PI / 180.0f);
 	}
 
 public:
-	void RayTest(lcObjectRayTest& ObjectRayTest) const override;
-	void BoxTest(lcObjectBoxTest& ObjectBoxTest) const override;
-	void DrawInterface(lcContext* Context, const lcScene& Scene) const override;
-	QVariant GetPropertyValue(lcObjectPropertyId PropertyId) const override;
-	bool SetPropertyValue(lcObjectPropertyId PropertyId, lcStep Step, bool AddKey, QVariant Value) override;
-	bool HasKeyFrame(lcObjectPropertyId PropertyId, lcStep Time) const override;
-	lcStep GetLastStep() const override;
-	bool SetKeyFrame(lcObjectPropertyId PropertyId, lcStep Time, bool KeyFrame) override;
+	void RayTest(swObjectRayTest& ObjectRayTest) const override;
+	void BoxTest(swObjectBoxTest& ObjectBoxTest) const override;
+	void DrawInterface(swContext* Context, const swScene& Scene) const override;
+	QVariant GetPropertyValue(swObjectPropertyId PropertyId) const override;
+	bool SetPropertyValue(swObjectPropertyId PropertyId, swStep Step, bool AddKey, QVariant Value) override;
+	bool HasKeyFrame(swObjectPropertyId PropertyId, swStep Time) const override;
+	swStep GetLastStep() const override;
+	bool SetKeyFrame(swObjectPropertyId PropertyId, swStep Time, bool KeyFrame) override;
 	void RemoveKeyFrames() override;
-	lcCameraHistoryState GetHistoryState() const;
-	void SetHistoryState(const lcCameraHistoryState& State);
+	swCameraHistoryState GetHistoryState() const;
+	void SetHistoryState(const swCameraHistoryState& State);
 
-	void InsertTime(lcStep Start, lcStep Time);
-	void RemoveTime(lcStep Start, lcStep Time);
+	void InsertTime(swStep Start, swStep Time);
+	void RemoveTime(swStep Start, swStep Time);
 
-	static bool FileLoad(lcFile& file);
+	static bool FileLoad(swFile& file);
 
-	void CompareBoundingBox(lcVector3& Min, lcVector3& Max);
-	void UpdatePosition(lcStep Step) override;
-	void CopyPosition(const lcCamera* Camera);
-	void CopySettings(const lcCamera* Camera);
+	void CompareBoundingBox(swVector3& Min, swVector3& Max);
+	void UpdatePosition(swStep Step) override;
+	void CopyPosition(const swCamera* Camera);
+	void CopySettings(const swCamera* Camera);
 
-	void ZoomExtents(float AspectRatio, const lcVector3& Center, const std::vector<lcVector3>& Points, lcStep Step, bool AddKey, bool AdjustFarPlane);
-	void ExpandFarPlane(const std::vector<lcVector3>& Points);
-	void ZoomRegion(float AspectRatio, const lcVector3& Position, const lcVector3& TargetPosition, const lcVector3* Corners, lcStep Step, bool AddKey);
-	void Zoom(float Distance, lcStep Step, bool AddKey);
-	void Pan(const lcVector3& Distance, lcStep Step, bool AddKey);
-	void Orbit(float DistanceX, float DistanceY, const lcVector3& CenterPosition, lcStep Step, bool AddKey);
-	void Roll(float Distance, lcStep Step, bool AddKey);
-	void Center(const lcVector3& NewCenter, lcStep Step, bool AddKey);
-	void MoveSelected(lcStep Step, bool AddKey, const lcVector3& Distance);
-	void MoveRelative(const lcVector3& Distance, lcStep Step, bool AddKey);
-	void Rotate(lcStep Step, bool AddKey, const lcMatrix33& RotationMatrix, const lcVector3& Center, const lcMatrix33& RotationFrame);
-	void SetViewpoint(lcViewpoint Viewpoint);
-	void SetViewpoint(const lcVector3& Position);
-	void SetViewpoint(const lcVector3& Position, const lcVector3& Target, const lcVector3& Up);
+	void ZoomExtents(float AspectRatio, const swVector3& Center, const std::vector<swVector3>& Points, swStep Step, bool AddKey, bool AdjustFarPlane);
+	void ExpandFarPlane(const std::vector<swVector3>& Points);
+	void ZoomRegion(float AspectRatio, const swVector3& Position, const swVector3& TargetPosition, const swVector3* Corners, swStep Step, bool AddKey);
+	void Zoom(float Distance, swStep Step, bool AddKey);
+	void Pan(const swVector3& Distance, swStep Step, bool AddKey);
+	void Orbit(float DistanceX, float DistanceY, const swVector3& CenterPosition, swStep Step, bool AddKey);
+	void Roll(float Distance, swStep Step, bool AddKey);
+	void Center(const swVector3& NewCenter, swStep Step, bool AddKey);
+	void MoveSelected(swStep Step, bool AddKey, const swVector3& Distance);
+	void MoveRelative(const swVector3& Distance, swStep Step, bool AddKey);
+	void Rotate(swStep Step, bool AddKey, const swMatrix33& RotationMatrix, const swVector3& Center, const swMatrix33& RotationFrame);
+	void SetViewpoint(swViewpoint Viewpoint);
+	void SetViewpoint(const swVector3& Position);
+	void SetViewpoint(const swVector3& Position, const swVector3& Target, const swVector3& Up);
 	void GetAngles(float& Latitude, float& Longitude, float& Distance) const;
 	void SetAngles(float Latitude, float Longitude, float Distance);
 
@@ -227,13 +227,13 @@ public:
 	static constexpr float DefaultFarPlane = 50000.0f;
 	float m_zFar = DefaultFarPlane;
 
-	lcMatrix44 mWorldView;
-	lcObjectProperty<lcVector3> mPosition = lcObjectProperty<lcVector3>(lcVector3(0.0f, 0.0f, 0.0f));
-	lcObjectProperty<lcVector3> mTargetPosition = lcObjectProperty<lcVector3>(lcVector3(0.0f, 0.0f, 0.0f));
-	lcObjectProperty<lcVector3> mUpVector = lcObjectProperty<lcVector3>(lcVector3(0.0f, 0.0f, 0.0f));
+	swMatrix44 mWorldView;
+	swObjectProperty<swVector3> mPosition = swObjectProperty<swVector3>(swVector3(0.0f, 0.0f, 0.0f));
+	swObjectProperty<swVector3> mTargetPosition = swObjectProperty<swVector3>(swVector3(0.0f, 0.0f, 0.0f));
+	swObjectProperty<swVector3> mUpVector = swObjectProperty<swVector3>(swVector3(0.0f, 0.0f, 0.0f));
 
 protected:
 	QString mName;
 	bool mSimple = true;
-	lcCameraProjection mProjection = lcCameraProjection::Perspective;
+	swCameraProjection mProjection = swCameraProjection::Perspective;
 };

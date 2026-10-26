@@ -1,13 +1,13 @@
 #pragma once
 
-class lcElidableToolButton;
+class swElidableToolButton;
 
-class lcFindReplaceWidget : public QWidget
+class swFindReplaceWidget : public QWidget
 {
 	Q_OBJECT
 
 public:
-	lcFindReplaceWidget(QWidget* Parent, lcModel* Model, bool Replace);
+	swFindReplaceWidget(QWidget* Parent, swModel* Model, bool Replace);
 
 protected slots:
 	void FindColorIndexChanged(int ColorIndex);
@@ -18,5 +18,5 @@ protected slots:
 
 protected:
 	QComboBox* mFindPartComboBox = nullptr;
-	lcElidableToolButton* mReplacePartButton = nullptr;
+	swElidableToolButton* mReplacePartButton = nullptr;
 };

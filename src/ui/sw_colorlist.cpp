@@ -6,42 +6,42 @@
 #include "sw_collapsiblewidget.h"
 #include "sw_utils.h"
 
-lcColorList::lcColorList(QWidget* Parent, bool AllowNoColor)
+swColorList::swColorList(QWidget* Parent, bool AllowNoColor)
 	: QWidget(Parent), mAllowNoColor(AllowNoColor)
 {
 	setFocusPolicy(Qt::StrongFocus);
 
 	UpdateCells();
 
-	connect(lcGetPiecesLibrary(), &lcPiecesLibrary::ColorsLoaded, this, &lcColorList::ColorsLoaded);
+	connect(swGetPiecesLibrary(), &swPiecesLibrary::ColorsLoaded, this, &swColorList::ColorsLoaded);
 }
 
-void lcColorList::UpdateCells()
+void swColorList::UpdateCells()
 {
-	for (lcColorListGroup& Group : mGroups)
+	for (swColorListGroup& Group : mGroups)
 		if (Group.Button)
 			Group.Button->deleteLater();
 
 	mCells.clear();
 	mGroups.clear();
 
-	for (int GroupIdx = 0; GroupIdx < LC_NUM_COLORGROUPS; GroupIdx++)
+	for (int GroupIdx = 0; GroupIdx < SW_NUM_COLORGROUPS; GroupIdx++)
 	{
-		lcColorGroup* Group = &gColorGroups[GroupIdx];
-		lcColorListGroup ListGroup;
+		swColorGroup* Group = &gColorGroups[GroupIdx];
+		swColorListGroup ListGroup;
 
 		for (int ColorIndex : Group->Colors)
 		{
-			mCells.emplace_back(lcColorListCell{ QRect(), ColorIndex });
+			mCells.emplace_back(swColorListCell{ QRect(), ColorIndex });
 			ListGroup.Name = Group->Name;
 			ListGroup.Cells.emplace_back(mCells.size());
 		}
 
 		// Group headers use the same collapsible buttons as the properties panel.
-		ListGroup.Button = new lcCollapsibleWidgetButton(Group->Name, this);
+		ListGroup.Button = new swCollapsibleWidgetButton(Group->Name, this);
 		ListGroup.Button->setToolTip(tr("Expand or collapse the %1 colors.").arg(Group->Name));
 
-		connect(ListGroup.Button, &lcCollapsibleWidgetButton::StateChanged, this, [this, GroupIdx](bool Expanded)
+		connect(ListGroup.Button, &swCollapsibleWidgetButton::StateChanged, this, [this, GroupIdx](bool Expanded)
 		{
 			SetGroupCollapsed(GroupIdx, !Expanded);
 		});
@@ -51,15 +51,15 @@ void lcColorList::UpdateCells()
 
 	if (mAllowNoColor)
 	{
-		mCells.emplace_back(lcColorListCell{ QRect(), lcGetColorIndex(LC_COLOR_NOCOLOR) });
-		mGroups[LC_COLORGROUP_SPECIAL].Cells.emplace_back(mCells.size());
+		mCells.emplace_back(swColorListCell{ QRect(), swGetColorIndex(SW_COLOR_NOCOLOR) });
+		mGroups[SW_COLORGROUP_SPECIAL].Cells.emplace_back(mCells.size());
 	}
 
 	// Before the first layout the width is only a placeholder, so estimate with the hinted width.
 	mPreferredHeight = GetHeightForWidth(isVisible() ? width() : sizeHint().width(), &mColumns, &mRows);
 }
 
-int lcColorList::GetHeightForWidth(int Width, int* Columns, int* Rows) const
+int swColorList::GetHeightForWidth(int Width, int* Columns, int* Rows) const
 {
 	QFontMetrics Metrics(font());
 	int TextHeight = 0;
@@ -72,7 +72,7 @@ int lcColorList::GetHeightForWidth(int Width, int* Columns, int* Rows) const
 	const int ColumnCount = qMax(5, Width / qMax(TargetCellSize, 1));
 	int RowCount = 0;
 
-	for (const lcColorListGroup& Group : mGroups)
+	for (const swColorListGroup& Group : mGroups)
 		if (!Group.Collapsed)
 			RowCount += ((int)Group.Cells.size() + ColumnCount - 1) / ColumnCount;
 
@@ -85,16 +85,16 @@ int lcColorList::GetHeightForWidth(int Width, int* Columns, int* Rows) const
 	return TextHeight + qCeil((float)Width / (float)ColumnCount * RowCount);
 }
 
-int lcColorList::GetGroupHeaderHeight(const lcColorListGroup& Group, bool FirstGroup) const
+int swColorList::GetGroupHeaderHeight(const swColorListGroup& Group, bool FirstGroup) const
 {
 	// Headers are spaced like the rows of a standard layout, above unless first and below unless collapsed.
-	const int Spacing = lcGetLayoutSpacing(this, Qt::Vertical);
+	const int Spacing = swGetLayoutSpacing(this, Qt::Vertical);
 	const int ButtonHeight = Group.Button ? Group.Button->sizeHint().height() : QFontMetrics(font()).height();
 
 	return (FirstGroup ? 0 : Spacing) + ButtonHeight + (Group.Collapsed ? 0 : Spacing);
 }
 
-void lcColorList::UpdateRects()
+void swColorList::UpdateRects()
 {
 	mPreferredHeight = GetHeightForWidth(width(), &mColumns, &mRows);
 
@@ -112,7 +112,7 @@ void lcColorList::UpdateRects()
 
 	for (size_t GroupIdx = 0; GroupIdx < mGroups.size(); GroupIdx++)
 	{
-		lcColorListGroup& Group = mGroups[GroupIdx];
+		swColorListGroup& Group = mGroups[GroupIdx];
 		int CurColumn = 0;
 		int NumRows = 0;
 
@@ -121,7 +121,7 @@ void lcColorList::UpdateRects()
 
 		if (Group.Button)
 		{
-			const int Top = Group.Rect.top() + (GroupIdx == 0 ? 0 : lcGetLayoutSpacing(this, Qt::Vertical));
+			const int Top = Group.Rect.top() + (GroupIdx == 0 ? 0 : swGetLayoutSpacing(this, Qt::Vertical));
 			Group.Button->setGeometry(QRect(0, Top, width(), Group.Button->sizeHint().height()));
 			Group.Button->show();
 		}
@@ -161,7 +161,7 @@ void lcColorList::UpdateRects()
 	}
 }
 
-void lcColorList::ToggleGroupCollapsed(int GroupIndex)
+void swColorList::ToggleGroupCollapsed(int GroupIndex)
 {
 	if (GroupIndex < 0 || GroupIndex >= static_cast<int>(mGroups.size()))
 		return;
@@ -169,9 +169,9 @@ void lcColorList::ToggleGroupCollapsed(int GroupIndex)
 	SetGroupCollapsed(GroupIndex, !mGroups[GroupIndex].Collapsed);
 }
 
-void lcColorList::SetGroupCollapsed(int GroupIndex, bool Collapsed)
+void swColorList::SetGroupCollapsed(int GroupIndex, bool Collapsed)
 {
-	lcColorListGroup& Group = mGroups[GroupIndex];
+	swColorListGroup& Group = mGroups[GroupIndex];
 
 	Group.Collapsed = Collapsed;
 
@@ -182,22 +182,22 @@ void lcColorList::SetGroupCollapsed(int GroupIndex, bool Collapsed)
 	update();
 }
 
-void lcColorList::ColorsLoaded()
+void swColorList::ColorsLoaded()
 {
 	UpdateCells();
 	UpdateRects();
 
-	SetCurrentColor(lcGetColorIndex(mColorCode));
+	SetCurrentColor(swGetColorIndex(mColorCode));
 
 	update();
 }
 
-QSize lcColorList::sizeHint() const
+QSize swColorList::sizeHint() const
 {
 	return QSize(200, mPreferredHeight);
 }
 
-void lcColorList::SetCurrentColor(int ColorIndex)
+void swColorList::SetCurrentColor(int ColorIndex)
 {
 	for (size_t CellIndex = 0; CellIndex < mCells.size(); CellIndex++)
 	{
@@ -209,7 +209,7 @@ void lcColorList::SetCurrentColor(int ColorIndex)
 	}
 }
 
-bool lcColorList::event(QEvent* Event)
+bool swColorList::event(QEvent* Event)
 {
 	if (Event->type() == QEvent::ToolTip)
 	{
@@ -220,7 +220,7 @@ bool lcColorList::event(QEvent* Event)
 			if (!mCells[CellIndex].Rect.contains(HelpEvent->pos()))
 				continue;
 
-			QString Text = lcGetColorToolTip(mCells[CellIndex].ColorIndex);
+			QString Text = swGetColorToolTip(mCells[CellIndex].ColorIndex);
 			QToolTip::showText(HelpEvent->globalPos(), Text);
 
 			return true;
@@ -255,7 +255,7 @@ bool lcColorList::event(QEvent* Event)
 	return QWidget::event(Event);
 }
 
-void lcColorList::mousePressEvent(QMouseEvent* MouseEvent)
+void swColorList::mousePressEvent(QMouseEvent* MouseEvent)
 {
 	for (size_t CellIndex = 0; CellIndex < mCells.size(); CellIndex++)
 	{
@@ -271,7 +271,7 @@ void lcColorList::mousePressEvent(QMouseEvent* MouseEvent)
 	mDragStartPosition = MouseEvent->pos();
 }
 
-void lcColorList::mouseMoveEvent(QMouseEvent* MouseEvent)
+void swColorList::mouseMoveEvent(QMouseEvent* MouseEvent)
 {
 	if (!(MouseEvent->buttons() & Qt::LeftButton))
 		return;
@@ -288,7 +288,7 @@ void lcColorList::mouseMoveEvent(QMouseEvent* MouseEvent)
 	Drag->exec(Qt::CopyAction);
 }
 
-void lcColorList::keyPressEvent(QKeyEvent *event)
+void swColorList::keyPressEvent(QKeyEvent *event)
 {
 	size_t NewCell = mCurrentCell;
 
@@ -369,7 +369,7 @@ void lcColorList::keyPressEvent(QKeyEvent *event)
 		QWidget::keyPressEvent(event);
 }
 
-void lcColorList::resizeEvent(QResizeEvent* Event)
+void swColorList::resizeEvent(QResizeEvent* Event)
 {
 	if (mWidth == width() && mHeight == height())
 		return;
@@ -382,7 +382,7 @@ void lcColorList::resizeEvent(QResizeEvent* Event)
 	QWidget::resizeEvent(Event);
 }
 
-void lcColorList::paintEvent(QPaintEvent* Event)
+void swColorList::paintEvent(QPaintEvent* Event)
 {
 	Q_UNUSED(Event);
 
@@ -394,14 +394,14 @@ void lcColorList::paintEvent(QPaintEvent* Event)
 
 	for (size_t CellIndex = 0; CellIndex < mCells.size(); CellIndex++)
 	{
-		const lcColor* Color = &gColorList[mCells[CellIndex].ColorIndex];
+		const swColor* Color = &gColorList[mCells[CellIndex].ColorIndex];
 
 		const QRect& Rect = mCells[CellIndex].Rect;
 
 		if (Rect.isNull())
 			continue;
 
-		if (Color->Code != LC_COLOR_NOCOLOR)
+		if (Color->Code != SW_COLOR_NOCOLOR)
 		{
 			QColor CellColor(Color->Value[0] * 255, Color->Value[1] * 255, Color->Value[2] * 255);
 
@@ -409,12 +409,12 @@ void lcColorList::paintEvent(QPaintEvent* Event)
 			Painter.drawRect(Rect);
 		}
 		else
-			lcDrawNoColorRect(Painter, Rect);
+			swDrawNoColorRect(Painter, Rect);
 	}
 
 	if (mCurrentCell < mCells.size() && !mCells[mCurrentCell].Rect.isNull())
 	{
-		const lcColor* Color = &gColorList[mCells[mCurrentCell].ColorIndex];
+		const swColor* Color = &gColorList[mCells[mCurrentCell].ColorIndex];
 		QColor EdgeColor(255 - Color->Value[0] * 255, 255 - Color->Value[1] * 255, 255 - Color->Value[2] * 255);
 
 		Painter.setPen(EdgeColor);
@@ -426,7 +426,7 @@ void lcColorList::paintEvent(QPaintEvent* Event)
 	}
 }
 
-void lcColorList::SelectCell(size_t CellIndex)
+void swColorList::SelectCell(size_t CellIndex)
 {
 	if (CellIndex >= mCells.size())
 		return;
@@ -435,7 +435,7 @@ void lcColorList::SelectCell(size_t CellIndex)
 		return;
 
 	mCurrentCell = CellIndex;
-	mColorCode = lcGetColorCode(mCells[CellIndex].ColorIndex);
+	mColorCode = swGetColorCode(mCells[CellIndex].ColorIndex);
 
 	emit ColorChanged(mCells[mCurrentCell].ColorIndex);
 	update();

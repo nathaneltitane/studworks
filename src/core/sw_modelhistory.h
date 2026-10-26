@@ -3,86 +3,86 @@
 #include "sw_model.h"
 #include "sw_objecthistory.h"
 
-enum class lcObjectType;
-enum class lcSelectionMode;
+enum class swObjectType;
+enum class swSelectionMode;
 
-class lcModelHistory
+class swModelHistory
 {
 public:
-	lcModelHistory() = default;
-	virtual ~lcModelHistory() = default;
+	swModelHistory() = default;
+	virtual ~swModelHistory() = default;
 
-	virtual void SaveStartState(const lcModel* Model) = 0;
-	virtual void SaveEndState(const lcModel* Model) = 0;
-	virtual void LoadStartState(lcModel* Model) const = 0;
-	virtual void LoadEndState(lcModel* Model) const = 0;
+	virtual void SaveStartState(const swModel* Model) = 0;
+	virtual void SaveEndState(const swModel* Model) = 0;
+	virtual void LoadStartState(swModel* Model) const = 0;
+	virtual void LoadEndState(swModel* Model) const = 0;
 	virtual bool StateChanged() const = 0;
-	virtual void RenamePieces(const std::vector<lcModelPieceRename>& Renames, const lcPieceData* ModelPieceData)
+	virtual void RenamePieces(const std::vector<swModelPieceRename>& Renames, const swPieceData* ModelPieceData)
 	{
 		Q_UNUSED(Renames);
 		Q_UNUSED(ModelPieceData);
 	}
 
-	virtual bool CanMergeWith(const lcModelHistory* Other) const
+	virtual bool CanMergeWith(const swModelHistory* Other) const
 	{
 		Q_UNUSED(Other);
 
 		return false;
 	}
 
-	virtual void MergeWith(lcModelHistory* Other)
+	virtual void MergeWith(swModelHistory* Other)
 	{
 		Q_UNUSED(Other);
 	}
 };
 
-struct lcModelHistorySelectState
+struct swModelHistorySelectState
 {
 	std::vector<bool> PieceSelection;
 	std::vector<bool> CameraSelection;
 	std::vector<bool> LightSelection;
 	size_t FocusIndex = SIZE_MAX;
 	uint32_t FocusSection = ~0U;
-	lcObjectType FocusObjectType = static_cast<lcObjectType>(~0);
+	swObjectType FocusObjectType = static_cast<swObjectType>(~0);
 
-	bool operator!=(const lcModelHistorySelectState& Other) const
+	bool operator!=(const swModelHistorySelectState& Other) const
 	{
 		return PieceSelection != Other.PieceSelection || CameraSelection != Other.CameraSelection || LightSelection != Other.LightSelection ||
 			FocusIndex != Other.FocusIndex || FocusSection != Other.FocusSection || FocusObjectType != Other.FocusObjectType;
 	}
 };
 
-class lcModelHistorySelect : public lcModelHistory
+class swModelHistorySelect : public swModelHistory
 {
 public:
-	lcModelHistorySelect() = default;
-	virtual ~lcModelHistorySelect() = default;
+	swModelHistorySelect() = default;
+	virtual ~swModelHistorySelect() = default;
 
-	void SaveStartState(const lcModel* Model) override;
-	void SaveEndState(const lcModel* Model) override;
-	void LoadStartState(lcModel* Model) const override;
-	void LoadEndState(lcModel* Model) const override;
+	void SaveStartState(const swModel* Model) override;
+	void SaveEndState(const swModel* Model) override;
+	void LoadStartState(swModel* Model) const override;
+	void LoadEndState(swModel* Model) const override;
 	bool StateChanged() const override;
 
 protected:
-	static void SaveState(lcModelHistorySelectState& State, const lcModel* Model);
-	static void LoadState(const lcModelHistorySelectState& State, lcModel* Model);
+	static void SaveState(swModelHistorySelectState& State, const swModel* Model);
+	static void LoadState(const swModelHistorySelectState& State, swModel* Model);
 
-	lcModelHistorySelectState mStartState;
-	lcModelHistorySelectState mEndState;
+	swModelHistorySelectState mStartState;
+	swModelHistorySelectState mEndState;
 };
 
-struct lcGroupHistoryState;
-struct lcPieceHistoryState;
-struct lcCameraHistoryState;
-struct lcLightHistoryState;
+struct swGroupHistoryState;
+struct swPieceHistoryState;
+struct swCameraHistoryState;
+struct swLightHistoryState;
 
-struct lcModelHistoryEditState
+struct swModelHistoryEditState
 {
-	lcObjectHistory<lcGroupHistoryState> Groups;
-	lcObjectHistory<lcPieceHistoryState> Pieces;
-	lcObjectHistory<lcCameraHistoryState> Cameras;
-	lcObjectHistory<lcLightHistoryState> Lights;
+	swObjectHistory<swGroupHistoryState> Groups;
+	swObjectHistory<swPieceHistoryState> Pieces;
+	swObjectHistory<swCameraHistoryState> Cameras;
+	swObjectHistory<swLightHistoryState> Lights;
 
 	bool IsEmpty() const
 	{
@@ -90,7 +90,7 @@ struct lcModelHistoryEditState
 	}
 };
 
-enum class lcModelHistoryEditMerge
+enum class swModelHistoryEditMerge
 {
 	None,
 	KeyboardMove,
@@ -102,61 +102,61 @@ enum class lcModelHistoryEditMerge
 	PropertiesEdit
 };
 
-struct lcModelHistoryEditMergeKey
+struct swModelHistoryEditMergeKey
 {
-	lcModelHistoryEditMerge Operation;
-	lcObjectPropertyId PropertyEditId = lcObjectPropertyId::Count;
-	lcStep Step;
+	swModelHistoryEditMerge Operation;
+	swObjectPropertyId PropertyEditId = swObjectPropertyId::Count;
+	swStep Step;
 	bool AddKeys;
 
-	bool operator==(const lcModelHistoryEditMergeKey& Other) const
+	bool operator==(const swModelHistoryEditMergeKey& Other) const
 	{
 		return Operation == Other.Operation && PropertyEditId == Other.PropertyEditId && Step == Other.Step && AddKeys == Other.AddKeys;
 	}
 };
 
-class lcModelHistoryEdit : public lcModelHistory
+class swModelHistoryEdit : public swModelHistory
 {
 public:
-	lcModelHistoryEdit(lcModelHistoryEditMergeKey MergeKey);
-	virtual ~lcModelHistoryEdit();
+	swModelHistoryEdit(swModelHistoryEditMergeKey MergeKey);
+	virtual ~swModelHistoryEdit();
 
-	void SaveStartState(const lcModel* Model) override;
-	void SaveEndState(const lcModel* Model) override;
-	void LoadStartState(lcModel* Model) const override;
-	void LoadEndState(lcModel* Model) const override;
+	void SaveStartState(const swModel* Model) override;
+	void SaveEndState(const swModel* Model) override;
+	void LoadStartState(swModel* Model) const override;
+	void LoadEndState(swModel* Model) const override;
 	bool StateChanged() const override;
-	void RenamePieces(const std::vector<lcModelPieceRename>& Renames, const lcPieceData* ModelPieceData) override;
+	void RenamePieces(const std::vector<swModelPieceRename>& Renames, const swPieceData* ModelPieceData) override;
 
-	bool CanMergeWith(const lcModelHistory* Other) const override;
-	void MergeWith(lcModelHistory* Other) override;
+	bool CanMergeWith(const swModelHistory* Other) const override;
+	void MergeWith(swModelHistory* Other) override;
 
 protected:
-	static void SaveState(lcModelHistoryEditState& State, const lcModel* Model);
-	static void LoadState(const lcModelHistoryEditState& State, lcModel* Model);
+	static void SaveState(swModelHistoryEditState& State, const swModel* Model);
+	static void LoadState(const swModelHistoryEditState& State, swModel* Model);
 
-	lcModelHistoryEditState mStartState;
-	lcModelHistoryEditState mEndState;
-	lcModelHistoryEditMergeKey mMergeKey;
+	swModelHistoryEditState mStartState;
+	swModelHistoryEditState mEndState;
+	swModelHistoryEditMergeKey mMergeKey;
 };
 
-class lcModelHistoryProperties : public lcModelHistory
+class swModelHistoryProperties : public swModelHistory
 {
 public:
-	lcModelHistoryProperties() = default;
-	virtual ~lcModelHistoryProperties() = default;
+	swModelHistoryProperties() = default;
+	virtual ~swModelHistoryProperties() = default;
 
-	void SaveStartState(const lcModel* Model) override;
-	void SaveEndState(const lcModel* Model) override;
-	void LoadStartState(lcModel* Model) const override;
-	void LoadEndState(lcModel* Model) const override;
+	void SaveStartState(const swModel* Model) override;
+	void SaveEndState(const swModel* Model) override;
+	void LoadStartState(swModel* Model) const override;
+	void LoadEndState(swModel* Model) const override;
 	bool StateChanged() const override;
-	void RenamePieces(const std::vector<lcModelPieceRename>& Renames, const lcPieceData* ModelPieceData) override;
+	void RenamePieces(const std::vector<swModelPieceRename>& Renames, const swPieceData* ModelPieceData) override;
 
 protected:
-	static void SaveState(lcModelProperties& State, const lcModel* Model);
-	static void LoadState(const lcModelProperties& State, lcModel* Model);
+	static void SaveState(swModelProperties& State, const swModel* Model);
+	static void LoadState(const swModelProperties& State, swModel* Model);
 
-	lcModelProperties mStartState;
-	lcModelProperties mEndState;
+	swModelProperties mStartState;
+	swModelProperties mEndState;
 };

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>lcUpdateDialog</class>
- <widget class="QDialog" name="lcUpdateDialog">
+ <class>swUpdateDialog</class>
+ <widget class="QDialog" name="swUpdateDialog">
   <property name="whatsThis">
    <string>&lt;p&gt;&lt;b&gt;Check for Updates&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Check online for a newer LeoCAD version and, when an official library is loaded, new pieces. The result appears in this dialog. An internet connection is required.&lt;/p&gt;&lt;p&gt;Use the download link to open the release page in your browser. This dialog does not install updates. Ignore suppresses automatic notifications for this update information; a manual update check still shows the result. Close dismisses the dialog.&lt;/p&gt;</string>
   </property>
@@ -56,7 +56,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>lcUpdateDialog</receiver>
+   <receiver>swUpdateDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -72,7 +72,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>lcUpdateDialog</receiver>
+   <receiver>swUpdateDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

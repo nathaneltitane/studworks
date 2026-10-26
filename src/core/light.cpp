@@ -8,101 +8,101 @@
 #include "sw_application.h"
 #include "sw_context.h"
 
-#define LC_LIGHT_SPHERE_RADIUS 5.0f
-#define LC_LIGHT_TARGET_RADIUS 2.5f
-#define LC_LIGHT_SPOT_CONE_HEIGHT 10.0f
-#define LC_LIGHT_SPOT_CONE_RADIUS 7.5f
-#define LC_LIGHT_DIRECTIONAL_RADIUS 5.0f
-#define LC_LIGHT_DIRECTIONAL_HEIGHT 7.5f
+#define SW_LIGHT_SPHERE_RADIUS 5.0f
+#define SW_LIGHT_TARGET_RADIUS 2.5f
+#define SW_LIGHT_SPOT_CONE_HEIGHT 10.0f
+#define SW_LIGHT_SPOT_CONE_RADIUS 7.5f
+#define SW_LIGHT_DIRECTIONAL_RADIUS 5.0f
+#define SW_LIGHT_DIRECTIONAL_HEIGHT 7.5f
 
-#define LC_LIGHT_POSITION_EDGE 7.5f
+#define SW_LIGHT_POSITION_EDGE 7.5f
 
-static const std::array<QLatin1String, static_cast<int>(lcLightType::Count)> gLightTypes = { QLatin1String("POINT"), QLatin1String("SPOT"), QLatin1String("DIRECTIONAL"), QLatin1String("AREA") };
-static const std::array<QLatin1String, static_cast<int>(lcLightAreaShape::Count)> gLightAreaShapes = { QLatin1String("RECTANGLE"), QLatin1String("SQUARE"), QLatin1String("DISK"), QLatin1String("ELLIPSE") };
+static const std::array<QLatin1String, static_cast<int>(swLightType::Count)> gLightTypes = { QLatin1String("POINT"), QLatin1String("SPOT"), QLatin1String("DIRECTIONAL"), QLatin1String("AREA") };
+static const std::array<QLatin1String, static_cast<int>(swLightAreaShape::Count)> gLightAreaShapes = { QLatin1String("RECTANGLE"), QLatin1String("SQUARE"), QLatin1String("DISK"), QLatin1String("ELLIPSE") };
 
-lcLight::lcLight()
-    : lcObject(lcObjectType::Light)
+swLight::swLight()
+    : swObject(swObjectType::Light)
 {
 }
 
-lcLight::lcLight(const lcVector3& Position, lcLightType LightType)
-	: lcObject(lcObjectType::Light), mLightType(LightType)
+swLight::swLight(const swVector3& Position, swLightType LightType)
+	: swObject(swObjectType::Light), mLightType(LightType)
 {
-	if (LightType == lcLightType::Directional)
-		mBlenderPower = lcObjectProperty<float>(1.0f);
+	if (LightType == swLightType::Directional)
+		mBlenderPower = swObjectProperty<float>(1.0f);
 
 	mPosition.SetValue(Position);
 
-	lcLight::UpdatePosition(1);
+	swLight::UpdatePosition(1);
 }
 
-QString lcLight::GetLightTypeString(lcLightType LightType)
+QString swLight::GetLightTypeString(swLightType LightType)
 {
 	switch (LightType)
 	{
-	case lcLightType::Point:
+	case swLightType::Point:
 		return QT_TRANSLATE_NOOP("Light Types", "Point Light");
 
-	case lcLightType::Spot:
+	case swLightType::Spot:
 		return QT_TRANSLATE_NOOP("Light Types", "Spotlight");
 
-	case lcLightType::Directional:
+	case swLightType::Directional:
 		return QT_TRANSLATE_NOOP("Light Types", "Directional Light");
 
-	case lcLightType::Area:
+	case swLightType::Area:
 		return QT_TRANSLATE_NOOP("Light Types", "Area Light");
 
-	case lcLightType::Count:
+	case swLightType::Count:
 		break;
 	}
 
 	return QString();
 }
 
-QStringList lcLight::GetLightTypeStrings()
+QStringList swLight::GetLightTypeStrings()
 {
 	QStringList LightTypes;
 
-	for (int LightTypeIndex = 0; LightTypeIndex < static_cast<int>(lcLightType::Count); LightTypeIndex++)
-		LightTypes.push_back(GetLightTypeString(static_cast<lcLightType>(LightTypeIndex)));
+	for (int LightTypeIndex = 0; LightTypeIndex < static_cast<int>(swLightType::Count); LightTypeIndex++)
+		LightTypes.push_back(GetLightTypeString(static_cast<swLightType>(LightTypeIndex)));
 
 	return LightTypes;
 }
 
-QString lcLight::GetAreaShapeString(lcLightAreaShape LightAreaShape)
+QString swLight::GetAreaShapeString(swLightAreaShape LightAreaShape)
 {
 	switch (LightAreaShape)
 	{
-	case lcLightAreaShape::Rectangle:
+	case swLightAreaShape::Rectangle:
 		return QT_TRANSLATE_NOOP("Light Shapes", "Rectangle");
 
-	case lcLightAreaShape::Square:
+	case swLightAreaShape::Square:
 		return QT_TRANSLATE_NOOP("Light Shapes", "Square");
 
-	case lcLightAreaShape::Disk:
+	case swLightAreaShape::Disk:
 		return QT_TRANSLATE_NOOP("Light Shapes", "Disk");
 
-	case lcLightAreaShape::Ellipse:
+	case swLightAreaShape::Ellipse:
 		return QT_TRANSLATE_NOOP("Light Shapes", "Ellipse");
 
-	case lcLightAreaShape::Count:
+	case swLightAreaShape::Count:
 		break;
 	}
 
 	return QString();
 }
 
-QStringList lcLight::GetAreaShapeStrings()
+QStringList swLight::GetAreaShapeStrings()
 {
 	QStringList AreaShapes;
 
-	for (int AreaShapeIndex = 0; AreaShapeIndex < static_cast<int>(lcLightAreaShape::Count); AreaShapeIndex++)
-		AreaShapes.push_back(GetAreaShapeString(static_cast<lcLightAreaShape>(AreaShapeIndex)));
+	for (int AreaShapeIndex = 0; AreaShapeIndex < static_cast<int>(swLightAreaShape::Count); AreaShapeIndex++)
+		AreaShapes.push_back(GetAreaShapeString(static_cast<swLightAreaShape>(AreaShapeIndex)));
 
 	return AreaShapes;
 }
 
-void lcLight::SaveLDraw(QTextStream& Stream) const
+void swLight::SaveLDraw(QTextStream& Stream) const
 {
 	const QLatin1String LineEnding("\r\n");
 
@@ -123,20 +123,20 @@ void lcLight::SaveLDraw(QTextStream& Stream) const
 
 	switch (mLightType)
 	{
-	case lcLightType::Count:
-	case lcLightType::Point:
+	case swLightType::Count:
+	case swLightType::Point:
 		break;
 
-	case lcLightType::Spot:
+	case swLightType::Spot:
 		mSpotConeAngle.Save(Stream, "LIGHT", "SPOT_CONE_ANGLE", true);
 		mSpotPenumbraAngle.Save(Stream, "LIGHT", "SPOT_PENUMBRA_ANGLE", true);
 		mPOVRaySpotTightness.Save(Stream, "LIGHT", "POVRAY_SPOT_TIGHTNESS", true);
 		break;
 
-	case lcLightType::Directional:
+	case swLightType::Directional:
 		break;
 
-	case lcLightType::Area:
+	case swLightType::Area:
 		Stream << QLatin1String("0 !LEOCAD LIGHT AREA_SHAPE ") << gLightAreaShapes[static_cast<int>(mAreaShape)] << LineEnding;
 		mPOVRayAreaGridX.Save(Stream, "LIGHT", "POVRAY_AREA_GRID_X", true);
 		mPOVRayAreaGridY.Save(Stream, "LIGHT", "POVRAY_AREA_GRID_Y", true);
@@ -146,13 +146,13 @@ void lcLight::SaveLDraw(QTextStream& Stream) const
 	Stream << QLatin1String("0 !LEOCAD LIGHT TYPE ") << gLightTypes[static_cast<int>(mLightType)] << QLatin1String(" NAME ") << mName << LineEnding;
 }
 
-void lcLight::CreateName(const std::vector<std::unique_ptr<lcLight>>& Lights)
+void swLight::CreateName(const std::vector<std::unique_ptr<swLight>>& Lights)
 {
 	if (!mName.isEmpty())
 	{
 		bool Found = false;
 
-		for (const std::unique_ptr<lcLight>& Light : Lights)
+		for (const std::unique_ptr<swLight>& Light : Lights)
 		{
 			if (Light->GetName() == mName)
 			{
@@ -171,33 +171,33 @@ void lcLight::CreateName(const std::vector<std::unique_ptr<lcLight>>& Lights)
 
 	switch (mLightType)
 	{
-	case lcLightType::Point:
+	case swLightType::Point:
 		Prefix = QLatin1String("Point Light ");
 		break;
 
-	case lcLightType::Spot:
+	case swLightType::Spot:
 		Prefix = QLatin1String("Spot Light ");
 		break;
 
-	case lcLightType::Directional:
+	case swLightType::Directional:
 		Prefix = QLatin1String("Directional Light ");
 		break;
 
-	case lcLightType::Area:
+	case swLightType::Area:
 		Prefix = QLatin1String("Area Light ");
 		break;
 
-	case lcLightType::Count:
+	case swLightType::Count:
 		break;
 	}
 
-	for (const std::unique_ptr<lcLight>& Light : Lights)
-		MaxLightNumber = qMax(MaxLightNumber, lcGetDefaultNameNumber(Light->GetName(), Prefix));
+	for (const std::unique_ptr<swLight>& Light : Lights)
+		MaxLightNumber = qMax(MaxLightNumber, swGetDefaultNameNumber(Light->GetName(), Prefix));
 
-	mName = lcFormatDefaultName(Prefix, MaxLightNumber + 1);
+	mName = swFormatDefaultName(Prefix, MaxLightNumber + 1);
 }
 
-bool lcLight::ParseLDrawLine(QTextStream& Stream)
+bool swLight::ParseLDrawLine(QTextStream& Stream)
 {
 	while (!Stream.atEnd())
 	{
@@ -245,7 +245,7 @@ bool lcLight::ParseLDrawLine(QTextStream& Stream)
 			{
 				if (AreaShape == gLightAreaShapes[ShapeIndex])
 				{
-					mAreaShape = static_cast<lcLightAreaShape>(ShapeIndex);
+					mAreaShape = static_cast<swLightAreaShape>(ShapeIndex);
 					break;
 				}
 			}
@@ -259,7 +259,7 @@ bool lcLight::ParseLDrawLine(QTextStream& Stream)
 			{
 				if (Type == gLightTypes[TypeIndex])
 				{
-					mLightType = static_cast<lcLightType>(TypeIndex);
+					mLightType = static_cast<swLightType>(TypeIndex);
 					break;
 				}
 			}
@@ -280,89 +280,89 @@ bool lcLight::ParseLDrawLine(QTextStream& Stream)
 	return false;
 }
 
-void lcLight::CompareBoundingBox(lcVector3& Min, lcVector3& Max)
+void swLight::CompareBoundingBox(swVector3& Min, swVector3& Max)
 {
-	const lcVector3 Point = mWorldMatrix.GetTranslation();
+	const swVector3 Point = mWorldMatrix.GetTranslation();
 
 	// TODO: this should check the entire mesh
 
-	Min = lcMin(Point, Min);
-	Max = lcMax(Point, Max);
+	Min = swMin(Point, Min);
+	Max = swMax(Point, Max);
 }
 
-void lcLight::RayTest(lcObjectRayTest& ObjectRayTest) const
+void swLight::RayTest(swObjectRayTest& ObjectRayTest) const
 {
 	if (IsPointLight())
 	{
 		float Distance;
 
-		if (lcSphereRayMinIntersectDistance(mWorldMatrix.GetTranslation(), LC_LIGHT_SPHERE_RADIUS, ObjectRayTest.Start, ObjectRayTest.End, &Distance) && (Distance < ObjectRayTest.Distance))
+		if (swSphereRayMinIntersectDistance(mWorldMatrix.GetTranslation(), SW_LIGHT_SPHERE_RADIUS, ObjectRayTest.Start, ObjectRayTest.End, &Distance) && (Distance < ObjectRayTest.Distance))
 		{
-			ObjectRayTest.ObjectSection.Object = const_cast<lcLight*>(this);
-			ObjectRayTest.ObjectSection.Section = LC_LIGHT_SECTION_POSITION;
+			ObjectRayTest.ObjectSection.Object = const_cast<swLight*>(this);
+			ObjectRayTest.ObjectSection.Section = SW_LIGHT_SECTION_POSITION;
 			ObjectRayTest.Distance = Distance;
 		}
 
 		return;
 	}
 
-	if (mLightType == lcLightType::Spot)
+	if (mLightType == swLightType::Spot)
 	{
-		const lcVector3 Direction = -lcVector3(mWorldMatrix[2]);
-		const lcVector3 Position = mWorldMatrix.GetTranslation() - Direction * LC_LIGHT_SPOT_CONE_HEIGHT;
+		const swVector3 Direction = -swVector3(mWorldMatrix[2]);
+		const swVector3 Position = mWorldMatrix.GetTranslation() - Direction * SW_LIGHT_SPOT_CONE_HEIGHT;
 		float Distance;
 
-		if (lcConeRayMinIntersectDistance(Position, Direction, LC_LIGHT_SPOT_CONE_RADIUS, LC_LIGHT_SPOT_CONE_HEIGHT, ObjectRayTest.Start, ObjectRayTest.End, &Distance) && (Distance < ObjectRayTest.Distance))
+		if (swConeRayMinIntersectDistance(Position, Direction, SW_LIGHT_SPOT_CONE_RADIUS, SW_LIGHT_SPOT_CONE_HEIGHT, ObjectRayTest.Start, ObjectRayTest.End, &Distance) && (Distance < ObjectRayTest.Distance))
 		{
-			ObjectRayTest.ObjectSection.Object = const_cast<lcLight*>(this);
-			ObjectRayTest.ObjectSection.Section = LC_LIGHT_SECTION_POSITION;
+			ObjectRayTest.ObjectSection.Object = const_cast<swLight*>(this);
+			ObjectRayTest.ObjectSection.Section = SW_LIGHT_SECTION_POSITION;
 			ObjectRayTest.Distance = Distance;
 		}
 	}
-	else if (mLightType == lcLightType::Area)
+	else if (mLightType == swLightType::Area)
 	{
-		const lcVector3 Direction = -lcVector3(mWorldMatrix[2]);
-		const lcVector3 Position = mWorldMatrix.GetTranslation();
-		const lcVector4 Plane(Direction, -lcDot(Direction, Position));
-		lcVector3 Intersection;
+		const swVector3 Direction = -swVector3(mWorldMatrix[2]);
+		const swVector3 Position = mWorldMatrix.GetTranslation();
+		const swVector4 Plane(Direction, -swDot(Direction, Position));
+		swVector3 Intersection;
 
-		if (lcLineSegmentPlaneIntersection(&Intersection, ObjectRayTest.Start, ObjectRayTest.End, Plane))
+		if (swLineSegmentPlaneIntersection(&Intersection, ObjectRayTest.Start, ObjectRayTest.End, Plane))
 		{
-			const lcVector3 XAxis = lcVector3(mWorldMatrix[0]);
-			const lcVector3 YAxis = lcVector3(mWorldMatrix[1]);
-			lcVector3 IntersectionDirection = Intersection - Position;
+			const swVector3 XAxis = swVector3(mWorldMatrix[0]);
+			const swVector3 YAxis = swVector3(mWorldMatrix[1]);
+			swVector3 IntersectionDirection = Intersection - Position;
 
-			float x = lcDot(IntersectionDirection, XAxis);
-			float y = lcDot(IntersectionDirection, YAxis);
-			const lcVector2 Size = { mAreaSizeX, mAreaSizeY };
+			float x = swDot(IntersectionDirection, XAxis);
+			float y = swDot(IntersectionDirection, YAxis);
+			const swVector2 Size = { mAreaSizeX, mAreaSizeY };
 
 			if (fabsf(x) < Size.x / 2.0f && fabsf(y) < Size.y / 2.0f)
 			{
-				float Distance = lcLength(Intersection - ObjectRayTest.Start);
+				float Distance = swLength(Intersection - ObjectRayTest.Start);
 
 				if (Distance < ObjectRayTest.Distance)
 				{
-					ObjectRayTest.ObjectSection.Object = const_cast<lcLight*>(this);
-					ObjectRayTest.ObjectSection.Section = LC_LIGHT_SECTION_POSITION;
+					ObjectRayTest.ObjectSection.Object = const_cast<swLight*>(this);
+					ObjectRayTest.ObjectSection.Section = SW_LIGHT_SECTION_POSITION;
 					ObjectRayTest.Distance = Distance;
 				}
 			}
 		}
 	}
 
-	const lcMatrix44 InverseWorldMatrix = lcMatrix44AffineInverse(mWorldMatrix);
-	lcVector3 Start = lcMul31(ObjectRayTest.Start, InverseWorldMatrix);
-	lcVector3 End = lcMul31(ObjectRayTest.End, InverseWorldMatrix);
+	const swMatrix44 InverseWorldMatrix = swMatrix44AffineInverse(mWorldMatrix);
+	swVector3 Start = swMul31(ObjectRayTest.Start, InverseWorldMatrix);
+	swVector3 End = swMul31(ObjectRayTest.End, InverseWorldMatrix);
 
 	float Distance;
-	lcVector3 Plane;
+	swVector3 Plane;
 
-	if (mLightType == lcLightType::Directional)
+	if (mLightType == swLightType::Directional)
 	{
-		if (lcCylinderRayMinIntersectDistance(LC_LIGHT_DIRECTIONAL_RADIUS, LC_LIGHT_DIRECTIONAL_HEIGHT, Start, End, &Distance) && (Distance < ObjectRayTest.Distance))
+		if (swCylinderRayMinIntersectDistance(SW_LIGHT_DIRECTIONAL_RADIUS, SW_LIGHT_DIRECTIONAL_HEIGHT, Start, End, &Distance) && (Distance < ObjectRayTest.Distance))
 		{
-			ObjectRayTest.ObjectSection.Object = const_cast<lcLight*>(this);
-			ObjectRayTest.ObjectSection.Section = LC_LIGHT_SECTION_POSITION;
+			ObjectRayTest.ObjectSection.Object = const_cast<swLight*>(this);
+			ObjectRayTest.ObjectSection.Section = SW_LIGHT_SECTION_POSITION;
 			ObjectRayTest.Distance = Distance;
 			ObjectRayTest.PieceRayTest.Plane = Plane;
 		}
@@ -370,79 +370,79 @@ void lcLight::RayTest(lcObjectRayTest& ObjectRayTest) const
 
 	if (IsSelected())
 	{
-		if (lcSphereRayMinIntersectDistance(lcMul31(lcVector3(0,0,-mTargetDistance), mWorldMatrix), LC_LIGHT_TARGET_RADIUS, ObjectRayTest.Start, ObjectRayTest.End, &Distance) && (Distance < ObjectRayTest.Distance))
+		if (swSphereRayMinIntersectDistance(swMul31(swVector3(0,0,-mTargetDistance), mWorldMatrix), SW_LIGHT_TARGET_RADIUS, ObjectRayTest.Start, ObjectRayTest.End, &Distance) && (Distance < ObjectRayTest.Distance))
 		{
-			ObjectRayTest.ObjectSection.Object = const_cast<lcLight*>(this);
-			ObjectRayTest.ObjectSection.Section = LC_LIGHT_SECTION_TARGET;
+			ObjectRayTest.ObjectSection.Object = const_cast<swLight*>(this);
+			ObjectRayTest.ObjectSection.Section = SW_LIGHT_SECTION_TARGET;
 			ObjectRayTest.Distance = Distance;
 		}
 	}
 }
 
-void lcLight::BoxTest(lcObjectBoxTest& ObjectBoxTest) const
+void swLight::BoxTest(swObjectBoxTest& ObjectBoxTest) const
 {
 	if (IsPointLight())
 	{
 		for (int PlaneIdx = 0; PlaneIdx < 6; PlaneIdx++)
-			if (lcDot3(mWorldMatrix.GetTranslation(), ObjectBoxTest.Planes[PlaneIdx]) + ObjectBoxTest.Planes[PlaneIdx][3] > LC_LIGHT_SPHERE_RADIUS)
+			if (swDot3(mWorldMatrix.GetTranslation(), ObjectBoxTest.Planes[PlaneIdx]) + ObjectBoxTest.Planes[PlaneIdx][3] > SW_LIGHT_SPHERE_RADIUS)
 				return;
 
-		ObjectBoxTest.Objects.emplace_back(const_cast<lcLight*>(this));
+		ObjectBoxTest.Objects.emplace_back(const_cast<swLight*>(this));
 		return;
 	}
 
-	lcMatrix44 InverseWorldMatrix = lcMatrix44AffineInverse(mWorldMatrix);
-	lcVector4 LocalPlanes[6];
+	swMatrix44 InverseWorldMatrix = swMatrix44AffineInverse(mWorldMatrix);
+	swVector4 LocalPlanes[6];
 
 	for (int PlaneIndex = 0; PlaneIndex < 6; PlaneIndex++)
 	{
-		const lcVector3 PlaneNormal = lcMul30(ObjectBoxTest.Planes[PlaneIndex], InverseWorldMatrix);
-		LocalPlanes[PlaneIndex] = lcVector4(PlaneNormal, ObjectBoxTest.Planes[PlaneIndex][3] - lcDot3(InverseWorldMatrix[3], PlaneNormal));
+		const swVector3 PlaneNormal = swMul30(ObjectBoxTest.Planes[PlaneIndex], InverseWorldMatrix);
+		LocalPlanes[PlaneIndex] = swVector4(PlaneNormal, ObjectBoxTest.Planes[PlaneIndex][3] - swDot3(InverseWorldMatrix[3], PlaneNormal));
 	}
 
 	// TODO: Check meshes after the bounding fox test.
-	if (mLightType == lcLightType::Spot)
+	if (mLightType == swLightType::Spot)
 	{
-		lcVector3 Min(-LC_LIGHT_SPOT_CONE_RADIUS, -LC_LIGHT_SPOT_CONE_RADIUS, 0);
-		lcVector3 Max( LC_LIGHT_SPOT_CONE_RADIUS,  LC_LIGHT_SPOT_CONE_RADIUS, LC_LIGHT_SPOT_CONE_HEIGHT);
+		swVector3 Min(-SW_LIGHT_SPOT_CONE_RADIUS, -SW_LIGHT_SPOT_CONE_RADIUS, 0);
+		swVector3 Max( SW_LIGHT_SPOT_CONE_RADIUS,  SW_LIGHT_SPOT_CONE_RADIUS, SW_LIGHT_SPOT_CONE_HEIGHT);
 
-		if (lcBoundingBoxIntersectsVolume(Min, Max, LocalPlanes))
+		if (swBoundingBoxIntersectsVolume(Min, Max, LocalPlanes))
 		{
-			ObjectBoxTest.Objects.emplace_back(const_cast<lcLight*>(this));
+			ObjectBoxTest.Objects.emplace_back(const_cast<swLight*>(this));
 			return;
 		}
 	}
-	else if (mLightType == lcLightType::Area)
+	else if (mLightType == swLightType::Area)
 	{
-		lcVector3 Min(-mAreaSizeX / 2.0f, -mAreaSizeY / 2.0f, 0);
-		lcVector3 Max( mAreaSizeX / 2.0f,  mAreaSizeY / 2.0f, 0);
+		swVector3 Min(-mAreaSizeX / 2.0f, -mAreaSizeY / 2.0f, 0);
+		swVector3 Max( mAreaSizeX / 2.0f,  mAreaSizeY / 2.0f, 0);
 
-		if (lcBoundingBoxIntersectsVolume(Min, Max, LocalPlanes))
+		if (swBoundingBoxIntersectsVolume(Min, Max, LocalPlanes))
 		{
-			ObjectBoxTest.Objects.emplace_back(const_cast<lcLight*>(this));
+			ObjectBoxTest.Objects.emplace_back(const_cast<swLight*>(this));
 			return;
 		}
 	}
-	else if (mLightType == lcLightType::Directional)
+	else if (mLightType == swLightType::Directional)
 	{
-		lcVector3 Min(-LC_LIGHT_DIRECTIONAL_RADIUS, -LC_LIGHT_DIRECTIONAL_RADIUS, 0);
-		lcVector3 Max( LC_LIGHT_DIRECTIONAL_RADIUS,  LC_LIGHT_DIRECTIONAL_RADIUS, LC_LIGHT_DIRECTIONAL_HEIGHT);
+		swVector3 Min(-SW_LIGHT_DIRECTIONAL_RADIUS, -SW_LIGHT_DIRECTIONAL_RADIUS, 0);
+		swVector3 Max( SW_LIGHT_DIRECTIONAL_RADIUS,  SW_LIGHT_DIRECTIONAL_RADIUS, SW_LIGHT_DIRECTIONAL_HEIGHT);
 
-		if (lcBoundingBoxIntersectsVolume(Min, Max, LocalPlanes))
+		if (swBoundingBoxIntersectsVolume(Min, Max, LocalPlanes))
 		{
-			ObjectBoxTest.Objects.emplace_back(const_cast<lcLight*>(this));
+			ObjectBoxTest.Objects.emplace_back(const_cast<swLight*>(this));
 			return;
 		}
 	}
 
 	if (IsSelected())
 	{
-		lcVector3 TargetPosition = lcMul31(lcVector3(0.0f, 0.0f, -mTargetDistance), mWorldMatrix);
+		swVector3 TargetPosition = swMul31(swVector3(0.0f, 0.0f, -mTargetDistance), mWorldMatrix);
 		bool Outside = false;
 
 		for (int PlaneIdx = 0; PlaneIdx < 6; PlaneIdx++)
 		{
-			if (lcDot3(TargetPosition, ObjectBoxTest.Planes[PlaneIdx]) + ObjectBoxTest.Planes[PlaneIdx][3] > LC_LIGHT_TARGET_RADIUS)
+			if (swDot3(TargetPosition, ObjectBoxTest.Planes[PlaneIdx]) + ObjectBoxTest.Planes[PlaneIdx][3] > SW_LIGHT_TARGET_RADIUS)
 			{
 				Outside = true;
 				break;
@@ -451,19 +451,19 @@ void lcLight::BoxTest(lcObjectBoxTest& ObjectBoxTest) const
 
 		if (!Outside)
 		{
-			ObjectBoxTest.Objects.emplace_back(const_cast<lcLight*>(this));
+			ObjectBoxTest.Objects.emplace_back(const_cast<swLight*>(this));
 			return;
 		}
 	}
 }
 
-void lcLight::MoveSelected(lcStep Step, bool AddKey, const lcVector3& Distance, bool FirstMove)
+void swLight::MoveSelected(swStep Step, bool AddKey, const swVector3& Distance, bool FirstMove)
 {
 	const quint32 Section = GetFocusSection();
 
-	if (Section == LC_LIGHT_SECTION_POSITION || Section == LC_LIGHT_SECTION_INVALID)
+	if (Section == SW_LIGHT_SECTION_POSITION || Section == SW_LIGHT_SECTION_INVALID)
 	{
-		const lcVector3 Position = mWorldMatrix.GetTranslation() + Distance;
+		const swVector3 Position = mWorldMatrix.GetTranslation() + Distance;
 
 		SetPosition(Position, Step, AddKey);
 
@@ -472,43 +472,43 @@ void lcLight::MoveSelected(lcStep Step, bool AddKey, const lcVector3& Distance, 
 	else
 	{
 		if (FirstMove)
-			mTargetMovePosition = lcMul31(lcVector3(0.0f, 0.0f, -mTargetDistance), mWorldMatrix);
+			mTargetMovePosition = swMul31(swVector3(0.0f, 0.0f, -mTargetDistance), mWorldMatrix);
 
 		mTargetMovePosition += Distance;
 
-		lcVector3 CurrentDirection = -lcNormalize(mTargetMovePosition - mWorldMatrix.GetTranslation());
-		lcMatrix33 WorldMatrix;
+		swVector3 CurrentDirection = -swNormalize(mTargetMovePosition - mWorldMatrix.GetTranslation());
+		swMatrix33 WorldMatrix;
 
-		WorldMatrix.r[0] = lcCross(lcVector3(mWorldMatrix.r[1]), CurrentDirection);
-		WorldMatrix.r[1] = lcCross(CurrentDirection, WorldMatrix.r[0]);
+		WorldMatrix.r[0] = swCross(swVector3(mWorldMatrix.r[1]), CurrentDirection);
+		WorldMatrix.r[1] = swCross(CurrentDirection, WorldMatrix.r[0]);
 		WorldMatrix.r[2] = CurrentDirection;
 
 		WorldMatrix.Orthonormalize();
 
 		SetRotation(WorldMatrix, Step, AddKey);
 
-		mWorldMatrix = lcMatrix44(WorldMatrix, mWorldMatrix.GetTranslation());
+		mWorldMatrix = swMatrix44(WorldMatrix, mWorldMatrix.GetTranslation());
 	}
 }
 
-void lcLight::Rotate(lcStep Step, bool AddKey, const lcMatrix33& RotationMatrix, const lcVector3& Center, const lcMatrix33& RotationFrame)
+void swLight::Rotate(swStep Step, bool AddKey, const swMatrix33& RotationMatrix, const swVector3& Center, const swMatrix33& RotationFrame)
 {
 	if (IsPointLight())
 		return;
 
-	if (GetFocusSection() != LC_LIGHT_SECTION_POSITION && GetFocusSection() != LC_LIGHT_SECTION_INVALID)
+	if (GetFocusSection() != SW_LIGHT_SECTION_POSITION && GetFocusSection() != SW_LIGHT_SECTION_INVALID)
 		return;
 
-	lcVector3 Distance = mWorldMatrix.GetTranslation() - Center;
-	const lcMatrix33 LocalToWorldMatrix = lcMatrix33(mWorldMatrix);
+	swVector3 Distance = mWorldMatrix.GetTranslation() - Center;
+	const swMatrix33 LocalToWorldMatrix = swMatrix33(mWorldMatrix);
 
-	const lcMatrix33 LocalToFocusMatrix = lcMul(LocalToWorldMatrix, RotationFrame);
-	lcMatrix33 NewLocalToWorldMatrix = lcMul(LocalToFocusMatrix, RotationMatrix);
+	const swMatrix33 LocalToFocusMatrix = swMul(LocalToWorldMatrix, RotationFrame);
+	swMatrix33 NewLocalToWorldMatrix = swMul(LocalToFocusMatrix, RotationMatrix);
 
-	const lcMatrix33 WorldToLocalMatrix = lcMatrix33AffineInverse(LocalToWorldMatrix);
+	const swMatrix33 WorldToLocalMatrix = swMatrix33AffineInverse(LocalToWorldMatrix);
 
-	Distance = lcMul(Distance, WorldToLocalMatrix);
-	Distance = lcMul(Distance, NewLocalToWorldMatrix);
+	Distance = swMul(Distance, WorldToLocalMatrix);
+	Distance = swMul(Distance, NewLocalToWorldMatrix);
 
 	NewLocalToWorldMatrix.Orthonormalize();
 
@@ -516,7 +516,7 @@ void lcLight::Rotate(lcStep Step, bool AddKey, const lcMatrix33& RotationMatrix,
 	SetRotation(NewLocalToWorldMatrix, Step, AddKey);
 }
 
-bool lcLight::SetName(const QString& Name)
+bool swLight::SetName(const QString& Name)
 {
 	if (mName == Name)
 		return false;
@@ -526,9 +526,9 @@ bool lcLight::SetName(const QString& Name)
 	return true;
 }
 
-bool lcLight::SetLightType(lcLightType LightType)
+bool swLight::SetLightType(swLightType LightType)
 {
-	if (static_cast<int>(LightType) < 0 || LightType >= lcLightType::Count)
+	if (static_cast<int>(LightType) < 0 || LightType >= swLightType::Count)
 		return false;
 
 	if (mLightType == LightType)
@@ -539,39 +539,39 @@ bool lcLight::SetLightType(lcLightType LightType)
 	return true;
 }
 
-bool lcLight::SetColor(const lcVector3& Color, lcStep Step, bool AddKey)
+bool swLight::SetColor(const swVector3& Color, swStep Step, bool AddKey)
 {
 	return mColor.ChangeKey(Color, Step, AddKey);
 }
 
-bool lcLight::SetPOVRayFadeDistance(float Distance, lcStep Step, bool AddKey)
+bool swLight::SetPOVRayFadeDistance(float Distance, swStep Step, bool AddKey)
 {
 	return mPOVRayFadeDistance.ChangeKey(Distance, Step, AddKey);
 }
 
-bool lcLight::SetPOVRayFadePower(float Power, lcStep Step, bool AddKey)
+bool swLight::SetPOVRayFadePower(float Power, swStep Step, bool AddKey)
 {
 	return mPOVRayFadePower.ChangeKey(Power, Step, AddKey);
 }
 
-bool lcLight::SetSpotConeAngle(float Angle, lcStep Step, bool AddKey)
+bool swLight::SetSpotConeAngle(float Angle, swStep Step, bool AddKey)
 {
 	return mSpotConeAngle.ChangeKey(Angle, Step, AddKey);
 }
 
-bool lcLight::SetSpotPenumbraAngle(float Angle, lcStep Step, bool AddKey)
+bool swLight::SetSpotPenumbraAngle(float Angle, swStep Step, bool AddKey)
 {
 	return mSpotPenumbraAngle.ChangeKey(Angle, Step, AddKey);
 }
 
-bool lcLight::SetSpotPOVRayTightness(float Tightness, lcStep Step, bool AddKey)
+bool swLight::SetSpotPOVRayTightness(float Tightness, swStep Step, bool AddKey)
 {
 	return mPOVRaySpotTightness.ChangeKey(Tightness, Step, AddKey);
 }
 
-bool lcLight::SetAreaShape(lcLightAreaShape AreaShape)
+bool swLight::SetAreaShape(swLightAreaShape AreaShape)
 {
-	if (static_cast<int>(AreaShape) < 0 || AreaShape >= lcLightAreaShape::Count)
+	if (static_cast<int>(AreaShape) < 0 || AreaShape >= swLightAreaShape::Count)
 		return false;
 
 	if (mAreaShape != AreaShape)
@@ -583,51 +583,51 @@ bool lcLight::SetAreaShape(lcLightAreaShape AreaShape)
 	return false;
 }
 
-bool lcLight::SetAreaPOVRayGridX(int AreaGrid, lcStep Step, bool AddKey)
+bool swLight::SetAreaPOVRayGridX(int AreaGrid, swStep Step, bool AddKey)
 {
 	mPOVRayAreaGridX.ChangeKey(AreaGrid, Step, AddKey);
 
 	return true;
 }
 
-bool lcLight::SetAreaPOVRayGridY(int AreaGrid, lcStep Step, bool AddKey)
+bool swLight::SetAreaPOVRayGridY(int AreaGrid, swStep Step, bool AddKey)
 {
 	mPOVRayAreaGridY.ChangeKey(AreaGrid, Step, AddKey);
 
 	return true;
 }
 
-bool lcLight::SetBlenderRadius(float Radius, lcStep Step, bool AddKey)
+bool swLight::SetBlenderRadius(float Radius, swStep Step, bool AddKey)
 {
 	return mBlenderRadius.ChangeKey(Radius, Step, AddKey);
 }
 
-bool lcLight::SetBlenderAngle(float Angle, lcStep Step, bool AddKey)
+bool swLight::SetBlenderAngle(float Angle, swStep Step, bool AddKey)
 {
-	return mBlenderAngle.ChangeKey(Angle * LC_DTOR, Step, AddKey);
+	return mBlenderAngle.ChangeKey(Angle * SW_DTOR, Step, AddKey);
 }
 
-bool lcLight::SetAreaSizeX(float Size, lcStep Step, bool AddKey)
+bool swLight::SetAreaSizeX(float Size, swStep Step, bool AddKey)
 {
 	return mAreaSizeX.ChangeKey(Size, Step, AddKey);
 }
 
-bool lcLight::SetAreaSizeY(float Size, lcStep Step, bool AddKey)
+bool swLight::SetAreaSizeY(float Size, swStep Step, bool AddKey)
 {
 	return mAreaSizeY.ChangeKey(Size, Step, AddKey);
 }
 
-bool lcLight::SetBlenderPower(float Power, lcStep Step, bool AddKey)
+bool swLight::SetBlenderPower(float Power, swStep Step, bool AddKey)
 {
 	return mBlenderPower.ChangeKey(Power, Step, AddKey);
 }
 
-bool lcLight::SetPOVRayPower(float Power, lcStep Step, bool AddKey)
+bool swLight::SetPOVRayPower(float Power, swStep Step, bool AddKey)
 {
 	return mPOVRayPower.ChangeKey(Power, Step, AddKey);
 }
 
-bool lcLight::SetCastShadow(bool CastShadow)
+bool swLight::SetCastShadow(bool CastShadow)
 {
 	if (mCastShadow != CastShadow)
 	{
@@ -638,7 +638,7 @@ bool lcLight::SetCastShadow(bool CastShadow)
 	return false;
 }
 
-void lcLight::InsertTime(lcStep Start, lcStep Time)
+void swLight::InsertTime(swStep Start, swStep Time)
 {
 	mPosition.InsertTime(Start, Time);
 	mRotation.InsertTime(Start, Time);
@@ -658,7 +658,7 @@ void lcLight::InsertTime(lcStep Start, lcStep Time)
 	mPOVRayFadePower.InsertTime(Start, Time);
 }
 
-void lcLight::RemoveTime(lcStep Start, lcStep Time)
+void swLight::RemoveTime(swStep Start, swStep Time)
 {
 	mPosition.RemoveTime(Start, Time);
 	mRotation.RemoveTime(Start, Time);
@@ -678,7 +678,7 @@ void lcLight::RemoveTime(lcStep Start, lcStep Time)
 	mPOVRayFadePower.RemoveTime(Start, Time);
 }
 
-void lcLight::UpdatePosition(lcStep Step)
+void swLight::UpdatePosition(swStep Step)
 {
 	mPosition.Update(Step);
 	mRotation.Update(Step);
@@ -699,50 +699,50 @@ void lcLight::UpdatePosition(lcStep Step)
 
 	if (IsPointLight())
 	{
-		mWorldMatrix = lcMatrix44Translation(mPosition);
+		mWorldMatrix = swMatrix44Translation(mPosition);
 	}
 	else
 	{
-		mWorldMatrix = lcMatrix44(mRotation, mPosition);
+		mWorldMatrix = swMatrix44(mRotation, mPosition);
 	}
 }
 
-void lcLight::DrawInterface(lcContext* Context, const lcScene& Scene) const
+void swLight::DrawInterface(swContext* Context, const swScene& Scene) const
 {
 	Q_UNUSED(Scene);
-	Context->SetMaterial(lcMaterialType::UnlitColor);
+	Context->SetMaterial(swMaterialType::UnlitColor);
 
 	switch (mLightType)
 	{
-	case lcLightType::Point:
+	case swLightType::Point:
 		DrawPointLight(Context);
 		break;
 
-	case lcLightType::Spot:
+	case swLightType::Spot:
 		DrawSpotLight(Context);
 		break;
 
-	case lcLightType::Directional:
+	case swLightType::Directional:
 		DrawDirectionalLight(Context);
 		break;
 
-	case lcLightType::Area:
+	case swLightType::Area:
 		DrawAreaLight(Context);
 		break;
 
-	case lcLightType::Count:
+	case swLightType::Count:
 		break;
 	}
 }
 
-void lcLight::DrawPointLight(lcContext* Context) const
+void swLight::DrawPointLight(swContext* Context) const
 {
 	SetupLightMatrix(Context);
 
-	DrawSphere(Context, lcVector3(0.0f, 0.0f, 0.0f), LC_LIGHT_SPHERE_RADIUS);
+	DrawSphere(Context, swVector3(0.0f, 0.0f, 0.0f), SW_LIGHT_SPHERE_RADIUS);
 }
 
-void lcLight::DrawSpotLight(lcContext* Context) const
+void swLight::DrawSpotLight(swContext* Context) const
 {
 	SetupLightMatrix(Context);
 
@@ -752,8 +752,8 @@ void lcLight::DrawSpotLight(lcContext* Context) const
 
 	for (int EdgeIndex = 0; EdgeIndex < ConeEdges; EdgeIndex++)
 	{
-		float c = cosf((float)EdgeIndex / ConeEdges * LC_2PI) * LC_LIGHT_SPOT_CONE_RADIUS;
-		float s = sinf((float)EdgeIndex / ConeEdges * LC_2PI) * LC_LIGHT_SPOT_CONE_RADIUS;
+		float c = cosf((float)EdgeIndex / ConeEdges * SW_2PI) * SW_LIGHT_SPOT_CONE_RADIUS;
+		float s = sinf((float)EdgeIndex / ConeEdges * SW_2PI) * SW_LIGHT_SPOT_CONE_RADIUS;
 
 		*CurVert++ = c;
 		*CurVert++ = s;
@@ -762,7 +762,7 @@ void lcLight::DrawSpotLight(lcContext* Context) const
 
 	*CurVert++ = 0.0f;
 	*CurVert++ = 0.0f;
-	*CurVert++ = LC_LIGHT_SPOT_CONE_HEIGHT;
+	*CurVert++ = SW_LIGHT_SPOT_CONE_HEIGHT;
 
 	Context->SetVertexBufferPointer(Verts);
 	Context->SetVertexFormatPosition(3);
@@ -784,25 +784,25 @@ void lcLight::DrawSpotLight(lcContext* Context) const
 	}
 }
 
-void lcLight::DrawDirectionalLight(lcContext* Context) const
+void swLight::DrawDirectionalLight(swContext* Context) const
 {
 	SetupLightMatrix(Context);
 
-	DrawCylinder(Context, LC_LIGHT_DIRECTIONAL_RADIUS, LC_LIGHT_DIRECTIONAL_HEIGHT);
+	DrawCylinder(Context, SW_LIGHT_DIRECTIONAL_RADIUS, SW_LIGHT_DIRECTIONAL_HEIGHT);
 
 	if (IsSelected())
 		DrawTarget(Context);
 }
 
-void lcLight::DrawAreaLight(lcContext* Context) const
+void swLight::DrawAreaLight(swContext* Context) const
 {
 	SetupLightMatrix(Context);
 
-	if (mAreaShape == lcLightAreaShape::Square || mAreaShape == lcLightAreaShape::Rectangle)
+	if (mAreaShape == swLightAreaShape::Square || mAreaShape == swLightAreaShape::Rectangle)
 	{
 		float Verts[4 * 3];
 		float* CurVert = Verts;
-		const lcVector2 Size = { mAreaSizeX, mAreaShape == lcLightAreaShape::Square ? mAreaSizeX : mAreaSizeY };
+		const swVector2 Size = { mAreaSizeX, mAreaShape == swLightAreaShape::Square ? mAreaSizeX : mAreaSizeY };
 
 		*CurVert++ = -Size.x / 2.0f;
 		*CurVert++ = -Size.y / 2.0f;
@@ -842,9 +842,9 @@ void lcLight::DrawAreaLight(lcContext* Context) const
 
 		for (int EdgeIndex = 0; EdgeIndex < CircleEdges; EdgeIndex++)
 		{
-			const lcVector2 Size = { mAreaSizeX, mAreaShape == lcLightAreaShape::Disk ? mAreaSizeX : mAreaSizeY };
-			float c = cosf((float)EdgeIndex / CircleEdges * LC_2PI) * Size.x / 2.0f;
-			float s = sinf((float)EdgeIndex / CircleEdges * LC_2PI) * Size.y / 2.0f;
+			const swVector2 Size = { mAreaSizeX, mAreaShape == swLightAreaShape::Disk ? mAreaSizeX : mAreaSizeY };
+			float c = cosf((float)EdgeIndex / CircleEdges * SW_2PI) * Size.x / 2.0f;
+			float s = sinf((float)EdgeIndex / CircleEdges * SW_2PI) * Size.y / 2.0f;
 
 			*CurVert++ = c;
 			*CurVert++ = s;
@@ -870,62 +870,62 @@ void lcLight::DrawAreaLight(lcContext* Context) const
 		DrawTarget(Context);
 }
 
-void lcLight::SetupLightMatrix(lcContext* Context) const
+void swLight::SetupLightMatrix(swContext* Context) const
 {
 	Context->SetWorldMatrix(mWorldMatrix);
 
-	const lcPreferences& Preferences = lcGetPreferences();
+	const swPreferences& Preferences = swGetPreferences();
 	const float LineWidth = Preferences.mLineWidth;
 
 	if (IsSelected())
 	{
-		const lcVector4 SelectedColor = lcVector4FromColor(Preferences.mObjectSelectedColor);
-		const lcVector4 FocusedColor = lcVector4FromColor(Preferences.mObjectFocusedColor);
+		const swVector4 SelectedColor = swVector4FromColor(Preferences.mObjectSelectedColor);
+		const swVector4 FocusedColor = swVector4FromColor(Preferences.mObjectFocusedColor);
 
 		Context->SetLineWidth(2.0f * LineWidth);
 
-		if (IsFocused(LC_LIGHT_SECTION_POSITION))
+		if (IsFocused(SW_LIGHT_SECTION_POSITION))
 			Context->SetColor(FocusedColor);
 		else
 			Context->SetColor(SelectedColor);
 	}
 	else
 	{
-		const lcVector4 LightColor = lcVector4FromColor(Preferences.mLightColor);
+		const swVector4 LightColor = swVector4FromColor(Preferences.mLightColor);
 
 		Context->SetLineWidth(LineWidth);
 		Context->SetColor(LightColor);
 	}
 }
 
-void lcLight::DrawSphere(lcContext* Context, const lcVector3& Center, float Radius) const
+void swLight::DrawSphere(swContext* Context, const swVector3& Center, float Radius) const
 {
 	constexpr int Slices = 6;
 	constexpr int NumIndices = 3 * Slices + 6 * Slices * (Slices - 2) + 3 * Slices;
 	constexpr int NumVertices = (Slices - 1) * Slices + 2;
-	lcVector3 Vertices[NumVertices];
+	swVector3 Vertices[NumVertices];
 	quint16 Indices[NumIndices];
 
-	lcVector3* Vertex = Vertices;
+	swVector3* Vertex = Vertices;
 	quint16* Index = Indices;
 
-	*Vertex++ = Center + lcVector3(0, 0, Radius);
+	*Vertex++ = Center + swVector3(0, 0, Radius);
 
 	for (int i = 1; i < Slices; i++)
 	{
-		const float r0 = Radius * sinf(i * (LC_PI / Slices));
-		const float z0 = Radius * cosf(i * (LC_PI / Slices));
+		const float r0 = Radius * sinf(i * (SW_PI / Slices));
+		const float z0 = Radius * cosf(i * (SW_PI / Slices));
 
 		for (int j = 0; j < Slices; j++)
 		{
-			const float x0 = r0 * sinf(j * (LC_2PI / Slices));
-			const float y0 = r0 * cosf(j * (LC_2PI / Slices));
+			const float x0 = r0 * sinf(j * (SW_2PI / Slices));
+			const float y0 = r0 * cosf(j * (SW_2PI / Slices));
 
-			*Vertex++ = Center + lcVector3(x0, y0, z0);
+			*Vertex++ = Center + swVector3(x0, y0, z0);
 		}
 	}
 
-	*Vertex++ = Center + lcVector3(0, 0, -Radius);
+	*Vertex++ = Center + swVector3(0, 0, -Radius);
 
 	for (quint16 i = 0; i < Slices - 1; i++)
 	{
@@ -981,7 +981,7 @@ void lcLight::DrawSphere(lcContext* Context, const lcVector3& Center, float Radi
 	Context->DrawIndexedPrimitives(GL_TRIANGLES, NumIndices, GL_UNSIGNED_SHORT, 0);
 }
 
-void lcLight::DrawCylinder(lcContext* Context, float Radius, float Height) const
+void swLight::DrawCylinder(swContext* Context, float Radius, float Height) const
 {
 	constexpr int Slices = 8;
 
@@ -990,8 +990,8 @@ void lcLight::DrawCylinder(lcContext* Context, float Radius, float Height) const
 
 	for (int EdgeIndex = 0; EdgeIndex < Slices; EdgeIndex++)
 	{
-		float c = cosf((float)EdgeIndex / Slices * LC_2PI) * Radius;
-		float s = sinf((float)EdgeIndex / Slices * LC_2PI) * Radius;
+		float c = cosf((float)EdgeIndex / Slices * SW_2PI) * Radius;
+		float s = sinf((float)EdgeIndex / Slices * SW_2PI) * Radius;
 
 		*CurVert++ = c;
 		*CurVert++ = s;
@@ -1015,7 +1015,7 @@ void lcLight::DrawCylinder(lcContext* Context, float Radius, float Height) const
 	Context->DrawIndexedPrimitives(GL_LINES, 48, GL_UNSIGNED_SHORT, 0);
 }
 
-void lcLight::DrawTarget(lcContext* Context) const
+void swLight::DrawTarget(swContext* Context) const
 {
 	float Verts[2 * 3];
 	float* CurVert = Verts;
@@ -1035,44 +1035,44 @@ void lcLight::DrawTarget(lcContext* Context) const
 
 	Context->DrawIndexedPrimitives(GL_LINES, 2, GL_UNSIGNED_SHORT, 0);
 
-	const lcPreferences& Preferences = lcGetPreferences();
+	const swPreferences& Preferences = swGetPreferences();
 	const float LineWidth = Preferences.mLineWidth;
 
 	if (IsSelected())
 	{
-		const lcVector4 SelectedColor = lcVector4FromColor(Preferences.mObjectSelectedColor);
-		const lcVector4 FocusedColor = lcVector4FromColor(Preferences.mObjectFocusedColor);
+		const swVector4 SelectedColor = swVector4FromColor(Preferences.mObjectSelectedColor);
+		const swVector4 FocusedColor = swVector4FromColor(Preferences.mObjectFocusedColor);
 
 		Context->SetLineWidth(2.0f * LineWidth);
 
-		if (IsFocused(LC_LIGHT_SECTION_TARGET))
+		if (IsFocused(SW_LIGHT_SECTION_TARGET))
 			Context->SetColor(FocusedColor);
 		else
 			Context->SetColor(SelectedColor);
 	}
 	else
 	{
-		const lcVector4 LightColor = lcVector4FromColor(Preferences.mLightColor);
+		const swVector4 LightColor = swVector4FromColor(Preferences.mLightColor);
 
 		Context->SetLineWidth(LineWidth);
 		Context->SetColor(LightColor);
 	}
 
-	DrawSphere(Context, lcVector3(0.0f, 0.0f, -mTargetDistance), LC_LIGHT_TARGET_RADIUS);
+	DrawSphere(Context, swVector3(0.0f, 0.0f, -mTargetDistance), SW_LIGHT_TARGET_RADIUS);
 }
 
-void lcLight::DrawCone(lcContext* Context, float TargetDistance) const
+void swLight::DrawCone(swContext* Context, float TargetDistance) const
 {
 	constexpr int ConeEdges = 16;
-	const float OuterRadius = tanf(LC_DTOR * mSpotConeAngle / 2.0f) * TargetDistance;
+	const float OuterRadius = tanf(SW_DTOR * mSpotConeAngle / 2.0f) * TargetDistance;
 
 	float Verts[(ConeEdges * 2 + 1) * 3];
 	float* CurVert = Verts;
 
 	for (int EdgeIndex = 0; EdgeIndex < ConeEdges; EdgeIndex++)
 	{
-		const float c = cosf((float)EdgeIndex / ConeEdges * LC_2PI);
-		const float s = sinf((float)EdgeIndex / ConeEdges * LC_2PI);
+		const float c = cosf((float)EdgeIndex / ConeEdges * SW_2PI);
+		const float s = sinf((float)EdgeIndex / ConeEdges * SW_2PI);
 
 		*CurVert++ = c * OuterRadius;
 		*CurVert++ = s * OuterRadius;
@@ -1087,12 +1087,12 @@ void lcLight::DrawCone(lcContext* Context, float TargetDistance) const
 
 	if (DrawPenumbra)
 	{
-		const float InnerRadius = tanf(LC_DTOR * (mSpotConeAngle / 2.0f - mSpotPenumbraAngle)) * TargetDistance;
+		const float InnerRadius = tanf(SW_DTOR * (mSpotConeAngle / 2.0f - mSpotPenumbraAngle)) * TargetDistance;
 
 		for (int EdgeIndex = 0; EdgeIndex < ConeEdges; EdgeIndex++)
 		{
-			const float c = cosf((float)EdgeIndex / ConeEdges * LC_2PI);
-			const float s = sinf((float)EdgeIndex / ConeEdges * LC_2PI);
+			const float c = cosf((float)EdgeIndex / ConeEdges * SW_2PI);
+			const float s = sinf((float)EdgeIndex / ConeEdges * SW_2PI);
 
 			*CurVert++ = c * InnerRadius;
 			*CurVert++ = s * InnerRadius;
@@ -1117,189 +1117,189 @@ void lcLight::DrawCone(lcContext* Context, float TargetDistance) const
 	Context->DrawIndexedPrimitives(GL_LINES, DrawPenumbra ? (ConeEdges * 2 + 4) * 2 : (ConeEdges + 4) * 2, GL_UNSIGNED_SHORT, 0);
 }
 
-QVariant lcLight::GetPropertyValue(lcObjectPropertyId PropertyId) const
+QVariant swLight::GetPropertyValue(swObjectPropertyId PropertyId) const
 {
 	switch (PropertyId)
 	{
-	case lcObjectPropertyId::PieceId:
-	case lcObjectPropertyId::PieceColor:
-	case lcObjectPropertyId::PieceStepShow:
-	case lcObjectPropertyId::PieceStepHide:
-	case lcObjectPropertyId::CameraName:
-	case lcObjectPropertyId::CameraProjection:
-	case lcObjectPropertyId::CameraFOV:
-	case lcObjectPropertyId::CameraNear:
-	case lcObjectPropertyId::CameraFar:
-	case lcObjectPropertyId::CameraPositionX:
-	case lcObjectPropertyId::CameraPositionY:
-	case lcObjectPropertyId::CameraPositionZ:
-	case lcObjectPropertyId::CameraTargetX:
-	case lcObjectPropertyId::CameraTargetY:
-	case lcObjectPropertyId::CameraTargetZ:
-	case lcObjectPropertyId::CameraUpX:
-	case lcObjectPropertyId::CameraUpY:
-	case lcObjectPropertyId::CameraUpZ:
+	case swObjectPropertyId::PieceId:
+	case swObjectPropertyId::PieceColor:
+	case swObjectPropertyId::PieceStepShow:
+	case swObjectPropertyId::PieceStepHide:
+	case swObjectPropertyId::CameraName:
+	case swObjectPropertyId::CameraProjection:
+	case swObjectPropertyId::CameraFOV:
+	case swObjectPropertyId::CameraNear:
+	case swObjectPropertyId::CameraFar:
+	case swObjectPropertyId::CameraPositionX:
+	case swObjectPropertyId::CameraPositionY:
+	case swObjectPropertyId::CameraPositionZ:
+	case swObjectPropertyId::CameraTargetX:
+	case swObjectPropertyId::CameraTargetY:
+	case swObjectPropertyId::CameraTargetZ:
+	case swObjectPropertyId::CameraUpX:
+	case swObjectPropertyId::CameraUpY:
+	case swObjectPropertyId::CameraUpZ:
 		break;
 
-	case lcObjectPropertyId::LightName:
+	case swObjectPropertyId::LightName:
 		return GetName();
 
-	case lcObjectPropertyId::LightType:
+	case swObjectPropertyId::LightType:
 		return static_cast<int>(GetLightType());
 
-	case lcObjectPropertyId::LightColor:
-		return QVariant::fromValue<lcVector3>(GetColor());
+	case swObjectPropertyId::LightColor:
+		return QVariant::fromValue<swVector3>(GetColor());
 
-	case lcObjectPropertyId::LightBlenderPower:
+	case swObjectPropertyId::LightBlenderPower:
 		return GetBlenderPower();
 
-	case lcObjectPropertyId::LightPOVRayPower:
+	case swObjectPropertyId::LightPOVRayPower:
 		return GetPOVRayPower();
 
-	case lcObjectPropertyId::LightCastShadow:
+	case swObjectPropertyId::LightCastShadow:
 		return GetCastShadow();
 
-	case lcObjectPropertyId::LightPOVRayFadeDistance:
+	case swObjectPropertyId::LightPOVRayFadeDistance:
 		return GetPOVRayFadeDistance();
 
-	case lcObjectPropertyId::LightPOVRayFadePower:
+	case swObjectPropertyId::LightPOVRayFadePower:
 		return GetPOVRayFadePower();
 
-	case lcObjectPropertyId::LightBlenderRadius:
+	case swObjectPropertyId::LightBlenderRadius:
 		return GetBlenderRadius();
 
-	case lcObjectPropertyId::LightBlenderAngle:
+	case swObjectPropertyId::LightBlenderAngle:
 		return GetBlenderAngle();
 
-	case lcObjectPropertyId::LightAreaSizeX:
+	case swObjectPropertyId::LightAreaSizeX:
 		return GetAreaSizeX();
 
-	case lcObjectPropertyId::LightAreaSizeY:
+	case swObjectPropertyId::LightAreaSizeY:
 		return GetAreaSizeY();
 
-	case lcObjectPropertyId::LightSpotConeAngle:
+	case swObjectPropertyId::LightSpotConeAngle:
 		return GetSpotConeAngle();
 
-	case lcObjectPropertyId::LightSpotPenumbraAngle:
+	case swObjectPropertyId::LightSpotPenumbraAngle:
 		return GetSpotPenumbraAngle();
 
-	case lcObjectPropertyId::LightPOVRaySpotTightness:
+	case swObjectPropertyId::LightPOVRaySpotTightness:
 		return GetSpotPOVRayTightness();
 
-	case lcObjectPropertyId::LightAreaShape:
+	case swObjectPropertyId::LightAreaShape:
 		return static_cast<int>(GetAreaShape());
 
-	case lcObjectPropertyId::LightPOVRayAreaGridX:
+	case swObjectPropertyId::LightPOVRayAreaGridX:
 		return GetAreaPOVRayGridX();
 
-	case lcObjectPropertyId::LightPOVRayAreaGridY:
+	case swObjectPropertyId::LightPOVRayAreaGridY:
 		return GetAreaPOVRayGridY();
 
-	case lcObjectPropertyId::ObjectPositionX:
-	case lcObjectPropertyId::ObjectPositionY:
-	case lcObjectPropertyId::ObjectPositionZ:
-	case lcObjectPropertyId::ObjectRotationX:
-	case lcObjectPropertyId::ObjectRotationY:
-	case lcObjectPropertyId::ObjectRotationZ:
-	case lcObjectPropertyId::Count:
+	case swObjectPropertyId::ObjectPositionX:
+	case swObjectPropertyId::ObjectPositionY:
+	case swObjectPropertyId::ObjectPositionZ:
+	case swObjectPropertyId::ObjectRotationX:
+	case swObjectPropertyId::ObjectRotationY:
+	case swObjectPropertyId::ObjectRotationZ:
+	case swObjectPropertyId::Count:
 		break;
 	}
 
 	return QVariant();
 }
 
-bool lcLight::SetPropertyValue(lcObjectPropertyId PropertyId, lcStep Step, bool AddKey, QVariant Value)
+bool swLight::SetPropertyValue(swObjectPropertyId PropertyId, swStep Step, bool AddKey, QVariant Value)
 {
 	switch (PropertyId)
 	{
-	case lcObjectPropertyId::PieceId:
-	case lcObjectPropertyId::PieceColor:
-	case lcObjectPropertyId::PieceStepShow:
-	case lcObjectPropertyId::PieceStepHide:
-	case lcObjectPropertyId::CameraName:
-	case lcObjectPropertyId::CameraProjection:
-	case lcObjectPropertyId::CameraFOV:
-	case lcObjectPropertyId::CameraNear:
-	case lcObjectPropertyId::CameraFar:
-	case lcObjectPropertyId::CameraPositionX:
-	case lcObjectPropertyId::CameraPositionY:
-	case lcObjectPropertyId::CameraPositionZ:
-	case lcObjectPropertyId::CameraTargetX:
-	case lcObjectPropertyId::CameraTargetY:
-	case lcObjectPropertyId::CameraTargetZ:
-	case lcObjectPropertyId::CameraUpX:
-	case lcObjectPropertyId::CameraUpY:
-	case lcObjectPropertyId::CameraUpZ:
+	case swObjectPropertyId::PieceId:
+	case swObjectPropertyId::PieceColor:
+	case swObjectPropertyId::PieceStepShow:
+	case swObjectPropertyId::PieceStepHide:
+	case swObjectPropertyId::CameraName:
+	case swObjectPropertyId::CameraProjection:
+	case swObjectPropertyId::CameraFOV:
+	case swObjectPropertyId::CameraNear:
+	case swObjectPropertyId::CameraFar:
+	case swObjectPropertyId::CameraPositionX:
+	case swObjectPropertyId::CameraPositionY:
+	case swObjectPropertyId::CameraPositionZ:
+	case swObjectPropertyId::CameraTargetX:
+	case swObjectPropertyId::CameraTargetY:
+	case swObjectPropertyId::CameraTargetZ:
+	case swObjectPropertyId::CameraUpX:
+	case swObjectPropertyId::CameraUpY:
+	case swObjectPropertyId::CameraUpZ:
 		break;
 
-	case lcObjectPropertyId::LightName:
+	case swObjectPropertyId::LightName:
 		return SetName(Value.toString());
 
-	case lcObjectPropertyId::LightType:
-		return SetLightType(static_cast<lcLightType>(Value.toInt()));
+	case swObjectPropertyId::LightType:
+		return SetLightType(static_cast<swLightType>(Value.toInt()));
 
-	case lcObjectPropertyId::LightColor:
-		return SetColor(Value.value<lcVector3>(), Step, AddKey);
+	case swObjectPropertyId::LightColor:
+		return SetColor(Value.value<swVector3>(), Step, AddKey);
 
-	case lcObjectPropertyId::LightBlenderPower:
+	case swObjectPropertyId::LightBlenderPower:
 		return SetBlenderPower(Value.toFloat(), Step, AddKey);
 
-	case lcObjectPropertyId::LightPOVRayPower:
+	case swObjectPropertyId::LightPOVRayPower:
 		return SetPOVRayPower(Value.toFloat(), Step, AddKey);
 
-	case lcObjectPropertyId::LightCastShadow:
+	case swObjectPropertyId::LightCastShadow:
 		return SetCastShadow(Value.toBool());
 
-	case lcObjectPropertyId::LightPOVRayFadeDistance:
+	case swObjectPropertyId::LightPOVRayFadeDistance:
 		return SetPOVRayFadeDistance(Value.toFloat(), Step, AddKey);
 
-	case lcObjectPropertyId::LightPOVRayFadePower:
+	case swObjectPropertyId::LightPOVRayFadePower:
 		return SetPOVRayFadePower(Value.toFloat(), Step, AddKey);
 
-	case lcObjectPropertyId::LightBlenderRadius:
+	case swObjectPropertyId::LightBlenderRadius:
 		return SetBlenderRadius(Value.toFloat(), Step, AddKey);
 
-	case lcObjectPropertyId::LightBlenderAngle:
+	case swObjectPropertyId::LightBlenderAngle:
 		return SetBlenderAngle(Value.toFloat(), Step, AddKey);
 
-	case lcObjectPropertyId::LightAreaSizeX:
+	case swObjectPropertyId::LightAreaSizeX:
 		return SetAreaSizeX(Value.toFloat(), Step, AddKey);
 
-	case lcObjectPropertyId::LightAreaSizeY:
+	case swObjectPropertyId::LightAreaSizeY:
 		return SetAreaSizeY(Value.toFloat(), Step, AddKey);
 
-	case lcObjectPropertyId::LightSpotConeAngle:
+	case swObjectPropertyId::LightSpotConeAngle:
 		return SetSpotConeAngle(Value.toFloat(), Step, AddKey);
 
-	case lcObjectPropertyId::LightSpotPenumbraAngle:
+	case swObjectPropertyId::LightSpotPenumbraAngle:
 		return SetSpotPenumbraAngle(Value.toFloat(), Step, AddKey);
 
-	case lcObjectPropertyId::LightPOVRaySpotTightness:
+	case swObjectPropertyId::LightPOVRaySpotTightness:
 		return SetSpotPOVRayTightness(Value.toFloat(), Step, AddKey);
 
-	case lcObjectPropertyId::LightAreaShape:
-		return SetAreaShape(static_cast<lcLightAreaShape>(Value.toInt()));
+	case swObjectPropertyId::LightAreaShape:
+		return SetAreaShape(static_cast<swLightAreaShape>(Value.toInt()));
 
-	case lcObjectPropertyId::LightPOVRayAreaGridX:
+	case swObjectPropertyId::LightPOVRayAreaGridX:
 		return SetAreaPOVRayGridX(Value.toInt(), Step, AddKey);
 
-	case lcObjectPropertyId::LightPOVRayAreaGridY:
+	case swObjectPropertyId::LightPOVRayAreaGridY:
 		return SetAreaPOVRayGridY(Value.toInt(), Step, AddKey);
 
-	case lcObjectPropertyId::ObjectPositionX:
-	case lcObjectPropertyId::ObjectPositionY:
-	case lcObjectPropertyId::ObjectPositionZ:
-	case lcObjectPropertyId::ObjectRotationX:
-	case lcObjectPropertyId::ObjectRotationY:
-	case lcObjectPropertyId::ObjectRotationZ:
-	case lcObjectPropertyId::Count:
+	case swObjectPropertyId::ObjectPositionX:
+	case swObjectPropertyId::ObjectPositionY:
+	case swObjectPropertyId::ObjectPositionZ:
+	case swObjectPropertyId::ObjectRotationX:
+	case swObjectPropertyId::ObjectRotationY:
+	case swObjectPropertyId::ObjectRotationZ:
+	case swObjectPropertyId::Count:
 		break;
 	}
 
 	return false;
 }
 
-lcStep lcLight::GetLastStep() const
+swStep swLight::GetLastStep() const
 {
 	return std::max({ mPosition.GetLastKeyFrame(), mRotation.GetLastKeyFrame(), mColor.GetLastKeyFrame(),
 		mBlenderPower.GetLastKeyFrame(), mBlenderRadius.GetLastKeyFrame(), mBlenderAngle.GetLastKeyFrame(),
@@ -1308,189 +1308,189 @@ lcStep lcLight::GetLastStep() const
 		mAreaSizeX.GetLastKeyFrame(), mAreaSizeY.GetLastKeyFrame(), mPOVRayAreaGridX.GetLastKeyFrame(), mPOVRayAreaGridY.GetLastKeyFrame() });
 }
 
-bool lcLight::HasKeyFrame(lcObjectPropertyId PropertyId, lcStep Time) const
+bool swLight::HasKeyFrame(swObjectPropertyId PropertyId, swStep Time) const
 {
 	switch (PropertyId)
 	{
-	case lcObjectPropertyId::PieceId:
-	case lcObjectPropertyId::PieceColor:
-	case lcObjectPropertyId::PieceStepShow:
-	case lcObjectPropertyId::PieceStepHide:
-	case lcObjectPropertyId::CameraName:
-	case lcObjectPropertyId::CameraProjection:
-	case lcObjectPropertyId::CameraFOV:
-	case lcObjectPropertyId::CameraNear:
-	case lcObjectPropertyId::CameraFar:
-	case lcObjectPropertyId::CameraPositionX:
-	case lcObjectPropertyId::CameraPositionY:
-	case lcObjectPropertyId::CameraPositionZ:
-	case lcObjectPropertyId::CameraTargetX:
-	case lcObjectPropertyId::CameraTargetY:
-	case lcObjectPropertyId::CameraTargetZ:
-	case lcObjectPropertyId::CameraUpX:
-	case lcObjectPropertyId::CameraUpY:
-	case lcObjectPropertyId::CameraUpZ:
-	case lcObjectPropertyId::LightName:
-	case lcObjectPropertyId::LightType:
+	case swObjectPropertyId::PieceId:
+	case swObjectPropertyId::PieceColor:
+	case swObjectPropertyId::PieceStepShow:
+	case swObjectPropertyId::PieceStepHide:
+	case swObjectPropertyId::CameraName:
+	case swObjectPropertyId::CameraProjection:
+	case swObjectPropertyId::CameraFOV:
+	case swObjectPropertyId::CameraNear:
+	case swObjectPropertyId::CameraFar:
+	case swObjectPropertyId::CameraPositionX:
+	case swObjectPropertyId::CameraPositionY:
+	case swObjectPropertyId::CameraPositionZ:
+	case swObjectPropertyId::CameraTargetX:
+	case swObjectPropertyId::CameraTargetY:
+	case swObjectPropertyId::CameraTargetZ:
+	case swObjectPropertyId::CameraUpX:
+	case swObjectPropertyId::CameraUpY:
+	case swObjectPropertyId::CameraUpZ:
+	case swObjectPropertyId::LightName:
+	case swObjectPropertyId::LightType:
 		return false;
 
-	case lcObjectPropertyId::LightColor:
+	case swObjectPropertyId::LightColor:
 		return mColor.HasKeyFrame(Time);
 
-	case lcObjectPropertyId::LightBlenderPower:
+	case swObjectPropertyId::LightBlenderPower:
 		return mBlenderPower.HasKeyFrame(Time);
 
-	case lcObjectPropertyId::LightPOVRayPower:
+	case swObjectPropertyId::LightPOVRayPower:
 		return mPOVRayPower.HasKeyFrame(Time);
 
-	case lcObjectPropertyId::LightCastShadow:
+	case swObjectPropertyId::LightCastShadow:
 		return false;
 
-	case lcObjectPropertyId::LightPOVRayFadeDistance:
+	case swObjectPropertyId::LightPOVRayFadeDistance:
 		return mPOVRayFadeDistance.HasKeyFrame(Time);
 
-	case lcObjectPropertyId::LightPOVRayFadePower:
+	case swObjectPropertyId::LightPOVRayFadePower:
 		return mPOVRayFadePower.HasKeyFrame(Time);
 
-	case lcObjectPropertyId::LightBlenderRadius:
+	case swObjectPropertyId::LightBlenderRadius:
 		return mBlenderRadius.HasKeyFrame(Time);
 
-	case lcObjectPropertyId::LightBlenderAngle:
+	case swObjectPropertyId::LightBlenderAngle:
 		return mBlenderAngle.HasKeyFrame(Time);
 
-	case lcObjectPropertyId::LightAreaSizeX:
+	case swObjectPropertyId::LightAreaSizeX:
 		return mAreaSizeX.HasKeyFrame(Time);
 
-	case lcObjectPropertyId::LightAreaSizeY:
+	case swObjectPropertyId::LightAreaSizeY:
 		return mAreaSizeY.HasKeyFrame(Time);
 
-	case lcObjectPropertyId::LightSpotConeAngle:
+	case swObjectPropertyId::LightSpotConeAngle:
 		return mSpotConeAngle.HasKeyFrame(Time);
 
-	case lcObjectPropertyId::LightSpotPenumbraAngle:
+	case swObjectPropertyId::LightSpotPenumbraAngle:
 		return mSpotPenumbraAngle.HasKeyFrame(Time);
 
-	case lcObjectPropertyId::LightPOVRaySpotTightness:
+	case swObjectPropertyId::LightPOVRaySpotTightness:
 		return mPOVRaySpotTightness.HasKeyFrame(Time);
 
-	case lcObjectPropertyId::LightAreaShape:
+	case swObjectPropertyId::LightAreaShape:
 		return false;
 
-	case lcObjectPropertyId::LightPOVRayAreaGridX:
+	case swObjectPropertyId::LightPOVRayAreaGridX:
 		return mPOVRayAreaGridX.HasKeyFrame(Time);
 
-	case lcObjectPropertyId::LightPOVRayAreaGridY:
+	case swObjectPropertyId::LightPOVRayAreaGridY:
 		return mPOVRayAreaGridY.HasKeyFrame(Time);
 
-	case lcObjectPropertyId::ObjectPositionX:
-	case lcObjectPropertyId::ObjectPositionY:
-	case lcObjectPropertyId::ObjectPositionZ:
+	case swObjectPropertyId::ObjectPositionX:
+	case swObjectPropertyId::ObjectPositionY:
+	case swObjectPropertyId::ObjectPositionZ:
 		return mPosition.HasKeyFrame(Time);
 
-	case lcObjectPropertyId::ObjectRotationX:
-	case lcObjectPropertyId::ObjectRotationY:
-	case lcObjectPropertyId::ObjectRotationZ:
+	case swObjectPropertyId::ObjectRotationX:
+	case swObjectPropertyId::ObjectRotationY:
+	case swObjectPropertyId::ObjectRotationZ:
 		return mRotation.HasKeyFrame(Time);
 
-	case lcObjectPropertyId::Count:
+	case swObjectPropertyId::Count:
 		return false;
 	}
 
 	return false;
 }
 
-bool lcLight::SetKeyFrame(lcObjectPropertyId PropertyId, lcStep Time, bool KeyFrame)
+bool swLight::SetKeyFrame(swObjectPropertyId PropertyId, swStep Time, bool KeyFrame)
 {
 	switch (PropertyId)
 	{
-	case lcObjectPropertyId::PieceId:
-	case lcObjectPropertyId::PieceColor:
-	case lcObjectPropertyId::PieceStepShow:
-	case lcObjectPropertyId::PieceStepHide:
-	case lcObjectPropertyId::CameraName:
-	case lcObjectPropertyId::CameraProjection:
-	case lcObjectPropertyId::CameraFOV:
-	case lcObjectPropertyId::CameraNear:
-	case lcObjectPropertyId::CameraFar:
-	case lcObjectPropertyId::CameraPositionX:
-	case lcObjectPropertyId::CameraPositionY:
-	case lcObjectPropertyId::CameraPositionZ:
-	case lcObjectPropertyId::CameraTargetX:
-	case lcObjectPropertyId::CameraTargetY:
-	case lcObjectPropertyId::CameraTargetZ:
-	case lcObjectPropertyId::CameraUpX:
-	case lcObjectPropertyId::CameraUpY:
-	case lcObjectPropertyId::CameraUpZ:
-	case lcObjectPropertyId::LightName:
-	case lcObjectPropertyId::LightType:
+	case swObjectPropertyId::PieceId:
+	case swObjectPropertyId::PieceColor:
+	case swObjectPropertyId::PieceStepShow:
+	case swObjectPropertyId::PieceStepHide:
+	case swObjectPropertyId::CameraName:
+	case swObjectPropertyId::CameraProjection:
+	case swObjectPropertyId::CameraFOV:
+	case swObjectPropertyId::CameraNear:
+	case swObjectPropertyId::CameraFar:
+	case swObjectPropertyId::CameraPositionX:
+	case swObjectPropertyId::CameraPositionY:
+	case swObjectPropertyId::CameraPositionZ:
+	case swObjectPropertyId::CameraTargetX:
+	case swObjectPropertyId::CameraTargetY:
+	case swObjectPropertyId::CameraTargetZ:
+	case swObjectPropertyId::CameraUpX:
+	case swObjectPropertyId::CameraUpY:
+	case swObjectPropertyId::CameraUpZ:
+	case swObjectPropertyId::LightName:
+	case swObjectPropertyId::LightType:
 		return false;
 
-	case lcObjectPropertyId::LightColor:
+	case swObjectPropertyId::LightColor:
 		return mColor.SetKeyFrame(Time, KeyFrame);
 
-	case lcObjectPropertyId::LightBlenderPower:
+	case swObjectPropertyId::LightBlenderPower:
 		return mBlenderPower.SetKeyFrame(Time, KeyFrame);
 
-	case lcObjectPropertyId::LightPOVRayPower:
+	case swObjectPropertyId::LightPOVRayPower:
 		return mPOVRayPower.SetKeyFrame(Time, KeyFrame);
 
-	case lcObjectPropertyId::LightCastShadow:
+	case swObjectPropertyId::LightCastShadow:
 		return false;
 
-	case lcObjectPropertyId::LightPOVRayFadeDistance:
+	case swObjectPropertyId::LightPOVRayFadeDistance:
 		return mPOVRayFadeDistance.SetKeyFrame(Time, KeyFrame);
 
-	case lcObjectPropertyId::LightPOVRayFadePower:
+	case swObjectPropertyId::LightPOVRayFadePower:
 		return mPOVRayFadePower.SetKeyFrame(Time, KeyFrame);
 
-	case lcObjectPropertyId::LightBlenderRadius:
+	case swObjectPropertyId::LightBlenderRadius:
 		return mBlenderRadius.SetKeyFrame(Time, KeyFrame);
 
-	case lcObjectPropertyId::LightBlenderAngle:
+	case swObjectPropertyId::LightBlenderAngle:
 		return mBlenderAngle.SetKeyFrame(Time, KeyFrame);
 
-	case lcObjectPropertyId::LightAreaSizeX:
+	case swObjectPropertyId::LightAreaSizeX:
 		return mAreaSizeX.SetKeyFrame(Time, KeyFrame);
 
-	case lcObjectPropertyId::LightAreaSizeY:
+	case swObjectPropertyId::LightAreaSizeY:
 		return mAreaSizeY.SetKeyFrame(Time, KeyFrame);
 
-	case lcObjectPropertyId::LightSpotConeAngle:
+	case swObjectPropertyId::LightSpotConeAngle:
 		return mSpotConeAngle.SetKeyFrame(Time, KeyFrame);
 
-	case lcObjectPropertyId::LightSpotPenumbraAngle:
+	case swObjectPropertyId::LightSpotPenumbraAngle:
 		return mSpotPenumbraAngle.SetKeyFrame(Time, KeyFrame);
 
-	case lcObjectPropertyId::LightPOVRaySpotTightness:
+	case swObjectPropertyId::LightPOVRaySpotTightness:
 		return mPOVRaySpotTightness.SetKeyFrame(Time, KeyFrame);
 
-	case lcObjectPropertyId::LightAreaShape:
+	case swObjectPropertyId::LightAreaShape:
 		return false;
 
-	case lcObjectPropertyId::LightPOVRayAreaGridX:
+	case swObjectPropertyId::LightPOVRayAreaGridX:
 		return mPOVRayAreaGridX.SetKeyFrame(Time, KeyFrame);
 
-	case lcObjectPropertyId::LightPOVRayAreaGridY:
+	case swObjectPropertyId::LightPOVRayAreaGridY:
 		return mPOVRayAreaGridY.SetKeyFrame(Time, KeyFrame);
 
-	case lcObjectPropertyId::ObjectPositionX:
-	case lcObjectPropertyId::ObjectPositionY:
-	case lcObjectPropertyId::ObjectPositionZ:
+	case swObjectPropertyId::ObjectPositionX:
+	case swObjectPropertyId::ObjectPositionY:
+	case swObjectPropertyId::ObjectPositionZ:
 		return mPosition.SetKeyFrame(Time, KeyFrame);
 
-	case lcObjectPropertyId::ObjectRotationX:
-	case lcObjectPropertyId::ObjectRotationY:
-	case lcObjectPropertyId::ObjectRotationZ:
+	case swObjectPropertyId::ObjectRotationX:
+	case swObjectPropertyId::ObjectRotationY:
+	case swObjectPropertyId::ObjectRotationZ:
 		return mRotation.SetKeyFrame(Time, KeyFrame);
 
-	case lcObjectPropertyId::Count:
+	case swObjectPropertyId::Count:
 		return false;
 	}
 
 	return false;
 }
 
-void lcLight::RemoveKeyFrames()
+void swLight::RemoveKeyFrames()
 {
 	mPosition.RemoveAllKeys();
 	mRotation.RemoveAllKeys();
@@ -1510,9 +1510,9 @@ void lcLight::RemoveKeyFrames()
 	mPOVRayFadePower.RemoveAllKeys();
 }
 
-lcLightHistoryState lcLight::GetHistoryState() const
+swLightHistoryState swLight::GetHistoryState() const
 {
-	lcLightHistoryState State;
+	swLightHistoryState State;
 
 	State.Id = mId;
 	State.Hidden = mHidden;
@@ -1540,7 +1540,7 @@ lcLightHistoryState lcLight::GetHistoryState() const
 	return State;
 }
 
-void lcLight::SetHistoryState(const lcLightHistoryState& State)
+void swLight::SetHistoryState(const swLightHistoryState& State)
 {
 	mId = State.Id;
 	mHidden = State.Hidden;

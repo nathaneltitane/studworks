@@ -1,7 +1,7 @@
-LC_VERTEX_INPUT vec3 VertexPosition1;
-LC_VERTEX_INPUT vec3 VertexPosition2;
-LC_VERTEX_INPUT vec3 VertexPosition3;
-LC_VERTEX_INPUT vec3 VertexPosition4;
+SW_VERTEX_INPUT vec3 VertexPosition1;
+SW_VERTEX_INPUT vec3 VertexPosition2;
+SW_VERTEX_INPUT vec3 VertexPosition3;
+SW_VERTEX_INPUT vec3 VertexPosition4;
 
 uniform mat4 WorldViewProjectionMatrix;
 

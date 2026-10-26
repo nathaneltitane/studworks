@@ -3,22 +3,22 @@
 #include "sw_model.h"
 #include "sw_thumbnailmanager.h"
 
-struct lcPropertiesDialogOptions
+struct swPropertiesDialogOptions
 {
-	lcModelProperties Properties;
-	lcPartsList PartsList;
-	lcBoundingBox BoundingBox;
+	swModelProperties Properties;
+	swPartsList PartsList;
+	swBoundingBox BoundingBox;
 };
 
 namespace Ui
 {
-class lcPropertiesDialog;
+class swPropertiesDialog;
 }
 
-class lcPartsTableWidget : public QTableWidget
+class swPartsTableWidget : public QTableWidget
 {
 public:
-	explicit lcPartsTableWidget(QWidget* Parent = nullptr);
+	explicit swPartsTableWidget(QWidget* Parent = nullptr);
 	void FreezePartColumns();
 	void scrollTo(const QModelIndex& Index, ScrollHint Hint = EnsureVisible) override;
 
@@ -31,7 +31,7 @@ protected:
 	void setSelection(const QRect& Rect, QItemSelectionModel::SelectionFlags Command) override;
 
 private:
-	friend class lcFrozenPartsView;
+	friend class swFrozenPartsView;
 	QItemSelectionModel::SelectionFlags TrackSelectionCommand(const QModelIndex& Index, const QEvent* Event, QItemSelectionModel::SelectionFlags Command) const;
 	bool SelectSharedRange(QItemSelectionModel::SelectionFlags Command);
 	void UpdateFrozenGeometry();
@@ -43,27 +43,27 @@ private:
 	mutable QPersistentModelIndex mSelectionEnd;
 };
 
-class lcPropertiesDialog : public QDialog
+class swPropertiesDialog : public QDialog
 {
 	Q_OBJECT
 
 public:
-	lcPropertiesDialog(QWidget* Parent, lcPropertiesDialogOptions* Options);
-	~lcPropertiesDialog();
+	swPropertiesDialog(QWidget* Parent, swPropertiesDialogOptions* Options);
+	~swPropertiesDialog();
 
-	lcPropertiesDialogOptions* mOptions;
+	swPropertiesDialogOptions* mOptions;
 
 public slots:
 	void accept() override;
 
 protected slots:
-	void ThumbnailReady(lcPartThumbnailId ThumbnailId, QPixmap Pixmap);
+	void ThumbnailReady(swPartThumbnailId ThumbnailId, QPixmap Pixmap);
 	void ExportBrickLink();
 	void ExportCSV();
 
 private:
 	QString GetExportFileName(const QString& Extension, const QString& Title, const QString& Filter);
 
-	Ui::lcPropertiesDialog* ui;
-	std::vector<std::pair<lcPartThumbnailId, QTableWidgetItem*>> mThumbnails;
+	Ui::swPropertiesDialog* ui;
+	std::vector<std::pair<swPartThumbnailId, QTableWidgetItem*>> mThumbnails;
 };

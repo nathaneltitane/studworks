@@ -4,16 +4,16 @@
 #include "ui_sw_htmldialog.h"
 #include "project.h"
 
-lcHTMLDialog::lcHTMLDialog(QWidget* Parent, lcHTMLExportOptions* Options)
-	: QDialog(Parent), ui(new Ui::lcHTMLDialog)
+swHTMLDialog::swHTMLDialog(QWidget* Parent, swHTMLExportOptions* Options)
+	: QDialog(Parent), ui(new Ui::swHTMLDialog)
 {
     ui->setupUi(this);
-	lcSetupDialogHelp(this, ui->buttonBox);
+	swSetupDialogHelp(this, ui->buttonBox);
 
-	connect(ui->outputFolderBrowse, &QPushButton::clicked, this, &lcHTMLDialog::OutputFolderBrowseClicked);
+	connect(ui->outputFolderBrowse, &QPushButton::clicked, this, &swHTMLDialog::OutputFolderBrowseClicked);
 
-	ui->stepWidth->setValidator(new QIntValidator(1, LC_MAX_IMAGE_DIMENSION, ui->stepWidth));
-	ui->stepHeight->setValidator(new QIntValidator(1, LC_MAX_IMAGE_DIMENSION, ui->stepHeight));
+	ui->stepWidth->setValidator(new QIntValidator(1, SW_MAX_IMAGE_DIMENSION, ui->stepWidth));
+	ui->stepHeight->setValidator(new QIntValidator(1, SW_MAX_IMAGE_DIMENSION, ui->stepHeight));
 
 	mOptions = Options;
 
@@ -30,18 +30,18 @@ lcHTMLDialog::lcHTMLDialog(QWidget* Parent, lcHTMLExportOptions* Options)
 	ui->singlePage->setChecked(mOptions->SinglePage);
 	ui->oneStepPerPage->setChecked(!mOptions->SinglePage);
 	ui->indexPage->setChecked(mOptions->SinglePage);
-	ui->stepWidth->setText(lcFormatIntegerLocalized(mOptions->StepImagesWidth, ui->stepWidth->validator()->locale()));
-	ui->stepHeight->setText(lcFormatIntegerLocalized(mOptions->StepImagesHeight, ui->stepHeight->validator()->locale()));
+	ui->stepWidth->setText(swFormatIntegerLocalized(mOptions->StepImagesWidth, ui->stepWidth->validator()->locale()));
+	ui->stepHeight->setText(swFormatIntegerLocalized(mOptions->StepImagesHeight, ui->stepHeight->validator()->locale()));
 	ui->partsAfterEachStep->setChecked(mOptions->PartsListStep);
 	ui->partsAtTheEnd->setChecked(mOptions->PartsListEnd);
 }
 
-lcHTMLDialog::~lcHTMLDialog()
+swHTMLDialog::~swHTMLDialog()
 {
     delete ui;
 }
 
-void lcHTMLDialog::accept()
+void swHTMLDialog::accept()
 {
 	QString pathName = ui->outputFolder->text();
 
@@ -83,7 +83,7 @@ void lcHTMLDialog::accept()
 	QDialog::accept();
 }
 
-void lcHTMLDialog::OutputFolderBrowseClicked()
+void swHTMLDialog::OutputFolderBrowseClicked()
 {
 	QString result = QFileDialog::getExistingDirectory(this, tr("Select Output Folder"), ui->outputFolder->text());
 

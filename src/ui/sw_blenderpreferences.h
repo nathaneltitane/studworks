@@ -1,23 +1,23 @@
 #pragma once
 
-#ifndef LC_DISABLE_BLENDER
+#ifndef SW_DISABLE_BLENDER
 
-#define LC_UNIX_SHELL                  "/bin/sh"
-#define LC_WINDOWS_SHELL               "cmd.exe"
-#define LC_BLENDER_ADDON_BLEND_FILE    "leocad.blend"
-#define LC_BLENDER_ADDON_IMPORT_MODULE "TN"
-#define LC_BLENDER_ADDON_RENDER_FOLDER "io_scene_render_ldraw"
+#define SW_UNIX_SHELL                  "/bin/sh"
+#define SW_WINDOWS_SHELL               "cmd.exe"
+#define SW_BLENDER_ADDON_BLEND_FILE    "leocad.blend"
+#define SW_BLENDER_ADDON_IMPORT_MODULE "TN"
+#define SW_BLENDER_ADDON_RENDER_FOLDER "io_scene_render_ldraw"
 
-class lcHttpReply;
-class lcBlenderPreferences;
+class swHttpReply;
+class swBlenderPreferences;
 
-class lcBlenderPreferencesDialog : public QDialog
+class swBlenderPreferencesDialog : public QDialog
 {
 	Q_OBJECT
 
 public:
-	explicit lcBlenderPreferencesDialog(int Width, int Height, double Scale, QWidget* Parent = nullptr);
-	virtual ~lcBlenderPreferencesDialog();
+	explicit swBlenderPreferencesDialog(int Width, int Height, double Scale, QWidget* Parent = nullptr);
+	virtual ~swBlenderPreferencesDialog();
 
 	static bool  GetBlenderPreferences(int& Width, int& Height, double& Scale, QWidget* Parent = nullptr);
 
@@ -32,17 +32,17 @@ private:
 	QPushButton* mApplyButton;
 	QPushButton* mResetButton;
 	QPushButton* mPathsButton;
-	lcBlenderPreferences* mPreferences;
+	swBlenderPreferences* mPreferences;
 };
 
-class lcBlenderPreferences : public QWidget
+class swBlenderPreferences : public QWidget
 {
 	Q_OBJECT
 public:
 
-	explicit lcBlenderPreferences(int Width, int Height, double Scale, QWidget* Parent = nullptr);
+	explicit swBlenderPreferences(int Width, int Height, double Scale, QWidget* Parent = nullptr);
 
-	~lcBlenderPreferences();
+	~swBlenderPreferences();
 
 	static void LoadSettings();
 	static void SaveSettings();
@@ -101,7 +101,7 @@ private slots:
 	void GetStandardOutput();
 	void ShowResult();
 	void StatusUpdate(bool, bool = true, const QString& = QString());
-	void DownloadFinished(lcHttpReply*);
+	void DownloadFinished(swHttpReply*);
 
 private:
 	static void SetNumericText(QLineEdit* Edit, const QString& Value);
@@ -431,7 +431,7 @@ private:
 	QProgressBar* mProgressBar = nullptr;
 	QProcess* mProcess = nullptr;
 
-	lcHttpReply  *mHttpReply = nullptr;
+	swHttpReply  *mHttpReply = nullptr;
 	QByteArray mData;
 
 	QTimer mUpdateTimer;
@@ -445,6 +445,6 @@ private:
 	bool mBlenderVersionFound;
 };
 
-extern class lcBlenderPreferences* gAddonPreferences;
+extern class swBlenderPreferences* gAddonPreferences;
 
-#endif // !LC_DISABLE_BLENDER
+#endif // !SW_DISABLE_BLENDER

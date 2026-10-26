@@ -5,44 +5,44 @@
 #include "sw_http.h"
 #include "project.h"
 
-lcSetsDatabaseDialog::lcSetsDatabaseDialog(QWidget* Parent)
+swSetsDatabaseDialog::swSetsDatabaseDialog(QWidget* Parent)
 	: QDialog(Parent),
-    ui(new Ui::lcSetsDatabaseDialog)
+    ui(new Ui::swSetsDatabaseDialog)
 {
 	ui->setupUi(this);
-	lcSetupDialogHelp(this, ui->buttonBox);
+	swSetupDialogHelp(this, ui->buttonBox);
 	ui->SearchEdit->installEventFilter(this);
 
-	mHttpManager = new lcHttpManager(this);
+	mHttpManager = new swHttpManager(this);
 
-	connect(ui->SetsTree, &QTreeWidget::itemDoubleClicked, this, &lcSetsDatabaseDialog::accept);
-	connect(this, &QDialog::finished, this, &lcSetsDatabaseDialog::Finished);
-	connect(mHttpManager, &lcHttpManager::DownloadFinished, this, &lcSetsDatabaseDialog::DownloadFinished);
-	connect(ui->SearchButton, &QPushButton::clicked, this, &lcSetsDatabaseDialog::SearchButtonClicked);
+	connect(ui->SetsTree, &QTreeWidget::itemDoubleClicked, this, &swSetsDatabaseDialog::accept);
+	connect(this, &QDialog::finished, this, &swSetsDatabaseDialog::Finished);
+	connect(mHttpManager, &swHttpManager::DownloadFinished, this, &swSetsDatabaseDialog::DownloadFinished);
+	connect(ui->SearchButton, &QPushButton::clicked, this, &swSetsDatabaseDialog::SearchButtonClicked);
 
 	mKeyListReply = mHttpManager->DownloadFile(QLatin1String("https://www.leocad.org/rebrickable.json"));
 }
 
-lcSetsDatabaseDialog::~lcSetsDatabaseDialog()
+swSetsDatabaseDialog::~swSetsDatabaseDialog()
 {
 	delete ui;
 }
 
-QString lcSetsDatabaseDialog::GetSetName() const
+QString swSetsDatabaseDialog::GetSetName() const
 {
 	QTreeWidgetItem* Current = ui->SetsTree->currentItem();
 	return Current ? Current->text(0) : QString();
 }
 
-QString lcSetsDatabaseDialog::GetSetDescription() const
+QString swSetsDatabaseDialog::GetSetDescription() const
 {
 	QTreeWidgetItem* Current = ui->SetsTree->currentItem();
 	return Current ? Current->text(1) : QString();
 }
 
-std::vector<lcSetInventoryItem> lcSetsDatabaseDialog::GetSetInventory() const
+std::vector<swSetInventoryItem> swSetsDatabaseDialog::GetSetInventory() const
 {
-	std::vector<lcSetInventoryItem> Inventory;
+	std::vector<swSetInventoryItem> Inventory;
 
 	if (mInventory.isEmpty())
 		return Inventory;
@@ -74,7 +74,7 @@ std::vector<lcSetInventoryItem> lcSetsDatabaseDialog::GetSetInventory() const
 	return Inventory;
 }
 
-bool lcSetsDatabaseDialog::eventFilter(QObject* Object, QEvent* Event)
+bool swSetsDatabaseDialog::eventFilter(QObject* Object, QEvent* Event)
 {
 	if (Event->type() == QEvent::KeyPress)
 	{
@@ -92,7 +92,7 @@ bool lcSetsDatabaseDialog::eventFilter(QObject* Object, QEvent* Event)
 	return QDialog::eventFilter(Object, Event);
 }
 
-void lcSetsDatabaseDialog::accept()
+void swSetsDatabaseDialog::accept()
 {
 	QTreeWidgetItem* Current = ui->SetsTree->currentItem();
 	if (!Current)
@@ -132,7 +132,7 @@ void lcSetsDatabaseDialog::accept()
 	QDialog::accept();
 }
 
-void lcSetsDatabaseDialog::Finished(int Result)
+void swSetsDatabaseDialog::Finished(int Result)
 {
 	Q_UNUSED(Result);
 
@@ -143,7 +143,7 @@ void lcSetsDatabaseDialog::Finished(int Result)
 	}
 }
 
-void lcSetsDatabaseDialog::SearchButtonClicked()
+void swSetsDatabaseDialog::SearchButtonClicked()
 {
 	QString Keyword = ui->SearchEdit->text();
 
@@ -191,7 +191,7 @@ void lcSetsDatabaseDialog::SearchButtonClicked()
 	}
 }
 
-void lcSetsDatabaseDialog::DownloadFinished(lcHttpReply* Reply)
+void swSetsDatabaseDialog::DownloadFinished(swHttpReply* Reply)
 {
 	if (Reply == mKeyListReply)
 	{
@@ -238,7 +238,7 @@ void lcSetsDatabaseDialog::DownloadFinished(lcHttpReply* Reply)
 				SetInfo << SetObject["set_num"].toString();
 				SetInfo << SetObject["name"].toString();
 				SetInfo << QString::number(SetObject["year"].toInt());
-				SetInfo << lcFormatIntegerLocalized(SetObject["num_parts"].toInt(), locale());
+				SetInfo << swFormatIntegerLocalized(SetObject["num_parts"].toInt(), locale());
 
 				new QTreeWidgetItem(ui->SetsTree, SetInfo);
 			}

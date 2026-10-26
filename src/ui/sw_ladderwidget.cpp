@@ -3,7 +3,7 @@
 #include "sw_objectproperty.h"
 #include "sw_utils.h"
 
-lcLadderWidget::lcLadderWidget(QAbstractSpinBox* SpinBox, lcFloatPropertySnap Snap)
+swLadderWidget::swLadderWidget(QAbstractSpinBox* SpinBox, swFloatPropertySnap Snap)
 	: QWidget(SpinBox, Qt::Popup | Qt::Sheet), mSpinBox(SpinBox)
 {
 	mSpinBox->installEventFilter(this);
@@ -11,7 +11,7 @@ lcLadderWidget::lcLadderWidget(QAbstractSpinBox* SpinBox, lcFloatPropertySnap Sn
 	CalculateSteps(Snap);
 }
 
-void lcLadderWidget::Show()
+void swLadderWidget::Show()
 {
 	int LineHeight = QFontMetrics(font()).height();
 	int CellSize = LineHeight * 4;
@@ -21,7 +21,7 @@ void lcLadderWidget::Show()
 
 	const QPoint CursorPosition = QCursor::pos();
 	const QPoint Position = CursorPosition - QPoint(width() / 2, height() / 2);
-	move(lcGetPopupPosition(Position, size(), CursorPosition));
+	move(swGetPopupPosition(Position, size(), CursorPosition));
 
 	mLastMousePositionX = mapFromGlobal(QCursor::pos()).x();
 	UpdateMousePosition();
@@ -30,13 +30,13 @@ void lcLadderWidget::Show()
 	grabMouse();
 }
 
-void lcLadderWidget::CalculateSteps(lcFloatPropertySnap Snap)
+void swLadderWidget::CalculateSteps(swFloatPropertySnap Snap)
 {
 	QDoubleSpinBox* SpinBox = qobject_cast<QDoubleSpinBox*>(mSpinBox);
 
 	switch (Snap)
 	{
-	case lcFloatPropertySnap::Auto:
+	case swFloatPropertySnap::Auto:
 		if (SpinBox)
 		{
 			double Max = SpinBox->maximum();
@@ -48,19 +48,19 @@ void lcLadderWidget::CalculateSteps(lcFloatPropertySnap Snap)
 		}
 		break;
 
-	case lcFloatPropertySnap::PiecePositionXY:
+	case swFloatPropertySnap::PiecePositionXY:
 		mSteps = { 80.0, 40.0, 24.0, 20.0, 10.0, 8.0, 1.0 };
 		break;
 
-	case lcFloatPropertySnap::PiecePositionZ:
+	case swFloatPropertySnap::PiecePositionZ:
 		mSteps = { 192.0, 96.0, 48.0, 24.0, 10.0, 8.0, 1.0 };
 		break;
 
-	case lcFloatPropertySnap::Position:
+	case swFloatPropertySnap::Position:
 		mSteps = { 1000.0, 100.0, 50.0, 10.0, 5.0, 1.0, 0.1 };
 		break;
 
-	case lcFloatPropertySnap::Rotation:
+	case swFloatPropertySnap::Rotation:
 		mSteps = { 45.0, 30.0, 22.5, 15.0, 5.0, 1.0, 0.1 };
 		break;
 	}
@@ -69,7 +69,7 @@ void lcLadderWidget::CalculateSteps(lcFloatPropertySnap Snap)
 		mSteps = { 100.0, 10.0, 1.0, 0.1, 0.01 };
 }
 
-void lcLadderWidget::UpdateMousePosition()
+void swLadderWidget::UpdateMousePosition()
 {
 	QPoint MousePosition = mapFromGlobal(QCursor::pos());
 
@@ -107,7 +107,7 @@ void lcLadderWidget::UpdateMousePosition()
 	}
 }
 
-void lcLadderWidget::CancelEditing()
+void swLadderWidget::CancelEditing()
 {
 	emit EditingCanceled();
 
@@ -115,7 +115,7 @@ void lcLadderWidget::CancelEditing()
 	deleteLater();
 }
 
-void lcLadderWidget::FinishEditing()
+void swLadderWidget::FinishEditing()
 {
 	emit EditingFinished();
 
@@ -123,7 +123,7 @@ void lcLadderWidget::FinishEditing()
 	deleteLater();
 }
 
-void lcLadderWidget::paintEvent(QPaintEvent* Event)
+void swLadderWidget::paintEvent(QPaintEvent* Event)
 {
 	Q_UNUSED(Event);
 
@@ -148,7 +148,7 @@ void lcLadderWidget::paintEvent(QPaintEvent* Event)
 	{
 		QRect Rect(0, Step * CellHeight, CellWidth, CellHeight);
 		QTextOption TextOption(Qt::AlignCenter);
-		QString Text = lcFormatDoubleLocalized(mSteps[Step], mSpinBox->locale(), 'g', 6);
+		QString Text = swFormatDoubleLocalized(mSteps[Step], mSpinBox->locale(), 'g', 6);
 
 		if (Step == mCurrentStep && mSpinBox)
 			Text = QString("%1\n\n(%2)").arg(Text, mSpinBox->text());
@@ -167,7 +167,7 @@ void lcLadderWidget::paintEvent(QPaintEvent* Event)
 		Painter.drawLine(0, Step * CellHeight, CellWidth, Step * CellHeight);
 }
 
-bool lcLadderWidget::eventFilter(QObject* Object, QEvent* Event)
+bool swLadderWidget::eventFilter(QObject* Object, QEvent* Event)
 {
 	if (Event->type() == QEvent::ShortcutOverride || Event->type() == QEvent::KeyPress)
 	{
@@ -186,21 +186,21 @@ bool lcLadderWidget::eventFilter(QObject* Object, QEvent* Event)
 	return QWidget::eventFilter(Object, Event);
 }
 
-void lcLadderWidget::mousePressEvent(QMouseEvent* MouseEvent)
+void swLadderWidget::mousePressEvent(QMouseEvent* MouseEvent)
 {
 	CancelEditing();
 
 	QWidget::mousePressEvent(MouseEvent);
 }
 
-void lcLadderWidget::mouseMoveEvent(QMouseEvent* MouseEvent)
+void swLadderWidget::mouseMoveEvent(QMouseEvent* MouseEvent)
 {
 	UpdateMousePosition();
 
 	QWidget::mouseMoveEvent(MouseEvent);
 }
 
-void lcLadderWidget::mouseReleaseEvent(QMouseEvent* MouseEvent)
+void swLadderWidget::mouseReleaseEvent(QMouseEvent* MouseEvent)
 {
 	FinishEditing();
 

@@ -4,17 +4,17 @@
 #include "sw_assettypes.h"
 #include "sw_result.h"
 
-#define LC_HTML_SINGLEPAGE    0x01
-#define LC_HTML_INDEX         0x02
-#define LC_HTML_LISTEND       0x08
-#define LC_HTML_LISTSTEP      0x10
-#define LC_HTML_SUBMODELS     0x40
-#define LC_HTML_CURRENT_ONLY  0x80
+#define SW_HTML_SINGLEPAGE    0x01
+#define SW_HTML_INDEX         0x02
+#define SW_HTML_LISTEND       0x08
+#define SW_HTML_LISTSTEP      0x10
+#define SW_HTML_SUBMODELS     0x40
+#define SW_HTML_CURRENT_ONLY  0x80
 
-class lcHTMLExportOptions
+class swHTMLExportOptions
 {
 public:
-	lcHTMLExportOptions(const Project* Project);
+	swHTMLExportOptions(const Project* Project);
 	void SaveDefaults();
 
 	QString PathName;
@@ -29,7 +29,7 @@ public:
 	bool PartsListEnd;
 };
 
-struct lcImageDialogOptions
+struct swImageDialogOptions
 {
 	QString FilePath;
 	int Width;
@@ -38,14 +38,14 @@ struct lcImageDialogOptions
 	int End;
 };
 
-struct lcSetInventoryItem
+struct swSetInventoryItem
 {
 	QByteArray PartID;
 	int Quantity;
 	int ColorCode;
 };
 
-struct lcEmbeddedData
+struct swEmbeddedData
 {
 	bool HasValidEncoding() const;
 	QString FileName;
@@ -65,35 +65,35 @@ public:
 	Project& operator=(const Project&) = delete;
 	Project& operator=(Project&&) = delete;
 
-	const std::vector<std::unique_ptr<lcModel>>& GetModels() const
+	const std::vector<std::unique_ptr<swModel>>& GetModels() const
 	{
 		return mModels;
 	}
 
-	const std::vector<std::shared_ptr<const lcEmbeddedData>>& GetEmbeddedData() const
+	const std::vector<std::shared_ptr<const swEmbeddedData>>& GetEmbeddedData() const
 	{
 		return mEmbeddedData;
 	}
 
-	const std::map<QString, std::shared_ptr<const lcEmbeddedData>>& GetEmbeddedDataLookup() const
+	const std::map<QString, std::shared_ptr<const swEmbeddedData>>& GetEmbeddedDataLookup() const
 	{
 		return mEmbeddedDataIndex;
 	}
 
-	std::shared_ptr<const lcEmbeddedData> FindEmbeddedData(const QString& FileName) const;
-	lcModel* GetModel(const QString& FileName) const;
-	lcPieceData* FindPieceData(const std::string& Name) const;
-	void RegisterPieceData(const std::string& Name, lcPieceData* PieceData);
-	void UnregisterPieceData(lcPieceData* PieceData);
+	std::shared_ptr<const swEmbeddedData> FindEmbeddedData(const QString& FileName) const;
+	swModel* GetModel(const QString& FileName) const;
+	swPieceData* FindPieceData(const std::string& Name) const;
+	void RegisterPieceData(const std::string& Name, swPieceData* PieceData);
+	void UnregisterPieceData(swPieceData* PieceData);
 	void ClearPieceDataIndex();
 	void TransferPieceDataIndexTo(Project* Destination);
 
-	lcModel* GetActiveModel() const
+	swModel* GetActiveModel() const
 	{
 		return mActiveModel;
 	}
 
-	lcModel* GetMainModel() const
+	swModel* GetMainModel() const
 	{
 		return !mModels.empty() ? mModels[0].get() : nullptr;
 	}
@@ -125,43 +125,43 @@ public:
 	QString GetImageFileName(bool AllowCurrentFolder) const;
 	void UpdateFileWatcher();
 
-	lcInstructions* GetInstructions();
+	swInstructions* GetInstructions();
 
-	void SetActiveModel(lcModel* Model, bool UpdateInterface);
+	void SetActiveModel(swModel* Model, bool UpdateInterface);
 	void SetActiveModel(int ModelIndex, bool UpdateInterface);
 	void SetActiveModel(const QString& FileName, bool UpdateInterface);
 
-	lcModel* CreateNewModel(bool ShowModel);
+	swModel* CreateNewModel(bool ShowModel);
 	QString GetNewModelName(QWidget* ParentWidget, const QString& DialogTitle, const QString& CurrentName, const QStringList& ExistingModels) const;
 	void ShowModelListDialog();
 
 	bool Load(const QString& FileName, bool ShowErrors);
 	void AddLoadWarning(const QString& Warning);
 	std::vector<QString> GetLoadWarningDetails() const;
-	lcResult<void> Save(const QString& FileName);
+	swResult<void> Save(const QString& FileName);
 	bool Save(QTextStream& Stream) const;
-	lcResult<void> Merge(const std::vector<Project*>& Sources);
+	swResult<void> Merge(const std::vector<Project*>& Sources);
 	bool ImportLDD(const QString& FileName);
-	bool ImportInventory(const std::vector<lcSetInventoryItem>& SetInventory, const QString& Name, const QString& Description);
+	bool ImportInventory(const std::vector<swSetInventoryItem>& SetInventory, const QString& Name, const QString& Description);
 
-	lcResult<void> SaveImage(const lcImageDialogOptions& Options);
-	std::vector<lcPieceDataRef> GetRequiredPieceData() const;
-	std::vector<lcPiece*> GetRequiredSynthPieces() const;
-	lcResult<void> EnsureAssetsReady() const;
-	lcResult<void> ExportCurrentStep(const QString& FileName);
-	lcResult<QByteArray> SerializeModel(const lcModel* Model, bool SelectedOnly, lcStep LastStep) const;
+	swResult<void> SaveImage(const swImageDialogOptions& Options);
+	std::vector<swPieceDataRef> GetRequiredPieceData() const;
+	std::vector<swPiece*> GetRequiredSynthPieces() const;
+	swResult<void> EnsureAssetsReady() const;
+	swResult<void> ExportCurrentStep(const QString& FileName);
+	swResult<QByteArray> SerializeModel(const swModel* Model, bool SelectedOnly, swStep LastStep) const;
 	// Caller owns the returned model; imported dependencies remain in this project.
-	lcResult<lcModel*> ImportClipboard(const QByteArray& FileData);
-	lcResult<void> ExportModel(const QString& FileName, lcModel* Model) const;
-	lcResult<void> Export3DStudio(const QString& FileName);
-	lcResult<void> ExportBrickLink();
-	lcResult<void> ExportCOLLADA(const QString& FileName);
-	lcResult<void> ExportCSV(const QString& FileName);
-	lcResult<void> ExportHTML(const lcHTMLExportOptions& Options);
-	lcResult<void> ExportPOVRay(const QString& FileName);
-	lcResult<void> ExportWavefront(const QString& FileName);
+	swResult<swModel*> ImportClipboard(const QByteArray& FileData);
+	swResult<void> ExportModel(const QString& FileName, swModel* Model) const;
+	swResult<void> Export3DStudio(const QString& FileName);
+	swResult<void> ExportBrickLink();
+	swResult<void> ExportCOLLADA(const QString& FileName);
+	swResult<void> ExportCSV(const QString& FileName);
+	swResult<void> ExportHTML(const swHTMLExportOptions& Options);
+	swResult<void> ExportPOVRay(const QString& FileName);
+	swResult<void> ExportWavefront(const QString& FileName);
 
-	void UpdatePieceData(lcPieceData* PieceData) const;
+	void UpdatePieceData(swPieceData* PieceData) const;
 
 private:
 	struct LoadWarning
@@ -179,33 +179,33 @@ private:
 	};
 	struct DocumentBlock
 	{
-		lcModel* Model = nullptr;
-		std::shared_ptr<const lcEmbeddedData> Data;
+		swModel* Model = nullptr;
+		std::shared_ptr<const swEmbeddedData> Data;
 		QByteArray Raw;
 		QByteArray Baseline;
 		QString OriginalName;
 		bool ExplicitModel = false;
 		bool DuplicateModel = false;
 	};
-	static QByteArray SerializeModelText(const lcModel* Model, bool SelectedOnly, lcStep LastStep);
-	static QByteArray SerializeStoredModel(const lcModel* Model, const QString& Name, const DocumentBlock* Original, bool NeedsHeader, bool SelectedOnly, lcStep LastStep);
+	static QByteArray SerializeModelText(const swModel* Model, bool SelectedOnly, swStep LastStep);
+	static QByteArray SerializeStoredModel(const swModel* Model, const QString& Name, const DocumentBlock* Original, bool NeedsHeader, bool SelectedOnly, swStep LastStep);
 	static bool WriteRaw(QTextStream& Stream, const QByteArray& Bytes);
-	static bool SameEmbeddedData(const lcEmbeddedData& First, const lcEmbeddedData& Second);
+	static bool SameEmbeddedData(const swEmbeddedData& First, const swEmbeddedData& Second);
 	static QString NormalizeEmbeddedDataName(const QString& FileName);
 	void LoadLDrawDocument(const QByteArray& FileData, const Project* ReferenceProject, bool ReuseExistingModels);
-	std::vector<QString> GetMergedAssetDirectories(const lcModel* Model) const;
-	lcResult<void> ValidateMergedTextureBindings(const Project& Source, const std::map<QString, std::shared_ptr<const lcEmbeddedData>>& MergedData, const lcModel* ClipboardRoot) const;
-	lcResult<void> MergeInternal(const std::vector<Project*>& Sources, const lcModel* ClipboardRoot);
+	std::vector<QString> GetMergedAssetDirectories(const swModel* Model) const;
+	swResult<void> ValidateMergedTextureBindings(const Project& Source, const std::map<QString, std::shared_ptr<const swEmbeddedData>>& MergedData, const swModel* ClipboardRoot) const;
+	swResult<void> MergeInternal(const std::vector<Project*>& Sources, const swModel* ClipboardRoot);
 	static FileState ReadFileState(const QString& FileName);
 	bool HasFileChanged(const QString& Path);
 	static QString MakeExportNameFragment(const QString& Name);
 	static QString MakeUniqueExportIdentifier(const QString& BaseName, std::set<QString>& UsedNames, const QString& ReservedSuffix);
 
 protected:
-	static bool CanShareMergePieceData(const lcPieceData* Existing, const lcPieceData* Incoming);
+	static bool CanShareMergePieceData(const swPieceData* Existing, const swPieceData* Incoming);
 	QString GetExportFileName(const QString& FileName, const QString& DefaultExtension, const QString& DialogTitle, const QString& DialogFilter) const;
 
-	std::vector<lcModelPartsEntry> GetModelParts();
+	std::vector<swModelPartsEntry> GetModelParts();
 	void SetFileName(const QString& FileName);
 
 	QUuid mClipboardIdentity = QUuid::createUuid();
@@ -223,23 +223,23 @@ protected:
 
 	std::vector<DocumentBlock> mDocumentBlocks;
 	std::vector<LoadWarning> mLoadWarnings;
-	std::vector<std::shared_ptr<const lcEmbeddedData>> mEmbeddedData;
+	std::vector<std::shared_ptr<const swEmbeddedData>> mEmbeddedData;
 	// First definition wins; retain duplicate blocks in mEmbeddedData for saving.
-	std::map<QString, std::shared_ptr<const lcEmbeddedData>> mEmbeddedDataIndex;
-	std::vector<std::unique_ptr<lcModel>> mModels;
-	// Maps normalized local filenames to lcPieceData objects visible in this project.
-	// This map does not own them; lcPiecesLibrary tracks and deletes them.
-	std::map<std::string, lcPieceData*> mPieceIndex;
-	lcModel* mActiveModel;
-	std::unique_ptr<lcInstructions> mInstructions;
+	std::map<QString, std::shared_ptr<const swEmbeddedData>> mEmbeddedDataIndex;
+	std::vector<std::unique_ptr<swModel>> mModels;
+	// Maps normalized local filenames to swPieceData objects visible in this project.
+	// This map does not own them; swPiecesLibrary tracks and deletes them.
+	std::map<std::string, swPieceData*> mPieceIndex;
+	swModel* mActiveModel;
+	std::unique_ptr<swInstructions> mInstructions;
 
 	Q_DECLARE_TR_FUNCTIONS(Project);
 };
 
-inline lcModel* lcGetActiveModel()
+inline swModel* swGetActiveModel()
 {
-	const Project* const Project = lcGetActiveProject();
+	const Project* const Project = swGetActiveProject();
 	return Project ? Project->GetActiveModel() : nullptr;
 }
 
-lcResult<void> lcExportCSV(const QString& FileName, const lcPartsList& PartsList);
+swResult<void> swExportCSV(const QString& FileName, const swPartsList& PartsList);

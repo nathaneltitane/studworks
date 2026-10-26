@@ -2,9 +2,9 @@
 
 #include "sw_mesh.h"
 
-enum class lcHighlightRenderMode;
+enum class swHighlightRenderMode;
 
-enum class lcRenderMeshState : int
+enum class swRenderMeshState : int
 {
 	Default,
 	Selected,
@@ -14,45 +14,45 @@ enum class lcRenderMeshState : int
 	Highlighted
 };
 
-struct lcRenderMesh
+struct swRenderMesh
 {
-	lcMatrix44 WorldMatrix;
-	lcMesh* Mesh;
+	swMatrix44 WorldMatrix;
+	swMesh* Mesh;
 	int ColorIndex;
 	int LodIndex;
-	lcRenderMeshState State;
+	swRenderMeshState State;
 };
 
-struct lcTranslucentMeshInstance
+struct swTranslucentMeshInstance
 {
-	const lcMeshSection* Section;
+	const swMeshSection* Section;
 	int RenderMeshIndex;
 	float Distance;
 };
 
-class lcScene
+class swScene
 {
 public:
-	lcScene();
+	swScene();
 
-	void SetActiveSubmodelInstance(lcPiece* ActiveSubmodelInstance, const lcMatrix44& ActiveSubmodelTransform, const std::vector<lcModel*>& ModelEditingPath)
+	void SetActiveSubmodelInstance(swPiece* ActiveSubmodelInstance, const swMatrix44& ActiveSubmodelTransform, const std::vector<swModel*>& ModelEditingPath)
 	{
 		mActiveSubmodelInstance = ActiveSubmodelInstance;
 		mActiveSubmodelTransform = ActiveSubmodelTransform;
 		mModelEditingPath = ModelEditingPath;
 	}
 
-	bool IsModelEditing(const lcModel* Model) const
+	bool IsModelEditing(const swModel* Model) const
 	{
 		return mDrawInterface && mActiveSubmodelInstance && std::find(mModelEditingPath.begin(), mModelEditingPath.end(), Model) != mModelEditingPath.end();
 	}
 
-	lcPiece* GetActiveSubmodelInstance() const
+	swPiece* GetActiveSubmodelInstance() const
 	{
 		return mActiveSubmodelInstance;
 	}
 
-	const lcMatrix44& GetViewMatrix() const
+	const swMatrix44& GetViewMatrix() const
 	{
 		return mViewMatrix;
 	}
@@ -107,7 +107,7 @@ public:
 		return mDrawInsertPreview;
 	}
 
-	void SetShadingMode(lcShadingMode ShadingMode)
+	void SetShadingMode(swShadingMode ShadingMode)
 	{
 		mShadingMode = ShadingMode;
 	}
@@ -129,59 +129,59 @@ public:
 		mMeshLODDistance = Distance;
 	}
 
-	lcMatrix44 ApplyActiveSubmodelTransform(const lcMatrix44& WorldMatrix) const
+	swMatrix44 ApplyActiveSubmodelTransform(const swMatrix44& WorldMatrix) const
 	{
-		return !mActiveSubmodelInstance ? WorldMatrix : lcMul(WorldMatrix, mActiveSubmodelTransform);
+		return !mActiveSubmodelInstance ? WorldMatrix : swMul(WorldMatrix, mActiveSubmodelTransform);
 	}
 
-	void Begin(const lcMatrix44& ViewMatrix);
+	void Begin(const swMatrix44& ViewMatrix);
 	void End();
-	void AddMesh(lcMesh* Mesh, const lcMatrix44& WorldMatrix, int ColorIndex, lcRenderMeshState State);
+	void AddMesh(swMesh* Mesh, const swMatrix44& WorldMatrix, int ColorIndex, swRenderMeshState State);
 
-	void AddInterfaceObject(const lcObject* Object)
+	void AddInterfaceObject(const swObject* Object)
 	{
 		mInterfaceObjects.emplace_back(Object);
 	}
 
-	void Draw(lcContext* Context, const std::function<void()>& PreTranslucentCallback) const;
+	void Draw(swContext* Context, const std::function<void()>& PreTranslucentCallback) const;
 	bool HasSelectedMeshes() const;
 	bool HasHighlightedMeshes() const;
 	bool CanReuseSceneDepth() const;
-	void DrawSelectionMask(lcContext* Context) const;
-	void DrawHighlightMask(lcContext* Context) const;
-	void DrawOutlineOccluders(lcContext* Context) const;
-	void SetHighlightRenderMode(lcHighlightRenderMode HighlightRenderMode)
+	void DrawSelectionMask(swContext* Context) const;
+	void DrawHighlightMask(swContext* Context) const;
+	void DrawOutlineOccluders(swContext* Context) const;
+	void SetHighlightRenderMode(swHighlightRenderMode HighlightRenderMode)
 	{
 		mHighlightRenderMode = HighlightRenderMode;
 	}
 
-	lcHighlightRenderMode GetHighlightRenderMode() const
+	swHighlightRenderMode GetHighlightRenderMode() const
 	{
 		return mHighlightRenderMode;
 	}
 
-	void DrawInterfaceObjects(lcContext* Context) const;
+	void DrawInterfaceObjects(swContext* Context) const;
 
 protected:
-	enum class lcOutlineGeometry
+	enum class swOutlineGeometry
 	{
 		Selection,
 		Highlight,
 		Occluders
 	};
 
-	void DrawOutlineGeometry(lcContext* Context, lcOutlineGeometry Geometry) const;
-	void DrawOpaqueMeshes(lcContext* Context, bool DrawLit, int PrimitiveTypes, bool DrawFaded, bool DrawNonFaded) const;
-	void DrawTranslucentMeshes(lcContext* Context, bool DrawLit, bool DrawFadePrepass, bool DrawFaded, bool DrawNonFaded) const;
-	void DrawDebugNormals(lcContext* Context, const lcMesh* Mesh) const;
+	void DrawOutlineGeometry(swContext* Context, swOutlineGeometry Geometry) const;
+	void DrawOpaqueMeshes(swContext* Context, bool DrawLit, int PrimitiveTypes, bool DrawFaded, bool DrawNonFaded) const;
+	void DrawTranslucentMeshes(swContext* Context, bool DrawLit, bool DrawFadePrepass, bool DrawFaded, bool DrawNonFaded) const;
+	void DrawDebugNormals(swContext* Context, const swMesh* Mesh) const;
 
-	lcMatrix44 mViewMatrix;
-	lcMatrix44 mActiveSubmodelTransform;
-	lcPiece* mActiveSubmodelInstance = nullptr;
-	std::vector<lcModel*> mModelEditingPath;
-	lcShadingMode mShadingMode;
+	swMatrix44 mViewMatrix;
+	swMatrix44 mActiveSubmodelTransform;
+	swPiece* mActiveSubmodelInstance = nullptr;
+	std::vector<swModel*> mModelEditingPath;
+	swShadingMode mShadingMode;
 	bool mDrawInterface = false;
-	lcHighlightRenderMode mHighlightRenderMode;
+	swHighlightRenderMode mHighlightRenderMode;
 	bool mRequireCompleteAssets = false;
 	bool mRequireGeneratedMeshes = false;
 	bool mMissingAssets = false;
@@ -192,13 +192,13 @@ protected:
 	float mLineWidth = 1.0f;
 	float mMeshLODDistance;
 
-	lcVector4 mFadeColor;
-	lcVector4 mHighlightColor;
+	swVector4 mFadeColor;
+	swVector4 mHighlightColor;
 	bool mHasFadedParts = false;
 	bool mTranslucentFade = false;
 
-	std::vector<lcRenderMesh> mRenderMeshes;
+	std::vector<swRenderMesh> mRenderMeshes;
 	std::vector<int> mOpaqueMeshes;
-	std::vector<lcTranslucentMeshInstance> mTranslucentMeshes;
-	std::vector<const lcObject*> mInterfaceObjects;
+	std::vector<swTranslucentMeshInstance> mTranslucentMeshes;
+	std::vector<const swObject*> mInterfaceObjects;
 };

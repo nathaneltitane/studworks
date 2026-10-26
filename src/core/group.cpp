@@ -4,33 +4,33 @@
 #include "group.h"
 #include "sw_file.h"
 
-lcGroupId lcGroup::mNextId;
+swGroupId swGroup::mNextId;
 
-lcGroup::lcGroup()
+swGroup::swGroup()
     : mId(mNextId)
 {
-	mNextId = static_cast<lcGroupId>(static_cast<uint32_t>(mNextId) + 1);
+	mNextId = static_cast<swGroupId>(static_cast<uint32_t>(mNextId) + 1);
 }
 
-void lcGroup::FileLoad(lcFile* File)
+void swGroup::FileLoad(swFile* File)
 {
 	qint32 GroupIndex;
-	char Name[LC_MAX_GROUP_NAME + 1];
+	char Name[SW_MAX_GROUP_NAME + 1];
 
 	File->ReadU8();
 	File->ReadBuffer(Name, sizeof(Name));
 	mName = QString::fromUtf8(Name);
 	File->ReadVector3();
 	File->ReadS32(&GroupIndex, 1);
-	mGroup = (lcGroup*)(quintptr)GroupIndex;
+	mGroup = (swGroup*)(quintptr)GroupIndex;
 }
 
-void lcGroup::CreateName(const std::vector<std::unique_ptr<lcGroup>>& Groups)
+void swGroup::CreateName(const std::vector<std::unique_ptr<swGroup>>& Groups)
 {
 	if (!mName.isEmpty())
 	{
 		bool Found = false;
-		for (const std::unique_ptr<lcGroup>& Group : Groups)
+		for (const std::unique_ptr<swGroup>& Group : Groups)
 		{
 			if (Group->mName == mName)
 			{
@@ -46,24 +46,24 @@ void lcGroup::CreateName(const std::vector<std::unique_ptr<lcGroup>>& Groups)
 	int Max = 0;
 	const QString Prefix = QApplication::tr("Group ");
 
-	for (const std::unique_ptr<lcGroup>& Group : Groups)
-		Max = qMax(Max, lcGetDefaultNameNumber(Group->mName, Prefix));
+	for (const std::unique_ptr<swGroup>& Group : Groups)
+		Max = qMax(Max, swGetDefaultNameNumber(Group->mName, Prefix));
 
-	mName = lcFormatDefaultName(Prefix, Max + 1);
+	mName = swFormatDefaultName(Prefix, Max + 1);
 }
 
-lcGroupHistoryState lcGroup::GetHistoryState() const
+swGroupHistoryState swGroup::GetHistoryState() const
 {
-	lcGroupHistoryState State;
+	swGroupHistoryState State;
 
 	State.Id = mId;
-	State.ParentId = mGroup ? static_cast<uint32_t>(mGroup->GetId()) : LC_GROUP_ID_INVALID;
+	State.ParentId = mGroup ? static_cast<uint32_t>(mGroup->GetId()) : SW_GROUP_ID_INVALID;
 	State.Name = mName;
 
 	return State;
 }
 
-void lcGroup::SetHistoryState(const lcGroupHistoryState& State, lcGroup* Parent)
+void swGroup::SetHistoryState(const swGroupHistoryState& State, swGroup* Parent)
 {
 	mId = State.Id;
 	mName = State.Name;

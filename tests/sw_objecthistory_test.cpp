@@ -4,12 +4,12 @@
 #include "sw_objectproperty.h"
 #include <random>
 
-class TestProperty : public lcObjectProperty<int>
+class TestProperty : public swObjectProperty<int>
 {
 public:
-	using lcObjectProperty<int>::lcObjectProperty;
+	using swObjectProperty<int>::swObjectProperty;
 
-	void AddKey(lcStep Step, int Value)
+	void AddKey(swStep Step, int Value)
 	{
 		mKeys.push_back({ Step, Value });
 	}
@@ -38,7 +38,7 @@ struct TestObject
 	TestState GetHistoryState() const { return State; }
 };
 
-using History = lcObjectHistory<TestState>;
+using History = swObjectHistory<TestState>;
 using Objects = std::vector<std::unique_ptr<TestObject>>;
 
 static History Capture(const Objects& Model)
@@ -84,7 +84,7 @@ static void Add(Objects& Model, uint32_t Id, int Value)
 	Model.back()->State = { Id, Value };
 }
 
-void lcTests::PropertyKeysAffectEquality()
+void swTests::PropertyKeysAffectEquality()
 {
 	TestProperty Property(10);
 	TestProperty OtherProperty(10);
@@ -97,7 +97,7 @@ void lcTests::PropertyKeysAffectEquality()
 	QVERIFY(!(Property == OtherProperty));
 }
 
-void lcTests::HistoryStoresOnlyChangedObjects()
+void swTests::HistoryStoresOnlyChangedObjects()
 {
 	Objects Model;
 
@@ -122,7 +122,7 @@ void lcTests::HistoryStoresOnlyChangedObjects()
 	QVERIFY(Model[0].get() == Untouched && Model[0]->Loads == 0 && Removed == 0);
 }
 
-void lcTests::HistoryCancelsPendingEdit()
+void swTests::HistoryCancelsPendingEdit()
 {
 	Objects Model;
 
@@ -140,7 +140,7 @@ void lcTests::HistoryCancelsPendingEdit()
 	QCOMPARE(Removed, 1);
 }
 
-void lcTests::HistoryReplaysAndMergesEdits()
+void swTests::HistoryReplaysAndMergesEdits()
 {
 	Objects Model;
 	History Start;
@@ -213,7 +213,7 @@ void lcTests::HistoryReplaysAndMergesEdits()
 	}
 }
 
-void lcTests::HistoryDropsRevertedMerge()
+void swTests::HistoryDropsRevertedMerge()
 {
 	Objects Model;
 	History Start;

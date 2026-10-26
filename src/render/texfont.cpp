@@ -23,7 +23,7 @@ TexFont::TexFont()
 	memset(&mGlyphs, 0, sizeof(mGlyphs));
 }
 
-bool TexFont::Initialize(lcContext* Context)
+bool TexFont::Initialize(swContext* Context)
 {
 	if (mTexture)
 		return true;
@@ -47,7 +47,7 @@ bool TexFont::Initialize(lcContext* Context)
 		const int Advance = Metrics.horizontalAdvance(QChar(Glyph));
 		const int TileX = (GlyphIndex % 10) * TileWidth;
 		const int TileY = (GlyphIndex / 10) * TileHeight;
-		const int MaskWidth = lcMin(TileWidth, Advance + Padding * 2);
+		const int MaskWidth = swMin(TileWidth, Advance + Padding * 2);
 		std::vector<unsigned char> Mask(MaskWidth * TileHeight, 0);
 		QImage GlyphImage(MaskWidth, TileHeight, QImage::Format_Alpha8);
 		GlyphImage.fill(0);
@@ -78,11 +78,11 @@ bool TexFont::Initialize(lcContext* Context)
 					int& Value = Distance[row * MaskWidth + column];
 					const int RowStep = Reverse ? 1 : -1, ColumnStep = Reverse ? 1 : -1;
 					if (row + RowStep >= 0 && row + RowStep < TileHeight)
-						Value = lcMin(Value, Distance[(row + RowStep) * MaskWidth + column] + 3);
+						Value = swMin(Value, Distance[(row + RowStep) * MaskWidth + column] + 3);
 					if (column + ColumnStep >= 0 && column + ColumnStep < MaskWidth)
-						Value = lcMin(Value, Distance[row * MaskWidth + column + ColumnStep] + 3);
+						Value = swMin(Value, Distance[row * MaskWidth + column + ColumnStep] + 3);
 					if (row + RowStep >= 0 && row + RowStep < TileHeight && column + ColumnStep >= 0 && column + ColumnStep < MaskWidth)
-						Value = lcMin(Value, Distance[(row + RowStep) * MaskWidth + column + ColumnStep] + 4);
+						Value = swMin(Value, Distance[(row + RowStep) * MaskWidth + column + ColumnStep] + 4);
 				}
 		};
 		Relax(ToInk, false); Relax(ToInk, true);
@@ -92,7 +92,7 @@ bool TexFont::Initialize(lcContext* Context)
 			for (int x = 0; x < MaskWidth; x++)
 			{
 				const int SignedDistance = (ToOutside[y * MaskWidth + x] - ToInk[y * MaskWidth + x]) / 3;
-				const unsigned char Value = static_cast<unsigned char>(lcClamp(128 + SignedDistance * 8, 0, 255));
+				const unsigned char Value = static_cast<unsigned char>(swClamp(128 + SignedDistance * 8, 0, 255));
 				unsigned char* Pixel = Image.scanLine(TileY + y) + TileX + x;
 				*Pixel = Value;
 			}
@@ -108,8 +108,8 @@ bool TexFont::Initialize(lcContext* Context)
 		GlyphIndex++;
 	}
 
-	mTexture = new lcTexture();
-	mTexture->SetImage(std::move(Image), LC_TEXTURE_LINEAR);
+	mTexture = new swTexture();
+	mTexture->SetImage(std::move(Image), SW_TEXTURE_LINEAR);
 	mTexture->Upload(Context);
 
 	return true;
@@ -134,7 +134,7 @@ void TexFont::GetStringDimensions(int* cx, int* cy, const char* Text) const
 	*cx = static_cast<int>(Width + 0.5f);
 }
 
-void TexFont::PrintText(lcContext* Context, float Left, float Top, float Z, const char* Text) const
+void TexFont::PrintText(swContext* Context, float Left, float Top, float Z, const char* Text) const
 {
 	const size_t Length = strlen(Text);
 
@@ -200,7 +200,7 @@ void TexFont::PrintText(lcContext* Context, float Left, float Top, float Z, cons
 	delete[] Verts;
 }
 
-void TexFont::GetTriangles(const lcMatrix44& Transform, const char* Text, float* Buffer) const
+void TexFont::GetTriangles(const swMatrix44& Transform, const char* Text, float* Buffer) const
 {
 	float Width = 0.0f;
 
@@ -222,16 +222,16 @@ void TexFont::GetTriangles(const lcMatrix44& Transform, const char* Text, float*
 		const float GlyphRight = GlyphLeft + mGlyphs[ch].RenderWidth;
 		const float GlyphTop = Top - mGlyphs[ch].Offset;
 		const float GlyphBottom = GlyphTop - mGlyphs[ch].RenderHeight;
-		lcVector3 Points[4] =
+		swVector3 Points[4] =
 		{
-			lcVector3(GlyphLeft, GlyphTop, Z),
-			lcVector3(GlyphLeft, GlyphBottom, Z),
-			lcVector3(GlyphRight, GlyphBottom, Z),
-			lcVector3(GlyphRight, GlyphTop, Z),
+			swVector3(GlyphLeft, GlyphTop, Z),
+			swVector3(GlyphLeft, GlyphBottom, Z),
+			swVector3(GlyphRight, GlyphBottom, Z),
+			swVector3(GlyphRight, GlyphTop, Z),
 		};
 
 		for (int PointIdx = 0; PointIdx < 4; PointIdx++)
-			Points[PointIdx] = lcMul31(Points[PointIdx], Transform);
+			Points[PointIdx] = swMul31(Points[PointIdx], Transform);
 
 		*Buffer++ = Points[0].x;
 		*Buffer++ = Points[0].y;

@@ -1,14 +1,14 @@
 #pragma once
 
-class lcColorList;
+class swColorList;
 
-class lcColorPickerPopup : public QFrame
+class swColorPickerPopup : public QFrame
 {
 	Q_OBJECT
 
 public:
-	lcColorPickerPopup(QWidget* Parent = nullptr, int ColorIndex = 0, bool AllowNoColor = false);
-	virtual ~lcColorPickerPopup();
+	swColorPickerPopup(QWidget* Parent = nullptr, int ColorIndex = 0, bool AllowNoColor = false);
+	virtual ~swColorPickerPopup();
 
 	void exec();
 	void SetPosition(const QWidget* Anchor);
@@ -29,16 +29,16 @@ protected:
 
 private:
 	QEventLoop* mEventLoop = nullptr;
-	lcColorList* mColorList = nullptr;
+	swColorList* mColorList = nullptr;
 };
 
-class lcColorPicker : public QPushButton
+class swColorPicker : public QPushButton
 {
 	Q_OBJECT
 
 public:
-	lcColorPicker(QWidget* Parent = nullptr, bool AllowNoColor = false);
-	virtual ~lcColorPicker();
+	swColorPicker(QWidget* Parent = nullptr, bool AllowNoColor = false);
+	virtual ~swColorPicker();
 
 	int GetCurrentColor() const;
 	int GetCurrentColorCode() const;

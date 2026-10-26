@@ -11,25 +11,25 @@
 #include <KAcceleratorManager>
 #include <kde_terminal_interface.h>
 
-lcTerminalWidget::lcTerminalWidget(QWidget* Parent)
+swTerminalWidget::swTerminalWidget(QWidget* Parent)
 	: QWidget(Parent)
 {
 	mLayout = new QVBoxLayout(this);
 
-	QWidget* OptionsRow = lcCreatePanelRow(this);
-	lcAddPanelRowStretch(OptionsRow);
+	QWidget* OptionsRow = swCreatePanelRow(this);
+	swAddPanelRowStretch(OptionsRow);
 	mLayout->addWidget(OptionsRow);
 
 	QMenu* OptionsMenu = new QMenu(OptionsRow);
-	lcAddPanelOptionsButton(OptionsRow, OptionsMenu, tr("Configure the terminal."), tr("Terminal Options"));
-	connect(OptionsMenu, &QMenu::aboutToShow, this, &lcTerminalWidget::OptionsMenuAboutToShow);
+	swAddPanelOptionsButton(OptionsRow, OptionsMenu, tr("Configure the terminal."), tr("Terminal Options"));
+	connect(OptionsMenu, &QMenu::aboutToShow, this, &swTerminalWidget::OptionsMenuAboutToShow);
 
 	mDirectory = QDir::homePath();
 
 	qApp->installEventFilter(this);
 }
 
-bool lcTerminalWidget::eventFilter(QObject* Object, QEvent* Event)
+bool swTerminalWidget::eventFilter(QObject* Object, QEvent* Event)
 {
 	if (Event->type() != QEvent::ShortcutOverride)
 		return false;
@@ -55,7 +55,7 @@ bool lcTerminalWidget::eventFilter(QObject* Object, QEvent* Event)
 	return false;
 }
 
-void lcTerminalWidget::showEvent(QShowEvent* Event)
+void swTerminalWidget::showEvent(QShowEvent* Event)
 {
 	// The shell starts the first time the panel is shown.
 	if (!mPart)
@@ -64,7 +64,7 @@ void lcTerminalWidget::showEvent(QShowEvent* Event)
 	QWidget::showEvent(Event);
 }
 
-void lcTerminalWidget::CreateTerminal()
+void swTerminalWidget::CreateTerminal()
 {
 	const KPluginFactory::Result<KPluginFactory> Factory = KPluginFactory::loadFactory(KPluginMetaData(QStringLiteral("konsolepart")));
 
@@ -105,29 +105,29 @@ void lcTerminalWidget::CreateTerminal()
 	connect(mPart, &QObject::destroyed, this, [this]()
 	{
 		if (isVisible())
-			QTimer::singleShot(0, this, &lcTerminalWidget::CreateTerminal);
+			QTimer::singleShot(0, this, &swTerminalWidget::CreateTerminal);
 	});
 }
 
-void lcTerminalWidget::OptionsMenuAboutToShow()
+void swTerminalWidget::OptionsMenuAboutToShow()
 {
 	QMenu* Menu = qobject_cast<QMenu*>(sender());
 	Menu->clear();
 
 	QAction* FollowModel = Menu->addAction(tr("Follow Model Folder"), this, []()
 	{
-		gMainWindow->HandleCommand(LC_VIEW_TERMINAL_TOGGLE_FOLLOW_MODEL);
+		gMainWindow->HandleCommand(SW_VIEW_TERMINAL_TOGGLE_FOLLOW_MODEL);
 	});
 	FollowModel->setCheckable(true);
-	FollowModel->setChecked(lcGetPreferences().mTerminalFollowModel);
+	FollowModel->setChecked(swGetPreferences().mTerminalFollowModel);
 
 	Menu->addAction(tr("Go to Model Folder"), this, []()
 	{
-		gMainWindow->HandleCommand(LC_VIEW_TERMINAL_GO_TO_MODEL_FOLDER);
+		gMainWindow->HandleCommand(SW_VIEW_TERMINAL_GO_TO_MODEL_FOLDER);
 	});
 }
 
-void lcTerminalWidget::SetDirectory(const QString& Directory, bool Force)
+void swTerminalWidget::SetDirectory(const QString& Directory, bool Force)
 {
 	if (Directory.isEmpty() || (Directory == mDirectory && !Force))
 		return;

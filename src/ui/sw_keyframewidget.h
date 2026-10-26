@@ -1,11 +1,11 @@
 #pragma once
 
-class lcKeyFrameWidget : public QCheckBox
+class swKeyFrameWidget : public QCheckBox
 {
 	Q_OBJECT
 
 public:
-	lcKeyFrameWidget(QWidget* Parent);
+	swKeyFrameWidget(QWidget* Parent);
 
 	QSize sizeHint() const override;
 

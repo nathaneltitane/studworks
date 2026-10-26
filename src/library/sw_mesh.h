@@ -3,62 +3,62 @@
 #include "sw_math.h"
 #include "sw_assettypes.h"
 
-enum lcMeshPrimitiveType
+enum swMeshPrimitiveType
 {
-	LC_MESH_LINES = 0x01,
-	LC_MESH_TRIANGLES = 0x02,
-	LC_MESH_TEXTURED_TRIANGLES = 0x08,
-	LC_MESH_CONDITIONAL_LINES = 0x10,
-	LC_MESH_NUM_PRIMITIVE_TYPES
+	SW_MESH_LINES = 0x01,
+	SW_MESH_TRIANGLES = 0x02,
+	SW_MESH_TEXTURED_TRIANGLES = 0x08,
+	SW_MESH_CONDITIONAL_LINES = 0x10,
+	SW_MESH_NUM_PRIMITIVE_TYPES
 };
 
-struct lcVertex
+struct swVertex
 {
-	lcVector3 Position;
+	swVector3 Position;
 	quint32 Normal;
 };
 
-struct lcVertexTextured
+struct swVertexTextured
 {
-	lcVector3 Position;
+	swVector3 Position;
 	quint32 Normal;
-	lcVector2 TexCoord;
+	swVector2 TexCoord;
 };
 
-struct lcVertexConditional
+struct swVertexConditional
 {
-	lcVector3 Position1;
-	lcVector3 Position2;
-	lcVector3 Position3;
-	lcVector3 Position4;
+	swVector3 Position1;
+	swVector3 Position2;
+	swVector3 Position3;
+	swVector3 Position4;
 };
 
-struct lcMeshSection
+struct swMeshSection
 {
 	int ColorIndex; // Holds a color code until FinalizeSections() converts it to an index.
 	int DrawOffset; // Index-buffer byte offset, or first conditional vertex.
 	int DrawCount;  // Index count, or conditional vertex count.
-	lcMeshPrimitiveType PrimitiveType;
-	lcTextureRef Texture;
+	swMeshPrimitiveType PrimitiveType;
+	swTextureRef Texture;
 	QString TextureName;
-	lcBoundingBox BoundingBox;
+	swBoundingBox BoundingBox;
 	float Radius;
 };
 
-struct lcMeshLod
+struct swMeshLod
 {
-	lcMeshSection* Sections = nullptr;
+	swMeshSection* Sections = nullptr;
 	int NumSections = 0;
 };
 
 enum
 {
-	LC_MESH_LOD_HIGH,
-	LC_MESH_LOD_LOW,
-	LC_NUM_MESH_LODS
+	SW_MESH_LOD_HIGH,
+	SW_MESH_LOD_LOW,
+	SW_NUM_MESH_LODS
 };
 
-enum class lcMeshFlag
+enum class swMeshFlag
 {
 	HasDefault     = 0x01, // Mesh has triangles using the default color
 	HasSolid       = 0x02, // Mesh has triangles using a solid color
@@ -68,67 +68,67 @@ enum class lcMeshFlag
 	HasStyleStud   = 0x20  // Mesh has a stud that can have a logo applied
 };
 
-Q_DECLARE_FLAGS(lcMeshFlags, lcMeshFlag)
-Q_DECLARE_OPERATORS_FOR_FLAGS(lcMeshFlags)
+Q_DECLARE_FLAGS(swMeshFlags, swMeshFlag)
+Q_DECLARE_OPERATORS_FOR_FLAGS(swMeshFlags)
 
-class lcMesh
+class swMesh
 {
 public:
-	lcMesh();
-	~lcMesh();
+	swMesh();
+	~swMesh();
 
-	lcMesh(const lcMesh&) = delete;
-	lcMesh(lcMesh&&) = delete;
-	lcMesh& operator=(const lcMesh&) = delete;
-	lcMesh& operator=(lcMesh&&) = delete;
+	swMesh(const swMesh&) = delete;
+	swMesh(swMesh&&) = delete;
+	swMesh& operator=(const swMesh&) = delete;
+	swMesh& operator=(swMesh&&) = delete;
 
-	void Create(quint16 (&NumSections)[LC_NUM_MESH_LODS], int VertexCount, int TexturedVertexCount, int ConditionalVertexCount, int IndexCount);
+	void Create(quint16 (&NumSections)[SW_NUM_MESH_LODS], int VertexCount, int TexturedVertexCount, int ConditionalVertexCount, int IndexCount);
 	void CreateBox();
 
-	bool FileLoad(lcMemFile& File);
-	bool FileSave(lcMemFile& File);
+	bool FileLoad(swMemFile& File);
+	bool FileSave(swMemFile& File);
 
 	// Set colors and flags, then sort sections using the current palette on the UI thread.
 	// Converts stored color codes to indices once, before publishing the mesh.
 	void FinalizeSections();
 
 	template<typename IndexType>
-	void ExportPOVRay(lcFile& File, const char* MeshName, const char** ColorTable);
-	void ExportPOVRay(lcFile& File, const char* MeshName, const char** ColorTable);
+	void ExportPOVRay(swFile& File, const char* MeshName, const char** ColorTable);
+	void ExportPOVRay(swFile& File, const char* MeshName, const char** ColorTable);
 
 	template<typename IndexType>
-	void ExportWavefrontIndices(lcFile& File, int DefaultColorIndex, int VertexOffset);
-	void ExportWavefrontIndices(lcFile& File, int DefaultColorIndex, int VertexOffset);
+	void ExportWavefrontIndices(swFile& File, int DefaultColorIndex, int VertexOffset);
+	void ExportWavefrontIndices(swFile& File, int DefaultColorIndex, int VertexOffset);
 
 	template<typename IndexType>
-	bool MinIntersectDist(const lcVector3& Start, const lcVector3& End, float& MinDist, lcVector3& HitPlane, lcVector3& HitNormal);
-	bool MinIntersectDist(const lcVector3& Start, const lcVector3& End, float& MinDist, lcVector3& HitPlane, lcVector3& HitNormal);
+	bool MinIntersectDist(const swVector3& Start, const swVector3& End, float& MinDist, swVector3& HitPlane, swVector3& HitNormal);
+	bool MinIntersectDist(const swVector3& Start, const swVector3& End, float& MinDist, swVector3& HitPlane, swVector3& HitNormal);
 
 	template<typename IndexType>
-	bool IntersectsPlanes(const lcVector4 (&Planes)[6]);
-	bool IntersectsPlanes(const lcVector4 (&Planes)[6]);
+	bool IntersectsPlanes(const swVector4 (&Planes)[6]);
+	bool IntersectsPlanes(const swVector4 (&Planes)[6]);
 
 	int GetLodIndex(float Distance) const;
 
-	const lcVertex* GetVertexData() const
+	const swVertex* GetVertexData() const
 	{
-		return static_cast<lcVertex*>(mVertexData);
+		return static_cast<swVertex*>(mVertexData);
 	}
 
-	const lcVertexTextured* GetTexturedVertexData() const
+	const swVertexTextured* GetTexturedVertexData() const
 	{
-		return reinterpret_cast<lcVertexTextured*>(static_cast<char*>(mVertexData) + mNumVertices * sizeof(lcVertex));
+		return reinterpret_cast<swVertexTextured*>(static_cast<char*>(mVertexData) + mNumVertices * sizeof(swVertex));
 	}
 
-	const lcVertexConditional* GetConditionalVertexData() const
+	const swVertexConditional* GetConditionalVertexData() const
 	{
-		return reinterpret_cast<lcVertexConditional*>(static_cast<char*>(mVertexData) + mNumVertices * sizeof(lcVertex) + mNumTexturedVertices * sizeof(lcVertexTextured));
+		return reinterpret_cast<swVertexConditional*>(static_cast<char*>(mVertexData) + mNumVertices * sizeof(swVertex) + mNumTexturedVertices * sizeof(swVertexTextured));
 	}
 
-	lcMeshLod mLods[LC_NUM_MESH_LODS];
-	lcBoundingBox mBoundingBox;
+	swMeshLod mLods[SW_NUM_MESH_LODS];
+	swBoundingBox mBoundingBox;
 	float mRadius = 0.0f;
-	lcMeshFlags mFlags;
+	swMeshFlags mFlags;
 
 	void* mVertexData = nullptr;
 	int mVertexDataSize = 0;

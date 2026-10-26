@@ -6,8 +6,8 @@
 #include "sw_string.h"
 #include <float.h>
 
-std::vector<lcColor> gColorList;
-lcColorGroup gColorGroups[LC_NUM_COLORGROUPS];
+std::vector<swColor> gColorList;
+swColorGroup gColorGroups[SW_NUM_COLORGROUPS];
 int gEdgeColor;
 int gDefaultColor;
 
@@ -22,38 +22,38 @@ static void GetToken(char*& Ptr, char* Token)
 	*Token = 0;
 }
 
-static void lcAdjustStudStyleColors(std::vector<lcColor>& Colors, lcStudStyle StudStyle)
+static void swAdjustStudStyleColors(std::vector<swColor>& Colors, swStudStyle StudStyle)
 {
-	const lcPreferences& Preferences = lcGetPreferences();
+	const swPreferences& Preferences = swGetPreferences();
 
-	if (!Preferences.mAutomateEdgeColor && !lcIsHighContrast(StudStyle))
+	if (!Preferences.mAutomateEdgeColor && !swIsHighContrast(StudStyle))
 		return;
 
-	const lcVector4 Edge = lcVector4FromColor(Preferences.mPartEdgeColor);
-	const lcVector4 DarkEdge = lcVector4FromColor(Preferences.mDarkEdgeColor);
-	const lcVector4 BlackEdge = lcVector4FromColor(Preferences.mBlackEdgeColor);
+	const swVector4 Edge = swVector4FromColor(Preferences.mPartEdgeColor);
+	const swVector4 DarkEdge = swVector4FromColor(Preferences.mDarkEdgeColor);
+	const swVector4 BlackEdge = swVector4FromColor(Preferences.mBlackEdgeColor);
 
 	const float ContrastControl = Preferences.mPartEdgeContrast;
-	const float LightDarkControl = Preferences.mAutomateEdgeColor ? Preferences.mPartColorValueLDIndex : LC_SRGB_TO_LINEAR(Preferences.mPartColorValueLDIndex);
+	const float LightDarkControl = Preferences.mAutomateEdgeColor ? Preferences.mPartColorValueLDIndex : SW_SRGB_TO_LINEAR(Preferences.mPartColorValueLDIndex);
 
-	for (lcColor& Color : Colors)
+	for (swColor& Color : Colors)
 	{
-		const lcVector3 LinearColor = lcSRGBToLinear(lcVector3(Color.Value));
-		const float ValueLuminescence = lcLuminescence(LinearColor);
+		const swVector3 LinearColor = swSRGBToLinear(swVector3(Color.Value));
+		const float ValueLuminescence = swLuminescence(LinearColor);
 
 		if (Preferences.mAutomateEdgeColor)
 		{
 			if (Color.Adjusted)
 				continue;
 
-			const float EdgeLuminescence = lcLuminescence(lcSRGBToLinear(lcVector3(Color.Edge)));
+			const float EdgeLuminescence = swLuminescence(swSRGBToLinear(swVector3(Color.Edge)));
 
-			Color.Edge = lcAlgorithmicEdgeColor(LinearColor, ValueLuminescence, EdgeLuminescence, ContrastControl, LightDarkControl);
+			Color.Edge = swAlgorithmicEdgeColor(LinearColor, ValueLuminescence, EdgeLuminescence, ContrastControl, LightDarkControl);
 			Color.Adjusted = true;
 		}
 		else
 		{
-			if (Color.Code == LC_STUD_CYLINDER_COLOR_CODE)
+			if (Color.Code == SW_STUD_CYLINDER_COLOR_CODE)
 				continue;
 			else if (Preferences.mBlackEdgeColorEnabled && Color.Code == 0)
 				Color.Edge = BlackEdge;
@@ -65,11 +65,11 @@ static void lcAdjustStudStyleColors(std::vector<lcColor>& Colors, lcStudStyle St
 	}
 }
 
-static std::vector<lcColor> lcParseColorFile(lcFile& File)
+static std::vector<swColor> swParseColorFile(swFile& File)
 {
 	char Line[1024], Token[1024];
-	std::vector<lcColor> Colors;
-	lcColor Color;
+	std::vector<swColor> Colors;
+	swColor Color;
 
 	while (File.ReadLine(Line, sizeof(Line)))
 	{
@@ -80,7 +80,7 @@ static std::vector<lcColor> lcParseColorFile(lcFile& File)
 			continue;
 
 		GetToken(Ptr, Token);
-		lcstrupr(Token);
+		swstrupr(Token);
 		if (strcmp(Token, "!COLOUR"))
 			continue;
 
@@ -88,7 +88,7 @@ static std::vector<lcColor> lcParseColorFile(lcFile& File)
 		Color.Translucent = false;
 		Color.Chrome = false;
 		Color.Rubber = false;
-		Color.Group = LC_COLORGROUP_SOLID;
+		Color.Group = SW_COLORGROUP_SOLID;
 		Color.Value[0] = FLT_MAX;
 		Color.Value[1] = FLT_MAX;
 		Color.Value[2] = FLT_MAX;
@@ -99,15 +99,15 @@ static std::vector<lcColor> lcParseColorFile(lcFile& File)
 		Color.Edge[3] = 1.0f;
 
 		GetToken(Ptr, Token);
-		lcstrcpy(Color.Name, Token);
-		lcstrcpy(Color.SafeName, Color.Name);
+		swstrcpy(Color.Name, Token);
+		swstrcpy(Color.SafeName, Color.Name);
 
 		for (char* Underscore = strchr((char*)Color.Name, '_'); Underscore; Underscore = strchr(Underscore, '_'))
 			*Underscore = ' ';
 
 		for (GetToken(Ptr, Token); Token[0]; GetToken(Ptr, Token))
 		{
-			lcstrupr(Token);
+			swstrupr(Token);
 
 			if (!strcmp(Token, "CODE"))
 			{
@@ -155,27 +155,27 @@ static std::vector<lcColor> lcParseColorFile(lcFile& File)
 					Color.Translucent = true;
 
 				if (Value == 128)
-					Color.Group = LC_COLORGROUP_TRANSLUCENT;
+					Color.Group = SW_COLORGROUP_TRANSLUCENT;
 				else if (Value != 0)
-					Color.Group = LC_COLORGROUP_SPECIAL;
+					Color.Group = SW_COLORGROUP_SPECIAL;
 			}
 			else if (!strcmp(Token, "CHROME"))
 			{
 				Color.Chrome = true;
-				Color.Group = LC_COLORGROUP_SPECIAL;
+				Color.Group = SW_COLORGROUP_SPECIAL;
 			}
 			else if (!strcmp(Token, "RUBBER"))
 			{
 				Color.Rubber = true;
-				Color.Group = LC_COLORGROUP_SPECIAL;
+				Color.Group = SW_COLORGROUP_SPECIAL;
 			}
 			else if (!strcmp(Token, "PEARLESCENT") || !strcmp(Token, "MATTE_METALIC") || !strcmp(Token, "METAL") || !strcmp(Token, "LUMINANCE"))
 			{
-				Color.Group = LC_COLORGROUP_SPECIAL;
+				Color.Group = SW_COLORGROUP_SPECIAL;
 			}
 			else if (!strcmp(Token, "MATERIAL"))
 			{
-				Color.Group = LC_COLORGROUP_SPECIAL;
+				Color.Group = SW_COLORGROUP_SPECIAL;
 				break; // Material is always last so ignore it and the rest of the line.
 			}
 		}
@@ -192,7 +192,7 @@ static std::vector<lcColor> lcParseColorFile(lcFile& File)
 
 		bool Duplicate = false;
 
-		for (lcColor& ExistingColor : Colors)
+		for (swColor& ExistingColor : Colors)
 		{
 			if (ExistingColor.Code == Color.Code)
 			{
@@ -209,17 +209,17 @@ static std::vector<lcColor> lcParseColorFile(lcFile& File)
 	return Colors;
 }
 
-bool lcLoadColorFile(lcFile& File, lcStudStyle StudStyle)
+bool swLoadColorFile(swFile& File, swStudStyle StudStyle)
 {
-	std::vector<lcColor> Colors = lcParseColorFile(File);
+	std::vector<swColor> Colors = swParseColorFile(File);
 	const bool Valid = !Colors.empty();
 
 	if (Valid)
-		lcAdjustStudStyleColors(Colors, StudStyle);
+		swAdjustStudStyleColors(Colors, StudStyle);
 
 	bool FoundMain = false, FoundEdge = false, FoundStudCylinder = false, FoundNoColor = false;
 
-	for (const lcColor& Color : Colors)
+	for (const swColor& Color : Colors)
 	{
 		switch (Color.Code)
 		{
@@ -231,11 +231,11 @@ bool lcLoadColorFile(lcFile& File, lcStudStyle StudStyle)
 				FoundEdge = true;
 				break;
 
-			case LC_STUD_CYLINDER_COLOR_CODE:
+			case SW_STUD_CYLINDER_COLOR_CODE:
 				FoundStudCylinder = true;
 				break;
 
-			case LC_COLOR_NOCOLOR:
+			case SW_COLOR_NOCOLOR:
 				FoundNoColor = true;
 				break;
 		}
@@ -243,13 +243,13 @@ bool lcLoadColorFile(lcFile& File, lcStudStyle StudStyle)
 
 	if (!FoundMain)
 	{
-		lcColor MainColor;
+		swColor MainColor;
 
 		MainColor.Code = 16;
 		MainColor.Translucent = false;
 		MainColor.Chrome = false;
 		MainColor.Rubber = false;
-		MainColor.Group = LC_COLORGROUP_SOLID;
+		MainColor.Group = SW_COLORGROUP_SOLID;
 		MainColor.Value[0] = 1.0f;
 		MainColor.Value[1] = 1.0f;
 		MainColor.Value[2] = 0.5f;
@@ -258,21 +258,21 @@ bool lcLoadColorFile(lcFile& File, lcStudStyle StudStyle)
 		MainColor.Edge[1] = 0.2f;
 		MainColor.Edge[2] = 0.2f;
 		MainColor.Edge[3] = 1.0f;
-		lcstrcpy(MainColor.Name, "Main Color");
-		lcstrcpy(MainColor.SafeName, "Main_Color");
+		swstrcpy(MainColor.Name, "Main Color");
+		swstrcpy(MainColor.SafeName, "Main_Color");
 
 		Colors.push_back(MainColor);
 	}
 
 	if (!FoundEdge)
 	{
-		lcColor EdgeColor;
+		swColor EdgeColor;
 
 		EdgeColor.Code = 24;
 		EdgeColor.Translucent = false;
 		EdgeColor.Chrome = false;
 		EdgeColor.Rubber = false;
-		EdgeColor.Group = LC_NUM_COLORGROUPS;
+		EdgeColor.Group = SW_NUM_COLORGROUPS;
 		EdgeColor.Value[0] = 0.5f;
 		EdgeColor.Value[1] = 0.5f;
 		EdgeColor.Value[2] = 0.5f;
@@ -281,39 +281,39 @@ bool lcLoadColorFile(lcFile& File, lcStudStyle StudStyle)
 		EdgeColor.Edge[1] = 0.2f;
 		EdgeColor.Edge[2] = 0.2f;
 		EdgeColor.Edge[3] = 1.0f;
-		lcstrcpy(EdgeColor.Name, "Edge Color");
-		lcstrcpy(EdgeColor.SafeName, "Edge_Color");
+		swstrcpy(EdgeColor.Name, "Edge Color");
+		swstrcpy(EdgeColor.SafeName, "Edge_Color");
 
 		Colors.push_back(EdgeColor);
 	}
 
 	if (!FoundStudCylinder)
 	{
-		const lcPreferences& Preferences = lcGetPreferences();
-		lcColor StudCylinderColor;
+		const swPreferences& Preferences = swGetPreferences();
+		swColor StudCylinderColor;
 
-		StudCylinderColor.Code = LC_STUD_CYLINDER_COLOR_CODE;
+		StudCylinderColor.Code = SW_STUD_CYLINDER_COLOR_CODE;
 		StudCylinderColor.Translucent = false;
 		StudCylinderColor.Chrome = false;
 		StudCylinderColor.Rubber = false;
-		StudCylinderColor.Group = LC_NUM_COLORGROUPS;
-		StudCylinderColor.Value = lcVector4FromColor(Preferences.mStudCylinderColor);
-		StudCylinderColor.Edge = lcVector4FromColor(Preferences.mPartEdgeColor);
-		lcstrcpy(StudCylinderColor.Name, "Stud Cylinder Color");
-		lcstrcpy(StudCylinderColor.SafeName, "Stud_Cylinder_Color");
+		StudCylinderColor.Group = SW_NUM_COLORGROUPS;
+		StudCylinderColor.Value = swVector4FromColor(Preferences.mStudCylinderColor);
+		StudCylinderColor.Edge = swVector4FromColor(Preferences.mPartEdgeColor);
+		swstrcpy(StudCylinderColor.Name, "Stud Cylinder Color");
+		swstrcpy(StudCylinderColor.SafeName, "Stud_Cylinder_Color");
 
 		Colors.push_back(StudCylinderColor);
 	}
 
 	if (!FoundNoColor)
 	{
-		lcColor NoColor;
+		swColor NoColor;
 
-		NoColor.Code = LC_COLOR_NOCOLOR;
+		NoColor.Code = SW_COLOR_NOCOLOR;
 		NoColor.Translucent = false;
 		NoColor.Chrome = false;
 		NoColor.Rubber = false;
-		NoColor.Group = LC_NUM_COLORGROUPS;
+		NoColor.Group = SW_NUM_COLORGROUPS;
 		NoColor.Value[0] = 0.5f;
 		NoColor.Value[1] = 0.5f;
 		NoColor.Value[2] = 0.5f;
@@ -322,23 +322,23 @@ bool lcLoadColorFile(lcFile& File, lcStudStyle StudStyle)
 		NoColor.Edge[1] = 0.2f;
 		NoColor.Edge[2] = 0.2f;
 		NoColor.Edge[3] = 1.0f;
-		lcstrcpy(NoColor.Name, "No Color");
-		lcstrcpy(NoColor.SafeName, "No_Color");
+		swstrcpy(NoColor.Name, "No Color");
+		swstrcpy(NoColor.SafeName, "No_Color");
 
 		Colors.push_back(NoColor);
 	}
 
-	for (lcColor& Color : gColorList)
-		Color.Group = LC_NUM_COLORGROUPS;
+	for (swColor& Color : gColorList)
+		Color.Group = SW_NUM_COLORGROUPS;
 
-	for (int GroupIdx = 0; GroupIdx < LC_NUM_COLORGROUPS; GroupIdx++)
+	for (int GroupIdx = 0; GroupIdx < SW_NUM_COLORGROUPS; GroupIdx++)
 		gColorGroups[GroupIdx].Colors.clear();
 
 	gColorGroups[0].Name = QApplication::tr("Solid", "Colors");
 	gColorGroups[1].Name = QApplication::tr("Translucent", "Colors");
 	gColorGroups[2].Name = QApplication::tr("Special", "Colors");
 
-	for (lcColor& Color : Colors)
+	for (swColor& Color : Colors)
 	{
 		int ColorIndex;
 
@@ -351,7 +351,7 @@ bool lcLoadColorFile(lcFile& File, lcStudStyle StudStyle)
 		else
 			gColorList[ColorIndex] = Color;
 
-		if (Color.Group != LC_NUM_COLORGROUPS)
+		if (Color.Group != SW_NUM_COLORGROUPS)
 			gColorGroups[Color.Group].Colors.push_back(ColorIndex);
 
 		if (Color.Code == 16)
@@ -363,21 +363,21 @@ bool lcLoadColorFile(lcFile& File, lcStudStyle StudStyle)
 	return Valid;
 }
 
-void lcLoadDefaultColors(lcStudStyle StudStyle)
+void swLoadDefaultColors(swStudStyle StudStyle)
 {
-	lcDiskFile ConfigFile(":/resources/ldconfig.ldr");
+	swDiskFile ConfigFile(":/resources/ldconfig.ldr");
 
 	if (ConfigFile.Open(QIODevice::ReadOnly))
-		lcLoadColorFile(ConfigFile, StudStyle);
+		swLoadColorFile(ConfigFile, StudStyle);
 }
 
-int lcGetColorIndex(quint32 ColorCode)
+int swGetColorIndex(quint32 ColorCode)
 {
 	for (size_t ColorIdx = 0; ColorIdx < gColorList.size(); ColorIdx++)
 		if (gColorList[ColorIdx].Code == ColorCode)
 			return (int)ColorIdx;
 
-	lcColor Color;
+	swColor Color;
 
 	Color.Code = ColorCode;
 	Color.Translucent = false;
@@ -388,7 +388,7 @@ int lcGetColorIndex(quint32 ColorCode)
 	Color.Edge[2] = 0.2f;
 	Color.Edge[3] = 1.0f;
 
-	if (ColorCode & LC_COLOR_DIRECT)
+	if (ColorCode & SW_COLOR_DIRECT)
 	{
 		Color.Value[0] = (float)((ColorCode & 0xff0000) >> 16) / 255.0f;
 		Color.Value[1] = (float)((ColorCode & 0x00ff00) >> 8) / 255.0f;
@@ -411,9 +411,9 @@ int lcGetColorIndex(quint32 ColorCode)
 	return (int)gColorList.size() - 1;
 }
 
-QString lcGetColorToolTip(int ColorIndex)
+QString swGetColorToolTip(int ColorIndex)
 {
-	lcColor* Color = &gColorList[ColorIndex];
+	swColor* Color = &gColorList[ColorIndex];
 	QColor Rgb(Color->Value[0] * 255, Color->Value[1] * 255, Color->Value[2] * 255);
 
 	QImage Image(16, 16, QImage::Format_RGB888);
@@ -422,10 +422,10 @@ QString lcGetColorToolTip(int ColorIndex)
 	QPainter Painter(&Image);
 	Painter.setPen(Qt::darkGray);
 
-	if (Color->Code != LC_COLOR_NOCOLOR)
+	if (Color->Code != SW_COLOR_NOCOLOR)
 		Painter.drawRect(0, 0, Image.width() - 1, Image.height() - 1);
 	else
-		lcDrawNoColorRect(Painter, QRect(0, 0, Image.width() - 1, Image.height() - 1));
+		swDrawNoColorRect(Painter, QRect(0, 0, Image.width() - 1, Image.height() - 1));
 
 	Painter.end();
 
@@ -437,7 +437,7 @@ QString lcGetColorToolTip(int ColorIndex)
 
 	QString Text;
 
-	if (Color->Code != LC_COLOR_NOCOLOR)
+	if (Color->Code != SW_COLOR_NOCOLOR)
 	{
 		const char* format = "<table><tr><td style=\"vertical-align:middle\"><img src=\"data:image/png;base64,%1\"/></td><td>%2 (%3)</td></tr></table>";
 		Text = QString(format).arg(QString(Buffer.data().toBase64()), gColorList[ColorIndex].Name, QString::number(gColorList[ColorIndex].Code));
@@ -452,7 +452,7 @@ QString lcGetColorToolTip(int ColorIndex)
 }
 
 
-void lcDrawNoColorRect(QPainter& Painter, const QRect& Rect)
+void swDrawNoColorRect(QPainter& Painter, const QRect& Rect)
 {
 	Painter.setBrush(Qt::black);
 	Painter.drawRect(Rect);

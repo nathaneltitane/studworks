@@ -1,7 +1,7 @@
 #include "sw_global.h"
 #include "sw_string.h"
 
-char* lcstrcasestr(const char* s, const char* find)
+char* swstrcasestr(const char* s, const char* find)
 {
 	char c, sc;
 
@@ -22,7 +22,7 @@ char* lcstrcasestr(const char* s, const char* find)
 	return ((char *)s);
 }
 
-char* lcstrupr(char* string)
+char* swstrupr(char* string)
 {
 	for (char* c = string; *c; c++)
 		*c = toupper(*c);
@@ -30,7 +30,7 @@ char* lcstrupr(char* string)
 	return string;
 }
 
-size_t lcstrcpy(char* dest, const char* source, size_t size)
+size_t swstrcpy(char* dest, const char* source, size_t size)
 {
 	if (size == 0)
 		return 0;
@@ -50,7 +50,7 @@ size_t lcstrcpy(char* dest, const char* source, size_t size)
 	return size;
 }
 
-size_t lcstrcat(char* dest, const char* source, size_t size)
+size_t swstrcat(char* dest, const char* source, size_t size)
 {
 	char* d = dest;
 	const char* s = source;
@@ -81,13 +81,13 @@ size_t lcstrcat(char* dest, const char* source, size_t size)
 	return (dlen + (s - source));
 }
 
-QString lcFormatDefaultName(const QString& Prefix, int Number)
+QString swFormatDefaultName(const QString& Prefix, int Number)
 {
 	// Default names are a word and a three digit number, such as Group 001.
 	return Prefix + QString::number(Number).rightJustified(3, QLatin1Char('0'));
 }
 
-int lcGetDefaultNameNumber(const QString& Name, const QString& Prefix)
+int swGetDefaultNameNumber(const QString& Name, const QString& Prefix)
 {
 	if (!Name.startsWith(Prefix))
 		return 0;

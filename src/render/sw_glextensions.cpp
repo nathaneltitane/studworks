@@ -13,7 +13,7 @@ GLfloat gMaxAnisotropy;
 #define APIENTRY
 #endif
 
-static void APIENTRY lcGLDebugCallback(GLenum Source, GLenum Type, GLuint Id, GLenum Severity, GLsizei Length, const GLchar* Message, GLvoid* UserParam)
+static void APIENTRY swGLDebugCallback(GLenum Source, GLenum Type, GLuint Id, GLenum Severity, GLsizei Length, const GLchar* Message, GLvoid* UserParam)
 {
 	Q_UNUSED(Source);
 	Q_UNUSED(Type);
@@ -27,7 +27,7 @@ static void APIENTRY lcGLDebugCallback(GLenum Source, GLenum Type, GLuint Id, GL
 
 #endif
 
-void lcInitializeGLExtensions(const QOpenGLContext* Context)
+void swInitializeGLExtensions(const QOpenGLContext* Context)
 {
 	QOpenGLFunctions* Functions = Context->functions();
 
@@ -42,7 +42,7 @@ void lcInitializeGLExtensions(const QOpenGLContext* Context)
 
 		if (DebugMessageCallback)
 		{
-			DebugMessageCallback((GLDEBUGPROCARB)&lcGLDebugCallback, nullptr);
+			DebugMessageCallback((GLDEBUGPROCARB)&swGLDebugCallback, nullptr);
 			glEnable(GL_DEBUG_OUTPUT);
 			glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB);
 		}

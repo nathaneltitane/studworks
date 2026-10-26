@@ -4,90 +4,90 @@
 #include "sw_instructions.h"
 #include "sw_profile.h"
 
-struct lcPageSetupPreset
+struct swPageSetupPreset
 {
 	const char* Name;
 	float Width;
 	float Height;
-	lcInstructionsPageUnits Units;
+	swInstructionsPageUnits Units;
 };
 
 // paper sizes are portrait and screen sizes landscape, the orientation buttons swap them
-static const lcPageSetupPreset gPageSetupPresets[] =
+static const swPageSetupPreset gPageSetupPresets[] =
 {
-	{ QT_TRANSLATE_NOOP("lcPageSetupDialog", "A0"), 841.0f, 1189.0f, lcInstructionsPageUnits::Millimeters },
-	{ QT_TRANSLATE_NOOP("lcPageSetupDialog", "A1"), 594.0f, 841.0f, lcInstructionsPageUnits::Millimeters },
-	{ QT_TRANSLATE_NOOP("lcPageSetupDialog", "A2"), 420.0f, 594.0f, lcInstructionsPageUnits::Millimeters },
-	{ QT_TRANSLATE_NOOP("lcPageSetupDialog", "A3"), 297.0f, 420.0f, lcInstructionsPageUnits::Millimeters },
-	{ QT_TRANSLATE_NOOP("lcPageSetupDialog", "A4"), 210.0f, 297.0f, lcInstructionsPageUnits::Millimeters },
-	{ QT_TRANSLATE_NOOP("lcPageSetupDialog", "A5"), 148.0f, 210.0f, lcInstructionsPageUnits::Millimeters },
-	{ QT_TRANSLATE_NOOP("lcPageSetupDialog", "A6"), 105.0f, 148.0f, lcInstructionsPageUnits::Millimeters },
-	{ QT_TRANSLATE_NOOP("lcPageSetupDialog", "B4"), 250.0f, 353.0f, lcInstructionsPageUnits::Millimeters },
-	{ QT_TRANSLATE_NOOP("lcPageSetupDialog", "B5"), 176.0f, 250.0f, lcInstructionsPageUnits::Millimeters },
-	{ QT_TRANSLATE_NOOP("lcPageSetupDialog", "B6"), 125.0f, 176.0f, lcInstructionsPageUnits::Millimeters },
-	{ QT_TRANSLATE_NOOP("lcPageSetupDialog", "JIS B4"), 257.0f, 364.0f, lcInstructionsPageUnits::Millimeters },
-	{ QT_TRANSLATE_NOOP("lcPageSetupDialog", "JIS B5"), 182.0f, 257.0f, lcInstructionsPageUnits::Millimeters },
-	{ nullptr, 0.0f, 0.0f, lcInstructionsPageUnits::Pixels },
-	{ QT_TRANSLATE_NOOP("lcPageSetupDialog", "Letter"), 8.5f, 11.0f, lcInstructionsPageUnits::Inches },
-	{ QT_TRANSLATE_NOOP("lcPageSetupDialog", "Legal"), 8.5f, 14.0f, lcInstructionsPageUnits::Inches },
-	{ QT_TRANSLATE_NOOP("lcPageSetupDialog", "Tabloid"), 11.0f, 17.0f, lcInstructionsPageUnits::Inches },
-	{ QT_TRANSLATE_NOOP("lcPageSetupDialog", "Executive"), 7.25f, 10.5f, lcInstructionsPageUnits::Inches },
-	{ QT_TRANSLATE_NOOP("lcPageSetupDialog", "Statement"), 5.5f, 8.5f, lcInstructionsPageUnits::Inches },
-	{ QT_TRANSLATE_NOOP("lcPageSetupDialog", "ANSI C"), 17.0f, 22.0f, lcInstructionsPageUnits::Inches },
-	{ nullptr, 0.0f, 0.0f, lcInstructionsPageUnits::Pixels },
-	{ QT_TRANSLATE_NOOP("lcPageSetupDialog", "XGA"), 1024.0f, 768.0f, lcInstructionsPageUnits::Pixels },
-	{ QT_TRANSLATE_NOOP("lcPageSetupDialog", "HD"), 1280.0f, 720.0f, lcInstructionsPageUnits::Pixels },
-	{ QT_TRANSLATE_NOOP("lcPageSetupDialog", "WXGA"), 1366.0f, 768.0f, lcInstructionsPageUnits::Pixels },
-	{ QT_TRANSLATE_NOOP("lcPageSetupDialog", "UXGA"), 1600.0f, 1200.0f, lcInstructionsPageUnits::Pixels },
-	{ QT_TRANSLATE_NOOP("lcPageSetupDialog", "Full HD"), 1920.0f, 1080.0f, lcInstructionsPageUnits::Pixels },
-	{ QT_TRANSLATE_NOOP("lcPageSetupDialog", "WUXGA"), 1920.0f, 1200.0f, lcInstructionsPageUnits::Pixels },
-	{ QT_TRANSLATE_NOOP("lcPageSetupDialog", "Tablet"), 2048.0f, 1536.0f, lcInstructionsPageUnits::Pixels },
-	{ QT_TRANSLATE_NOOP("lcPageSetupDialog", "QHD"), 2560.0f, 1440.0f, lcInstructionsPageUnits::Pixels },
-	{ QT_TRANSLATE_NOOP("lcPageSetupDialog", "4K UHD"), 3840.0f, 2160.0f, lcInstructionsPageUnits::Pixels },
+	{ QT_TRANSLATE_NOOP("swPageSetupDialog", "A0"), 841.0f, 1189.0f, swInstructionsPageUnits::Millimeters },
+	{ QT_TRANSLATE_NOOP("swPageSetupDialog", "A1"), 594.0f, 841.0f, swInstructionsPageUnits::Millimeters },
+	{ QT_TRANSLATE_NOOP("swPageSetupDialog", "A2"), 420.0f, 594.0f, swInstructionsPageUnits::Millimeters },
+	{ QT_TRANSLATE_NOOP("swPageSetupDialog", "A3"), 297.0f, 420.0f, swInstructionsPageUnits::Millimeters },
+	{ QT_TRANSLATE_NOOP("swPageSetupDialog", "A4"), 210.0f, 297.0f, swInstructionsPageUnits::Millimeters },
+	{ QT_TRANSLATE_NOOP("swPageSetupDialog", "A5"), 148.0f, 210.0f, swInstructionsPageUnits::Millimeters },
+	{ QT_TRANSLATE_NOOP("swPageSetupDialog", "A6"), 105.0f, 148.0f, swInstructionsPageUnits::Millimeters },
+	{ QT_TRANSLATE_NOOP("swPageSetupDialog", "B4"), 250.0f, 353.0f, swInstructionsPageUnits::Millimeters },
+	{ QT_TRANSLATE_NOOP("swPageSetupDialog", "B5"), 176.0f, 250.0f, swInstructionsPageUnits::Millimeters },
+	{ QT_TRANSLATE_NOOP("swPageSetupDialog", "B6"), 125.0f, 176.0f, swInstructionsPageUnits::Millimeters },
+	{ QT_TRANSLATE_NOOP("swPageSetupDialog", "JIS B4"), 257.0f, 364.0f, swInstructionsPageUnits::Millimeters },
+	{ QT_TRANSLATE_NOOP("swPageSetupDialog", "JIS B5"), 182.0f, 257.0f, swInstructionsPageUnits::Millimeters },
+	{ nullptr, 0.0f, 0.0f, swInstructionsPageUnits::Pixels },
+	{ QT_TRANSLATE_NOOP("swPageSetupDialog", "Letter"), 8.5f, 11.0f, swInstructionsPageUnits::Inches },
+	{ QT_TRANSLATE_NOOP("swPageSetupDialog", "Legal"), 8.5f, 14.0f, swInstructionsPageUnits::Inches },
+	{ QT_TRANSLATE_NOOP("swPageSetupDialog", "Tabloid"), 11.0f, 17.0f, swInstructionsPageUnits::Inches },
+	{ QT_TRANSLATE_NOOP("swPageSetupDialog", "Executive"), 7.25f, 10.5f, swInstructionsPageUnits::Inches },
+	{ QT_TRANSLATE_NOOP("swPageSetupDialog", "Statement"), 5.5f, 8.5f, swInstructionsPageUnits::Inches },
+	{ QT_TRANSLATE_NOOP("swPageSetupDialog", "ANSI C"), 17.0f, 22.0f, swInstructionsPageUnits::Inches },
+	{ nullptr, 0.0f, 0.0f, swInstructionsPageUnits::Pixels },
+	{ QT_TRANSLATE_NOOP("swPageSetupDialog", "XGA"), 1024.0f, 768.0f, swInstructionsPageUnits::Pixels },
+	{ QT_TRANSLATE_NOOP("swPageSetupDialog", "HD"), 1280.0f, 720.0f, swInstructionsPageUnits::Pixels },
+	{ QT_TRANSLATE_NOOP("swPageSetupDialog", "WXGA"), 1366.0f, 768.0f, swInstructionsPageUnits::Pixels },
+	{ QT_TRANSLATE_NOOP("swPageSetupDialog", "UXGA"), 1600.0f, 1200.0f, swInstructionsPageUnits::Pixels },
+	{ QT_TRANSLATE_NOOP("swPageSetupDialog", "Full HD"), 1920.0f, 1080.0f, swInstructionsPageUnits::Pixels },
+	{ QT_TRANSLATE_NOOP("swPageSetupDialog", "WUXGA"), 1920.0f, 1200.0f, swInstructionsPageUnits::Pixels },
+	{ QT_TRANSLATE_NOOP("swPageSetupDialog", "Tablet"), 2048.0f, 1536.0f, swInstructionsPageUnits::Pixels },
+	{ QT_TRANSLATE_NOOP("swPageSetupDialog", "QHD"), 2560.0f, 1440.0f, swInstructionsPageUnits::Pixels },
+	{ QT_TRANSLATE_NOOP("swPageSetupDialog", "4K UHD"), 3840.0f, 2160.0f, swInstructionsPageUnits::Pixels },
 };
 
-static float lcGetPageUnitScale(lcInstructionsPageUnits Units)
+static float swGetPageUnitScale(swInstructionsPageUnits Units)
 {
 	switch (Units)
 	{
-	case lcInstructionsPageUnits::Pixels:
+	case swInstructionsPageUnits::Pixels:
 		return 1.0f;
 
-	case lcInstructionsPageUnits::Millimeters:
+	case swInstructionsPageUnits::Millimeters:
 		return 72.0f / 25.4f;
 
-	case lcInstructionsPageUnits::Centimeters:
+	case swInstructionsPageUnits::Centimeters:
 		return 72.0f / 2.54f;
 
-	case lcInstructionsPageUnits::Inches:
+	case swInstructionsPageUnits::Inches:
 		return 72.0f;
 	}
 
 	return 1.0f;
 }
 
-static QString lcGetPageUnitSuffix(lcInstructionsPageUnits Units)
+static QString swGetPageUnitSuffix(swInstructionsPageUnits Units)
 {
 	switch (Units)
 	{
-	case lcInstructionsPageUnits::Pixels:
-		return QCoreApplication::translate("lcPageSetupDialog", "px");
+	case swInstructionsPageUnits::Pixels:
+		return QCoreApplication::translate("swPageSetupDialog", "px");
 
-	case lcInstructionsPageUnits::Millimeters:
-		return QCoreApplication::translate("lcPageSetupDialog", "mm");
+	case swInstructionsPageUnits::Millimeters:
+		return QCoreApplication::translate("swPageSetupDialog", "mm");
 
-	case lcInstructionsPageUnits::Centimeters:
-		return QCoreApplication::translate("lcPageSetupDialog", "cm");
+	case swInstructionsPageUnits::Centimeters:
+		return QCoreApplication::translate("swPageSetupDialog", "cm");
 
-	case lcInstructionsPageUnits::Inches:
-		return QCoreApplication::translate("lcPageSetupDialog", "in");
+	case swInstructionsPageUnits::Inches:
+		return QCoreApplication::translate("swPageSetupDialog", "in");
 	}
 
 	return QString();
 }
 
-lcPageSetupDialog::lcPageSetupDialog(QWidget* Parent, lcInstructionsPageSetup* PageSetup)
-	: QDialog(Parent), ui(new Ui::lcPageSetupDialog), mPageSetup(PageSetup), mPoints(*PageSetup)
+swPageSetupDialog::swPageSetupDialog(QWidget* Parent, swInstructionsPageSetup* PageSetup)
+	: QDialog(Parent), ui(new Ui::swPageSetupDialog), mPageSetup(PageSetup), mPoints(*PageSetup)
 {
 	ui->setupUi(this);
 
@@ -97,9 +97,9 @@ lcPageSetupDialog::lcPageSetupDialog(QWidget* Parent, lcInstructionsPageSetup* P
 
 	ui->PresetComboBox->addItem(tr("Custom"), -1);
 
-	for (int PresetIndex = 0; PresetIndex < static_cast<int>(LC_ARRAY_COUNT(gPageSetupPresets)); PresetIndex++)
+	for (int PresetIndex = 0; PresetIndex < static_cast<int>(SW_ARRAY_COUNT(gPageSetupPresets)); PresetIndex++)
 	{
-		const lcPageSetupPreset& Preset = gPageSetupPresets[PresetIndex];
+		const swPageSetupPreset& Preset = gPageSetupPresets[PresetIndex];
 
 		if (!Preset.Name)
 		{
@@ -107,23 +107,23 @@ lcPageSetupDialog::lcPageSetupDialog(QWidget* Parent, lcInstructionsPageSetup* P
 			continue;
 		}
 
-		const int Decimals = Preset.Units == lcInstructionsPageUnits::Inches ? 2 : 0;
-		const QString Size = tr("%1 x %2 %3").arg(QLocale().toString(Preset.Width, 'f', Decimals), QLocale().toString(Preset.Height, 'f', Decimals), lcGetPageUnitSuffix(Preset.Units));
+		const int Decimals = Preset.Units == swInstructionsPageUnits::Inches ? 2 : 0;
+		const QString Size = tr("%1 x %2 %3").arg(QLocale().toString(Preset.Width, 'f', Decimals), QLocale().toString(Preset.Height, 'f', Decimals), swGetPageUnitSuffix(Preset.Units));
 
 		ui->PresetComboBox->addItem(tr("%1 (%2)").arg(tr(Preset.Name), Size), PresetIndex);
 	}
 
 	for (QDoubleSpinBox* SpinBox : { ui->WidthSpinBox, ui->HeightSpinBox, ui->LeftSpinBox, ui->RightSpinBox, ui->TopSpinBox, ui->BottomSpinBox })
-		connect(SpinBox, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &lcPageSetupDialog::SizeEdited);
+		connect(SpinBox, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &swPageSetupDialog::SizeEdited);
 
-	auto GetProfileUnits = [](LC_PROFILE_KEY Key)
+	auto GetProfileUnits = [](SW_PROFILE_KEY Key)
 	{
-		const int Units = lcGetProfileInt(Key);
-		return Units >= 0 && Units <= static_cast<int>(lcInstructionsPageUnits::Inches) ? static_cast<lcInstructionsPageUnits>(Units) : lcInstructionsPageUnits::Inches;
+		const int Units = swGetProfileInt(Key);
+		return Units >= 0 && Units <= static_cast<int>(swInstructionsPageUnits::Inches) ? static_cast<swInstructionsPageUnits>(Units) : swInstructionsPageUnits::Inches;
 	};
 
-	mUnits = GetProfileUnits(LC_PROFILE_INSTRUCTIONS_PAGE_UNITS);
-	mMarginUnits = GetProfileUnits(LC_PROFILE_INSTRUCTIONS_MARGIN_UNITS);
+	mUnits = GetProfileUnits(SW_PROFILE_INSTRUCTIONS_PAGE_UNITS);
+	mMarginUnits = GetProfileUnits(SW_PROFILE_INSTRUCTIONS_MARGIN_UNITS);
 	ui->UnitsComboBox->setCurrentIndex(static_cast<int>(mUnits));
 	ui->MarginUnitsComboBox->setCurrentIndex(static_cast<int>(mMarginUnits));
 
@@ -131,18 +131,18 @@ lcPageSetupDialog::lcPageSetupDialog(QWidget* Parent, lcInstructionsPageSetup* P
 	UpdatePreset();
 	UpdateOrientation();
 
-	connect(ui->PresetComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, &lcPageSetupDialog::PresetChanged);
-	connect(ui->UnitsComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, &lcPageSetupDialog::UnitsChanged);
-	connect(ui->MarginUnitsComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, &lcPageSetupDialog::MarginUnitsChanged);
-	connect(ui->PortraitButton, &QRadioButton::toggled, this, &lcPageSetupDialog::OrientationChanged);
+	connect(ui->PresetComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, &swPageSetupDialog::PresetChanged);
+	connect(ui->UnitsComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, &swPageSetupDialog::UnitsChanged);
+	connect(ui->MarginUnitsComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, &swPageSetupDialog::MarginUnitsChanged);
+	connect(ui->PortraitButton, &QRadioButton::toggled, this, &swPageSetupDialog::OrientationChanged);
 }
 
-lcPageSetupDialog::~lcPageSetupDialog()
+swPageSetupDialog::~swPageSetupDialog()
 {
 	delete ui;
 }
 
-void lcPageSetupDialog::accept()
+void swPageSetupDialog::accept()
 {
 	if (mPoints.MarginLeft + mPoints.MarginRight >= mPoints.Width || mPoints.MarginTop + mPoints.MarginBottom >= mPoints.Height)
 	{
@@ -151,19 +151,19 @@ void lcPageSetupDialog::accept()
 	}
 
 	*mPageSetup = mPoints;
-	lcSetProfileInt(LC_PROFILE_INSTRUCTIONS_PAGE_UNITS, static_cast<int>(mUnits));
-	lcSetProfileInt(LC_PROFILE_INSTRUCTIONS_MARGIN_UNITS, static_cast<int>(mMarginUnits));
+	swSetProfileInt(SW_PROFILE_INSTRUCTIONS_PAGE_UNITS, static_cast<int>(mUnits));
+	swSetProfileInt(SW_PROFILE_INSTRUCTIONS_MARGIN_UNITS, static_cast<int>(mMarginUnits));
 
 	QDialog::accept();
 }
 
-void lcPageSetupDialog::UpdateSpinBoxes()
+void swPageSetupDialog::UpdateSpinBoxes()
 {
-	auto SetValue = [](QDoubleSpinBox* SpinBox, lcInstructionsPageUnits Units, float Points, float Minimum)
+	auto SetValue = [](QDoubleSpinBox* SpinBox, swInstructionsPageUnits Units, float Points, float Minimum)
 	{
-		const float Scale = lcGetPageUnitScale(Units);
-		const int Decimals = Units == lcInstructionsPageUnits::Pixels ? 0 : Units == lcInstructionsPageUnits::Millimeters ? 1 : 2;
-		const QString Suffix = QLatin1Char(' ') + lcGetPageUnitSuffix(Units);
+		const float Scale = swGetPageUnitScale(Units);
+		const int Decimals = Units == swInstructionsPageUnits::Pixels ? 0 : Units == swInstructionsPageUnits::Millimeters ? 1 : 2;
+		const QString Suffix = QLatin1Char(' ') + swGetPageUnitSuffix(Units);
 
 		QSignalBlocker Blocker(SpinBox);
 		SpinBox->setDecimals(Decimals);
@@ -181,7 +181,7 @@ void lcPageSetupDialog::UpdateSpinBoxes()
 	SetValue(ui->BottomSpinBox, mMarginUnits, mPoints.MarginBottom, 0.0f);
 }
 
-void lcPageSetupDialog::UpdatePreset()
+void swPageSetupDialog::UpdatePreset()
 {
 	int Match = 0;
 
@@ -192,8 +192,8 @@ void lcPageSetupDialog::UpdatePreset()
 		if (PresetIndex < 0 || !ui->PresetComboBox->itemData(Index).isValid())
 			continue;
 
-		const lcPageSetupPreset& Preset = gPageSetupPresets[PresetIndex];
-		const float Scale = lcGetPageUnitScale(Preset.Units);
+		const swPageSetupPreset& Preset = gPageSetupPresets[PresetIndex];
+		const float Scale = swGetPageUnitScale(Preset.Units);
 		const float Width = Preset.Width * Scale, Height = Preset.Height * Scale;
 
 		if ((qAbs(mPoints.Width - Width) < 0.5f && qAbs(mPoints.Height - Height) < 0.5f) || (qAbs(mPoints.Width - Height) < 0.5f && qAbs(mPoints.Height - Width) < 0.5f))
@@ -207,7 +207,7 @@ void lcPageSetupDialog::UpdatePreset()
 	ui->PresetComboBox->setCurrentIndex(Match);
 }
 
-void lcPageSetupDialog::UpdateOrientation()
+void swPageSetupDialog::UpdateOrientation()
 {
 	QSignalBlocker PortraitBlocker(ui->PortraitButton);
 	QSignalBlocker LandscapeBlocker(ui->LandscapeButton);
@@ -218,17 +218,17 @@ void lcPageSetupDialog::UpdateOrientation()
 		ui->PortraitButton->setChecked(true);
 }
 
-void lcPageSetupDialog::PresetChanged(int Index)
+void swPageSetupDialog::PresetChanged(int Index)
 {
 	const QVariant Data = ui->PresetComboBox->itemData(Index);
 
 	if (!Data.isValid() || Data.toInt() < 0)
 		return;
 
-	const lcPageSetupPreset& Preset = gPageSetupPresets[Data.toInt()];
-	const float Scale = lcGetPageUnitScale(Preset.Units);
+	const swPageSetupPreset& Preset = gPageSetupPresets[Data.toInt()];
+	const float Scale = swGetPageUnitScale(Preset.Units);
 	const float Short = qMin(Preset.Width, Preset.Height) * Scale, Long = qMax(Preset.Width, Preset.Height) * Scale;
-	const bool SwitchUnits = (Preset.Units == lcInstructionsPageUnits::Pixels) != (mUnits == lcInstructionsPageUnits::Pixels);
+	const bool SwitchUnits = (Preset.Units == swInstructionsPageUnits::Pixels) != (mUnits == swInstructionsPageUnits::Pixels);
 
 	// moving between paper and screen sizes starts from the preset's own orientation
 	if (SwitchUnits)
@@ -244,9 +244,9 @@ void lcPageSetupDialog::PresetChanged(int Index)
 	}
 
 	// metric presets use metric units and imperial presets inches, keeping centimeters if already chosen
-	auto GetPresetUnits = [&Preset](lcInstructionsPageUnits Units)
+	auto GetPresetUnits = [&Preset](swInstructionsPageUnits Units)
 	{
-		if (Preset.Units == lcInstructionsPageUnits::Millimeters && Units == lcInstructionsPageUnits::Centimeters)
+		if (Preset.Units == swInstructionsPageUnits::Millimeters && Units == swInstructionsPageUnits::Centimeters)
 			return Units;
 
 		return Preset.Units;
@@ -264,21 +264,21 @@ void lcPageSetupDialog::PresetChanged(int Index)
 	UpdateOrientation();
 }
 
-void lcPageSetupDialog::UnitsChanged(int Index)
+void swPageSetupDialog::UnitsChanged(int Index)
 {
-	mUnits = static_cast<lcInstructionsPageUnits>(Index);
+	mUnits = static_cast<swInstructionsPageUnits>(Index);
 
 	UpdateSpinBoxes();
 }
 
-void lcPageSetupDialog::MarginUnitsChanged(int Index)
+void swPageSetupDialog::MarginUnitsChanged(int Index)
 {
-	mMarginUnits = static_cast<lcInstructionsPageUnits>(Index);
+	mMarginUnits = static_cast<swInstructionsPageUnits>(Index);
 
 	UpdateSpinBoxes();
 }
 
-void lcPageSetupDialog::OrientationChanged()
+void swPageSetupDialog::OrientationChanged()
 {
 	const bool Landscape = ui->LandscapeButton->isChecked();
 
@@ -290,10 +290,10 @@ void lcPageSetupDialog::OrientationChanged()
 	UpdateSpinBoxes();
 }
 
-void lcPageSetupDialog::SizeEdited()
+void swPageSetupDialog::SizeEdited()
 {
-	const float Scale = lcGetPageUnitScale(mUnits);
-	const float MarginScale = lcGetPageUnitScale(mMarginUnits);
+	const float Scale = swGetPageUnitScale(mUnits);
+	const float MarginScale = swGetPageUnitScale(mMarginUnits);
 
 	mPoints.Width = ui->WidthSpinBox->value() * Scale;
 	mPoints.Height = ui->HeightSpinBox->value() * Scale;

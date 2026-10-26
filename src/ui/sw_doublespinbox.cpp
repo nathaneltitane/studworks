@@ -4,77 +4,77 @@
 #include "sw_utils.h"
 #include "sw_mainwindow.h"
 
-lcDoubleSpinBox::lcDoubleSpinBox(QWidget* Parent)
+swDoubleSpinBox::swDoubleSpinBox(QWidget* Parent)
 	: QDoubleSpinBox(Parent)
 {
 	lineEdit()->installEventFilter(this);
 
-	connect(this, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &lcDoubleSpinBox::ValueChanged);
-	connect(lineEdit(), &QLineEdit::returnPressed, this, &lcDoubleSpinBox::ReturnPressed);
+	connect(this, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &swDoubleSpinBox::ValueChanged);
+	connect(lineEdit(), &QLineEdit::returnPressed, this, &swDoubleSpinBox::ReturnPressed);
 }
 
-void lcDoubleSpinBox::SetValue(double Value)
+void swDoubleSpinBox::SetValue(double Value)
 {
 	mModified = false;
 
 	setValue(Value);
 }
 
-void lcDoubleSpinBox::SetSnap(lcFloatPropertySnap Snap)
+void swDoubleSpinBox::SetSnap(swFloatPropertySnap Snap)
 {
 	mSnap = Snap;
 
 	switch (Snap)
 	{
-	case lcFloatPropertySnap::Auto:
+	case swFloatPropertySnap::Auto:
 		setSingleStep(10.0);
 		break;
 
-	case lcFloatPropertySnap::PiecePositionXY:
+	case swFloatPropertySnap::PiecePositionXY:
 		setSingleStep(gMainWindow->GetMoveXYSnap());
 		break;
 
-	case lcFloatPropertySnap::PiecePositionZ:
+	case swFloatPropertySnap::PiecePositionZ:
 		setSingleStep(gMainWindow->GetMoveZSnap());
 		break;
 
-	case lcFloatPropertySnap::Position:
+	case swFloatPropertySnap::Position:
 		setSingleStep(10.0);
 		break;
 
-	case lcFloatPropertySnap::Rotation:
+	case swFloatPropertySnap::Rotation:
 		setSingleStep(gMainWindow->GetAngleSnap());
 		break;
 	}
 }
 
-void lcDoubleSpinBox::ShowLadderWidget()
+void swDoubleSpinBox::ShowLadderWidget()
 {
-	lcLadderWidget* LadderWidget = new lcLadderWidget(this, mSnap);
+	swLadderWidget* LadderWidget = new swLadderWidget(this, mSnap);
 
 	mLadderWidgetInitialValue = value();
 
-	connect(LadderWidget, &lcLadderWidget::EditingCanceled, this, &lcDoubleSpinBox::LadderWidgetCanceled);
+	connect(LadderWidget, &swLadderWidget::EditingCanceled, this, &swDoubleSpinBox::LadderWidgetCanceled);
 
 	LadderWidget->Show();
 }
 
-void lcDoubleSpinBox::LadderWidgetCanceled()
+void swDoubleSpinBox::LadderWidgetCanceled()
 {
 	setValue(mLadderWidgetInitialValue);
 }
 
-QString	lcDoubleSpinBox::textFromValue(double Value) const
+QString	swDoubleSpinBox::textFromValue(double Value) const
 {
-	return lcFormatFloatLocalized(Value, locale());
+	return swFormatFloatLocalized(Value, locale());
 }
 
-void lcDoubleSpinBox::ValueChanged()
+void swDoubleSpinBox::ValueChanged()
 {
 	mModified = true;
 }
 
-void lcDoubleSpinBox::CancelEditing()
+void swDoubleSpinBox::CancelEditing()
 {
 	if (!mEditing)
 		return;
@@ -84,7 +84,7 @@ void lcDoubleSpinBox::CancelEditing()
 	emit EditingCanceled();
 }
 
-void lcDoubleSpinBox::FinishEditing()
+void swDoubleSpinBox::FinishEditing()
 {
 	if (!mEditing)
 		return;
@@ -94,13 +94,13 @@ void lcDoubleSpinBox::FinishEditing()
 	emit EditingFinished();
 }
 
-void lcDoubleSpinBox::ReturnPressed()
+void swDoubleSpinBox::ReturnPressed()
 {
 	FinishEditing();
 	emit ReturnKeyPressed();
 }
 
-bool lcDoubleSpinBox::eventFilter(QObject* Object, QEvent* Event)
+bool swDoubleSpinBox::eventFilter(QObject* Object, QEvent* Event)
 {
 	if (mDragMode == DragMode::None && Event->type() == QEvent::MouseButtonPress && Object == lineEdit())
 	{
@@ -113,7 +113,7 @@ bool lcDoubleSpinBox::eventFilter(QObject* Object, QEvent* Event)
 	return QDoubleSpinBox::eventFilter(Object, Event);
 }
 
-void lcDoubleSpinBox::mousePressEvent(QMouseEvent* MouseEvent)
+void swDoubleSpinBox::mousePressEvent(QMouseEvent* MouseEvent)
 {
 	if (mDragMode == DragMode::Dragging)
 	{
@@ -144,7 +144,7 @@ void lcDoubleSpinBox::mousePressEvent(QMouseEvent* MouseEvent)
 	QDoubleSpinBox::mousePressEvent(MouseEvent);
 }
 
-void lcDoubleSpinBox::mouseMoveEvent(QMouseEvent* MouseEvent)
+void swDoubleSpinBox::mouseMoveEvent(QMouseEvent* MouseEvent)
 {
 	if (mDragMode == DragMode::Dragging)
 	{
@@ -188,14 +188,14 @@ void lcDoubleSpinBox::mouseMoveEvent(QMouseEvent* MouseEvent)
 	QDoubleSpinBox::mouseMoveEvent(MouseEvent);
 }
 
-void lcDoubleSpinBox::mouseReleaseEvent(QMouseEvent* MouseEvent)
+void swDoubleSpinBox::mouseReleaseEvent(QMouseEvent* MouseEvent)
 {
 	mDragMode = DragMode::None;
 
 	QDoubleSpinBox::mouseReleaseEvent(MouseEvent);
 }
 
-bool lcDoubleSpinBox::event(QEvent* Event)
+bool swDoubleSpinBox::event(QEvent* Event)
 {
 	if (Event->type() == QEvent::KeyPress)
 	{
@@ -243,7 +243,7 @@ bool lcDoubleSpinBox::event(QEvent* Event)
 	return QDoubleSpinBox::event(Event);
 }
 
-void lcDoubleSpinBox::focusInEvent(QFocusEvent* FocusEvent)
+void swDoubleSpinBox::focusInEvent(QFocusEvent* FocusEvent)
 {
 	mModified = false;
 	mEditing = true;
@@ -253,7 +253,7 @@ void lcDoubleSpinBox::focusInEvent(QFocusEvent* FocusEvent)
 	emit EditingStarted();
 }
 
-void lcDoubleSpinBox::focusOutEvent(QFocusEvent* FocusEvent)
+void swDoubleSpinBox::focusOutEvent(QFocusEvent* FocusEvent)
 {
 	FinishEditing();
 

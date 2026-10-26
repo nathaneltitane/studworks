@@ -5,12 +5,12 @@ namespace KParts
 	class ReadOnlyPart;
 }
 
-class lcTerminalWidget : public QWidget
+class swTerminalWidget : public QWidget
 {
 	Q_OBJECT
 
 public:
-	explicit lcTerminalWidget(QWidget* Parent);
+	explicit swTerminalWidget(QWidget* Parent);
 
 	void SetDirectory(const QString& Directory, bool Force);
 

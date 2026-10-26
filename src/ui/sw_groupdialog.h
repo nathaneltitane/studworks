@@ -1,16 +1,16 @@
 #pragma once
 
 namespace Ui {
-class lcGroupDialog;
+class swGroupDialog;
 }
 
-class lcGroupDialog : public QDialog
+class swGroupDialog : public QDialog
 {
 	Q_OBJECT
 
 public:
-	explicit lcGroupDialog(QWidget* Parent, const QString& Name, const std::vector<std::unique_ptr<lcGroup>>& Groups);
-	virtual ~lcGroupDialog();
+	explicit swGroupDialog(QWidget* Parent, const QString& Name, const std::vector<std::unique_ptr<swGroup>>& Groups);
+	virtual ~swGroupDialog();
 
 	QString mName;
 
@@ -18,6 +18,6 @@ public slots:
 	void accept() override;
 
 private:
-	const std::vector<std::unique_ptr<lcGroup>>& mGroups;
-	Ui::lcGroupDialog* ui;
+	const std::vector<std::unique_ptr<swGroup>>& mGroups;
+	Ui::swGroupDialog* ui;
 };

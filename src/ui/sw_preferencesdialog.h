@@ -4,9 +4,9 @@
 #include "sw_shortcuts.h"
 #include "sw_category.h"
 
-struct lcPreferencesDialogOptions
+struct swPreferencesDialogOptions
 {
-	lcPreferences Preferences;
+	swPreferences Preferences;
 
 	QString LibraryPath;
 	QString ColorConfigPath;
@@ -18,35 +18,35 @@ struct lcPreferencesDialogOptions
 	int CheckForUpdates;
 
 	int AASamples;
-	lcStudStyle StudStyle;
+	swStudStyle StudStyle;
 
-	std::vector<lcLibraryCategory> Categories;
+	std::vector<swLibraryCategory> Categories;
 	bool CategoriesModified;
 	bool CategoriesDefault;
 
-	lcKeyboardShortcuts KeyboardShortcuts;
+	swKeyboardShortcuts KeyboardShortcuts;
 	bool KeyboardShortcutsModified;
 	bool KeyboardShortcutsDefault;
 
-	lcMouseShortcuts MouseShortcuts;
+	swMouseShortcuts MouseShortcuts;
 	bool MouseShortcutsModified;
 	bool MouseShortcutsDefault;
 };
 
 namespace Ui
 {
-class lcPreferencesDialog;
+class swPreferencesDialog;
 }
 
-class lcPreferencesDialog : public QDialog
+class swPreferencesDialog : public QDialog
 {
 	Q_OBJECT
 
 public:
-	lcPreferencesDialog(QWidget* Parent, lcPreferencesDialogOptions* Options);
-	~lcPreferencesDialog();
+	swPreferencesDialog(QWidget* Parent, swPreferencesDialogOptions* Options);
+	~swPreferencesDialog();
 
-	lcPreferencesDialogOptions* mOptions;
+	swPreferencesDialogOptions* mOptions;
 
 	enum
 	{
@@ -106,7 +106,7 @@ private slots:
 	void MouseTreeItemChanged(QTreeWidgetItem* Current);
 
 private:
-	Ui::lcPreferencesDialog* ui;
+	Ui::swPreferencesDialog* ui;
 
 	void UpdateCategories();
 	void UpdateCommandList();
@@ -114,7 +114,7 @@ private:
 	void UpdateMouseTreeItem(int ItemIndex);
 	void SetShortcutModified(QTreeWidgetItem* TreeItem, bool Modified);
 
-	struct lcRenderTargetWidgets
+	struct swRenderTargetWidgets
 	{
 		QCheckBox* SyncRendering;
 		QLabel* ShadingModeLabel;
@@ -126,7 +126,7 @@ private:
 		QLabel* LineWidthLabel;
 	};
 
-	lcRenderTargetWidgets GetRenderTargetWidgets(lcRenderTarget Target) const;
+	swRenderTargetWidgets GetRenderTargetWidgets(swRenderTarget Target) const;
 
 	float mLineWidthRange[2];
 	float mLineWidthGranularity;

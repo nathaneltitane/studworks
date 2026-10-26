@@ -1,33 +1,33 @@
 #pragma once
 
-class lcHttpReply;
-class lcHttpManager;
+class swHttpReply;
+class swHttpManager;
 
 namespace Ui {
-class lcUpdateDialog;
+class swUpdateDialog;
 }
 
-void lcDoInitialUpdateCheck();
+void swDoInitialUpdateCheck();
 
-class lcUpdateDialog : public QDialog
+class swUpdateDialog : public QDialog
 {
 	Q_OBJECT
 
 public:
-	lcUpdateDialog(QWidget* Parent, bool InitialUpdate);
-	virtual ~lcUpdateDialog();
+	swUpdateDialog(QWidget* Parent, bool InitialUpdate);
+	virtual ~swUpdateDialog();
 
 	void ParseUpdate(const char* Update);
 
 public slots:
-	void DownloadFinished(lcHttpReply* Reply);
+	void DownloadFinished(swHttpReply* Reply);
 	void accept() override;
 	void finished(int result);
 
 private:
-	Ui::lcUpdateDialog* ui;
+	Ui::swUpdateDialog* ui;
 
-	lcHttpManager* mHttpManager;
+	swHttpManager* mHttpManager;
 	QByteArray mVersionData;
 	bool mInitialUpdate;
 };

@@ -1,25 +1,25 @@
 #pragma once
 
-class lcPieceData;
-class lcPartSelectionWidget;
-class lcPartSelectionListView;
+class swPieceData;
+class swPartSelectionWidget;
+class swPartSelectionListView;
 
-class lcPartSelectionPopup : public QWidget
+class swPartSelectionPopup : public QWidget
 {
 	Q_OBJECT
 
 public:
-	lcPartSelectionPopup(lcPieceData* InitialPart, QWidget* Parent);
-	virtual ~lcPartSelectionPopup() = default;
+	swPartSelectionPopup(swPieceData* InitialPart, QWidget* Parent);
+	virtual ~swPartSelectionPopup() = default;
 	QSize sizeHint() const override;
 	void SetHeightLimit(int Height);
 
-	std::optional<lcPieceData*> GetPickedPart() const
+	std::optional<swPieceData*> GetPickedPart() const
 	{
-		return mAccepted ? std::optional<lcPieceData*>(mPickedPiece) : std::nullopt;
+		return mAccepted ? std::optional<swPieceData*>(mPickedPiece) : std::nullopt;
 	}
 
-	lcPartSelectionWidget* GetPartSelectionWidget() const
+	swPartSelectionWidget* GetPartSelectionWidget() const
 	{
 		return mPartSelectionWidget;
 	}
@@ -33,13 +33,13 @@ protected:
 	void showEvent(QShowEvent* ShowEvent) override;
 	void Close();
 	void UpdateHeightLimit();
-	QSize GetPartsViewSizeHint(const lcPartSelectionListView* PartsView, const QSize& PopupSize) const;
+	QSize GetPartsViewSizeHint(const swPartSelectionListView* PartsView, const QSize& PopupSize) const;
 
-	lcPartSelectionWidget* mPartSelectionWidget = nullptr;
-	lcPieceData* mInitialPart = nullptr;
-	lcPieceData* mPickedPiece = nullptr;
+	swPartSelectionWidget* mPartSelectionWidget = nullptr;
+	swPieceData* mInitialPart = nullptr;
+	swPieceData* mPickedPiece = nullptr;
 	bool mAccepted = false;
 	int mHeightLimit = QWIDGETSIZE_MAX;
 };
 
-std::optional<lcPieceData*> lcShowPartSelectionPopup(lcPieceData* InitialPart, const std::vector<std::pair<lcPieceData*, std::string>>& CustomParts, int ColorIndex, QWidget* Parent, QPoint Position);
+std::optional<swPieceData*> swShowPartSelectionPopup(swPieceData* InitialPart, const std::vector<std::pair<swPieceData*, std::string>>& CustomParts, int ColorIndex, QWidget* Parent, QPoint Position);

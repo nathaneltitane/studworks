@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>lcSetsDatabaseDialog</class>
- <widget class="QDialog" name="lcSetsDatabaseDialog">
+ <class>swSetsDatabaseDialog</class>
+ <widget class="QDialog" name="swSetsDatabaseDialog">
   <property name="whatsThis">
    <string>&lt;p&gt;&lt;b&gt;Import Set Inventory&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Search the online Rebrickable database by set name or number. Select a result and choose OK, or double-click it, to download the set inventory for the operation that opened this dialog.&lt;/p&gt;&lt;p&gt;An internet connection is required for searching and downloading inventories.&lt;/p&gt;</string>
   </property>
@@ -119,7 +119,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>lcSetsDatabaseDialog</receiver>
+   <receiver>swSetsDatabaseDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -135,7 +135,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>lcSetsDatabaseDialog</receiver>
+   <receiver>swSetsDatabaseDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

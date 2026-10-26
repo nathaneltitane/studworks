@@ -4,11 +4,11 @@
 #include "ui_sw_categorydialog.h"
 #include "sw_category.h"
 
-lcCategoryDialog::lcCategoryDialog(QWidget* Parent, lcLibraryCategory* Options)
-	: QDialog(Parent), ui(new Ui::lcCategoryDialog)
+swCategoryDialog::swCategoryDialog(QWidget* Parent, swLibraryCategory* Options)
+	: QDialog(Parent), ui(new Ui::swCategoryDialog)
 {
 	ui->setupUi(this);
-	lcSetupDialogHelp(this, ui->buttonBox);
+	swSetupDialogHelp(this, ui->buttonBox);
 
 	mOptions = Options;
 
@@ -21,12 +21,12 @@ lcCategoryDialog::lcCategoryDialog(QWidget* Parent, lcLibraryCategory* Options)
 	ui->keywords->setText(mOptions->Keywords);
 }
 
-lcCategoryDialog::~lcCategoryDialog()
+swCategoryDialog::~swCategoryDialog()
 {
 	delete ui;
 }
 
-void lcCategoryDialog::accept()
+void swCategoryDialog::accept()
 {
 	QString Name = ui->name->text();
 

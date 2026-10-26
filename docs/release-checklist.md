@@ -27,8 +27,8 @@
 
 6. Update the release version in the current `YY.MM` format:
    - `leocad.pro`
-   - `common/lc_global.h`
-   - `qt/Info.plist`
+   - `src/sw_global.h`
+   - `src/ui/Info.plist`
    - `snapcraft.yaml`
    - `leocad.spec`
    - `tools/setup/leocad.appdata.xml`

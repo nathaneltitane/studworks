@@ -1,11 +1,11 @@
 #pragma once
 
-class lcSpinnerWidget : public QWidget
+class swSpinnerWidget : public QWidget
 {
 	Q_OBJECT
 
 public:
-	lcSpinnerWidget(QWidget* Parent = nullptr);
+	swSpinnerWidget(QWidget* Parent = nullptr);
 
 protected:
 	void paintEvent(QPaintEvent* Event) override;

@@ -8,22 +8,22 @@
 #include "sw_model.h"
 #include "sw_utils.h"
 
-#ifndef LC_DISABLE_RENDER_DIALOG
+#ifndef SW_DISABLE_RENDER_DIALOG
 
-#define LC_POVRAY_PREVIEW_WIDTH 768
-#define LC_POVRAY_PREVIEW_HEIGHT 432
+#define SW_POVRAY_PREVIEW_WIDTH 768
+#define SW_POVRAY_PREVIEW_HEIGHT 432
 #if defined(Q_OS_WIN) || defined(Q_OS_MACOS)
-#define LC_POVRAY_MEMORY_MAPPED_FILE 1
+#define SW_POVRAY_MEMORY_MAPPED_FILE 1
 #endif
 
-void lcRenderPreviewWidget::resizeEvent(QResizeEvent* Event)
+void swRenderPreviewWidget::resizeEvent(QResizeEvent* Event)
 {
 	mScaledImage = QImage();
 
 	QWidget::resizeEvent(Event);
 }
 
-void lcRenderPreviewWidget::paintEvent(QPaintEvent* PaintEvent)
+void swRenderPreviewWidget::paintEvent(QPaintEvent* PaintEvent)
 {
 	Q_UNUSED(PaintEvent);
 
@@ -42,18 +42,18 @@ void lcRenderPreviewWidget::paintEvent(QPaintEvent* PaintEvent)
 		Painter.fillRect(rect(), Qt::transparent);
 }
 
-lcRenderDialog::lcRenderDialog(QWidget* Parent, lcRenderDialogMode RenderDialogMode)
-	: QDialog(Parent), mDialogMode(RenderDialogMode), ui(new Ui::lcRenderDialog)
+swRenderDialog::swRenderDialog(QWidget* Parent, swRenderDialogMode RenderDialogMode)
+	: QDialog(Parent), mDialogMode(RenderDialogMode), ui(new Ui::swRenderDialog)
 {
 	ui->setupUi(this);
-	lcSetupDialogHelp(this, ui->buttonBox);
+	swSetupDialogHelp(this, ui->buttonBox);
 
-	mWidth = lcGetProfileInt(LC_PROFILE_RENDER_WIDTH);
-	mHeight = lcGetProfileInt(LC_PROFILE_RENDER_HEIGHT);
-	mQuality = lcGetProfileRenderQuality();
+	mWidth = swGetProfileInt(SW_PROFILE_RENDER_WIDTH);
+	mHeight = swGetProfileInt(SW_PROFILE_RENDER_HEIGHT);
+	mQuality = swGetProfileRenderQuality();
 	mScale = 1.0f;
 
-	ui->OutputEdit->setText(lcGetActiveProject()->GetImageFileName(false));
+	ui->OutputEdit->setText(swGetActiveProject()->GetImageFileName(false));
 
 	mRenderButton = new QPushButton(tr("Render"), ui->buttonBox);
 	ui->buttonBox->addButton(mRenderButton, QDialogButtonBox::ActionRole);
@@ -68,13 +68,13 @@ lcRenderDialog::lcRenderDialog(QWidget* Parent, lcRenderDialogMode RenderDialogM
 	mLogButton->setWhatsThis(tr("<p><b>View Log</b></p><p>Open the renderer output to investigate a failed render or warnings. This button becomes available when a log has been captured.</p>"));
 	mRenderButton->setWhatsThis(tr("<p><b>Render</b></p><p>Start the render using the current settings. While rendering, this button becomes Cancel so you can stop the operation.</p>"));
 
-	connect(mRenderButton, &QPushButton::clicked, this, &lcRenderDialog::RenderButtonClicked);
-	connect(mSettingsButton, &QPushButton::clicked, this, &lcRenderDialog::SettingsButtonClicked);
-	connect(mLogButton, &QPushButton::clicked, this, &lcRenderDialog::LogButtonClicked);
-	connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &lcRenderDialog::reject);
-	connect(ui->OutputBrowseButton, &QPushButton::clicked, this, &lcRenderDialog::OutputBrowseButtonClicked);
+	connect(mRenderButton, &QPushButton::clicked, this, &swRenderDialog::RenderButtonClicked);
+	connect(mSettingsButton, &QPushButton::clicked, this, &swRenderDialog::SettingsButtonClicked);
+	connect(mLogButton, &QPushButton::clicked, this, &swRenderDialog::LogButtonClicked);
+	connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &swRenderDialog::reject);
+	connect(ui->OutputBrowseButton, &QPushButton::clicked, this, &swRenderDialog::OutputBrowseButtonClicked);
 
-	if (mDialogMode == lcRenderDialogMode::RenderPOVRay)
+	if (mDialogMode == swRenderDialogMode::RenderPOVRay)
 	{
 		setWindowTitle(tr("POV-Ray Image Render"));
 
@@ -85,17 +85,17 @@ lcRenderDialog::lcRenderDialog(QWidget* Parent, lcRenderDialogMode RenderDialogM
 	}
 	else
 	{
-		setWindowTitle(mDialogMode == lcRenderDialogMode::OpenInBlender ? tr("Blender LDraw Import") : tr("Blender Image Render"));
+		setWindowTitle(mDialogMode == swRenderDialogMode::OpenInBlender ? tr("Blender LDraw Import") : tr("Blender Image Render"));
 		setWhatsThis(tr("<p><b>Blender Image Render</b></p><p>Render the current model step with the Blender LDraw add-on. Configure Blender and its add-on through Settings, choose an output image, then select Render.</p><p>The preview is scaled to fit the dialog. View Log shows diagnostic output when available.</p>"));
 		mSettingsButton->setWhatsThis(tr("<p><b>Blender Settings</b></p><p>Configure the Blender executable, LDraw import modules, library paths, and render settings. Blender and an import module must be configured before rendering or opening the model.</p>"));
 
-		bool BlenderConfigured = !lcGetProfileString(LC_PROFILE_BLENDER_IMPORT_MODULE).isEmpty();
+		bool BlenderConfigured = !swGetProfileString(SW_PROFILE_BLENDER_IMPORT_MODULE).isEmpty();
 
 		QStringList const& DataPathList = QStandardPaths::standardLocations(QStandardPaths::AppLocalDataLocation);
-		if (!QDir(QString("%1/Blender/addons/%2").arg(DataPathList.first(), LC_BLENDER_ADDON_RENDER_FOLDER)).isReadable())
+		if (!QDir(QString("%1/Blender/addons/%2").arg(DataPathList.first(), SW_BLENDER_ADDON_RENDER_FOLDER)).isReadable())
 		{
 			BlenderConfigured = false;
-			lcSetProfileString(LC_PROFILE_BLENDER_IMPORT_MODULE, QString());
+			swSetProfileString(SW_PROFILE_BLENDER_IMPORT_MODULE, QString());
 		}
 
 		mRenderButton->setToolTip(BlenderConfigured ? tr("Render the current model step with Blender.") : tr("Blender not configured. Use Settings to configure."));
@@ -103,7 +103,7 @@ lcRenderDialog::lcRenderDialog(QWidget* Parent, lcRenderDialogMode RenderDialogM
 
 		mSettingsButton->setToolTip(tr("Configure Blender, its add-on, and render settings."));
 
-		if (mDialogMode == lcRenderDialogMode::OpenInBlender)
+		if (mDialogMode == swRenderDialogMode::OpenInBlender)
 		{
 			mSettingsButton->setToolTip(tr("Configure Blender and its LDraw import settings."));
 
@@ -132,43 +132,43 @@ lcRenderDialog::lcRenderDialog(QWidget* Parent, lcRenderDialogMode RenderDialogM
 		}
 	}
 
-	connect(&mUpdateTimer, &QTimer::timeout, this, &lcRenderDialog::Update);
+	connect(&mUpdateTimer, &QTimer::timeout, this, &swRenderDialog::Update);
 
 	mUpdateTimer.start(500);
 }
 
-lcRenderDialog::~lcRenderDialog()
+swRenderDialog::~swRenderDialog()
 {
 	delete ui;
 }
 
-QString lcRenderDialog::GetStdOutFileName() const
+QString swRenderDialog::GetStdOutFileName() const
 {
-	QString LogFile = mDialogMode == lcRenderDialogMode::RenderPOVRay ? QLatin1String("leocad-povray-render.out") : QLatin1String("leocad-blender-render.out");
+	QString LogFile = mDialogMode == swRenderDialogMode::RenderPOVRay ? QLatin1String("leocad-povray-render.out") : QLatin1String("leocad-blender-render.out");
 
 	return QDir(QDir::tempPath()).absoluteFilePath(LogFile);
 }
 
-QString lcRenderDialog::GetStdErrFileName() const
+QString swRenderDialog::GetStdErrFileName() const
 {
-	QString LogFile = mDialogMode == lcRenderDialogMode::RenderPOVRay ? QLatin1String("leocad-povray-render.err") : QLatin1String("leocad-blender-render.err");
+	QString LogFile = mDialogMode == swRenderDialogMode::RenderPOVRay ? QLatin1String("leocad-povray-render.err") : QLatin1String("leocad-blender-render.err");
 
 	return QDir(QDir::tempPath()).absoluteFilePath(LogFile);
 }
 
-QString lcRenderDialog::GetPOVFileName() const
+QString swRenderDialog::GetPOVFileName() const
 {
 	return QDir(QDir::tempPath()).absoluteFilePath("leocad-render.pov");
 }
 
-void lcRenderDialog::CloseProcess()
+void swRenderDialog::CloseProcess()
 {
 	delete mProcess;
 	mProcess = nullptr;
 
-	if (mDialogMode == lcRenderDialogMode::RenderPOVRay)
+	if (mDialogMode == swRenderDialogMode::RenderPOVRay)
 	{
-#if LC_POVRAY_MEMORY_MAPPED_FILE
+#if SW_POVRAY_MEMORY_MAPPED_FILE
 		mOutputFile.unmap((uchar*)mOutputBuffer);
 		mOutputBuffer = nullptr;
 		mOutputFile.close();
@@ -179,11 +179,11 @@ void lcRenderDialog::CloseProcess()
 		QFile::remove(GetPOVFileName());
 	}
 
-	if (mDialogMode != lcRenderDialogMode::OpenInBlender)
+	if (mDialogMode != swRenderDialogMode::OpenInBlender)
 		mRenderButton->setText(tr("Render"));
 }
 
-bool lcRenderDialog::PromptCancel()
+bool swRenderDialog::PromptCancel()
 {
 	if (!mProcess)
 		return true;
@@ -194,7 +194,7 @@ bool lcRenderDialog::PromptCancel()
 	if (mProcess)
 	{
 #ifdef Q_OS_WIN
-		lcTerminateChildProcess(this, mProcess->processId(), QCoreApplication::applicationPid());
+		swTerminateChildProcess(this, mProcess->processId(), QCoreApplication::applicationPid());
 #endif
 		mProcess->kill();
 	}
@@ -210,7 +210,7 @@ bool lcRenderDialog::PromptCancel()
 	return true;
 }
 
-void lcRenderDialog::RenderButtonClicked()
+void swRenderDialog::RenderButtonClicked()
 {
 	if (mProcess)
 	{
@@ -225,19 +225,19 @@ void lcRenderDialog::RenderButtonClicked()
 
 	mRenderTime.start();
 
-	if (mDialogMode == lcRenderDialogMode::RenderPOVRay)
+	if (mDialogMode == swRenderDialogMode::RenderPOVRay)
 		RenderPOVRay();
 	else
 		RenderBlender();
 }
 
-void lcRenderDialog::reject()
+void swRenderDialog::reject()
 {
 	if (PromptCancel())
 		QDialog::reject();
 }
 
-void lcRenderDialog::RenderPOVRay()
+void swRenderDialog::RenderPOVRay()
 {
 	QString FileName = GetPOVFileName();
 
@@ -247,7 +247,7 @@ void lcRenderDialog::RenderPOVRay()
 
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 
-	lcResult<void> ExportResult = lcGetActiveProject()->ExportPOVRay(FileName);
+	swResult<void> ExportResult = swGetActiveProject()->ExportPOVRay(FileName);
 
 	QGuiApplication::restoreOverrideCursor();
 
@@ -268,25 +268,25 @@ void lcRenderDialog::RenderPOVRay()
 	Arguments.append(QString::fromLatin1("+H%1").arg(QString::number(mHeight)));
 	Arguments.append("-O-");
 
-#if LC_POVRAY_MEMORY_MAPPED_FILE
+#if SW_POVRAY_MEMORY_MAPPED_FILE
 	Arguments.append(QString::fromLatin1("+SM\"%1\"").arg(GetStdOutFileName()));
 #endif
 
 	switch (mQuality)
 	{
-	case lcPOVRayRenderQuality::High:
+	case swPOVRayRenderQuality::High:
 		Arguments.append("+Q11");
 		Arguments.append("+R3");
 		Arguments.append("+A0.1");
 		Arguments.append("+J0.5");
 		break;
 
-	case lcPOVRayRenderQuality::Medium:
+	case swPOVRayRenderQuality::Medium:
 		Arguments.append("+Q5");
 		Arguments.append("+A0.1");
 		break;
 
-	case lcPOVRayRenderQuality::Low:
+	case swPOVRayRenderQuality::Low:
 		break;
 	}
 
@@ -297,7 +297,7 @@ void lcRenderDialog::RenderPOVRay()
 #endif
 
 #ifdef Q_OS_LINUX
-	POVRayPath = lcGetProfileString(LC_PROFILE_POVRAY_PATH);
+	POVRayPath = swGetProfileString(SW_PROFILE_POVRAY_PATH);
 	Arguments.append("+FN");
 	Arguments.append("-D");
 #endif
@@ -317,9 +317,9 @@ void lcRenderDialog::RenderPOVRay()
 	if (QFileInfo::exists(IniPath))
 		Arguments.append(QString("+L\"%1\"").arg(IniPath));
 
-	if (lcGetActiveProject()->GetModels()[0]->GetPOVRayOptions().UseLGEO)
+	if (swGetActiveProject()->GetModels()[0]->GetPOVRayOptions().UseLGEO)
 	{
-		const QString LGEOPath = lcGetProfileString(LC_PROFILE_POVRAY_LGEO_PATH);
+		const QString LGEOPath = swGetProfileString(SW_PROFILE_POVRAY_LGEO_PATH);
 
 		if (QFileInfo::exists(LGEOPath))
 		{
@@ -335,7 +335,7 @@ void lcRenderDialog::RenderPOVRay()
 		}
 	}
 
-	lcRenderProcess* Process = new lcRenderProcess(this);
+	swRenderProcess* Process = new swRenderProcess(this);
 #ifdef Q_OS_LINUX
 	connect(Process, &QProcess::readyReadStandardError, this, [this]() { bool Error; ReadStdErr(Error); });
 #endif
@@ -364,13 +364,13 @@ void lcRenderDialog::RenderPOVRay()
 	}
 }
 
-void lcRenderDialog::RenderBlender()
+void swRenderDialog::RenderBlender()
 {
-	const QString BlenderLDrawConfigFile = lcGetProfileString(LC_PROFILE_BLENDER_LDRAW_CONFIG_PATH);
-	const QString BlenderImportModule = lcGetProfileString(LC_PROFILE_BLENDER_IMPORT_MODULE);
+	const QString BlenderLDrawConfigFile = swGetProfileString(SW_PROFILE_BLENDER_LDRAW_CONFIG_PATH);
+	const QString BlenderImportModule = swGetProfileString(SW_PROFILE_BLENDER_IMPORT_MODULE);
 
 	if (!QFileInfo(BlenderLDrawConfigFile).isReadable() && !BlenderImportModule.isEmpty())
-		lcBlenderPreferences::SaveSettings();
+		swBlenderPreferences::SaveSettings();
 
 	ui->RenderProgress->setFormat(tr("Saving Blender Model"));
 	QApplication::processEvents();
@@ -380,12 +380,12 @@ void lcRenderDialog::RenderBlender()
 
 	const QStringList DataPathList = QStandardPaths::standardLocations(QStandardPaths::AppLocalDataLocation);
 	mDataPath = DataPathList.first();
-	const QString DefaultBlendFile = QString("%1/blender/config/%2").arg(mDataPath, LC_BLENDER_ADDON_BLEND_FILE);
+	const QString DefaultBlendFile = QString("%1/blender/config/%2").arg(mDataPath, SW_BLENDER_ADDON_BLEND_FILE);
 
-	lcModel* Model = lcGetActiveProject()->GetActiveModel();
-	const QString ModelFileName = QFileInfo(QDir(lcGetProfileString(LC_PROFILE_PROJECTS_PATH)), QString("%1_Step_%2.ldr").arg(QFileInfo(Model->GetProperties().mFileName).baseName()).arg(Model->GetCurrentStep())).absoluteFilePath();
+	swModel* Model = swGetActiveProject()->GetActiveModel();
+	const QString ModelFileName = QFileInfo(QDir(swGetProfileString(SW_PROFILE_PROJECTS_PATH)), QString("%1_Step_%2.ldr").arg(QFileInfo(Model->GetProperties().mFileName).baseName()).arg(Model->GetCurrentStep())).absoluteFilePath();
 
-	lcResult<void> ExportResult = lcGetActiveProject()->ExportCurrentStep(ModelFileName);
+	swResult<void> ExportResult = swGetActiveProject()->ExportCurrentStep(ModelFileName);
 
 	if (!ExportResult)
 	{
@@ -417,7 +417,7 @@ void lcRenderDialog::RenderBlender()
 	if (SearchCustomDir)
 		PythonExpression.append(", search_additional_paths=True");
 
-	if (mDialogMode == lcRenderDialogMode::OpenInBlender)
+	if (mDialogMode == swRenderDialogMode::OpenInBlender)
 	{
 		PythonExpression.append(", import_only=True");
 
@@ -443,9 +443,9 @@ void lcRenderDialog::RenderBlender()
 #else
 	ScriptName =  QLatin1String("render_ldraw_model.sh");
 #endif
-	ScriptCommand = QString("\"%1\" %2").arg(lcGetProfileString(LC_PROFILE_BLENDER_PATH), Arguments.join(" "));
+	ScriptCommand = QString("\"%1\" %2").arg(swGetProfileString(SW_PROFILE_BLENDER_PATH), Arguments.join(" "));
 
-	if (mDialogMode == lcRenderDialogMode::OpenInBlender)
+	if (mDialogMode == swRenderDialogMode::OpenInBlender)
 		ScriptCommand.append(QString(" > %1").arg(QDir::toNativeSeparators(GetStdOutFileName())));
 
 	const QLatin1String LineEnding("\r\n");
@@ -472,16 +472,16 @@ void lcRenderDialog::RenderBlender()
 	QThread::sleep(2);
 
 #ifdef Q_OS_WIN
-	ShellProgram = QLatin1String(LC_WINDOWS_SHELL);
+	ShellProgram = QLatin1String(SW_WINDOWS_SHELL);
 #else
-	ShellProgram = QLatin1String(LC_UNIX_SHELL);
+	ShellProgram = QLatin1String(SW_UNIX_SHELL);
 #endif
 
-	mProcess = new lcRenderProcess(this);
+	mProcess = new swRenderProcess(this);
 
-	connect(mProcess, &QProcess::readyReadStandardOutput, this, &lcRenderDialog::ReadStdOut);
+	connect(mProcess, &QProcess::readyReadStandardOutput, this, &swRenderDialog::ReadStdOut);
 
-	const QString LDrawLibPath = QFileInfo(lcGetProfileString(LC_PROFILE_PARTS_LIBRARY)).absolutePath();
+	const QString LDrawLibPath = QFileInfo(swGetProfileString(SW_PROFILE_PARTS_LIBRARY)).absolutePath();
 	QStringList SystemEnvironment = QProcess::systemEnvironment();
 	SystemEnvironment.prepend("LDRAW_DIRECTORY=" + LDrawLibPath);
 
@@ -491,7 +491,7 @@ void lcRenderDialog::RenderBlender()
 
 	mProcess->setStandardErrorFile(GetStdErrFileName());
 
-	if (mDialogMode == lcRenderDialogMode::OpenInBlender)
+	if (mDialogMode == swRenderDialogMode::OpenInBlender)
 	{
 		QFileInfo Info(GetStdOutFileName());
 		if (Info.exists())
@@ -530,7 +530,7 @@ void lcRenderDialog::RenderBlender()
 							const QString Items = Error ? tr("errors%1").arg(Warning ? tr(" and warnings") : "") : Warning ? tr("warnings") : "";
 							const QString Title = tr("Open in Blender Output");
 							const QString Body = tr("Open in Blender encountered %1. See Show Details...").arg(Items);
-							lcBlenderPreferences::ShowMessage(this, Body, Title, QString(), QString(Ba), 0, Icon);
+							swBlenderPreferences::ShowMessage(this, Body, Title, QString(), QString(Ba), 0, Icon);
 						}
 					}
 				}
@@ -564,9 +564,9 @@ void lcRenderDialog::RenderBlender()
 	}
 }
 
-void lcRenderDialog::ReadStdOut()
+void swRenderDialog::ReadStdOut()
 {
-	if (mDialogMode == lcRenderDialogMode::RenderPOVRay)
+	if (mDialogMode == swRenderDialogMode::RenderPOVRay)
 		return;
 
 	QString StdOut = QString(mProcess->readAllStandardOutput());
@@ -579,7 +579,7 @@ void lcRenderDialog::ReadStdOut()
 	QRegExp RxRenderProgress;
 	RxRenderProgress.setCaseSensitivity(Qt::CaseInsensitive);
 #endif
-	int BlenderVersionNum = QString(lcGetProfileString(LC_PROFILE_BLENDER_VERSION).mid(1, 1)).toInt();
+	int BlenderVersionNum = QString(swGetProfileString(SW_PROFILE_BLENDER_VERSION).mid(1, 1)).toInt();
 	bool BlenderVersion3OrGreater = BlenderVersionNum > 2;
 
 	if (BlenderVersion3OrGreater)
@@ -607,9 +607,9 @@ void lcRenderDialog::ReadStdOut()
 #endif
 }
 
-QString lcRenderDialog::ReadStdErr(bool& HasError) const
+QString swRenderDialog::ReadStdErr(bool& HasError) const
 {
-	HasError = mDialogMode == lcRenderDialogMode::RenderBlender ? false : true;
+	HasError = mDialogMode == swRenderDialogMode::RenderBlender ? false : true;
 
 	QFile File;
 	QStringList ReturnLines;
@@ -628,7 +628,7 @@ QString lcRenderDialog::ReadStdErr(bool& HasError) const
 		QString Line = In.readLine(0);
 		ReturnLines << Line.trimmed() + "<br>";
 
-		if (mDialogMode == lcRenderDialogMode::RenderPOVRay)
+		if (mDialogMode == swRenderDialogMode::RenderPOVRay)
 		{
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
 			if (Line.contains(QRegularExpression("^POV-Ray finished$", QRegularExpression::CaseInsensitiveOption)))
@@ -638,7 +638,7 @@ QString lcRenderDialog::ReadStdErr(bool& HasError) const
 				HasError = false;
 #endif
 		}
-		else if (mDialogMode == lcRenderDialogMode::RenderBlender)
+		else if (mDialogMode == swRenderDialogMode::RenderBlender)
 		{
 			if (!HasError && !Line.isEmpty())
 				HasError = true;
@@ -648,7 +648,7 @@ QString lcRenderDialog::ReadStdErr(bool& HasError) const
 	return ReturnLines.join(" ");
 }
 
-void lcRenderDialog::WriteStdOut()
+void swRenderDialog::WriteStdOut()
 {
 	QFile File(GetStdOutFileName());
 
@@ -665,16 +665,16 @@ void lcRenderDialog::WriteStdOut()
 	}
 }
 
-void lcRenderDialog::Update()
+void swRenderDialog::Update()
 {
 	if (!mProcess)
 		return;
 
 	const bool ProcessFinished = mProcess->state() == QProcess::NotRunning;
 
-	if (mDialogMode == lcRenderDialogMode::RenderPOVRay)
+	if (mDialogMode == swRenderDialogMode::RenderPOVRay)
 	{
-#if LC_POVRAY_MEMORY_MAPPED_FILE
+#if SW_POVRAY_MEMORY_MAPPED_FILE
 		if (!mOutputBuffer)
 		{
 			mOutputFile.setFileName(GetStdOutFileName());
@@ -706,7 +706,7 @@ void lcRenderDialog::Update()
 			}
 		}
 
-		struct lcSharedMemoryHeader
+		struct swSharedMemoryHeader
 		{
 			quint32 Version;
 			quint32 Width;
@@ -715,7 +715,7 @@ void lcRenderDialog::Update()
 			quint32 PixelsRead;
 		};
 
-		lcSharedMemoryHeader* Header = (lcSharedMemoryHeader*)mOutputBuffer;
+		swSharedMemoryHeader* Header = (swSharedMemoryHeader*)mOutputBuffer;
 
 		if (Header->PixelsWritten == Header->PixelsRead && !ProcessFinished)
 			return;
@@ -762,7 +762,7 @@ void lcRenderDialog::Update()
 	}
 }
 
-void lcRenderDialog::ShowResult()
+void swRenderDialog::ShowResult()
 {
 	bool Error;
 	const QString StdErrLog = ReadStdErr(Error);
@@ -773,7 +773,7 @@ void lcRenderDialog::ShowResult()
 		ui->RenderProgress->setValue(0);
 
 		const QString Body  = tr("An error occurred while rendering.");
-		lcBlenderPreferences::ShowMessage(this, Body, windowTitle(), QString(), StdErrLog, 0, QMessageBox::Warning);
+		swBlenderPreferences::ShowMessage(this, Body, windowTitle(), QString(), StdErrLog, 0, QMessageBox::Warning);
 		return;
 	}
 	else
@@ -784,7 +784,7 @@ void lcRenderDialog::ShowResult()
 	bool Success = false;
 	QString FileName = ui->OutputEdit->text();
 
-	if (mDialogMode == lcRenderDialogMode::RenderPOVRay)
+	if (mDialogMode == swRenderDialogMode::RenderPOVRay)
 	{
 		ui->preview->SetImage(mImage.scaled(mPreviewWidth, mPreviewHeight, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 
@@ -799,7 +799,7 @@ void lcRenderDialog::ShowResult()
 		}
 
 	}
-	else if (mDialogMode == lcRenderDialogMode::RenderBlender)
+	else if (mDialogMode == swRenderDialogMode::RenderBlender)
 	{
 		Success = QFileInfo::exists(FileName);
 		if (Success)
@@ -822,7 +822,7 @@ void lcRenderDialog::ShowResult()
 	WriteStdOut();
 }
 
-void lcRenderDialog::OutputBrowseButtonClicked()
+void swRenderDialog::OutputBrowseButtonClicked()
 {
 	const QString Result = QFileDialog::getSaveFileName(this, tr("Select Output File"), ui->OutputEdit->text(), tr("Supported Image Files (*.bmp *.png *.jpg);;BMP Files (*.bmp);;PNG Files (*.png);;JPEG Files (*.jpg);;All Files (*.*)"));
 
@@ -830,9 +830,9 @@ void lcRenderDialog::OutputBrowseButtonClicked()
 		ui->OutputEdit->setText(QDir::toNativeSeparators(Result));
 }
 
-void lcRenderDialog::SettingsButtonClicked()
+void swRenderDialog::SettingsButtonClicked()
 {
-	if (mDialogMode == lcRenderDialogMode::RenderPOVRay)
+	if (mDialogMode == swRenderDialogMode::RenderPOVRay)
 	{
 		QDialog Dialog(this);
 
@@ -844,15 +844,15 @@ void lcRenderDialog::SettingsButtonClicked()
 		QLineEdit* WidthEdit = new QLineEdit(&Dialog);
 		Layout->addRow(tr("Width:"), WidthEdit);
 
-		WidthEdit->setValidator(new QIntValidator(1, LC_MAX_IMAGE_DIMENSION, WidthEdit));
-		WidthEdit->setText(lcFormatIntegerLocalized(mWidth, WidthEdit->validator()->locale()));
+		WidthEdit->setValidator(new QIntValidator(1, SW_MAX_IMAGE_DIMENSION, WidthEdit));
+		WidthEdit->setText(swFormatIntegerLocalized(mWidth, WidthEdit->validator()->locale()));
 		WidthEdit->setToolTip(tr("Set the rendered image width in pixels (1 to 32768)."));
 
 		QLineEdit* HeightEdit = new QLineEdit(&Dialog);
 		Layout->addRow(tr("Height:"), HeightEdit);
 
-		HeightEdit->setValidator(new QIntValidator(1, LC_MAX_IMAGE_DIMENSION, HeightEdit));
-		HeightEdit->setText(lcFormatIntegerLocalized(mHeight, HeightEdit->validator()->locale()));
+		HeightEdit->setValidator(new QIntValidator(1, SW_MAX_IMAGE_DIMENSION, HeightEdit));
+		HeightEdit->setText(swFormatIntegerLocalized(mHeight, HeightEdit->validator()->locale()));
 		HeightEdit->setToolTip(tr("Set the rendered image height in pixels (1 to 32768)."));
 
 		QComboBox* QualityComboBox = new QComboBox(&Dialog);
@@ -875,7 +875,7 @@ void lcRenderDialog::SettingsButtonClicked()
 
 		QDialogButtonBox* ButtonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Help, Qt::Horizontal, &Dialog);
 		Layout->addRow(ButtonBox);
-		lcSetupDialogHelp(&Dialog, ButtonBox);
+		swSetupDialogHelp(&Dialog, ButtonBox);
 
 		QObject::connect(ButtonBox, &QDialogButtonBox::rejected, &Dialog, &QDialog::reject);
 		int Width = mWidth;
@@ -889,14 +889,14 @@ void lcRenderDialog::SettingsButtonClicked()
 
 			if (!WidthOk || !WidthEdit->hasAcceptableInput())
 			{
-				QMessageBox::information(&Dialog, Dialog.windowTitle(), tr("Please enter a width between 1 and %1 pixels.").arg(QString::number(LC_MAX_IMAGE_DIMENSION)));
+				QMessageBox::information(&Dialog, Dialog.windowTitle(), tr("Please enter a width between 1 and %1 pixels.").arg(QString::number(SW_MAX_IMAGE_DIMENSION)));
 				WidthEdit->setFocus();
 				return;
 			}
 
 			if (!HeightOk || !HeightEdit->hasAcceptableInput())
 			{
-				QMessageBox::information(&Dialog, Dialog.windowTitle(), tr("Please enter a height between 1 and %1 pixels.").arg(QString::number(LC_MAX_IMAGE_DIMENSION)));
+				QMessageBox::information(&Dialog, Dialog.windowTitle(), tr("Please enter a height between 1 and %1 pixels.").arg(QString::number(SW_MAX_IMAGE_DIMENSION)));
 				HeightEdit->setFocus();
 				return;
 			}
@@ -911,29 +911,29 @@ void lcRenderDialog::SettingsButtonClicked()
 
 		mWidth = Width;
 		mHeight = Height;
-		mQuality = static_cast<lcPOVRayRenderQuality>(QualityComboBox->currentIndex());
+		mQuality = static_cast<swPOVRayRenderQuality>(QualityComboBox->currentIndex());
 
-		lcSetProfileInt(LC_PROFILE_RENDER_WIDTH, mWidth);
-		lcSetProfileInt(LC_PROFILE_RENDER_HEIGHT, mHeight);
-		lcSetProfileRenderQuality(mQuality);
+		swSetProfileInt(SW_PROFILE_RENDER_WIDTH, mWidth);
+		swSetProfileInt(SW_PROFILE_RENDER_HEIGHT, mHeight);
+		swSetProfileRenderQuality(mQuality);
 	}
 	else
 	{
-		lcBlenderPreferencesDialog::GetBlenderPreferences(mWidth, mHeight, mScale, this);
+		swBlenderPreferencesDialog::GetBlenderPreferences(mWidth, mHeight, mScale, this);
 
-		if (lcGetProfileString(LC_PROFILE_BLENDER_IMPORT_MODULE).isEmpty())
+		if (swGetProfileString(SW_PROFILE_BLENDER_IMPORT_MODULE).isEmpty())
 			mRenderButton->setToolTip(tr("Blender not configured. Use Settings to configure."));
 		else
 			mRenderButton->setEnabled(true);
 	}
 }
 
-void lcRenderDialog::LogButtonClicked()
+void swRenderDialog::LogButtonClicked()
 {
 	QFileInfo FileInfo;
 	QString Message ;
 
-	if (mDialogMode == lcRenderDialogMode::RenderPOVRay)
+	if (mDialogMode == swRenderDialogMode::RenderPOVRay)
 	{
 		FileInfo.setFile(GetStdErrFileName());
 		Message = tr("POV-Ray standard error file not found: '%1'.").arg(FileInfo.absoluteFilePath());
@@ -978,7 +978,7 @@ void lcRenderDialog::LogButtonClicked()
 
 	QDialogButtonBox* ButtonBox = new QDialogButtonBox(QDialogButtonBox::Close | QDialogButtonBox::Help, Qt::Horizontal, &Dialog);
 	Layout->addWidget(ButtonBox);
-	lcSetupDialogHelp(&Dialog, ButtonBox);
+	swSetupDialogHelp(&Dialog, ButtonBox);
 
 	QObject::connect(ButtonBox, &QDialogButtonBox::rejected, &Dialog, &QDialog::reject);
 	QObject::connect(ButtonBox, &QDialogButtonBox::accepted, &Dialog, &QDialog::accept);
@@ -986,7 +986,7 @@ void lcRenderDialog::LogButtonClicked()
 	Dialog.exec();
 }
 
-lcRenderProcess::~lcRenderProcess()
+swRenderProcess::~swRenderProcess()
 {
 	if (state() == QProcess::Running || state() == QProcess::Starting)
 	{
@@ -995,4 +995,4 @@ lcRenderProcess::~lcRenderProcess()
 	}
 }
 
-#endif // LC_DISABLE_RENDER_DIALOG
+#endif // SW_DISABLE_RENDER_DIALOG

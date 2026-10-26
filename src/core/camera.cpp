@@ -9,81 +9,81 @@
 #include "sw_application.h"
 #include "sw_context.h"
 
-#define LC_CAMERA_POSITION_EDGE 7.5f
-#define LC_CAMERA_TARGET_EDGE 7.5f
+#define SW_CAMERA_POSITION_EDGE 7.5f
+#define SW_CAMERA_TARGET_EDGE 7.5f
 
-#define LC_CAMERA_SAVE_VERSION 7 // LeoCAD 0.80
+#define SW_CAMERA_SAVE_VERSION 7 // LeoCAD 0.80
 
-lcCamera::lcCamera()
-    : lcObject(lcObjectType::Camera)
+swCamera::swCamera()
+    : swObject(swObjectType::Camera)
 {
 }
 
-lcCamera::lcCamera(bool Simple)
-    : lcObject(lcObjectType::Camera), mSimple(Simple)
+swCamera::swCamera(bool Simple)
+    : swObject(swObjectType::Camera), mSimple(Simple)
 {
 	if (!Simple)
 	{
-		mPosition.SetValue(lcVector3(-250.0f, -250.0f, 75.0f));
-		mTargetPosition.SetValue(lcVector3(0.0f, 0.0f, 0.0f));
-		mUpVector.SetValue(lcVector3(-0.2357f, -0.2357f, 0.94281f));
+		mPosition.SetValue(swVector3(-250.0f, -250.0f, 75.0f));
+		mTargetPosition.SetValue(swVector3(0.0f, 0.0f, 0.0f));
+		mUpVector.SetValue(swVector3(-0.2357f, -0.2357f, 0.94281f));
 
-		lcCamera::UpdatePosition(1);
+		swCamera::UpdatePosition(1);
 	}
 }
 
-lcCamera::lcCamera(bool Simple, const lcVector3& Position, const lcVector3& TargetPosition)
-    : lcObject(lcObjectType::Camera), mSimple(Simple)
+swCamera::swCamera(bool Simple, const swVector3& Position, const swVector3& TargetPosition)
+    : swObject(swObjectType::Camera), mSimple(Simple)
 {
 	// Fix the up vector
-	lcVector3 UpVector(0, 0, 1), FrontVector(Position - TargetPosition), SideVector;
+	swVector3 UpVector(0, 0, 1), FrontVector(Position - TargetPosition), SideVector;
 	FrontVector.Normalize();
 	if (FrontVector == UpVector)
-		SideVector = lcVector3(1, 0, 0);
+		SideVector = swVector3(1, 0, 0);
 	else
-		SideVector = lcCross(FrontVector, UpVector);
-	UpVector = lcCross(SideVector, FrontVector);
+		SideVector = swCross(FrontVector, UpVector);
+	UpVector = swCross(SideVector, FrontVector);
 	UpVector.Normalize();
 
 	mPosition.SetValue(Position);
 	mTargetPosition.SetValue(TargetPosition);
 	mUpVector.SetValue(UpVector);
 
-	lcCamera::UpdatePosition(1);
+	swCamera::UpdatePosition(1);
 }
 
-lcCamera::~lcCamera()
+swCamera::~swCamera()
 {
 }
 
-QString lcCamera::GetCameraProjectionString(lcCameraProjection CameraProjection)
+QString swCamera::GetCameraProjectionString(swCameraProjection CameraProjection)
 {
 	switch (CameraProjection)
 	{
-	case lcCameraProjection::Perspective:
+	case swCameraProjection::Perspective:
 		return QT_TRANSLATE_NOOP("Camera Projection", "Perspective");
 
-	case lcCameraProjection::Orthographic:
+	case swCameraProjection::Orthographic:
 		return QT_TRANSLATE_NOOP("Camera Projection", "Orthographic");
 
-	case lcCameraProjection::Count:
+	case swCameraProjection::Count:
 		break;
 	}
 
 	return QString();
 }
 
-QStringList lcCamera::GetCameraProjectionStrings()
+QStringList swCamera::GetCameraProjectionStrings()
 {
 	QStringList CameraProjections;
 
-	for (int CameraProjectionIndex = 0; CameraProjectionIndex < static_cast<int>(lcCameraProjection::Count); CameraProjectionIndex++)
-		CameraProjections.push_back(GetCameraProjectionString(static_cast<lcCameraProjection>(CameraProjectionIndex)));
+	for (int CameraProjectionIndex = 0; CameraProjectionIndex < static_cast<int>(swCameraProjection::Count); CameraProjectionIndex++)
+		CameraProjections.push_back(GetCameraProjectionString(static_cast<swCameraProjection>(CameraProjectionIndex)));
 
 	return CameraProjections;
 }
 
-lcViewpoint lcCamera::GetViewpoint(const QString& ViewpointName)
+swViewpoint swCamera::GetViewpoint(const QString& ViewpointName)
 {
 	const QLatin1String ViewpointNames[] =
 	{
@@ -96,16 +96,16 @@ lcViewpoint lcCamera::GetViewpoint(const QString& ViewpointName)
 		QLatin1String("home")
 	};
 
-	LC_ARRAY_SIZE_CHECK(ViewpointNames, lcViewpoint::Count);
+	SW_ARRAY_SIZE_CHECK(ViewpointNames, swViewpoint::Count);
 
-	for (int ViewpointIndex = 0; ViewpointIndex < static_cast<int>(lcViewpoint::Count); ViewpointIndex++)
+	for (int ViewpointIndex = 0; ViewpointIndex < static_cast<int>(swViewpoint::Count); ViewpointIndex++)
 		if (ViewpointNames[ViewpointIndex] == ViewpointName)
-			return static_cast<lcViewpoint>(ViewpointIndex);
+			return static_cast<swViewpoint>(ViewpointIndex);
 
-	return lcViewpoint::Count;
+	return swViewpoint::Count;
 }
 
-bool lcCamera::SetName(const QString& Name)
+bool swCamera::SetName(const QString& Name)
 {
 	if (mName == Name)
 		return false;
@@ -115,13 +115,13 @@ bool lcCamera::SetName(const QString& Name)
 	return true;
 }
 
-void lcCamera::CreateName(const std::vector<std::unique_ptr<lcCamera>>& Cameras)
+void swCamera::CreateName(const std::vector<std::unique_ptr<swCamera>>& Cameras)
 {
 	if (!mName.isEmpty())
 	{
 		bool Found = false;
 
-		for (const std::unique_ptr<lcCamera>& Camera : Cameras)
+		for (const std::unique_ptr<swCamera>& Camera : Cameras)
 		{
 			if (Camera->GetName() == mName)
 			{
@@ -137,15 +137,15 @@ void lcCamera::CreateName(const std::vector<std::unique_ptr<lcCamera>>& Cameras)
 	int MaxCameraNumber = 0;
 	const QString Prefix = QLatin1String("Camera ");
 
-	for (const std::unique_ptr<lcCamera>& Camera : Cameras)
-		MaxCameraNumber = qMax(MaxCameraNumber, lcGetDefaultNameNumber(Camera->GetName(), Prefix));
+	for (const std::unique_ptr<swCamera>& Camera : Cameras)
+		MaxCameraNumber = qMax(MaxCameraNumber, swGetDefaultNameNumber(Camera->GetName(), Prefix));
 
-	mName = lcFormatDefaultName(Prefix, MaxCameraNumber + 1);
+	mName = swFormatDefaultName(Prefix, MaxCameraNumber + 1);
 }
 
-bool lcCamera::SetProjection(lcCameraProjection CameraProjection)
+bool swCamera::SetProjection(swCameraProjection CameraProjection)
 {
-	if (static_cast<int>(CameraProjection) < 0 || CameraProjection >= lcCameraProjection::Count)
+	if (static_cast<int>(CameraProjection) < 0 || CameraProjection >= swCameraProjection::Count)
 		return false;
 
 	if (GetProjection() == CameraProjection)
@@ -156,7 +156,7 @@ bool lcCamera::SetProjection(lcCameraProjection CameraProjection)
 	return true;
 }
 
-bool lcCamera::SetFOV(float Fovy)
+bool swCamera::SetFOV(float Fovy)
 {
 	if (m_fovy == Fovy)
 		return false;
@@ -166,7 +166,7 @@ bool lcCamera::SetFOV(float Fovy)
 	return true;
 }
 
-bool lcCamera::SetNearPlane(float NearPlane)
+bool swCamera::SetNearPlane(float NearPlane)
 {
 	if (m_zNear == NearPlane)
 		return false;
@@ -176,7 +176,7 @@ bool lcCamera::SetNearPlane(float NearPlane)
 	return true;
 }
 
-bool lcCamera::SetFarPlane(float FarPlane)
+bool swCamera::SetFarPlane(float FarPlane)
 {
 	if (m_zFar == FarPlane)
 		return false;
@@ -186,7 +186,7 @@ bool lcCamera::SetFarPlane(float FarPlane)
 	return true;
 }
 
-void lcCamera::SaveLDraw(QTextStream& Stream) const
+void swCamera::SaveLDraw(QTextStream& Stream) const
 {
 	const QLatin1String LineEnding("\r\n");
 
@@ -201,13 +201,13 @@ void lcCamera::SaveLDraw(QTextStream& Stream) const
 	if (IsHidden())
 		Stream << QLatin1String("HIDDEN");
 
-	if (mProjection == lcCameraProjection::Orthographic)
+	if (mProjection == swCameraProjection::Orthographic)
 		Stream << QLatin1String("ORTHOGRAPHIC ");
 
 	Stream << QLatin1String("NAME ") << mName << LineEnding;
 }
 
-bool lcCamera::ParseLDrawLine(QTextStream& Stream)
+bool swCamera::ParseLDrawLine(QTextStream& Stream)
 {
 	while (!Stream.atEnd())
 	{
@@ -217,7 +217,7 @@ bool lcCamera::ParseLDrawLine(QTextStream& Stream)
 		if (Token == QLatin1String("HIDDEN"))
 			SetHidden(true);
 		else if (Token == QLatin1String("ORTHOGRAPHIC"))
-			SetProjection(lcCameraProjection::Orthographic);
+			SetProjection(swCameraProjection::Orthographic);
 		else if (Token == QLatin1String("FOV"))
 			Stream >> m_fovy;
 		else if (Token == QLatin1String("ZNEAR"))
@@ -243,13 +243,13 @@ bool lcCamera::ParseLDrawLine(QTextStream& Stream)
 /////////////////////////////////////////////////////////////////////////////
 // Camera save/load
 
-bool lcCamera::FileLoad(lcFile& file)
+bool swCamera::FileLoad(swFile& file)
 {
 	quint8 version, ch;
 
 	version = file.ReadU8();
 
-	if (version > LC_CAMERA_SAVE_VERSION)
+	if (version > SW_CAMERA_SAVE_VERSION)
 		return false;
 
 	if (version > 5)
@@ -383,53 +383,53 @@ bool lcCamera::FileLoad(lcFile& file)
 	return true;
 }
 
-void lcCamera::CompareBoundingBox(lcVector3& Min, lcVector3& Max)
+void swCamera::CompareBoundingBox(swVector3& Min, swVector3& Max)
 {
-	const lcVector3 Points[2] =
+	const swVector3 Points[2] =
 	{
 		mPosition, mTargetPosition
 	};
 
 	for (int i = 0; i < 2; i++)
 	{
-		const lcVector3& Point = Points[i];
+		const swVector3& Point = Points[i];
 
 		// TODO: this should check the entire mesh
 
-		Min = lcMin(Point, Min);
-		Max = lcMax(Point, Max);
+		Min = swMin(Point, Min);
+		Max = swMax(Point, Max);
 	}
 }
 
-void lcCamera::MoveSelected(lcStep Step, bool AddKey, const lcVector3& Distance)
+void swCamera::MoveSelected(swStep Step, bool AddKey, const swVector3& Distance)
 {
 	if (IsSimple())
 		AddKey = false;
 
 	const quint32 FocusSection = GetFocusSection();
 
-	if (FocusSection == LC_CAMERA_SECTION_POSITION || FocusSection == LC_CAMERA_SECTION_INVALID)
+	if (FocusSection == SW_CAMERA_SECTION_POSITION || FocusSection == SW_CAMERA_SECTION_INVALID)
 	{
 		mPosition.ChangeKey(mPosition + Distance, Step, AddKey);
 	}
 
-	if (FocusSection == LC_CAMERA_SECTION_TARGET || FocusSection == LC_CAMERA_SECTION_INVALID)
+	if (FocusSection == SW_CAMERA_SECTION_TARGET || FocusSection == SW_CAMERA_SECTION_INVALID)
 	{
 		mTargetPosition.ChangeKey(mTargetPosition + Distance, Step, AddKey);
 	}
 
-	if (FocusSection == LC_CAMERA_SECTION_UPVECTOR)
+	if (FocusSection == SW_CAMERA_SECTION_UPVECTOR)
 	{
-		mUpVector.ChangeKey(lcNormalize(mUpVector + Distance), Step, AddKey);
+		mUpVector.ChangeKey(swNormalize(mUpVector + Distance), Step, AddKey);
 	}
 }
 
-void lcCamera::MoveRelative(const lcVector3& Distance, lcStep Step, bool AddKey)
+void swCamera::MoveRelative(const swVector3& Distance, swStep Step, bool AddKey)
 {
 	if (IsSimple())
 		AddKey = false;
 
-	const lcVector3 Relative = lcMul30(Distance, lcMatrix44Transpose(mWorldView)) * 5.0f;
+	const swVector3 Relative = swMul30(Distance, swMatrix44Transpose(mWorldView)) * 5.0f;
 
 	mPosition.ChangeKey(mPosition + Relative, Step, AddKey);
 	mTargetPosition.ChangeKey(mTargetPosition + Relative, Step, AddKey);
@@ -437,52 +437,52 @@ void lcCamera::MoveRelative(const lcVector3& Distance, lcStep Step, bool AddKey)
 	UpdatePosition(Step);
 }
 
-void lcCamera::Rotate(lcStep Step, bool AddKey, const lcMatrix33& RotationMatrix, const lcVector3& Center, const lcMatrix33& RotationFrame)
+void swCamera::Rotate(swStep Step, bool AddKey, const swMatrix33& RotationMatrix, const swVector3& Center, const swMatrix33& RotationFrame)
 {
-	if (GetFocusSection() != LC_CAMERA_SECTION_POSITION && GetFocusSection() != LC_CAMERA_SECTION_INVALID)
+	if (GetFocusSection() != SW_CAMERA_SECTION_POSITION && GetFocusSection() != SW_CAMERA_SECTION_INVALID)
 		return;
 
-	const lcMatrix33 LocalToWorldMatrix = lcMatrix33(mWorldView);
+	const swMatrix33 LocalToWorldMatrix = swMatrix33(mWorldView);
 
-	const lcMatrix33 LocalToFocusMatrix = lcMul(LocalToWorldMatrix, RotationFrame);
-	lcMatrix33 NewLocalToWorldMatrix = lcMul(LocalToFocusMatrix, RotationMatrix);
+	const swMatrix33 LocalToFocusMatrix = swMul(LocalToWorldMatrix, RotationFrame);
+	swMatrix33 NewLocalToWorldMatrix = swMul(LocalToFocusMatrix, RotationMatrix);
 
-	const lcMatrix33 WorldToLocalMatrix = lcMatrix33AffineInverse(LocalToWorldMatrix);
+	const swMatrix33 WorldToLocalMatrix = swMatrix33AffineInverse(LocalToWorldMatrix);
 
-	lcVector3 Distance = mPosition - Center;
-	Distance = lcMul(Distance, WorldToLocalMatrix);
-	Distance = lcMul(Distance, NewLocalToWorldMatrix);
+	swVector3 Distance = mPosition - Center;
+	Distance = swMul(Distance, WorldToLocalMatrix);
+	Distance = swMul(Distance, NewLocalToWorldMatrix);
 
 	SetPosition(Center + Distance, Step, AddKey);
 
 	Distance = mTargetPosition - Center;
-	Distance = lcMul(Distance, WorldToLocalMatrix);
-	Distance = lcMul(Distance, NewLocalToWorldMatrix);
+	Distance = swMul(Distance, WorldToLocalMatrix);
+	Distance = swMul(Distance, NewLocalToWorldMatrix);
 
 	SetTargetPosition(Center + Distance, Step, AddKey);
 
-	lcVector3 UpVector = mUpVector;
+	swVector3 UpVector = mUpVector;
 
-	UpVector = lcMul(UpVector, WorldToLocalMatrix);
-	UpVector = lcMul(UpVector, NewLocalToWorldMatrix);
+	UpVector = swMul(UpVector, WorldToLocalMatrix);
+	UpVector = swMul(UpVector, NewLocalToWorldMatrix);
 
 	SetUpVector(UpVector, Step, AddKey);
 }
 
-void lcCamera::UpdatePosition(lcStep Step)
+void swCamera::UpdatePosition(swStep Step)
 {
 	mPosition.Update(Step);
 	mTargetPosition.Update(Step);
 	mUpVector.Update(Step);
 
-	const lcVector3 FrontVector(mPosition - mTargetPosition);
-	const lcVector3 SideVector = lcCross(FrontVector, mUpVector);
-	const lcVector3 UpVector = lcNormalize(lcCross(SideVector, FrontVector));
+	const swVector3 FrontVector(mPosition - mTargetPosition);
+	const swVector3 SideVector = swCross(FrontVector, mUpVector);
+	const swVector3 UpVector = swNormalize(swCross(SideVector, FrontVector));
 
-	mWorldView = lcMatrix44LookAt(mPosition, mTargetPosition, UpVector);
+	mWorldView = swMatrix44LookAt(mPosition, mTargetPosition, UpVector);
 }
 
-void lcCamera::CopyPosition(const lcCamera* Camera)
+void swCamera::CopyPosition(const swCamera* Camera)
 {
 	m_fovy = Camera->m_fovy;
 	m_zNear = Camera->m_zNear;
@@ -495,7 +495,7 @@ void lcCamera::CopyPosition(const lcCamera* Camera)
 	mProjection = Camera->mProjection;
 }
 
-void lcCamera::CopySettings(const lcCamera* Camera)
+void swCamera::CopySettings(const swCamera* Camera)
 {
 	m_fovy = Camera->m_fovy;
 	m_zNear = Camera->m_zNear;
@@ -504,52 +504,52 @@ void lcCamera::CopySettings(const lcCamera* Camera)
 	mProjection = Camera->mProjection;
 }
 
-void lcCamera::DrawInterface(lcContext* Context, const lcScene& Scene) const
+void swCamera::DrawInterface(swContext* Context, const swScene& Scene) const
 {
 	Q_UNUSED(Scene);
-	Context->SetMaterial(lcMaterialType::UnlitColor);
+	Context->SetMaterial(swMaterialType::UnlitColor);
 
-	lcMatrix44 ViewWorldMatrix = lcMatrix44AffineInverse(mWorldView);
-	ViewWorldMatrix.SetTranslation(lcVector3(0, 0, 0));
+	swMatrix44 ViewWorldMatrix = swMatrix44AffineInverse(mWorldView);
+	ViewWorldMatrix.SetTranslation(swVector3(0, 0, 0));
 
-	const lcMatrix44 CameraViewMatrix = lcMul(ViewWorldMatrix, lcMatrix44Translation(mPosition));
+	const swMatrix44 CameraViewMatrix = swMul(ViewWorldMatrix, swMatrix44Translation(mPosition));
 	Context->SetWorldMatrix(CameraViewMatrix);
 
 	float Verts[(12 + 8 + 8 + 3 + 4) * 3];
 	float* CurVert = Verts;
 
-	float Length = lcLength(mPosition - mTargetPosition);
+	float Length = swLength(mPosition - mTargetPosition);
 
-	*CurVert++ =  LC_CAMERA_POSITION_EDGE; *CurVert++ =  LC_CAMERA_POSITION_EDGE; *CurVert++ =  LC_CAMERA_POSITION_EDGE;
-	*CurVert++ = -LC_CAMERA_POSITION_EDGE; *CurVert++ =  LC_CAMERA_POSITION_EDGE; *CurVert++ =  LC_CAMERA_POSITION_EDGE;
-	*CurVert++ = -LC_CAMERA_POSITION_EDGE; *CurVert++ = -LC_CAMERA_POSITION_EDGE; *CurVert++ =  LC_CAMERA_POSITION_EDGE;
-	*CurVert++ =  LC_CAMERA_POSITION_EDGE; *CurVert++ = -LC_CAMERA_POSITION_EDGE; *CurVert++ =  LC_CAMERA_POSITION_EDGE;
-	*CurVert++ =  LC_CAMERA_POSITION_EDGE; *CurVert++ =  LC_CAMERA_POSITION_EDGE; *CurVert++ = -LC_CAMERA_POSITION_EDGE;
-	*CurVert++ = -LC_CAMERA_POSITION_EDGE; *CurVert++ =  LC_CAMERA_POSITION_EDGE; *CurVert++ = -LC_CAMERA_POSITION_EDGE;
-	*CurVert++ = -LC_CAMERA_POSITION_EDGE; *CurVert++ = -LC_CAMERA_POSITION_EDGE; *CurVert++ = -LC_CAMERA_POSITION_EDGE;
-	*CurVert++ =  LC_CAMERA_POSITION_EDGE; *CurVert++ = -LC_CAMERA_POSITION_EDGE; *CurVert++ = -LC_CAMERA_POSITION_EDGE;
-	*CurVert++ =  LC_CAMERA_POSITION_EDGE; *CurVert++ =  LC_CAMERA_POSITION_EDGE; *CurVert++ = -LC_CAMERA_POSITION_EDGE * 2;
-	*CurVert++ = -LC_CAMERA_POSITION_EDGE; *CurVert++ =  LC_CAMERA_POSITION_EDGE; *CurVert++ = -LC_CAMERA_POSITION_EDGE * 2;
-	*CurVert++ = -LC_CAMERA_POSITION_EDGE; *CurVert++ = -LC_CAMERA_POSITION_EDGE; *CurVert++ = -LC_CAMERA_POSITION_EDGE * 2;
-	*CurVert++ =  LC_CAMERA_POSITION_EDGE; *CurVert++ = -LC_CAMERA_POSITION_EDGE; *CurVert++ = -LC_CAMERA_POSITION_EDGE * 2;
+	*CurVert++ =  SW_CAMERA_POSITION_EDGE; *CurVert++ =  SW_CAMERA_POSITION_EDGE; *CurVert++ =  SW_CAMERA_POSITION_EDGE;
+	*CurVert++ = -SW_CAMERA_POSITION_EDGE; *CurVert++ =  SW_CAMERA_POSITION_EDGE; *CurVert++ =  SW_CAMERA_POSITION_EDGE;
+	*CurVert++ = -SW_CAMERA_POSITION_EDGE; *CurVert++ = -SW_CAMERA_POSITION_EDGE; *CurVert++ =  SW_CAMERA_POSITION_EDGE;
+	*CurVert++ =  SW_CAMERA_POSITION_EDGE; *CurVert++ = -SW_CAMERA_POSITION_EDGE; *CurVert++ =  SW_CAMERA_POSITION_EDGE;
+	*CurVert++ =  SW_CAMERA_POSITION_EDGE; *CurVert++ =  SW_CAMERA_POSITION_EDGE; *CurVert++ = -SW_CAMERA_POSITION_EDGE;
+	*CurVert++ = -SW_CAMERA_POSITION_EDGE; *CurVert++ =  SW_CAMERA_POSITION_EDGE; *CurVert++ = -SW_CAMERA_POSITION_EDGE;
+	*CurVert++ = -SW_CAMERA_POSITION_EDGE; *CurVert++ = -SW_CAMERA_POSITION_EDGE; *CurVert++ = -SW_CAMERA_POSITION_EDGE;
+	*CurVert++ =  SW_CAMERA_POSITION_EDGE; *CurVert++ = -SW_CAMERA_POSITION_EDGE; *CurVert++ = -SW_CAMERA_POSITION_EDGE;
+	*CurVert++ =  SW_CAMERA_POSITION_EDGE; *CurVert++ =  SW_CAMERA_POSITION_EDGE; *CurVert++ = -SW_CAMERA_POSITION_EDGE * 2;
+	*CurVert++ = -SW_CAMERA_POSITION_EDGE; *CurVert++ =  SW_CAMERA_POSITION_EDGE; *CurVert++ = -SW_CAMERA_POSITION_EDGE * 2;
+	*CurVert++ = -SW_CAMERA_POSITION_EDGE; *CurVert++ = -SW_CAMERA_POSITION_EDGE; *CurVert++ = -SW_CAMERA_POSITION_EDGE * 2;
+	*CurVert++ =  SW_CAMERA_POSITION_EDGE; *CurVert++ = -SW_CAMERA_POSITION_EDGE; *CurVert++ = -SW_CAMERA_POSITION_EDGE * 2;
 
-	*CurVert++ =  LC_CAMERA_TARGET_EDGE; *CurVert++ =  LC_CAMERA_TARGET_EDGE; *CurVert++ =  LC_CAMERA_TARGET_EDGE - Length;
-	*CurVert++ = -LC_CAMERA_TARGET_EDGE; *CurVert++ =  LC_CAMERA_TARGET_EDGE; *CurVert++ =  LC_CAMERA_TARGET_EDGE - Length;
-	*CurVert++ = -LC_CAMERA_TARGET_EDGE; *CurVert++ = -LC_CAMERA_TARGET_EDGE; *CurVert++ =  LC_CAMERA_TARGET_EDGE - Length;
-	*CurVert++ =  LC_CAMERA_TARGET_EDGE; *CurVert++ = -LC_CAMERA_TARGET_EDGE; *CurVert++ =  LC_CAMERA_TARGET_EDGE - Length;
-	*CurVert++ =  LC_CAMERA_TARGET_EDGE; *CurVert++ =  LC_CAMERA_TARGET_EDGE; *CurVert++ = -LC_CAMERA_TARGET_EDGE - Length;
-	*CurVert++ = -LC_CAMERA_TARGET_EDGE; *CurVert++ =  LC_CAMERA_TARGET_EDGE; *CurVert++ = -LC_CAMERA_TARGET_EDGE - Length;
-	*CurVert++ = -LC_CAMERA_TARGET_EDGE; *CurVert++ = -LC_CAMERA_TARGET_EDGE; *CurVert++ = -LC_CAMERA_TARGET_EDGE - Length;
-	*CurVert++ =  LC_CAMERA_TARGET_EDGE; *CurVert++ = -LC_CAMERA_TARGET_EDGE; *CurVert++ = -LC_CAMERA_TARGET_EDGE - Length;
+	*CurVert++ =  SW_CAMERA_TARGET_EDGE; *CurVert++ =  SW_CAMERA_TARGET_EDGE; *CurVert++ =  SW_CAMERA_TARGET_EDGE - Length;
+	*CurVert++ = -SW_CAMERA_TARGET_EDGE; *CurVert++ =  SW_CAMERA_TARGET_EDGE; *CurVert++ =  SW_CAMERA_TARGET_EDGE - Length;
+	*CurVert++ = -SW_CAMERA_TARGET_EDGE; *CurVert++ = -SW_CAMERA_TARGET_EDGE; *CurVert++ =  SW_CAMERA_TARGET_EDGE - Length;
+	*CurVert++ =  SW_CAMERA_TARGET_EDGE; *CurVert++ = -SW_CAMERA_TARGET_EDGE; *CurVert++ =  SW_CAMERA_TARGET_EDGE - Length;
+	*CurVert++ =  SW_CAMERA_TARGET_EDGE; *CurVert++ =  SW_CAMERA_TARGET_EDGE; *CurVert++ = -SW_CAMERA_TARGET_EDGE - Length;
+	*CurVert++ = -SW_CAMERA_TARGET_EDGE; *CurVert++ =  SW_CAMERA_TARGET_EDGE; *CurVert++ = -SW_CAMERA_TARGET_EDGE - Length;
+	*CurVert++ = -SW_CAMERA_TARGET_EDGE; *CurVert++ = -SW_CAMERA_TARGET_EDGE; *CurVert++ = -SW_CAMERA_TARGET_EDGE - Length;
+	*CurVert++ =  SW_CAMERA_TARGET_EDGE; *CurVert++ = -SW_CAMERA_TARGET_EDGE; *CurVert++ = -SW_CAMERA_TARGET_EDGE - Length;
 
-	*CurVert++ =  LC_CAMERA_TARGET_EDGE; *CurVert++ =  LC_CAMERA_TARGET_EDGE + 25.0f; *CurVert++ =  LC_CAMERA_TARGET_EDGE;
-	*CurVert++ = -LC_CAMERA_TARGET_EDGE; *CurVert++ =  LC_CAMERA_TARGET_EDGE + 25.0f; *CurVert++ =  LC_CAMERA_TARGET_EDGE;
-	*CurVert++ = -LC_CAMERA_TARGET_EDGE; *CurVert++ = -LC_CAMERA_TARGET_EDGE + 25.0f; *CurVert++ =  LC_CAMERA_TARGET_EDGE;
-	*CurVert++ =  LC_CAMERA_TARGET_EDGE; *CurVert++ = -LC_CAMERA_TARGET_EDGE + 25.0f; *CurVert++ =  LC_CAMERA_TARGET_EDGE;
-	*CurVert++ =  LC_CAMERA_TARGET_EDGE; *CurVert++ =  LC_CAMERA_TARGET_EDGE + 25.0f; *CurVert++ = -LC_CAMERA_TARGET_EDGE;
-	*CurVert++ = -LC_CAMERA_TARGET_EDGE; *CurVert++ =  LC_CAMERA_TARGET_EDGE + 25.0f; *CurVert++ = -LC_CAMERA_TARGET_EDGE;
-	*CurVert++ = -LC_CAMERA_TARGET_EDGE; *CurVert++ = -LC_CAMERA_TARGET_EDGE + 25.0f; *CurVert++ = -LC_CAMERA_TARGET_EDGE;
-	*CurVert++ =  LC_CAMERA_TARGET_EDGE; *CurVert++ = -LC_CAMERA_TARGET_EDGE + 25.0f; *CurVert++ = -LC_CAMERA_TARGET_EDGE;
+	*CurVert++ =  SW_CAMERA_TARGET_EDGE; *CurVert++ =  SW_CAMERA_TARGET_EDGE + 25.0f; *CurVert++ =  SW_CAMERA_TARGET_EDGE;
+	*CurVert++ = -SW_CAMERA_TARGET_EDGE; *CurVert++ =  SW_CAMERA_TARGET_EDGE + 25.0f; *CurVert++ =  SW_CAMERA_TARGET_EDGE;
+	*CurVert++ = -SW_CAMERA_TARGET_EDGE; *CurVert++ = -SW_CAMERA_TARGET_EDGE + 25.0f; *CurVert++ =  SW_CAMERA_TARGET_EDGE;
+	*CurVert++ =  SW_CAMERA_TARGET_EDGE; *CurVert++ = -SW_CAMERA_TARGET_EDGE + 25.0f; *CurVert++ =  SW_CAMERA_TARGET_EDGE;
+	*CurVert++ =  SW_CAMERA_TARGET_EDGE; *CurVert++ =  SW_CAMERA_TARGET_EDGE + 25.0f; *CurVert++ = -SW_CAMERA_TARGET_EDGE;
+	*CurVert++ = -SW_CAMERA_TARGET_EDGE; *CurVert++ =  SW_CAMERA_TARGET_EDGE + 25.0f; *CurVert++ = -SW_CAMERA_TARGET_EDGE;
+	*CurVert++ = -SW_CAMERA_TARGET_EDGE; *CurVert++ = -SW_CAMERA_TARGET_EDGE + 25.0f; *CurVert++ = -SW_CAMERA_TARGET_EDGE;
+	*CurVert++ =  SW_CAMERA_TARGET_EDGE; *CurVert++ = -SW_CAMERA_TARGET_EDGE + 25.0f; *CurVert++ = -SW_CAMERA_TARGET_EDGE;
 
 	*CurVert++ = 0.0f; *CurVert++ = 0.0f; *CurVert++ = 0.0f;
 	*CurVert++ = 0.0f; *CurVert++ = 0.0f; *CurVert++ = -Length;
@@ -577,11 +577,11 @@ void lcCamera::DrawInterface(lcContext* Context, const lcScene& Scene) const
 	Context->SetVertexFormatPosition(3);
 	Context->SetIndexBufferPointer(Indices);
 
-	const lcPreferences& Preferences = lcGetPreferences();
+	const swPreferences& Preferences = swGetPreferences();
 	const float LineWidth = Preferences.mLineWidth;
-	const lcVector4 SelectedColor = lcVector4FromColor(Preferences.mObjectSelectedColor);
-	const lcVector4 FocusedColor = lcVector4FromColor(Preferences.mObjectFocusedColor);
-	const lcVector4 CameraColor = lcVector4FromColor(Preferences.mCameraColor);
+	const swVector4 SelectedColor = swVector4FromColor(Preferences.mObjectSelectedColor);
+	const swVector4 FocusedColor = swVector4FromColor(Preferences.mObjectFocusedColor);
+	const swVector4 CameraColor = swVector4FromColor(Preferences.mCameraColor);
 
 	if (!IsSelected())
 	{
@@ -595,7 +595,7 @@ void lcCamera::DrawInterface(lcContext* Context, const lcScene& Scene) const
 		if (IsSelected())
 		{
 			Context->SetLineWidth(2.0f * LineWidth);
-			if (IsFocused(LC_CAMERA_SECTION_POSITION))
+			if (IsFocused(SW_CAMERA_SECTION_POSITION))
 				Context->SetColor(FocusedColor);
 			else
 				Context->SetColor(SelectedColor);
@@ -611,7 +611,7 @@ void lcCamera::DrawInterface(lcContext* Context, const lcScene& Scene) const
 		if (IsSelected())
 		{
 			Context->SetLineWidth(2.0f * LineWidth);
-			if (IsFocused(LC_CAMERA_SECTION_TARGET))
+			if (IsFocused(SW_CAMERA_SECTION_TARGET))
 				Context->SetColor(FocusedColor);
 			else
 				Context->SetColor(SelectedColor);
@@ -627,7 +627,7 @@ void lcCamera::DrawInterface(lcContext* Context, const lcScene& Scene) const
 		if (IsSelected())
 		{
 			Context->SetLineWidth(2.0f * LineWidth);
-			if (IsFocused(LC_CAMERA_SECTION_UPVECTOR))
+			if (IsFocused(SW_CAMERA_SECTION_UPVECTOR))
 				Context->SetColor(FocusedColor);
 			else
 				Context->SetColor(SelectedColor);
@@ -643,7 +643,7 @@ void lcCamera::DrawInterface(lcContext* Context, const lcScene& Scene) const
 		Context->SetColor(CameraColor);
 		Context->SetLineWidth(LineWidth);
 
-		float SizeY = tanf(LC_DTOR * m_fovy / 2) * Length;
+		float SizeY = tanf(SW_DTOR * m_fovy / 2) * Length;
 		float SizeX = SizeY * 1.333f;
 
 		*CurVert++ =  SizeX; *CurVert++ =  SizeY; *CurVert++ = -Length;
@@ -655,270 +655,270 @@ void lcCamera::DrawInterface(lcContext* Context, const lcScene& Scene) const
 	}
 }
 
-QVariant lcCamera::GetPropertyValue(lcObjectPropertyId PropertyId) const
+QVariant swCamera::GetPropertyValue(swObjectPropertyId PropertyId) const
 {
 	switch (PropertyId)
 	{
-	case lcObjectPropertyId::PieceId:
-	case lcObjectPropertyId::PieceColor:
-	case lcObjectPropertyId::PieceStepShow:
-	case lcObjectPropertyId::PieceStepHide:
+	case swObjectPropertyId::PieceId:
+	case swObjectPropertyId::PieceColor:
+	case swObjectPropertyId::PieceStepShow:
+	case swObjectPropertyId::PieceStepHide:
 		break;
 
-	case lcObjectPropertyId::CameraName:
+	case swObjectPropertyId::CameraName:
 		return GetName();
 
-	case lcObjectPropertyId::CameraProjection:
+	case swObjectPropertyId::CameraProjection:
 		return static_cast<int>(GetProjection());
 
-	case lcObjectPropertyId::CameraFOV:
-	case lcObjectPropertyId::CameraNear:
-	case lcObjectPropertyId::CameraFar:
-	case lcObjectPropertyId::CameraPositionX:
-	case lcObjectPropertyId::CameraPositionY:
-	case lcObjectPropertyId::CameraPositionZ:
-	case lcObjectPropertyId::CameraTargetX:
-	case lcObjectPropertyId::CameraTargetY:
-	case lcObjectPropertyId::CameraTargetZ:
-	case lcObjectPropertyId::CameraUpX:
-	case lcObjectPropertyId::CameraUpY:
-	case lcObjectPropertyId::CameraUpZ:
-	case lcObjectPropertyId::LightName:
-	case lcObjectPropertyId::LightType:
-	case lcObjectPropertyId::LightColor:
-	case lcObjectPropertyId::LightBlenderPower:
-	case lcObjectPropertyId::LightPOVRayPower:
-	case lcObjectPropertyId::LightCastShadow:
-	case lcObjectPropertyId::LightPOVRayFadeDistance:
-	case lcObjectPropertyId::LightPOVRayFadePower:
-	case lcObjectPropertyId::LightBlenderRadius:
-	case lcObjectPropertyId::LightBlenderAngle:
-	case lcObjectPropertyId::LightAreaSizeX:
-	case lcObjectPropertyId::LightAreaSizeY:
-	case lcObjectPropertyId::LightSpotConeAngle:
-	case lcObjectPropertyId::LightSpotPenumbraAngle:
-	case lcObjectPropertyId::LightPOVRaySpotTightness:
-	case lcObjectPropertyId::LightAreaShape:
-	case lcObjectPropertyId::LightPOVRayAreaGridX:
-	case lcObjectPropertyId::LightPOVRayAreaGridY:
-	case lcObjectPropertyId::ObjectPositionX:
-	case lcObjectPropertyId::ObjectPositionY:
-	case lcObjectPropertyId::ObjectPositionZ:
-	case lcObjectPropertyId::ObjectRotationX:
-	case lcObjectPropertyId::ObjectRotationY:
-	case lcObjectPropertyId::ObjectRotationZ:
-	case lcObjectPropertyId::Count:
+	case swObjectPropertyId::CameraFOV:
+	case swObjectPropertyId::CameraNear:
+	case swObjectPropertyId::CameraFar:
+	case swObjectPropertyId::CameraPositionX:
+	case swObjectPropertyId::CameraPositionY:
+	case swObjectPropertyId::CameraPositionZ:
+	case swObjectPropertyId::CameraTargetX:
+	case swObjectPropertyId::CameraTargetY:
+	case swObjectPropertyId::CameraTargetZ:
+	case swObjectPropertyId::CameraUpX:
+	case swObjectPropertyId::CameraUpY:
+	case swObjectPropertyId::CameraUpZ:
+	case swObjectPropertyId::LightName:
+	case swObjectPropertyId::LightType:
+	case swObjectPropertyId::LightColor:
+	case swObjectPropertyId::LightBlenderPower:
+	case swObjectPropertyId::LightPOVRayPower:
+	case swObjectPropertyId::LightCastShadow:
+	case swObjectPropertyId::LightPOVRayFadeDistance:
+	case swObjectPropertyId::LightPOVRayFadePower:
+	case swObjectPropertyId::LightBlenderRadius:
+	case swObjectPropertyId::LightBlenderAngle:
+	case swObjectPropertyId::LightAreaSizeX:
+	case swObjectPropertyId::LightAreaSizeY:
+	case swObjectPropertyId::LightSpotConeAngle:
+	case swObjectPropertyId::LightSpotPenumbraAngle:
+	case swObjectPropertyId::LightPOVRaySpotTightness:
+	case swObjectPropertyId::LightAreaShape:
+	case swObjectPropertyId::LightPOVRayAreaGridX:
+	case swObjectPropertyId::LightPOVRayAreaGridY:
+	case swObjectPropertyId::ObjectPositionX:
+	case swObjectPropertyId::ObjectPositionY:
+	case swObjectPropertyId::ObjectPositionZ:
+	case swObjectPropertyId::ObjectRotationX:
+	case swObjectPropertyId::ObjectRotationY:
+	case swObjectPropertyId::ObjectRotationZ:
+	case swObjectPropertyId::Count:
 		break;
 	}
 
 	return QVariant();
 }
 
-bool lcCamera::SetPropertyValue(lcObjectPropertyId PropertyId, lcStep Step, bool AddKey, QVariant Value)
+bool swCamera::SetPropertyValue(swObjectPropertyId PropertyId, swStep Step, bool AddKey, QVariant Value)
 {
 	Q_UNUSED(Step);
 	Q_UNUSED(AddKey);
 
 	switch (PropertyId)
 	{
-	case lcObjectPropertyId::PieceId:
-	case lcObjectPropertyId::PieceColor:
-	case lcObjectPropertyId::PieceStepShow:
-	case lcObjectPropertyId::PieceStepHide:
+	case swObjectPropertyId::PieceId:
+	case swObjectPropertyId::PieceColor:
+	case swObjectPropertyId::PieceStepShow:
+	case swObjectPropertyId::PieceStepHide:
 		break;
 
-	case lcObjectPropertyId::CameraName:
+	case swObjectPropertyId::CameraName:
 		return SetName(Value.toString());
 
-	case lcObjectPropertyId::CameraProjection:
-		return SetProjection(static_cast<lcCameraProjection>(Value.toInt()));
+	case swObjectPropertyId::CameraProjection:
+		return SetProjection(static_cast<swCameraProjection>(Value.toInt()));
 
-	case lcObjectPropertyId::CameraFOV:
+	case swObjectPropertyId::CameraFOV:
 		return SetFOV(Value.toFloat());
 
-	case lcObjectPropertyId::CameraNear:
+	case swObjectPropertyId::CameraNear:
 		return SetNearPlane(Value.toFloat());
 
-	case lcObjectPropertyId::CameraFar:
+	case swObjectPropertyId::CameraFar:
 		return SetFarPlane(Value.toFloat());
 
-	case lcObjectPropertyId::CameraPositionX:
-	case lcObjectPropertyId::CameraPositionY:
-	case lcObjectPropertyId::CameraPositionZ:
-	case lcObjectPropertyId::CameraTargetX:
-	case lcObjectPropertyId::CameraTargetY:
-	case lcObjectPropertyId::CameraTargetZ:
-	case lcObjectPropertyId::CameraUpX:
-	case lcObjectPropertyId::CameraUpY:
-	case lcObjectPropertyId::CameraUpZ:
-	case lcObjectPropertyId::LightName:
-	case lcObjectPropertyId::LightType:
-	case lcObjectPropertyId::LightColor:
-	case lcObjectPropertyId::LightBlenderPower:
-	case lcObjectPropertyId::LightPOVRayPower:
-	case lcObjectPropertyId::LightCastShadow:
-	case lcObjectPropertyId::LightPOVRayFadeDistance:
-	case lcObjectPropertyId::LightPOVRayFadePower:
-	case lcObjectPropertyId::LightBlenderRadius:
-	case lcObjectPropertyId::LightBlenderAngle:
-	case lcObjectPropertyId::LightAreaSizeX:
-	case lcObjectPropertyId::LightAreaSizeY:
-	case lcObjectPropertyId::LightSpotConeAngle:
-	case lcObjectPropertyId::LightSpotPenumbraAngle:
-	case lcObjectPropertyId::LightPOVRaySpotTightness:
-	case lcObjectPropertyId::LightAreaShape:
-	case lcObjectPropertyId::LightPOVRayAreaGridX:
-	case lcObjectPropertyId::LightPOVRayAreaGridY:
-	case lcObjectPropertyId::ObjectPositionX:
-	case lcObjectPropertyId::ObjectPositionY:
-	case lcObjectPropertyId::ObjectPositionZ:
-	case lcObjectPropertyId::ObjectRotationX:
-	case lcObjectPropertyId::ObjectRotationY:
-	case lcObjectPropertyId::ObjectRotationZ:
-	case lcObjectPropertyId::Count:
+	case swObjectPropertyId::CameraPositionX:
+	case swObjectPropertyId::CameraPositionY:
+	case swObjectPropertyId::CameraPositionZ:
+	case swObjectPropertyId::CameraTargetX:
+	case swObjectPropertyId::CameraTargetY:
+	case swObjectPropertyId::CameraTargetZ:
+	case swObjectPropertyId::CameraUpX:
+	case swObjectPropertyId::CameraUpY:
+	case swObjectPropertyId::CameraUpZ:
+	case swObjectPropertyId::LightName:
+	case swObjectPropertyId::LightType:
+	case swObjectPropertyId::LightColor:
+	case swObjectPropertyId::LightBlenderPower:
+	case swObjectPropertyId::LightPOVRayPower:
+	case swObjectPropertyId::LightCastShadow:
+	case swObjectPropertyId::LightPOVRayFadeDistance:
+	case swObjectPropertyId::LightPOVRayFadePower:
+	case swObjectPropertyId::LightBlenderRadius:
+	case swObjectPropertyId::LightBlenderAngle:
+	case swObjectPropertyId::LightAreaSizeX:
+	case swObjectPropertyId::LightAreaSizeY:
+	case swObjectPropertyId::LightSpotConeAngle:
+	case swObjectPropertyId::LightSpotPenumbraAngle:
+	case swObjectPropertyId::LightPOVRaySpotTightness:
+	case swObjectPropertyId::LightAreaShape:
+	case swObjectPropertyId::LightPOVRayAreaGridX:
+	case swObjectPropertyId::LightPOVRayAreaGridY:
+	case swObjectPropertyId::ObjectPositionX:
+	case swObjectPropertyId::ObjectPositionY:
+	case swObjectPropertyId::ObjectPositionZ:
+	case swObjectPropertyId::ObjectRotationX:
+	case swObjectPropertyId::ObjectRotationY:
+	case swObjectPropertyId::ObjectRotationZ:
+	case swObjectPropertyId::Count:
 		break;
 	}
 
 	return false;
 }
 
-lcStep lcCamera::GetLastStep() const
+swStep swCamera::GetLastStep() const
 {
 	return std::max({ mPosition.GetLastKeyFrame(), mTargetPosition.GetLastKeyFrame(), mUpVector.GetLastKeyFrame() });
 }
 
-bool lcCamera::HasKeyFrame(lcObjectPropertyId PropertyId, lcStep Time) const
+bool swCamera::HasKeyFrame(swObjectPropertyId PropertyId, swStep Time) const
 {
 	switch (PropertyId)
 	{
-	case lcObjectPropertyId::PieceId:
-	case lcObjectPropertyId::PieceColor:
-	case lcObjectPropertyId::PieceStepShow:
-	case lcObjectPropertyId::PieceStepHide:
-	case lcObjectPropertyId::CameraName:
-	case lcObjectPropertyId::CameraProjection:
-	case lcObjectPropertyId::CameraFOV:
-	case lcObjectPropertyId::CameraNear:
-	case lcObjectPropertyId::CameraFar:
+	case swObjectPropertyId::PieceId:
+	case swObjectPropertyId::PieceColor:
+	case swObjectPropertyId::PieceStepShow:
+	case swObjectPropertyId::PieceStepHide:
+	case swObjectPropertyId::CameraName:
+	case swObjectPropertyId::CameraProjection:
+	case swObjectPropertyId::CameraFOV:
+	case swObjectPropertyId::CameraNear:
+	case swObjectPropertyId::CameraFar:
 		return false;
 
-	case lcObjectPropertyId::CameraPositionX:
-	case lcObjectPropertyId::CameraPositionY:
-	case lcObjectPropertyId::CameraPositionZ:
+	case swObjectPropertyId::CameraPositionX:
+	case swObjectPropertyId::CameraPositionY:
+	case swObjectPropertyId::CameraPositionZ:
 		return mPosition.HasKeyFrame(Time);
 
-	case lcObjectPropertyId::CameraTargetX:
-	case lcObjectPropertyId::CameraTargetY:
-	case lcObjectPropertyId::CameraTargetZ:
+	case swObjectPropertyId::CameraTargetX:
+	case swObjectPropertyId::CameraTargetY:
+	case swObjectPropertyId::CameraTargetZ:
 		return mTargetPosition.HasKeyFrame(Time);
 
-	case lcObjectPropertyId::CameraUpX:
-	case lcObjectPropertyId::CameraUpY:
-	case lcObjectPropertyId::CameraUpZ:
+	case swObjectPropertyId::CameraUpX:
+	case swObjectPropertyId::CameraUpY:
+	case swObjectPropertyId::CameraUpZ:
 		return mUpVector.HasKeyFrame(Time);
 
-	case lcObjectPropertyId::LightName:
-	case lcObjectPropertyId::LightType:
-	case lcObjectPropertyId::LightColor:
-	case lcObjectPropertyId::LightBlenderPower:
-	case lcObjectPropertyId::LightPOVRayPower:
-	case lcObjectPropertyId::LightCastShadow:
-	case lcObjectPropertyId::LightPOVRayFadeDistance:
-	case lcObjectPropertyId::LightPOVRayFadePower:
-	case lcObjectPropertyId::LightBlenderRadius:
-	case lcObjectPropertyId::LightBlenderAngle:
-	case lcObjectPropertyId::LightAreaSizeX:
-	case lcObjectPropertyId::LightAreaSizeY:
-	case lcObjectPropertyId::LightSpotConeAngle:
-	case lcObjectPropertyId::LightSpotPenumbraAngle:
-	case lcObjectPropertyId::LightPOVRaySpotTightness:
-	case lcObjectPropertyId::LightAreaShape:
-	case lcObjectPropertyId::LightPOVRayAreaGridX:
-	case lcObjectPropertyId::LightPOVRayAreaGridY:
-	case lcObjectPropertyId::ObjectPositionX:
-	case lcObjectPropertyId::ObjectPositionY:
-	case lcObjectPropertyId::ObjectPositionZ:
-	case lcObjectPropertyId::ObjectRotationX:
-	case lcObjectPropertyId::ObjectRotationY:
-	case lcObjectPropertyId::ObjectRotationZ:
-	case lcObjectPropertyId::Count:
+	case swObjectPropertyId::LightName:
+	case swObjectPropertyId::LightType:
+	case swObjectPropertyId::LightColor:
+	case swObjectPropertyId::LightBlenderPower:
+	case swObjectPropertyId::LightPOVRayPower:
+	case swObjectPropertyId::LightCastShadow:
+	case swObjectPropertyId::LightPOVRayFadeDistance:
+	case swObjectPropertyId::LightPOVRayFadePower:
+	case swObjectPropertyId::LightBlenderRadius:
+	case swObjectPropertyId::LightBlenderAngle:
+	case swObjectPropertyId::LightAreaSizeX:
+	case swObjectPropertyId::LightAreaSizeY:
+	case swObjectPropertyId::LightSpotConeAngle:
+	case swObjectPropertyId::LightSpotPenumbraAngle:
+	case swObjectPropertyId::LightPOVRaySpotTightness:
+	case swObjectPropertyId::LightAreaShape:
+	case swObjectPropertyId::LightPOVRayAreaGridX:
+	case swObjectPropertyId::LightPOVRayAreaGridY:
+	case swObjectPropertyId::ObjectPositionX:
+	case swObjectPropertyId::ObjectPositionY:
+	case swObjectPropertyId::ObjectPositionZ:
+	case swObjectPropertyId::ObjectRotationX:
+	case swObjectPropertyId::ObjectRotationY:
+	case swObjectPropertyId::ObjectRotationZ:
+	case swObjectPropertyId::Count:
 		return false;
 	}
 
 	return false;
 }
 
-bool lcCamera::SetKeyFrame(lcObjectPropertyId PropertyId, lcStep Time, bool KeyFrame)
+bool swCamera::SetKeyFrame(swObjectPropertyId PropertyId, swStep Time, bool KeyFrame)
 {
 	switch (PropertyId)
 	{
-	case lcObjectPropertyId::PieceId:
-	case lcObjectPropertyId::PieceColor:
-	case lcObjectPropertyId::PieceStepShow:
-	case lcObjectPropertyId::PieceStepHide:
-	case lcObjectPropertyId::CameraName:
-	case lcObjectPropertyId::CameraProjection:
-	case lcObjectPropertyId::CameraFOV:
-	case lcObjectPropertyId::CameraNear:
-	case lcObjectPropertyId::CameraFar:
+	case swObjectPropertyId::PieceId:
+	case swObjectPropertyId::PieceColor:
+	case swObjectPropertyId::PieceStepShow:
+	case swObjectPropertyId::PieceStepHide:
+	case swObjectPropertyId::CameraName:
+	case swObjectPropertyId::CameraProjection:
+	case swObjectPropertyId::CameraFOV:
+	case swObjectPropertyId::CameraNear:
+	case swObjectPropertyId::CameraFar:
 		return false;
 
-	case lcObjectPropertyId::CameraPositionX:
-	case lcObjectPropertyId::CameraPositionY:
-	case lcObjectPropertyId::CameraPositionZ:
+	case swObjectPropertyId::CameraPositionX:
+	case swObjectPropertyId::CameraPositionY:
+	case swObjectPropertyId::CameraPositionZ:
 		return mPosition.SetKeyFrame(Time, KeyFrame);
 
-	case lcObjectPropertyId::CameraTargetX:
-	case lcObjectPropertyId::CameraTargetY:
-	case lcObjectPropertyId::CameraTargetZ:
+	case swObjectPropertyId::CameraTargetX:
+	case swObjectPropertyId::CameraTargetY:
+	case swObjectPropertyId::CameraTargetZ:
 		return mTargetPosition.SetKeyFrame(Time, KeyFrame);
 
-	case lcObjectPropertyId::CameraUpX:
-	case lcObjectPropertyId::CameraUpY:
-	case lcObjectPropertyId::CameraUpZ:
+	case swObjectPropertyId::CameraUpX:
+	case swObjectPropertyId::CameraUpY:
+	case swObjectPropertyId::CameraUpZ:
 		return mUpVector.SetKeyFrame(Time, KeyFrame);
 
-	case lcObjectPropertyId::LightName:
-	case lcObjectPropertyId::LightType:
-	case lcObjectPropertyId::LightColor:
-	case lcObjectPropertyId::LightBlenderPower:
-	case lcObjectPropertyId::LightPOVRayPower:
-	case lcObjectPropertyId::LightCastShadow:
-	case lcObjectPropertyId::LightPOVRayFadeDistance:
-	case lcObjectPropertyId::LightPOVRayFadePower:
-	case lcObjectPropertyId::LightBlenderRadius:
-	case lcObjectPropertyId::LightBlenderAngle:
-	case lcObjectPropertyId::LightAreaSizeX:
-	case lcObjectPropertyId::LightAreaSizeY:
-	case lcObjectPropertyId::LightSpotConeAngle:
-	case lcObjectPropertyId::LightSpotPenumbraAngle:
-	case lcObjectPropertyId::LightPOVRaySpotTightness:
-	case lcObjectPropertyId::LightAreaShape:
-	case lcObjectPropertyId::LightPOVRayAreaGridX:
-	case lcObjectPropertyId::LightPOVRayAreaGridY:
-	case lcObjectPropertyId::ObjectPositionX:
-	case lcObjectPropertyId::ObjectPositionY:
-	case lcObjectPropertyId::ObjectPositionZ:
-	case lcObjectPropertyId::ObjectRotationX:
-	case lcObjectPropertyId::ObjectRotationY:
-	case lcObjectPropertyId::ObjectRotationZ:
-	case lcObjectPropertyId::Count:
+	case swObjectPropertyId::LightName:
+	case swObjectPropertyId::LightType:
+	case swObjectPropertyId::LightColor:
+	case swObjectPropertyId::LightBlenderPower:
+	case swObjectPropertyId::LightPOVRayPower:
+	case swObjectPropertyId::LightCastShadow:
+	case swObjectPropertyId::LightPOVRayFadeDistance:
+	case swObjectPropertyId::LightPOVRayFadePower:
+	case swObjectPropertyId::LightBlenderRadius:
+	case swObjectPropertyId::LightBlenderAngle:
+	case swObjectPropertyId::LightAreaSizeX:
+	case swObjectPropertyId::LightAreaSizeY:
+	case swObjectPropertyId::LightSpotConeAngle:
+	case swObjectPropertyId::LightSpotPenumbraAngle:
+	case swObjectPropertyId::LightPOVRaySpotTightness:
+	case swObjectPropertyId::LightAreaShape:
+	case swObjectPropertyId::LightPOVRayAreaGridX:
+	case swObjectPropertyId::LightPOVRayAreaGridY:
+	case swObjectPropertyId::ObjectPositionX:
+	case swObjectPropertyId::ObjectPositionY:
+	case swObjectPropertyId::ObjectPositionZ:
+	case swObjectPropertyId::ObjectRotationX:
+	case swObjectPropertyId::ObjectRotationY:
+	case swObjectPropertyId::ObjectRotationZ:
+	case swObjectPropertyId::Count:
 		return false;
 	}
 
 	return false;
 }
 
-void lcCamera::RemoveKeyFrames()
+void swCamera::RemoveKeyFrames()
 {
 	mPosition.RemoveAllKeys();
 	mTargetPosition.RemoveAllKeys();
 	mUpVector.RemoveAllKeys();
 }
 
-lcCameraHistoryState lcCamera::GetHistoryState() const
+swCameraHistoryState swCamera::GetHistoryState() const
 {
-	lcCameraHistoryState State;
+	swCameraHistoryState State;
 
 	State.Id = mId;
 	State.Hidden = mHidden;
@@ -935,7 +935,7 @@ lcCameraHistoryState lcCamera::GetHistoryState() const
 	return State;
 }
 
-void lcCamera::SetHistoryState(const lcCameraHistoryState& State)
+void swCamera::SetHistoryState(const swCameraHistoryState& State)
 {
 	mId = State.Id;
 	mHidden = State.Hidden;
@@ -950,196 +950,196 @@ void lcCamera::SetHistoryState(const lcCameraHistoryState& State)
 	mName = State.Name;
 }
 
-void lcCamera::RayTest(lcObjectRayTest& ObjectRayTest) const
+void swCamera::RayTest(swObjectRayTest& ObjectRayTest) const
 {
-	lcVector3 Min = lcVector3(-LC_CAMERA_POSITION_EDGE, -LC_CAMERA_POSITION_EDGE, -LC_CAMERA_POSITION_EDGE);
-	lcVector3 Max = lcVector3(LC_CAMERA_POSITION_EDGE, LC_CAMERA_POSITION_EDGE, LC_CAMERA_POSITION_EDGE);
+	swVector3 Min = swVector3(-SW_CAMERA_POSITION_EDGE, -SW_CAMERA_POSITION_EDGE, -SW_CAMERA_POSITION_EDGE);
+	swVector3 Max = swVector3(SW_CAMERA_POSITION_EDGE, SW_CAMERA_POSITION_EDGE, SW_CAMERA_POSITION_EDGE);
 
-	lcVector3 Start = lcMul31(ObjectRayTest.Start, mWorldView);
-	lcVector3 End = lcMul31(ObjectRayTest.End, mWorldView);
+	swVector3 Start = swMul31(ObjectRayTest.Start, mWorldView);
+	swVector3 End = swMul31(ObjectRayTest.End, mWorldView);
 
 	float Distance;
-	lcVector3 Plane;
+	swVector3 Plane;
 
-	if (lcBoundingBoxRayIntersectDistance(Min, Max, Start, End, &Distance, nullptr, &Plane) && (Distance < ObjectRayTest.Distance))
+	if (swBoundingBoxRayIntersectDistance(Min, Max, Start, End, &Distance, nullptr, &Plane) && (Distance < ObjectRayTest.Distance))
 	{
-		ObjectRayTest.ObjectSection.Object = const_cast<lcCamera*>(this);
-		ObjectRayTest.ObjectSection.Section = LC_CAMERA_SECTION_POSITION;
+		ObjectRayTest.ObjectSection.Object = const_cast<swCamera*>(this);
+		ObjectRayTest.ObjectSection.Section = SW_CAMERA_SECTION_POSITION;
 		ObjectRayTest.Distance = Distance;
 		ObjectRayTest.PieceRayTest.Plane = Plane;
 	}
 
-	Min = lcVector3(-LC_CAMERA_TARGET_EDGE, -LC_CAMERA_TARGET_EDGE, -LC_CAMERA_TARGET_EDGE);
-	Max = lcVector3(LC_CAMERA_TARGET_EDGE, LC_CAMERA_TARGET_EDGE, LC_CAMERA_TARGET_EDGE);
+	Min = swVector3(-SW_CAMERA_TARGET_EDGE, -SW_CAMERA_TARGET_EDGE, -SW_CAMERA_TARGET_EDGE);
+	Max = swVector3(SW_CAMERA_TARGET_EDGE, SW_CAMERA_TARGET_EDGE, SW_CAMERA_TARGET_EDGE);
 
-	lcMatrix44 WorldView = mWorldView;
-	WorldView.SetTranslation(lcMul30(-mTargetPosition, WorldView));
+	swMatrix44 WorldView = mWorldView;
+	WorldView.SetTranslation(swMul30(-mTargetPosition, WorldView));
 
-	Start = lcMul31(ObjectRayTest.Start, WorldView);
-	End = lcMul31(ObjectRayTest.End, WorldView);
+	Start = swMul31(ObjectRayTest.Start, WorldView);
+	End = swMul31(ObjectRayTest.End, WorldView);
 
-	if (lcBoundingBoxRayIntersectDistance(Min, Max, Start, End, &Distance, nullptr, &Plane) && (Distance < ObjectRayTest.Distance))
+	if (swBoundingBoxRayIntersectDistance(Min, Max, Start, End, &Distance, nullptr, &Plane) && (Distance < ObjectRayTest.Distance))
 	{
-		ObjectRayTest.ObjectSection.Object = const_cast<lcCamera*>(this);
-		ObjectRayTest.ObjectSection.Section = LC_CAMERA_SECTION_TARGET;
+		ObjectRayTest.ObjectSection.Object = const_cast<swCamera*>(this);
+		ObjectRayTest.ObjectSection.Section = SW_CAMERA_SECTION_TARGET;
 		ObjectRayTest.Distance = Distance;
 		ObjectRayTest.PieceRayTest.Plane = Plane;
 	}
 
-	const lcMatrix44 ViewWorld = lcMatrix44AffineInverse(mWorldView);
-	const lcVector3 UpVectorPosition = lcMul31(lcVector3(0, 25, 0), ViewWorld);
+	const swMatrix44 ViewWorld = swMatrix44AffineInverse(mWorldView);
+	const swVector3 UpVectorPosition = swMul31(swVector3(0, 25, 0), ViewWorld);
 
 	WorldView = mWorldView;
-	WorldView.SetTranslation(lcMul30(-UpVectorPosition, WorldView));
+	WorldView.SetTranslation(swMul30(-UpVectorPosition, WorldView));
 
-	Start = lcMul31(ObjectRayTest.Start, WorldView);
-	End = lcMul31(ObjectRayTest.End, WorldView);
+	Start = swMul31(ObjectRayTest.Start, WorldView);
+	End = swMul31(ObjectRayTest.End, WorldView);
 
-	if (lcBoundingBoxRayIntersectDistance(Min, Max, Start, End, &Distance, nullptr, &Plane) && (Distance < ObjectRayTest.Distance))
+	if (swBoundingBoxRayIntersectDistance(Min, Max, Start, End, &Distance, nullptr, &Plane) && (Distance < ObjectRayTest.Distance))
 	{
-		ObjectRayTest.ObjectSection.Object = const_cast<lcCamera*>(this);
-		ObjectRayTest.ObjectSection.Section = LC_CAMERA_SECTION_UPVECTOR;
+		ObjectRayTest.ObjectSection.Object = const_cast<swCamera*>(this);
+		ObjectRayTest.ObjectSection.Section = SW_CAMERA_SECTION_UPVECTOR;
 		ObjectRayTest.Distance = Distance;
 		ObjectRayTest.PieceRayTest.Plane = Plane;
 	}
 }
 
-void lcCamera::BoxTest(lcObjectBoxTest& ObjectBoxTest) const
+void swCamera::BoxTest(swObjectBoxTest& ObjectBoxTest) const
 {
-	lcVector3 Min(-LC_CAMERA_POSITION_EDGE, -LC_CAMERA_POSITION_EDGE, -LC_CAMERA_POSITION_EDGE);
-	lcVector3 Max(LC_CAMERA_POSITION_EDGE, LC_CAMERA_POSITION_EDGE, LC_CAMERA_POSITION_EDGE);
+	swVector3 Min(-SW_CAMERA_POSITION_EDGE, -SW_CAMERA_POSITION_EDGE, -SW_CAMERA_POSITION_EDGE);
+	swVector3 Max(SW_CAMERA_POSITION_EDGE, SW_CAMERA_POSITION_EDGE, SW_CAMERA_POSITION_EDGE);
 
-	lcVector4 LocalPlanes[6];
-
-	for (int PlaneIdx = 0; PlaneIdx < 6; PlaneIdx++)
-	{
-		const lcVector3 Normal = lcMul30(ObjectBoxTest.Planes[PlaneIdx], mWorldView);
-		LocalPlanes[PlaneIdx] = lcVector4(Normal, ObjectBoxTest.Planes[PlaneIdx][3] - lcDot3(mWorldView[3], Normal));
-	}
-
-	if (lcBoundingBoxIntersectsVolume(Min, Max, LocalPlanes))
-	{
-		ObjectBoxTest.Objects.emplace_back(const_cast<lcCamera*>(this));
-		return;
-	}
-
-	Min = lcVector3(-LC_CAMERA_TARGET_EDGE, -LC_CAMERA_TARGET_EDGE, -LC_CAMERA_TARGET_EDGE);
-	Max = lcVector3(LC_CAMERA_TARGET_EDGE, LC_CAMERA_TARGET_EDGE, LC_CAMERA_TARGET_EDGE);
-
-	lcMatrix44 WorldView = mWorldView;
-	WorldView.SetTranslation(lcMul30(-mTargetPosition, WorldView));
+	swVector4 LocalPlanes[6];
 
 	for (int PlaneIdx = 0; PlaneIdx < 6; PlaneIdx++)
 	{
-		const lcVector3 Normal = lcMul30(ObjectBoxTest.Planes[PlaneIdx], WorldView);
-		LocalPlanes[PlaneIdx] = lcVector4(Normal, ObjectBoxTest.Planes[PlaneIdx][3] - lcDot3(WorldView[3], Normal));
+		const swVector3 Normal = swMul30(ObjectBoxTest.Planes[PlaneIdx], mWorldView);
+		LocalPlanes[PlaneIdx] = swVector4(Normal, ObjectBoxTest.Planes[PlaneIdx][3] - swDot3(mWorldView[3], Normal));
 	}
 
-	if (lcBoundingBoxIntersectsVolume(Min, Max, LocalPlanes))
+	if (swBoundingBoxIntersectsVolume(Min, Max, LocalPlanes))
 	{
-		ObjectBoxTest.Objects.emplace_back(const_cast<lcCamera*>(this));
+		ObjectBoxTest.Objects.emplace_back(const_cast<swCamera*>(this));
 		return;
 	}
 
-	const lcMatrix44 ViewWorld = lcMatrix44AffineInverse(mWorldView);
-	const lcVector3 UpVectorPosition = lcMul31(lcVector3(0, 25, 0), ViewWorld);
+	Min = swVector3(-SW_CAMERA_TARGET_EDGE, -SW_CAMERA_TARGET_EDGE, -SW_CAMERA_TARGET_EDGE);
+	Max = swVector3(SW_CAMERA_TARGET_EDGE, SW_CAMERA_TARGET_EDGE, SW_CAMERA_TARGET_EDGE);
+
+	swMatrix44 WorldView = mWorldView;
+	WorldView.SetTranslation(swMul30(-mTargetPosition, WorldView));
+
+	for (int PlaneIdx = 0; PlaneIdx < 6; PlaneIdx++)
+	{
+		const swVector3 Normal = swMul30(ObjectBoxTest.Planes[PlaneIdx], WorldView);
+		LocalPlanes[PlaneIdx] = swVector4(Normal, ObjectBoxTest.Planes[PlaneIdx][3] - swDot3(WorldView[3], Normal));
+	}
+
+	if (swBoundingBoxIntersectsVolume(Min, Max, LocalPlanes))
+	{
+		ObjectBoxTest.Objects.emplace_back(const_cast<swCamera*>(this));
+		return;
+	}
+
+	const swMatrix44 ViewWorld = swMatrix44AffineInverse(mWorldView);
+	const swVector3 UpVectorPosition = swMul31(swVector3(0, 25, 0), ViewWorld);
 
 	WorldView = mWorldView;
-	WorldView.SetTranslation(lcMul30(-UpVectorPosition, WorldView));
+	WorldView.SetTranslation(swMul30(-UpVectorPosition, WorldView));
 
 	for (int PlaneIdx = 0; PlaneIdx < 6; PlaneIdx++)
 	{
-		const lcVector3 Normal = lcMul30(ObjectBoxTest.Planes[PlaneIdx], WorldView);
-		LocalPlanes[PlaneIdx] = lcVector4(Normal, ObjectBoxTest.Planes[PlaneIdx][3] - lcDot3(WorldView[3], Normal));
+		const swVector3 Normal = swMul30(ObjectBoxTest.Planes[PlaneIdx], WorldView);
+		LocalPlanes[PlaneIdx] = swVector4(Normal, ObjectBoxTest.Planes[PlaneIdx][3] - swDot3(WorldView[3], Normal));
 	}
 
-	if (lcBoundingBoxIntersectsVolume(Min, Max, LocalPlanes))
+	if (swBoundingBoxIntersectsVolume(Min, Max, LocalPlanes))
 	{
-		ObjectBoxTest.Objects.emplace_back(const_cast<lcCamera*>(this));
+		ObjectBoxTest.Objects.emplace_back(const_cast<swCamera*>(this));
 		return;
 	}
 }
 
-void lcCamera::InsertTime(lcStep Start, lcStep Time)
+void swCamera::InsertTime(swStep Start, swStep Time)
 {
 	mPosition.InsertTime(Start, Time);
 	mTargetPosition.InsertTime(Start, Time);
 	mUpVector.InsertTime(Start, Time);
 }
 
-void lcCamera::RemoveTime(lcStep Start, lcStep Time)
+void swCamera::RemoveTime(swStep Start, swStep Time)
 {
 	mPosition.RemoveTime(Start, Time);
 	mTargetPosition.RemoveTime(Start, Time);
 	mUpVector.RemoveTime(Start, Time);
 }
 
-void lcCamera::ExpandFarPlane(const std::vector<lcVector3>& Points)
+void swCamera::ExpandFarPlane(const std::vector<swVector3>& Points)
 {
 	if (!IsSimple())
 		return;
 
 	float FarDistance = 0.0f;
 
-	for (const lcVector3& Point : Points)
-		FarDistance = lcMax(FarDistance, -lcMul31(Point, mWorldView).z);
+	for (const swVector3& Point : Points)
+		FarDistance = swMax(FarDistance, -swMul31(Point, mWorldView).z);
 
 	// Orthographic views use four times the camera's far plane.
-	if (GetProjection() == lcCameraProjection::Orthographic)
+	if (GetProjection() == swCameraProjection::Orthographic)
 		FarDistance /= 4.0f;
 
 	if (FarDistance > DefaultFarPlane && FarDistance > m_zFar)
 		m_zFar = ceilf(FarDistance * 1.1f / 10000.0f) * 10000.0f;
 }
 
-void lcCamera::ZoomExtents(float AspectRatio, const lcVector3& Center, const std::vector<lcVector3>& Points, lcStep Step, bool AddKey, bool AdjustFarPlane)
+void swCamera::ZoomExtents(float AspectRatio, const swVector3& Center, const std::vector<swVector3>& Points, swStep Step, bool AddKey, bool AdjustFarPlane)
 {
-	lcVector3 Position, TargetPosition;
+	swVector3 Position, TargetPosition;
 
-	if (GetProjection() == lcCameraProjection::Orthographic)
+	if (GetProjection() == swCameraProjection::Orthographic)
 	{
 		float MinX = FLT_MAX, MaxX = -FLT_MAX, MinY = FLT_MAX, MaxY = -FLT_MAX;
 
-		for (lcVector3 Point : Points)
+		for (swVector3 Point : Points)
 		{
-			Point = lcMul30(Point, mWorldView);
+			Point = swMul30(Point, mWorldView);
 
-			MinX = lcMin(MinX, Point.x);
-			MinY = lcMin(MinY, Point.y);
-			MaxX = lcMax(MaxX, Point.x);
-			MaxY = lcMax(MaxY, Point.y);
+			MinX = swMin(MinX, Point.x);
+			MinY = swMin(MinY, Point.y);
+			MaxX = swMax(MaxX, Point.x);
+			MaxY = swMax(MaxY, Point.y);
 		}
 
 		float Width = fabsf(MaxX - MinX);
 		float Height = fabsf(MaxY - MinY);
 
-		const lcVector3 ViewCenter = lcMul30(Center, mWorldView);
+		const swVector3 ViewCenter = swMul30(Center, mWorldView);
 
 		float OffsetX = (fabsf(MaxX - ViewCenter.x) - fabsf(ViewCenter.x - MinX)) / 2.0f;
 		float OffsetY = (fabsf(MaxY - ViewCenter.y) - fabsf(ViewCenter.y - MinY)) / 2.0f;
-		lcVector3 ViewOffset(OffsetX, OffsetY, 0.0f);
+		swVector3 ViewOffset(OffsetX, OffsetY, 0.0f);
 
-		lcMatrix44 ViewWorldMatrix = lcMatrix44AffineInverse(mWorldView);
-		ViewWorldMatrix.SetTranslation(lcVector3(0, 0, 0));
+		swMatrix44 ViewWorldMatrix = swMatrix44AffineInverse(mWorldView);
+		ViewWorldMatrix.SetTranslation(swVector3(0, 0, 0));
 
-		lcVector3 WorldOffset = lcMul30(ViewOffset, ViewWorldMatrix);
+		swVector3 WorldOffset = swMul30(ViewOffset, ViewWorldMatrix);
 
 		if (Width > Height * AspectRatio)
 			Height = Width / AspectRatio;
 
-		const float f = Height / (m_fovy * (LC_PI / 180.0f));
+		const float f = Height / (m_fovy * (SW_PI / 180.0f));
 
-		const lcVector3 FrontVector(mTargetPosition - mPosition);
+		const swVector3 FrontVector(mTargetPosition - mPosition);
 
 		TargetPosition = Center + WorldOffset;
-		Position = TargetPosition - lcNormalize(FrontVector) * f;
+		Position = TargetPosition - swNormalize(FrontVector) * f;
 	}
 	else
 	{
-		const lcVector3 CenterPosition(mPosition + Center - mTargetPosition);
-		const lcMatrix44 ProjectionMatrix = lcMatrix44Perspective(m_fovy, AspectRatio, m_zNear, m_zFar);
+		const swVector3 CenterPosition(mPosition + Center - mTargetPosition);
+		const swMatrix44 ProjectionMatrix = swMatrix44Perspective(m_fovy, AspectRatio, m_zNear, m_zFar);
 
-		std::tie(Position, std::ignore) = lcZoomExtents(CenterPosition, mWorldView, ProjectionMatrix, Points.data(), Points.size());
+		std::tie(Position, std::ignore) = swZoomExtents(CenterPosition, mWorldView, ProjectionMatrix, Points.data(), Points.size());
 		TargetPosition = Center;
 	}
 
@@ -1158,22 +1158,22 @@ void lcCamera::ZoomExtents(float AspectRatio, const lcVector3& Center, const std
 		ExpandFarPlane(Points);
 }
 
-void lcCamera::ZoomRegion(float AspectRatio, const lcVector3& Position, const lcVector3& TargetPosition, const lcVector3* Corners, lcStep Step, bool AddKey)
+void swCamera::ZoomRegion(float AspectRatio, const swVector3& Position, const swVector3& TargetPosition, const swVector3* Corners, swStep Step, bool AddKey)
 {
-	lcVector3 NewPosition;
+	swVector3 NewPosition;
 
-	if (GetProjection() == lcCameraProjection::Orthographic)
+	if (GetProjection() == swCameraProjection::Orthographic)
 	{
 		float MinX = FLT_MAX, MaxX = -FLT_MAX, MinY = FLT_MAX, MaxY = -FLT_MAX;
 
 		for (int PointIdx = 0; PointIdx < 2; PointIdx++)
 		{
-			const lcVector3 Point = lcMul30(Corners[PointIdx], mWorldView);
+			const swVector3 Point = swMul30(Corners[PointIdx], mWorldView);
 
-			MinX = lcMin(MinX, Point.x);
-			MinY = lcMin(MinY, Point.y);
-			MaxX = lcMax(MaxX, Point.x);
-			MaxY = lcMax(MaxY, Point.y);
+			MinX = swMin(MinX, Point.x);
+			MinY = swMin(MinY, Point.y);
+			MaxX = swMax(MaxX, Point.x);
+			MaxY = swMax(MaxY, Point.y);
 		}
 
 		float Width = MaxX - MinX;
@@ -1182,17 +1182,17 @@ void lcCamera::ZoomRegion(float AspectRatio, const lcVector3& Position, const lc
 		if (Width > Height * AspectRatio)
 			Height = Width / AspectRatio;
 
-		const float f = Height / (m_fovy * (LC_PI / 180.0f));
+		const float f = Height / (m_fovy * (SW_PI / 180.0f));
 
-		const lcVector3 FrontVector(mTargetPosition - mPosition);
-		NewPosition = TargetPosition - lcNormalize(FrontVector) * f;
+		const swVector3 FrontVector(mTargetPosition - mPosition);
+		NewPosition = TargetPosition - swNormalize(FrontVector) * f;
 	}
 	else
 	{
-		const lcMatrix44 WorldView = lcMatrix44LookAt(Position, TargetPosition, mUpVector);
-		const lcMatrix44 ProjectionMatrix = lcMatrix44Perspective(m_fovy, AspectRatio, m_zNear, m_zFar);
+		const swMatrix44 WorldView = swMatrix44LookAt(Position, TargetPosition, mUpVector);
+		const swMatrix44 ProjectionMatrix = swMatrix44Perspective(m_fovy, AspectRatio, m_zNear, m_zFar);
 
-		std::tie(NewPosition, std::ignore) = lcZoomExtents(Position, WorldView, ProjectionMatrix, Corners, 2);
+		std::tie(NewPosition, std::ignore) = swZoomExtents(Position, WorldView, ProjectionMatrix, Corners, 2);
 	}
 
 	if (IsSimple())
@@ -1204,16 +1204,16 @@ void lcCamera::ZoomRegion(float AspectRatio, const lcVector3& Position, const lc
 	UpdatePosition(Step);
 }
 
-void lcCamera::Zoom(float Distance, lcStep Step, bool AddKey)
+void swCamera::Zoom(float Distance, swStep Step, bool AddKey)
 {
-	lcVector3 FrontVector(mPosition - mTargetPosition);
+	swVector3 FrontVector(mPosition - mTargetPosition);
 	FrontVector.Normalize();
 	FrontVector *= -5.0f * Distance;
 
 	// Don't zoom ortho in if it would cross the ortho focal plane.
-	if (GetProjection() == lcCameraProjection::Orthographic)
+	if (GetProjection() == swCameraProjection::Orthographic)
 	{
-		if ((Distance > 0) && (lcDot(mPosition + FrontVector - mTargetPosition, mPosition - mTargetPosition) <= 0))
+		if ((Distance > 0) && (swDot(mPosition + FrontVector - mTargetPosition, mPosition - mTargetPosition) <= 0))
 			return;
 	}
 
@@ -1222,13 +1222,13 @@ void lcCamera::Zoom(float Distance, lcStep Step, bool AddKey)
 
 	mPosition.ChangeKey(mPosition + FrontVector, Step, AddKey);
 
-	if (GetProjection() != lcCameraProjection::Orthographic)
+	if (GetProjection() != swCameraProjection::Orthographic)
 		mTargetPosition.ChangeKey(mTargetPosition + FrontVector, Step, AddKey);
 
 	UpdatePosition(Step);
 }
 
-void lcCamera::Pan(const lcVector3& Distance, lcStep Step, bool AddKey)
+void swCamera::Pan(const swVector3& Distance, swStep Step, bool AddKey)
 {
 	if (IsSimple())
 		AddKey = false;
@@ -1239,20 +1239,20 @@ void lcCamera::Pan(const lcVector3& Distance, lcStep Step, bool AddKey)
 	UpdatePosition(Step);
 }
 
-void lcCamera::Orbit(float DistanceX, float DistanceY, const lcVector3& CenterPosition, lcStep Step, bool AddKey)
+void swCamera::Orbit(float DistanceX, float DistanceY, const swVector3& CenterPosition, swStep Step, bool AddKey)
 {
-	const lcMatrix44 Inverse = lcMatrix44AffineInverse(mWorldView);
-	const lcMatrix44 TransformY = lcMatrix44FromAxisAngle(lcVector3(Inverse[0]), DistanceY);
+	const swMatrix44 Inverse = swMatrix44AffineInverse(mWorldView);
+	const swMatrix44 TransformY = swMatrix44FromAxisAngle(swVector3(Inverse[0]), DistanceY);
 
-	lcVector3 Position = lcMul31(mPosition - CenterPosition, TransformY) + CenterPosition;
-	lcVector3 TargetPosition = lcMul31(mTargetPosition - CenterPosition, TransformY) + CenterPosition;
-	lcVector3 UpVector = lcMul31(mUpVector, TransformY);
+	swVector3 Position = swMul31(mPosition - CenterPosition, TransformY) + CenterPosition;
+	swVector3 TargetPosition = swMul31(mTargetPosition - CenterPosition, TransformY) + CenterPosition;
+	swVector3 UpVector = swMul31(mUpVector, TransformY);
 
-	const lcMatrix44 TransformX = lcMatrix44RotationZ(-DistanceX);
+	const swMatrix44 TransformX = swMatrix44RotationZ(-DistanceX);
 
-	Position = lcMul31(Position - CenterPosition, TransformX) + CenterPosition;
-	TargetPosition = lcMul31(TargetPosition - CenterPosition, TransformX) + CenterPosition;
-	UpVector = lcMul31(UpVector, TransformX);
+	Position = swMul31(Position - CenterPosition, TransformX) + CenterPosition;
+	TargetPosition = swMul31(TargetPosition - CenterPosition, TransformX) + CenterPosition;
+	UpVector = swMul31(UpVector, TransformX);
 
 	if (IsSimple())
 		AddKey = false;
@@ -1264,12 +1264,12 @@ void lcCamera::Orbit(float DistanceX, float DistanceY, const lcVector3& CenterPo
 	UpdatePosition(Step);
 }
 
-void lcCamera::Roll(float Distance, lcStep Step, bool AddKey)
+void swCamera::Roll(float Distance, swStep Step, bool AddKey)
 {
-	const lcVector3 FrontVector(mPosition - mTargetPosition);
-	const lcMatrix44 Rotation = lcMatrix44FromAxisAngle(FrontVector, Distance);
+	const swVector3 FrontVector(mPosition - mTargetPosition);
+	const swMatrix44 Rotation = swMatrix44FromAxisAngle(FrontVector, Distance);
 
-	const lcVector3 UpVector = lcMul30(mUpVector, Rotation);
+	const swVector3 UpVector = swMul30(mUpVector, Rotation);
 
 	if (IsSimple())
 		AddKey = false;
@@ -1279,10 +1279,10 @@ void lcCamera::Roll(float Distance, lcStep Step, bool AddKey)
 	UpdatePosition(Step);
 }
 
-void lcCamera::Center(const lcVector3& NewCenter, lcStep Step, bool AddKey)
+void swCamera::Center(const swVector3& NewCenter, swStep Step, bool AddKey)
 {
-	const lcMatrix44 Inverse = lcMatrix44AffineInverse(mWorldView);
-	const lcVector3 Direction = -lcVector3(Inverse[2]);
+	const swMatrix44 Inverse = swMatrix44AffineInverse(mWorldView);
+	const swVector3 Direction = -swVector3(Inverse[2]);
 
 //	float Yaw, Pitch, Roll;
 	float Roll;
@@ -1300,18 +1300,18 @@ void lcCamera::Center(const lcVector3& NewCenter, lcStep Step, bool AddKey)
 		Roll = atan2f(Inverse[0][1], Inverse[1][1]);
 	}
 
-	lcVector3 FrontVector(mPosition - NewCenter);
-	const lcMatrix44 Rotation = lcMatrix44FromAxisAngle(FrontVector, Roll);
+	swVector3 FrontVector(mPosition - NewCenter);
+	const swMatrix44 Rotation = swMatrix44FromAxisAngle(FrontVector, Roll);
 
-	lcVector3 UpVector(0, 0, 1), SideVector;
+	swVector3 UpVector(0, 0, 1), SideVector;
 	FrontVector.Normalize();
-	if (fabsf(lcDot(UpVector, FrontVector)) > 0.99f)
-		SideVector = lcVector3(-1, 0, 0);
+	if (fabsf(swDot(UpVector, FrontVector)) > 0.99f)
+		SideVector = swVector3(-1, 0, 0);
 	else
-		SideVector = lcCross(FrontVector, UpVector);
-	UpVector = lcCross(SideVector, FrontVector);
+		SideVector = swCross(FrontVector, UpVector);
+	UpVector = swCross(SideVector, FrontVector);
 	UpVector.Normalize();
-	UpVector = lcMul30(UpVector, Rotation);
+	UpVector = swMul30(UpVector, Rotation);
 
 	if (IsSimple())
 		AddKey = false;
@@ -1322,61 +1322,61 @@ void lcCamera::Center(const lcVector3& NewCenter, lcStep Step, bool AddKey)
 	UpdatePosition(Step);
 }
 
-void lcCamera::SetViewpoint(lcViewpoint Viewpoint)
+void swCamera::SetViewpoint(swViewpoint Viewpoint)
 {
-	const lcVector3 Positions[] =
+	const swVector3 Positions[] =
 	{
-		lcVector3(    0.0f, -1250.0f,     0.0f), // lcViewpoint::Front
-		lcVector3(    0.0f,  1250.0f,     0.0f), // lcViewpoint::Back
-		lcVector3(    0.0f,     0.0f,  1250.0f), // lcViewpoint::Top
-		lcVector3(    0.0f,     0.0f, -1250.0f), // lcViewpoint::Bottom
-		lcVector3( 1250.0f,     0.0f,     0.0f), // lcViewpoint::Left
-		lcVector3(-1250.0f,     0.0f,     0.0f), // lcViewpoint::Right
-		lcVector3(  375.0f,  -375.0f,   187.5f)  // lcViewpoint::Home
+		swVector3(    0.0f, -1250.0f,     0.0f), // swViewpoint::Front
+		swVector3(    0.0f,  1250.0f,     0.0f), // swViewpoint::Back
+		swVector3(    0.0f,     0.0f,  1250.0f), // swViewpoint::Top
+		swVector3(    0.0f,     0.0f, -1250.0f), // swViewpoint::Bottom
+		swVector3( 1250.0f,     0.0f,     0.0f), // swViewpoint::Left
+		swVector3(-1250.0f,     0.0f,     0.0f), // swViewpoint::Right
+		swVector3(  375.0f,  -375.0f,   187.5f)  // swViewpoint::Home
 	};
 
-	const lcVector3 Ups[] =
+	const swVector3 Ups[] =
 	{
-		lcVector3(0.0f, 0.0f, 1.0f),
-		lcVector3(0.0f, 0.0f, 1.0f),
-		lcVector3(0.0f, 1.0f, 0.0f),
-		lcVector3(0.0f,-1.0f, 0.0f),
-		lcVector3(0.0f, 0.0f, 1.0f),
-		lcVector3(0.0f, 0.0f, 1.0f),
-		lcVector3(0.2357f, -0.2357f, 0.94281f)
+		swVector3(0.0f, 0.0f, 1.0f),
+		swVector3(0.0f, 0.0f, 1.0f),
+		swVector3(0.0f, 1.0f, 0.0f),
+		swVector3(0.0f,-1.0f, 0.0f),
+		swVector3(0.0f, 0.0f, 1.0f),
+		swVector3(0.0f, 0.0f, 1.0f),
+		swVector3(0.2357f, -0.2357f, 0.94281f)
 	};
 
 	mPosition.ChangeKey(Positions[static_cast<int>(Viewpoint)], 1, false);
-	mTargetPosition.ChangeKey(lcVector3(0, 0, 0), 1, false);
+	mTargetPosition.ChangeKey(swVector3(0, 0, 0), 1, false);
 	mUpVector.ChangeKey(Ups[static_cast<int>(Viewpoint)], 1, false);
 
 	UpdatePosition(1);
 }
 
-void lcCamera::SetViewpoint(const lcVector3& Position)
+void swCamera::SetViewpoint(const swVector3& Position)
 {
-	lcVector3 UpVector(0, 0, 1), FrontVector(Position), SideVector;
+	swVector3 UpVector(0, 0, 1), FrontVector(Position), SideVector;
 	FrontVector.Normalize();
-	if (fabsf(lcDot(UpVector, FrontVector)) > 0.99f)
-		SideVector = lcVector3(-1, 0, 0);
+	if (fabsf(swDot(UpVector, FrontVector)) > 0.99f)
+		SideVector = swVector3(-1, 0, 0);
 	else
-		SideVector = lcCross(FrontVector, UpVector);
-	UpVector = lcCross(SideVector, FrontVector);
+		SideVector = swCross(FrontVector, UpVector);
+	UpVector = swCross(SideVector, FrontVector);
 	UpVector.Normalize();
 
 	mPosition.ChangeKey(Position, 1, false);
-	mTargetPosition.ChangeKey(lcVector3(0, 0, 0), 1, false);
+	mTargetPosition.ChangeKey(swVector3(0, 0, 0), 1, false);
 	mUpVector.ChangeKey(UpVector, 1, false);
 
 	UpdatePosition(1);
 }
 
-void lcCamera::SetViewpoint(const lcVector3& Position, const lcVector3& TargetPosition, const lcVector3& Up)
+void swCamera::SetViewpoint(const swVector3& Position, const swVector3& TargetPosition, const swVector3& Up)
 {
-	const lcVector3 Direction = TargetPosition - Position;
-	lcVector3 UpVector, SideVector;
-	SideVector = lcCross(Direction, Up);
-	UpVector = lcCross(SideVector, Direction);
+	const swVector3 Direction = TargetPosition - Position;
+	swVector3 UpVector, SideVector;
+	SideVector = swCross(Direction, Up);
+	UpVector = swCross(SideVector, Direction);
 	UpVector.Normalize();
 
 	mPosition.ChangeKey(Position, 1, false);
@@ -1386,19 +1386,19 @@ void lcCamera::SetViewpoint(const lcVector3& Position, const lcVector3& TargetPo
 	UpdatePosition(1);
 }
 
-void lcCamera::SetAngles(float Latitude, float Longitude, float Distance)
+void swCamera::SetAngles(float Latitude, float Longitude, float Distance)
 {
-	lcVector3 Position = lcVector3(0, -1, 0);
-	lcVector3 TargetPosition = lcVector3(0, 0, 0);
-	lcVector3 UpVector = lcVector3(0, 0, 1);
+	swVector3 Position = swVector3(0, -1, 0);
+	swVector3 TargetPosition = swVector3(0, 0, 0);
+	swVector3 UpVector = swVector3(0, 0, 1);
 
-	const lcMatrix33 LongitudeMatrix = lcMatrix33RotationZ(LC_DTOR * Longitude);
-	Position = lcMul(Position, LongitudeMatrix);
+	const swMatrix33 LongitudeMatrix = swMatrix33RotationZ(SW_DTOR * Longitude);
+	Position = swMul(Position, LongitudeMatrix);
 
-	const lcVector3 SideVector = lcMul(lcVector3(-1, 0, 0), LongitudeMatrix);
-	const lcMatrix33 LatitudeMatrix = lcMatrix33FromAxisAngle(SideVector, LC_DTOR * Latitude);
-	Position = lcMul(Position, LatitudeMatrix) * Distance;
-	UpVector = lcMul(UpVector, LatitudeMatrix);
+	const swVector3 SideVector = swMul(swVector3(-1, 0, 0), LongitudeMatrix);
+	const swMatrix33 LatitudeMatrix = swMatrix33FromAxisAngle(SideVector, SW_DTOR * Latitude);
+	Position = swMul(Position, LatitudeMatrix) * Distance;
+	UpVector = swMul(UpVector, LatitudeMatrix);
 
 	mPosition.ChangeKey(Position, 1, false);
 	mTargetPosition.ChangeKey(TargetPosition, 1, false);
@@ -1407,21 +1407,21 @@ void lcCamera::SetAngles(float Latitude, float Longitude, float Distance)
 	UpdatePosition(1);
 }
 
-void lcCamera::GetAngles(float& Latitude, float& Longitude, float& Distance) const
+void swCamera::GetAngles(float& Latitude, float& Longitude, float& Distance) const
 {
-	lcVector3 FrontVector(mPosition - mTargetPosition);
-	const lcVector3 X(1, 0, 0);
-	const lcVector3 Y(0, 1, 0);
-	const lcVector3 Z(0, 0, 1);
+	swVector3 FrontVector(mPosition - mTargetPosition);
+	const swVector3 X(1, 0, 0);
+	const swVector3 Y(0, 1, 0);
+	const swVector3 Z(0, 0, 1);
 
 	FrontVector.Normalize();
-	Latitude = acos(lcDot(-FrontVector, Z)) * LC_RTOD - 90.0f;
+	Latitude = acos(swDot(-FrontVector, Z)) * SW_RTOD - 90.0f;
 
-	const lcVector3 CameraXY = -lcNormalize(lcVector3(FrontVector.x, FrontVector.y, 0.0f));
-	Longitude = acos(lcDot(CameraXY, Y)) * LC_RTOD;
+	const swVector3 CameraXY = -swNormalize(swVector3(FrontVector.x, FrontVector.y, 0.0f));
+	Longitude = acos(swDot(CameraXY, Y)) * SW_RTOD;
 
-	if (lcDot(CameraXY, X) > 0)
+	if (swDot(CameraXY, X) > 0)
 		Longitude = -Longitude;
 
-	Distance = lcLength(mPosition);
+	Distance = swLength(mPosition);
 }

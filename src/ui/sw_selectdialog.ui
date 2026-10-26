@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>lcSelectDialog</class>
- <widget class="QDialog" name="lcSelectDialog">
+ <class>swSelectDialog</class>
+ <widget class="QDialog" name="swSelectDialog">
   <property name="whatsThis">
    <string>&lt;p&gt;&lt;b&gt;Select Objects&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Use the checkboxes to choose visible pieces, cameras, and lights in the current model. Choose OK to replace the current selection with the checked objects, or Cancel to keep the current selection.&lt;/p&gt;&lt;p&gt;Pieces in the same top-level group are selected together. All, None, and Invert change the checkboxes in this dialog.&lt;/p&gt;</string>
   </property>
@@ -89,7 +89,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>lcSelectDialog</receiver>
+   <receiver>swSelectDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -105,7 +105,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>lcSelectDialog</receiver>
+   <receiver>swSelectDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

@@ -7,64 +7,64 @@
 #include "sw_application.h"
 #include "sw_texture.h"
 
-lcTexture* lcViewSphere::mTexture;
-lcVertexBuffer lcViewSphere::mVertexBuffer;
-lcIndexBuffer lcViewSphere::mIndexBuffer;
-int lcViewSphere::mSphereIndexCount;
-const float lcViewSphere::mRadius = 1.0f;
-const float lcViewSphere::mHighlightRadius = 0.35f;
-const int lcViewSphere::mSubdivisions = 24;
+swTexture* swViewSphere::mTexture;
+swVertexBuffer swViewSphere::mVertexBuffer;
+swIndexBuffer swViewSphere::mIndexBuffer;
+int swViewSphere::mSphereIndexCount;
+const float swViewSphere::mRadius = 1.0f;
+const float swViewSphere::mHighlightRadius = 0.35f;
+const int swViewSphere::mSubdivisions = 24;
 
-lcViewSphere::lcViewSphere(lcView* View)
+swViewSphere::swViewSphere(swView* View)
 	: mView(View)
 {
 	UpdateSettings();
 }
 
-void lcViewSphere::UpdateSettings()
+void swViewSphere::UpdateSettings()
 {
-	const lcPreferences& Preferences = lcGetPreferences();
+	const swPreferences& Preferences = swGetPreferences();
 
 	switch (mView->GetViewType())
 	{
-	case lcViewType::View:
+	case swViewType::View:
 		mSize = Preferences.mViewSphereSize;
 		mEnabled = Preferences.mViewSphereEnabled;
 		mLocation = Preferences.mViewSphereLocation;
 		break;
 
-	case lcViewType::Preview:
+	case swViewType::Preview:
 		mSize = Preferences.mPreviewViewSphereSize;
 		mEnabled = Preferences.mPreviewViewSphereEnabled;
 		mLocation = Preferences.mPreviewViewSphereLocation;
 		break;
 
-	case lcViewType::Minifig:
-	case lcViewType::PartsList:
-	case lcViewType::Count:
+	case swViewType::Minifig:
+	case swViewType::PartsList:
+	case swViewType::Count:
 		break;
 	}
 
-	mEnabled = mEnabled && lcContext::SupportsMaterial(lcMaterialType::UnlitViewSphere);
+	mEnabled = mEnabled && swContext::SupportsMaterial(swMaterialType::UnlitViewSphere);
 }
 
-lcMatrix44 lcViewSphere::GetViewMatrix() const
+swMatrix44 swViewSphere::GetViewMatrix() const
 {
-	lcMatrix44 ViewMatrix = mView->GetCamera()->mWorldView;
-	ViewMatrix.SetTranslation(lcVector3(0, 0, 0));
+	swMatrix44 ViewMatrix = mView->GetCamera()->mWorldView;
+	ViewMatrix.SetTranslation(swVector3(0, 0, 0));
 	return ViewMatrix;
 }
 
-lcMatrix44 lcViewSphere::GetProjectionMatrix() const
+swMatrix44 swViewSphere::GetProjectionMatrix() const
 {
-	return lcMatrix44Ortho(-mRadius * 1.25f, mRadius * 1.25f, -mRadius * 1.25f, mRadius * 1.25f, -mRadius * 1.25f, mRadius * 1.25f);
+	return swMatrix44Ortho(-mRadius * 1.25f, mRadius * 1.25f, -mRadius * 1.25f, mRadius * 1.25f, -mRadius * 1.25f, mRadius * 1.25f);
 }
 
-void lcViewSphere::CreateResources(lcContext* Context)
+void swViewSphere::CreateResources(swContext* Context)
 {
 	constexpr int SourceCellSize = 128, CellHeight = 64, CellBottom = (SourceCellSize - CellHeight) / 2;
 	constexpr int AtlasWidth = SourceCellSize, AtlasHeight = 512;
-	mTexture = new lcTexture();
+	mTexture = new swTexture();
 
 	const QString ViewNames[6] =
 	{
@@ -91,13 +91,13 @@ void lcViewSphere::CreateResources(lcContext* Context)
 				for (int x = Reverse ? Size - 1 : 0; Reverse ? x >= 0 : x < Size; x += Reverse ? -1 : 1)
 				{
 					int& Value = Distance[y * Size + x]; const int Step = Reverse ? 1 : -1;
-					if (y + Step >= 0 && y + Step < Size) Value = lcMin(Value, Distance[(y + Step) * Size + x] + 3);
-					if (x + Step >= 0 && x + Step < Size) Value = lcMin(Value, Distance[y * Size + x + Step] + 3);
-					if (y + Step >= 0 && y + Step < Size && x + Step >= 0 && x + Step < Size) Value = lcMin(Value, Distance[(y + Step) * Size + x + Step] + 4);
+					if (y + Step >= 0 && y + Step < Size) Value = swMin(Value, Distance[(y + Step) * Size + x] + 3);
+					if (x + Step >= 0 && x + Step < Size) Value = swMin(Value, Distance[y * Size + x + Step] + 3);
+					if (y + Step >= 0 && y + Step < Size && x + Step >= 0 && x + Step < Size) Value = swMin(Value, Distance[(y + Step) * Size + x + Step] + 4);
 				}
 		};
 		Relax(ToInk, false); Relax(ToInk, true); Relax(ToOutside, false); Relax(ToOutside, true);
-		for (int i = 0; i < Count; i++) TextureImage.scanLine(i / Size)[i % Size] = static_cast<unsigned char>(lcClamp(128 + (ToOutside[i] - ToInk[i]) / 3 * 16, 0, 255));
+		for (int i = 0; i < Count; i++) TextureImage.scanLine(i / Size)[i % Size] = static_cast<unsigned char>(swClamp(128 + (ToOutside[i] - ToInk[i]) / 3 * 16, 0, 255));
 	};
 
 	for (int ViewIdx = 0; ViewIdx < 6; ViewIdx++)
@@ -134,7 +134,7 @@ void lcViewSphere::CreateResources(lcContext* Context)
 				TextureImage.constScanLine(CellBottom + y), SourceCellSize);
 	}
 
-	mTexture->SetImage(std::move(AtlasImage), LC_TEXTURE_LINEAR);
+	mTexture->SetImage(std::move(AtlasImage), SW_TEXTURE_LINEAR);
 	mTexture->Upload(Context);
 
 	const int SphereVertexCount = (mSubdivisions + 1) * (mSubdivisions + 1) * 6;
@@ -142,22 +142,22 @@ void lcViewSphere::CreateResources(lcContext* Context)
 	std::vector<float> Verts(SphereVertexCount * 6);
 	std::vector<GLushort> Indices(mSphereIndexCount);
 
-	lcMatrix44 Transforms[6] =
+	swMatrix44 Transforms[6] =
 	{
-		lcMatrix44(lcVector4(0.0f,  1.0f, 0.0f, 0.0f), lcVector4(0.0f,  0.0f, 1.0f, 0.0f), lcVector4(1.0f, 0.0f, 0.0f, 0.0f), lcVector4(1.0f,  0.0f,  0.0f, 1.0f)),
-		lcMatrix44(lcVector4(0.0f, -1.0f, 0.0f, 0.0f), lcVector4(0.0f,  0.0f, 1.0f, 0.0f), lcVector4(1.0f, 0.0f, 0.0f, 0.0f), lcVector4(-1.0f,  0.0f,  0.0f, 1.0f)),
-		lcMatrix44(lcVector4(-1.0f,  0.0f, 0.0f, 0.0f), lcVector4(0.0f,  0.0f, 1.0f, 0.0f), lcVector4(0.0f, 1.0f, 0.0f, 0.0f), lcVector4(0.0f,  1.0f,  0.0f, 1.0f)),
-		lcMatrix44(lcVector4(1.0f,  0.0f, 0.0f, 0.0f), lcVector4(0.0f,  0.0f, 1.0f, 0.0f), lcVector4(0.0f, 1.0f, 0.0f, 0.0f), lcVector4(0.0f, -1.0f,  0.0f, 1.0f)),
-		lcMatrix44(lcVector4(1.0f,  0.0f, 0.0f, 0.0f), lcVector4(0.0f,  1.0f, 0.0f, 0.0f), lcVector4(0.0f, 0.0f, 1.0f, 0.0f), lcVector4(0.0f,  0.0f,  1.0f, 1.0f)),
-		lcMatrix44(lcVector4(1.0f,  0.0f, 0.0f, 0.0f), lcVector4(0.0f, -1.0f, 0.0f, 0.0f), lcVector4(0.0f, 0.0f, 1.0f, 0.0f), lcVector4(0.0f,  0.0f, -1.0f, 1.0f)),
+		swMatrix44(swVector4(0.0f,  1.0f, 0.0f, 0.0f), swVector4(0.0f,  0.0f, 1.0f, 0.0f), swVector4(1.0f, 0.0f, 0.0f, 0.0f), swVector4(1.0f,  0.0f,  0.0f, 1.0f)),
+		swMatrix44(swVector4(0.0f, -1.0f, 0.0f, 0.0f), swVector4(0.0f,  0.0f, 1.0f, 0.0f), swVector4(1.0f, 0.0f, 0.0f, 0.0f), swVector4(-1.0f,  0.0f,  0.0f, 1.0f)),
+		swMatrix44(swVector4(-1.0f,  0.0f, 0.0f, 0.0f), swVector4(0.0f,  0.0f, 1.0f, 0.0f), swVector4(0.0f, 1.0f, 0.0f, 0.0f), swVector4(0.0f,  1.0f,  0.0f, 1.0f)),
+		swMatrix44(swVector4(1.0f,  0.0f, 0.0f, 0.0f), swVector4(0.0f,  0.0f, 1.0f, 0.0f), swVector4(0.0f, 1.0f, 0.0f, 0.0f), swVector4(0.0f, -1.0f,  0.0f, 1.0f)),
+		swMatrix44(swVector4(1.0f,  0.0f, 0.0f, 0.0f), swVector4(0.0f,  1.0f, 0.0f, 0.0f), swVector4(0.0f, 0.0f, 1.0f, 0.0f), swVector4(0.0f,  0.0f,  1.0f, 1.0f)),
+		swMatrix44(swVector4(1.0f,  0.0f, 0.0f, 0.0f), swVector4(0.0f, -1.0f, 0.0f, 0.0f), swVector4(0.0f, 0.0f, 1.0f, 0.0f), swVector4(0.0f,  0.0f, -1.0f, 1.0f)),
 	};
 
 	constexpr float Step = 2.0f / mSubdivisions;
 	float* CurVert = Verts.data();
-	auto ProjectToSphere = [](const lcVector3& Vert)
+	auto ProjectToSphere = [](const swVector3& Vert)
 	{
-		const lcVector3 Vert2 = Vert * Vert;
-		return lcVector3(Vert.x * sqrt(1.0 - 0.5 * (Vert2.y + Vert2.z) + Vert2.y * Vert2.z / 3.0),
+		const swVector3 Vert2 = Vert * Vert;
+		return swVector3(Vert.x * sqrt(1.0 - 0.5 * (Vert2.y + Vert2.z) + Vert2.y * Vert2.z / 3.0),
 			Vert.y * sqrt(1.0 - 0.5 * (Vert2.z + Vert2.x) + Vert2.z * Vert2.x / 3.0),
 			Vert.z * sqrt(1.0 - 0.5 * (Vert2.x + Vert2.y) + Vert2.x * Vert2.y / 3.0));
 	};
@@ -168,8 +168,8 @@ void lcViewSphere::CreateResources(lcContext* Context)
 		{
 			for (int x = 0; x <= mSubdivisions; x++)
 			{
-				const lcVector3 Vert = lcMul31(lcVector3(Step * x - 1.0f, Step * y - 1.0f, 0.0f), Transforms[FaceIdx]);
-				const lcVector3 SphereVert = ProjectToSphere(Vert) * mRadius;
+				const swVector3 Vert = swMul31(swVector3(Step * x - 1.0f, Step * y - 1.0f, 0.0f), Transforms[FaceIdx]);
+				const swVector3 SphereVert = ProjectToSphere(Vert) * mRadius;
 				*CurVert++ = SphereVert.x;
 				*CurVert++ = SphereVert.y;
 				*CurVert++ = SphereVert.z;
@@ -207,7 +207,7 @@ void lcViewSphere::CreateResources(lcContext* Context)
 	mIndexBuffer = Context->CreateIndexBuffer(static_cast<int>(Indices.size()) * sizeof(GLushort), Indices.data());
 }
 
-void lcViewSphere::DestroyResources(lcContext* Context)
+void swViewSphere::DestroyResources(swContext* Context)
 {
 	delete mTexture;
 	mTexture = nullptr;
@@ -215,47 +215,47 @@ void lcViewSphere::DestroyResources(lcContext* Context)
 	Context->DestroyIndexBuffer(mIndexBuffer);
 }
 
-void lcViewSphere::Draw()
+void swViewSphere::Draw()
 {
 	UpdateSettings();
 
 	if (!mSize || !mEnabled)
 		return;
 
-	lcContext* Context = mView->mContext;
+	swContext* Context = mView->mContext;
 	const float UIScale = mView->GetUIScale();
 	const int Width = mView->GetWidth();
 	const int Height = mView->GetHeight();
 	const int ViewportSize = mSize * UIScale;
-	const int Left = (mLocation == lcViewSphereLocation::BottomLeft || mLocation == lcViewSphereLocation::TopLeft) ? 0 : Width - ViewportSize;
-	const int Bottom = (mLocation == lcViewSphereLocation::BottomLeft || mLocation == lcViewSphereLocation::BottomRight) ? 0 : Height - ViewportSize;
+	const int Left = (mLocation == swViewSphereLocation::BottomLeft || mLocation == swViewSphereLocation::TopLeft) ? 0 : Width - ViewportSize;
+	const int Bottom = (mLocation == swViewSphereLocation::BottomLeft || mLocation == swViewSphereLocation::BottomRight) ? 0 : Height - ViewportSize;
 	Context->SetViewport(Left, Bottom, ViewportSize, ViewportSize);
 
-	Context->SetDepthFunction(lcDepthFunction::Always);
+	Context->SetDepthFunction(swDepthFunction::Always);
 	Context->EnableCullFace(true);
 
 	Context->SetVertexBuffer(mVertexBuffer);
 	Context->SetVertexFormat(0, 3, 0, 3, 0, false);
 	Context->SetIndexBuffer(mIndexBuffer);
 
-	Context->SetMaterial(lcMaterialType::UnlitColor);
-	Context->SetColor(lcVector4(0.0f, 0.0f, 0.0f, 1.0f));
+	Context->SetMaterial(swMaterialType::UnlitColor);
+	Context->SetColor(swVector4(0.0f, 0.0f, 0.0f, 1.0f));
 
 	float Scale = 1.005f + 2.0f / (float)ViewportSize;
-	Context->SetWorldMatrix(lcMatrix44Scale(lcVector3(Scale, Scale, Scale)));
+	Context->SetWorldMatrix(swMatrix44Scale(swVector3(Scale, Scale, Scale)));
 	Context->SetViewMatrix(GetViewMatrix());
 	Context->SetProjectionMatrix(GetProjectionMatrix());
 
 	Context->DrawIndexedPrimitives(GL_TRIANGLES, mSphereIndexCount, GL_UNSIGNED_SHORT, 0);
 
-	Context->SetMaterial(lcMaterialType::UnlitViewSphere);
+	Context->SetMaterial(swMaterialType::UnlitViewSphere);
 	Context->BindTexture2D(mTexture);
 
-	Context->SetWorldMatrix(lcMatrix44Identity());
+	Context->SetWorldMatrix(swMatrix44Identity());
 	Context->SetViewMatrix(GetViewMatrix());
 	Context->SetProjectionMatrix(GetProjectionMatrix());
 
-	lcVector4 HighlightPosition(0.0f, 0.0f, 0.0f, 0.0f);
+	swVector4 HighlightPosition(0.0f, 0.0f, 0.0f, 0.0f);
 
 	if (mIntersectionFlags.any())
 	{
@@ -267,25 +267,25 @@ void lcViewSphere::Draw()
 				HighlightPosition[AxisIdx] = -1.0f;
 		}
 
-		HighlightPosition = lcVector4(lcNormalize(lcVector3(HighlightPosition)), mHighlightRadius);
+		HighlightPosition = swVector4(swNormalize(swVector3(HighlightPosition)), mHighlightRadius);
 	}
 
-	const lcPreferences& Preferences = lcGetPreferences();
-	const lcVector4 TextColor = lcVector4FromColor(Preferences.mViewSphereTextColor);
-	const lcVector4 BackgroundColor = lcVector4FromColor(Preferences.mViewSphereColor);
-	const lcVector4 HighlightColor = lcVector4FromColor(Preferences.mViewSphereHighlightColor);
+	const swPreferences& Preferences = swGetPreferences();
+	const swVector4 TextColor = swVector4FromColor(Preferences.mViewSphereTextColor);
+	const swVector4 BackgroundColor = swVector4FromColor(Preferences.mViewSphereColor);
+	const swVector4 HighlightColor = swVector4FromColor(Preferences.mViewSphereHighlightColor);
 
 	Context->SetHighlightParams(HighlightPosition, TextColor, BackgroundColor, HighlightColor);
-	Context->SetTextHaloColor(lcVector4FromColor(Preferences.mTextHaloColor));
+	Context->SetTextHaloColor(swVector4FromColor(Preferences.mTextHaloColor));
 	Context->DrawIndexedPrimitives(GL_TRIANGLES, mSphereIndexCount, GL_UNSIGNED_SHORT, 0);
 
-	Context->SetDepthFunction(lcDepthFunction::LessEqual);
+	Context->SetDepthFunction(swDepthFunction::LessEqual);
 	Context->EnableCullFace(false);
 
 	Context->SetViewport(0, 0, mView->GetWidth(), mView->GetHeight());
 }
 
-bool lcViewSphere::OnLeftButtonDown()
+bool swViewSphere::OnLeftButtonDown()
 {
 	if (!mSize || !mEnabled)
 		return false;
@@ -302,7 +302,7 @@ bool lcViewSphere::OnLeftButtonDown()
 	return true;
 }
 
-bool lcViewSphere::OnLeftButtonUp()
+bool swViewSphere::OnLeftButtonUp()
 {
 	if (!mSize || !mEnabled)
 		return false;
@@ -315,7 +315,7 @@ bool lcViewSphere::OnLeftButtonUp()
 	if (!mIntersectionFlags.any())
 		return false;
 
-	lcVector3 Position(0.0f, 0.0f, 0.0f);
+	swVector3 Position(0.0f, 0.0f, 0.0f);
 
 	for (int AxisIdx = 0; AxisIdx < 3; AxisIdx++)
 	{
@@ -330,7 +330,7 @@ bool lcViewSphere::OnLeftButtonUp()
 	return true;
 }
 
-bool lcViewSphere::OnMouseMove()
+bool swViewSphere::OnMouseMove()
 {
 	if (!mSize || !mEnabled)
 		return false;
@@ -356,21 +356,21 @@ bool lcViewSphere::OnMouseMove()
 	return mIntersectionFlags.any();
 }
 
-bool lcViewSphere::IsDragging() const
+bool swViewSphere::IsDragging() const
 {
 	int InputStateX = mView->GetMouseX();
 	int InputStateY = mView->GetMouseY();
 	return mMouseDown && (qAbs(mMouseDownX - InputStateX) > 3 || qAbs(mMouseDownY - InputStateY) > 3);
 }
 
-std::bitset<6> lcViewSphere::GetIntersectionFlags(lcVector3& Intersection) const
+std::bitset<6> swViewSphere::GetIntersectionFlags(swVector3& Intersection) const
 {
 	const float UIScale = mView->GetUIScale();
 	const int Width = mView->GetWidth();
 	const int Height = mView->GetHeight();
 	const int ViewportSize = mSize * UIScale;
-	const int Left = (mLocation == lcViewSphereLocation::BottomLeft || mLocation == lcViewSphereLocation::TopLeft) ? 0 : Width - ViewportSize;
-	const int Bottom = (mLocation == lcViewSphereLocation::BottomLeft || mLocation == lcViewSphereLocation::BottomRight) ? 0 : Height - ViewportSize;
+	const int Left = (mLocation == swViewSphereLocation::BottomLeft || mLocation == swViewSphereLocation::TopLeft) ? 0 : Width - ViewportSize;
+	const int Bottom = (mLocation == swViewSphereLocation::BottomLeft || mLocation == swViewSphereLocation::BottomRight) ? 0 : Height - ViewportSize;
 	const int x = mView->GetMouseX() - Left;
 	const int y = mView->GetMouseY() - Bottom;
 	std::bitset<6> IntersectionFlags;
@@ -378,13 +378,13 @@ std::bitset<6> lcViewSphere::GetIntersectionFlags(lcVector3& Intersection) const
 	if (x < 0 || x > Width || y < 0 || y > Height)
 		return IntersectionFlags;
 
-	lcVector3 StartEnd[2] = { lcVector3(x, y, 0), lcVector3(x, y, 1) };
+	swVector3 StartEnd[2] = { swVector3(x, y, 0), swVector3(x, y, 1) };
 	const int Viewport[4] = { 0, 0, ViewportSize, ViewportSize };
 
-	lcUnprojectPoints(StartEnd, 2, GetViewMatrix(), GetProjectionMatrix(), Viewport);
+	swUnprojectPoints(StartEnd, 2, GetViewMatrix(), GetProjectionMatrix(), Viewport);
 
 	float Distance;
-	if (lcSphereRayMinIntersectDistance(lcVector3(0.0f, 0.0f, 0.0f), mRadius, StartEnd[0], StartEnd[1], &Distance))
+	if (swSphereRayMinIntersectDistance(swVector3(0.0f, 0.0f, 0.0f), mRadius, StartEnd[0], StartEnd[1], &Distance))
 	{
 		Intersection = (StartEnd[0] + (StartEnd[1] - StartEnd[0]) * Distance) / mRadius;
 
@@ -392,11 +392,11 @@ std::bitset<6> lcViewSphere::GetIntersectionFlags(lcVector3& Intersection) const
 		{
 			for (int Axis1Idx = 0; Axis1Idx < 6; Axis1Idx++)
 			{
-				lcVector3 Point1(0.0f, 0.0f, 0.0f);
+				swVector3 Point1(0.0f, 0.0f, 0.0f);
 
 				Point1[Axis1Idx / 2] = Axis1Idx % 2 ? -1.0f : 1.0f;
 
-				if (lcLengthSquared(Point1 - Intersection) < mHighlightRadius * mHighlightRadius)
+				if (swLengthSquared(Point1 - Intersection) < mHighlightRadius * mHighlightRadius)
 				{
 					IntersectionFlags.set(Axis1Idx);
 					return;
@@ -407,11 +407,11 @@ std::bitset<6> lcViewSphere::GetIntersectionFlags(lcVector3& Intersection) const
 					if (Axis1Idx / 2 == Axis2Idx / 2)
 						continue;
 
-					lcVector3 Point2(0.0f, 0.0f, 0.0f);
+					swVector3 Point2(0.0f, 0.0f, 0.0f);
 					Point2[Axis1Idx / 2] = Axis1Idx % 2 ? -0.70710678118f : 0.70710678118f;
 					Point2[Axis2Idx / 2] = Axis2Idx % 2 ? -0.70710678118f : 0.70710678118f;
 
-					if (lcLengthSquared(Point2 - Intersection) < mHighlightRadius * mHighlightRadius)
+					if (swLengthSquared(Point2 - Intersection) < mHighlightRadius * mHighlightRadius)
 					{
 						IntersectionFlags.set(Axis1Idx);
 						IntersectionFlags.set(Axis2Idx);
@@ -423,12 +423,12 @@ std::bitset<6> lcViewSphere::GetIntersectionFlags(lcVector3& Intersection) const
 						if (Axis1Idx / 2 == Axis3Idx / 2 || Axis2Idx / 2 == Axis3Idx / 2)
 							continue;
 
-						lcVector3 Point3(0.0f, 0.0f, 0.0f);
+						swVector3 Point3(0.0f, 0.0f, 0.0f);
 						Point3[Axis1Idx / 2] = Axis1Idx % 2 ? -0.57735026919f : 0.57735026919f;
 						Point3[Axis2Idx / 2] = Axis2Idx % 2 ? -0.57735026919f : 0.57735026919f;
 						Point3[Axis3Idx / 2] = Axis3Idx % 2 ? -0.57735026919f : 0.57735026919f;
 
-						if (lcLengthSquared(Point3 - Intersection) < mHighlightRadius * mHighlightRadius)
+						if (swLengthSquared(Point3 - Intersection) < mHighlightRadius * mHighlightRadius)
 						{
 							IntersectionFlags.set(Axis1Idx);
 							IntersectionFlags.set(Axis2Idx);

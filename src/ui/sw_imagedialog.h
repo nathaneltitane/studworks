@@ -1,18 +1,18 @@
 #pragma once
 
 namespace Ui {
-class lcImageDialog;
+class swImageDialog;
 }
 
-struct lcImageDialogOptions;
+struct swImageDialogOptions;
 
-class lcImageDialog : public QDialog
+class swImageDialog : public QDialog
 {
 	Q_OBJECT
 
 public:
-	lcImageDialog(QWidget* Parent, lcImageDialogOptions* Options);
-	virtual ~lcImageDialog();
+	swImageDialog(QWidget* Parent, swImageDialogOptions* Options);
+	virtual ~swImageDialog();
 
 public slots:
 	void accept() override;
@@ -21,7 +21,7 @@ private slots:
 	void FileNameBrowseClicked();
 
 private:
-	lcImageDialogOptions* mOptions;
-	Ui::lcImageDialog* ui;
+	swImageDialogOptions* mOptions;
+	Ui::swImageDialog* ui;
 };
 

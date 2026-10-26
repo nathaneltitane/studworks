@@ -1,5 +1,5 @@
-#ifndef LC_GLOBAL_H
-#define LC_GLOBAL_H
+#ifndef SW_GLOBAL_H
+#define SW_GLOBAL_H
 
 #ifdef __cplusplus
 
@@ -51,86 +51,86 @@ class QPrinter;
 #define QT_STRINGIFY(x) QT_STRINGIFY2(x)
 #endif
 
-#define LC_ARRAY_COUNT(x) ((sizeof(x)/sizeof(0[x])) / ((size_t)(!(sizeof(x) % sizeof(0[x])))))
-#define LC_ARRAY_SIZE_CHECK(a,s) static_assert(LC_ARRAY_COUNT(a) == static_cast<int>(s), QT_STRINGIFY(a) " size mismatch.")
+#define SW_ARRAY_COUNT(x) ((sizeof(x)/sizeof(0[x])) / ((size_t)(!(sizeof(x) % sizeof(0[x])))))
+#define SW_ARRAY_SIZE_CHECK(a,s) static_assert(SW_ARRAY_COUNT(a) == static_cast<int>(s), QT_STRINGIFY(a) " size mismatch.")
 
 #if defined(EGL_VERSION_1_0) || defined(GL_ES_VERSION_2_0) || defined(GL_ES_VERSION_3_0) || defined(QT_OPENGL_ES)
-#define LC_OPENGLES 1
+#define SW_OPENGLES 1
 #endif
 
 // Old defines and declarations.
-#define LC_MAXPATH 1024
-#define LC_MAXNAME 1000
+#define SW_MAXPATH 1024
+#define SW_MAXNAME 1000
 
-typedef quint32 lcStep;
-#define LC_STEP_MAX 0xffffffff
+typedef quint32 swStep;
+#define SW_STEP_MAX 0xffffffff
 
 // Version number.
-#define LC_VERSION_MAJOR 26
-#define LC_VERSION_MINOR 9
-#define LC_VERSION_PATCH 0
-#define LC_VERSION_TEXT "2026-10-25"
+#define SW_VERSION_MAJOR 26
+#define SW_VERSION_MINOR 9
+#define SW_VERSION_PATCH 0
+#define SW_VERSION_TEXT "2026-10-25"
 
 // Forward declarations.
 class Project;
-class lcModel;
-enum class lcGeometryBoundsMode;
-class lcObject;
-class lcPiece;
-class lcCamera;
-class lcLight;
-enum class lcLightType;
-enum class lcLightAreaShape;
-class lcGroup;
-class lcModelHistory;
-class lcPieceData;
-class lcSynthInfo;
-class lcTrainTrackInfo;
-typedef std::map<const lcPieceData*, std::map<int, int>> lcPartsList;
-struct lcModelPartsEntry;
-struct lcMinifig;
-enum class lcViewpoint;
-enum class lcShadingMode;
-enum class lcStudStyle;
-class lcInstructions;
-struct lcInstructionsPageSetup;
-struct lcObjectRayTest;
-struct lcObjectBoxTest;
+class swModel;
+enum class swGeometryBoundsMode;
+class swObject;
+class swPiece;
+class swCamera;
+class swLight;
+enum class swLightType;
+enum class swLightAreaShape;
+class swGroup;
+class swModelHistory;
+class swPieceData;
+class swSynthInfo;
+class swTrainTrackInfo;
+typedef std::map<const swPieceData*, std::map<int, int>> swPartsList;
+struct swModelPartsEntry;
+struct swMinifig;
+enum class swViewpoint;
+enum class swShadingMode;
+enum class swStudStyle;
+class swInstructions;
+struct swInstructionsPageSetup;
+struct swObjectRayTest;
+struct swObjectBoxTest;
 
-class lcVector2;
-class lcVector3;
-class lcVector4;
-class lcMatrix33;
-class lcMatrix44;
+class swVector2;
+class swVector3;
+class swVector4;
+class swMatrix33;
+class swMatrix44;
 
-class lcFindReplaceWidget;
-struct lcFindReplaceParams;
-class lcCollapsibleWidget;
-class lcViewWidget;
-class lcView;
-class lcContext;
-class lcMesh;
-struct lcMeshSection;
-struct lcRenderMesh;
-struct lcObjectSection;
-struct lcPieceRayTest;
-class lcTexture;
-class lcScene;
-class lcViewManipulator;
-class lcViewSphere;
-enum class lcRenderMeshState : int;
-enum class lcTrackTool;
-enum class lcTrackButton;
+class swFindReplaceWidget;
+struct swFindReplaceParams;
+class swCollapsibleWidget;
+class swViewWidget;
+class swView;
+class swContext;
+class swMesh;
+struct swMeshSection;
+struct swRenderMesh;
+struct swObjectSection;
+struct swPieceRayTest;
+class swTexture;
+class swScene;
+class swViewManipulator;
+class swViewSphere;
+enum class swRenderMeshState : int;
+enum class swTrackTool;
+enum class swTrackButton;
 
-class lcThumbnailManager;
-class lcAssetLoader;
-class lcTextureManager;
-class lcPieceManager;
+class swThumbnailManager;
+class swAssetLoader;
+class swTextureManager;
+class swPieceManager;
 
-class lcFile;
-class lcMemFile;
-class lcDiskFile;
+class swFile;
+class swMemFile;
+class swDiskFile;
 
 #endif
 
-#endif // LC_GLOBAL_H
+#endif // SW_GLOBAL_H

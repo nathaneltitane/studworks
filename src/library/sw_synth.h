@@ -3,19 +3,19 @@
 #include "sw_math.h"
 #include "piece.h"
 
-class lcLibraryMeshData;
-class lcMesh;
+class swLibraryMeshData;
+class swMesh;
 
-class lcSynthInfo
+class swSynthInfo
 {
 public:
-	explicit lcSynthInfo(float Length);
-	virtual ~lcSynthInfo() = default;
+	explicit swSynthInfo(float Length);
+	virtual ~swSynthInfo() = default;
 
-	lcSynthInfo(const lcSynthInfo&) = delete;
-	lcSynthInfo(lcSynthInfo&&) = delete;
-	lcSynthInfo& operator=(const lcSynthInfo&) = delete;
-	lcSynthInfo& operator=(lcSynthInfo&&) = delete;
+	swSynthInfo(const swSynthInfo&) = delete;
+	swSynthInfo(swSynthInfo&&) = delete;
+	swSynthInfo& operator=(const swSynthInfo&) = delete;
+	swSynthInfo& operator=(swSynthInfo&&) = delete;
 
 	bool CanAddControlPoints() const
 	{
@@ -37,15 +37,15 @@ public:
 		return mNondirectional;
 	}
 
-	virtual void GetDefaultControlPoints(std::vector<lcPieceControlPoint>& ControlPoints) const = 0;
-	virtual void VerifyControlPoints(std::vector<lcPieceControlPoint>& ControlPoints) const = 0;
-	int InsertControlPoint(std::vector<lcPieceControlPoint>& ControlPoints, const lcVector3& Start, const lcVector3& End) const;
-	std::unique_ptr<lcMesh> BuildMesh(const std::vector<lcPieceControlPoint>& ControlPoints, const std::atomic_bool& Cancelled) const;
+	virtual void GetDefaultControlPoints(std::vector<swPieceControlPoint>& ControlPoints) const = 0;
+	virtual void VerifyControlPoints(std::vector<swPieceControlPoint>& ControlPoints) const = 0;
+	int InsertControlPoint(std::vector<swPieceControlPoint>& ControlPoints, const swVector3& Start, const swVector3& End) const;
+	std::unique_ptr<swMesh> BuildMesh(const std::vector<swPieceControlPoint>& ControlPoints, const std::atomic_bool& Cancelled) const;
 
 protected:
-	using SectionCallbackFunc = std::function<void(const lcVector3& CurvePoint, quint32 SegmentIndex, float t)>;
-	virtual void CalculateSections(const std::vector<lcPieceControlPoint>& ControlPoints, std::vector<lcMatrix44>& Sections, SectionCallbackFunc SectionCallback, const std::atomic_bool* Cancelled) const = 0;
-	virtual void AddParts(lcMemFile& File, lcLibraryMeshData& MeshData, const std::vector<lcMatrix44>& Sections, const std::atomic_bool* Cancelled) const = 0;
+	using SectionCallbackFunc = std::function<void(const swVector3& CurvePoint, quint32 SegmentIndex, float t)>;
+	virtual void CalculateSections(const std::vector<swPieceControlPoint>& ControlPoints, std::vector<swMatrix44>& Sections, SectionCallbackFunc SectionCallback, const std::atomic_bool* Cancelled) const = 0;
+	virtual void AddParts(swMemFile& File, swLibraryMeshData& MeshData, const std::vector<swMatrix44>& Sections, const std::atomic_bool* Cancelled) const = 0;
 
 	bool mCurve = false;
 	bool mUnidirectional = false;
@@ -53,4 +53,4 @@ protected:
 	float mLength;
 };
 
-void lcSynthInit();
+void swSynthInit();

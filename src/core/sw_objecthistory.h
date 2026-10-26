@@ -3,7 +3,7 @@
 // Object states are captured while an edit is in progress, then reduced to the
 // changed objects. Ordering is only retained for insertions, deletions or reordering.
 template<typename StateType>
-struct lcObjectHistory
+struct swObjectHistory
 {
 	std::vector<StateType> States;
 	std::optional<std::vector<uint32_t>> Order;
@@ -28,7 +28,7 @@ struct lcObjectHistory
 		return States.empty() && !Order;
 	}
 
-	static void Compact(lcObjectHistory& Start, lcObjectHistory& End)
+	static void Compact(swObjectHistory& Start, swObjectHistory& End)
 	{
 		std::unordered_map<uint32_t, const StateType*> StartStates;
 		std::unordered_map<uint32_t, const StateType*> EndStates;
@@ -78,7 +78,7 @@ struct lcObjectHistory
 		}
 	}
 
-	static void Merge(lcObjectHistory& Start, lcObjectHistory& End, lcObjectHistory& NextStart, lcObjectHistory& NextEnd)
+	static void Merge(swObjectHistory& Start, swObjectHistory& End, swObjectHistory& NextStart, swObjectHistory& NextEnd)
 	{
 		std::map<uint32_t, StateType> Before;
 		std::map<uint32_t, StateType> After;

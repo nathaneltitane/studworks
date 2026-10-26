@@ -1,117 +1,117 @@
 #include "sw_global.h"
 #include "object.h"
 
-lcObjectId lcObject::mNextId;
+swObjectId swObject::mNextId;
 
-lcObject::lcObject(lcObjectType ObjectType)
+swObject::swObject(swObjectType ObjectType)
     : mObjectType(ObjectType), mId(mNextId)
 {
-	mNextId = static_cast<lcObjectId>(static_cast<uint32_t>(mNextId) + 1);
+	mNextId = static_cast<swObjectId>(static_cast<uint32_t>(mNextId) + 1);
 }
 
-lcObject::~lcObject()
+swObject::~swObject()
 {
 }
 
-QString lcObject::GetCheckpointString(lcObjectPropertyId PropertyId)
+QString swObject::GetCheckpointString(swObjectPropertyId PropertyId)
 {
 	switch (PropertyId)
 	{
-	case lcObjectPropertyId::PieceId:
+	case swObjectPropertyId::PieceId:
 		return QT_TRANSLATE_NOOP("Checkpoint", "Change Piece");
 
-	case lcObjectPropertyId::PieceColor:
+	case swObjectPropertyId::PieceColor:
 		return QT_TRANSLATE_NOOP("Checkpoint", "Change Piece Color");
 
-	case lcObjectPropertyId::PieceStepShow:
-	case lcObjectPropertyId::PieceStepHide:
+	case swObjectPropertyId::PieceStepShow:
+	case swObjectPropertyId::PieceStepHide:
 		break;
 
-	case lcObjectPropertyId::CameraName:
+	case swObjectPropertyId::CameraName:
 		return QT_TRANSLATE_NOOP("Checkpoint", "Rename Camera");
 
-	case lcObjectPropertyId::CameraProjection:
+	case swObjectPropertyId::CameraProjection:
 		return QT_TRANSLATE_NOOP("Checkpoint", "Change Camera Projection");
 
-	case lcObjectPropertyId::CameraFOV:
+	case swObjectPropertyId::CameraFOV:
 		return QT_TRANSLATE_NOOP("Checkpoint", "Change Camera FOV");
 
-	case lcObjectPropertyId::CameraNear:
+	case swObjectPropertyId::CameraNear:
 		return QT_TRANSLATE_NOOP("Checkpoint", "Change Camera Near Plane");
 
-	case lcObjectPropertyId::CameraFar:
+	case swObjectPropertyId::CameraFar:
 		return QT_TRANSLATE_NOOP("Checkpoint", "Change Camera Far Plane");
 
-	case lcObjectPropertyId::CameraPositionX:
-	case lcObjectPropertyId::CameraPositionY:
-	case lcObjectPropertyId::CameraPositionZ:
-	case lcObjectPropertyId::CameraTargetX:
-	case lcObjectPropertyId::CameraTargetY:
-	case lcObjectPropertyId::CameraTargetZ:
-	case lcObjectPropertyId::CameraUpX:
-	case lcObjectPropertyId::CameraUpY:
-	case lcObjectPropertyId::CameraUpZ:
+	case swObjectPropertyId::CameraPositionX:
+	case swObjectPropertyId::CameraPositionY:
+	case swObjectPropertyId::CameraPositionZ:
+	case swObjectPropertyId::CameraTargetX:
+	case swObjectPropertyId::CameraTargetY:
+	case swObjectPropertyId::CameraTargetZ:
+	case swObjectPropertyId::CameraUpX:
+	case swObjectPropertyId::CameraUpY:
+	case swObjectPropertyId::CameraUpZ:
 		break;
 
-	case lcObjectPropertyId::LightName:
+	case swObjectPropertyId::LightName:
 		return QT_TRANSLATE_NOOP("Checkpoint", "Rename Light");
 
-	case lcObjectPropertyId::LightType:
+	case swObjectPropertyId::LightType:
 		return QT_TRANSLATE_NOOP("Checkpoint", "Change Light Type");
 
-	case lcObjectPropertyId::LightColor:
+	case swObjectPropertyId::LightColor:
 		return QT_TRANSLATE_NOOP("Checkpoint", "Change Light Color");
 
-	case lcObjectPropertyId::LightBlenderPower:
+	case swObjectPropertyId::LightBlenderPower:
 		return QT_TRANSLATE_NOOP("Checkpoint", "Change Light Blender Power");
 
-	case lcObjectPropertyId::LightPOVRayPower:
+	case swObjectPropertyId::LightPOVRayPower:
 		return QT_TRANSLATE_NOOP("Checkpoint", "Change Light POV-Ray Power");
 
-	case lcObjectPropertyId::LightCastShadow:
+	case swObjectPropertyId::LightCastShadow:
 		return QT_TRANSLATE_NOOP("Checkpoint", "Change Light Shadow");
 
-	case lcObjectPropertyId::LightPOVRayFadeDistance:
+	case swObjectPropertyId::LightPOVRayFadeDistance:
 		return QT_TRANSLATE_NOOP("Checkpoint", "Change Light POV-Ray Fade Distance");
 
-	case lcObjectPropertyId::LightPOVRayFadePower:
+	case swObjectPropertyId::LightPOVRayFadePower:
 		return QT_TRANSLATE_NOOP("Checkpoint", "Change Light POV-Ray Fade Power");
 
-	case lcObjectPropertyId::LightBlenderRadius:
+	case swObjectPropertyId::LightBlenderRadius:
 		return QT_TRANSLATE_NOOP("Checkpoint", "Change Light Blender Radius");
 
-	case lcObjectPropertyId::LightBlenderAngle:
+	case swObjectPropertyId::LightBlenderAngle:
 		return QT_TRANSLATE_NOOP("Checkpoint", "Change Light Blender Angle");
 
-	case lcObjectPropertyId::LightAreaSizeX:
+	case swObjectPropertyId::LightAreaSizeX:
 		return QT_TRANSLATE_NOOP("Checkpoint", "Change Area Light X Size");
 
-	case lcObjectPropertyId::LightAreaSizeY:
+	case swObjectPropertyId::LightAreaSizeY:
 		return QT_TRANSLATE_NOOP("Checkpoint", "Change Area Light Y Size");
 
-	case lcObjectPropertyId::LightSpotConeAngle:
+	case swObjectPropertyId::LightSpotConeAngle:
 		return QT_TRANSLATE_NOOP("Checkpoint", "Change Spotlight Cone Angle");
 
-	case lcObjectPropertyId::LightSpotPenumbraAngle:
+	case swObjectPropertyId::LightSpotPenumbraAngle:
 		return QT_TRANSLATE_NOOP("Checkpoint", "Change Spotlight Penumbra Angle");
 
-	case lcObjectPropertyId::LightPOVRaySpotTightness:
+	case swObjectPropertyId::LightPOVRaySpotTightness:
 		return QT_TRANSLATE_NOOP("Checkpoint", "Change Spotlight POV-Ray Tightness");
 
-	case lcObjectPropertyId::LightAreaShape:
+	case swObjectPropertyId::LightAreaShape:
 		return QT_TRANSLATE_NOOP("Checkpoint", "Change Area Light Shape");
 
-	case lcObjectPropertyId::LightPOVRayAreaGridX:
-	case lcObjectPropertyId::LightPOVRayAreaGridY:
+	case swObjectPropertyId::LightPOVRayAreaGridX:
+	case swObjectPropertyId::LightPOVRayAreaGridY:
 		return QT_TRANSLATE_NOOP("Checkpoint", "Change Area Light POV-Ray Grid");
 
-	case lcObjectPropertyId::ObjectPositionX:
-	case lcObjectPropertyId::ObjectPositionY:
-	case lcObjectPropertyId::ObjectPositionZ:
-	case lcObjectPropertyId::ObjectRotationX:
-	case lcObjectPropertyId::ObjectRotationY:
-	case lcObjectPropertyId::ObjectRotationZ:
-	case lcObjectPropertyId::Count:
+	case swObjectPropertyId::ObjectPositionX:
+	case swObjectPropertyId::ObjectPositionY:
+	case swObjectPropertyId::ObjectPositionZ:
+	case swObjectPropertyId::ObjectRotationX:
+	case swObjectPropertyId::ObjectRotationY:
+	case swObjectPropertyId::ObjectRotationZ:
+	case swObjectPropertyId::Count:
 		break;
 	}
 

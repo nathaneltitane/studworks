@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>lcGroupDialog</class>
- <widget class="QDialog" name="lcGroupDialog">
+ <class>swGroupDialog</class>
+ <widget class="QDialog" name="swGroupDialog">
   <property name="whatsThis">
    <string>&lt;p&gt;&lt;b&gt;Group Pieces&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Name a new group for the selected pieces so you can select and move them together. Choose OK to create it, or Cancel to leave the groups unchanged.&lt;/p&gt;</string>
   </property>
@@ -64,7 +64,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>lcGroupDialog</receiver>
+   <receiver>swGroupDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -80,7 +80,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>lcGroupDialog</receiver>
+   <receiver>swGroupDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

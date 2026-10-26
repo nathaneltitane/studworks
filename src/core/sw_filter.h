@@ -1,10 +1,10 @@
 #pragma once
 
-class lcFilter
+class swFilter
 {
 public:
-	lcFilter(const std::string_view FilterString);
-	~lcFilter() = default;
+	swFilter(const std::string_view FilterString);
+	~swFilter() = default;
 
 	bool Match(const char* String) const;
 

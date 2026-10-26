@@ -23,49 +23,49 @@
 #include "sw_string.h"
 
 // Cache payloads use Qt compression with checksum validation.
-constexpr quint32 LC_LIBRARY_CACHE_VERSION = 0x0114;
-constexpr qint32 LC_LIBRARY_MESH_CACHE_VERSION = 2;
+constexpr quint32 SW_LIBRARY_CACHE_VERSION = 0x0114;
+constexpr qint32 SW_LIBRARY_MESH_CACHE_VERSION = 2;
 
-enum class lcLibrarySourceType
+enum class swLibrarySourceType
 {
 	Library,
 	StudStyle
 };
 
-struct lcLibrarySource
+struct swLibrarySource
 {
-	lcLibrarySource() = default;
+	swLibrarySource() = default;
 
-	lcLibrarySource(const lcLibrarySource&) = delete;
-	lcLibrarySource(lcLibrarySource&&) = delete;
-	lcLibrarySource& operator=(const lcLibrarySource&) = delete;
-	lcLibrarySource& operator=(lcLibrarySource&&) = delete;
+	swLibrarySource(const swLibrarySource&) = delete;
+	swLibrarySource(swLibrarySource&&) = delete;
+	swLibrarySource& operator=(const swLibrarySource&) = delete;
+	swLibrarySource& operator=(swLibrarySource&&) = delete;
 
-	lcLibrarySourceType Type;
-	std::map<std::string, std::unique_ptr<lcLibraryPrimitive>> Primitives;
+	swLibrarySourceType Type;
+	std::map<std::string, std::unique_ptr<swLibraryPrimitive>> Primitives;
 };
 
-lcLibraryPrimitive::lcLibraryPrimitive(QString&& FileName, const char* Name, lcZipFileType ZipFileType, quint32 ZipFileIndex, bool Stud, bool StudStyle, bool SubFile)
+swLibraryPrimitive::swLibraryPrimitive(QString&& FileName, const char* Name, swZipFileType ZipFileType, quint32 ZipFileIndex, bool Stud, bool StudStyle, bool SubFile)
 	: mFileName(std::move(FileName))
 {
-	lcstrcpy(mName, Name);
+	swstrcpy(mName, Name);
 
 	mZipFileType = ZipFileType;
 	mZipFileIndex = ZipFileIndex;
-	mState = lcPrimitiveState::NotLoaded;
+	mState = swPrimitiveState::NotLoaded;
 	mStud = Stud;
 	mStudStyle = StudStyle;
 	mSubFile = SubFile;
 }
 
-lcPiecesLibrary::lcPiecesLibrary(lcStudStyle StudStyle, bool StudCylinderColorEnabled)
+swPiecesLibrary::swPiecesLibrary(swStudStyle StudStyle, bool StudCylinderColorEnabled)
 	: mStudStyle(StudStyle), mStudCylinderColorEnabled(StudCylinderColorEnabled)
 {
-	mPieceManager = std::make_unique<lcPieceManager>();
-	mTextureManager = std::make_unique<lcTextureManager>();
-	mAssetLoader = std::unique_ptr<lcAssetLoader>(new lcAssetLoader(this));
-	mThumbnailManager = std::unique_ptr<lcThumbnailManager>(new lcThumbnailManager(this));
-	mLoadingMesh = std::unique_ptr<lcMesh>(new lcMesh);
+	mPieceManager = std::make_unique<swPieceManager>();
+	mTextureManager = std::make_unique<swTextureManager>();
+	mAssetLoader = std::unique_ptr<swAssetLoader>(new swAssetLoader(this));
+	mThumbnailManager = std::unique_ptr<swThumbnailManager>(new swThumbnailManager(this));
+	mLoadingMesh = std::unique_ptr<swMesh>(new swMesh);
 	mLoadingMesh->CreateBox();
 	QStringList cachePathList = QStandardPaths::standardLocations(QStandardPaths::CacheLocation);
 	mCachePath = cachePathList.first();
@@ -77,7 +77,7 @@ lcPiecesLibrary::lcPiecesLibrary(lcStudStyle StudStyle, bool StudCylinderColorEn
 	mHasUnofficial = false;
 }
 
-lcPiecesLibrary::~lcPiecesLibrary()
+swPiecesLibrary::~swPiecesLibrary()
 {
 	mThumbnailManager.reset();
 	mCancelLoading.store(true);
@@ -86,7 +86,7 @@ lcPiecesLibrary::~lcPiecesLibrary()
 	ReleaseBuffers();
 }
 
-void lcPiecesLibrary::Unload()
+void swPiecesLibrary::Unload()
 {
 	Q_ASSERT(QThread::currentThread() == thread());
 
@@ -110,49 +110,49 @@ void lcPiecesLibrary::Unload()
 
 	mOfficialPieceCount = 0;
 
-	for (std::unique_ptr<lcZipFile>& ZipFile : mZipFiles)
+	for (std::unique_ptr<swZipFile>& ZipFile : mZipFiles)
 		ZipFile.reset();
 
 	if (HadLoader)
-		mAssetLoader = std::unique_ptr<lcAssetLoader>(new lcAssetLoader(this));
+		mAssetLoader = std::unique_ptr<swAssetLoader>(new swAssetLoader(this));
 }
 
-void lcPiecesLibrary::RemoveTemporaryPieceData()
+void swPiecesLibrary::RemoveTemporaryPieceData()
 {
 	mPieceManager->RemoveTemporaryPieceData();
 }
 
-void lcPiecesLibrary::ReleaseProjectPieceData(Project* OwnerProject)
+void swPiecesLibrary::ReleaseProjectPieceData(Project* OwnerProject)
 {
 	mPieceManager->ReleaseProjectPieceData(OwnerProject);
 }
 
-void lcPiecesLibrary::TransferProjectPieceData(Project* Source, Project* Destination)
+void swPiecesLibrary::TransferProjectPieceData(Project* Source, Project* Destination)
 {
 	mPieceManager->TransferProjectPieceData(Source, Destination);
 }
 
-bool lcPiecesLibrary::RenameModelPieceData(lcPieceData* PieceData, const char* NewName)
+bool swPiecesLibrary::RenameModelPieceData(swPieceData* PieceData, const char* NewName)
 {
 	if (!mPieceManager->RenameModelPieceData(PieceData, NewName))
 		return false;
 
-	if (PieceData->mState != lcAssetState::Failed)
+	if (PieceData->mState != swAssetState::Failed)
 		ClearPieceDataLoadError(PieceData);
 
 	return true;
 }
 
-std::string lcPiecesLibrary::NormalizePieceDataName(const char* PieceName)
+std::string swPiecesLibrary::NormalizePieceDataName(const char* PieceName)
 {
-	return lcPieceManager::NormalizePieceDataName(PieceName);
+	return swPieceManager::NormalizePieceDataName(PieceName);
 }
 
-lcPieceDataRef lcPiecesLibrary::AcquireModelPieceData(const char* PieceName, Project* Project, bool& Reused)
+swPieceDataRef swPiecesLibrary::AcquireModelPieceData(const char* PieceName, Project* Project, bool& Reused)
 {
-	lcPieceData* PieceData = mPieceManager->AcquireModelPieceData(PieceName, Project, Reused);
+	swPieceData* PieceData = mPieceManager->AcquireModelPieceData(PieceName, Project, Reused);
 
-	lcPieceDataRef PieceDataRef = lcPieceDataRef::Adopt(PieceData, this);
+	swPieceDataRef PieceDataRef = swPieceDataRef::Adopt(PieceData, this);
 
 	if (Reused)
 		InvalidatePieceDataLoad(PieceData);
@@ -160,13 +160,13 @@ lcPieceDataRef lcPiecesLibrary::AcquireModelPieceData(const char* PieceName, Pro
 	return PieceDataRef;
 }
 
-lcResult<Project*> lcPiecesLibrary::LoadExternalProject(const QFileInfo& FileInfo, bool Preview, bool DeferModelMeshRequests)
+swResult<Project*> swPiecesLibrary::LoadExternalProject(const QFileInfo& FileInfo, bool Preview, bool DeferModelMeshRequests)
 {
 	static thread_local std::vector<QString> LoadingPaths;
 	const QString Path = FileInfo.canonicalFilePath();
 
 	if (std::find(LoadingPaths.begin(), LoadingPaths.end(), Path) != LoadingPaths.end())
-		return lcUnexpected(tr("Circular reference between external model files at '%1'.").arg(Path));
+		return swUnexpected(tr("Circular reference between external model files at '%1'.").arg(Path));
 
 	LoadingPaths.push_back(Path);
 
@@ -179,28 +179,28 @@ lcResult<Project*> lcPiecesLibrary::LoadExternalProject(const QFileInfo& FileInf
 	if (!Loaded)
 	{
 		delete ExternalProject;
-		return lcUnexpected(tr("Could not load external model file '%1'.").arg(FileInfo.absoluteFilePath()));
+		return swUnexpected(tr("Could not load external model file '%1'.").arg(FileInfo.absoluteFilePath()));
 	}
 
 	return ExternalProject;
 }
 
-lcPieceData* lcPiecesLibrary::FindPieceData(const char* PieceName, Project* CurrentProject)
+swPieceData* swPiecesLibrary::FindPieceData(const char* PieceName, Project* CurrentProject)
 {
 	const std::string Name = NormalizePieceDataName(PieceName);
 
 	return mPieceManager->FindPieceData(Name, CurrentProject);
 }
 
-lcPieceDataRef lcPiecesLibrary::AcquirePieceData(const char* PieceName, Project* CurrentProject, bool CreateMissing, bool SearchProjectFolder)
+swPieceDataRef swPiecesLibrary::AcquirePieceData(const char* PieceName, Project* CurrentProject, bool CreateMissing, bool SearchProjectFolder)
 {
 	Q_ASSERT(QThread::currentThread() == thread());
 
 	QString ProjectPath;
 	QString LoadError;
 
-	if (lcPieceData* PieceData = FindPieceData(PieceName, CurrentProject))
-		return lcPieceDataRef(PieceData, this);
+	if (swPieceData* PieceData = FindPieceData(PieceName, CurrentProject))
+		return swPieceDataRef(PieceData, this);
 
 	if (CurrentProject && SearchProjectFolder && !CurrentProject->GetFileName().isEmpty())
 		ProjectPath = QFileInfo(CurrentProject->GetFileName()).absolutePath();
@@ -211,15 +211,15 @@ lcPieceDataRef lcPiecesLibrary::AcquirePieceData(const char* PieceName, Project*
 
 		if (ProjectFile.isFile())
 		{
-			const lcResult<Project*> ExternalProject = LoadExternalProject(ProjectFile, CurrentProject && CurrentProject->IsPreview(), CurrentProject && CurrentProject->DefersModelMeshRequests());
+			const swResult<Project*> ExternalProject = LoadExternalProject(ProjectFile, CurrentProject && CurrentProject->IsPreview(), CurrentProject && CurrentProject->DefersModelMeshRequests());
 
 			if (ExternalProject)
 			{
-				lcPieceData* PieceData = mPieceManager->CreatePieceData(PieceName, CurrentProject);
+				swPieceData* PieceData = mPieceManager->CreatePieceData(PieceName, CurrentProject);
 
 				PieceData->CreateProject(ExternalProject.value(), PieceName);
 
-				return lcPieceDataRef(PieceData, this);
+				return swPieceDataRef(PieceData, this);
 			}
 			else
 				LoadError = ExternalProject.error();
@@ -228,17 +228,17 @@ lcPieceDataRef lcPiecesLibrary::AcquirePieceData(const char* PieceName, Project*
 
 	if (CreateMissing)
 	{
-		lcPieceData* PieceData = mPieceManager->CreatePieceData(PieceName, CurrentProject);
+		swPieceData* PieceData = mPieceManager->CreatePieceData(PieceName, CurrentProject);
 
 		PieceData->SetFailed(LoadError.isEmpty() ? tr("Could not find piece '%1'.").arg(QString::fromLatin1(PieceName)) : LoadError);
 
-		return lcPieceDataRef(PieceData, this);
+		return swPieceDataRef(PieceData, this);
 	}
 
-	return lcPieceDataRef();
+	return swPieceDataRef();
 }
 
-bool lcPiecesLibrary::RemapProjectPieceData(lcPieceData* PieceData, const QString& ProjectDirectory, bool IsPreview)
+bool swPiecesLibrary::RemapProjectPieceData(swPieceData* PieceData, const QString& ProjectDirectory, bool IsPreview)
 {
 	const QByteArray PieceName(PieceData->mFileName);
 	const QFileInfo Candidate(QDir(ProjectDirectory).absoluteFilePath(QString::fromLatin1(PieceName.constData())));
@@ -254,7 +254,7 @@ bool lcPiecesLibrary::RemapProjectPieceData(lcPieceData* PieceData, const QStrin
 
 	if (Candidate.isFile())
 	{
-		const lcResult<Project*> ExternalProject = LoadExternalProject(Candidate, IsPreview, true);
+		const swResult<Project*> ExternalProject = LoadExternalProject(Candidate, IsPreview, true);
 
 		if (ExternalProject)
 			PieceData->CreateProject(ExternalProject.value(), PieceName.constData());
@@ -275,7 +275,7 @@ bool lcPiecesLibrary::RemapProjectPieceData(lcPieceData* PieceData, const QStrin
 	return true;
 }
 
-lcTextureRef lcPiecesLibrary::AcquireTexture(const char* TextureName, Project* CurrentProject, bool SearchProjectFolder)
+swTextureRef swPiecesLibrary::AcquireTexture(const char* TextureName, Project* CurrentProject, bool SearchProjectFolder)
 {
 	QString ProjectPath;
 
@@ -287,16 +287,16 @@ lcTextureRef lcPiecesLibrary::AcquireTexture(const char* TextureName, Project* C
 			ProjectPath = QFileInfo(FileName).absolutePath();
 	}
 
-	std::map<QString, std::shared_ptr<const lcEmbeddedData>> EmbeddedData;
+	std::map<QString, std::shared_ptr<const swEmbeddedData>> EmbeddedData;
 
 	if (CurrentProject)
 		EmbeddedData = CurrentProject->GetEmbeddedDataLookup();
 
-	lcFileSource Source;
+	swFileSource Source;
 	return AcquireTexture(TextureName, std::vector<QString>{ ProjectPath }, EmbeddedData, Source);
 }
 
-QString lcPiecesLibrary::FindProjectTextureFile(const QString& ProjectPath, const QString& TextureName)
+QString swPiecesLibrary::FindProjectTextureFile(const QString& ProjectPath, const QString& TextureName)
 {
 	QDir Directory(ProjectPath);
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
@@ -347,17 +347,17 @@ QString lcPiecesLibrary::FindProjectTextureFile(const QString& ProjectPath, cons
 	return QString();
 }
 
-lcFileSource lcPiecesLibrary::ResolveTextureSource(const char* TextureName, const std::vector<QString>& SearchDirectories, const std::map<QString, std::shared_ptr<const lcEmbeddedData>>& EmbeddedData, QString& ProjectPath)
+swFileSource swPiecesLibrary::ResolveTextureSource(const char* TextureName, const std::vector<QString>& SearchDirectories, const std::map<QString, std::shared_ptr<const swEmbeddedData>>& EmbeddedData, QString& ProjectPath)
 {
 	Q_ASSERT(QThread::currentThread() == thread());
 
 	ProjectPath.clear();
 
-	if (!TextureName[0] || strlen(TextureName) >= LC_TEXTURE_NAME_LEN)
-		return lcFileSource();
+	if (!TextureName[0] || strlen(TextureName) >= SW_TEXTURE_NAME_LEN)
+		return swFileSource();
 
-	const bool ArchiveLibrary = static_cast<bool>(mZipFiles[static_cast<int>(lcZipFileType::Official)]);
-	lcFileSource Source;
+	const bool ArchiveLibrary = static_cast<bool>(mZipFiles[static_cast<int>(swZipFileType::Official)]);
+	swFileSource Source;
 	const QString Name = QString::fromLatin1(TextureName);
 	const QString Candidates[] = { QLatin1String("textures/") + Name, Name };
 	const QString Folders[] = { QStringLiteral("p/"), QStringLiteral("parts/"), QStringLiteral("models/"), QStringLiteral("unofficial/p/"), QStringLiteral("unofficial/parts/") };
@@ -397,7 +397,7 @@ lcFileSource lcPiecesLibrary::ResolveTextureSource(const char* TextureName, cons
 			if (ArchiveLibrary)
 			{
 				const bool Unofficial = Folder.startsWith(QLatin1String("unofficial/"));
-				const int Type = static_cast<int>(Unofficial ? lcZipFileType::Unofficial : lcZipFileType::Official);
+				const int Type = static_cast<int>(Unofficial ? swZipFileType::Unofficial : swZipFileType::Official);
 				QString EntryName;
 
 				if (Unofficial)
@@ -441,41 +441,41 @@ lcFileSource lcPiecesLibrary::ResolveTextureSource(const char* TextureName, cons
 	return Source;
 }
 
-lcTextureRef lcPiecesLibrary::AcquireTexture(const char* TextureName, const std::vector<QString>& SearchDirectories, const std::map<QString, std::shared_ptr<const lcEmbeddedData>>& EmbeddedData, lcFileSource& Source)
+swTextureRef swPiecesLibrary::AcquireTexture(const char* TextureName, const std::vector<QString>& SearchDirectories, const std::map<QString, std::shared_ptr<const swEmbeddedData>>& EmbeddedData, swFileSource& Source)
 {
 	QString ProjectPath;
 	Source = ResolveTextureSource(TextureName, SearchDirectories, EmbeddedData, ProjectPath);
 
-	return lcTextureRef::Adopt(mTextureManager->AcquireTexture(TextureName, Source, ProjectPath), this);
+	return swTextureRef::Adopt(mTextureManager->AcquireTexture(TextureName, Source, ProjectPath), this);
 }
 
-void lcPiecesLibrary::RequestTextureLoad(lcTexture* Texture, lcLoadPriority LoadPriority)
+void swPiecesLibrary::RequestTextureLoad(swTexture* Texture, swLoadPriority LoadPriority)
 {
 	Q_ASSERT(QThread::currentThread() == thread());
 
 	mAssetLoader->RequestTextureLoad(Texture, Texture->mSource, LoadPriority);
 }
 
-bool lcPiecesLibrary::WaitForTexture(const lcTextureRef& TextureRef)
+bool swPiecesLibrary::WaitForTexture(const swTextureRef& TextureRef)
 {
 	Q_ASSERT(QThread::currentThread() == thread());
 
 	return mAssetLoader->WaitForTexture(TextureRef.Get(), TextureRef->mSource);
 }
 
-lcTextureBuildResult lcPiecesLibrary::BuildTextureData(const lcFileSource& Source)
+swTextureBuildResult swPiecesLibrary::BuildTextureData(const swFileSource& Source)
 {
-	const lcResult<std::unique_ptr<lcFile>> File = OpenFile(Source);
+	const swResult<std::unique_ptr<swFile>> File = OpenFile(Source);
 
 	if (!File)
 	{
-		lcTextureBuildResult Result;
-		Result.Error = lcTextureLoadError::DecodeFailed;
+		swTextureBuildResult Result;
+		Result.Error = swTextureLoadError::DecodeFailed;
 		Result.ErrorDetails = File.error();
 		return Result;
 	}
 
-	lcTextureBuildResult Result = mTextureManager->BuildTextureData(*File.value());
+	swTextureBuildResult Result = mTextureManager->BuildTextureData(*File.value());
 
 	if (Result.DecodedImage.isNull() && Source.EmbeddedData)
 		Result.ErrorDetails = tr("Could not decode embedded texture '%1'.").arg(Source.EmbeddedData->FileName);
@@ -483,62 +483,62 @@ lcTextureBuildResult lcPiecesLibrary::BuildTextureData(const lcFileSource& Sourc
 	return Result;
 }
 
-lcResult<std::unique_ptr<lcFile>> lcPiecesLibrary::OpenFile(const lcFileSource& Source)
+swResult<std::unique_ptr<swFile>> swPiecesLibrary::OpenFile(const swFileSource& Source)
 {
 	if (Source.EmbeddedData)
 	{
-		const lcEmbeddedData& Data = *Source.EmbeddedData;
+		const swEmbeddedData& Data = *Source.EmbeddedData;
 
 		if (!Data.Error.isEmpty())
-			return lcUnexpected(Data.Error);
+			return swUnexpected(Data.Error);
 
 		if (!Data.HasValidEncoding())
-			return lcUnexpected(tr("Invalid Base64 data for embedded file '%1'.").arg(Data.FileName));
+			return swUnexpected(tr("Invalid Base64 data for embedded file '%1'.").arg(Data.FileName));
 
 		const QByteArray Bytes = QByteArray::fromBase64(Data.EncodedData);
-		std::unique_ptr<lcMemFile> File(new lcMemFile);
+		std::unique_ptr<swMemFile> File(new swMemFile);
 
 		if (File->WriteBuffer(Bytes.constData(), Bytes.size()) != static_cast<size_t>(Bytes.size()))
-			return lcUnexpected(tr("Could not read embedded file '%1'.").arg(Data.FileName));
+			return swUnexpected(tr("Could not read embedded file '%1'.").arg(Data.FileName));
 
 		File->Seek(0, SEEK_SET);
-		return std::unique_ptr<lcFile>(std::move(File));
+		return std::unique_ptr<swFile>(std::move(File));
 	}
 
 	if (!Source.FilePath.isEmpty())
 	{
-		std::unique_ptr<lcDiskFile> File(new lcDiskFile(Source.FilePath));
+		std::unique_ptr<swDiskFile> File(new swDiskFile(Source.FilePath));
 
 		if (!File->Open(QIODevice::ReadOnly))
-			return lcUnexpected(tr("Could not open file '%1'.").arg(Source.FilePath));
+			return swUnexpected(tr("Could not open file '%1'.").arg(Source.FilePath));
 
-		return std::unique_ptr<lcFile>(std::move(File));
+		return std::unique_ptr<swFile>(std::move(File));
 	}
 
-	if (Source.ArchiveType < 0 || Source.ArchiveType >= static_cast<int>(lcZipFileType::Count) || Source.ArchiveIndex < 0)
-		return lcUnexpected(tr("Invalid archive file source."));
+	if (Source.ArchiveType < 0 || Source.ArchiveType >= static_cast<int>(swZipFileType::Count) || Source.ArchiveIndex < 0)
+		return swUnexpected(tr("Invalid archive file source."));
 
-	std::unique_ptr<lcMemFile> File(new lcMemFile);
+	std::unique_ptr<swMemFile> File(new swMemFile);
 
 	// Source archives are stable until workers are drained; extraction locks
 	// the selected archive internally without serializing unrelated archives.
-	const std::unique_ptr<lcZipFile>& Archive = mZipFiles[Source.ArchiveType];
+	const std::unique_ptr<swZipFile>& Archive = mZipFiles[Source.ArchiveType];
 
 	if (!Archive || static_cast<size_t>(Source.ArchiveIndex) >= Archive->mFiles.size())
-		return lcUnexpected(tr("Could not read archive entry %1.").arg(Source.ArchiveIndex));
+		return swUnexpected(tr("Could not read archive entry %1.").arg(Source.ArchiveIndex));
 
 	if (!Archive->ExtractFile(Source.ArchiveIndex, *File))
-		return lcUnexpected(tr("Could not read archive file '%1'.").arg(QString::fromLatin1(Archive->mFiles[Source.ArchiveIndex].file_name)));
+		return swUnexpected(tr("Could not read archive file '%1'.").arg(QString::fromLatin1(Archive->mFiles[Source.ArchiveIndex].file_name)));
 
 	File->Seek(0, SEEK_SET);
-	return std::unique_ptr<lcFile>(std::move(File));
+	return std::unique_ptr<swFile>(std::move(File));
 }
 
-bool lcPiecesLibrary::Load(const QString& LibraryPath, bool ShowProgress, bool OfficialLibrary)
+bool swPiecesLibrary::Load(const QString& LibraryPath, bool ShowProgress, bool OfficialLibrary)
 {
 	Unload();
 
-	if (OpenArchive(LibraryPath, lcZipFileType::Official))
+	if (OpenArchive(LibraryPath, swZipFileType::Official))
 	{
 		if (OfficialLibrary)
 			mOfficialPieceCount = static_cast<int>(mPieceManager->GetLibraryPieceDataCount());
@@ -548,7 +548,7 @@ bool lcPiecesLibrary::Load(const QString& LibraryPath, bool ShowProgress, bool O
 		mLibraryDir = QFileInfo(LibraryPath).absoluteDir();
 		QString UnofficialFileName = mLibraryDir.absoluteFilePath(QLatin1String("ldrawunf.zip"));
 
-		if (!OpenArchive(UnofficialFileName, lcZipFileType::Unofficial))
+		if (!OpenArchive(UnofficialFileName, swZipFileType::Unofficial))
 			UnofficialFileName.clear();
 
 		ReadArchiveDescriptions(LibraryPath, UnofficialFileName);
@@ -564,22 +564,22 @@ bool lcPiecesLibrary::Load(const QString& LibraryPath, bool ShowProgress, bool O
 	}
 
 	UpdateStudStyleSource();
-	lcLoadDefaultCategories();
-	lcSynthInit();
-	lcTrainTrackInfo::Initialize(this);
+	swLoadDefaultCategories();
+	swSynthInit();
+	swTrainTrackInfo::Initialize(this);
 
 	return true;
 }
 
-void lcPiecesLibrary::LoadColors()
+void swPiecesLibrary::LoadColors()
 {
-	QString CustomColorsPath = lcGetProfileString(LC_PROFILE_COLOR_CONFIG);
+	QString CustomColorsPath = swGetProfileString(SW_PROFILE_COLOR_CONFIG);
 
 	if (!CustomColorsPath.isEmpty())
 	{
-		lcDiskFile ColorFile(CustomColorsPath);
+		swDiskFile ColorFile(CustomColorsPath);
 
-		if (ColorFile.Open(QIODevice::ReadOnly) && lcLoadColorFile(ColorFile, mStudStyle))
+		if (ColorFile.Open(QIODevice::ReadOnly) && swLoadColorFile(ColorFile, mStudStyle))
 		{
 			UpdateLoadingMeshColors();
 			emit ColorsLoaded();
@@ -587,23 +587,23 @@ void lcPiecesLibrary::LoadColors()
 		}
 	}
 
-	if (mZipFiles[static_cast<int>(lcZipFileType::Official)])
+	if (mZipFiles[static_cast<int>(swZipFileType::Official)])
 	{
-		lcMemFile ColorFile;
+		swMemFile ColorFile;
 
-		if (!mZipFiles[static_cast<int>(lcZipFileType::Official)]->ExtractFile("ldraw/ldconfig.ldr", ColorFile) || !lcLoadColorFile(ColorFile, mStudStyle))
-			lcLoadDefaultColors(mStudStyle);
+		if (!mZipFiles[static_cast<int>(swZipFileType::Official)]->ExtractFile("ldraw/ldconfig.ldr", ColorFile) || !swLoadColorFile(ColorFile, mStudStyle))
+			swLoadDefaultColors(mStudStyle);
 	}
 	else
 	{
-		lcDiskFile ColorFile(mLibraryDir.absoluteFilePath(QLatin1String("ldconfig.ldr")));
+		swDiskFile ColorFile(mLibraryDir.absoluteFilePath(QLatin1String("ldconfig.ldr")));
 
-		if (!ColorFile.Open(QIODevice::ReadOnly) || !lcLoadColorFile(ColorFile, mStudStyle))
+		if (!ColorFile.Open(QIODevice::ReadOnly) || !swLoadColorFile(ColorFile, mStudStyle))
 		{
 			ColorFile.SetFileName(mLibraryDir.absoluteFilePath(QLatin1String("LDConfig.ldr")));
 
-			if (!ColorFile.Open(QIODevice::ReadOnly) || !lcLoadColorFile(ColorFile, mStudStyle))
-				lcLoadDefaultColors(mStudStyle);
+			if (!ColorFile.Open(QIODevice::ReadOnly) || !swLoadColorFile(ColorFile, mStudStyle))
+				swLoadDefaultColors(mStudStyle);
 		}
 	}
 
@@ -611,20 +611,20 @@ void lcPiecesLibrary::LoadColors()
 	emit ColorsLoaded();
 }
 
-void lcPiecesLibrary::UpdateLoadingMeshColors()
+void swPiecesLibrary::UpdateLoadingMeshColors()
 {
-	lcMeshSection* Sections = mLoadingMesh->mLods[LC_MESH_LOD_HIGH].Sections;
+	swMeshSection* Sections = mLoadingMesh->mLods[SW_MESH_LOD_HIGH].Sections;
 
 	Sections[0].ColorIndex = gDefaultColor;
 	Sections[1].ColorIndex = gEdgeColor;
 }
 
-bool lcPiecesLibrary::IsStudPrimitive(const char* FileName)
+bool swPiecesLibrary::IsStudPrimitive(const char* FileName)
 {
 	return memcmp(FileName, "STU", 3) == 0;
 }
 
-bool lcPiecesLibrary::IsStudStylePrimitive(const char* FileName)
+bool swPiecesLibrary::IsStudStylePrimitive(const char* FileName)
 {
 	constexpr std::array<const char*, 15> StudStylePrimitives =
 	{
@@ -639,19 +639,19 @@ bool lcPiecesLibrary::IsStudStylePrimitive(const char* FileName)
 	return false;
 }
 
-qint32 lcPiecesLibrary::MeshCacheSettingsKey(lcStudStyle StudStyle, bool StudCylinderColorEnabled)
+qint32 swPiecesLibrary::MeshCacheSettingsKey(swStudStyle StudStyle, bool StudCylinderColorEnabled)
 {
-	return (LC_LIBRARY_MESH_CACHE_VERSION << 16) | (static_cast<qint32>(StudStyle) << 1) | static_cast<qint32>(StudCylinderColorEnabled);
+	return (SW_LIBRARY_MESH_CACHE_VERSION << 16) | (static_cast<qint32>(StudStyle) << 1) | static_cast<qint32>(StudCylinderColorEnabled);
 }
 
-void lcPiecesLibrary::UpdateStudStyleSource()
+void swPiecesLibrary::UpdateStudStyleSource()
 {
-	if (!mSources.empty() && mSources.front()->Type == lcLibrarySourceType::StudStyle)
+	if (!mSources.empty() && mSources.front()->Type == swLibrarySourceType::StudStyle)
 		mSources.erase(mSources.begin());
 
-	mZipFiles[static_cast<int>(lcZipFileType::StudStyle)].reset();
+	mZipFiles[static_cast<int>(swZipFileType::StudStyle)].reset();
 
-	if (mStudStyle == lcStudStyle::Plain || (mStudStyle >= lcStudStyle::HighContrast && !mStudCylinderColorEnabled))
+	if (mStudStyle == swStudStyle::Plain || (mStudStyle >= swStudStyle::HighContrast && !mStudCylinderColorEnabled))
 		return;
 
 	const QLatin1String FileNames[] =
@@ -666,17 +666,17 @@ void lcPiecesLibrary::UpdateStudStyleSource()
 		QLatin1String(":/resources/studslegostyle2.zip")  // HighContrastLogo
 	};
 
-	LC_ARRAY_SIZE_CHECK(FileNames, lcStudStyle::Count);
+	SW_ARRAY_SIZE_CHECK(FileNames, swStudStyle::Count);
 
-	std::unique_ptr<lcDiskFile> StudStyleFile(new lcDiskFile(FileNames[static_cast<int>(mStudStyle)]));
+	std::unique_ptr<swDiskFile> StudStyleFile(new swDiskFile(FileNames[static_cast<int>(mStudStyle)]));
 
 	if (StudStyleFile->Open(QIODevice::ReadOnly))
-		OpenArchive(std::move(StudStyleFile), lcZipFileType::StudStyle);
+		OpenArchive(std::move(StudStyleFile), swZipFileType::StudStyle);
 }
 
-bool lcPiecesLibrary::OpenArchive(const QString& FileName, lcZipFileType ZipFileType)
+bool swPiecesLibrary::OpenArchive(const QString& FileName, swZipFileType ZipFileType)
 {
-	std::unique_ptr<lcDiskFile> File(new lcDiskFile(FileName));
+	std::unique_ptr<swDiskFile> File(new swDiskFile(FileName));
 
 	if (!File->Open(QIODevice::ReadOnly))
 		return false;
@@ -684,21 +684,21 @@ bool lcPiecesLibrary::OpenArchive(const QString& FileName, lcZipFileType ZipFile
 	return OpenArchive(std::move(File), ZipFileType);
 }
 
-bool lcPiecesLibrary::OpenArchive(std::unique_ptr<lcFile> File, lcZipFileType ZipFileType)
+bool swPiecesLibrary::OpenArchive(std::unique_ptr<swFile> File, swZipFileType ZipFileType)
 {
-	std::unique_ptr<lcZipFile> ZipFile(new lcZipFile());
+	std::unique_ptr<swZipFile> ZipFile(new swZipFile());
 
 	if (!ZipFile->OpenRead(std::move(File)))
 		return false;
 
 	mTextureArchiveEntries[static_cast<int>(ZipFileType)].clear();
 
-	std::unique_ptr<lcLibrarySource> Source(new lcLibrarySource);
-	Source->Type = ZipFileType != lcZipFileType::StudStyle ? lcLibrarySourceType::Library : lcLibrarySourceType::StudStyle;
+	std::unique_ptr<swLibrarySource> Source(new swLibrarySource);
+	Source->Type = ZipFileType != swZipFileType::StudStyle ? swLibrarySourceType::Library : swLibrarySourceType::StudStyle;
 
 	for (quint32 FileIdx = 0; FileIdx < ZipFile->mFiles.size(); FileIdx++)
 	{
-		lcZipFileInfo& FileInfo = ZipFile->mFiles[FileIdx];
+		swZipFileInfo& FileInfo = ZipFile->mFiles[FileIdx];
 		const std::string NormalizedName = NormalizePieceDataName(FileInfo.file_name);
 		const char* Name = NormalizedName.c_str();
 
@@ -711,14 +711,14 @@ bool lcPiecesLibrary::OpenArchive(std::unique_ptr<lcFile> File, lcZipFileType Zi
 		{
 			if (!memcmp(Extension, ".PNG", 4))
 			{
-				if (ZipFileType == lcZipFileType::Official || ZipFileType == lcZipFileType::Unofficial)
+				if (ZipFileType == swZipFileType::Official || ZipFileType == swZipFileType::Unofficial)
 					mTextureArchiveEntries[static_cast<int>(ZipFileType)].emplace(QDir::cleanPath(QString::fromLatin1(Name)).toUpper(), FileIdx);
 			}
 
 			continue;
 		}
 
-		if (ZipFileType == lcZipFileType::Official)
+		if (ZipFileType == swZipFileType::Official)
 		{
 			if (strncmp(Name, "LDRAW/", 6))
 				continue;
@@ -732,10 +732,10 @@ bool lcPiecesLibrary::OpenArchive(std::unique_ptr<lcFile> File, lcZipFileType Zi
 
 			if (strncmp(Name, "S/", 2))
 			{
-				lcPieceData* PieceData = FindPieceData(Name, nullptr);
+				swPieceData* PieceData = FindPieceData(Name, nullptr);
 
 				// Unofficial additions must not replace registered official parts.
-				if (PieceData && ZipFileType == lcZipFileType::Unofficial && PieceData->mZipFileType == lcZipFileType::Official)
+				if (PieceData && ZipFileType == swZipFileType::Unofficial && PieceData->mZipFileType == swZipFileType::Official)
 					continue;
 
 				if (!PieceData)
@@ -746,19 +746,19 @@ bool lcPiecesLibrary::OpenArchive(std::unique_ptr<lcFile> File, lcZipFileType Zi
 				PieceData->SetZipFile(ZipFileType, FileIdx);
 			}
 			else
-				Source->Primitives[Name] = std::make_unique<lcLibraryPrimitive>(QString(), FileInfo.file_name + (Name - NormalizedName.c_str()), ZipFileType, FileIdx, false, false, true);
+				Source->Primitives[Name] = std::make_unique<swLibraryPrimitive>(QString(), FileInfo.file_name + (Name - NormalizedName.c_str()), ZipFileType, FileIdx, false, false, true);
 		}
 		else if (!strncmp(Name, "P/", 2))
 		{
 			Name += 2;
 
-			Source->Primitives[Name] = std::make_unique<lcLibraryPrimitive>(QString(), FileInfo.file_name + (Name - NormalizedName.c_str()), ZipFileType, FileIdx, IsStudPrimitive(Name), IsStudStylePrimitive(Name), false);
+			Source->Primitives[Name] = std::make_unique<swLibraryPrimitive>(QString(), FileInfo.file_name + (Name - NormalizedName.c_str()), ZipFileType, FileIdx, IsStudPrimitive(Name), IsStudStylePrimitive(Name), false);
 		}
 	}
 
 	mZipFiles[static_cast<int>(ZipFileType)] = std::move(ZipFile);
 
-	if (ZipFileType != lcZipFileType::StudStyle)
+	if (ZipFileType != swZipFileType::StudStyle)
 		mSources.emplace_back(std::move(Source));
 	else
 		mSources.insert(mSources.begin(), std::move(Source));
@@ -766,7 +766,7 @@ bool lcPiecesLibrary::OpenArchive(std::unique_ptr<lcFile> File, lcZipFileType Zi
 	return true;
 }
 
-void lcPiecesLibrary::ReadArchiveDescriptions(const QString& OfficialFileName, const QString& UnofficialFileName)
+void swPiecesLibrary::ReadArchiveDescriptions(const QString& OfficialFileName, const QString& UnofficialFileName)
 {
 	QFileInfo OfficialInfo(OfficialFileName);
 	QFileInfo UnofficialInfo(UnofficialFileName);
@@ -789,9 +789,9 @@ void lcPiecesLibrary::ReadArchiveDescriptions(const QString& OfficialFileName, c
 
 	if (!LoadCacheIndex(IndexFileName))
 	{
-		lcMemFile PieceFile;
+		swMemFile PieceFile;
 
-		for (lcPieceData* PieceData : mPieceManager->GetLibraryPieceData())
+		for (swPieceData* PieceData : mPieceManager->GetLibraryPieceData())
 		{
 			mZipFiles[static_cast<int>(PieceData->mZipFileType)]->ExtractFile(PieceData->mZipFileIndex, PieceFile, 256);
 			PieceFile.Seek(0, SEEK_END);
@@ -818,12 +818,12 @@ void lcPiecesLibrary::ReadArchiveDescriptions(const QString& OfficialFileName, c
 	}
 }
 
-bool lcPiecesLibrary::OpenDirectory(const QDir& LibraryDir, bool ShowProgress)
+bool swPiecesLibrary::OpenDirectory(const QDir& LibraryDir, bool ShowProgress)
 {
 	mTextureDiskEntries.clear();
 
 	const QLatin1String BaseFolders[] = { QLatin1String(""), QLatin1String("unofficial/") };
-	constexpr int NumBaseFolders = LC_ARRAY_COUNT(BaseFolders);
+	constexpr int NumBaseFolders = SW_ARRAY_COUNT(BaseFolders);
 
 	QFileInfoList FileLists[NumBaseFolders];
 
@@ -834,10 +834,10 @@ bool lcPiecesLibrary::OpenDirectory(const QDir& LibraryDir, bool ShowProgress)
 		FileLists[BaseFolderIdx] = Dir.entryInfoList();
 	}
 
-	if (FileLists[static_cast<int>(lcLibraryFolderType::Official)].isEmpty())
+	if (FileLists[static_cast<int>(swLibraryFolderType::Official)].isEmpty())
 		return false;
 
-	mHasUnofficial = !FileLists[static_cast<int>(lcLibraryFolderType::Unofficial)].isEmpty();
+	mHasUnofficial = !FileLists[static_cast<int>(swLibraryFolderType::Unofficial)].isEmpty();
 	ReadDirectoryDescriptions(FileLists, ShowProgress);
 
 	constexpr std::pair<const char*, bool> PrimitiveDirectories[] =
@@ -846,10 +846,10 @@ bool lcPiecesLibrary::OpenDirectory(const QDir& LibraryDir, bool ShowProgress)
 		{ "parts/s/", true }
 	};
 
-	for (unsigned int BaseFolderIdx = 0; BaseFolderIdx < LC_ARRAY_COUNT(BaseFolders); BaseFolderIdx++)
+	for (unsigned int BaseFolderIdx = 0; BaseFolderIdx < SW_ARRAY_COUNT(BaseFolders); BaseFolderIdx++)
 	{
-		std::unique_ptr<lcLibrarySource> Source(new lcLibrarySource);
-		Source->Type = lcLibrarySourceType::Library;
+		std::unique_ptr<swLibrarySource> Source(new swLibrarySource);
+		Source->Type = swLibrarySourceType::Library;
 
 		QDir BaseDir(LibraryDir.absoluteFilePath(QLatin1String(BaseFolders[BaseFolderIdx])));
 
@@ -871,10 +871,10 @@ bool lcPiecesLibrary::OpenDirectory(const QDir& LibraryDir, bool ShowProgress)
 				if (BaseFolderIdx > 0 && FindPrimitive(Name.c_str()))
 					continue;
 
-				if (BaseFolderIdx == static_cast<int>(lcLibraryFolderType::Unofficial))
+				if (BaseFolderIdx == static_cast<int>(swLibraryFolderType::Unofficial))
 					mHasUnofficial = true;
 
-				Source->Primitives[Name] = std::make_unique<lcLibraryPrimitive>(std::move(FileName), RelativeName, lcZipFileType::Count, 0, !SubFile && IsStudPrimitive(Name.c_str()), IsStudStylePrimitive(Name.c_str()), SubFile);
+				Source->Primitives[Name] = std::make_unique<swLibraryPrimitive>(std::move(FileName), RelativeName, swZipFileType::Count, 0, !SubFile && IsStudPrimitive(Name.c_str()), IsStudStylePrimitive(Name.c_str()), SubFile);
 			}
 		}
 
@@ -901,14 +901,14 @@ bool lcPiecesLibrary::OpenDirectory(const QDir& LibraryDir, bool ShowProgress)
 	return true;
 }
 
-void lcPiecesLibrary::ReadDirectoryDescriptions(const QFileInfoList (&FileLists)[static_cast<int>(lcLibraryFolderType::Count)], bool ShowProgress)
+void swPiecesLibrary::ReadDirectoryDescriptions(const QFileInfoList (&FileLists)[static_cast<int>(swLibraryFolderType::Count)], bool ShowProgress)
 {
 	QString IndexFileName = QFileInfo(QDir(mCachePath), QLatin1String("index")).absoluteFilePath();
-	lcMemFile IndexFile;
+	swMemFile IndexFile;
 
 	struct CachedDescription
 	{
-		lcPieceData::CacheData CacheData;
+		swPieceData::CacheData CacheData;
 		quint8 FolderType;
 		quint64 FileTime;
 	};
@@ -930,7 +930,7 @@ void lcPiecesLibrary::ReadDirectoryDescriptions(const QFileInfoList (&FileLists)
 					!ReadIndexString(IndexFile, Entry.CacheData.Description) || !ReadIndexString(IndexFile, Entry.CacheData.PatternParentId) ||
 					IndexFile.ReadU8(&Entry.CacheData.Flags, 1) != 1 ||
 					IndexFile.ReadU8(&Entry.FolderType, 1) != 1 || IndexFile.ReadU64(&Entry.FileTime, 1) != 1 ||
-					Entry.FolderType >= static_cast<quint8>(lcLibraryFolderType::Count) ||
+					Entry.FolderType >= static_cast<quint8>(swLibraryFolderType::Count) ||
 					!CachedDescriptions.emplace(std::move(FileName), std::move(Entry)).second)
 				{
 					CachedDescriptions.clear();
@@ -942,15 +942,15 @@ void lcPiecesLibrary::ReadDirectoryDescriptions(const QFileInfoList (&FileLists)
 
 	struct DescriptionJob
 	{
-		lcPieceData* PieceData;
+		swPieceData* PieceData;
 		QFileInfo FileInfo;
-		lcLibraryFolderType FolderType;
+		swLibraryFolderType FolderType;
 		bool Modified = false;
 	};
 
 	std::vector<DescriptionJob> Jobs;
 
-	for (int FolderIdx = 0; FolderIdx < static_cast<int>(lcLibraryFolderType::Count); FolderIdx++)
+	for (int FolderIdx = 0; FolderIdx < static_cast<int>(swLibraryFolderType::Count); FolderIdx++)
 	{
 		const QFileInfoList& FileList = FileLists[FolderIdx];
 
@@ -962,9 +962,9 @@ void lcPiecesLibrary::ReadDirectoryDescriptions(const QFileInfoList (&FileLists)
 			if (FolderIdx > 0 && mPieceManager->FindPieceData(Name, nullptr))
 				continue;
 
-			lcPieceData* PieceData = mPieceManager->CreateLibraryPieceData(Name, FileString.constData());
+			swPieceData* PieceData = mPieceManager->CreateLibraryPieceData(Name, FileString.constData());
 
-			Jobs.push_back({ PieceData, FileList[FileIdx], static_cast<lcLibraryFolderType>(FolderIdx) });
+			Jobs.push_back({ PieceData, FileList[FileIdx], static_cast<swLibraryFolderType>(FolderIdx) });
 		}
 	}
 
@@ -980,8 +980,8 @@ void lcPiecesLibrary::ReadDirectoryDescriptions(const QFileInfoList (&FileLists)
 	{
 		FilesLoaded.ref();
 
-		lcPieceData* PieceData = Job.PieceData;
-		lcDiskFile PieceFile(Job.FileInfo.absoluteFilePath());
+		swPieceData* PieceData = Job.PieceData;
+		swDiskFile PieceFile(Job.FileInfo.absoluteFilePath());
 		char Line[1024];
 
 		const auto CachedIt = CachedDescriptions.find(PieceData->mFileName);
@@ -995,7 +995,7 @@ void lcPiecesLibrary::ReadDirectoryDescriptions(const QFileInfoList (&FileLists)
 
 		if (!PieceFile.Open(QIODevice::ReadOnly) || !PieceFile.ReadLine(Line, sizeof(Line)))
 		{
-			lcstrcpy(PieceData->m_strDescription, "Unknown");
+			swstrcpy(PieceData->m_strDescription, "Unknown");
 			return;
 		}
 
@@ -1055,15 +1055,15 @@ void lcPiecesLibrary::ReadDirectoryDescriptions(const QFileInfoList (&FileLists)
 
 		ClassifyPieces(FilePaths);
 
-		lcMemFile NewIndexFile;
+		swMemFile NewIndexFile;
 
 		NewIndexFile.WriteQString(mLibraryDir.absolutePath());
 		NewIndexFile.WriteU32(static_cast<quint32>(Jobs.size()));
 
 		for (const DescriptionJob& Job : Jobs)
 		{
-			const lcPieceData* PieceData = Job.PieceData;
-			const lcPieceData::CacheData CacheData = PieceData->GetCacheData();
+			const swPieceData* PieceData = Job.PieceData;
+			const swPieceData::CacheData CacheData = PieceData->GetCacheData();
 
 			if (!WriteIndexString(NewIndexFile, PieceData->mFileName) ||
 				!WriteIndexString(NewIndexFile, CacheData.Description) || !WriteIndexString(NewIndexFile, CacheData.PatternParentId))
@@ -1079,7 +1079,7 @@ void lcPiecesLibrary::ReadDirectoryDescriptions(const QFileInfoList (&FileLists)
 	}
 }
 
-bool lcPiecesLibrary::ReadCacheFile(const QString& FileName, lcMemFile& CacheFile, CacheType Type)
+bool swPiecesLibrary::ReadCacheFile(const QString& FileName, swMemFile& CacheFile, CacheType Type)
 {
 	QFile File(FileName);
 
@@ -1088,7 +1088,7 @@ bool lcPiecesLibrary::ReadCacheFile(const QString& FileName, lcMemFile& CacheFil
 
 	quint32 CacheVersion, CacheFlags;
 
-	if (File.read(reinterpret_cast<char*>(&CacheVersion), sizeof(CacheVersion)) != sizeof(CacheVersion) || CacheVersion != LC_LIBRARY_CACHE_VERSION)
+	if (File.read(reinterpret_cast<char*>(&CacheVersion), sizeof(CacheVersion)) != sizeof(CacheVersion) || CacheVersion != SW_LIBRARY_CACHE_VERSION)
 		return false;
 
 	if (File.read(reinterpret_cast<char*>(&CacheFlags), sizeof(CacheFlags)) != sizeof(CacheFlags) || CacheFlags != static_cast<quint32>(Type))
@@ -1125,7 +1125,7 @@ bool lcPiecesLibrary::ReadCacheFile(const QString& FileName, lcMemFile& CacheFil
 	return true;
 }
 
-bool lcPiecesLibrary::WriteCacheFile(const QString& FileName, const lcMemFile& CacheFile, CacheType Type)
+bool swPiecesLibrary::WriteCacheFile(const QString& FileName, const swMemFile& CacheFile, CacheType Type)
 {
 	if (CacheFile.GetLength() > static_cast<size_t>(std::numeric_limits<int>::max()))
 		return false;
@@ -1135,7 +1135,7 @@ bool lcPiecesLibrary::WriteCacheFile(const QString& FileName, const lcMemFile& C
 	if (!File.open(QIODevice::WriteOnly))
 		return false;
 
-	constexpr quint32 CacheVersion = LC_LIBRARY_CACHE_VERSION;
+	constexpr quint32 CacheVersion = SW_LIBRARY_CACHE_VERSION;
 	const quint32 CacheFlags = static_cast<quint32>(Type);
 
 	if (File.write(reinterpret_cast<const char*>(&CacheVersion), sizeof(CacheVersion)) != sizeof(CacheVersion) ||
@@ -1155,7 +1155,7 @@ bool lcPiecesLibrary::WriteCacheFile(const QString& FileName, const lcMemFile& C
 	return !CompressedData.isEmpty() && File.write(CompressedData) == CompressedData.size();
 }
 
-bool lcPiecesLibrary::ReadIndexString(lcMemFile& File, std::string& String)
+bool swPiecesLibrary::ReadIndexString(swMemFile& File, std::string& String)
 {
 	quint8 Length;
 
@@ -1167,7 +1167,7 @@ bool lcPiecesLibrary::ReadIndexString(lcMemFile& File, std::string& String)
 	return File.ReadBuffer(String.data(), Length) == Length;
 }
 
-bool lcPiecesLibrary::WriteIndexString(lcMemFile& File, const std::string& String)
+bool swPiecesLibrary::WriteIndexString(swMemFile& File, const std::string& String)
 {
 	if (String.size() > 255)
 		return false;
@@ -1177,7 +1177,7 @@ bool lcPiecesLibrary::WriteIndexString(lcMemFile& File, const std::string& Strin
 	return File.WriteU8(&Length, 1) == 1 && File.WriteBuffer(String.data(), Length) == Length;
 }
 
-std::string lcPiecesLibrary::ReadAliasTarget(lcFile& File)
+std::string swPiecesLibrary::ReadAliasTarget(swFile& File)
 {
 	std::string Target;
 	char Buffer[1024];
@@ -1218,7 +1218,7 @@ std::string lcPiecesLibrary::ReadAliasTarget(lcFile& File)
 
 		const QByteArray Name = Stream.readAll().trimmed().toLatin1();
 
-		if (Name.isEmpty() || Name.size() >= LC_PIECE_NAME_LEN)
+		if (Name.isEmpty() || Name.size() >= SW_PIECE_NAME_LEN)
 			return std::string();
 
 		Target = NormalizePieceDataName(Name.constData());
@@ -1227,21 +1227,21 @@ std::string lcPiecesLibrary::ReadAliasTarget(lcFile& File)
 	return Target;
 }
 
-void lcPiecesLibrary::ClassifyPieces(const DirectoryFilePaths& FilePaths)
+void swPiecesLibrary::ClassifyPieces(const DirectoryFilePaths& FilePaths)
 {
-	const std::vector<lcPieceData*> Parts = mPieceManager->GetLibraryPieceData();
-	std::unordered_map<lcPieceData*, lcPieceData*> AliasTargets;
+	const std::vector<swPieceData*> Parts = mPieceManager->GetLibraryPieceData();
+	std::unordered_map<swPieceData*, swPieceData*> AliasTargets;
 
-	for (lcPieceData* PieceData : Parts)
+	for (swPieceData* PieceData : Parts)
 	{
 		const std::string Name = NormalizePieceDataName(PieceData->mFileName);
 		const std::vector<std::string> ParentIds = PieceData->Classify(Name);
 
 		if (PieceData->IsAlias())
 		{
-			lcFileSource Source;
+			swFileSource Source;
 
-			if (PieceData->mZipFileType != lcZipFileType::Count)
+			if (PieceData->mZipFileType != swZipFileType::Count)
 			{
 				Source.ArchiveType = static_cast<int>(PieceData->mZipFileType);
 				Source.ArchiveIndex = PieceData->mZipFileIndex;
@@ -1259,8 +1259,8 @@ void lcPiecesLibrary::ClassifyPieces(const DirectoryFilePaths& FilePaths)
 				Source.FilePath = FileIt->second;
 			}
 
-			const lcResult<std::unique_ptr<lcFile>> File = OpenFile(Source);
-			lcPieceData* Target = nullptr;
+			const swResult<std::unique_ptr<swFile>> File = OpenFile(Source);
+			swPieceData* Target = nullptr;
 
 			if (File)
 			{
@@ -1276,7 +1276,7 @@ void lcPiecesLibrary::ClassifyPieces(const DirectoryFilePaths& FilePaths)
 
 		for (const std::string& ParentId : ParentIds)
 		{
-			const lcPieceData* Parent = FindPieceData(ParentId.c_str(), nullptr);
+			const swPieceData* Parent = FindPieceData(ParentId.c_str(), nullptr);
 
 			if (Parent && Parent->IsLibraryPiece())
 			{
@@ -1286,15 +1286,15 @@ void lcPiecesLibrary::ClassifyPieces(const DirectoryFilePaths& FilePaths)
 		}
 	}
 
-	std::unordered_set<lcPieceData*> ResolvedAliases;
+	std::unordered_set<swPieceData*> ResolvedAliases;
 
 	for (const auto& [Alias, Target] : AliasTargets)
 	{
 		if (ResolvedAliases.find(Alias) != ResolvedAliases.end())
 			continue;
 
-		std::vector<lcPieceData*> Chain;
-		lcPieceData* Current = Alias;
+		std::vector<swPieceData*> Chain;
+		swPieceData* Current = Alias;
 		bool Cycle = false;
 
 		while (Current)
@@ -1317,7 +1317,7 @@ void lcPiecesLibrary::ClassifyPieces(const DirectoryFilePaths& FilePaths)
 		// Only the referencing alias inherits decoration from its target.
 		for (auto PieceIt = Chain.rbegin(); PieceIt != Chain.rend(); PieceIt++)
 		{
-			lcPieceData* PieceData = *PieceIt;
+			swPieceData* PieceData = *PieceIt;
 			PieceData->SetAliasTarget(Cycle ? nullptr : Current);
 			Current = PieceData;
 			ResolvedAliases.insert(PieceData);
@@ -1325,9 +1325,9 @@ void lcPiecesLibrary::ClassifyPieces(const DirectoryFilePaths& FilePaths)
 	}
 }
 
-bool lcPiecesLibrary::LoadCacheIndex(const QString& FileName)
+bool swPiecesLibrary::LoadCacheIndex(const QString& FileName)
 {
-	lcMemFile IndexFile;
+	swMemFile IndexFile;
 
 	if (!ReadCacheFile(FileName, IndexFile, CacheType::Archive))
 		return false;
@@ -1337,9 +1337,9 @@ bool lcPiecesLibrary::LoadCacheIndex(const QString& FileName)
 	if (IndexFile.ReadU32(&NumFiles, 1) != 1 || NumFiles != mPieceManager->GetLibraryPieceDataCount())
 		return false;
 
-	for (lcPieceData* PieceData : mPieceManager->GetLibraryPieceData())
+	for (swPieceData* PieceData : mPieceManager->GetLibraryPieceData())
 	{
-		lcPieceData::CacheData CacheData;
+		swPieceData::CacheData CacheData;
 
 		if (!ReadIndexString(IndexFile, CacheData.Description) || !ReadIndexString(IndexFile, CacheData.PatternParentId) ||
 			IndexFile.ReadU8(&CacheData.Flags, 1) != 1 || !PieceData->InitializeFromCache(CacheData))
@@ -1349,18 +1349,18 @@ bool lcPiecesLibrary::LoadCacheIndex(const QString& FileName)
 	return true;
 }
 
-bool lcPiecesLibrary::SaveArchiveCacheIndex(const QString& FileName)
+bool swPiecesLibrary::SaveArchiveCacheIndex(const QString& FileName)
 {
-	lcMemFile IndexFile;
+	swMemFile IndexFile;
 
 	const quint32 NumFiles = (quint32)mPieceManager->GetLibraryPieceDataCount();
 
 	if (IndexFile.WriteBuffer((char*)&NumFiles, sizeof(NumFiles)) == 0)
 		return false;
 
-	for (const lcPieceData* PieceData : mPieceManager->GetLibraryPieceData())
+	for (const swPieceData* PieceData : mPieceManager->GetLibraryPieceData())
 	{
-		const lcPieceData::CacheData CacheData = PieceData->GetCacheData();
+		const swPieceData::CacheData CacheData = PieceData->GetCacheData();
 
 		if (!WriteIndexString(IndexFile, CacheData.Description) || !WriteIndexString(IndexFile, CacheData.PatternParentId))
 			return false;
@@ -1371,30 +1371,30 @@ bool lcPiecesLibrary::SaveArchiveCacheIndex(const QString& FileName)
 	return WriteCacheFile(FileName, IndexFile, CacheType::Archive);
 }
 
-void lcPiecesLibrary::RequestPieceDataLoad(lcPieceData* PieceData, lcLoadPriority LoadPriority)
+void swPiecesLibrary::RequestPieceDataLoad(swPieceData* PieceData, swLoadPriority LoadPriority)
 {
 	Q_ASSERT(QThread::currentThread() == thread());
 
 	if (PieceData->IsProject() || (PieceData->IsModel() && !PieceData->GetModel()->HasDirectGeometry()))
 	{
-		PieceData->mState = lcAssetState::Loaded;
+		PieceData->mState = swAssetState::Loaded;
 		ClearPieceDataLoadError(PieceData);
 		return;
 	}
 
-	if (PieceData->mState == lcAssetState::Unloaded)
+	if (PieceData->mState == swAssetState::Unloaded)
 	{
-		PieceData->mState = lcAssetState::Loading;
+		PieceData->mState = swAssetState::Loading;
 		ClearPieceDataLoadError(PieceData);
 
-		const lcBoundingBox& Box = GetLoadingMesh()->mBoundingBox;
+		const swBoundingBox& Box = GetLoadingMesh()->mBoundingBox;
 
 		if (!PieceData->IsModel())
 			PieceData->SetBoundingBox(Box.Min, Box.Max);
 		else
 		{
-			const lcBoundingBox& ModelBox = PieceData->GetBoundingBox();
-			PieceData->SetBoundingBox(lcMin(ModelBox.Min, Box.Min), lcMax(ModelBox.Max, Box.Max));
+			const swBoundingBox& ModelBox = PieceData->GetBoundingBox();
+			PieceData->SetBoundingBox(swMin(ModelBox.Min, Box.Min), swMax(ModelBox.Max, Box.Max));
 		}
 	}
 
@@ -1402,20 +1402,20 @@ void lcPiecesLibrary::RequestPieceDataLoad(lcPieceData* PieceData, lcLoadPriorit
 		mAssetLoader->RequestPieceLoad(PieceData, LoadPriority);
 }
 
-void lcPiecesLibrary::PieceDataLoadCancelled(lcPieceData* PieceData)
+void swPiecesLibrary::PieceDataLoadCancelled(swPieceData* PieceData)
 {
 	Q_ASSERT(QThread::currentThread() == thread());
 
-	PieceData->mState = lcAssetState::Unloaded;
+	PieceData->mState = swAssetState::Unloaded;
 	ClearPieceDataLoadError(PieceData);
 }
 
-void lcPiecesLibrary::NotifyAssetStatusChanged()
+void swPiecesLibrary::NotifyAssetStatusChanged()
 {
 	emit AssetStatusChanged();
 }
 
-bool lcPiecesLibrary::EnsurePieceDataAssetsReady(const lcPieceDataRef& PieceData)
+bool swPiecesLibrary::EnsurePieceDataAssetsReady(const swPieceDataRef& PieceData)
 {
 	const bool PieceReady = WaitForPieceData(PieceData);
 
@@ -1433,48 +1433,48 @@ bool lcPiecesLibrary::EnsurePieceDataAssetsReady(const lcPieceDataRef& PieceData
 	return PieceReady;
 }
 
-bool lcPiecesLibrary::WaitForPieceData(const lcPieceDataRef& PieceDataRef)
+bool swPiecesLibrary::WaitForPieceData(const swPieceDataRef& PieceDataRef)
 {
 	Q_ASSERT(QThread::currentThread() == thread());
 
-	if (PieceDataRef->mState == lcAssetState::Unloaded)
-		RequestPieceDataLoad(PieceDataRef.Get(), lcLoadPriority::Blocking);
+	if (PieceDataRef->mState == swAssetState::Unloaded)
+		RequestPieceDataLoad(PieceDataRef.Get(), swLoadPriority::Blocking);
 
 	const bool RequestsSucceeded = mAssetLoader->WaitForPieces({ PieceDataRef.Get() });
 
-	return RequestsSucceeded && PieceDataRef->mState == lcAssetState::Loaded;
+	return RequestsSucceeded && PieceDataRef->mState == swAssetState::Loaded;
 }
 
-bool lcPiecesLibrary::WaitForPieceData(const std::vector<lcPieceDataRef>& PieceDataRefs, const std::function<void(int, int)>& Progress)
+bool swPiecesLibrary::WaitForPieceData(const std::vector<swPieceDataRef>& PieceDataRefs, const std::function<void(int, int)>& Progress)
 {
 	Q_ASSERT(QThread::currentThread() == thread());
 
-	std::vector<lcPieceData*> Pieces;
+	std::vector<swPieceData*> Pieces;
 	Pieces.reserve(PieceDataRefs.size());
 
-	for (const lcPieceDataRef& PieceDataRef : PieceDataRefs)
+	for (const swPieceDataRef& PieceDataRef : PieceDataRefs)
 	{
-		if (PieceDataRef->mState == lcAssetState::Unloaded)
-			RequestPieceDataLoad(PieceDataRef.Get(), lcLoadPriority::Blocking);
+		if (PieceDataRef->mState == swAssetState::Unloaded)
+			RequestPieceDataLoad(PieceDataRef.Get(), swLoadPriority::Blocking);
 
 		Pieces.push_back(PieceDataRef.Get());
 	}
 
 	const bool RequestsSucceeded = mAssetLoader->WaitForPieces(Pieces, Progress);
 
-	for (const lcPieceDataRef& PieceDataRef : PieceDataRefs)
-		if (PieceDataRef->mState != lcAssetState::Loaded)
+	for (const swPieceDataRef& PieceDataRef : PieceDataRefs)
+		if (PieceDataRef->mState != swAssetState::Loaded)
 			return false;
 
 	return RequestsSucceeded;
 }
 
-void lcPiecesLibrary::RequestSynthMesh(lcPiece* Piece)
+void swPiecesLibrary::RequestSynthMesh(swPiece* Piece)
 {
 	Q_ASSERT(QThread::currentThread() == thread());
 
-	lcPieceData* PieceData = Piece->mPieceData.Get();
-	std::shared_ptr<const lcSynthInfo> SynthInfo = PieceData ? PieceData->GetSynthInfoShared() : nullptr;
+	swPieceData* PieceData = Piece->mPieceData.Get();
+	std::shared_ptr<const swSynthInfo> SynthInfo = PieceData ? PieceData->GetSynthInfoShared() : nullptr;
 
 	if (!SynthInfo)
 	{
@@ -1487,7 +1487,7 @@ void lcPiecesLibrary::RequestSynthMesh(lcPiece* Piece)
 	mAssetLoader->RequestSynthMesh(Piece, PieceData, std::move(SynthInfo), Piece->GetControlPoints());
 }
 
-void lcPiecesLibrary::CancelSynthMesh(lcPiece* Piece)
+void swPiecesLibrary::CancelSynthMesh(swPiece* Piece)
 {
 	Q_ASSERT(QThread::currentThread() == thread());
 
@@ -1497,29 +1497,29 @@ void lcPiecesLibrary::CancelSynthMesh(lcPiece* Piece)
 		mAssetLoader->CancelSynthMesh(Piece);
 }
 
-bool lcPiecesLibrary::WaitForSynthMeshes(const std::vector<lcPiece*>& Pieces)
+bool swPiecesLibrary::WaitForSynthMeshes(const std::vector<swPiece*>& Pieces)
 {
 	Q_ASSERT(QThread::currentThread() == thread());
 
 	const bool RequestsSucceeded = mAssetLoader->WaitForSynthMeshes(Pieces);
 
-	for (const lcPiece* Piece : Pieces)
+	for (const swPiece* Piece : Pieces)
 		if (Piece->mPieceData && Piece->mPieceData->GetSynthInfo() && !Piece->HasGeneratedMesh())
 			return false;
 
 	return RequestsSucceeded;
 }
 
-QString lcPiecesLibrary::GetSynthMeshError(const lcPiece* Piece) const
+QString swPiecesLibrary::GetSynthMeshError(const swPiece* Piece) const
 {
 	Q_ASSERT(QThread::currentThread() == thread());
 
-	const auto It = mSynthPieces.find(const_cast<lcPiece*>(Piece));
+	const auto It = mSynthPieces.find(const_cast<swPiece*>(Piece));
 
 	return It != mSynthPieces.end() ? It->second : QString();
 }
 
-bool lcPiecesLibrary::PublishPieceDataMesh(lcPieceData* PieceData, std::unique_ptr<lcMesh> Mesh, QString Error)
+bool swPiecesLibrary::PublishPieceDataMesh(swPieceData* PieceData, std::unique_ptr<swMesh> Mesh, QString Error)
 {
 	Q_ASSERT(QThread::currentThread() == thread());
 
@@ -1530,7 +1530,7 @@ bool lcPiecesLibrary::PublishPieceDataMesh(lcPieceData* PieceData, std::unique_p
 		if (Mesh)
 			PieceData->SetMesh(Mesh.release());
 
-		PieceData->mState = lcAssetState::Loaded;
+		PieceData->mState = swAssetState::Loaded;
 		ClearPieceDataLoadError(PieceData);
 	}
 	else
@@ -1541,7 +1541,7 @@ bool lcPiecesLibrary::PublishPieceDataMesh(lcPieceData* PieceData, std::unique_p
 	return Loaded;
 }
 
-bool lcPiecesLibrary::PublishSynthMesh(lcPiece* Piece, std::unique_ptr<lcMesh> Mesh, QString Error)
+bool swPiecesLibrary::PublishSynthMesh(swPiece* Piece, std::unique_ptr<swMesh> Mesh, QString Error)
 {
 	Q_ASSERT(QThread::currentThread() == thread());
 
@@ -1560,38 +1560,38 @@ bool lcPiecesLibrary::PublishSynthMesh(lcPiece* Piece, std::unique_ptr<lcMesh> M
 	return Loaded;
 }
 
-void lcPiecesLibrary::PublishTexture(lcTexture* Texture, lcTextureBuildResult Result)
+void swPiecesLibrary::PublishTexture(swTexture* Texture, swTextureBuildResult Result)
 {
 	Q_ASSERT(QThread::currentThread() == thread());
 
 	if (!Result.DecodedImage.isNull())
-		Texture->SetImage(std::move(Result.DecodedImage), LC_TEXTURE_MIPMAPS);
+		Texture->SetImage(std::move(Result.DecodedImage), SW_TEXTURE_MIPMAPS);
 	else
 		Texture->SetFailed(Result.Error, std::move(Result.ErrorDetails));
 }
 
-void lcPiecesLibrary::RebuildModelPieceData(lcPieceData* PieceData)
+void swPiecesLibrary::RebuildModelPieceData(swPieceData* PieceData)
 {
 	Q_ASSERT(QThread::currentThread() == thread());
 	Q_ASSERT(PieceData->IsModel());
 
 	InvalidatePieceDataLoad(PieceData);
 	PieceData->ReleaseMesh();
-	RequestPieceDataLoad(PieceData, lcLoadPriority::Normal);
+	RequestPieceDataLoad(PieceData, swLoadPriority::Normal);
 }
 
-void lcPiecesLibrary::InvalidatePieceDataLoad(lcPieceData* PieceData)
+void swPiecesLibrary::InvalidatePieceDataLoad(swPieceData* PieceData)
 {
 	Q_ASSERT(QThread::currentThread() == thread());
 
-	PieceData->mState = lcAssetState::Unloaded;
+	PieceData->mState = swAssetState::Unloaded;
 	ClearPieceDataLoadError(PieceData);
 
 	if (mAssetLoader)
 		mAssetLoader->InvalidatePieceLoad(PieceData);
 }
 
-void lcPiecesLibrary::ReleasePieceData(lcPieceData* PieceData)
+void swPiecesLibrary::ReleasePieceData(swPieceData* PieceData)
 {
 	const int Remaining = mPieceManager->ReleasePieceData(PieceData);
 
@@ -1599,29 +1599,29 @@ void lcPiecesLibrary::ReleasePieceData(lcPieceData* PieceData)
 		mAssetLoader->CancelPieceLoad(PieceData);
 }
 
-void lcPiecesLibrary::AddPieceDataReference(lcPieceData* PieceData)
+void swPiecesLibrary::AddPieceDataReference(swPieceData* PieceData)
 {
 	mPieceManager->AddPieceDataReference(PieceData);
 }
 
-void lcPiecesLibrary::SetPieceDataLoadError(const lcPieceData* PieceData, QString Error)
+void swPiecesLibrary::SetPieceDataLoadError(const swPieceData* PieceData, QString Error)
 {
 	mPieceManager->SetPieceDataLoadError(PieceData, std::move(Error));
 }
 
-QString lcPiecesLibrary::GetPieceDataLoadError(const lcPieceData* PieceData) const
+QString swPiecesLibrary::GetPieceDataLoadError(const swPieceData* PieceData) const
 {
 	return mPieceManager->GetPieceDataLoadError(PieceData);
 }
 
-void lcPiecesLibrary::ClearPieceDataLoadError(const lcPieceData* PieceData)
+void swPiecesLibrary::ClearPieceDataLoadError(const swPieceData* PieceData)
 {
 	mPieceManager->ClearPieceDataLoadError(PieceData);
 }
 
-lcPieceSourceSnapshot lcPiecesLibrary::SnapshotPieceDataSource(const lcPieceData* PieceData) const
+swPieceSourceSnapshot swPiecesLibrary::SnapshotPieceDataSource(const swPieceData* PieceData) const
 {
-	lcPieceSourceSnapshot Source;
+	swPieceSourceSnapshot Source;
 
 	Source.FileName = QString::fromLatin1(PieceData->mFileName);
 	Source.LibraryDirectory = mLibraryDir.absolutePath();
@@ -1636,7 +1636,7 @@ lcPieceSourceSnapshot lcPiecesLibrary::SnapshotPieceDataSource(const lcPieceData
 		Source.InlineModel = true;
 		Source.InlineMeshLines = PieceData->GetModel()->GetFileLines();
 
-		const lcModel* Model = PieceData->GetModel();
+		const swModel* Model = PieceData->GetModel();
 		Source.TextureSearchDirectories = Model->GetAssetSearchDirectories();
 
 		if (Model->GetProject())
@@ -1646,9 +1646,9 @@ lcPieceSourceSnapshot lcPiecesLibrary::SnapshotPieceDataSource(const lcPieceData
 	return Source;
 }
 
-lcPieceBuildResult lcPiecesLibrary::BuildPieceData(const lcPieceSourceSnapshot& Source)
+swPieceBuildResult swPiecesLibrary::BuildPieceData(const swPieceSourceSnapshot& Source)
 {
-	lcPieceBuildResult Result;
+	swPieceBuildResult Result;
 
 	if (mCancelLoading.load())
 	{
@@ -1656,9 +1656,9 @@ lcPieceBuildResult lcPiecesLibrary::BuildPieceData(const lcPieceSourceSnapshot& 
 		return Result;
 	}
 
-	if (!Source.InlineModel && Source.ZipFileType != lcZipFileType::Count && mZipFiles[static_cast<int>(Source.ZipFileType)])
+	if (!Source.InlineModel && Source.ZipFileType != swZipFileType::Count && mZipFiles[static_cast<int>(Source.ZipFileType)])
 	{
-		lcMemFile CacheData;
+		swMemFile CacheData;
 
 		if (ReadCacheFile(Source.CachePath, CacheData, CacheType::Archive))
 		{
@@ -1666,7 +1666,7 @@ lcPieceBuildResult lcPiecesLibrary::BuildPieceData(const lcPieceSourceSnapshot& 
 
 			if (CacheData.ReadBuffer(&Flags, sizeof(Flags)) == sizeof(Flags) && Flags == MeshCacheSettingsKey(Source.StudStyle, Source.StudCylinderColorEnabled))
 			{
-				Result.Mesh.reset(new lcMesh);
+				Result.Mesh.reset(new swMesh);
 
 				if (Result.Mesh->FileLoad(CacheData))
 				{
@@ -1679,12 +1679,12 @@ lcPieceBuildResult lcPiecesLibrary::BuildPieceData(const lcPieceSourceSnapshot& 
 		}
 	}
 
-	lcLibraryMeshData MeshData;
-	lcMeshLoader MeshLoader(MeshData, nullptr, lcMeshLoaderFlag::Optimize | lcMeshLoaderFlag::RequireAllIncludes);
+	swLibraryMeshData MeshData;
+	swMeshLoader MeshLoader(MeshData, nullptr, swMeshLoaderFlag::Optimize | swMeshLoaderFlag::RequireAllIncludes);
 
 	if (Source.InlineModel)
 	{
-		lcMemFile PieceFile;
+		swMemFile PieceFile;
 
 		for (const QString& Line : Source.InlineMeshLines)
 		{
@@ -1696,7 +1696,7 @@ lcPieceBuildResult lcPiecesLibrary::BuildPieceData(const lcPieceSourceSnapshot& 
 
 		PieceFile.Seek(0, SEEK_SET);
 
-		if (!MeshLoader.LoadMesh(PieceFile, LC_MESHDATA_SHARED))
+		if (!MeshLoader.LoadMesh(PieceFile, SW_MESHDATA_SHARED))
 		{
 			Result.Error = tr("Could not load model geometry '%1'.").arg(Source.FileName);
 
@@ -1716,24 +1716,24 @@ lcPieceBuildResult lcPiecesLibrary::BuildPieceData(const lcPieceSourceSnapshot& 
 	{
 		bool Loaded = false;
 
-		if (Source.ZipFileType != lcZipFileType::Count && mZipFiles[static_cast<int>(Source.ZipFileType)])
+		if (Source.ZipFileType != swZipFileType::Count && mZipFiles[static_cast<int>(Source.ZipFileType)])
 		{
-			lcFileSource FileSource;
+			swFileSource FileSource;
 			FileSource.ArchiveType = static_cast<int>(Source.ZipFileType);
 			FileSource.ArchiveIndex = Source.ZipFileIndex;
-			const lcResult<std::unique_ptr<lcFile>> File = OpenFile(FileSource);
+			const swResult<std::unique_ptr<swFile>> File = OpenFile(FileSource);
 
 			if (File)
-				Loaded = MeshLoader.LoadMesh(*File.value(), LC_MESHDATA_SHARED);
+				Loaded = MeshLoader.LoadMesh(*File.value(), SW_MESHDATA_SHARED);
 		}
 		else
 		{
-			lcFileSource FileSource;
+			swFileSource FileSource;
 			FileSource.FilePath = QDir(Source.LibraryDirectory).absoluteFilePath(QStringLiteral("parts/") + Source.FileName);
-			const lcResult<std::unique_ptr<lcFile>> File = OpenFile(FileSource);
+			const swResult<std::unique_ptr<swFile>> File = OpenFile(FileSource);
 
 			if (File)
-				Loaded = MeshLoader.LoadMesh(*File.value(), LC_MESHDATA_SHARED);
+				Loaded = MeshLoader.LoadMesh(*File.value(), SW_MESHDATA_SHARED);
 
 			// Directory loading retries unofficial geometry after an open or parse failure.
 			if (mHasUnofficial && !Loaded)
@@ -1741,10 +1741,10 @@ lcPieceBuildResult lcPiecesLibrary::BuildPieceData(const lcPieceSourceSnapshot& 
 				MeshData.Clear();
 
 				FileSource.FilePath = QDir(Source.LibraryDirectory).absoluteFilePath(QStringLiteral("unofficial/parts/") + Source.FileName);
-				const lcResult<std::unique_ptr<lcFile>> UnofficialFile = OpenFile(FileSource);
+				const swResult<std::unique_ptr<swFile>> UnofficialFile = OpenFile(FileSource);
 
 				if (UnofficialFile)
-					Loaded = MeshLoader.LoadMesh(*UnofficialFile.value(), LC_MESHDATA_SHARED);
+					Loaded = MeshLoader.LoadMesh(*UnofficialFile.value(), SW_MESHDATA_SHARED);
 			}
 		}
 
@@ -1770,12 +1770,12 @@ lcPieceBuildResult lcPiecesLibrary::BuildPieceData(const lcPieceSourceSnapshot& 
 	return Result;
 }
 
-void lcPiecesLibrary::SaveBuiltPieceDataCache(const lcPieceSourceSnapshot& Source, lcMesh& Mesh)
+void swPiecesLibrary::SaveBuiltPieceDataCache(const swPieceSourceSnapshot& Source, swMesh& Mesh)
 {
-	if (Source.ZipFileType == lcZipFileType::Count)
+	if (Source.ZipFileType == swZipFileType::Count)
 		return;
 
-	lcMemFile MeshData;
+	swMemFile MeshData;
 
 	const qint32 Flags = MeshCacheSettingsKey(Source.StudStyle, Source.StudCylinderColorEnabled);
 
@@ -1785,11 +1785,11 @@ void lcPiecesLibrary::SaveBuiltPieceDataCache(const lcPieceSourceSnapshot& Sourc
 	WriteCacheFile(Source.CachePath, MeshData, CacheType::Archive);
 }
 
-lcResult<std::unique_ptr<lcFile>> lcPiecesLibrary::OpenPrimitiveFile(const lcLibraryPrimitive* Primitive)
+swResult<std::unique_ptr<swFile>> swPiecesLibrary::OpenPrimitiveFile(const swLibraryPrimitive* Primitive)
 {
-	lcFileSource Source;
+	swFileSource Source;
 
-	if (Primitive->mZipFileType != lcZipFileType::Count)
+	if (Primitive->mZipFileType != swZipFileType::Count)
 	{
 		Source.ArchiveType = static_cast<int>(Primitive->mZipFileType);
 		Source.ArchiveIndex = Primitive->mZipFileIndex;
@@ -1800,15 +1800,15 @@ lcResult<std::unique_ptr<lcFile>> lcPiecesLibrary::OpenPrimitiveFile(const lcLib
 	return OpenFile(Source);
 }
 
-lcResult<std::unique_ptr<lcFile>> lcPiecesLibrary::OpenPieceDataFile(const char* PieceName)
+swResult<std::unique_ptr<swFile>> swPiecesLibrary::OpenPieceDataFile(const char* PieceName)
 {
-	const std::optional<lcPieceManager::FileInfo> FileInfo = mPieceManager->GetPieceDataFileInfo(PieceName);
+	const std::optional<swPieceManager::FileInfo> FileInfo = mPieceManager->GetPieceDataFileInfo(PieceName);
 
-	if (mZipFiles[static_cast<int>(lcZipFileType::Official)])
+	if (mZipFiles[static_cast<int>(swZipFileType::Official)])
 	{
-		if (FileInfo && FileInfo->ZipFileType != lcZipFileType::Count)
+		if (FileInfo && FileInfo->ZipFileType != swZipFileType::Count)
 		{
-			lcFileSource Source;
+			swFileSource Source;
 			Source.ArchiveType = static_cast<int>(FileInfo->ZipFileType);
 			Source.ArchiveIndex = FileInfo->ZipFileIndex;
 			return OpenFile(Source);
@@ -1816,14 +1816,14 @@ lcResult<std::unique_ptr<lcFile>> lcPiecesLibrary::OpenPieceDataFile(const char*
 
 		if (!FileInfo)
 		{
-			for (const lcZipFileType Type : { lcZipFileType::Official, lcZipFileType::Unofficial })
+			for (const swZipFileType Type : { swZipFileType::Official, swZipFileType::Unofficial })
 			{
-				const std::unique_ptr<lcZipFile>& Archive = mZipFiles[static_cast<int>(Type)];
+				const std::unique_ptr<swZipFile>& Archive = mZipFiles[static_cast<int>(Type)];
 
 				if (!Archive)
 					continue;
 
-				const QString Prefix = Type == lcZipFileType::Official ? QStringLiteral("ldraw/") : QString();
+				const QString Prefix = Type == swZipFileType::Official ? QStringLiteral("ldraw/") : QString();
 
 				for (const QString& Folder : { QStringLiteral("parts/"), QStringLiteral("p/") })
 				{
@@ -1834,16 +1834,16 @@ lcResult<std::unique_ptr<lcFile>> lcPiecesLibrary::OpenPieceDataFile(const char*
 					if (!FileIndex)
 						continue;
 
-					lcFileSource Source;
+					swFileSource Source;
 					Source.ArchiveType = static_cast<int>(Type);
 					Source.ArchiveIndex = *FileIndex;
 
-					if (lcResult<std::unique_ptr<lcFile>> File = OpenFile(Source))
+					if (swResult<std::unique_ptr<swFile>> File = OpenFile(Source))
 						return File;
 				}
 			}
 
-			return lcUnexpected(tr("Could not open included file '%1'.").arg(QString::fromLatin1(PieceName)));
+			return swUnexpected(tr("Could not open included file '%1'.").arg(QString::fromLatin1(PieceName)));
 		}
 	}
 
@@ -1864,10 +1864,10 @@ lcResult<std::unique_ptr<lcFile>> lcPiecesLibrary::OpenPieceDataFile(const char*
 	for (const QString& Folder : Folders)
 	{
 		const QString FileName = Folder + Name;
-		lcFileSource Source;
+		swFileSource Source;
 		Source.FilePath = mLibraryDir.absoluteFilePath(FileName);
 
-		if (lcResult<std::unique_ptr<lcFile>> File = OpenFile(Source))
+		if (swResult<std::unique_ptr<swFile>> File = OpenFile(Source))
 			return File;
 
 #if defined(Q_OS_MACOS) || defined(Q_OS_LINUX)
@@ -1875,16 +1875,16 @@ lcResult<std::unique_ptr<lcFile>> lcPiecesLibrary::OpenPieceDataFile(const char*
 		{
 			Source.FilePath = mLibraryDir.absoluteFilePath(FileName.toLower());
 
-			if (lcResult<std::unique_ptr<lcFile>> File = OpenFile(Source))
+			if (swResult<std::unique_ptr<swFile>> File = OpenFile(Source))
 				return File;
 		}
 #endif
 	}
 
-	return lcUnexpected(tr("Could not open included file '%1'.").arg(QString::fromLatin1(PieceName)));
+	return swUnexpected(tr("Could not open included file '%1'.").arg(QString::fromLatin1(PieceName)));
 }
 
-void lcPiecesLibrary::ReleaseBuffers()
+void swPiecesLibrary::ReleaseBuffers()
 {
 	mBuffersDirty = true;
 
@@ -1892,25 +1892,25 @@ void lcPiecesLibrary::ReleaseBuffers()
 	if (!mVertexBuffer.IsValid() && !mIndexBuffer.IsValid())
 		return;
 
-	lcContext* Context = lcContext::GetGlobalOffscreenContext();
+	swContext* Context = swContext::GetGlobalOffscreenContext();
 
 	Context->MakeCurrent();
 	Context->DestroyVertexBuffer(mVertexBuffer);
 	Context->DestroyIndexBuffer(mIndexBuffer);
 }
 
-void lcPiecesLibrary::UpdateBuffers(lcContext* Context)
+void swPiecesLibrary::UpdateBuffers(swContext* Context)
 {
 	if (!gSupportsVertexBufferObject || !mBuffersDirty)
 		return;
 
 	int VertexDataSize = 0;
 	int IndexDataSize = 0;
-	std::vector<lcMesh*> Meshes;
+	std::vector<swMesh*> Meshes;
 
-	const auto AddMesh = [&VertexDataSize, &IndexDataSize, &Meshes](lcPieceData* PieceData)
+	const auto AddMesh = [&VertexDataSize, &IndexDataSize, &Meshes](swPieceData* PieceData)
 	{
-		lcMesh* Mesh = PieceData->GetMesh();
+		swMesh* Mesh = PieceData->GetMesh();
 
 		if (!Mesh)
 			return;
@@ -1932,7 +1932,7 @@ void lcPiecesLibrary::UpdateBuffers(lcContext* Context)
 		Meshes.push_back(Mesh);
 	};
 
-	for (lcPieceData* PieceData : mPieceManager->GetAllPieceData())
+	for (swPieceData* PieceData : mPieceManager->GetAllPieceData())
 		AddMesh(PieceData);
 
 	if (!VertexDataSize)
@@ -1958,11 +1958,11 @@ void lcPiecesLibrary::UpdateBuffers(lcContext* Context)
 	VertexDataSize = 0;
 	IndexDataSize = 0;
 
-	for (lcMesh* Mesh : Meshes)
+	for (swMesh* Mesh : Meshes)
 	{
 		if (Mesh->mIndexDataSize && !IndexData)
 		{
-			for (lcMesh* CachedMesh : Meshes)
+			for (swMesh* CachedMesh : Meshes)
 			{
 				CachedMesh->mVertexCacheOffset = -1;
 				CachedMesh->mIndexCacheOffset = -1;
@@ -1998,7 +1998,7 @@ void lcPiecesLibrary::UpdateBuffers(lcContext* Context)
 	free(IndexData);
 }
 
-void lcPiecesLibrary::ScheduleBufferRepack()
+void swPiecesLibrary::ScheduleBufferRepack()
 {
 	mStreamingBuffersPending = true;
 
@@ -2022,26 +2022,26 @@ void lcPiecesLibrary::ScheduleBufferRepack()
 
 		mStreamingBuffersPending = false;
 		mBuffersDirty = true;
-		lcView::UpdateAllViews();
+		swView::UpdateAllViews();
 	});
 }
 
-lcMesh* lcPiecesLibrary::GetLoadingMesh() const
+swMesh* swPiecesLibrary::GetLoadingMesh() const
 {
 	return mLoadingMesh.get();
 }
 
-void lcPiecesLibrary::AddTextureReference(lcTexture* Texture)
+void swPiecesLibrary::AddTextureReference(swTexture* Texture)
 {
 	mTextureManager->AddTextureReference(Texture);
 }
 
-void lcPiecesLibrary::ReleaseTexture(lcTexture* Texture)
+void swPiecesLibrary::ReleaseTexture(swTexture* Texture)
 {
 	mTextureManager->ReleaseTexture(Texture);
 }
 
-void lcPiecesLibrary::UpdateStudStyleAndColors(lcStudStyle StudStyle, bool StudCylinderColorEnabled)
+void swPiecesLibrary::UpdateStudStyleAndColors(swStudStyle StudStyle, bool StudCylinderColorEnabled)
 {
 	Q_ASSERT(QThread::currentThread() == thread());
 
@@ -2058,56 +2058,56 @@ void lcPiecesLibrary::UpdateStudStyleAndColors(lcStudStyle StudStyle, bool StudC
 	LoadColors();
 	UpdateStudStyleSource();
 
-	for (const std::unique_ptr<lcLibrarySource>& Source : mSources)
+	for (const std::unique_ptr<swLibrarySource>& Source : mSources)
 	{
 		for (const auto& PrimitiveIt : Source->Primitives)
 		{
-			lcLibraryPrimitive* Primitive = PrimitiveIt.second.get();
+			swLibraryPrimitive* Primitive = PrimitiveIt.second.get();
 
 			if (Primitive->mStudStyle || Primitive->mMeshData.mHasStyleStud)
 				Primitive->Unload();
 		}
 	}
 
-	const auto ReloadPiece = [this](lcPieceData* PieceData)
+	const auto ReloadPiece = [this](swPieceData* PieceData)
 	{
-		if (PieceData->mState != lcAssetState::Loaded || !PieceData->GetMesh() || !(PieceData->GetMesh()->mFlags & lcMeshFlag::HasStyleStud))
+		if (PieceData->mState != swAssetState::Loaded || !PieceData->GetMesh() || !(PieceData->GetMesh()->mFlags & swMeshFlag::HasStyleStud))
 			return;
 
 		if (PieceData->IsModel())
 		{
 			PieceData->ReleaseMesh();
-			PieceData->mState = lcAssetState::Unloaded;
+			PieceData->mState = swAssetState::Unloaded;
 
-			RequestPieceDataLoad(PieceData, lcLoadPriority::Low);
+			RequestPieceDataLoad(PieceData, swLoadPriority::Low);
 		}
 		else if (!PieceData->IsProject())
 		{
 			PieceData->Unload();
-			RequestPieceDataLoad(PieceData, lcLoadPriority::Low);
+			RequestPieceDataLoad(PieceData, swLoadPriority::Low);
 		}
 
 		mBuffersDirty = true;
 	};
 
-	for (lcPieceData* PieceData : mPieceManager->GetAllPieceData())
+	for (swPieceData* PieceData : mPieceManager->GetAllPieceData())
 		ReloadPiece(PieceData);
 
-	std::vector<lcPiece*> SynthPieces;
+	std::vector<swPiece*> SynthPieces;
 	SynthPieces.reserve(mSynthPieces.size());
 
 	for (const auto& Entry : mSynthPieces)
 		SynthPieces.push_back(Entry.first);
 
-	for (lcPiece* Piece : SynthPieces)
+	for (swPiece* Piece : SynthPieces)
 		Piece->RefreshGeneratedMesh();
 
 	mAssetLoader->ResumeQueuedWork();
 }
 
-lcLibraryPrimitive* lcPiecesLibrary::FindPrimitive(const char* Name) const
+swLibraryPrimitive* swPiecesLibrary::FindPrimitive(const char* Name) const
 {
-	for (const std::unique_ptr<lcLibrarySource>& Source : mSources)
+	for (const std::unique_ptr<swLibrarySource>& Source : mSources)
 	{
 		const auto PrimitiveIt = Source->Primitives.find(Name);
 
@@ -2118,37 +2118,37 @@ lcLibraryPrimitive* lcPiecesLibrary::FindPrimitive(const char* Name) const
 	return nullptr;
 }
 
-lcResult<void> lcPiecesLibrary::LoadPrimitive(lcLibraryPrimitive* Primitive)
+swResult<void> swPiecesLibrary::LoadPrimitive(swLibraryPrimitive* Primitive)
 {
 	QThread* Thread = QThread::currentThread();
-	lcLibraryPrimitive* Parent = nullptr;
+	swLibraryPrimitive* Parent = nullptr;
 
 	mPrimitiveMutex.lock();
 
 	if (ShouldCancelLoading())
 	{
 		mPrimitiveMutex.unlock();
-		return lcUnexpected(tr("Library loading was canceled."));
+		return swUnexpected(tr("Library loading was canceled."));
 	}
 
-	if (Primitive->mState == lcPrimitiveState::Loaded)
+	if (Primitive->mState == swPrimitiveState::Loaded)
 	{
 		mPrimitiveMutex.unlock();
-		return lcResult<void>();
+		return swResult<void>();
 	}
 
-	std::vector<lcLibraryPrimitive*>& Stack = mPrimitiveLoadStacks[Thread];
+	std::vector<swLibraryPrimitive*>& Stack = mPrimitiveLoadStacks[Thread];
 
 	if (!Stack.empty())
 	{
 		Parent = Stack.back();
 
-		for (lcLibraryPrimitive* Dependency = Primitive; Dependency;)
+		for (swLibraryPrimitive* Dependency = Primitive; Dependency;)
 		{
 			if (Dependency == Parent)
 			{
 				mPrimitiveMutex.unlock();
-				return lcUnexpected(tr("Primitive include cycle at '%1'.").arg(QString::fromLatin1(Primitive->mName)));
+				return swUnexpected(tr("Primitive include cycle at '%1'.").arg(QString::fromLatin1(Primitive->mName)));
 			}
 
 			const auto It = mPrimitiveDependencies.find(Dependency);
@@ -2161,14 +2161,14 @@ lcResult<void> lcPiecesLibrary::LoadPrimitive(lcLibraryPrimitive* Primitive)
 	Stack.push_back(Primitive);
 	mPrimitiveMutex.unlock();
 
-	lcResult<void> Result = LoadPrimitiveData(Primitive);
+	swResult<void> Result = LoadPrimitiveData(Primitive);
 
 	mPrimitiveMutex.lock();
 
 	if (Parent)
 		mPrimitiveDependencies.erase(Parent);
 
-	std::vector<lcLibraryPrimitive*>& CompletedStack = mPrimitiveLoadStacks[Thread];
+	std::vector<swLibraryPrimitive*>& CompletedStack = mPrimitiveLoadStacks[Thread];
 	CompletedStack.pop_back();
 
 	if (CompletedStack.empty())
@@ -2179,46 +2179,46 @@ lcResult<void> lcPiecesLibrary::LoadPrimitive(lcLibraryPrimitive* Primitive)
 	return Result;
 }
 
-lcResult<void> lcPiecesLibrary::LoadPrimitiveData(lcLibraryPrimitive* Primitive)
+swResult<void> swPiecesLibrary::LoadPrimitiveData(swLibraryPrimitive* Primitive)
 {
 	mPrimitiveMutex.lock();
 
 	if (ShouldCancelLoading())
 	{
 		mPrimitiveMutex.unlock();
-		return lcUnexpected(tr("Library loading was canceled."));
+		return swUnexpected(tr("Library loading was canceled."));
 	}
 
-	if (Primitive->mState == lcPrimitiveState::NotLoaded)
-		Primitive->mState = lcPrimitiveState::Loading;
+	if (Primitive->mState == swPrimitiveState::NotLoaded)
+		Primitive->mState = swPrimitiveState::Loading;
 	else
 	{
-		while (Primitive->mState == lcPrimitiveState::Loading)
+		while (Primitive->mState == swPrimitiveState::Loading)
 		{
 			if (ShouldCancelLoading())
 			{
 				mPrimitiveMutex.unlock();
-				return lcUnexpected(tr("Library loading was canceled."));
+				return swUnexpected(tr("Library loading was canceled."));
 			}
 
 			mPrimitiveLoaded.wait(&mPrimitiveMutex, 10);
 		}
 
-		const bool Loaded = Primitive->mState == lcPrimitiveState::Loaded;
+		const bool Loaded = Primitive->mState == swPrimitiveState::Loaded;
 		const QString Error = Primitive->mLoadError;
 		mPrimitiveMutex.unlock();
 
 		if (Loaded)
-			return lcResult<void>();
+			return swResult<void>();
 
-		return lcUnexpected(Error);
+		return swUnexpected(Error);
 	}
 
 	mPrimitiveMutex.unlock();
 
-	lcMeshLoader MeshLoader(Primitive->mMeshData, nullptr, lcMeshLoaderFlag::Optimize | lcMeshLoaderFlag::RequireAllIncludes);
+	swMeshLoader MeshLoader(Primitive->mMeshData, nullptr, swMeshLoaderFlag::Optimize | swMeshLoaderFlag::RequireAllIncludes);
 
-	const auto LoadFailed = [this, Primitive](QString Error) -> lcResult<void>
+	const auto LoadFailed = [this, Primitive](QString Error) -> swResult<void>
 	{
 		Primitive->mMeshData.Clear();
 
@@ -2227,55 +2227,55 @@ lcResult<void> lcPiecesLibrary::LoadPrimitiveData(lcLibraryPrimitive* Primitive)
 
 		QMutexLocker LoadLock(&mPrimitiveMutex);
 		Primitive->mLoadError = Error;
-		Primitive->mState = lcPrimitiveState::NotLoaded;
+		Primitive->mState = swPrimitiveState::NotLoaded;
 		mPrimitiveLoaded.wakeAll();
-		return lcUnexpected(std::move(Error));
+		return swUnexpected(std::move(Error));
 	};
 
-	lcLibraryPrimitive* LowPrimitive = nullptr;
+	swLibraryPrimitive* LowPrimitive = nullptr;
 
-	if (mZipFiles[static_cast<int>(lcZipFileType::Official)] && Primitive->mStud && !Primitive->mStudStyle)
+	if (mZipFiles[static_cast<int>(swZipFileType::Official)] && Primitive->mStud && !Primitive->mStudStyle)
 	{
 		if (strncmp(Primitive->mName, "8/", 2)) // todo: low LOD for loose file libraries
 		{
-			char Name[LC_PIECE_NAME_LEN];
-			lcstrcpy(Name, "8/");
-			lcstrcat(Name, Primitive->mName);
-			lcstrupr(Name);
+			char Name[SW_PIECE_NAME_LEN];
+			swstrcpy(Name, "8/");
+			swstrcat(Name, Primitive->mName);
+			swstrupr(Name);
 
 			LowPrimitive = FindPrimitive(Name); // todo: low primitives don't work with studlogo
 		}
 	}
 
-	const lcResult<std::unique_ptr<lcFile>> File = OpenPrimitiveFile(Primitive);
+	const swResult<std::unique_ptr<swFile>> File = OpenPrimitiveFile(Primitive);
 
 	if (!File)
 		return LoadFailed(File.error());
 
-	if (!MeshLoader.LoadMesh(*File.value(), LowPrimitive ? LC_MESHDATA_HIGH : LC_MESHDATA_SHARED))
+	if (!MeshLoader.LoadMesh(*File.value(), LowPrimitive ? SW_MESHDATA_HIGH : SW_MESHDATA_SHARED))
 		return LoadFailed(MeshLoader.GetError());
 
 	if (LowPrimitive)
 	{
-		const lcResult<std::unique_ptr<lcFile>> LowFile = OpenPrimitiveFile(LowPrimitive);
+		const swResult<std::unique_ptr<swFile>> LowFile = OpenPrimitiveFile(LowPrimitive);
 
 		if (!LowFile)
 			return LoadFailed(LowFile.error());
 
-		if (!MeshLoader.LoadMesh(*LowFile.value(), LC_MESHDATA_LOW))
+		if (!MeshLoader.LoadMesh(*LowFile.value(), SW_MESHDATA_LOW))
 			return LoadFailed(MeshLoader.GetError());
 	}
 
 	mPrimitiveMutex.lock();
 	Primitive->mLoadError.clear();
-	Primitive->mState = lcPrimitiveState::Loaded;
+	Primitive->mState = swPrimitiveState::Loaded;
 	mPrimitiveLoaded.wakeAll();
 	mPrimitiveMutex.unlock();
 
-	return lcResult<void>();
+	return swResult<void>();
 }
 
-bool lcPiecesLibrary::PieceDataInCategory(lcPieceData* PieceData, const char* CategoryKeywords) const
+bool swPiecesLibrary::PieceDataInCategory(swPieceData* PieceData, const char* CategoryKeywords) const
 {
 	if (!PieceData->IsLibraryPiece())
 		return false;
@@ -2286,21 +2286,21 @@ bool lcPiecesLibrary::PieceDataInCategory(lcPieceData* PieceData, const char* Ca
 	else
 		PieceName = PieceData->m_strDescription;
 
-	return lcMatchCategory(PieceName, CategoryKeywords);
+	return swMatchCategory(PieceName, CategoryKeywords);
 }
 
-void lcPiecesLibrary::GetCategoryEntries(int CategoryIndex, bool GroupPieces, std::vector<lcPieceData*>& SinglePieces, std::vector<lcPieceData*>& GroupedPieces)
+void swPiecesLibrary::GetCategoryEntries(int CategoryIndex, bool GroupPieces, std::vector<swPieceData*>& SinglePieces, std::vector<swPieceData*>& GroupedPieces)
 {
 	if (CategoryIndex >= 0 && CategoryIndex < static_cast<int>(gCategories.size()))
 		GetCategoryEntries(gCategories[CategoryIndex].Keywords.constData(), GroupPieces, SinglePieces, GroupedPieces);
 }
 
-void lcPiecesLibrary::GetCategoryEntries(const char* CategoryKeywords, bool GroupPieces, std::vector<lcPieceData*>& SinglePieces, std::vector<lcPieceData*>& GroupedPieces)
+void swPiecesLibrary::GetCategoryEntries(const char* CategoryKeywords, bool GroupPieces, std::vector<swPieceData*>& SinglePieces, std::vector<swPieceData*>& GroupedPieces)
 {
 	SinglePieces.clear();
 	GroupedPieces.clear();
 
-	for (lcPieceData* PieceData : mPieceManager->GetLibraryPieceData())
+	for (swPieceData* PieceData : mPieceManager->GetLibraryPieceData())
 	{
 		if (!PieceDataInCategory(PieceData, CategoryKeywords))
 			continue;
@@ -2314,7 +2314,7 @@ void lcPiecesLibrary::GetCategoryEntries(const char* CategoryKeywords, bool Grou
 		// Check if it's a patterned piece.
 		if (PieceData->IsDecorated())
 		{
-			lcPieceData* Parent = FindPieceData(PieceData->GetPatternParentId().c_str(), nullptr);
+			swPieceData* Parent = FindPieceData(PieceData->GetPatternParentId().c_str(), nullptr);
 
 			if (Parent)
 			{
@@ -2342,18 +2342,18 @@ void lcPiecesLibrary::GetCategoryEntries(const char* CategoryKeywords, bool Grou
 	}
 }
 
-std::vector<lcPieceData*> lcPiecesLibrary::GetParts() const
+std::vector<swPieceData*> swPiecesLibrary::GetParts() const
 {
 	return mPieceManager->GetLibraryPieceData();
 }
 
-std::vector<lcPieceData*> lcPiecesLibrary::GetVisibleTrainTrackParts(const lcTrainTrackConnectionType& ConnectionType) const
+std::vector<swPieceData*> swPiecesLibrary::GetVisibleTrainTrackParts(const swTrainTrackConnectionType& ConnectionType) const
 {
-	std::vector<lcPieceData*> Parts;
+	std::vector<swPieceData*> Parts;
 
-	for (lcPieceData* PieceData : mPieceManager->GetLibraryPieceData())
+	for (swPieceData* PieceData : mPieceManager->GetLibraryPieceData())
 	{
-		lcTrainTrackInfo* TrainTrackInfo = PieceData->GetTrainTrackInfo();
+		swTrainTrackInfo* TrainTrackInfo = PieceData->GetTrainTrackInfo();
 
 		if (TrainTrackInfo && TrainTrackInfo->IsVisible() && TrainTrackInfo->CanConnectTo(ConnectionType, true))
 			Parts.emplace_back(PieceData);
@@ -2362,35 +2362,35 @@ std::vector<lcPieceData*> lcPiecesLibrary::GetVisibleTrainTrackParts(const lcTra
 	return Parts;
 }
 
-std::vector<lcPieceData*> lcPiecesLibrary::GetPartsFromSet(const std::vector<std::string>& PartIds) const
+std::vector<swPieceData*> swPiecesLibrary::GetPartsFromSet(const std::vector<std::string>& PartIds) const
 {
-	std::vector<lcPieceData*> Parts;
+	std::vector<swPieceData*> Parts;
 	Parts.reserve(PartIds.size());
 
 	for (const std::string& PartId : PartIds)
 	{
-		if (lcPieceData* PieceData = mPieceManager->FindPieceData(PartId, nullptr))
+		if (swPieceData* PieceData = mPieceManager->FindPieceData(PartId, nullptr))
 			Parts.push_back(PieceData);
 	}
 
 	return Parts;
 }
 
-std::string lcPiecesLibrary::GetPartId(const lcPieceData* PieceData) const
+std::string swPiecesLibrary::GetPartId(const swPieceData* PieceData) const
 {
 	return mPieceManager->GetLibraryPieceDataName(PieceData);
 }
 
-bool lcPiecesLibrary::LoadBuiltinPieceLibrary()
+bool swPiecesLibrary::LoadBuiltinPieceLibrary()
 {
-	std::unique_ptr<lcDiskFile> File(new lcDiskFile(":/resources/library.zip"));
+	std::unique_ptr<swDiskFile> File(new swDiskFile(":/resources/library.zip"));
 
-	if (!File->Open(QIODevice::ReadOnly) || !OpenArchive(std::move(File), lcZipFileType::Official))
+	if (!File->Open(QIODevice::ReadOnly) || !OpenArchive(std::move(File), swZipFileType::Official))
 		return false;
 
-	lcMemFile PieceFile;
+	swMemFile PieceFile;
 
-	for (lcPieceData* PieceData : mPieceManager->GetLibraryPieceData())
+	for (swPieceData* PieceData : mPieceManager->GetLibraryPieceData())
 	{
 		mZipFiles[static_cast<int>(PieceData->mZipFileType)]->ExtractFile(PieceData->mZipFileIndex, PieceFile, 256);
 		PieceFile.Seek(0, SEEK_END);
@@ -2414,12 +2414,12 @@ bool lcPiecesLibrary::LoadBuiltinPieceLibrary()
 
 	ClassifyPieces(DirectoryFilePaths());
 
-	lcLoadDefaultColors(mStudStyle);
+	swLoadDefaultColors(mStudStyle);
 	UpdateLoadingMeshColors();
 	UpdateStudStyleSource();
-	lcLoadDefaultCategories(true);
-	lcSynthInit();
-	lcTrainTrackInfo::Initialize(this);
+	swLoadDefaultCategories(true);
+	swSynthInit();
+	swTrainTrackInfo::Initialize(this);
 
 	return true;
 }

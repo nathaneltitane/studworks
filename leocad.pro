@@ -19,13 +19,13 @@ greaterThan(QT_MAJOR_VERSION, 5) {
 
 qtHaveModule(gamepad) {
 	QT += gamepad
-	DEFINES += LC_ENABLE_GAMEPAD
+	DEFINES += SW_ENABLE_GAMEPAD
 }
 
 # Optional embedded Konsole terminal on systems with KDE Frameworks.
 qtHaveModule(KParts) {
 	QT += KParts
-	DEFINES += LC_ENABLE_TERMINAL
+	DEFINES += SW_ENABLE_TERMINAL
 }
 
 CONFIG += precompile_header incremental c++17 force_debug_info
@@ -74,7 +74,7 @@ TRAVIS_TAG = $$(TRAVIS_TAG)
 TRAVIS_COMMIT = $$(TRAVIS_COMMIT)
 !isEmpty(TRAVIS_COMMIT) {
 	isEmpty(TRAVIS_TAG) {
-		DEFINES += "LC_CONTINUOUS_BUILD=$$system(git rev-parse --short HEAD)"
+		DEFINES += "SW_CONTINUOUS_BUILD=$$system(git rev-parse --short HEAD)"
 	}
 }
 
@@ -82,7 +82,7 @@ APPVEYOR_REPO_TAG = $$(APPVEYOR_REPO_TAG)
 APPVEYOR_REPO_COMMIT = $$(APPVEYOR_REPO_COMMIT)
 !isEmpty(APPVEYOR_REPO_COMMIT) {
 	isEmpty(APPVEYOR_REPO_TAG) {
-		DEFINES += "LC_CONTINUOUS_BUILD=$$system(git rev-parse --short HEAD)"
+		DEFINES += "SW_CONTINUOUS_BUILD=$$system(git rev-parse --short HEAD)"
 		VERSION = 0.0.0.1
 		QMAKE_TARGET_DESCRIPTION = "LeoCAD Continuous Build $$system(git rev-parse --short HEAD)"
 	}
@@ -149,11 +149,11 @@ unix:!macx {
 	INSTALLS += target docs man desktop icons mime appdata
 
 	!isEmpty(DISABLE_UPDATE_CHECK) {
-		DEFINES += LC_DISABLE_UPDATE_CHECK=$$DISABLE_UPDATE_CHECK
+		DEFINES += SW_DISABLE_UPDATE_CHECK=$$DISABLE_UPDATE_CHECK
 	}
 
 	!isEmpty(LDRAW_LIBRARY_PATH) {
-		DEFINES += LC_LDRAW_LIBRARY_PATH=\\\"$$LDRAW_LIBRARY_PATH\\\"
+		DEFINES += SW_LDRAW_LIBRARY_PATH=\\\"$$LDRAW_LIBRARY_PATH\\\"
 	}
 }
 
@@ -169,12 +169,12 @@ macx {
 	povray.path = Contents/MacOS
 
 	QMAKE_BUNDLE_DATA += document_icon library povray
-	DEFINES += LC_DISABLE_UPDATE_CHECK=1
+	DEFINES += SW_DISABLE_UPDATE_CHECK=1
 }
 
 ios {
-	DEFINES += LC_DISABLE_RENDER_DIALOG=1
-	DEFINES += LC_DISABLE_BLENDER=1
+	DEFINES += SW_DISABLE_RENDER_DIALOG=1
+	DEFINES += SW_DISABLE_BLENDER=1
 }
 
 include(src/app/app.pri)

@@ -14,7 +14,7 @@
 #include "sw_partselectionpopup.h"
 #include "sw_modelhistory.h"
 
-lcPropertiesWidget::lcPropertiesWidget(QWidget* Parent)
+swPropertiesWidget::swPropertiesWidget(QWidget* Parent)
 	: QWidget(Parent)
 {
 	CreateWidgets();
@@ -38,31 +38,31 @@ lcPropertiesWidget::lcPropertiesWidget(QWidget* Parent)
 }
 
 
-lcObjectPropertyId lcPropertiesWidget::GetEditorWidgetPropertyId(QWidget* Widget) const
+swObjectPropertyId swPropertiesWidget::GetEditorWidgetPropertyId(QWidget* Widget) const
 {
 	if (!Widget)
-		return lcObjectPropertyId::Count;
+		return swObjectPropertyId::Count;
 
 	for (size_t Index = 0; Index < mPropertyWidgets.size(); Index++)
 		if (mPropertyWidgets[Index].Editor == Widget)
-			return static_cast<lcObjectPropertyId>(Index);
+			return static_cast<swObjectPropertyId>(Index);
 
-	return lcObjectPropertyId::Count;
+	return swObjectPropertyId::Count;
 }
 
-lcObjectPropertyId lcPropertiesWidget::GetKeyFrameWidgetPropertyId(QWidget* Widget) const
+swObjectPropertyId swPropertiesWidget::GetKeyFrameWidgetPropertyId(QWidget* Widget) const
 {
 	if (!Widget)
-		return lcObjectPropertyId::Count;
+		return swObjectPropertyId::Count;
 
 	for (size_t Index = 0; Index < mPropertyWidgets.size(); Index++)
 		if (mPropertyWidgets[Index].KeyFrame == Widget)
-			return static_cast<lcObjectPropertyId>(Index);
+			return static_cast<swObjectPropertyId>(Index);
 
-	return lcObjectPropertyId::Count;
+	return swObjectPropertyId::Count;
 }
 
-bool lcPropertiesWidget::event(QEvent* Event)
+bool swPropertiesWidget::event(QEvent* Event)
 {
 	const bool Result = QWidget::event(Event);
 
@@ -76,7 +76,7 @@ bool lcPropertiesWidget::event(QEvent* Event)
 
 
 
-void lcPropertiesWidget::CategoryStateChanged(bool Expanded)
+void swPropertiesWidget::CategoryStateChanged(bool Expanded)
 {
 	QObject* Button = sender();
 
@@ -93,15 +93,15 @@ void lcPropertiesWidget::CategoryStateChanged(bool Expanded)
 
 
 
-void lcPropertiesWidget::KeyFrameChanged()
+void swPropertiesWidget::KeyFrameChanged()
 {
 	QCheckBox* Widget = qobject_cast<QCheckBox*>(sender());
-	lcObjectPropertyId PropertyId = GetKeyFrameWidgetPropertyId(Widget);
+	swObjectPropertyId PropertyId = GetKeyFrameWidgetPropertyId(Widget);
 
-	if (PropertyId == lcObjectPropertyId::Count)
+	if (PropertyId == swObjectPropertyId::Count)
 		return;
 
-	lcModel* Model = gMainWindow->GetActiveModel();
+	swModel* Model = gMainWindow->GetActiveModel();
 
 	if (!Model)
 		return;
@@ -112,18 +112,18 @@ void lcPropertiesWidget::KeyFrameChanged()
 		Model->SetObjectsKeyFrame(mSelection, PropertyId, Widget->isChecked());
 }
 
-void lcPropertiesWidget::UpdateKeyFrameWidget(lcObjectPropertyId PropertyId)
+void swPropertiesWidget::UpdateKeyFrameWidget(swObjectPropertyId PropertyId)
 {
-	lcKeyFrameWidget* Widget = mPropertyWidgets[static_cast<int>(PropertyId)].KeyFrame;
+	swKeyFrameWidget* Widget = mPropertyWidgets[static_cast<int>(PropertyId)].KeyFrame;
 
 	if (Widget)
 	{
 		QSignalBlocker Blocker(Widget);
-		lcModel* Model = gMainWindow->GetActiveModel();
+		swModel* Model = gMainWindow->GetActiveModel();
 
 		if (Model)
 		{
-			const lcStep Step = Model->GetCurrentStep();
+			const swStep Step = Model->GetCurrentStep();
 
 			if (mFocusObject)
 				Widget->setChecked(mFocusObject->HasKeyFrame(PropertyId, Step));
@@ -131,7 +131,7 @@ void lcPropertiesWidget::UpdateKeyFrameWidget(lcObjectPropertyId PropertyId)
 			{
 				int KeyFrameCount = 0, NonKeyFrameCount = 0;
 
-				for (const lcObject* Object : mSelection)
+				for (const swObject* Object : mSelection)
 				{
 					if (Object->HasKeyFrame(PropertyId, Step))
 						KeyFrameCount++;
@@ -150,7 +150,7 @@ void lcPropertiesWidget::UpdateKeyFrameWidget(lcObjectPropertyId PropertyId)
 
 
 
-std::pair<QVariant, bool> lcPropertiesWidget::GetUpdateValue(lcObjectPropertyId PropertyId)
+std::pair<QVariant, bool> swPropertiesWidget::GetUpdateValue(swObjectPropertyId PropertyId)
 {
 	QVariant Value;
 	bool Partial = false;
@@ -161,7 +161,7 @@ std::pair<QVariant, bool> lcPropertiesWidget::GetUpdateValue(lcObjectPropertyId 
 	{
 		bool First = true;
 
-		for (const lcObject* Object : mSelection)
+		for (const swObject* Object : mSelection)
 		{
 			const QVariant ObjectValue = Object->GetPropertyValue(PropertyId);
 
@@ -181,24 +181,24 @@ std::pair<QVariant, bool> lcPropertiesWidget::GetUpdateValue(lcObjectPropertyId 
 	return { Value, Partial };
 }
 
-void lcPropertiesWidget::BoolChanged()
+void swPropertiesWidget::BoolChanged()
 {
 	QAbstractButton* Widget = qobject_cast<QAbstractButton*>(sender());
-	lcObjectPropertyId PropertyId = GetEditorWidgetPropertyId(Widget);
+	swObjectPropertyId PropertyId = GetEditorWidgetPropertyId(Widget);
 
-	if (PropertyId == lcObjectPropertyId::Count)
+	if (PropertyId == swObjectPropertyId::Count)
 		return;
 
-	lcModel* Model = gMainWindow->GetActiveModel();
+	swModel* Model = gMainWindow->GetActiveModel();
 
 	if (!Model)
 		return;
 
 	const bool Value = Widget->isChecked();
-	Model->SetObjectsProperty(mFocusObject ? std::vector<lcObject*>{ mFocusObject } : mSelection, PropertyId, Value);
+	Model->SetObjectsProperty(mFocusObject ? std::vector<swObject*>{ mFocusObject } : mSelection, PropertyId, Value);
 }
 
-void lcPropertiesWidget::UpdateBool(lcObjectPropertyId PropertyId)
+void swPropertiesWidget::UpdateBool(swObjectPropertyId PropertyId)
 {
 	QAbstractButton* Button = qobject_cast<QAbstractButton*>(mPropertyWidgets[static_cast<int>(PropertyId)].Editor);
 
@@ -219,29 +219,29 @@ void lcPropertiesWidget::UpdateBool(lcObjectPropertyId PropertyId)
 }
 
 
-void lcPropertiesWidget::FloatEditingStarted()
+void swPropertiesWidget::FloatEditingStarted()
 {
-	lcDoubleSpinBox* Widget = qobject_cast<lcDoubleSpinBox*>(sender());
-	lcObjectPropertyId PropertyId = GetEditorWidgetPropertyId(Widget);
+	swDoubleSpinBox* Widget = qobject_cast<swDoubleSpinBox*>(sender());
+	swObjectPropertyId PropertyId = GetEditorWidgetPropertyId(Widget);
 
-	if (PropertyId == lcObjectPropertyId::Count)
+	if (PropertyId == swObjectPropertyId::Count)
 		return;
 
-	lcModel* Model = gMainWindow->GetActiveModel();
+	swModel* Model = gMainWindow->GetActiveModel();
 
 	if (Model)
 		Model->BeginPropertyEdit(PropertyId);
 }
 
-void lcPropertiesWidget::FloatEditingFinished()
+void swPropertiesWidget::FloatEditingFinished()
 {
-	lcDoubleSpinBox* Widget = qobject_cast<lcDoubleSpinBox*>(sender());
-	lcObjectPropertyId PropertyId = GetEditorWidgetPropertyId(Widget);
+	swDoubleSpinBox* Widget = qobject_cast<swDoubleSpinBox*>(sender());
+	swObjectPropertyId PropertyId = GetEditorWidgetPropertyId(Widget);
 
-	if (PropertyId == lcObjectPropertyId::Count)
+	if (PropertyId == swObjectPropertyId::Count)
 		return;
 
-	lcModel* Model = gMainWindow->GetActiveModel();
+	swModel* Model = gMainWindow->GetActiveModel();
 
 	if (!Model)
 		return;
@@ -249,15 +249,15 @@ void lcPropertiesWidget::FloatEditingFinished()
 	Model->EndPropertyEdit(PropertyId, true);
 }
 
-void lcPropertiesWidget::FloatEditingCanceled()
+void swPropertiesWidget::FloatEditingCanceled()
 {
-	lcDoubleSpinBox* Widget = qobject_cast<lcDoubleSpinBox*>(sender());
-	lcObjectPropertyId PropertyId = GetEditorWidgetPropertyId(Widget);
+	swDoubleSpinBox* Widget = qobject_cast<swDoubleSpinBox*>(sender());
+	swObjectPropertyId PropertyId = GetEditorWidgetPropertyId(Widget);
 
-	if (PropertyId == lcObjectPropertyId::Count)
+	if (PropertyId == swObjectPropertyId::Count)
 		return;
 
-	lcModel* Model = gMainWindow->GetActiveModel();
+	swModel* Model = gMainWindow->GetActiveModel();
 
 	if (!Model)
 		return;
@@ -265,194 +265,194 @@ void lcPropertiesWidget::FloatEditingCanceled()
 	Model->EndPropertyEdit(PropertyId, false);
 }
 
-void lcPropertiesWidget::FloatChanged(double Value)
+void swPropertiesWidget::FloatChanged(double Value)
 {
-	lcDoubleSpinBox* Widget = qobject_cast<lcDoubleSpinBox*>(sender());
-	lcObjectPropertyId PropertyId = GetEditorWidgetPropertyId(Widget);
+	swDoubleSpinBox* Widget = qobject_cast<swDoubleSpinBox*>(sender());
+	swObjectPropertyId PropertyId = GetEditorWidgetPropertyId(Widget);
 
 	ChangeFloatValue(PropertyId, Value);
 }
 
-void lcPropertiesWidget::ChangeFloatValue(lcObjectPropertyId PropertyId, float Value)
+void swPropertiesWidget::ChangeFloatValue(swObjectPropertyId PropertyId, float Value)
 {
-	if (PropertyId == lcObjectPropertyId::Count)
+	if (PropertyId == swObjectPropertyId::Count)
 		return;
 
-	lcModel* Model = gMainWindow->GetActiveModel();
+	swModel* Model = gMainWindow->GetActiveModel();
 
 	if (!Model)
 		return;
 
-	lcPiece* Piece = dynamic_cast<lcPiece*>(mFocusObject);
-	lcCamera* Camera = dynamic_cast<lcCamera*>(mFocusObject);
-	lcLight* Light = dynamic_cast<lcLight*>(mFocusObject);
+	swPiece* Piece = dynamic_cast<swPiece*>(mFocusObject);
+	swCamera* Camera = dynamic_cast<swCamera*>(mFocusObject);
+	swLight* Light = dynamic_cast<swLight*>(mFocusObject);
 
 	mDisableUpdates = true;
 
-	if (PropertyId == lcObjectPropertyId::ObjectPositionX || PropertyId == lcObjectPropertyId::ObjectPositionY || PropertyId == lcObjectPropertyId::ObjectPositionZ)
+	if (PropertyId == swObjectPropertyId::ObjectPositionX || PropertyId == swObjectPropertyId::ObjectPositionY || PropertyId == swObjectPropertyId::ObjectPositionZ)
 	{
-		lcVector3 Center;
-		lcMatrix33 RelativeRotation;
+		swVector3 Center;
+		swMatrix33 RelativeRotation;
 		Model->GetMoveRotateTransform(Center, RelativeRotation);
-		lcVector3 Position = Center;
+		swVector3 Position = Center;
 
-		if (PropertyId == lcObjectPropertyId::ObjectPositionX)
+		if (PropertyId == swObjectPropertyId::ObjectPositionX)
 			Position[0] = Value;
-		else if (PropertyId == lcObjectPropertyId::ObjectPositionY)
+		else if (PropertyId == swObjectPropertyId::ObjectPositionY)
 			Position[1] = Value;
-		else if (PropertyId == lcObjectPropertyId::ObjectPositionZ)
+		else if (PropertyId == swObjectPropertyId::ObjectPositionZ)
 			Position[2] = Value;
 
-		lcVector3 Distance = Position - Center;
+		swVector3 Distance = Position - Center;
 
-		Model->MoveSelectedObjects(Distance, lcModelTransformFlag::FirstMove, lcModelHistoryEditMerge::PropertiesMove);
+		Model->MoveSelectedObjects(Distance, swModelTransformFlag::FirstMove, swModelHistoryEditMerge::PropertiesMove);
 	}
-	else if (PropertyId == lcObjectPropertyId::ObjectRotationX || PropertyId == lcObjectPropertyId::ObjectRotationY || PropertyId == lcObjectPropertyId::ObjectRotationZ)
+	else if (PropertyId == swObjectPropertyId::ObjectRotationX || PropertyId == swObjectPropertyId::ObjectRotationY || PropertyId == swObjectPropertyId::ObjectRotationZ)
 	{
-		lcVector3 InitialRotation(0.0f, 0.0f, 0.0f);
+		swVector3 InitialRotation(0.0f, 0.0f, 0.0f);
 
 		if (mLastRotation)
 			InitialRotation = mLastRotation.value();
 		else if (Piece)
-			InitialRotation = lcMatrix44ToEulerAngles(Piece->mModelWorld) * LC_RTOD;
+			InitialRotation = swMatrix44ToEulerAngles(Piece->mModelWorld) * SW_RTOD;
 		else if (Light)
-			InitialRotation = lcMatrix44ToEulerAngles(Light->GetWorldMatrix()) * LC_RTOD;
+			InitialRotation = swMatrix44ToEulerAngles(Light->GetWorldMatrix()) * SW_RTOD;
 
-		lcVector3 Rotation = InitialRotation;
+		swVector3 Rotation = InitialRotation;
 
-		if (PropertyId == lcObjectPropertyId::ObjectRotationX)
+		if (PropertyId == swObjectPropertyId::ObjectRotationX)
 			Rotation[0] = Value;
-		else if (PropertyId == lcObjectPropertyId::ObjectRotationY)
+		else if (PropertyId == swObjectPropertyId::ObjectRotationY)
 			Rotation[1] = Value;
-		else if (PropertyId == lcObjectPropertyId::ObjectRotationZ)
+		else if (PropertyId == swObjectPropertyId::ObjectRotationZ)
 			Rotation[2] = Value;
 
-		Model->RotateSelectedObjects(Rotation - InitialRotation, lcModelTransformFlag::Relative, lcModelHistoryEditMerge::PropertiesRotate);
+		Model->RotateSelectedObjects(Rotation - InitialRotation, swModelTransformFlag::Relative, swModelHistoryEditMerge::PropertiesRotate);
 
 		mLastRotation = Rotation;
 	}
-	else if (PropertyId == lcObjectPropertyId::CameraPositionX || PropertyId == lcObjectPropertyId::CameraPositionY || PropertyId == lcObjectPropertyId::CameraPositionZ)
+	else if (PropertyId == swObjectPropertyId::CameraPositionX || PropertyId == swObjectPropertyId::CameraPositionY || PropertyId == swObjectPropertyId::CameraPositionZ)
 	{
-		quint32 FocusSection = LC_CAMERA_SECTION_INVALID;
-		lcVector3 Start;
+		quint32 FocusSection = SW_CAMERA_SECTION_INVALID;
+		swVector3 Start;
 
 		if (Camera)
 		{
 			FocusSection = Camera->GetFocusSection();
 			Camera->SetFocused(FocusSection, false);
-			Camera->SetFocused(LC_CAMERA_SECTION_POSITION, true);
+			Camera->SetFocused(SW_CAMERA_SECTION_POSITION, true);
 
 			Start = Camera->mPosition;
 		}
 		else
 		{
-			Start = lcVector3(0.0f, 0.0f, 0.0f);
+			Start = swVector3(0.0f, 0.0f, 0.0f);
 		}
 
-		lcVector3 End = Start;
+		swVector3 End = Start;
 
-		if (PropertyId == lcObjectPropertyId::CameraPositionX)
+		if (PropertyId == swObjectPropertyId::CameraPositionX)
 			End[0] = Value;
-		else if (PropertyId == lcObjectPropertyId::CameraPositionY)
+		else if (PropertyId == swObjectPropertyId::CameraPositionY)
 			End[1] = Value;
-		else if (PropertyId == lcObjectPropertyId::CameraPositionZ)
+		else if (PropertyId == swObjectPropertyId::CameraPositionZ)
 			End[2] = Value;
 
-		lcVector3 Distance = End - Start;
+		swVector3 Distance = End - Start;
 
-		Model->MoveSelectedObjects(Distance, lcModelTransformFlag::FirstMove, lcModelHistoryEditMerge::PropertiesMove);
+		Model->MoveSelectedObjects(Distance, swModelTransformFlag::FirstMove, swModelHistoryEditMerge::PropertiesMove);
 
 		if (Camera)
 		{
-			Camera->SetFocused(LC_CAMERA_SECTION_POSITION, false);
+			Camera->SetFocused(SW_CAMERA_SECTION_POSITION, false);
 			Camera->SetFocused(FocusSection, true);
 		}
 	}
-	else if (PropertyId == lcObjectPropertyId::CameraTargetX || PropertyId == lcObjectPropertyId::CameraTargetY || PropertyId == lcObjectPropertyId::CameraTargetZ)
+	else if (PropertyId == swObjectPropertyId::CameraTargetX || PropertyId == swObjectPropertyId::CameraTargetY || PropertyId == swObjectPropertyId::CameraTargetZ)
 	{
-		quint32 FocusSection = LC_CAMERA_SECTION_INVALID;
-		lcVector3 Start;
+		quint32 FocusSection = SW_CAMERA_SECTION_INVALID;
+		swVector3 Start;
 
 		if (Camera)
 		{
 			FocusSection = Camera->GetFocusSection();
 			Camera->SetFocused(FocusSection, false);
-			Camera->SetFocused(LC_CAMERA_SECTION_TARGET, true);
+			Camera->SetFocused(SW_CAMERA_SECTION_TARGET, true);
 
 			Start = Camera->mTargetPosition;
 		}
 		else
 		{
-			Start = lcVector3(0.0f, 0.0f, 0.0f);
+			Start = swVector3(0.0f, 0.0f, 0.0f);
 		}
 
-		lcVector3 End = Start;
+		swVector3 End = Start;
 
-		if (PropertyId == lcObjectPropertyId::CameraTargetX)
+		if (PropertyId == swObjectPropertyId::CameraTargetX)
 			End[0] = Value;
-		else if (PropertyId == lcObjectPropertyId::CameraTargetY)
+		else if (PropertyId == swObjectPropertyId::CameraTargetY)
 			End[1] = Value;
-		else if (PropertyId == lcObjectPropertyId::CameraTargetZ)
+		else if (PropertyId == swObjectPropertyId::CameraTargetZ)
 			End[2] = Value;
 
-		lcVector3 Distance = End - Start;
+		swVector3 Distance = End - Start;
 
-		Model->MoveSelectedObjects(Distance, lcModelTransformFlag::FirstMove, lcModelHistoryEditMerge::PropertiesMove);
+		Model->MoveSelectedObjects(Distance, swModelTransformFlag::FirstMove, swModelHistoryEditMerge::PropertiesMove);
 
 		if (Camera)
 		{
-			Camera->SetFocused(LC_CAMERA_SECTION_TARGET, false);
+			Camera->SetFocused(SW_CAMERA_SECTION_TARGET, false);
 			Camera->SetFocused(FocusSection, true);
 		}
 	}
-	else if (PropertyId == lcObjectPropertyId::CameraUpX || PropertyId == lcObjectPropertyId::CameraUpY || PropertyId == lcObjectPropertyId::CameraUpZ)
+	else if (PropertyId == swObjectPropertyId::CameraUpX || PropertyId == swObjectPropertyId::CameraUpY || PropertyId == swObjectPropertyId::CameraUpZ)
 	{
-		quint32 FocusSection = LC_CAMERA_SECTION_INVALID;
-		lcVector3 Start;
+		quint32 FocusSection = SW_CAMERA_SECTION_INVALID;
+		swVector3 Start;
 
 		if (Camera)
 		{
 			FocusSection = Camera->GetFocusSection();
 			Camera->SetFocused(FocusSection, false);
-			Camera->SetFocused(LC_CAMERA_SECTION_UPVECTOR, true);
+			Camera->SetFocused(SW_CAMERA_SECTION_UPVECTOR, true);
 
 			Start = Camera->mUpVector;
 		}
 		else
 		{
-			Start = lcVector3(0.0f, 0.0f, 0.0f);
+			Start = swVector3(0.0f, 0.0f, 0.0f);
 		}
 
-		lcVector3 End = Start;
+		swVector3 End = Start;
 
-		if (PropertyId == lcObjectPropertyId::CameraUpX)
+		if (PropertyId == swObjectPropertyId::CameraUpX)
 			End[0] = Value;
-		else if (PropertyId == lcObjectPropertyId::CameraUpY)
+		else if (PropertyId == swObjectPropertyId::CameraUpY)
 			End[1] = Value;
-		else if (PropertyId == lcObjectPropertyId::CameraUpZ)
+		else if (PropertyId == swObjectPropertyId::CameraUpZ)
 			End[2] = Value;
 
-		lcVector3 Distance = End - Start;
+		swVector3 Distance = End - Start;
 
-		Model->MoveSelectedObjects(Distance, lcModelTransformFlag::FirstMove, lcModelHistoryEditMerge::PropertiesMove);
+		Model->MoveSelectedObjects(Distance, swModelTransformFlag::FirstMove, swModelHistoryEditMerge::PropertiesMove);
 
 		if (Camera)
 		{
-			Camera->SetFocused(LC_CAMERA_SECTION_UPVECTOR, false);
+			Camera->SetFocused(SW_CAMERA_SECTION_UPVECTOR, false);
 			Camera->SetFocused(FocusSection, true);
 		}
 	}
 	else
 	{
-		Model->SetObjectsProperty(mFocusObject ? std::vector<lcObject*>{ mFocusObject } : mSelection, PropertyId, Value);
+		Model->SetObjectsProperty(mFocusObject ? std::vector<swObject*>{ mFocusObject } : mSelection, PropertyId, Value);
 	}
 
 	mDisableUpdates = false;
 }
 
-void lcPropertiesWidget::UpdateFloat(lcObjectPropertyId PropertyId, float Value)
+void swPropertiesWidget::UpdateFloat(swObjectPropertyId PropertyId, float Value)
 {
-	lcDoubleSpinBox* Widget = qobject_cast<lcDoubleSpinBox*>(mPropertyWidgets[static_cast<int>(PropertyId)].Editor);
+	swDoubleSpinBox* Widget = qobject_cast<swDoubleSpinBox*>(mPropertyWidgets[static_cast<int>(PropertyId)].Editor);
 
 	if (Widget)
 	{
@@ -460,76 +460,76 @@ void lcPropertiesWidget::UpdateFloat(lcObjectPropertyId PropertyId, float Value)
 
 		switch (PropertyId)
 		{
-		case lcObjectPropertyId::PieceId:
-		case lcObjectPropertyId::PieceColor:
-		case lcObjectPropertyId::PieceStepShow:
-		case lcObjectPropertyId::PieceStepHide:
-		case lcObjectPropertyId::CameraName:
-		case lcObjectPropertyId::CameraProjection:
+		case swObjectPropertyId::PieceId:
+		case swObjectPropertyId::PieceColor:
+		case swObjectPropertyId::PieceStepShow:
+		case swObjectPropertyId::PieceStepHide:
+		case swObjectPropertyId::CameraName:
+		case swObjectPropertyId::CameraProjection:
 			break;
 
-		case lcObjectPropertyId::CameraFOV:
-		case lcObjectPropertyId::CameraNear:
-		case lcObjectPropertyId::CameraFar:
-			Widget->SetSnap(lcFloatPropertySnap::Auto);
+		case swObjectPropertyId::CameraFOV:
+		case swObjectPropertyId::CameraNear:
+		case swObjectPropertyId::CameraFar:
+			Widget->SetSnap(swFloatPropertySnap::Auto);
 			break;
 
-		case lcObjectPropertyId::CameraPositionX:
-		case lcObjectPropertyId::CameraPositionY:
-		case lcObjectPropertyId::CameraPositionZ:
-		case lcObjectPropertyId::CameraTargetX:
-		case lcObjectPropertyId::CameraTargetY:
-		case lcObjectPropertyId::CameraTargetZ:
-			Widget->SetSnap(lcFloatPropertySnap::Position);
+		case swObjectPropertyId::CameraPositionX:
+		case swObjectPropertyId::CameraPositionY:
+		case swObjectPropertyId::CameraPositionZ:
+		case swObjectPropertyId::CameraTargetX:
+		case swObjectPropertyId::CameraTargetY:
+		case swObjectPropertyId::CameraTargetZ:
+			Widget->SetSnap(swFloatPropertySnap::Position);
 			break;
 
-		case lcObjectPropertyId::CameraUpX:
-		case lcObjectPropertyId::CameraUpY:
-		case lcObjectPropertyId::CameraUpZ:
-			Widget->SetSnap(lcFloatPropertySnap::Auto);
+		case swObjectPropertyId::CameraUpX:
+		case swObjectPropertyId::CameraUpY:
+		case swObjectPropertyId::CameraUpZ:
+			Widget->SetSnap(swFloatPropertySnap::Auto);
 			break;
 
-		case lcObjectPropertyId::LightName:
-		case lcObjectPropertyId::LightType:
-		case lcObjectPropertyId::LightColor:
+		case swObjectPropertyId::LightName:
+		case swObjectPropertyId::LightType:
+		case swObjectPropertyId::LightColor:
 			break;
 
-		case lcObjectPropertyId::LightBlenderPower:
-		case lcObjectPropertyId::LightPOVRayPower:
-		case lcObjectPropertyId::LightCastShadow:
-		case lcObjectPropertyId::LightPOVRayFadeDistance:
-		case lcObjectPropertyId::LightPOVRayFadePower:
-		case lcObjectPropertyId::LightBlenderRadius:
-		case lcObjectPropertyId::LightBlenderAngle:
-		case lcObjectPropertyId::LightAreaSizeX:
-		case lcObjectPropertyId::LightAreaSizeY:
-		case lcObjectPropertyId::LightSpotConeAngle:
-		case lcObjectPropertyId::LightSpotPenumbraAngle:
-		case lcObjectPropertyId::LightPOVRaySpotTightness:
-			Widget->SetSnap(lcFloatPropertySnap::Auto);
+		case swObjectPropertyId::LightBlenderPower:
+		case swObjectPropertyId::LightPOVRayPower:
+		case swObjectPropertyId::LightCastShadow:
+		case swObjectPropertyId::LightPOVRayFadeDistance:
+		case swObjectPropertyId::LightPOVRayFadePower:
+		case swObjectPropertyId::LightBlenderRadius:
+		case swObjectPropertyId::LightBlenderAngle:
+		case swObjectPropertyId::LightAreaSizeX:
+		case swObjectPropertyId::LightAreaSizeY:
+		case swObjectPropertyId::LightSpotConeAngle:
+		case swObjectPropertyId::LightSpotPenumbraAngle:
+		case swObjectPropertyId::LightPOVRaySpotTightness:
+			Widget->SetSnap(swFloatPropertySnap::Auto);
 			break;
 
-		case lcObjectPropertyId::LightAreaShape:
-		case lcObjectPropertyId::LightPOVRayAreaGridX:
-		case lcObjectPropertyId::LightPOVRayAreaGridY:
+		case swObjectPropertyId::LightAreaShape:
+		case swObjectPropertyId::LightPOVRayAreaGridX:
+		case swObjectPropertyId::LightPOVRayAreaGridY:
 			break;
 
-		case lcObjectPropertyId::ObjectPositionX:
-		case lcObjectPropertyId::ObjectPositionY:
-			Widget->SetSnap(mLayoutMode == LayoutMode::Piece ? lcFloatPropertySnap::PiecePositionXY : lcFloatPropertySnap::Position);
+		case swObjectPropertyId::ObjectPositionX:
+		case swObjectPropertyId::ObjectPositionY:
+			Widget->SetSnap(mLayoutMode == LayoutMode::Piece ? swFloatPropertySnap::PiecePositionXY : swFloatPropertySnap::Position);
 			break;
 
-		case lcObjectPropertyId::ObjectPositionZ:
-			Widget->SetSnap(mLayoutMode == LayoutMode::Piece ? lcFloatPropertySnap::PiecePositionZ : lcFloatPropertySnap::Position);
+		case swObjectPropertyId::ObjectPositionZ:
+			Widget->SetSnap(mLayoutMode == LayoutMode::Piece ? swFloatPropertySnap::PiecePositionZ : swFloatPropertySnap::Position);
 			break;
 
-		case lcObjectPropertyId::ObjectRotationX:
-		case lcObjectPropertyId::ObjectRotationY:
-		case lcObjectPropertyId::ObjectRotationZ:
-			Widget->SetSnap(lcFloatPropertySnap::Rotation);
+		case swObjectPropertyId::ObjectRotationX:
+		case swObjectPropertyId::ObjectRotationY:
+		case swObjectPropertyId::ObjectRotationZ:
+			Widget->SetSnap(swFloatPropertySnap::Rotation);
 			break;
 
-		case lcObjectPropertyId::Count:
+		case swObjectPropertyId::Count:
 			break;
 		}
 
@@ -542,24 +542,24 @@ void lcPropertiesWidget::UpdateFloat(lcObjectPropertyId PropertyId, float Value)
 
 
 
-void lcPropertiesWidget::IntegerChanged()
+void swPropertiesWidget::IntegerChanged()
 {
 	QSpinBox* SpinBox = qobject_cast<QSpinBox*>(sender());
-	lcObjectPropertyId PropertyId = GetEditorWidgetPropertyId(SpinBox);
+	swObjectPropertyId PropertyId = GetEditorWidgetPropertyId(SpinBox);
 
-	if (PropertyId == lcObjectPropertyId::Count)
+	if (PropertyId == swObjectPropertyId::Count)
 		return;
 
-	lcModel* Model = gMainWindow->GetActiveModel();
+	swModel* Model = gMainWindow->GetActiveModel();
 
 	// The value below the range only stands for differing values.
 	if (!Model || (SpinBox->value() == SpinBox->minimum() && !SpinBox->specialValueText().isEmpty()))
 		return;
 
-	Model->SetObjectsProperty(mFocusObject ? std::vector<lcObject*>{ mFocusObject } : mSelection, PropertyId, SpinBox->value());
+	Model->SetObjectsProperty(mFocusObject ? std::vector<swObject*>{ mFocusObject } : mSelection, PropertyId, SpinBox->value());
 }
 
-void lcPropertiesWidget::UpdateInteger(lcObjectPropertyId PropertyId)
+void swPropertiesWidget::UpdateInteger(swObjectPropertyId PropertyId)
 {
 	QSpinBox* SpinBox = qobject_cast<QSpinBox*>(mPropertyWidgets[static_cast<int>(PropertyId)].Editor);
 
@@ -592,37 +592,37 @@ void lcPropertiesWidget::UpdateInteger(lcObjectPropertyId PropertyId)
 }
 
 
-void lcPropertiesWidget::StepNumberChanged()
+void swPropertiesWidget::StepNumberChanged()
 {
 	QLineEdit* Widget = qobject_cast<QLineEdit*>(sender());
-	lcObjectPropertyId PropertyId = GetEditorWidgetPropertyId(Widget);
+	swObjectPropertyId PropertyId = GetEditorWidgetPropertyId(Widget);
 
-	if (PropertyId == lcObjectPropertyId::Count)
+	if (PropertyId == swObjectPropertyId::Count)
 		return;
 
-	lcModel* Model = gMainWindow->GetActiveModel();
+	swModel* Model = gMainWindow->GetActiveModel();
 
 	if (!Model)
 		return;
 
 	bool Ok = true;
 	QString Text = Widget->text();
-	lcStep Step = Text.isEmpty() && PropertyId == lcObjectPropertyId::PieceStepHide ? LC_STEP_MAX : Widget->validator()->locale().toUInt(Text, &Ok);
+	swStep Step = Text.isEmpty() && PropertyId == swObjectPropertyId::PieceStepHide ? SW_STEP_MAX : Widget->validator()->locale().toUInt(Text, &Ok);
 
 	if (!Ok || !Widget->hasAcceptableInput())
 		return;
 
-	if (PropertyId == lcObjectPropertyId::PieceStepShow)
+	if (PropertyId == swObjectPropertyId::PieceStepShow)
 	{
 		Model->SetSelectedPiecesStepShow(Step);
 	}
-	else if (PropertyId == lcObjectPropertyId::PieceStepHide)
+	else if (PropertyId == swObjectPropertyId::PieceStepHide)
 	{
 		Model->SetSelectedPiecesStepHide(Step);
 	}
 }
 
-void lcPropertiesWidget::UpdateStepNumber(lcObjectPropertyId PropertyId, lcStep Step, lcStep Min, lcStep Max)
+void swPropertiesWidget::UpdateStepNumber(swObjectPropertyId PropertyId, swStep Step, swStep Min, swStep Max)
 {
 	QLineEdit* Widget = qobject_cast<QLineEdit*>(mPropertyWidgets[static_cast<int>(PropertyId)].Editor);
 
@@ -630,8 +630,8 @@ void lcPropertiesWidget::UpdateStepNumber(lcObjectPropertyId PropertyId, lcStep 
 	{
 		QSignalBlocker Blocker(Widget);
 
-		Widget->setValidator(new lcStepValidator(Min, Max, PropertyId == lcObjectPropertyId::PieceStepHide, Widget));
-		Widget->setText(Step == LC_STEP_MAX ? QString() : lcFormatIntegerLocalized(Step, Widget->validator()->locale()));
+		Widget->setValidator(new swStepValidator(Min, Max, PropertyId == swObjectPropertyId::PieceStepHide, Widget));
+		Widget->setText(Step == SW_STEP_MAX ? QString() : swFormatIntegerLocalized(Step, Widget->validator()->locale()));
 	}
 
 	UpdateKeyFrameWidget(PropertyId);
@@ -642,24 +642,24 @@ void lcPropertiesWidget::UpdateStepNumber(lcObjectPropertyId PropertyId, lcStep 
 
 
 
-void lcPropertiesWidget::StringChanged()
+void swPropertiesWidget::StringChanged()
 {
 	QLineEdit* LineEdit = qobject_cast<QLineEdit*>(sender());
-	lcObjectPropertyId PropertyId = GetEditorWidgetPropertyId(LineEdit);
+	swObjectPropertyId PropertyId = GetEditorWidgetPropertyId(LineEdit);
 
-	if (PropertyId == lcObjectPropertyId::Count)
+	if (PropertyId == swObjectPropertyId::Count)
 		return;
 
-	lcModel* Model = gMainWindow->GetActiveModel();
+	swModel* Model = gMainWindow->GetActiveModel();
 
 	if (!Model)
 		return;
 
 	QString Value = LineEdit->text();
-	Model->SetObjectsProperty(mFocusObject ? std::vector<lcObject*>{ mFocusObject } : mSelection, PropertyId, Value);
+	Model->SetObjectsProperty(mFocusObject ? std::vector<swObject*>{ mFocusObject } : mSelection, PropertyId, Value);
 }
 
-void lcPropertiesWidget::UpdateString(lcObjectPropertyId PropertyId)
+void swPropertiesWidget::UpdateString(swObjectPropertyId PropertyId)
 {
 	QLineEdit* LineEdit = qobject_cast<QLineEdit*>(mPropertyWidgets[static_cast<int>(PropertyId)].Editor);
 
@@ -687,23 +687,23 @@ void lcPropertiesWidget::UpdateString(lcObjectPropertyId PropertyId)
 }
 
 
-void lcPropertiesWidget::StringListChanged(int Value)
+void swPropertiesWidget::StringListChanged(int Value)
 {
 	QComboBox* ComboBox = qobject_cast<QComboBox*>(sender());
-	lcObjectPropertyId PropertyId = GetEditorWidgetPropertyId(ComboBox);
+	swObjectPropertyId PropertyId = GetEditorWidgetPropertyId(ComboBox);
 
-	if (PropertyId == lcObjectPropertyId::Count)
+	if (PropertyId == swObjectPropertyId::Count)
 		return;
 
-	lcModel* Model = gMainWindow->GetActiveModel();
+	swModel* Model = gMainWindow->GetActiveModel();
 
 	if (!Model)
 		return;
 
-	Model->SetObjectsProperty(mFocusObject ? std::vector<lcObject*>{ mFocusObject } : mSelection, PropertyId, Value);
+	Model->SetObjectsProperty(mFocusObject ? std::vector<swObject*>{ mFocusObject } : mSelection, PropertyId, Value);
 }
 
-void lcPropertiesWidget::UpdateStringList(lcObjectPropertyId PropertyId)
+void swPropertiesWidget::UpdateStringList(swObjectPropertyId PropertyId)
 {
 	QComboBox* ComboBox = qobject_cast<QComboBox*>(mPropertyWidgets[static_cast<int>(PropertyId)].Editor);
 
@@ -736,12 +736,12 @@ void lcPropertiesWidget::UpdateStringList(lcObjectPropertyId PropertyId)
 }
 
 
-void lcPropertiesWidget::ColorButtonClicked()
+void swPropertiesWidget::ColorButtonClicked()
 {
 	QToolButton* ColorButton = qobject_cast<QToolButton*>(sender());
-	lcObjectPropertyId PropertyId = GetEditorWidgetPropertyId(ColorButton);
+	swObjectPropertyId PropertyId = GetEditorWidgetPropertyId(ColorButton);
 
-	if (PropertyId == lcObjectPropertyId::Count)
+	if (PropertyId == swObjectPropertyId::Count)
 		return;
 
 	QVariant Value;
@@ -749,42 +749,42 @@ void lcPropertiesWidget::ColorButtonClicked()
 
 	std::tie(Value, Partial) = GetUpdateValue(PropertyId);
 
-	QColor InitialColor = Partial ? QColor(128, 128, 128) : lcQColorFromVector3(Value.value<lcVector3>());
+	QColor InitialColor = Partial ? QColor(128, 128, 128) : swQColorFromVector3(Value.value<swVector3>());
 
 	QMenu* Menu = new QMenu(ColorButton);
 
 	QWidgetAction* Action = new QWidgetAction(Menu);
-	lcColorDialogPopup *Popup = new lcColorDialogPopup(InitialColor, Menu);
+	swColorDialogPopup *Popup = new swColorDialogPopup(InitialColor, Menu);
 	Action->setDefaultWidget(Popup);
 	Menu->addAction(Action);
 
-	connect(Popup, &lcColorDialogPopup::ColorSelected, this, &lcPropertiesWidget::ColorChanged);
+	connect(Popup, &swColorDialogPopup::ColorSelected, this, &swPropertiesWidget::ColorChanged);
 
 	Menu->exec(ColorButton->mapToGlobal(ColorButton->rect().bottomLeft()));
 
 	delete Menu;
 }
 
-void lcPropertiesWidget::ColorChanged(QColor Color)
+void swPropertiesWidget::ColorChanged(QColor Color)
 {
-	lcColorDialogPopup* Popup = qobject_cast<lcColorDialogPopup*>(sender());
+	swColorDialogPopup* Popup = qobject_cast<swColorDialogPopup*>(sender());
 	QMenu* Menu = qobject_cast<QMenu*>(Popup->parent());
 	QToolButton* ColorButton = qobject_cast<QToolButton*>(Menu->parent());
-	lcObjectPropertyId PropertyId = GetEditorWidgetPropertyId(ColorButton);
+	swObjectPropertyId PropertyId = GetEditorWidgetPropertyId(ColorButton);
 
 	if (!Color.isValid())
 		return;
 
-	lcModel* Model = gMainWindow->GetActiveModel();
+	swModel* Model = gMainWindow->GetActiveModel();
 
 	if (!Model)
 		return;
 
-	const lcVector3 FloatColor = lcVector3FromQColor(Color);
-	Model->SetObjectsProperty(mFocusObject ? std::vector<lcObject*>{ mFocusObject } : mSelection, PropertyId, QVariant::fromValue<lcVector3>(FloatColor));
+	const swVector3 FloatColor = swVector3FromQColor(Color);
+	Model->SetObjectsProperty(mFocusObject ? std::vector<swObject*>{ mFocusObject } : mSelection, PropertyId, QVariant::fromValue<swVector3>(FloatColor));
 }
 
-void lcPropertiesWidget::UpdateColor(lcObjectPropertyId PropertyId)
+void swPropertiesWidget::UpdateColor(swObjectPropertyId PropertyId)
 {
 	QToolButton* ColorButton = qobject_cast<QToolButton*>(mPropertyWidgets[static_cast<int>(PropertyId)].Editor);
 
@@ -797,7 +797,7 @@ void lcPropertiesWidget::UpdateColor(lcObjectPropertyId PropertyId)
 
 	std::tie(Value, Partial) = GetUpdateValue(PropertyId);
 
-	QColor Color = Partial ? QColor(128, 128, 128) : lcQColorFromVector3(Value.value<lcVector3>());
+	QColor Color = Partial ? QColor(128, 128, 128) : swQColorFromVector3(Value.value<swVector3>());
 
 	// The color shows in the light block so the name stays centered like the piece color.
 	mIdentityBlocks[static_cast<int>(IdentityIndex::Light)].Color = Color;
@@ -809,30 +809,30 @@ void lcPropertiesWidget::UpdateColor(lcObjectPropertyId PropertyId)
 }
 
 
-void lcPropertiesWidget::PieceColorChanged(int ColorIndex)
+void swPropertiesWidget::PieceColorChanged(int ColorIndex)
 {
-	lcColorPickerPopup* Popup = qobject_cast<lcColorPickerPopup*>(sender());
+	swColorPickerPopup* Popup = qobject_cast<swColorPickerPopup*>(sender());
 	QMenu* Menu = qobject_cast<QMenu*>(Popup->parent());
 	QToolButton* ColorButton = qobject_cast<QToolButton*>(Menu->parent());
-	lcObjectPropertyId PropertyId = GetEditorWidgetPropertyId(ColorButton);
+	swObjectPropertyId PropertyId = GetEditorWidgetPropertyId(ColorButton);
 
 	Menu->close();
 
-	if (PropertyId == lcObjectPropertyId::Count)
+	if (PropertyId == swObjectPropertyId::Count)
 		return;
 
-	lcModel* Model = gMainWindow->GetActiveModel();
+	swModel* Model = gMainWindow->GetActiveModel();
 
 	if (!Model)
 		return;
 
-	Model->SetObjectsProperty(mFocusObject ? std::vector<lcObject*>{ mFocusObject } : mSelection, PropertyId, ColorIndex);
+	Model->SetObjectsProperty(mFocusObject ? std::vector<swObject*>{ mFocusObject } : mSelection, PropertyId, ColorIndex);
 }
 
-void lcPropertiesWidget::PieceColorButtonClicked()
+void swPropertiesWidget::PieceColorButtonClicked()
 {
 	QToolButton* ColorButton = qobject_cast<QToolButton*>(sender());
-	lcObjectPropertyId PropertyId = GetEditorWidgetPropertyId(ColorButton);
+	swObjectPropertyId PropertyId = GetEditorWidgetPropertyId(ColorButton);
 
 	if (!ColorButton)
 		return;
@@ -847,18 +847,18 @@ void lcPropertiesWidget::PieceColorButtonClicked()
 	QMenu* Menu = new QMenu(ColorButton);
 
 	QWidgetAction* Action = new QWidgetAction(Menu);
-	lcColorPickerPopup* Popup = new lcColorPickerPopup(Menu, ColorIndex);
+	swColorPickerPopup* Popup = new swColorPickerPopup(Menu, ColorIndex);
 	Action->setDefaultWidget(Popup);
 	Menu->addAction(Action);
 
-	connect(Popup, &lcColorPickerPopup::Selected, this, &lcPropertiesWidget::PieceColorChanged);
+	connect(Popup, &swColorPickerPopup::Selected, this, &swPropertiesWidget::PieceColorChanged);
 
 	Menu->exec(ColorButton->mapToGlobal(ColorButton->rect().bottomLeft()));
 
 	delete Menu;
 }
 
-void lcPropertiesWidget::UpdatePieceColor(lcObjectPropertyId PropertyId)
+void swPropertiesWidget::UpdatePieceColor(swObjectPropertyId PropertyId)
 {
 	QToolButton* ColorButton = qobject_cast<QToolButton*>(mPropertyWidgets[static_cast<int>(PropertyId)].Editor);
 
@@ -894,9 +894,9 @@ void lcPropertiesWidget::UpdatePieceColor(lcObjectPropertyId PropertyId)
 }
 
 
-void lcPropertiesWidget::UpdatePieceId(lcObjectPropertyId PropertyId)
+void swPropertiesWidget::UpdatePieceId(swObjectPropertyId PropertyId)
 {
-	lcElidableToolButton* PieceIdButton = qobject_cast<lcElidableToolButton*>(mPropertyWidgets[static_cast<int>(PropertyId)].Editor);
+	swElidableToolButton* PieceIdButton = qobject_cast<swElidableToolButton*>(mPropertyWidgets[static_cast<int>(PropertyId)].Editor);
 
 	if (!PieceIdButton)
 		return;
@@ -907,7 +907,7 @@ void lcPropertiesWidget::UpdatePieceId(lcObjectPropertyId PropertyId)
 
 	std::tie(Value, Partial) = GetUpdateValue(PropertyId);
 
-	lcPieceData* PieceData = static_cast<lcPieceData*>(Value.value<void*>());
+	swPieceData* PieceData = static_cast<swPieceData*>(Value.value<void*>());
 
 	if (Partial)
 		PieceIdButton->setText(tr("Multiple Pieces"));
@@ -919,10 +919,10 @@ void lcPropertiesWidget::UpdatePieceId(lcObjectPropertyId PropertyId)
 	UpdateKeyFrameWidget(PropertyId);
 }
 
-void lcPropertiesWidget::PieceIdButtonClicked()
+void swPropertiesWidget::PieceIdButtonClicked()
 {
 	QToolButton* PieceIdButton = qobject_cast<QToolButton*>(sender());
-	lcObjectPropertyId PropertyId = GetEditorWidgetPropertyId(PieceIdButton);
+	swObjectPropertyId PropertyId = GetEditorWidgetPropertyId(PieceIdButton);
 
 	if (!PieceIdButton)
 		return;
@@ -932,29 +932,29 @@ void lcPropertiesWidget::PieceIdButtonClicked()
 
 	std::tie(Value, Partial) = GetUpdateValue(PropertyId);
 
-	lcPieceData* PieceData = Partial ? nullptr : static_cast<lcPieceData*>(Value.value<void*>());
+	swPieceData* PieceData = Partial ? nullptr : static_cast<swPieceData*>(Value.value<void*>());
 
-	std::tie(Value, Partial) = GetUpdateValue(lcObjectPropertyId::PieceColor);
+	std::tie(Value, Partial) = GetUpdateValue(swObjectPropertyId::PieceColor);
 
 	int ColorIndex = Partial ? gDefaultColor : Value.toInt();
 
-	std::optional<lcPieceData*> Result = lcShowPartSelectionPopup(PieceData, std::vector<std::pair<lcPieceData*, std::string>>(), ColorIndex, PieceIdButton, PieceIdButton->mapToGlobal(PieceIdButton->rect().bottomLeft()));
+	std::optional<swPieceData*> Result = swShowPartSelectionPopup(PieceData, std::vector<std::pair<swPieceData*, std::string>>(), ColorIndex, PieceIdButton, PieceIdButton->mapToGlobal(PieceIdButton->rect().bottomLeft()));
 
 	if (Result.has_value())
 	{
-		lcModel* Model = gMainWindow->GetActiveModel();
+		swModel* Model = gMainWindow->GetActiveModel();
 		PieceData = Result.value();
 
 		if (!Model || !PieceData)
 			return;
 
-		Model->SetObjectsProperty(mFocusObject ? std::vector<lcObject*>{ mFocusObject } : mSelection, PropertyId, QVariant::fromValue<void*>(PieceData));
+		Model->SetObjectsProperty(mFocusObject ? std::vector<swObject*>{ mFocusObject } : mSelection, PropertyId, QVariant::fromValue<void*>(PieceData));
 	}
 }
 
 
 
-bool lcPropertiesWidget::HasVisibleRows() const
+bool swPropertiesWidget::HasVisibleRows() const
 {
 	// Only the scrolling rows count, the identity and transform rows sit outside the list.
 	for (int Index = 0; Index < mSettingsLayout->count(); Index++)
@@ -968,7 +968,7 @@ bool lcPropertiesWidget::HasVisibleRows() const
 	return false;
 }
 
-bool lcPropertiesWidget::eventFilter(QObject* Object, QEvent* Event)
+bool swPropertiesWidget::eventFilter(QObject* Object, QEvent* Event)
 {
 	// The identity and transform rows sit outside the list, so their changes also resize the panel.
 	if ((Object == mIdentityRows || Object == mTransformRows) && Event->type() == QEvent::LayoutRequest)
@@ -997,7 +997,7 @@ bool lcPropertiesWidget::eventFilter(QObject* Object, QEvent* Event)
 	return QWidget::eventFilter(Object, Event);
 }
 
-void lcPropertiesWidget::UpdateIdentityBlock(IdentityBlock& Block)
+void swPropertiesWidget::UpdateIdentityBlock(IdentityBlock& Block)
 {
 	if (!Block.Swatch)
 		return;
@@ -1024,7 +1024,7 @@ void lcPropertiesWidget::UpdateIdentityBlock(IdentityBlock& Block)
 	}
 
 	const QRect SwatchRect(FirstSlot->mapTo(mIdentityRows, QPoint(0, 0)), LastSlot->mapTo(mIdentityRows, LastSlot->rect().bottomRight()));
-	const int Inset = lcGetLayoutSpacing(this, Qt::Horizontal);
+	const int Inset = swGetLayoutSpacing(this, Qt::Horizontal);
 	const QSize IconSize = (SwatchRect.size() - QSize(Inset, Inset)).expandedTo(QSize(1, 1));
 
 	Block.Swatch->setGeometry(SwatchRect);
@@ -1043,7 +1043,7 @@ void lcPropertiesWidget::UpdateIdentityBlock(IdentityBlock& Block)
 	Block.Swatch->raise();
 }
 
-void lcPropertiesWidget::UpdateRowVisible(QWidget* Row)
+void swPropertiesWidget::UpdateRowVisible(QWidget* Row)
 {
 	if (!Row)
 		return;
@@ -1058,7 +1058,7 @@ void lcPropertiesWidget::UpdateRowVisible(QWidget* Row)
 	Row->setVisible(Visible);
 }
 
-void lcPropertiesWidget::AddCategory(CategoryIndex Index, const QString& Title, bool Collapsible)
+void swPropertiesWidget::AddCategory(CategoryIndex Index, const QString& Title, bool Collapsible)
 {
 	mCurrentCategory = &mCategoryWidgets[static_cast<int>(Index)];
 	mCurrentCategory->Category = Index;
@@ -1069,17 +1069,17 @@ void lcPropertiesWidget::AddCategory(CategoryIndex Index, const QString& Title, 
 	if (!Collapsible)
 		return;
 
-	lcCollapsibleWidgetButton* CategoryButton = new lcCollapsibleWidgetButton(Title, this);
+	swCollapsibleWidgetButton* CategoryButton = new swCollapsibleWidgetButton(Title, this);
 	CategoryButton->setToolTip(tr("Expand or collapse the %1 properties.").arg(Title));
 
 	mCurrentCategory->Button = CategoryButton;
 
-	connect(CategoryButton, &lcCollapsibleWidgetButton::StateChanged, this, &lcPropertiesWidget::CategoryStateChanged);
+	connect(CategoryButton, &swCollapsibleWidgetButton::StateChanged, this, &swPropertiesWidget::CategoryStateChanged);
 
 	mSettingsLayout->addWidget(CategoryButton);
 }
 
-void lcPropertiesWidget::RegisterEditor(lcObjectPropertyId PropertyId, QWidget* Editor, const QString& Name, const QString& ToolTip)
+void swPropertiesWidget::RegisterEditor(swObjectPropertyId PropertyId, QWidget* Editor, const QString& Name, const QString& ToolTip)
 {
 	Editor->setToolTip(ToolTip);
 	Editor->setAccessibleName(Name);
@@ -1089,21 +1089,21 @@ void lcPropertiesWidget::RegisterEditor(lcObjectPropertyId PropertyId, QWidget* 
 	mPropertyWidgets[static_cast<int>(PropertyId)].Category = mCurrentCategory->Category;
 }
 
-lcKeyFrameWidget* lcPropertiesWidget::CreateKeyFrameWidget(lcObjectPropertyId PropertyId)
+swKeyFrameWidget* swPropertiesWidget::CreateKeyFrameWidget(swObjectPropertyId PropertyId)
 {
-	lcKeyFrameWidget* Widget = new lcKeyFrameWidget(this);
+	swKeyFrameWidget* Widget = new swKeyFrameWidget(this);
 	Widget->setToolTip(tr("Toggle Keyframe"));
 
-	connect(Widget, &QCheckBox::stateChanged, this, &lcPropertiesWidget::KeyFrameChanged);
+	connect(Widget, &QCheckBox::stateChanged, this, &swPropertiesWidget::KeyFrameChanged);
 
 	mPropertyWidgets[static_cast<int>(PropertyId)].KeyFrame = Widget;
 
 	return Widget;
 }
 
-lcDoubleSpinBox* lcPropertiesWidget::CreateFloatEditor(lcObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip, float Min, float Max, bool ShowName, const QString& Suffix)
+swDoubleSpinBox* swPropertiesWidget::CreateFloatEditor(swObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip, float Min, float Max, bool ShowName, const QString& Suffix)
 {
-	lcDoubleSpinBox* Widget = new lcDoubleSpinBox(this);
+	swDoubleSpinBox* Widget = new swDoubleSpinBox(this);
 	RegisterEditor(PropertyId, Widget, Name, ToolTip);
 
 	Widget->setRange(Min, Max);
@@ -1113,137 +1113,137 @@ lcDoubleSpinBox* lcPropertiesWidget::CreateFloatEditor(lcObjectPropertyId Proper
 		Widget->setPrefix(Name + QLatin1Char(' '));
 
 	Widget->setSuffix(Suffix);
-	lcSetupPanelSpinBox(Widget);
+	swSetupPanelSpinBox(Widget);
 
-	connect(Widget, &lcDoubleSpinBox::EditingStarted, this, &lcPropertiesWidget::FloatEditingStarted);
-	connect(Widget, &lcDoubleSpinBox::EditingCanceled, this, &lcPropertiesWidget::FloatEditingCanceled);
-	connect(Widget, &lcDoubleSpinBox::EditingFinished, this, &lcPropertiesWidget::FloatEditingFinished);
+	connect(Widget, &swDoubleSpinBox::EditingStarted, this, &swPropertiesWidget::FloatEditingStarted);
+	connect(Widget, &swDoubleSpinBox::EditingCanceled, this, &swPropertiesWidget::FloatEditingCanceled);
+	connect(Widget, &swDoubleSpinBox::EditingFinished, this, &swPropertiesWidget::FloatEditingFinished);
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-	connect(Widget, QOverload<double>::of(&lcDoubleSpinBox::valueChanged), this, &lcPropertiesWidget::FloatChanged);
+	connect(Widget, QOverload<double>::of(&swDoubleSpinBox::valueChanged), this, &swPropertiesWidget::FloatChanged);
 #else
-	connect(Widget, &lcDoubleSpinBox::valueChanged, this, &lcPropertiesWidget::FloatChanged);
+	connect(Widget, &swDoubleSpinBox::valueChanged, this, &swPropertiesWidget::FloatChanged);
 #endif
 
 	return Widget;
 }
 
-QSpinBox* lcPropertiesWidget::CreateIntegerEditor(lcObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip, int Min, int Max)
+QSpinBox* swPropertiesWidget::CreateIntegerEditor(swObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip, int Min, int Max)
 {
 	QSpinBox* Widget = new QSpinBox(this);
 	RegisterEditor(PropertyId, Widget, Name, ToolTip);
 
 	Widget->setRange(Min, Max);
 	Widget->setPrefix(Name + QLatin1Char(' '));
-	lcSetupPanelSpinBox(Widget);
+	swSetupPanelSpinBox(Widget);
 
 	// Applied on every change like the other value boxes, so the arrows take effect at once.
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-	connect(Widget, QOverload<int>::of(&QSpinBox::valueChanged), this, &lcPropertiesWidget::IntegerChanged);
+	connect(Widget, QOverload<int>::of(&QSpinBox::valueChanged), this, &swPropertiesWidget::IntegerChanged);
 #else
-	connect(Widget, &QSpinBox::valueChanged, this, &lcPropertiesWidget::IntegerChanged);
+	connect(Widget, &QSpinBox::valueChanged, this, &swPropertiesWidget::IntegerChanged);
 #endif
 
 	return Widget;
 }
 
-QLineEdit* lcPropertiesWidget::CreateStepNumberEditor(lcObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip)
+QLineEdit* swPropertiesWidget::CreateStepNumberEditor(swObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip)
 {
 	QLineEdit* Widget = new QLineEdit(this);
 	RegisterEditor(PropertyId, Widget, Name, ToolTip);
 	Widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	lcSetupPanelEdit(Widget);
+	swSetupPanelEdit(Widget);
 
-	connect(Widget, &QLineEdit::editingFinished, this, &lcPropertiesWidget::StepNumberChanged);
+	connect(Widget, &QLineEdit::editingFinished, this, &swPropertiesWidget::StepNumberChanged);
 
 	// An empty removal step keeps the piece for the rest of the model.
-	if (PropertyId == lcObjectPropertyId::PieceStepHide)
+	if (PropertyId == swObjectPropertyId::PieceStepHide)
 		Widget->setPlaceholderText(tr("Never"));
 
 	return Widget;
 }
 
-QLineEdit* lcPropertiesWidget::CreateStringEditor(lcObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip)
+QLineEdit* swPropertiesWidget::CreateStringEditor(swObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip)
 {
 	QLineEdit* Widget = new QLineEdit(this);
 	RegisterEditor(PropertyId, Widget, Name, ToolTip);
 	Widget->setPlaceholderText(Name);
 	Widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	lcSetupPanelEdit(Widget);
+	swSetupPanelEdit(Widget);
 
-	connect(Widget, &QLineEdit::editingFinished, this, &lcPropertiesWidget::StringChanged);
+	connect(Widget, &QLineEdit::editingFinished, this, &swPropertiesWidget::StringChanged);
 
 	return Widget;
 }
 
-QComboBox* lcPropertiesWidget::CreateStringListEditor(lcObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip, const QStringList& Strings)
+QComboBox* swPropertiesWidget::CreateStringListEditor(swObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip, const QStringList& Strings)
 {
 	QComboBox* Widget = new QComboBox(this);
 	RegisterEditor(PropertyId, Widget, Name, ToolTip);
 	Widget->addItems(Strings);
 	Widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	lcSetupPanelEdit(Widget);
+	swSetupPanelEdit(Widget);
 
-	connect(Widget, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &lcPropertiesWidget::StringListChanged);
+	connect(Widget, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &swPropertiesWidget::StringListChanged);
 
 	return Widget;
 }
 
-QToolButton* lcPropertiesWidget::CreateColorEditor(lcObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip)
+QToolButton* swPropertiesWidget::CreateColorEditor(swObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip)
 {
 	QToolButton* Widget = new QToolButton(this);
 	RegisterEditor(PropertyId, Widget, Name, ToolTip);
 	Widget->setToolButtonStyle(Qt::ToolButtonTextOnly);
-	lcSetupPanelButton(Widget);
+	swSetupPanelButton(Widget);
 	Widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-	connect(Widget, &QToolButton::clicked, this, &lcPropertiesWidget::ColorButtonClicked);
+	connect(Widget, &QToolButton::clicked, this, &swPropertiesWidget::ColorButtonClicked);
 
 	return Widget;
 }
 
-QToolButton* lcPropertiesWidget::CreateToggleEditor(lcObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip)
+QToolButton* swPropertiesWidget::CreateToggleEditor(swObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip)
 {
 	QToolButton* Widget = new QToolButton(this);
 	RegisterEditor(PropertyId, Widget, Name, ToolTip);
 	Widget->setText(Name);
 	Widget->setCheckable(true);
 	Widget->setToolButtonStyle(Qt::ToolButtonTextOnly);
-	lcSetupPanelButton(Widget);
+	swSetupPanelButton(Widget);
 	Widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-	connect(Widget, &QToolButton::toggled, this, &lcPropertiesWidget::BoolChanged);
+	connect(Widget, &QToolButton::toggled, this, &swPropertiesWidget::BoolChanged);
 
 	return Widget;
 }
 
-QToolButton* lcPropertiesWidget::CreatePieceIdEditor(lcObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip)
+QToolButton* swPropertiesWidget::CreatePieceIdEditor(swObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip)
 {
-	lcElidableToolButton* Widget = new lcElidableToolButton(this);
+	swElidableToolButton* Widget = new swElidableToolButton(this);
 	RegisterEditor(PropertyId, Widget, Name, ToolTip);
 	Widget->setToolButtonStyle(Qt::ToolButtonTextOnly);
-	lcSetupPanelButton(Widget);
+	swSetupPanelButton(Widget);
 	Widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-	connect(Widget, &QToolButton::clicked, this, &lcPropertiesWidget::PieceIdButtonClicked);
+	connect(Widget, &QToolButton::clicked, this, &swPropertiesWidget::PieceIdButtonClicked);
 
 	return Widget;
 }
 
-QToolButton* lcPropertiesWidget::CreatePieceColorEditor(lcObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip)
+QToolButton* swPropertiesWidget::CreatePieceColorEditor(swObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip)
 {
 	QToolButton* Widget = new QToolButton(this);
 	RegisterEditor(PropertyId, Widget, Name, ToolTip);
 	Widget->setToolButtonStyle(Qt::ToolButtonTextOnly);
-	lcSetupPanelButton(Widget);
+	swSetupPanelButton(Widget);
 	Widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-	connect(Widget, &QToolButton::clicked, this, &lcPropertiesWidget::PieceColorButtonClicked);
+	connect(Widget, &QToolButton::clicked, this, &swPropertiesWidget::PieceColorButtonClicked);
 
 	return Widget;
 }
 
-QToolButton* lcPropertiesWidget::CreateRowNameButton(QWidget* Row, const QString& Letter, const QString& Name)
+QToolButton* swPropertiesWidget::CreateRowNameButton(QWidget* Row, const QString& Letter, const QString& Name)
 {
 	// A button with a letter for the row takes the place of the transform button so the boxes line up.
 	QToolButton* NameButton = new QToolButton(Row);
@@ -1251,16 +1251,16 @@ QToolButton* lcPropertiesWidget::CreateRowNameButton(QWidget* Row, const QString
 	NameButton->setToolTip(Name);
 	NameButton->setAccessibleName(Name);
 	NameButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
-	lcAddPanelRowWidget(Row, NameButton);
-	lcSetupPanelButton(NameButton);
-	NameButton->setFixedSize(lcGetPanelButtonSize());
+	swAddPanelRowWidget(Row, NameButton);
+	swSetupPanelButton(NameButton);
+	NameButton->setFixedSize(swGetPanelButtonSize());
 
 	return NameButton;
 }
 
-QWidget* lcPropertiesWidget::AddValueRow(QWidget* Container, const QString& Letter, const QString& Name, const std::vector<RowEditor>& Editors)
+QWidget* swPropertiesWidget::AddValueRow(QWidget* Container, const QString& Letter, const QString& Name, const std::vector<RowEditor>& Editors)
 {
-	QWidget* Row = lcCreatePanelRow(Container);
+	QWidget* Row = swCreatePanelRow(Container);
 	Container->layout()->addWidget(Row);
 
 	CreateRowNameButton(Row, Letter, Name);
@@ -1268,17 +1268,17 @@ QWidget* lcPropertiesWidget::AddValueRow(QWidget* Container, const QString& Lett
 	for (const RowEditor& Editor : Editors)
 	{
 		Editor.Editor->setParent(Row);
-		lcAddPanelRowWidget(Row, Editor.Editor);
+		swAddPanelRowWidget(Row, Editor.Editor);
 		mPropertyWidgets[static_cast<int>(GetEditorWidgetPropertyId(Editor.Editor))].Row = Row;
 
-		if (Editor.KeyFrameId != lcObjectPropertyId::Count)
-			lcAddPanelRowWidget(Row, CreateKeyFrameWidget(Editor.KeyFrameId));
+		if (Editor.KeyFrameId != swObjectPropertyId::Count)
+			swAddPanelRowWidget(Row, CreateKeyFrameWidget(Editor.KeyFrameId));
 	}
 
 	return Row;
 }
 
-void lcPropertiesWidget::AddVectorRow(QWidget* Container, const std::array<lcObjectPropertyId, 3>& PropertyIds, const QString& Letter, const QString& Name, const QString& ToolTip, bool SupportsKeyFrames, float Min, float Max)
+void swPropertiesWidget::AddVectorRow(QWidget* Container, const std::array<swObjectPropertyId, 3>& PropertyIds, const QString& Letter, const QString& Name, const QString& ToolTip, bool SupportsKeyFrames, float Min, float Max)
 {
 	// The X, Y and Z values share a row with one keyframe since they are keyed together.
 	const QString AxisNames[3] = { tr("X"), tr("Y"), tr("Z") };
@@ -1286,34 +1286,34 @@ void lcPropertiesWidget::AddVectorRow(QWidget* Container, const std::array<lcObj
 
 	for (int Axis = 0; Axis < 3; Axis++)
 	{
-		lcDoubleSpinBox* Widget = CreateFloatEditor(PropertyIds[Axis], tr("%1 %2").arg(Name, AxisNames[Axis]), tr("%1 (%2)").arg(ToolTip, AxisNames[Axis]), Min, Max, false);
-		Editors.push_back({ Widget, Axis == 2 && SupportsKeyFrames ? PropertyIds[0] : lcObjectPropertyId::Count });
+		swDoubleSpinBox* Widget = CreateFloatEditor(PropertyIds[Axis], tr("%1 %2").arg(Name, AxisNames[Axis]), tr("%1 (%2)").arg(ToolTip, AxisNames[Axis]), Min, Max, false);
+		Editors.push_back({ Widget, Axis == 2 && SupportsKeyFrames ? PropertyIds[0] : swObjectPropertyId::Count });
 	}
 
 	AddValueRow(Container, Letter, Name, Editors);
 }
 
-void lcPropertiesWidget::AddIdentityRow(IdentityIndex Index, QWidget* Editor, lcObjectPropertyId KeyFrameId)
+void swPropertiesWidget::AddIdentityRow(IdentityIndex Index, QWidget* Editor, swObjectPropertyId KeyFrameId)
 {
 	// A full width row without a name, the block on the left spans the slots of all the identity rows of the object.
 	IdentityBlock& Block = mIdentityBlocks[static_cast<int>(Index)];
-	QWidget* Row = lcCreatePanelRow(mIdentityRows);
+	QWidget* Row = swCreatePanelRow(mIdentityRows);
 	mIdentityRows->layout()->addWidget(Row);
 
 	QWidget* Slot = new QWidget(Row);
-	Slot->setFixedSize(lcGetPanelButtonSize());
-	lcAddPanelRowWidget(Row, Slot);
+	Slot->setFixedSize(swGetPanelButtonSize());
+	swAddPanelRowWidget(Row, Slot);
 	Row->installEventFilter(this);
 	Block.Slots.push_back(Slot);
 
 	Editor->setParent(Row);
-	lcAddPanelRowWidget(Row, Editor);
+	swAddPanelRowWidget(Row, Editor);
 
-	const lcObjectPropertyId PropertyId = GetEditorWidgetPropertyId(Editor);
+	const swObjectPropertyId PropertyId = GetEditorWidgetPropertyId(Editor);
 	mPropertyWidgets[static_cast<int>(PropertyId)].Row = Row;
 
-	if (KeyFrameId != lcObjectPropertyId::Count)
-		lcAddPanelRowWidget(Row, CreateKeyFrameWidget(KeyFrameId));
+	if (KeyFrameId != swObjectPropertyId::Count)
+		swAddPanelRowWidget(Row, CreateKeyFrameWidget(KeyFrameId));
 
 	if (!Block.Swatch)
 	{
@@ -1325,7 +1325,7 @@ void lcPropertiesWidget::AddIdentityRow(IdentityIndex Index, QWidget* Editor, lc
 	}
 
 	// Objects with a color open the same color choice from the block.
-	if (PropertyId == lcObjectPropertyId::PieceColor || PropertyId == lcObjectPropertyId::LightColor)
+	if (PropertyId == swObjectPropertyId::PieceColor || PropertyId == swObjectPropertyId::LightColor)
 	{
 		Block.Swatch->setAttribute(Qt::WA_TransparentForMouseEvents, false);
 		Block.Swatch->setToolTip(Editor->toolTip());
@@ -1334,7 +1334,7 @@ void lcPropertiesWidget::AddIdentityRow(IdentityIndex Index, QWidget* Editor, lc
 	}
 }
 
-void lcPropertiesWidget::CreateWidgets()
+void swPropertiesWidget::CreateWidgets()
 {
 	// The rows sit in the panel layout, which provides the margins.
 	mSettingsLayout = new QVBoxLayout(this);
@@ -1356,97 +1356,97 @@ void lcPropertiesWidget::CreateWidgets()
 
 	AddCategory(CategoryIndex::Piece, tr("Piece"), false);
 
-	AddIdentityRow(IdentityIndex::Piece, CreatePieceIdEditor(lcObjectPropertyId::PieceId, tr("Piece"), tr("Piece ID")));
-	AddIdentityRow(IdentityIndex::Piece, CreatePieceColorEditor(lcObjectPropertyId::PieceColor, tr("Color"), tr("Piece color")));
+	AddIdentityRow(IdentityIndex::Piece, CreatePieceIdEditor(swObjectPropertyId::PieceId, tr("Piece"), tr("Piece ID")));
+	AddIdentityRow(IdentityIndex::Piece, CreatePieceColorEditor(swObjectPropertyId::PieceColor, tr("Color"), tr("Piece color")));
 
 	AddValueRow(mStepRows, tr("S"), tr("Steps"),
 	{
-		{ CreateStepNumberEditor(lcObjectPropertyId::PieceStepShow, tr("Added in Step"), tr("Added in Step: Step when the piece is added to the model")) },
-		{ CreateStepNumberEditor(lcObjectPropertyId::PieceStepHide, tr("Removed in Step"), tr("Removed in Step: Step when the piece is removed from the model, leave empty to keep it until the end")) }
+		{ CreateStepNumberEditor(swObjectPropertyId::PieceStepShow, tr("Added in Step"), tr("Added in Step: Step when the piece is added to the model")) },
+		{ CreateStepNumberEditor(swObjectPropertyId::PieceStepHide, tr("Removed in Step"), tr("Removed in Step: Step when the piece is removed from the model, leave empty to keep it until the end")) }
 	});
 
 	AddCategory(CategoryIndex::Camera, tr("Camera"), false);
 
-	AddIdentityRow(IdentityIndex::Camera, CreateStringEditor(lcObjectPropertyId::CameraName, tr("Name"), tr("Camera name")));
-	AddIdentityRow(IdentityIndex::Camera, CreateStringListEditor(lcObjectPropertyId::CameraProjection, tr("Projection"), tr("Camera projection"), lcCamera::GetCameraProjectionStrings()));
+	AddIdentityRow(IdentityIndex::Camera, CreateStringEditor(swObjectPropertyId::CameraName, tr("Name"), tr("Camera name")));
+	AddIdentityRow(IdentityIndex::Camera, CreateStringListEditor(swObjectPropertyId::CameraProjection, tr("Projection"), tr("Camera projection"), swCamera::GetCameraProjectionStrings()));
 
 	AddValueRow(this, tr("F"), tr("Field of View and Clipping"),
 	{
-		{ CreateFloatEditor(lcObjectPropertyId::CameraFOV, tr("FOV"), tr("Field of view in degrees"), 0.1f, 179.9f, true, tr("°")) },
-		{ CreateFloatEditor(lcObjectPropertyId::CameraNear, tr("Near"), tr("Near clipping distance"), 0.1f, FLT_MAX, true) },
-		{ CreateFloatEditor(lcObjectPropertyId::CameraFar, tr("Far"), tr("Far clipping distance"), 0.1f, FLT_MAX, true) }
+		{ CreateFloatEditor(swObjectPropertyId::CameraFOV, tr("FOV"), tr("Field of view in degrees"), 0.1f, 179.9f, true, tr("°")) },
+		{ CreateFloatEditor(swObjectPropertyId::CameraNear, tr("Near"), tr("Near clipping distance"), 0.1f, FLT_MAX, true) },
+		{ CreateFloatEditor(swObjectPropertyId::CameraFar, tr("Far"), tr("Far clipping distance"), 0.1f, FLT_MAX, true) }
 	});
 
 	AddCategory(CategoryIndex::CameraTransform, tr("Transform"), false);
 
-	AddVectorRow(mTransformRows, { lcObjectPropertyId::CameraPositionX, lcObjectPropertyId::CameraPositionY, lcObjectPropertyId::CameraPositionZ }, tr("P"), tr("Position"), tr("Camera position"), true, -FLT_MAX, FLT_MAX);
-	AddVectorRow(mTransformRows, { lcObjectPropertyId::CameraTargetX, lcObjectPropertyId::CameraTargetY, lcObjectPropertyId::CameraTargetZ }, tr("L"), tr("Look At"), tr("Camera target position"), true, -FLT_MAX, FLT_MAX);
-	AddVectorRow(mTransformRows, { lcObjectPropertyId::CameraUpX, lcObjectPropertyId::CameraUpY, lcObjectPropertyId::CameraUpZ }, tr("U"), tr("Up"), tr("Camera up direction"), true, -FLT_MAX, FLT_MAX);
+	AddVectorRow(mTransformRows, { swObjectPropertyId::CameraPositionX, swObjectPropertyId::CameraPositionY, swObjectPropertyId::CameraPositionZ }, tr("P"), tr("Position"), tr("Camera position"), true, -FLT_MAX, FLT_MAX);
+	AddVectorRow(mTransformRows, { swObjectPropertyId::CameraTargetX, swObjectPropertyId::CameraTargetY, swObjectPropertyId::CameraTargetZ }, tr("L"), tr("Look At"), tr("Camera target position"), true, -FLT_MAX, FLT_MAX);
+	AddVectorRow(mTransformRows, { swObjectPropertyId::CameraUpX, swObjectPropertyId::CameraUpY, swObjectPropertyId::CameraUpZ }, tr("U"), tr("Up"), tr("Camera up direction"), true, -FLT_MAX, FLT_MAX);
 
 	AddCategory(CategoryIndex::Light, tr("Light"), false);
 
-	AddIdentityRow(IdentityIndex::Light, CreateStringEditor(lcObjectPropertyId::LightName, tr("Name"), tr("Light name")));
-	AddIdentityRow(IdentityIndex::Light, CreateStringListEditor(lcObjectPropertyId::LightType, tr("Type"), tr("Light type"), lcLight::GetLightTypeStrings()));
-	AddIdentityRow(IdentityIndex::Light, CreateStringListEditor(lcObjectPropertyId::LightAreaShape, tr("Area Shape"), tr("The shape of the area light"), lcLight::GetAreaShapeStrings()));
-	AddIdentityRow(IdentityIndex::Light, CreateColorEditor(lcObjectPropertyId::LightColor, tr("Color"), tr("Light color")), lcObjectPropertyId::LightColor);
-	AddIdentityRow(IdentityIndex::Light, CreateToggleEditor(lcObjectPropertyId::LightCastShadow, tr("Cast Shadow"), tr("Cast a shadow from this light")));
+	AddIdentityRow(IdentityIndex::Light, CreateStringEditor(swObjectPropertyId::LightName, tr("Name"), tr("Light name")));
+	AddIdentityRow(IdentityIndex::Light, CreateStringListEditor(swObjectPropertyId::LightType, tr("Type"), tr("Light type"), swLight::GetLightTypeStrings()));
+	AddIdentityRow(IdentityIndex::Light, CreateStringListEditor(swObjectPropertyId::LightAreaShape, tr("Area Shape"), tr("The shape of the area light"), swLight::GetAreaShapeStrings()));
+	AddIdentityRow(IdentityIndex::Light, CreateColorEditor(swObjectPropertyId::LightColor, tr("Color"), tr("Light color")), swObjectPropertyId::LightColor);
+	AddIdentityRow(IdentityIndex::Light, CreateToggleEditor(swObjectPropertyId::LightCastShadow, tr("Cast Shadow"), tr("Cast a shadow from this light")));
 
 	AddValueRow(this, tr("A"), tr("Spotlight Angles"),
 	{
-		{ CreateFloatEditor(lcObjectPropertyId::LightSpotConeAngle, tr("Cone"), tr("Angle in degrees of the spotlight's beam"), 0.0f, 179.9f, true, tr("°")), lcObjectPropertyId::LightSpotConeAngle },
-		{ CreateFloatEditor(lcObjectPropertyId::LightSpotPenumbraAngle, tr("Penumbra"), tr("Angle in degrees over which the intensity of the spotlight falls off to zero"), 0.0f, 179.9f, true, tr("°")), lcObjectPropertyId::LightSpotPenumbraAngle }
+		{ CreateFloatEditor(swObjectPropertyId::LightSpotConeAngle, tr("Cone"), tr("Angle in degrees of the spotlight's beam"), 0.0f, 179.9f, true, tr("°")), swObjectPropertyId::LightSpotConeAngle },
+		{ CreateFloatEditor(swObjectPropertyId::LightSpotPenumbraAngle, tr("Penumbra"), tr("Angle in degrees over which the intensity of the spotlight falls off to zero"), 0.0f, 179.9f, true, tr("°")), swObjectPropertyId::LightSpotPenumbraAngle }
 	});
 
 	AddValueRow(this, tr("S"), tr("Area Size"),
 	{
-		{ CreateFloatEditor(lcObjectPropertyId::LightAreaSizeX, tr("Size X"), tr("The width of the area light"), 0.0f, FLT_MAX, true), lcObjectPropertyId::LightAreaSizeX },
-		{ CreateFloatEditor(lcObjectPropertyId::LightAreaSizeY, tr("Y"), tr("The height of the area light"), 0.0f, FLT_MAX, true), lcObjectPropertyId::LightAreaSizeY }
+		{ CreateFloatEditor(swObjectPropertyId::LightAreaSizeX, tr("Size X"), tr("The width of the area light"), 0.0f, FLT_MAX, true), swObjectPropertyId::LightAreaSizeX },
+		{ CreateFloatEditor(swObjectPropertyId::LightAreaSizeY, tr("Y"), tr("The height of the area light"), 0.0f, FLT_MAX, true), swObjectPropertyId::LightAreaSizeY }
 	});
 
 	AddCategory(CategoryIndex::LightBlender, tr("Blender Settings"), true);
 
 	AddValueRow(this, tr("B"), tr("Blender"),
 	{
-		{ CreateFloatEditor(lcObjectPropertyId::LightBlenderPower, tr("Power"), tr("Power of the light in watts"), 0.0f, FLT_MAX, true, tr(" W")), lcObjectPropertyId::LightBlenderPower },
-		{ CreateFloatEditor(lcObjectPropertyId::LightBlenderRadius, tr("Radius"), tr("Shadow soft size"), 0.0f, FLT_MAX, true), lcObjectPropertyId::LightBlenderRadius },
-		{ CreateFloatEditor(lcObjectPropertyId::LightBlenderAngle, tr("Angle"), tr("Angular diameter of the light"), 0.0f, 180.0f, true, tr("°")), lcObjectPropertyId::LightBlenderAngle }
+		{ CreateFloatEditor(swObjectPropertyId::LightBlenderPower, tr("Power"), tr("Power of the light in watts"), 0.0f, FLT_MAX, true, tr(" W")), swObjectPropertyId::LightBlenderPower },
+		{ CreateFloatEditor(swObjectPropertyId::LightBlenderRadius, tr("Radius"), tr("Shadow soft size"), 0.0f, FLT_MAX, true), swObjectPropertyId::LightBlenderRadius },
+		{ CreateFloatEditor(swObjectPropertyId::LightBlenderAngle, tr("Angle"), tr("Angular diameter of the light"), 0.0f, 180.0f, true, tr("°")), swObjectPropertyId::LightBlenderAngle }
 	});
 
 	AddCategory(CategoryIndex::LightPOVRay, tr("POV-Ray Settings"), true);
 
 	AddValueRow(this, tr("V"), tr("POV-Ray"),
 	{
-		{ CreateFloatEditor(lcObjectPropertyId::LightPOVRayPower, tr("Power"), tr("Power of the light (multiplicative factor)"), 0.0f, FLT_MAX, true), lcObjectPropertyId::LightPOVRayPower },
-		{ CreateFloatEditor(lcObjectPropertyId::LightPOVRaySpotTightness, tr("Tightness"), tr("Additional exponential spotlight edge softening"), 0.0f, FLT_MAX, true), lcObjectPropertyId::LightPOVRaySpotTightness }
+		{ CreateFloatEditor(swObjectPropertyId::LightPOVRayPower, tr("Power"), tr("Power of the light (multiplicative factor)"), 0.0f, FLT_MAX, true), swObjectPropertyId::LightPOVRayPower },
+		{ CreateFloatEditor(swObjectPropertyId::LightPOVRaySpotTightness, tr("Tightness"), tr("Additional exponential spotlight edge softening"), 0.0f, FLT_MAX, true), swObjectPropertyId::LightPOVRaySpotTightness }
 	});
 
 	AddValueRow(this, tr("F"), tr("Fade"),
 	{
-		{ CreateFloatEditor(lcObjectPropertyId::LightPOVRayFadeDistance, tr("Fade Distance"), tr("The distance at which the full light intensity arrives"), 0.0f, FLT_MAX, true), lcObjectPropertyId::LightPOVRayFadeDistance },
-		{ CreateFloatEditor(lcObjectPropertyId::LightPOVRayFadePower, tr("Fade Power"), tr("Light falloff rate"), 0.0f, FLT_MAX, true), lcObjectPropertyId::LightPOVRayFadePower }
+		{ CreateFloatEditor(swObjectPropertyId::LightPOVRayFadeDistance, tr("Fade Distance"), tr("The distance at which the full light intensity arrives"), 0.0f, FLT_MAX, true), swObjectPropertyId::LightPOVRayFadeDistance },
+		{ CreateFloatEditor(swObjectPropertyId::LightPOVRayFadePower, tr("Fade Power"), tr("Light falloff rate"), 0.0f, FLT_MAX, true), swObjectPropertyId::LightPOVRayFadePower }
 	});
 
 	AddValueRow(this, tr("G"), tr("Area Grid"),
 	{
-		{ CreateIntegerEditor(lcObjectPropertyId::LightPOVRayAreaGridX, tr("Grid X"), tr("Number of point sources along the X axis (1 to 64)."), 1, LC_MAX_AREA_LIGHT_GRID), lcObjectPropertyId::LightPOVRayAreaGridX },
-		{ CreateIntegerEditor(lcObjectPropertyId::LightPOVRayAreaGridY, tr("Y"), tr("Number of point sources along the Y axis (1 to 64)."), 1, LC_MAX_AREA_LIGHT_GRID), lcObjectPropertyId::LightPOVRayAreaGridY }
+		{ CreateIntegerEditor(swObjectPropertyId::LightPOVRayAreaGridX, tr("Grid X"), tr("Number of point sources along the X axis (1 to 64)."), 1, SW_MAX_AREA_LIGHT_GRID), swObjectPropertyId::LightPOVRayAreaGridX },
+		{ CreateIntegerEditor(swObjectPropertyId::LightPOVRayAreaGridY, tr("Y"), tr("Number of point sources along the Y axis (1 to 64)."), 1, SW_MAX_AREA_LIGHT_GRID), swObjectPropertyId::LightPOVRayAreaGridY }
 	});
 
 	AddCategory(CategoryIndex::ObjectTransform, tr("Transform"), false);
 
-	AddVectorRow(mTransformRows, { lcObjectPropertyId::ObjectPositionX, lcObjectPropertyId::ObjectPositionY, lcObjectPropertyId::ObjectPositionZ }, tr("P"), tr("Position"), tr("Position of the object"), true, -FLT_MAX, FLT_MAX);
-	AddVectorRow(mTransformRows, { lcObjectPropertyId::ObjectRotationX, lcObjectPropertyId::ObjectRotationY, lcObjectPropertyId::ObjectRotationZ }, tr("R"), tr("Rotation"), tr("Rotation of the object in degrees"), true, -FLT_MAX, FLT_MAX);
+	AddVectorRow(mTransformRows, { swObjectPropertyId::ObjectPositionX, swObjectPropertyId::ObjectPositionY, swObjectPropertyId::ObjectPositionZ }, tr("P"), tr("Position"), tr("Position of the object"), true, -FLT_MAX, FLT_MAX);
+	AddVectorRow(mTransformRows, { swObjectPropertyId::ObjectRotationX, swObjectPropertyId::ObjectRotationY, swObjectPropertyId::ObjectRotationZ }, tr("R"), tr("Rotation"), tr("Rotation of the object in degrees"), true, -FLT_MAX, FLT_MAX);
 
 	mSettingsLayout->addStretch(1);
 }
 
-void lcPropertiesWidget::SetCategoryWidgetsVisible(CategoryWidgets& Category, bool Visible)
+void swPropertiesWidget::SetCategoryWidgetsVisible(CategoryWidgets& Category, bool Visible)
 {
-	for (lcObjectPropertyId PropertyId : Category.Properties)
+	for (swObjectPropertyId PropertyId : Category.Properties)
 		SetPropertyWidgetsVisible(PropertyId, Visible && mPropertyWidgets[static_cast<int>(PropertyId)].Visible);
 }
 
-void lcPropertiesWidget::SetPropertyWidgetsVisible(lcObjectPropertyId PropertyId, bool Visible)
+void swPropertiesWidget::SetPropertyWidgetsVisible(swObjectPropertyId PropertyId, bool Visible)
 {
 	PropertyWidgets& Property = mPropertyWidgets[static_cast<int>(PropertyId)];
 
@@ -1459,7 +1459,7 @@ void lcPropertiesWidget::SetPropertyWidgetsVisible(lcObjectPropertyId PropertyId
 	UpdateRowVisible(Property.Row);
 }
 
-void lcPropertiesWidget::SetLayoutMode(LayoutMode Mode)
+void swPropertiesWidget::SetLayoutMode(LayoutMode Mode)
 {
 	if (mLayoutMode == Mode)
 		return;
@@ -1482,7 +1482,7 @@ void lcPropertiesWidget::SetLayoutMode(LayoutMode Mode)
 }
 
 
-void lcPropertiesWidget::SetPropertyVisible(lcObjectPropertyId PropertyId, bool Visible)
+void swPropertiesWidget::SetPropertyVisible(swObjectPropertyId PropertyId, bool Visible)
 {
 	PropertyWidgets& Property = mPropertyWidgets[static_cast<int>(PropertyId)];
 	Property.Visible = Visible;
@@ -1493,7 +1493,7 @@ void lcPropertiesWidget::SetPropertyVisible(lcObjectPropertyId PropertyId, bool 
 }
 
 
-void lcPropertiesWidget::SetCategoryVisible(CategoryIndex Index, bool Visible)
+void swPropertiesWidget::SetCategoryVisible(CategoryIndex Index, bool Visible)
 {
 	CategoryWidgets& Category = mCategoryWidgets[static_cast<int>(Index)];
 
@@ -1503,7 +1503,7 @@ void lcPropertiesWidget::SetCategoryVisible(CategoryIndex Index, bool Visible)
 	SetCategoryWidgetsVisible(Category, Visible && (!Category.Button || Category.Button->IsExpanded()));
 }
 
-void lcPropertiesWidget::SetEmpty()
+void swPropertiesWidget::SetEmpty()
 {
 	// Keep the piece rows on screen, disabled, so the panel keeps its height.
 	SetPiece({}, nullptr);
@@ -1513,40 +1513,40 @@ void lcPropertiesWidget::SetEmpty()
 	mSelection.clear();
 }
 
-void lcPropertiesWidget::SetPiece(const std::vector<lcObject*>& Selection, lcObject* Focus)
+void swPropertiesWidget::SetPiece(const std::vector<swObject*>& Selection, swObject* Focus)
 {
 	SetLayoutMode(LayoutMode::Piece);
 
-	lcPiece* Piece = dynamic_cast<lcPiece*>(Focus);
+	swPiece* Piece = dynamic_cast<swPiece*>(Focus);
 	mSelection = Selection;
 	mFocusObject = Piece;
 
-	lcVector3 Position;
-	lcMatrix33 RelativeRotation;
-	lcModel* Model = gMainWindow->GetActiveModel();
+	swVector3 Position;
+	swMatrix33 RelativeRotation;
+	swModel* Model = gMainWindow->GetActiveModel();
 
 	if (!Model)
 		return;
 
 	Model->GetMoveRotateTransform(Position, RelativeRotation);
 
-	UpdateFloat(lcObjectPropertyId::ObjectPositionX, Position[0]);
-	UpdateFloat(lcObjectPropertyId::ObjectPositionY, Position[1]);
-	UpdateFloat(lcObjectPropertyId::ObjectPositionZ, Position[2]);
+	UpdateFloat(swObjectPropertyId::ObjectPositionX, Position[0]);
+	UpdateFloat(swObjectPropertyId::ObjectPositionY, Position[1]);
+	UpdateFloat(swObjectPropertyId::ObjectPositionZ, Position[2]);
 
-	lcVector3 Rotation;
+	swVector3 Rotation;
 
 	if (Piece)
-		Rotation = lcMatrix44ToEulerAngles(Piece->mModelWorld) * LC_RTOD;
+		Rotation = swMatrix44ToEulerAngles(Piece->mModelWorld) * SW_RTOD;
 	else
-		Rotation = lcVector3(0.0f, 0.0f, 0.0f);
+		Rotation = swVector3(0.0f, 0.0f, 0.0f);
 
-	UpdateFloat(lcObjectPropertyId::ObjectRotationX, Rotation[0]);
-	UpdateFloat(lcObjectPropertyId::ObjectRotationY, Rotation[1]);
-	UpdateFloat(lcObjectPropertyId::ObjectRotationZ, Rotation[2]);
+	UpdateFloat(swObjectPropertyId::ObjectRotationX, Rotation[0]);
+	UpdateFloat(swObjectPropertyId::ObjectRotationY, Rotation[1]);
+	UpdateFloat(swObjectPropertyId::ObjectRotationZ, Rotation[2]);
 
-	lcStep StepShow = 1;
-	lcStep StepHide = LC_STEP_MAX;
+	swStep StepShow = 1;
+	swStep StepHide = SW_STEP_MAX;
 
 	if (Piece)
 	{
@@ -1557,12 +1557,12 @@ void lcPropertiesWidget::SetPiece(const std::vector<lcObject*>& Selection, lcObj
 	{
 		bool FirstPiece = true;
 
-		for (lcObject* Object : Selection)
+		for (swObject* Object : Selection)
 		{
 			if (!Object->IsPiece())
 				continue;
 
-			lcPiece* SelectedPiece = (lcPiece*)Object;
+			swPiece* SelectedPiece = (swPiece*)Object;
 
 			if (FirstPiece)
 			{
@@ -1582,23 +1582,23 @@ void lcPropertiesWidget::SetPiece(const std::vector<lcObject*>& Selection, lcObj
 		}
 	}
 
-	UpdatePieceId(lcObjectPropertyId::PieceId);
-	UpdatePieceColor(lcObjectPropertyId::PieceColor);
-	UpdateStepNumber(lcObjectPropertyId::PieceStepShow, StepShow ? StepShow : LC_STEP_MAX, 1, StepHide - 1);
-	UpdateStepNumber(lcObjectPropertyId::PieceStepHide, StepHide ? StepHide : LC_STEP_MAX, StepShow + 1, LC_STEP_MAX);
+	UpdatePieceId(swObjectPropertyId::PieceId);
+	UpdatePieceColor(swObjectPropertyId::PieceColor);
+	UpdateStepNumber(swObjectPropertyId::PieceStepShow, StepShow ? StepShow : SW_STEP_MAX, 1, StepHide - 1);
+	UpdateStepNumber(swObjectPropertyId::PieceStepHide, StepHide ? StepHide : SW_STEP_MAX, StepShow + 1, SW_STEP_MAX);
 }
 
-void lcPropertiesWidget::SetCamera(const std::vector<lcObject*>& Selection, lcObject* Focus)
+void swPropertiesWidget::SetCamera(const std::vector<swObject*>& Selection, swObject* Focus)
 {
 	SetLayoutMode(LayoutMode::Camera);
 
-	lcCamera* Camera = dynamic_cast<lcCamera*>(Focus);
+	swCamera* Camera = dynamic_cast<swCamera*>(Focus);
 	mSelection = Selection;
 	mFocusObject = Camera;
 
-	lcVector3 Position(0.0f, 0.0f, 0.0f);
-	lcVector3 Target(0.0f, 0.0f, 0.0f);
-	lcVector3 UpVector(0.0f, 0.0f, 0.0f);
+	swVector3 Position(0.0f, 0.0f, 0.0f);
+	swVector3 Target(0.0f, 0.0f, 0.0f);
+	swVector3 UpVector(0.0f, 0.0f, 0.0f);
 	float FoV = 60.0f;
 	float ZNear = 1.0f;
 	float ZFar = 100.0f;
@@ -1614,43 +1614,43 @@ void lcPropertiesWidget::SetCamera(const std::vector<lcObject*>& Selection, lcOb
 		ZFar = Camera->m_zFar;
 	}
 
-	UpdateString(lcObjectPropertyId::CameraName);
-	UpdateStringList(lcObjectPropertyId::CameraProjection);
+	UpdateString(swObjectPropertyId::CameraName);
+	UpdateStringList(swObjectPropertyId::CameraProjection);
 
-	UpdateFloat(lcObjectPropertyId::CameraFOV, FoV);
-	UpdateFloat(lcObjectPropertyId::CameraNear, ZNear);
-	UpdateFloat(lcObjectPropertyId::CameraFar, ZFar);
+	UpdateFloat(swObjectPropertyId::CameraFOV, FoV);
+	UpdateFloat(swObjectPropertyId::CameraNear, ZNear);
+	UpdateFloat(swObjectPropertyId::CameraFar, ZFar);
 
-	UpdateFloat(lcObjectPropertyId::CameraPositionX, Position[0]);
-	UpdateFloat(lcObjectPropertyId::CameraPositionY, Position[1]);
-	UpdateFloat(lcObjectPropertyId::CameraPositionZ, Position[2]);
+	UpdateFloat(swObjectPropertyId::CameraPositionX, Position[0]);
+	UpdateFloat(swObjectPropertyId::CameraPositionY, Position[1]);
+	UpdateFloat(swObjectPropertyId::CameraPositionZ, Position[2]);
 
-	UpdateFloat(lcObjectPropertyId::CameraTargetX, Target[0]);
-	UpdateFloat(lcObjectPropertyId::CameraTargetY, Target[1]);
-	UpdateFloat(lcObjectPropertyId::CameraTargetZ, Target[2]);
+	UpdateFloat(swObjectPropertyId::CameraTargetX, Target[0]);
+	UpdateFloat(swObjectPropertyId::CameraTargetY, Target[1]);
+	UpdateFloat(swObjectPropertyId::CameraTargetZ, Target[2]);
 
-	UpdateFloat(lcObjectPropertyId::CameraUpX, UpVector[0]);
-	UpdateFloat(lcObjectPropertyId::CameraUpY, UpVector[1]);
-	UpdateFloat(lcObjectPropertyId::CameraUpZ, UpVector[2]);
+	UpdateFloat(swObjectPropertyId::CameraUpX, UpVector[0]);
+	UpdateFloat(swObjectPropertyId::CameraUpY, UpVector[1]);
+	UpdateFloat(swObjectPropertyId::CameraUpZ, UpVector[2]);
 }
 
-void lcPropertiesWidget::SetLight(const std::vector<lcObject*>& Selection, lcObject* Focus)
+void swPropertiesWidget::SetLight(const std::vector<swObject*>& Selection, swObject* Focus)
 {
 	SetLayoutMode(LayoutMode::Light);
 
-	lcLight* Light = dynamic_cast<lcLight*>(Focus);
+	swLight* Light = dynamic_cast<swLight*>(Focus);
 	mSelection = Selection;
 	mFocusObject = Light;
 
-	lcLightType LightType = lcLightType::Count;
-	lcLightAreaShape LightAreaShape = lcLightAreaShape::Count;
+	swLightType LightType = swLightType::Count;
+	swLightAreaShape LightAreaShape = swLightAreaShape::Count;
 	float BlenderRadius = 0.0f, BlenderAngle = 0.0f;
 	float AreaSizeX = 0.0f, AreaSizeY = 0.0f;
 	float BlenderPower = 0.0f, POVRayPower = 0.0f;
 	float POVRayFadeDistance = 0.0f;
 	float POVRayFadePower = 0.0f;
-	lcVector3 Position(0.0f, 0.0f, 0.0f);
-	lcVector3 Rotation = lcVector3(0.0f, 0.0f, 0.0f);
+	swVector3 Position(0.0f, 0.0f, 0.0f);
+	swVector3 Rotation = swVector3(0.0f, 0.0f, 0.0f);
 	float SpotConeAngle = 0.0f, SpotPenumbraAngle = 0.0f, SpotTightness = 0.0f;
 
 	if (Light)
@@ -1659,7 +1659,7 @@ void lcPropertiesWidget::SetLight(const std::vector<lcObject*>& Selection, lcObj
 		LightAreaShape = Light->GetAreaShape();
 
 		Position = Light->GetPosition();
-		Rotation = lcMatrix44ToEulerAngles(Light->GetWorldMatrix()) * LC_RTOD;
+		Rotation = swMatrix44ToEulerAngles(Light->GetWorldMatrix()) * SW_RTOD;
 		BlenderPower = Light->GetBlenderPower();
 		POVRayPower = Light->GetPOVRayPower();
 		POVRayFadeDistance = Light->GetPOVRayFadeDistance();
@@ -1677,9 +1677,9 @@ void lcPropertiesWidget::SetLight(const std::vector<lcObject*>& Selection, lcObj
 		bool First = true;
 		bool PartialLightType = false, PartialAreaShape = false;
 
-		for (const lcObject* Object : mSelection)
+		for (const swObject* Object : mSelection)
 		{
-			const lcLight* CurrentLight = dynamic_cast<const lcLight*>(Object);
+			const swLight* CurrentLight = dynamic_cast<const swLight*>(Object);
 
 			if (!CurrentLight)
 				continue;
@@ -1701,81 +1701,81 @@ void lcPropertiesWidget::SetLight(const std::vector<lcObject*>& Selection, lcObj
 		}
 
 		if (PartialLightType)
-			LightType = lcLightType::Count;
+			LightType = swLightType::Count;
 
 		if (PartialAreaShape)
-			LightAreaShape = lcLightAreaShape::Count;
+			LightAreaShape = swLightAreaShape::Count;
 	}
 
-	UpdateString(lcObjectPropertyId::LightName);
-	UpdateStringList(lcObjectPropertyId::LightType);
-	UpdateColor(lcObjectPropertyId::LightColor);
+	UpdateString(swObjectPropertyId::LightName);
+	UpdateStringList(swObjectPropertyId::LightType);
+	UpdateColor(swObjectPropertyId::LightColor);
 
-	UpdateFloat(lcObjectPropertyId::LightBlenderPower, BlenderPower);
-	UpdateFloat(lcObjectPropertyId::LightPOVRayPower, POVRayPower);
-	UpdateBool(lcObjectPropertyId::LightCastShadow);
+	UpdateFloat(swObjectPropertyId::LightBlenderPower, BlenderPower);
+	UpdateFloat(swObjectPropertyId::LightPOVRayPower, POVRayPower);
+	UpdateBool(swObjectPropertyId::LightCastShadow);
 
-	UpdateFloat(lcObjectPropertyId::LightPOVRayFadeDistance, POVRayFadeDistance);
-	UpdateFloat(lcObjectPropertyId::LightPOVRayFadePower, POVRayFadePower);
+	UpdateFloat(swObjectPropertyId::LightPOVRayFadeDistance, POVRayFadeDistance);
+	UpdateFloat(swObjectPropertyId::LightPOVRayFadePower, POVRayFadePower);
 
-	const bool IsPointLight = (LightType == lcLightType::Point);
-	const bool IsSpotLight = (LightType == lcLightType::Spot);
+	const bool IsPointLight = (LightType == swLightType::Point);
+	const bool IsSpotLight = (LightType == swLightType::Spot);
 
-	SetPropertyVisible(lcObjectPropertyId::LightBlenderRadius, IsPointLight || IsSpotLight);
+	SetPropertyVisible(swObjectPropertyId::LightBlenderRadius, IsPointLight || IsSpotLight);
 
 	if (IsPointLight || IsSpotLight)
-		UpdateFloat(lcObjectPropertyId::LightBlenderRadius, BlenderRadius);
+		UpdateFloat(swObjectPropertyId::LightBlenderRadius, BlenderRadius);
 
-	SetPropertyVisible(lcObjectPropertyId::LightSpotConeAngle, IsSpotLight);
-	SetPropertyVisible(lcObjectPropertyId::LightSpotPenumbraAngle, IsSpotLight);
-	SetPropertyVisible(lcObjectPropertyId::LightPOVRaySpotTightness, IsSpotLight);
+	SetPropertyVisible(swObjectPropertyId::LightSpotConeAngle, IsSpotLight);
+	SetPropertyVisible(swObjectPropertyId::LightSpotPenumbraAngle, IsSpotLight);
+	SetPropertyVisible(swObjectPropertyId::LightPOVRaySpotTightness, IsSpotLight);
 
 	if (IsSpotLight)
 	{
-		UpdateFloat(lcObjectPropertyId::LightSpotConeAngle, SpotConeAngle);
-		UpdateFloat(lcObjectPropertyId::LightSpotPenumbraAngle, SpotPenumbraAngle);
-		UpdateFloat(lcObjectPropertyId::LightPOVRaySpotTightness, SpotTightness);
+		UpdateFloat(swObjectPropertyId::LightSpotConeAngle, SpotConeAngle);
+		UpdateFloat(swObjectPropertyId::LightSpotPenumbraAngle, SpotPenumbraAngle);
+		UpdateFloat(swObjectPropertyId::LightPOVRaySpotTightness, SpotTightness);
 	}
 
-	const bool IsDirectionalLight = (LightType == lcLightType::Directional);
-	SetPropertyVisible(lcObjectPropertyId::LightBlenderAngle, IsDirectionalLight);
+	const bool IsDirectionalLight = (LightType == swLightType::Directional);
+	SetPropertyVisible(swObjectPropertyId::LightBlenderAngle, IsDirectionalLight);
 
 	if (IsDirectionalLight)
-		UpdateFloat(lcObjectPropertyId::LightBlenderAngle, BlenderAngle);
+		UpdateFloat(swObjectPropertyId::LightBlenderAngle, BlenderAngle);
 
-	const bool IsAreaLight = (LightType == lcLightType::Area);
-	SetPropertyVisible(lcObjectPropertyId::LightAreaShape, IsAreaLight);
+	const bool IsAreaLight = (LightType == swLightType::Area);
+	SetPropertyVisible(swObjectPropertyId::LightAreaShape, IsAreaLight);
 
-	const bool IsSquare = (LightAreaShape == lcLightAreaShape::Square || LightAreaShape == lcLightAreaShape::Disk);
-	SetPropertyVisible(lcObjectPropertyId::LightAreaSizeX, IsAreaLight);
-	SetPropertyVisible(lcObjectPropertyId::LightAreaSizeY, IsAreaLight && !IsSquare);
+	const bool IsSquare = (LightAreaShape == swLightAreaShape::Square || LightAreaShape == swLightAreaShape::Disk);
+	SetPropertyVisible(swObjectPropertyId::LightAreaSizeX, IsAreaLight);
+	SetPropertyVisible(swObjectPropertyId::LightAreaSizeY, IsAreaLight && !IsSquare);
 
 	// Square and disk shapes have a single size.
-	if (lcDoubleSpinBox* SizeXEditor = qobject_cast<lcDoubleSpinBox*>(mPropertyWidgets[static_cast<int>(lcObjectPropertyId::LightAreaSizeX)].Editor))
+	if (swDoubleSpinBox* SizeXEditor = qobject_cast<swDoubleSpinBox*>(mPropertyWidgets[static_cast<int>(swObjectPropertyId::LightAreaSizeX)].Editor))
 		SizeXEditor->setPrefix(IsSquare ? tr("Size ") : tr("Size X "));
 
-	SetPropertyVisible(lcObjectPropertyId::LightPOVRayAreaGridX, IsAreaLight);
-	SetPropertyVisible(lcObjectPropertyId::LightPOVRayAreaGridY, IsAreaLight);
+	SetPropertyVisible(swObjectPropertyId::LightPOVRayAreaGridX, IsAreaLight);
+	SetPropertyVisible(swObjectPropertyId::LightPOVRayAreaGridY, IsAreaLight);
 
 	if (IsAreaLight)
 	{
-		UpdateStringList(lcObjectPropertyId::LightAreaShape);
-		UpdateFloat(lcObjectPropertyId::LightAreaSizeX, AreaSizeX);
-		UpdateFloat(lcObjectPropertyId::LightAreaSizeY, AreaSizeY);
-		UpdateInteger(lcObjectPropertyId::LightPOVRayAreaGridX);
-		UpdateInteger(lcObjectPropertyId::LightPOVRayAreaGridY);
+		UpdateStringList(swObjectPropertyId::LightAreaShape);
+		UpdateFloat(swObjectPropertyId::LightAreaSizeX, AreaSizeX);
+		UpdateFloat(swObjectPropertyId::LightAreaSizeY, AreaSizeY);
+		UpdateInteger(swObjectPropertyId::LightPOVRayAreaGridX);
+		UpdateInteger(swObjectPropertyId::LightPOVRayAreaGridY);
 	}
 
-	UpdateFloat(lcObjectPropertyId::ObjectPositionX, Position[0]);
-	UpdateFloat(lcObjectPropertyId::ObjectPositionY, Position[1]);
-	UpdateFloat(lcObjectPropertyId::ObjectPositionZ, Position[2]);
+	UpdateFloat(swObjectPropertyId::ObjectPositionX, Position[0]);
+	UpdateFloat(swObjectPropertyId::ObjectPositionY, Position[1]);
+	UpdateFloat(swObjectPropertyId::ObjectPositionZ, Position[2]);
 
-	UpdateFloat(lcObjectPropertyId::ObjectRotationX, Rotation[0]);
-	UpdateFloat(lcObjectPropertyId::ObjectRotationY, Rotation[1]);
-	UpdateFloat(lcObjectPropertyId::ObjectRotationZ, Rotation[2]);
+	UpdateFloat(swObjectPropertyId::ObjectRotationX, Rotation[0]);
+	UpdateFloat(swObjectPropertyId::ObjectRotationY, Rotation[1]);
+	UpdateFloat(swObjectPropertyId::ObjectRotationZ, Rotation[2]);
 }
 
-void lcPropertiesWidget::Update(const std::vector<lcObject*>& Selection, lcObject* Focus)
+void swPropertiesWidget::Update(const std::vector<swObject*>& Selection, swObject* Focus)
 {
 	if (mDisableUpdates)
 		return;
@@ -1791,15 +1791,15 @@ void lcPropertiesWidget::Update(const std::vector<lcObject*>& Selection, lcObjec
 	{
 		switch (Focus->GetType())
 		{
-		case lcObjectType::Piece:
+		case swObjectType::Piece:
 			Mode = LayoutMode::Piece;
 			break;
 
-		case lcObjectType::Camera:
+		case swObjectType::Camera:
 			Mode = LayoutMode::Camera;
 			break;
 
-		case lcObjectType::Light:
+		case swObjectType::Light:
 			Mode = LayoutMode::Light;
 			break;
 		}
@@ -1810,7 +1810,7 @@ void lcPropertiesWidget::Update(const std::vector<lcObject*>& Selection, lcObjec
 		{
 			switch (Selection[ObjectIdx]->GetType())
 			{
-			case lcObjectType::Piece:
+			case swObjectType::Piece:
 				if (Mode == LayoutMode::Empty)
 					Mode = LayoutMode::Piece;
 				else if (Mode != LayoutMode::Piece)
@@ -1820,7 +1820,7 @@ void lcPropertiesWidget::Update(const std::vector<lcObject*>& Selection, lcObjec
 				}
 				break;
 
-			case lcObjectType::Camera:
+			case swObjectType::Camera:
 				if (Mode == LayoutMode::Empty)
 					Mode = LayoutMode::Camera;
 				else if (Mode != LayoutMode::Camera)
@@ -1830,7 +1830,7 @@ void lcPropertiesWidget::Update(const std::vector<lcObject*>& Selection, lcObjec
 				}
 				break;
 
-			case lcObjectType::Light:
+			case swObjectType::Light:
 				if (Mode == LayoutMode::Empty)
 					Mode = LayoutMode::Light;
 				else if (Mode != LayoutMode::Light)

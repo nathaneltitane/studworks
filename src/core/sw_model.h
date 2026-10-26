@@ -6,58 +6,58 @@
 #include "sw_objectproperty.h"
 #include "sw_result.h"
 
-enum class lcGeometryBoundsMode
+enum class swGeometryBoundsMode
 {
 	IncludeFallback,
 	AvailableOnly
 };
 
-enum class lcImageBackground
+enum class swImageBackground
 {
 	Default,
 	Transparent,
 	Opaque
 };
 
-enum class lcPartsListSort
+enum class swPartsListSort
 {
 	Color,
 	Name,
 	PartId
 };
 
-enum class lcCameraProjection;
-struct lcSetInventoryItem;
-struct lcModelHistoryEditState;
-struct lcGroupHistoryState;
-struct lcPieceHistoryState;
-struct lcCameraHistoryState;
-struct lcLightHistoryState;
-template<typename StateType> struct lcObjectHistory;
-class lcModelHistory;
-class lcModelHistorySelect;
-class lcModelHistoryEdit;
-class lcModelHistoryProperties;
-enum class lcModelHistoryEditMerge;
+enum class swCameraProjection;
+struct swSetInventoryItem;
+struct swModelHistoryEditState;
+struct swGroupHistoryState;
+struct swPieceHistoryState;
+struct swCameraHistoryState;
+struct swLightHistoryState;
+template<typename StateType> struct swObjectHistory;
+class swModelHistory;
+class swModelHistorySelect;
+class swModelHistoryEdit;
+class swModelHistoryProperties;
+enum class swModelHistoryEditMerge;
 
-#define LC_SEL_NO_PIECES                0x0001 // No pieces in model
-#define LC_SEL_PIECE                    0x0002 // At least 1 piece selected
-#define LC_SEL_CAMERA                   0x0004 // At least 1 camera selected
-#define LC_SEL_LIGHT                    0x0008 // At least 1 light selected
-#define LC_SEL_SELECTED                 0x0010 // At least 1 object selected
-#define LC_SEL_UNSELECTED               0x0020 // At least 1 piece unselected
-#define LC_SEL_HIDDEN                   0x0040 // At least one piece hidden
-#define LC_SEL_HIDDEN_SELECTED          0x0080 // At least one piece selected is hidden
-#define LC_SEL_VISIBLE_SELECTED         0x0100 // At least one piece selected is not hidden
-#define LC_SEL_GROUPED                  0x0200 // At least one piece selected is grouped
-#define LC_SEL_FOCUS_GROUPED            0x0400 // Focused piece is grouped
-#define LC_SEL_CAN_GROUP                0x0800 // Can make a new group
-#define LC_SEL_MODEL_SELECTED           0x1000 // At least one model reference is selected
-#define LC_SEL_CAN_ADD_CONTROL_POINT    0x2000 // Can add control points to focused piece
-#define LC_SEL_CAN_REMOVE_CONTROL_POINT 0x4000 // Can remove control points from focused piece
-#define LC_SEL_TRAIN_TRACK_VISIBLE      0x8000 // Focused piece has train track connections
+#define SW_SEL_NO_PIECES                0x0001 // No pieces in model
+#define SW_SEL_PIECE                    0x0002 // At least 1 piece selected
+#define SW_SEL_CAMERA                   0x0004 // At least 1 camera selected
+#define SW_SEL_LIGHT                    0x0008 // At least 1 light selected
+#define SW_SEL_SELECTED                 0x0010 // At least 1 object selected
+#define SW_SEL_UNSELECTED               0x0020 // At least 1 piece unselected
+#define SW_SEL_HIDDEN                   0x0040 // At least one piece hidden
+#define SW_SEL_HIDDEN_SELECTED          0x0080 // At least one piece selected is hidden
+#define SW_SEL_VISIBLE_SELECTED         0x0100 // At least one piece selected is not hidden
+#define SW_SEL_GROUPED                  0x0200 // At least one piece selected is grouped
+#define SW_SEL_FOCUS_GROUPED            0x0400 // Focused piece is grouped
+#define SW_SEL_CAN_GROUP                0x0800 // Can make a new group
+#define SW_SEL_MODEL_SELECTED           0x1000 // At least one model reference is selected
+#define SW_SEL_CAN_ADD_CONTROL_POINT    0x2000 // Can add control points to focused piece
+#define SW_SEL_CAN_REMOVE_CONTROL_POINT 0x4000 // Can remove control points from focused piece
+#define SW_SEL_TRAIN_TRACK_VISIBLE      0x8000 // Focused piece has train track connections
 
-enum class lcSelectionMode
+enum class swSelectionMode
 {
 	Single,
 	Piece,
@@ -65,7 +65,7 @@ enum class lcSelectionMode
 	PieceColor
 };
 
-enum class lcTransformType
+enum class swTransformType
 {
 	First,
 	AbsoluteTranslation = First,
@@ -75,7 +75,7 @@ enum class lcTransformType
 	Count
 };
 
-enum class lcModelTransformFlag
+enum class swModelTransformFlag
 {
 	None = 0,
 	Relative = 1 << 0,
@@ -84,43 +84,43 @@ enum class lcModelTransformFlag
 	FirstMove = 1 << 3
 };
 
-Q_DECLARE_FLAGS(lcModelTransformFlags, lcModelTransformFlag)
-Q_DECLARE_OPERATORS_FOR_FLAGS(lcModelTransformFlags)
+Q_DECLARE_FLAGS(swModelTransformFlags, swModelTransformFlag)
+Q_DECLARE_OPERATORS_FOR_FLAGS(swModelTransformFlags)
 
-struct lcInsertPieceInfo
+struct swInsertPieceInfo
 {
-	lcPieceData* PieceData;
-	lcMatrix44 Transform;
+	swPieceData* PieceData;
+	swMatrix44 Transform;
 	int ColorIndex;
 };
 
-// Stored insertion previews own their definitions; lcInsertPieceInfo remains borrowed.
-struct lcPreviewInsertPieceInfo
+// Stored insertion previews own their definitions; swInsertPieceInfo remains borrowed.
+struct swPreviewInsertPieceInfo
 {
-	explicit lcPreviewInsertPieceInfo(const lcInsertPieceInfo& Info)
+	explicit swPreviewInsertPieceInfo(const swInsertPieceInfo& Info)
 		: PieceData(Info.PieceData), Transform(Info.Transform), ColorIndex(Info.ColorIndex)
 	{
 	}
 
-	lcPieceDataRef PieceData;
-	lcMatrix44 Transform;
+	swPieceDataRef PieceData;
+	swMatrix44 Transform;
 	int ColorIndex;
 };
 
-struct lcModelPieceRename
+struct swModelPieceRename
 {
-	lcPieceData* PieceData;
+	swPieceData* PieceData;
 	QString OldName;
 	QString NewName;
 };
 
-struct lcModelAssetSourceState
+struct swModelAssetSourceState
 {
 	std::vector<QString> Directories;
 	bool PreferCurrentDirectory;
 };
 
-enum class lcStepViewMode
+enum class swStepViewMode
 {
 	Relative,
 	Absolute,
@@ -129,29 +129,29 @@ enum class lcStepViewMode
 };
 
 // View rotation of a step, stored as an MLCAD 0 ROTSTEP line ending that step.
-struct lcStepView
+struct swStepView
 {
-	lcStepViewMode Mode = lcStepViewMode::Relative;
-	lcVector3 Angles = lcVector3(0.0f, 0.0f, 0.0f);
+	swStepViewMode Mode = swStepViewMode::Relative;
+	swVector3 Angles = swVector3(0.0f, 0.0f, 0.0f);
 
-	bool operator==(const lcStepView& Other) const
+	bool operator==(const swStepView& Other) const
 	{
 		return Mode == Other.Mode && Angles == Other.Angles;
 	}
 
-	bool operator!=(const lcStepView& Other) const
+	bool operator!=(const swStepView& Other) const
 	{
 		return !(*this == Other);
 	}
 };
 
-class lcModelProperties
+class swModelProperties
 {
 public:
 	void LoadDefaults();
 	void SaveDefaults();
 
-	bool operator==(const lcModelProperties& Properties) const
+	bool operator==(const swModelProperties& Properties) const
 	{
 		if (mFileName != Properties.mFileName || mModelName != Properties.mModelName || mAuthor != Properties.mAuthor ||
 			mDescription != Properties.mDescription || mComments != Properties.mComments)
@@ -166,7 +166,7 @@ public:
 		return true;
 	}
 
-	bool operator!=(const lcModelProperties& Properties) const
+	bool operator!=(const swModelProperties& Properties) const
 	{
 		return !(*this == Properties);
 	}
@@ -181,11 +181,11 @@ public:
 	QString mAuthor;
 	QString mComments;
 
-	lcVector3 mAmbientColor;
-	std::map<lcStep, lcStepView> mStepViews;
+	swVector3 mAmbientColor;
+	std::map<swStep, swStepView> mStepViews;
 };
 
-class lcPOVRayOptions
+class swPOVRayOptions
 {
 public:
 	void ParseLDrawLine(QTextStream& LineStream);
@@ -199,28 +199,28 @@ public:
 	int FloorAxis = 1;
 	float FloorAmbient = 0.4f;
 	float FloorDiffuse = 0.4f;
-	lcVector3 FloorColor = lcVector3(0.8f,0.8f,0.8f);
+	swVector3 FloorColor = swVector3(0.8f,0.8f,0.8f);
 	QString HeaderIncludeFile;
 	QString FooterIncludeFile;
 };
 
-struct lcModelHistoryEntry
+struct swModelHistoryEntry
 {
-	std::vector<std::unique_ptr<lcModelHistory>> HistorySequence;
+	std::vector<std::unique_ptr<swModelHistory>> HistorySequence;
 	QString Description;
 	quint64 Revision = 0;
 };
 
-class lcModel
+class swModel
 {
 public:
-	lcModel(const QString& FileName, Project* Project, bool Preview);
-	~lcModel();
+	swModel(const QString& FileName, Project* Project, bool Preview);
+	~swModel();
 
-	lcModel(const lcModel&) = delete;
-	lcModel(lcModel&&) = delete;
-	lcModel& operator=(const lcModel&) = delete;
-	lcModel& operator=(lcModel&&) = delete;
+	swModel(const swModel&) = delete;
+	swModel(swModel&&) = delete;
+	swModel& operator=(const swModel&) = delete;
+	swModel& operator=(swModel&&) = delete;
 
 	Project* GetProject() const
 	{
@@ -229,8 +229,8 @@ public:
 
 	void SetProject(Project* Project);
 	void PreserveAssetSourceDirectory(const QString& Directory, bool PreferCurrentDirectory);
-	lcModelAssetSourceState GetAssetSourceState() const;
-	void RestoreAssetSourceState(const lcModelAssetSourceState& State);
+	swModelAssetSourceState GetAssetSourceState() const;
+	void RestoreAssetSourceState(const swModelAssetSourceState& State);
 	std::vector<QString> GetAssetSearchDirectories() const;
 
 	bool IsActive() const
@@ -241,50 +241,50 @@ public:
 	bool IsModified() const;
 	void SetSaved();
 
-	bool GetPieceWorldMatrix(lcPiece* Piece, lcMatrix44& ParentWorldMatrix) const;
-	bool IncludesModel(const lcModel* Model) const;
+	bool GetPieceWorldMatrix(swPiece* Piece, swMatrix44& ParentWorldMatrix) const;
+	bool IncludesModel(const swModel* Model) const;
 	void CreatePieceData(Project* Project);
-	bool RebindPieceData(lcPieceData* Previous, lcPieceData* Replacement);
-	void UpdatePieceData(std::vector<lcModel*>& UpdatedModels);
+	bool RebindPieceData(swPieceData* Previous, swPieceData* Replacement);
+	void UpdatePieceData(std::vector<swModel*>& UpdatedModels);
 	void QueueMeshBuild();
 	void UpdateAllViews() const;
 	void RefreshPreview() const;
-	std::vector<lcPieceDataRef> GetRequiredPieceData() const;
-	std::vector<lcPiece*> GetRequiredSynthPieces() const;
+	std::vector<swPieceDataRef> GetRequiredPieceData() const;
+	std::vector<swPiece*> GetRequiredSynthPieces() const;
 	void WaitForAssets() const;
-	lcResult<void> EnsureAssetsReady() const;
+	swResult<void> EnsureAssetsReady() const;
 
-	lcPieceData* GetPieceData() const
+	swPieceData* GetPieceData() const
 	{
 		return mPieceData.Get();
 	}
 
-	const std::vector<std::unique_ptr<lcPiece>>& GetPieces() const
+	const std::vector<std::unique_ptr<swPiece>>& GetPieces() const
 	{
 		return mPieces;
 	}
 
-	const std::vector<std::unique_ptr<lcCamera>>& GetCameras() const
+	const std::vector<std::unique_ptr<swCamera>>& GetCameras() const
 	{
 		return mCameras;
 	}
 
-	const std::vector<std::unique_ptr<lcLight>>& GetLights() const
+	const std::vector<std::unique_ptr<swLight>>& GetLights() const
 	{
 		return mLights;
 	}
 
-	const std::vector<std::unique_ptr<lcGroup>>& GetGroups() const
+	const std::vector<std::unique_ptr<swGroup>>& GetGroups() const
 	{
 		return mGroups;
 	}
 
-	const lcModelProperties& GetProperties() const
+	const swModelProperties& GetProperties() const
 	{
 		return mProperties;
 	}
 
-	const lcPOVRayOptions& GetPOVRayOptions() const
+	const swPOVRayOptions& GetPOVRayOptions() const
 	{
 		return mPOVRayOptions;
 	}
@@ -316,17 +316,17 @@ public:
 		return mHasDirectGeometry;
 	}
 
-	lcStep GetLastStep() const;
+	swStep GetLastStep() const;
 
-	lcStep GetCurrentStep() const
+	swStep GetCurrentStep() const
 	{
 		return mCurrentStep;
 	}
 
 	void SetActive(bool Active);
-	void CalculateStep(lcStep Step);
-	void SetCurrentStep(lcStep Step);
-	void SetTemporaryStep(lcStep Step)
+	void CalculateStep(swStep Step);
+	void SetCurrentStep(swStep Step);
+	void SetTemporaryStep(swStep Step)
 	{
 		mCurrentStep = Step;
 		CalculateStep(Step);
@@ -336,17 +336,17 @@ public:
 	void ShowLastStep();
 	void ShowPreviousStep();
 	void ShowNextStep();
-	void InsertStepAction(lcStep Step);
-	void ShiftStepViews(lcStep Step, int Offset);
-	void SetStepView(lcStep Step, const std::optional<lcStepView>& StepView);
-	std::optional<lcStepView> GetEffectiveStepView(lcStep Step) const;
-	void RemoveStepAction(lcStep Step);
+	void InsertStepAction(swStep Step);
+	void ShiftStepViews(swStep Step, int Offset);
+	void SetStepView(swStep Step, const std::optional<swStepView>& StepView);
+	std::optional<swStepView> GetEffectiveStepView(swStep Step) const;
+	void RemoveStepAction(swStep Step);
 
-	void LoadEditHistoryState(const lcModelHistoryEditState& HistoryState);
-	void LoadModelPropertiesState(const lcModelProperties& ModelProperties);
+	void LoadEditHistoryState(const swModelHistoryEditState& HistoryState);
+	void LoadModelPropertiesState(const swModelProperties& ModelProperties);
 
-	lcPiece* AddPiece(lcPieceData* PieceData, quint32 Section);
-	void AddPiece(std::unique_ptr<lcPiece> Piece, size_t PieceIndex);
+	swPiece* AddPiece(swPieceData* PieceData, quint32 Section);
+	void AddPiece(std::unique_ptr<swPiece> Piece, size_t PieceIndex);
 	void DeleteSelectedObjects();
 	void ResetSelectedPiecesPivotPoint();
 	void RemoveSelectedObjectsKeyFrames();
@@ -357,59 +357,59 @@ public:
 	void RotateFocusedTrainTrack(int Direction);
 	void ShowSelectedPiecesEarlier();
 	void ShowSelectedPiecesLater();
-	void InsertStepAndMoveSelectedPieces(lcStep Step);
-	void SetPieceSteps(const std::vector<std::pair<lcPiece*, lcStep>>& PieceSteps);
-	void RenamePieces(const std::vector<lcModelPieceRename>& Renames);
+	void InsertStepAndMoveSelectedPieces(swStep Step);
+	void SetPieceSteps(const std::vector<std::pair<swPiece*, swStep>>& PieceSteps);
+	void RenamePieces(const std::vector<swModelPieceRename>& Renames);
 
-	void MoveSelectionToModel(lcModel* Model);
+	void MoveSelectionToModel(swModel* Model);
 	void InlineSelectedModels();
 
-	lcGroup* AddGroup(const QString& Prefix, lcGroup* Parent);
-	lcGroup* GetGroup(const QString& Name, bool CreateIfMissing);
-	void RemoveGroup(lcGroup* Group);
+	swGroup* AddGroup(const QString& Prefix, swGroup* Parent);
+	swGroup* GetGroup(const QString& Name, bool CreateIfMissing);
+	void RemoveGroup(swGroup* Group);
 	void GroupSelection();
 	void UngroupSelection();
 	void AddSelectedPiecesToGroup();
 	void RemoveFocusPieceFromGroup();
 	void ShowEditGroupsDialog();
 
-	void SaveLDraw(QTextStream& Stream, bool SelectedOnly, lcStep LastStep) const;
+	void SaveLDraw(QTextStream& Stream, bool SelectedOnly, swStep LastStep) const;
 	void LoadLDraw(QIODevice& Device, Project* Project);
-	bool LoadBinary(lcFile* File);
+	bool LoadBinary(swFile* File);
 	bool LoadLDD(const QString& FileData);
-	bool LoadInventory(const std::vector<lcSetInventoryItem>& SetInventory);
-	void Merge(std::unique_ptr<lcModel> Other);
+	bool LoadInventory(const std::vector<swSetInventoryItem>& SetInventory);
+	void Merge(std::unique_ptr<swModel> Other);
 
-	void SetMinifig(const lcMinifig& Minifig);
-	void SetPreviewPieceData(lcPieceData* PieceData, int ColorIndex);
+	void SetMinifig(const swMinifig& Minifig);
+	void SetPreviewPieceData(swPieceData* PieceData, int ColorIndex);
 
-	lcResult<void> Cut();
-	lcResult<void> Copy();
-	lcResult<void> Paste(bool PasteToCurrentStep);
+	swResult<void> Cut();
+	swResult<void> Copy();
+	swResult<void> Paste(bool PasteToCurrentStep);
 	void DuplicateSelectedPieces();
 	void PaintSelectedPieces();
-	void UpdateTrainTrackConnections(lcPiece* TrackPiece, bool IgnoreSelected) const;
+	void UpdateTrainTrackConnections(swPiece* TrackPiece, bool IgnoreSelected) const;
 	void UpdateSelectedPiecesTrainTrackConnections();
-	void SetPreviewInsertPieceInfo(std::vector<lcInsertPieceInfo>&& PreviewInsertPieceInfo);
+	void SetPreviewInsertPieceInfo(std::vector<swInsertPieceInfo>&& PreviewInsertPieceInfo);
 
-	const std::vector<lcPreviewInsertPieceInfo>& GetPreviewInsertPieceInfo() const
+	const std::vector<swPreviewInsertPieceInfo>& GetPreviewInsertPieceInfo() const
 	{
 		return mPreviewInsertPieceInfo;
 	}
 
-	void GetScene(lcScene* Scene, const lcCamera* ViewCamera, bool AllowHighlight, bool AllowFade) const;
-	void AddSubModelRenderMeshes(lcScene* Scene, const lcMatrix44& WorldMatrix, int DefaultColorIndex, lcRenderMeshState RenderMeshState, bool ParentActive) const;
-	QImage GetStepImage(bool Zoom, int Width, int Height, lcStep Step);
+	void GetScene(swScene* Scene, const swCamera* ViewCamera, bool AllowHighlight, bool AllowFade) const;
+	void AddSubModelRenderMeshes(swScene* Scene, const swMatrix44& WorldMatrix, int DefaultColorIndex, swRenderMeshState RenderMeshState, bool ParentActive) const;
+	QImage GetStepImage(bool Zoom, int Width, int Height, swStep Step);
 	// Empty inventory succeeds with a null image; rendering failures return an error.
-	lcResult<QImage> GetPartsListImage(int MaxWidth, lcStep Step, quint32 BackgroundColor, QFont Font, QColor TextColor, bool KeepMissingParts, bool ShowCounts = true, lcPartsListSort Sort = lcPartsListSort::Color) const;
-	lcResult<void> SaveStepImages(const QString& BaseName, bool AddStepSuffix, bool Zoom, int Width, int Height, lcStep Start, lcStep End, lcImageBackground Background);
+	swResult<QImage> GetPartsListImage(int MaxWidth, swStep Step, quint32 BackgroundColor, QFont Font, QColor TextColor, bool KeepMissingParts, bool ShowCounts = true, swPartsListSort Sort = swPartsListSort::Color) const;
+	swResult<void> SaveStepImages(const QString& BaseName, bool AddStepSuffix, bool Zoom, int Width, int Height, swStep Start, swStep End, swImageBackground Background);
 
-	void RayTest(lcObjectRayTest& ObjectRayTest) const;
-	void BoxTest(lcObjectBoxTest& ObjectBoxTest) const;
-	bool SubModelMinIntersectDist(const lcVector3& WorldStart, const lcVector3& WorldEnd, float& MinDistance, lcPieceRayTest& PieceRayTest) const;
-	bool SubModelBoxTest(const lcVector4 Planes[6]) const;
-	void SubModelCompareBoundingBox(const lcMatrix44& WorldMatrix, lcVector3& Min, lcVector3& Max) const;
-	void SubModelAddBoundingBoxPoints(const lcMatrix44& WorldMatrix, std::vector<lcVector3>& Points, lcGeometryBoundsMode Mode) const;
+	void RayTest(swObjectRayTest& ObjectRayTest) const;
+	void BoxTest(swObjectBoxTest& ObjectBoxTest) const;
+	bool SubModelMinIntersectDist(const swVector3& WorldStart, const swVector3& WorldEnd, float& MinDistance, swPieceRayTest& PieceRayTest) const;
+	bool SubModelBoxTest(const swVector4 Planes[6]) const;
+	void SubModelCompareBoundingBox(const swMatrix44& WorldMatrix, swVector3& Min, swVector3& Max) const;
+	void SubModelAddBoundingBoxPoints(const swMatrix44& WorldMatrix, std::vector<swVector3>& Points, swGeometryBoundsMode Mode) const;
 
 	bool HasPieces() const
 	{
@@ -418,30 +418,30 @@ public:
 
 	bool AnyPiecesSelected() const;
 	bool AnyObjectsSelected() const;
-	lcModel* GetFirstSelectedSubmodel() const;
-	void GetSubModels(std::set<lcModel*>& SubModels) const;
-	bool GetMoveRotateTransform(lcVector3& Center, lcMatrix33& RelativeRotation) const;
+	swModel* GetFirstSelectedSubmodel() const;
+	void GetSubModels(std::set<swModel*>& SubModels) const;
+	bool GetMoveRotateTransform(swVector3& Center, swMatrix33& RelativeRotation) const;
 	bool CanRotateSelection() const;
-	bool GetPieceFocusOrSelectionCenter(lcVector3& Center) const;
-	lcVector3 GetSelectionOrModelCenter() const;
-	bool GetFocusPosition(lcVector3& Position) const;
-	lcObject* GetFocusObject() const;
-	bool GetSelectionCenter(lcVector3& Center) const;
-	lcBoundingBox GetAllPiecesBoundingBox() const;
-	bool GetVisiblePiecesBoundingBox(lcVector3& Min, lcVector3& Max) const;
-	std::vector<lcVector3> GetPiecesBoundingBoxPoints(lcGeometryBoundsMode Mode) const;
-	void GetPartsList(int DefaultColorIndex, bool ScanSubModels, bool AddSubModels, lcPartsList& PartsList) const;
-	void GetPartsListForStep(lcStep Step, int DefaultColorIndex, lcPartsList& PartsList, bool Cumulative) const;
-	void GetModelParts(const lcMatrix44& WorldMatrix, int DefaultColorIndex, std::vector<lcModelPartsEntry>& ModelParts) const;
-	void GetSelectionInformation(int* Flags, std::vector<lcObject*>& Selection, lcObject** Focus) const;
+	bool GetPieceFocusOrSelectionCenter(swVector3& Center) const;
+	swVector3 GetSelectionOrModelCenter() const;
+	bool GetFocusPosition(swVector3& Position) const;
+	swObject* GetFocusObject() const;
+	bool GetSelectionCenter(swVector3& Center) const;
+	swBoundingBox GetAllPiecesBoundingBox() const;
+	bool GetVisiblePiecesBoundingBox(swVector3& Min, swVector3& Max) const;
+	std::vector<swVector3> GetPiecesBoundingBoxPoints(swGeometryBoundsMode Mode) const;
+	void GetPartsList(int DefaultColorIndex, bool ScanSubModels, bool AddSubModels, swPartsList& PartsList) const;
+	void GetPartsListForStep(swStep Step, int DefaultColorIndex, swPartsList& PartsList, bool Cumulative) const;
+	void GetModelParts(const swMatrix44& WorldMatrix, int DefaultColorIndex, std::vector<swModelPartsEntry>& ModelParts) const;
+	void GetSelectionInformation(int* Flags, std::vector<swObject*>& Selection, swObject** Focus) const;
 
 	void ClearSelectionAction();
-	void SetSelectionAndFocusAction(const std::vector<lcObject*>& Selection, lcObject* Focus, quint32 Section, lcSelectionMode SelectionMode);
-	void FocusOrDeselectObjectAction(lcObject* Object, uint32_t Section, lcSelectionMode SelectionMode);
+	void SetSelectionAndFocusAction(const std::vector<swObject*>& Selection, swObject* Focus, quint32 Section, swSelectionMode SelectionMode);
+	void FocusOrDeselectObjectAction(swObject* Object, uint32_t Section, swSelectionMode SelectionMode);
 	void SelectAllPiecesAction();
 	void InvertPieceSelectionAction();
-	void AddToSelectionAction(const std::vector<lcObject*>& Objects);
-	void RemoveFromSelectionAction(const std::vector<lcObject*>& Objects);
+	void AddToSelectionAction(const std::vector<swObject*>& Objects);
+	void RemoveFromSelectionAction(const std::vector<swObject*>& Objects);
 
 	void HideSelectedPieces();
 	void HideUnselectedPieces();
@@ -453,16 +453,16 @@ public:
 	void UndoAction();
 	void RedoAction();
 
-	lcVector3 SnapPosition(const lcVector3& Delta) const;
-	lcVector3 SnapRotation(const lcVector3& Delta) const;
-	lcMatrix33 GetRelativeRotation() const;
+	swVector3 SnapPosition(const swVector3& Delta) const;
+	swVector3 SnapRotation(const swVector3& Delta) const;
+	swMatrix33 GetRelativeRotation() const;
 
-	const lcVector3& GetMouseToolDistance() const
+	const swVector3& GetMouseToolDistance() const
 	{
 		return mMouseToolDistance;
 	}
 
-	bool GetMouseToolMovePositions(lcVector3& Start, lcVector3& End) const
+	bool GetMouseToolMovePositions(swVector3& Start, swVector3& End) const
 	{
 		if (!mMouseToolMovePositionValid)
 			return false;
@@ -473,79 +473,79 @@ public:
 		return true;
 	}
 
-	void BeginMouseTool(lcTool Tool, lcView* View);
-	void EndMouseTool(lcTool Tool, lcView* View, bool Accept);
+	void BeginMouseTool(swTool Tool, swView* View);
+	void EndMouseTool(swTool Tool, swView* View, bool Accept);
 	bool InsertPieceToolClicked();
-	void InsertCameraToolClicked(const lcVector3& Position);
-	void InsertLightToolClicked(const lcVector3& Position, lcLightType LightType);
-	void UpdateMoveTool(const lcVector3& Distance, bool AllowRelative, bool AlternateButtonDrag);
-	void UpdateFreeMoveTool(lcPiece* MousePiece, const lcMatrix44& StartTransform, const lcMatrix44& NewTransform, bool IsConnection, bool AlternateButtonDrag);
-	void UpdateRotateTool(const lcVector3& Axis, float Angle, bool AlternateButtonDrag, bool Relative);
-	void UpdateRotateTool(const lcMatrix33& RotationMatrix, bool AlternateButtonDrag, bool Relative);
+	void InsertCameraToolClicked(const swVector3& Position);
+	void InsertLightToolClicked(const swVector3& Position, swLightType LightType);
+	void UpdateMoveTool(const swVector3& Distance, bool AllowRelative, bool AlternateButtonDrag);
+	void UpdateFreeMoveTool(swPiece* MousePiece, const swMatrix44& StartTransform, const swMatrix44& NewTransform, bool IsConnection, bool AlternateButtonDrag);
+	void UpdateRotateTool(const swVector3& Axis, float Angle, bool AlternateButtonDrag, bool Relative);
+	void UpdateRotateTool(const swMatrix33& RotationMatrix, bool AlternateButtonDrag, bool Relative);
 	void UpdateScaleTool(const float Scale);
-	void EraserToolClicked(lcObject* Object);
-	void PaintToolClicked(lcObject* Object);
-	void ColorPickerToolClicked(const lcObject* Object);
-	void UpdateZoomTool(lcCamera* Camera, float Mouse);
-	void UpdatePanTool(lcCamera* Camera, const lcVector3& Distance);
-	void UpdateOrbitTool(lcCamera* Camera, float MouseX, float MouseY);
-	void UpdateRollTool(lcCamera* Camera, float Mouse);
-	void ZoomRegionToolClicked(lcView* View, float AspectRatio, const lcVector3& Position, const lcVector3& TargetPosition, const lcVector3* Corners);
-	void LookAt(lcCamera* Camera);
-	void MoveCamera(lcCamera* Camera, const lcVector3& Direction);
-	void ZoomExtents(lcCamera* Camera, float Aspect, const lcMatrix44& WorldMatrix, lcGeometryBoundsMode Mode, bool AdjustFarPlane);
-	void Zoom(lcCamera* Camera, float Amount);
+	void EraserToolClicked(swObject* Object);
+	void PaintToolClicked(swObject* Object);
+	void ColorPickerToolClicked(const swObject* Object);
+	void UpdateZoomTool(swCamera* Camera, float Mouse);
+	void UpdatePanTool(swCamera* Camera, const swVector3& Distance);
+	void UpdateOrbitTool(swCamera* Camera, float MouseX, float MouseY);
+	void UpdateRollTool(swCamera* Camera, float Mouse);
+	void ZoomRegionToolClicked(swView* View, float AspectRatio, const swVector3& Position, const swVector3& TargetPosition, const swVector3* Corners);
+	void LookAt(swCamera* Camera);
+	void MoveCamera(swCamera* Camera, const swVector3& Direction);
+	void ZoomExtents(swCamera* Camera, float Aspect, const swMatrix44& WorldMatrix, swGeometryBoundsMode Mode, bool AdjustFarPlane);
+	void Zoom(swCamera* Camera, float Amount);
 
-	void MoveSelectedObjects(const lcVector3& Distance, lcModelTransformFlags Flags, lcModelHistoryEditMerge ModelHistoryEditMerge)
+	void MoveSelectedObjects(const swVector3& Distance, swModelTransformFlags Flags, swModelHistoryEditMerge ModelHistoryEditMerge)
 	{
 		MoveSelectedObjects(Distance, Distance, Flags, ModelHistoryEditMerge);
 	}
 
-	void MoveSelectedObjects(const lcVector3& PieceDistance, const lcVector3& ObjectDistance, lcModelTransformFlags Flags, lcModelHistoryEditMerge ModelHistoryEditMerge);
-	void RotateSelectedObjects(const lcVector3& Angles, lcModelTransformFlags Flags, lcModelHistoryEditMerge ModelHistoryEditMerge);
-	void RotateSelectedObjects(const lcMatrix33& RotationMatrix, lcModelTransformFlags Flags, lcModelHistoryEditMerge ModelHistoryEditMerge);
+	void MoveSelectedObjects(const swVector3& PieceDistance, const swVector3& ObjectDistance, swModelTransformFlags Flags, swModelHistoryEditMerge ModelHistoryEditMerge);
+	void RotateSelectedObjects(const swVector3& Angles, swModelTransformFlags Flags, swModelHistoryEditMerge ModelHistoryEditMerge);
+	void RotateSelectedObjects(const swMatrix33& RotationMatrix, swModelTransformFlags Flags, swModelHistoryEditMerge ModelHistoryEditMerge);
 	void ScaleSelectedPieces(const float Scale);
-	void TransformSelectedObjects(lcTransformType TransformType, const lcVector3& Transform);
-	void SetObjectsKeyFrame(const std::vector<lcObject*>& Objects, lcObjectPropertyId PropertyId, bool KeyFrame);
+	void TransformSelectedObjects(swTransformType TransformType, const swVector3& Transform);
+	void SetObjectsKeyFrame(const std::vector<swObject*>& Objects, swObjectPropertyId PropertyId, bool KeyFrame);
 	void SetSelectedPiecesColorIndex(int ColorIndex);
-	void SetSelectedPiecesStepShow(lcStep Step);
-	void SetSelectedPiecesStepHide(lcStep Step);
+	void SetSelectedPiecesStepShow(swStep Step);
+	void SetSelectedPiecesStepHide(swStep Step);
 
-	void SetObjectsProperty(const std::vector<lcObject*>& Objects, lcObjectPropertyId PropertyId, QVariant Value);
-	void BeginPropertyEdit(lcObjectPropertyId PropertyId);
-	void EndPropertyEdit(lcObjectPropertyId PropertyId, bool Accept);
+	void SetObjectsProperty(const std::vector<swObject*>& Objects, swObjectPropertyId PropertyId, QVariant Value);
+	void BeginPropertyEdit(swObjectPropertyId PropertyId);
+	void EndPropertyEdit(swObjectPropertyId PropertyId, bool Accept);
 
-	void SetCameraProjection(lcCamera* Camera, lcCameraProjection CameraProjection);
+	void SetCameraProjection(swCamera* Camera, swCameraProjection CameraProjection);
 
 	void ShowPropertiesDialog();
 	void ShowArrayDialog();
-	void AddMinifig(const lcMinifig& Minifig);
+	void AddMinifig(const swMinifig& Minifig);
 	void UpdateInterface();
 
 protected:
-	lcResult<QImage> RenderStepImageWithReadyAssets(bool Zoom, int Width, int Height, lcStep Step, lcCamera* OutputCamera, lcImageBackground Background);
+	swResult<QImage> RenderStepImageWithReadyAssets(bool Zoom, int Width, int Height, swStep Step, swCamera* OutputCamera, swImageBackground Background);
 
 	void DeleteModel();
 
-	std::unordered_map<uint32_t, lcGroup*> RestoreGroups(const lcObjectHistory<lcGroupHistoryState>& History);
-	void RestorePieces(const lcObjectHistory<lcPieceHistoryState>& History, const std::unordered_map<uint32_t, lcGroup*>& GroupsById);
-	void RestoreCameras(const lcObjectHistory<lcCameraHistoryState>& History);
-	void RestoreLights(const lcObjectHistory<lcLightHistoryState>& History);
+	std::unordered_map<uint32_t, swGroup*> RestoreGroups(const swObjectHistory<swGroupHistoryState>& History);
+	void RestorePieces(const swObjectHistory<swPieceHistoryState>& History, const std::unordered_map<uint32_t, swGroup*>& GroupsById);
+	void RestoreCameras(const swObjectHistory<swCameraHistoryState>& History);
+	void RestoreLights(const swObjectHistory<swLightHistoryState>& History);
 
 	void AddSelectionHistory(std::function<void()> Callback);
 	void ClearSelection();
-	void SetFocus(lcObject* FocusObject, uint32_t FocusSection, lcSelectionMode SelectionMode);
-	void SetSelectionAndFocus(const std::vector<lcObject*>& Objects, lcObject* FocusObject, uint32_t FocusSection, lcSelectionMode SelectionMode);
+	void SetFocus(swObject* FocusObject, uint32_t FocusSection, swSelectionMode SelectionMode);
+	void SetSelectionAndFocus(const std::vector<swObject*>& Objects, swObject* FocusObject, uint32_t FocusSection, swSelectionMode SelectionMode);
 	void SelectAllPieces();
 	void InvertPieceSelection();
-	void AddToSelection(const std::vector<lcObject*>& Objects);
-	void RemoveFromSelection(const std::vector<lcObject*>& Objects);
+	void AddToSelection(const std::vector<swObject*>& Objects);
+	void RemoveFromSelection(const std::vector<swObject*>& Objects);
 	void BeginEditHistory();
-	void BeginMergeableEditHistory(lcModelHistoryEditMerge ModelHistoryEditMerge, lcObjectPropertyId PropertyId);
+	void BeginMergeableEditHistory(swModelHistoryEditMerge ModelHistoryEditMerge, swObjectPropertyId PropertyId);
 	void EndEditHistory();
-	void SetModelProperties(const lcModelProperties& ModelProperties);
+	void SetModelProperties(const swModelProperties& ModelProperties);
 
-	void RunHistorySequence(const std::vector<std::unique_ptr<lcModelHistory>>& HistorySequence, bool Apply);
+	void RunHistorySequence(const std::vector<std::unique_ptr<swModelHistory>>& HistorySequence, bool Apply);
 	void BeginHistorySequence();
 	void EndHistorySequence(const QString& Description);
 	void DiscardHistorySequence();
@@ -556,50 +556,50 @@ protected:
 	QString GetGroupName(const QString& Prefix);
 	void RemoveEmptyGroups();
 	bool RemoveSelectedObjects();
-	void RemoveCameraFromViews(lcCamera* Camera);
+	void RemoveCameraFromViews(swCamera* Camera);
 
-	std::vector<lcObject*> GetSelectionModePieces(lcSelectionMode SelectionMode, const lcPiece* SelectedPiece) const;
+	std::vector<swObject*> GetSelectionModePieces(swSelectionMode SelectionMode, const swPiece* SelectedPiece) const;
 	void DeselectAllObjects();
-	void SetFocusedObject(lcObject* FocusObject, uint32_t FocusSection, lcSelectionMode SelectionMode);
-	void SetObjectsSelected(const std::vector<lcObject*>& Objects, bool Selected);
-	void SelectGroup(lcGroup* TopGroup, bool Select);
+	void SetFocusedObject(swObject* FocusObject, uint32_t FocusSection, swSelectionMode SelectionMode);
+	void SetObjectsSelected(const std::vector<swObject*>& Objects, bool Selected);
+	void SelectGroup(swGroup* TopGroup, bool Select);
 
-	size_t AddPiece(lcPiece* Piece);
-	void InsertStep(lcStep Step);
+	size_t AddPiece(swPiece* Piece);
+	void InsertStep(swStep Step);
 
-	lcPOVRayOptions mPOVRayOptions;
-	lcModelProperties mProperties;
+	swPOVRayOptions mPOVRayOptions;
+	swModelProperties mProperties;
 	Project* mProject;
 	// Search roots retained when a model moves between project directories.
 	// Their order and the current-directory preference are saved with the model.
 	std::vector<QString> mAssetSourceDirectories;
 	bool mPreferCurrentAssetDirectory = true;
-	lcPieceDataRef mPieceData;
+	swPieceDataRef mPieceData;
 
 	bool mIsPreview;
 	bool mActive;
-	lcStep mCurrentStep;
-	lcVector3 mMouseToolDistance;
-	lcVector3 mMouseToolMoveStartPosition;
-	lcVector3 mMouseToolMoveEndPosition;
+	swStep mCurrentStep;
+	swVector3 mMouseToolDistance;
+	swVector3 mMouseToolMoveStartPosition;
+	swVector3 mMouseToolMoveEndPosition;
 	bool mMouseToolMovePositionValid = false;
 	bool mMouseToolMoveUsesFocus = false;
 	bool mMouseToolFirstMove;
-	std::vector<lcPreviewInsertPieceInfo> mPreviewInsertPieceInfo;
+	std::vector<swPreviewInsertPieceInfo> mPreviewInsertPieceInfo;
 
-	std::vector<std::unique_ptr<lcPiece>> mPieces;
-	std::vector<std::unique_ptr<lcCamera>> mCameras;
-	std::vector<std::unique_ptr<lcLight>> mLights;
-	std::vector<std::unique_ptr<lcGroup>> mGroups;
+	std::vector<std::unique_ptr<swPiece>> mPieces;
+	std::vector<std::unique_ptr<swCamera>> mCameras;
+	std::vector<std::unique_ptr<swLight>> mLights;
+	std::vector<std::unique_ptr<swGroup>> mGroups;
 	QStringList mFileLines;
 	bool mHasDirectGeometry = false;
 
-	std::vector<std::unique_ptr<lcModelHistory>> mHistorySequence;
-	lcObjectPropertyId mActivePropertyEdit = lcObjectPropertyId::Count;
+	std::vector<std::unique_ptr<swModelHistory>> mHistorySequence;
+	swObjectPropertyId mActivePropertyEdit = swObjectPropertyId::Count;
 	quint64 mSavedHistoryRevision = 0;
 	quint64 mNextHistoryRevision = 1;
-	std::vector<std::unique_ptr<lcModelHistoryEntry>> mUndoHistory;
-	std::vector<std::unique_ptr<lcModelHistoryEntry>> mRedoHistory;
+	std::vector<std::unique_ptr<swModelHistoryEntry>> mUndoHistory;
+	std::vector<std::unique_ptr<swModelHistoryEntry>> mRedoHistory;
 
-	Q_DECLARE_TR_FUNCTIONS(lcModel);
+	Q_DECLARE_TR_FUNCTIONS(swModel);
 };

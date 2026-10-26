@@ -4,7 +4,7 @@
 #include "sw_context.h"
 #include <bitset>
 
-enum class lcViewSphereLocation
+enum class swViewSphereLocation
 {
 	TopLeft,
 	TopRight,
@@ -12,10 +12,10 @@ enum class lcViewSphereLocation
 	BottomRight
 };
 
-class lcViewSphere
+class swViewSphere
 {
 public:
-	lcViewSphere(lcView* View);
+	swViewSphere(swView* View);
 
 	void Draw();
 	bool OnMouseMove();
@@ -23,31 +23,31 @@ public:
 	bool OnLeftButtonDown();
 	bool IsDragging() const;
 
-	static void CreateResources(lcContext* Context);
-	static void DestroyResources(lcContext* Context);
+	static void CreateResources(swContext* Context);
+	static void DestroyResources(swContext* Context);
 
 protected:
 	void UpdateSettings();
-	lcMatrix44 GetViewMatrix() const;
-	lcMatrix44 GetProjectionMatrix() const;
-	std::bitset<6> GetIntersectionFlags(lcVector3& Intersection) const;
+	swMatrix44 GetViewMatrix() const;
+	swMatrix44 GetProjectionMatrix() const;
+	std::bitset<6> GetIntersectionFlags(swVector3& Intersection) const;
 
-	lcView* const mView = nullptr;
+	swView* const mView = nullptr;
 
 	int mSize = 1;
 	bool mEnabled = false;
-	lcViewSphereLocation mLocation = lcViewSphereLocation::TopRight;
+	swViewSphereLocation mLocation = swViewSphereLocation::TopRight;
 
 	int mMouseDownX = 0;
 	int mMouseDownY = 0;
 	bool mMouseDown = false;
 
-	lcVector3 mIntersection;
+	swVector3 mIntersection;
 	std::bitset<6> mIntersectionFlags;
 
-	static lcTexture* mTexture;
-	static lcVertexBuffer mVertexBuffer;
-	static lcIndexBuffer mIndexBuffer;
+	static swTexture* mTexture;
+	static swVertexBuffer mVertexBuffer;
+	static swIndexBuffer mIndexBuffer;
 	static int mSphereIndexCount;
 	static const float mRadius;
 	static const float mHighlightRadius;

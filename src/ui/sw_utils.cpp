@@ -12,7 +12,7 @@
 #include <TlHelp32.h>
 #endif
 
-QPoint lcGetPopupPosition(const QPoint& Position, const QSize& Size, const QPoint& ScreenPosition)
+QPoint swGetPopupPosition(const QPoint& Position, const QSize& Size, const QPoint& ScreenPosition)
 {
 	QScreen* Screen = QGuiApplication::screenAt(ScreenPosition);
 
@@ -29,14 +29,14 @@ QPoint lcGetPopupPosition(const QPoint& Position, const QSize& Size, const QPoin
 	return QPoint(X, Y);
 }
 
-bool lcWindowGeometryFilter::eventFilter(QObject* Object, QEvent* Event)
+bool swWindowGeometryFilter::eventFilter(QObject* Object, QEvent* Event)
 {
 	if (Event->type() != QEvent::Show || !Object->isWidgetType())
 		return false;
 
 	QWidget* Window = static_cast<QWidget*>(Object);
 
-	if (!Window->isWindow() || Window->property("lcInitialGeometry").toBool())
+	if (!Window->isWindow() || Window->property("swInitialGeometry").toBool())
 		return false;
 
 	// Only dialogs and secondary main windows, the standard Qt dialogs size themselves and the main window restores its own geometry.
@@ -47,7 +47,7 @@ bool lcWindowGeometryFilter::eventFilter(QObject* Object, QEvent* Event)
 	if (!IsDialog && !IsSecondaryWindow)
 		return false;
 
-	Window->setProperty("lcInitialGeometry", true);
+	Window->setProperty("swInitialGeometry", true);
 
 	QWidget* Parent = Window->parentWidget() ? Window->parentWidget()->window() : nullptr;
 	QScreen* Screen = Parent ? Parent->screen() : Window->screen();
@@ -70,10 +70,10 @@ bool lcWindowGeometryFilter::eventFilter(QObject* Object, QEvent* Event)
 	return false;
 }
 
-class lcFitHeightFilter : public QObject
+class swFitHeightFilter : public QObject
 {
 public:
-	explicit lcFitHeightFilter(QWidget* Widget)
+	explicit swFitHeightFilter(QWidget* Widget)
 		: QObject(Widget)
 	{
 	}
@@ -91,15 +91,15 @@ protected:
 	}
 };
 
-void lcFitHeightToContents(QWidget* Widget)
+void swFitHeightToContents(QWidget* Widget)
 {
 	Widget->setFixedHeight(Widget->sizeHint().height());
-	Widget->installEventFilter(new lcFitHeightFilter(Widget));
+	Widget->installEventFilter(new swFitHeightFilter(Widget));
 }
 
-lcBlockingProgress* lcBlockingProgress::mActive = nullptr;
+swBlockingProgress* swBlockingProgress::mActive = nullptr;
 
-lcBlockingProgress::lcBlockingProgress(const QString& Title, const QString& Label, bool Cancelable)
+swBlockingProgress::swBlockingProgress(const QString& Title, const QString& Label, bool Cancelable)
 	: mTitle(Title), mLabel(Label), mCancelable(Cancelable)
 {
 	// A wait started while another one shows its progress is part of the same task.
@@ -111,7 +111,7 @@ lcBlockingProgress::lcBlockingProgress(const QString& Title, const QString& Labe
 	mTimer.start();
 }
 
-lcBlockingProgress::~lcBlockingProgress()
+swBlockingProgress::~swBlockingProgress()
 {
 	delete mDialog;
 
@@ -119,7 +119,7 @@ lcBlockingProgress::~lcBlockingProgress()
 		mActive = nullptr;
 }
 
-void lcBlockingProgress::SetProgress(int Value, int Maximum)
+void swBlockingProgress::SetProgress(int Value, int Maximum)
 {
 	if (mNested)
 		return;
@@ -162,12 +162,12 @@ void lcBlockingProgress::SetProgress(int Value, int Maximum)
 	mDialog->setValue(Value);
 }
 
-bool lcBlockingProgress::IsCanceled() const
+bool swBlockingProgress::IsCanceled() const
 {
 	return mDialog && mDialog->wasCanceled();
 }
 
-QSize lcGetPanelButtonSize()
+QSize swGetPanelButtonSize()
 {
 	// Every panel button is sized after the options gear button of a panel toolbar.
 	static QSize ButtonSize;
@@ -187,10 +187,10 @@ QSize lcGetPanelButtonSize()
 	return ButtonSize;
 }
 
-void lcSetupPanelButton(QToolButton* Button)
+void swSetupPanelButton(QToolButton* Button)
 {
 	// Panel buttons are outlined, icon buttons are as large as the gear and text buttons as tall.
-	const QSize ButtonSize = lcGetPanelButtonSize();
+	const QSize ButtonSize = swGetPanelButtonSize();
 
 	Button->setAutoRaise(false);
 	Button->setFocusPolicy(Qt::NoFocus);
@@ -206,13 +206,13 @@ void lcSetupPanelButton(QToolButton* Button)
 	}
 }
 
-void lcSetupPanelEdit(QWidget* Edit)
+void swSetupPanelEdit(QWidget* Edit)
 {
 	// Text boxes in panel toolbars are as tall as the buttons so the rows have even spacing.
-	Edit->setFixedHeight(lcGetPanelButtonSize().height());
+	Edit->setFixedHeight(swGetPanelButtonSize().height());
 }
 
-void lcSetupPanelSpinBox(QAbstractSpinBox* SpinBox)
+void swSetupPanelSpinBox(QAbstractSpinBox* SpinBox)
 {
 	// Spin boxes are wide enough for a short value with the name and unit shown in them.
 	QString Prefix, Suffix;
@@ -242,10 +242,10 @@ void lcSetupPanelSpinBox(QAbstractSpinBox* SpinBox)
 	SizePolicy.setHorizontalStretch(1);
 	SpinBox->setSizePolicy(SizePolicy);
 	SpinBox->setMinimumWidth(SpinBox->fontMetrics().horizontalAdvance(Prefix + QLatin1String("-000") + Suffix) + Decoration);
-	lcSetupPanelEdit(SpinBox);
+	swSetupPanelEdit(SpinBox);
 }
 
-int lcGetLayoutSpacing(const QWidget* Widget, Qt::Orientation Orientation)
+int swGetLayoutSpacing(const QWidget* Widget, Qt::Orientation Orientation)
 {
 	// The spacing a standard layout uses, for widgets that place their children themselves.
 	QStyle* Style = Widget->style();
@@ -254,7 +254,7 @@ int lcGetLayoutSpacing(const QWidget* Widget, Qt::Orientation Orientation)
 	return Spacing >= 0 ? Spacing : Style->layoutSpacing(QSizePolicy::DefaultType, QSizePolicy::DefaultType, Orientation, nullptr, Widget);
 }
 
-QWidget* lcCreatePanelRow(QWidget* Parent)
+QWidget* swCreatePanelRow(QWidget* Parent)
 {
 	// The row sits inside the panel layout, which provides the margins, the row keeps the standard spacing.
 	QWidget* Row = new QWidget(Parent);
@@ -264,28 +264,28 @@ QWidget* lcCreatePanelRow(QWidget* Parent)
 	return Row;
 }
 
-void lcAddPanelRowWidget(QWidget* Row, QWidget* Widget)
+void swAddPanelRowWidget(QWidget* Row, QWidget* Widget)
 {
 	Row->layout()->addWidget(Widget);
 }
 
-void lcAddPanelRowStretch(QWidget* Row)
+void swAddPanelRowStretch(QWidget* Row)
 {
 	static_cast<QHBoxLayout*>(Row->layout())->addStretch(1);
 }
 
-QToolButton* lcAddPanelActionButton(QWidget* Row, QAction* Action)
+QToolButton* swAddPanelActionButton(QWidget* Row, QAction* Action)
 {
 	QToolButton* Button = new QToolButton(Row);
 
 	Button->setDefaultAction(Action);
-	lcAddPanelRowWidget(Row, Button);
-	lcSetupPanelButton(Button);
+	swAddPanelRowWidget(Row, Button);
+	swSetupPanelButton(Button);
 
 	return Button;
 }
 
-QToolButton* lcAddPanelOptionsButton(QWidget* Row, QMenu* Menu, const QString& ToolTip, const QString& AccessibleName)
+QToolButton* swAddPanelOptionsButton(QWidget* Row, QMenu* Menu, const QString& ToolTip, const QString& AccessibleName)
 {
 	QToolButton* OptionsButton = new QToolButton(Row);
 
@@ -294,13 +294,13 @@ QToolButton* lcAddPanelOptionsButton(QWidget* Row, QMenu* Menu, const QString& T
 	OptionsButton->setAccessibleName(AccessibleName);
 	OptionsButton->setPopupMode(QToolButton::InstantPopup);
 	OptionsButton->setMenu(Menu);
-	lcAddPanelRowWidget(Row, OptionsButton);
-	lcSetupPanelButton(OptionsButton);
+	swAddPanelRowWidget(Row, OptionsButton);
+	swSetupPanelButton(OptionsButton);
 
 	return OptionsButton;
 }
 
-void lcSetupWidgetHelp(QWidget* Root, QDialogButtonBox* ButtonBox)
+void swSetupWidgetHelp(QWidget* Root, QDialogButtonBox* ButtonBox)
 {
 	const auto ShowHelp = [Root](QWidget* Widget)
 	{
@@ -332,12 +332,12 @@ void lcSetupWidgetHelp(QWidget* Root, QDialogButtonBox* ButtonBox)
 	QObject::connect(HelpShortcut, &QShortcut::activatedAmbiguously, Root, HelpActivated);
 }
 
-void lcSetupDialogHelp(QDialog* Dialog, QDialogButtonBox* ButtonBox)
+void swSetupDialogHelp(QDialog* Dialog, QDialogButtonBox* ButtonBox)
 {
-	lcSetupWidgetHelp(Dialog, ButtonBox);
+	swSetupWidgetHelp(Dialog, ButtonBox);
 }
 
-QString lcFormatValue(float Value, int Precision)
+QString swFormatValue(float Value, int Precision)
 {
 	QString String = QString::number(Value, 'f', Precision);
 	const qsizetype Dot = String.indexOf('.');
@@ -354,7 +354,7 @@ QString lcFormatValue(float Value, int Precision)
 	return String;
 }
 
-QString lcFormatFloatLocalized(float Value, QLocale Locale)
+QString swFormatFloatLocalized(float Value, QLocale Locale)
 {
 	Locale.setNumberOptions(Locale.numberOptions() | QLocale::OmitGroupSeparator);
 	QString DecimalPoint = Locale.decimalPoint();
@@ -372,19 +372,19 @@ QString lcFormatFloatLocalized(float Value, QLocale Locale)
 	return String;
 }
 
-QString lcFormatDoubleLocalized(double Value, QLocale Locale, char Format, int Precision)
+QString swFormatDoubleLocalized(double Value, QLocale Locale, char Format, int Precision)
 {
 	Locale.setNumberOptions(Locale.numberOptions() | QLocale::OmitGroupSeparator);
 	return Locale.toString(Value, Format, Precision);
 }
 
-QString lcFormatIntegerLocalized(qlonglong Value, QLocale Locale)
+QString swFormatIntegerLocalized(qlonglong Value, QLocale Locale)
 {
 	Locale.setNumberOptions(Locale.numberOptions() | QLocale::OmitGroupSeparator);
 	return Locale.toString(Value);
 }
 
-std::optional<float> lcParseFloatLocalized(const QString& Value, QLocale Locale)
+std::optional<float> swParseFloatLocalized(const QString& Value, QLocale Locale)
 {
 	bool Ok;
 	const float Number = Locale.toFloat(Value, &Ok);
@@ -397,7 +397,7 @@ std::optional<float> lcParseFloatLocalized(const QString& Value, QLocale Locale)
 
 #ifdef Q_OS_WIN
 
-int lcTerminateChildProcess(QWidget* Parent, const qint64 Pid, const qint64 Ppid)
+int swTerminateChildProcess(QWidget* Parent, const qint64 Pid, const qint64 Ppid)
 {
 	DWORD PID        = DWORD(Pid);
 	DWORD PPID       = DWORD(Ppid);
@@ -448,7 +448,7 @@ int lcTerminateChildProcess(QWidget* Parent, const qint64 Pid, const qint64 Ppid
 	return 0;
 }
 
-bool lcRunElevatedProcess(const LPCWSTR ExeName, const LPCWSTR Arguments, const LPCWSTR WorkingFolder)
+bool swRunElevatedProcess(const LPCWSTR ExeName, const LPCWSTR Arguments, const LPCWSTR WorkingFolder)
 {
 	SHELLEXECUTEINFO ShellExecuteInfo = {};
 
@@ -481,17 +481,17 @@ bool lcRunElevatedProcess(const LPCWSTR ExeName, const LPCWSTR Arguments, const 
 #endif
 
 // Resize all columns to content except for one stretching column. (taken from QT creator)
-lcTreeWidgetColumnStretcher::lcTreeWidgetColumnStretcher(QTreeWidget* TreeWidget, int ColumnToStretch)
+swTreeWidgetColumnStretcher::swTreeWidgetColumnStretcher(QTreeWidget* TreeWidget, int ColumnToStretch)
 	: QObject(TreeWidget->header()), mColumnToStretch(ColumnToStretch), mInteractiveResize(false), mStretchWidth(0)
 {
 	parent()->installEventFilter(this);
-	connect(TreeWidget->header(), &QHeaderView::sectionResized, this, &lcTreeWidgetColumnStretcher::SectionResized);
+	connect(TreeWidget->header(), &QHeaderView::sectionResized, this, &swTreeWidgetColumnStretcher::SectionResized);
 
 	QHideEvent Fake;
-	lcTreeWidgetColumnStretcher::eventFilter(parent(), &Fake);
+	swTreeWidgetColumnStretcher::eventFilter(parent(), &Fake);
 }
 
-void lcTreeWidgetColumnStretcher::SectionResized(int LogicalIndex, int OldSize, int NewSize)
+void swTreeWidgetColumnStretcher::SectionResized(int LogicalIndex, int OldSize, int NewSize)
 {
 	Q_UNUSED(OldSize)
 
@@ -506,7 +506,7 @@ void lcTreeWidgetColumnStretcher::SectionResized(int LogicalIndex, int OldSize, 
 	}
 }
 
-bool lcTreeWidgetColumnStretcher::eventFilter(QObject* Object, QEvent* Event)
+bool swTreeWidgetColumnStretcher::eventFilter(QObject* Object, QEvent* Event)
 {
 	if (Object == parent())
 	{
@@ -540,18 +540,18 @@ bool lcTreeWidgetColumnStretcher::eventFilter(QObject* Object, QEvent* Event)
 	return false;
 }
 
-lcPieceIdStringModel::lcPieceIdStringModel(lcModel* Model, QObject* Parent)
+swPieceIdStringModel::swPieceIdStringModel(swModel* Model, QObject* Parent)
 	: QAbstractListModel(Parent)
 {
-	lcPiecesLibrary* Library = lcGetPiecesLibrary();
+	swPiecesLibrary* Library = swGetPiecesLibrary();
 	mSortedPieces = Library->GetParts();
 
-	mSortedPieces.erase(std::remove_if(mSortedPieces.begin(), mSortedPieces.end(), [Model](lcPieceData* PieceData)
+	mSortedPieces.erase(std::remove_if(mSortedPieces.begin(), mSortedPieces.end(), [Model](swPieceData* PieceData)
 	{
 		return PieceData->IsModel() && PieceData->GetModel()->IncludesModel(Model);
 	}), mSortedPieces.end());
 
-	auto PieceCompare = [](lcPieceData* PieceData1, lcPieceData* PieceData2)
+	auto PieceCompare = [](swPieceData* PieceData1, swPieceData* PieceData2)
 	{
 		return strcmp(PieceData1->m_strDescription, PieceData2->m_strDescription) < 0;
 	};
@@ -559,7 +559,7 @@ lcPieceIdStringModel::lcPieceIdStringModel(lcModel* Model, QObject* Parent)
 	std::sort(mSortedPieces.begin(), mSortedPieces.end(), PieceCompare);
 }
 
-QModelIndex lcPieceIdStringModel::Index(lcPieceData* PieceData) const
+QModelIndex swPieceIdStringModel::Index(swPieceData* PieceData) const
 {
 	for (size_t PieceDataIndex = 0; PieceDataIndex < mSortedPieces.size(); PieceDataIndex++)
 		if (mSortedPieces[PieceDataIndex] == PieceData)
@@ -568,29 +568,29 @@ QModelIndex lcPieceIdStringModel::Index(lcPieceData* PieceData) const
 	return QModelIndex();
 }
 
-std::vector<bool> lcPieceIdStringModel::GetFilteredRows(const QString& FilterText) const
+std::vector<bool> swPieceIdStringModel::GetFilteredRows(const QString& FilterText) const
 {
 	const std::string Text = FilterText.toStdString();
 	std::vector<bool> FilteredRows(mSortedPieces.size());
 
 	for (size_t PieceDataIndex = 0; PieceDataIndex < mSortedPieces.size(); PieceDataIndex++)
 	{
-		const lcPieceData* PieceData = mSortedPieces[PieceDataIndex];
+		const swPieceData* PieceData = mSortedPieces[PieceDataIndex];
 
-		FilteredRows[PieceDataIndex] = (lcstrcasestr(PieceData->m_strDescription, Text.c_str()) || lcstrcasestr(PieceData->mFileName, Text.c_str()));
+		FilteredRows[PieceDataIndex] = (swstrcasestr(PieceData->m_strDescription, Text.c_str()) || swstrcasestr(PieceData->mFileName, Text.c_str()));
 	}
 
 	return FilteredRows;
 }
 
-int lcPieceIdStringModel::rowCount(const QModelIndex& Parent) const
+int swPieceIdStringModel::rowCount(const QModelIndex& Parent) const
 {
 	Q_UNUSED(Parent);
 
 	return static_cast<int>(mSortedPieces.size());
 }
 
-QVariant lcPieceIdStringModel::data(const QModelIndex& Index, int Role) const
+QVariant swPieceIdStringModel::data(const QModelIndex& Index, int Role) const
 {
 	if (Index.row() < static_cast<int>(mSortedPieces.size()))
 	{
@@ -603,7 +603,7 @@ QVariant lcPieceIdStringModel::data(const QModelIndex& Index, int Role) const
 	return QVariant();
 }
 
-lcColorDialogPopup::lcColorDialogPopup(const QColor& InitialColor, QWidget* Parent)
+swColorDialogPopup::swColorDialogPopup(const QColor& InitialColor, QWidget* Parent)
 	: QWidget(Parent)
 {
 	setAccessibleName(tr("Choose Color"));
@@ -622,13 +622,13 @@ lcColorDialogPopup::lcColorDialogPopup(const QColor& InitialColor, QWidget* Pare
 
 	QDialogButtonBox* ButtonBox = new QDialogButtonBox(QDialogButtonBox::Ok|QDialogButtonBox::Cancel|QDialogButtonBox::Help, this);
 	Layout->addWidget(ButtonBox);
-	lcSetupWidgetHelp(this, ButtonBox);
+	swSetupWidgetHelp(this, ButtonBox);
 
-	QObject::connect(ButtonBox, &QDialogButtonBox::accepted, this, &lcColorDialogPopup::Accept);
-	QObject::connect(ButtonBox, &QDialogButtonBox::rejected, this, &lcColorDialogPopup::Reject);
+	QObject::connect(ButtonBox, &QDialogButtonBox::accepted, this, &swColorDialogPopup::Accept);
+	QObject::connect(ButtonBox, &QDialogButtonBox::rejected, this, &swColorDialogPopup::Reject);
 }
 
-void lcColorDialogPopup::Accept()
+void swColorDialogPopup::Accept()
 {
 	QColor Color = mColorDialog->currentColor();
 
@@ -637,12 +637,12 @@ void lcColorDialogPopup::Accept()
 	Close();
 }
 
-void lcColorDialogPopup::Reject()
+void swColorDialogPopup::Reject()
 {
 	Close();
 }
 
-void lcColorDialogPopup::Close()
+void swColorDialogPopup::Close()
 {
 	QMenu* Menu = qobject_cast<QMenu*>(parent());
 

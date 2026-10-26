@@ -2,12 +2,12 @@
 
 #include "sw_math.h"
 
-#define LC_MAX_COLOR_NAME 64
-#define LC_COLOR_DIRECT 0x80000000
-#define LC_COLOR_NOCOLOR 0xffffffff
-#define LC_STUD_CYLINDER_COLOR_CODE 4242
+#define SW_MAX_COLOR_NAME 64
+#define SW_COLOR_DIRECT 0x80000000
+#define SW_COLOR_NOCOLOR 0xffffffff
+#define SW_STUD_CYLINDER_COLOR_CODE 4242
 
-struct lcColor
+struct swColor
 {
 	quint32 Code;
 	int Group;
@@ -15,66 +15,66 @@ struct lcColor
 	bool Chrome = false;
 	bool Rubber = false;
 	bool Adjusted = false;
-	lcVector4 Value;
-	lcVector4 Edge;
-	char Name[LC_MAX_COLOR_NAME];
-	char SafeName[LC_MAX_COLOR_NAME];
+	swVector4 Value;
+	swVector4 Edge;
+	char Name[SW_MAX_COLOR_NAME];
+	char SafeName[SW_MAX_COLOR_NAME];
 };
 
 enum
 {
-	LC_COLORGROUP_SOLID,
-	LC_COLORGROUP_TRANSLUCENT,
-	LC_COLORGROUP_SPECIAL,
-	LC_NUM_COLORGROUPS
+	SW_COLORGROUP_SOLID,
+	SW_COLORGROUP_TRANSLUCENT,
+	SW_COLORGROUP_SPECIAL,
+	SW_NUM_COLORGROUPS
 };
 
-struct lcColorGroup
+struct swColorGroup
 {
 	std::vector<int> Colors;
 	QString Name;
 };
 
-extern std::vector<lcColor> gColorList;
-extern lcColorGroup gColorGroups[LC_NUM_COLORGROUPS];
+extern std::vector<swColor> gColorList;
+extern swColorGroup gColorGroups[SW_NUM_COLORGROUPS];
 extern int gEdgeColor;
 extern int gDefaultColor;
 
-void lcLoadDefaultColors(lcStudStyle StudStyle);
-bool lcLoadColorFile(lcFile& File, lcStudStyle StudStyle);
-int lcGetColorIndex(quint32 ColorCode);
+void swLoadDefaultColors(swStudStyle StudStyle);
+bool swLoadColorFile(swFile& File, swStudStyle StudStyle);
+int swGetColorIndex(quint32 ColorCode);
 
-inline quint32 lcGetColorCodeFromExtendedColor(int Color)
+inline quint32 swGetColorCodeFromExtendedColor(int Color)
 {
 	const quint32 ConversionTable[] = { 4, 12, 2, 10, 1, 9, 14, 15, 8, 0, 6, 13, 13, 334, 36, 44, 34, 42, 33, 41, 46, 47, 7, 382, 6, 13, 11, 383 };
 	return ConversionTable[Color];
 }
 
-inline quint32 lcGetColorCodeFromOriginalColor(int Color)
+inline quint32 swGetColorCodeFromOriginalColor(int Color)
 {
 	const quint32 ConversionTable[] = { 0, 2, 4, 9, 7, 6, 22, 8, 10, 11, 14, 16, 18, 9, 21, 20, 22, 8, 10, 11 };
-	return lcGetColorCodeFromExtendedColor(ConversionTable[Color]);
+	return swGetColorCodeFromExtendedColor(ConversionTable[Color]);
 }
 
-inline quint32 lcGetColorCode(int ColorIndex)
+inline quint32 swGetColorCode(int ColorIndex)
 {
 	return gColorList[ColorIndex].Code;
 }
 
-inline bool lcIsColorTranslucent(size_t ColorIndex)
+inline bool swIsColorTranslucent(size_t ColorIndex)
 {
 	return gColorList[ColorIndex].Translucent;
 }
 
-inline bool lcIsColorChrome(size_t ColorIndex)
+inline bool swIsColorChrome(size_t ColorIndex)
 {
 	return gColorList[ColorIndex].Chrome;
 }
 
-inline bool lcIsColorRubber(size_t ColorIndex)
+inline bool swIsColorRubber(size_t ColorIndex)
 {
 	return gColorList[ColorIndex].Rubber;
 }
 
-QString lcGetColorToolTip(int ColorIndex);
-void lcDrawNoColorRect(QPainter& Painter, const QRect& Rect);
+QString swGetColorToolTip(int ColorIndex);
+void swDrawNoColorRect(QPainter& Painter, const QRect& Rect);

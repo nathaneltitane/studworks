@@ -7,9 +7,9 @@
 #include "sw_file.h"
 #include <QDomDocument>
 
-static bool lcLoadLDrawXML(std::map<int, int>& MaterialTable, std::map<int, std::string>& BrickTable, std::map<std::string, std::pair<lcVector3, lcVector4>>& TransformTable)
+static bool swLoadLDrawXML(std::map<int, int>& MaterialTable, std::map<int, std::string>& BrickTable, std::map<std::string, std::pair<swVector3, swVector4>>& TransformTable)
 {
-	QFile File(lcGetPiecesLibrary()->GetLibraryFilePath(QLatin1String("ldraw.xml")));
+	QFile File(swGetPiecesLibrary()->GetLibraryFilePath(QLatin1String("ldraw.xml")));
 	QByteArray Data;
 
 	if (File.open(QIODevice::ReadOnly))
@@ -55,8 +55,8 @@ static bool lcLoadLDrawXML(std::map<int, int>& MaterialTable, std::map<int, std:
 		{
 			QString LDrawID = Element.attribute(QLatin1String("ldraw"));
 
-			lcVector3 Translation;
-			lcVector4 AxisAngle;
+			swVector3 Translation;
+			swVector4 AxisAngle;
 
 			Translation[0] = Element.attribute(QLatin1String("tx")).toFloat();
 			Translation[1] = Element.attribute(QLatin1String("ty")).toFloat();
@@ -73,13 +73,13 @@ static bool lcLoadLDrawXML(std::map<int, int>& MaterialTable, std::map<int, std:
 	return true;
 }
 
-bool lcImportLXFMLFile(const QString& FileData, Project* Project, std::vector<lcPiece*>& Pieces, std::vector<std::vector<lcPiece*>>& Groups)
+bool swImportLXFMLFile(const QString& FileData, Project* Project, std::vector<swPiece*>& Pieces, std::vector<std::vector<swPiece*>>& Groups)
 {
 	std::map<int, int> MaterialTable;
 	std::map<int, std::string> BrickTable;
-	std::map<std::string, std::pair<lcVector3, lcVector4>> TransformTable;
+	std::map<std::string, std::pair<swVector3, swVector4>> TransformTable;
 
-	if (!lcLoadLDrawXML(MaterialTable, BrickTable, TransformTable))
+	if (!swLoadLDrawXML(MaterialTable, BrickTable, TransformTable))
 		return false;
 
 	QDomDocument Document;
@@ -110,7 +110,7 @@ bool lcImportLXFMLFile(const QString& FileData, Project* Project, std::vector<lc
 					continue;
 
 				bool BoneFound = false;
-				lcMatrix44 WorldMatrix;
+				swMatrix44 WorldMatrix;
 
 				for (QDomNode BoneNode = PartElement.firstChild(); !BoneNode.isNull(); BoneNode = BoneNode.nextSibling())
 				{
@@ -151,13 +151,13 @@ bool lcImportLXFMLFile(const QString& FileData, Project* Project, std::vector<lc
 				QString LegoID = PartElement.attribute(QLatin1String("designID"));
 				int Material = PartElement.attribute(QLatin1String("materials")).split(',').first().toInt();
 
-				lcPieceDataRef PieceData;
+				swPieceDataRef PieceData;
 				const auto BrickIt = BrickTable.find(LegoID.toInt());
 
 				if (BrickIt != BrickTable.end())
-					PieceData = lcGetPiecesLibrary()->AcquirePieceData(BrickIt->second.c_str(), Project, true, false);
+					PieceData = swGetPiecesLibrary()->AcquirePieceData(BrickIt->second.c_str(), Project, true, false);
 				else
-					PieceData = lcGetPiecesLibrary()->AcquirePieceData(LegoID.toLatin1() + ".dat", Project, true, false);
+					PieceData = swGetPiecesLibrary()->AcquirePieceData(LegoID.toLatin1() + ".dat", Project, true, false);
 
 				const auto ColorIt = MaterialTable.find(Material);
 				int ColorCode = 16;
@@ -168,21 +168,21 @@ bool lcImportLXFMLFile(const QString& FileData, Project* Project, std::vector<lc
 				const auto TransformIt = TransformTable.find(BrickIt != BrickTable.end() ? BrickIt->second : (LegoID.toStdString() + ".dat"));
 				if (TransformIt != TransformTable.end())
 				{
-					const lcVector4& AxisAngle = TransformIt->second.second;
-					const lcVector3& TransformTranslation = TransformIt->second.first;
+					const swVector4& AxisAngle = TransformIt->second.second;
+					const swVector3& TransformTranslation = TransformIt->second.first;
 
-					lcMatrix44 Transform = lcMatrix44FromAxisAngle(lcVector3(AxisAngle[0], AxisAngle[1], AxisAngle[2]), -AxisAngle[3]);
-					Transform.SetTranslation(lcMul30(-TransformTranslation, Transform));
+					swMatrix44 Transform = swMatrix44FromAxisAngle(swVector3(AxisAngle[0], AxisAngle[1], AxisAngle[2]), -AxisAngle[3]);
+					Transform.SetTranslation(swMul30(-TransformTranslation, Transform));
 
-					WorldMatrix = lcMul(Transform, WorldMatrix);
+					WorldMatrix = swMul(Transform, WorldMatrix);
 				}
 
-				WorldMatrix = lcMatrix44(lcVector4(WorldMatrix[0][0], -WorldMatrix[0][1], -WorldMatrix[0][2], 0.0f), lcVector4(-WorldMatrix[1][0], WorldMatrix[1][1], WorldMatrix[1][2], 0.0f),
-										 lcVector4(-WorldMatrix[2][0], WorldMatrix[2][1], WorldMatrix[2][2], 0.0f), lcVector4(WorldMatrix[3][0] * 25.0f, -WorldMatrix[3][1] * 25.0f, -WorldMatrix[3][2] * 25.0f, 1.0f));
+				WorldMatrix = swMatrix44(swVector4(WorldMatrix[0][0], -WorldMatrix[0][1], -WorldMatrix[0][2], 0.0f), swVector4(-WorldMatrix[1][0], WorldMatrix[1][1], WorldMatrix[1][2], 0.0f),
+										 swVector4(-WorldMatrix[2][0], WorldMatrix[2][1], WorldMatrix[2][2], 0.0f), swVector4(WorldMatrix[3][0] * 25.0f, -WorldMatrix[3][1] * 25.0f, -WorldMatrix[3][2] * 25.0f, 1.0f));
 
-				lcPiece* Piece = new lcPiece(nullptr);
+				swPiece* Piece = new swPiece(nullptr);
 				Piece->SetPieceData(std::move(PieceData), QString(), false, true);
-				Piece->Initialize(lcMatrix44LDrawToLeoCAD(WorldMatrix), 1);
+				Piece->Initialize(swMatrix44LDrawToStudWorks(WorldMatrix), 1);
 				Piece->SetColorCode(ColorCode);
 				Pieces.push_back(Piece);
 				NumBrickPieces++;
@@ -190,7 +190,7 @@ bool lcImportLXFMLFile(const QString& FileData, Project* Project, std::vector<lc
 
 			if (NumBrickPieces > 1)
 			{
-				std::vector<lcPiece*> Group;
+				std::vector<swPiece*> Group;
 				for (size_t PieceIdx = Pieces.size() - NumBrickPieces; PieceIdx < Pieces.size(); PieceIdx++)
 					Group.push_back(Pieces[PieceIdx]);
 				Groups.push_back(Group);

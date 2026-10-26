@@ -7,9 +7,9 @@
 #include "sw_profile.h"
 #include "sw_http.h"
 
-void lcDoInitialUpdateCheck()
+void swDoInitialUpdateCheck()
 {
-	int UpdateFrequency = lcGetProfileInt(LC_PROFILE_CHECK_UPDATES);
+	int UpdateFrequency = swGetProfileInt(SW_PROFILE_CHECK_UPDATES);
 
 	if (UpdateFrequency == 0)
 		return;
@@ -25,31 +25,31 @@ void lcDoInitialUpdateCheck()
 			return;
 	}
 
-	new lcUpdateDialog(nullptr, true);
+	new swUpdateDialog(nullptr, true);
 }
 
-lcUpdateDialog::lcUpdateDialog(QWidget* Parent, bool InitialUpdate)
-	: QDialog(Parent), ui(new Ui::lcUpdateDialog), mInitialUpdate(InitialUpdate)
+swUpdateDialog::swUpdateDialog(QWidget* Parent, bool InitialUpdate)
+	: QDialog(Parent), ui(new Ui::swUpdateDialog), mInitialUpdate(InitialUpdate)
 {
 	ui->setupUi(this);
-	lcSetupDialogHelp(this, ui->buttonBox);
+	swSetupDialogHelp(this, ui->buttonBox);
 
-	connect(this, &QDialog::finished, this, &lcUpdateDialog::finished);
+	connect(this, &QDialog::finished, this, &swUpdateDialog::finished);
 
 	ui->status->setText(tr("Connecting to update server..."));
 
-	mHttpManager = new lcHttpManager(this);
-	connect(mHttpManager, &lcHttpManager::DownloadFinished, this, &lcUpdateDialog::DownloadFinished);
+	mHttpManager = new swHttpManager(this);
+	connect(mHttpManager, &swHttpManager::DownloadFinished, this, &swUpdateDialog::DownloadFinished);
 
 	mHttpManager->DownloadFile(QLatin1String("https://www.leocad.org/updates.txt"));
 }
 
-lcUpdateDialog::~lcUpdateDialog()
+swUpdateDialog::~swUpdateDialog()
 {
 	delete ui;
 }
 
-void lcUpdateDialog::accept()
+void swUpdateDialog::accept()
 {
 	QSettings Settings;
 	Settings.setValue("Updates/IgnoreVersion", mVersionData);
@@ -57,7 +57,7 @@ void lcUpdateDialog::accept()
 	QDialog::accept();
 }
 
-void lcUpdateDialog::finished(int result)
+void swUpdateDialog::finished(int result)
 {
 	Q_UNUSED(result);
 
@@ -65,7 +65,7 @@ void lcUpdateDialog::finished(int result)
 		deleteLater();
 }
 
-void lcUpdateDialog::DownloadFinished(lcHttpReply* Reply)
+void swUpdateDialog::DownloadFinished(swHttpReply* Reply)
 {
 	bool UpdateAvailable = false;
 
@@ -88,15 +88,15 @@ void lcUpdateDialog::DownloadFinished(lcHttpReply* Reply)
 		{
 			QString Status;
 
-			if (MajorVersion > LC_VERSION_MAJOR)
+			if (MajorVersion > SW_VERSION_MAJOR)
 				UpdateAvailable = true;
-			else if (MajorVersion == LC_VERSION_MAJOR)
+			else if (MajorVersion == SW_VERSION_MAJOR)
 			{
-				if (MinorVersion > LC_VERSION_MINOR)
+				if (MinorVersion > SW_VERSION_MINOR)
 					UpdateAvailable = true;
-				else if (MinorVersion == LC_VERSION_MINOR)
+				else if (MinorVersion == SW_VERSION_MINOR)
 				{
-					if (PatchVersion > LC_VERSION_PATCH)
+					if (PatchVersion > SW_VERSION_PATCH)
 						UpdateAvailable = true;
 				}
 			}
@@ -106,7 +106,7 @@ void lcUpdateDialog::DownloadFinished(lcHttpReply* Reply)
 			else
 				Status = tr("<p>You are using the latest LeoCAD version.</p>");
 
-			const int OfficialPieceCount = lcGetPiecesLibrary()->GetOfficialPieceCount();
+			const int OfficialPieceCount = swGetPiecesLibrary()->GetOfficialPieceCount();
 
 			if (OfficialPieceCount)
 			{

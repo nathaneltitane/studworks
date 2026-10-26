@@ -3,19 +3,19 @@
 #include "sw_context.h"
 #include "sw_glextensions.h"
 
-lcTexture* gGridTexture;
+swTexture* gGridTexture;
 
-lcTexture::lcTexture(int Flags)
+swTexture::swTexture(int Flags)
     : mFlags(Flags)
 {
 }
 
-lcTexture::~lcTexture()
+swTexture::~swTexture()
 {
 	Unload();
 }
 
-void lcTexture::CreateGridTexture()
+void swTexture::CreateGridTexture()
 {
 	constexpr int NumLevels = 9;
 	mImages.resize(NumLevels);
@@ -127,15 +127,15 @@ void lcTexture::CreateGridTexture()
 	}
 
 	mRefCount = 1;
-	mFlags = LC_TEXTURE_WRAPU | LC_TEXTURE_WRAPV | LC_TEXTURE_MIPMAPS | LC_TEXTURE_ANISOTROPIC;
-	mState = lcAssetState::Loading;
+	mFlags = SW_TEXTURE_WRAPU | SW_TEXTURE_WRAPV | SW_TEXTURE_MIPMAPS | SW_TEXTURE_ANISOTROPIC;
+	mState = swAssetState::Loading;
 
-	lcContext* Context = lcContext::GetGlobalOffscreenContext();
+	swContext* Context = swContext::GetGlobalOffscreenContext();
 	Context->MakeCurrent();
 	Upload(Context);
 }
 
-QImage lcTexture::PrepareImage(QImage Image)
+QImage swTexture::PrepareImage(QImage Image)
 {
 	if (Image.isNull())
 		return QImage();
@@ -157,37 +157,37 @@ QImage lcTexture::PrepareImage(QImage Image)
 	return Image.convertToFormat(Format);
 }
 
-void lcTexture::SetImage(QImage SourceImage, int Flags)
+void swTexture::SetImage(QImage SourceImage, int Flags)
 {
 	QImage TextureImage = PrepareImage(std::move(SourceImage));
 
 	if (TextureImage.isNull())
 	{
-		SetFailed(lcTextureLoadError::DecodeFailed, QString());
+		SetFailed(swTextureLoadError::DecodeFailed, QString());
 		return;
 	}
 
 	mImages.clear();
 	mImages.emplace_back(std::move(TextureImage));
 	mFlags = Flags;
-	mState = lcAssetState::Loading;
+	mState = swAssetState::Loading;
 }
 
-void lcTexture::DiscardDecodedImage()
+void swTexture::DiscardDecodedImage()
 {
 	mImages.clear();
 }
 
-void lcTexture::SetFailed(lcTextureLoadError Error, QString Details)
+void swTexture::SetFailed(swTextureLoadError Error, QString Details)
 {
-	mState = lcAssetState::Failed;
+	mState = swAssetState::Failed;
 	mLoadFailure = Error;
 	mLoadFailureDetails = std::move(Details);
 }
 
-QString lcTexture::GetLoadError() const
+QString swTexture::GetLoadError() const
 {
-	if (mState != lcAssetState::Failed)
+	if (mState != swAssetState::Failed)
 		return QString();
 
 	if (!mLoadFailureDetails.isEmpty())
@@ -195,30 +195,30 @@ QString lcTexture::GetLoadError() const
 
 	switch (mLoadFailure)
 	{
-	case lcTextureLoadError::DecodeFailed:
+	case swTextureLoadError::DecodeFailed:
 		return tr("Could not load texture '%1'.").arg(QString::fromLatin1(mName));
 
-	case lcTextureLoadError::ContextActivationFailed:
+	case swTextureLoadError::ContextActivationFailed:
 		return tr("Could not make the shared GL context current for texture upload.");
 
-	case lcTextureLoadError::ContextUnavailable:
+	case swTextureLoadError::ContextUnavailable:
 		return tr("No shared GL context is available for texture upload.");
 
-	case lcTextureLoadError::UploadFailed:
+	case swTextureLoadError::UploadFailed:
 		return tr("Texture upload failed.");
 
-	case lcTextureLoadError::None:
+	case swTextureLoadError::None:
 		return tr("Texture '%1' failed to load.").arg(QString::fromLatin1(mName));
 	}
 
 	return tr("Texture '%1' failed to load.").arg(QString::fromLatin1(mName));
 }
 
-void lcTexture::SetImages(std::vector<QImage>&& Images, int Flags)
+void swTexture::SetImages(std::vector<QImage>&& Images, int Flags)
 {
 	if (Images.empty())
 	{
-		SetFailed(lcTextureLoadError::DecodeFailed, QString());
+		SetFailed(swTextureLoadError::DecodeFailed, QString());
 		return;
 	}
 
@@ -228,17 +228,17 @@ void lcTexture::SetImages(std::vector<QImage>&& Images, int Flags)
 
 		if (Image.isNull())
 		{
-			SetFailed(lcTextureLoadError::DecodeFailed, QString());
+			SetFailed(swTextureLoadError::DecodeFailed, QString());
 			return;
 		}
 	}
 
 	mImages = std::move(Images);
 	mFlags = Flags;
-	mState = lcAssetState::Loading;
+	mState = swAssetState::Loading;
 }
 
-void lcTexture::Upload(lcContext* Context)
+void swTexture::Upload(swContext* Context)
 {
 	if (!NeedsUpload())
 		return;
@@ -251,8 +251,8 @@ void lcTexture::Upload(lcContext* Context)
 	if (Uploaded && mTexture)
 	{
 		mImages.clear();
-		mState = lcAssetState::Loaded;
-		mLoadFailure = lcTextureLoadError::None;
+		mState = swAssetState::Loaded;
+		mLoadFailure = swTextureLoadError::None;
 		mLoadFailureDetails.clear();
 	}
 	else
@@ -264,11 +264,11 @@ void lcTexture::Upload(lcContext* Context)
 			mTexture = 0;
 		}
 
-		SetFailed(lcTextureLoadError::UploadFailed, QString());
+		SetFailed(swTextureLoadError::UploadFailed, QString());
 	}
 }
 
-void lcTexture::Unload()
+void swTexture::Unload()
 {
 	if (mTexture)
 	{
@@ -278,7 +278,7 @@ void lcTexture::Unload()
 			GLContext->functions()->glDeleteTextures(1, &mTexture);
 		else if (qApp && QThread::currentThread() == qApp->thread())
 		{
-			if (lcContext* Context = lcContext::GetGlobalOffscreenContext())
+			if (swContext* Context = swContext::GetGlobalOffscreenContext())
 			{
 				Context->MakeCurrent();
 
@@ -292,7 +292,7 @@ void lcTexture::Unload()
 	}
 
 	mTexture = 0;
-	mState = lcAssetState::Unloaded;
-	mLoadFailure = lcTextureLoadError::None;
+	mState = swAssetState::Unloaded;
+	mLoadFailure = swTextureLoadError::None;
 	mLoadFailureDetails.clear();
 }

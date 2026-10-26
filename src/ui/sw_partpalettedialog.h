@@ -1,18 +1,18 @@
 #pragma once
 
 namespace Ui {
-class lcPartPaletteDialog;
+class swPartPaletteDialog;
 }
 
-struct lcPartPalette;
+struct swPartPalette;
 
-class lcPartPaletteDialog : public QDialog
+class swPartPaletteDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    lcPartPaletteDialog(QWidget* Parent, std::vector<lcPartPalette>& PartPalettes);
-    ~lcPartPaletteDialog();
+    swPartPaletteDialog(QWidget* Parent, std::vector<swPartPalette>& PartPalettes);
+    ~swPartPaletteDialog();
 
 protected slots:
 	void accept() override;
@@ -29,7 +29,7 @@ private slots:
 private:
 	void UpdateButtons();
 
-	Ui::lcPartPaletteDialog* ui;
-	std::vector<lcPartPalette>& mPartPalettes;
-	std::vector<lcPartPalette*> mImportedPalettes;
+	Ui::swPartPaletteDialog* ui;
+	std::vector<swPartPalette>& mPartPalettes;
+	std::vector<swPartPalette*> mImportedPalettes;
 };

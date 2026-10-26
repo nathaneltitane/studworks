@@ -12,7 +12,7 @@ visible in the dialog rather than available only on hover.
 
 Keep static help in the dialog's `.ui` file so Qt extracts it for translation.
 Use translated C++ strings for dynamic help. Command descriptions belong in the
-`WhatsThis` field of `lcCommand`, marked with `QT_TRANSLATE_NOOP("WhatsThis", ...)`;
+`WhatsThis` field of `swCommand`, marked with `QT_TRANSLATE_NOOP("WhatsThis", ...)`;
 `CreateActions()` translates them when actions are created. Keep widget overviews
 and composite-control help with the widgets. Do not translate static data before
 application translators are installed. New catalog entries remain unfinished
@@ -22,11 +22,11 @@ status. Maintain `resources/leocad_en.ts` with `lupdate -pluralonly`. Keep the
 current build policy of including nonempty unfinished translations.
 
 Add the standard Help button to the dialog's button box, then call
-`lcSetupDialogHelp()` after `setupUi()`. Help shows the dialog overview. F1 shows
+`swSetupDialogHelp()` after `setupUi()`. Help shows the dialog overview. F1 shows
 help for the focused control, falling back through its parent groups to the
 dialog overview. This also handles focus inside composite controls such as
 spin boxes. Both entry points use Qt's native What's This popup. For QWidget-based choosers
-embedded in menus, use `lcSetupWidgetHelp()` and verify that help does not accept
+embedded in menus, use `swSetupWidgetHelp()` and verify that help does not accept
 a choice or close the menu. Shortcut-recording fields may capture F1 as input;
 keep the Help button available for those fields.
 Dock widgets and toolbars can pass `nullptr` as the button box to enable F1

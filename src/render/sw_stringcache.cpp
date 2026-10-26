@@ -3,32 +3,32 @@
 #include "sw_texture.h"
 #include "sw_context.h"
 
-lcStringCache gStringCache;
+swStringCache gStringCache;
 
-lcStringCache::lcStringCache()
+swStringCache::swStringCache()
 	: mTexture(nullptr)
 {
 }
 
-lcStringCache::~lcStringCache()
+swStringCache::~swStringCache()
 {
 	delete mTexture;
 }
 
-void lcStringCache::Initialize(lcContext* Context)
+void swStringCache::Initialize(swContext* Context)
 {
 	Q_UNUSED(Context);
 
-	mTexture = new lcTexture();
+	mTexture = new swTexture();
 }
 
-void lcStringCache::Reset()
+void swStringCache::Reset()
 {
 	delete mTexture;
 	mTexture = nullptr;
 }
 
-void lcStringCache::CacheStrings(lcContext* Context, const QStringList& Strings)
+void swStringCache::CacheStrings(swContext* Context, const QStringList& Strings)
 {
 	bool Update = false;
 
@@ -36,7 +36,7 @@ void lcStringCache::CacheStrings(lcContext* Context, const QStringList& Strings)
 	{
 		if (mStrings.find(String) == mStrings.end())
 		{
-			mStrings[String] = lcStringCacheEntry();
+			mStrings[String] = swStringCacheEntry();
 			Update = true;
 		}
 	}
@@ -71,7 +71,7 @@ void lcStringCache::CacheStrings(lcContext* Context, const QStringList& Strings)
 			DestHeight = 0;
 		}
 
-		lcStringCacheEntry& String = Entry.second;
+		swStringCacheEntry& String = Entry.second;
 
 		if (SourceRect.width() + 2 > TextureImage.width() || DestY + SourceRect.height() + 2 > TextureImage.height() || DestY + SourceRect.height() + 2 > TextureImage.height())
 		{
@@ -98,17 +98,17 @@ void lcStringCache::CacheStrings(lcContext* Context, const QStringList& Strings)
 		DestHeight = qMax(DestHeight, SourceRect.height());
 	}
 
-	mTexture->SetImage(std::move(TextureImage), LC_TEXTURE_LINEAR);
+	mTexture->SetImage(std::move(TextureImage), SW_TEXTURE_LINEAR);
 	mTexture->Upload(Context);
 }
 
-void lcStringCache::GetStringDimensions(int* cx, int* cy, const QString& String) const
+void swStringCache::GetStringDimensions(int* cx, int* cy, const QString& String) const
 {
 	const auto& Entry = mStrings.find(String);
 
 	if (Entry != mStrings.end())
 	{
-		const lcStringCacheEntry& FontString = Entry->second;
+		const swStringCacheEntry& FontString = Entry->second;
 		*cx = FontString.Right - FontString.Left;
 		*cy = FontString.Top - FontString.Bottom;
 	}
@@ -116,7 +116,7 @@ void lcStringCache::GetStringDimensions(int* cx, int* cy, const QString& String)
 		*cx = *cy = 0;
 }
 
-void lcStringCache::DrawStrings(lcContext* Context, const lcMatrix44* Transforms, const QStringList& Strings) const
+void swStringCache::DrawStrings(swContext* Context, const swMatrix44* Transforms, const QStringList& Strings) const
 {
 	float* Verts = (float*)alloca(Strings.size() * 6 * 5 * sizeof(float));
 	float* Buffer = Verts;
@@ -128,7 +128,7 @@ void lcStringCache::DrawStrings(lcContext* Context, const lcMatrix44* Transforms
 		if (Entry == mStrings.end())
 			continue;
 
-		const lcStringCacheEntry& FontString = Entry->second;
+		const swStringCacheEntry& FontString = Entry->second;
 
 		float u0 = (float)FontString.Left / (float)(mTexture->mWidth - 1);
 		float u1 = (float)FontString.Right / (float)(mTexture->mWidth - 1);
@@ -141,16 +141,16 @@ void lcStringCache::DrawStrings(lcContext* Context, const lcMatrix44* Transforms
 		float Top = Height / 2.0f;
 		float Z = 0.0f;
 
-		lcVector3 Points[4] =
+		swVector3 Points[4] =
 		{
-			lcVector3(Left, Top, Z),
-			lcVector3(Left, Top - Height, Z),
-			lcVector3(Left + Width, Top - Height, Z),
-			lcVector3(Left + Width, Top, Z),
+			swVector3(Left, Top, Z),
+			swVector3(Left, Top - Height, Z),
+			swVector3(Left + Width, Top - Height, Z),
+			swVector3(Left + Width, Top, Z),
 		};
 
 		for (int PointIdx = 0; PointIdx < 4; PointIdx++)
-			Points[PointIdx] = lcMul31(Points[PointIdx], Transforms[StringIdx]);
+			Points[PointIdx] = swMul31(Points[PointIdx], Transforms[StringIdx]);
 
 		*Buffer++ = Points[0].x;
 		*Buffer++ = Points[0].y;

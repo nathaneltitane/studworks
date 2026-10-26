@@ -4,31 +4,31 @@
 #include "sw_string.h"
 #include "sw_texture.h"
 
-lcTextureManager::~lcTextureManager()
+swTextureManager::~swTextureManager()
 {
 	Clear();
 }
 
-void lcTextureManager::Clear()
+void swTextureManager::Clear()
 {
 	QMutexLocker Lock(&mMutex);
 
-	for (lcTexture* Texture : mTextures)
+	for (swTexture* Texture : mTextures)
 		delete Texture;
 
 	mTextures.clear();
 }
 
-void lcTextureManager::AddTextureReference(lcTexture* Texture)
+void swTextureManager::AddTextureReference(swTexture* Texture)
 {
 	QMutexLocker Lock(&mMutex);
 
 	Texture->AddRef();
 }
 
-lcTexture* lcTextureManager::AcquireTexture(const char* TextureName, const lcFileSource& Source, const QString& ProjectPath)
+swTexture* swTextureManager::AcquireTexture(const char* TextureName, const swFileSource& Source, const QString& ProjectPath)
 {
-	if (!TextureName[0] || strlen(TextureName) >= LC_TEXTURE_NAME_LEN)
+	if (!TextureName[0] || strlen(TextureName) >= SW_TEXTURE_NAME_LEN)
 		return nullptr;
 
 	if (!Source.EmbeddedData && Source.FilePath.isEmpty() && Source.ArchiveIndex == -1)
@@ -36,7 +36,7 @@ lcTexture* lcTextureManager::AcquireTexture(const char* TextureName, const lcFil
 
 	QMutexLocker Lock(&mMutex);
 
-	for (lcTexture* Texture : mTextures)
+	for (swTexture* Texture : mTextures)
 	{
 		if (Texture->mSource != Source)
 			continue;
@@ -46,9 +46,9 @@ lcTexture* lcTextureManager::AcquireTexture(const char* TextureName, const lcFil
 		return Texture;
 	}
 
-	lcTexture* Texture = new lcTexture(LC_TEXTURE_MIPMAPS);
+	swTexture* Texture = new swTexture(SW_TEXTURE_MIPMAPS);
 
-	lcstrcpy(Texture->mName, TextureName);
+	swstrcpy(Texture->mName, TextureName);
 	Texture->mSource = Source;
 	Texture->SetTemporary(bool(Source.EmbeddedData) || !ProjectPath.isEmpty());
 	Texture->AddRef();
@@ -58,28 +58,28 @@ lcTexture* lcTextureManager::AcquireTexture(const char* TextureName, const lcFil
 	return Texture;
 }
 
-lcTextureBuildResult lcTextureManager::BuildTextureData(lcFile& File)
+swTextureBuildResult swTextureManager::BuildTextureData(swFile& File)
 {
-	lcTextureBuildResult Result = DecodeTextureData(File);
+	swTextureBuildResult Result = DecodeTextureData(File);
 
 	if (!Result.DecodedImage.isNull())
 	{
-		Result.DecodedImage = lcTexture::PrepareImage(std::move(Result.DecodedImage));
+		Result.DecodedImage = swTexture::PrepareImage(std::move(Result.DecodedImage));
 
 		if (Result.DecodedImage.isNull())
-			Result.Error = lcTextureLoadError::DecodeFailed;
+			Result.Error = swTextureLoadError::DecodeFailed;
 	}
 
 	return Result;
 }
 
-lcTextureBuildResult lcTextureManager::DecodeTextureData(lcFile& File)
+swTextureBuildResult swTextureManager::DecodeTextureData(swFile& File)
 {
-	lcTextureBuildResult Result;
+	swTextureBuildResult Result;
 
 	bool Loaded = false;
 
-	if (lcMemFile* MemoryFile = dynamic_cast<lcMemFile*>(&File))
+	if (swMemFile* MemoryFile = dynamic_cast<swMemFile*>(&File))
 	{
 		if (MemoryFile->mBuffer && MemoryFile->mPosition < MemoryFile->mFileSize)
 		{
@@ -89,7 +89,7 @@ lcTextureBuildResult lcTextureManager::DecodeTextureData(lcFile& File)
 				Loaded = Result.DecodedImage.loadFromData(MemoryFile->mBuffer + MemoryFile->mPosition, static_cast<int>(Length));
 		}
 	}
-	else if (lcDiskFile* DiskFile = dynamic_cast<lcDiskFile*>(&File))
+	else if (swDiskFile* DiskFile = dynamic_cast<swDiskFile*>(&File))
 	{
 		QFile& Device = DiskFile->GetFile();
 		const qint64 Position = Device.pos();
@@ -105,19 +105,19 @@ lcTextureBuildResult lcTextureManager::DecodeTextureData(lcFile& File)
 	if (!Loaded || Result.DecodedImage.isNull())
 	{
 		Result.DecodedImage = QImage();
-		Result.Error = lcTextureLoadError::DecodeFailed;
+		Result.Error = swTextureLoadError::DecodeFailed;
 	}
 
 	return Result;
 }
 
-void lcTextureManager::ReleaseTexture(lcTexture* Texture)
+void swTextureManager::ReleaseTexture(swTexture* Texture)
 {
 	QMutexLocker Lock(&mMutex);
 
 	if (Texture->Release() == 0 && Texture->IsTemporary())
 	{
-		std::vector<lcTexture*>::iterator TextureIt = std::find(mTextures.begin(), mTextures.end(), Texture);
+		std::vector<swTexture*>::iterator TextureIt = std::find(mTextures.begin(), mTextures.end(), Texture);
 		if (TextureIt != mTextures.end())
 			mTextures.erase(TextureIt);
 		delete Texture;

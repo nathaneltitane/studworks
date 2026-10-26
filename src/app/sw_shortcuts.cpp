@@ -2,66 +2,66 @@
 #include "sw_shortcuts.h"
 #include "sw_profile.h"
 
-lcKeyboardShortcuts gKeyboardShortcuts;
-lcMouseShortcuts gMouseShortcuts;
+swKeyboardShortcuts gKeyboardShortcuts;
+swMouseShortcuts gMouseShortcuts;
 
-void lcLoadDefaultKeyboardShortcuts()
+void swLoadDefaultKeyboardShortcuts()
 {
-	QByteArray Buffer = lcGetProfileBuffer(LC_PROFILE_KEYBOARD_SHORTCUTS);
+	QByteArray Buffer = swGetProfileBuffer(SW_PROFILE_KEYBOARD_SHORTCUTS);
 	QTextStream Stream(Buffer, QIODevice::ReadOnly);
 
 	if (Buffer.isEmpty() || !gKeyboardShortcuts.Load(Stream))
 		gKeyboardShortcuts.Reset();
 }
 
-void lcSaveDefaultKeyboardShortcuts()
+void swSaveDefaultKeyboardShortcuts()
 {
 	QByteArray Buffer;
 	QTextStream Stream(&Buffer, QIODevice::WriteOnly);
 
 	gKeyboardShortcuts.Save(Stream);
 
-	lcSetProfileBuffer(LC_PROFILE_KEYBOARD_SHORTCUTS, Buffer);
+	swSetProfileBuffer(SW_PROFILE_KEYBOARD_SHORTCUTS, Buffer);
 }
 
-void lcResetDefaultKeyboardShortcuts()
+void swResetDefaultKeyboardShortcuts()
 {
 	gKeyboardShortcuts.Reset();
 
-	lcRemoveProfileKey(LC_PROFILE_KEYBOARD_SHORTCUTS);
+	swRemoveProfileKey(SW_PROFILE_KEYBOARD_SHORTCUTS);
 }
 
-void lcLoadDefaultMouseShortcuts()
+void swLoadDefaultMouseShortcuts()
 {
-	QStringList Shortcuts = lcGetProfileStringList(LC_PROFILE_MOUSE_SHORTCUTS);
+	QStringList Shortcuts = swGetProfileStringList(SW_PROFILE_MOUSE_SHORTCUTS);
 
 	if (Shortcuts.isEmpty() || !gMouseShortcuts.Load(Shortcuts))
 		gMouseShortcuts.Reset();
 }
 
-void lcSaveDefaultMouseShortcuts()
+void swSaveDefaultMouseShortcuts()
 {
 	QStringList Shortcuts;
 
 	gMouseShortcuts.Save(Shortcuts);
 
-	lcSetProfileStringList(LC_PROFILE_MOUSE_SHORTCUTS, Shortcuts);
+	swSetProfileStringList(SW_PROFILE_MOUSE_SHORTCUTS, Shortcuts);
 }
 
-void lcResetDefaultMouseShortcuts()
+void swResetDefaultMouseShortcuts()
 {
 	gMouseShortcuts.Reset();
 
-	lcRemoveProfileKey(LC_PROFILE_MOUSE_SHORTCUTS);
+	swRemoveProfileKey(SW_PROFILE_MOUSE_SHORTCUTS);
 }
 
-void lcKeyboardShortcuts::Reset()
+void swKeyboardShortcuts::Reset()
 {
-	for (int CommandIdx = 0; CommandIdx < LC_NUM_COMMANDS; CommandIdx++)
+	for (int CommandIdx = 0; CommandIdx < SW_NUM_COMMANDS; CommandIdx++)
 		mShortcuts[CommandIdx] = gCommands[CommandIdx].DefaultShortcut;
 }
 
-bool lcKeyboardShortcuts::Save(const QString& FileName)
+bool swKeyboardShortcuts::Save(const QString& FileName)
 {
 	QFile File(FileName);
 
@@ -73,9 +73,9 @@ bool lcKeyboardShortcuts::Save(const QString& FileName)
 	return Save(Stream);
 }
 
-bool lcKeyboardShortcuts::Save(QTextStream& Stream)
+bool swKeyboardShortcuts::Save(QTextStream& Stream)
 {
-	for (int CommandIdx = 0; CommandIdx < LC_NUM_COMMANDS; CommandIdx++)
+	for (int CommandIdx = 0; CommandIdx < SW_NUM_COMMANDS; CommandIdx++)
 	{
 		if (mShortcuts[CommandIdx].isEmpty())
 			continue;
@@ -88,7 +88,7 @@ bool lcKeyboardShortcuts::Save(QTextStream& Stream)
 	return true;
 }
 
-bool lcKeyboardShortcuts::Load(const QString& FileName)
+bool swKeyboardShortcuts::Load(const QString& FileName)
 {
 	QFile File(FileName);
 
@@ -100,9 +100,9 @@ bool lcKeyboardShortcuts::Load(const QString& FileName)
 	return Load(Stream);
 }
 
-bool lcKeyboardShortcuts::Load(QTextStream& Stream)
+bool swKeyboardShortcuts::Load(QTextStream& Stream)
 {
-	for (int CommandIdx = 0; CommandIdx < LC_NUM_COMMANDS; CommandIdx++)
+	for (int CommandIdx = 0; CommandIdx < SW_NUM_COMMANDS; CommandIdx++)
 		mShortcuts[CommandIdx].clear();
 
 	for (QString Line = Stream.readLine(); !Line.isNull(); Line = Stream.readLine())
@@ -115,11 +115,11 @@ bool lcKeyboardShortcuts::Load(QTextStream& Stream)
 		QString Key = Line.left(Equals);
 
 		int CommandIdx;
-		for (CommandIdx = 0; CommandIdx < LC_NUM_COMMANDS; CommandIdx++)
+		for (CommandIdx = 0; CommandIdx < SW_NUM_COMMANDS; CommandIdx++)
 			if (gCommands[CommandIdx].ID == Key)
 				break;
 
-		if (CommandIdx == LC_NUM_COMMANDS)
+		if (CommandIdx == SW_NUM_COMMANDS)
 			continue;
 
 		mShortcuts[CommandIdx] = Line.mid(Equals + 1);
@@ -128,9 +128,9 @@ bool lcKeyboardShortcuts::Load(QTextStream& Stream)
 	return true;
 }
 
-void lcMouseShortcuts::Clear()
+void swMouseShortcuts::Clear()
 {
-	for (int ShortcutIndex = 0; ShortcutIndex < static_cast<int>(lcTool::Count); ShortcutIndex++)
+	for (int ShortcutIndex = 0; ShortcutIndex < static_cast<int>(swTool::Count); ShortcutIndex++)
 	{
 		mShortcuts[ShortcutIndex].Modifiers1 = Qt::NoModifier;
 		mShortcuts[ShortcutIndex].Button1 = Qt::NoButton;
@@ -139,28 +139,28 @@ void lcMouseShortcuts::Clear()
 	}
 }
 
-void lcMouseShortcuts::Reset()
+void swMouseShortcuts::Reset()
 {
 	Clear();
 
-	lcToolShortcut& RotateViewShortcut = mShortcuts[static_cast<int>(lcTool::RotateView)];
+	swToolShortcut& RotateViewShortcut = mShortcuts[static_cast<int>(swTool::RotateView)];
 	RotateViewShortcut.Modifiers1 = Qt::AltModifier;
 	RotateViewShortcut.Button1 = Qt::LeftButton;
 	RotateViewShortcut.Modifiers2 = Qt::NoModifier;
 	RotateViewShortcut.Button2 = Qt::RightButton;
 
-	lcToolShortcut& PanShortcut = mShortcuts[static_cast<int>(lcTool::Pan)];
+	swToolShortcut& PanShortcut = mShortcuts[static_cast<int>(swTool::Pan)];
 	PanShortcut.Modifiers1 = Qt::AltModifier;
 	PanShortcut.Button1 = Qt::MiddleButton;
 	PanShortcut.Modifiers2 = Qt::ShiftModifier;
 	PanShortcut.Button2 = Qt::RightButton;
 
-	lcToolShortcut& ZoomShortcut = mShortcuts[static_cast<int>(lcTool::Zoom)];
+	swToolShortcut& ZoomShortcut = mShortcuts[static_cast<int>(swTool::Zoom)];
 	ZoomShortcut.Modifiers1 = Qt::AltModifier;
 	ZoomShortcut.Button1 = Qt::RightButton;
 }
 
-bool lcMouseShortcuts::Save(const QString& FileName)
+bool swMouseShortcuts::Save(const QString& FileName)
 {
 	QStringList Shortcuts;
 
@@ -181,11 +181,11 @@ bool lcMouseShortcuts::Save(const QString& FileName)
 
 	return true;
 }
-bool lcMouseShortcuts::Save(QStringList& Shortcuts)
+bool swMouseShortcuts::Save(QStringList& Shortcuts)
 {
 	Shortcuts.clear();
 
-	for (int ShortcutIndex = 0; ShortcutIndex < static_cast<int>(lcTool::Count); ShortcutIndex++)
+	for (int ShortcutIndex = 0; ShortcutIndex < static_cast<int>(swTool::Count); ShortcutIndex++)
 	{
 		int ButtonIndex1 = 0;
 		for (int Button1 = mShortcuts[ShortcutIndex].Button1; Button1; Button1 >>= 1)
@@ -209,7 +209,7 @@ bool lcMouseShortcuts::Save(QStringList& Shortcuts)
 	return true;
 }
 
-bool lcMouseShortcuts::Load(const QString& FileName)
+bool swMouseShortcuts::Load(const QString& FileName)
 {
 	QFile File(FileName);
 
@@ -225,7 +225,7 @@ bool lcMouseShortcuts::Load(const QString& FileName)
 	return Load(Lines);
 }
 
-bool lcMouseShortcuts::Load(const QStringList& FullShortcuts)
+bool swMouseShortcuts::Load(const QStringList& FullShortcuts)
 {
 	Clear();
 
@@ -239,11 +239,11 @@ bool lcMouseShortcuts::Load(const QStringList& FullShortcuts)
 		QString Key = FullShortcut.left(Equals);
 
 		int ToolIdx;
-		for (ToolIdx = 0; ToolIdx < static_cast<int>(lcTool::Count); ToolIdx++)
+		for (ToolIdx = 0; ToolIdx < static_cast<int>(swTool::Count); ToolIdx++)
 			if (Key == gToolNames[ToolIdx])
 				break;
 
-		if (ToolIdx == static_cast<int>(lcTool::Count))
+		if (ToolIdx == static_cast<int>(swTool::Count))
 			continue;
 
 		const QStringList Shortcuts = FullShortcut.mid(Equals + 1).split(',');
@@ -277,11 +277,11 @@ bool lcMouseShortcuts::Load(const QStringList& FullShortcuts)
 	return true;
 }
 
-lcTool lcMouseShortcuts::GetTool(Qt::MouseButton Button, Qt::KeyboardModifiers Modifiers) const
+swTool swMouseShortcuts::GetTool(Qt::MouseButton Button, Qt::KeyboardModifiers Modifiers) const
 {
-	for (int ToolIdx = 0; ToolIdx < static_cast<int>(lcTool::Count); ToolIdx++)
+	for (int ToolIdx = 0; ToolIdx < static_cast<int>(swTool::Count); ToolIdx++)
 		if ((mShortcuts[ToolIdx].Button1 == Button && mShortcuts[ToolIdx].Modifiers1 == Modifiers) || (mShortcuts[ToolIdx].Button2 == Button && mShortcuts[ToolIdx].Modifiers2 == Modifiers))
-			return (lcTool)ToolIdx;
+			return (swTool)ToolIdx;
 
-	return lcTool::Count;
+	return swTool::Count;
 }

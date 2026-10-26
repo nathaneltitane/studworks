@@ -1,4 +1,4 @@
-LC_VERTEX_INPUT vec3 VertexPosition;
+SW_VERTEX_INPUT vec3 VertexPosition;
 
 uniform mat4 WorldViewProjectionMatrix;
 

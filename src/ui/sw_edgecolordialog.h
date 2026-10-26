@@ -2,11 +2,11 @@
 
 #include <QtWidgets>
 
-class lcAutomateEdgeColorDialog : public QDialog
+class swAutomateEdgeColorDialog : public QDialog
 {
 	Q_OBJECT
 public:
-	lcAutomateEdgeColorDialog(QWidget *Parent, bool ShowHighContrastDialog);
+	swAutomateEdgeColorDialog(QWidget *Parent, bool ShowHighContrastDialog);
 	bool mStudCylinderColorEnabled;
 	quint32 mStudCylinderColor;
 	bool mPartEdgeColorEnabled;

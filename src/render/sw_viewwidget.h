@@ -1,15 +1,15 @@
 #pragma once
 
-class lcViewWidget : public QOpenGLWidget
+class swViewWidget : public QOpenGLWidget
 {
 	Q_OBJECT
 
 public:
-	lcViewWidget(QWidget* Parent, lcView* View);
-	~lcViewWidget();
+	swViewWidget(QWidget* Parent, swView* View);
+	~swViewWidget();
 
-	lcView* GetView() const;
-	void SetView(lcView* View);
+	swView* GetView() const;
+	void SetView(swView* View);
 
 	void UpdateMousePosition();
 	void UpdateModelEditingPath();
@@ -52,7 +52,7 @@ protected:
 	void UpdateOverlayGeometry();
 	void UpdateModelEditingLabel();
 
-	std::unique_ptr<lcView> mView;
+	std::unique_ptr<swView> mView;
 	QWidget* mOverlay = nullptr;
 	QVBoxLayout* mOverlayLayout = nullptr;
 	QWidget* mModelEditingBar = nullptr;

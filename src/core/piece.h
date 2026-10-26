@@ -1,52 +1,52 @@
 #pragma once
 
-class lcPieceData;
+class swPieceData;
 
 #include "object.h"
 #include "sw_colors.h"
 #include "sw_math.h"
 #include "sw_assettypes.h"
 
-#define LC_MAX_CONTROL_POINTS 1000
+#define SW_MAX_CONTROL_POINTS 1000
 
-enum lcPieceSection : quint32
+enum swPieceSection : quint32
 {
-	LC_PIECE_SECTION_INVALID = LC_OBJECT_SECTION_INVALID,
-	LC_PIECE_SECTION_POSITION = 0,
-	LC_PIECE_SECTION_CONTROL_POINT_FIRST,
-	LC_PIECE_SECTION_CONTROL_POINT_LAST = LC_PIECE_SECTION_CONTROL_POINT_FIRST + LC_MAX_CONTROL_POINTS - 1,
-	LC_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST = 1
+	SW_PIECE_SECTION_INVALID = SW_OBJECT_SECTION_INVALID,
+	SW_PIECE_SECTION_POSITION = 0,
+	SW_PIECE_SECTION_CONTROL_POINT_FIRST,
+	SW_PIECE_SECTION_CONTROL_POINT_LAST = SW_PIECE_SECTION_CONTROL_POINT_FIRST + SW_MAX_CONTROL_POINTS - 1,
+	SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST = 1
 };
 
-struct lcPieceControlPoint
+struct swPieceControlPoint
 {
-	lcMatrix44 Transform;
+	swMatrix44 Transform;
 	float Scale;
 
-	bool operator==(const lcPieceControlPoint& Other) const
+	bool operator==(const swPieceControlPoint& Other) const
 	{
 		return Transform == Other.Transform && Scale == Other.Scale;
 	}
 };
 
-struct lcPieceHistoryState
+struct swPieceHistoryState
 {
-	lcObjectId Id;
+	swObjectId Id;
 	bool Hidden;
 	int FileLine;
 	QString PieceId;
 	uint32_t GroupId;
 	int ColorIndex;
 	quint32 ColorCode;
-	lcStep StepShow;
-	lcStep StepHide;
-	lcMatrix44 PivotMatrix;
+	swStep StepShow;
+	swStep StepHide;
+	swMatrix44 PivotMatrix;
 	bool PivotPointValid;
-	std::vector<lcPieceControlPoint> ControlPoints;
-	lcObjectProperty<lcVector3> Position;
-	lcObjectProperty<lcMatrix33> Rotation;
+	std::vector<swPieceControlPoint> ControlPoints;
+	swObjectProperty<swVector3> Position;
+	swObjectProperty<swMatrix33> Rotation;
 
-	bool operator==(const lcPieceHistoryState& Other) const
+	bool operator==(const swPieceHistoryState& Other) const
 	{
 		return Id == Other.Id && Hidden == Other.Hidden && FileLine == Other.FileLine && PieceId == Other.PieceId &&
             GroupId == Other.GroupId && ColorIndex == Other.ColorIndex && ColorCode == Other.ColorCode &&
@@ -56,21 +56,21 @@ struct lcPieceHistoryState
 	}
 };
 
-class lcPiece : public lcObject
+class swPiece : public swObject
 {
 public:
-	lcPiece();
-	lcPiece(lcPieceData* PieceData);
-	lcPiece(lcPieceDataRef PieceDataRef);
-	lcPiece(const lcPiece& Other);
-	virtual ~lcPiece();
+	swPiece();
+	swPiece(swPieceData* PieceData);
+	swPiece(swPieceDataRef PieceDataRef);
+	swPiece(const swPiece& Other);
+	virtual ~swPiece();
 
-	lcPiece(lcPiece&&) = delete;
-	lcPiece& operator=(const lcPiece&) = delete;
-	lcPiece& operator=(lcPiece&&) = delete;
+	swPiece(swPiece&&) = delete;
+	swPiece& operator=(const swPiece&) = delete;
+	swPiece& operator=(swPiece&&) = delete;
 
 	quint32 GetAllowedTransforms() const override;
-	lcVector3 GetSectionPosition(quint32 Section) const override;
+	swVector3 GetSectionPosition(quint32 Section) const override;
 
 	void SaveLDraw(QTextStream& Stream) const;
 	bool ParseLDrawLine(QTextStream& Stream);
@@ -85,27 +85,27 @@ public:
 		return mFileLine;
 	}
 
-	void RayTest(lcObjectRayTest& ObjectRayTest) const override;
-	void BoxTest(lcObjectBoxTest& ObjectBoxTest) const override;
-	bool MinIntersectDist(const lcVector3& Start, const lcVector3& End, float& MinDistance, lcPieceRayTest& PieceRayTest) const;
-	bool IntersectsPlanes(const lcMatrix44& WorldMatrix, const lcVector4 Planes[6]) const;
-	void DrawInterface(lcContext* Context, const lcScene& Scene) const override;
-	QVariant GetPropertyValue(lcObjectPropertyId PropertyId) const override;
-	bool SetPropertyValue(lcObjectPropertyId PropertyId, lcStep Step, bool AddKey, QVariant Value) override;
-	bool HasKeyFrame(lcObjectPropertyId PropertyId, lcStep Time) const override;
-	lcStep GetLastStep() const override;
-	bool SetKeyFrame(lcObjectPropertyId PropertyId, lcStep Time, bool KeyFrame) override;
+	void RayTest(swObjectRayTest& ObjectRayTest) const override;
+	void BoxTest(swObjectBoxTest& ObjectBoxTest) const override;
+	bool MinIntersectDist(const swVector3& Start, const swVector3& End, float& MinDistance, swPieceRayTest& PieceRayTest) const;
+	bool IntersectsPlanes(const swMatrix44& WorldMatrix, const swVector4 Planes[6]) const;
+	void DrawInterface(swContext* Context, const swScene& Scene) const override;
+	QVariant GetPropertyValue(swObjectPropertyId PropertyId) const override;
+	bool SetPropertyValue(swObjectPropertyId PropertyId, swStep Step, bool AddKey, QVariant Value) override;
+	bool HasKeyFrame(swObjectPropertyId PropertyId, swStep Time) const override;
+	swStep GetLastStep() const override;
+	bool SetKeyFrame(swObjectPropertyId PropertyId, swStep Time, bool KeyFrame) override;
 	void RemoveKeyFrames() override;
-	lcPieceHistoryState GetHistoryState() const;
-	void SetHistoryState(const lcPieceHistoryState& State, Project* Project, lcGroup* Group);
+	swPieceHistoryState GetHistoryState() const;
+	void SetHistoryState(const swPieceHistoryState& State, Project* Project, swGroup* Group);
 
-	void AddMainModelRenderMeshes(lcScene* Scene, bool Highlight, bool Fade) const;
-	void AddSubModelRenderMeshes(lcScene* Scene, const lcMatrix44& WorldMatrix, int DefaultColorIndex, lcRenderMeshState RenderMeshState, bool ParentActive) const;
-	void SubModelCompareBoundingBox(const lcMatrix44& WorldMatrix, lcVector3& Min, lcVector3& Max) const;
-	void SubModelAddBoundingBoxPoints(const lcMatrix44& WorldMatrix, std::vector<lcVector3>& Points, lcGeometryBoundsMode Mode) const;
+	void AddMainModelRenderMeshes(swScene* Scene, bool Highlight, bool Fade) const;
+	void AddSubModelRenderMeshes(swScene* Scene, const swMatrix44& WorldMatrix, int DefaultColorIndex, swRenderMeshState RenderMeshState, bool ParentActive) const;
+	void SubModelCompareBoundingBox(const swMatrix44& WorldMatrix, swVector3& Min, swVector3& Max) const;
+	void SubModelAddBoundingBoxPoints(const swMatrix44& WorldMatrix, std::vector<swVector3>& Points, swGeometryBoundsMode Mode) const;
 
-	void InsertTime(lcStep Start, lcStep Time);
-	void RemoveTime(lcStep Start, lcStep Time);
+	void InsertTime(swStep Start, swStep Time);
+	void RemoveTime(swStep Start, swStep Time);
 
 	bool IsHidden() const
 	{
@@ -117,12 +117,12 @@ public:
 		mHidden = Hidden;
 	}
 
-	const std::vector<lcPieceControlPoint>& GetControlPoints() const
+	const std::vector<swPieceControlPoint>& GetControlPoints() const
 	{
 		return mControlPoints;
 	}
 
-	void SetControlPoints(const std::vector<lcPieceControlPoint>& ControlPoints)
+	void SetControlPoints(const std::vector<swPieceControlPoint>& ControlPoints)
 	{
 		mControlPoints = ControlPoints;
 		UpdateMesh();
@@ -152,7 +152,7 @@ public:
 	void UpdateID();
 
 	QString GetName() const override;
-	bool IsVisible(lcStep Step) const;
+	bool IsVisible(swStep Step) const;
 	bool IsVisibleInSubModel() const;
 
 	bool AreTrainTrackConnectionsVisible() const
@@ -160,55 +160,55 @@ public:
 		return IsFocused();
 	}
 
-	void GetModelParts(const lcMatrix44& WorldMatrix, int DefaultColorIndex, std::vector<lcModelPartsEntry>& ModelParts) const;
-	void Initialize(const lcMatrix44& WorldMatrix, lcStep Step);
-	const lcBoundingBox& GetBoundingBox() const;
-	void CompareBoundingBox(lcVector3& Min, lcVector3& Max) const;
-	void SetPieceData(lcPieceDataRef PieceDataRef, const QString& ID, bool Wait, bool UpdateSynthInfo);
-	bool SetPieceId(lcPieceData* PieceData);
-	bool FileLoad(lcFile& file, Project* Project);
+	void GetModelParts(const swMatrix44& WorldMatrix, int DefaultColorIndex, std::vector<swModelPartsEntry>& ModelParts) const;
+	void Initialize(const swMatrix44& WorldMatrix, swStep Step);
+	const swBoundingBox& GetBoundingBox() const;
+	void CompareBoundingBox(swVector3& Min, swVector3& Max) const;
+	void SetPieceData(swPieceDataRef PieceDataRef, const QString& ID, bool Wait, bool UpdateSynthInfo);
+	bool SetPieceId(swPieceData* PieceData);
+	bool FileLoad(swFile& file, Project* Project);
 
-	void UpdatePosition(lcStep Step) override;
-	void MoveSelected(lcStep Step, bool AddKey, const lcVector3& Distance);
-	void Rotate(lcStep Step, bool AddKey, const lcMatrix33& RotationMatrix, const lcVector3& Center, const lcMatrix33& RotationFrame);
-	void MovePivotPoint(const lcVector3& Distance);
-	void RotatePivotPoint(const lcMatrix33& RotationMatrix);
+	void UpdatePosition(swStep Step) override;
+	void MoveSelected(swStep Step, bool AddKey, const swVector3& Distance);
+	void Rotate(swStep Step, bool AddKey, const swMatrix33& RotationMatrix, const swVector3& Center, const swMatrix33& RotationFrame);
+	void MovePivotPoint(const swVector3& Distance);
+	void RotatePivotPoint(const swMatrix33& RotationMatrix);
 
 	bool CanAddControlPoint() const;
 	bool CanRemoveControlPoint() const;
 
-	bool InsertControlPoint(const lcVector3& WorldStart, const lcVector3& WorldEnd);
+	bool InsertControlPoint(const swVector3& WorldStart, const swVector3& WorldEnd);
 	bool RemoveFocusedControlPoint();
-	void VerifyControlPoints(std::vector<lcPieceControlPoint>& ControlPoints) const;
+	void VerifyControlPoints(std::vector<swPieceControlPoint>& ControlPoints) const;
 	bool IsGeneratedMeshPending() const { return mSynthPending; }
 	// An older mesh may remain visible while its replacement is pending.
 	bool HasGeneratedMesh() const { return mMesh != nullptr && !mSynthPending; }
-	void SetGeneratedMesh(lcMesh* Mesh);
+	void SetGeneratedMesh(swMesh* Mesh);
 	void RefreshGeneratedMesh();
 
-	lcGroup* GetTopGroup();
+	swGroup* GetTopGroup();
 
-	void SetGroup(lcGroup* Group)
+	void SetGroup(swGroup* Group)
 	{
 		mGroup = Group;
 	}
 
-	lcGroup* GetGroup() const
+	swGroup* GetGroup() const
 	{
 		return mGroup;
 	}
 
-	lcStep GetStepShow() const
+	swStep GetStepShow() const
 	{
 		return mStepShow;
 	}
 
-	lcStep GetStepHide() const
+	swStep GetStepHide() const
 	{
 		return mStepHide;
 	}
 
-	void SetStepHide(lcStep Step)
+	void SetStepHide(swStep Step)
 	{
 		if (Step < 2)
 			Step = 2;
@@ -219,10 +219,10 @@ public:
 			SetStepShow(mStepHide - 1);
 	}
 
-	void SetStepShow(lcStep Step)
+	void SetStepShow(swStep Step)
 	{
-		if (Step == LC_STEP_MAX)
-			Step = LC_STEP_MAX - 1;
+		if (Step == SW_STEP_MAX)
+			Step = SW_STEP_MAX - 1;
 
 		if (mStepShow != Step)
 		{
@@ -242,7 +242,7 @@ public:
 	void SetColorCode(quint32 ColorCode)
 	{
 		mColorCode = ColorCode;
-		mColorIndex = lcGetColorIndex(ColorCode);
+		mColorIndex = swGetColorIndex(ColorCode);
 	}
 
 	int GetColorIndex() const
@@ -256,39 +256,39 @@ public:
 			return false;
 
 		mColorIndex = ColorIndex;
-		mColorCode = lcGetColorCode(ColorIndex);
+		mColorCode = swGetColorCode(ColorIndex);
 
 		return true;
 	}
 
-	void SetPosition(const lcVector3& Position, lcStep Step, bool AddKey)
+	void SetPosition(const swVector3& Position, swStep Step, bool AddKey)
 	{
 		mPosition.ChangeKey(Position, Step, AddKey);
 	}
 
-	void SetRotation(const lcMatrix33& Rotation, lcStep Step, bool AddKey)
+	void SetRotation(const swMatrix33& Rotation, swStep Step, bool AddKey)
 	{
 		mRotation.ChangeKey(Rotation, Step, AddKey);
 	}
 
-	lcVector3 GetRotationCenter() const;
-	lcMatrix33 GetRelativeRotation() const;
+	swVector3 GetRotationCenter() const;
+	swMatrix33 GetRelativeRotation() const;
 
 	void ResetPivotPoint()
 	{
 		mPivotPointValid = false;
-		mPivotMatrix = lcMatrix44Identity();
+		mPivotMatrix = swMatrix44Identity();
 	}
 
 public:
-	lcPieceDataRef mPieceData;
+	swPieceDataRef mPieceData;
 
-	lcMatrix44 mModelWorld;
-	lcMatrix44 mPivotMatrix = lcMatrix44Identity();
+	swMatrix44 mModelWorld;
+	swMatrix44 mPivotMatrix = swMatrix44Identity();
 
 protected:
 	void UpdateMesh();
-	lcMesh* GetDisplayMesh() const;
+	swMesh* GetDisplayMesh() const;
 
 	bool IsPivotPointVisible() const
 	{
@@ -300,25 +300,25 @@ protected:
 		return IsSelected();
 	}
 
-	void DrawSynthInterface(lcContext* Context, const lcMatrix44& WorldMatrix) const;
+	void DrawSynthInterface(swContext* Context, const swMatrix44& WorldMatrix) const;
 
-	lcObjectProperty<lcVector3> mPosition = lcObjectProperty<lcVector3>(lcVector3(0.0f, 0.0f, 0.0f));
-	lcObjectProperty<lcMatrix33> mRotation = lcObjectProperty<lcMatrix33>(lcMatrix33Identity());
+	swObjectProperty<swVector3> mPosition = swObjectProperty<swVector3>(swVector3(0.0f, 0.0f, 0.0f));
+	swObjectProperty<swMatrix33> mRotation = swObjectProperty<swMatrix33>(swMatrix33Identity());
 
 	int mFileLine = -1;
 	QString mID;
 
-	lcGroup* mGroup = nullptr;
+	swGroup* mGroup = nullptr;
 
 	int mColorIndex;
 	quint32 mColorCode;
 
-	lcStep mStepShow = 1;
-	lcStep mStepHide = LC_STEP_MAX;
+	swStep mStepShow = 1;
+	swStep mStepHide = SW_STEP_MAX;
 
 	bool mPivotPointValid = false;
-	std::vector<lcPieceControlPoint> mControlPoints;
+	std::vector<swPieceControlPoint> mControlPoints;
 	std::vector<bool> mTrainTrackConnections;
-	lcMesh* mMesh = nullptr;
+	swMesh* mMesh = nullptr;
 	bool mSynthPending = false;
 };

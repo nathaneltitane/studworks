@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>lcImageDialog</class>
- <widget class="QDialog" name="lcImageDialog">
+ <class>swImageDialog</class>
+ <widget class="QDialog" name="swImageDialog">
   <property name="whatsThis">
    <string>&lt;p&gt;&lt;b&gt;Save Image&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Save images of the active model using the current view. Choose a destination file, image dimensions, and the steps to include.&lt;/p&gt;&lt;p&gt;Saving one step produces one image. Saving several steps produces a separate numbered image for each step.&lt;/p&gt;</string>
   </property>
@@ -292,7 +292,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>lcImageDialog</receiver>
+   <receiver>swImageDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -308,7 +308,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>lcImageDialog</receiver>
+   <receiver>swImageDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

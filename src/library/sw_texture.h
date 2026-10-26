@@ -1,32 +1,32 @@
 #pragma once
 
-#define LC_TEXTURE_WRAPU         0x01
-#define LC_TEXTURE_WRAPV         0x02
-#define LC_TEXTURE_MIPMAPS       0x04
-#define LC_TEXTURE_CUBEMAP       0x08
+#define SW_TEXTURE_WRAPU         0x01
+#define SW_TEXTURE_WRAPV         0x02
+#define SW_TEXTURE_MIPMAPS       0x04
+#define SW_TEXTURE_CUBEMAP       0x08
 
-#define LC_TEXTURE_POINT         0x00
-#define LC_TEXTURE_LINEAR        0x10
-#define LC_TEXTURE_BILINEAR      0x20
-#define LC_TEXTURE_TRILINEAR     0x30
-#define LC_TEXTURE_ANISOTROPIC   0x40
-#define LC_TEXTURE_FILTER_MASK   0xf0
-#define LC_TEXTURE_FILTER_SHIFT  4
+#define SW_TEXTURE_POINT         0x00
+#define SW_TEXTURE_LINEAR        0x10
+#define SW_TEXTURE_BILINEAR      0x20
+#define SW_TEXTURE_TRILINEAR     0x30
+#define SW_TEXTURE_ANISOTROPIC   0x40
+#define SW_TEXTURE_FILTER_MASK   0xf0
+#define SW_TEXTURE_FILTER_SHIFT  4
 
-#define LC_TEXTURE_NAME_LEN 256
+#define SW_TEXTURE_NAME_LEN 256
 
 #include "sw_assettypes.h"
 
-class lcTexture
+class swTexture
 {
 public:
-	lcTexture(int Flags = 0);
-	~lcTexture();
+	swTexture(int Flags = 0);
+	~swTexture();
 
-	lcTexture(const lcTexture&) = delete;
-	lcTexture(lcTexture&&) = delete;
-	lcTexture& operator=(const lcTexture&) = delete;
-	lcTexture& operator=(lcTexture&&) = delete;
+	swTexture(const swTexture&) = delete;
+	swTexture(swTexture&&) = delete;
+	swTexture& operator=(const swTexture&) = delete;
+	swTexture& operator=(swTexture&&) = delete;
 
 	void CreateGridTexture();
 	static QImage PrepareImage(QImage Image);
@@ -35,10 +35,10 @@ public:
 	void SetImages(std::vector<QImage>&& Images, int Flags);
 	void DiscardDecodedImage();
 	// Records a failure without discarding pixels retained for upload retries.
-	void SetFailed(lcTextureLoadError Error, QString Details);
+	void SetFailed(swTextureLoadError Error, QString Details);
 	// Failure details or a fallback message; empty unless loading has failed.
 	QString GetLoadError() const;
-	void Upload(lcContext* Context);
+	void Upload(swContext* Context);
 	void Unload();
 
 	bool HasImageData() const
@@ -46,13 +46,13 @@ public:
 		return mTexture != 0 || !mImages.empty();
 	}
 
-	// Reference bookkeeping belongs to lcTextureManager.
+	// Reference bookkeeping belongs to swTextureManager.
 	void AddRef()
 	{
 		mRefCount.ref();
 	}
 
-	// Reference bookkeeping belongs to lcTextureManager.
+	// Reference bookkeeping belongs to swTextureManager.
 	bool Release()
 	{
 		const bool InUse = mRefCount.deref();
@@ -80,12 +80,12 @@ public:
 
 	bool NeedsUpload() const
 	{
-		return mTexture == 0 && !mImages.empty() && mState != lcAssetState::Failed;
+		return mTexture == 0 && !mImages.empty() && mState != swAssetState::Failed;
 	}
 
 	bool IsReady() const
 	{
-		return mState == lcAssetState::Loaded && mTexture != 0;
+		return mState == swAssetState::Loaded && mTexture != 0;
 	}
 
 	int GetFlags() const
@@ -105,11 +105,11 @@ public:
 
 	int mWidth;
 	int mHeight;
-	char mName[LC_TEXTURE_NAME_LEN] = {};
-	lcFileSource mSource;
+	char mName[SW_TEXTURE_NAME_LEN] = {};
+	swFileSource mSource;
 	GLuint mTexture = 0;
-	lcAssetState mState = lcAssetState::Unloaded;
-	lcTextureLoadError mLoadFailure = lcTextureLoadError::None;
+	swAssetState mState = swAssetState::Unloaded;
+	swTextureLoadError mLoadFailure = swTextureLoadError::None;
 	QString mLoadFailureDetails;
 
 protected:
@@ -118,7 +118,7 @@ protected:
 	std::vector<QImage> mImages;
 	int mFlags = 0;
 
-	Q_DECLARE_TR_FUNCTIONS(lcTexture)
+	Q_DECLARE_TR_FUNCTIONS(swTexture)
 };
 
-extern lcTexture* gGridTexture;
+extern swTexture* gGridTexture;

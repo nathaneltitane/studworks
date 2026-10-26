@@ -7,19 +7,19 @@
 #include "sw_glextensions.h"
 #include "sw_viewwidget.h"
 
-lcAboutDialog::lcAboutDialog(QWidget* Parent)
-	: QDialog(Parent), ui(new Ui::lcAboutDialog)
+swAboutDialog::swAboutDialog(QWidget* Parent)
+	: QDialog(Parent), ui(new Ui::swAboutDialog)
 {
 	ui->setupUi(this);
-	lcSetupDialogHelp(this, ui->buttonBox);
+	swSetupDialogHelp(this, ui->buttonBox);
 
-#ifdef LC_CONTINUOUS_BUILD
-	ui->version->setText(tr("LeoCAD+ Continuous Build %1").arg(QString::fromLatin1(QT_STRINGIFY(LC_CONTINUOUS_BUILD))));
+#ifdef SW_CONTINUOUS_BUILD
+	ui->version->setText(tr("LeoCAD+ Continuous Build %1").arg(QString::fromLatin1(QT_STRINGIFY(SW_CONTINUOUS_BUILD))));
 #else
-	ui->version->setText(tr("LeoCAD+ Version %1").arg(QString::fromLatin1(LC_VERSION_TEXT)));
+	ui->version->setText(tr("LeoCAD+ Version %1").arg(QString::fromLatin1(SW_VERSION_TEXT)));
 #endif
 
-	lcViewWidget* Widget = gMainWindow->GetActiveView()->GetWidget();
+	swViewWidget* Widget = gMainWindow->GetActiveView()->GetWidget();
 	QOpenGLContext* Context = Widget->context();
 	QOpenGLFunctions* Functions = Context->functions();
 	QSurfaceFormat Format = Context->format();
@@ -49,7 +49,7 @@ lcAboutDialog::lcAboutDialog(QWidget* Parent)
 	ui->info->setText(QtVersion + Version + Buffers + Extensions);
 }
 
-lcAboutDialog::~lcAboutDialog()
+swAboutDialog::~swAboutDialog()
 {
 	delete ui;
 }

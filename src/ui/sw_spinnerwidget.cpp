@@ -1,7 +1,7 @@
 #include "sw_global.h"
 #include "sw_spinnerwidget.h"
 
-lcSpinnerWidget::lcSpinnerWidget(QWidget* Parent)
+swSpinnerWidget::swSpinnerWidget(QWidget* Parent)
 	: QWidget(Parent)
 {
 	const int Size = qCeil(2.0 * (OrbitRadius + qMax(DiscRadius, 1.5) + 1.5));
@@ -11,20 +11,20 @@ lcSpinnerWidget::lcSpinnerWidget(QWidget* Parent)
 	connect(&mTimer, &QTimer::timeout, this, [this]() { update(); });
 }
 
-void lcSpinnerWidget::showEvent(QShowEvent* Event)
+void swSpinnerWidget::showEvent(QShowEvent* Event)
 {
 	QWidget::showEvent(Event);
 	mElapsed.start();
 	mTimer.start();
 }
 
-void lcSpinnerWidget::hideEvent(QHideEvent* Event)
+void swSpinnerWidget::hideEvent(QHideEvent* Event)
 {
 	mTimer.stop();
 	QWidget::hideEvent(Event);
 }
 
-void lcSpinnerWidget::paintEvent(QPaintEvent* Event)
+void swSpinnerWidget::paintEvent(QPaintEvent* Event)
 {
 	Q_UNUSED(Event);
 

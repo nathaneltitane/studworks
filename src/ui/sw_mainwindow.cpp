@@ -5,7 +5,7 @@
 #include <QPrintDialog>
 #include <QPrintPreviewDialog>
 #include "sw_partselectionwidget.h"
-#ifdef LC_ENABLE_TERMINAL
+#ifdef SW_ENABLE_TERMINAL
 #include "sw_terminalwidget.h"
 #endif
 #include "sw_propertieswidget.h"
@@ -34,31 +34,31 @@
 #include "sw_modelhistory.h"
 #include "sw_spinnerwidget.h"
 
-#if LC_ENABLE_GAMEPAD
+#if SW_ENABLE_GAMEPAD
 #include <QtGamepad/QGamepad>
 #endif
 
-lcMainWindow* gMainWindow;
-#define LC_TAB_LAYOUT_VERSION 0x0001
+swMainWindow* gMainWindow;
+#define SW_TAB_LAYOUT_VERSION 0x0001
 
-lcMainWindow::lcMainWindow()
+swMainWindow::swMainWindow()
 {
-	mTransformType = lcTransformType::RelativeTranslation;
+	mTransformType = swTransformType::RelativeTranslation;
 
-	mColorIndex = lcGetColorIndex(7);
-	mTool = lcTool::Select;
+	mColorIndex = swGetColorIndex(7);
+	mTool = swTool::Select;
 	mMoveXYSnapIndex = 4;
 	mMoveZSnapIndex = 3;
 	mAngleSnapIndex = 5;
-	mAngleSnapCustom = lcGetProfileFloat(LC_PROFILE_ANGLE_SNAP_CUSTOM);
-	mOrbitSnapEnabled = lcGetProfileInt(LC_PROFILE_ORBIT_SNAP);
-	mSelectionMode = lcSelectionMode::Single;
+	mAngleSnapCustom = swGetProfileFloat(SW_PROFILE_ANGLE_SNAP_CUSTOM);
+	mOrbitSnapEnabled = swGetProfileInt(SW_PROFILE_ORBIT_SNAP);
+	mSelectionMode = swSelectionMode::Single;
 
 	for (size_t FileIndex = 0; FileIndex < mRecentFiles.size(); FileIndex++)
-		mRecentFiles[FileIndex] = lcGetProfileString((LC_PROFILE_KEY)(LC_PROFILE_RECENT_FILE1 + FileIndex));
+		mRecentFiles[FileIndex] = swGetProfileString((SW_PROFILE_KEY)(SW_PROFILE_RECENT_FILE1 + FileIndex));
 
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 8, 0))
-	connect(&mGamepadTimer, &QTimer::timeout, this, &lcMainWindow::UpdateGamepads);
+	connect(&mGamepadTimer, &QTimer::timeout, this, &swMainWindow::UpdateGamepads);
 	mLastGamepadUpdate = QDateTime::currentDateTime();
 	mGamepadTimer.start(33);
 #endif
@@ -66,20 +66,20 @@ lcMainWindow::lcMainWindow()
 	gMainWindow = this;
 }
 
-lcMainWindow::~lcMainWindow()
+swMainWindow::~swMainWindow()
 {
-	lcPiecesLibrary* Library = lcGetPiecesLibrary();
+	swPiecesLibrary* Library = swGetPiecesLibrary();
 	disconnect(Library, nullptr, this, nullptr);
 
 	mInsertPieceData.Reset();
 
 	for (size_t FileIndex = 0; FileIndex < mRecentFiles.size(); FileIndex++)
-		lcSetProfileString((LC_PROFILE_KEY)(LC_PROFILE_RECENT_FILE1 + FileIndex), mRecentFiles[FileIndex]);
+		swSetProfileString((SW_PROFILE_KEY)(SW_PROFILE_RECENT_FILE1 + FileIndex), mRecentFiles[FileIndex]);
 
 	gMainWindow = nullptr;
 }
 
-void lcMainWindow::CreateWidgets()
+void swMainWindow::CreateWidgets()
 {
 	setAcceptDrops(true);
 	setWindowIcon(QIcon(":/resources/leocad.png"));
@@ -103,7 +103,7 @@ void lcMainWindow::CreateWidgets()
 
 	// Model tabs and the view below them each get a complete outline so neither looks cut off.
 	// They are as tall as the panel buttons and centered in a bar as tall as the panel title bars.
-	const int TabHeight = lcGetPanelButtonSize().height();
+	const int TabHeight = swGetPanelButtonSize().height();
 	const int TitleBarHeight = mModelTabWidget->fontMetrics().height() + 2 * style()->pixelMetric(QStyle::PM_DockWidgetTitleMargin);
 	const int TabMargin = qMax((TitleBarHeight - TabHeight) / 2, 0);
 
@@ -123,20 +123,20 @@ void lcMainWindow::CreateWidgets()
 	ModelViewOptionsButton->setToolTip(tr("Configure the model view display and rendering."));
 	ModelViewOptionsButton->setAccessibleName(tr("Model View Options"));
 	ModelViewOptionsButton->setPopupMode(QToolButton::InstantPopup);
-	lcSetupPanelButton(ModelViewOptionsButton);
+	swSetupPanelButton(ModelViewOptionsButton);
 	ModelViewCornerLayout->addWidget(ModelViewOptionsButton, 0, Qt::AlignVCenter);
 
 	QMenu* ModelViewOptionsMenu = new QMenu(ModelViewOptionsButton);
 	ModelViewOptionsButton->setMenu(ModelViewOptionsMenu);
 	mModelTabWidget->setCornerWidget(ModelViewCorner, Qt::TopRightCorner);
 
-	connect(ModelViewOptionsMenu, &QMenu::aboutToShow, this, &lcMainWindow::ModelViewOptionsMenuAboutToShow);
+	connect(ModelViewOptionsMenu, &QMenu::aboutToShow, this, &swMainWindow::ModelViewOptionsMenuAboutToShow);
 
-	connect(mModelTabWidget->tabBar(), &QTabBar::tabCloseRequested, this, &lcMainWindow::ModelTabClosed);
-	connect(mModelTabWidget->tabBar(), &QTabBar::customContextMenuRequested, this, &lcMainWindow::ModelTabContextMenuRequested);
-	connect(mModelTabWidget, &QTabWidget::currentChanged, this, &lcMainWindow::ModelTabChanged);
+	connect(mModelTabWidget->tabBar(), &QTabBar::tabCloseRequested, this, &swMainWindow::ModelTabClosed);
+	connect(mModelTabWidget->tabBar(), &QTabBar::customContextMenuRequested, this, &swMainWindow::ModelTabContextMenuRequested);
+	connect(mModelTabWidget, &QTabWidget::currentChanged, this, &swMainWindow::ModelTabChanged);
 
-	connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &lcMainWindow::ClipboardChanged);
+	connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &swMainWindow::ClipboardChanged);
 	ClipboardChanged();
 
 	QSettings Settings;
@@ -149,271 +149,271 @@ void lcMainWindow::CreateWidgets()
 	Settings.endGroup();
 }
 
-void lcMainWindow::CreateActions()
+void swMainWindow::CreateActions()
 {
-	for (int CommandIdx = 0; CommandIdx < LC_NUM_COMMANDS; CommandIdx++)
+	for (int CommandIdx = 0; CommandIdx < SW_NUM_COMMANDS; CommandIdx++)
 	{
 		QAction* Action = new QAction(qApp->translate("Menu", gCommands[CommandIdx].MenuName), this);
 		Action->setStatusTip(qApp->translate("Status", gCommands[CommandIdx].StatusText));
 		if (gCommands[CommandIdx].WhatsThis[0])
 			Action->setWhatsThis(qApp->translate("WhatsThis", gCommands[CommandIdx].WhatsThis));
-		connect(Action, &QAction::triggered, this, &lcMainWindow::ActionTriggered);
+		connect(Action, &QAction::triggered, this, &swMainWindow::ActionTriggered);
 		addAction(Action);
 		mActions[CommandIdx] = Action;
 	}
 
-	mActions[LC_HELP_WHATS_THIS]->setToolTip(mActions[LC_HELP_WHATS_THIS]->statusTip());
-	mActions[LC_FILE_NEW]->setToolTip(tr("New Model"));
-	mActions[LC_FILE_OPEN]->setToolTip(tr("Open Model"));
-	mActions[LC_FILE_SAVE]->setToolTip(tr("Save Model"));
+	mActions[SW_HELP_WHATS_THIS]->setToolTip(mActions[SW_HELP_WHATS_THIS]->statusTip());
+	mActions[SW_FILE_NEW]->setToolTip(tr("New Model"));
+	mActions[SW_FILE_OPEN]->setToolTip(tr("Open Model"));
+	mActions[SW_FILE_SAVE]->setToolTip(tr("Save Model"));
 
 	QIcon FileNewIcon;
 	FileNewIcon.addFile(":/resources/file_new.png");
 	FileNewIcon.addFile(":/resources/file_new_16.png");
-	mActions[LC_FILE_NEW]->setIcon(FileNewIcon);
+	mActions[SW_FILE_NEW]->setIcon(FileNewIcon);
 
 	QIcon FileSaveIcon;
 	FileSaveIcon.addFile(":/resources/file_save.png");
 	FileSaveIcon.addFile(":/resources/file_save_16.png");
-	mActions[LC_FILE_SAVE]->setIcon(FileSaveIcon);
+	mActions[SW_FILE_SAVE]->setIcon(FileSaveIcon);
 
 	QIcon FileOpenIcon;
 	FileOpenIcon.addFile(":/resources/file_open.png");
 	FileOpenIcon.addFile(":/resources/file_open_16.png");
-	mActions[LC_FILE_OPEN]->setIcon(FileOpenIcon);
+	mActions[SW_FILE_OPEN]->setIcon(FileOpenIcon);
 
 	QIcon FilePrintIcon;
 	FilePrintIcon.addFile(":/resources/file_print.png");
 	FilePrintIcon.addFile(":/resources/file_print_16.png");
-	mActions[LC_FILE_PRINT]->setIcon(FilePrintIcon);
+	mActions[SW_FILE_PRINT]->setIcon(FilePrintIcon);
 
 	QIcon FilePrintPreviewIcon;
 	FilePrintPreviewIcon.addFile(":/resources/file_print_preview.png");
 	FilePrintPreviewIcon.addFile(":/resources/file_print_preview_16.png");
-	mActions[LC_FILE_PRINT_PREVIEW]->setIcon(FilePrintPreviewIcon);
+	mActions[SW_FILE_PRINT_PREVIEW]->setIcon(FilePrintPreviewIcon);
 
 	QIcon EditUndoIcon;
 	EditUndoIcon.addFile(":/resources/edit_undo.png");
 	EditUndoIcon.addFile(":/resources/edit_undo_16.png");
-	mActions[LC_EDIT_UNDO]->setIcon(EditUndoIcon);
+	mActions[SW_EDIT_UNDO]->setIcon(EditUndoIcon);
 
 	QIcon EditRedoIcon;
 	EditRedoIcon.addFile(":/resources/edit_redo.png");
 	EditRedoIcon.addFile(":/resources/edit_redo_16.png");
-	mActions[LC_EDIT_REDO]->setIcon(EditRedoIcon);
+	mActions[SW_EDIT_REDO]->setIcon(EditRedoIcon);
 
 	QIcon EditCutIcon;
 	EditCutIcon.addFile(":/resources/edit_cut.png");
 	EditCutIcon.addFile(":/resources/edit_cut_16.png");
-	mActions[LC_EDIT_CUT]->setIcon(EditCutIcon);
+	mActions[SW_EDIT_CUT]->setIcon(EditCutIcon);
 
 	QIcon EditCopyIcon;
 	EditCopyIcon.addFile(":/resources/edit_copy.png");
 	EditCopyIcon.addFile(":/resources/edit_copy_16.png");
-	mActions[LC_EDIT_COPY]->setIcon(EditCopyIcon);
+	mActions[SW_EDIT_COPY]->setIcon(EditCopyIcon);
 
 	QIcon EditPasteIcon;
 	EditPasteIcon.addFile(":/resources/edit_paste.png");
 	EditPasteIcon.addFile(":/resources/edit_paste_16.png");
-	mActions[LC_EDIT_PASTE]->setIcon(EditPasteIcon);
+	mActions[SW_EDIT_PASTE]->setIcon(EditPasteIcon);
 
 	QIcon EditActionInsertIcon;
 	EditActionInsertIcon.addFile(":/resources/action_insert.png");
 	EditActionInsertIcon.addFile(":/resources/action_insert_16.png");
-	mActions[LC_EDIT_ACTION_INSERT]->setIcon(EditActionInsertIcon);
+	mActions[SW_EDIT_ACTION_INSERT]->setIcon(EditActionInsertIcon);
 
 	QIcon EditActionLightIcon;
 	EditActionLightIcon.addFile(":/resources/action_light.png");
 	EditActionLightIcon.addFile(":/resources/action_light_16.png");
-	mActions[LC_EDIT_ACTION_POINT_LIGHT]->setIcon(EditActionLightIcon);
+	mActions[SW_EDIT_ACTION_POINT_LIGHT]->setIcon(EditActionLightIcon);
 
 	QIcon EditActionSpotLightIcon;
 	EditActionSpotLightIcon.addFile(":/resources/action_spotlight.png");
 	EditActionSpotLightIcon.addFile(":/resources/action_spotlight_16.png");
-	mActions[LC_EDIT_ACTION_SPOTLIGHT]->setIcon(EditActionSpotLightIcon);
+	mActions[SW_EDIT_ACTION_SPOTLIGHT]->setIcon(EditActionSpotLightIcon);
 
 	QIcon EditActionSunlightIcon;
 	EditActionSunlightIcon.addFile(":/resources/action_sunlight.png");
 	EditActionSunlightIcon.addFile(":/resources/action_sunlight_16.png");
-	mActions[LC_EDIT_ACTION_DIRECTIONAL_LIGHT]->setIcon(EditActionSunlightIcon);
+	mActions[SW_EDIT_ACTION_DIRECTIONAL_LIGHT]->setIcon(EditActionSunlightIcon);
 
 	QIcon EditActionArealightIcon;
 	EditActionArealightIcon.addFile(":/resources/action_arealight.png");
 	EditActionArealightIcon.addFile(":/resources/action_arealight_16.png");
-	mActions[LC_EDIT_ACTION_AREA_LIGHT]->setIcon(EditActionArealightIcon);
+	mActions[SW_EDIT_ACTION_AREA_LIGHT]->setIcon(EditActionArealightIcon);
 
 	QIcon EditActionSelectIcon;
 	EditActionSelectIcon.addFile(":/resources/action_select.png");
 	EditActionSelectIcon.addFile(":/resources/action_select_16.png");
-	mActions[LC_EDIT_ACTION_SELECT]->setIcon(EditActionSelectIcon);
+	mActions[SW_EDIT_ACTION_SELECT]->setIcon(EditActionSelectIcon);
 
 	QIcon EditActionMoveIcon;
 	EditActionMoveIcon.addFile(":/resources/action_move.png");
 	EditActionMoveIcon.addFile(":/resources/action_move_16.png");
-	mActions[LC_EDIT_ACTION_MOVE]->setIcon(EditActionMoveIcon);
+	mActions[SW_EDIT_ACTION_MOVE]->setIcon(EditActionMoveIcon);
 
 	QIcon EditActionRotateIcon;
 	EditActionRotateIcon.addFile(":/resources/action_rotate.png");
 	EditActionRotateIcon.addFile(":/resources/action_rotate_16.png");
-	mActions[LC_EDIT_ACTION_ROTATE]->setIcon(EditActionRotateIcon);
+	mActions[SW_EDIT_ACTION_ROTATE]->setIcon(EditActionRotateIcon);
 
 	QIcon EditActionDeleteIcon;
 	EditActionDeleteIcon.addFile(":/resources/action_delete.png");
 	EditActionDeleteIcon.addFile(":/resources/action_delete_16.png");
-	mActions[LC_EDIT_ACTION_DELETE]->setIcon(EditActionDeleteIcon);
+	mActions[SW_EDIT_ACTION_DELETE]->setIcon(EditActionDeleteIcon);
 
 	QIcon EditActionPaintIcon;
 	EditActionPaintIcon.addFile(":/resources/action_paint.png");
 	EditActionPaintIcon.addFile(":/resources/action_paint_16.png");
-	mActions[LC_EDIT_ACTION_PAINT]->setIcon(EditActionPaintIcon);
+	mActions[SW_EDIT_ACTION_PAINT]->setIcon(EditActionPaintIcon);
 
 	QIcon EditActionColorPickerIcon;
 	EditActionColorPickerIcon.addFile(":/resources/action_color_picker.png");
 	EditActionColorPickerIcon.addFile(":/resources/action_color_picker_16.png");
-	mActions[LC_EDIT_ACTION_COLOR_PICKER]->setIcon(EditActionColorPickerIcon);
+	mActions[SW_EDIT_ACTION_COLOR_PICKER]->setIcon(EditActionColorPickerIcon);
 
 	QIcon EditActionZoomIcon;
 	EditActionZoomIcon.addFile(":/resources/action_zoom.png");
 	EditActionZoomIcon.addFile(":/resources/action_zoom_16.png");
-	mActions[LC_EDIT_ACTION_ZOOM]->setIcon(EditActionZoomIcon);
+	mActions[SW_EDIT_ACTION_ZOOM]->setIcon(EditActionZoomIcon);
 
 	QIcon EditActionPanIcon;
 	EditActionPanIcon.addFile(":/resources/action_pan.png");
 	EditActionPanIcon.addFile(":/resources/action_pan_16.png");
-	mActions[LC_EDIT_ACTION_PAN]->setIcon(EditActionPanIcon);
+	mActions[SW_EDIT_ACTION_PAN]->setIcon(EditActionPanIcon);
 
 	QIcon FileRenderPOVRayIcon;
 	FileRenderPOVRayIcon.addFile(":/resources/file_render_povray.png");
 	FileRenderPOVRayIcon.addFile(":/resources/file_render_povray_16.png");
-	mActions[LC_FILE_RENDER_POVRAY]->setIcon(FileRenderPOVRayIcon);
+	mActions[SW_FILE_RENDER_POVRAY]->setIcon(FileRenderPOVRayIcon);
 
 	QIcon FileRenderBlenderIcon;
 	FileRenderBlenderIcon.addFile(":/resources/file_render_blender.png");
 	FileRenderBlenderIcon.addFile(":/resources/file_render_blender_16.png");
-	mActions[LC_FILE_RENDER_BLENDER]->setIcon(FileRenderBlenderIcon);
+	mActions[SW_FILE_RENDER_BLENDER]->setIcon(FileRenderBlenderIcon);
 
 	QIcon FileOpenInBlenderIcon;
 	FileOpenInBlenderIcon.addFile(":/resources/file_render_open_in_blender.png");
 	FileOpenInBlenderIcon.addFile(":/resources/file_render_open_in_blender_16.png");
-	mActions[LC_FILE_RENDER_OPEN_IN_BLENDER]->setIcon(FileOpenInBlenderIcon);
+	mActions[SW_FILE_RENDER_OPEN_IN_BLENDER]->setIcon(FileOpenInBlenderIcon);
 
-	mActions[LC_EDIT_ACTION_CAMERA]->setIcon(QIcon(":/resources/action_camera.png"));
-	mActions[LC_EDIT_ACTION_ROTATE_VIEW]->setIcon(QIcon(":/resources/action_rotate_view.png"));
-	mActions[LC_EDIT_ACTION_ROLL]->setIcon(QIcon(":/resources/action_roll.png"));
-	mActions[LC_EDIT_ACTION_ZOOM_REGION]->setIcon(QIcon(":/resources/action_zoom_region.png"));
-	mActions[LC_EDIT_FIND]->setIcon(QIcon(":/resources/edit_find.png"));
-	mActions[LC_EDIT_FIND_NEXT]->setIcon(QIcon(":/resources/edit_find_next.png"));
-	mActions[LC_EDIT_FIND_PREVIOUS]->setIcon(QIcon(":/resources/edit_find_previous.png"));
-	mActions[LC_EDIT_FIND_ALL]->setIcon(QIcon(":/resources/edit_find_all.png"));
-	mActions[LC_EDIT_REPLACE_NEXT]->setIcon(QIcon(":/resources/edit_replace_next.png"));
-	mActions[LC_EDIT_REPLACE_ALL]->setIcon(QIcon(":/resources/edit_replace_all.png"));
-	mActions[LC_PIECE_SHOW_EARLIER]->setIcon(QIcon(":/resources/piece_show_earlier.png"));
-	mActions[LC_PIECE_SHOW_LATER]->setIcon(QIcon(":/resources/piece_show_later.png"));
-	mActions[LC_VIEW_SPLIT_HORIZONTAL]->setIcon(QIcon(":/resources/view_split_horizontal.png"));
-	mActions[LC_VIEW_SPLIT_VERTICAL]->setIcon(QIcon(":/resources/view_split_vertical.png"));
-	mActions[LC_VIEW_ZOOM_IN]->setIcon(QIcon(":/resources/view_zoomin.png"));
-	mActions[LC_VIEW_ZOOM_OUT]->setIcon(QIcon(":/resources/view_zoomout.png"));
-	mActions[LC_VIEW_ZOOM_EXTENTS]->setIcon(QIcon(":/resources/view_zoomextents.png"));
-	mActions[LC_VIEW_TIME_FIRST]->setIcon(QIcon(":/resources/time_first.png"));
-	mActions[LC_VIEW_TIME_PREVIOUS]->setIcon(QIcon(":/resources/time_previous.png"));
-	mActions[LC_VIEW_TIME_NEXT]->setIcon(QIcon(":/resources/time_next.png"));
-	mActions[LC_VIEW_TIME_LAST]->setIcon(QIcon(":/resources/time_last.png"));
-	mActions[LC_VIEW_TIME_ADD_KEYS]->setIcon(QIcon(":/resources/time_add_keys.png"));
-	mActions[LC_HELP_HOMEPAGE]->setIcon(QIcon(":/resources/help_homepage.png"));
+	mActions[SW_EDIT_ACTION_CAMERA]->setIcon(QIcon(":/resources/action_camera.png"));
+	mActions[SW_EDIT_ACTION_ROTATE_VIEW]->setIcon(QIcon(":/resources/action_rotate_view.png"));
+	mActions[SW_EDIT_ACTION_ROLL]->setIcon(QIcon(":/resources/action_roll.png"));
+	mActions[SW_EDIT_ACTION_ZOOM_REGION]->setIcon(QIcon(":/resources/action_zoom_region.png"));
+	mActions[SW_EDIT_FIND]->setIcon(QIcon(":/resources/edit_find.png"));
+	mActions[SW_EDIT_FIND_NEXT]->setIcon(QIcon(":/resources/edit_find_next.png"));
+	mActions[SW_EDIT_FIND_PREVIOUS]->setIcon(QIcon(":/resources/edit_find_previous.png"));
+	mActions[SW_EDIT_FIND_ALL]->setIcon(QIcon(":/resources/edit_find_all.png"));
+	mActions[SW_EDIT_REPLACE_NEXT]->setIcon(QIcon(":/resources/edit_replace_next.png"));
+	mActions[SW_EDIT_REPLACE_ALL]->setIcon(QIcon(":/resources/edit_replace_all.png"));
+	mActions[SW_PIECE_SHOW_EARLIER]->setIcon(QIcon(":/resources/piece_show_earlier.png"));
+	mActions[SW_PIECE_SHOW_LATER]->setIcon(QIcon(":/resources/piece_show_later.png"));
+	mActions[SW_VIEW_SPLIT_HORIZONTAL]->setIcon(QIcon(":/resources/view_split_horizontal.png"));
+	mActions[SW_VIEW_SPLIT_VERTICAL]->setIcon(QIcon(":/resources/view_split_vertical.png"));
+	mActions[SW_VIEW_ZOOM_IN]->setIcon(QIcon(":/resources/view_zoomin.png"));
+	mActions[SW_VIEW_ZOOM_OUT]->setIcon(QIcon(":/resources/view_zoomout.png"));
+	mActions[SW_VIEW_ZOOM_EXTENTS]->setIcon(QIcon(":/resources/view_zoomextents.png"));
+	mActions[SW_VIEW_TIME_FIRST]->setIcon(QIcon(":/resources/time_first.png"));
+	mActions[SW_VIEW_TIME_PREVIOUS]->setIcon(QIcon(":/resources/time_previous.png"));
+	mActions[SW_VIEW_TIME_NEXT]->setIcon(QIcon(":/resources/time_next.png"));
+	mActions[SW_VIEW_TIME_LAST]->setIcon(QIcon(":/resources/time_last.png"));
+	mActions[SW_VIEW_TIME_ADD_KEYS]->setIcon(QIcon(":/resources/time_add_keys.png"));
+	mActions[SW_HELP_HOMEPAGE]->setIcon(QIcon(":/resources/help_homepage.png"));
 
-	mActions[LC_EDIT_SNAP_MOVE_TOGGLE]->setCheckable(true);
-	mActions[LC_EDIT_SNAP_ANGLE_TOGGLE]->setCheckable(true);
-	mActions[LC_VIEW_CAMERA_NONE]->setCheckable(true);
-	mActions[LC_VIEW_TIME_ADD_KEYS]->setCheckable(true);
-	mActions[LC_VIEW_STEP_VIEW_TOGGLE_FOLLOW]->setCheckable(true);
-	mActions[LC_VIEW_STEP_VIEW_TOGGLE_FOLLOW]->setChecked(lcGetPreferences().mFollowStepViews);
-	mActions[LC_PIECE_TOGGLE_FIRST_AT_ORIGIN]->setCheckable(true);
+	mActions[SW_EDIT_SNAP_MOVE_TOGGLE]->setCheckable(true);
+	mActions[SW_EDIT_SNAP_ANGLE_TOGGLE]->setCheckable(true);
+	mActions[SW_VIEW_CAMERA_NONE]->setCheckable(true);
+	mActions[SW_VIEW_TIME_ADD_KEYS]->setCheckable(true);
+	mActions[SW_VIEW_STEP_VIEW_TOGGLE_FOLLOW]->setCheckable(true);
+	mActions[SW_VIEW_STEP_VIEW_TOGGLE_FOLLOW]->setChecked(swGetPreferences().mFollowStepViews);
+	mActions[SW_PIECE_TOGGLE_FIRST_AT_ORIGIN]->setCheckable(true);
 
-	for (int ActionIndex = LC_VIEW_TOOLBAR_FIRST; ActionIndex <= LC_VIEW_TOOLBAR_LAST; ActionIndex++)
+	for (int ActionIndex = SW_VIEW_TOOLBAR_FIRST; ActionIndex <= SW_VIEW_TOOLBAR_LAST; ActionIndex++)
 		mActions[ActionIndex]->setCheckable(true);
 
 	QActionGroup* ActionRelativeGroup = new QActionGroup(this);
-	for (int ActionIdx = LC_EDIT_TRANSFORM_RELATIVE; ActionIdx <= LC_EDIT_TRANSFORM_ABSOLUTE; ActionIdx++)
+	for (int ActionIdx = SW_EDIT_TRANSFORM_RELATIVE; ActionIdx <= SW_EDIT_TRANSFORM_ABSOLUTE; ActionIdx++)
 	{
 		mActions[ActionIdx]->setCheckable(true);
 		ActionRelativeGroup->addAction(mActions[ActionIdx]);
 	}
 
 	QActionGroup* ActionSeparateGroup = new QActionGroup(this);
-	for (int ActionIdx = LC_EDIT_TRANSFORM_SEPARATELY; ActionIdx <= LC_EDIT_TRANSFORM_TOGETHER; ActionIdx++)
+	for (int ActionIdx = SW_EDIT_TRANSFORM_SEPARATELY; ActionIdx <= SW_EDIT_TRANSFORM_TOGETHER; ActionIdx++)
 	{
 		mActions[ActionIdx]->setCheckable(true);
 		ActionSeparateGroup->addAction(mActions[ActionIdx]);
 	}
 
 	QActionGroup* ActionSnapXYGroup = new QActionGroup(this);
-	for (int ActionIdx = LC_EDIT_SNAP_MOVE_XY0; ActionIdx <= LC_EDIT_SNAP_MOVE_XY9; ActionIdx++)
+	for (int ActionIdx = SW_EDIT_SNAP_MOVE_XY0; ActionIdx <= SW_EDIT_SNAP_MOVE_XY9; ActionIdx++)
 	{
 		mActions[ActionIdx]->setCheckable(true);
 		ActionSnapXYGroup->addAction(mActions[ActionIdx]);
 	}
 
 	QActionGroup* ActionSnapZGroup = new QActionGroup(this);
-	for (int ActionIdx = LC_EDIT_SNAP_MOVE_Z0; ActionIdx <= LC_EDIT_SNAP_MOVE_Z9; ActionIdx++)
+	for (int ActionIdx = SW_EDIT_SNAP_MOVE_Z0; ActionIdx <= SW_EDIT_SNAP_MOVE_Z9; ActionIdx++)
 	{
 		mActions[ActionIdx]->setCheckable(true);
 		ActionSnapZGroup->addAction(mActions[ActionIdx]);
 	}
 
 	QActionGroup* ActionSnapAngleGroup = new QActionGroup(this);
-	for (int ActionIdx = LC_EDIT_SNAP_ANGLE0; ActionIdx <= LC_EDIT_SNAP_ANGLE_CUSTOM; ActionIdx++)
+	for (int ActionIdx = SW_EDIT_SNAP_ANGLE0; ActionIdx <= SW_EDIT_SNAP_ANGLE_CUSTOM; ActionIdx++)
 	{
 		mActions[ActionIdx]->setCheckable(true);
 		ActionSnapAngleGroup->addAction(mActions[ActionIdx]);
 	}
 
-	mActions[LC_EDIT_SNAP_ORBIT_TOGGLE]->setCheckable(true);
+	mActions[SW_EDIT_SNAP_ORBIT_TOGGLE]->setCheckable(true);
 
 	QActionGroup* ActionTransformTypeGroup = new QActionGroup(this);
-	for (int ActionIdx = LC_EDIT_TRANSFORM_ABSOLUTE_TRANSLATION; ActionIdx <= LC_EDIT_TRANSFORM_RELATIVE_ROTATION; ActionIdx++)
+	for (int ActionIdx = SW_EDIT_TRANSFORM_ABSOLUTE_TRANSLATION; ActionIdx <= SW_EDIT_TRANSFORM_RELATIVE_ROTATION; ActionIdx++)
 	{
 		mActions[ActionIdx]->setCheckable(true);
 		ActionTransformTypeGroup->addAction(mActions[ActionIdx]);
 	}
 
 	QActionGroup* ActionToolGroup = new QActionGroup(this);
-	for (int ActionIdx = LC_EDIT_ACTION_FIRST; ActionIdx <= LC_EDIT_ACTION_LAST; ActionIdx++)
+	for (int ActionIdx = SW_EDIT_ACTION_FIRST; ActionIdx <= SW_EDIT_ACTION_LAST; ActionIdx++)
 	{
 		mActions[ActionIdx]->setCheckable(true);
 		ActionToolGroup->addAction(mActions[ActionIdx]);
 	}
 
 	QActionGroup* ActionCameraGroup = new QActionGroup(this);
-	ActionCameraGroup->addAction(mActions[LC_VIEW_CAMERA_NONE]);
-	for (int ActionIdx = LC_VIEW_CAMERA_FIRST; ActionIdx <= LC_VIEW_CAMERA_LAST; ActionIdx++)
+	ActionCameraGroup->addAction(mActions[SW_VIEW_CAMERA_NONE]);
+	for (int ActionIdx = SW_VIEW_CAMERA_FIRST; ActionIdx <= SW_VIEW_CAMERA_LAST; ActionIdx++)
 	{
 		mActions[ActionIdx]->setCheckable(true);
 		ActionCameraGroup->addAction(mActions[ActionIdx]);
 	}
 
 	QActionGroup* ActionPerspectiveGroup = new QActionGroup(this);
-	for (int ActionIdx = LC_VIEW_PROJECTION_FIRST; ActionIdx <= LC_VIEW_PROJECTION_LAST; ActionIdx++)
+	for (int ActionIdx = SW_VIEW_PROJECTION_FIRST; ActionIdx <= SW_VIEW_PROJECTION_LAST; ActionIdx++)
 	{
 		mActions[ActionIdx]->setCheckable(true);
 		ActionPerspectiveGroup->addAction(mActions[ActionIdx]);
 	}
 
 	QActionGroup* ActionShadingGroup = new QActionGroup(this);
-	for (int ActionIdx = LC_VIEW_SHADING_FIRST; ActionIdx <= LC_VIEW_SHADING_LAST; ActionIdx++)
+	for (int ActionIdx = SW_VIEW_SHADING_FIRST; ActionIdx <= SW_VIEW_SHADING_LAST; ActionIdx++)
 	{
 		mActions[ActionIdx]->setCheckable(true);
 		ActionShadingGroup->addAction(mActions[ActionIdx]);
 	}
 
 	QActionGroup* SelectionModeGroup = new QActionGroup(this);
-	for (int ActionIdx = LC_EDIT_SELECTION_MODE_FIRST; ActionIdx <= LC_EDIT_SELECTION_MODE_LAST; ActionIdx++)
+	for (int ActionIdx = SW_EDIT_SELECTION_MODE_FIRST; ActionIdx <= SW_EDIT_SELECTION_MODE_LAST; ActionIdx++)
 	{
 		mActions[ActionIdx]->setCheckable(true);
 		SelectionModeGroup->addAction(mActions[ActionIdx]);
 	}
 
 	QActionGroup* ModelGroup = new QActionGroup(this);
-	for (int ActionIdx = LC_MODEL_FIRST; ActionIdx <= LC_MODEL_LAST; ActionIdx++)
+	for (int ActionIdx = SW_MODEL_FIRST; ActionIdx <= SW_MODEL_LAST; ActionIdx++)
 	{
 		mActions[ActionIdx]->setCheckable(true);
 		ModelGroup->addAction(mActions[ActionIdx]);
@@ -422,222 +422,222 @@ void lcMainWindow::CreateActions()
 	UpdateShortcuts();
 }
 
-void lcMainWindow::CreateMenus()
+void swMainWindow::CreateMenus()
 {
 	QMenu* TransformMenu = new QMenu(tr("Transform"), this);
-	TransformMenu->addAction(mActions[LC_EDIT_TRANSFORM_RELATIVE_TRANSLATION]);
-	TransformMenu->addAction(mActions[LC_EDIT_TRANSFORM_ABSOLUTE_TRANSLATION]);
-	TransformMenu->addAction(mActions[LC_EDIT_TRANSFORM_RELATIVE_ROTATION]);
-	TransformMenu->addAction(mActions[LC_EDIT_TRANSFORM_ABSOLUTE_ROTATION]);
-	mActions[LC_EDIT_TRANSFORM]->setMenu(TransformMenu);
+	TransformMenu->addAction(mActions[SW_EDIT_TRANSFORM_RELATIVE_TRANSLATION]);
+	TransformMenu->addAction(mActions[SW_EDIT_TRANSFORM_ABSOLUTE_TRANSLATION]);
+	TransformMenu->addAction(mActions[SW_EDIT_TRANSFORM_RELATIVE_ROTATION]);
+	TransformMenu->addAction(mActions[SW_EDIT_TRANSFORM_ABSOLUTE_ROTATION]);
+	mActions[SW_EDIT_TRANSFORM]->setMenu(TransformMenu);
 
 	mCameraMenu = new QMenu(tr("C&ameras"), this);
-	mCameraMenu->addAction(mActions[LC_VIEW_CAMERA_NONE]);
+	mCameraMenu->addAction(mActions[SW_VIEW_CAMERA_NONE]);
 
-	for (int actionIdx = LC_VIEW_CAMERA_FIRST; actionIdx <= LC_VIEW_CAMERA_LAST; actionIdx++)
+	for (int actionIdx = SW_VIEW_CAMERA_FIRST; actionIdx <= SW_VIEW_CAMERA_LAST; actionIdx++)
 		mCameraMenu->addAction(mActions[actionIdx]);
 
-	connect(mCameraMenu, &QMenu::aboutToShow, this, &lcMainWindow::CameraMenuAboutToShow);
+	connect(mCameraMenu, &QMenu::aboutToShow, this, &swMainWindow::CameraMenuAboutToShow);
 
 	mViewpointMenu = new QMenu(tr("&Viewpoints"), this);
-	mViewpointMenu->addAction(mActions[LC_VIEW_VIEWPOINT_FRONT]);
-	mViewpointMenu->addAction(mActions[LC_VIEW_VIEWPOINT_BACK]);
-	mViewpointMenu->addAction(mActions[LC_VIEW_VIEWPOINT_LEFT]);
-	mViewpointMenu->addAction(mActions[LC_VIEW_VIEWPOINT_RIGHT]);
-	mViewpointMenu->addAction(mActions[LC_VIEW_VIEWPOINT_TOP]);
-	mViewpointMenu->addAction(mActions[LC_VIEW_VIEWPOINT_BOTTOM]);
-	mViewpointMenu->addAction(mActions[LC_VIEW_VIEWPOINT_HOME]);
+	mViewpointMenu->addAction(mActions[SW_VIEW_VIEWPOINT_FRONT]);
+	mViewpointMenu->addAction(mActions[SW_VIEW_VIEWPOINT_BACK]);
+	mViewpointMenu->addAction(mActions[SW_VIEW_VIEWPOINT_LEFT]);
+	mViewpointMenu->addAction(mActions[SW_VIEW_VIEWPOINT_RIGHT]);
+	mViewpointMenu->addAction(mActions[SW_VIEW_VIEWPOINT_TOP]);
+	mViewpointMenu->addAction(mActions[SW_VIEW_VIEWPOINT_BOTTOM]);
+	mViewpointMenu->addAction(mActions[SW_VIEW_VIEWPOINT_HOME]);
 	mViewpointMenu->addSeparator();
-	mViewpointMenu->addAction(mActions[LC_VIEW_STEP_VIEW_EDIT]);
-	mViewpointMenu->addAction(mActions[LC_VIEW_STEP_VIEW_TOGGLE_FOLLOW]);
+	mViewpointMenu->addAction(mActions[SW_VIEW_STEP_VIEW_EDIT]);
+	mViewpointMenu->addAction(mActions[SW_VIEW_STEP_VIEW_TOGGLE_FOLLOW]);
 	mViewpointMenu->addSeparator();
-	mViewpointMenu->addAction(mActions[LC_VIEW_NORMAL_TO_FACE]);
+	mViewpointMenu->addAction(mActions[SW_VIEW_NORMAL_TO_FACE]);
 
 	mProjectionMenu = new QMenu(tr("Projection"), this);
-	mProjectionMenu->addAction(mActions[LC_VIEW_PROJECTION_PERSPECTIVE]);
-	mProjectionMenu->addAction(mActions[LC_VIEW_PROJECTION_ORTHO]);
+	mProjectionMenu->addAction(mActions[SW_VIEW_PROJECTION_PERSPECTIVE]);
+	mProjectionMenu->addAction(mActions[SW_VIEW_PROJECTION_ORTHO]);
 
-	connect(mProjectionMenu, &QMenu::aboutToShow, this, &lcMainWindow::ProjectionMenuAboutToShow);
+	connect(mProjectionMenu, &QMenu::aboutToShow, this, &swMainWindow::ProjectionMenuAboutToShow);
 
 	mShadingMenu = new QMenu(tr("Sh&ading"), this);
-	mShadingMenu->addAction(mActions[LC_VIEW_SHADING_WIREFRAME]);
-	mShadingMenu->addAction(mActions[LC_VIEW_SHADING_FLAT]);
-	mShadingMenu->addAction(mActions[LC_VIEW_SHADING_DEFAULT_LIGHTS]);
+	mShadingMenu->addAction(mActions[SW_VIEW_SHADING_WIREFRAME]);
+	mShadingMenu->addAction(mActions[SW_VIEW_SHADING_FLAT]);
+	mShadingMenu->addAction(mActions[SW_VIEW_SHADING_DEFAULT_LIGHTS]);
 
 	mToolsMenu = new QMenu(tr("Tools"), this);
-	mToolsMenu->addAction(mActions[LC_EDIT_ACTION_INSERT]);
-	mToolsMenu->addAction(mActions[LC_EDIT_ACTION_POINT_LIGHT]);
-	mToolsMenu->addAction(mActions[LC_EDIT_ACTION_SPOTLIGHT]);
-	mToolsMenu->addAction(mActions[LC_EDIT_ACTION_DIRECTIONAL_LIGHT]);
-	mToolsMenu->addAction(mActions[LC_EDIT_ACTION_AREA_LIGHT]);
-	mToolsMenu->addAction(mActions[LC_EDIT_ACTION_CAMERA]);
+	mToolsMenu->addAction(mActions[SW_EDIT_ACTION_INSERT]);
+	mToolsMenu->addAction(mActions[SW_EDIT_ACTION_POINT_LIGHT]);
+	mToolsMenu->addAction(mActions[SW_EDIT_ACTION_SPOTLIGHT]);
+	mToolsMenu->addAction(mActions[SW_EDIT_ACTION_DIRECTIONAL_LIGHT]);
+	mToolsMenu->addAction(mActions[SW_EDIT_ACTION_AREA_LIGHT]);
+	mToolsMenu->addAction(mActions[SW_EDIT_ACTION_CAMERA]);
 	mToolsMenu->addSeparator();
-	mToolsMenu->addAction(mActions[LC_EDIT_ACTION_SELECT]);
-	mToolsMenu->addAction(mActions[LC_EDIT_ACTION_MOVE]);
-	mToolsMenu->addAction(mActions[LC_EDIT_ACTION_ROTATE]);
-	mToolsMenu->addAction(mActions[LC_EDIT_ACTION_DELETE]);
-	mToolsMenu->addAction(mActions[LC_EDIT_ACTION_PAINT]);
-	mToolsMenu->addAction(mActions[LC_EDIT_ACTION_COLOR_PICKER]);
+	mToolsMenu->addAction(mActions[SW_EDIT_ACTION_SELECT]);
+	mToolsMenu->addAction(mActions[SW_EDIT_ACTION_MOVE]);
+	mToolsMenu->addAction(mActions[SW_EDIT_ACTION_ROTATE]);
+	mToolsMenu->addAction(mActions[SW_EDIT_ACTION_DELETE]);
+	mToolsMenu->addAction(mActions[SW_EDIT_ACTION_PAINT]);
+	mToolsMenu->addAction(mActions[SW_EDIT_ACTION_COLOR_PICKER]);
 	mToolsMenu->addSeparator();
-	mToolsMenu->addAction(mActions[LC_EDIT_ACTION_ZOOM]);
-	mToolsMenu->addAction(mActions[LC_EDIT_ACTION_PAN]);
-	mToolsMenu->addAction(mActions[LC_EDIT_ACTION_ROTATE_VIEW]);
-	mToolsMenu->addAction(mActions[LC_EDIT_ACTION_ROLL]);
-	mToolsMenu->addAction(mActions[LC_EDIT_ACTION_ZOOM_REGION]);
+	mToolsMenu->addAction(mActions[SW_EDIT_ACTION_ZOOM]);
+	mToolsMenu->addAction(mActions[SW_EDIT_ACTION_PAN]);
+	mToolsMenu->addAction(mActions[SW_EDIT_ACTION_ROTATE_VIEW]);
+	mToolsMenu->addAction(mActions[SW_EDIT_ACTION_ROLL]);
+	mToolsMenu->addAction(mActions[SW_EDIT_ACTION_ZOOM_REGION]);
 
 	QMenu* FileMenu = menuBar()->addMenu(tr("&File"));
-	connect(FileMenu, &QMenu::aboutToShow, this, &lcMainWindow::FileMenuAboutToShow);
-	FileMenu->addAction(mActions[LC_FILE_NEW]);
-	FileMenu->addAction(mActions[LC_FILE_OPEN]);
-	FileMenu->addAction(mActions[LC_FILE_MERGE]);
-	FileMenu->addAction(mActions[LC_FILE_RELOAD]);
+	connect(FileMenu, &QMenu::aboutToShow, this, &swMainWindow::FileMenuAboutToShow);
+	FileMenu->addAction(mActions[SW_FILE_NEW]);
+	FileMenu->addAction(mActions[SW_FILE_OPEN]);
+	FileMenu->addAction(mActions[SW_FILE_MERGE]);
+	FileMenu->addAction(mActions[SW_FILE_RELOAD]);
 	FileMenu->addSeparator();
-	FileMenu->addAction(mActions[LC_FILE_SAVE]);
-	FileMenu->addAction(mActions[LC_FILE_SAVEAS]);
-	FileMenu->addAction(mActions[LC_FILE_SAVE_IMAGE]);
+	FileMenu->addAction(mActions[SW_FILE_SAVE]);
+	FileMenu->addAction(mActions[SW_FILE_SAVEAS]);
+	FileMenu->addAction(mActions[SW_FILE_SAVE_IMAGE]);
 	QMenu* ImportMenu = FileMenu->addMenu(tr("&Import"));
-	ImportMenu->addAction(mActions[LC_FILE_IMPORT_LDD]);
-	ImportMenu->addAction(mActions[LC_FILE_IMPORT_INVENTORY]);
+	ImportMenu->addAction(mActions[SW_FILE_IMPORT_LDD]);
+	ImportMenu->addAction(mActions[SW_FILE_IMPORT_INVENTORY]);
 	QMenu* ExportMenu = FileMenu->addMenu(tr("&Export"));
-	ExportMenu->addAction(mActions[LC_FILE_EXPORT_3DS]);
-	ExportMenu->addAction(mActions[LC_FILE_EXPORT_BRICKLINK]);
-	ExportMenu->addAction(mActions[LC_FILE_EXPORT_COLLADA]);
-	ExportMenu->addAction(mActions[LC_FILE_EXPORT_CSV]);
-	ExportMenu->addAction(mActions[LC_FILE_EXPORT_HTML]);
-	ExportMenu->addAction(mActions[LC_FILE_EXPORT_POVRAY]);
-	ExportMenu->addAction(mActions[LC_FILE_EXPORT_WAVEFRONT]);
+	ExportMenu->addAction(mActions[SW_FILE_EXPORT_3DS]);
+	ExportMenu->addAction(mActions[SW_FILE_EXPORT_BRICKLINK]);
+	ExportMenu->addAction(mActions[SW_FILE_EXPORT_COLLADA]);
+	ExportMenu->addAction(mActions[SW_FILE_EXPORT_CSV]);
+	ExportMenu->addAction(mActions[SW_FILE_EXPORT_HTML]);
+	ExportMenu->addAction(mActions[SW_FILE_EXPORT_POVRAY]);
+	ExportMenu->addAction(mActions[SW_FILE_EXPORT_WAVEFRONT]);
 	FileMenu->addSeparator();
-#ifndef LC_DISABLE_RENDER_DIALOG
+#ifndef SW_DISABLE_RENDER_DIALOG
 	QMenu* RenderMenu = FileMenu->addMenu(tr("&Render"));
-	RenderMenu->addAction(mActions[LC_FILE_RENDER_POVRAY]);
-	RenderMenu->addAction(mActions[LC_FILE_RENDER_BLENDER]);
-	RenderMenu->addAction(mActions[LC_FILE_RENDER_OPEN_IN_BLENDER]);
+	RenderMenu->addAction(mActions[SW_FILE_RENDER_POVRAY]);
+	RenderMenu->addAction(mActions[SW_FILE_RENDER_BLENDER]);
+	RenderMenu->addAction(mActions[SW_FILE_RENDER_OPEN_IN_BLENDER]);
 #endif
-	FileMenu->addAction(mActions[LC_FILE_PRINT]);
-	FileMenu->addAction(mActions[LC_FILE_PRINT_PREVIEW]);
+	FileMenu->addAction(mActions[SW_FILE_PRINT]);
+	FileMenu->addAction(mActions[SW_FILE_PRINT_PREVIEW]);
 	FileMenu->addSeparator();
-	FileMenu->addAction(mActions[LC_FILE_RECENT1]);
-	FileMenu->addAction(mActions[LC_FILE_RECENT2]);
-	FileMenu->addAction(mActions[LC_FILE_RECENT3]);
-	FileMenu->addAction(mActions[LC_FILE_RECENT4]);
+	FileMenu->addAction(mActions[SW_FILE_RECENT1]);
+	FileMenu->addAction(mActions[SW_FILE_RECENT2]);
+	FileMenu->addAction(mActions[SW_FILE_RECENT3]);
+	FileMenu->addAction(mActions[SW_FILE_RECENT4]);
 	mActionFileRecentSeparator = FileMenu->addSeparator();
-	FileMenu->addAction(mActions[LC_FILE_EXIT]);
+	FileMenu->addAction(mActions[SW_FILE_EXIT]);
 
 	QMenu* EditMenu = menuBar()->addMenu(tr("&Edit"));
-	EditMenu->addAction(mActions[LC_VIEW_PREFERENCES]);
-	EditMenu->addAction(mActions[LC_FILE_INSTRUCTIONS]);
+	EditMenu->addAction(mActions[SW_VIEW_PREFERENCES]);
+	EditMenu->addAction(mActions[SW_FILE_INSTRUCTIONS]);
 	EditMenu->addSeparator();
-	EditMenu->addAction(mActions[LC_EDIT_UNDO]);
-	EditMenu->addAction(mActions[LC_EDIT_REDO]);
+	EditMenu->addAction(mActions[SW_EDIT_UNDO]);
+	EditMenu->addAction(mActions[SW_EDIT_REDO]);
 	EditMenu->addSeparator();
-	EditMenu->addAction(mActions[LC_EDIT_CUT]);
-	EditMenu->addAction(mActions[LC_EDIT_COPY]);
-	EditMenu->addAction(mActions[LC_EDIT_PASTE]);
-	EditMenu->addAction(mActions[LC_EDIT_PASTE_STEPS]);
+	EditMenu->addAction(mActions[SW_EDIT_CUT]);
+	EditMenu->addAction(mActions[SW_EDIT_COPY]);
+	EditMenu->addAction(mActions[SW_EDIT_PASTE]);
+	EditMenu->addAction(mActions[SW_EDIT_PASTE_STEPS]);
 	EditMenu->addSeparator();
-	EditMenu->addAction(mActions[LC_EDIT_FIND]);
-	EditMenu->addAction(mActions[LC_EDIT_FIND_NEXT]);
-	EditMenu->addAction(mActions[LC_EDIT_FIND_PREVIOUS]);
-	EditMenu->addAction(mActions[LC_EDIT_REPLACE]);
-	EditMenu->addAction(mActions[LC_EDIT_REPLACE_NEXT]);
+	EditMenu->addAction(mActions[SW_EDIT_FIND]);
+	EditMenu->addAction(mActions[SW_EDIT_FIND_NEXT]);
+	EditMenu->addAction(mActions[SW_EDIT_FIND_PREVIOUS]);
+	EditMenu->addAction(mActions[SW_EDIT_REPLACE]);
+	EditMenu->addAction(mActions[SW_EDIT_REPLACE_NEXT]);
 	EditMenu->addSeparator();
-	EditMenu->addAction(mActions[LC_EDIT_SELECT_ALL]);
-	EditMenu->addAction(mActions[LC_EDIT_SELECT_NONE]);
-	EditMenu->addAction(mActions[LC_EDIT_SELECT_INVERT]);
-	EditMenu->addAction(mActions[LC_EDIT_SELECT_BY_NAME]);
+	EditMenu->addAction(mActions[SW_EDIT_SELECT_ALL]);
+	EditMenu->addAction(mActions[SW_EDIT_SELECT_NONE]);
+	EditMenu->addAction(mActions[SW_EDIT_SELECT_INVERT]);
+	EditMenu->addAction(mActions[SW_EDIT_SELECT_BY_NAME]);
 	EditMenu->addMenu(mSelectionModeMenu);
 	EditMenu->addSeparator();
 	EditMenu->addMenu(mTransformMenu);
 	EditMenu->addMenu(mToolsMenu);
 
 	QMenu* ViewMenu = menuBar()->addMenu(tr("&View"));
-	ViewMenu->addAction(mActions[LC_VIEW_ZOOM_EXTENTS]);
-	ViewMenu->addAction(mActions[LC_VIEW_LOOK_AT]);
+	ViewMenu->addAction(mActions[SW_VIEW_ZOOM_EXTENTS]);
+	ViewMenu->addAction(mActions[SW_VIEW_LOOK_AT]);
 	ViewMenu->addMenu(mViewpointMenu);
 	ViewMenu->addMenu(mCameraMenu);
 	ViewMenu->addMenu(mProjectionMenu);
 	ViewMenu->addMenu(mShadingMenu);
 	QMenu* StepMenu = ViewMenu->addMenu(tr("Ste&p"));
-	StepMenu->addAction(mActions[LC_VIEW_TIME_FIRST]);
-	StepMenu->addAction(mActions[LC_VIEW_TIME_PREVIOUS]);
-	StepMenu->addAction(mActions[LC_VIEW_TIME_NEXT]);
-	StepMenu->addAction(mActions[LC_VIEW_TIME_LAST]);
+	StepMenu->addAction(mActions[SW_VIEW_TIME_FIRST]);
+	StepMenu->addAction(mActions[SW_VIEW_TIME_PREVIOUS]);
+	StepMenu->addAction(mActions[SW_VIEW_TIME_NEXT]);
+	StepMenu->addAction(mActions[SW_VIEW_TIME_LAST]);
 	StepMenu->addSeparator();
-	StepMenu->addAction(mActions[LC_VIEW_TIME_INSERT_BEFORE]);
-	StepMenu->addAction(mActions[LC_VIEW_TIME_INSERT_AFTER]);
-	StepMenu->addAction(mActions[LC_VIEW_TIME_DELETE]);
+	StepMenu->addAction(mActions[SW_VIEW_TIME_INSERT_BEFORE]);
+	StepMenu->addAction(mActions[SW_VIEW_TIME_INSERT_AFTER]);
+	StepMenu->addAction(mActions[SW_VIEW_TIME_DELETE]);
 	ViewMenu->addSeparator();
-	ViewMenu->addAction(mActions[LC_VIEW_SPLIT_HORIZONTAL]);
-	ViewMenu->addAction(mActions[LC_VIEW_SPLIT_VERTICAL]);
-	ViewMenu->addAction(mActions[LC_VIEW_REMOVE_VIEW]);
-	ViewMenu->addAction(mActions[LC_VIEW_RESET_VIEWS]);
+	ViewMenu->addAction(mActions[SW_VIEW_SPLIT_HORIZONTAL]);
+	ViewMenu->addAction(mActions[SW_VIEW_SPLIT_VERTICAL]);
+	ViewMenu->addAction(mActions[SW_VIEW_REMOVE_VIEW]);
+	ViewMenu->addAction(mActions[SW_VIEW_RESET_VIEWS]);
 	ViewMenu->addSeparator();
 	QMenu* ToolBarsMenu = ViewMenu->addMenu(tr("T&oolbars"));
-	connect(ToolBarsMenu, &QMenu::aboutToShow, this, &lcMainWindow::UpdateDockWidgetActions);
-	ToolBarsMenu->addAction(mActions[LC_VIEW_TOOLBAR_PARTS]);
-	ToolBarsMenu->addAction(mActions[LC_VIEW_TOOLBAR_COLORS]);
-	ToolBarsMenu->addAction(mActions[LC_VIEW_TOOLBAR_PROPERTIES]);
-	ToolBarsMenu->addAction(mActions[LC_VIEW_TOOLBAR_TIMELINE]);
-	ToolBarsMenu->addAction(mActions[LC_VIEW_TOOLBAR_PREVIEW]);
-	ToolBarsMenu->addAction(mActions[LC_VIEW_TOOLBAR_MINIFIG]);
-	ToolBarsMenu->addAction(mActions[LC_VIEW_TOOLBAR_TERMINAL]);
+	connect(ToolBarsMenu, &QMenu::aboutToShow, this, &swMainWindow::UpdateDockWidgetActions);
+	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_PARTS]);
+	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_COLORS]);
+	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_PROPERTIES]);
+	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_TIMELINE]);
+	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_PREVIEW]);
+	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_MINIFIG]);
+	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_TERMINAL]);
 	ToolBarsMenu->addSeparator();
-	ToolBarsMenu->addAction(mActions[LC_VIEW_TOOLBAR_STANDARD]);
-	ToolBarsMenu->addAction(mActions[LC_VIEW_TOOLBAR_TOOLS]);
-	ToolBarsMenu->addAction(mActions[LC_VIEW_TOOLBAR_TIME]);
-	ViewMenu->addAction(mActions[LC_VIEW_FULLSCREEN]);
+	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_STANDARD]);
+	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_TOOLS]);
+	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_TIME]);
+	ViewMenu->addAction(mActions[SW_VIEW_FULLSCREEN]);
 
 	QMenu* PieceMenu = menuBar()->addMenu(tr("&Piece"));
-	PieceMenu->addAction(mActions[LC_PIECE_INSERT]);
-	PieceMenu->addAction(mActions[LC_PIECE_TOGGLE_FIRST_AT_ORIGIN]);
+	PieceMenu->addAction(mActions[SW_PIECE_INSERT]);
+	PieceMenu->addAction(mActions[SW_PIECE_TOGGLE_FIRST_AT_ORIGIN]);
 	connect(PieceMenu, &QMenu::aboutToShow, this, [this]()
 	{
-		mActions[LC_PIECE_TOGGLE_FIRST_AT_ORIGIN]->setChecked(lcGetPreferences().mFirstPieceAtOrigin);
+		mActions[SW_PIECE_TOGGLE_FIRST_AT_ORIGIN]->setChecked(swGetPreferences().mFirstPieceAtOrigin);
 	});
-	PieceMenu->addAction(mActions[LC_PIECE_DELETE]);
-	PieceMenu->addAction(mActions[LC_PIECE_DUPLICATE]);
-	PieceMenu->addAction(mActions[LC_PIECE_PAINT_SELECTED]);
-	PieceMenu->addAction(mActions[LC_PIECE_ARRAY]);
-	PieceMenu->addAction(mActions[LC_PIECE_RESET_PIVOT_POINT]);
-	PieceMenu->addAction(mActions[LC_PIECE_REMOVE_KEY_FRAMES]);
+	PieceMenu->addAction(mActions[SW_PIECE_DELETE]);
+	PieceMenu->addAction(mActions[SW_PIECE_DUPLICATE]);
+	PieceMenu->addAction(mActions[SW_PIECE_PAINT_SELECTED]);
+	PieceMenu->addAction(mActions[SW_PIECE_ARRAY]);
+	PieceMenu->addAction(mActions[SW_PIECE_RESET_PIVOT_POINT]);
+	PieceMenu->addAction(mActions[SW_PIECE_REMOVE_KEY_FRAMES]);
 	PieceMenu->addSeparator();
-	PieceMenu->addAction(mActions[LC_PIECE_EDIT_SELECTED_SUBMODEL]);
-	PieceMenu->addAction(mActions[LC_PIECE_EDIT_END_SUBMODEL]);
-	PieceMenu->addAction(mActions[LC_PIECE_VIEW_SELECTED_MODEL]);
-	PieceMenu->addAction(mActions[LC_PIECE_INLINE_SELECTED_MODELS]);
-	PieceMenu->addAction(mActions[LC_PIECE_MOVE_SELECTION_TO_MODEL]);
+	PieceMenu->addAction(mActions[SW_PIECE_EDIT_SELECTED_SUBMODEL]);
+	PieceMenu->addAction(mActions[SW_PIECE_EDIT_END_SUBMODEL]);
+	PieceMenu->addAction(mActions[SW_PIECE_VIEW_SELECTED_MODEL]);
+	PieceMenu->addAction(mActions[SW_PIECE_INLINE_SELECTED_MODELS]);
+	PieceMenu->addAction(mActions[SW_PIECE_MOVE_SELECTION_TO_MODEL]);
 	PieceMenu->addSeparator();
-	PieceMenu->addAction(mActions[LC_PIECE_GROUP]);
-	PieceMenu->addAction(mActions[LC_PIECE_UNGROUP]);
-	PieceMenu->addAction(mActions[LC_PIECE_GROUP_REMOVE]);
-	PieceMenu->addAction(mActions[LC_PIECE_GROUP_ADD]);
-	PieceMenu->addAction(mActions[LC_PIECE_GROUP_EDIT]);
+	PieceMenu->addAction(mActions[SW_PIECE_GROUP]);
+	PieceMenu->addAction(mActions[SW_PIECE_UNGROUP]);
+	PieceMenu->addAction(mActions[SW_PIECE_GROUP_REMOVE]);
+	PieceMenu->addAction(mActions[SW_PIECE_GROUP_ADD]);
+	PieceMenu->addAction(mActions[SW_PIECE_GROUP_EDIT]);
 	PieceMenu->addSeparator();
-	PieceMenu->addAction(mActions[LC_PIECE_HIDE_SELECTED]);
-	PieceMenu->addAction(mActions[LC_PIECE_HIDE_UNSELECTED]);
-	PieceMenu->addAction(mActions[LC_PIECE_UNHIDE_SELECTED]);
-	PieceMenu->addAction(mActions[LC_PIECE_UNHIDE_ALL]);
+	PieceMenu->addAction(mActions[SW_PIECE_HIDE_SELECTED]);
+	PieceMenu->addAction(mActions[SW_PIECE_HIDE_UNSELECTED]);
+	PieceMenu->addAction(mActions[SW_PIECE_UNHIDE_SELECTED]);
+	PieceMenu->addAction(mActions[SW_PIECE_UNHIDE_ALL]);
 
 	QMenu* ModelMenu = menuBar()->addMenu(tr("&Models"));
-	ModelMenu->addAction(mActions[LC_MODEL_PROPERTIES]);
-	ModelMenu->addAction(mActions[LC_MODEL_NEW]);
-	ModelMenu->addAction(mActions[LC_MODEL_LIST]);
-	ModelMenu->addAction(mActions[LC_PIECE_MINIFIG_WIZARD]);
+	ModelMenu->addAction(mActions[SW_MODEL_PROPERTIES]);
+	ModelMenu->addAction(mActions[SW_MODEL_NEW]);
+	ModelMenu->addAction(mActions[SW_MODEL_LIST]);
+	ModelMenu->addAction(mActions[SW_PIECE_MINIFIG_WIZARD]);
 	ModelMenu->addSeparator();
-	for (int ModelIdx = LC_MODEL_FIRST; ModelIdx <= LC_MODEL_LAST; ModelIdx++)
+	for (int ModelIdx = SW_MODEL_FIRST; ModelIdx <= SW_MODEL_LAST; ModelIdx++)
 		ModelMenu->addAction(mActions[ModelIdx]);
 
 	QMenu* HelpMenu = menuBar()->addMenu(tr("&Help"));
-	HelpMenu->addAction(mActions[LC_HELP_WHATS_THIS]);
-	HelpMenu->addAction(mActions[LC_HELP_HOMEPAGE]);
-	HelpMenu->addAction(mActions[LC_HELP_BUG_REPORT]);
-#if !LC_DISABLE_UPDATE_CHECK
-	HelpMenu->addAction(mActions[LC_HELP_UPDATES]);
+	HelpMenu->addAction(mActions[SW_HELP_WHATS_THIS]);
+	HelpMenu->addAction(mActions[SW_HELP_HOMEPAGE]);
+	HelpMenu->addAction(mActions[SW_HELP_BUG_REPORT]);
+#if !SW_DISABLE_UPDATE_CHECK
+	HelpMenu->addAction(mActions[SW_HELP_UPDATES]);
 #endif
 #ifndef Q_OS_MACOS
 	HelpMenu->addSeparator();
 #endif
-	HelpMenu->addAction(mActions[LC_HELP_ABOUT]);
+	HelpMenu->addAction(mActions[SW_HELP_ABOUT]);
 
 	// The menu bar menus show text only, the toolbars keep the icons.
 	std::function<void(QMenu*)> HideMenuIcons = [&HideMenuIcons](QMenu* Menu)
@@ -656,10 +656,10 @@ void lcMainWindow::CreateMenus()
 			HideMenuIcons(MenuAction->menu());
 }
 
-void lcMainWindow::CreateToolBars()
+void swMainWindow::CreateToolBars()
 {
 	mSelectionModeMenu = new QMenu(tr("Selection Mode"), this);
-	for (int ModeIdx = LC_EDIT_SELECTION_MODE_FIRST; ModeIdx <= LC_EDIT_SELECTION_MODE_LAST; ModeIdx++)
+	for (int ModeIdx = SW_EDIT_SELECTION_MODE_FIRST; ModeIdx <= SW_EDIT_SELECTION_MODE_LAST; ModeIdx++)
 		mSelectionModeMenu->addAction(mActions[ModeIdx]);
 
 	QAction* SelectionModeAction = new QAction(tr("Selection Mode"), this);
@@ -670,11 +670,11 @@ void lcMainWindow::CreateToolBars()
 	SelectionModeAction->setMenu(mSelectionModeMenu);
 
 	mTransformMenu = new QMenu(tr("Transform"), this);
-	mTransformMenu->addAction(mActions[LC_EDIT_TRANSFORM_RELATIVE]);
-	mTransformMenu->addAction(mActions[LC_EDIT_TRANSFORM_ABSOLUTE]);
+	mTransformMenu->addAction(mActions[SW_EDIT_TRANSFORM_RELATIVE]);
+	mTransformMenu->addAction(mActions[SW_EDIT_TRANSFORM_ABSOLUTE]);
 	mTransformMenu->addSeparator();
-	mTransformMenu->addAction(mActions[LC_EDIT_TRANSFORM_TOGETHER]);
-	mTransformMenu->addAction(mActions[LC_EDIT_TRANSFORM_SEPARATELY]);
+	mTransformMenu->addAction(mActions[SW_EDIT_TRANSFORM_TOGETHER]);
+	mTransformMenu->addAction(mActions[SW_EDIT_TRANSFORM_SEPARATELY]);
 
 	QAction* TransformAction = new QAction(tr("Transform"), this);
 	TransformAction->setStatusTip(tr("Transform Options"));
@@ -684,15 +684,15 @@ void lcMainWindow::CreateToolBars()
 	TransformAction->setMenu(mTransformMenu);
 
 	QMenu* SnapXYMenu = new QMenu(tr("Snap XY"), this);
-	for (int actionIdx = LC_EDIT_SNAP_MOVE_XY0; actionIdx <= LC_EDIT_SNAP_MOVE_XY9; actionIdx++)
+	for (int actionIdx = SW_EDIT_SNAP_MOVE_XY0; actionIdx <= SW_EDIT_SNAP_MOVE_XY9; actionIdx++)
 		SnapXYMenu->addAction(mActions[actionIdx]);
 
 	QMenu* SnapZMenu = new QMenu(tr("Snap Z"), this);
-	for (int actionIdx = LC_EDIT_SNAP_MOVE_Z0; actionIdx <= LC_EDIT_SNAP_MOVE_Z9; actionIdx++)
+	for (int actionIdx = SW_EDIT_SNAP_MOVE_Z0; actionIdx <= SW_EDIT_SNAP_MOVE_Z9; actionIdx++)
 		SnapZMenu->addAction(mActions[actionIdx]);
 
 	QMenu* SnapMenu = new QMenu(tr("Snap Menu"), this);
-	SnapMenu->addAction(mActions[LC_EDIT_SNAP_MOVE_TOGGLE]);
+	SnapMenu->addAction(mActions[SW_EDIT_SNAP_MOVE_TOGGLE]);
 	SnapMenu->addSeparator();
 	SnapMenu->addMenu(SnapXYMenu);
 	SnapMenu->addMenu(SnapZMenu);
@@ -705,12 +705,12 @@ void lcMainWindow::CreateToolBars()
 	MoveAction->setMenu(SnapMenu);
 
 	QMenu* SnapAngleMenu = new QMenu(tr("Snap Angle Menu"), this);
-	SnapAngleMenu->addAction(mActions[LC_EDIT_SNAP_ANGLE_TOGGLE]);
+	SnapAngleMenu->addAction(mActions[SW_EDIT_SNAP_ANGLE_TOGGLE]);
 	SnapAngleMenu->addSeparator();
-	for (int actionIdx = LC_EDIT_SNAP_ANGLE0; actionIdx <= LC_EDIT_SNAP_ANGLE_CUSTOM; actionIdx++)
+	for (int actionIdx = SW_EDIT_SNAP_ANGLE0; actionIdx <= SW_EDIT_SNAP_ANGLE_CUSTOM; actionIdx++)
 		SnapAngleMenu->addAction(mActions[actionIdx]);
 	SnapAngleMenu->addSeparator();
-	SnapAngleMenu->addAction(mActions[LC_EDIT_SNAP_ORBIT_TOGGLE]);
+	SnapAngleMenu->addAction(mActions[SW_EDIT_SNAP_ORBIT_TOGGLE]);
 
 	QAction* AngleAction = new QAction(tr("Rotation Snap"), this);
 	AngleAction->setStatusTip(tr("Snap rotations to fixed intervals"));
@@ -722,12 +722,12 @@ void lcMainWindow::CreateToolBars()
 	mStandardToolBar = addToolBar(tr("Standard"));
 	mStandardToolBar->setObjectName("StandardToolbar");
 	mStandardToolBar->setWhatsThis(tr("<p><b>Standard Toolbar</b></p><p>Use file controls to create, open, and save models, and Undo or Redo to navigate edit history. Before moving or rotating objects, choose the selection rule, coordinate reference, and snapping increments from the four drop-down controls. Help > What's This? explains individual controls.</p>"));
-	mStandardToolBar->addAction(mActions[LC_FILE_NEW]);
-	mStandardToolBar->addAction(mActions[LC_FILE_OPEN]);
-	mStandardToolBar->addAction(mActions[LC_FILE_SAVE]);
+	mStandardToolBar->addAction(mActions[SW_FILE_NEW]);
+	mStandardToolBar->addAction(mActions[SW_FILE_OPEN]);
+	mStandardToolBar->addAction(mActions[SW_FILE_SAVE]);
 	mStandardToolBar->addSeparator();
-	mStandardToolBar->addAction(mActions[LC_EDIT_UNDO]);
-	mStandardToolBar->addAction(mActions[LC_EDIT_REDO]);
+	mStandardToolBar->addAction(mActions[SW_EDIT_UNDO]);
+	mStandardToolBar->addAction(mActions[SW_EDIT_REDO]);
 	mStandardToolBar->addSeparator();
 	mStandardToolBar->addAction(SelectionModeAction);
 	mStandardToolBar->addAction(TransformAction);
@@ -742,40 +742,40 @@ void lcMainWindow::CreateToolBars()
 	mTimeToolBar = addToolBar(tr("Time"));
 	mTimeToolBar->setObjectName("TimeToolbar");
 	mTimeToolBar->setWhatsThis(tr("<p><b>Time Toolbar</b></p><p>The arrow buttons move through building steps so you can inspect how the model is assembled. They do not change the step assigned to a piece; use the Timeline for that. Add Keys controls whether edits create animation keys at the current step, allowing properties such as position to vary between steps.</p>"));
-	mTimeToolBar->addAction(mActions[LC_VIEW_TIME_FIRST]);
-	mTimeToolBar->addAction(mActions[LC_VIEW_TIME_PREVIOUS]);
-	mTimeToolBar->addAction(mActions[LC_VIEW_TIME_NEXT]);
-	mTimeToolBar->addAction(mActions[LC_VIEW_TIME_LAST]);
-	mTimeToolBar->addAction(mActions[LC_VIEW_TIME_ADD_KEYS]);
+	mTimeToolBar->addAction(mActions[SW_VIEW_TIME_FIRST]);
+	mTimeToolBar->addAction(mActions[SW_VIEW_TIME_PREVIOUS]);
+	mTimeToolBar->addAction(mActions[SW_VIEW_TIME_NEXT]);
+	mTimeToolBar->addAction(mActions[SW_VIEW_TIME_LAST]);
+	mTimeToolBar->addAction(mActions[SW_VIEW_TIME_ADD_KEYS]);
 
 	mToolsToolBar = addToolBar(tr("Tools"));
 	mToolsToolBar->setObjectName("ToolsToolbar");
 	mToolsToolBar->setWhatsThis(tr("<p><b>Tools Toolbar</b></p><p>Choose a tool, then use it in the model view. Insertion tools create pieces, lights, or cameras. Editing tools select, transform, remove, or recolor objects. Navigation tools change the viewpoint without changing model geometry. Mouse assignments can be customized in Preferences.</p>"));
 	insertToolBarBreak(mToolsToolBar);
-	mToolsToolBar->addAction(mActions[LC_EDIT_ACTION_INSERT]);
-	mToolsToolBar->addAction(mActions[LC_EDIT_ACTION_POINT_LIGHT]);
-	mToolsToolBar->addAction(mActions[LC_EDIT_ACTION_SPOTLIGHT]);
-	mToolsToolBar->addAction(mActions[LC_EDIT_ACTION_DIRECTIONAL_LIGHT]);
-	mToolsToolBar->addAction(mActions[LC_EDIT_ACTION_AREA_LIGHT]);
-	mToolsToolBar->addAction(mActions[LC_EDIT_ACTION_CAMERA]);
+	mToolsToolBar->addAction(mActions[SW_EDIT_ACTION_INSERT]);
+	mToolsToolBar->addAction(mActions[SW_EDIT_ACTION_POINT_LIGHT]);
+	mToolsToolBar->addAction(mActions[SW_EDIT_ACTION_SPOTLIGHT]);
+	mToolsToolBar->addAction(mActions[SW_EDIT_ACTION_DIRECTIONAL_LIGHT]);
+	mToolsToolBar->addAction(mActions[SW_EDIT_ACTION_AREA_LIGHT]);
+	mToolsToolBar->addAction(mActions[SW_EDIT_ACTION_CAMERA]);
 	mToolsToolBar->addSeparator();
-	mToolsToolBar->addAction(mActions[LC_EDIT_ACTION_SELECT]);
-	mToolsToolBar->addAction(mActions[LC_EDIT_ACTION_MOVE]);
-	mToolsToolBar->addAction(mActions[LC_EDIT_ACTION_ROTATE]);
-	mToolsToolBar->addAction(mActions[LC_EDIT_ACTION_DELETE]);
-	mToolsToolBar->addAction(mActions[LC_EDIT_ACTION_PAINT]);
-	mToolsToolBar->addAction(mActions[LC_EDIT_ACTION_COLOR_PICKER]);
+	mToolsToolBar->addAction(mActions[SW_EDIT_ACTION_SELECT]);
+	mToolsToolBar->addAction(mActions[SW_EDIT_ACTION_MOVE]);
+	mToolsToolBar->addAction(mActions[SW_EDIT_ACTION_ROTATE]);
+	mToolsToolBar->addAction(mActions[SW_EDIT_ACTION_DELETE]);
+	mToolsToolBar->addAction(mActions[SW_EDIT_ACTION_PAINT]);
+	mToolsToolBar->addAction(mActions[SW_EDIT_ACTION_COLOR_PICKER]);
 	mToolsToolBar->addSeparator();
-	mToolsToolBar->addAction(mActions[LC_EDIT_ACTION_ZOOM]);
-	mToolsToolBar->addAction(mActions[LC_EDIT_ACTION_PAN]);
-	mToolsToolBar->addAction(mActions[LC_EDIT_ACTION_ROTATE_VIEW]);
-	mToolsToolBar->addAction(mActions[LC_EDIT_ACTION_ROLL]);
-	mToolsToolBar->addAction(mActions[LC_EDIT_ACTION_ZOOM_REGION]);
+	mToolsToolBar->addAction(mActions[SW_EDIT_ACTION_ZOOM]);
+	mToolsToolBar->addAction(mActions[SW_EDIT_ACTION_PAN]);
+	mToolsToolBar->addAction(mActions[SW_EDIT_ACTION_ROTATE_VIEW]);
+	mToolsToolBar->addAction(mActions[SW_EDIT_ACTION_ROLL]);
+	mToolsToolBar->addAction(mActions[SW_EDIT_ACTION_ZOOM_REGION]);
 	mToolsToolBar->hide();
 
 	for (QToolBar* ToolBar : { mStandardToolBar, mTimeToolBar, mToolsToolBar })
 	{
-		lcSetupWidgetHelp(ToolBar, nullptr);
+		swSetupWidgetHelp(ToolBar, nullptr);
 
 		for (QAction* Action : ToolBar->actions())
 		{
@@ -795,29 +795,29 @@ void lcMainWindow::CreateToolBars()
 	mPartsToolBar->installEventFilter(this);
 	mPartsToolBar->setObjectName("PartsToolbar");
 	mPartsToolBar->setWhatsThis(tr("<p><b>Pieces</b></p><p>Choose a category or palette and filter its pieces. Selecting a piece prepares it for insertion; drag it into the model view to place it. Double-click a piece to open its preview. Options controls filtering, thumbnails, and list display.</p>"));
-	lcSetupWidgetHelp(mPartsToolBar, nullptr);
-	mPartSelectionWidget = new lcPartSelectionWidget(false, mPartsToolBar);
+	swSetupWidgetHelp(mPartsToolBar, nullptr);
+	mPartSelectionWidget = new swPartSelectionWidget(false, mPartsToolBar);
 	mPartsToolBar->setWidget(mPartSelectionWidget);
 	addDockWidget(Qt::RightDockWidgetArea, mPartsToolBar);
 
-	connect(mPartsToolBar, &QDockWidget::dockLocationChanged, mPartSelectionWidget, &lcPartSelectionWidget::DockLocationChanged);
-	connect(mPartSelectionWidget, &lcPartSelectionWidget::PartPicked, this, &lcMainWindow::PartListPicked);
-	connect(mPartSelectionWidget, &lcPartSelectionWidget::CurrentPartChanged, this, &lcMainWindow::SetInsertPieceData);
+	connect(mPartsToolBar, &QDockWidget::dockLocationChanged, mPartSelectionWidget, &swPartSelectionWidget::DockLocationChanged);
+	connect(mPartSelectionWidget, &swPartSelectionWidget::PartPicked, this, &swMainWindow::PartListPicked);
+	connect(mPartSelectionWidget, &swPartSelectionWidget::CurrentPartChanged, this, &swMainWindow::SetInsertPieceData);
 
 	mColorsToolBar = new QDockWidget(tr("Colors"), this);
 	mColorsToolBar->setObjectName("ColorsToolbar");
 	mColorsToolBar->setWhatsThis(tr("<p><b>Colors</b></p><p>Choose the current LDraw color from the swatches. This color is used when inserting or painting pieces. To recolor selected pieces, use the color button above the swatches. Hover over a swatch for its name and color code.</p>"));
-	lcSetupWidgetHelp(mColorsToolBar, nullptr);
+	swSetupWidgetHelp(mColorsToolBar, nullptr);
 	mColorsToolBar->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
-	mColorList = new lcColorList();
-	connect(mColorList, &lcColorList::ColorChanged, this, &lcMainWindow::ColorChanged);
+	mColorList = new swColorList();
+	connect(mColorList, &swColorList::ColorChanged, this, &swMainWindow::ColorChanged);
 
 	QWidget* ColorWidget = new QWidget(mColorsToolBar);
 
 	QVBoxLayout* ColorLayout = new QVBoxLayout(ColorWidget);
 
-	QWidget* ColorRow = lcCreatePanelRow(ColorWidget);
+	QWidget* ColorRow = swCreatePanelRow(ColorWidget);
 	ColorLayout->addWidget(ColorRow);
 
 	mColorButton = new QToolButton(ColorWidget);
@@ -825,23 +825,23 @@ void lcMainWindow::CreateToolBars()
 	mColorButton->setToolTip(tr("Apply the current color to selected pieces."));
 	mColorButton->setAccessibleName(tr("Change Selection Color"));
 	mColorButton->setWhatsThis(tr("<p><b>Change Selection Color</b></p><p>Apply the current color to selected pieces. Choosing a swatch sets the current color; this button applies that color to the selection.</p>"));
-	lcAddPanelRowWidget(ColorRow, mColorButton);
-	lcSetupPanelButton(mColorButton);
+	swAddPanelRowWidget(ColorRow, mColorButton);
+	swSetupPanelButton(mColorButton);
 
 	// Nothing else sits in the header, so the button reaches up to the options button.
 	mColorButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-	connect(mColorButton, &QToolButton::clicked, this, &lcMainWindow::ColorButtonClicked);
+	connect(mColorButton, &QToolButton::clicked, this, &swMainWindow::ColorButtonClicked);
 
 	QMenu* ColorOptionsMenu = new QMenu(ColorRow);
-	lcAddPanelOptionsButton(ColorRow, ColorOptionsMenu, tr("Choose how inserted pieces are colored."), tr("Color Options"));
-	connect(ColorOptionsMenu, &QMenu::aboutToShow, this, &lcMainWindow::ColorOptionsMenuAboutToShow);
+	swAddPanelOptionsButton(ColorRow, ColorOptionsMenu, tr("Choose how inserted pieces are colored."), tr("Color Options"));
+	connect(ColorOptionsMenu, &QMenu::aboutToShow, this, &swMainWindow::ColorOptionsMenuAboutToShow);
 
 	ColorLayout->addWidget(mColorList);
 	mColorList->setAccessibleName(tr("LDraw Colors"));
 
 	// The panel is always exactly as tall as the color button and the tiles.
-	connect(mColorList, &lcColorList::HeightChanged, this, [this, ColorWidget, ColorLayout]()
+	connect(mColorList, &swColorList::HeightChanged, this, [this, ColorWidget, ColorLayout]()
 	{
 		// Recompute from the current rows, then let the dock follow so it grows and shrinks with the tiles.
 		ColorLayout->invalidate();
@@ -860,7 +860,7 @@ void lcMainWindow::CreateToolBars()
 	mPropertiesToolBar = new QDockWidget(tr("Properties"), this);
 	mPropertiesToolBar->setObjectName("PropertiesToolbar");
 	mPropertiesToolBar->setWhatsThis(tr("<p><b>Properties</b></p><p>Edit properties of the focused object or selection. Available fields depend on whether you select pieces, a camera, or a light. Expand a section to see its fields. Keyframe controls mark properties at the current building step.</p><p>The transform fields at the bottom apply an X/Y/Z translation or rotation using the chosen transform mode. Press Enter to apply the values.</p>"));
-	lcSetupWidgetHelp(mPropertiesToolBar, nullptr);
+	swSetupWidgetHelp(mPropertiesToolBar, nullptr);
 
 	QWidget* PropertiesWidget = new QWidget(mPropertiesToolBar);
 	QVBoxLayout* PropertiesLayout = new QVBoxLayout(PropertiesWidget);
@@ -872,11 +872,11 @@ void lcMainWindow::CreateToolBars()
 	PropertiesScrollArea->setWidgetResizable(true);
 	PropertiesLayout->addWidget(PropertiesScrollArea);
 
-	mPropertiesWidget = new lcPropertiesWidget(PropertiesScrollArea);
+	mPropertiesWidget = new swPropertiesWidget(PropertiesScrollArea);
 	PropertiesScrollArea->setWidget(mPropertiesWidget);
 	PropertiesLayout->insertWidget(0, mPropertiesWidget->GetIdentityRowsWidget());
 
-	QWidget* TransformWidget = lcCreatePanelRow(PropertiesWidget);
+	QWidget* TransformWidget = swCreatePanelRow(PropertiesWidget);
 
 	// A T names the row like the P and R buttons of the position and rotation rows.
 	QToolButton* TransformNameButton = new QToolButton(TransformWidget);
@@ -884,39 +884,39 @@ void lcMainWindow::CreateToolBars()
 	TransformNameButton->setToolTip(tr("Transform"));
 	TransformNameButton->setAccessibleName(tr("Transform"));
 	TransformNameButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
-	lcAddPanelRowWidget(TransformWidget, TransformNameButton);
-	lcSetupPanelButton(TransformNameButton);
-	TransformNameButton->setFixedSize(lcGetPanelButtonSize());
+	swAddPanelRowWidget(TransformWidget, TransformNameButton);
+	swSetupPanelButton(TransformNameButton);
+	TransformNameButton->setFixedSize(swGetPanelButtonSize());
 
 	// Transform values use the same spin boxes as the position and rotation rows.
-	mTransformXEdit = new lcDoubleSpinBox(TransformWidget);
+	mTransformXEdit = new swDoubleSpinBox(TransformWidget);
 	mTransformXEdit->setRange(-FLT_MAX, FLT_MAX);
 	mTransformXEdit->setAccessibleName(tr("Transform X"));
 	mTransformXEdit->setToolTip(tr("Enter the X translation in LDraw units or rotation in degrees."));
-	lcSetupPanelSpinBox(mTransformXEdit);
-	lcAddPanelRowWidget(TransformWidget, mTransformXEdit);
-	mTransformYEdit = new lcDoubleSpinBox(TransformWidget);
+	swSetupPanelSpinBox(mTransformXEdit);
+	swAddPanelRowWidget(TransformWidget, mTransformXEdit);
+	mTransformYEdit = new swDoubleSpinBox(TransformWidget);
 	mTransformYEdit->setRange(-FLT_MAX, FLT_MAX);
 	mTransformYEdit->setAccessibleName(tr("Transform Y"));
 	mTransformYEdit->setToolTip(tr("Enter the Y translation in LDraw units or rotation in degrees."));
-	lcSetupPanelSpinBox(mTransformYEdit);
-	lcAddPanelRowWidget(TransformWidget, mTransformYEdit);
-	mTransformZEdit = new lcDoubleSpinBox(TransformWidget);
+	swSetupPanelSpinBox(mTransformYEdit);
+	swAddPanelRowWidget(TransformWidget, mTransformYEdit);
+	mTransformZEdit = new swDoubleSpinBox(TransformWidget);
 	mTransformZEdit->setRange(-FLT_MAX, FLT_MAX);
 	mTransformZEdit->setAccessibleName(tr("Transform Z"));
 	mTransformZEdit->setToolTip(tr("Enter the Z translation in LDraw units or rotation in degrees."));
-	lcSetupPanelSpinBox(mTransformZEdit);
-	lcAddPanelRowWidget(TransformWidget, mTransformZEdit);
+	swSetupPanelSpinBox(mTransformZEdit);
+	swAddPanelRowWidget(TransformWidget, mTransformZEdit);
 
 	// The transform mode button sits under the keyframe buttons and shows the current mode.
 	QToolButton* TransformButton = new QToolButton(TransformWidget);
-	TransformButton->setDefaultAction(mActions[LC_EDIT_TRANSFORM]);
+	TransformButton->setDefaultAction(mActions[SW_EDIT_TRANSFORM]);
 	TransformButton->setPopupMode(QToolButton::InstantPopup);
 	TransformButton->setToolTip(tr("Choose absolute or relative translation or rotation."));
 	TransformButton->setWhatsThis(tr("<p><b>Apply Transform</b></p><p>Choose the translation or rotation mode, enter X/Y/Z values, and press Enter to apply them. Translation values use LDraw units; rotation values use degrees.</p>"));
-	lcAddPanelRowWidget(TransformWidget, TransformButton);
-	lcSetupPanelButton(TransformButton);
-	TransformButton->setFixedSize(lcGetPanelButtonSize());
+	swAddPanelRowWidget(TransformWidget, TransformButton);
+	swSetupPanelButton(TransformButton);
+	TransformButton->setFixedSize(swGetPanelButtonSize());
 
 	PropertiesLayout->addWidget(mPropertiesWidget->GetTransformRowsWidget());
 	PropertiesLayout->addWidget(TransformWidget);
@@ -927,12 +927,12 @@ void lcMainWindow::CreateToolBars()
 		// The scrolling rows are hidden when all shown properties are in the fixed rows.
 		const bool ShowList = mPropertiesWidget->HasVisibleRows();
 		const int ListHeight = ShowList ? mPropertiesWidget->sizeHint().height() : 0;
-		const int MinimumListHeight = qMin(ListHeight, lcGetPanelButtonSize().height());
+		const int MinimumListHeight = qMin(ListHeight, swGetPanelButtonSize().height());
 
 		// The full height adds the layout margins and the standard spacing between the shown rows, measured
 		// without growing any widget so the window never grows on the way.
 		const QMargins Margins = PropertiesLayout->contentsMargins();
-		const int Spacing = lcGetLayoutSpacing(PropertiesWidget, Qt::Vertical);
+		const int Spacing = swGetLayoutSpacing(PropertiesWidget, Qt::Vertical);
 		int PanelHeight = Margins.top() + Margins.bottom() + TransformWidget->sizeHint().height();
 
 		for (const QWidget* Rows : { mPropertiesWidget->GetIdentityRowsWidget(), mPropertiesWidget->GetTransformRowsWidget() })
@@ -953,14 +953,14 @@ void lcMainWindow::CreateToolBars()
 			resizeDocks({ mPropertiesToolBar }, { PanelHeight + mPropertiesToolBar->height() - PropertiesWidget->height() }, Qt::Vertical);
 	};
 
-	connect(mPropertiesWidget, &lcPropertiesWidget::LayoutChanged, this, [UpdatePropertiesHeight]()
+	connect(mPropertiesWidget, &swPropertiesWidget::LayoutChanged, this, [UpdatePropertiesHeight]()
 	{
 		QTimer::singleShot(0, UpdatePropertiesHeight);
 	});
 
-	connect(mTransformXEdit, &lcDoubleSpinBox::ReturnKeyPressed, mActions[LC_EDIT_TRANSFORM], &QAction::trigger);
-	connect(mTransformYEdit, &lcDoubleSpinBox::ReturnKeyPressed, mActions[LC_EDIT_TRANSFORM], &QAction::trigger);
-	connect(mTransformZEdit, &lcDoubleSpinBox::ReturnKeyPressed, mActions[LC_EDIT_TRANSFORM], &QAction::trigger);
+	connect(mTransformXEdit, &swDoubleSpinBox::ReturnKeyPressed, mActions[SW_EDIT_TRANSFORM], &QAction::trigger);
+	connect(mTransformYEdit, &swDoubleSpinBox::ReturnKeyPressed, mActions[SW_EDIT_TRANSFORM], &QAction::trigger);
+	connect(mTransformZEdit, &swDoubleSpinBox::ReturnKeyPressed, mActions[SW_EDIT_TRANSFORM], &QAction::trigger);
 
 	mPropertiesToolBar->setWidget(PropertiesWidget);
 	addDockWidget(Qt::RightDockWidgetArea, mPropertiesToolBar);
@@ -968,10 +968,10 @@ void lcMainWindow::CreateToolBars()
 	mTimelineToolBar = new QDockWidget(tr("Timeline"), this);
 	mTimelineToolBar->setObjectName("TimelineToolbar");
 	mTimelineToolBar->setWhatsThis(tr("<p><b>Timeline</b></p><p>Select a step to make it current, or select piece rows to select those pieces in the model. Drag pieces between steps or reorder them within a step. Right-click for step insertion, removal, movement, and visibility commands.</p>"));
-	lcSetupWidgetHelp(mTimelineToolBar, nullptr);
+	swSetupWidgetHelp(mTimelineToolBar, nullptr);
 	mTimelineToolBar->setAcceptDrops(true);
 
-	mTimelineWidget = new lcTimelineWidget(mTimelineToolBar);
+	mTimelineWidget = new swTimelineWidget(mTimelineToolBar);
 
 	// The steps of the selected piece are edited below the timeline.
 	QWidget* TimelinePanel = new QWidget(mTimelineToolBar);
@@ -989,7 +989,7 @@ void lcMainWindow::CreateToolBars()
 	mMinifigToolBar = new QDockWidget(tr("Minifigure"), this);
 	mMinifigToolBar->setObjectName("MinifigToolbar");
 	mMinifigToolBar->setWhatsThis(tr("<p><b>Minifigure</b></p><p>Choose the pieces, colors and pose of a minifigure, then add it to the current model. The panel keeps its settings so you can add several variations.</p>"));
-	lcSetupWidgetHelp(mMinifigToolBar, nullptr);
+	swSetupWidgetHelp(mMinifigToolBar, nullptr);
 	addDockWidget(Qt::RightDockWidgetArea, mMinifigToolBar);
 	mMinifigToolBar->hide();
 
@@ -998,8 +998,8 @@ void lcMainWindow::CreateToolBars()
 		if (Visible && !mMinifigToolBar->widget())
 		{
 			// The panel is exactly as tall as the editor wherever it is docked.
-			lcMinifigDialog* MinifigDialog = new lcMinifigDialog(mMinifigToolBar);
-			lcFitHeightToContents(MinifigDialog);
+			swMinifigDialog* MinifigDialog = new swMinifigDialog(mMinifigToolBar);
+			swFitHeightToContents(MinifigDialog);
 			mMinifigToolBar->setWidget(MinifigDialog);
 		}
 	});
@@ -1009,27 +1009,27 @@ void lcMainWindow::CreateToolBars()
 	tabifyDockWidget(mTimelineToolBar, mPreviewToolBar);
 	tabifyDockWidget(mPreviewToolBar, mMinifigToolBar);
 
-	connect(mPropertiesToolBar, &QDockWidget::topLevelChanged, this, &lcMainWindow::EnableWindowFlags);
-	connect(mTimelineToolBar, &QDockWidget::topLevelChanged, this, &lcMainWindow::EnableWindowFlags);
-	connect(mPartsToolBar, &QDockWidget::topLevelChanged, this, &lcMainWindow::EnableWindowFlags);
-	connect(mColorsToolBar, &QDockWidget::topLevelChanged, this, &lcMainWindow::EnableWindowFlags);
-	connect(mMinifigToolBar, &QDockWidget::topLevelChanged, this, &lcMainWindow::EnableWindowFlags);
+	connect(mPropertiesToolBar, &QDockWidget::topLevelChanged, this, &swMainWindow::EnableWindowFlags);
+	connect(mTimelineToolBar, &QDockWidget::topLevelChanged, this, &swMainWindow::EnableWindowFlags);
+	connect(mPartsToolBar, &QDockWidget::topLevelChanged, this, &swMainWindow::EnableWindowFlags);
+	connect(mColorsToolBar, &QDockWidget::topLevelChanged, this, &swMainWindow::EnableWindowFlags);
+	connect(mMinifigToolBar, &QDockWidget::topLevelChanged, this, &swMainWindow::EnableWindowFlags);
 
 	mPartsToolBar->raise();
 }
 
-lcView* lcMainWindow::CreateView(lcModel* Model)
+swView* swMainWindow::CreateView(swModel* Model)
 {
-	lcView* NewView = new lcView(lcViewType::View, Model);
+	swView* NewView = new swView(swViewType::View, Model);
 
-	connect(NewView, &lcView::FocusReceived, this, &lcMainWindow::ViewFocusReceived);
+	connect(NewView, &swView::FocusReceived, this, &swMainWindow::ViewFocusReceived);
 
 	AddView(NewView);
 
 	return NewView;
 }
 
-void lcMainWindow::PreviewPiece(lcPieceData* PieceData, int ColorCode, bool ShowPreview)
+void swMainWindow::PreviewPiece(swPieceData* PieceData, int ColorCode, bool ShowPreview)
 {
 	if (ShowPreview)
 		mPreviewToolBar->show();
@@ -1037,41 +1037,41 @@ void lcMainWindow::PreviewPiece(lcPieceData* PieceData, int ColorCode, bool Show
 	mPreviewWidget->SetCurrentPiece(PieceData, ColorCode);
 }
 
-void lcMainWindow::CreateTerminalWidget()
+void swMainWindow::CreateTerminalWidget()
 {
-#ifdef LC_ENABLE_TERMINAL
+#ifdef SW_ENABLE_TERMINAL
 	mTerminalToolBar = new QDockWidget(tr("Terminal"), this);
 	mTerminalToolBar->setObjectName("TerminalToolBar");
 	mTerminalToolBar->setWhatsThis(tr("<p><b>Terminal</b></p><p>An embedded Konsole terminal that starts in the folder of the current model.</p>"));
-	lcSetupWidgetHelp(mTerminalToolBar, nullptr);
-	mTerminalToolBar->setWidget(new lcTerminalWidget(mTerminalToolBar));
+	swSetupWidgetHelp(mTerminalToolBar, nullptr);
+	mTerminalToolBar->setWidget(new swTerminalWidget(mTerminalToolBar));
 	addDockWidget(Qt::BottomDockWidgetArea, mTerminalToolBar);
 	mTerminalToolBar->hide();
 
-	connect(mTerminalToolBar, &QDockWidget::topLevelChanged, this, &lcMainWindow::EnableWindowFlags);
+	connect(mTerminalToolBar, &QDockWidget::topLevelChanged, this, &swMainWindow::EnableWindowFlags);
 #else
 	// Without KDE Frameworks there is no terminal to show.
-	mActions[LC_VIEW_TOOLBAR_TERMINAL]->setVisible(false);
-	mActions[LC_VIEW_TERMINAL_TOGGLE_FOLLOW_MODEL]->setVisible(false);
-	mActions[LC_VIEW_TERMINAL_GO_TO_MODEL_FOLDER]->setVisible(false);
+	mActions[SW_VIEW_TOOLBAR_TERMINAL]->setVisible(false);
+	mActions[SW_VIEW_TERMINAL_TOGGLE_FOLLOW_MODEL]->setVisible(false);
+	mActions[SW_VIEW_TERMINAL_GO_TO_MODEL_FOLDER]->setVisible(false);
 #endif
 }
 
-void lcMainWindow::UpdateTerminalDirectory(bool Force)
+void swMainWindow::UpdateTerminalDirectory(bool Force)
 {
-#ifdef LC_ENABLE_TERMINAL
-	const QString FileName = lcGetActiveProject()->GetFileName();
+#ifdef SW_ENABLE_TERMINAL
+	const QString FileName = swGetActiveProject()->GetFileName();
 
 	if (mTerminalToolBar && !FileName.isEmpty())
-		static_cast<lcTerminalWidget*>(mTerminalToolBar->widget())->SetDirectory(QFileInfo(FileName).absolutePath(), Force);
+		static_cast<swTerminalWidget*>(mTerminalToolBar->widget())->SetDirectory(QFileInfo(FileName).absolutePath(), Force);
 #else
 	Q_UNUSED(Force);
 #endif
 }
 
-void lcMainWindow::SnapPartsDock()
+void swMainWindow::SnapPartsDock()
 {
-	if (!lcGetPreferences().mPiecesSnapToTiles || !mPartsToolBar || mPartsToolBar->isFloating() || !mPartSelectionWidget)
+	if (!swGetPreferences().mPiecesSnapToTiles || !mPartsToolBar || mPartsToolBar->isFloating() || !mPartSelectionWidget)
 		return;
 
 	const Qt::DockWidgetArea Area = dockWidgetArea(mPartsToolBar);
@@ -1099,22 +1099,22 @@ void lcMainWindow::SnapPartsDock()
 	}
 }
 
-void lcMainWindow::CreatePreviewWidget()
+void swMainWindow::CreatePreviewWidget()
 {
-	mPreviewWidget  = new lcPreviewDockWidget(this);
+	mPreviewWidget  = new swPreviewDockWidget(this);
 
 	mPreviewToolBar = new QDockWidget(tr("Preview"), this);
 	mPreviewToolBar->setWindowTitle(tr("Preview"));
 	mPreviewToolBar->setObjectName("PreviewToolBar");
 	mPreviewToolBar->setWhatsThis(tr("<p><b>Preview</b></p><p>Inspect a piece without placing it in the model. Double-click a piece in the Pieces dock to preview it. Lock Preview keeps the current preview when the source selection changes; unlock it to allow updates.</p>"));
-	lcSetupWidgetHelp(mPreviewToolBar, nullptr);
+	swSetupWidgetHelp(mPreviewToolBar, nullptr);
 	mPreviewToolBar->setWidget(mPreviewWidget);
 	addDockWidget(Qt::RightDockWidgetArea, mPreviewToolBar);
 
-	connect(mPreviewToolBar, &QDockWidget::topLevelChanged, this, &lcMainWindow::EnableWindowFlags);
+	connect(mPreviewToolBar, &QDockWidget::topLevelChanged, this, &swMainWindow::EnableWindowFlags);
 }
 
-bool lcMainWindow::eventFilter(QObject* Object, QEvent* Event)
+bool swMainWindow::eventFilter(QObject* Object, QEvent* Event)
 {
 	// Resizing the pieces panel by hand snaps it to whole tiles once the mouse is released.
 	if (Object == mPartsToolBar && Event->type() == QEvent::Resize && QApplication::mouseButtons() != Qt::NoButton)
@@ -1122,7 +1122,7 @@ bool lcMainWindow::eventFilter(QObject* Object, QEvent* Event)
 	else if (Event->type() == QEvent::MouseButtonRelease && mPartsSnapPending)
 	{
 		mPartsSnapPending = false;
-		QTimer::singleShot(0, this, &lcMainWindow::SnapPartsDock);
+		QTimer::singleShot(0, this, &swMainWindow::SnapPartsDock);
 	}
 
 	QTabBar* TabBar = mModelTabWidget ? mModelTabWidget->tabBar() : nullptr;
@@ -1149,7 +1149,7 @@ bool lcMainWindow::eventFilter(QObject* Object, QEvent* Event)
 	return QMainWindow::eventFilter(Object, Event);
 }
 
-void lcMainWindow::TogglePreviewWidget(bool Visible)
+void swMainWindow::TogglePreviewWidget(bool Visible)
 {
 	if (mPreviewToolBar)
 	{
@@ -1164,7 +1164,7 @@ void lcMainWindow::TogglePreviewWidget(bool Visible)
 	}
 }
 
-void lcMainWindow::EnableWindowFlags(bool Detached)
+void swMainWindow::EnableWindowFlags(bool Detached)
 {
 	if (Detached)
 	{
@@ -1177,10 +1177,10 @@ void lcMainWindow::EnableWindowFlags(bool Detached)
 	}
 }
 
-class lcElidedLabel : public QFrame
+class swElidedLabel : public QFrame
 {
 public:
-	explicit lcElidedLabel(QWidget* Parent = nullptr)
+	explicit swElidedLabel(QWidget* Parent = nullptr)
 		: QFrame(Parent)
 	{
 		setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
@@ -1198,7 +1198,7 @@ protected:
 	QString mText;
 };
 
-void lcElidedLabel::paintEvent(QPaintEvent* event)
+void swElidedLabel::paintEvent(QPaintEvent* event)
 {
 	QFrame::paintEvent(event);
 
@@ -1239,15 +1239,15 @@ void lcElidedLabel::paintEvent(QPaintEvent* event)
 	TextLayout.endLayout();
 }
 
-void lcMainWindow::CreateStatusBar()
+void swMainWindow::CreateStatusBar()
 {
 	QStatusBar* StatusBar = new QStatusBar(this);
 	setStatusBar(StatusBar);
 
-	mStatusBarLabel = new lcElidedLabel();
+	mStatusBarLabel = new swElidedLabel();
 	StatusBar->addWidget(mStatusBarLabel, 1);
 
-	mStatusLoadSpinner = new lcSpinnerWidget();
+	mStatusLoadSpinner = new swSpinnerWidget();
 	StatusBar->addPermanentWidget(mStatusLoadSpinner);
 	mStatusLoadSpinner->hide();
 
@@ -1271,21 +1271,21 @@ void lcMainWindow::CreateStatusBar()
 	mStatusTimeLabel = new QLabel();
 	StatusBar->addPermanentWidget(mStatusTimeLabel);
 
-	lcPiecesLibrary* Library = lcGetPiecesLibrary();
-	connect(Library, &lcPiecesLibrary::AssetStatusChanged, this, &lcMainWindow::ScheduleAssetUpdate);
-	connect(Library, &lcPiecesLibrary::PartLoaded, this, [this](lcPieceData* PieceData)
+	swPiecesLibrary* Library = swGetPiecesLibrary();
+	connect(Library, &swPiecesLibrary::AssetStatusChanged, this, &swMainWindow::ScheduleAssetUpdate);
+	connect(Library, &swPiecesLibrary::PartLoaded, this, [this](swPieceData* PieceData)
 	{
 		if (mStatusRequiredAssets.find(PieceData) != mStatusRequiredAssets.end())
 			ScheduleAssetUpdate();
 	});
-	connect(Library, &lcPiecesLibrary::PartLoadFailed, this, [this](lcPieceData* PieceData, const QString&)
+	connect(Library, &swPiecesLibrary::PartLoadFailed, this, [this](swPieceData* PieceData, const QString&)
 	{
 		if (mStatusRequiredAssets.find(PieceData) != mStatusRequiredAssets.end())
 			ScheduleAssetUpdate();
 	});
 }
 
-void lcMainWindow::ScheduleAssetUpdate()
+void swMainWindow::ScheduleAssetUpdate()
 {
 	if (mAssetUpdateScheduled)
 		return;
@@ -1299,9 +1299,9 @@ void lcMainWindow::ScheduleAssetUpdate()
 	});
 }
 
-void lcMainWindow::UpdateAssets()
+void swMainWindow::UpdateAssets()
 {
-	Project* Project = lcGetActiveProject();
+	Project* Project = swGetActiveProject();
 	mStatusLoadSpinner->setToolTip(QString());
 
 	if (mStatusProject != Project)
@@ -1320,20 +1320,20 @@ void lcMainWindow::UpdateAssets()
 		return;
 	}
 
-	std::vector<lcModel*> UpdatedModels;
+	std::vector<swModel*> UpdatedModels;
 
-	for (const std::unique_ptr<lcModel>& Model : Project->GetModels())
+	for (const std::unique_ptr<swModel>& Model : Project->GetModels())
 		Model->UpdatePieceData(UpdatedModels);
 
 	UpdateTimeline(false, true);
 
-	lcView::UpdateProjectViews(Project);
+	swView::UpdateProjectViews(Project);
 
-	const std::vector<lcPieceDataRef> RequiredPieceData = Project->GetRequiredPieceData();
-	const std::vector<lcPiece*> GeneratedPieces = Project->GetRequiredSynthPieces();
+	const std::vector<swPieceDataRef> RequiredPieceData = Project->GetRequiredPieceData();
+	const std::vector<swPiece*> GeneratedPieces = Project->GetRequiredSynthPieces();
 
 	mStatusRequiredAssets.clear();
-	for (const lcPieceDataRef& RequiredData : RequiredPieceData)
+	for (const swPieceDataRef& RequiredData : RequiredPieceData)
 		mStatusRequiredAssets.insert(RequiredData.Get());
 
 	int PendingParts = 0;
@@ -1349,14 +1349,14 @@ void lcMainWindow::UpdateAssets()
 		FailureDetails += Warning;
 	}
 
-	for (const lcPieceDataRef& RequiredData : RequiredPieceData)
+	for (const swPieceDataRef& RequiredData : RequiredPieceData)
 	{
-		const lcPieceData* PieceData = RequiredData.Get();
-		if (PieceData->mState == lcAssetState::Failed)
+		const swPieceData* PieceData = RequiredData.Get();
+		if (PieceData->mState == swAssetState::Failed)
 		{
 			Failed++;
 
-			QString Error = lcGetPiecesLibrary()->GetPieceDataLoadError(PieceData);
+			QString Error = swGetPiecesLibrary()->GetPieceDataLoadError(PieceData);
 
 			if (Error.isEmpty())
 				Error = tr("Could not load piece.");
@@ -1366,11 +1366,11 @@ void lcMainWindow::UpdateAssets()
 
 			FailureDetails += QStringLiteral("'%1': %2").arg(QString::fromLatin1(PieceData->mFileName), Error);
 		}
-		else if (PieceData->mState != lcAssetState::Loaded)
+		else if (PieceData->mState != swAssetState::Loaded)
 			PendingParts++;
 	}
 
-	for (const lcPiece* Piece : GeneratedPieces)
+	for (const swPiece* Piece : GeneratedPieces)
 	{
 		if (Piece->IsGeneratedMeshPending())
 			PendingSynths++;
@@ -1378,7 +1378,7 @@ void lcMainWindow::UpdateAssets()
 		{
 			Failed++;
 
-			QString Error = lcGetPiecesLibrary()->GetSynthMeshError(Piece);
+			QString Error = swGetPiecesLibrary()->GetSynthMeshError(Piece);
 
 			if (Error.isEmpty())
 				Error = tr("Could not generate geometry.");
@@ -1420,7 +1420,7 @@ void lcMainWindow::UpdateAssets()
 	mStatusLoadSpinner->setVisible(Pending > 0);
 }
 
-void lcMainWindow::closeEvent(QCloseEvent* Event)
+void swMainWindow::closeEvent(QCloseEvent* Event)
 {
 	if (SaveProjectIfModified())
 	{
@@ -1439,13 +1439,13 @@ void lcMainWindow::closeEvent(QCloseEvent* Event)
 		Event->ignore();
 }
 
-void lcMainWindow::dragEnterEvent(QDragEnterEvent* Event)
+void swMainWindow::dragEnterEvent(QDragEnterEvent* Event)
 {
 	if (Event->mimeData()->hasUrls())
 		Event->acceptProposedAction();
 }
 
-void lcMainWindow::dropEvent(QDropEvent* Event)
+void swMainWindow::dropEvent(QDropEvent* Event)
 {
 	const QMimeData* MimeData = Event->mimeData();
 	const QList<QUrl> Urls = MimeData->urls();
@@ -1454,44 +1454,44 @@ void lcMainWindow::dropEvent(QDropEvent* Event)
 			break;
 }
 
-QMenu* lcMainWindow::createPopupMenu()
+QMenu* swMainWindow::createPopupMenu()
 {
 	QMenu* Menu = new QMenu(this);
 
 	UpdateDockWidgetActions();
 
-	Menu->addAction(mActions[LC_VIEW_TOOLBAR_PARTS]);
-	Menu->addAction(mActions[LC_VIEW_TOOLBAR_COLORS]);
-	Menu->addAction(mActions[LC_VIEW_TOOLBAR_PROPERTIES]);
-	Menu->addAction(mActions[LC_VIEW_TOOLBAR_TIMELINE]);
-	Menu->addAction(mActions[LC_VIEW_TOOLBAR_PREVIEW]);
-	Menu->addAction(mActions[LC_VIEW_TOOLBAR_MINIFIG]);
-	Menu->addAction(mActions[LC_VIEW_TOOLBAR_TERMINAL]);
+	Menu->addAction(mActions[SW_VIEW_TOOLBAR_PARTS]);
+	Menu->addAction(mActions[SW_VIEW_TOOLBAR_COLORS]);
+	Menu->addAction(mActions[SW_VIEW_TOOLBAR_PROPERTIES]);
+	Menu->addAction(mActions[SW_VIEW_TOOLBAR_TIMELINE]);
+	Menu->addAction(mActions[SW_VIEW_TOOLBAR_PREVIEW]);
+	Menu->addAction(mActions[SW_VIEW_TOOLBAR_MINIFIG]);
+	Menu->addAction(mActions[SW_VIEW_TOOLBAR_TERMINAL]);
 	Menu->addSeparator();
-	Menu->addAction(mActions[LC_VIEW_TOOLBAR_STANDARD]);
-	Menu->addAction(mActions[LC_VIEW_TOOLBAR_TOOLS]);
-	Menu->addAction(mActions[LC_VIEW_TOOLBAR_TIME]);
+	Menu->addAction(mActions[SW_VIEW_TOOLBAR_STANDARD]);
+	Menu->addAction(mActions[SW_VIEW_TOOLBAR_TOOLS]);
+	Menu->addAction(mActions[SW_VIEW_TOOLBAR_TIME]);
 
 	return Menu;
 }
 
-void lcMainWindow::UpdateDockWidgetActions()
+void swMainWindow::UpdateDockWidgetActions()
 {
-	mActions[LC_VIEW_TOOLBAR_PARTS]->setChecked(mPartsToolBar->isVisible());
-	mActions[LC_VIEW_TOOLBAR_COLORS]->setChecked(mColorsToolBar->isVisible());
-	mActions[LC_VIEW_TOOLBAR_PROPERTIES]->setChecked(mPropertiesToolBar->isVisible());
-	mActions[LC_VIEW_TOOLBAR_TIMELINE]->setChecked(mTimelineToolBar->isVisible());
-	mActions[LC_VIEW_TOOLBAR_STANDARD]->setChecked(mStandardToolBar->isVisible());
-	mActions[LC_VIEW_TOOLBAR_TOOLS]->setChecked(mToolsToolBar->isVisible());
-	mActions[LC_VIEW_TOOLBAR_TIME]->setChecked(mTimeToolBar->isVisible());
-	mActions[LC_VIEW_TOOLBAR_PREVIEW]->setChecked(mPreviewToolBar->isVisible());
-	mActions[LC_VIEW_TOOLBAR_MINIFIG]->setChecked(mMinifigToolBar->isVisible());
-	mActions[LC_VIEW_TOOLBAR_TERMINAL]->setChecked(mTerminalToolBar && mTerminalToolBar->isVisible());
+	mActions[SW_VIEW_TOOLBAR_PARTS]->setChecked(mPartsToolBar->isVisible());
+	mActions[SW_VIEW_TOOLBAR_COLORS]->setChecked(mColorsToolBar->isVisible());
+	mActions[SW_VIEW_TOOLBAR_PROPERTIES]->setChecked(mPropertiesToolBar->isVisible());
+	mActions[SW_VIEW_TOOLBAR_TIMELINE]->setChecked(mTimelineToolBar->isVisible());
+	mActions[SW_VIEW_TOOLBAR_STANDARD]->setChecked(mStandardToolBar->isVisible());
+	mActions[SW_VIEW_TOOLBAR_TOOLS]->setChecked(mToolsToolBar->isVisible());
+	mActions[SW_VIEW_TOOLBAR_TIME]->setChecked(mTimeToolBar->isVisible());
+	mActions[SW_VIEW_TOOLBAR_PREVIEW]->setChecked(mPreviewToolBar->isVisible());
+	mActions[SW_VIEW_TOOLBAR_MINIFIG]->setChecked(mMinifigToolBar->isVisible());
+	mActions[SW_VIEW_TOOLBAR_TERMINAL]->setChecked(mTerminalToolBar && mTerminalToolBar->isVisible());
 }
 
-void lcMainWindow::UpdateGamepads()
+void swMainWindow::UpdateGamepads()
 {
-#if LC_ENABLE_GAMEPAD
+#if SW_ENABLE_GAMEPAD
 	QDateTime Now = QDateTime::currentDateTime();
 	quint64 Elapsed = mLastGamepadUpdate.msecsTo(Now);
 	mLastGamepadUpdate = Now;
@@ -1499,7 +1499,7 @@ void lcMainWindow::UpdateGamepads()
 	if (!gMainWindow)
 		return;
 
-	lcView* ActiveView = GetActiveView();
+	swView* ActiveView = GetActiveView();
 	if (!ActiveView)
 		return;
 
@@ -1510,29 +1510,29 @@ void lcMainWindow::UpdateGamepads()
 	QGamepad Gamepad(Gamepads[0]);
 
 	float Scale = (float)Elapsed / 20.0f;
-	lcVector3 Distance(Scale * Gamepad.axisLeftX(), 0.0f, -Scale * Gamepad.axisLeftY());
+	swVector3 Distance(Scale * Gamepad.axisLeftX(), 0.0f, -Scale * Gamepad.axisLeftY());
 
 	if (fabsf(Distance.LengthSquared()) > 0.01f)
 		ActiveView->MoveCamera(Distance);
 #endif
 }
 
-void lcMainWindow::ModelTabContextMenuRequested(const QPoint& Point)
+void swMainWindow::ModelTabContextMenuRequested(const QPoint& Point)
 {
 	QMenu* Menu = new QMenu;
 
 	mMousePressTabIndex = mModelTabWidget->tabBar()->tabAt(Point);
 
 	if (mModelTabWidget->count() > 1)
-		Menu->addAction(tr("Close Other Tabs"), this, &lcMainWindow::ModelTabCloseOtherTabs);
+		Menu->addAction(tr("Close Other Tabs"), this, &swMainWindow::ModelTabCloseOtherTabs);
 	if (mMousePressTabIndex == mModelTabWidget->currentIndex())
-		Menu->addAction(mActions[LC_VIEW_RESET_VIEWS]);
+		Menu->addAction(mActions[SW_VIEW_RESET_VIEWS]);
 
 	Menu->exec(QCursor::pos());
 	delete Menu;
 }
 
-void lcMainWindow::ModelTabCloseOtherTabs()
+void swMainWindow::ModelTabCloseOtherTabs()
 {
 	if (mMousePressTabIndex == -1)
 		return;
@@ -1544,7 +1544,7 @@ void lcMainWindow::ModelTabCloseOtherTabs()
 		delete mModelTabWidget->widget(0);
 }
 
-void lcMainWindow::ModelTabClosed(int Index)
+void swMainWindow::ModelTabClosed(int Index)
 {
 	if (mModelTabWidget->count() != 1)
 		delete mModelTabWidget->widget(Index);
@@ -1552,15 +1552,15 @@ void lcMainWindow::ModelTabClosed(int Index)
 		NewProject();
 }
 
-void lcMainWindow::ModelTabChanged(int Index)
+void swMainWindow::ModelTabChanged(int Index)
 {
-	Project* Project = lcGetActiveProject();
-	lcModelTabWidget* CurrentTab = (lcModelTabWidget*)mModelTabWidget->widget(Index);
+	Project* Project = swGetActiveProject();
+	swModelTabWidget* CurrentTab = (swModelTabWidget*)mModelTabWidget->widget(Index);
 
 	Project->SetActiveModel(CurrentTab ? CurrentTab->GetModel() : nullptr, true);
 }
 
-void lcMainWindow::ClipboardChanged()
+void swMainWindow::ClipboardChanged()
 {
 	const QString MimeType = QLatin1String("application/vnd.leocad-clipboard");
 	const QMimeData* MimeData = QApplication::clipboard()->mimeData();
@@ -1572,47 +1572,47 @@ void lcMainWindow::ClipboardChanged()
 	gApplication->SetClipboard(ClipboardData);
 }
 
-void lcMainWindow::ActionTriggered()
+void swMainWindow::ActionTriggered()
 {
 	QObject* Action = sender();
 
-	for (int CommandIdx = 0; CommandIdx < LC_NUM_COMMANDS; CommandIdx++)
+	for (int CommandIdx = 0; CommandIdx < SW_NUM_COMMANDS; CommandIdx++)
 	{
 		if (Action == mActions[CommandIdx])
 		{
-			HandleCommand((lcCommandId)CommandIdx);
+			HandleCommand((swCommandId)CommandIdx);
 			break;
 		}
 	}
 }
 
-void lcMainWindow::ColorChanged(int ColorIndex)
+void swMainWindow::ColorChanged(int ColorIndex)
 {
 	SetColorIndex(ColorIndex);
 }
 
-void lcMainWindow::PartListPicked(lcPieceData* PieceData)
+void swMainWindow::PartListPicked(swPieceData* PieceData)
 {
 	if (!PieceData)
 		return;
 
-	quint32 ColorCode = lcGetColorCode(mPartSelectionWidget->GetColorIndex());
+	quint32 ColorCode = swGetColorCode(mPartSelectionWidget->GetColorIndex());
 
 	PreviewPiece(PieceData, ColorCode, true);
 }
 
-void lcMainWindow::ColorButtonClicked()
+void swMainWindow::ColorButtonClicked()
 {
-	lcModel* ActiveModel = GetActiveModel();
+	swModel* ActiveModel = GetActiveModel();
 
 	if (ActiveModel)
 		ActiveModel->PaintSelectedPieces();
 }
 
-void lcMainWindow::ProjectFileChanged(const QString& Path)
+void swMainWindow::ProjectFileChanged(const QString& Path)
 {
 	static bool Ignore;
-	Project* CurrentProject = lcGetActiveProject();
+	Project* CurrentProject = swGetActiveProject();
 
 	if (Ignore || !CurrentProject || Path.isEmpty() || QFileInfo(Path) != QFileInfo(CurrentProject->GetFileName()))
 		return;
@@ -1627,7 +1627,7 @@ void lcMainWindow::ProjectFileChanged(const QString& Path)
 	{
 		Ignore = false;
 
-		if (CurrentProject == lcGetActiveProject() && CurrentFileName == CurrentProject->GetFileName())
+		if (CurrentProject == swGetActiveProject() && CurrentFileName == CurrentProject->GetFileName())
 		{
 			CurrentProject->MarkAsModified();
 			UpdateTitle();
@@ -1636,7 +1636,7 @@ void lcMainWindow::ProjectFileChanged(const QString& Path)
 		return;
 	}
 
-	if (CurrentProject != lcGetActiveProject() || CurrentFileName != CurrentProject->GetFileName())
+	if (CurrentProject != swGetActiveProject() || CurrentFileName != CurrentProject->GetFileName())
 	{
 		Ignore = false;
 		return;
@@ -1647,17 +1647,17 @@ void lcMainWindow::ProjectFileChanged(const QString& Path)
 	Ignore = false;
 }
 
-void lcMainWindow::ToggleWatchFileChanges()
+void swMainWindow::ToggleWatchFileChanges()
 {
-	lcGetPreferences().mWatchFileChanges = !lcGetPreferences().mWatchFileChanges;
-	lcSetProfileInt(LC_PROFILE_WATCH_FILE_CHANGES, lcGetPreferences().mWatchFileChanges);
+	swGetPreferences().mWatchFileChanges = !swGetPreferences().mWatchFileChanges;
+	swSetProfileInt(SW_PROFILE_WATCH_FILE_CHANGES, swGetPreferences().mWatchFileChanges);
 
-	lcGetActiveProject()->UpdateFileWatcher();
+	swGetActiveProject()->UpdateFileWatcher();
 }
 
-void lcMainWindow::ReloadProject()
+void swMainWindow::ReloadProject()
 {
-	Project* CurrentProject = lcGetActiveProject();
+	Project* CurrentProject = swGetActiveProject();
 
 	if (!CurrentProject)
 		return;
@@ -1681,7 +1681,7 @@ void lcMainWindow::ReloadProject()
 	ReloadProjectFile(FileName);
 }
 
-void lcMainWindow::ReloadProjectFile(const QString& FileName)
+void swMainWindow::ReloadProjectFile(const QString& FileName)
 {
 	std::unique_ptr<Project> NewProject = std::make_unique<Project>();
 
@@ -1690,60 +1690,60 @@ void lcMainWindow::ReloadProjectFile(const QString& FileName)
 		QByteArray TabLayout = GetTabLayout();
 		gApplication->SetProject(NewProject.release());
 		RestoreTabLayout(TabLayout);
-		lcView::UpdateAllViews();
+		swView::UpdateAllViews();
 	}
 }
 
-void lcMainWindow::Print(QPrinter* Printer)
+void swMainWindow::Print(QPrinter* Printer)
 {
-	lcGetActiveProject()->GetMainModel()->WaitForAssets();
+	swGetActiveProject()->GetMainModel()->WaitForAssets();
 
-	lcPrintInstructions(lcGetActiveProject()->GetInstructions(), Printer);
+	swPrintInstructions(swGetActiveProject()->GetInstructions(), Printer);
 }
 
-void lcMainWindow::ShowUpdatesDialog()
+void swMainWindow::ShowUpdatesDialog()
 {
-	lcUpdateDialog Dialog(this, false);
+	swUpdateDialog Dialog(this, false);
 	Dialog.exec();
 }
 
-void lcMainWindow::ShowAboutDialog()
+void swMainWindow::ShowAboutDialog()
 {
-	lcAboutDialog Dialog(this);
+	swAboutDialog Dialog(this);
 	Dialog.exec();
 }
 
-void lcMainWindow::ShowHTMLDialog()
+void swMainWindow::ShowHTMLDialog()
 {
-	lcHTMLExportOptions Options(lcGetActiveProject());
-	lcHTMLDialog Dialog(this, &Options);
+	swHTMLExportOptions Options(swGetActiveProject());
+	swHTMLDialog Dialog(this, &Options);
 
 	if (Dialog.exec() != QDialog::Accepted)
 		return;
 
 	Options.SaveDefaults();
-	ShowResultError(lcGetActiveProject()->ExportHTML(Options), tr("Export HTML"));
+	ShowResultError(swGetActiveProject()->ExportHTML(Options), tr("Export HTML"));
 }
 
-void lcMainWindow::ShowExportPOVRayDialog()
+void swMainWindow::ShowExportPOVRayDialog()
 {
-	lcResult<void> ExportResult = lcGetActiveProject()->ExportPOVRay(QString());
+	swResult<void> ExportResult = swGetActiveProject()->ExportPOVRay(QString());
 
 	if (!ExportResult && !ExportResult.error().isEmpty())
 		QMessageBox::warning(this, tr("POV-Ray Export" ), ExportResult.error());
 }
 
-void lcMainWindow::ShowRenderDialog(lcRenderDialogMode RenderDialogMode)
+void swMainWindow::ShowRenderDialog(swRenderDialogMode RenderDialogMode)
 {
-#ifndef LC_DISABLE_RENDER_DIALOG
-	lcRenderDialog Dialog(this, RenderDialogMode);
+#ifndef SW_DISABLE_RENDER_DIALOG
+	swRenderDialog Dialog(this, RenderDialogMode);
 	Dialog.exec();
 #endif
 }
 
-void lcMainWindow::ShowInstructionsDialog()
+void swMainWindow::ShowInstructionsDialog()
 {
-	lcGetActiveProject()->GetMainModel()->WaitForAssets();
+	swGetActiveProject()->GetMainModel()->WaitForAssets();
 
 	// The instructions window stays open beside the model and follows its changes.
 	if (mInstructionsDialog)
@@ -1753,30 +1753,30 @@ void lcMainWindow::ShowInstructionsDialog()
 		return;
 	}
 
-	lcInstructionsDialog* Dialog = new lcInstructionsDialog(this, lcGetActiveProject());
+	swInstructionsDialog* Dialog = new swInstructionsDialog(this, swGetActiveProject());
 	Dialog->setAttribute(Qt::WA_DeleteOnClose);
-	connect(this, &lcMainWindow::ModelContentsChanged, Dialog, &lcInstructionsDialog::ModelChanged);
+	connect(this, &swMainWindow::ModelContentsChanged, Dialog, &swInstructionsDialog::ModelChanged);
 	mInstructionsDialog = Dialog;
 	Dialog->show();
 }
 
-void lcMainWindow::CloseInstructionsDialog()
+void swMainWindow::CloseInstructionsDialog()
 {
 	if (mInstructionsDialog)
 		delete mInstructionsDialog;
 }
 
-void lcMainWindow::ShowPrintDialog()
+void swMainWindow::ShowPrintDialog()
 {
-	lcGetActiveProject()->GetMainModel()->WaitForAssets();
+	swGetActiveProject()->GetMainModel()->WaitForAssets();
 
 #ifndef QT_NO_PRINTER
 	// Printing uses the instruction pages and their page setup, rebuilt from the current model.
-	lcInstructions* Instructions = lcGetActiveProject()->GetInstructions();
+	swInstructions* Instructions = swGetActiveProject()->GetInstructions();
 	Instructions->Update();
 
 	QPrinter Printer(QPrinter::HighResolution);
-	lcSetupInstructionsPrinter(Instructions, &Printer);
+	swSetupInstructionsPrinter(Instructions, &Printer);
 
 	QPrintDialog PrintDialog(&Printer, this);
 
@@ -1785,35 +1785,35 @@ void lcMainWindow::ShowPrintDialog()
 #endif
 }
 
-void lcMainWindow::ShowImageDialog()
+void swMainWindow::ShowImageDialog()
 {
-	lcImageDialogOptions Options;
-	Project* Project = lcGetActiveProject();
-	lcModel* Model = Project->GetActiveModel();
+	swImageDialogOptions Options;
+	Project* Project = swGetActiveProject();
+	swModel* Model = Project->GetActiveModel();
 
-	Options.Width = lcGetProfileInt(LC_PROFILE_IMAGE_WIDTH);
-	Options.Height = lcGetProfileInt(LC_PROFILE_IMAGE_HEIGHT);
+	Options.Width = swGetProfileInt(SW_PROFILE_IMAGE_WIDTH);
+	Options.Height = swGetProfileInt(SW_PROFILE_IMAGE_HEIGHT);
 	Options.Start = Model->GetCurrentStep();
 	Options.End = Model->GetLastStep();
 	Options.FilePath = Project->GetImageFileName(false);
 
-	lcImageDialog Dialog(this, &Options);
+	swImageDialog Dialog(this, &Options);
 
 	if (Dialog.exec() != QDialog::Accepted)
 		return;
 
-	lcSetProfileInt(LC_PROFILE_IMAGE_WIDTH, Options.Width);
-	lcSetProfileInt(LC_PROFILE_IMAGE_HEIGHT, Options.Height);
+	swSetProfileInt(SW_PROFILE_IMAGE_WIDTH, Options.Width);
+	swSetProfileInt(SW_PROFILE_IMAGE_HEIGHT, Options.Height);
 
-	const lcResult<void> Saved = lcGetActiveProject()->SaveImage(Options);
+	const swResult<void> Saved = swGetActiveProject()->SaveImage(Options);
 
 	if (!Saved)
 		QMessageBox::warning(this, tr("Save Image"), Saved.error());
 }
 
-void lcMainWindow::ShowSelectDialog()
+void swMainWindow::ShowSelectDialog()
 {
-	lcModel* ActiveModel = GetActiveModel();
+	swModel* ActiveModel = GetActiveModel();
 
 	if (!ActiveModel)
 		return;
@@ -1824,110 +1824,110 @@ void lcMainWindow::ShowSelectDialog()
 		return;
 	}
 
-	lcSelectDialog Dialog(this, ActiveModel);
+	swSelectDialog Dialog(this, ActiveModel);
 
 	if (Dialog.exec() != QDialog::Accepted)
 		return;
 
-	ActiveModel->SetSelectionAndFocusAction(Dialog.mObjects, nullptr, 0, lcSelectionMode::Single);
+	ActiveModel->SetSelectionAndFocusAction(Dialog.mObjects, nullptr, 0, swSelectionMode::Single);
 }
 
-void lcMainWindow::ShowResultError(const lcResult<void>& Result, const QString& Title)
+void swMainWindow::ShowResultError(const swResult<void>& Result, const QString& Title)
 {
 	if (!Result && !Result.error().isEmpty())
 		QMessageBox::warning(this, Title, Result.error());
 }
 
-void lcMainWindow::SetShadingMode(lcShadingMode ShadingMode)
+void swMainWindow::SetShadingMode(swShadingMode ShadingMode)
 {
-	lcGetPreferences().mShadingMode = ShadingMode;
-	lcSetProfileShadingMode(ShadingMode);
+	swGetPreferences().mShadingMode = ShadingMode;
+	swSetProfileShadingMode(ShadingMode);
 
 	UpdateShadingMode();
 
 	UpdatePartsRendering();
 }
 
-void lcMainWindow::SetSelectionMode(lcSelectionMode SelectionMode)
+void swMainWindow::SetSelectionMode(swSelectionMode SelectionMode)
 {
 	mSelectionMode = SelectionMode;
 
 	UpdateSelectionMode();
 }
 
-void lcMainWindow::ToggleViewSphere()
+void swMainWindow::ToggleViewSphere()
 {
-	lcGetPreferences().mViewSphereEnabled = !lcGetPreferences().mViewSphereEnabled;
-	lcSetProfileInt(LC_PROFILE_VIEW_SPHERE_ENABLED, lcGetPreferences().mViewSphereEnabled);
+	swGetPreferences().mViewSphereEnabled = !swGetPreferences().mViewSphereEnabled;
+	swSetProfileInt(SW_PROFILE_VIEW_SPHERE_ENABLED, swGetPreferences().mViewSphereEnabled);
 
-	lcView::UpdateAllViews();
+	swView::UpdateAllViews();
 }
 
-void lcMainWindow::ToggleAxisIcon()
+void swMainWindow::ToggleAxisIcon()
 {
-	lcGetPreferences().mDrawAxes = !lcGetPreferences().mDrawAxes;
-	lcSetProfileInt(LC_PROFILE_DRAW_AXES, lcGetPreferences().mDrawAxes);
+	swGetPreferences().mDrawAxes = !swGetPreferences().mDrawAxes;
+	swSetProfileInt(SW_PROFILE_DRAW_AXES, swGetPreferences().mDrawAxes);
 
-	lcView::UpdateAllViews();
+	swView::UpdateAllViews();
 }
 
-void lcMainWindow::ToggleGrid()
+void swMainWindow::ToggleGrid()
 {
-	lcGetPreferences().mGridEnabled = !lcGetPreferences().mGridEnabled;
+	swGetPreferences().mGridEnabled = !swGetPreferences().mGridEnabled;
 
-	lcView::UpdateAllViews();
+	swView::UpdateAllViews();
 }
 
-void lcMainWindow::ToggleLoadPiecesBeforeShowing()
+void swMainWindow::ToggleLoadPiecesBeforeShowing()
 {
-	lcGetPreferences().mLoadPiecesBeforeShowing = !lcGetPreferences().mLoadPiecesBeforeShowing;
-	lcSetProfileInt(LC_PROFILE_LOAD_PIECES_BEFORE_SHOWING, lcGetPreferences().mLoadPiecesBeforeShowing);
+	swGetPreferences().mLoadPiecesBeforeShowing = !swGetPreferences().mLoadPiecesBeforeShowing;
+	swSetProfileInt(SW_PROFILE_LOAD_PIECES_BEFORE_SHOWING, swGetPreferences().mLoadPiecesBeforeShowing);
 }
 
-static void lcTogglePreference(bool& Value, LC_PROFILE_KEY Key)
+static void swTogglePreference(bool& Value, SW_PROFILE_KEY Key)
 {
 	Value = !Value;
-	lcSetProfileInt(Key, Value);
+	swSetProfileInt(Key, Value);
 
-	lcView::UpdateAllViews();
+	swView::UpdateAllViews();
 }
 
-void lcMainWindow::SetHighlightRenderMode(lcHighlightRenderMode HighlightRenderMode)
+void swMainWindow::SetHighlightRenderMode(swHighlightRenderMode HighlightRenderMode)
 {
-	lcGetPreferences().mHighlightRenderMode = HighlightRenderMode;
-	lcSetProfileHighlightRenderMode(HighlightRenderMode);
+	swGetPreferences().mHighlightRenderMode = HighlightRenderMode;
+	swSetProfileHighlightRenderMode(HighlightRenderMode);
 
-	lcView::UpdateAllViews();
+	swView::UpdateAllViews();
 }
 
-void lcMainWindow::ToggleAutomateEdgeColor()
+void swMainWindow::ToggleAutomateEdgeColor()
 {
-	lcGetPreferences().mAutomateEdgeColor = !lcGetPreferences().mAutomateEdgeColor;
-	lcSetProfileInt(LC_PROFILE_AUTOMATE_EDGE_COLOR, lcGetPreferences().mAutomateEdgeColor);
+	swGetPreferences().mAutomateEdgeColor = !swGetPreferences().mAutomateEdgeColor;
+	swSetProfileInt(SW_PROFILE_AUTOMATE_EDGE_COLOR, swGetPreferences().mAutomateEdgeColor);
 
-	lcGetPiecesLibrary()->LoadColors();
-	lcView::UpdateAllViews();
+	swGetPiecesLibrary()->LoadColors();
+	swView::UpdateAllViews();
 }
 
-void lcMainWindow::SetStudStyle(lcStudStyle StudStyle)
+void swMainWindow::SetStudStyle(swStudStyle StudStyle)
 {
-	lcSetProfileStudStyle(StudStyle);
-	lcGetPiecesLibrary()->UpdateStudStyleAndColors(StudStyle, lcGetPreferences().mStudCylinderColorEnabled);
+	swSetProfileStudStyle(StudStyle);
+	swGetPiecesLibrary()->UpdateStudStyleAndColors(StudStyle, swGetPreferences().mStudCylinderColorEnabled);
 
-	lcView::UpdateAllViews();
+	swView::UpdateAllViews();
 }
 
-void lcMainWindow::ShowStepViewDialog()
+void swMainWindow::ShowStepViewDialog()
 {
-	lcModel* ActiveModel = GetActiveModel();
-	lcView* ActiveView = GetActiveView();
+	swModel* ActiveModel = GetActiveModel();
+	swView* ActiveView = GetActiveView();
 
 	if (!ActiveModel || !ActiveView)
 		return;
 
-	const lcStep Step = ActiveModel->GetCurrentStep();
-	const std::map<lcStep, lcStepView>& StepViews = ActiveModel->GetProperties().mStepViews;
-	const std::map<lcStep, lcStepView>::const_iterator Current = StepViews.find(Step);
+	const swStep Step = ActiveModel->GetCurrentStep();
+	const std::map<swStep, swStepView>& StepViews = ActiveModel->GetProperties().mStepViews;
+	const std::map<swStep, swStepView>::const_iterator Current = StepViews.find(Step);
 
 	QDialog Dialog(this);
 	Dialog.setWindowTitle(tr("Step %1 View").arg(Step));
@@ -1979,9 +1979,9 @@ void lcMainWindow::ShowStepViewDialog()
 	connect(ModeCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), &Dialog, UpdateEnabled);
 	connect(CurrentViewButton, &QPushButton::clicked, &Dialog, [ActiveView, ModeCombo, AngleEdits]()
 	{
-		const lcVector3 Angles = ActiveView->GetStepViewAngles();
+		const swVector3 Angles = ActiveView->GetStepViewAngles();
 
-		ModeCombo->setCurrentIndex(static_cast<int>(lcStepViewMode::Absolute) + 1);
+		ModeCombo->setCurrentIndex(static_cast<int>(swStepViewMode::Absolute) + 1);
 
 		for (int Axis = 0; Axis < 3; Axis++)
 			AngleEdits[Axis]->setValue(Angles[Axis]);
@@ -1992,40 +1992,40 @@ void lcMainWindow::ShowStepViewDialog()
 	if (Dialog.exec() != QDialog::Accepted)
 		return;
 
-	std::optional<lcStepView> StepView;
+	std::optional<swStepView> StepView;
 
 	if (ModeCombo->currentIndex() > 0)
 	{
-		StepView = lcStepView();
-		StepView->Mode = static_cast<lcStepViewMode>(ModeCombo->currentIndex() - 1);
+		StepView = swStepView();
+		StepView->Mode = static_cast<swStepViewMode>(ModeCombo->currentIndex() - 1);
 
-		if (StepView->Mode != lcStepViewMode::End)
-			StepView->Angles = lcVector3(AngleEdits[0]->value(), AngleEdits[1]->value(), AngleEdits[2]->value());
+		if (StepView->Mode != swStepViewMode::End)
+			StepView->Angles = swVector3(AngleEdits[0]->value(), AngleEdits[1]->value(), AngleEdits[2]->value());
 	}
 
 	ActiveModel->SetStepView(Step, StepView);
 }
 
-void lcMainWindow::ToggleFadePreviousSteps()
+void swMainWindow::ToggleFadePreviousSteps()
 {
-	lcGetPreferences().mFadeSteps = !lcGetPreferences().mFadeSteps;
-	lcSetProfileInt(LC_PROFILE_FADE_STEPS, lcGetPreferences().mFadeSteps);
+	swGetPreferences().mFadeSteps = !swGetPreferences().mFadeSteps;
+	swSetProfileInt(SW_PROFILE_FADE_STEPS, swGetPreferences().mFadeSteps);
 
-	lcView::UpdateAllViews();
+	swView::UpdateAllViews();
 }
 
-void lcMainWindow::ToggleEdgeLines(lcRenderTarget Target)
+void swMainWindow::ToggleEdgeLines(swRenderTarget Target)
 {
-	lcPreferences& Preferences = lcGetPreferences();
+	swPreferences& Preferences = swGetPreferences();
 
-	if (Target == lcRenderTarget::ModelView)
+	if (Target == swRenderTarget::ModelView)
 	{
 		Preferences.mDrawEdgeLines = !Preferences.mDrawEdgeLines;
-		lcSetProfileInt(LC_PROFILE_DRAW_EDGE_LINES, Preferences.mDrawEdgeLines);
+		swSetProfileInt(SW_PROFILE_DRAW_EDGE_LINES, Preferences.mDrawEdgeLines);
 	}
 	else
 	{
-		lcTargetRenderSettings& TargetSettings = Preferences.GetTargetRenderSettings(Target);
+		swTargetRenderSettings& TargetSettings = Preferences.GetTargetRenderSettings(Target);
 
 		// Changing a target setting stops following the model view settings.
 		TargetSettings.Settings = Preferences.GetRenderSettings(Target);
@@ -2037,18 +2037,18 @@ void lcMainWindow::ToggleEdgeLines(lcRenderTarget Target)
 	UpdatePartsRendering();
 }
 
-void lcMainWindow::ToggleConditionalLines(lcRenderTarget Target)
+void swMainWindow::ToggleConditionalLines(swRenderTarget Target)
 {
-	lcPreferences& Preferences = lcGetPreferences();
+	swPreferences& Preferences = swGetPreferences();
 
-	if (Target == lcRenderTarget::ModelView)
+	if (Target == swRenderTarget::ModelView)
 	{
 		Preferences.mDrawConditionalLines = !Preferences.mDrawConditionalLines;
-		lcSetProfileInt(LC_PROFILE_DRAW_CONDITIONAL_LINES, Preferences.mDrawConditionalLines);
+		swSetProfileInt(SW_PROFILE_DRAW_CONDITIONAL_LINES, Preferences.mDrawConditionalLines);
 	}
 	else
 	{
-		lcTargetRenderSettings& TargetSettings = Preferences.GetTargetRenderSettings(Target);
+		swTargetRenderSettings& TargetSettings = Preferences.GetTargetRenderSettings(Target);
 
 		TargetSettings.Settings = Preferences.GetRenderSettings(Target);
 		TargetSettings.Settings.DrawConditionalLines = !TargetSettings.Settings.DrawConditionalLines;
@@ -2059,10 +2059,10 @@ void lcMainWindow::ToggleConditionalLines(lcRenderTarget Target)
 	UpdatePartsRendering();
 }
 
-void lcMainWindow::ToggleSyncRendering(lcRenderTarget Target)
+void swMainWindow::ToggleSyncRendering(swRenderTarget Target)
 {
-	lcPreferences& Preferences = lcGetPreferences();
-	lcTargetRenderSettings& TargetSettings = Preferences.GetTargetRenderSettings(Target);
+	swPreferences& Preferences = swGetPreferences();
+	swTargetRenderSettings& TargetSettings = Preferences.GetTargetRenderSettings(Target);
 
 	TargetSettings.SyncRendering = !TargetSettings.SyncRendering;
 	Preferences.SaveRenderTarget(Target);
@@ -2070,10 +2070,10 @@ void lcMainWindow::ToggleSyncRendering(lcRenderTarget Target)
 	UpdatePartsRendering();
 }
 
-void lcMainWindow::SetTargetShadingMode(lcRenderTarget Target, lcShadingMode ShadingMode)
+void swMainWindow::SetTargetShadingMode(swRenderTarget Target, swShadingMode ShadingMode)
 {
-	lcPreferences& Preferences = lcGetPreferences();
-	lcTargetRenderSettings& TargetSettings = Preferences.GetTargetRenderSettings(Target);
+	swPreferences& Preferences = swGetPreferences();
+	swTargetRenderSettings& TargetSettings = Preferences.GetTargetRenderSettings(Target);
 
 	TargetSettings.Settings = Preferences.GetRenderSettings(Target);
 	TargetSettings.Settings.ShadingMode = ShadingMode;
@@ -2083,7 +2083,7 @@ void lcMainWindow::SetTargetShadingMode(lcRenderTarget Target, lcShadingMode Sha
 	UpdatePartsRendering();
 }
 
-QAction* lcMainWindow::AddMenuCommand(QMenu* Menu, const QString& Text, lcCommandId CommandId, bool Checked)
+QAction* swMainWindow::AddMenuCommand(QMenu* Menu, const QString& Text, swCommandId CommandId, bool Checked)
 {
 	// Menu entries run the matching command so keyboard shortcuts and menus stay in sync.
 	QAction* Action = Menu->addAction(Text, this, [this, CommandId]()
@@ -2099,127 +2099,127 @@ QAction* lcMainWindow::AddMenuCommand(QMenu* Menu, const QString& Text, lcComman
 	return Action;
 }
 
-void lcMainWindow::AddRenderTargetActions(QMenu* Menu, lcRenderTarget Target)
+void swMainWindow::AddRenderTargetActions(QMenu* Menu, swRenderTarget Target)
 {
-	struct lcRenderTargetCommands
+	struct swRenderTargetCommands
 	{
-		lcCommandId SyncRendering;
-		lcCommandId Wireframe;
-		lcCommandId Flat;
-		lcCommandId DefaultLights;
-		lcCommandId EdgeLines;
-		lcCommandId ConditionalLines;
+		swCommandId SyncRendering;
+		swCommandId Wireframe;
+		swCommandId Flat;
+		swCommandId DefaultLights;
+		swCommandId EdgeLines;
+		swCommandId ConditionalLines;
 	};
 
 	// The model view commands, the other targets replace them with their own.
-	lcRenderTargetCommands Commands = { LC_NUM_COMMANDS, LC_VIEW_SHADING_WIREFRAME, LC_VIEW_SHADING_FLAT, LC_VIEW_SHADING_DEFAULT_LIGHTS, LC_VIEW_TOGGLE_EDGE_LINES, LC_VIEW_TOGGLE_CONDITIONAL_LINES };
+	swRenderTargetCommands Commands = { SW_NUM_COMMANDS, SW_VIEW_SHADING_WIREFRAME, SW_VIEW_SHADING_FLAT, SW_VIEW_SHADING_DEFAULT_LIGHTS, SW_VIEW_TOGGLE_EDGE_LINES, SW_VIEW_TOGGLE_CONDITIONAL_LINES };
 
 	switch (Target)
 	{
-	case lcRenderTarget::ModelView:
+	case swRenderTarget::ModelView:
 		break;
 
-	case lcRenderTarget::Preview:
-		Commands = { LC_VIEW_TOGGLE_PREVIEW_SYNC_RENDERING, LC_VIEW_PREVIEW_SHADING_WIREFRAME, LC_VIEW_PREVIEW_SHADING_FLAT, LC_VIEW_PREVIEW_SHADING_DEFAULT_LIGHTS, LC_VIEW_TOGGLE_PREVIEW_EDGE_LINES, LC_VIEW_TOGGLE_PREVIEW_CONDITIONAL_LINES };
+	case swRenderTarget::Preview:
+		Commands = { SW_VIEW_TOGGLE_PREVIEW_SYNC_RENDERING, SW_VIEW_PREVIEW_SHADING_WIREFRAME, SW_VIEW_PREVIEW_SHADING_FLAT, SW_VIEW_PREVIEW_SHADING_DEFAULT_LIGHTS, SW_VIEW_TOGGLE_PREVIEW_EDGE_LINES, SW_VIEW_TOGGLE_PREVIEW_CONDITIONAL_LINES };
 		break;
 
-	case lcRenderTarget::Minifig:
-		Commands = { LC_VIEW_TOGGLE_MINIFIG_SYNC_RENDERING, LC_VIEW_MINIFIG_SHADING_WIREFRAME, LC_VIEW_MINIFIG_SHADING_FLAT, LC_VIEW_MINIFIG_SHADING_DEFAULT_LIGHTS, LC_VIEW_TOGGLE_MINIFIG_EDGE_LINES, LC_VIEW_TOGGLE_MINIFIG_CONDITIONAL_LINES };
+	case swRenderTarget::Minifig:
+		Commands = { SW_VIEW_TOGGLE_MINIFIG_SYNC_RENDERING, SW_VIEW_MINIFIG_SHADING_WIREFRAME, SW_VIEW_MINIFIG_SHADING_FLAT, SW_VIEW_MINIFIG_SHADING_DEFAULT_LIGHTS, SW_VIEW_TOGGLE_MINIFIG_EDGE_LINES, SW_VIEW_TOGGLE_MINIFIG_CONDITIONAL_LINES };
 		break;
 
-	case lcRenderTarget::Pieces:
-		Commands = { LC_VIEW_TOGGLE_PIECES_SYNC_RENDERING, LC_VIEW_PIECES_SHADING_WIREFRAME, LC_VIEW_PIECES_SHADING_FLAT, LC_VIEW_PIECES_SHADING_DEFAULT_LIGHTS, LC_VIEW_TOGGLE_PIECES_EDGE_LINES, LC_VIEW_TOGGLE_PIECES_CONDITIONAL_LINES };
+	case swRenderTarget::Pieces:
+		Commands = { SW_VIEW_TOGGLE_PIECES_SYNC_RENDERING, SW_VIEW_PIECES_SHADING_WIREFRAME, SW_VIEW_PIECES_SHADING_FLAT, SW_VIEW_PIECES_SHADING_DEFAULT_LIGHTS, SW_VIEW_TOGGLE_PIECES_EDGE_LINES, SW_VIEW_TOGGLE_PIECES_CONDITIONAL_LINES };
 		break;
 	}
 
-	const lcPreferences& Preferences = lcGetPreferences();
-	const lcRenderSettings RenderSettings = Preferences.GetRenderSettings(Target);
+	const swPreferences& Preferences = swGetPreferences();
+	const swRenderSettings RenderSettings = Preferences.GetRenderSettings(Target);
 
 	// The model views have no settings to follow.
-	if (Target != lcRenderTarget::ModelView)
+	if (Target != swRenderTarget::ModelView)
 		AddMenuCommand(Menu, tr("Use Model View Settings"), Commands.SyncRendering, Preferences.GetTargetRenderSettings(Target).SyncRendering);
 
 	QMenu* ShadingMenu = Menu->addMenu(tr("Shading"));
 	QActionGroup* ShadingGroup = new QActionGroup(ShadingMenu);
-	ShadingGroup->addAction(AddMenuCommand(ShadingMenu, tr("Wireframe"), Commands.Wireframe, RenderSettings.ShadingMode == lcShadingMode::Wireframe));
-	ShadingGroup->addAction(AddMenuCommand(ShadingMenu, tr("Flat Shading"), Commands.Flat, RenderSettings.ShadingMode == lcShadingMode::Flat));
-	ShadingGroup->addAction(AddMenuCommand(ShadingMenu, tr("Default Lights"), Commands.DefaultLights, RenderSettings.ShadingMode == lcShadingMode::DefaultLights));
+	ShadingGroup->addAction(AddMenuCommand(ShadingMenu, tr("Wireframe"), Commands.Wireframe, RenderSettings.ShadingMode == swShadingMode::Wireframe));
+	ShadingGroup->addAction(AddMenuCommand(ShadingMenu, tr("Flat Shading"), Commands.Flat, RenderSettings.ShadingMode == swShadingMode::Flat));
+	ShadingGroup->addAction(AddMenuCommand(ShadingMenu, tr("Default Lights"), Commands.DefaultLights, RenderSettings.ShadingMode == swShadingMode::DefaultLights));
 
 	AddMenuCommand(Menu, tr("Edge Lines"), Commands.EdgeLines, RenderSettings.DrawEdgeLines);
 	AddMenuCommand(Menu, tr("Conditional Lines"), Commands.ConditionalLines, RenderSettings.DrawConditionalLines);
 }
 
-void lcMainWindow::ModelViewOptionsMenuAboutToShow()
+void swMainWindow::ModelViewOptionsMenuAboutToShow()
 {
 	QMenu* Menu = qobject_cast<QMenu*>(sender());
 	Menu->clear();
 
-	const lcPreferences& Preferences = lcGetPreferences();
+	const swPreferences& Preferences = swGetPreferences();
 
-	AddMenuCommand(Menu, tr("View Sphere"), LC_VIEW_TOGGLE_VIEW_SPHERE, Preferences.mViewSphereEnabled);
-	AddMenuCommand(Menu, tr("Axis Icon"), LC_VIEW_TOGGLE_AXIS_ICON, Preferences.mDrawAxes);
-	AddMenuCommand(Menu, tr("Base Grid"), LC_VIEW_TOGGLE_GRID, Preferences.mGridEnabled);
-	AddMenuCommand(Menu, tr("XZ Height Grid"), LC_VIEW_GRID_TOGGLE_HEIGHT_XZ, Preferences.mDrawGridHeightXZ);
-	AddMenuCommand(Menu, tr("YZ Height Grid"), LC_VIEW_GRID_TOGGLE_HEIGHT_YZ, Preferences.mDrawGridHeightYZ);
-	AddMenuCommand(Menu, tr("Height Grids Behind Model"), LC_VIEW_GRID_TOGGLE_HEIGHT_BEHIND, Preferences.mGridHeightBehindModel);
-	AddMenuCommand(Menu, tr("Fade Previous Steps"), LC_VIEW_FADE_PREVIOUS_STEPS, Preferences.mFadeSteps);
-	AddMenuCommand(Menu, tr("Insert First Piece at Origin"), LC_PIECE_TOGGLE_FIRST_AT_ORIGIN, Preferences.mFirstPieceAtOrigin);
+	AddMenuCommand(Menu, tr("View Sphere"), SW_VIEW_TOGGLE_VIEW_SPHERE, Preferences.mViewSphereEnabled);
+	AddMenuCommand(Menu, tr("Axis Icon"), SW_VIEW_TOGGLE_AXIS_ICON, Preferences.mDrawAxes);
+	AddMenuCommand(Menu, tr("Base Grid"), SW_VIEW_TOGGLE_GRID, Preferences.mGridEnabled);
+	AddMenuCommand(Menu, tr("XZ Height Grid"), SW_VIEW_GRID_TOGGLE_HEIGHT_XZ, Preferences.mDrawGridHeightXZ);
+	AddMenuCommand(Menu, tr("YZ Height Grid"), SW_VIEW_GRID_TOGGLE_HEIGHT_YZ, Preferences.mDrawGridHeightYZ);
+	AddMenuCommand(Menu, tr("Height Grids Behind Model"), SW_VIEW_GRID_TOGGLE_HEIGHT_BEHIND, Preferences.mGridHeightBehindModel);
+	AddMenuCommand(Menu, tr("Fade Previous Steps"), SW_VIEW_FADE_PREVIOUS_STEPS, Preferences.mFadeSteps);
+	AddMenuCommand(Menu, tr("Insert First Piece at Origin"), SW_PIECE_TOGGLE_FIRST_AT_ORIGIN, Preferences.mFirstPieceAtOrigin);
 
 	Menu->addSeparator();
 
-	AddRenderTargetActions(Menu, lcRenderTarget::ModelView);
+	AddRenderTargetActions(Menu, swRenderTarget::ModelView);
 }
 
-void lcMainWindow::TogglePreviewViewSphere()
+void swMainWindow::TogglePreviewViewSphere()
 {
-	lcGetPreferences().mPreviewViewSphereEnabled = !lcGetPreferences().mPreviewViewSphereEnabled;
-	lcSetProfileInt(LC_PROFILE_PREVIEW_VIEW_SPHERE_ENABLED, lcGetPreferences().mPreviewViewSphereEnabled);
+	swGetPreferences().mPreviewViewSphereEnabled = !swGetPreferences().mPreviewViewSphereEnabled;
+	swSetProfileInt(SW_PROFILE_PREVIEW_VIEW_SPHERE_ENABLED, swGetPreferences().mPreviewViewSphereEnabled);
 
-	lcView::UpdateAllViews();
+	swView::UpdateAllViews();
 }
 
-void lcMainWindow::TogglePreviewAxisIcon()
+void swMainWindow::TogglePreviewAxisIcon()
 {
-	lcGetPreferences().mDrawPreviewAxis = !lcGetPreferences().mDrawPreviewAxis;
-	lcSetProfileInt(LC_PROFILE_PREVIEW_DRAW_AXES, lcGetPreferences().mDrawPreviewAxis);
+	swGetPreferences().mDrawPreviewAxis = !swGetPreferences().mDrawPreviewAxis;
+	swSetProfileInt(SW_PROFILE_PREVIEW_DRAW_AXES, swGetPreferences().mDrawPreviewAxis);
 
-	lcView::UpdateAllViews();
+	swView::UpdateAllViews();
 }
 
-void lcMainWindow::UpdatePartsRendering()
+void swMainWindow::UpdatePartsRendering()
 {
-	lcView::UpdateAllViews();
+	swView::UpdateAllViews();
 
 	if (mPartSelectionWidget)
 		mPartSelectionWidget->UpdateThumbnails();
 }
 
-QByteArray lcMainWindow::GetTabLayout()
+QByteArray swMainWindow::GetTabLayout()
 {
 	QByteArray TabLayoutData;
 	QDataStream DataStream(&TabLayoutData, QIODevice::WriteOnly);
 
-	DataStream << (quint32)LC_TAB_LAYOUT_VERSION;
+	DataStream << (quint32)SW_TAB_LAYOUT_VERSION;
 	qint32 NumTabs = mModelTabWidget->count();
 	DataStream << NumTabs;
-	DataStream << ((lcModelTabWidget*)mModelTabWidget->currentWidget())->GetModel()->GetProperties().mFileName;
+	DataStream << ((swModelTabWidget*)mModelTabWidget->currentWidget())->GetModel()->GetProperties().mFileName;
 
 	for (int TabIdx = 0; TabIdx < NumTabs; TabIdx++)
 	{
-		lcModelTabWidget* TabWidget = (lcModelTabWidget*)mModelTabWidget->widget(TabIdx);
+		swModelTabWidget* TabWidget = (swModelTabWidget*)mModelTabWidget->widget(TabIdx);
 
 		DataStream << TabWidget->GetModel()->GetProperties().mFileName;
 
 		std::function<void (QWidget*)> SaveWidget = [&DataStream, &SaveWidget, &TabWidget](QWidget* Widget)
 		{
-			if (Widget->metaObject() == &lcViewWidget::staticMetaObject)
+			if (Widget->metaObject() == &swViewWidget::staticMetaObject)
 			{
-				lcView* CurrentView = ((lcViewWidget*)Widget)->GetView();
+				swView* CurrentView = ((swViewWidget*)Widget)->GetView();
 
 				DataStream << (qint32)0;
 				DataStream << (qint32)(TabWidget->GetActiveView() == CurrentView ? 1 : 0);
 
-				const lcCamera* Camera = CurrentView->GetCamera();
+				const swCamera* Camera = CurrentView->GetCamera();
 
 				if (Camera->IsSimple())
 				{
@@ -2256,7 +2256,7 @@ QByteArray lcMainWindow::GetTabLayout()
 	return TabLayoutData;
 }
 
-void lcMainWindow::RestoreTabLayout(const QByteArray& TabLayout)
+void swMainWindow::RestoreTabLayout(const QByteArray& TabLayout)
 {
 	if (TabLayout.isEmpty())
 		return;
@@ -2266,7 +2266,7 @@ void lcMainWindow::RestoreTabLayout(const QByteArray& TabLayout)
 	quint32 Version;
 	DataStream >> Version;
 
-	if (Version != LC_TAB_LAYOUT_VERSION)
+	if (Version != SW_TAB_LAYOUT_VERSION)
 		return;
 
 	qint32 NumTabs;
@@ -2281,13 +2281,13 @@ void lcMainWindow::RestoreTabLayout(const QByteArray& TabLayout)
 		QString ModelName;
 		DataStream >> ModelName;
 
-		lcModel* Model = lcGetActiveProject()->GetModel(ModelName);
-		lcModelTabWidget* TabWidget = nullptr;
+		swModel* Model = swGetActiveProject()->GetModel(ModelName);
+		swModelTabWidget* TabWidget = nullptr;
 
 		if (Model)
 		{
 			SetCurrentModelTab(Model, false);
-			TabWidget = (lcModelTabWidget*)mModelTabWidget->widget(mModelTabWidget->count() - 1);
+			TabWidget = (swModelTabWidget*)mModelTabWidget->widget(mModelTabWidget->count() - 1);
 		}
 
 		QWidget* ActiveWidget = nullptr;
@@ -2308,15 +2308,15 @@ void lcMainWindow::RestoreTabLayout(const QByteArray& TabLayout)
 				qint32 CameraType;
 				DataStream >> CameraType;
 
-				lcView* CurrentView = nullptr;
+				swView* CurrentView = nullptr;
 
 				if (ParentWidget)
-					CurrentView = ((lcViewWidget*)ParentWidget)->GetView();
+					CurrentView = ((swViewWidget*)ParentWidget)->GetView();
 
 				if (CameraType == 0)
 				{
 					float FoV, ZNear, ZFar;
-					lcVector3 Position, TargetPosition, UpVector;
+					swVector3 Position, TargetPosition, UpVector;
 
 					DataStream >> FoV;
 					DataStream >> ZNear;
@@ -2327,7 +2327,7 @@ void lcMainWindow::RestoreTabLayout(const QByteArray& TabLayout)
 
 					if (CurrentView)
 					{
-						lcCamera* Camera = CurrentView->GetCamera();
+						swCamera* Camera = CurrentView->GetCamera();
 						if (!std::isnan(FoV))
 							Camera->m_fovy = FoV;
 						if (!std::isnan(ZNear))
@@ -2341,7 +2341,7 @@ void lcMainWindow::RestoreTabLayout(const QByteArray& TabLayout)
 							Camera->SetUpVector(UpVector, 1, false);
 						}
 						Camera->UpdatePosition(1);
-						Camera->ExpandFarPlane(CurrentView->GetModel()->GetPiecesBoundingBoxPoints(lcGeometryBoundsMode::IncludeFallback));
+						Camera->ExpandFarPlane(CurrentView->GetModel()->GetPiecesBoundingBoxPoints(swGeometryBoundsMode::IncludeFallback));
 					}
 				}
 				else
@@ -2388,18 +2388,18 @@ void lcMainWindow::RestoreTabLayout(const QByteArray& TabLayout)
 	}
 
 	if (!mModelTabWidget->count())
-		lcGetActiveProject()->SetActiveModel(0, true);
+		swGetActiveProject()->SetActiveModel(0, true);
 	else
-		lcGetActiveProject()->SetActiveModel(CurrentTabName, true);
+		swGetActiveProject()->SetActiveModel(CurrentTabName, true);
 }
 
-void lcMainWindow::RemoveAllModelTabs()
+void swMainWindow::RemoveAllModelTabs()
 {
 	while (mModelTabWidget->count())
 		delete mModelTabWidget->widget(0);
 }
 
-void lcMainWindow::CloseCurrentModelTab()
+void swMainWindow::CloseCurrentModelTab()
 {
 	if (mModelTabWidget->count() > 1)
 		delete mModelTabWidget->currentWidget();
@@ -2407,11 +2407,11 @@ void lcMainWindow::CloseCurrentModelTab()
 		NewProject();
 }
 
-void lcMainWindow::SetCurrentModelTab(lcModel* Model, bool AdjustFarPlane)
+void swMainWindow::SetCurrentModelTab(swModel* Model, bool AdjustFarPlane)
 {
 	for (int TabIdx = 0; TabIdx < mModelTabWidget->count(); TabIdx++)
 	{
-		lcModelTabWidget* TabWidget = (lcModelTabWidget*)mModelTabWidget->widget(TabIdx);
+		swModelTabWidget* TabWidget = (swModelTabWidget*)mModelTabWidget->widget(TabIdx);
 
 		if (TabWidget->GetModel() == Model)
 		{
@@ -2420,26 +2420,26 @@ void lcMainWindow::SetCurrentModelTab(lcModel* Model, bool AdjustFarPlane)
 		}
 	}
 
-	lcModelTabWidget* TabWidget = new lcModelTabWidget(Model);
+	swModelTabWidget* TabWidget = new swModelTabWidget(Model);
 	mModelTabWidget->addTab(TabWidget, Model->GetProperties().mFileName);
 
 	QVBoxLayout* CentralLayout = new QVBoxLayout(TabWidget);
 	CentralLayout->setContentsMargins(0, 0, 0, 0);
 
-	lcView* NewView = CreateView(Model);
-	lcViewWidget* ViewWidget = new lcViewWidget(TabWidget, NewView);
+	swView* NewView = CreateView(Model);
+	swViewWidget* ViewWidget = new swViewWidget(TabWidget, NewView);
 	CentralLayout->addWidget(ViewWidget);
 
 	mModelTabWidget->setCurrentWidget(TabWidget);
 
 	ViewWidget->show();
 	ViewWidget->setFocus();
-	NewView->ZoomExtents(lcGeometryBoundsMode::IncludeFallback, AdjustFarPlane);
+	NewView->ZoomExtents(swGeometryBoundsMode::IncludeFallback, AdjustFarPlane);
 }
 
-void lcMainWindow::AddView(lcView* View)
+void swMainWindow::AddView(swView* View)
 {
-	lcModelTabWidget* TabWidget = GetTabWidgetForModel(View->GetModel());
+	swModelTabWidget* TabWidget = GetTabWidgetForModel(View->GetModel());
 
 	if (!TabWidget)
 		return;
@@ -2448,22 +2448,22 @@ void lcMainWindow::AddView(lcView* View)
 		TabWidget->SetActiveView(View);
 }
 
-void lcMainWindow::RemoveView(lcView* View)
+void swMainWindow::RemoveView(swView* View)
 {
-	lcModelTabWidget* TabWidget = GetTabForView(View);
+	swModelTabWidget* TabWidget = GetTabForView(View);
 
 	if (TabWidget)
 		TabWidget->RemoveView(View);
 }
 
-void lcMainWindow::SetActiveView(lcView* ActiveView)
+void swMainWindow::SetActiveView(swView* ActiveView)
 {
-	lcModelTabWidget* TabWidget = GetTabForView(ActiveView);
+	swModelTabWidget* TabWidget = GetTabForView(ActiveView);
 
 	if (!TabWidget)
 		return;
 
-	lcView* CurrentActiveView = TabWidget->GetActiveView();
+	swView* CurrentActiveView = TabWidget->GetActiveView();
 
 	if (CurrentActiveView == ActiveView)
 		return;
@@ -2474,27 +2474,27 @@ void lcMainWindow::SetActiveView(lcView* ActiveView)
 	TabWidget->SetActiveView(ActiveView);
 }
 
-void lcMainWindow::SetTool(lcTool Tool)
+void swMainWindow::SetTool(swTool Tool)
 {
 	mTool = Tool;
 
-	QAction* Action = mActions[LC_EDIT_ACTION_FIRST + static_cast<int>(mTool)];
+	QAction* Action = mActions[SW_EDIT_ACTION_FIRST + static_cast<int>(mTool)];
 
 	if (Action)
 		Action->setChecked(true);
 
-	lcView::UpdateAllViews();
+	swView::UpdateAllViews();
 }
 
-void lcMainWindow::ToggleFirstPieceAtOrigin()
+void swMainWindow::ToggleFirstPieceAtOrigin()
 {
-	lcGetPreferences().mFirstPieceAtOrigin = !lcGetPreferences().mFirstPieceAtOrigin;
-	lcSetProfileInt(LC_PROFILE_FIRST_PIECE_AT_ORIGIN, lcGetPreferences().mFirstPieceAtOrigin);
+	swGetPreferences().mFirstPieceAtOrigin = !swGetPreferences().mFirstPieceAtOrigin;
+	swSetProfileInt(SW_PROFILE_FIRST_PIECE_AT_ORIGIN, swGetPreferences().mFirstPieceAtOrigin);
 
-	mActions[LC_PIECE_TOGGLE_FIRST_AT_ORIGIN]->setChecked(lcGetPreferences().mFirstPieceAtOrigin);
+	mActions[SW_PIECE_TOGGLE_FIRST_AT_ORIGIN]->setChecked(swGetPreferences().mFirstPieceAtOrigin);
 }
 
-void lcMainWindow::SetColorIndex(int ColorIndex)
+void swMainWindow::SetColorIndex(int ColorIndex)
 {
 	mColorIndex = ColorIndex;
 
@@ -2505,18 +2505,18 @@ void lcMainWindow::SetColorIndex(int ColorIndex)
 	UpdateColor();
 }
 
-int lcMainWindow::GetInsertColorIndex() const
+int swMainWindow::GetInsertColorIndex() const
 {
-	switch (lcGetPreferences().mInsertColorMode)
+	switch (swGetPreferences().mInsertColorMode)
 	{
-	case lcInsertColorMode::CurrentColor:
+	case swInsertColorMode::CurrentColor:
 		break;
 
-	case lcInsertColorMode::SelectedPieceColor:
+	case swInsertColorMode::SelectedPieceColor:
 		// Selecting a piece already made its color the current color.
 		break;
 
-	case lcInsertColorMode::LastInsertedColor:
+	case swInsertColorMode::LastInsertedColor:
 		if (mLastInsertedColorIndex != -1)
 			return mLastInsertedColorIndex;
 		break;
@@ -2525,28 +2525,28 @@ int lcMainWindow::GetInsertColorIndex() const
 	return mColorIndex;
 }
 
-void lcMainWindow::SetLastInsertedColorIndex(int ColorIndex)
+void swMainWindow::SetLastInsertedColorIndex(int ColorIndex)
 {
 	mLastInsertedColorIndex = ColorIndex;
 
 	UpdatePiecesColor();
 }
 
-void lcMainWindow::SetInsertColorMode(lcInsertColorMode InsertColorMode)
+void swMainWindow::SetInsertColorMode(swInsertColorMode InsertColorMode)
 {
-	lcGetPreferences().mInsertColorMode = InsertColorMode;
-	lcSetProfileInt(LC_PROFILE_INSERT_COLOR_MODE, static_cast<int>(InsertColorMode));
+	swGetPreferences().mInsertColorMode = InsertColorMode;
+	swSetProfileInt(SW_PROFILE_INSERT_COLOR_MODE, static_cast<int>(InsertColorMode));
 
 	UpdatePiecesColor();
 }
 
-void lcMainWindow::ColorOptionsMenuAboutToShow()
+void swMainWindow::ColorOptionsMenuAboutToShow()
 {
 	QMenu* Menu = qobject_cast<QMenu*>(sender());
 	Menu->clear();
 
 	// Each entry runs the matching command so keyboard shortcuts and the menu stay in sync.
-	auto AddCommand = [this](QMenu* TargetMenu, const QString& Text, lcCommandId CommandId, bool Checked)
+	auto AddCommand = [this](QMenu* TargetMenu, const QString& Text, swCommandId CommandId, bool Checked)
 	{
 		QAction* Action = TargetMenu->addAction(Text, this, [this, CommandId]()
 		{
@@ -2561,60 +2561,60 @@ void lcMainWindow::ColorOptionsMenuAboutToShow()
 		return Action;
 	};
 
-	const lcInsertColorMode InsertColorMode = lcGetPreferences().mInsertColorMode;
+	const swInsertColorMode InsertColorMode = swGetPreferences().mInsertColorMode;
 
 	QMenu* InsertMenu = Menu->addMenu(tr("Insert Color"));
 	QActionGroup* InsertGroup = new QActionGroup(InsertMenu);
-	InsertGroup->addAction(AddCommand(InsertMenu, tr("Current Color"), LC_PIECE_INSERT_COLOR_CURRENT, InsertColorMode == lcInsertColorMode::CurrentColor));
-	InsertGroup->addAction(AddCommand(InsertMenu, tr("Selected Piece Color"), LC_PIECE_INSERT_COLOR_SELECTED, InsertColorMode == lcInsertColorMode::SelectedPieceColor));
-	InsertGroup->addAction(AddCommand(InsertMenu, tr("Last Inserted Piece Color"), LC_PIECE_INSERT_COLOR_LAST_INSERTED, InsertColorMode == lcInsertColorMode::LastInsertedColor));
+	InsertGroup->addAction(AddCommand(InsertMenu, tr("Current Color"), SW_PIECE_INSERT_COLOR_CURRENT, InsertColorMode == swInsertColorMode::CurrentColor));
+	InsertGroup->addAction(AddCommand(InsertMenu, tr("Selected Piece Color"), SW_PIECE_INSERT_COLOR_SELECTED, InsertColorMode == swInsertColorMode::SelectedPieceColor));
+	InsertGroup->addAction(AddCommand(InsertMenu, tr("Last Inserted Piece Color"), SW_PIECE_INSERT_COLOR_LAST_INSERTED, InsertColorMode == swInsertColorMode::LastInsertedColor));
 
-	AddCommand(Menu, tr("Lock Pieces Color"), LC_VIEW_PIECES_TOGGLE_LOCK_COLOR, mPartSelectionWidget && mPartSelectionWidget->IsColorLocked());
+	AddCommand(Menu, tr("Lock Pieces Color"), SW_VIEW_PIECES_TOGGLE_LOCK_COLOR, mPartSelectionWidget && mPartSelectionWidget->IsColorLocked());
 }
 
-void lcMainWindow::UpdatePiecesColor()
+void swMainWindow::UpdatePiecesColor()
 {
 	// The pieces list shows the color new pieces will be inserted with, unless its color is locked.
 	if (mPartSelectionWidget)
 		mPartSelectionWidget->SetColorIndex(GetInsertColorIndex());
 }
 
-void lcMainWindow::SetMoveSnapEnabled(bool Enabled)
+void swMainWindow::SetMoveSnapEnabled(bool Enabled)
 {
 	mMoveSnapEnabled = Enabled;
 	UpdateSnap();
 }
 
-void lcMainWindow::SetAngleSnapEnabled(bool Enabled)
+void swMainWindow::SetAngleSnapEnabled(bool Enabled)
 {
 	mAngleSnapEnabled = Enabled;
 	UpdateSnap();
 }
 
-QString lcMainWindow::GetAngleSnapText() const
+QString swMainWindow::GetAngleSnapText() const
 {
-	return mAngleSnapEnabled ? lcFormatDoubleLocalized(GetAngleSnap(), locale(), 'g', 6) : tr("None");
+	return mAngleSnapEnabled ? swFormatDoubleLocalized(GetAngleSnap(), locale(), 'g', 6) : tr("None");
 }
 
-void lcMainWindow::SetMoveXYSnapIndex(int Index)
+void swMainWindow::SetMoveXYSnapIndex(int Index)
 {
 	mMoveXYSnapIndex = Index;
 	UpdateSnap();
 }
 
-void lcMainWindow::SetMoveZSnapIndex(int Index)
+void swMainWindow::SetMoveZSnapIndex(int Index)
 {
 	mMoveZSnapIndex = Index;
 	UpdateSnap();
 }
 
-void lcMainWindow::SetAngleSnapIndex(int Index)
+void swMainWindow::SetAngleSnapIndex(int Index)
 {
 	mAngleSnapIndex = Index;
 	UpdateSnap();
 }
 
-void lcMainWindow::SetCustomAngleSnap()
+void swMainWindow::SetCustomAngleSnap()
 {
 	bool Ok = false;
 	const double Angle = QInputDialog::getDouble(this, tr("Custom Rotation Snap"), tr("Snap angle in degrees:"), mAngleSnapCustom, 0.01, 360.0, 2, &Ok);
@@ -2627,31 +2627,31 @@ void lcMainWindow::SetCustomAngleSnap()
 
 	// Keep at most two decimals.
 	mAngleSnapCustom = static_cast<float>(qRound(Angle * 100.0) / 100.0);
-	lcSetProfileFloat(LC_PROFILE_ANGLE_SNAP_CUSTOM, mAngleSnapCustom);
+	swSetProfileFloat(SW_PROFILE_ANGLE_SNAP_CUSTOM, mAngleSnapCustom);
 
-	mActions[LC_EDIT_SNAP_ANGLE_CUSTOM]->setText(tr("Custom (%1 Degrees)...").arg(lcFormatDoubleLocalized(mAngleSnapCustom, locale(), 'g', 6)));
+	mActions[SW_EDIT_SNAP_ANGLE_CUSTOM]->setText(tr("Custom (%1 Degrees)...").arg(swFormatDoubleLocalized(mAngleSnapCustom, locale(), 'g', 6)));
 
-	SetAngleSnapIndex(LC_EDIT_SNAP_ANGLE_CUSTOM - LC_EDIT_SNAP_ANGLE0);
+	SetAngleSnapIndex(SW_EDIT_SNAP_ANGLE_CUSTOM - SW_EDIT_SNAP_ANGLE0);
 }
 
-void lcMainWindow::SetRelativeTransform(bool RelativeTransform)
+void swMainWindow::SetRelativeTransform(bool RelativeTransform)
 {
 	mRelativeTransform = RelativeTransform;
 
 	UpdateLockSnap();
-	lcView::UpdateAllViews();
+	swView::UpdateAllViews();
 }
 
-void lcMainWindow::SetSeparateTransform(bool SelectionTransform)
+void swMainWindow::SetSeparateTransform(bool SelectionTransform)
 {
 	mLocalTransform = SelectionTransform;
 
 	UpdateLockSnap();
 }
 
-void lcMainWindow::SetTransformType(lcTransformType TransformType)
+void swMainWindow::SetTransformType(swTransformType TransformType)
 {
-	if (TransformType < lcTransformType::First || TransformType >= lcTransformType::Count)
+	if (TransformType < swTransformType::First || TransformType >= swTransformType::Count)
 		return;
 
 	mTransformType = TransformType;
@@ -2664,43 +2664,43 @@ void lcMainWindow::SetTransformType(lcTransformType TransformType)
 		":/resources/edit_transform_relative_rotation.png"
 	};
 
-	LC_ARRAY_SIZE_CHECK(IconNames, lcTransformType::Count);
+	SW_ARRAY_SIZE_CHECK(IconNames, swTransformType::Count);
 
 	int TransformIndex = static_cast<int>(TransformType);
-	mActions[LC_EDIT_TRANSFORM_ABSOLUTE_TRANSLATION + TransformIndex]->setChecked(true);
-	mActions[LC_EDIT_TRANSFORM]->setIcon(QIcon(IconNames[TransformIndex]));
+	mActions[SW_EDIT_TRANSFORM_ABSOLUTE_TRANSLATION + TransformIndex]->setChecked(true);
+	mActions[SW_EDIT_TRANSFORM]->setIcon(QIcon(IconNames[TransformIndex]));
 }
 
-void lcMainWindow::SetInsertPieceData(lcPieceData* PieceData)
+void swMainWindow::SetInsertPieceData(swPieceData* PieceData)
 {
-	mInsertPieceData = lcPieceDataRef(PieceData);
+	mInsertPieceData = swPieceDataRef(PieceData);
 
 	if (mInsertPieceData)
-		lcGetPiecesLibrary()->RequestPieceDataLoad(mInsertPieceData.Get(), lcLoadPriority::Normal);
+		swGetPiecesLibrary()->RequestPieceDataLoad(mInsertPieceData.Get(), swLoadPriority::Normal);
 }
 
-std::optional<lcVector3> lcMainWindow::GetTransformAmount()
+std::optional<swVector3> swMainWindow::GetTransformAmount()
 {
-	return lcVector3(mTransformXEdit->value(), mTransformYEdit->value(), mTransformZEdit->value());
+	return swVector3(mTransformXEdit->value(), mTransformYEdit->value(), mTransformZEdit->value());
 }
 
-void lcMainWindow::SplitView(Qt::Orientation Orientation)
+void swMainWindow::SplitView(Qt::Orientation Orientation)
 {
 	QWidget* Focus = focusWidget();
 
-	if (Focus->metaObject() != &lcViewWidget::staticMetaObject)
+	if (Focus->metaObject() != &swViewWidget::staticMetaObject)
 		return;
 
 	QWidget* Parent = Focus->parentWidget();
 	QSplitter* Splitter;
 	QList<int> Sizes;
 
-	if (Parent->metaObject() == &lcModelTabWidget::staticMetaObject)
+	if (Parent->metaObject() == &swModelTabWidget::staticMetaObject)
 	{
 		Splitter = new QSplitter(Orientation, Parent);
 		Parent->layout()->addWidget(Splitter);
 		Splitter->addWidget(Focus);
-		Splitter->addWidget(new lcViewWidget(mModelTabWidget->currentWidget(), CreateView(GetCurrentTabModel())));
+		Splitter->addWidget(new swViewWidget(mModelTabWidget->currentWidget(), CreateView(GetCurrentTabModel())));
 	}
 	else
 	{
@@ -2711,7 +2711,7 @@ void lcMainWindow::SplitView(Qt::Orientation Orientation)
 		Splitter = new QSplitter(Orientation, Parent);
 		ParentSplitter->insertWidget(FocusIndex, Splitter);
 		Splitter->addWidget(Focus);
-		Splitter->addWidget(new lcViewWidget(mModelTabWidget->currentWidget(), CreateView(GetCurrentTabModel())));
+		Splitter->addWidget(new swViewWidget(mModelTabWidget->currentWidget(), CreateView(GetCurrentTabModel())));
 
 		ParentSplitter->setSizes(Sizes);
 	}
@@ -2723,26 +2723,26 @@ void lcMainWindow::SplitView(Qt::Orientation Orientation)
 	Focus->setFocus();
 }
 
-void lcMainWindow::SplitHorizontal()
+void swMainWindow::SplitHorizontal()
 {
 	SplitView(Qt::Vertical);
 }
 
-void lcMainWindow::SplitVertical()
+void swMainWindow::SplitVertical()
 {
 	SplitView(Qt::Horizontal);
 }
 
-void lcMainWindow::RemoveActiveView()
+void swMainWindow::RemoveActiveView()
 {
 	QWidget* Focus = focusWidget();
 
-	if (Focus->metaObject() != &lcViewWidget::staticMetaObject)
+	if (Focus->metaObject() != &swViewWidget::staticMetaObject)
 		return;
 
 	QWidget* Parent = Focus->parentWidget();
 
-	if (Parent->metaObject() == &lcModelTabWidget::staticMetaObject)
+	if (Parent->metaObject() == &swModelTabWidget::staticMetaObject)
 		return;
 
 	QWidget* ParentParentWidget = Parent->parentWidget();
@@ -2750,7 +2750,7 @@ void lcMainWindow::RemoveActiveView()
 	int FocusIndex = ParentSplitter->indexOf(Focus);
 	QWidget* OtherWidget = ParentSplitter->widget(!FocusIndex);
 
-	if (ParentParentWidget->metaObject() == &lcModelTabWidget::staticMetaObject)
+	if (ParentParentWidget->metaObject() == &swModelTabWidget::staticMetaObject)
 	{
 		QLayout* CentralLayout = ParentParentWidget->layout();
 
@@ -2771,9 +2771,9 @@ void lcMainWindow::RemoveActiveView()
 
 	Parent->deleteLater();
 
-	if (OtherWidget->metaObject() != &lcViewWidget::staticMetaObject)
+	if (OtherWidget->metaObject() != &swViewWidget::staticMetaObject)
 	{
-		lcModelTabWidget* TabWidget = (lcModelTabWidget*)mModelTabWidget->currentWidget();
+		swModelTabWidget* TabWidget = (swModelTabWidget*)mModelTabWidget->currentWidget();
 
 		if (TabWidget)
 			OtherWidget = TabWidget->GetAnyViewWidget();
@@ -2782,9 +2782,9 @@ void lcMainWindow::RemoveActiveView()
 	OtherWidget->setFocus();
 }
 
-void lcMainWindow::ResetViews()
+void swMainWindow::ResetViews()
 {
-	lcModelTabWidget* TabWidget = (lcModelTabWidget*)mModelTabWidget->currentWidget();
+	swModelTabWidget* TabWidget = (swModelTabWidget*)mModelTabWidget->currentWidget();
 
 	if (!TabWidget)
 		return;
@@ -2793,16 +2793,16 @@ void lcMainWindow::ResetViews()
 	QWidget* TopWidget = TabLayout->itemAt(0)->widget();
 	TopWidget->deleteLater();
 
-	lcView* NewView = CreateView(TabWidget->GetModel());
-	lcViewWidget* ViewWidget = new lcViewWidget(TabWidget, NewView);
+	swView* NewView = CreateView(TabWidget->GetModel());
+	swViewWidget* ViewWidget = new swViewWidget(TabWidget, NewView);
 	TabLayout->addWidget(ViewWidget);
 
 	ViewWidget->show();
 	ViewWidget->setFocus();
-	NewView->ZoomExtents(lcGeometryBoundsMode::IncludeFallback, true);
+	NewView->ZoomExtents(swGeometryBoundsMode::IncludeFallback, true);
 }
 
-void lcMainWindow::ToggleDockWidget(QWidget* DockWidget)
+void swMainWindow::ToggleDockWidget(QWidget* DockWidget)
 {
 	if (DockWidget->isHidden())
 	{
@@ -2813,26 +2813,26 @@ void lcMainWindow::ToggleDockWidget(QWidget* DockWidget)
 		DockWidget->close();
 }
 
-void lcMainWindow::TogglePrintPreview()
+void swMainWindow::TogglePrintPreview()
 {
 #ifndef QT_NO_PRINTER
 	// todo: print preview inside main window
 
-	lcGetActiveProject()->GetMainModel()->WaitForAssets();
+	swGetActiveProject()->GetMainModel()->WaitForAssets();
 
-	lcInstructions* Instructions = lcGetActiveProject()->GetInstructions();
+	swInstructions* Instructions = swGetActiveProject()->GetInstructions();
 	Instructions->Update();
 
 	QPrinter Printer(QPrinter::ScreenResolution);
-	lcSetupInstructionsPrinter(Instructions, &Printer);
+	swSetupInstructionsPrinter(Instructions, &Printer);
 
 	QPrintPreviewDialog Preview(&Printer, this);
-	connect(&Preview, &QPrintPreviewDialog::paintRequested, this, &lcMainWindow::Print);
+	connect(&Preview, &QPrintPreviewDialog::paintRequested, this, &swMainWindow::Print);
 	Preview.exec();
 #endif
 }
 
-void lcMainWindow::ToggleFullScreen()
+void swMainWindow::ToggleFullScreen()
 {
 	// todo: hide toolbars and menu
 	// todo: create fullscreen toolbar or support esc key to go back
@@ -2842,7 +2842,7 @@ void lcMainWindow::ToggleFullScreen()
 		showFullScreen();
 }
 
-void lcMainWindow::AddRecentFile(const QString& FileName)
+void swMainWindow::AddRecentFile(const QString& FileName)
 {
 	QString SavedName = FileName;
 	int MaxRecentFiles = static_cast<int>(mRecentFiles.size());
@@ -2854,13 +2854,13 @@ void lcMainWindow::AddRecentFile(const QString& FileName)
 		if (QFileInfo(mRecentFiles[FileIndex]) == FileInfo)
 			break;
 
-	for (FileIndex = lcMin(FileIndex, MaxRecentFiles - 1); FileIndex > 0; FileIndex--)
+	for (FileIndex = swMin(FileIndex, MaxRecentFiles - 1); FileIndex > 0; FileIndex--)
 		mRecentFiles[FileIndex] = mRecentFiles[FileIndex - 1];
 
 	mRecentFiles[0] = SavedName;
 }
 
-void lcMainWindow::RemoveRecentFile(size_t FileIndex)
+void swMainWindow::RemoveRecentFile(size_t FileIndex)
 {
 	for (; FileIndex < mRecentFiles.size() - 1; FileIndex++)
 		mRecentFiles[FileIndex] = mRecentFiles[FileIndex + 1];
@@ -2868,13 +2868,13 @@ void lcMainWindow::RemoveRecentFile(size_t FileIndex)
 	mRecentFiles[mRecentFiles.size() - 1].clear();
 }
 
-void lcMainWindow::UpdateSelectedObjects(bool SelectionChanged)
+void swMainWindow::UpdateSelectedObjects(bool SelectionChanged)
 {
 	int Flags = 0;
-	std::vector<lcObject*> Selection;
-	lcObject* Focus = nullptr;
+	std::vector<swObject*> Selection;
+	swObject* Focus = nullptr;
 
-	lcModel* ActiveModel = GetActiveModel();
+	swModel* ActiveModel = GetActiveModel();
 	if (ActiveModel)
 		ActiveModel->GetSelectionInformation(&Flags, Selection, &Focus);
 
@@ -2883,72 +2883,72 @@ void lcMainWindow::UpdateSelectedObjects(bool SelectionChanged)
 		mTimelineWidget->UpdateSelection();
 
 		// Selecting a piece makes its color current; picking a color afterwards overrides it.
-		if (lcGetPreferences().mInsertColorMode == lcInsertColorMode::SelectedPieceColor)
+		if (swGetPreferences().mInsertColorMode == swInsertColorMode::SelectedPieceColor)
 		{
-			lcObject* SelectedPiece = (Focus && Focus->IsPiece()) ? Focus : nullptr;
+			swObject* SelectedPiece = (Focus && Focus->IsPiece()) ? Focus : nullptr;
 
 			for (size_t ObjectIndex = 0; !SelectedPiece && ObjectIndex < Selection.size(); ObjectIndex++)
 				if (Selection[ObjectIndex]->IsPiece())
 					SelectedPiece = Selection[ObjectIndex];
 
-			if (SelectedPiece && static_cast<lcPiece*>(SelectedPiece)->GetColorIndex() != mColorIndex)
-				SetColorIndex(static_cast<lcPiece*>(SelectedPiece)->GetColorIndex());
+			if (SelectedPiece && static_cast<swPiece*>(SelectedPiece)->GetColorIndex() != mColorIndex)
+				SetColorIndex(static_cast<swPiece*>(SelectedPiece)->GetColorIndex());
 		}
 
-		mActions[LC_EDIT_CUT]->setEnabled(Flags & LC_SEL_SELECTED);
-		mActions[LC_EDIT_COPY]->setEnabled(Flags & LC_SEL_SELECTED);
-		mActions[LC_EDIT_FIND]->setEnabled((Flags & LC_SEL_NO_PIECES) == 0);
-		mActions[LC_EDIT_FIND_NEXT]->setEnabled((Flags & LC_SEL_NO_PIECES) == 0);
-		mActions[LC_EDIT_FIND_PREVIOUS]->setEnabled((Flags & LC_SEL_NO_PIECES) == 0);
-		mActions[LC_EDIT_FIND_ALL]->setEnabled((Flags & LC_SEL_NO_PIECES) == 0);
-		mActions[LC_EDIT_REPLACE]->setEnabled((Flags & LC_SEL_NO_PIECES) == 0);
-		mActions[LC_EDIT_REPLACE_NEXT]->setEnabled((Flags & LC_SEL_NO_PIECES) == 0);
-		mActions[LC_EDIT_REPLACE_ALL]->setEnabled((Flags & LC_SEL_NO_PIECES) == 0);
-		mActions[LC_EDIT_SELECT_INVERT]->setEnabled((Flags & LC_SEL_NO_PIECES) == 0);
-		mActions[LC_EDIT_SELECT_BY_NAME]->setEnabled((Flags & LC_SEL_NO_PIECES) == 0);
-		mActions[LC_EDIT_SELECT_NONE]->setEnabled(Flags & LC_SEL_SELECTED);
-		mActions[LC_EDIT_SELECT_ALL]->setEnabled(Flags & LC_SEL_UNSELECTED);
+		mActions[SW_EDIT_CUT]->setEnabled(Flags & SW_SEL_SELECTED);
+		mActions[SW_EDIT_COPY]->setEnabled(Flags & SW_SEL_SELECTED);
+		mActions[SW_EDIT_FIND]->setEnabled((Flags & SW_SEL_NO_PIECES) == 0);
+		mActions[SW_EDIT_FIND_NEXT]->setEnabled((Flags & SW_SEL_NO_PIECES) == 0);
+		mActions[SW_EDIT_FIND_PREVIOUS]->setEnabled((Flags & SW_SEL_NO_PIECES) == 0);
+		mActions[SW_EDIT_FIND_ALL]->setEnabled((Flags & SW_SEL_NO_PIECES) == 0);
+		mActions[SW_EDIT_REPLACE]->setEnabled((Flags & SW_SEL_NO_PIECES) == 0);
+		mActions[SW_EDIT_REPLACE_NEXT]->setEnabled((Flags & SW_SEL_NO_PIECES) == 0);
+		mActions[SW_EDIT_REPLACE_ALL]->setEnabled((Flags & SW_SEL_NO_PIECES) == 0);
+		mActions[SW_EDIT_SELECT_INVERT]->setEnabled((Flags & SW_SEL_NO_PIECES) == 0);
+		mActions[SW_EDIT_SELECT_BY_NAME]->setEnabled((Flags & SW_SEL_NO_PIECES) == 0);
+		mActions[SW_EDIT_SELECT_NONE]->setEnabled(Flags & SW_SEL_SELECTED);
+		mActions[SW_EDIT_SELECT_ALL]->setEnabled(Flags & SW_SEL_UNSELECTED);
 
-		mActions[LC_PIECE_DELETE]->setEnabled(Flags & LC_SEL_SELECTED);
-		mActions[LC_PIECE_DUPLICATE]->setEnabled(Flags & LC_SEL_SELECTED);
-		mActions[LC_PIECE_PAINT_SELECTED]->setEnabled(Flags & LC_SEL_PIECE);
-		mActions[LC_PIECE_RESET_PIVOT_POINT]->setEnabled(Flags & LC_SEL_SELECTED);
-		mActions[LC_PIECE_REMOVE_KEY_FRAMES]->setEnabled(Flags & LC_SEL_SELECTED);
-		mActions[LC_PIECE_ARRAY]->setEnabled(Flags & LC_SEL_PIECE);
-		mActions[LC_PIECE_CONTROL_POINT_INSERT]->setEnabled(Flags & LC_SEL_CAN_ADD_CONTROL_POINT);
-		mActions[LC_PIECE_CONTROL_POINT_REMOVE]->setEnabled(Flags & LC_SEL_CAN_REMOVE_CONTROL_POINT);
-		mActions[LC_PIECE_TRAIN_TRACK_FOCUS_NEXT]->setEnabled(Flags & LC_SEL_TRAIN_TRACK_VISIBLE);
-		mActions[LC_PIECE_TRAIN_TRACK_FOCUS_PREVIOUS]->setEnabled(Flags & LC_SEL_TRAIN_TRACK_VISIBLE);
-		mActions[LC_PIECE_TRAIN_TRACK_ROTATE]->setEnabled(Flags & LC_SEL_TRAIN_TRACK_VISIBLE);
-		mActions[LC_PIECE_HIDE_SELECTED]->setEnabled(Flags & LC_SEL_VISIBLE_SELECTED);
-		mActions[LC_PIECE_HIDE_UNSELECTED]->setEnabled(Flags & LC_SEL_UNSELECTED);
-		mActions[LC_PIECE_UNHIDE_SELECTED]->setEnabled(Flags & LC_SEL_HIDDEN_SELECTED);
-		mActions[LC_PIECE_UNHIDE_ALL]->setEnabled(Flags & LC_SEL_HIDDEN);
-		mActions[LC_PIECE_VIEW_SELECTED_MODEL]->setEnabled(Flags & LC_SEL_MODEL_SELECTED);
-		mActions[LC_PIECE_MOVE_SELECTION_TO_MODEL]->setEnabled(Flags & LC_SEL_PIECE);
-		mActions[LC_PIECE_INLINE_SELECTED_MODELS]->setEnabled(Flags & LC_SEL_MODEL_SELECTED);
-		mActions[LC_PIECE_EDIT_SELECTED_SUBMODEL]->setEnabled(Flags & LC_SEL_MODEL_SELECTED);
-		mActions[LC_PIECE_GROUP]->setEnabled(Flags & LC_SEL_CAN_GROUP);
-		mActions[LC_PIECE_UNGROUP]->setEnabled(Flags & LC_SEL_GROUPED);
-		mActions[LC_PIECE_GROUP_ADD]->setEnabled((Flags & (LC_SEL_GROUPED | LC_SEL_FOCUS_GROUPED)) == LC_SEL_GROUPED);
-		mActions[LC_PIECE_GROUP_REMOVE]->setEnabled(Flags & LC_SEL_FOCUS_GROUPED);
-		mActions[LC_PIECE_GROUP_EDIT]->setEnabled((Flags & LC_SEL_NO_PIECES) == 0);
-		mActions[LC_PIECE_SHOW_EARLIER]->setEnabled(Flags & LC_SEL_PIECE); // FIXME: disable if current step is 1
-		mActions[LC_PIECE_SHOW_LATER]->setEnabled(Flags & LC_SEL_PIECE);
-		mActions[LC_TIMELINE_MOVE_SELECTION]->setEnabled(Flags & LC_SEL_PIECE);
-		mActions[LC_TIMELINE_MOVE_SELECTION_BEFORE]->setEnabled(Flags & LC_SEL_PIECE);
-		mActions[LC_TIMELINE_MOVE_SELECTION_AFTER]->setEnabled(Flags & LC_SEL_PIECE);
+		mActions[SW_PIECE_DELETE]->setEnabled(Flags & SW_SEL_SELECTED);
+		mActions[SW_PIECE_DUPLICATE]->setEnabled(Flags & SW_SEL_SELECTED);
+		mActions[SW_PIECE_PAINT_SELECTED]->setEnabled(Flags & SW_SEL_PIECE);
+		mActions[SW_PIECE_RESET_PIVOT_POINT]->setEnabled(Flags & SW_SEL_SELECTED);
+		mActions[SW_PIECE_REMOVE_KEY_FRAMES]->setEnabled(Flags & SW_SEL_SELECTED);
+		mActions[SW_PIECE_ARRAY]->setEnabled(Flags & SW_SEL_PIECE);
+		mActions[SW_PIECE_CONTROL_POINT_INSERT]->setEnabled(Flags & SW_SEL_CAN_ADD_CONTROL_POINT);
+		mActions[SW_PIECE_CONTROL_POINT_REMOVE]->setEnabled(Flags & SW_SEL_CAN_REMOVE_CONTROL_POINT);
+		mActions[SW_PIECE_TRAIN_TRACK_FOCUS_NEXT]->setEnabled(Flags & SW_SEL_TRAIN_TRACK_VISIBLE);
+		mActions[SW_PIECE_TRAIN_TRACK_FOCUS_PREVIOUS]->setEnabled(Flags & SW_SEL_TRAIN_TRACK_VISIBLE);
+		mActions[SW_PIECE_TRAIN_TRACK_ROTATE]->setEnabled(Flags & SW_SEL_TRAIN_TRACK_VISIBLE);
+		mActions[SW_PIECE_HIDE_SELECTED]->setEnabled(Flags & SW_SEL_VISIBLE_SELECTED);
+		mActions[SW_PIECE_HIDE_UNSELECTED]->setEnabled(Flags & SW_SEL_UNSELECTED);
+		mActions[SW_PIECE_UNHIDE_SELECTED]->setEnabled(Flags & SW_SEL_HIDDEN_SELECTED);
+		mActions[SW_PIECE_UNHIDE_ALL]->setEnabled(Flags & SW_SEL_HIDDEN);
+		mActions[SW_PIECE_VIEW_SELECTED_MODEL]->setEnabled(Flags & SW_SEL_MODEL_SELECTED);
+		mActions[SW_PIECE_MOVE_SELECTION_TO_MODEL]->setEnabled(Flags & SW_SEL_PIECE);
+		mActions[SW_PIECE_INLINE_SELECTED_MODELS]->setEnabled(Flags & SW_SEL_MODEL_SELECTED);
+		mActions[SW_PIECE_EDIT_SELECTED_SUBMODEL]->setEnabled(Flags & SW_SEL_MODEL_SELECTED);
+		mActions[SW_PIECE_GROUP]->setEnabled(Flags & SW_SEL_CAN_GROUP);
+		mActions[SW_PIECE_UNGROUP]->setEnabled(Flags & SW_SEL_GROUPED);
+		mActions[SW_PIECE_GROUP_ADD]->setEnabled((Flags & (SW_SEL_GROUPED | SW_SEL_FOCUS_GROUPED)) == SW_SEL_GROUPED);
+		mActions[SW_PIECE_GROUP_REMOVE]->setEnabled(Flags & SW_SEL_FOCUS_GROUPED);
+		mActions[SW_PIECE_GROUP_EDIT]->setEnabled((Flags & SW_SEL_NO_PIECES) == 0);
+		mActions[SW_PIECE_SHOW_EARLIER]->setEnabled(Flags & SW_SEL_PIECE); // FIXME: disable if current step is 1
+		mActions[SW_PIECE_SHOW_LATER]->setEnabled(Flags & SW_SEL_PIECE);
+		mActions[SW_TIMELINE_MOVE_SELECTION]->setEnabled(Flags & SW_SEL_PIECE);
+		mActions[SW_TIMELINE_MOVE_SELECTION_BEFORE]->setEnabled(Flags & SW_SEL_PIECE);
+		mActions[SW_TIMELINE_MOVE_SELECTION_AFTER]->setEnabled(Flags & SW_SEL_PIECE);
 
-		mActions[LC_PIECE_EDIT_END_SUBMODEL]->setEnabled(GetCurrentTabModel() != ActiveModel);
+		mActions[SW_PIECE_EDIT_END_SUBMODEL]->setEnabled(GetCurrentTabModel() != ActiveModel);
 	}
 
 	mPropertiesWidget->Update(Selection, Focus);
 
 	if (Focus && Focus->IsPiece())
 	{
-		lcPiece* Piece = (lcPiece*)Focus;
+		swPiece* Piece = (swPiece*)Focus;
 		int ColorIndex = Piece->GetColorIndex();
-		quint32 ColorCode = lcGetColorCode(ColorIndex);
+		quint32 ColorCode = swGetColorCode(ColorIndex);
 
 		PreviewPiece(Piece->mPieceData.Get(), ColorCode, false);
 	}
@@ -2958,7 +2958,7 @@ void lcMainWindow::UpdateSelectedObjects(bool SelectionChanged)
 	if ((Selection.size() == 1) && Focus)
 	{
 		if (Focus->IsPiece())
-			Message = tr("%1 (ID: %2)").arg(Focus->GetName(), ((lcPiece*)Focus)->GetID());
+			Message = tr("%1 (ID: %2)").arg(Focus->GetName(), ((swPiece*)Focus)->GetID());
 		else
 			Message = Focus->GetName();
 	}
@@ -2968,9 +2968,9 @@ void lcMainWindow::UpdateSelectedObjects(bool SelectionChanged)
 
 		if (Focus && Focus->IsPiece())
 		{
-			Message.append(tr(" - %1 (ID: %2)").arg(Focus->GetName(), ((lcPiece*)Focus)->GetID()));
+			Message.append(tr(" - %1 (ID: %2)").arg(Focus->GetName(), ((swPiece*)Focus)->GetID()));
 
-			const lcGroup* Group = ((lcPiece*)Focus)->GetGroup();
+			const swGroup* Group = ((swPiece*)Focus)->GetGroup();
 			if (Group && !Group->mName.isEmpty())
 				Message.append(tr(" in group '%1'").arg(Group->mName));
 		}
@@ -2978,7 +2978,7 @@ void lcMainWindow::UpdateSelectedObjects(bool SelectionChanged)
 
 	mStatusBarLabel->setText(Message);
 
-	lcVector3 Position(0.0f, 0.0f, 0.0f);
+	swVector3 Position(0.0f, 0.0f, 0.0f);
 
 	if (ActiveModel)
 		ActiveModel->GetFocusPosition(Position);
@@ -3000,43 +3000,43 @@ void lcMainWindow::UpdateSelectedObjects(bool SelectionChanged)
 	mStatusPositionLabel->setText(Label);
 }
 
-void lcMainWindow::UpdateTimeline(bool Clear, bool UpdateItems)
+void swMainWindow::UpdateTimeline(bool Clear, bool UpdateItems)
 {
 	mTimelineWidget->Update(Clear, UpdateItems);
 
 	emit ModelContentsChanged();
 }
 
-void lcMainWindow::UpdatePaste(bool Enabled)
+void swMainWindow::UpdatePaste(bool Enabled)
 {
-	if (mActions[LC_EDIT_PASTE])
-		mActions[LC_EDIT_PASTE]->setEnabled(Enabled);
+	if (mActions[SW_EDIT_PASTE])
+		mActions[SW_EDIT_PASTE]->setEnabled(Enabled);
 
-	if (mActions[LC_EDIT_PASTE_STEPS])
-		mActions[LC_EDIT_PASTE_STEPS]->setEnabled(Enabled);
+	if (mActions[SW_EDIT_PASTE_STEPS])
+		mActions[SW_EDIT_PASTE_STEPS]->setEnabled(Enabled);
 }
 
-void lcMainWindow::UpdateCurrentStep()
+void swMainWindow::UpdateCurrentStep()
 {
-	lcModel* ActiveModel = GetActiveModel();
+	swModel* ActiveModel = GetActiveModel();
 
 	if (!ActiveModel)
 		return;
 
-	lcStep CurrentStep = ActiveModel->GetCurrentStep();
-	lcStep LastStep = ActiveModel->GetLastStep();
+	swStep CurrentStep = ActiveModel->GetCurrentStep();
+	swStep LastStep = ActiveModel->GetLastStep();
 
-	mActions[LC_VIEW_TIME_FIRST]->setEnabled(CurrentStep != 1);
-	mActions[LC_VIEW_TIME_PREVIOUS]->setEnabled(CurrentStep > 1);
-	mActions[LC_VIEW_TIME_NEXT]->setEnabled(CurrentStep < LC_STEP_MAX);
-	mActions[LC_VIEW_TIME_LAST]->setEnabled(CurrentStep != LastStep);
+	mActions[SW_VIEW_TIME_FIRST]->setEnabled(CurrentStep != 1);
+	mActions[SW_VIEW_TIME_PREVIOUS]->setEnabled(CurrentStep > 1);
+	mActions[SW_VIEW_TIME_NEXT]->setEnabled(CurrentStep < SW_STEP_MAX);
+	mActions[SW_VIEW_TIME_LAST]->setEnabled(CurrentStep != LastStep);
 
-	mStatusTimeLabel->setText(QString(tr("Step %1")).arg(lcFormatIntegerLocalized(CurrentStep, locale())));
+	mStatusTimeLabel->setText(QString(tr("Step %1")).arg(swFormatIntegerLocalized(CurrentStep, locale())));
 }
 
-void lcMainWindow::SetAddKeys(bool AddKeys)
+void swMainWindow::SetAddKeys(bool AddKeys)
 {
-	QAction* Action = mActions[LC_VIEW_TIME_ADD_KEYS];
+	QAction* Action = mActions[SW_VIEW_TIME_ADD_KEYS];
 
 	if (Action)
 		Action->setChecked(AddKeys);
@@ -3044,29 +3044,29 @@ void lcMainWindow::SetAddKeys(bool AddKeys)
 	mAddKeys = AddKeys;
 }
 
-void lcMainWindow::UpdateLockSnap()
+void swMainWindow::UpdateLockSnap()
 {
 	if (GetRelativeTransform())
-		mActions[LC_EDIT_TRANSFORM_RELATIVE]->setChecked(true);
+		mActions[SW_EDIT_TRANSFORM_RELATIVE]->setChecked(true);
 	else
-		mActions[LC_EDIT_TRANSFORM_ABSOLUTE]->setChecked(true);
+		mActions[SW_EDIT_TRANSFORM_ABSOLUTE]->setChecked(true);
 
 	if (GetSeparateTransform())
-		mActions[LC_EDIT_TRANSFORM_SEPARATELY]->setChecked(true);
+		mActions[SW_EDIT_TRANSFORM_SEPARATELY]->setChecked(true);
 	else
-		mActions[LC_EDIT_TRANSFORM_TOGETHER]->setChecked(true);
+		mActions[SW_EDIT_TRANSFORM_TOGETHER]->setChecked(true);
 
 	UpdateSnap();
 }
 
-void lcMainWindow::UpdateSnap()
+void swMainWindow::UpdateSnap()
 {
-	mActions[LC_EDIT_SNAP_MOVE_TOGGLE]->setChecked(mMoveSnapEnabled);
-	mActions[LC_EDIT_SNAP_ANGLE_TOGGLE]->setChecked(mAngleSnapEnabled);
-	mActions[LC_EDIT_SNAP_MOVE_XY0 + mMoveXYSnapIndex]->setChecked(true);
-	mActions[LC_EDIT_SNAP_MOVE_Z0 + mMoveZSnapIndex]->setChecked(true);
-	mActions[LC_EDIT_SNAP_ANGLE0 + mAngleSnapIndex]->setChecked(true);
-	mActions[LC_EDIT_SNAP_ORBIT_TOGGLE]->setChecked(mOrbitSnapEnabled);
+	mActions[SW_EDIT_SNAP_MOVE_TOGGLE]->setChecked(mMoveSnapEnabled);
+	mActions[SW_EDIT_SNAP_ANGLE_TOGGLE]->setChecked(mAngleSnapEnabled);
+	mActions[SW_EDIT_SNAP_MOVE_XY0 + mMoveXYSnapIndex]->setChecked(true);
+	mActions[SW_EDIT_SNAP_MOVE_Z0 + mMoveZSnapIndex]->setChecked(true);
+	mActions[SW_EDIT_SNAP_ANGLE0 + mAngleSnapIndex]->setChecked(true);
+	mActions[SW_EDIT_SNAP_ORBIT_TOGGLE]->setChecked(mOrbitSnapEnabled);
 
 	// Spell out the transform and snap settings from the toolbar, using the same names as their menus.
 	auto MenuText = [this](int CommandId)
@@ -3075,17 +3075,17 @@ void lcMainWindow::UpdateSnap()
 	};
 
 	const bool MoveSnapped = mMoveSnapEnabled && (mMoveXYSnapIndex || mMoveZSnapIndex);
-	const QString MoveXY = MoveSnapped ? MenuText(LC_EDIT_SNAP_MOVE_XY0 + mMoveXYSnapIndex) : tr("free");
-	const QString MoveZ = MoveSnapped ? MenuText(LC_EDIT_SNAP_MOVE_Z0 + mMoveZSnapIndex) : tr("free");
+	const QString MoveXY = MoveSnapped ? MenuText(SW_EDIT_SNAP_MOVE_XY0 + mMoveXYSnapIndex) : tr("free");
+	const QString MoveZ = MoveSnapped ? MenuText(SW_EDIT_SNAP_MOVE_Z0 + mMoveZSnapIndex) : tr("free");
 	const QString Axes = mRelativeTransform ? tr("relative") : tr("absolute");
-	const QString Angle = GetAngleSnap() != 0.0f ? tr("%1 deg.").arg(lcFormatDoubleLocalized(GetAngleSnap(), locale(), 'g', 6)) : tr("free");
+	const QString Angle = GetAngleSnap() != 0.0f ? tr("%1 deg.").arg(swFormatDoubleLocalized(GetAngleSnap(), locale(), 'g', 6)) : tr("free");
 	const QString Pivot = GetSeparateTransform() ? tr("separately") : tr("together");
 
 	mStatusSnapLabel->setText(tr("- Move XY: %1 Z: %2 - Axes: %3 - Rotate: %4 / %5 -").arg(MoveXY, MoveZ, Axes, Angle, Pivot));
 	mStatusSnapLabel->setToolTip(tr("Movement snap, rotation snap, transform axes and rotation pivot. Change them with the last buttons of the standard toolbar."));
 }
 
-void lcMainWindow::UpdateColor()
+void swMainWindow::UpdateColor()
 {
 	QPixmap Pixmap(14, 14);
 	Pixmap.fill(QColor::fromRgbF(gColorList[mColorIndex].Value[0], gColorList[mColorIndex].Value[1], gColorList[mColorIndex].Value[2]));
@@ -3096,10 +3096,10 @@ void lcMainWindow::UpdateColor()
 	mColorList->SetCurrentColor(mColorIndex);
 }
 
-void lcMainWindow::UpdateUndoRedo(const QString& UndoText, const QString& RedoText)
+void swMainWindow::UpdateUndoRedo(const QString& UndoText, const QString& RedoText)
 {
-	QAction* UndoAction = mActions[LC_EDIT_UNDO];
-	QAction* RedoAction = mActions[LC_EDIT_REDO];
+	QAction* UndoAction = mActions[SW_EDIT_UNDO];
+	QAction* RedoAction = mActions[SW_EDIT_REDO];
 
 	if (!UndoText.isEmpty())
 	{
@@ -3124,16 +3124,16 @@ void lcMainWindow::UpdateUndoRedo(const QString& UndoText, const QString& RedoTe
 	}
 }
 
-void lcMainWindow::ViewFocusReceived()
+void swMainWindow::ViewFocusReceived()
 {
-	SetActiveView(qobject_cast<lcView*>(sender()));
+	SetActiveView(qobject_cast<swView*>(sender()));
 }
 
-void lcMainWindow::FileMenuAboutToShow()
+void swMainWindow::FileMenuAboutToShow()
 {
-	for (int ActionIdx = LC_FILE_RECENT_FIRST; ActionIdx <= LC_FILE_RECENT_LAST; ActionIdx++)
+	for (int ActionIdx = SW_FILE_RECENT_FIRST; ActionIdx <= SW_FILE_RECENT_LAST; ActionIdx++)
 	{
-		int FileIdx = ActionIdx - LC_FILE_RECENT_FIRST;
+		int FileIdx = ActionIdx - SW_FILE_RECENT_FIRST;
 		QAction* Action = mActions[ActionIdx];
 
 		if (!mRecentFiles[FileIdx].isEmpty())
@@ -3148,17 +3148,17 @@ void lcMainWindow::FileMenuAboutToShow()
 	mActionFileRecentSeparator->setVisible(!mRecentFiles[0].isEmpty());
 }
 
-void lcMainWindow::CameraMenuAboutToShow()
+void swMainWindow::CameraMenuAboutToShow()
 {
-	const std::vector<std::unique_ptr<lcCamera>>& Cameras = lcGetActiveModel()->GetCameras();
-	lcView* ActiveView = GetActiveView();
-	const lcCamera* CurrentCamera = ActiveView ? ActiveView->GetCamera() : nullptr;
+	const std::vector<std::unique_ptr<swCamera>>& Cameras = swGetActiveModel()->GetCameras();
+	swView* ActiveView = GetActiveView();
+	const swCamera* CurrentCamera = ActiveView ? ActiveView->GetCamera() : nullptr;
 	bool CurrentSet = false;
 
-	for (size_t ActionIndex = LC_VIEW_CAMERA_FIRST; ActionIndex <= LC_VIEW_CAMERA_LAST; ActionIndex++)
+	for (size_t ActionIndex = SW_VIEW_CAMERA_FIRST; ActionIndex <= SW_VIEW_CAMERA_LAST; ActionIndex++)
 	{
 		QAction* Action = mActions[ActionIndex];
-		size_t CameraIndex = ActionIndex - LC_VIEW_CAMERA_FIRST;
+		size_t CameraIndex = ActionIndex - SW_VIEW_CAMERA_FIRST;
 
 		if (CameraIndex < Cameras.size())
 		{
@@ -3176,58 +3176,58 @@ void lcMainWindow::CameraMenuAboutToShow()
 	}
 
 	if (!CurrentSet)
-		mActions[LC_VIEW_CAMERA_NONE]->setChecked(true);
+		mActions[SW_VIEW_CAMERA_NONE]->setChecked(true);
 }
 
-void lcMainWindow::ProjectionMenuAboutToShow()
+void swMainWindow::ProjectionMenuAboutToShow()
 {
-	lcView* ActiveView = GetActiveView();
+	swView* ActiveView = GetActiveView();
 
 	if (ActiveView)
 	{
-		if (ActiveView->GetCamera()->GetProjection() == lcCameraProjection::Orthographic)
-			mActions[LC_VIEW_PROJECTION_ORTHO]->setChecked(true);
+		if (ActiveView->GetCamera()->GetProjection() == swCameraProjection::Orthographic)
+			mActions[SW_VIEW_PROJECTION_ORTHO]->setChecked(true);
 		else
-			mActions[LC_VIEW_PROJECTION_PERSPECTIVE]->setChecked(true);
+			mActions[SW_VIEW_PROJECTION_PERSPECTIVE]->setChecked(true);
 	}
 }
 
-void lcMainWindow::UpdateShadingMode()
+void swMainWindow::UpdateShadingMode()
 {
-	mActions[LC_VIEW_SHADING_FIRST + static_cast<int>(lcGetPreferences().mShadingMode)]->setChecked(true);
+	mActions[SW_VIEW_SHADING_FIRST + static_cast<int>(swGetPreferences().mShadingMode)]->setChecked(true);
 }
 
-void lcMainWindow::UpdateSelectionMode()
+void swMainWindow::UpdateSelectionMode()
 {
 	switch (mSelectionMode)
 	{
-	case lcSelectionMode::Single:
-		mActions[LC_EDIT_SELECTION_SINGLE]->setChecked(true);
+	case swSelectionMode::Single:
+		mActions[SW_EDIT_SELECTION_SINGLE]->setChecked(true);
 		break;
 
-	case lcSelectionMode::Piece:
-		mActions[LC_EDIT_SELECTION_PIECE]->setChecked(true);
+	case swSelectionMode::Piece:
+		mActions[SW_EDIT_SELECTION_PIECE]->setChecked(true);
 		break;
 
-	case lcSelectionMode::Color:
-		mActions[LC_EDIT_SELECTION_COLOR]->setChecked(true);
+	case swSelectionMode::Color:
+		mActions[SW_EDIT_SELECTION_COLOR]->setChecked(true);
 		break;
 
-	case lcSelectionMode::PieceColor:
-		mActions[LC_EDIT_SELECTION_PIECE_COLOR]->setChecked(true);
+	case swSelectionMode::PieceColor:
+		mActions[SW_EDIT_SELECTION_PIECE_COLOR]->setChecked(true);
 		break;
 	}
 }
 
-void lcMainWindow::UpdateModels()
+void swMainWindow::UpdateModels()
 {
-	const std::vector<std::unique_ptr<lcModel>>& Models = lcGetActiveProject()->GetModels();
-	lcModel* CurrentModel = lcGetActiveModel();
+	const std::vector<std::unique_ptr<swModel>>& Models = swGetActiveProject()->GetModels();
+	swModel* CurrentModel = swGetActiveModel();
 
-	for (size_t ActionIndex = LC_MODEL_FIRST; ActionIndex <= LC_MODEL_LAST; ActionIndex++)
+	for (size_t ActionIndex = SW_MODEL_FIRST; ActionIndex <= SW_MODEL_LAST; ActionIndex++)
 	{
 		QAction* Action = mActions[ActionIndex];
-		size_t ModelIndex = ActionIndex - LC_MODEL_FIRST;
+		size_t ModelIndex = ActionIndex - SW_MODEL_FIRST;
 
 		if (ModelIndex < Models.size())
 		{
@@ -3239,15 +3239,15 @@ void lcMainWindow::UpdateModels()
 			Action->setVisible(false);
 	}
 
-	auto HasModel = [&Models](lcModel* Model)
+	auto HasModel = [&Models](swModel* Model)
 	{
-		return std::find_if(Models.begin(), Models.end(), [Model](const std::unique_ptr<lcModel>& CheckModel) { return CheckModel.get() == Model; }) != Models.end();
+		return std::find_if(Models.begin(), Models.end(), [Model](const std::unique_ptr<swModel>& CheckModel) { return CheckModel.get() == Model; }) != Models.end();
 	};
 
 	for (int TabIdx = 0; TabIdx < mModelTabWidget->count(); )
 	{
-		lcModelTabWidget* TabWidget = (lcModelTabWidget*)mModelTabWidget->widget(TabIdx);
-		lcModel* Model = TabWidget->GetModel();
+		swModelTabWidget* TabWidget = (swModelTabWidget*)mModelTabWidget->widget(TabIdx);
+		swModel* Model = TabWidget->GetModel();
 
 		if (!Model)
 			TabIdx++;
@@ -3267,37 +3267,37 @@ void lcMainWindow::UpdateModels()
 			SetInsertPieceData(nullptr);
 }
 
-void lcMainWindow::UpdateInUseCategory()
+void swMainWindow::UpdateInUseCategory()
 {
 	mPartSelectionWidget->UpdateInUseCategory();
 }
 
-void lcMainWindow::UpdateCategories()
+void swMainWindow::UpdateCategories()
 {
 	mPartSelectionWidget->UpdateCategories();
 }
 
-void lcMainWindow::UpdateTitle()
+void swMainWindow::UpdateTitle()
 {
-	setWindowModified(lcGetActiveProject()->IsModified());
-	setWindowFilePath(lcGetActiveProject()->GetTitle());
+	setWindowModified(swGetActiveProject()->IsModified());
+	setWindowFilePath(swGetActiveProject()->GetTitle());
 
-	if (lcGetPreferences().mTerminalFollowModel)
+	if (swGetPreferences().mTerminalFollowModel)
 		UpdateTerminalDirectory(false);
 }
 
-void lcMainWindow::UpdateModified(bool Modified)
+void swMainWindow::UpdateModified(bool Modified)
 {
 	setWindowModified(Modified);
 }
 
-void lcMainWindow::UpdateShortcuts()
+void swMainWindow::UpdateShortcuts()
 {
-	for (int ActionIdx = 0; ActionIdx < LC_NUM_COMMANDS; ActionIdx++)
+	for (int ActionIdx = 0; ActionIdx < SW_NUM_COMMANDS; ActionIdx++)
 		mActions[ActionIdx]->setShortcut(QKeySequence(gKeyboardShortcuts.mShortcuts[ActionIdx]));
 }
 
-void lcMainWindow::NewProject()
+void swMainWindow::NewProject()
 {
 	if (!SaveProjectIfModified())
 		return;
@@ -3306,7 +3306,7 @@ void lcMainWindow::NewProject()
 	gApplication->SetProject(NewProject);
 }
 
-bool lcMainWindow::OpenProject(const QString& FileName)
+bool swMainWindow::OpenProject(const QString& FileName)
 {
 	if (!SaveProjectIfModified())
 		return false;
@@ -3315,23 +3315,23 @@ bool lcMainWindow::OpenProject(const QString& FileName)
 
 	if (LoadFileName.isEmpty())
 	{
-		LoadFileName = lcGetActiveProject()->GetFileName();
+		LoadFileName = swGetActiveProject()->GetFileName();
 
 		if (LoadFileName.isEmpty())
-			LoadFileName = lcGetProfileString(LC_PROFILE_PROJECTS_PATH);
+			LoadFileName = swGetProfileString(SW_PROFILE_PROJECTS_PATH);
 
 		LoadFileName = QFileDialog::getOpenFileName(this, tr("Open Model"), LoadFileName, tr("Supported Files (*.lcd *.ldr *.dat *.mpd);;All Files (*.*)"));
 
 		if (LoadFileName.isEmpty())
 			return false;
 
-		lcSetProfileString(LC_PROFILE_PROJECTS_PATH, QFileInfo(LoadFileName).absolutePath());
+		swSetProfileString(SW_PROFILE_PROJECTS_PATH, QFileInfo(LoadFileName).absolutePath());
 	}
 
 	return OpenProjectFile(LoadFileName);
 }
 
-void lcMainWindow::OpenRecentProject(int RecentFileIndex)
+void swMainWindow::OpenRecentProject(int RecentFileIndex)
 {
 	if (!SaveProjectIfModified())
 		return;
@@ -3340,7 +3340,7 @@ void lcMainWindow::OpenRecentProject(int RecentFileIndex)
 		RemoveRecentFile(RecentFileIndex);
 }
 
-bool lcMainWindow::OpenProjectFile(const QString& FileName)
+bool swMainWindow::OpenProjectFile(const QString& FileName)
 {
 	Project* NewProject = new Project();
 
@@ -3349,7 +3349,7 @@ bool lcMainWindow::OpenProjectFile(const QString& FileName)
 		gApplication->SetProject(NewProject);
 
 		// Show the model complete instead of drawing pieces as they finish loading.
-		if (lcGetPreferences().mLoadPiecesBeforeShowing)
+		if (swGetPreferences().mLoadPiecesBeforeShowing)
 		{
 			QApplication::setOverrideCursor(Qt::WaitCursor);
 			NewProject->GetMainModel()->WaitForAssets();
@@ -3357,22 +3357,22 @@ bool lcMainWindow::OpenProjectFile(const QString& FileName)
 		}
 
 		AddRecentFile(FileName);
-		lcView::UpdateProjectViews(NewProject);
+		swView::UpdateProjectViews(NewProject);
 
 		return true;
 	}
 
 	delete NewProject;
-	lcGetPiecesLibrary()->RemoveTemporaryPieceData();
+	swGetPiecesLibrary()->RemoveTemporaryPieceData();
 	return false;
 }
 
-void lcMainWindow::ShowMergeDialog()
+void swMainWindow::ShowMergeDialog()
 {
-	QString InitialFolder = lcGetActiveProject()->GetFileName();
+	QString InitialFolder = swGetActiveProject()->GetFileName();
 
 	if (InitialFolder.isEmpty())
-		InitialFolder = lcGetProfileString(LC_PROFILE_PROJECTS_PATH);
+		InitialFolder = swGetProfileString(SW_PROFILE_PROJECTS_PATH);
 	else
 		InitialFolder = QFileInfo(InitialFolder).absolutePath();
 
@@ -3381,7 +3381,7 @@ void lcMainWindow::ShowMergeDialog()
 	if (LoadFileNames.isEmpty())
 		return;
 
-	lcSetProfileString(LC_PROFILE_PROJECTS_PATH, QFileInfo(LoadFileNames.first()).absolutePath());
+	swSetProfileString(SW_PROFILE_PROJECTS_PATH, QFileInfo(LoadFileNames.first()).absolutePath());
 
 	std::vector<std::unique_ptr<Project>> ProjectsToMerge;
 
@@ -3403,7 +3403,7 @@ void lcMainWindow::ShowMergeDialog()
 		Sources.push_back(ProjectToMerge.get());
 	}
 
-	const lcResult<void> MergeResult = lcGetActiveProject()->Merge(Sources);
+	const swResult<void> MergeResult = swGetActiveProject()->Merge(Sources);
 
 	if (!MergeResult)
 	{
@@ -3416,7 +3416,7 @@ void lcMainWindow::ShowMergeDialog()
 	UpdateModels();
 }
 
-void lcMainWindow::ImportLDD()
+void swMainWindow::ImportLDD()
 {
 	if (!SaveProjectIfModified())
 		return;
@@ -3430,47 +3430,47 @@ void lcMainWindow::ImportLDD()
 	if (NewProject->ImportLDD(LoadFileName))
 	{
 		gApplication->SetProject(NewProject);
-		lcView::UpdateProjectViews(NewProject);
+		swView::UpdateProjectViews(NewProject);
 	}
 	else
 	{
 		delete NewProject;
-		lcGetPiecesLibrary()->RemoveTemporaryPieceData();
+		swGetPiecesLibrary()->RemoveTemporaryPieceData();
 	}
 }
 
-void lcMainWindow::ImportInventory()
+void swMainWindow::ImportInventory()
 {
 	if (!SaveProjectIfModified())
 		return;
 
-	lcSetsDatabaseDialog Dialog(this);
+	swSetsDatabaseDialog Dialog(this);
 	if (Dialog.exec() != QDialog::Accepted)
 		return;
 
 	Project* NewProject = new Project();
-	std::vector<lcSetInventoryItem> SetInventory = Dialog.GetSetInventory();
+	std::vector<swSetInventoryItem> SetInventory = Dialog.GetSetInventory();
 
 	if (NewProject->ImportInventory(SetInventory, Dialog.GetSetName(), Dialog.GetSetDescription()))
 	{
 		gApplication->SetProject(NewProject);
-		lcView::UpdateProjectViews(NewProject);
+		swView::UpdateProjectViews(NewProject);
 	}
 	else
 		delete NewProject;
 }
 
-bool lcMainWindow::SaveProject(const QString& FileName)
+bool swMainWindow::SaveProject(const QString& FileName)
 {
 	QString SaveFileName = FileName;
-	Project* Project = lcGetActiveProject();
+	Project* Project = swGetActiveProject();
 
 	if (SaveFileName.isEmpty())
 	{
 		SaveFileName = Project->GetFileName();
 
 		if (SaveFileName.isEmpty())
-			SaveFileName = QFileInfo(QDir(lcGetProfileString(LC_PROFILE_PROJECTS_PATH)), Project->GetTitle()).absoluteFilePath();
+			SaveFileName = QFileInfo(QDir(swGetProfileString(SW_PROFILE_PROJECTS_PATH)), Project->GetTitle()).absoluteFilePath();
 
 		QString Filter = (Project->GetModels().size() > 1) ? tr("Supported Files (*.mpd);;All Files (*.*)") : tr("Supported Files (*.ldr *.dat *.mpd);;All Files (*.*)");
 
@@ -3479,7 +3479,7 @@ bool lcMainWindow::SaveProject(const QString& FileName)
 		if (SaveFileName.isEmpty())
 			return false;
 
-		lcSetProfileString(LC_PROFILE_PROJECTS_PATH, QFileInfo(SaveFileName).absolutePath());
+		swSetProfileString(SW_PROFILE_PROJECTS_PATH, QFileInfo(SaveFileName).absolutePath());
 	}
 
 	if (QFileInfo(SaveFileName).suffix().toLower() == QLatin1String("lcd"))
@@ -3488,7 +3488,7 @@ bool lcMainWindow::SaveProject(const QString& FileName)
 		return false;
 	}
 
-	lcResult<void> SaveResult = Project->Save(SaveFileName);
+	swResult<void> SaveResult = Project->Save(SaveFileName);
 
 	if (!SaveResult)
 	{
@@ -3502,9 +3502,9 @@ bool lcMainWindow::SaveProject(const QString& FileName)
 	return true;
 }
 
-bool lcMainWindow::SaveProjectIfModified()
+bool swMainWindow::SaveProjectIfModified()
 {
-	Project* Project = lcGetActiveProject();
+	Project* Project = swGetActiveProject();
 	if (!Project->IsModified())
 		return true;
 
@@ -3526,18 +3526,18 @@ bool lcMainWindow::SaveProjectIfModified()
 	return true;
 }
 
-bool lcMainWindow::SetModelFromFocus()
+bool swMainWindow::SetModelFromFocus()
 {
-	lcObject* FocusObject = GetActiveModel()->GetFocusObject();
+	swObject* FocusObject = GetActiveModel()->GetFocusObject();
 
 	if (!FocusObject || !FocusObject->IsPiece())
 		return false;
 
-	lcModel* Model = ((lcPiece*)FocusObject)->mPieceData->GetModel();
+	swModel* Model = ((swPiece*)FocusObject)->mPieceData->GetModel();
 
 	if (Model)
 	{
-		Project* Project = lcGetActiveProject();
+		Project* Project = swGetActiveProject();
 		Project->SetActiveModel(Model, true);
 		return true;
 	}
@@ -3545,33 +3545,33 @@ bool lcMainWindow::SetModelFromFocus()
 	return false;
 }
 
-void lcMainWindow::SetModelFromSelection()
+void swMainWindow::SetModelFromSelection()
 {
 	if (SetModelFromFocus())
 		return;
 
-	lcModel* Model = GetActiveModel()->GetFirstSelectedSubmodel();
+	swModel* Model = GetActiveModel()->GetFirstSelectedSubmodel();
 
 	if (Model)
 	{
-		Project* Project = lcGetActiveProject();
+		Project* Project = swGetActiveProject();
 		Project->SetActiveModel(Model, true);
 	}
 }
 
-lcModel* lcMainWindow::GetActiveModel() const
+swModel* swMainWindow::GetActiveModel() const
 {
-	lcView* ActiveView = GetActiveView();
+	swView* ActiveView = GetActiveView();
 	return ActiveView ? ActiveView->GetActiveModel() : nullptr;
 }
 
-lcModelTabWidget* lcMainWindow::GetTabForView(lcView* View) const
+swModelTabWidget* swMainWindow::GetTabForView(swView* View) const
 {
 	QWidget* Widget = View->GetWidget();
 
 	while (Widget)
 	{
-		lcModelTabWidget* TabWidget = qobject_cast<lcModelTabWidget*>(Widget);
+		swModelTabWidget* TabWidget = qobject_cast<swModelTabWidget*>(Widget);
 
 		if (TabWidget)
 			return TabWidget;
@@ -3582,403 +3582,403 @@ lcModelTabWidget* lcMainWindow::GetTabForView(lcView* View) const
 	return nullptr;
 }
 
-void lcMainWindow::HandleCommand(lcCommandId CommandId)
+void swMainWindow::HandleCommand(swCommandId CommandId)
 {
-	lcView* ActiveView = GetActiveView();
+	swView* ActiveView = GetActiveView();
 
-	if (ActiveView && CommandId != LC_EDIT_CANCEL)
+	if (ActiveView && CommandId != SW_EDIT_CANCEL)
 		ActiveView->StopTracking(true);
 
-	lcModel* ActiveModel = ActiveView ? ActiveView->GetActiveModel() : nullptr;
+	swModel* ActiveModel = ActiveView ? ActiveView->GetActiveModel() : nullptr;
 
 	switch (CommandId)
 	{
-	case LC_FILE_NEW:
+	case SW_FILE_NEW:
 		NewProject();
 		break;
 
-	case LC_FILE_OPEN:
+	case SW_FILE_OPEN:
 		OpenProject(QString());
 		break;
 
-	case LC_FILE_MERGE:
+	case SW_FILE_MERGE:
 		ShowMergeDialog();
 		break;
 
-	case LC_FILE_RELOAD:
+	case SW_FILE_RELOAD:
 		ReloadProject();
 		break;
 
-	case LC_FILE_TOGGLE_WATCH_FILE_CHANGES:
+	case SW_FILE_TOGGLE_WATCH_FILE_CHANGES:
 		ToggleWatchFileChanges();
 		break;
 
-	case LC_FILE_SAVE:
-		SaveProject(lcGetActiveProject()->GetFileName());
+	case SW_FILE_SAVE:
+		SaveProject(swGetActiveProject()->GetFileName());
 		break;
 
-	case LC_FILE_SAVEAS:
+	case SW_FILE_SAVEAS:
 		SaveProject(QString());
 		break;
 
-	case LC_FILE_SAVE_IMAGE:
+	case SW_FILE_SAVE_IMAGE:
 		ShowImageDialog();
 		break;
 
-	case LC_FILE_IMPORT_LDD:
+	case SW_FILE_IMPORT_LDD:
 		ImportLDD();
 		break;
 
-	case LC_FILE_IMPORT_INVENTORY:
+	case SW_FILE_IMPORT_INVENTORY:
 		ImportInventory();
 		break;
 
-	case LC_FILE_EXPORT_3DS:
-		ShowResultError(lcGetActiveProject()->Export3DStudio(QString()), tr("Export 3DS"));
+	case SW_FILE_EXPORT_3DS:
+		ShowResultError(swGetActiveProject()->Export3DStudio(QString()), tr("Export 3DS"));
 		break;
 
-	case LC_FILE_EXPORT_COLLADA:
-		ShowResultError(lcGetActiveProject()->ExportCOLLADA(QString()), tr("Export COLLADA"));
+	case SW_FILE_EXPORT_COLLADA:
+		ShowResultError(swGetActiveProject()->ExportCOLLADA(QString()), tr("Export COLLADA"));
 		break;
 
-	case LC_FILE_EXPORT_HTML:
+	case SW_FILE_EXPORT_HTML:
 		ShowHTMLDialog();
 		break;
 
-	case LC_FILE_EXPORT_BRICKLINK:
-		ShowResultError(lcGetActiveProject()->ExportBrickLink(), tr("Export BrickLink"));
+	case SW_FILE_EXPORT_BRICKLINK:
+		ShowResultError(swGetActiveProject()->ExportBrickLink(), tr("Export BrickLink"));
 		break;
 
-	case LC_FILE_EXPORT_CSV:
-		ShowResultError(lcGetActiveProject()->ExportCSV(QString()), tr("Export CSV"));
+	case SW_FILE_EXPORT_CSV:
+		ShowResultError(swGetActiveProject()->ExportCSV(QString()), tr("Export CSV"));
 		break;
 
-	case LC_FILE_EXPORT_POVRAY:
+	case SW_FILE_EXPORT_POVRAY:
 		ShowExportPOVRayDialog();
 		break;
 
-	case LC_FILE_EXPORT_WAVEFRONT:
-		ShowResultError(lcGetActiveProject()->ExportWavefront(QString()), tr("Export Wavefront"));
+	case SW_FILE_EXPORT_WAVEFRONT:
+		ShowResultError(swGetActiveProject()->ExportWavefront(QString()), tr("Export Wavefront"));
 		break;
 
-	case LC_FILE_RENDER_POVRAY:
-		ShowRenderDialog(lcRenderDialogMode::RenderPOVRay);
+	case SW_FILE_RENDER_POVRAY:
+		ShowRenderDialog(swRenderDialogMode::RenderPOVRay);
 		break;
 
-	case LC_FILE_RENDER_BLENDER:
-		ShowRenderDialog(lcRenderDialogMode::RenderBlender);
+	case SW_FILE_RENDER_BLENDER:
+		ShowRenderDialog(swRenderDialogMode::RenderBlender);
 		break;
 
-	case LC_FILE_RENDER_OPEN_IN_BLENDER:
-		ShowRenderDialog(lcRenderDialogMode::OpenInBlender);
+	case SW_FILE_RENDER_OPEN_IN_BLENDER:
+		ShowRenderDialog(swRenderDialogMode::OpenInBlender);
 		break;
 
-	case LC_FILE_INSTRUCTIONS:
+	case SW_FILE_INSTRUCTIONS:
 		ShowInstructionsDialog();
 		break;
 
-	case LC_FILE_PRINT_PREVIEW:
+	case SW_FILE_PRINT_PREVIEW:
 		TogglePrintPreview();
 		break;
 
-	case LC_FILE_PRINT:
+	case SW_FILE_PRINT:
 		ShowPrintDialog();
 		break;
 
-	case LC_FILE_RECENT1:
-	case LC_FILE_RECENT2:
-	case LC_FILE_RECENT3:
-	case LC_FILE_RECENT4:
-		OpenRecentProject(CommandId - LC_FILE_RECENT1);
+	case SW_FILE_RECENT1:
+	case SW_FILE_RECENT2:
+	case SW_FILE_RECENT3:
+	case SW_FILE_RECENT4:
+		OpenRecentProject(CommandId - SW_FILE_RECENT1);
 		break;
 
-	case LC_FILE_EXIT:
+	case SW_FILE_EXIT:
 		close();
 		break;
 
-	case LC_EDIT_UNDO:
+	case SW_EDIT_UNDO:
 		if (ActiveModel)
 			ActiveModel->UndoAction();
 		break;
 
-	case LC_EDIT_REDO:
+	case SW_EDIT_REDO:
 		if (ActiveModel)
 			ActiveModel->RedoAction();
 		break;
 
-	case LC_EDIT_CUT:
+	case SW_EDIT_CUT:
 		if (ActiveModel)
 			ShowResultError(ActiveModel->Cut(), tr("Cannot Cut Model"));
 		break;
 
-	case LC_EDIT_COPY:
+	case SW_EDIT_COPY:
 		if (ActiveModel)
 			ShowResultError(ActiveModel->Copy(), tr("Cannot Copy Model"));
 		break;
 
-	case LC_EDIT_PASTE:
+	case SW_EDIT_PASTE:
 		if (ActiveModel)
 			ShowResultError(ActiveModel->Paste(true), tr("Cannot Paste Model"));
 		break;
 
-	case LC_EDIT_PASTE_STEPS:
+	case SW_EDIT_PASTE_STEPS:
 		if (ActiveModel)
 			ShowResultError(ActiveModel->Paste(false), tr("Cannot Paste Model"));
 		break;
 
-	case LC_EDIT_FIND:
+	case SW_EDIT_FIND:
 		if (ActiveView)
 			ActiveView->ShowFindReplaceWidget(false);
 		break;
 
-	case LC_EDIT_FIND_NEXT:
+	case SW_EDIT_FIND_NEXT:
 		if (ActiveModel)
 			ActiveModel->FindReplacePiece(true, false, false);
 		break;
 
-	case LC_EDIT_FIND_PREVIOUS:
+	case SW_EDIT_FIND_PREVIOUS:
 		if (ActiveModel)
 			ActiveModel->FindReplacePiece(false, false, false);
 		break;
 
-	case LC_EDIT_FIND_ALL:
+	case SW_EDIT_FIND_ALL:
 		if (ActiveModel)
 			ActiveModel->FindReplacePiece(true, true, false);
 		break;
 
-	case LC_EDIT_REPLACE:
+	case SW_EDIT_REPLACE:
 		if (ActiveView)
 			ActiveView->ShowFindReplaceWidget(true);
 		break;
 
-	case LC_EDIT_REPLACE_ALL:
+	case SW_EDIT_REPLACE_ALL:
 		if (ActiveModel)
 			ActiveModel->FindReplacePiece(true, true, true);
 		break;
 
-	case LC_EDIT_REPLACE_NEXT:
+	case SW_EDIT_REPLACE_NEXT:
 		if (ActiveModel)
 			ActiveModel->FindReplacePiece(true, false, true);
 		break;
 
-	case LC_EDIT_SELECT_ALL:
+	case SW_EDIT_SELECT_ALL:
 		if (ActiveModel)
 			ActiveModel->SelectAllPiecesAction();
 		break;
 
-	case LC_EDIT_SELECT_NONE:
+	case SW_EDIT_SELECT_NONE:
 		if (ActiveModel)
 			ActiveModel->ClearSelectionAction();
 		break;
 
-	case LC_EDIT_SELECT_INVERT:
+	case SW_EDIT_SELECT_INVERT:
 		if (ActiveModel)
 			ActiveModel->InvertPieceSelectionAction();
 		break;
 
-	case LC_EDIT_SELECT_BY_NAME:
+	case SW_EDIT_SELECT_BY_NAME:
 		ShowSelectDialog();
 		break;
 
-	case LC_EDIT_SELECTION_SINGLE:
-		SetSelectionMode(lcSelectionMode::Single);
+	case SW_EDIT_SELECTION_SINGLE:
+		SetSelectionMode(swSelectionMode::Single);
 		break;
 
-	case LC_EDIT_SELECTION_PIECE:
-		SetSelectionMode(lcSelectionMode::Piece);
+	case SW_EDIT_SELECTION_PIECE:
+		SetSelectionMode(swSelectionMode::Piece);
 		break;
 
-	case LC_EDIT_SELECTION_COLOR:
-		SetSelectionMode(lcSelectionMode::Color);
+	case SW_EDIT_SELECTION_COLOR:
+		SetSelectionMode(swSelectionMode::Color);
 		break;
 
-	case LC_EDIT_SELECTION_PIECE_COLOR:
-		SetSelectionMode(lcSelectionMode::PieceColor);
+	case SW_EDIT_SELECTION_PIECE_COLOR:
+		SetSelectionMode(swSelectionMode::PieceColor);
 		break;
 
-	case LC_VIEW_SPLIT_HORIZONTAL:
+	case SW_VIEW_SPLIT_HORIZONTAL:
 		SplitHorizontal();
 		break;
 
-	case LC_VIEW_SPLIT_VERTICAL:
+	case SW_VIEW_SPLIT_VERTICAL:
 		SplitVertical();
 		break;
 
-	case LC_VIEW_REMOVE_VIEW:
+	case SW_VIEW_REMOVE_VIEW:
 		RemoveActiveView();
 		break;
 
-	case LC_VIEW_RESET_VIEWS:
+	case SW_VIEW_RESET_VIEWS:
 		ResetViews();
 		break;
 
-	case LC_VIEW_TOOLBAR_STANDARD:
+	case SW_VIEW_TOOLBAR_STANDARD:
 		ToggleDockWidget(mStandardToolBar);
 		break;
 
-	case LC_VIEW_TOOLBAR_TOOLS:
+	case SW_VIEW_TOOLBAR_TOOLS:
 		ToggleDockWidget(mToolsToolBar);
 		break;
 
-	case LC_VIEW_TOOLBAR_TIME:
+	case SW_VIEW_TOOLBAR_TIME:
 		ToggleDockWidget(mTimeToolBar);
 		break;
 
-	case LC_VIEW_TOOLBAR_PARTS:
+	case SW_VIEW_TOOLBAR_PARTS:
 		ToggleDockWidget(mPartsToolBar);
 		if (mPartsToolBar->isVisible())
 			mPartSelectionWidget->FocusPartFilterWidget();
 		break;
 
-	case LC_VIEW_TOOLBAR_COLORS:
+	case SW_VIEW_TOOLBAR_COLORS:
 		ToggleDockWidget(mColorsToolBar);
 		break;
 
-	case LC_VIEW_TOOLBAR_PROPERTIES:
+	case SW_VIEW_TOOLBAR_PROPERTIES:
 		ToggleDockWidget(mPropertiesToolBar);
 		break;
 
-	case LC_VIEW_TOOLBAR_TIMELINE:
+	case SW_VIEW_TOOLBAR_TIMELINE:
 		ToggleDockWidget(mTimelineToolBar);
 		break;
 
-	case LC_VIEW_TOOLBAR_PREVIEW:
+	case SW_VIEW_TOOLBAR_PREVIEW:
 		ToggleDockWidget(mPreviewToolBar);
 		break;
 
-	case LC_VIEW_TOOLBAR_TERMINAL:
+	case SW_VIEW_TOOLBAR_TERMINAL:
 		if (mTerminalToolBar)
 			ToggleDockWidget(mTerminalToolBar);
 		break;
 
-	case LC_VIEW_TOOLBAR_MINIFIG:
+	case SW_VIEW_TOOLBAR_MINIFIG:
 		ToggleDockWidget(mMinifigToolBar);
 		break;
 
-	case LC_VIEW_FULLSCREEN:
+	case SW_VIEW_FULLSCREEN:
 		ToggleFullScreen();
 		break;
 
-	case LC_VIEW_CLOSE_CURRENT_TAB:
+	case SW_VIEW_CLOSE_CURRENT_TAB:
 		CloseCurrentModelTab();
 		break;
 
-	case LC_VIEW_SHADING_WIREFRAME:
-		SetShadingMode(lcShadingMode::Wireframe);
+	case SW_VIEW_SHADING_WIREFRAME:
+		SetShadingMode(swShadingMode::Wireframe);
 		break;
 
-	case LC_VIEW_SHADING_FLAT:
-		SetShadingMode(lcShadingMode::Flat);
+	case SW_VIEW_SHADING_FLAT:
+		SetShadingMode(swShadingMode::Flat);
 		break;
 
-	case LC_VIEW_SHADING_DEFAULT_LIGHTS:
-		SetShadingMode(lcShadingMode::DefaultLights);
+	case SW_VIEW_SHADING_DEFAULT_LIGHTS:
+		SetShadingMode(swShadingMode::DefaultLights);
 		break;
 
-	case LC_VIEW_PROJECTION_PERSPECTIVE:
+	case SW_VIEW_PROJECTION_PERSPECTIVE:
 		if (ActiveView)
-			ActiveView->SetCameraProjection(lcCameraProjection::Perspective);
+			ActiveView->SetCameraProjection(swCameraProjection::Perspective);
 		break;
 
-	case LC_VIEW_PROJECTION_ORTHO:
+	case SW_VIEW_PROJECTION_ORTHO:
 		if (ActiveView)
-			ActiveView->SetCameraProjection(lcCameraProjection::Orthographic);
+			ActiveView->SetCameraProjection(swCameraProjection::Orthographic);
 		break;
 
-	case LC_VIEW_TOGGLE_VIEW_SPHERE:
+	case SW_VIEW_TOGGLE_VIEW_SPHERE:
 		ToggleViewSphere();
 		break;
 
-	case LC_VIEW_TOGGLE_AXIS_ICON:
+	case SW_VIEW_TOGGLE_AXIS_ICON:
 		ToggleAxisIcon();
 		break;
 
-	case LC_VIEW_TOGGLE_GRID:
+	case SW_VIEW_TOGGLE_GRID:
 		ToggleGrid();
 		break;
 
-	case LC_VIEW_FADE_PREVIOUS_STEPS:
+	case SW_VIEW_FADE_PREVIOUS_STEPS:
 		ToggleFadePreviousSteps();
 		break;
 
-	case LC_VIEW_STEP_VIEW_EDIT:
+	case SW_VIEW_STEP_VIEW_EDIT:
 		ShowStepViewDialog();
 		break;
 
-	case LC_VIEW_STEP_VIEW_REMOVE:
+	case SW_VIEW_STEP_VIEW_REMOVE:
 		if (ActiveModel)
 			ActiveModel->SetStepView(ActiveModel->GetCurrentStep(), std::nullopt);
 		break;
 
-	case LC_VIEW_STEP_VIEW_TOGGLE_FOLLOW:
-		lcGetPreferences().mFollowStepViews = !lcGetPreferences().mFollowStepViews;
-		lcSetProfileInt(LC_PROFILE_FOLLOW_STEP_VIEWS, lcGetPreferences().mFollowStepViews);
-		mActions[LC_VIEW_STEP_VIEW_TOGGLE_FOLLOW]->setChecked(lcGetPreferences().mFollowStepViews);
+	case SW_VIEW_STEP_VIEW_TOGGLE_FOLLOW:
+		swGetPreferences().mFollowStepViews = !swGetPreferences().mFollowStepViews;
+		swSetProfileInt(SW_PROFILE_FOLLOW_STEP_VIEWS, swGetPreferences().mFollowStepViews);
+		mActions[SW_VIEW_STEP_VIEW_TOGGLE_FOLLOW]->setChecked(swGetPreferences().mFollowStepViews);
 
-		if (lcGetPreferences().mFollowStepViews && ActiveView)
+		if (swGetPreferences().mFollowStepViews && ActiveView)
 			ActiveView->ApplyStepView();
 		break;
 
-	case LC_VIEW_NORMAL_TO_FACE:
+	case SW_VIEW_NORMAL_TO_FACE:
 		if (ActiveView)
 			ActiveView->StartFaceNormalPick();
 		break;
 
-	case LC_VIEW_GRID_TOGGLE_HEIGHT_XZ:
-		lcGetPreferences().mDrawGridHeightXZ = !lcGetPreferences().mDrawGridHeightXZ;
-		lcSetProfileInt(LC_PROFILE_GRID_HEIGHT_XZ, lcGetPreferences().mDrawGridHeightXZ);
-		lcView::UpdateAllViews();
+	case SW_VIEW_GRID_TOGGLE_HEIGHT_XZ:
+		swGetPreferences().mDrawGridHeightXZ = !swGetPreferences().mDrawGridHeightXZ;
+		swSetProfileInt(SW_PROFILE_GRID_HEIGHT_XZ, swGetPreferences().mDrawGridHeightXZ);
+		swView::UpdateAllViews();
 		break;
 
-	case LC_VIEW_GRID_TOGGLE_HEIGHT_YZ:
-		lcGetPreferences().mDrawGridHeightYZ = !lcGetPreferences().mDrawGridHeightYZ;
-		lcSetProfileInt(LC_PROFILE_GRID_HEIGHT_YZ, lcGetPreferences().mDrawGridHeightYZ);
-		lcView::UpdateAllViews();
+	case SW_VIEW_GRID_TOGGLE_HEIGHT_YZ:
+		swGetPreferences().mDrawGridHeightYZ = !swGetPreferences().mDrawGridHeightYZ;
+		swSetProfileInt(SW_PROFILE_GRID_HEIGHT_YZ, swGetPreferences().mDrawGridHeightYZ);
+		swView::UpdateAllViews();
 		break;
 
-	case LC_VIEW_GRID_TOGGLE_HEIGHT_BEHIND:
-		lcGetPreferences().mGridHeightBehindModel = !lcGetPreferences().mGridHeightBehindModel;
-		lcSetProfileInt(LC_PROFILE_GRID_HEIGHT_BEHIND_MODEL, lcGetPreferences().mGridHeightBehindModel);
-		lcView::UpdateAllViews();
+	case SW_VIEW_GRID_TOGGLE_HEIGHT_BEHIND:
+		swGetPreferences().mGridHeightBehindModel = !swGetPreferences().mGridHeightBehindModel;
+		swSetProfileInt(SW_PROFILE_GRID_HEIGHT_BEHIND_MODEL, swGetPreferences().mGridHeightBehindModel);
+		swView::UpdateAllViews();
 		break;
 
-	case LC_VIEW_TERMINAL_TOGGLE_FOLLOW_MODEL:
-		lcGetPreferences().mTerminalFollowModel = !lcGetPreferences().mTerminalFollowModel;
-		lcSetProfileInt(LC_PROFILE_TERMINAL_FOLLOW_MODEL, lcGetPreferences().mTerminalFollowModel);
+	case SW_VIEW_TERMINAL_TOGGLE_FOLLOW_MODEL:
+		swGetPreferences().mTerminalFollowModel = !swGetPreferences().mTerminalFollowModel;
+		swSetProfileInt(SW_PROFILE_TERMINAL_FOLLOW_MODEL, swGetPreferences().mTerminalFollowModel);
 
-		if (lcGetPreferences().mTerminalFollowModel)
+		if (swGetPreferences().mTerminalFollowModel)
 			UpdateTerminalDirectory(false);
 		break;
 
-	case LC_VIEW_TERMINAL_GO_TO_MODEL_FOLDER:
+	case SW_VIEW_TERMINAL_GO_TO_MODEL_FOLDER:
 		UpdateTerminalDirectory(true);
 		break;
 
-	case LC_VIEW_COLORS_TOGGLE_SOLID:
-		mColorList->ToggleGroupCollapsed(LC_COLORGROUP_SOLID);
+	case SW_VIEW_COLORS_TOGGLE_SOLID:
+		mColorList->ToggleGroupCollapsed(SW_COLORGROUP_SOLID);
 		break;
 
-	case LC_VIEW_COLORS_TOGGLE_TRANSLUCENT:
-		mColorList->ToggleGroupCollapsed(LC_COLORGROUP_TRANSLUCENT);
+	case SW_VIEW_COLORS_TOGGLE_TRANSLUCENT:
+		mColorList->ToggleGroupCollapsed(SW_COLORGROUP_TRANSLUCENT);
 		break;
 
-	case LC_VIEW_COLORS_TOGGLE_SPECIAL:
-		mColorList->ToggleGroupCollapsed(LC_COLORGROUP_SPECIAL);
+	case SW_VIEW_COLORS_TOGGLE_SPECIAL:
+		mColorList->ToggleGroupCollapsed(SW_COLORGROUP_SPECIAL);
 		break;
 
-	case LC_PIECE_INSERT_COLOR_CURRENT:
-		SetInsertColorMode(lcInsertColorMode::CurrentColor);
+	case SW_PIECE_INSERT_COLOR_CURRENT:
+		SetInsertColorMode(swInsertColorMode::CurrentColor);
 		break;
 
-	case LC_PIECE_INSERT_COLOR_SELECTED:
-		SetInsertColorMode(lcInsertColorMode::SelectedPieceColor);
+	case SW_PIECE_INSERT_COLOR_SELECTED:
+		SetInsertColorMode(swInsertColorMode::SelectedPieceColor);
 		break;
 
-	case LC_PIECE_INSERT_COLOR_LAST_INSERTED:
-		SetInsertColorMode(lcInsertColorMode::LastInsertedColor);
+	case SW_PIECE_INSERT_COLOR_LAST_INSERTED:
+		SetInsertColorMode(swInsertColorMode::LastInsertedColor);
 		break;
 
-	case LC_VIEW_PIECES_TOGGLE_LOCK_COLOR:
+	case SW_VIEW_PIECES_TOGGLE_LOCK_COLOR:
 		if (mPartSelectionWidget)
 		{
 			mPartSelectionWidget->ToggleColorLocked();
@@ -3986,835 +3986,835 @@ void lcMainWindow::HandleCommand(lcCommandId CommandId)
 		}
 		break;
 
-	case LC_FILE_TOGGLE_OPEN_MOST_RECENT:
-		lcTogglePreference(lcGetPreferences().mAutoLoadMostRecent, LC_PROFILE_AUTOLOAD_MOSTRECENT);
+	case SW_FILE_TOGGLE_OPEN_MOST_RECENT:
+		swTogglePreference(swGetPreferences().mAutoLoadMostRecent, SW_PROFILE_AUTOLOAD_MOSTRECENT);
 		break;
 
-	case LC_FILE_TOGGLE_RESTORE_TAB_LAYOUT:
-		lcTogglePreference(lcGetPreferences().mRestoreTabLayout, LC_PROFILE_RESTORE_TAB_LAYOUT);
+	case SW_FILE_TOGGLE_RESTORE_TAB_LAYOUT:
+		swTogglePreference(swGetPreferences().mRestoreTabLayout, SW_PROFILE_RESTORE_TAB_LAYOUT);
 		break;
 
-	case LC_EDIT_TOGGLE_FIXED_DIRECTION_KEYS:
-		lcTogglePreference(lcGetPreferences().mFixedAxes, LC_PROFILE_FIXED_AXES);
+	case SW_EDIT_TOGGLE_FIXED_DIRECTION_KEYS:
+		swTogglePreference(swGetPreferences().mFixedAxes, SW_PROFILE_FIXED_AXES);
 		break;
 
-	case LC_VIEW_TOGGLE_MESH_LOD:
-		lcTogglePreference(lcGetPreferences().mAllowLOD, LC_PROFILE_ALLOW_LOD);
+	case SW_VIEW_TOGGLE_MESH_LOD:
+		swTogglePreference(swGetPreferences().mAllowLOD, SW_PROFILE_ALLOW_LOD);
 		break;
 
-	case LC_VIEW_TOGGLE_HIGHLIGHT_NEW_PIECES:
-		lcTogglePreference(lcGetPreferences().mHighlightNewParts, LC_PROFILE_HIGHLIGHT_NEW_PARTS);
+	case SW_VIEW_TOGGLE_HIGHLIGHT_NEW_PIECES:
+		swTogglePreference(swGetPreferences().mHighlightNewParts, SW_PROFILE_HIGHLIGHT_NEW_PARTS);
 		break;
 
-	case LC_VIEW_TOGGLE_GRID_STUDS:
-		lcTogglePreference(lcGetPreferences().mDrawGridStuds, LC_PROFILE_GRID_STUDS);
+	case SW_VIEW_TOGGLE_GRID_STUDS:
+		swTogglePreference(swGetPreferences().mDrawGridStuds, SW_PROFILE_GRID_STUDS);
 		break;
 
-	case LC_VIEW_TOGGLE_GRID_LINES:
-		lcTogglePreference(lcGetPreferences().mDrawGridLines, LC_PROFILE_GRID_LINES);
+	case SW_VIEW_TOGGLE_GRID_LINES:
+		swTogglePreference(swGetPreferences().mDrawGridLines, SW_PROFILE_GRID_LINES);
 		break;
 
-	case LC_VIEW_TOGGLE_GRID_ORIGIN:
-		lcTogglePreference(lcGetPreferences().mDrawGridOrigin, LC_PROFILE_GRID_ORIGIN);
+	case SW_VIEW_TOGGLE_GRID_ORIGIN:
+		swTogglePreference(swGetPreferences().mDrawGridOrigin, SW_PROFILE_GRID_ORIGIN);
 		break;
 
-	case LC_VIEW_TOGGLE_BACKGROUND_GRADIENT:
-		lcTogglePreference(lcGetPreferences().mBackgroundGradient, LC_PROFILE_BACKGROUND_GRADIENT);
+	case SW_VIEW_TOGGLE_BACKGROUND_GRADIENT:
+		swTogglePreference(swGetPreferences().mBackgroundGradient, SW_PROFILE_BACKGROUND_GRADIENT);
 		break;
 
-	case LC_VIEW_TOGGLE_AUTOMATE_EDGE_COLOR:
+	case SW_VIEW_TOGGLE_AUTOMATE_EDGE_COLOR:
 		ToggleAutomateEdgeColor();
 		break;
 
-	case LC_VIEW_HIGHLIGHT_STYLE_OUTLINE:
-		SetHighlightRenderMode(lcHighlightRenderMode::Outline);
+	case SW_VIEW_HIGHLIGHT_STYLE_OUTLINE:
+		SetHighlightRenderMode(swHighlightRenderMode::Outline);
 		break;
 
-	case LC_VIEW_HIGHLIGHT_STYLE_TINT:
-		SetHighlightRenderMode(lcHighlightRenderMode::Tint);
+	case SW_VIEW_HIGHLIGHT_STYLE_TINT:
+		SetHighlightRenderMode(swHighlightRenderMode::Tint);
 		break;
 
-	case LC_VIEW_STUD_STYLE_PLAIN:
-		SetStudStyle(lcStudStyle::Plain);
+	case SW_VIEW_STUD_STYLE_PLAIN:
+		SetStudStyle(swStudStyle::Plain);
 		break;
 
-	case LC_VIEW_STUD_STYLE_THIN_LINES_LOGO:
-		SetStudStyle(lcStudStyle::ThinLinesLogo);
+	case SW_VIEW_STUD_STYLE_THIN_LINES_LOGO:
+		SetStudStyle(swStudStyle::ThinLinesLogo);
 		break;
 
-	case LC_VIEW_STUD_STYLE_OUTLINE_LOGO:
-		SetStudStyle(lcStudStyle::OutlineLogo);
+	case SW_VIEW_STUD_STYLE_OUTLINE_LOGO:
+		SetStudStyle(swStudStyle::OutlineLogo);
 		break;
 
-	case LC_VIEW_STUD_STYLE_SHARP_TOP_LOGO:
-		SetStudStyle(lcStudStyle::SharpTopLogo);
+	case SW_VIEW_STUD_STYLE_SHARP_TOP_LOGO:
+		SetStudStyle(swStudStyle::SharpTopLogo);
 		break;
 
-	case LC_VIEW_STUD_STYLE_ROUNDED_TOP_LOGO:
-		SetStudStyle(lcStudStyle::RoundedTopLogo);
+	case SW_VIEW_STUD_STYLE_ROUNDED_TOP_LOGO:
+		SetStudStyle(swStudStyle::RoundedTopLogo);
 		break;
 
-	case LC_VIEW_STUD_STYLE_FLATTENED_LOGO:
-		SetStudStyle(lcStudStyle::FlattenedLogo);
+	case SW_VIEW_STUD_STYLE_FLATTENED_LOGO:
+		SetStudStyle(swStudStyle::FlattenedLogo);
 		break;
 
-	case LC_VIEW_STUD_STYLE_HIGH_CONTRAST:
-		SetStudStyle(lcStudStyle::HighContrast);
+	case SW_VIEW_STUD_STYLE_HIGH_CONTRAST:
+		SetStudStyle(swStudStyle::HighContrast);
 		break;
 
-	case LC_VIEW_STUD_STYLE_HIGH_CONTRAST_LOGO:
-		SetStudStyle(lcStudStyle::HighContrastLogo);
+	case SW_VIEW_STUD_STYLE_HIGH_CONTRAST_LOGO:
+		SetStudStyle(swStudStyle::HighContrastLogo);
 		break;
 
-	case LC_VIEW_TOGGLE_EDGE_LINES:
-		ToggleEdgeLines(lcRenderTarget::ModelView);
+	case SW_VIEW_TOGGLE_EDGE_LINES:
+		ToggleEdgeLines(swRenderTarget::ModelView);
 		break;
 
-	case LC_VIEW_TOGGLE_CONDITIONAL_LINES:
-		ToggleConditionalLines(lcRenderTarget::ModelView);
+	case SW_VIEW_TOGGLE_CONDITIONAL_LINES:
+		ToggleConditionalLines(swRenderTarget::ModelView);
 		break;
 
-	case LC_VIEW_TOGGLE_PREVIEW_SYNC_RENDERING:
-		ToggleSyncRendering(lcRenderTarget::Preview);
+	case SW_VIEW_TOGGLE_PREVIEW_SYNC_RENDERING:
+		ToggleSyncRendering(swRenderTarget::Preview);
 		break;
 
-	case LC_VIEW_PREVIEW_SHADING_WIREFRAME:
-		SetTargetShadingMode(lcRenderTarget::Preview, lcShadingMode::Wireframe);
+	case SW_VIEW_PREVIEW_SHADING_WIREFRAME:
+		SetTargetShadingMode(swRenderTarget::Preview, swShadingMode::Wireframe);
 		break;
 
-	case LC_VIEW_PREVIEW_SHADING_FLAT:
-		SetTargetShadingMode(lcRenderTarget::Preview, lcShadingMode::Flat);
+	case SW_VIEW_PREVIEW_SHADING_FLAT:
+		SetTargetShadingMode(swRenderTarget::Preview, swShadingMode::Flat);
 		break;
 
-	case LC_VIEW_PREVIEW_SHADING_DEFAULT_LIGHTS:
-		SetTargetShadingMode(lcRenderTarget::Preview, lcShadingMode::DefaultLights);
+	case SW_VIEW_PREVIEW_SHADING_DEFAULT_LIGHTS:
+		SetTargetShadingMode(swRenderTarget::Preview, swShadingMode::DefaultLights);
 		break;
 
-	case LC_VIEW_TOGGLE_PREVIEW_EDGE_LINES:
-		ToggleEdgeLines(lcRenderTarget::Preview);
+	case SW_VIEW_TOGGLE_PREVIEW_EDGE_LINES:
+		ToggleEdgeLines(swRenderTarget::Preview);
 		break;
 
-	case LC_VIEW_TOGGLE_PREVIEW_CONDITIONAL_LINES:
-		ToggleConditionalLines(lcRenderTarget::Preview);
+	case SW_VIEW_TOGGLE_PREVIEW_CONDITIONAL_LINES:
+		ToggleConditionalLines(swRenderTarget::Preview);
 		break;
 
-	case LC_VIEW_TOGGLE_PIECES_SYNC_RENDERING:
-		ToggleSyncRendering(lcRenderTarget::Pieces);
+	case SW_VIEW_TOGGLE_PIECES_SYNC_RENDERING:
+		ToggleSyncRendering(swRenderTarget::Pieces);
 		break;
 
-	case LC_VIEW_TOGGLE_MINIFIG_SYNC_RENDERING:
-		ToggleSyncRendering(lcRenderTarget::Minifig);
+	case SW_VIEW_TOGGLE_MINIFIG_SYNC_RENDERING:
+		ToggleSyncRendering(swRenderTarget::Minifig);
 		break;
 
-	case LC_VIEW_MINIFIG_SHADING_WIREFRAME:
-		SetTargetShadingMode(lcRenderTarget::Minifig, lcShadingMode::Wireframe);
+	case SW_VIEW_MINIFIG_SHADING_WIREFRAME:
+		SetTargetShadingMode(swRenderTarget::Minifig, swShadingMode::Wireframe);
 		break;
 
-	case LC_VIEW_MINIFIG_SHADING_FLAT:
-		SetTargetShadingMode(lcRenderTarget::Minifig, lcShadingMode::Flat);
+	case SW_VIEW_MINIFIG_SHADING_FLAT:
+		SetTargetShadingMode(swRenderTarget::Minifig, swShadingMode::Flat);
 		break;
 
-	case LC_VIEW_MINIFIG_SHADING_DEFAULT_LIGHTS:
-		SetTargetShadingMode(lcRenderTarget::Minifig, lcShadingMode::DefaultLights);
+	case SW_VIEW_MINIFIG_SHADING_DEFAULT_LIGHTS:
+		SetTargetShadingMode(swRenderTarget::Minifig, swShadingMode::DefaultLights);
 		break;
 
-	case LC_VIEW_TOGGLE_MINIFIG_EDGE_LINES:
-		ToggleEdgeLines(lcRenderTarget::Minifig);
+	case SW_VIEW_TOGGLE_MINIFIG_EDGE_LINES:
+		ToggleEdgeLines(swRenderTarget::Minifig);
 		break;
 
-	case LC_VIEW_TOGGLE_MINIFIG_CONDITIONAL_LINES:
-		ToggleConditionalLines(lcRenderTarget::Minifig);
+	case SW_VIEW_TOGGLE_MINIFIG_CONDITIONAL_LINES:
+		ToggleConditionalLines(swRenderTarget::Minifig);
 		break;
 
-	case LC_VIEW_PIECES_TOGGLE_SNAP_TO_TILES:
-		lcGetPreferences().mPiecesSnapToTiles = !lcGetPreferences().mPiecesSnapToTiles;
-		lcSetProfileInt(LC_PROFILE_PIECES_SNAP_TO_TILES, lcGetPreferences().mPiecesSnapToTiles);
+	case SW_VIEW_PIECES_TOGGLE_SNAP_TO_TILES:
+		swGetPreferences().mPiecesSnapToTiles = !swGetPreferences().mPiecesSnapToTiles;
+		swSetProfileInt(SW_PROFILE_PIECES_SNAP_TO_TILES, swGetPreferences().mPiecesSnapToTiles);
 		SnapPartsDock();
 		break;
 
-	case LC_VIEW_PIECES_SHADING_WIREFRAME:
-		SetTargetShadingMode(lcRenderTarget::Pieces, lcShadingMode::Wireframe);
+	case SW_VIEW_PIECES_SHADING_WIREFRAME:
+		SetTargetShadingMode(swRenderTarget::Pieces, swShadingMode::Wireframe);
 		break;
 
-	case LC_VIEW_PIECES_SHADING_FLAT:
-		SetTargetShadingMode(lcRenderTarget::Pieces, lcShadingMode::Flat);
+	case SW_VIEW_PIECES_SHADING_FLAT:
+		SetTargetShadingMode(swRenderTarget::Pieces, swShadingMode::Flat);
 		break;
 
-	case LC_VIEW_PIECES_SHADING_DEFAULT_LIGHTS:
-		SetTargetShadingMode(lcRenderTarget::Pieces, lcShadingMode::DefaultLights);
+	case SW_VIEW_PIECES_SHADING_DEFAULT_LIGHTS:
+		SetTargetShadingMode(swRenderTarget::Pieces, swShadingMode::DefaultLights);
 		break;
 
-	case LC_VIEW_TOGGLE_PIECES_EDGE_LINES:
-		ToggleEdgeLines(lcRenderTarget::Pieces);
+	case SW_VIEW_TOGGLE_PIECES_EDGE_LINES:
+		ToggleEdgeLines(swRenderTarget::Pieces);
 		break;
 
-	case LC_VIEW_TOGGLE_PIECES_CONDITIONAL_LINES:
-		ToggleConditionalLines(lcRenderTarget::Pieces);
+	case SW_VIEW_TOGGLE_PIECES_CONDITIONAL_LINES:
+		ToggleConditionalLines(swRenderTarget::Pieces);
 		break;
 
-	case LC_VIEW_TOGGLE_PREVIEW_VIEW_SPHERE:
+	case SW_VIEW_TOGGLE_PREVIEW_VIEW_SPHERE:
 		TogglePreviewViewSphere();
 		break;
 
-	case LC_VIEW_TOGGLE_PREVIEW_AXIS_ICON:
+	case SW_VIEW_TOGGLE_PREVIEW_AXIS_ICON:
 		TogglePreviewAxisIcon();
 		break;
 
-	case LC_FILE_TOGGLE_LOAD_PIECES_BEFORE_SHOWING:
+	case SW_FILE_TOGGLE_LOAD_PIECES_BEFORE_SHOWING:
 		ToggleLoadPiecesBeforeShowing();
 		break;
 
-	case LC_VIEW_PREVIEW_TOGGLE_SQUARE:
+	case SW_VIEW_PREVIEW_TOGGLE_SQUARE:
 		if (mPreviewWidget)
-			mPreviewWidget->SetSquareViewport(!lcGetPreferences().mPreviewSquareViewport);
+			mPreviewWidget->SetSquareViewport(!swGetPreferences().mPreviewSquareViewport);
 		break;
 
-	case LC_PIECE_INSERT:
+	case SW_PIECE_INSERT:
 		if (ActiveModel)
-			ActiveModel->AddPiece(nullptr, LC_PIECE_SECTION_INVALID);
+			ActiveModel->AddPiece(nullptr, SW_PIECE_SECTION_INVALID);
 		break;
 
-	case LC_PIECE_TOGGLE_FIRST_AT_ORIGIN:
+	case SW_PIECE_TOGGLE_FIRST_AT_ORIGIN:
 		ToggleFirstPieceAtOrigin();
 		break;
 
-	case LC_PIECE_DELETE:
+	case SW_PIECE_DELETE:
 		if (ActiveModel)
 			ActiveModel->DeleteSelectedObjects();
 		break;
 
-	case LC_PIECE_DUPLICATE:
+	case SW_PIECE_DUPLICATE:
 		if (ActiveModel)
 			ActiveModel->DuplicateSelectedPieces();
 		break;
 
-	case LC_PIECE_PAINT_SELECTED:
+	case SW_PIECE_PAINT_SELECTED:
 		if (ActiveModel)
 			ActiveModel->PaintSelectedPieces();
 		break;
 
-	case LC_PIECE_RESET_PIVOT_POINT:
+	case SW_PIECE_RESET_PIVOT_POINT:
 		if (ActiveModel)
 			ActiveModel->ResetSelectedPiecesPivotPoint();
 		break;
 
-	case LC_PIECE_REMOVE_KEY_FRAMES:
+	case SW_PIECE_REMOVE_KEY_FRAMES:
 		if (ActiveModel)
 			ActiveModel->RemoveSelectedObjectsKeyFrames();
 		break;
 
-	case LC_PIECE_CONTROL_POINT_INSERT:
+	case SW_PIECE_CONTROL_POINT_INSERT:
 		if (ActiveModel)
 			ActiveModel->InsertControlPoint();
 		break;
 
-	case LC_PIECE_CONTROL_POINT_REMOVE:
+	case SW_PIECE_CONTROL_POINT_REMOVE:
 		if (ActiveModel)
 			ActiveModel->RemoveFocusedControlPoint();
 		break;
 
-	case LC_PIECE_TRAIN_TRACK_FOCUS_NEXT:
+	case SW_PIECE_TRAIN_TRACK_FOCUS_NEXT:
 		if (ActiveModel)
 			ActiveModel->FocusNextTrainTrack();
 		break;
 
-	case LC_PIECE_TRAIN_TRACK_FOCUS_PREVIOUS:
+	case SW_PIECE_TRAIN_TRACK_FOCUS_PREVIOUS:
 		if (ActiveModel)
 			ActiveModel->FocusPreviousTrainTrack();
 		break;
 
-	case LC_PIECE_TRAIN_TRACK_ROTATE:
+	case SW_PIECE_TRAIN_TRACK_ROTATE:
 		if (ActiveModel)
 			ActiveModel->RotateFocusedTrainTrack(1);
 		break;
 
-	case LC_PIECE_MOVE_PLUSX:
+	case SW_PIECE_MOVE_PLUSX:
 		if (ActiveModel)
-			ActiveModel->MoveSelectedObjects(ActiveView->GetMoveDirection(lcVector3(lcMax(GetMoveXYSnap(), 0.1f), 0.0f, 0.0f)), lcModelTransformFlag::Relative | lcModelTransformFlag::Checkpoint | lcModelTransformFlag::FirstMove, lcModelHistoryEditMerge::KeyboardMove);
+			ActiveModel->MoveSelectedObjects(ActiveView->GetMoveDirection(swVector3(swMax(GetMoveXYSnap(), 0.1f), 0.0f, 0.0f)), swModelTransformFlag::Relative | swModelTransformFlag::Checkpoint | swModelTransformFlag::FirstMove, swModelHistoryEditMerge::KeyboardMove);
 		break;
 
-	case LC_PIECE_MOVE_MINUSX:
+	case SW_PIECE_MOVE_MINUSX:
 		if (ActiveModel)
-			ActiveModel->MoveSelectedObjects(ActiveView->GetMoveDirection(lcVector3(-lcMax(GetMoveXYSnap(), 0.1f), 0.0f, 0.0f)), lcModelTransformFlag::Relative | lcModelTransformFlag::Checkpoint | lcModelTransformFlag::FirstMove, lcModelHistoryEditMerge::KeyboardMove);
+			ActiveModel->MoveSelectedObjects(ActiveView->GetMoveDirection(swVector3(-swMax(GetMoveXYSnap(), 0.1f), 0.0f, 0.0f)), swModelTransformFlag::Relative | swModelTransformFlag::Checkpoint | swModelTransformFlag::FirstMove, swModelHistoryEditMerge::KeyboardMove);
 		break;
 
-	case LC_PIECE_MOVE_PLUSY:
+	case SW_PIECE_MOVE_PLUSY:
 		if (ActiveModel)
-			ActiveModel->MoveSelectedObjects(ActiveView->GetMoveDirection(lcVector3(0.0f, lcMax(GetMoveXYSnap(), 0.1f), 0.0f)), lcModelTransformFlag::Relative | lcModelTransformFlag::Checkpoint | lcModelTransformFlag::FirstMove, lcModelHistoryEditMerge::KeyboardMove);
+			ActiveModel->MoveSelectedObjects(ActiveView->GetMoveDirection(swVector3(0.0f, swMax(GetMoveXYSnap(), 0.1f), 0.0f)), swModelTransformFlag::Relative | swModelTransformFlag::Checkpoint | swModelTransformFlag::FirstMove, swModelHistoryEditMerge::KeyboardMove);
 		break;
 
-	case LC_PIECE_MOVE_MINUSY:
+	case SW_PIECE_MOVE_MINUSY:
 		if (ActiveModel)
-			ActiveModel->MoveSelectedObjects(ActiveView->GetMoveDirection(lcVector3(0.0f, -lcMax(GetMoveXYSnap(), 0.1f), 0.0f)), lcModelTransformFlag::Relative | lcModelTransformFlag::Checkpoint | lcModelTransformFlag::FirstMove, lcModelHistoryEditMerge::KeyboardMove);
+			ActiveModel->MoveSelectedObjects(ActiveView->GetMoveDirection(swVector3(0.0f, -swMax(GetMoveXYSnap(), 0.1f), 0.0f)), swModelTransformFlag::Relative | swModelTransformFlag::Checkpoint | swModelTransformFlag::FirstMove, swModelHistoryEditMerge::KeyboardMove);
 		break;
 
-	case LC_PIECE_MOVE_PLUSZ:
+	case SW_PIECE_MOVE_PLUSZ:
 		if (ActiveModel)
-			ActiveModel->MoveSelectedObjects(ActiveView->GetMoveDirection(lcVector3(0.0f, 0.0f, lcMax(GetMoveZSnap(), 0.1f))), lcModelTransformFlag::Relative | lcModelTransformFlag::Checkpoint | lcModelTransformFlag::FirstMove, lcModelHistoryEditMerge::KeyboardMove);
+			ActiveModel->MoveSelectedObjects(ActiveView->GetMoveDirection(swVector3(0.0f, 0.0f, swMax(GetMoveZSnap(), 0.1f))), swModelTransformFlag::Relative | swModelTransformFlag::Checkpoint | swModelTransformFlag::FirstMove, swModelHistoryEditMerge::KeyboardMove);
 		break;
 
-	case LC_PIECE_MOVE_MINUSZ:
+	case SW_PIECE_MOVE_MINUSZ:
 		if (ActiveModel)
-			ActiveModel->MoveSelectedObjects(ActiveView->GetMoveDirection(lcVector3(0.0f, 0.0f, -lcMax(GetMoveZSnap(), 0.1f))), lcModelTransformFlag::Relative | lcModelTransformFlag::Checkpoint | lcModelTransformFlag::FirstMove, lcModelHistoryEditMerge::KeyboardMove);
+			ActiveModel->MoveSelectedObjects(ActiveView->GetMoveDirection(swVector3(0.0f, 0.0f, -swMax(GetMoveZSnap(), 0.1f))), swModelTransformFlag::Relative | swModelTransformFlag::Checkpoint | swModelTransformFlag::FirstMove, swModelHistoryEditMerge::KeyboardMove);
 		break;
 
-	case LC_PIECE_ROTATE_PLUSX:
+	case SW_PIECE_ROTATE_PLUSX:
 		if (ActiveModel)
-			ActiveModel->RotateSelectedObjects(ActiveView->GetMoveDirection(lcVector3(lcMax(GetAngleSnap(), 1.0f), 0.0f, 0.0f)), lcModelTransformFlag::Relative | lcModelTransformFlag::Checkpoint, lcModelHistoryEditMerge::KeyboardRotate);
+			ActiveModel->RotateSelectedObjects(ActiveView->GetMoveDirection(swVector3(swMax(GetAngleSnap(), 1.0f), 0.0f, 0.0f)), swModelTransformFlag::Relative | swModelTransformFlag::Checkpoint, swModelHistoryEditMerge::KeyboardRotate);
 		break;
 
-	case LC_PIECE_ROTATE_MINUSX:
+	case SW_PIECE_ROTATE_MINUSX:
 		if (ActiveModel)
-			ActiveModel->RotateSelectedObjects(ActiveView->GetMoveDirection(lcVector3(-lcMax(GetAngleSnap(), 1.0f), 0.0f, 0.0f)), lcModelTransformFlag::Relative | lcModelTransformFlag::Checkpoint, lcModelHistoryEditMerge::KeyboardRotate);
+			ActiveModel->RotateSelectedObjects(ActiveView->GetMoveDirection(swVector3(-swMax(GetAngleSnap(), 1.0f), 0.0f, 0.0f)), swModelTransformFlag::Relative | swModelTransformFlag::Checkpoint, swModelHistoryEditMerge::KeyboardRotate);
 		break;
 
-	case LC_PIECE_ROTATE_PLUSY:
+	case SW_PIECE_ROTATE_PLUSY:
 		if (ActiveModel)
-			ActiveModel->RotateSelectedObjects(ActiveView->GetMoveDirection(lcVector3(0.0f, lcMax(GetAngleSnap(), 1.0f), 0.0f)), lcModelTransformFlag::Relative | lcModelTransformFlag::Checkpoint, lcModelHistoryEditMerge::KeyboardRotate);
+			ActiveModel->RotateSelectedObjects(ActiveView->GetMoveDirection(swVector3(0.0f, swMax(GetAngleSnap(), 1.0f), 0.0f)), swModelTransformFlag::Relative | swModelTransformFlag::Checkpoint, swModelHistoryEditMerge::KeyboardRotate);
 		break;
 
-	case LC_PIECE_ROTATE_MINUSY:
+	case SW_PIECE_ROTATE_MINUSY:
 		if (ActiveModel)
-			ActiveModel->RotateSelectedObjects(ActiveView->GetMoveDirection(lcVector3(0.0f, -lcMax(GetAngleSnap(), 1.0f), 0.0f)), lcModelTransformFlag::Relative | lcModelTransformFlag::Checkpoint, lcModelHistoryEditMerge::KeyboardRotate);
+			ActiveModel->RotateSelectedObjects(ActiveView->GetMoveDirection(swVector3(0.0f, -swMax(GetAngleSnap(), 1.0f), 0.0f)), swModelTransformFlag::Relative | swModelTransformFlag::Checkpoint, swModelHistoryEditMerge::KeyboardRotate);
 		break;
 
-	case LC_PIECE_ROTATE_PLUSZ:
+	case SW_PIECE_ROTATE_PLUSZ:
 		if (ActiveModel)
-			ActiveModel->RotateSelectedObjects(ActiveView->GetMoveDirection(lcVector3(0.0f, 0.0f, lcMax(GetAngleSnap(), 1.0f))), lcModelTransformFlag::Relative | lcModelTransformFlag::Checkpoint, lcModelHistoryEditMerge::KeyboardRotate);
+			ActiveModel->RotateSelectedObjects(ActiveView->GetMoveDirection(swVector3(0.0f, 0.0f, swMax(GetAngleSnap(), 1.0f))), swModelTransformFlag::Relative | swModelTransformFlag::Checkpoint, swModelHistoryEditMerge::KeyboardRotate);
 		break;
 
-	case LC_PIECE_ROTATE_MINUSZ:
+	case SW_PIECE_ROTATE_MINUSZ:
 		if (ActiveModel)
-			ActiveModel->RotateSelectedObjects(ActiveView->GetMoveDirection(lcVector3(0.0f, 0.0f, -lcMax(GetAngleSnap(), 1.0f))), lcModelTransformFlag::Relative | lcModelTransformFlag::Checkpoint, lcModelHistoryEditMerge::KeyboardRotate);
+			ActiveModel->RotateSelectedObjects(ActiveView->GetMoveDirection(swVector3(0.0f, 0.0f, -swMax(GetAngleSnap(), 1.0f))), swModelTransformFlag::Relative | swModelTransformFlag::Checkpoint, swModelHistoryEditMerge::KeyboardRotate);
 		break;
 
-	case LC_PIECE_MINIFIG_WIZARD:
+	case SW_PIECE_MINIFIG_WIZARD:
 		mMinifigToolBar->show();
 		mMinifigToolBar->raise();
 		break;
 
-	case LC_PIECE_ARRAY:
+	case SW_PIECE_ARRAY:
 		if (ActiveModel)
 			ActiveModel->ShowArrayDialog();
 		break;
 
-	case LC_PIECE_VIEW_SELECTED_MODEL:
+	case SW_PIECE_VIEW_SELECTED_MODEL:
 		SetModelFromSelection();
 		break;
 
-	case LC_PIECE_MOVE_SELECTION_TO_MODEL:
+	case SW_PIECE_MOVE_SELECTION_TO_MODEL:
 		if (ActiveModel)
-			ActiveModel->MoveSelectionToModel(lcGetActiveProject()->CreateNewModel(false));
+			ActiveModel->MoveSelectionToModel(swGetActiveProject()->CreateNewModel(false));
 		break;
 
-	case LC_PIECE_INLINE_SELECTED_MODELS:
+	case SW_PIECE_INLINE_SELECTED_MODELS:
 		if (ActiveModel)
 			ActiveModel->InlineSelectedModels();
 		break;
 
-	case LC_PIECE_EDIT_END_SUBMODEL:
+	case SW_PIECE_EDIT_END_SUBMODEL:
 		if (ActiveView)
 			ActiveView->SetTopSubmodelActive();
 		break;
 
-	case LC_PIECE_EDIT_SELECTED_SUBMODEL:
+	case SW_PIECE_EDIT_SELECTED_SUBMODEL:
 		if (ActiveView)
 			ActiveView->SetSelectedSubmodelActive();
 		break;
 
-	case LC_PIECE_GROUP:
+	case SW_PIECE_GROUP:
 		if (ActiveModel)
 			ActiveModel->GroupSelection();
 		break;
 
-	case LC_PIECE_UNGROUP:
+	case SW_PIECE_UNGROUP:
 		if (ActiveModel)
 			ActiveModel->UngroupSelection();
 		break;
 
-	case LC_PIECE_GROUP_ADD:
+	case SW_PIECE_GROUP_ADD:
 		if (ActiveModel)
 			ActiveModel->AddSelectedPiecesToGroup();
 		break;
 
-	case LC_PIECE_GROUP_REMOVE:
+	case SW_PIECE_GROUP_REMOVE:
 		if (ActiveModel)
 			ActiveModel->RemoveFocusPieceFromGroup();
 		break;
 
-	case LC_PIECE_GROUP_EDIT:
+	case SW_PIECE_GROUP_EDIT:
 		if (ActiveModel)
 			ActiveModel->ShowEditGroupsDialog();
 		break;
 
-	case LC_PIECE_HIDE_SELECTED:
+	case SW_PIECE_HIDE_SELECTED:
 		if (ActiveModel)
 			ActiveModel->HideSelectedPieces();
 		break;
 
-	case LC_PIECE_HIDE_UNSELECTED:
+	case SW_PIECE_HIDE_UNSELECTED:
 		if (ActiveModel)
 			ActiveModel->HideUnselectedPieces();
 		break;
 
-	case LC_PIECE_UNHIDE_SELECTED:
+	case SW_PIECE_UNHIDE_SELECTED:
 		if (ActiveModel)
 			ActiveModel->UnhideSelectedPieces();
 		break;
 
-	case LC_PIECE_UNHIDE_ALL:
+	case SW_PIECE_UNHIDE_ALL:
 		if (ActiveModel)
 			ActiveModel->UnhideAllPieces();
 		break;
 
-	case LC_PIECE_SHOW_EARLIER:
+	case SW_PIECE_SHOW_EARLIER:
 		if (ActiveModel)
 			ActiveModel->ShowSelectedPiecesEarlier();
 		break;
 
-	case LC_PIECE_SHOW_LATER:
+	case SW_PIECE_SHOW_LATER:
 		if (ActiveModel)
 			ActiveModel->ShowSelectedPiecesLater();
 		break;
 
-	case LC_VIEW_PREFERENCES:
+	case SW_VIEW_PREFERENCES:
 		gApplication->ShowPreferencesDialog();
 		break;
 
-	case LC_VIEW_ZOOM_IN:
+	case SW_VIEW_ZOOM_IN:
 		if (ActiveView)
 			ActiveView->Zoom(10.0f);
 		break;
 
-	case LC_VIEW_ZOOM_OUT:
+	case SW_VIEW_ZOOM_OUT:
 		if (ActiveView)
 			ActiveView->Zoom(-10.0f);
 		break;
 
-	case LC_VIEW_ZOOM_EXTENTS:
+	case SW_VIEW_ZOOM_EXTENTS:
 		if (ActiveView)
-			ActiveView->ZoomExtents(lcGeometryBoundsMode::IncludeFallback, false);
+			ActiveView->ZoomExtents(swGeometryBoundsMode::IncludeFallback, false);
 		break;
 
-	case LC_VIEW_LOOK_AT:
+	case SW_VIEW_LOOK_AT:
 		if (ActiveView)
 			ActiveView->LookAt();
 		break;
 
-	case LC_VIEW_MOVE_FORWARD:
+	case SW_VIEW_MOVE_FORWARD:
 		if (ActiveView)
-			ActiveView->MoveCamera(lcVector3(0.0f, 0.0f, -1.0f));
+			ActiveView->MoveCamera(swVector3(0.0f, 0.0f, -1.0f));
 		break;
 
-	case LC_VIEW_MOVE_BACKWARD:
+	case SW_VIEW_MOVE_BACKWARD:
 		if (ActiveView)
-			ActiveView->MoveCamera(lcVector3(0.0f, 0.0f, 1.0f));
+			ActiveView->MoveCamera(swVector3(0.0f, 0.0f, 1.0f));
 		break;
 
-	case LC_VIEW_MOVE_LEFT:
+	case SW_VIEW_MOVE_LEFT:
 		if (ActiveView)
-			ActiveView->MoveCamera(lcVector3(-1.0f, 0.0f, 0.0f));
+			ActiveView->MoveCamera(swVector3(-1.0f, 0.0f, 0.0f));
 		break;
 
-	case LC_VIEW_MOVE_RIGHT:
+	case SW_VIEW_MOVE_RIGHT:
 		if (ActiveView)
-			ActiveView->MoveCamera(lcVector3(1.0f, 0.0f, 0.0f));
+			ActiveView->MoveCamera(swVector3(1.0f, 0.0f, 0.0f));
 		break;
 
-	case LC_VIEW_MOVE_UP:
+	case SW_VIEW_MOVE_UP:
 		if (ActiveView)
-			ActiveView->MoveCamera(lcVector3(0.0f, 1.0f, 0.0f));
+			ActiveView->MoveCamera(swVector3(0.0f, 1.0f, 0.0f));
 		break;
 
-	case LC_VIEW_MOVE_DOWN:
+	case SW_VIEW_MOVE_DOWN:
 		if (ActiveView)
-			ActiveView->MoveCamera(lcVector3(0.0f, -1.0f, 0.0f));
+			ActiveView->MoveCamera(swVector3(0.0f, -1.0f, 0.0f));
 		break;
 
-	case LC_VIEW_TIME_NEXT:
+	case SW_VIEW_TIME_NEXT:
 		if (ActiveModel)
 			ActiveModel->ShowNextStep();
 		break;
 
-	case LC_VIEW_TIME_PREVIOUS:
+	case SW_VIEW_TIME_PREVIOUS:
 		if (ActiveModel)
 			ActiveModel->ShowPreviousStep();
 		break;
 
-	case LC_VIEW_TIME_FIRST:
+	case SW_VIEW_TIME_FIRST:
 		if (ActiveModel)
 			ActiveModel->ShowFirstStep();
 		break;
 
-	case LC_VIEW_TIME_LAST:
+	case SW_VIEW_TIME_LAST:
 		if (ActiveModel)
 			ActiveModel->ShowLastStep();
 		break;
 
-	case LC_VIEW_TIME_INSERT_BEFORE:
+	case SW_VIEW_TIME_INSERT_BEFORE:
 		if (ActiveModel)
 			ActiveModel->InsertStepAction(ActiveModel->GetCurrentStep());
 		break;
 
-	case LC_VIEW_TIME_INSERT_AFTER:
+	case SW_VIEW_TIME_INSERT_AFTER:
 		if (ActiveModel)
 			ActiveModel->InsertStepAction(ActiveModel->GetCurrentStep() + 1);
 		break;
 
-	case LC_VIEW_TIME_DELETE:
+	case SW_VIEW_TIME_DELETE:
 		if (ActiveModel)
 			ActiveModel->RemoveStepAction(ActiveModel->GetCurrentStep());
 		break;
 
-	case LC_VIEW_VIEWPOINT_FRONT:
+	case SW_VIEW_VIEWPOINT_FRONT:
 		if (ActiveView)
-			ActiveView->SetViewpoint(lcViewpoint::Front);
+			ActiveView->SetViewpoint(swViewpoint::Front);
 		break;
 
-	case LC_VIEW_VIEWPOINT_BACK:
+	case SW_VIEW_VIEWPOINT_BACK:
 		if (ActiveView)
-			ActiveView->SetViewpoint(lcViewpoint::Back);
+			ActiveView->SetViewpoint(swViewpoint::Back);
 		break;
 
-	case LC_VIEW_VIEWPOINT_TOP:
+	case SW_VIEW_VIEWPOINT_TOP:
 		if (ActiveView)
-			ActiveView->SetViewpoint(lcViewpoint::Top);
+			ActiveView->SetViewpoint(swViewpoint::Top);
 		break;
 
-	case LC_VIEW_VIEWPOINT_BOTTOM:
+	case SW_VIEW_VIEWPOINT_BOTTOM:
 		if (ActiveView)
-			ActiveView->SetViewpoint(lcViewpoint::Bottom);
+			ActiveView->SetViewpoint(swViewpoint::Bottom);
 		break;
 
-	case LC_VIEW_VIEWPOINT_LEFT:
+	case SW_VIEW_VIEWPOINT_LEFT:
 		if (ActiveView)
-			ActiveView->SetViewpoint(lcViewpoint::Left);
+			ActiveView->SetViewpoint(swViewpoint::Left);
 		break;
 
-	case LC_VIEW_VIEWPOINT_RIGHT:
+	case SW_VIEW_VIEWPOINT_RIGHT:
 		if (ActiveView)
-			ActiveView->SetViewpoint(lcViewpoint::Right);
+			ActiveView->SetViewpoint(swViewpoint::Right);
 		break;
 
-	case LC_VIEW_VIEWPOINT_HOME:
+	case SW_VIEW_VIEWPOINT_HOME:
 		if (ActiveView)
-			ActiveView->SetViewpoint(lcViewpoint::Home);
+			ActiveView->SetViewpoint(swViewpoint::Home);
 		break;
 
-	case LC_VIEW_CAMERA_NONE:
+	case SW_VIEW_CAMERA_NONE:
 		if (ActiveView)
 			ActiveView->RemoveCamera();
 		break;
 
-	case LC_VIEW_CAMERA1:
-	case LC_VIEW_CAMERA2:
-	case LC_VIEW_CAMERA3:
-	case LC_VIEW_CAMERA4:
-	case LC_VIEW_CAMERA5:
-	case LC_VIEW_CAMERA6:
-	case LC_VIEW_CAMERA7:
-	case LC_VIEW_CAMERA8:
-	case LC_VIEW_CAMERA9:
-	case LC_VIEW_CAMERA10:
-	case LC_VIEW_CAMERA11:
-	case LC_VIEW_CAMERA12:
-	case LC_VIEW_CAMERA13:
-	case LC_VIEW_CAMERA14:
-	case LC_VIEW_CAMERA15:
-	case LC_VIEW_CAMERA16:
+	case SW_VIEW_CAMERA1:
+	case SW_VIEW_CAMERA2:
+	case SW_VIEW_CAMERA3:
+	case SW_VIEW_CAMERA4:
+	case SW_VIEW_CAMERA5:
+	case SW_VIEW_CAMERA6:
+	case SW_VIEW_CAMERA7:
+	case SW_VIEW_CAMERA8:
+	case SW_VIEW_CAMERA9:
+	case SW_VIEW_CAMERA10:
+	case SW_VIEW_CAMERA11:
+	case SW_VIEW_CAMERA12:
+	case SW_VIEW_CAMERA13:
+	case SW_VIEW_CAMERA14:
+	case SW_VIEW_CAMERA15:
+	case SW_VIEW_CAMERA16:
 		if (ActiveView)
-			ActiveView->SetCameraIndex(CommandId - LC_VIEW_CAMERA1);
+			ActiveView->SetCameraIndex(CommandId - SW_VIEW_CAMERA1);
 		break;
 
-	case LC_MODEL_NEW:
-		lcGetActiveProject()->CreateNewModel(true);
+	case SW_MODEL_NEW:
+		swGetActiveProject()->CreateNewModel(true);
 		break;
 
-	case LC_MODEL_PROPERTIES:
+	case SW_MODEL_PROPERTIES:
 		if (ActiveModel)
 			ActiveModel->ShowPropertiesDialog();
 		break;
 
-	case LC_MODEL_LIST:
-		lcGetActiveProject()->ShowModelListDialog();
+	case SW_MODEL_LIST:
+		swGetActiveProject()->ShowModelListDialog();
 		break;
 
-	case LC_MODEL_01:
-	case LC_MODEL_02:
-	case LC_MODEL_03:
-	case LC_MODEL_04:
-	case LC_MODEL_05:
-	case LC_MODEL_06:
-	case LC_MODEL_07:
-	case LC_MODEL_08:
-	case LC_MODEL_09:
-	case LC_MODEL_10:
-	case LC_MODEL_11:
-	case LC_MODEL_12:
-	case LC_MODEL_13:
-	case LC_MODEL_14:
-	case LC_MODEL_15:
-	case LC_MODEL_16:
-	case LC_MODEL_17:
-	case LC_MODEL_18:
-	case LC_MODEL_19:
-	case LC_MODEL_20:
-	case LC_MODEL_21:
-	case LC_MODEL_22:
-	case LC_MODEL_23:
-	case LC_MODEL_24:
-	case LC_MODEL_25:
-	case LC_MODEL_26:
-	case LC_MODEL_27:
-	case LC_MODEL_28:
-	case LC_MODEL_29:
-	case LC_MODEL_30:
-	case LC_MODEL_31:
-	case LC_MODEL_32:
-	case LC_MODEL_33:
-	case LC_MODEL_34:
-	case LC_MODEL_35:
-	case LC_MODEL_36:
-	case LC_MODEL_37:
-	case LC_MODEL_38:
-	case LC_MODEL_39:
-	case LC_MODEL_40:
-		lcGetActiveProject()->SetActiveModel(CommandId - LC_MODEL_01, true);
+	case SW_MODEL_01:
+	case SW_MODEL_02:
+	case SW_MODEL_03:
+	case SW_MODEL_04:
+	case SW_MODEL_05:
+	case SW_MODEL_06:
+	case SW_MODEL_07:
+	case SW_MODEL_08:
+	case SW_MODEL_09:
+	case SW_MODEL_10:
+	case SW_MODEL_11:
+	case SW_MODEL_12:
+	case SW_MODEL_13:
+	case SW_MODEL_14:
+	case SW_MODEL_15:
+	case SW_MODEL_16:
+	case SW_MODEL_17:
+	case SW_MODEL_18:
+	case SW_MODEL_19:
+	case SW_MODEL_20:
+	case SW_MODEL_21:
+	case SW_MODEL_22:
+	case SW_MODEL_23:
+	case SW_MODEL_24:
+	case SW_MODEL_25:
+	case SW_MODEL_26:
+	case SW_MODEL_27:
+	case SW_MODEL_28:
+	case SW_MODEL_29:
+	case SW_MODEL_30:
+	case SW_MODEL_31:
+	case SW_MODEL_32:
+	case SW_MODEL_33:
+	case SW_MODEL_34:
+	case SW_MODEL_35:
+	case SW_MODEL_36:
+	case SW_MODEL_37:
+	case SW_MODEL_38:
+	case SW_MODEL_39:
+	case SW_MODEL_40:
+		swGetActiveProject()->SetActiveModel(CommandId - SW_MODEL_01, true);
 		break;
 
-	case LC_HELP_WHATS_THIS:
+	case SW_HELP_WHATS_THIS:
 		QWhatsThis::enterWhatsThisMode();
 		break;
 
-	case LC_HELP_HOMEPAGE:
+	case SW_HELP_HOMEPAGE:
 		QDesktopServices::openUrl(QUrl("https://www.leocad.org/"));
 		break;
 
-	case LC_HELP_BUG_REPORT:
+	case SW_HELP_BUG_REPORT:
 		QDesktopServices::openUrl(QUrl("https://github.com/leozide/leocad/issues"));
 		break;
 
-	case LC_HELP_UPDATES:
+	case SW_HELP_UPDATES:
 		ShowUpdatesDialog();
 		break;
 
-	case LC_HELP_ABOUT:
+	case SW_HELP_ABOUT:
 		ShowAboutDialog();
 		break;
 
-	case LC_VIEW_TIME_ADD_KEYS:
+	case SW_VIEW_TIME_ADD_KEYS:
 		SetAddKeys(!GetAddKeys());
 		break;
 
-	case LC_EDIT_TRANSFORM_RELATIVE:
+	case SW_EDIT_TRANSFORM_RELATIVE:
 		SetRelativeTransform(true);
 		break;
 
-	case LC_EDIT_TRANSFORM_ABSOLUTE:
+	case SW_EDIT_TRANSFORM_ABSOLUTE:
 		SetRelativeTransform(false);
 		break;
 
-	case LC_EDIT_TRANSFORM_TOGGLE_RELATIVE:
+	case SW_EDIT_TRANSFORM_TOGGLE_RELATIVE:
 		SetRelativeTransform(!GetRelativeTransform());
 		break;
 
-	case LC_EDIT_TRANSFORM_SEPARATELY:
+	case SW_EDIT_TRANSFORM_SEPARATELY:
 		SetSeparateTransform(true);
 		break;
 
-	case LC_EDIT_TRANSFORM_TOGETHER:
+	case SW_EDIT_TRANSFORM_TOGETHER:
 		SetSeparateTransform(false);
 		break;
 
-	case LC_EDIT_TRANSFORM_TOGGLE_SEPARATE:
+	case SW_EDIT_TRANSFORM_TOGGLE_SEPARATE:
 		SetSeparateTransform(!GetSeparateTransform());
 		break;
 
-	case LC_EDIT_SNAP_MOVE_TOGGLE:
+	case SW_EDIT_SNAP_MOVE_TOGGLE:
 		SetMoveSnapEnabled(!mMoveSnapEnabled);
 		break;
 
-	case LC_EDIT_SNAP_MOVE_XY0:
-	case LC_EDIT_SNAP_MOVE_XY1:
-	case LC_EDIT_SNAP_MOVE_XY2:
-	case LC_EDIT_SNAP_MOVE_XY3:
-	case LC_EDIT_SNAP_MOVE_XY4:
-	case LC_EDIT_SNAP_MOVE_XY5:
-	case LC_EDIT_SNAP_MOVE_XY6:
-	case LC_EDIT_SNAP_MOVE_XY7:
-	case LC_EDIT_SNAP_MOVE_XY8:
-	case LC_EDIT_SNAP_MOVE_XY9:
-		SetMoveXYSnapIndex(CommandId - LC_EDIT_SNAP_MOVE_XY0);
+	case SW_EDIT_SNAP_MOVE_XY0:
+	case SW_EDIT_SNAP_MOVE_XY1:
+	case SW_EDIT_SNAP_MOVE_XY2:
+	case SW_EDIT_SNAP_MOVE_XY3:
+	case SW_EDIT_SNAP_MOVE_XY4:
+	case SW_EDIT_SNAP_MOVE_XY5:
+	case SW_EDIT_SNAP_MOVE_XY6:
+	case SW_EDIT_SNAP_MOVE_XY7:
+	case SW_EDIT_SNAP_MOVE_XY8:
+	case SW_EDIT_SNAP_MOVE_XY9:
+		SetMoveXYSnapIndex(CommandId - SW_EDIT_SNAP_MOVE_XY0);
 		break;
 
-	case LC_EDIT_SNAP_MOVE_Z0:
-	case LC_EDIT_SNAP_MOVE_Z1:
-	case LC_EDIT_SNAP_MOVE_Z2:
-	case LC_EDIT_SNAP_MOVE_Z3:
-	case LC_EDIT_SNAP_MOVE_Z4:
-	case LC_EDIT_SNAP_MOVE_Z5:
-	case LC_EDIT_SNAP_MOVE_Z6:
-	case LC_EDIT_SNAP_MOVE_Z7:
-	case LC_EDIT_SNAP_MOVE_Z8:
-	case LC_EDIT_SNAP_MOVE_Z9:
-		SetMoveZSnapIndex(CommandId - LC_EDIT_SNAP_MOVE_Z0);
+	case SW_EDIT_SNAP_MOVE_Z0:
+	case SW_EDIT_SNAP_MOVE_Z1:
+	case SW_EDIT_SNAP_MOVE_Z2:
+	case SW_EDIT_SNAP_MOVE_Z3:
+	case SW_EDIT_SNAP_MOVE_Z4:
+	case SW_EDIT_SNAP_MOVE_Z5:
+	case SW_EDIT_SNAP_MOVE_Z6:
+	case SW_EDIT_SNAP_MOVE_Z7:
+	case SW_EDIT_SNAP_MOVE_Z8:
+	case SW_EDIT_SNAP_MOVE_Z9:
+		SetMoveZSnapIndex(CommandId - SW_EDIT_SNAP_MOVE_Z0);
 		break;
 
-	case LC_EDIT_SNAP_ANGLE_TOGGLE:
+	case SW_EDIT_SNAP_ANGLE_TOGGLE:
 		SetAngleSnapEnabled(!mAngleSnapEnabled);
 		break;
 
-	case LC_EDIT_SNAP_ANGLE0:
-	case LC_EDIT_SNAP_ANGLE1:
-	case LC_EDIT_SNAP_ANGLE2:
-	case LC_EDIT_SNAP_ANGLE3:
-	case LC_EDIT_SNAP_ANGLE4:
-	case LC_EDIT_SNAP_ANGLE5:
-	case LC_EDIT_SNAP_ANGLE6:
-	case LC_EDIT_SNAP_ANGLE7:
-	case LC_EDIT_SNAP_ANGLE8:
-	case LC_EDIT_SNAP_ANGLE9:
-		SetAngleSnapIndex(CommandId - LC_EDIT_SNAP_ANGLE0);
+	case SW_EDIT_SNAP_ANGLE0:
+	case SW_EDIT_SNAP_ANGLE1:
+	case SW_EDIT_SNAP_ANGLE2:
+	case SW_EDIT_SNAP_ANGLE3:
+	case SW_EDIT_SNAP_ANGLE4:
+	case SW_EDIT_SNAP_ANGLE5:
+	case SW_EDIT_SNAP_ANGLE6:
+	case SW_EDIT_SNAP_ANGLE7:
+	case SW_EDIT_SNAP_ANGLE8:
+	case SW_EDIT_SNAP_ANGLE9:
+		SetAngleSnapIndex(CommandId - SW_EDIT_SNAP_ANGLE0);
 		break;
 
-	case LC_EDIT_SNAP_ANGLE_CUSTOM:
+	case SW_EDIT_SNAP_ANGLE_CUSTOM:
 		SetCustomAngleSnap();
 		break;
 
-	case LC_EDIT_SNAP_ORBIT_TOGGLE:
+	case SW_EDIT_SNAP_ORBIT_TOGGLE:
 		mOrbitSnapEnabled = !mOrbitSnapEnabled;
-		lcSetProfileInt(LC_PROFILE_ORBIT_SNAP, mOrbitSnapEnabled);
+		swSetProfileInt(SW_PROFILE_ORBIT_SNAP, mOrbitSnapEnabled);
 		UpdateSnap();
 		break;
 
-	case LC_EDIT_TRANSFORM:
+	case SW_EDIT_TRANSFORM:
 		if (ActiveModel)
 		{
-			const std::optional<lcVector3> Transform = GetTransformAmount();
+			const std::optional<swVector3> Transform = GetTransformAmount();
 
 			if (Transform)
 				ActiveModel->TransformSelectedObjects(GetTransformType(), *Transform);
 		}
 		break;
 
-	case LC_EDIT_TRANSFORM_ABSOLUTE_TRANSLATION:
-		SetTransformType(lcTransformType::AbsoluteTranslation);
+	case SW_EDIT_TRANSFORM_ABSOLUTE_TRANSLATION:
+		SetTransformType(swTransformType::AbsoluteTranslation);
 		break;
 
-	case LC_EDIT_TRANSFORM_RELATIVE_TRANSLATION:
-		SetTransformType(lcTransformType::RelativeTranslation);
+	case SW_EDIT_TRANSFORM_RELATIVE_TRANSLATION:
+		SetTransformType(swTransformType::RelativeTranslation);
 		break;
 
-	case LC_EDIT_TRANSFORM_ABSOLUTE_ROTATION:
-		SetTransformType(lcTransformType::AbsoluteRotation);
+	case SW_EDIT_TRANSFORM_ABSOLUTE_ROTATION:
+		SetTransformType(swTransformType::AbsoluteRotation);
 		break;
 
-	case LC_EDIT_TRANSFORM_RELATIVE_ROTATION:
-		SetTransformType(lcTransformType::RelativeRotation);
+	case SW_EDIT_TRANSFORM_RELATIVE_ROTATION:
+		SetTransformType(swTransformType::RelativeRotation);
 		break;
 
-	case LC_EDIT_ACTION_SELECT:
-		SetTool(lcTool::Select);
+	case SW_EDIT_ACTION_SELECT:
+		SetTool(swTool::Select);
 		break;
 
-	case LC_EDIT_ACTION_INSERT:
-		SetTool(lcTool::Insert);
+	case SW_EDIT_ACTION_INSERT:
+		SetTool(swTool::Insert);
 		break;
 
-	case LC_EDIT_ACTION_POINT_LIGHT:
-		SetTool(lcTool::PointLight);
+	case SW_EDIT_ACTION_POINT_LIGHT:
+		SetTool(swTool::PointLight);
 		break;
 
-	case LC_EDIT_ACTION_AREA_LIGHT:
-		SetTool(lcTool::AreaLight);
+	case SW_EDIT_ACTION_AREA_LIGHT:
+		SetTool(swTool::AreaLight);
 		break;
 
-	case LC_EDIT_ACTION_DIRECTIONAL_LIGHT:
-		SetTool(lcTool::DirectionalLight);
+	case SW_EDIT_ACTION_DIRECTIONAL_LIGHT:
+		SetTool(swTool::DirectionalLight);
 		break;
 
-	case LC_EDIT_ACTION_SPOTLIGHT:
-		SetTool(lcTool::SpotLight);
+	case SW_EDIT_ACTION_SPOTLIGHT:
+		SetTool(swTool::SpotLight);
 		break;
 
-	case LC_EDIT_ACTION_CAMERA:
-		SetTool(lcTool::Camera);
+	case SW_EDIT_ACTION_CAMERA:
+		SetTool(swTool::Camera);
 		break;
 
-	case LC_EDIT_ACTION_MOVE:
-		SetTool(lcTool::Move);
+	case SW_EDIT_ACTION_MOVE:
+		SetTool(swTool::Move);
 		break;
 
-	case LC_EDIT_ACTION_ROTATE:
-		SetTool(lcTool::Rotate);
+	case SW_EDIT_ACTION_ROTATE:
+		SetTool(swTool::Rotate);
 		break;
 
-	case LC_EDIT_ACTION_DELETE:
-		SetTool(lcTool::Eraser);
+	case SW_EDIT_ACTION_DELETE:
+		SetTool(swTool::Eraser);
 		break;
 
-	case LC_EDIT_ACTION_PAINT:
-		SetTool(lcTool::Paint);
+	case SW_EDIT_ACTION_PAINT:
+		SetTool(swTool::Paint);
 		break;
 
-	case LC_EDIT_ACTION_COLOR_PICKER:
-		SetTool(lcTool::ColorPicker);
+	case SW_EDIT_ACTION_COLOR_PICKER:
+		SetTool(swTool::ColorPicker);
 		break;
 
-	case LC_EDIT_ACTION_ZOOM:
-		SetTool(lcTool::Zoom);
+	case SW_EDIT_ACTION_ZOOM:
+		SetTool(swTool::Zoom);
 		break;
 
-	case LC_EDIT_ACTION_ZOOM_REGION:
-		SetTool(lcTool::ZoomRegion);
+	case SW_EDIT_ACTION_ZOOM_REGION:
+		SetTool(swTool::ZoomRegion);
 		break;
 
-	case LC_EDIT_ACTION_PAN:
-		SetTool(lcTool::Pan);
+	case SW_EDIT_ACTION_PAN:
+		SetTool(swTool::Pan);
 		break;
 
-	case LC_EDIT_ACTION_ROTATE_VIEW:
-		SetTool(lcTool::RotateView);
+	case SW_EDIT_ACTION_ROTATE_VIEW:
+		SetTool(swTool::RotateView);
 		break;
 
-	case LC_EDIT_ACTION_ROLL:
-		SetTool(lcTool::Roll);
+	case SW_EDIT_ACTION_ROLL:
+		SetTool(swTool::Roll);
 		break;
 
-	case LC_EDIT_CANCEL:
+	case SW_EDIT_CANCEL:
 		if (ActiveView && !ActiveView->CloseFindReplaceDialog())
 			ActiveView->CancelTrackingOrClearSelectionAction();
 		break;
 
-	case LC_TIMELINE_INSERT_BEFORE:
+	case SW_TIMELINE_INSERT_BEFORE:
 		mTimelineWidget->InsertStepBefore();
 		break;
 
-	case LC_TIMELINE_INSERT_AFTER:
+	case SW_TIMELINE_INSERT_AFTER:
 		mTimelineWidget->InsertStepAfter();
 		break;
 
-	case LC_TIMELINE_DELETE:
+	case SW_TIMELINE_DELETE:
 		mTimelineWidget->RemoveStep();
 		break;
 
-	case LC_TIMELINE_MOVE_SELECTION:
+	case SW_TIMELINE_MOVE_SELECTION:
 		mTimelineWidget->MoveSelection();
 		break;
 
-	case LC_TIMELINE_MOVE_SELECTION_BEFORE:
+	case SW_TIMELINE_MOVE_SELECTION_BEFORE:
 		mTimelineWidget->MoveSelectionBefore();
 		break;
 
-	case LC_TIMELINE_MOVE_SELECTION_AFTER:
+	case SW_TIMELINE_MOVE_SELECTION_AFTER:
 		mTimelineWidget->MoveSelectionAfter();
 		break;
 
-	case LC_TIMELINE_SET_CURRENT:
+	case SW_TIMELINE_SET_CURRENT:
 		mTimelineWidget->SetCurrentStep();
 		break;
 
-	case LC_NUM_COMMANDS:
+	case SW_NUM_COMMANDS:
 		break;
 	}
 }

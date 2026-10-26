@@ -3,10 +3,10 @@
 #include "sw_math.h"
 
 class Project;
-class lcPiecesLibrary;
-enum class lcViewSphereLocation;
+class swPiecesLibrary;
+enum class swViewSphereLocation;
 
-enum class lcShadingMode
+enum class swShadingMode
 {
 	Wireframe,
 	Flat,
@@ -14,26 +14,26 @@ enum class lcShadingMode
 	Full
 };
 
-enum class lcColorTheme
+enum class swColorTheme
 {
 	Dark,
 	System
 };
 
-enum class lcHighlightRenderMode
+enum class swHighlightRenderMode
 {
 	Outline,
 	Tint
 };
 
-enum class lcInsertColorMode
+enum class swInsertColorMode
 {
 	CurrentColor,
 	SelectedPieceColor,
 	LastInsertedColor
 };
 
-enum class lcAxisIconLocation
+enum class swAxisIconLocation
 {
 	TopLeft,
 	TopRight,
@@ -41,15 +41,15 @@ enum class lcAxisIconLocation
 	BottomRight
 };
 
-struct lcRenderSettings
+struct swRenderSettings
 {
-	lcShadingMode ShadingMode;
+	swShadingMode ShadingMode;
 	bool DrawEdgeLines;
 	bool DrawConditionalLines;
 	float LineWidth;
 };
 
-enum class lcRenderTarget
+enum class swRenderTarget
 {
 	ModelView,
 	Preview,
@@ -57,28 +57,28 @@ enum class lcRenderTarget
 	Minifig
 };
 
-struct lcTargetRenderSettings
+struct swTargetRenderSettings
 {
 	bool SyncRendering;
-	lcRenderSettings Settings;
+	swRenderSettings Settings;
 };
 
-class lcPreferences
+class swPreferences
 {
 public:
 	void LoadDefaults();
 	void SaveDefaults();
-	void SetInterfaceColors(lcColorTheme ColorTheme);
+	void SetInterfaceColors(swColorTheme ColorTheme);
 
-	void LoadRenderTarget(lcRenderTarget Target);
-	void SaveRenderTarget(lcRenderTarget Target) const;
+	void LoadRenderTarget(swRenderTarget Target);
+	void SaveRenderTarget(swRenderTarget Target) const;
 
 	// The pieces preview and the pieces list use their own settings unless they are synced with the model views.
-	lcRenderSettings GetRenderSettings(lcRenderTarget Target) const
+	swRenderSettings GetRenderSettings(swRenderTarget Target) const
 	{
-		if (Target != lcRenderTarget::ModelView)
+		if (Target != swRenderTarget::ModelView)
 		{
-			const lcTargetRenderSettings& TargetSettings = GetTargetRenderSettings(Target);
+			const swTargetRenderSettings& TargetSettings = GetTargetRenderSettings(Target);
 
 			if (!TargetSettings.SyncRendering)
 				return TargetSettings.Settings;
@@ -87,26 +87,26 @@ public:
 		return { mShadingMode, mDrawEdgeLines, mDrawConditionalLines, mLineWidth };
 	}
 
-	lcTargetRenderSettings& GetTargetRenderSettings(lcRenderTarget Target)
+	swTargetRenderSettings& GetTargetRenderSettings(swRenderTarget Target)
 	{
-		return Target == lcRenderTarget::Pieces ? mPiecesRendering : Target == lcRenderTarget::Minifig ? mMinifigRendering : mPreviewRendering;
+		return Target == swRenderTarget::Pieces ? mPiecesRendering : Target == swRenderTarget::Minifig ? mMinifigRendering : mPreviewRendering;
 	}
 
-	const lcTargetRenderSettings& GetTargetRenderSettings(lcRenderTarget Target) const
+	const swTargetRenderSettings& GetTargetRenderSettings(swRenderTarget Target) const
 	{
-		return Target == lcRenderTarget::Pieces ? mPiecesRendering : Target == lcRenderTarget::Minifig ? mMinifigRendering : mPreviewRendering;
+		return Target == swRenderTarget::Pieces ? mPiecesRendering : Target == swRenderTarget::Minifig ? mMinifigRendering : mPreviewRendering;
 	}
 
 	int mMouseSensitivity;
-	lcShadingMode mShadingMode;
-	lcHighlightRenderMode mHighlightRenderMode;
+	swShadingMode mShadingMode;
+	swHighlightRenderMode mHighlightRenderMode;
 	bool mBackgroundGradient;
 	quint32 mBackgroundSolidColor;
 	quint32 mBackgroundGradientColorTop;
 	quint32 mBackgroundGradientColorBottom;
 	bool mDrawAxes;
 	bool mFollowStepViews;
-	lcAxisIconLocation mAxisIconLocation;
+	swAxisIconLocation mAxisIconLocation;
 	quint32 mTextColor;
 	quint32 mTextHaloColor;
 	quint32 mMarqueeBorderColor;
@@ -118,9 +118,9 @@ public:
 	bool mDrawConditionalLines;
 	float mLineWidth;
 	bool mAllowLOD;
-	lcTargetRenderSettings mPreviewRendering;
-	lcTargetRenderSettings mPiecesRendering;
-	lcTargetRenderSettings mMinifigRendering;
+	swTargetRenderSettings mPreviewRendering;
+	swTargetRenderSettings mPiecesRendering;
+	swTargetRenderSettings mMinifigRendering;
 	float mMeshLODDistance;
 	bool mFadeSteps;
 	quint32 mFadeStepsColor;
@@ -138,7 +138,7 @@ public:
 	bool mGridHeightBehindModel;
 	bool mFixedAxes;
 	bool mViewSphereEnabled;
-	lcViewSphereLocation mViewSphereLocation;
+	swViewSphereLocation mViewSphereLocation;
 	int mViewSphereSize;
 	quint32 mViewSphereColor;
 	quint32 mViewSphereTextColor;
@@ -151,10 +151,10 @@ public:
 	bool mFirstPieceAtOrigin;
 	bool mPiecesSnapToTiles;
 	bool mTerminalFollowModel;
-	lcInsertColorMode mInsertColorMode;
+	swInsertColorMode mInsertColorMode;
 	bool mWatchFileChanges;
 	bool mLoadPiecesBeforeShowing;
-	lcColorTheme mColorTheme;
+	swColorTheme mColorTheme;
 	quint32 mObjectSelectedColor;
 	quint32 mObjectFocusedColor;
 	quint32 mCameraColor;
@@ -165,7 +165,7 @@ public:
 
 	int mPreviewViewSphereEnabled;
 	int mPreviewViewSphereSize;
-	lcViewSphereLocation mPreviewViewSphereLocation;
+	swViewSphereLocation mPreviewViewSphereLocation;
 	int mDrawPreviewAxis;
 	bool mPreviewSquareViewport;
 
@@ -182,7 +182,7 @@ public:
 	bool  mAutomateEdgeColor;
 };
 
-struct lcCommandLineOptions
+struct swCommandLineOptions
 {
 	bool ParseOK = true;
 	bool Exit = false;
@@ -205,18 +205,18 @@ struct lcCommandLineOptions
 	int ImageWidth;
 	int ImageHeight;
 	int AASamples;
-	lcShadingMode ShadingMode;
+	swShadingMode ShadingMode;
 	float LineWidth;
-	lcStudStyle StudStyle;
-	lcStep ImageStart;
-	lcStep ImageEnd;
-	lcVector3 CameraPosition[3];
-	lcVector2 CameraLatLon;
+	swStudStyle StudStyle;
+	swStep ImageStart;
+	swStep ImageEnd;
+	swVector3 CameraPosition[3];
+	swVector2 CameraLatLon;
 	float FoV;
 	float PartEdgeContrast;
 	float PartColorValueLDIndex;
-	lcVector2 ZPlanes;
-	lcViewpoint Viewpoint;
+	swVector2 ZPlanes;
+	swViewpoint Viewpoint;
 	bool StudCylinderColorEnabled;
 	quint32 StudCylinderColor;
 	bool PartEdgeColorEnabled;
@@ -241,14 +241,14 @@ struct lcCommandLineOptions
 	QString StdErr;
 };
 
-enum class lcStartupMode
+enum class swStartupMode
 {
 	ShowWindow,
 	Success,
 	Error
 };
 
-class lcApplication : public QApplication
+class swApplication : public QApplication
 {
 	Q_OBJECT
 
@@ -258,29 +258,29 @@ public:
 	{
 		return mDefaultPalette.color(QPalette::Window).lightness() < 128;
 	}
-	lcApplication(int& Argc, char** Argv);
-	~lcApplication();
+	swApplication(int& Argc, char** Argv);
+	~swApplication();
 
-	lcApplication(const lcApplication&) = delete;
-	lcApplication(lcApplication&&) = delete;
-	lcApplication& operator=(const lcApplication&) = delete;
-	lcApplication& operator=(lcApplication&&) = delete;
+	swApplication(const swApplication&) = delete;
+	swApplication(swApplication&&) = delete;
+	swApplication& operator=(const swApplication&) = delete;
+	swApplication& operator=(swApplication&&) = delete;
 
 	void SetProject(Project* Project);
-	static lcCommandLineOptions ParseCommandLineOptions();
-	lcStartupMode Initialize(const QList<QPair<QString, bool>>& LibraryPaths);
+	static swCommandLineOptions ParseCommandLineOptions();
+	swStartupMode Initialize(const QList<QPair<QString, bool>>& LibraryPaths);
 	void Shutdown();
 	void ShowPreferencesDialog();
 	void SaveTabLayout() const;
 
-	bool LoadPartsLibrary(const QList<QPair<QString, bool>>& LibraryPaths, bool OnlyUsePaths, lcStudStyle StudStyle, bool StudCylinderColorEnabled);
+	bool LoadPartsLibrary(const QList<QPair<QString, bool>>& LibraryPaths, bool OnlyUsePaths, swStudStyle StudStyle, bool StudCylinderColorEnabled);
 
 	void SetClipboard(const QByteArray& Clipboard);
 	void ExportClipboard(const QByteArray& Clipboard);
 
 	Project* mProject = nullptr;
-	lcPiecesLibrary* mLibrary = nullptr;
-	lcPreferences mPreferences;
+	swPiecesLibrary* mLibrary = nullptr;
+	swPreferences mPreferences;
 	QByteArray mClipboard;
 
 signals:
@@ -295,19 +295,19 @@ protected:
 	bool mCustomStyleApplied = false;
 };
 
-extern lcApplication* gApplication;
+extern swApplication* gApplication;
 
-inline lcPiecesLibrary* lcGetPiecesLibrary()
+inline swPiecesLibrary* swGetPiecesLibrary()
 {
 	return gApplication->mLibrary;
 }
 
-inline Project* lcGetActiveProject()
+inline Project* swGetActiveProject()
 {
 	return gApplication->mProject;
 }
 
-inline lcPreferences& lcGetPreferences()
+inline swPreferences& swGetPreferences()
 {
 	return gApplication->mPreferences;
 }

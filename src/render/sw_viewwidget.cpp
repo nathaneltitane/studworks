@@ -14,14 +14,14 @@
 #include "sw_utils.h"
 #include "sw_viewsphere.h"
 
-lcViewWidget::lcViewWidget(QWidget* Parent, lcView* View)
+swViewWidget::swViewWidget(QWidget* Parent, swView* View)
 	: QOpenGLWidget(Parent), mView(View)
 {
 	mView->SetWidget(this);
 
 	setMouseTracking(true);
 
-	if (View->GetViewType() == lcViewType::View)
+	if (View->GetViewType() == swViewType::View)
 	{
 		setFocusPolicy(Qt::StrongFocus);
 		setAcceptDrops(true);
@@ -79,12 +79,12 @@ lcViewWidget::lcViewWidget(QWidget* Parent, lcView* View)
 			mView->SetTopSubmodelActive();
 		});
 
-		lcSetupWidgetHelp(mModelEditingBar, nullptr);
+		swSetupWidgetHelp(mModelEditingBar, nullptr);
 		UpdateModelEditingPath();
 	}
 }
 
-lcViewWidget::~lcViewWidget()
+swViewWidget::~swViewWidget()
 {
 	if (context())
 		makeCurrent();
@@ -95,17 +95,17 @@ lcViewWidget::~lcViewWidget()
 		doneCurrent();
 }
 
-QSize lcViewWidget::sizeHint() const
+QSize swViewWidget::sizeHint() const
 {
 	return mPreferredSize.isEmpty() ? QOpenGLWidget::sizeHint() : mPreferredSize;
 }
 
-lcView* lcViewWidget::GetView() const
+swView* swViewWidget::GetView() const
 {
 	return mView.get();
 }
 
-void lcViewWidget::SetView(lcView* View)
+void swViewWidget::SetView(swView* View)
 {
 	if (context())
 		makeCurrent();
@@ -125,18 +125,18 @@ void lcViewWidget::SetView(lcView* View)
 			View->SetFocus(true);
 	}
 
-	mView = std::unique_ptr<lcView>(View);
+	mView = std::unique_ptr<swView>(View);
 	UpdateModelEditingPath();
 }
 
-void lcViewWidget::UpdateModelEditingPath()
+void swViewWidget::UpdateModelEditingPath()
 {
 	if (!mOverlay || !mView)
 		return;
 
 	QStringList Names;
 
-	for (const lcModel* Model : mView->GetModelEditingPath())
+	for (const swModel* Model : mView->GetModelEditingPath())
 		Names.append(Model->GetProperties().mFileName);
 
 	if (Names != mModelEditingNames)
@@ -151,7 +151,7 @@ void lcViewWidget::UpdateModelEditingPath()
 	UpdateOverlayGeometry();
 }
 
-void lcViewWidget::SetFindReplaceWidget(QWidget* Widget)
+void swViewWidget::SetFindReplaceWidget(QWidget* Widget)
 {
 	if (!mOverlay)
 		return;
@@ -161,7 +161,7 @@ void lcViewWidget::SetFindReplaceWidget(QWidget* Widget)
 	UpdateOverlayGeometry();
 }
 
-void lcViewWidget::UpdateOverlayGeometry()
+void swViewWidget::UpdateOverlayGeometry()
 {
 	if (!mOverlay)
 		return;
@@ -175,13 +175,13 @@ void lcViewWidget::UpdateOverlayGeometry()
 
 	int Left = 1;
 	int Right = width() - 1;
-	const lcPreferences& Preferences = lcGetPreferences();
+	const swPreferences& Preferences = swGetPreferences();
 
 	if (Preferences.mViewSphereEnabled && Preferences.mViewSphereSize > 0)
 	{
-		if (Preferences.mViewSphereLocation == lcViewSphereLocation::TopLeft)
+		if (Preferences.mViewSphereLocation == swViewSphereLocation::TopLeft)
 			Left += Preferences.mViewSphereSize + 2;
-		else if (Preferences.mViewSphereLocation == lcViewSphereLocation::TopRight)
+		else if (Preferences.mViewSphereLocation == swViewSphereLocation::TopRight)
 			Right -= Preferences.mViewSphereSize + 2;
 	}
 
@@ -201,9 +201,9 @@ void lcViewWidget::UpdateOverlayGeometry()
 	}
 
 	if (mFindReplaceWidget)
-		PreferredWidth = lcMax(PreferredWidth, mFindReplaceWidget->sizeHint().width());
+		PreferredWidth = swMax(PreferredWidth, mFindReplaceWidget->sizeHint().width());
 
-	const int OverlayWidth = lcClamp(PreferredWidth, 1, lcMax(1, Right - Left));
+	const int OverlayWidth = swClamp(PreferredWidth, 1, swMax(1, Right - Left));
 
 	mOverlay->setGeometry(Left, 1, OverlayWidth, mOverlayLayout->sizeHint().height());
 	mOverlayLayout->activate();
@@ -212,7 +212,7 @@ void lcViewWidget::UpdateOverlayGeometry()
 	UpdateModelEditingLabel();
 }
 
-void lcViewWidget::UpdateModelEditingLabel()
+void swViewWidget::UpdateModelEditingLabel()
 {
 	if (mModelEditingNames.size() < 2)
 		return;
@@ -229,7 +229,7 @@ void lcViewWidget::UpdateModelEditingLabel()
 	const int PathWidth = Metrics.width(mModelEditingNames.join(Separator));
 #endif
 	const int NameCount = static_cast<int>(mModelEditingNames.size());
-	const int NameWidth = lcMax(0, (mModelEditingLabel->width() - SeparatorWidth * (NameCount - 1)) / NameCount);
+	const int NameWidth = swMax(0, (mModelEditingLabel->width() - SeparatorWidth * (NameCount - 1)) / NameCount);
 	QStringList Segments;
 
 	for (int Index = 0; Index < mModelEditingNames.size(); Index++)
@@ -250,7 +250,7 @@ void lcViewWidget::UpdateModelEditingLabel()
 	mModelEditingLabel->setText(Segments.join(Separator));
 }
 
-bool lcViewWidget::eventFilter(QObject* Object, QEvent* Event)
+bool swViewWidget::eventFilter(QObject* Object, QEvent* Event)
 {
 	if (Object == mOverlay && Event->type() == QEvent::LayoutRequest)
 		UpdateOverlayGeometry();
@@ -258,13 +258,13 @@ bool lcViewWidget::eventFilter(QObject* Object, QEvent* Event)
 	return QOpenGLWidget::eventFilter(Object, Event);
 }
 
-void lcViewWidget::resizeEvent(QResizeEvent* Event)
+void swViewWidget::resizeEvent(QResizeEvent* Event)
 {
 	QOpenGLWidget::resizeEvent(Event);
 	UpdateOverlayGeometry();
 }
 
-void lcViewWidget::UpdateMousePosition()
+void swViewWidget::UpdateMousePosition()
 {
 	QPoint MousePosition = mapFromGlobal(QCursor::pos());
 	float DeviceScale = GetDeviceScale();
@@ -273,24 +273,24 @@ void lcViewWidget::UpdateMousePosition()
 	mView->SetMouseModifiers(QApplication::keyboardModifiers());
 }
 
-void lcViewWidget::initializeGL()
+void swViewWidget::initializeGL()
 {
 	mView->mContext->SetGLContext(context(), this);
 }
 
-void lcViewWidget::resizeGL(int Width, int Height)
+void swViewWidget::resizeGL(int Width, int Height)
 {
 	const float Scale = GetDeviceScale();
 
 	mView->SetSize(Width * Scale, Height * Scale);
 }
 
-void lcViewWidget::paintGL()
+void swViewWidget::paintGL()
 {
 	mView->OnDraw();
 }
 
-bool lcViewWidget::event(QEvent* Event)
+bool swViewWidget::event(QEvent* Event)
 {
 	if (Event->type() == QEvent::NativeGesture)
 	{
@@ -303,7 +303,7 @@ bool lcViewWidget::event(QEvent* Event)
 			break;
 
 		case Qt::SmartZoomNativeGesture:
-			mView->ZoomExtents(lcGeometryBoundsMode::IncludeFallback, false);
+			mView->ZoomExtents(swGeometryBoundsMode::IncludeFallback, false);
 			break;
 
 		default:
@@ -314,7 +314,7 @@ bool lcViewWidget::event(QEvent* Event)
 	return QOpenGLWidget::event(Event);
 }
 
-void lcViewWidget::focusInEvent(QFocusEvent* FocusEvent)
+void swViewWidget::focusInEvent(QFocusEvent* FocusEvent)
 {
 	if (mView)
 		mView->SetFocus(true);
@@ -322,7 +322,7 @@ void lcViewWidget::focusInEvent(QFocusEvent* FocusEvent)
 	QOpenGLWidget::focusInEvent(FocusEvent);
 }
 
-void lcViewWidget::focusOutEvent(QFocusEvent* FocusEvent)
+void swViewWidget::focusOutEvent(QFocusEvent* FocusEvent)
 {
 	if (mView)
 		mView->SetFocus(false);
@@ -330,7 +330,7 @@ void lcViewWidget::focusOutEvent(QFocusEvent* FocusEvent)
 	QOpenGLWidget::focusOutEvent(FocusEvent);
 }
 
-void lcViewWidget::keyPressEvent(QKeyEvent* KeyEvent)
+void swViewWidget::keyPressEvent(QKeyEvent* KeyEvent)
 {
 	if (KeyEvent->key() == Qt::Key_Control || KeyEvent->key() == Qt::Key_Shift)
 	{
@@ -341,7 +341,7 @@ void lcViewWidget::keyPressEvent(QKeyEvent* KeyEvent)
 	QOpenGLWidget::keyPressEvent(KeyEvent);
 }
 
-void lcViewWidget::keyReleaseEvent(QKeyEvent* KeyEvent)
+void swViewWidget::keyReleaseEvent(QKeyEvent* KeyEvent)
 {
 	if (KeyEvent->key() == Qt::Key_Control || KeyEvent->key() == Qt::Key_Shift)
 	{
@@ -352,7 +352,7 @@ void lcViewWidget::keyReleaseEvent(QKeyEvent* KeyEvent)
 	QOpenGLWidget::keyReleaseEvent(KeyEvent);
 }
 
-void lcViewWidget::mousePressEvent(QMouseEvent* MouseEvent)
+void swViewWidget::mousePressEvent(QMouseEvent* MouseEvent)
 {
 	float DeviceScale = GetDeviceScale();
 
@@ -386,7 +386,7 @@ void lcViewWidget::mousePressEvent(QMouseEvent* MouseEvent)
 	}
 }
 
-void lcViewWidget::mouseReleaseEvent(QMouseEvent* MouseEvent)
+void swViewWidget::mouseReleaseEvent(QMouseEvent* MouseEvent)
 {
 	float DeviceScale = GetDeviceScale();
 
@@ -420,7 +420,7 @@ void lcViewWidget::mouseReleaseEvent(QMouseEvent* MouseEvent)
 	}
 }
 
-void lcViewWidget::mouseDoubleClickEvent(QMouseEvent* MouseEvent)
+void swViewWidget::mouseDoubleClickEvent(QMouseEvent* MouseEvent)
 {
 	float DeviceScale = GetDeviceScale();
 
@@ -438,13 +438,13 @@ void lcViewWidget::mouseDoubleClickEvent(QMouseEvent* MouseEvent)
 	}
 }
 
-void lcViewWidget::contextMenuEvent(QContextMenuEvent* ContextMenuEvent)
+void swViewWidget::contextMenuEvent(QContextMenuEvent* ContextMenuEvent)
 {
 	// Views show their own menu when the right button is released, so the press is never a panel menu that would stop a drag.
 	ContextMenuEvent->accept();
 }
 
-void lcViewWidget::mouseMoveEvent(QMouseEvent* MouseEvent)
+void swViewWidget::mouseMoveEvent(QMouseEvent* MouseEvent)
 {
 	float DeviceScale = GetDeviceScale();
 
@@ -454,7 +454,7 @@ void lcViewWidget::mouseMoveEvent(QMouseEvent* MouseEvent)
 	mView->OnMouseMove();
 }
 
-void lcViewWidget::wheelEvent(QWheelEvent* WheelEvent)
+void swViewWidget::wheelEvent(QWheelEvent* WheelEvent)
 {
 	if (WheelEvent->source() == Qt::MouseEventSynthesizedBySystem)
 	{
@@ -510,40 +510,40 @@ void lcViewWidget::wheelEvent(QWheelEvent* WheelEvent)
 	WheelEvent->accept();
 }
 
-void lcViewWidget::leaveEvent(QEvent* Event)
+void swViewWidget::leaveEvent(QEvent* Event)
 {
 	mView->OnMouseLeave();
 
 	QOpenGLWidget::leaveEvent(Event);
 }
 
-void lcViewWidget::dragEnterEvent(QDragEnterEvent* DragEnterEvent)
+void swViewWidget::dragEnterEvent(QDragEnterEvent* DragEnterEvent)
 {
 	const QMimeData* MimeData = DragEnterEvent->mimeData();
 
 	if (MimeData->hasFormat("application/vnd.leocad-part"))
 	{
 		DragEnterEvent->acceptProposedAction();
-		mView->BeginDrag(lcDragState::Piece);
+		mView->BeginDrag(swDragState::Piece);
 		return;
 	}
 	else if (MimeData->hasFormat("application/vnd.leocad-color"))
 	{
 		DragEnterEvent->acceptProposedAction();
-		mView->BeginDrag(lcDragState::Color);
+		mView->BeginDrag(swDragState::Color);
 		return;
 	}
 
 	DragEnterEvent->ignore();
 }
 
-void lcViewWidget::dragLeaveEvent(QDragLeaveEvent* DragLeaveEvent)
+void swViewWidget::dragLeaveEvent(QDragLeaveEvent* DragLeaveEvent)
 {
 	mView->EndDrag(false);
 	DragLeaveEvent->accept();
 }
 
-void lcViewWidget::dragMoveEvent(QDragMoveEvent* DragMoveEvent)
+void swViewWidget::dragMoveEvent(QDragMoveEvent* DragMoveEvent)
 {
 	const QMimeData* MimeData = DragMoveEvent->mimeData();
 
@@ -563,7 +563,7 @@ void lcViewWidget::dragMoveEvent(QDragMoveEvent* DragMoveEvent)
 	QOpenGLWidget::dragMoveEvent(DragMoveEvent);
 }
 
-void lcViewWidget::dropEvent(QDropEvent* DropEvent)
+void swViewWidget::dropEvent(QDropEvent* DropEvent)
 {
 	const QMimeData* MimeData = DropEvent->mimeData();
 

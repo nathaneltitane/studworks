@@ -9,231 +9,231 @@
 #include "sw_partselectionwidget.h"
 #include "sw_colors.h"
 
-lcProfileEntry::lcProfileEntry(const char* Section, const char* Key, int DefaultValue)
+swProfileEntry::swProfileEntry(const char* Section, const char* Key, int DefaultValue)
 {
 	mSection = Section;
 	mKey = Key;
 	mDefault = DefaultValue;
 }
 
-lcProfileEntry::lcProfileEntry(const char* Section, const char* Key, uint DefaultValue)
+swProfileEntry::swProfileEntry(const char* Section, const char* Key, uint DefaultValue)
 {
 	mSection = Section;
 	mKey = Key;
 	mDefault = DefaultValue;
 }
 
-lcProfileEntry::lcProfileEntry(const char* Section, const char* Key, float DefaultValue)
+swProfileEntry::swProfileEntry(const char* Section, const char* Key, float DefaultValue)
 {
 	mSection = Section;
 	mKey = Key;
 	mDefault = DefaultValue;
 }
 
-lcProfileEntry::lcProfileEntry(const char* Section, const char* Key, const char* DefaultValue)
+swProfileEntry::swProfileEntry(const char* Section, const char* Key, const char* DefaultValue)
 {
 	mSection = Section;
 	mKey = Key;
 	mDefault = QString(DefaultValue);
 }
 
-lcProfileEntry::lcProfileEntry(const char* Section, const char* Key, const QStringList& /*StringList*/)
+swProfileEntry::swProfileEntry(const char* Section, const char* Key, const QStringList& /*StringList*/)
 {
 	mSection = Section;
 	mKey = Key;
 	mDefault = QStringList();
 }
 
-lcProfileEntry::lcProfileEntry(const char* Section, const char* Key)
+swProfileEntry::swProfileEntry(const char* Section, const char* Key)
 {
 	mSection = Section;
 	mKey = Key;
 	mDefault = QByteArray();
 }
 
-static lcProfileEntry gProfileEntries[LC_NUM_PROFILE_KEYS] =
+static swProfileEntry gProfileEntries[SW_NUM_PROFILE_KEYS] =
 {
-	lcProfileEntry("Settings", "FixedAxes", false),                                                        // LC_PROFILE_FIXED_AXES
-	lcProfileEntry("Settings", "LineWidth", 1.0f),                                                         // LC_PROFILE_LINE_WIDTH
-	lcProfileEntry("Settings", "AllowLOD", true),                                                          // LC_PROFILE_ALLOW_LOD
-	lcProfileEntry("Settings", "LODDistance", 750.0f),                                                     // LC_PROFILE_LOD_DISTANCE
-	lcProfileEntry("Settings", "FadeSteps", false),                                                        // LC_PROFILE_FADE_STEPS
-	lcProfileEntry("Settings", "FadeStepsColor", LC_RGBA(128, 128, 128, 128)),                             // LC_PROFILE_FADE_STEPS_COLOR
-	lcProfileEntry("Settings", "HighlightNewParts", 0),                                                    // LC_PROFILE_HIGHLIGHT_NEW_PARTS
-	lcProfileEntry("Settings", "HighlightNewPartsColor", LC_RGBA(255, 242, 0, 192)),                       // LC_PROFILE_HIGHLIGHT_NEW_PARTS_COLOR
-	lcProfileEntry("Settings", "ShadingMode", static_cast<int>(lcShadingMode::DefaultLights)),             // LC_PROFILE_SHADING_MODE
-	lcProfileEntry("Settings", "HighlightRenderMode", static_cast<int>(lcHighlightRenderMode::Outline)),      // LC_PROFILE_HIGHLIGHT_RENDER_MODE
-	lcProfileEntry("Settings", "BackgroundGradient", false),                                               // LC_PROFILE_BACKGROUND_GRADIENT
-	lcProfileEntry("Settings", "BackgroundColor", LC_RGB(49, 52, 55)),                                     // LC_PROFILE_BACKGROUND_COLOR
-	lcProfileEntry("Settings", "GradientColorTop", LC_RGB(54, 72, 95)),                                    // LC_PROFILE_GRADIENT_COLOR_TOP
-	lcProfileEntry("Settings", "GradientColorBottom", LC_RGB(49, 52, 55)),                                 // LC_PROFILE_GRADIENT_COLOR_BOTTOM
-	lcProfileEntry("Settings", "DrawAxes", 0),                                                             // LC_PROFILE_DRAW_AXES
-	lcProfileEntry("Settings", "FollowStepViews", 1),                                                      // LC_PROFILE_FOLLOW_STEP_VIEWS
-	lcProfileEntry("Settings", "DrawAxesLocation", static_cast<int>(lcAxisIconLocation::BottomLeft)),      // LC_PROFILE_DRAW_AXES_LOCATION
-	lcProfileEntry("Settings", "TextColor", LC_RGBA(214, 220, 227, 255)),                                  // LC_PROFILE_TEXT_COLOR
-	lcProfileEntry("Settings", "TextHaloColor", LC_RGBA(17, 19, 24, 160)),                                // LC_PROFILE_TEXT_HALO_COLOR
-	lcProfileEntry("Settings", "MarqueeBorderColor", LC_RGBA(64, 64, 255, 255)),                           // LC_PROFILE_MARQUEE_BORDER_COLOR
-	lcProfileEntry("Settings", "MarqueeFillColor", LC_RGBA(64, 64, 255, 64)),                              // LC_PROFILE_MARQUEE_FILL_COLOR
-	lcProfileEntry("Settings", "OverlayColor", LC_RGBA(0, 0, 0, 255)),                                     // LC_PROFILE_OVERLAY_COLOR
-	lcProfileEntry("Settings", "ActiveViewColor", LC_RGBA(41, 128, 185, 255)),                             // LC_PROFILE_ACTIVE_VIEW_COLOR
-	lcProfileEntry("Settings", "InactiveViewColor", LC_RGBA(69, 69, 69, 255)),                             // LC_PROFILE_INACTIVE_VIEW_COLOR
-	lcProfileEntry("Settings", "DrawEdgeLines", 1),                                                        // LC_PROFILE_DRAW_EDGE_LINES
-	lcProfileEntry("Settings", "DrawConditionalLines", 1),                                                 // LC_PROFILE_DRAW_CONDITIONAL_LINES
-	lcProfileEntry("Settings", "PreviewSyncRendering", 1),                                                   // LC_PROFILE_PREVIEW_SYNC_RENDERING
-	lcProfileEntry("Settings", "PreviewShadingMode", static_cast<int>(lcShadingMode::DefaultLights)),        // LC_PROFILE_PREVIEW_SHADING_MODE
-	lcProfileEntry("Settings", "PreviewDrawEdgeLines", 1),                                                   // LC_PROFILE_PREVIEW_DRAW_EDGE_LINES
-	lcProfileEntry("Settings", "PreviewDrawConditionalLines", 1),                                            // LC_PROFILE_PREVIEW_DRAW_CONDITIONAL_LINES
-	lcProfileEntry("Settings", "PreviewLineWidth", 1.0f),                                                    // LC_PROFILE_PREVIEW_LINE_WIDTH
-	lcProfileEntry("Settings", "PiecesSyncRendering", 1),                                                    // LC_PROFILE_PIECES_SYNC_RENDERING
-	lcProfileEntry("Settings", "PiecesShadingMode", static_cast<int>(lcShadingMode::DefaultLights)),         // LC_PROFILE_PIECES_SHADING_MODE
-	lcProfileEntry("Settings", "PiecesDrawEdgeLines", 1),                                                    // LC_PROFILE_PIECES_DRAW_EDGE_LINES
-	lcProfileEntry("Settings", "PiecesDrawConditionalLines", 1),                                             // LC_PROFILE_PIECES_DRAW_CONDITIONAL_LINES
-	lcProfileEntry("Settings", "PiecesLineWidth", 1.0f),                                                     // LC_PROFILE_PIECES_LINE_WIDTH
-	lcProfileEntry("Settings", "GridStuds", 1),                                                            // LC_PROFILE_GRID_STUDS
-	lcProfileEntry("Settings", "GridStudColor", LC_RGBA(24, 24, 24, 192)),                                 // LC_PROFILE_GRID_STUD_COLOR
-	lcProfileEntry("Settings", "GridLines", 1),                                                            // LC_PROFILE_GRID_LINES
-	lcProfileEntry("Settings", "GridLineSpacing", 5),                                                      // LC_PROFILE_GRID_LINE_SPACING
-	lcProfileEntry("Settings", "GridLineColor", LC_RGBA(24, 24, 24, 255)),                                 // LC_PROFILE_GRID_LINE_COLOR
-	lcProfileEntry("Settings", "GridOrigin", 0),                                                           // LC_PROFILE_GRID_ORIGIN
-	lcProfileEntry("Settings", "GridHeightXZ", 0),                                                         // LC_PROFILE_GRID_HEIGHT_XZ
-	lcProfileEntry("Settings", "GridHeightYZ", 0),                                                         // LC_PROFILE_GRID_HEIGHT_YZ
-	lcProfileEntry("Settings", "GridHeightBehindModel", 0),                                                // LC_PROFILE_GRID_HEIGHT_BEHIND_MODEL
-	lcProfileEntry("Settings", "AASamples", 1),                                                            // LC_PROFILE_ANTIALIASING_SAMPLES
-	lcProfileEntry("Settings", "ViewSphereEnabled", 1),                                                    // LC_PROFILE_VIEW_SPHERE_ENABLED
-	lcProfileEntry("Settings", "ViewSphereLocation", (int)lcViewSphereLocation::TopRight),                 // LC_PROFILE_VIEW_SPHERE_LOCATION
-	lcProfileEntry("Settings", "ViewSphereSize", 100),                                                     // LC_PROFILE_VIEW_SPHERE_SIZE
-	lcProfileEntry("Settings", "ViewSphereColor", LC_RGBA(27, 31, 36, 255)),                               // LC_PROFILE_VIEW_SPHERE_COLOR
-	lcProfileEntry("Settings", "ViewSphereTextColor", LC_RGBA(232, 237, 242, 255)),                        // LC_PROFILE_VIEW_SPHERE_TEXT_COLOR
-	lcProfileEntry("Settings", "ViewSphereHighlightColor", LC_RGBA(41, 128, 185, 255)),                    // LC_PROFILE_VIEW_SPHERE_HIGHLIGHT_COLOR
-	lcProfileEntry("Settings", "AxisXColor", LC_RGBA(200, 40, 60, 255)),                                   // LC_PROFILE_AXIS_X_COLOR
-	lcProfileEntry("Settings", "AxisYColor", LC_RGBA(100, 200, 20, 255)),                                  // LC_PROFILE_AXIS_Y_COLOR
-	lcProfileEntry("Settings", "AxisZColor", LC_RGBA(40, 60, 230, 255)),                                   // LC_PROFILE_AXIS_Z_COLOR
-	lcProfileEntry("Settings", "ObjectSelectedColor", static_cast<uint>(LC_RGBA(229, 76, 102, 255))),      // LC_PROFILE_OBJECT_SELECTED_COLOR
-	lcProfileEntry("Settings", "ObjectFocusedColor", static_cast<uint>(LC_RGBA(102, 76, 229, 255))),       // LC_PROFILE_OBJECT_FOCUSED_COLOR
-	lcProfileEntry("Settings", "CameraColor", static_cast<uint>(LC_RGBA(128, 204, 128, 255))),             // LC_PROFILE_CAMERA_COLOR
-	lcProfileEntry("Settings", "LightColor", static_cast<uint>(LC_RGBA(128, 204, 128, 255))),              // LC_PROFILE_LIGHT_COLOR
-	lcProfileEntry("Settings", "ControlPointColor", static_cast<uint>(LC_RGBA(128, 204, 128, 128))),       // LC_PROFILE_CONTROL_POINT_COLOR
-	lcProfileEntry("Settings", "ControlPointFocusedColor", static_cast<uint>(LC_RGBA(102, 76, 229, 128))), // LC_PROFILE_CONTROL_POINT_FOCUSED_COLOR
+	swProfileEntry("Settings", "FixedAxes", false),                                                        // SW_PROFILE_FIXED_AXES
+	swProfileEntry("Settings", "LineWidth", 1.0f),                                                         // SW_PROFILE_LINE_WIDTH
+	swProfileEntry("Settings", "AllowLOD", true),                                                          // SW_PROFILE_ALLOW_LOD
+	swProfileEntry("Settings", "LODDistance", 750.0f),                                                     // SW_PROFILE_LOD_DISTANCE
+	swProfileEntry("Settings", "FadeSteps", false),                                                        // SW_PROFILE_FADE_STEPS
+	swProfileEntry("Settings", "FadeStepsColor", SW_RGBA(128, 128, 128, 128)),                             // SW_PROFILE_FADE_STEPS_COLOR
+	swProfileEntry("Settings", "HighlightNewParts", 0),                                                    // SW_PROFILE_HIGHLIGHT_NEW_PARTS
+	swProfileEntry("Settings", "HighlightNewPartsColor", SW_RGBA(255, 242, 0, 192)),                       // SW_PROFILE_HIGHLIGHT_NEW_PARTS_COLOR
+	swProfileEntry("Settings", "ShadingMode", static_cast<int>(swShadingMode::DefaultLights)),             // SW_PROFILE_SHADING_MODE
+	swProfileEntry("Settings", "HighlightRenderMode", static_cast<int>(swHighlightRenderMode::Outline)),      // SW_PROFILE_HIGHLIGHT_RENDER_MODE
+	swProfileEntry("Settings", "BackgroundGradient", false),                                               // SW_PROFILE_BACKGROUND_GRADIENT
+	swProfileEntry("Settings", "BackgroundColor", SW_RGB(49, 52, 55)),                                     // SW_PROFILE_BACKGROUND_COLOR
+	swProfileEntry("Settings", "GradientColorTop", SW_RGB(54, 72, 95)),                                    // SW_PROFILE_GRADIENT_COLOR_TOP
+	swProfileEntry("Settings", "GradientColorBottom", SW_RGB(49, 52, 55)),                                 // SW_PROFILE_GRADIENT_COLOR_BOTTOM
+	swProfileEntry("Settings", "DrawAxes", 0),                                                             // SW_PROFILE_DRAW_AXES
+	swProfileEntry("Settings", "FollowStepViews", 1),                                                      // SW_PROFILE_FOLLOW_STEP_VIEWS
+	swProfileEntry("Settings", "DrawAxesLocation", static_cast<int>(swAxisIconLocation::BottomLeft)),      // SW_PROFILE_DRAW_AXES_LOCATION
+	swProfileEntry("Settings", "TextColor", SW_RGBA(214, 220, 227, 255)),                                  // SW_PROFILE_TEXT_COLOR
+	swProfileEntry("Settings", "TextHaloColor", SW_RGBA(17, 19, 24, 160)),                                // SW_PROFILE_TEXT_HALO_COLOR
+	swProfileEntry("Settings", "MarqueeBorderColor", SW_RGBA(64, 64, 255, 255)),                           // SW_PROFILE_MARQUEE_BORDER_COLOR
+	swProfileEntry("Settings", "MarqueeFillColor", SW_RGBA(64, 64, 255, 64)),                              // SW_PROFILE_MARQUEE_FILL_COLOR
+	swProfileEntry("Settings", "OverlayColor", SW_RGBA(0, 0, 0, 255)),                                     // SW_PROFILE_OVERLAY_COLOR
+	swProfileEntry("Settings", "ActiveViewColor", SW_RGBA(41, 128, 185, 255)),                             // SW_PROFILE_ACTIVE_VIEW_COLOR
+	swProfileEntry("Settings", "InactiveViewColor", SW_RGBA(69, 69, 69, 255)),                             // SW_PROFILE_INACTIVE_VIEW_COLOR
+	swProfileEntry("Settings", "DrawEdgeLines", 1),                                                        // SW_PROFILE_DRAW_EDGE_LINES
+	swProfileEntry("Settings", "DrawConditionalLines", 1),                                                 // SW_PROFILE_DRAW_CONDITIONAL_LINES
+	swProfileEntry("Settings", "PreviewSyncRendering", 1),                                                   // SW_PROFILE_PREVIEW_SYNC_RENDERING
+	swProfileEntry("Settings", "PreviewShadingMode", static_cast<int>(swShadingMode::DefaultLights)),        // SW_PROFILE_PREVIEW_SHADING_MODE
+	swProfileEntry("Settings", "PreviewDrawEdgeLines", 1),                                                   // SW_PROFILE_PREVIEW_DRAW_EDGE_LINES
+	swProfileEntry("Settings", "PreviewDrawConditionalLines", 1),                                            // SW_PROFILE_PREVIEW_DRAW_CONDITIONAL_LINES
+	swProfileEntry("Settings", "PreviewLineWidth", 1.0f),                                                    // SW_PROFILE_PREVIEW_LINE_WIDTH
+	swProfileEntry("Settings", "PiecesSyncRendering", 1),                                                    // SW_PROFILE_PIECES_SYNC_RENDERING
+	swProfileEntry("Settings", "PiecesShadingMode", static_cast<int>(swShadingMode::DefaultLights)),         // SW_PROFILE_PIECES_SHADING_MODE
+	swProfileEntry("Settings", "PiecesDrawEdgeLines", 1),                                                    // SW_PROFILE_PIECES_DRAW_EDGE_LINES
+	swProfileEntry("Settings", "PiecesDrawConditionalLines", 1),                                             // SW_PROFILE_PIECES_DRAW_CONDITIONAL_LINES
+	swProfileEntry("Settings", "PiecesLineWidth", 1.0f),                                                     // SW_PROFILE_PIECES_LINE_WIDTH
+	swProfileEntry("Settings", "GridStuds", 1),                                                            // SW_PROFILE_GRID_STUDS
+	swProfileEntry("Settings", "GridStudColor", SW_RGBA(24, 24, 24, 192)),                                 // SW_PROFILE_GRID_STUD_COLOR
+	swProfileEntry("Settings", "GridLines", 1),                                                            // SW_PROFILE_GRID_LINES
+	swProfileEntry("Settings", "GridLineSpacing", 5),                                                      // SW_PROFILE_GRID_LINE_SPACING
+	swProfileEntry("Settings", "GridLineColor", SW_RGBA(24, 24, 24, 255)),                                 // SW_PROFILE_GRID_LINE_COLOR
+	swProfileEntry("Settings", "GridOrigin", 0),                                                           // SW_PROFILE_GRID_ORIGIN
+	swProfileEntry("Settings", "GridHeightXZ", 0),                                                         // SW_PROFILE_GRID_HEIGHT_XZ
+	swProfileEntry("Settings", "GridHeightYZ", 0),                                                         // SW_PROFILE_GRID_HEIGHT_YZ
+	swProfileEntry("Settings", "GridHeightBehindModel", 0),                                                // SW_PROFILE_GRID_HEIGHT_BEHIND_MODEL
+	swProfileEntry("Settings", "AASamples", 1),                                                            // SW_PROFILE_ANTIALIASING_SAMPLES
+	swProfileEntry("Settings", "ViewSphereEnabled", 1),                                                    // SW_PROFILE_VIEW_SPHERE_ENABLED
+	swProfileEntry("Settings", "ViewSphereLocation", (int)swViewSphereLocation::TopRight),                 // SW_PROFILE_VIEW_SPHERE_LOCATION
+	swProfileEntry("Settings", "ViewSphereSize", 100),                                                     // SW_PROFILE_VIEW_SPHERE_SIZE
+	swProfileEntry("Settings", "ViewSphereColor", SW_RGBA(27, 31, 36, 255)),                               // SW_PROFILE_VIEW_SPHERE_COLOR
+	swProfileEntry("Settings", "ViewSphereTextColor", SW_RGBA(232, 237, 242, 255)),                        // SW_PROFILE_VIEW_SPHERE_TEXT_COLOR
+	swProfileEntry("Settings", "ViewSphereHighlightColor", SW_RGBA(41, 128, 185, 255)),                    // SW_PROFILE_VIEW_SPHERE_HIGHLIGHT_COLOR
+	swProfileEntry("Settings", "AxisXColor", SW_RGBA(200, 40, 60, 255)),                                   // SW_PROFILE_AXIS_X_COLOR
+	swProfileEntry("Settings", "AxisYColor", SW_RGBA(100, 200, 20, 255)),                                  // SW_PROFILE_AXIS_Y_COLOR
+	swProfileEntry("Settings", "AxisZColor", SW_RGBA(40, 60, 230, 255)),                                   // SW_PROFILE_AXIS_Z_COLOR
+	swProfileEntry("Settings", "ObjectSelectedColor", static_cast<uint>(SW_RGBA(229, 76, 102, 255))),      // SW_PROFILE_OBJECT_SELECTED_COLOR
+	swProfileEntry("Settings", "ObjectFocusedColor", static_cast<uint>(SW_RGBA(102, 76, 229, 255))),       // SW_PROFILE_OBJECT_FOCUSED_COLOR
+	swProfileEntry("Settings", "CameraColor", static_cast<uint>(SW_RGBA(128, 204, 128, 255))),             // SW_PROFILE_CAMERA_COLOR
+	swProfileEntry("Settings", "LightColor", static_cast<uint>(SW_RGBA(128, 204, 128, 255))),              // SW_PROFILE_LIGHT_COLOR
+	swProfileEntry("Settings", "ControlPointColor", static_cast<uint>(SW_RGBA(128, 204, 128, 128))),       // SW_PROFILE_CONTROL_POINT_COLOR
+	swProfileEntry("Settings", "ControlPointFocusedColor", static_cast<uint>(SW_RGBA(102, 76, 229, 128))), // SW_PROFILE_CONTROL_POINT_FOCUSED_COLOR
 
-	lcProfileEntry("Settings", "Language", ""),                                                // LC_PROFILE_LANGUAGE
-	lcProfileEntry("Settings", "ColorTheme", static_cast<int>(lcColorTheme::Dark)),            // LC_PROFILE_COLOR_THEME
-	lcProfileEntry("Settings", "CheckUpdates", 1),                                             // LC_PROFILE_CHECK_UPDATES
-	lcProfileEntry("Settings", "ProjectsPath", ""),                                            // LC_PROFILE_PROJECTS_PATH
-	lcProfileEntry("Settings", "PartsLibrary", ""),                                            // LC_PROFILE_PARTS_LIBRARY
-	lcProfileEntry("Settings", "PartPalettes"),                                                // LC_PROFILE_PART_PALETTES
-	lcProfileEntry("Settings", "MinifigSettings", ""),                                         // LC_PROFILE_MINIFIG_SETTINGS
-	lcProfileEntry("Settings", "ColorConfig", ""),                                             // LC_PROFILE_COLOR_CONFIG
-	lcProfileEntry("Settings", "Shortcuts"),                                                   // LC_PROFILE_KEYBOARD_SHORTCUTS
-	lcProfileEntry("Settings", "MouseShortcuts", QStringList()),                               // LC_PROFILE_MOUSE_SHORTCUTS
-	lcProfileEntry("Settings", "Categories"),                                                  // LC_PROFILE_CATEGORIES
-	lcProfileEntry("Settings", "RecentFile1", ""),                                             // LC_PROFILE_RECENT_FILE1
-	lcProfileEntry("Settings", "RecentFile2", ""),                                             // LC_PROFILE_RECENT_FILE2
-	lcProfileEntry("Settings", "RecentFile3", ""),                                             // LC_PROFILE_RECENT_FILE3
-	lcProfileEntry("Settings", "RecentFile4", ""),                                             // LC_PROFILE_RECENT_FILE4
-	lcProfileEntry("Settings", "AutoLoadMostRecent", false),                                   // LC_PROFILE_AUTOLOAD_MOSTRECENT
-	lcProfileEntry("Settings", "RestoreTabLayout", true),                                      // LC_PROFILE_RESTORE_TAB_LAYOUT
-	lcProfileEntry("Settings", "AngleSnapCustom", 7.5f),                                       // LC_PROFILE_ANGLE_SNAP_CUSTOM
-	lcProfileEntry("Settings", "OrbitSnap", false),                                            // LC_PROFILE_ORBIT_SNAP
-	lcProfileEntry("Settings", "FirstPieceAtOrigin", false),                                   // LC_PROFILE_FIRST_PIECE_AT_ORIGIN
-	lcProfileEntry("Settings", "TerminalFollowModel", true),                                   // LC_PROFILE_TERMINAL_FOLLOW_MODEL
-	lcProfileEntry("Settings", "InsertColorMode", 0),                                          // LC_PROFILE_INSERT_COLOR_MODE
-	lcProfileEntry("Settings", "WatchFileChanges", true),                                      // LC_PROFILE_WATCH_FILE_CHANGES
-	lcProfileEntry("Settings", "LoadPiecesBeforeShowing", false),                              // LC_PROFILE_LOAD_PIECES_BEFORE_SHOWING
-	lcProfileEntry("Settings", "AutosaveInterval", 10),                                        // LC_PROFILE_AUTOSAVE_INTERVAL
-	lcProfileEntry("Settings", "MouseSensitivity", 11),                                        // LC_PROFILE_MOUSE_SENSITIVITY
-	lcProfileEntry("Settings", "ImageWidth", 1280),                                            // LC_PROFILE_IMAGE_WIDTH
-	lcProfileEntry("Settings", "ImageHeight", 720),                                            // LC_PROFILE_IMAGE_HEIGHT
-	lcProfileEntry("Settings", "ImageExtension", ".png"),                                      // LC_PROFILE_IMAGE_EXTENSION
-	lcProfileEntry("Settings", "PartsListIcons", 64),                                          // LC_PROFILE_PARTS_LIST_ICONS
-	lcProfileEntry("Settings", "PartsListNames", 1),                                           // LC_PROFILE_PARTS_LIST_NAMES
-	lcProfileEntry("Settings", "PartsListFixedColor", static_cast<uint>(LC_COLOR_NOCOLOR)),                                     // LC_PROFILE_PARTS_LIST_COLOR
-	lcProfileEntry("Settings", "PartsListColorLocked", false),                                // LC_PROFILE_PARTS_LIST_COLOR_LOCKED
-	lcProfileEntry("Settings", "PartsListDecorated", 1),                                       // LC_PROFILE_PARTS_LIST_DECORATED
-	lcProfileEntry("Settings", "PartsListAliases", 1),                                         // LC_PROFILE_PARTS_LIST_ALIASES
-	lcProfileEntry("Settings", "PartsListListMode", 0),                                        // LC_PROFILE_PARTS_LIST_LISTMODE
-	lcProfileEntry("Settings", "PartsPopupIcons", 64),                                             // LC_PROFILE_PARTS_POPUP_ICONS
-	lcProfileEntry("Settings", "PartsPopupNames", 1),                                              // LC_PROFILE_PARTS_POPUP_NAMES
-	lcProfileEntry("Settings", "PartsPopupDecorated", 1),                                          // LC_PROFILE_PARTS_POPUP_DECORATED
-	lcProfileEntry("Settings", "PartsPopupAliases", 1),                                            // LC_PROFILE_PARTS_POPUP_ALIASES
-	lcProfileEntry("Settings", "PartsPopupListMode", 0),                                           // LC_PROFILE_PARTS_POPUP_LISTMODE
-	lcProfileEntry("Settings", "PartsListPartFilter", static_cast<int>(lcPartFilterType::Default)),                                      // LC_PROFILE_PARTS_LIST_PART_FILTER
-	lcProfileEntry("Settings", "PartsListCaseSensitiveFilter", 0),                             // LC_PROFILE_PARTS_LIST_CASE_SENSITIVE_FILTER
-	lcProfileEntry("Settings", "PartsListFileNameFilter", 1),                                  // LC_PROFILE_PARTS_LIST_FILE_NAME_FILTER
-	lcProfileEntry("Settings", "PartsListPartDescriptionFilter", 1),                           // LC_PROFILE_PARTS_LIST_PART_DESCRIPTION_FILTER
-	lcProfileEntry("Settings", "StudStyle", static_cast<int>(lcStudStyle::Plain)),                                                // LC_PROFILE_STUD_STYLE
+	swProfileEntry("Settings", "Language", ""),                                                // SW_PROFILE_LANGUAGE
+	swProfileEntry("Settings", "ColorTheme", static_cast<int>(swColorTheme::Dark)),            // SW_PROFILE_COLOR_THEME
+	swProfileEntry("Settings", "CheckUpdates", 1),                                             // SW_PROFILE_CHECK_UPDATES
+	swProfileEntry("Settings", "ProjectsPath", ""),                                            // SW_PROFILE_PROJECTS_PATH
+	swProfileEntry("Settings", "PartsLibrary", ""),                                            // SW_PROFILE_PARTS_LIBRARY
+	swProfileEntry("Settings", "PartPalettes"),                                                // SW_PROFILE_PART_PALETTES
+	swProfileEntry("Settings", "MinifigSettings", ""),                                         // SW_PROFILE_MINIFIG_SETTINGS
+	swProfileEntry("Settings", "ColorConfig", ""),                                             // SW_PROFILE_COLOR_CONFIG
+	swProfileEntry("Settings", "Shortcuts"),                                                   // SW_PROFILE_KEYBOARD_SHORTCUTS
+	swProfileEntry("Settings", "MouseShortcuts", QStringList()),                               // SW_PROFILE_MOUSE_SHORTCUTS
+	swProfileEntry("Settings", "Categories"),                                                  // SW_PROFILE_CATEGORIES
+	swProfileEntry("Settings", "RecentFile1", ""),                                             // SW_PROFILE_RECENT_FILE1
+	swProfileEntry("Settings", "RecentFile2", ""),                                             // SW_PROFILE_RECENT_FILE2
+	swProfileEntry("Settings", "RecentFile3", ""),                                             // SW_PROFILE_RECENT_FILE3
+	swProfileEntry("Settings", "RecentFile4", ""),                                             // SW_PROFILE_RECENT_FILE4
+	swProfileEntry("Settings", "AutoLoadMostRecent", false),                                   // SW_PROFILE_AUTOLOAD_MOSTRECENT
+	swProfileEntry("Settings", "RestoreTabLayout", true),                                      // SW_PROFILE_RESTORE_TAB_LAYOUT
+	swProfileEntry("Settings", "AngleSnapCustom", 7.5f),                                       // SW_PROFILE_ANGLE_SNAP_CUSTOM
+	swProfileEntry("Settings", "OrbitSnap", false),                                            // SW_PROFILE_ORBIT_SNAP
+	swProfileEntry("Settings", "FirstPieceAtOrigin", false),                                   // SW_PROFILE_FIRST_PIECE_AT_ORIGIN
+	swProfileEntry("Settings", "TerminalFollowModel", true),                                   // SW_PROFILE_TERMINAL_FOLLOW_MODEL
+	swProfileEntry("Settings", "InsertColorMode", 0),                                          // SW_PROFILE_INSERT_COLOR_MODE
+	swProfileEntry("Settings", "WatchFileChanges", true),                                      // SW_PROFILE_WATCH_FILE_CHANGES
+	swProfileEntry("Settings", "LoadPiecesBeforeShowing", false),                              // SW_PROFILE_LOAD_PIECES_BEFORE_SHOWING
+	swProfileEntry("Settings", "AutosaveInterval", 10),                                        // SW_PROFILE_AUTOSAVE_INTERVAL
+	swProfileEntry("Settings", "MouseSensitivity", 11),                                        // SW_PROFILE_MOUSE_SENSITIVITY
+	swProfileEntry("Settings", "ImageWidth", 1280),                                            // SW_PROFILE_IMAGE_WIDTH
+	swProfileEntry("Settings", "ImageHeight", 720),                                            // SW_PROFILE_IMAGE_HEIGHT
+	swProfileEntry("Settings", "ImageExtension", ".png"),                                      // SW_PROFILE_IMAGE_EXTENSION
+	swProfileEntry("Settings", "PartsListIcons", 64),                                          // SW_PROFILE_PARTS_LIST_ICONS
+	swProfileEntry("Settings", "PartsListNames", 1),                                           // SW_PROFILE_PARTS_LIST_NAMES
+	swProfileEntry("Settings", "PartsListFixedColor", static_cast<uint>(SW_COLOR_NOCOLOR)),                                     // SW_PROFILE_PARTS_LIST_COLOR
+	swProfileEntry("Settings", "PartsListColorLocked", false),                                // SW_PROFILE_PARTS_LIST_COLOR_LOCKED
+	swProfileEntry("Settings", "PartsListDecorated", 1),                                       // SW_PROFILE_PARTS_LIST_DECORATED
+	swProfileEntry("Settings", "PartsListAliases", 1),                                         // SW_PROFILE_PARTS_LIST_ALIASES
+	swProfileEntry("Settings", "PartsListListMode", 0),                                        // SW_PROFILE_PARTS_LIST_LISTMODE
+	swProfileEntry("Settings", "PartsPopupIcons", 64),                                             // SW_PROFILE_PARTS_POPUP_ICONS
+	swProfileEntry("Settings", "PartsPopupNames", 1),                                              // SW_PROFILE_PARTS_POPUP_NAMES
+	swProfileEntry("Settings", "PartsPopupDecorated", 1),                                          // SW_PROFILE_PARTS_POPUP_DECORATED
+	swProfileEntry("Settings", "PartsPopupAliases", 1),                                            // SW_PROFILE_PARTS_POPUP_ALIASES
+	swProfileEntry("Settings", "PartsPopupListMode", 0),                                           // SW_PROFILE_PARTS_POPUP_LISTMODE
+	swProfileEntry("Settings", "PartsListPartFilter", static_cast<int>(swPartFilterType::Default)),                                      // SW_PROFILE_PARTS_LIST_PART_FILTER
+	swProfileEntry("Settings", "PartsListCaseSensitiveFilter", 0),                             // SW_PROFILE_PARTS_LIST_CASE_SENSITIVE_FILTER
+	swProfileEntry("Settings", "PartsListFileNameFilter", 1),                                  // SW_PROFILE_PARTS_LIST_FILE_NAME_FILTER
+	swProfileEntry("Settings", "PartsListPartDescriptionFilter", 1),                           // SW_PROFILE_PARTS_LIST_PART_DESCRIPTION_FILTER
+	swProfileEntry("Settings", "StudStyle", static_cast<int>(swStudStyle::Plain)),                                                // SW_PROFILE_STUD_STYLE
 
-	lcProfileEntry("Defaults", "Author", ""),                                                  // LC_PROFILE_DEFAULT_AUTHOR_NAME
-	lcProfileEntry("Defaults", "AmbientColor", LC_RGB(75, 75, 75)),                            // LC_PROFILE_DEFAULT_AMBIENT_COLOR
+	swProfileEntry("Defaults", "Author", ""),                                                  // SW_PROFILE_DEFAULT_AUTHOR_NAME
+	swProfileEntry("Defaults", "AmbientColor", SW_RGB(75, 75, 75)),                            // SW_PROFILE_DEFAULT_AMBIENT_COLOR
 
-	lcProfileEntry("HTML", "Options", LC_HTML_SINGLEPAGE),                                     // LC_PROFILE_HTML_OPTIONS
-	lcProfileEntry("HTML", "ImageOptions", LC_IMAGE_TRANSPARENT),                              // LC_PROFILE_HTML_IMAGE_OPTIONS
-	lcProfileEntry("HTML", "ImageWidth", 640),                                                 // LC_PROFILE_HTML_IMAGE_WIDTH
-	lcProfileEntry("HTML", "ImageHeight", 480),                                                // LC_PROFILE_HTML_IMAGE_HEIGHT
+	swProfileEntry("HTML", "Options", SW_HTML_SINGLEPAGE),                                     // SW_PROFILE_HTML_OPTIONS
+	swProfileEntry("HTML", "ImageOptions", SW_IMAGE_TRANSPARENT),                              // SW_PROFILE_HTML_IMAGE_OPTIONS
+	swProfileEntry("HTML", "ImageWidth", 640),                                                 // SW_PROFILE_HTML_IMAGE_WIDTH
+	swProfileEntry("HTML", "ImageHeight", 480),                                                // SW_PROFILE_HTML_IMAGE_HEIGHT
 
-	lcProfileEntry("POVRay", "Path", "/usr/bin/povray"),                                       // LC_PROFILE_POVRAY_PATH
-	lcProfileEntry("POVRay", "LGEOPath", ""),                                                  // LC_PROFILE_POVRAY_LGEO_PATH
+	swProfileEntry("POVRay", "Path", "/usr/bin/povray"),                                       // SW_PROFILE_POVRAY_PATH
+	swProfileEntry("POVRay", "LGEOPath", ""),                                                  // SW_PROFILE_POVRAY_LGEO_PATH
 
-	lcProfileEntry("Render", "Width", 1280),                                                   // LC_PROFILE_RENDER_WIDTH
-	lcProfileEntry("Render", "Height", 720),                                                   // LC_PROFILE_RENDER_HEIGHT
-	lcProfileEntry("Render", "Quality", (int)lcPOVRayRenderQuality::High),                     // LC_PROFILE_RENDER_QUALITY
+	swProfileEntry("Render", "Width", 1280),                                                   // SW_PROFILE_RENDER_WIDTH
+	swProfileEntry("Render", "Height", 720),                                                   // SW_PROFILE_RENDER_HEIGHT
+	swProfileEntry("Render", "Quality", (int)swPOVRayRenderQuality::High),                     // SW_PROFILE_RENDER_QUALITY
 
-	lcProfileEntry("Blender", "Path", ""),                                                     // LC_PROFILE_BLENDER_PATH
-	lcProfileEntry("Blender", "LDrawConfigPath", ""),                                          // LC_PROFILE_BLENDER_LDRAW_CONFIG_PATH
-	lcProfileEntry("Blender", "Version", ""),                                                  // LC_PROFILE_BLENDER_VERSION
-	lcProfileEntry("Blender", "AddonVersion", ""),                                             // LC_PROFILE_BLENDER_ADDON_VERSION
-	lcProfileEntry("Blender", "AddonVersionCheck", 1),                                         // LC_PROFILE_BLENDER_ADDON_VERSION_CHECK
-	lcProfileEntry("Blender", "ImportModule", ""),                                             // LC_PROFILE_BLENDER_IMPORT_MODULE
+	swProfileEntry("Blender", "Path", ""),                                                     // SW_PROFILE_BLENDER_PATH
+	swProfileEntry("Blender", "LDrawConfigPath", ""),                                          // SW_PROFILE_BLENDER_LDRAW_CONFIG_PATH
+	swProfileEntry("Blender", "Version", ""),                                                  // SW_PROFILE_BLENDER_VERSION
+	swProfileEntry("Blender", "AddonVersion", ""),                                             // SW_PROFILE_BLENDER_ADDON_VERSION
+	swProfileEntry("Blender", "AddonVersionCheck", 1),                                         // SW_PROFILE_BLENDER_ADDON_VERSION_CHECK
+	swProfileEntry("Blender", "ImportModule", ""),                                             // SW_PROFILE_BLENDER_IMPORT_MODULE
 
-	lcProfileEntry("Settings", "PreviewViewSphereEnabled", 0),                                    // LC_PROFILE_PREVIEW_VIEW_SPHERE_ENABLED
-	lcProfileEntry("Settings", "PreviewViewSphereSize", 75),                                      // LC_PROFILE_PREVIEW_VIEW_SPHERE_SIZE
-	lcProfileEntry("Settings", "PreviewViewSphereLocation", (int)lcViewSphereLocation::TopRight), // LC_PROFILE_PREVIEW_VIEW_SPHERE_LOCATION
-	lcProfileEntry("Settings", "DrawPreviewAxis", 0),                                             // LC_PROFILE_PREVIEW_DRAW_AXES
+	swProfileEntry("Settings", "PreviewViewSphereEnabled", 0),                                    // SW_PROFILE_PREVIEW_VIEW_SPHERE_ENABLED
+	swProfileEntry("Settings", "PreviewViewSphereSize", 75),                                      // SW_PROFILE_PREVIEW_VIEW_SPHERE_SIZE
+	swProfileEntry("Settings", "PreviewViewSphereLocation", (int)swViewSphereLocation::TopRight), // SW_PROFILE_PREVIEW_VIEW_SPHERE_LOCATION
+	swProfileEntry("Settings", "DrawPreviewAxis", 0),                                             // SW_PROFILE_PREVIEW_DRAW_AXES
 
-	lcProfileEntry("Settings", "StudCylinderColorEnabled", true),                              // LC_PROFILE_STUD_CYLINDER_COLOR_ENABLED
-	lcProfileEntry("Settings", "StudCylinderColor", LC_RGBA(27, 42, 52, 255)),                 // LC_PROFILE_STUD_CYLINDER_COLOR
-	lcProfileEntry("Settings", "PartEdgeColorEnabled", true),                                  // LC_PROFILE_PART_EDGE_COLOR_ENABLED
-	lcProfileEntry("Settings", "PartEdgeColor", LC_RGBA(0, 0, 0, 255)),                        // LC_PROFILE_PART_EDGE_COLOR
-	lcProfileEntry("Settings", "BlackEdgeColorEnabled", true),                                 // LC_PROFILE_BLACK_EDGE_COLOR_ENABLED
-	lcProfileEntry("Settings", "BlackEdgeColor", LC_RGBA(255, 255, 255, 255)),                 // LC_PROFILE_BLACK_EDGE_COLOR
-	lcProfileEntry("Settings", "DarkEdgeColorEnabled", true),                                  // LC_PROFILE_DARK_EDGE_COLOR_ENABLED
-	lcProfileEntry("Settings", "DarkEdgeColor", LC_RGBA(27, 42, 52, 255)),                     // LC_PROFILE_DARK_EDGE_COLOR
-	lcProfileEntry("Settings", "PartEdgeContrast", 0.5f),                                      // LC_PROFILE_PART_EDGE_CONTRAST
-	lcProfileEntry("Settings", "PartColorValueLDIndex", 0.5f),                                 // LC_PROFILE_PART_COLOR_VALUE_LD_INDEX
-	lcProfileEntry("Settings", "AutomateEdgeColor", 0),                                        // LC_PROFILE_AUTOMATE_EDGE_COLOR
+	swProfileEntry("Settings", "StudCylinderColorEnabled", true),                              // SW_PROFILE_STUD_CYLINDER_COLOR_ENABLED
+	swProfileEntry("Settings", "StudCylinderColor", SW_RGBA(27, 42, 52, 255)),                 // SW_PROFILE_STUD_CYLINDER_COLOR
+	swProfileEntry("Settings", "PartEdgeColorEnabled", true),                                  // SW_PROFILE_PART_EDGE_COLOR_ENABLED
+	swProfileEntry("Settings", "PartEdgeColor", SW_RGBA(0, 0, 0, 255)),                        // SW_PROFILE_PART_EDGE_COLOR
+	swProfileEntry("Settings", "BlackEdgeColorEnabled", true),                                 // SW_PROFILE_BLACK_EDGE_COLOR_ENABLED
+	swProfileEntry("Settings", "BlackEdgeColor", SW_RGBA(255, 255, 255, 255)),                 // SW_PROFILE_BLACK_EDGE_COLOR
+	swProfileEntry("Settings", "DarkEdgeColorEnabled", true),                                  // SW_PROFILE_DARK_EDGE_COLOR_ENABLED
+	swProfileEntry("Settings", "DarkEdgeColor", SW_RGBA(27, 42, 52, 255)),                     // SW_PROFILE_DARK_EDGE_COLOR
+	swProfileEntry("Settings", "PartEdgeContrast", 0.5f),                                      // SW_PROFILE_PART_EDGE_CONTRAST
+	swProfileEntry("Settings", "PartColorValueLDIndex", 0.5f),                                 // SW_PROFILE_PART_COLOR_VALUE_LD_INDEX
+	swProfileEntry("Settings", "AutomateEdgeColor", 0),                                        // SW_PROFILE_AUTOMATE_EDGE_COLOR
 
-	lcProfileEntry("Instructions", "PageWidth", 612.0f),                                       // LC_PROFILE_INSTRUCTIONS_PAGE_WIDTH
-	lcProfileEntry("Instructions", "PageHeight", 792.0f),                                      // LC_PROFILE_INSTRUCTIONS_PAGE_HEIGHT
-	lcProfileEntry("Instructions", "MarginLeft", 36.0f),                                       // LC_PROFILE_INSTRUCTIONS_MARGIN_LEFT
-	lcProfileEntry("Instructions", "MarginRight", 36.0f),                                      // LC_PROFILE_INSTRUCTIONS_MARGIN_RIGHT
-	lcProfileEntry("Instructions", "MarginTop", 36.0f),                                        // LC_PROFILE_INSTRUCTIONS_MARGIN_TOP
-	lcProfileEntry("Instructions", "MarginBottom", 36.0f),                                     // LC_PROFILE_INSTRUCTIONS_MARGIN_BOTTOM
-	lcProfileEntry("Instructions", "PageUnits", 3),                                            // LC_PROFILE_INSTRUCTIONS_PAGE_UNITS
-	lcProfileEntry("Instructions", "MarginUnits", 3),                                          // LC_PROFILE_INSTRUCTIONS_MARGIN_UNITS
-	lcProfileEntry("Settings", "PreviewSquareViewport", 0),                                    // LC_PROFILE_PREVIEW_SQUARE_VIEWPORT
-	lcProfileEntry("Settings", "MinifigSyncRendering", 1),                                     // LC_PROFILE_MINIFIG_SYNC_RENDERING
-	lcProfileEntry("Settings", "MinifigShadingMode", static_cast<int>(lcShadingMode::DefaultLights)), // LC_PROFILE_MINIFIG_SHADING_MODE
-	lcProfileEntry("Settings", "MinifigDrawEdgeLines", 1),                                     // LC_PROFILE_MINIFIG_DRAW_EDGE_LINES
-	lcProfileEntry("Settings", "MinifigDrawConditionalLines", 1),                              // LC_PROFILE_MINIFIG_DRAW_CONDITIONAL_LINES
-	lcProfileEntry("Settings", "MinifigLineWidth", 1.0f),                                      // LC_PROFILE_MINIFIG_LINE_WIDTH
-	lcProfileEntry("Settings", "PiecesSnapToTiles", 1)                                         // LC_PROFILE_PIECES_SNAP_TO_TILES
+	swProfileEntry("Instructions", "PageWidth", 612.0f),                                       // SW_PROFILE_INSTRUCTIONS_PAGE_WIDTH
+	swProfileEntry("Instructions", "PageHeight", 792.0f),                                      // SW_PROFILE_INSTRUCTIONS_PAGE_HEIGHT
+	swProfileEntry("Instructions", "MarginLeft", 36.0f),                                       // SW_PROFILE_INSTRUCTIONS_MARGIN_LEFT
+	swProfileEntry("Instructions", "MarginRight", 36.0f),                                      // SW_PROFILE_INSTRUCTIONS_MARGIN_RIGHT
+	swProfileEntry("Instructions", "MarginTop", 36.0f),                                        // SW_PROFILE_INSTRUCTIONS_MARGIN_TOP
+	swProfileEntry("Instructions", "MarginBottom", 36.0f),                                     // SW_PROFILE_INSTRUCTIONS_MARGIN_BOTTOM
+	swProfileEntry("Instructions", "PageUnits", 3),                                            // SW_PROFILE_INSTRUCTIONS_PAGE_UNITS
+	swProfileEntry("Instructions", "MarginUnits", 3),                                          // SW_PROFILE_INSTRUCTIONS_MARGIN_UNITS
+	swProfileEntry("Settings", "PreviewSquareViewport", 0),                                    // SW_PROFILE_PREVIEW_SQUARE_VIEWPORT
+	swProfileEntry("Settings", "MinifigSyncRendering", 1),                                     // SW_PROFILE_MINIFIG_SYNC_RENDERING
+	swProfileEntry("Settings", "MinifigShadingMode", static_cast<int>(swShadingMode::DefaultLights)), // SW_PROFILE_MINIFIG_SHADING_MODE
+	swProfileEntry("Settings", "MinifigDrawEdgeLines", 1),                                     // SW_PROFILE_MINIFIG_DRAW_EDGE_LINES
+	swProfileEntry("Settings", "MinifigDrawConditionalLines", 1),                              // SW_PROFILE_MINIFIG_DRAW_CONDITIONAL_LINES
+	swProfileEntry("Settings", "MinifigLineWidth", 1.0f),                                      // SW_PROFILE_MINIFIG_LINE_WIDTH
+	swProfileEntry("Settings", "PiecesSnapToTiles", 1)                                         // SW_PROFILE_PIECES_SNAP_TO_TILES
 };
 
-void lcProfileInit()
+void swProfileInit()
 {
-	gProfileEntries[LC_PROFILE_PROJECTS_PATH].mDefault = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+	gProfileEntries[SW_PROFILE_PROJECTS_PATH].mDefault = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
 }
 
-void lcRemoveProfileKey(LC_PROFILE_KEY Key)
+void swRemoveProfileKey(SW_PROFILE_KEY Key)
 {
-	lcProfileEntry& Entry = gProfileEntries[Key];
+	swProfileEntry& Entry = gProfileEntries[Key];
 	QSettings Settings;
 
 	Settings.remove(QString("%1/%2").arg(Entry.mSection, Entry.mKey));
 }
 
-int lcGetProfileInt(LC_PROFILE_KEY Key)
+int swGetProfileInt(SW_PROFILE_KEY Key)
 {
-	lcProfileEntry& Entry = gProfileEntries[Key];
+	swProfileEntry& Entry = gProfileEntries[Key];
 	int* DefaultInt = std::get_if<int>(&Entry.mDefault);
 	int DefaultValue = DefaultInt ? *DefaultInt : 0;
 
@@ -253,9 +253,9 @@ int lcGetProfileInt(LC_PROFILE_KEY Key)
 	return DefaultValue;
 }
 
-uint lcGetProfileUInt(LC_PROFILE_KEY Key)
+uint swGetProfileUInt(SW_PROFILE_KEY Key)
 {
-	lcProfileEntry& Entry = gProfileEntries[Key];
+	swProfileEntry& Entry = gProfileEntries[Key];
 	uint* DefaultUInt = std::get_if<uint>(&Entry.mDefault);
 	uint DefaultValue = DefaultUInt ? *DefaultUInt : 0;
 
@@ -282,9 +282,9 @@ uint lcGetProfileUInt(LC_PROFILE_KEY Key)
 	return DefaultValue;
 }
 
-float lcGetProfileFloat(LC_PROFILE_KEY Key)
+float swGetProfileFloat(SW_PROFILE_KEY Key)
 {
-	lcProfileEntry& Entry = gProfileEntries[Key];
+	swProfileEntry& Entry = gProfileEntries[Key];
 	float* DefaultFloat = std::get_if<float>(&Entry.mDefault);
 	float DefaultValue = DefaultFloat ? *DefaultFloat : 0.0f;
 
@@ -294,85 +294,85 @@ float lcGetProfileFloat(LC_PROFILE_KEY Key)
 	return Valid && std::isfinite(Value) ? Value : DefaultValue;
 }
 
-QString lcGetProfileString(LC_PROFILE_KEY Key)
+QString swGetProfileString(SW_PROFILE_KEY Key)
 {
-	lcProfileEntry& Entry = gProfileEntries[Key];
+	swProfileEntry& Entry = gProfileEntries[Key];
 	QString* DefaultString = std::get_if<QString>(&Entry.mDefault);
 	QString DefaultValue = DefaultString ? *DefaultString : QString();
 
 	return QSettings().value(QString("%1/%2").arg(Entry.mSection, Entry.mKey), DefaultValue).toString();
 }
 
-QStringList lcGetProfileStringList(LC_PROFILE_KEY Key)
+QStringList swGetProfileStringList(SW_PROFILE_KEY Key)
 {
-	lcProfileEntry& Entry = gProfileEntries[Key];
+	swProfileEntry& Entry = gProfileEntries[Key];
 	QStringList* DefaultStringList = std::get_if<QStringList>(&Entry.mDefault);
 	QStringList DefaultValue = DefaultStringList ? *DefaultStringList : QStringList();
 
 	return QSettings().value(QString("%1/%2").arg(Entry.mSection, Entry.mKey), DefaultValue).toStringList();
 }
 
-QByteArray lcGetProfileBuffer(LC_PROFILE_KEY Key)
+QByteArray swGetProfileBuffer(SW_PROFILE_KEY Key)
 {
-	lcProfileEntry& Entry = gProfileEntries[Key];
+	swProfileEntry& Entry = gProfileEntries[Key];
 	QSettings Settings;
 
 	return Settings.value(QString("%1/%2").arg(Entry.mSection, Entry.mKey)).toByteArray();
 }
 
-void lcSetProfileInt(LC_PROFILE_KEY Key, int Value)
+void swSetProfileInt(SW_PROFILE_KEY Key, int Value)
 {
-	lcProfileEntry& Entry = gProfileEntries[Key];
+	swProfileEntry& Entry = gProfileEntries[Key];
 	QSettings Settings;
 
 	Settings.setValue(QString("%1/%2").arg(Entry.mSection, Entry.mKey), Value);
 }
 
-void lcSetProfileUInt(LC_PROFILE_KEY Key, uint Value)
+void swSetProfileUInt(SW_PROFILE_KEY Key, uint Value)
 {
-	lcProfileEntry& Entry = gProfileEntries[Key];
+	swProfileEntry& Entry = gProfileEntries[Key];
 	QSettings Settings;
 
 	Settings.setValue(QString("%1/%2").arg(Entry.mSection, Entry.mKey), Value);
 }
 
-void lcSetProfileFloat(LC_PROFILE_KEY Key, float Value)
+void swSetProfileFloat(SW_PROFILE_KEY Key, float Value)
 {
 	if (!std::isfinite(Value))
 		return;
 
-	lcProfileEntry& Entry = gProfileEntries[Key];
+	swProfileEntry& Entry = gProfileEntries[Key];
 	QSettings Settings;
 
 	Settings.setValue(QString("%1/%2").arg(Entry.mSection, Entry.mKey), Value);
 }
 
-void lcSetProfileString(LC_PROFILE_KEY Key, const QString& Value)
+void swSetProfileString(SW_PROFILE_KEY Key, const QString& Value)
 {
-	lcProfileEntry& Entry = gProfileEntries[Key];
+	swProfileEntry& Entry = gProfileEntries[Key];
 	QSettings Settings;
 
 	Settings.setValue(QString("%1/%2").arg(Entry.mSection, Entry.mKey), Value);
 }
 
-void lcSetProfileStringList(LC_PROFILE_KEY Key, const QStringList& Value)
+void swSetProfileStringList(SW_PROFILE_KEY Key, const QStringList& Value)
 {
-	lcProfileEntry& Entry = gProfileEntries[Key];
+	swProfileEntry& Entry = gProfileEntries[Key];
 	QSettings Settings;
 
 	Settings.setValue(QString("%1/%2").arg(Entry.mSection, Entry.mKey), Value);
 }
 
-void lcSetProfileBuffer(LC_PROFILE_KEY Key, const QByteArray& Buffer)
+void swSetProfileBuffer(SW_PROFILE_KEY Key, const QByteArray& Buffer)
 {
-	lcProfileEntry& Entry = gProfileEntries[Key];
+	swProfileEntry& Entry = gProfileEntries[Key];
 	QSettings Settings;
 
 	Settings.setValue(QString("%1/%2").arg(Entry.mSection, Entry.mKey), Buffer);
 }
 
 template<typename Enum>
-struct lcProfileEnumValue
+struct swProfileEnumValue
 {
 	Enum Value;
 	const char* Token;
@@ -380,75 +380,75 @@ struct lcProfileEnumValue
 };
 
 // Tokens and legacy numbers remain stable when enum members are reordered.
-constexpr lcProfileEnumValue<lcShadingMode> ShadingModeValues[] =
+constexpr swProfileEnumValue<swShadingMode> ShadingModeValues[] =
 {
-	{ lcShadingMode::Wireframe, "Wireframe", 0 },
-	{ lcShadingMode::Flat, "Flat", 1 },
-	{ lcShadingMode::DefaultLights, "DefaultLights", 2 },
-	{ lcShadingMode::Full, "Full", 3 }
+	{ swShadingMode::Wireframe, "Wireframe", 0 },
+	{ swShadingMode::Flat, "Flat", 1 },
+	{ swShadingMode::DefaultLights, "DefaultLights", 2 },
+	{ swShadingMode::Full, "Full", 3 }
 };
 
-constexpr lcProfileEnumValue<lcHighlightRenderMode> HighlightRenderModeValues[] =
+constexpr swProfileEnumValue<swHighlightRenderMode> HighlightRenderModeValues[] =
 {
-	{ lcHighlightRenderMode::Outline, "Outline", 0 },
-	{ lcHighlightRenderMode::Tint, "Tint", 1 }
+	{ swHighlightRenderMode::Outline, "Outline", 0 },
+	{ swHighlightRenderMode::Tint, "Tint", 1 }
 };
 
-constexpr lcProfileEnumValue<lcAxisIconLocation> AxisIconLocationValues[] =
+constexpr swProfileEnumValue<swAxisIconLocation> AxisIconLocationValues[] =
 {
-	{ lcAxisIconLocation::TopLeft, "TopLeft", 0 },
-	{ lcAxisIconLocation::TopRight, "TopRight", 1 },
-	{ lcAxisIconLocation::BottomLeft, "BottomLeft", 2 },
-	{ lcAxisIconLocation::BottomRight, "BottomRight", 3 }
+	{ swAxisIconLocation::TopLeft, "TopLeft", 0 },
+	{ swAxisIconLocation::TopRight, "TopRight", 1 },
+	{ swAxisIconLocation::BottomLeft, "BottomLeft", 2 },
+	{ swAxisIconLocation::BottomRight, "BottomRight", 3 }
 };
 
-constexpr lcProfileEnumValue<lcViewSphereLocation> ViewSphereLocationValues[] =
+constexpr swProfileEnumValue<swViewSphereLocation> ViewSphereLocationValues[] =
 {
-	{ lcViewSphereLocation::TopLeft, "TopLeft", 0 },
-	{ lcViewSphereLocation::TopRight, "TopRight", 1 },
-	{ lcViewSphereLocation::BottomLeft, "BottomLeft", 2 },
-	{ lcViewSphereLocation::BottomRight, "BottomRight", 3 }
+	{ swViewSphereLocation::TopLeft, "TopLeft", 0 },
+	{ swViewSphereLocation::TopRight, "TopRight", 1 },
+	{ swViewSphereLocation::BottomLeft, "BottomLeft", 2 },
+	{ swViewSphereLocation::BottomRight, "BottomRight", 3 }
 };
 
-constexpr lcProfileEnumValue<lcColorTheme> ColorThemeValues[] =
+constexpr swProfileEnumValue<swColorTheme> ColorThemeValues[] =
 {
-	{ lcColorTheme::Dark, "Dark", 0 },
-	{ lcColorTheme::System, "System", 1 }
+	{ swColorTheme::Dark, "Dark", 0 },
+	{ swColorTheme::System, "System", 1 }
 };
 
-constexpr lcProfileEnumValue<lcStudStyle> StudStyleValues[] =
+constexpr swProfileEnumValue<swStudStyle> StudStyleValues[] =
 {
-	{ lcStudStyle::Plain, "Plain", 0 },
-	{ lcStudStyle::ThinLinesLogo, "ThinLinesLogo", 1 },
-	{ lcStudStyle::OutlineLogo, "OutlineLogo", 2 },
-	{ lcStudStyle::SharpTopLogo, "SharpTopLogo", 3 },
-	{ lcStudStyle::RoundedTopLogo, "RoundedTopLogo", 4 },
-	{ lcStudStyle::FlattenedLogo, "FlattenedLogo", 5 },
-	{ lcStudStyle::HighContrast, "HighContrast", 6 },
-	{ lcStudStyle::HighContrastLogo, "HighContrastLogo", 7 }
+	{ swStudStyle::Plain, "Plain", 0 },
+	{ swStudStyle::ThinLinesLogo, "ThinLinesLogo", 1 },
+	{ swStudStyle::OutlineLogo, "OutlineLogo", 2 },
+	{ swStudStyle::SharpTopLogo, "SharpTopLogo", 3 },
+	{ swStudStyle::RoundedTopLogo, "RoundedTopLogo", 4 },
+	{ swStudStyle::FlattenedLogo, "FlattenedLogo", 5 },
+	{ swStudStyle::HighContrast, "HighContrast", 6 },
+	{ swStudStyle::HighContrastLogo, "HighContrastLogo", 7 }
 };
 
-constexpr lcProfileEnumValue<lcPartFilterType> PartFilterTypeValues[] =
+constexpr swProfileEnumValue<swPartFilterType> PartFilterTypeValues[] =
 {
-	{ lcPartFilterType::Default, "Default", 0 },
-	{ lcPartFilterType::RegularExpression, "RegularExpression", 1 }
+	{ swPartFilterType::Default, "Default", 0 },
+	{ swPartFilterType::RegularExpression, "RegularExpression", 1 }
 };
 
-constexpr lcProfileEnumValue<lcPOVRayRenderQuality> RenderQualityValues[] =
+constexpr swProfileEnumValue<swPOVRayRenderQuality> RenderQualityValues[] =
 {
-	{ lcPOVRayRenderQuality::Low, "Low", 0 },
-	{ lcPOVRayRenderQuality::Medium, "Medium", 1 },
-	{ lcPOVRayRenderQuality::High, "High", 2 }
+	{ swPOVRayRenderQuality::Low, "Low", 0 },
+	{ swPOVRayRenderQuality::Medium, "Medium", 1 },
+	{ swPOVRayRenderQuality::High, "High", 2 }
 };
 
 template<typename Enum, size_t N>
-static Enum lcReadProfileEnum(LC_PROFILE_KEY Key, const lcProfileEnumValue<Enum> (&Values)[N])
+static Enum swReadProfileEnum(SW_PROFILE_KEY Key, const swProfileEnumValue<Enum> (&Values)[N])
 {
-	const lcProfileEntry& Entry = gProfileEntries[Key];
+	const swProfileEntry& Entry = gProfileEntries[Key];
 	const Enum Default = static_cast<Enum>(std::get<int>(Entry.mDefault));
 	const QString Token = QSettings().value(QString("%1/%2").arg(Entry.mSection, Entry.mKey)).toString();
 
-	for (const lcProfileEnumValue<Enum>& Value : Values)
+	for (const swProfileEnumValue<Enum>& Value : Values)
 	{
 		if (Token == QLatin1String(Value.Token))
 			return Value.Value;
@@ -459,7 +459,7 @@ static Enum lcReadProfileEnum(LC_PROFILE_KEY Key, const lcProfileEnumValue<Enum>
 
 	if (Valid)
 	{
-		for (const lcProfileEnumValue<Enum>& Value : Values)
+		for (const swProfileEnumValue<Enum>& Value : Values)
 		{
 			if (LegacyValue == Value.LegacyValue)
 				return Value.Value;
@@ -470,104 +470,104 @@ static Enum lcReadProfileEnum(LC_PROFILE_KEY Key, const lcProfileEnumValue<Enum>
 }
 
 template<typename Enum, size_t N>
-static void lcWriteProfileEnum(LC_PROFILE_KEY Key, Enum Value, const lcProfileEnumValue<Enum> (&Values)[N])
+static void swWriteProfileEnum(SW_PROFILE_KEY Key, Enum Value, const swProfileEnumValue<Enum> (&Values)[N])
 {
-	for (const lcProfileEnumValue<Enum>& Entry : Values)
+	for (const swProfileEnumValue<Enum>& Entry : Values)
 	{
 		if (Value == Entry.Value)
 		{
-			lcSetProfileString(Key, QString::fromLatin1(Entry.Token));
+			swSetProfileString(Key, QString::fromLatin1(Entry.Token));
 			return;
 		}
 	}
 }
 
-lcShadingMode lcGetProfileShadingMode(LC_PROFILE_KEY Key)
+swShadingMode swGetProfileShadingMode(SW_PROFILE_KEY Key)
 {
-	return lcReadProfileEnum(Key, ShadingModeValues);
+	return swReadProfileEnum(Key, ShadingModeValues);
 }
 
-void lcSetProfileShadingMode(lcShadingMode Value, LC_PROFILE_KEY Key)
+void swSetProfileShadingMode(swShadingMode Value, SW_PROFILE_KEY Key)
 {
-	lcWriteProfileEnum(Key, Value, ShadingModeValues);
+	swWriteProfileEnum(Key, Value, ShadingModeValues);
 }
 
-lcHighlightRenderMode lcGetProfileHighlightRenderMode()
+swHighlightRenderMode swGetProfileHighlightRenderMode()
 {
-	return lcReadProfileEnum(LC_PROFILE_HIGHLIGHT_RENDER_MODE, HighlightRenderModeValues);
+	return swReadProfileEnum(SW_PROFILE_HIGHLIGHT_RENDER_MODE, HighlightRenderModeValues);
 }
 
-void lcSetProfileHighlightRenderMode(lcHighlightRenderMode Value)
+void swSetProfileHighlightRenderMode(swHighlightRenderMode Value)
 {
-	lcWriteProfileEnum(LC_PROFILE_HIGHLIGHT_RENDER_MODE, Value, HighlightRenderModeValues);
+	swWriteProfileEnum(SW_PROFILE_HIGHLIGHT_RENDER_MODE, Value, HighlightRenderModeValues);
 }
 
-lcAxisIconLocation lcGetProfileAxisIconLocation()
+swAxisIconLocation swGetProfileAxisIconLocation()
 {
-	return lcReadProfileEnum(LC_PROFILE_DRAW_AXES_LOCATION, AxisIconLocationValues);
+	return swReadProfileEnum(SW_PROFILE_DRAW_AXES_LOCATION, AxisIconLocationValues);
 }
 
-void lcSetProfileAxisIconLocation(lcAxisIconLocation Value)
+void swSetProfileAxisIconLocation(swAxisIconLocation Value)
 {
-	lcWriteProfileEnum(LC_PROFILE_DRAW_AXES_LOCATION, Value, AxisIconLocationValues);
+	swWriteProfileEnum(SW_PROFILE_DRAW_AXES_LOCATION, Value, AxisIconLocationValues);
 }
 
-lcViewSphereLocation lcGetProfileViewSphereLocation()
+swViewSphereLocation swGetProfileViewSphereLocation()
 {
-	return lcReadProfileEnum(LC_PROFILE_VIEW_SPHERE_LOCATION, ViewSphereLocationValues);
+	return swReadProfileEnum(SW_PROFILE_VIEW_SPHERE_LOCATION, ViewSphereLocationValues);
 }
 
-void lcSetProfileViewSphereLocation(lcViewSphereLocation Value)
+void swSetProfileViewSphereLocation(swViewSphereLocation Value)
 {
-	lcWriteProfileEnum(LC_PROFILE_VIEW_SPHERE_LOCATION, Value, ViewSphereLocationValues);
+	swWriteProfileEnum(SW_PROFILE_VIEW_SPHERE_LOCATION, Value, ViewSphereLocationValues);
 }
 
-lcColorTheme lcGetProfileColorTheme()
+swColorTheme swGetProfileColorTheme()
 {
-	return lcReadProfileEnum(LC_PROFILE_COLOR_THEME, ColorThemeValues);
+	return swReadProfileEnum(SW_PROFILE_COLOR_THEME, ColorThemeValues);
 }
 
-void lcSetProfileColorTheme(lcColorTheme Value)
+void swSetProfileColorTheme(swColorTheme Value)
 {
-	lcWriteProfileEnum(LC_PROFILE_COLOR_THEME, Value, ColorThemeValues);
+	swWriteProfileEnum(SW_PROFILE_COLOR_THEME, Value, ColorThemeValues);
 }
 
-lcStudStyle lcGetProfileStudStyle()
+swStudStyle swGetProfileStudStyle()
 {
-	return lcReadProfileEnum(LC_PROFILE_STUD_STYLE, StudStyleValues);
+	return swReadProfileEnum(SW_PROFILE_STUD_STYLE, StudStyleValues);
 }
 
-void lcSetProfileStudStyle(lcStudStyle Value)
+void swSetProfileStudStyle(swStudStyle Value)
 {
-	lcWriteProfileEnum(LC_PROFILE_STUD_STYLE, Value, StudStyleValues);
+	swWriteProfileEnum(SW_PROFILE_STUD_STYLE, Value, StudStyleValues);
 }
 
-lcPartFilterType lcGetProfilePartFilterType()
+swPartFilterType swGetProfilePartFilterType()
 {
-	return lcReadProfileEnum(LC_PROFILE_PARTS_LIST_PART_FILTER, PartFilterTypeValues);
+	return swReadProfileEnum(SW_PROFILE_PARTS_LIST_PART_FILTER, PartFilterTypeValues);
 }
 
-void lcSetProfilePartFilterType(lcPartFilterType Value)
+void swSetProfilePartFilterType(swPartFilterType Value)
 {
-	lcWriteProfileEnum(LC_PROFILE_PARTS_LIST_PART_FILTER, Value, PartFilterTypeValues);
+	swWriteProfileEnum(SW_PROFILE_PARTS_LIST_PART_FILTER, Value, PartFilterTypeValues);
 }
 
-lcPOVRayRenderQuality lcGetProfileRenderQuality()
+swPOVRayRenderQuality swGetProfileRenderQuality()
 {
-	return lcReadProfileEnum(LC_PROFILE_RENDER_QUALITY, RenderQualityValues);
+	return swReadProfileEnum(SW_PROFILE_RENDER_QUALITY, RenderQualityValues);
 }
 
-void lcSetProfileRenderQuality(lcPOVRayRenderQuality Value)
+void swSetProfileRenderQuality(swPOVRayRenderQuality Value)
 {
-	lcWriteProfileEnum(LC_PROFILE_RENDER_QUALITY, Value, RenderQualityValues);
+	swWriteProfileEnum(SW_PROFILE_RENDER_QUALITY, Value, RenderQualityValues);
 }
 
-lcViewSphereLocation lcGetProfilePreviewViewSphereLocation()
+swViewSphereLocation swGetProfilePreviewViewSphereLocation()
 {
-	return lcReadProfileEnum(LC_PROFILE_PREVIEW_VIEW_SPHERE_LOCATION, ViewSphereLocationValues);
+	return swReadProfileEnum(SW_PROFILE_PREVIEW_VIEW_SPHERE_LOCATION, ViewSphereLocationValues);
 }
 
-void lcSetProfilePreviewViewSphereLocation(lcViewSphereLocation Value)
+void swSetProfilePreviewViewSphereLocation(swViewSphereLocation Value)
 {
-	lcWriteProfileEnum(LC_PROFILE_PREVIEW_VIEW_SPHERE_LOCATION, Value, ViewSphereLocationValues);
+	swWriteProfileEnum(SW_PROFILE_PREVIEW_VIEW_SPHERE_LOCATION, Value, ViewSphereLocationValues);
 }

@@ -2,26 +2,26 @@
 #include "sw_objectproperty.h"
 #include "sw_math.h"
 
-#define LC_OBJECT_PROPERTY(T) \
-	template void lcObjectProperty<T>::Update(lcStep Step); \
-	template bool lcObjectProperty<T>::ChangeKey(const T& Value, lcStep Step, bool AddKey); \
-	template void lcObjectProperty<T>::InsertTime(lcStep Start, lcStep Time); \
-	template void lcObjectProperty<T>::RemoveTime(lcStep Start, lcStep Time); \
-	template bool lcObjectProperty<T>::HasKeyFrame(lcStep Time) const; \
-	template bool lcObjectProperty<T>::SetKeyFrame(lcStep Time, bool KeyFrame); \
-	template void lcObjectProperty<T>::Save(QTextStream& Stream, const char* ObjectName, const char* VariableName, bool SaveEmpty) const; \
-	template bool lcObjectProperty<T>::Load(QTextStream& Stream, const QString& Token, const char* VariableName);
+#define SW_OBJECT_PROPERTY(T) \
+	template void swObjectProperty<T>::Update(swStep Step); \
+	template bool swObjectProperty<T>::ChangeKey(const T& Value, swStep Step, bool AddKey); \
+	template void swObjectProperty<T>::InsertTime(swStep Start, swStep Time); \
+	template void swObjectProperty<T>::RemoveTime(swStep Start, swStep Time); \
+	template bool swObjectProperty<T>::HasKeyFrame(swStep Time) const; \
+	template bool swObjectProperty<T>::SetKeyFrame(swStep Time, bool KeyFrame); \
+	template void swObjectProperty<T>::Save(QTextStream& Stream, const char* ObjectName, const char* VariableName, bool SaveEmpty) const; \
+	template bool swObjectProperty<T>::Load(QTextStream& Stream, const QString& Token, const char* VariableName);
 
-LC_OBJECT_PROPERTY(float)
-LC_OBJECT_PROPERTY(int)
-LC_OBJECT_PROPERTY(lcVector2i)
-LC_OBJECT_PROPERTY(lcVector2)
-LC_OBJECT_PROPERTY(lcVector3)
-LC_OBJECT_PROPERTY(lcVector4)
-LC_OBJECT_PROPERTY(lcMatrix33)
+SW_OBJECT_PROPERTY(float)
+SW_OBJECT_PROPERTY(int)
+SW_OBJECT_PROPERTY(swVector2i)
+SW_OBJECT_PROPERTY(swVector2)
+SW_OBJECT_PROPERTY(swVector3)
+SW_OBJECT_PROPERTY(swVector4)
+SW_OBJECT_PROPERTY(swMatrix33)
 
 template<typename T>
-static void lcObjectPropertySaveValue(QTextStream& Stream, const T& Value)
+static void swObjectPropertySaveValue(QTextStream& Stream, const T& Value)
 {
 	constexpr int Count = sizeof(T) / sizeof(float);
 
@@ -30,7 +30,7 @@ static void lcObjectPropertySaveValue(QTextStream& Stream, const T& Value)
 }
 
 template<>
-void lcObjectPropertySaveValue(QTextStream& Stream, const int& Value)
+void swObjectPropertySaveValue(QTextStream& Stream, const int& Value)
 {
 	constexpr int Count = sizeof(int) / sizeof(int);
 
@@ -39,16 +39,16 @@ void lcObjectPropertySaveValue(QTextStream& Stream, const int& Value)
 }
 
 template<>
-void lcObjectPropertySaveValue(QTextStream& Stream, const lcVector2i& Value)
+void swObjectPropertySaveValue(QTextStream& Stream, const swVector2i& Value)
 {
-	constexpr int Count = sizeof(lcVector2i) / sizeof(int);
+	constexpr int Count = sizeof(swVector2i) / sizeof(int);
 
 	for (int ValueIndex = 0; ValueIndex < Count; ValueIndex++)
 		Stream << ((const int*)&Value)[ValueIndex] << ' ';
 }
 
 template<typename T>
-static void lcObjectPropertyLoadValue(QTextStream& Stream, T& Value)
+static void swObjectPropertyLoadValue(QTextStream& Stream, T& Value)
 {
 	constexpr int Count = sizeof(T) / sizeof(float);
 
@@ -57,7 +57,7 @@ static void lcObjectPropertyLoadValue(QTextStream& Stream, T& Value)
 }
 
 template<>
-void lcObjectPropertyLoadValue(QTextStream& Stream, int& Value)
+void swObjectPropertyLoadValue(QTextStream& Stream, int& Value)
 {
 	constexpr int Count = sizeof(int) / sizeof(int);
 
@@ -66,23 +66,23 @@ void lcObjectPropertyLoadValue(QTextStream& Stream, int& Value)
 }
 
 template<>
-void lcObjectPropertyLoadValue(QTextStream& Stream, lcVector2i& Value)
+void swObjectPropertyLoadValue(QTextStream& Stream, swVector2i& Value)
 {
-	constexpr int Count = sizeof(lcVector2i) / sizeof(int);
+	constexpr int Count = sizeof(swVector2i) / sizeof(int);
 
 	for (int ValueIdx = 0; ValueIdx < Count; ValueIdx++)
 		Stream >> ((int*)&Value)[ValueIdx];
 }
 
 template<typename T>
-void lcObjectProperty<T>::Update(lcStep Step)
+void swObjectProperty<T>::Update(swStep Step)
 {
 	if (mKeys.empty())
 		return;
 
-	const lcObjectPropertyKey<T>* PreviousKey = &mKeys[0];
+	const swObjectPropertyKey<T>* PreviousKey = &mKeys[0];
 
-	for (const lcObjectPropertyKey<T>& Key : mKeys)
+	for (const swObjectPropertyKey<T>& Key : mKeys)
 	{
 		if (Key.Step > Step)
 			break;
@@ -94,7 +94,7 @@ void lcObjectProperty<T>::Update(lcStep Step)
 }
 
 template<typename T>
-bool lcObjectProperty<T>::ChangeKey(const T& Value, lcStep Step, bool AddKey)
+bool swObjectProperty<T>::ChangeKey(const T& Value, swStep Step, bool AddKey)
 {
 	if (!AddKey && mKeys.empty())
 	{
@@ -106,7 +106,7 @@ bool lcObjectProperty<T>::ChangeKey(const T& Value, lcStep Step, bool AddKey)
 		return true;
 	}
 
-	for (typename std::vector<lcObjectPropertyKey<T>>::iterator KeyIt = mKeys.begin(); KeyIt != mKeys.end(); KeyIt++)
+	for (typename std::vector<swObjectPropertyKey<T>>::iterator KeyIt = mKeys.begin(); KeyIt != mKeys.end(); KeyIt++)
 	{
 		if (KeyIt->Step < Step)
 			continue;
@@ -119,7 +119,7 @@ bool lcObjectProperty<T>::ChangeKey(const T& Value, lcStep Step, bool AddKey)
 			KeyIt->Value = Value;
 		}
 		else if (AddKey)
-			mKeys.insert(KeyIt, lcObjectPropertyKey<T>{ Step, Value });
+			mKeys.insert(KeyIt, swObjectPropertyKey<T>{ Step, Value });
 		else if (KeyIt == mKeys.begin())
 		{
 			if (KeyIt->Value == Value)
@@ -141,7 +141,7 @@ bool lcObjectProperty<T>::ChangeKey(const T& Value, lcStep Step, bool AddKey)
 	}
 
 	if (AddKey || mKeys.empty())
-		mKeys.emplace_back(lcObjectPropertyKey<T>{ Step, Value });
+		mKeys.emplace_back(swObjectPropertyKey<T>{ Step, Value });
 	else
 		mKeys.back().Value = Value;
 
@@ -149,11 +149,11 @@ bool lcObjectProperty<T>::ChangeKey(const T& Value, lcStep Step, bool AddKey)
 }
 
 template<typename T>
-void lcObjectProperty<T>::InsertTime(lcStep Start, lcStep Time)
+void swObjectProperty<T>::InsertTime(swStep Start, swStep Time)
 {
 	bool EndKey = false;
 
-	for (typename std::vector<lcObjectPropertyKey<T>>::iterator KeyIt = mKeys.begin(); KeyIt != mKeys.end();)
+	for (typename std::vector<swObjectPropertyKey<T>>::iterator KeyIt = mKeys.begin(); KeyIt != mKeys.end();)
 	{
 		if ((KeyIt->Step < Start) || (KeyIt->Step == 1))
 		{
@@ -167,9 +167,9 @@ void lcObjectProperty<T>::InsertTime(lcStep Start, lcStep Time)
 			continue;
 		}
 
-		if (KeyIt->Step >= LC_STEP_MAX - Time)
+		if (KeyIt->Step >= SW_STEP_MAX - Time)
 		{
-			KeyIt->Step = LC_STEP_MAX;
+			KeyIt->Step = SW_STEP_MAX;
 			EndKey = true;
 		}
 		else
@@ -180,9 +180,9 @@ void lcObjectProperty<T>::InsertTime(lcStep Start, lcStep Time)
 }
 
 template<typename T>
-void lcObjectProperty<T>::RemoveTime(lcStep Start, lcStep Time)
+void swObjectProperty<T>::RemoveTime(swStep Start, swStep Time)
 {
-	for (typename std::vector<lcObjectPropertyKey<T>>::iterator KeyIt = mKeys.begin(); KeyIt != mKeys.end();)
+	for (typename std::vector<swObjectPropertyKey<T>>::iterator KeyIt = mKeys.begin(); KeyIt != mKeys.end();)
 	{
 		if ((KeyIt->Step < Start) || (KeyIt->Step == 1))
 		{
@@ -202,9 +202,9 @@ void lcObjectProperty<T>::RemoveTime(lcStep Start, lcStep Time)
 }
 
 template<typename T>
-bool lcObjectProperty<T>::HasKeyFrame(lcStep Time) const
+bool swObjectProperty<T>::HasKeyFrame(swStep Time) const
 {
-	for (typename std::vector<lcObjectPropertyKey<T>>::const_iterator KeyIt = mKeys.begin(); KeyIt != mKeys.end(); KeyIt++)
+	for (typename std::vector<swObjectPropertyKey<T>>::const_iterator KeyIt = mKeys.begin(); KeyIt != mKeys.end(); KeyIt++)
 	{
 		if (KeyIt->Step == Time)
 			return true;
@@ -216,11 +216,11 @@ bool lcObjectProperty<T>::HasKeyFrame(lcStep Time) const
 }
 
 template<typename T>
-bool lcObjectProperty<T>::SetKeyFrame(lcStep Time, bool KeyFrame)
+bool swObjectProperty<T>::SetKeyFrame(swStep Time, bool KeyFrame)
 {
 	if (KeyFrame)
 	{
-		typename std::vector<lcObjectPropertyKey<T>>::const_iterator KeyIt;
+		typename std::vector<swObjectPropertyKey<T>>::const_iterator KeyIt;
 
 		for (KeyIt = mKeys.begin(); KeyIt != mKeys.end(); KeyIt++)
 		{
@@ -230,13 +230,13 @@ bool lcObjectProperty<T>::SetKeyFrame(lcStep Time, bool KeyFrame)
 				break;
 		}
 
-		mKeys.insert(KeyIt, lcObjectPropertyKey<T>{ Time, mValue });
+		mKeys.insert(KeyIt, swObjectPropertyKey<T>{ Time, mValue });
 
 		return true;
 	}
 	else
 	{
-		for (typename std::vector<lcObjectPropertyKey<T>>::const_iterator KeyIt = mKeys.begin(); KeyIt != mKeys.end(); KeyIt++)
+		for (typename std::vector<swObjectPropertyKey<T>>::const_iterator KeyIt = mKeys.begin(); KeyIt != mKeys.end(); KeyIt++)
 		{
 			if (KeyIt->Step == Time)
 			{
@@ -256,7 +256,7 @@ bool lcObjectProperty<T>::SetKeyFrame(lcStep Time, bool KeyFrame)
 }
 
 template<typename T>
-void lcObjectProperty<T>::Save(QTextStream& Stream, const char* ObjectName, const char* VariableName, bool SaveEmpty) const
+void swObjectProperty<T>::Save(QTextStream& Stream, const char* ObjectName, const char* VariableName, bool SaveEmpty) const
 {
 	if (mKeys.empty())
 	{
@@ -264,18 +264,18 @@ void lcObjectProperty<T>::Save(QTextStream& Stream, const char* ObjectName, cons
 		{
 			Stream << QLatin1String("0 !LEOCAD ") << ObjectName << ' ' << VariableName << ' ';
 
-			lcObjectPropertySaveValue(Stream, mValue);
+			swObjectPropertySaveValue(Stream, mValue);
 
 			Stream << QLatin1String("\r\n");
 		}
 	}
 	else
 	{
-		for (const lcObjectPropertyKey<T>& Key : mKeys)
+		for (const swObjectPropertyKey<T>& Key : mKeys)
 		{
 			Stream << QLatin1String("0 !LEOCAD ") << ObjectName << ' ' << VariableName << "_KEY " << Key.Step << ' ';
 
-			lcObjectPropertySaveValue(Stream, Key.Value);
+			swObjectPropertySaveValue(Stream, Key.Value);
 
 			Stream << QLatin1String("\r\n");
 		}
@@ -283,11 +283,11 @@ void lcObjectProperty<T>::Save(QTextStream& Stream, const char* ObjectName, cons
 }
 
 template<typename T>
-bool lcObjectProperty<T>::Load(QTextStream& Stream, const QString& Token, const char* VariableName)
+bool swObjectProperty<T>::Load(QTextStream& Stream, const QString& Token, const char* VariableName)
 {
 	if (Token == VariableName)
 	{
-		lcObjectPropertyLoadValue(Stream, mValue);
+		swObjectPropertyLoadValue(Stream, mValue);
 
 		return true;
 	}

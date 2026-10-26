@@ -6,7 +6,7 @@
 #include <windows.h>
 #include <wininet.h>
 
-lcHttpReply::lcHttpReply(QObject* Parent, const QString& URL)
+swHttpReply::swHttpReply(QObject* Parent, const QString& URL)
 	: QThread(Parent)
 {
 	mError = true;
@@ -14,7 +14,7 @@ lcHttpReply::lcHttpReply(QObject* Parent, const QString& URL)
 	mURL = URL;
 }
 
-void lcHttpReply::run()
+void swHttpReply::run()
 {
 	HINTERNET Session = nullptr;
 	HINTERNET Request = nullptr;
@@ -60,14 +60,14 @@ void lcHttpReply::run()
 	InternetCloseHandle(Session);
 }
 
-lcHttpManager::lcHttpManager(QObject* Owner)
+swHttpManager::swHttpManager(QObject* Owner)
 	: QObject(Owner)
 {
 }
 
-lcHttpReply* lcHttpManager::DownloadFile(const QString& Url)
+swHttpReply* swHttpManager::DownloadFile(const QString& Url)
 {
-	lcHttpReply* Reply = new lcHttpReply(this, Url);
+	swHttpReply* Reply = new swHttpReply(this, Url);
 	connect(Reply, &QThread::finished, [this, Reply] { emit DownloadFinished(Reply); });
 	Reply->start();
 	return Reply;
@@ -75,13 +75,13 @@ lcHttpReply* lcHttpManager::DownloadFile(const QString& Url)
 
 #else
 
-lcHttpManager::lcHttpManager(QObject* Owner)
+swHttpManager::swHttpManager(QObject* Owner)
 	: QNetworkAccessManager(Owner)
 {
-	connect(this, &QNetworkAccessManager::finished, this, &lcHttpManager::Finished);
+	connect(this, &QNetworkAccessManager::finished, this, &swHttpManager::Finished);
 }
 
-lcHttpReply* lcHttpManager::lcHttpManager::DownloadFile(const QString& Url)
+swHttpReply* swHttpManager::swHttpManager::DownloadFile(const QString& Url)
 {
 	QNetworkRequest Request = QNetworkRequest(QUrl(Url));
 
@@ -93,12 +93,12 @@ lcHttpReply* lcHttpManager::lcHttpManager::DownloadFile(const QString& Url)
 #endif
 #endif
 
-	return (lcHttpReply*)get(Request);
+	return (swHttpReply*)get(Request);
 }
 
-void lcHttpManager::Finished(QNetworkReply* Reply)
+void swHttpManager::Finished(QNetworkReply* Reply)
 {
-	emit DownloadFinished((lcHttpReply*)Reply);
+	emit DownloadFinished((swHttpReply*)Reply);
 }
 
 #endif

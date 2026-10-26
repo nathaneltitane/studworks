@@ -1,41 +1,41 @@
 #pragma once
 
-class lcHttpReply;
-class lcHttpManager;
-struct lcSetInventoryItem;
+class swHttpReply;
+class swHttpManager;
+struct swSetInventoryItem;
 
 namespace Ui {
-class lcSetsDatabaseDialog;
+class swSetsDatabaseDialog;
 }
 
-class lcSetsDatabaseDialog : public QDialog
+class swSetsDatabaseDialog : public QDialog
 {
 	Q_OBJECT
 
 public:
-	explicit lcSetsDatabaseDialog(QWidget* Parent);
-	virtual ~lcSetsDatabaseDialog();
+	explicit swSetsDatabaseDialog(QWidget* Parent);
+	virtual ~swSetsDatabaseDialog();
 
 	QString GetSetName() const;
 	QString GetSetDescription() const;
-	std::vector<lcSetInventoryItem> GetSetInventory() const;
+	std::vector<swSetInventoryItem> GetSetInventory() const;
 
 	bool eventFilter(QObject* Object, QEvent* Event) override;
 
 public slots:
-	void DownloadFinished(lcHttpReply* Reply);
+	void DownloadFinished(swHttpReply* Reply);
 	void SearchButtonClicked();
 	void accept() override;
 	void Finished(int Result);
 
 protected:
-	lcHttpManager* mHttpManager;
+	swHttpManager* mHttpManager;
 
-	lcHttpReply* mKeyListReply;
-	lcHttpReply* mSearchReply;
-	lcHttpReply* mInventoryReply;
+	swHttpReply* mKeyListReply;
+	swHttpReply* mSearchReply;
+	swHttpReply* mInventoryReply;
 	QStringList mKeys;
 	QByteArray mInventory;
 
-	Ui::lcSetsDatabaseDialog* ui;
+	Ui::swSetsDatabaseDialog* ui;
 };

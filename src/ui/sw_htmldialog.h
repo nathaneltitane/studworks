@@ -1,18 +1,18 @@
 #pragma once
 
-class lcHTMLExportOptions;
+class swHTMLExportOptions;
 
 namespace Ui {
-class lcHTMLDialog;
+class swHTMLDialog;
 }
 
-class lcHTMLDialog : public QDialog
+class swHTMLDialog : public QDialog
 {
 	Q_OBJECT
 
 public:
-	explicit lcHTMLDialog(QWidget* Parent, lcHTMLExportOptions* Options);
-	virtual ~lcHTMLDialog();
+	explicit swHTMLDialog(QWidget* Parent, swHTMLExportOptions* Options);
+	virtual ~swHTMLDialog();
 
 public slots:
 	void accept() override;
@@ -21,7 +21,7 @@ private slots:
 	void OutputFolderBrowseClicked();
 
 private:
-	lcHTMLExportOptions* mOptions;
-	Ui::lcHTMLDialog* ui;
+	swHTMLExportOptions* mOptions;
+	Ui::swHTMLDialog* ui;
 };
 

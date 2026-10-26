@@ -1,18 +1,18 @@
 #pragma once
 
 namespace Ui {
-class lcSelectDialog;
+class swSelectDialog;
 }
 
-class lcSelectDialog : public QDialog
+class swSelectDialog : public QDialog
 {
 	Q_OBJECT
 
 public:
-	lcSelectDialog(QWidget* Parent, lcModel* Model);
-	~lcSelectDialog();
+	swSelectDialog(QWidget* Parent, swModel* Model);
+	~swSelectDialog();
 
-	std::vector<lcObject*> mObjects;
+	std::vector<swObject*> mObjects;
 
 	enum
 	{
@@ -29,8 +29,8 @@ private slots:
 	void ItemChanged(QTreeWidgetItem *item, int column);
 
 private:
-	Ui::lcSelectDialog* ui;
+	Ui::swSelectDialog* ui;
 
-	void AddChildren(QTreeWidgetItem* ParentItem, lcGroup* ParentGroup, lcModel* Model);
+	void AddChildren(QTreeWidgetItem* ParentItem, swGroup* ParentGroup, swModel* Model);
 };
 

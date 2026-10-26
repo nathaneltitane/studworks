@@ -11,18 +11,18 @@
 #  define DEF_MEM_LEVEL  MAX_MEM_LEVEL
 #endif
 
-lcZipFile::lcZipFile()
+swZipFile::swZipFile()
 {
 	mModified = false;
 }
 
-lcZipFile::~lcZipFile()
+swZipFile::~swZipFile()
 {
 }
 
-bool lcZipFile::OpenRead(const QString& FileName)
+bool swZipFile::OpenRead(const QString& FileName)
 {
-	std::unique_ptr<lcDiskFile> File(new lcDiskFile(FileName));
+	std::unique_ptr<swDiskFile> File(new swDiskFile(FileName));
 
 	if (!File->Open(QIODevice::ReadOnly))
 		return false;
@@ -30,7 +30,7 @@ bool lcZipFile::OpenRead(const QString& FileName)
 	return OpenRead(std::move(File));
 }
 
-bool lcZipFile::OpenRead(std::unique_ptr<lcFile> File)
+bool swZipFile::OpenRead(std::unique_ptr<swFile> File)
 {
 	mFile = std::move(File);
 
@@ -43,9 +43,9 @@ bool lcZipFile::OpenRead(std::unique_ptr<lcFile> File)
 	return true;
 }
 
-bool lcZipFile::OpenWrite(const QString& FileName)
+bool swZipFile::OpenWrite(const QString& FileName)
 {
-	std::unique_ptr<lcDiskFile> File(new lcDiskFile(FileName));
+	std::unique_ptr<swDiskFile> File(new swDiskFile(FileName));
 
 	if (!File->Open(QIODevice::WriteOnly))
 		return false;
@@ -61,14 +61,14 @@ bool lcZipFile::OpenWrite(const QString& FileName)
 	return true;
 }
 
-quint64 lcZipFile::SearchCentralDir()
+quint64 swZipFile::SearchCentralDir()
 {
 	quint64 SizeFile, MaxBack, BackRead, PosFound;
 	constexpr int CommentBufferSize = 1024;
 	quint8 buf[CommentBufferSize + 4];
 
 	SizeFile = mFile->GetLength();
-	MaxBack = lcMin(SizeFile, 0xffffULL);
+	MaxBack = swMin(SizeFile, 0xffffULL);
 	BackRead = 4;
 	PosFound = 0;
 
@@ -104,14 +104,14 @@ quint64 lcZipFile::SearchCentralDir()
 	return PosFound;
 }
 
-quint64 lcZipFile::SearchCentralDir64()
+quint64 swZipFile::SearchCentralDir64()
 {
 	quint64 SizeFile, MaxBack, BackRead, PosFound;
 	const int CommentBufferSize = 1024;
 	quint8 buf[CommentBufferSize + 4];
 
 	SizeFile = mFile->GetLength();
-	MaxBack = lcMin(SizeFile, 0xffffULL);
+	MaxBack = swMin(SizeFile, 0xffffULL);
 	BackRead = 4;
 	PosFound = 0;
 
@@ -187,12 +187,12 @@ quint64 lcZipFile::SearchCentralDir64()
 	return RelativeOffset;
 }
 
-bool lcZipFile::CheckFileCoherencyHeader(int FileIndex, quint32* SizeVar, quint64* OffsetLocalExtraField, quint32* SizeLocalExtraField)
+bool swZipFile::CheckFileCoherencyHeader(int FileIndex, quint32* SizeVar, quint64* OffsetLocalExtraField, quint32* SizeLocalExtraField)
 {
 	quint16 Number16, Flags;
 	quint32 Number32, Magic;
 	quint16 SizeFilename, SizeExtraField;
-	const lcZipFileInfo& FileInfo = mFiles[FileIndex];
+	const swZipFileInfo& FileInfo = mFiles[FileIndex];
 
 	*SizeVar = 0;
 	*OffsetLocalExtraField = 0;
@@ -243,7 +243,7 @@ bool lcZipFile::CheckFileCoherencyHeader(int FileIndex, quint32* SizeVar, quint6
 	return true;
 }
 
-bool lcZipFile::Open()
+bool swZipFile::Open()
 {
 	quint64 NumberEntriesCD, CentralPos;
 
@@ -347,7 +347,7 @@ bool lcZipFile::Open()
 	return ReadCentralDir();
 }
 
-bool lcZipFile::ReadCentralDir()
+bool swZipFile::ReadCentralDir()
 {
 	quint64 PosInCentralDir = mCentralDirOffset;
 
@@ -357,7 +357,7 @@ bool lcZipFile::ReadCentralDir()
 	for (quint64 FileNum = 0; FileNum < mNumEntries; FileNum++)
 	{
 		quint32 Magic, Number32;
-		lcZipFileInfo& FileInfo = mFiles.emplace_back();
+		swZipFileInfo& FileInfo = mFiles.emplace_back();
 		long Seek = 0;
 
 		FileInfo.write_buffer = nullptr;
@@ -567,11 +567,11 @@ bool lcZipFile::ReadCentralDir()
 	return true;
 }
 
-std::optional<quint32> lcZipFile::FindFileIndex(const char* FileName) const
+std::optional<quint32> swZipFile::FindFileIndex(const char* FileName) const
 {
 	for (quint32 FileIdx = 0; FileIdx < mFiles.size(); FileIdx++)
 	{
-		const lcZipFileInfo& FileInfo = mFiles[FileIdx];
+		const swZipFileInfo& FileInfo = mFiles[FileIdx];
 
 		if (!qstricmp(FileInfo.file_name, FileName))
 			return FileIdx;
@@ -580,21 +580,21 @@ std::optional<quint32> lcZipFile::FindFileIndex(const char* FileName) const
 	return std::nullopt;
 }
 
-bool lcZipFile::ExtractFile(const char* FileName, lcMemFile& File, quint32 MaxLength)
+bool swZipFile::ExtractFile(const char* FileName, swMemFile& File, quint32 MaxLength)
 {
 	const std::optional<quint32> FileIndex = FindFileIndex(FileName);
 
 	return FileIndex && ExtractFile(*FileIndex, File, MaxLength);
 }
 
-bool lcZipFile::ExtractFile(quint32 FileIndex, lcMemFile& File, quint32 MaxLength)
+bool swZipFile::ExtractFile(quint32 FileIndex, swMemFile& File, quint32 MaxLength)
 {
 	QMutexLocker Lock(&mMutex);
 
 	quint32 SizeVar;
 	quint64 OffsetLocalExtraField;
 	quint32 SizeLocalExtraField;
-	const lcZipFileInfo& FileInfo = mFiles[FileIndex];
+	const swZipFileInfo& FileInfo = mFiles[FileIndex];
 
 	if (!CheckFileCoherencyHeader(FileIndex, &SizeVar, &OffsetLocalExtraField, &SizeLocalExtraField))
 		return false;
@@ -629,7 +629,7 @@ bool lcZipFile::ExtractFile(quint32 FileIndex, lcMemFile& File, quint32 MaxLengt
 
 	Stream.avail_in = (uInt)0;
 
-	quint32 Length = lcMin((quint32)FileInfo.uncompressed_size, MaxLength);
+	quint32 Length = swMin((quint32)FileInfo.uncompressed_size, MaxLength);
 	File.SetLength(Length);
 	File.Seek(0, SEEK_SET);
 

@@ -1,25 +1,25 @@
 #pragma once
 
-struct lcLibraryCategory;
+struct swLibraryCategory;
 
 namespace Ui {
-class lcCategoryDialog;
+class swCategoryDialog;
 }
 
-class lcCategoryDialog : public QDialog
+class swCategoryDialog : public QDialog
 {
 	Q_OBJECT
 
 public:
-	explicit lcCategoryDialog(QWidget* Parent, lcLibraryCategory* Category);
-	virtual ~lcCategoryDialog();
+	explicit swCategoryDialog(QWidget* Parent, swLibraryCategory* Category);
+	virtual ~swCategoryDialog();
 
-	lcLibraryCategory* mOptions;
+	swLibraryCategory* mOptions;
 
 public slots:
 	void accept() override;
 
 private:
-	Ui::lcCategoryDialog* ui;
+	Ui::swCategoryDialog* ui;
 };
 
