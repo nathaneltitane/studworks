@@ -1143,6 +1143,9 @@ void lcCamera::ZoomExtents(float AspectRatio, const lcVector3& Center, const std
 		TargetPosition = Center;
 	}
 
+	// Back away a little so the fitted geometry never touches the view edges.
+	Position = TargetPosition + (Position - TargetPosition) * 1.05f;
+
 	if (IsSimple())
 		AddKey = false;
 
