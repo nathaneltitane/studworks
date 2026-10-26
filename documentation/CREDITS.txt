@@ -5,9 +5,11 @@ see COPYING.txt.
 The following people have contributed to LeoCAD:
 
 Author -  Original Design:
+
 Leonardo Zide <leozide@gmail.com>
 
 Contributions - in alphabetical order:
+
 Christian Höltje <docwhat@gerf.org>
 David Paleino <dapal@debian.org>
 Hubert Figuiere <hub@figuiere.net>
