@@ -22,6 +22,11 @@
 - Write for a future maintainer without access to the chat. Do not merely restate the diff or include conversational history.
 - Subject-only messages are acceptable for purely mechanical changes.
 
+# Releases
+
+- The version is the release date. Move it with `tools/sw_version_bump`, and write the new README notice, the release notes come from it.
+- Enable `tools/hooks/pre-push` with `git config core.hooksPath tools/hooks`. Once a version is released, a later push of code changes to main bumps it to the day's date, with a notice written by `claude -p`.
+
 # Dialog help and translations
 
 - Follow `documentation/dialog-help.md` when adding or changing dialog controls, including help text, label buddies, and Help/F1 behavior.

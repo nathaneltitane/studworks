@@ -102,10 +102,10 @@ version_compact_new="${version_new//-/}"
 
 replace_version source/application/sw_global.h "*SW_VERSION_TEXT*" "${version_old}" "${version_new}"
 
-# the badges and the package table, the notices keep their own dates
+# the badges and the package table, the notices keep their own dates and the new one goes on top
 replace_version README.md "*\[ Version // ${version_old} \]*" "${version_old}" "${version_new}"
 replace_version README.md "      | *${version_old}*" "${version_old}" "${version_new}"
-insert_version README.md "${version_old} ↴" "${version_new} ↴" ""
+insert_version README.md "[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9] ↴" "${version_new} ↴" ""
 
 replace_version .github/ISSUE_TEMPLATE/bug_report.md "*StudWorks Version*" "${version_old}" "${version_new}"
 replace_version packaging/PKGBUILD "pkgver=*" "${version_compact_old}" "${version_compact_new}"
