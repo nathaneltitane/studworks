@@ -201,6 +201,8 @@ swInstructionsPropertyType swInstructionsPlacementWidget::GetPlacementType() con
 	case swInstructionsPlacementElement::PageNumber:
 		return swInstructionsPropertyType::PageNumberPlacement;
 
+	case swInstructionsPlacementElement::Notice:
+	case swInstructionsPlacementElement::Pointer:
 	case swInstructionsPlacementElement::None:
 		break;
 	}
@@ -224,6 +226,8 @@ swInstructionsPropertyType swInstructionsPlacementWidget::GetAnchorType() const
 	case swInstructionsPlacementElement::StepImage:
 	case swInstructionsPlacementElement::CoverImage:
 	case swInstructionsPlacementElement::PageNumber:
+	case swInstructionsPlacementElement::Notice:
+	case swInstructionsPlacementElement::Pointer:
 	case swInstructionsPlacementElement::None:
 		break;
 	}
@@ -288,11 +292,14 @@ void swInstructionsPlacementWidget::UpdateWidget()
 	const bool Locked = mInstructions->IsElementLocked(mElementKey);
 	const bool Active = GetPlacementType() != swInstructionsPropertyType::Count && !Locked;
 
-	mResetPositionButton->setEnabled(Active && mInstructions->HasElementOffset(mElementKey));
+	// a notice has no placement but returns to where it was added, a pointer follows its elements
+	const bool Movable = Active || (mElement == swInstructionsPlacementElement::Notice && !Locked);
+
+	mResetPositionButton->setEnabled(Movable && mInstructions->HasElementOffset(mElementKey));
 
 	{
 		QSignalBlocker Blocker(mLockButton);
-		mLockButton->setEnabled(mElement != swInstructionsPlacementElement::None);
+		mLockButton->setEnabled(mElement != swInstructionsPlacementElement::None && mElement != swInstructionsPlacementElement::Pointer);
 		mLockButton->setChecked(Locked);
 	}
 
@@ -328,6 +335,14 @@ void swInstructionsPlacementWidget::UpdateWidget()
 
 	case swInstructionsPlacementElement::PageNumber:
 		mElementLabel->setText(tr("Page Number"));
+		break;
+
+	case swInstructionsPlacementElement::Notice:
+		mElementLabel->setText(tr("Notice"));
+		break;
+
+	case swInstructionsPlacementElement::Pointer:
+		mElementLabel->setText(tr("Pointer"));
 		break;
 
 	case swInstructionsPlacementElement::None:

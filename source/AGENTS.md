@@ -13,6 +13,7 @@
 - Prefer explicit `lock()` and `unlock()` over an extra scope with `QMutexLocker` for short, straight-line critical sections that must end before the following code. Keep `QMutexLocker` for early returns, waits, or nontrivial control flow.
 - Preserve existing blank lines when editing code. Prefer blank lines between declarations and following logic, and between distinct logical steps; do not remove user-added blank lines without a specific reason.
 - When adding a parameter to an existing function, update every call site explicitly instead of adding a default argument to preserve old calls.
+- List new file meta commands in `references/command-meta.md`, and add their object to `gCommandMetaObjects`.
 
 # Commit Messages
 

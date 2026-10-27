@@ -26,6 +26,10 @@ Useful? Star the repository - it helps others find it.
 - Cursors and toolbar icons redrawn from the Blender icon set, following the light or dark theme - move and rotate cursors show their axis
 - Instructions: place, drag and lock every page element, page grid with snapping, page numbers and colors and fonts for every element
 - Instructions: Print panel inside the instructions window replaces the print dialog and print preview, the window opens maximized
+- Instructions: padding, margin, border and background for every page element, the background fills the whole box
+- Instructions: notices, free text added to any page with a right-click
+- Instructions: pointers from an element border to a part, step, notice or other element - eight anchors or the nearest, line or callout wedge, arrowhead or dot tip
+- Instructions: settings, page layouts, notices and pointers saved in the model file as '!SW INSTRUCTION' meta commands
 - Preferences: label and control columns lined up on every page, mouse shortcuts recorded by clicking, mouse tools grouped like the keyboard commands
 - Menus: new Steps menu, Instructions and Properties in the File menu, Image under Export, Preferences at the bottom of the Edit menu
 - Parts panel snaps its categories to the longest name when docked on top or bottom
@@ -92,6 +96,9 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
   - Step dividers, document font, parts list options and full page backgrounds
   - Placement panel to place, drag and lock every page element, with a snapping page grid
   - Page numbers, colors and fonts for every element and a built-in Print panel
+  - Padding, margin, border and background for every page element
+  - Notices and pointers to emphasize parts, steps and notices
+  - Instructions saved in the model file
 
 - **Models** ↴
   - Model properties with part IDs, thumbnails, counts and BrickLink or CSV export

@@ -4,6 +4,7 @@
 #include "sw_dialog_instructions_properties.h"
 #include "sw_project.h"
 #include "sw_model.h"
+#include "sw_object_part.h"
 #include "sw_view.h"
 #include "sw_window_utilities.h"
 
@@ -29,6 +30,10 @@ bool swGetElementKey(const QGraphicsItem* Item, swInstructionsElementKey& Key)
 	}
 	else if (dynamic_cast<const swInstructionsPageNumberItem*>(Item))
 		Key = { swInstructionsPlacementElement::PageNumber, nullptr, 0 };
+	else if (const swInstructionsNoticeItem* NoticeItem = dynamic_cast<const swInstructionsNoticeItem*>(Item))
+		Key = { swInstructionsPlacementElement::Notice, nullptr, static_cast<swStep>(NoticeItem->GetId()) };
+	else if (const swInstructionsPointerItem* PointerItem = dynamic_cast<const swInstructionsPointerItem*>(Item))
+		Key = { swInstructionsPlacementElement::Pointer, nullptr, static_cast<swStep>(PointerItem->GetId()) };
 	else
 	{
 		Key = { swInstructionsPlacementElement::None, nullptr, 0 };
@@ -80,8 +85,10 @@ static void swPlaceElement(QGraphicsItem* Item, const swInstructions* Instructio
 }
 
 // use to crop a rendered image to its visible pixels so it can be placed like any other element
-static QImage swCropImage(const QImage& Image)
+static QImage swCropImage(const QImage& Image, QPoint& Offset)
 {
+	Offset = QPoint();
+
 	const QImage Source = Image.convertToFormat(QImage::Format_ARGB32);
 	int Left = Source.width(), Top = Source.height(), Right = -1, Bottom = -1;
 
@@ -103,6 +110,8 @@ static QImage swCropImage(const QImage& Image)
 
 	if (Right < 0)
 		return QImage();
+
+	Offset = QPoint(Left, Top);
 
 	return Source.copy(Left, Top, Right - Left + 1, Bottom - Top + 1);
 }
@@ -138,9 +147,16 @@ static QPointF swGetPlacementPosition(const QRectF& Anchor, const QSizeF& Size, 
 }
 
 swInstructionsStepImageItem::swInstructionsStepImageItem(QGraphicsItem* Parent, swInstructions* Instructions, swModel* Model, swStep Step)
-	: swInstructionsPaddedItem(Parent), mInstructions(Instructions), mModel(Model), mStep(Step)
+	: swInstructionsBoxItem(Parent), mInstructions(Instructions), mModel(Model), mStep(Step)
 {
 	setFlags(SW_MOVABLE_ITEM_FLAGS);
+	SetBoxStyle(mInstructions->GetBoxStyle(swInstructionsBoxElement::StepImage, mModel, mStep));
+}
+
+void swInstructionsStepImageItem::SetCoverImage()
+{
+	mCoverImage = true;
+	SetBoxStyle(mInstructions->GetBoxStyle(swInstructionsBoxElement::CoverImage, mModel, mStep));
 }
 
 QVariant swInstructionsStepImageItem::itemChange(GraphicsItemChange Change, const QVariant& Value)
@@ -172,17 +188,127 @@ void swInstructionsStepImageItem::Update()
 	View.ZoomExtentsAtStep(mModel->GetLastStep(), swGeometryBoundsMode::IncludeFallback, false);
 
 	std::vector<QImage> Images = View.GetStepImages(mStep, mStep);
+	mPartRegions.clear();
 
-	if (!Images.empty())
-		setPixmap(QPixmap::fromImage(swCropImage(Images.front())));
-	else
+	if (Images.empty())
+	{
 		setPixmap(QPixmap());
+		return;
+	}
+
+	QPoint CropOffset;
+	setPixmap(QPixmap::fromImage(swCropImage(Images.front(), CropOffset)));
+
+	// the parts shown at the step are projected like the image so pointers can find and follow them
+	View.SetSize(mWidth, mHeight);
+
+	const swStep CurrentStep = mModel->GetCurrentStep();
+	const qreal Inset = mBoxStyle.GetInset();
+	const QPointF Origin(Inset - CropOffset.x(), Inset - CropOffset.y());
+	const std::vector<std::unique_ptr<swPart>>& Parts = mModel->GetParts();
+
+	mModel->SetTemporaryStep(mStep);
+
+	for (size_t PartIndex = 0; PartIndex < Parts.size(); PartIndex++)
+	{
+		const swPart* Part = Parts[PartIndex].get();
+
+		if (Part->IsHidden() || !Part->IsVisible(mStep))
+			continue;
+
+		swVector3 Min(FLT_MAX, FLT_MAX, FLT_MAX);
+		swVector3 Max(-FLT_MAX, -FLT_MAX, -FLT_MAX);
+		Part->CompareBoundingBox(Min, Max);
+
+		swVector3 Corners[8];
+		swGetBoxCorners(Min, Max, Corners);
+
+		QRectF Rect;
+
+		for (const swVector3& Corner : Corners)
+		{
+			const swVector3 Point = View.ProjectPoint(Corner);
+			const QPointF ImagePoint = Origin + QPointF(Point.x, mHeight - Point.y);
+
+			Rect = Rect.isNull() ? QRectF(ImagePoint, QSizeF(0.0, 0.0)) : Rect.united(QRectF(ImagePoint, QSizeF(0.0, 0.0)));
+		}
+
+		Rect = Rect.normalized();
+
+		const swVector3 Center = View.ProjectPoint((Min + Max) * 0.5f);
+		mPartRegions.push_back({ static_cast<int>(PartIndex), Rect, Origin + QPointF(Center.x, mHeight - Center.y) });
+	}
+
+	mModel->SetTemporaryStep(CurrentStep);
+
+	if (!mModel->IsActive())
+		mModel->CalculateStep(SW_STEP_MAXIMUM);
+}
+
+bool swInstructionsStepImageItem::FindPart(const QPointF& Point, int& PartIndex) const
+{
+	// the smallest part drawn under the point wins, a point near a part still finds it
+	const swPartRegion* Found = nullptr;
+	qreal FoundArea = 0.0;
+
+	for (const swPartRegion& Region : mPartRegions)
+	{
+		if (!Region.Rect.contains(Point))
+			continue;
+
+		const qreal Area = Region.Rect.width() * Region.Rect.height();
+
+		if (!Found || Area < FoundArea)
+		{
+			Found = &Region;
+			FoundArea = Area;
+		}
+	}
+
+	if (!Found)
+	{
+		qreal FoundDistance = 24.0;
+
+		for (const swPartRegion& Region : mPartRegions)
+		{
+			const qreal Distance = QLineF(Point, Region.Center).length();
+
+			if (Distance < FoundDistance)
+			{
+				Found = &Region;
+				FoundDistance = Distance;
+			}
+		}
+	}
+
+	if (!Found)
+		return false;
+
+	PartIndex = Found->PartIndex;
+
+	return true;
+}
+
+bool swInstructionsStepImageItem::GetPartPoint(int PartIndex, QPointF& Point) const
+{
+	for (const swPartRegion& Region : mPartRegions)
+	{
+		if (Region.PartIndex != PartIndex)
+			continue;
+
+		Point = Region.Center;
+
+		return true;
+	}
+
+	return false;
 }
 
 swInstructionsStepNumberItem::swInstructionsStepNumberItem(QGraphicsItem* Parent, swInstructions* Instructions, swModel* Model, swStep Step)
-	: swInstructionsPaddedItem(Parent), mInstructions(Instructions), mModel(Model), mStep(Step)
+	: swInstructionsBoxItem(Parent), mInstructions(Instructions), mModel(Model), mStep(Step)
 {
 	setFlags(SW_MOVABLE_ITEM_FLAGS);
+	SetBoxStyle(mInstructions->GetBoxStyle(swInstructionsBoxElement::StepNumber, mModel, mStep));
 }
 
 QVariant swInstructionsStepNumberItem::itemChange(GraphicsItemChange Change, const QVariant& Value)
@@ -206,10 +332,11 @@ void swInstructionsStepNumberItem::Update()
 }
 
 swInstructionsPageNumberItem::swInstructionsPageNumberItem(QGraphicsItem* Parent, swInstructions* Instructions, size_t PageIndex)
-	: swInstructionsPaddedItem(Parent), mInstructions(Instructions)
+	: swInstructionsBoxItem(Parent), mInstructions(Instructions)
 {
 	setFlags(SW_MOVABLE_ITEM_FLAGS);
 	setZValue(1.0);
+	SetBoxStyle(mInstructions->GetBoxStyle(swInstructionsBoxElement::PageNumber, nullptr, 0));
 
 	const QLocale Locale;
 	const QString PageNumber = swFormatIntegerLocalized(static_cast<qlonglong>(PageIndex + 1), Locale);
@@ -233,9 +360,12 @@ QVariant swInstructionsPageNumberItem::itemChange(GraphicsItemChange Change, con
 }
 
 swInstructionsPartsListItem::swInstructionsPartsListItem(QGraphicsItem* Parent, swInstructions* Instructions, swModel* Model, swStep Step)
-	: swInstructionsPaddedItem(Parent), mInstructions(Instructions), mModel(Model), mStep(Step)
+	: swInstructionsBoxItem(Parent), mInstructions(Instructions), mModel(Model), mStep(Step)
 {
 	setFlags(SW_MOVABLE_ITEM_FLAGS);
+	// the parts image is drawn on the background color, the box fills only around it
+	SetBoxStyle(mInstructions->GetBoxStyle(swInstructionsBoxElement::PartsList, mModel, mStep));
+	SetContentBackground(true);
 }
 
 QVariant swInstructionsPartsListItem::itemChange(GraphicsItemChange Change, const QVariant& Value)
@@ -275,26 +405,15 @@ void swInstructionsPartsListItem::Update()
 		return;
 	}
 
-	QImage Image = PartsImage.value();
-	const int BorderWidth = mInstructions->GetIntProperty(swInstructionsPropertyType::PLIBorderWidth, mModel, mStep);
-
-	if (BorderWidth > 0 && !Image.isNull())
-	{
-		QPainter Painter(&Image);
-		QPen Pen(mInstructions->GetColorProperty(swInstructionsPropertyType::PLIBorderColor, mModel, mStep), BorderWidth);
-		Pen.setJoinStyle(Qt::MiterJoin);
-		Painter.setPen(Pen);
-		Painter.drawRect(QRectF(BorderWidth / 2.0, BorderWidth / 2.0, Image.width() - BorderWidth, Image.height() - BorderWidth));
-	}
-
-	setPixmap(QPixmap::fromImage(Image));
+	setPixmap(QPixmap::fromImage(PartsImage.value()));
 }
 
 swInstructionsCoverTextItem::swInstructionsCoverTextItem(QGraphicsItem* Parent, swInstructions* Instructions, swModel* Model, bool Author)
-	: swInstructionsPaddedItem(Parent), mInstructions(Instructions), mModel(Model), mAuthor(Author)
+	: swInstructionsBoxItem(Parent), mInstructions(Instructions), mModel(Model), mAuthor(Author)
 {
 	setFlags(SW_MOVABLE_ITEM_FLAGS);
 	setZValue(1.0);
+	SetBoxStyle(mInstructions->GetBoxStyle(Author ? swInstructionsBoxElement::CoverAuthor : swInstructionsBoxElement::CoverTitle, mModel, 0));
 }
 
 QVariant swInstructionsCoverTextItem::itemChange(GraphicsItemChange Change, const QVariant& Value)
@@ -303,6 +422,355 @@ QVariant swInstructionsCoverTextItem::itemChange(GraphicsItemChange Change, cons
 		return swSnapItemPosition(this, mInstructions, Value);
 
 	return QGraphicsTextItem::itemChange(Change, Value);
+}
+
+bool swEditNoticeText(QWidget* Parent, QString& Text, bool NewNotice)
+{
+	bool Accepted = false;
+	const QString Title = NewNotice ? QCoreApplication::translate("swInstructionsDialog", "Add Notice") : QCoreApplication::translate("swInstructionsDialog", "Edit Notice");
+	const QString NewText = QInputDialog::getMultiLineText(Parent, Title, QCoreApplication::translate("swInstructionsDialog", "Notice text:"), Text, &Accepted);
+
+	if (!Accepted || NewText.trimmed().isEmpty())
+		return false;
+
+	Text = NewText;
+
+	return true;
+}
+
+swInstructionsNoticeItem::swInstructionsNoticeItem(QGraphicsItem* Parent, swInstructions* Instructions, const swInstructionsNotice& Notice)
+	: swInstructionsBoxItem(Parent), mInstructions(Instructions), mId(Notice.Id)
+{
+	setFlags(SW_MOVABLE_ITEM_FLAGS);
+	setZValue(1.0);
+	SetBoxStyle(mInstructions->GetBoxStyle(swInstructionsBoxElement::Notice, nullptr, 0));
+
+	setFont(mInstructions->GetFontProperty(swInstructionsPropertyType::NoticeFont, nullptr, 0));
+	setDefaultTextColor(mInstructions->GetColorProperty(swInstructionsPropertyType::NoticeTextColor, nullptr, 0));
+	setPlainText(Notice.Text);
+}
+
+QVariant swInstructionsNoticeItem::itemChange(GraphicsItemChange Change, const QVariant& Value)
+{
+	if (Change == QGraphicsItem::ItemPositionChange)
+		return swSnapItemPosition(this, mInstructions, Value);
+
+	return QGraphicsTextItem::itemChange(Change, Value);
+}
+
+void swInstructionsNoticeItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* Event)
+{
+	Event->accept();
+
+	const swInstructionsNotice* Notice = mInstructions->FindNotice(mId);
+	QWidget* Parent = scene() && !scene()->views().isEmpty() ? scene()->views().front() : nullptr;
+
+	if (!Notice)
+		return;
+
+	// the edit rebuilds the page once the scene has finished with the click, the rebuild deletes the items
+	const int Id = mId;
+	swInstructions* Instructions = mInstructions;
+	QString Text = Notice->Text;
+
+	QTimer::singleShot(0, Instructions, [Instructions, Parent, Id, Text]() mutable
+	{
+		if (swEditNoticeText(Parent, Text, false))
+			Instructions->SetNoticeText(Id, Text);
+	});
+}
+
+QPointF swGetPointerAnchor(const QRectF& BorderRect, int Anchor)
+{
+	switch (Anchor)
+	{
+	case 0:
+		return BorderRect.topLeft();
+
+	case 1:
+		return QPointF(BorderRect.center().x(), BorderRect.top());
+
+	case 2:
+		return BorderRect.topRight();
+
+	case 3:
+		return QPointF(BorderRect.right(), BorderRect.center().y());
+
+	case 4:
+		return BorderRect.bottomRight();
+
+	case 5:
+		return QPointF(BorderRect.center().x(), BorderRect.bottom());
+
+	case 6:
+		return BorderRect.bottomLeft();
+
+	default:
+		return QPointF(BorderRect.left(), BorderRect.center().y());
+	}
+}
+
+// use to get the border of a boxed element in the coordinates of another item
+static bool swGetBorderRect(const QGraphicsItem* Item, const QGraphicsItem* Parent, QRectF& BorderRect)
+{
+	const swInstructionsBoxBase* Box = dynamic_cast<const swInstructionsBoxBase*>(Item);
+
+	if (!Box || !Item->isVisible())
+		return false;
+
+	BorderRect = Item->mapRectToItem(Parent, Box->GetBorderRect());
+
+	return true;
+}
+
+swInstructionsPointerItem::swInstructionsPointerItem(QGraphicsItem* Parent, swInstructions* Instructions, const swInstructionsPointer& Pointer, QGraphicsItem* Source, QGraphicsItem* Target)
+	: QGraphicsItem(Parent), mInstructions(Instructions), mPointer(Pointer), mSource(Source), mTarget(Target)
+{
+	setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsFocusable);
+	setZValue(2.0);
+
+	// a pointer without its own style or tip follows the pointer properties
+	const int Style = mPointer.Style >= 0 ? mPointer.Style : mInstructions->GetIntProperty(swInstructionsPropertyType::PointerStyle, nullptr, 0);
+	const int Tip = mPointer.Tip >= 0 ? mPointer.Tip : mInstructions->GetIntProperty(swInstructionsPropertyType::PointerTip, nullptr, 0);
+
+	mStyle = static_cast<swInstructionsPointerStyle>(Style);
+	mTip = static_cast<swInstructionsPointerTip>(Tip);
+	mColor = mInstructions->GetColorProperty(swInstructionsPropertyType::PointerColor, nullptr, 0);
+	mWidth = qMax(mInstructions->GetIntProperty(swInstructionsPropertyType::PointerWidth, nullptr, 0), 1);
+	mTipSize = qMax(mInstructions->GetIntProperty(swInstructionsPropertyType::PointerTipSize, nullptr, 0), 1);
+
+	UpdateGeometry();
+}
+
+void swInstructionsPointerItem::UpdateGeometry()
+{
+	QRectF SourceRect;
+
+	if (!swGetBorderRect(mSource, parentItem(), SourceRect))
+		return;
+
+	QPointF TipPosition = mPointer.TipPosition;
+	QRectF TargetRect;
+
+	if (mDraggingTip)
+		TipPosition = mTipPosition;
+	else if (mPointer.TargetType == swInstructionsPointerTarget::Part && mTarget)
+	{
+		const swInstructionsStepImageItem* ImageItem = dynamic_cast<const swInstructionsStepImageItem*>(mTarget);
+		QPointF PartPoint;
+
+		if (ImageItem && ImageItem->GetPartPoint(mPointer.TargetPart, PartPoint))
+			TipPosition = mTarget->mapToItem(parentItem(), PartPoint);
+	}
+	else if (mPointer.TargetType == swInstructionsPointerTarget::Element && swGetBorderRect(mTarget, parentItem(), TargetRect))
+	{
+		// the tip touches the target border on the side facing the element, inside it when they overlap
+		const QPointF Center = SourceRect.center();
+
+		if (TargetRect.contains(Center))
+			TipPosition = TargetRect.center();
+		else
+			TipPosition = QPointF(qBound(TargetRect.left(), Center.x(), TargetRect.right()), qBound(TargetRect.top(), Center.y(), TargetRect.bottom()));
+	}
+
+	// an automatic anchor is the one nearest to the tip
+	int Anchor = mPointer.Anchor;
+
+	if (Anchor < 0 || Anchor >= SW_POINTER_ANCHOR_COUNT)
+	{
+		qreal AnchorDistance = 0.0;
+
+		for (int Index = 0; Index < SW_POINTER_ANCHOR_COUNT; Index++)
+		{
+			const qreal Distance = QLineF(swGetPointerAnchor(SourceRect, Index), TipPosition).length();
+
+			if (Index == 0 || Distance < AnchorDistance)
+			{
+				Anchor = Index;
+				AnchorDistance = Distance;
+			}
+		}
+	}
+
+	prepareGeometryChange();
+	mBasePosition = swGetPointerAnchor(SourceRect, Anchor);
+	mTipPosition = TipPosition;
+	update();
+}
+
+QPainterPath swInstructionsPointerItem::GetPath() const
+{
+	QPainterPath Path;
+	const QLineF Line(mBasePosition, mTipPosition);
+
+	if (Line.length() < 0.5)
+		return Path;
+
+	const QPointF Direction = (mTipPosition - mBasePosition) / Line.length();
+	const QPointF Normal(-Direction.y(), Direction.x());
+
+	// the wedge narrows from the element border to the tip, the line is stroked
+	if (mStyle == swInstructionsPointerStyle::Wedge)
+	{
+		const qreal HalfWidth = mTipSize / 2.0;
+
+		Path.moveTo(mBasePosition + Normal * HalfWidth);
+		Path.lineTo(mTipPosition);
+		Path.lineTo(mBasePosition - Normal * HalfWidth);
+		Path.closeSubpath();
+	}
+
+	if (mTip == swInstructionsPointerTip::Dot)
+		Path.addEllipse(mTipPosition, mTipSize / 2.0, mTipSize / 2.0);
+	else if (mStyle == swInstructionsPointerStyle::Line)
+	{
+		const QPointF Back = mTipPosition - Direction * mTipSize;
+		const qreal HalfWidth = mTipSize * 0.4;
+
+		Path.moveTo(mTipPosition);
+		Path.lineTo(Back + Normal * HalfWidth);
+		Path.lineTo(Back - Normal * HalfWidth);
+		Path.closeSubpath();
+	}
+
+	return Path;
+}
+
+QRectF swInstructionsPointerItem::boundingRect() const
+{
+	const qreal Extent = qMax(mTipSize, mWidth) + 8.0;
+
+	return QRectF(mBasePosition, mTipPosition).normalized().adjusted(-Extent, -Extent, Extent, Extent);
+}
+
+QPainterPath swInstructionsPointerItem::shape() const
+{
+	QPainterPath Path;
+	Path.moveTo(mBasePosition);
+	Path.lineTo(mTipPosition);
+
+	// the pointer is easy to pick whatever its width
+	QPainterPathStroker Stroker;
+	Stroker.setWidth(qMax(mWidth, 8.0));
+
+	QPainterPath Shape = Stroker.createStroke(Path);
+	Shape.addPath(GetPath());
+	Shape.addEllipse(mTipPosition, qMax(mTipSize, 10.0), qMax(mTipSize, 10.0));
+
+	return Shape;
+}
+
+void swInstructionsPointerItem::paint(QPainter* Painter, const QStyleOptionGraphicsItem* Option, QWidget* Widget)
+{
+	Q_UNUSED(Widget);
+
+	Painter->save();
+	Painter->setRenderHint(QPainter::Antialiasing, true);
+
+	if (mStyle == swInstructionsPointerStyle::Line)
+	{
+		// the line stops at the arrowhead so its end stays sharp
+		QPointF LineEnd = mTipPosition;
+		const QLineF Line(mBasePosition, mTipPosition);
+
+		if (mTip == swInstructionsPointerTip::Arrowhead && Line.length() > mTipSize)
+			LineEnd = mTipPosition - (mTipPosition - mBasePosition) / Line.length() * (mTipSize * 0.5);
+
+		QPen Pen(mColor, mWidth);
+		Pen.setCapStyle(Qt::FlatCap);
+		Painter->setPen(Pen);
+		Painter->drawLine(mBasePosition, LineEnd);
+	}
+
+	Painter->setPen(Qt::NoPen);
+	Painter->setBrush(mColor);
+	Painter->drawPath(GetPath());
+
+	if (Option->state & QStyle::State_Selected)
+	{
+		// the handles show the anchor and the tip that can be dragged
+		QPen Pen(Option->palette.highlight(), 2.0);
+		Pen.setCosmetic(true);
+
+		Painter->setPen(Pen);
+		Painter->setBrush(Option->palette.base());
+		Painter->drawEllipse(mBasePosition, 4.0, 4.0);
+		Painter->drawEllipse(mTipPosition, 5.0, 5.0);
+	}
+
+	Painter->restore();
+}
+
+void swInstructionsPointerItem::mousePressEvent(QGraphicsSceneMouseEvent* Event)
+{
+	QGraphicsItem::mousePressEvent(Event);
+
+	// pressing the tip drags it to another part, element or point of the page
+	if (Event->button() == Qt::LeftButton && QLineF(Event->pos(), mTipPosition).length() <= qMax(mTipSize, 10.0))
+	{
+		mDraggingTip = true;
+		Event->accept();
+	}
+}
+
+void swInstructionsPointerItem::mouseMoveEvent(QGraphicsSceneMouseEvent* Event)
+{
+	if (!mDraggingTip)
+	{
+		QGraphicsItem::mouseMoveEvent(Event);
+		return;
+	}
+
+	mTipPosition = Event->pos();
+	UpdateGeometry();
+}
+
+void swInstructionsPointerItem::mouseReleaseEvent(QGraphicsSceneMouseEvent* Event)
+{
+	QGraphicsItem::mouseReleaseEvent(Event);
+
+	if (!mDraggingTip)
+		return;
+
+	mDraggingTip = false;
+
+	// the tip points at the topmost part or element under it, else at the point of the page
+	swInstructionsPointerTarget TargetType = swInstructionsPointerTarget::Point;
+	swInstructionsElementKey TargetElement = { swInstructionsPlacementElement::None, nullptr, 0 };
+	int TargetPart = -1;
+	const QPointF TipPosition = mapToItem(parentItem(), Event->pos());
+	const QList<QGraphicsItem*> Items = scene()->items(Event->scenePos());
+
+	for (const QGraphicsItem* Item : Items)
+	{
+		swInstructionsElementKey Key;
+
+		if (Item == mSource || dynamic_cast<const swInstructionsPointerItem*>(Item) || !swGetElementKey(Item, Key))
+			continue;
+
+		if (const swInstructionsStepImageItem* ImageItem = dynamic_cast<const swInstructionsStepImageItem*>(Item))
+		{
+			if (ImageItem->FindPart(ImageItem->mapFromScene(Event->scenePos()), TargetPart))
+			{
+				TargetType = swInstructionsPointerTarget::Part;
+				TargetElement = Key;
+				break;
+			}
+		}
+
+		TargetType = swInstructionsPointerTarget::Element;
+		TargetElement = Key;
+		break;
+	}
+
+	// the page is rebuilt once the scene has finished with the release, the rebuild deletes the items
+	swInstructions* Instructions = mInstructions;
+	const int Id = mPointer.Id;
+
+	QTimer::singleShot(0, Instructions, [Instructions, Id, TargetType, TargetElement, TargetPart, TipPosition]()
+	{
+		Instructions->SetPointerTarget(Id, TargetType, TargetElement, TargetPart, TipPosition);
+	});
 }
 
 swInstructionsPageWidget::swInstructionsPageWidget(QWidget* Parent, swInstructions* Instructions, swInstructionsPropertiesWidget* PropertiesWidget, swInstructionsPlacementWidget* PlacementWidget)
@@ -378,39 +846,9 @@ void swInstructionsPageWidget::SelectionChanged()
 	mPlacementWidget->SelectionChanged(Focus);
 }
 
-void swUpdateInstructionsPageScene(swInstructions* Instructions, const swInstructionsPage* Page, QGraphicsScene* Scene)
+// use to add the elements of the cover, the bill of materials or the steps of a page
+static void swAddPageContent(swInstructions* Instructions, const swInstructionsPage* Page, QGraphicsScene* Scene, QGraphicsRectItem* PageItem, const QRectF& MarginsRect)
 {
-	Scene->clear();
-
-	if (!Page)
-		return;
-
-	const swInstructionsPageSetup& PageSetup = Instructions->mPageSetup;
-	Scene->setSceneRect(0, 0, PageSetup.Width, PageSetup.Height);
-
-	// the background fills the whole page, margins included, so prints have no white border
-	const size_t PageIndex = static_cast<size_t>(Page - Instructions->mPages.data());
-	const QColor BackgroundColor = Instructions->GetPageBackgroundColor(PageIndex);
-	QGraphicsRectItem* PageItem = Scene->addRect(QRectF(0.0f, 0.0f, PageSetup.Width, PageSetup.Height), QPen(Qt::NoPen), QBrush(BackgroundColor));
-	PageItem->setFlag(QGraphicsItem::ItemClipsChildrenToShape, true);
-
-	QRectF MarginsRect(PageSetup.MarginLeft, PageSetup.MarginTop, PageSetup.Width - PageSetup.MarginLeft - PageSetup.MarginRight, PageSetup.Height - PageSetup.MarginTop - PageSetup.MarginBottom);
-
-	// pages with steps and the bill of materials are numbered unless all pages are, placed halfway into the margins so it stays clear of the steps
-	const bool PageHasContent = (Page->Type == swInstructionsPageType::Steps && !Page->Steps.empty()) || Page->Type == swInstructionsPageType::BillOfMaterials || Instructions->GetBoolProperty(swInstructionsPropertyType::ShowPageNumberAllPages, nullptr, 0);
-
-	if (PageHasContent && Instructions->GetBoolProperty(swInstructionsPropertyType::ShowPageNumber, nullptr, 0))
-	{
-		const QRectF NumberRect(PageSetup.MarginLeft / 2.0, PageSetup.MarginTop / 2.0, PageSetup.Width - (PageSetup.MarginLeft + PageSetup.MarginRight) / 2.0, PageSetup.Height - (PageSetup.MarginTop + PageSetup.MarginBottom) / 2.0);
-		swInstructionsPageNumberItem* PageNumberItem = new swInstructionsPageNumberItem(PageItem, Instructions, PageIndex);
-
-		const int Placement = swGetValidPlacement(Instructions->GetIntProperty(swInstructionsPropertyType::PageNumberPlacement, nullptr, 0), true);
-		swPlaceElement(PageNumberItem, Instructions, swGetPlacementPosition(NumberRect, PageNumberItem->boundingRect().size(), Placement));
-	}
-
-	if (Page->Type == swInstructionsPageType::Blank)
-		return;
-
 	if (Page->Type == swInstructionsPageType::Cover)
 	{
 		swModel* Model = Page->Model;
@@ -456,7 +894,7 @@ void swUpdateInstructionsPageScene(swInstructions* Instructions, const swInstruc
 			Item->setPlainText(Text);
 			Item->document()->setDefaultTextOption(TextOption);
 
-			const qreal TextWidth = MarginsRect.width() - 2.0 * SW_ELEMENT_PADDING;
+			const qreal TextWidth = MarginsRect.width() - 2.0 * Item->GetBoxStyle().GetInset();
 
 			if (Item->document()->idealWidth() > TextWidth)
 				Item->setTextWidth(TextWidth);
@@ -512,13 +950,15 @@ void swUpdateInstructionsPageScene(swInstructions* Instructions, const swInstruc
 		const QRectF ImageRect = MarginsRect.adjusted(0.0, TopHeight, 0.0, -BottomHeight);
 		const swStep LastStep = Model->GetLastStep();
 
-		if (ImageRect.height() > 2.0 * SW_ELEMENT_PADDING + 1.0)
+		const qreal ImageInset = Instructions->GetBoxStyle(swInstructionsBoxElement::CoverImage, Model, LastStep).GetInset();
+
+		if (ImageRect.height() > 2.0 * ImageInset + 1.0)
 		{
 			Scene->addRect(ImageRect, QPen(Qt::NoPen), QBrush(Instructions->GetColorProperty(swInstructionsPropertyType::StepBackgroundColor, Model, LastStep)))->setParentItem(PageItem);
 
 			swInstructionsStepImageItem* ModelImageItem = new swInstructionsStepImageItem(PageItem, Instructions, Model, LastStep);
 			ModelImageItem->SetCoverImage();
-			ModelImageItem->SetImageSize(qMax(static_cast<int>(ImageRect.width() - 2.0 * SW_ELEMENT_PADDING), 1), static_cast<int>(ImageRect.height() - 2.0 * SW_ELEMENT_PADDING));
+			ModelImageItem->SetImageSize(qMax(static_cast<int>(ImageRect.width() - 2.0 * ImageInset), 1), static_cast<int>(ImageRect.height() - 2.0 * ImageInset));
 			ModelImageItem->Update();
 
 			const int Placement = swGetValidPlacement(Instructions->GetIntProperty(swInstructionsPropertyType::CoverImagePlacement, Model, LastStep), true);
@@ -531,7 +971,7 @@ void swUpdateInstructionsPageScene(swInstructions* Instructions, const swInstruc
 	if (Page->Type == swInstructionsPageType::BillOfMaterials)
 	{
 		swInstructionsPartsListItem* PartsImageItem = new swInstructionsPartsListItem(PageItem, Instructions, Page->Model, 0);
-		PartsImageItem->SetBillOfMaterials(qMax(static_cast<int>(MarginsRect.width() - 2.0 * SW_ELEMENT_PADDING), 16));
+		PartsImageItem->SetBillOfMaterials(qMax(static_cast<int>(MarginsRect.width() - 2.0 * PartsImageItem->GetBoxStyle().GetInset()), 16));
 		PartsImageItem->Update();
 
 		const int Placement = swGetValidPlacement(Instructions->GetIntProperty(swInstructionsPropertyType::BillOfMaterialsPlacement, Page->Model, 0), true);
@@ -595,7 +1035,8 @@ void swUpdateInstructionsPageScene(swInstructions* Instructions, const swInstruc
 		StepAreaItem->setPos(CellRect.topLeft());
 
 		swInstructionsStepImageItem* StepImageItem = new swInstructionsStepImageItem(StepAreaItem, Instructions, Step.Model, Step.Step);
-		StepImageItem->SetImageSize(qMax(static_cast<int>(CellRect.width() - 2.0 * SW_ELEMENT_PADDING), 1), qMax(static_cast<int>(CellRect.height() - 2.0 * SW_ELEMENT_PADDING), 1));
+		const qreal ImageInset = StepImageItem->GetBoxStyle().GetInset();
+		StepImageItem->SetImageSize(qMax(static_cast<int>(CellRect.width() - 2.0 * ImageInset), 1), qMax(static_cast<int>(CellRect.height() - 2.0 * ImageInset), 1));
 		StepImageItem->Update();
 
 		swInstructionsStepNumberItem* StepNumberItem = new swInstructionsStepNumberItem(StepAreaItem, Instructions, Step.Model, Step.Step);
@@ -611,7 +1052,7 @@ void swUpdateInstructionsPageScene(swInstructions* Instructions, const swInstruc
 
 		// the parts list wraps at the width of its area
 		swInstructionsPartsListItem* PartsImageItem = new swInstructionsPartsListItem(StepAreaItem, Instructions, Step.Model, Step.Step);
-		PartsImageItem->SetMaxWidth(qMax(static_cast<int>(AreaRect.width() - 2.0 * SW_ELEMENT_PADDING), 16));
+		PartsImageItem->SetMaxWidth(qMax(static_cast<int>(AreaRect.width() - 2.0 * PartsImageItem->GetBoxStyle().GetInset()), 16));
 		PartsImageItem->Update();
 
 		swInstructionsPlacementAnchor NumberAnchor = static_cast<swInstructionsPlacementAnchor>(Instructions->GetIntProperty(swInstructionsPropertyType::StepNumberAnchor, Step.Model, Step.Step));
@@ -647,6 +1088,93 @@ void swUpdateInstructionsPageScene(swInstructions* Instructions, const swInstruc
 	}
 }
 
+// use to add the notices of a page and the pointers leaving its elements
+static void swAddPageAnnotations(swInstructions* Instructions, size_t PageIndex, QGraphicsScene* Scene, QGraphicsRectItem* PageItem, const QRectF& MarginsRect)
+{
+	const swInstructionsPageKey PageKey = Instructions->GetPageElementsKey(PageIndex);
+
+	for (const swInstructionsNotice& Notice : Instructions->GetNotices())
+	{
+		if (Notice.PageKey != PageKey)
+			continue;
+
+		swInstructionsNoticeItem* NoticeItem = new swInstructionsNoticeItem(PageItem, Instructions, Notice);
+		const qreal TextWidth = MarginsRect.width() / 2.0;
+
+		// a long notice wraps at half the page width
+		if (NoticeItem->document()->idealWidth() > TextWidth)
+			NoticeItem->setTextWidth(TextWidth);
+
+		swPlaceElement(NoticeItem, Instructions, Notice.Position);
+	}
+
+	std::map<swInstructionsElementKey, QGraphicsItem*> ElementItems;
+	const QList<QGraphicsItem*> Items = Scene->items();
+
+	for (QGraphicsItem* Item : Items)
+	{
+		swInstructionsElementKey Key;
+
+		if (swGetElementKey(Item, Key))
+			ElementItems[Key] = Item;
+	}
+
+	auto FindItem = [&ElementItems](const swInstructionsElementKey& Key) -> QGraphicsItem*
+	{
+		const auto ItemIt = ElementItems.find(Key);
+
+		return ItemIt != ElementItems.end() && ItemIt->second->isVisible() ? ItemIt->second : nullptr;
+	};
+
+	// a pointer whose element is not shown on the page is not drawn
+	for (const swInstructionsPointer& Pointer : Instructions->GetPointers())
+	{
+		if (Pointer.PageKey != PageKey)
+			continue;
+
+		QGraphicsItem* SourceItem = FindItem(Pointer.Source);
+
+		if (SourceItem)
+			new swInstructionsPointerItem(PageItem, Instructions, Pointer, SourceItem, FindItem(Pointer.TargetElement));
+	}
+}
+
+void swUpdateInstructionsPageScene(swInstructions* Instructions, const swInstructionsPage* Page, QGraphicsScene* Scene)
+{
+	Scene->clear();
+
+	if (!Page)
+		return;
+
+	const swInstructionsPageSetup& PageSetup = Instructions->mPageSetup;
+	Scene->setSceneRect(0, 0, PageSetup.Width, PageSetup.Height);
+
+	// the background fills the whole page, margins included, so prints have no white border
+	const size_t PageIndex = static_cast<size_t>(Page - Instructions->mPages.data());
+	const QColor BackgroundColor = Instructions->GetPageBackgroundColor(PageIndex);
+	QGraphicsRectItem* PageItem = Scene->addRect(QRectF(0.0f, 0.0f, PageSetup.Width, PageSetup.Height), QPen(Qt::NoPen), QBrush(BackgroundColor));
+	PageItem->setFlag(QGraphicsItem::ItemClipsChildrenToShape, true);
+
+	QRectF MarginsRect(PageSetup.MarginLeft, PageSetup.MarginTop, PageSetup.Width - PageSetup.MarginLeft - PageSetup.MarginRight, PageSetup.Height - PageSetup.MarginTop - PageSetup.MarginBottom);
+
+	// pages with steps and the bill of materials are numbered unless all pages are, placed halfway into the margins so it stays clear of the steps
+	const bool PageHasContent = (Page->Type == swInstructionsPageType::Steps && !Page->Steps.empty()) || Page->Type == swInstructionsPageType::BillOfMaterials || Instructions->GetBoolProperty(swInstructionsPropertyType::ShowPageNumberAllPages, nullptr, 0);
+
+	if (PageHasContent && Instructions->GetBoolProperty(swInstructionsPropertyType::ShowPageNumber, nullptr, 0))
+	{
+		const QRectF NumberRect(PageSetup.MarginLeft / 2.0, PageSetup.MarginTop / 2.0, PageSetup.Width - (PageSetup.MarginLeft + PageSetup.MarginRight) / 2.0, PageSetup.Height - (PageSetup.MarginTop + PageSetup.MarginBottom) / 2.0);
+		swInstructionsPageNumberItem* PageNumberItem = new swInstructionsPageNumberItem(PageItem, Instructions, PageIndex);
+
+		const int Placement = swGetValidPlacement(Instructions->GetIntProperty(swInstructionsPropertyType::PageNumberPlacement, nullptr, 0), true);
+		swPlaceElement(PageNumberItem, Instructions, swGetPlacementPosition(NumberRect, PageNumberItem->boundingRect().size(), Placement));
+	}
+
+	if (Page->Type != swInstructionsPageType::Blank)
+		swAddPageContent(Instructions, Page, Scene, PageItem, MarginsRect);
+
+	swAddPageAnnotations(Instructions, PageIndex, Scene, PageItem, MarginsRect);
+}
+
 void swInstructionsPageWidget::SetCurrentPage(const swInstructionsPage* Page)
 {
 	QGraphicsScene* Scene = scene();
@@ -667,6 +1195,13 @@ void swInstructionsPageWidget::SetCurrentPage(const swInstructionsPage* Page)
 	mPage = Page;
 	swUpdateInstructionsPageScene(mInstructions, Page, Scene);
 	FitPage();
+
+	// a new pointer is selected alone so it can be dragged right away
+	if (mPendingSelection)
+	{
+		SelectedKeys = { *mPendingSelection };
+		mPendingSelection.reset();
+	}
 
 	if (SelectedKeys.empty())
 		return;
@@ -697,6 +1232,192 @@ void swInstructionsPageWidget::mousePressEvent(QMouseEvent* Event)
 	for (QGraphicsItem* Item : SelectedItems)
 		if (Item->flags() & QGraphicsItem::ItemIsMovable)
 			mDragItems.emplace_back(Item, Item->pos());
+}
+
+void swInstructionsPageWidget::mouseMoveEvent(QMouseEvent* Event)
+{
+	QGraphicsView::mouseMoveEvent(Event);
+
+	if (mDragItems.empty())
+		return;
+
+	// the pointers follow the elements they leave or point at while these are dragged
+	const QList<QGraphicsItem*> Items = scene()->items();
+
+	for (QGraphicsItem* Item : Items)
+		if (swInstructionsPointerItem* PointerItem = dynamic_cast<swInstructionsPointerItem*>(Item))
+			PointerItem->UpdateGeometry();
+}
+
+void swInstructionsPageWidget::contextMenuEvent(QContextMenuEvent* Event)
+{
+	if (!mPage)
+		return;
+
+	const size_t PageIndex = static_cast<size_t>(mPage - mInstructions->mPages.data());
+	const QPointF ScenePosition = mapToScene(Event->pos());
+	QGraphicsItem* ElementItem = nullptr;
+	swInstructionsElementKey Key = { swInstructionsPlacementElement::None, nullptr, 0 };
+
+	// the menu acts on the topmost element under the cursor
+	const QList<QGraphicsItem*> Items = scene()->items(ScenePosition);
+
+	for (QGraphicsItem* Item : Items)
+	{
+		if (swGetElementKey(Item, Key))
+		{
+			ElementItem = Item;
+			break;
+		}
+	}
+
+	if (ElementItem && !ElementItem->isSelected())
+	{
+		scene()->clearSelection();
+		ElementItem->setSelected(true);
+	}
+
+	QMenu Menu(this);
+	const swInstructionsPlacementElement Element = std::get<0>(Key);
+	const int Id = static_cast<int>(std::get<2>(Key));
+
+	if (Element == swInstructionsPlacementElement::Pointer)
+	{
+		const swInstructionsPointer* Pointer = mInstructions->FindPointer(Id);
+
+		if (!Pointer)
+			return;
+
+		QMenu* AnchorMenu = Menu.addMenu(tr("Anchor"));
+		const QStringList AnchorNames = { tr("Top Left"), tr("Top"), tr("Top Right"), tr("Right"), tr("Bottom Right"), tr("Bottom"), tr("Bottom Left"), tr("Left") };
+		QActionGroup* AnchorGroup = new QActionGroup(AnchorMenu);
+
+		for (int Anchor = SW_POINTER_ANCHOR_AUTO; Anchor < SW_POINTER_ANCHOR_COUNT; Anchor++)
+		{
+			QAction* Action = AnchorMenu->addAction(Anchor < 0 ? tr("Automatic") : AnchorNames[Anchor]);
+			Action->setCheckable(true);
+			Action->setChecked(Pointer->Anchor == Anchor);
+			AnchorGroup->addAction(Action);
+
+			if (Anchor < 0)
+				AnchorMenu->addSeparator();
+
+			connect(Action, &QAction::triggered, this, [this, Id, Anchor]()
+			{
+				mInstructions->SetPointerAnchor(Id, Anchor);
+			});
+		}
+
+		const int PointerStyle = Pointer->Style;
+		const int PointerTip = Pointer->Tip;
+
+		auto AddChoiceMenu = [this, &Menu](const QString& Title, const QStringList& Names, int Current, std::function<void(int)> SetChoice)
+		{
+			QMenu* ChoiceMenu = Menu.addMenu(Title);
+			QActionGroup* ChoiceGroup = new QActionGroup(ChoiceMenu);
+
+			for (int Choice = -1; Choice < Names.size(); Choice++)
+			{
+				QAction* Action = ChoiceMenu->addAction(Choice < 0 ? tr("Default") : Names[Choice]);
+				Action->setCheckable(true);
+				Action->setChecked(Current == Choice);
+				ChoiceGroup->addAction(Action);
+
+				if (Choice < 0)
+					ChoiceMenu->addSeparator();
+
+				connect(Action, &QAction::triggered, this, [SetChoice, Choice]()
+				{
+					SetChoice(Choice);
+				});
+			}
+		};
+
+		AddChoiceMenu(tr("Style"), { tr("Line"), tr("Callout Wedge") }, PointerStyle, [this, Id, PointerTip](int Style)
+		{
+			mInstructions->SetPointerStyle(Id, Style, PointerTip);
+		});
+
+		AddChoiceMenu(tr("Tip"), { tr("Arrowhead"), tr("Dot") }, PointerTip, [this, Id, PointerStyle](int Tip)
+		{
+			mInstructions->SetPointerStyle(Id, PointerStyle, Tip);
+		});
+
+		Menu.addSeparator();
+
+		connect(Menu.addAction(tr("Remove Pointer")), &QAction::triggered, this, [this, Id]()
+		{
+			mInstructions->RemovePointer(Id);
+		});
+	}
+	else
+	{
+		connect(Menu.addAction(tr("Add Notice...")), &QAction::triggered, this, [this, PageIndex, ScenePosition]()
+		{
+			QString Text;
+
+			if (swEditNoticeText(this, Text, true))
+				mInstructions->AddNotice(PageIndex, ScenePosition, Text);
+		});
+
+		if (ElementItem && dynamic_cast<swInstructionsBoxBase*>(ElementItem))
+		{
+			// the new pointer leaves the element sideways, toward the inside of the page
+			const QRectF BorderRect = ElementItem->mapRectToScene(dynamic_cast<swInstructionsBoxBase*>(ElementItem)->GetBorderRect());
+			QPointF TipPosition(BorderRect.right() + 72.0, BorderRect.center().y());
+
+			if (!sceneRect().contains(TipPosition))
+				TipPosition.setX(BorderRect.left() - 72.0);
+
+			connect(Menu.addAction(tr("Add Pointer")), &QAction::triggered, this, [this, PageIndex, Key, TipPosition]()
+			{
+				const int PointerId = mInstructions->AddPointer(PageIndex, Key, TipPosition);
+
+				SelectElement({ swInstructionsPlacementElement::Pointer, nullptr, static_cast<swStep>(PointerId) });
+			});
+		}
+
+		if (Element == swInstructionsPlacementElement::Notice)
+		{
+			Menu.addSeparator();
+
+			connect(Menu.addAction(tr("Edit Notice...")), &QAction::triggered, this, [this, Id]()
+			{
+				const swInstructionsNotice* Notice = mInstructions->FindNotice(Id);
+				QString Text = Notice ? Notice->Text : QString();
+
+				if (Notice && swEditNoticeText(this, Text, false))
+					mInstructions->SetNoticeText(Id, Text);
+			});
+
+			connect(Menu.addAction(tr("Remove Notice")), &QAction::triggered, this, [this, Id]()
+			{
+				mInstructions->RemoveNotice(Id);
+			});
+		}
+	}
+
+	Menu.exec(Event->globalPos());
+}
+
+void swInstructionsPageWidget::SelectElement(const swInstructionsElementKey& Key)
+{
+	const QList<QGraphicsItem*> Items = scene()->items();
+
+	for (QGraphicsItem* Item : Items)
+	{
+		swInstructionsElementKey ItemKey;
+
+		if (swGetElementKey(Item, ItemKey) && ItemKey == Key)
+		{
+			scene()->clearSelection();
+			Item->setSelected(true);
+			return;
+		}
+	}
+
+	// the page is rebuilt later, the element is selected once it exists
+	mPendingSelection = Key;
 }
 
 void swInstructionsPageWidget::mouseReleaseEvent(QMouseEvent* Event)

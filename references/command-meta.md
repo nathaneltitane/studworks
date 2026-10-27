@@ -181,6 +181,22 @@ Each light property takes the `_KEY` form when animated.
 | `0 !SW NO_SHADOWS POV_RAY` | Read, Write | no shadows |
 | `0 !SW USE_LGEO POV_RAY` | Read, Write | use the LGEO library |
 
+### Instruction
+
+Instructions settings, written in the main model header. Models are quoted file names, `-` for none. Steps are `STEP <model> <step>`, pages `<STEPS|COVER|BILL_OF_MATERIALS|BLANK> <model> <step> <rank>` and page elements `<element> <model> <step>`, with the element `NONE`, `STEP_NUMBER`, `PARTS_LIST`, `COVER_TITLE`, `COVER_AUTHOR`, `BILL_OF_MATERIALS`, `STEP_IMAGE`, `COVER_IMAGE`, `PAGE_NUMBER`, `NOTICE` or `POINTER`. Values are `TRUE`/`FALSE`, numbers, `#RRGGBBAA` colors or text to the end of the line, with `\\`, `\"` and `\n` escaped.
+
+| Command | Handling | Use |
+| --- | --- | --- |
+| `0 !SW PROPERTY INSTRUCTION <name> <value>` | Read, Write | document property, such as `STEP_NUMBER_BORDER_WIDTH 3` |
+| `0 !SW PAGE_PROPERTY INSTRUCTION STEP <model> <step> <name> <value>` | Read, Write | property of the page starting at the step |
+| `0 !SW STEPS_PER_PAGE INSTRUCTION <rows> <columns>` | Read, Write | steps per page |
+| `0 !SW PAGE_STEPS_PER_PAGE INSTRUCTION STEP <model> <step> <rows> <columns>` | Read, Write | steps per page from the step on |
+| `0 !SW BLANK_PAGE INSTRUCTION STEP <model> <step>` | Read, Write | blank page before the step |
+| `0 !SW OFFSET INSTRUCTION <element> <model> <step> <x> <y>` | Read, Write | element moved from its place |
+| `0 !SW LOCK INSTRUCTION <element> <model> <step> <x> <y>` | Read, Write | element locked at a position |
+| `0 !SW NOTICE INSTRUCTION <id> PAGE <page> POSITION <x> <y> TEXT <text>` | Read, Write | notice on a page |
+| `0 !SW POINTER INSTRUCTION <id> PAGE <page> SOURCE <element> ANCHOR <AUTO\|0-7> STYLE <DEFAULT\|LINE\|WEDGE> TIP <DEFAULT\|ARROWHEAD\|DOT> TARGET <POINT\|ELEMENT\|PART> <element> PART <index> POSITION <x> <y>` | Read, Write | pointer from an element border to a point, element or part |
+
 ### Group
 
 | Command | Handling | Use |

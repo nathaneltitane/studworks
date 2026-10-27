@@ -16,7 +16,7 @@ static const QLatin1String gCommandMetaMarkerLeoCAD("!LEOCAD");
 static const QLatin1String gCommandMetaObjects[] =
 {
 	QLatin1String("PART"), QLatin1String("CAMERA"), QLatin1String("LIGHT"), QLatin1String("MODEL"),
-	QLatin1String("POV_RAY"), QLatin1String("GROUP"), QLatin1String("SYNTH_PATH"), QLatin1String("CLIPBOARD")
+	QLatin1String("POV_RAY"), QLatin1String("GROUP"), QLatin1String("SYNTH_PATH"), QLatin1String("CLIPBOARD"), QLatin1String("INSTRUCTION")
 };
 
 // StudWorks names and their LeoCAD names.

@@ -57,11 +57,14 @@ protected:
 		Document,
 		Cover,
 		BillOfMaterials,
-		PageLayout,
 		Page,
+		PageLayout,
+		PageNumber,
 		Step,
 		PartsList,
-		PageNumber,
+		Notice,
+		Pointer,
+		Box,
 		Count
 	};
 
@@ -80,7 +83,13 @@ protected:
 		StepImage,
 		StepNumber,
 		PartsList,
-		PageNumber
+		PageNumber,
+		CoverTitle,
+		CoverAuthor,
+		CoverImage,
+		BillOfMaterials,
+		Notice,
+		Pointer
 	};
 
 	struct CategoryWidgets
@@ -123,6 +132,7 @@ protected:
 	void SetColorValue(swInstructionsPropertyType Type, const QColor& Color);
 	void SetThumbnailPageScope(bool PageOnly);
 	void DividerPresetClicked(int Preset);
+	void SetBoxElement(swInstructionsBoxElement Element);
 
 	void UpdateWidget();
 	void UpdateEditors();
@@ -148,6 +158,9 @@ protected:
 	QToolButton* mBackgroundPageButton = nullptr;
 	std::vector<QToolButton*> mDividerPresetButtons;
 	std::vector<QLabel*> mRowLabels;
+	QComboBox* mBoxElementComboBox = nullptr;
+	swInstructionsBoxElement mBoxElement = swInstructionsBoxElement::StepImage;
+	std::array<std::vector<QWidget*>, static_cast<int>(swInstructionsBoxElement::Count)> mBoxRows;
 	QVBoxLayout* mCategoriesLayout = nullptr;
 };
 

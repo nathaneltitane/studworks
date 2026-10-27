@@ -464,6 +464,15 @@ void Project::ShowModelListDialog()
 	for (const std::unique_ptr<swModel>& Model : mModels)
 		Model->RenameParts(Renames);
 
+	// The instructions name their models and stay with the main model.
+	std::map<QString, QString> InstructionNames;
+
+	for (const swModelPartRename& Rename : Renames)
+		InstructionNames[Rename.OldName] = Rename.NewName;
+
+	QStringList InstructionLines = GetMainModel() ? GetMainModel()->GetInstructionLines() : QStringList();
+	swRenameInstructionsModels(InstructionLines, InstructionNames);
+
 	for (const swModelListDialogEntry& Entry : Results)
 	{
 		swModel* Model = Entry.ExistingModel;
@@ -524,6 +533,9 @@ void Project::ShowModelListDialog()
 	}
 
 	mModels = std::move(NewModels);
+
+	for (const std::unique_ptr<swModel>& Model : mModels)
+		Model->SetInstructionLines(Model == mModels.front() ? InstructionLines : QStringList());
 
 	gMainWindow->UpdateTitle();
 

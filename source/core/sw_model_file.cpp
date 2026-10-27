@@ -210,6 +210,19 @@ void swModel::SaveLDraw(QTextStream& Stream, bool SelectedOnly, swStep LastStep)
 	if (!mAssetSourceDirectories.empty() && !mPreferCurrentAssetDirectory)
 		Stream << QLatin1String("0 !SW ASSET_SOURCE_PRIORITY MODEL SOURCE") << LineEnding;
 
+	// copied parts leave the instructions behind
+	if (!SelectedOnly)
+	{
+		for (const QString& InstructionLine : mInstructionLines)
+		{
+			const int PropertyEnd = InstructionLine.indexOf(QLatin1Char(' '));
+			const QString Property = PropertyEnd == -1 ? InstructionLine : InstructionLine.left(PropertyEnd);
+			const QString Arguments = PropertyEnd == -1 ? QString() : InstructionLine.mid(PropertyEnd);
+
+			Stream << QLatin1String("0 !SW ") << Property << QLatin1String(" INSTRUCTION") << Arguments << LineEnding;
+		}
+	}
+
 	std::vector<swGroup*> CurrentGroups;
 	swStep Step = 1;
 	int CurrentLine = 0;
@@ -411,6 +424,7 @@ void swModel::LoadLDraw(QIODevice& Device, Project* Project)
 	mProperties.mComments.clear();
 	mProperties.mStepViews.clear();
 	mAssetSourceDirectories.clear();
+	mInstructionLines.clear();
 	mPreferCurrentAssetDirectory = true;
 	bool ReadingHeader = true;
 	bool FirstLine = true;
@@ -568,6 +582,10 @@ void swModel::LoadLDraw(QIODevice& Device, Project* Project)
 			else if (Token == QLatin1String("POV_RAY"))
 			{
 				mPOVRayOptions.ParseLDrawLine(LineStream);
+			}
+			else if (Token == QLatin1String("INSTRUCTION"))
+			{
+				mInstructionLines.append(LineStream.readAll().trimmed());
 			}
 			else if (Token == QLatin1String("GROUP"))
 			{

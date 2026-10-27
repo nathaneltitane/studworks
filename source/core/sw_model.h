@@ -311,6 +311,17 @@ public:
 		return mFileLines;
 	}
 
+	// the instructions meta commands of the model without their marker and object
+	const QStringList& GetInstructionLines() const
+	{
+		return mInstructionLines;
+	}
+
+	void SetInstructionLines(const QStringList& InstructionLines)
+	{
+		mInstructionLines = InstructionLines;
+	}
+
 	bool HasDirectGeometry() const
 	{
 		return mHasDirectGeometry;
@@ -592,6 +603,7 @@ protected:
 	std::vector<std::unique_ptr<swLight>> mLights;
 	std::vector<std::unique_ptr<swGroup>> mGroups;
 	QStringList mFileLines;
+	QStringList mInstructionLines;
 	bool mHasDirectGeometry = false;
 
 	std::vector<std::unique_ptr<swModelHistory>> mHistorySequence;

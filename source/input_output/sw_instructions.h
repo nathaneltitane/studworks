@@ -95,6 +95,50 @@ enum class swInstructionsPropertyType
 	PageNumberColor,
 	PageNumberPlacement,
 	ShowPageNumberAllPages,
+	StepImageMargin,
+	StepImagePadding,
+	StepImageBorderWidth,
+	StepImageBorderColor,
+	StepImageBackgroundColor,
+	StepNumberMargin,
+	StepNumberPadding,
+	StepNumberBorderWidth,
+	StepNumberBorderColor,
+	StepNumberBackgroundColor,
+	PLIMargin,
+	PLIPadding,
+	PageNumberMargin,
+	PageNumberPadding,
+	PageNumberBorderWidth,
+	PageNumberBorderColor,
+	PageNumberBackgroundColor,
+	CoverTitleMargin,
+	CoverTitlePadding,
+	CoverTitleBorderWidth,
+	CoverTitleBorderColor,
+	CoverTitleBackgroundColor,
+	CoverAuthorMargin,
+	CoverAuthorPadding,
+	CoverAuthorBorderWidth,
+	CoverAuthorBorderColor,
+	CoverAuthorBackgroundColor,
+	CoverImageMargin,
+	CoverImagePadding,
+	CoverImageBorderWidth,
+	CoverImageBorderColor,
+	CoverImageBackgroundColor,
+	NoticeFont,
+	NoticeTextColor,
+	NoticeMargin,
+	NoticePadding,
+	NoticeBorderWidth,
+	NoticeBorderColor,
+	NoticeBackgroundColor,
+	PointerStyle,
+	PointerTip,
+	PointerColor,
+	PointerWidth,
+	PointerTipSize,
 	Count
 };
 
@@ -103,6 +147,60 @@ enum class swInstructionsPageNumberFormat
 {
 	Number,
 	NumberOfPages
+};
+
+// every page element is drawn in a box, the margin and padding surround its border and its background fills all of it
+enum class swInstructionsBoxElement
+{
+	StepImage,
+	StepNumber,
+	PartsList,
+	PageNumber,
+	CoverTitle,
+	CoverAuthor,
+	CoverImage,
+	Notice,
+	Count
+};
+
+struct swInstructionsBoxTypes
+{
+	swInstructionsPropertyType Margin;
+	swInstructionsPropertyType Padding;
+	swInstructionsPropertyType BorderWidth;
+	swInstructionsPropertyType BorderColor;
+	swInstructionsPropertyType BackgroundColor;
+};
+
+// use to get the properties of the box of an element, the parts list keeps its own border and background
+swInstructionsBoxTypes swGetBoxTypes(swInstructionsBoxElement Element);
+
+struct swInstructionsBoxStyle
+{
+	qreal Margin = 0.0;
+	qreal Padding = 0.0;
+	qreal BorderWidth = 0.0;
+	QColor BorderColor;
+	QColor BackgroundColor;
+
+	// the distance from the edge of the box to its content
+	qreal GetInset() const
+	{
+		return Margin + BorderWidth + Padding;
+	}
+};
+
+// a pointer is a line or a callout wedge, ending in an arrowhead or a dot
+enum class swInstructionsPointerStyle
+{
+	Line,
+	Wedge
+};
+
+enum class swInstructionsPointerTip
+{
+	Arrowhead,
+	Dot
 };
 
 // what a step element is placed against, the area is the page or its part given to the step by the split
@@ -169,7 +267,9 @@ enum class swInstructionsPlacementElement
 	BillOfMaterials,
 	StepImage,
 	CoverImage,
-	PageNumber
+	PageNumber,
+	Notice,
+	Pointer
 };
 
 // a moved element keeps its offset from its placement through page rebuilds
@@ -206,6 +306,45 @@ enum class swInstructionsPageType
 
 using swInstructionsStepKey = std::pair<swModel*, swStep>;
 
+// notices and pointers belong to one page, found by its type, its first step and its rank among pages sharing them
+using swInstructionsPageKey = std::tuple<swInstructionsPageType, swModel*, swStep, int>;
+
+// a notice is a free text box placed on a page
+struct swInstructionsNotice
+{
+	int Id = 0;
+	swInstructionsPageKey PageKey;
+	QPointF Position;
+	QString Text;
+};
+
+// a pointer leaves the border of an element at one of its 8 anchors and points at a part, another element or a point of the page
+constexpr int SW_POINTER_ANCHOR_AUTO = -1;
+constexpr int SW_POINTER_ANCHOR_COUNT = 8;
+
+enum class swInstructionsPointerTarget
+{
+	Point,
+	Element,
+	Part
+};
+
+struct swInstructionsPointer
+{
+	int Id = 0;
+	swInstructionsPageKey PageKey;
+	swInstructionsElementKey Source;
+	int Anchor = SW_POINTER_ANCHOR_AUTO;
+	swInstructionsPointerTarget TargetType = swInstructionsPointerTarget::Point;
+	swInstructionsElementKey TargetElement;
+	int TargetPart = -1;
+	QPointF TipPosition;
+
+	// a pointer without its own style or tip follows the pointer properties
+	int Style = -1;
+	int Tip = -1;
+};
+
 struct swInstructionsPage
 {
 	swInstructionsPageSettings Settings;
@@ -219,6 +358,9 @@ struct swInstructionsModel
 {
 	std::vector<swInstructionsProperties> StepProperties;
 };
+
+// the instructions are saved as meta commands of the main model, which names the models it refers to
+void swRenameInstructionsModels(QStringList& CommandLines, const std::map<QString, QString>& Names);
 
 class swInstructions : public QObject
 {
@@ -266,6 +408,34 @@ public:
 	void SetElementOffsets(const std::map<swInstructionsElementKey, QPointF>& Offsets);
 	void ResetElementOffset(const swInstructionsElementKey& Key);
 	void SetElementPlacement(swInstructionsPropertyType Type, int Placement, const swInstructionsElementKey& Key);
+
+	// the box of an element, the bill of materials uses the box of the parts list
+	swInstructionsBoxStyle GetBoxStyle(swInstructionsBoxElement Element, swModel* Model, swStep Step) const;
+
+	// notices and pointers stay on their page through page layout changes
+	swInstructionsPageKey GetPageElementsKey(size_t PageIndex) const;
+
+	const std::vector<swInstructionsNotice>& GetNotices() const
+	{
+		return mNotices;
+	}
+
+	const swInstructionsNotice* FindNotice(int Id) const;
+	int AddNotice(size_t PageIndex, const QPointF& Position, const QString& Text);
+	void SetNoticeText(int Id, const QString& Text);
+	void RemoveNotice(int Id);
+
+	const std::vector<swInstructionsPointer>& GetPointers() const
+	{
+		return mPointers;
+	}
+
+	const swInstructionsPointer* FindPointer(int Id) const;
+	int AddPointer(size_t PageIndex, const swInstructionsElementKey& Source, const QPointF& TipPosition);
+	void SetPointerTarget(int Id, swInstructionsPointerTarget TargetType, const swInstructionsElementKey& TargetElement, int TargetPart, const QPointF& TipPosition);
+	void SetPointerAnchor(int Id, int Anchor);
+	void SetPointerStyle(int Id, int Style, int Tip);
+	void RemovePointer(int Id);
 
 	// a locked element keeps its position on the page whatever its placement and is not dragged
 	bool IsElementLocked(const swInstructionsElementKey& Key) const;
@@ -316,8 +486,11 @@ public:
 	std::map<swInstructionsElementKey, QPointF> mElementOffsets;
 	std::map<swInstructionsElementKey, QPointF> mLockedPositions;
 	std::multiset<swInstructionsStepKey> mBlankPages;
+	std::vector<swInstructionsNotice> mNotices;
+	std::vector<swInstructionsPointer> mPointers;
 	swInstructionsPageSetup mPageSetup;
 	swInstructionsProperties mStepProperties;
+	swInstructionsProperties mDefaultProperties;
 
 	std::map<swModel*, swInstructionsModel> mModels;
 
@@ -329,7 +502,11 @@ signals:
 	void UnitsChanged();
 
 protected:
+	static swInstructionsProperties CreateDefaultProperties();
 	void SetDefaultProperties();
+	void LoadCommandLines();
+	QStringList GetCommandLines() const;
+	void StoreCommandLines();
 	void CreatePages();
 	void AddDefaultPages(swModel* Model, std::vector<const swModel*>& AddedModels);
 	void AddBlankPages(swInstructionsPage& Page, const swInstructionsStepKey& Key);
@@ -349,6 +526,8 @@ protected:
 	bool mSnapToGrid = false;
 	bool mGridWithinMargins = true;
 	float mGridSize = 18.0f;
+	int mNextNoticeId = 1;
+	int mNextPointerId = 1;
 
 	static const float mDisplayDPI;
 
