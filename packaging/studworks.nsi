@@ -70,7 +70,6 @@ Section "Application Files" SecStudWorks
 
   ;Register file extension
   WriteRegStr HKCR ".lcd" "" "StudWorks.Project"
-  WriteRegStr HKCR ".lcd\ShellNew" "NullFile" ""
   WriteRegStr HKCR "StudWorks.Project" "" "StudWorks Project"
   WriteRegStr HKCR "StudWorks.Project\DefaultIcon" "" "$INSTDIR\StudWorks.exe,0"
   WriteRegStr HKCR "StudWorks.Project\shell" "" "open"

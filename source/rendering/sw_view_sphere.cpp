@@ -1,7 +1,7 @@
 #include "sw_global.h"
 #include "sw_view_sphere.h"
 #include "sw_view.h"
-#include "sw_camera.h"
+#include "sw_object_camera.h"
 #include "sw_context.h"
 #include "sw_string_cache.h"
 #include "sw_application.h"

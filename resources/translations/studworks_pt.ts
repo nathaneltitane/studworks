@@ -1953,13 +1953,13 @@
 <context>
     <name>Camera Projection</name>
     <message>
-        <location filename="../../source/core/sw_camera.cpp" line="64"/>
+        <location filename="../../source/core/sw_object_camera.cpp" line="64"/>
         <source>Perspective</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Perspetiva</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_camera.cpp" line="67"/>
+        <location filename="../../source/core/sw_object_camera.cpp" line="67"/>
         <source>Orthographic</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ortográfico</translation>
@@ -2127,25 +2127,25 @@
 <context>
     <name>Light Shapes</name>
     <message>
-        <location filename="../../source/core/sw_light.cpp" line="77"/>
+        <location filename="../../source/core/sw_object_light.cpp" line="77"/>
         <source>Rectangle</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Retângulo</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_light.cpp" line="80"/>
+        <location filename="../../source/core/sw_object_light.cpp" line="80"/>
         <source>Square</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Quadrado</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_light.cpp" line="83"/>
+        <location filename="../../source/core/sw_object_light.cpp" line="83"/>
         <source>Disk</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Disco</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_light.cpp" line="86"/>
+        <location filename="../../source/core/sw_object_light.cpp" line="86"/>
         <source>Ellipse</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Elipse</translation>
@@ -2154,7 +2154,7 @@
 <context>
     <name>Light Types</name>
     <message>
-        <location filename="../../source/core/sw_light.cpp" line="44"/>
+        <location filename="../../source/core/sw_object_light.cpp" line="44"/>
         <source>Point Light</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ponto de luz</translation>
@@ -2165,18 +2165,18 @@
         <translation type="obsolete">Luz pontual</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_light.cpp" line="47"/>
+        <location filename="../../source/core/sw_object_light.cpp" line="47"/>
         <source>Spotlight</source>
         <translation type="unfinished">Projector</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_light.cpp" line="50"/>
+        <location filename="../../source/core/sw_object_light.cpp" line="50"/>
         <source>Directional Light</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Luz Direcional</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_light.cpp" line="53"/>
+        <location filename="../../source/core/sw_object_light.cpp" line="53"/>
         <source>Area Light</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Luz de área</translation>
@@ -4566,13 +4566,13 @@ O formato do ficheiro não é reconhecido.</translation>
         <translation type="obsolete">Erro</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="3601"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="3601"/>
         <source>Existing file &apos;%1&apos; detected.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Detetado ficheiro existente &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="3602"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="3602"/>
         <source>&apos;%1&apos;&lt;br&gt;This file already exists.&lt;br&gt;Replace existing file?</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&apos;%1&apos;&lt;br&gt;Este ficheiro já existe.&lt;br&gt;Substituir ficheiro existente?</translation>
@@ -4684,1201 +4684,1201 @@ O formato do ficheiro não é reconhecido.</translation>
  seleção completa das definições complementares.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="83"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="148"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="83"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="148"/>
         <source>%1 can specify camera definitions within the LDraw data. Choose to load them or ignore them.</source>
         <oldsource>%1 can specify camera definitions within the ldraw data. Choose to load them or ignore them.</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 pode especificar definições da câmara nos dados ldraw. Escolha carregá-los ou ignorá-los.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="84"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="150"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="84"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="150"/>
         <source>%1 can specify point and sunlight definitions within the LDraw data. Choose to load them or ignore them.</source>
         <oldsource>%1 can specify point and sunlight definitions within the ldraw data. Choose to load them or ignore them.</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 pode especificar definições de ponto e luz solar nos dados ldraw. Escolha carregá-los ou ignorá-los.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="76"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="138"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="76"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="138"/>
         <source>Add Environment</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Adicionar ambiente</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="77"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="77"/>
         <source>Add Piece Gap</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Adicionar espaço entre peças</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="77"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="77"/>
         <source>Add a small space between each piece</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Adicione um pequeno espaço entre cada peça</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="96"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="179"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="96"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="179"/>
         <source>Add any archive (zip) libraries in the LDraw file path to the library search list - impacts performance</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Adicionar quaisquer bibliotecas de ficheiros (zip) no caminho do ficheiro LDraw à lista de pesquisa de bibliotecas - afeta o desempenho</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="78"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="78"/>
         <source>Adds a Bevel modifier for rounding off sharp edges</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Adiciona um modificador Bevel para arredondar arestas vivas</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="138"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="138"/>
         <source>Adds a ground plane and environment texture</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Adiciona um plano de solo e textura de ambiente</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="76"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="76"/>
         <source>Adds a ground plane and environment texture (affects &apos;Photo-realistic&apos; look only)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Adiciona um plano de solo e textura de ambiente (afeta apenas o aspeto &apos;foto-realista&apos;)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="159"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="159"/>
         <source>Adds a keyframe that shows the piece at the moment in the timeline</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Adiciona um fotograma-chave que mostra a peça no momento na linha do tempo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="107"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="107"/>
         <source>Amount of space between each piece (default 0.2mm)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Quantidade de espaço entre cada peça (padrão 0,2 mm)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="199"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="199"/>
         <source>Apply import scaling to mesh - Recommended for rendering, Apply import scaling to object - Recommended for piece editing</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Aplicar escala de importação à malha - Recomendado para renderização, Aplicar escala de importação ao objeto - Recomendado para edição de peças</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="153"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="153"/>
         <source>BFC</source>
         <translatorcomment>Technical identifier or nonlinguistic text; intentionally retained unchanged.</translatorcomment>
         <translation type="unfinished">BFC</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="78"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="139"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="78"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="139"/>
         <source>Bevel Edges</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Bordas chanfradas</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="183"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="183"/>
         <source>Bevel Segments</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Segmentos chanfrados</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="184"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="184"/>
         <source>Bevel Weight</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Peso chanfrado</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="104"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="185"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="104"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="185"/>
         <source>Bevel Width</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Largura do chanfro</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="139"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="139"/>
         <source>Bevel edges. Can cause some pieces to render incorrectly.</source>
         <oldsource>Bevel edges. Can cause some pieces to render incorrectly</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Bordas chanfradas. Pode fazer com que algumas peças sejam renderizadas incorretamente</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="183"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="183"/>
         <source>Bevel segments</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Segmentos chanfrados</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="184"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="184"/>
         <source>Bevel weight</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Peso chanfrado</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="61"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="61"/>
         <source>Blender Path</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender Caminho</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="62"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="62"/>
         <source>Blendfile Path</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Caminho do ficheiro de mistura</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="154"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="154"/>
         <source>CLEAR Command</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Comando LIMPAR</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="105"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="186"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="105"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="186"/>
         <source>Camera Border Percent</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Percentagem da borda da câmara</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="142"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="144"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="142"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="144"/>
         <source>Case-sensitive Filesystem</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Sistema de ficheiros com distinção entre maiúsculas e minúsculas</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="129"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="129"/>
         <source>Centered at Origin on Ground|Centered at Origin</source>
         <oldsource>Centered At Origin On Ground|Centered At Origin</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Centrado na Origem No Solo|Centrado na Origem</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="196"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="196"/>
         <source>Chosen Logo</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Logótipo escolhido</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="113"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="197"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="113"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="197"/>
         <source>Color Scheme</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Esquema de cores</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="113"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="197"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="113"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="197"/>
         <source>Color scheme options - Realistic (lgeo), Original (LDConfig), Alternate (LDCfgalt), Custom (User Defined)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Opções de esquema de cores - Realista (lgeo), Original (LDConfig), Alternativo (LDCfgalt), Personalizado (Definido pelo utilizador)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="160"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="160"/>
         <source>Create collection for individual steps</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Criar coleção para etapas individuais</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="85"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="85"/>
         <source>Creates a Blender Object for each and every stud (WARNING: can be slow to import and edit in Blender if there are lots of studs)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cria um objeto Blender para cada garanhão (AVISO: pode ser lento a importar e editar em Blender se houver muitos studs)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="80"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="146"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="80"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="146"/>
         <source>Crop Image</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cortar imagem</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="80"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="146"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="80"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="146"/>
         <source>Crop the image border at opaque content. Requires transparent background set to True.</source>
         <oldsource>Crop the image border at opaque content. Requires transparent background set to True</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Corte a margem da imagem no conteúdo opaco. Requer fundo transparente definido como True</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="81"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="81"/>
         <source>Curved Walls</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Paredes Curvas</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="64"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="64"/>
         <source>Custom LDConfig Path</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Caminho LDConfig personalizado</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="106"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="106"/>
         <source>Default Color</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Cor predefinida</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="147"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="147"/>
         <source>Display Logo</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Exibir logotipo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="95"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="171"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="95"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="171"/>
         <source>Display Render Window</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Exibir janela de renderização</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="147"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="147"/>
         <source>Display the logo on the stud</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Exibir o logótipo no pino</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="162"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="162"/>
         <source>Don&apos;t import studs</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Não importe pregos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="89"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="89"/>
         <source>Each object has a five-digit prefix, e.g., 00001_car. This keeps the list in its proper order.</source>
         <oldsource>Each object has a five digit prefix eg. 00001_car. This keeps the list in it&apos;s proper order</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cada objeto tem um prefixo de cinco dígitos, p. 00001_automóvel. Isto mantém a lista na ordem correta</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="63"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="63"/>
         <source>Environment Texture Path</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Caminho de textura do ambiente</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="144"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="144"/>
         <source>Filesystem case sensitivity defaults to false on Windows and macOS. Set to true if the LDraw path is case-sensitive on a case-insensitive filesystem.</source>
         <oldsource>Filesystem case sensitive defaults to false Windows and MacOS. Set true if LDraw path set to case-sensitive on case-insensitive filesystem.</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Os padrões de distinção entre maiúsculas e minúsculas do sistema de ficheiros são falsos Windows e MacOS. Defina como verdadeiro se o caminho LDraw estiver definido como sensível a maiúsculas e minúsculas no sistema de ficheiros que não distingue maiúsculas de minúsculas.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="142"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="142"/>
         <source>Filesystem is case sensitive. Defaults to true on Linux.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">O sistema de ficheiros diferencia maiúsculas de minúsculas. O padrão é verdadeiro no Linux.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="82"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="82"/>
         <source>Flatten Hierarchy</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Achatar hierarquia</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="114"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="114"/>
         <source>Flex Pieces Source</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Fonte de peças flexíveis</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="194"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="194"/>
         <source>Frame to add the first STEP meta command</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Quadro para adicionar o primeiro metacomando STEP</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="187"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="187"/>
         <source>Frames per Step</source>
         <oldsource>Frames Per Step</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Quadros por etapa</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="187"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="187"/>
         <source>Frames per step</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Quadros por etapa</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="66"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="66"/>
         <source>Full directory path to LSynth primitives - specify if not using default bundled in add-on</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Caminho completo do diretório para as primitivas LSynth - especifique se não estiver a utilizar o pacote padrão no add-on</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="67"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="67"/>
         <source>Full directory path to stud logo primitives - if stud logo enabled, specify if unofficial pieces not used or not using default bundled in add-on</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Caminho completo do diretório para as primitivas do logótipo do Stud - se o logótipo do Stud estiver ativado, especifique se as peças não oficiais não são utilizadas ou não utilizam o pacote padrão no complemento</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="65"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="65"/>
         <source>Full directory path to the LDraw pieces library (download from https://library.ldraw.org)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Caminho completo do diretório para a biblioteca de peças do LDraw (download em https://library.ldraw.org)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="63"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="63"/>
         <source>Full file path to .exr environment texture file - specify if not using default bundled in add-on</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Caminho completo do ficheiro para o ficheiro de textura do ambiente . exr - especifique se não estiver a utilizar o pacote padrão no add-on</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="61"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="61"/>
         <source>Full file path to Blender application executable</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Caminho completo do ficheiro executável da aplicação Blender</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="62"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="62"/>
         <source>Full file path to a supplement .blend file - specify to append additional settings</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Caminho completo do ficheiro para um ficheiro . blnd complementar - especifique para anexar definições adicionais</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="64"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="64"/>
         <source>Full file path to custom LDConfig file - specify if not %1 alternate LDConfig file</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Caminho completo do ficheiro LDConfig personalizado - especifique, se não, %1 ficheiro LDConfig alternativo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="69"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="69"/>
         <source>Full file path to the Stud.io LDraw Custom Pieces</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Caminho completo do ficheiro para Stud.io LDraw Custom Pieces</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="68"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="68"/>
         <source>Full file path to the Stud.io LDraw Pieces Library (download from https://www.bricklink.com/v3/studio/download.page)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Caminho completo do ficheiro para a biblioteca de peças Stud.io LDraw (download em https://www.bricklink.com/v3/studio/download.page)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="155"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="155"/>
         <source>GROUP Command</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Comando GRUPO</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="188"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="188"/>
         <source>Gap Scale</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escala de lacuna</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="107"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="107"/>
         <source>Gap Width</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Largura da folga</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="154"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="154"/>
         <source>Hides all pieces in the timeline up to where this command is encountered</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Oculta todas as partes da linha de tempo até onde este comando se encontra</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="199"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="199"/>
         <source>How to Scale Pieces</source>
         <oldsource>How To Scale Pieces</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Como dimensionar peças</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="87"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="87"/>
         <source>Identical pieces (of the same type and color) share the same mesh</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Peças idênticas (do mesmo tipo e cor) partilham a mesma malha</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="109"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="193"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="109"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="193"/>
         <source>Image Height</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Altura da imagem</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="110"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="110"/>
         <source>Image Scale</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escala de imagem</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="108"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="192"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="108"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="192"/>
         <source>Image Width</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Largura da imagem</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="83"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="148"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="83"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="148"/>
         <source>Import Cameras</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Importar câmaras</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="149"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="149"/>
         <source>Import Edges</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Importar bordas</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="149"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="149"/>
         <source>Import LDraw edges as edges</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Importar arestas LDraw como arestas</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="84"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="150"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="84"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="150"/>
         <source>Import Lights</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Importar Luzes</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="189"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="189"/>
         <source>Import Scale</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escala de importação</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="82"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="82"/>
         <source>In Scene Outline, all pieces are placed directly below the root - there&apos;s no tree of submodels</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">No Scene Outline, todas as peças são colocadas diretamente abaixo da raiz - não existe árvore de submodelos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="85"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="85"/>
         <source>Instance Studs</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Pregos de instância</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="86"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="151"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="86"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="151"/>
         <source>Keep Aspect Ratio</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Mantenha a proporção</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="65"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="65"/>
         <source>LDraw Directory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">LDraw Diretório</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="66"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="66"/>
         <source>LSynth Directory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">LSynth Diretório</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="126"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="126"/>
         <source>LSynth|LDCad|LDCad and LSynth</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">LSynth|LDCad|LDCad e LSynth</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="87"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="87"/>
         <source>Link Like Pieces</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ligar peças semelhantes</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="115"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="115"/>
         <source>Logo Version</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Versão do logótipo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="116"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="116"/>
         <source>Look</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Olhar</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="208"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="208"/>
         <source>Low Resolution Primitives|Standard Primitives|High Resolution Primitives</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Primitivos de baixa resolução|Primitivos standard|Primitivos de alta resolução</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="86"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="151"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="86"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="151"/>
         <source>Maintain the aspect ratio when resizing the output image - this attribute is not passed to Blender</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Manter a proporção ao redimensionar a imagem de saída - este atributo não é passado para Blender</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="152"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="152"/>
         <source>Make Gaps</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Faça lacunas</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="152"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="152"/>
         <source>Make small gaps between bricks. A small gap is more realistic.</source>
         <oldsource>Make small gaps between bricks. A small gap is more realistic</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Faça pequenos espaços entre os tijolos. Uma pequena lacuna é mais realista</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="81"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="81"/>
         <source>Makes surfaces look slightly concave, for interesting reflections</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Faz com que as superfícies pareçam ligeiramente côncavas, para reflexos interessantes</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="190"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="190"/>
         <source>Maximum distance between elements to merge</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Distância máxima entre elementos a fundir</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="190"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="190"/>
         <source>Merge Distance</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Mesclar distância</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="170"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="170"/>
         <source>Merge vertices that are within a certain distance.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Mesclar vértices que se encontram dentro de uma certa distância.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="94"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="170"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="94"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="170"/>
         <source>No Duplicate Vertices</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Sem vértices duplicados</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="162"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="162"/>
         <source>No Studs</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Sem pregos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="156"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="158"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="156"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="158"/>
         <source>Not implemented</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Não implementado</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="89"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="89"/>
         <source>Number Objects</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Objetos numéricos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="102"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="181"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="102"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="181"/>
         <source>Output all messages while working, else only show warnings and errors</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Envie todas as mensagens durante o trabalho, caso contrário, mostre apenas avisos e erros</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="90"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="163"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="90"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="163"/>
         <source>Overwrite Image</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Substituir imagem</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="91"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="91"/>
         <source>Overwrite existing material with the same name</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Substituir material existente com o mesmo nome</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="92"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="92"/>
         <source>Overwrite existing mesh with the same name</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Substituir a malha existente com o mesmo nome</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="156"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="156"/>
         <source>PAUSE Command</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Comando PAUSAR</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="157"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="157"/>
         <source>PRINT/WRITE Command</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Comando IMPRIMIR/ESCREVER</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="88"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="88"/>
         <source>Parent Minifigs</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Minifiguras pais</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="165"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="165"/>
         <source>Parent to Empty</source>
         <oldsource>Parent To Empty</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Pai para esvaziar</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="165"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="165"/>
         <source>Parent the model to an empty</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Pai do modelo para um vazio</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="128"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="128"/>
         <source>Photorealistic|LEGO® Instructions</source>
         <oldsource>Photo Realistic|Lego Instructions</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Foto realista|Lego Instruções</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="116"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="116"/>
         <source>Photorealistic or schematic instruction look</source>
         <oldsource>Photo-realistic or Schematic &apos;Instruction&apos; look</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Aparência fotorrealista ou esquemática de &apos;instrução&apos;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="88"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="88"/>
         <source>Pieces of minifigs are automatically parented to each other in a hierarchy</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Pedaços de minifigs são automaticamente criados entre si numa hierarquia</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="93"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="164"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="93"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="164"/>
         <source>Position Camera</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Posição da câmara</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="117"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="117"/>
         <source>Position Object</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Posição do objeto</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="93"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="164"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="93"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="164"/>
         <source>Position the camera to show the whole model</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Posicione a câmara para mostrar todo o modelo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="166"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="166"/>
         <source>Prefer Stud.io Library</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Prefira a Biblioteca Stud.io</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="167"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="167"/>
         <source>Prefer Unofficial Pieces</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Prefira peças não oficiais</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="157"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="157"/>
         <source>Prints PRINT/WRITE META commands to the system console.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Imprime os comandos PRINT/WRITE META na consola do sistema.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="155"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="155"/>
         <source>Process GROUP meta commands</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Processar metacomandos GROUP</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="153"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="153"/>
         <source>Process LDraw Back Face Culling meta commands</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Processar metacomandos LDraw Back Face Culling</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="161"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="161"/>
         <source>Process TEXMAP and DATA meta commands</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Processar metacomandos TEXMAP e DATA</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="168"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="168"/>
         <source>Profile</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Perfil</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="168"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="168"/>
         <source>Profile import performance</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Desempenho de importação de perfis</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="206"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="206"/>
         <source>Raised flattened logo geometry (3)|Raised rounded logo geometry (4)|Subtle rounded logo geometry (5)</source>
         <oldsource>Raised flattened logo geometry(3)|Raised rounded logo geometry(4)|Subtle rounded logo geometry(5)</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Geometria de logótipo achatada em relevo(3)|Geometria de logótipo arredondada em relevo(4)|Geometria de logótipo arredondada subtil(5)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="125"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="207"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="125"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="207"/>
         <source>Realistic Colors|Original LDraw Colors|Alternate LDraw Colors|Custom Colors</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cores realistas|Original LDraw Cores|Alternativas LDraw Cores|Cores personalizadas</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="169"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="169"/>
         <source>Recalculate Normals</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Recalcular normais</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="131"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="131"/>
         <source>Recalculate Normals|Two Faces Back to Back</source>
         <oldsource>Recalculate Normals|Two Faces Back To Back</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Recalcular normais|Duas faces consecutivas</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="169"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="169"/>
         <source>Recalculate normals. Not recommended if BFC processing is active.</source>
         <oldsource>Recalculate normals. Not recommended if BFC processing is active</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Recalcular normais. Não recomendado se o processamento BFC estiver ativo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="94"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="94"/>
         <source>Remove duplicate vertices (recommended)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Remover vértices duplicados (recomendado)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="180"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="180"/>
         <source>Render LDraw edges using freestyle</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Renderizar arestas LDraw utilizando estilo livre</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="111"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="191"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="111"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="191"/>
         <source>Render Percentage</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Percentagem de renderização</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="48"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="48"/>
         <source>&lt;p&gt;&lt;b&gt;Blender LDraw Add-on Settings&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Configure Blender and its LDraw import and render add-ons. Choose the Blender executable first. Editing its path or changing an import module can configure the add-on immediately.&lt;/p&gt;&lt;p&gt;Choose an import module, then adjust its library paths and rendering options. TN and MM have separate settings. Use the scroll bar to reach all options; Show Paths and Hide Paths control the paths section.&lt;/p&gt;&lt;p&gt;Image dimensions and render percentage start with the values from the Render dialog. Crop Image calculates dimensions for the current model. Choose Apply to save the paths and settings and close this dialog. Reset restores the last applied values or system defaults.&lt;/p&gt;&lt;p&gt;Cancel closes without applying pending path and setting edits. Add-on installation, module configuration, and the update-check preference can take effect before Apply.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Configurações do complemento LDraw do Blender&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Configure o Blender e seus complementos de importação e renderização do LDraw. Escolha primeiro o executável do Blender. Editar seu caminho ou alterar um módulo de importação pode configurar o complemento imediatamente.&lt;/p&gt;&lt;p&gt;Escolha um módulo de importação e ajuste os caminhos da biblioteca e as opções de renderização. TN e MM possuem configurações separadas. Use a barra de rolagem para acessar todas as opções; Mostrar caminhos e Ocultar caminhos controlam a seção de caminhos.&lt;/p&gt;&lt;p&gt;As dimensões da imagem e a porcentagem de renderização começam com os valores da caixa de diálogo Renderizar. Cortar imagem calcula as dimensões do modelo atual. Escolha Aplicar para salvar os caminhos e configurações e fechar esta caixa de diálogo. A redefinição restaura os últimos valores aplicados ou padrões do sistema.&lt;/p&gt;&lt;p&gt;Cancelar fecha o diálogo sem aplicar as alterações pendentes aos caminhos e às configurações. A instalação do complemento, a configuração do módulo e a preferência de verificação de atualização podem entrar em vigor antes da aplicação.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="118"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="198"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="118"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="198"/>
         <source>Resolution</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Resolução</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="118"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="198"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="118"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="198"/>
         <source>Resolution of piece primitives, i.e., how much geometry they have</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Resolução das primitivas das peças, ou seja, quanta geometria têm</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="119"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="119"/>
         <source>Resolve Normals</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Resolver normais</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="127"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="127"/>
         <source>Rounded (4)|Flattened (3)|Subtle Rounded (5)</source>
         <oldsource>Rounded(4)|Flattened(3)|Subtle Rounded(5)</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Arredondado(4)|Achatado(3)|Arredondado Subtil(5)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="158"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="158"/>
         <source>SAVE Command</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Comando SALVAR</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="159"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="159"/>
         <source>STEP Command</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Comando PASSO</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="160"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="160"/>
         <source>STEP Groups</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Grupos ETAPA</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="209"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="209"/>
         <source>Scale Mesh|Scale Object</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escala de malha|Objeto de escala</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="188"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="188"/>
         <source>Scale individual pieces by this much to create the gap</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Dimensione as peças individuais neste valor para criar a lacuna</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="97"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="172"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="97"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="172"/>
         <source>Search Additional Paths</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Pesquisar caminhos adicionais</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="166"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="166"/>
         <source>Search for pieces in Stud.io library first</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Procure peças na biblioteca Stud.io primeiro</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="167"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="167"/>
         <source>Search for unofficial pieces first</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Procure primeiro peças não oficiais</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="173"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="173"/>
         <source>Set Step End Frame</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Definir quadro final da etapa</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="174"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="174"/>
         <source>Set Timeline Markers</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Definir marcadores de linha do tempo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="173"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="173"/>
         <source>Set the end frame to the last step</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Defina o quadro final para a última etapa</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="174"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="174"/>
         <source>Set timeline markers for meta commands</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Definir marcadores de linha de tempo para metacomandos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="110"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="110"/>
         <source>Sets a scale for the model (1.0 = real life scale)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Define uma escala para o modelo (1,0 = escala da vida real)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="106"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="106"/>
         <source>Sets the default piece color using LDraw color code</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Define a cor padrão da peça utilizando o código de cores LDraw</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="109"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="193"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="109"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="193"/>
         <source>Sets the rendered image height in pixels - from current step image, label shows config setting.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Define a altura da imagem renderizada em pixéis - a partir da imagem do passo atual, o rótulo mostra a definição.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="111"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="191"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="111"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="191"/>
         <source>Sets the rendered image percentage scale for its pixel resolution - updated from current step, label shows config setting.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Define a escala percentual da imagem renderizada para a sua resolução de pixéis - atualizada a partir do passo atual, o rótulo mostra a configuração.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="108"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="192"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="108"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="192"/>
         <source>Sets the rendered image width in pixels - from current step image, label shows config setting.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Define a largura da imagem renderizada em pixéis - a partir da imagem do passo atual, o rótulo mostra a configuração.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="175"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="175"/>
         <source>Shade Smooth</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Sombra Suave</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="101"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="101"/>
         <source>Shows the LEGO® logo on each stud (at the expense of some extra geometry and import time)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Mostra o logótipo LEGO® em cada pino (à custa de alguma geometria extra e tempo de importação)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="98"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="98"/>
         <source>Smooth Shading</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Sombreamento Suave</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="200"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="200"/>
         <source>Smooth Type</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Tipo Suave</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="98"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="98"/>
         <source>Smooth faces and add an edge-split modifier (recommended)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Suavize faces e adicione um modificador de divisão de arestas (recomendado)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="210"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="210"/>
         <source>Smooth piece faces with edge split modifier|Auto-smooth piece faces|Split during initial mesh processing</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Faces de peça suaves com modificador de divisão de arestas|Faces de peça suavizadas automaticamente|Divisão durante o processamento inicial da malha</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="119"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="119"/>
         <source>Some older LDraw pieces have faces with ambiguous normals. This specifies what to do with them.</source>
         <oldsource>Some older LDraw pieces have faces with ambiguous normals, this specifies what to do with them</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Algumas peças LDraw mais antigas têm faces com normais ambíguas, isto especifica o que fazer com elas</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="114"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="114"/>
         <source>Source used to create flexible pieces - string, hoses, etc. (LDCad, LSynth, or both)</source>
         <oldsource>Source used to create flexible pieces - string, hoses etc. (LDCad, LSynth or both</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Fonte utilizada para criar peças flexíveis - cordas, mangueiras etc. (LDCad, LSynth ou ambos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="95"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="171"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="95"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="171"/>
         <source>Specify whether to display the render window during Blender user interface image file render</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Especifique se pretende visualizar a janela de renderização durante a renderização do ficheiro de imagem da interface do utilizador Blender</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="90"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="163"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="90"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="163"/>
         <source>Specify whether to overwrite an existing rendered image file</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Especifique se pretende substituir um ficheiro de imagem renderizada existente</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="176"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="176"/>
         <source>Specify whether to render a background</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Especifique se pretende renderizar um fundo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="99"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="99"/>
         <source>Specify whether to render a background (affects the photorealistic look only)</source>
         <oldsource>Specify whether to render a background (affects &apos;Photo-realistic look only)</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Especifique se pretende renderizar um fundo (afeta apenas a aparência fotorrealista)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="97"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="172"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="97"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="172"/>
         <source>Specify whether to search additional LDraw paths</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Especifique se pretende pesquisar caminhos LDraw adicionais</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="79"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="140"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="79"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="140"/>
         <source>Specify whether to treat the .blend file as being loaded from a trusted source</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Especifique se pretende tratar o ficheiro . blend como sendo carregado a partir de uma fonte fidedigna</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="100"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="100"/>
         <source>Specify whether to use pieces from the LDraw unofficial pieces library path</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Especifique se pretende utilizar peças do caminho da biblioteca de peças não oficial LDraw</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="177"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="177"/>
         <source>Split shortcut pieces into their constituent pieces as if they were models</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Divida as peças de atalho nas suas peças constituintes, como se fossem modelos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="130"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="130"/>
         <source>Standard Primitives|High Resolution Primitives|Low Resolution Primitives</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Primitivos standard|Primitivos de alta resolução|Primitivos de baixa resolução</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="194"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="194"/>
         <source>Starting Step Frame</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Quadro de etapas iniciais</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="67"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="67"/>
         <source>Stud Logo Directory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Diretório de logótipos de Stud</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="69"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="69"/>
         <source>Stud.io Custom Pieces Path</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Caminho de peças personalizadas Stud.io</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="68"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="68"/>
         <source>Stud.io LDraw Path</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Stud.io LDraw Caminho</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="161"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="161"/>
         <source>TEXMAP and DATA Command</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">TEXMAP e comando DADOS</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="117"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="117"/>
         <source>The object is centered at the origin, and on the ground plane</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">O objeto está centrado na origem e no plano terrestre</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="99"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="176"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="99"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="176"/>
         <source>Transparent Background</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Fundo Transparente</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="177"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="177"/>
         <source>Treat Shortcuts as Models</source>
         <oldsource>Treat Shortcuts As Models</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Trate os atalhos como modelos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="178"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="178"/>
         <source>Triangulate Faces</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Triangular rostos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="178"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="178"/>
         <source>Triangulate all faces</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Triangular todas as faces</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="79"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="140"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="79"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="140"/>
         <source>Trusted Blend File</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Arquivo de mistura fiável</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="96"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="179"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="96"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="179"/>
         <source>Use Archive Libraries</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Utilizar bibliotecas de arquivo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="91"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="91"/>
         <source>Use Existing Material</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Utilize material existente</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="92"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="92"/>
         <source>Use Existing Mesh</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Usar malha existente</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="180"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="180"/>
         <source>Use Freestyle Edges</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Use bordas de estilo livre</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="101"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="101"/>
         <source>Use Logo Studs</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Use pregos de logotipo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="100"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="100"/>
         <source>Use Unofficial Pieces</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Use peças não oficiais</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="200"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="200"/>
         <source>Use either autosmooth or an edge split modifier to smooth piece faces</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Utilize a suavização automática ou um modificador de divisão de arestas para suavizar as faces das peças</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="175"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="175"/>
         <source>Use flat or smooth shading for piece faces</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Utilize sombreado plano ou suave para faces de peças</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="102"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="181"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="102"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="181"/>
         <source>Verbose Output</source>
         <oldsource>Verbose output</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Saída detalhada</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="189"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="189"/>
         <source>What scale to import at. Full scale is 1.0 and is so huge that it is unwieldy in the viewport.</source>
         <oldsource>What scale to import at. Full scale is 1.0 and is so huge that it is unwieldy in the viewport</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">A que escala importar. A escala completa é 1,0 e é tão grande que é difícil de gerir na janela de visualização</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="186"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="186"/>
         <source>When positioning the camera, include a (percentage) border around the model in the render</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ao posicionar a câmara, inclua uma borda (percentagem) à volta do modelo na renderização</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="105"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="105"/>
         <source>When positioning the camera, include a (percentage) border leeway around the model in the rendered image</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ao posicionar a câmara, inclua uma margem de margem (percentagem) em torno do modelo na imagem renderizada</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="196"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="196"/>
         <source>Which logo to display. logo and logo2 aren&apos;t used and are only included for completeness.</source>
         <oldsource>Which logo to display. logo and logo2 aren&apos;t used and are only included for completeness</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Qual o logotipo a exibir. logo e logo2 não são utilizados e são incluídos apenas para fins de integridade</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="115"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="115"/>
         <source>Which version of the logo to use (&apos;3&apos; (flat), &apos;4&apos; (rounded) or &apos;5&apos; (subtle rounded))</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Qual a versão do logótipo a utilizar (&apos;3&apos; (plano), &apos;4&apos; (arredondado) ou &apos;5&apos; (arredondado subtil))</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="104"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="185"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="104"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="185"/>
         <source>Width of the beveled edges</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Largura das arestas chanfradas</translation>
@@ -5889,21 +5889,21 @@ O formato do ficheiro não é reconhecido.</translation>
         <translation type="obsolete">Erro</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_utilities.cpp" line="409"/>
-        <location filename="../../source/interface/window/sw_utilities.cpp" line="415"/>
-        <location filename="../../source/interface/window/sw_utilities.cpp" line="433"/>
+        <location filename="../../source/interface/window/sw_window_utilities.cpp" line="409"/>
+        <location filename="../../source/interface/window/sw_window_utilities.cpp" line="415"/>
+        <location filename="../../source/interface/window/sw_window_utilities.cpp" line="433"/>
         <source>Stop Blender Process</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Parar o processo do Blender</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_utilities.cpp" line="433"/>
+        <location filename="../../source/interface/window/sw_window_utilities.cpp" line="433"/>
         <source>%1 failed: %2</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 falhou: %2</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="88"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="88"/>
         <source>Create Pieces List</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Criar lista de peças</translation>
@@ -7795,18 +7795,18 @@ O formato do ficheiro não é reconhecido.</translation>
         <translation type="obsolete">&lt;p&gt;&lt;b&gt;Sobre o StudWorks&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Veja a versão do StudWorks e informações do sistema. Os detalhes do Qt e do OpenGL podem ajudar a diagnosticar problemas de exibição. Selecione o texto em Informações do sistema para copiá-lo ao relatar um problema. O link do site é aberto no seu navegador.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_about_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_about.ui"/>
         <source>About StudWorks</source>
         <translation>Sobre StudWorks</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_about_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_about.ui"/>
         <source>StudWorks version running on this computer.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Versão StudWorks em execução neste computador.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_about_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_about.ui"/>
         <source>StudWorks Version 0.00.0</source>
         <translation>StudWorks Versão 0.00.0</translation>
     </message>
@@ -7820,29 +7820,29 @@ O formato do ficheiro não é reconhecido.</translation>
         <translation type="obsolete">Abra o site StudWorks em seu navegador.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_about_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_about.ui"/>
         <source>System Information</source>
         <translation>Informações do Sistema</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_about_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_about.ui"/>
         <source>Select and copy system information for a problem report.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione e copie as informações do sistema para um relatório de problemas.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_about_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_about.ui"/>
         <source>&lt;p&gt;&lt;b&gt;System Information&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Shows the Qt runtime and build versions, graphics driver and renderer, OpenGL and shader versions, buffer sizes, and supported graphics features. Select the text and copy it with the standard keyboard shortcut to include it in a problem report.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Informações do sistema&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Mostra o tempo de execução e versões de compilação do Qt, driver e renderizador gráfico, versões de OpenGL e shader, tamanhos de buffer e recursos gráficos suportados. Selecione o texto e copie-o com o atalho de teclado padrão para incluí-lo em um relatório de problema.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_about_dialog.cpp" line="19"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_about.cpp" line="19"/>
         <source>StudWorks Version %1</source>
         <translation>StudWorks Versão %1</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_about_dialog.cpp" line="32"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_about.cpp" line="32"/>
         <source>OpenGL Version %1 (GLSL %2)
 %3 - %4
 
@@ -7873,13 +7873,13 @@ Tampão de Desenho: %5 bits
         <translation type="vanished">tampão duplo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_about_dialog.cpp" line="17"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_about.cpp" line="17"/>
         <source>StudWorks Continuous Build %1</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">StudWorks Compilação Contínua %1</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_about_dialog.cpp" line="29"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_about.cpp" line="29"/>
         <source>Qt Version %1 (compiled with %2)
 
 </source>
@@ -7887,7 +7887,7 @@ Tampão de Desenho: %5 bits
         <translation type="unfinished">Versão Qt %1 (compilado com %2)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_about_dialog.cpp" line="38"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_about.cpp" line="38"/>
         <source>Color Buffer: %1 bits
 Depth Buffer: %2 bits
 Stencil Buffer: %3 bits
@@ -7899,7 +7899,7 @@ Buffer de profundidade: %2 bits
 Buffer de stencil: %3 bits</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_about_dialog.cpp" line="41"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_about.cpp" line="41"/>
         <source>Buffers: %1
 Framebuffers: %2
 BlendFuncSeparate: %3
@@ -7912,38 +7912,38 @@ BlendFuncSeparate: %3
 Anisotrópico: %4</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_about_dialog.cpp" line="42"/>
-        <location filename="../../source/interface/dialogs/sw_about_dialog.cpp" line="43"/>
-        <location filename="../../source/interface/dialogs/sw_about_dialog.cpp" line="44"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_about.cpp" line="42"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_about.cpp" line="43"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_about.cpp" line="44"/>
         <source>Supported</source>
         <translation>Aceite</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_about_dialog.cpp" line="42"/>
-        <location filename="../../source/interface/dialogs/sw_about_dialog.cpp" line="43"/>
-        <location filename="../../source/interface/dialogs/sw_about_dialog.cpp" line="44"/>
-        <location filename="../../source/interface/dialogs/sw_about_dialog.cpp" line="45"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_about.cpp" line="42"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_about.cpp" line="43"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_about.cpp" line="44"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_about.cpp" line="45"/>
         <source>Not supported</source>
         <translation>Recusado</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_about_dialog.cpp" line="45"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_about.cpp" line="45"/>
         <source>Supported (max %1)</source>
         <translation>Aceite (máximo %1)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_about_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_about.ui"/>
         <source>&lt;p&gt;&lt;b&gt;About StudWorks&lt;/b&gt;&lt;/p&gt;&lt;p&gt;View the StudWorks version and system information. The Qt and OpenGL details can help diagnose display problems. Select text in System Information to copy it when reporting a problem. The project page link opens in your browser.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_about_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_about.ui"/>
         <source>StudWorks is a free CAD program for creating virtual LEGO® models with the LDraw parts library.
 It is built on LeoCAD by Leonardo Zide and released under the GNU General Public License version 2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_about_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_about.ui"/>
         <source>Open the StudWorks project page in your browser.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8549,308 +8549,308 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
 <context>
     <name>swArrayDialog</name>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Array&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Create repeated copies of the selected pieces using up to three array dimensions. Each row defines a count, an offset, and a rotation increment.&lt;/p&gt;&lt;p&gt;Counts include the original selection. For example, counts of 3, 2, and 1 create five new copies of each selected piece. Set an offset or rotation to keep copies from overlapping.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Array&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Crie cópias repetidas das peças selecionadas usando até três dimensões de array. Cada linha define uma contagem, um deslocamento e um incremento de rotação.&lt;/p&gt;&lt;p&gt;As contagens incluem a seleção original. Por exemplo, contagens de 3, 2 e 1 criam cinco novas cópias de cada peça selecionada. Defina um deslocamento ou rotação para evitar a sobreposição de cópias.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Array</source>
         <translation>Quadro</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Dimensions&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Each row controls one array dimension, with a count from 1 to 1000. The product of the three counts includes the original selection. A count of 1 adds no copies along that dimension.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Dimensões&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Cada linha controla uma dimensão da matriz, com uma contagem de 1 a 1.000. O produto das três contagens inclui a seleção original. Uma contagem de 1 não adiciona nenhuma cópia nessa dimensão.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Dimensions</source>
         <translation>Dimensões</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Number of positions in dimension 3, including the original.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Número de posições na dimensão 3, incluindo o original.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Dimension 3 count</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Contagem da dimensão 3</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Number of positions in dimension 1, including the original.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Número de posições na dimensão 1, incluindo o original.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Dimension 1 count</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Contagem da dimensão 1</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Number of positions in dimension 2, including the original.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Número de posições na dimensão 2, incluindo o original.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Dimension 2 count</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Contagem da dimensão 2</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Offsets&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Each row sets the X, Y, and Z displacement per step in the corresponding array dimension. Values use the model axes and LDraw units; 20 units equal one stud width. Negative values reverse the direction.&lt;/p&gt;&lt;p&gt;For a straight row spaced one stud apart along X, use a count greater than 1 and an X offset of 20 in the same row.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Deslocamentos&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Cada linha define o deslocamento X, Y e Z por etapa na dimensão da matriz correspondente. Os valores usam os eixos do modelo e as unidades do LDraw; 20 unidades equivalem à largura de um pino. Valores negativos invertem a direção.&lt;/p&gt;&lt;p&gt;Para uma linha reta espaçada por uma viga ao longo de X, use uma contagem maior que 1 e um deslocamento X de 20 na mesma linha.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Offsets</source>
         <translation>Espaços</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Y offset per step in dimension 1, in LDraw units.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Deslocamento Y por etapa na dimensão 1, em unidades LDraw.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Dimension 1 Y offset</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Dimensão 1 deslocamento Y</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>X offset per step in dimension 2, in LDraw units.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Deslocamento X por etapa na dimensão 2, em unidades LDraw.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Dimension 2 X offset</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Dimensão 2 X deslocamento</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>X offset per step in dimension 1, in LDraw units.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Deslocamento X por etapa na dimensão 1, em unidades LDraw.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Dimension 1 X offset</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Dimensão 1 X deslocamento</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>X offset per step in dimension 3, in LDraw units.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Deslocamento X por etapa na dimensão 3, em unidades LDraw.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Dimension 3 X offset</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Dimensão 3 X deslocamento</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Z offset per step in dimension 1, in LDraw units.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Deslocamento Z por etapa na dimensão 1, em unidades LDraw.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Dimension 1 Z offset</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Dimensão 1 Deslocamento Z</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Y offset per step in dimension 2, in LDraw units.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Deslocamento Y por etapa na dimensão 2, em unidades LDraw.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Dimension 2 Y offset</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Dimensão 2 Deslocamento Y</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Y offset per step in dimension 3, in LDraw units.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Deslocamento Y por etapa na dimensão 3, em unidades LDraw.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Dimension 3 Y offset</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Dimensão 3 deslocamento Y</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Z offset per step in dimension 2, in LDraw units.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Deslocamento Z por etapa na dimensão 2, em unidades LDraw.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Dimension 2 Z offset</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Dimensão 2 Deslocamento Z</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Z offset per step in dimension 3, in LDraw units.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Deslocamento Z por etapa na dimensão 3, em unidades LDraw.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Dimension 3 Z offset</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Dimensão 3 deslocamento Z</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Rotations&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Each row sets the rotation increment around the X, Y, and Z model axes, in degrees, for its array dimension. Rotations from all three dimensions are added, then applied in X, Y, Z order before the offset.&lt;/p&gt;&lt;p&gt;Copies rotate around the focused piece origin, or the selection center when no piece has focus. Negative values reverse the rotation.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Rotações&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Cada linha define o incremento de rotação em torno dos eixos do modelo X, Y e Z, em graus, para sua dimensão de matriz. As rotações de todas as três dimensões são adicionadas e aplicadas na ordem X, Y, Z antes do deslocamento.&lt;/p&gt;&lt;p&gt;As cópias giram em torno da origem da peça em foco ou do centro de seleção quando nenhuma peça está em foco. Valores negativos invertem a rotação.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Rotations</source>
         <translation>Rotações</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Z rotation per step in dimension 3, in degrees.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Rotação Z por etapa na dimensão 3, em graus.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Dimension 3 Z rotation</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Dimensão 3 rotação Z</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>X rotation per step in dimension 3, in degrees.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Rotação X por etapa na dimensão 3, em graus.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Dimension 3 X rotation</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Dimensão 3 X rotação</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>X rotation per step in dimension 1, in degrees.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Rotação X por etapa na dimensão 1, em graus.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Dimension 1 X rotation</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Dimensão 1 X rotação</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Z rotation per step in dimension 2, in degrees.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Rotação Z por etapa na dimensão 2, em graus.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Dimension 2 Z rotation</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Dimensão 2 rotação Z</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Z rotation per step in dimension 1, in degrees.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Rotação Z por etapa na dimensão 1, em graus.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Dimension 1 Z rotation</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Dimensão 1 rotação Z</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>X rotation per step in dimension 2, in degrees.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Rotação X por etapa na dimensão 2, em graus.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Dimension 2 X rotation</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Dimensão 2 X rotação</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Y rotation per step in dimension 1, in degrees.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Rotação Y por etapa na dimensão 1, em graus.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Dimension 1 Y rotation</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Dimensão 1 rotação Y</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Y rotation per step in dimension 2, in degrees.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Rotação Y por etapa na dimensão 2, em graus.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Dimension 2 Y rotation</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Dimensão 2 rotação Y</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Y rotation per step in dimension 3, in degrees.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Rotação Y por etapa na dimensão 3, em graus.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
         <source>Dimension 3 Y rotation</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Dimensão 3 rotação Y</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.cpp" line="75"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.cpp" line="75"/>
         <source>Array is empty.</source>
         <translation>O quadro está vazio.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_array_dialog.cpp" line="103"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_array.cpp" line="103"/>
         <source>Please enter a valid value for &apos;%1&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8873,19 +8873,19 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
 <context>
     <name>swAutomateEdgeColorDialog</name>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="21"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="21"/>
         <source>Color Preferences</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Preferências de cores</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="27"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="27"/>
         <source>Edge Colors</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cores das bordas</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="38"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="38"/>
         <source>Contrast:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Contraste:</translation>
@@ -8896,23 +8896,23 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Defina a quantidade de contraste - 0,50 é metade.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="52"/>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="81"/>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="116"/>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="134"/>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="152"/>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="170"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="52"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="81"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="116"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="134"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="152"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="170"/>
         <source>Reset</source>
         <translation type="unfinished">Reiniciar</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="63"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="63"/>
         <source>Light/Dark Value:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Valor claro/escuro:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="63"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="63"/>
         <source>Saturation:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Saturação:</translation>
@@ -8928,171 +8928,171 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Defina para especificar a quantidade de matiz ou sombra da cor da borda da cor da peça com saturação ajustada</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="91"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="91"/>
         <source>High Contrast</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Alto contraste</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="106"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="106"/>
         <source>Stud Cylinder Color:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cor do cilindro do parafuso prisioneiro:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="124"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="124"/>
         <source>Pieces Edge Color:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cor da orla das peças:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="142"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="142"/>
         <source>Black Pieces Edge Color:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cor da borda das peças pretas:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="160"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="160"/>
         <source>Dark Pieces Edge Color:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cor da orla das peças escuras:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="260"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="260"/>
         <source>Select Stud Cylinder Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione a cor do cilindro do perno</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="265"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="265"/>
         <source>Select Piece Edge Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione a cor da borda da peça</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="274"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="274"/>
         <source>Automate edge color appears to be enabled.&lt;br&gt;Black pieces edge color will not be accessible.&lt;br&gt;Do you want to continue?</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">A automatização da cor da borda parece estar ativada.&lt;br&gt;A cor da borda das peças pretas não estará acessível.&lt;br&gt;Deseja continuar?</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="273"/>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="278"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="273"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="278"/>
         <source>Select Black Edge Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione a cor da borda preta</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="23"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="23"/>
         <source>&lt;p&gt;&lt;b&gt;High Contrast Edge Colors&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose custom stud and edge colors for high contrast stud styles. Enable an override with its checkbox, then choose its color. Light/Dark Value sets the threshold for dark-piece edge colors. Automated edge colors take precedence over the piece edge overrides.&lt;/p&gt;&lt;p&gt;Choose OK to return changes to Preferences, then choose OK in Preferences to keep them. Cancel discards changes in this dialog. Reset restores an individual control&apos;s default.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Cores de borda de alto contraste&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Escolha cores personalizadas de pinos e bordas para estilos de pinos de alto contraste. Habilite uma substituição com sua caixa de seleção e escolha sua cor. O valor Claro/Escuro define o limite para cores de bordas de peças escuras. As cores automatizadas das bordas têm precedência sobre as substituições das bordas da peça.&lt;/p&gt;&lt;p&gt;Escolha OK para retornar as alterações às Preferências e, em seguida, escolha OK em Preferências para mantê-las. Cancelar descarta as alterações nesta caixa de diálogo. A redefinição restaura o padrão de um controle individual.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="24"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="24"/>
         <source>&lt;p&gt;&lt;b&gt;Automated Edge Colors&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Adjust the contrast and saturation used to calculate piece edge colors. Both controls range from 0.00 to 1.00. Reset restores a control to 0.50.&lt;/p&gt;&lt;p&gt;Choose OK to return changes to Preferences, then choose OK in Preferences to keep them. Cancel discards changes in this dialog.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Cores de borda automatizadas&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Ajuste o contraste e a saturação usados para calcular as cores das bordas da peça. Ambos os controles variam de 0,00 a 1,00. Redefinir restaura um controle para 0,50.&lt;/p&gt;&lt;p&gt;Escolha OK para retornar as alterações às Preferências e, em seguida, escolha OK em Preferências para mantê-las. Cancelar descarta as alterações nesta caixa de diálogo.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="43"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="43"/>
         <source>Set edge contrast from 0.00 to 1.00 (default 0.50).</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Defina o contraste da borda de 0,00 a 1,00 (padrão 0,50).</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="44"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="44"/>
         <source>&lt;p&gt;&lt;b&gt;Edge Contrast&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Adjust the contrast used by automated edge colors to distinguish edges from piece surfaces. The range is 0.00 to 1.00; Reset restores 0.50.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Contraste da borda&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Ajuste o contraste usado pelas cores automatizadas das bordas para distinguir as bordas das superfícies das peças. O intervalo é de 0,00 a 1,00; Redefinir restaura 0,50.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="53"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="53"/>
         <source>Restore edge contrast to 0.50.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Restaure o contraste da borda para 0,50.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="69"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="69"/>
         <source>Set the light/dark threshold from 0.00 to 1.00 (default 0.50).</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Defina o limite claro/escuro de 0,00 a 1,00 (padrão 0,50).</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="70"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="70"/>
         <source>Set edge-color saturation from 0.00 to 1.00 (default 0.50).</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Defina a saturação da cor da borda de 0,00 a 1,00 (padrão 0,50).</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="72"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="72"/>
         <source>&lt;p&gt;&lt;b&gt;Light/Dark Value&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Classify piece colors by brightness to choose which pieces receive the dark-piece edge override. Colors below the threshold are treated as dark. A separate enabled black-piece override takes priority for black pieces. The range is 0.00 to 1.00; Reset restores 0.50.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Valor claro/escuro&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Classifique as cores das peças por brilho para escolher quais peças receberão a substituição da borda da peça escura. As cores abaixo do limite são tratadas como escuras. Uma substituição de peça preta habilitada separadamente tem prioridade para peças pretas. O intervalo é de 0,00 a 1,00; Redefinir restaura 0,50.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="73"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="73"/>
         <source>&lt;p&gt;&lt;b&gt;Edge Saturation&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Adjust the tint or shade used to calculate automated edge colors from piece colors. The range is 0.00 to 1.00; Reset restores 0.50.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Saturação da borda&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Ajuste a tonalidade ou tonalidade usada para calcular cores automatizadas das bordas a partir das cores das peças. O intervalo é de 0,00 a 1,00; Redefinir restaura 0,50.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="82"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="82"/>
         <source>Restore the light/dark threshold to 0.50.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Restaure o limite claro/escuro para 0,50.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="82"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="82"/>
         <source>Restore edge-color saturation to 0.50.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Restaure a saturação da cor da borda para 0,50.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="182"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="182"/>
         <source>Enable the custom color for %1.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ative a cor personalizada para %1.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="186"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="186"/>
         <source>Restore the default color for %1.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Restaure a cor padrão para %1.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="191"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="191"/>
         <source>Enable a custom color for stud cylinders in high contrast stud styles, then use the color button to choose it.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ative uma cor personalizada para cilindros de pinos em estilos de pinos de alto contraste e use o botão de cores para escolhê-la.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="193"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="193"/>
         <source>Enable a custom edge color for pieces not covered by the black or dark overrides. Automated edge colors take precedence.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ative uma cor de borda personalizada para peças não cobertas pelas substituições pretas ou escuras. As cores das bordas automatizadas têm precedência.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="195"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="195"/>
         <source>Enable a custom edge color for black pieces. This override takes priority over the dark-piece and general edge colors. Automated edge colors take precedence.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ative uma cor de borda personalizada para peças pretas. Esta substituição tem prioridade sobre as cores da peça escura e das bordas gerais. As cores das bordas automatizadas têm precedência.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="197"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="197"/>
         <source>Enable a custom edge color for pieces below the light/dark threshold, except black pieces with their own enabled override. Automated edge colors take precedence.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Habilite uma cor de borda personalizada para peças abaixo do limite claro/escuro, exceto peças pretas com sua própria substituição habilitada. As cores das bordas automatizadas têm precedência.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="287"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="287"/>
         <source>Automate edge color appears to be enabled.&lt;br&gt;Dark pieces edge color will not be accessible.&lt;br&gt;Do you want to continue?</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">A automatização da cor da borda parece estar ativada.&lt;br&gt;A cor da borda das peças escuras não estará acessível.&lt;br&gt;Deseja continuar?</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="286"/>
-        <location filename="../../source/interface/dialogs/sw_edge_color_dialog.cpp" line="291"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="286"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edge_color.cpp" line="291"/>
         <source>Select Dark Edge Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione a cor da borda escura</translation>
@@ -9101,63 +9101,63 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
 <context>
     <name>swBlenderPreferences</name>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="368"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="368"/>
         <source>Blender LDraw Add-on Settings</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender LDraw Configurações do suplemento</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="386"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="386"/>
         <source>Blender Executable</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender Executável</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="388"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="388"/>
         <source>&lt;p&gt;&lt;b&gt;Blender Executable&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose the Blender executable. Finishing an edit to this path starts Blender configuration and may install or update the LDraw add-on. Configuration must complete before add-on paths and settings become available.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Executável do Blender&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Escolha o executável do Blender. Concluir uma edição neste caminho inicia a configuração do Blender e pode instalar ou atualizar o complemento LDraw. A configuração deve ser concluída antes que os caminhos e configurações do complemento sejam disponibilizados.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="399"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="399"/>
         <source>Installed Blender version reported during configuration.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Versão instalada do Blender relatada durante a configuração.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="400"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="400"/>
         <source>Blender Version</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Versão do Liquidificador</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="413"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="637"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="794"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="413"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="637"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="794"/>
         <source>Browse...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Navegar...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="416"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="416"/>
         <source>Locate the Blender executable.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Localize o executável do Blender.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="419"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="419"/>
         <source>%1 Blender LDraw Add-on</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 Blender LDraw Complemento</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="421"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="421"/>
         <source>&lt;p&gt;&lt;b&gt;Blender LDraw Add-on&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Update downloads or reconfigures the LDraw add-on. Output opens the configuration log when available. The update-check preference takes effect as soon as you change it.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Complemento LDraw do Blender&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Atualizar baixa ou reconfigura o complemento LDraw. A saída abre o log de configuração quando disponível. A preferência de verificação de atualização entra em vigor assim que você a altera.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="426"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="426"/>
         <source>Prompt to download new add-on version when available</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Solicitar o download da nova versão complementar quando disponível</translation>
@@ -9168,7 +9168,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">%1 Blender LDraw complemento de importação e renderizador de imagens</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="449"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="449"/>
         <source>Update</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Atualização</translation>
@@ -9179,7 +9179,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Atualizar suplemento %1 Blender LDraw</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="454"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="454"/>
         <source>Output...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Saída...</translation>
@@ -9190,13 +9190,13 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Abra o registo de saída padrão</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="460"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="460"/>
         <source>Enabled Add-on Modules</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Módulos complementares habilitados</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="466"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="466"/>
         <source>LDraw Import TN</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">LDraw Importar TN</translation>
@@ -9207,7 +9207,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Active o módulo de importação complementar (adaptado de LDraw Import by Toby Nelson) em Blender</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="471"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="471"/>
         <source>LDraw Import MM</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">LDraw Importar MM</translation>
@@ -9218,7 +9218,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Active o módulo de importação complementar (adaptado de LDraw Import de Matthew Morrison) em Blender</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="476"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="476"/>
         <source>%1 Image Render</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 Renderização de imagem</translation>
@@ -9229,56 +9229,56 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Módulo complementar de renderização de imagens em Blender</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="508"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1194"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1650"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1726"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="508"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1194"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1650"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1726"/>
         <source>Blender</source>
         <translatorcomment>Technical identifier or nonlinguistic text; intentionally retained unchanged.</translatorcomment>
         <translation type="unfinished">Blender</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="508"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1207"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1735"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="508"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1207"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1735"/>
         <source>Blender Add-on</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender Complemento</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="522"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="522"/>
         <source>Blender not configured.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender não configurado.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="534"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="534"/>
         <source>Add-on not configured - Update.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Add-on não configurado - Atualização.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="536"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="536"/>
         <source>Add-on not configured.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Complemento não configurado.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="610"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="610"/>
         <source>LDraw Import TN Add-on Paths</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">LDraw Importar caminhos complementares TN</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="613"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="770"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="613"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="770"/>
         <source>&lt;p&gt;&lt;b&gt;Add-on Paths&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Set the files and folders used by the selected importer. Use Browse to locate an entry. TN and MM use different optional paths. Configure Blender first to enable these controls.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Caminhos de complemento&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Defina os arquivos e pastas usados pelo importador selecionado. Use Procurar para localizar uma entrada. TN e MM usam caminhos opcionais diferentes. Configure o Blender primeiro para ativar esses controles.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="638"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="795"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="638"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="795"/>
         <source>Choose a file or folder for %1.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha um arquivo ou pasta para %1.</translation>
@@ -9289,37 +9289,37 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">&lt;p&gt;&lt;b&gt;Configurações de importação e renderização&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Ajuste as opções de geometria, materiais, câmera e imagem do importador selecionado. Passe o mouse sobre um controle ou pressione F1 para ver sua descrição. A largura e a altura da imagem estão em pixels; a porcentagem de renderização dimensiona as dimensões de saída.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="664"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="664"/>
         <source>LDraw Import TN Add-on Settings</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">LDraw Importar as definições do complemento TN</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="767"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="767"/>
         <source>LDraw Import MM Add-on Paths</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">LDraw Importar caminhos complementares MM</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="821"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="821"/>
         <source>LDraw Import MM Add-on Settings</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">LDraw Importar as definições do complemento MM</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="985"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="985"/>
         <source>add-on install</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">instalação de complemento</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="997"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="997"/>
         <source>test</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">teste</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1020"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1020"/>
         <source>Cannot start Blender %1 process.
 %2</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -9327,7 +9327,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
 %2</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1029"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1029"/>
         <source>Failed to execute Blender %1.
 %2</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -9335,28 +9335,28 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
 %2</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1046"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1046"/>
         <source>A simple check to test if the selected file is Blender failed. Please create a %1 GitHub ticket if you are sure the file is Blender 2.8 or newer. The ticket should contain the full path to the Blender executable.</source>
         <oldsource>A simple check to test if the selected file is Blender failed.Please create a %1 GitHub ticket if you are sure the file is Blender 2.8 or newer.The ticket should contain the full path to the Blender executable.</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Uma verificação simples para testar se o ficheiro selecionado é Blender falhou. Crie um ticket %1 GitHub se tiver a certeza de que o ficheiro é Blender 2.8 ou mais recente. O ticket deve conter o caminho completo para o executável Blender.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1068"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1068"/>
         <source>Blender %1 process completed. Version: %2 validated.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender %1 processo concluído. Versão: %2 validada.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1089"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1221"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1089"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1221"/>
         <source>Installing...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Instalando...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1125"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1319"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1125"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1319"/>
         <source>Error writing to file &apos;%1&apos;:
 %2.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -9364,51 +9364,51 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
 %2.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1139"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1149"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1139"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1149"/>
         <source>Blender test failed.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">O teste Blender falhou.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="2080"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="2080"/>
         <source>Save Blender Add-on Output</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Salvar a saída do complemento do Blender</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="2091"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="2091"/>
         <source>Cancel Blender Add-on Installation</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Cancelar a instalação do complemento do Blender</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="2386"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="2386"/>
         <source>&lt;p&gt;&lt;b&gt;Reset Add-on Settings&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose Last Apply to restore the saved paths and settings, or System Default to load the built-in defaults. Choose OK to update the settings form, then Apply in the parent dialog to save them. Cancel keeps the current edits.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Redefinir configurações do complemento&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Escolha Última aplicação para restaurar os caminhos e configurações salvos ou Padrão do sistema para carregar os padrões integrados. Escolha OK para atualizar o formulário de configurações e, em seguida, Aplicar na caixa de diálogo pai para salvá-los. Cancelar mantém as edições atuais.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="2391"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="2391"/>
         <source>Restore paths and settings to the last applied values.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Restaure caminhos e configurações para os últimos valores aplicados.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="2394"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="2394"/>
         <source>Replace paths and settings with the built-in defaults.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Substitua caminhos e configurações pelos padrões integrados.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="3158"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="3214"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="3158"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="3214"/>
         <source>Apply Render Settings</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Aplicar configurações de renderização</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="3196"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="3196"/>
         <source>Set LDraw Color Scheme</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Definir o esquema de cores do LDraw</translation>
@@ -9419,20 +9419,20 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">%1 Blender LDraw Módulos complementares</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1158"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1158"/>
         <source>No import module enabled. If you continue, the default import module (Import TN) will be used.&lt;br&gt;If you select No, all add-on modules will be disabled.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Nenhum módulo de importação ativado. Se continuar, será utilizado o módulo de importação padrão (Import TN).&lt;br&gt;Se selecionar Não, todos os módulos complementares serão desativados.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1159"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1159"/>
         <source>Continue with the default import module?</source>
         <oldsource>Continue with the default import module ?</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Continuar com o módulo de importação padrão?</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1185"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1185"/>
         <source>Downloading...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">A descarregar...</translation>
@@ -9443,152 +9443,152 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Visualizar a versão complementar de renderização Blender e %1</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1216"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1216"/>
         <source>Could not find add-on install file: &apos;%1&apos;.</source>
         <oldsource>Could not find add-on install file: &apos;%1&apos;</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Não foi possível encontrar o ficheiro de instalação do suplemento: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1216"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1264"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1336"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1716"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="2032"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1216"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1264"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1336"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1716"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="2032"/>
         <source>Install Blender Add-on</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Instalar o complemento do Blender</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1217"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1217"/>
         <source>Not found.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Não encontrado.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1243"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1243"/>
         <source>Blender Add-on Install Arguments: &apos;%1&apos; %2</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender Argumentos de instalação do suplemento: &apos;%1&apos; %2</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1264"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1264"/>
         <source>Cannot read add-on file &apos;%1&apos;&lt;br&gt;%2</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Não é possível ler o ficheiro complementar &apos;%1&apos;&lt;br&gt;%2</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1333"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1333"/>
         <source>Install failed.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Falha na instalação.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1336"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1336"/>
         <source>Blender executable not found at &apos;%1&apos;.</source>
         <oldsource>Blender executable not found at &apos;%1&apos;</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender executável não encontrado em &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1362"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="3843"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1362"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="3843"/>
         <source>Extract Blender Add-on</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Extrair o complemento do Blender</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1424"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1424"/>
         <source>Check for Blender Add-on Updates</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Verificar atualizações do complemento do Blender</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1717"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1717"/>
         <source>Add-on install failed.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Falha na instalação do suplemento.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1350"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1350"/>
         <source>Extracting...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Extraindo...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="427"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="427"/>
         <source>Check for add-on updates; this preference is saved immediately.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Verifique se há atualizações de complementos; esta preferência é salva imediatamente.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="440"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="440"/>
         <source>Installed %1 Blender LDraw import and render add-on version.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Instalado %1 Versão complementar de importação e renderização do Blender LDraw.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="443"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="443"/>
         <source>Blender LDraw Add-on Version</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Versão complementar do Blender LDraw</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="450"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="450"/>
         <source>Download or reconfigure the %1 Blender LDraw add-on.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Baixe ou reconfigure o complemento %1 Blender LDraw.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="455"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="455"/>
         <source>Open the standard output log.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Abra o log de saída padrão.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="463"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="463"/>
         <source>&lt;p&gt;&lt;b&gt;Import and Render Modules&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose TN or MM to select the LDraw importer and its options. Changing the importer configures Blender immediately. The image render module is managed automatically; an import module is required to import or render a model.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Módulos de importação e renderização&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Escolha TN ou MM para selecionar o importador LDraw e suas opções. Alterar o importador configura o Blender imediatamente. O módulo de renderização de imagem é gerenciado automaticamente; um módulo de importação é necessário para importar ou renderizar um modelo.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="467"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="467"/>
         <source>Enable add-on import module (adapted from LDraw Import by Toby Nelson) in Blender.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Habilite o módulo de importação complementar (adaptado de LDraw Import de Toby Nelson) no Blender.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="472"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="472"/>
         <source>Enable add-on import module (adapted from LDraw Import by Matthew Morrison) in Blender.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Habilite o módulo de importação complementar (adaptado de LDraw Import de Matthew Morrison) no Blender.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="477"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="477"/>
         <source>Add-on image render module in Blender.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Módulo complementar de renderização de imagem no Blender.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="661"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="818"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="661"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="818"/>
         <source>&lt;p&gt;&lt;b&gt;Import and Render Settings&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Adjust the selected importer&apos;s geometry, materials, camera, and image options. Hover over a control or press F1 for its description. Image width and height are in pixels, from 1 to 32768; render percentage scales the output dimensions.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1148"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1148"/>
         <source>Test Blender</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Testar o Blender</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1157"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1157"/>
         <source>Configure Blender Add-on</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Configurar o complemento do Blender</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1358"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1358"/>
         <source>Failed to extract &apos;%1&apos; to &apos;%2&apos;.</source>
         <oldsource>Failed to extract &apos;%1&apos; to &apos;%2&apos;</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -9600,7 +9600,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Extrair complemento</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1424"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1424"/>
         <source>Check latest add-on version failed.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Falha na verificação da versão mais recente do suplemento.</translation>
@@ -9611,151 +9611,151 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Último complemento</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1437"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1437"/>
         <source>Cannot open add-on archive file: &apos;%1&apos;.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Não é possível abrir o ficheiro complementar: &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1437"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1445"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1452"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1461"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1505"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1560"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1606"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1609"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1613"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1616"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1619"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1625"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1628"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1634"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1437"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1445"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1452"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1461"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1505"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1560"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1606"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1609"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1613"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1616"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1619"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1625"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1628"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1634"/>
         <source>Update Blender Add-on</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Atualizar o complemento do Blender</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1445"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1445"/>
         <source>Cannot extract add-on archive version file: &apos;%1&apos;.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Não é possível extrair o ficheiro de versão do ficheiro complementar: &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1452"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1452"/>
         <source>Cannot read add-on archive version file: &apos;%1&apos;.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Não é possível ler o ficheiro de versão do ficheiro complementar: &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1461"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1461"/>
         <source>Cannot read add-on version file: &apos;%1&apos;&lt;br&gt;%2.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Não é possível ler o ficheiro da versão complementar: &apos;%1&apos;&lt;br&gt;%2.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1506"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1506"/>
         <source>Detected %1 Blender LDraw add-on %2. A newer version %3 exists.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Detetado %1 Blender LDraw complemento %2. Existe uma versão mais recente %3.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1507"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1507"/>
         <source>Do you want to download version %1?</source>
         <oldsource>Do you want to download version %1 ?</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Deseja descarregar a versão %1?</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1544"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1544"/>
         <source>Failed to properly remove Blender add-on: &apos;%1&apos;.</source>
         <oldsource>Failed to properly remove Blender add-on: &apos;%1&apos;</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Falha ao remover corretamente o suplemento Blender: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1544"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1544"/>
         <source>Remove Existing Add-on</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Remover complemento existente</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1560"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1560"/>
         <source>Failed to rename existing Blender add-on archive &apos;%1&apos;.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Falha ao renomear o ficheiro complementar Blender existente &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1606"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1606"/>
         <source>Failed to validate Blender add-on file name.&lt;br&gt;Downloaded: &apos;%1&apos;&lt;br&gt;Received: &apos;%2&apos;</source>
         <oldsource>Failed to validate Blender add-on file name&lt;br&gt;Downloaded:&apos;%1&apos;&lt;br&gt;Received:&apos;%2&apos;</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Falha ao validar Blender nome do ficheiro complementar&lt;br&gt;Descarregue:&apos;%1&apos;&lt;br&gt;Recebido:&apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1609"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1609"/>
         <source>Failed to validate Blender add-on SHA hash.&lt;br&gt;Calculated: %1&lt;br&gt;Received: %2</source>
         <oldsource>Failed to validate Blender add-on SHA hash &lt;br&gt;Calculated:%1&lt;br&gt;Received:%2</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Falha ao validar o hash SHA do add-on Blender &lt;br&gt;Calculado:%1&lt;br&gt;Recebido:%2</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1613"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1613"/>
         <source>Failed to receive SHA hash for Blender add-on &apos;%1.sha256&apos;.</source>
         <oldsource>Failed to receive SHA hash for Blender add-on &apos;%1.sha256&apos;</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Falha ao receber hash SHA para o add-on Blender &apos;%1.sha256&apos;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1616"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1616"/>
         <source>Failed to read Blender add-on archive:&lt;br&gt;&apos;%1&apos;:&lt;br&gt;%2</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Falha ao ler o ficheiro complementar Blender:&lt;br&gt;&apos;%1&apos;:&lt;br&gt;%2</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1619"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1619"/>
         <source>Failed to write Blender add-on archive:&lt;br&gt;&apos;%1&apos;:&lt;br&gt;%2</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Falha ao gravar ficheiro complementar Blender:&lt;br&gt;&apos;%1&apos;:&lt;br&gt;%2</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1625"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1625"/>
         <source>Failed to remove invalid Blender add-on archive:&lt;br&gt;&apos;%1&apos;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Falha ao remover o ficheiro de complemento Blender inválido:&lt;br&gt;&apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1628"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1628"/>
         <source>Failed to restore Blender add-on archive:&lt;br&gt;&apos;%1&apos; from &apos;%2&apos;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Falha ao restaurar o ficheiro de complemento Blender:&lt;br&gt;&apos;%1&apos; de &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1634"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1634"/>
         <source>Failed to download Blender add-on archive:&lt;br&gt;&apos;%1&apos;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Falha ao descarregar o ficheiro de complemento Blender:&lt;br&gt;&apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1639"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1639"/>
         <source>Download failed.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Falha no download.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1650"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1650"/>
         <source>Blender add-on</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Complemento Blender</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1672"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1672"/>
         <source>%1 not configured</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 não configurado</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1683"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1683"/>
         <source>%1 setup...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 configuração...</translation>
@@ -9766,7 +9766,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Falha na instalação do suplemento. Consulte &apos;%1/stderr-blender-add-on-install&apos; para obter detalhes.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1713"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1713"/>
         <source>Error: Install failed.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Erro: falha na instalação.</translation>
@@ -9777,7 +9777,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">%1 Blender Instalação do complemento</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1718"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1718"/>
         <source>LDraw add-on install encountered one or more errors. See Show Details...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">A instalação do suplemento LDraw encontrou um ou mais erros. Consulte Mostrar detalhes...</translation>
@@ -9788,55 +9788,55 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Blender versão %1</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1878"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1878"/>
         <source>Blender add-on standard output file not found: &apos;%1&apos;.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender ficheiro de saída padrão complementar não encontrado: &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1878"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1878"/>
         <source>View Blender Add-on Output</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Exibir a saída do complemento do Blender</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="1973"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="1973"/>
         <source>v%1</source>
         <translatorcomment>Technical identifier or nonlinguistic text; intentionally retained unchanged.</translatorcomment>
         <translation type="unfinished">v%1</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="2030"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="2030"/>
         <source>errors%1</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">erros%1</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="2030"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="2030"/>
         <source> and warnings</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished"> e avisos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="2030"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="2030"/>
         <source>warnings</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">avisos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="2033"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="2033"/>
         <source>Add-on install standard output.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Saída padrão de instalação do complemento.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="2034"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="2034"/>
         <source>LDraw add-on install encountered %1. See Show Details...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Instalação do suplemento LDraw encontrada %1. Consulte Mostrar detalhes...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="2053"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="2053"/>
         <source>Failed to open log file: &apos;%1&apos;:
 %2</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -9844,7 +9844,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
 %2</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="2080"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="2080"/>
         <source>Error writing to %1 file &apos;%2&apos;:
 %3</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -9857,13 +9857,13 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Cancelar instalação do suplemento %1</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="2092"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="2092"/>
         <source>Are you sure you want to cancel the add-on installation?</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Tem a certeza de que pretende cancelar a instalação do suplemento?</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="2385"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="2385"/>
         <source>Add-on Reset</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Redefinição de complemento</translation>
@@ -9874,45 +9874,45 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Selecione como repor as definições. A escolha é desde a última aplicação ou padrão do sistema.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="2390"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="2390"/>
         <source>Last Apply</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Última aplicação</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="2393"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="2393"/>
         <source>System Default</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Padrão do sistema</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="2681"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="2699"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="2681"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="2699"/>
         <source>%1 - Setting (%2)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 - Configuração (%2)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="2718"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="2723"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="2718"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="2723"/>
         <source>Load Blender Add-on Settings</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Carregar configurações do complemento do Blender</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="2723"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="2723"/>
         <source>Blender config file was not found. Install log check failed:&lt;br&gt;%1:&lt;br&gt;%2</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">O ficheiro de configuração Blender não foi encontrado. Falha na verificação do registo de instalação:&lt;br&gt;%1:&lt;br&gt;%2</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="2972"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="2972"/>
         <source>Select Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione a cor</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="2987"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="2987"/>
         <source>Locate %1</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Localizar %1</translation>
@@ -9923,25 +9923,25 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">LDraw Conflito de definições de renderização</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="3159"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="3159"/>
         <source>Crop image configuration settings conflict were resolved.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">O conflito de definições de imagem de corte foi resolvido.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="3160"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="3160"/>
         <source>Keep aspect ratio set to false.&lt;br&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Mantenha a proporção definida como falsa.&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="3160"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="3160"/>
         <source>Add environment (backdrop and base plane) set to false.&lt;br&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Adicionar ambiente (pano de fundo e plano base) definido como false.&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="3160"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="3160"/>
         <source>Transparent background set to true.&lt;br&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Fundo transparente definido como verdadeiro.&lt;br&gt;</translation>
@@ -9952,13 +9952,13 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Cores LDraw personalizadas</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="3197"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="3197"/>
         <source>Color scheme &apos;custom&apos; cannot be enabled. Custom LDConfig file not found.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">O esquema de cores &apos;personalizado&apos; não pode ser ativado. Ficheiro LDConfig personalizado não encontrado.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="3198"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="3198"/>
         <source>Color scheme &apos;custom&apos; selected but no LDConfig file was specified.&lt;br&gt;The default color scheme &apos;%1&apos; will be used.&lt;br&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Esquema de cores &apos;personalizado&apos; selecionado, mas não foi especificado nenhum ficheiro LDConfig.&lt;br&gt;Será utilizado o esquema de cores padrão &apos;%1&apos;.&lt;br&gt;</translation>
@@ -9969,56 +9969,56 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Configurações de renderização modificadas</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="3215"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="3215"/>
         <source>Do you want to accept the modified settings before quitting?</source>
         <oldsource>Do you want to accept the modified settings before quitting ?</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Deseja aceitar as definições modificadas antes de sair?</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="3584"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="3584"/>
         <source>Failed to open Blender parameter file: &apos;%1&apos;:&lt;br&gt;%2</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Falha ao abrir o ficheiro de parâmetros Blender: &apos;%1&apos;:&lt;br&gt;%2</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="3587"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="3587"/>
         <source>Export Blender Parameters</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Exportar parâmetros do Blender</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="3600"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="3600"/>
         <source>Replace Existing File</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Substituir ficheiro existente</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="3672"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="3672"/>
         <source>Do you want to download version </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Quer baixar a versão </translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="3676"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="3676"/>
         <source>Do not show download new add-on version message again.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Não volte a mostrar a mensagem de download da nova versão do suplemento.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="3695"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="3695"/>
         <source>Add-on download failed.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Falha no download do suplemento.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="3695"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="3695"/>
         <source>Download Blender Add-on</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Baixar o complemento do Blender</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="3843"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="3843"/>
         <source>ZipFile entry format (HostOS %1) at index %2 is not supported. Extract terminated.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">O formato de entrada ZipFile (HostOS %1) no índice %2 não é suportado. Extração encerrada.</translation>
@@ -10029,7 +10029,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Extrair complemento</translation>
     </message>
     <message numerus="yes">
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="3908"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="3908"/>
         <source>%1 of %n files extracted.</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">
@@ -10038,7 +10038,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="3579"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="3579"/>
         <source>Finished writing Blender parameter entries. Processed %n lines in file &apos;%1&apos;.</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">
@@ -10050,51 +10050,51 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
 <context>
     <name>swBlenderPreferencesDialog</name>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="227"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="227"/>
         <source>Blender LDraw Add-on Settings</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender LDraw Configurações do suplemento</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="240"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="240"/>
         <source>Apply</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Candidatar-se</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="241"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="241"/>
         <source>Save the add-on paths and settings and close this dialog.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Salve os caminhos e configurações do complemento e feche esta caixa de diálogo.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="247"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="301"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="313"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="247"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="301"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="313"/>
         <source>Hide the add-on paths section.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Oculte a seção de caminhos complementares.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="253"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="253"/>
         <source>Restore the last applied paths and settings or the system defaults.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Restaure os últimos caminhos e configurações aplicados ou os padrões do sistema.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="300"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="300"/>
         <source>Show Paths</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Mostrar caminhos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="301"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="301"/>
         <source>Show the add-on paths section.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Mostre a seção de caminhos complementares.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="327"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="327"/>
         <source>Please enter a valid value for &apos;%1&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10104,10 +10104,10 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Aplicar caminhos complementares e preferências de configuração</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="246"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="299"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="300"/>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="312"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="246"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="299"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="300"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="312"/>
         <source>Hide Paths</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ocultar caminhos</translation>
@@ -10118,7 +10118,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Ocultar caixa de diálogo de preferências do caminho do complemento</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="251"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="251"/>
         <source>Reset</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Repor</translation>
@@ -10152,7 +10152,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
 <context>
     <name>swBlockingProgress</name>
     <message>
-        <location filename="../../source/interface/window/sw_utilities.cpp" line="142"/>
+        <location filename="../../source/interface/window/sw_window_utilities.cpp" line="142"/>
         <source>%v of %m</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10160,61 +10160,61 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
 <context>
     <name>swCategoryDialog</name>
     <message>
-        <location filename="../../source/interface/dialogs/sw_category_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_category.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Piece Category&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Name a category and enter the expression used to find its pieces in the library. Both fields are required. Choose OK to return the category changes to Preferences, then choose OK in Preferences to keep them. Cancel discards edits in this dialog.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Keyword Syntax&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Expressions match text in library piece descriptions, ignoring case.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;tt&gt;Brick&lt;/tt&gt;: match this text anywhere in the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^Brick&lt;/tt&gt;: match Brick as a whole word.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;%Brick&lt;/tt&gt;: match Brick at the beginning of the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^%Brick&lt;/tt&gt;: require both a whole word and the beginning of the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A | B&lt;/tt&gt;: match either expression.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A &amp;amp; B&lt;/tt&gt;: match both expressions.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;!A&lt;/tt&gt;: exclude descriptions matching A.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;(A | B)&lt;/tt&gt;: group expressions.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Put spaces around &lt;tt&gt;|&lt;/tt&gt; and &lt;tt&gt;&amp;amp;&lt;/tt&gt;. Use parentheses when combining operators.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Examples&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;tt&gt;^%Brick | ^%Plate&lt;/tt&gt; matches descriptions beginning with the word Brick or Plate.&lt;br&gt;&lt;tt&gt;(^%Brick | ^%Plate) &amp;amp; !Pattern&lt;/tt&gt; also excludes descriptions containing Pattern.&lt;/p&gt;&lt;p&gt;Use the language of the library descriptions for search terms; do not translate the syntax symbols.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Categoria de peças&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Dê um nome à categoria e introduza a expressão usada para encontrar as suas peças na biblioteca. Ambos os campos são obrigatórios. Escolha OK para transferir as alterações para as Preferências e depois OK nas Preferências para as guardar. Cancelar descarta as alterações neste diálogo.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Sintaxe de palavras-chave&lt;/b&gt;&lt;/p&gt;&lt;p&gt;As expressões procuram texto nas descrições das peças da biblioteca, sem distinguir maiúsculas de minúsculas.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;tt&gt;Brick&lt;/tt&gt;: procura este texto em qualquer posição da descrição.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^Brick&lt;/tt&gt;: procura Brick como palavra completa.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;%Brick&lt;/tt&gt;: procura Brick no início da descrição.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^%Brick&lt;/tt&gt;: exige uma palavra completa no início da descrição.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A | B&lt;/tt&gt;: procura correspondências com pelo menos uma das expressões.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A &amp;amp; B&lt;/tt&gt;: procura correspondências com ambas as expressões.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;!A&lt;/tt&gt;: exclui descrições correspondentes a A.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;(A | B)&lt;/tt&gt;: agrupa expressões.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Coloque espaços à volta de &lt;tt&gt;|&lt;/tt&gt; e &lt;tt&gt;&amp;amp;&lt;/tt&gt;. Use parênteses ao combinar operadores.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Exemplos&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;tt&gt;^%Brick | ^%Plate&lt;/tt&gt; procura descrições que começam com a palavra Brick ou Plate.&lt;br&gt;&lt;tt&gt;(^%Brick | ^%Plate) &amp;amp; !Pattern&lt;/tt&gt; também exclui descrições que contêm Pattern.&lt;/p&gt;&lt;p&gt;Use o idioma das descrições da biblioteca nos termos de pesquisa; não traduza os símbolos da sintaxe.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_category_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_category.ui"/>
         <source>Category</source>
         <translation>Categoria</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_category_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_category.ui"/>
         <source>Enter the category name shown in the piece browser.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Digite o nome da categoria mostrado no navegador de peças.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_category_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_category.ui"/>
         <source>Name:</source>
         <translation>Nome:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_category_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_category.ui"/>
         <source>Enter an expression that matches piece descriptions.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Insira uma expressão que corresponda às descrições das peças.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_category_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_category.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Keyword Syntax&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Expressions match text in library piece descriptions, ignoring case.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;tt&gt;Brick&lt;/tt&gt;: match this text anywhere in the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^Brick&lt;/tt&gt;: match Brick as a whole word.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;%Brick&lt;/tt&gt;: match Brick at the beginning of the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^%Brick&lt;/tt&gt;: require both a whole word and the beginning of the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A | B&lt;/tt&gt;: match either expression.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A &amp;amp; B&lt;/tt&gt;: match both expressions.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;!A&lt;/tt&gt;: exclude descriptions matching A.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;(A | B)&lt;/tt&gt;: group expressions.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Put spaces around &lt;tt&gt;|&lt;/tt&gt; and &lt;tt&gt;&amp;amp;&lt;/tt&gt;. Use parentheses when combining operators.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Examples&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;tt&gt;^%Brick | ^%Plate&lt;/tt&gt; matches descriptions beginning with the word Brick or Plate.&lt;br&gt;&lt;tt&gt;(^%Brick | ^%Plate) &amp;amp; !Pattern&lt;/tt&gt; also excludes descriptions containing Pattern.&lt;/p&gt;&lt;p&gt;Use the language of the library descriptions for search terms; do not translate the syntax symbols.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Sintaxe de palavras-chave&lt;/b&gt;&lt;/p&gt;&lt;p&gt;As expressões procuram texto nas descrições das peças da biblioteca, sem distinguir maiúsculas de minúsculas.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;tt&gt;Brick&lt;/tt&gt;: procura este texto em qualquer posição da descrição.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^Brick&lt;/tt&gt;: procura Brick como palavra completa.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;%Brick&lt;/tt&gt;: procura Brick no início da descrição.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^%Brick&lt;/tt&gt;: exige uma palavra completa no início da descrição.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A | B&lt;/tt&gt;: procura correspondências com pelo menos uma das expressões.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A &amp;amp; B&lt;/tt&gt;: procura correspondências com ambas as expressões.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;!A&lt;/tt&gt;: exclui descrições correspondentes a A.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;(A | B)&lt;/tt&gt;: agrupa expressões.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Coloque espaços à volta de &lt;tt&gt;|&lt;/tt&gt; e &lt;tt&gt;&amp;amp;&lt;/tt&gt;. Use parênteses ao combinar operadores.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Exemplos&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;tt&gt;^%Brick | ^%Plate&lt;/tt&gt; procura descrições que começam com a palavra Brick ou Plate.&lt;br&gt;&lt;tt&gt;(^%Brick | ^%Plate) &amp;amp; !Pattern&lt;/tt&gt; também exclui descrições que contêm Pattern.&lt;/p&gt;&lt;p&gt;Use o idioma das descrições da biblioteca nos termos de pesquisa; não traduza os símbolos da sintaxe.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_category_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_category.ui"/>
         <source>Keywords:</source>
         <translation>Palavras Chave:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_category_dialog.cpp" line="16"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_category.cpp" line="16"/>
         <source>Edit Category</source>
         <translation>Editar Categoria</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_category_dialog.cpp" line="18"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_category.cpp" line="18"/>
         <source>New Category</source>
         <translation>Nova Categoria</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_category_dialog.cpp" line="35"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_category.cpp" line="35"/>
         <source>Name cannot be empty.</source>
         <translation>O nome não pode ser vazio.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_category_dialog.cpp" line="43"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_category.cpp" line="43"/>
         <source>Keywords cannot be empty.</source>
         <translation>As palavras chave não podem ser vazias.</translation>
     </message>
@@ -10222,25 +10222,25 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
 <context>
     <name>swColorDialogPopup</name>
     <message>
-        <location filename="../../source/interface/window/sw_utilities.cpp" line="609"/>
+        <location filename="../../source/interface/window/sw_window_utilities.cpp" line="609"/>
         <source>Choose Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a cor</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_utilities.cpp" line="610"/>
+        <location filename="../../source/interface/window/sw_window_utilities.cpp" line="610"/>
         <source>&lt;p&gt;&lt;b&gt;Choose Color&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Pick a color using the swatches or enter its component values. Choose OK to use the selected color, or Cancel to keep the original color. Editing the controls alone does not apply the color.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Escolha a cor&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Escolha uma cor usando as amostras ou insira os valores dos componentes. Escolha OK para usar a cor selecionada ou Cancelar para manter a cor original. A edição dos controles por si só não aplica a cor.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_utilities.cpp" line="620"/>
+        <location filename="../../source/interface/window/sw_window_utilities.cpp" line="620"/>
         <source>Custom Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cor personalizada</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_utilities.cpp" line="621"/>
+        <location filename="../../source/interface/window/sw_window_utilities.cpp" line="621"/>
         <source>Choose a color or enter its component values.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha uma cor ou insira os valores dos componentes.</translation>
@@ -10249,7 +10249,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
 <context>
     <name>swColorList</name>
     <message>
-        <location filename="../../source/interface/widgets/sw_color_list.cpp" line="42"/>
+        <location filename="../../source/interface/widgets/sw_widget_color_list.cpp" line="42"/>
         <source>Expand or collapse the %1 colors.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10318,30 +10318,30 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
 <context>
     <name>swEditGroupsDialog</name>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edit_groups_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edit_groups.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Edit Groups&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Reorganize the model&apos;s pieces and groups in the tree. Drag pieces or groups into a group, or to the top level to remove them from a parent group. Double-click a group name to rename it.&lt;/p&gt;&lt;p&gt;New Group creates a group inside the selected group, or beside an ungrouped piece. Choose OK to apply the hierarchy, or Cancel to discard the changes. Empty groups are removed when changes are applied.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Editar grupos&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Reorganize as peças e grupos do modelo na árvore. Arraste peças ou grupos para um grupo ou para o nível superior para removê-los de um grupo pai. Clique duas vezes no nome de um grupo para renomeá-lo.&lt;/p&gt;&lt;p&gt;Novo Grupo cria um grupo dentro do grupo selecionado ou ao lado de uma peça desagrupada. Escolha OK para aplicar a hierarquia ou Cancelar para descartar as alterações. Os grupos vazios são removidos quando as alterações são aplicadas.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edit_groups_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edit_groups.ui"/>
         <source>Edit Groups</source>
         <translation>Editar Grupos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edit_groups_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edit_groups.ui"/>
         <source>Drag pieces and groups to reorganize them; double-click a group name to rename it.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Arraste peças e grupos para reorganizá-los; clique duas vezes no nome de um grupo para renomeá-lo.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edit_groups_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edit_groups.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Group Hierarchy&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Drop an item onto a group to make it a member of that group. Move it to the top level to remove its parent group. Only group names can be edited; names must be unique and nonempty.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Hierarquia de grupo&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Solte um item em um grupo para torná-lo membro desse grupo. Mova-o para o nível superior para remover seu grupo pai. Somente nomes de grupos podem ser editados; os nomes devem ser exclusivos e não vazios.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edit_groups_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edit_groups.ui"/>
         <source>Piece and Group Hierarchy</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Hierarquia de peças e grupos</translation>
@@ -10351,25 +10351,25 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="vanished">Novo Grupo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edit_groups_dialog.cpp" line="46"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edit_groups.cpp" line="46"/>
         <source>&amp;New Group</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&amp;Novo grupo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edit_groups_dialog.cpp" line="47"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edit_groups.cpp" line="47"/>
         <source>Create a group under the selected group or at the top level.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Crie um grupo no grupo selecionado ou no nível superior.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edit_groups_dialog.cpp" line="48"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edit_groups.cpp" line="48"/>
         <source>&lt;p&gt;&lt;b&gt;New Group&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select a group to create a subgroup inside it. If a piece is selected, the new group is created beside that piece. With no selection, the new group is created at the top level. Rename the new group by editing its name, then drag pieces into it.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Novo Grupo&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Selecione um grupo para criar um subgrupo dentro dele. Se uma peça for selecionada, o novo grupo será criado ao lado dessa peça. Sem seleção, o novo grupo é criado no nível superior. Renomeie o novo grupo editando seu nome e arraste peças para ele.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_edit_groups_dialog.cpp" line="97"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_edit_groups.cpp" line="97"/>
         <source>Group </source>
         <translation type="unfinished"></translation>
     </message>
@@ -10381,49 +10381,49 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
 <context>
     <name>swFindReplaceWidget</name>
     <message>
-        <location filename="../../source/interface/widgets/sw_find_replace_widget.cpp" line="23"/>
+        <location filename="../../source/interface/widgets/sw_widget_find_replace.cpp" line="23"/>
         <source>Find:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Encontrar:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_find_replace_widget.cpp" line="26"/>
+        <location filename="../../source/interface/widgets/sw_widget_find_replace.cpp" line="26"/>
         <source>Search Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cor de pesquisa</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_find_replace_widget.cpp" line="30"/>
+        <location filename="../../source/interface/widgets/sw_widget_find_replace.cpp" line="30"/>
         <source>Search Piece</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Peça de pesquisa</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_find_replace_widget.cpp" line="54"/>
+        <location filename="../../source/interface/widgets/sw_widget_find_replace.cpp" line="54"/>
         <source>Replace:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Substituir:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_find_replace_widget.cpp" line="57"/>
+        <location filename="../../source/interface/widgets/sw_widget_find_replace.cpp" line="57"/>
         <source>Replacement Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cor de substituição</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_find_replace_widget.cpp" line="64"/>
+        <location filename="../../source/interface/widgets/sw_widget_find_replace.cpp" line="64"/>
         <source>Replacement Piece</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Peça de substituição</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_find_replace_widget.cpp" line="90"/>
+        <location filename="../../source/interface/widgets/sw_widget_find_replace.cpp" line="90"/>
         <source>None</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">Nenhum</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_find_replace_widget.cpp" line="96"/>
+        <location filename="../../source/interface/widgets/sw_widget_find_replace.cpp" line="96"/>
         <source>Close</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Perto</translation>
@@ -10432,40 +10432,40 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
 <context>
     <name>swGroupDialog</name>
     <message>
-        <location filename="../../source/interface/dialogs/sw_group_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_group.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Group Pieces&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Name a new group for the selected pieces so you can select and move them together. Choose OK to create it, or Cancel to leave the groups unchanged.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Agrupar peças&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Nomeie um novo grupo para as peças selecionadas para que você possa selecioná-las e movê-las juntas. Escolha OK para criá-lo ou Cancelar para deixar os grupos inalterados.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_group_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_group.ui"/>
         <source>Group</source>
         <translation>Grupo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_group_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_group.ui"/>
         <source>Enter a unique, nonempty name for the new group.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Insira um nome exclusivo e não vazio para o novo grupo.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_group_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_group.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Group Name&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a name that is not already used by another group in this model. The new group contains the selected pieces and their existing groups.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Nome do grupo&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Escolha um nome que ainda não seja usado por outro grupo neste modelo. O novo grupo contém as peças selecionadas e seus grupos existentes.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_group_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_group.ui"/>
         <source>Name</source>
         <translation>Nome</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_group_dialog.cpp" line="27"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_group.cpp" line="27"/>
         <source>Name cannot be empty.</source>
         <translation>O nome não pode estar vazio.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_group_dialog.cpp" line="35"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_group.cpp" line="35"/>
         <source>A group with this name already exists.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Já existe um grupo com este nome.</translation>
@@ -10474,102 +10474,102 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
 <context>
     <name>swHTMLDialog</name>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>HTML Options</source>
         <translation>Opções HTML</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>General</source>
         <translation>Geral</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>Output Folder:</source>
         <oldsource>Output folder:</oldsource>
         <translation type="unfinished">Pasta de saída:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>Transparent image background</source>
         <translation>Fundo de imagem transparente</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>Add a step index when using One Step per Page.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Adicione um índice de etapas ao usar «Um passo por página».</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>Width of each step image, in pixels.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Largura de cada imagem de etapa, em pixels.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>Width:</source>
         <translation>Largura:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>Height of each step image, in pixels.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Altura de cada imagem de etapa, em pixels.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>Height:</source>
         <translation>Altura:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>Index page</source>
         <translation>Página de índice</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Export HTML&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Create browser-viewable building instructions and PNG images in the output folder. Choose which models to include, how to organize the step pages, and where to show pieces lists.&lt;/p&gt;&lt;p&gt;Keep the generated HTML and image files together when copying or sharing the instructions.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Exportar HTML&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Crie instruções de construção visíveis no navegador e imagens PNG na pasta de saída. Escolha quais modelos incluir, como organizar as páginas de etapas e onde mostrar as listas de peças.&lt;/p&gt;&lt;p&gt;Mantenha os arquivos HTML e de imagem gerados juntos ao copiar ou compartilhar as instruções.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>Folder for the generated HTML pages and images.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Pasta para as páginas e imagens HTML geradas.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Output Folder&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The exporter creates this folder if needed and writes the instruction pages and their images into it. Use a separate folder for each export to keep the generated files together.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Pasta de saída&lt;/b&gt;&lt;/p&gt;&lt;p&gt;O exportador cria esta pasta se necessário e grava nela as páginas de instruções e suas imagens. Use uma pasta separada para cada exportação para manter os arquivos gerados juntos.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>Choose the folder for the exported instructions.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a pasta para as instruções exportadas.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>Choose Output Folder</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a pasta de saída</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>Save step images with a transparent background.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Salve imagens de etapas com fundo transparente.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Transparent Image Background&lt;/b&gt;&lt;/p&gt;&lt;p&gt;When checked, the PNG step images have a transparent background so the page background can show through. When unchecked, they include the configured solid or gradient background with no transparency.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Fundo de imagem transparente&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Quando marcada, as imagens PNG da etapa têm um fundo transparente para que o fundo da página possa ser exibido. Quando desmarcados, incluem o plano de fundo sólido ou gradiente configurado sem transparência.&lt;/p&gt;</translation>
@@ -10580,7 +10580,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">&lt;p&gt;&lt;b&gt;Modelos&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Exporte todos os modelos do projeto, apenas o modelo atual ou o modelo atual com os submodelos aos quais ele faz referência. Quando vários modelos são exportados, um índice geral é vinculado às suas instruções.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>Models</source>
         <translation>Modelos</translation>
     </message>
@@ -10590,30 +10590,30 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Instruções de exportação para cada modelo do projeto.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>All Models</source>
         <translation>Todos os modelos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>Export the current model and the submodels it references.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Exporte o modelo atual e os submodelos aos quais ele faz referência.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>Current Model and Submodels</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Modelo e submodelos atuais</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>Export instructions only for the current model.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Instruções de exportação apenas para o modelo atual.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>Current Model Only</source>
         <translation>Apenas o modelo actual</translation>
     </message>
@@ -10623,34 +10623,34 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">&lt;p&gt;&lt;b&gt;Etapas&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Página única coloca todas as etapas de cada modelo em uma página HTML. «Um passo por página» cria páginas separadas com links de navegação. Nesse modo, a página Índice adiciona uma página com links para as etapas.&lt;/p&gt;&lt;p&gt;Largura e Altura definem o tamanho da imagem da etapa em pixels. Use dimensões positivas de até 2.048 pixels.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>Steps</source>
         <translation>Passos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>Put all steps for each model on one HTML page.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Coloque todas as etapas de cada modelo em uma página HTML.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>Single Page</source>
         <translation>Página única</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>Create a separate HTML page for each step.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Crie uma página HTML separada para cada etapa.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>One Step per Page</source>
         <translation>Um passo por página</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Pieces List&lt;/b&gt;&lt;/p&gt;&lt;p&gt;After each step shows the pieces added in that step. At the end shows the complete model inventory after the instructions. You can enable either option, both, or neither.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Lista de peças&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Após cada etapa são exibidas as peças adicionadas naquela etapa. No final mostra o inventário completo do modelo após as instruções. Você pode ativar qualquer uma das opções, ambas ou nenhuma.&lt;/p&gt;</translation>
@@ -10660,29 +10660,29 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="vanished">Destacar as novas peças</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>Pieces List</source>
         <translation>Lista das Peças</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>Include a complete pieces list after each model&apos;s instructions.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Inclua uma lista completa de peças após as instruções de cada modelo.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>At the end</source>
         <translation>No fim</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>Include a list of the pieces added in each step.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Inclua uma lista das peças adicionadas em cada etapa.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>After each step</source>
         <translation>Após cada passo</translation>
     </message>
@@ -10695,43 +10695,43 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="vanished">Criar imagens</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.cpp" line="50"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.cpp" line="50"/>
         <source>Output folder cannot be empty.</source>
         <translation>aTem de indicar a pasta de saída.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.cpp" line="50"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.cpp" line="50"/>
         <source>Export HTML</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">Exportar HTML</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.cpp" line="60"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.cpp" line="60"/>
         <source>Please enter a width between 1 and 32768 pixels.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.cpp" line="67"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.cpp" line="67"/>
         <source>Please enter a height between 1 and 32768 pixels.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.cpp" line="88"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.cpp" line="88"/>
         <source>Select Output Folder</source>
         <translation>Selecionar a Pasta de Saída</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Models&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Export instructions for the model and all submodels, only the model or submodel being edited, or that entry with its referenced submodels. When several entries are exported, an overall index links to their instructions.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>Export instructions for the model and all submodels.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_html_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Steps&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Single Page places all steps for each model on one HTML page. One Step per Page creates separate pages with navigation links. In that mode, Index page adds a page linking to the steps.&lt;/p&gt;&lt;p&gt;Width and Height set the step image size in pixels. Use dimensions from 1 to 32768 pixels.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10739,164 +10739,164 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
 <context>
     <name>swImageDialog</name>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.ui"/>
         <source>Save Image</source>
         <translation>Gravar Imagem</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.ui"/>
         <source>File Name:</source>
         <oldsource>File name:</oldsource>
         <translation type="unfinished">Nome do ficheiro:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.ui"/>
         <source>Path and file name for the exported image.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Caminho e nome do arquivo da imagem exportada.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.ui"/>
         <source>&lt;p&gt;&lt;b&gt;File Name&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose an output folder, file name, and image extension, such as .png, .jpg, or .bmp.&lt;/p&gt;&lt;p&gt;When saving several steps, the step number is added before the extension. For example, &apos;model.png&apos; becomes &apos;model01.png&apos;, &apos;model02.png&apos;, and so on.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Nome do arquivo&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Escolha uma pasta de saída, um nome de arquivo e uma extensão de imagem, como .png, .jpg ou .bmp.&lt;/p&gt;&lt;p&gt;Ao salvar várias etapas, o número da etapa é adicionado antes da extensão. Por exemplo, &apos;model.png&apos; torna-se &apos;model01.png&apos;, &apos;model02.png&apos; e assim por diante.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.ui"/>
         <source>Choose the image file and format.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha o arquivo de imagem e o formato.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.ui"/>
         <source>Choose Image File</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha o arquivo de imagem</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Dimensions&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Set the exported image width and height in pixels. Each value must be between 1 and 32768. Larger images use more memory and may exceed the graphics hardware limits.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Dimensões&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Defina a largura e a altura da imagem exportada em pixels. Cada valor deve estar entre 1 e 32.768. Imagens maiores usam mais memória e podem exceder os limites do hardware gráfico.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.ui"/>
         <source>Dimensions</source>
         <translation>Dimensões</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.ui"/>
         <source>Width of the saved image, in pixels (1 to 32768).</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Largura da imagem salva, em pixels (1 a 32768).</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.ui"/>
         <source>Height of the saved image, in pixels (1 to 32768).</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Altura da imagem salva, em pixels (1 a 32768).</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Step Range&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose All Steps, Current Step, or Custom Range. The From and To fields are used only for Custom Range. Both endpoints are included, and To may equal From to save just one step.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Intervalo de etapas&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Escolha todas as etapas, etapa atual ou intervalo personalizado. Os campos De e Até são usados ​​apenas para intervalo personalizado. Ambos os pontos de extremidade estão incluídos e To pode ser igual a From para salvar apenas uma etapa.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.ui"/>
         <source>Step Range</source>
         <translation>Intervalo de Passos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.ui"/>
         <source>Save an image for every step in the active model.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Salve uma imagem para cada etapa do modelo ativo.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.ui"/>
         <source>All Steps</source>
         <translation>Todos os Passos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.ui"/>
         <source>Save only the current step.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Salve apenas a etapa atual.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.ui"/>
         <source>Current Step</source>
         <translation>Passo Actual</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.ui"/>
         <source>Save the steps between From and To, including both endpoints.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Salve as etapas entre De e Para, incluindo ambos os pontos de extremidade.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.ui"/>
         <source>Custom Range</source>
         <translation>Intervalo Personalizado</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.ui"/>
         <source>From:</source>
         <translation>De:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.ui"/>
         <source>First step to save when Custom Range is selected.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Primeira etapa para salvar quando o intervalo personalizado for selecionado.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.ui"/>
         <source>First Step</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Primeiro passo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.ui"/>
         <source>To:</source>
         <translation>Até:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.ui"/>
         <source>Last step to save when Custom Range is selected.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Última etapa para salvar quando o intervalo personalizado for selecionado.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.ui"/>
         <source>Last Step</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Última etapa</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.ui"/>
         <source>Width:</source>
         <translation>Largura:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Save Image&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Save images of the active model using the current view. Choose a destination file, image dimensions, and the steps to include.&lt;/p&gt;&lt;p&gt;Saving one step produces one image. Saving several steps produces a separate numbered image for each step.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Salvar imagem&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Salve imagens do modelo ativo usando a visualização atual. Escolha um arquivo de destino, as dimensões da imagem e as etapas a serem incluídas.&lt;/p&gt;&lt;p&gt;Salvar uma etapa produz uma imagem. Salvar várias etapas produz uma imagem numerada separada para cada etapa.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.ui"/>
         <source>Height:</source>
         <translation>Altura:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.cpp" line="39"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.cpp" line="39"/>
         <source>Output file cannot be empty.</source>
         <oldsource>Output File cannot be empty.</oldsource>
         <translation type="unfinished">Tem de indicar o ficheiro de saída.</translation>
@@ -10906,37 +10906,37 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="vanished">Erro</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.cpp" line="78"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.cpp" line="78"/>
         <source>First step must be between 1 and %1.</source>
         <translation>O primeiro passo tem de ser entre 1 e %1.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.cpp" line="86"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.cpp" line="86"/>
         <source>Last step must be between 1 and %1.</source>
         <translation>O último passo tem de ser entre %1 e 1.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.cpp" line="108"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.cpp" line="108"/>
         <source>Supported Image Files (*.bmp *.png *.jpg);;BMP Files (*.bmp);;PNG Files (*.png);;JPEG Files (*.jpg);;All Files (*.*)</source>
         <translation>Formatos de Imagem Suportados (*.bmp *.png *.jpg);;Ficheiros BMP (*.bmp);;Ficheiros PNG (*.png);;Ficheiros JPEG (*.jpg);;Todos os Ficheiros (*.*)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.cpp" line="92"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.cpp" line="92"/>
         <source>Last step must be greater than first step.</source>
         <translation>O último passo tem de ser superior au primeiro.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.cpp" line="48"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.cpp" line="48"/>
         <source>Please enter a width between 1 and 32768.</source>
         <translation>É favor escolher uma largura entre 1 e 32768.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.cpp" line="56"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.cpp" line="56"/>
         <source>Please enter a height between 1 and 32768.</source>
         <translation>É favor escolher uma altura entre 1 e 32768.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_image_dialog.cpp" line="108"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_image.cpp" line="108"/>
         <source>Save Image File</source>
         <translation>Exportar Imagem</translation>
     </message>
@@ -11038,49 +11038,49 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
 <context>
     <name>swInstructionsDialog</name>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="952"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="952"/>
         <source>Instructions</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Instruções</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="967"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="967"/>
         <source>Page Settings</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Configurações de página</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="972"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="972"/>
         <source>Print...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="973"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="973"/>
         <source>Print the instruction pages</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="1058"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="1058"/>
         <source>Printing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="1058"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="1058"/>
         <source>Printing pages...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="1146"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="1146"/>
         <source>%1 - Cover</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="1150"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="1150"/>
         <source>%1 - Bill of Materials</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="1154"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="1154"/>
         <source>%1 - Blank</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11100,7 +11100,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Horizontal</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="1141"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="1141"/>
         <source>Page %1</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Página %1</translation>
@@ -11109,43 +11109,43 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
 <context>
     <name>swInstructionsPageListWidget</name>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="348"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="348"/>
         <source>Pages</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Páginas</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="357"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="357"/>
         <source>Page options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="357"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="357"/>
         <source>Page Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="359"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="359"/>
         <source>Page Setup...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="360"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="360"/>
         <source>Choose the page size, orientation and margins</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="365"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="365"/>
         <source>Insert Blank Page Before</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="366"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="366"/>
         <source>Insert Blank Page After</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="367"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="367"/>
         <source>Remove Blank Page</source>
         <translation type="unfinished"></translation>
     </message>
@@ -11158,7 +11158,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
 <context>
     <name>swInstructionsPropertiesWidget</name>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="496"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="496"/>
         <source>Properties</source>
         <translation type="unfinished">Propriedades</translation>
     </message>
@@ -11168,19 +11168,19 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Predefinição</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="510"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="510"/>
         <source>Current Model</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Modelo Atual</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="510"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="510"/>
         <source>Current Step Only</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Somente etapa atual</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="510"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="510"/>
         <source>Current Step Forward</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Atual passo em frente</translation>
@@ -11196,186 +11196,186 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Predefinição:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="505"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="505"/>
         <source>Properties options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="505"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="505"/>
         <source>Properties Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="508"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="508"/>
         <source>Apply Changes To</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="510"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="510"/>
         <source>All Steps</source>
         <translation type="unfinished">Todos os Passos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="541"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="541"/>
         <source>Steps fill landscape pages across each row and portrait pages down each column, following the orientation chosen in Page Setup.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="549"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="549"/>
         <source>Rows:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="549"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="549"/>
         <source>Number of step rows on this page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="550"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="550"/>
         <source>Columns:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="550"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="550"/>
         <source>Number of step columns on this page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="560"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="560"/>
         <source>Apply to All Pages</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="561"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="561"/>
         <source>Use this number of rows and columns on every page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="622"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="622"/>
         <source>Color</source>
         <translation type="unfinished">Cor</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="622"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="622"/>
         <source>Name</source>
         <translation type="unfinished">Nome</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="622"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="622"/>
         <source>Part ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="659"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="659"/>
         <source>Select Step Number Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione a cor do número do passo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="663"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="663"/>
         <source>Select Step Background Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione a cor de fundo do passo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="667"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="667"/>
         <source>Select Pieces List Background Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione a cor de fundo da lista de peças</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="671"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="671"/>
         <source>Select Pieces List Border Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione a cor da borda da lista de peças</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="675"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="675"/>
         <source>Select Pieces List Text Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione a cor do texto da lista de peças</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="679"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="679"/>
         <source>Select Step Divider Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="683"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="683"/>
         <source>Select Page Background Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="729"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="729"/>
         <source>The document font is used for all text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="748"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="748"/>
         <source>Select Step Number Font</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione a fonte do número da etapa</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="752"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="752"/>
         <source>Select Pieces List Font</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione a fonte da lista de peças</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="756"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="756"/>
         <source>Select Document Font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="760"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="760"/>
         <source>Select Cover Title Font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="853"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="853"/>
         <source>Page Properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="855"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="855"/>
         <source>Document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="867"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="867"/>
         <source>Steps per Page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="871"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="871"/>
         <source>Page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="877"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="877"/>
         <source>Step</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="883"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="883"/>
         <source>Pieces List</source>
         <translation type="unfinished">Lista das Peças</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="900"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="900"/>
         <source>Step Properties</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Propriedades da etapa</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="916"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="916"/>
         <source>Step Number Properties</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Propriedades do número da etapa</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_instructions_dialog.cpp" line="931"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions.cpp" line="931"/>
         <source>Pieces List Properties</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Propriedades da lista de peças</translation>
@@ -11384,186 +11384,186 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
 <context>
     <name>swMainWindow</name>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="435"/>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="681"/>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="688"/>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="893"/>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="894"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="435"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="681"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="688"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="893"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="894"/>
         <source>Transform</source>
         <translation>Transformar</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="442"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="442"/>
         <source>C&amp;ameras</source>
         <translation>Câm&amp;aras</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="500"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="500"/>
         <source>&amp;File</source>
         <translation>&amp;Ficheiro</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="513"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="513"/>
         <source>&amp;Export</source>
         <translation>&amp;Exportar</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="538"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="538"/>
         <source>&amp;Edit</source>
         <translation>&amp;Editar</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="565"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="565"/>
         <source>&amp;View</source>
         <translation>&amp;Ver</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="450"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="450"/>
         <source>&amp;Viewpoints</source>
         <translation>Ponto de &amp;Vista</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="464"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="464"/>
         <source>Projection</source>
         <translation>Projecção</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="572"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="572"/>
         <source>Ste&amp;p</source>
         <translation>&amp;Passo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="587"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="587"/>
         <source>T&amp;oolbars</source>
         <translation>&amp;Barras de Ferramentas</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="602"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="602"/>
         <source>&amp;Piece</source>
         <translation>&amp;Peça</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="642"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="642"/>
         <source>&amp;Help</source>
         <translation>A&amp;juda</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="677"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="677"/>
         <source>&lt;p&gt;&lt;b&gt;Selection Mode&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose the rule applied when you pick a piece in the model view. Single selects that piece; the other modes include matching piece types, matching colors, or both. For example, color selection lets you pick matching red pieces without selecting each one separately.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Modo de seleção&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Escolha a regra aplicada ao escolher uma peça na visualização do modelo. Single seleciona essa peça; os outros modos incluem tipos de peças correspondentes, cores correspondentes ou ambos. Por exemplo, a seleção de cores permite escolher peças vermelhas correspondentes sem selecionar cada uma delas separadamente.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="689"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="689"/>
         <source>Transform Options</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Opções de transformação</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="691"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="691"/>
         <source>&lt;p&gt;&lt;b&gt;Transform Options&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose the axes and pivot used for interactive transforms. Relative Transforms uses the focused object&apos;s orientation, so movement along X follows that object&apos;s local X axis. Absolute Transforms uses the model axes. Rotate Together rotates the selection around a shared pivot; Rotate Separately rotates each piece around its own origin.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Opções de transformação&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Escolha os eixos e o pivô usados para transformações interativas. As Transformações Relativas usam a orientação do objeto em foco, de modo que o movimento ao longo de X segue o eixo X local desse objeto. Absolute Transforms usa os eixos do modelo. Girar Juntos gira a seleção em torno de um pivô compartilhado; Girar Gira separadamente cada peça em torno de sua própria origem.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="695"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="695"/>
         <source>Snap XY</source>
         <translation>Fixa XY</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="699"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="699"/>
         <source>Snap Z</source>
         <translation>Fixa Z</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="703"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="703"/>
         <source>Snap Menu</source>
         <translation>Menu Fixar</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="709"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="709"/>
         <source>Movement Snap</source>
         <translation>Fixar Movimentos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="710"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="710"/>
         <source>Snap translations to fixed intervals</source>
         <translation>Fixa translações por intervalos fixos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="712"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="712"/>
         <source>&lt;p&gt;&lt;b&gt;Movement Snap&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose how far objects move in each snapped increment. XY controls movement across the base plane; Z controls vertical movement, so they can use different intervals. Turn snapping off for free placement, then enable it again when you need consistent spacing.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Ajuste do movimento&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Escolha a distância que os objetos se movem em cada incremento ajustado. XY controla o movimento através do plano base; Z controla o movimento vertical, para que possam usar intervalos diferentes. Desative o encaixe para posicionamento livre e ative-o novamente quando precisar de espaçamento consistente.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="716"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="716"/>
         <source>Snap Angle Menu</source>
         <translation>Menu de fixação dos ângulos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="724"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="724"/>
         <source>Rotation Snap</source>
         <translation>Grelha de Rotação</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="725"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="725"/>
         <source>Snap rotations to fixed intervals</source>
         <translation>Fixa as rotações por intervalos fixos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="727"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="727"/>
         <source>&lt;p&gt;&lt;b&gt;Rotation Snap&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose an angle increment for interactive rotation. For example, a 90-degree increment is useful for quarter turns, while smaller increments allow finer alignment. Turn snapping off for free rotation without fixed angle increments.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Ajuste de rotação&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Escolha um incremento de ângulo para rotação interativa. Por exemplo, um incremento de 90 graus é útil para quartos de volta, enquanto incrementos menores permitem um alinhamento mais preciso. Desative o encaixe para rotação livre sem incrementos de ângulo fixo.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="731"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="731"/>
         <source>Standard</source>
         <translation>Standard</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="479"/>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="760"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="479"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="760"/>
         <source>Tools</source>
         <translation>Ferramentas</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="165"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="165"/>
         <source>New Model</source>
         <translation>Novo Modelo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="166"/>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3358"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="166"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3358"/>
         <source>Open Model</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Modelo aberto</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="167"/>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3512"/>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3522"/>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3530"/>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3546"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="167"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3512"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3522"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3530"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3546"/>
         <source>Save Model</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Guardar modelo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="470"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="470"/>
         <source>Sh&amp;ading</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Sombre&amp;amento</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="510"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="510"/>
         <source>&amp;Import</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&amp;Importação</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="523"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="523"/>
         <source>&amp;Render</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Devolve&amp;r</translation>
@@ -11574,44 +11574,44 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Sub&amp;modelo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="670"/>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="674"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="670"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="674"/>
         <source>Selection Mode</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Modo de seleção</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="675"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="675"/>
         <source>Change selection mode</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Alterar modo de seleção</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="676"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="676"/>
         <source>Choose which related pieces are included when selecting a piece.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha quais peças relacionadas serão incluídas ao selecionar uma peça.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="690"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="690"/>
         <source>Choose coordinate axes and whether selected pieces rotate together.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha os eixos coordenados e se as peças selecionadas giram juntas.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="711"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="711"/>
         <source>Choose movement snapping intervals for XY and Z.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha intervalos de ajuste de movimento para XY e Z.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="726"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="726"/>
         <source>Choose the rotation snapping interval.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha o intervalo de ajuste da rotação.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="751"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="751"/>
         <source>Time</source>
         <translation>Hora</translation>
     </message>
@@ -11621,239 +11621,239 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">&lt;p&gt;&lt;b&gt;Barra de ferramentas padrão&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Use controles de arquivo para criar, abrir e salvar projetos e Desfazer ou Refazer para navegar pelo histórico de edições. Antes de mover ou girar objetos, escolha a regra de seleção, a referência de coordenadas e os incrementos de encaixe nos quatro controles suspensos. Ajuda &gt; O que é isso? explica os controles individuais.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="753"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="753"/>
         <source>&lt;p&gt;&lt;b&gt;Time Toolbar&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The arrow buttons move through building steps so you can inspect how the model is assembled. They do not change the step assigned to a piece; use the Timeline for that. Add Keys controls whether edits create animation keys at the current step, allowing properties such as position to vary between steps.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Barra de ferramentas Tempo&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Os botões de seta movem-se pelas etapas de construção para que você possa inspecionar como o modelo é montado. Não alteram o passo atribuído a uma peça; use a linha do tempo para isso. Adicionar chaves controla se as edições criam chaves de animação na etapa atual, permitindo que propriedades como posição variem entre as etapas.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="762"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="762"/>
         <source>&lt;p&gt;&lt;b&gt;Tools Toolbar&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a tool, then use it in the model view. Insertion tools create pieces, lights, or cameras. Editing tools select, transform, remove, or recolor objects. Navigation tools change the viewpoint without changing model geometry. Mouse assignments can be customized in Preferences.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Barra de ferramentas Ferramentas&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Escolha uma ferramenta e use-a na visualização do modelo. As ferramentas de inserção criam peças, luzes ou câmeras. As ferramentas de edição selecionam, transformam, removem ou recolorem objetos. As ferramentas de navegação alteram o ponto de vista sem alterar a geometria do modelo. As atribuições do mouse podem ser personalizadas em Preferências.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="803"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="803"/>
         <source>Pieces</source>
         <translation>Peças</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="806"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="806"/>
         <source>&lt;p&gt;&lt;b&gt;Pieces&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a category or palette and filter its pieces. Selecting a piece prepares it for insertion; drag it into the model view to place it. Double-click a piece to open its preview. Options controls filtering, thumbnails, and list display.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Peças&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Escolha uma categoria ou paleta e filtre suas peças. A seleção de uma peça a prepara para inserção; arraste-o para a visualização do modelo para posicioná-lo. Clique duas vezes em uma peça para abrir sua visualização. As opções controlam a filtragem, as miniaturas e a exibição da lista.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="816"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="816"/>
         <source>Colors</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cores</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="818"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="818"/>
         <source>&lt;p&gt;&lt;b&gt;Colors&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose the current LDraw color from the swatches. This color is used when inserting or painting pieces. To recolor selected pieces, use the color button above the swatches. Hover over a swatch for its name and color code.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Cores&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Escolha a cor atual do LDraw nas amostras. Esta cor é utilizada na inserção ou pintura de peças. Para recolorir peças selecionadas, use o botão de cores acima das amostras. Passe o mouse sobre uma amostra para ver seu nome e código de cor.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="834"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="834"/>
         <source>Apply the current color to selected pieces.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Aplique a cor atual às peças selecionadas.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="835"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="835"/>
         <source>Change Selection Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Alterar cor de seleção</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="836"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="836"/>
         <source>&lt;p&gt;&lt;b&gt;Change Selection Color&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Apply the current color to selected pieces. Choosing a swatch sets the current color; this button applies that color to the selection.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Alterar cor da seleção&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Aplica a cor atual às peças selecionadas. A escolha de uma amostra define a cor atual; este botão aplica essa cor à seleção.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="850"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="850"/>
         <source>LDraw Colors</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cores do LDraw</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="869"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="869"/>
         <source>Properties</source>
         <translation>Propriedades</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="871"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="871"/>
         <source>&lt;p&gt;&lt;b&gt;Properties&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Edit properties of the focused object or selection. Available fields depend on whether you select pieces, a camera, or a light. Expand a section to see its fields. Keyframe controls mark properties at the current building step.&lt;/p&gt;&lt;p&gt;The transform fields at the bottom apply an X/Y/Z translation or rotation using the chosen transform mode. Press Enter to apply the values.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Propriedades&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Edite as propriedades do objeto ou seleção em foco. Os campos disponíveis dependem de você selecionar peças, uma câmera ou uma luz. Expanda uma seção para ver seus campos. Os controles de quadro-chave marcam as propriedades na etapa de construção atual.&lt;/p&gt;&lt;p&gt;Os campos de transformação na parte inferior aplicam uma translação ou rotação X/Y/Z usando o modo de transformação escolhido. Pressione Enter para aplicar os valores.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="924"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="924"/>
         <source>Choose absolute or relative translation or rotation.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha translação ou rotação absoluta ou relativa.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="925"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="925"/>
         <source>&lt;p&gt;&lt;b&gt;Apply Transform&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose the translation or rotation mode, enter X/Y/Z values, and press Enter to apply them. Translation values use LDraw units; rotation values use degrees.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Aplicar transformação&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Escolha o modo de translação ou rotação, insira os valores X/Y/Z e pressione Enter para aplicá-los. Os valores de tradução usam unidades LDRaw; os valores de rotação usam graus.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="903"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="903"/>
         <source>Transform X</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Transformar X</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="122"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="122"/>
         <source>Configure the model view display and rendering.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="123"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="123"/>
         <source>Model View Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="184"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="184"/>
         <source>Open Model Folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="633"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="633"/>
         <source>&amp;Models</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="733"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="733"/>
         <source>&lt;p&gt;&lt;b&gt;Standard Toolbar&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Use file controls to create, open, and save models, and Undo or Redo to navigate edit history. Before moving or rotating objects, choose the selection rule, coordinate reference, and snapping increments from the four drop-down controls. Help &gt; What&apos;s This? explains individual controls.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="846"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="846"/>
         <source>Choose how inserted pieces are colored.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="846"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="846"/>
         <source>Color Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="892"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="892"/>
         <source>T</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="904"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="904"/>
         <source>Enter the X translation in LDraw units or rotation in degrees.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Insira a translação do X em unidades do LDraw ou a rotação em graus.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="909"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="909"/>
         <source>Transform Y</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Transformar Y</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="910"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="910"/>
         <source>Enter the Y translation in LDraw units or rotation in degrees.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Insira a translação Y em unidades LDraw ou a rotação em graus.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="915"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="915"/>
         <source>Transform Z</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Transformar Z</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="916"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="916"/>
         <source>Enter the Z translation in LDraw units or rotation in degrees.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Insira a translação Z em unidades LDraw ou a rotação em graus.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="977"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="977"/>
         <source>Timeline</source>
         <translation>Linha Temporal</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="979"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="979"/>
         <source>&lt;p&gt;&lt;b&gt;Timeline&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select a step to make it current, or select piece rows to select those pieces in the model. Drag pieces between steps or reorder them within a step. Right-click for step insertion, removal, movement, and visibility commands.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Linha do tempo&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Selecione uma etapa para torná-la atual ou selecione linhas de peças para selecionar essas peças no modelo. Arraste peças entre etapas ou reordene-as dentro de uma etapa. Clique com o botão direito para comandos de inserção, remoção, movimentação e visibilidade de etapas.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="998"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="998"/>
         <source>Minifigure Builder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1000"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1000"/>
         <source>&lt;p&gt;&lt;b&gt;Minifigure Builder&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose the pieces, colors and pose of a minifigure, then add it to the current model. The panel keeps its settings so you can add several variations.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1052"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1052"/>
         <source>Terminal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1054"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1054"/>
         <source>&lt;p&gt;&lt;b&gt;Terminal&lt;/b&gt;&lt;/p&gt;&lt;p&gt;An embedded Konsole terminal that starts in the folder of the current model.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1119"/>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1120"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1119"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1120"/>
         <source>Preview</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Visualização</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1122"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1122"/>
         <source>&lt;p&gt;&lt;b&gt;Preview&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Inspect a piece without placing it in the model. Double-click a piece in the Pieces dock to preview it. Lock Preview keeps the current preview when the source selection changes; unlock it to allow updates.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Visualização&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Inspecione uma peça sem colocá-la no modelo. Clique duas vezes em uma peça no encaixe Peças para visualizá-la. Bloquear visualização mantém a visualização atual quando a seleção da fonte é alterada; desbloqueie-o para permitir atualizações.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1277"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1277"/>
         <source>Asset loading failed</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Falha no carregamento de recursos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1378"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1378"/>
         <source>Could not load piece.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Não foi possível carregar a peça.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1400"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1400"/>
         <source>Could not generate geometry.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Não foi possível gerar geometria.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1414"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1414"/>
         <source>Regenerating synthesized piece geometry.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Regenerando a geometria da peça sintetizada.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1416"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1416"/>
         <source>Loading model pieces (%1 / %2).</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Carregamento de peças do modelo (%1 / %2).</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1423"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1423"/>
         <source>The model could not be fully loaded. Some pieces may be missing.
 
 %1</source>
@@ -11866,283 +11866,283 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
 %1</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1543"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1543"/>
         <source>Close Other Tabs</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Fechar outras guias</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1636"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1636"/>
         <source>The file &apos;%1&apos; has been modified by another application. Do you want to reload it?</source>
         <oldsource>The file &apos;%1&apos; has been modified by another application, do you want to reload it?</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">O ficheiro &apos;%1&apos; foi modificado por outra aplicação, pretende recarregá-lo?</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1642"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1642"/>
         <source>File Changed</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Arquivo alterado</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1685"/>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1693"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1685"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1693"/>
         <source>Reload</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1685"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1685"/>
         <source>The current model has not been saved to a file yet.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1691"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1691"/>
         <source>The model has unsaved changes. Do you want to discard them and reload &apos;%1&apos;?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1735"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1735"/>
         <source>Export HTML</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Exportar HTML</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1743"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1743"/>
         <source>POV-Ray Export</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">POV-Ray Exportar</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1821"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1821"/>
         <source>Save Image</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">Gravar Imagem</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1833"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1833"/>
         <source>Nothing to select.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Nada a selecionar.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1833"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1833"/>
         <source>Select Objects</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">Selecionar Objetos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1953"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1953"/>
         <source>Step %1 View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1958"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1958"/>
         <source>No view change</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1958"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1958"/>
         <source>Relative to the default view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1958"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1958"/>
         <source>Absolute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1958"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1958"/>
         <source>Added to the previous view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1958"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1958"/>
         <source>Back to the default view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1959"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1959"/>
         <source>How this step turns the view, saved as an MLCAD ROTSTEP line ending the step.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1960"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1960"/>
         <source>Rotation:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1963"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1963"/>
         <source>X:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1963"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1963"/>
         <source>Y:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1963"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1963"/>
         <source>Z:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1970"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1970"/>
         <source> deg.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1974"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1974"/>
         <source>Use Current View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="1975"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="1975"/>
         <source>Fill in the absolute rotation that matches the current view.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="2160"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="2160"/>
         <source>Use Model View Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="2162"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="2162"/>
         <source>Shading</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="2164"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="2164"/>
         <source>Wireframe</source>
         <translation type="unfinished">Estrutura de arame</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="2165"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="2165"/>
         <source>Flat Shading</source>
         <translation type="unfinished">Sombreamento plano</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="2166"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="2166"/>
         <source>Default Lights</source>
         <translation type="unfinished">Luzes padrão</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="2170"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="2170"/>
         <source>Standard Lighting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="2170"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="2170"/>
         <source>Studio Lighting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="2170"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="2170"/>
         <source>Matte Lighting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="2170"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="2170"/>
         <source>Toon Lighting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="2179"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="2179"/>
         <source>Edge Lines</source>
         <translation type="unfinished">Linhas de orla</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="2180"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="2180"/>
         <source>Conditional Lines</source>
         <translation type="unfinished">Linhas Condicionais</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="2190"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="2190"/>
         <source>View Sphere</source>
         <translation type="unfinished">Ver Esfera</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="2191"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="2191"/>
         <source>Axis Icon</source>
         <translation type="unfinished">Ícone do eixo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="2192"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="2192"/>
         <source>Base Grid</source>
         <translation type="unfinished">Grelha de Base</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="2193"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="2193"/>
         <source>XZ Height Grid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="2194"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="2194"/>
         <source>YZ Height Grid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="2195"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="2195"/>
         <source>Height Grids Behind Model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="2196"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="2196"/>
         <source>Fade Previous Steps</source>
         <translation type="unfinished">Desaparecer etapas anteriores</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="2197"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="2197"/>
         <source>Insert First Piece at Origin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="2597"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="2597"/>
         <source>Insert Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="2599"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="2599"/>
         <source>Current Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="2600"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="2600"/>
         <source>Selected Piece Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="2601"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="2601"/>
         <source>Last Inserted Piece Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="2603"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="2603"/>
         <source>Lock Pieces Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="2651"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="2651"/>
         <source>Custom Rotation Snap</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="2651"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="2651"/>
         <source>Snap angle in degrees:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="2663"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="2663"/>
         <source>Custom (%1 Degrees)...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="2992"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="2992"/>
         <source>%1 (ID: %2)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 (ID: %2)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="2998"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="2998"/>
         <source>%n objects selected</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">
@@ -12151,134 +12151,134 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         </translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3002"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3002"/>
         <source> - %1 (ID: %2)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished"> - %1 (ID: %2)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3006"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3006"/>
         <source> in group &apos;%1&apos;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished"> no grupo &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3021"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3021"/>
         <source>Piece</source>
         <translation type="unfinished">Peça</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3023"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3023"/>
         <source>Camera</source>
         <translation type="unfinished">Câmara</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3025"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3025"/>
         <source>Light</source>
         <translation type="unfinished">Luz</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3027"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3027"/>
         <source>Origin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3029"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3029"/>
         <source>%1 X: %2 Y: %3 Z: %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3065"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3065"/>
         <source>Step %1</source>
         <translation>Passo %1</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3109"/>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3110"/>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3112"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3109"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3110"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3112"/>
         <source>free</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3111"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3111"/>
         <source>relative</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3111"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3111"/>
         <source>absolute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3112"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3112"/>
         <source>%1 deg.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3113"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3113"/>
         <source>separately</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3113"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3113"/>
         <source>together</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3115"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3115"/>
         <source>- Move XY: %1 Z: %2 - Axes: %3 - Rotate: %4 / %5 -</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3116"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3116"/>
         <source>Movement snap, rotation snap, transform axes and rotation pivot. Change them with the last buttons of the standard toolbar.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3672"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3672"/>
         <source>Export 3DS</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Exportar 3DS</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3676"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3676"/>
         <source>Export COLLADA</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">Exportar COLLADA</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3684"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3684"/>
         <source>Export BrickLink</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">Exportar BrickLink</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3688"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3688"/>
         <source>Export CSV</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">Exportar CSV</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3696"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3696"/>
         <source>Export Wavefront</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">Exportar Wavefront</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3746"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3746"/>
         <source>Cannot Cut Model</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Não é possível cortar o modelo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3751"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3751"/>
         <source>Cannot Copy Model</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Não é possível copiar o modelo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3756"/>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3761"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3756"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3761"/>
         <source>Cannot Paste Model</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Não é possível colar o modelo</translation>
@@ -12288,46 +12288,46 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="vanished"> M: %1 %2 R: %3 </translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3138"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3138"/>
         <source>&amp;Undo %1</source>
         <translation>&amp;Desfazer %1</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3143"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3143"/>
         <source>&amp;Undo</source>
         <translation>Desfa&amp;zer</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3149"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3149"/>
         <source>&amp;Redo %1</source>
         <translation>&amp;Refazer %1</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3154"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3154"/>
         <source>&amp;Redo</source>
         <translation>&amp;Refazer</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3358"/>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3414"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3358"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3414"/>
         <source>Supported Files (*.lcd *.ldr *.dat *.mpd);;All Files (*.*)</source>
         <translation>Ficheiros Aceites (*.lcd *.ldr *.dat *.mpd);;Todos os Ficheiros (*.*)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3414"/>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3449"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3414"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3449"/>
         <source>Merge Model</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Mesclar modelo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3459"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3459"/>
         <source>Import</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Importação</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3459"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3459"/>
         <source>LEGO® Digital Designer Files (*.lxf);;All Files (*.*)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">LEGO® Ficheiros do Digital Designer (*.lxf);;Todos os ficheiros (*.*)</translation>
@@ -12342,12 +12342,12 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="vanished">Erro ao carregar &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3510"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3510"/>
         <source>Supported Files (*.mpd);;All Files (*.*)</source>
         <translation>Ficheiros Aceites (*.mpd);;Todos os Ficheiros (*.*)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3510"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3510"/>
         <source>Supported Files (*.ldr *.dat *.mpd);;All Files (*.*)</source>
         <translation>Ficheiros Aceites (*.ldr *.dat *.mpd);;Todos os Ficheiros (*.*)</translation>
     </message>
@@ -12370,13 +12370,13 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete"> M: %1 %2 R: %3  {1 %2 ?} {3 %4 ?}</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3445"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3445"/>
         <source>Cannot Merge Model</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Não é possível fundir o modelo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3522"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3522"/>
         <source>Saving files in LCD format is no longer supported. Please use the LDR or MPD formats instead.</source>
         <oldsource>Saving files in LCD format is no longer supported, please use the LDR or MPD formats instead.</oldsource>
         <translation type="unfinished">O formato LCD já não é aceite para gravar, escolha os formatos LDR ou MPD.</translation>
@@ -12387,95 +12387,95 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Guardar projeto</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3546"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3546"/>
         <source>Save changes to &apos;%1&apos;?</source>
         <translation>Gravar as modificações de &apos;%1&apos;?</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.h" line="125"/>
-        <location filename="../../source/interface/window/sw_main_window.h" line="131"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="125"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="131"/>
         <source>0</source>
         <translation>8x {0?}</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.h" line="125"/>
-        <location filename="../../source/interface/window/sw_main_window.h" line="131"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="125"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="131"/>
         <source>1/20S</source>
         <translation>8x {1/20S?}</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.h" line="125"/>
-        <location filename="../../source/interface/window/sw_main_window.h" line="131"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="125"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="131"/>
         <source>1/4S</source>
         <translation>8x {1/4S?}</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.h" line="125"/>
-        <location filename="../../source/interface/window/sw_main_window.h" line="131"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="125"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="131"/>
         <source>1F</source>
         <translation>8x {1F?}</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.h" line="125"/>
-        <location filename="../../source/interface/window/sw_main_window.h" line="131"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="125"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="131"/>
         <source>1/2S</source>
         <translation>8x {1/2S?}</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.h" line="125"/>
-        <location filename="../../source/interface/window/sw_main_window.h" line="131"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="125"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="131"/>
         <source>1S</source>
         <translation>8x {1S?}</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.h" line="125"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="125"/>
         <source>2S</source>
         <translation>8x {2S?}</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.h" line="125"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="125"/>
         <source>3S</source>
         <translation>8x {3S?}</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.h" line="125"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="125"/>
         <source>4S</source>
         <translation>8x {4S?}</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.h" line="125"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="125"/>
         <source>8S</source>
         <translation>8x {8S?}</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="2627"/>
-        <location filename="../../source/interface/window/sw_main_window.h" line="126"/>
-        <location filename="../../source/interface/window/sw_main_window.h" line="132"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="2627"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="126"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="132"/>
         <source>None</source>
         <translation>Nenhum</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.h" line="131"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="131"/>
         <source>1B</source>
         <translation>8x {1B?}</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.h" line="131"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="131"/>
         <source>2B</source>
         <translation>8x {2B?}</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.h" line="131"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="131"/>
         <source>4B</source>
         <translation>8x {4B?}</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_main_window.h" line="131"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="131"/>
         <source>8B</source>
         <translation>8x {8B?}</translation>
     </message>
     <message numerus="yes">
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3449"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3449"/>
         <source>Merged %n submodels.</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">
@@ -12524,250 +12524,250 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">&lt;p&gt;&lt;b&gt;Modelos&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Carregue uma configuração salva de peças, cores e ângulos ou salve a configuração atual com um nome. A escolha de outro modelo substitui a configuração de visualização atual.&lt;/p&gt;&lt;p&gt;As alterações na visualização não são salvas como modelo até que você use Salvar. As operações do modelo são retidas quando o assistente é fechado, inclusive após Cancelar.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="158"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="158"/>
         <source>Templates</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Modelos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.ui"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.ui"/>
         <source>Load a saved configuration of pieces, colors, and angles.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Carregue uma configuração salva de peças, cores e ângulos.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.ui"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.ui"/>
         <source>Minifigure Template</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Modelo de minifigura</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.ui"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.ui"/>
         <source>Save the current minifigure configuration as a named template.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Salve a configuração atual da minifigura como um modelo nomeado.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.ui"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Save Template&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Enter a name for the current pieces, colors, and pose. Reusing an existing name asks before replacing that template. The Default template cannot be overwritten.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Salvar modelo&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Insira um nome para as peças, cores e poses atuais. Reutilizar um nome existente pergunta antes de substituir esse modelo. O modelo padrão não pode ser substituído.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.ui"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.ui"/>
         <source>Save...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Guardar...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.ui"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.ui"/>
         <source>Delete the selected saved template.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Exclua o modelo salvo selecionado.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.ui"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Delete Template&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Remove the selected named template after confirmation. This does not remove pieces from the preview or an existing model. The Default template cannot be deleted.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Excluir modelo&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Remova o modelo nomeado selecionado após a confirmação. Isso não remove peças da visualização ou de um modelo existente. O modelo padrão não pode ser excluído.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.ui"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.ui"/>
         <source>Delete...</source>
         <translation type="unfinished">Apagar...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.ui"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.ui"/>
         <source>Add templates from a .minifig file.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Adicione modelos de um arquivo .minifig.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.ui"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Import Templates&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Add saved configurations from a .minifig file to the template collection. Existing template names are kept when the imported file contains the same names.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Importar modelos&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Adicione configurações salvas de um arquivo .minifig à coleção de modelos. Os nomes dos modelos existentes são mantidos quando o arquivo importado contém os mesmos nomes.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.ui"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.ui"/>
         <source>Import...</source>
         <translation type="unfinished">Importar....</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.ui"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.ui"/>
         <source>Save the entire template collection to a .minifig file.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Salve toda a coleção de modelos em um arquivo .minifig.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.ui"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Export Templates&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Write all templates to a .minifig file for backup or sharing. Export includes the entire collection, not just the selected template.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Exportar modelos&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Grave todos os modelos em um arquivo .minifig para backup ou compartilhamento. A exportação inclui toda a coleção, não apenas o modelo selecionado.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.ui"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.ui"/>
         <source>Export...</source>
         <translation type="unfinished">Exportar...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="35"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="35"/>
         <source>Hat</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Chapéu</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="35"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="35"/>
         <source>Hat Accessory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Acessório para chapéu</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="35"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="35"/>
         <source>Head</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cabeça</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="35"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="35"/>
         <source>Neck</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Pescoço</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="35"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="35"/>
         <source>Torso</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Torso</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="35"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="35"/>
         <source>Hip</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Anca</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="35"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="35"/>
         <source>Hip Accessory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Acessório de quadril</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="35"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="35"/>
         <source>Left Arm</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Braço Esquerdo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="35"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="35"/>
         <source>Right Arm</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Braço Direito</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="35"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="35"/>
         <source>Left Hand</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Mão Esquerda</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="35"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="35"/>
         <source>Right Hand</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Mão Direita</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="36"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="36"/>
         <source>Left Hand Accessory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Acessório para mão esquerda</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="36"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="36"/>
         <source>Right Hand Accessory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Acessório para mão direita</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="36"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="36"/>
         <source>Left Leg</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Perna Esquerda</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="36"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="36"/>
         <source>Right Leg</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Perna Direita</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="36"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="36"/>
         <source>Left Leg Accessory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Acessório para perna esquerda</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="36"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="36"/>
         <source>Right Leg Accessory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Acessório para perna direita</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="53"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="53"/>
         <source>%1 piece</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 peça</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="54"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="54"/>
         <source>&lt;p&gt;&lt;b&gt;Choose Piece&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a piece for this section of the minifigure. Select None to omit it, the selector then shows the name of the section. The preview updates when you select a different piece.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="128"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="128"/>
         <source>Minifigure Builder Preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="130"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="130"/>
         <source>&lt;p&gt;&lt;b&gt;Minifigure Builder Preview&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Check the assembled minifigure as you change pieces, colors, or angles. Choose Add to Model to add it to the current model.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="173"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="173"/>
         <source>Add to Model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="174"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="174"/>
         <source>Add this minifigure to the current model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="190"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="190"/>
         <source>Configure the minifigure builder preview rendering.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="191"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="191"/>
         <source>Minifigure Builder Preview Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="252"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="252"/>
         <source>Choose the piece for %1, or None to omit it.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a peça para %1, ou Nenhum para a omitir.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="252"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="252"/>
         <source>%1: %2</source>
         <translation type="unfinished">%1: %2</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="294"/>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="297"/>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="308"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="294"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="297"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="308"/>
         <source>Default Template</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12777,37 +12777,37 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">&lt;p&gt;&lt;b&gt;Escolha a peça&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Escolha uma peça para esta seção da minifigura. Selecione Nenhum para omiti-lo. A visualização é atualizada quando você seleciona uma peça diferente.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="61"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="61"/>
         <source>%1 color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 cor</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="62"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="62"/>
         <source>Choose the color for %1.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a cor para %1.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="63"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="63"/>
         <source>&lt;p&gt;&lt;b&gt;Choose Color&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Change the color of this minifigure piece. The preview updates immediately, and saving a template includes the chosen color.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Escolha a cor&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Mude a cor desta peça de minifigura. A visualização é atualizada imediatamente e salvar um modelo inclui a cor escolhida.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="76"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="76"/>
         <source>%1 rotation</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 rotação</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="77"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="77"/>
         <source>Rotate %1, in degrees (-360 to 360).</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Gire %1, em graus (-360 a 360).</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="78"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="78"/>
         <source>&lt;p&gt;&lt;b&gt;Rotation&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Adjust this piece&apos;s angle to pose the minifigure. Values range from -360 to 360 degrees. The available rotation depends on the selected minifigure section.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Rotação&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Ajuste o ângulo desta peça para posicionar a minifigura. Os valores variam de -360 a 360 graus. A rotação disponível depende da seção da minifigura selecionada.&lt;/p&gt;</translation>
@@ -12818,7 +12818,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Visualização da minifigura</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="129"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="129"/>
         <source>Preview of the chosen pieces, colors, and pose.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Prévia das peças escolhidas, cores e pose.</translation>
@@ -12829,65 +12829,65 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">&lt;p&gt;&lt;b&gt;Visualização da minifigura&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Verifique a minifigura montada conforme você altera peças, cores ou ângulos. Escolha OK para adicionar esta configuração ao modelo atual.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="351"/>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="358"/>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="364"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="351"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="358"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="364"/>
         <source>Save Template</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Guardar modelo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="351"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="351"/>
         <source>Template Name:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Nome do modelo:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="358"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="358"/>
         <source>Template name cannot be empty.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">O nome do modelo não pode estar vazio.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="364"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="364"/>
         <source>Cannot overwrite the default template.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Não é possível substituir o modelo padrão.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="370"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="370"/>
         <source>Are you sure you want to overwrite the template &apos;%1&apos;?</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Tem a certeza que pretende substituir o modelo &apos;%1&apos;?</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="371"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="371"/>
         <source>Overwrite Template</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Modelo de substituição</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="399"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="399"/>
         <source>Are you sure you want to delete the template &apos;%1&apos;?</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Tem a certeza que pretende eliminar o modelo &apos;%1&apos;?</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="401"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="401"/>
         <source>Delete Template</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Excluir modelo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="414"/>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="423"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="414"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="423"/>
         <source>Import Templates</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Importar modelos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="414"/>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="435"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="414"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="435"/>
         <source>Minifigure Template Files (*.minifig);;All Files (*.*)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ficheiros de modelo Minifig (*.minifig);;Todos os ficheiros (*.*)</translation>
@@ -12897,7 +12897,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Erro</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="423"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="423"/>
         <source>Error reading file &apos;%1&apos;:
 %2</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -12905,42 +12905,42 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
 %2</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="435"/>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="444"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="435"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="444"/>
         <source>Export Templates</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Exportar modelos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="444"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="444"/>
         <source>Error writing to file &apos;%1&apos;:
 %2</source>
         <translation type="unfinished">Erro ao escrever no ficheiro &apos;%1&apos;:
 %2</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.cpp" line="479"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.cpp" line="479"/>
         <source>None</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">Nenhum</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.ui"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Minifigure Builder&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Build a minifigure by choosing its pieces, colors, and pose. The preview updates as you make changes. Choose Add to Model to insert the minifigure into the current model.&lt;/p&gt;&lt;p&gt;Templates let you reuse a configuration. Saved, deleted, and imported templates are kept as soon as you change them.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.ui"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.ui"/>
         <source>Minifigure Builder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.ui"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Minifigure Pieces&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Each section has a piece selector and a color button. Some sections also have a rotation control in degrees. Choose None in a piece selector to omit that piece, the selector then shows the name of the section.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_minifigure_builder_widget.ui"/>
+        <location filename="../../source/interface/widgets/sw_widget_minifigure_builder.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Templates&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Load a saved configuration of pieces, colors, and angles, or save the current configuration under a name. Choosing another template replaces the current preview configuration.&lt;/p&gt;&lt;p&gt;Changes to the preview are not saved as a template until you use Save. Saved, deleted and imported templates are kept right away.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13522,13 +13522,13 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">&lt;p&gt;&lt;b&gt;Submodelos&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Gerencie os modelos armazenados neste projeto. Crie, renomeie, duplique, exclua ou reordene-os e escolha OK para aplicar as alterações. Cancel descarta as alterações da lista; os arquivos já exportados permanecem no disco.&lt;/p&gt;&lt;p&gt;Arraste as entradas da lista para alterar sua ordem. Use Definir ativo para alternar para o item atual da lista ao aplicar alterações.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.ui"/>
         <source>Submodels</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Submodelos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.ui"/>
         <source>Select models to manage, or drag them to change their order.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione modelos para gerenciar ou arraste-os para alterar sua ordem.</translation>
@@ -13544,7 +13544,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Adicione um novo submodelo vazio ao projeto.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.ui"/>
         <source>&amp;New...</source>
         <translation>&amp;Novo...</translation>
     </message>
@@ -13559,52 +13559,52 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">&lt;p&gt;&lt;b&gt;Excluir submodelos&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Remova as entradas selecionadas após a confirmação. Pelo menos um modelo deve permanecer. O projeto é alterado quando você aceita esta caixa de diálogo.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.ui"/>
         <source>D&amp;elete...</source>
         <translation>&amp;Apagar...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.ui"/>
         <source>Choose a unique name for each selected model.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha um nome exclusivo para cada modelo selecionado.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.ui"/>
         <source>&amp;Rename...</source>
         <translation>&amp;Mudar o Nome...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.ui"/>
         <source>Save the selected models to separate LDraw files.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Salve os modelos selecionados em arquivos LDraw separados.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Export Submodels&lt;/b&gt;&lt;/p&gt;&lt;p&gt;For one selected model, choose its output file. For several selected models, choose an output folder. Export writes files immediately, even if you later cancel this dialog.&lt;/p&gt;&lt;p&gt;A newly created empty model has nothing to export until the list changes have been applied.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Exportar submodelos&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Para um modelo selecionado, escolha seu arquivo de saída. Para vários modelos selecionados, escolha uma pasta de saída. Exportar grava os arquivos imediatamente, mesmo se você cancelar esta caixa de diálogo posteriormente.&lt;/p&gt;&lt;p&gt;Um modelo vazio recém-criado não terá nada para exportar até que as alterações da lista sejam aplicadas.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.ui"/>
         <source>Export...</source>
         <translation>Exportar...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.ui"/>
         <source>Create named copies of the selected models.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Crie cópias nomeadas dos modelos selecionados.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.ui"/>
         <source>Duplicate...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Duplicado...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.ui"/>
         <source>Switch to the current list item when applying the changes.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Mude para o item atual da lista ao aplicar as alterações.</translation>
@@ -13623,13 +13623,13 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="vanished">&amp;Descer</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.ui"/>
         <source>Set Active</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Definir ativo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.cpp" line="114"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.cpp" line="114"/>
         <source>New Submodel</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Novo submodelo</translation>
@@ -13639,46 +13639,46 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="vanished">Erro</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.cpp" line="128"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.cpp" line="128"/>
         <source>The model cannot be empty.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">O modelo não pode estar vazio.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.cpp" line="142"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.cpp" line="142"/>
         <source>Are you sure you want to delete the submodel &apos;%1&apos;?</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Tem a certeza que pretende eliminar o submodelo &apos;%1&apos;?</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.cpp" line="128"/>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.cpp" line="136"/>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.cpp" line="146"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.cpp" line="128"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.cpp" line="136"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.cpp" line="146"/>
         <source>Delete Submodel</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Apagar submodelo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.cpp" line="136"/>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.cpp" line="166"/>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.cpp" line="190"/>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.cpp" line="258"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.cpp" line="136"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.cpp" line="166"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.cpp" line="190"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.cpp" line="258"/>
         <source>No submodel selected.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Nenhum submodelo selecionado.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.cpp" line="166"/>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.cpp" line="177"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.cpp" line="166"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.cpp" line="177"/>
         <source>Rename Submodel</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Renomear submodelo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.cpp" line="190"/>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.cpp" line="205"/>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.cpp" line="220"/>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.cpp" line="242"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.cpp" line="190"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.cpp" line="205"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.cpp" line="220"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.cpp" line="242"/>
         <source>Export Submodel</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Exportar submodelo</translation>
@@ -13688,25 +13688,25 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="vanished">StudWorks</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.cpp" line="205"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.cpp" line="205"/>
         <source>Nothing to export.</source>
         <translation>Nada a exportar.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.cpp" line="212"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.cpp" line="212"/>
         <source>Export Model</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Modelo de exportação</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.cpp" line="226"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.cpp" line="226"/>
         <source>Select Export Folder</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione Pasta de Exportação</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.cpp" line="258"/>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.cpp" line="296"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.cpp" line="258"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.cpp" line="296"/>
         <source>Duplicate Submodel</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Submodelo duplicado</translation>
@@ -13717,13 +13717,13 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Cópia de </translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.cpp" line="212"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.cpp" line="212"/>
         <source>Supported Files (*.ldr *.dat);;All Files (*.*)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ficheiros Suportados (*.ldr *.dat);;Todos os Ficheiros (*.*)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.cpp" line="144"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.cpp" line="144"/>
         <source>Are you sure you want to delete %n submodels?</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">
@@ -13732,32 +13732,32 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         </translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Submodels&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Manage the model and its submodels. Create, rename, duplicate, delete, or reorder entries, then choose OK to apply the changes. Cancel discards the list changes; files already exported remain on disk.&lt;/p&gt;&lt;p&gt;Drag list entries to change their order. Use Set Active to switch to the current list item when applying changes.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Model List&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select one or more entries for actions such as Rename, Duplicate, Export, or Delete. Drag entries to reorder them. Double-click an entry to apply the list changes and make that entry active.&lt;/p&gt;&lt;p&gt;Model and submodel names must be unique; capitalization alone does not make a name unique.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.ui"/>
         <source>Add a new empty submodel.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.ui"/>
         <source>Remove the selected entries.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Delete Submodels&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Remove the selected entries after confirmation. At least one entry must remain. Changes take effect when you accept this dialog.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Set Active&lt;/b&gt;&lt;/p&gt;&lt;p&gt;When checked, accepting this dialog makes the current list entry active for editing. When unchecked, the existing active entry is retained if it remains in the list.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -13765,292 +13765,292 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
 <context>
     <name>swPageSetupDialog</name>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.ui"/>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="149"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="149"/>
         <source>Page Setup</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Configuração de página</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.ui"/>
         <source>Size</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Tamanho</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.ui"/>
         <source>Width:</source>
         <translation type="unfinished">Largura:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.ui"/>
         <source>Height:</source>
         <translation type="unfinished">Altura:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.ui"/>
         <source>Preset:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Predefinição:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.ui"/>
         <source>Units:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Unidades:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.ui"/>
         <source>Margins</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Margens</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.ui"/>
         <source>Left:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Esquerda:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.ui"/>
         <source>Right:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Certo:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.ui"/>
         <source>Top:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Topo:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.ui"/>
         <source>Bottom:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Fundo:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.ui"/>
         <source>Choose a standard paper or screen size, or Custom to enter your own.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.ui"/>
         <source>Units used for the page size. A pixel is 1/72 inch, one pixel of the page image. Choosing a preset selects the units that match it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.ui"/>
         <source>Orientation:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.ui"/>
         <source>Portrait</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.ui"/>
         <source>Landscape</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.ui"/>
         <source>Units used for the margins, metric or imperial. Choosing a preset selects the units that match it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="18"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="18"/>
         <source>A0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="19"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="19"/>
         <source>A1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="20"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="20"/>
         <source>A2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="21"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="21"/>
         <source>A3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="22"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="22"/>
         <source>A4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="23"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="23"/>
         <source>A5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="24"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="24"/>
         <source>A6</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="25"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="25"/>
         <source>B4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="26"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="26"/>
         <source>B5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="27"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="27"/>
         <source>B6</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="28"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="28"/>
         <source>JIS B4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="29"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="29"/>
         <source>JIS B5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="31"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="31"/>
         <source>Letter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="32"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="32"/>
         <source>Legal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="33"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="33"/>
         <source>Tabloid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="34"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="34"/>
         <source>Executive</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="35"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="35"/>
         <source>Statement</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="36"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="36"/>
         <source>ANSI C</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="38"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="38"/>
         <source>XGA</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="39"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="39"/>
         <source>HD</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="40"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="40"/>
         <source>WXGA</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="41"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="41"/>
         <source>UXGA</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="42"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="42"/>
         <source>Full HD</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="43"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="43"/>
         <source>WUXGA</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="44"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="44"/>
         <source>Tablet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="45"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="45"/>
         <source>QHD</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="46"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="46"/>
         <source>4K UHD</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="74"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="74"/>
         <source>px</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="77"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="77"/>
         <source>mm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="80"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="80"/>
         <source>cm</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="83"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="83"/>
         <source>in</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="94"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="94"/>
         <source>Pixels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="94"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="94"/>
         <source>Millimeters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="94"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="94"/>
         <source>Centimeters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="94"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="94"/>
         <source>Inches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="98"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="98"/>
         <source>Custom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="111"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="111"/>
         <source>%1 x %2 %3</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="113"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="113"/>
         <source>%1 (%2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_page_setup_dialog.cpp" line="149"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_page_setup.cpp" line="149"/>
         <source>The margins must leave room for the page contents.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -14058,137 +14058,137 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
 <context>
     <name>swPartPaletteDialog</name>
     <message>
-        <location filename="../../source/interface/dialogs/sw_part_palette_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_part_palette.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Piece Palettes&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Organize reusable collections of pieces in the piece browser. Create, rename, delete, import, or reorder palettes, then choose OK to apply the changes. Cancel discards these palette changes.&lt;/p&gt;&lt;p&gt;Palettes organize piece choices; they do not change pieces already placed in a model.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Paletas de peças&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Organize coleções reutilizáveis de peças no navegador de peças. Crie, renomeie, exclua, importe ou reordene paletas e escolha OK para aplicar as alterações. Cancelar descarta essas alterações de paleta.&lt;/p&gt;&lt;p&gt;As paletas organizam as opções de peças; eles não alteram peças já colocadas em um modelo.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_part_palette_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_part_palette.ui"/>
         <source>Piece Palettes</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Paletas de peças</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_part_palette_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_part_palette.ui"/>
         <source>Select the palette to rename, delete, or move.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione a paleta para renomear, excluir ou mover.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_part_palette_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_part_palette.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Palette List&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select a palette before using Rename, Delete, Move Up, or Move Down. The list order determines the palette order in the piece browser.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Lista de paletas&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Selecione uma paleta antes de usar Renomear, Excluir, Mover para cima ou Mover para baixo. A ordem da lista determina a ordem da paleta no navegador de peças.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_part_palette_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_part_palette.ui"/>
         <source>Create a new empty piece palette.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Crie uma nova paleta de peças vazia.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_part_palette_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_part_palette.ui"/>
         <source>New...</source>
         <translation type="unfinished">Novo...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_part_palette_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_part_palette.ui"/>
         <source>Remove the selected palette after confirmation.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Remova a paleta selecionada após a confirmação.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_part_palette_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_part_palette.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Delete Palette&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Remove the selected palette and its list of piece choices. Library pieces and pieces already used in models are not deleted. At least one palette must remain.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Excluir paleta&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Remove a paleta selecionada e sua lista de opções de peças. As peças da biblioteca e as peças já utilizadas nos modelos não são excluídas. Pelo menos uma paleta deve permanecer.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_part_palette_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_part_palette.ui"/>
         <source>Delete...</source>
         <translation type="unfinished">Apagar...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_part_palette_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_part_palette.ui"/>
         <source>Change the name of the selected palette.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Altere o nome da paleta selecionada.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_part_palette_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_part_palette.ui"/>
         <source>Rename...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Renomear...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_part_palette_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_part_palette.ui"/>
         <source>Create a palette from an online set inventory.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Crie uma paleta a partir de um inventário de conjunto online.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_part_palette_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_part_palette.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Import Palette&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Open Import Set Inventory to search for a set and download its inventory. The new palette uses the set description as its name.&lt;/p&gt;&lt;p&gt;The palette stores piece IDs; inventory colors and quantities are not stored. An internet connection is required.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Paleta de importação&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Abra o inventário do conjunto de importação para procurar um conjunto e fazer download de seu inventário. A nova paleta usa a descrição do conjunto como nome.&lt;/p&gt;&lt;p&gt;A paleta armazena IDs de peças; cores e quantidades de estoque não são armazenadas. É necessária uma conexão com a Internet.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_part_palette_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_part_palette.ui"/>
         <source>Import...</source>
         <translation type="unfinished">Importar....</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_part_palette_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_part_palette.ui"/>
         <source>Move the selected palette one position earlier in the list.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Mova a paleta selecionada uma posição anterior na lista.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_part_palette_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_part_palette.ui"/>
         <source>Move Up</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Subir</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_part_palette_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_part_palette.ui"/>
         <source>Move the selected palette one position later in the list.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Mova a paleta selecionada uma posição posteriormente na lista.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_part_palette_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_part_palette.ui"/>
         <source>Move Down</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Mover para baixo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_part_palette_dialog.cpp" line="79"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_part_palette.cpp" line="79"/>
         <source>New Piece Palette</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Nova paleta de peças</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_part_palette_dialog.cpp" line="79"/>
-        <location filename="../../source/interface/dialogs/sw_part_palette_dialog.cpp" line="118"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_part_palette.cpp" line="79"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_part_palette.cpp" line="118"/>
         <source>Palette Name:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Nome da paleta:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_part_palette_dialog.cpp" line="98"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_part_palette.cpp" line="98"/>
         <source>Are you sure you want to delete the palette &apos;%1&apos;?</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Tem a certeza de que pretende eliminar a paleta &apos;%1&apos;?</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_part_palette_dialog.cpp" line="99"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_part_palette.cpp" line="99"/>
         <source>Delete Piece Palette</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Apagar paleta de peças</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_part_palette_dialog.cpp" line="118"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_part_palette.cpp" line="118"/>
         <source>Rename Piece Palette</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Renomear paleta de peças</translation>
@@ -14197,7 +14197,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
 <context>
     <name>swPartSelectionListModel</name>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="375"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="375"/>
         <source>Could not load piece &apos;%1&apos;.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Não foi possível carregar a peça &apos;%1&apos;.</translation>
@@ -14206,24 +14206,24 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
 <context>
     <name>swPartSelectionListView</name>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="624"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="624"/>
         <source>Add to Palette</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Adicionar à paleta</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="635"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="635"/>
         <source>None</source>
         <translation type="unfinished">Nenhum</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="639"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="639"/>
         <source>Remove from Palette</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Remover da paleta</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="645"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="645"/>
         <source>Open Submodel</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Submodelo aberto</translation>
@@ -14232,13 +14232,13 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
 <context>
     <name>swPartSelectionPopup</name>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_popup.cpp" line="10"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection_popup.cpp" line="10"/>
         <source>Choose Piece</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a peça</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_popup.cpp" line="11"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection_popup.cpp" line="11"/>
         <source>&lt;p&gt;&lt;b&gt;Choose Piece&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select a piece, then choose OK or double-click it to use it. Cancel keeps the original choice. Filter the list to find a piece; Options controls matching and list display. When None is available, select it to omit the piece.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Escolher peça&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Selecione uma peça e escolha OK ou clique duas vezes nela para usá-la. Cancelar mantém a escolha original. Filtre a lista para encontrar uma peça; As opções controlam a correspondência e a exibição da lista. Quando Nenhum estiver disponível, selecione-o para omitir a peça.&lt;/p&gt;</translation>
@@ -14247,15 +14247,15 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
 <context>
     <name>swPartSelectionWidget</name>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1028"/>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1029"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1028"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1029"/>
         <source>Filter Categories</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Filtrar categorias</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1036"/>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1457"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1036"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1457"/>
         <source>Match Case</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Caso de partida</translation>
@@ -14266,186 +14266,186 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Opções</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1376"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1376"/>
         <source>Edit Palettes...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Editar paletas...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1405"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1405"/>
         <source>Icons</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ícones</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1409"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1409"/>
         <source>No Icons</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Sem ícones</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1414"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1414"/>
         <source>Small Icons</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ícones pequenos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1419"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1419"/>
         <source>Medium Icons</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ícones médios</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1424"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1424"/>
         <source>Large Icons</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ícones grandes</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1429"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1429"/>
         <source>Extra Large Icons</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ícones extragrandes</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1444"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1444"/>
         <source>Lock Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Bloquear cor</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1451"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1451"/>
         <source>Filter</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Filtro</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1453"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1453"/>
         <source>Regular Expression</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Expressão regular</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1463"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1463"/>
         <source>Piece ID</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">ID da peça</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1468"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1468"/>
         <source>Piece Description</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Descrição da peça</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1385"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1385"/>
         <source>Show Piece Names</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Mostrar nomes de peças</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1030"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1030"/>
         <source>Filter category names to narrow the category list.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Filtre os nomes das categorias para restringir a lista de categorias.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1045"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1045"/>
         <source>Piece Categories</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Categorias de peças</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1046"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1046"/>
         <source>Choose a category or palette to display its pieces.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha uma categoria ou paleta para exibir suas peças.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1062"/>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1063"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1062"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1063"/>
         <source>Filter Pieces</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Peças de filtro</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1064"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1064"/>
         <source>Filter the displayed pieces using the matching options.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Filtre as peças exibidas usando as opções correspondentes.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1069"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1069"/>
         <source>Configure piece filtering and list display.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Configure a filtragem de peças e a exibição da lista.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1069"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1069"/>
         <source>Piece List Options</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Opções de lista de peças</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1073"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1073"/>
         <source>Available Pieces</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Peças Disponíveis</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1074"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1074"/>
         <source>Select a piece from the filtered list.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione uma peça da lista filtrada.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1390"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1390"/>
         <source>Show Decorated Pieces</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Mostrar peças decoradas</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1394"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1394"/>
         <source>Show Piece Aliases</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Mostrar aliases de peças</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1399"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1399"/>
         <source>Snap Panel Width to Tiles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1438"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1438"/>
         <source>List Mode</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Modo de lista</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1475"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1475"/>
         <source>Rendering</source>
         <translation type="unfinished">Restituir</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1516"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1516"/>
         <source>Favorites</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Favoritos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1649"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1649"/>
         <source>All Pieces</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Todas as peças</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1655"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1655"/>
         <source>In Use</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Em uso</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_part_selection_widget.cpp" line="1661"/>
+        <location filename="../../source/interface/widgets/sw_widget_part_selection.cpp" line="1661"/>
         <source>Submodels</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Submodelos</translation>
@@ -14600,23 +14600,23 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
 <context>
     <name>swPreferencesDialog</name>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Preferences</source>
         <translation>Preferências</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>General</source>
         <translation>Geral</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Default Author Name:</source>
         <oldsource>Default author name:</oldsource>
         <translation type="unfinished">Nome do autor por omissão:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -14625,7 +14625,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="vanished">Biblioteca de peças personalizada:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Mouse Sensitivity:</source>
         <oldsource>Mouse sensitivity:</oldsource>
         <translation type="unfinished">Sensibilidade do rato :</translation>
@@ -14636,7 +14636,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Procurar actualizações:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>PO&amp;V-Ray Executable:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Executá&amp;vel POV-Ray:</translation>
@@ -14663,7 +14663,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Abra o ficheiro mais recente no arranque</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Rendering</source>
         <translation>Restituir</translation>
     </message>
@@ -14680,51 +14680,51 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="vanished">largura</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Anti-aliasing</source>
         <translation>Suavização</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>2x</source>
         <translation>2x</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>4x</source>
         <translation>4x</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>8x</source>
         <translation>8x</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Shading Mode:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Modo de sombreado:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Wireframe</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Estrutura de arame</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Flat Shading</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Sombreamento plano</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Default Lights</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Luzes padrão</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Base Grid</source>
         <translation>Grelha de Base</translation>
     </message>
@@ -14733,7 +14733,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="vanished">Desenhar pregos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>studs</source>
         <translation>pregos</translation>
     </message>
@@ -14742,108 +14742,108 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="vanished">Desenhar linhas cada</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>View Sphere</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ver Esfera</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Disabled</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Desativado</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Small</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Pequeno</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Medium</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Médio</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Large</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Grande</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Highlight Color:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cor de destaque:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Color:</source>
         <translation type="unfinished">Cor:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Text Color:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cor do texto:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Location:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Localização:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Application</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Aplicação</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Language:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Idioma:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Default</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Predefinição</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Color Theme:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Tema das cores:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Dark</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escuro</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>System</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Sistema</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Custom Paths</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Caminhos personalizados</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Pieces Library:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Biblioteca de peças:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Color Configuration:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Configuração de cores:</translation>
@@ -14854,7 +14854,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Configurações do minifig:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>&amp;LGEO Library:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&amp;LGEO Biblioteca:</translation>
@@ -14865,19 +14865,19 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Restaurar layout da guia</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Set the distance in LDraw units at which simpler piece meshes are used.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Defina a distância em unidades LDraw nas quais malhas de peças mais simples serão usadas.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Stud Style</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Estilo Stud</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Mesh LOD</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">LOD da malha</translation>
@@ -14887,85 +14887,85 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Destacar as novas peças</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Plain</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Plano</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Thin Lines Logo</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Logótipo De Linhas Finas</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Outline Logo</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Logótipo do esboço</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Sharp Top Logo</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Logótipo superior da Sharp</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Rounded Top Logo</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Logótipo superior arredondado</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Flattened Logo</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Logotipo achatado</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>High Contrast</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Alto contraste</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>High Contrast with Logo</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Alto contraste com logótipo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Settings...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Configurações...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Contrast Settings...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Definições de contraste...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Preferences&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Configure the application, display, colors, piece categories, and keyboard and mouse shortcuts. Choose OK to save the changes or Cancel to discard edits in Preferences. Language, piece-library, and antialiasing changes may require restarting StudWorks.&lt;/p&gt;&lt;p&gt;Export buttons write files immediately. Blender add-on settings have their own Apply action and can configure Blender before you close Preferences.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Preferências&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Configure a aplicação, exibição, cores, categorias de peças e atalhos de teclado e mouse. Escolha OK para salvar as alterações ou Cancelar para descartar as edições em Preferências. Alterações de idioma, biblioteca de peças e antialiasing podem exigir a reinicialização do StudWorks.&lt;/p&gt;&lt;p&gt;Os botões de exportação gravam os arquivos imediatamente. As configurações do complemento do Blender têm sua própria ação Aplicar e podem configurar o Blender antes de você fechar as Preferências.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>&lt;p&gt;&lt;b&gt;General Preferences&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Set application behavior and custom library, configuration, and renderer paths. Leave optional configuration paths empty to use the built-in settings.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Preferências Gerais&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Defina o comportamento do aplicativo e biblioteca personalizada, configuração e caminhos de renderização. Deixe os caminhos de configuração opcionais vazios para usar as configurações integradas.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the interface language used after restarting StudWorks.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha o idioma da interface usado após reiniciar o StudWorks.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Language</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Idioma</translation>
@@ -14981,85 +14981,85 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Escolha com que frequência verificar automaticamente atualizações de aplicativos e bibliotecas.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the interface theme and optionally reset its colors.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha o tema da interface e, opcionalmente, redefina suas cores.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Color Theme</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Tema de cores</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Set the author name used for new models.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Defina o nome do autor usado para novos modelos.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Default Author Name</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Nome do autor padrão</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Move pieces along fixed model axes instead of view-relative directions.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Mova as peças ao longo de eixos fixos do modelo em vez de direções relativas à vista.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Open the most recently used file when StudWorks starts.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Abra o arquivo usado mais recentemente quando o StudWorks iniciar.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose a piece-library folder or supported archive to load after restarting StudWorks.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha uma pasta de biblioteca de peças ou arquivo compatível para carregar após reiniciar o StudWorks.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Pieces Library</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Biblioteca de peças</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose a piece-library folder.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha uma pasta de biblioteca de peças.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose a piece-library ZIP or BIN archive.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha um arquivo ZIP ou BIN de biblioteca parcial.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose a custom LDraw color configuration file, or leave empty to use the library colors.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha um arquivo de configuração de cores personalizado do LDraw ou deixe em branco para usar as cores da biblioteca.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Color Configuration</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Configuração de cores</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose a custom LDraw color configuration file.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha um arquivo de configuração de cores personalizado do LDraw.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose a custom minifigure builder settings file, or leave empty to use the built-in choices.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha um arquivo de configurações de minifigura personalizado ou deixe em branco para usar as opções integradas.</translation>
@@ -15070,43 +15070,43 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Configurações de minifiguras</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose a minifigure builder settings INI file.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha um arquivo INI de configurações de minifigura.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Set the POV-Ray executable used for rendering.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Defina o executável do POV-Ray usado para renderização.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>POV-Ray Executable</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Executável POV-Ray</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Locate the POV-Ray executable.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Localize o executável do POV-Ray.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Set the LGEO library folder used by POV-Ray exports.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Defina a pasta da biblioteca LGEO usada pelas exportações do POV-Ray.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>LGEO Library</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Biblioteca LGEO</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the LGEO library folder.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a pasta da biblioteca LGEO.</translation>
@@ -15117,79 +15117,79 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Restaure guias de modelo salvas e visualize layouts ao abrir um projeto.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Rendering Preferences&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Control shading, stud geometry, selection appearance, edges, and step effects. Some options are unavailable when the graphics system does not support them.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Preferências de renderização&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Controle sombreamento, geometria de vigas, aparência de seleção, arestas e efeitos de etapa. Algumas opções ficam indisponíveis quando o sistema gráfico não as suporta.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Previous Step Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cor da etapa anterior</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the tint used for pieces from previous steps.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a tonalidade usada nas peças das etapas anteriores.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Shading Mode</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Modo de sombreamento</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose how piece surfaces and edges are drawn in model views.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha como as superfícies e arestas da peça são desenhadas nas vistas do modelo.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Use simpler meshes for distant pieces to improve display performance.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Use malhas mais simples para peças distantes para melhorar o desempenho da exibição.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Tint pieces from previous building steps with the chosen fade color.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Pinte peças de etapas de construção anteriores com a cor de desbotamento escolhida.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Highlight pieces introduced in the current building step.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Destaque as peças introduzidas na etapa de construção atual.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>New Piece Highlight Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cor de destaque da nova peça</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the highlight color for pieces in the current step.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a cor de destaque das peças na etapa atual.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Blender LDraw Render</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Renderização do Blender LDraw</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Blender Add-on Settings&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Open the separate Blender configuration dialog. Its Apply action saves its settings independently of Preferences, and choosing an executable or importer can configure Blender immediately.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Configurações do complemento do Blender&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Abra a caixa de diálogo separada de configuração do Blender. Sua ação Aplicar salva suas configurações independentemente de Preferências, e escolher um executável ou importador pode configurar o Blender imediatamente.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Configure Blender and its LDraw import and render add-ons.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Configure o Blender e seus complementos de importação e renderização do LDraw.</translation>
@@ -15205,37 +15205,37 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Escolha como as peças selecionadas serão destacadas.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Mesh Detail Distance</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Distância de detalhes da malha</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Configure colors and the light/dark threshold for high contrast stud styles.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Configure as cores e o limite claro/escuro para estilos de pinos de alto contraste.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Antialiasing Samples</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Amostras de suavização</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the antialiasing sample count; more samples can use more graphics resources.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a contagem de amostras de suavização; mais amostras podem usar mais recursos gráficos.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose stud geometry and the high contrast stud styles.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a geometria dos pinos e os estilos de pinos de alto contraste.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Smooth jagged edges in model views; changes require restarting StudWorks.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Bordas irregulares suaves nas vistas do modelo; as alterações exigem a reinicialização do StudWorks.</translation>
@@ -15246,133 +15246,133 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Renderização de seleção</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Draw conditional lines where needed to show curved piece surfaces.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Desenhe linhas condicionais onde for necessário para mostrar superfícies curvas das peças.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Set edge-line width within the range supported by the graphics system.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Defina a largura da linha de borda dentro do intervalo suportado pelo sistema gráfico.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Line Width</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Largura da linha</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Draw the edge lines defined by each piece.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Desenhe as linhas de borda definidas por cada peça.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Calculate edge colors from piece colors instead of using their defined edge colors.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Calcule as cores das bordas a partir das cores das peças em vez de usar as cores das bordas definidas.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Configure the contrast and saturation used for automated edge colors.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Configure o contraste e a saturação usados para cores de borda automatizadas.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>&lt;p&gt;&lt;b&gt;View Preferences&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose navigation aids for model views and the piece preview, and configure the base grid. Locations select the corner where each navigation aid appears.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Preferências de visualização&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Escolha os auxílios de navegação para visualizações do modelo e visualização da peça e configure a grade base. Os locais selecionam o canto onde cada auxílio de navegação aparece.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Views</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Visualizações</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Model Views</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Visualizações do modelo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Show the model-axis indicator in model views.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Mostre o indicador do eixo do modelo nas visualizações do modelo.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Axis Icon</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ícone do eixo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the corner for the model-view navigation sphere.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha o canto da esfera de navegação da visualização do modelo.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the model-view navigation sphere size, or disable it.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha o tamanho da esfera de navegação da visualização do modelo ou desative-o.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>View Sphere:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ver Esfera:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Location</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Localização</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Top Left</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Canto superior esquerdo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Top Right</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Canto superior direito</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Bottom Left</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Inferior Esquerdo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Bottom Right</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Canto inferior direito</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the corner for the model-axis indicator.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha o canto para o indicador do eixo do modelo.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Show base-grid lines at the specified spacing.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Mostrar linhas de grade base no espaçamento especificado.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Grid Line Spacing</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Espaçamento entre linhas de grade</translation>
@@ -15383,7 +15383,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Defina o espaçamento da linha da grade base nos pinos (mínimo 1).</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Emphasize the base-grid lines through the model origin.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Enfatize as linhas da grade base através da origem do modelo.</translation>
@@ -15394,7 +15394,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Desenhe linhas de origem</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Show stud positions on the base grid.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Mostre as posições dos pinos na grade base.</translation>
@@ -15410,300 +15410,300 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Mostrar o indicador do eixo do modelo na visualização da peça.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the corner for the piece-preview navigation sphere.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha o canto para a esfera de navegação de visualização da peça.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the piece-preview navigation sphere size, or disable it.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha o tamanho da esfera de navegação de visualização da peça ou desative-o.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Display Colors&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose colors for the background, objects, grid, and interface. These settings control the display; they do not change the LDraw colors assigned to model pieces.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Cores de exibição&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Escolha cores para o plano de fundo, objetos, grade e interface. Estas configurações controlam a exibição; eles não alteram as cores do LDraw atribuídas às peças do modelo.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Colors</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cores</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the display color for the selection rectangle border.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a cor de exibição da borda do retângulo de seleção.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Marquee Border</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Contorno do retângulo de seleção</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the display color for inactive view borders.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a cor de exibição das bordas da vista inativa.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Marquee Fill</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Preenchimento do retângulo de seleção</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the display color for the selection rectangle fill.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a cor de exibição para o preenchimento do retângulo de seleção.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the display color for view text.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a cor de exibição para visualizar o texto.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Text Halo Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Texto Halo Cor</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the display color for the halo behind view text.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a cor de exibição do halo atrás do texto da visualização.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Inactive View Border</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Borda de visualização inativa</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the display color for view overlays.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a cor de exibição das sobreposições de visualização.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Text Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cor do texto</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Overlay Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cor de sobreposição</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Active View Border</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Borda do Active View</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the display color for the active view border.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a cor de exibição da borda da vista ativa.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the display color for the navigation sphere.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a cor de exibição da esfera de navegação.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the display color for navigation sphere text.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a cor de exibição do texto da esfera de navegação.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the display color for the highlighted region of the navigation sphere.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a cor de exibição da região destacada da esfera de navegação.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the display color for base-grid lines.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a cor de exibição das linhas da grade base.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the display color for base-grid stud markers.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a cor de exibição dos marcadores de pinos da grade base.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Background</source>
         <translation type="unfinished">Fundo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the display color for the top of the background gradient.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a cor de exibição da parte superior do gradiente de fundo.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Top Color:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cor superior:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the display color for the bottom of the background gradient.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a cor de exibição da parte inferior do gradiente de fundo.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Bottom Color:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cor inferior:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Use a single color for the model-view background.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Use uma única cor para o plano de fundo da visualização do modelo.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>So&amp;lid Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cor Só&amp;lida</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Blend the top and bottom colors in the model-view background.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Misture as cores superior e inferior no plano de fundo da visualização do modelo.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>&amp;Gradient</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&amp;Gradiente</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Light Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cor clara</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Camera Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cor da câmera</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Control Point Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cor do ponto de controle</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Focused Control Point Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cor do ponto de controle focado</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Selected Object Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cor do objeto selecionado</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Focused Object Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cor do objeto em foco</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Assign the chosen mouse button and modifiers to the selected tool.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Atribua o botão do mouse escolhido e os modificadores à ferramenta selecionada.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Remove the primary mouse shortcut and promote the secondary shortcut.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Remova o atalho principal do mouse e promova o atalho secundário.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Adjust how strongly mouse motion affects navigation.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ajuste a intensidade com que o movimento do mouse afeta a navegação.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Mouse Sensitivity</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Sensibilidade do mouse</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Interface</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Interface</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Inactive View Border:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Borda de visualização inativa:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Overlay Color:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cor de sobreposição:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Active View Border:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Borda do Active View:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Marquee Border:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Borda do letreiro:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Highlight New Pieces</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Destaque novas peças</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Fade Previous Steps</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Desaparecer etapas anteriores</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Add-on Settings...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Configurações de complemento...</translation>
@@ -15715,7 +15715,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="obsolete">Renderização de seleção:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Blender LDraw Render:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender LDraw Renderização:</translation>
@@ -15732,595 +15732,595 @@ Unsupported video cards use face tint and colored edges.</source>
 As placas de vídeo não suportadas utilizam a tonalidade da face e bordas coloridas.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Outline</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Delimitar</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Tint and Edges</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Matiz e bordas</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Lines</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Linhas</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Conditional Lines</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Linhas Condicionais</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Line Width:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Largura da linha:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Edge Lines</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Linhas de orla</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Automate Edge Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Automatizar a cor das bordas</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Marquee Fill:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Preenchimento de letreiro:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Text Halo Color:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cor do halo do texto:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>View Sphere Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ver cor da esfera</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>View Sphere Text Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ver cor do texto da esfera</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>View Sphere Highlight Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ver cor de destaque da esfera</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Grid</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Rede</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Lines:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Linhas:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Grid Line Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cor da linha da grade</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Studs:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Pregos:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Grid Stud Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cor do pino da grade</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Background Top Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cor superior do plano de fundo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Background Bottom Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cor inferior do fundo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Background Solid Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cor sólida de fundo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the display color for the solid background.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a cor de exibição do fundo sólido.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Objects</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Objetos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the display color for light-object outlines.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a cor de exibição para contornos de objetos leves.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Light:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Luz:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the display color for the focused object.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a cor de exibição do objeto em foco.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Focused:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Focado:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the display color for camera-object outlines.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a cor de exibição dos contornos dos objetos da câmera.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the display color for the focused control point.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a cor de exibição do ponto de controle em foco.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Control Point Focused:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ponto de controlo focado:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the display color for control points.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a cor de exibição dos pontos de controle.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the display color for selected objects.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a cor de exibição dos objetos selecionados.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Control Point:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ponto de controlo:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Selected:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecionado:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Camera:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Câmara:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Piece Categories&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Create, edit, reorder, or import categories for the piece browser. The right-hand list shows pieces matching the selected category. Imported and edited categories are saved when you choose OK in Preferences; Export writes the current list immediately.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Categorias de peças&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Crie, edite, reordene ou importe categorias para o navegador de peças. A lista à direita mostra peças que correspondem à categoria selecionada. As categorias importadas e editadas são salvas quando você escolhe OK em Preferências; Export grava a lista atual imediatamente.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Categories</source>
         <translation>Categorias</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Pieces Library Categories</source>
         <translation>Categorias de Peças na Biblioteca</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Piece Categories</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Categorias de peças</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Select a category to inspect or edit; drag categories to reorder them.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione uma categoria para inspecionar ou editar; arraste as categorias para reordená-las.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Matching Pieces</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Peças correspondentes</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>View the library pieces matching the selected category.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Veja as peças da biblioteca que correspondem à categoria selecionada.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Name</source>
         <translation>Nome</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Number</source>
         <translation>Número</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Replace the category list with categories from a text file.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Substitua a lista de categorias por categorias de um arquivo de texto.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Import...</source>
         <translation>Importar....</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Save the current category list to a text file immediately.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Salve a lista de categorias atual em um arquivo de texto imediatamente.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Export...</source>
         <translation>Exportar...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Restore the default category list after confirmation.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Restaure a lista de categorias padrão após a confirmação.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Reset...</source>
         <translation>Reiniciar...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Category</source>
         <translation>Categoria</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Create a category with a name and a keyword expression.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Crie uma categoria com um nome e uma expressão de palavra-chave.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>New...</source>
         <translation>Novo...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Edit the selected category name and keyword expression.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Edite o nome da categoria selecionada e a expressão da palavra-chave.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Edit...</source>
         <translation>Editar...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Remove the selected category after confirmation.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Remova a categoria selecionada após confirmação.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Delete...</source>
         <translation>Apagar...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Keyboard Shortcuts&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select a command, click Key Sequence, press the desired key combination, then choose Assign. Remove clears the selected command&apos;s shortcut. Import replaces the shortcut list; Export writes the current list immediately. Choose OK in Preferences to save changes.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Atalhos de teclado&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Selecione um comando, clique em Sequência de teclas, pressione a combinação de teclas desejada e escolha Atribuir. Remover limpa o atalho do comando selecionado. A importação substitui a lista de atalhos; Export grava a lista atual imediatamente. Escolha OK em Preferências para salvar as alterações.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Keyboard</source>
         <translation>Teclado</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Keyboard Shortcuts</source>
         <translation>Atalhos de Teclado</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Commands and Keyboard Shortcuts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Comandos e atalhos de teclado</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Select the command whose keyboard shortcut you want to change.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione o comando cujo atalho de teclado você deseja alterar.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Command</source>
         <translation>Commando</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Shortcut</source>
         <translation>Atalho</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Filter Commands</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Comandos de filtro</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Filter commands by name or shortcut.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Filtre comandos por nome ou atalho.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Search shortcuts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Atalhos de pesquisa</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Replace keyboard shortcuts with assignments from a text file.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Substitua os atalhos do teclado por tarefas de um arquivo de texto.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Save the current keyboard shortcuts to a text file immediately.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Salve os atalhos de teclado atuais em um arquivo de texto imediatamente.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Restore the default keyboard shortcuts after confirmation.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Restaure os atalhos de teclado padrão após a confirmação.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Key Sequence&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Click here and press the key combination you want to assign. Function keys, including F1, are recorded as shortcut candidates in this field. Use the Help button for guidance. Assign asks before replacing a shortcut already used by another command.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Sequência de teclas&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Clique aqui e pressione a combinação de teclas que deseja atribuir. As teclas de função, incluindo F1, são registradas como candidatos a atalho neste campo. Use o botão Ajuda para orientação. Atribua perguntas antes de substituir um atalho já usado por outro comando.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Press the key combination to assign, then choose Assign.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Pressione a combinação de teclas para atribuir e escolha Atribuir.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Key Se&amp;quence:</source>
         <oldsource>Key se&amp;quence:</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Se&amp;quência de teclas:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Key Sequence</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Sequência de teclas</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Assign the entered key combination to the selected command.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Atribua a combinação de teclas inserida ao comando selecionado.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Clear the selected command&apos;s keyboard shortcut.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Limpe o atalho de teclado do comando selecionado.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Mouse Shortcuts&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select a tool, choose a mouse button and optional modifiers, then choose Assign. Each tool can have two shortcuts; a new assignment becomes the primary shortcut. Remove clears the primary shortcut and promotes the secondary shortcut. Choose OK in Preferences to save changes.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Atalhos do mouse&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Selecione uma ferramenta, escolha um botão do mouse e modificadores opcionais e escolha Atribuir. Cada ferramenta pode ter dois atalhos; uma nova tarefa se torna o atalho principal. Remover limpa o atalho principal e promove o atalho secundário. Escolha OK em Preferências para salvar as alterações.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Mouse</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Rato</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Mouse Shortcuts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Atalhos do rato</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Tools and Mouse Shortcuts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ferramentas e atalhos do mouse</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Select a tool to edit its primary and secondary mouse shortcuts.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione uma ferramenta para editar seus atalhos de mouse primários e secundários.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Action</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ação</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Shortcut 1</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Atalho 1</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Shortcut 2</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Atalho 2</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Replace mouse shortcuts with assignments from a text file.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Substitua os atalhos do mouse por tarefas de um arquivo de texto.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Save the current mouse shortcuts to a text file immediately.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Salve imediatamente os atalhos do mouse atuais em um arquivo de texto.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Restore the default mouse shortcuts after confirmation.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Restaure os atalhos padrão do mouse após a confirmação.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the mouse button to assign to the selected tool.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha o botão do mouse para atribuir à ferramenta selecionada.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Button:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Botão:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Button</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Botão</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>None</source>
         <translation type="unfinished">Nenhum</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Left</source>
         <translation type="unfinished">Left</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Middle</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Meio</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Right</source>
         <translation type="unfinished">Right</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Modifiers:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Modificadores:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Require the Control modifier for this mouse shortcut.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Exija o modificador Control para este atalho do mouse.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Control</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Controlo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Require the Alt modifier for this mouse shortcut.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Exija o modificador Alt para este atalho do mouse.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Alt</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Alt.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Require the Shift modifier for this mouse shortcut.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Exija o modificador Shift para este atalho do mouse.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Shift</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Turno</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Assign</source>
         <translation>Definir</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Remove</source>
         <translation>Remover</translation>
     </message>
@@ -16329,54 +16329,54 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
         <translation type="vanished">O espaço de grelha deve ser superior a 0.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="539"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="539"/>
         <source>Select Pieces Library Folder</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione a pasta da biblioteca de peças</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="547"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="547"/>
         <source>Supported Archives (*.zip *.bin);;All Files (*.*)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ficheiros Suportados (*.zip *.bin);;Todos os Ficheiros (*.*)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="547"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="547"/>
         <source>Select Pieces Library Archive</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione o ficheiro da biblioteca de peças</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="570"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="570"/>
         <source>Select Color Configuration File</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione o ficheiro de configuração de cores</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="570"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="570"/>
         <source>Settings Files (*.ldr);;All Files (*.*)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ficheiros de definições (*.ldr);;Todos os ficheiros (*.*)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="578"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="578"/>
         <source>Select Minifigure Builder Settings File</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione o ficheiro de definições do Minifig</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="578"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="578"/>
         <source>Settings Files (*.ini);;All Files (*.*)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ficheiros de definições (*.ini);;Todos os ficheiros (*.*)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="587"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="587"/>
         <source>Executable Files (*.exe);;All Files (*.*)</source>
         <translation>Ficheiros Executaveis(*.exe);;Todos os Ficheiros (*.*)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="589"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="589"/>
         <source>All Files (*.*)</source>
         <translation>Todos os Ficheiros (*.*)</translation>
     </message>
@@ -16385,239 +16385,239 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
         <translation type="vanished">Escolher o programa POV-Ray</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="600"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="600"/>
         <source>Open LGEO Folder</source>
         <translation>Escolher a Pasta LGEO</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="610"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="610"/>
         <source>Reset Colors</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Redefinir cores</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="610"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="610"/>
         <source>Would you like to also reset the interface colors to match the color theme?</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Gostaria também de repor as cores da interface para combinar com o tema de cores?</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="624"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="624"/>
         <source>Select Background Color</source>
         <translation type="unfinished">Seleccionar a Cor do Fundo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="629"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="629"/>
         <source>Select Gradient Top Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione a cor superior do gradiente</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="634"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="634"/>
         <source>Select Gradient Bottom Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione a cor inferior do gradiente</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="639"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="639"/>
         <source>Select Text Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione a cor do texto</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="644"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="644"/>
         <source>Select Text Halo Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione a cor do texto Halo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="650"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="650"/>
         <source>Select Marquee Border Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione a cor da borda do letreiro</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="655"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="655"/>
         <source>Select Marquee Fill Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione a cor de preenchimento do letreiro</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="661"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="661"/>
         <source>Select Overlay Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione a cor da sobreposição</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="666"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="666"/>
         <source>Select Active View Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione a cor do Active View</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="671"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="671"/>
         <source>Select Inactive View Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione a cor da visualização inativa</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="676"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="676"/>
         <source>Select Fade Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione a cor do desvanecimento</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="682"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="682"/>
         <source>Select Highlight Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione a cor de destaque</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="688"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="688"/>
         <source>Select Grid Stud Color</source>
         <translation>Cor dos Pregos na Grelha</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="694"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="694"/>
         <source>Select Grid Line Color</source>
         <translation>Cor das Linhas na Grelha</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="699"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="699"/>
         <source>Select View Sphere Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione Exibir cor da esfera</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="704"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="704"/>
         <source>Select View Sphere Text Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione Ver cor do texto da esfera</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="709"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="709"/>
         <source>Select View Sphere Highlight Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione Exibir cor de destaque da esfera</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="714"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="714"/>
         <source>Select X Axis Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="719"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="719"/>
         <source>Select Y Axis Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="724"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="724"/>
         <source>Select Z Axis Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="729"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="729"/>
         <source>Select Object Selected Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione a cor selecionada do objeto</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="734"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="734"/>
         <source>Select Object Focused Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione a cor do foco do objeto</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="739"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="739"/>
         <source>Select Camera Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione a cor da câmara</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="744"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="744"/>
         <source>Select Light Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione a cor clara</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="749"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="749"/>
         <source>Select Control Point Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione a cor do ponto de controlo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="755"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="755"/>
         <source>Select Control Point Focused Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione a cor focada no ponto de controlo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="917"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="917"/>
         <source>Unassigned</source>
         <translation>Por Definir</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1056"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1056"/>
         <source>Are you sure you want to delete the category &apos;%1&apos;?</source>
         <translation>Confirmar querer apagar a categoria &apos;%1&apos;?</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1057"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1057"/>
         <source>Delete Category</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Excluir categoria</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1069"/>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1077"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1069"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1077"/>
         <source>Import Categories</source>
         <translation>Importar Categorias</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1069"/>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1088"/>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1363"/>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1383"/>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1555"/>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1576"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1069"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1088"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1363"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1383"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1555"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1576"/>
         <source>Text Files (*.txt);;All Files (*.*)</source>
         <translation>Ficheiros Texto (*.txt);;Todos os Ficheiros (*.*)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1077"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1077"/>
         <source>Error loading categories file.</source>
         <translation>Erro ao carregar o ficheiro de categorias.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1088"/>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1095"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1088"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1095"/>
         <source>Export Categories</source>
         <translation>Exportar Categorias</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1095"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1095"/>
         <source>Error saving categories file.</source>
         <translation>Erro ao gravar o ficheiro de categorias.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1102"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1102"/>
         <source>Are you sure you want to load the default categories?</source>
         <translation>Confirmar querer carregar as categorias por omissão?</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1102"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1102"/>
         <source>Reset Categories</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Redefinir categorias</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1308"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1308"/>
         <source>The shortcut &apos;%1&apos; is already assigned to &apos;%2&apos;. Do you want to replace it?</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">O atalho &apos;%1&apos; já está atribuído a &apos;%2&apos;. Quer substituí-lo?</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1587"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1587"/>
         <source>Reset Mouse Shortcuts</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Redefinir atalhos do mouse</translation>
@@ -16627,7 +16627,7 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
         <translation type="vanished">Importar Atalhos de Teclado</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1371"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1371"/>
         <source>Error loading keyboard shortcuts file.</source>
         <translation>Erro ao carregar o ficheiro de atalhos de teclado.</translation>
     </message>
@@ -16636,49 +16636,49 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
         <translation type="vanished">Exportar Atalhos de Teclado</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1390"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1390"/>
         <source>Error saving keyboard shortcuts file.</source>
         <translation>Erro ao gravar o ficheiro de atalhos de teclado.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1397"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1397"/>
         <source>Are you sure you want to load the default keyboard shortcuts?</source>
         <translation>Confirmar querer carregar os atalhos de teclado por omissão?</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1424"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1424"/>
         <source>Left Button</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Botão Esquerdo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1428"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1428"/>
         <source>Middle Button</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Botão do meio</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1432"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1432"/>
         <source>Right Button</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Botão direito</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1310"/>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1499"/>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1508"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1310"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1499"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1508"/>
         <source>Override Shortcut</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Substituir atalho</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="289"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="289"/>
         <source>Default Lights is unavailable. Flat shading is used instead.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">As luzes padrão não estão disponíveis. Em vez disso, é utilizado sombreado plano.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="316"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="316"/>
         <source>View sphere rendering is unavailable.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">A renderização da esfera de visualização não está disponível.</translation>
@@ -16689,528 +16689,528 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
         <translation type="obsolete">A renderização de contornos não está disponível. Serão utilizadas tonalidades faciais e bordas coloridas.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="592"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="592"/>
         <source>Select POV-Ray Executable</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione POV-Ray Executável</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1371"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1371"/>
         <source>Import Keyboard Shortcuts</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Importar atalhos de teclado</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1390"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1390"/>
         <source>Export Keyboard Shortcuts</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Exportar atalhos de teclado</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1397"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1397"/>
         <source>Reset Keyboard Shortcuts</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Redefinir atalhos de teclado</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1499"/>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1508"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1499"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1508"/>
         <source>This shortcut is already assigned to &apos;%1&apos;. Do you want to replace it?</source>
         <oldsource>This shortcut is already assigned to &apos;%1&apos;, do you want to replace it?</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Este atalho já está atribuído a &apos;%1&apos;, pretende substituí-lo?</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1363"/>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1555"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1363"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1555"/>
         <source>Import Shortcuts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Atalhos de importação</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1563"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1563"/>
         <source>Error loading mouse shortcuts file.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Erro ao carregar o ficheiro de atalhos do rato.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1383"/>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1576"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1383"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1576"/>
         <source>Export Shortcuts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Exportar atalhos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="424"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="424"/>
         <source>Grid spacing must be between 1 and %1 studs.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1563"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1563"/>
         <source>Import Mouse Shortcuts</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Importar atalhos do mouse</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1582"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1582"/>
         <source>Error saving mouse shortcuts file.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Erro ao guardar o ficheiro de atalhos do rato.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1582"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1582"/>
         <source>Export Mouse Shortcuts</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Exportar atalhos do mouse</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="1587"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1587"/>
         <source>Are you sure you want to load the default mouse shortcuts?</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Tem a certeza de que pretende carregar os atalhos padrão do rato?</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Highlight Style&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose how selected pieces and pieces added in the current step are highlighted in the viewport. Outline uses fading outlines in the selection, focus, or new-piece highlight color. Selected pieces also receive a faint fill over obscured portions. Tint and Edges uses tinted faces and colored edges for selection, and colored edges for new pieces.&lt;/p&gt;&lt;p&gt;New-piece highlighting requires Highlight New Pieces. Wireframe views, image exports, and systems without outline support use Tint and Edges.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose how selected pieces and new pieces are highlighted in the viewport.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Highlight Style</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Highlight Style:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.cpp" line="338"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="338"/>
         <source>Outline rendering is unavailable; the Tint and Edges style will be used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Minifigure Builder Settings:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Minifigure Builder Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Open Most Recent File on Startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Restore saved model tabs and view layouts when opening a model.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Restore Tab Layout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Ask to reload the model when its file is changed by another application. Use File &gt; Reload to reload it manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Watch for File Changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Wait until every piece of a model is loaded before showing it, instead of showing pieces as they load.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Load All Pieces Before Showing a Model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Editing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Fixed Direction Keys</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the color given to newly inserted pieces: the current color, the color of the selected piece, or the color of the last inserted piece.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Insert Color:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Insert Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Current color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Selected piece color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Last inserted piece color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Place the first piece of an empty model at 0, 0, 0 instead of where it is dropped.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Insert First Piece at Origin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Performance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Stud Style:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose how the Default Lights shading mode lights pieces in every view: Standard uses one light with a soft highlight, Studio adds fill and rim lights, Matte drops the highlights and Toon uses flat cel shading bands.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Lighting Style:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Lighting Style</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Standard</source>
         <translation type="unfinished">Standard</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Studio</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Matte</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Toon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Steps and Highlighting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Blender</source>
         <translation type="unfinished">Blender</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Turn the view to each step&apos;s view rotation (MLCAD ROTSTEP) when changing steps.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Follow Step Views</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Draw Lines Every</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Set base-grid line spacing in studs (1 to 10000).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Draw Origin Lines</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Draw a vertical grid on the XZ plane through the X axis with lines every plate height.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Draw XZ Height Grid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Draw a vertical grid on the YZ plane through the Y axis with lines every plate height.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Draw YZ Height Grid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Draw the height grids on the side of the model facing away from the camera instead of through the origin axes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Draw Height Grids Behind the Model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Draw Studs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Pieces</source>
         <translation type="unfinished">Peças</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Use the model view rendering settings for the pieces list and parts list images.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Use Model View Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose how pieces are drawn in the pieces list and parts list images.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Pieces Shading Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Draw edge lines on pieces in the pieces list and parts list images.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Draw conditional lines on pieces in the pieces list and parts list images.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Set the line width used in the pieces list and parts list images.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Pieces Line Width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Snap the width of the docked pieces panel to whole thumbnail tiles after resizing it, and the categories to the longest category name when docked on top or bottom.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Snap Panel Width to Tiles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Pieces Preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Keep the piece preview square, with a 1:1 width to height ratio, whatever the panel size.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Square Viewport</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Show the model-axis indicator in the pieces preview.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Use the model view rendering settings for the pieces preview.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose how pieces are drawn in the pieces preview.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Preview Shading Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Draw edge lines on pieces in the pieces preview.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Draw conditional lines on pieces in the pieces preview.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Set the line width used in the pieces preview.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Preview Line Width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Minifigure Builder Preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Use the model view rendering settings for the minifigure builder preview.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose how pieces are drawn in the minifigure builder preview.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Minifigure Builder Shading Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Draw edge lines on pieces in the minifigure builder preview.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Draw conditional lines on pieces in the minifigure builder preview.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Set the line width used in the minifigure builder preview.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Minifigure Builder Line Width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Axes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the X axis color used by the axis icon, grid origin lines and transform handles.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>X:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>X Axis Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the Y axis color used by the axis icon, grid origin lines and transform handles.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Y:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Y Axis Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose the Z axis color used by the axis icon, grid origin lines and transform handles.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Z:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Z Axis Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_preferences_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Navigation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -17218,58 +17218,58 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
 <context>
     <name>swPreviewDockWidget</name>
     <message>
-        <location filename="../../source/interface/widgets/sw_preview_widget.cpp" line="69"/>
+        <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="69"/>
         <source>Piece Preview</source>
         <translatorcomment>Translation reused from another context; requires human review.</translatorcomment>
         <translation type="unfinished">Pré-visualização da peça</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_preview_widget.cpp" line="70"/>
+        <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="70"/>
         <source>Inspect the previewed piece without placing it in the model.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Inspecione a peça visualizada sem colocá-la no modelo.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_preview_widget.cpp" line="74"/>
-        <location filename="../../source/interface/widgets/sw_preview_widget.cpp" line="380"/>
+        <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="74"/>
+        <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="380"/>
         <source>Lock Preview</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Visualização de bloqueio</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_preview_widget.cpp" line="75"/>
+        <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="75"/>
         <source>&lt;p&gt;&lt;b&gt;Lock Preview&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Keep the current piece in the preview while you browse other pieces. Unlock Preview allows the display to update again. An empty preview cannot be locked.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Bloquear visualização&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Mantenha a peça atual na visualização enquanto você navega por outras peças. A visualização de desbloqueio permite que a exibição seja atualizada novamente. Uma visualização vazia não pode ser bloqueada.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_preview_widget.cpp" line="78"/>
+        <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="78"/>
         <source>Ctrl+L</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ctrl+L</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_preview_widget.cpp" line="117"/>
+        <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="117"/>
         <source>Configure the pieces preview.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_preview_widget.cpp" line="117"/>
+        <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="117"/>
         <source>Pieces Preview Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_preview_widget.cpp" line="131"/>
+        <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="131"/>
         <source>View Sphere</source>
         <translation type="unfinished">Ver Esfera</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_preview_widget.cpp" line="132"/>
+        <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="132"/>
         <source>Axis Icon</source>
         <translation type="unfinished">Ícone do eixo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_preview_widget.cpp" line="133"/>
+        <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="133"/>
         <source>Square Viewport</source>
         <translation type="unfinished"></translation>
     </message>
@@ -17284,36 +17284,36 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
         <translation type="obsolete">Barra de ferramentas de visualização</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_preview_widget.cpp" line="184"/>
-        <location filename="../../source/interface/widgets/sw_preview_widget.cpp" line="292"/>
-        <location filename="../../source/interface/widgets/sw_preview_widget.cpp" line="303"/>
+        <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="184"/>
+        <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="292"/>
+        <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="303"/>
         <source>Loading...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Carregando...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_preview_widget.cpp" line="193"/>
-        <location filename="../../source/interface/widgets/sw_preview_widget.cpp" line="284"/>
-        <location filename="../../source/interface/widgets/sw_preview_widget.cpp" line="311"/>
-        <location filename="../../source/interface/widgets/sw_preview_widget.cpp" line="351"/>
+        <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="193"/>
+        <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="284"/>
+        <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="311"/>
+        <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="351"/>
         <source>Preview unavailable</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Visualização indisponível</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_preview_widget.cpp" line="377"/>
+        <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="377"/>
         <source>Unlock the preview display to enable updates</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Desbloqueie a visualização de pré-visualização para ativar atualizações</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_preview_widget.cpp" line="378"/>
+        <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="378"/>
         <source>Lock the preview display to disable updates</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Bloqueie a visualização de visualização para desativar as atualizações</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_preview_widget.cpp" line="380"/>
+        <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="380"/>
         <source>Unlock Preview</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Pré-visualização de desbloqueio</translation>
@@ -17327,7 +17327,7 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
         <translation type="obsolete">&lt;p&gt;&lt;b&gt;Propriedades do modelo&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Edite o autor, a descrição e os comentários do modelo atual na guia Resumo. Medidas e peças usadas fornecem informações somente leitura. Escolha OK para aplicar as alterações nos metadados ou Cancelar para descartá-las.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
         <source>Properties</source>
         <translation>Propriedades</translation>
     </message>
@@ -17337,69 +17337,69 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
         <translation type="obsolete">&lt;p&gt;&lt;b&gt;Resumo do modelo&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Autor, descrição e comentários são armazenados com este modelo quando o projeto é salvo. As medidas mostram seu tamanho geral.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
         <source>Summary</source>
         <translation>Resumo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
         <source>Enter the author credited in this model.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Insira o autor creditado neste modelo.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
         <source>Author:</source>
         <translation>Autor:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
         <source>Enter a short description of this model.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Insira uma breve descrição deste modelo.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
         <source>Description:</source>
         <translation>Descrição:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
         <source>Enter plain-text notes to store with this model.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Insira notas de texto simples para armazenar com este modelo.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
         <source>Comments:</source>
         <translation>Comentários:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
         <source>Overall model dimensions along the X, Y, and Z axes.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Dimensões gerais do modelo ao longo dos eixos X, Y e Z.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Model Measurements&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The dimensions of the model&apos;s bounding box are shown in centimeters, inches, and LDraw units (LDU). The values are read-only and include pieces across all steps.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Medidas do modelo&lt;/b&gt;&lt;/p&gt;&lt;p&gt;As dimensões da caixa delimitadora do modelo são mostradas em centímetros, polegadas e unidades LDraw (LDU). Os valores são somente leitura e incluem partes de todas as etapas.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
         <source>Measurements:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Medidas:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
         <source>Model Measurements</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Medições do modelo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
         <source>View piece quantities by color; click a column heading to sort.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Visualize quantidades de peças por cor; clique no cabeçalho de uma coluna para classificar.</translation>
@@ -17434,7 +17434,7 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
         <translation type="vanished">Peças Utilizadas</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.cpp" line="287"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.cpp" line="287"/>
         <source>%1 Properties</source>
         <translation>Propriedades %1</translation>
     </message>
@@ -17448,55 +17448,55 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
 %7 x %8 x %9 LDU</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.cpp" line="295"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.cpp" line="295"/>
         <source>Metric: %1 x %2 x %3 cm - Imperial: %4 x %5 x %6 inches - LDraw: %7 x %8 x %9 LDU</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.cpp" line="314"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.cpp" line="314"/>
         <source>Preview</source>
         <translation type="unfinished">Visualização</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.cpp" line="315"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.cpp" line="315"/>
         <source>ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.cpp" line="316"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.cpp" line="316"/>
         <source>Piece</source>
         <translation>Peça</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.cpp" line="327"/>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.cpp" line="396"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.cpp" line="327"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.cpp" line="396"/>
         <source>Total</source>
         <translation>Total</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.cpp" line="430"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.cpp" line="430"/>
         <source>Unique pieces: %1 - Total pieces: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.cpp" line="475"/>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.cpp" line="483"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.cpp" line="475"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.cpp" line="483"/>
         <source>Export BrickLink</source>
         <translation type="unfinished">Exportar BrickLink</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.cpp" line="475"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.cpp" line="475"/>
         <source>XML Files (*.xml);;All Files (*.*)</source>
         <translation type="unfinished">Ficheiros XML (*.xml);;Todos os Ficheiros (*.*)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.cpp" line="488"/>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.cpp" line="496"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.cpp" line="488"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.cpp" line="496"/>
         <source>Export CSV</source>
         <translation type="unfinished">Exportar CSV</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.cpp" line="488"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.cpp" line="488"/>
         <source>CSV Files (*.csv);;All Files (*.*)</source>
         <translation type="unfinished">Ficheiros CSV (*.csv);;Todos os Ficheiros (*.*)</translation>
     </message>
@@ -17521,58 +17521,58 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
         <translation type="vanished">Todos os Formatos de Imagem (*.bmp *.gif *.png *.jpg);;Ficheiros BMP (*.bmp);;Ficheiros GIF (*.gif);;Ficheiros PNG (*.png);;Ficheiros JPEG (*.jpg);;Todos os Ficheiros (*.*)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Model Properties&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Edit the current model&apos;s author, description, and comments on the Summary tab. Measurements and Pieces provide read-only information. Choose OK to apply the metadata changes, or Cancel to discard them.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Model Summary&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Author, description, and comments are stored in the model file when you save it. Measurements show its overall size.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.ui"/>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.cpp" line="463"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.cpp" line="463"/>
         <source>Pieces</source>
         <translation type="unfinished">Peças</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Pieces&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The table counts pieces across all steps, including pieces inside submodels. The first column shows a thumbnail of each piece in its most used color, and the ID column shows its number. Color columns show quantities, and totals summarize each piece, each color, and the whole model. Click a column heading to sort. The thumbnail, ID and piece-name columns stay visible while you scroll horizontally. Counts cannot be edited here.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
         <source>Unique pieces count each piece and color combination once; total pieces count every piece in the model.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
         <source>Save this model&apos;s piece list as a BrickLink wanted list.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Export BrickLink&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Saves the pieces listed in this table as a BrickLink XML wanted list, the same format as File &amp;gt; Export &amp;gt; BrickLink. Only the model shown in this dialog and its submodels are included.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
         <source>Export BrickLink...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
         <source>Save this model&apos;s piece list as a CSV spreadsheet.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Export CSV&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Saves the pieces listed in this table as comma separated values with name, color, quantity, ID and color code, the same format as File &amp;gt; Export &amp;gt; CSV. Only the model shown in this dialog and its submodels are included.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_properties_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
         <source>Export CSV...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -17585,35 +17585,35 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
         <translation type="obsolete">%1: %2</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="31"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="31"/>
         <source>Keyframe for %1</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Fotograma-chave para %1</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="32"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="32"/>
         <source>&lt;p&gt;&lt;b&gt;Property Keyframe&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Enable or remove a keyframe for this property at the current building step. Keyframes let the property&apos;s value change between steps.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Quadro-chave da propriedade&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Ative ou remova um quadro-chave para esta propriedade na etapa de construção atual. Os quadros-chave permitem que o valor da propriedade mude entre as etapas.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="216"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="216"/>
         <source>%1: Multiple Values</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="581"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="581"/>
         <source>%1Multiple Values</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="806"/>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="891"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="806"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="891"/>
         <source>Multiple Colors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1073"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1073"/>
         <source>Expand or collapse the %1 properties.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Expanda ou recolha as propriedades %1.</translation>
@@ -17624,9 +17624,9 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
         <translation type="obsolete">Alternar quadro-chave</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="678"/>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="718"/>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="723"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="678"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="718"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="723"/>
         <source>Multiple Values</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Vários valores</translation>
@@ -17637,66 +17637,66 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
         <translation type="obsolete"> Várias cores</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="913"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="913"/>
         <source>Multiple Pieces</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Várias peças</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="917"/>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1357"/>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1359"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="917"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1357"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1359"/>
         <source>Piece</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">Peça</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1095"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1095"/>
         <source>Toggle Keyframe</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1161"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1161"/>
         <source>Never</source>
         <translation type="unfinished">Nunca</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1284"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1284"/>
         <source>X</source>
         <translation type="unfinished">X</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1289"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1289"/>
         <source>%1 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1289"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1289"/>
         <source>%1 (%2)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1332"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1332"/>
         <source>%1 Swatch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1359"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1359"/>
         <source>Piece ID</source>
         <oldsource>Piece Id</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">ID da peça</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="880"/>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1360"/>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1391"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="880"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1360"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1391"/>
         <source>Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cor</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1360"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1360"/>
         <source>Piece color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cor da peça</translation>
@@ -17722,75 +17722,75 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
         <translation type="obsolete">Passo quando a peça estiver oculta</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1368"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1368"/>
         <source>Camera</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">Câmara</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1370"/>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1388"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1370"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1388"/>
         <source>Name</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">Nome</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1370"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1370"/>
         <source>Camera name</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Nome da câmara</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1371"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1371"/>
         <source>Projection</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">Projecção</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1371"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1371"/>
         <source>Camera projection</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Projeção de câmara</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1375"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1375"/>
         <source>FOV</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Campo de visão</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1375"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1375"/>
         <source>Field of view in degrees</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Campo de visão em graus</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1376"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1376"/>
         <source>Near</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Plano próximo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1376"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1376"/>
         <source>Near clipping distance</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Perto da distância de recorte</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1377"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1377"/>
         <source>Far</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Plano distante</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1377"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1377"/>
         <source>Far clipping distance</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Distância de corte distante</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1380"/>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1435"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1380"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1435"/>
         <source>Transform</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">Transformar</translation>
@@ -17801,21 +17801,21 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
         <translation type="obsolete">Posição X</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1382"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1382"/>
         <source>Camera position</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Posição da câmara</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1284"/>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1403"/>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1432"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1284"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1403"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1432"/>
         <source>Y</source>
         <translatorcomment>Technical identifier or nonlinguistic text; intentionally retained unchanged.</translatorcomment>
         <translation type="unfinished">Y</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1284"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1284"/>
         <source>Z</source>
         <translatorcomment>Technical identifier or nonlinguistic text; intentionally retained unchanged.</translatorcomment>
         <translation type="unfinished">Z</translation>
@@ -17826,7 +17826,7 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
         <translation type="obsolete">Alvo X</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1383"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1383"/>
         <source>Camera target position</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Posição alvo da câmara</translation>
@@ -17837,49 +17837,49 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
         <translation type="obsolete">Acima X</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1384"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1384"/>
         <source>Camera up direction</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Vetor vertical da câmara</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1386"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1386"/>
         <source>Light</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Luz</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1388"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1388"/>
         <source>Light name</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Nome claro</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1389"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1389"/>
         <source>Type</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Tipo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1389"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1389"/>
         <source>Light type</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Tipo de luz</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1391"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1391"/>
         <source>Light color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cor clara</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1392"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1392"/>
         <source>Cast Shadow</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Lançar sombra</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1392"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1392"/>
         <source>Cast a shadow from this light</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Lance uma sombra desta luz</translation>
@@ -17905,309 +17905,309 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
         <translation type="obsolete">Ângulo em graus sobre o qual a intensidade da luz spot cai para zero</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1362"/>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1400"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1362"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1400"/>
         <source>S</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1362"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1362"/>
         <source>Steps</source>
         <translation type="unfinished">Passos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1364"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1364"/>
         <source>Added in Step</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1364"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1364"/>
         <source>Added in Step: Step when the piece is added to the model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1365"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1365"/>
         <source>Removed in Step</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1365"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1365"/>
         <source>Removed in Step: Step when the piece is removed from the model, leave empty to keep it until the end</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1373"/>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1423"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1373"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1423"/>
         <source>F</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1373"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1373"/>
         <source>Field of View and Clipping</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1375"/>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1396"/>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1397"/>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1412"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1375"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1396"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1397"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1412"/>
         <source>°</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1382"/>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1437"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1382"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1437"/>
         <source>P</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1382"/>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1437"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1382"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1437"/>
         <source>Position</source>
         <translation type="unfinished">Posição</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1383"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1383"/>
         <source>L</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1383"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1383"/>
         <source>Look At</source>
         <translation type="unfinished">Olhar Para</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1384"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1384"/>
         <source>U</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1384"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1384"/>
         <source>Up</source>
         <translation type="unfinished">Subir</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1390"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1390"/>
         <source>Area Shape</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Formato da área</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1390"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1390"/>
         <source>The shape of the area light</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">A forma da luz da área</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1394"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1394"/>
         <source>A</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1394"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1394"/>
         <source>Spotlight Angles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1396"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1396"/>
         <source>Cone</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1396"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1396"/>
         <source>Angle in degrees of the spotlight&apos;s beam</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1397"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1397"/>
         <source>Penumbra</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1397"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1397"/>
         <source>Angle in degrees over which the intensity of the spotlight falls off to zero</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1400"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1400"/>
         <source>Area Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1402"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1402"/>
         <source>Size X</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Tamanho X</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1402"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1402"/>
         <source>The width of the area light</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">A largura da área de luz</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1403"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1403"/>
         <source>The height of the area light</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">A altura da luz da área</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1406"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1406"/>
         <source>Blender Settings</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender Configurações</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1408"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1408"/>
         <source>B</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1408"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1408"/>
         <source>Blender</source>
         <translation type="unfinished">Blender</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1410"/>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1419"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1410"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1419"/>
         <source>Power</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Poder</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1410"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1410"/>
         <source>Power of the light in watts</source>
         <oldsource>Power of the light in Watts</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Potência da luz em Watts</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1410"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1410"/>
         <source> W</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1411"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1411"/>
         <source>Radius</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Raio</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1411"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1411"/>
         <source>Shadow soft size</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Tamanho suave da sombra</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1412"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1412"/>
         <source>Angle</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ângulo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1412"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1412"/>
         <source>Angular diameter of the light</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Diâmetro angular da luz</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1415"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1415"/>
         <source>POV-Ray Settings</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">POV-Ray Configurações</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1417"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1417"/>
         <source>V</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1417"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1417"/>
         <source>POV-Ray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1419"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1419"/>
         <source>Power of the light (multiplicative factor)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Potência da luz (fator multiplicativo)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1420"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1420"/>
         <source>Additional exponential spotlight edge softening</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1423"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1423"/>
         <source>Fade</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1425"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1425"/>
         <source>Fade Distance</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Distância de desvanecimento</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1425"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1425"/>
         <source>The distance at which the full light intensity arrives</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">A distância a que chega a intensidade total da luz</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1426"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1426"/>
         <source>Fade Power</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Poder de desvanecimento</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1426"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1426"/>
         <source>Light falloff rate</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Taxa de queda ligeira</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1429"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1429"/>
         <source>G</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1429"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1429"/>
         <source>Area Grid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1431"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1431"/>
         <source>Number of point sources along the X axis (1 to 64).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1432"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1432"/>
         <source>Number of point sources along the Y axis (1 to 64).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1438"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1438"/>
         <source>R</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1438"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1438"/>
         <source>Rotation</source>
         <translation type="unfinished">Rotação</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1755"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1755"/>
         <source>Size </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1755"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1755"/>
         <source>Size X </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1420"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1420"/>
         <source>Tightness</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Aperto</translation>
@@ -18218,7 +18218,7 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
         <translation type="obsolete">Suavização adicional da borda do spot light exponencial</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1431"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1431"/>
         <source>Grid X</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Grau X</translation>
@@ -18234,7 +18234,7 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
         <translation type="obsolete">Número de fontes pontuais ao longo do eixo Y</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1437"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1437"/>
         <source>Position of the object</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Posição do objeto</translation>
@@ -18245,7 +18245,7 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
         <translation type="obsolete">Rotação X</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_properties_widget.cpp" line="1438"/>
+        <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1438"/>
         <source>Rotation of the object in degrees</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Rotação do objeto em graus</translation>
@@ -18367,45 +18367,45 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
 <context>
     <name>swRenderDialog</name>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.ui"/>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="58"/>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="183"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="58"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="183"/>
         <source>Render</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Devolver</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="61"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="61"/>
         <source>Settings...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Configurações...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="64"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="64"/>
         <source>View Log...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ver registo...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="67"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="67"/>
         <source>Show the renderer output and diagnostic messages.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Mostre a saída do renderizador e as mensagens de diagnóstico.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="68"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="68"/>
         <source>&lt;p&gt;&lt;b&gt;View Log&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Open the renderer output to investigate a failed render or warnings. This button becomes available when a log has been captured.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Ver registro&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Abra a saída do renderizador para investigar uma falha na renderização ou avisos. Este botão fica disponível quando um registro é capturado.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="69"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="69"/>
         <source>&lt;p&gt;&lt;b&gt;Render&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Start the render using the current settings. While rendering, this button becomes Cancel so you can stop the operation.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Renderizar&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Inicie a renderização usando as configurações atuais. Durante a renderização, este botão se torna Cancelar para que você possa interromper a operação.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="79"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="79"/>
         <source>POV-Ray Image Render</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">POV-Ray Renderização de imagem</translation>
@@ -18416,20 +18416,20 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
         <translation type="obsolete">Modelo de renderização</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="88"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="88"/>
         <source>Blender LDraw Import</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender LDraw Importar</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="88"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="88"/>
         <source>Blender Image Render</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender Renderização de imagem</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="101"/>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="925"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="101"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="925"/>
         <source>Blender not configured. Use Settings to configure.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender não configurado. Utilize Configurações para configurar.</translation>
@@ -18445,7 +18445,7 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
         <translation type="obsolete">Blender definições de importação</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="110"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="110"/>
         <source>Open in Blender</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Abrir em Blender</translation>
@@ -18456,7 +18456,7 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
         <translation type="obsolete">Importe e abra o modelo LDraw em Blender</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="246"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="246"/>
         <source>Exporting Model</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Exportando Modelo</translation>
@@ -18467,85 +18467,85 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
         <translation type="obsolete">Erro de renderização</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="81"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="81"/>
         <source>&lt;p&gt;&lt;b&gt;POV-Ray Image Render&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Render the current model step using POV-Ray. Choose an output image, then use Settings to set its dimensions and quality. Select Render to start.&lt;/p&gt;&lt;p&gt;The preview is scaled to fit the dialog. View Log shows diagnostic output when available.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Renderização de imagem POV-Ray&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Renderize a etapa atual do modelo usando POV-Ray. Escolha uma imagem de saída e use Configurações para definir suas dimensões e qualidade. Selecione Renderizar para iniciar.&lt;/p&gt;&lt;p&gt;A visualização é dimensionada para caber na caixa de diálogo. Visualizar registro mostra a saída de diagnóstico quando disponível.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="82"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="82"/>
         <source>Render the current model step with POV-Ray.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Renderize a etapa do modelo atual com POV-Ray.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="83"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="83"/>
         <source>Set the POV-Ray image dimensions and render quality.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Defina as dimensões da imagem POV-Ray e a qualidade de renderização.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="84"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="84"/>
         <source>&lt;p&gt;&lt;b&gt;POV-Ray Settings&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose the image width and height in pixels and the rendering quality. Higher resolution and quality can increase rendering time.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Configurações do POV-Ray&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Escolha a largura e a altura da imagem em pixels e a qualidade da renderização. Maior resolução e qualidade podem aumentar o tempo de renderização.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="89"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="89"/>
         <source>&lt;p&gt;&lt;b&gt;Blender Image Render&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Render the current model step with the Blender LDraw add-on. Configure Blender and its add-on through Settings, choose an output image, then select Render.&lt;/p&gt;&lt;p&gt;The preview is scaled to fit the dialog. View Log shows diagnostic output when available.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Blender Image Render&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Renderize a etapa atual do modelo com o complemento Blender LDraw. Configure o Blender e seu complemento em Configurações, escolha uma imagem de saída e selecione Renderizar.&lt;/p&gt;&lt;p&gt;A visualização é dimensionada para caber na caixa de diálogo. Visualizar registro mostra a saída de diagnóstico quando disponível.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="90"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="90"/>
         <source>&lt;p&gt;&lt;b&gt;Blender Settings&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Configure the Blender executable, LDraw import modules, library paths, and render settings. Blender and an import module must be configured before rendering or opening the model.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Configurações do Blender&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Configure o executável do Blender, módulos de importação do LDraw, caminhos de biblioteca e configurações de renderização. O Blender e um módulo de importação devem ser configurados antes de renderizar ou abrir o modelo.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="101"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="101"/>
         <source>Render the current model step with Blender.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Renderize a etapa atual do modelo com o Blender.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="104"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="104"/>
         <source>Configure Blender, its add-on, and render settings.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Configure o Blender, seu complemento e configurações de renderização.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="108"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="108"/>
         <source>Configure Blender and its LDraw import settings.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Configure o Blender e suas configurações de importação do LDraw.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="111"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="111"/>
         <source>&lt;p&gt;&lt;b&gt;Open in Blender&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Export the current model step and open it in Blender for editing. Use Settings to configure Blender and its LDraw import add-on, then select Open in Blender.&lt;/p&gt;&lt;p&gt;This mode does not save a rendered image.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Abrir no Blender&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Exporte a etapa atual do modelo e abra-a no Blender para edição. Use Configurações para configurar o Blender e seu complemento de importação LDraw e selecione Abrir no Blender.&lt;/p&gt;&lt;p&gt;Este modo não salva uma imagem renderizada.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="112"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="112"/>
         <source>&lt;p&gt;&lt;b&gt;Open in Blender&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Import the current model step into Blender for editing. Configure Blender and its LDraw import add-on through Settings if this action is unavailable.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Abrir no Blender&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Importe a etapa do modelo atual para o Blender para edição. Configure o Blender e seu complemento de importação LDraw através de Configurações se esta ação não estiver disponível.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="115"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="115"/>
         <source>Import the current model step and open it in Blender.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Importe a etapa atual do modelo e abra-a no Blender.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="375"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="375"/>
         <source>Saving Blender Model</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Guardar modelo Blender</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="467"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="467"/>
         <source>Cannot write Blender render script file &apos;%1&apos;:
 %2.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -18553,45 +18553,45 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
 %2.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="530"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="530"/>
         <source>errors%1</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">erros%1</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="530"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="530"/>
         <source> and warnings</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished"> e avisos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="530"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="530"/>
         <source>warnings</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">avisos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="531"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="531"/>
         <source>Open in Blender Output</source>
         <oldsource>Open in Blender output</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Abrir na saída Blender</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="532"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="532"/>
         <source>Open in Blender encountered %1. See Show Details...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Aberto em Blender encontrado %1. Consulte Mostrar detalhes...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="561"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="561"/>
         <source>Error starting Blender render process.</source>
         <oldsource>Error starting Blender render process</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Erro ao iniciar o processo de renderização Blender</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="621"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="621"/>
         <source>Failed to open log file: &apos;%1&apos;:
 %2</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -18599,35 +18599,35 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
 %2</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="775"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="775"/>
         <source>An error occurred while rendering.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ocorreu um erro durante a renderização.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="820"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="820"/>
         <source>Render failed.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Falha na renderização.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="839"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="839"/>
         <source>POV-Ray Settings</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">POV-Ray Configurações</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="840"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="840"/>
         <source>&lt;p&gt;&lt;b&gt;POV-Ray Settings&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Set the output image dimensions and rendering quality. Width and height are in pixels, from 1 to 32768. Larger images and higher quality can take longer to render.&lt;/p&gt;&lt;p&gt;Choose OK to save these settings for subsequent renders, or Cancel to keep the previous settings. This dialog does not start rendering.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="849"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="849"/>
         <source>Set the rendered image width in pixels (1 to 32768).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="856"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="856"/>
         <source>Set the rendered image height in pixels (1 to 32768).</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18637,7 +18637,7 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
         <translation type="obsolete">&lt;p&gt;&lt;b&gt;Configurações do POV-Ray&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Defina as dimensões da imagem de saída e a qualidade de renderização. A largura e a altura estão em pixels, com um mínimo de 16. Imagens maiores e de maior qualidade podem levar mais tempo para serem renderizadas.&lt;/p&gt;&lt;p&gt;Escolha OK para salvar essas configurações para renderizações subsequentes ou Cancelar para manter as configurações anteriores. Esta caixa de diálogo não inicia a renderização.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="845"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="845"/>
         <source>Width:</source>
         <translation>Largura:</translation>
     </message>
@@ -18647,7 +18647,7 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
         <translation type="obsolete">Defina a largura da imagem renderizada em pixels (mínimo 16).</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="852"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="852"/>
         <source>Height:</source>
         <translation>Altura:</translation>
     </message>
@@ -18657,67 +18657,67 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
         <translation type="obsolete">Defina a altura da imagem renderizada em pixels (mínimo 16).</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="861"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="861"/>
         <source>High</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Alto</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="861"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="861"/>
         <source>Medium</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Médio</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="861"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="861"/>
         <source>Low</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Baixo</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="863"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="863"/>
         <source>Choose the rendering quality; higher quality can take longer.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a qualidade de renderização; qualidade superior pode levar mais tempo.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="864"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="864"/>
         <source>&lt;p&gt;&lt;b&gt;Rendering Quality&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Low uses POV-Ray&apos;s default quality without additional antialiasing options. Medium uses quality level 5 with antialiasing. High uses quality level 11 with additional antialiasing settings.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Qualidade de renderização&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Baixa usa a qualidade padrão do POV-Ray sem opções adicionais de antialiasing. Médio usa nível de qualidade 5 com antialiasing. Alto usa o nível de qualidade 11 com configurações adicionais de antialiasing.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="892"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="892"/>
         <source>Please enter a width between 1 and %1 pixels.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="899"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="899"/>
         <source>Please enter a height between 1 and %1 pixels.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="939"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="939"/>
         <source>POV-Ray standard error file not found: &apos;%1&apos;.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">POV-Ray ficheiro de erro padrão não encontrado: &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="944"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="944"/>
         <source>Blender standard output file not found: &apos;%1&apos;.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Blender ficheiro de saída padrão não encontrado: &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="949"/>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="957"/>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="966"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="949"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="957"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="966"/>
         <source>Render Log</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Registo de renderização</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="957"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="957"/>
         <source>Error opening log file &apos;%1&apos;:
 %2.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -18725,109 +18725,109 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
 %2.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="967"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="967"/>
         <source>&lt;p&gt;&lt;b&gt;Render Log&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Read the renderer output to investigate warnings or a failed render. Select text and copy it with the standard keyboard shortcut when reporting a problem. Close returns to the Render dialog.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Registro de renderização&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Leia a saída do renderizador para investigar avisos ou falha na renderização. Selecione o texto e copie-o com o atalho de teclado padrão ao relatar um problema. Fechar retorna à caixa de diálogo Renderizar.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="974"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="974"/>
         <source>Renderer Output</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Saída do renderizador</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="975"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="975"/>
         <source>Read and copy renderer output and diagnostic messages.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Leia e copie a saída do renderizador e as mensagens de diagnóstico.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="859"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="859"/>
         <source>Quality:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Qualidade:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.ui"/>
         <source>Path and file name for the rendered image.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Caminho e nome do arquivo da imagem renderizada.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Output Image&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose where to save the rendered image and its format, such as PNG, JPEG, or BMP. The output path applies to image rendering; Open in Blender does not use it.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Imagem de saída&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Escolha onde salvar a imagem renderizada e seu formato, como PNG, JPEG ou BMP. O caminho de saída se aplica à renderização de imagens; Abrir no Blender não utiliza.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.ui"/>
         <source>Output:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Saída:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.ui"/>
         <source>Choose the rendered image file and format.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha o arquivo e o formato da imagem renderizada.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.ui"/>
         <source>Choose Render Output</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Escolha a saída de renderização</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.ui"/>
         <source>...</source>
         <translation type="unfinished">...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.ui"/>
         <source>Preview of the rendered image.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Pré-visualização da imagem renderizada.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.ui"/>
         <source>Render Preview</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Visualização de renderização</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Render Preview&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The preview is scaled to fit this area. Changing the dialog size does not change the output resolution; use Settings to change the image dimensions.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Visualização da renderização&lt;/b&gt;&lt;/p&gt;&lt;p&gt;A visualização é dimensionada para caber nesta área. Alterar o tamanho da caixa de diálogo não altera a resolução de saída; use Configurações para alterar as dimensões da imagem.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.ui"/>
         <source>Progress of the current export or render.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Progresso da exportação ou renderização atual.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.ui"/>
         <source>Render Progress</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Progresso da renderização</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="191"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="191"/>
         <source>Cancel Render</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cancelar renderização</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="191"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="191"/>
         <source>Are you sure you want to cancel the current render?</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Tem a certeza de que pretende cancelar a renderização atual?</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="355"/>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="555"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="355"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="555"/>
         <source>Cancel</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cancelar</translation>
@@ -18837,26 +18837,26 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
         <translation type="vanished">Erro</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="362"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="362"/>
         <source>Error starting POV-Ray.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Erro ao iniciar o POV-Ray.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="798"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="798"/>
         <source>Error writing to file &apos;%1&apos;:
 %2</source>
         <translation type="unfinished">Erro ao escrever no ficheiro &apos;%1&apos;:
 %2</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="827"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="827"/>
         <source>Select Output File</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione o ficheiro de saída</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_render_dialog.cpp" line="827"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_render.cpp" line="827"/>
         <source>Supported Image Files (*.bmp *.png *.jpg);;BMP Files (*.bmp);;PNG Files (*.png);;JPEG Files (*.jpg);;All Files (*.*)</source>
         <translation>Formatos de Imagem Suportados (*.bmp *.png *.jpg);;Ficheiros BMP (*.bmp);;Ficheiros PNG (*.png);;Ficheiros JPEG (*.jpg);;Todos os Ficheiros (*.*)</translation>
     </message>
@@ -18875,64 +18875,64 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
 <context>
     <name>swSelectDialog</name>
     <message>
-        <location filename="../../source/interface/dialogs/sw_select_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_select.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Select Objects&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Use the checkboxes to choose visible pieces, cameras, and lights in the current model. Choose OK to replace the current selection with the checked objects, or Cancel to keep the current selection.&lt;/p&gt;&lt;p&gt;Pieces in the same top-level group are selected together. All, None, and Invert change the checkboxes in this dialog.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Selecionar objetos&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Use as caixas de seleção para escolher peças, câmeras e luzes visíveis no modelo atual. Escolha OK para substituir a seleção atual pelos objetos marcados ou Cancelar para manter a seleção atual.&lt;/p&gt;&lt;p&gt;As peças do mesmo grupo de nível superior são selecionadas juntas. Todos, Nenhum e Inverter alteram as caixas de seleção nesta caixa de diálogo.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_select_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_select.ui"/>
         <source>Select Objects</source>
         <translation>Selecionar Objetos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_select_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_select.ui"/>
         <source>Check the objects to include in the selection.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Marque os objetos a serem incluídos na seleção.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_select_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_select.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Object List&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The list includes pieces visible in the current step and visible cameras and lights. Expand groups to see their pieces. Checking or clearing a grouped piece applies the same state to all pieces in its top-level group.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Lista de objetos&lt;/b&gt;&lt;/p&gt;&lt;p&gt;A lista inclui peças visíveis na etapa atual e câmeras e luzes visíveis. Expanda os grupos para ver suas peças. Marcar ou desmarcar uma peça agrupada aplica o mesmo estado a todas as peças do grupo de nível superior.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_select_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_select.ui"/>
         <source>Objects to Select</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Objetos para selecionar</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_select_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_select.ui"/>
         <source>Check every object in the list.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Verifique todos os objetos da lista.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_select_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_select.ui"/>
         <source>All</source>
         <translation>Todos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_select_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_select.ui"/>
         <source>Clear every object checkbox in the list.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Desmarque todas as caixas de seleção de objetos na lista.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_select_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_select.ui"/>
         <source>None</source>
         <translation>Nenhum</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_select_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_select.ui"/>
         <source>Check unchecked objects and clear checked objects.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Verifique objetos não verificados e limpe objetos marcados.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_select_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_select.ui"/>
         <source>Invert</source>
         <translation>Inverter</translation>
     </message>
@@ -18945,88 +18945,88 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
         <translation type="obsolete">Conjuntos de bases de dados</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_sets_database_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_sets_database.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Import Set Inventory&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Search the online Rebrickable database by set name or number. Select a result and choose OK, or double-click it, to download the set inventory for the operation that opened this dialog.&lt;/p&gt;&lt;p&gt;An internet connection is required for searching and downloading inventories.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Importar inventário de conjuntos&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Pesquise no banco de dados online do Rebrickable por nome ou número do conjunto. Selecione um resultado e escolha OK, ou clique duas vezes nele, para baixar o inventário definido para a operação que abriu esta caixa de diálogo.&lt;/p&gt;&lt;p&gt;É necessária uma conexão com a Internet para pesquisar e baixar inventários.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_sets_database_dialog.ui"/>
-        <location filename="../../source/interface/dialogs/sw_sets_database_dialog.cpp" line="119"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_sets_database.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_sets_database.cpp" line="119"/>
         <source>Import Set Inventory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Importar conjunto de inventário</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_sets_database_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_sets_database.ui"/>
         <source>Enter a set name or number, then press Enter or choose Search.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Insira um nome ou número de conjunto e pressione Enter ou escolha Pesquisar.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_sets_database_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_sets_database.ui"/>
         <source>Set Name or Number</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Definir nome ou número</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_sets_database_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_sets_database.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Search Sets&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Enter a set number or words from its name. Press Enter or choose Search to retrieve matching sets. Refine the search if the set you want is not listed.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Pesquisar conjuntos&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Insira um número de conjunto ou palavras de seu nome. Pressione Enter ou escolha Pesquisar para recuperar conjuntos correspondentes. Refine a pesquisa se o conjunto desejado não estiver listado.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_sets_database_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_sets_database.ui"/>
         <source>Search the online database using the entered name or number.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Pesquise no banco de dados online usando o nome ou número inserido.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_sets_database_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_sets_database.ui"/>
         <source>Search</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Pesquisa</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_sets_database_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_sets_database.ui"/>
         <source>Select a set to download its piece inventory.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione um conjunto para baixar seu inventário de peças.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_sets_database_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_sets_database.ui"/>
         <source>Set Search Results</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Definir resultados de pesquisa</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_sets_database_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_sets_database.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Search Results&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Results show the set number, name, release year, and piece count. Select the desired set and choose OK, or double-click its row, to download its inventory.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Resultados da pesquisa&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Os resultados mostram o número do conjunto, o nome, o ano de lançamento e a contagem de peças. Selecione o conjunto desejado e escolha OK ou clique duas vezes em sua linha para baixar seu inventário.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_sets_database_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_sets_database.ui"/>
         <source>Number</source>
         <translation>Número</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_sets_database_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_sets_database.ui"/>
         <source>Name</source>
         <translation>Nome</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_sets_database_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_sets_database.ui"/>
         <source>Year</source>
         <translation>Ano</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_sets_database_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_sets_database.ui"/>
         <source>Pieces</source>
         <translation>Peças</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_sets_database_dialog.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_sets_database.ui"/>
         <source>Set data provided by &lt;a href=&quot;https://www.rebrickable.com&quot;&gt;Rebrickable&lt;/a&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Definir dados fornecidos por &lt;a href=&quot;https://www.rebrickable.com&quot;&gt;Rebrickable&lt;/a&gt;</translation>
@@ -19037,7 +19037,7 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
         <translation type="obsolete">Base de dados de conjuntos fornecida por &lt;a href=&quot;https://www.rebrickable.com&quot;&gt;Rebrickable&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_sets_database_dialog.cpp" line="119"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_sets_database.cpp" line="119"/>
         <source>Please select a set from the list.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione um conjunto da lista.</translation>
@@ -19048,47 +19048,47 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
         <translation type="obsolete">Definir inventário</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_sets_database_dialog.cpp" line="34"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_sets_database.cpp" line="34"/>
         <source>Rebrickable API Key</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_sets_database_dialog.cpp" line="34"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_sets_database.cpp" line="34"/>
         <source>Set inventories are downloaded from Rebrickable.
 Enter your Rebrickable API key, available for free from your account settings at rebrickable.com:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_sets_database_dialog.cpp" line="129"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_sets_database.cpp" line="129"/>
         <source>Downloading</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Baixando</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_sets_database_dialog.cpp" line="130"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_sets_database.cpp" line="130"/>
         <source>Downloading set inventory</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Fazendo download do inventário definido</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_sets_database_dialog.cpp" line="167"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_sets_database.cpp" line="167"/>
         <source>Keyword cannot be empty.</source>
         <translation>A palavra chave não podem ser vazia.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_sets_database_dialog.cpp" line="167"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_sets_database.cpp" line="167"/>
         <source>Search Sets</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Pesquisar conjuntos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_sets_database_dialog.cpp" line="175"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_sets_database.cpp" line="175"/>
         <source>Searching</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Procurando</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_sets_database_dialog.cpp" line="176"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_sets_database.cpp" line="176"/>
         <source>Connecting to server</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ligar ao servidor</translation>
@@ -19104,13 +19104,13 @@ Enter your Rebrickable API key, available for free from your account settings at
         <translation type="obsolete">Conectar ao banco de dados de conjuntos</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_sets_database_dialog.cpp" line="243"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_sets_database.cpp" line="243"/>
         <source>Error downloading set inventory.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Erro ao descarregar o inventário do conjunto.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_sets_database_dialog.cpp" line="243"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_sets_database.cpp" line="243"/>
         <source>Download Set Inventory</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Baixar inventário do conjunto</translation>
@@ -19119,7 +19119,7 @@ Enter your Rebrickable API key, available for free from your account settings at
 <context>
     <name>swSpinnerWidget</name>
     <message>
-        <location filename="../../source/interface/widgets/sw_spinner_widget.cpp" line="9"/>
+        <location filename="../../source/interface/widgets/sw_widget_spinner.cpp" line="9"/>
         <source>Loading</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Carregando</translation>
@@ -19128,27 +19128,27 @@ Enter your Rebrickable API key, available for free from your account settings at
 <context>
     <name>swTerminalWidget</name>
     <message>
-        <location filename="../../source/interface/widgets/sw_terminal_widget.cpp" line="28"/>
+        <location filename="../../source/interface/widgets/sw_widget_terminal.cpp" line="28"/>
         <source>Configure the terminal.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_terminal_widget.cpp" line="28"/>
+        <location filename="../../source/interface/widgets/sw_widget_terminal.cpp" line="28"/>
         <source>Terminal Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_terminal_widget.cpp" line="77"/>
+        <location filename="../../source/interface/widgets/sw_widget_terminal.cpp" line="77"/>
         <source>The Konsole terminal component is not installed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_terminal_widget.cpp" line="121"/>
+        <location filename="../../source/interface/widgets/sw_widget_terminal.cpp" line="121"/>
         <source>Follow Model Folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_terminal_widget.cpp" line="128"/>
+        <location filename="../../source/interface/widgets/sw_widget_terminal.cpp" line="128"/>
         <source>Go to Model Folder</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19190,49 +19190,49 @@ Enter your Rebrickable API key, available for free from your account settings at
 <context>
     <name>swTimelineWidget</name>
     <message>
-        <location filename="../../source/interface/widgets/sw_timeline_widget.cpp" line="11"/>
+        <location filename="../../source/interface/widgets/sw_widget_timeline.cpp" line="11"/>
         <source>Building Steps and Pieces</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Construindo etapas e peças</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_timeline_widget.cpp" line="12"/>
+        <location filename="../../source/interface/widgets/sw_widget_timeline.cpp" line="12"/>
         <source>Select steps or pieces; drag pieces to reorder them or change their building step.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Selecione etapas ou peças; arraste as peças para reordená-las ou alterar a etapa de construção.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_timeline_widget.cpp" line="158"/>
+        <location filename="../../source/interface/widgets/sw_widget_timeline.cpp" line="158"/>
         <source>Step %1</source>
         <translation>Passo %1</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_timeline_widget.cpp" line="296"/>
+        <location filename="../../source/interface/widgets/sw_widget_timeline.cpp" line="296"/>
         <source>relative</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_timeline_widget.cpp" line="296"/>
+        <location filename="../../source/interface/widgets/sw_widget_timeline.cpp" line="296"/>
         <source>absolute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_timeline_widget.cpp" line="296"/>
+        <location filename="../../source/interface/widgets/sw_widget_timeline.cpp" line="296"/>
         <source>added</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_timeline_widget.cpp" line="301"/>
+        <location filename="../../source/interface/widgets/sw_widget_timeline.cpp" line="301"/>
         <source>View: back to default</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_timeline_widget.cpp" line="303"/>
+        <location filename="../../source/interface/widgets/sw_widget_timeline.cpp" line="303"/>
         <source>View: %1, %2, %3 %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_timeline_widget.cpp" line="308"/>
+        <location filename="../../source/interface/widgets/sw_widget_timeline.cpp" line="308"/>
         <source>Step view saved as an MLCAD ROTSTEP line. Double-click to edit it.</source>
         <translation type="unfinished"></translation>
     </message>

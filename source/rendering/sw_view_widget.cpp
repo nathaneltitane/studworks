@@ -4,14 +4,14 @@
 #include "sw_project.h"
 #include "sw_library.h"
 #include "sw_application.h"
-#include "sw_main_window.h"
+#include "sw_window_main.h"
 #include "sw_context.h"
 #include "sw_view.h"
 #include "sw_texture.h"
 #include "sw_mesh.h"
 #include "sw_profile.h"
-#include "sw_preview_widget.h"
-#include "sw_utilities.h"
+#include "sw_widget_preview.h"
+#include "sw_window_utilities.h"
 #include "sw_view_sphere.h"
 
 swViewWidget::swViewWidget(QWidget* Parent, swView* View)

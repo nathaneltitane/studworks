@@ -4,7 +4,7 @@
 <context>
     <name>swBlenderPreferences</name>
     <message numerus="yes">
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="3908"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="3908"/>
         <source>%1 of %n files extracted.</source>
         <translation>
             <numerusform>%1 of %n file extracted.</numerusform>
@@ -12,7 +12,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="3579"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="3579"/>
         <source>Finished writing Blender parameter entries. Processed %n lines in file &apos;%1&apos;.</source>
         <translation>
             <numerusform>Finished writing Blender parameter entries. Processed %n line in file &apos;%1&apos;.</numerusform>
@@ -23,7 +23,7 @@
 <context>
     <name>swMainWindow</name>
     <message numerus="yes">
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="2998"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="2998"/>
         <source>%n objects selected</source>
         <translation>
             <numerusform>%n object selected</numerusform>
@@ -31,7 +31,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../source/interface/window/sw_main_window.cpp" line="3449"/>
+        <location filename="../../source/interface/window/sw_window_main.cpp" line="3449"/>
         <source>Merged %n submodels.</source>
         <translation>
             <numerusform>Merged %n submodel.</numerusform>
@@ -53,7 +53,7 @@
 <context>
     <name>swModelListDialog</name>
     <message numerus="yes">
-        <location filename="../../source/interface/dialogs/sw_model_list_dialog.cpp" line="144"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.cpp" line="144"/>
         <source>Are you sure you want to delete %n submodels?</source>
         <translation>
             <numerusform>Are you sure you want to delete %n submodel?</numerusform>

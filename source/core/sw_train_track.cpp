@@ -2,7 +2,7 @@
 #include "sw_train_track.h"
 #include "sw_library.h"
 #include "sw_piece_data.h"
-#include "sw_piece.h"
+#include "sw_object_piece.h"
 #include "sw_model.h"
 #include "sw_application.h"
 

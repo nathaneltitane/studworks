@@ -3,12 +3,11 @@
 	<mime-type type="application/vnd.studworks">
 		<comment>StudWorks Project</comment>
 		<magic priority="90">
-			<match type="string" offset="0" value="StudWorks 0.">
+			<match type="string" offset="0" value="LeoCAD 0.">
 				<match type="string" offset="10" value=" Project\0\0"/>
 			</match>
 		</magic>
 		<glob pattern="*.lcd"/>
-		<glob pattern="*.studworks"/>
 	</mime-type>
 	<mime-type type="application/x-ldraw">
 		<comment>LDraw File</comment>

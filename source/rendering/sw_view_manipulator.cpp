@@ -4,12 +4,12 @@
 #include "sw_view.h"
 #include "sw_model.h"
 #include "sw_object.h"
-#include "sw_piece.h"
-#include "sw_camera.h"
+#include "sw_object_piece.h"
+#include "sw_object_camera.h"
 #include "sw_piece_data.h"
 #include "sw_synthesis.h"
 #include "sw_train_track.h"
-#include "sw_main_window.h"
+#include "sw_window_main.h"
 #include "sw_texture_font.h"
 
 swVertexBuffer swViewManipulator::mRotateMoveVertexBuffer;

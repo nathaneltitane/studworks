@@ -4,9 +4,9 @@
 #include "sw_model.h"
 #include "sw_project.h"
 #include "sw_view_sphere.h"
-#include "sw_render_dialog.h"
+#include "sw_dialog_render.h"
 #include "sw_library.h"
-#include "sw_part_selection_widget.h"
+#include "sw_widget_part_selection.h"
 #include "sw_colors.h"
 
 swProfileEntry::swProfileEntry(const char* Section, const char* Key, int DefaultValue)

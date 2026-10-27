@@ -4,9 +4,9 @@
 #include "sw_piece_data.h"
 #include "sw_view.h"
 #include "sw_model.h"
-#include "sw_piece.h"
+#include "sw_object_piece.h"
 #include "sw_project.h"
-#include "sw_camera.h"
+#include "sw_object_camera.h"
 
 swThumbnailManager::swThumbnailManager(swPiecesLibrary* Library)
 	: QObject(Library), mLibrary(Library)

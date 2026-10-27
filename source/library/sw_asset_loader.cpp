@@ -6,7 +6,7 @@
 #include "sw_mesh.h"
 #include "sw_texture.h"
 #include "sw_synthesis.h"
-#include "sw_piece.h"
+#include "sw_object_piece.h"
 
 constexpr QEvent::Type swAssetLoaderCompletionEvent = static_cast<QEvent::Type>(QEvent::User + 1);
 

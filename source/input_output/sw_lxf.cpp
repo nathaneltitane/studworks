@@ -2,8 +2,8 @@
 #include "sw_lxf.h"
 #include "sw_library.h"
 #include "sw_application.h"
-#include "sw_main_window.h"
-#include "sw_piece.h"
+#include "sw_window_main.h"
+#include "sw_object_piece.h"
 #include "sw_file.h"
 #include <QDomDocument>
 

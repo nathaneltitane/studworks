@@ -4,15 +4,15 @@
 #include "sw_library.h"
 #include "sw_profile.h"
 #include "sw_project.h"
-#include "sw_main_window.h"
-#include "sw_preferences_dialog.h"
-#include "sw_part_selection_widget.h"
+#include "sw_window_main.h"
+#include "sw_dialog_preferences.h"
+#include "sw_widget_part_selection.h"
 #include "sw_shortcuts.h"
 #include "sw_view.h"
-#include "sw_camera.h"
-#include "sw_preview_widget.h"
+#include "sw_object_camera.h"
+#include "sw_widget_preview.h"
 #include "sw_colors.h"
-#include "sw_utilities.h"
+#include "sw_window_utilities.h"
 
 #ifdef Q_OS_WIN
 #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))

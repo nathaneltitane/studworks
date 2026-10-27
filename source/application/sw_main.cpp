@@ -103,21 +103,7 @@ static void swRegisterShellFileTypes()
 	LONG Result = RegQueryValue(HKEY_CLASSES_ROOT, TEXT(".lcd"), Temp, &Size);
 
 	if (Result != ERROR_SUCCESS || !lstrlen(Temp) || lstrcmp(Temp, TEXT("StudWorks.Project")))
-	{
-		if (RegSetValue(HKEY_CLASSES_ROOT, TEXT(".lcd"), REG_SZ, TEXT("StudWorks.Project"), lstrlen(TEXT("StudWorks.Project")) * sizeof(TCHAR)) != ERROR_SUCCESS)
-			return;
-
-		HKEY Key;
-		DWORD Disposition = 0;
-
-		if (RegCreateKeyEx(HKEY_CLASSES_ROOT, TEXT(".lcd\\ShellNew"), 0, REG_NONE, REG_OPTION_NON_VOLATILE, KEY_WRITE | KEY_READ, nullptr, &Key, &Disposition) != ERROR_SUCCESS)
-			return;
-
-		Result = RegSetValueEx(Key, TEXT("NullFile"), 0, REG_SZ, (CONST BYTE*)TEXT(""), (lstrlen(TEXT("")) + 1) * sizeof(TCHAR));
-
-		if (RegCloseKey(Key) != ERROR_SUCCESS || Result != ERROR_SUCCESS)
-			return;
-	}
+		RegSetValue(HKEY_CLASSES_ROOT, TEXT(".lcd"), REG_SZ, TEXT("StudWorks.Project"), lstrlen(TEXT("StudWorks.Project")) * sizeof(TCHAR));
 }
 
 #endif

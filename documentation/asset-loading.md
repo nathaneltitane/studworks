@@ -81,7 +81,7 @@ new evidence and update this record with any agreed change.
 | `swTextureManager` | Texture identities and references, snapshots, and private CPU decoding of resolved sources. | [sw_texture_manager.h](../source/library/sw_texture_manager.h), [sw_texture_manager.cpp](../source/library/sw_texture_manager.cpp) |
 | `swAssetLoader` | Pending requests, worker scheduling, private results, texture upload, publication, cancellation, readiness waits, and deferred settlement notifications. | [sw_asset_loader.h](../source/library/sw_asset_loader.h), [sw_asset_loader.cpp](../source/library/sw_asset_loader.cpp) |
 | `swPieceData` / `swTexture` | Published geometry or texture data, readiness state, and asset metadata. | [sw_piece_data.h](../source/library/sw_piece_data.h), [sw_texture.h](../source/library/sw_texture.h) |
-| Projects, models, and views | Project-local names, required-asset traversal, generated-piece ownership, bounds, fallback display, cameras, and redraws. | [sw_project.cpp](../source/core/sw_project.cpp), [sw_model.cpp](../source/core/sw_model.cpp), [sw_piece.cpp](../source/core/sw_piece.cpp) |
+| Projects, models, and views | Project-local names, required-asset traversal, generated-piece ownership, bounds, fallback display, cameras, and redraws. | [sw_project.cpp](../source/core/sw_project.cpp), [sw_model.cpp](../source/core/sw_model.cpp), [sw_object_piece.cpp](../source/core/sw_object_piece.cpp) |
 
 The library owns the loader. Call library entry points from the UI thread for
 asset acquisition, release, scheduling, waiting, and invalidation. Workers use
@@ -515,7 +515,7 @@ Initial generation displays a cube. Control-point edits retain the previous
 generated mesh until replacement settles; that older mesh does not satisfy a
 wait for the new generation. Settlement holds the base `swPieceData` through its
 deferred notification. See [sw_synthesis.cpp](../source/library/sw_synthesis.cpp) and
-[sw_piece.cpp](../source/core/sw_piece.cpp).
+[sw_object_piece.cpp](../source/core/sw_object_piece.cpp).
 
 Interactive fallback rendering, bounds, ray/box picking, and selection outlines
 use the same displayed geometry and keep the original instance identity. A
@@ -598,7 +598,7 @@ its recursive pieces and per-instance synths, or use the model-level API.
 | Ordinary LDraw/LDD opening and interactive views | Parse and queue, then return. Draw shared fallback cubes for unavailable geometry; recurse through available children. Update bounds and redraw as assets settle without automatically refitting the camera. |
 | Inventory import | Wait for required geometry before computing persistent placement; failure prevents using cube bounds as final layout. |
 | Insertion layout | Wait for required geometry before computing persistent placement; failed geometry uses fallback boxes. |
-| Preview | Wait for its recursive requirements and generated meshes; failure rejects the preview. See [sw_preview_widget.cpp](../source/interface/widgets/sw_preview_widget.cpp). |
+| Preview | Wait for its recursive requirements and generated meshes; failure rejects the preview. See [sw_widget_preview.cpp](../source/interface/widgets/sw_widget_preview.cpp). |
 | Thumbnail manager | Acquire required assets asynchronously. Missing library geometry/textures produce an error thumbnail. Pending generated meshes delay rendering; synth failure can use a loaded library mesh. See [sw_thumbnail_manager.cpp](../source/library/sw_thumbnail_manager.cpp). |
 | OBJ, COLLADA, 3DS, POV-Ray export | Wait for model requirements, then omit failed meshes and failed generated geometry. Empty output is allowed. Render/write failures still report errors. See [sw_project.cpp](../source/core/sw_project.cpp). |
 | Saved images, screenshots, HTML, instructions, printing | Wait for settlement, then render available geometry without loading cubes. HTML parts lists retain missing entries and quantities with blank thumbnails; instruction parts lists omit unavailable thumbnails. Actual rendering/writing failures still fail the operation. |

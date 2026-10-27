@@ -1,7 +1,7 @@
 #pragma once
 
 #include "sw_math.h"
-#include "sw_piece.h"
+#include "sw_object_piece.h"
 
 class swLibraryMeshData;
 class swMesh;

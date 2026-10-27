@@ -4,7 +4,7 @@
 #include "sw_mesh.h"
 #include "sw_texture.h"
 #include "sw_colors.h"
-#include "sw_main_window.h"
+#include "sw_window_main.h"
 #include "sw_library.h"
 #include "sw_texture_font.h"
 #include "sw_view.h"

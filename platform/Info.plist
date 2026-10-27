@@ -10,7 +10,6 @@
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>lcd</string>
-				<string>studworks</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
 			<string>studworks_document.icns</string>
