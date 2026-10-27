@@ -22,8 +22,8 @@ qtHaveModule(gamepad) {
 	DEFINES += SW_ENABLE_GAMEPAD
 }
 
-# Optional embedded Konsole terminal on systems with KDE Frameworks.
-qtHaveModule(KParts) {
+# Optional embedded Konsole terminal on systems with KDE Frameworks, left out of bundled packages.
+qtHaveModule(KParts):isEmpty(BUNDLE_LIBRARIES) {
 	QT += KParts
 	DEFINES += SW_ENABLE_TERMINAL
 }
@@ -114,6 +114,21 @@ MOC_DIR = $$DESTDIR/.moc
 RCC_DIR = $$DESTDIR/.qrc
 UI_DIR = $$DESTDIR/.ui
 
+win32 {
+	# the parts library and povray are copied beside the executable only when present
+	exists($$_PRO_FILE_PWD_/library.bin) {
+		library.files = $$_PRO_FILE_PWD_/library.bin
+		library.path = $$OUT_PWD/$$DESTDIR
+		COPIES += library
+	}
+
+	exists($$_PRO_FILE_PWD_/povconsole32-sse2.exe) {
+		povray.files = $$_PRO_FILE_PWD_/povconsole32-sse2.exe
+		povray.path = $$OUT_PWD/$$DESTDIR
+		COPIES += povray
+	}
+}
+
 unix:!macx {
 	isEmpty(INSTALL_PREFIX):INSTALL_PREFIX = /usr
 	isEmpty(BIN_DIR):BIN_DIR = $$INSTALL_PREFIX/bin
@@ -147,6 +162,19 @@ unix:!macx {
 	appdata.files = packaging/io.github.nathaneltitane.StudWorks.appdata.xml
 
 	INSTALLS += target docs man desktop icons mime appdata
+
+	# the parts library is installed only when present, povray comes from the system
+	exists($$_PRO_FILE_PWD_/library.bin) {
+		library.path = $$INSTALL_PREFIX/share/studworks
+		library.files = $$_PRO_FILE_PWD_/library.bin
+		INSTALLS += library
+	}
+
+	# find the bundled qt libraries first
+	!isEmpty(BUNDLE_LIBRARIES) {
+		QMAKE_LFLAGS += -Wl,--disable-new-dtags
+		QMAKE_RPATHDIR += $$INSTALL_PREFIX/lib
+	}
 
 	!isEmpty(LDRAW_LIBRARY_PATH) {
 		DEFINES += SW_LDRAW_LIBRARY_PATH=\\\"$$LDRAW_LIBRARY_PATH\\\"

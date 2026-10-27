@@ -35,6 +35,9 @@ parts:
   library:
     source: .
     plugin: dump
+    build-packages:
+      - curl
     override-build: |
       mkdir -p $SNAPCRAFT_PART_INSTALL/usr/share/studworks
+      [ -s library.bin ] || curl -fsSL https://library.ldraw.org/library/updates/complete.zip -o library.bin
       cp library.bin $SNAPCRAFT_PART_INSTALL/usr/share/studworks/library.bin

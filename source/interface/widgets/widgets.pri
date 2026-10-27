@@ -37,8 +37,8 @@ HEADERS += \
 FORMS += \
 	$$PWD/sw_minifigure_builder_widget.ui
 
-# Optional embedded Konsole terminal on systems with KDE Frameworks.
-qtHaveModule(KParts) {
+# Optional embedded Konsole terminal on systems with KDE Frameworks, left out of bundled packages.
+qtHaveModule(KParts):isEmpty(BUNDLE_LIBRARIES) {
 	SOURCES += $$PWD/sw_terminal_widget.cpp
 	HEADERS += $$PWD/sw_terminal_widget.h
 }

@@ -1,3 +1,4 @@
+[ -s library.bin ] || wget -c https://library.ldraw.org/library/updates/complete.zip -O library.bin
 qmake PREFIX=/usr -r
 make clean
 make -j4
@@ -6,11 +7,9 @@ rm ./*.spec # Otherwise the next line fails
 sudo checkinstall --pkgname=app --pkgversion="1" --pkgrelease="1" --backup=no --fstrans=no --default --deldoc
 mkdir appdir ; cd appdir
 dpkg -x ../app_1-1_amd64.deb . ; find .
-cp ../qt/studworks.desktop .
+cp ../platform/studworks.desktop .
 sed -i -e 's|\.svg||g' studworks.desktop # Workaround
-cp ../resources/studworks.png .
-mkdir usr/share/studworks
-cp ../library.bin usr/share/studworks/library.bin
+cp ../resources/icons/256x256/apps/studworks.png .
 cd ..
 wget -c "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
 chmod a+x linuxdeployqt*.AppImage

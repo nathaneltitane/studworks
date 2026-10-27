@@ -16,7 +16,7 @@ Useful? Star the repository - it helps others find it.
 
 ### NOTICE
 
-10-26-2026 ↴
+2026-10-26 ↴
 
 - LeoCAD+ is now StudWorks, its own project built on [LeoCAD](https://github.com/leozide/leocad)
 - Code split into modules: application, core, library, rendering, input_output and interface
@@ -25,7 +25,7 @@ Useful? Star the repository - it helps others find it.
 - Set inventories use your own free Rebrickable API key, asked for once
 - Light and camera properties follow the piece layout: named rows, values with their names and units, one keyframe per value
 
-10-25-2026 ↴
+2026-10-25 ↴
 
 - Default names use a three digit number and no number sign: 'Group 001', 'Minifigure 001', 'Submodel 001.ldr', 'Camera 001', 'Spot Light 001'
 - Duplicated submodels take the next free number instead of 'Copy of': 'Car.ldr' becomes 'Car 001.ldr'
@@ -34,7 +34,7 @@ Useful? Star the repository - it helps others find it.
 - Timeline: steps a piece is added and removed in, edited below the timeline - an empty removal step reads 'Never'
 - Model tabs fully outlined and lined up with the view options button
 
-10-24-2026 ↴
+2026-10-24 ↴
 
 - Instructions: paper and screen presets, metric or imperial units and margins, orientation-based step order
 - Instructions: cover page, bill of materials, blank page breaks, step dividers, document font and full page background

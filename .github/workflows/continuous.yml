@@ -15,11 +15,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
+    - name: Read version
+      id: version
+      shell: bash
+      run: |
+        [[ "$(grep -m 1 SW_VERSION_TEXT source/application/sw_global.h)" =~ \"([0-9-]+)\" ]]
+        echo "text=${BASH_REMATCH[1]}" >> "$GITHUB_OUTPUT"
     - name: Install Qt
       uses: jurplel/install-qt-action@v4  
       with:
         version: '5.15.*'
         cache: 'true'
+    - name: Cache Library
+      uses: actions/cache@v6
+      id: cache-library
+      with:
+        path: library.bin
+        key: library-complete
+    - name: Download Library
+      if: steps.cache-library.outputs.cache-hit != 'true'
+      run: wget https://library.ldraw.org/library/updates/complete.zip -O library.bin
     - name: Get number of CPU cores
       uses: SimenB/github-actions-cpu-cores@v3
       id: cpu-cores
@@ -27,6 +42,10 @@ jobs:
       run: qmake PREFIX=/usr
     - name: Build
       run: make -j ${{ steps.cpu-cores.outputs.count }}
+    - name: Install
+      run: |
+        make install INSTALL_ROOT=$PWD/AppDir
+        test -s AppDir/usr/share/studworks/library.bin
     - name: Generate test Makefile
       run: |
         mkdir -p build/tests
@@ -42,14 +61,65 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v7
       with:
-        name: test-results-${{ runner.os }}
+        name: test-results-${{ runner.os }}-${{ steps.version.outputs.text }}-${{ runner.arch }}
         path: build/tests/test-results.xml
         if-no-files-found: ignore
+
+  build-deb:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        - runner: ubuntu-22.04
+          architecture: amd64
+        - runner: ubuntu-22.04-arm
+          architecture: arm64
+    runs-on: ${{ matrix.runner }}
+    steps:
+    - uses: actions/checkout@v7
+    - name: Read version
+      id: version
+      shell: bash
+      run: |
+        [[ "$(grep -m 1 SW_VERSION_TEXT source/application/sw_global.h)" =~ \"([0-9-]+)\" ]]
+        echo "text=${BASH_REMATCH[1]}" >> "$GITHUB_OUTPUT"
+    - name: Install Qt
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y qtbase5-dev qttools5-dev-tools libqt5opengl5-dev libqt5svg5 qt5-image-formats-plugins zlib1g-dev
+    - name: Cache Library
+      uses: actions/cache@v6
+      id: cache-library
+      with:
+        path: library.bin
+        key: library-complete
+    - name: Download Library
+      if: steps.cache-library.outputs.cache-hit != 'true'
+      run: wget https://library.ldraw.org/library/updates/complete.zip -O library.bin
+    - name: Build package
+      run: packaging/deb.sh build/deb
+    - name: Test package
+      run: |
+        for image in debian:12 debian:13 ubuntu:22.04 ubuntu:24.04
+        do
+          docker run --rm -v "$PWD/build/deb:/deb" "$image" sh -c 'apt-get update -qq && apt-get install -y -qq /deb/studworks_*.deb > /dev/null && QT_QPA_PLATFORM=offscreen studworks --version && test -s /opt/studworks/share/studworks/library.bin'
+        done
+    - name: Upload package
+      uses: actions/upload-artifact@v7
+      with:
+        name: studworks-deb-${{ steps.version.outputs.text }}-${{ matrix.architecture }}
+        path: build/deb/studworks_*.deb
 
   build-macos:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v7
+    - name: Read version
+      id: version
+      shell: bash
+      run: |
+        [[ "$(grep -m 1 SW_VERSION_TEXT source/application/sw_global.h)" =~ \"([0-9-]+)\" ]]
+        echo "text=${BASH_REMATCH[1]}" >> "$GITHUB_OUTPUT"
     - name: Install Qt
       uses: jurplel/install-qt-action@v4
       with:
@@ -101,7 +171,7 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v7
       with:
-        name: test-results-${{ runner.os }}
+        name: test-results-${{ runner.os }}-${{ steps.version.outputs.text }}-${{ runner.arch }}
         path: build/tests/test-results.xml
         if-no-files-found: ignore
 
@@ -112,6 +182,12 @@ jobs:
         shell: cmd
     steps:
     - uses: actions/checkout@v7
+    - name: Read version
+      id: version
+      shell: bash
+      run: |
+        [[ "$(grep -m 1 SW_VERSION_TEXT source/application/sw_global.h)" =~ \"([0-9-]+)\" ]]
+        echo "text=${BASH_REMATCH[1]}" >> "$GITHUB_OUTPUT"
     - name: Set up MSVC
       uses: ilammy/msvc-dev-cmd@v1
       with:
@@ -123,10 +199,31 @@ jobs:
         version: '6.10.3'
         arch: 'win64_msvc2022_64'
         cache: 'true'
+    - name: Cache Library
+      uses: actions/cache@v6
+      id: cache-library
+      with:
+        path: library.bin
+        key: library-complete
+    - name: Download Library
+      if: steps.cache-library.outputs.cache-hit != 'true'
+      run: curl -fsSL https://library.ldraw.org/library/updates/complete.zip -o library.bin
+    - name: Cache POV-Ray
+      uses: actions/cache@v6
+      id: cache-povray
+      with:
+        path: povconsole32-sse2.exe
+        key: povray-windows-build1
+    - name: Download POV-Ray
+      if: steps.cache-povray.outputs.cache-hit != 'true'
+      run: curl -fsSL https://github.com/leozide/povray/releases/download/build1/povconsole32-sse2.exe -o povconsole32-sse2.exe
     - name: Generate Makefile
       run: qmake -spec win32-msvc CONFIG+=release CONFIG-=debug CONFIG-=debug_and_release
     - name: Build
-      run: nmake /NOLOGO
+      run: |
+        nmake /NOLOGO
+        if not exist build\release\library.bin exit /b 1
+        if not exist build\release\povconsole32-sse2.exe exit /b 1
     - name: Generate test Makefile
       run: |
         mkdir build\tests
@@ -142,6 +239,6 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v7
       with:
-        name: test-results-${{ runner.os }}
+        name: test-results-${{ runner.os }}-${{ steps.version.outputs.text }}-${{ runner.arch }}
         path: build/tests/test-results.xml
         if-no-files-found: ignore
