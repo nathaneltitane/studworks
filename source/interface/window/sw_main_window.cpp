@@ -399,7 +399,6 @@ void swMainWindow::CreateMenus()
 	FileMenu->addSeparator();
 	FileMenu->addAction(mActions[SW_FILE_SAVE]);
 	FileMenu->addAction(mActions[SW_FILE_SAVE_AS]);
-	FileMenu->addAction(mActions[SW_FILE_SAVE_IMAGE]);
 	QMenu* ImportMenu = FileMenu->addMenu(tr("&Import"));
 	ImportMenu->addAction(mActions[SW_FILE_IMPORT_LDD]);
 	ImportMenu->addAction(mActions[SW_FILE_IMPORT_INVENTORY]);
@@ -409,6 +408,7 @@ void swMainWindow::CreateMenus()
 	ExportMenu->addAction(mActions[SW_FILE_EXPORT_COLLADA]);
 	ExportMenu->addAction(mActions[SW_FILE_EXPORT_CSV]);
 	ExportMenu->addAction(mActions[SW_FILE_EXPORT_HTML]);
+	ExportMenu->addAction(mActions[SW_FILE_SAVE_IMAGE]);
 	ExportMenu->addAction(mActions[SW_FILE_EXPORT_POVRAY]);
 	ExportMenu->addAction(mActions[SW_FILE_EXPORT_WAVEFRONT]);
 	FileMenu->addSeparator();

@@ -62,8 +62,8 @@ const swCommand gCommands[] =
 	// SW_FILE_SAVE_IMAGE
 	{
 		QT_TRANSLATE_NOOP("Action", "File.SaveImage"),
-		QT_TRANSLATE_NOOP("Menu", "Save &Image..."),
-		QT_TRANSLATE_NOOP("Status", "Save a picture of the current view"),
+		QT_TRANSLATE_NOOP("Menu", "&Image..."),
+		QT_TRANSLATE_NOOP("Status", "Export an image of the current view"),
 		"",
 		""
 	},
