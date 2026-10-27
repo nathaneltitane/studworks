@@ -8,6 +8,7 @@
 #include "sw_model.h"
 
 class swPartSelectionWidget;
+class swInstructionsDialog;
 class swPreviewDockWidget;
 class PiecePreview;
 class swQPartsTree;
@@ -272,7 +273,6 @@ public:
 	void RemoveActiveView();
 	void ResetViews();
 
-	void TogglePrintPreview();
 	void ToggleFullScreen();
 
 	void UpdateSelectedObjects(bool SelectionChanged);
@@ -331,7 +331,6 @@ protected slots:
 	void ColorChanged(int ColorIndex);
 	void PartListPicked(swPieceData* PieceData);
 	void ColorButtonClicked();
-	void Print(QPrinter* Printer);
 	void EnableWindowFlags(bool);
 
 protected:
@@ -354,7 +353,7 @@ protected:
 	void ShowExportPOVRayDialog();
 	void ShowRenderDialog(swRenderDialogMode RenderDialogMode);
 	void ShowInstructionsDialog();
-	void ShowPrintDialog();
+	void ShowPrintWidget();
 	void ShowImageDialog();
 	void ShowSelectDialog();
 	void ShowResultError(const swResult<void>& Result, const QString& Title);
@@ -407,7 +406,7 @@ protected:
 	QDockWidget* mPreviewToolBar = nullptr;
 	QDockWidget* mTerminalToolBar = nullptr;
 	QDockWidget* mPartsToolBar = nullptr;
-	QPointer<QMainWindow> mInstructionsDialog;
+	QPointer<swInstructionsDialog> mInstructionsDialog;
 	bool mPartsSnapPending = false;
 	bool mPartsSnapRetried = false;
 	QDockWidget* mColorsToolBar = nullptr;

@@ -6,6 +6,7 @@
 #include "sw_view.h"
 #include "sw_collapsible_widget.h"
 #include "sw_utilities.h"
+#include <QPrinterInfo>
 
 // use to identify a page element across page rebuilds, which delete the items
 static bool swGetElementKey(const QGraphicsItem* Item, swInstructionsElementKey& Key)
@@ -27,6 +28,8 @@ static bool swGetElementKey(const QGraphicsItem* Item, swInstructionsElementKey&
 		const swInstructionsPlacementElement Element = TextItem->IsAuthor() ? swInstructionsPlacementElement::CoverAuthor : swInstructionsPlacementElement::CoverTitle;
 		Key = { Element, TextItem->GetModel(), 0 };
 	}
+	else if (dynamic_cast<const swInstructionsPageNumberItem*>(Item))
+		Key = { swInstructionsPlacementElement::PageNumber, nullptr, 0 };
 	else
 	{
 		Key = { swInstructionsPlacementElement::None, nullptr, 0 };
@@ -56,8 +59,8 @@ static QVariant swSnapItemPosition(const QGraphicsItem* Item, const swInstructio
 	return Parent ? Parent->mapFromScene(Snapped) : Snapped;
 }
 
-// the grid size arrows move to the next whole increment so converted sizes line up with the unit
-class swInstructionsGridSizeSpinBox : public QDoubleSpinBox
+// the length arrows move to the next whole increment so converted lengths line up with the unit
+class swInstructionsLengthSpinBox : public QDoubleSpinBox
 {
 public:
 	using QDoubleSpinBox::QDoubleSpinBox;
@@ -71,6 +74,116 @@ public:
 		setValue((Base + Steps) * Step);
 	}
 };
+
+// use to show a length stored in points in the page units, each step is a usual increment of the unit, the unit is shown beside the box
+static void swSetupLengthSpinBox(QDoubleSpinBox* SpinBox, swInstructionsPageUnits Units, double Minimum, double Maximum)
+{
+	const double Scale = swGetPageUnitScale(Units);
+	int Decimals = 0;
+	double Step = 1.0;
+
+	switch (Units)
+	{
+	case swInstructionsPageUnits::Pixels:
+		break;
+
+	case swInstructionsPageUnits::Millimeters:
+		Decimals = 1;
+		break;
+
+	case swInstructionsPageUnits::Centimeters:
+		Decimals = 2;
+		Step = 0.1;
+		break;
+
+	case swInstructionsPageUnits::Inches:
+		Decimals = 3;
+		Step = 0.125;
+		break;
+	}
+
+	// short ranges like line widths step by one point
+	if (Step * 10.0 > (Maximum - Minimum) / Scale)
+		Step = 1.0 / Scale;
+
+	SpinBox->setDecimals(Decimals);
+	SpinBox->setSingleStep(Step);
+	SpinBox->setRange(Minimum / Scale, Maximum / Scale);
+}
+
+swInstructionsUnitButton::swInstructionsUnitButton(QWidget* Parent, const QString& Name)
+	: QToolButton(Parent)
+{
+	setToolTip(tr("Units of the value, press to show it in other units than the page units."));
+	setWhatsThis(toolTip());
+	setAccessibleName(tr("%1 Units").arg(Name));
+	setToolButtonStyle(Qt::ToolButtonTextOnly);
+	swSetupPanelButton(this);
+
+	// the button is square like the icon buttons of the panels
+	setFixedWidth(height());
+
+	connect(this, &QToolButton::clicked, this, &swInstructionsUnitButton::ShowUnitsMenu);
+}
+
+swInstructionsPageUnits swInstructionsUnitButton::GetUnits(const swInstructions* Instructions) const
+{
+	// the document units win over the units of this value, which win over the page units
+	const std::optional<swInstructionsPageUnits> DocumentUnits = Instructions->GetDocumentUnits();
+
+	if (DocumentUnits)
+		return *DocumentUnits;
+
+	return mUnits ? *mUnits : Instructions->GetPageUnits();
+}
+
+void swInstructionsUnitButton::UpdateUnits(const swInstructions* Instructions)
+{
+	setText(swGetPageUnitSuffix(GetUnits(Instructions)));
+	setEnabled(!Instructions->GetDocumentUnits());
+}
+
+void swInstructionsUnitButton::ShowUnitsMenu()
+{
+	QMenu Menu(this);
+	QActionGroup* Group = new QActionGroup(&Menu);
+
+	QAction* PageAction = Menu.addAction(tr("Page Units"));
+	PageAction->setCheckable(true);
+	PageAction->setChecked(!mUnits);
+	Group->addAction(PageAction);
+
+	Menu.addSeparator();
+
+	const std::pair<swInstructionsPageUnits, QString> UnitNames[] =
+	{
+		{ swInstructionsPageUnits::Pixels, tr("Pixels") },
+		{ swInstructionsPageUnits::Millimeters, tr("Millimeters") },
+		{ swInstructionsPageUnits::Centimeters, tr("Centimeters") },
+		{ swInstructionsPageUnits::Inches, tr("Inches") }
+	};
+
+	for (const std::pair<swInstructionsPageUnits, QString>& UnitName : UnitNames)
+	{
+		QAction* Action = Menu.addAction(UnitName.second);
+		Action->setCheckable(true);
+		Action->setChecked(mUnits && *mUnits == UnitName.first);
+		Action->setData(static_cast<int>(UnitName.first));
+		Group->addAction(Action);
+	}
+
+	QAction* Chosen = Menu.exec(mapToGlobal(rect().bottomLeft()));
+
+	if (!Chosen)
+		return;
+
+	if (Chosen == PageAction)
+		mUnits.reset();
+	else
+		mUnits = static_cast<swInstructionsPageUnits>(Chosen->data().toInt());
+
+	emit UnitsChanged();
+}
 
 // the movable elements are dragged on the page and snap to its grid
 constexpr QGraphicsItem::GraphicsItemFlags SW_MOVABLE_ITEM_FLAGS = QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsFocusable | QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemSendsGeometryChanges;
@@ -219,6 +332,33 @@ void swInstructionsStepNumberItem::Update()
 	setFont(StepNumberFont);
 	setBrush(QBrush(mInstructions->GetColorProperty(swInstructionsPropertyType::StepNumberColor, mModel, mStep)));
 	setText(QString::number(mStep));
+}
+
+swInstructionsPageNumberItem::swInstructionsPageNumberItem(QGraphicsItem* Parent, swInstructions* Instructions, size_t PageIndex)
+	: swInstructionsPaddedItem(Parent), mInstructions(Instructions)
+{
+	setFlags(SW_MOVABLE_ITEM_FLAGS);
+	setZValue(1.0);
+
+	const QLocale Locale;
+	const QString PageNumber = swFormatIntegerLocalized(static_cast<qlonglong>(PageIndex + 1), Locale);
+	const swInstructionsPageNumberFormat Format = static_cast<swInstructionsPageNumberFormat>(mInstructions->GetIntProperty(swInstructionsPropertyType::PageNumberFormat, nullptr, 0));
+
+	setFont(mInstructions->GetFontProperty(swInstructionsPropertyType::PageNumberFont, nullptr, 0));
+	setBrush(QBrush(mInstructions->GetColorProperty(swInstructionsPropertyType::PageNumberColor, nullptr, 0)));
+
+	if (Format == swInstructionsPageNumberFormat::NumberOfPages)
+		setText(QCoreApplication::translate("swInstructionsDialog", "%1 / %2").arg(PageNumber, swFormatIntegerLocalized(static_cast<qlonglong>(mInstructions->mPages.size()), Locale)));
+	else
+		setText(PageNumber);
+}
+
+QVariant swInstructionsPageNumberItem::itemChange(GraphicsItemChange Change, const QVariant& Value)
+{
+	if (Change == QGraphicsItem::ItemPositionChange)
+		return swSnapItemPosition(this, mInstructions, Value);
+
+	return QGraphicsSimpleTextItem::itemChange(Change, Value);
 }
 
 swInstructionsPartsListItem::swInstructionsPartsListItem(QGraphicsItem* Parent, swInstructions* Instructions, swModel* Model, swStep Step)
@@ -378,11 +518,22 @@ static void swUpdateInstructionsPageScene(swInstructions* Instructions, const sw
 	Scene->setSceneRect(0, 0, PageSetup.Width, PageSetup.Height);
 
 	// the background fills the whole page, margins included, so prints have no white border
-	const QColor BackgroundColor = Instructions->GetColorProperty(swInstructionsPropertyType::PageBackgroundColor, nullptr, 0);
+	const size_t PageIndex = static_cast<size_t>(Page - Instructions->mPages.data());
+	const QColor BackgroundColor = Instructions->GetPageBackgroundColor(PageIndex);
 	QGraphicsRectItem* PageItem = Scene->addRect(QRectF(0.0f, 0.0f, PageSetup.Width, PageSetup.Height), QPen(Qt::NoPen), QBrush(BackgroundColor));
 	PageItem->setFlag(QGraphicsItem::ItemClipsChildrenToShape, true);
 
 	QRectF MarginsRect(PageSetup.MarginLeft, PageSetup.MarginTop, PageSetup.Width - PageSetup.MarginLeft - PageSetup.MarginRight, PageSetup.Height - PageSetup.MarginTop - PageSetup.MarginBottom);
+
+	// every page but the cover is numbered, placed in the page halfway into its margins so it stays clear of the steps
+	if (Page->Type != swInstructionsPageType::Cover && Instructions->GetBoolProperty(swInstructionsPropertyType::ShowPageNumber, nullptr, 0))
+	{
+		const QRectF NumberRect(PageSetup.MarginLeft / 2.0, PageSetup.MarginTop / 2.0, PageSetup.Width - (PageSetup.MarginLeft + PageSetup.MarginRight) / 2.0, PageSetup.Height - (PageSetup.MarginTop + PageSetup.MarginBottom) / 2.0);
+		swInstructionsPageNumberItem* PageNumberItem = new swInstructionsPageNumberItem(PageItem, Instructions, PageIndex);
+
+		const int Placement = swGetValidPlacement(Instructions->GetIntProperty(swInstructionsPropertyType::PageNumberPlacement, nullptr, 0), true);
+		swPlaceElement(PageNumberItem, Instructions, swGetPlacementPosition(NumberRect, PageNumberItem->boundingRect().size(), Placement));
+	}
 
 	if (Page->Type == swInstructionsPageType::Blank)
 		return;
@@ -828,16 +979,66 @@ swInstructionsPropertiesWidget::swInstructionsPropertiesWidget(QWidget* Parent, 
 
 	QVBoxLayout* Layout = new QVBoxLayout(CentralWidget);
 
-	QWidget* OptionsRow = swCreatePanelRow(CentralWidget);
-	swAddPanelRowStretch(OptionsRow);
-	Layout->addWidget(OptionsRow);
+	mOptionsRow = swCreatePanelRow(CentralWidget);
+	swAddPanelRowStretch(mOptionsRow);
+	Layout->addWidget(mOptionsRow);
 
 	QMenu* OptionsMenu = new QMenu(this);
-	swAddPanelOptionsButton(OptionsRow, OptionsMenu, tr("Properties options"), tr("Properties Options"));
+	swAddPanelOptionsButton(mOptionsRow, OptionsMenu, tr("Properties options"), tr("Properties Options"));
 
 	QAction* PageSetupAction = OptionsMenu->addAction(tr("Page Setup..."));
 	PageSetupAction->setToolTip(tr("Choose the page size, orientation and margins"));
 	connect(PageSetupAction, &QAction::triggered, this, &swInstructionsPropertiesWidget::ShowPageSetupDialog);
+
+	OptionsMenu->addSeparator();
+
+	// the document units replace the units of every value while they are used
+	QAction* DocumentUnitsAction = OptionsMenu->addAction(tr("Use Document Units"));
+	DocumentUnitsAction->setToolTip(tr("Show every value in the document units, the unit buttons of the values are disabled"));
+	DocumentUnitsAction->setCheckable(true);
+	connect(DocumentUnitsAction, &QAction::toggled, this, [this](bool Checked)
+	{
+		mInstructions->SetDefaultBool(swInstructionsPropertyType::UseDocumentUnits, Checked);
+	});
+
+	QMenu* DocumentUnitsMenu = OptionsMenu->addMenu(tr("Document Units"));
+	QActionGroup* DocumentUnitsGroup = new QActionGroup(DocumentUnitsMenu);
+
+	const std::pair<swInstructionsPageUnits, QString> UnitNames[] =
+	{
+		{ swInstructionsPageUnits::Pixels, tr("Pixels") },
+		{ swInstructionsPageUnits::Millimeters, tr("Millimeters") },
+		{ swInstructionsPageUnits::Centimeters, tr("Centimeters") },
+		{ swInstructionsPageUnits::Inches, tr("Inches") }
+	};
+
+	for (const std::pair<swInstructionsPageUnits, QString>& UnitName : UnitNames)
+	{
+		QAction* Action = DocumentUnitsMenu->addAction(UnitName.second);
+		Action->setCheckable(true);
+		Action->setData(static_cast<int>(UnitName.first));
+		DocumentUnitsGroup->addAction(Action);
+	}
+
+	connect(DocumentUnitsGroup, &QActionGroup::triggered, this, [this](QAction* Action)
+	{
+		mInstructions->SetDefaultInt(swInstructionsPropertyType::DocumentUnits, Action->data().toInt());
+	});
+
+	connect(OptionsMenu, &QMenu::aboutToShow, this, [this, DocumentUnitsAction, DocumentUnitsMenu, DocumentUnitsGroup]()
+	{
+		const bool UseDocumentUnits = mInstructions->GetBoolProperty(swInstructionsPropertyType::UseDocumentUnits, nullptr, 0);
+		const int Units = mInstructions->GetIntProperty(swInstructionsPropertyType::DocumentUnits, nullptr, 0);
+		QSignalBlocker Blocker(DocumentUnitsAction);
+
+		DocumentUnitsAction->setChecked(UseDocumentUnits);
+		DocumentUnitsMenu->setEnabled(UseDocumentUnits);
+
+		for (QAction* Action : DocumentUnitsGroup->actions())
+			Action->setChecked(Action->data().toInt() == Units);
+	});
+
+	connect(DocumentUnitsAction, &QAction::toggled, DocumentUnitsMenu, &QMenu::setEnabled);
 
 	OptionsMenu->addSeparator();
 
@@ -880,6 +1081,7 @@ swInstructionsPropertiesWidget::swInstructionsPropertiesWidget(QWidget* Parent, 
 	ScrollArea->setMinimumWidth(CategoriesWidget->minimumSizeHint().width() + ScrollArea->verticalScrollBar()->sizeHint().width());
 
 	connect(mInstructions, &swInstructions::StepSettingsChanged, this, &swInstructionsPropertiesWidget::UpdateEditors);
+	connect(mInstructions, &swInstructions::UnitsChanged, this, &swInstructionsPropertiesWidget::UpdateEditors);
 	connect(mInstructions, &swInstructions::PageLayoutChanged, this, &swInstructionsPropertiesWidget::UpdateWidget);
 	connect(mInstructions, &swInstructions::PageSetupChanged, this, &swInstructionsPropertiesWidget::UpdateWidget);
 
@@ -936,6 +1138,13 @@ void swInstructionsPropertiesWidget::CreateWidgets()
 		CreateToggleEditor(swInstructionsPropertyType::ShowCoverAuthor, tr("Show Author"), tr("Show the model author on the cover."))
 	});
 
+	AddRow(CategoryIndex::Cover, {
+		CreateToggleEditor(swInstructionsPropertyType::ShowCoverBlankPage, tr("Blank Page After Cover"), tr("Follow the cover with a blank page, like the inside of a printed cover."))
+	});
+
+	CreateColorEditor(swInstructionsPropertyType::CoverBackgroundColor, tr("Cover Background"), tr("Color filling the whole cover page, margins included."));
+	AddEditorRow(CategoryIndex::Cover, swInstructionsPropertyType::CoverBackgroundColor);
+
 	CreateFontEditor(swInstructionsPropertyType::CoverTitleFont, tr("Cover Title Font"), tr("Font of the model title, the author uses half its size."));
 	AddEditorRow(CategoryIndex::Cover, swInstructionsPropertyType::CoverTitleFont);
 	CreateColorEditor(swInstructionsPropertyType::CoverTitleColor, tr("Cover Title Color"), tr("Color of the model title and author."));
@@ -946,6 +1155,13 @@ void swInstructionsPropertiesWidget::CreateWidgets()
 	AddRow(CategoryIndex::BillOfMaterials, {
 		CreateToggleEditor(swInstructionsPropertyType::ShowBillOfMaterials, tr("Show Bill of Materials"), tr("End the instructions with a page listing every piece of the model."))
 	});
+
+	AddRow(CategoryIndex::BillOfMaterials, {
+		CreateToggleEditor(swInstructionsPropertyType::ShowBillOfMaterialsBlankPage, tr("Blank Page Before Bill of Materials"), tr("Precede the bill of materials with a blank page."))
+	});
+
+	CreateColorEditor(swInstructionsPropertyType::BillOfMaterialsBackgroundColor, tr("Bill of Materials Background"), tr("Color filling the whole bill of materials page, margins included."));
+	AddEditorRow(CategoryIndex::BillOfMaterials, swInstructionsPropertyType::BillOfMaterialsBackgroundColor);
 
 	AddCategory(CategoryIndex::PageLayout, tr("Steps per Page"), tr("<p><b>Steps per Page</b></p><p>The rows and columns of steps on the current page, the following pages flow on from it. The presets split the page in halves, thirds or quarters and show the step dividers. Steps fill landscape pages across each row and portrait pages down each column, following the orientation chosen in Page Setup.</p>"));
 
@@ -1016,10 +1232,27 @@ void swInstructionsPropertiesWidget::CreateWidgets()
 	AddLabeledRow(CategoryIndex::PageLayout, tr("Columns"), mColumnsSpinBox);
 	AddRow(CategoryIndex::PageLayout, { ApplyAllButton });
 
-	AddCategory(CategoryIndex::Page, tr("Page"), tr("<p><b>Page</b></p><p>The page background and the lines dividing neighboring steps.</p>"));
+	AddCategory(CategoryIndex::Page, tr("Page"), tr("<p><b>Page</b></p><p>The background of the step and blank pages and the lines dividing neighboring steps. The background applies to all these pages, or only to the current page when it has its own. The cover and the bill of materials have their own backgrounds.</p>"));
 
 	CreateColorEditor(swInstructionsPropertyType::PageBackgroundColor, tr("Page Background"), tr("Color filling the whole page, margins included."));
 	AddEditorRow(CategoryIndex::Page, swInstructionsPropertyType::PageBackgroundColor);
+
+	// the background belongs to all pages or only to the current one
+	mBackgroundPageButton = new QToolButton(this);
+	mBackgroundPageButton->setText(tr("Background on This Page Only"));
+	mBackgroundPageButton->setCheckable(true);
+	mBackgroundPageButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
+	mBackgroundPageButton->setToolTip(tr("Give this page its own background, unchecked it follows all pages."));
+	mBackgroundPageButton->setWhatsThis(mBackgroundPageButton->toolTip());
+	mBackgroundPageButton->setAccessibleName(mBackgroundPageButton->text());
+	swSetupPanelButton(mBackgroundPageButton);
+
+	connect(mBackgroundPageButton, &QToolButton::toggled, this, [this](bool PageOnly)
+	{
+		mInstructions->SetPageScope(mPageIndex, swInstructionsPropertyType::PageBackgroundColor, PageOnly);
+	});
+
+	AddRow(CategoryIndex::Page, { mBackgroundPageButton });
 
 	AddRow(CategoryIndex::Page, {
 		CreateToggleEditor(swInstructionsPropertyType::ShowStepDividers, tr("Show Step Dividers"), tr("Draw lines between neighboring steps."))
@@ -1027,10 +1260,24 @@ void swInstructionsPropertiesWidget::CreateWidgets()
 
 	CreateColorEditor(swInstructionsPropertyType::StepDividerColor, tr("Divider Color"), tr("Color of the lines between steps."));
 	AddEditorRow(CategoryIndex::Page, swInstructionsPropertyType::StepDividerColor);
-	CreateIntegerEditor(swInstructionsPropertyType::StepDividerWidth, tr("Divider Width"), tr("Width of the lines between steps, in points."), 1, 20);
+	CreateLengthEditor(swInstructionsPropertyType::StepDividerWidth, tr("Divider Width"), tr("Width of the lines between steps."), 1, 20);
 	AddEditorRow(CategoryIndex::Page, swInstructionsPropertyType::StepDividerWidth);
 
-	AddCategory(CategoryIndex::Step, tr("Step"), tr("<p><b>Step</b></p><p>The step number and the area behind each step.</p>"));
+	AddCategory(CategoryIndex::PageNumber, tr("Page Number"), tr("<p><b>Page Number</b></p><p>The number of each page, the cover is not numbered. Drag it or use the Placement panel to move it on all pages.</p>"));
+
+	AddRow(CategoryIndex::PageNumber, {
+		CreateToggleEditor(swInstructionsPropertyType::ShowPageNumber, tr("Show Page Number"), tr("Show the number of each page except the cover."))
+	});
+
+	// the choices follow the order of swInstructionsPageNumberFormat
+	CreateChoiceEditor(swInstructionsPropertyType::PageNumberFormat, tr("Page Number Format"), tr("Show the page number alone or with the page count."), { tr("Page Number"), tr("Page Number / Page Count") });
+	AddEditorRow(CategoryIndex::PageNumber, swInstructionsPropertyType::PageNumberFormat);
+	CreateFontEditor(swInstructionsPropertyType::PageNumberFont, tr("Page Number Font"), tr("Font of the page numbers."));
+	AddEditorRow(CategoryIndex::PageNumber, swInstructionsPropertyType::PageNumberFont);
+	CreateColorEditor(swInstructionsPropertyType::PageNumberColor, tr("Page Number Color"), tr("Color of the page numbers."));
+	AddEditorRow(CategoryIndex::PageNumber, swInstructionsPropertyType::PageNumberColor);
+
+	AddCategory(CategoryIndex::Step, tr("Step Number"), tr("<p><b>Step Number</b></p><p>The step number and the area behind each step.</p>"));
 
 	AddRow(CategoryIndex::Step, {
 		CreateToggleEditor(swInstructionsPropertyType::ShowStepNumber, tr("Show Step Number"), tr("Show the number of each step in its top left corner."))
@@ -1050,7 +1297,8 @@ void swInstructionsPropertiesWidget::CreateWidgets()
 		CreateToggleEditor(swInstructionsPropertyType::PLIShowCounts, tr("Show Piece Counts"), tr("Show how many of each piece are needed."))
 	});
 
-	CreateSortEditor(swInstructionsPropertyType::PLISortOrder, tr("Pieces List Order"), tr("Order of the pieces in the list."));
+	// the choices follow the order of swPartsListSort
+	CreateChoiceEditor(swInstructionsPropertyType::PLISortOrder, tr("Pieces List Order"), tr("Order of the pieces in the list."), { tr("Sort by Color"), tr("Sort by Name"), tr("Sort by Part ID") });
 	AddEditorRow(CategoryIndex::PiecesList, swInstructionsPropertyType::PLISortOrder);
 	CreateFontEditor(swInstructionsPropertyType::PLIFont, tr("Pieces List Font"), tr("Font of the piece counts."));
 	AddEditorRow(CategoryIndex::PiecesList, swInstructionsPropertyType::PLIFont);
@@ -1060,9 +1308,9 @@ void swInstructionsPropertiesWidget::CreateWidgets()
 	AddEditorRow(CategoryIndex::PiecesList, swInstructionsPropertyType::PLIBackgroundColor);
 	CreateColorEditor(swInstructionsPropertyType::PLIBorderColor, tr("Pieces List Border Color"), tr("Color of the line around the pieces list."));
 	AddEditorRow(CategoryIndex::PiecesList, swInstructionsPropertyType::PLIBorderColor);
-	CreateIntegerEditor(swInstructionsPropertyType::PLIBorderWidth, tr("Border Width"), tr("Width of the line around the pieces list in points, 0 draws no line."), 0, 20);
+	CreateLengthEditor(swInstructionsPropertyType::PLIBorderWidth, tr("Border Width"), tr("Width of the line around the pieces list, 0 draws no line."), 0, 20);
 	AddEditorRow(CategoryIndex::PiecesList, swInstructionsPropertyType::PLIBorderWidth);
-	CreateIntegerEditor(swInstructionsPropertyType::PLIThumbnailSize, tr("Thumbnail Size"), tr("Size each piece is drawn at in points, larger thumbnails show larger pieces."), 32, 512);
+	CreateLengthEditor(swInstructionsPropertyType::PLIThumbnailSize, tr("Thumbnail Size"), tr("Size each piece is drawn at, larger thumbnails show larger pieces."), 32, 512);
 	AddEditorRow(CategoryIndex::PiecesList, swInstructionsPropertyType::PLIThumbnailSize);
 	CreateColorEditor(swInstructionsPropertyType::PLIThumbnailBackgroundColor, tr("Thumbnail Background"), tr("Color behind each piece and its count, transparent draws none."));
 	AddEditorRow(CategoryIndex::PiecesList, swInstructionsPropertyType::PLIThumbnailBackgroundColor);
@@ -1142,7 +1390,28 @@ QLabel* swInstructionsPropertiesWidget::AddLabeledRow(CategoryIndex Index, const
 QLabel* swInstructionsPropertiesWidget::AddEditorRow(CategoryIndex Index, swInstructionsPropertyType Type)
 {
 	EditorWidgets& Editors = mEditors[static_cast<int>(Type)];
-	Editors.Label = AddLabeledRow(Index, Editors.Name, Editors.Widget);
+
+	// the unit and the font size sit between the name and the input
+	std::vector<QWidget*> RowEditors;
+
+	if (Editors.SizeSpinBox)
+		RowEditors.push_back(Editors.SizeSpinBox);
+
+	RowEditors.push_back(Editors.Widget);
+
+	QWidget* Row = AddRow(Index, RowEditors);
+	QHBoxLayout* RowLayout = static_cast<QHBoxLayout*>(Row->layout());
+
+	Editors.Label = new QLabel(Editors.Name, Row);
+	Editors.Label->setBuddy(Editors.SizeSpinBox ? Editors.SizeSpinBox : Editors.Widget);
+	RowLayout->insertWidget(0, Editors.Label);
+	mRowLabels.push_back(Editors.Label);
+
+	if (Editors.UnitButton)
+	{
+		Editors.UnitButton->setParent(Row);
+		RowLayout->insertWidget(1, Editors.UnitButton);
+	}
 
 	return Editors.Label;
 }
@@ -1176,28 +1445,40 @@ QToolButton* swInstructionsPropertiesWidget::CreateToggleEditor(swInstructionsPr
 	return Button;
 }
 
-QSpinBox* swInstructionsPropertiesWidget::CreateIntegerEditor(swInstructionsPropertyType Type, const QString& Name, const QString& ToolTip, int Minimum, int Maximum)
+QDoubleSpinBox* swInstructionsPropertiesWidget::CreateLengthEditor(swInstructionsPropertyType Type, const QString& Name, const QString& ToolTip, int Minimum, int Maximum)
 {
-	QSpinBox* SpinBox = new QSpinBox(this);
-	RegisterEditor(Type, EditorType::Integer, SpinBox, Name, ToolTip);
-	SpinBox->setRange(Minimum, Maximum);
+	// lengths are stored in points and shown in the page units
+	QDoubleSpinBox* SpinBox = new swInstructionsLengthSpinBox(this);
+	RegisterEditor(Type, EditorType::Length, SpinBox, Name, ToolTip);
+
+	EditorWidgets& Editors = mEditors[static_cast<int>(Type)];
+	Editors.Minimum = Minimum;
+	Editors.Maximum = Maximum;
+
+	Editors.UnitButton = new swInstructionsUnitButton(this, Name);
+	swSetupLengthSpinBox(SpinBox, mInstructions->GetPageUnits(), Minimum, Maximum);
+
+	// the value applies once typed, each change rebuilds the pages
+	SpinBox->setKeyboardTracking(false);
 	swSetupPanelSpinBox(SpinBox);
 
-	connect(SpinBox, qOverload<int>(&QSpinBox::valueChanged), this, [this, Type](int Value)
+	connect(SpinBox, qOverload<double>(&QDoubleSpinBox::valueChanged), this, [this, Type](double Value)
 	{
-		SetIntValue(Type, Value);
+		SetIntValue(Type, qRound(Value * swGetPageUnitScale(GetEditorUnits(Type))));
 	});
+
+	connect(Editors.UnitButton, &swInstructionsUnitButton::UnitsChanged, this, &swInstructionsPropertiesWidget::UpdateEditors);
 
 	return SpinBox;
 }
 
-QComboBox* swInstructionsPropertiesWidget::CreateSortEditor(swInstructionsPropertyType Type, const QString& Name, const QString& ToolTip)
+QComboBox* swInstructionsPropertiesWidget::CreateChoiceEditor(swInstructionsPropertyType Type, const QString& Name, const QString& ToolTip, const QStringList& Choices)
 {
 	QComboBox* ComboBox = new QComboBox(this);
-	RegisterEditor(Type, EditorType::Sort, ComboBox, Name, ToolTip);
+	RegisterEditor(Type, EditorType::Choice, ComboBox, Name, ToolTip);
 
-	// the items follow the order of swPartsListSort
-	ComboBox->addItems({ tr("Sort by Color"), tr("Sort by Name"), tr("Sort by Part ID") });
+	// the choices are in the order of the property values
+	ComboBox->addItems(Choices);
 	swSetupPanelEdit(ComboBox);
 
 	connect(ComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, [this, Type](int Index)
@@ -1225,15 +1506,37 @@ QToolButton* swInstructionsPropertiesWidget::CreateColorEditor(swInstructionsPro
 
 QToolButton* swInstructionsPropertiesWidget::CreateFontEditor(swInstructionsPropertyType Type, const QString& Name, const QString& ToolTip)
 {
+	// the size is typed in the page units like every length beside the button choosing the font
 	QToolButton* Button = new QToolButton(this);
 	RegisterEditor(Type, EditorType::Font, Button, Name, ToolTip);
 	Button->setToolButtonStyle(Qt::ToolButtonTextOnly);
 	swSetupPanelButton(Button);
 
+	EditorWidgets& Editors = mEditors[static_cast<int>(Type)];
+	Editors.Minimum = 4;
+	Editors.Maximum = 288;
+	Editors.UnitButton = new swInstructionsUnitButton(this, Name);
+	Editors.SizeSpinBox = new swInstructionsLengthSpinBox(this);
+	swSetupLengthSpinBox(Editors.SizeSpinBox, mInstructions->GetPageUnits(), Editors.Minimum, Editors.Maximum);
+	Editors.SizeSpinBox->setKeyboardTracking(false);
+	Editors.SizeSpinBox->setToolTip(tr("Size of the font in the page units."));
+	Editors.SizeSpinBox->setWhatsThis(Editors.SizeSpinBox->toolTip());
+	Editors.SizeSpinBox->setAccessibleName(tr("%1 Size").arg(Name));
+	swSetupPanelSpinBox(Editors.SizeSpinBox);
+
 	connect(Button, &QToolButton::clicked, this, [this, Type]()
 	{
 		FontButtonClicked(Type);
 	});
+
+	connect(Editors.SizeSpinBox, qOverload<double>(&QDoubleSpinBox::valueChanged), this, [this, Type](double Size)
+	{
+		QFont Font = mInstructions->GetFontProperty(Type, mModel, mStep);
+		Font.setPointSizeF(Size * swGetPageUnitScale(GetEditorUnits(Type)));
+		mInstructions->SetDefaultFont(Type, Font);
+	});
+
+	connect(Editors.UnitButton, &swInstructionsUnitButton::UnitsChanged, this, &swInstructionsPropertiesWidget::UpdateEditors);
 
 	return Button;
 }
@@ -1300,6 +1603,24 @@ QIcon swInstructionsPropertiesWidget::CreateColorIcon(const QColor& Color, int S
 	return QIcon(Pixmap);
 }
 
+void swInstructionsPropertiesWidget::AddOptionsAction(QAction* Action)
+{
+	// actions fill the row beside the options button in place of the stretch
+	QHBoxLayout* RowLayout = static_cast<QHBoxLayout*>(mOptionsRow->layout());
+	QToolButton* Button = new QToolButton(mOptionsRow);
+
+	Button->setDefaultAction(Action);
+	Button->setToolButtonStyle(Qt::ToolButtonTextOnly);
+	Button->setWhatsThis(Action->toolTip());
+	swSetupPanelButton(Button);
+	Button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+	if (RowLayout->itemAt(0)->spacerItem())
+		delete RowLayout->takeAt(0);
+
+	RowLayout->insertWidget(RowLayout->count() - 1, Button, 1);
+}
+
 void swInstructionsPropertiesWidget::SelectionChanged(QGraphicsItem* FocusItem)
 {
 	// only the kind and step of the item are kept, page rebuilds delete the items
@@ -1325,9 +1646,11 @@ void swInstructionsPropertiesWidget::SelectionChanged(QGraphicsItem* FocusItem)
 		Model = PartsItem->GetModel();
 		Step = PartsItem->GetStep();
 	}
+	else if (dynamic_cast<swInstructionsPageNumberItem*>(FocusItem))
+		Focus = FocusType::PageNumber;
 
 	// the model image of the cover and the list of the bill of materials show their page settings
-	if (GetPageType() != swInstructionsPageType::Steps)
+	if (GetPageType() != swInstructionsPageType::Steps && Focus != FocusType::PageNumber)
 		Focus = FocusType::None;
 
 	if (Focus == mFocus && Model == mModel && Step == mStep)
@@ -1344,7 +1667,8 @@ void swInstructionsPropertiesWidget::SetCurrentPage(int PageIndex)
 {
 	mPageIndex = PageIndex;
 
-	// the page layout shows the rows and columns of the current page
+	// the page settings and the page layout show the current page
+	UpdateEditors();
 	UpdatePageLayout();
 	UpdateCategories();
 }
@@ -1374,11 +1698,24 @@ void swInstructionsPropertiesWidget::UpdateEditors()
 			qobject_cast<QToolButton*>(Editor.Widget)->setChecked(mInstructions->GetBoolProperty(Type, mModel, mStep));
 			break;
 
-		case EditorType::Integer:
-			qobject_cast<QSpinBox*>(Editor.Widget)->setValue(GetIntValue(Type));
+		case EditorType::Length:
+			{
+				// the units follow the page setup unless overridden, an unchanged value leaves the text being typed alone
+				QDoubleSpinBox* SpinBox = qobject_cast<QDoubleSpinBox*>(Editor.Widget);
+				const swInstructionsPageUnits Units = GetEditorUnits(Type);
+				QSignalBlocker SpinBoxBlocker(SpinBox);
+
+				swSetupLengthSpinBox(SpinBox, Units, Editor.Minimum, Editor.Maximum);
+				Editor.UnitButton->UpdateUnits(mInstructions);
+
+				const double Value = GetIntValue(Type) / swGetPageUnitScale(Units);
+
+				if (qRound(SpinBox->value() * swGetPageUnitScale(Units)) != GetIntValue(Type))
+					SpinBox->setValue(Value);
+			}
 			break;
 
-		case EditorType::Sort:
+		case EditorType::Choice:
 			qobject_cast<QComboBox*>(Editor.Widget)->setCurrentIndex(mInstructions->GetIntProperty(Type, mModel, mStep));
 			break;
 
@@ -1395,7 +1732,14 @@ void swInstructionsPropertiesWidget::UpdateEditors()
 		case EditorType::Font:
 			{
 				const QFont Font = mInstructions->GetFontProperty(Type, mModel, mStep);
-				qobject_cast<QToolButton*>(Editor.Widget)->setText(QString("%1 %2").arg(Font.family(), swFormatIntegerLocalized(Font.pointSize(), locale())));
+				QSignalBlocker SizeBlocker(Editor.SizeSpinBox);
+
+				const swInstructionsPageUnits Units = GetEditorUnits(Type);
+
+				qobject_cast<QToolButton*>(Editor.Widget)->setText(Font.family());
+				swSetupLengthSpinBox(Editor.SizeSpinBox, Units, Editor.Minimum, Editor.Maximum);
+				Editor.UnitButton->UpdateUnits(mInstructions);
+				Editor.SizeSpinBox->setValue(Font.pointSizeF() / swGetPageUnitScale(Units));
 			}
 			break;
 		}
@@ -1414,6 +1758,12 @@ void swInstructionsPropertiesWidget::UpdateEditors()
 
 		if (Editors.Label)
 			Editors.Label->setEnabled(Enabled);
+
+		if (Editors.UnitButton)
+			Editors.UnitButton->setEnabled(Enabled && !mInstructions->GetDocumentUnits());
+
+		if (Editors.SizeSpinBox)
+			Editors.SizeSpinBox->setEnabled(Enabled);
 	};
 
 	const bool UseDocumentFont = GetBool(swInstructionsPropertyType::UseDocumentFont);
@@ -1426,10 +1776,23 @@ void swInstructionsPropertiesWidget::UpdateEditors()
 	SetEnabled(swInstructionsPropertyType::CoverTitleFont, !UseDocumentFont && ShowCoverPage);
 	SetEnabled(swInstructionsPropertyType::CoverTitleColor, ShowCoverPage);
 	SetEnabled(swInstructionsPropertyType::ShowCoverAuthor, ShowCoverPage);
+	SetEnabled(swInstructionsPropertyType::ShowCoverBlankPage, ShowCoverPage);
+	SetEnabled(swInstructionsPropertyType::CoverBackgroundColor, ShowCoverPage);
+
+	const bool ShowBillOfMaterials = GetBool(swInstructionsPropertyType::ShowBillOfMaterials);
+
+	SetEnabled(swInstructionsPropertyType::ShowBillOfMaterialsBlankPage, ShowBillOfMaterials);
+	SetEnabled(swInstructionsPropertyType::BillOfMaterialsBackgroundColor, ShowBillOfMaterials);
 	SetEnabled(swInstructionsPropertyType::StepNumberFont, !UseDocumentFont && ShowStepNumber);
 	SetEnabled(swInstructionsPropertyType::StepNumberColor, ShowStepNumber);
 	SetEnabled(swInstructionsPropertyType::PLIFont, !UseDocumentFont);
 	SetEnabled(swInstructionsPropertyType::StepDividerColor, ShowStepDividers);
+
+	const bool ShowPageNumber = GetBool(swInstructionsPropertyType::ShowPageNumber);
+
+	SetEnabled(swInstructionsPropertyType::PageNumberFormat, ShowPageNumber);
+	SetEnabled(swInstructionsPropertyType::PageNumberFont, !UseDocumentFont && ShowPageNumber);
+	SetEnabled(swInstructionsPropertyType::PageNumberColor, ShowPageNumber);
 	SetEnabled(swInstructionsPropertyType::StepDividerWidth, ShowStepDividers);
 
 	const swInstructionsPageType PageType = GetPageType();
@@ -1437,6 +1800,15 @@ void swInstructionsPropertiesWidget::UpdateEditors()
 
 	mThumbnailPageButton->setEnabled(PageType == swInstructionsPageType::Steps || PageType == swInstructionsPageType::BillOfMaterials);
 	mThumbnailPageButton->setChecked(mInstructions->HasPageProperty(mPageIndex, swInstructionsPropertyType::PLIThumbnailSize));
+
+	QSignalBlocker BackgroundBlocker(mBackgroundPageButton);
+
+	mBackgroundPageButton->setChecked(mInstructions->HasPageProperty(mPageIndex, swInstructionsPropertyType::PageBackgroundColor));
+}
+
+swInstructionsPageUnits swInstructionsPropertiesWidget::GetEditorUnits(swInstructionsPropertyType Type) const
+{
+	return mEditors[static_cast<int>(Type)].UnitButton->GetUnits(mInstructions);
 }
 
 int swInstructionsPropertiesWidget::GetIntValue(swInstructionsPropertyType Type) const
@@ -1561,7 +1933,8 @@ void swInstructionsPropertiesWidget::UpdateCategories()
 			Visible[static_cast<int>(CategoryIndex::Cover)] = true;
 			Visible[static_cast<int>(CategoryIndex::BillOfMaterials)] = true;
 			Visible[static_cast<int>(CategoryIndex::PageLayout)] = PageType == swInstructionsPageType::Steps;
-			Visible[static_cast<int>(CategoryIndex::Page)] = true;
+			Visible[static_cast<int>(CategoryIndex::Page)] = PageType == swInstructionsPageType::Steps || PageType == swInstructionsPageType::Blank;
+			Visible[static_cast<int>(CategoryIndex::PageNumber)] = PageType != swInstructionsPageType::Cover;
 			Visible[static_cast<int>(CategoryIndex::Step)] = PageType == swInstructionsPageType::Steps;
 			Visible[static_cast<int>(CategoryIndex::PiecesList)] = PageType == swInstructionsPageType::Steps || PageType == swInstructionsPageType::BillOfMaterials;
 		}
@@ -1578,6 +1951,10 @@ void swInstructionsPropertiesWidget::UpdateCategories()
 
 	case FocusType::PiecesList:
 		Visible[static_cast<int>(CategoryIndex::PiecesList)] = true;
+		break;
+
+	case FocusType::PageNumber:
+		Visible[static_cast<int>(CategoryIndex::PageNumber)] = true;
 		break;
 	}
 
@@ -1783,6 +2160,9 @@ swInstructionsPropertyType swInstructionsPlacementWidget::GetPlacementType() con
 	case swInstructionsPlacementElement::CoverImage:
 		return swInstructionsPropertyType::CoverImagePlacement;
 
+	case swInstructionsPlacementElement::PageNumber:
+		return swInstructionsPropertyType::PageNumberPlacement;
+
 	case swInstructionsPlacementElement::None:
 		break;
 	}
@@ -1805,6 +2185,7 @@ swInstructionsPropertyType swInstructionsPlacementWidget::GetAnchorType() const
 	case swInstructionsPlacementElement::BillOfMaterials:
 	case swInstructionsPlacementElement::StepImage:
 	case swInstructionsPlacementElement::CoverImage:
+	case swInstructionsPlacementElement::PageNumber:
 	case swInstructionsPlacementElement::None:
 		break;
 	}
@@ -1905,6 +2286,10 @@ void swInstructionsPlacementWidget::UpdateWidget()
 
 	case swInstructionsPlacementElement::CoverImage:
 		mElementLabel->setText(tr("Cover Model"));
+		break;
+
+	case swInstructionsPlacementElement::PageNumber:
+		mElementLabel->setText(tr("Page Number"));
 		break;
 
 	case swInstructionsPlacementElement::None:
@@ -2009,7 +2394,10 @@ swInstructionsGridWidget::swInstructionsGridWidget(QWidget* Parent, swInstructio
 	QLabel* GridSizeLabel = new QLabel(tr("Grid Size"), GridSizeRow);
 	GridSizeRowLayout->addWidget(GridSizeLabel);
 
-	mGridSizeSpinBox = new swInstructionsGridSizeSpinBox(GridSizeRow);
+	mGridSizeUnitButton = new swInstructionsUnitButton(GridSizeRow, tr("Grid Size"));
+	GridSizeRowLayout->addWidget(mGridSizeUnitButton);
+
+	mGridSizeSpinBox = new swInstructionsLengthSpinBox(GridSizeRow);
 	mGridSizeSpinBox->setToolTip(tr("Distance between the grid lines in the margin units of the page setup."));
 	mGridSizeSpinBox->setWhatsThis(mGridSizeSpinBox->toolTip());
 	mGridSizeSpinBox->setAccessibleName(tr("Grid Size"));
@@ -2030,12 +2418,15 @@ swInstructionsGridWidget::swInstructionsGridWidget(QWidget* Parent, swInstructio
 		mInstructions->SetGridWithinMargins(Index == 0);
 	});
 	connect(mGridSizeSpinBox, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &swInstructionsGridWidget::GridSizeChanged);
+	connect(mGridSizeUnitButton, &swInstructionsUnitButton::UnitsChanged, this, &swInstructionsGridWidget::UpdateGrid);
 
 	// the panel is exactly as tall as its rows wherever it is docked
 	swFitHeightToContents(CentralWidget);
 
 	connect(mInstructions, &swInstructions::GridChanged, this, &swInstructionsGridWidget::UpdateGrid);
 	connect(mInstructions, &swInstructions::PageSetupChanged, this, &swInstructionsGridWidget::UpdateGrid);
+	connect(mInstructions, &swInstructions::PageLayoutChanged, this, &swInstructionsGridWidget::UpdateGrid);
+	connect(mInstructions, &swInstructions::UnitsChanged, this, &swInstructionsGridWidget::UpdateGrid);
 
 	UpdateGrid();
 }
@@ -2051,42 +2442,249 @@ void swInstructionsGridWidget::UpdateGrid()
 	mSnapToGridButton->setChecked(mInstructions->IsSnapToGrid());
 	mGridScopeComboBox->setCurrentIndex(mInstructions->IsGridWithinMargins() ? 0 : 1);
 
-	// the size follows the margin units, each step is a usual increment of the unit
-	const swInstructionsPageUnits Units = mInstructions->GetGridUnits();
-	const double Scale = swGetPageUnitScale(Units);
-	int Decimals = 0;
-	double Step = 1.0;
+	const swInstructionsPageUnits Units = mGridSizeUnitButton->GetUnits(mInstructions);
 
-	switch (Units)
-	{
-	case swInstructionsPageUnits::Pixels:
-		break;
-
-	case swInstructionsPageUnits::Millimeters:
-		Decimals = 1;
-		break;
-
-	case swInstructionsPageUnits::Centimeters:
-		Decimals = 2;
-		Step = 0.1;
-		break;
-
-	case swInstructionsPageUnits::Inches:
-		Decimals = 3;
-		Step = 0.125;
-		break;
-	}
-
-	mGridSizeSpinBox->setDecimals(Decimals);
-	mGridSizeSpinBox->setSingleStep(Step);
-	mGridSizeSpinBox->setRange(SW_GRID_SIZE_MINIMUM / Scale, SW_GRID_SIZE_MAXIMUM / Scale);
-	mGridSizeSpinBox->setSuffix(QLatin1Char(' ') + swGetPageUnitSuffix(Units));
-	mGridSizeSpinBox->setValue(mInstructions->GetGridSize() / Scale);
+	swSetupLengthSpinBox(mGridSizeSpinBox, Units, SW_GRID_SIZE_MINIMUM, SW_GRID_SIZE_MAXIMUM);
+	mGridSizeUnitButton->UpdateUnits(mInstructions);
+	mGridSizeSpinBox->setValue(mInstructions->GetGridSize() / swGetPageUnitScale(Units));
 }
 
 void swInstructionsGridWidget::GridSizeChanged(double Size)
 {
-	mInstructions->SetGridSize(Size * swGetPageUnitScale(mInstructions->GetGridUnits()));
+	mInstructions->SetGridSize(Size * swGetPageUnitScale(mGridSizeUnitButton->GetUnits(mInstructions)));
+}
+
+swInstructionsPrintWidget::swInstructionsPrintWidget(QWidget* Parent, swInstructions* Instructions)
+	: QDockWidget(Parent), mInstructions(Instructions)
+{
+	setWindowTitle(tr("Print"));
+	setWhatsThis(tr("<p><b>Print</b></p><p>Print the instruction pages on a printer or to a PDF file. The pages are printed on paper matching the page setup, the pages panel shows how they look.</p>"));
+	swSetupWidgetHelp(this, nullptr);
+
+	QWidget* CentralWidget = new QWidget(this);
+	setWidget(CentralWidget);
+
+	QVBoxLayout* Layout = new QVBoxLayout(CentralWidget);
+
+	auto CreateRow = [CentralWidget, Layout](const QString& Name, QLabel** Label)
+	{
+		QWidget* Row = swCreatePanelRow(CentralWidget);
+		Layout->addWidget(Row);
+
+		*Label = new QLabel(Name, Row);
+		Row->layout()->addWidget(*Label);
+
+		return Row;
+	};
+
+	auto SetupEdit = [](QWidget* Edit, const QString& Name, const QString& ToolTip)
+	{
+		Edit->setToolTip(ToolTip);
+		Edit->setWhatsThis(ToolTip);
+		Edit->setAccessibleName(Name);
+		Edit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	};
+
+	auto CreateSpinBox = [SetupEdit](QWidget* Row, const QString& Name, const QString& ToolTip)
+	{
+		QSpinBox* SpinBox = new QSpinBox(Row);
+		SetupEdit(SpinBox, Name, ToolTip);
+		swSetupPanelSpinBox(SpinBox);
+		static_cast<QHBoxLayout*>(Row->layout())->addWidget(SpinBox, 1);
+
+		return SpinBox;
+	};
+
+	QLabel* PrinterLabel = nullptr;
+	QWidget* PrinterRow = CreateRow(tr("Printer"), &PrinterLabel);
+
+	mPrinterComboBox = new QComboBox(PrinterRow);
+	SetupEdit(mPrinterComboBox, tr("Printer"), tr("Choose the printer, or print the pages to a PDF file."));
+	swSetupPanelEdit(mPrinterComboBox);
+	static_cast<QHBoxLayout*>(PrinterRow->layout())->addWidget(mPrinterComboBox, 1);
+	PrinterLabel->setBuddy(mPrinterComboBox);
+
+	QLabel* FileLabel = nullptr;
+	mFileRow = CreateRow(tr("File"), &FileLabel);
+
+	mFileEdit = new QLineEdit(mFileRow);
+	SetupEdit(mFileEdit, tr("File"), tr("The PDF file the pages are printed to."));
+	swSetupPanelEdit(mFileEdit);
+	static_cast<QHBoxLayout*>(mFileRow->layout())->addWidget(mFileEdit, 1);
+	FileLabel->setBuddy(mFileEdit);
+
+	QToolButton* BrowseButton = new QToolButton(mFileRow);
+	BrowseButton->setText(tr("..."));
+	BrowseButton->setToolTip(tr("Choose the PDF file."));
+	BrowseButton->setWhatsThis(BrowseButton->toolTip());
+	BrowseButton->setAccessibleName(tr("Browse"));
+	swSetupPanelButton(BrowseButton);
+	mFileRow->layout()->addWidget(BrowseButton);
+
+	QLabel* PagesLabel = nullptr;
+	QWidget* PagesRow = CreateRow(tr("Pages"), &PagesLabel);
+
+	mFromSpinBox = CreateSpinBox(PagesRow, tr("First Page"), tr("The first page to print."));
+	PagesLabel->setBuddy(mFromSpinBox);
+
+	QLabel* ToLabel = new QLabel(tr("to"), PagesRow);
+	PagesRow->layout()->addWidget(ToLabel);
+
+	mToSpinBox = CreateSpinBox(PagesRow, tr("Last Page"), tr("The last page to print."));
+
+	// the range starts as all pages, it ends on the last page
+	mFromSpinBox->setRange(1, 1);
+	mToSpinBox->setRange(1, 1);
+
+	QLabel* CopiesLabel = nullptr;
+	QWidget* CopiesRow = CreateRow(tr("Copies"), &CopiesLabel);
+
+	mCopiesSpinBox = CreateSpinBox(CopiesRow, tr("Copies"), tr("The number of copies to print."));
+	mCopiesSpinBox->setRange(1, 999);
+	CopiesLabel->setBuddy(mCopiesSpinBox);
+
+	mCollateButton = new QToolButton(CopiesRow);
+	mCollateButton->setText(tr("Collate"));
+	mCollateButton->setCheckable(true);
+	mCollateButton->setChecked(true);
+	mCollateButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
+	mCollateButton->setToolTip(tr("Print each copy completely before the next one instead of the copies of each page together."));
+	mCollateButton->setWhatsThis(mCollateButton->toolTip());
+	mCollateButton->setAccessibleName(tr("Collate"));
+	swSetupPanelButton(mCollateButton);
+	CopiesRow->layout()->addWidget(mCollateButton);
+
+	// the print button spans the panel below its settings like add to model in the minifigure builder
+	QWidget* PrintRow = swCreatePanelRow(CentralWidget);
+	Layout->addWidget(PrintRow);
+
+	QToolButton* PrintButton = new QToolButton(PrintRow);
+	PrintButton->setText(tr("Print"));
+	PrintButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
+	PrintButton->setToolTip(tr("Print the chosen pages."));
+	PrintButton->setWhatsThis(PrintButton->toolTip());
+	PrintButton->setAccessibleName(tr("Print"));
+	swSetupPanelButton(PrintButton);
+	PrintButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	static_cast<QHBoxLayout*>(PrintRow->layout())->addWidget(PrintButton, 1);
+
+	// the labels share one width so the inputs line up
+	const int LabelWidth = qMax(qMax(PrinterLabel->sizeHint().width(), FileLabel->sizeHint().width()), qMax(PagesLabel->sizeHint().width(), CopiesLabel->sizeHint().width()));
+	PrinterLabel->setFixedWidth(LabelWidth);
+	FileLabel->setFixedWidth(LabelWidth);
+	PagesLabel->setFixedWidth(LabelWidth);
+	CopiesLabel->setFixedWidth(LabelWidth);
+
+	connect(mPrinterComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, &swInstructionsPrintWidget::UpdateFileRow);
+	connect(BrowseButton, &QToolButton::clicked, this, &swInstructionsPrintWidget::BrowseFile);
+	connect(mFromSpinBox, qOverload<int>(&QSpinBox::valueChanged), mToSpinBox, [this](int Page)
+	{
+		mToSpinBox->setValue(qMax(Page, mToSpinBox->value()));
+	});
+	connect(mToSpinBox, qOverload<int>(&QSpinBox::valueChanged), mFromSpinBox, [this](int Page)
+	{
+		mFromSpinBox->setValue(qMin(Page, mFromSpinBox->value()));
+	});
+	connect(PrintButton, &QToolButton::clicked, this, &swInstructionsPrintWidget::Print);
+
+	// the printers are listed again whenever the panel opens so new printers show up
+	connect(this, &QDockWidget::visibilityChanged, this, [this](bool Visible)
+	{
+		if (Visible)
+			UpdatePrinters();
+	});
+
+	connect(mInstructions, &swInstructions::PageSetupChanged, this, &swInstructionsPrintWidget::UpdatePages);
+	connect(mInstructions, &swInstructions::PageLayoutChanged, this, &swInstructionsPrintWidget::UpdatePages);
+
+	// the panel is exactly as tall as its rows wherever it is docked
+	swFitHeightToContents(CentralWidget);
+
+	UpdatePrinters();
+	UpdatePages();
+}
+
+void swInstructionsPrintWidget::UpdatePrinters()
+{
+	QSignalBlocker Blocker(mPrinterComboBox);
+
+	// the printer names are the item data, the pdf file has none
+	const QString CurrentPrinter = mPrinterComboBox->count() ? mPrinterComboBox->currentData().toString() : QPrinterInfo::defaultPrinterName();
+	const bool CurrentFile = mPrinterComboBox->count() && CurrentPrinter.isEmpty();
+
+	mPrinterComboBox->clear();
+
+	for (const QString& PrinterName : QPrinterInfo::availablePrinterNames())
+		mPrinterComboBox->addItem(PrinterName, PrinterName);
+
+	mPrinterComboBox->addItem(tr("PDF File"), QString());
+
+	const int PrinterIndex = CurrentFile ? -1 : mPrinterComboBox->findData(CurrentPrinter);
+	mPrinterComboBox->setCurrentIndex(PrinterIndex != -1 ? PrinterIndex : mPrinterComboBox->count() - 1);
+
+	UpdateFileRow();
+}
+
+void swInstructionsPrintWidget::UpdatePages()
+{
+	QSignalBlocker FromBlocker(mFromSpinBox);
+	QSignalBlocker ToBlocker(mToSpinBox);
+
+	// a range that ended on the last page keeps ending there when pages are added or removed
+	const int PageCount = qMax(static_cast<int>(mInstructions->mPages.size()), 1);
+	const bool LastPage = mToSpinBox->value() == mToSpinBox->maximum();
+
+	mFromSpinBox->setRange(1, PageCount);
+	mToSpinBox->setRange(1, PageCount);
+
+	if (LastPage)
+		mToSpinBox->setValue(PageCount);
+
+	mFromSpinBox->setValue(qMin(mFromSpinBox->value(), mToSpinBox->value()));
+}
+
+void swInstructionsPrintWidget::UpdateFileRow()
+{
+	mFileRow->setVisible(mPrinterComboBox->currentData().toString().isEmpty());
+}
+
+bool swInstructionsPrintWidget::BrowseFile()
+{
+	const QString FileName = QFileDialog::getSaveFileName(this, tr("Print to File"), mFileEdit->text(), tr("PDF Files (*.pdf);;All Files (*.*)"));
+
+	if (FileName.isEmpty())
+		return false;
+
+	mFileEdit->setText(FileName);
+
+	return true;
+}
+
+void swInstructionsPrintWidget::Print()
+{
+#ifndef QT_NO_PRINTER
+	const QString PrinterName = mPrinterComboBox->currentData().toString();
+
+	if (PrinterName.isEmpty() && mFileEdit->text().isEmpty() && !BrowseFile())
+		return;
+
+	QPrinter Printer(QPrinter::HighResolution);
+
+	if (PrinterName.isEmpty())
+	{
+		Printer.setOutputFormat(QPrinter::PdfFormat);
+		Printer.setOutputFileName(mFileEdit->text());
+	}
+	else
+		Printer.setPrinterName(PrinterName);
+
+	swSetupInstructionsPrinter(mInstructions, &Printer);
+	Printer.setFromTo(mFromSpinBox->value(), mToSpinBox->value());
+	Printer.setCopyCount(mCopiesSpinBox->value());
+	Printer.setCollateCopies(mCollateButton->isChecked());
+
+	swPrintInstructions(mInstructions, &Printer);
+#endif
 }
 
 swInstructionsDialog::swInstructionsDialog(QWidget* Parent, Project* Project)
@@ -2117,18 +2715,30 @@ swInstructionsDialog::swInstructionsDialog(QWidget* Parent, Project* Project)
 	mPageListWidget->setObjectName("InstructionsPageList");
 	addDockWidget(Qt::LeftDockWidgetArea, mPageListWidget);
 
-	mPageSettingsToolBar = addToolBar(tr("Page Settings"));
-	mPageSettingsToolBar->setObjectName("PageSettings");
-	mPageSettingsToolBar->setFloatable(false);
-	mPageSettingsToolBar->setMovable(false);
+	// the print panel opens on demand below the grid like the minifigure builder, a panel of its own
+	mPrintWidget = new swInstructionsPrintWidget(this, mInstructions);
+	mPrintWidget->setObjectName("InstructionsPrint");
+	addDockWidget(Qt::RightDockWidgetArea, mPrintWidget);
+	splitDockWidget(mGridWidget, mPrintWidget, Qt::Vertical);
+	mPrintWidget->hide();
 
-	mPrintAction = mPageSettingsToolBar->addAction(tr("Print..."));
-	mPrintAction->setToolTip(tr("Print the instruction pages"));
+	// the print button shows and hides the print panel and stays checked while it is shown
+	QAction* PrintAction = mPrintWidget->toggleViewAction();
+	PrintAction->setToolTip(tr("Show or hide the Print panel to print the instruction pages"));
+	mPropertiesWidget->AddOptionsAction(PrintAction);
 
 	connect(mPageListWidget->mThumbnailsWidget, &QListWidget::currentRowChanged, this, &swInstructionsDialog::CurrentThumbnailChanged);
 	UpdatePageList();
 
-	connect(mPrintAction, &QAction::triggered, this, &swInstructionsDialog::ShowPrintDialog);
+	// the pages panel snaps to its longest page name like the categories of the pieces panel
+	mPageListWidget->installEventFilter(this);
+	installEventFilter(this);
+	connect(mPageListWidget, &QDockWidget::dockLocationChanged, this, [this]()
+	{
+		QTimer::singleShot(0, this, &swInstructionsDialog::SnapPageListDock);
+	});
+	QTimer::singleShot(0, this, &swInstructionsDialog::SnapPageListDock);
+
 	connect(mInstructions, &swInstructions::PageSetupChanged, this, &swInstructionsDialog::PageSetupChanged);
 	connect(mInstructions, &swInstructions::PageLayoutChanged, this, &swInstructionsDialog::PageSetupChanged);
 }
@@ -2204,7 +2814,6 @@ void swPrintInstructions(swInstructions* Instructions, QPrinter* Printer)
 	const QRectF SheetRect(0.0, 0.0, Printer->width(), Printer->height());
 	const QSizeF PageSize = QSizeF(PageSetup.Width, PageSetup.Height).scaled(SheetRect.size(), Qt::KeepAspectRatio);
 	const QRectF PageRect(QPointF((SheetRect.width() - PageSize.width()) / 2.0, (SheetRect.height() - PageSize.height()) / 2.0), PageSize);
-	const QColor BackgroundColor = Instructions->GetColorProperty(swInstructionsPropertyType::PageBackgroundColor, nullptr, 0);
 
 	const int SheetCount = DocCopies * PageCopies * (qAbs(ToPage - FromPage) + 1);
 	int SheetsPrinted = 0;
@@ -2246,7 +2855,7 @@ void swPrintInstructions(swInstructions* Instructions, QPrinter* Printer)
 
 				swUpdateInstructionsPageScene(Instructions, &Instructions->mPages[Page - 1], &Scene);
 
-				Painter.fillRect(SheetRect, BackgroundColor);
+				Painter.fillRect(SheetRect, Instructions->GetPageBackgroundColor(Page - 1));
 				Scene.render(&Painter, PageRect, Scene.sceneRect(), Qt::KeepAspectRatio);
 			}
 
@@ -2262,22 +2871,10 @@ void swPrintInstructions(swInstructions* Instructions, QPrinter* Printer)
 #endif
 }
 
-void swInstructionsDialog::ShowPrintDialog()
+void swInstructionsDialog::ShowPrintWidget()
 {
-#ifndef QT_NO_PRINTER
-	QPrinter Printer(QPrinter::HighResolution);
-	swSetupInstructionsPrinter(mInstructions, &Printer);
-
-	QPrintDialog PrintDialog(&Printer, this);
-
-	if (PrintDialog.exec() == QDialog::Accepted)
-		Print(&Printer);
-#endif
-}
-
-void swInstructionsDialog::Print(QPrinter* Printer)
-{
-	swPrintInstructions(mInstructions, Printer);
+	mPrintWidget->show();
+	mPrintWidget->raise();
 }
 
 void swInstructionsDialog::UpdatePageList()
@@ -2317,6 +2914,47 @@ void swInstructionsDialog::UpdatePageList()
 	const int Row = qMin(CurrentRow, ThumbnailsWidget->count() - 1);
 	ThumbnailsWidget->setCurrentRow(Row);
 	CurrentThumbnailChanged(Row);
+
+	QTimer::singleShot(0, this, &swInstructionsDialog::SnapPageListDock);
+}
+
+bool swInstructionsDialog::eventFilter(QObject* Object, QEvent* Event)
+{
+	// resizing the pages panel by hand snaps it back once the mouse is released
+	if (Object == mPageListWidget && Event->type() == QEvent::Resize && QApplication::mouseButtons() != Qt::NoButton)
+		mPageListSnapPending = true;
+	else if (Event->type() == QEvent::MouseButtonRelease && mPageListSnapPending)
+	{
+		mPageListSnapPending = false;
+		QTimer::singleShot(0, this, &swInstructionsDialog::SnapPageListDock);
+	}
+
+	return QMainWindow::eventFilter(Object, Event);
+}
+
+void swInstructionsDialog::SnapPageListDock()
+{
+	if (mPageListWidget->isFloating())
+		return;
+
+	const Qt::DockWidgetArea Area = dockWidgetArea(mPageListWidget);
+
+	if (Area != Qt::LeftDockWidgetArea && Area != Qt::RightDockWidgetArea)
+		return;
+
+	// measure every page name, the list shows the longest one in full beside the scroll bar
+	QListWidget* ThumbnailsWidget = mPageListWidget->mThumbnailsWidget;
+	const int TextWidth = ThumbnailsWidget->sizeHintForColumn(0);
+
+	if (TextWidth <= 0)
+		return;
+
+	const int Delta = TextWidth - ThumbnailsWidget->viewport()->width();
+
+	if (!Delta)
+		return;
+
+	resizeDocks({ mPageListWidget }, { mPageListWidget->width() + Delta }, Qt::Horizontal);
 }
 
 void swInstructionsDialog::ModelChanged()

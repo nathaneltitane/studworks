@@ -20,7 +20,7 @@ std::optional<float> swParseFloatLocalized(const QString& Value, QLocale Locale)
 void swSetupDialogHelp(QDialog* Dialog, QDialogButtonBox* ButtonBox);
 void swSetupWidgetHelp(QWidget* Root, QDialogButtonBox* ButtonBox);
 
-// Gives dialogs and secondary windows a usable size the first time they are shown.
+// Gives dialogs and windows a minimum of a quarter of the screen and a usable size the first time they are shown.
 class swWindowGeometryFilter : public QObject
 {
 public:

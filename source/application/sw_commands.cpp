@@ -176,15 +176,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "File.Print"),
 		QT_TRANSLATE_NOOP("Menu", "&Print..."),
-		QT_TRANSLATE_NOOP("Status", "Print the current model"),
-		"",
-		""
-	},
-	// SW_FILE_PRINT_PREVIEW
-	{
-		QT_TRANSLATE_NOOP("Action", "File.PrintPreview"),
-		QT_TRANSLATE_NOOP("Menu", "Print Pre&view..."),
-		QT_TRANSLATE_NOOP("Status", "Display how the model would look if printed"),
+		QT_TRANSLATE_NOOP("Status", "Show the Print panel of the instructions window"),
 		"",
 		""
 	},

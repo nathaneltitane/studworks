@@ -83,7 +83,25 @@ enum class swInstructionsPropertyType
 	CoverAuthorPlacement,
 	CoverImagePlacement,
 	StepImagePlacement,
+	CoverBackgroundColor,
+	BillOfMaterialsBackgroundColor,
+	ShowCoverBlankPage,
+	ShowBillOfMaterialsBlankPage,
+	UseDocumentUnits,
+	DocumentUnits,
+	ShowPageNumber,
+	PageNumberFormat,
+	PageNumberFont,
+	PageNumberColor,
+	PageNumberPlacement,
 	Count
+};
+
+// the page number alone or with the page count
+enum class swInstructionsPageNumberFormat
+{
+	Number,
+	NumberOfPages
 };
 
 // what a step element is placed against, the area is the page or its part given to the step by the split
@@ -149,7 +167,8 @@ enum class swInstructionsPlacementElement
 	CoverAuthor,
 	BillOfMaterials,
 	StepImage,
-	CoverImage
+	CoverImage,
+	PageNumber
 };
 
 // a moved element keeps its offset from its placement through page rebuilds
@@ -238,6 +257,9 @@ public:
 	void SetPageInt(size_t PageIndex, swInstructionsPropertyType Type, int Value);
 	void SetPageColor(size_t PageIndex, swInstructionsPropertyType Type, const QColor& Color);
 
+	// the cover and the bill of materials have their own background, the other pages share one unless a page has its own
+	QColor GetPageBackgroundColor(size_t PageIndex) const;
+
 	QPointF GetElementOffset(const swInstructionsElementKey& Key) const;
 	bool HasElementOffset(const swInstructionsElementKey& Key) const;
 	void SetElementOffsets(const std::map<swInstructionsElementKey, QPointF>& Offsets);
@@ -273,7 +295,12 @@ public:
 	}
 
 	QRectF GetGridRect() const;
-	swInstructionsPageUnits GetGridUnits() const;
+
+	// every length shown in the instructions uses the margin units of the page setup
+	swInstructionsPageUnits GetPageUnits() const;
+
+	// the document units replace the page units and every unit chosen for a single value
+	std::optional<swInstructionsPageUnits> GetDocumentUnits() const;
 
 	void SetShowGrid(bool ShowGrid);
 	void SetSnapToGrid(bool SnapToGrid);
@@ -298,12 +325,14 @@ signals:
 	void PageSetupChanged();
 	void PageLayoutChanged();
 	void GridChanged();
+	void UnitsChanged();
 
 protected:
 	void SetDefaultProperties();
 	void CreatePages();
 	void AddDefaultPages(swModel* Model, std::vector<const swModel*>& AddedModels);
 	void AddBlankPages(swInstructionsPage& Page, const swInstructionsStepKey& Key);
+	void AddDefaultBlankPage(const swInstructionsStepKey& Key);
 	swInstructionsPageSettings GetStepPageSettings(const swInstructionsStepKey& Key) const;
 	bool GetPageKey(size_t PageIndex, swInstructionsStepKey& Key) const;
 
@@ -311,6 +340,7 @@ protected:
 	QVariant GetPageProperty(size_t PageIndex, swInstructionsPropertyType Type) const;
 	void SetPageProperty(size_t PageIndex, swInstructionsPropertyType Type, const QVariant& Value);
 	bool GetStepPageIndex(swModel* Model, swStep Step, size_t& PageIndex) const;
+	void EmitPagePropertyChanged(swInstructionsPropertyType Type);
 	void SetDefaultProperty(swInstructionsPropertyType Type, const QVariant& Value);
 
 	Project* mProject = nullptr;
@@ -320,4 +350,8 @@ protected:
 	float mGridSize = 18.0f;
 
 	static const float mDisplayDPI;
+
+	// the default blank pages after the cover and before the bill of materials are keyed apart from the steps
+	static const swInstructionsStepKey mCoverBlankKey;
+	static const swInstructionsStepKey mBillOfMaterialsBlankKey;
 };

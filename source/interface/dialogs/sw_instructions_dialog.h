@@ -140,6 +140,18 @@ protected:
 	swStep mStep = 1;
 };
 
+// one page number item per page, they share their placement and offset so all pages number alike
+class swInstructionsPageNumberItem : public swInstructionsPaddedItem<QGraphicsSimpleTextItem>
+{
+public:
+	swInstructionsPageNumberItem(QGraphicsItem* Parent, swInstructions* Instructions, size_t PageIndex);
+
+protected:
+	QVariant itemChange(GraphicsItemChange Change, const QVariant& Value) override;
+
+	swInstructions* mInstructions = nullptr;
+};
+
 class swInstructionsPartsListItem : public swInstructionsPaddedItem<QGraphicsPixmapItem>
 {
 public:
@@ -249,6 +261,26 @@ protected:
 	swInstructions* mInstructions;
 };
 
+// use to show the units of a length beside its input, pressing it overrides the page units for that input
+class swInstructionsUnitButton : public QToolButton
+{
+	Q_OBJECT
+
+public:
+	swInstructionsUnitButton(QWidget* Parent, const QString& Name);
+
+	swInstructionsPageUnits GetUnits(const swInstructions* Instructions) const;
+	void UpdateUnits(const swInstructions* Instructions);
+
+signals:
+	void UnitsChanged();
+
+protected:
+	void ShowUnitsMenu();
+
+	std::optional<swInstructionsPageUnits> mUnits;
+};
+
 class swInstructionsPropertiesWidget : public QDockWidget
 {
 	Q_OBJECT
@@ -256,6 +288,7 @@ class swInstructionsPropertiesWidget : public QDockWidget
 public:
 	swInstructionsPropertiesWidget(QWidget* Parent, swInstructions* Instructions);
 
+	void AddOptionsAction(QAction* Action);
 	void SelectionChanged(QGraphicsItem* FocusItem);
 	void SetCurrentPage(int PageIndex);
 
@@ -269,14 +302,15 @@ protected:
 		Page,
 		Step,
 		PiecesList,
+		PageNumber,
 		Count
 	};
 
 	enum class EditorType
 	{
 		Bool,
-		Integer,
-		Sort,
+		Length,
+		Choice,
 		Color,
 		Font
 	};
@@ -286,7 +320,8 @@ protected:
 		None,
 		StepImage,
 		StepNumber,
-		PiecesList
+		PiecesList,
+		PageNumber
 	};
 
 	struct CategoryWidgets
@@ -299,8 +334,12 @@ protected:
 	{
 		QWidget* Widget = nullptr;
 		QLabel* Label = nullptr;
+		swInstructionsUnitButton* UnitButton = nullptr;
+		QDoubleSpinBox* SizeSpinBox = nullptr;
 		EditorType Type = EditorType::Bool;
 		QString Name;
+		int Minimum = 0;
+		int Maximum = 0;
 	};
 
 	void ShowPageSetupDialog();
@@ -311,14 +350,15 @@ protected:
 	QLabel* AddEditorRow(CategoryIndex Index, swInstructionsPropertyType Type);
 	void RegisterEditor(swInstructionsPropertyType Type, EditorType Editor, QWidget* Widget, const QString& Name, const QString& ToolTip);
 	QToolButton* CreateToggleEditor(swInstructionsPropertyType Type, const QString& Name, const QString& ToolTip);
-	QSpinBox* CreateIntegerEditor(swInstructionsPropertyType Type, const QString& Name, const QString& ToolTip, int Minimum, int Maximum);
-	QComboBox* CreateSortEditor(swInstructionsPropertyType Type, const QString& Name, const QString& ToolTip);
+	QDoubleSpinBox* CreateLengthEditor(swInstructionsPropertyType Type, const QString& Name, const QString& ToolTip, int Minimum, int Maximum);
+	QComboBox* CreateChoiceEditor(swInstructionsPropertyType Type, const QString& Name, const QString& ToolTip, const QStringList& Choices);
 	QToolButton* CreateColorEditor(swInstructionsPropertyType Type, const QString& Name, const QString& ToolTip);
 	QToolButton* CreateFontEditor(swInstructionsPropertyType Type, const QString& Name, const QString& ToolTip);
 	void ColorButtonClicked(swInstructionsPropertyType Type);
 	void FontButtonClicked(swInstructionsPropertyType Type);
 	void SetCategoriesExpanded(bool Expanded);
 	int GetIntValue(swInstructionsPropertyType Type) const;
+	swInstructionsPageUnits GetEditorUnits(swInstructionsPropertyType Type) const;
 	QColor GetColorValue(swInstructionsPropertyType Type) const;
 	void SetIntValue(swInstructionsPropertyType Type, int Value);
 	void SetColorValue(swInstructionsPropertyType Type, const QColor& Color);
@@ -335,6 +375,7 @@ protected:
 	static QIcon CreateDividerPresetIcon(int Rows, int Columns, const QPalette& Palette);
 
 	swInstructions* mInstructions = nullptr;
+	QWidget* mOptionsRow = nullptr;
 	FocusType mFocus = FocusType::None;
 	int mPageIndex = 0;
 	swModel* mModel = nullptr;
@@ -345,6 +386,7 @@ protected:
 	QSpinBox* mRowsSpinBox = nullptr;
 	QSpinBox* mColumnsSpinBox = nullptr;
 	QToolButton* mThumbnailPageButton = nullptr;
+	QToolButton* mBackgroundPageButton = nullptr;
 	std::vector<QToolButton*> mDividerPresetButtons;
 	std::vector<QLabel*> mRowLabels;
 	QVBoxLayout* mCategoriesLayout = nullptr;
@@ -401,7 +443,34 @@ protected:
 	QToolButton* mShowGridButton = nullptr;
 	QToolButton* mSnapToGridButton = nullptr;
 	QDoubleSpinBox* mGridSizeSpinBox = nullptr;
+	swInstructionsUnitButton* mGridSizeUnitButton = nullptr;
 	QComboBox* mGridScopeComboBox = nullptr;
+};
+
+// the print panel is the only print dialog of the application, the pages beside it are its preview
+class swInstructionsPrintWidget : public QDockWidget
+{
+	Q_OBJECT
+
+public:
+	swInstructionsPrintWidget(QWidget* Parent, swInstructions* Instructions);
+
+protected:
+	void UpdatePrinters();
+	void UpdatePages();
+	void UpdateFileRow();
+	bool BrowseFile();
+	void Print();
+
+	swInstructions* mInstructions = nullptr;
+
+	QComboBox* mPrinterComboBox = nullptr;
+	QWidget* mFileRow = nullptr;
+	QLineEdit* mFileEdit = nullptr;
+	QSpinBox* mFromSpinBox = nullptr;
+	QSpinBox* mToSpinBox = nullptr;
+	QSpinBox* mCopiesSpinBox = nullptr;
+	QToolButton* mCollateButton = nullptr;
 };
 
 class swInstructionsDialog : public QMainWindow
@@ -413,18 +482,20 @@ public:
 
 public slots:
 	void ModelChanged();
+	void ShowPrintWidget();
 
 protected slots:
-	void ShowPrintDialog();
 	void PageSetupChanged();
 	void CurrentThumbnailChanged(int Index);
 
 protected:
-	void Print(QPrinter* Printer);
+	bool eventFilter(QObject* Object, QEvent* Event) override;
 	void UpdatePageList();
+	void SnapPageListDock();
 
 	Project* mProject = nullptr;
 	bool mUpdatePending = false;
+	bool mPageListSnapPending = false;
 
 	int mCurrentPageNumber;
 	swInstructions* mInstructions;
@@ -434,7 +505,5 @@ protected:
 	swInstructionsPropertiesWidget* mPropertiesWidget = nullptr;
 	swInstructionsPlacementWidget* mPlacementWidget = nullptr;
 	swInstructionsGridWidget* mGridWidget = nullptr;
-
-	QToolBar* mPageSettingsToolBar = nullptr;
-	QAction* mPrintAction = nullptr;
+	swInstructionsPrintWidget* mPrintWidget = nullptr;
 };

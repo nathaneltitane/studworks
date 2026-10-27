@@ -39,12 +39,13 @@ bool swWindowGeometryFilter::eventFilter(QObject* Object, QEvent* Event)
 	if (!Window->isWindow() || Window->property("swInitialGeometry").toBool())
 		return false;
 
-	// Only dialogs and secondary main windows, the standard Qt dialogs size themselves and the main window restores its own geometry.
+	// Only dialogs and main windows, the standard Qt dialogs size themselves.
 	const bool IsDialog = qobject_cast<QDialog*>(Window) && !qobject_cast<QMessageBox*>(Window) && !qobject_cast<QInputDialog*>(Window) && !qobject_cast<QProgressDialog*>(Window) &&
 		!qobject_cast<QFileDialog*>(Window) && !qobject_cast<QColorDialog*>(Window) && !qobject_cast<QFontDialog*>(Window) && !qobject_cast<QPrintDialog*>(Window);
-	const bool IsSecondaryWindow = qobject_cast<QMainWindow*>(Window) && Window->parentWidget();
+	const bool IsMainWindow = qobject_cast<QMainWindow*>(Window);
+	const bool IsSecondaryWindow = IsMainWindow && Window->parentWidget();
 
-	if (!IsDialog && !IsSecondaryWindow)
+	if (!IsDialog && !IsMainWindow)
 		return false;
 
 	Window->setProperty("swInitialGeometry", true);
@@ -57,15 +58,19 @@ bool swWindowGeometryFilter::eventFilter(QObject* Object, QEvent* Event)
 
 	// A quarter of the available screen, never smaller than the contents need and never larger than the screen.
 	const QRect Available = Screen->availableGeometry();
-	QSize Size = QSize(Available.width() / 4, Available.height() / 4).expandedTo(Window->sizeHint()).expandedTo(Window->minimumSizeHint());
+	const QSize MinimumSize = QSize(Available.width() / 4, Available.height() / 4).expandedTo(Window->minimumSizeHint()).boundedTo(Available.size());
+
+	// Every window keeps at least that quarter when resized, the main window restores the rest of its geometry itself.
+	Window->setMinimumSize(MinimumSize);
+
+	if (!IsDialog && !IsSecondaryWindow)
+		return false;
+
+	// only the size is set, the window manager places the window and applies its rules and tiling
+	QSize Size = MinimumSize.expandedTo(Window->sizeHint());
 	Size = Size.boundedTo(Available.size());
 
-	QRect Geometry(QPoint(0, 0), Size);
-	Geometry.moveCenter(Parent ? Parent->geometry().center() : Available.center());
-	Geometry.moveLeft(qBound(Available.left(), Geometry.left(), Available.right() - Size.width() + 1));
-	Geometry.moveTop(qBound(Available.top(), Geometry.top(), Available.bottom() - Size.height() + 1));
-
-	Window->setGeometry(Geometry);
+	Window->resize(Size);
 
 	return false;
 }

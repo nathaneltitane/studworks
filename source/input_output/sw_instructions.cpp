@@ -7,6 +7,8 @@
 #include "sw_profile.h"
 
 const float swInstructions::mDisplayDPI = 72.0f;
+const swInstructionsStepKey swInstructions::mCoverBlankKey = { nullptr, 0 };
+const swInstructionsStepKey swInstructions::mBillOfMaterialsBlankKey = { nullptr, 1 };
 
 float swGetPageUnitScale(swInstructionsPageUnits Units)
 {
@@ -121,8 +123,19 @@ void swInstructions::SetDefaultProperties()
 	mStepProperties[static_cast<int>(swInstructionsPropertyType::CoverAuthorPlacement)].Value = SW_PLACEMENT_GRID_SIZE + 2;
 	mStepProperties[static_cast<int>(swInstructionsPropertyType::CoverImagePlacement)].Value = SW_PLACEMENT_COUNT / 2;
 	mStepProperties[static_cast<int>(swInstructionsPropertyType::StepImagePlacement)].Value = SW_PLACEMENT_COUNT / 2;
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::CoverBackgroundColor)].Value = SW_RGBA(255, 255, 255, 255);
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::BillOfMaterialsBackgroundColor)].Value = SW_RGBA(255, 255, 255, 255);
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::ShowCoverBlankPage)].Value = true;
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::ShowBillOfMaterialsBlankPage)].Value = true;
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::UseDocumentUnits)].Value = false;
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::DocumentUnits)].Value = static_cast<int>(swInstructionsPageUnits::Millimeters);
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::ShowPageNumber)].Value = true;
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::PageNumberFormat)].Value = static_cast<int>(swInstructionsPageNumberFormat::Number);
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::PageNumberFont)].Value = QFont("Arial", 16).toString();
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::PageNumberColor)].Value = SW_RGBA(0, 0, 0, 255);
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::PageNumberPlacement)].Value = SW_PLACEMENT_COUNT - SW_PLACEMENT_GRID_SIZE - 2;
 
-	static_assert(static_cast<int>(swInstructionsPropertyType::Count) == 34, "Missing default property");
+	static_assert(static_cast<int>(swInstructionsPropertyType::Count) == 45, "Missing default property");
 }
 
 void swInstructions::ResetProperties()
@@ -256,8 +269,9 @@ void swInstructions::SetPageDividerPreset(size_t PageIndex, int Rows, int Column
 
 bool swInstructions::CanInsertBlankPage(size_t PageIndex) const
 {
+	// the default blank pages belong to no step, a blank page goes before the page that follows them
 	swInstructionsStepKey Key;
-	return GetPageKey(PageIndex, Key);
+	return GetPageKey(PageIndex, Key) && Key.first;
 }
 
 void swInstructions::InsertBlankPage(size_t PageIndex)
@@ -265,7 +279,7 @@ void swInstructions::InsertBlankPage(size_t PageIndex)
 	// the blank page goes before the page at this index and stays with its first step
 	swInstructionsStepKey Key;
 
-	if (!GetPageKey(PageIndex, Key))
+	if (!GetPageKey(PageIndex, Key) || !Key.first)
 		return;
 
 	mBlankPages.insert(Key);
@@ -279,6 +293,21 @@ void swInstructions::RemoveBlankPage(size_t PageIndex)
 {
 	if (PageIndex >= mPages.size() || mPages[PageIndex].Type != swInstructionsPageType::Blank)
 		return;
+
+	// a default blank page is removed by switching it off
+	const swInstructionsStepKey& BlankKey = mPages[PageIndex].BlankKey;
+
+	if (BlankKey == mCoverBlankKey)
+	{
+		SetDefaultBool(swInstructionsPropertyType::ShowCoverBlankPage, false);
+		return;
+	}
+
+	if (BlankKey == mBillOfMaterialsBlankKey)
+	{
+		SetDefaultBool(swInstructionsPropertyType::ShowBillOfMaterialsBlankPage, false);
+		return;
+	}
 
 	std::multiset<swInstructionsStepKey>::iterator BlankIt = mBlankPages.find(mPages[PageIndex].BlankKey);
 
@@ -346,7 +375,7 @@ QFont swInstructions::GetFontProperty(swInstructionsPropertyType Type, swModel* 
 
 bool swInstructions::IsPageProperty(swInstructionsPropertyType Type)
 {
-	return Type == swInstructionsPropertyType::PLIThumbnailSize || Type == swInstructionsPropertyType::PLIThumbnailBackgroundColor;
+	return Type == swInstructionsPropertyType::PLIThumbnailSize || Type == swInstructionsPropertyType::PLIThumbnailBackgroundColor || Type == swInstructionsPropertyType::PageBackgroundColor;
 }
 
 bool swInstructions::GetStepPageIndex(swModel* Model, swStep Step, size_t& PageIndex) const
@@ -407,6 +436,36 @@ QColor swInstructions::GetPageColorProperty(size_t PageIndex, swInstructionsProp
 	return swQColorFromRGBA(GetPageProperty(PageIndex, Type).toUInt());
 }
 
+QColor swInstructions::GetPageBackgroundColor(size_t PageIndex) const
+{
+	if (PageIndex < mPages.size())
+	{
+		switch (mPages[PageIndex].Type)
+		{
+		case swInstructionsPageType::Cover:
+			return GetColorProperty(swInstructionsPropertyType::CoverBackgroundColor, nullptr, 0);
+
+		case swInstructionsPageType::BillOfMaterials:
+			return GetColorProperty(swInstructionsPropertyType::BillOfMaterialsBackgroundColor, nullptr, 0);
+
+		case swInstructionsPageType::Steps:
+		case swInstructionsPageType::Blank:
+			break;
+		}
+	}
+
+	return GetPageColorProperty(PageIndex, swInstructionsPropertyType::PageBackgroundColor);
+}
+
+void swInstructions::EmitPagePropertyChanged(swInstructionsPropertyType Type)
+{
+	// the background is drawn with the page, the thumbnails with their step
+	if (Type == swInstructionsPropertyType::PageBackgroundColor)
+		emit PageLayoutChanged();
+	else
+		emit StepSettingsChanged(nullptr, 0);
+}
+
 void swInstructions::SetPageScope(size_t PageIndex, swInstructionsPropertyType Type, bool PageOnly)
 {
 	swInstructionsStepKey Key;
@@ -425,7 +484,7 @@ void swInstructions::SetPageScope(size_t PageIndex, swInstructionsPropertyType T
 	else
 		Property = swInstructionsProperty();
 
-	emit StepSettingsChanged(nullptr, 0);
+	EmitPagePropertyChanged(Type);
 }
 
 void swInstructions::SetPageProperty(size_t PageIndex, swInstructionsPropertyType Type, const QVariant& Value)
@@ -442,7 +501,7 @@ void swInstructions::SetPageProperty(size_t PageIndex, swInstructionsPropertyTyp
 
 	Property.Value = Value;
 
-	emit StepSettingsChanged(nullptr, 0);
+	EmitPagePropertyChanged(Type);
 }
 
 void swInstructions::SetPageInt(size_t PageIndex, swInstructionsPropertyType Type, int Value)
@@ -599,13 +658,25 @@ QRectF swInstructions::GetGridRect() const
 	return QRectF(0.0, 0.0, mPageSetup.Width, mPageSetup.Height);
 }
 
-swInstructionsPageUnits swInstructions::GetGridUnits() const
+swInstructionsPageUnits swInstructions::GetPageUnits() const
 {
-	// the grid measures positions on the page like the margins do
 	const int Units = swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_MARGIN_UNITS);
 
 	if (Units < 0 || Units > static_cast<int>(swInstructionsPageUnits::Inches))
 		return swInstructionsPageUnits::Inches;
+
+	return static_cast<swInstructionsPageUnits>(Units);
+}
+
+std::optional<swInstructionsPageUnits> swInstructions::GetDocumentUnits() const
+{
+	if (!GetBoolProperty(swInstructionsPropertyType::UseDocumentUnits, nullptr, 0))
+		return std::nullopt;
+
+	const int Units = GetIntProperty(swInstructionsPropertyType::DocumentUnits, nullptr, 0);
+
+	if (Units < 0 || Units > static_cast<int>(swInstructionsPageUnits::Inches))
+		return swInstructionsPageUnits::Millimeters;
 
 	return static_cast<swInstructionsPageUnits>(Units);
 }
@@ -675,8 +746,15 @@ void swInstructions::SetDefaultProperty(swInstructionsPropertyType Type, const Q
 	{
 	case swInstructionsPropertyType::ShowBillOfMaterials:
 	case swInstructionsPropertyType::ShowCoverPage:
+	case swInstructionsPropertyType::ShowCoverBlankPage:
+	case swInstructionsPropertyType::ShowBillOfMaterialsBlankPage:
 		CreatePages();
 		emit PageLayoutChanged();
+		break;
+
+	case swInstructionsPropertyType::UseDocumentUnits:
+	case swInstructionsPropertyType::DocumentUnits:
+		emit UnitsChanged();
 		break;
 
 	case swInstructionsPropertyType::UseDocumentFont:
@@ -685,6 +763,8 @@ void swInstructions::SetDefaultProperty(swInstructionsPropertyType Type, const Q
 	case swInstructionsPropertyType::CoverTitleColor:
 	case swInstructionsPropertyType::ShowCoverAuthor:
 	case swInstructionsPropertyType::PageBackgroundColor:
+	case swInstructionsPropertyType::CoverBackgroundColor:
+	case swInstructionsPropertyType::BillOfMaterialsBackgroundColor:
 	case swInstructionsPropertyType::ShowStepDividers:
 	case swInstructionsPropertyType::StepDividerColor:
 	case swInstructionsPropertyType::StepDividerWidth:
@@ -698,6 +778,11 @@ void swInstructions::SetDefaultProperty(swInstructionsPropertyType Type, const Q
 	case swInstructionsPropertyType::CoverImagePlacement:
 	case swInstructionsPropertyType::StepImagePlacement:
 	case swInstructionsPropertyType::StepBackgroundColor:
+	case swInstructionsPropertyType::ShowPageNumber:
+	case swInstructionsPropertyType::PageNumberFormat:
+	case swInstructionsPropertyType::PageNumberFont:
+	case swInstructionsPropertyType::PageNumberColor:
+	case swInstructionsPropertyType::PageNumberPlacement:
 		emit PageLayoutChanged();
 		break;
 
@@ -725,12 +810,18 @@ void swInstructions::CreatePages()
 				Page.Type = swInstructionsPageType::Cover;
 				Page.Model = Model;
 				mPages.emplace_back(std::move(Page));
+
+				if (GetBoolProperty(swInstructionsPropertyType::ShowCoverBlankPage, nullptr, 0))
+					AddDefaultBlankPage(mCoverBlankKey);
 			}
 
 			AddDefaultPages(Model, AddedModels);
 
 			if (GetBoolProperty(swInstructionsPropertyType::ShowBillOfMaterials, nullptr, 0))
 			{
+				if (GetBoolProperty(swInstructionsPropertyType::ShowBillOfMaterialsBlankPage, nullptr, 0))
+					AddDefaultBlankPage(mBillOfMaterialsBlankKey);
+
 				swInstructionsPage Page;
 				Page.Type = swInstructionsPageType::BillOfMaterials;
 				Page.Model = Model;
@@ -869,4 +960,12 @@ void swInstructions::AddBlankPages(swInstructionsPage& Page, const swInstruction
 		BlankPage.BlankKey = Key;
 		mPages.emplace_back(std::move(BlankPage));
 	}
+}
+
+void swInstructions::AddDefaultBlankPage(const swInstructionsStepKey& Key)
+{
+	swInstructionsPage BlankPage;
+	BlankPage.Type = swInstructionsPageType::Blank;
+	BlankPage.BlankKey = Key;
+	mPages.emplace_back(std::move(BlankPage));
 }

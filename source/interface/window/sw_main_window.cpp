@@ -2,8 +2,6 @@
 #include "sw_main_window.h"
 #include "sw_minifigure_builder_widget.h"
 #include "sw_double_spin_box.h"
-#include <QPrintDialog>
-#include <QPrintPreviewDialog>
 #include "sw_part_selection_widget.h"
 #ifdef SW_ENABLE_TERMINAL
 #include "sw_terminal_widget.h"
@@ -1603,13 +1601,6 @@ void swMainWindow::ReloadProjectFile(const QString& FileName)
 	}
 }
 
-void swMainWindow::Print(QPrinter* Printer)
-{
-	swGetActiveProject()->GetMainModel()->WaitForAssets();
-
-	swPrintInstructions(swGetActiveProject()->GetInstructions(), Printer);
-}
-
 void swMainWindow::ShowAboutDialog()
 {
 	swAboutDialog Dialog(this);
@@ -1669,32 +1660,13 @@ void swMainWindow::CloseInstructionsDialog()
 		delete mInstructionsDialog;
 }
 
-void swMainWindow::ShowPrintDialog()
+void swMainWindow::ShowPrintWidget()
 {
-	swGetActiveProject()->GetMainModel()->WaitForAssets();
+	// printing has one panel in the instructions window beside the pages it prints
+	ShowInstructionsDialog();
 
-#ifndef QT_NO_PRINTER
-	// Printing uses the instruction pages and their page setup, rebuilt from the current model.
-	swInstructions* Instructions = swGetActiveProject()->GetInstructions();
-	Instructions->Update();
-
-	QPrinter Printer(QPrinter::HighResolution);
-	swSetupInstructionsPrinter(Instructions, &Printer);
-
-	QPrintDialog PrintDialog(&Printer, this);
-
-	// The print preview opens from the print dialog where its button box is available.
-	QDialogButtonBox* ButtonBox = PrintDialog.findChild<QDialogButtonBox*>();
-
-	if (ButtonBox)
-	{
-		QPushButton* PreviewButton = ButtonBox->addButton(tr("Preview..."), QDialogButtonBox::ActionRole);
-		connect(PreviewButton, &QPushButton::clicked, this, &swMainWindow::TogglePrintPreview);
-	}
-
-	if (PrintDialog.exec() == QDialog::Accepted)
-		Print(&Printer);
-#endif
+	if (mInstructionsDialog)
+		mInstructionsDialog->ShowPrintWidget();
 }
 
 void swMainWindow::ShowImageDialog()
@@ -2759,25 +2731,6 @@ void swMainWindow::ToggleDockWidget(QWidget* DockWidget)
 		DockWidget->close();
 }
 
-void swMainWindow::TogglePrintPreview()
-{
-#ifndef QT_NO_PRINTER
-	// todo: print preview inside main window
-
-	swGetActiveProject()->GetMainModel()->WaitForAssets();
-
-	swInstructions* Instructions = swGetActiveProject()->GetInstructions();
-	Instructions->Update();
-
-	QPrinter Printer(QPrinter::ScreenResolution);
-	swSetupInstructionsPrinter(Instructions, &Printer);
-
-	QPrintPreviewDialog Preview(&Printer, this);
-	connect(&Preview, &QPrintPreviewDialog::paintRequested, this, &swMainWindow::Print);
-	Preview.exec();
-#endif
-}
-
 void swMainWindow::ToggleFullScreen()
 {
 	// todo: hide toolbars and menu
@@ -3627,12 +3580,8 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 		ShowInstructionsDialog();
 		break;
 
-	case SW_FILE_PRINT_PREVIEW:
-		TogglePrintPreview();
-		break;
-
 	case SW_FILE_PRINT:
-		ShowPrintDialog();
+		ShowPrintWidget();
 		break;
 
 	case SW_FILE_RECENT1:
