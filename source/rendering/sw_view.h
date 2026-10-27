@@ -338,7 +338,7 @@ protected:
 	void DestroyOutlineFramebuffers();
 	bool GenerateOutlineMasks();
 
-	void DrawBackground(int CurrentTileRow, int TotalTileRows, int CurrentTileHeight) const;
+	void DrawBackground() const;
 	void DrawViewport() const;
 	void DrawAxes() const;
 

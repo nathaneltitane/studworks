@@ -3,10 +3,9 @@
 #include "sw_utilities.h"
 #include "sw_application.h"
 
-swAutomateEdgeColorDialog::swAutomateEdgeColorDialog(QWidget* Parent, bool ShowHighContrastDialog)
+swAutomateEdgeColorDialog::swAutomateEdgeColorDialog(QWidget* Parent, bool ShowHighContrastDialog, const swPreferences& Preferences)
 	:QDialog(Parent)
 {
-	const swPreferences& Preferences = swGetPreferences();
 	mStudCylinderColorEnabled = Preferences.mStudCylinderColorEnabled;
 	mStudCylinderColor = Preferences.mStudCylinderColor;
 	mPartEdgeColorEnabled = Preferences.mPartEdgeColorEnabled;
@@ -17,6 +16,7 @@ swAutomateEdgeColorDialog::swAutomateEdgeColorDialog(QWidget* Parent, bool ShowH
 	mDarkEdgeColor = Preferences.mDarkEdgeColor;
 	mPartEdgeContrast = Preferences.mPartEdgeContrast;
 	mPartColorValueLDIndex = Preferences.mPartColorValueLDIndex;
+	mAutomateEdgeColor = Preferences.mAutomateEdgeColor;
 
 	setWindowTitle(tr("Color Preferences"));
 	setWhatsThis(ShowHighContrastDialog ?
@@ -267,7 +267,7 @@ void swAutomateEdgeColorDialog::ColorButtonClicked()
 	}
 	else if (Button == BlackEdgeColorButton)
 	{
-		if (swGetPreferences().mAutomateEdgeColor)
+		if (mAutomateEdgeColor)
 		{
 			QMessageBox msgBox;
 			msgBox.setWindowTitle(tr("Select Black Edge Color"));
@@ -280,7 +280,7 @@ void swAutomateEdgeColorDialog::ColorButtonClicked()
 	}
 	else if (Button == DarkEdgeColorButton)
 	{
-		if (swGetPreferences().mAutomateEdgeColor)
+		if (mAutomateEdgeColor)
 		{
 			QMessageBox msgBox;
 			msgBox.setWindowTitle(tr("Select Dark Edge Color"));

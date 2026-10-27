@@ -20,14 +20,111 @@ static const char* gLanguageLocales[] =
 	"", "cs_CZ", "de_DE", "en_US", "fr_FR", "pt_PT", "es_ES", "ru_RU", "uk_UA", "zh_CN", "zh_TW"
 };
 
+// Lines up the label and control columns of all groups on each page, so controls start at the same position.
+static void swAlignPreferencesColumns(QTabWidget* TabWidget)
+{
+	for (int PageIndex = 0; PageIndex < TabWidget->count(); PageIndex++)
+	{
+		QList<QGridLayout*> GridLayouts;
+		QList<QFormLayout*> FormLayouts;
+		int LabelWidth = 0;
+		int ControlWidth = 0;
+
+		for (QGroupBox* Group : TabWidget->widget(PageIndex)->findChildren<QGroupBox*>())
+		{
+			if (QFormLayout* FormLayout = qobject_cast<QFormLayout*>(Group->layout()))
+			{
+				for (int Row = 0; Row < FormLayout->rowCount(); Row++)
+				{
+					QLayoutItem* Item = FormLayout->itemAt(Row, QFormLayout::LabelRole);
+
+					if (Item && Item->widget())
+						LabelWidth = qMax(LabelWidth, Item->sizeHint().width());
+				}
+
+				FormLayouts.append(FormLayout);
+				continue;
+			}
+
+			QGridLayout* GridLayout = qobject_cast<QGridLayout*>(Group->layout());
+
+			if (!GridLayout)
+				continue;
+
+			// Groups without labels, such as lists of checkboxes, keep their own layout.
+			bool HasLabels = false;
+
+			for (int ItemIndex = 0; ItemIndex < GridLayout->count(); ItemIndex++)
+			{
+				int Row, Column, RowSpan, ColumnSpan;
+				GridLayout->getItemPosition(ItemIndex, &Row, &Column, &RowSpan, &ColumnSpan);
+
+				if (Column == 0 && ColumnSpan == 1 && qobject_cast<QLabel*>(GridLayout->itemAt(ItemIndex)->widget()))
+					HasLabels = true;
+			}
+
+			if (!HasLabels)
+				continue;
+
+			for (int ItemIndex = 0; ItemIndex < GridLayout->count(); ItemIndex++)
+			{
+				QLayoutItem* Item = GridLayout->itemAt(ItemIndex);
+				QWidget* Widget = Item->widget();
+				int Row, Column, RowSpan, ColumnSpan;
+				GridLayout->getItemPosition(ItemIndex, &Row, &Column, &RowSpan, &ColumnSpan);
+
+				if (!Widget)
+				{
+					if (Column == 1 && Item->layout())
+						ControlWidth = qMax(ControlWidth, Item->sizeHint().width());
+
+					continue;
+				}
+
+				if (Column == 0)
+				{
+					if (ColumnSpan == 1)
+						LabelWidth = qMax(LabelWidth, Item->sizeHint().width());
+				}
+				else if (qobject_cast<QToolButton*>(Widget) || qobject_cast<QCheckBox*>(Widget))
+					Item->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+				else if (Column == 1)
+					ControlWidth = qMax(ControlWidth, Item->sizeHint().width());
+			}
+
+			GridLayouts.append(GridLayout);
+		}
+
+		for (QGridLayout* GridLayout : GridLayouts)
+		{
+			GridLayout->setColumnMinimumWidth(0, LabelWidth);
+			GridLayout->setColumnMinimumWidth(1, ControlWidth);
+
+			// Only the last column grows, which keeps the controls at their shared width.
+			for (int Column = 0; Column < GridLayout->columnCount(); Column++)
+				GridLayout->setColumnStretch(Column, Column == GridLayout->columnCount() - 1 ? 1 : 0);
+		}
+
+		for (QFormLayout* FormLayout : FormLayouts)
+		{
+			FormLayout->setLabelAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+
+			for (int Row = 0; Row < FormLayout->rowCount(); Row++)
+				if (QLayoutItem* Item = FormLayout->itemAt(Row, QFormLayout::LabelRole))
+					if (QWidget* Label = Item->widget())
+						Label->setMinimumWidth(LabelWidth);
+		}
+	}
+}
+
 swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOptions* Options)
 	: QDialog(Parent), mOptions(Options), ui(new Ui::swPreferencesDialog)
 {
 	ui->setupUi(this);
 	swSetupDialogHelp(this, ui->buttonBox);
 
-	ui->partsLibraryBrowse->setIcon(swCreateInterfaceIcon("toolbars/standard", "file_folder"));
-	ui->partsArchiveBrowse->setIcon(swCreateInterfaceIcon("dialogs", "file_archive"));
+	ui->partsLibraryBrowse->setIcon(swCreateInterfaceIcon("toolbars/standard", "file_open"));
+	ui->partsArchiveBrowse->setIcon(swCreateInterfaceIcon("dialogs", "library_archive"));
 
 #if defined(Q_OS_WIN) || defined(Q_OS_MACOS)
 	ui->povrayLabel->hide();
@@ -56,6 +153,8 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	connect(ui->lgeoPathBrowse, &QPushButton::clicked, this, &swPreferencesDialog::LgeoPathBrowseClicked);
 	connect(ui->ColorTheme, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &swPreferencesDialog::ColorThemeCurrentIndexChanged);
 	connect(ui->AutomateEdgeColor, &QCheckBox::toggled, this, &swPreferencesDialog::AutomateEdgeColorToggled);
+	connect(ui->EdgeContrastSlider, &QSlider::valueChanged, this, &swPreferencesDialog::EdgeColorSliderValueChanged);
+	connect(ui->EdgeSaturationSlider, &QSlider::valueChanged, this, &swPreferencesDialog::EdgeColorSliderValueChanged);
 	connect(ui->BlenderAddonSettingsButton, &QPushButton::clicked, this, &swPreferencesDialog::BlenderAddonSettingsButtonClicked);
 	connect(ui->studStyleCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &swPreferencesDialog::StudStyleComboCurrentIndexChanged);
 	connect(ui->antiAliasing, &QCheckBox::toggled, this, &swPreferencesDialog::AntiAliasingToggled);
@@ -92,6 +191,7 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	connect(ui->shortcutsExport, &QPushButton::clicked, this, &swPreferencesDialog::ShortcutsExportClicked);
 	connect(ui->shortcutsReset, &QPushButton::clicked, this, &swPreferencesDialog::ShortcutsResetClicked);
 	connect(ui->KeyboardFilterEdit, &QLineEdit::textEdited, this, &swPreferencesDialog::KeyboardFilterEditTextEdited);
+	connect(ui->MouseFilterEdit, &QLineEdit::textEdited, this, &swPreferencesDialog::MouseFilterEditTextEdited);
 	connect(ui->mouseAssign, &QPushButton::clicked, this, &swPreferencesDialog::MouseAssignClicked);
 	connect(ui->mouseRemove, &QPushButton::clicked, this, &swPreferencesDialog::MouseRemoveClicked);
 	connect(ui->MouseImportButton, &QPushButton::clicked, this, &swPreferencesDialog::MouseImportButtonClicked);
@@ -99,8 +199,6 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	connect(ui->mouseReset, &QPushButton::clicked, this, &swPreferencesDialog::MouseResetClicked);
 
 	connect(ui->BackgroundSolidColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
-	connect(ui->BackgroundGradient1ColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
-	connect(ui->BackgroundGradient2ColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
 	connect(ui->ActiveViewColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
 	connect(ui->InactiveViewColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
 	connect(ui->TextHaloColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
@@ -130,7 +228,6 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	connect(ui->commandList, &QTreeWidget::currentItemChanged, this, &swPreferencesDialog::CommandChanged);
 	connect(ui->mouseTree, &QTreeWidget::currentItemChanged, this, &swPreferencesDialog::MouseTreeItemChanged);
 	connect(ui->HighContrastButton, &QToolButton::clicked, this, &swPreferencesDialog::AutomateEdgeColor);
-	connect(ui->AutomateEdgeColorButton, &QToolButton::clicked, this, &swPreferencesDialog::AutomateEdgeColor);
 
 	ui->partsLibrary->setText(mOptions->LibraryPath);
 	ui->ColorConfigEdit->setText(mOptions->ColorConfigPath);
@@ -138,7 +235,14 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	ui->povrayExecutable->setText(mOptions->POVRayPath);
 	ui->lgeoPath->setText(mOptions->LGEOPath);
 	ui->authorName->setText(mOptions->DefaultAuthor);
+
+	connect(ui->mouseSensitivity, &QSlider::valueChanged, ui->MouseSensitivityLabel, [this](int Value)
+	{
+		ui->MouseSensitivityLabel->setText(locale().toString(Value));
+	});
 	ui->mouseSensitivity->setValue(mOptions->Preferences.mMouseSensitivity);
+	ui->MouseSensitivityLabel->setText(locale().toString(ui->mouseSensitivity->value()));
+
 	const bool ColorThemeBlocked = ui->ColorTheme->blockSignals(true);
 	ui->ColorTheme->setCurrentIndex(static_cast<int>(mOptions->Preferences.mColorTheme));
 	ui->ColorTheme->blockSignals(ColorThemeBlocked);
@@ -159,6 +263,10 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	ui->WatchFileChanges->setChecked(mOptions->Preferences.mWatchFileChanges);
 	ui->LoadPiecesBeforeShowing->setChecked(mOptions->Preferences.mLoadPiecesBeforeShowing);
 	ui->AutomateEdgeColor->setChecked(mOptions->Preferences.mAutomateEdgeColor);
+	const int EdgeContrast = qRound(mOptions->Preferences.mPartEdgeContrast * 100.0f);
+	const int EdgeSaturation = qRound(mOptions->Preferences.mPartColorValueLDIndex * 100.0f);
+	ui->EdgeContrastSlider->setValue(EdgeContrast);
+	ui->EdgeSaturationSlider->setValue(EdgeSaturation);
 
 	ui->antiAliasing->setChecked(mOptions->AASamples != 1);
 	if (mOptions->AASamples == 8)
@@ -225,11 +333,6 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	ui->FollowStepViewsCheckBox->setChecked(mOptions->Preferences.mFollowStepViews);
 
 	ui->AxisIconLocationCombo->setCurrentIndex((int)mOptions->Preferences.mAxisIconLocation);
-
-	if (!mOptions->Preferences.mBackgroundGradient)
-		ui->BackgroundSolidRadio->setChecked(true);
-	else
-		ui->BackgroundGradientRadio->setChecked(true);
 
 	ui->ViewSphereLocationCombo->setCurrentIndex((int)mOptions->Preferences.mViewSphereLocation);
 
@@ -348,6 +451,21 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	ui->HighlightRenderMode->setEnabled(OutlineSupported);
 	ui->HighlightRenderModeLabel->setEnabled(OutlineSupported);
 
+	ui->SelectionOutlineWidth->setRange(SW_SELECTION_OUTLINE_WIDTH_MINIMUM, SW_SELECTION_OUTLINE_WIDTH_MAXIMUM);
+	ui->SelectionOutlineWidth->setValue(mOptions->Preferences.mSelectionOutlineWidth);
+
+	// The width only applies to the outline style.
+	auto UpdateSelectionOutlineWidth = [this, OutlineSupported]()
+	{
+		const bool Enable = OutlineSupported && ui->HighlightRenderMode->currentIndex() == static_cast<int>(swHighlightRenderMode::Outline);
+
+		ui->SelectionOutlineWidth->setEnabled(Enable);
+		ui->SelectionOutlineWidthLabel->setEnabled(Enable);
+	};
+
+	connect(ui->HighlightRenderMode, QOverload<int>::of(&QComboBox::currentIndexChanged), this, UpdateSelectionOutlineWidth);
+	UpdateSelectionOutlineWidth();
+
 	auto SetButtonPixmap = [](quint32 Color, QToolButton* Button)
 	{
 		QPixmap Pixmap(12, 12);
@@ -357,8 +475,6 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	};
 
 	SetButtonPixmap(mOptions->Preferences.mBackgroundSolidColor, ui->BackgroundSolidColorButton);
-	SetButtonPixmap(mOptions->Preferences.mBackgroundGradientColorTop, ui->BackgroundGradient1ColorButton);
-	SetButtonPixmap(mOptions->Preferences.mBackgroundGradientColorBottom, ui->BackgroundGradient2ColorButton);
 	SetButtonPixmap(mOptions->Preferences.mTextColor, ui->TextColorButton);
 	SetButtonPixmap(mOptions->Preferences.mTextHaloColor, ui->TextHaloColorButton);
 	SetButtonPixmap(mOptions->Preferences.mMarqueeBorderColor, ui->MarqueeBorderColorButton);
@@ -386,6 +502,7 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	StudStyleComboCurrentIndexChanged(ui->studStyleCombo->currentIndex());
 	AntiAliasingToggled();
 	AutomateEdgeColorToggled();
+	EdgeColorSliderValueChanged();
 	EdgeLinesToggled();
 	LineWidthSliderValueChanged();
 	RenderTargetChanged();
@@ -405,14 +522,14 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	CommandChanged(nullptr);
 
 	UpdateMouseTree();
-	ui->mouseTree->header()->setSectionResizeMode(0, QHeaderView::Stretch);
-	ui->mouseTree->header()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
-	ui->mouseTree->header()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
+	new swTreeWidgetColumnStretcher(ui->mouseTree, 0);
 	MouseTreeItemChanged(nullptr);
 
 	for (QLabel* Label : findChildren<QLabel*>())
 		if (QWidget* Control = Label->buddy())
 			Label->setToolTip(Control->toolTip());
+
+	swAlignPreferencesColumns(ui->tabWidget);
 }
 
 swPreferencesDialog::~swPreferencesDialog()
@@ -492,7 +609,6 @@ void swPreferencesDialog::accept()
 	mOptions->Preferences.mDrawGridHeightYZ = ui->GridHeightYZCheckBox->isChecked();
 	mOptions->Preferences.mGridHeightBehindModel = ui->GridHeightBehindCheckBox->isChecked();
 
-	mOptions->Preferences.mBackgroundGradient = ui->BackgroundGradientRadio->isChecked();
 	mOptions->Preferences.mDrawAxes = ui->AxisIconCheckBox->isChecked();
 	mOptions->Preferences.mFollowStepViews = ui->FollowStepViewsCheckBox->isChecked();
 	mOptions->Preferences.mAxisIconLocation = (swAxisIconLocation)ui->AxisIconLocationCombo->currentIndex();
@@ -515,6 +631,7 @@ void swPreferencesDialog::accept()
 	mOptions->Preferences.mShadingMode = (swShadingMode)ui->ShadingMode->currentIndex();
 	mOptions->Preferences.mLightingStyle = static_cast<swLightingStyle>(ui->LightingStyle->currentIndex());
 	mOptions->Preferences.mHighlightRenderMode = static_cast<swHighlightRenderMode>(ui->HighlightRenderMode->currentIndex());
+	mOptions->Preferences.mSelectionOutlineWidth = ui->SelectionOutlineWidth->value();
 
 	mOptions->StudStyle = static_cast<swStudStyle>(ui->studStyleCombo->currentIndex());
 
@@ -627,16 +744,6 @@ void swPreferencesDialog::ColorButtonClicked()
 	{
 		Color = &mOptions->Preferences.mBackgroundSolidColor;
 		Title = tr("Select Background Color");
-	}
-	else if (Button == ui->BackgroundGradient1ColorButton)
-	{
-		Color = &mOptions->Preferences.mBackgroundGradientColorTop;
-		Title = tr("Select Gradient Top Color");
-	}
-	else if (Button == ui->BackgroundGradient2ColorButton)
-	{
-		Color = &mOptions->Preferences.mBackgroundGradientColorBottom;
-		Title = tr("Select Gradient Bottom Color");
 	}
 	else if (Button == ui->TextColorButton)
 	{
@@ -876,7 +983,24 @@ void swPreferencesDialog::ViewSphereSizeComboCurrentIndexChanged(int Index)
 
 void swPreferencesDialog::AutomateEdgeColorToggled()
 {
-	ui->AutomateEdgeColorButton->setEnabled(ui->AutomateEdgeColor->isChecked());
+	const bool Enable = ui->AutomateEdgeColor->isChecked();
+
+	mOptions->Preferences.mAutomateEdgeColor = Enable;
+	ui->EdgeContrastTitle->setEnabled(Enable);
+	ui->EdgeContrastSlider->setEnabled(Enable);
+	ui->EdgeContrastLabel->setEnabled(Enable);
+	ui->EdgeSaturationTitle->setEnabled(Enable);
+	ui->EdgeSaturationSlider->setEnabled(Enable);
+	ui->EdgeSaturationLabel->setEnabled(Enable);
+}
+
+void swPreferencesDialog::EdgeColorSliderValueChanged()
+{
+	mOptions->Preferences.mPartEdgeContrast = static_cast<float>(ui->EdgeContrastSlider->value()) * 0.01f;
+	mOptions->Preferences.mPartColorValueLDIndex = static_cast<float>(ui->EdgeSaturationSlider->value()) * 0.01f;
+
+	ui->EdgeContrastLabel->setText(swFormatDoubleLocalized(mOptions->Preferences.mPartEdgeContrast, locale(), 'f', 2));
+	ui->EdgeSaturationLabel->setText(swFormatDoubleLocalized(mOptions->Preferences.mPartColorValueLDIndex, locale(), 'f', 2));
 }
 
 void swPreferencesDialog::StudStyleComboCurrentIndexChanged(int Index)
@@ -886,7 +1010,7 @@ void swPreferencesDialog::StudStyleComboCurrentIndexChanged(int Index)
 
 void swPreferencesDialog::AutomateEdgeColor()
 {
-	swAutomateEdgeColorDialog Dialog(this, sender() == ui->HighContrastButton);
+	swAutomateEdgeColorDialog Dialog(this, true, mOptions->Preferences);
 
 	if (Dialog.exec() == QDialog::Accepted)
 	{
@@ -900,6 +1024,9 @@ void swPreferencesDialog::AutomateEdgeColor()
 		mOptions->Preferences.mDarkEdgeColor = Dialog.mDarkEdgeColor;
 		mOptions->Preferences.mPartEdgeContrast = Dialog.mPartEdgeContrast;
 		mOptions->Preferences.mPartColorValueLDIndex = Dialog.mPartColorValueLDIndex;
+
+		// The light/dark value is the same setting as the edge saturation.
+		ui->EdgeSaturationSlider->setValue(qRound(mOptions->Preferences.mPartColorValueLDIndex * 100.0f));
 	}
 }
 
@@ -1234,7 +1361,9 @@ void swPreferencesDialog::SetShortcutModified(QTreeWidgetItem* TreeItem, bool Mo
 	Font.setItalic(Modified);
 	TreeItem->setFont(0, Font);
 	Font.setBold(Modified);
-	TreeItem->setFont(1, Font);
+
+	for (int Column = 1; Column < TreeItem->columnCount(); Column++)
+		TreeItem->setFont(Column, Font);
 }
 
 void swPreferencesDialog::CommandChanged(QTreeWidgetItem* Current)
@@ -1253,7 +1382,8 @@ void swPreferencesDialog::CommandChanged(QTreeWidgetItem* Current)
 	ui->shortcutEdit->setText(Key.toString(QKeySequence::NativeText));
 }
 
-void swPreferencesDialog::KeyboardFilterEditTextEdited(const QString& Text)
+// Shows the tree items whose text in any column contains the filter, with their categories.
+static void swFilterShortcutTree(QTreeWidget* TreeWidget, const QString& Text)
 {
 	if (Text.isEmpty())
 	{
@@ -1265,13 +1395,15 @@ void swPreferencesDialog::KeyboardFilterEditTextEdited(const QString& Text)
 			ParentItem->setHidden(false);
 		};
 
-		ShowItems(ui->commandList->invisibleRootItem());
+		ShowItems(TreeWidget->invisibleRootItem());
 	}
 	else
 	{
-		std::function<bool(QTreeWidgetItem*,bool)> ShowItems = [&ShowItems, &Text](QTreeWidgetItem* ParentItem, bool ForceVisible)
+		std::function<bool(QTreeWidgetItem*,bool)> ShowItems = [&ShowItems, &Text, TreeWidget](QTreeWidgetItem* ParentItem, bool ForceVisible)
 		{
-			ForceVisible |= ParentItem->text(0).contains(Text, Qt::CaseInsensitive) || ParentItem->text(1).contains(Text, Qt::CaseInsensitive);
+			for (int Column = 0; Column < TreeWidget->columnCount(); Column++)
+				ForceVisible |= ParentItem->text(Column).contains(Text, Qt::CaseInsensitive);
+
 			bool Visible = ForceVisible;
 
 			for (int ChildIdx = 0; ChildIdx < ParentItem->childCount(); ChildIdx++)
@@ -1282,8 +1414,13 @@ void swPreferencesDialog::KeyboardFilterEditTextEdited(const QString& Text)
 			return Visible;
 		};
 
-		ShowItems(ui->commandList->invisibleRootItem(), false);
+		ShowItems(TreeWidget->invisibleRootItem(), false);
 	}
+}
+
+void swPreferencesDialog::KeyboardFilterEditTextEdited(const QString& Text)
+{
+	swFilterShortcutTree(ui->commandList, Text);
 }
 
 void swPreferencesDialog::ShortcutAssignClicked()
@@ -1409,12 +1546,62 @@ void swPreferencesDialog::ShortcutsResetClicked()
 	mOptions->KeyboardShortcutsDefault = true;
 }
 
+// The mouse tools show their menu names, grouped like the keyboard commands.
+static QString swGetToolText(int ToolIndex)
+{
+	return qApp->translate("Menu", gCommands[SW_EDIT_ACTION_FIRST + ToolIndex].MenuName).remove('&').remove(QLatin1String("..."));
+}
+
 void swPreferencesDialog::UpdateMouseTree()
 {
 	ui->mouseTree->clear();
 
-	for (int ToolIdx = 0; ToolIdx < static_cast<int>(swTool::Count); ToolIdx++)
-		UpdateMouseTreeItem(ToolIdx);
+	struct swToolCategory
+	{
+		const char* Name;
+		swTool LastTool;
+	};
+
+	constexpr swToolCategory Categories[] =
+	{
+		{ QT_TRANSLATE_NOOP("swPreferencesDialog", "Insert"), swTool::Camera },
+		{ QT_TRANSLATE_NOOP("swPreferencesDialog", "Edit"), swTool::ColorPicker },
+		{ QT_TRANSLATE_NOOP("swPreferencesDialog", "View"), swTool::ZoomRegion }
+	};
+
+	int ToolIdx = 0;
+
+	for (const swToolCategory& Category : Categories)
+	{
+		QTreeWidgetItem* CategoryItem = new QTreeWidgetItem(ui->mouseTree, QStringList(tr(Category.Name)));
+		QFont Font = CategoryItem->font(0);
+		Font.setBold(true);
+		CategoryItem->setFont(0, Font);
+
+		for (; ToolIdx <= static_cast<int>(Category.LastTool); ToolIdx++)
+		{
+			QTreeWidgetItem* Item = new QTreeWidgetItem(CategoryItem, QStringList(swGetToolText(ToolIdx)));
+			Item->setData(0, Qt::UserRole, QVariant::fromValue(ToolIdx));
+			UpdateMouseTreeItem(ToolIdx);
+		}
+
+		ui->mouseTree->expandItem(CategoryItem);
+	}
+
+	MouseFilterEditTextEdited(ui->MouseFilterEdit->text());
+}
+
+QTreeWidgetItem* swPreferencesDialog::FindMouseTreeItem(int ItemIndex) const
+{
+	for (QTreeWidgetItemIterator It(ui->mouseTree); *It; ++It)
+	{
+		const QVariant ItemData = (*It)->data(0, Qt::UserRole);
+
+		if (ItemData.isValid() && ItemData.toInt() == ItemIndex)
+			return *It;
+	}
+
+	return nullptr;
 }
 
 void swPreferencesDialog::UpdateMouseTreeItem(int ItemIndex)
@@ -1443,27 +1630,29 @@ void swPreferencesDialog::UpdateMouseTreeItem(int ItemIndex)
 		return Shortcut;
 	};
 
-	QString Shortcut1 = GetShortcutText(mOptions->MouseShortcuts.mShortcuts[ItemIndex].Button1, mOptions->MouseShortcuts.mShortcuts[ItemIndex].Modifiers1);
-	QString Shortcut2 = GetShortcutText(mOptions->MouseShortcuts.mShortcuts[ItemIndex].Button2, mOptions->MouseShortcuts.mShortcuts[ItemIndex].Modifiers2);
+	QTreeWidgetItem* Item = FindMouseTreeItem(ItemIndex);
 
-	QTreeWidgetItem* Item = ui->mouseTree->topLevelItem(ItemIndex);
+	if (!Item)
+		return;
 
-	if (Item)
-	{
-		Item->setText(1, Shortcut1);
-		Item->setText(2, Shortcut2);
-	}
-	else
-		new QTreeWidgetItem(ui->mouseTree, QStringList() << tr(gToolNames[ItemIndex]) << Shortcut1 << Shortcut2);
+	const swMouseShortcuts::swToolShortcut& Shortcut = mOptions->MouseShortcuts.mShortcuts[ItemIndex];
+	Item->setText(1, GetShortcutText(Shortcut.Button1, Shortcut.Modifiers1));
+	Item->setText(2, GetShortcutText(Shortcut.Button2, Shortcut.Modifiers2));
+
+	swMouseShortcuts DefaultShortcuts;
+	DefaultShortcuts.Reset();
+	const swMouseShortcuts::swToolShortcut& Default = DefaultShortcuts.mShortcuts[ItemIndex];
+	SetShortcutModified(Item, Shortcut.Button1 != Default.Button1 || Shortcut.Modifiers1 != Default.Modifiers1 || Shortcut.Button2 != Default.Button2 || Shortcut.Modifiers2 != Default.Modifiers2);
 }
 
 void swPreferencesDialog::MouseAssignClicked()
 {
 	QTreeWidgetItem* Current = ui->mouseTree->currentItem();
 
-	if (!Current)
+	if (!Current || !Current->data(0, Qt::UserRole).isValid())
 		return;
 
+	const int ItemIndex = Current->data(0, Qt::UserRole).toInt();
 	int ButtonIndex = ui->mouseButton->currentIndex();
 	Qt::MouseButton Button = Qt::NoButton;
 	Qt::KeyboardModifiers Modifiers = Qt::NoModifier;
@@ -1496,12 +1685,12 @@ void swPreferencesDialog::MouseAssignClicked()
 
 		for (int ToolIdx = 0; ToolIdx < static_cast<int>(swTool::Count); ToolIdx++)
 		{
-			if (ToolIdx == ButtonIndex)
+			if (ToolIdx == ItemIndex)
 				continue;
 
 			if (mOptions->MouseShortcuts.mShortcuts[ToolIdx].Button2 == Button && mOptions->MouseShortcuts.mShortcuts[ToolIdx].Modifiers2 == Modifiers)
 			{
-				if (QMessageBox::question(this, tr("Override Shortcut"), tr("This shortcut is already assigned to '%1'. Do you want to replace it?").arg(tr(gToolNames[ToolIdx])), QMessageBox::Yes | QMessageBox::No) == QMessageBox::No)
+				if (QMessageBox::question(this, tr("Override Shortcut"), tr("This shortcut is already assigned to '%1'. Do you want to replace it?").arg(swGetToolText(ToolIdx)), QMessageBox::Yes | QMessageBox::No) == QMessageBox::No)
 					return;
 
 				mOptions->MouseShortcuts.mShortcuts[ToolIdx].Button2 = Qt::NoButton;
@@ -1510,7 +1699,7 @@ void swPreferencesDialog::MouseAssignClicked()
 
 			if (mOptions->MouseShortcuts.mShortcuts[ToolIdx].Button1 == Button && mOptions->MouseShortcuts.mShortcuts[ToolIdx].Modifiers1 == Modifiers)
 			{
-				if (QMessageBox::question(this, tr("Override Shortcut"), tr("This shortcut is already assigned to '%1'. Do you want to replace it?").arg(tr(gToolNames[ToolIdx])), QMessageBox::Yes | QMessageBox::No) == QMessageBox::No)
+				if (QMessageBox::question(this, tr("Override Shortcut"), tr("This shortcut is already assigned to '%1'. Do you want to replace it?").arg(swGetToolText(ToolIdx)), QMessageBox::Yes | QMessageBox::No) == QMessageBox::No)
 					return;
 
 				mOptions->MouseShortcuts.mShortcuts[ToolIdx].Button1 = mOptions->MouseShortcuts.mShortcuts[ToolIdx].Button2;
@@ -1523,7 +1712,6 @@ void swPreferencesDialog::MouseAssignClicked()
 		}
 	}
 
-	int ItemIndex = ui->mouseTree->indexOfTopLevelItem(Current);
 	mOptions->MouseShortcuts.mShortcuts[ItemIndex].Button2 = mOptions->MouseShortcuts.mShortcuts[ItemIndex].Button1;
 	mOptions->MouseShortcuts.mShortcuts[ItemIndex].Modifiers2 = mOptions->MouseShortcuts.mShortcuts[ItemIndex].Modifiers1;
 	mOptions->MouseShortcuts.mShortcuts[ItemIndex].Button1 = Button;
@@ -1539,10 +1727,10 @@ void swPreferencesDialog::MouseRemoveClicked()
 {
 	QTreeWidgetItem* Current = ui->mouseTree->currentItem();
 
-	if (!Current)
+	if (!Current || !Current->data(0, Qt::UserRole).isValid())
 		return;
 
-	int ItemIndex = ui->mouseTree->indexOfTopLevelItem(Current);
+	const int ItemIndex = Current->data(0, Qt::UserRole).toInt();
 	mOptions->MouseShortcuts.mShortcuts[ItemIndex].Button1 = mOptions->MouseShortcuts.mShortcuts[ItemIndex].Button2;
 	mOptions->MouseShortcuts.mShortcuts[ItemIndex].Modifiers1 = mOptions->MouseShortcuts.mShortcuts[ItemIndex].Modifiers2;
 	mOptions->MouseShortcuts.mShortcuts[ItemIndex].Button2 = Qt::NoButton;
@@ -1601,7 +1789,7 @@ void swPreferencesDialog::MouseResetClicked()
 
 void swPreferencesDialog::MouseTreeItemChanged(QTreeWidgetItem* Current)
 {
-	if (!Current)
+	if (!Current || !Current->data(0, Qt::UserRole).isValid())
 	{
 		ui->MouseShortcutGroup->setEnabled(false);
 		return;
@@ -1609,7 +1797,7 @@ void swPreferencesDialog::MouseTreeItemChanged(QTreeWidgetItem* Current)
 
 	ui->MouseShortcutGroup->setEnabled(true);
 
-	int ToolIndex = ui->mouseTree->indexOfTopLevelItem(Current);
+	const int ToolIndex = Current->data(0, Qt::UserRole).toInt();
 
 	Qt::MouseButton Button = mOptions->MouseShortcuts.mShortcuts[ToolIndex].Button1;
 
@@ -1636,4 +1824,9 @@ void swPreferencesDialog::MouseTreeItemChanged(QTreeWidgetItem* Current)
 	ui->mouseControl->setChecked((Modifiers & Qt::ControlModifier) != 0);
 	ui->mouseShift->setChecked((Modifiers & Qt::ShiftModifier) != 0);
 	ui->mouseAlt->setChecked((Modifiers & Qt::AltModifier) != 0);
+}
+
+void swPreferencesDialog::MouseFilterEditTextEdited(const QString& Text)
+{
+	swFilterShortcutTree(ui->mouseTree, Text);
 }

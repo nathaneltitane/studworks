@@ -68,6 +68,7 @@ private slots:
 	void ColorButtonClicked();
 	void AutomateEdgeColor();
 	void AutomateEdgeColorToggled();
+	void EdgeColorSliderValueChanged();
 	void BlenderAddonSettingsButtonClicked();
 	void StudStyleComboCurrentIndexChanged(int Index);
 	void AntiAliasingToggled();
@@ -103,6 +104,7 @@ private slots:
 	void MouseExportButtonClicked();
 	void MouseResetClicked();
 	void MouseTreeItemChanged(QTreeWidgetItem* Current);
+	void MouseFilterEditTextEdited(const QString& Text);
 
 private:
 	Ui::swPreferencesDialog* ui;
@@ -111,6 +113,7 @@ private:
 	void UpdateCommandList();
 	void UpdateMouseTree();
 	void UpdateMouseTreeItem(int ItemIndex);
+	QTreeWidgetItem* FindMouseTreeItem(int ItemIndex) const;
 	void SetShortcutModified(QTreeWidgetItem* TreeItem, bool Modified);
 
 	struct swRenderTargetWidgets

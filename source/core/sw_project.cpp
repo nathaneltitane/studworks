@@ -2434,54 +2434,8 @@ swResult<void> Project::Export3DStudio(const QString& FileName)
 
 	File.WriteFloats(BackgroundSolidColor.GetFloats(), 3);
 
-	File.WriteU16(0x1300); // CHK_V_GRADIENT
-	File.WriteU32(118);
-
-	File.WriteFloat(1.0f);
-
-	File.WriteU16(0x0010); // CHK_COLOR_F
-	File.WriteU32(18);
-
-	const swVector3 BackgroundGradientColor1 = swVector3FromColor(Preferences.mBackgroundGradientColorTop);
-	const swVector3 BackgroundGradientColor2 = swVector3FromColor(Preferences.mBackgroundGradientColorBottom);
-
-	File.WriteFloats(BackgroundGradientColor1.GetFloats(), 3);
-
-	File.WriteU16(0x0013); // CHK_LIN_COLOR_F
-	File.WriteU32(18);
-
-	File.WriteFloats(BackgroundGradientColor1.GetFloats(), 3);
-
-	File.WriteU16(0x0010); // CHK_COLOR_F
-	File.WriteU32(18);
-
-	File.WriteFloats(((BackgroundGradientColor1 + BackgroundGradientColor2) / 2.0f).GetFloats(), 3);
-
-	File.WriteU16(0x0013); // CHK_LIN_COLOR_F
-	File.WriteU32(18);
-
-	File.WriteFloats(((BackgroundGradientColor1 + BackgroundGradientColor2) / 2.0f).GetFloats(), 3);
-
-	File.WriteU16(0x0010); // CHK_COLOR_F
-	File.WriteU32(18);
-
-	File.WriteFloats(BackgroundGradientColor2.GetFloats(), 3);
-
-	File.WriteU16(0x0013); // CHK_LIN_COLOR_F
-	File.WriteU32(18);
-
-	File.WriteFloats(BackgroundGradientColor2.GetFloats(), 3);
-
-	if (Preferences.mBackgroundGradient)
-	{
-		File.WriteU16(0x1301); // LIB3DS_USE_V_GRADIENT
-		File.WriteU32(6);
-	}
-	else
-	{
-		File.WriteU16(0x1201); // LIB3DS_USE_SOLID_BGND
-		File.WriteU32(6);
-	}
+	File.WriteU16(0x1201); // LIB3DS_USE_SOLID_BGND
+	File.WriteU32(6);
 
 	int NumPieces = 0;
 	for (const swModelPartsEntry& ModelPart : ModelParts)

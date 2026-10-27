@@ -29,10 +29,8 @@ void swPreferences::LoadDefaults()
 	mShadingMode = swGetProfileShadingMode();
 	mLightingStyle = swGetProfileLightingStyle();
 	mHighlightRenderMode = swGetProfileHighlightRenderMode();
-	mBackgroundGradient = swGetProfileInteger(SW_PROFILE_BACKGROUND_GRADIENT);
+	mSelectionOutlineWidth = qBound(SW_SELECTION_OUTLINE_WIDTH_MINIMUM, swGetProfileInteger(SW_PROFILE_SELECTION_OUTLINE_WIDTH), SW_SELECTION_OUTLINE_WIDTH_MAXIMUM);
 	mBackgroundSolidColor = swGetProfileUnsignedInteger(SW_PROFILE_BACKGROUND_COLOR);
-	mBackgroundGradientColorTop = swGetProfileUnsignedInteger(SW_PROFILE_GRADIENT_COLOR_TOP);
-	mBackgroundGradientColorBottom = swGetProfileUnsignedInteger(SW_PROFILE_GRADIENT_COLOR_BOTTOM);
 	mDrawAxes = swGetProfileInteger(SW_PROFILE_DRAW_AXES);
 	mFollowStepViews = swGetProfileInteger(SW_PROFILE_FOLLOW_STEP_VIEWS);
 	mAxisIconLocation = swGetProfileAxisIconLocation();
@@ -113,15 +111,13 @@ void swPreferences::SaveDefaults()
 	swSetProfileShadingMode(mShadingMode);
 	swSetProfileLightingStyle(mLightingStyle);
 	swSetProfileHighlightRenderMode(mHighlightRenderMode);
+	swSetProfileInteger(SW_PROFILE_SELECTION_OUTLINE_WIDTH, mSelectionOutlineWidth);
 	swSetProfileInteger(SW_PROFILE_DRAW_AXES, mDrawAxes);
 	swSetProfileInteger(SW_PROFILE_FOLLOW_STEP_VIEWS, mFollowStepViews);
 	swSetProfileAxisIconLocation(mAxisIconLocation);
 	swSetProfileUnsignedInteger(SW_PROFILE_TEXT_COLOR, mTextColor);
 	swSetProfileUnsignedInteger(SW_PROFILE_TEXT_HALO_COLOR, mTextHaloColor);
-	swSetProfileInteger(SW_PROFILE_BACKGROUND_GRADIENT, mBackgroundGradient);
 	swSetProfileUnsignedInteger(SW_PROFILE_BACKGROUND_COLOR, mBackgroundSolidColor);
-	swSetProfileUnsignedInteger(SW_PROFILE_GRADIENT_COLOR_TOP, mBackgroundGradientColorTop);
-	swSetProfileUnsignedInteger(SW_PROFILE_GRADIENT_COLOR_BOTTOM, mBackgroundGradientColorBottom);
 	swSetProfileUnsignedInteger(SW_PROFILE_MARQUEE_BORDER_COLOR, mMarqueeBorderColor);
 	swSetProfileUnsignedInteger(SW_PROFILE_MARQUEE_FILL_COLOR, mMarqueeFillColor);
 	swSetProfileUnsignedInteger(SW_PROFILE_OVERLAY_COLOR, mOverlayColor);
@@ -243,8 +239,6 @@ void swPreferences::SetInterfaceColors(swColorTheme ColorTheme)
 		mTextColor = SW_RGBA(214, 220, 227, 255);
 		mTextHaloColor = SW_RGBA(17, 19, 24, 160);
 		mBackgroundSolidColor = SW_RGB(49, 52, 55);
-		mBackgroundGradientColorTop = SW_RGB(0, 0, 191);
-		mBackgroundGradientColorBottom = SW_RGB(255, 255, 255);
 		mOverlayColor = swGetProfileUnsignedInteger(SW_PROFILE_OVERLAY_COLOR);
 		mActiveViewColor = SW_RGBA(41, 128, 185, 255);
 		mGridStudColor = SW_RGBA(24, 24, 24, 192);
@@ -258,8 +252,6 @@ void swPreferences::SetInterfaceColors(swColorTheme ColorTheme)
 		mTextColor = SW_RGBA(24, 33, 43, 255);
 		mTextHaloColor = SW_RGBA(248, 250, 252, 204);
 		mBackgroundSolidColor = SW_RGB(255, 255, 255);
-		mBackgroundGradientColorTop = SW_RGB(54, 72, 95);
-		mBackgroundGradientColorBottom = SW_RGB(49, 52, 55);
 		mOverlayColor = SW_RGBA(0, 0, 0, 255);
 		mActiveViewColor = SW_RGBA(255, 0, 0, 255);
 		mGridStudColor = SW_RGBA(64, 64, 64, 192);

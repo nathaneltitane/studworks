@@ -1676,14 +1676,6 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
-	// SW_VIEW_TOGGLE_BACKGROUND_GRADIENT
-	{
-		QT_TRANSLATE_NOOP("Action", "View.ToggleBackgroundGradient"),
-		QT_TRANSLATE_NOOP("Menu", "Gradient Background"),
-		QT_TRANSLATE_NOOP("Status", "Toggle between a gradient and a solid background"),
-		"",
-		""
-	},
 	// SW_VIEW_TOGGLE_AUTOMATE_EDGE_COLOR
 	{
 		QT_TRANSLATE_NOOP("Action", "View.ToggleAutomateEdgeColor"),
@@ -1705,6 +1697,22 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("Action", "View.HighlightStyle.TintAndEdges"),
 		QT_TRANSLATE_NOOP("Menu", "Tint and Edges Highlight"),
 		QT_TRANSLATE_NOOP("Status", "Highlight selected and new pieces with tinted faces and colored edges"),
+		"",
+		""
+	},
+	// SW_VIEW_SELECTION_OUTLINE_WIDTH_INCREASE
+	{
+		QT_TRANSLATE_NOOP("Action", "View.HighlightStyle.IncreaseOutlineWidth"),
+		QT_TRANSLATE_NOOP("Menu", "Increase Outline Width"),
+		QT_TRANSLATE_NOOP("Status", "Make the selection outline thicker"),
+		"",
+		""
+	},
+	// SW_VIEW_SELECTION_OUTLINE_WIDTH_DECREASE
+	{
+		QT_TRANSLATE_NOOP("Action", "View.HighlightStyle.DecreaseOutlineWidth"),
+		QT_TRANSLATE_NOOP("Menu", "Decrease Outline Width"),
+		QT_TRANSLATE_NOOP("Status", "Make the selection outline thinner"),
 		"",
 		""
 	},

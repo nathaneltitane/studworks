@@ -829,7 +829,7 @@ void swContext::DrawOutline(QOpenGLFramebufferObject& FullFramebuffer, QOpenGLFr
 
 	const swPreferences& Preferences = swGetPreferences();
 
-	SetOutlineParams(swVector4(1.0f / FullFramebuffer.width(), 1.0f / FullFramebuffer.height(), 4.0f * DeviceScale, 0.3f),
+	SetOutlineParams(swVector4(1.0f / FullFramebuffer.width(), 1.0f / FullFramebuffer.height(), static_cast<float>(Preferences.mSelectionOutlineWidth) * DeviceScale, 0.3f),
 		swVector4FromColor(Preferences.mObjectSelectedColor), swVector4FromColor(Preferences.mObjectFocusedColor), swVector4FromColor(Preferences.mHighlightNewPartsColor));
 
 	glActiveTexture(GL_TEXTURE1);

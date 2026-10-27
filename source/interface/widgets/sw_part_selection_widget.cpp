@@ -1032,7 +1032,7 @@ swPartSelectionWidget::swPartSelectionWidget(bool IsPopup, QWidget* Parent)
 	swAddPanelRowWidget(FilterCategoriesRow, mFilterCategoriesWidget);
 
 	mFilterCaseAction = new QAction();
-	mFilterCaseAction->setIcon(swCreateInterfaceIcon("widgets", "small_caps"));
+	mFilterCaseAction->setIcon(swCreateInterfaceIcon("widgets", "filter_case"));
 	mFilterCaseAction->setToolTip(tr("Match Case"));
 	mFilterCaseAction->setCheckable(true);
 	mFilterCaseAction->setChecked(false);

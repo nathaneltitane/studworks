@@ -131,7 +131,7 @@ swRenderDialog::swRenderDialog(QWidget* Parent, swRenderDialogMode RenderDialogM
 			Image.fill(Qt::transparent);
 			QPainter Painter(&Image);
 			Painter.setRenderHint(QPainter::SmoothPixmapTransform);
-			swCreateInterfaceIcon("dialogs", "blender").paint(&Painter, QRect(440, 160, 400, 400));
+			swCreateInterfaceIcon("dialogs", "render_placeholder").paint(&Painter, QRect(440, 160, 400, 400));
 			Painter.end();
 			ui->preview->SetImage(Image);
 		}

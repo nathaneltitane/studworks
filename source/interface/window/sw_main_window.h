@@ -238,6 +238,7 @@ public:
 	void ToggleFadePreviousSteps();
 	void ShowStepViewDialog();
 	void SetHighlightRenderMode(swHighlightRenderMode HighlightRenderMode);
+	void SetSelectionOutlineWidth(int SelectionOutlineWidth);
 	void ToggleAutomateEdgeColor();
 	void SetStudStyle(swStudStyle StudStyle);
 	void ToggleEdgeLines(swRenderTarget Target);

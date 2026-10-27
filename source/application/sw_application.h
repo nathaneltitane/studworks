@@ -28,6 +28,10 @@ enum class swColorTheme
 	System
 };
 
+// The outline shader samples at most 8 pixels around each pixel.
+#define SW_SELECTION_OUTLINE_WIDTH_MINIMUM 1
+#define SW_SELECTION_OUTLINE_WIDTH_MAXIMUM 8
+
 enum class swHighlightRenderMode
 {
 	Outline,
@@ -109,10 +113,8 @@ public:
 	swShadingMode mShadingMode;
 	swLightingStyle mLightingStyle;
 	swHighlightRenderMode mHighlightRenderMode;
-	bool mBackgroundGradient;
+	int mSelectionOutlineWidth;
 	quint32 mBackgroundSolidColor;
-	quint32 mBackgroundGradientColorTop;
-	quint32 mBackgroundGradientColorBottom;
 	bool mDrawAxes;
 	bool mFollowStepViews;
 	swAxisIconLocation mAxisIconLocation;

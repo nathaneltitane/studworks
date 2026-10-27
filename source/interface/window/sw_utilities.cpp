@@ -177,7 +177,7 @@ QSize swGetPanelButtonSize()
 		QToolBar ToolBar;
 		QToolButton* Button = new QToolButton(&ToolBar);
 
-		Button->setIcon(swCreateInterfaceIcon("widgets", "settings"));
+		Button->setIcon(swCreateInterfaceIcon("widgets", "button_options"));
 		Button->setAutoRaise(true);
 		ToolBar.addWidget(Button);
 
@@ -289,7 +289,7 @@ QToolButton* swAddPanelOptionsButton(QWidget* Row, QMenu* Menu, const QString& T
 {
 	QToolButton* OptionsButton = new QToolButton(Row);
 
-	OptionsButton->setIcon(swCreateInterfaceIcon("widgets", "settings"));
+	OptionsButton->setIcon(swCreateInterfaceIcon("widgets", "button_options"));
 	OptionsButton->setToolTip(ToolTip);
 	OptionsButton->setAccessibleName(AccessibleName);
 	OptionsButton->setPopupMode(QToolButton::InstantPopup);

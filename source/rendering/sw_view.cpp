@@ -1110,7 +1110,7 @@ void swView::OnDraw()
 				else
 					CurrentTileWidth = mRenderImage.width() - (TotalTileColumns - 1) * (mWidth);
 
-				DrawBackground(CurrentTileRow, TotalTileRows, CurrentTileHeight);
+				DrawBackground();
 
 				mContext->SetViewport(0, 0, CurrentTileWidth, CurrentTileHeight);
 				mContext->SetProjectionMatrix(GetTileProjectionMatrix(CurrentTileRow, CurrentTileColumn, CurrentTileWidth, CurrentTileHeight));
@@ -1120,7 +1120,7 @@ void swView::OnDraw()
 				CurrentTileWidth = mWidth;
 				CurrentTileHeight = mHeight;
 
-				DrawBackground(CurrentTileRow, TotalTileRows, CurrentTileHeight);
+				DrawBackground();
 
 				mContext->SetProjectionMatrix(GetProjectionMatrix());
 			}
@@ -1150,7 +1150,7 @@ void swView::OnDraw()
 			{
 				mScene->SetHighlightRenderMode(swHighlightRenderMode::Tint);
 				
-				DrawBackground(CurrentTileRow, TotalTileRows, CurrentTileHeight);
+				DrawBackground();
 				
 				mContext->SetProjectionMatrix(GetProjectionMatrix());
 				
@@ -1279,7 +1279,7 @@ bool swView::HasMissingAssets() const
 	return mScene->HasMissingAssets();
 }
 
-void swView::DrawBackground(int CurrentTileRow, int TotalTileRows, int CurrentTileHeight) const
+void swView::DrawBackground() const
 {
 	if (mOverrideBackgroundColor)
 	{
@@ -1291,74 +1291,8 @@ void swView::DrawBackground(int CurrentTileRow, int TotalTileRows, int CurrentTi
 	const swPreferences& Preferences = swGetPreferences();
 	float Alpha = mContext->IsOffscreen() ? 0.0f : 1.0f;
 
-	if (!Preferences.mBackgroundGradient)
-	{
-		swVector4 BackgroundColor(swVector3FromColor(Preferences.mBackgroundSolidColor), Alpha);
-		mContext->ClearColorAndDepth(BackgroundColor);
-		return;
-	}
-
-	mContext->ClearDepth();
-
-	mContext->SetDepthWrite(false);
-	mContext->EnableDepthTest(false);
-
-	float ViewWidth = (float)mWidth;
-	float ViewHeight = (float)mHeight;
-
-	mContext->SetWorldMatrix(swMatrix44Identity());
-	mContext->SetViewMatrix(swMatrix44Identity());
-	mContext->SetProjectionMatrix(swMatrix44Orthographic(0.0f, ViewWidth, 0.0f, ViewHeight, -1.0f, 1.0f));
-
-	const int TotalHeight = TotalTileRows == 1 ? mHeight : mRenderImage.height();
-	const quint32 TopY = CurrentTileRow * mHeight + CurrentTileHeight;
-
-	const double t1 = 1.0 - (double)TopY / (double)TotalHeight;
-	const double t2 = 1.0 - (double)(TopY - CurrentTileHeight) / (double)TotalHeight;
-
-	const quint32 ColorTop = Preferences.mBackgroundGradientColorTop;
-	const quint32 ColorBottom = Preferences.mBackgroundGradientColorBottom;
-
-	double TopRed = SW_RGBA_RED(ColorTop);
-	double TopGreen = SW_RGBA_GREEN(ColorTop);
-	double TopBlue = SW_RGBA_BLUE(ColorTop);
-	double BottomRed = SW_RGBA_RED(ColorBottom);
-	double BottomGreen = SW_RGBA_GREEN(ColorBottom);
-	double BottomBlue = SW_RGBA_BLUE(ColorBottom);
-	const double DeltaRed = BottomRed - TopRed;
-	const double DeltaGreen = BottomGreen - TopGreen;
-	const double DeltaBlue = BottomBlue - TopBlue;
-
-	BottomRed = TopRed + DeltaRed * t2;
-	BottomGreen = TopGreen + DeltaGreen * t2;
-	BottomBlue = TopBlue + DeltaBlue * t2;
-
-	TopRed = TopRed + DeltaRed * t1;
-	TopGreen = TopGreen + DeltaGreen * t1;
-	TopBlue = TopBlue + DeltaBlue * t1;
-
-	const quint32 Color1 = SW_RGBA(TopRed, TopGreen, TopBlue, Alpha);
-	const quint32 Color2 = SW_RGBA(BottomRed, BottomGreen, BottomBlue, Alpha);
-
-	struct swBackgroundVertex
-	{
-		float x, y;
-		quint32 Color;
-	};
-
-	const swBackgroundVertex Verts[4] =
-	{
-		{ ViewWidth, ViewHeight, Color1 }, { 0.0f, ViewHeight, Color1 }, { 0.0f, 0.0f, Color2 }, { ViewWidth, 0.0f, Color2 }
-	};
-
-	mContext->SetMaterial(swMaterialType::UnlitVertexColor);
-	mContext->SetVertexBufferPointer(Verts);
-	mContext->SetVertexFormat(0, 2, 0, 0, 4, false);
-
-	mContext->DrawPrimitives(GL_TRIANGLE_FAN, 0, 4);
-
-	mContext->EnableDepthTest(true);
-	mContext->SetDepthWrite(true);
+	swVector4 BackgroundColor(swVector3FromColor(Preferences.mBackgroundSolidColor), Alpha);
+	mContext->ClearColorAndDepth(BackgroundColor);
 }
 
 void swView::DrawViewport() const
@@ -2414,7 +2348,7 @@ static QPixmap swCreateCursorPixmap(const QString& Name, const QString& Badge)
 	QPainter Painter(&Glyph);
 
 	// the arrow tip sits in the top left corner and leaves the bottom right for the badge
-	if (Name == QLatin1String("restrict_select_off"))
+	if (Name == QLatin1String("cursor_select"))
 		Painter.drawImage(-1, -3, Icon);
 	else
 		Painter.drawImage(4, 4, Icon);
@@ -2464,35 +2398,35 @@ void swView::SetCursor(swCursor CursorType)
 
 	constexpr swCursorInformation Cursors[] =
 	{
-		{  0,  0, "", "" },                          // swCursor::Hidden
-		{  0,  0, "", "" },                          // swCursor::Default
-		{ 16, 16, "mesh_cube", "" },                 // swCursor::Brick
-		{ 16, 16, "light_point", "" },               // swCursor::PointLight
-		{ 16, 16, "light_spot", "" },                // swCursor::SpotLight
-		{ 16, 16, "light_sun", "" },                 // swCursor::DirectionalLight
-		{ 16, 16, "light_area", "" },                // swCursor::AreaLight
-		{ 16, 16, "camera_data", "" },               // swCursor::Camera
-		{  1,  1, "restrict_select_off", "" },       // swCursor::Select
-		{  1,  1, "restrict_select_off", "add" },    // swCursor::SelectAdd
-		{  1,  1, "restrict_select_off", "remove" }, // swCursor::SelectRemove
-		{ 16, 16, "gesture_pan", "" },               // swCursor::Move
-		{ 16, 16, "gesture_pan_x", "" },             // swCursor::MoveAxisX
-		{ 16, 16, "gesture_pan_y", "" },             // swCursor::MoveAxisY
-		{ 16, 16, "gesture_pan_z", "" },             // swCursor::MoveAxisZ
-		{ 16, 16, "gesture_rotate", "" },            // swCursor::Rotate
-		{ 16, 16, "gesture_rotate_x", "" },          // swCursor::RotateAxisX
-		{ 16, 16, "gesture_rotate_y", "" },          // swCursor::RotateAxisY
-		{ 16, 16, "gesture_rotate_z", "" },          // swCursor::RotateAxisZ
-		{ 16, 16, "arrow_left_right", "" },          // swCursor::RotateX
-		{ 16, 16, "arrow_up_down", "" },             // swCursor::RotateY
-		{ 16, 16, "trash", "" },                     // swCursor::Delete
-		{ 14, 25, "brush_data", "" },                // swCursor::Paint
-		{  6, 24, "eyedropper", "" },                // swCursor::ColorPicker
-		{ 13, 14, "view_zoom", "" },                 // swCursor::Zoom
-		{ 12, 12, "view_zoom_region", "" },          // swCursor::ZoomRegion
-		{ 16, 16, "view_pan", "" },                  // swCursor::Pan
-		{ 16, 16, "file_refresh", "" },              // swCursor::Roll
-		{ 16, 16, "orientation_gimbal", "" },        // swCursor::RotateView
+		{  0,  0, "", "" },                                  // swCursor::Hidden
+		{  0,  0, "", "" },                                  // swCursor::Default
+		{ 16, 16, "cursor_brick", "" },                      // swCursor::Brick
+		{ 16, 16, "cursor_light_point", "" },                // swCursor::PointLight
+		{ 16, 16, "cursor_light_spot", "" },                 // swCursor::SpotLight
+		{ 16, 16, "cursor_light_directional", "" },          // swCursor::DirectionalLight
+		{ 16, 16, "cursor_light_area", "" },                 // swCursor::AreaLight
+		{ 16, 16, "cursor_camera", "" },                     // swCursor::Camera
+		{  1,  1, "cursor_select", "" },                     // swCursor::Select
+		{  1,  1, "cursor_select", "cursor_select_add" },    // swCursor::SelectAdd
+		{  1,  1, "cursor_select", "cursor_select_remove" }, // swCursor::SelectRemove
+		{ 16, 16, "cursor_move", "" },                       // swCursor::Move
+		{ 16, 16, "cursor_move_axis_x", "" },                // swCursor::MoveAxisX
+		{ 16, 16, "cursor_move_axis_y", "" },                // swCursor::MoveAxisY
+		{ 16, 16, "cursor_move_axis_z", "" },                // swCursor::MoveAxisZ
+		{ 16, 16, "cursor_rotate", "" },                     // swCursor::Rotate
+		{ 16, 16, "cursor_rotate_axis_x", "" },              // swCursor::RotateAxisX
+		{ 16, 16, "cursor_rotate_axis_y", "" },              // swCursor::RotateAxisY
+		{ 16, 16, "cursor_rotate_axis_z", "" },              // swCursor::RotateAxisZ
+		{ 16, 16, "cursor_rotate_x", "" },                   // swCursor::RotateX
+		{ 16, 16, "cursor_rotate_y", "" },                   // swCursor::RotateY
+		{ 16, 16, "cursor_delete", "" },                     // swCursor::Delete
+		{ 14, 25, "cursor_paint", "" },                      // swCursor::Paint
+		{  6, 24, "cursor_picker_color", "" },               // swCursor::ColorPicker
+		{ 13, 14, "cursor_zoom", "" },                       // swCursor::Zoom
+		{ 12, 12, "cursor_zoom_region", "" },                // swCursor::ZoomRegion
+		{ 16, 16, "cursor_pan", "" },                        // swCursor::Pan
+		{ 16, 16, "cursor_roll", "" },                       // swCursor::Roll
+		{ 16, 16, "cursor_view_rotate", "" },                // swCursor::RotateView
 	};
 
 	SW_ARRAY_SIZE_CHECK(Cursors, swCursor::Count);

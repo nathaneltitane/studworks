@@ -64,10 +64,8 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Settings", "ShadingMode", static_cast<int>(swShadingMode::DefaultLights)),             // SW_PROFILE_SHADING_MODE
 	swProfileEntry("Settings", "LightingStyle", static_cast<int>(swLightingStyle::Standard)),               // SW_PROFILE_LIGHTING_STYLE
 	swProfileEntry("Settings", "HighlightRenderMode", static_cast<int>(swHighlightRenderMode::Outline)),      // SW_PROFILE_HIGHLIGHT_RENDER_MODE
-	swProfileEntry("Settings", "BackgroundGradient", false),                                               // SW_PROFILE_BACKGROUND_GRADIENT
+	swProfileEntry("Settings", "SelectionOutlineWidth", 4),                                                // SW_PROFILE_SELECTION_OUTLINE_WIDTH
 	swProfileEntry("Settings", "BackgroundColor", SW_RGB(49, 52, 55)),                                     // SW_PROFILE_BACKGROUND_COLOR
-	swProfileEntry("Settings", "GradientColorTop", SW_RGB(54, 72, 95)),                                    // SW_PROFILE_GRADIENT_COLOR_TOP
-	swProfileEntry("Settings", "GradientColorBottom", SW_RGB(49, 52, 55)),                                 // SW_PROFILE_GRADIENT_COLOR_BOTTOM
 	swProfileEntry("Settings", "DrawAxes", 0),                                                             // SW_PROFILE_DRAW_AXES
 	swProfileEntry("Settings", "FollowStepViews", 1),                                                      // SW_PROFILE_FOLLOW_STEP_VIEWS
 	swProfileEntry("Settings", "DrawAxesLocation", static_cast<int>(swAxisIconLocation::BottomLeft)),      // SW_PROFILE_DRAW_AXES_LOCATION

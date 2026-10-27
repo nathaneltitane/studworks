@@ -450,6 +450,19 @@
             </property>
            </widget>
           </item>
+          <item row="0" column="2">
+           <spacer name="EditingSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
          </layout>
         </widget>
        </item>
@@ -462,7 +475,7 @@
       <attribute name="title">
        <string>Rendering</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_8">
+      <layout class="QVBoxLayout" name="verticalLayout_8" stretch="0,0,0,0,1">
        <item>
         <widget class="QGroupBox" name="PerformanceGroup">
          <property name="title">
@@ -804,6 +817,38 @@
             </item>
            </widget>
           </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="SelectionOutlineWidthLabel">
+            <property name="toolTip">
+             <string>Choose the thickness of the outline drawn around selected pieces and new pieces.</string>
+            </property>
+            <property name="text">
+             <string>Outline Width:</string>
+            </property>
+            <property name="buddy">
+             <cstring>SelectionOutlineWidth</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QSpinBox" name="SelectionOutlineWidth">
+            <property name="accessibleName">
+             <string>Outline Width</string>
+            </property>
+            <property name="toolTip">
+             <string>Choose the thickness of the outline drawn around selected pieces and new pieces.</string>
+            </property>
+            <property name="suffix">
+             <string> px</string>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>8</number>
+            </property>
+           </widget>
+          </item>
           <item row="0" column="3">
            <spacer name="StepsSpacer">
             <property name="orientation">
@@ -826,7 +871,7 @@
           <string>Lines</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_5">
-          <item row="3" column="2">
+          <item row="5" column="2">
            <widget class="QLabel" name="LineWidthLabel">
             <property name="text">
              <string/>
@@ -843,7 +888,7 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="3">
+          <item row="5" column="3">
            <spacer name="horizontalSpacer_9">
             <property name="orientation">
              <enum>Qt::Orientation::Horizontal</enum>
@@ -856,7 +901,7 @@
             </property>
            </spacer>
           </item>
-          <item row="3" column="0">
+          <item row="5" column="0">
            <widget class="QLabel" name="label_26">
             <property name="toolTip">
              <string>Set edge-line width within the range supported by the graphics system.</string>
@@ -869,7 +914,7 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="1">
+          <item row="5" column="1">
            <widget class="QSlider" name="LineWidthSlider">
             <property name="accessibleName">
              <string>Line Width</string>
@@ -878,7 +923,7 @@
              <string>Set edge-line width within the range supported by the graphics system.</string>
             </property>
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -911,13 +956,87 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
-           <widget class="QToolButton" name="AutomateEdgeColorButton">
+          <item row="3" column="0">
+           <widget class="QLabel" name="EdgeContrastTitle">
             <property name="toolTip">
-             <string>Configure the contrast and saturation used for automated edge colors.</string>
+             <string>Set the contrast between automated edge colors and piece surfaces from 0.00 to 1.00 (default 0.50).</string>
             </property>
             <property name="text">
-             <string>Settings...</string>
+             <string>Edge Contrast:</string>
+            </property>
+            <property name="buddy">
+             <cstring>EdgeContrastSlider</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QSlider" name="EdgeContrastSlider">
+            <property name="accessibleName">
+             <string>Edge Contrast</string>
+            </property>
+            <property name="toolTip">
+             <string>Set the contrast between automated edge colors and piece surfaces from 0.00 to 1.00 (default 0.50).</string>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximum">
+             <number>100</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="2">
+           <widget class="QLabel" name="EdgeContrastLabel">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="EdgeSaturationTitle">
+            <property name="toolTip">
+             <string>Set the saturation of automated edge colors from 0.00 to 1.00 (default 0.50).</string>
+            </property>
+            <property name="text">
+             <string>Edge Saturation:</string>
+            </property>
+            <property name="buddy">
+             <cstring>EdgeSaturationSlider</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QSlider" name="EdgeSaturationSlider">
+            <property name="accessibleName">
+             <string>Edge Saturation</string>
+            </property>
+            <property name="toolTip">
+             <string>Set the saturation of automated edge colors from 0.00 to 1.00 (default 0.50).</string>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximum">
+             <number>100</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="2">
+           <widget class="QLabel" name="EdgeSaturationLabel">
+            <property name="text">
+             <string/>
             </property>
            </widget>
           </item>
@@ -1007,30 +1126,6 @@
           <string>Model Views</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_3">
-          <item row="1" column="0">
-           <widget class="QCheckBox" name="AxisIconCheckBox">
-            <property name="toolTip">
-             <string>Show the model-axis indicator in model views.</string>
-            </property>
-            <property name="text">
-             <string>Axis Icon</string>
-            </property>
-           </widget>
-          </item>
-          
-          <item row="0" column="2">
-           <widget class="QLabel" name="ViewSphereLocationLabel">
-            <property name="toolTip">
-             <string>Choose the corner for the model-view navigation sphere.</string>
-            </property>
-            <property name="buddy">
-             <cstring>ViewSphereLocationCombo</cstring>
-            </property>
-            <property name="text">
-             <string>Location:</string>
-            </property>
-           </widget>
-          </item>
           <item row="0" column="0">
            <widget class="QLabel" name="label_21">
             <property name="toolTip">
@@ -1074,7 +1169,20 @@
             </item>
            </widget>
           </item>
-          <item row="0" column="3">
+          <item row="1" column="0">
+           <widget class="QLabel" name="ViewSphereLocationLabel">
+            <property name="toolTip">
+             <string>Choose the corner for the model-view navigation sphere.</string>
+            </property>
+            <property name="buddy">
+             <cstring>ViewSphereLocationCombo</cstring>
+            </property>
+            <property name="text">
+             <string>View Sphere Location:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
            <widget class="QComboBox" name="ViewSphereLocationCombo">
             <property name="accessibleName">
              <string>Location</string>
@@ -1104,20 +1212,17 @@
             </item>
            </widget>
           </item>
-          <item row="0" column="4">
-           <spacer name="horizontalSpacer_7">
-            <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
+          <item row="2" column="0" colspan="2">
+           <widget class="QCheckBox" name="AxisIconCheckBox">
+            <property name="toolTip">
+             <string>Show the model-axis indicator in model views.</string>
             </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
+            <property name="text">
+             <string>Axis Icon</string>
             </property>
-           </spacer>
+           </widget>
           </item>
-          <item row="1" column="2">
+          <item row="3" column="0">
            <widget class="QLabel" name="AxisIconLocationLabel">
             <property name="toolTip">
              <string>Choose the corner for the model-axis indicator.</string>
@@ -1126,11 +1231,11 @@
              <cstring>AxisIconLocationCombo</cstring>
             </property>
             <property name="text">
-             <string>Location:</string>
+             <string>Axis Icon Location:</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="3">
+          <item row="3" column="1">
            <widget class="QComboBox" name="AxisIconLocationCombo">
             <property name="accessibleName">
              <string>Location</string>
@@ -1160,7 +1265,7 @@
             </item>
            </widget>
           </item>
-          <item row="2" column="0" colspan="4">
+          <item row="4" column="0" colspan="2">
            <widget class="QCheckBox" name="FollowStepViewsCheckBox">
             <property name="toolTip">
              <string>Turn the view to each step's view rotation (MLCAD ROTSTEP) when changing steps.</string>
@@ -1169,6 +1274,19 @@
              <string>Follow Step Views</string>
             </property>
            </widget>
+          </item>
+          <item row="0" column="2">
+           <spacer name="horizontalSpacer_7">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
           </item>
          </layout>
         </widget>
@@ -1417,70 +1535,20 @@
           <string>Pieces Preview</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_6">
-          <item row="2" column="2" colspan="2">
-           <widget class="QCheckBox" name="PreviewSquareViewportCheckBox">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_8">
             <property name="toolTip">
-             <string>Keep the piece preview square, with a 1:1 width to height ratio, whatever the panel size.</string>
-            </property>
-            <property name="text">
-             <string>Square Viewport</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0" colspan="2">
-           <widget class="QCheckBox" name="PreviewAxisIconCheckBox">
-            <property name="toolTip">
-             <string>Show the model-axis indicator in the pieces preview.</string>
-            </property>
-            <property name="text">
-             <string>Axis Icon</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="3">
-           <widget class="QComboBox" name="PreviewViewSphereLocationCombo">
-            <property name="accessibleName">
-             <string>Location</string>
-            </property>
-            <property name="toolTip">
-             <string>Choose the corner for the piece-preview navigation sphere.</string>
-            </property>
-            <item>
-             <property name="text">
-              <string>Top Left</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Top Right</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Bottom Left</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Bottom Right</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-          <item row="1" column="2">
-           <widget class="QLabel" name="PreviewViewSphereLocationLabel">
-            <property name="toolTip">
-             <string>Choose the corner for the piece-preview navigation sphere.</string>
+             <string>Choose the piece-preview navigation sphere size, or disable it.</string>
             </property>
             <property name="buddy">
-             <cstring>PreviewViewSphereLocationCombo</cstring>
+             <cstring>PreviewViewSphereSizeCombo</cstring>
             </property>
             <property name="text">
-             <string>Location:</string>
+             <string>View Sphere:</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="1">
+          <item row="0" column="1" colspan="2">
            <widget class="QComboBox" name="PreviewViewSphereSizeCombo">
             <property name="accessibleName">
              <string>View Sphere</string>
@@ -1511,32 +1579,69 @@
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QLabel" name="label_8">
+           <widget class="QLabel" name="PreviewViewSphereLocationLabel">
             <property name="toolTip">
-             <string>Choose the piece-preview navigation sphere size, or disable it.</string>
+             <string>Choose the corner for the piece-preview navigation sphere.</string>
             </property>
             <property name="buddy">
-             <cstring>PreviewViewSphereSizeCombo</cstring>
+             <cstring>PreviewViewSphereLocationCombo</cstring>
             </property>
             <property name="text">
-             <string>View Sphere:</string>
+             <string>View Sphere Location:</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="4">
-           <spacer name="horizontalSpacer_11">
-            <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
+          <item row="1" column="1" colspan="2">
+           <widget class="QComboBox" name="PreviewViewSphereLocationCombo">
+            <property name="accessibleName">
+             <string>Location</string>
             </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
+            <property name="toolTip">
+             <string>Choose the corner for the piece-preview navigation sphere.</string>
             </property>
-           </spacer>
+            <item>
+             <property name="text">
+              <string>Top Left</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Top Right</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Bottom Left</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Bottom Right</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="2" column="0" colspan="3">
+           <widget class="QCheckBox" name="PreviewAxisIconCheckBox">
+            <property name="toolTip">
+             <string>Show the model-axis indicator in the pieces preview.</string>
+            </property>
+            <property name="text">
+             <string>Axis Icon</string>
+            </property>
+           </widget>
           </item>
           <item row="3" column="0" colspan="3">
+           <widget class="QCheckBox" name="PreviewSquareViewportCheckBox">
+            <property name="toolTip">
+             <string>Keep the piece preview square, with a 1:1 width to height ratio, whatever the panel size.</string>
+            </property>
+            <property name="text">
+             <string>Square Viewport</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0" colspan="3">
            <widget class="QCheckBox" name="PreviewSyncRendering">
             <property name="toolTip">
              <string>Use the model view rendering settings for the pieces preview.</string>
@@ -1546,7 +1651,7 @@
             </property>
            </widget>
           </item>
-          <item row="4" column="0">
+          <item row="5" column="0">
            <widget class="QLabel" name="PreviewShadingModeLabel">
             <property name="toolTip">
              <string>Choose how pieces are drawn in the pieces preview.</string>
@@ -1559,7 +1664,7 @@
             </property>
            </widget>
           </item>
-          <item row="4" column="1">
+          <item row="5" column="1" colspan="2">
            <widget class="QComboBox" name="PreviewShadingMode">
             <property name="accessibleName">
              <string>Preview Shading Mode</string>
@@ -1584,7 +1689,7 @@
             </item>
            </widget>
           </item>
-          <item row="5" column="0">
+          <item row="6" column="0" colspan="3">
            <widget class="QCheckBox" name="PreviewEdgeLines">
             <property name="toolTip">
              <string>Draw edge lines on pieces in the pieces preview.</string>
@@ -1594,7 +1699,7 @@
             </property>
            </widget>
           </item>
-          <item row="6" column="0">
+          <item row="7" column="0" colspan="3">
            <widget class="QCheckBox" name="PreviewConditionalLines">
             <property name="toolTip">
              <string>Draw conditional lines on pieces in the pieces preview.</string>
@@ -1604,7 +1709,7 @@
             </property>
            </widget>
           </item>
-          <item row="7" column="0">
+          <item row="8" column="0">
            <widget class="QLabel" name="PreviewLineWidthTitle">
             <property name="toolTip">
              <string>Set the line width used in the pieces preview.</string>
@@ -1617,7 +1722,7 @@
             </property>
            </widget>
           </item>
-          <item row="7" column="1">
+          <item row="8" column="1">
            <widget class="QSlider" name="PreviewLineWidthSlider">
             <property name="accessibleName">
              <string>Preview Line Width</string>
@@ -1630,12 +1735,25 @@
             </property>
            </widget>
           </item>
-          <item row="7" column="2">
+          <item row="8" column="2">
            <widget class="QLabel" name="PreviewLineWidthLabel">
             <property name="text">
-             <string/>
+             <string />
             </property>
            </widget>
+          </item>
+          <item row="0" column="3">
+           <spacer name="horizontalSpacer_11">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
           </item>
          </layout>
         </widget>
@@ -1646,25 +1764,7 @@
           <string>Minifigure Builder Preview</string>
          </property>
          <layout class="QGridLayout" name="MinifigureBuilderLayout">
-          
-          
-          
-          
-          
-          <item row="1" column="4">
-           <spacer name="MinifigureBuilderSpacer">
-            <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="3" column="0" colspan="3">
+          <item row="0" column="0" colspan="3">
            <widget class="QCheckBox" name="MinifigureBuilderSyncRendering">
             <property name="toolTip">
              <string>Use the model view rendering settings for the minifigure builder preview.</string>
@@ -1674,7 +1774,7 @@
             </property>
            </widget>
           </item>
-          <item row="4" column="0">
+          <item row="1" column="0">
            <widget class="QLabel" name="MinifigureBuilderShadingModeLabel">
             <property name="toolTip">
              <string>Choose how pieces are drawn in the minifigure builder preview.</string>
@@ -1687,7 +1787,7 @@
             </property>
            </widget>
           </item>
-          <item row="4" column="1">
+          <item row="1" column="1" colspan="2">
            <widget class="QComboBox" name="MinifigureBuilderShadingMode">
             <property name="accessibleName">
              <string>Minifigure Builder Shading Mode</string>
@@ -1712,7 +1812,7 @@
             </item>
            </widget>
           </item>
-          <item row="5" column="0">
+          <item row="2" column="0" colspan="3">
            <widget class="QCheckBox" name="MinifigureBuilderEdgeLines">
             <property name="toolTip">
              <string>Draw edge lines on pieces in the minifigure builder preview.</string>
@@ -1722,7 +1822,7 @@
             </property>
            </widget>
           </item>
-          <item row="6" column="0">
+          <item row="3" column="0" colspan="3">
            <widget class="QCheckBox" name="MinifigureBuilderConditionalLines">
             <property name="toolTip">
              <string>Draw conditional lines on pieces in the minifigure builder preview.</string>
@@ -1732,7 +1832,7 @@
             </property>
            </widget>
           </item>
-          <item row="7" column="0">
+          <item row="4" column="0">
            <widget class="QLabel" name="MinifigureBuilderLineWidthTitle">
             <property name="toolTip">
              <string>Set the line width used in the minifigure builder preview.</string>
@@ -1745,7 +1845,7 @@
             </property>
            </widget>
           </item>
-          <item row="7" column="1">
+          <item row="4" column="1">
            <widget class="QSlider" name="MinifigureBuilderLineWidthSlider">
             <property name="accessibleName">
              <string>Minifigure Builder Line Width</string>
@@ -1758,12 +1858,25 @@
             </property>
            </widget>
           </item>
-          <item row="7" column="2">
+          <item row="4" column="2">
            <widget class="QLabel" name="MinifigureBuilderLineWidthLabel">
             <property name="text">
-             <string/>
+             <string />
             </property>
            </widget>
+          </item>
+          <item row="0" column="3">
+           <spacer name="MinifigureBuilderSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
           </item>
          </layout>
         </widget>
@@ -1790,40 +1903,266 @@
       <attribute name="title">
        <string>Colors</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout_9">
-       <item row="2" column="0" colspan="2">
+      <layout class="QGridLayout" name="gridLayout_9" rowstretch="0,0,0,0,0,0,1">
+       <item row="0" column="0">
+        <widget class="QGroupBox" name="groupBox_7">
+         <property name="title">
+          <string>Background</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_7">
+          <item row="0" column="0">
+           <widget class="QLabel" name="BackgroundColorLabel">
+            <property name="toolTip">
+             <string>Choose the display color for the model-view background.</string>
+            </property>
+            <property name="buddy">
+             <cstring>BackgroundSolidColorButton</cstring>
+            </property>
+            <property name="text">
+             <string>Color:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QToolButton" name="BackgroundSolidColorButton">
+            <property name="accessibleName">
+             <string>Background Color</string>
+            </property>
+            <property name="toolTip">
+             <string>Choose the display color for the model-view background.</string>
+            </property>
+            <property name="text">
+             <string />
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <spacer name="horizontalSpacer_12">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QGroupBox" name="groupBox_12">
+         <property name="title">
+          <string>Objects</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_10">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_33">
+            <property name="toolTip">
+             <string>Choose the display color for selected objects.</string>
+            </property>
+            <property name="buddy">
+             <cstring>ObjectSelectedColorButton</cstring>
+            </property>
+            <property name="text">
+             <string>Selected:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QToolButton" name="ObjectSelectedColorButton">
+            <property name="accessibleName">
+             <string>Selected Object Color</string>
+            </property>
+            <property name="toolTip">
+             <string>Choose the display color for selected objects.</string>
+            </property>
+            <property name="text">
+             <string />
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_38">
+            <property name="toolTip">
+             <string>Choose the display color for the focused object.</string>
+            </property>
+            <property name="buddy">
+             <cstring>ObjectFocusedColorButton</cstring>
+            </property>
+            <property name="text">
+             <string>Focused:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QToolButton" name="ObjectFocusedColorButton">
+            <property name="accessibleName">
+             <string>Focused Object Color</string>
+            </property>
+            <property name="toolTip">
+             <string>Choose the display color for the focused object.</string>
+            </property>
+            <property name="text">
+             <string />
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_34">
+            <property name="toolTip">
+             <string>Choose the display color for camera-object outlines.</string>
+            </property>
+            <property name="buddy">
+             <cstring>CameraColorButton</cstring>
+            </property>
+            <property name="text">
+             <string>Camera:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QToolButton" name="CameraColorButton">
+            <property name="accessibleName">
+             <string>Camera Color</string>
+            </property>
+            <property name="toolTip">
+             <string>Choose the display color for camera-object outlines.</string>
+            </property>
+            <property name="text">
+             <string />
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label_37">
+            <property name="toolTip">
+             <string>Choose the display color for light-object outlines.</string>
+            </property>
+            <property name="buddy">
+             <cstring>LightColorButton</cstring>
+            </property>
+            <property name="text">
+             <string>Light:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QToolButton" name="LightColorButton">
+            <property name="accessibleName">
+             <string>Light Color</string>
+            </property>
+            <property name="toolTip">
+             <string>Choose the display color for light-object outlines.</string>
+            </property>
+            <property name="text">
+             <string />
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_35">
+            <property name="toolTip">
+             <string>Choose the display color for control points.</string>
+            </property>
+            <property name="buddy">
+             <cstring>ControlPointColorButton</cstring>
+            </property>
+            <property name="text">
+             <string>Control Point:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QToolButton" name="ControlPointColorButton">
+            <property name="accessibleName">
+             <string>Control Point Color</string>
+            </property>
+            <property name="toolTip">
+             <string>Choose the display color for control points.</string>
+            </property>
+            <property name="text">
+             <string />
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="label_36">
+            <property name="toolTip">
+             <string>Choose the display color for the focused control point.</string>
+            </property>
+            <property name="buddy">
+             <cstring>ControlPointFocusedColorButton</cstring>
+            </property>
+            <property name="text">
+             <string>Control Point Focused:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QToolButton" name="ControlPointFocusedColorButton">
+            <property name="accessibleName">
+             <string>Focused Control Point Color</string>
+            </property>
+            <property name="toolTip">
+             <string>Choose the display color for the focused control point.</string>
+            </property>
+            <property name="text">
+             <string />
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <spacer name="horizontalSpacer_15">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="0">
         <widget class="QGroupBox" name="groupBox_11">
          <property name="title">
           <string>Interface</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_8">
-          <item row="3" column="0">
-           <widget class="QLabel" name="label_15">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_6">
             <property name="toolTip">
-             <string>Choose the display color for the selection rectangle border.</string>
+             <string>Choose the display color for the active view border.</string>
             </property>
             <property name="buddy">
-             <cstring>MarqueeBorderColorButton</cstring>
+             <cstring>ActiveViewColorButton</cstring>
             </property>
             <property name="text">
-             <string>Marquee Border:</string>
+             <string>Active View Border:</string>
             </property>
            </widget>
           </item>
-          <item row="3" column="1">
-           <widget class="QToolButton" name="MarqueeBorderColorButton">
+          <item row="0" column="1">
+           <widget class="QToolButton" name="ActiveViewColorButton">
             <property name="accessibleName">
-             <string>Marquee Border</string>
+             <string>Active View Border</string>
             </property>
             <property name="toolTip">
-             <string>Choose the display color for the selection rectangle border.</string>
+             <string>Choose the display color for the active view border.</string>
             </property>
             <property name="text">
-             <string/>
+             <string />
             </property>
            </widget>
           </item>
-          <item row="0" column="3">
+          <item row="1" column="0">
            <widget class="QLabel" name="label_32">
             <property name="toolTip">
              <string>Choose the display color for inactive view borders.</string>
@@ -1836,16 +2175,16 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="4">
-           <widget class="QToolButton" name="MarqueeFillColorButton">
+          <item row="1" column="1">
+           <widget class="QToolButton" name="InactiveViewColorButton">
             <property name="accessibleName">
-             <string>Marquee Fill</string>
+             <string>Inactive View Border</string>
             </property>
             <property name="toolTip">
-             <string>Choose the display color for the selection rectangle fill.</string>
+             <string>Choose the display color for inactive view borders.</string>
             </property>
             <property name="text">
-             <string/>
+             <string />
             </property>
            </widget>
           </item>
@@ -1862,59 +2201,20 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="4">
-           <widget class="QToolButton" name="TextHaloColorButton">
+          <item row="2" column="1">
+           <widget class="QToolButton" name="TextColorButton">
             <property name="accessibleName">
-             <string>Text Halo Color</string>
+             <string>Text Color</string>
             </property>
             <property name="toolTip">
-             <string>Choose the display color for the halo behind view text.</string>
+             <string>Choose the display color for view text.</string>
             </property>
             <property name="text">
-             <string/>
+             <string />
             </property>
            </widget>
           </item>
-          <item row="3" column="3">
-           <widget class="QLabel" name="label_16">
-            <property name="toolTip">
-             <string>Choose the display color for the selection rectangle fill.</string>
-            </property>
-            <property name="buddy">
-             <cstring>MarqueeFillColorButton</cstring>
-            </property>
-            <property name="text">
-             <string>Marquee Fill:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="4">
-           <widget class="QToolButton" name="InactiveViewColorButton">
-            <property name="accessibleName">
-             <string>Inactive View Border</string>
-            </property>
-            <property name="toolTip">
-             <string>Choose the display color for inactive view borders.</string>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="0">
-           <widget class="QLabel" name="label_2">
-            <property name="toolTip">
-             <string>Choose the display color for view overlays.</string>
-            </property>
-            <property name="buddy">
-             <cstring>OverlayColorButton</cstring>
-            </property>
-            <property name="text">
-             <string>Overlay Color:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="3">
+          <item row="3" column="0">
            <widget class="QLabel" name="label_31">
             <property name="toolTip">
              <string>Choose the display color for the halo behind view text.</string>
@@ -1927,20 +2227,85 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
-           <widget class="QToolButton" name="TextColorButton">
+          <item row="3" column="1">
+           <widget class="QToolButton" name="TextHaloColorButton">
             <property name="accessibleName">
-             <string>Text Color</string>
+             <string>Text Halo Color</string>
             </property>
             <property name="toolTip">
-             <string>Choose the display color for view text.</string>
+             <string>Choose the display color for the halo behind view text.</string>
             </property>
             <property name="text">
-             <string/>
+             <string />
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="label_15">
+            <property name="toolTip">
+             <string>Choose the display color for the selection rectangle border.</string>
+            </property>
+            <property name="buddy">
+             <cstring>MarqueeBorderColorButton</cstring>
+            </property>
+            <property name="text">
+             <string>Marquee Border:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QToolButton" name="MarqueeBorderColorButton">
+            <property name="accessibleName">
+             <string>Marquee Border</string>
+            </property>
+            <property name="toolTip">
+             <string>Choose the display color for the selection rectangle border.</string>
+            </property>
+            <property name="text">
+             <string />
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="label_16">
+            <property name="toolTip">
+             <string>Choose the display color for the selection rectangle fill.</string>
+            </property>
+            <property name="buddy">
+             <cstring>MarqueeFillColorButton</cstring>
+            </property>
+            <property name="text">
+             <string>Marquee Fill:</string>
             </property>
            </widget>
           </item>
           <item row="5" column="1">
+           <widget class="QToolButton" name="MarqueeFillColorButton">
+            <property name="accessibleName">
+             <string>Marquee Fill</string>
+            </property>
+            <property name="toolTip">
+             <string>Choose the display color for the selection rectangle fill.</string>
+            </property>
+            <property name="text">
+             <string />
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QLabel" name="label_2">
+            <property name="toolTip">
+             <string>Choose the display color for view overlays.</string>
+            </property>
+            <property name="buddy">
+             <cstring>OverlayColorButton</cstring>
+            </property>
+            <property name="text">
+             <string>Overlay Color:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
            <widget class="QToolButton" name="OverlayColorButton">
             <property name="accessibleName">
              <string>Overlay Color</string>
@@ -1949,27 +2314,14 @@
              <string>Choose the display color for view overlays.</string>
             </property>
             <property name="text">
-             <string/>
+             <string />
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
-           <widget class="QToolButton" name="ActiveViewColorButton">
-            <property name="accessibleName">
-             <string>Active View Border</string>
-            </property>
-            <property name="toolTip">
-             <string>Choose the display color for the active view border.</string>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="5">
+          <item row="0" column="2">
            <spacer name="horizontalSpacer_16">
             <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
+             <enum>Qt::Horizontal</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -1979,30 +2331,75 @@
             </property>
            </spacer>
           </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QGroupBox" name="groupBox_10">
+         <property name="title">
+          <string>Grid</string>
+         </property>
+         <layout class="QGridLayout" name="horizontalLayout_17">
           <item row="0" column="0">
-           <widget class="QLabel" name="label_6">
+           <widget class="QLabel" name="label_29">
             <property name="toolTip">
-             <string>Choose the display color for the active view border.</string>
+             <string>Choose the display color for base-grid lines.</string>
             </property>
             <property name="buddy">
-             <cstring>ActiveViewColorButton</cstring>
+             <cstring>gridLineColor</cstring>
             </property>
             <property name="text">
-             <string>Active View Border:</string>
+             <string>Lines:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QToolButton" name="gridLineColor">
+            <property name="accessibleName">
+             <string>Grid Line Color</string>
+            </property>
+            <property name="toolTip">
+             <string>Choose the display color for base-grid lines.</string>
+            </property>
+            <property name="text">
+             <string />
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_30">
+            <property name="toolTip">
+             <string>Choose the display color for base-grid stud markers.</string>
+            </property>
+            <property name="buddy">
+             <cstring>gridStudColor</cstring>
+            </property>
+            <property name="text">
+             <string>Studs:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QToolButton" name="gridStudColor">
+            <property name="accessibleName">
+             <string>Grid Stud Color</string>
+            </property>
+            <property name="toolTip">
+             <string>Choose the display color for base-grid stud markers.</string>
+            </property>
+            <property name="text">
+             <string />
             </property>
            </widget>
           </item>
           <item row="0" column="2">
-           <spacer name="horizontalSpacer_18">
+           <spacer name="horizontalSpacer_20">
             <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Policy::Fixed</enum>
+             <enum>Qt::Horizontal</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>20</width>
+              <width>40</width>
               <height>20</height>
              </size>
             </property>
@@ -2011,13 +2408,13 @@
          </layout>
         </widget>
        </item>
-       <item row="4" column="1">
+       <item row="4" column="0">
         <widget class="QGroupBox" name="groupBox_9">
          <property name="title">
           <string>View Sphere</string>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_16">
-          <item>
+         <layout class="QGridLayout" name="horizontalLayout_16">
+          <item row="0" column="0">
            <widget class="QLabel" name="label_22">
             <property name="toolTip">
              <string>Choose the display color for the navigation sphere.</string>
@@ -2030,7 +2427,7 @@
             </property>
            </widget>
           </item>
-          <item>
+          <item row="0" column="1">
            <widget class="QToolButton" name="ViewSphereColorButton">
             <property name="accessibleName">
              <string>View Sphere Color</string>
@@ -2039,27 +2436,11 @@
              <string>Choose the display color for the navigation sphere.</string>
             </property>
             <property name="text">
-             <string/>
+             <string />
             </property>
            </widget>
           </item>
-          <item>
-           <spacer name="horizontalSpacer_21">
-            <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Policy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
+          <item row="1" column="0">
            <widget class="QLabel" name="label_23">
             <property name="toolTip">
              <string>Choose the display color for navigation sphere text.</string>
@@ -2072,7 +2453,7 @@
             </property>
            </widget>
           </item>
-          <item>
+          <item row="1" column="1">
            <widget class="QToolButton" name="ViewSphereTextColorButton">
             <property name="accessibleName">
              <string>View Sphere Text Color</string>
@@ -2081,27 +2462,11 @@
              <string>Choose the display color for navigation sphere text.</string>
             </property>
             <property name="text">
-             <string/>
+             <string />
             </property>
            </widget>
           </item>
-          <item>
-           <spacer name="horizontalSpacer_22">
-            <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Policy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
+          <item row="2" column="0">
            <widget class="QLabel" name="label_20">
             <property name="toolTip">
              <string>Choose the display color for the highlighted region of the navigation sphere.</string>
@@ -2114,7 +2479,7 @@
             </property>
            </widget>
           </item>
-          <item>
+          <item row="2" column="1">
            <widget class="QToolButton" name="ViewSphereHighlightColorButton">
             <property name="accessibleName">
              <string>View Sphere Highlight Color</string>
@@ -2123,14 +2488,14 @@
              <string>Choose the display color for the highlighted region of the navigation sphere.</string>
             </property>
             <property name="text">
-             <string/>
+             <string />
             </property>
            </widget>
           </item>
-          <item>
-           <spacer name="horizontalSpacer_14">
+          <item row="0" column="2">
+           <spacer name="horizontalSpacer_21">
             <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
+             <enum>Qt::Horizontal</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -2143,13 +2508,13 @@
          </layout>
         </widget>
        </item>
-       <item row="5" column="0" colspan="2">
+       <item row="5" column="0">
         <widget class="QGroupBox" name="AxisColorsGroup">
          <property name="title">
           <string>Axes</string>
          </property>
-         <layout class="QHBoxLayout" name="AxisColorsLayout">
-          <item>
+         <layout class="QGridLayout" name="AxisColorsLayout">
+          <item row="0" column="0">
            <widget class="QLabel" name="AxisXColorLabel">
             <property name="toolTip">
              <string>Choose the X axis color used by the axis icon, grid origin lines and transform handles.</string>
@@ -2162,7 +2527,7 @@
             </property>
            </widget>
           </item>
-          <item>
+          <item row="0" column="1">
            <widget class="QToolButton" name="AxisXColorButton">
             <property name="accessibleName">
              <string>X Axis Color</string>
@@ -2171,27 +2536,11 @@
              <string>Choose the X axis color used by the axis icon, grid origin lines and transform handles.</string>
             </property>
             <property name="text">
-             <string/>
+             <string />
             </property>
            </widget>
           </item>
-          <item>
-           <spacer name="AxisXSpacer">
-            <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Policy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
+          <item row="1" column="0">
            <widget class="QLabel" name="AxisYColorLabel">
             <property name="toolTip">
              <string>Choose the Y axis color used by the axis icon, grid origin lines and transform handles.</string>
@@ -2204,7 +2553,7 @@
             </property>
            </widget>
           </item>
-          <item>
+          <item row="1" column="1">
            <widget class="QToolButton" name="AxisYColorButton">
             <property name="accessibleName">
              <string>Y Axis Color</string>
@@ -2213,27 +2562,11 @@
              <string>Choose the Y axis color used by the axis icon, grid origin lines and transform handles.</string>
             </property>
             <property name="text">
-             <string/>
+             <string />
             </property>
            </widget>
           </item>
-          <item>
-           <spacer name="AxisYSpacer">
-            <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Policy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
+          <item row="2" column="0">
            <widget class="QLabel" name="AxisZColorLabel">
             <property name="toolTip">
              <string>Choose the Z axis color used by the axis icon, grid origin lines and transform handles.</string>
@@ -2246,7 +2579,7 @@
             </property>
            </widget>
           </item>
-          <item>
+          <item row="2" column="1">
            <widget class="QToolButton" name="AxisZColorButton">
             <property name="accessibleName">
              <string>Z Axis Color</string>
@@ -2255,14 +2588,14 @@
              <string>Choose the Z axis color used by the axis icon, grid origin lines and transform handles.</string>
             </property>
             <property name="text">
-             <string/>
+             <string />
             </property>
            </widget>
           </item>
-          <item>
-           <spacer name="AxisZSpacer">
+          <item row="0" column="2">
+           <spacer name="AxisXSpacer">
             <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
+             <enum>Qt::Horizontal</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -2287,434 +2620,6 @@
           </size>
          </property>
         </spacer>
-       </item>
-       <item row="4" column="0">
-        <widget class="QGroupBox" name="groupBox_10">
-         <property name="title">
-          <string>Grid</string>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_17">
-          <item>
-           <widget class="QLabel" name="label_29">
-            <property name="toolTip">
-             <string>Choose the display color for base-grid lines.</string>
-            </property>
-            <property name="buddy">
-             <cstring>gridLineColor</cstring>
-            </property>
-            <property name="text">
-             <string>Lines:</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QToolButton" name="gridLineColor">
-            <property name="accessibleName">
-             <string>Grid Line Color</string>
-            </property>
-            <property name="toolTip">
-             <string>Choose the display color for base-grid lines.</string>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="horizontalSpacer_20">
-            <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Policy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_30">
-            <property name="toolTip">
-             <string>Choose the display color for base-grid stud markers.</string>
-            </property>
-            <property name="buddy">
-             <cstring>gridStudColor</cstring>
-            </property>
-            <property name="text">
-             <string>Studs:</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QToolButton" name="gridStudColor">
-            <property name="accessibleName">
-             <string>Grid Stud Color</string>
-            </property>
-            <property name="toolTip">
-             <string>Choose the display color for base-grid stud markers.</string>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="horizontalSpacer_13">
-            <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="0" column="0" colspan="2">
-        <widget class="QGroupBox" name="groupBox_7">
-         <property name="title">
-          <string>Background</string>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_7">
-          <item row="1" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout_2">
-            <item>
-             <widget class="QLabel" name="label_27">
-              <property name="toolTip">
-               <string>Choose the display color for the top of the background gradient.</string>
-              </property>
-              <property name="buddy">
-               <cstring>BackgroundGradient1ColorButton</cstring>
-              </property>
-              <property name="text">
-               <string>Top Color:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QToolButton" name="BackgroundGradient1ColorButton">
-              <property name="accessibleName">
-               <string>Background Top Color</string>
-              </property>
-              <property name="toolTip">
-               <string>Choose the display color for the top of the background gradient.</string>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_19">
-              <property name="orientation">
-               <enum>Qt::Orientation::Horizontal</enum>
-              </property>
-              <property name="sizeType">
-               <enum>QSizePolicy::Policy::Fixed</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_28">
-              <property name="toolTip">
-               <string>Choose the display color for the bottom of the background gradient.</string>
-              </property>
-              <property name="buddy">
-               <cstring>BackgroundGradient2ColorButton</cstring>
-              </property>
-              <property name="text">
-               <string>Bottom Color:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QToolButton" name="BackgroundGradient2ColorButton">
-              <property name="accessibleName">
-               <string>Background Bottom Color</string>
-              </property>
-              <property name="toolTip">
-               <string>Choose the display color for the bottom of the background gradient.</string>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_10">
-              <property name="orientation">
-               <enum>Qt::Orientation::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </item>
-          <item row="0" column="0">
-           <widget class="QRadioButton" name="BackgroundSolidRadio">
-            <property name="toolTip">
-             <string>Use a single color for the model-view background.</string>
-            </property>
-            <property name="text">
-             <string>So&amp;lid Color</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QRadioButton" name="BackgroundGradientRadio">
-            <property name="toolTip">
-             <string>Blend the top and bottom colors in the model-view background.</string>
-            </property>
-            <property name="text">
-             <string>&amp;Gradient</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout_11">
-            <item>
-             <widget class="QToolButton" name="BackgroundSolidColorButton">
-              <property name="accessibleName">
-               <string>Background Solid Color</string>
-              </property>
-              <property name="toolTip">
-               <string>Choose the display color for the solid background.</string>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_12">
-              <property name="orientation">
-               <enum>Qt::Orientation::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="1" column="0" colspan="2">
-        <widget class="QGroupBox" name="groupBox_12">
-         <property name="title">
-          <string>Objects</string>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_10">
-          <item row="1" column="3">
-           <widget class="QLabel" name="label_37">
-            <property name="toolTip">
-             <string>Choose the display color for light-object outlines.</string>
-            </property>
-            <property name="buddy">
-             <cstring>LightColorButton</cstring>
-            </property>
-            <property name="text">
-             <string>Light:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="4">
-           <widget class="QToolButton" name="LightColorButton">
-            <property name="accessibleName">
-             <string>Light Color</string>
-            </property>
-            <property name="toolTip">
-             <string>Choose the display color for light-object outlines.</string>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <spacer name="horizontalSpacer_15">
-            <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Policy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="0" column="3">
-           <widget class="QLabel" name="label_38">
-            <property name="toolTip">
-             <string>Choose the display color for the focused object.</string>
-            </property>
-            <property name="buddy">
-             <cstring>ObjectFocusedColorButton</cstring>
-            </property>
-            <property name="text">
-             <string>Focused:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QToolButton" name="CameraColorButton">
-            <property name="accessibleName">
-             <string>Camera Color</string>
-            </property>
-            <property name="toolTip">
-             <string>Choose the display color for camera-object outlines.</string>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="3">
-           <widget class="QLabel" name="label_36">
-            <property name="toolTip">
-             <string>Choose the display color for the focused control point.</string>
-            </property>
-            <property name="buddy">
-             <cstring>ControlPointFocusedColorButton</cstring>
-            </property>
-            <property name="text">
-             <string>Control Point Focused:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QToolButton" name="ControlPointColorButton">
-            <property name="accessibleName">
-             <string>Control Point Color</string>
-            </property>
-            <property name="toolTip">
-             <string>Choose the display color for control points.</string>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="4">
-           <widget class="QToolButton" name="ControlPointFocusedColorButton">
-            <property name="accessibleName">
-             <string>Focused Control Point Color</string>
-            </property>
-            <property name="toolTip">
-             <string>Choose the display color for the focused control point.</string>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QToolButton" name="ObjectSelectedColorButton">
-            <property name="accessibleName">
-             <string>Selected Object Color</string>
-            </property>
-            <property name="toolTip">
-             <string>Choose the display color for selected objects.</string>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="4">
-           <widget class="QToolButton" name="ObjectFocusedColorButton">
-            <property name="accessibleName">
-             <string>Focused Object Color</string>
-            </property>
-            <property name="toolTip">
-             <string>Choose the display color for the focused object.</string>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_35">
-            <property name="toolTip">
-             <string>Choose the display color for control points.</string>
-            </property>
-            <property name="buddy">
-             <cstring>ControlPointColorButton</cstring>
-            </property>
-            <property name="text">
-             <string>Control Point:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_33">
-            <property name="toolTip">
-             <string>Choose the display color for selected objects.</string>
-            </property>
-            <property name="buddy">
-             <cstring>ObjectSelectedColorButton</cstring>
-            </property>
-            <property name="text">
-             <string>Selected:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_34">
-            <property name="toolTip">
-             <string>Choose the display color for camera-object outlines.</string>
-            </property>
-            <property name="buddy">
-             <cstring>CameraColorButton</cstring>
-            </property>
-            <property name="text">
-             <string>Camera:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="5">
-           <spacer name="horizontalSpacer_17">
-            <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-         </layout>
-        </widget>
        </item>
       </layout>
      </widget>
@@ -3136,14 +3041,14 @@
                  <string>Select a tool to edit its primary and secondary mouse shortcuts.</string>
                 </property>
                 <property name="rootIsDecorated">
-                 <bool>false</bool>
+                 <bool>true</bool>
                 </property>
                 <property name="uniformRowHeights">
                  <bool>true</bool>
                 </property>
                 <column>
                  <property name="text">
-                  <string>Action</string>
+                  <string>Tool</string>
                  </property>
                 </column>
                 <column>
@@ -3156,6 +3061,19 @@
                   <string>Shortcut 2</string>
                  </property>
                 </column>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="MouseFilterEdit">
+                <property name="accessibleName">
+                 <string>Filter Tools</string>
+                </property>
+                <property name="toolTip">
+                 <string>Filter tools by name or shortcut.</string>
+                </property>
+                <property name="placeholderText">
+                 <string>Search shortcuts</string>
+                </property>
                </widget>
               </item>
               <item>
@@ -3217,59 +3135,59 @@
          <property name="title">
           <string>Shortcut</string>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_12">
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_14">
+         <layout class="QGridLayout" name="horizontalLayout_12">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_11">
+            <property name="toolTip">
+             <string>Choose the mouse button to assign to the selected tool.</string>
+            </property>
+            <property name="buddy">
+             <cstring>mouseButton</cstring>
+            </property>
+            <property name="text">
+             <string>Button:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="mouseButton">
+            <property name="accessibleName">
+             <string>Button</string>
+            </property>
+            <property name="toolTip">
+             <string>Choose the mouse button to assign to the selected tool.</string>
+            </property>
             <item>
-             <widget class="QLabel" name="label_11">
-              <property name="toolTip">
-               <string>Choose the mouse button to assign to the selected tool.</string>
-              </property>
-              <property name="buddy">
-               <cstring>mouseButton</cstring>
-              </property>
-              <property name="text">
-               <string>Button:</string>
-              </property>
-             </widget>
+             <property name="text">
+              <string>None</string>
+             </property>
             </item>
             <item>
-             <widget class="QComboBox" name="mouseButton">
-              <property name="accessibleName">
-               <string>Button</string>
-              </property>
-              <property name="toolTip">
-               <string>Choose the mouse button to assign to the selected tool.</string>
-              </property>
-              <item>
-               <property name="text">
-                <string>None</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Left</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Middle</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Right</string>
-               </property>
-              </item>
-             </widget>
+             <property name="text">
+              <string>Left</string>
+             </property>
             </item>
             <item>
-             <widget class="QLabel" name="label_12">
-              <property name="text">
-               <string>Modifiers:</string>
-              </property>
-             </widget>
+             <property name="text">
+              <string>Middle</string>
+             </property>
             </item>
+            <item>
+             <property name="text">
+              <string>Right</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_12">
+            <property name="text">
+             <string>Modifiers:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <layout class="QHBoxLayout" name="MouseModifiersLayout">
             <item>
              <widget class="QCheckBox" name="mouseControl">
               <property name="toolTip">
@@ -3300,6 +3218,10 @@
               </property>
              </widget>
             </item>
+           </layout>
+          </item>
+          <item row="2" column="1">
+           <layout class="QHBoxLayout" name="MouseButtonsLayout">
             <item>
              <widget class="QPushButton" name="mouseAssign">
               <property name="toolTip">
@@ -3322,6 +3244,19 @@
             </item>
            </layout>
           </item>
+          <item row="0" column="2">
+           <spacer name="MouseShortcutSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
          </layout>
         </widget>
        </item>
@@ -3330,45 +3265,61 @@
          <property name="title">
           <string>Navigation</string>
          </property>
-         <layout class="QVBoxLayout" name="MouseSensitivityLayout">
-          <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_15">
-             <item>
-              <widget class="QLabel" name="label_13">
-               <property name="toolTip">
-                <string>Adjust how strongly mouse motion affects navigation.</string>
-               </property>
-               <property name="buddy">
-                <cstring>mouseSensitivity</cstring>
-               </property>
-               <property name="text">
-                <string>Mouse Sensitivity:</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QSlider" name="mouseSensitivity">
-               <property name="accessibleName">
-                <string>Mouse Sensitivity</string>
-               </property>
-               <property name="toolTip">
-                <string>Adjust how strongly mouse motion affects navigation.</string>
-               </property>
-               <property name="minimum">
-                <number>1</number>
-               </property>
-               <property name="maximum">
-                <number>20</number>
-               </property>
-               <property name="pageStep">
-                <number>5</number>
-               </property>
-               <property name="orientation">
-                <enum>Qt::Orientation::Horizontal</enum>
-               </property>
-              </widget>
-             </item>
-            </layout>
+         <layout class="QGridLayout" name="MouseSensitivityLayout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_13">
+            <property name="toolTip">
+             <string>Adjust how strongly mouse motion affects navigation.</string>
+            </property>
+            <property name="buddy">
+             <cstring>mouseSensitivity</cstring>
+            </property>
+            <property name="text">
+             <string>Mouse Sensitivity:</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSlider" name="mouseSensitivity">
+            <property name="accessibleName">
+             <string>Mouse Sensitivity</string>
+            </property>
+            <property name="toolTip">
+             <string>Adjust how strongly mouse motion affects navigation.</string>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>20</number>
+            </property>
+            <property name="pageStep">
+             <number>5</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QLabel" name="MouseSensitivityLabel">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="3">
+           <spacer name="MouseSensitivitySpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
           </item>
          </layout>
         </widget>
@@ -3425,10 +3376,12 @@
   <tabstop>HighlightNewParts</tabstop>
   <tabstop>HighlightNewPartsColor</tabstop>
   <tabstop>HighlightRenderMode</tabstop>
+  <tabstop>SelectionOutlineWidth</tabstop>
   <tabstop>edgeLines</tabstop>
   <tabstop>ConditionalLinesCheckBox</tabstop>
   <tabstop>AutomateEdgeColor</tabstop>
-  <tabstop>AutomateEdgeColorButton</tabstop>
+  <tabstop>EdgeContrastSlider</tabstop>
+  <tabstop>EdgeSaturationSlider</tabstop>
   <tabstop>LineWidthSlider</tabstop>
   <tabstop>BlenderAddonSettingsButton</tabstop>
   <tabstop>ViewSphereSizeCombo</tabstop>
@@ -3457,11 +3410,7 @@
   <tabstop>PreviewConditionalLines</tabstop>
   <tabstop>PreviewLineWidthSlider</tabstop>
   <tabstop>PreviewSquareViewportCheckBox</tabstop>
-  <tabstop>BackgroundSolidRadio</tabstop>
   <tabstop>BackgroundSolidColorButton</tabstop>
-  <tabstop>BackgroundGradientRadio</tabstop>
-  <tabstop>BackgroundGradient1ColorButton</tabstop>
-  <tabstop>BackgroundGradient2ColorButton</tabstop>
   <tabstop>ObjectSelectedColorButton</tabstop>
   <tabstop>ObjectFocusedColorButton</tabstop>
   <tabstop>CameraColorButton</tabstop>
@@ -3500,6 +3449,7 @@
   <tabstop>shortcutAssign</tabstop>
   <tabstop>shortcutRemove</tabstop>
   <tabstop>mouseTree</tabstop>
+  <tabstop>MouseFilterEdit</tabstop>
   <tabstop>MouseImportButton</tabstop>
   <tabstop>MouseExportButton</tabstop>
   <tabstop>mouseReset</tabstop>

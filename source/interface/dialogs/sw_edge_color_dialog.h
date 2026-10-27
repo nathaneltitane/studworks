@@ -2,11 +2,13 @@
 
 #include <QtWidgets>
 
+class swPreferences;
+
 class swAutomateEdgeColorDialog : public QDialog
 {
 	Q_OBJECT
 public:
-	swAutomateEdgeColorDialog(QWidget *Parent, bool ShowHighContrastDialog);
+	swAutomateEdgeColorDialog(QWidget *Parent, bool ShowHighContrastDialog, const swPreferences& Preferences);
 	bool mStudCylinderColorEnabled;
 	quint32 mStudCylinderColor;
 	bool mPartEdgeColorEnabled;
@@ -26,6 +28,8 @@ protected slots:
 	void ResetColorButtonClicked();
 
 protected:
+	bool mAutomateEdgeColor;
+
 	QSlider* PartColorValueLDIndexSlider;
 	QSlider* PartEdgeContrastSlider;
 
