@@ -142,7 +142,7 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <widget class="swPartsTableWidget" name="PartsTable">
+        <widget class="swPiecesTableWidget" name="PartsTable">
          <property name="toolTip">
           <string>View piece quantities by color; click a column heading to sort.</string>
          </property>
@@ -250,7 +250,7 @@
  </tabstops>
  <customwidgets>
   <customwidget>
-   <class>swPartsTableWidget</class>
+   <class>swPiecesTableWidget</class>
    <extends>QTableWidget</extends>
    <header>sw_dialog_properties.h</header>
   </customwidget>

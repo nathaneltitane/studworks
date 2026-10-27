@@ -1292,7 +1292,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
-	// SW_VIEW_TOOLBAR_PARTS
+	// SW_VIEW_TOOLBAR_PIECES
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Toolbars.Parts"),
 		QT_TRANSLATE_NOOP("Menu", "Pieces"),

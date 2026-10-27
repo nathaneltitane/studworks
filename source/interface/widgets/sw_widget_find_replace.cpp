@@ -98,7 +98,7 @@ swFindReplaceWidget::swFindReplaceWidget(QWidget* Parent, swModel* Model, bool R
 
 	connect(CloseButton, &QToolButton::clicked, this, &QObject::deleteLater);
 
-	swPartsList PartsList;
+	swPiecesList PartsList;
 	Model->GetPartsList(gDefaultColor, false, true, PartsList);
 
 	for (const auto& PartIt : PartsList)
@@ -163,7 +163,7 @@ void swFindReplaceWidget::ReplaceButtonClicked()
 {
 	swFindReplaceParameters& Params = swView::GetFindReplaceParams();
 
-	std::optional<swPieceData*> Result = swShowPartSelectionPopup(Params.ReplacePieceData, std::vector<std::pair<swPieceData*, std::string>>(),
+	std::optional<swPieceData*> Result = swShowPieceSelectionPopup(Params.ReplacePieceData, std::vector<std::pair<swPieceData*, std::string>>(),
                 gDefaultColor, mReplacePartButton, mReplacePartButton->mapToGlobal(mReplacePartButton->rect().bottomLeft()));
 
 	if (!Result.has_value())

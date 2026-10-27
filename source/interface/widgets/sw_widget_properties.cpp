@@ -938,7 +938,7 @@ void swPropertiesWidget::PieceIdButtonClicked()
 
 	int ColorIndex = Partial ? gDefaultColor : Value.toInt();
 
-	std::optional<swPieceData*> Result = swShowPartSelectionPopup(PieceData, std::vector<std::pair<swPieceData*, std::string>>(), ColorIndex, PieceIdButton, PieceIdButton->mapToGlobal(PieceIdButton->rect().bottomLeft()));
+	std::optional<swPieceData*> Result = swShowPieceSelectionPopup(PieceData, std::vector<std::pair<swPieceData*, std::string>>(), ColorIndex, PieceIdButton, PieceIdButton->mapToGlobal(PieceIdButton->rect().bottomLeft()));
 
 	if (Result.has_value())
 	{

@@ -19,7 +19,7 @@ enum class swImageBackground
 	Opaque
 };
 
-enum class swPartsListSort
+enum class swPiecesListSort
 {
 	Color,
 	Name,
@@ -401,7 +401,7 @@ public:
 	void AddSubModelRenderMeshes(swScene* Scene, const swMatrix44& WorldMatrix, int DefaultColorIndex, swRenderMeshState RenderMeshState, bool ParentActive) const;
 	QImage GetStepImage(bool Zoom, int Width, int Height, swStep Step);
 	// Empty inventory succeeds with a null image; rendering failures return an error.
-	swResult<QImage> GetPartsListImage(int MaxWidth, int ThumbnailSize, swStep Step, quint32 BackgroundColor, quint32 ThumbnailBackgroundColor, QFont Font, QColor TextColor, bool KeepMissingParts, bool ShowCounts = true, swPartsListSort Sort = swPartsListSort::Color) const;
+	swResult<QImage> GetPartsListImage(int MaxWidth, int ThumbnailSize, swStep Step, quint32 BackgroundColor, quint32 ThumbnailBackgroundColor, QFont Font, QColor TextColor, bool KeepMissingParts, bool ShowCounts = true, swPiecesListSort Sort = swPiecesListSort::Color) const;
 	swResult<void> SaveStepImages(const QString& BaseName, bool AddStepSuffix, bool Zoom, int Width, int Height, swStep Start, swStep End, swImageBackground Background);
 
 	void RayTest(swObjectRayTest& ObjectRayTest) const;
@@ -430,9 +430,9 @@ public:
 	swBoundingBox GetAllPiecesBoundingBox() const;
 	bool GetVisiblePiecesBoundingBox(swVector3& Min, swVector3& Max) const;
 	std::vector<swVector3> GetPiecesBoundingBoxPoints(swGeometryBoundsMode Mode) const;
-	void GetPartsList(int DefaultColorIndex, bool ScanSubModels, bool AddSubModels, swPartsList& PartsList) const;
-	void GetPartsListForStep(swStep Step, int DefaultColorIndex, swPartsList& PartsList, bool Cumulative) const;
-	void GetModelParts(const swMatrix44& WorldMatrix, int DefaultColorIndex, std::vector<swModelPartsEntry>& ModelParts) const;
+	void GetPartsList(int DefaultColorIndex, bool ScanSubModels, bool AddSubModels, swPiecesList& PartsList) const;
+	void GetPartsListForStep(swStep Step, int DefaultColorIndex, swPiecesList& PartsList, bool Cumulative) const;
+	void GetModelParts(const swMatrix44& WorldMatrix, int DefaultColorIndex, std::vector<swModelPiecesEntry>& ModelParts) const;
 	void GetSelectionInformation(int* Flags, std::vector<swObject*>& Selection, swObject** Focus) const;
 
 	void ClearSelectionAction();

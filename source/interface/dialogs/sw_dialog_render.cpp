@@ -486,7 +486,7 @@ void swRenderDialog::RenderBlender()
 
 	connect(mProcess, &QProcess::readyReadStandardOutput, this, &swRenderDialog::ReadStdOut);
 
-	const QString LDrawLibPath = QFileInfo(swGetProfileString(SW_PROFILE_PARTS_LIBRARY)).absolutePath();
+	const QString LDrawLibPath = QFileInfo(swGetProfileString(SW_PROFILE_PIECES_LIBRARY)).absolutePath();
 	QStringList SystemEnvironment = QProcess::systemEnvironment();
 	SystemEnvironment.prepend("LDRAW_DIRECTORY=" + LDrawLibPath);
 

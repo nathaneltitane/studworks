@@ -6,7 +6,7 @@
 struct swPropertiesDialogOptions
 {
 	swModelProperties Properties;
-	swPartsList PartsList;
+	swPiecesList PartsList;
 	swBoundingBox BoundingBox;
 };
 
@@ -15,10 +15,10 @@ namespace Ui
 class swPropertiesDialog;
 }
 
-class swPartsTableWidget : public QTableWidget
+class swPiecesTableWidget : public QTableWidget
 {
 public:
-	explicit swPartsTableWidget(QWidget* Parent = nullptr);
+	explicit swPiecesTableWidget(QWidget* Parent = nullptr);
 	void FreezePartColumns();
 	void scrollTo(const QModelIndex& Index, ScrollHint Hint = EnsureVisible) override;
 
@@ -31,7 +31,7 @@ protected:
 	void setSelection(const QRect& Rect, QItemSelectionModel::SelectionFlags Command) override;
 
 private:
-	friend class swFrozenPartsView;
+	friend class swFrozenPiecesView;
 	QItemSelectionModel::SelectionFlags TrackSelectionCommand(const QModelIndex& Index, const QEvent* Event, QItemSelectionModel::SelectionFlags Command) const;
 	bool SelectSharedRange(QItemSelectionModel::SelectionFlags Command);
 	void UpdateFrozenGeometry();
@@ -57,7 +57,7 @@ public slots:
 	void accept() override;
 
 protected slots:
-	void ThumbnailReady(swPartThumbnailId ThumbnailId, QPixmap Pixmap);
+	void ThumbnailReady(swPieceThumbnailId ThumbnailId, QPixmap Pixmap);
 	void ExportBrickLink();
 	void ExportCSV();
 
@@ -65,5 +65,5 @@ private:
 	QString GetExportFileName(const QString& Extension, const QString& Title, const QString& Filter);
 
 	Ui::swPropertiesDialog* ui;
-	std::vector<std::pair<swPartThumbnailId, QTableWidgetItem*>> mThumbnails;
+	std::vector<std::pair<swPieceThumbnailId, QTableWidgetItem*>> mThumbnails;
 };

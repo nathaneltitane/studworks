@@ -2,4 +2,4 @@
 
 #include "sw_result.h"
 
-swResult<void> swExportBrickLink(const QString& FileName, const swPartsList& PartsList);
+swResult<void> swExportBrickLink(const QString& FileName, const swPiecesList& PartsList);

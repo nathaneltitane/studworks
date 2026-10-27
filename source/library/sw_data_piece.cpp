@@ -461,7 +461,7 @@ void swPieceData::AddRenderMeshes(swScene* Scene, const swMatrix44& WorldMatrix,
 	}
 }
 
-void swPieceData::GetPartsList(int DefaultColorIndex, bool ScanSubModels, bool AddSubModels, swPartsList& PartsList) const
+void swPieceData::GetPartsList(int DefaultColorIndex, bool ScanSubModels, bool AddSubModels, swPiecesList& PartsList) const
 {
 	if (IsModel())
 	{
@@ -481,7 +481,7 @@ void swPieceData::GetPartsList(int DefaultColorIndex, bool ScanSubModels, bool A
 		PartsList[this][DefaultColorIndex]++;
 }
 
-void swPieceData::GetModelParts(const swMatrix44& WorldMatrix, int DefaultColorIndex, std::vector<swModelPartsEntry>& ModelParts) const
+void swPieceData::GetModelParts(const swMatrix44& WorldMatrix, int DefaultColorIndex, std::vector<swModelPiecesEntry>& ModelParts) const
 {
 	if (IsModel())
 	{
@@ -496,7 +496,7 @@ void swPieceData::GetModelParts(const swMatrix44& WorldMatrix, int DefaultColorI
 		return;
 	}
 
-	ModelParts.emplace_back(swModelPartsEntry{ WorldMatrix, this, nullptr, DefaultColorIndex });
+	ModelParts.emplace_back(swModelPiecesEntry{ WorldMatrix, this, nullptr, DefaultColorIndex });
 }
 
 void swPieceData::CompareBoundingBox(const swMatrix44& WorldMatrix, swVector3& Min, swVector3& Max) const

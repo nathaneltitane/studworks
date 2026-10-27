@@ -1728,9 +1728,9 @@ bool Project::ImportInventory(const std::vector<swSetInventoryItem>& SetInventor
 	return true;
 }
 
-std::vector<swModelPartsEntry> Project::GetModelParts()
+std::vector<swModelPiecesEntry> Project::GetModelParts()
 {
-	std::vector<swModelPartsEntry> ModelParts;
+	std::vector<swModelPiecesEntry> ModelParts;
 
 	if (mModels.empty())
 		return ModelParts;
@@ -1760,7 +1760,7 @@ std::vector<swModelPartsEntry> Project::GetModelParts()
 
 	mModels[0]->GetModelParts(swMatrix44Identity(), gDefaultColor, ModelParts);
 
-	ModelParts.erase(std::remove_if(ModelParts.begin(), ModelParts.end(), [](const swModelPartsEntry& ModelPart)
+	ModelParts.erase(std::remove_if(ModelParts.begin(), ModelParts.end(), [](const swModelPiecesEntry& ModelPart)
 	{
 		return ModelPart.PieceData->mState != swAssetState::Loaded ||
 			(ModelPart.PieceData->GetSynthInfo() && !ModelPart.Mesh) ||

@@ -51,8 +51,8 @@ void swPreferences::LoadDefaults()
 	mMeshLODDistance = swGetProfileFloat(SW_PROFILE_LOD_DISTANCE);
 	mFadeSteps = swGetProfileInteger(SW_PROFILE_FADE_STEPS);
 	mFadeStepsColor = swGetProfileUnsignedInteger(SW_PROFILE_FADE_STEPS_COLOR);
-	mHighlightNewParts = swGetProfileInteger(SW_PROFILE_HIGHLIGHT_NEW_PARTS);
-	mHighlightNewPartsColor = swGetProfileUnsignedInteger(SW_PROFILE_HIGHLIGHT_NEW_PARTS_COLOR);
+	mHighlightNewParts = swGetProfileInteger(SW_PROFILE_HIGHLIGHT_NEW_PIECES);
+	mHighlightNewPartsColor = swGetProfileUnsignedInteger(SW_PROFILE_HIGHLIGHT_NEW_PIECES_COLOR);
 	mDrawGridStuds = swGetProfileInteger(SW_PROFILE_GRID_STUDS);
 	mGridStudColor = swGetProfileUnsignedInteger(SW_PROFILE_GRID_STUD_COLOR);
 	mDrawGridLines = swGetProfileInteger(SW_PROFILE_GRID_LINES);
@@ -87,14 +87,14 @@ void swPreferences::LoadDefaults()
 	mPreviewSquareViewport = swGetProfileInteger(SW_PROFILE_PREVIEW_SQUARE_VIEWPORT);
 	mStudCylinderColorEnabled = swGetProfileInteger(SW_PROFILE_STUD_CYLINDER_COLOR_ENABLED);
 	mStudCylinderColor = swGetProfileUnsignedInteger(SW_PROFILE_STUD_CYLINDER_COLOR);
-	mPartEdgeColorEnabled = swGetProfileInteger(SW_PROFILE_PART_EDGE_COLOR_ENABLED);
-	mPartEdgeColor = swGetProfileUnsignedInteger(SW_PROFILE_PART_EDGE_COLOR);
+	mPartEdgeColorEnabled = swGetProfileInteger(SW_PROFILE_PIECE_EDGE_COLOR_ENABLED);
+	mPartEdgeColor = swGetProfileUnsignedInteger(SW_PROFILE_PIECE_EDGE_COLOR);
 	mBlackEdgeColorEnabled = swGetProfileInteger(SW_PROFILE_BLACK_EDGE_COLOR_ENABLED);
 	mBlackEdgeColor = swGetProfileUnsignedInteger(SW_PROFILE_BLACK_EDGE_COLOR);
 	mDarkEdgeColorEnabled = swGetProfileInteger(SW_PROFILE_DARK_EDGE_COLOR_ENABLED);
 	mDarkEdgeColor = swGetProfileUnsignedInteger(SW_PROFILE_DARK_EDGE_COLOR);
-	mPartEdgeContrast = swGetProfileFloat(SW_PROFILE_PART_EDGE_CONTRAST);
-	mPartColorValueLDIndex = swGetProfileFloat(SW_PROFILE_PART_COLOR_VALUE_LD_INDEX);
+	mPartEdgeContrast = swGetProfileFloat(SW_PROFILE_PIECE_EDGE_CONTRAST);
+	mPartColorValueLDIndex = swGetProfileFloat(SW_PROFILE_PIECE_COLOR_VALUE_LD_INDEX);
 	mAutomateEdgeColor = swGetProfileInteger(SW_PROFILE_AUTOMATE_EDGE_COLOR);
 	mObjectSelectedColor = swGetProfileUnsignedInteger(SW_PROFILE_OBJECT_SELECTED_COLOR);
 	mObjectFocusedColor = swGetProfileUnsignedInteger(SW_PROFILE_OBJECT_FOCUSED_COLOR);
@@ -133,8 +133,8 @@ void swPreferences::SaveDefaults()
 	swSetProfileFloat(SW_PROFILE_LOD_DISTANCE, mMeshLODDistance);
 	swSetProfileInteger(SW_PROFILE_FADE_STEPS, mFadeSteps);
 	swSetProfileUnsignedInteger(SW_PROFILE_FADE_STEPS_COLOR, mFadeStepsColor);
-	swSetProfileInteger(SW_PROFILE_HIGHLIGHT_NEW_PARTS, mHighlightNewParts);
-	swSetProfileUnsignedInteger(SW_PROFILE_HIGHLIGHT_NEW_PARTS_COLOR, mHighlightNewPartsColor);
+	swSetProfileInteger(SW_PROFILE_HIGHLIGHT_NEW_PIECES, mHighlightNewParts);
+	swSetProfileUnsignedInteger(SW_PROFILE_HIGHLIGHT_NEW_PIECES_COLOR, mHighlightNewPartsColor);
 	swSetProfileInteger(SW_PROFILE_GRID_STUDS, mDrawGridStuds);
 	swSetProfileUnsignedInteger(SW_PROFILE_GRID_STUD_COLOR, mGridStudColor);
 	swSetProfileInteger(SW_PROFILE_GRID_LINES, mDrawGridLines);
@@ -169,14 +169,14 @@ void swPreferences::SaveDefaults()
 	swSetProfileInteger(SW_PROFILE_PREVIEW_SQUARE_VIEWPORT, mPreviewSquareViewport);
 	swSetProfileInteger(SW_PROFILE_STUD_CYLINDER_COLOR_ENABLED, mStudCylinderColorEnabled);
 	swSetProfileUnsignedInteger(SW_PROFILE_STUD_CYLINDER_COLOR, mStudCylinderColor);
-	swSetProfileInteger(SW_PROFILE_PART_EDGE_COLOR_ENABLED, mPartEdgeColorEnabled);
-	swSetProfileUnsignedInteger(SW_PROFILE_PART_EDGE_COLOR, mPartEdgeColor);
+	swSetProfileInteger(SW_PROFILE_PIECE_EDGE_COLOR_ENABLED, mPartEdgeColorEnabled);
+	swSetProfileUnsignedInteger(SW_PROFILE_PIECE_EDGE_COLOR, mPartEdgeColor);
 	swSetProfileInteger(SW_PROFILE_BLACK_EDGE_COLOR_ENABLED, mBlackEdgeColorEnabled);
 	swSetProfileUnsignedInteger(SW_PROFILE_BLACK_EDGE_COLOR, mBlackEdgeColor);
 	swSetProfileInteger(SW_PROFILE_DARK_EDGE_COLOR_ENABLED, mDarkEdgeColorEnabled);
 	swSetProfileUnsignedInteger(SW_PROFILE_DARK_EDGE_COLOR, mDarkEdgeColor);
-	swSetProfileFloat(SW_PROFILE_PART_EDGE_CONTRAST, mPartEdgeContrast);
-	swSetProfileFloat(SW_PROFILE_PART_COLOR_VALUE_LD_INDEX, mPartColorValueLDIndex);
+	swSetProfileFloat(SW_PROFILE_PIECE_EDGE_CONTRAST, mPartEdgeContrast);
+	swSetProfileFloat(SW_PROFILE_PIECE_COLOR_VALUE_LD_INDEX, mPartColorValueLDIndex);
 	swSetProfileInteger(SW_PROFILE_AUTOMATE_EDGE_COLOR, mAutomateEdgeColor);
 	swSetProfileUnsignedInteger(SW_PROFILE_OBJECT_SELECTED_COLOR, mObjectSelectedColor);
 	swSetProfileUnsignedInteger(SW_PROFILE_OBJECT_FOCUSED_COLOR, mObjectFocusedColor);
@@ -440,7 +440,7 @@ bool swApplication::LoadPartsLibrary(const QList<QPair<QString, bool>>& LibraryP
 		if (EnvPath && EnvPath[0])
 			return mLibrary->Load(EnvPath, ShowProgress, false);
 
-		QString CustomPath = swGetProfileString(SW_PROFILE_PARTS_LIBRARY);
+		QString CustomPath = swGetProfileString(SW_PROFILE_PIECES_LIBRARY);
 
 		if (!CustomPath.isEmpty())
 			return mLibrary->Load(CustomPath, ShowProgress, false);
@@ -1495,7 +1495,7 @@ void swApplication::ShowPreferencesDialog()
 
 	Options.Preferences = mPreferences;
 
-	Options.LibraryPath = swGetProfileString(SW_PROFILE_PARTS_LIBRARY);
+	Options.LibraryPath = swGetProfileString(SW_PROFILE_PIECES_LIBRARY);
 	Options.MinifigureBuilderSettingsPath = swGetProfileString(SW_PROFILE_MINIFIGURE_BUILDER_SETTINGS);
 	Options.ColorConfigPath = swGetProfileString(SW_PROFILE_COLOR_CONFIGURATION);
 	Options.POVRayPath = swGetProfileString(SW_PROFILE_POVRAY_PATH);
@@ -1522,7 +1522,7 @@ void swApplication::ShowPreferencesDialog()
 		return;
 
 	bool LanguageChanged = Options.Language != swGetProfileString(SW_PROFILE_LANGUAGE);
-	bool LibraryChanged = Options.LibraryPath != swGetProfileString(SW_PROFILE_PARTS_LIBRARY);
+	bool LibraryChanged = Options.LibraryPath != swGetProfileString(SW_PROFILE_PIECES_LIBRARY);
 	bool ColorConfigChanged = Options.ColorConfigPath != swGetProfileString(SW_PROFILE_COLOR_CONFIGURATION);
 	bool AAChanged = CurrentAASamples != Options.AASamples;
 	bool StudStyleChanged = CurrentStudStyle != Options.StudStyle;
@@ -1559,7 +1559,7 @@ void swApplication::ShowPreferencesDialog()
 		gMainWindow->GetPreviewWidget()->UpdateSquareViewport();
 
 	swSetProfileString(SW_PROFILE_DEFAULT_AUTHOR_NAME, Options.DefaultAuthor);
-	swSetProfileString(SW_PROFILE_PARTS_LIBRARY, Options.LibraryPath);
+	swSetProfileString(SW_PROFILE_PIECES_LIBRARY, Options.LibraryPath);
 	swSetProfileString(SW_PROFILE_MINIFIGURE_BUILDER_SETTINGS, Options.MinifigureBuilderSettingsPath);
 	swSetProfileString(SW_PROFILE_POVRAY_PATH, Options.POVRayPath);
 	swSetProfileString(SW_PROFILE_POVRAY_LGEO_PATH, Options.LGEOPath);

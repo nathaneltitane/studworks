@@ -3,8 +3,8 @@
 #include <QObject>
 
 class QLocale;
-class swPartSelectionWidget;
-class swPartSelectionListView;
+class swPieceSelectionWidget;
+class swPieceSelectionListView;
 struct swTrainTrackConnectionType;
 
 constexpr int SW_MAXIMUM_IMAGE_DIMENSION = 32768;

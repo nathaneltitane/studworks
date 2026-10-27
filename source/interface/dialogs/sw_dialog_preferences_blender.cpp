@@ -986,7 +986,7 @@ void swBlenderPreferences::ConfigureBlenderAddon(bool TestBlender, bool AddonUpd
 			if (Action == PR_INSTALL)
 			{
 				connect(mProcess, &QProcess::readyReadStandardOutput, this, [this]() { ReadStdOut(); });
-				const QString& LdrawLibPath = QFileInfo(swGetProfileString(SW_PROFILE_PARTS_LIBRARY)).absolutePath();
+				const QString& LdrawLibPath = QFileInfo(swGetProfileString(SW_PROFILE_PIECES_LIBRARY)).absolutePath();
 				QStringList SystemEnvironment = QProcess::systemEnvironment();
 				SystemEnvironment.prepend("LDRAW_DIRECTORY=" + LdrawLibPath);
 				SystemEnvironment.prepend("ADDONS_TO_LOAD=" + AddonPathsAndModuleNames);
@@ -1301,7 +1301,7 @@ void swBlenderPreferences::ConfigureBlenderAddon(bool TestBlender, bool AddonUpd
 		ScriptFile.setFileName(QString("%1/%2").arg(QDir::tempPath()).arg(ScriptName));
 		if (ScriptFile.open(QIODevice::WriteOnly | QIODevice::Text))
 		{
-			const QString& LdrawLibPath = QFileInfo(swGetProfileString(SW_PROFILE_PARTS_LIBRARY)).absolutePath();
+			const QString& LdrawLibPath = QFileInfo(swGetProfileString(SW_PROFILE_PIECES_LIBRARY)).absolutePath();
 			QTextStream Stream(&ScriptFile);
 
 			Stream << QLatin1String("@ECHO OFF& SETLOCAL") << Qt::endl;
@@ -2588,7 +2588,7 @@ void swBlenderPreferences::LoadSettings()
 		/* 1  PATH_BLENDFILE    */        << (QFileInfo::exists(DefaultBlendFile) ? DefaultBlendFile : QString())
 		/* 2  PATH_ENVIRONMENT  */        << QString()
 		/* 3  PATH_LDCONFIG     */        << swGetProfileString(SW_PROFILE_COLOR_CONFIGURATION)
-		/* 4  PATH_LDRAW        */        << LDrawPartsLibrary(swGetProfileString(SW_PROFILE_PARTS_LIBRARY))
+		/* 4  PATH_LDRAW        */        << LDrawPartsLibrary(swGetProfileString(SW_PROFILE_PIECES_LIBRARY))
 		/* 5  PATH_LSYNTH       */        << QString()
 		/* 6  PATH_STUD_LOGO    */        << QString()
 		/* 7  PATH_STUDIO_LDRAW */        << QString()

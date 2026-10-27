@@ -383,7 +383,7 @@ void swView::ShowTrainTrackPopup()
 	for (swPieceData* PieceData : TrainTrackParts)
 		Parts.emplace_back(PieceData, std::string());
 
-	std::optional<swPieceData*> Result = swShowPartSelectionPopup(nullptr, Parts, gMainWindow->GetInsertColorIndex(), mWidget, QCursor::pos());
+	std::optional<swPieceData*> Result = swShowPieceSelectionPopup(nullptr, Parts, gMainWindow->GetInsertColorIndex(), mWidget, QCursor::pos());
 	swPieceData* PieceData = Result.has_value() ? Result.value() : nullptr;
 
 	if (PieceData)

@@ -172,13 +172,13 @@ swResult<QImage> swModel::RenderStepImageWithReadyAssets(bool Zoom, int Width, i
 	return Image;
 }
 
-swResult<QImage> swModel::GetPartsListImage(int MaxWidth, int RequestedThumbnailSize, swStep Step, quint32 BackgroundColor, quint32 ThumbnailBackgroundColor, QFont Font, QColor TextColor, bool KeepMissingParts, bool ShowCounts, swPartsListSort Sort) const
+swResult<QImage> swModel::GetPartsListImage(int MaxWidth, int RequestedThumbnailSize, swStep Step, quint32 BackgroundColor, quint32 ThumbnailBackgroundColor, QFont Font, QColor TextColor, bool KeepMissingParts, bool ShowCounts, swPiecesListSort Sort) const
 {
 	swScopedGLContextState GLState;
 
 	WaitForAssets();
 
-	swPartsList PartsList;
+	swPiecesList PartsList;
 
 	if (Step == 0)
 		GetPartsList(gDefaultColor, true, false, PartsList);
@@ -188,7 +188,7 @@ swResult<QImage> swModel::GetPartsListImage(int MaxWidth, int RequestedThumbnail
 	if (PartsList.empty())
 		return QImage();
 
-	struct swPartsListImage
+	struct swPiecesListImage
 	{
 		QImage Thumbnail;
 		const swPieceData* PieceData;
@@ -198,7 +198,7 @@ swResult<QImage> swModel::GetPartsListImage(int MaxWidth, int RequestedThumbnail
 		QPoint Position;
 	};
 
-	std::vector<swPartsListImage> Images;
+	std::vector<swPiecesListImage> Images;
 
 	for (const auto& PartIt : PartsList)
 	{
@@ -209,8 +209,8 @@ swResult<QImage> swModel::GetPartsListImage(int MaxWidth, int RequestedThumbnail
 
 		for (const auto& ColorIt : PartIt.second)
 		{
-			Images.push_back(swPartsListImage());
-			swPartsListImage& Image = Images.back();
+			Images.push_back(swPiecesListImage());
+			swPiecesListImage& Image = Images.back();
 			Image.PieceData = PartIt.first;
 			Image.ColorIndex = ColorIt.first;
 			Image.Count = ColorIt.second;
@@ -228,19 +228,19 @@ swResult<QImage> swModel::GetPartsListImage(int MaxWidth, int RequestedThumbnail
 		return Image;
 	}
 
-	auto ImageCompare = [Sort](const swPartsListImage& Image1, const swPartsListImage& Image2)
+	auto ImageCompare = [Sort](const swPiecesListImage& Image1, const swPiecesListImage& Image2)
 	{
 		switch (Sort)
 		{
-		case swPartsListSort::Color:
+		case swPiecesListSort::Color:
 			break;
 
-		case swPartsListSort::Name:
+		case swPiecesListSort::Name:
 			if (int Compare = strcmp(Image1.PieceData->m_strDescription, Image2.PieceData->m_strDescription))
 				return Compare < 0;
 			return Image1.ColorIndex < Image2.ColorIndex;
 
-		case swPartsListSort::PartId:
+		case swPiecesListSort::PartId:
 			if (int Compare = strcmp(Image1.PieceData->mFileName, Image2.PieceData->mFileName))
 				return Compare < 0;
 			return Image1.ColorIndex < Image2.ColorIndex;
@@ -274,7 +274,7 @@ swResult<QImage> swModel::GetPartsListImage(int MaxWidth, int RequestedThumbnail
 
 	float ExtraPixels = 0.0f;
 
-	for (const swPartsListImage& Image : Images)
+	for (const swPiecesListImage& Image : Images)
 	{
 		const swPieceData* PieceData = Image.PieceData;
 		const swBoundingBox& BoundingBox = PieceData->GetBoundingBox();
@@ -305,7 +305,7 @@ swResult<QImage> swModel::GetPartsListImage(int MaxWidth, int RequestedThumbnail
 
 	bool RenderFailed = false;
 
-	for (swPartsListImage& Image : Images)
+	for (swPiecesListImage& Image : Images)
 	{
 		View.BindRenderFramebuffer();
 		Context->ClearColorAndDepth(swVector4(swVector3FromColor(BackgroundColor), 0.0f));
@@ -347,7 +347,7 @@ swResult<QImage> swModel::GetPartsListImage(int MaxWidth, int RequestedThumbnail
 	if (RenderFailed)
 		return swUnexpected(tr("Could not read the pieces list image."));
 
-	auto CalculateImageBounds = [](swPartsListImage& Image)
+	auto CalculateImageBounds = [](swPiecesListImage& Image)
 	{
 		const QImage& Thumbnail = Image.Thumbnail;
 		const int Width = Thumbnail.width();
@@ -379,13 +379,13 @@ swResult<QImage> swModel::GetPartsListImage(int MaxWidth, int RequestedThumbnail
 
 	if (KeepMissingParts)
 	{
-		for (swPartsListImage& Image : Images)
+		for (swPiecesListImage& Image : Images)
 			if (Image.Bounds.isEmpty())
 				Image.Bounds = QRect(0, 0, qMin(64, ThumbnailSize), qMin(64, ThumbnailSize));
 	}
 	else
 	{
-		Images.erase(std::remove_if(Images.begin(), Images.end(), [](const swPartsListImage& Image)
+		Images.erase(std::remove_if(Images.begin(), Images.end(), [](const swPiecesListImage& Image)
 		{
 			return Image.Bounds.isEmpty();
 		}), Images.end());
@@ -416,7 +416,7 @@ swResult<QImage> swModel::GetPartsListImage(int MaxWidth, int RequestedThumbnail
 	int CurrentHeight = 0;
 	int ImageWidth = MaxWidth;
 
-	for (const swPartsListImage& Image : Images)
+	for (const swPiecesListImage& Image : Images)
 		CurrentHeight = qMax(Image.Bounds.height() + Ascent, CurrentHeight);
 
 	for (;;)
@@ -428,7 +428,7 @@ swResult<QImage> swModel::GetPartsListImage(int MaxWidth, int RequestedThumbnail
 		constexpr int Spacing = 20;
 		int NextHeightIncrease = INT_MAX;
 
-		for (swPartsListImage& Image : Images)
+		for (swPiecesListImage& Image : Images)
 		{
 			if (CurrentY + Image.Bounds.height() + Ascent > CurrentHeight)
 			{
@@ -466,7 +466,7 @@ swResult<QImage> swModel::GetPartsListImage(int MaxWidth, int RequestedThumbnail
 	Painter.setFont(Font);
 	Painter.setPen(TextColor);
 
-	for (const swPartsListImage& Image : Images)
+	for (const swPiecesListImage& Image : Images)
 	{
 		const QPoint Position = Image.Position + QPoint(20, 20);
 

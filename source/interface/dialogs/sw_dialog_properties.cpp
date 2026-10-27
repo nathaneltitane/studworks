@@ -10,10 +10,10 @@
 #include "sw_bricklink.h"
 #include "sw_project.h"
 
-class swFrozenPartsView : public QTableView
+class swFrozenPiecesView : public QTableView
 {
 public:
-	explicit swFrozenPartsView(swPartsTableWidget* PartsTable)
+	explicit swFrozenPiecesView(swPiecesTableWidget* PartsTable)
 		: QTableView(PartsTable), mPartsTable(PartsTable)
 	{
 	}
@@ -31,10 +31,10 @@ protected:
 	}
 
 private:
-	swPartsTableWidget* mPartsTable;
+	swPiecesTableWidget* mPartsTable;
 };
 
-class swPartsThumbnailDelegate : public QStyledItemDelegate
+class swPiecesThumbnailDelegate : public QStyledItemDelegate
 {
 public:
 	using QStyledItemDelegate::QStyledItemDelegate;
@@ -47,15 +47,15 @@ protected:
 	}
 };
 
-swPartsTableWidget::swPartsTableWidget(QWidget* Parent)
+swPiecesTableWidget::swPiecesTableWidget(QWidget* Parent)
 	: QTableWidget(Parent)
 {
 }
 
-void swPartsTableWidget::FreezePartColumns()
+void swPiecesTableWidget::FreezePartColumns()
 {
 	// The thumbnail sits in a column of its own so copied cells only hold text.
-	setItemDelegateForColumn(0, new swPartsThumbnailDelegate(this));
+	setItemDelegateForColumn(0, new swPiecesThumbnailDelegate(this));
 	setColumnWidth(0, qMax(iconSize().width() + 8, horizontalHeader()->sectionSizeHint(0)));
 	setColumnWidth(1, qMax(sizeHintForColumn(1), horizontalHeader()->sectionSizeHint(1)));
 	mPartColumnWidth = qMax(sizeHintForColumn(2), horizontalHeader()->sectionSizeHint(2));
@@ -64,7 +64,7 @@ void swPartsTableWidget::FreezePartColumns()
 	setTextElideMode(Qt::ElideRight);
 
 	// Both views share the data and selection, so sorting and row highlights stay in sync.
-	mFrozenColumn = new swFrozenPartsView(this);
+	mFrozenColumn = new swFrozenPiecesView(this);
 	mFrozenColumn->setModel(model());
 	mFrozenColumn->setSelectionModel(selectionModel());
 	mFrozenColumn->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -72,7 +72,7 @@ void swPartsTableWidget::FreezePartColumns()
 	mFrozenColumn->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	mFrozenColumn->setTextElideMode(Qt::ElideRight);
 	mFrozenColumn->setIconSize(iconSize());
-	mFrozenColumn->setItemDelegateForColumn(0, new swPartsThumbnailDelegate(mFrozenColumn));
+	mFrozenColumn->setItemDelegateForColumn(0, new swPiecesThumbnailDelegate(mFrozenColumn));
 	mFrozenColumn->setFocusPolicy(Qt::NoFocus);
 	mFrozenColumn->setFocusProxy(this);
 	mFrozenColumn->setFrameShape(QFrame::NoFrame);
@@ -126,7 +126,7 @@ void swPartsTableWidget::FreezePartColumns()
 	mFrozenColumn->show();
 }
 
-bool swPartsTableWidget::eventFilter(QObject* Object, QEvent* Event)
+bool swPiecesTableWidget::eventFilter(QObject* Object, QEvent* Event)
 {
 	if (mFrozenColumn && Event->type() == QEvent::Wheel &&
 		(Object == mFrozenColumn->viewport() || Object == mFrozenColumn->horizontalHeader()->viewport()))
@@ -138,7 +138,7 @@ bool swPartsTableWidget::eventFilter(QObject* Object, QEvent* Event)
 	return QTableWidget::eventFilter(Object, Event);
 }
 
-QItemSelectionModel::SelectionFlags swPartsTableWidget::TrackSelectionCommand(const QModelIndex& Index, const QEvent* Event, QItemSelectionModel::SelectionFlags Command) const
+QItemSelectionModel::SelectionFlags swPiecesTableWidget::TrackSelectionCommand(const QModelIndex& Index, const QEvent* Event, QItemSelectionModel::SelectionFlags Command) const
 {
 	// Qt keeps a separate range anchor in each view, even with a shared selection model.
 	mSelectionEnd = Index;
@@ -153,12 +153,12 @@ QItemSelectionModel::SelectionFlags swPartsTableWidget::TrackSelectionCommand(co
 	return Command;
 }
 
-QItemSelectionModel::SelectionFlags swPartsTableWidget::selectionCommand(const QModelIndex& Index, const QEvent* Event) const
+QItemSelectionModel::SelectionFlags swPiecesTableWidget::selectionCommand(const QModelIndex& Index, const QEvent* Event) const
 {
 	return TrackSelectionCommand(Index, Event, QTableWidget::selectionCommand(Index, Event));
 }
 
-bool swPartsTableWidget::SelectSharedRange(QItemSelectionModel::SelectionFlags Command)
+bool swPiecesTableWidget::SelectSharedRange(QItemSelectionModel::SelectionFlags Command)
 {
 	if (!Command.testFlag(QItemSelectionModel::Current) || !mSelectionAnchor.isValid() || !mSelectionEnd.isValid())
 		return false;
@@ -169,13 +169,13 @@ bool swPartsTableWidget::SelectSharedRange(QItemSelectionModel::SelectionFlags C
 	return true;
 }
 
-void swPartsTableWidget::setSelection(const QRect& Rect, QItemSelectionModel::SelectionFlags Command)
+void swPiecesTableWidget::setSelection(const QRect& Rect, QItemSelectionModel::SelectionFlags Command)
 {
 	if (!SelectSharedRange(Command))
 		QTableWidget::setSelection(Rect, Command);
 }
 
-void swPartsTableWidget::UpdateFrozenGeometry()
+void swPiecesTableWidget::UpdateFrozenGeometry()
 {
 	if (!mFrozenColumn)
 		return;
@@ -190,12 +190,12 @@ void swPartsTableWidget::UpdateFrozenGeometry()
 	mFrozenColumn->setGeometry(viewport()->geometry().x(), frameWidth(), GetFrozenWidth(), viewport()->height() + horizontalHeader()->height());
 }
 
-int swPartsTableWidget::GetFrozenWidth() const
+int swPiecesTableWidget::GetFrozenWidth() const
 {
 	return columnWidth(0) + columnWidth(1) + columnWidth(2);
 }
 
-void swPartsTableWidget::focusInEvent(QFocusEvent* Event)
+void swPiecesTableWidget::focusInEvent(QFocusEvent* Event)
 {
 	const bool HasCurrent = currentIndex().isValid();
 	QTableWidget::focusInEvent(Event);
@@ -205,26 +205,26 @@ void swPartsTableWidget::focusInEvent(QFocusEvent* Event)
 		selectionModel()->clearCurrentIndex();
 }
 
-void swPartsTableWidget::resizeEvent(QResizeEvent* Event)
+void swPiecesTableWidget::resizeEvent(QResizeEvent* Event)
 {
 	QTableWidget::resizeEvent(Event);
 	UpdateFrozenGeometry();
 }
 
-void swPartsTableWidget::EnsureCountVisible(const QModelIndex& Index)
+void swPiecesTableWidget::EnsureCountVisible(const QModelIndex& Index)
 {
 	if (mFrozenColumn && Index.column() > 2 && visualRect(Index).left() < GetFrozenWidth())
 		horizontalScrollBar()->setValue(horizontalScrollBar()->value() + visualRect(Index).left() - GetFrozenWidth());
 }
 
-QModelIndex swPartsTableWidget::moveCursor(CursorAction Action, Qt::KeyboardModifiers Modifiers)
+QModelIndex swPiecesTableWidget::moveCursor(CursorAction Action, Qt::KeyboardModifiers Modifiers)
 {
 	const QModelIndex Index = QTableWidget::moveCursor(Action, Modifiers);
 	EnsureCountVisible(Index);
 	return Index;
 }
 
-void swPartsTableWidget::scrollTo(const QModelIndex& Index, ScrollHint Hint)
+void swPiecesTableWidget::scrollTo(const QModelIndex& Index, ScrollHint Hint)
 {
 	if (!mFrozenColumn || Index.column() > 2)
 	{
@@ -235,17 +235,17 @@ void swPartsTableWidget::scrollTo(const QModelIndex& Index, ScrollHint Hint)
 		mFrozenColumn->scrollTo(Index, Hint);
 }
 
-class swPartsTableWidgetItem : public QTableWidgetItem
+class swPiecesTableWidgetItem : public QTableWidgetItem
 {
 public:
-	explicit swPartsTableWidgetItem(const QString& Text, int Type = QTableWidgetItem::Type)
+	explicit swPiecesTableWidgetItem(const QString& Text, int Type = QTableWidgetItem::Type)
 		: QTableWidgetItem(Text, Type)
 	{
 		mLast = false;
 		setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
 	}
 
-	swPartsTableWidgetItem(int Count, QLocale Locale)
+	swPiecesTableWidgetItem(int Count, QLocale Locale)
 		: QTableWidgetItem(swFormatIntegerLocalized(Count, Locale)), mLast(false)
 	{
 		setData(Qt::UserRole, Count);
@@ -259,7 +259,7 @@ public:
 		if (mLast)
 			return Descending;
 
-		if (((const swPartsTableWidgetItem&)Other).mLast)
+		if (((const swPiecesTableWidgetItem&)Other).mLast)
 			return !Descending;
 
 		if (column() == 0)
@@ -299,7 +299,7 @@ swPropertiesDialog::swPropertiesDialog(QWidget* Parent, swPropertiesDialogOption
 
 	ui->MeasurementsLabel->setText(Measurements);
 
-	const swPartsList& PartsList = mOptions->PartsList;
+	const swPiecesList& PartsList = mOptions->PartsList;
 	QStringList HorizontalLabels;
 
 	std::vector<bool> ColorsUsed(gColorList.size());
@@ -350,11 +350,11 @@ swPropertiesDialog::swPropertiesDialog(QWidget* Parent, swPropertiesDialogOption
 		if (PieceId.endsWith(QLatin1String(".dat"), Qt::CaseInsensitive))
 			PieceId.chop(4);
 
-		swPartsTableWidgetItem* ThumbnailItem = new swPartsTableWidgetItem(QString());
+		swPiecesTableWidgetItem* ThumbnailItem = new swPiecesTableWidgetItem(QString());
 		ThumbnailItem->setData(Qt::UserRole, PieceId);
 		PartsTable->setItem(Row, 0, ThumbnailItem);
-		PartsTable->setItem(Row, 1, new swPartsTableWidgetItem(PieceId));
-		PartsTable->setItem(Row, 2, new swPartsTableWidgetItem(PieceData->m_strDescription));
+		PartsTable->setItem(Row, 1, new swPiecesTableWidgetItem(PieceId));
+		PartsTable->setItem(Row, 2, new swPiecesTableWidgetItem(PieceData->m_strDescription));
 
 		int ThumbnailColor = gDefaultColor, ThumbnailCount = 0;
 
@@ -363,7 +363,7 @@ swPropertiesDialog::swPropertiesDialog(QWidget* Parent, swPropertiesDialogOption
 			int ColorIndex = ColorIt.first;
 			int Count = ColorIt.second;
 
-			swPartsTableWidgetItem* Item = new swPartsTableWidgetItem(Count, locale());
+			swPiecesTableWidgetItem* Item = new swPiecesTableWidgetItem(Count, locale());
 			Item->setTextAlignment(Qt::AlignCenter);
 			PartsTable->setItem(Row, ColorColumns[ColorIndex] + 3, Item);
 
@@ -388,39 +388,39 @@ swPropertiesDialog::swPropertiesDialog(QWidget* Parent, swPropertiesDialogOption
 
 		for (int Column = 0; Column <= ColorCount + 2; Column++)
 			if (!PartsTable->item(Row, Column))
-				PartsTable->setItem(Row, Column, new swPartsTableWidgetItem(QString()));
+				PartsTable->setItem(Row, Column, new swPiecesTableWidgetItem(QString()));
 
 		Row++;
 	}
 
-	swPartsTableWidgetItem* Item = new swPartsTableWidgetItem(tr("Total"));
+	swPiecesTableWidgetItem* Item = new swPiecesTableWidgetItem(tr("Total"));
 	Item->mLast = true;
 	PartsTable->setItem((int)InfoTotals.size(), 0, Item);
 
-	Item = new swPartsTableWidgetItem(QString());
+	Item = new swPiecesTableWidgetItem(QString());
 	Item->mLast = true;
 	PartsTable->setItem((int)InfoTotals.size(), 1, Item);
 
-	Item = new swPartsTableWidgetItem(QString());
+	Item = new swPiecesTableWidgetItem(QString());
 	Item->mLast = true;
 	PartsTable->setItem((int)InfoTotals.size(), 2, Item);
 
 	for (Row = 0; Row < (int)InfoTotals.size(); Row++)
 	{
-		Item = new swPartsTableWidgetItem(InfoTotals[Row], locale());
+		Item = new swPiecesTableWidgetItem(InfoTotals[Row], locale());
 		Item->setTextAlignment(Qt::AlignCenter);
 		PartsTable->setItem(Row, ColorCount + 3, Item);
 	}
 
 	for (int ColorIndex = 0; ColorIndex < ColorCount; ColorIndex++)
 	{
-		Item = new swPartsTableWidgetItem(ColorTotals[ColorIndex], locale());
+		Item = new swPiecesTableWidgetItem(ColorTotals[ColorIndex], locale());
 		Item->mLast = true;
 		Item->setTextAlignment(Qt::AlignCenter);
 		PartsTable->setItem((int)InfoTotals.size(), ColorIndex + 3, Item);
 	}
 
-	Item = new swPartsTableWidgetItem(Total, locale());
+	Item = new swPiecesTableWidgetItem(Total, locale());
 	Item->mLast = true;
 	Item->setTextAlignment(Qt::AlignCenter);
 	PartsTable->setItem((int)InfoTotals.size(), ColorCount + 3, Item);
@@ -446,7 +446,7 @@ swPropertiesDialog::~swPropertiesDialog()
 	delete ui;
 }
 
-void swPropertiesDialog::ThumbnailReady(swPartThumbnailId ThumbnailId, QPixmap Pixmap)
+void swPropertiesDialog::ThumbnailReady(swPieceThumbnailId ThumbnailId, QPixmap Pixmap)
 {
 	for (const auto& [Id, Item] : mThumbnails)
 		if (Id == ThumbnailId)

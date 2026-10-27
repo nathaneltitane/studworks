@@ -100,7 +100,7 @@ void swInstructions::SetDefaultProperties()
 	mStepProperties[static_cast<int>(swInstructionsPropertyType::PLIBorderColor)].Value = SW_RGBA(0, 0, 0, 255);
 	mStepProperties[static_cast<int>(swInstructionsPropertyType::PLIBorderWidth)].Value = 0;
 	mStepProperties[static_cast<int>(swInstructionsPropertyType::PLIShowCounts)].Value = true;
-	mStepProperties[static_cast<int>(swInstructionsPropertyType::PLISortOrder)].Value = static_cast<int>(swPartsListSort::Color);
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::PLISortOrder)].Value = static_cast<int>(swPiecesListSort::Color);
 	mStepProperties[static_cast<int>(swInstructionsPropertyType::ShowStepDividers)].Value = true;
 	mStepProperties[static_cast<int>(swInstructionsPropertyType::StepDividerColor)].Value = SW_RGBA(0, 0, 0, 255);
 	mStepProperties[static_cast<int>(swInstructionsPropertyType::StepDividerWidth)].Value = 2;

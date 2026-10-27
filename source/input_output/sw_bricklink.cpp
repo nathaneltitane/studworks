@@ -60,7 +60,7 @@ public:
 	int mCount;
 };
 
-swResult<void> swExportBrickLink(const QString& SaveFileName, const swPartsList& PartsList)
+swResult<void> swExportBrickLink(const QString& SaveFileName, const swPiecesList& PartsList)
 {
 	QJsonDocument Document = swLoadBrickLinkMapping();
 	QJsonObject Root = Document.object();

@@ -160,7 +160,7 @@ public:
 		return IsFocused();
 	}
 
-	void GetModelParts(const swMatrix44& WorldMatrix, int DefaultColorIndex, std::vector<swModelPartsEntry>& ModelParts) const;
+	void GetModelParts(const swMatrix44& WorldMatrix, int DefaultColorIndex, std::vector<swModelPiecesEntry>& ModelParts) const;
 	void Initialize(const swMatrix44& WorldMatrix, swStep Step);
 	const swBoundingBox& GetBoundingBox() const;
 	void CompareBoundingBox(swVector3& Min, swVector3& Max) const;

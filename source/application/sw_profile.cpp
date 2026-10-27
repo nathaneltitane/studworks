@@ -59,8 +59,8 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Settings", "LODDistance", 750.0f),                                                     // SW_PROFILE_LOD_DISTANCE
 	swProfileEntry("Settings", "FadeSteps", false),                                                        // SW_PROFILE_FADE_STEPS
 	swProfileEntry("Settings", "FadeStepsColor", SW_RGBA(128, 128, 128, 128)),                             // SW_PROFILE_FADE_STEPS_COLOR
-	swProfileEntry("Settings", "HighlightNewParts", 0),                                                    // SW_PROFILE_HIGHLIGHT_NEW_PARTS
-	swProfileEntry("Settings", "HighlightNewPartsColor", SW_RGBA(255, 242, 0, 192)),                       // SW_PROFILE_HIGHLIGHT_NEW_PARTS_COLOR
+	swProfileEntry("Settings", "HighlightNewPieces", 0),                                                   // SW_PROFILE_HIGHLIGHT_NEW_PIECES
+	swProfileEntry("Settings", "HighlightNewPiecesColor", SW_RGBA(255, 242, 0, 192)),                      // SW_PROFILE_HIGHLIGHT_NEW_PIECES_COLOR
 	swProfileEntry("Settings", "ShadingMode", static_cast<int>(swShadingMode::DefaultLights)),             // SW_PROFILE_SHADING_MODE
 	swProfileEntry("Settings", "LightingStyle", static_cast<int>(swLightingStyle::Standard)),               // SW_PROFILE_LIGHTING_STYLE
 	swProfileEntry("Settings", "HighlightRenderMode", static_cast<int>(swHighlightRenderMode::Outline)),      // SW_PROFILE_HIGHLIGHT_RENDER_MODE
@@ -117,8 +117,8 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Settings", "Language", ""),                                                // SW_PROFILE_LANGUAGE
 	swProfileEntry("Settings", "ColorTheme", static_cast<int>(swColorTheme::Dark)),            // SW_PROFILE_COLOR_THEME
 	swProfileEntry("Settings", "ProjectsPath", ""),                                            // SW_PROFILE_PROJECTS_PATH
-	swProfileEntry("Settings", "PartsLibrary", ""),                                            // SW_PROFILE_PARTS_LIBRARY
-	swProfileEntry("Settings", "PartPalettes"),                                                // SW_PROFILE_PART_PALETTES
+	swProfileEntry("Settings", "PiecesLibrary", ""),                                           // SW_PROFILE_PIECES_LIBRARY
+	swProfileEntry("Settings", "PiecePalettes"),                                               // SW_PROFILE_PIECE_PALETTES
 	swProfileEntry("Settings", "MinifigSettings", ""),                                         // SW_PROFILE_MINIFIGURE_BUILDER_SETTINGS
 	swProfileEntry("Settings", "ColorConfig", ""),                                             // SW_PROFILE_COLOR_CONFIGURATION
 	swProfileEntry("Settings", "Shortcuts"),                                                   // SW_PROFILE_KEYBOARD_SHORTCUTS
@@ -142,22 +142,22 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Settings", "ImageWidth", 1280),                                            // SW_PROFILE_IMAGE_WIDTH
 	swProfileEntry("Settings", "ImageHeight", 720),                                            // SW_PROFILE_IMAGE_HEIGHT
 	swProfileEntry("Settings", "ImageExtension", ".png"),                                      // SW_PROFILE_IMAGE_EXTENSION
-	swProfileEntry("Settings", "PartsListIcons", 64),                                          // SW_PROFILE_PARTS_LIST_ICONS
-	swProfileEntry("Settings", "PartsListNames", 1),                                           // SW_PROFILE_PARTS_LIST_NAMES
-	swProfileEntry("Settings", "PartsListFixedColor", static_cast<uint>(SW_COLOR_NO_COLOR)),                                     // SW_PROFILE_PARTS_LIST_COLOR
-	swProfileEntry("Settings", "PartsListColorLocked", false),                                // SW_PROFILE_PARTS_LIST_COLOR_LOCKED
-	swProfileEntry("Settings", "PartsListDecorated", 1),                                       // SW_PROFILE_PARTS_LIST_DECORATED
-	swProfileEntry("Settings", "PartsListAliases", 1),                                         // SW_PROFILE_PARTS_LIST_ALIASES
-	swProfileEntry("Settings", "PartsListListMode", 0),                                        // SW_PROFILE_PARTS_LIST_LIST_MODE
-	swProfileEntry("Settings", "PartsPopupIcons", 64),                                             // SW_PROFILE_PARTS_POPUP_ICONS
-	swProfileEntry("Settings", "PartsPopupNames", 1),                                              // SW_PROFILE_PARTS_POPUP_NAMES
-	swProfileEntry("Settings", "PartsPopupDecorated", 1),                                          // SW_PROFILE_PARTS_POPUP_DECORATED
-	swProfileEntry("Settings", "PartsPopupAliases", 1),                                            // SW_PROFILE_PARTS_POPUP_ALIASES
-	swProfileEntry("Settings", "PartsPopupListMode", 0),                                           // SW_PROFILE_PARTS_POPUP_LIST_MODE
-	swProfileEntry("Settings", "PartsListPartFilter", static_cast<int>(swPartFilterType::Default)),                                      // SW_PROFILE_PARTS_LIST_PART_FILTER
-	swProfileEntry("Settings", "PartsListCaseSensitiveFilter", 0),                             // SW_PROFILE_PARTS_LIST_CASE_SENSITIVE_FILTER
-	swProfileEntry("Settings", "PartsListFileNameFilter", 1),                                  // SW_PROFILE_PARTS_LIST_FILE_NAME_FILTER
-	swProfileEntry("Settings", "PartsListPartDescriptionFilter", 1),                           // SW_PROFILE_PARTS_LIST_PART_DESCRIPTION_FILTER
+	swProfileEntry("Settings", "PiecesListIcons", 64),                                         // SW_PROFILE_PIECES_LIST_ICONS
+	swProfileEntry("Settings", "PiecesListNames", 1),                                          // SW_PROFILE_PIECES_LIST_NAMES
+	swProfileEntry("Settings", "PiecesListFixedColor", static_cast<uint>(SW_COLOR_NO_COLOR)),                                    // SW_PROFILE_PIECES_LIST_COLOR
+	swProfileEntry("Settings", "PiecesListColorLocked", false),                               // SW_PROFILE_PIECES_LIST_COLOR_LOCKED
+	swProfileEntry("Settings", "PiecesListDecorated", 1),                                      // SW_PROFILE_PIECES_LIST_DECORATED
+	swProfileEntry("Settings", "PiecesListAliases", 1),                                        // SW_PROFILE_PIECES_LIST_ALIASES
+	swProfileEntry("Settings", "PiecesListListMode", 0),                                       // SW_PROFILE_PIECES_LIST_LIST_MODE
+	swProfileEntry("Settings", "PiecesPopupIcons", 64),                                            // SW_PROFILE_PIECES_POPUP_ICONS
+	swProfileEntry("Settings", "PiecesPopupNames", 1),                                             // SW_PROFILE_PIECES_POPUP_NAMES
+	swProfileEntry("Settings", "PiecesPopupDecorated", 1),                                         // SW_PROFILE_PIECES_POPUP_DECORATED
+	swProfileEntry("Settings", "PiecesPopupAliases", 1),                                           // SW_PROFILE_PIECES_POPUP_ALIASES
+	swProfileEntry("Settings", "PiecesPopupListMode", 0),                                          // SW_PROFILE_PIECES_POPUP_LIST_MODE
+	swProfileEntry("Settings", "PiecesListPieceFilter", static_cast<int>(swPieceFilterType::Default)),                                    // SW_PROFILE_PIECES_LIST_PIECE_FILTER
+	swProfileEntry("Settings", "PiecesListCaseSensitiveFilter", 0),                            // SW_PROFILE_PIECES_LIST_CASE_SENSITIVE_FILTER
+	swProfileEntry("Settings", "PiecesListFileNameFilter", 1),                                 // SW_PROFILE_PIECES_LIST_FILE_NAME_FILTER
+	swProfileEntry("Settings", "PiecesListPieceDescriptionFilter", 1),                         // SW_PROFILE_PIECES_LIST_PIECE_DESCRIPTION_FILTER
 	swProfileEntry("Settings", "StudStyle", static_cast<int>(swStudStyle::Plain)),                                                // SW_PROFILE_STUD_STYLE
 
 	swProfileEntry("Defaults", "Author", ""),                                                  // SW_PROFILE_DEFAULT_AUTHOR_NAME
@@ -189,14 +189,14 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 
 	swProfileEntry("Settings", "StudCylinderColorEnabled", true),                              // SW_PROFILE_STUD_CYLINDER_COLOR_ENABLED
 	swProfileEntry("Settings", "StudCylinderColor", SW_RGBA(27, 42, 52, 255)),                 // SW_PROFILE_STUD_CYLINDER_COLOR
-	swProfileEntry("Settings", "PartEdgeColorEnabled", true),                                  // SW_PROFILE_PART_EDGE_COLOR_ENABLED
-	swProfileEntry("Settings", "PartEdgeColor", SW_RGBA(0, 0, 0, 255)),                        // SW_PROFILE_PART_EDGE_COLOR
+	swProfileEntry("Settings", "PieceEdgeColorEnabled", true),                                 // SW_PROFILE_PIECE_EDGE_COLOR_ENABLED
+	swProfileEntry("Settings", "PieceEdgeColor", SW_RGBA(0, 0, 0, 255)),                       // SW_PROFILE_PIECE_EDGE_COLOR
 	swProfileEntry("Settings", "BlackEdgeColorEnabled", true),                                 // SW_PROFILE_BLACK_EDGE_COLOR_ENABLED
 	swProfileEntry("Settings", "BlackEdgeColor", SW_RGBA(255, 255, 255, 255)),                 // SW_PROFILE_BLACK_EDGE_COLOR
 	swProfileEntry("Settings", "DarkEdgeColorEnabled", true),                                  // SW_PROFILE_DARK_EDGE_COLOR_ENABLED
 	swProfileEntry("Settings", "DarkEdgeColor", SW_RGBA(27, 42, 52, 255)),                     // SW_PROFILE_DARK_EDGE_COLOR
-	swProfileEntry("Settings", "PartEdgeContrast", 0.5f),                                      // SW_PROFILE_PART_EDGE_CONTRAST
-	swProfileEntry("Settings", "PartColorValueLDIndex", 0.5f),                                 // SW_PROFILE_PART_COLOR_VALUE_LD_INDEX
+	swProfileEntry("Settings", "PieceEdgeContrast", 0.5f),                                     // SW_PROFILE_PIECE_EDGE_CONTRAST
+	swProfileEntry("Settings", "PieceColorValueLDIndex", 0.5f),                                // SW_PROFILE_PIECE_COLOR_VALUE_LD_INDEX
 	swProfileEntry("Settings", "AutomateEdgeColor", 0),                                        // SW_PROFILE_AUTOMATE_EDGE_COLOR
 
 	swProfileEntry("Instructions", "PageWidth", 612.0f),                                       // SW_PROFILE_INSTRUCTIONS_PAGE_WIDTH
@@ -439,10 +439,10 @@ constexpr swProfileEnumerationValue<swStudStyle> StudStyleValues[] =
 	{ swStudStyle::HighContrastLogo, "HighContrastLogo", 7 }
 };
 
-constexpr swProfileEnumerationValue<swPartFilterType> PartFilterTypeValues[] =
+constexpr swProfileEnumerationValue<swPieceFilterType> PartFilterTypeValues[] =
 {
-	{ swPartFilterType::Default, "Default", 0 },
-	{ swPartFilterType::RegularExpression, "RegularExpression", 1 }
+	{ swPieceFilterType::Default, "Default", 0 },
+	{ swPieceFilterType::RegularExpression, "RegularExpression", 1 }
 };
 
 constexpr swProfileEnumerationValue<swPOVRayRenderQuality> RenderQualityValues[] =
@@ -563,14 +563,14 @@ void swSetProfileStudStyle(swStudStyle Value)
 	swWriteProfileEnumeration(SW_PROFILE_STUD_STYLE, Value, StudStyleValues);
 }
 
-swPartFilterType swGetProfilePartFilterType()
+swPieceFilterType swGetProfilePieceFilterType()
 {
-	return swReadProfileEnumeration(SW_PROFILE_PARTS_LIST_PART_FILTER, PartFilterTypeValues);
+	return swReadProfileEnumeration(SW_PROFILE_PIECES_LIST_PIECE_FILTER, PartFilterTypeValues);
 }
 
-void swSetProfilePartFilterType(swPartFilterType Value)
+void swSetProfilePieceFilterType(swPieceFilterType Value)
 {
-	swWriteProfileEnumeration(SW_PROFILE_PARTS_LIST_PART_FILTER, Value, PartFilterTypeValues);
+	swWriteProfileEnumeration(SW_PROFILE_PIECES_LIST_PIECE_FILTER, Value, PartFilterTypeValues);
 }
 
 swPOVRayRenderQuality swGetProfileRenderQuality()

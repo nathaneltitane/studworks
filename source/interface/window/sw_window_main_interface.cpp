@@ -417,7 +417,7 @@ void swMainWindow::CreateMenus()
 	QMenu* ViewMenu = menuBar()->addMenu(tr("&View"));
 	QMenu* ToolBarsMenu = ViewMenu->addMenu(tr("T&oolbars"));
 	connect(ToolBarsMenu, &QMenu::aboutToShow, this, &swMainWindow::UpdateDockWidgetActions);
-	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_PARTS]);
+	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_PIECES]);
 	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_COLORS]);
 	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_PROPERTIES]);
 	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_TIMELINE]);
@@ -656,13 +656,13 @@ void swMainWindow::CreateToolBars()
 	mPartsToolBar->setObjectName("PartsToolbar");
 	mPartsToolBar->setWhatsThis(tr("<p><b>Pieces</b></p><p>Choose a category or palette and filter its pieces. Selecting a piece prepares it for insertion; drag it into the model view to place it. Double-click a piece to open its preview. Options controls filtering, thumbnails, and list display.</p>"));
 	swSetupWidgetHelp(mPartsToolBar, nullptr);
-	mPartSelectionWidget = new swPartSelectionWidget(false, mPartsToolBar);
+	mPartSelectionWidget = new swPieceSelectionWidget(false, mPartsToolBar);
 	mPartsToolBar->setWidget(mPartSelectionWidget);
 	addDockWidget(Qt::RightDockWidgetArea, mPartsToolBar);
 
-	connect(mPartsToolBar, &QDockWidget::dockLocationChanged, mPartSelectionWidget, &swPartSelectionWidget::DockLocationChanged);
-	connect(mPartSelectionWidget, &swPartSelectionWidget::PartPicked, this, &swMainWindow::PartListPicked);
-	connect(mPartSelectionWidget, &swPartSelectionWidget::CurrentPartChanged, this, &swMainWindow::SetInsertPieceData);
+	connect(mPartsToolBar, &QDockWidget::dockLocationChanged, mPartSelectionWidget, &swPieceSelectionWidget::DockLocationChanged);
+	connect(mPartSelectionWidget, &swPieceSelectionWidget::PartPicked, this, &swMainWindow::PartListPicked);
+	connect(mPartSelectionWidget, &swPieceSelectionWidget::CurrentPartChanged, this, &swMainWindow::SetInsertPieceData);
 
 	mColorsToolBar = new QDockWidget(tr("Colors"), this);
 	mColorsToolBar->setObjectName("ColorsToolbar");

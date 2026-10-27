@@ -652,7 +652,7 @@ void swModel::RemoveStepAction(swStep Step)
 	SetCurrentStep(mCurrentStep);
 }
 
-void swModel::GetPartsList(int DefaultColorIndex, bool ScanSubModels, bool AddSubModels, swPartsList& PartsList) const
+void swModel::GetPartsList(int DefaultColorIndex, bool ScanSubModels, bool AddSubModels, swPiecesList& PartsList) const
 {
 	for (const std::unique_ptr<swPiece>& Piece : mPieces)
 	{
@@ -668,7 +668,7 @@ void swModel::GetPartsList(int DefaultColorIndex, bool ScanSubModels, bool AddSu
 	}
 }
 
-void swModel::GetPartsListForStep(swStep Step, int DefaultColorIndex, swPartsList& PartsList, bool Cumulative) const
+void swModel::GetPartsListForStep(swStep Step, int DefaultColorIndex, swPiecesList& PartsList, bool Cumulative) const
 {
 	for (const std::unique_ptr<swPiece>& Piece : mPieces)
 	{
@@ -684,10 +684,10 @@ void swModel::GetPartsListForStep(swStep Step, int DefaultColorIndex, swPartsLis
 	}
 }
 
-void swModel::GetModelParts(const swMatrix44& WorldMatrix, int DefaultColorIndex, std::vector<swModelPartsEntry>& ModelParts) const
+void swModel::GetModelParts(const swMatrix44& WorldMatrix, int DefaultColorIndex, std::vector<swModelPiecesEntry>& ModelParts) const
 {
 	if (mHasDirectGeometry && mPieceData->GetMesh())
-		ModelParts.emplace_back(swModelPartsEntry{ WorldMatrix, mPieceData.Get(), mPieceData->GetMesh(), DefaultColorIndex });
+		ModelParts.emplace_back(swModelPiecesEntry{ WorldMatrix, mPieceData.Get(), mPieceData->GetMesh(), DefaultColorIndex });
 
 	for (const std::unique_ptr<swPiece>& Piece : mPieces)
 		Piece->GetModelParts(WorldMatrix, DefaultColorIndex, ModelParts);

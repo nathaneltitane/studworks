@@ -484,7 +484,7 @@ void swMinifigureBuilderWidget::PieceButtonClicked()
 
 	int ColorIndex = mMinifigureBuilder->mMinifigure.ColorIndices[ItemIndex];
 
-	std::optional<swPieceData*> Result = swShowPartSelectionPopup(CurrentPieceData, Parts, ColorIndex, PieceButton, Position);
+	std::optional<swPieceData*> Result = swShowPieceSelectionPopup(CurrentPieceData, Parts, ColorIndex, PieceButton, Position);
 
 	if (!Result.has_value())
 		return;

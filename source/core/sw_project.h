@@ -205,7 +205,7 @@ protected:
 	static bool CanShareMergePieceData(const swPieceData* Existing, const swPieceData* Incoming);
 	QString GetExportFileName(const QString& FileName, const QString& DefaultExtension, const QString& DialogTitle, const QString& DialogFilter) const;
 
-	std::vector<swModelPartsEntry> GetModelParts();
+	std::vector<swModelPiecesEntry> GetModelParts();
 	void SetFileName(const QString& FileName);
 
 	QUuid mClipboardIdentity = QUuid::createUuid();
@@ -242,4 +242,4 @@ inline swModel* swGetActiveModel()
 	return Project ? Project->GetActiveModel() : nullptr;
 }
 
-swResult<void> swExportCSV(const QString& FileName, const swPartsList& PartsList);
+swResult<void> swExportCSV(const QString& FileName, const swPiecesList& PartsList);

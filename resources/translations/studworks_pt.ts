@@ -15042,7 +15042,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
     </message>
 </context>
 <context>
-    <name>swPartPaletteDialog</name>
+    <name>swPiecePaletteDialog</name>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
         <source>&lt;p&gt;&lt;b&gt;Piece Palettes&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Organize reusable collections of pieces in the piece browser. Create, rename, delete, import, or reorder palettes, then choose OK to apply the changes. Cancel discards these palette changes.&lt;/p&gt;&lt;p&gt;Palettes organize piece choices; they do not change pieces already placed in a model.&lt;/p&gt;</source>
@@ -15181,7 +15181,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
     </message>
 </context>
 <context>
-    <name>swPartSelectionListModel</name>
+    <name>swPieceSelectionListModel</name>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="375"/>
         <source>Could not load piece &apos;%1&apos;.</source>
@@ -15190,7 +15190,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
     </message>
 </context>
 <context>
-    <name>swPartSelectionListView</name>
+    <name>swPieceSelectionListView</name>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="624"/>
         <source>Add to Palette</source>
@@ -15216,7 +15216,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
     </message>
 </context>
 <context>
-    <name>swPartSelectionPopup</name>
+    <name>swPieceSelectionPopup</name>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_selection_piece_popup.cpp" line="10"/>
         <source>Choose Piece</source>
@@ -15231,7 +15231,7 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
     </message>
 </context>
 <context>
-    <name>swPartSelectionWidget</name>
+    <name>swPieceSelectionWidget</name>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1028"/>
         <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1029"/>

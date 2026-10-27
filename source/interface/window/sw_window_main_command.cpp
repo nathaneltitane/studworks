@@ -281,7 +281,7 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 		ToggleDockWidget(mTimeToolBar);
 		break;
 
-	case SW_VIEW_TOOLBAR_PARTS:
+	case SW_VIEW_TOOLBAR_PIECES:
 		ToggleDockWidget(mPartsToolBar);
 		if (mPartsToolBar->isVisible())
 			mPartSelectionWidget->FocusPartFilterWidget();
@@ -481,7 +481,7 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 		break;
 
 	case SW_VIEW_TOGGLE_HIGHLIGHT_NEW_PIECES:
-		swTogglePreference(swGetPreferences().mHighlightNewParts, SW_PROFILE_HIGHLIGHT_NEW_PARTS);
+		swTogglePreference(swGetPreferences().mHighlightNewParts, SW_PROFILE_HIGHLIGHT_NEW_PIECES);
 		break;
 
 	case SW_VIEW_TOGGLE_GRID_STUDS:

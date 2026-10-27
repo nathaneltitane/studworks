@@ -449,7 +449,7 @@ void swInstructionsPropertiesWidget::CreateWidgets()
 		CreateToggleEditor(swInstructionsPropertyType::PLIShowCounts, tr("Show Piece Counts"), tr("Show how many of each piece are needed."))
 	});
 
-	// the choices follow the order of swPartsListSort
+	// the choices follow the order of swPiecesListSort
 	CreateChoiceEditor(swInstructionsPropertyType::PLISortOrder, tr("Pieces List Order"), tr("Order of the pieces in the list."), { tr("Sort by Color"), tr("Sort by Name"), tr("Sort by Part ID") });
 	AddEditorRow(CategoryIndex::PiecesList, swInstructionsPropertyType::PLISortOrder);
 	CreateFontEditor(swInstructionsPropertyType::PLIFont, tr("Pieces List Font"), tr("Font of the piece counts."));
@@ -792,7 +792,7 @@ void swInstructionsPropertiesWidget::SelectionChanged(QGraphicsItem* FocusItem)
 		Model = NumberItem->GetModel();
 		Step = NumberItem->GetStep();
 	}
-	else if (swInstructionsPartsListItem* PartsItem = dynamic_cast<swInstructionsPartsListItem*>(FocusItem))
+	else if (swInstructionsPiecesListItem* PartsItem = dynamic_cast<swInstructionsPiecesListItem*>(FocusItem))
 	{
 		Focus = FocusType::PiecesList;
 		Model = PartsItem->GetModel();

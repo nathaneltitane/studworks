@@ -7,11 +7,10 @@
 #include "sw_commands.h"
 #include "sw_model.h"
 
-class swPartSelectionWidget;
+class swPieceSelectionWidget;
 class swInstructionsDialog;
 class swPreviewDockWidget;
 class PiecePreview;
-class swQPartsTree;
 class swColorList;
 class swPropertiesWidget;
 class swTimelineWidget;
@@ -170,7 +169,7 @@ public:
 		return CurrentTab ? CurrentTab->GetModel() : nullptr;
 	}
 
-	swPartSelectionWidget* GetPartSelectionWidget() const
+	swPieceSelectionWidget* GetPartSelectionWidget() const
 	{
 		return mPartSelectionWidget;
 	}
@@ -414,7 +413,7 @@ protected:
 	QDockWidget* mTimelineToolBar = nullptr;
 	QDockWidget* mMinifigureBuilderToolBar = nullptr;
 
-	swPartSelectionWidget* mPartSelectionWidget = nullptr;
+	swPieceSelectionWidget* mPartSelectionWidget = nullptr;
 	swColorList* mColorList = nullptr;
 	QToolButton* mColorButton = nullptr;
 	swPropertiesWidget* mPropertiesWidget = nullptr;

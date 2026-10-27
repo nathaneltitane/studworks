@@ -413,7 +413,7 @@ QMenu* swMainWindow::createPopupMenu()
 
 	UpdateDockWidgetActions();
 
-	Menu->addAction(mActions[SW_VIEW_TOOLBAR_PARTS]);
+	Menu->addAction(mActions[SW_VIEW_TOOLBAR_PIECES]);
 	Menu->addAction(mActions[SW_VIEW_TOOLBAR_COLORS]);
 	Menu->addAction(mActions[SW_VIEW_TOOLBAR_PROPERTIES]);
 	Menu->addAction(mActions[SW_VIEW_TOOLBAR_TIMELINE]);
@@ -430,7 +430,7 @@ QMenu* swMainWindow::createPopupMenu()
 
 void swMainWindow::UpdateDockWidgetActions()
 {
-	mActions[SW_VIEW_TOOLBAR_PARTS]->setChecked(mPartsToolBar->isVisible());
+	mActions[SW_VIEW_TOOLBAR_PIECES]->setChecked(mPartsToolBar->isVisible());
 	mActions[SW_VIEW_TOOLBAR_COLORS]->setChecked(mColorsToolBar->isVisible());
 	mActions[SW_VIEW_TOOLBAR_PROPERTIES]->setChecked(mPropertiesToolBar->isVisible());
 	mActions[SW_VIEW_TOOLBAR_TIMELINE]->setChecked(mTimelineToolBar->isVisible());

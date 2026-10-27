@@ -2,6 +2,7 @@
 #include "sw_application.h"
 #include "sw_profile.h"
 #include "sw_data_piece.h"
+#include "sw_migration.h"
 #include <QApplication>
 #include <locale.h>
 
@@ -121,56 +122,6 @@ static void swInitializeSurfaceFormat(int argc, char* argv[])
 	}
 }
 
-static void swCopyFolder(const QString& Source, const QString& Destination)
-{
-	QDir().mkpath(Destination);
-
-	for (const QFileInfo& Entry : QDir(Source).entryInfoList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot | QDir::Hidden))
-	{
-		const QString Target = QDir(Destination).filePath(Entry.fileName());
-
-		if (Entry.isDir())
-			swCopyFolder(Entry.absoluteFilePath(), Target);
-		else
-			QFile::copy(Entry.absoluteFilePath(), Target);
-	}
-}
-
-static void swMigrateEarlierSettings()
-{
-	// The first start takes over the settings and data stored under the earlier application name, later starts only use their own.
-	QSettings Settings;
-
-	if (!Settings.allKeys().isEmpty())
-		return;
-
-	const QString OrganizationName = QCoreApplication::organizationName();
-	const QString ApplicationName = QCoreApplication::applicationName();
-	const QString DataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
-
-	QCoreApplication::setOrganizationName(QLatin1String("LeoCAD Software"));
-	QCoreApplication::setApplicationName(QLatin1String("LeoCAD"));
-
-	// Stored lists of numbers can only be read once their type is known, nothing has registered it this early.
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-	qRegisterMetaTypeStreamOperators<QList<int>>("QList<int>");
-#endif
-
-	QSettings OldSettings;
-	const QString OldDataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
-
-	for (const QString& Key : OldSettings.allKeys())
-		Settings.setValue(Key, OldSettings.value(Key));
-
-	QCoreApplication::setOrganizationName(OrganizationName);
-	QCoreApplication::setApplicationName(ApplicationName);
-
-	if (QDir(OldDataPath).exists() && !QDir(DataPath).exists())
-		swCopyFolder(OldDataPath, DataPath);
-
-	Settings.sync();
-}
-
 int main(int argc, char *argv[])
 {
 	QCoreApplication::setOrganizationDomain(QLatin1String("nathaneltitane.github.io"));
@@ -179,7 +130,7 @@ int main(int argc, char *argv[])
 	QCoreApplication::setApplicationVersion(QLatin1String(SW_VERSION_TEXT));
 	QGuiApplication::setDesktopFileName(QLatin1String("studworks"));
 
-	swMigrateEarlierSettings();
+	swMigrateSettings();
 	swInitializeSurfaceFormat(argc, argv);
 
 	QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);

@@ -17,7 +17,7 @@ bool swGetElementKey(const QGraphicsItem* Item, swInstructionsElementKey& Key)
 	}
 	else if (const swInstructionsStepNumberItem* NumberItem = dynamic_cast<const swInstructionsStepNumberItem*>(Item))
 		Key = { swInstructionsPlacementElement::StepNumber, NumberItem->GetModel(), NumberItem->GetStep() };
-	else if (const swInstructionsPartsListItem* PartsItem = dynamic_cast<const swInstructionsPartsListItem*>(Item))
+	else if (const swInstructionsPiecesListItem* PartsItem = dynamic_cast<const swInstructionsPiecesListItem*>(Item))
 	{
 		const swInstructionsPlacementElement Element = PartsItem->IsBillOfMaterials() ? swInstructionsPlacementElement::BillOfMaterials : swInstructionsPlacementElement::PiecesList;
 		Key = { Element, PartsItem->GetModel(), PartsItem->GetStep() };
@@ -232,13 +232,13 @@ QVariant swInstructionsPageNumberItem::itemChange(GraphicsItemChange Change, con
 	return QGraphicsSimpleTextItem::itemChange(Change, Value);
 }
 
-swInstructionsPartsListItem::swInstructionsPartsListItem(QGraphicsItem* Parent, swInstructions* Instructions, swModel* Model, swStep Step)
+swInstructionsPiecesListItem::swInstructionsPiecesListItem(QGraphicsItem* Parent, swInstructions* Instructions, swModel* Model, swStep Step)
 	: swInstructionsPaddedItem(Parent), mInstructions(Instructions), mModel(Model), mStep(Step)
 {
 	setFlags(SW_MOVABLE_ITEM_FLAGS);
 }
 
-QVariant swInstructionsPartsListItem::itemChange(GraphicsItemChange Change, const QVariant& Value)
+QVariant swInstructionsPiecesListItem::itemChange(GraphicsItemChange Change, const QVariant& Value)
 {
 	if (Change == QGraphicsItem::ItemPositionChange)
 		return swSnapItemPosition(this, mInstructions, Value);
@@ -246,7 +246,7 @@ QVariant swInstructionsPartsListItem::itemChange(GraphicsItemChange Change, cons
 	return QGraphicsPixmapItem::itemChange(Change, Value);
 }
 
-void swInstructionsPartsListItem::Update()
+void swInstructionsPiecesListItem::Update()
 {
 	// the bill of materials uses the pieces list settings but is shown whenever its page exists
 	bool Visible = mBillOfMaterials || mInstructions->GetBoolProperty(swInstructionsPropertyType::ShowStepPLI, mModel, mStep);
@@ -259,7 +259,7 @@ void swInstructionsPartsListItem::Update()
 	QFont Font = mInstructions->GetFontProperty(swInstructionsPropertyType::PLIFont, mModel, mStep);
 	QColor TextColor = mInstructions->GetColorProperty(swInstructionsPropertyType::PLITextColor, mModel, mStep);
 	const bool ShowCounts = mInstructions->GetBoolProperty(swInstructionsPropertyType::PLIShowCounts, mModel, mStep);
-	const swPartsListSort Sort = static_cast<swPartsListSort>(mInstructions->GetIntProperty(swInstructionsPropertyType::PLISortOrder, mModel, mStep));
+	const swPiecesListSort Sort = static_cast<swPiecesListSort>(mInstructions->GetIntProperty(swInstructionsPropertyType::PLISortOrder, mModel, mStep));
 	const int ThumbnailSize = mInstructions->GetIntProperty(swInstructionsPropertyType::PLIThumbnailSize, mModel, mStep);
 	const QColor ThumbnailBackgroundColor = mInstructions->GetColorProperty(swInstructionsPropertyType::PLIThumbnailBackgroundColor, mModel, mStep);
 
@@ -349,7 +349,7 @@ void swInstructionsPageWidget::StepSettingsChanged(swModel* Model, swStep Step)
 			continue;
 		}
 
-		swInstructionsPartsListItem* PartsItem = dynamic_cast<swInstructionsPartsListItem*>(Item);
+		swInstructionsPiecesListItem* PartsItem = dynamic_cast<swInstructionsPiecesListItem*>(Item);
 
 		if (PartsItem)
 		{
@@ -530,7 +530,7 @@ void swUpdateInstructionsPageScene(swInstructions* Instructions, const swInstruc
 
 	if (Page->Type == swInstructionsPageType::BillOfMaterials)
 	{
-		swInstructionsPartsListItem* PartsImageItem = new swInstructionsPartsListItem(PageItem, Instructions, Page->Model, 0);
+		swInstructionsPiecesListItem* PartsImageItem = new swInstructionsPiecesListItem(PageItem, Instructions, Page->Model, 0);
 		PartsImageItem->SetBillOfMaterials(qMax(static_cast<int>(MarginsRect.width() - 2.0 * SW_ELEMENT_PADDING), 16));
 		PartsImageItem->Update();
 
@@ -610,7 +610,7 @@ void swUpdateInstructionsPageScene(swInstructions* Instructions, const swInstruc
 		AreaRect.adjust(InsetLeft, InsetTop, -InsetRight, -InsetBottom);
 
 		// the pieces list wraps at the width of its area
-		swInstructionsPartsListItem* PartsImageItem = new swInstructionsPartsListItem(StepAreaItem, Instructions, Step.Model, Step.Step);
+		swInstructionsPiecesListItem* PartsImageItem = new swInstructionsPiecesListItem(StepAreaItem, Instructions, Step.Model, Step.Step);
 		PartsImageItem->SetMaxWidth(qMax(static_cast<int>(AreaRect.width() - 2.0 * SW_ELEMENT_PADDING), 16));
 		PartsImageItem->Update();
 
