@@ -17,7 +17,7 @@
 
 static const char* gLanguageLocales[] =
 {
-	"", "cs_CZ", "de_DE", "en_US", "fr_FR", "pt_PT", "es_ES", "zh_CN", "zh_TW"
+	"", "cs_CZ", "de_DE", "en_US", "fr_FR", "pt_PT", "es_ES", "ru_RU", "uk_UA", "zh_CN", "zh_TW"
 };
 
 swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOptions* Options)
@@ -40,6 +40,8 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	ui->Language->addItem("Fran\u00e7ais");
 	ui->Language->addItem("Portugu\u00eas");
 	ui->Language->addItem("Espa\u00f1ol");
+	ui->Language->addItem("\u0420\u0443\u0441\u0441\u043a\u0438\u0439");
+	ui->Language->addItem("\u0423\u043a\u0440\u0430\u0457\u043d\u0441\u044c\u043a\u0430");
 	ui->Language->addItem("\u7b80\u4f53\u4e2d\u6587");
 	ui->Language->addItem("\u7e41\u9ad4\u4e2d\u6587");
 
@@ -436,7 +438,7 @@ void swPreferencesDialog::accept()
 	mOptions->Preferences.mAutomateEdgeColor = ui->AutomateEdgeColor->isChecked();
 
 	int Language = ui->Language->currentIndex();
-	if (Language < 0 || Language > static_cast<int>(SW_ARRAY_COUNT(gLanguageLocales)))
+	if (Language < 0 || Language >= static_cast<int>(SW_ARRAY_COUNT(gLanguageLocales)))
 		Language = 0;
 	mOptions->Language = gLanguageLocales[Language];
 
