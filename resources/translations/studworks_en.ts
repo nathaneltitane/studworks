@@ -23,7 +23,7 @@
 <context>
     <name>swMainWindow</name>
     <message numerus="yes">
-        <location filename="../../source/interface/window/sw_window_main.cpp" line="2998"/>
+        <location filename="../../source/interface/window/sw_window_main_update.cpp" line="135"/>
         <source>%n objects selected</source>
         <translation>
             <numerusform>%n object selected</numerusform>
@@ -31,7 +31,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../source/interface/window/sw_window_main.cpp" line="3449"/>
+        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="263"/>
         <source>Merged %n submodels.</source>
         <translation>
             <numerusform>Merged %n submodel.</numerusform>
@@ -42,7 +42,7 @@
 <context>
     <name>swModel</name>
     <message numerus="yes">
-        <location filename="../../source/core/sw_model.cpp" line="5629"/>
+        <location filename="../../source/core/sw_model_selection.cpp" line="1037"/>
         <source>Replace Pieces</source>
         <translation>
             <numerusform>Replace Piece</numerusform>
@@ -53,7 +53,7 @@
 <context>
     <name>swModelListDialog</name>
     <message numerus="yes">
-        <location filename="../../source/interface/dialogs/sw_dialog_model_list.cpp" line="144"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_model_list.cpp" line="148"/>
         <source>Are you sure you want to delete %n submodels?</source>
         <translation>
             <numerusform>Are you sure you want to delete %n submodel?</numerusform>
