@@ -923,9 +923,11 @@ void swInstructionsPropertiesWidget::CreateWidgets()
 	AddCategory(CategoryIndex::Document, tr("Document"), tr("<p><b>Document</b></p><p>One font for all text of the instructions.</p>"));
 
 	AddRow(CategoryIndex::Document, {
-		CreateToggleEditor(swInstructionsPropertyType::UseDocumentFont, tr("Use Document Font"), tr("Use one font for all text in the instructions.")),
-		CreateFontEditor(swInstructionsPropertyType::DocumentFont, tr("Document Font"), tr("Font of all text while the document font is used."))
+		CreateToggleEditor(swInstructionsPropertyType::UseDocumentFont, tr("Use Document Font"), tr("Use one font for all text in the instructions."))
 	});
+
+	CreateFontEditor(swInstructionsPropertyType::DocumentFont, tr("Document Font"), tr("Font of all text while the document font is used."));
+	AddEditorRow(CategoryIndex::Document, swInstructionsPropertyType::DocumentFont);
 
 	AddCategory(CategoryIndex::Cover, tr("Cover Page"), tr("<p><b>Cover Page</b></p><p>The first page, showing the model title, its author and the finished model. The title comes from the model description, or its name when there is none, the author from the model properties.</p>"));
 
@@ -934,10 +936,10 @@ void swInstructionsPropertiesWidget::CreateWidgets()
 		CreateToggleEditor(swInstructionsPropertyType::ShowCoverAuthor, tr("Show Author"), tr("Show the model author on the cover."))
 	});
 
-	AddRow(CategoryIndex::Cover, {
-		CreateFontEditor(swInstructionsPropertyType::CoverTitleFont, tr("Cover Title Font"), tr("Font of the model title, the author uses half its size.")),
-		CreateColorEditor(swInstructionsPropertyType::CoverTitleColor, tr("Cover Title Color"), tr("Color of the model title and author."))
-	});
+	CreateFontEditor(swInstructionsPropertyType::CoverTitleFont, tr("Cover Title Font"), tr("Font of the model title, the author uses half its size."));
+	AddEditorRow(CategoryIndex::Cover, swInstructionsPropertyType::CoverTitleFont);
+	CreateColorEditor(swInstructionsPropertyType::CoverTitleColor, tr("Cover Title Color"), tr("Color of the model title and author."));
+	AddEditorRow(CategoryIndex::Cover, swInstructionsPropertyType::CoverTitleColor);
 
 	AddCategory(CategoryIndex::BillOfMaterials, tr("Bill of Materials"), tr("<p><b>Bill of Materials</b></p><p>The last page, listing every piece of the model. It uses the Pieces List settings.</p>"));
 
@@ -977,7 +979,6 @@ void swInstructionsPropertiesWidget::CreateWidgets()
 	{
 		QSpinBox* SpinBox = new QSpinBox(this);
 		SpinBox->setRange(1, 10);
-		SpinBox->setPrefix(Name + QLatin1Char(' '));
 		SpinBox->setToolTip(ToolTip);
 		SpinBox->setWhatsThis(ToolTip);
 		SpinBox->setAccessibleName(Name);
@@ -1011,31 +1012,36 @@ void swInstructionsPropertiesWidget::CreateWidgets()
 		mInstructions->SetDefaultPageSettings(PageSettings);
 	});
 
-	AddRow(CategoryIndex::PageLayout, { mRowsSpinBox, mColumnsSpinBox, ApplyAllButton });
+	AddLabeledRow(CategoryIndex::PageLayout, tr("Rows"), mRowsSpinBox);
+	AddLabeledRow(CategoryIndex::PageLayout, tr("Columns"), mColumnsSpinBox);
+	AddRow(CategoryIndex::PageLayout, { ApplyAllButton });
 
 	AddCategory(CategoryIndex::Page, tr("Page"), tr("<p><b>Page</b></p><p>The page background and the lines dividing neighboring steps.</p>"));
 
-	AddRow(CategoryIndex::Page, {
-		CreateColorEditor(swInstructionsPropertyType::PageBackgroundColor, tr("Page Background"), tr("Color filling the whole page, margins included."))
-	});
+	CreateColorEditor(swInstructionsPropertyType::PageBackgroundColor, tr("Page Background"), tr("Color filling the whole page, margins included."));
+	AddEditorRow(CategoryIndex::Page, swInstructionsPropertyType::PageBackgroundColor);
 
 	AddRow(CategoryIndex::Page, {
-		CreateToggleEditor(swInstructionsPropertyType::ShowStepDividers, tr("Show Step Dividers"), tr("Draw lines between neighboring steps.")),
-		CreateColorEditor(swInstructionsPropertyType::StepDividerColor, tr("Divider Color"), tr("Color of the lines between steps.")),
-		CreateIntegerEditor(swInstructionsPropertyType::StepDividerWidth, tr("Divider Width"), tr("Width of the lines between steps, in points."), 1, 20)
+		CreateToggleEditor(swInstructionsPropertyType::ShowStepDividers, tr("Show Step Dividers"), tr("Draw lines between neighboring steps."))
 	});
+
+	CreateColorEditor(swInstructionsPropertyType::StepDividerColor, tr("Divider Color"), tr("Color of the lines between steps."));
+	AddEditorRow(CategoryIndex::Page, swInstructionsPropertyType::StepDividerColor);
+	CreateIntegerEditor(swInstructionsPropertyType::StepDividerWidth, tr("Divider Width"), tr("Width of the lines between steps, in points."), 1, 20);
+	AddEditorRow(CategoryIndex::Page, swInstructionsPropertyType::StepDividerWidth);
 
 	AddCategory(CategoryIndex::Step, tr("Step"), tr("<p><b>Step</b></p><p>The step number and the area behind each step.</p>"));
 
 	AddRow(CategoryIndex::Step, {
-		CreateToggleEditor(swInstructionsPropertyType::ShowStepNumber, tr("Show Step Number"), tr("Show the number of each step in its top left corner.")),
-		CreateFontEditor(swInstructionsPropertyType::StepNumberFont, tr("Step Number Font"), tr("Font of the step numbers.")),
-		CreateColorEditor(swInstructionsPropertyType::StepNumberColor, tr("Step Number Color"), tr("Color of the step numbers."))
+		CreateToggleEditor(swInstructionsPropertyType::ShowStepNumber, tr("Show Step Number"), tr("Show the number of each step in its top left corner."))
 	});
 
-	AddRow(CategoryIndex::Step, {
-		CreateColorEditor(swInstructionsPropertyType::StepBackgroundColor, tr("Step Background"), tr("Color filling the area of each step, transparent shows the page background."))
-	});
+	CreateFontEditor(swInstructionsPropertyType::StepNumberFont, tr("Step Number Font"), tr("Font of the step numbers."));
+	AddEditorRow(CategoryIndex::Step, swInstructionsPropertyType::StepNumberFont);
+	CreateColorEditor(swInstructionsPropertyType::StepNumberColor, tr("Step Number Color"), tr("Color of the step numbers."));
+	AddEditorRow(CategoryIndex::Step, swInstructionsPropertyType::StepNumberColor);
+	CreateColorEditor(swInstructionsPropertyType::StepBackgroundColor, tr("Step Background"), tr("Color filling the area of each step, transparent shows the page background."));
+	AddEditorRow(CategoryIndex::Step, swInstructionsPropertyType::StepBackgroundColor);
 
 	AddCategory(CategoryIndex::PiecesList, tr("Pieces List"), tr("<p><b>Pieces List</b></p><p>The list of pieces added in each step. The bill of materials uses the same settings.</p>"));
 
@@ -1044,25 +1050,22 @@ void swInstructionsPropertiesWidget::CreateWidgets()
 		CreateToggleEditor(swInstructionsPropertyType::PLIShowCounts, tr("Show Piece Counts"), tr("Show how many of each piece are needed."))
 	});
 
-	AddRow(CategoryIndex::PiecesList, {
-		CreateSortEditor(swInstructionsPropertyType::PLISortOrder, tr("Pieces List Order"), tr("Order of the pieces in the list."))
-	});
-
-	AddRow(CategoryIndex::PiecesList, {
-		CreateFontEditor(swInstructionsPropertyType::PLIFont, tr("Pieces List Font"), tr("Font of the piece counts.")),
-		CreateColorEditor(swInstructionsPropertyType::PLITextColor, tr("Pieces List Text Color"), tr("Color of the piece counts."))
-	});
-
-	AddRow(CategoryIndex::PiecesList, {
-		CreateColorEditor(swInstructionsPropertyType::PLIBackgroundColor, tr("Pieces List Background"), tr("Color filling the pieces list.")),
-		CreateColorEditor(swInstructionsPropertyType::PLIBorderColor, tr("Pieces List Border Color"), tr("Color of the line around the pieces list.")),
-		CreateIntegerEditor(swInstructionsPropertyType::PLIBorderWidth, tr("Border Width"), tr("Width of the line around the pieces list in points, 0 draws no line."), 0, 20)
-	});
-
-	AddRow(CategoryIndex::PiecesList, {
-		CreateIntegerEditor(swInstructionsPropertyType::PLIThumbnailSize, tr("Thumbnail Size"), tr("Size each piece is drawn at in points, larger thumbnails show larger pieces."), 32, 512),
-		CreateColorEditor(swInstructionsPropertyType::PLIThumbnailBackgroundColor, tr("Thumbnail Background"), tr("Color behind each piece and its count, transparent draws none."))
-	});
+	CreateSortEditor(swInstructionsPropertyType::PLISortOrder, tr("Pieces List Order"), tr("Order of the pieces in the list."));
+	AddEditorRow(CategoryIndex::PiecesList, swInstructionsPropertyType::PLISortOrder);
+	CreateFontEditor(swInstructionsPropertyType::PLIFont, tr("Pieces List Font"), tr("Font of the piece counts."));
+	AddEditorRow(CategoryIndex::PiecesList, swInstructionsPropertyType::PLIFont);
+	CreateColorEditor(swInstructionsPropertyType::PLITextColor, tr("Pieces List Text Color"), tr("Color of the piece counts."));
+	AddEditorRow(CategoryIndex::PiecesList, swInstructionsPropertyType::PLITextColor);
+	CreateColorEditor(swInstructionsPropertyType::PLIBackgroundColor, tr("Pieces List Background"), tr("Color filling the pieces list."));
+	AddEditorRow(CategoryIndex::PiecesList, swInstructionsPropertyType::PLIBackgroundColor);
+	CreateColorEditor(swInstructionsPropertyType::PLIBorderColor, tr("Pieces List Border Color"), tr("Color of the line around the pieces list."));
+	AddEditorRow(CategoryIndex::PiecesList, swInstructionsPropertyType::PLIBorderColor);
+	CreateIntegerEditor(swInstructionsPropertyType::PLIBorderWidth, tr("Border Width"), tr("Width of the line around the pieces list in points, 0 draws no line."), 0, 20);
+	AddEditorRow(CategoryIndex::PiecesList, swInstructionsPropertyType::PLIBorderWidth);
+	CreateIntegerEditor(swInstructionsPropertyType::PLIThumbnailSize, tr("Thumbnail Size"), tr("Size each piece is drawn at in points, larger thumbnails show larger pieces."), 32, 512);
+	AddEditorRow(CategoryIndex::PiecesList, swInstructionsPropertyType::PLIThumbnailSize);
+	CreateColorEditor(swInstructionsPropertyType::PLIThumbnailBackgroundColor, tr("Thumbnail Background"), tr("Color behind each piece and its count, transparent draws none."));
+	AddEditorRow(CategoryIndex::PiecesList, swInstructionsPropertyType::PLIThumbnailBackgroundColor);
 
 	// the thumbnail settings belong to all pages or only to the current one
 	mThumbnailPageButton = new QToolButton(this);
@@ -1077,6 +1080,15 @@ void swInstructionsPropertiesWidget::CreateWidgets()
 	connect(mThumbnailPageButton, &QToolButton::toggled, this, &swInstructionsPropertiesWidget::SetThumbnailPageScope);
 
 	AddRow(CategoryIndex::PiecesList, { mThumbnailPageButton });
+
+	// the labels share one width so the inputs line up across the categories
+	int LabelWidth = 0;
+
+	for (const QLabel* Label : mRowLabels)
+		LabelWidth = qMax(LabelWidth, Label->sizeHint().width());
+
+	for (QLabel* Label : mRowLabels)
+		Label->setFixedWidth(LabelWidth);
 }
 
 void swInstructionsPropertiesWidget::AddCategory(CategoryIndex Index, const QString& Title, const QString& WhatsThis)
@@ -1115,6 +1127,26 @@ QWidget* swInstructionsPropertiesWidget::AddRow(CategoryIndex Index, const std::
 	return Row;
 }
 
+QLabel* swInstructionsPropertiesWidget::AddLabeledRow(CategoryIndex Index, const QString& Name, QWidget* Editor)
+{
+	// the name sits beside the input so the input keeps its width for the value
+	QWidget* Row = AddRow(Index, { Editor });
+	QLabel* Label = new QLabel(Name, Row);
+	Label->setBuddy(Editor);
+	static_cast<QHBoxLayout*>(Row->layout())->insertWidget(0, Label);
+	mRowLabels.push_back(Label);
+
+	return Label;
+}
+
+QLabel* swInstructionsPropertiesWidget::AddEditorRow(CategoryIndex Index, swInstructionsPropertyType Type)
+{
+	EditorWidgets& Editors = mEditors[static_cast<int>(Type)];
+	Editors.Label = AddLabeledRow(Index, Editors.Name, Editors.Widget);
+
+	return Editors.Label;
+}
+
 void swInstructionsPropertiesWidget::RegisterEditor(swInstructionsPropertyType Type, EditorType Editor, QWidget* Widget, const QString& Name, const QString& ToolTip)
 {
 	Widget->setToolTip(ToolTip);
@@ -1149,7 +1181,6 @@ QSpinBox* swInstructionsPropertiesWidget::CreateIntegerEditor(swInstructionsProp
 	QSpinBox* SpinBox = new QSpinBox(this);
 	RegisterEditor(Type, EditorType::Integer, SpinBox, Name, ToolTip);
 	SpinBox->setRange(Minimum, Maximum);
-	SpinBox->setPrefix(Name + QLatin1Char(' '));
 	swSetupPanelSpinBox(SpinBox);
 
 	connect(SpinBox, qOverload<int>(&QSpinBox::valueChanged), this, [this, Type](int Value)
@@ -1378,7 +1409,11 @@ void swInstructionsPropertiesWidget::UpdateEditors()
 
 	auto SetEnabled = [this](swInstructionsPropertyType Type, bool Enabled)
 	{
-		mEditors[static_cast<int>(Type)].Widget->setEnabled(Enabled);
+		const EditorWidgets& Editors = mEditors[static_cast<int>(Type)];
+		Editors.Widget->setEnabled(Enabled);
+
+		if (Editors.Label)
+			Editors.Label->setEnabled(Enabled);
 	};
 
 	const bool UseDocumentFont = GetBool(swInstructionsPropertyType::UseDocumentFont);
@@ -1589,7 +1624,7 @@ swInstructionsPlacementWidget::swInstructionsPlacementWidget(QWidget* Parent, sw
 	: QDockWidget(Parent), mInstructions(Instructions)
 {
 	setWindowTitle(tr("Placement"));
-	setWhatsThis(tr("<p><b>Placement</b></p><p>Place the selected page element on a predefined area: the step model, step number, pieces list, cover model, cover title, cover author or bill of materials. Step elements are placed in the part of the page their step gets from the split, or outside the other step element. Placements apply to all pages.</p><p>Every element can also be dragged on the page, it keeps its distance from its placement. A locked element keeps its position whatever its placement and is not dragged. The page grid helps aligning dragged elements, it is never printed.</p>"));
+	setWhatsThis(tr("<p><b>Placement</b></p><p>Select an element on the page to place, move or lock it. Place the selected page element on a predefined area: the step model, step number, pieces list, cover model, cover title, cover author or bill of materials. Step elements are placed in the part of the page their step gets from the split, or outside the other step element. Placements apply to all pages.</p><p>Every element can also be dragged on the page, it keeps its distance from its placement. A locked element keeps its position whatever its placement and is not dragged.</p>"));
 	swSetupWidgetHelp(this, nullptr);
 
 	QWidget* CentralWidget = new QWidget(this);
@@ -1604,6 +1639,9 @@ swInstructionsPlacementWidget::swInstructionsPlacementWidget(QWidget* Parent, sw
 	QWidget* AnchorRow = swCreatePanelRow(CentralWidget);
 	Layout->addWidget(AnchorRow);
 
+	QLabel* AnchorLabel = new QLabel(tr("Relative To"), AnchorRow);
+	AnchorRow->layout()->addWidget(AnchorLabel);
+
 	mAnchorComboBox = new QComboBox(AnchorRow);
 	mAnchorComboBox->setToolTip(tr("Choose what the element is placed against."));
 	mAnchorComboBox->setWhatsThis(mAnchorComboBox->toolTip());
@@ -1611,6 +1649,8 @@ swInstructionsPlacementWidget::swInstructionsPlacementWidget(QWidget* Parent, sw
 	swSetupPanelEdit(mAnchorComboBox);
 	mAnchorComboBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	static_cast<QHBoxLayout*>(AnchorRow->layout())->addWidget(mAnchorComboBox, 1);
+
+	AnchorLabel->setBuddy(mAnchorComboBox);
 
 	connect(mAnchorComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, &swInstructionsPlacementWidget::AnchorChanged);
 
@@ -1667,70 +1707,13 @@ swInstructionsPlacementWidget::swInstructionsPlacementWidget(QWidget* Parent, sw
 	connect(mResetPositionButton, &QToolButton::clicked, this, &swInstructionsPlacementWidget::ResetPositionClicked);
 	connect(mLockButton, &QToolButton::toggled, this, &swInstructionsPlacementWidget::LockClicked);
 
-	// the grid settings apply to every element and stay available without a selection
-	QWidget* GridRow = swCreatePanelRow(CentralWidget);
-	QHBoxLayout* GridRowLayout = static_cast<QHBoxLayout*>(GridRow->layout());
-	Layout->addWidget(GridRow);
 
-	auto CreateGridButton = [GridRow, GridRowLayout](const QString& Name, const QString& ToolTip)
-	{
-		QToolButton* Button = new QToolButton(GridRow);
-		Button->setText(Name);
-		Button->setCheckable(true);
-		Button->setToolButtonStyle(Qt::ToolButtonTextOnly);
-		Button->setToolTip(ToolTip);
-		Button->setWhatsThis(ToolTip);
-		Button->setAccessibleName(Name);
-		swSetupPanelButton(Button);
-		Button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-		GridRowLayout->addWidget(Button, 1);
-
-		return Button;
-	};
-
-	mShowGridButton = CreateGridButton(tr("Show Grid"), tr("Draw the page grid on screen, it is never printed."));
-	mSnapToGridButton = CreateGridButton(tr("Snap to Grid"), tr("Snap dragged elements to the page grid."));
-
-	// the grid area and size share a row under the grid toggles
-	QWidget* GridSizeRow = swCreatePanelRow(CentralWidget);
-	QHBoxLayout* GridSizeRowLayout = static_cast<QHBoxLayout*>(GridSizeRow->layout());
-	Layout->addWidget(GridSizeRow);
-
-	mGridScopeComboBox = new QComboBox(GridSizeRow);
-	mGridScopeComboBox->addItem(tr("Within Margins"));
-	mGridScopeComboBox->addItem(tr("Full Page"));
-	mGridScopeComboBox->setToolTip(tr("Choose whether the grid covers the area inside the margins or the full page."));
-	mGridScopeComboBox->setWhatsThis(mGridScopeComboBox->toolTip());
-	mGridScopeComboBox->setAccessibleName(tr("Grid Area"));
-	swSetupPanelEdit(mGridScopeComboBox);
-	mGridScopeComboBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	GridSizeRowLayout->addWidget(mGridScopeComboBox, 1);
-
-	mGridSizeSpinBox = new swInstructionsGridSizeSpinBox(GridSizeRow);
-	mGridSizeSpinBox->setPrefix(tr("Grid Size") + QLatin1Char(' '));
-	mGridSizeSpinBox->setToolTip(tr("Distance between the grid lines in the margin units of the page setup."));
-	mGridSizeSpinBox->setWhatsThis(mGridSizeSpinBox->toolTip());
-	mGridSizeSpinBox->setAccessibleName(tr("Grid Size"));
-	swSetupPanelSpinBox(mGridSizeSpinBox);
-	mGridSizeSpinBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	GridSizeRowLayout->addWidget(mGridSizeSpinBox, 1);
-
-	connect(mShowGridButton, &QToolButton::toggled, mInstructions, &swInstructions::SetShowGrid);
-	connect(mSnapToGridButton, &QToolButton::toggled, mInstructions, &swInstructions::SetSnapToGrid);
-	connect(mGridScopeComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, [this](int Index)
-	{
-		mInstructions->SetGridWithinMargins(Index == 0);
-	});
-	connect(mGridSizeSpinBox, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &swInstructionsPlacementWidget::GridSizeChanged);
-
-	Layout->addStretch(1);
+	// the panel is exactly as tall as its rows wherever it is docked
+	swFitHeightToContents(CentralWidget);
 
 	connect(mInstructions, &swInstructions::PageLayoutChanged, this, &swInstructionsPlacementWidget::UpdateWidget);
-	connect(mInstructions, &swInstructions::GridChanged, this, &swInstructionsPlacementWidget::UpdateGrid);
-	connect(mInstructions, &swInstructions::PageSetupChanged, this, &swInstructionsPlacementWidget::UpdateGrid);
 
 	UpdateWidget();
-	UpdateGrid();
 }
 
 QIcon swInstructionsPlacementWidget::CreatePlacementIcon(int Placement, const QPalette& Palette)
@@ -1880,55 +1863,6 @@ void swInstructionsPlacementWidget::LockClicked(bool Locked)
 		mInstructions->UnlockElement(mElementKey, mElementPosition - mPlacementPosition);
 }
 
-void swInstructionsPlacementWidget::UpdateGrid()
-{
-	QSignalBlocker ShowBlocker(mShowGridButton);
-	QSignalBlocker SnapBlocker(mSnapToGridButton);
-	QSignalBlocker SizeBlocker(mGridSizeSpinBox);
-	QSignalBlocker ScopeBlocker(mGridScopeComboBox);
-
-	mShowGridButton->setChecked(mInstructions->IsGridShown());
-	mSnapToGridButton->setChecked(mInstructions->IsSnapToGrid());
-	mGridScopeComboBox->setCurrentIndex(mInstructions->IsGridWithinMargins() ? 0 : 1);
-
-	// the size follows the margin units, each step is a usual increment of the unit
-	const swInstructionsPageUnits Units = mInstructions->GetGridUnits();
-	const double Scale = swGetPageUnitScale(Units);
-	int Decimals = 0;
-	double Step = 1.0;
-
-	switch (Units)
-	{
-	case swInstructionsPageUnits::Pixels:
-		break;
-
-	case swInstructionsPageUnits::Millimeters:
-		Decimals = 1;
-		break;
-
-	case swInstructionsPageUnits::Centimeters:
-		Decimals = 2;
-		Step = 0.1;
-		break;
-
-	case swInstructionsPageUnits::Inches:
-		Decimals = 3;
-		Step = 0.125;
-		break;
-	}
-
-	mGridSizeSpinBox->setDecimals(Decimals);
-	mGridSizeSpinBox->setSingleStep(Step);
-	mGridSizeSpinBox->setRange(SW_GRID_SIZE_MINIMUM / Scale, SW_GRID_SIZE_MAXIMUM / Scale);
-	mGridSizeSpinBox->setSuffix(QLatin1Char(' ') + swGetPageUnitSuffix(Units));
-	mGridSizeSpinBox->setValue(mInstructions->GetGridSize() / Scale);
-}
-
-void swInstructionsPlacementWidget::GridSizeChanged(double Size)
-{
-	mInstructions->SetGridSize(Size * swGetPageUnitScale(mInstructions->GetGridUnits()));
-}
-
 void swInstructionsPlacementWidget::UpdateWidget()
 {
 	// a locked element keeps its position, it is neither placed nor dragged
@@ -1974,7 +1908,7 @@ void swInstructionsPlacementWidget::UpdateWidget()
 		break;
 
 	case swInstructionsPlacementElement::None:
-		mElementLabel->setText(tr("Select an element on the page to place, move or lock it."));
+		mElementLabel->setText(tr("No Element Selected"));
 		break;
 	}
 
@@ -2013,6 +1947,148 @@ void swInstructionsPlacementWidget::UpdateWidget()
 	}
 }
 
+swInstructionsGridWidget::swInstructionsGridWidget(QWidget* Parent, swInstructions* Instructions)
+	: QDockWidget(Parent), mInstructions(Instructions)
+{
+	setWindowTitle(tr("Grid"));
+	setWhatsThis(tr("<p><b>Grid</b></p><p>The page grid helps aligning dragged elements, it is never printed. Show it on screen, snap dragged elements to it, and choose its area and the distance between its lines.</p>"));
+	swSetupWidgetHelp(this, nullptr);
+
+	QWidget* CentralWidget = new QWidget(this);
+	setWidget(CentralWidget);
+
+	QVBoxLayout* Layout = new QVBoxLayout(CentralWidget);
+
+	// the grid settings apply to every element and need no selection
+	QWidget* GridRow = swCreatePanelRow(CentralWidget);
+	QHBoxLayout* GridRowLayout = static_cast<QHBoxLayout*>(GridRow->layout());
+	Layout->addWidget(GridRow);
+
+	auto CreateGridButton = [GridRow, GridRowLayout](const QString& Name, const QString& ToolTip)
+	{
+		QToolButton* Button = new QToolButton(GridRow);
+		Button->setText(Name);
+		Button->setCheckable(true);
+		Button->setToolButtonStyle(Qt::ToolButtonTextOnly);
+		Button->setToolTip(ToolTip);
+		Button->setWhatsThis(ToolTip);
+		Button->setAccessibleName(Name);
+		swSetupPanelButton(Button);
+		Button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+		GridRowLayout->addWidget(Button, 1);
+
+		return Button;
+	};
+
+	mShowGridButton = CreateGridButton(tr("Show Grid"), tr("Draw the page grid on screen, it is never printed."));
+	mSnapToGridButton = CreateGridButton(tr("Snap to Grid"), tr("Snap dragged elements to the page grid."));
+
+	// the grid area and size rows follow the toggles, each name beside its input
+	QWidget* GridScopeRow = swCreatePanelRow(CentralWidget);
+	QHBoxLayout* GridScopeRowLayout = static_cast<QHBoxLayout*>(GridScopeRow->layout());
+	Layout->addWidget(GridScopeRow);
+
+	QLabel* GridScopeLabel = new QLabel(tr("Grid Area"), GridScopeRow);
+	GridScopeRowLayout->addWidget(GridScopeLabel);
+
+	mGridScopeComboBox = new QComboBox(GridScopeRow);
+	mGridScopeComboBox->addItem(tr("Within Margins"));
+	mGridScopeComboBox->addItem(tr("Full Page"));
+	mGridScopeComboBox->setToolTip(tr("Choose whether the grid covers the area inside the margins or the full page."));
+	mGridScopeComboBox->setWhatsThis(mGridScopeComboBox->toolTip());
+	mGridScopeComboBox->setAccessibleName(tr("Grid Area"));
+	swSetupPanelEdit(mGridScopeComboBox);
+	mGridScopeComboBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	GridScopeRowLayout->addWidget(mGridScopeComboBox, 1);
+	GridScopeLabel->setBuddy(mGridScopeComboBox);
+
+	QWidget* GridSizeRow = swCreatePanelRow(CentralWidget);
+	QHBoxLayout* GridSizeRowLayout = static_cast<QHBoxLayout*>(GridSizeRow->layout());
+	Layout->addWidget(GridSizeRow);
+
+	QLabel* GridSizeLabel = new QLabel(tr("Grid Size"), GridSizeRow);
+	GridSizeRowLayout->addWidget(GridSizeLabel);
+
+	mGridSizeSpinBox = new swInstructionsGridSizeSpinBox(GridSizeRow);
+	mGridSizeSpinBox->setToolTip(tr("Distance between the grid lines in the margin units of the page setup."));
+	mGridSizeSpinBox->setWhatsThis(mGridSizeSpinBox->toolTip());
+	mGridSizeSpinBox->setAccessibleName(tr("Grid Size"));
+	swSetupPanelSpinBox(mGridSizeSpinBox);
+	mGridSizeSpinBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	GridSizeRowLayout->addWidget(mGridSizeSpinBox, 1);
+	GridSizeLabel->setBuddy(mGridSizeSpinBox);
+
+	// the labels share one width so the inputs line up
+	const int LabelWidth = qMax(GridScopeLabel->sizeHint().width(), GridSizeLabel->sizeHint().width());
+	GridScopeLabel->setFixedWidth(LabelWidth);
+	GridSizeLabel->setFixedWidth(LabelWidth);
+
+	connect(mShowGridButton, &QToolButton::toggled, mInstructions, &swInstructions::SetShowGrid);
+	connect(mSnapToGridButton, &QToolButton::toggled, mInstructions, &swInstructions::SetSnapToGrid);
+	connect(mGridScopeComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, [this](int Index)
+	{
+		mInstructions->SetGridWithinMargins(Index == 0);
+	});
+	connect(mGridSizeSpinBox, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &swInstructionsGridWidget::GridSizeChanged);
+
+	// the panel is exactly as tall as its rows wherever it is docked
+	swFitHeightToContents(CentralWidget);
+
+	connect(mInstructions, &swInstructions::GridChanged, this, &swInstructionsGridWidget::UpdateGrid);
+	connect(mInstructions, &swInstructions::PageSetupChanged, this, &swInstructionsGridWidget::UpdateGrid);
+
+	UpdateGrid();
+}
+
+void swInstructionsGridWidget::UpdateGrid()
+{
+	QSignalBlocker ShowBlocker(mShowGridButton);
+	QSignalBlocker SnapBlocker(mSnapToGridButton);
+	QSignalBlocker SizeBlocker(mGridSizeSpinBox);
+	QSignalBlocker ScopeBlocker(mGridScopeComboBox);
+
+	mShowGridButton->setChecked(mInstructions->IsGridShown());
+	mSnapToGridButton->setChecked(mInstructions->IsSnapToGrid());
+	mGridScopeComboBox->setCurrentIndex(mInstructions->IsGridWithinMargins() ? 0 : 1);
+
+	// the size follows the margin units, each step is a usual increment of the unit
+	const swInstructionsPageUnits Units = mInstructions->GetGridUnits();
+	const double Scale = swGetPageUnitScale(Units);
+	int Decimals = 0;
+	double Step = 1.0;
+
+	switch (Units)
+	{
+	case swInstructionsPageUnits::Pixels:
+		break;
+
+	case swInstructionsPageUnits::Millimeters:
+		Decimals = 1;
+		break;
+
+	case swInstructionsPageUnits::Centimeters:
+		Decimals = 2;
+		Step = 0.1;
+		break;
+
+	case swInstructionsPageUnits::Inches:
+		Decimals = 3;
+		Step = 0.125;
+		break;
+	}
+
+	mGridSizeSpinBox->setDecimals(Decimals);
+	mGridSizeSpinBox->setSingleStep(Step);
+	mGridSizeSpinBox->setRange(SW_GRID_SIZE_MINIMUM / Scale, SW_GRID_SIZE_MAXIMUM / Scale);
+	mGridSizeSpinBox->setSuffix(QLatin1Char(' ') + swGetPageUnitSuffix(Units));
+	mGridSizeSpinBox->setValue(mInstructions->GetGridSize() / Scale);
+}
+
+void swInstructionsGridWidget::GridSizeChanged(double Size)
+{
+	mInstructions->SetGridSize(Size * swGetPageUnitScale(mInstructions->GetGridUnits()));
+}
+
 swInstructionsDialog::swInstructionsDialog(QWidget* Parent, Project* Project)
 	: QMainWindow(Parent), mProject(Project)
 {
@@ -2028,6 +2104,11 @@ swInstructionsDialog::swInstructionsDialog(QWidget* Parent, Project* Project)
 	mPlacementWidget->setObjectName("InstructionsPlacement");
 	addDockWidget(Qt::RightDockWidgetArea, mPlacementWidget);
 	splitDockWidget(mPropertiesWidget, mPlacementWidget, Qt::Vertical);
+
+	mGridWidget = new swInstructionsGridWidget(this, mInstructions);
+	mGridWidget->setObjectName("InstructionsGrid");
+	addDockWidget(Qt::RightDockWidgetArea, mGridWidget);
+	splitDockWidget(mPlacementWidget, mGridWidget, Qt::Vertical);
 
 	mPageWidget = new swInstructionsPageWidget(this, mInstructions, mPropertiesWidget, mPlacementWidget);
 	setCentralWidget(mPageWidget);

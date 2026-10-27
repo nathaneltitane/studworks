@@ -298,6 +298,7 @@ protected:
 	struct EditorWidgets
 	{
 		QWidget* Widget = nullptr;
+		QLabel* Label = nullptr;
 		EditorType Type = EditorType::Bool;
 		QString Name;
 	};
@@ -306,6 +307,8 @@ protected:
 	void CreateWidgets();
 	void AddCategory(CategoryIndex Index, const QString& Title, const QString& WhatsThis);
 	QWidget* AddRow(CategoryIndex Index, const std::vector<QWidget*>& Editors);
+	QLabel* AddLabeledRow(CategoryIndex Index, const QString& Name, QWidget* Editor);
+	QLabel* AddEditorRow(CategoryIndex Index, swInstructionsPropertyType Type);
 	void RegisterEditor(swInstructionsPropertyType Type, EditorType Editor, QWidget* Widget, const QString& Name, const QString& ToolTip);
 	QToolButton* CreateToggleEditor(swInstructionsPropertyType Type, const QString& Name, const QString& ToolTip);
 	QSpinBox* CreateIntegerEditor(swInstructionsPropertyType Type, const QString& Name, const QString& ToolTip, int Minimum, int Maximum);
@@ -343,6 +346,7 @@ protected:
 	QSpinBox* mColumnsSpinBox = nullptr;
 	QToolButton* mThumbnailPageButton = nullptr;
 	std::vector<QToolButton*> mDividerPresetButtons;
+	std::vector<QLabel*> mRowLabels;
 	QVBoxLayout* mCategoriesLayout = nullptr;
 };
 
@@ -361,8 +365,6 @@ protected:
 	void ResetPositionClicked();
 	void LockClicked(bool Locked);
 	void UpdateWidget();
-	void UpdateGrid();
-	void GridSizeChanged(double Size);
 	swInstructionsPropertyType GetPlacementType() const;
 	swInstructionsPropertyType GetAnchorType() const;
 	bool IsInsideAnchor() const;
@@ -378,13 +380,28 @@ protected:
 	QLabel* mElementLabel = nullptr;
 	QToolButton* mResetPositionButton = nullptr;
 	QToolButton* mLockButton = nullptr;
+	QComboBox* mAnchorComboBox = nullptr;
+	QWidget* mGridWidget = nullptr;
+	std::array<QToolButton*, SW_PLACEMENT_COUNT> mPlacementButtons = {};
+};
+
+class swInstructionsGridWidget : public QDockWidget
+{
+	Q_OBJECT
+
+public:
+	swInstructionsGridWidget(QWidget* Parent, swInstructions* Instructions);
+
+protected:
+	void UpdateGrid();
+	void GridSizeChanged(double Size);
+
+	swInstructions* mInstructions = nullptr;
+
 	QToolButton* mShowGridButton = nullptr;
 	QToolButton* mSnapToGridButton = nullptr;
 	QDoubleSpinBox* mGridSizeSpinBox = nullptr;
 	QComboBox* mGridScopeComboBox = nullptr;
-	QComboBox* mAnchorComboBox = nullptr;
-	QWidget* mGridWidget = nullptr;
-	std::array<QToolButton*, SW_PLACEMENT_COUNT> mPlacementButtons = {};
 };
 
 class swInstructionsDialog : public QMainWindow
@@ -416,6 +433,7 @@ protected:
 	swInstructionsPageListWidget* mPageListWidget = nullptr;
 	swInstructionsPropertiesWidget* mPropertiesWidget = nullptr;
 	swInstructionsPlacementWidget* mPlacementWidget = nullptr;
+	swInstructionsGridWidget* mGridWidget = nullptr;
 
 	QToolBar* mPageSettingsToolBar = nullptr;
 	QAction* mPrintAction = nullptr;
