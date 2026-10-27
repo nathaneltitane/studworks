@@ -130,6 +130,8 @@ private:
 
 	swRenderTargetWidgets GetRenderTargetWidgets(swRenderTarget Target) const;
 
+	Qt::MouseButton mMouseShortcutButton = Qt::NoButton;
+	Qt::KeyboardModifiers mMouseShortcutModifiers = Qt::NoModifier;
 	float mLineWidthRange[2];
 	float mLineWidthGranularity;
 	static constexpr float mMeshLODMultiplier = 25.0f;

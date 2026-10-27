@@ -3016,7 +3016,7 @@
      </widget>
      <widget class="QWidget" name="tabMouse">
       <property name="whatsThis">
-       <string>&lt;p&gt;&lt;b&gt;Mouse Shortcuts&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select a tool, choose a mouse button and optional modifiers, then choose Assign. Each tool can have two shortcuts; a new assignment becomes the primary shortcut. Remove clears the primary shortcut and promotes the secondary shortcut. Choose OK in Preferences to save changes.&lt;/p&gt;</string>
+       <string>&lt;p&gt;&lt;b&gt;Mouse Shortcuts&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select a tool, click the Mouse Sequence field with the button and modifiers to use, then choose Assign. Each tool can have two shortcuts; a new assignment becomes the primary shortcut. Remove clears the primary shortcut and promotes the secondary shortcut. Choose OK in Preferences to save changes.&lt;/p&gt;</string>
       </property>
       <attribute name="title">
        <string>Mouse</string>
@@ -3135,127 +3135,58 @@
          <property name="title">
           <string>Shortcut</string>
          </property>
-         <layout class="QGridLayout" name="horizontalLayout_12">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_11">
+         <layout class="QHBoxLayout" name="MouseShortcutLayout">
+          <item>
+           <widget class="QLabel" name="MouseShortcutLabel">
+            <property name="whatsThis">
+             <string>&lt;p&gt;&lt;b&gt;Mouse Sequence&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Click here with the mouse button you want to assign while holding any Control, Alt or Shift modifiers. Assign makes it the primary shortcut of the selected tool and asks before replacing a shortcut already used by another tool.&lt;/p&gt;</string>
+            </property>
             <property name="toolTip">
-             <string>Choose the mouse button to assign to the selected tool.</string>
+             <string>Click here with the mouse button and modifier keys you want to assign, then choose Assign.</string>
+            </property>
+            <property name="text">
+             <string>Mouse Se&amp;quence:</string>
             </property>
             <property name="buddy">
-             <cstring>mouseButton</cstring>
-            </property>
-            <property name="text">
-             <string>Button:</string>
+             <cstring>MouseShortcutEdit</cstring>
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
-           <widget class="QComboBox" name="mouseButton">
+          <item>
+           <widget class="QLineEdit" name="MouseShortcutEdit">
             <property name="accessibleName">
-             <string>Button</string>
+             <string>Mouse Sequence</string>
+            </property>
+            <property name="whatsThis">
+             <string>&lt;p&gt;&lt;b&gt;Mouse Sequence&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Click here with the mouse button you want to assign while holding any Control, Alt or Shift modifiers. Assign makes it the primary shortcut of the selected tool and asks before replacing a shortcut already used by another tool.&lt;/p&gt;</string>
             </property>
             <property name="toolTip">
-             <string>Choose the mouse button to assign to the selected tool.</string>
+             <string>Click here with the mouse button and modifier keys you want to assign, then choose Assign.</string>
             </property>
-            <item>
-             <property name="text">
-              <string>None</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Left</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Middle</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Right</string>
-             </property>
-            </item>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_12">
+          <item>
+           <widget class="QPushButton" name="mouseAssign">
+            <property name="toolTip">
+             <string>Assign the entered mouse sequence to the selected tool.</string>
+            </property>
             <property name="text">
-             <string>Modifiers:</string>
+             <string>Assign</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="1">
-           <layout class="QHBoxLayout" name="MouseModifiersLayout">
-            <item>
-             <widget class="QCheckBox" name="mouseControl">
-              <property name="toolTip">
-               <string>Require the Control modifier for this mouse shortcut.</string>
-              </property>
-              <property name="text">
-               <string>Control</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="mouseAlt">
-              <property name="toolTip">
-               <string>Require the Alt modifier for this mouse shortcut.</string>
-              </property>
-              <property name="text">
-               <string>Alt</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="mouseShift">
-              <property name="toolTip">
-               <string>Require the Shift modifier for this mouse shortcut.</string>
-              </property>
-              <property name="text">
-               <string>Shift</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item row="2" column="1">
-           <layout class="QHBoxLayout" name="MouseButtonsLayout">
-            <item>
-             <widget class="QPushButton" name="mouseAssign">
-              <property name="toolTip">
-               <string>Assign the chosen mouse button and modifiers to the selected tool.</string>
-              </property>
-              <property name="text">
-               <string>Assign</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="mouseRemove">
-              <property name="toolTip">
-               <string>Remove the primary mouse shortcut and promote the secondary shortcut.</string>
-              </property>
-              <property name="text">
-               <string>Remove</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item row="0" column="2">
-           <spacer name="MouseShortcutSpacer">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+          <item>
+           <widget class="QPushButton" name="mouseRemove">
+            <property name="toolTip">
+             <string>Remove the primary mouse shortcut and promote the secondary shortcut.</string>
             </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
+            <property name="text">
+             <string>Remove</string>
             </property>
-           </spacer>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -3453,10 +3384,7 @@
   <tabstop>MouseImportButton</tabstop>
   <tabstop>MouseExportButton</tabstop>
   <tabstop>mouseReset</tabstop>
-  <tabstop>mouseButton</tabstop>
-  <tabstop>mouseControl</tabstop>
-  <tabstop>mouseAlt</tabstop>
-  <tabstop>mouseShift</tabstop>
+  <tabstop>MouseShortcutEdit</tabstop>
   <tabstop>mouseAssign</tabstop>
   <tabstop>mouseRemove</tabstop>
   <tabstop>mouseSensitivity</tabstop>

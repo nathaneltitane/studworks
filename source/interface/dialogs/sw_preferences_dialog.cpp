@@ -225,6 +225,7 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	connect(ui->categoriesTree, &QTreeWidget::itemSelectionChanged, this, &swPreferencesDialog::UpdateParts);
 	connect(ui->categoriesTree->model(), &QAbstractItemModel::rowsInserted, this, &swPreferencesDialog::CategoriesDropped);
 	ui->shortcutEdit->installEventFilter(this);
+	ui->MouseShortcutEdit->installEventFilter(this);
 	connect(ui->commandList, &QTreeWidget::currentItemChanged, this, &swPreferencesDialog::CommandChanged);
 	connect(ui->mouseTree, &QTreeWidget::currentItemChanged, this, &swPreferencesDialog::MouseTreeItemChanged);
 	connect(ui->HighContrastButton, &QToolButton::clicked, this, &swPreferencesDialog::AutomateEdgeColor);
@@ -1242,9 +1243,60 @@ void swPreferencesDialog::ResetCategoriesClicked()
 	UpdateCategories();
 }
 
+// Mouse shortcuts read like key sequences, with the button name after the modifiers.
+static QString swGetMouseShortcutText(Qt::MouseButton Button, Qt::KeyboardModifiers Modifiers)
+{
+	QString Shortcut = QKeySequence(Modifiers).toString(QKeySequence::NativeText);
+
+	switch (Button)
+	{
+	case Qt::LeftButton:
+		Shortcut += swPreferencesDialog::tr("Left Button");
+		break;
+
+	case Qt::MiddleButton:
+		Shortcut += swPreferencesDialog::tr("Middle Button");
+		break;
+
+	case Qt::RightButton:
+		Shortcut += swPreferencesDialog::tr("Right Button");
+		break;
+
+	default:
+		Shortcut.clear();
+	}
+
+	return Shortcut;
+}
+
 bool swPreferencesDialog::eventFilter(QObject* Object, QEvent* Event)
 {
-	Q_UNUSED(Object);
+	// The mouse sequence field records the button and modifiers it is clicked with.
+	if (Object == ui->MouseShortcutEdit)
+	{
+		if (Event->type() == QEvent::MouseButtonPress || Event->type() == QEvent::MouseButtonDblClick)
+		{
+			QMouseEvent* MouseEvent = static_cast<QMouseEvent*>(Event);
+			const Qt::MouseButton Button = MouseEvent->button();
+
+			if (Button == Qt::LeftButton || Button == Qt::MiddleButton || Button == Qt::RightButton)
+			{
+				mMouseShortcutButton = Button;
+				mMouseShortcutModifiers = MouseEvent->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier | Qt::AltModifier);
+				ui->MouseShortcutEdit->setText(swGetMouseShortcutText(mMouseShortcutButton, mMouseShortcutModifiers));
+			}
+
+			ui->MouseShortcutEdit->setFocus(Qt::MouseFocusReason);
+			MouseEvent->accept();
+
+			return true;
+		}
+
+		if (Event->type() == QEvent::MouseButtonRelease || Event->type() == QEvent::MouseMove || Event->type() == QEvent::ContextMenu)
+			return true;
+
+		return QDialog::eventFilter(Object, Event);
+	}
 
 	if (Event->type() == QEvent::KeyPress)
 	{
@@ -1606,29 +1658,6 @@ QTreeWidgetItem* swPreferencesDialog::FindMouseTreeItem(int ItemIndex) const
 
 void swPreferencesDialog::UpdateMouseTreeItem(int ItemIndex)
 {
-	auto GetShortcutText = [](Qt::MouseButton Button, Qt::KeyboardModifiers Modifiers)
-	{
-		QString Shortcut = QKeySequence(Modifiers).toString(QKeySequence::NativeText);
-
-		switch (Button)
-		{
-		case Qt::LeftButton:
-			Shortcut += tr("Left Button");
-			break;
-
-		case Qt::MiddleButton:
-			Shortcut += tr("Middle Button");
-			break;
-
-		case Qt::RightButton:
-			Shortcut += tr("Right Button");
-			break;
-
-		default:
-			Shortcut.clear();
-		}
-		return Shortcut;
-	};
 
 	QTreeWidgetItem* Item = FindMouseTreeItem(ItemIndex);
 
@@ -1636,8 +1665,8 @@ void swPreferencesDialog::UpdateMouseTreeItem(int ItemIndex)
 		return;
 
 	const swMouseShortcuts::swToolShortcut& Shortcut = mOptions->MouseShortcuts.mShortcuts[ItemIndex];
-	Item->setText(1, GetShortcutText(Shortcut.Button1, Shortcut.Modifiers1));
-	Item->setText(2, GetShortcutText(Shortcut.Button2, Shortcut.Modifiers2));
+	Item->setText(1, swGetMouseShortcutText(Shortcut.Button1, Shortcut.Modifiers1));
+	Item->setText(2, swGetMouseShortcutText(Shortcut.Button2, Shortcut.Modifiers2));
 
 	swMouseShortcuts DefaultShortcuts;
 	DefaultShortcuts.Reset();
@@ -1653,36 +1682,11 @@ void swPreferencesDialog::MouseAssignClicked()
 		return;
 
 	const int ItemIndex = Current->data(0, Qt::UserRole).toInt();
-	int ButtonIndex = ui->mouseButton->currentIndex();
-	Qt::MouseButton Button = Qt::NoButton;
-	Qt::KeyboardModifiers Modifiers = Qt::NoModifier;
+	const Qt::MouseButton Button = mMouseShortcutButton;
+	const Qt::KeyboardModifiers Modifiers = mMouseShortcutModifiers;
 
-	if (ButtonIndex)
+	if (Button != Qt::NoButton)
 	{
-		switch (ButtonIndex)
-		{
-		case 1:
-			Button = Qt::LeftButton;
-			break;
-
-		case 2:
-			Button = Qt::MiddleButton;
-			break;
-
-		case 3:
-			Button = Qt::RightButton;
-			break;
-		}
-
-		if (ui->mouseControl->isChecked())
-			Modifiers |= Qt::ControlModifier;
-
-		if (ui->mouseShift->isChecked())
-			Modifiers |= Qt::ShiftModifier;
-
-		if (ui->mouseAlt->isChecked())
-			Modifiers |= Qt::AltModifier;
-
 		for (int ToolIdx = 0; ToolIdx < static_cast<int>(swTool::Count); ToolIdx++)
 		{
 			if (ToolIdx == ItemIndex)
@@ -1799,31 +1803,9 @@ void swPreferencesDialog::MouseTreeItemChanged(QTreeWidgetItem* Current)
 
 	const int ToolIndex = Current->data(0, Qt::UserRole).toInt();
 
-	Qt::MouseButton Button = mOptions->MouseShortcuts.mShortcuts[ToolIndex].Button1;
-
-	switch (Button)
-	{
-	case Qt::LeftButton:
-		ui->mouseButton->setCurrentIndex(1);
-		break;
-
-	case Qt::MiddleButton:
-		ui->mouseButton->setCurrentIndex(2);
-		break;
-
-	case Qt::RightButton:
-		ui->mouseButton->setCurrentIndex(3);
-		break;
-
-	default:
-		ui->mouseButton->setCurrentIndex(0);
-		break;
-	}
-
-	Qt::KeyboardModifiers Modifiers = mOptions->MouseShortcuts.mShortcuts[ToolIndex].Modifiers1;
-	ui->mouseControl->setChecked((Modifiers & Qt::ControlModifier) != 0);
-	ui->mouseShift->setChecked((Modifiers & Qt::ShiftModifier) != 0);
-	ui->mouseAlt->setChecked((Modifiers & Qt::AltModifier) != 0);
+	mMouseShortcutButton = mOptions->MouseShortcuts.mShortcuts[ToolIndex].Button1;
+	mMouseShortcutModifiers = mOptions->MouseShortcuts.mShortcuts[ToolIndex].Modifiers1;
+	ui->MouseShortcutEdit->setText(swGetMouseShortcutText(mMouseShortcutButton, mMouseShortcutModifiers));
 }
 
 void swPreferencesDialog::MouseFilterEditTextEdited(const QString& Text)
