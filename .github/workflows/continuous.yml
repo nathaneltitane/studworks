@@ -10,6 +10,11 @@ on:
 permissions:
   contents: read
 
+# a newer push to the same branch cancels the runs still in progress
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build-ubuntu:
     runs-on: ubuntu-latest
