@@ -1,0 +1,117 @@
+#!/bin/bash
+
+# move the release date version to a new date, today by default
+# usage: tools/sw_version_bump [yyyy-mm-dd]
+
+set -e
+
+directory_source="$(cd "${BASH_SOURCE[0]%/*}/.." && pwd)"
+
+printf -v version_today "%(%Y-%m-%d)T" -1
+
+version_new="${1:-${version_today}}"
+
+if [[ ! ${version_new} =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]
+then
+	printf "%s\n" "version not a date: ${version_new}"
+	exit 1
+fi
+
+cd "${directory_source}"
+
+# the current version comes from the source
+while IFS= read -r line_global
+do
+	if [[ ${line_global} =~ SW_VERSION_TEXT\ \"([0-9-]+)\" ]]
+	then
+		version_old="${BASH_REMATCH[1]}"
+		break
+	fi
+done < source/application/sw_global.h
+
+if [ -z "${version_old}" ]
+then
+	printf "%s\n" "version not found in source/application/sw_global.h"
+	exit 1
+fi
+
+if [ "${version_old}" = "${version_new}" ]
+then
+	printf "%s\n" "version already ${version_new}"
+	exit 0
+fi
+
+if [[ ! ${version_new} > ${version_old} ]]
+then
+	printf "%s\n" "version ${version_new} not after ${version_old}"
+	exit 1
+fi
+
+# use to replace a text in the lines of a file matching a pattern
+replace_version() {
+	local file_target="${1}"
+	local pattern_line="${2}"
+	local text_old="${3}"
+	local text_new="${4}"
+	local lines_file
+	local index_line
+
+	mapfile -t lines_file < "${file_target}"
+
+	for index_line in "${!lines_file[@]}"
+	do
+		if [[ ${lines_file[index_line]} == ${pattern_line} ]]
+		then
+			lines_file[index_line]="${lines_file[index_line]//${text_old}/${text_new}}"
+		fi
+	done
+
+	printf "%s\n" "${lines_file[@]}" > "${file_target}"
+	printf "%s\n" "updated ${file_target}"
+}
+
+# use to insert a line before the first line of a file matching a pattern
+insert_version() {
+	local file_target="${1}"
+	local pattern_line="${2}"
+	local lines_insert=("${@:3}")
+	local lines_file
+	local lines_result=()
+	local line_file
+	local state_insert=0
+
+	mapfile -t lines_file < "${file_target}"
+
+	for line_file in "${lines_file[@]}"
+	do
+		if [ "${state_insert}" = 0 ] && [[ ${line_file} == ${pattern_line} ]]
+		then
+			lines_result+=("${lines_insert[@]}")
+			state_insert=1
+		fi
+
+		lines_result+=("${line_file}")
+	done
+
+	printf "%s\n" "${lines_result[@]}" > "${file_target}"
+	printf "%s\n" "updated ${file_target}"
+}
+
+version_compact_old="${version_old//-/}"
+version_compact_new="${version_new//-/}"
+
+replace_version source/application/sw_global.h "*SW_VERSION_TEXT*" "${version_old}" "${version_new}"
+
+# the badges and the package table, the notices keep their own dates
+replace_version README.md "*\[ Version // ${version_old} \]*" "${version_old}" "${version_new}"
+replace_version README.md "      | *${version_old}*" "${version_old}" "${version_new}"
+insert_version README.md "${version_old} ↴" "${version_new} ↴" ""
+
+replace_version .github/ISSUE_TEMPLATE/bug_report.md "*StudWorks Version*" "${version_old}" "${version_new}"
+replace_version packaging/PKGBUILD "pkgver=*" "${version_compact_old}" "${version_compact_new}"
+insert_version packaging/io.github.nathaneltitane.StudWorks.appdata.xml "*<release version=*" $'\t\t'"<release version=\"${version_new}\" date=\"${version_new}\" />"
+replace_version platform/Info.plist "*<string>${version_old}</string>*" "${version_old}" "${version_new}"
+replace_version platform/Info.plist "*<string>${version_compact_old}</string>*" "${version_compact_old}" "${version_compact_new}"
+replace_version snapcraft.yaml "*${version_old}*" "${version_old}" "${version_new}"
+
+printf "%s\n" "version ${version_old} moved to ${version_new}, write its notice in README.md before pushing"
