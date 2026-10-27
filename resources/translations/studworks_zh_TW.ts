@@ -3824,7 +3824,7 @@
         <translation type="vanished">載入檔案 &apos;%1&apos; 時出錯:檔案格式無法識別。</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project.cpp" line="1566"/>
+        <location filename="../../source/core/sw_project.cpp" line="1573"/>
         <source>Merged </source>
         <translation>合併的 </translation>
     </message>
@@ -3833,13 +3833,13 @@
         <translation type="vanished">StudWorks</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="573"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="881"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="576"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="884"/>
         <source>Nothing to export.</source>
         <translation>沒有可導出的內容。</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="183"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="186"/>
         <source>Export 3D Studio</source>
         <translation>導出 3D Studio</translation>
     </message>
@@ -3855,40 +3855,40 @@
         <translation type="obsolete">此項目中已存在名為 &apos;%1&apos; 的零件。</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project.cpp" line="367"/>
-        <location filename="../../source/core/sw_project.cpp" line="394"/>
-        <location filename="../../source/core/sw_project.cpp" line="451"/>
+        <location filename="../../source/core/sw_project.cpp" line="368"/>
+        <location filename="../../source/core/sw_project.cpp" line="395"/>
+        <location filename="../../source/core/sw_project.cpp" line="452"/>
         <source>Submodels</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">子模型</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project.cpp" line="427"/>
+        <location filename="../../source/core/sw_project.cpp" line="428"/>
         <source>Model &apos;%1&apos; was deleted.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">型號 &apos;%1&apos; 已刪除。</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project.cpp" line="725"/>
+        <location filename="../../source/core/sw_project.cpp" line="726"/>
         <source>Embedded data has no filename.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">嵌入數據沒有檔案名。</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project.cpp" line="779"/>
+        <location filename="../../source/core/sw_project.cpp" line="780"/>
         <source>Unexpected statement in embedded data &apos;%1&apos;.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">嵌入數據 &apos;%1&apos; 中存在意外語句。</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project.cpp" line="814"/>
+        <location filename="../../source/core/sw_project.cpp" line="815"/>
         <source>Duplicate model &apos;%1&apos; was ignored; model names are case-insensitive.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">重複模型 &apos;%1&apos; 被忽略；型號名稱不區分大小寫。</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project.cpp" line="1025"/>
-        <location filename="../../source/core/sw_project.cpp" line="1034"/>
+        <location filename="../../source/core/sw_project.cpp" line="1026"/>
+        <location filename="../../source/core/sw_project.cpp" line="1035"/>
         <source>Error reading file &apos;%1&apos;:
 %2</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -3896,15 +3896,15 @@
 %2</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project.cpp" line="1025"/>
-        <location filename="../../source/core/sw_project.cpp" line="1034"/>
-        <location filename="../../source/core/sw_project.cpp" line="1090"/>
+        <location filename="../../source/core/sw_project.cpp" line="1026"/>
+        <location filename="../../source/core/sw_project.cpp" line="1035"/>
+        <location filename="../../source/core/sw_project.cpp" line="1093"/>
         <source>Load Model</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">載入模型</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project.cpp" line="1090"/>
+        <location filename="../../source/core/sw_project.cpp" line="1093"/>
         <source>Error loading file &apos;%1&apos;:
 File format is not recognized.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -3912,13 +3912,13 @@ File format is not recognized.</source>
  檔案格式無法識別。</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project.cpp" line="1187"/>
+        <location filename="../../source/core/sw_project.cpp" line="1194"/>
         <source>Could not write all model data.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">無法寫入所有模型數據。</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project.cpp" line="1418"/>
+        <location filename="../../source/core/sw_project.cpp" line="1425"/>
         <source>Merging would change texture &apos;%1&apos; used by model &apos;%2&apos;. Rename the conflicting texture before merging.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">合併將更改模型 &apos;%2&apos; 使用的紋理 &apos;%1&apos;。在合併之前重命名衝突的紋理。</translation>
@@ -3934,165 +3934,165 @@ File format is not recognized.</source>
         <translation type="obsolete">這兩個項目都包含名為 &apos;%1&apos; 的不同部分。合併前重命名。</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project.cpp" line="230"/>
+        <location filename="../../source/core/sw_project.cpp" line="231"/>
         <source>Submodel </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project.cpp" line="283"/>
+        <location filename="../../source/core/sw_project.cpp" line="284"/>
         <source>A part named &apos;%1&apos; already exists in this model. Please enter a unique name.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project.cpp" line="367"/>
-        <location filename="../../source/core/sw_project.cpp" line="394"/>
-        <location filename="../../source/core/sw_project.cpp" line="451"/>
+        <location filename="../../source/core/sw_project.cpp" line="368"/>
+        <location filename="../../source/core/sw_project.cpp" line="395"/>
+        <location filename="../../source/core/sw_project.cpp" line="452"/>
         <source>A part named &apos;%1&apos; already exists in this model.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project.cpp" line="1456"/>
+        <location filename="../../source/core/sw_project.cpp" line="1463"/>
         <source>Both models contain different embedded data named &apos;%1&apos;. Rename one before merging.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project.cpp" line="1524"/>
-        <location filename="../../source/core/sw_project.cpp" line="1536"/>
+        <location filename="../../source/core/sw_project.cpp" line="1531"/>
+        <location filename="../../source/core/sw_project.cpp" line="1543"/>
         <source>Both models contain different parts named &apos;%1&apos;. Rename one before merging.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project.cpp" line="1566"/>
+        <location filename="../../source/core/sw_project.cpp" line="1573"/>
         <source>Merged %1 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">合併%1 </translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project.cpp" line="1586"/>
+        <location filename="../../source/core/sw_project.cpp" line="1593"/>
         <source>Could not reserve submodel name &apos;%1&apos;.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">無法保留子型號名稱 &apos;%1&apos;。</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project.cpp" line="1835"/>
+        <location filename="../../source/core/sw_project.cpp" line="1842"/>
         <source>Cannot export different submodels named &apos;%1&apos;.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">無法導出名為 &apos;%1&apos; 的不同子模型。</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project.cpp" line="1885"/>
+        <location filename="../../source/core/sw_project.cpp" line="1892"/>
         <source>Could not serialize all model data.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">無法序列化所有模型數據。</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project.cpp" line="1923"/>
+        <location filename="../../source/core/sw_project.cpp" line="1930"/>
         <source>Cannot export different embedded data named &apos;%1&apos;.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">無法導出名為 &apos;%1&apos; 的不同嵌入數據。</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project.cpp" line="1984"/>
+        <location filename="../../source/core/sw_project.cpp" line="1991"/>
         <source>Clipboard contains no model.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">剪貼板不包含模型。</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="183"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="186"/>
         <source>3DS Files (*.3ds);;All Files (*.*)</source>
         <translation>3DS 檔案 (*.3ds);;所有檔案 (*.*)</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="191"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="595"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="897"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1233"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1967"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1980"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="194"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="598"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="900"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1236"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1970"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1983"/>
         <source>Could not open file &apos;%1&apos; for writing.</source>
         <translation>無法開啟檔案 &apos;%1&apos; 進行寫入。</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="575"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="578"/>
         <source>Export BrickLink</source>
         <translation>導出 BrickLink</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="575"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="578"/>
         <source>XML Files (*.xml);;All Files (*.*)</source>
         <translation>XML 檔案 (*.xml);;所有檔案 (*.*)</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="587"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="590"/>
         <source>Export COLLADA</source>
         <translation>導出 COLLADA</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="587"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="590"/>
         <source>COLLADA Files (*.dae);;All Files (*.*)</source>
         <translation>COLLADA 檔案 (*.dae);;所有檔案 (*.*)</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="883"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="886"/>
         <source>Export CSV</source>
         <translation>導出 CSV</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="883"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="886"/>
         <source>CSV Files (*.csv);;All Files (*.*)</source>
         <translation>CSV 檔案 (*.csv);;所有檔案 (*.*)</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="1032"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1035"/>
         <source>Created by %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="1055"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1093"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1185"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1058"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1096"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1188"/>
         <source>Instructions for %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="1060"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1096"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1116"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1208"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1063"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1099"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1119"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1211"/>
         <source>Step %1</source>
         <translation type="unfinished">步驟 %1</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="1099"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1136"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1211"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1102"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1139"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1214"/>
         <source>Parts Used</source>
         <translation type="unfinished">所用零件</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="1115"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1118"/>
         <source>%1 - Step %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="1128"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1159"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1131"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1162"/>
         <source>Previous</source>
         <translation type="unfinished">上一個</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="1131"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1162"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1134"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1165"/>
         <source>Index</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="1134"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1137"/>
         <source>Next</source>
         <translation type="unfinished">下一個</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="1151"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1154"/>
         <source>Parts used by %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4101,55 +4101,55 @@ File format is not recognized.</source>
         <translation type="vanished">創建圖片錯誤.</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="1225"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1228"/>
         <source>Export POV-Ray</source>
         <translation>導出 POV-Ray</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="1225"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1228"/>
         <source>POV-Ray Files (*.pov);;All Files (*.*)</source>
         <translation>POV-Ray 檔案 (*.pov);;所有檔案 (*.*)</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="1670"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1720"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1673"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1723"/>
         <source>Could not find LGEO files in folder &apos;%1&apos;.</source>
         <translation>在資料夾 &apos;%1&apos; 中找不到 LGEO 檔案。</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="1958"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1961"/>
         <source>Export Wavefront</source>
         <translation>導出 Wavefront</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="1958"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1961"/>
         <source>Wavefront Files (*.obj);;All Files (*.*)</source>
         <translation>Wavefront 檔案 (*.obj);;所有檔案 (*.*)</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project.cpp" line="1175"/>
-        <location filename="../../source/core/sw_project.cpp" line="1187"/>
-        <location filename="../../source/core/sw_project.cpp" line="1198"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="81"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="97"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1017"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1051"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1089"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1111"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1147"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1181"/>
+        <location filename="../../source/core/sw_project.cpp" line="1178"/>
+        <location filename="../../source/core/sw_project.cpp" line="1194"/>
+        <location filename="../../source/core/sw_project.cpp" line="1205"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="84"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="100"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1020"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1054"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1092"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1114"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1150"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1184"/>
         <source>Error writing to file &apos;%1&apos;:
 %2</source>
         <translation>寫入檔案 &apos;%1&apos; 時出錯:
 %2</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project.cpp" line="143"/>
+        <location filename="../../source/core/sw_project.cpp" line="144"/>
         <source>New Model.ldr</source>
         <translation>新建模型.ldr</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project.cpp" line="143"/>
+        <location filename="../../source/core/sw_project.cpp" line="144"/>
         <source>New Model.mpd</source>
         <translation>新建模型.mpd</translation>
     </message>
@@ -4158,12 +4158,12 @@ File format is not recognized.</source>
         <translation type="vanished">子模型 #</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project.cpp" line="243"/>
+        <location filename="../../source/core/sw_project.cpp" line="244"/>
         <source>Submodel Name:</source>
         <translation>子模型名稱:</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project.cpp" line="250"/>
+        <location filename="../../source/core/sw_project.cpp" line="251"/>
         <source>The submodel name cannot be empty.</source>
         <translation>子模型名稱不能為空。</translation>
     </message>
@@ -4172,13 +4172,13 @@ File format is not recognized.</source>
         <translation type="vanished">子模型已存在</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project.cpp" line="270"/>
+        <location filename="../../source/core/sw_project.cpp" line="271"/>
         <source>A submodel named &apos;%1&apos; already exists. Please enter a unique name.</source>
         <oldsource>A submodel named &apos;%1&apos; already exists, please enter a unique name.</oldsource>
         <translation type="unfinished">名為 &apos;%1&apos; 的子模型已存在，請輸入唯一名稱。</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project.cpp" line="301"/>
+        <location filename="../../source/core/sw_project.cpp" line="302"/>
         <source>New Submodel</source>
         <translation>新建子模型</translation>
     </message>
@@ -7562,70 +7562,70 @@ It is built on LeoCAD by Leonardo Zide and released under the GNU General Public
 <context>
     <name>swApplication</name>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="518"/>
-        <location filename="../../source/application/sw_application.cpp" line="543"/>
-        <location filename="../../source/application/sw_application.cpp" line="566"/>
-        <location filename="../../source/application/sw_application.cpp" line="589"/>
-        <location filename="../../source/application/sw_application.cpp" line="599"/>
-        <location filename="../../source/application/sw_application.cpp" line="622"/>
-        <location filename="../../source/application/sw_application.cpp" line="647"/>
+        <location filename="../../source/application/sw_application.cpp" line="520"/>
+        <location filename="../../source/application/sw_application.cpp" line="545"/>
+        <location filename="../../source/application/sw_application.cpp" line="568"/>
+        <location filename="../../source/application/sw_application.cpp" line="591"/>
+        <location filename="../../source/application/sw_application.cpp" line="601"/>
+        <location filename="../../source/application/sw_application.cpp" line="624"/>
+        <location filename="../../source/application/sw_application.cpp" line="649"/>
         <source>Not enough parameters for the &apos;%1&apos; option.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&apos;%1&apos; 選項參數不足。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="540"/>
-        <location filename="../../source/application/sw_application.cpp" line="563"/>
-        <location filename="../../source/application/sw_application.cpp" line="586"/>
-        <location filename="../../source/application/sw_application.cpp" line="619"/>
-        <location filename="../../source/application/sw_application.cpp" line="644"/>
-        <location filename="../../source/application/sw_application.cpp" line="697"/>
-        <location filename="../../source/application/sw_application.cpp" line="814"/>
-        <location filename="../../source/application/sw_application.cpp" line="835"/>
-        <location filename="../../source/application/sw_application.cpp" line="846"/>
+        <location filename="../../source/application/sw_application.cpp" line="542"/>
+        <location filename="../../source/application/sw_application.cpp" line="565"/>
+        <location filename="../../source/application/sw_application.cpp" line="588"/>
+        <location filename="../../source/application/sw_application.cpp" line="621"/>
+        <location filename="../../source/application/sw_application.cpp" line="646"/>
+        <location filename="../../source/application/sw_application.cpp" line="699"/>
+        <location filename="../../source/application/sw_application.cpp" line="816"/>
+        <location filename="../../source/application/sw_application.cpp" line="837"/>
+        <location filename="../../source/application/sw_application.cpp" line="848"/>
         <source>Invalid parameter value specified for the &apos;%1&apos; option: &apos;%2&apos;.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">為 &apos;%1&apos; 選項指定的參數值無效：&apos;%2&apos;.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="658"/>
+        <location filename="../../source/application/sw_application.cpp" line="660"/>
         <source>The file &apos;%1&apos; is not readable.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">檔案 &apos;%1&apos; 不可讀。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="706"/>
+        <location filename="../../source/application/sw_application.cpp" line="708"/>
         <source>Invalid parameter values specified for the &apos;%1&apos; option: limits are +/- 360.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">為 &apos;%1&apos; 選項指定的參數值無效：限制為 +/- 360.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="725"/>
+        <location filename="../../source/application/sw_application.cpp" line="727"/>
         <source>The camera position is too close to the camera target of the &apos;%1&apos; option.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">相機位置距離 &apos;%1&apos; 選項的相機目標太近。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="730"/>
+        <location filename="../../source/application/sw_application.cpp" line="732"/>
         <source>Invalid up vector length specified for the &apos;%1&apos; option.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">為 &apos;%1&apos; 選項指定的向上向量長度無效。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="735"/>
+        <location filename="../../source/application/sw_application.cpp" line="737"/>
         <source>The up vector is parallel to the front vector specified for the &apos;%1&apos; option.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">向上向量與為 &apos;%1&apos; 選項指定的前向向量平行。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="748"/>
+        <location filename="../../source/application/sw_application.cpp" line="750"/>
         <source>Invalid parameter values specified for the &apos;%1&apos; option: requirements are: 1 &lt;= &lt;near&gt; &lt; &lt;far&gt;.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -7638,314 +7638,314 @@ It is built on LeoCAD by Leonardo Zide and released under the GNU General Public
         <translation type="obsolete">StudWorks 連續構建 %1</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="884"/>
+        <location filename="../../source/application/sw_application.cpp" line="886"/>
         <source>StudWorks Version %1
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">StudWorks 版本 %1</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="885"/>
+        <location filename="../../source/application/sw_application.cpp" line="887"/>
         <source>Compiled %1
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">已編譯 %1</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="890"/>
+        <location filename="../../source/application/sw_application.cpp" line="892"/>
         <source>Usage: studworks [options] [file]
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">用法：studworks [選項] [檔案]</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="891"/>
+        <location filename="../../source/application/sw_application.cpp" line="893"/>
         <source>  [options] can be:
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  [選項]可以是：</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="892"/>
+        <location filename="../../source/application/sw_application.cpp" line="894"/>
         <source>  -l, --libpath &lt;path&gt;: Set the Parts Library location to path.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -l, --libpath &lt;path&gt;：將片段庫位置設置為路徑.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="893"/>
+        <location filename="../../source/application/sw_application.cpp" line="895"/>
         <source>  -i, --image &lt;outfile.ext&gt;: Save a picture in the format specified by ext and exit.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -i, --image &lt;outfile.ext&gt;：以ext指定的格式儲存一張圖片並退出。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="894"/>
+        <location filename="../../source/application/sw_application.cpp" line="896"/>
         <source>  -w, --width &lt;width&gt;: Set the picture width.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -w, --width &lt;width&gt;: 設置圖片寬度.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="895"/>
+        <location filename="../../source/application/sw_application.cpp" line="897"/>
         <source>  -h, --height &lt;height&gt;: Set the picture height.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -h, --height &lt;height&gt;: 設置圖片高度.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="896"/>
+        <location filename="../../source/application/sw_application.cpp" line="898"/>
         <source>  -f, --from &lt;step&gt;: Set the first step to save pictures.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -f,--from &lt;step&gt;：設置第一步儲存圖片</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="897"/>
+        <location filename="../../source/application/sw_application.cpp" line="899"/>
         <source>  -t, --to &lt;step&gt;: Set the last step to save pictures.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -t,--to &lt;step&gt;：設置最後一步儲存圖片</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="898"/>
+        <location filename="../../source/application/sw_application.cpp" line="900"/>
         <source>  -s, --submodel &lt;submodel&gt;: Set the active submodel.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -s, --submodel &lt;submodel&gt;: 設置活動子模型.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="899"/>
+        <location filename="../../source/application/sw_application.cpp" line="901"/>
         <source>  -c, --camera &lt;camera name&gt;: Set the active camera.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -c, --camera &lt;camera name&gt;: 設置活動相機.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="900"/>
+        <location filename="../../source/application/sw_application.cpp" line="902"/>
         <source>  --viewpoint &lt;viewpoint&gt;: Set the view to one of the preset viewpoints (front, back, left, right, top, bottom, home).
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --viewpoint &lt;viewpoint&gt;：將視圖設置為預設視點之一（前、後、左、右、上、下、主）。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="901"/>
+        <location filename="../../source/application/sw_application.cpp" line="903"/>
         <source>  --camera-angles &lt;latitude&gt; &lt;longitude&gt;: Set the camera angles in degrees around the model.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --camera-angles &lt;latitude&gt; &lt;longitude&gt;：設置模型周圍的相機角度（以度為單位）。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="902"/>
+        <location filename="../../source/application/sw_application.cpp" line="904"/>
         <source>  --camera-position &lt;x&gt; &lt;y&gt; &lt;z&gt; &lt;tx&gt; &lt;ty&gt; &lt;tz&gt; &lt;ux&gt; &lt;uy&gt; &lt;uz&gt;: Set the camera position, target and up vector.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --camera-position &lt;x&gt; &lt;y&gt; &lt;z&gt; &lt;tx&gt; &lt;ty&gt; &lt;tz&gt; &lt;ux&gt; &lt;uy&gt; &lt;uz&gt;：設置相機位置、目標和上向量。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="903"/>
+        <location filename="../../source/application/sw_application.cpp" line="905"/>
         <source>  --camera-position-ldraw &lt;x&gt; &lt;y&gt; &lt;z&gt; &lt;tx&gt; &lt;ty&gt; &lt;tz&gt; &lt;ux&gt; &lt;uy&gt; &lt;uz&gt;: Set the camera position, target and up vector using LDraw coordinates.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --camera-position-ldraw &lt;x&gt; &lt;y&gt; &lt;z&gt; &lt;tx&gt; &lt;ty&gt; &lt;tz&gt; &lt;ux&gt; &lt;uy&gt; &lt;uz&gt;：使用 LDraw 設置相機位置、目標和上向量座標.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="904"/>
+        <location filename="../../source/application/sw_application.cpp" line="906"/>
         <source>  --orthographic: Render images using an orthographic projection.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --orthographic：使用正交投影渲染圖像。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="905"/>
+        <location filename="../../source/application/sw_application.cpp" line="907"/>
         <source>  --fov &lt;degrees&gt;: Set the vertical field of view used to render images (&lt; 180).
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --fov &lt;degrees&gt;：設置用於渲染圖像的垂直視野 (&lt; 180).</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="906"/>
+        <location filename="../../source/application/sw_application.cpp" line="908"/>
         <source>  --zplanes &lt;near&gt; &lt;far&gt;: Set the near and far clipping planes used to render images (1 &lt;= &lt;near&gt; &lt; &lt;far&gt;).
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --zplanes &lt;near&gt; &lt;far&gt;：設置用於渲染圖像的近剪裁平面和遠剪裁平面（1 &lt;= &lt;near&gt; &lt; &lt;far&gt;）.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="907"/>
+        <location filename="../../source/application/sw_application.cpp" line="909"/>
         <source>  --fade-steps: Render parts from prior steps faded.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --fade-steps：先前步驟中的渲染片段褪色。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="908"/>
+        <location filename="../../source/application/sw_application.cpp" line="910"/>
         <source>  --no-fade-steps: Do not render parts from prior steps faded.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --no-fade-steps：不要將先前步驟中的片段渲染為褪色。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="909"/>
+        <location filename="../../source/application/sw_application.cpp" line="911"/>
         <source>  --fade-steps-color &lt;#AARRGGBB&gt;: Rendering color for prior step parts.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --fade-steps-color &lt;#AARRGGBB&gt;：先前步驟片段的渲染顏色.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="910"/>
+        <location filename="../../source/application/sw_application.cpp" line="912"/>
         <source>  --highlight: Highlight parts in the steps they appear.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --highlight：突出顯示出現步驟中的片段。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="911"/>
+        <location filename="../../source/application/sw_application.cpp" line="913"/>
         <source>  --no-highlight: Do not highlight parts in the steps they appear.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --no-highlight：不要在出現的步驟中突出顯示棋子。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="912"/>
+        <location filename="../../source/application/sw_application.cpp" line="914"/>
         <source>  --highlight-color &lt;#AARRGGBB&gt;: Rendering color for highlighted parts.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --highlight-color &lt;#AARRGGBB&gt;：突出顯示部分的渲染顏色.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="913"/>
+        <location filename="../../source/application/sw_application.cpp" line="915"/>
         <source>  --shading &lt;mode&gt;: Select shading mode for rendering (wireframe, flat, default, full).
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --shading &lt;mode&gt;：選擇渲染的著色模式（線框、平面、預設、完整）。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="914"/>
+        <location filename="../../source/application/sw_application.cpp" line="916"/>
         <source>  --lighting &lt;style&gt;: Select the lighting style of the default shading (standard, studio, matte, toon).
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="915"/>
+        <location filename="../../source/application/sw_application.cpp" line="917"/>
         <source>  --line-width &lt;width&gt;: Set the width of the edge lines.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --line-width &lt;width&gt;：設置邊緣線的寬度。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="916"/>
+        <location filename="../../source/application/sw_application.cpp" line="918"/>
         <source>  --aa-samples &lt;samples&gt;: Anti-aliasing sample size (1, 2, 4, or 8).
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --aa-samples &lt;samples&gt;：抗鋸齒樣本大小（1、2、4 或 8）.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="917"/>
+        <location filename="../../source/application/sw_application.cpp" line="919"/>
         <source>  -ss, --stud-style &lt;style&gt;: Set the stud style (0=No style, 1=LDraw single wire, 2=LDraw double wire, 3=LDraw raised floating, 4=LDraw raised rounded, 5=LDraw subtle rounded, 6=LEGO® no logo, 7=LEGO® single wire).
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -ss, --stud-style &lt;style&gt;：設置螺柱樣式（0=無樣式，1=LDraw單線，2=LDraw雙線，3=LDraw凸起浮動，4=LDraw凸起圓形，5=LDraw微妙圓形，6=LEGO®無標誌，7=LEGO®單線).</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="918"/>
+        <location filename="../../source/application/sw_application.cpp" line="920"/>
         <source>  -nscc, --disable-stud-cylinder-color: Disable high contrast stud cylinder color.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -nscc，--disable-stud-cylinder-color：禁用高對比度螺柱圓柱顏色。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="919"/>
+        <location filename="../../source/application/sw_application.cpp" line="921"/>
         <source>  -scc, --stud-cylinder-color &lt;#AARRGGBB&gt;: High contrast stud cylinder color.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -scc，--stud-cylinder-color &lt;#AARRGGBB&gt;：高對比度螺柱圓柱顏色.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="920"/>
+        <location filename="../../source/application/sw_application.cpp" line="922"/>
         <source>  -nec, --disable-edge-color: Disable high contrast edge color.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -nec，--disable-edge-color：禁用高對比度邊緣顏色。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="921"/>
+        <location filename="../../source/application/sw_application.cpp" line="923"/>
         <source>  -ec, --edge-color &lt;#AARRGGBB&gt;: High contrast edge color.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -ec, --edge-color &lt;#AARRGGBB&gt;: 高對比度邊緣顏色.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="922"/>
+        <location filename="../../source/application/sw_application.cpp" line="924"/>
         <source>  -nbec, --disable-black-edge-color: Disable high contrast edge color for black parts.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -nbec，--disable-black-edge-color：禁用黑色塊的高對比度邊緣顏色。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="923"/>
+        <location filename="../../source/application/sw_application.cpp" line="925"/>
         <source>  -bec, --black-edge-color &lt;#AARRGGBB&gt;: High contrast edge color for black parts.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -bec，--black-edge-color &lt;#AARRGGBB&gt;：黑色塊的高對比度邊緣顏色.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="924"/>
+        <location filename="../../source/application/sw_application.cpp" line="926"/>
         <source>  -ndec, --disable-dark-edge-color: Disable high contrast edge color for dark color parts.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -ndec，--disable-dark-edge-color：禁用深色片段的高對比度邊緣顏色。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="925"/>
+        <location filename="../../source/application/sw_application.cpp" line="927"/>
         <source>  -dec, --dark-edge-color &lt;#AARRGGBB&gt;: High contrast edge color for dark color parts.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -dec, --dark-edge-color &lt;#AARRGGBB&gt;：深色片段的高對比度邊緣顏色.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="926"/>
+        <location filename="../../source/application/sw_application.cpp" line="928"/>
         <source>  -aec, --automate-edge-color: Enable automatically adjusted edge colors.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -aec, --automate-edge-color: 啟用自動調整邊緣顏色.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="927"/>
+        <location filename="../../source/application/sw_application.cpp" line="929"/>
         <source>  -cc, --color-contrast &lt;contrast&gt;: Color contrast value between 0.0 and 1.0.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -cc, --color-contrast &lt;contrast&gt;: 0.0 和 1.0 之間的顏色對比度值.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="928"/>
+        <location filename="../../source/application/sw_application.cpp" line="930"/>
         <source>  -ldv, --light-dark-value &lt;value&gt;: Light/Dark color value between 0.0 and 1.0.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -ldv, --light-dark-value &lt;value&gt;：0.0 到 1.0 之間的淺色/深色值.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="929"/>
+        <location filename="../../source/application/sw_application.cpp" line="931"/>
         <source>  -obj, --export-wavefront &lt;outfile.obj&gt;: Export the model to Wavefront OBJ format.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -obj, --export-wavefront &lt;outfile.obj&gt;：將模型導出為 Wavefront OBJ 格式.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="930"/>
+        <location filename="../../source/application/sw_application.cpp" line="932"/>
         <source>  -3ds, --export-3ds &lt;outfile.3ds&gt;: Export the model to 3D Studio 3DS format.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -3ds, --export-3ds &lt;outfile.3ds&gt;：將模型導出為 3D Studio 3DS 格式。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="931"/>
+        <location filename="../../source/application/sw_application.cpp" line="933"/>
         <source>  -dae, --export-collada &lt;outfile.dae&gt;: Export the model to COLLADA DAE format.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -dae, --export-collada &lt;outfile.dae&gt;：將模型導出為 COLLADA DAE 格式.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="932"/>
+        <location filename="../../source/application/sw_application.cpp" line="934"/>
         <source>  -csv, --export-csv &lt;outfile.csv&gt;: Export the list of parts used in CSV format.
 </source>
         <oldsource>  -csv, --export-csv &lt;outfile.csv&gt;: Export the list of pieces used in csv format.
@@ -7954,140 +7954,140 @@ It is built on LeoCAD by Leonardo Zide and released under the GNU General Public
         <translation type="unfinished">  -csv, --export-csv &lt;outfile.csv&gt;: 導出csv格式使用的片段列表.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="933"/>
+        <location filename="../../source/application/sw_application.cpp" line="935"/>
         <source>  -html, --export-html &lt;folder&gt;: Create an HTML page for the model.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -html, --export-html &lt;folder&gt;：為模型創建 HTML 頁面.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="934"/>
+        <location filename="../../source/application/sw_application.cpp" line="936"/>
         <source>  -v, --version: Output version information and exit.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -v,--version：輸出版本信息並退出.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="935"/>
+        <location filename="../../source/application/sw_application.cpp" line="937"/>
         <source>  -?, --help: Display this help message and exit.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -?, --help: 顯示此幫助消息並退出.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="941"/>
+        <location filename="../../source/application/sw_application.cpp" line="943"/>
         <source>Unknown option: &apos;%1&apos;.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">未知選項：&apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="948"/>
+        <location filename="../../source/application/sw_application.cpp" line="950"/>
         <source>High contrast stud and edge color settings are ignored when -aec or --automate-edge-color is set.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">當設置 -aec 或 --automate-edge-color 時，高對比度螺柱和邊緣顏色設置將被忽略。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="953"/>
+        <location filename="../../source/application/sw_application.cpp" line="955"/>
         <source>Automate edge color is required for the &apos;%1&apos; option but is not enabled.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&apos;%1&apos; 選項需要自動邊緣顏色，但未啟用。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="964"/>
+        <location filename="../../source/application/sw_application.cpp" line="966"/>
         <source>High contrast stud style is required for the &apos;%1&apos; option but is not enabled.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&apos;%1&apos; 選項需要高對比度螺柱樣式，但未啟用。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="994"/>
+        <location filename="../../source/application/sw_application.cpp" line="996"/>
         <source>--viewpoint is ignored when --camera is set.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">當 --camera 設置時，--viewpoint 被忽略。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="997"/>
+        <location filename="../../source/application/sw_application.cpp" line="999"/>
         <source>--orthographic is ignored when --camera is set.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">當 --camera 設置時，--orthographic 被忽略。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1000"/>
+        <location filename="../../source/application/sw_application.cpp" line="1002"/>
         <source>--camera-angles is ignored when --camera is set.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">當 --camera 設置時，--camera-angles 被忽略。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1003"/>
+        <location filename="../../source/application/sw_application.cpp" line="1005"/>
         <source>--camera-position is ignored when --camera is set.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">當 --camera 設置時，--camera-position 被忽略。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1008"/>
+        <location filename="../../source/application/sw_application.cpp" line="1010"/>
         <source>--camera-angles is ignored when --viewpoint is set.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">當 --viewpoint 設置時，--camera-angles 被忽略。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1011"/>
+        <location filename="../../source/application/sw_application.cpp" line="1013"/>
         <source>--camera-position is ignored when --viewpoint is set.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">當 --viewpoint 設置時，--camera-position 被忽略。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1016"/>
+        <location filename="../../source/application/sw_application.cpp" line="1018"/>
         <source>--camera-position is ignored when --camera-angles is set.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">當 --camera-angles 設置時，--camera-position 被忽略。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1023"/>
+        <location filename="../../source/application/sw_application.cpp" line="1025"/>
         <source>No file name specified.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">未指定檔案名.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1059"/>
+        <location filename="../../source/application/sw_application.cpp" line="1061"/>
         <source>Command line image export is not supported on iOS.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">iOS 不支持命令行圖像導出。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1073"/>
-        <location filename="../../source/application/sw_application.cpp" line="1454"/>
+        <location filename="../../source/application/sw_application.cpp" line="1075"/>
+        <location filename="../../source/application/sw_application.cpp" line="1456"/>
         <source>Initialize Renderer</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">初始化渲染器</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1113"/>
+        <location filename="../../source/application/sw_application.cpp" line="1115"/>
         <source>StudWorks could not find a compatible Parts Library so only a small number of parts will be available.
 
 Please visit https://library.ldraw.org for information on how to download and install a library.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1115"/>
+        <location filename="../../source/application/sw_application.cpp" line="1117"/>
         <source>StudWorks could not load Parts Library.
 
 Please visit https://library.ldraw.org for information on how to download and install a library.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1571"/>
+        <location filename="../../source/application/sw_application.cpp" line="1573"/>
         <source>Preferences</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">選項</translation>
@@ -8115,25 +8115,25 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 請訪問 https://www.studworks.org 瞭解有關如何下載和安裝庫的信息。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1118"/>
+        <location filename="../../source/application/sw_application.cpp" line="1120"/>
         <source>Load Parts Library</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">載入零件庫</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1174"/>
+        <location filename="../../source/application/sw_application.cpp" line="1176"/>
         <source>Error: model &apos;%1&apos; does not exist.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">錯誤：型號 &apos;%1&apos; 不存在。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1273"/>
-        <location filename="../../source/application/sw_application.cpp" line="1310"/>
-        <location filename="../../source/application/sw_application.cpp" line="1344"/>
-        <location filename="../../source/application/sw_application.cpp" line="1378"/>
-        <location filename="../../source/application/sw_application.cpp" line="1412"/>
-        <location filename="../../source/application/sw_application.cpp" line="1432"/>
+        <location filename="../../source/application/sw_application.cpp" line="1275"/>
+        <location filename="../../source/application/sw_application.cpp" line="1312"/>
+        <location filename="../../source/application/sw_application.cpp" line="1346"/>
+        <location filename="../../source/application/sw_application.cpp" line="1380"/>
+        <location filename="../../source/application/sw_application.cpp" line="1414"/>
+        <location filename="../../source/application/sw_application.cpp" line="1434"/>
         <source>Saved &apos;%1&apos;.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -8424,7 +8424,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">已儲存 &apos;%1&apos;。</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1571"/>
+        <location filename="../../source/application/sw_application.cpp" line="1573"/>
         <source>Some changes will only take effect the next time you start StudWorks.</source>
         <translation>部分更改將在下次啟動 StudWorks 時生效。</translation>
     </message>
@@ -12333,10 +12333,10 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="125"/>
-        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="326"/>
-        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="336"/>
-        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="344"/>
-        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="360"/>
+        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="356"/>
+        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="366"/>
+        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="374"/>
+        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="390"/>
         <source>Save Model</source>
         <translation>儲存模型</translation>
     </message>
@@ -13089,13 +13089,43 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_project.cpp" line="172"/>
-        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="228"/>
+        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="258"/>
         <source>Supported Files (*.lcd *.ldr *.dat *.mpd);;All Files (*.*)</source>
         <translation>支持的檔案 (*.lcd *.ldr *.dat *.mpd);;所有檔案 (*.*)</translation>
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_project.cpp" line="228"/>
-        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="263"/>
+        <source>Migrate Model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="228"/>
+        <source>&apos;%1&apos; uses LeoCAD meta commands. Do you want to migrate it to StudWorks meta commands?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="229"/>
+        <source>A migrated model is saved with StudWorks meta commands, LeoCAD then ignores its cameras, lights, groups and part settings. A model kept as it is stays readable in LeoCAD.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="230"/>
+        <source>Migrate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="231"/>
+        <source>Keep</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="233"/>
+        <source>Migrate LeoCAD models automatically</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="258"/>
+        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="293"/>
         <source>Merge Model</source>
         <translation>合併模型</translation>
     </message>
@@ -13108,12 +13138,12 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">已合併 %1 個子模型。</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="273"/>
+        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="303"/>
         <source>Import</source>
         <translation>導入</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="273"/>
+        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="303"/>
         <source>LEGO® Digital Designer Files (*.lxf);;All Files (*.*)</source>
         <translation>LEGO® Digital Designer 檔案 (*.lxf);;所有檔案 (*.*)</translation>
     </message>
@@ -13126,12 +13156,12 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">載入錯誤 &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="324"/>
+        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="354"/>
         <source>Supported Files (*.mpd);;All Files (*.*)</source>
         <translation>支持的檔案 (*.mpd);;所有檔案 (*.*)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="324"/>
+        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="354"/>
         <source>Supported Files (*.ldr *.dat *.mpd);;All Files (*.*)</source>
         <translation>支持的檔案 (*.ldr *.dat *.mpd);;所有檔案 (*.*)</translation>
     </message>
@@ -13152,13 +13182,13 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished"> 移動: %1 %2 旋轉: %3 %4 </translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="259"/>
+        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="289"/>
         <source>Cannot Merge Model</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">無法合併模型</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="336"/>
+        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="366"/>
         <source>Saving files in LCD format is no longer supported. Please use the LDR or MPD formats instead.</source>
         <oldsource>Saving files in LCD format is no longer supported, please use the LDR or MPD formats instead.</oldsource>
         <translation type="unfinished">不再支持儲存為 LCD 格式，請改用 LDR 或 MPD 格式。</translation>
@@ -13169,7 +13199,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="obsolete">儲存項目</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="360"/>
+        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="390"/>
         <source>Save changes to &apos;%1&apos;?</source>
         <translation>儲存對 &apos;%1&apos; 的更改？</translation>
     </message>
@@ -13257,7 +13287,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation>8B</translation>
     </message>
     <message numerus="yes">
-        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="263"/>
+        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="293"/>
         <source>Merged %n submodels.</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">
@@ -13841,13 +13871,13 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="unfinished">無法為零件 &apos;%1&apos; 生成幾何體。</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_model_file.cpp" line="666"/>
+        <location filename="../../source/core/sw_model_file.cpp" line="667"/>
         <source>Model &apos;%1&apos;: reference to &apos;%2&apos; was ignored because it would create a circular reference.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">模型 &apos;%1&apos;：對 &apos;%2&apos; 的引用被忽略，因為它會創建循環引用。</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_model_file.cpp" line="953"/>
+        <location filename="../../source/core/sw_model_file.cpp" line="954"/>
         <location filename="../../source/core/sw_model_group.cpp" line="77"/>
         <source>Group </source>
         <translation type="unfinished"></translation>
@@ -17013,47 +17043,47 @@ Unsupported video cards use face tint and colored edges.</source>
         <translation type="vanished">網格間距必須大於 0。</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="662"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="664"/>
         <source>Select Parts Library Folder</source>
         <translation>選擇零件庫資料夾</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="670"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="672"/>
         <source>Supported Archives (*.zip *.bin);;All Files (*.*)</source>
         <translation>支持的壓縮包 (*.zip *.bin);;所有檔案 (*.*)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="670"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="672"/>
         <source>Select Parts Library Archive</source>
         <translation>選擇零件庫壓縮包</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="693"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="695"/>
         <source>Select Color Configuration File</source>
         <translation>選擇顏色配置檔案</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="693"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="695"/>
         <source>Settings Files (*.ldr);;All Files (*.*)</source>
         <translation>設置檔案 (*.ldr);;所有檔案 (*.*)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="701"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="703"/>
         <source>Select Minifigure Builder Settings File</source>
         <translation>選擇人偶設置檔案</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="701"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="703"/>
         <source>Settings Files (*.ini);;All Files (*.*)</source>
         <translation>設置檔案 (*.ini);;所有檔案 (*.*)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="710"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="712"/>
         <source>Executable Files (*.exe);;All Files (*.*)</source>
         <translation>可執行檔案 (*.exe);;所有檔案 (*.*)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="712"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="714"/>
         <source>All Files (*.*)</source>
         <translation>所有檔案 (*.*)</translation>
     </message>
@@ -17062,22 +17092,22 @@ Unsupported video cards use face tint and colored edges.</source>
         <translation type="vanished">開啟 POV-Ray</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="723"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="725"/>
         <source>Open LGEO Folder</source>
         <translation>開啟 LGEO 資料夾</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="733"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="735"/>
         <source>Reset Colors</source>
         <translation>重置顏色</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="733"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="735"/>
         <source>Would you like to also reset the interface colors to match the color theme?</source>
         <translation>是否同時重置界面顏色以符合顏色主題？</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="747"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="749"/>
         <source>Select Background Color</source>
         <translation>選擇背景顏色</translation>
     </message>
@@ -17094,202 +17124,202 @@ Unsupported video cards use face tint and colored edges.</source>
         <translation type="vanished">選擇座標軸顏色</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="752"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="754"/>
         <source>Select Text Color</source>
         <translation>選擇文本顏色</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="757"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="759"/>
         <source>Select Text Halo Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">選擇文本光暈顏色</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="763"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="765"/>
         <source>Select Marquee Border Color</source>
         <translation>選擇選框邊框顏色</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="768"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="770"/>
         <source>Select Marquee Fill Color</source>
         <translation>選擇選框填充顏色</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="774"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="776"/>
         <source>Select Overlay Color</source>
         <translation>選擇疊加色</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="779"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="781"/>
         <source>Select Active View Color</source>
         <translation>選擇活動視圖顏色</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="784"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="786"/>
         <source>Select Inactive View Color</source>
         <translation>選擇非活動視圖顏色</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="789"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="791"/>
         <source>Select Fade Color</source>
         <translation>選擇淡化顏色</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="795"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="797"/>
         <source>Select Highlight Color</source>
         <translation>選擇高亮顏色</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="801"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="803"/>
         <source>Select Grid Stud Color</source>
         <translation>選擇網格凸點顏色</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="807"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="809"/>
         <source>Select Grid Line Color</source>
         <translation>選擇網格線顏色</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="812"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="814"/>
         <source>Select View Sphere Color</source>
         <translation>選擇視圖球顏色</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="817"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="819"/>
         <source>Select View Sphere Text Color</source>
         <translation>選擇視圖球文本顏色</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="822"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="824"/>
         <source>Select View Sphere Highlight Color</source>
         <translation>選擇視圖球高亮顏色</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="827"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="829"/>
         <source>Select X Axis Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="832"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="834"/>
         <source>Select Y Axis Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="837"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="839"/>
         <source>Select Z Axis Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="842"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="844"/>
         <source>Select Object Selected Color</source>
         <translation>選擇選定物體顏色</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="847"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="849"/>
         <source>Select Object Focused Color</source>
         <translation>選擇焦點物體顏色</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="852"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="854"/>
         <source>Select Camera Color</source>
         <translation>選擇相機顏色</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="857"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="859"/>
         <source>Select Light Color</source>
         <translation>選擇光源顏色</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="862"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="864"/>
         <source>Select Control Point Color</source>
         <translation>選擇控制點顏色</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="868"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="870"/>
         <source>Select Control Point Focused Color</source>
         <translation>選擇焦點控制點顏色</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1050"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1052"/>
         <source>Unassigned</source>
         <translation>未分配</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1189"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1191"/>
         <source>Are you sure you want to delete the category &apos;%1&apos;?</source>
         <translation>確定要刪除類別 &apos;%1&apos; 嗎？</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1190"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1192"/>
         <source>Delete Category</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">刪除類別</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1202"/>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1210"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1204"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1212"/>
         <source>Import Categories</source>
         <translation>導入類別</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1202"/>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1221"/>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1557"/>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1577"/>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1752"/>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1773"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1204"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1223"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1559"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1579"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1754"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1775"/>
         <source>Text Files (*.txt);;All Files (*.*)</source>
         <translation>文本檔案 (*.txt);;所有檔案 (*.*)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1210"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1212"/>
         <source>Error loading categories file.</source>
         <translation>載入類別檔案時出錯。</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1221"/>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1228"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1223"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1230"/>
         <source>Export Categories</source>
         <translation>導出類別</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1228"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1230"/>
         <source>Error saving categories file.</source>
         <translation>儲存類別檔案時出錯。</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1235"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1237"/>
         <source>Are you sure you want to load the default categories?</source>
         <translation>確定要載入預設類別嗎？</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1235"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1237"/>
         <source>Reset Categories</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">重置類別</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1502"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1504"/>
         <source>The shortcut &apos;%1&apos; is already assigned to &apos;%2&apos;. Do you want to replace it?</source>
         <translation>快速鍵 &apos;%1&apos; 已分配給 &apos;%2&apos;。是否替換？</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1619"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1621"/>
         <source>Insert</source>
         <translation type="unfinished">插入</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1620"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1622"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1621"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1623"/>
         <source>View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1784"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1786"/>
         <source>Reset Mouse Shortcuts</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">重置游標快捷方式</translation>
@@ -17299,7 +17329,7 @@ Unsupported video cards use face tint and colored edges.</source>
         <translation type="vanished">導入快速鍵</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1565"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1567"/>
         <source>Error loading keyboard shortcuts file.</source>
         <translation>載入鍵盤快速鍵檔案時出錯。</translation>
     </message>
@@ -17308,45 +17338,45 @@ Unsupported video cards use face tint and colored edges.</source>
         <translation type="vanished">導出快速鍵</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1584"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1586"/>
         <source>Error saving keyboard shortcuts file.</source>
         <translation>儲存鍵盤快速鍵檔案時出錯。</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1591"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1593"/>
         <source>Are you sure you want to load the default keyboard shortcuts?</source>
         <translation>確定要載入預設鍵盤快速鍵嗎？</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1254"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1256"/>
         <source>Left Button</source>
         <translation>左鍵</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1258"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1260"/>
         <source>Middle Button</source>
         <translation>中鍵</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1262"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1264"/>
         <source>Right Button</source>
         <translation>右鍵</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1504"/>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1697"/>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1706"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1506"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1699"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1708"/>
         <source>Override Shortcut</source>
         <translation>取代快速鍵</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="398"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="399"/>
         <source>Default Lights is unavailable. Flat shading is used instead.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">預設燈光不可用。而是使用平面陰影。</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="425"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="426"/>
         <source>View sphere rendering is unavailable.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">視圖球體渲染不可用。</translation>
@@ -17357,76 +17387,76 @@ Unsupported video cards use face tint and colored edges.</source>
         <translation type="obsolete">輪廓渲染不可用。將使用面部色彩和彩色邊緣。</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="715"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="717"/>
         <source>Select POV-Ray Executable</source>
         <translation>選擇 POV-Ray 可執行檔案</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1565"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1567"/>
         <source>Import Keyboard Shortcuts</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">導入鍵盤快速鍵</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1584"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1586"/>
         <source>Export Keyboard Shortcuts</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">導出鍵盤快速鍵</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1591"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1593"/>
         <source>Reset Keyboard Shortcuts</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">重置鍵盤快速鍵</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1697"/>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1706"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1699"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1708"/>
         <source>This shortcut is already assigned to &apos;%1&apos;. Do you want to replace it?</source>
         <oldsource>This shortcut is already assigned to &apos;%1&apos;, do you want to replace it?</oldsource>
         <translation type="unfinished">此快速鍵已分配給 &apos;%1&apos;，是否替換？</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1557"/>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1752"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1559"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1754"/>
         <source>Import Shortcuts</source>
         <translation>導入快速鍵</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1760"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1762"/>
         <source>Error loading mouse shortcuts file.</source>
         <translation>載入游標快速鍵檔案時出錯。</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1577"/>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1773"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1579"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1775"/>
         <source>Export Shortcuts</source>
         <translation>導出快速鍵</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="547"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="548"/>
         <source>Grid spacing must be between 1 and %1 studs.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1760"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1762"/>
         <source>Import Mouse Shortcuts</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">導入游標快捷方式</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1779"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1781"/>
         <source>Error saving mouse shortcuts file.</source>
         <translation>儲存游標快速鍵檔案時出錯。</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1779"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1781"/>
         <source>Export Mouse Shortcuts</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">導出游標快捷方式</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1784"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1786"/>
         <source>Are you sure you want to load the default mouse shortcuts?</source>
         <translation>確定要載入預設游標快速鍵嗎？</translation>
     </message>
@@ -17451,7 +17481,7 @@ Unsupported video cards use face tint and colored edges.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="447"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="448"/>
         <source>Outline rendering is unavailable; the Tint and Edges style will be used.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -17988,6 +18018,16 @@ Unsupported video cards use face tint and colored edges.</source>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Assign the entered mouse sequence to the selected tool.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Convert the LeoCAD meta commands of opened models to StudWorks meta commands without asking. Migrated models are no longer read fully by LeoCAD.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Migrate LeoCAD Models Automatically</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
