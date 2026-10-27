@@ -3,7 +3,7 @@
  <class>swAboutDialog</class>
  <widget class="QDialog" name="swAboutDialog">
   <property name="whatsThis">
-   <string>&lt;p&gt;&lt;b&gt;About StudWorks&lt;/b&gt;&lt;/p&gt;&lt;p&gt;View the StudWorks version and system information. The Qt and OpenGL details can help diagnose display problems. Select text in System Information to copy it when reporting a problem. The website link opens in your browser.&lt;/p&gt;</string>
+   <string>&lt;p&gt;&lt;b&gt;About StudWorks&lt;/b&gt;&lt;/p&gt;&lt;p&gt;View the StudWorks version and system information. The Qt and OpenGL details can help diagnose display problems. Select text in System Information to copy it when reporting a problem. The project page link opens in your browser.&lt;/p&gt;</string>
   </property>
   <property name="geometry">
    <rect>
@@ -52,7 +52,8 @@
          <item>
           <widget class="QLabel" name="label_4">
            <property name="text">
-            <string>StudWorks is a free application for creating virtual LEGO models. Based on LeoCAD by Leonardo Zide, released under the GNU General Public License version 2.</string>
+            <string>StudWorks is a free CAD program for creating virtual LEGO models with the LDraw parts library.
+It is built on LeoCAD by Leonardo Zide and released under the GNU General Public License version 2.</string>
            </property>
            <property name="wordWrap">
             <bool>true</bool>
