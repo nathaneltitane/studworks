@@ -159,12 +159,20 @@ macx {
 
 	document_icon.files += $$_PRO_FILE_PWD_/resources/studworks_document.icns
 	document_icon.path = Contents/Resources
-	library.files += $$_PRO_FILE_PWD_/library.bin
-	library.path = Contents/Resources
-	povray.files += $$_PRO_FILE_PWD_/povray
-	povray.path = Contents/MacOS
+	QMAKE_BUNDLE_DATA += document_icon
 
-	QMAKE_BUNDLE_DATA += document_icon library povray
+	# the parts library and povray are bundled only when present
+	exists($$_PRO_FILE_PWD_/library.bin) {
+		library.files += $$_PRO_FILE_PWD_/library.bin
+		library.path = Contents/Resources
+		QMAKE_BUNDLE_DATA += library
+	}
+
+	exists($$_PRO_FILE_PWD_/povray) {
+		povray.files += $$_PRO_FILE_PWD_/povray
+		povray.path = Contents/MacOS
+		QMAKE_BUNDLE_DATA += povray
+	}
 }
 
 ios {
