@@ -419,7 +419,9 @@ void swMainWindow::CreateMenus()
 	RenderMenu->addAction(mActions[SW_FILE_RENDER_OPEN_IN_BLENDER]);
 #endif
 	FileMenu->addAction(mActions[SW_FILE_PRINT]);
-	FileMenu->addAction(mActions[SW_FILE_PRINT_PREVIEW]);
+	FileMenu->addSeparator();
+	FileMenu->addAction(mActions[SW_FILE_INSTRUCTIONS]);
+	FileMenu->addAction(mActions[SW_MODEL_PROPERTIES]);
 	FileMenu->addSeparator();
 	FileMenu->addAction(mActions[SW_FILE_RECENT1]);
 	FileMenu->addAction(mActions[SW_FILE_RECENT2]);
@@ -429,9 +431,6 @@ void swMainWindow::CreateMenus()
 	FileMenu->addAction(mActions[SW_FILE_EXIT]);
 
 	QMenu* EditMenu = menuBar()->addMenu(tr("&Edit"));
-	EditMenu->addAction(mActions[SW_VIEW_PREFERENCES]);
-	EditMenu->addAction(mActions[SW_FILE_INSTRUCTIONS]);
-	EditMenu->addSeparator();
 	EditMenu->addAction(mActions[SW_EDIT_UNDO]);
 	EditMenu->addAction(mActions[SW_EDIT_REDO]);
 	EditMenu->addSeparator();
@@ -454,8 +453,24 @@ void swMainWindow::CreateMenus()
 	EditMenu->addSeparator();
 	EditMenu->addMenu(mTransformMenu);
 	EditMenu->addMenu(mToolsMenu);
+	EditMenu->addSeparator();
+	EditMenu->addAction(mActions[SW_VIEW_PREFERENCES]);
 
 	QMenu* ViewMenu = menuBar()->addMenu(tr("&View"));
+	QMenu* ToolBarsMenu = ViewMenu->addMenu(tr("T&oolbars"));
+	connect(ToolBarsMenu, &QMenu::aboutToShow, this, &swMainWindow::UpdateDockWidgetActions);
+	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_PARTS]);
+	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_COLORS]);
+	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_PROPERTIES]);
+	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_TIMELINE]);
+	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_PREVIEW]);
+	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_MINIFIGURE_BUILDER]);
+	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_TERMINAL]);
+	ToolBarsMenu->addSeparator();
+	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_STANDARD]);
+	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_TOOLS]);
+	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_TIME]);
+	ViewMenu->addSeparator();
 	ViewMenu->addAction(mActions[SW_VIEW_ZOOM_EXTENTS]);
 	ViewMenu->addAction(mActions[SW_VIEW_LOOK_AT]);
 	ViewMenu->addMenu(mViewpointMenu);
@@ -477,40 +492,17 @@ void swMainWindow::CreateMenus()
 	ViewMenu->addAction(mActions[SW_VIEW_REMOVE_VIEW]);
 	ViewMenu->addAction(mActions[SW_VIEW_RESET_VIEWS]);
 	ViewMenu->addSeparator();
-	QMenu* ToolBarsMenu = ViewMenu->addMenu(tr("T&oolbars"));
-	connect(ToolBarsMenu, &QMenu::aboutToShow, this, &swMainWindow::UpdateDockWidgetActions);
-	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_PARTS]);
-	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_COLORS]);
-	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_PROPERTIES]);
-	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_TIMELINE]);
-	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_PREVIEW]);
-	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_MINIFIGURE_BUILDER]);
-	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_TERMINAL]);
-	ToolBarsMenu->addSeparator();
-	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_STANDARD]);
-	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_TOOLS]);
-	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_TIME]);
 	ViewMenu->addAction(mActions[SW_VIEW_FULL_SCREEN]);
 
 	QMenu* PieceMenu = menuBar()->addMenu(tr("&Piece"));
 	PieceMenu->addAction(mActions[SW_PIECE_INSERT]);
-	PieceMenu->addAction(mActions[SW_PIECE_TOGGLE_FIRST_AT_ORIGIN]);
-	connect(PieceMenu, &QMenu::aboutToShow, this, [this]()
-	{
-		mActions[SW_PIECE_TOGGLE_FIRST_AT_ORIGIN]->setChecked(swGetPreferences().mFirstPieceAtOrigin);
-	});
 	PieceMenu->addAction(mActions[SW_PIECE_DELETE]);
 	PieceMenu->addAction(mActions[SW_PIECE_DUPLICATE]);
+	PieceMenu->addSeparator();
 	PieceMenu->addAction(mActions[SW_PIECE_PAINT_SELECTED]);
 	PieceMenu->addAction(mActions[SW_PIECE_ARRAY]);
 	PieceMenu->addAction(mActions[SW_PIECE_RESET_PIVOT_POINT]);
 	PieceMenu->addAction(mActions[SW_PIECE_REMOVE_KEY_FRAMES]);
-	PieceMenu->addSeparator();
-	PieceMenu->addAction(mActions[SW_PIECE_EDIT_SELECTED_SUBMODEL]);
-	PieceMenu->addAction(mActions[SW_PIECE_EDIT_END_SUBMODEL]);
-	PieceMenu->addAction(mActions[SW_PIECE_VIEW_SELECTED_MODEL]);
-	PieceMenu->addAction(mActions[SW_PIECE_INLINE_SELECTED_MODELS]);
-	PieceMenu->addAction(mActions[SW_PIECE_MOVE_SELECTION_TO_MODEL]);
 	PieceMenu->addSeparator();
 	PieceMenu->addAction(mActions[SW_PIECE_GROUP]);
 	PieceMenu->addAction(mActions[SW_PIECE_UNGROUP]);
@@ -524,16 +516,23 @@ void swMainWindow::CreateMenus()
 	PieceMenu->addAction(mActions[SW_PIECE_UNHIDE_ALL]);
 
 	QMenu* ModelMenu = menuBar()->addMenu(tr("&Models"));
-	ModelMenu->addAction(mActions[SW_MODEL_PROPERTIES]);
+	ModelMenu->addAction(mActions[SW_PIECE_MINIFIGURE_BUILDER]);
+	ModelMenu->addSeparator();
 	ModelMenu->addAction(mActions[SW_MODEL_NEW]);
 	ModelMenu->addAction(mActions[SW_MODEL_LIST]);
-	ModelMenu->addAction(mActions[SW_PIECE_MINIFIGURE_BUILDER]);
+	ModelMenu->addSeparator();
+	ModelMenu->addAction(mActions[SW_PIECE_EDIT_SELECTED_SUBMODEL]);
+	ModelMenu->addAction(mActions[SW_PIECE_EDIT_END_SUBMODEL]);
+	ModelMenu->addAction(mActions[SW_PIECE_VIEW_SELECTED_MODEL]);
+	ModelMenu->addAction(mActions[SW_PIECE_INLINE_SELECTED_MODELS]);
+	ModelMenu->addAction(mActions[SW_PIECE_MOVE_SELECTION_TO_MODEL]);
 	ModelMenu->addSeparator();
 	for (int ModelIdx = SW_MODEL_FIRST; ModelIdx <= SW_MODEL_LAST; ModelIdx++)
 		ModelMenu->addAction(mActions[ModelIdx]);
 
 	QMenu* HelpMenu = menuBar()->addMenu(tr("&Help"));
 	HelpMenu->addAction(mActions[SW_HELP_WHATS_THIS]);
+	HelpMenu->addSeparator();
 	HelpMenu->addAction(mActions[SW_HELP_HOME_PAGE]);
 	HelpMenu->addAction(mActions[SW_HELP_BUG_REPORT]);
 #ifndef Q_OS_MACOS
@@ -1683,6 +1682,15 @@ void swMainWindow::ShowPrintDialog()
 
 	QPrintDialog PrintDialog(&Printer, this);
 
+	// The print preview opens from the print dialog where its button box is available.
+	QDialogButtonBox* ButtonBox = PrintDialog.findChild<QDialogButtonBox*>();
+
+	if (ButtonBox)
+	{
+		QPushButton* PreviewButton = ButtonBox->addButton(tr("Preview..."), QDialogButtonBox::ActionRole);
+		connect(PreviewButton, &QPushButton::clicked, this, &swMainWindow::TogglePrintPreview);
+	}
+
 	if (PrintDialog.exec() == QDialog::Accepted)
 		Print(&Printer);
 #endif
@@ -2090,14 +2098,17 @@ void swMainWindow::ModelViewOptionsMenuAboutToShow()
 
 	const swPreferences& Preferences = swGetPreferences();
 
+	AddMenuCommand(Menu, tr("Fade Previous Steps"), SW_VIEW_FADE_PREVIOUS_STEPS, Preferences.mFadeSteps);
+	AddMenuCommand(Menu, tr("Insert First Piece at Origin"), SW_PIECE_TOGGLE_FIRST_AT_ORIGIN, Preferences.mFirstPieceAtOrigin);
+
+	Menu->addSeparator();
+
 	AddMenuCommand(Menu, tr("View Sphere"), SW_VIEW_TOGGLE_VIEW_SPHERE, Preferences.mViewSphereEnabled);
 	AddMenuCommand(Menu, tr("Axis Icon"), SW_VIEW_TOGGLE_AXIS_ICON, Preferences.mDrawAxes);
 	AddMenuCommand(Menu, tr("Base Grid"), SW_VIEW_TOGGLE_GRID, Preferences.mGridEnabled);
 	AddMenuCommand(Menu, tr("XZ Height Grid"), SW_VIEW_GRID_TOGGLE_HEIGHT_XZ, Preferences.mDrawGridHeightXZ);
 	AddMenuCommand(Menu, tr("YZ Height Grid"), SW_VIEW_GRID_TOGGLE_HEIGHT_YZ, Preferences.mDrawGridHeightYZ);
 	AddMenuCommand(Menu, tr("Height Grids Behind Model"), SW_VIEW_GRID_TOGGLE_HEIGHT_BEHIND, Preferences.mGridHeightBehindModel);
-	AddMenuCommand(Menu, tr("Fade Previous Steps"), SW_VIEW_FADE_PREVIOUS_STEPS, Preferences.mFadeSteps);
-	AddMenuCommand(Menu, tr("Insert First Piece at Origin"), SW_PIECE_TOGGLE_FIRST_AT_ORIGIN, Preferences.mFirstPieceAtOrigin);
 
 	Menu->addSeparator();
 

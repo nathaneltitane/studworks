@@ -21,6 +21,10 @@ swModelListDialog::swModelListDialog(QWidget* Parent, const std::vector<std::uni
 	ui->setupUi(this);
 	swSetupDialogHelp(this, ui->buttonBox);
 
+	// The submodel list always spans the full height of the main window.
+	if (Parent)
+		resize(width(), Parent->window()->height());
+
 	connect(ui->NewModel, &QPushButton::clicked, this, &swModelListDialog::NewModelClicked);
 	connect(ui->DeleteModel, &QPushButton::clicked, this, &swModelListDialog::DeleteModelClicked);
 	connect(ui->RenameModel, &QPushButton::clicked, this, &swModelListDialog::RenameModelClicked);

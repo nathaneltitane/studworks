@@ -167,7 +167,7 @@ const swCommand gCommands[] =
 	// SW_FILE_INSTRUCTIONS
 	{
 		QT_TRANSLATE_NOOP("Action", "File.Instructions"),
-		QT_TRANSLATE_NOOP("Menu", "&Instructions..."),
+		QT_TRANSLATE_NOOP("Menu", "Instr&uctions..."),
 		QT_TRANSLATE_NOOP("Status", "Configure instructions layout"),
 		"",
 		""
@@ -2327,7 +2327,7 @@ const swCommand gCommands[] =
 	// SW_MODEL_PROPERTIES
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Properties"),
-		QT_TRANSLATE_NOOP("Menu", "Prope&rties..."),
+		QT_TRANSLATE_NOOP("Menu", "Proper&ties..."),
 		QT_TRANSLATE_NOOP("Status", "Display the properties of the current submodel"),
 		"",
 		""
@@ -2663,7 +2663,7 @@ const swCommand gCommands[] =
 	// SW_HELP_WHATS_THIS
 	{
 		QT_TRANSLATE_NOOP("Action", "Help.WhatsThis"),
-		QT_TRANSLATE_NOOP("Menu", "What's This?"),
+		QT_TRANSLATE_NOOP("Menu", "&What's This?"),
 		QT_TRANSLATE_NOOP("Status", "Click a control to read its contextual help"),
 		"",
 		"Shift+F1"
@@ -2671,7 +2671,7 @@ const swCommand gCommands[] =
 	// SW_HELP_HOME_PAGE
 	{
 		QT_TRANSLATE_NOOP("Action", "Help.HomePage"),
-		QT_TRANSLATE_NOOP("Menu", "StudWorks &Home Page"),
+		QT_TRANSLATE_NOOP("Menu", "&Home Page"),
 		QT_TRANSLATE_NOOP("Status", "Open StudWorks' home page on the internet using your default web browser"),
 		"",
 		""
@@ -2679,7 +2679,7 @@ const swCommand gCommands[] =
 	// SW_HELP_BUG_REPORT
 	{
 		QT_TRANSLATE_NOOP("Action", "Help.BugReport"),
-		QT_TRANSLATE_NOOP("Menu", "Report a Bug"),
+		QT_TRANSLATE_NOOP("Menu", "Report a &Bug"),
 		QT_TRANSLATE_NOOP("Status", "Open StudWorks' bug report form on your default web browser"),
 		"",
 		""
