@@ -14099,13 +14099,13 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="unfinished">Não foi possível gerar a geometria da peça &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_model_file.cpp" line="667"/>
+        <location filename="../../source/core/sw_model_file.cpp" line="668"/>
         <source>Model &apos;%1&apos;: reference to &apos;%2&apos; was ignored because it would create a circular reference.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Modelo &apos;%1&apos;: a referência a &apos;%2&apos; foi ignorada porque criaria uma referência circular.</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_model_file.cpp" line="954"/>
+        <location filename="../../source/core/sw_model_file.cpp" line="955"/>
         <location filename="../../source/core/sw_model_group.cpp" line="77"/>
         <source>Group </source>
         <translation type="unfinished"></translation>

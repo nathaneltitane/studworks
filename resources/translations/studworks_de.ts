@@ -14062,13 +14062,13 @@ Bitte lesen sie unter https://github.com/nathaneltitane/studworks nach wie man e
         <translation type="unfinished">Für Teil &apos;%1&apos; konnte keine Geometrie generiert werden.</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_model_file.cpp" line="667"/>
+        <location filename="../../source/core/sw_model_file.cpp" line="668"/>
         <source>Model &apos;%1&apos;: reference to &apos;%2&apos; was ignored because it would create a circular reference.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Modell &apos;%1&apos;: Verweis auf &apos;%2&apos; wurde ignoriert, da dadurch ein Zirkelverweis erstellt würde.</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_model_file.cpp" line="954"/>
+        <location filename="../../source/core/sw_model_file.cpp" line="955"/>
         <location filename="../../source/core/sw_model_group.cpp" line="77"/>
         <source>Group </source>
         <translation type="unfinished"></translation>

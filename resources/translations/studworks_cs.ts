@@ -13838,13 +13838,13 @@ Please visit https://library.ldraw.org for information on how to download and in
         <translation type="unfinished">Nelze vygenerovat geometrii pro dílek &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_model_file.cpp" line="667"/>
+        <location filename="../../source/core/sw_model_file.cpp" line="668"/>
         <source>Model &apos;%1&apos;: reference to &apos;%2&apos; was ignored because it would create a circular reference.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Model &apos;%1&apos;: odkaz na &apos;%2&apos; byl ignorován, protože by vytvořil kruhový odkaz.</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_model_file.cpp" line="954"/>
+        <location filename="../../source/core/sw_model_file.cpp" line="955"/>
         <location filename="../../source/core/sw_model_group.cpp" line="77"/>
         <source>Group </source>
         <translation type="unfinished"></translation>

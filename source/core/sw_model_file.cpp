@@ -202,6 +202,7 @@ void swModel::SaveLDraw(QTextStream& Stream, bool SelectedOnly, swStep LastStep)
 	const QLatin1String LineEnding("\r\n");
 
 	mProperties.SaveLDraw(Stream);
+	mPOVRayOptions.SaveLDraw(Stream);
 
 	for (const QString& Directory : mAssetSourceDirectories)
 		Stream << QLatin1String("0 !SW ASSET_SOURCE MODEL ") << QString::fromLatin1(Directory.toUtf8().toBase64()) << LineEnding;

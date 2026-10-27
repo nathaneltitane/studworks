@@ -13871,13 +13871,13 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="unfinished">無法為零件 &apos;%1&apos; 生成幾何體。</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_model_file.cpp" line="667"/>
+        <location filename="../../source/core/sw_model_file.cpp" line="668"/>
         <source>Model &apos;%1&apos;: reference to &apos;%2&apos; was ignored because it would create a circular reference.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">模型 &apos;%1&apos;：對 &apos;%2&apos; 的引用被忽略，因為它會創建循環引用。</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_model_file.cpp" line="954"/>
+        <location filename="../../source/core/sw_model_file.cpp" line="955"/>
         <location filename="../../source/core/sw_model_group.cpp" line="77"/>
         <source>Group </source>
         <translation type="unfinished"></translation>

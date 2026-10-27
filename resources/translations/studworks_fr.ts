@@ -14097,13 +14097,13 @@ SVP visitez https://github.com/nathaneltitane/studworks pour apprendre comment t
         <translation type="unfinished">Impossible de générer la géométrie pour la pièce &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_model_file.cpp" line="667"/>
+        <location filename="../../source/core/sw_model_file.cpp" line="668"/>
         <source>Model &apos;%1&apos;: reference to &apos;%2&apos; was ignored because it would create a circular reference.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Modèle &apos;%1&apos;&#xa0;: la référence à &apos;%2&apos; a été ignorée car elle créerait une référence circulaire.</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_model_file.cpp" line="954"/>
+        <location filename="../../source/core/sw_model_file.cpp" line="955"/>
         <location filename="../../source/core/sw_model_group.cpp" line="77"/>
         <source>Group </source>
         <translation type="unfinished"></translation>
