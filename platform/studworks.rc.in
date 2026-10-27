@@ -16,7 +16,7 @@ VS_VERSION_INFO VERSIONINFO
 			BLOCK \"040904e4\"
 			BEGIN
 				VALUE \"CompanyName\", \"StudWorks\0\"
-				VALUE \"FileDescription\", \"$$DESCRIPTION_TEXT\0\"
+				VALUE \"FileDescription\", \"StudWorks\0\"
 				VALUE \"FileVersion\", \"$$VERSION_TEXT\0\"
 				VALUE \"LegalCopyright\", \"Copyright (C) Leonardo Zide, Nathanel Titane and contributors\0\"
 				VALUE \"OriginalFilename\", \"StudWorks.exe\0\"

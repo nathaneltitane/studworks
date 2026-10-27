@@ -36,7 +36,6 @@ VERSION_TEXT = $$find(VERSION_LINES, SW_VERSION_TEXT)
 VERSION_TEXT = $$replace(VERSION_TEXT, ".*\"([0-9-]+)\".*", \\1)
 VERSION_PARTS = $$split(VERSION_TEXT, -)
 VERSION_RC = $$num_add($$member(VERSION_PARTS, 0), 0),$$num_add($$member(VERSION_PARTS, 1), 0),$$num_add($$member(VERSION_PARTS, 2), 0),0
-DESCRIPTION_TEXT = StudWorks
 
 win32 {
 	DEFINES += NOMINMAX
@@ -74,23 +73,6 @@ isEmpty(QMAKE_LRELEASE) {
 		!exists($$QMAKE_LRELEASE) { QMAKE_LRELEASE = lrelease-qt4 }
 	} else {
 		!exists($$QMAKE_LRELEASE) { QMAKE_LRELEASE = lrelease }
-	}
-}
-
-TRAVIS_TAG = $$(TRAVIS_TAG)
-TRAVIS_COMMIT = $$(TRAVIS_COMMIT)
-!isEmpty(TRAVIS_COMMIT) {
-	isEmpty(TRAVIS_TAG) {
-		DEFINES += "SW_CONTINUOUS_BUILD=$$system(git rev-parse --short HEAD)"
-	}
-}
-
-APPVEYOR_REPO_TAG = $$(APPVEYOR_REPO_TAG)
-APPVEYOR_REPO_COMMIT = $$(APPVEYOR_REPO_COMMIT)
-!isEmpty(APPVEYOR_REPO_COMMIT) {
-	isEmpty(APPVEYOR_REPO_TAG) {
-		DEFINES += "SW_CONTINUOUS_BUILD=$$system(git rev-parse --short HEAD)"
-		DESCRIPTION_TEXT = "StudWorks Continuous Build $$system(git rev-parse --short HEAD)"
 	}
 }
 
@@ -179,7 +161,7 @@ unix:!macx {
 	# find the bundled qt libraries first
 	!isEmpty(BUNDLE_LIBRARIES) {
 		QMAKE_LFLAGS += -Wl,--disable-new-dtags
-		QMAKE_RPATHDIR += $$INSTALL_PREFIX/lib
+		QMAKE_RPATHDIR += $ORIGIN/../lib
 	}
 
 	!isEmpty(LDRAW_LIBRARY_PATH) {

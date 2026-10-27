@@ -13,11 +13,7 @@ swAboutDialog::swAboutDialog(QWidget* Parent)
 	ui->setupUi(this);
 	swSetupDialogHelp(this, ui->buttonBox);
 
-#ifdef SW_CONTINUOUS_BUILD
-	ui->version->setText(tr("StudWorks Continuous Build %1").arg(QString::fromLatin1(QT_STRINGIFY(SW_CONTINUOUS_BUILD))));
-#else
 	ui->version->setText(tr("StudWorks Version %1").arg(QString::fromLatin1(SW_VERSION_TEXT)));
-#endif
 
 	swViewWidget* Widget = gMainWindow->GetActiveView()->GetWidget();
 	QOpenGLContext* Context = Widget->context();

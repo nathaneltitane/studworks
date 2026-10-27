@@ -1,18 +1,35 @@
-[ -s library.bin ] || wget -c https://library.ldraw.org/library/updates/complete.zip -O library.bin
-qmake PREFIX=/usr -r
-make clean
-make -j4
-sudo apt-get -y install checkinstall
-rm ./*.spec # Otherwise the next line fails
-sudo checkinstall --pkgname=app --pkgversion="1" --pkgrelease="1" --backup=no --fstrans=no --default --deldoc
-mkdir appdir ; cd appdir
-dpkg -x ../app_1-1_amd64.deb . ; find .
-cp ../platform/studworks.desktop .
-sed -i -e 's|\.svg||g' studworks.desktop # Workaround
-cp ../resources/icons/256x256/apps/studworks.png .
-cd ..
-wget -c "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
-chmod a+x linuxdeployqt*.AppImage
-unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
-./linuxdeployqt*.AppImage ./appdir/usr/bin/studworks -bundle-non-qt-libs
-./linuxdeployqt*.AppImage ./appdir/usr/bin/studworks -appimage
+#!/bin/bash
+
+# build a studworks appimage that carries its own qt libraries
+# usage: packaging/appimage.sh [build directory]
+
+set -e
+
+directory_source="$(cd "${BASH_SOURCE[0]%/*}/.." && pwd)"
+directory_build="${1:-${directory_source}/build/appimage}"
+
+package_architecture="$(uname -m)"
+
+source "${directory_source}/packaging/bundle.sh"
+
+# lay out the appdir root
+cp "${directory_source}/packaging/AppRun" "${directory_package}/AppRun"
+chmod 755 "${directory_package}/AppRun"
+cp "${directory_source}/platform/studworks.desktop" "${directory_package}/studworks.desktop"
+cp "${directory_source}/resources/icons/256x256/apps/studworks.png" "${directory_package}/studworks.png"
+ln -sf studworks.png "${directory_package}/.DirIcon"
+
+# download appimagetool
+file_tool="${directory_build}/appimagetool-${package_architecture}.AppImage"
+
+if [ ! -s "${file_tool}" ]
+then
+	curl -fsSL "https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-${package_architecture}.AppImage" -o "${file_tool}"
+	chmod 755 "${file_tool}"
+fi
+
+file_package="${directory_build}/studworks-linux-${package_version}-${package_architecture}.appimage"
+
+ARCH="${package_architecture}" VERSION="${package_version}" APPIMAGE_EXTRACT_AND_RUN=1 "${file_tool}" --no-appstream "${directory_package}" "${file_package}"
+
+printf "%s\n" "${file_package}"

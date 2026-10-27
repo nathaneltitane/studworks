@@ -154,6 +154,49 @@ jobs:
         name: studworks-rpm-${{ steps.version.outputs.text }}-${{ matrix.architecture }}
         path: build/rpm/studworks-*.rpm
 
+  build-appimage:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        - runner: ubuntu-22.04
+          architecture: x86_64
+        - runner: ubuntu-22.04-arm
+          architecture: aarch64
+    runs-on: ${{ matrix.runner }}
+    steps:
+    - uses: actions/checkout@v7
+    - name: Read version
+      id: version
+      shell: bash
+      run: |
+        [[ "$(grep -m 1 SW_VERSION_TEXT source/application/sw_global.h)" =~ \"([0-9-]+)\" ]]
+        echo "text=${BASH_REMATCH[1]}" >> "$GITHUB_OUTPUT"
+    - name: Install Qt
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y qtbase5-dev qttools5-dev-tools libqt5opengl5-dev libqt5svg5 qt5-image-formats-plugins zlib1g-dev
+    - name: Cache Library
+      uses: actions/cache@v6
+      id: cache-library
+      with:
+        path: library.bin
+        key: library-complete
+    - name: Download Library
+      if: steps.cache-library.outputs.cache-hit != 'true'
+      run: wget https://library.ldraw.org/library/updates/complete.zip -O library.bin
+    - name: Build package
+      run: packaging/appimage.sh build/appimage
+    - name: Test package
+      run: |
+        docker run --rm -v "$PWD/build/appimage:/appimage" debian:12 sh -c 'apt-get update -qq && apt-get install -y -qq libgl1 libegl1 libfontconfig1 libglib2.0-0 libdbus-1-3 libcups2 > /dev/null && cd /tmp && /appimage/studworks-*.appimage --appimage-extract > /dev/null && QT_QPA_PLATFORM=offscreen squashfs-root/AppRun --version && test -s squashfs-root/opt/studworks/share/studworks/library.bin'
+        docker run --rm -v "$PWD/build/appimage:/appimage" fedora:latest sh -c 'dnf install -y -q mesa-libGL mesa-libEGL fontconfig glib2 dbus-libs cups-libs && cd /tmp && /appimage/studworks-*.appimage --appimage-extract > /dev/null && QT_QPA_PLATFORM=offscreen squashfs-root/AppRun --version'
+    - name: Upload package
+      uses: actions/upload-artifact@v7
+      with:
+        name: studworks-appimage-${{ steps.version.outputs.text }}-${{ matrix.architecture }}
+        path: build/appimage/studworks-*.appimage
+
   build-macos:
     runs-on: macos-latest
     steps:
@@ -190,14 +233,11 @@ jobs:
       run: |
         wget https://github.com/leozide/povray/releases/download/build1/povray
         chmod +x povray
-        curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/nathaneltitane/studworks/commits/main | jq -r '.sha' > remote.txt
-        REMOTE=$(cat remote.txt)
-        echo "REMOTE=$REMOTE"        
     - name: Get number of CPU cores
       uses: SimenB/github-actions-cpu-cores@v3
       id: cpu-cores
     - name: Generate Makefile
-      run: qmake -early QMAKE_DEFAULT_LIBDIRS=$(xcrun -show-sdk-path)/usr/lib PREFIX=/usr
+      run: qmake -early QMAKE_DEFAULT_LIBDIRS=$(xcrun -show-sdk-path)/usr/lib QMAKE_APPLE_DEVICE_ARCHS="x86_64 arm64" CONFIG+=release CONFIG-=debug CONFIG-=debug_and_release
     - name: Build
       run: make -j ${{ steps.cpu-cores.outputs.count }}
     - name: Generate test Makefile
@@ -218,6 +258,33 @@ jobs:
         name: test-results-macos-${{ steps.version.outputs.text }}-arm64
         path: build/tests/test-results.xml
         if-no-files-found: ignore
+    - name: Build package
+      working-directory: build/release
+      run: |
+        test -s StudWorks.app/Contents/Resources/library.bin
+        macdeployqt StudWorks.app
+        # sign ad hoc so apple silicon starts the deployed bundle
+        if [ -f StudWorks.app/Contents/MacOS/povray ]
+        then
+          codesign --force --sign - StudWorks.app/Contents/MacOS/povray
+        fi
+        codesign --force --deep --sign - StudWorks.app
+        lipo -archs StudWorks.app/Contents/MacOS/StudWorks
+        # hdiutil fails now and then on the runners
+        for attempt in 1 2 3 4 5
+        do
+          if hdiutil create -volname StudWorks -srcfolder StudWorks.app -ov -format UDZO studworks-macos-${{ steps.version.outputs.text }}-universal.dmg
+          then
+            break
+          fi
+          sleep 10
+        done
+        test -s studworks-macos-${{ steps.version.outputs.text }}-universal.dmg
+    - name: Upload package
+      uses: actions/upload-artifact@v7
+      with:
+        name: studworks-macos-${{ steps.version.outputs.text }}-universal
+        path: build/release/studworks-macos-*.dmg
 
   build-windows:
     runs-on: windows-2022
@@ -286,3 +353,73 @@ jobs:
         name: test-results-windows-${{ steps.version.outputs.text }}-x64
         path: build/tests/test-results.xml
         if-no-files-found: ignore
+    - name: Build package
+      shell: bash
+      run: |
+        mkdir appdir
+        cp build/release/StudWorks.exe library.bin povconsole32-sse2.exe appdir/
+        cp documentation/README.md appdir/readme.txt
+        windeployqt --release appdir/StudWorks.exe
+        cp "$(cygpath -u "${VCToolsRedistDir}")vc_redist.x64.exe" appdir/
+        cp packaging/studworks.nsi .
+        "/c/Program Files (x86)/NSIS/makensis.exe" -V4 -DX64 "-XOutFile studworks-windows-${{ steps.version.outputs.text }}-x64.exe" studworks.nsi
+        test -s studworks-windows-${{ steps.version.outputs.text }}-x64.exe
+    - name: Upload package
+      uses: actions/upload-artifact@v7
+      with:
+        name: studworks-windows-${{ steps.version.outputs.text }}-x64
+        path: studworks-windows-*.exe
+
+  release:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [ build-deb, build-rpm, build-appimage, build-macos, build-windows ]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency: release
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+    - uses: actions/checkout@v7
+    - name: Read version
+      id: version
+      shell: bash
+      run: |
+        [[ "$(grep -m 1 SW_VERSION_TEXT source/application/sw_global.h)" =~ \"([0-9-]+)\" ]]
+        echo "text=${BASH_REMATCH[1]}" >> "$GITHUB_OUTPUT"
+    - name: Download packages
+      uses: actions/download-artifact@v8
+      with:
+        pattern: studworks-*
+        path: packages
+        merge-multiple: true
+    - name: Write release notes
+      shell: bash
+      run: |
+        # the readme notice of this version
+        state_notice=0
+        while IFS= read -r line_readme
+        do
+          if [[ ${line_readme} == "${{ steps.version.outputs.text }} ↴" ]]
+          then
+            state_notice=1
+          elif [ "${state_notice}" = 1 ] && [[ ${line_readme} =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}\ ↴ || ${line_readme} == "---" ]]
+          then
+            break
+          elif [ "${state_notice}" = 1 ] && [ -n "${line_readme}" ]
+          then
+            printf "%s\n" "${line_readme}" >> notes.md
+          fi
+        done < README.md
+        touch notes.md
+    - name: Publish continuous release
+      run: |
+        gh release delete continuous --cleanup-tag --yes || true
+        gh release create continuous packages/* --prerelease --target "${GITHUB_SHA}" --title "StudWorks Continuous" --notes "Latest build of main from ${GITHUB_SHA::7}"
+    - name: Publish version release
+      run: |
+        # each date version is released once, from the first build that carries it
+        if ! gh release view "${{ steps.version.outputs.text }}" > /dev/null 2>&1
+        then
+          gh release create "${{ steps.version.outputs.text }}" packages/* --target "${GITHUB_SHA}" --title "StudWorks ${{ steps.version.outputs.text }}" --notes-file notes.md --latest
+        fi

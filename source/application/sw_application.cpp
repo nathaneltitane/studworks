@@ -881,11 +881,7 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 		}
 		else if (Option == QLatin1String("-v") || Option == QLatin1String("--version"))
 		{
-#ifdef SW_CONTINUOUS_BUILD
-			Options.StdOut += tr("StudWorks Continuous Build %1\n").arg(QT_STRINGIFY(SW_CONTINUOUS_BUILD));
-#else
 			Options.StdOut += tr("StudWorks Version %1\n").arg(SW_VERSION_TEXT);
-#endif
 			Options.StdOut += tr("Compiled %1\n").arg(__DATE__);
 			Options.Exit = true;
 		}

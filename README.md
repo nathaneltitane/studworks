@@ -10,11 +10,28 @@ Useful? Star the repository - it helps others find it.
 
 ---
 
-[[ StudWorks // Project Page ]](https://github.com/nathaneltitane/studworks)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;[ Version // 2026-10-26 ]
+[[ StudWorks // Project Page ]](https://github.com/nathaneltitane/studworks)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;[ Version // 2026-10-27 ]
 
 ---
 
 ### NOTICE
+
+2026-10-27 ↴
+
+- Packages: .deb, .rpm and AppImage for x86_64 and arm64, Windows installer and universal macOS disk image, all with Qt and the parts library included
+- Releases published on GitHub for every date version, plus a continuous build of the latest changes
+- Versions follow the release date everywhere: 'studworks-2026-10-27-x86_64.rpm', the About dialog and the Windows file version
+- Lighting styles for the default shading: Standard, Studio, Matte and Toon - also from the command line with '--lighting'
+- Selection outline width, set in Preferences or with 'Increase Outline Width' and 'Decrease Outline Width'
+- Cursors and toolbar icons redrawn from the Blender icon set, following the light or dark theme - move and rotate cursors show their axis
+- Instructions: place, drag and lock every page element, page grid with snapping, page numbers and colors and fonts for every element
+- Instructions: Print panel inside the instructions window replaces the print dialog and print preview, the window opens maximized
+- Preferences: label and control columns lined up on every page, mouse shortcuts recorded by clicking, mouse tools grouped like the keyboard commands
+- Menus: new Steps menu, Instructions and Properties in the File menu, Image under Export, Preferences at the bottom of the Edit menu
+- Pieces panel snaps its categories to the longest name when docked on top or bottom
+- Terminal panel: 'Open Model Folder' button
+- Traditional Chinese, Russian and Ukrainian added to the language choices
+- About dialog shows the LEGO® trademark notice
 
 2026-10-26 ↴
 
@@ -58,6 +75,8 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
   - Properties panel with compact position, rotation and transform rows and a spanning color swatch
   - Dockable Minifigure Builder panel, optional embedded terminal panel and a square piece preview
   - Panels dock side by side in any area
+  - Pieces panel snaps to whole thumbnail tiles and its categories to the longest name
+  - Theme-aware Blender icons and cursors, with axis cursors for moving and rotating
 
 - **Modeling** ↴
   - MLCad ROTSTEP step views shown and edited in the Timeline
@@ -65,11 +84,14 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
   - Normal to Face view command, first piece at the origin option
   - Insert color options and the selected piece color as the current color
   - Separate rendering settings for the model view, piece preview and pieces list
+  - Standard, Studio, Matte and Toon lighting styles and an adjustable selection outline width
 
 - **Instructions** ↴
   - Page setup with paper and screen presets, units, margins and orientation
   - Cover page, bill of materials, blank page breaks and per page step layouts
   - Step dividers, document font, pieces list options and full page backgrounds
+  - Placement panel to place, drag and lock every page element, with a snapping page grid
+  - Page numbers, colors and fonts for every element and a built-in Print panel
 
 - **Models** ↴
   - Model properties with piece IDs, thumbnails, counts and BrickLink or CSV export
@@ -78,6 +100,21 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
 ---
 
 ### TL;DR
+
+  - Install ↴
+    - Download a package from the [latest release](https://github.com/nathaneltitane/studworks/releases/latest), or from the [continuous build](https://github.com/nathaneltitane/studworks/releases/tag/continuous) for the latest changes - every package carries the date version of the release:
+
+      | System | Package |
+      | --- | --- |
+      | Debian, Ubuntu | studworks_2026-10-27_amd64.deb / arm64.deb |
+      | Fedora, Rocky Linux, RHEL, openSUSE | studworks-2026-10-27-x86_64.rpm / aarch64.rpm |
+      | Any Linux | studworks-linux-2026-10-27-x86_64.appimage / aarch64.appimage |
+      | Windows | studworks-windows-2026-10-27-x64.exe |
+      | macOS | studworks-macos-2026-10-27-universal.dmg |
+
+    - The .deb and .rpm packages install to '/opt/studworks', the AppImage runs from anywhere after 'chmod +x' - all three carry their own Qt libraries and the LDraw parts library, and only need the base system libraries.
+    - Linux packages are tested on Debian 12 and 13, Ubuntu 22.04 and 24.04, Rocky Linux 9, Fedora and openSUSE Tumbleweed.
+    - The macOS disk image is not notarized: on first start, right click StudWorks and choose Open.
 
   - Prepare ↴
     - Install a C++ compiler, Qt 5 (widgets, OpenGL, print support, network, xml and concurrent modules) and zlib development packages.
@@ -94,6 +131,9 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
 
   - Run ↴
     - Start 'build/release/studworks' and point Preferences to an [LDraw parts library](https://library.ldraw.org/updates?latest) if none is found.
+
+  - Package ↴
+    - Run 'packaging/deb.sh' on Debian or Ubuntu, 'packaging/rpm.sh' on an RPM distribution or 'packaging/appimage.sh' on any Linux, with an optional build directory - all three download the parts library when it is missing.
 
 ---
 
@@ -139,7 +179,7 @@ LEGO® is a trademark of the LEGO® Group, which does not sponsor, authorize or 
 
 ---
 
-[[ StudWorks // Project Page ]](https://github.com/nathaneltitane/studworks)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;[ Version // 2026-10-26 ]
+[[ StudWorks // Project Page ]](https://github.com/nathaneltitane/studworks)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;[ Version // 2026-10-27 ]
 
 ---
 
