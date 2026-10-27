@@ -118,7 +118,7 @@ void swMainWindow::CreateWidgets()
 	ModelViewCornerLayout->setContentsMargins(0, TabMargin, TabMargin, TabMargin);
 
 	QToolButton* ModelViewOptionsButton = new QToolButton(ModelViewCorner);
-	ModelViewOptionsButton->setIcon(QIcon(":/resources/interface/widgets/gear_in.png"));
+	ModelViewOptionsButton->setIcon(swCreateInterfaceIcon("widgets", "settings"));
 	ModelViewOptionsButton->setToolTip(tr("Configure the model view display and rendering."));
 	ModelViewOptionsButton->setAccessibleName(tr("Model View Options"));
 	ModelViewOptionsButton->setPopupMode(QToolButton::InstantPopup);
@@ -176,9 +176,7 @@ void swMainWindow::CreateActions()
 	FileSaveIcon.addFile(":/resources/interface/toolbars/standard/file_save_16.png");
 	mActions[SW_FILE_SAVE]->setIcon(FileSaveIcon);
 
-	QIcon FileOpenIcon;
-	FileOpenIcon.addFile(":/resources/interface/toolbars/standard/file_open.png");
-	FileOpenIcon.addFile(":/resources/interface/toolbars/standard/file_open_16.png");
+	QIcon FileOpenIcon = swCreateInterfaceIcon("toolbars/standard", "file_folder");
 	mActions[SW_FILE_OPEN]->setIcon(FileOpenIcon);
 	mActions[SW_VIEW_TERMINAL_OPEN_MODEL_FOLDER]->setIcon(FileOpenIcon);
 	mActions[SW_VIEW_TERMINAL_OPEN_MODEL_FOLDER]->setToolTip(tr("Open Model Folder"));
@@ -1270,7 +1268,7 @@ void swMainWindow::CreateStatusBar()
 	mStatusLoadFailureLabel = new QLabel();
 	constexpr int WarningIconSize = 14;
 	const QSize WarningPixelSize = QSize(WarningIconSize, WarningIconSize) * devicePixelRatioF();
-	QPixmap WarningPixmap = QIcon(QStringLiteral(":/resources/interface/widgets/warning.svg")).pixmap(WarningPixelSize);
+	QPixmap WarningPixmap = swCreateInterfaceIcon("widgets", "status_warning_filled").pixmap(WarningPixelSize);
 	WarningPixmap = WarningPixmap.scaled(WarningPixelSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 	WarningPixmap.setDevicePixelRatio(devicePixelRatioF());
 	mStatusLoadFailureLabel->setPixmap(WarningPixmap);

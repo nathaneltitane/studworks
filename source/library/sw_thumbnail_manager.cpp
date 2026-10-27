@@ -411,9 +411,9 @@ void swThumbnailManager::DrawThumbnail(swPartThumbnailId ThumbnailId, swPartThum
 	const char* IconName = nullptr;
 
 	if (PieceData->GetSynthInfo())
-		IconName = ":/resources/interface/widgets/part_flexible.png";
+		IconName = ":/resources/interface/widgets/png/32/flexible_32.png";
 	else if (PieceData->GetTrainTrackInfo())
-		IconName = ":/resources/interface/widgets/part_traintrack.png";
+		IconName = ":/resources/interface/widgets/png/32/grid_32.png";
 
 	if (IconName)
 	{

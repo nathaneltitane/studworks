@@ -186,7 +186,7 @@ swMinifigureBuilderWidget::swMinifigureBuilderWidget(QWidget* Parent)
 
 	// The options button holds the preview rendering settings, like the other preview panels.
 	QToolButton* OptionsButton = new QToolButton(this);
-	OptionsButton->setIcon(QIcon(":/resources/interface/widgets/gear_in.png"));
+	OptionsButton->setIcon(swCreateInterfaceIcon("widgets", "settings"));
 	OptionsButton->setToolTip(tr("Configure the minifigure builder preview rendering."));
 	OptionsButton->setAccessibleName(tr("Minifigure Builder Preview Options"));
 	OptionsButton->setPopupMode(QToolButton::InstantPopup);

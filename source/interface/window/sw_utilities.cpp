@@ -177,7 +177,7 @@ QSize swGetPanelButtonSize()
 		QToolBar ToolBar;
 		QToolButton* Button = new QToolButton(&ToolBar);
 
-		Button->setIcon(QIcon(":/resources/interface/widgets/gear_in.png"));
+		Button->setIcon(swCreateInterfaceIcon("widgets", "settings"));
 		Button->setAutoRaise(true);
 		ToolBar.addWidget(Button);
 
@@ -289,7 +289,7 @@ QToolButton* swAddPanelOptionsButton(QWidget* Row, QMenu* Menu, const QString& T
 {
 	QToolButton* OptionsButton = new QToolButton(Row);
 
-	OptionsButton->setIcon(QIcon(":/resources/interface/widgets/gear_in.png"));
+	OptionsButton->setIcon(swCreateInterfaceIcon("widgets", "settings"));
 	OptionsButton->setToolTip(ToolTip);
 	OptionsButton->setAccessibleName(AccessibleName);
 	OptionsButton->setPopupMode(QToolButton::InstantPopup);
@@ -648,4 +648,91 @@ void swColorDialogPopup::Close()
 
 	if (Menu)
 		Menu->close();
+}
+
+swInterfaceIconEngine::swInterfaceIconEngine(const QString& Folder, const QString& Name)
+	: mFolder(Folder), mName(Name)
+{
+	for (int Size : SW_INTERFACE_ICON_SIZES)
+	{
+		const QString FileName = QString::fromLatin1(":/resources/interface/%1/png/%2/%3_%2.png").arg(Folder).arg(Size).arg(Name);
+
+		if (QFile::exists(FileName))
+			mIcon.addFile(FileName, QSize(Size, Size));
+	}
+}
+
+void swInterfaceIconEngine::paint(QPainter* Painter, const QRect& Rect, QIcon::Mode Mode, QIcon::State State)
+{
+	const qreal PixelRatio = Painter->device() ? Painter->device()->devicePixelRatioF() : 1.0;
+	QPixmap Pixmap = pixmap(Rect.size() * PixelRatio, Mode, State);
+
+	Pixmap.setDevicePixelRatio(PixelRatio);
+	Painter->drawPixmap(Rect, Pixmap);
+}
+
+QPixmap swInterfaceIconEngine::pixmap(const QSize& Size, QIcon::Mode Mode, QIcon::State State)
+{
+	const QPalette Palette = QApplication::palette();
+	QColor Color;
+
+	switch (Mode)
+	{
+	case QIcon::Disabled:
+		Color = Palette.color(QPalette::Disabled, QPalette::WindowText);
+		break;
+
+	case QIcon::Selected:
+		Color = Palette.color(QPalette::Active, QPalette::HighlightedText);
+		break;
+
+	case QIcon::Normal:
+	case QIcon::Active:
+		Color = Palette.color(QPalette::Active, QPalette::WindowText);
+		break;
+	}
+
+	const QString CacheKey = QString::fromLatin1("swInterfaceIcon:%1/%2:%3x%4:%5:%6").arg(mFolder, mName).arg(Size.width()).arg(Size.height()).arg(static_cast<int>(State)).arg(Color.rgba(), 0, 16);
+	QPixmap Pixmap;
+
+	if (QPixmapCache::find(CacheKey, &Pixmap))
+		return Pixmap;
+
+	QImage Image = mIcon.pixmap(Size, QIcon::Normal, State).toImage().convertToFormat(QImage::Format_ARGB32);
+
+	// grey pixels take the text color and colored accents stay unless the icon is disabled
+	for (int Y = 0; Y < Image.height(); Y++)
+	{
+		QRgb* Line = reinterpret_cast<QRgb*>(Image.scanLine(Y));
+
+		for (int X = 0; X < Image.width(); X++)
+		{
+			const QRgb Pixel = Line[X];
+			const int Maximum = qMax(qRed(Pixel), qMax(qGreen(Pixel), qBlue(Pixel)));
+			const int Minimum = qMin(qRed(Pixel), qMin(qGreen(Pixel), qBlue(Pixel)));
+
+			if (Mode == QIcon::Disabled || Maximum - Minimum < 32)
+				Line[X] = qRgba(Color.red(), Color.green(), Color.blue(), qAlpha(Pixel) * Color.alpha() / 255);
+		}
+	}
+
+	Pixmap = QPixmap::fromImage(Image);
+	QPixmapCache::insert(CacheKey, Pixmap);
+
+	return Pixmap;
+}
+
+QSize swInterfaceIconEngine::actualSize(const QSize& Size, QIcon::Mode Mode, QIcon::State State)
+{
+	return mIcon.actualSize(Size, Mode, State);
+}
+
+QIconEngine* swInterfaceIconEngine::clone() const
+{
+	return new swInterfaceIconEngine(mFolder, mName);
+}
+
+QIcon swCreateInterfaceIcon(const QString& Folder, const QString& Name)
+{
+	return QIcon(new swInterfaceIconEngine(Folder, Name));
 }

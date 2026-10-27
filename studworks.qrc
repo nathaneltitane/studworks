@@ -18,7 +18,6 @@
         <file>resources/interface/toolbars/standard/edit_redo_16.png</file>
         <file>resources/interface/toolbars/standard/edit_undo_16.png</file>
         <file>resources/interface/toolbars/standard/file_new_16.png</file>
-        <file>resources/interface/toolbars/standard/file_open_16.png</file>
         <file>resources/interface/menus/file_print_16.png</file>
         <file>resources/interface/menus/file_print_preview_16.png</file>
         <file>resources/interface/menus/file_render_blender_16.png</file>
@@ -36,8 +35,6 @@
         <file>resources/interface/toolbars/tools/action_next.png</file>
         <file>resources/interface/toolbars/tools/action_paint.png</file>
         <file>resources/interface/toolbars/tools/action_pan.png</file>
-        <file>resources/interface/widgets/action_preview_locked.png</file>
-        <file>resources/interface/widgets/action_preview_unlocked.png</file>
         <file>resources/interface/toolbars/tools/action_previous.png</file>
         <file>resources/interface/toolbars/tools/action_roll.png</file>
         <file>resources/interface/toolbars/tools/action_rotate.png</file>
@@ -83,7 +80,6 @@
         <file>resources/interface/toolbars/standard/edit_snap_move.png</file>
         <file>resources/interface/toolbars/standard/edit_undo.png</file>
         <file>resources/interface/toolbars/standard/file_new.png</file>
-        <file>resources/interface/toolbars/standard/file_open.png</file>
         <file>resources/interface/menus/file_print.png</file>
         <file>resources/interface/menus/file_print_preview.png</file>
         <file>resources/interface/menus/file_render_blender.png</file>
@@ -110,7 +106,34 @@
         <file>resources/interface/menus/piece_show_earlier.png</file>
         <file>resources/interface/menus/piece_show_later.png</file>
         <file>resources/interface/toolbars/time/time_add_keys.png</file>
-        <file>resources/interface/dialogs/archive.png</file>
+        <file>resources/interface/dialogs/png/16/file_archive_16.png</file>
+        <file>resources/interface/dialogs/png/24/file_archive_24.png</file>
+        <file>resources/interface/dialogs/png/32/file_archive_32.png</file>
+        <file>resources/interface/dialogs/png/48/file_archive_48.png</file>
+        <file>resources/interface/toolbars/standard/png/16/file_folder_16.png</file>
+        <file>resources/interface/toolbars/standard/png/24/file_folder_24.png</file>
+        <file>resources/interface/toolbars/standard/png/32/file_folder_32.png</file>
+        <file>resources/interface/toolbars/standard/png/48/file_folder_48.png</file>
+        <file>resources/interface/widgets/png/16/flexible_16.png</file>
+        <file>resources/interface/widgets/png/24/flexible_24.png</file>
+        <file>resources/interface/widgets/png/32/flexible_32.png</file>
+        <file>resources/interface/widgets/png/48/flexible_48.png</file>
+        <file>resources/interface/widgets/png/16/grid_16.png</file>
+        <file>resources/interface/widgets/png/24/grid_24.png</file>
+        <file>resources/interface/widgets/png/32/grid_32.png</file>
+        <file>resources/interface/widgets/png/48/grid_48.png</file>
+        <file>resources/interface/widgets/png/16/settings_16.png</file>
+        <file>resources/interface/widgets/png/24/settings_24.png</file>
+        <file>resources/interface/widgets/png/32/settings_32.png</file>
+        <file>resources/interface/widgets/png/48/settings_48.png</file>
+        <file>resources/interface/widgets/png/16/small_caps_16.png</file>
+        <file>resources/interface/widgets/png/24/small_caps_24.png</file>
+        <file>resources/interface/widgets/png/32/small_caps_32.png</file>
+        <file>resources/interface/widgets/png/48/small_caps_48.png</file>
+        <file>resources/interface/widgets/png/16/status_warning_filled_16.png</file>
+        <file>resources/interface/widgets/png/24/status_warning_filled_24.png</file>
+        <file>resources/interface/widgets/png/32/status_warning_filled_32.png</file>
+        <file>resources/interface/widgets/png/48/status_warning_filled_48.png</file>
         <file>resources/data/library.zip</file>
         <file>resources/data/studlogo1.zip</file>
         <file>resources/data/studlogo2.zip</file>
@@ -152,10 +175,5 @@
         <file>resources/shaders/unlit_vertex_color_vs.glsl</file>
         <file>resources/shaders/unlit_view_sphere_ps.glsl</file>
         <file>resources/shaders/unlit_view_sphere_vs.glsl</file>
-        <file>resources/interface/widgets/case.png</file>
-        <file>resources/interface/widgets/part_flexible.png</file>
-        <file>resources/interface/widgets/part_traintrack.png</file>
-        <file>resources/interface/widgets/gear_in.png</file>
-        <file>resources/interface/widgets/warning.svg</file>
     </qresource>
 </RCC>

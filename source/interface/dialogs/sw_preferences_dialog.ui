@@ -69,20 +69,12 @@
               <property name="toolTip">
                <string>Choose a piece-library folder.</string>
               </property>
-              <property name="icon">
-               <iconset resource="../../../studworks.qrc">
-                <normaloff>:/resources/interface/toolbars/standard/file_open.png</normaloff>:/resources/interface/toolbars/standard/file_open.png</iconset>
-              </property>
              </widget>
             </item>
             <item>
              <widget class="QToolButton" name="partsArchiveBrowse">
               <property name="toolTip">
                <string>Choose a piece-library ZIP or BIN archive.</string>
-              </property>
-              <property name="icon">
-               <iconset resource="../../../studworks.qrc">
-                <normaloff>:/resources/interface/dialogs/archive.png</normaloff>:/resources/interface/dialogs/archive.png</iconset>
               </property>
              </widget>
             </item>

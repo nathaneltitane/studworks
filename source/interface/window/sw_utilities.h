@@ -75,6 +75,28 @@ void swAddPanelRowStretch(QWidget* Row);
 QToolButton* swAddPanelActionButton(QWidget* Row, QAction* Action);
 QToolButton* swAddPanelOptionsButton(QWidget* Row, QMenu* Menu, const QString& ToolTip, const QString& AccessibleName);
 
+// Interface icons are white on transparent and drawn in the palette text color, so they follow theme changes.
+// Each folder keeps the Blender layout, png/<size>/<name>_<size>.png, for every size in SW_INTERFACE_ICON_SIZES.
+constexpr int SW_INTERFACE_ICON_SIZES[] = { 16, 24, 32, 48 };
+
+class swInterfaceIconEngine : public QIconEngine
+{
+public:
+	swInterfaceIconEngine(const QString& Folder, const QString& Name);
+
+	void paint(QPainter* Painter, const QRect& Rect, QIcon::Mode Mode, QIcon::State State) override;
+	QPixmap pixmap(const QSize& Size, QIcon::Mode Mode, QIcon::State State) override;
+	QSize actualSize(const QSize& Size, QIcon::Mode Mode, QIcon::State State) override;
+	QIconEngine* clone() const override;
+
+protected:
+	QString mFolder;
+	QString mName;
+	QIcon mIcon;
+};
+
+QIcon swCreateInterfaceIcon(const QString& Folder, const QString& Name);
+
 // ScreenPosition selects the monitor independently of the desired popup position.
 QPoint swGetPopupPosition(const QPoint& Position, const QSize& Size, const QPoint& ScreenPosition);
 
