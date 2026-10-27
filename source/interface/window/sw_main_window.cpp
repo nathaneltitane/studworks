@@ -1651,7 +1651,7 @@ void swMainWindow::ShowInstructionsDialog()
 	Dialog->setAttribute(Qt::WA_DeleteOnClose);
 	connect(this, &swMainWindow::ModelContentsChanged, Dialog, &swInstructionsDialog::ModelChanged);
 	mInstructionsDialog = Dialog;
-	Dialog->show();
+	Dialog->showMaximized();
 }
 
 void swMainWindow::CloseInstructionsDialog()
