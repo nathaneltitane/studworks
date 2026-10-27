@@ -1,7 +1,7 @@
 #include "sw_global.h"
 #include "sw_dialog_instructions_properties.h"
 #include "sw_dialog_instructions_page.h"
-#include "sw_dialog_page_setup.h"
+#include "sw_dialog_setup_page.h"
 #include "sw_project.h"
 #include "sw_model.h"
 #include "sw_widget_collapsible.h"

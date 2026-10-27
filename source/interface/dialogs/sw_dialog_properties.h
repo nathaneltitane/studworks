@@ -1,7 +1,7 @@
 #pragma once
 
 #include "sw_model.h"
-#include "sw_thumbnail_manager.h"
+#include "sw_manager_thumbnail.h"
 
 struct swPropertiesDialogOptions
 {

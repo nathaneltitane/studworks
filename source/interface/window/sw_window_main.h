@@ -1,7 +1,7 @@
 #pragma once
 
 #include "sw_application.h"
-#include "sw_asset_types.h"
+#include "sw_types_asset.h"
 #include "sw_shortcuts.h"
 #include "sw_result.h"
 #include "sw_commands.h"

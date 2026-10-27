@@ -4,7 +4,7 @@
 <context>
     <name>swBlenderPreferences</name>
     <message numerus="yes">
-        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="3908"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="3908"/>
         <source>%1 of %n files extracted.</source>
         <translation>
             <numerusform>%1 of %n file extracted.</numerusform>
@@ -12,7 +12,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../source/interface/dialogs/sw_dialog_blender_preferences.cpp" line="3579"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="3579"/>
         <source>Finished writing Blender parameter entries. Processed %n lines in file &apos;%1&apos;.</source>
         <translation>
             <numerusform>Finished writing Blender parameter entries. Processed %n line in file &apos;%1&apos;.</numerusform>
@@ -53,7 +53,7 @@
 <context>
     <name>swModelListDialog</name>
     <message numerus="yes">
-        <location filename="../../source/interface/dialogs/sw_dialog_model_list.cpp" line="148"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_list_model.cpp" line="148"/>
         <source>Are you sure you want to delete %n submodels?</source>
         <translation>
             <numerusform>Are you sure you want to delete %n submodel?</numerusform>

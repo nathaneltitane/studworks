@@ -1,7 +1,7 @@
 #include "sw_global.h"
 #include "sw_application.h"
 #include "sw_profile.h"
-#include "sw_piece_data.h"
+#include "sw_data_piece.h"
 #include <QApplication>
 #include <locale.h>
 

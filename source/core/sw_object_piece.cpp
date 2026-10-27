@@ -4,7 +4,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <math.h>
-#include "sw_piece_data.h"
+#include "sw_data_piece.h"
 #include "sw_object_piece.h"
 #include "sw_group.h"
 #include "sw_file.h"
@@ -14,7 +14,7 @@
 #include "sw_scene.h"
 #include "sw_window_utilities.h"
 #include "sw_synthesis.h"
-#include "sw_train_track.h"
+#include "sw_track_train.h"
 #include "sw_string.h"
 #include "sw_model.h"
 

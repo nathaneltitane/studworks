@@ -6,7 +6,7 @@
 #include "sw_project.h"
 #include "sw_window_main.h"
 #include "sw_dialog_preferences.h"
-#include "sw_widget_part_selection.h"
+#include "sw_widget_selection_piece.h"
 #include "sw_shortcuts.h"
 #include "sw_view.h"
 #include "sw_object_camera.h"

@@ -3,7 +3,7 @@
 #include "sw_project.h"
 #include "sw_model.h"
 #include "sw_object_piece.h"
-#include "sw_piece_data.h"
+#include "sw_data_piece.h"
 #include "sw_profile.h"
 
 const float swInstructions::mDisplayDPI = 72.0f;

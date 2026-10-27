@@ -77,10 +77,10 @@ new evidence and update this record with any agreed change.
 | Owner | Responsibility | Source |
 | --- | --- | --- |
 | `swPiecesLibrary` | Acquisition/lifetime facade, source discovery, texture file indexes, archives, primitive and mesh caches, settings, shared mesh buffers, and loader coordination. Owns the piece and texture managers and supplies archive readers. | [sw_library.h](../source/library/sw_library.h), [sw_library.cpp](../source/library/sw_library.cpp) |
-| `swPieceManager` | Piece creation/reuse, library/local registrations and project indexes, normalization/renaming, references, zero-reference unload/deletion, temporary cleanup, sparse errors, synchronized registry access, ordered teardown, borrowed snapshots and copied include-source metadata. No source discovery or scheduling. | [sw_piece_manager.h](../source/library/sw_piece_manager.h), [sw_piece_manager.cpp](../source/library/sw_piece_manager.cpp) |
-| `swTextureManager` | Texture identities and references, snapshots, and private CPU decoding of resolved sources. | [sw_texture_manager.h](../source/library/sw_texture_manager.h), [sw_texture_manager.cpp](../source/library/sw_texture_manager.cpp) |
-| `swAssetLoader` | Pending requests, worker scheduling, private results, texture upload, publication, cancellation, readiness waits, and deferred settlement notifications. | [sw_asset_loader.h](../source/library/sw_asset_loader.h), [sw_asset_loader.cpp](../source/library/sw_asset_loader.cpp) |
-| `swPieceData` / `swTexture` | Published geometry or texture data, readiness state, and asset metadata. | [sw_piece_data.h](../source/library/sw_piece_data.h), [sw_texture.h](../source/library/sw_texture.h) |
+| `swPieceManager` | Piece creation/reuse, library/local registrations and project indexes, normalization/renaming, references, zero-reference unload/deletion, temporary cleanup, sparse errors, synchronized registry access, ordered teardown, borrowed snapshots and copied include-source metadata. No source discovery or scheduling. | [sw_manager_piece.h](../source/library/sw_manager_piece.h), [sw_manager_piece.cpp](../source/library/sw_manager_piece.cpp) |
+| `swTextureManager` | Texture identities and references, snapshots, and private CPU decoding of resolved sources. | [sw_manager_texture.h](../source/library/sw_manager_texture.h), [sw_manager_texture.cpp](../source/library/sw_manager_texture.cpp) |
+| `swAssetLoader` | Pending requests, worker scheduling, private results, texture upload, publication, cancellation, readiness waits, and deferred settlement notifications. | [sw_loader_asset.h](../source/library/sw_loader_asset.h), [sw_loader_asset.cpp](../source/library/sw_loader_asset.cpp) |
+| `swPieceData` / `swTexture` | Published geometry or texture data, readiness state, and asset metadata. | [sw_data_piece.h](../source/library/sw_data_piece.h), [sw_texture.h](../source/library/sw_texture.h) |
 | Projects, models, and views | Project-local names, required-asset traversal, generated-piece ownership, bounds, fallback display, cameras, and redraws. | [sw_project.cpp](../source/core/sw_project.cpp), [sw_model.cpp](../source/core/sw_model.cpp), [sw_object_piece.cpp](../source/core/sw_object_piece.cpp) |
 
 The library owns the loader. Call library entry points from the UI thread for
@@ -136,7 +136,7 @@ waits through decoding and upload. Texture requests,
 priority promotion, cancellation, upload/retries, and part dependency settlement
 remain in `swAssetLoader`; its requests retain `swTextureReference` handles, explicitly
 reset on the UI thread before worker-shared request storage can be destroyed.
-Shared readiness, priority, file-source and piece-source snapshots, build results, and `swTextureLoadError` live in `sw_asset_types.h`. Stud-style and
+Shared readiness, priority, file-source and piece-source snapshots, build results, and `swTextureLoadError` live in `sw_types_asset.h`. Stud-style and
 archive-type enums remain in `sw_library.h` and are forward-declared by the shared
 header; the piece snapshot constructor supplies their defaults out of line.
 `swTexture::mSource` stores the source identity; copies for workers do not snapshot
@@ -431,7 +431,7 @@ buffer upload is not part of asset readiness.
 ## References, cancellation, and generated geometry
 
 `swPieceDataReference` and `swTextureReference` alias the shared `swAssetReference<T>` template in
-`sw_asset_types.h`. Both are copyable scoped references.
+`sw_types_asset.h`. Both are copyable scoped references.
 Construction from a borrowed pointer and copying acquire one reference; moving
 transfers the reference without retaining it. Assignment retains the new identity
 before releasing the old one. Destruction or `Reset()` releases one reference
@@ -599,7 +599,7 @@ its recursive pieces and per-instance synths, or use the model-level API.
 | Inventory import | Wait for required geometry before computing persistent placement; failure prevents using cube bounds as final layout. |
 | Insertion layout | Wait for required geometry before computing persistent placement; failed geometry uses fallback boxes. |
 | Preview | Wait for its recursive requirements and generated meshes; failure rejects the preview. See [sw_widget_preview.cpp](../source/interface/widgets/sw_widget_preview.cpp). |
-| Thumbnail manager | Acquire required assets asynchronously. Missing library geometry/textures produce an error thumbnail. Pending generated meshes delay rendering; synth failure can use a loaded library mesh. See [sw_thumbnail_manager.cpp](../source/library/sw_thumbnail_manager.cpp). |
+| Thumbnail manager | Acquire required assets asynchronously. Missing library geometry/textures produce an error thumbnail. Pending generated meshes delay rendering; synth failure can use a loaded library mesh. See [sw_manager_thumbnail.cpp](../source/library/sw_manager_thumbnail.cpp). |
 | OBJ, COLLADA, 3DS, POV-Ray export | Wait for model requirements, then omit failed meshes and failed generated geometry. Empty output is allowed. Render/write failures still report errors. See [sw_project.cpp](../source/core/sw_project.cpp). |
 | Saved images, screenshots, HTML, instructions, printing | Wait for settlement, then render available geometry without loading cubes. HTML parts lists retain missing entries and quantities with blank thumbnails; instruction parts lists omit unavailable thumbnails. Actual rendering/writing failures still fail the operation. |
 | Model save, CSV, BrickLink inventory | Save references or inventory data without requiring successful geometry loading. |

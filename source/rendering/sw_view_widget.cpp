@@ -1,6 +1,6 @@
 #include "sw_global.h"
 #include "sw_view_widget.h"
-#include "sw_opengl_extensions.h"
+#include "sw_extensions_opengl.h"
 #include "sw_project.h"
 #include "sw_library.h"
 #include "sw_application.h"

@@ -4,9 +4,9 @@
 #include "sw_window_utilities.h"
 #include "sw_colors.h"
 #include "sw_application.h"
-#include "sw_piece_data.h"
+#include "sw_data_piece.h"
 #include "sw_library.h"
-#include "sw_thumbnail_manager.h"
+#include "sw_manager_thumbnail.h"
 #include "sw_bricklink.h"
 #include "sw_project.h"
 

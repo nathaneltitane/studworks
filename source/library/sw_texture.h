@@ -15,7 +15,7 @@
 
 #define SW_TEXTURE_NAME_LENGTH 256
 
-#include "sw_asset_types.h"
+#include "sw_types_asset.h"
 
 class swTexture
 {

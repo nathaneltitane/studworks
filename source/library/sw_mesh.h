@@ -1,7 +1,7 @@
 #pragma once
 
 #include "sw_math.h"
-#include "sw_asset_types.h"
+#include "sw_types_asset.h"
 
 enum swMeshPrimitiveType
 {

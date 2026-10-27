@@ -4,7 +4,7 @@
 #include "sw_project.h"
 #include "sw_application.h"
 #include "sw_profile.h"
-#include "sw_dialog_blender_preferences.h"
+#include "sw_dialog_preferences_blender.h"
 #include "sw_model.h"
 #include "sw_window_utilities.h"
 

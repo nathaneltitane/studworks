@@ -1,7 +1,7 @@
 #include "sw_global.h"
 #include "sw_texture.h"
 #include "sw_context.h"
-#include "sw_opengl_extensions.h"
+#include "sw_extensions_opengl.h"
 
 swTexture* gGridTexture;
 

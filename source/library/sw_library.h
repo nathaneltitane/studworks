@@ -1,9 +1,9 @@
 #pragma once
 
 #include "sw_context.h"
-#include "sw_mesh_loader.h"
+#include "sw_loader_mesh.h"
 #include "sw_result.h"
-#include "sw_asset_types.h"
+#include "sw_types_asset.h"
 
 struct swTrainTrackConnectionType;
 class swZipFile;

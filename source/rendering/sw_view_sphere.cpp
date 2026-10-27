@@ -3,7 +3,7 @@
 #include "sw_view.h"
 #include "sw_object_camera.h"
 #include "sw_context.h"
-#include "sw_string_cache.h"
+#include "sw_cache_string.h"
 #include "sw_application.h"
 #include "sw_texture.h"
 

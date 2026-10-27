@@ -3,9 +3,9 @@
 #include "sw_library.h"
 #include "sw_application.h"
 #include "sw_file.h"
-#include "sw_mesh_loader.h"
+#include "sw_loader_mesh.h"
 #include "sw_mesh.h"
-#include "sw_piece_data.h"
+#include "sw_data_piece.h"
 #include <locale.h>
 
 class swSynthesisInformationCurved : public swSynthesisInformation

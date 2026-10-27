@@ -1,6 +1,6 @@
 #include "sw_global.h"
 #include "sw_context.h"
-#include "sw_opengl_extensions.h"
+#include "sw_extensions_opengl.h"
 #include "sw_mesh.h"
 #include "sw_texture.h"
 #include "sw_colors.h"
@@ -10,7 +10,7 @@
 #include "sw_view.h"
 #include "sw_view_sphere.h"
 #include "sw_view_manipulator.h"
-#include "sw_string_cache.h"
+#include "sw_cache_string.h"
 #include "sw_scene.h"
 
 #ifdef SW_OPENGLES

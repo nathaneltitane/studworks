@@ -4,7 +4,7 @@
 #include "sw_library.h"
 #include "sw_application.h"
 #include "sw_string.h"
-#include "sw_piece_data.h"
+#include "sw_data_piece.h"
 #include "sw_colors.h"
 
 static QJsonDocument swLoadBrickLinkMapping()

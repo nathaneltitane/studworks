@@ -1,0 +1,199 @@
+#include "sw_global.h"
+#include "sw_cache_string.h"
+#include "sw_texture.h"
+#include "sw_context.h"
+
+swStringCache gStringCache;
+
+swStringCache::swStringCache()
+	: mTexture(nullptr)
+{
+}
+
+swStringCache::~swStringCache()
+{
+	delete mTexture;
+}
+
+void swStringCache::Initialize(swContext* Context)
+{
+	Q_UNUSED(Context);
+
+	mTexture = new swTexture();
+}
+
+void swStringCache::Reset()
+{
+	delete mTexture;
+	mTexture = nullptr;
+}
+
+void swStringCache::CacheStrings(swContext* Context, const QStringList& Strings)
+{
+	bool Update = false;
+
+	for (const QString& String : Strings)
+	{
+		if (mStrings.find(String) == mStrings.end())
+		{
+			mStrings[String] = swStringCacheEntry();
+			Update = true;
+		}
+	}
+
+	if (!Update)
+		return;
+
+	QImage TextureImage(256, 256, QImage::Format_Alpha8);
+
+	QImage Image(128, 128, QImage::Format_ARGB32);
+	QPainter Painter;
+	QFont Font("Helvetica", 20);
+	int DestX = 0, DestY = 0, DestHeight = 0;
+	TextureImage.fill(0);
+
+	for (auto& Entry : mStrings)
+	{
+		QRect SourceRect;
+
+		Painter.begin(&Image);
+		Painter.fillRect(0, 0, Image.width(), Image.height(), QColor(0, 0, 0));
+		Painter.setBrush(QColor(255, 255, 255));
+		Painter.setPen(QColor(255, 255, 255));
+		Painter.setFont(Font);
+		Painter.drawText(0, 0, Image.width(), Image.height(), 0, Entry.first, &SourceRect);
+		Painter.end();
+
+		if (DestX + SourceRect.width() + 2 > TextureImage.width())
+		{
+			DestX = 0;
+			DestY += DestHeight + 2;
+			DestHeight = 0;
+		}
+
+		swStringCacheEntry& String = Entry.second;
+
+		if (SourceRect.width() + 2 > TextureImage.width() || DestY + SourceRect.height() + 2 > TextureImage.height() || DestY + SourceRect.height() + 2 > TextureImage.height())
+		{
+			memset(&String, 0, sizeof(String));
+			break;
+		}
+
+		String.Top = TextureImage.height() - DestY - 2;
+		String.Bottom = String.Top - SourceRect.height() + 1;
+		String.Left = DestX + 1;
+		String.Right = String.Left + SourceRect.width() - 2;
+
+		for (int y = SourceRect.top(); y < SourceRect.bottom(); y++)
+		{
+			unsigned char* Dest = TextureImage.scanLine(String.Top - y) + String.Left;
+
+			for (int x = SourceRect.left(); x < SourceRect.right(); x++)
+			{
+				*Dest++ = qRed(Image.pixel(x, y));
+			}
+		}
+
+		DestX += SourceRect.width() + 2;
+		DestHeight = qMax(DestHeight, SourceRect.height());
+	}
+
+	mTexture->SetImage(std::move(TextureImage), SW_TEXTURE_LINEAR);
+	mTexture->Upload(Context);
+}
+
+void swStringCache::GetStringDimensions(int* cx, int* cy, const QString& String) const
+{
+	const auto& Entry = mStrings.find(String);
+
+	if (Entry != mStrings.end())
+	{
+		const swStringCacheEntry& FontString = Entry->second;
+		*cx = FontString.Right - FontString.Left;
+		*cy = FontString.Top - FontString.Bottom;
+	}
+	else
+		*cx = *cy = 0;
+}
+
+void swStringCache::DrawStrings(swContext* Context, const swMatrix44* Transforms, const QStringList& Strings) const
+{
+	float* Verts = (float*)alloca(Strings.size() * 6 * 5 * sizeof(float));
+	float* Buffer = Verts;
+
+	for (int StringIdx = 0; StringIdx < Strings.size(); StringIdx++)
+	{
+		const auto& Entry = mStrings.find(Strings[StringIdx]);
+
+		if (Entry == mStrings.end())
+			continue;
+
+		const swStringCacheEntry& FontString = Entry->second;
+
+		float u0 = (float)FontString.Left / (float)(mTexture->mWidth - 1);
+		float u1 = (float)FontString.Right / (float)(mTexture->mWidth - 1);
+		float v0 = (float)FontString.Bottom / (float)(mTexture->mHeight - 1);
+		float v1 = (float)FontString.Top / (float)(mTexture->mHeight - 1);
+
+		float Width = FontString.Right - FontString.Left;
+		float Height = FontString.Top - FontString.Bottom;
+		float Left = -Width / 2.0f;
+		float Top = Height / 2.0f;
+		float Z = 0.0f;
+
+		swVector3 Points[4] =
+		{
+			swVector3(Left, Top, Z),
+			swVector3(Left, Top - Height, Z),
+			swVector3(Left + Width, Top - Height, Z),
+			swVector3(Left + Width, Top, Z),
+		};
+
+		for (int PointIdx = 0; PointIdx < 4; PointIdx++)
+			Points[PointIdx] = swMultiply31(Points[PointIdx], Transforms[StringIdx]);
+
+		*Buffer++ = Points[0].x;
+		*Buffer++ = Points[0].y;
+		*Buffer++ = Points[0].z;
+		*Buffer++ = u0;
+		*Buffer++ = v1;
+
+		*Buffer++ = Points[1].x;
+		*Buffer++ = Points[1].y;
+		*Buffer++ = Points[1].z;
+		*Buffer++ = u0;
+		*Buffer++ = v0;
+
+		*Buffer++ = Points[2].x;
+		*Buffer++ = Points[2].y;
+		*Buffer++ = Points[2].z;
+		*Buffer++ = u1;
+		*Buffer++ = v0;
+
+		*Buffer++ = Points[2].x;
+		*Buffer++ = Points[2].y;
+		*Buffer++ = Points[2].z;
+		*Buffer++ = u1;
+		*Buffer++ = v0;
+
+		*Buffer++ = Points[3].x;
+		*Buffer++ = Points[3].y;
+		*Buffer++ = Points[3].z;
+		*Buffer++ = u1;
+		*Buffer++ = v1;
+
+		*Buffer++ = Points[0].x;
+		*Buffer++ = Points[0].y;
+		*Buffer++ = Points[0].z;
+		*Buffer++ = u0;
+		*Buffer++ = v1;
+	}
+
+	Context->SetVertexBufferPointer(Verts);
+	Context->SetVertexFormat(0, 3, 0, 2, 0, false);
+
+	Context->BindTexture2D(mTexture);
+	Context->SetColor(0.0f, 0.0f, 0.0f, 1.0f);
+	Context->DrawPrimitives(GL_TRIANGLES, 0, static_cast<int>(Strings.size()) * 6);
+}
+

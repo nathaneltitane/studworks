@@ -1,7 +1,7 @@
 #pragma once
 
 #include "sw_application.h"
-#include "sw_asset_types.h"
+#include "sw_types_asset.h"
 #include "sw_result.h"
 
 #define SW_HTML_SINGLE_PAGE    0x01

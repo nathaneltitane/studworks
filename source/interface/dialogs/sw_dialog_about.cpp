@@ -4,7 +4,7 @@
 #include "ui_sw_dialog_about.h"
 #include "sw_window_main.h"
 #include "sw_view.h"
-#include "sw_opengl_extensions.h"
+#include "sw_extensions_opengl.h"
 #include "sw_view_widget.h"
 
 swAboutDialog::swAboutDialog(QWidget* Parent)

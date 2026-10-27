@@ -5,7 +5,7 @@ class swPieceData;
 #include "sw_object.h"
 #include "sw_colors.h"
 #include "sw_math.h"
-#include "sw_asset_types.h"
+#include "sw_types_asset.h"
 
 #define SW_MAXIMUM_CONTROL_POINTS 1000
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "sw_asset_types.h"
+#include "sw_types_asset.h"
 #include "sw_context.h"
 #include "sw_math.h"
 #include "sw_commands.h"
