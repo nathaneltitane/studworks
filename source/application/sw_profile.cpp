@@ -207,6 +207,10 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Instructions", "MarginBottom", 36.0f),                                     // SW_PROFILE_INSTRUCTIONS_MARGIN_BOTTOM
 	swProfileEntry("Instructions", "PageUnits", 3),                                            // SW_PROFILE_INSTRUCTIONS_PAGE_UNITS
 	swProfileEntry("Instructions", "MarginUnits", 3),                                          // SW_PROFILE_INSTRUCTIONS_MARGIN_UNITS
+	swProfileEntry("Instructions", "ShowGrid", 0),                                             // SW_PROFILE_INSTRUCTIONS_SHOW_GRID
+	swProfileEntry("Instructions", "SnapToGrid", 0),                                           // SW_PROFILE_INSTRUCTIONS_SNAP_TO_GRID
+	swProfileEntry("Instructions", "GridSize", 18.0f),                                         // SW_PROFILE_INSTRUCTIONS_GRID_SIZE
+	swProfileEntry("Instructions", "GridWithinMargins", 1),                                    // SW_PROFILE_INSTRUCTIONS_GRID_WITHIN_MARGINS
 	swProfileEntry("Settings", "PreviewSquareViewport", 0),                                    // SW_PROFILE_PREVIEW_SQUARE_VIEWPORT
 	swProfileEntry("Settings", "MinifigSyncRendering", 1),                                     // SW_PROFILE_MINIFIGURE_BUILDER_SYNCHRONIZED_RENDERING
 	swProfileEntry("Settings", "MinifigShadingMode", static_cast<int>(swShadingMode::DefaultLights)), // SW_PROFILE_MINIFIGURE_BUILDER_SHADING_MODE

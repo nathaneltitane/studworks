@@ -8,6 +8,46 @@
 
 const float swInstructions::mDisplayDPI = 72.0f;
 
+float swGetPageUnitScale(swInstructionsPageUnits Units)
+{
+	switch (Units)
+	{
+	case swInstructionsPageUnits::Pixels:
+		return 1.0f;
+
+	case swInstructionsPageUnits::Millimeters:
+		return 72.0f / 25.4f;
+
+	case swInstructionsPageUnits::Centimeters:
+		return 72.0f / 2.54f;
+
+	case swInstructionsPageUnits::Inches:
+		return 72.0f;
+	}
+
+	return 1.0f;
+}
+
+QString swGetPageUnitSuffix(swInstructionsPageUnits Units)
+{
+	switch (Units)
+	{
+	case swInstructionsPageUnits::Pixels:
+		return QCoreApplication::translate("swInstructions", "px");
+
+	case swInstructionsPageUnits::Millimeters:
+		return QCoreApplication::translate("swInstructions", "mm");
+
+	case swInstructionsPageUnits::Centimeters:
+		return QCoreApplication::translate("swInstructions", "cm");
+
+	case swInstructionsPageUnits::Inches:
+		return QCoreApplication::translate("swInstructions", "in");
+	}
+
+	return QString();
+}
+
 swInstructions::swInstructions(Project* Project)
 	: mProject(Project)
 {
@@ -33,6 +73,20 @@ swInstructions::swInstructions(Project* Project)
 	mPageSettings.Columns = 1;
 	mPageSettings.Direction = GetPageDirection();
 
+	mShowGrid = swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_SHOW_GRID) != 0;
+	mSnapToGrid = swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_SNAP_TO_GRID) != 0;
+	mGridSize = qBound(SW_GRID_SIZE_MINIMUM, swGetProfileFloat(SW_PROFILE_INSTRUCTIONS_GRID_SIZE), SW_GRID_SIZE_MAXIMUM);
+	mGridWithinMargins = swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_GRID_WITHIN_MARGINS) != 0;
+
+	SetDefaultProperties();
+
+	CreatePages();
+}
+
+void swInstructions::SetDefaultProperties()
+{
+	mStepProperties = swInstructionsProperties();
+
 	mStepProperties[static_cast<int>(swInstructionsPropertyType::ShowStepNumber)].Value = true;
 	mStepProperties[static_cast<int>(swInstructionsPropertyType::ShowStepPLI)].Value = true;
 	mStepProperties[static_cast<int>(swInstructionsPropertyType::StepNumberFont)].Value = QFont("Arial", 72).toString();
@@ -43,7 +97,6 @@ swInstructions::swInstructions(Project* Project)
 	mStepProperties[static_cast<int>(swInstructionsPropertyType::PLITextColor)].Value = SW_RGBA(0, 0, 0, 255);
 	mStepProperties[static_cast<int>(swInstructionsPropertyType::PLIBorderColor)].Value = SW_RGBA(0, 0, 0, 255);
 	mStepProperties[static_cast<int>(swInstructionsPropertyType::PLIBorderWidth)].Value = 0;
-//	mStepProperties[static_cast<int>(swInstructionsPropertyType::PLIBorderRound)].Value = true;
 	mStepProperties[static_cast<int>(swInstructionsPropertyType::PLIShowCounts)].Value = true;
 	mStepProperties[static_cast<int>(swInstructionsPropertyType::PLISortOrder)].Value = static_cast<int>(swPartsListSort::Color);
 	mStepProperties[static_cast<int>(swInstructionsPropertyType::ShowStepDividers)].Value = true;
@@ -54,64 +107,34 @@ swInstructions::swInstructions(Project* Project)
 	mStepProperties[static_cast<int>(swInstructionsPropertyType::DocumentFont)].Value = QFont("Arial", 16).toString();
 	mStepProperties[static_cast<int>(swInstructionsPropertyType::ShowCoverPage)].Value = true;
 	mStepProperties[static_cast<int>(swInstructionsPropertyType::CoverTitleFont)].Value = QFont("Arial", 48, QFont::Bold).toString();
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::CoverTitleColor)].Value = SW_RGBA(0, 0, 0, 255);
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::ShowCoverAuthor)].Value = true;
 	mStepProperties[static_cast<int>(swInstructionsPropertyType::PageBackgroundColor)].Value = SW_RGBA(255, 255, 255, 255);
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::StepNumberPlacement)].Value = SW_PLACEMENT_GRID_SIZE + 1;
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::StepNumberAnchor)].Value = static_cast<int>(swInstructionsPlacementAnchor::Area);
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::PLIPlacement)].Value = SW_PLACEMENT_GRID_SIZE + SW_PLACEMENT_GRID_SIZE - 1;
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::PLIAnchor)].Value = static_cast<int>(swInstructionsPlacementAnchor::StepNumber);
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::CoverTitlePlacement)].Value = SW_PLACEMENT_GRID_SIZE + 2;
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::BillOfMaterialsPlacement)].Value = SW_PLACEMENT_GRID_SIZE + 1;
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::PLIThumbnailSize)].Value = 300;
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::PLIThumbnailBackgroundColor)].Value = SW_RGBA(255, 255, 255, 0);
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::CoverAuthorPlacement)].Value = SW_PLACEMENT_GRID_SIZE + 2;
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::CoverImagePlacement)].Value = SW_PLACEMENT_COUNT / 2;
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::StepImagePlacement)].Value = SW_PLACEMENT_COUNT / 2;
 
-	static_assert(static_cast<int>(swInstructionsPropertyType::Count) == 21, "Missing default property");
-
-	CreatePages();
+	static_assert(static_cast<int>(swInstructionsPropertyType::Count) == 34, "Missing default property");
 }
 
-QString swInstructions::GetPropertyLabel(swInstructionsPropertyType Type)
+void swInstructions::ResetProperties()
 {
-	switch (Type)
-	{
-		case swInstructionsPropertyType::ShowStepNumber:
-			return tr("Show Step Number");
-		case swInstructionsPropertyType::ShowStepPLI:
-			return tr("Show Pieces List");
-		case swInstructionsPropertyType::StepNumberFont:
-			return tr("Font:");
-		case swInstructionsPropertyType::StepNumberColor:
-			return tr("Text Color:");
-		case swInstructionsPropertyType::StepBackgroundColor:
-			return tr("Background Color:");
-		case swInstructionsPropertyType::PLIBackgroundColor:
-			return tr("Background Color:");
-		case swInstructionsPropertyType::PLIFont:
-			return tr("Font:");
-		case swInstructionsPropertyType::PLITextColor:
-			return tr("Text Color:");
-		case swInstructionsPropertyType::PLIBorderColor:
-			return tr("Border Color:");
-		case swInstructionsPropertyType::PLIBorderWidth:
-			return tr("Border Width:");
-		case swInstructionsPropertyType::PLIShowCounts:
-			return tr("Show Piece Counts");
-		case swInstructionsPropertyType::PLISortOrder:
-			return tr("Sort By:");
-		case swInstructionsPropertyType::ShowStepDividers:
-			return tr("Show Step Dividers");
-		case swInstructionsPropertyType::StepDividerColor:
-			return tr("Divider Color:");
-		case swInstructionsPropertyType::StepDividerWidth:
-			return tr("Divider Width:");
-		case swInstructionsPropertyType::ShowBillOfMaterials:
-			return tr("Show Bill of Materials");
-		case swInstructionsPropertyType::UseDocumentFont:
-			return tr("Use Document Font");
-		case swInstructionsPropertyType::DocumentFont:
-			return tr("Font:");
-		case swInstructionsPropertyType::ShowCoverPage:
-			return tr("Show Cover Page");
-		case swInstructionsPropertyType::CoverTitleFont:
-			return tr("Title Font:");
-		case swInstructionsPropertyType::PageBackgroundColor:
-			return tr("Background Color:");
-		case swInstructionsPropertyType::Count:
-			break;
-	}
+	// only the defaults, page properties and moved elements are restored, the page layouts and blank pages stay
+	SetDefaultProperties();
+	mPagePropertyOverrides.clear();
+	mElementOffsets.clear();
+	mLockedPositions.clear();
+	CreatePages();
 
-	return QString();
+	emit PageLayoutChanged();
 }
 
 void swInstructions::SetDefaultPageSettings(const swInstructionsPageSettings& PageSettings)
@@ -209,6 +232,28 @@ void swInstructions::SetPageSettings(size_t PageIndex, int Rows, int Columns)
 	emit PageLayoutChanged();
 }
 
+void swInstructions::SetPageDividerPreset(size_t PageIndex, int Rows, int Columns)
+{
+	// a split page shows its dividers, the preset changes both and rebuilds the pages once
+	swInstructionsProperty& Dividers = mStepProperties[static_cast<int>(swInstructionsPropertyType::ShowStepDividers)];
+	const bool ShowDividers = Rows * Columns > 1 && !Dividers.Value.toBool();
+
+	if (ShowDividers)
+		Dividers.Value = true;
+
+	const swInstructionsPageSettings PageSettings = GetPageSettings(PageIndex);
+
+	if (PageSettings.Rows == Rows && PageSettings.Columns == Columns)
+	{
+		if (ShowDividers)
+			emit PageLayoutChanged();
+
+		return;
+	}
+
+	SetPageSettings(PageIndex, Rows, Columns);
+}
+
 bool swInstructions::CanInsertBlankPage(size_t PageIndex) const
 {
 	swInstructionsStepKey Key;
@@ -299,8 +344,280 @@ QFont swInstructions::GetFontProperty(swInstructionsPropertyType Type, swModel* 
 	return Font;
 }
 
+bool swInstructions::IsPageProperty(swInstructionsPropertyType Type)
+{
+	return Type == swInstructionsPropertyType::PLIThumbnailSize || Type == swInstructionsPropertyType::PLIThumbnailBackgroundColor;
+}
+
+bool swInstructions::GetStepPageIndex(swModel* Model, swStep Step, size_t& PageIndex) const
+{
+	// step 0 is the whole model, shown by its bill of materials
+	for (size_t Index = 0; Index < mPages.size(); Index++)
+	{
+		const swInstructionsPage& Page = mPages[Index];
+
+		if (Step == 0 && Page.Type == swInstructionsPageType::BillOfMaterials && Page.Model == Model)
+		{
+			PageIndex = Index;
+			return true;
+		}
+
+		for (const swInstructionsStep& PageStep : Page.Steps)
+		{
+			if (PageStep.Model == Model && PageStep.Step == Step)
+			{
+				PageIndex = Index;
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+bool swInstructions::HasPageProperty(size_t PageIndex, swInstructionsPropertyType Type) const
+{
+	swInstructionsStepKey Key;
+
+	if (!GetPageKey(PageIndex, Key) || PageIndex >= mPages.size())
+		return false;
+
+	std::map<swInstructionsStepKey, swInstructionsProperties>::const_iterator PropertiesIt = mPagePropertyOverrides.find(Key);
+
+	return PropertiesIt != mPagePropertyOverrides.end() && PropertiesIt->second[static_cast<int>(Type)].Mode != swInstructionsPropertyMode::NotSet;
+}
+
+QVariant swInstructions::GetPageProperty(size_t PageIndex, swInstructionsPropertyType Type) const
+{
+	swInstructionsStepKey Key;
+
+	if (HasPageProperty(PageIndex, Type) && GetPageKey(PageIndex, Key))
+		return mPagePropertyOverrides.at(Key)[static_cast<int>(Type)].Value;
+
+	return mStepProperties[static_cast<int>(Type)].Value;
+}
+
+int swInstructions::GetPageIntProperty(size_t PageIndex, swInstructionsPropertyType Type) const
+{
+	return GetPageProperty(PageIndex, Type).toInt();
+}
+
+QColor swInstructions::GetPageColorProperty(size_t PageIndex, swInstructionsPropertyType Type) const
+{
+	return swQColorFromRGBA(GetPageProperty(PageIndex, Type).toUInt());
+}
+
+void swInstructions::SetPageScope(size_t PageIndex, swInstructionsPropertyType Type, bool PageOnly)
+{
+	swInstructionsStepKey Key;
+
+	if (!IsPageProperty(Type) || PageIndex >= mPages.size() || !GetPageKey(PageIndex, Key) || HasPageProperty(PageIndex, Type) == PageOnly)
+		return;
+
+	// a page starts from the value of all pages and returns to it when it no longer has its own
+	swInstructionsProperty& Property = mPagePropertyOverrides[Key][static_cast<int>(Type)];
+
+	if (PageOnly)
+	{
+		Property.Mode = swInstructionsPropertyMode::Default;
+		Property.Value = mStepProperties[static_cast<int>(Type)].Value;
+	}
+	else
+		Property = swInstructionsProperty();
+
+	emit StepSettingsChanged(nullptr, 0);
+}
+
+void swInstructions::SetPageProperty(size_t PageIndex, swInstructionsPropertyType Type, const QVariant& Value)
+{
+	swInstructionsStepKey Key;
+
+	if (!HasPageProperty(PageIndex, Type) || !GetPageKey(PageIndex, Key))
+		return;
+
+	swInstructionsProperty& Property = mPagePropertyOverrides[Key][static_cast<int>(Type)];
+
+	if (Property.Value == Value)
+		return;
+
+	Property.Value = Value;
+
+	emit StepSettingsChanged(nullptr, 0);
+}
+
+void swInstructions::SetPageInt(size_t PageIndex, swInstructionsPropertyType Type, int Value)
+{
+	SetPageProperty(PageIndex, Type, Value);
+}
+
+void swInstructions::SetPageColor(size_t PageIndex, swInstructionsPropertyType Type, const QColor& Color)
+{
+	SetPageProperty(PageIndex, Type, swRGBAFromQColor(Color));
+}
+
+QPointF swInstructions::GetElementOffset(const swInstructionsElementKey& Key) const
+{
+	const std::map<swInstructionsElementKey, QPointF>::const_iterator Offset = mElementOffsets.find(Key);
+
+	if (Offset == mElementOffsets.end())
+		return QPointF();
+
+	return Offset->second;
+}
+
+bool swInstructions::HasElementOffset(const swInstructionsElementKey& Key) const
+{
+	return mElementOffsets.find(Key) != mElementOffsets.end();
+}
+
+void swInstructions::SetElementOffsets(const std::map<swInstructionsElementKey, QPointF>& Offsets)
+{
+	if (Offsets.empty())
+		return;
+
+	// an element moved back onto its placement no longer keeps an offset
+	for (const std::pair<const swInstructionsElementKey, QPointF>& Offset : Offsets)
+	{
+		if (Offset.second.isNull())
+			mElementOffsets.erase(Offset.first);
+		else
+			mElementOffsets[Offset.first] = Offset.second;
+	}
+
+	emit PageLayoutChanged();
+}
+
+void swInstructions::ResetElementOffset(const swInstructionsElementKey& Key)
+{
+	if (mElementOffsets.erase(Key))
+		emit PageLayoutChanged();
+}
+
+void swInstructions::SetElementPlacement(swInstructionsPropertyType Type, int Placement, const swInstructionsElementKey& Key)
+{
+	// a placed element leaves the position it was moved to
+	const bool OffsetRemoved = mElementOffsets.erase(Key) > 0;
+
+	if (mStepProperties[static_cast<int>(Type)].Value == QVariant(Placement))
+	{
+		if (OffsetRemoved)
+			emit PageLayoutChanged();
+
+		return;
+	}
+
+	SetDefaultProperty(Type, Placement);
+}
+
+bool swInstructions::IsElementLocked(const swInstructionsElementKey& Key) const
+{
+	return mLockedPositions.find(Key) != mLockedPositions.end();
+}
+
+QPointF swInstructions::GetLockedPosition(const swInstructionsElementKey& Key) const
+{
+	const std::map<swInstructionsElementKey, QPointF>::const_iterator Position = mLockedPositions.find(Key);
+
+	if (Position == mLockedPositions.end())
+		return QPointF();
+
+	return Position->second;
+}
+
+void swInstructions::LockElement(const swInstructionsElementKey& Key, const QPointF& Position)
+{
+	mLockedPositions[Key] = Position;
+
+	emit PageLayoutChanged();
+}
+
+void swInstructions::UnlockElement(const swInstructionsElementKey& Key, const QPointF& Offset)
+{
+	if (!mLockedPositions.erase(Key))
+		return;
+
+	// the unlocked element stays where it was locked, as an offset from its placement
+	if (Offset.isNull())
+		mElementOffsets.erase(Key);
+	else
+		mElementOffsets[Key] = Offset;
+
+	emit PageLayoutChanged();
+}
+
+void swInstructions::SetShowGrid(bool ShowGrid)
+{
+	if (mShowGrid == ShowGrid)
+		return;
+
+	mShowGrid = ShowGrid;
+	swSetProfileInteger(SW_PROFILE_INSTRUCTIONS_SHOW_GRID, mShowGrid);
+
+	emit GridChanged();
+}
+
+void swInstructions::SetSnapToGrid(bool SnapToGrid)
+{
+	if (mSnapToGrid == SnapToGrid)
+		return;
+
+	mSnapToGrid = SnapToGrid;
+	swSetProfileInteger(SW_PROFILE_INSTRUCTIONS_SNAP_TO_GRID, mSnapToGrid);
+
+	emit GridChanged();
+}
+
+void swInstructions::SetGridSize(float GridSize)
+{
+	GridSize = qBound(SW_GRID_SIZE_MINIMUM, GridSize, SW_GRID_SIZE_MAXIMUM);
+
+	if (qFuzzyCompare(mGridSize, GridSize))
+		return;
+
+	mGridSize = GridSize;
+	swSetProfileFloat(SW_PROFILE_INSTRUCTIONS_GRID_SIZE, mGridSize);
+
+	emit GridChanged();
+}
+
+void swInstructions::SetGridWithinMargins(bool WithinMargins)
+{
+	if (mGridWithinMargins == WithinMargins)
+		return;
+
+	mGridWithinMargins = WithinMargins;
+	swSetProfileInteger(SW_PROFILE_INSTRUCTIONS_GRID_WITHIN_MARGINS, mGridWithinMargins);
+
+	emit GridChanged();
+}
+
+QRectF swInstructions::GetGridRect() const
+{
+	if (mGridWithinMargins)
+		return QRectF(mPageSetup.MarginLeft, mPageSetup.MarginTop, mPageSetup.Width - mPageSetup.MarginLeft - mPageSetup.MarginRight, mPageSetup.Height - mPageSetup.MarginTop - mPageSetup.MarginBottom);
+
+	return QRectF(0.0, 0.0, mPageSetup.Width, mPageSetup.Height);
+}
+
+swInstructionsPageUnits swInstructions::GetGridUnits() const
+{
+	// the grid measures positions on the page like the margins do
+	const int Units = swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_MARGIN_UNITS);
+
+	if (Units < 0 || Units > static_cast<int>(swInstructionsPageUnits::Inches))
+		return swInstructionsPageUnits::Inches;
+
+	return static_cast<swInstructionsPageUnits>(Units);
+}
+
 QVariant swInstructions::GetProperty(swInstructionsPropertyType Type, swModel* Model, swStep Step) const
 {
+	size_t PageIndex;
+
+	// a page with its own value overrides every other value of its steps
+	if (!mPagePropertyOverrides.empty() && IsPageProperty(Type) && GetStepPageIndex(Model, Step, PageIndex) && HasPageProperty(PageIndex, Type))
+		return GetPageProperty(PageIndex, Type);
+
 	QVariant Value = mStepProperties[static_cast<int>(Type)].Value;
 
 	std::map<swModel*, swInstructionsModel>::const_iterator ModelIt = mModels.find(Model);
@@ -365,10 +682,22 @@ void swInstructions::SetDefaultProperty(swInstructionsPropertyType Type, const Q
 	case swInstructionsPropertyType::UseDocumentFont:
 	case swInstructionsPropertyType::DocumentFont:
 	case swInstructionsPropertyType::CoverTitleFont:
+	case swInstructionsPropertyType::CoverTitleColor:
+	case swInstructionsPropertyType::ShowCoverAuthor:
 	case swInstructionsPropertyType::PageBackgroundColor:
 	case swInstructionsPropertyType::ShowStepDividers:
 	case swInstructionsPropertyType::StepDividerColor:
 	case swInstructionsPropertyType::StepDividerWidth:
+	case swInstructionsPropertyType::StepNumberPlacement:
+	case swInstructionsPropertyType::StepNumberAnchor:
+	case swInstructionsPropertyType::PLIPlacement:
+	case swInstructionsPropertyType::PLIAnchor:
+	case swInstructionsPropertyType::CoverTitlePlacement:
+	case swInstructionsPropertyType::BillOfMaterialsPlacement:
+	case swInstructionsPropertyType::CoverAuthorPlacement:
+	case swInstructionsPropertyType::CoverImagePlacement:
+	case swInstructionsPropertyType::StepImagePlacement:
+	case swInstructionsPropertyType::StepBackgroundColor:
 		emit PageLayoutChanged();
 		break;
 

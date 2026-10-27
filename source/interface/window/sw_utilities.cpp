@@ -603,7 +603,7 @@ QVariant swPieceIdStringModel::data(const QModelIndex& Index, int Role) const
 	return QVariant();
 }
 
-swColorDialogPopup::swColorDialogPopup(const QColor& InitialColor, QWidget* Parent)
+swColorDialogPopup::swColorDialogPopup(const QColor& InitialColor, bool ShowAlphaChannel, QWidget* Parent)
 	: QWidget(Parent)
 {
 	setAccessibleName(tr("Choose Color"));
@@ -615,6 +615,7 @@ swColorDialogPopup::swColorDialogPopup(const QColor& InitialColor, QWidget* Pare
 	mColorDialog = new QColorDialog(InitialColor, this);
 	mColorDialog->setWindowFlags(Qt::Widget);
 	mColorDialog->setOptions(QColorDialog::DontUseNativeDialog | QColorDialog::NoButtons);
+	mColorDialog->setOption(QColorDialog::ShowAlphaChannel, ShowAlphaChannel);
 
 	Layout->addWidget(mColorDialog);
 	mColorDialog->setAccessibleName(tr("Custom Color"));

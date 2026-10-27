@@ -754,7 +754,7 @@ void swPropertiesWidget::ColorButtonClicked()
 	QMenu* Menu = new QMenu(ColorButton);
 
 	QWidgetAction* Action = new QWidgetAction(Menu);
-	swColorDialogPopup *Popup = new swColorDialogPopup(InitialColor, Menu);
+	swColorDialogPopup *Popup = new swColorDialogPopup(InitialColor, false, Menu);
 	Action->setDefaultWidget(Popup);
 	Menu->addAction(Action);
 

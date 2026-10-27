@@ -1822,7 +1822,7 @@ swResult<QImage> swModel::RenderStepImageWithReadyAssets(bool Zoom, int Width, i
 	return Image;
 }
 
-swResult<QImage> swModel::GetPartsListImage(int MaxWidth, swStep Step, quint32 BackgroundColor, QFont Font, QColor TextColor, bool KeepMissingParts, bool ShowCounts, swPartsListSort Sort) const
+swResult<QImage> swModel::GetPartsListImage(int MaxWidth, int RequestedThumbnailSize, swStep Step, quint32 BackgroundColor, quint32 ThumbnailBackgroundColor, QFont Font, QColor TextColor, bool KeepMissingParts, bool ShowCounts, swPartsListSort Sort) const
 {
 	swScopedGLContextState GLState;
 
@@ -1908,7 +1908,8 @@ swResult<QImage> swModel::GetPartsListImage(int MaxWidth, swStep Step, quint32 B
 	View.SetOffscreenContext();
 	View.MakeCurrent();
 	swContext* Context = View.mContext;
-	const int ThumbnailSize = qMin(MaxWidth, 512);
+	// a thumbnail wider than the list could never be laid out
+	const int ThumbnailSize = qBound(16, RequestedThumbnailSize, qMax(qMin(MaxWidth, 512), 16));
 
 	View.SetSize(ThumbnailSize, ThumbnailSize);
 
@@ -2118,6 +2119,11 @@ swResult<QImage> swModel::GetPartsListImage(int MaxWidth, swStep Step, quint32 B
 	for (const swPartsListImage& Image : Images)
 	{
 		const QPoint Position = Image.Position + QPoint(20, 20);
+
+		// the thumbnail background holds the piece and its count, it stays inside the spacing between pieces
+		if (qAlpha(ThumbnailBackgroundColor))
+			Painter.fillRect(QRect(Position, Image.Bounds.size() + QSize(0, Ascent)).adjusted(-6, -6, 6, 6), swQColorFromRGBA(ThumbnailBackgroundColor));
+
 		Painter.drawImage(Position, Image.Thumbnail, Image.Bounds);
 
 		if (ShowCounts)

@@ -273,7 +273,7 @@ class swColorDialogPopup : public QWidget
 	Q_OBJECT
 
 public:
-	swColorDialogPopup(const QColor& InitialColor, QWidget* Parent);
+	swColorDialogPopup(const QColor& InitialColor, bool ShowAlphaChannel, QWidget* Parent);
 
 signals:
 	void ColorSelected(QColor Color);

@@ -46,46 +46,6 @@ static const swPageSetupPreset gPageSetupPresets[] =
 	{ QT_TRANSLATE_NOOP("swPageSetupDialog", "4K UHD"), 3840.0f, 2160.0f, swInstructionsPageUnits::Pixels },
 };
 
-static float swGetPageUnitScale(swInstructionsPageUnits Units)
-{
-	switch (Units)
-	{
-	case swInstructionsPageUnits::Pixels:
-		return 1.0f;
-
-	case swInstructionsPageUnits::Millimeters:
-		return 72.0f / 25.4f;
-
-	case swInstructionsPageUnits::Centimeters:
-		return 72.0f / 2.54f;
-
-	case swInstructionsPageUnits::Inches:
-		return 72.0f;
-	}
-
-	return 1.0f;
-}
-
-static QString swGetPageUnitSuffix(swInstructionsPageUnits Units)
-{
-	switch (Units)
-	{
-	case swInstructionsPageUnits::Pixels:
-		return QCoreApplication::translate("swPageSetupDialog", "px");
-
-	case swInstructionsPageUnits::Millimeters:
-		return QCoreApplication::translate("swPageSetupDialog", "mm");
-
-	case swInstructionsPageUnits::Centimeters:
-		return QCoreApplication::translate("swPageSetupDialog", "cm");
-
-	case swInstructionsPageUnits::Inches:
-		return QCoreApplication::translate("swPageSetupDialog", "in");
-	}
-
-	return QString();
-}
-
 swPageSetupDialog::swPageSetupDialog(QWidget* Parent, swInstructionsPageSetup* PageSetup)
 	: QDialog(Parent), ui(new Ui::swPageSetupDialog), mPageSetup(PageSetup), mPoints(*PageSetup)
 {

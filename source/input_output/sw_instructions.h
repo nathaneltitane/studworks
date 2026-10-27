@@ -10,6 +10,10 @@ enum class swInstructionsPageUnits
 	Inches
 };
 
+// use to get the points in one page unit and the unit suffix shown next to the values
+float swGetPageUnitScale(swInstructionsPageUnits Units);
+QString swGetPageUnitSuffix(swInstructionsPageUnits Units);
+
 struct swInstructionsPageSetup
 {
 	float Width;
@@ -54,7 +58,6 @@ enum class swInstructionsPropertyType
 	PLITextColor,
 	PLIBorderColor,
 	PLIBorderWidth,
-//	PLIBorderRound,
 	// pli: spacing and margins, text alignment
 	PLIShowCounts,
 	PLISortOrder,
@@ -66,9 +69,95 @@ enum class swInstructionsPropertyType
 	DocumentFont,
 	ShowCoverPage,
 	CoverTitleFont,
+	CoverTitleColor,
+	ShowCoverAuthor,
 	PageBackgroundColor,
+	StepNumberPlacement,
+	StepNumberAnchor,
+	PLIPlacement,
+	PLIAnchor,
+	CoverTitlePlacement,
+	BillOfMaterialsPlacement,
+	PLIThumbnailSize,
+	PLIThumbnailBackgroundColor,
+	CoverAuthorPlacement,
+	CoverImagePlacement,
+	StepImagePlacement,
 	Count
 };
+
+// what a step element is placed against, the area is the page or its part given to the step by the split
+enum class swInstructionsPlacementAnchor
+{
+	Area,
+	StepNumber,
+	PiecesList
+};
+
+// placements are cells of a grid around the anchor, numbered row by row, its inner cells lie inside the anchor
+constexpr int SW_PLACEMENT_GRID_SIZE = 5;
+constexpr int SW_PLACEMENT_COUNT = SW_PLACEMENT_GRID_SIZE * SW_PLACEMENT_GRID_SIZE;
+
+inline bool swIsInsidePlacement(int Placement)
+{
+	const int Row = Placement / SW_PLACEMENT_GRID_SIZE;
+	const int Column = Placement % SW_PLACEMENT_GRID_SIZE;
+
+	return Row > 0 && Row < SW_PLACEMENT_GRID_SIZE - 1 && Column > 0 && Column < SW_PLACEMENT_GRID_SIZE - 1;
+}
+
+// use to move a placement inside an area or outside an element, the nearest cell keeps its side
+inline int swGetValidPlacement(int Placement, bool Inside)
+{
+	const int Last = SW_PLACEMENT_GRID_SIZE - 1;
+	int Row = qBound(0, Placement / SW_PLACEMENT_GRID_SIZE, Last);
+	int Column = qBound(0, Placement % SW_PLACEMENT_GRID_SIZE, Last);
+
+	if (Inside)
+	{
+		Row = qBound(1, Row, Last - 1);
+		Column = qBound(1, Column, Last - 1);
+	}
+	else if (swIsInsidePlacement(Row * SW_PLACEMENT_GRID_SIZE + Column))
+	{
+		if (Column == 1)
+			Column = 0;
+		else if (Column == Last - 1)
+			Column = Last;
+		else if (Row == 1)
+			Row = 0;
+		else if (Row == Last - 1)
+			Row = Last;
+		else
+		{
+			// the center goes to the right of the element, aligned to its top
+			Row = 1;
+			Column = Last;
+		}
+	}
+
+	return Row * SW_PLACEMENT_GRID_SIZE + Column;
+}
+
+// the page elements that can be selected and moved, the placement panel places some of them
+enum class swInstructionsPlacementElement
+{
+	None,
+	StepNumber,
+	PiecesList,
+	CoverTitle,
+	CoverAuthor,
+	BillOfMaterials,
+	StepImage,
+	CoverImage
+};
+
+// a moved element keeps its offset from its placement through page rebuilds
+using swInstructionsElementKey = std::tuple<swInstructionsPlacementElement, swModel*, swStep>;
+
+// the grid size is stored in points and shown in the margin units
+constexpr float SW_GRID_SIZE_MINIMUM = 2.0f;
+constexpr float SW_GRID_SIZE_MAXIMUM = 144.0f;
 
 struct swInstructionsProperty
 {
@@ -118,11 +207,10 @@ class swInstructions : public QObject
 public:
 	swInstructions(Project* Project = nullptr);
 
-	static QString GetPropertyLabel(swInstructionsPropertyType Type);
-
 	void SetDefaultPageSettings(const swInstructionsPageSettings& PageSettings);
 	swInstructionsPageSettings GetPageSettings(size_t PageIndex) const;
 	void SetPageSettings(size_t PageIndex, int Rows, int Columns);
+	void SetPageDividerPreset(size_t PageIndex, int Rows, int Columns);
 	bool CanInsertBlankPage(size_t PageIndex) const;
 	void InsertBlankPage(size_t PageIndex);
 	void RemoveBlankPage(size_t PageIndex);
@@ -139,11 +227,66 @@ public:
 	void SetDefaultInt(swInstructionsPropertyType Type, int Value);
 	void SetDefaultColor(swInstructionsPropertyType Type, const QColor& Color);
 	void SetDefaultFont(swInstructionsPropertyType Type, const QFont& Font);
+	void ResetProperties();
+
+	// some properties can differ on a single page, the page keeps them through page layout changes
+	static bool IsPageProperty(swInstructionsPropertyType Type);
+	bool HasPageProperty(size_t PageIndex, swInstructionsPropertyType Type) const;
+	void SetPageScope(size_t PageIndex, swInstructionsPropertyType Type, bool PageOnly);
+	int GetPageIntProperty(size_t PageIndex, swInstructionsPropertyType Type) const;
+	QColor GetPageColorProperty(size_t PageIndex, swInstructionsPropertyType Type) const;
+	void SetPageInt(size_t PageIndex, swInstructionsPropertyType Type, int Value);
+	void SetPageColor(size_t PageIndex, swInstructionsPropertyType Type, const QColor& Color);
+
+	QPointF GetElementOffset(const swInstructionsElementKey& Key) const;
+	bool HasElementOffset(const swInstructionsElementKey& Key) const;
+	void SetElementOffsets(const std::map<swInstructionsElementKey, QPointF>& Offsets);
+	void ResetElementOffset(const swInstructionsElementKey& Key);
+	void SetElementPlacement(swInstructionsPropertyType Type, int Placement, const swInstructionsElementKey& Key);
+
+	// a locked element keeps its position on the page whatever its placement and is not dragged
+	bool IsElementLocked(const swInstructionsElementKey& Key) const;
+	QPointF GetLockedPosition(const swInstructionsElementKey& Key) const;
+	void LockElement(const swInstructionsElementKey& Key, const QPointF& Position);
+	void UnlockElement(const swInstructionsElementKey& Key, const QPointF& Offset);
+
+	// the page grid helps aligning elements on screen, it is never printed
+	bool IsGridShown() const
+	{
+		return mShowGrid;
+	}
+
+	bool IsSnapToGrid() const
+	{
+		return mSnapToGrid;
+	}
+
+	float GetGridSize() const
+	{
+		return mGridSize;
+	}
+
+	// the grid covers the area inside the margins or the full page, it starts at the margins or the page corner
+	bool IsGridWithinMargins() const
+	{
+		return mGridWithinMargins;
+	}
+
+	QRectF GetGridRect() const;
+	swInstructionsPageUnits GetGridUnits() const;
+
+	void SetShowGrid(bool ShowGrid);
+	void SetSnapToGrid(bool SnapToGrid);
+	void SetGridSize(float GridSize);
+	void SetGridWithinMargins(bool WithinMargins);
 
 //protected:
 	std::vector<swInstructionsPage> mPages;
 	swInstructionsPageSettings mPageSettings;
 	std::map<swInstructionsStepKey, swInstructionsPageSettings> mPageSettingsOverrides;
+	std::map<swInstructionsStepKey, swInstructionsProperties> mPagePropertyOverrides;
+	std::map<swInstructionsElementKey, QPointF> mElementOffsets;
+	std::map<swInstructionsElementKey, QPointF> mLockedPositions;
 	std::multiset<swInstructionsStepKey> mBlankPages;
 	swInstructionsPageSetup mPageSetup;
 	swInstructionsProperties mStepProperties;
@@ -154,8 +297,10 @@ signals:
 	void StepSettingsChanged(swModel* Model, swStep Step);
 	void PageSetupChanged();
 	void PageLayoutChanged();
+	void GridChanged();
 
 protected:
+	void SetDefaultProperties();
 	void CreatePages();
 	void AddDefaultPages(swModel* Model, std::vector<const swModel*>& AddedModels);
 	void AddBlankPages(swInstructionsPage& Page, const swInstructionsStepKey& Key);
@@ -163,9 +308,16 @@ protected:
 	bool GetPageKey(size_t PageIndex, swInstructionsStepKey& Key) const;
 
 	QVariant GetProperty(swInstructionsPropertyType Type, swModel* Model, swStep Step) const;
+	QVariant GetPageProperty(size_t PageIndex, swInstructionsPropertyType Type) const;
+	void SetPageProperty(size_t PageIndex, swInstructionsPropertyType Type, const QVariant& Value);
+	bool GetStepPageIndex(swModel* Model, swStep Step, size_t& PageIndex) const;
 	void SetDefaultProperty(swInstructionsPropertyType Type, const QVariant& Value);
 
 	Project* mProject = nullptr;
+	bool mShowGrid = false;
+	bool mSnapToGrid = false;
+	bool mGridWithinMargins = true;
+	float mGridSize = 18.0f;
 
 	static const float mDisplayDPI;
 };
