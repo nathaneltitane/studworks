@@ -477,15 +477,6 @@ void swMainWindow::CreateMenus()
 	ViewMenu->addMenu(mCameraMenu);
 	ViewMenu->addMenu(mProjectionMenu);
 	ViewMenu->addMenu(mShadingMenu);
-	QMenu* StepMenu = ViewMenu->addMenu(tr("Ste&p"));
-	StepMenu->addAction(mActions[SW_VIEW_TIME_FIRST]);
-	StepMenu->addAction(mActions[SW_VIEW_TIME_PREVIOUS]);
-	StepMenu->addAction(mActions[SW_VIEW_TIME_NEXT]);
-	StepMenu->addAction(mActions[SW_VIEW_TIME_LAST]);
-	StepMenu->addSeparator();
-	StepMenu->addAction(mActions[SW_VIEW_TIME_INSERT_BEFORE]);
-	StepMenu->addAction(mActions[SW_VIEW_TIME_INSERT_AFTER]);
-	StepMenu->addAction(mActions[SW_VIEW_TIME_DELETE]);
 	ViewMenu->addSeparator();
 	ViewMenu->addAction(mActions[SW_VIEW_SPLIT_HORIZONTAL]);
 	ViewMenu->addAction(mActions[SW_VIEW_SPLIT_VERTICAL]);
@@ -514,6 +505,16 @@ void swMainWindow::CreateMenus()
 	PieceMenu->addAction(mActions[SW_PIECE_HIDE_UNSELECTED]);
 	PieceMenu->addAction(mActions[SW_PIECE_UNHIDE_SELECTED]);
 	PieceMenu->addAction(mActions[SW_PIECE_UNHIDE_ALL]);
+
+	QMenu* StepMenu = menuBar()->addMenu(tr("&Steps"));
+	StepMenu->addAction(mActions[SW_VIEW_TIME_FIRST]);
+	StepMenu->addAction(mActions[SW_VIEW_TIME_PREVIOUS]);
+	StepMenu->addAction(mActions[SW_VIEW_TIME_NEXT]);
+	StepMenu->addAction(mActions[SW_VIEW_TIME_LAST]);
+	StepMenu->addSeparator();
+	StepMenu->addAction(mActions[SW_VIEW_TIME_INSERT_BEFORE]);
+	StepMenu->addAction(mActions[SW_VIEW_TIME_INSERT_AFTER]);
+	StepMenu->addAction(mActions[SW_VIEW_TIME_DELETE]);
 
 	QMenu* ModelMenu = menuBar()->addMenu(tr("&Models"));
 	ModelMenu->addAction(mActions[SW_PIECE_MINIFIGURE_BUILDER]);
