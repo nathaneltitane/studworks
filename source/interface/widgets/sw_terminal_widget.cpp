@@ -20,6 +20,10 @@ swTerminalWidget::swTerminalWidget(QWidget* Parent)
 	swAddPanelRowStretch(OptionsRow);
 	mLayout->addWidget(OptionsRow);
 
+	QAction* OpenFolderAction = gMainWindow->mActions[SW_VIEW_TERMINAL_OPEN_MODEL_FOLDER];
+	QToolButton* OpenFolderButton = swAddPanelActionButton(OptionsRow, OpenFolderAction);
+	OpenFolderButton->setWhatsThis(OpenFolderAction->whatsThis());
+
 	QMenu* OptionsMenu = new QMenu(OptionsRow);
 	swAddPanelOptionsButton(OptionsRow, OptionsMenu, tr("Configure the terminal."), tr("Terminal Options"));
 	connect(OptionsMenu, &QMenu::aboutToShow, this, &swTerminalWidget::OptionsMenuAboutToShow);

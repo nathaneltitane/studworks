@@ -4,7 +4,7 @@
 <context>
     <name>swBlenderPreferences</name>
     <message numerus="yes">
-        <location filename="../common/lc_blenderpreferences.cpp" line="3910"/>
+        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="3908"/>
         <source>%1 of %n files extracted.</source>
         <translation>
             <numerusform>%1 of %n file extracted.</numerusform>
@@ -12,7 +12,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../common/lc_blenderpreferences.cpp" line="3581"/>
+        <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="3579"/>
         <source>Finished writing Blender parameter entries. Processed %n lines in file &apos;%1&apos;.</source>
         <translation>
             <numerusform>Finished writing Blender parameter entries. Processed %n line in file &apos;%1&apos;.</numerusform>
@@ -23,7 +23,7 @@
 <context>
     <name>swMainWindow</name>
     <message numerus="yes">
-        <location filename="../common/lc_mainwindow.cpp" line="2376"/>
+        <location filename="../../source/interface/window/sw_main_window.cpp" line="2998"/>
         <source>%n objects selected</source>
         <translation>
             <numerusform>%n object selected</numerusform>
@@ -31,7 +31,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../common/lc_mainwindow.cpp" line="2776"/>
+        <location filename="../../source/interface/window/sw_main_window.cpp" line="3449"/>
         <source>Merged %n submodels.</source>
         <translation>
             <numerusform>Merged %n submodel.</numerusform>
@@ -42,7 +42,7 @@
 <context>
     <name>swModel</name>
     <message numerus="yes">
-        <location filename="../common/lc_model.cpp" line="5458"/>
+        <location filename="../../source/core/sw_model.cpp" line="5629"/>
         <source>Replace Pieces</source>
         <translation>
             <numerusform>Replace Piece</numerusform>
@@ -53,7 +53,7 @@
 <context>
     <name>swModelListDialog</name>
     <message numerus="yes">
-        <location filename="../common/lc_modellistdialog.cpp" line="143"/>
+        <location filename="../../source/interface/dialogs/sw_model_list_dialog.cpp" line="144"/>
         <source>Are you sure you want to delete %n submodels?</source>
         <translation>
             <numerusform>Are you sure you want to delete %n submodel?</numerusform>

@@ -180,6 +180,8 @@ void swMainWindow::CreateActions()
 	FileOpenIcon.addFile(":/resources/interface/toolbars/standard/file_open.png");
 	FileOpenIcon.addFile(":/resources/interface/toolbars/standard/file_open_16.png");
 	mActions[SW_FILE_OPEN]->setIcon(FileOpenIcon);
+	mActions[SW_VIEW_TERMINAL_OPEN_MODEL_FOLDER]->setIcon(FileOpenIcon);
+	mActions[SW_VIEW_TERMINAL_OPEN_MODEL_FOLDER]->setToolTip(tr("Open Model Folder"));
 
 	QIcon FilePrintIcon;
 	FilePrintIcon.addFile(":/resources/interface/menus/file_print.png");
@@ -1061,6 +1063,7 @@ void swMainWindow::CreateTerminalWidget()
 	mActions[SW_VIEW_TOOLBAR_TERMINAL]->setVisible(false);
 	mActions[SW_VIEW_TERMINAL_TOGGLE_FOLLOW_MODEL]->setVisible(false);
 	mActions[SW_VIEW_TERMINAL_GO_TO_MODEL_FOLDER]->setVisible(false);
+	mActions[SW_VIEW_TERMINAL_OPEN_MODEL_FOLDER]->setVisible(false);
 #endif
 }
 
@@ -3311,6 +3314,9 @@ void swMainWindow::UpdateTitle()
 	setWindowModified(swGetActiveProject()->IsModified());
 	setWindowFilePath(swGetActiveProject()->GetTitle());
 
+	// An unsaved model has no folder to open.
+	mActions[SW_VIEW_TERMINAL_OPEN_MODEL_FOLDER]->setEnabled(!swGetActiveProject()->GetFileName().isEmpty());
+
 	if (swGetPreferences().mTerminalFollowModel)
 		UpdateTerminalDirectory(false);
 }
@@ -3997,6 +4003,11 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 
 	case SW_VIEW_TERMINAL_GO_TO_MODEL_FOLDER:
 		UpdateTerminalDirectory(true);
+		break;
+
+	case SW_VIEW_TERMINAL_OPEN_MODEL_FOLDER:
+		if (!swGetActiveProject()->GetFileName().isEmpty())
+			QDesktopServices::openUrl(QUrl::fromLocalFile(QFileInfo(swGetActiveProject()->GetFileName()).absolutePath()));
 		break;
 
 	case SW_VIEW_COLORS_TOGGLE_SOLID:

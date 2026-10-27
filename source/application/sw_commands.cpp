@@ -1548,6 +1548,14 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+	// SW_VIEW_TERMINAL_OPEN_MODEL_FOLDER
+	{
+		QT_TRANSLATE_NOOP("Action", "View.Terminal.OpenModelFolder"),
+		QT_TRANSLATE_NOOP("Menu", "Open Model Folder"),
+		QT_TRANSLATE_NOOP("Status", "Open the model folder"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Open Model Folder</b></p><p>Open the folder of the current model in the file manager. The button is unavailable until the model is saved to a file.</p>"),
+		""
+	},
 	// SW_VIEW_COLORS_TOGGLE_SOLID
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Colors.ToggleSolid"),

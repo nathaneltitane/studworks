@@ -17,7 +17,7 @@
 
 static const char* gLanguageLocales[] =
 {
-	"", "cs_CZ", "de_DE", "en_US", "fr_FR", "pt_PT", "es_ES", "zh_CN"
+	"", "cs_CZ", "de_DE", "en_US", "fr_FR", "pt_PT", "es_ES", "zh_CN", "zh_TW"
 };
 
 swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOptions* Options)
@@ -41,6 +41,7 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	ui->Language->addItem("Portugu\u00eas");
 	ui->Language->addItem("Espa\u00f1ol");
 	ui->Language->addItem("\u7b80\u4f53\u4e2d\u6587");
+	ui->Language->addItem("\u7e41\u9ad4\u4e2d\u6587");
 
 	connect(ui->partsLibraryBrowse, &QPushButton::clicked, this, &swPreferencesDialog::PartsLibraryBrowseClicked);
 	connect(ui->partsArchiveBrowse, &QPushButton::clicked, this, &swPreferencesDialog::PartsArchiveBrowseClicked);
