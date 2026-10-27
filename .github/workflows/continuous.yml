@@ -355,20 +355,12 @@ jobs:
         if-no-files-found: ignore
     - name: Build package
       shell: bash
-      run: |
-        mkdir appdir
-        cp build/release/StudWorks.exe library.bin povconsole32-sse2.exe appdir/
-        cp documentation/README.md appdir/readme.txt
-        windeployqt --release appdir/StudWorks.exe
-        cp "$(cygpath -u "${VCToolsRedistDir}")vc_redist.x64.exe" appdir/
-        cp packaging/studworks.nsi .
-        "/c/Program Files (x86)/NSIS/makensis.exe" -V4 -DX64 "-XOutFile studworks-windows-${{ steps.version.outputs.text }}-x64.exe" studworks.nsi
-        test -s studworks-windows-${{ steps.version.outputs.text }}-x64.exe
+      run: packaging/windows.sh build/windows
     - name: Upload package
       uses: actions/upload-artifact@v7
       with:
         name: studworks-windows-${{ steps.version.outputs.text }}-x64
-        path: studworks-windows-*.exe
+        path: build/windows/studworks-windows-*.exe
 
   release:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'

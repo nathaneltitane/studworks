@@ -1,4 +1,5 @@
 !include "MUI2.nsh"
+!include "FileFunc.nsh"
 
 ; The name of the installer
 Name "StudWorks"
@@ -7,7 +8,7 @@ Name "StudWorks"
 ;OutFile "studworks-setup.exe"
 
 ; Request application privileges for Windows Vista
-;RequestExecutionLevel admin
+RequestExecutionLevel admin
 
 ; Build Unicode installer
 Unicode True
@@ -17,7 +18,7 @@ InstallDir $PROGRAMFILES64\StudWorks
 
 ; Registry key to check for directory (so if you install again, it will 
 ; overwrite the old one automatically)
-InstallDirRegKey HKLM "Software\StudWorks\StudWorks" "InstallFolder"
+InstallDirRegKey HKLM "Software\StudWorks" "InstallFolder"
   
 ;  Icon "setup.ico"
 
@@ -55,9 +56,17 @@ SetCompressor /SOLID lzma
 Section "Application Files" SecStudWorks
 
   SectionIn RO
+  SetShellVarContext all
+
+  ;Remove the previous version, its uninstaller keeps the user settings
+  IfFileExists "$INSTDIR\Uninstall.exe" 0 PastPreviousCheck
+    ExecWait '"$INSTDIR\Uninstall.exe" /S /KEEPSETTINGS _?=$INSTDIR'
+    Delete "$INSTDIR\Uninstall.exe"
+  PastPreviousCheck:
+
   SetOutPath "$INSTDIR"
 
-  File /r /x library.bin "appdir\*.*"
+  File /r /x library.bin "${DIRECTORY_PACKAGE}\*.*"
 
   ;Register file extension
   WriteRegStr HKCR ".lcd" "" "StudWorks.Project"
@@ -74,7 +83,7 @@ Section "Application Files" SecStudWorks
   PastVcRedist64Check:
 
   ;Store installation folder
-  ;WriteRegStr HKLM "Software\StudWorks\StudWorks" "InstallFolder" $INSTDIR
+  WriteRegStr HKLM "Software\StudWorks" "InstallFolder" $INSTDIR
   
   CreateShortCut "$SMPROGRAMS\StudWorks.lnk" "$INSTDIR\StudWorks.exe"
 
@@ -83,13 +92,12 @@ Section "Application Files" SecStudWorks
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\StudWorks" "DisplayVersion" $%VERSION%
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\StudWorks" "Publisher" "StudWorks.org"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\StudWorks" "DisplayIcon" '"$INSTDIR\StudWorks.exe"'
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\StudWorks" "UninstallString" '"$INSTDIR\uninstall.exe"'
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\StudWorks" "UninstallString" '"$INSTDIR\Uninstall.exe"'
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\StudWorks" "URLUpdateInfo" "https://github.com/nathaneltitane/studworks"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\StudWorks" "URLInfoAbout" "https://github.com/nathaneltitane/studworks"
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\StudWorks" "NoModify" 1
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\StudWorks" "NoRepair" 1
 
-  !include "FileFunc.nsh"
   ${GetSize} "$INSTDIR" "/S=0K" $0 $1 $2
   IntFmt $0 "0x%08X" $0
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\StudWorks" "EstimatedSize" "$0"
@@ -102,7 +110,7 @@ Section "Parts Library" SecLibrary
 
   SetOutPath "$INSTDIR"
 
-  File "appdir\library.bin"
+  File "${DIRECTORY_PACKAGE}\library.bin"
 
 SectionEnd
 
@@ -124,17 +132,14 @@ SectionEnd
 
 Section "Uninstall"
 
+  SetShellVarContext all
+
   Delete "$SMPROGRAMS\StudWorks.lnk"
+
+  ;Every file and folder the installer placed, listed at build time
+  !include "uninstall.nsh"
+
   Delete "$INSTDIR\Uninstall.exe"
-
-  Delete "$INSTDIR\StudWorks.exe"
-  Delete "$INSTDIR\StudWorks.hlp"
-  Delete "$INSTDIR\StudWorks.cnt"
-  Delete "$INSTDIR\readme.txt"
-  Delete "$INSTDIR\library.bin"
-  Delete "$INSTDIR\povconsole32-sse2.exe"
-  Delete "$INSTDIR\vc_redist.x64.exe"
-
   RMDir "$INSTDIR"
 
   DeleteRegKey HKCR ".lcd"
@@ -142,7 +147,18 @@ Section "Uninstall"
   System::Call 'shell32.dll::SHChangeNotify(i, i, i, i) v (0x08000000, 0, 0, 0)'
 
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\StudWorks"
-  DeleteRegKey HKLM "Software\StudWorks\StudWorks\InstallFolder"
-  DeleteRegKey /ifempty HKCU "Software\StudWorks\StudWorks"
+  DeleteRegKey HKLM "Software\StudWorks"
+
+  ;Settings, parts cache and temporary files, kept when a new version replaces this one
+  ${un.GetParameters} $R0
+  ClearErrors
+  ${un.GetOptions} $R0 "/KEEPSETTINGS" $R1
+  IfErrors 0 PastSettings
+    SetShellVarContext current
+    DeleteRegKey HKCU "Software\StudWorks"
+    RMDir /r "$LOCALAPPDATA\StudWorks"
+    RMDir /r "$APPDATA\StudWorks"
+    Delete "$TEMP\studworks-*"
+  PastSettings:
 
 SectionEnd
