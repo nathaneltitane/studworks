@@ -11,7 +11,7 @@ class swPiecePaletteDialog : public QDialog
     Q_OBJECT
 
 public:
-    swPiecePaletteDialog(QWidget* Parent, std::vector<swPiecePalette>& PartPalettes);
+    swPiecePaletteDialog(QWidget* Parent, std::vector<swPiecePalette>& PiecePalettes);
     ~swPiecePaletteDialog();
 
 protected slots:
@@ -30,6 +30,6 @@ private:
 	void UpdateButtons();
 
 	Ui::swPiecePaletteDialog* ui;
-	std::vector<swPiecePalette>& mPartPalettes;
+	std::vector<swPiecePalette>& mPiecePalettes;
 	std::vector<swPiecePalette*> mImportedPalettes;
 };

@@ -102,7 +102,7 @@ swPieceData* swPieceManager::CreatePieceData(const char* PieceName, Project* Own
 	swPieceData* PieceData = new swPieceData(false);
 	const std::string Name = NormalizePieceDataName(PieceName);
 
-	PieceData->CreatePart(PieceName);
+	PieceData->CreatePiece(PieceName);
 
 	if (OwnerProject)
 		RegisterProjectPieceData(OwnerProject, Name, PieceData);

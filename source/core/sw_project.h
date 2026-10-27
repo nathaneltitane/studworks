@@ -25,8 +25,8 @@ public:
 	bool IndexPage;
 	int StepImagesWidth;
 	int StepImagesHeight;
-	bool PartsListStep;
-	bool PartsListEnd;
+	bool PiecesListStep;
+	bool PiecesListEnd;
 };
 
 struct swImageDialogOptions
@@ -40,7 +40,7 @@ struct swImageDialogOptions
 
 struct swSetInventoryItem
 {
-	QByteArray PartID;
+	QByteArray PieceID;
 	int Quantity;
 	int ColorCode;
 };
@@ -205,7 +205,7 @@ protected:
 	static bool CanShareMergePieceData(const swPieceData* Existing, const swPieceData* Incoming);
 	QString GetExportFileName(const QString& FileName, const QString& DefaultExtension, const QString& DialogTitle, const QString& DialogFilter) const;
 
-	std::vector<swModelPiecesEntry> GetModelParts();
+	std::vector<swModelPiecesEntry> GetModelPieces();
 	void SetFileName(const QString& FileName);
 
 	QUuid mClipboardIdentity = QUuid::createUuid();
@@ -242,4 +242,4 @@ inline swModel* swGetActiveModel()
 	return Project ? Project->GetActiveModel() : nullptr;
 }
 
-swResult<void> swExportCSV(const QString& FileName, const swPiecesList& PartsList);
+swResult<void> swExportCSV(const QString& FileName, const swPiecesList& PiecesList);

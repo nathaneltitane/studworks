@@ -44,7 +44,7 @@ void swMainWindow::SetShadingMode(swShadingMode ShadingMode)
 
 	UpdateShadingMode();
 
-	UpdatePartsRendering();
+	UpdatePiecesRendering();
 }
 
 void swMainWindow::SetLightingStyle(swLightingStyle LightingStyle)
@@ -54,7 +54,7 @@ void swMainWindow::SetLightingStyle(swLightingStyle LightingStyle)
 
 	UpdateShadingMode();
 
-	UpdatePartsRendering();
+	UpdatePiecesRendering();
 }
 
 void swMainWindow::SetSelectionMode(swSelectionMode SelectionMode)
@@ -245,7 +245,7 @@ void swMainWindow::ToggleEdgeLines(swRenderTarget Target)
 		Preferences.SaveRenderTarget(Target);
 	}
 
-	UpdatePartsRendering();
+	UpdatePiecesRendering();
 }
 
 void swMainWindow::ToggleConditionalLines(swRenderTarget Target)
@@ -267,7 +267,7 @@ void swMainWindow::ToggleConditionalLines(swRenderTarget Target)
 		Preferences.SaveRenderTarget(Target);
 	}
 
-	UpdatePartsRendering();
+	UpdatePiecesRendering();
 }
 
 void swMainWindow::ToggleSyncRendering(swRenderTarget Target)
@@ -278,7 +278,7 @@ void swMainWindow::ToggleSyncRendering(swRenderTarget Target)
 	TargetSettings.SyncRendering = !TargetSettings.SyncRendering;
 	Preferences.SaveRenderTarget(Target);
 
-	UpdatePartsRendering();
+	UpdatePiecesRendering();
 }
 
 void swMainWindow::SetTargetShadingMode(swRenderTarget Target, swShadingMode ShadingMode)
@@ -291,7 +291,7 @@ void swMainWindow::SetTargetShadingMode(swRenderTarget Target, swShadingMode Sha
 	TargetSettings.SyncRendering = false;
 	Preferences.SaveRenderTarget(Target);
 
-	UpdatePartsRendering();
+	UpdatePiecesRendering();
 }
 
 QAction* swMainWindow::AddMenuCommand(QMenu* Menu, const QString& Text, swCommandId CommandId, bool Checked)
@@ -411,12 +411,12 @@ void swMainWindow::TogglePreviewAxisIcon()
 	swView::UpdateAllViews();
 }
 
-void swMainWindow::UpdatePartsRendering()
+void swMainWindow::UpdatePiecesRendering()
 {
 	swView::UpdateAllViews();
 
-	if (mPartSelectionWidget)
-		mPartSelectionWidget->UpdateThumbnails();
+	if (mPieceSelectionWidget)
+		mPieceSelectionWidget->UpdateThumbnails();
 }
 
 QByteArray swMainWindow::GetTabLayout()

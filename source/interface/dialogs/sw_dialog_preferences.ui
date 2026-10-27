@@ -756,7 +756,7 @@
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QCheckBox" name="HighlightNewParts">
+           <widget class="QCheckBox" name="HighlightNewPieces">
             <property name="toolTip">
              <string>Highlight pieces introduced in the current building step.</string>
             </property>
@@ -766,7 +766,7 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QToolButton" name="HighlightNewPartsColor">
+           <widget class="QToolButton" name="HighlightNewPiecesColor">
             <property name="accessibleName">
              <string>New Piece Highlight Color</string>
             </property>
@@ -3304,8 +3304,8 @@
   <tabstop>LightingStyle</tabstop>
   <tabstop>FadeSteps</tabstop>
   <tabstop>FadeStepsColor</tabstop>
-  <tabstop>HighlightNewParts</tabstop>
-  <tabstop>HighlightNewPartsColor</tabstop>
+  <tabstop>HighlightNewPieces</tabstop>
+  <tabstop>HighlightNewPiecesColor</tabstop>
   <tabstop>HighlightRenderMode</tabstop>
   <tabstop>SelectionOutlineWidth</tabstop>
   <tabstop>edgeLines</tabstop>

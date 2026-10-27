@@ -171,7 +171,7 @@ public:
 	void AddRenderMesh(swScene& Scene);
 	void AddRenderMeshes(swScene* Scene, const swMatrix44& WorldMatrix, int ColorIndex, swRenderMeshState RenderMeshState, bool ParentActive) const;
 
-	void CreatePart(const char* Name);
+	void CreatePiece(const char* Name);
 
 	void DetachContainer();
 	void SetModel(swModel* Model);
@@ -180,8 +180,8 @@ public:
 	bool IncludesModel(const swModel* Model) const;
 	bool MinIntersectDist(const swVector3& Start, const swVector3& End, float& MinDistance, swPieceRayTest& PieceRayTest) const;
 	bool BoxTest(const swMatrix44& WorldMatrix, const swVector4 Planes[6]) const;
-	void GetPartsList(int DefaultColorIndex, bool ScanSubModels, bool AddSubModels, swPiecesList& PartsList) const;
-	void GetModelParts(const swMatrix44& WorldMatrix, int DefaultColorIndex, std::vector<swModelPiecesEntry>& ModelParts) const;
+	void GetPiecesList(int DefaultColorIndex, bool ScanSubModels, bool AddSubModels, swPiecesList& PiecesList) const;
+	void GetModelPieces(const swMatrix44& WorldMatrix, int DefaultColorIndex, std::vector<swModelPiecesEntry>& ModelPieces) const;
 	void CompareBoundingBox(const swMatrix44& WorldMatrix, swVector3& Min, swVector3& Max) const;
 	void AddSubModelBoundingBoxPoints(const swMatrix44& WorldMatrix, std::vector<swVector3>& Points, swGeometryBoundsMode Mode) const;
 	void UpdateBoundingBox(std::vector<swModel*>& UpdatedModels);
@@ -206,7 +206,7 @@ protected:
 
 	enum class Type
 	{
-		Part,
+		Piece,
 		Model,
 		Project
 	};
@@ -216,7 +216,7 @@ protected:
 	// Fixed at creation, independently of type and load state.
 	const bool mIsLibraryPiece;
 	int mRefCount = 0;
-	Type mType = Type::Part;
+	Type mType = Type::Piece;
 	swModel* mModel = nullptr;
 	Project* mProject = nullptr;
 	swMesh* mMesh = nullptr;

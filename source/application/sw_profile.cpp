@@ -439,7 +439,7 @@ constexpr swProfileEnumerationValue<swStudStyle> StudStyleValues[] =
 	{ swStudStyle::HighContrastLogo, "HighContrastLogo", 7 }
 };
 
-constexpr swProfileEnumerationValue<swPieceFilterType> PartFilterTypeValues[] =
+constexpr swProfileEnumerationValue<swPieceFilterType> PieceFilterTypeValues[] =
 {
 	{ swPieceFilterType::Default, "Default", 0 },
 	{ swPieceFilterType::RegularExpression, "RegularExpression", 1 }
@@ -565,12 +565,12 @@ void swSetProfileStudStyle(swStudStyle Value)
 
 swPieceFilterType swGetProfilePieceFilterType()
 {
-	return swReadProfileEnumeration(SW_PROFILE_PIECES_LIST_PIECE_FILTER, PartFilterTypeValues);
+	return swReadProfileEnumeration(SW_PROFILE_PIECES_LIST_PIECE_FILTER, PieceFilterTypeValues);
 }
 
 void swSetProfilePieceFilterType(swPieceFilterType Value)
 {
-	swWriteProfileEnumeration(SW_PROFILE_PIECES_LIST_PIECE_FILTER, Value, PartFilterTypeValues);
+	swWriteProfileEnumeration(SW_PROFILE_PIECES_LIST_PIECE_FILTER, Value, PieceFilterTypeValues);
 }
 
 swPOVRayRenderQuality swGetProfileRenderQuality()

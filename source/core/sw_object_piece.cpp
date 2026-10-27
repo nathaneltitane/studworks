@@ -1499,7 +1499,7 @@ bool swPiece::IsVisibleInSubModel() const
 	return (mStepHide == SW_STEP_MAXIMUM) && !mHidden;
 }
 
-void swPiece::GetModelParts(const swMatrix44& WorldMatrix, int DefaultColorIndex, std::vector<swModelPiecesEntry>& ModelParts) const
+void swPiece::GetModelPieces(const swMatrix44& WorldMatrix, int DefaultColorIndex, std::vector<swModelPiecesEntry>& ModelPieces) const
 {
 	if (!IsVisibleInSubModel())
 		return;
@@ -1510,9 +1510,9 @@ void swPiece::GetModelParts(const swMatrix44& WorldMatrix, int DefaultColorIndex
 		ColorIndex = DefaultColorIndex;
 
 	if (!mMesh || mPieceData->mState != swAssetState::Loaded)
-		mPieceData->GetModelParts(swMultiply(mModelWorld, WorldMatrix), ColorIndex, ModelParts);
+		mPieceData->GetModelPieces(swMultiply(mModelWorld, WorldMatrix), ColorIndex, ModelPieces);
 	else
-		ModelParts.emplace_back(swModelPiecesEntry{ swMultiply(mModelWorld, WorldMatrix), mPieceData.Get(), mMesh, ColorIndex });
+		ModelPieces.emplace_back(swModelPiecesEntry{ swMultiply(mModelWorld, WorldMatrix), mPieceData.Get(), mMesh, ColorIndex });
 }
 
 const swBoundingBox& swPiece::GetBoundingBox() const

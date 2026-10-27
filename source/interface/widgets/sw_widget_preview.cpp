@@ -84,12 +84,12 @@ swPreviewDockWidget::swPreviewDockWidget(QWidget* Parent)
 	swSetupPanelEdit(mLabel);
 
 	swPiecesLibrary* Library = swGetPiecesLibrary();
-	connect(Library, &swPiecesLibrary::PartLoaded, this, [this](swPieceData*)
+	connect(Library, &swPiecesLibrary::PieceLoaded, this, [this](swPieceData*)
 	{
 		if (mAssetRefreshPending)
 			RefreshPendingAssets();
 	});
-	connect(Library, &swPiecesLibrary::PartLoadFailed, this, [this](swPieceData*, const QString&)
+	connect(Library, &swPiecesLibrary::PieceLoadFailed, this, [this](swPieceData*, const QString&)
 	{
 		if (mAssetRefreshPending)
 			RefreshPendingAssets();

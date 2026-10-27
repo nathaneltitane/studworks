@@ -169,9 +169,9 @@ public:
 		return CurrentTab ? CurrentTab->GetModel() : nullptr;
 	}
 
-	swPieceSelectionWidget* GetPartSelectionWidget() const
+	swPieceSelectionWidget* GetPieceSelectionWidget() const
 	{
-		return mPartSelectionWidget;
+		return mPieceSelectionWidget;
 	}
 
 	swPreviewDockWidget* GetPreviewWidget() const
@@ -249,7 +249,7 @@ public:
 	QAction* AddMenuCommand(QMenu* Menu, const QString& Text, swCommandId CommandId, bool Checked);
 	void TogglePreviewViewSphere();
 	void TogglePreviewAxisIcon();
-	void UpdatePartsRendering();
+	void UpdatePiecesRendering();
 	void ToggleLoadPiecesBeforeShowing();
 
 	void NewProject();
@@ -295,7 +295,7 @@ public:
 	std::optional<swVector3> GetTransformAmount();
 
 	bool eventFilter(QObject* Object, QEvent* Event) override;
-	void SnapPartsDock();
+	void SnapPiecesDock();
 
 	int mColorIndex;
 	int mLastInsertedColorIndex = -1;
@@ -328,7 +328,7 @@ protected slots:
 	void ClipboardChanged();
 	void ActionTriggered();
 	void ColorChanged(int ColorIndex);
-	void PartListPicked(swPieceData* PieceData);
+	void PieceListPicked(swPieceData* PieceData);
 	void ColorButtonClicked();
 	void EnableWindowFlags(bool);
 
@@ -404,16 +404,16 @@ protected:
 	QToolBar* mTimeToolBar = nullptr;
 	QDockWidget* mPreviewToolBar = nullptr;
 	QDockWidget* mTerminalToolBar = nullptr;
-	QDockWidget* mPartsToolBar = nullptr;
+	QDockWidget* mPiecesToolBar = nullptr;
 	QPointer<swInstructionsDialog> mInstructionsDialog;
-	bool mPartsSnapPending = false;
-	bool mPartsSnapRetried = false;
+	bool mPiecesSnapPending = false;
+	bool mPiecesSnapRetried = false;
 	QDockWidget* mColorsToolBar = nullptr;
 	QDockWidget* mPropertiesToolBar = nullptr;
 	QDockWidget* mTimelineToolBar = nullptr;
 	QDockWidget* mMinifigureBuilderToolBar = nullptr;
 
-	swPieceSelectionWidget* mPartSelectionWidget = nullptr;
+	swPieceSelectionWidget* mPieceSelectionWidget = nullptr;
 	swColorList* mColorList = nullptr;
 	QToolButton* mColorButton = nullptr;
 	swPropertiesWidget* mPropertiesWidget = nullptr;

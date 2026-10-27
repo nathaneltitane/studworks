@@ -13,25 +13,25 @@
 class swFrozenPiecesView : public QTableView
 {
 public:
-	explicit swFrozenPiecesView(swPiecesTableWidget* PartsTable)
-		: QTableView(PartsTable), mPartsTable(PartsTable)
+	explicit swFrozenPiecesView(swPiecesTableWidget* PiecesTable)
+		: QTableView(PiecesTable), mPiecesTable(PiecesTable)
 	{
 	}
 
 protected:
 	QItemSelectionModel::SelectionFlags selectionCommand(const QModelIndex& Index, const QEvent* Event = nullptr) const override
 	{
-		return mPartsTable->TrackSelectionCommand(Index, Event, QTableView::selectionCommand(Index, Event));
+		return mPiecesTable->TrackSelectionCommand(Index, Event, QTableView::selectionCommand(Index, Event));
 	}
 
 	void setSelection(const QRect& Rect, QItemSelectionModel::SelectionFlags Command) override
 	{
-		if (!mPartsTable->SelectSharedRange(Command))
+		if (!mPiecesTable->SelectSharedRange(Command))
 			QTableView::setSelection(Rect, Command);
 	}
 
 private:
-	swPiecesTableWidget* mPartsTable;
+	swPiecesTableWidget* mPiecesTable;
 };
 
 class swPiecesThumbnailDelegate : public QStyledItemDelegate
@@ -52,13 +52,13 @@ swPiecesTableWidget::swPiecesTableWidget(QWidget* Parent)
 {
 }
 
-void swPiecesTableWidget::FreezePartColumns()
+void swPiecesTableWidget::FreezePieceColumns()
 {
 	// The thumbnail sits in a column of its own so copied cells only hold text.
 	setItemDelegateForColumn(0, new swPiecesThumbnailDelegate(this));
 	setColumnWidth(0, qMax(iconSize().width() + 8, horizontalHeader()->sectionSizeHint(0)));
 	setColumnWidth(1, qMax(sizeHintForColumn(1), horizontalHeader()->sectionSizeHint(1)));
-	mPartColumnWidth = qMax(sizeHintForColumn(2), horizontalHeader()->sectionSizeHint(2));
+	mPieceColumnWidth = qMax(sizeHintForColumn(2), horizontalHeader()->sectionSizeHint(2));
 	for (int Column = 0; Column < 3; Column++)
 		horizontalHeader()->setSectionResizeMode(Column, QHeaderView::Fixed);
 	setTextElideMode(Qt::ElideRight);
@@ -181,8 +181,8 @@ void swPiecesTableWidget::UpdateFrozenGeometry()
 		return;
 
 	// The piece column always shows the full description.
-	if (columnWidth(2) != mPartColumnWidth)
-		setColumnWidth(2, mPartColumnWidth);
+	if (columnWidth(2) != mPieceColumnWidth)
+		setColumnWidth(2, mPieceColumnWidth);
 
 	for (int Column = 0; Column < 3; Column++)
 		mFrozenColumn->setColumnWidth(Column, columnWidth(Column));
@@ -299,13 +299,13 @@ swPropertiesDialog::swPropertiesDialog(QWidget* Parent, swPropertiesDialogOption
 
 	ui->MeasurementsLabel->setText(Measurements);
 
-	const swPiecesList& PartsList = mOptions->PartsList;
+	const swPiecesList& PiecesList = mOptions->PiecesList;
 	QStringList HorizontalLabels;
 
 	std::vector<bool> ColorsUsed(gColorList.size());
 
-	for (const auto& PartIt : PartsList)
-		for (const auto& ColorIt : PartIt.second)
+	for (const auto& PieceIt : PiecesList)
+		for (const auto& ColorIt : PieceIt.second)
 			ColorsUsed[ColorIt.first] = true;
 
 	std::vector<int> ColorColumns(gColorList.size());
@@ -326,25 +326,25 @@ swPropertiesDialog::swPropertiesDialog(QWidget* Parent, swPropertiesDialogOption
 
 	HorizontalLabels.append(tr("Total"));
 
-	QTableWidget* PartsTable = ui->PartsTable;
+	QTableWidget* PiecesTable = ui->PiecesTable;
 	const int ThumbnailSize = 32;
-	PartsTable->setIconSize(QSize(ThumbnailSize, ThumbnailSize));
-	PartsTable->verticalHeader()->setDefaultSectionSize(qMax(PartsTable->verticalHeader()->defaultSectionSize(), ThumbnailSize + 4));
-	PartsTable->setColumnCount(ColorCount + 4);
-	PartsTable->setRowCount((int)PartsList.size() + 1);
-	PartsTable->setHorizontalHeaderLabels(HorizontalLabels);
-	PartsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+	PiecesTable->setIconSize(QSize(ThumbnailSize, ThumbnailSize));
+	PiecesTable->verticalHeader()->setDefaultSectionSize(qMax(PiecesTable->verticalHeader()->defaultSectionSize(), ThumbnailSize + 4));
+	PiecesTable->setColumnCount(ColorCount + 4);
+	PiecesTable->setRowCount((int)PiecesList.size() + 1);
+	PiecesTable->setHorizontalHeaderLabels(HorizontalLabels);
+	PiecesTable->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
-	std::vector<int> InfoTotals(PartsList.size());
+	std::vector<int> InfoTotals(PiecesList.size());
 	std::vector<int> ColorTotals(ColorCount);
 	int Row = 0, Total = 0, UniqueCount = 0;
 	swThumbnailManager* ThumbnailManager = swGetPiecesLibrary()->GetThumbnailManager();
 
 	connect(ThumbnailManager, &swThumbnailManager::ThumbnailReady, this, &swPropertiesDialog::ThumbnailReady);
 
-	for (const auto& PartIt : PartsList)
+	for (const auto& PieceIt : PiecesList)
 	{
-		const swPieceData* PieceData = PartIt.first;
+		const swPieceData* PieceData = PieceIt.first;
 		QString PieceId = PieceData->mFileName;
 
 		if (PieceId.endsWith(QLatin1String(".dat"), Qt::CaseInsensitive))
@@ -352,20 +352,20 @@ swPropertiesDialog::swPropertiesDialog(QWidget* Parent, swPropertiesDialogOption
 
 		swPiecesTableWidgetItem* ThumbnailItem = new swPiecesTableWidgetItem(QString());
 		ThumbnailItem->setData(Qt::UserRole, PieceId);
-		PartsTable->setItem(Row, 0, ThumbnailItem);
-		PartsTable->setItem(Row, 1, new swPiecesTableWidgetItem(PieceId));
-		PartsTable->setItem(Row, 2, new swPiecesTableWidgetItem(PieceData->m_strDescription));
+		PiecesTable->setItem(Row, 0, ThumbnailItem);
+		PiecesTable->setItem(Row, 1, new swPiecesTableWidgetItem(PieceId));
+		PiecesTable->setItem(Row, 2, new swPiecesTableWidgetItem(PieceData->m_strDescription));
 
 		int ThumbnailColor = gDefaultColor, ThumbnailCount = 0;
 
-		for (const auto& ColorIt : PartIt.second)
+		for (const auto& ColorIt : PieceIt.second)
 		{
 			int ColorIndex = ColorIt.first;
 			int Count = ColorIt.second;
 
 			swPiecesTableWidgetItem* Item = new swPiecesTableWidgetItem(Count, locale());
 			Item->setTextAlignment(Qt::AlignCenter);
-			PartsTable->setItem(Row, ColorColumns[ColorIndex] + 3, Item);
+			PiecesTable->setItem(Row, ColorColumns[ColorIndex] + 3, Item);
 
 			if (Count > ThumbnailCount)
 			{
@@ -387,29 +387,29 @@ swPropertiesDialog::swPropertiesDialog(QWidget* Parent, swPropertiesDialogOption
 			ThumbnailItem->setData(Qt::DecorationRole, Thumbnail);
 
 		for (int Column = 0; Column <= ColorCount + 2; Column++)
-			if (!PartsTable->item(Row, Column))
-				PartsTable->setItem(Row, Column, new swPiecesTableWidgetItem(QString()));
+			if (!PiecesTable->item(Row, Column))
+				PiecesTable->setItem(Row, Column, new swPiecesTableWidgetItem(QString()));
 
 		Row++;
 	}
 
 	swPiecesTableWidgetItem* Item = new swPiecesTableWidgetItem(tr("Total"));
 	Item->mLast = true;
-	PartsTable->setItem((int)InfoTotals.size(), 0, Item);
+	PiecesTable->setItem((int)InfoTotals.size(), 0, Item);
 
 	Item = new swPiecesTableWidgetItem(QString());
 	Item->mLast = true;
-	PartsTable->setItem((int)InfoTotals.size(), 1, Item);
+	PiecesTable->setItem((int)InfoTotals.size(), 1, Item);
 
 	Item = new swPiecesTableWidgetItem(QString());
 	Item->mLast = true;
-	PartsTable->setItem((int)InfoTotals.size(), 2, Item);
+	PiecesTable->setItem((int)InfoTotals.size(), 2, Item);
 
 	for (Row = 0; Row < (int)InfoTotals.size(); Row++)
 	{
 		Item = new swPiecesTableWidgetItem(InfoTotals[Row], locale());
 		Item->setTextAlignment(Qt::AlignCenter);
-		PartsTable->setItem(Row, ColorCount + 3, Item);
+		PiecesTable->setItem(Row, ColorCount + 3, Item);
 	}
 
 	for (int ColorIndex = 0; ColorIndex < ColorCount; ColorIndex++)
@@ -417,20 +417,20 @@ swPropertiesDialog::swPropertiesDialog(QWidget* Parent, swPropertiesDialogOption
 		Item = new swPiecesTableWidgetItem(ColorTotals[ColorIndex], locale());
 		Item->mLast = true;
 		Item->setTextAlignment(Qt::AlignCenter);
-		PartsTable->setItem((int)InfoTotals.size(), ColorIndex + 3, Item);
+		PiecesTable->setItem((int)InfoTotals.size(), ColorIndex + 3, Item);
 	}
 
 	Item = new swPiecesTableWidgetItem(Total, locale());
 	Item->mLast = true;
 	Item->setTextAlignment(Qt::AlignCenter);
-	PartsTable->setItem((int)InfoTotals.size(), ColorCount + 3, Item);
+	PiecesTable->setItem((int)InfoTotals.size(), ColorCount + 3, Item);
 
-	ui->PartsTable->FreezePartColumns();
+	ui->PiecesTable->FreezePieceColumns();
 
 	ui->PiecesCountLabel->setText(tr("Unique pieces: %1 - Total pieces: %2").arg(swFormatIntegerLocalized(UniqueCount, locale()), swFormatIntegerLocalized(Total, locale())));
 
-	ui->ExportBrickLinkButton->setEnabled(!PartsList.empty());
-	ui->ExportCSVButton->setEnabled(!PartsList.empty());
+	ui->ExportBrickLinkButton->setEnabled(!PiecesList.empty());
+	ui->ExportCSVButton->setEnabled(!PiecesList.empty());
 
 	connect(ui->ExportBrickLinkButton, &QPushButton::clicked, this, &swPropertiesDialog::ExportBrickLink);
 	connect(ui->ExportCSVButton, &QPushButton::clicked, this, &swPropertiesDialog::ExportCSV);
@@ -477,7 +477,7 @@ void swPropertiesDialog::ExportBrickLink()
 	if (FileName.isEmpty())
 		return;
 
-	swResult<void> Result = swExportBrickLink(FileName, mOptions->PartsList);
+	swResult<void> Result = swExportBrickLink(FileName, mOptions->PiecesList);
 
 	if (!Result && !Result.error().isEmpty())
 		QMessageBox::warning(this, tr("Export BrickLink"), Result.error());
@@ -490,7 +490,7 @@ void swPropertiesDialog::ExportCSV()
 	if (FileName.isEmpty())
 		return;
 
-	swResult<void> Result = swExportCSV(FileName, mOptions->PartsList);
+	swResult<void> Result = swExportCSV(FileName, mOptions->PiecesList);
 
 	if (!Result && !Result.error().isEmpty())
 		QMessageBox::warning(this, tr("Export CSV"), Result.error());

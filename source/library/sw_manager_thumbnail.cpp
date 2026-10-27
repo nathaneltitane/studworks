@@ -11,8 +11,8 @@
 swThumbnailManager::swThumbnailManager(swPiecesLibrary* Library)
 	: QObject(Library), mLibrary(Library)
 {
-	connect(mLibrary, &swPiecesLibrary::PartLoaded, this, &swThumbnailManager::PartLoaded);
-	connect(mLibrary, &swPiecesLibrary::PartLoadFailed, this, &swThumbnailManager::PartLoadFailed);
+	connect(mLibrary, &swPiecesLibrary::PieceLoaded, this, &swThumbnailManager::PieceLoaded);
+	connect(mLibrary, &swPiecesLibrary::PieceLoadFailed, this, &swThumbnailManager::PieceLoadFailed);
 	connect(mLibrary, &swPiecesLibrary::GeneratedMeshSettled, this, &swThumbnailManager::GeneratedMeshSettled);
 }
 
@@ -184,7 +184,7 @@ void swThumbnailManager::UpdateThumbnail(swPieceThumbnailId ThumbnailId, swPiece
 	DrawThumbnail(ThumbnailId, Thumbnail);
 }
 
-void swThumbnailManager::PartLoaded(swPieceData* PieceData)
+void swThumbnailManager::PieceLoaded(swPieceData* PieceData)
 {
 	std::vector<swPieceThumbnailId> Ready;
 
@@ -204,7 +204,7 @@ void swThumbnailManager::PartLoaded(swPieceData* PieceData)
 	}
 }
 
-void swThumbnailManager::PartLoadFailed(swPieceData* PieceData)
+void swThumbnailManager::PieceLoadFailed(swPieceData* PieceData)
 {
 	std::vector<swPieceThumbnailId> Failed;
 
@@ -333,7 +333,7 @@ void swThumbnailManager::DrawThumbnail(swPieceThumbnailId ThumbnailId, swPieceTh
 	{
 		if (!mModel)
 			mModel = std::unique_ptr<swModel>(new swModel(QString(), nullptr, true));
-		mView = std::unique_ptr<swView>(new swView(swViewType::PartsList, mModel.get()));
+		mView = std::unique_ptr<swView>(new swView(swViewType::PiecesList, mModel.get()));
 
 		mView->SetOffscreenContext();
 		mView->MakeCurrent();

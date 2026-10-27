@@ -1229,10 +1229,10 @@ std::string swPiecesLibrary::ReadAliasTarget(swFile& File)
 
 void swPiecesLibrary::ClassifyPieces(const DirectoryFilePaths& FilePaths)
 {
-	const std::vector<swPieceData*> Parts = mPieceManager->GetLibraryPieceData();
+	const std::vector<swPieceData*> Pieces = mPieceManager->GetLibraryPieceData();
 	std::unordered_map<swPieceData*, swPieceData*> AliasTargets;
 
-	for (swPieceData* PieceData : Parts)
+	for (swPieceData* PieceData : Pieces)
 	{
 		const std::string Name = NormalizePieceDataName(PieceData->mFileName);
 		const std::vector<std::string> ParentIds = PieceData->Classify(Name);
@@ -2342,41 +2342,41 @@ void swPiecesLibrary::GetCategoryEntries(const char* CategoryKeywords, bool Grou
 	}
 }
 
-std::vector<swPieceData*> swPiecesLibrary::GetParts() const
+std::vector<swPieceData*> swPiecesLibrary::GetPieces() const
 {
 	return mPieceManager->GetLibraryPieceData();
 }
 
-std::vector<swPieceData*> swPiecesLibrary::GetVisibleTrainTrackParts(const swTrainTrackConnectionType& ConnectionType) const
+std::vector<swPieceData*> swPiecesLibrary::GetVisibleTrainTrackPieces(const swTrainTrackConnectionType& ConnectionType) const
 {
-	std::vector<swPieceData*> Parts;
+	std::vector<swPieceData*> Pieces;
 
 	for (swPieceData* PieceData : mPieceManager->GetLibraryPieceData())
 	{
 		swTrainTrackInformation* TrainTrackInfo = PieceData->GetTrainTrackInfo();
 
 		if (TrainTrackInfo && TrainTrackInfo->IsVisible() && TrainTrackInfo->CanConnectTo(ConnectionType, true))
-			Parts.emplace_back(PieceData);
+			Pieces.emplace_back(PieceData);
 	}
 
-	return Parts;
+	return Pieces;
 }
 
-std::vector<swPieceData*> swPiecesLibrary::GetPartsFromSet(const std::vector<std::string>& PartIds) const
+std::vector<swPieceData*> swPiecesLibrary::GetPiecesFromSet(const std::vector<std::string>& PieceIds) const
 {
-	std::vector<swPieceData*> Parts;
-	Parts.reserve(PartIds.size());
+	std::vector<swPieceData*> Pieces;
+	Pieces.reserve(PieceIds.size());
 
-	for (const std::string& PartId : PartIds)
+	for (const std::string& PieceId : PieceIds)
 	{
-		if (swPieceData* PieceData = mPieceManager->FindPieceData(PartId, nullptr))
-			Parts.push_back(PieceData);
+		if (swPieceData* PieceData = mPieceManager->FindPieceData(PieceId, nullptr))
+			Pieces.push_back(PieceData);
 	}
 
-	return Parts;
+	return Pieces;
 }
 
-std::string swPiecesLibrary::GetPartId(const swPieceData* PieceData) const
+std::string swPiecesLibrary::GetPieceId(const swPieceData* PieceData) const
 {
 	return mPieceManager->GetLibraryPieceDataName(PieceData);
 }

@@ -282,9 +282,9 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 		break;
 
 	case SW_VIEW_TOOLBAR_PIECES:
-		ToggleDockWidget(mPartsToolBar);
-		if (mPartsToolBar->isVisible())
-			mPartSelectionWidget->FocusPartFilterWidget();
+		ToggleDockWidget(mPiecesToolBar);
+		if (mPiecesToolBar->isVisible())
+			mPieceSelectionWidget->FocusPieceFilterWidget();
 		break;
 
 	case SW_VIEW_TOOLBAR_COLORS:
@@ -457,9 +457,9 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 		break;
 
 	case SW_VIEW_PIECES_TOGGLE_LOCK_COLOR:
-		if (mPartSelectionWidget)
+		if (mPieceSelectionWidget)
 		{
-			mPartSelectionWidget->ToggleColorLocked();
+			mPieceSelectionWidget->ToggleColorLocked();
 			UpdatePiecesColor();
 		}
 		break;
@@ -481,7 +481,7 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 		break;
 
 	case SW_VIEW_TOGGLE_HIGHLIGHT_NEW_PIECES:
-		swTogglePreference(swGetPreferences().mHighlightNewParts, SW_PROFILE_HIGHLIGHT_NEW_PIECES);
+		swTogglePreference(swGetPreferences().mHighlightNewPieces, SW_PROFILE_HIGHLIGHT_NEW_PIECES);
 		break;
 
 	case SW_VIEW_TOGGLE_GRID_STUDS:
@@ -611,7 +611,7 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 	case SW_VIEW_PIECES_TOGGLE_SNAP_TO_TILES:
 		swGetPreferences().mPiecesSnapToTiles = !swGetPreferences().mPiecesSnapToTiles;
 		swSetProfileInteger(SW_PROFILE_PIECES_SNAP_TO_TILES, swGetPreferences().mPiecesSnapToTiles);
-		SnapPartsDock();
+		SnapPiecesDock();
 		break;
 
 	case SW_VIEW_PIECES_SHADING_WIREFRAME:

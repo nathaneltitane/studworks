@@ -201,7 +201,7 @@ protected:
 
 	swVector4 mFadeColor;
 	swVector4 mHighlightColor;
-	bool mHasFadedParts = false;
+	bool mHasFadedPieces = false;
 	bool mTranslucentFade = false;
 
 	std::vector<swRenderMesh> mRenderMeshes;

@@ -198,7 +198,7 @@ void swPieceData::SetFailed(QString Error)
 void swPieceData::DetachContainer()
 {
 	Project* PreviousProject = IsProject() ? mProject : nullptr;
-	mType = Type::Part;
+	mType = Type::Piece;
 	mModel = nullptr;
 	mProject = nullptr;
 	swstrcpy(m_strDescription, mFileName);
@@ -276,7 +276,7 @@ bool swPieceData::IncludesModel(const swModel* Model) const
 	return false;
 }
 
-void swPieceData::CreatePart(const char* Name)
+void swPieceData::CreatePiece(const char* Name)
 {
 	swstrcpy(mFileName, Name);
 	swstrcpy(m_strDescription, Name);
@@ -461,42 +461,42 @@ void swPieceData::AddRenderMeshes(swScene* Scene, const swMatrix44& WorldMatrix,
 	}
 }
 
-void swPieceData::GetPartsList(int DefaultColorIndex, bool ScanSubModels, bool AddSubModels, swPiecesList& PartsList) const
+void swPieceData::GetPiecesList(int DefaultColorIndex, bool ScanSubModels, bool AddSubModels, swPiecesList& PiecesList) const
 {
 	if (IsModel())
 	{
 		if (ScanSubModels)
-			mModel->GetPartsList(DefaultColorIndex, ScanSubModels, AddSubModels, PartsList);
+			mModel->GetPiecesList(DefaultColorIndex, ScanSubModels, AddSubModels, PiecesList);
 
 		if (AddSubModels)
-			PartsList[this][DefaultColorIndex]++;
+			PiecesList[this][DefaultColorIndex]++;
 	}
 	else if (IsProject() && !IsProjectPiece())
 	{
 		const swModel* const Model = mProject->GetMainModel();
 		if (Model)
-			Model->GetPartsList(DefaultColorIndex, ScanSubModels, AddSubModels, PartsList);
+			Model->GetPiecesList(DefaultColorIndex, ScanSubModels, AddSubModels, PiecesList);
 	}
 	else
-		PartsList[this][DefaultColorIndex]++;
+		PiecesList[this][DefaultColorIndex]++;
 }
 
-void swPieceData::GetModelParts(const swMatrix44& WorldMatrix, int DefaultColorIndex, std::vector<swModelPiecesEntry>& ModelParts) const
+void swPieceData::GetModelPieces(const swMatrix44& WorldMatrix, int DefaultColorIndex, std::vector<swModelPiecesEntry>& ModelPieces) const
 {
 	if (IsModel())
 	{
-		mModel->GetModelParts(WorldMatrix, DefaultColorIndex, ModelParts);
+		mModel->GetModelPieces(WorldMatrix, DefaultColorIndex, ModelPieces);
 		return;
 	}
 	else if (IsProject())
 	{
 		const swModel* const Model = mProject->GetMainModel();
 		if (Model)
-			Model->GetModelParts(WorldMatrix, DefaultColorIndex, ModelParts);
+			Model->GetModelPieces(WorldMatrix, DefaultColorIndex, ModelPieces);
 		return;
 	}
 
-	ModelParts.emplace_back(swModelPiecesEntry{ WorldMatrix, this, nullptr, DefaultColorIndex });
+	ModelPieces.emplace_back(swModelPiecesEntry{ WorldMatrix, this, nullptr, DefaultColorIndex });
 }
 
 void swPieceData::CompareBoundingBox(const swMatrix44& WorldMatrix, swVector3& Min, swVector3& Max) const

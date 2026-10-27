@@ -200,7 +200,7 @@ public:
 	QString GetSynthMeshError(const swPiece* Piece) const;
 
 	// Returns a borrowed library snapshot in name order. Caller prevents identity teardown.
-	std::vector<swPieceData*> GetParts() const;
+	std::vector<swPieceData*> GetPieces() const;
 
 	// Matches library-part descriptions against category keywords.
 	bool PieceDataInCategory(swPieceData* PieceData, const char* CategoryKeywords) const;
@@ -210,13 +210,13 @@ public:
 	void GetCategoryEntries(const char* CategoryKeywords, bool GroupPieces, std::vector<swPieceData*>& SinglePieces, std::vector<swPieceData*>& GroupedPieces);
 
 	// Returns borrowed visible track parts compatible with the connection type.
-	std::vector<swPieceData*> GetVisibleTrainTrackParts(const swTrainTrackConnectionType& ConnectionType) const;
+	std::vector<swPieceData*> GetVisibleTrainTrackPieces(const swTrainTrackConnectionType& ConnectionType) const;
 
 	// Resolves normalized library IDs, preserving input order and duplicates; missing IDs are skipped.
-	std::vector<swPieceData*> GetPartsFromSet(const std::vector<std::string>& PartIds) const;
+	std::vector<swPieceData*> GetPiecesFromSet(const std::vector<std::string>& PieceIds) const;
 
 	// Returns the library index key, or an empty string for an unregistered/local identity.
-	std::string GetPartId(const swPieceData* PieceData) const;
+	std::string GetPieceId(const swPieceData* PieceData) const;
 
 	// Queries primitive sources; FindPrimitive() returns a borrowed entry.
 	swLibraryPrimitive* FindPrimitive(const char* Name) const;
@@ -258,8 +258,8 @@ public:
 
 signals:
 	void AssetStatusChanged();
-	void PartLoaded(swPieceData* PieceData);
-	void PartLoadFailed(swPieceData* PieceData, const QString& Error);
+	void PieceLoaded(swPieceData* PieceData);
+	void PieceLoadFailed(swPieceData* PieceData, const QString& Error);
 	void GeneratedMeshSettled(swPieceData* PieceData);
 	void ColorsLoaded();
 

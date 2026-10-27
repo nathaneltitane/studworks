@@ -135,8 +135,8 @@ public:
 	float mMeshLODDistance;
 	bool mFadeSteps;
 	quint32 mFadeStepsColor;
-	bool mHighlightNewParts;
-	quint32 mHighlightNewPartsColor;
+	bool mHighlightNewPieces;
+	quint32 mHighlightNewPiecesColor;
 	bool mGridEnabled = true;
 	bool mDrawGridStuds;
 	quint32 mGridStudColor;
@@ -182,14 +182,14 @@ public:
 
 	bool mStudCylinderColorEnabled;
 	quint32 mStudCylinderColor;
-	bool mPartEdgeColorEnabled;
-	quint32 mPartEdgeColor;
+	bool mPieceEdgeColorEnabled;
+	quint32 mPieceEdgeColor;
 	bool mBlackEdgeColorEnabled;
 	quint32 mBlackEdgeColor;
 	bool mDarkEdgeColorEnabled;
 	quint32 mDarkEdgeColor;
-	float mPartEdgeContrast;
-	float mPartColorValueLDIndex;
+	float mPieceEdgeContrast;
+	float mPieceColorValueLDIndex;
 	bool  mAutomateEdgeColor;
 };
 
@@ -225,14 +225,14 @@ struct swCommandLineOptions
 	swVector3 CameraPosition[3];
 	swVector2 CameraLatLon;
 	float FoV;
-	float PartEdgeContrast;
-	float PartColorValueLDIndex;
+	float PieceEdgeContrast;
+	float PieceColorValueLDIndex;
 	swVector2 ZPlanes;
 	swViewpoint Viewpoint;
 	bool StudCylinderColorEnabled;
 	quint32 StudCylinderColor;
-	bool PartEdgeColorEnabled;
-	quint32 PartEdgeColor;
+	bool PieceEdgeColorEnabled;
+	quint32 PieceEdgeColor;
 	bool BlackEdgeColorEnabled;
 	quint32 BlackEdgeColor;
 	bool DarkEdgeColorEnabled;
@@ -285,7 +285,7 @@ public:
 	void ShowPreferencesDialog();
 	void SaveTabLayout() const;
 
-	bool LoadPartsLibrary(const QList<QPair<QString, bool>>& LibraryPaths, bool OnlyUsePaths, swStudStyle StudStyle, bool StudCylinderColorEnabled);
+	bool LoadPiecesLibrary(const QList<QPair<QString, bool>>& LibraryPaths, bool OnlyUsePaths, swStudStyle StudStyle, bool StudCylinderColorEnabled);
 
 	void SetClipboard(const QByteArray& Clipboard);
 	void ExportClipboard(const QByteArray& Clipboard);

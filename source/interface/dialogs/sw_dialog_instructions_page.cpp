@@ -17,10 +17,10 @@ bool swGetElementKey(const QGraphicsItem* Item, swInstructionsElementKey& Key)
 	}
 	else if (const swInstructionsStepNumberItem* NumberItem = dynamic_cast<const swInstructionsStepNumberItem*>(Item))
 		Key = { swInstructionsPlacementElement::StepNumber, NumberItem->GetModel(), NumberItem->GetStep() };
-	else if (const swInstructionsPiecesListItem* PartsItem = dynamic_cast<const swInstructionsPiecesListItem*>(Item))
+	else if (const swInstructionsPiecesListItem* PiecesItem = dynamic_cast<const swInstructionsPiecesListItem*>(Item))
 	{
-		const swInstructionsPlacementElement Element = PartsItem->IsBillOfMaterials() ? swInstructionsPlacementElement::BillOfMaterials : swInstructionsPlacementElement::PiecesList;
-		Key = { Element, PartsItem->GetModel(), PartsItem->GetStep() };
+		const swInstructionsPlacementElement Element = PiecesItem->IsBillOfMaterials() ? swInstructionsPlacementElement::BillOfMaterials : swInstructionsPlacementElement::PiecesList;
+		Key = { Element, PiecesItem->GetModel(), PiecesItem->GetStep() };
 	}
 	else if (const swInstructionsCoverTextItem* TextItem = dynamic_cast<const swInstructionsCoverTextItem*>(Item))
 	{
@@ -263,19 +263,19 @@ void swInstructionsPiecesListItem::Update()
 	const int ThumbnailSize = mInstructions->GetIntProperty(swInstructionsPropertyType::PLIThumbnailSize, mModel, mStep);
 	const QColor ThumbnailBackgroundColor = mInstructions->GetColorProperty(swInstructionsPropertyType::PLIThumbnailBackgroundColor, mModel, mStep);
 
-	const swResult<QImage> PartsImage = mModel->GetPartsListImage(mMaxWidth, ThumbnailSize, mBillOfMaterials ? 0 : mStep, swRGBAFromQColor(BackgroundColor), swRGBAFromQColor(ThumbnailBackgroundColor), Font, TextColor, false, ShowCounts, Sort);
+	const swResult<QImage> PiecesImage = mModel->GetPiecesListImage(mMaxWidth, ThumbnailSize, mBillOfMaterials ? 0 : mStep, swRGBAFromQColor(BackgroundColor), swRGBAFromQColor(ThumbnailBackgroundColor), Font, TextColor, false, ShowCounts, Sort);
 
-	if (!PartsImage)
+	if (!PiecesImage)
 	{
 		setPixmap(QPixmap());
 
 		QWidget* Parent = scene() && !scene()->views().isEmpty() ? scene()->views().front() : nullptr;
-		QMessageBox::warning(Parent, QObject::tr("Create Pieces List"), PartsImage.error());
+		QMessageBox::warning(Parent, QObject::tr("Create Pieces List"), PiecesImage.error());
 
 		return;
 	}
 
-	QImage Image = PartsImage.value();
+	QImage Image = PiecesImage.value();
 	const int BorderWidth = mInstructions->GetIntProperty(swInstructionsPropertyType::PLIBorderWidth, mModel, mStep);
 
 	if (BorderWidth > 0 && !Image.isNull())
@@ -349,12 +349,12 @@ void swInstructionsPageWidget::StepSettingsChanged(swModel* Model, swStep Step)
 			continue;
 		}
 
-		swInstructionsPiecesListItem* PartsItem = dynamic_cast<swInstructionsPiecesListItem*>(Item);
+		swInstructionsPiecesListItem* PiecesItem = dynamic_cast<swInstructionsPiecesListItem*>(Item);
 
-		if (PartsItem)
+		if (PiecesItem)
 		{
-			if (!Model || (PartsItem->GetModel() == Model && PartsItem->GetStep() == Step))
-				PartsItem->Update();
+			if (!Model || (PiecesItem->GetModel() == Model && PiecesItem->GetStep() == Step))
+				PiecesItem->Update();
 
 			continue;
 		}
@@ -530,12 +530,12 @@ void swUpdateInstructionsPageScene(swInstructions* Instructions, const swInstruc
 
 	if (Page->Type == swInstructionsPageType::BillOfMaterials)
 	{
-		swInstructionsPiecesListItem* PartsImageItem = new swInstructionsPiecesListItem(PageItem, Instructions, Page->Model, 0);
-		PartsImageItem->SetBillOfMaterials(qMax(static_cast<int>(MarginsRect.width() - 2.0 * SW_ELEMENT_PADDING), 16));
-		PartsImageItem->Update();
+		swInstructionsPiecesListItem* PiecesImageItem = new swInstructionsPiecesListItem(PageItem, Instructions, Page->Model, 0);
+		PiecesImageItem->SetBillOfMaterials(qMax(static_cast<int>(MarginsRect.width() - 2.0 * SW_ELEMENT_PADDING), 16));
+		PiecesImageItem->Update();
 
 		const int Placement = swGetValidPlacement(Instructions->GetIntProperty(swInstructionsPropertyType::BillOfMaterialsPlacement, Page->Model, 0), true);
-		swPlaceElement(PartsImageItem, Instructions, swGetPlacementPosition(MarginsRect, PartsImageItem->boundingRect().size(), Placement));
+		swPlaceElement(PiecesImageItem, Instructions, swGetPlacementPosition(MarginsRect, PiecesImageItem->boundingRect().size(), Placement));
 
 		return;
 	}
@@ -610,24 +610,24 @@ void swUpdateInstructionsPageScene(swInstructions* Instructions, const swInstruc
 		AreaRect.adjust(InsetLeft, InsetTop, -InsetRight, -InsetBottom);
 
 		// the pieces list wraps at the width of its area
-		swInstructionsPiecesListItem* PartsImageItem = new swInstructionsPiecesListItem(StepAreaItem, Instructions, Step.Model, Step.Step);
-		PartsImageItem->SetMaxWidth(qMax(static_cast<int>(AreaRect.width() - 2.0 * SW_ELEMENT_PADDING), 16));
-		PartsImageItem->Update();
+		swInstructionsPiecesListItem* PiecesImageItem = new swInstructionsPiecesListItem(StepAreaItem, Instructions, Step.Model, Step.Step);
+		PiecesImageItem->SetMaxWidth(qMax(static_cast<int>(AreaRect.width() - 2.0 * SW_ELEMENT_PADDING), 16));
+		PiecesImageItem->Update();
 
 		swInstructionsPlacementAnchor NumberAnchor = static_cast<swInstructionsPlacementAnchor>(Instructions->GetIntProperty(swInstructionsPropertyType::StepNumberAnchor, Step.Model, Step.Step));
-		swInstructionsPlacementAnchor PartsAnchor = static_cast<swInstructionsPlacementAnchor>(Instructions->GetIntProperty(swInstructionsPropertyType::PLIAnchor, Step.Model, Step.Step));
+		swInstructionsPlacementAnchor PiecesAnchor = static_cast<swInstructionsPlacementAnchor>(Instructions->GetIntProperty(swInstructionsPropertyType::PLIAnchor, Step.Model, Step.Step));
 
 		// an element placed against a hidden element or against the element placed against it falls back to the area
-		if (NumberAnchor != swInstructionsPlacementAnchor::PiecesList || !PartsImageItem->isVisible() || PartsAnchor == swInstructionsPlacementAnchor::StepNumber)
+		if (NumberAnchor != swInstructionsPlacementAnchor::PiecesList || !PiecesImageItem->isVisible() || PiecesAnchor == swInstructionsPlacementAnchor::StepNumber)
 			NumberAnchor = swInstructionsPlacementAnchor::Area;
 
-		if (PartsAnchor != swInstructionsPlacementAnchor::StepNumber || !StepNumberItem->isVisible())
-			PartsAnchor = swInstructionsPlacementAnchor::Area;
+		if (PiecesAnchor != swInstructionsPlacementAnchor::StepNumber || !StepNumberItem->isVisible())
+			PiecesAnchor = swInstructionsPlacementAnchor::Area;
 
 		const int NumberPlacement = swGetValidPlacement(Instructions->GetIntProperty(swInstructionsPropertyType::StepNumberPlacement, Step.Model, Step.Step), NumberAnchor == swInstructionsPlacementAnchor::Area);
-		const int PartsPlacement = swGetValidPlacement(Instructions->GetIntProperty(swInstructionsPropertyType::PLIPlacement, Step.Model, Step.Step), PartsAnchor == swInstructionsPlacementAnchor::Area);
+		const int PiecesPlacement = swGetValidPlacement(Instructions->GetIntProperty(swInstructionsPropertyType::PLIPlacement, Step.Model, Step.Step), PiecesAnchor == swInstructionsPlacementAnchor::Area);
 		const QSizeF NumberSize = StepNumberItem->boundingRect().size();
-		const QSizeF PartsSize = PartsImageItem->boundingRect().size();
+		const QSizeF PiecesSize = PiecesImageItem->boundingRect().size();
 
 		const int ImagePlacement = swGetValidPlacement(Instructions->GetIntProperty(swInstructionsPropertyType::StepImagePlacement, Step.Model, Step.Step), true);
 		swPlaceElement(StepImageItem, Instructions, swGetPlacementPosition(AreaRect, StepImageItem->boundingRect().size(), ImagePlacement));
@@ -636,14 +636,14 @@ void swUpdateInstructionsPageScene(swInstructions* Instructions, const swInstruc
 		if (NumberAnchor == swInstructionsPlacementAnchor::Area)
 			swPlaceElement(StepNumberItem, Instructions, swGetPlacementPosition(AreaRect, NumberSize, NumberPlacement));
 
-		if (PartsAnchor == swInstructionsPlacementAnchor::Area)
-			swPlaceElement(PartsImageItem, Instructions, swGetPlacementPosition(AreaRect, PartsSize, PartsPlacement));
+		if (PiecesAnchor == swInstructionsPlacementAnchor::Area)
+			swPlaceElement(PiecesImageItem, Instructions, swGetPlacementPosition(AreaRect, PiecesSize, PiecesPlacement));
 
 		if (NumberAnchor == swInstructionsPlacementAnchor::PiecesList)
-			swPlaceElement(StepNumberItem, Instructions, swGetPlacementPosition(QRectF(PartsImageItem->pos(), PartsSize), NumberSize, NumberPlacement));
+			swPlaceElement(StepNumberItem, Instructions, swGetPlacementPosition(QRectF(PiecesImageItem->pos(), PiecesSize), NumberSize, NumberPlacement));
 
-		if (PartsAnchor == swInstructionsPlacementAnchor::StepNumber)
-			swPlaceElement(PartsImageItem, Instructions, swGetPlacementPosition(QRectF(StepNumberItem->pos(), NumberSize), PartsSize, PartsPlacement));
+		if (PiecesAnchor == swInstructionsPlacementAnchor::StepNumber)
+			swPlaceElement(PiecesImageItem, Instructions, swGetPlacementPosition(QRectF(StepNumberItem->pos(), NumberSize), PiecesSize, PiecesPlacement));
 	}
 }
 

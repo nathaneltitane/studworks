@@ -2562,7 +2562,7 @@ void swBlenderPreferences::LoadSettings()
 		swSetProfileString(SW_PROFILE_BLENDER_IMPORT_MODULE, QString());
 
 	bool UseArchiveLibrary = false;
-	auto LDrawPartsLibrary = [&] (QString const& LDrawPath)
+	auto LDrawPiecesLibrary = [&] (QString const& LDrawPath)
 	{
 		QString LDrawDir = LDrawPath;
 
@@ -2571,10 +2571,10 @@ void swBlenderPreferences::LoadSettings()
 			LDrawDir = FileInfo.absolutePath();
 
 		const QString Suffix = FileInfo.suffix().toLower();
-		const QFileInfo PartInfo(QString("%1/p/1-4cyli.dat").arg(LDrawDir));
+		const QFileInfo PieceInfo(QString("%1/p/1-4cyli.dat").arg(LDrawDir));
 		const QFileInfo LDConfigInfo(QString("%1/LDConfig.ldr").arg(LDrawDir));
 
-		UseArchiveLibrary = (Suffix == "zip" || Suffix == "bin") && !(PartInfo.exists() && LDConfigInfo.exists());
+		UseArchiveLibrary = (Suffix == "zip" || Suffix == "bin") && !(PieceInfo.exists() && LDConfigInfo.exists());
 
 		return QDir::toNativeSeparators(LDrawDir);
 	};
@@ -2588,7 +2588,7 @@ void swBlenderPreferences::LoadSettings()
 		/* 1  PATH_BLENDFILE    */        << (QFileInfo::exists(DefaultBlendFile) ? DefaultBlendFile : QString())
 		/* 2  PATH_ENVIRONMENT  */        << QString()
 		/* 3  PATH_LDCONFIG     */        << swGetProfileString(SW_PROFILE_COLOR_CONFIGURATION)
-		/* 4  PATH_LDRAW        */        << LDrawPartsLibrary(swGetProfileString(SW_PROFILE_PIECES_LIBRARY))
+		/* 4  PATH_LDRAW        */        << LDrawPiecesLibrary(swGetProfileString(SW_PROFILE_PIECES_LIBRARY))
 		/* 5  PATH_LSYNTH       */        << QString()
 		/* 6  PATH_STUD_LOGO    */        << QString()
 		/* 7  PATH_STUDIO_LDRAW */        << QString()
@@ -3370,7 +3370,7 @@ void swBlenderPreferences::LoadDefaultParameters(QByteArray& Buffer, int Which)
 	# degrees) of the face's normal to the horizontal plane. Use a | delimited tuple to
 	# represent a range within which the angle must lie.
 
-	#   Item--------  PartID-  Angle/Angle Range (in degrees)
+	#   Item--------  PieceID-  Angle/Angle Range (in degrees)
 	*/
 	const char DefaultSlopedBricks[] =
 		{
@@ -3471,7 +3471,7 @@ void swBlenderPreferences::LoadDefaultParameters(QByteArray& Buffer, int Which)
 	# Dictionary with part number (with extension), as key,
 	# of lighted bricks, light emission colour and intensity, as values.
 
-	#    Item---------  PartID---  Light--------------  Intensity
+	#    Item---------  PieceID---  Light--------------  Intensity
 	*/
 	const char DefaultLightedBricks[] =
 		{

@@ -323,21 +323,21 @@ void swMinifigureBuilderWidget::TemplateComboBoxCurrentTextChanged(const QString
 
 	mMinifigureBuilder->LoadTemplate(TemplateName);
 
-	for (int PartIdx = 0; PartIdx < SW_MINIFIGURE_ITEM_COUNT; PartIdx++)
+	for (int PieceIdx = 0; PieceIdx < SW_MINIFIGURE_ITEM_COUNT; PieceIdx++)
 	{
-		UpdatePieceButton(PartIdx);
+		UpdatePieceButton(PieceIdx);
 
-		QSignalBlocker ColorBlocker(mColorPickers[PartIdx]);
+		QSignalBlocker ColorBlocker(mColorPickers[PieceIdx]);
 
-		mColorPickers[PartIdx]->SetCurrentColorCode(Template.ColorCodes[PartIdx]);
+		mColorPickers[PieceIdx]->SetCurrentColorCode(Template.ColorCodes[PieceIdx]);
 
-		swDoubleSpinBox* AngleSpinBox = mSpinBoxes[PartIdx];
+		swDoubleSpinBox* AngleSpinBox = mSpinBoxes[PieceIdx];
 
 		if (AngleSpinBox)
 		{
 			QSignalBlocker AngleBlocker(AngleSpinBox);
 
-			AngleSpinBox->SetValue(Template.Angles[PartIdx]);
+			AngleSpinBox->SetValue(Template.Angles[PieceIdx]);
 		}
 	}
 
@@ -376,7 +376,7 @@ void swMinifigureBuilderWidget::TemplateSaveButtonClicked()
 
 	for (int ItemIndex = 0; ItemIndex < SW_MINIFIGURE_ITEM_COUNT; ItemIndex++)
 	{
-		Template.Parts[ItemIndex] = mMinifigureBuilder->mSettings[ItemIndex][mMinifigureBuilder->GetSelectionIndex(ItemIndex)].PieceData->mFileName;
+		Template.Pieces[ItemIndex] = mMinifigureBuilder->mSettings[ItemIndex][mMinifigureBuilder->GetSelectionIndex(ItemIndex)].PieceData->mFileName;
 		Template.ColorCodes[ItemIndex] = mColorPickers[ItemIndex]->GetCurrentColorCode();
 		QDoubleSpinBox* AngleSpinBox = mSpinBoxes[ItemIndex];
 		Template.Angles[ItemIndex] = AngleSpinBox ? AngleSpinBox->value() : 0.0f;
@@ -473,18 +473,18 @@ void swMinifigureBuilderWidget::PieceButtonClicked()
 	swPieceData* CurrentPieceData = mMinifigureBuilder->mMinifigure.PieceData[ItemIndex].Get();
 
 	QPoint Position = PieceButton->mapToGlobal(PieceButton->rect().bottomLeft());
-	std::vector<std::pair<swPieceData*, std::string>> Parts;
+	std::vector<std::pair<swPieceData*, std::string>> Pieces;
 
-	Parts.reserve(mMinifigureBuilder->mSettings[ItemIndex].size());
-	Parts.emplace_back(nullptr, tr("None").toStdString());
+	Pieces.reserve(mMinifigureBuilder->mSettings[ItemIndex].size());
+	Pieces.emplace_back(nullptr, tr("None").toStdString());
 
 	for (const swMinifigurePieceInformation& Setting : mMinifigureBuilder->mSettings[ItemIndex])
 		if (Setting.PieceData)
-			Parts.emplace_back(Setting.PieceData, Setting.Description);
+			Pieces.emplace_back(Setting.PieceData, Setting.Description);
 
 	int ColorIndex = mMinifigureBuilder->mMinifigure.ColorIndices[ItemIndex];
 
-	std::optional<swPieceData*> Result = swShowPieceSelectionPopup(CurrentPieceData, Parts, ColorIndex, PieceButton, Position);
+	std::optional<swPieceData*> Result = swShowPieceSelectionPopup(CurrentPieceData, Pieces, ColorIndex, PieceButton, Position);
 
 	if (!Result.has_value())
 		return;

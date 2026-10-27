@@ -549,7 +549,7 @@ swPieceIdStringModel::swPieceIdStringModel(swModel* Model, QObject* Parent)
 	: QAbstractListModel(Parent)
 {
 	swPiecesLibrary* Library = swGetPiecesLibrary();
-	mSortedPieces = Library->GetParts();
+	mSortedPieces = Library->GetPieces();
 
 	mSortedPieces.erase(std::remove_if(mSortedPieces.begin(), mSortedPieces.end(), [Model](swPieceData* PieceData)
 	{

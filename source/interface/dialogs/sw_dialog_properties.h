@@ -6,7 +6,7 @@
 struct swPropertiesDialogOptions
 {
 	swModelProperties Properties;
-	swPiecesList PartsList;
+	swPiecesList PiecesList;
 	swBoundingBox BoundingBox;
 };
 
@@ -19,7 +19,7 @@ class swPiecesTableWidget : public QTableWidget
 {
 public:
 	explicit swPiecesTableWidget(QWidget* Parent = nullptr);
-	void FreezePartColumns();
+	void FreezePieceColumns();
 	void scrollTo(const QModelIndex& Index, ScrollHint Hint = EnsureVisible) override;
 
 protected:
@@ -38,7 +38,7 @@ private:
 	void EnsureCountVisible(const QModelIndex& Index);
 	QTableView* mFrozenColumn = nullptr;
 	int GetFrozenWidth() const;
-	int mPartColumnWidth = 0;
+	int mPieceColumnWidth = 0;
 	mutable QPersistentModelIndex mSelectionAnchor;
 	mutable QPersistentModelIndex mSelectionEnd;
 };

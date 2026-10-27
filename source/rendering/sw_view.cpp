@@ -361,9 +361,9 @@ void swView::ShowTrainTrackPopup()
 
 	int ConnectionIndex = mTrackToolSection - SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST;
 	const swTrainTrackConnectionType& ConnectionType = TrainTrackInfo->GetConnections()[ConnectionIndex].Type;
-	std::vector<swPieceData*> TrainTrackParts = swGetPiecesLibrary()->GetVisibleTrainTrackParts(ConnectionType);
+	std::vector<swPieceData*> TrainTrackPieces = swGetPiecesLibrary()->GetVisibleTrainTrackPieces(ConnectionType);
 
-	auto PartSortFunc = [](const swPieceData* a, const swPieceData* b)
+	auto PieceSortFunc = [](const swPieceData* a, const swPieceData* b)
 	{
 		if (!a)
 			return true;
@@ -374,16 +374,16 @@ void swView::ShowTrainTrackPopup()
 		return strcmp(a->m_strDescription, b->m_strDescription) < 0;
 	};
 
-	std::sort(TrainTrackParts.begin(), TrainTrackParts.end(), PartSortFunc);
+	std::sort(TrainTrackPieces.begin(), TrainTrackPieces.end(), PieceSortFunc);
 
-	std::vector<std::pair<swPieceData*, std::string>> Parts;
+	std::vector<std::pair<swPieceData*, std::string>> Pieces;
 
-	Parts.reserve(TrainTrackParts.size());
+	Pieces.reserve(TrainTrackPieces.size());
 
-	for (swPieceData* PieceData : TrainTrackParts)
-		Parts.emplace_back(PieceData, std::string());
+	for (swPieceData* PieceData : TrainTrackPieces)
+		Pieces.emplace_back(PieceData, std::string());
 
-	std::optional<swPieceData*> Result = swShowPieceSelectionPopup(nullptr, Parts, gMainWindow->GetInsertColorIndex(), mWidget, QCursor::pos());
+	std::optional<swPieceData*> Result = swShowPieceSelectionPopup(nullptr, Pieces, gMainWindow->GetInsertColorIndex(), mWidget, QCursor::pos());
 	swPieceData* PieceData = Result.has_value() ? Result.value() : nullptr;
 
 	if (PieceData)

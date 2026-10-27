@@ -136,13 +136,13 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tabParts">
+     <widget class="QWidget" name="tabPieces">
       <attribute name="title">
        <string>Pieces</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <widget class="swPiecesTableWidget" name="PartsTable">
+        <widget class="swPiecesTableWidget" name="PiecesTable">
          <property name="toolTip">
           <string>View piece quantities by color; click a column heading to sort.</string>
          </property>
@@ -244,7 +244,7 @@
   <tabstop>AuthorEdit</tabstop>
   <tabstop>DescriptionEdit</tabstop>
   <tabstop>CommentsEdit</tabstop>
-  <tabstop>PartsTable</tabstop>
+  <tabstop>PiecesTable</tabstop>
   <tabstop>ExportBrickLinkButton</tabstop>
   <tabstop>ExportCSVButton</tabstop>
  </tabstops>

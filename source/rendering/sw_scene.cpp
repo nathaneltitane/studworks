@@ -29,9 +29,9 @@ void swScene::Begin(const swMatrix44& ViewMatrix)
 	mInterfaceObjects.clear();
 
 	const swPreferences& Preferences = swGetPreferences();
-	mHighlightColor = swVector4FromColor(Preferences.mHighlightNewPartsColor);
+	mHighlightColor = swVector4FromColor(Preferences.mHighlightNewPiecesColor);
 	mFadeColor = swVector4FromColor(Preferences.mFadeStepsColor);
-	mHasFadedParts = false;
+	mHasFadedPieces = false;
 	mTranslucentFade = mFadeColor.w != 1.0f;
 }
 
@@ -75,7 +75,7 @@ void swScene::AddMesh(swMesh* Mesh, const swMatrix44& WorldMatrix, int ColorInde
 	const bool ForceTranslucent = (mTranslucentFade && State == swRenderMeshState::Faded);
 	const bool Translucent = swIsColorTranslucent(ColorIndex) || ForceTranslucent;
 	const swMeshFlags Flags = Mesh->mFlags;
-	mHasFadedParts |= State == swRenderMeshState::Faded;
+	mHasFadedPieces |= State == swRenderMeshState::Faded;
 
 	if ((Flags & (swMeshFlag::HasSolid | swMeshFlag::HasLines)) || ((Flags & swMeshFlag::HasDefault) && !Translucent))
 		mOpaqueMeshes.emplace_back(static_cast<int>(mRenderMeshes.size()) - 1);
@@ -463,7 +463,7 @@ void swScene::Draw(swContext* Context, const std::function<void()>& PreTransluce
 	{
 		const int SolidPrimitiveTypes = SW_MESH_TRIANGLES | SW_MESH_TEXTURED_TRIANGLES | (DrawLines ? SW_MESH_LINES : 0);
 
-		if (mTranslucentFade && mHasFadedParts)
+		if (mTranslucentFade && mHasFadedPieces)
 		{
 			DrawOpaqueMeshes(Context, false, SolidPrimitiveTypes, false, true);
 
@@ -495,7 +495,7 @@ void swScene::Draw(swContext* Context, const std::function<void()>& PreTransluce
 	}
 	else
 	{
-		if (mTranslucentFade && mHasFadedParts)
+		if (mTranslucentFade && mHasFadedPieces)
 		{
 			DrawOpaqueMeshes(Context, true, SW_MESH_TRIANGLES | SW_MESH_TEXTURED_TRIANGLES, false, true);
 
@@ -547,7 +547,7 @@ bool swScene::HasSelectedMeshes() const
 bool swScene::CanReuseSceneDepth() const
 {
 	// Faded depth prepasses and insertion previews should not obscure selection.
-	if (mTranslucentFade && mHasFadedParts)
+	if (mTranslucentFade && mHasFadedPieces)
 		return false;
 
 	return std::none_of(mRenderMeshes.begin(), mRenderMeshes.end(), [](const swRenderMesh& Mesh)

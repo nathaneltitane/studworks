@@ -1728,12 +1728,12 @@ bool Project::ImportInventory(const std::vector<swSetInventoryItem>& SetInventor
 	return true;
 }
 
-std::vector<swModelPiecesEntry> Project::GetModelParts()
+std::vector<swModelPiecesEntry> Project::GetModelPieces()
 {
-	std::vector<swModelPiecesEntry> ModelParts;
+	std::vector<swModelPiecesEntry> ModelPieces;
 
 	if (mModels.empty())
-		return ModelParts;
+		return ModelPieces;
 
 	mModels[0]->WaitForAssets();
 
@@ -1758,16 +1758,16 @@ std::vector<swModelPiecesEntry> Project::GetModelParts()
 		Model->CalculateStep(SW_STEP_MAXIMUM);
 	}
 
-	mModels[0]->GetModelParts(swMatrix44Identity(), gDefaultColor, ModelParts);
+	mModels[0]->GetModelPieces(swMatrix44Identity(), gDefaultColor, ModelPieces);
 
-	ModelParts.erase(std::remove_if(ModelParts.begin(), ModelParts.end(), [](const swModelPiecesEntry& ModelPart)
+	ModelPieces.erase(std::remove_if(ModelPieces.begin(), ModelPieces.end(), [](const swModelPiecesEntry& ModelPiece)
 	{
-		return ModelPart.PieceData->mState != swAssetState::Loaded ||
-			(ModelPart.PieceData->GetSynthInfo() && !ModelPart.Mesh) ||
-			(!ModelPart.Mesh && !ModelPart.PieceData->GetMesh());
-	}), ModelParts.end());
+		return ModelPiece.PieceData->mState != swAssetState::Loaded ||
+			(ModelPiece.PieceData->GetSynthInfo() && !ModelPiece.Mesh) ||
+			(!ModelPiece.Mesh && !ModelPiece.PieceData->GetMesh());
+	}), ModelPieces.end());
 
-	return ModelParts;
+	return ModelPieces;
 }
 
 std::vector<swPieceDataReference> Project::GetRequiredPieceData() const

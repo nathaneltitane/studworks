@@ -127,35 +127,35 @@ void swMainWindow::UpdateTerminalDirectory(bool Force)
 #endif
 }
 
-void swMainWindow::SnapPartsDock()
+void swMainWindow::SnapPiecesDock()
 {
-	if (!swGetPreferences().mPiecesSnapToTiles || !mPartsToolBar || mPartsToolBar->isFloating() || !mPartSelectionWidget)
+	if (!swGetPreferences().mPiecesSnapToTiles || !mPiecesToolBar || mPiecesToolBar->isFloating() || !mPieceSelectionWidget)
 		return;
 
-	const Qt::DockWidgetArea Area = dockWidgetArea(mPartsToolBar);
+	const Qt::DockWidgetArea Area = dockWidgetArea(mPiecesToolBar);
 
 	if (Area != Qt::LeftDockWidgetArea && Area != Qt::RightDockWidgetArea)
 	{
-		mPartSelectionWidget->SnapCategoriesWidth();
+		mPieceSelectionWidget->SnapCategoriesWidth();
 		return;
 	}
 
-	const int Delta = mPartSelectionWidget->GetTileSnapDelta();
+	const int Delta = mPieceSelectionWidget->GetTileSnapDelta();
 
 	if (!Delta)
 		return;
 
-	resizeDocks({ mPartsToolBar }, { mPartsToolBar->width() + Delta }, Qt::Horizontal);
+	resizeDocks({ mPiecesToolBar }, { mPiecesToolBar->width() + Delta }, Qt::Horizontal);
 
 	// Check once more after the tiles are laid out again in case the view wraps differently than measured.
-	if (!mPartsSnapRetried)
+	if (!mPiecesSnapRetried)
 	{
-		mPartsSnapRetried = true;
+		mPiecesSnapRetried = true;
 
 		QTimer::singleShot(0, this, [this]()
 		{
-			SnapPartsDock();
-			mPartsSnapRetried = false;
+			SnapPiecesDock();
+			mPiecesSnapRetried = false;
 		});
 	}
 }
@@ -178,12 +178,12 @@ void swMainWindow::CreatePreviewWidget()
 bool swMainWindow::eventFilter(QObject* Object, QEvent* Event)
 {
 	// Resizing the pieces panel by hand snaps it to whole tiles once the mouse is released.
-	if (Object == mPartsToolBar && Event->type() == QEvent::Resize && QApplication::mouseButtons() != Qt::NoButton)
-		mPartsSnapPending = true;
-	else if (Event->type() == QEvent::MouseButtonRelease && mPartsSnapPending)
+	if (Object == mPiecesToolBar && Event->type() == QEvent::Resize && QApplication::mouseButtons() != Qt::NoButton)
+		mPiecesSnapPending = true;
+	else if (Event->type() == QEvent::MouseButtonRelease && mPiecesSnapPending)
 	{
-		mPartsSnapPending = false;
-		QTimer::singleShot(0, this, &swMainWindow::SnapPartsDock);
+		mPiecesSnapPending = false;
+		QTimer::singleShot(0, this, &swMainWindow::SnapPiecesDock);
 	}
 
 	QTabBar* TabBar = mModelTabWidget ? mModelTabWidget->tabBar() : nullptr;
@@ -289,7 +289,7 @@ void swMainWindow::UpdateAssets()
 	for (const swPieceDataReference& RequiredData : RequiredPieceData)
 		mStatusRequiredAssets.insert(RequiredData.Get());
 
-	int PendingParts = 0;
+	int PendingPieces = 0;
 	int PendingSynths = 0;
 	int Failed = 0;
 	QString FailureDetails;
@@ -320,7 +320,7 @@ void swMainWindow::UpdateAssets()
 			FailureDetails += QStringLiteral("'%1': %2").arg(QString::fromLatin1(PieceData->mFileName), Error);
 		}
 		else if (PieceData->mState != swAssetState::Loaded)
-			PendingParts++;
+			PendingPieces++;
 	}
 
 	for (const swPiece* Piece : GeneratedPieces)
@@ -344,10 +344,10 @@ void swMainWindow::UpdateAssets()
 	}
 
 	const int Total = static_cast<int>(RequiredPieceData.size() + GeneratedPieces.size());
-	const int Pending = PendingParts + PendingSynths;
+	const int Pending = PendingPieces + PendingSynths;
 	QString LoadingText;
 
-	if (!PendingParts && PendingSynths)
+	if (!PendingPieces && PendingSynths)
 		LoadingText = tr("Regenerating synthesized piece geometry.");
 	else
 		LoadingText = tr("Loading model pieces (%1 / %2).").arg(Total - Pending - Failed).arg(Total);
@@ -383,7 +383,7 @@ void swMainWindow::closeEvent(QCloseEvent* Event)
 		Settings.beginGroup("MainWindow");
 		Settings.setValue("Geometry", saveGeometry());
 		Settings.setValue("State", saveState());
-		mPartSelectionWidget->SaveState(Settings);
+		mPieceSelectionWidget->SaveState(Settings);
 		Settings.endGroup();
 
 		gApplication->SaveTabLayout();
@@ -430,7 +430,7 @@ QMenu* swMainWindow::createPopupMenu()
 
 void swMainWindow::UpdateDockWidgetActions()
 {
-	mActions[SW_VIEW_TOOLBAR_PIECES]->setChecked(mPartsToolBar->isVisible());
+	mActions[SW_VIEW_TOOLBAR_PIECES]->setChecked(mPiecesToolBar->isVisible());
 	mActions[SW_VIEW_TOOLBAR_COLORS]->setChecked(mColorsToolBar->isVisible());
 	mActions[SW_VIEW_TOOLBAR_PROPERTIES]->setChecked(mPropertiesToolBar->isVisible());
 	mActions[SW_VIEW_TOOLBAR_TIMELINE]->setChecked(mTimelineToolBar->isVisible());
@@ -544,12 +544,12 @@ void swMainWindow::ColorChanged(int ColorIndex)
 	SetColorIndex(ColorIndex);
 }
 
-void swMainWindow::PartListPicked(swPieceData* PieceData)
+void swMainWindow::PieceListPicked(swPieceData* PieceData)
 {
 	if (!PieceData)
 		return;
 
-	quint32 ColorCode = swGetColorCode(mPartSelectionWidget->GetColorIndex());
+	quint32 ColorCode = swGetColorCode(mPieceSelectionWidget->GetColorIndex());
 
 	PreviewPiece(PieceData, ColorCode, true);
 }
@@ -766,14 +766,14 @@ void swMainWindow::ColorOptionsMenuAboutToShow()
 	InsertGroup->addAction(AddCommand(InsertMenu, tr("Selected Piece Color"), SW_PIECE_INSERT_COLOR_SELECTED, InsertColorMode == swInsertColorMode::SelectedPieceColor));
 	InsertGroup->addAction(AddCommand(InsertMenu, tr("Last Inserted Piece Color"), SW_PIECE_INSERT_COLOR_LAST_INSERTED, InsertColorMode == swInsertColorMode::LastInsertedColor));
 
-	AddCommand(Menu, tr("Lock Pieces Color"), SW_VIEW_PIECES_TOGGLE_LOCK_COLOR, mPartSelectionWidget && mPartSelectionWidget->IsColorLocked());
+	AddCommand(Menu, tr("Lock Pieces Color"), SW_VIEW_PIECES_TOGGLE_LOCK_COLOR, mPieceSelectionWidget && mPieceSelectionWidget->IsColorLocked());
 }
 
 void swMainWindow::UpdatePiecesColor()
 {
 	// The pieces list shows the color new pieces will be inserted with, unless its color is locked.
-	if (mPartSelectionWidget)
-		mPartSelectionWidget->SetColorIndex(GetInsertColorIndex());
+	if (mPieceSelectionWidget)
+		mPieceSelectionWidget->SetColorIndex(GetInsertColorIndex());
 }
 
 void swMainWindow::SetMoveSnapEnabled(bool Enabled)

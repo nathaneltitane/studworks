@@ -429,7 +429,7 @@ void swMainWindow::UpdateModels()
 			delete TabWidget;
 	}
 
-	mPartSelectionWidget->UpdateModels();
+	mPieceSelectionWidget->UpdateModels();
 
 	if (mInsertPieceData && mInsertPieceData->IsModel())
 		if (!HasModel(mInsertPieceData->GetModel()))
@@ -438,12 +438,12 @@ void swMainWindow::UpdateModels()
 
 void swMainWindow::UpdateInUseCategory()
 {
-	mPartSelectionWidget->UpdateInUseCategory();
+	mPieceSelectionWidget->UpdateInUseCategory();
 }
 
 void swMainWindow::UpdateCategories()
 {
-	mPartSelectionWidget->UpdateCategories();
+	mPieceSelectionWidget->UpdateCategories();
 }
 
 void swMainWindow::UpdateTitle()

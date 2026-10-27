@@ -40,18 +40,18 @@ swMinifigureBuilder::swMinifigureBuilder()
 	const int ColorCodes[SW_MINIFIGURE_ITEM_COUNT] = { 4, 7, 14, 7, 1, 0, 7, 4, 4, 14, 14, 7, 7, 0, 0, 7, 7 };
 	const char* const Pieces[SW_MINIFIGURE_ITEM_COUNT] = { "3624.dat", "", "3626bp01.dat", "", "973.dat", "3815.dat", "", "3819.dat", "3818.dat", "3820.dat", "3820.dat", "", "", "3817.dat", "3816.dat", "", "" };
 
-	for (int PartIndex = 0; PartIndex < SW_MINIFIGURE_ITEM_COUNT; PartIndex++)
+	for (int PieceIndex = 0; PieceIndex < SW_MINIFIGURE_ITEM_COUNT; PieceIndex++)
 	{
-		Template.Parts[PartIndex] = Pieces[PartIndex];
-		Template.ColorCodes[PartIndex] = ColorCodes[PartIndex];
-		Template.Angles[PartIndex] = 0.0f;
+		Template.Pieces[PieceIndex] = Pieces[PieceIndex];
+		Template.ColorCodes[PieceIndex] = ColorCodes[PieceIndex];
+		Template.Angles[PieceIndex] = 0.0f;
 	}
 
-	for (int PartIndex = 0; PartIndex < SW_MINIFIGURE_ITEM_COUNT; PartIndex++)
+	for (int PieceIndex = 0; PieceIndex < SW_MINIFIGURE_ITEM_COUNT; PieceIndex++)
 	{
-		mMinifigure.ColorIndices[PartIndex] = gDefaultColor;
-		mMinifigure.Angles[PartIndex] = 0.0f;
-		mMinifigure.Matrices[PartIndex] = swMatrix44Identity();
+		mMinifigure.ColorIndices[PieceIndex] = gDefaultColor;
+		mMinifigure.Angles[PieceIndex] = 0.0f;
+		mMinifigure.Matrices[PieceIndex] = swMatrix44Identity();
 	}
 }
 
@@ -193,16 +193,16 @@ void swMinifigureBuilder::LoadTemplate(const QString& TemplateName)
 	const swMinifigureTemplate& Template = TemplateIt->second;
 	swPiecesLibrary* Library = swGetPiecesLibrary();
 
-	for (int PartIndex = 0; PartIndex < SW_MINIFIGURE_ITEM_COUNT; PartIndex++)
+	for (int PieceIndex = 0; PieceIndex < SW_MINIFIGURE_ITEM_COUNT; PieceIndex++)
 	{
-		mMinifigure.ColorIndices[PartIndex] = swGetColorIndex(Template.ColorCodes[PartIndex]);
-		mMinifigure.Angles[PartIndex] = Template.Angles[PartIndex];
-		mMinifigure.Matrices[PartIndex] = swMatrix44Identity();
+		mMinifigure.ColorIndices[PieceIndex] = swGetColorIndex(Template.ColorCodes[PieceIndex]);
+		mMinifigure.Angles[PieceIndex] = Template.Angles[PieceIndex];
+		mMinifigure.Matrices[PieceIndex] = swMatrix44Identity();
 
-		mMinifigure.PieceData[PartIndex] = Library->AcquirePieceData(Template.Parts[PartIndex].toLatin1(), nullptr, false, false);
+		mMinifigure.PieceData[PieceIndex] = Library->AcquirePieceData(Template.Pieces[PieceIndex].toLatin1(), nullptr, false, false);
 
-		if (mMinifigure.PieceData[PartIndex])
-			Library->RequestPieceDataLoad(mMinifigure.PieceData[PartIndex].Get(), swLoadPriority::Normal);
+		if (mMinifigure.PieceData[PieceIndex])
+			Library->RequestPieceDataLoad(mMinifigure.PieceData[PieceIndex].Get(), swLoadPriority::Normal);
 	}
 
 	std::vector<swPieceDataReference> RequiredPieceData;
@@ -247,13 +247,13 @@ void swMinifigureBuilder::AddTemplatesJson(const QByteArray& TemplateData)
 		QJsonObject TemplateObject = ElementIt.value().toObject();
 		swMinifigureTemplate Template;
 
-		for (int PartIdx = 0; PartIdx < SW_MINIFIGURE_ITEM_COUNT; PartIdx++)
+		for (int PieceIdx = 0; PieceIdx < SW_MINIFIGURE_ITEM_COUNT; PieceIdx++)
 		{
-			QJsonObject PartObject = TemplateObject.value(QLatin1String(mSectionNames[PartIdx])).toObject();
+			QJsonObject PieceObject = TemplateObject.value(QLatin1String(mSectionNames[PieceIdx])).toObject();
 
-			Template.Parts[PartIdx] = PartObject["Id"].toString();
-			Template.ColorCodes[PartIdx] = PartObject["Color"].toInt();
-			Template.Angles[PartIdx] = PartObject["Angle"].toDouble();
+			Template.Pieces[PieceIdx] = PieceObject["Id"].toString();
+			Template.ColorCodes[PieceIdx] = PieceObject["Color"].toInt();
+			Template.Angles[PieceIdx] = PieceObject["Angle"].toDouble();
 		}
 
 		mTemplates.emplace(ElementIt.key(), std::move(Template));
@@ -269,15 +269,15 @@ QByteArray swMinifigureBuilder::GetTemplatesJson() const
 		const swMinifigureTemplate& Template = TemplateEntry.second;
 		QJsonObject TemplateObject;
 
-		for (int PartIdx = 0; PartIdx < SW_MINIFIGURE_ITEM_COUNT; PartIdx++)
+		for (int PieceIdx = 0; PieceIdx < SW_MINIFIGURE_ITEM_COUNT; PieceIdx++)
 		{
-			QJsonObject PartObject;
+			QJsonObject PieceObject;
 
-			PartObject["Id"] = Template.Parts[PartIdx];
-			PartObject["Color"] = Template.ColorCodes[PartIdx];
-			PartObject["Angle"] = Template.Angles[PartIdx];
+			PieceObject["Id"] = Template.Pieces[PieceIdx];
+			PieceObject["Color"] = Template.ColorCodes[PieceIdx];
+			PieceObject["Angle"] = Template.Angles[PieceIdx];
 
-			TemplateObject[QLatin1String(mSectionNames[PartIdx])] = PartObject;
+			TemplateObject[QLatin1String(mSectionNames[PieceIdx])] = PieceObject;
 		}
 
 		TemplatesObject[TemplateEntry.first] = TemplateObject;

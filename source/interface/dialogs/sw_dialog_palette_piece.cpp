@@ -6,8 +6,8 @@
 #include "sw_dialog_database_sets.h"
 #include "sw_project.h"
 
-swPiecePaletteDialog::swPiecePaletteDialog(QWidget* Parent, std::vector<swPiecePalette>& PartPalettes)
-	: QDialog(Parent), ui(new Ui::swPiecePaletteDialog), mPartPalettes(PartPalettes)
+swPiecePaletteDialog::swPiecePaletteDialog(QWidget* Parent, std::vector<swPiecePalette>& PiecePalettes)
+	: QDialog(Parent), ui(new Ui::swPiecePaletteDialog), mPiecePalettes(PiecePalettes)
 {
     ui->setupUi(this);
 	swSetupDialogHelp(this, ui->buttonBox);
@@ -20,7 +20,7 @@ swPiecePaletteDialog::swPiecePaletteDialog(QWidget* Parent, std::vector<swPieceP
 	connect(ui->MoveDownButton, &QPushButton::clicked, this, &swPiecePaletteDialog::MoveDownButtonClicked);
 	connect(ui->PaletteList, QOverload<int>::of(&QListWidget::currentRowChanged), this, &swPiecePaletteDialog::PaletteListCurrentRowChanged);
 
-	for (const swPiecePalette& Palette : PartPalettes)
+	for (const swPiecePalette& Palette : PiecePalettes)
 	{
 		QListWidgetItem* Item = new QListWidgetItem(Palette.Name);
 		Item->setData(Qt::UserRole, QVariant::fromValue<uintptr_t>(reinterpret_cast<uintptr_t>(&Palette)));
@@ -51,8 +51,8 @@ void swPiecePaletteDialog::UpdateButtons()
 
 void swPiecePaletteDialog::accept()
 {
-	std::vector<swPiecePalette> PartPalettes;
-	PartPalettes.reserve(ui->PaletteList->count());
+	std::vector<swPiecePalette> PiecePalettes;
+	PiecePalettes.reserve(ui->PaletteList->count());
 
 	for (int ItemIdx = 0; ItemIdx < ui->PaletteList->count(); ItemIdx++)
 	{
@@ -62,12 +62,12 @@ void swPiecePaletteDialog::accept()
 		swPiecePalette Palette;
 		Palette.Name = Item->text();
 		if (OldPalette)
-			Palette.Parts = std::move(OldPalette->Parts);
+			Palette.Pieces = std::move(OldPalette->Pieces);
 
-		PartPalettes.emplace_back(std::move(Palette));
+		PiecePalettes.emplace_back(std::move(Palette));
 	}
 
-	mPartPalettes = std::move(PartPalettes);
+	mPiecePalettes = std::move(PiecePalettes);
 
 	QDialog::accept();
 }
@@ -139,7 +139,7 @@ void swPiecePaletteDialog::ImportButtonClicked()
 
 	for (const swSetInventoryItem& Item : Inventory)
 	{
-		Palette->Parts.push_back(Item.PartID.toUpper().toStdString() + ".DAT");
+		Palette->Pieces.push_back(Item.PieceID.toUpper().toStdString() + ".DAT");
 	}
 
 	QListWidgetItem* Item = new QListWidgetItem(Palette->Name);

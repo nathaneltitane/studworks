@@ -627,12 +627,12 @@ void swModel::LoadLDraw(QIODevice& Device, Project* Project)
 			swMatrix44 IncludeTransform(swVector4(IncludeMatrix[3], IncludeMatrix[6], IncludeMatrix[9], 0.0f), swVector4(IncludeMatrix[4], IncludeMatrix[7], IncludeMatrix[10], 0.0f),
 										swVector4(IncludeMatrix[5], IncludeMatrix[8], IncludeMatrix[11], 0.0f), swVector4(IncludeMatrix[0], IncludeMatrix[1], IncludeMatrix[2], 1.0f));
 
-			QString PartId = LineStream.readAll().trimmed();
+			QString PieceId = LineStream.readAll().trimmed();
 
-			if (PartId.isEmpty())
+			if (PieceId.isEmpty())
 				continue;
 
-			QByteArray CleanId = PartId.toLatin1().toUpper().replace('\\', '/');
+			QByteArray CleanId = PieceId.toLatin1().toUpper().replace('\\', '/');
 
 			if (Library->FindPrimitive(CleanId.constData()))
 			{
@@ -647,14 +647,14 @@ void swModel::LoadLDraw(QIODevice& Device, Project* Project)
 				if (!CurrentGroups.empty())
 					Piece->SetGroup(CurrentGroups[CurrentGroups.size() - 1]);
 
-				swPieceDataReference PieceData = Library->AcquirePieceData(PartId.toLatin1().constData(), Project, true, true);
+				swPieceDataReference PieceData = Library->AcquirePieceData(PieceId.toLatin1().constData(), Project, true, true);
 
 				const float* Matrix = IncludeTransform.GetFloats();
 				const swMatrix44 Transform(swVector4(Matrix[0], Matrix[2], -Matrix[1], 0.0f), swVector4(Matrix[8], Matrix[10], -Matrix[9], 0.0f),
 									       swVector4(-Matrix[4], -Matrix[6], Matrix[5], 0.0f), swVector4(Matrix[12], Matrix[14], -Matrix[13], 1.0f));
 
 				Piece->SetFileLine(mFileLines.size());
-				Piece->SetPieceData(std::move(PieceData), PartId, false, false);
+				Piece->SetPieceData(std::move(PieceData), PieceId, false, false);
 				Piece->Initialize(Transform, CurrentStep);
 				Piece->SetColorCode(ColorCode);
 				Piece->VerifyControlPoints(ControlPoints);
@@ -663,7 +663,7 @@ void swModel::LoadLDraw(QIODevice& Device, Project* Project)
 
 				if (Piece->mPieceData->IsModel() && Piece->mPieceData->GetModel()->IncludesModel(this))
 				{
-					Project->AddLoadWarning(tr("Model '%1': reference to '%2' was ignored because it would create a circular reference.").arg(GetFileName(), PartId));
+					Project->AddLoadWarning(tr("Model '%1': reference to '%2' was ignored because it would create a circular reference.").arg(GetFileName(), PieceId));
 					delete Piece;
 					Piece = nullptr;
 					continue;
@@ -966,7 +966,7 @@ bool swModel::LoadInventory(const std::vector<swSetInventoryItem>& SetInventory)
 
 	for (const swSetInventoryItem& SetInventoryItem : SetInventory)
 	{
-		const swPieceDataReference PieceData = Library->AcquirePieceData(SetInventoryItem.PartID + ".dat", mProject, true, false);
+		const swPieceDataReference PieceData = Library->AcquirePieceData(SetInventoryItem.PieceID + ".dat", mProject, true, false);
 		int Quantity = SetInventoryItem.Quantity;
 
 		while (Quantity--)

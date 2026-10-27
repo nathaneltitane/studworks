@@ -61,17 +61,17 @@ swPieceSelectionListModel::swPieceSelectionListModel(QObject* Parent)
 	: QAbstractListModel(Parent)
 {
 	mListView = (swPieceSelectionListView*)Parent;
-	const bool IsPopup = mListView->GetPartSelectionWidget()->GetIsPopup();
+	const bool IsPopup = mListView->GetPieceSelectionWidget()->GetIsPopup();
 
 	mIconSize = 0;
-	mShowPartNames = swGetProfileInteger(IsPopup ? SW_PROFILE_PIECES_POPUP_NAMES : SW_PROFILE_PIECES_LIST_NAMES);
+	mShowPieceNames = swGetProfileInteger(IsPopup ? SW_PROFILE_PIECES_POPUP_NAMES : SW_PROFILE_PIECES_LIST_NAMES);
 	mListMode = swGetProfileInteger(IsPopup ? SW_PROFILE_PIECES_POPUP_LIST_MODE : SW_PROFILE_PIECES_LIST_LIST_MODE);
-	mShowDecoratedParts = swGetProfileInteger(IsPopup ? SW_PROFILE_PIECES_POPUP_DECORATED : SW_PROFILE_PIECES_LIST_DECORATED);
-	mShowPartAliases = swGetProfileInteger(IsPopup ? SW_PROFILE_PIECES_POPUP_ALIASES : SW_PROFILE_PIECES_LIST_ALIASES);
+	mShowDecoratedPieces = swGetProfileInteger(IsPopup ? SW_PROFILE_PIECES_POPUP_DECORATED : SW_PROFILE_PIECES_LIST_DECORATED);
+	mShowPieceAliases = swGetProfileInteger(IsPopup ? SW_PROFILE_PIECES_POPUP_ALIASES : SW_PROFILE_PIECES_LIST_ALIASES);
 	mCaseSensitiveFilter = swGetProfileInteger(SW_PROFILE_PIECES_LIST_CASE_SENSITIVE_FILTER);
 	mFileNameFilter = swGetProfileInteger(SW_PROFILE_PIECES_LIST_FILE_NAME_FILTER);
-	mPartDescriptionFilter = swGetProfileInteger(SW_PROFILE_PIECES_LIST_PIECE_DESCRIPTION_FILTER);
-	mPartFilterType = swGetProfilePieceFilterType();
+	mPieceDescriptionFilter = swGetProfileInteger(SW_PROFILE_PIECES_LIST_PIECE_DESCRIPTION_FILTER);
+	mPieceFilterType = swGetProfilePieceFilterType();
 
 	uint ColorCode = IsPopup ? SW_COLOR_NO_COLOR : swGetProfileUnsignedInteger(SW_PROFILE_PIECES_LIST_COLOR);
 	int LockedFlag = IsPopup ? 0 : swGetProfileInteger(SW_PROFILE_PIECES_LIST_COLOR_LOCKED);
@@ -120,7 +120,7 @@ void swPieceSelectionListModel::SetColorIndex(int ColorIndex)
 
 void swPieceSelectionListModel::ToggleColorLocked()
 {
-	if (mListView->GetPartSelectionWidget()->GetIsPopup())
+	if (mListView->GetPieceSelectionWidget()->GetIsPopup())
 		return;
 
 	mColorLocked = !mColorLocked;
@@ -143,7 +143,7 @@ void swPieceSelectionListModel::ToggleListMode()
 	mListMode = !mListMode;
 
 	mListView->UpdateViewMode();
-	swSetProfileInteger(mListView->GetPartSelectionWidget()->GetIsPopup() ? SW_PROFILE_PIECES_POPUP_LIST_MODE : SW_PROFILE_PIECES_LIST_LIST_MODE, mListMode);
+	swSetProfileInteger(mListView->GetPieceSelectionWidget()->GetIsPopup() ? SW_PROFILE_PIECES_POPUP_LIST_MODE : SW_PROFILE_PIECES_LIST_LIST_MODE, mListMode);
 }
 
 void swPieceSelectionListModel::SetCategory(int CategoryIndex)
@@ -153,24 +153,24 @@ void swPieceSelectionListModel::SetCategory(int CategoryIndex)
 	ReleaseThumbnails();
 
 	swPiecesLibrary* Library = swGetPiecesLibrary();
-	std::vector<swPieceData*> SingleParts, GroupedParts;
+	std::vector<swPieceData*> SinglePieces, GroupedPieces;
 
 	if (CategoryIndex != -1)
-		Library->GetCategoryEntries(CategoryIndex, false, SingleParts, GroupedParts);
+		Library->GetCategoryEntries(CategoryIndex, false, SinglePieces, GroupedPieces);
 	else
 	{
-		SingleParts = Library->GetParts();
+		SinglePieces = Library->GetPieces();
 
 		swModel* ActiveModel = gMainWindow->GetActiveModel();
 
-		for (size_t PartIndex = 0; PartIndex < SingleParts.size(); )
+		for (size_t PieceIndex = 0; PieceIndex < SinglePieces.size(); )
 		{
-			swPieceData* PieceData = SingleParts[PartIndex];
+			swPieceData* PieceData = SinglePieces[PieceIndex];
 
 			if (!PieceData->IsModel() || !PieceData->GetModel()->IncludesModel(ActiveModel))
-				PartIndex++;
+				PieceIndex++;
 			else
-				SingleParts.erase(SingleParts.begin() + PartIndex);
+				SinglePieces.erase(SinglePieces.begin() + PieceIndex);
 		}
 	}
 
@@ -179,12 +179,12 @@ void swPieceSelectionListModel::SetCategory(int CategoryIndex)
 		return strcmp(a->m_strDescription, b->m_strDescription) < 0;
 	};
 
-	std::sort(SingleParts.begin(), SingleParts.end(), swPieceSortFunction);
+	std::sort(SinglePieces.begin(), SinglePieces.end(), swPieceSortFunction);
 
-	mParts.resize(SingleParts.size());
+	mPieces.resize(SinglePieces.size());
 
-	for (size_t PartIndex = 0; PartIndex < SingleParts.size(); PartIndex++)
-		mParts[PartIndex].PieceData = SingleParts[PartIndex];
+	for (size_t PieceIndex = 0; PieceIndex < SinglePieces.size(); PieceIndex++)
+		mPieces[PieceIndex].PieceData = SinglePieces[PieceIndex];
 
 	endResetModel();
 
@@ -196,21 +196,21 @@ void swPieceSelectionListModel::SetModelsCategory()
 	beginResetModel();
 
 	ReleaseThumbnails();
-	mParts.clear();
+	mPieces.clear();
 
 	const std::vector<std::unique_ptr<swModel>>& Models = swGetActiveProject()->GetModels();
 	swModel* ActiveModel = gMainWindow->GetActiveModel();
 
 	for (const std::unique_ptr<swModel>& Model : Models)
 		if (!Model->IncludesModel(ActiveModel))
-			mParts.emplace_back().PieceData = Model->GetPieceData();
+			mPieces.emplace_back().PieceData = Model->GetPieceData();
 
 	auto swPieceSortFunction = [](const swPieceSelectionListModelEntry& a, const swPieceSelectionListModelEntry& b)
 	{
 		return strcmp(a.PieceData->m_strDescription, b.PieceData->m_strDescription) < 0;
 	};
 
-	std::sort(mParts.begin(), mParts.end(), swPieceSortFunction);
+	std::sort(mPieces.begin(), mPieces.end(), swPieceSortFunction);
 
 	endResetModel();
 
@@ -222,23 +222,23 @@ void swPieceSelectionListModel::SetPaletteCategory(int SetIndex)
 	beginResetModel();
 
 	ReleaseThumbnails();
-	mParts.clear();
+	mPieces.clear();
 
-	swPieceSelectionWidget* PartSelectionWidget = mListView->GetPartSelectionWidget();
-	const std::vector<swPiecePalette>& Palettes = PartSelectionWidget->GetPartPalettes();
-	std::vector<swPieceData*> PartsList = swGetPiecesLibrary()->GetPartsFromSet(Palettes[SetIndex].Parts);
+	swPieceSelectionWidget* PieceSelectionWidget = mListView->GetPieceSelectionWidget();
+	const std::vector<swPiecePalette>& Palettes = PieceSelectionWidget->GetPiecePalettes();
+	std::vector<swPieceData*> PiecesList = swGetPiecesLibrary()->GetPiecesFromSet(Palettes[SetIndex].Pieces);
 
 	auto swPieceSortFunction = [](const swPieceData* a, const swPieceData* b)
 	{
 		return strcmp(a->m_strDescription, b->m_strDescription) < 0;
 	};
 
-	std::sort(PartsList.begin(), PartsList.end(), swPieceSortFunction);
+	std::sort(PiecesList.begin(), PiecesList.end(), swPieceSortFunction);
 
-	mParts.reserve(PartsList.size());
+	mPieces.reserve(PiecesList.size());
 
-	for (swPieceData* PieceData : PartsList)
-		mParts.emplace_back().PieceData = PieceData;
+	for (swPieceData* PieceData : PiecesList)
+		mPieces.emplace_back().PieceData = PieceData;
 
 	endResetModel();
 
@@ -250,30 +250,30 @@ void swPieceSelectionListModel::SetCurrentModelCategory()
 	beginResetModel();
 
 	ReleaseThumbnails();
-	mParts.clear();
+	mPieces.clear();
 
 	swModel* ActiveModel = gMainWindow->GetActiveModel();
-	swPiecesList PartsList;
+	swPiecesList PiecesList;
 
 	if (ActiveModel)
-		ActiveModel->GetPartsList(gDefaultColor, true, true, PartsList);
+		ActiveModel->GetPiecesList(gDefaultColor, true, true, PiecesList);
 
-	for (const auto& PartIt : PartsList)
-		mParts.emplace_back().PieceData = (swPieceData*)PartIt.first;
+	for (const auto& PieceIt : PiecesList)
+		mPieces.emplace_back().PieceData = (swPieceData*)PieceIt.first;
 
 	auto swPieceSortFunction = [](const swPieceSelectionListModelEntry& a, const swPieceSelectionListModelEntry& b)
 	{
 		return strcmp(a.PieceData->m_strDescription, b.PieceData->m_strDescription) < 0;
 	};
 
-	std::sort(mParts.begin(), mParts.end(), swPieceSortFunction);
+	std::sort(mPieces.begin(), mPieces.end(), swPieceSortFunction);
 
 	endResetModel();
 
 	SetFilter(mFilterString);
 }
 
-void swPieceSelectionListModel::SetCustomParts(const std::vector<std::pair<swPieceData*, std::string>>& Parts, int ColorIndex)
+void swPieceSelectionListModel::SetCustomPieces(const std::vector<std::pair<swPieceData*, std::string>>& Pieces, int ColorIndex)
 {
 	beginResetModel();
 
@@ -281,11 +281,11 @@ void swPieceSelectionListModel::SetCustomParts(const std::vector<std::pair<swPie
 	mColorIndex = ColorIndex;
 
 	ReleaseThumbnails();
-	mParts.clear();
+	mPieces.clear();
 
-	for (const auto& [PieceData, Description] : Parts)
+	for (const auto& [PieceData, Description] : Pieces)
 	{
-		swPieceSelectionListModelEntry& Entry = mParts.emplace_back();
+		swPieceSelectionListModelEntry& Entry = mPieces.emplace_back();
 
 		Entry.PieceData = PieceData;
 		Entry.Description = Description;
@@ -313,31 +313,31 @@ void swPieceSelectionListModel::SetFilter(const QString& FilterString)
 	QRegExp FilterRx(FilterString, CaseSensitive, QRegExp::RegExp2);
 #endif
 
-	for (size_t PartIdx = 0; PartIdx < mParts.size(); PartIdx++)
+	for (size_t PieceIdx = 0; PieceIdx < mPieces.size(); PieceIdx++)
 	{
-		swPieceData* PieceData = mParts[PartIdx].PieceData;
+		swPieceData* PieceData = mPieces[PieceIdx].PieceData;
 		bool Visible = true;
 
 		if (!PieceData)
 			Visible = true;
-		else if (!mShowDecoratedParts && PieceData->IsDecorated() && !PieceData->IsProjectPiece())
+		else if (!mShowDecoratedPieces && PieceData->IsDecorated() && !PieceData->IsProjectPiece())
 			Visible = false;
-		else if (!mShowPartAliases && PieceData->IsAlias())
+		else if (!mShowPieceAliases && PieceData->IsAlias())
 			Visible = false;
-		else if (mPartFilterType == swPieceFilterType::Default)
+		else if (mPieceFilterType == swPieceFilterType::Default)
 		{
-			const char* Description = mParts[PartIdx].Description.empty() ? PieceData->m_strDescription : mParts[PartIdx].Description.c_str();
+			const char* Description = mPieces[PieceIdx].Description.empty() ? PieceData->m_strDescription : mPieces[PieceIdx].Description.c_str();
 
-			Visible = (mPartDescriptionFilter && Filter.Match(Description)) || (mFileNameFilter && Filter.Match(PieceData->mFileName));
+			Visible = (mPieceDescriptionFilter && Filter.Match(Description)) || (mFileNameFilter && Filter.Match(PieceData->mFileName));
 		}
-		else if (mPartFilterType == swPieceFilterType::RegularExpression)
+		else if (mPieceFilterType == swPieceFilterType::RegularExpression)
 		{
-			QString Description = mParts[PartIdx].Description.empty() ? QString(PieceData->m_strDescription) : QString::fromStdString(mParts[PartIdx].Description);
+			QString Description = mPieces[PieceIdx].Description.empty() ? QString(PieceData->m_strDescription) : QString::fromStdString(mPieces[PieceIdx].Description);
 
-			Visible = (mPartDescriptionFilter && Description.contains(FilterRx)) || (mFileNameFilter && QString(PieceData->mFileName).contains(FilterRx));
+			Visible = (mPieceDescriptionFilter && Description.contains(FilterRx)) || (mFileNameFilter && QString(PieceData->mFileName).contains(FilterRx));
 		}
 
-		mListView->setRowHidden((int)PartIdx, !Visible);
+		mListView->setRowHidden((int)PieceIdx, !Visible);
 	}
 }
 
@@ -345,22 +345,22 @@ int swPieceSelectionListModel::rowCount(const QModelIndex& Parent) const
 {
 	Q_UNUSED(Parent);
 
-	return (int)mParts.size();
+	return (int)mPieces.size();
 }
 
 QVariant swPieceSelectionListModel::data(const QModelIndex& Index, int Role) const
 {
 	size_t InfoIndex = Index.row();
 
-	if (Index.isValid() && InfoIndex < mParts.size())
+	if (Index.isValid() && InfoIndex < mPieces.size())
 	{
-		swPieceData* PieceData = mParts[InfoIndex].PieceData;
+		swPieceData* PieceData = mPieces[InfoIndex].PieceData;
 
 		switch (Role)
 		{
 		case Qt::DisplayRole:
-			if (!mIconSize || mShowPartNames || mListMode)
-				return QVariant(mParts[InfoIndex].Description.empty() ? QString::fromLatin1(PieceData->m_strDescription) : QString::fromStdString(mParts[InfoIndex].Description));
+			if (!mIconSize || mShowPieceNames || mListMode)
+				return QVariant(mPieces[InfoIndex].Description.empty() ? QString::fromLatin1(PieceData->m_strDescription) : QString::fromStdString(mPieces[InfoIndex].Description));
 			break;
 
 		case Qt::ToolTipRole:
@@ -379,8 +379,8 @@ QVariant swPieceSelectionListModel::data(const QModelIndex& Index, int Role) con
 			break;
 
 		case Qt::DecorationRole:
-			if (mIconSize && !mParts[InfoIndex].Pixmap.isNull())
-				return QVariant(mParts[InfoIndex].Pixmap);
+			if (mIconSize && !mPieces[InfoIndex].Pixmap.isNull())
+				return QVariant(mPieces[InfoIndex].Pixmap);
 			else
 				return QVariant(QColor(0, 0, 0, 0));
 
@@ -414,9 +414,9 @@ QModelIndex swPieceSelectionListModel::GetPieceDataIndex(swPieceData* PieceData)
 {
 	if (PieceData)
 	{
-		for (int PartIndex = 0; PartIndex < static_cast<int>(mParts.size()); PartIndex++)
-			if (mParts[PartIndex].PieceData == PieceData)
-				return index(PartIndex, 0);
+		for (int PieceIndex = 0; PieceIndex < static_cast<int>(mPieces.size()); PieceIndex++)
+			if (mPieces[PieceIndex].PieceData == PieceData)
+				return index(PieceIndex, 0);
 	}
 
 	return QModelIndex();
@@ -426,77 +426,77 @@ void swPieceSelectionListModel::ReleaseThumbnails()
 {
 	swThumbnailManager* ThumbnailManager = swGetPiecesLibrary()->GetThumbnailManager();
 
-	for (swPieceSelectionListModelEntry& Part : mParts)
+	for (swPieceSelectionListModelEntry& Piece : mPieces)
 	{
-		ThumbnailManager->ReleaseThumbnail(Part.ThumbnailId);
-		Part.ThumbnailId = swPieceThumbnailId::Invalid;
-		Part.Pixmap = QPixmap();
+		ThumbnailManager->ReleaseThumbnail(Piece.ThumbnailId);
+		Piece.ThumbnailId = swPieceThumbnailId::Invalid;
+		Piece.Pixmap = QPixmap();
 	}
 }
 
-void swPieceSelectionListModel::RequestThumbnail(int PartIndex)
+void swPieceSelectionListModel::RequestThumbnail(int PieceIndex)
 {
-	if (!mIconSize || !mParts[PartIndex].Pixmap.isNull() || mParts[PartIndex].ThumbnailId != swPieceThumbnailId::Invalid)
+	if (!mIconSize || !mPieces[PieceIndex].Pixmap.isNull() || mPieces[PieceIndex].ThumbnailId != swPieceThumbnailId::Invalid)
 		return;
 
-	swPieceData* PieceData = mParts[PartIndex].PieceData;
+	swPieceData* PieceData = mPieces[PieceIndex].PieceData;
 
 	if (!PieceData)
 		return;
 
-	int ColorIndex = mParts[PartIndex].ColorIndex == -1 ? mColorIndex : mParts[PartIndex].ColorIndex;
+	int ColorIndex = mPieces[PieceIndex].ColorIndex == -1 ? mColorIndex : mPieces[PieceIndex].ColorIndex;
 
 	auto [ThumbnailId, Thumbnail] = swGetPiecesLibrary()->GetThumbnailManager()->RequestThumbnail(PieceData, ColorIndex, mIconSize, mDeviceScale);
 
-	mParts[PartIndex].ThumbnailId = ThumbnailId;
+	mPieces[PieceIndex].ThumbnailId = ThumbnailId;
 
 	if (!Thumbnail.isNull())
 	{
-		mParts[PartIndex].Pixmap = Thumbnail;
+		mPieces[PieceIndex].Pixmap = Thumbnail;
 
-		emit dataChanged(index(PartIndex, 0), index(PartIndex, 0), { Qt::DecorationRole });
+		emit dataChanged(index(PieceIndex, 0), index(PieceIndex, 0), { Qt::DecorationRole });
 	}
 }
 
 void swPieceSelectionListModel::ThumbnailReady(swPieceThumbnailId ThumbnailId, QPixmap Pixmap)
 {
-	for (int PartIndex = 0; PartIndex < static_cast<int>(mParts.size()); PartIndex++)
+	for (int PieceIndex = 0; PieceIndex < static_cast<int>(mPieces.size()); PieceIndex++)
 	{
-		if (mParts[PartIndex].ThumbnailId == ThumbnailId)
+		if (mPieces[PieceIndex].ThumbnailId == ThumbnailId)
 		{
-			mParts[PartIndex].Pixmap = Pixmap;
+			mPieces[PieceIndex].Pixmap = Pixmap;
 
-			emit dataChanged(index(PartIndex, 0), index(PartIndex, 0), { Qt::DecorationRole });
+			emit dataChanged(index(PieceIndex, 0), index(PieceIndex, 0), { Qt::DecorationRole });
 		}
 	}
 }
 
-void swPieceSelectionListModel::SetShowDecoratedParts(bool Show)
+void swPieceSelectionListModel::SetShowDecoratedPieces(bool Show)
 {
-	if (Show == mShowDecoratedParts)
+	if (Show == mShowDecoratedPieces)
 		return;
 
-	mShowDecoratedParts = Show;
+	mShowDecoratedPieces = Show;
 
 	SetFilter(mFilterString);
 }
 
-void swPieceSelectionListModel::SetShowPartAliases(bool Show)
+void swPieceSelectionListModel::SetShowPieceAliases(bool Show)
 {
-	if (Show == mShowPartAliases)
+	if (Show == mShowPieceAliases)
 		return;
 
-	mShowPartAliases = Show;
+	mShowPieceAliases = Show;
 
 	SetFilter(mFilterString);
 }
 
-void swPieceSelectionListModel::SetPartFilterType(swPieceFilterType Option)
+void swPieceSelectionListModel::SetPieceFilterType(swPieceFilterType Option)
 {
-	if (Option == mPartFilterType)
+	if (Option == mPieceFilterType)
 		return;
 
-	mPartFilterType = Option;
+	mPieceFilterType = Option;
 
 	SetFilter(mFilterString);
 }
@@ -521,12 +521,12 @@ void swPieceSelectionListModel::SetFileNameFilter(bool Option)
 	SetFilter(mFilterString);
 }
 
-void swPieceSelectionListModel::SetPartDescriptionFilter(bool Option)
+void swPieceSelectionListModel::SetPieceDescriptionFilter(bool Option)
 {
-	if (Option == mPartDescriptionFilter)
+	if (Option == mPieceDescriptionFilter)
 		return;
 
-	mPartDescriptionFilter = Option;
+	mPieceDescriptionFilter = Option;
 
 	SetFilter(mFilterString);
 }
@@ -548,12 +548,12 @@ void swPieceSelectionListModel::SetIconSize(int Size, float DeviceScale)
 	SetFilter(mFilterString);
 }
 
-void swPieceSelectionListModel::SetShowPartNames(bool Show)
+void swPieceSelectionListModel::SetShowPieceNames(bool Show)
 {
-	if (Show == mShowPartNames)
+	if (Show == mShowPieceNames)
 		return;
 
-	mShowPartNames = Show;
+	mShowPieceNames = Show;
 
 	beginResetModel();
 	endResetModel();
@@ -561,8 +561,8 @@ void swPieceSelectionListModel::SetShowPartNames(bool Show)
 	SetFilter(mFilterString);
 }
 
-swPieceSelectionListView::swPieceSelectionListView(QWidget* Parent, swPieceSelectionWidget* PartSelectionWidget)
-	: QListView(Parent), mPartSelectionWidget(PartSelectionWidget)
+swPieceSelectionListView::swPieceSelectionListView(QWidget* Parent, swPieceSelectionWidget* PieceSelectionWidget)
+	: QListView(Parent), mPieceSelectionWidget(PieceSelectionWidget)
 {
 	setUniformItemSizes(true);
 	setResizeMode(QListView::Adjust);
@@ -578,7 +578,7 @@ swPieceSelectionListView::swPieceSelectionListView(QWidget* Parent, swPieceSelec
 	setItemDelegate(ItemDelegate);
 
 	// the popup picks with a single click
-	if (mPartSelectionWidget && mPartSelectionWidget->GetIsPopup())
+	if (mPieceSelectionWidget && mPieceSelectionWidget->GetIsPopup())
 		connect(this, &QListView::clicked, this, &swPieceSelectionListView::DoubleClicked);
 	else
 		connect(this, &QListView::doubleClicked, this, &swPieceSelectionListView::DoubleClicked);
@@ -586,7 +586,7 @@ swPieceSelectionListView::swPieceSelectionListView(QWidget* Parent, swPieceSelec
 
 	connect(gApplication, &swApplication::RendererInitialized, this, &swPieceSelectionListView::UpdateIconSize);
 
-	mRequestedIconSize = swGetProfileInteger(mPartSelectionWidget->GetIsPopup() ? SW_PROFILE_PIECES_POPUP_ICONS : SW_PROFILE_PIECES_LIST_ICONS);
+	mRequestedIconSize = swGetProfileInteger(mPieceSelectionWidget->GetIsPopup() ? SW_PROFILE_PIECES_POPUP_ICONS : SW_PROFILE_PIECES_LIST_ICONS);
 	UpdateIconSize();
 }
 
@@ -594,9 +594,9 @@ void swPieceSelectionListView::keyPressEvent(QKeyEvent* KeyEvent)
 {
 	if (KeyEvent->key() == Qt::Key_Enter)
 	{
-		swPieceData* PieceData = GetCurrentPart();
+		swPieceData* PieceData = GetCurrentPiece();
 
-		emit PartPicked(PieceData);
+		emit PiecePicked(PieceData);
 
 		return;
 	}
@@ -608,12 +608,12 @@ void swPieceSelectionListView::DoubleClicked(const QModelIndex& Index)
 {
 	swPieceData* PieceData = GetListModel()->GetPieceData(Index.row());
 
-	emit PartPicked(PieceData);
+	emit PiecePicked(PieceData);
 }
 
 void swPieceSelectionListView::CustomContextMenuRequested(QPoint Pos)
 {
-	if (!mPartSelectionWidget || mPartSelectionWidget->GetIsPopup())
+	if (!mPieceSelectionWidget || mPieceSelectionWidget->GetIsPopup())
 		return;
 
 	QMenu* Menu = new QMenu(this);
@@ -623,12 +623,12 @@ void swPieceSelectionListView::CustomContextMenuRequested(QPoint Pos)
 
 	QMenu* SetMenu = Menu->addMenu(tr("Add to Palette"));
 
-	const std::vector<swPiecePalette>& Palettes = mPartSelectionWidget->GetPartPalettes();
+	const std::vector<swPiecePalette>& Palettes = mPieceSelectionWidget->GetPiecePalettes();
 
 	if (!Palettes.empty())
 	{
 		for (const swPiecePalette& Palette : Palettes)
-			SetMenu->addAction(Palette.Name, mPartSelectionWidget, &swPieceSelectionWidget::AddToPalette);
+			SetMenu->addAction(Palette.Name, mPieceSelectionWidget, &swPieceSelectionWidget::AddToPalette);
 	}
 	else
 	{
@@ -636,13 +636,13 @@ void swPieceSelectionListView::CustomContextMenuRequested(QPoint Pos)
 		Action->setEnabled(false);
 	}
 
-	QAction* RemoveAction = Menu->addAction(tr("Remove from Palette"), mPartSelectionWidget, &swPieceSelectionWidget::RemoveFromPalette);
+	QAction* RemoveAction = Menu->addAction(tr("Remove from Palette"), mPieceSelectionWidget, &swPieceSelectionWidget::RemoveFromPalette);
 	RemoveAction->setEnabled(mCategoryType == swPieceCategoryType::Palette);
 
 	if (mContextPieceData && mContextPieceData->IsModel())
 	{
 		Menu->addSeparator();
-		Menu->addAction(tr("Open Submodel"), mPartSelectionWidget, &swPieceSelectionWidget::OpenSubmodel);
+		Menu->addAction(tr("Open Submodel"), mPieceSelectionWidget, &swPieceSelectionWidget::OpenSubmodel);
 	}
 
 	Menu->exec(viewport()->mapToGlobal(Pos));
@@ -661,10 +661,10 @@ void swPieceSelectionListView::SetCategory(swPieceCategoryType Type, int Index)
 
 	switch (Type)
 	{
-	case swPieceCategoryType::AllParts:
+	case swPieceCategoryType::AllPieces:
 		mListModel->SetCategory(-1);
 		break;
-	case swPieceCategoryType::PartsInUse:
+	case swPieceCategoryType::PiecesInUse:
 		mListModel->SetCurrentModelCategory();
 		break;
 	case swPieceCategoryType::Submodels:
@@ -703,16 +703,16 @@ void swPieceSelectionListView::SetCategory(swPieceCategoryType Type, int Index)
 	}
 }
 
-void swPieceSelectionListView::SetCustomParts(const std::vector<std::pair<swPieceData*, std::string>>& Parts, int ColorIndex)
+void swPieceSelectionListView::SetCustomPieces(const std::vector<std::pair<swPieceData*, std::string>>& Pieces, int ColorIndex)
 {
 	mCategoryType = swPieceCategoryType::Custom;
 
-	mListModel->SetCustomParts(Parts, ColorIndex);
+	mListModel->SetCustomPieces(Pieces, ColorIndex);
 
 	setCurrentIndex(mListModel->index(0, 0));
 }
 
-void swPieceSelectionListView::SetCurrentPart(swPieceData* PieceData)
+void swPieceSelectionListView::SetCurrentPiece(swPieceData* PieceData)
 {
 	QModelIndex Index = mListModel->GetPieceDataIndex(PieceData);
 
@@ -748,32 +748,32 @@ void swPieceSelectionListView::SetExtraLargeIcons()
 	SetIconSize(ExtraLargeIconSize);
 }
 
-void swPieceSelectionListView::TogglePartNames()
+void swPieceSelectionListView::TogglePieceNames()
 {
-	bool Show = !mListModel->GetShowPartNames();
-	mListModel->SetShowPartNames(Show);
-	swSetProfileInteger(mPartSelectionWidget->GetIsPopup() ? SW_PROFILE_PIECES_POPUP_NAMES : SW_PROFILE_PIECES_LIST_NAMES, Show);
+	bool Show = !mListModel->GetShowPieceNames();
+	mListModel->SetShowPieceNames(Show);
+	swSetProfileInteger(mPieceSelectionWidget->GetIsPopup() ? SW_PROFILE_PIECES_POPUP_NAMES : SW_PROFILE_PIECES_LIST_NAMES, Show);
 	UpdateItemGeometry();
 }
 
-void swPieceSelectionListView::ToggleDecoratedParts()
+void swPieceSelectionListView::ToggleDecoratedPieces()
 {
-	bool Show = !mListModel->GetShowDecoratedParts();
-	mListModel->SetShowDecoratedParts(Show);
-	swSetProfileInteger(mPartSelectionWidget->GetIsPopup() ? SW_PROFILE_PIECES_POPUP_DECORATED : SW_PROFILE_PIECES_LIST_DECORATED, Show);
+	bool Show = !mListModel->GetShowDecoratedPieces();
+	mListModel->SetShowDecoratedPieces(Show);
+	swSetProfileInteger(mPieceSelectionWidget->GetIsPopup() ? SW_PROFILE_PIECES_POPUP_DECORATED : SW_PROFILE_PIECES_LIST_DECORATED, Show);
 }
 
-void swPieceSelectionListView::TogglePartAliases()
+void swPieceSelectionListView::TogglePieceAliases()
 {
-	bool Show = !mListModel->GetShowPartAliases();
-	mListModel->SetShowPartAliases(Show);
-	swSetProfileInteger(mPartSelectionWidget->GetIsPopup() ? SW_PROFILE_PIECES_POPUP_ALIASES : SW_PROFILE_PIECES_LIST_ALIASES, Show);
+	bool Show = !mListModel->GetShowPieceAliases();
+	mListModel->SetShowPieceAliases(Show);
+	swSetProfileInteger(mPieceSelectionWidget->GetIsPopup() ? SW_PROFILE_PIECES_POPUP_ALIASES : SW_PROFILE_PIECES_LIST_ALIASES, Show);
 }
 
 void swPieceSelectionListView::ToggleRegularExpressionFilter()
 {
-	bool Option = mListModel->GetPartFilterType() == swPieceFilterType::RegularExpression;
-	SetPartFilterType(Option ? swPieceFilterType::Default : swPieceFilterType::RegularExpression);
+	bool Option = mListModel->GetPieceFilterType() == swPieceFilterType::RegularExpression;
+	SetPieceFilterType(Option ? swPieceFilterType::Default : swPieceFilterType::RegularExpression);
 }
 
 void swPieceSelectionListView::ToggleCaseSensitiveFilter()
@@ -790,16 +790,16 @@ void swPieceSelectionListView::ToggleFileNameFilter()
 	swSetProfileInteger(SW_PROFILE_PIECES_LIST_FILE_NAME_FILTER, Option);
 }
 
-void swPieceSelectionListView::TogglePartDescriptionFilter()
+void swPieceSelectionListView::TogglePieceDescriptionFilter()
 {
-	bool Option = !mListModel->GetPartDescriptionFilter();
-	mListModel->SetPartDescriptionFilter(Option);
+	bool Option = !mListModel->GetPieceDescriptionFilter();
+	mListModel->SetPieceDescriptionFilter(Option);
 	swSetProfileInteger(SW_PROFILE_PIECES_LIST_PIECE_DESCRIPTION_FILTER, Option);
 }
 
-void swPieceSelectionListView::SetPartFilterType(swPieceFilterType Option)
+void swPieceSelectionListView::SetPieceFilterType(swPieceFilterType Option)
 {
-	mListModel->SetPartFilterType(Option);
+	mListModel->SetPieceFilterType(Option);
 	swSetProfilePieceFilterType(Option);
 }
 
@@ -816,7 +816,7 @@ void swPieceSelectionListView::ToggleFixedColor()
 
 void swPieceSelectionListView::UpdateInUseCategory()
 {
-	if (mCategoryType == swPieceCategoryType::PartsInUse)
+	if (mCategoryType == swPieceCategoryType::PiecesInUse)
 		mListModel->SetCurrentModelCategory();
 }
 
@@ -830,7 +830,7 @@ void swPieceSelectionListView::UpdateViewMode()
 void swPieceSelectionListView::SetIconSize(int Size)
 {
 	mRequestedIconSize = Size;
-	swSetProfileInteger(mPartSelectionWidget->GetIsPopup() ? SW_PROFILE_PIECES_POPUP_ICONS : SW_PROFILE_PIECES_LIST_ICONS, Size);
+	swSetProfileInteger(mPieceSelectionWidget->GetIsPopup() ? SW_PROFILE_PIECES_POPUP_ICONS : SW_PROFILE_PIECES_LIST_ICONS, Size);
 	UpdateIconSize();
 }
 
@@ -855,7 +855,7 @@ void swPieceSelectionListView::UpdateIconSize()
 	int Height = qMax(Size, fontMetrics().height()) + 2 * frameWidth() + 2 * PixmapMargin;
 	if (horizontalScrollBar())
 		Height += horizontalScrollBar()->sizeHint().height();
-	setMinimumSize(mPartSelectionWidget->GetIsPopup() ? QSize(0, 0) : QSize(Width, Height));
+	setMinimumSize(mPieceSelectionWidget->GetIsPopup() ? QSize(0, 0) : QSize(Width, Height));
 	UpdateItemGeometry();
 }
 
@@ -863,13 +863,13 @@ void swPieceSelectionListView::UpdateItemGeometry()
 {
 	updateGeometry();
 
-	if (mPartSelectionWidget->GetIsPopup())
+	if (mPieceSelectionWidget->GetIsPopup())
 	{
 		// Invalidate the layout item caches through the picker splitter.
 		for (QWidget* Widget = parentWidget(); Widget; Widget = Widget->parentWidget())
 		{
 			Widget->updateGeometry();
-			if (Widget == mPartSelectionWidget)
+			if (Widget == mPieceSelectionWidget)
 				break;
 		}
 	}
@@ -881,7 +881,7 @@ void swPieceSelectionListView::startDrag(Qt::DropActions SupportedActions)
 {
 	Q_UNUSED(SupportedActions);
 
-	swPieceData* PieceData = GetCurrentPart();
+	swPieceData* PieceData = GetCurrentPiece();
 
 	if (!PieceData)
 		return;
@@ -964,7 +964,7 @@ QSize swPieceSelectionListView::GetPreferredSize(int MaximumWidth) const
 	int MaximumRows = 4;
 
 	QSize CellSize = GetCellSize();
-	if (mPartSelectionWidget->GetIsPopup() && !mListModel->IsListMode())
+	if (mPieceSelectionWidget->GetIsPopup() && !mListModel->IsListMode())
 	{
 		switch (mListModel->GetIconSize())
 		{
@@ -995,7 +995,7 @@ QSize swPieceSelectionListView::GetPreferredSize(int MaximumWidth) const
 		WidthOverhead += verticalScrollBar()->sizeHint().width() + 1;
 
 	const int Width = qMin(CellSize.width() * Columns + WidthOverhead, MaximumWidth);
-	if (mPartSelectionWidget->GetIsPopup() && !mListModel->IsListMode() && CellSize.width() > 0)
+	if (mPieceSelectionWidget->GetIsPopup() && !mListModel->IsListMode() && CellSize.width() > 0)
 		Columns = qMin(Columns, qMax(1, (Width - WidthOverhead) / CellSize.width()));
 
 	int Rows = model()->rowCount() ? qMin(MaximumRows, (model()->rowCount() + Columns - 1) / Columns) : MaximumRows;
@@ -1049,16 +1049,16 @@ swPieceSelectionWidget::swPieceSelectionWidget(bool IsPopup, QWidget* Parent)
 
 	CategoriesLayout->addWidget(mCategoriesWidget);
 
-	QWidget* PartsGroupWidget = new QWidget(mSplitter);
+	QWidget* PiecesGroupWidget = new QWidget(mSplitter);
 
-	QVBoxLayout* PartsLayout = new QVBoxLayout();
-	PartsLayout->setContentsMargins(0, 0, 0, 0);
-	PartsGroupWidget->setLayout(PartsLayout);
+	QVBoxLayout* PiecesLayout = new QVBoxLayout();
+	PiecesLayout->setContentsMargins(0, 0, 0, 0);
+	PiecesGroupWidget->setLayout(PiecesLayout);
 
-	QWidget* SearchRow = swCreatePanelRow(PartsGroupWidget);
-	PartsLayout->addWidget(SearchRow);
+	QWidget* SearchRow = swCreatePanelRow(PiecesGroupWidget);
+	PiecesLayout->addWidget(SearchRow);
 
-	mFilterWidget = new QLineEdit(PartsGroupWidget);
+	mFilterWidget = new QLineEdit(PiecesGroupWidget);
 	mFilterWidget->setPlaceholderText(tr("Filter Pieces"));
 	mFilterWidget->setAccessibleName(tr("Filter Pieces"));
 	mFilterWidget->setToolTip(tr("Filter the displayed pieces using the matching options."));
@@ -1069,25 +1069,25 @@ swPieceSelectionWidget::swPieceSelectionWidget(bool IsPopup, QWidget* Parent)
 	swAddPanelOptionsButton(SearchRow, OptionsMenu, tr("Configure piece filtering and list display."), tr("Piece List Options"));
 	connect(OptionsMenu, &QMenu::aboutToShow, this, &swPieceSelectionWidget::OptionsMenuAboutToShow);
 
-	mPartsWidget = new swPieceSelectionListView(PartsGroupWidget, this);
-	mPartsWidget->setAccessibleName(tr("Available Pieces"));
-	mPartsWidget->setToolTip(tr("Select a piece from the filtered list."));
+	mPiecesWidget = new swPieceSelectionListView(PiecesGroupWidget, this);
+	mPiecesWidget->setAccessibleName(tr("Available Pieces"));
+	mPiecesWidget->setToolTip(tr("Select a piece from the filtered list."));
 	if (mIsPopup)
-		mPartsWidget->setMinimumSize(0, 0);
-	PartsLayout->addWidget(mPartsWidget);
+		mPiecesWidget->setMinimumSize(0, 0);
+	PiecesLayout->addWidget(mPiecesWidget);
 
 	QHBoxLayout* Layout = new QHBoxLayout(this);
 	Layout->addWidget(mSplitter);
 	setLayout(Layout);
 
-	connect(mPartsWidget, &swPieceSelectionListView::PartPicked, this, &swPieceSelectionWidget::PartViewPartPicked);
-	connect(mPartsWidget, &swPieceSelectionListView::LayoutChanged, this, &swPieceSelectionWidget::LayoutChanged);
-	connect(mPartsWidget->selectionModel(), &QItemSelectionModel::currentChanged, this, &swPieceSelectionWidget::PartViewSelectionChanged);
+	connect(mPiecesWidget, &swPieceSelectionListView::PiecePicked, this, &swPieceSelectionWidget::PieceViewPiecePicked);
+	connect(mPiecesWidget, &swPieceSelectionListView::LayoutChanged, this, &swPieceSelectionWidget::LayoutChanged);
+	connect(mPiecesWidget->selectionModel(), &QItemSelectionModel::currentChanged, this, &swPieceSelectionWidget::PieceViewSelectionChanged);
 	connect(mFilterWidget, &QLineEdit::textChanged, this, &swPieceSelectionWidget::FilterChanged);
 	connect(mCategoriesWidget, &QTreeWidget::currentItemChanged, this, &swPieceSelectionWidget::CategoryChanged);
 	connect(mFilterCategoriesWidget, &QLineEdit::textChanged, this, &swPieceSelectionWidget::FilterCategoriesChanged);
 
-	LoadPartPalettes();
+	LoadPiecePalettes();
 	UpdateCategories();
 
 	mSplitter->setStretchFactor(0, 0);
@@ -1155,10 +1155,10 @@ void swPieceSelectionWidget::SaveState(QSettings& Settings)
 	Settings.setValue("PieceSelectionSplitter", QVariant::fromValue(Sizes));
 }
 
-void swPieceSelectionWidget::SetCurrentPart(swPieceData* PieceData)
+void swPieceSelectionWidget::SetCurrentPiece(swPieceData* PieceData)
 {
-	mPartsWidget->SetCurrentPart(PieceData);
-	mPartsWidget->setFocus();
+	mPiecesWidget->SetCurrentPiece(PieceData);
+	mPiecesWidget->setFocus();
 }
 
 void swPieceSelectionWidget::SetCategory(swPieceCategoryType Type, int Index)
@@ -1184,11 +1184,11 @@ void swPieceSelectionWidget::SetCategory(swPieceCategoryType Type, int Index)
 	}
 }
 
-void swPieceSelectionWidget::SetCustomParts(const std::vector<std::pair<swPieceData*, std::string>>& Parts, int ColorIndex)
+void swPieceSelectionWidget::SetCustomPieces(const std::vector<std::pair<swPieceData*, std::string>>& Pieces, int ColorIndex)
 {
 	mSplitter->widget(0)->setVisible(false);
 
-	mPartsWidget->SetCustomParts(Parts, ColorIndex);
+	mPiecesWidget->SetCustomPieces(Pieces, ColorIndex);
 }
 
 void swPieceSelectionWidget::SetOrientation(Qt::Orientation Orientation)
@@ -1321,7 +1321,7 @@ void swPieceSelectionWidget::FilterChanged(const QString& Text)
 		}
 	}
 
-	mPartsWidget->GetListModel()->SetFilter(Text);
+	mPiecesWidget->GetListModel()->SetFilter(Text);
 }
 
 void swPieceSelectionWidget::FilterCategoriesTriggered()
@@ -1350,20 +1350,20 @@ void swPieceSelectionWidget::CategoryChanged(QTreeWidgetItem* Current, QTreeWidg
 	int Type = Current->data(0, static_cast<int>(swPieceCategoryRole::Type)).toInt();
 	int Index = Current->data(0, static_cast<int>(swPieceCategoryRole::Index)).toInt();
 
-	mPartsWidget->SetCategory(static_cast<swPieceCategoryType>(Type), Index);
+	mPiecesWidget->SetCategory(static_cast<swPieceCategoryType>(Type), Index);
 }
 
-void swPieceSelectionWidget::PartViewSelectionChanged(const QModelIndex& Current, const QModelIndex& Previous)
+void swPieceSelectionWidget::PieceViewSelectionChanged(const QModelIndex& Current, const QModelIndex& Previous)
 {
 	Q_UNUSED(Current);
 	Q_UNUSED(Previous);
 
-	emit CurrentPartChanged(mPartsWidget->GetCurrentPart());
+	emit CurrentPieceChanged(mPiecesWidget->GetCurrentPiece());
 }
 
-void swPieceSelectionWidget::PartViewPartPicked(swPieceData* PieceData)
+void swPieceSelectionWidget::PieceViewPiecePicked(swPieceData* PieceData)
 {
-	emit PartPicked(PieceData);
+	emit PiecePicked(PieceData);
 }
 
 void swPieceSelectionWidget::OptionsMenuAboutToShow()
@@ -1373,27 +1373,27 @@ void swPieceSelectionWidget::OptionsMenuAboutToShow()
 
 	if (!mIsPopup)
 	{
-		Menu->addAction(tr("Edit Palettes..."), this, &swPieceSelectionWidget::EditPartPalettes);
+		Menu->addAction(tr("Edit Palettes..."), this, &swPieceSelectionWidget::EditPiecePalettes);
 
 		Menu->addSeparator();
 	}
 
-	swPieceSelectionListModel* ListModel = mPartsWidget->GetListModel();
+	swPieceSelectionListModel* ListModel = mPiecesWidget->GetListModel();
 
 	if (ListModel->GetIconSize() != swPieceSelectionListView::NoIconSize && !ListModel->IsListMode())
 	{
-		QAction* PartNames = Menu->addAction(tr("Show Piece Names"), mPartsWidget, &swPieceSelectionListView::TogglePartNames);
-		PartNames->setCheckable(true);
-		PartNames->setChecked(ListModel->GetShowPartNames());
+		QAction* PieceNames = Menu->addAction(tr("Show Piece Names"), mPiecesWidget, &swPieceSelectionListView::TogglePieceNames);
+		PieceNames->setCheckable(true);
+		PieceNames->setChecked(ListModel->GetShowPieceNames());
 	}
 
-	QAction* DecoratedParts = Menu->addAction(tr("Show Decorated Pieces"), mPartsWidget, &swPieceSelectionListView::ToggleDecoratedParts);
-	DecoratedParts->setCheckable(true);
-	DecoratedParts->setChecked(ListModel->GetShowDecoratedParts());
+	QAction* DecoratedPieces = Menu->addAction(tr("Show Decorated Pieces"), mPiecesWidget, &swPieceSelectionListView::ToggleDecoratedPieces);
+	DecoratedPieces->setCheckable(true);
+	DecoratedPieces->setChecked(ListModel->GetShowDecoratedPieces());
 
-	QAction* PartAliases = Menu->addAction(tr("Show Piece Aliases"), mPartsWidget, &swPieceSelectionListView::TogglePartAliases);
-	PartAliases->setCheckable(true);
-	PartAliases->setChecked(ListModel->GetShowPartAliases());
+	QAction* PieceAliases = Menu->addAction(tr("Show Piece Aliases"), mPiecesWidget, &swPieceSelectionListView::TogglePieceAliases);
+	PieceAliases->setCheckable(true);
+	PieceAliases->setChecked(ListModel->GetShowPieceAliases());
 
 	if (!mIsPopup)
 		gMainWindow->AddMenuCommand(Menu, tr("Snap Panel Width to Tiles"), SW_VIEW_PIECES_TOGGLE_SNAP_TO_TILES, swGetPreferences().mPiecesSnapToTiles);
@@ -1406,27 +1406,27 @@ void swPieceSelectionWidget::OptionsMenuAboutToShow()
 
 		QActionGroup* IconGroup = new QActionGroup(Menu);
 
-		QAction* NoIcons = IconMenu->addAction(tr("No Icons"), mPartsWidget, &swPieceSelectionListView::SetNoIcons);
+		QAction* NoIcons = IconMenu->addAction(tr("No Icons"), mPiecesWidget, &swPieceSelectionListView::SetNoIcons);
 		NoIcons->setCheckable(true);
 		NoIcons->setChecked(ListModel->GetIconSize() == swPieceSelectionListView::NoIconSize);
 		IconGroup->addAction(NoIcons);
 
-		QAction* SmallIcons = IconMenu->addAction(tr("Small Icons"), mPartsWidget, &swPieceSelectionListView::SetSmallIcons);
+		QAction* SmallIcons = IconMenu->addAction(tr("Small Icons"), mPiecesWidget, &swPieceSelectionListView::SetSmallIcons);
 		SmallIcons->setCheckable(true);
 		SmallIcons->setChecked(ListModel->GetIconSize() == swPieceSelectionListView::SmallIconSize);
 		IconGroup->addAction(SmallIcons);
 
-		QAction* MediumIcons = IconMenu->addAction(tr("Medium Icons"), mPartsWidget, &swPieceSelectionListView::SetMediumIcons);
+		QAction* MediumIcons = IconMenu->addAction(tr("Medium Icons"), mPiecesWidget, &swPieceSelectionListView::SetMediumIcons);
 		MediumIcons->setCheckable(true);
 		MediumIcons->setChecked(ListModel->GetIconSize() == swPieceSelectionListView::MediumIconSize);
 		IconGroup->addAction(MediumIcons);
 
-		QAction* LargeIcons = IconMenu->addAction(tr("Large Icons"), mPartsWidget, &swPieceSelectionListView::SetLargeIcons);
+		QAction* LargeIcons = IconMenu->addAction(tr("Large Icons"), mPiecesWidget, &swPieceSelectionListView::SetLargeIcons);
 		LargeIcons->setCheckable(true);
 		LargeIcons->setChecked(ListModel->GetIconSize() == swPieceSelectionListView::LargeIconSize);
 		IconGroup->addAction(LargeIcons);
 
-		QAction* ExtraLargeIcons = IconMenu->addAction(tr("Extra Large Icons"), mPartsWidget, &swPieceSelectionListView::SetExtraLargeIcons);
+		QAction* ExtraLargeIcons = IconMenu->addAction(tr("Extra Large Icons"), mPiecesWidget, &swPieceSelectionListView::SetExtraLargeIcons);
 		ExtraLargeIcons->setCheckable(true);
 		ExtraLargeIcons->setChecked(ListModel->GetIconSize() == swPieceSelectionListView::ExtraLargeIconSize);
 		IconGroup->addAction(ExtraLargeIcons);
@@ -1435,13 +1435,13 @@ void swPieceSelectionWidget::OptionsMenuAboutToShow()
 		{
 			IconMenu->addSeparator();
 
-			QAction* ListMode = IconMenu->addAction(tr("List Mode"), mPartsWidget, &swPieceSelectionListView::ToggleListMode);
+			QAction* ListMode = IconMenu->addAction(tr("List Mode"), mPiecesWidget, &swPieceSelectionListView::ToggleListMode);
 			ListMode->setCheckable(true);
 			ListMode->setChecked(ListModel->IsListMode());
 
 			if (!mIsPopup)
 			{
-				QAction* FixedColor = IconMenu->addAction(tr("Lock Color"), mPartsWidget, &swPieceSelectionListView::ToggleFixedColor);
+				QAction* FixedColor = IconMenu->addAction(tr("Lock Color"), mPiecesWidget, &swPieceSelectionListView::ToggleFixedColor);
 				FixedColor->setCheckable(true);
 				FixedColor->setChecked(ListModel->IsColorLocked());
 			}
@@ -1450,25 +1450,25 @@ void swPieceSelectionWidget::OptionsMenuAboutToShow()
 
 	QMenu* FilterMenu = Menu->addMenu(tr("Filter"));
 
-	QAction* RegularExpressionFilter = FilterMenu->addAction(tr("Regular Expression"), mPartsWidget, &swPieceSelectionListView::ToggleRegularExpressionFilter);
+	QAction* RegularExpressionFilter = FilterMenu->addAction(tr("Regular Expression"), mPiecesWidget, &swPieceSelectionListView::ToggleRegularExpressionFilter);
 	RegularExpressionFilter->setCheckable(true);
-	RegularExpressionFilter->setChecked(ListModel->GetPartFilterType() == swPieceFilterType::RegularExpression);
+	RegularExpressionFilter->setChecked(ListModel->GetPieceFilterType() == swPieceFilterType::RegularExpression);
 
-	QAction* CaseSensitiveFilter = FilterMenu->addAction(tr("Match Case"), mPartsWidget, &swPieceSelectionListView::ToggleCaseSensitiveFilter);
+	QAction* CaseSensitiveFilter = FilterMenu->addAction(tr("Match Case"), mPiecesWidget, &swPieceSelectionListView::ToggleCaseSensitiveFilter);
 	CaseSensitiveFilter->setCheckable(true);
 	CaseSensitiveFilter->setChecked(ListModel->GetCaseSensitiveFilter());
 
 	FilterMenu->addSeparator();
 
-	QAction* FileNameFilter = FilterMenu->addAction(tr("Piece ID"), mPartsWidget, &swPieceSelectionListView::ToggleFileNameFilter);
+	QAction* FileNameFilter = FilterMenu->addAction(tr("Piece ID"), mPiecesWidget, &swPieceSelectionListView::ToggleFileNameFilter);
 	FileNameFilter->setCheckable(true);
 	FileNameFilter->setChecked(ListModel->GetFileNameFilter());
-	FileNameFilter->setEnabled(ListModel->GetPartDescriptionFilter());
+	FileNameFilter->setEnabled(ListModel->GetPieceDescriptionFilter());
 
-	QAction* PartDescriptionFilter = FilterMenu->addAction(tr("Piece Description"), mPartsWidget, &swPieceSelectionListView::TogglePartDescriptionFilter);
-	PartDescriptionFilter->setCheckable(true);
-	PartDescriptionFilter->setChecked(ListModel->GetPartDescriptionFilter());
-	PartDescriptionFilter->setEnabled(ListModel->GetFileNameFilter());
+	QAction* PieceDescriptionFilter = FilterMenu->addAction(tr("Piece Description"), mPiecesWidget, &swPieceSelectionListView::TogglePieceDescriptionFilter);
+	PieceDescriptionFilter->setCheckable(true);
+	PieceDescriptionFilter->setChecked(ListModel->GetPieceDescriptionFilter());
+	PieceDescriptionFilter->setEnabled(ListModel->GetFileNameFilter());
 
 	if (gSupportsFramebufferObject && gMainWindow)
 	{
@@ -1477,23 +1477,23 @@ void swPieceSelectionWidget::OptionsMenuAboutToShow()
 	}
 }
 
-void swPieceSelectionWidget::EditPartPalettes()
+void swPieceSelectionWidget::EditPiecePalettes()
 {
-	swPiecePaletteDialog Dialog(this, mPartPalettes);
+	swPiecePaletteDialog Dialog(this, mPiecePalettes);
 
 	if (Dialog.exec() != QDialog::Accepted)
 		return;
 
-	SavePartPalettes();
+	SavePiecePalettes();
 	UpdateCategories();
 }
 
 void swPieceSelectionWidget::UpdateThumbnails()
 {
-	mPartsWidget->GetListModel()->UpdateThumbnails();
+	mPiecesWidget->GetListModel()->UpdateThumbnails();
 }
 
-void swPieceSelectionWidget::SetDefaultPart()
+void swPieceSelectionWidget::SetDefaultPiece()
 {
 	for (int CategoryIdx = 0; CategoryIdx < mCategoriesWidget->topLevelItemCount(); CategoryIdx++)
 	{
@@ -1507,7 +1507,7 @@ void swPieceSelectionWidget::SetDefaultPart()
 	}
 }
 
-void swPieceSelectionWidget::LoadPartPalettes()
+void swPieceSelectionWidget::LoadPiecePalettes()
 {
 	QByteArray Buffer = swGetProfileBuffer(SW_PROFILE_PIECE_PALETTES);
 	QJsonDocument Document = QJsonDocument::fromJson(Buffer);
@@ -1516,7 +1516,7 @@ void swPieceSelectionWidget::LoadPartPalettes()
 		Document = QJsonDocument::fromJson((QString("{ \"Version\":1, \"Palettes\": { \"%1\": [] } }").arg(tr("Favorites"))).toUtf8());
 
 	QJsonObject RootObject = Document.object();
-	mPartPalettes.clear();
+	mPiecePalettes.clear();
 
 	int Version = RootObject["Version"].toInt(0);
 	if (Version != 1)
@@ -1532,30 +1532,30 @@ void swPieceSelectionWidget::LoadPartPalettes()
 		swPiecePalette Palette;
 		Palette.Name = ElementIt.key();
 
-		const QJsonArray Parts = ElementIt.value().toArray();
+		const QJsonArray Pieces = ElementIt.value().toArray();
 
-		for (const QJsonValue& Part : Parts)
-			Palette.Parts.emplace_back(Part.toString().toStdString());
+		for (const QJsonValue& Piece : Pieces)
+			Palette.Pieces.emplace_back(Piece.toString().toStdString());
 
-		mPartPalettes.emplace_back(std::move(Palette));
+		mPiecePalettes.emplace_back(std::move(Palette));
 	}
 }
 
-void swPieceSelectionWidget::SavePartPalettes()
+void swPieceSelectionWidget::SavePiecePalettes()
 {
 	QJsonObject RootObject;
 
 	RootObject["Version"] = 1;
 	QJsonObject PalettesObject;
 
-	for (const swPiecePalette& Palette : mPartPalettes)
+	for (const swPiecePalette& Palette : mPiecePalettes)
 	{
-		QJsonArray Parts;
+		QJsonArray Pieces;
 
-		for (const std::string& PartId : Palette.Parts)
-			Parts.append(QString::fromStdString(PartId));
+		for (const std::string& PieceId : Palette.Pieces)
+			Pieces.append(QString::fromStdString(PieceId));
 
-		PalettesObject[Palette.Name] = Parts;
+		PalettesObject[Palette.Name] = Pieces;
 	}
 
 	RootObject["Palettes"] = PalettesObject;
@@ -1566,33 +1566,33 @@ void swPieceSelectionWidget::SavePartPalettes()
 
 void swPieceSelectionWidget::AddToPalette()
 {
-	swPieceData* PieceData = mPartsWidget->GetContextInfo();
+	swPieceData* PieceData = mPiecesWidget->GetContextInfo();
 	if (!PieceData)
 		return;
 
 	QString SetName = ((QAction*)sender())->text();
 
-	std::vector<swPiecePalette>::iterator SetIt = std::find_if(mPartPalettes.begin(), mPartPalettes.end(), [&SetName](const swPiecePalette& Set)
+	std::vector<swPiecePalette>::iterator SetIt = std::find_if(mPiecePalettes.begin(), mPiecePalettes.end(), [&SetName](const swPiecePalette& Set)
 	{
 		return Set.Name == SetName;
 	});
 
-	if (SetIt == mPartPalettes.end())
+	if (SetIt == mPiecePalettes.end())
 		return;
 
-	std::string PartId = swGetPiecesLibrary()->GetPartId(PieceData);
-	std::vector<std::string>& Parts = SetIt->Parts;
+	std::string PieceId = swGetPiecesLibrary()->GetPieceId(PieceData);
+	std::vector<std::string>& Pieces = SetIt->Pieces;
 
-	if (std::find(Parts.begin(), Parts.end(), PartId) == Parts.end())
+	if (std::find(Pieces.begin(), Pieces.end(), PieceId) == Pieces.end())
 	{
-		Parts.emplace_back(PartId);
-		SavePartPalettes();
+		Pieces.emplace_back(PieceId);
+		SavePiecePalettes();
 	}
 }
 
 void swPieceSelectionWidget::RemoveFromPalette()
 {
-	swPieceData* PieceData = mPartsWidget->GetContextInfo();
+	swPieceData* PieceData = mPiecesWidget->GetContextInfo();
 	if (!PieceData)
 		return;
 
@@ -1601,22 +1601,22 @@ void swPieceSelectionWidget::RemoveFromPalette()
 		return;
 
 	int SetIndex = CurrentItem->data(0, static_cast<int>(swPieceCategoryRole::Index)).toInt();
-	swPiecePalette& Palette = mPartPalettes[SetIndex];
+	swPiecePalette& Palette = mPiecePalettes[SetIndex];
 
-	std::string PartId = swGetPiecesLibrary()->GetPartId(PieceData);
-	std::vector<std::string>::iterator PartIt = std::find(Palette.Parts.begin(), Palette.Parts.end(), PartId);
+	std::string PieceId = swGetPiecesLibrary()->GetPieceId(PieceData);
+	std::vector<std::string>::iterator PieceIt = std::find(Palette.Pieces.begin(), Palette.Pieces.end(), PieceId);
 
-	if (PartIt != Palette.Parts.end())
+	if (PieceIt != Palette.Pieces.end())
 	{
-		Palette.Parts.erase(PartIt);
-		mPartsWidget->SetCategory(swPieceCategoryType::Palette, SetIndex);
-		SavePartPalettes();
+		Palette.Pieces.erase(PieceIt);
+		mPiecesWidget->SetCategory(swPieceCategoryType::Palette, SetIndex);
+		SavePiecePalettes();
 	}
 }
 
 void swPieceSelectionWidget::OpenSubmodel()
 {
-	swPieceData* PieceData = mPartsWidget->GetContextInfo();
+	swPieceData* PieceData = mPiecesWidget->GetContextInfo();
 
 	if (!PieceData || !PieceData->IsModel())
 		return;
@@ -1628,7 +1628,7 @@ void swPieceSelectionWidget::OpenSubmodel()
 
 void swPieceSelectionWidget::UpdateInUseCategory()
 {
-	mPartsWidget->UpdateInUseCategory();
+	mPiecesWidget->UpdateInUseCategory();
 }
 
 void swPieceSelectionWidget::UpdateCategories()
@@ -1646,16 +1646,16 @@ void swPieceSelectionWidget::UpdateCategories()
 
 	mCategoriesWidget->clear();
 
-	mAllPartsCategoryItem = new QTreeWidgetItem(mCategoriesWidget, QStringList(tr("All Pieces")));
-	mAllPartsCategoryItem->setData(0, static_cast<int>(swPieceCategoryRole::Type), static_cast<int>(swPieceCategoryType::AllParts));
+	mAllPiecesCategoryItem = new QTreeWidgetItem(mCategoriesWidget, QStringList(tr("All Pieces")));
+	mAllPiecesCategoryItem->setData(0, static_cast<int>(swPieceCategoryRole::Type), static_cast<int>(swPieceCategoryType::AllPieces));
 
-	if (CurrentType == swPieceCategoryType::AllParts && CurrentIndex == 0)
-		CurrentItem = mAllPartsCategoryItem;
+	if (CurrentType == swPieceCategoryType::AllPieces && CurrentIndex == 0)
+		CurrentItem = mAllPiecesCategoryItem;
 
 	QTreeWidgetItem* CurrentModelCategoryItem = new QTreeWidgetItem(mCategoriesWidget, QStringList(tr("In Use")));
-	CurrentModelCategoryItem->setData(0, static_cast<int>(swPieceCategoryRole::Type), static_cast<int>(swPieceCategoryType::PartsInUse));
+	CurrentModelCategoryItem->setData(0, static_cast<int>(swPieceCategoryRole::Type), static_cast<int>(swPieceCategoryType::PiecesInUse));
 
-	if (CurrentType == swPieceCategoryType::PartsInUse && CurrentIndex == 0)
+	if (CurrentType == swPieceCategoryType::PiecesInUse && CurrentIndex == 0)
 		CurrentItem = CurrentModelCategoryItem;
 
 	QTreeWidgetItem* SubmodelsCategoryItem = new QTreeWidgetItem(mCategoriesWidget, QStringList(tr("Submodels")));
@@ -1664,9 +1664,9 @@ void swPieceSelectionWidget::UpdateCategories()
 	if (CurrentType == swPieceCategoryType::Submodels && CurrentIndex == 0)
 		CurrentItem = SubmodelsCategoryItem;
 
-	for (int PaletteIdx = 0; PaletteIdx < static_cast<int>(mPartPalettes.size()); PaletteIdx++)
+	for (int PaletteIdx = 0; PaletteIdx < static_cast<int>(mPiecePalettes.size()); PaletteIdx++)
 	{
-		const swPiecePalette& Set = mPartPalettes[PaletteIdx];
+		const swPiecePalette& Set = mPiecePalettes[PaletteIdx];
 		QTreeWidgetItem* PaletteCategoryItem = new QTreeWidgetItem(mCategoriesWidget, QStringList(Set.Name));
 		PaletteCategoryItem->setData(0, static_cast<int>(swPieceCategoryRole::Type), static_cast<int>(swPieceCategoryType::Palette));
 		PaletteCategoryItem->setData(0, static_cast<int>(swPieceCategoryRole::Index), PaletteIdx);
@@ -1696,5 +1696,5 @@ void swPieceSelectionWidget::UpdateModels()
 	QTreeWidgetItem* CurrentItem = mCategoriesWidget->currentItem();
 
 	if (CurrentItem && CurrentItem->data(0, static_cast<int>(swPieceCategoryRole::Type)) == static_cast<int>(swPieceCategoryType::Submodels))
-		mPartsWidget->SetCategory(swPieceCategoryType::Submodels, 0);
+		mPiecesWidget->SetCategory(swPieceCategoryType::Submodels, 0);
 }

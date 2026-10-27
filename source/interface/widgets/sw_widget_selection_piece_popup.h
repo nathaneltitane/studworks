@@ -9,19 +9,19 @@ class swPieceSelectionPopup : public QWidget
 	Q_OBJECT
 
 public:
-	swPieceSelectionPopup(swPieceData* InitialPart, QWidget* Parent);
+	swPieceSelectionPopup(swPieceData* InitialPiece, QWidget* Parent);
 	virtual ~swPieceSelectionPopup() = default;
 	QSize sizeHint() const override;
 	void SetHeightLimit(int Height);
 
-	std::optional<swPieceData*> GetPickedPart() const
+	std::optional<swPieceData*> GetPickedPiece() const
 	{
 		return mAccepted ? std::optional<swPieceData*>(mPickedPiece) : std::nullopt;
 	}
 
-	swPieceSelectionWidget* GetPartSelectionWidget() const
+	swPieceSelectionWidget* GetPieceSelectionWidget() const
 	{
-		return mPartSelectionWidget;
+		return mPieceSelectionWidget;
 	}
 
 protected slots:
@@ -33,13 +33,13 @@ protected:
 	void showEvent(QShowEvent* ShowEvent) override;
 	void Close();
 	void UpdateHeightLimit();
-	QSize GetPartsViewSizeHint(const swPieceSelectionListView* PartsView, const QSize& PopupSize) const;
+	QSize GetPiecesViewSizeHint(const swPieceSelectionListView* PiecesView, const QSize& PopupSize) const;
 
-	swPieceSelectionWidget* mPartSelectionWidget = nullptr;
-	swPieceData* mInitialPart = nullptr;
+	swPieceSelectionWidget* mPieceSelectionWidget = nullptr;
+	swPieceData* mInitialPiece = nullptr;
 	swPieceData* mPickedPiece = nullptr;
 	bool mAccepted = false;
 	int mHeightLimit = QWIDGETSIZE_MAX;
 };
 
-std::optional<swPieceData*> swShowPieceSelectionPopup(swPieceData* InitialPart, const std::vector<std::pair<swPieceData*, std::string>>& CustomParts, int ColorIndex, QWidget* Parent, QPoint Position);
+std::optional<swPieceData*> swShowPieceSelectionPopup(swPieceData* InitialPiece, const std::vector<std::pair<swPieceData*, std::string>>& CustomPieces, int ColorIndex, QWidget* Parent, QPoint Position);

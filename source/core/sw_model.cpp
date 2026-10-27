@@ -652,7 +652,7 @@ void swModel::RemoveStepAction(swStep Step)
 	SetCurrentStep(mCurrentStep);
 }
 
-void swModel::GetPartsList(int DefaultColorIndex, bool ScanSubModels, bool AddSubModels, swPiecesList& PartsList) const
+void swModel::GetPiecesList(int DefaultColorIndex, bool ScanSubModels, bool AddSubModels, swPiecesList& PiecesList) const
 {
 	for (const std::unique_ptr<swPiece>& Piece : mPieces)
 	{
@@ -664,11 +664,11 @@ void swModel::GetPartsList(int DefaultColorIndex, bool ScanSubModels, bool AddSu
 		if (ColorIndex == gDefaultColor)
 			ColorIndex = DefaultColorIndex;
 
-		Piece->mPieceData->GetPartsList(ColorIndex, ScanSubModels, AddSubModels, PartsList);
+		Piece->mPieceData->GetPiecesList(ColorIndex, ScanSubModels, AddSubModels, PiecesList);
 	}
 }
 
-void swModel::GetPartsListForStep(swStep Step, int DefaultColorIndex, swPiecesList& PartsList, bool Cumulative) const
+void swModel::GetPiecesListForStep(swStep Step, int DefaultColorIndex, swPiecesList& PiecesList, bool Cumulative) const
 {
 	for (const std::unique_ptr<swPiece>& Piece : mPieces)
 	{
@@ -680,17 +680,17 @@ void swModel::GetPartsListForStep(swStep Step, int DefaultColorIndex, swPiecesLi
 		if (ColorIndex == gDefaultColor)
 			ColorIndex = DefaultColorIndex;
 
-		Piece->mPieceData->GetPartsList(ColorIndex, false, true, PartsList);
+		Piece->mPieceData->GetPiecesList(ColorIndex, false, true, PiecesList);
 	}
 }
 
-void swModel::GetModelParts(const swMatrix44& WorldMatrix, int DefaultColorIndex, std::vector<swModelPiecesEntry>& ModelParts) const
+void swModel::GetModelPieces(const swMatrix44& WorldMatrix, int DefaultColorIndex, std::vector<swModelPiecesEntry>& ModelPieces) const
 {
 	if (mHasDirectGeometry && mPieceData->GetMesh())
-		ModelParts.emplace_back(swModelPiecesEntry{ WorldMatrix, mPieceData.Get(), mPieceData->GetMesh(), DefaultColorIndex });
+		ModelPieces.emplace_back(swModelPiecesEntry{ WorldMatrix, mPieceData.Get(), mPieceData->GetMesh(), DefaultColorIndex });
 
 	for (const std::unique_ptr<swPiece>& Piece : mPieces)
-		Piece->GetModelParts(WorldMatrix, DefaultColorIndex, ModelParts);
+		Piece->GetModelPieces(WorldMatrix, DefaultColorIndex, ModelPieces);
 }
 
 void swModel::ShowPropertiesDialog()
@@ -700,7 +700,7 @@ void swModel::ShowPropertiesDialog()
 	Options.Properties = mProperties;
 	Options.BoundingBox = GetAllPiecesBoundingBox();
 
-	GetPartsList(gDefaultColor, true, false, Options.PartsList);
+	GetPiecesList(gDefaultColor, true, false, Options.PiecesList);
 
 	swPropertiesDialog Dialog(gMainWindow, &Options);
 	if (Dialog.exec() != QDialog::Accepted)
@@ -807,15 +807,15 @@ void swModel::AddMinifigure(const swMinifigure& Minifigure)
 
 	Pieces.reserve(SW_MINIFIGURE_ITEM_COUNT);
 
-	for (int PartIndex = 0; PartIndex < SW_MINIFIGURE_ITEM_COUNT; PartIndex++)
+	for (int PieceIndex = 0; PieceIndex < SW_MINIFIGURE_ITEM_COUNT; PieceIndex++)
 	{
-		if (!Minifigure.PieceData[PartIndex])
+		if (!Minifigure.PieceData[PieceIndex])
 			continue;
 
-		swPiece* Piece = new swPiece(Minifigure.PieceData[PartIndex]);
+		swPiece* Piece = new swPiece(Minifigure.PieceData[PieceIndex]);
 
-		Piece->Initialize(Minifigure.Matrices[PartIndex], mCurrentStep);
-		Piece->SetColorIndex(Minifigure.ColorIndices[PartIndex]);
+		Piece->Initialize(Minifigure.Matrices[PieceIndex], mCurrentStep);
+		Piece->SetColorIndex(Minifigure.ColorIndices[PieceIndex]);
 		Piece->SetGroup(Group);
 		AddPiece(Piece);
 		Piece->UpdatePosition(mCurrentStep);
@@ -839,15 +839,15 @@ void swModel::SetMinifigure(const swMinifigure& Minifigure)
 	std::vector<swObject*> Pieces;
 	Pieces.reserve(SW_MINIFIGURE_ITEM_COUNT);
 
-	for (int PartIdx = 0; PartIdx < SW_MINIFIGURE_ITEM_COUNT; PartIdx++)
+	for (int PieceIdx = 0; PieceIdx < SW_MINIFIGURE_ITEM_COUNT; PieceIdx++)
 	{
-		if (!Minifigure.PieceData[PartIdx])
+		if (!Minifigure.PieceData[PieceIdx])
 			continue;
 
-		swPiece* Piece = new swPiece(Minifigure.PieceData[PartIdx]);
+		swPiece* Piece = new swPiece(Minifigure.PieceData[PieceIdx]);
 
-		Piece->Initialize(Minifigure.Matrices[PartIdx], 1);
-		Piece->SetColorIndex(Minifigure.ColorIndices[PartIdx]);
+		Piece->Initialize(Minifigure.Matrices[PieceIdx], 1);
+		Piece->SetColorIndex(Minifigure.ColorIndices[PieceIdx]);
 		AddPiece(Piece);
 		Piece->UpdatePosition(1);
 

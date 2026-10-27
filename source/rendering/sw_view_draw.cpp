@@ -45,7 +45,7 @@ void swView::OnDraw()
 
 	swRenderTarget RenderTarget = swRenderTarget::ModelView;
 
-	if (mViewType == swViewType::PartsList)
+	if (mViewType == swViewType::PiecesList)
 		RenderTarget = swRenderTarget::Pieces;
 	else if (mViewType == swViewType::Preview)
 		RenderTarget = swRenderTarget::Preview;
@@ -62,7 +62,7 @@ void swView::OnDraw()
 	mScene->SetLineSettings(RenderSettings.DrawEdgeLines, RenderSettings.DrawConditionalLines, RenderSettings.LineWidth);
 	mScene->SetAllowLOD(Preferences.mAllowLOD && mWidget != nullptr);
 	mScene->SetRequireCompleteAssets(static_cast<bool>(mRenderFramebuffer));
-	mScene->SetRequireGeneratedMeshes(mRenderFramebuffer && mViewType != swViewType::PartsList);
+	mScene->SetRequireGeneratedMeshes(mRenderFramebuffer && mViewType != swViewType::PiecesList);
 	mScene->SetLODDistance(Preferences.mMeshLODDistance);
 
 	mScene->Begin(mCamera->mWorldView);
@@ -73,7 +73,7 @@ void swView::OnDraw()
 	bool DrawInsertPreview = DrawInterface && std::any_of(mViews.begin(), mViews.end(), [](swView* View){ return View->mTrackTool == swTrackTool::Insert; });
 	mScene->SetDrawInsertPreview(DrawInsertPreview);
 	
-	mModel->GetScene(mScene.get(), mCamera, Preferences.mHighlightNewParts, Preferences.mFadeSteps && mViewType == swViewType::View);
+	mModel->GetScene(mScene.get(), mCamera, Preferences.mHighlightNewPieces, Preferences.mFadeSteps && mViewType == swViewType::View);
 
 	mScene->End();
 
@@ -366,7 +366,7 @@ void swView::DrawAxes() const
 			break;
 
 		case swViewType::MinifigureBuilder:
-		case swViewType::PartsList:
+		case swViewType::PiecesList:
 		case swViewType::Count:
 			return;
 	}

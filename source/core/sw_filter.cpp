@@ -20,7 +20,7 @@ swFilter::swFilter(const std::string_view FilterString)
 				Op = FilterOp::Or;
 			else
 			{
-				mFilterParts.emplace_back(FilterPart{Op, Token.find_first_of("*?") != std::string_view::npos, std::string(Token)});
+				mFilterPieces.emplace_back(FilterPiece{Op, Token.find_first_of("*?") != std::string_view::npos, std::string(Token)});
 				Op = FilterOp::And;
 			}
 
@@ -52,7 +52,7 @@ swFilter::swFilter(const std::string_view FilterString)
 				std::string_view Token = FilterString.substr(TokenStart + 1, Index - TokenStart - 1);
 
 				if (!Token.empty())
-					mFilterParts.emplace_back(FilterPart{Op, Token.find_first_of("*?") != std::string_view::npos, std::string(Token)});
+					mFilterPieces.emplace_back(FilterPiece{Op, Token.find_first_of("*?") != std::string_view::npos, std::string(Token)});
 
 				TokenStart = std::string_view::npos;
 				Op = FilterOp::And;
@@ -77,13 +77,13 @@ swFilter::swFilter(const std::string_view FilterString)
 
 bool swFilter::Match(const char* String) const
 {
-	bool CurrentMatch = mFilterParts.empty();
+	bool CurrentMatch = mFilterPieces.empty();
 
-	for (const FilterPart& FilterPart : mFilterParts)
+	for (const FilterPiece& FilterPiece : mFilterPieces)
 	{
-		bool Match = FilterPart.Wildcard ? FastWildCompare(String, FilterPart.String.c_str()) : swstrcasestr(String, FilterPart.String.c_str()) != nullptr;
+		bool Match = FilterPiece.Wildcard ? FastWildCompare(String, FilterPiece.String.c_str()) : swstrcasestr(String, FilterPiece.String.c_str()) != nullptr;
 
-		switch (FilterPart.Op)
+		switch (FilterPiece.Op)
 		{
 		case FilterOp::And:
 			CurrentMatch &= Match;

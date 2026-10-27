@@ -11,14 +11,14 @@ public:
 	swAutomateEdgeColorDialog(QWidget *Parent, bool ShowHighContrastDialog, const swPreferences& Preferences);
 	bool mStudCylinderColorEnabled;
 	quint32 mStudCylinderColor;
-	bool mPartEdgeColorEnabled;
-	quint32 mPartEdgeColor;
+	bool mPieceEdgeColorEnabled;
+	quint32 mPieceEdgeColor;
 	bool mBlackEdgeColorEnabled;
 	quint32 mBlackEdgeColor;
 	bool mDarkEdgeColorEnabled;
 	quint32 mDarkEdgeColor;
-	float mPartEdgeContrast;
-	float mPartColorValueLDIndex;
+	float mPieceEdgeContrast;
+	float mPieceColorValueLDIndex;
 
 protected slots:
 	void SliderValueChanged(int);
@@ -30,27 +30,27 @@ protected slots:
 protected:
 	bool mAutomateEdgeColor;
 
-	QSlider* PartColorValueLDIndexSlider;
-	QSlider* PartEdgeContrastSlider;
+	QSlider* PieceColorValueLDIndexSlider;
+	QSlider* PieceEdgeContrastSlider;
 
-	QLabel* PartEdgeContrast;
-	QLabel* PartColorValueLDIndex;
+	QLabel* PieceEdgeContrast;
+	QLabel* PieceColorValueLDIndex;
 
-	QToolButton* ResetPartEdgeContrastButton;
-	QToolButton* ResetPartColorValueLDIndexButton;
+	QToolButton* ResetPieceEdgeContrastButton;
+	QToolButton* ResetPieceColorValueLDIndexButton;
 
 	QCheckBox* StudCylinderColorEnabledBox;
-	QCheckBox* PartEdgeColorEnabledBox;
+	QCheckBox* PieceEdgeColorEnabledBox;
 	QCheckBox* BlackEdgeColorEnabledBox;
 	QCheckBox* DarkEdgeColorEnabledBox;
 
 	QToolButton* StudCylinderColorButton;
-	QToolButton* PartEdgeColorButton;
+	QToolButton* PieceEdgeColorButton;
 	QToolButton* BlackEdgeColorButton;
 	QToolButton* DarkEdgeColorButton;
 
 	QToolButton* ResetStudCylinderColorButton;
-	QToolButton* ResetPartEdgeColorButton;
+	QToolButton* ResetPieceEdgeColorButton;
 	QToolButton* ResetBlackEdgeColorButton;
 	QToolButton* ResetDarkEdgeColorButton;
 };

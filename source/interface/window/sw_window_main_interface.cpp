@@ -102,7 +102,7 @@ void swMainWindow::CreateWidgets()
 	move(QPoint(200, 200));
 	restoreGeometry(Settings.value("Geometry").toByteArray());
 	restoreState(Settings.value("State").toByteArray());
-	mPartSelectionWidget->LoadState(Settings);
+	mPieceSelectionWidget->LoadState(Settings);
 	Settings.endGroup();
 }
 
@@ -651,18 +651,18 @@ void swMainWindow::CreateToolBars()
 	}
 
 
-	mPartsToolBar = new QDockWidget(tr("Pieces"), this);
-	mPartsToolBar->installEventFilter(this);
-	mPartsToolBar->setObjectName("PartsToolbar");
-	mPartsToolBar->setWhatsThis(tr("<p><b>Pieces</b></p><p>Choose a category or palette and filter its pieces. Selecting a piece prepares it for insertion; drag it into the model view to place it. Double-click a piece to open its preview. Options controls filtering, thumbnails, and list display.</p>"));
-	swSetupWidgetHelp(mPartsToolBar, nullptr);
-	mPartSelectionWidget = new swPieceSelectionWidget(false, mPartsToolBar);
-	mPartsToolBar->setWidget(mPartSelectionWidget);
-	addDockWidget(Qt::RightDockWidgetArea, mPartsToolBar);
+	mPiecesToolBar = new QDockWidget(tr("Pieces"), this);
+	mPiecesToolBar->installEventFilter(this);
+	mPiecesToolBar->setObjectName("PiecesToolbar");
+	mPiecesToolBar->setWhatsThis(tr("<p><b>Pieces</b></p><p>Choose a category or palette and filter its pieces. Selecting a piece prepares it for insertion; drag it into the model view to place it. Double-click a piece to open its preview. Options controls filtering, thumbnails, and list display.</p>"));
+	swSetupWidgetHelp(mPiecesToolBar, nullptr);
+	mPieceSelectionWidget = new swPieceSelectionWidget(false, mPiecesToolBar);
+	mPiecesToolBar->setWidget(mPieceSelectionWidget);
+	addDockWidget(Qt::RightDockWidgetArea, mPiecesToolBar);
 
-	connect(mPartsToolBar, &QDockWidget::dockLocationChanged, mPartSelectionWidget, &swPieceSelectionWidget::DockLocationChanged);
-	connect(mPartSelectionWidget, &swPieceSelectionWidget::PartPicked, this, &swMainWindow::PartListPicked);
-	connect(mPartSelectionWidget, &swPieceSelectionWidget::CurrentPartChanged, this, &swMainWindow::SetInsertPieceData);
+	connect(mPiecesToolBar, &QDockWidget::dockLocationChanged, mPieceSelectionWidget, &swPieceSelectionWidget::DockLocationChanged);
+	connect(mPieceSelectionWidget, &swPieceSelectionWidget::PiecePicked, this, &swMainWindow::PieceListPicked);
+	connect(mPieceSelectionWidget, &swPieceSelectionWidget::CurrentPieceChanged, this, &swMainWindow::SetInsertPieceData);
 
 	mColorsToolBar = new QDockWidget(tr("Colors"), this);
 	mColorsToolBar->setObjectName("ColorsToolbar");
@@ -864,18 +864,18 @@ void swMainWindow::CreateToolBars()
 		}
 	});
 
-	tabifyDockWidget(mPartsToolBar, mPropertiesToolBar);
+	tabifyDockWidget(mPiecesToolBar, mPropertiesToolBar);
 	tabifyDockWidget(mPropertiesToolBar, mTimelineToolBar);
 	tabifyDockWidget(mTimelineToolBar, mPreviewToolBar);
 	tabifyDockWidget(mPreviewToolBar, mMinifigureBuilderToolBar);
 
 	connect(mPropertiesToolBar, &QDockWidget::topLevelChanged, this, &swMainWindow::EnableWindowFlags);
 	connect(mTimelineToolBar, &QDockWidget::topLevelChanged, this, &swMainWindow::EnableWindowFlags);
-	connect(mPartsToolBar, &QDockWidget::topLevelChanged, this, &swMainWindow::EnableWindowFlags);
+	connect(mPiecesToolBar, &QDockWidget::topLevelChanged, this, &swMainWindow::EnableWindowFlags);
 	connect(mColorsToolBar, &QDockWidget::topLevelChanged, this, &swMainWindow::EnableWindowFlags);
 	connect(mMinifigureBuilderToolBar, &QDockWidget::topLevelChanged, this, &swMainWindow::EnableWindowFlags);
 
-	mPartsToolBar->raise();
+	mPiecesToolBar->raise();
 }
 
 void swMainWindow::CreateStatusBar()
@@ -915,12 +915,12 @@ void swMainWindow::CreateStatusBar()
 
 	swPiecesLibrary* Library = swGetPiecesLibrary();
 	connect(Library, &swPiecesLibrary::AssetStatusChanged, this, &swMainWindow::ScheduleAssetUpdate);
-	connect(Library, &swPiecesLibrary::PartLoaded, this, [this](swPieceData* PieceData)
+	connect(Library, &swPiecesLibrary::PieceLoaded, this, [this](swPieceData* PieceData)
 	{
 		if (mStatusRequiredAssets.find(PieceData) != mStatusRequiredAssets.end())
 			ScheduleAssetUpdate();
 	});
-	connect(Library, &swPiecesLibrary::PartLoadFailed, this, [this](swPieceData* PieceData, const QString&)
+	connect(Library, &swPiecesLibrary::PieceLoadFailed, this, [this](swPieceData* PieceData, const QString&)
 	{
 		if (mStatusRequiredAssets.find(PieceData) != mStatusRequiredAssets.end())
 			ScheduleAssetUpdate();

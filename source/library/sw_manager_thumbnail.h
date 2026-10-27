@@ -35,8 +35,8 @@ signals:
 	void ThumbnailReady(swPieceThumbnailId ThumbnailId, QPixmap Pixmap);
 
 protected slots:
-	void PartLoaded(swPieceData* PieceData);
-	void PartLoadFailed(swPieceData* PieceData);
+	void PieceLoaded(swPieceData* PieceData);
+	void PieceLoadFailed(swPieceData* PieceData);
 	void GeneratedMeshSettled(swPieceData* PieceData);
 
 protected:

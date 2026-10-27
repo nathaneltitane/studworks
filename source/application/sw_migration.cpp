@@ -80,7 +80,8 @@ static void swMigrateRenamedKeys()
 		{ "Settings/PartsPopupListMode", "Settings/PiecesPopupListMode" },
 		{ "Settings/PartsPopupNames", "Settings/PiecesPopupNames" },
 		{ "Settings/PartsShadingMode", "Settings/PiecesShadingMode" },
-		{ "Settings/PartsSyncRendering", "Settings/PiecesSyncRendering" }
+		{ "Settings/PartsSyncRendering", "Settings/PiecesSyncRendering" },
+		{ "Settings/mPartColorValueLDIndex", "Settings/PieceColorValueLDIndex" }
 	};
 
 	QSettings Settings;
@@ -99,6 +100,37 @@ static void swMigrateRenamedKeys()
 	Settings.sync();
 }
 
+static QByteArray swSerializeName(const char* Name)
+{
+	QByteArray Data;
+	QDataStream Stream(&Data, QIODevice::WriteOnly);
+	Stream << QString::fromLatin1(Name);
+
+	return Data;
+}
+
+static void swMigrateRenamedToolbars()
+{
+	// Toolbars are restored by name, the stored window layout takes the new names so they keep their place.
+	constexpr const char* RenamedToolbars[][2] =
+	{
+		{ "PartsToolbar", "PiecesToolbar" }
+	};
+
+	QSettings Settings;
+	const QByteArray OldState = Settings.value("MainWindow/State").toByteArray();
+	QByteArray State = OldState;
+
+	for (const auto& [OldName, NewName] : RenamedToolbars)
+		State.replace(swSerializeName(OldName), swSerializeName(NewName));
+
+	if (State == OldState)
+		return;
+
+	Settings.setValue("MainWindow/State", State);
+	Settings.sync();
+}
+
 void swMigrateSettings()
 {
 	// Stored lists of numbers can only be read once their type is known, nothing has registered it this early.
@@ -108,4 +140,5 @@ void swMigrateSettings()
 
 	swMigrateEarlierSettings();
 	swMigrateRenamedKeys();
+	swMigrateRenamedToolbars();
 }

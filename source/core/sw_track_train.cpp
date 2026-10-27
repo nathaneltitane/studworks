@@ -100,9 +100,9 @@ void swTrainTrackInformation::Initialize(swPiecesLibrary* Library)
 	for (QJsonObject::const_iterator SleepersIt = JsonSleepers.constBegin(); SleepersIt != JsonSleepers.constEnd(); ++SleepersIt)
 	{
 		size_t Group = qHash(SleepersIt.key());
-		QString PartId = SleepersIt->toString();
+		QString PieceId = SleepersIt->toString();
 
-		swPieceData* SleeperPieceData = Library->FindPieceData(PartId.toLatin1(), nullptr);
+		swPieceData* SleeperPieceData = Library->FindPieceData(PieceId.toLatin1(), nullptr);
 
 		if (SleeperPieceData)
 			mSleepers[Group] = SleeperPieceData;

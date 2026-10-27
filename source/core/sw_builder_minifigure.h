@@ -42,7 +42,7 @@ struct swMinifigure
 
 struct swMinifigureTemplate
 {
-	QString Parts[SW_MINIFIGURE_ITEM_COUNT];
+	QString Pieces[SW_MINIFIGURE_ITEM_COUNT];
 	int ColorCodes[SW_MINIFIGURE_ITEM_COUNT];
 	float Angles[SW_MINIFIGURE_ITEM_COUNT];
 };

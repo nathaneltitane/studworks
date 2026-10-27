@@ -792,11 +792,11 @@ void swInstructionsPropertiesWidget::SelectionChanged(QGraphicsItem* FocusItem)
 		Model = NumberItem->GetModel();
 		Step = NumberItem->GetStep();
 	}
-	else if (swInstructionsPiecesListItem* PartsItem = dynamic_cast<swInstructionsPiecesListItem*>(FocusItem))
+	else if (swInstructionsPiecesListItem* PiecesItem = dynamic_cast<swInstructionsPiecesListItem*>(FocusItem))
 	{
 		Focus = FocusType::PiecesList;
-		Model = PartsItem->GetModel();
-		Step = PartsItem->GetStep();
+		Model = PiecesItem->GetModel();
+		Step = PiecesItem->GetStep();
 	}
 	else if (dynamic_cast<swInstructionsPageNumberItem*>(FocusItem))
 		Focus = FocusType::PageNumber;

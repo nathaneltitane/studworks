@@ -17,6 +17,6 @@ protected slots:
 	void ReplaceButtonClicked();
 
 protected:
-	QComboBox* mFindPartComboBox = nullptr;
-	swElidableToolButton* mReplacePartButton = nullptr;
+	QComboBox* mFindPieceComboBox = nullptr;
+	swElidableToolButton* mReplacePieceButton = nullptr;
 };

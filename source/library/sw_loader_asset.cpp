@@ -675,9 +675,9 @@ void swAssetLoader::DispatchNotifications()
 		QPointer<swPiecesLibrary> LibraryGuard(mLibrary);
 
 		if (RequestedPiece->State == RequestState::Succeeded)
-			emit mLibrary->PartLoaded(PieceData);
+			emit mLibrary->PieceLoaded(PieceData);
 		else
-			emit mLibrary->PartLoadFailed(PieceData, RequestedPiece->Error);
+			emit mLibrary->PieceLoadFailed(PieceData, RequestedPiece->Error);
 
 		if (!LoaderGuard || !LibraryGuard)
 		{

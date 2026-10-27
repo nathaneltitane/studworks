@@ -105,7 +105,7 @@ enum class swViewType
 	View,
 	Preview,
 	MinifigureBuilder,
-	PartsList,
+	PiecesList,
 	Count
 };
 
