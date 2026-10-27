@@ -525,8 +525,10 @@ static void swUpdateInstructionsPageScene(swInstructions* Instructions, const sw
 
 	QRectF MarginsRect(PageSetup.MarginLeft, PageSetup.MarginTop, PageSetup.Width - PageSetup.MarginLeft - PageSetup.MarginRight, PageSetup.Height - PageSetup.MarginTop - PageSetup.MarginBottom);
 
-	// every page but the cover is numbered, placed in the page halfway into its margins so it stays clear of the steps
-	if (Page->Type != swInstructionsPageType::Cover && Instructions->GetBoolProperty(swInstructionsPropertyType::ShowPageNumber, nullptr, 0))
+	// pages with steps and the bill of materials are numbered unless all pages are, placed halfway into the margins so it stays clear of the steps
+	const bool PageHasContent = (Page->Type == swInstructionsPageType::Steps && !Page->Steps.empty()) || Page->Type == swInstructionsPageType::BillOfMaterials || Instructions->GetBoolProperty(swInstructionsPropertyType::ShowPageNumberAllPages, nullptr, 0);
+
+	if (PageHasContent && Instructions->GetBoolProperty(swInstructionsPropertyType::ShowPageNumber, nullptr, 0))
 	{
 		const QRectF NumberRect(PageSetup.MarginLeft / 2.0, PageSetup.MarginTop / 2.0, PageSetup.Width - (PageSetup.MarginLeft + PageSetup.MarginRight) / 2.0, PageSetup.Height - (PageSetup.MarginTop + PageSetup.MarginBottom) / 2.0);
 		swInstructionsPageNumberItem* PageNumberItem = new swInstructionsPageNumberItem(PageItem, Instructions, PageIndex);
@@ -1263,10 +1265,11 @@ void swInstructionsPropertiesWidget::CreateWidgets()
 	CreateLengthEditor(swInstructionsPropertyType::StepDividerWidth, tr("Divider Width"), tr("Width of the lines between steps."), 1, 20);
 	AddEditorRow(CategoryIndex::Page, swInstructionsPropertyType::StepDividerWidth);
 
-	AddCategory(CategoryIndex::PageNumber, tr("Page Number"), tr("<p><b>Page Number</b></p><p>The number of each page, the cover is not numbered. Drag it or use the Placement panel to move it on all pages.</p>"));
+	AddCategory(CategoryIndex::PageNumber, tr("Page Number"), tr("<p><b>Page Number</b></p><p>The number of each page, the cover and blank pages are not numbered unless all pages are. Drag it or use the Placement panel to move it on all pages.</p>"));
 
 	AddRow(CategoryIndex::PageNumber, {
-		CreateToggleEditor(swInstructionsPropertyType::ShowPageNumber, tr("Show Page Number"), tr("Show the number of each page except the cover."))
+		CreateToggleEditor(swInstructionsPropertyType::ShowPageNumber, tr("Show Page Number"), tr("Show the number of each page except the cover and blank pages.")),
+		CreateToggleEditor(swInstructionsPropertyType::ShowPageNumberAllPages, tr("Number All Pages"), tr("Number every page, the cover and blank pages included."))
 	});
 
 	// the choices follow the order of swInstructionsPageNumberFormat
@@ -1790,6 +1793,7 @@ void swInstructionsPropertiesWidget::UpdateEditors()
 
 	const bool ShowPageNumber = GetBool(swInstructionsPropertyType::ShowPageNumber);
 
+	SetEnabled(swInstructionsPropertyType::ShowPageNumberAllPages, ShowPageNumber);
 	SetEnabled(swInstructionsPropertyType::PageNumberFormat, ShowPageNumber);
 	SetEnabled(swInstructionsPropertyType::PageNumberFont, !UseDocumentFont && ShowPageNumber);
 	SetEnabled(swInstructionsPropertyType::PageNumberColor, ShowPageNumber);

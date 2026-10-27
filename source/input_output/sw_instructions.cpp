@@ -134,8 +134,9 @@ void swInstructions::SetDefaultProperties()
 	mStepProperties[static_cast<int>(swInstructionsPropertyType::PageNumberFont)].Value = QFont("Arial", 16).toString();
 	mStepProperties[static_cast<int>(swInstructionsPropertyType::PageNumberColor)].Value = SW_RGBA(0, 0, 0, 255);
 	mStepProperties[static_cast<int>(swInstructionsPropertyType::PageNumberPlacement)].Value = SW_PLACEMENT_COUNT - SW_PLACEMENT_GRID_SIZE - 2;
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::ShowPageNumberAllPages)].Value = false;
 
-	static_assert(static_cast<int>(swInstructionsPropertyType::Count) == 45, "Missing default property");
+	static_assert(static_cast<int>(swInstructionsPropertyType::Count) == 46, "Missing default property");
 }
 
 void swInstructions::ResetProperties()
@@ -783,6 +784,7 @@ void swInstructions::SetDefaultProperty(swInstructionsPropertyType Type, const Q
 	case swInstructionsPropertyType::PageNumberFont:
 	case swInstructionsPropertyType::PageNumberColor:
 	case swInstructionsPropertyType::PageNumberPlacement:
+	case swInstructionsPropertyType::ShowPageNumberAllPages:
 		emit PageLayoutChanged();
 		break;
 

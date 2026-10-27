@@ -94,6 +94,7 @@ enum class swInstructionsPropertyType
 	PageNumberFont,
 	PageNumberColor,
 	PageNumberPlacement,
+	ShowPageNumberAllPages,
 	Count
 };
 
