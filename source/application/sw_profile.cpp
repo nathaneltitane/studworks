@@ -137,6 +137,7 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Settings", "InsertColorMode", 0),                                          // SW_PROFILE_INSERT_COLOR_MODE
 	swProfileEntry("Settings", "WatchFileChanges", true),                                      // SW_PROFILE_WATCH_FILE_CHANGES
 	swProfileEntry("Settings", "LoadPartsBeforeShowing", false),                              // SW_PROFILE_LOAD_PARTS_BEFORE_SHOWING
+	swProfileEntry("Settings", "MigrateMetaCommands", false),                                  // SW_PROFILE_MIGRATE_META_COMMANDS
 	swProfileEntry("Settings", "AutosaveInterval", 10),                                        // SW_PROFILE_AUTO_SAVE_INTERVAL
 	swProfileEntry("Settings", "MouseSensitivity", 11),                                        // SW_PROFILE_MOUSE_SENSITIVITY
 	swProfileEntry("Settings", "ImageWidth", 1280),                                            // SW_PROFILE_IMAGE_WIDTH

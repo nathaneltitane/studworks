@@ -18,6 +18,7 @@
 #include "sw_file.h"
 #include "sw_file_zip.h"
 #include "sw_dialog_list_model.h"
+#include "sw_command_meta.h"
 #include "sw_bricklink.h"
 #include "sw_string.h"
 #include "sw_colors.h"
@@ -75,9 +76,11 @@ swResult<void> Project::ExportCurrentStep(const QString& FileName)
 	if (!Bytes)
 		return swUnexpected(Bytes.error());
 
+	// The Blender add-on reads LeoCAD meta commands.
+	const QByteArray Output = swWriteCommandMeta(Bytes.value(), swCommandMetaFormat::LeoCAD);
 	QSaveFile File(FileName);
 
-	if (!File.open(QIODevice::WriteOnly) || File.write(Bytes.value()) != Bytes.value().size() || !File.commit())
+	if (!File.open(QIODevice::WriteOnly) || File.write(Output) != Output.size() || !File.commit())
 		return swUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, File.errorString()));
 
 	swSetProfileString(SW_PROFILE_PROJECTS_PATH, QFileInfo(FileName).absolutePath());

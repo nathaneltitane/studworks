@@ -16,6 +16,8 @@ HEADERS += sw_tests.h
 
 SOURCES += \
 	../source/core/sw_object_property.cpp \
+	../source/input_output/sw_command_meta.cpp \
+	sw_command_meta_test.cpp \
 	sw_object_history_test.cpp \
 	sw_object_property_test.cpp \
 	main.cpp

@@ -190,21 +190,19 @@ void swCamera::SaveLDraw(QTextStream& Stream) const
 {
 	const QLatin1String LineEnding("\r\n");
 
-	Stream << QLatin1String("0 !LEOCAD CAMERA FOV ") << m_fovy << QLatin1String(" ZNEAR ") << m_zNear << QLatin1String(" ZFAR ") << m_zFar << LineEnding;
+	Stream << QLatin1String("0 !SW FOV CAMERA ") << m_fovy << QLatin1String(" ZNEAR ") << m_zNear << QLatin1String(" ZFAR ") << m_zFar << LineEnding;
 
 	mPosition.Save(Stream, "CAMERA", "POSITION", true);
 	mTargetPosition.Save(Stream, "CAMERA", "TARGET_POSITION", true);
 	mUpVector.Save(Stream, "CAMERA", "UP_VECTOR", true);
 
-	Stream << QLatin1String("0 !LEOCAD CAMERA ");
-
 	if (IsHidden())
-		Stream << QLatin1String("HIDDEN");
+		Stream << QLatin1String("0 !SW HIDDEN CAMERA") << LineEnding;
 
 	if (mProjection == swCameraProjection::Orthographic)
-		Stream << QLatin1String("ORTHOGRAPHIC ");
+		Stream << QLatin1String("0 !SW ORTHOGRAPHIC CAMERA") << LineEnding;
 
-	Stream << QLatin1String("NAME ") << mName << LineEnding;
+	Stream << QLatin1String("0 !SW LABEL CAMERA ") << mName << LineEnding;
 }
 
 bool swCamera::ParseLDrawLine(QTextStream& Stream)
@@ -230,7 +228,7 @@ bool swCamera::ParseLDrawLine(QTextStream& Stream)
 			continue;
 		else if (mUpVector.Load(Stream, Token, "UP_VECTOR"))
 			continue;
-		else if (Token == QLatin1String("NAME"))
+		else if (Token == QLatin1String("LABEL") || Token == QLatin1String("NAME"))
 		{
 			mName = Stream.readAll().trimmed();
 			return true;

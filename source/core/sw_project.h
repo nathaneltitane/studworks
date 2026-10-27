@@ -115,6 +115,12 @@ public:
 
 	bool IsModified() const;
 	void MarkAsModified();
+	void MigrateMetaCommands();
+
+	bool HasLeoCADMetaCommands() const
+	{
+		return mLeoCADMetaCommands;
+	}
 	QString GetTitle() const;
 
 	QString GetFileName() const
@@ -213,6 +219,8 @@ protected:
 	// External projects can parse their models before queuing direct meshes.
 	bool mDeferModelMeshRequests = false;
 	bool mModified;
+	// LeoCAD meta commands are kept until migrated.
+	bool mLeoCADMetaCommands = false;
 	QString mFileName;
 	QByteArray mFileHash;
 	bool mFileExists = false;

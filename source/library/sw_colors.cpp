@@ -169,7 +169,7 @@ static std::vector<swColor> swParseColorFile(swFile& File)
 				Color.Rubber = true;
 				Color.Group = SW_COLOR_GROUP_SPECIAL;
 			}
-			else if (!strcmp(Token, "PEARLESCENT") || !strcmp(Token, "MATTE_METALIC") || !strcmp(Token, "METAL") || !strcmp(Token, "LUMINANCE"))
+			else if (!strcmp(Token, "PEARLESCENT") || !strcmp(Token, "MATTE_METALLIC") || !strcmp(Token, "MATTE_METALIC") || !strcmp(Token, "METAL") || !strcmp(Token, "LUMINANCE"))
 			{
 				Color.Group = SW_COLOR_GROUP_SPECIAL;
 			}

@@ -13,4 +13,7 @@ private slots:
 	void HistoryCancelsPendingEdit();
 	void HistoryReplaysAndMergesEdits();
 	void HistoryDropsRevertedMerge();
+	void CommandMetaReadsBothFormats();
+	void CommandMetaWritesBothFormats();
+	void CommandMetaRoundTripsModel();
 };

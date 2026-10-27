@@ -107,11 +107,11 @@ void swLight::SaveLDraw(QTextStream& Stream) const
 	const QLatin1String LineEnding("\r\n");
 
 	if (!mCastShadow)
-		Stream << QLatin1String("0 !LEOCAD LIGHT SHADOWLESS") << LineEnding;
+		Stream << QLatin1String("0 !SW SHADOWLESS LIGHT") << LineEnding;
 
 	mPosition.Save(Stream, "LIGHT", "POSITION", true);
-	mRotation.Save(Stream, "LIGHT", "ROTATION", true);
-	mColor.Save(Stream, "LIGHT", "COLOR", true);
+	mRotation.Save(Stream, "LIGHT", "ORIENTATION", true);
+	mColor.Save(Stream, "LIGHT", "COLOR_RGB", true);
 	mBlenderRadius.Save(Stream, "LIGHT", "BLENDER_RADIUS", true);
 	mBlenderAngle.Save(Stream, "LIGHT", "BLENDER_ANGLE", true);
 	mAreaSizeX.Save(Stream, "LIGHT", "AREA_SIZE_X", true);
@@ -137,13 +137,14 @@ void swLight::SaveLDraw(QTextStream& Stream) const
 		break;
 
 	case swLightType::Area:
-		Stream << QLatin1String("0 !LEOCAD LIGHT AREA_SHAPE ") << gLightAreaShapes[static_cast<int>(mAreaShape)] << LineEnding;
+		Stream << QLatin1String("0 !SW AREA_SHAPE LIGHT ") << gLightAreaShapes[static_cast<int>(mAreaShape)] << LineEnding;
 		mPOVRayAreaGridX.Save(Stream, "LIGHT", "POVRAY_AREA_GRID_X", true);
 		mPOVRayAreaGridY.Save(Stream, "LIGHT", "POVRAY_AREA_GRID_Y", true);
 		break;
 	}
 
-	Stream << QLatin1String("0 !LEOCAD LIGHT TYPE ") << gLightTypes[static_cast<int>(mLightType)] << QLatin1String(" NAME ") << mName << LineEnding;
+	Stream << QLatin1String("0 !SW TYPE LIGHT ") << gLightTypes[static_cast<int>(mLightType)] << LineEnding;
+	Stream << QLatin1String("0 !SW LABEL LIGHT ") << mName << LineEnding;
 }
 
 void swLight::CreateName(const std::vector<std::unique_ptr<swLight>>& Lights)
@@ -206,9 +207,9 @@ bool swLight::ParseLDrawLine(QTextStream& Stream)
 
 		if (mPosition.Load(Stream, Token, "POSITION"))
 			continue;
-		else if (mRotation.Load(Stream, Token, "ROTATION"))
+		else if (mRotation.Load(Stream, Token, "ORIENTATION"))
 			continue;
-		else if (mColor.Load(Stream, Token, "COLOR"))
+		else if (mColor.Load(Stream, Token, "COLOR_RGB"))
 			continue;
 		else if (mBlenderRadius.Load(Stream, Token, "BLENDER_RADIUS"))
 			continue;
@@ -268,7 +269,7 @@ bool swLight::ParseLDrawLine(QTextStream& Stream)
 		{
 			mCastShadow = false;
 		}
-		else if (Token == QLatin1String("NAME"))
+		else if (Token == QLatin1String("LABEL") || Token == QLatin1String("NAME"))
 		{
 			mName = Stream.readAll().trimmed();
 			mName.replace("\"", "");

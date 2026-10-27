@@ -165,6 +165,7 @@ public:
 	swInsertColorMode mInsertColorMode;
 	bool mWatchFileChanges;
 	bool mLoadPartsBeforeShowing;
+	bool mMigrateMetaCommands;
 	swColorTheme mColorTheme;
 	quint32 mObjectSelectedColor;
 	quint32 mObjectFocusedColor;

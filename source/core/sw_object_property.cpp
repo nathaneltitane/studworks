@@ -262,7 +262,7 @@ void swObjectProperty<T>::Save(QTextStream& Stream, const char* ObjectName, cons
 	{
 		if (SaveEmpty)
 		{
-			Stream << QLatin1String("0 !LEOCAD ") << ObjectName << ' ' << VariableName << ' ';
+			Stream << QLatin1String("0 !SW ") << VariableName << ' ' << ObjectName << ' ';
 
 			swObjectPropertySaveValue(Stream, mValue);
 
@@ -273,7 +273,7 @@ void swObjectProperty<T>::Save(QTextStream& Stream, const char* ObjectName, cons
 	{
 		for (const swObjectPropertyKey<T>& Key : mKeys)
 		{
-			Stream << QLatin1String("0 !LEOCAD ") << ObjectName << ' ' << VariableName << "_KEY " << Key.Step << ' ';
+			Stream << QLatin1String("0 !SW ") << VariableName << "_KEY " << ObjectName << ' ' << Key.Step << ' ';
 
 			swObjectPropertySaveValue(Stream, Key.Value);
 

@@ -79,6 +79,7 @@ void swPreferences::LoadDefaults()
 	mInsertColorMode = static_cast<swInsertColorMode>(qBound(0, swGetProfileInteger(SW_PROFILE_INSERT_COLOR_MODE), static_cast<int>(swInsertColorMode::LastInsertedColor)));
 	mWatchFileChanges = swGetProfileInteger(SW_PROFILE_WATCH_FILE_CHANGES);
 	mLoadPartsBeforeShowing = swGetProfileInteger(SW_PROFILE_LOAD_PARTS_BEFORE_SHOWING);
+	mMigrateMetaCommands = swGetProfileInteger(SW_PROFILE_MIGRATE_META_COMMANDS);
 	mColorTheme = swGetProfileColorTheme();
 	mPreviewViewSphereEnabled = swGetProfileInteger(SW_PROFILE_PREVIEW_VIEW_SPHERE_ENABLED);
 	mPreviewViewSphereSize = swGetProfileInteger(SW_PROFILE_PREVIEW_VIEW_SPHERE_SIZE);
@@ -161,6 +162,7 @@ void swPreferences::SaveDefaults()
 	swSetProfileInteger(SW_PROFILE_INSERT_COLOR_MODE, static_cast<int>(mInsertColorMode));
 	swSetProfileInteger(SW_PROFILE_WATCH_FILE_CHANGES, mWatchFileChanges);
 	swSetProfileInteger(SW_PROFILE_LOAD_PARTS_BEFORE_SHOWING, mLoadPartsBeforeShowing);
+	swSetProfileInteger(SW_PROFILE_MIGRATE_META_COMMANDS, mMigrateMetaCommands);
 	swSetProfileColorTheme(mColorTheme);
 	swSetProfileInteger(SW_PROFILE_PREVIEW_VIEW_SPHERE_ENABLED, mPreviewViewSphereEnabled);
 	swSetProfileInteger(SW_PROFILE_PREVIEW_VIEW_SPHERE_SIZE, mPreviewViewSphereSize);
@@ -435,10 +437,10 @@ bool swApplication::LoadPartsLibrary(const QList<QPair<QString, bool>>& LibraryP
 
 	if (!OnlyUsePaths)
 	{
-		char* EnvPath = getenv("STUDWORKS_LIB");
+		char* PathEnvironment = getenv("STUDWORKS_LIBRARY");
 
-		if (EnvPath && EnvPath[0])
-			return mLibrary->Load(EnvPath, ShowProgress, false);
+		if (PathEnvironment && PathEnvironment[0])
+			return mLibrary->Load(PathEnvironment, ShowProgress, false);
 
 		QString CustomPath = swGetProfileString(SW_PROFILE_PARTS_LIBRARY);
 

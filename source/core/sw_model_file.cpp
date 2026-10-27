@@ -23,12 +23,13 @@
 #include "sw_lxf.h"
 #include "sw_widget_preview.h"
 #include "sw_string.h"
+#include "sw_command_meta.h"
 #include <locale.h>
 
-// Meta commands are written with the established tag so models stay compatible, both tags are read.
+// Meta commands reach the parsers object first.
 static bool swIsMetaCommand(const QString& Token)
 {
-	return Token == QLatin1String("!LEOCAD") || Token == QLatin1String("!STUDWORKS");
+	return Token == QLatin1String("!SW");
 }
 
 void swModelProperties::LoadDefaults()
@@ -54,7 +55,7 @@ void swModelProperties::SaveLDraw(QTextStream& Stream) const
 	{
 		const QStringList Comments = mComments.split('\n');
 		for (const QString& Comment : Comments)
-			Stream << QLatin1String("0 !LEOCAD MODEL COMMENT ") << Comment << LineEnding;
+			Stream << QLatin1String("0 !SW COMMENT MODEL ") << Comment << LineEnding;
 	}
 
 //	swVector3 mAmbientColor;
@@ -117,13 +118,13 @@ void swPOVRayOptions::ParseLDrawLine(QTextStream& LineStream)
 	QString Token;
 	LineStream >> Token;
 
-	if (Token == QLatin1String("HEADER_INCLUDE_FILE"))
+	if (Token == QLatin1String("HEADER_FILE_INCLUDE"))
 	{
 		LineStream >> HeaderIncludeFile;
 		if (!QFileInfo(HeaderIncludeFile).isReadable())
 			HeaderIncludeFile.clear();
 	}
-	else if (Token == QLatin1String("FOOTER_INCLUDE_FILE"))
+	else if (Token == QLatin1String("FOOTER_FILE_INCLUDE"))
 	{
 		LineStream >> FooterIncludeFile;
 		if (!QFileInfo(FooterIncludeFile).isReadable())
@@ -157,27 +158,27 @@ void swPOVRayOptions::SaveLDraw(QTextStream& Stream) const
 {
 	const QLatin1String LineEnding("\r\n");
 	if (!HeaderIncludeFile.isEmpty())
-		Stream << QLatin1String("0 !LEOCAD POV_RAY HEADER_INCLUDE_FILE ") << QDir::toNativeSeparators(HeaderIncludeFile) << LineEnding;
+		Stream << QLatin1String("0 !SW HEADER_FILE_INCLUDE POV_RAY ") << QDir::toNativeSeparators(HeaderIncludeFile) << LineEnding;
 	if (!FooterIncludeFile.isEmpty())
-		Stream << QLatin1String("0 !LEOCAD POV_RAY FOOTER_INCLUDE_FILE ") << QDir::toNativeSeparators(FooterIncludeFile) << LineEnding;
+		Stream << QLatin1String("0 !SW FOOTER_FILE_INCLUDE POV_RAY ") << QDir::toNativeSeparators(FooterIncludeFile) << LineEnding;
 	if (FloorAxis != 1)
-		Stream << QLatin1String("0 !LEOCAD POV_RAY FLOOR_AXIS ") << FloorAxis << LineEnding;
+		Stream << QLatin1String("0 !SW FLOOR_AXIS POV_RAY ") << FloorAxis << LineEnding;
 	if (FloorColor != swVector3(0.8f,0.8f,0.8f))
-		Stream << QLatin1String("0 !LEOCAD POV_RAY FLOOR_COLOR_RGB ") << FloorColor[0] << ' ' << FloorColor[1] << ' ' << FloorColor[2] << LineEnding;
+		Stream << QLatin1String("0 !SW FLOOR_COLOR_RGB POV_RAY ") << FloorColor[0] << ' ' << FloorColor[1] << ' ' << FloorColor[2] << LineEnding;
 	if (FloorAmbient != 0.4f)
-		Stream << QLatin1String("0 !LEOCAD POV_RAY FLOOR_AMBIENT ") << FloorAmbient << LineEnding;
+		Stream << QLatin1String("0 !SW FLOOR_AMBIENT POV_RAY ") << FloorAmbient << LineEnding;
 	if (FloorDiffuse != 0.4f)
-		Stream << QLatin1String("0 !LEOCAD POV_RAY FLOOR_DIFFUSE ") << FloorDiffuse << LineEnding;
+		Stream << QLatin1String("0 !SW FLOOR_DIFFUSE POV_RAY ") << FloorDiffuse << LineEnding;
 	if (ExcludeFloor)
-		Stream << QLatin1String("0 !LEOCAD POV_RAY EXCLUDE_FLOOR") << LineEnding;
+		Stream << QLatin1String("0 !SW EXCLUDE_FLOOR POV_RAY") << LineEnding;
 	if (ExcludeBackground)
-		Stream << QLatin1String("0 !LEOCAD POV_RAY EXCLUDE_BACKGROUND") << LineEnding;
+		Stream << QLatin1String("0 !SW EXCLUDE_BACKGROUND POV_RAY") << LineEnding;
 	if (NoReflection)
-		Stream << QLatin1String("0 !LEOCAD POV_RAY NO_REFLECTION") << LineEnding;
+		Stream << QLatin1String("0 !SW NO_REFLECTION POV_RAY") << LineEnding;
 	if (NoShadow)
-		Stream << QLatin1String("0 !LEOCAD POV_RAY NO_SHADOWS") << LineEnding;
+		Stream << QLatin1String("0 !SW NO_SHADOWS POV_RAY") << LineEnding;
 	if (UseLGEO)
-		Stream << QLatin1String("0 !LEOCAD POV_RAY USE_LGEO") << LineEnding;
+		Stream << QLatin1String("0 !SW USE_LGEO POV_RAY") << LineEnding;
 }
 
 static QString swGetStepEndLine(const swModelProperties& Properties, swStep Step)
@@ -203,10 +204,10 @@ void swModel::SaveLDraw(QTextStream& Stream, bool SelectedOnly, swStep LastStep)
 	mProperties.SaveLDraw(Stream);
 
 	for (const QString& Directory : mAssetSourceDirectories)
-		Stream << QLatin1String("0 !LEOCAD MODEL ASSET_SOURCE ") << QString::fromLatin1(Directory.toUtf8().toBase64()) << LineEnding;
+		Stream << QLatin1String("0 !SW ASSET_SOURCE MODEL ") << QString::fromLatin1(Directory.toUtf8().toBase64()) << LineEnding;
 
 	if (!mAssetSourceDirectories.empty() && !mPreferCurrentAssetDirectory)
-		Stream << QLatin1String("0 !LEOCAD MODEL ASSET_SOURCE_PRIORITY SOURCE") << LineEnding;
+		Stream << QLatin1String("0 !SW ASSET_SOURCE_PRIORITY MODEL SOURCE") << LineEnding;
 
 	std::vector<swGroup*> CurrentGroups;
 	swStep Step = 1;
@@ -291,7 +292,7 @@ void swModel::SaveLDraw(QTextStream& Stream, bool SelectedOnly, swStep LastStep)
 					if (ParentFound == PartParents.end())
 					{
 						CurrentGroups.pop_back();
-						Stream << QLatin1String("0 !LEOCAD GROUP END\r\n");
+						Stream << QLatin1String("0 !SW END GROUP\r\n");
 					}
 					else
 					{
@@ -304,7 +305,7 @@ void swModel::SaveLDraw(QTextStream& Stream, bool SelectedOnly, swStep LastStep)
 				{
 					swGroup* Group = *ParentIt;
 					CurrentGroups.emplace_back(Group);
-					Stream << QLatin1String("0 !LEOCAD GROUP BEGIN ") << Group->mName << LineEnding;
+					Stream << QLatin1String("0 !SW BEGIN GROUP ") << Group->mName << LineEnding;
 				}
 			}
 		}
@@ -313,18 +314,18 @@ void swModel::SaveLDraw(QTextStream& Stream, bool SelectedOnly, swStep LastStep)
 			while (CurrentGroups.size())
 			{
 				CurrentGroups.pop_back();
-				Stream << QLatin1String("0 !LEOCAD GROUP END\r\n");
+				Stream << QLatin1String("0 !SW END GROUP\r\n");
 			}
 		}
 
 		if (Part->mPartData->GetSynthInfo())
 		{
-			Stream << QLatin1String("0 !LEOCAD SYNTH BEGIN\r\n");
+			Stream << QLatin1String("0 !SW BEGIN SYNTH_PATH\r\n");
 
 			const std::vector<swPartControlPoint>& ControlPoints = Part->GetControlPoints();
 			for (const swPartControlPoint& ControlPoint : ControlPoints)
 			{
-				Stream << QLatin1String("0 !LEOCAD SYNTH CONTROL_POINT");
+				Stream << QLatin1String("0 !SW CONTROL_POINT SYNTH_PATH");
 
 				const float* FloatMatrix = ControlPoint.Transform.GetFloats();
 				const float Numbers[13] = { FloatMatrix[12], -FloatMatrix[14], FloatMatrix[13], FloatMatrix[0], -FloatMatrix[8], FloatMatrix[4], -FloatMatrix[2], FloatMatrix[10], -FloatMatrix[6], FloatMatrix[1], -FloatMatrix[9], FloatMatrix[5], ControlPoint.Scale };
@@ -339,7 +340,7 @@ void swModel::SaveLDraw(QTextStream& Stream, bool SelectedOnly, swStep LastStep)
 		Part->SaveLDraw(Stream);
 
 		if (Part->mPartData->GetSynthInfo())
-			Stream << QLatin1String("0 !LEOCAD SYNTH END\r\n");
+			Stream << QLatin1String("0 !SW END SYNTH_PATH\r\n");
 	}
 
 	while (!SavedStep && CurrentLine < mFileLines.size())
@@ -379,7 +380,7 @@ void swModel::SaveLDraw(QTextStream& Stream, bool SelectedOnly, swStep LastStep)
 	while (CurrentGroups.size())
 	{
 		CurrentGroups.pop_back();
-		Stream << QLatin1String("0 !LEOCAD GROUP END\r\n");
+		Stream << QLatin1String("0 !SW END GROUP\r\n");
 	}
 
 	for (const std::unique_ptr<swCamera>& Camera : mCameras)
@@ -417,7 +418,7 @@ void swModel::LoadLDraw(QIODevice& Device, Project* Project)
 	{
 		const qint64 Pos = Device.pos();
 		QString OriginalLine = Device.readLine();
-		QString Line = OriginalLine.trimmed();
+		QString Line = swReadCommandMeta(OriginalLine.trimmed());
 		QTextStream LineStream(&Line, QIODevice::ReadOnly);
 
 		QString Token;
@@ -532,7 +533,7 @@ void swModel::LoadLDraw(QIODevice& Device, Project* Project)
 					mProperties.ParseLDrawLine(PropertiesStream);
 				}
 			}
-			else if (Token == QLatin1String("PIECE"))
+			else if (Token == QLatin1String("PART"))
 			{
 				if (!Part)
 					Part = new swPart(nullptr);
@@ -587,7 +588,7 @@ void swModel::LoadLDraw(QIODevice& Device, Project* Project)
 						CurrentGroups.pop_back();
 				}
 			}
-			else if (Token == QLatin1String("SYNTH"))
+			else if (Token == QLatin1String("SYNTH_PATH"))
 			{
 				LineStream >> Token;
 

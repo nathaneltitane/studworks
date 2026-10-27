@@ -21,6 +21,7 @@
 #include "sw_bricklink.h"
 #include "sw_string.h"
 #include "sw_colors.h"
+#include "sw_command_meta.h"
 
 Project::Project(bool IsPreview)
 	: mIsPreview(IsPreview)
@@ -1038,6 +1039,7 @@ bool Project::Load(const QString& FileName, bool ShowErrors)
 	mModels.clear();
 	mDocumentBlocks.clear();
 	mLoadWarnings.clear();
+	mLeoCADMetaCommands = false;
 	mEmbeddedData.clear();
 	mEmbeddedDataIndex.clear();
 	swGetPartsLibrary()->ReleaseProjectPartData(this);
@@ -1065,6 +1067,7 @@ bool Project::Load(const QString& FileName, bool ShowErrors)
 	if (LoadDAT)
 	{
 		LoadLDrawDocument(FileData, nullptr, false);
+		mLeoCADMetaCommands = !mIsPreview && swHasLeoCADCommandMeta(FileData);
 	}
 	else
 	{
@@ -1176,11 +1179,15 @@ swResult<void> Project::Save(const QString& FileName)
 	}
 
 	{
-		QTextStream Stream(&File);
+		QByteArray Bytes;
+		QTextStream Stream(&Bytes, QIODevice::WriteOnly);
 		const bool Serialized = Save(Stream);
 		Stream.flush();
 
-		if (!Serialized || Stream.status() != QTextStream::Ok)
+		if (Serialized && Stream.status() == QTextStream::Ok)
+			Bytes = swWriteCommandMeta(Bytes, mLeoCADMetaCommands ? swCommandMetaFormat::LeoCAD : swCommandMetaFormat::StudWorks);
+
+		if (!Serialized || Stream.status() != QTextStream::Ok || File.write(Bytes) != Bytes.size())
 		{
 			File.cancelWriting();
 			RestoreAssetSources();
@@ -1963,7 +1970,7 @@ swResult<QByteArray> Project::SerializeModel(const swModel* Root, bool SelectedO
 		Append(Data->RawBlock);
 
 	if (SelectedOnly)
-		Output.prepend("0 !STUDWORKS CLIPBOARD PROJECT " + mClipboardIdentity.toString().toUtf8() + "\r\n");
+		Output.prepend("0 !SW PROJECT CLIPBOARD " + mClipboardIdentity.toString().toUtf8() + "\r\n");
 
 	return Output;
 }
@@ -1975,7 +1982,7 @@ swResult<swModel*> Project::ImportClipboard(const QByteArray& FileData)
 	swGetPartsLibrary()->ReleaseProjectPartData(&Source);
 	Source.SetDeferModelMeshRequests(true);
 	Source.mFileName = mFileName;
-	const QByteArray Marker("0 !STUDWORKS CLIPBOARD PROJECT ");
+	const QByteArray Marker("0 !SW PROJECT CLIPBOARD ");
 	const QByteArray FirstLine = FileData.left(FileData.indexOf('\n') == -1 ? FileData.size() : FileData.indexOf('\n')).trimmed();
 	const bool SameProject = FirstLine.startsWith(Marker) && QUuid(QString::fromUtf8(FirstLine.mid(Marker.size()))) == mClipboardIdentity;
 	Source.LoadLDrawDocument(FileData, this, SameProject);
@@ -2076,4 +2083,14 @@ void Project::UpdatePartData(swPartData* PartData) const
 void Project::MarkAsModified()
 {
 	mModified = true;
+}
+
+void Project::MigrateMetaCommands()
+{
+	mLeoCADMetaCommands = false;
+	mModified = true;
+
+	// Reserialize models instead of keeping their text.
+	for (DocumentBlock& Block : mDocumentBlocks)
+		Block.Baseline.clear();
 }

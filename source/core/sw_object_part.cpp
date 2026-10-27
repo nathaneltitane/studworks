@@ -145,17 +145,17 @@ void swPart::SaveLDraw(QTextStream& Stream) const
 	const QLatin1String LineEnding("\r\n");
 
 	if (mStepHide != SW_STEP_MAXIMUM)
-		Stream << QLatin1String("0 !LEOCAD PIECE STEP_HIDE ") << mStepHide << LineEnding;
+		Stream << QLatin1String("0 !SW STEP_HIDE PART ") << mStepHide << LineEnding;
 
 	if (IsHidden())
-		Stream << QLatin1String("0 !LEOCAD PIECE HIDDEN") << LineEnding;
+		Stream << QLatin1String("0 !SW HIDDEN PART") << LineEnding;
 
 	if (mPivotPointValid)
 	{
 		const float* PivotMatrix = mPivotMatrix.GetFloats();
 		const float PivotNumbers[12] = { PivotMatrix[12], -PivotMatrix[14], PivotMatrix[13], PivotMatrix[0], -PivotMatrix[8], PivotMatrix[4], -PivotMatrix[2], PivotMatrix[10], -PivotMatrix[6], PivotMatrix[1], -PivotMatrix[9], PivotMatrix[5] };
 
-		Stream << QLatin1String("0 !LEOCAD PIECE PIVOT ");
+		Stream << QLatin1String("0 !SW PIVOT PART ");
 
 		for (int NumberIdx = 0; NumberIdx < 12; NumberIdx++)
 			Stream << ' ' << swFormatValue(PivotNumbers[NumberIdx], NumberIdx < 3 ? 4 : 6);
@@ -163,8 +163,8 @@ void swPart::SaveLDraw(QTextStream& Stream) const
 		Stream << LineEnding;
 	}
 
-	mPosition.Save(Stream, "PIECE", "POSITION", false);
-	mRotation.Save(Stream, "PIECE", "ROTATION", false);
+	mPosition.Save(Stream, "PART", "POSITION", false);
+	mRotation.Save(Stream, "PART", "ORIENTATION", false);
 
 	Stream << "1 " << mColorCode << ' ';
 
@@ -202,7 +202,7 @@ bool swPart::ParseLDrawLine(QTextStream& Stream)
 		}
 		else if (mPosition.Load(Stream, Token, "POSITION"))
 			continue;
-		else if (mRotation.Load(Stream, Token, "ROTATION"))
+		else if (mRotation.Load(Stream, Token, "ORIENTATION"))
 			continue;
 	}
 

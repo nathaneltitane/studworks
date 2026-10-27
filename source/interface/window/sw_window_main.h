@@ -361,6 +361,7 @@ protected:
 	void UpdateTerminalDirectory(bool Force);
 
 	bool OpenProjectFile(const QString& FileName);
+	bool MigrateMetaCommands(const QString& FileName);
 	void AddRecentFile(const QString& FileName);
 	void RemoveRecentFile(size_t FileIndex);
 

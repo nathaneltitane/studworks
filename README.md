@@ -130,7 +130,7 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
     ```
 
   - Run ↴
-    - Start 'build/release/studworks' and point Preferences to an [LDraw parts library](https://library.ldraw.org/updates?latest) or set 'STUDWORKS_LIB' if none is found - up to date video card drivers are recommended for the OpenGL rendering.
+    - Start 'build/release/studworks' and point Preferences to an [LDraw parts library](https://library.ldraw.org/updates?latest) or set 'STUDWORKS_LIBRARY' if none is found - up to date video card drivers are recommended for the OpenGL rendering.
 
   - Package ↴
     - Run 'packaging/deb.sh' on Debian or Ubuntu, 'packaging/rpm.sh' on an RPM distribution or 'packaging/appimage.sh' on any Linux, with an optional build directory - all three download the parts library when it is missing.

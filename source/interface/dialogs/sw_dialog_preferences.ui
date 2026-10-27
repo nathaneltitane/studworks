@@ -383,6 +383,16 @@
             </property>
            </widget>
           </item>
+          <item row="5" column="0" colspan="2">
+           <widget class="QCheckBox" name="MigrateMetaCommands">
+            <property name="toolTip">
+             <string>Convert the LeoCAD meta commands of opened models to StudWorks meta commands without asking. Migrated models are no longer read fully by LeoCAD.</string>
+            </property>
+            <property name="text">
+             <string>Migrate LeoCAD Models Automatically</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
@@ -3291,6 +3301,7 @@
   <tabstop>RestoreTabLayout</tabstop>
   <tabstop>WatchFileChanges</tabstop>
   <tabstop>LoadPartsBeforeShowing</tabstop>
+  <tabstop>MigrateMetaCommands</tabstop>
   <tabstop>fixedDirectionKeys</tabstop>
   <tabstop>InsertColorMode</tabstop>
   <tabstop>FirstPartAtOrigin</tabstop>
