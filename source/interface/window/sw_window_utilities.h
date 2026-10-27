@@ -3,8 +3,8 @@
 #include <QObject>
 
 class QLocale;
-class swPieceSelectionWidget;
-class swPieceSelectionListView;
+class swPartSelectionWidget;
+class swPartSelectionListView;
 struct swTrainTrackConnectionType;
 
 constexpr int SW_MAXIMUM_IMAGE_DIMENSION = 32768;
@@ -251,21 +251,21 @@ protected:
 	}
 };
 
-class swPieceIdStringModel : public QAbstractListModel
+class swPartIdStringModel : public QAbstractListModel
 {
 	Q_OBJECT
 
 public:
-	swPieceIdStringModel(swModel* Model, QObject* Parent);
+	swPartIdStringModel(swModel* Model, QObject* Parent);
 
-	QModelIndex Index(swPieceData* PieceData) const;
+	QModelIndex Index(swPartData* PartData) const;
 	std::vector<bool> GetFilteredRows(const QString& FilterText) const;
 
 	int rowCount(const QModelIndex& Parent = QModelIndex()) const override;
 	QVariant data(const QModelIndex& Index, int Role = Qt::DisplayRole) const override;
 
 protected:
-	std::vector<swPieceData*> mSortedPieces;
+	std::vector<swPartData*> mSortedParts;
 };
 
 class swColorDialogPopup : public QWidget

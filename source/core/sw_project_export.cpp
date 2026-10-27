@@ -2,8 +2,8 @@
 #include "sw_math.h"
 #include "sw_mesh.h"
 #include "sw_widget_preview.h"
-#include "sw_object_piece.h"
-#include "sw_data_piece.h"
+#include "sw_object_part.h"
+#include "sw_data_part.h"
 #include "sw_object_camera.h"
 #include "sw_project.h"
 #include "sw_instructions.h"
@@ -40,8 +40,8 @@ swHTMLExportOptions::swHTMLExportOptions(const Project* Project)
 	IndexPage = (HTMLOptions & SW_HTML_INDEX) != 0;
 	StepImagesWidth = swGetProfileInteger(SW_PROFILE_HTML_IMAGE_WIDTH);
 	StepImagesHeight = swGetProfileInteger(SW_PROFILE_HTML_IMAGE_HEIGHT);
-	PiecesListStep = (HTMLOptions & SW_HTML_LIST_STEP) != 0;
-	PiecesListEnd = (HTMLOptions & SW_HTML_LIST_END) != 0;
+	PartsListStep = (HTMLOptions & SW_HTML_LIST_STEP) != 0;
+	PartsListEnd = (HTMLOptions & SW_HTML_LIST_END) != 0;
 }
 
 void swHTMLExportOptions::SaveDefaults()
@@ -56,9 +56,9 @@ void swHTMLExportOptions::SaveDefaults()
 		HTMLOptions |= SW_HTML_SINGLE_PAGE;
 	if (IndexPage)
 		HTMLOptions |= SW_HTML_INDEX;
-	if (PiecesListStep)
+	if (PartsListStep)
 		HTMLOptions |= SW_HTML_LIST_STEP;
-	if (PiecesListEnd)
+	if (PartsListEnd)
 		HTMLOptions |= SW_HTML_LIST_END;
 
 	swSetProfileInteger(SW_PROFILE_HTML_IMAGE_OPTIONS, TransparentImages ? SW_IMAGE_TRANSPARENT : 0);
@@ -178,7 +178,7 @@ QString Project::GetExportFileName(const QString& FileName, const QString& Defau
 
 swResult<void> Project::Export3DStudio(const QString& FileName)
 {
-	const std::vector<swModelPiecesEntry> ModelPieces = GetModelPieces();
+	const std::vector<swModelPartsEntry> ModelParts = GetModelParts();
 
 	QString SaveFileName = GetExportFileName(FileName, "3ds", tr("Export 3D Studio"), tr("3DS Files (*.3ds);;All Files (*.*)"));
 
@@ -407,10 +407,10 @@ swResult<void> Project::Export3DStudio(const QString& FileName)
 	File.WriteU16(0x1201); // LIB3DS_USE_SOLID_BGND
 	File.WriteU32(6);
 
-	int NumPieces = 0;
-	for (const swModelPiecesEntry& ModelPiece : ModelPieces)
+	int NumParts = 0;
+	for (const swModelPartsEntry& ModelPart : ModelParts)
 	{
-		swMesh* Mesh = !ModelPiece.Mesh ? ModelPiece.PieceData->GetMesh() : ModelPiece.Mesh;
+		swMesh* Mesh = !ModelPart.Mesh ? ModelPart.PartData->GetMesh() : ModelPart.Mesh;
 
 		if (!Mesh || Mesh->mIndexType == GL_UNSIGNED_INT)
 			continue;
@@ -420,8 +420,8 @@ swResult<void> Project::Export3DStudio(const QString& FileName)
 		File.WriteU32(0);
 
 		char Name[32];
-		snprintf(Name, sizeof(Name), "Piece%.3d", NumPieces);
-		NumPieces++;
+		snprintf(Name, sizeof(Name), "Part%.3d", NumParts);
+		NumParts++;
 		File.WriteBuffer(Name, strlen(Name) + 1);
 
 		long TriObjectStart = File.GetPosition();
@@ -434,7 +434,7 @@ swResult<void> Project::Export3DStudio(const QString& FileName)
 		File.WriteU16(Mesh->mNumVertices);
 
 		swVertex* Verts = (swVertex*)Mesh->mVertexData;
-		const swMatrix44& ModelWorld = ModelPiece.WorldMatrix;
+		const swMatrix44& ModelWorld = ModelPart.WorldMatrix;
 
 		for (int VertexIdx = 0; VertexIdx < Mesh->mNumVertices; VertexIdx++)
 		{
@@ -503,7 +503,7 @@ swResult<void> Project::Export3DStudio(const QString& FileName)
 			if (Section->PrimitiveType != SW_MESH_TRIANGLES && Section->PrimitiveType != SW_MESH_TEXTURED_TRIANGLES)
 				continue;
 
-			int MaterialIndex = Section->ColorIndex == gDefaultColor ? ModelPiece.ColorIndex : Section->ColorIndex;
+			int MaterialIndex = Section->ColorIndex == gDefaultColor ? ModelPart.ColorIndex : Section->ColorIndex;
 
 			File.WriteU16(0x4130); // CHK_MSH_MAT_GROUP
 			File.WriteU32(6 + MaterialNameLength + 1 + 2 + 2 * Section->DrawCount / 3);
@@ -564,12 +564,12 @@ swResult<void> Project::Export3DStudio(const QString& FileName)
 
 swResult<void> Project::ExportBrickLink()
 {
-	swPiecesList PiecesList;
+	swPartsList PartsList;
 
 	if (!mModels.empty())
-		mModels[0]->GetPiecesList(gDefaultColor, true, false, PiecesList);
+		mModels[0]->GetPartsList(gDefaultColor, true, false, PartsList);
 
-	if (PiecesList.empty())
+	if (PartsList.empty())
 		return swUnexpected(tr("Nothing to export."));
 
 	QString SaveFileName = GetExportFileName(QString(), "xml", tr("Export BrickLink"), tr("XML Files (*.xml);;All Files (*.*)"));
@@ -577,12 +577,12 @@ swResult<void> Project::ExportBrickLink()
 	if (SaveFileName.isEmpty())
 		return swUnexpected(QString());
 
-	return swExportBrickLink(SaveFileName, PiecesList);
+	return swExportBrickLink(SaveFileName, PartsList);
 }
 
 swResult<void> Project::ExportCOLLADA(const QString& FileName)
 {
-	const std::vector<swModelPiecesEntry> ModelPieces = GetModelPieces();
+	const std::vector<swModelPartsEntry> ModelParts = GetModelParts();
 
 	QString SaveFileName = GetExportFileName(FileName, "dae", tr("Export COLLADA"), tr("COLLADA Files (*.dae);;All Files (*.*)"));
 
@@ -674,9 +674,9 @@ swResult<void> Project::ExportCOLLADA(const QString& FileName)
 	std::map<const swMesh*, QString> MeshIDs;
 	std::set<QString> UsedMeshIDs;
 
-	for (const swModelPiecesEntry& ModelPiece : ModelPieces)
+	for (const swModelPartsEntry& ModelPart : ModelParts)
 	{
-		swMesh* Mesh = !ModelPiece.Mesh ? ModelPiece.PieceData->GetMesh() : ModelPiece.Mesh;
+		swMesh* Mesh = !ModelPart.Mesh ? ModelPart.PartData->GetMesh() : ModelPart.Mesh;
 
 		if (!Mesh)
 			continue;
@@ -684,7 +684,7 @@ swResult<void> Project::ExportCOLLADA(const QString& FileName)
 		if (MeshIDs.find(Mesh) != MeshIDs.end())
 			continue;
 
-		const QString BaseName = QLatin1String("Part_") + MakeExportNameFragment(QString::fromUtf8(ModelPiece.PieceData->mFileName));
+		const QString BaseName = QLatin1String("Part_") + MakeExportNameFragment(QString::fromUtf8(ModelPart.PartData->mFileName));
 		const QString ID = MakeUniqueExportIdentifier(BaseName, UsedMeshIDs, QString());
 		MeshIDs.emplace(Mesh, ID);
 		const int NumVertices = Mesh->mNumVertices + Mesh->mNumTexturedVertices;
@@ -813,9 +813,9 @@ swResult<void> Project::ExportCOLLADA(const QString& FileName)
 	Stream << "<library_visual_scenes>\r\n";
 	Stream << "\t<visual_scene id=\"DefaultScene\">\r\n";
 
-	for (const swModelPiecesEntry& ModelPiece : ModelPieces)
+	for (const swModelPartsEntry& ModelPart : ModelParts)
 	{
-		swMesh* Mesh = !ModelPiece.Mesh ? ModelPiece.PieceData->GetMesh() : ModelPiece.Mesh;
+		swMesh* Mesh = !ModelPart.Mesh ? ModelPart.PartData->GetMesh() : ModelPart.Mesh;
 
 		if (!Mesh)
 			continue;
@@ -825,7 +825,7 @@ swResult<void> Project::ExportCOLLADA(const QString& FileName)
 		Stream << "\t\t<node>\r\n";
 		Stream << "\t\t\t<matrix>\r\n";
 
-		const swMatrix44& Matrix = ModelPiece.WorldMatrix;
+		const swMatrix44& Matrix = ModelPart.WorldMatrix;
 		Stream << QString("\t\t\t\t%1 %2 %3 %4\r\n").arg(QString::number(Matrix[0][0]), QString::number(Matrix[1][0]), QString::number(Matrix[2][0]), QString::number(Matrix[3][0]));
 		Stream << QString("\t\t\t\t%1 %2 %3 %4\r\n").arg(QString::number(Matrix[0][1]), QString::number(Matrix[1][1]), QString::number(Matrix[2][1]), QString::number(Matrix[3][1]));
 		Stream << QString("\t\t\t\t%1 %2 %3 %4\r\n").arg(QString::number(Matrix[0][2]), QString::number(Matrix[1][2]), QString::number(Matrix[2][2]), QString::number(Matrix[3][2]));
@@ -846,7 +846,7 @@ swResult<void> Project::ExportCOLLADA(const QString& FileName)
 			const QString& SourceColorName = ColorIDs[Section->ColorIndex];
 			const QString* TargetColorName;
 			if (Section->ColorIndex == gDefaultColor)
-				TargetColorName = &ColorIDs[ModelPiece.ColorIndex];
+				TargetColorName = &ColorIDs[ModelPart.ColorIndex];
 			else
 				TargetColorName = &SourceColorName;
 
@@ -872,12 +872,12 @@ swResult<void> Project::ExportCOLLADA(const QString& FileName)
 
 swResult<void> Project::ExportCSV(const QString& FileName)
 {
-	swPiecesList PiecesList;
+	swPartsList PartsList;
 
 	if (!mModels.empty())
-		mModels[0]->GetPiecesList(gDefaultColor, true, false, PiecesList);
+		mModels[0]->GetPartsList(gDefaultColor, true, false, PartsList);
 
-	if (PiecesList.empty())
+	if (PartsList.empty())
 		return swUnexpected(tr("Nothing to export."));
 
 	QString SaveFileName = GetExportFileName(FileName, "csv", tr("Export CSV"), tr("CSV Files (*.csv);;All Files (*.*)"));
@@ -885,10 +885,10 @@ swResult<void> Project::ExportCSV(const QString& FileName)
 	if (SaveFileName.isEmpty())
 		return swUnexpected(QString());
 
-	return swExportCSV(SaveFileName, PiecesList);
+	return swExportCSV(SaveFileName, PartsList);
 }
 
-swResult<void> swExportCSV(const QString& FileName, const swPiecesList& PiecesList)
+swResult<void> swExportCSV(const QString& FileName, const swPartsList& PartsList)
 {
 	swDiskFile CSVFile(FileName);
 	char Line[1024];
@@ -898,16 +898,16 @@ swResult<void> swExportCSV(const QString& FileName, const swPiecesList& PiecesLi
 
 	CSVFile.WriteLine("Part Name,Color,Quantity,Part ID,Color Code\n");
 
-	for (const auto& PieceIt : PiecesList)
+	for (const auto& PartIt : PartsList)
 	{
-		const swPieceData* PieceData = PieceIt.first;
+		const swPartData* PartData = PartIt.first;
 
-		for (const auto& ColorIt : PieceIt.second)
+		for (const auto& ColorIt : PartIt.second)
 		{
-			std::string Description = PieceData->m_strDescription;
+			std::string Description = PartData->m_strDescription;
 			Description.erase(std::remove(Description.begin(), Description.end(), ','), Description.end());
 
-			snprintf(Line, sizeof(Line), "\"%s\",\"%s\",%d,%s,%d\n", Description.c_str(), gColorList[ColorIt.first].Name, ColorIt.second, PieceData->mFileName, gColorList[ColorIt.first].Code);
+			snprintf(Line, sizeof(Line), "\"%s\",\"%s\",%d,%s,%d\n", Description.c_str(), gColorList[ColorIt.first].Name, ColorIt.second, PartData->mFileName, gColorList[ColorIt.first].Code);
 			CSVFile.WriteLine(Line);
 		}
 	}
@@ -992,19 +992,19 @@ swResult<void> Project::ExportHTML(const swHTMLExportOptions& Options)
 		ModelBaseNames.emplace(Model.get(), std::move(BaseName));
 	}
 
-	auto AddPiecesListImage = [&Dir](QTextStream& Stream, swModel* Model, swStep Step, const QString& BaseName) -> swResult<void>
+	auto AddPartsListImage = [&Dir](QTextStream& Stream, swModel* Model, swStep Step, const QString& BaseName) -> swResult<void>
 	{
-		swPiecesList PiecesList;
+		swPartsList PartsList;
 
 		if (Step == 0)
-			Model->GetPiecesList(gDefaultColor, true, false, PiecesList);
+			Model->GetPartsList(gDefaultColor, true, false, PartsList);
 		else
-			Model->GetPiecesListForStep(Step, gDefaultColor, PiecesList, false);
+			Model->GetPartsListForStep(Step, gDefaultColor, PartsList, false);
 
-		if (PiecesList.empty())
+		if (PartsList.empty())
 			return swResult<void>();
 
-		const swResult<QImage> Image = Model->GetPiecesListImage(1024, 512, Step, SW_RGBA(255, 255, 255, 0), SW_RGBA(255, 255, 255, 0), QFont("Arial", 16, QFont::Bold), Qt::black, true);
+		const swResult<QImage> Image = Model->GetPartsListImage(1024, 512, Step, SW_RGBA(255, 255, 255, 0), SW_RGBA(255, 255, 255, 0), QFont("Arial", 16, QFont::Bold), Qt::black, true);
 
 		if (!Image)
 			return swUnexpected(Image.error());
@@ -1059,21 +1059,21 @@ swResult<void> Project::ExportHTML(const swHTMLExportOptions& Options)
 				QString StepString = QString::fromLatin1("%1").arg(Step, 2, 10, QLatin1Char('0'));
 				Stream << QString::fromLatin1("<p><IMG SRC=\"%1-%2.png\" ALT=\"%3\" WIDTH=%4 HEIGHT=%5></p><BR><BR>\r\n").arg(BaseName.toHtmlEscaped(), StepString, tr("Step %1").arg(StepString).toHtmlEscaped(), QString::number(Options.StepImagesWidth), QString::number(Options.StepImagesHeight));
 
-				if (Options.PiecesListStep)
+				if (Options.PartsListStep)
 				{
-					const swResult<void> PiecesImageSaved = AddPiecesListImage(Stream, Model, Step, QString("%1-%2").arg(BaseName, StepString));
+					const swResult<void> PartsImageSaved = AddPartsListImage(Stream, Model, Step, QString("%1-%2").arg(BaseName, StepString));
 
-					if (!PiecesImageSaved)
-						return PiecesImageSaved;
+					if (!PartsImageSaved)
+						return PartsImageSaved;
 				}
 			}
 
-			if (Options.PiecesListEnd)
+			if (Options.PartsListEnd)
 			{
-				const swResult<void> PiecesImageSaved = AddPiecesListImage(Stream, Model, 0, BaseName);
+				const swResult<void> PartsImageSaved = AddPartsListImage(Stream, Model, 0, BaseName);
 
-				if (!PiecesImageSaved)
-					return PiecesImageSaved;
+				if (!PartsImageSaved)
+					return PartsImageSaved;
 			}
 
 			Stream << QString::fromLatin1("</CENTER>\r\n<BR><HR><BR><B><I>%1</I></B><BR></HTML>\r\n").arg(CreatedBy);
@@ -1095,8 +1095,8 @@ swResult<void> Project::ExportHTML(const swHTMLExportOptions& Options)
 				for (swStep Step = 1; Step <= LastStep; Step++)
 					Stream << QString::fromLatin1("<A HREF=\"%1-%2.html\">%3<BR>\r\n</A>").arg(BaseName, QString("%1").arg(Step, 2, 10, QLatin1Char('0')), tr("Step %1").arg(QString::number(Step)).toHtmlEscaped());
 
-				if (Options.PiecesListEnd)
-					Stream << QString::fromLatin1("<A HREF=\"%1-pieces.html\">%2</A><BR>\r\n").arg(BaseName, tr("Pieces Used").toHtmlEscaped());
+				if (Options.PartsListEnd)
+					Stream << QString::fromLatin1("<A HREF=\"%1-parts.html\">%2</A><BR>\r\n").arg(BaseName, tr("Parts Used").toHtmlEscaped());
 
 				Stream << QString::fromLatin1("</CENTER>\r\n<BR><HR><BR><B><I>%1</I></B><BR></HTML>\r\n").arg(CreatedBy);
 			}
@@ -1115,12 +1115,12 @@ swResult<void> Project::ExportHTML(const swHTMLExportOptions& Options)
 				WriteHeader(Stream, tr("%1 - Step %2").arg(PageTitle, QString::number(Step)));
 				Stream << QString::fromLatin1("<IMG SRC=\"%1-%2.png\" ALT=\"%3\" WIDTH=%4 HEIGHT=%5><BR><BR>\r\n").arg(BaseName.toHtmlEscaped(), StepString, tr("Step %1").arg(StepString).toHtmlEscaped(), QString::number(Options.StepImagesWidth), QString::number(Options.StepImagesHeight));
 
-				if (Options.PiecesListStep)
+				if (Options.PartsListStep)
 				{
-					const swResult<void> PiecesImageSaved = AddPiecesListImage(Stream, Model, Step, QString("%1-%2").arg(BaseName, StepString));
+					const swResult<void> PartsImageSaved = AddPartsListImage(Stream, Model, Step, QString("%1-%2").arg(BaseName, StepString));
 
-					if (!PiecesImageSaved)
-						return PiecesImageSaved;
+					if (!PartsImageSaved)
+						return PartsImageSaved;
 				}
 
 				Stream << QLatin1String("</CENTER>\r\n<BR><HR><BR>");
@@ -1132,15 +1132,15 @@ swResult<void> Project::ExportHTML(const swHTMLExportOptions& Options)
 
 				if (Step != LastStep)
 					Stream << QString::fromLatin1("<A HREF=\"%1-%2.html\">%3</A>").arg(BaseName, QString("%1").arg(Step + 1, 2, 10, QLatin1Char('0')), tr("Next").toHtmlEscaped());
-				else if (Options.PiecesListEnd)
-					Stream << QString::fromLatin1("<A HREF=\"%1-pieces.html\">%2</A>").arg(BaseName, tr("Pieces Used").toHtmlEscaped());
+				else if (Options.PartsListEnd)
+					Stream << QString::fromLatin1("<A HREF=\"%1-parts.html\">%2</A>").arg(BaseName, tr("Parts Used").toHtmlEscaped());
 
 				Stream << QLatin1String("<BR></HTML>\r\n");
 			}
 
-			if (Options.PiecesListEnd)
+			if (Options.PartsListEnd)
 			{
-				QString FileName = QFileInfo(Dir, BaseName + QLatin1String("-pieces.html")).absoluteFilePath();
+				QString FileName = QFileInfo(Dir, BaseName + QLatin1String("-parts.html")).absoluteFilePath();
 				QFile File(FileName);
 
 				if (!File.open(QIODevice::WriteOnly))
@@ -1148,12 +1148,12 @@ swResult<void> Project::ExportHTML(const swHTMLExportOptions& Options)
 
 				QTextStream Stream(&File);
 
-				WriteHeader(Stream, tr("Pieces used by %1").arg(PageTitle));
+				WriteHeader(Stream, tr("Parts used by %1").arg(PageTitle));
 
-				const swResult<void> PiecesImageSaved = AddPiecesListImage(Stream, Model, 0, BaseName);
+				const swResult<void> PartsImageSaved = AddPartsListImage(Stream, Model, 0, BaseName);
 
-				if (!PiecesImageSaved)
-					return PiecesImageSaved;
+				if (!PartsImageSaved)
+					return PartsImageSaved;
 
 				Stream << QLatin1String("</CENTER>\r\n<BR><HR><BR>");
 				Stream << QString::fromLatin1("<A HREF=\"%1-%2.html\">%3</A> ").arg(BaseName, QString("%1").arg(LastStep, 2, 10, QLatin1Char('0')), tr("Previous").toHtmlEscaped());
@@ -1207,8 +1207,8 @@ swResult<void> Project::ExportHTML(const swHTMLExportOptions& Options)
 				for (swStep Step = 1; Step <= LastStep; Step++)
 					Stream << QString::fromLatin1("<A HREF=\"%1-%2.html\">%3<BR>\r\n</A>").arg(BaseName, QString("%1").arg(Step, 2, 10, QLatin1Char('0')), tr("Step %1").arg(QString::number(Step)).toHtmlEscaped());
 
-				if (Options.PiecesListEnd)
-					Stream << QString::fromLatin1("<A HREF=\"%1-pieces.html\">%2</A><BR>\r\n").arg(BaseName, tr("Pieces Used").toHtmlEscaped());
+				if (Options.PartsListEnd)
+					Stream << QString::fromLatin1("<A HREF=\"%1-parts.html\">%2</A><BR>\r\n").arg(BaseName, tr("Parts Used").toHtmlEscaped());
 			}
 		}
 
@@ -1220,7 +1220,7 @@ swResult<void> Project::ExportHTML(const swHTMLExportOptions& Options)
 
 swResult<void> Project::ExportPOVRay(const QString& FileName)
 {
-	const std::vector<swModelPiecesEntry> ModelPieces = GetModelPieces();
+	const std::vector<swModelPartsEntry> ModelParts = GetModelParts();
 
 	QString SaveFileName = GetExportFileName(FileName, QLatin1String("pov"), tr("Export POV-Ray"), tr("POV-Ray Files (*.pov);;All Files (*.*)"));
 
@@ -1234,9 +1234,9 @@ swResult<void> Project::ExportPOVRay(const QString& FileName)
 
 	enum
 	{
-		LGEO_PIECE_LGEO  = 0x01,
-		LGEO_PIECE_AR    = 0x02,
-		LGEO_PIECE_SLOPE = 0x04
+		LGEO_PART_LGEO  = 0x01,
+		LGEO_PART_AR    = 0x02,
+		LGEO_PART_SLOPE = 0x04
 	};
 
 	enum
@@ -1262,8 +1262,8 @@ swResult<void> Project::ExportPOVRay(const QString& FileName)
 
 	POVFile.WriteLine("global_settings { assumed_gamma 1.0 }\n\n");
 
-	swPiecesLibrary* Library = swGetPiecesLibrary();
-	std::map<const swPieceData*, std::pair<char[SW_PIECE_NAME_LENGTH + 1], int>> PieceTable;
+	swPartsLibrary* Library = swGetPartsLibrary();
+	std::map<const swPartData*, std::pair<char[SW_PART_NAME_LENGTH + 1], int>> PartTable;
 	size_t NumColors = gColorList.size();
 	std::vector<std::string> LgeoColorTable(NumColors);
 	std::vector<std::array<char, SW_MAXIMUM_COLOR_NAME + 3>> ColorTable(NumColors);
@@ -1302,22 +1302,22 @@ swResult<void> Project::ExportPOVRay(const QString& FileName)
 	swVector3 Min(FLT_MAX, FLT_MAX, FLT_MAX);
 	swVector3 Max(-FLT_MAX, -FLT_MAX, -FLT_MAX);
 
-	if (ModelPieces.empty())
+	if (ModelParts.empty())
 	{
 		Min = swVector3(-10.0f, -10.0f, -10.0f);
 		Max = swVector3(10.0f, 10.0f, 10.0f);
 	}
 
-	for (const swModelPiecesEntry& ModelPiece : ModelPieces)
+	for (const swModelPartsEntry& ModelPart : ModelParts)
 	{
 		swVector3 Points[8];
 
-		const swMesh* Mesh = ModelPiece.Mesh ? ModelPiece.Mesh : ModelPiece.PieceData->GetMesh();
+		const swMesh* Mesh = ModelPart.Mesh ? ModelPart.Mesh : ModelPart.PartData->GetMesh();
 		swGetBoxCorners(Mesh->mBoundingBox, Points);
 
 		for (int PointIdx = 0; PointIdx < 8; PointIdx++)
 		{
-			swVector3 Point = swMultiply31(Points[PointIdx], ModelPiece.WorldMatrix);
+			swVector3 Point = swMultiply31(Points[PointIdx], ModelPart.WorldMatrix);
 
 			Min = swMinimum(Point, Min);
 			Max = swMaximum(Point, Max);
@@ -1477,9 +1477,9 @@ swResult<void> Project::ExportPOVRay(const QString& FileName)
 			static_cast<int>(swLightType::Point), static_cast<int>(swLightType::Spot), static_cast<int>(swLightType::Directional), static_cast<int>(swLightType::Area));
 	POVFile.WriteLine(Line);
 
-	for (const swModelPiecesEntry& ModelPiece : ModelPieces)
+	for (const swModelPartsEntry& ModelPart : ModelParts)
 	{
-		int ColorIdx = ModelPiece.ColorIndex;
+		int ColorIdx = ModelPart.ColorIndex;
 
 		if (swIsColorTranslucent(ColorIdx))
 		{
@@ -1682,34 +1682,34 @@ swResult<void> Project::ExportPOVRay(const QString& FileName)
 
 			swstrcat(Src, ".dat");
 
-			swPieceData* PieceData = Library->FindPieceData(Src, nullptr);
-			if (!PieceData)
+			swPartData* PartData = Library->FindPartData(Src, nullptr);
+			if (!PartData)
 				continue;
 
-			bool LgeoPieceFound = false;
+			bool LgeoPartFound = false;
 
-			if ((LgeoPieceFound = strchr(Flags, 'L')))
+			if ((LgeoPartFound = strchr(Flags, 'L')))
 			{
-				std::pair<char[SW_PIECE_NAME_LENGTH + 1], int>& Entry = PieceTable[PieceData];
-				Entry.second |= LGEO_PIECE_LGEO;
+				std::pair<char[SW_PART_NAME_LENGTH + 1], int>& Entry = PartTable[PartData];
+				Entry.second |= LGEO_PART_LGEO;
 				snprintf(Entry.first, sizeof(Entry.first), "lg_%s", Dst);
 			}
 
-			if (strchr(Flags, 'A') && !LgeoPieceFound)
+			if (strchr(Flags, 'A') && !LgeoPartFound)
 			{
-				std::pair<char[SW_PIECE_NAME_LENGTH + 1], int>& Entry = PieceTable[PieceData];
-				Entry.second |= LGEO_PIECE_AR;
+				std::pair<char[SW_PART_NAME_LENGTH + 1], int>& Entry = PartTable[PartData];
+				Entry.second |= LGEO_PART_AR;
 				snprintf(Entry.first, sizeof(Entry.first), "ar_%s", Dst);
 			}
 
 			if (strchr(Flags, 'S'))
 			{
-				auto Entry = PieceTable.find(PieceData);
+				auto Entry = PartTable.find(PartData);
 
-				if (Entry != PieceTable.end() && Entry->second.first[0])
+				if (Entry != PartTable.end() && Entry->second.first[0])
 				{
 					// The external include declares both the base object and its slope surface.
-					Entry->second.second |= LGEO_PIECE_SLOPE;
+					Entry->second.second |= LGEO_PART_SLOPE;
 				}
 			}
 		}
@@ -1783,8 +1783,8 @@ swResult<void> Project::ExportPOVRay(const QString& FileName)
 		}
 	};
 
-	for (const swModelPiecesEntry& ModelPiece : ModelPieces)
-		AddColorDefinition(ModelPiece.ColorIndex);
+	for (const swModelPartsEntry& ModelPart : ModelParts)
+		AddColorDefinition(ModelPart.ColorIndex);
 
 	AddColorDefinition(swGetColorIndex(TopModelColorCode));
 
@@ -1792,24 +1792,24 @@ swResult<void> Project::ExportPOVRay(const QString& FileName)
 
 	if (UseLGEO)
 	{
-		for (const swModelPiecesEntry& ModelPiece : ModelPieces)
+		for (const swModelPartsEntry& ModelPart : ModelParts)
 		{
-			if (ModelPiece.Mesh)
+			if (ModelPart.Mesh)
 				continue;
 
-			auto Search = PieceTable.find(ModelPiece.PieceData);
-			if (Search == PieceTable.end())
+			auto Search = PartTable.find(ModelPart.PartData);
+			if (Search == PartTable.end())
 				continue;
 
-			swMesh* Mesh = ModelPiece.PieceData->GetMesh();
+			swMesh* Mesh = ModelPart.PartData->GetMesh();
 
 			if (!Mesh)
 				continue;
 
-			const std::pair<char[SW_PIECE_NAME_LENGTH + 1], int>& Entry = Search->second;
+			const std::pair<char[SW_PART_NAME_LENGTH + 1], int>& Entry = Search->second;
 			if (Entry.first[0] && IncludedLgeoNames.insert(Entry.first).second)
 			{
-				snprintf(Line, sizeof(Line), "#include \"%s.inc\" // %s\n", Entry.first, ModelPiece.PieceData->m_strDescription);
+				snprintf(Line, sizeof(Line), "#include \"%s.inc\" // %s\n", Entry.first, ModelPart.PartData->m_strDescription);
 				POVFile.WriteLine(Line);
 			}
 		}
@@ -1828,19 +1828,19 @@ swResult<void> Project::ExportPOVRay(const QString& FileName)
 	for (const swColor& Color : gColorList)
 		UsedPovNames.insert(QLatin1String("sw_") + QString::fromLatin1(Color.SafeName));
 
-	for (const swModelPiecesEntry& ModelPiece : ModelPieces)
+	for (const swModelPartsEntry& ModelPart : ModelParts)
 	{
-		swMesh* Mesh = !ModelPiece.Mesh ? ModelPiece.PieceData->GetMesh() : ModelPiece.Mesh;
+		swMesh* Mesh = !ModelPart.Mesh ? ModelPart.PartData->GetMesh() : ModelPart.Mesh;
 
 		if (!Mesh)
 			continue;
 
-		if (!ModelPiece.Mesh)
+		if (!ModelPart.Mesh)
 		{
-			const std::map<const swPieceData*, std::pair<char[SW_PIECE_NAME_LENGTH + 1], int>>::const_iterator ExistingPiece = PieceTable.find(ModelPiece.PieceData);
+			const std::map<const swPartData*, std::pair<char[SW_PART_NAME_LENGTH + 1], int>>::const_iterator ExistingPart = PartTable.find(ModelPart.PartData);
 
-			if (ExistingPiece != PieceTable.end() && ExistingPiece->second.first[0] &&
-				(ExistingPiece->second.second & (LGEO_PIECE_LGEO | LGEO_PIECE_AR)))
+			if (ExistingPart != PartTable.end() && ExistingPart->second.first[0] &&
+				(ExistingPart->second.second & (LGEO_PART_LGEO | LGEO_PART_AR)))
 				continue;
 		}
 
@@ -1849,16 +1849,16 @@ swResult<void> Project::ExportPOVRay(const QString& FileName)
 
 		if (Added)
 		{
-			const QString BaseName = QLatin1String("sw_") + MakeExportNameFragment(QString::fromUtf8(ModelPiece.PieceData->mFileName));
+			const QString BaseName = QLatin1String("sw_") + MakeExportNameFragment(QString::fromUtf8(ModelPart.PartData->mFileName));
 			const QString Identifier = MakeUniqueExportIdentifier(BaseName, UsedPovNames, QLatin1String("_clear"));
 			MeshNameIt = MeshNames.emplace(Mesh, Identifier.mid(3).toStdString()).first;
 		}
 
 		const std::string& MeshName = MeshNameIt->second;
 
-		if (!ModelPiece.Mesh)
+		if (!ModelPart.Mesh)
 		{
-			std::pair<char[SW_PIECE_NAME_LENGTH + 1], int>& Entry = PieceTable[ModelPiece.PieceData];
+			std::pair<char[SW_PART_NAME_LENGTH + 1], int>& Entry = PartTable[ModelPart.PartData];
 			snprintf(Entry.first, sizeof(Entry.first), "sw_%s", MeshName.c_str());
 		}
 
@@ -1871,35 +1871,35 @@ swResult<void> Project::ExportPOVRay(const QString& FileName)
 		POVFile.WriteLine(Line);
 	}
 
-	if (!ModelPieces.empty())
+	if (!ModelParts.empty())
 	{
 		snprintf(Line, sizeof(Line), "#declare %s = union {\n", TopModelName.toLatin1().constData());
 		POVFile.WriteLine(Line);
 	}
 
-	for (const swModelPiecesEntry& ModelPiece : ModelPieces)
+	for (const swModelPartsEntry& ModelPart : ModelParts)
 	{
-		int ColorIdx = ModelPiece.ColorIndex;
+		int ColorIdx = ModelPart.ColorIndex;
 		const char* Suffix = swIsColorTranslucent(ColorIdx) ? "_clear" : "";
-		const float* f = ModelPiece.WorldMatrix.GetFloats();
+		const float* f = ModelPart.WorldMatrix.GetFloats();
 		char Modifier[32];
 		if (UseLGEO || MaterialColors.contains(ColorTable[ColorIdx].data()))
 			snprintf(Modifier, sizeof(Modifier), "material");
 		else
 			snprintf(Modifier, sizeof(Modifier), "texture");
-		if (!ModelPiece.Mesh)
+		if (!ModelPart.Mesh)
 		{
-			std::pair<char[SW_PIECE_NAME_LENGTH + 1], int>& Entry = PieceTable[ModelPiece.PieceData];
+			std::pair<char[SW_PART_NAME_LENGTH + 1], int>& Entry = PartTable[ModelPart.PartData];
 
-			if (!Entry.first[0] && !(Entry.second & LGEO_PIECE_SLOPE))
+			if (!Entry.first[0] && !(Entry.second & LGEO_PART_SLOPE))
 			{
-				const std::map<const swMesh*, std::string>::const_iterator MeshName = MeshNames.find(ModelPiece.PieceData->GetMesh());
+				const std::map<const swMesh*, std::string>::const_iterator MeshName = MeshNames.find(ModelPart.PartData->GetMesh());
 
 				if (MeshName != MeshNames.end())
 					snprintf(Entry.first, sizeof(Entry.first), "sw_%s", MeshName->second.c_str());
 			}
 
-			if (Entry.second & LGEO_PIECE_SLOPE)
+			if (Entry.second & LGEO_PART_SLOPE)
 			{
 				snprintf(Line, sizeof(Line),
 						"  merge {\n    object {\n      %s%s\n      %s { %s }\n    }\n"
@@ -1910,7 +1910,7 @@ swResult<void> Project::ExportPOVRay(const QString& FileName)
 			}
 			else
 			{
-				if (!ModelPiece.PieceData || !ModelPiece.PieceData->GetMesh())
+				if (!ModelPart.PartData || !ModelPart.PartData->GetMesh())
 					continue;
 
 				snprintf(Line, sizeof(Line), "  object {\n    %s%s\n    %s { %s }\n    matrix <%g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g>\n  }\n",
@@ -1920,7 +1920,7 @@ swResult<void> Project::ExportPOVRay(const QString& FileName)
 		}
 		else
 		{
-			const std::string& Name = MeshNames.at(ModelPiece.Mesh);
+			const std::string& Name = MeshNames.at(ModelPart.Mesh);
 
 			snprintf(Line, sizeof(Line), "  object {\n    sw_%s%s\n    %s { %s }\n    matrix <%g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g>\n  }\n",
 					Name.c_str(), Suffix, Modifier, ColorTable[ColorIdx].data(), -f[5], -f[4], -f[6], -f[1], -f[0], -f[2], f[9], f[8], f[10], f[13] / 25.0f, f[12] / 25.0f, f[14] / 25.0f);
@@ -1929,7 +1929,7 @@ swResult<void> Project::ExportPOVRay(const QString& FileName)
 		POVFile.WriteLine(Line);
 	}
 
-	if (!ModelPieces.empty())
+	if (!ModelParts.empty())
 	{
 		snprintf(Line, sizeof(Line), "\n  #if (ModelReflection = 0)\n    no_reflection\n  #end\n  #if (ModelShadow = 0)\n    no_shadow\n  #end\n}\n\n");
 		POVFile.WriteLine(Line);
@@ -1953,7 +1953,7 @@ swResult<void> Project::ExportPOVRay(const QString& FileName)
 
 swResult<void> Project::ExportWavefront(const QString& FileName)
 {
-	const std::vector<swModelPiecesEntry> ModelPieces = GetModelPieces();
+	const std::vector<swModelPartsEntry> ModelParts = GetModelParts();
 
 	QString SaveFileName = GetExportFileName(FileName, QLatin1String("obj"), tr("Export Wavefront"), tr("Wavefront Files (*.obj);;All Files (*.*)"));
 
@@ -2011,56 +2011,56 @@ swResult<void> Project::ExportWavefront(const QString& FileName)
 		}
 	};
 
-	for (const swModelPiecesEntry& ModelPiece : ModelPieces)
+	for (const swModelPartsEntry& ModelPart : ModelParts)
 	{
-		swMesh* Mesh = !ModelPiece.Mesh ? ModelPiece.PieceData->GetMesh() : ModelPiece.Mesh;
+		swMesh* Mesh = !ModelPart.Mesh ? ModelPart.PartData->GetMesh() : ModelPart.Mesh;
 
 		if (!Mesh)
 			continue;
 
 		const swVertex* Verts = static_cast<const swVertex*>(Mesh->mVertexData);
 
-		WritePositions(Verts, Mesh->mNumVertices, ModelPiece.WorldMatrix);
+		WritePositions(Verts, Mesh->mNumVertices, ModelPart.WorldMatrix);
 
 		const swVertexTextured* VertsTextured = reinterpret_cast<const swVertexTextured*>(Verts + Mesh->mNumVertices);
 
-		WritePositions(VertsTextured, Mesh->mNumTexturedVertices, ModelPiece.WorldMatrix);
+		WritePositions(VertsTextured, Mesh->mNumTexturedVertices, ModelPart.WorldMatrix);
 
 		OBJFile.WriteLine("#\n\n");
 	}
 
-	for (const swModelPiecesEntry& ModelPiece : ModelPieces)
+	for (const swModelPartsEntry& ModelPart : ModelParts)
 	{
-		swMesh* Mesh = !ModelPiece.Mesh ? ModelPiece.PieceData->GetMesh() : ModelPiece.Mesh;
+		swMesh* Mesh = !ModelPart.Mesh ? ModelPart.PartData->GetMesh() : ModelPart.Mesh;
 
 		if (!Mesh)
 			continue;
 
 		const swVertex* Verts = static_cast<const swVertex*>(Mesh->mVertexData);
 
-		WriteNormals(Verts, Mesh->mNumVertices, ModelPiece.WorldMatrix);
+		WriteNormals(Verts, Mesh->mNumVertices, ModelPart.WorldMatrix);
 
 		const swVertexTextured* VertsTextured = reinterpret_cast<const swVertexTextured*>(Verts + Mesh->mNumVertices);
 
-		WriteNormals(VertsTextured, Mesh->mNumTexturedVertices, ModelPiece.WorldMatrix);
+		WriteNormals(VertsTextured, Mesh->mNumTexturedVertices, ModelPart.WorldMatrix);
 
 		OBJFile.WriteLine("#\n\n");
 	}
 
-	int PieceCount = 0;
+	int PartCount = 0;
 	quint32 BaseVertex = 1;
 
-	for (const swModelPiecesEntry& ModelPiece : ModelPieces)
+	for (const swModelPartsEntry& ModelPart : ModelParts)
 	{
-		swMesh* Mesh = !ModelPiece.Mesh ? ModelPiece.PieceData->GetMesh() : ModelPiece.Mesh;
+		swMesh* Mesh = !ModelPart.Mesh ? ModelPart.PartData->GetMesh() : ModelPart.Mesh;
 
 		if (!Mesh)
 			continue;
 
-		snprintf(Line, sizeof(Line), "g Piece%.3d\n", PieceCount++);
+		snprintf(Line, sizeof(Line), "g Part%.3d\n", PartCount++);
 		OBJFile.WriteLine(Line);
 
-		Mesh->ExportWavefrontIndices(OBJFile, ModelPiece.ColorIndex, BaseVertex);
+		Mesh->ExportWavefrontIndices(OBJFile, ModelPart.ColorIndex, BaseVertex);
 		BaseVertex += Mesh->mNumVertices + Mesh->mNumTexturedVertices;
 	}
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "sw_math.h"
-#include "sw_object_piece.h"
+#include "sw_object_part.h"
 
 class swLibraryMeshData;
 class swMesh;
@@ -37,15 +37,15 @@ public:
 		return mNondirectional;
 	}
 
-	virtual void GetDefaultControlPoints(std::vector<swPieceControlPoint>& ControlPoints) const = 0;
-	virtual void VerifyControlPoints(std::vector<swPieceControlPoint>& ControlPoints) const = 0;
-	int InsertControlPoint(std::vector<swPieceControlPoint>& ControlPoints, const swVector3& Start, const swVector3& End) const;
-	std::unique_ptr<swMesh> BuildMesh(const std::vector<swPieceControlPoint>& ControlPoints, const std::atomic_bool& Cancelled) const;
+	virtual void GetDefaultControlPoints(std::vector<swPartControlPoint>& ControlPoints) const = 0;
+	virtual void VerifyControlPoints(std::vector<swPartControlPoint>& ControlPoints) const = 0;
+	int InsertControlPoint(std::vector<swPartControlPoint>& ControlPoints, const swVector3& Start, const swVector3& End) const;
+	std::unique_ptr<swMesh> BuildMesh(const std::vector<swPartControlPoint>& ControlPoints, const std::atomic_bool& Cancelled) const;
 
 protected:
 	using SectionCallbackFunc = std::function<void(const swVector3& CurvePoint, quint32 SegmentIndex, float t)>;
-	virtual void CalculateSections(const std::vector<swPieceControlPoint>& ControlPoints, std::vector<swMatrix44>& Sections, SectionCallbackFunc SectionCallback, const std::atomic_bool* Cancelled) const = 0;
-	virtual void AddPieces(swMemoryFile& File, swLibraryMeshData& MeshData, const std::vector<swMatrix44>& Sections, const std::atomic_bool* Cancelled) const = 0;
+	virtual void CalculateSections(const std::vector<swPartControlPoint>& ControlPoints, std::vector<swMatrix44>& Sections, SectionCallbackFunc SectionCallback, const std::atomic_bool* Cancelled) const = 0;
+	virtual void AddParts(swMemoryFile& File, swLibraryMeshData& MeshData, const std::vector<swMatrix44>& Sections, const std::atomic_bool* Cancelled) const = 0;
 
 	bool mCurve = false;
 	bool mUnidirectional = false;

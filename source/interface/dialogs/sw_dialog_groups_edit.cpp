@@ -4,7 +4,7 @@
 #include "sw_dialog_groups_edit.h"
 #include "ui_sw_dialog_groups_edit.h"
 #include "sw_model.h"
-#include "sw_object_piece.h"
+#include "sw_object_part.h"
 #include "sw_group.h"
 
 constexpr uintptr_t SW_GROUP_DIALOG_NEW_GROUP = ~0U;
@@ -45,7 +45,7 @@ swEditGroupsDialog::swEditGroupsDialog(QWidget* Parent, const swModel* Model)
 
 	QPushButton* NewGroup = ui->buttonBox->addButton(tr("&New Group"), QDialogButtonBox::ActionRole);
 	NewGroup->setToolTip(tr("Create a group under the selected group or at the top level."));
-	NewGroup->setWhatsThis(tr("<p><b>New Group</b></p><p>Select a group to create a subgroup inside it. If a piece is selected, the new group is created beside that piece. With no selection, the new group is created at the top level. Rename the new group by editing its name, then drag pieces into it.</p>"));
+	NewGroup->setWhatsThis(tr("<p><b>New Group</b></p><p>Select a group to create a subgroup inside it. If a part is selected, the new group is created beside that part. With no selection, the new group is created at the top level. Rename the new group by editing its name, then drag parts into it.</p>"));
 
 	connect(NewGroup, &QPushButton::clicked, this, &swEditGroupsDialog::NewGroupClicked);
 
@@ -88,7 +88,7 @@ void swEditGroupsDialog::NewGroupClicked()
 {
 	QTreeWidgetItem* CurrentItem = ui->treeWidget->currentItem();
 
-	if (CurrentItem && CurrentItem->data(0, PieceRole).value<uintptr_t>())
+	if (CurrentItem && CurrentItem->data(0, PartRole).value<uintptr_t>())
 		CurrentItem = CurrentItem->parent();
 
 	if (!CurrentItem)
@@ -141,10 +141,10 @@ swEditGroupsDialog::GroupInfo swEditGroupsDialog::GetGroupInfo(QTreeWidgetItem* 
 			GroupInfo.ChildGroups.emplace_back(GetGroupInfo(ChildItem));
 		else
 		{
-			swPiece* Piece = reinterpret_cast<swPiece*>(ChildItem->data(0, PieceRole).value<uintptr_t>());
+			swPart* Part = reinterpret_cast<swPart*>(ChildItem->data(0, PartRole).value<uintptr_t>());
 
-			if (Piece)
-				GroupInfo.ChildPieces.push_back(Piece);
+			if (Part)
+				GroupInfo.ChildParts.push_back(Part);
 		}
 	}
 
@@ -200,17 +200,17 @@ void swEditGroupsDialog::PopulateTree()
 			break;
 	}
 
-	const std::vector<std::unique_ptr<swPiece>>& Pieces = mModel->GetPieces();
+	const std::vector<std::unique_ptr<swPart>>& Parts = mModel->GetParts();
 
-	for (const std::unique_ptr<swPiece>& Piece : Pieces)
+	for (const std::unique_ptr<swPart>& Part : Parts)
 	{
-		QTreeWidgetItem* ParentItem = AddedGroups.find(Piece->GetGroup())->second;
+		QTreeWidgetItem* ParentItem = AddedGroups.find(Part->GetGroup())->second;
 
 		if (ParentItem)
 		{
-			QTreeWidgetItem* PieceItem = new QTreeWidgetItem(ParentItem, QStringList(Piece->GetName()));
-			PieceItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled);
-			PieceItem->setData(0, PieceRole, QVariant::fromValue<uintptr_t>((uintptr_t)Piece.get()));
+			QTreeWidgetItem* PartItem = new QTreeWidgetItem(ParentItem, QStringList(Part->GetName()));
+			PartItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled);
+			PartItem->setData(0, PartRole, QVariant::fromValue<uintptr_t>((uintptr_t)Part.get()));
 		}
 	}
 }

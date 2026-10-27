@@ -1,7 +1,7 @@
 #include "sw_global.h"
 #include "sw_model.h"
 #include "sw_model_history.h"
-#include "sw_object_piece.h"
+#include "sw_object_part.h"
 #include "sw_object_camera.h"
 #include "sw_object_light.h"
 #include "sw_group.h"
@@ -12,7 +12,7 @@
 #include "sw_scene.h"
 #include "sw_track_train.h"
 #include "sw_file.h"
-#include "sw_data_piece.h"
+#include "sw_data_part.h"
 #include "sw_view.h"
 #include "sw_builder_minifigure.h"
 #include "sw_dialog_array.h"
@@ -106,45 +106,45 @@ std::vector<QString> swModel::GetAssetSearchDirectories() const
 
 swModel::~swModel()
 {
-	mPreviewInsertPieceInfo.clear();
+	mPreviewInsertPartInfo.clear();
 
-	if (mPieceData)
+	if (mPartData)
 	{
-		if (mPieceData->GetModel() == this)
+		if (mPartData->GetModel() == this)
 		{
-			if (!mIsPreview && gMainWindow && gMainWindow->GetInsertPieceData() == mPieceData)
-				gMainWindow->SetInsertPieceData(nullptr);
+			if (!mIsPreview && gMainWindow && gMainWindow->GetInsertPartData() == mPartData)
+				gMainWindow->SetInsertPartData(nullptr);
 
 			// Keep the name indexed while placements still reference the deleted model.
-			swGetPiecesLibrary()->InvalidatePieceDataLoad(mPieceData.Get());
-			mPieceData->DetachContainer();
-			mPieceData->SetFailed(tr("Model '%1' was deleted.").arg(QString::fromLatin1(mPieceData->mFileName)));
-			swGetPiecesLibrary()->NotifyAssetStatusChanged();
+			swGetPartsLibrary()->InvalidatePartDataLoad(mPartData.Get());
+			mPartData->DetachContainer();
+			mPartData->SetFailed(tr("Model '%1' was deleted.").arg(QString::fromLatin1(mPartData->mFileName)));
+			swGetPartsLibrary()->NotifyAssetStatusChanged();
 		}
 
-		mPieceData.Reset();
+		mPartData.Reset();
 	}
 
 	DeleteModel();
 }
 
-bool swModel::GetPieceWorldMatrix(swPiece* Piece, swMatrix44& ParentWorldMatrix) const
+bool swModel::GetPartWorldMatrix(swPart* Part, swMatrix44& ParentWorldMatrix) const
 {
-	for (const std::unique_ptr<swPiece>& ModelPiece : mPieces)
+	for (const std::unique_ptr<swPart>& ModelPart : mParts)
 	{
-		if (ModelPiece.get() == Piece)
+		if (ModelPart.get() == Part)
 		{
-			ParentWorldMatrix = swMultiply(ModelPiece->mModelWorld, ParentWorldMatrix);
+			ParentWorldMatrix = swMultiply(ModelPart->mModelWorld, ParentWorldMatrix);
 			return true;
 		}
 
-		const swPieceData* PieceData = ModelPiece->mPieceData.Get();
+		const swPartData* PartData = ModelPart->mPartData.Get();
 
-		if (PieceData->IsModel())
+		if (PartData->IsModel())
 		{
-			swMatrix44 WorldMatrix = swMultiply(ModelPiece->mModelWorld, ParentWorldMatrix);
+			swMatrix44 WorldMatrix = swMultiply(ModelPart->mModelWorld, ParentWorldMatrix);
 
-			if (PieceData->GetPieceWorldMatrix(Piece, WorldMatrix))
+			if (PartData->GetPartWorldMatrix(Part, WorldMatrix))
 			{
 				ParentWorldMatrix = WorldMatrix;
 				return true;
@@ -166,11 +166,11 @@ bool swModel::IncludesModel(const swModel* Model) const
 		if (!Current || !Visited.insert(Current).second)
 			return false;
 
-		for (const std::unique_ptr<swPiece>& Piece : Current->mPieces)
+		for (const std::unique_ptr<swPart>& Part : Current->mParts)
 		{
-			const swPieceData* PieceData = Piece->mPieceData.Get();
+			const swPartData* PartData = Part->mPartData.Get();
 
-			if (PieceData && PieceData->IsModel() && Visit(PieceData->GetModel()))
+			if (PartData && PartData->IsModel() && Visit(PartData->GetModel()))
 				return true;
 		}
 
@@ -205,7 +205,7 @@ void swModel::DeleteModel()
 		}
 	}
 
-	mPieces.clear();
+	mParts.clear();
 	mCameras.clear();
 	mLights.clear();
 	mGroups.clear();
@@ -213,30 +213,30 @@ void swModel::DeleteModel()
 	mHasDirectGeometry = false;
 }
 
-void swModel::CreatePieceData(Project* Project)
+void swModel::CreatePartData(Project* Project)
 {
-	swPiecesLibrary* Library = swGetPiecesLibrary();
+	swPartsLibrary* Library = swGetPartsLibrary();
 	bool Reused;
-	mPieceData = Library->AcquireModelPieceData(mProperties.mFileName.toLatin1().constData(), Project, Reused);
-	mPieceData->SetModel(this);
+	mPartData = Library->AcquireModelPartData(mProperties.mFileName.toLatin1().constData(), Project, Reused);
+	mPartData->SetModel(this);
 
 	if (Reused)
 	{
 		// Reusing a referenced name can turn an existing placement into a cycle.
-		mPieces.erase(std::remove_if(mPieces.begin(), mPieces.end(), [this](const std::unique_ptr<swPiece>& Piece)
+		mParts.erase(std::remove_if(mParts.begin(), mParts.end(), [this](const std::unique_ptr<swPart>& Part)
 		{
-			return Piece->mPieceData && Piece->mPieceData->IncludesModel(this);
-		}), mPieces.end());
+			return Part->mPartData && Part->mPartData->IncludesModel(this);
+		}), mParts.end());
 	}
 
-	// The model owns the reference acquired by AcquireModelPieceData(), including while
+	// The model owns the reference acquired by AcquireModelPartData(), including while
 	// mesh requests are deferred until its source lines have been parsed.
 	if (!Project->DefersModelMeshRequests())
 	{
 		if (mIsPreview)
-			Library->RequestPieceDataLoad(mPieceData.Get(), swLoadPriority::Normal);
+			Library->RequestPartDataLoad(mPartData.Get(), swLoadPriority::Normal);
 		else
-			Library->WaitForPieceData(mPieceData);
+			Library->WaitForPartData(mPartData);
 	}
 
 	if (Reused)
@@ -248,13 +248,13 @@ void swModel::CreatePieceData(Project* Project)
 	}
 }
 
-bool swModel::RebindPieceData(swPieceData* Previous, swPieceData* Replacement)
+bool swModel::RebindPartData(swPartData* Previous, swPartData* Replacement)
 {
 	bool Changed = false;
 
-	mPieces.erase(std::remove_if(mPieces.begin(), mPieces.end(), [this, Previous, Replacement, &Changed](const std::unique_ptr<swPiece>& Piece)
+	mParts.erase(std::remove_if(mParts.begin(), mParts.end(), [this, Previous, Replacement, &Changed](const std::unique_ptr<swPart>& Part)
 	{
-		if (Piece->mPieceData != Previous)
+		if (Part->mPartData != Previous)
 			return false;
 
 		Changed = true;
@@ -262,19 +262,19 @@ bool swModel::RebindPieceData(swPieceData* Previous, swPieceData* Replacement)
 		if (Replacement->IncludesModel(this))
 			return true;
 
-		const QString PieceId = Piece->GetID();
-		Piece->SetPieceData(swPieceDataReference(Replacement), PieceId, false, false);
+		const QString PartId = Part->GetID();
+		Part->SetPartData(swPartDataReference(Replacement), PartId, false, false);
 
 		return false;
-	}), mPieces.end());
+	}), mParts.end());
 
 	return Changed;
 }
 
 void swModel::QueueMeshBuild()
 {
-	mPieceData->SetModel(this);
-	swGetPiecesLibrary()->RebuildModelPieceData(mPieceData.Get());
+	mPartData->SetModel(this);
+	swGetPartsLibrary()->RebuildModelPartData(mPartData.Get());
 }
 
 void swModel::UpdateAllViews() const
@@ -291,43 +291,43 @@ void swModel::RefreshPreview() const
 		gMainWindow->GetPreviewWidget()->RefreshModel(this);
 }
 
-std::vector<swPieceDataReference> swModel::GetRequiredPieceData() const
+std::vector<swPartDataReference> swModel::GetRequiredPartData() const
 {
-	std::vector<swPieceDataReference> RequiredPieceData;
+	std::vector<swPartDataReference> RequiredPartData;
 	std::unordered_set<const swModel*> Visited;
 
-	const std::function<void(const swModel*)> Collect = [&RequiredPieceData, &Visited, &Collect](const swModel* Model)
+	const std::function<void(const swModel*)> Collect = [&RequiredPartData, &Visited, &Collect](const swModel* Model)
 	{
 		if (!Model || !Visited.insert(Model).second)
 			return;
 
-		if (Model->mPieceData)
-			RequiredPieceData.push_back(Model->mPieceData);
+		if (Model->mPartData)
+			RequiredPartData.push_back(Model->mPartData);
 
-		for (const std::unique_ptr<swPiece>& Piece : Model->mPieces)
+		for (const std::unique_ptr<swPart>& Part : Model->mParts)
 		{
-			const swPieceDataReference& PieceData = Piece->mPieceData;
+			const swPartDataReference& PartData = Part->mPartData;
 
-			if (PieceData->IsModel())
-				Collect(PieceData->GetModel());
-			else if (PieceData->IsProject())
-				Collect(PieceData->GetProject()->GetMainModel());
+			if (PartData->IsModel())
+				Collect(PartData->GetModel());
+			else if (PartData->IsProject())
+				Collect(PartData->GetProject()->GetMainModel());
 			else
-				RequiredPieceData.push_back(PieceData);
+				RequiredPartData.push_back(PartData);
 		}
 	};
 
 	Collect(this);
 
-	std::sort(RequiredPieceData.begin(), RequiredPieceData.end());
-	RequiredPieceData.erase(std::unique(RequiredPieceData.begin(), RequiredPieceData.end()), RequiredPieceData.end());
+	std::sort(RequiredPartData.begin(), RequiredPartData.end());
+	RequiredPartData.erase(std::unique(RequiredPartData.begin(), RequiredPartData.end()), RequiredPartData.end());
 
-	return RequiredPieceData;
+	return RequiredPartData;
 }
 
-std::vector<swPiece*> swModel::GetRequiredSynthPieces() const
+std::vector<swPart*> swModel::GetRequiredSynthParts() const
 {
-	std::vector<swPiece*> Required;
+	std::vector<swPart*> Required;
 	std::unordered_set<const swModel*> Visited;
 
 	const std::function<void(const swModel*)> Collect = [&Required, &Visited, &Collect](const swModel* Model)
@@ -335,16 +335,16 @@ std::vector<swPiece*> swModel::GetRequiredSynthPieces() const
 		if (!Model || !Visited.insert(Model).second)
 			return;
 
-		for (const std::unique_ptr<swPiece>& Piece : Model->mPieces)
+		for (const std::unique_ptr<swPart>& Part : Model->mParts)
 		{
-			swPieceData* PieceData = Piece->mPieceData.Get();
+			swPartData* PartData = Part->mPartData.Get();
 
-			if (PieceData->IsModel())
-				Collect(PieceData->GetModel());
-			else if (PieceData->IsProject())
-				Collect(PieceData->GetProject()->GetMainModel());
-			else if (PieceData->GetSynthInfo())
-				Required.push_back(Piece.get());
+			if (PartData->IsModel())
+				Collect(PartData->GetModel());
+			else if (PartData->IsProject())
+				Collect(PartData->GetProject()->GetMainModel());
+			else if (PartData->GetSynthInfo())
+				Required.push_back(Part.get());
 		}
 	};
 
@@ -355,23 +355,23 @@ std::vector<swPiece*> swModel::GetRequiredSynthPieces() const
 
 void swModel::WaitForAssets() const
 {
-	const std::vector<swPieceDataReference> RequiredPieceData = GetRequiredPieceData();
-	swPiecesLibrary* Library = swGetPiecesLibrary();
+	const std::vector<swPartDataReference> RequiredPartData = GetRequiredPartData();
+	swPartsLibrary* Library = swGetPartsLibrary();
 
-	swBlockingProgress Progress(tr("Loading"), tr("Loading pieces..."), false);
+	swBlockingProgress Progress(tr("Loading"), tr("Loading parts..."), false);
 
-	Library->WaitForPieceData(RequiredPieceData, [&Progress](int Finished, int Total)
+	Library->WaitForPartData(RequiredPartData, [&Progress](int Finished, int Total)
 	{
 		Progress.SetProgress(Finished, Total);
 	});
 
-	Library->WaitForSynthMeshes(GetRequiredSynthPieces());
+	Library->WaitForSynthMeshes(GetRequiredSynthParts());
 
-	// Temporary minifigure and thumbnail models have no container piece to update.
-	if (mPieceData)
+	// Temporary minifigure and thumbnail models have no container part to update.
+	if (mPartData)
 	{
 		std::vector<swModel*> UpdatedModels;
-		const_cast<swModel*>(this)->UpdatePieceData(UpdatedModels);
+		const_cast<swModel*>(this)->UpdatePartData(UpdatedModels);
 	}
 }
 
@@ -379,31 +379,31 @@ swResult<void> swModel::EnsureAssetsReady() const
 {
 	WaitForAssets();
 
-	const std::vector<swPieceDataReference> RequiredPieceData = GetRequiredPieceData();
-	swPiecesLibrary* Library = swGetPiecesLibrary();
+	const std::vector<swPartDataReference> RequiredPartData = GetRequiredPartData();
+	swPartsLibrary* Library = swGetPartsLibrary();
 
-	for (const swPieceDataReference& RequiredData : RequiredPieceData)
+	for (const swPartDataReference& RequiredData : RequiredPartData)
 	{
 		if (RequiredData->mState == swAssetState::Loaded)
 			continue;
 
-		const QString Error = Library->GetPieceDataLoadError(RequiredData.Get());
+		const QString Error = Library->GetPartDataLoadError(RequiredData.Get());
 
 		if (!Error.isEmpty())
 			return swUnexpected(Error);
 
-		return swUnexpected(tr("Could not load all required pieces."));
+		return swUnexpected(tr("Could not load all required parts."));
 	}
 
-	const std::vector<swPiece*> GeneratedPieces = GetRequiredSynthPieces();
+	const std::vector<swPart*> GeneratedParts = GetRequiredSynthParts();
 
-	for (const swPiece* Piece : GeneratedPieces)
-		if (!Piece->HasGeneratedMesh())
+	for (const swPart* Part : GeneratedParts)
+		if (!Part->HasGeneratedMesh())
 		{
-			QString Error = Library->GetSynthMeshError(Piece);
+			QString Error = Library->GetSynthMeshError(Part);
 
 			if (Error.isEmpty())
-				Error = tr("Could not generate geometry for piece '%1'.").arg(QString::fromLatin1(Piece->mPieceData->mFileName));
+				Error = tr("Could not generate geometry for part '%1'.").arg(QString::fromLatin1(Part->mPartData->mFileName));
 
 			return swUnexpected(Error);
 		}
@@ -411,30 +411,30 @@ swResult<void> swModel::EnsureAssetsReady() const
 	return swResult<void>();
 }
 
-void swModel::UpdatePieceData(std::vector<swModel*>& UpdatedModels)
+void swModel::UpdatePartData(std::vector<swModel*>& UpdatedModels)
 {
 	if (std::find(UpdatedModels.begin(), UpdatedModels.end(), this) != UpdatedModels.end())
 		return;
 
-	mPieceData->SetModel(this);
+	mPartData->SetModel(this);
 	UpdatedModels.push_back(this);
 
-	const swMesh* Mesh = mPieceData->GetDisplayMesh();
+	const swMesh* Mesh = mPartData->GetDisplayMesh();
 
-	if (mPieces.empty() && !Mesh)
+	if (mParts.empty() && !Mesh)
 	{
-		mPieceData->SetBoundingBox(swVector3(0.0f, 0.0f, 0.0f), swVector3(0.0f, 0.0f, 0.0f));
+		mPartData->SetBoundingBox(swVector3(0.0f, 0.0f, 0.0f), swVector3(0.0f, 0.0f, 0.0f));
 		return;
 	}
 
 	swVector3 Min(FLT_MAX, FLT_MAX, FLT_MAX), Max(-FLT_MAX, -FLT_MAX, -FLT_MAX);
 
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
+	for (const std::unique_ptr<swPart>& Part : mParts)
 	{
-		if (Piece->IsVisibleInSubModel())
+		if (Part->IsVisibleInSubModel())
 		{
-			Piece->mPieceData->UpdateBoundingBox(UpdatedModels);
-			Piece->CompareBoundingBox(Min, Max);
+			Part->mPartData->UpdateBoundingBox(UpdatedModels);
+			Part->CompareBoundingBox(Min, Max);
 		}
 	}
 
@@ -444,7 +444,7 @@ void swModel::UpdatePieceData(std::vector<swModel*>& UpdatedModels)
 		Max = swMaximum(Max, Mesh->mBoundingBox.Max);
 	}
 
-	mPieceData->SetBoundingBox(Min, Max);
+	mPartData->SetBoundingBox(Min, Max);
 }
 
 void swModel::SetActive(bool Active)
@@ -455,8 +455,8 @@ void swModel::SetActive(bool Active)
 
 void swModel::CalculateStep(swStep Step)
 {
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
-		Piece->UpdatePosition(Step);
+	for (const std::unique_ptr<swPart>& Part : mParts)
+		Part->UpdatePosition(Step);
 
 	for (std::unique_ptr<swCamera>& Camera : mCameras)
 		Camera->UpdatePosition(Step);
@@ -521,8 +521,8 @@ swStep swModel::GetLastStep() const
 {
 	swStep Step = 1;
 
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
-		Step = swMaximum(Step, Piece->GetLastStep());
+	for (const std::unique_ptr<swPart>& Part : mParts)
+		Step = swMaximum(Step, Part->GetLastStep());
 
 	for (const std::unique_ptr<swCamera>& Camera : mCameras)
 		Step = swMaximum(Step, Camera->GetLastStep());
@@ -535,8 +535,8 @@ swStep swModel::GetLastStep() const
 
 void swModel::InsertStep(swStep Step)
 {
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
-		Piece->InsertTime(Step, 1);
+	for (const std::unique_ptr<swPart>& Part : mParts)
+		Part->InsertTime(Step, 1);
 
 	for (std::unique_ptr<swCamera>& Camera : mCameras)
 		Camera->InsertTime(Step, 1);
@@ -636,8 +636,8 @@ void swModel::RemoveStepAction(swStep Step)
 	BeginHistorySequence();
 	BeginEditHistory();
 
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
-		Piece->RemoveTime(Step, 1);
+	for (const std::unique_ptr<swPart>& Part : mParts)
+		Part->RemoveTime(Step, 1);
 
 	for (std::unique_ptr<swCamera>& Camera : mCameras)
 		Camera->RemoveTime(Step, 1);
@@ -652,45 +652,45 @@ void swModel::RemoveStepAction(swStep Step)
 	SetCurrentStep(mCurrentStep);
 }
 
-void swModel::GetPiecesList(int DefaultColorIndex, bool ScanSubModels, bool AddSubModels, swPiecesList& PiecesList) const
+void swModel::GetPartsList(int DefaultColorIndex, bool ScanSubModels, bool AddSubModels, swPartsList& PartsList) const
 {
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
+	for (const std::unique_ptr<swPart>& Part : mParts)
 	{
-		if (!Piece->IsVisibleInSubModel())
+		if (!Part->IsVisibleInSubModel())
 			continue;
 
-		int ColorIndex = Piece->GetColorIndex();
+		int ColorIndex = Part->GetColorIndex();
 
 		if (ColorIndex == gDefaultColor)
 			ColorIndex = DefaultColorIndex;
 
-		Piece->mPieceData->GetPiecesList(ColorIndex, ScanSubModels, AddSubModels, PiecesList);
+		Part->mPartData->GetPartsList(ColorIndex, ScanSubModels, AddSubModels, PartsList);
 	}
 }
 
-void swModel::GetPiecesListForStep(swStep Step, int DefaultColorIndex, swPiecesList& PiecesList, bool Cumulative) const
+void swModel::GetPartsListForStep(swStep Step, int DefaultColorIndex, swPartsList& PartsList, bool Cumulative) const
 {
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
+	for (const std::unique_ptr<swPart>& Part : mParts)
 	{
-		if (Cumulative ? Piece->GetStepShow() > Step : Piece->GetStepShow() != Step || Piece->IsHidden())
+		if (Cumulative ? Part->GetStepShow() > Step : Part->GetStepShow() != Step || Part->IsHidden())
 			continue;
 
-		int ColorIndex = Piece->GetColorIndex();
+		int ColorIndex = Part->GetColorIndex();
 
 		if (ColorIndex == gDefaultColor)
 			ColorIndex = DefaultColorIndex;
 
-		Piece->mPieceData->GetPiecesList(ColorIndex, false, true, PiecesList);
+		Part->mPartData->GetPartsList(ColorIndex, false, true, PartsList);
 	}
 }
 
-void swModel::GetModelPieces(const swMatrix44& WorldMatrix, int DefaultColorIndex, std::vector<swModelPiecesEntry>& ModelPieces) const
+void swModel::GetModelParts(const swMatrix44& WorldMatrix, int DefaultColorIndex, std::vector<swModelPartsEntry>& ModelParts) const
 {
-	if (mHasDirectGeometry && mPieceData->GetMesh())
-		ModelPieces.emplace_back(swModelPiecesEntry{ WorldMatrix, mPieceData.Get(), mPieceData->GetMesh(), DefaultColorIndex });
+	if (mHasDirectGeometry && mPartData->GetMesh())
+		ModelParts.emplace_back(swModelPartsEntry{ WorldMatrix, mPartData.Get(), mPartData->GetMesh(), DefaultColorIndex });
 
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
-		Piece->GetModelPieces(WorldMatrix, DefaultColorIndex, ModelPieces);
+	for (const std::unique_ptr<swPart>& Part : mParts)
+		Part->GetModelParts(WorldMatrix, DefaultColorIndex, ModelParts);
 }
 
 void swModel::ShowPropertiesDialog()
@@ -698,9 +698,9 @@ void swModel::ShowPropertiesDialog()
 	swPropertiesDialogOptions Options;
 
 	Options.Properties = mProperties;
-	Options.BoundingBox = GetAllPiecesBoundingBox();
+	Options.BoundingBox = GetAllPartsBoundingBox();
 
-	GetPiecesList(gDefaultColor, true, false, Options.PiecesList);
+	GetPartsList(gDefaultColor, true, false, Options.PartsList);
 
 	swPropertiesDialog Dialog(gMainWindow, &Options);
 	if (Dialog.exec() != QDialog::Accepted)
@@ -718,9 +718,9 @@ void swModel::ShowArrayDialog()
 {
 	swVector3 Center;
 
-	if (!GetPieceFocusOrSelectionCenter(Center))
+	if (!GetPartFocusOrSelectionCenter(Center))
 	{
-		QMessageBox::information(gMainWindow, tr("Piece Array"), tr("No pieces selected."));
+		QMessageBox::information(gMainWindow, tr("Part Array"), tr("No parts selected."));
 		return;
 	}
 
@@ -731,14 +731,14 @@ void swModel::ShowArrayDialog()
 
 	if (Dialog.mCounts[0] * Dialog.mCounts[1] * Dialog.mCounts[2] < 2)
 	{
-		QMessageBox::information(gMainWindow, tr("Piece Array"), tr("Array only has 1 element or less. No pieces added."));
+		QMessageBox::information(gMainWindow, tr("Part Array"), tr("Array only has 1 element or less. No parts added."));
 		return;
 	}
 
 	BeginHistorySequence();
 	BeginEditHistory();
 
-	std::vector<swObject*> NewPieces;
+	std::vector<swObject*> NewParts;
 
 	for (int Step1 = 0; Step1 < Dialog.mCounts[0]; Step1++)
 	{
@@ -752,12 +752,12 @@ void swModel::ShowArrayDialog()
 				swVector3 RotationAngles = Dialog.mRotations[0] * Step1 + Dialog.mRotations[1] * Step2 + Dialog.mRotations[2] * Step3;
 				const swVector3 Offset = Dialog.mOffsets[0] * Step1 + Dialog.mOffsets[1] * Step2 + Dialog.mOffsets[2] * Step3;
 
-				for (const std::unique_ptr<swPiece>& Piece : mPieces)
+				for (const std::unique_ptr<swPart>& Part : mParts)
 				{
-					if (!Piece->IsSelected())
+					if (!Part->IsSelected())
 						continue;
 
-					ModelWorld = Piece->mModelWorld;
+					ModelWorld = Part->mModelWorld;
 
 					ModelWorld.r[3] -= swVector4(Center, 0.0f);
 					ModelWorld = swMultiply(ModelWorld, swMatrix44RotationX(RotationAngles[0] * SW_DEGREES_TO_RADIANS));
@@ -768,29 +768,29 @@ void swModel::ShowArrayDialog()
 					Position = swVector3(ModelWorld.r[3].x, ModelWorld.r[3].y, ModelWorld.r[3].z);
 					ModelWorld.SetTranslation(Position + Offset);
 
-					swPiece* NewPiece = new swPiece(nullptr);
-					NewPiece->SetPieceData(Piece->mPieceData, Piece->GetID(), true, true);
-					NewPiece->Initialize(ModelWorld, mCurrentStep);
-					NewPiece->SetColorIndex(Piece->GetColorIndex());
+					swPart* NewPart = new swPart(nullptr);
+					NewPart->SetPartData(Part->mPartData, Part->GetID(), true, true);
+					NewPart->Initialize(ModelWorld, mCurrentStep);
+					NewPart->SetColorIndex(Part->GetColorIndex());
 
-					NewPieces.emplace_back(NewPiece);
+					NewParts.emplace_back(NewPart);
 				}
 			}
 		}
 	}
 
-	for (size_t PieceIdx = 0; PieceIdx < NewPieces.size(); PieceIdx++)
+	for (size_t PartIdx = 0; PartIdx < NewParts.size(); PartIdx++)
 	{
-		swPiece* Piece = (swPiece*)NewPieces[PieceIdx];
-		Piece->UpdatePosition(mCurrentStep);
-		AddPiece(Piece);
+		swPart* Part = (swPart*)NewParts[PartIdx];
+		Part->UpdatePosition(mCurrentStep);
+		AddPart(Part);
 	}
 
 	EndEditHistory();
 
-	AddToSelection(NewPieces);
+	AddToSelection(NewParts);
 
-	EndHistorySequence(tr("Piece Array"));
+	EndHistorySequence(tr("Part Array"));
 
 	gMainWindow->UpdateTimeline(false, false);
 }
@@ -803,29 +803,29 @@ void swModel::AddMinifigure(const swMinifigure& Minifigure)
 	BeginEditHistory();
 
 	swGroup* Group = AddGroup(tr("Minifigure "), nullptr);
-	std::vector<swObject*> Pieces;
+	std::vector<swObject*> Parts;
 
-	Pieces.reserve(SW_MINIFIGURE_ITEM_COUNT);
+	Parts.reserve(SW_MINIFIGURE_ITEM_COUNT);
 
-	for (int PieceIndex = 0; PieceIndex < SW_MINIFIGURE_ITEM_COUNT; PieceIndex++)
+	for (int PartIndex = 0; PartIndex < SW_MINIFIGURE_ITEM_COUNT; PartIndex++)
 	{
-		if (!Minifigure.PieceData[PieceIndex])
+		if (!Minifigure.PartData[PartIndex])
 			continue;
 
-		swPiece* Piece = new swPiece(Minifigure.PieceData[PieceIndex]);
+		swPart* Part = new swPart(Minifigure.PartData[PartIndex]);
 
-		Piece->Initialize(Minifigure.Matrices[PieceIndex], mCurrentStep);
-		Piece->SetColorIndex(Minifigure.ColorIndices[PieceIndex]);
-		Piece->SetGroup(Group);
-		AddPiece(Piece);
-		Piece->UpdatePosition(mCurrentStep);
+		Part->Initialize(Minifigure.Matrices[PartIndex], mCurrentStep);
+		Part->SetColorIndex(Minifigure.ColorIndices[PartIndex]);
+		Part->SetGroup(Group);
+		AddPart(Part);
+		Part->UpdatePosition(mCurrentStep);
 
-		Pieces.emplace_back(Piece);
+		Parts.emplace_back(Part);
 	}
 
 	EndEditHistory();
 
-	SetSelectionAndFocus(Pieces, nullptr, 0, swSelectionMode::Single);
+	SetSelectionAndFocus(Parts, nullptr, 0, swSelectionMode::Single);
 
 	EndHistorySequence(tr("Add Minifigure"));
 
@@ -836,35 +836,35 @@ void swModel::SetMinifigure(const swMinifigure& Minifigure)
 {
 	DeleteModel();
 
-	std::vector<swObject*> Pieces;
-	Pieces.reserve(SW_MINIFIGURE_ITEM_COUNT);
+	std::vector<swObject*> Parts;
+	Parts.reserve(SW_MINIFIGURE_ITEM_COUNT);
 
-	for (int PieceIdx = 0; PieceIdx < SW_MINIFIGURE_ITEM_COUNT; PieceIdx++)
+	for (int PartIdx = 0; PartIdx < SW_MINIFIGURE_ITEM_COUNT; PartIdx++)
 	{
-		if (!Minifigure.PieceData[PieceIdx])
+		if (!Minifigure.PartData[PartIdx])
 			continue;
 
-		swPiece* Piece = new swPiece(Minifigure.PieceData[PieceIdx]);
+		swPart* Part = new swPart(Minifigure.PartData[PartIdx]);
 
-		Piece->Initialize(Minifigure.Matrices[PieceIdx], 1);
-		Piece->SetColorIndex(Minifigure.ColorIndices[PieceIdx]);
-		AddPiece(Piece);
-		Piece->UpdatePosition(1);
+		Part->Initialize(Minifigure.Matrices[PartIdx], 1);
+		Part->SetColorIndex(Minifigure.ColorIndices[PartIdx]);
+		AddPart(Part);
+		Part->UpdatePosition(1);
 
-		Pieces.emplace_back(Piece);
+		Parts.emplace_back(Part);
 	}
 }
 
-void swModel::SetPreviewPieceData(swPieceData* PieceData, int ColorIndex)
+void swModel::SetPreviewPartData(swPartData* PartData, int ColorIndex)
 {
 	DeleteModel();
 
-	swPiece* Piece = new swPiece(PieceData);
+	swPart* Part = new swPart(PartData);
 
-	Piece->Initialize(swMatrix44Identity(), 1);
-	Piece->SetColorIndex(ColorIndex);
-	AddPiece(Piece);
-	Piece->UpdatePosition(1);
+	Part->Initialize(swMatrix44Identity(), 1);
+	Part->SetColorIndex(ColorIndex);
+	AddPart(Part);
+	Part->UpdatePosition(1);
 
 	mCurrentStep = SW_STEP_MAXIMUM;
 	CalculateStep(SW_STEP_MAXIMUM);

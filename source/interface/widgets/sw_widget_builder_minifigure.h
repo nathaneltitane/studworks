@@ -27,14 +27,14 @@ protected slots:
 	void TemplateDeleteButtonClicked();
 	void TemplateImportButtonClicked();
 	void TemplateExportButtonClicked();
-	void PieceButtonClicked();
+	void PartButtonClicked();
 	void ColorChanged(int Index);
 	void AngleChanged(double Value);
 
 protected:
 	bool eventFilter(QObject* Object, QEvent* Event) override;
 	void FitPreview();
-	void UpdatePieceButton(int ItemIndex);
+	void UpdatePartButton(int ItemIndex);
 	void OptionsMenuAboutToShow();
 	void UpdateTemplateCombo();
 	void SetCurrentTemplateModified();
@@ -44,7 +44,7 @@ protected:
 	swView* mView;
 	QWidget* mViewWidget = nullptr;
 	std::array<QString, SW_MINIFIGURE_ITEM_COUNT> mSectionNames;
-	std::array<QToolButton*, SW_MINIFIGURE_ITEM_COUNT> mPieceButtons;
+	std::array<QToolButton*, SW_MINIFIGURE_ITEM_COUNT> mPartButtons;
 	std::array<swColorPicker*, SW_MINIFIGURE_ITEM_COUNT> mColorPickers;
 	std::array<swDoubleSpinBox*, SW_MINIFIGURE_ITEM_COUNT> mSpinBoxes;
 

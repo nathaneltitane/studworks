@@ -3,7 +3,7 @@
 #include "sw_dialog_select.h"
 #include "ui_sw_dialog_select.h"
 #include "sw_model.h"
-#include "sw_object_piece.h"
+#include "sw_object_part.h"
 #include "sw_object_camera.h"
 #include "sw_object_light.h"
 #include "sw_group.h"
@@ -187,17 +187,17 @@ void swSelectDialog::AddChildren(QTreeWidgetItem* ParentItem, swGroup* ParentGro
 		AddChildren(GroupItem, Group.get(), Model);
 	}
 
-	const std::vector<std::unique_ptr<swPiece>>& Pieces = Model->GetPieces();
+	const std::vector<std::unique_ptr<swPart>>& Parts = Model->GetParts();
 	swStep currentStep = Model->GetCurrentStep();
 
-	for (const std::unique_ptr<swPiece>& Piece : Pieces)
+	for (const std::unique_ptr<swPart>& Part : Parts)
 	{
-		if (Piece->GetGroup() != ParentGroup || !Piece->IsVisible(currentStep))
+		if (Part->GetGroup() != ParentGroup || !Part->IsVisible(currentStep))
 			continue;
 
-		QTreeWidgetItem* PieceItem = new QTreeWidgetItem(ParentItem, QStringList(Piece->GetName()));
-		PieceItem->setData(0, IndexRole, QVariant::fromValue<uintptr_t>((uintptr_t)Piece.get()));
-		PieceItem->setCheckState(0, Piece->IsSelected() ? Qt::Checked : Qt::Unchecked);
+		QTreeWidgetItem* PartItem = new QTreeWidgetItem(ParentItem, QStringList(Part->GetName()));
+		PartItem->setData(0, IndexRole, QVariant::fromValue<uintptr_t>((uintptr_t)Part.get()));
+		PartItem->setCheckState(0, Part->IsSelected() ? Qt::Checked : Qt::Unchecked);
 	}
 
 	if (!ParentGroup)

@@ -237,7 +237,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="369"/>
-        <source>Edit.SelectPiece</source>
+        <source>Edit.SelectPart</source>
         <translation>Upravit.Vybrat díl</translation>
     </message>
     <message>
@@ -247,7 +247,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="385"/>
-        <source>Edit.SelectPieceColor</source>
+        <source>Edit.SelectPartColor</source>
         <translatorcomment>TODO</translatorcomment>
         <translation>Upravit.Vybrat barvu dílu</translation>
     </message>
@@ -1045,22 +1045,22 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1577"/>
-        <source>Piece.InsertColor.Current</source>
+        <source>Part.InsertColor.Current</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1585"/>
-        <source>Piece.InsertColor.Selected</source>
+        <source>Part.InsertColor.Selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1593"/>
-        <source>Piece.InsertColor.LastInserted</source>
+        <source>Part.InsertColor.LastInserted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1601"/>
-        <source>View.Pieces.ToggleLockColor</source>
+        <source>View.Parts.ToggleLockColor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1085,7 +1085,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1641"/>
-        <source>View.ToggleHighlightNewPieces</source>
+        <source>View.ToggleHighlightNewParts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1210,32 +1210,32 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1841"/>
-        <source>View.Pieces.ToggleSyncRendering</source>
+        <source>View.Parts.ToggleSyncRendering</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1849"/>
-        <source>View.Pieces.Shade.Wireframe</source>
+        <source>View.Parts.Shade.Wireframe</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1857"/>
-        <source>View.Pieces.Shade.Flat</source>
+        <source>View.Parts.Shade.Flat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1865"/>
-        <source>View.Pieces.Shade.DefaultLights</source>
+        <source>View.Parts.Shade.DefaultLights</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1873"/>
-        <source>View.Pieces.ToggleEdgeLines</source>
+        <source>View.Parts.ToggleEdgeLines</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1881"/>
-        <source>View.Pieces.ToggleConditionalLines</source>
+        <source>View.Parts.ToggleConditionalLines</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1270,7 +1270,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1937"/>
-        <source>View.Pieces.ToggleSnapToTiles</source>
+        <source>View.Parts.ToggleSnapToTiles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1285,7 +1285,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1961"/>
-        <source>File.ToggleLoadPiecesBeforeShowing</source>
+        <source>File.ToggleLoadPartsBeforeShowing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1295,221 +1295,221 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1977"/>
-        <source>Piece.Insert</source>
+        <source>Part.Insert</source>
         <translatorcomment>TODO - kousek, kus, část</translatorcomment>
         <translation>Dílek.Vložit</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1985"/>
-        <source>Piece.ToggleFirstPieceAtOrigin</source>
+        <source>Part.ToggleFirstPartAtOrigin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1993"/>
-        <source>Piece.Delete</source>
+        <source>Part.Delete</source>
         <translation>Dílek.Odstranit</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2001"/>
-        <source>Piece.Duplicate</source>
+        <source>Part.Duplicate</source>
         <translation>Dílek.Duplikovat</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2009"/>
-        <source>Piece.PaintSelected</source>
+        <source>Part.PaintSelected</source>
         <translatorcomment>Technical identifier or nonlinguistic text; intentionally retained unchanged.</translatorcomment>
-        <translation type="unfinished">Piece.PaintSelected</translation>
+        <translation type="unfinished">Part.PaintSelected</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2017"/>
-        <source>Piece.ResetPivotPoint</source>
+        <source>Part.ResetPivotPoint</source>
         <translation>Dílek.Vynulovat bod otáčení</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2025"/>
-        <source>Piece.RemoveKeyFrames</source>
+        <source>Part.RemoveKeyFrames</source>
         <translation>Dílek.Odstranit klíčový snímek</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2033"/>
-        <source>Piece.ControlPoint.Insert</source>
+        <source>Part.ControlPoint.Insert</source>
         <translation>Dílek.Kontrolní bod.Vložit</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2041"/>
-        <source>Piece.ControlPoint.Remove</source>
+        <source>Part.ControlPoint.Remove</source>
         <translation>Dílek.Kontrolní bod.Odstranit</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2049"/>
-        <source>Piece.TrainTrack.FocusNext</source>
+        <source>Part.TrainTrack.FocusNext</source>
         <translatorcomment>Technical identifier or nonlinguistic text; intentionally retained unchanged.</translatorcomment>
-        <translation type="unfinished">Piece.TrainTrack.FocusNext</translation>
+        <translation type="unfinished">Part.TrainTrack.FocusNext</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2057"/>
-        <source>Piece.TrainTrack.FocusPrevious</source>
+        <source>Part.TrainTrack.FocusPrevious</source>
         <translatorcomment>Technical identifier or nonlinguistic text; intentionally retained unchanged.</translatorcomment>
-        <translation type="unfinished">Piece.TrainTrack.FocusPrevious</translation>
+        <translation type="unfinished">Part.TrainTrack.FocusPrevious</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2065"/>
-        <source>Piece.TrainTrack.Rotate</source>
+        <source>Part.TrainTrack.Rotate</source>
         <translatorcomment>Technical identifier or nonlinguistic text; intentionally retained unchanged.</translatorcomment>
-        <translation type="unfinished">Piece.TrainTrack.Rotate</translation>
+        <translation type="unfinished">Part.TrainTrack.Rotate</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2073"/>
-        <source>Piece.Move.PlusX</source>
+        <source>Part.Move.PlusX</source>
         <translation>Dílek.Posuny.PlusX</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2081"/>
-        <source>Piece.Move.MinusX</source>
+        <source>Part.Move.MinusX</source>
         <translation>Dílek.Posuny.MinusX</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2089"/>
-        <source>Piece.Move.PlusY</source>
+        <source>Part.Move.PlusY</source>
         <translation>Dílek.Posuny.PlusY</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2097"/>
-        <source>Piece.Move.MinusY</source>
+        <source>Part.Move.MinusY</source>
         <translation>Dílek.Posuny.MinusY</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2105"/>
-        <source>Piece.Move.PlusZ</source>
+        <source>Part.Move.PlusZ</source>
         <translation>Dílek.Posuny.PlusZ</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2113"/>
-        <source>Piece.Move.MinusZ</source>
+        <source>Part.Move.MinusZ</source>
         <translation>Dílek.Posuny.MinusZ</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2121"/>
-        <source>Piece.Rotate.PlusX</source>
+        <source>Part.Rotate.PlusX</source>
         <translation>Dílek.Otočení.PlusX</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2129"/>
-        <source>Piece.Rotate.MinusX</source>
+        <source>Part.Rotate.MinusX</source>
         <translation>Dílek.Otočení.MinusX</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2137"/>
-        <source>Piece.Rotate.PlusY</source>
+        <source>Part.Rotate.PlusY</source>
         <translation>Dílek.Otočení.PlusY</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2145"/>
-        <source>Piece.Rotate.MinusY</source>
+        <source>Part.Rotate.MinusY</source>
         <translation>Dílek.Otočení.MinusY</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2153"/>
-        <source>Piece.Rotate.PlusZ</source>
+        <source>Part.Rotate.PlusZ</source>
         <translation>Dílek.Otočení.PlusZ</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2161"/>
-        <source>Piece.Rotate.MinusZ</source>
+        <source>Part.Rotate.MinusZ</source>
         <translation>Dílek.Otočení.MinusZ</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2169"/>
-        <source>Piece.MinifigureBuilder</source>
+        <source>Part.MinifigureBuilder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Piece.MinifigWizard</source>
+        <source>Part.MinifigWizard</source>
         <translation type="vanished">Dílek.Průvodce Minifig</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2177"/>
-        <source>Piece.Array</source>
+        <source>Part.Array</source>
         <translation>Dílek.Pole</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2185"/>
-        <source>Piece.ViewSelectedModel</source>
+        <source>Part.ViewSelectedModel</source>
         <translation>Dílek.Zobrazit vybraný model</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2193"/>
-        <source>Piece.MoveSelectionToModel</source>
+        <source>Part.MoveSelectionToModel</source>
         <translation>Dílek.Přesunout výběr do modelu</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2201"/>
-        <source>Piece.InlineSelectedModels</source>
+        <source>Part.InlineSelectedModels</source>
         <translation>Dílek.Vložené vybrané modely</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2209"/>
-        <source>Piece.EditSelectedSubmodel</source>
+        <source>Part.EditSelectedSubmodel</source>
         <translation>Dílek.Upravit vybraný podmodel</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2217"/>
-        <source>Piece.EditEndSubmodel</source>
+        <source>Part.EditEndSubmodel</source>
         <translation>Dílek.Upravit koncový podmodel</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2225"/>
-        <source>Piece.Group</source>
+        <source>Part.Group</source>
         <translation>Dílek.Seskupit</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2233"/>
-        <source>Piece.Ungroup</source>
+        <source>Part.Ungroup</source>
         <translation>Dílek.Rozdělit</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2241"/>
-        <source>Piece.GroupAdd</source>
+        <source>Part.GroupAdd</source>
         <translation>Dílek.Přidat skupinu</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2249"/>
-        <source>Piece.GroupRemove</source>
+        <source>Part.GroupRemove</source>
         <translation>Dílek.Odstranit skupinu</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2257"/>
-        <source>Piece.GroupEdit</source>
+        <source>Part.GroupEdit</source>
         <translation>Dílek.Upravit skupinu</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2265"/>
-        <source>Piece.HideSelected</source>
+        <source>Part.HideSelected</source>
         <translation>Dílek.Skrýt vybrané</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2273"/>
-        <source>Piece.HideUnselected</source>
+        <source>Part.HideUnselected</source>
         <translation>Dílek.Skrýt nevybrané</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2281"/>
-        <source>Piece.UnhideSelected</source>
+        <source>Part.UnhideSelected</source>
         <translation>Dílek.Zobrazit vybrané</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2289"/>
-        <source>Piece.UnhideAll</source>
+        <source>Part.UnhideAll</source>
         <translation>Dílek.Zobrazit vše</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2297"/>
-        <source>Piece.ShowEarlier</source>
+        <source>Part.ShowEarlier</source>
         <translation>Dílek.Zobrazit dříve</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2305"/>
-        <source>Piece.ShowLater</source>
+        <source>Part.ShowLater</source>
         <translation>Dílek.Zobrazit později</translation>
     </message>
     <message>
@@ -1772,13 +1772,13 @@
     <name>Checkpoint</name>
     <message>
         <location filename="../../source/core/sw_object.cpp" line="21"/>
-        <source>Change Piece</source>
+        <source>Change Part</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Změnit dílek</translation>
     </message>
     <message>
         <location filename="../../source/core/sw_object.cpp" line="24"/>
-        <source>Change Piece Color</source>
+        <source>Change Part Color</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Změnit barvu dílku</translation>
     </message>
@@ -2208,7 +2208,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="370"/>
-        <source>Piece Selection</source>
+        <source>Part Selection</source>
         <translation>Výběr dílu</translation>
     </message>
     <message>
@@ -2218,7 +2218,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="386"/>
-        <source>Piece and Color Selection</source>
+        <source>Part and Color Selection</source>
         <translation>Výběr dílků a barev</translation>
     </message>
     <message>
@@ -2858,7 +2858,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1298"/>
-        <source>Pieces</source>
+        <source>Parts</source>
         <translation>Části</translation>
     </message>
     <message>
@@ -3043,7 +3043,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1586"/>
-        <source>Insert with Selected Piece Color</source>
+        <source>Insert with Selected Part Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3053,7 +3053,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1602"/>
-        <source>Lock Pieces Color</source>
+        <source>Lock Parts Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3078,7 +3078,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1642"/>
-        <source>Highlight New Pieces</source>
+        <source>Highlight New Parts</source>
         <translation type="unfinished">Zvýrazněte nové kousky</translation>
     </message>
     <message>
@@ -3223,32 +3223,32 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1842"/>
-        <source>Pieces Use Model View Settings</source>
+        <source>Parts Use Model View Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1850"/>
-        <source>Pieces Wireframe</source>
+        <source>Parts Wireframe</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1858"/>
-        <source>Pieces Flat Shading</source>
+        <source>Parts Flat Shading</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1866"/>
-        <source>Pieces Default Lights</source>
+        <source>Parts Default Lights</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1874"/>
-        <source>Pieces Edge Lines</source>
+        <source>Parts Edge Lines</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1882"/>
-        <source>Pieces Conditional Lines</source>
+        <source>Parts Conditional Lines</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3298,7 +3298,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1962"/>
-        <source>Load All Pieces Before Showing</source>
+        <source>Load All Parts Before Showing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3313,7 +3313,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1986"/>
-        <source>Insert First Piece at Origin</source>
+        <source>Insert First Part at Origin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3803,7 +3803,7 @@
     <name>Mouse</name>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2749"/>
-        <source>NewPiece</source>
+        <source>NewPart</source>
         <translatorcomment>TODO</translatorcomment>
         <translation>Nový díl</translation>
     </message>
@@ -3936,7 +3936,7 @@
         <translation type="unfinished">Podmodel s názvem &apos;%1&apos; již existuje, zadejte jedinečný název.</translation>
     </message>
     <message>
-        <source>A piece named &apos;%1&apos; already exists in this project. Please enter a unique name.</source>
+        <source>A part named &apos;%1&apos; already exists in this project. Please enter a unique name.</source>
         <oldsource>A piece named &apos;%1&apos; already exists in this project, please enter a unique name.</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">Kus s názvem &apos;%1&apos; již v tomto projektu existuje, zadejte prosím jedinečný název.</translation>
@@ -3947,7 +3947,7 @@
         <translation>Nový podmodel</translation>
     </message>
     <message>
-        <source>A piece named &apos;%1&apos; already exists in this project.</source>
+        <source>A part named &apos;%1&apos; already exists in this project.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">Položka s názvem &apos;%1&apos; již v tomto projektu existuje.</translation>
     </message>
@@ -4029,7 +4029,7 @@ Formát souboru není rozpoznán.</translation>
         <translation type="obsolete">Oba projekty obsahují různá vložená data s názvem &apos;%1&apos;. Před sloučením jeden přejmenujte.</translation>
     </message>
     <message>
-        <source>Both projects contain different pieces named &apos;%1&apos;. Rename one before merging.</source>
+        <source>Both projects contain different parts named &apos;%1&apos;. Rename one before merging.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">Oba projekty obsahují různé dílky s názvem &apos;%1&apos;. Před sloučením jeden přejmenujte.</translation>
     </message>
@@ -4060,7 +4060,7 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/core/sw_project.cpp" line="283"/>
-        <source>A piece named &apos;%1&apos; already exists in this model. Please enter a unique name.</source>
+        <source>A part named &apos;%1&apos; already exists in this model. Please enter a unique name.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4075,7 +4075,7 @@ Formát souboru není rozpoznán.</translation>
         <location filename="../../source/core/sw_project.cpp" line="367"/>
         <location filename="../../source/core/sw_project.cpp" line="394"/>
         <location filename="../../source/core/sw_project.cpp" line="451"/>
-        <source>A piece named &apos;%1&apos; already exists in this model.</source>
+        <source>A part named &apos;%1&apos; already exists in this model.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4094,7 +4094,7 @@ Formát souboru není rozpoznán.</translation>
     <message>
         <location filename="../../source/core/sw_project.cpp" line="1524"/>
         <location filename="../../source/core/sw_project.cpp" line="1536"/>
-        <source>Both models contain different pieces named &apos;%1&apos;. Rename one before merging.</source>
+        <source>Both models contain different parts named &apos;%1&apos;. Rename one before merging.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4202,7 +4202,7 @@ Formát souboru není rozpoznán.</translation>
         <location filename="../../source/core/sw_project_export.cpp" line="1099"/>
         <location filename="../../source/core/sw_project_export.cpp" line="1136"/>
         <location filename="../../source/core/sw_project_export.cpp" line="1211"/>
-        <source>Pieces Used</source>
+        <source>Parts Used</source>
         <translation type="unfinished">Použité díly</translation>
     </message>
     <message>
@@ -4229,7 +4229,7 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/core/sw_project_export.cpp" line="1151"/>
-        <source>Pieces used by %1</source>
+        <source>Parts used by %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4461,13 +4461,13 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="77"/>
-        <source>Add Piece Gap</source>
+        <source>Add Part Gap</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Přidejte mezeru mezi dílky</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="77"/>
-        <source>Add a small space between each piece</source>
+        <source>Add a small space between each part</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Mezi každý dílek přidejte malou mezeru</translation>
     </message>
@@ -4498,19 +4498,19 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="159"/>
-        <source>Adds a keyframe that shows the piece at the moment in the timeline</source>
+        <source>Adds a keyframe that shows the part at the moment in the timeline</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Přidá klíčový snímek, který na časové ose zobrazuje daný moment</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="107"/>
-        <source>Amount of space between each piece (default 0.2mm)</source>
+        <source>Amount of space between each part (default 0.2mm)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Velikost mezery mezi každým dílkem (výchozí 0,2 mm)</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="199"/>
-        <source>Apply import scaling to mesh - Recommended for rendering, Apply import scaling to object - Recommended for piece editing</source>
+        <source>Apply import scaling to mesh - Recommended for rendering, Apply import scaling to object - Recommended for part editing</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Použít měřítko importu na síť – doporučeno pro vykreslování, Použít měřítko importu na objekt – doporučeno pro úpravy dílků</translation>
     </message>
@@ -4548,7 +4548,7 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="139"/>
-        <source>Bevel edges. Can cause some pieces to render incorrectly.</source>
+        <source>Bevel edges. Can cause some parts to render incorrectly.</source>
         <oldsource>Bevel edges. Can cause some pieces to render incorrectly</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Zkosené hrany. Může způsobit nesprávné vykreslení některých dílků</translation>
@@ -4728,9 +4728,9 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="114"/>
-        <source>Flex Pieces Source</source>
+        <source>Flex Parts Source</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Zdroj Flex Pieces</translation>
+        <translation type="unfinished">Zdroj Flex Parts</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="194"/>
@@ -4759,13 +4759,13 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="67"/>
-        <source>Full directory path to stud logo primitives - if stud logo enabled, specify if unofficial pieces not used or not using default bundled in add-on</source>
+        <source>Full directory path to stud logo primitives - if stud logo enabled, specify if unofficial parts not used or not using default bundled in add-on</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Úplná cesta k adresáři k primitivům loga hřebíků – pokud je povoleno logo hřebu, určete, zda se neoficiální dílky nepoužívají nebo nepoužívají výchozí přibalené v doplňku</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="65"/>
-        <source>Full directory path to the LDraw pieces library (download from https://library.ldraw.org)</source>
+        <source>Full directory path to the LDraw parts library (download from https://library.ldraw.org)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Úplná cesta k adresáři ke knihovně dílků LDraw (stáhnout z https://library.ldraw.org)</translation>
     </message>
@@ -4795,15 +4795,15 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="69"/>
-        <source>Full file path to the Stud.io LDraw Custom Pieces</source>
+        <source>Full file path to the Stud.io LDraw Custom Parts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Úplná cesta k souboru Stud.io LDraw Custom Pieces</translation>
+        <translation type="unfinished">Úplná cesta k souboru Stud.io LDraw Custom Parts</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="68"/>
-        <source>Full file path to the Stud.io LDraw Pieces Library (download from https://www.bricklink.com/v3/studio/download.page)</source>
+        <source>Full file path to the Stud.io LDraw Parts Library (download from https://www.bricklink.com/v3/studio/download.page)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Úplná cesta k souboru do Stud.io LDraw Pieces Library (stáhnout z https://www.bricklink.com/v3/studio/download.page)</translation>
+        <translation type="unfinished">Úplná cesta k souboru do Stud.io LDraw Parts Library (stáhnout z https://www.bricklink.com/v3/studio/download.page)</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="155"/>
@@ -4825,20 +4825,20 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="154"/>
-        <source>Hides all pieces in the timeline up to where this command is encountered</source>
+        <source>Hides all parts in the timeline up to where this command is encountered</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Skryje všechny části na časové ose až do místa, kde se setkáte s tímto příkazem</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="199"/>
-        <source>How to Scale Pieces</source>
+        <source>How to Scale Parts</source>
         <oldsource>How To Scale Pieces</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Jak škálovat dílky</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="87"/>
-        <source>Identical pieces (of the same type and color) share the same mesh</source>
+        <source>Identical parts (of the same type and color) share the same mesh</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Identické dílky (stejného typu a barvy) sdílejí stejnou síť</translation>
     </message>
@@ -4896,7 +4896,7 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="82"/>
-        <source>In Scene Outline, all pieces are placed directly below the root - there&apos;s no tree of submodels</source>
+        <source>In Scene Outline, all parts are placed directly below the root - there&apos;s no tree of submodels</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ve Scene Outline jsou všechny díly umístěny přímo pod kořenem – není zde žádný strom podmodelů</translation>
     </message>
@@ -4933,9 +4933,9 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="87"/>
-        <source>Link Like Pieces</source>
+        <source>Link Like Parts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Link Like Pieces</translation>
+        <translation type="unfinished">Link Like Parts</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="115"/>
@@ -5098,7 +5098,7 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="88"/>
-        <source>Pieces of minifigs are automatically parented to each other in a hierarchy</source>
+        <source>Parts of minifigs are automatically parented to each other in a hierarchy</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Kusy minifigů jsou automaticky přiřazeny k sobě v hierarchii</translation>
     </message>
@@ -5130,7 +5130,7 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="167"/>
-        <source>Prefer Unofficial Pieces</source>
+        <source>Prefer Unofficial Parts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Preferujte neoficiální kousky</translation>
     </message>
@@ -5239,7 +5239,7 @@ Formát souboru není rozpoznán.</translation>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="118"/>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="198"/>
-        <source>Resolution of piece primitives, i.e., how much geometry they have</source>
+        <source>Resolution of part primitives, i.e., how much geometry they have</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Rozlišení kusových primitiv, tj. jak velkou geometrii mají</translation>
     </message>
@@ -5282,7 +5282,7 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="188"/>
-        <source>Scale individual pieces by this much to create the gap</source>
+        <source>Scale individual parts by this much to create the gap</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Změřte jednotlivé dílky o tolik, abyste vytvořili mezeru</translation>
     </message>
@@ -5295,13 +5295,13 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="166"/>
-        <source>Search for pieces in Stud.io library first</source>
+        <source>Search for parts in Stud.io library first</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Nejprve vyhledejte dílky v knihovně Stud.io</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="167"/>
-        <source>Search for unofficial pieces first</source>
+        <source>Search for unofficial parts first</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Nejprve hledejte neoficiální kousky</translation>
     </message>
@@ -5337,7 +5337,7 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="106"/>
-        <source>Sets the default piece color using LDraw color code</source>
+        <source>Sets the default part color using LDraw color code</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Nastaví výchozí barvu dílku pomocí kódu barvy LDraw</translation>
     </message>
@@ -5394,20 +5394,20 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="210"/>
-        <source>Smooth piece faces with edge split modifier|Auto-smooth piece faces|Split during initial mesh processing</source>
+        <source>Smooth part faces with edge split modifier|Auto-smooth part faces|Split during initial mesh processing</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Hladké plochy dílků s modifikátorem rozdělení hran|Automaticky hladké plochy dílků|Rozdělení během počátečního zpracování sítě</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="119"/>
-        <source>Some older LDraw pieces have faces with ambiguous normals. This specifies what to do with them.</source>
+        <source>Some older LDraw parts have faces with ambiguous normals. This specifies what to do with them.</source>
         <oldsource>Some older LDraw pieces have faces with ambiguous normals, this specifies what to do with them</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Některé starší dílky LDraw mají obličeje s nejednoznačnými normálami, což určuje, co s nimi dělat</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="114"/>
-        <source>Source used to create flexible pieces - string, hoses, etc. (LDCad, LSynth, or both)</source>
+        <source>Source used to create flexible parts - string, hoses, etc. (LDCad, LSynth, or both)</source>
         <oldsource>Source used to create flexible pieces - string, hoses etc. (LDCad, LSynth or both</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Zdroj používaný k vytvoření pružných dílků - provázek, hadic atd. (LDCad, LSynth nebo obojí</translation>
@@ -5455,13 +5455,13 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="100"/>
-        <source>Specify whether to use pieces from the LDraw unofficial pieces library path</source>
+        <source>Specify whether to use parts from the LDraw unofficial parts library path</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Určete, zda se mají použít dílky z neoficiální cesty knihovny dílků LDraw</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="177"/>
-        <source>Split shortcut pieces into their constituent pieces as if they were models</source>
+        <source>Split shortcut parts into their constituent parts as if they were models</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Rozdělte zkratky na jednotlivé části, jako by to byly modely</translation>
     </message>
@@ -5485,7 +5485,7 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="69"/>
-        <source>Stud.io Custom Pieces Path</source>
+        <source>Stud.io Custom Parts Path</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Cesta vlastních dílků Stud.io</translation>
     </message>
@@ -5573,19 +5573,19 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="100"/>
-        <source>Use Unofficial Pieces</source>
+        <source>Use Unofficial Parts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Použijte neoficiální kousky</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="200"/>
-        <source>Use either autosmooth or an edge split modifier to smooth piece faces</source>
+        <source>Use either autosmooth or an edge split modifier to smooth part faces</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">K vyhlazení ploch dílu použijte buď automatické vyhlazení nebo modifikátor rozdělení hran</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="175"/>
-        <source>Use flat or smooth shading for piece faces</source>
+        <source>Use flat or smooth shading for part faces</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Pro tváře dílků použijte ploché nebo hladké stínování</translation>
     </message>
@@ -5657,7 +5657,7 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_page.cpp" line="273"/>
-        <source>Create Pieces List</source>
+        <source>Create Parts List</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Vytvořit seznam dílků</translation>
     </message>
@@ -5710,7 +5710,7 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="82"/>
-        <source>Import all pieces from an official set</source>
+        <source>Import all parts from an official set</source>
         <translation>Importovat všechny součásti z oficiální sady</translation>
     </message>
     <message>
@@ -5730,12 +5730,12 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="114"/>
-        <source>Export a list of pieces used in BrickLink XML format</source>
+        <source>Export a list of parts used in BrickLink XML format</source>
         <translation>Exportovat seznam použitých součástí ve formátu BrickLink XML</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="122"/>
-        <source>Export a list of pieces used in comma delimited file format</source>
+        <source>Export a list of parts used in comma delimited file format</source>
         <translation>Exportovat seznam použitých součástí ve formátu CSV</translation>
     </message>
     <message>
@@ -5830,7 +5830,7 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="331"/>
-        <source>Select all pieces in the model</source>
+        <source>Select all parts in the model</source>
         <translation>Vybrat všechny části modelu</translation>
     </message>
     <message>
@@ -5848,27 +5848,27 @@ Formát souboru není rozpoznán.</translation>
         <translation>Vybrat objekty podle názvu</translation>
     </message>
     <message>
-        <source>Select pieces by color</source>
+        <source>Select parts by color</source>
         <translation type="vanished">Vybrat části podle barvy</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="363"/>
-        <source>Select one piece at a time</source>
+        <source>Select one part at a time</source>
         <translation>Vybrat vždy jeden dílek</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="371"/>
-        <source>Select all pieces of the same type</source>
+        <source>Select all parts of the same type</source>
         <translation>Vybrat všechny dílky stejného typu</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="379"/>
-        <source>Select all pieces of the same color</source>
+        <source>Select all parts of the same color</source>
         <translation>Vybrat všechny kusy stejné barvy</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="387"/>
-        <source>Select all pieces of the same type and color</source>
+        <source>Select all parts of the same type and color</source>
         <translation>Vybrat všechny kusy stejného typu a barvy</translation>
     </message>
     <message>
@@ -5877,7 +5877,7 @@ Formát souboru není rozpoznán.</translation>
         <translation>Přesun a otáčení objektů vzhledem k tomu, který je vybrán</translation>
     </message>
     <message>
-        <source>Rotate pieces around their individual pivot point</source>
+        <source>Rotate parts around their individual pivot point</source>
         <translation type="vanished">Otočit dílky kolem svého vlastnho otočného bodu</translation>
     </message>
     <message>
@@ -5894,43 +5894,43 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="275"/>
-        <source>Find piece</source>
+        <source>Find part</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Najděte kousek</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="283"/>
-        <source>Find next piece</source>
+        <source>Find next part</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Najděte další díl</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="291"/>
-        <source>Find previous piece</source>
+        <source>Find previous part</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Najděte předchozí díl</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="299"/>
-        <source>Find all pieces that match the search criteria</source>
+        <source>Find all parts that match the search criteria</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Najděte všechny dílky, které odpovídají kritériím vyhledávání</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="307"/>
-        <source>Replace piece</source>
+        <source>Replace part</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Vyměňte dílek</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="315"/>
-        <source>Replace next piece</source>
+        <source>Replace next part</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Vyměňte další dílek</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="323"/>
-        <source>Replace all pieces that match the search criteria</source>
+        <source>Replace all parts that match the search criteria</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Vyměňte všechny dílky, které odpovídají kritériím vyhledávání</translation>
     </message>
@@ -5954,19 +5954,19 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="419"/>
-        <source>Rotate selected pieces separately</source>
+        <source>Rotate selected parts separately</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Otočte vybrané dílky samostatně</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="427"/>
-        <source>Rotate selected pieces together</source>
+        <source>Rotate selected parts together</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Otočte vybrané dílky dohromady</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="435"/>
-        <source>Toggle rotating selected pieces separately</source>
+        <source>Toggle rotating selected parts separately</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Samostatně přepínat otáčení vybraných dílků</translation>
     </message>
@@ -6166,7 +6166,7 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="755"/>
-        <source>Add new pieces to the model</source>
+        <source>Add new parts to the model</source>
         <translation>Přidejte do modelu nové dílky</translation>
     </message>
     <message>
@@ -6195,7 +6195,7 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="819"/>
-        <source>Rotate selected pieces</source>
+        <source>Rotate selected parts</source>
         <translation>Otočit vybrané dílky</translation>
     </message>
     <message>
@@ -6205,12 +6205,12 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="835"/>
-        <source>Change piece color</source>
+        <source>Change part color</source>
         <translation>Změni barvu dílků</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="843"/>
-        <source>Get piece color</source>
+        <source>Get part color</source>
         <translation>Získat barvu dílku</translation>
     </message>
     <message>
@@ -6259,12 +6259,12 @@ Formát souboru není rozpoznán.</translation>
         <translation>Oddálit</translation>
     </message>
     <message>
-        <source>Fit all pieces in the current view (hold the CTRL key down to zoom all views)</source>
+        <source>Fit all parts in the current view (hold the CTRL key down to zoom all views)</source>
         <translation type="vanished">Přizpůsobit všechny dílky v aktuálním pohledu (stisknutím klávesy CTRL zvětšíte všechna zobrazení)</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="931"/>
-        <source>Rotate view so selected pieces are at center</source>
+        <source>Rotate view so selected parts are at center</source>
         <translation>Otočit pohled tak, aby vybrané dílky byly ve středu</translation>
     </message>
     <message>
@@ -6443,7 +6443,7 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="923"/>
-        <source>Fit all pieces in the current view</source>
+        <source>Fit all parts in the current view</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Zobrazit všechny díly v aktuálním pohledu</translation>
     </message>
@@ -6495,7 +6495,7 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1299"/>
-        <source>Toggle the Pieces Toolbar</source>
+        <source>Toggle the Parts Toolbar</source>
         <translation>Přepnout panel částí</translation>
     </message>
     <message>
@@ -6674,22 +6674,22 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1579"/>
-        <source>Insert new pieces with the current color</source>
+        <source>Insert new parts with the current color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1587"/>
-        <source>Insert new pieces with the color of the selected piece</source>
+        <source>Insert new parts with the color of the selected part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1595"/>
-        <source>Insert new pieces with the color of the last inserted piece</source>
+        <source>Insert new parts with the color of the last inserted part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1603"/>
-        <source>Toggle keeping the pieces list in a fixed color instead of following the insert color</source>
+        <source>Toggle keeping the parts list in a fixed color instead of following the insert color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6704,17 +6704,17 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1627"/>
-        <source>Toggle moving pieces along fixed model axes instead of view-relative directions</source>
+        <source>Toggle moving parts along fixed model axes instead of view-relative directions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1635"/>
-        <source>Toggle using simpler meshes for distant pieces</source>
+        <source>Toggle using simpler meshes for distant parts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1643"/>
-        <source>Toggle highlighting pieces added in the current step</source>
+        <source>Toggle highlighting parts added in the current step</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6734,17 +6734,17 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1675"/>
-        <source>Toggle automatically computing piece edge colors</source>
+        <source>Toggle automatically computing part edge colors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1683"/>
-        <source>Highlight selected and new pieces with outlines</source>
+        <source>Highlight selected and new parts with outlines</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1691"/>
-        <source>Highlight selected and new pieces with tinted faces and colored edges</source>
+        <source>Highlight selected and new parts with tinted faces and colored edges</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6809,62 +6809,62 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1795"/>
-        <source>Toggle using the model view rendering settings for the pieces preview</source>
+        <source>Toggle using the model view rendering settings for the parts preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1803"/>
-        <source>Display the pieces preview as wireframe</source>
+        <source>Display the parts preview as wireframe</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1811"/>
-        <source>Display the pieces preview without any shading or lights</source>
+        <source>Display the parts preview without any shading or lights</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1819"/>
-        <source>Display the pieces preview with the default lights</source>
+        <source>Display the parts preview with the default lights</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1827"/>
-        <source>Toggle edge lines in the pieces preview</source>
+        <source>Toggle edge lines in the parts preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1835"/>
-        <source>Toggle conditional lines in the pieces preview</source>
+        <source>Toggle conditional lines in the parts preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1843"/>
-        <source>Toggle using the model view rendering settings for the pieces list</source>
+        <source>Toggle using the model view rendering settings for the parts list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1851"/>
-        <source>Display the pieces list as wireframe</source>
+        <source>Display the parts list as wireframe</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1859"/>
-        <source>Display the pieces list without any shading or lights</source>
+        <source>Display the parts list without any shading or lights</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1867"/>
-        <source>Display the pieces list with the default lights</source>
+        <source>Display the parts list with the default lights</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1875"/>
-        <source>Toggle edge lines in the pieces list</source>
+        <source>Toggle edge lines in the parts list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1883"/>
-        <source>Toggle conditional lines in the pieces list</source>
+        <source>Toggle conditional lines in the parts list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6899,37 +6899,37 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1939"/>
-        <source>Toggle snapping the pieces panel width to whole thumbnail tiles and the categories to the longest name</source>
+        <source>Toggle snapping the parts panel width to whole thumbnail tiles and the categories to the longest name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1947"/>
-        <source>Toggle the view sphere in the pieces preview</source>
+        <source>Toggle the view sphere in the parts preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1955"/>
-        <source>Toggle the axis icon in the pieces preview</source>
+        <source>Toggle the axis icon in the parts preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1963"/>
-        <source>Toggle waiting for every piece to load before showing a model</source>
+        <source>Toggle waiting for every part to load before showing a model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1971"/>
-        <source>Keep the piece preview at a 1:1 ratio</source>
+        <source>Keep the part preview at a 1:1 ratio</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1979"/>
-        <source>Add a new piece to the model</source>
+        <source>Add a new part to the model</source>
         <translation>Přidat nový dílek do modelu</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1987"/>
-        <source>Toggle placing the first piece of an empty model at 0, 0, 0</source>
+        <source>Toggle placing the first part of an empty model at 0, 0, 0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6939,24 +6939,24 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2003"/>
-        <source>Create a copy of the selected pieces</source>
+        <source>Create a copy of the selected parts</source>
         <translation>Vytvořte kopii vybraných dílků</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2011"/>
-        <source>Change the color of the selected pieces</source>
+        <source>Change the color of the selected parts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Změňte barvu vybraných dílků</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2019"/>
-        <source>Reset the pivot point of the selected pieces to their origin</source>
+        <source>Reset the pivot point of the selected parts to their origin</source>
         <translatorcomment>TODO - původ, zdroj, počátek, vznik</translatorcomment>
         <translation>Obnovte bod otáčení vybraných dílků dle jejich původu</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2027"/>
-        <source>Remove all keyframes from the selected pieces</source>
+        <source>Remove all keyframes from the selected parts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6975,7 +6975,7 @@ Formát souboru není rozpoznán.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Remove all key frames from the selected pieces</source>
+        <source>Remove all key frames from the selected parts</source>
         <translation type="vanished">Odstraňte všechny klíčové snímky z vybraných dílků</translation>
     </message>
     <message>
@@ -7063,18 +7063,18 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2179"/>
-        <source>Make copies of the selected pieces</source>
+        <source>Make copies of the selected parts</source>
         <translation>Vytvořit kopie vybraných dílků</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2187"/>
-        <source>Open the model referenced by the selected piece in a new tab</source>
+        <source>Open the model referenced by the selected part in a new tab</source>
         <translatorcomment>TODO</translatorcomment>
         <translation>Otevřete model, na který odkazuje vybraný dílek, na nové kartě</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2195"/>
-        <source>Move the selected pieces to a new model and replace them with a reference to the model</source>
+        <source>Move the selected parts to a new model and replace them with a reference to the model</source>
         <translation>Přesuňte vybrané dílky do nového modelu a nahraďte je odkazem na model</translation>
     </message>
     <message>
@@ -7095,7 +7095,7 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2227"/>
-        <source>Group selected pieces together</source>
+        <source>Group selected parts together</source>
         <translation>Seskupit vybrané dílky dohromady</translation>
     </message>
     <message>
@@ -7105,13 +7105,13 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2243"/>
-        <source>Add focused piece to selected group</source>
+        <source>Add focused part to selected group</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Přidat aktivní dílek do vybrané skupiny</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2251"/>
-        <source>Remove focused piece from group</source>
+        <source>Remove focused part from group</source>
         <translation>Odstranit vybraný kousek ze skupiny</translation>
     </message>
     <message>
@@ -7141,12 +7141,12 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2299"/>
-        <source>Show selected pieces one step earlier</source>
+        <source>Show selected parts one step earlier</source>
         <translation>Zobrazit vybrané dílky o krok dříve</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2307"/>
-        <source>Show selected pieces one step later</source>
+        <source>Show selected parts one step later</source>
         <translation>Zobrazit vybrané dílky o krok později</translation>
     </message>
     <message>
@@ -7223,7 +7223,7 @@ Formát souboru není rozpoznán.</translation>
         <translation type="vanished">Otevřít formulář hlášení chyb StudWorksu ve výchozím webovém prohlížeči</translation>
     </message>
     <message>
-        <source>Check if a newer StudWorks version or pieces library has been released</source>
+        <source>Check if a newer StudWorks version or parts library has been released</source>
         <translation type="vanished">Zkontrolovat, zda nebyla vydána novější verze StudWorksu nebo knihovny součástí</translation>
     </message>
     <message>
@@ -7233,18 +7233,18 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2715"/>
-        <source>Move the selected pieces into this step</source>
+        <source>Move the selected parts into this step</source>
         <translation>Přesunout vybrané části do tohoto kroku</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2723"/>
-        <source>Move the selected pieces into a new step before this</source>
+        <source>Move the selected parts into a new step before this</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Před tím přesuňte vybrané dílky do nového kroku</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2731"/>
-        <source>Move the selected pieces into a new step after this</source>
+        <source>Move the selected parts into a new step after this</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Poté přesuňte vybrané dílky do nového kroku</translation>
     </message>
@@ -7338,7 +7338,7 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="756"/>
-        <source>&lt;p&gt;&lt;b&gt;Insert Piece Tool&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a piece in the Pieces dock and a color in Colors, then use this tool in the model view to place the piece. Movement snapping controls placement increments. Use the preview to check placement before inserting the piece.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Insert Part Tool&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a part in the Parts dock and a color in Colors, then use this tool in the model view to place the part. Movement snapping controls placement increments. Use the preview to check placement before inserting the part.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Nástroj Vložit díl&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Vyberte díl v doku Dílů a barvu v Barvách a poté použijte tento nástroj v zobrazení modelu k umístění dílu. Přichycení pohybu řídí přírůstky umístění. Před vložením dílu zkontrolujte umístění pomocí náhledu.&lt;/p&gt;</translation>
     </message>
@@ -7374,7 +7374,7 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="804"/>
-        <source>&lt;p&gt;&lt;b&gt;Select Tool&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Pick objects in the model view or drag a selection rectangle. Selection Mode controls whether matching piece types or colors are included. The focused object provides the reference for relative transforms.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Select Tool&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Pick objects in the model view or drag a selection rectangle. Selection Mode controls whether matching part types or colors are included. The focused object provides the reference for relative transforms.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Nástroj pro výběr&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Vyberte objekty v zobrazení modelu nebo přetáhněte obdélník výběru. Režim výběru řídí, zda jsou zahrnuty odpovídající typy nebo barvy dílů. Zaměřený objekt poskytuje referenci pro relativní transformace.&lt;/p&gt;</translation>
     </message>
@@ -7386,7 +7386,7 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="820"/>
-        <source>&lt;p&gt;&lt;b&gt;Rotate Tool&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select objects, then drag a rotation handle in the model view. Rotation Snap sets the angle increments. Transform Options chooses relative or model axes and whether pieces rotate together or separately.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Rotate Tool&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select objects, then drag a rotation handle in the model view. Rotation Snap sets the angle increments. Transform Options chooses relative or model axes and whether parts rotate together or separately.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Nástroj otočení&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Vyberte objekty a poté přetáhněte úchyt otáčení v pohledu modelu. Rotation Snap nastavuje přírůstky úhlu. Možnosti transformace volí relativní nebo modelové osy a to, zda se díly otáčejí společně nebo samostatně.&lt;/p&gt;</translation>
     </message>
@@ -7398,19 +7398,19 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="836"/>
-        <source>&lt;p&gt;&lt;b&gt;Paint Tool&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose the replacement color in the Colors dock, then click pieces in the model view to recolor them. To recolor the current selection together, use the color button above the swatches.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Paint Tool&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose the replacement color in the Colors dock, then click parts in the model view to recolor them. To recolor the current selection together, use the color button above the swatches.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Nástroj Malování&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Vyberte náhradní barvu v doku Barvy a poté kliknutím na díly v zobrazení modelu je přebarvěte. Chcete-li přebarvit aktuální výběr společně, použijte tlačítko barvy nad vzorníkem.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="844"/>
-        <source>&lt;p&gt;&lt;b&gt;Color Picker Tool&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Click a piece in the model view to make its color the current color. You can then use that color for insertion or painting; sampling it does not recolor the piece.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Color Picker Tool&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Click a part in the model view to make its color the current color. You can then use that color for insertion or painting; sampling it does not recolor the part.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Nástroj pro výběr barvy&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Kliknutím na díl v zobrazení modelu změníte jeho barvu na aktuální barvu. Tuto barvu pak můžete použít pro vkládání nebo malování; vzorkováním se díl nepřebarví.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="852"/>
-        <source>&lt;p&gt;&lt;b&gt;Zoom Tool&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Drag in the model view to move the viewpoint closer to or farther from the model. This changes the view rather than resizing pieces. Use Zoom Region to frame a particular area.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Zoom Tool&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Drag in the model view to move the viewpoint closer to or farther from the model. This changes the view rather than resizing parts. Use Zoom Region to frame a particular area.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Nástroj Lupa&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Přetažením v pohledu modelu přesunete bod pohledu blíže nebo dále od modelu. Tím se změní pohled spíše než změna velikosti dílů. Použijte Zoom Region k orámování konkrétní oblasti.&lt;/p&gt;</translation>
     </message>
@@ -7422,13 +7422,13 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="868"/>
-        <source>&lt;p&gt;&lt;b&gt;Orbit Tool&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Drag to orbit the view around its center and inspect the model from another direction. This rotates the viewpoint rather than the selected pieces; use Rotate for object edits.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Orbit Tool&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Drag to orbit the view around its center and inspect the model from another direction. This rotates the viewpoint rather than the selected parts; use Rotate for object edits.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Nástroj Orbit&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Přetažením můžete obíhat pohled kolem jeho středu a prohlížet model z jiného směru. Tím se otočí hledisko spíše než vybrané díly; pro úpravy objektů použijte Otočit.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="876"/>
-        <source>&lt;p&gt;&lt;b&gt;Roll Tool&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Drag to turn the view around its viewing axis, tilting what appears upright on screen. Model pieces keep their positions and orientations.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Roll Tool&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Drag to turn the view around its viewing axis, tilting what appears upright on screen. Model parts keep their positions and orientations.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Nástroj Roll&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Přetažením otočíte pohled kolem jeho osy zobrazení a nakloníte to, co se na obrazovce objeví svisle. Modelové díly si zachovávají svou polohu a orientaci.&lt;/p&gt;</translation>
     </message>
@@ -7440,19 +7440,19 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1180"/>
-        <source>&lt;p&gt;&lt;b&gt;First Step&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Display the model at its first building step. Step navigation changes which pieces are visible; it does not move pieces to a different step.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;First Step&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Display the model at its first building step. Step navigation changes which parts are visible; it does not move parts to a different step.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;První krok&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Zobrazte model v jeho prvním kroku sestavení. Kroková navigace mění, které díly jsou viditelné; neposouvá figurky do jiného kroku.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1188"/>
-        <source>&lt;p&gt;&lt;b&gt;Previous Step&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Display the model one building step earlier. Pieces introduced in later steps are hidden so you can inspect the earlier stage of construction.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Previous Step&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Display the model one building step earlier. Parts introduced in later steps are hidden so you can inspect the earlier stage of construction.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Předchozí krok&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Zobrazte model o jeden stavební krok dříve. Díly představené v pozdějších krocích jsou skryté, takže si můžete prohlédnout dřívější fázi výstavby.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1196"/>
-        <source>&lt;p&gt;&lt;b&gt;Next Step&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Display the next building step to reveal the next stage of the model. Use the Timeline to change which step introduces a piece.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Next Step&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Display the next building step to reveal the next stage of the model. Use the Timeline to change which step introduces a part.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Další krok&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Zobrazte další krok stavby, abyste odhalili další fázi modelu. Pomocí časové osy změňte, který krok zavádí díl.&lt;/p&gt;</translation>
     </message>
@@ -7464,33 +7464,33 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1236"/>
-        <source>&lt;p&gt;&lt;b&gt;Add Keys&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Enable this when an edit should create a new animation key at the current step. For example, moving a piece at a later step can give it a different position there. The diamond controls in Properties show and toggle keys for individual properties.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Add Keys&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Enable this when an edit should create a new animation key at the current step. For example, moving a part at a later step can give it a different position there. The diamond controls in Properties show and toggle keys for individual properties.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Přidat klíče&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Povolte, když má úprava v aktuálním kroku vytvořit nový klíč animace. Například posunutím figurky v pozdějším kroku může mít jinou pozici. Diamantové ovládací prvky ve vlastnostech zobrazují a přepínají klávesy pro jednotlivé vlastnosti.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1396"/>
-        <source>&lt;p&gt;&lt;b&gt;Standard Lighting&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Light pieces drawn with the Default Lights shading mode using one light above the camera with a soft highlight. This is the classic look.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Standard Lighting&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Light parts drawn with the Default Lights shading mode using one light above the camera with a soft highlight. This is the classic look.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1404"/>
-        <source>&lt;p&gt;&lt;b&gt;Studio Lighting&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Light pieces drawn with the Default Lights shading mode using a key light, a fill light from the camera and a rim light that brightens silhouette edges, for a softer, more photographic look.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Studio Lighting&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Light parts drawn with the Default Lights shading mode using a key light, a fill light from the camera and a rim light that brightens silhouette edges, for a softer, more photographic look.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1412"/>
-        <source>&lt;p&gt;&lt;b&gt;Matte Lighting&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Light pieces drawn with the Default Lights shading mode without specular highlights, so colors stay flat and true while surfaces keep their shading.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Matte Lighting&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Light parts drawn with the Default Lights shading mode without specular highlights, so colors stay flat and true while surfaces keep their shading.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1420"/>
-        <source>&lt;p&gt;&lt;b&gt;Toon Lighting&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Light pieces drawn with the Default Lights shading mode in a few flat brightness bands with a sharp highlight, for a cartoon look that pairs well with edge lines.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Toon Lighting&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Light parts drawn with the Default Lights shading mode in a few flat brightness bands with a sharp highlight, for a cartoon look that pairs well with edge lines.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1500"/>
-        <source>&lt;p&gt;&lt;b&gt;Normal to Face&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Click a face of any piece, including pieces inside submodels, to point the camera straight at it. The model is not changed. Press Esc to cancel.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Normal to Face&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Click a face of any part, including parts inside submodels, to point the camera straight at it. The model is not changed. Press Esc to cancel.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7801,7 +7801,7 @@ It is built on LeoCAD by Leonardo Zide and released under the GNU General Public
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="892"/>
-        <source>  -l, --libpath &lt;path&gt;: Set the Pieces Library location to path.
+        <source>  -l, --libpath &lt;path&gt;: Set the Parts Library location to path.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -l, --libpath &lt;path&gt;: Nastavte umístění knihovny dílků na cestu.</translation>
@@ -7893,28 +7893,28 @@ It is built on LeoCAD by Leonardo Zide and released under the GNU General Public
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="907"/>
-        <source>  --fade-steps: Render pieces from prior steps faded.
+        <source>  --fade-steps: Render parts from prior steps faded.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --fade-steps: Části renderu z předchozích kroků vybledly.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="908"/>
-        <source>  --no-fade-steps: Do not render pieces from prior steps faded.
+        <source>  --no-fade-steps: Do not render parts from prior steps faded.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --no-fade-steps: Nevykreslujte kousky z předchozích kroků vybledlé.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="910"/>
-        <source>  --highlight: Highlight pieces in the steps they appear.
+        <source>  --highlight: Highlight parts in the steps they appear.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --highlight: Zvýrazněte dílky v krocích, které se zobrazují.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="911"/>
-        <source>  --no-highlight: Do not highlight pieces in the steps they appear.
+        <source>  --no-highlight: Do not highlight parts in the steps they appear.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --no-highlight: Nezvýrazňujte dílky v krocích, ve kterých se objevují.</translation>
@@ -7962,28 +7962,28 @@ It is built on LeoCAD by Leonardo Zide and released under the GNU General Public
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="922"/>
-        <source>  -nbec, --disable-black-edge-color: Disable high contrast edge color for black pieces.
+        <source>  -nbec, --disable-black-edge-color: Disable high contrast edge color for black parts.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -nbec, --disable-black-edge-color: Zakázat vysoce kontrastní barvu okraje pro černé dílky.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="923"/>
-        <source>  -bec, --black-edge-color &lt;#AARRGGBB&gt;: High contrast edge color for black pieces.
+        <source>  -bec, --black-edge-color &lt;#AARRGGBB&gt;: High contrast edge color for black parts.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -bec, --black-edge-color &lt;#AARRGGBB&gt;: Vysoce kontrastní barva okrajů pro černé dílky.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="924"/>
-        <source>  -ndec, --disable-dark-edge-color: Disable high contrast edge color for dark color pieces.
+        <source>  -ndec, --disable-dark-edge-color: Disable high contrast edge color for dark color parts.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -ndec, --disable-dark-edge-color: Zakázat vysoce kontrastní barvu okrajů pro tmavé barevné dílky.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="925"/>
-        <source>  -dec, --dark-edge-color &lt;#AARRGGBB&gt;: High contrast edge color for dark color pieces.
+        <source>  -dec, --dark-edge-color &lt;#AARRGGBB&gt;: High contrast edge color for dark color parts.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -dec, --dark-edge-color &lt;#AARRGGBB&gt;: Vysoce kontrastní barva okrajů pro tmavé barevné dílky.</translation>
@@ -8018,7 +8018,7 @@ It is built on LeoCAD by Leonardo Zide and released under the GNU General Public
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="932"/>
-        <source>  -csv, --export-csv &lt;outfile.csv&gt;: Export the list of pieces used in CSV format.
+        <source>  -csv, --export-csv &lt;outfile.csv&gt;: Export the list of parts used in CSV format.
 </source>
         <oldsource>  -csv, --export-csv &lt;outfile.csv&gt;: Export the list of pieces used in csv format.
 </oldsource>
@@ -8124,7 +8124,7 @@ It is built on LeoCAD by Leonardo Zide and released under the GNU General Public
         <translation type="unfinished">Inicializovat vykreslovací modul</translation>
     </message>
     <message>
-        <source>StudWorks could not find a compatible Pieces Library so only a small number of pieces will be available.
+        <source>StudWorks could not find a compatible Parts Library so only a small number of parts will be available.
 
 Please visit https://github.com/nathaneltitane/studworks for information on how to download and install a library.</source>
         <translation type="vanished">StudWorks nemohl najít kompatibilní knihovnu dílů, takže bude k dispozici pouze malé množství dílů.
@@ -8132,7 +8132,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 Informace o tom, jak stáhnout a nainstalovat knihovnu, naleznete na adrese https://github.com/nathaneltitane/studworks.</translation>
     </message>
     <message>
-        <source>StudWorks could not load Pieces Library.
+        <source>StudWorks could not load Parts Library.
 
 Please visit https://github.com/nathaneltitane/studworks for information on how to download and install a library.</source>
         <translation type="vanished">StudWorks nemohl načíst knihovnu součástí.
@@ -8165,14 +8165,14 @@ Informace o tom, jak stáhnout a nainstalovat knihovnu, naleznete na adrese http
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="909"/>
-        <source>  --fade-steps-color &lt;#AARRGGBB&gt;: Rendering color for prior step pieces.
+        <source>  --fade-steps-color &lt;#AARRGGBB&gt;: Rendering color for prior step parts.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --fade-steps-color &lt;#AARRGGBB&gt;: Barva vykreslování pro dílky z předchozího kroku.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="912"/>
-        <source>  --highlight-color &lt;#AARRGGBB&gt;: Rendering color for highlighted pieces.
+        <source>  --highlight-color &lt;#AARRGGBB&gt;: Rendering color for highlighted parts.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --highlight-color &lt;#AARRGGBB&gt;: Barva vykreslení pro zvýrazněné dílky.</translation>
@@ -8222,21 +8222,21 @@ Informace o tom, jak stáhnout a nainstalovat knihovnu, naleznete na adrese http
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="1113"/>
-        <source>StudWorks could not find a compatible Pieces Library so only a small number of pieces will be available.
+        <source>StudWorks could not find a compatible Parts Library so only a small number of parts will be available.
 
 Please visit https://library.ldraw.org for information on how to download and install a library.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="1115"/>
-        <source>StudWorks could not load Pieces Library.
+        <source>StudWorks could not load Parts Library.
 
 Please visit https://library.ldraw.org for information on how to download and install a library.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="1118"/>
-        <source>Load Pieces Library</source>
+        <source>Load Parts Library</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Načíst knihovnu dílků</translation>
     </message>
@@ -8269,7 +8269,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     <name>swArrayDialog</name>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Array&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Create repeated copies of the selected pieces using up to three array dimensions. Each row defines a count, an offset, and a rotation increment.&lt;/p&gt;&lt;p&gt;Counts include the original selection. For example, counts of 3, 2, and 1 create five new copies of each selected piece. Set an offset or rotation to keep copies from overlapping.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Array&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Create repeated copies of the selected parts using up to three array dimensions. Each row defines a count, an offset, and a rotation increment.&lt;/p&gt;&lt;p&gt;Counts include the original selection. For example, counts of 3, 2, and 1 create five new copies of each selected part. Set an offset or rotation to keep copies from overlapping.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Pole&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Vytvářejte opakované kopie vybraných dílů pomocí až tří rozměrů pole. Každý řádek definuje počet, posun a přírůstek otočení.&lt;/p&gt;&lt;p&gt;Počty zahrnují původní výběr. Například počty 3, 2 a 1 vytvoří pět nových kopií každého vybraného dílu. Nastavte odsazení nebo otočení, aby se kopie nepřekrývaly.&lt;/p&gt;</translation>
     </message>
@@ -8446,7 +8446,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Rotations&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Each row sets the rotation increment around the X, Y, and Z model axes, in degrees, for its array dimension. Rotations from all three dimensions are added, then applied in X, Y, Z order before the offset.&lt;/p&gt;&lt;p&gt;Copies rotate around the focused piece origin, or the selection center when no piece has focus. Negative values reverse the rotation.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Rotations&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Each row sets the rotation increment around the X, Y, and Z model axes, in degrees, for its array dimension. Rotations from all three dimensions are added, then applied in X, Y, Z order before the offset.&lt;/p&gt;&lt;p&gt;Copies rotate around the focused part origin, or the selection center when no part has focus. Negative values reverse the rotation.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Otočení&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Každý řádek nastavuje přírůstek rotace kolem os modelu X, Y a Z ve stupních pro svůj rozměr pole. Přidají se rotace ze všech tří rozměrů a poté se aplikují v pořadí X, Y, Z před odsazením.&lt;/p&gt;&lt;p&gt;Kopie se otáčejí kolem počátku zaostřeného dílu nebo středu výběru, když není zaostřený žádný díl. Záporné hodnoty obrátí rotaci.&lt;/p&gt;</translation>
     </message>
@@ -8584,7 +8584,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/library/sw_loader_asset.cpp" line="609"/>
-        <source>Could not load piece &apos;%1&apos;.</source>
+        <source>Could not load part &apos;%1&apos;.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Nelze načíst dílek &apos;%1&apos;.</translation>
     </message>
@@ -8642,7 +8642,7 @@ Please visit https://library.ldraw.org for information on how to download and in
         <translation type="obsolete">Nastavte pro klasifikaci, kde jsou hodnoty barev světlé nebo tmavé - např. Tmavě modrošedá (72) je světlá na 0,39.</translation>
     </message>
     <message>
-        <source>Set to specify amount of edge color tint or shade from the saturation adjusted piece color</source>
+        <source>Set to specify amount of edge color tint or shade from the saturation adjusted part color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">Nastavte, chcete-li určit množství barevného odstínu okraje nebo odstínu z barvy dílu s upravenou sytostí</translation>
     </message>
@@ -8660,19 +8660,19 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_color_edge.cpp" line="124"/>
-        <source>Pieces Edge Color:</source>
+        <source>Parts Edge Color:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Barva okraje dílků:</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_color_edge.cpp" line="142"/>
-        <source>Black Pieces Edge Color:</source>
+        <source>Black Parts Edge Color:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Barva okraje černých dílků:</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_color_edge.cpp" line="160"/>
-        <source>Dark Pieces Edge Color:</source>
+        <source>Dark Parts Edge Color:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Barva okraje tmavých dílků:</translation>
     </message>
@@ -8684,13 +8684,13 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_color_edge.cpp" line="265"/>
-        <source>Select Piece Edge Color</source>
+        <source>Select Part Edge Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Vyberte Barva okraje dílku</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_color_edge.cpp" line="274"/>
-        <source>Automate edge color appears to be enabled.&lt;br&gt;Black pieces edge color will not be accessible.&lt;br&gt;Do you want to continue?</source>
+        <source>Automate edge color appears to be enabled.&lt;br&gt;Black parts edge color will not be accessible.&lt;br&gt;Do you want to continue?</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Zdá se, že je povolena automatizace barvy okraje.&lt;br&gt;Barva okraje černých dílků nebude dostupná.&lt;br&gt;Chcete pokračovat?</translation>
     </message>
@@ -8703,13 +8703,13 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_color_edge.cpp" line="23"/>
-        <source>&lt;p&gt;&lt;b&gt;High Contrast Edge Colors&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose custom stud and edge colors for high contrast stud styles. Enable an override with its checkbox, then choose its color. Light/Dark Value sets the threshold for dark-piece edge colors. Automated edge colors take precedence over the piece edge overrides.&lt;/p&gt;&lt;p&gt;Choose OK to return changes to Preferences, then choose OK in Preferences to keep them. Cancel discards changes in this dialog. Reset restores an individual control&apos;s default.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;High Contrast Edge Colors&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose custom stud and edge colors for high contrast stud styles. Enable an override with its checkbox, then choose its color. Light/Dark Value sets the threshold for dark-part edge colors. Automated edge colors take precedence over the part edge overrides.&lt;/p&gt;&lt;p&gt;Choose OK to return changes to Preferences, then choose OK in Preferences to keep them. Cancel discards changes in this dialog. Reset restores an individual control&apos;s default.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Vysoce kontrastní barvy hran&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Vyberte si vlastní barvy cvočků a hran pro vysoce kontrastní styly cvočků. Povolte přepsání pomocí jeho zaškrtávacího políčka a poté vyberte jeho barvu. Světlá/tmavá hodnota nastavuje práh pro barvy okrajů tmavých částí. Automatizované barvy hran mají přednost před přepsáním hran dílu.&lt;/p&gt;&lt;p&gt;Zvolte OK pro návrat změn do Předvoleb a poté zvolte OK v Předvolbách, chcete-li je zachovat. Zrušit zruší změny v tomto dialogu. Reset obnoví výchozí nastavení jednotlivých ovládacích prvků.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_color_edge.cpp" line="24"/>
-        <source>&lt;p&gt;&lt;b&gt;Automated Edge Colors&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Adjust the contrast and saturation used to calculate piece edge colors. Both controls range from 0.00 to 1.00. Reset restores a control to 0.50.&lt;/p&gt;&lt;p&gt;Choose OK to return changes to Preferences, then choose OK in Preferences to keep them. Cancel discards changes in this dialog.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Automated Edge Colors&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Adjust the contrast and saturation used to calculate part edge colors. Both controls range from 0.00 to 1.00. Reset restores a control to 0.50.&lt;/p&gt;&lt;p&gt;Choose OK to return changes to Preferences, then choose OK in Preferences to keep them. Cancel discards changes in this dialog.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Automatické barvy okrajů&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Upravte kontrast a sytost použité k výpočtu barev okrajů dílu. Oba ovládací prvky se pohybují od 0,00 do 1,00. Reset obnoví hodnotu ovládacího prvku na 0,50.&lt;/p&gt;&lt;p&gt;Zvolte OK pro návrat změn do Preferences a poté zvolte OK v Preferences, chcete-li je zachovat. Zrušit zahodí změny v tomto dialogu.&lt;/p&gt;</translation>
     </message>
@@ -8721,7 +8721,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_color_edge.cpp" line="44"/>
-        <source>&lt;p&gt;&lt;b&gt;Edge Contrast&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Adjust the contrast used by automated edge colors to distinguish edges from piece surfaces. The range is 0.00 to 1.00; Reset restores 0.50.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Edge Contrast&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Adjust the contrast used by automated edge colors to distinguish edges from part surfaces. The range is 0.00 to 1.00; Reset restores 0.50.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Kontrast hran&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Upravte kontrast používaný automatickými barvami hran k rozlišení hran od povrchů dílu. Rozsah je 0,00 až 1,00; Reset obnoví 0,50.&lt;/p&gt;</translation>
     </message>
@@ -8745,13 +8745,13 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_color_edge.cpp" line="72"/>
-        <source>&lt;p&gt;&lt;b&gt;Light/Dark Value&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Classify piece colors by brightness to choose which pieces receive the dark-piece edge override. Colors below the threshold are treated as dark. A separate enabled black-piece override takes priority for black pieces. The range is 0.00 to 1.00; Reset restores 0.50.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Light/Dark Value&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Classify part colors by brightness to choose which parts receive the dark-part edge override. Colors below the threshold are treated as dark. A separate enabled black-part override takes priority for black parts. The range is 0.00 to 1.00; Reset restores 0.50.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Hodnota světlé/tmavé&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Klasifikujte barvy dílků podle jasu a vyberte, u kterých dílků se přepíše okraj tmavých dílků. Barvy pod prahem jsou považovány za tmavé. Samostatné aktivované potlačení černé figury má přednost pro černé figurky. Rozsah je 0,00 až 1,00; Reset obnoví 0,50.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_color_edge.cpp" line="73"/>
-        <source>&lt;p&gt;&lt;b&gt;Edge Saturation&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Adjust the tint or shade used to calculate automated edge colors from piece colors. The range is 0.00 to 1.00; Reset restores 0.50.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Edge Saturation&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Adjust the tint or shade used to calculate automated edge colors from part colors. The range is 0.00 to 1.00; Reset restores 0.50.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Sytost okrajů&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Upravte odstín nebo odstín používaný k výpočtu automatických barev okrajů z barev dílu. Rozsah je 0,00 až 1,00; Reset obnoví 0,50.&lt;/p&gt;</translation>
     </message>
@@ -8787,25 +8787,25 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_color_edge.cpp" line="193"/>
-        <source>Enable a custom edge color for pieces not covered by the black or dark overrides. Automated edge colors take precedence.</source>
+        <source>Enable a custom edge color for parts not covered by the black or dark overrides. Automated edge colors take precedence.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Povolte vlastní barvu okraje pro díly, které nejsou pokryty černým nebo tmavým přepsáním. Automatizované barvy okrajů mají přednost.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_color_edge.cpp" line="195"/>
-        <source>Enable a custom edge color for black pieces. This override takes priority over the dark-piece and general edge colors. Automated edge colors take precedence.</source>
+        <source>Enable a custom edge color for black parts. This override takes priority over the dark-part and general edge colors. Automated edge colors take precedence.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Povolit vlastní barvu okraje pro černé díly. Toto přepsání má přednost před tmavými barvami a obecnými barvami okrajů. Automatizované barvy okrajů mají přednost.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_color_edge.cpp" line="197"/>
-        <source>Enable a custom edge color for pieces below the light/dark threshold, except black pieces with their own enabled override. Automated edge colors take precedence.</source>
+        <source>Enable a custom edge color for parts below the light/dark threshold, except black parts with their own enabled override. Automated edge colors take precedence.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Povolte vlastní barvu okraje pro díly pod prahem světla/tmy, kromě černých dílů s vlastním povoleným přepsáním. Automatizované barvy okrajů mají přednost.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_color_edge.cpp" line="287"/>
-        <source>Automate edge color appears to be enabled.&lt;br&gt;Dark pieces edge color will not be accessible.&lt;br&gt;Do you want to continue?</source>
+        <source>Automate edge color appears to be enabled.&lt;br&gt;Dark parts edge color will not be accessible.&lt;br&gt;Do you want to continue?</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Zdá se, že je povolena automatická barva okrajů.&lt;br&gt;Barva okrajů tmavých kousků nebude dostupná.&lt;br&gt;Chcete pokračovat?</translation>
     </message>
@@ -9882,7 +9882,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     <name>swCategoryDialog</name>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_category.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Piece Category&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Name a category and enter the expression used to find its pieces in the library. Both fields are required. Choose OK to return the category changes to Preferences, then choose OK in Preferences to keep them. Cancel discards edits in this dialog.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Keyword Syntax&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Expressions match text in library piece descriptions, ignoring case.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;tt&gt;Brick&lt;/tt&gt;: match this text anywhere in the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^Brick&lt;/tt&gt;: match Brick as a whole word.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;%Brick&lt;/tt&gt;: match Brick at the beginning of the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^%Brick&lt;/tt&gt;: require both a whole word and the beginning of the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A | B&lt;/tt&gt;: match either expression.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A &amp;amp; B&lt;/tt&gt;: match both expressions.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;!A&lt;/tt&gt;: exclude descriptions matching A.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;(A | B)&lt;/tt&gt;: group expressions.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Put spaces around &lt;tt&gt;|&lt;/tt&gt; and &lt;tt&gt;&amp;amp;&lt;/tt&gt;. Use parentheses when combining operators.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Examples&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;tt&gt;^%Brick | ^%Plate&lt;/tt&gt; matches descriptions beginning with the word Brick or Plate.&lt;br&gt;&lt;tt&gt;(^%Brick | ^%Plate) &amp;amp; !Pattern&lt;/tt&gt; also excludes descriptions containing Pattern.&lt;/p&gt;&lt;p&gt;Use the language of the library descriptions for search terms; do not translate the syntax symbols.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Part Category&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Name a category and enter the expression used to find its parts in the library. Both fields are required. Choose OK to return the category changes to Preferences, then choose OK in Preferences to keep them. Cancel discards edits in this dialog.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Keyword Syntax&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Expressions match text in library part descriptions, ignoring case.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;tt&gt;Brick&lt;/tt&gt;: match this text anywhere in the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^Brick&lt;/tt&gt;: match Brick as a whole word.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;%Brick&lt;/tt&gt;: match Brick at the beginning of the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^%Brick&lt;/tt&gt;: require both a whole word and the beginning of the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A | B&lt;/tt&gt;: match either expression.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A &amp;amp; B&lt;/tt&gt;: match both expressions.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;!A&lt;/tt&gt;: exclude descriptions matching A.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;(A | B)&lt;/tt&gt;: group expressions.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Put spaces around &lt;tt&gt;|&lt;/tt&gt; and &lt;tt&gt;&amp;amp;&lt;/tt&gt;. Use parentheses when combining operators.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Examples&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;tt&gt;^%Brick | ^%Plate&lt;/tt&gt; matches descriptions beginning with the word Brick or Plate.&lt;br&gt;&lt;tt&gt;(^%Brick | ^%Plate) &amp;amp; !Pattern&lt;/tt&gt; also excludes descriptions containing Pattern.&lt;/p&gt;&lt;p&gt;Use the language of the library descriptions for search terms; do not translate the syntax symbols.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Kategorie dílů&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Pojmenujte kategorii a zadejte výraz pro vyhledání dílů v knihovně. Obě pole jsou povinná. Tlačítkem OK přenesete změny do Předvoleb; dalším stisknutím OK v Předvolbách je uložíte. Zrušit zahodí úpravy v tomto dialogu.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Syntaxe klíčových slov&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Výrazy hledají text v popisech dílů v knihovně bez rozlišení velkých a malých písmen.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;tt&gt;Brick&lt;/tt&gt;: vyhledá tento text kdekoli v popisu.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^Brick&lt;/tt&gt;: vyhledá Brick jako celé slovo.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;%Brick&lt;/tt&gt;: vyhledá Brick na začátku popisu.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^%Brick&lt;/tt&gt;: vyžaduje celé slovo na začátku popisu.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A | B&lt;/tt&gt;: vyhledá shodu alespoň s jedním výrazem.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A &amp;amp; B&lt;/tt&gt;: vyhledá shodu s oběma výrazy.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;!A&lt;/tt&gt;: vyloučí popisy odpovídající A.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;(A | B)&lt;/tt&gt;: seskupuje výrazy.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Vložte mezery kolem &lt;tt&gt;|&lt;/tt&gt; a &lt;tt&gt;&amp;amp;&lt;/tt&gt;. Při kombinování operátorů používejte závorky.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Příklady&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;tt&gt;^%Brick | ^%Plate&lt;/tt&gt; odpovídá popisům začínajícím slovem Brick nebo Plate.&lt;br&gt;&lt;tt&gt;(^%Brick | ^%Plate) &amp;amp; !Pattern&lt;/tt&gt; také vyloučí popisy obsahující Pattern.&lt;/p&gt;&lt;p&gt;Vyhledávací výrazy zadávejte v jazyce popisů knihovny; symboly syntaxe nepřekládejte.&lt;/p&gt;</translation>
     </message>
@@ -9893,7 +9893,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_category.ui"/>
-        <source>Enter the category name shown in the piece browser.</source>
+        <source>Enter the category name shown in the part browser.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Zadejte název kategorie zobrazený v prohlížeči dílů.</translation>
     </message>
@@ -9904,13 +9904,13 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_category.ui"/>
-        <source>Enter an expression that matches piece descriptions.</source>
+        <source>Enter an expression that matches part descriptions.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Zadejte výraz, který odpovídá popisům dílů.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_category.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Keyword Syntax&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Expressions match text in library piece descriptions, ignoring case.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;tt&gt;Brick&lt;/tt&gt;: match this text anywhere in the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^Brick&lt;/tt&gt;: match Brick as a whole word.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;%Brick&lt;/tt&gt;: match Brick at the beginning of the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^%Brick&lt;/tt&gt;: require both a whole word and the beginning of the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A | B&lt;/tt&gt;: match either expression.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A &amp;amp; B&lt;/tt&gt;: match both expressions.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;!A&lt;/tt&gt;: exclude descriptions matching A.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;(A | B)&lt;/tt&gt;: group expressions.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Put spaces around &lt;tt&gt;|&lt;/tt&gt; and &lt;tt&gt;&amp;amp;&lt;/tt&gt;. Use parentheses when combining operators.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Examples&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;tt&gt;^%Brick | ^%Plate&lt;/tt&gt; matches descriptions beginning with the word Brick or Plate.&lt;br&gt;&lt;tt&gt;(^%Brick | ^%Plate) &amp;amp; !Pattern&lt;/tt&gt; also excludes descriptions containing Pattern.&lt;/p&gt;&lt;p&gt;Use the language of the library descriptions for search terms; do not translate the syntax symbols.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Keyword Syntax&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Expressions match text in library part descriptions, ignoring case.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;tt&gt;Brick&lt;/tt&gt;: match this text anywhere in the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^Brick&lt;/tt&gt;: match Brick as a whole word.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;%Brick&lt;/tt&gt;: match Brick at the beginning of the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^%Brick&lt;/tt&gt;: require both a whole word and the beginning of the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A | B&lt;/tt&gt;: match either expression.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A &amp;amp; B&lt;/tt&gt;: match both expressions.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;!A&lt;/tt&gt;: exclude descriptions matching A.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;(A | B)&lt;/tt&gt;: group expressions.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Put spaces around &lt;tt&gt;|&lt;/tt&gt; and &lt;tt&gt;&amp;amp;&lt;/tt&gt;. Use parentheses when combining operators.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Examples&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;tt&gt;^%Brick | ^%Plate&lt;/tt&gt; matches descriptions beginning with the word Brick or Plate.&lt;br&gt;&lt;tt&gt;(^%Brick | ^%Plate) &amp;amp; !Pattern&lt;/tt&gt; also excludes descriptions containing Pattern.&lt;/p&gt;&lt;p&gt;Use the language of the library descriptions for search terms; do not translate the syntax symbols.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Syntaxe klíčových slov&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Výrazy hledají text v popisech dílů v knihovně bez rozlišení velkých a malých písmen.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;tt&gt;Brick&lt;/tt&gt;: vyhledá tento text kdekoli v popisu.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^Brick&lt;/tt&gt;: vyhledá Brick jako celé slovo.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;%Brick&lt;/tt&gt;: vyhledá Brick na začátku popisu.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^%Brick&lt;/tt&gt;: vyžaduje celé slovo na začátku popisu.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A | B&lt;/tt&gt;: vyhledá shodu alespoň s jedním výrazem.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A &amp;amp; B&lt;/tt&gt;: vyhledá shodu s oběma výrazy.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;!A&lt;/tt&gt;: vyloučí popisy odpovídající A.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;(A | B)&lt;/tt&gt;: seskupuje výrazy.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Vložte mezery kolem &lt;tt&gt;|&lt;/tt&gt; a &lt;tt&gt;&amp;amp;&lt;/tt&gt;. Při kombinování operátorů používejte závorky.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Příklady&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;tt&gt;^%Brick | ^%Plate&lt;/tt&gt; odpovídá popisům začínajícím slovem Brick nebo Plate.&lt;br&gt;&lt;tt&gt;(^%Brick | ^%Plate) &amp;amp; !Pattern&lt;/tt&gt; také vyloučí popisy obsahující Pattern.&lt;/p&gt;&lt;p&gt;Vyhledávací výrazy zadávejte v jazyce popisů knihovny; symboly syntaxe nepřekládejte.&lt;/p&gt;</translation>
     </message>
@@ -10040,7 +10040,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     <name>swEditGroupsDialog</name>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_groups_edit.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Edit Groups&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Reorganize the model&apos;s pieces and groups in the tree. Drag pieces or groups into a group, or to the top level to remove them from a parent group. Double-click a group name to rename it.&lt;/p&gt;&lt;p&gt;New Group creates a group inside the selected group, or beside an ungrouped piece. Choose OK to apply the hierarchy, or Cancel to discard the changes. Empty groups are removed when changes are applied.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Edit Groups&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Reorganize the model&apos;s parts and groups in the tree. Drag parts or groups into a group, or to the top level to remove them from a parent group. Double-click a group name to rename it.&lt;/p&gt;&lt;p&gt;New Group creates a group inside the selected group, or beside an ungrouped part. Choose OK to apply the hierarchy, or Cancel to discard the changes. Empty groups are removed when changes are applied.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Upravit skupiny&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Přeorganizujte části a skupiny modelu ve stromu. Přetažením dílů nebo skupin do skupiny nebo na nejvyšší úroveň je odeberte z nadřazené skupiny. Dvojitým kliknutím na název skupiny ji přejmenujete.&lt;/p&gt;&lt;p&gt;Nová skupina vytvoří skupinu uvnitř vybrané skupiny nebo vedle neseskupené části. Zvolte OK pro použití hierarchie nebo Storno pro zrušení změn. Prázdné skupiny jsou při použití změn odstraněny.&lt;/p&gt;</translation>
     </message>
@@ -10051,7 +10051,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_groups_edit.ui"/>
-        <source>Drag pieces and groups to reorganize them; double-click a group name to rename it.</source>
+        <source>Drag parts and groups to reorganize them; double-click a group name to rename it.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Přetažením dílů a skupin je reorganizujte; poklepáním na název skupiny ji přejmenujete.</translation>
     </message>
@@ -10063,7 +10063,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_groups_edit.ui"/>
-        <source>Piece and Group Hierarchy</source>
+        <source>Part and Group Hierarchy</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Dílová a skupinová hierarchie</translation>
     </message>
@@ -10085,7 +10085,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_groups_edit.cpp" line="48"/>
-        <source>&lt;p&gt;&lt;b&gt;New Group&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select a group to create a subgroup inside it. If a piece is selected, the new group is created beside that piece. With no selection, the new group is created at the top level. Rename the new group by editing its name, then drag pieces into it.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;New Group&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select a group to create a subgroup inside it. If a part is selected, the new group is created beside that part. With no selection, the new group is created at the top level. Rename the new group by editing its name, then drag parts into it.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Nová skupina&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Vyberte skupinu a vytvořte v ní podskupinu. Pokud je vybrán díl, nová skupina se vytvoří vedle tohoto dílu. Bez výběru se nová skupina vytvoří na nejvyšší úrovni. Přejmenujte novou skupinu úpravou jejího názvu a poté do ní přetáhněte její části.&lt;/p&gt;</translation>
     </message>
@@ -10115,7 +10115,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_find_replace.cpp" line="30"/>
-        <source>Search Piece</source>
+        <source>Search Part</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Hledat dílek</translation>
     </message>
@@ -10133,7 +10133,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_find_replace.cpp" line="64"/>
-        <source>Replacement Piece</source>
+        <source>Replacement Part</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Náhradní díl</translation>
     </message>
@@ -10154,7 +10154,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     <name>swGroupDialog</name>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_group.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Group Pieces&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Name a new group for the selected pieces so you can select and move them together. Choose OK to create it, or Cancel to leave the groups unchanged.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Group Parts&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Name a new group for the selected parts so you can select and move them together. Choose OK to create it, or Cancel to leave the groups unchanged.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Skupinové díly&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Pojmenujte novou skupinu pro vybrané díly, abyste je mohli vybrat a přesunout dohromady. Zvolte OK, chcete-li je vytvořit, nebo Zrušit, chcete-li skupiny ponechat beze změny.&lt;/p&gt;</translation>
     </message>
@@ -10171,7 +10171,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_group.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Group Name&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a name that is not already used by another group in this model. The new group contains the selected pieces and their existing groups.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Group Name&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a name that is not already used by another group in this model. The new group contains the selected parts and their existing groups.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Název skupiny&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Vyberte název, který již nepoužívá jiná skupina v tomto modelu. Nová skupina obsahuje vybrané díly a jejich stávající skupiny.&lt;/p&gt;</translation>
     </message>
@@ -10196,7 +10196,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     <name>swHTMLDialog</name>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Export HTML&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Create browser-viewable building instructions and PNG images in the output folder. Choose which models to include, how to organize the step pages, and where to show pieces lists.&lt;/p&gt;&lt;p&gt;Keep the generated HTML and image files together when copying or sharing the instructions.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Export HTML&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Create browser-viewable building instructions and PNG images in the output folder. Choose which models to include, how to organize the step pages, and where to show parts lists.&lt;/p&gt;&lt;p&gt;Keep the generated HTML and image files together when copying or sharing the instructions.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Export HTML&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Vytvořte ve výstupní složce pokyny k sestavení a obrázky PNG, které lze zobrazit v prohlížeči. Vyberte, které modely chcete zahrnout, jak uspořádat stránky s kroky a kde se mají zobrazovat kusovníky.&lt;/p&gt;&lt;p&gt;Při kopírování nebo sdílení pokynů mějte vygenerované soubory HTML a obrázky pohromadě.&lt;/p&gt;</translation>
     </message>
@@ -10371,19 +10371,19 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Pieces List&lt;/b&gt;&lt;/p&gt;&lt;p&gt;After each step shows the pieces added in that step. At the end shows the complete model inventory after the instructions. You can enable either option, both, or neither.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Parts List&lt;/b&gt;&lt;/p&gt;&lt;p&gt;After each step shows the parts added in that step. At the end shows the complete model inventory after the instructions. You can enable either option, both, or neither.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Seznam dílů&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Po každém kroku se zobrazí díly přidané v tomto kroku. Na konci ukazuje kompletní inventář modelu podle pokynů. Můžete povolit kteroukoli možnost, obě nebo žádnou.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
-        <source>Include a complete pieces list after each model&apos;s instructions.</source>
+        <source>Include a complete parts list after each model&apos;s instructions.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Za pokyny pro každý model přiložte kompletní seznam dílů.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
-        <source>Include a list of the pieces added in each step.</source>
+        <source>Include a list of the parts added in each step.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Zahrňte seznam dílů přidaných v každém kroku.</translation>
     </message>
@@ -10393,7 +10393,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
-        <source>Pieces List</source>
+        <source>Parts List</source>
         <translation>Seznam částí</translation>
     </message>
     <message>
@@ -10669,7 +10669,7 @@ Please visit https://library.ldraw.org for information on how to download and in
         <translation type="obsolete">Zobrazit číslo kroku</translation>
     </message>
     <message>
-        <source>Show Pieces List</source>
+        <source>Show Parts List</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">Zobrazit seznam dílků</translation>
     </message>
@@ -11017,7 +11017,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_placement.cpp" line="42"/>
-        <source>&lt;p&gt;&lt;b&gt;Placement&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select an element on the page to place, move or lock it. Place the selected page element on a predefined area: the step model, step number, pieces list, cover model, cover title, cover author or bill of materials. Step elements are placed in the part of the page their step gets from the split, or outside the other step element. Placements apply to all pages.&lt;/p&gt;&lt;p&gt;Every element can also be dragged on the page, it keeps its distance from its placement. A locked element keeps its position whatever its placement and is not dragged.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Placement&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select an element on the page to place, move or lock it. Place the selected page element on a predefined area: the step model, step number, parts list, cover model, cover title, cover author or bill of materials. Step elements are placed in the part of the page their step gets from the split, or outside the other step element. Placements apply to all pages.&lt;/p&gt;&lt;p&gt;Every element can also be dragged on the page, it keeps its distance from its placement. A locked element keeps its position whatever its placement and is not dragged.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -11065,7 +11065,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_placement.cpp" line="306"/>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_placement.cpp" line="344"/>
-        <source>Pieces List</source>
+        <source>Parts List</source>
         <translation type="unfinished">Seznam částí</translation>
     </message>
     <message>
@@ -11307,17 +11307,17 @@ Please visit https://library.ldraw.org for information on how to download and in
         <translation type="obsolete">Vyberte Krok Barva pozadí</translation>
     </message>
     <message>
-        <source>Select Pieces List Background Color</source>
+        <source>Select Parts List Background Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">Vyberte Barva pozadí seznamu dílků</translation>
     </message>
     <message>
-        <source>Select Pieces List Border Color</source>
+        <source>Select Parts List Border Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">Vyberte Barva ohraničení seznamu dílků</translation>
     </message>
     <message>
-        <source>Select Pieces List Text Color</source>
+        <source>Select Parts List Text Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">Vyberte Barva textu seznamu dílků</translation>
     </message>
@@ -11327,13 +11327,13 @@ Please visit https://library.ldraw.org for information on how to download and in
         <translation type="obsolete">Vyberte Písmo čísla kroku</translation>
     </message>
     <message>
-        <source>Select Pieces List Font</source>
+        <source>Select Parts List Font</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">Vyberte Písmo seznamu dílků</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="125"/>
-        <source>&lt;p&gt;&lt;b&gt;Properties&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Edit how the instruction pages look. With nothing selected on the page every section is shown, select a step, its number or its pieces list to show only their settings. Changes apply to all pages.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Properties&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Edit how the instruction pages look. With nothing selected on the page every section is shown, select a step, its number or its parts list to show only their settings. Changes apply to all pages.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -11598,7 +11598,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="304"/>
-        <source>&lt;p&gt;&lt;b&gt;Bill of Materials&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The last page, listing every piece of the model. It uses the Pieces List settings.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Bill of Materials&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The last page, listing every part of the model. It uses the Parts List settings.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -11608,7 +11608,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="307"/>
-        <source>End the instructions with a page listing every piece of the model.</source>
+        <source>End the instructions with a page listing every part of the model.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -11846,37 +11846,37 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="445"/>
-        <source>&lt;p&gt;&lt;b&gt;Pieces List&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The list of pieces added in each step. The bill of materials uses the same settings.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Parts List&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The list of parts added in each step. The bill of materials uses the same settings.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="448"/>
-        <source>Show Pieces List</source>
+        <source>Show Parts List</source>
         <translation type="unfinished">Zobrazit seznam dílků</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="448"/>
-        <source>Show the pieces added in each step next to its number.</source>
+        <source>Show the parts added in each step next to its number.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="449"/>
-        <source>Show Piece Counts</source>
+        <source>Show Part Counts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="449"/>
-        <source>Show how many of each piece are needed.</source>
+        <source>Show how many of each part are needed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="453"/>
-        <source>Pieces List Order</source>
+        <source>Parts List Order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="453"/>
-        <source>Order of the pieces in the list.</source>
+        <source>Order of the parts in the list.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -11896,42 +11896,42 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="455"/>
-        <source>Pieces List Font</source>
+        <source>Parts List Font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="455"/>
-        <source>Font of the piece counts.</source>
+        <source>Font of the part counts.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="457"/>
-        <source>Pieces List Text Color</source>
+        <source>Parts List Text Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="457"/>
-        <source>Color of the piece counts.</source>
+        <source>Color of the part counts.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="459"/>
-        <source>Pieces List Background</source>
+        <source>Parts List Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="459"/>
-        <source>Color filling the pieces list.</source>
+        <source>Color filling the parts list.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="461"/>
-        <source>Pieces List Border Color</source>
+        <source>Parts List Border Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="461"/>
-        <source>Color of the line around the pieces list.</source>
+        <source>Color of the line around the parts list.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -11941,7 +11941,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="463"/>
-        <source>Width of the line around the pieces list, 0 draws no line.</source>
+        <source>Width of the line around the parts list, 0 draws no line.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -11951,7 +11951,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="465"/>
-        <source>Size each piece is drawn at, larger thumbnails show larger pieces.</source>
+        <source>Size each part is drawn at, larger thumbnails show larger parts.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -11961,7 +11961,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="467"/>
-        <source>Color behind each piece and its count, transparent draws none.</source>
+        <source>Color behind each part and its count, transparent draws none.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -11996,7 +11996,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="445"/>
-        <source>Pieces List</source>
+        <source>Parts List</source>
         <translation type="unfinished">Seznam částí</translation>
     </message>
     <message>
@@ -12010,7 +12010,7 @@ Please visit https://library.ldraw.org for information on how to download and in
         <translation type="obsolete">Vlastnosti čísla kroku</translation>
     </message>
     <message>
-        <source>Pieces List Properties</source>
+        <source>Parts List Properties</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">Vlastnosti seznamu dílků</translation>
     </message>
@@ -12154,7 +12154,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="446"/>
-        <source>&amp;Piece</source>
+        <source>&amp;Part</source>
         <translatorcomment>TODO - dílek, kus</translatorcomment>
         <translation>&amp;Dílek</translation>
     </message>
@@ -12180,7 +12180,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="527"/>
-        <source>Choose which related pieces are included when selecting a piece.</source>
+        <source>Choose which related parts are included when selecting a part.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Při výběru dílu zvolte, které související díly jsou zahrnuty.</translation>
     </message>
@@ -12192,7 +12192,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="541"/>
-        <source>Choose coordinate axes and whether selected pieces rotate together.</source>
+        <source>Choose coordinate axes and whether selected parts rotate together.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Vyberte souřadnicové osy a zda se vybrané díly otáčejí společně.</translation>
     </message>
@@ -12262,7 +12262,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="604"/>
-        <source>&lt;p&gt;&lt;b&gt;Time Toolbar&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The arrow buttons move through building steps so you can inspect how the model is assembled. They do not change the step assigned to a piece; use the Timeline for that. Add Keys controls whether edits create animation keys at the current step, allowing properties such as position to vary between steps.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Time Toolbar&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The arrow buttons move through building steps so you can inspect how the model is assembled. They do not change the step assigned to a part; use the Timeline for that. Add Keys controls whether edits create animation keys at the current step, allowing properties such as position to vary between steps.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Panel nástrojů Čas&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Tlačítka se šipkami se pohybují po krocích stavby, takže můžete zkontrolovat, jak je model sestaven. Nemění krok přiřazený dílu; použijte k tomu časovou osu. Přidat klávesy řídí, zda úpravy vytvoří animační klávesy v aktuálním kroku, což umožňuje, aby se vlastnosti, jako je poloha, mezi jednotlivými kroky měnily.&lt;/p&gt;</translation>
     </message>
@@ -12278,13 +12278,13 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="528"/>
-        <source>&lt;p&gt;&lt;b&gt;Selection Mode&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose the rule applied when you pick a piece in the model view. Single selects that piece; the other modes include matching piece types, matching colors, or both. For example, color selection lets you pick matching red pieces without selecting each one separately.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Selection Mode&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose the rule applied when you pick a part in the model view. Single selects that part; the other modes include matching part types, matching colors, or both. For example, color selection lets you pick matching red parts without selecting each one separately.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Režim výběru&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Vyberte pravidlo, které se použije při výběru dílu v zobrazení modelu. Single vybere ten díl; ostatní režimy zahrnují shodu typů dílů, shodu barev nebo obojí. Například výběr barev vám umožňuje vybrat odpovídající červené díly, aniž byste museli vybírat každý zvlášť.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="542"/>
-        <source>&lt;p&gt;&lt;b&gt;Transform Options&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose the axes and pivot used for interactive transforms. Relative Transforms uses the focused object&apos;s orientation, so movement along X follows that object&apos;s local X axis. Absolute Transforms uses the model axes. Rotate Together rotates the selection around a shared pivot; Rotate Separately rotates each piece around its own origin.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Transform Options&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose the axes and pivot used for interactive transforms. Relative Transforms uses the focused object&apos;s orientation, so movement along X follows that object&apos;s local X axis. Absolute Transforms uses the model axes. Rotate Together rotates the selection around a shared pivot; Rotate Separately rotates each part around its own origin.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Možnosti transformace&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Vyberte osy a pivot použité pro interaktivní transformace. Relativní transformace používá orientaci zaostřeného objektu, takže pohyb podél X sleduje lokální osu X tohoto objektu. Absolutní transformace používá osy modelu. Rotate Together otočí výběr kolem sdíleného pivotu; Otočit samostatně otočí každý díl kolem jeho vlastního počátku.&lt;/p&gt;</translation>
     </message>
@@ -12302,18 +12302,18 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="613"/>
-        <source>&lt;p&gt;&lt;b&gt;Tools Toolbar&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a tool, then use it in the model view. Insertion tools create pieces, lights, or cameras. Editing tools select, transform, remove, or recolor objects. Navigation tools change the viewpoint without changing model geometry. Mouse assignments can be customized in Preferences.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Tools Toolbar&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a tool, then use it in the model view. Insertion tools create parts, lights, or cameras. Editing tools select, transform, remove, or recolor objects. Navigation tools change the viewpoint without changing model geometry. Mouse assignments can be customized in Preferences.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Panel nástrojů Nástroje&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Vyberte nástroj a poté jej použijte v zobrazení modelu. Nástroje pro vkládání vytvářejí díly, světla nebo kamery. Nástroje pro úpravy vybírají, transformují, odebírají nebo přebarvují objekty. Navigační nástroje mění pohled bez změny geometrie modelu. Přiřazení myši lze upravit v Předvolbách.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="654"/>
-        <source>Pieces</source>
+        <source>Parts</source>
         <translation>Části</translation>
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="657"/>
-        <source>&lt;p&gt;&lt;b&gt;Pieces&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a category or palette and filter its pieces. Selecting a piece prepares it for insertion; drag it into the model view to place it. Double-click a piece to open its preview. Options controls filtering, thumbnails, and list display.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Parts&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a category or palette and filter its parts. Selecting a part prepares it for insertion; drag it into the model view to place it. Double-click a part to open its preview. Options controls filtering, thumbnails, and list display.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Díly&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Vyberte kategorii nebo paletu a filtrujte její kousky. Výběr dílu jej připraví na vložení; přetažením do pohledu modelu jej umístěte. Poklepáním na díl otevřete jeho náhled. Možnosti řídí filtrování, miniatury a zobrazení seznamu.&lt;/p&gt;</translation>
     </message>
@@ -12324,13 +12324,13 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="669"/>
-        <source>&lt;p&gt;&lt;b&gt;Colors&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose the current LDraw color from the swatches. This color is used when inserting or painting pieces. To recolor selected pieces, use the color button above the swatches. Hover over a swatch for its name and color code.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Colors&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose the current LDraw color from the swatches. This color is used when inserting or painting parts. To recolor selected parts, use the color button above the swatches. Hover over a swatch for its name and color code.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Barvy&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Zvolte aktuální barvu LDraw ze vzorníku. Tato barva se používá při vkládání nebo malování dílů. Chcete-li vybrané díly přebarvit, použijte barevné tlačítko nad vzorníkem. Umístěním ukazatele myši na vzorek zobrazíte jeho název a kód barvy.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="685"/>
-        <source>Apply the current color to selected pieces.</source>
+        <source>Apply the current color to selected parts.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Aplikujte aktuální barvu na vybrané díly.</translation>
     </message>
@@ -12342,7 +12342,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="687"/>
-        <source>&lt;p&gt;&lt;b&gt;Change Selection Color&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Apply the current color to selected pieces. Choosing a swatch sets the current color; this button applies that color to the selection.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Change Selection Color&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Apply the current color to selected parts. Choosing a swatch sets the current color; this button applies that color to the selection.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Změnit barvu výběru&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Použít aktuální barvu na vybrané díly. Výběrem políčka nastavíte aktuální barvu; toto tlačítko použije tuto barvu na výběr.&lt;/p&gt;</translation>
     </message>
@@ -12359,7 +12359,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="722"/>
-        <source>&lt;p&gt;&lt;b&gt;Properties&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Edit properties of the focused object or selection. Available fields depend on whether you select pieces, a camera, or a light. Expand a section to see its fields. Keyframe controls mark properties at the current building step.&lt;/p&gt;&lt;p&gt;The transform fields at the bottom apply an X/Y/Z translation or rotation using the chosen transform mode. Press Enter to apply the values.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Properties&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Edit properties of the focused object or selection. Available fields depend on whether you select parts, a camera, or a light. Expand a section to see its fields. Keyframe controls mark properties at the current building step.&lt;/p&gt;&lt;p&gt;The transform fields at the bottom apply an X/Y/Z translation or rotation using the chosen transform mode. Press Enter to apply the values.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Vlastnosti&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Upravte vlastnosti vybraného objektu nebo výběru. Dostupná pole závisí na tom, zda vyberete díly, fotoaparát nebo světlo. Rozbalením sekce zobrazíte její pole. Ovládací prvky klíčového snímku označují vlastnosti v aktuálním kroku vytváření.&lt;/p&gt;&lt;p&gt;Pole transformace ve spodní části aplikují X/Y/Z posun nebo rotaci pomocí zvoleného režimu transformace. Stisknutím klávesy Enter hodnoty použijete.&lt;/p&gt;</translation>
     </message>
@@ -12408,7 +12408,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="697"/>
-        <source>Choose how inserted pieces are colored.</source>
+        <source>Choose how inserted parts are colored.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -12458,7 +12458,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="830"/>
-        <source>&lt;p&gt;&lt;b&gt;Timeline&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select a step to make it current, or select piece rows to select those pieces in the model. Drag pieces between steps or reorder them within a step. Right-click for step insertion, removal, movement, and visibility commands.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Timeline&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select a step to make it current, or select part rows to select those parts in the model. Drag parts between steps or reorder them within a step. Right-click for step insertion, removal, movement, and visibility commands.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Časová osa&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Vyberte krok, aby byl aktuální, nebo vyberte řádky dílů a vyberte tyto díly v modelu. Přetahujte kousky mezi kroky nebo v rámci kroku změňte jejich pořadí. Kliknutím pravým tlačítkem myši zobrazíte příkazy pro vkládání, odebírání, pohyb a viditelnost.&lt;/p&gt;</translation>
     </message>
@@ -12469,7 +12469,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="851"/>
-        <source>&lt;p&gt;&lt;b&gt;Minifigure Builder&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose the pieces, colors and pose of a minifigure, then add it to the current model. The panel keeps its settings so you can add several variations.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Minifigure Builder&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose the parts, colors and pose of a minifigure, then add it to the current model. The panel keeps its settings so you can add several variations.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -12491,9 +12491,9 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main.cpp" line="170"/>
-        <source>&lt;p&gt;&lt;b&gt;Preview&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Inspect a piece without placing it in the model. Double-click a piece in the Pieces dock to preview it. Lock Preview keeps the current preview when the source selection changes; unlock it to allow updates.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Preview&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Inspect a part without placing it in the model. Double-click a part in the Parts dock to preview it. Lock Preview keeps the current preview when the source selection changes; unlock it to allow updates.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">&lt;p&gt;&lt;b&gt;Náhled&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Zkontrolujte díl, aniž byste jej umístili do modelu. Dvojitým kliknutím na díl v doku Pieces zobrazíte jeho náhled. Uzamknout náhled zachová aktuální náhled, když se změní výběr zdroje; odemkněte jej a povolte aktualizace.&lt;/p&gt;</translation>
+        <translation type="unfinished">&lt;p&gt;&lt;b&gt;Náhled&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Zkontrolujte díl, aniž byste jej umístili do modelu. Dvojitým kliknutím na díl v doku Parts zobrazíte jeho náhled. Uzamknout náhled zachová aktuální náhled, když se změní výběr zdroje; odemkněte jej a povolte aktualizace.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="903"/>
@@ -12503,7 +12503,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main.cpp" line="315"/>
-        <source>Could not load piece.</source>
+        <source>Could not load part.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Kus se nepodařilo načíst.</translation>
     </message>
@@ -12515,19 +12515,19 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main.cpp" line="351"/>
-        <source>Regenerating synthesized piece geometry.</source>
+        <source>Regenerating synthesized part geometry.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Obnovení geometrie syntetizovaného dílku.</translation>
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main.cpp" line="353"/>
-        <source>Loading model pieces (%1 / %2).</source>
+        <source>Loading model parts (%1 / %2).</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Načítání dílků modelu (%1 / %2).</translation>
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main.cpp" line="360"/>
-        <source>The model could not be fully loaded. Some pieces may be missing.
+        <source>The model could not be fully loaded. Some parts may be missing.
 
 %1</source>
         <oldsource>The model could not be fully loaded, some pieces may be missing.
@@ -12733,7 +12733,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_view.cpp" line="382"/>
-        <source>Insert First Piece at Origin</source>
+        <source>Insert First Part at Origin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -12748,17 +12748,17 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main.cpp" line="766"/>
-        <source>Selected Piece Color</source>
+        <source>Selected Part Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main.cpp" line="767"/>
-        <source>Last Inserted Piece Color</source>
+        <source>Last Inserted Part Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main.cpp" line="769"/>
-        <source>Lock Pieces Color</source>
+        <source>Lock Parts Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -12778,7 +12778,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_update.cpp" line="158"/>
-        <source>Piece</source>
+        <source>Part</source>
         <translation type="unfinished">Část</translation>
     </message>
     <message>
@@ -13063,85 +13063,85 @@ Please visit https://library.ldraw.org for information on how to download and in
         <translation>Chcete uložit změny v &apos;%1&apos;?</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main.h" line="126"/>
-        <location filename="../../source/interface/window/sw_window_main.h" line="132"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="125"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="131"/>
         <source>0</source>
         <translation>0</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main.h" line="126"/>
-        <location filename="../../source/interface/window/sw_window_main.h" line="132"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="125"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="131"/>
         <source>1/20S</source>
         <translation>1/20S</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main.h" line="126"/>
-        <location filename="../../source/interface/window/sw_window_main.h" line="132"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="125"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="131"/>
         <source>1/4S</source>
         <translation>1/4S</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main.h" line="126"/>
-        <location filename="../../source/interface/window/sw_window_main.h" line="132"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="125"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="131"/>
         <source>1F</source>
         <translation>1F</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main.h" line="126"/>
-        <location filename="../../source/interface/window/sw_window_main.h" line="132"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="125"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="131"/>
         <source>1/2S</source>
         <translation>1/2S</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main.h" line="126"/>
-        <location filename="../../source/interface/window/sw_window_main.h" line="132"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="125"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="131"/>
         <source>1S</source>
         <translation>1S</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main.h" line="126"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="125"/>
         <source>2S</source>
         <translation>2S</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main.h" line="126"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="125"/>
         <source>3S</source>
         <translation>3S</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main.h" line="126"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="125"/>
         <source>4S</source>
         <translation>4S</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main.h" line="126"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="125"/>
         <source>8S</source>
         <translation>8S</translation>
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main.cpp" line="793"/>
-        <location filename="../../source/interface/window/sw_window_main.h" line="127"/>
-        <location filename="../../source/interface/window/sw_window_main.h" line="133"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="126"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="132"/>
         <source>None</source>
         <translation>Žádné</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main.h" line="132"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="131"/>
         <source>1B</source>
         <translation>1B</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main.h" line="132"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="131"/>
         <source>2B</source>
         <translation>2B</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main.h" line="132"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="131"/>
         <source>4B</source>
         <translation>4B</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main.h" line="132"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="131"/>
         <source>8B</source>
         <translation>8B</translation>
     </message>
@@ -13177,7 +13177,7 @@ Please visit https://library.ldraw.org for information on how to download and in
 <context>
     <name>swMinifigureBuilderWidget</name>
     <message>
-        <source>&lt;p&gt;&lt;b&gt;Minifig Wizard&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Build a minifigure by choosing its pieces, colors, and pose. The preview updates as you make changes. Choose OK to insert the minifigure into the current model, or Cancel to close without inserting it.&lt;/p&gt;&lt;p&gt;Templates let you reuse a configuration. Saved, deleted, and imported templates are retained even if you cancel the wizard.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Minifig Wizard&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Build a minifigure by choosing its parts, colors, and pose. The preview updates as you make changes. Choose OK to insert the minifigure into the current model, or Cancel to close without inserting it.&lt;/p&gt;&lt;p&gt;Templates let you reuse a configuration. Saved, deleted, and imported templates are retained even if you cancel the wizard.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">&lt;p&gt;&lt;b&gt;Průvodce minifigem&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Postavte si minifigurku výběrem jejích dílků, barev a pózy. Náhled se aktualizuje při provádění změn. Zvolte OK pro vložení minifigurky do aktuálního modelu nebo Zrušit pro zavření bez vložení.&lt;/p&gt;&lt;p&gt;Šablony vám umožňují znovu použít konfiguraci. Uložené, odstraněné a importované šablony zůstanou zachovány, i když zrušíte průvodce.&lt;/p&gt;</translation>
     </message>
@@ -13186,12 +13186,12 @@ Please visit https://library.ldraw.org for information on how to download and in
         <translation type="obsolete">Průvodce Minifig</translation>
     </message>
     <message>
-        <source>&lt;p&gt;&lt;b&gt;Minifigure Pieces&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Each section has a piece selector and a color button. Some sections also have a rotation control in degrees. Choose None in a piece selector to omit that piece.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Minifigure Parts&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Each section has a part selector and a color button. Some sections also have a rotation control in degrees. Choose None in a part selector to omit that part.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">&lt;p&gt;&lt;b&gt;Dílky minifigurek&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Každá sekce má výběr figur a tlačítko barvy. Některé sekce mají také ovládání rotace ve stupních. Chcete-li daný díl vynechat, zvolte Žádný ve výběru dílu.&lt;/p&gt;</translation>
     </message>
     <message>
-        <source>&lt;p&gt;&lt;b&gt;Templates&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Load a saved configuration of pieces, colors, and angles, or save the current configuration under a name. Choosing another template replaces the current preview configuration.&lt;/p&gt;&lt;p&gt;Changes to the preview are not saved as a template until you use Save. Template operations are retained when the wizard closes, including after Cancel.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Templates&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Load a saved configuration of parts, colors, and angles, or save the current configuration under a name. Choosing another template replaces the current preview configuration.&lt;/p&gt;&lt;p&gt;Changes to the preview are not saved as a template until you use Save. Template operations are retained when the wizard closes, including after Cancel.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">&lt;p&gt;&lt;b&gt;Šablony&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Načtěte uloženou konfiguraci dílů, barev a úhlů nebo uložte aktuální konfiguraci pod názvem. Výběr jiné šablony nahradí aktuální konfiguraci náhledu.&lt;/p&gt;&lt;p&gt;Změny náhledu se neuloží jako šablona, ​​dokud nepoužijete možnost Uložit. Operace se šablonami jsou zachovány, když se průvodce zavře, včetně po zrušení.&lt;/p&gt;</translation>
     </message>
@@ -13202,7 +13202,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_builder_minifigure.ui"/>
-        <source>Load a saved configuration of pieces, colors, and angles.</source>
+        <source>Load a saved configuration of parts, colors, and angles.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Načtěte uloženou konfiguraci dílů, barev a úhlů.</translation>
     </message>
@@ -13220,7 +13220,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_builder_minifigure.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Save Template&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Enter a name for the current pieces, colors, and pose. Reusing an existing name asks before replacing that template. The Default template cannot be overwritten.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Save Template&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Enter a name for the current parts, colors, and pose. Reusing an existing name asks before replacing that template. The Default template cannot be overwritten.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Uložit šablonu&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Zadejte název pro aktuální kousky, barvy a pózu. Opětovné použití existujícího názvu se před nahrazením šablony zeptá. Výchozí šablonu nelze přepsat.&lt;/p&gt;</translation>
     </message>
@@ -13237,7 +13237,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_builder_minifigure.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Delete Template&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Remove the selected named template after confirmation. This does not remove pieces from the preview or an existing model. The Default template cannot be deleted.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Delete Template&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Remove the selected named template after confirmation. This does not remove parts from the preview or an existing model. The Default template cannot be deleted.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Odstranit šablonu&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Po potvrzení odeberte vybranou pojmenovanou šablonu. Toto neodstraní díly z náhledu nebo existujícího modelu. Výchozí šablonu nelze smazat.&lt;/p&gt;</translation>
     </message>
@@ -13385,13 +13385,13 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_builder_minifigure.cpp" line="53"/>
-        <source>%1 piece</source>
+        <source>%1 part</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 díl</translation>
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_builder_minifigure.cpp" line="54"/>
-        <source>&lt;p&gt;&lt;b&gt;Choose Piece&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a piece for this section of the minifigure. Select None to omit it, the selector then shows the name of the section. The preview updates when you select a different piece.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Choose Part&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a part for this section of the minifigure. Select None to omit it, the selector then shows the name of the section. The preview updates when you select a different part.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -13401,7 +13401,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_builder_minifigure.cpp" line="130"/>
-        <source>&lt;p&gt;&lt;b&gt;Minifigure Builder Preview&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Check the assembled minifigure as you change pieces, colors, or angles. Choose Add to Model to add it to the current model.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Minifigure Builder Preview&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Check the assembled minifigure as you change parts, colors, or angles. Choose Add to Model to add it to the current model.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -13426,7 +13426,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_builder_minifigure.cpp" line="252"/>
-        <source>Choose the piece for %1, or None to omit it.</source>
+        <source>Choose the part for %1, or None to omit it.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Vyberte díl pro %1, nebo zvolte Žádný, chcete-li jej vynechat.</translation>
     </message>
@@ -13443,7 +13443,7 @@ Please visit https://library.ldraw.org for information on how to download and in
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;p&gt;&lt;b&gt;Choose Piece&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a piece for this section of the minifigure. Select None to omit it. The preview updates when you select a different piece.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Choose Part&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a part for this section of the minifigure. Select None to omit it. The preview updates when you select a different part.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">&lt;p&gt;&lt;b&gt;Vyberte dílek&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Vyberte dílek pro tuto část minifigurky. Chcete-li jej vynechat, vyberte možnost Žádný. Náhled se aktualizuje, když vyberete jiný díl.&lt;/p&gt;</translation>
     </message>
@@ -13461,7 +13461,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_builder_minifigure.cpp" line="63"/>
-        <source>&lt;p&gt;&lt;b&gt;Choose Color&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Change the color of this minifigure piece. The preview updates immediately, and saving a template includes the chosen color.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Choose Color&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Change the color of this minifigure part. The preview updates immediately, and saving a template includes the chosen color.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Vyberte barvu&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Změňte barvu tohoto dílku minifigurky. Náhled se okamžitě aktualizuje a uložení šablony obsahuje vybranou barvu.&lt;/p&gt;</translation>
     </message>
@@ -13479,7 +13479,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_builder_minifigure.cpp" line="78"/>
-        <source>&lt;p&gt;&lt;b&gt;Rotation&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Adjust this piece&apos;s angle to pose the minifigure. Values range from -360 to 360 degrees. The available rotation depends on the selected minifigure section.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Rotation&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Adjust this part&apos;s angle to pose the minifigure. Values range from -360 to 360 degrees. The available rotation depends on the selected minifigure section.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Otáčení&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Upravte úhel tohoto dílku, abyste postavili minifigurku. Hodnoty se pohybují od -360 do 360 stupňů. Dostupná rotace závisí na vybrané sekci minifigurky.&lt;/p&gt;</translation>
     </message>
@@ -13490,12 +13490,12 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_builder_minifigure.cpp" line="129"/>
-        <source>Preview of the chosen pieces, colors, and pose.</source>
+        <source>Preview of the chosen parts, colors, and pose.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Náhled vybraných dílů, barev a pózy.</translation>
     </message>
     <message>
-        <source>&lt;p&gt;&lt;b&gt;Minifigure Preview&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Check the assembled minifigure as you change pieces, colors, or angles. Choose OK to add this configuration to the current model.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Minifigure Preview&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Check the assembled minifigure as you change parts, colors, or angles. Choose OK to add this configuration to the current model.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">&lt;p&gt;&lt;b&gt;Náhled minifigurky&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Kontrolujte sestavenou minifigurku, jak měníte dílky, barvy nebo úhly. Zvolte OK pro přidání této konfigurace do aktuálního modelu.&lt;/p&gt;</translation>
     </message>
@@ -13586,7 +13586,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_builder_minifigure.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Minifigure Builder&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Build a minifigure by choosing its pieces, colors, and pose. The preview updates as you make changes. Choose Add to Model to insert the minifigure into the current model.&lt;/p&gt;&lt;p&gt;Templates let you reuse a configuration. Saved, deleted, and imported templates are kept as soon as you change them.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Minifigure Builder&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Build a minifigure by choosing its parts, colors, and pose. The preview updates as you make changes. Choose Add to Model to insert the minifigure into the current model.&lt;/p&gt;&lt;p&gt;Templates let you reuse a configuration. Saved, deleted, and imported templates are kept as soon as you change them.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -13596,12 +13596,12 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_builder_minifigure.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Minifigure Pieces&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Each section has a piece selector and a color button. Some sections also have a rotation control in degrees. Choose None in a piece selector to omit that piece, the selector then shows the name of the section.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Minifigure Parts&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Each section has a part selector and a color button. Some sections also have a rotation control in degrees. Choose None in a part selector to omit that part, the selector then shows the name of the section.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_builder_minifigure.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Templates&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Load a saved configuration of pieces, colors, and angles, or save the current configuration under a name. Choosing another template replaces the current preview configuration.&lt;/p&gt;&lt;p&gt;Changes to the preview are not saved as a template until you use Save. Saved, deleted and imported templates are kept right away.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Templates&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Load a saved configuration of parts, colors, and angles, or save the current configuration under a name. Choosing another template replaces the current preview configuration.&lt;/p&gt;&lt;p&gt;Changes to the preview are not saved as a template until you use Save. Saved, deleted and imported templates are kept right away.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -13621,7 +13621,7 @@ Please visit https://library.ldraw.org for information on how to download and in
         <translation type="vanished">Vkládání</translation>
     </message>
     <message>
-        <source>Duplicating Pieces</source>
+        <source>Duplicating Parts</source>
         <translation type="vanished">Duplikování dílků</translation>
     </message>
     <message>
@@ -13658,7 +13658,7 @@ Please visit https://library.ldraw.org for information on how to download and in
         <location filename="../../source/core/sw_model_clipboard.cpp" line="175"/>
         <location filename="../../source/core/sw_model_group.cpp" line="73"/>
         <location filename="../../source/core/sw_model_group.cpp" line="110"/>
-        <source>No pieces selected.</source>
+        <source>No parts selected.</source>
         <translation>Nejsou vybrány žádné dílky.</translation>
     </message>
     <message>
@@ -13674,7 +13674,7 @@ Please visit https://library.ldraw.org for information on how to download and in
         <translation type="vanished">Úpravy skupin</translation>
     </message>
     <message>
-        <source>Adding Piece</source>
+        <source>Adding Part</source>
         <translation type="vanished">Přidání dílku</translation>
     </message>
     <message>
@@ -13728,11 +13728,11 @@ Please visit https://library.ldraw.org for information on how to download and in
         <translation type="vanished">Nastavení části</translation>
     </message>
     <message>
-        <source>Showing Pieces</source>
+        <source>Showing Parts</source>
         <translation type="vanished">Zobrazení dílků</translation>
     </message>
     <message>
-        <source>Hiding Pieces</source>
+        <source>Hiding Parts</source>
         <translation type="vanished">Skrytí dílků</translation>
     </message>
     <message>
@@ -13792,18 +13792,18 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/core/sw_model.cpp" line="361"/>
-        <source>Loading pieces...</source>
+        <source>Loading parts...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/core/sw_model.cpp" line="395"/>
-        <source>Could not load all required pieces.</source>
+        <source>Could not load all required parts.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Nepodařilo se načíst všechny požadované dílky.</translation>
     </message>
     <message>
         <location filename="../../source/core/sw_model.cpp" line="406"/>
-        <source>Could not generate geometry for piece &apos;%1&apos;.</source>
+        <source>Could not generate geometry for part &apos;%1&apos;.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Nelze vygenerovat geometrii pro dílek &apos;%1&apos;.</translation>
     </message>
@@ -13833,7 +13833,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/core/sw_model_clipboard.cpp" line="175"/>
-        <source>Duplicate Pieces</source>
+        <source>Duplicate Parts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Duplicitní dílky</translation>
     </message>
@@ -13854,19 +13854,19 @@ Please visit https://library.ldraw.org for information on how to download and in
         <location filename="../../source/core/sw_model_render.cpp" line="399"/>
         <location filename="../../source/core/sw_model_render.cpp" line="408"/>
         <location filename="../../source/core/sw_model_render.cpp" line="461"/>
-        <source>Could not allocate the pieces list image.</source>
+        <source>Could not allocate the parts list image.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Nepodařilo se přidělit obrázek seznamu dílků.</translation>
     </message>
     <message>
         <location filename="../../source/core/sw_model_render.cpp" line="267"/>
-        <source>Could not create the pieces list framebuffer.</source>
+        <source>Could not create the parts list framebuffer.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Nelze vytvořit framebuffer seznamu dílků.</translation>
     </message>
     <message>
         <location filename="../../source/core/sw_model_render.cpp" line="348"/>
-        <source>Could not read the pieces list image.</source>
+        <source>Could not read the parts list image.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Nelze přečíst obrázek seznamu dílků.</translation>
     </message>
@@ -13929,7 +13929,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     <message>
         <location filename="../../source/core/sw_model_edit.cpp" line="207"/>
         <location filename="../../source/core/sw_model_tool.cpp" line="235"/>
-        <source>Add Piece</source>
+        <source>Add Part</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Přidat dílek</translation>
     </message>
@@ -14022,7 +14022,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/core/sw_model_edit.cpp" line="685"/>
-        <source>Show Pieces</source>
+        <source>Show Parts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Zobrazit kousky</translation>
     </message>
@@ -14090,14 +14090,14 @@ Please visit https://library.ldraw.org for information on how to download and in
     <message>
         <location filename="../../source/core/sw_model_selection.cpp" line="821"/>
         <location filename="../../source/core/sw_model_selection.cpp" line="852"/>
-        <source>Hide Pieces</source>
+        <source>Hide Parts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Skrýt dílky</translation>
     </message>
     <message>
         <location filename="../../source/core/sw_model_selection.cpp" line="883"/>
         <location filename="../../source/core/sw_model_selection.cpp" line="914"/>
-        <source>Unhide Pieces</source>
+        <source>Unhide Parts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Odkrýt dílky</translation>
     </message>
@@ -14168,7 +14168,7 @@ Please visit https://library.ldraw.org for information on how to download and in
         <location filename="../../source/core/sw_model.cpp" line="723"/>
         <location filename="../../source/core/sw_model.cpp" line="734"/>
         <location filename="../../source/core/sw_model.cpp" line="793"/>
-        <source>Piece Array</source>
+        <source>Part Array</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Pole dílků</translation>
     </message>
@@ -14204,7 +14204,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/core/sw_model.cpp" line="734"/>
-        <source>Array only has 1 element or less. No pieces added.</source>
+        <source>Array only has 1 element or less. No parts added.</source>
         <oldsource>Array only has 1 element or less, no pieces added.</oldsource>
         <translation type="unfinished">Pole obsahuje pouze 1 prvek nebo méně, nejsou přidávány žádné dílky.</translation>
     </message>
@@ -14222,7 +14222,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message numerus="yes">
         <location filename="../../source/core/sw_model_selection.cpp" line="1037"/>
-        <source>Replace Pieces</source>
+        <source>Replace Parts</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">
             <numerusform>Nahradit dílek</numerusform>
@@ -14428,7 +14428,7 @@ Please visit https://library.ldraw.org for information on how to download and in
         <translation type="obsolete">Kopie z </translation>
     </message>
     <message>
-        <source>Select Pieces Library Folder</source>
+        <source>Select Parts Library Folder</source>
         <translation type="vanished">Vyberte složku knihovny částí</translation>
     </message>
     <message>
@@ -14755,195 +14755,195 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
 </context>
 <context>
-    <name>swPiecePaletteDialog</name>
+    <name>swPartPaletteDialog</name>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Piece Palettes&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Organize reusable collections of pieces in the piece browser. Create, rename, delete, import, or reorder palettes, then choose OK to apply the changes. Cancel discards these palette changes.&lt;/p&gt;&lt;p&gt;Palettes organize piece choices; they do not change pieces already placed in a model.&lt;/p&gt;</source>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
+        <source>&lt;p&gt;&lt;b&gt;Part Palettes&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Organize reusable collections of parts in the part browser. Create, rename, delete, import, or reorder palettes, then choose OK to apply the changes. Cancel discards these palette changes.&lt;/p&gt;&lt;p&gt;Palettes organize part choices; they do not change parts already placed in a model.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Palety dílů&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Uspořádejte opakovaně použitelné sbírky dílů v prohlížeči dílů. Vytvořte, přejmenujte, odstraňte, importujte nebo změňte pořadí palet a poté klepněte na OK pro použití změn. Zrušit zruší tyto změny palety.&lt;/p&gt;&lt;p&gt;Palety organizují výběr dílů; nemění díly již umístěné v modelu.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
-        <source>Piece Palettes</source>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
+        <source>Part Palettes</source>
         <translation>Část palet</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
         <source>Select the palette to rename, delete, or move.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Vyberte paletu, kterou chcete přejmenovat, odstranit nebo přesunout.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Palette List&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select a palette before using Rename, Delete, Move Up, or Move Down. The list order determines the palette order in the piece browser.&lt;/p&gt;</source>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
+        <source>&lt;p&gt;&lt;b&gt;Palette List&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select a palette before using Rename, Delete, Move Up, or Move Down. The list order determines the palette order in the part browser.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Seznam palet&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Před použitím Přejmenovat, Odstranit, Posunout nahoru nebo Posunout dolů vyberte paletu. Pořadí seznamu určuje pořadí palet v prohlížeči dílů.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
-        <source>Create a new empty piece palette.</source>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
+        <source>Create a new empty part palette.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Vytvořte novou prázdnou paletu.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
         <source>New...</source>
         <translation>Nová...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
         <source>Remove the selected palette after confirmation.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Po potvrzení odeberte vybranou paletu.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Delete Palette&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Remove the selected palette and its list of piece choices. Library pieces and pieces already used in models are not deleted. At least one palette must remain.&lt;/p&gt;</source>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
+        <source>&lt;p&gt;&lt;b&gt;Delete Palette&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Remove the selected palette and its list of part choices. Library parts and parts already used in models are not deleted. At least one palette must remain.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Odstranit paletu&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Odstraní vybranou paletu a její seznam položek. Položky knihovny a položky již použité v modelech nebudou odstraněny. Musí zůstat alespoň jedna paleta.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
         <source>Delete...</source>
         <translation>Odstranit...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
         <source>Change the name of the selected palette.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Změňte název vybrané palety.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
         <source>Rename...</source>
         <translation>Přejmenovat...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
         <source>Create a palette from an online set inventory.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Vytvořte paletu z online inventáře sady.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Import Palette&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Open Import Set Inventory to search for a set and download its inventory. The new palette uses the set description as its name.&lt;/p&gt;&lt;p&gt;The palette stores piece IDs; inventory colors and quantities are not stored. An internet connection is required.&lt;/p&gt;</source>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
+        <source>&lt;p&gt;&lt;b&gt;Import Palette&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Open Import Set Inventory to search for a set and download its inventory. The new palette uses the set description as its name.&lt;/p&gt;&lt;p&gt;The palette stores part IDs; inventory colors and quantities are not stored. An internet connection is required.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Paleta importu&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Otevřete položku Importovat inventář sady a vyhledejte sadu a stáhněte si její inventář. Nová paleta používá jako název popis sady.&lt;/p&gt;&lt;p&gt;Paleta ukládá ID dílů; barvy a množství inventáře nejsou uloženy. Je vyžadováno připojení k internetu.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
         <source>Import...</source>
         <translation>Importovat...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
         <source>Move the selected palette one position earlier in the list.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Posuňte vybranou paletu o jednu pozici dříve v seznamu.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
         <source>Move Up</source>
         <translation>Nahoru</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
         <source>Move the selected palette one position later in the list.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Přesuňte vybranou paletu o jednu pozici dále v seznamu.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
         <source>Move Down</source>
         <translation>Dolu</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.cpp" line="79"/>
-        <source>New Piece Palette</source>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.cpp" line="79"/>
+        <source>New Part Palette</source>
         <translation>Nová paleta částí</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.cpp" line="79"/>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.cpp" line="118"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.cpp" line="79"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.cpp" line="118"/>
         <source>Palette Name:</source>
         <translation>Název palety:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.cpp" line="98"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.cpp" line="98"/>
         <source>Are you sure you want to delete the palette &apos;%1&apos;?</source>
         <translation>Opravdu chcete odstranit paletu &apos;%1&apos;?</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.cpp" line="99"/>
-        <source>Delete Piece Palette</source>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.cpp" line="99"/>
+        <source>Delete Part Palette</source>
         <translation>Odstranit paletu částí</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.cpp" line="118"/>
-        <source>Rename Piece Palette</source>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.cpp" line="118"/>
+        <source>Rename Part Palette</source>
         <translation>Přejmenovat paletu částí</translation>
     </message>
 </context>
 <context>
-    <name>swPieceSelectionListModel</name>
+    <name>swPartSelectionListModel</name>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="375"/>
-        <source>Could not load piece &apos;%1&apos;.</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="375"/>
+        <source>Could not load part &apos;%1&apos;.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Nelze načíst dílek &apos;%1&apos;.</translation>
     </message>
 </context>
 <context>
-    <name>swPieceSelectionListView</name>
+    <name>swPartSelectionListView</name>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="624"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="624"/>
         <source>Add to Palette</source>
         <translation>Přidat do palety</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="635"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="635"/>
         <source>None</source>
         <translation>Žádné</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="639"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="639"/>
         <source>Remove from Palette</source>
         <translation>Odebrat z palety</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="645"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="645"/>
         <source>Open Submodel</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Otevřete Submodel</translation>
     </message>
 </context>
 <context>
-    <name>swPieceSelectionPopup</name>
+    <name>swPartSelectionPopup</name>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece_popup.cpp" line="10"/>
-        <source>Choose Piece</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part_popup.cpp" line="10"/>
+        <source>Choose Part</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Vyberte Díl</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece_popup.cpp" line="11"/>
-        <source>&lt;p&gt;&lt;b&gt;Choose Piece&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select a piece, then choose OK or double-click it to use it. Cancel keeps the original choice. Filter the list to find a piece; Options controls matching and list display. When None is available, select it to omit the piece.&lt;/p&gt;</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part_popup.cpp" line="11"/>
+        <source>&lt;p&gt;&lt;b&gt;Choose Part&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select a part, then choose OK or double-click it to use it. Cancel keeps the original choice. Filter the list to find a part; Options controls matching and list display. When None is available, select it to omit the part.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Vybrat díl&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Vyberte díl a poté zvolte OK nebo na něj dvakrát klikněte, abyste jej mohli použít. Zrušit zachová původní výběr. Filtrujte seznam a najděte díl; Možnosti řídí shodu a zobrazení seznamu. Když je k dispozici Žádná, vyberte ji, chcete-li díl vynechat.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
-    <name>swPieceSelectionWidget</name>
+    <name>swPartSelectionWidget</name>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1028"/>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1029"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1028"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1029"/>
         <source>Filter Categories</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Filtrovat kategorie</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1036"/>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1457"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1036"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1457"/>
         <source>Match Case</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Match Case</translation>
@@ -14957,157 +14957,157 @@ Please visit https://library.ldraw.org for information on how to download and in
         <translation type="vanished">Možnosti</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1376"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1376"/>
         <source>Edit Palettes...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Upravit palety...</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1405"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1405"/>
         <source>Icons</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">ikony</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1409"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1409"/>
         <source>No Icons</source>
         <translation>Žádné ikony</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1414"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1414"/>
         <source>Small Icons</source>
         <translation>Malé ikony</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1419"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1419"/>
         <source>Medium Icons</source>
         <translation>Střední ikony</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1424"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1424"/>
         <source>Large Icons</source>
         <translation>Velké ikony</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1429"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1429"/>
         <source>Extra Large Icons</source>
         <translation>Největší ikony</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1444"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1444"/>
         <source>Lock Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Barva zámku</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1451"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1451"/>
         <source>Filter</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Filtr</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1453"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1453"/>
         <source>Regular Expression</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Regulární výraz</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1463"/>
-        <source>Piece ID</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1463"/>
+        <source>Part ID</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">ID dílku</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1468"/>
-        <source>Piece Description</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1468"/>
+        <source>Part Description</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Popis dílu</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1385"/>
-        <source>Show Piece Names</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1385"/>
+        <source>Show Part Names</source>
         <translatorcomment>Otázka je zda nepojmenovat parts -&gt; díly, (části)</translatorcomment>
         <translation>Zobrazit názvy částí</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1030"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1030"/>
         <source>Filter category names to narrow the category list.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Filtrování názvů kategorií zúží seznam kategorií.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1045"/>
-        <source>Piece Categories</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1045"/>
+        <source>Part Categories</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Kategorie dílů</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1046"/>
-        <source>Choose a category or palette to display its pieces.</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1046"/>
+        <source>Choose a category or palette to display its parts.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Vyberte kategorii nebo paletu pro zobrazení jejích částí.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1062"/>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1063"/>
-        <source>Filter Pieces</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1062"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1063"/>
+        <source>Filter Parts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Filtrační dílky</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1064"/>
-        <source>Filter the displayed pieces using the matching options.</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1064"/>
+        <source>Filter the displayed parts using the matching options.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Filtrujte zobrazené díly pomocí odpovídajících možností.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1069"/>
-        <source>Configure piece filtering and list display.</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1069"/>
+        <source>Configure part filtering and list display.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Nakonfigurujte filtrování dílů a zobrazení seznamu.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1069"/>
-        <source>Piece List Options</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1069"/>
+        <source>Part List Options</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Možnosti seznamu dílů</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1073"/>
-        <source>Available Pieces</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1073"/>
+        <source>Available Parts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Dostupné díly</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1074"/>
-        <source>Select a piece from the filtered list.</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1074"/>
+        <source>Select a part from the filtered list.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Vyberte díl z filtrovaného seznamu.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1390"/>
-        <source>Show Decorated Pieces</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1390"/>
+        <source>Show Decorated Parts</source>
         <translatorcomment>Otázka co znamená zdobené?</translatorcomment>
         <translation>Zobrazit zdobené součásti</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1394"/>
-        <source>Show Piece Aliases</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1394"/>
+        <source>Show Part Aliases</source>
         <translatorcomment>Allises -&gt; popis, přezdívka, označení</translatorcomment>
         <translation>Zobrazit přezdívny částí</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1399"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1399"/>
         <source>Snap Panel Width to Tiles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1438"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1438"/>
         <source>List Mode</source>
         <translation>Režim seznamu</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1475"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1475"/>
         <source>Rendering</source>
         <translation type="unfinished">Vykreslování</translation>
     </message>
@@ -15116,17 +15116,17 @@ Please visit https://library.ldraw.org for information on how to download and in
         <translation type="vanished">Uzamknutí barevného náhledu</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1516"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1516"/>
         <source>Favorites</source>
         <translation>Oblíbené</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1649"/>
-        <source>All Pieces</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1649"/>
+        <source>All Parts</source>
         <translation>Všechny části</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1655"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1655"/>
         <source>In Use</source>
         <translation>Využíváno</translation>
     </message>
@@ -15135,13 +15135,13 @@ Please visit https://library.ldraw.org for information on how to download and in
         <translation type="vanished">Používané části</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1661"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1661"/>
         <source>Submodels</source>
         <translation>Podmodely</translation>
     </message>
 </context>
 <context>
-    <name>swPiecesLibrary</name>
+    <name>swPartsLibrary</name>
     <message>
         <source>External project include cycle at &apos;%1&apos;.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -15154,7 +15154,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/library/sw_library.cpp" line="233"/>
-        <source>Could not find piece &apos;%1&apos;.</source>
+        <source>Could not find part &apos;%1&apos;.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Nepodařilo se najít dílek &apos;%1&apos;.</translation>
     </message>
@@ -15227,12 +15227,12 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/library/sw_library.cpp" line="1021"/>
-        <source>Loading Pieces Library</source>
+        <source>Loading Parts Library</source>
         <translation>Načítání knihovny dílů</translation>
     </message>
     <message>
         <location filename="../../source/library/sw_library.cpp" line="1551"/>
-        <source>Could not generate geometry for piece &apos;%1&apos;.</source>
+        <source>Could not generate geometry for part &apos;%1&apos;.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Nelze vygenerovat geometrii pro dílek &apos;%1&apos;.</translation>
     </message>
@@ -15254,13 +15254,13 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/library/sw_library.cpp" line="1755"/>
-        <source>Could not load piece &apos;%1&apos;.</source>
+        <source>Could not load part &apos;%1&apos;.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Nelze načíst dílek &apos;%1&apos;.</translation>
     </message>
     <message>
         <location filename="../../source/library/sw_library.cpp" line="1768"/>
-        <source>Could not prepare piece &apos;%1&apos; for rendering.</source>
+        <source>Could not prepare part &apos;%1&apos; for rendering.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Nelze připravit dílek &apos;%1&apos; k vykreslení.</translation>
     </message>
@@ -15366,7 +15366,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Pieces Library:</source>
+        <source>Parts Library:</source>
         <translation>Knihovna součástí:</translation>
     </message>
     <message>
@@ -15615,7 +15615,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Set the distance in LDraw units at which simpler piece meshes are used.</source>
+        <source>Set the distance in LDraw units at which simpler part meshes are used.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Nastavte vzdálenost v jednotkách LDraw, při které se používají jednodušší sítě dílů.</translation>
     </message>
@@ -15680,7 +15680,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Preferences&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Configure the application, display, colors, piece categories, and keyboard and mouse shortcuts. Choose OK to save the changes or Cancel to discard edits in Preferences. Language, piece-library, and antialiasing changes may require restarting StudWorks.&lt;/p&gt;&lt;p&gt;Export buttons write files immediately. Blender add-on settings have their own Apply action and can configure Blender before you close Preferences.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Preferences&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Configure the application, display, colors, part categories, and keyboard and mouse shortcuts. Choose OK to save the changes or Cancel to discard edits in Preferences. Language, part-library, and antialiasing changes may require restarting StudWorks.&lt;/p&gt;&lt;p&gt;Export buttons write files immediately. Blender add-on settings have their own Apply action and can configure Blender before you close Preferences.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Předvolby&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Nakonfigurujte aplikaci, zobrazení, barvy, kategorie dílů a klávesové zkratky a myši. Zvolte OK pro uložení změn nebo Storno pro zrušení úprav v Předvolbách. Změny jazyka, knihovny částí a antialiasingu mohou vyžadovat restartování StudWorksu.&lt;/p&gt;&lt;p&gt;Tlačítka Export zapisují soubory okamžitě. Nastavení doplňků Blenderu mají vlastní akci Použít a mohou nakonfigurovat Blender před zavřením Předvoleb.&lt;/p&gt;</translation>
     </message>
@@ -15708,7 +15708,7 @@ Please visit https://library.ldraw.org for information on how to download and in
         <translation type="obsolete">Zkontrolujte aktualizace</translation>
     </message>
     <message>
-        <source>Choose how often to check automatically for application and piece-library updates.</source>
+        <source>Choose how often to check automatically for application and part-library updates.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">Zvolte, jak často se mají automaticky kontrolovat aktualizace aplikací a dílčí knihovny.</translation>
     </message>
@@ -15738,7 +15738,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Move pieces along fixed model axes instead of view-relative directions.</source>
+        <source>Move parts along fixed model axes instead of view-relative directions.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Přesouvejte díly podél pevných os modelu namísto směrů relativních k pohledu.</translation>
     </message>
@@ -15750,25 +15750,25 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose a piece-library folder or supported archive to load after restarting StudWorks.</source>
+        <source>Choose a part-library folder or supported archive to load after restarting StudWorks.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Vyberte složku dílčí knihovny nebo podporovaný archiv, který se má načíst po restartování StudWorksu.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Pieces Library</source>
+        <source>Parts Library</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Knihovna dílů</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose a piece-library folder.</source>
+        <source>Choose a part-library folder.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Vyberte složku knihovny.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose a piece-library ZIP or BIN archive.</source>
+        <source>Choose a part-library ZIP or BIN archive.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Vyberte archiv ZIP nebo BIN s dílčí knihovnou.</translation>
     </message>
@@ -15862,7 +15862,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose the tint used for pieces from previous steps.</source>
+        <source>Choose the tint used for parts from previous steps.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Vyberte odstín použitý pro díly z předchozích kroků.</translation>
     </message>
@@ -15874,37 +15874,37 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose how piece surfaces and edges are drawn in model views.</source>
+        <source>Choose how part surfaces and edges are drawn in model views.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Zvolte způsob kreslení povrchů a hran dílu v pohledech modelu.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Use simpler meshes for distant pieces to improve display performance.</source>
+        <source>Use simpler meshes for distant parts to improve display performance.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Pro zlepšení výkonu zobrazení použijte jednodušší sítě pro vzdálené díly.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Tint pieces from previous building steps with the chosen fade color.</source>
+        <source>Tint parts from previous building steps with the chosen fade color.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Odbarvujte kousky z předchozích stavebních kroků zvolenou barvou vyblednutí.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Highlight pieces introduced in the current building step.</source>
+        <source>Highlight parts introduced in the current building step.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Zvýrazněte díly představené v aktuálním kroku budování.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>New Piece Highlight Color</source>
+        <source>New Part Highlight Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Barva zvýraznění nového dílu</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose the highlight color for pieces in the current step.</source>
+        <source>Choose the highlight color for parts in the current step.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Vyberte barvu zvýraznění dílů v aktuálním kroku.</translation>
     </message>
@@ -15932,7 +15932,7 @@ Please visit https://library.ldraw.org for information on how to download and in
         <translation type="obsolete">&lt;p&gt;&lt;b&gt;Vykreslování výběru&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Obrys vykreslí obrys a slabou výběrovou výplň přes zakryté části. Tónování obličeje používá tónované plochy a barevné okraje. Systémy bez podpory obrysů používají Tónování obličeje.&lt;/p&gt;</translation>
     </message>
     <message>
-        <source>Choose how selected pieces are highlighted.</source>
+        <source>Choose how selected parts are highlighted.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">Vyberte způsob zvýraznění vybraných dílů.</translation>
     </message>
@@ -15979,7 +15979,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Draw conditional lines where needed to show curved piece surfaces.</source>
+        <source>Draw conditional lines where needed to show curved part surfaces.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">V případě potřeby nakreslete podmíněné čáry pro zobrazení zakřivených povrchů dílů.</translation>
     </message>
@@ -15997,13 +15997,13 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Draw the edge lines defined by each piece.</source>
+        <source>Draw the edge lines defined by each part.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Nakreslete okrajové čáry definované každým dílem.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Calculate edge colors from piece colors instead of using their defined edge colors.</source>
+        <source>Calculate edge colors from part colors instead of using their defined edge colors.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Počítejte barvy hran z barev dílů namísto použití jejich definovaných barev hran.</translation>
     </message>
@@ -16014,7 +16014,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;View Preferences&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose navigation aids for model views and the piece preview, and configure the base grid. Locations select the corner where each navigation aid appears.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;View Preferences&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose navigation aids for model views and the part preview, and configure the base grid. Locations select the corner where each navigation aid appears.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Předvolby zobrazení&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Vyberte navigační pomůcky pro zobrazení modelu a náhled dílu a nakonfigurujte základní mřížku. Místa vybírají roh, kde se zobrazí jednotlivé navigační pomůcky.&lt;/p&gt;</translation>
     </message>
@@ -16127,30 +16127,30 @@ Please visit https://library.ldraw.org for information on how to download and in
         <translation type="unfinished">Zobrazit pozice čepů na základní mřížce.</translation>
     </message>
     <message>
-        <source>Piece Preview</source>
+        <source>Part Preview</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">Náhled dílku</translation>
     </message>
     <message>
-        <source>Show the model-axis indicator in the piece preview.</source>
+        <source>Show the model-axis indicator in the part preview.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">Zobrazit indikátor osy modelu v náhledu dílu.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose the corner for the piece-preview navigation sphere.</source>
+        <source>Choose the corner for the part-preview navigation sphere.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Vyberte roh pro sféru navigace s náhledem části.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose the piece-preview navigation sphere size, or disable it.</source>
+        <source>Choose the part-preview navigation sphere size, or disable it.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Vyberte velikost navigační koule náhledu části nebo ji deaktivujte.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Display Colors&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose colors for the background, objects, grid, and interface. These settings control the display; they do not change the LDraw colors assigned to model pieces.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Display Colors&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose colors for the background, objects, grid, and interface. These settings control the display; they do not change the LDraw colors assigned to model parts.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Barvy zobrazení&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Vyberte barvy pro pozadí, objekty, mřížku a rozhraní. Tato nastavení řídí displej; nemění barvy LDraw přiřazené dílům modelu.&lt;/p&gt;</translation>
     </message>
@@ -16378,7 +16378,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Highlight New Pieces</source>
+        <source>Highlight New Parts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Zvýrazněte nové kousky</translation>
     </message>
@@ -16406,7 +16406,7 @@ Please visit https://library.ldraw.org for information on how to download and in
         <translation type="unfinished">Blender LDraw Vykreslení:</translation>
     </message>
     <message>
-        <source>Controls how selected pieces are rendered, the options are:
+        <source>Controls how selected parts are rendered, the options are:
 - Outline with a faint selection-colored fill for obscured portions
 - Face tint and colored edges.
 Unsupported video cards use face tint and colored edges.</source>
@@ -16618,7 +16618,7 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Piece Categories&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Create, edit, reorder, or import categories for the piece browser. The right-hand list shows pieces matching the selected category. Imported and edited categories are saved when you choose OK in Preferences; Export writes the current list immediately.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Part Categories&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Create, edit, reorder, or import categories for the part browser. The right-hand list shows parts matching the selected category. Imported and edited categories are saved when you choose OK in Preferences; Export writes the current list immediately.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Kategorie dílů&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Vytvářejte, upravujte, změňte pořadí nebo importujte kategorie pro prohlížeč dílů. V pravém seznamu jsou zobrazeny díly odpovídající zvolené kategorii. Importované a upravené kategorie se uloží, když v Předvolbách zvolíte OK; Export okamžitě zapíše aktuální seznam.&lt;/p&gt;</translation>
     </message>
@@ -16629,13 +16629,13 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Pieces Library Categories</source>
+        <source>Parts Library Categories</source>
         <translatorcomment>TODO</translatorcomment>
         <translation>Kategorie knihoven součástí</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Piece Categories</source>
+        <source>Part Categories</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Kategorie dílů</translation>
     </message>
@@ -16647,13 +16647,13 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Matching Pieces</source>
+        <source>Matching Parts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Odpovídající díly</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>View the library pieces matching the selected category.</source>
+        <source>View the library parts matching the selected category.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Zobrazte položky knihovny odpovídající vybrané kategorii.</translation>
     </message>
@@ -17008,12 +17008,12 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="662"/>
-        <source>Select Pieces Library Folder</source>
+        <source>Select Parts Library Folder</source>
         <translation>Vyberte složku knihovny částí</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="670"/>
-        <source>Select Pieces Library Archive</source>
+        <source>Select Parts Library Archive</source>
         <translation>Vyberte archiv knihovny částí</translation>
     </message>
     <message>
@@ -17441,12 +17441,12 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Highlight Style&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose how selected pieces and pieces added in the current step are highlighted in the viewport. Outline uses fading outlines in the selection, focus, or new-piece highlight color. Selected pieces also receive a faint fill over obscured portions. Tint and Edges uses tinted faces and colored edges for selection, and colored edges for new pieces.&lt;/p&gt;&lt;p&gt;New-piece highlighting requires Highlight New Pieces. Wireframe views, image exports, and systems without outline support use Tint and Edges.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Highlight Style&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose how selected parts and parts added in the current step are highlighted in the viewport. Outline uses fading outlines in the selection, focus, or new-part highlight color. Selected parts also receive a faint fill over obscured portions. Tint and Edges uses tinted faces and colored edges for selection, and colored edges for new parts.&lt;/p&gt;&lt;p&gt;New-part highlighting requires Highlight New Parts. Wireframe views, image exports, and systems without outline support use Tint and Edges.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose how selected pieces and new pieces are highlighted in the viewport.</source>
+        <source>Choose how selected parts and new parts are highlighted in the viewport.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17506,12 +17506,12 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Wait until every piece of a model is loaded before showing it, instead of showing pieces as they load.</source>
+        <source>Wait until every part of a model is loaded before showing it, instead of showing parts as they load.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Load All Pieces Before Showing a Model</source>
+        <source>Load All Parts Before Showing a Model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17526,7 +17526,7 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose the color given to newly inserted pieces: the current color, the color of the selected piece, or the color of the last inserted piece.</source>
+        <source>Choose the color given to newly inserted parts: the current color, the color of the selected part, or the color of the last inserted part.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17546,22 +17546,22 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Selected piece color</source>
+        <source>Selected part color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Last inserted piece color</source>
+        <source>Last inserted part color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Place the first piece of an empty model at 0, 0, 0 instead of where it is dropped.</source>
+        <source>Place the first part of an empty model at 0, 0, 0 instead of where it is dropped.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Insert First Piece at Origin</source>
+        <source>Insert First Part at Origin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17576,7 +17576,7 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose how the Default Lights shading mode lights pieces in every view: Standard uses one light with a soft highlight, Studio adds fill and rim lights, Matte drops the highlights and Toon uses flat cel shading bands.</source>
+        <source>Choose how the Default Lights shading mode lights parts in every view: Standard uses one light with a soft highlight, Studio adds fill and rim lights, Matte drops the highlights and Toon uses flat cel shading bands.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17681,12 +17681,12 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Pieces</source>
+        <source>Parts</source>
         <translation type="unfinished">Části</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Use the model view rendering settings for the pieces list and parts list images.</source>
+        <source>Use the model view rendering settings for the parts list and parts list images.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17696,37 +17696,37 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose how pieces are drawn in the pieces list and parts list images.</source>
+        <source>Choose how parts are drawn in the parts list and parts list images.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Pieces Shading Mode</source>
+        <source>Parts Shading Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Draw edge lines on pieces in the pieces list and parts list images.</source>
+        <source>Draw edge lines on parts in the parts list and parts list images.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Draw conditional lines on pieces in the pieces list and parts list images.</source>
+        <source>Draw conditional lines on parts in the parts list and parts list images.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Set the line width used in the pieces list and parts list images.</source>
+        <source>Set the line width used in the parts list and parts list images.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Pieces Line Width</source>
+        <source>Parts Line Width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Snap the width of the docked pieces panel to whole thumbnail tiles after resizing it, and the categories to the longest category name when docked on top or bottom.</source>
+        <source>Snap the width of the docked parts panel to whole thumbnail tiles after resizing it, and the categories to the longest category name when docked on top or bottom.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17736,12 +17736,12 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Pieces Preview</source>
+        <source>Parts Preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Keep the piece preview square, with a 1:1 width to height ratio, whatever the panel size.</source>
+        <source>Keep the part preview square, with a 1:1 width to height ratio, whatever the panel size.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17751,17 +17751,17 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Show the model-axis indicator in the pieces preview.</source>
+        <source>Show the model-axis indicator in the parts preview.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Use the model view rendering settings for the pieces preview.</source>
+        <source>Use the model view rendering settings for the parts preview.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose how pieces are drawn in the pieces preview.</source>
+        <source>Choose how parts are drawn in the parts preview.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17771,17 +17771,17 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Draw edge lines on pieces in the pieces preview.</source>
+        <source>Draw edge lines on parts in the parts preview.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Draw conditional lines on pieces in the pieces preview.</source>
+        <source>Draw conditional lines on parts in the parts preview.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Set the line width used in the pieces preview.</source>
+        <source>Set the line width used in the parts preview.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17801,7 +17801,7 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose how pieces are drawn in the minifigure builder preview.</source>
+        <source>Choose how parts are drawn in the minifigure builder preview.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17811,12 +17811,12 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Draw edge lines on pieces in the minifigure builder preview.</source>
+        <source>Draw edge lines on parts in the minifigure builder preview.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Draw conditional lines on pieces in the minifigure builder preview.</source>
+        <source>Draw conditional lines on parts in the minifigure builder preview.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17886,7 +17886,7 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose the thickness of the outline drawn around selected pieces and new pieces.</source>
+        <source>Choose the thickness of the outline drawn around selected parts and new parts.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17906,7 +17906,7 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Set the contrast between automated edge colors and piece surfaces from 0.00 to 1.00 (default 0.50).</source>
+        <source>Set the contrast between automated edge colors and part surfaces from 0.00 to 1.00 (default 0.50).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -18004,13 +18004,13 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     <name>swPreviewDockWidget</name>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="69"/>
-        <source>Piece Preview</source>
+        <source>Part Preview</source>
         <translatorcomment>Translation reused from another context; requires human review.</translatorcomment>
         <translation type="unfinished">Náhled dílku</translation>
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="70"/>
-        <source>Inspect the previewed piece without placing it in the model.</source>
+        <source>Inspect the previewed part without placing it in the model.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Prohlédněte si zobrazený díl, aniž byste jej umístili do modelu.</translation>
     </message>
@@ -18023,7 +18023,7 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="75"/>
-        <source>&lt;p&gt;&lt;b&gt;Lock Preview&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Keep the current piece in the preview while you browse other pieces. Unlock Preview allows the display to update again. An empty preview cannot be locked.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Lock Preview&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Keep the current part in the preview while you browse other parts. Unlock Preview allows the display to update again. An empty preview cannot be locked.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Uzamknout náhled&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Ponechat aktuální skladbu v náhledu, zatímco budete procházet další skladby. Odemknout náhled umožňuje zobrazení znovu aktualizovat. Prázdný náhled nelze zamknout.&lt;/p&gt;</translation>
     </message>
@@ -18035,12 +18035,12 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="117"/>
-        <source>Configure the pieces preview.</source>
+        <source>Configure the parts preview.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="117"/>
-        <source>Pieces Preview Options</source>
+        <source>Parts Preview Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -18107,7 +18107,7 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
 <context>
     <name>swPropertiesDialog</name>
     <message>
-        <source>&lt;p&gt;&lt;b&gt;Model Properties&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Edit the current model&apos;s author, description, and comments on the Summary tab. Measurements and Pieces Used provide read-only information. Choose OK to apply the metadata changes, or Cancel to discard them.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Model Properties&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Edit the current model&apos;s author, description, and comments on the Summary tab. Measurements and Parts Used provide read-only information. Choose OK to apply the metadata changes, or Cancel to discard them.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">&lt;p&gt;&lt;b&gt;Vlastnosti modelu&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Upravte autora, popis a komentáře aktuálního modelu na kartě Souhrn. Měření a použité díly poskytují informace pouze pro čtení. Zvolte OK pro použití změn metadat, nebo Zrušit pro jejich zrušení.&lt;/p&gt;</translation>
     </message>
@@ -18167,7 +18167,7 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Model Measurements&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The dimensions of the model&apos;s bounding box are shown in centimeters, inches, and LDraw units (LDU). The values are read-only and include pieces across all steps.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Model Measurements&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The dimensions of the model&apos;s bounding box are shown in centimeters, inches, and LDraw units (LDU). The values are read-only and include parts across all steps.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Měry modelu&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Rozměry ohraničovacího rámečku modelu jsou uvedeny v centimetrech, palcích a jednotkách LDraw (LDU). Hodnoty jsou pouze pro čtení a zahrnují části ve všech krocích.&lt;/p&gt;</translation>
     </message>
@@ -18185,12 +18185,12 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
-        <source>View piece quantities by color; click a column heading to sort.</source>
+        <source>View part quantities by color; click a column heading to sort.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Zobrazení množství dílů podle barvy; kliknutím na záhlaví sloupce seřadíte.</translation>
     </message>
     <message>
-        <source>&lt;p&gt;&lt;b&gt;Pieces Used&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The table counts pieces across all steps, including pieces inside submodels. Color columns show quantities, and totals summarize each piece, each color, and the whole model. Click a column heading to sort. The piece-name column stays visible while you scroll horizontally. Counts cannot be edited here.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Parts Used&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The table counts parts across all steps, including parts inside submodels. Color columns show quantities, and totals summarize each part, each color, and the whole model. Click a column heading to sort. The part-name column stays visible while you scroll horizontally. Counts cannot be edited here.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">&lt;p&gt;&lt;b&gt;Použité díly&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Tabulka počítá díly ve všech krocích, včetně dílů uvnitř podmodelů. Barevné sloupce zobrazují množství a součty shrnují každý díl, každou barvu a celý model. Kliknutím na záhlaví sloupce seřadíte. Při vodorovném posouvání zůstane sloupec s názvem dílu viditelný. Počty zde nelze upravovat.&lt;/p&gt;</translation>
     </message>
@@ -18228,7 +18228,7 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
         <translation type="vanished">Nastavit jako výchozí možnosti pro nové projekty</translation>
     </message>
     <message>
-        <source>Pieces Used</source>
+        <source>Parts Used</source>
         <translation type="vanished">Použité díly</translation>
     </message>
     <message>
@@ -18262,7 +18262,7 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.cpp" line="316"/>
-        <source>Piece</source>
+        <source>Part</source>
         <translation>Část</translation>
     </message>
     <message>
@@ -18273,7 +18273,7 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.cpp" line="430"/>
-        <source>Unique pieces: %1 - Total pieces: %2</source>
+        <source>Unique parts: %1 - Total parts: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -18320,7 +18320,7 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Model Properties&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Edit the current model&apos;s author, description, and comments on the Summary tab. Measurements and Pieces provide read-only information. Choose OK to apply the metadata changes, or Cancel to discard them.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Model Properties&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Edit the current model&apos;s author, description, and comments on the Summary tab. Measurements and Parts provide read-only information. Choose OK to apply the metadata changes, or Cancel to discard them.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -18331,27 +18331,27 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.cpp" line="463"/>
-        <source>Pieces</source>
+        <source>Parts</source>
         <translation type="unfinished">Části</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Pieces&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The table counts pieces across all steps, including pieces inside submodels. The first column shows a thumbnail of each piece in its most used color, and the ID column shows its number. Color columns show quantities, and totals summarize each piece, each color, and the whole model. Click a column heading to sort. The thumbnail, ID and piece-name columns stay visible while you scroll horizontally. Counts cannot be edited here.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Parts&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The table counts parts across all steps, including parts inside submodels. The first column shows a thumbnail of each part in its most used color, and the ID column shows its number. Color columns show quantities, and totals summarize each part, each color, and the whole model. Click a column heading to sort. The thumbnail, ID and part-name columns stay visible while you scroll horizontally. Counts cannot be edited here.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
-        <source>Unique pieces count each piece and color combination once; total pieces count every piece in the model.</source>
+        <source>Unique parts count each part and color combination once; total parts count every part in the model.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
-        <source>Save this model&apos;s piece list as a BrickLink wanted list.</source>
+        <source>Save this model&apos;s part list as a BrickLink wanted list.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Export BrickLink&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Saves the pieces listed in this table as a BrickLink XML wanted list, the same format as File &amp;gt; Export &amp;gt; BrickLink. Only the model shown in this dialog and its submodels are included.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Export BrickLink&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Saves the parts listed in this table as a BrickLink XML wanted list, the same format as File &amp;gt; Export &amp;gt; BrickLink. Only the model shown in this dialog and its submodels are included.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -18361,12 +18361,12 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
-        <source>Save this model&apos;s piece list as a CSV spreadsheet.</source>
+        <source>Save this model&apos;s part list as a CSV spreadsheet.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Export CSV&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Saves the pieces listed in this table as comma separated values with name, color, quantity, ID and color code, the same format as File &amp;gt; Export &amp;gt; CSV. Only the model shown in this dialog and its submodels are included.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Export CSV&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Saves the parts listed in this table as comma separated values with name, color, quantity, ID and color code, the same format as File &amp;gt; Export &amp;gt; CSV. Only the model shown in this dialog and its submodels are included.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -18436,7 +18436,7 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="913"/>
-        <source>Multiple Pieces</source>
+        <source>Multiple Parts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Více dílků</translation>
     </message>
@@ -18444,7 +18444,7 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
         <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="917"/>
         <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1357"/>
         <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1359"/>
-        <source>Piece</source>
+        <source>Part</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">Část</translation>
     </message>
@@ -18480,7 +18480,7 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1359"/>
-        <source>Piece ID</source>
+        <source>Part ID</source>
         <oldsource>Piece Id</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Id</translation>
@@ -18495,7 +18495,7 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1360"/>
-        <source>Piece color</source>
+        <source>Part color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Barva dílku</translation>
     </message>
@@ -18505,7 +18505,7 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
         <translation type="obsolete">Show</translation>
     </message>
     <message>
-        <source>Step when piece is added to the model</source>
+        <source>Step when part is added to the model</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">Krok, když je díl přidán do modelu</translation>
     </message>
@@ -18515,7 +18515,7 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
         <translation type="obsolete">Skrýt</translation>
     </message>
     <message>
-        <source>Step when piece is hidden</source>
+        <source>Step when part is hidden</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">Krok, když je dílek skrytý</translation>
     </message>
@@ -18720,7 +18720,7 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1364"/>
-        <source>Added in Step: Step when the piece is added to the model</source>
+        <source>Added in Step: Step when the part is added to the model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -18730,7 +18730,7 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1365"/>
-        <source>Removed in Step: Step when the piece is removed from the model, leave empty to keep it until the end</source>
+        <source>Removed in Step: Step when the part is removed from the model, leave empty to keep it until the end</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -19060,7 +19060,7 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
         <translation type="vanished">Název</translation>
     </message>
     <message>
-        <source>Piece ID</source>
+        <source>Part ID</source>
         <translation type="vanished">ID části</translation>
     </message>
     <message>
@@ -19206,7 +19206,7 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
         <translation type="vanished">Barva</translation>
     </message>
     <message>
-        <source>Piece</source>
+        <source>Part</source>
         <translation type="vanished">Část</translation>
     </message>
     <message>
@@ -19757,7 +19757,7 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     <name>swSelectDialog</name>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_select.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Select Objects&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Use the checkboxes to choose visible pieces, cameras, and lights in the current model. Choose OK to replace the current selection with the checked objects, or Cancel to keep the current selection.&lt;/p&gt;&lt;p&gt;Pieces in the same top-level group are selected together. All, None, and Invert change the checkboxes in this dialog.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Select Objects&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Use the checkboxes to choose visible parts, cameras, and lights in the current model. Choose OK to replace the current selection with the checked objects, or Cancel to keep the current selection.&lt;/p&gt;&lt;p&gt;Parts in the same top-level group are selected together. All, None, and Invert change the checkboxes in this dialog.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Vybrat objekty&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Pomocí zaškrtávacích políček vyberte viditelné části, kamery a světla v aktuálním modelu. Zvolte OK, chcete-li nahradit aktuální výběr zaškrtnutými objekty, nebo Zrušit, chcete-li zachovat aktuální výběr.&lt;/p&gt;&lt;p&gt;Díly ve stejné skupině nejvyšší úrovně jsou vybrány společně. All, None a Invert mění zaškrtávací políčka v tomto dialogu.&lt;/p&gt;</translation>
     </message>
@@ -19774,7 +19774,7 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_select.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Object List&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The list includes pieces visible in the current step and visible cameras and lights. Expand groups to see their pieces. Checking or clearing a grouped piece applies the same state to all pieces in its top-level group.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Object List&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The list includes parts visible in the current step and visible cameras and lights. Expand groups to see their parts. Checking or clearing a grouped part applies the same state to all parts in its top-level group.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Seznam objektů&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Seznam obsahuje díly viditelné v aktuálním kroku a viditelné kamery a světla. Rozbalte skupiny, abyste viděli jejich kousky. Kontrola nebo vymazání seskupeného dílu aplikuje stejný stav na všechny díly v jeho skupině nejvyšší úrovně.&lt;/p&gt;</translation>
     </message>
@@ -19867,7 +19867,7 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_database_sets.ui"/>
-        <source>Select a set to download its piece inventory.</source>
+        <source>Select a set to download its part inventory.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Vyberte sadu a stáhněte si její inventář dílů.</translation>
     </message>
@@ -19879,7 +19879,7 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_database_sets.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Search Results&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Results show the set number, name, release year, and piece count. Select the desired set and choose OK, or double-click its row, to download its inventory.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Search Results&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Results show the set number, name, release year, and part count. Select the desired set and choose OK, or double-click its row, to download its inventory.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Výsledky vyhledávání&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Výsledky zobrazují číslo sady, název, rok vydání a počet dílů. Vyberte požadovanou sadu a zvolte OK nebo dvakrát klikněte na její řádek, abyste si stáhli její inventář.&lt;/p&gt;</translation>
     </message>
@@ -19900,7 +19900,7 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_database_sets.ui"/>
-        <source>Pieces</source>
+        <source>Parts</source>
         <translation>Části</translation>
     </message>
     <message>
@@ -20061,13 +20061,13 @@ Enter your Rebrickable API key, available for free from your account settings at
     <name>swTimelineWidget</name>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_timeline.cpp" line="11"/>
-        <source>Building Steps and Pieces</source>
+        <source>Building Steps and Parts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Stavební kroky a díly</translation>
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_timeline.cpp" line="12"/>
-        <source>Select steps or pieces; drag pieces to reorder them or change their building step.</source>
+        <source>Select steps or parts; drag parts to reorder them or change their building step.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Vyberte kroky nebo díly; přetažením dílů změníte jejich pořadí nebo změníte jejich stavební krok.</translation>
     </message>
@@ -20110,7 +20110,7 @@ Enter your Rebrickable API key, available for free from your account settings at
 <context>
     <name>swUpdateDialog</name>
     <message>
-        <source>&lt;p&gt;&lt;b&gt;Check for Updates&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Check online for a newer StudWorks version and, when an official library is loaded, new pieces. The result appears in this dialog. An internet connection is required.&lt;/p&gt;&lt;p&gt;Use the download link to open the release page in your browser. This dialog does not install updates. Ignore suppresses automatic notifications for this update information; a manual update check still shows the result. Close dismisses the dialog.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Check for Updates&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Check online for a newer StudWorks version and, when an official library is loaded, new parts. The result appears in this dialog. An internet connection is required.&lt;/p&gt;&lt;p&gt;Use the download link to open the release page in your browser. This dialog does not install updates. Ignore suppresses automatic notifications for this update information; a manual update check still shows the result. Close dismisses the dialog.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">&lt;p&gt;&lt;b&gt;Kontrola aktualizací&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Vyhledejte online novější verzi StudWorksu a po načtení oficiální knihovny i nové díly. Výsledek se zobrazí v tomto dialogu. Je vyžadováno připojení k internetu.&lt;/p&gt;&lt;p&gt;Pomocí odkazu ke stažení otevřete v prohlížeči stránku vydání. Tento dialog neinstaluje aktualizace. Ignorovat potlačí automatická upozornění na tyto informace o aktualizaci; ruční kontrola aktualizací stále zobrazuje výsledek. Zavřít dialogové okno zavře.&lt;/p&gt;</translation>
     </message>
@@ -20146,11 +20146,11 @@ Enter your Rebrickable API key, available for free from your account settings at
         <translation type="vanished">&lt;p&gt;Používáte nejnovější verzi StudWorksu.&lt;/p&gt;</translation>
     </message>
     <message>
-        <source>&lt;p&gt;There are new pieces available.&lt;/p&gt;</source>
+        <source>&lt;p&gt;There are new parts available.&lt;/p&gt;</source>
         <translation type="vanished">&lt;p&gt;K dispozici jsou nové aktualizace.&lt;/p&gt;</translation>
     </message>
     <message>
-        <source>&lt;p&gt;There are no new pieces available at this time.&lt;/p&gt;</source>
+        <source>&lt;p&gt;There are no new parts available at this time.&lt;/p&gt;</source>
         <translation type="vanished">&lt;p&gt;Momentálně nejsou k dispozici žádné nové aktualizace.&lt;/p&gt;</translation>
     </message>
     <message>

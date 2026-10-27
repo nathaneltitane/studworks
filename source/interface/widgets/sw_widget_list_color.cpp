@@ -13,7 +13,7 @@ swColorList::swColorList(QWidget* Parent, bool AllowNoColor)
 
 	UpdateCells();
 
-	connect(swGetPiecesLibrary(), &swPiecesLibrary::ColorsLoaded, this, &swColorList::ColorsLoaded);
+	connect(swGetPartsLibrary(), &swPartsLibrary::ColorsLoaded, this, &swColorList::ColorsLoaded);
 }
 
 void swColorList::UpdateCells()

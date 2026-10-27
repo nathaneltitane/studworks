@@ -1,7 +1,7 @@
 #include "sw_global.h"
 #include "sw_model.h"
 #include "sw_model_history.h"
-#include "sw_object_piece.h"
+#include "sw_object_part.h"
 #include "sw_object_camera.h"
 #include "sw_object_light.h"
 #include "sw_group.h"
@@ -12,7 +12,7 @@
 #include "sw_scene.h"
 #include "sw_track_train.h"
 #include "sw_file.h"
-#include "sw_data_piece.h"
+#include "sw_data_part.h"
 #include "sw_view.h"
 #include "sw_builder_minifigure.h"
 #include "sw_dialog_array.h"
@@ -203,41 +203,41 @@ void swModel::EndMouseTool(swTool Tool, swView* View, bool Accept)
 	}
 }
 
-bool swModel::InsertPieceToolClicked()
+bool swModel::InsertPartToolClicked()
 {
-	if (mPreviewInsertPieceInfo.empty())
+	if (mPreviewInsertPartInfo.empty())
 		return false;
 
 	BeginHistorySequence();
 	BeginEditHistory();
 
-	swPiece* Piece = nullptr;
+	swPart* Part = nullptr;
 
-	for (const swPreviewInsertPieceInformation& InsertPieceInfo : mPreviewInsertPieceInfo)
+	for (const swPreviewInsertPartInformation& InsertPartInfo : mPreviewInsertPartInfo)
 	{
-		Piece = new swPiece(InsertPieceInfo.PieceData);
+		Part = new swPart(InsertPartInfo.PartData);
 
-		Piece->Initialize(InsertPieceInfo.Transform, mCurrentStep);
-		Piece->SetColorIndex(InsertPieceInfo.ColorIndex);
-		Piece->UpdatePosition(mCurrentStep);
+		Part->Initialize(InsertPartInfo.Transform, mCurrentStep);
+		Part->SetColorIndex(InsertPartInfo.ColorIndex);
+		Part->UpdatePosition(mCurrentStep);
 
-		AddPiece(Piece);
+		AddPart(Part);
 	}
 
-	SetPreviewInsertPieceInfo(std::vector<swInsertPieceInformation>());
+	SetPreviewInsertPartInfo(std::vector<swInsertPartInformation>());
 
 	EndEditHistory();
 
-	gMainWindow->SetLastInsertedColorIndex(Piece->GetColorIndex());
+	gMainWindow->SetLastInsertedColorIndex(Part->GetColorIndex());
 
-	SetSelectionAndFocus(std::vector<swObject*>(), Piece, SW_PIECE_SECTION_POSITION, swSelectionMode::Single);
+	SetSelectionAndFocus(std::vector<swObject*>(), Part, SW_PART_SECTION_POSITION, swSelectionMode::Single);
 
-	EndHistorySequence(tr("Add Piece"));
+	EndHistorySequence(tr("Add Part"));
 
 	gMainWindow->UpdateTimeline(false, false);
 	gMainWindow->UpdateInUseCategory();
 
-	UpdateTrainTrackConnections(Piece, false);
+	UpdateTrainTrackConnections(Part, false);
 
 	return true;
 }
@@ -302,11 +302,11 @@ void swModel::InsertLightToolClicked(const swVector3& Position, swLightType Ligh
 
 void swModel::UpdateMoveTool(const swVector3& Distance, bool AllowRelative, bool AlternateButtonDrag)
 {
-	const swVector3 PieceDistance = SnapPosition(Distance) - SnapPosition(mMouseToolDistance);
+	const swVector3 PartDistance = SnapPosition(Distance) - SnapPosition(mMouseToolDistance);
 	const swVector3 ObjectDistance = Distance - mMouseToolDistance;
 
 	swModelTransformFlags Flags = (AllowRelative ? swModelTransformFlag::Relative : swModelTransformFlag::None) | (AlternateButtonDrag ? swModelTransformFlag::RotatePivotPoint : swModelTransformFlag::None) | (mMouseToolFirstMove ? swModelTransformFlag::FirstMove : swModelTransformFlag::None);
-	MoveSelectedObjects(PieceDistance, ObjectDistance, Flags, swModelHistoryEditMerge::None);
+	MoveSelectedObjects(PartDistance, ObjectDistance, Flags, swModelHistoryEditMerge::None);
 
 	if (mMouseToolMovePositionValid)
 	{
@@ -333,19 +333,19 @@ void swModel::UpdateMoveTool(const swVector3& Distance, bool AllowRelative, bool
 	UpdateAllViews();
 }
 
-void swModel::UpdateFreeMoveTool(swPiece* MousePiece, const swMatrix44& StartTransform, const swMatrix44& NewTransform, bool IsConnection, bool AlternateButtonDrag)
+void swModel::UpdateFreeMoveTool(swPart* MousePart, const swMatrix44& StartTransform, const swMatrix44& NewTransform, bool IsConnection, bool AlternateButtonDrag)
 {
 	swMatrix33 NewRotation = IsConnection ? swMatrix33(NewTransform) : swMatrix33(StartTransform);
-	swMatrix33 CurrentRotation = swMatrix33(MousePiece->mModelWorld);
+	swMatrix33 CurrentRotation = swMatrix33(MousePart->mModelWorld);
 
 	if (!swMatrix33Similar(CurrentRotation, NewRotation))
 	{
-		const swVector3 Distance = NewTransform.GetTranslation() - MousePiece->mModelWorld.GetTranslation();
+		const swVector3 Distance = NewTransform.GetTranslation() - MousePart->mModelWorld.GetTranslation();
 
 		swMatrix33 RotationMatrix = swMultiply(swMatrix33AffineInverse(CurrentRotation), NewRotation);
 
 		const swVector3& Center = NewTransform.GetTranslation();
-		swMatrix33 RelativeRotation = MousePiece->GetRelativeRotation();
+		swMatrix33 RelativeRotation = MousePart->GetRelativeRotation();
 
 		swMatrix33 WorldToFocusMatrix = swMatrix33AffineInverse(RelativeRotation);
 		// Rotate() expects the rotation in the focus frame.
@@ -359,15 +359,15 @@ void swModel::UpdateFreeMoveTool(swPiece* MousePiece, const swMatrix44& StartTra
 
 		for (swObject* Object : Selection)
 		{
-			if (Object->IsPiece())
+			if (Object->IsPart())
 			{
-				swPiece* Piece = (swPiece*)Object;
+				swPart* Part = (swPart*)Object;
 
-				Piece->MoveSelected(mCurrentStep, gMainWindow->GetAddKeys(), Distance);
-				Piece->UpdatePosition(mCurrentStep);
+				Part->MoveSelected(mCurrentStep, gMainWindow->GetAddKeys(), Distance);
+				Part->UpdatePosition(mCurrentStep);
 
-				Piece->Rotate(mCurrentStep, gMainWindow->GetAddKeys(), RotationMatrix, Center, WorldToFocusMatrix);
-				Piece->UpdatePosition(mCurrentStep);
+				Part->Rotate(mCurrentStep, gMainWindow->GetAddKeys(), RotationMatrix, Center, WorldToFocusMatrix);
+				Part->UpdatePosition(mCurrentStep);
 			}
 			else if (Object->IsCamera())
 			{
@@ -425,7 +425,7 @@ void swModel::UpdateRotateTool(const swMatrix33& RotationMatrix, bool AlternateB
 
 void swModel::UpdateScaleTool(const float Scale)
 {
-	ScaleSelectedPieces(Scale);
+	ScaleSelectedParts(Scale);
 
 	gMainWindow->UpdateSelectedObjects(false);
 	UpdateAllViews();
@@ -441,11 +441,11 @@ void swModel::EraserToolClicked(swObject* Object)
 
 	switch (Object->GetType())
 	{
-	case swObjectType::Piece:
-		for (auto PieceIt = mPieces.begin(); PieceIt != mPieces.end(); ++PieceIt)
-			if (PieceIt->get() == Object)
+	case swObjectType::Part:
+		for (auto PartIt = mParts.begin(); PartIt != mParts.end(); ++PartIt)
+			if (PartIt->get() == Object)
 			{
-				mPieces.erase(PieceIt);
+				mParts.erase(PartIt);
 				RemoveEmptyGroups();
 				break;
 			}
@@ -495,17 +495,17 @@ void swModel::EraserToolClicked(swObject* Object)
 
 void swModel::PaintToolClicked(swObject* Object)
 {
-	if (!Object || !Object->IsPiece())
+	if (!Object || !Object->IsPart())
 		return;
 
-	swPiece* Piece = (swPiece*)Object;
+	swPart* Part = (swPart*)Object;
 
-	if (Piece->GetColorIndex() != gMainWindow->mColorIndex)
+	if (Part->GetColorIndex() != gMainWindow->mColorIndex)
 	{
 		BeginHistorySequence();
 		BeginEditHistory();
 
-		Piece->SetColorIndex(gMainWindow->mColorIndex);
+		Part->SetColorIndex(gMainWindow->mColorIndex);
 
 		EndEditHistory();
 		EndHistorySequence(tr("Paint"));
@@ -517,12 +517,12 @@ void swModel::PaintToolClicked(swObject* Object)
 
 void swModel::ColorPickerToolClicked(const swObject* Object)
 {
-	if (!Object || !Object->IsPiece())
+	if (!Object || !Object->IsPart())
 		return;
 
-	const swPiece* Piece = (swPiece*)Object;
+	const swPart* Part = (swPart*)Object;
 
-	gMainWindow->SetColorIndex(Piece->GetColorIndex());
+	gMainWindow->SetColorIndex(Part->GetColorIndex());
 }
 
 void swModel::UpdateZoomTool(swCamera* Camera, float Mouse)
@@ -599,7 +599,7 @@ void swModel::LookAt(swCamera* Camera)
 	{
 		swVector3 Min(FLT_MAX, FLT_MAX, FLT_MAX), Max(-FLT_MAX, -FLT_MAX, -FLT_MAX);
 
-		if (GetVisiblePiecesBoundingBox(Min, Max))
+		if (GetVisiblePartsBoundingBox(Min, Max))
 			Center = (Min + Max) / 2.0f;
 		else
 			Center = swVector3(0.0f, 0.0f, 0.0f);
@@ -645,7 +645,7 @@ void swModel::MoveCamera(swCamera* Camera, const swVector3& Direction)
 
 void swModel::ZoomExtents(swCamera* Camera, float Aspect, const swMatrix44& WorldMatrix, swGeometryBoundsMode Mode, bool AdjustFarPlane)
 {
-	std::vector<swVector3> Points = GetPiecesBoundingBoxPoints(Mode);
+	std::vector<swVector3> Points = GetPartsBoundingBoxPoints(Mode);
 
 	if (Points.empty())
 		return;

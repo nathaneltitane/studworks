@@ -2,7 +2,7 @@
 #include "sw_window_main.h"
 #include "sw_widget_builder_minifigure.h"
 #include "sw_widget_spin_box_double.h"
-#include "sw_widget_selection_piece.h"
+#include "sw_widget_selection_part.h"
 #ifdef SW_ENABLE_TERMINAL
 #include "sw_widget_terminal.h"
 #endif
@@ -22,10 +22,10 @@
 #include "sw_profile.h"
 #include "sw_view.h"
 #include "sw_project.h"
-#include "sw_object_piece.h"
+#include "sw_object_part.h"
 #include "sw_object_camera.h"
 #include "sw_group.h"
-#include "sw_data_piece.h"
+#include "sw_data_part.h"
 #include "sw_library.h"
 #include "sw_colors.h"
 #include "sw_widget_preview.h"
@@ -50,83 +50,83 @@ void swMainWindow::UpdateSelectedObjects(bool SelectionChanged)
 	{
 		mTimelineWidget->UpdateSelection();
 
-		// Selecting a piece makes its color current; picking a color afterwards overrides it.
-		if (swGetPreferences().mInsertColorMode == swInsertColorMode::SelectedPieceColor)
+		// Selecting a part makes its color current; picking a color afterwards overrides it.
+		if (swGetPreferences().mInsertColorMode == swInsertColorMode::SelectedPartColor)
 		{
-			swObject* SelectedPiece = (Focus && Focus->IsPiece()) ? Focus : nullptr;
+			swObject* SelectedPart = (Focus && Focus->IsPart()) ? Focus : nullptr;
 
-			for (size_t ObjectIndex = 0; !SelectedPiece && ObjectIndex < Selection.size(); ObjectIndex++)
-				if (Selection[ObjectIndex]->IsPiece())
-					SelectedPiece = Selection[ObjectIndex];
+			for (size_t ObjectIndex = 0; !SelectedPart && ObjectIndex < Selection.size(); ObjectIndex++)
+				if (Selection[ObjectIndex]->IsPart())
+					SelectedPart = Selection[ObjectIndex];
 
-			if (SelectedPiece && static_cast<swPiece*>(SelectedPiece)->GetColorIndex() != mColorIndex)
-				SetColorIndex(static_cast<swPiece*>(SelectedPiece)->GetColorIndex());
+			if (SelectedPart && static_cast<swPart*>(SelectedPart)->GetColorIndex() != mColorIndex)
+				SetColorIndex(static_cast<swPart*>(SelectedPart)->GetColorIndex());
 		}
 
 		mActions[SW_EDIT_CUT]->setEnabled(Flags & SW_SELECTION_SELECTED);
 		mActions[SW_EDIT_COPY]->setEnabled(Flags & SW_SELECTION_SELECTED);
-		mActions[SW_EDIT_FIND]->setEnabled((Flags & SW_SELECTION_NO_PIECES) == 0);
-		mActions[SW_EDIT_FIND_NEXT]->setEnabled((Flags & SW_SELECTION_NO_PIECES) == 0);
-		mActions[SW_EDIT_FIND_PREVIOUS]->setEnabled((Flags & SW_SELECTION_NO_PIECES) == 0);
-		mActions[SW_EDIT_FIND_ALL]->setEnabled((Flags & SW_SELECTION_NO_PIECES) == 0);
-		mActions[SW_EDIT_REPLACE]->setEnabled((Flags & SW_SELECTION_NO_PIECES) == 0);
-		mActions[SW_EDIT_REPLACE_NEXT]->setEnabled((Flags & SW_SELECTION_NO_PIECES) == 0);
-		mActions[SW_EDIT_REPLACE_ALL]->setEnabled((Flags & SW_SELECTION_NO_PIECES) == 0);
-		mActions[SW_EDIT_SELECT_INVERT]->setEnabled((Flags & SW_SELECTION_NO_PIECES) == 0);
-		mActions[SW_EDIT_SELECT_BY_NAME]->setEnabled((Flags & SW_SELECTION_NO_PIECES) == 0);
+		mActions[SW_EDIT_FIND]->setEnabled((Flags & SW_SELECTION_NO_PARTS) == 0);
+		mActions[SW_EDIT_FIND_NEXT]->setEnabled((Flags & SW_SELECTION_NO_PARTS) == 0);
+		mActions[SW_EDIT_FIND_PREVIOUS]->setEnabled((Flags & SW_SELECTION_NO_PARTS) == 0);
+		mActions[SW_EDIT_FIND_ALL]->setEnabled((Flags & SW_SELECTION_NO_PARTS) == 0);
+		mActions[SW_EDIT_REPLACE]->setEnabled((Flags & SW_SELECTION_NO_PARTS) == 0);
+		mActions[SW_EDIT_REPLACE_NEXT]->setEnabled((Flags & SW_SELECTION_NO_PARTS) == 0);
+		mActions[SW_EDIT_REPLACE_ALL]->setEnabled((Flags & SW_SELECTION_NO_PARTS) == 0);
+		mActions[SW_EDIT_SELECT_INVERT]->setEnabled((Flags & SW_SELECTION_NO_PARTS) == 0);
+		mActions[SW_EDIT_SELECT_BY_NAME]->setEnabled((Flags & SW_SELECTION_NO_PARTS) == 0);
 		mActions[SW_EDIT_SELECT_NONE]->setEnabled(Flags & SW_SELECTION_SELECTED);
 		mActions[SW_EDIT_SELECT_ALL]->setEnabled(Flags & SW_SELECTION_UNSELECTED);
 
-		mActions[SW_PIECE_DELETE]->setEnabled(Flags & SW_SELECTION_SELECTED);
-		mActions[SW_PIECE_DUPLICATE]->setEnabled(Flags & SW_SELECTION_SELECTED);
-		mActions[SW_PIECE_PAINT_SELECTED]->setEnabled(Flags & SW_SELECTION_PIECE);
-		mActions[SW_PIECE_RESET_PIVOT_POINT]->setEnabled(Flags & SW_SELECTION_SELECTED);
-		mActions[SW_PIECE_REMOVE_KEY_FRAMES]->setEnabled(Flags & SW_SELECTION_SELECTED);
-		mActions[SW_PIECE_ARRAY]->setEnabled(Flags & SW_SELECTION_PIECE);
-		mActions[SW_PIECE_CONTROL_POINT_INSERT]->setEnabled(Flags & SW_SELECTION_CAN_ADD_CONTROL_POINT);
-		mActions[SW_PIECE_CONTROL_POINT_REMOVE]->setEnabled(Flags & SW_SELECTION_CAN_REMOVE_CONTROL_POINT);
-		mActions[SW_PIECE_TRAIN_TRACK_FOCUS_NEXT]->setEnabled(Flags & SW_SELECTION_TRAIN_TRACK_VISIBLE);
-		mActions[SW_PIECE_TRAIN_TRACK_FOCUS_PREVIOUS]->setEnabled(Flags & SW_SELECTION_TRAIN_TRACK_VISIBLE);
-		mActions[SW_PIECE_TRAIN_TRACK_ROTATE]->setEnabled(Flags & SW_SELECTION_TRAIN_TRACK_VISIBLE);
-		mActions[SW_PIECE_HIDE_SELECTED]->setEnabled(Flags & SW_SELECTION_VISIBLE_SELECTED);
-		mActions[SW_PIECE_HIDE_UNSELECTED]->setEnabled(Flags & SW_SELECTION_UNSELECTED);
-		mActions[SW_PIECE_UNHIDE_SELECTED]->setEnabled(Flags & SW_SELECTION_HIDDEN_SELECTED);
-		mActions[SW_PIECE_UNHIDE_ALL]->setEnabled(Flags & SW_SELECTION_HIDDEN);
-		mActions[SW_PIECE_VIEW_SELECTED_MODEL]->setEnabled(Flags & SW_SELECTION_MODEL_SELECTED);
-		mActions[SW_PIECE_MOVE_SELECTION_TO_MODEL]->setEnabled(Flags & SW_SELECTION_PIECE);
-		mActions[SW_PIECE_INLINE_SELECTED_MODELS]->setEnabled(Flags & SW_SELECTION_MODEL_SELECTED);
-		mActions[SW_PIECE_EDIT_SELECTED_SUBMODEL]->setEnabled(Flags & SW_SELECTION_MODEL_SELECTED);
-		mActions[SW_PIECE_GROUP]->setEnabled(Flags & SW_SELECTION_CAN_GROUP);
-		mActions[SW_PIECE_UNGROUP]->setEnabled(Flags & SW_SELECTION_GROUPED);
-		mActions[SW_PIECE_GROUP_ADD]->setEnabled((Flags & (SW_SELECTION_GROUPED | SW_SELECTION_FOCUS_GROUPED)) == SW_SELECTION_GROUPED);
-		mActions[SW_PIECE_GROUP_REMOVE]->setEnabled(Flags & SW_SELECTION_FOCUS_GROUPED);
-		mActions[SW_PIECE_GROUP_EDIT]->setEnabled((Flags & SW_SELECTION_NO_PIECES) == 0);
-		mActions[SW_PIECE_SHOW_EARLIER]->setEnabled(Flags & SW_SELECTION_PIECE); // FIXME: disable if current step is 1
-		mActions[SW_PIECE_SHOW_LATER]->setEnabled(Flags & SW_SELECTION_PIECE);
-		mActions[SW_TIMELINE_MOVE_SELECTION]->setEnabled(Flags & SW_SELECTION_PIECE);
-		mActions[SW_TIMELINE_MOVE_SELECTION_BEFORE]->setEnabled(Flags & SW_SELECTION_PIECE);
-		mActions[SW_TIMELINE_MOVE_SELECTION_AFTER]->setEnabled(Flags & SW_SELECTION_PIECE);
+		mActions[SW_PART_DELETE]->setEnabled(Flags & SW_SELECTION_SELECTED);
+		mActions[SW_PART_DUPLICATE]->setEnabled(Flags & SW_SELECTION_SELECTED);
+		mActions[SW_PART_PAINT_SELECTED]->setEnabled(Flags & SW_SELECTION_PART);
+		mActions[SW_PART_RESET_PIVOT_POINT]->setEnabled(Flags & SW_SELECTION_SELECTED);
+		mActions[SW_PART_REMOVE_KEY_FRAMES]->setEnabled(Flags & SW_SELECTION_SELECTED);
+		mActions[SW_PART_ARRAY]->setEnabled(Flags & SW_SELECTION_PART);
+		mActions[SW_PART_CONTROL_POINT_INSERT]->setEnabled(Flags & SW_SELECTION_CAN_ADD_CONTROL_POINT);
+		mActions[SW_PART_CONTROL_POINT_REMOVE]->setEnabled(Flags & SW_SELECTION_CAN_REMOVE_CONTROL_POINT);
+		mActions[SW_PART_TRAIN_TRACK_FOCUS_NEXT]->setEnabled(Flags & SW_SELECTION_TRAIN_TRACK_VISIBLE);
+		mActions[SW_PART_TRAIN_TRACK_FOCUS_PREVIOUS]->setEnabled(Flags & SW_SELECTION_TRAIN_TRACK_VISIBLE);
+		mActions[SW_PART_TRAIN_TRACK_ROTATE]->setEnabled(Flags & SW_SELECTION_TRAIN_TRACK_VISIBLE);
+		mActions[SW_PART_HIDE_SELECTED]->setEnabled(Flags & SW_SELECTION_VISIBLE_SELECTED);
+		mActions[SW_PART_HIDE_UNSELECTED]->setEnabled(Flags & SW_SELECTION_UNSELECTED);
+		mActions[SW_PART_UNHIDE_SELECTED]->setEnabled(Flags & SW_SELECTION_HIDDEN_SELECTED);
+		mActions[SW_PART_UNHIDE_ALL]->setEnabled(Flags & SW_SELECTION_HIDDEN);
+		mActions[SW_PART_VIEW_SELECTED_MODEL]->setEnabled(Flags & SW_SELECTION_MODEL_SELECTED);
+		mActions[SW_PART_MOVE_SELECTION_TO_MODEL]->setEnabled(Flags & SW_SELECTION_PART);
+		mActions[SW_PART_INLINE_SELECTED_MODELS]->setEnabled(Flags & SW_SELECTION_MODEL_SELECTED);
+		mActions[SW_PART_EDIT_SELECTED_SUBMODEL]->setEnabled(Flags & SW_SELECTION_MODEL_SELECTED);
+		mActions[SW_PART_GROUP]->setEnabled(Flags & SW_SELECTION_CAN_GROUP);
+		mActions[SW_PART_UNGROUP]->setEnabled(Flags & SW_SELECTION_GROUPED);
+		mActions[SW_PART_GROUP_ADD]->setEnabled((Flags & (SW_SELECTION_GROUPED | SW_SELECTION_FOCUS_GROUPED)) == SW_SELECTION_GROUPED);
+		mActions[SW_PART_GROUP_REMOVE]->setEnabled(Flags & SW_SELECTION_FOCUS_GROUPED);
+		mActions[SW_PART_GROUP_EDIT]->setEnabled((Flags & SW_SELECTION_NO_PARTS) == 0);
+		mActions[SW_PART_SHOW_EARLIER]->setEnabled(Flags & SW_SELECTION_PART); // FIXME: disable if current step is 1
+		mActions[SW_PART_SHOW_LATER]->setEnabled(Flags & SW_SELECTION_PART);
+		mActions[SW_TIMELINE_MOVE_SELECTION]->setEnabled(Flags & SW_SELECTION_PART);
+		mActions[SW_TIMELINE_MOVE_SELECTION_BEFORE]->setEnabled(Flags & SW_SELECTION_PART);
+		mActions[SW_TIMELINE_MOVE_SELECTION_AFTER]->setEnabled(Flags & SW_SELECTION_PART);
 
-		mActions[SW_PIECE_EDIT_END_SUBMODEL]->setEnabled(GetCurrentTabModel() != ActiveModel);
+		mActions[SW_PART_EDIT_END_SUBMODEL]->setEnabled(GetCurrentTabModel() != ActiveModel);
 	}
 
 	mPropertiesWidget->Update(Selection, Focus);
 
-	if (Focus && Focus->IsPiece())
+	if (Focus && Focus->IsPart())
 	{
-		swPiece* Piece = (swPiece*)Focus;
-		int ColorIndex = Piece->GetColorIndex();
+		swPart* Part = (swPart*)Focus;
+		int ColorIndex = Part->GetColorIndex();
 		quint32 ColorCode = swGetColorCode(ColorIndex);
 
-		PreviewPiece(Piece->mPieceData.Get(), ColorCode, false);
+		PreviewPart(Part->mPartData.Get(), ColorCode, false);
 	}
 
 	QString Message;
 
 	if ((Selection.size() == 1) && Focus)
 	{
-		if (Focus->IsPiece())
-			Message = tr("%1 (ID: %2)").arg(Focus->GetName(), ((swPiece*)Focus)->GetID());
+		if (Focus->IsPart())
+			Message = tr("%1 (ID: %2)").arg(Focus->GetName(), ((swPart*)Focus)->GetID());
 		else
 			Message = Focus->GetName();
 	}
@@ -134,11 +134,11 @@ void swMainWindow::UpdateSelectedObjects(bool SelectionChanged)
 	{
 		Message = tr("%n objects selected", nullptr, static_cast<int>(Selection.size()));
 
-		if (Focus && Focus->IsPiece())
+		if (Focus && Focus->IsPart())
 		{
-			Message.append(tr(" - %1 (ID: %2)").arg(Focus->GetName(), ((swPiece*)Focus)->GetID()));
+			Message.append(tr(" - %1 (ID: %2)").arg(Focus->GetName(), ((swPart*)Focus)->GetID()));
 
-			const swGroup* Group = ((swPiece*)Focus)->GetGroup();
+			const swGroup* Group = ((swPart*)Focus)->GetGroup();
 			if (Group && !Group->mName.isEmpty())
 				Message.append(tr(" in group '%1'").arg(Group->mName));
 		}
@@ -154,8 +154,8 @@ void swMainWindow::UpdateSelectedObjects(bool SelectionChanged)
 	// Name the focused object so the coordinates are clearly its position.
 	QString Object;
 
-	if (Focus && Focus->IsPiece())
-		Object = tr("Piece");
+	if (Focus && Focus->IsPart())
+		Object = tr("Part");
 	else if (Focus && Focus->IsCamera())
 		Object = tr("Camera");
 	else if (Focus && Focus->IsLight())
@@ -374,16 +374,16 @@ void swMainWindow::UpdateSelectionMode()
 		mActions[SW_EDIT_SELECTION_SINGLE]->setChecked(true);
 		break;
 
-	case swSelectionMode::Piece:
-		mActions[SW_EDIT_SELECTION_PIECE]->setChecked(true);
+	case swSelectionMode::Part:
+		mActions[SW_EDIT_SELECTION_PART]->setChecked(true);
 		break;
 
 	case swSelectionMode::Color:
 		mActions[SW_EDIT_SELECTION_COLOR]->setChecked(true);
 		break;
 
-	case swSelectionMode::PieceColor:
-		mActions[SW_EDIT_SELECTION_PIECE_COLOR]->setChecked(true);
+	case swSelectionMode::PartColor:
+		mActions[SW_EDIT_SELECTION_PART_COLOR]->setChecked(true);
 		break;
 	}
 }
@@ -429,21 +429,21 @@ void swMainWindow::UpdateModels()
 			delete TabWidget;
 	}
 
-	mPieceSelectionWidget->UpdateModels();
+	mPartSelectionWidget->UpdateModels();
 
-	if (mInsertPieceData && mInsertPieceData->IsModel())
-		if (!HasModel(mInsertPieceData->GetModel()))
-			SetInsertPieceData(nullptr);
+	if (mInsertPartData && mInsertPartData->IsModel())
+		if (!HasModel(mInsertPartData->GetModel()))
+			SetInsertPartData(nullptr);
 }
 
 void swMainWindow::UpdateInUseCategory()
 {
-	mPieceSelectionWidget->UpdateInUseCategory();
+	mPartSelectionWidget->UpdateInUseCategory();
 }
 
 void swMainWindow::UpdateCategories()
 {
-	mPieceSelectionWidget->UpdateCategories();
+	mPartSelectionWidget->UpdateCategories();
 }
 
 void swMainWindow::UpdateTitle()

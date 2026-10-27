@@ -3,7 +3,7 @@
  <class>swPreferencesDialog</class>
  <widget class="QDialog" name="swPreferencesDialog">
   <property name="whatsThis">
-   <string>&lt;p&gt;&lt;b&gt;Preferences&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Configure the application, display, colors, piece categories, and keyboard and mouse shortcuts. Choose OK to save the changes or Cancel to discard edits in Preferences. Language, piece-library, and antialiasing changes may require restarting StudWorks.&lt;/p&gt;&lt;p&gt;Export buttons write files immediately. Blender add-on settings have their own Apply action and can configure Blender before you close Preferences.&lt;/p&gt;</string>
+   <string>&lt;p&gt;&lt;b&gt;Preferences&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Configure the application, display, colors, part categories, and keyboard and mouse shortcuts. Choose OK to save the changes or Cancel to discard edits in Preferences. Language, part-library, and antialiasing changes may require restarting StudWorks.&lt;/p&gt;&lt;p&gt;Export buttons write files immediately. Blender add-on settings have their own Apply action and can configure Blender before you close Preferences.&lt;/p&gt;</string>
   </property>
   <property name="geometry">
    <rect>
@@ -42,10 +42,10 @@
           <item row="0" column="0">
            <widget class="QLabel" name="label_5">
             <property name="toolTip">
-             <string>Choose a piece-library folder or supported archive to load after restarting StudWorks.</string>
+             <string>Choose a part-library folder or supported archive to load after restarting StudWorks.</string>
             </property>
             <property name="text">
-             <string>Pieces Library:</string>
+             <string>Parts Library:</string>
             </property>
             <property name="buddy">
              <cstring>partsLibrary</cstring>
@@ -57,24 +57,24 @@
             <item>
              <widget class="QLineEdit" name="partsLibrary">
               <property name="accessibleName">
-               <string>Pieces Library</string>
+               <string>Parts Library</string>
               </property>
               <property name="toolTip">
-               <string>Choose a piece-library folder or supported archive to load after restarting StudWorks.</string>
+               <string>Choose a part-library folder or supported archive to load after restarting StudWorks.</string>
               </property>
              </widget>
             </item>
             <item>
              <widget class="QToolButton" name="partsLibraryBrowse">
               <property name="toolTip">
-               <string>Choose a piece-library folder.</string>
+               <string>Choose a part-library folder.</string>
               </property>
              </widget>
             </item>
             <item>
              <widget class="QToolButton" name="partsArchiveBrowse">
               <property name="toolTip">
-               <string>Choose a piece-library ZIP or BIN archive.</string>
+               <string>Choose a part-library ZIP or BIN archive.</string>
               </property>
              </widget>
             </item>
@@ -374,12 +374,12 @@
            </widget>
           </item>
           <item row="4" column="0" colspan="2">
-           <widget class="QCheckBox" name="LoadPiecesBeforeShowing">
+           <widget class="QCheckBox" name="LoadPartsBeforeShowing">
             <property name="toolTip">
-             <string>Wait until every piece of a model is loaded before showing it, instead of showing pieces as they load.</string>
+             <string>Wait until every part of a model is loaded before showing it, instead of showing parts as they load.</string>
             </property>
             <property name="text">
-             <string>Load All Pieces Before Showing a Model</string>
+             <string>Load All Parts Before Showing a Model</string>
             </property>
            </widget>
           </item>
@@ -395,7 +395,7 @@
           <item row="0" column="0" colspan="2">
            <widget class="QCheckBox" name="fixedDirectionKeys">
             <property name="toolTip">
-             <string>Move pieces along fixed model axes instead of view-relative directions.</string>
+             <string>Move parts along fixed model axes instead of view-relative directions.</string>
             </property>
             <property name="text">
              <string>Fixed Direction Keys</string>
@@ -405,7 +405,7 @@
           <item row="1" column="0">
            <widget class="QLabel" name="InsertColorModeLabel">
             <property name="toolTip">
-             <string>Choose the color given to newly inserted pieces: the current color, the color of the selected piece, or the color of the last inserted piece.</string>
+             <string>Choose the color given to newly inserted parts: the current color, the color of the selected part, or the color of the last inserted part.</string>
             </property>
             <property name="text">
              <string>Insert Color:</string>
@@ -421,7 +421,7 @@
              <string>Insert Color</string>
             </property>
             <property name="toolTip">
-             <string>Choose the color given to newly inserted pieces: the current color, the color of the selected piece, or the color of the last inserted piece.</string>
+             <string>Choose the color given to newly inserted parts: the current color, the color of the selected part, or the color of the last inserted part.</string>
             </property>
             <item>
              <property name="text">
@@ -430,23 +430,23 @@
             </item>
             <item>
              <property name="text">
-              <string>Selected piece color</string>
+              <string>Selected part color</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>Last inserted piece color</string>
+              <string>Last inserted part color</string>
              </property>
             </item>
            </widget>
           </item>
           <item row="2" column="0" colspan="2">
-           <widget class="QCheckBox" name="FirstPieceAtOrigin">
+           <widget class="QCheckBox" name="FirstPartAtOrigin">
             <property name="toolTip">
-             <string>Place the first piece of an empty model at 0, 0, 0 instead of where it is dropped.</string>
+             <string>Place the first part of an empty model at 0, 0, 0 instead of where it is dropped.</string>
             </property>
             <property name="text">
-             <string>Insert First Piece at Origin</string>
+             <string>Insert First Part at Origin</string>
             </property>
            </widget>
           </item>
@@ -520,7 +520,7 @@
           <item row="1" column="0">
            <widget class="QCheckBox" name="MeshLOD">
             <property name="toolTip">
-             <string>Use simpler meshes for distant pieces to improve display performance.</string>
+             <string>Use simpler meshes for distant parts to improve display performance.</string>
             </property>
             <property name="text">
              <string>Mesh LOD</string>
@@ -533,7 +533,7 @@
              <string>Mesh Detail Distance</string>
             </property>
             <property name="toolTip">
-             <string>Set the distance in LDraw units at which simpler piece meshes are used.</string>
+             <string>Set the distance in LDraw units at which simpler part meshes are used.</string>
             </property>
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -632,7 +632,7 @@
           <item row="3" column="0">
            <widget class="QLabel" name="label_3">
             <property name="toolTip">
-             <string>Choose how piece surfaces and edges are drawn in model views.</string>
+             <string>Choose how part surfaces and edges are drawn in model views.</string>
             </property>
             <property name="buddy">
              <cstring>ShadingMode</cstring>
@@ -648,7 +648,7 @@
              <string>Shading Mode</string>
             </property>
             <property name="toolTip">
-             <string>Choose how piece surfaces and edges are drawn in model views.</string>
+             <string>Choose how part surfaces and edges are drawn in model views.</string>
             </property>
             <item>
              <property name="text">
@@ -670,7 +670,7 @@
           <item row="4" column="0">
            <widget class="QLabel" name="LightingStyleLabel">
             <property name="toolTip">
-             <string>Choose how the Default Lights shading mode lights pieces in every view: Standard uses one light with a soft highlight, Studio adds fill and rim lights, Matte drops the highlights and Toon uses flat cel shading bands.</string>
+             <string>Choose how the Default Lights shading mode lights parts in every view: Standard uses one light with a soft highlight, Studio adds fill and rim lights, Matte drops the highlights and Toon uses flat cel shading bands.</string>
             </property>
             <property name="buddy">
              <cstring>LightingStyle</cstring>
@@ -686,7 +686,7 @@
              <string>Lighting Style</string>
             </property>
             <property name="toolTip">
-             <string>Choose how the Default Lights shading mode lights pieces in every view: Standard uses one light with a soft highlight, Studio adds fill and rim lights, Matte drops the highlights and Toon uses flat cel shading bands.</string>
+             <string>Choose how the Default Lights shading mode lights parts in every view: Standard uses one light with a soft highlight, Studio adds fill and rim lights, Matte drops the highlights and Toon uses flat cel shading bands.</string>
             </property>
             <item>
              <property name="text">
@@ -735,7 +735,7 @@
           <item row="0" column="0">
            <widget class="QCheckBox" name="FadeSteps">
             <property name="toolTip">
-             <string>Tint pieces from previous building steps with the chosen fade color.</string>
+             <string>Tint parts from previous building steps with the chosen fade color.</string>
             </property>
             <property name="text">
              <string>Fade Previous Steps</string>
@@ -748,7 +748,7 @@
              <string>Previous Step Color</string>
             </property>
             <property name="toolTip">
-             <string>Choose the tint used for pieces from previous steps.</string>
+             <string>Choose the tint used for parts from previous steps.</string>
             </property>
             <property name="text">
              <string/>
@@ -756,22 +756,22 @@
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QCheckBox" name="HighlightNewPieces">
+           <widget class="QCheckBox" name="HighlightNewParts">
             <property name="toolTip">
-             <string>Highlight pieces introduced in the current building step.</string>
+             <string>Highlight parts introduced in the current building step.</string>
             </property>
             <property name="text">
-             <string>Highlight New Pieces</string>
+             <string>Highlight New Parts</string>
             </property>
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QToolButton" name="HighlightNewPiecesColor">
+           <widget class="QToolButton" name="HighlightNewPartsColor">
             <property name="accessibleName">
-             <string>New Piece Highlight Color</string>
+             <string>New Part Highlight Color</string>
             </property>
             <property name="toolTip">
-             <string>Choose the highlight color for pieces in the current step.</string>
+             <string>Choose the highlight color for parts in the current step.</string>
             </property>
             <property name="text">
              <string/>
@@ -781,10 +781,10 @@
           <item row="2" column="0">
            <widget class="QLabel" name="HighlightRenderModeLabel">
             <property name="whatsThis">
-             <string>&lt;p&gt;&lt;b&gt;Highlight Style&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose how selected pieces and pieces added in the current step are highlighted in the viewport. Outline uses fading outlines in the selection, focus, or new-piece highlight color. Selected pieces also receive a faint fill over obscured portions. Tint and Edges uses tinted faces and colored edges for selection, and colored edges for new pieces.&lt;/p&gt;&lt;p&gt;New-piece highlighting requires Highlight New Pieces. Wireframe views, image exports, and systems without outline support use Tint and Edges.&lt;/p&gt;</string>
+             <string>&lt;p&gt;&lt;b&gt;Highlight Style&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose how selected parts and parts added in the current step are highlighted in the viewport. Outline uses fading outlines in the selection, focus, or new-part highlight color. Selected parts also receive a faint fill over obscured portions. Tint and Edges uses tinted faces and colored edges for selection, and colored edges for new parts.&lt;/p&gt;&lt;p&gt;New-part highlighting requires Highlight New Parts. Wireframe views, image exports, and systems without outline support use Tint and Edges.&lt;/p&gt;</string>
             </property>
             <property name="toolTip">
-             <string>Choose how selected pieces and new pieces are highlighted in the viewport.</string>
+             <string>Choose how selected parts and new parts are highlighted in the viewport.</string>
             </property>
             <property name="text">
              <string>Highlight Style:</string>
@@ -800,10 +800,10 @@
              <string>Highlight Style</string>
             </property>
             <property name="whatsThis">
-             <string>&lt;p&gt;&lt;b&gt;Highlight Style&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose how selected pieces and pieces added in the current step are highlighted in the viewport. Outline uses fading outlines in the selection, focus, or new-piece highlight color. Selected pieces also receive a faint fill over obscured portions. Tint and Edges uses tinted faces and colored edges for selection, and colored edges for new pieces.&lt;/p&gt;&lt;p&gt;New-piece highlighting requires Highlight New Pieces. Wireframe views, image exports, and systems without outline support use Tint and Edges.&lt;/p&gt;</string>
+             <string>&lt;p&gt;&lt;b&gt;Highlight Style&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose how selected parts and parts added in the current step are highlighted in the viewport. Outline uses fading outlines in the selection, focus, or new-part highlight color. Selected parts also receive a faint fill over obscured portions. Tint and Edges uses tinted faces and colored edges for selection, and colored edges for new parts.&lt;/p&gt;&lt;p&gt;New-part highlighting requires Highlight New Parts. Wireframe views, image exports, and systems without outline support use Tint and Edges.&lt;/p&gt;</string>
             </property>
             <property name="toolTip">
-             <string>Choose how selected pieces and new pieces are highlighted in the viewport.</string>
+             <string>Choose how selected parts and new parts are highlighted in the viewport.</string>
             </property>
             <item>
              <property name="text">
@@ -820,7 +820,7 @@
           <item row="3" column="0">
            <widget class="QLabel" name="SelectionOutlineWidthLabel">
             <property name="toolTip">
-             <string>Choose the thickness of the outline drawn around selected pieces and new pieces.</string>
+             <string>Choose the thickness of the outline drawn around selected parts and new parts.</string>
             </property>
             <property name="text">
              <string>Outline Width:</string>
@@ -836,7 +836,7 @@
              <string>Outline Width</string>
             </property>
             <property name="toolTip">
-             <string>Choose the thickness of the outline drawn around selected pieces and new pieces.</string>
+             <string>Choose the thickness of the outline drawn around selected parts and new parts.</string>
             </property>
             <property name="suffix">
              <string> px</string>
@@ -881,7 +881,7 @@
           <item row="1" column="0">
            <widget class="QCheckBox" name="ConditionalLinesCheckBox">
             <property name="toolTip">
-             <string>Draw conditional lines where needed to show curved piece surfaces.</string>
+             <string>Draw conditional lines where needed to show curved part surfaces.</string>
             </property>
             <property name="text">
              <string>Conditional Lines</string>
@@ -939,7 +939,7 @@
           <item row="0" column="0">
            <widget class="QCheckBox" name="edgeLines">
             <property name="toolTip">
-             <string>Draw the edge lines defined by each piece.</string>
+             <string>Draw the edge lines defined by each part.</string>
             </property>
             <property name="text">
              <string>Edge Lines</string>
@@ -949,7 +949,7 @@
           <item row="2" column="0">
            <widget class="QCheckBox" name="AutomateEdgeColor">
             <property name="toolTip">
-             <string>Calculate edge colors from piece colors instead of using their defined edge colors.</string>
+             <string>Calculate edge colors from part colors instead of using their defined edge colors.</string>
             </property>
             <property name="text">
              <string>Automate Edge Color</string>
@@ -959,7 +959,7 @@
           <item row="3" column="0">
            <widget class="QLabel" name="EdgeContrastTitle">
             <property name="toolTip">
-             <string>Set the contrast between automated edge colors and piece surfaces from 0.00 to 1.00 (default 0.50).</string>
+             <string>Set the contrast between automated edge colors and part surfaces from 0.00 to 1.00 (default 0.50).</string>
             </property>
             <property name="text">
              <string>Edge Contrast:</string>
@@ -975,7 +975,7 @@
              <string>Edge Contrast</string>
             </property>
             <property name="toolTip">
-             <string>Set the contrast between automated edge colors and piece surfaces from 0.00 to 1.00 (default 0.50).</string>
+             <string>Set the contrast between automated edge colors and part surfaces from 0.00 to 1.00 (default 0.50).</string>
             </property>
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -1114,7 +1114,7 @@
      </widget>
      <widget class="QWidget" name="tab">
       <property name="whatsThis">
-       <string>&lt;p&gt;&lt;b&gt;View Preferences&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose navigation aids for model views and the piece preview, and configure the base grid. Locations select the corner where each navigation aid appears.&lt;/p&gt;</string>
+       <string>&lt;p&gt;&lt;b&gt;View Preferences&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose navigation aids for model views and the part preview, and configure the base grid. Locations select the corner where each navigation aid appears.&lt;/p&gt;</string>
       </property>
       <attribute name="title">
        <string>Views</string>
@@ -1397,15 +1397,15 @@
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="PiecesGroup">
+        <widget class="QGroupBox" name="PartsGroup">
          <property name="title">
-          <string>Pieces</string>
+          <string>Parts</string>
          </property>
-         <layout class="QGridLayout" name="PiecesLayout">
+         <layout class="QGridLayout" name="PartsLayout">
           <item row="0" column="0" colspan="3">
-           <widget class="QCheckBox" name="PiecesSyncRendering">
+           <widget class="QCheckBox" name="PartsSyncRendering">
             <property name="toolTip">
-             <string>Use the model view rendering settings for the pieces list and parts list images.</string>
+             <string>Use the model view rendering settings for the parts list and parts list images.</string>
             </property>
             <property name="text">
              <string>Use Model View Settings</string>
@@ -1413,25 +1413,25 @@
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QLabel" name="PiecesShadingModeLabel">
+           <widget class="QLabel" name="PartsShadingModeLabel">
             <property name="toolTip">
-             <string>Choose how pieces are drawn in the pieces list and parts list images.</string>
+             <string>Choose how parts are drawn in the parts list and parts list images.</string>
             </property>
             <property name="text">
              <string>Shading Mode:</string>
             </property>
             <property name="buddy">
-             <cstring>PiecesShadingMode</cstring>
+             <cstring>PartsShadingMode</cstring>
             </property>
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QComboBox" name="PiecesShadingMode">
+           <widget class="QComboBox" name="PartsShadingMode">
             <property name="accessibleName">
-             <string>Pieces Shading Mode</string>
+             <string>Parts Shading Mode</string>
             </property>
             <property name="toolTip">
-             <string>Choose how pieces are drawn in the pieces list and parts list images.</string>
+             <string>Choose how parts are drawn in the parts list and parts list images.</string>
             </property>
             <item>
              <property name="text">
@@ -1451,9 +1451,9 @@
            </widget>
           </item>
           <item row="2" column="0">
-           <widget class="QCheckBox" name="PiecesEdgeLines">
+           <widget class="QCheckBox" name="PartsEdgeLines">
             <property name="toolTip">
-             <string>Draw edge lines on pieces in the pieces list and parts list images.</string>
+             <string>Draw edge lines on parts in the parts list and parts list images.</string>
             </property>
             <property name="text">
              <string>Edge Lines</string>
@@ -1461,9 +1461,9 @@
            </widget>
           </item>
           <item row="3" column="0">
-           <widget class="QCheckBox" name="PiecesConditionalLines">
+           <widget class="QCheckBox" name="PartsConditionalLines">
             <property name="toolTip">
-             <string>Draw conditional lines on pieces in the pieces list and parts list images.</string>
+             <string>Draw conditional lines on parts in the parts list and parts list images.</string>
             </property>
             <property name="text">
              <string>Conditional Lines</string>
@@ -1471,25 +1471,25 @@
            </widget>
           </item>
           <item row="4" column="0">
-           <widget class="QLabel" name="PiecesLineWidthTitle">
+           <widget class="QLabel" name="PartsLineWidthTitle">
             <property name="toolTip">
-             <string>Set the line width used in the pieces list and parts list images.</string>
+             <string>Set the line width used in the parts list and parts list images.</string>
             </property>
             <property name="text">
              <string>Line Width:</string>
             </property>
             <property name="buddy">
-             <cstring>PiecesLineWidthSlider</cstring>
+             <cstring>PartsLineWidthSlider</cstring>
             </property>
            </widget>
           </item>
           <item row="4" column="1">
-           <widget class="QSlider" name="PiecesLineWidthSlider">
+           <widget class="QSlider" name="PartsLineWidthSlider">
             <property name="accessibleName">
-             <string>Pieces Line Width</string>
+             <string>Parts Line Width</string>
             </property>
             <property name="toolTip">
-             <string>Set the line width used in the pieces list and parts list images.</string>
+             <string>Set the line width used in the parts list and parts list images.</string>
             </property>
             <property name="orientation">
              <enum>Qt::Orientation::Horizontal</enum>
@@ -1497,14 +1497,14 @@
            </widget>
           </item>
           <item row="4" column="2">
-           <widget class="QLabel" name="PiecesLineWidthLabel">
+           <widget class="QLabel" name="PartsLineWidthLabel">
             <property name="text">
              <string/>
             </property>
            </widget>
           </item>
           <item row="1" column="3">
-           <spacer name="PiecesSpacer">
+           <spacer name="PartsSpacer">
             <property name="orientation">
              <enum>Qt::Orientation::Horizontal</enum>
             </property>
@@ -1517,9 +1517,9 @@
            </spacer>
           </item>
           <item row="5" column="0" colspan="3">
-           <widget class="QCheckBox" name="PiecesSnapToTiles">
+           <widget class="QCheckBox" name="PartsSnapToTiles">
             <property name="toolTip">
-             <string>Snap the width of the docked pieces panel to whole thumbnail tiles after resizing it, and the categories to the longest category name when docked on top or bottom.</string>
+             <string>Snap the width of the docked parts panel to whole thumbnail tiles after resizing it, and the categories to the longest category name when docked on top or bottom.</string>
             </property>
             <property name="text">
              <string>Snap Panel Width to Tiles</string>
@@ -1532,13 +1532,13 @@
        <item>
         <widget class="QGroupBox" name="PreviewGroup">
          <property name="title">
-          <string>Pieces Preview</string>
+          <string>Parts Preview</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_6">
           <item row="0" column="0">
            <widget class="QLabel" name="label_8">
             <property name="toolTip">
-             <string>Choose the piece-preview navigation sphere size, or disable it.</string>
+             <string>Choose the part-preview navigation sphere size, or disable it.</string>
             </property>
             <property name="buddy">
              <cstring>PreviewViewSphereSizeCombo</cstring>
@@ -1554,7 +1554,7 @@
              <string>View Sphere</string>
             </property>
             <property name="toolTip">
-             <string>Choose the piece-preview navigation sphere size, or disable it.</string>
+             <string>Choose the part-preview navigation sphere size, or disable it.</string>
             </property>
             <item>
              <property name="text">
@@ -1581,7 +1581,7 @@
           <item row="1" column="0">
            <widget class="QLabel" name="PreviewViewSphereLocationLabel">
             <property name="toolTip">
-             <string>Choose the corner for the piece-preview navigation sphere.</string>
+             <string>Choose the corner for the part-preview navigation sphere.</string>
             </property>
             <property name="buddy">
              <cstring>PreviewViewSphereLocationCombo</cstring>
@@ -1597,7 +1597,7 @@
              <string>Location</string>
             </property>
             <property name="toolTip">
-             <string>Choose the corner for the piece-preview navigation sphere.</string>
+             <string>Choose the corner for the part-preview navigation sphere.</string>
             </property>
             <item>
              <property name="text">
@@ -1624,7 +1624,7 @@
           <item row="2" column="0" colspan="3">
            <widget class="QCheckBox" name="PreviewAxisIconCheckBox">
             <property name="toolTip">
-             <string>Show the model-axis indicator in the pieces preview.</string>
+             <string>Show the model-axis indicator in the parts preview.</string>
             </property>
             <property name="text">
              <string>Axis Icon</string>
@@ -1634,7 +1634,7 @@
           <item row="3" column="0" colspan="3">
            <widget class="QCheckBox" name="PreviewSquareViewportCheckBox">
             <property name="toolTip">
-             <string>Keep the piece preview square, with a 1:1 width to height ratio, whatever the panel size.</string>
+             <string>Keep the part preview square, with a 1:1 width to height ratio, whatever the panel size.</string>
             </property>
             <property name="text">
              <string>Square Viewport</string>
@@ -1644,7 +1644,7 @@
           <item row="4" column="0" colspan="3">
            <widget class="QCheckBox" name="PreviewSyncRendering">
             <property name="toolTip">
-             <string>Use the model view rendering settings for the pieces preview.</string>
+             <string>Use the model view rendering settings for the parts preview.</string>
             </property>
             <property name="text">
              <string>Use Model View Settings</string>
@@ -1654,7 +1654,7 @@
           <item row="5" column="0">
            <widget class="QLabel" name="PreviewShadingModeLabel">
             <property name="toolTip">
-             <string>Choose how pieces are drawn in the pieces preview.</string>
+             <string>Choose how parts are drawn in the parts preview.</string>
             </property>
             <property name="text">
              <string>Shading Mode:</string>
@@ -1670,7 +1670,7 @@
              <string>Preview Shading Mode</string>
             </property>
             <property name="toolTip">
-             <string>Choose how pieces are drawn in the pieces preview.</string>
+             <string>Choose how parts are drawn in the parts preview.</string>
             </property>
             <item>
              <property name="text">
@@ -1692,7 +1692,7 @@
           <item row="6" column="0" colspan="3">
            <widget class="QCheckBox" name="PreviewEdgeLines">
             <property name="toolTip">
-             <string>Draw edge lines on pieces in the pieces preview.</string>
+             <string>Draw edge lines on parts in the parts preview.</string>
             </property>
             <property name="text">
              <string>Edge Lines</string>
@@ -1702,7 +1702,7 @@
           <item row="7" column="0" colspan="3">
            <widget class="QCheckBox" name="PreviewConditionalLines">
             <property name="toolTip">
-             <string>Draw conditional lines on pieces in the pieces preview.</string>
+             <string>Draw conditional lines on parts in the parts preview.</string>
             </property>
             <property name="text">
              <string>Conditional Lines</string>
@@ -1712,7 +1712,7 @@
           <item row="8" column="0">
            <widget class="QLabel" name="PreviewLineWidthTitle">
             <property name="toolTip">
-             <string>Set the line width used in the pieces preview.</string>
+             <string>Set the line width used in the parts preview.</string>
             </property>
             <property name="text">
              <string>Line Width:</string>
@@ -1728,7 +1728,7 @@
              <string>Preview Line Width</string>
             </property>
             <property name="toolTip">
-             <string>Set the line width used in the pieces preview.</string>
+             <string>Set the line width used in the parts preview.</string>
             </property>
             <property name="orientation">
              <enum>Qt::Orientation::Horizontal</enum>
@@ -1777,7 +1777,7 @@
           <item row="1" column="0">
            <widget class="QLabel" name="MinifigureBuilderShadingModeLabel">
             <property name="toolTip">
-             <string>Choose how pieces are drawn in the minifigure builder preview.</string>
+             <string>Choose how parts are drawn in the minifigure builder preview.</string>
             </property>
             <property name="text">
              <string>Shading Mode:</string>
@@ -1793,7 +1793,7 @@
              <string>Minifigure Builder Shading Mode</string>
             </property>
             <property name="toolTip">
-             <string>Choose how pieces are drawn in the minifigure builder preview.</string>
+             <string>Choose how parts are drawn in the minifigure builder preview.</string>
             </property>
             <item>
              <property name="text">
@@ -1815,7 +1815,7 @@
           <item row="2" column="0" colspan="3">
            <widget class="QCheckBox" name="MinifigureBuilderEdgeLines">
             <property name="toolTip">
-             <string>Draw edge lines on pieces in the minifigure builder preview.</string>
+             <string>Draw edge lines on parts in the minifigure builder preview.</string>
             </property>
             <property name="text">
              <string>Edge Lines</string>
@@ -1825,7 +1825,7 @@
           <item row="3" column="0" colspan="3">
            <widget class="QCheckBox" name="MinifigureBuilderConditionalLines">
             <property name="toolTip">
-             <string>Draw conditional lines on pieces in the minifigure builder preview.</string>
+             <string>Draw conditional lines on parts in the minifigure builder preview.</string>
             </property>
             <property name="text">
              <string>Conditional Lines</string>
@@ -1898,7 +1898,7 @@
      </widget>
      <widget class="QWidget" name="ColorTab">
       <property name="whatsThis">
-       <string>&lt;p&gt;&lt;b&gt;Display Colors&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose colors for the background, objects, grid, and interface. These settings control the display; they do not change the LDraw colors assigned to model pieces.&lt;/p&gt;</string>
+       <string>&lt;p&gt;&lt;b&gt;Display Colors&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose colors for the background, objects, grid, and interface. These settings control the display; they do not change the LDraw colors assigned to model parts.&lt;/p&gt;</string>
       </property>
       <attribute name="title">
        <string>Colors</string>
@@ -2625,7 +2625,7 @@
      </widget>
      <widget class="QWidget" name="tabCategories">
       <property name="whatsThis">
-       <string>&lt;p&gt;&lt;b&gt;Piece Categories&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Create, edit, reorder, or import categories for the piece browser. The right-hand list shows pieces matching the selected category. Imported and edited categories are saved when you choose OK in Preferences; Export writes the current list immediately.&lt;/p&gt;</string>
+       <string>&lt;p&gt;&lt;b&gt;Part Categories&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Create, edit, reorder, or import categories for the part browser. The right-hand list shows parts matching the selected category. Imported and edited categories are saved when you choose OK in Preferences; Export writes the current list immediately.&lt;/p&gt;</string>
       </property>
       <attribute name="title">
        <string>Categories</string>
@@ -2634,7 +2634,7 @@
        <item>
         <widget class="QGroupBox" name="groupBox_3">
          <property name="title">
-          <string>Pieces Library Categories</string>
+          <string>Parts Library Categories</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_7">
           <item>
@@ -2650,7 +2650,7 @@
             </property>
             <widget class="QTreeWidget" name="categoriesTree">
              <property name="accessibleName">
-              <string>Piece Categories</string>
+              <string>Part Categories</string>
              </property>
              <property name="toolTip">
               <string>Select a category to inspect or edit; drag categories to reorder them.</string>
@@ -2684,10 +2684,10 @@
             </widget>
             <widget class="QTreeWidget" name="partsTree">
              <property name="accessibleName">
-              <string>Matching Pieces</string>
+              <string>Matching Parts</string>
              </property>
              <property name="toolTip">
-              <string>View the library pieces matching the selected category.</string>
+              <string>View the library parts matching the selected category.</string>
              </property>
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -3290,10 +3290,10 @@
   <tabstop>autoLoadMostRecent</tabstop>
   <tabstop>RestoreTabLayout</tabstop>
   <tabstop>WatchFileChanges</tabstop>
-  <tabstop>LoadPiecesBeforeShowing</tabstop>
+  <tabstop>LoadPartsBeforeShowing</tabstop>
   <tabstop>fixedDirectionKeys</tabstop>
   <tabstop>InsertColorMode</tabstop>
-  <tabstop>FirstPieceAtOrigin</tabstop>
+  <tabstop>FirstPartAtOrigin</tabstop>
   <tabstop>antiAliasing</tabstop>
   <tabstop>antiAliasingSamples</tabstop>
   <tabstop>MeshLOD</tabstop>
@@ -3304,8 +3304,8 @@
   <tabstop>LightingStyle</tabstop>
   <tabstop>FadeSteps</tabstop>
   <tabstop>FadeStepsColor</tabstop>
-  <tabstop>HighlightNewPieces</tabstop>
-  <tabstop>HighlightNewPiecesColor</tabstop>
+  <tabstop>HighlightNewParts</tabstop>
+  <tabstop>HighlightNewPartsColor</tabstop>
   <tabstop>HighlightRenderMode</tabstop>
   <tabstop>SelectionOutlineWidth</tabstop>
   <tabstop>edgeLines</tabstop>
@@ -3327,11 +3327,11 @@
   <tabstop>GridHeightXZCheckBox</tabstop>
   <tabstop>GridHeightYZCheckBox</tabstop>
   <tabstop>GridHeightBehindCheckBox</tabstop>
-  <tabstop>PiecesSyncRendering</tabstop>
-  <tabstop>PiecesShadingMode</tabstop>
-  <tabstop>PiecesEdgeLines</tabstop>
-  <tabstop>PiecesConditionalLines</tabstop>
-  <tabstop>PiecesLineWidthSlider</tabstop>
+  <tabstop>PartsSyncRendering</tabstop>
+  <tabstop>PartsShadingMode</tabstop>
+  <tabstop>PartsEdgeLines</tabstop>
+  <tabstop>PartsConditionalLines</tabstop>
+  <tabstop>PartsLineWidthSlider</tabstop>
   <tabstop>PreviewViewSphereSizeCombo</tabstop>
   <tabstop>PreviewViewSphereLocationCombo</tabstop>
   <tabstop>PreviewAxisIconCheckBox</tabstop>

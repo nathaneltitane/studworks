@@ -50,14 +50,14 @@ protected slots:
 	void StringListChanged(int Index);
 	void ColorButtonClicked();
 	void ColorChanged(QColor Color);
-	void PieceColorButtonClicked();
-	void PieceColorChanged(int ColorIndex);
-	void PieceIdButtonClicked();
+	void PartColorButtonClicked();
+	void PartColorChanged(int ColorIndex);
+	void PartIdButtonClicked();
 
 protected:
 	enum class CategoryIndex
 	{
-		Piece,
+		Part,
 		Camera,
 		CameraTransform,
 		Light,
@@ -76,14 +76,14 @@ protected:
 		String,
 		StringList,
 		Color,
-		PieceColor,
-		PieceId
+		PartColor,
+		PartId
 	};
 
 	enum class LayoutMode
 	{
 		Empty,
-		Piece,
+		Part,
 		Camera,
 		Light,
 		Multiple,
@@ -92,7 +92,7 @@ protected:
 
 	enum class IdentityIndex
 	{
-		Piece,
+		Part,
 		Camera,
 		Light,
 		Count
@@ -145,8 +145,8 @@ protected:
 	QComboBox* CreateStringListEditor(swObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip, const QStringList& Strings);
 	QToolButton* CreateColorEditor(swObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip);
 	QToolButton* CreateToggleEditor(swObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip);
-	QToolButton* CreatePieceIdEditor(swObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip);
-	QToolButton* CreatePieceColorEditor(swObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip);
+	QToolButton* CreatePartIdEditor(swObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip);
+	QToolButton* CreatePartColorEditor(swObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip);
 	QWidget* AddValueRow(QWidget* Container, const QString& Letter, const QString& Name, const std::vector<RowEditor>& Editors);
 	void AddVectorRow(QWidget* Container, const std::array<swObjectPropertyId, 3>& PropertyIds, const QString& Letter, const QString& Name, const QString& ToolTip, bool SupportsKeyFrames, float Min, float Max);
 	void AddIdentityRow(IdentityIndex Index, QWidget* Editor, swObjectPropertyId KeyFrameId = swObjectPropertyId::Count);
@@ -164,13 +164,13 @@ protected:
 	void UpdateString(swObjectPropertyId PropertyId);
 	void UpdateStringList(swObjectPropertyId PropertyId);
 	void UpdateColor(swObjectPropertyId PropertyId);
-	void UpdatePieceColor(swObjectPropertyId PropertyId);
-	void UpdatePieceId(swObjectPropertyId PropertyId);
+	void UpdatePartColor(swObjectPropertyId PropertyId);
+	void UpdatePartId(swObjectPropertyId PropertyId);
 
 	void ChangeFloatValue(swObjectPropertyId PropertyId, float Value);
 
 	void SetEmpty();
-	void SetPiece(const std::vector<swObject*>& Selection, swObject* Focus);
+	void SetPart(const std::vector<swObject*>& Selection, swObject* Focus);
 	void SetCamera(const std::vector<swObject*>& Selection, swObject* Focus);
 	void SetLight(const std::vector<swObject*>& Selection, swObject* Focus);
 

@@ -364,7 +364,7 @@ void swLight::RayTest(swObjectRayTest& ObjectRayTest) const
 			ObjectRayTest.ObjectSection.Object = const_cast<swLight*>(this);
 			ObjectRayTest.ObjectSection.Section = SW_LIGHT_SECTION_POSITION;
 			ObjectRayTest.Distance = Distance;
-			ObjectRayTest.PieceRayTest.Plane = Plane;
+			ObjectRayTest.PartRayTest.Plane = Plane;
 		}
 	}
 
@@ -1121,10 +1121,10 @@ QVariant swLight::GetPropertyValue(swObjectPropertyId PropertyId) const
 {
 	switch (PropertyId)
 	{
-	case swObjectPropertyId::PieceId:
-	case swObjectPropertyId::PieceColor:
-	case swObjectPropertyId::PieceStepShow:
-	case swObjectPropertyId::PieceStepHide:
+	case swObjectPropertyId::PartId:
+	case swObjectPropertyId::PartColor:
+	case swObjectPropertyId::PartStepShow:
+	case swObjectPropertyId::PartStepHide:
 	case swObjectPropertyId::CameraName:
 	case swObjectPropertyId::CameraProjection:
 	case swObjectPropertyId::CameraFOV:
@@ -1212,10 +1212,10 @@ bool swLight::SetPropertyValue(swObjectPropertyId PropertyId, swStep Step, bool 
 {
 	switch (PropertyId)
 	{
-	case swObjectPropertyId::PieceId:
-	case swObjectPropertyId::PieceColor:
-	case swObjectPropertyId::PieceStepShow:
-	case swObjectPropertyId::PieceStepHide:
+	case swObjectPropertyId::PartId:
+	case swObjectPropertyId::PartColor:
+	case swObjectPropertyId::PartStepShow:
+	case swObjectPropertyId::PartStepHide:
 	case swObjectPropertyId::CameraName:
 	case swObjectPropertyId::CameraProjection:
 	case swObjectPropertyId::CameraFOV:
@@ -1312,10 +1312,10 @@ bool swLight::HasKeyFrame(swObjectPropertyId PropertyId, swStep Time) const
 {
 	switch (PropertyId)
 	{
-	case swObjectPropertyId::PieceId:
-	case swObjectPropertyId::PieceColor:
-	case swObjectPropertyId::PieceStepShow:
-	case swObjectPropertyId::PieceStepHide:
+	case swObjectPropertyId::PartId:
+	case swObjectPropertyId::PartColor:
+	case swObjectPropertyId::PartStepShow:
+	case swObjectPropertyId::PartStepHide:
 	case swObjectPropertyId::CameraName:
 	case swObjectPropertyId::CameraProjection:
 	case swObjectPropertyId::CameraFOV:
@@ -1403,10 +1403,10 @@ bool swLight::SetKeyFrame(swObjectPropertyId PropertyId, swStep Time, bool KeyFr
 {
 	switch (PropertyId)
 	{
-	case swObjectPropertyId::PieceId:
-	case swObjectPropertyId::PieceColor:
-	case swObjectPropertyId::PieceStepShow:
-	case swObjectPropertyId::PieceStepHide:
+	case swObjectPropertyId::PartId:
+	case swObjectPropertyId::PartColor:
+	case swObjectPropertyId::PartStepShow:
+	case swObjectPropertyId::PartStepHide:
 	case swObjectPropertyId::CameraName:
 	case swObjectPropertyId::CameraProjection:
 	case swObjectPropertyId::CameraFOV:

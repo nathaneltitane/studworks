@@ -1,6 +1,6 @@
 #pragma once
 
-class swPieceData;
+class swPartData;
 
 #include "sw_object.h"
 #include "sw_colors.h"
@@ -9,32 +9,32 @@ class swPieceData;
 
 #define SW_MAXIMUM_CONTROL_POINTS 1000
 
-enum swPieceSection : quint32
+enum swPartSection : quint32
 {
-	SW_PIECE_SECTION_INVALID = SW_OBJECT_SECTION_INVALID,
-	SW_PIECE_SECTION_POSITION = 0,
-	SW_PIECE_SECTION_CONTROL_POINT_FIRST,
-	SW_PIECE_SECTION_CONTROL_POINT_LAST = SW_PIECE_SECTION_CONTROL_POINT_FIRST + SW_MAXIMUM_CONTROL_POINTS - 1,
-	SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST = 1
+	SW_PART_SECTION_INVALID = SW_OBJECT_SECTION_INVALID,
+	SW_PART_SECTION_POSITION = 0,
+	SW_PART_SECTION_CONTROL_POINT_FIRST,
+	SW_PART_SECTION_CONTROL_POINT_LAST = SW_PART_SECTION_CONTROL_POINT_FIRST + SW_MAXIMUM_CONTROL_POINTS - 1,
+	SW_PART_SECTION_TRAIN_TRACK_CONNECTION_FIRST = 1
 };
 
-struct swPieceControlPoint
+struct swPartControlPoint
 {
 	swMatrix44 Transform;
 	float Scale;
 
-	bool operator==(const swPieceControlPoint& Other) const
+	bool operator==(const swPartControlPoint& Other) const
 	{
 		return Transform == Other.Transform && Scale == Other.Scale;
 	}
 };
 
-struct swPieceHistoryState
+struct swPartHistoryState
 {
 	swObjectId Id;
 	bool Hidden;
 	int FileLine;
-	QString PieceId;
+	QString PartId;
 	uint32_t GroupId;
 	int ColorIndex;
 	quint32 ColorCode;
@@ -42,13 +42,13 @@ struct swPieceHistoryState
 	swStep StepHide;
 	swMatrix44 PivotMatrix;
 	bool PivotPointValid;
-	std::vector<swPieceControlPoint> ControlPoints;
+	std::vector<swPartControlPoint> ControlPoints;
 	swObjectProperty<swVector3> Position;
 	swObjectProperty<swMatrix33> Rotation;
 
-	bool operator==(const swPieceHistoryState& Other) const
+	bool operator==(const swPartHistoryState& Other) const
 	{
-		return Id == Other.Id && Hidden == Other.Hidden && FileLine == Other.FileLine && PieceId == Other.PieceId &&
+		return Id == Other.Id && Hidden == Other.Hidden && FileLine == Other.FileLine && PartId == Other.PartId &&
             GroupId == Other.GroupId && ColorIndex == Other.ColorIndex && ColorCode == Other.ColorCode &&
             StepShow == Other.StepShow && StepHide == Other.StepHide && PivotMatrix == Other.PivotMatrix &&
             PivotPointValid == Other.PivotPointValid && ControlPoints == Other.ControlPoints &&
@@ -56,18 +56,18 @@ struct swPieceHistoryState
 	}
 };
 
-class swPiece : public swObject
+class swPart : public swObject
 {
 public:
-	swPiece();
-	swPiece(swPieceData* PieceData);
-	swPiece(swPieceDataReference PieceDataRef);
-	swPiece(const swPiece& Other);
-	virtual ~swPiece();
+	swPart();
+	swPart(swPartData* PartData);
+	swPart(swPartDataReference PartDataRef);
+	swPart(const swPart& Other);
+	virtual ~swPart();
 
-	swPiece(swPiece&&) = delete;
-	swPiece& operator=(const swPiece&) = delete;
-	swPiece& operator=(swPiece&&) = delete;
+	swPart(swPart&&) = delete;
+	swPart& operator=(const swPart&) = delete;
+	swPart& operator=(swPart&&) = delete;
 
 	quint32 GetAllowedTransforms() const override;
 	swVector3 GetSectionPosition(quint32 Section) const override;
@@ -87,7 +87,7 @@ public:
 
 	void RayTest(swObjectRayTest& ObjectRayTest) const override;
 	void BoxTest(swObjectBoxTest& ObjectBoxTest) const override;
-	bool MinIntersectDist(const swVector3& Start, const swVector3& End, float& MinDistance, swPieceRayTest& PieceRayTest) const;
+	bool MinIntersectDist(const swVector3& Start, const swVector3& End, float& MinDistance, swPartRayTest& PartRayTest) const;
 	bool IntersectsPlanes(const swMatrix44& WorldMatrix, const swVector4 Planes[6]) const;
 	void DrawInterface(swContext* Context, const swScene& Scene) const override;
 	QVariant GetPropertyValue(swObjectPropertyId PropertyId) const override;
@@ -96,8 +96,8 @@ public:
 	swStep GetLastStep() const override;
 	bool SetKeyFrame(swObjectPropertyId PropertyId, swStep Time, bool KeyFrame) override;
 	void RemoveKeyFrames() override;
-	swPieceHistoryState GetHistoryState() const;
-	void SetHistoryState(const swPieceHistoryState& State, Project* Project, swGroup* Group);
+	swPartHistoryState GetHistoryState() const;
+	void SetHistoryState(const swPartHistoryState& State, Project* Project, swGroup* Group);
 
 	void AddMainModelRenderMeshes(swScene* Scene, bool Highlight, bool Fade) const;
 	void AddSubModelRenderMeshes(swScene* Scene, const swMatrix44& WorldMatrix, int DefaultColorIndex, swRenderMeshState RenderMeshState, bool ParentActive) const;
@@ -117,12 +117,12 @@ public:
 		mHidden = Hidden;
 	}
 
-	const std::vector<swPieceControlPoint>& GetControlPoints() const
+	const std::vector<swPartControlPoint>& GetControlPoints() const
 	{
 		return mControlPoints;
 	}
 
-	void SetControlPoints(const std::vector<swPieceControlPoint>& ControlPoints)
+	void SetControlPoints(const std::vector<swPartControlPoint>& ControlPoints)
 	{
 		mControlPoints = ControlPoints;
 		UpdateMesh();
@@ -160,12 +160,12 @@ public:
 		return IsFocused();
 	}
 
-	void GetModelPieces(const swMatrix44& WorldMatrix, int DefaultColorIndex, std::vector<swModelPiecesEntry>& ModelPieces) const;
+	void GetModelParts(const swMatrix44& WorldMatrix, int DefaultColorIndex, std::vector<swModelPartsEntry>& ModelParts) const;
 	void Initialize(const swMatrix44& WorldMatrix, swStep Step);
 	const swBoundingBox& GetBoundingBox() const;
 	void CompareBoundingBox(swVector3& Min, swVector3& Max) const;
-	void SetPieceData(swPieceDataReference PieceDataRef, const QString& ID, bool Wait, bool UpdateSynthInfo);
-	bool SetPieceId(swPieceData* PieceData);
+	void SetPartData(swPartDataReference PartDataRef, const QString& ID, bool Wait, bool UpdateSynthInfo);
+	bool SetPartId(swPartData* PartData);
 	bool FileLoad(swFile& file, Project* Project);
 
 	void UpdatePosition(swStep Step) override;
@@ -179,7 +179,7 @@ public:
 
 	bool InsertControlPoint(const swVector3& WorldStart, const swVector3& WorldEnd);
 	bool RemoveFocusedControlPoint();
-	void VerifyControlPoints(std::vector<swPieceControlPoint>& ControlPoints) const;
+	void VerifyControlPoints(std::vector<swPartControlPoint>& ControlPoints) const;
 	bool IsGeneratedMeshPending() const { return mSynthPending; }
 	// An older mesh may remain visible while its replacement is pending.
 	bool HasGeneratedMesh() const { return mMesh != nullptr && !mSynthPending; }
@@ -281,7 +281,7 @@ public:
 	}
 
 public:
-	swPieceDataReference mPieceData;
+	swPartDataReference mPartData;
 
 	swMatrix44 mModelWorld;
 	swMatrix44 mPivotMatrix = swMatrix44Identity();
@@ -317,7 +317,7 @@ protected:
 	swStep mStepHide = SW_STEP_MAXIMUM;
 
 	bool mPivotPointValid = false;
-	std::vector<swPieceControlPoint> mControlPoints;
+	std::vector<swPartControlPoint> mControlPoints;
 	std::vector<bool> mTrainTrackConnections;
 	swMesh* mMesh = nullptr;
 	bool mSynthPending = false;

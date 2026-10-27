@@ -2,7 +2,7 @@
 #include "sw_window_main.h"
 #include "sw_widget_builder_minifigure.h"
 #include "sw_widget_spin_box_double.h"
-#include "sw_widget_selection_piece.h"
+#include "sw_widget_selection_part.h"
 #ifdef SW_ENABLE_TERMINAL
 #include "sw_widget_terminal.h"
 #endif
@@ -21,10 +21,10 @@
 #include "sw_profile.h"
 #include "sw_view.h"
 #include "sw_project.h"
-#include "sw_object_piece.h"
+#include "sw_object_part.h"
 #include "sw_object_camera.h"
 #include "sw_group.h"
-#include "sw_data_piece.h"
+#include "sw_data_part.h"
 #include "sw_library.h"
 #include "sw_colors.h"
 #include "sw_widget_preview.h"
@@ -190,17 +190,17 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 
 	case SW_EDIT_FIND_NEXT:
 		if (ActiveModel)
-			ActiveModel->FindReplacePiece(true, false, false);
+			ActiveModel->FindReplacePart(true, false, false);
 		break;
 
 	case SW_EDIT_FIND_PREVIOUS:
 		if (ActiveModel)
-			ActiveModel->FindReplacePiece(false, false, false);
+			ActiveModel->FindReplacePart(false, false, false);
 		break;
 
 	case SW_EDIT_FIND_ALL:
 		if (ActiveModel)
-			ActiveModel->FindReplacePiece(true, true, false);
+			ActiveModel->FindReplacePart(true, true, false);
 		break;
 
 	case SW_EDIT_REPLACE:
@@ -210,17 +210,17 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 
 	case SW_EDIT_REPLACE_ALL:
 		if (ActiveModel)
-			ActiveModel->FindReplacePiece(true, true, true);
+			ActiveModel->FindReplacePart(true, true, true);
 		break;
 
 	case SW_EDIT_REPLACE_NEXT:
 		if (ActiveModel)
-			ActiveModel->FindReplacePiece(true, false, true);
+			ActiveModel->FindReplacePart(true, false, true);
 		break;
 
 	case SW_EDIT_SELECT_ALL:
 		if (ActiveModel)
-			ActiveModel->SelectAllPiecesAction();
+			ActiveModel->SelectAllPartsAction();
 		break;
 
 	case SW_EDIT_SELECT_NONE:
@@ -230,7 +230,7 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 
 	case SW_EDIT_SELECT_INVERT:
 		if (ActiveModel)
-			ActiveModel->InvertPieceSelectionAction();
+			ActiveModel->InvertPartSelectionAction();
 		break;
 
 	case SW_EDIT_SELECT_BY_NAME:
@@ -241,16 +241,16 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 		SetSelectionMode(swSelectionMode::Single);
 		break;
 
-	case SW_EDIT_SELECTION_PIECE:
-		SetSelectionMode(swSelectionMode::Piece);
+	case SW_EDIT_SELECTION_PART:
+		SetSelectionMode(swSelectionMode::Part);
 		break;
 
 	case SW_EDIT_SELECTION_COLOR:
 		SetSelectionMode(swSelectionMode::Color);
 		break;
 
-	case SW_EDIT_SELECTION_PIECE_COLOR:
-		SetSelectionMode(swSelectionMode::PieceColor);
+	case SW_EDIT_SELECTION_PART_COLOR:
+		SetSelectionMode(swSelectionMode::PartColor);
 		break;
 
 	case SW_VIEW_SPLIT_HORIZONTAL:
@@ -281,10 +281,10 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 		ToggleDockWidget(mTimeToolBar);
 		break;
 
-	case SW_VIEW_TOOLBAR_PIECES:
-		ToggleDockWidget(mPiecesToolBar);
-		if (mPiecesToolBar->isVisible())
-			mPieceSelectionWidget->FocusPieceFilterWidget();
+	case SW_VIEW_TOOLBAR_PARTS:
+		ToggleDockWidget(mPartsToolBar);
+		if (mPartsToolBar->isVisible())
+			mPartSelectionWidget->FocusPartFilterWidget();
 		break;
 
 	case SW_VIEW_TOOLBAR_COLORS:
@@ -444,23 +444,23 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 		mColorList->ToggleGroupCollapsed(SW_COLOR_GROUP_SPECIAL);
 		break;
 
-	case SW_PIECE_INSERT_COLOR_CURRENT:
+	case SW_PART_INSERT_COLOR_CURRENT:
 		SetInsertColorMode(swInsertColorMode::CurrentColor);
 		break;
 
-	case SW_PIECE_INSERT_COLOR_SELECTED:
-		SetInsertColorMode(swInsertColorMode::SelectedPieceColor);
+	case SW_PART_INSERT_COLOR_SELECTED:
+		SetInsertColorMode(swInsertColorMode::SelectedPartColor);
 		break;
 
-	case SW_PIECE_INSERT_COLOR_LAST_INSERTED:
+	case SW_PART_INSERT_COLOR_LAST_INSERTED:
 		SetInsertColorMode(swInsertColorMode::LastInsertedColor);
 		break;
 
-	case SW_VIEW_PIECES_TOGGLE_LOCK_COLOR:
-		if (mPieceSelectionWidget)
+	case SW_VIEW_PARTS_TOGGLE_LOCK_COLOR:
+		if (mPartSelectionWidget)
 		{
-			mPieceSelectionWidget->ToggleColorLocked();
-			UpdatePiecesColor();
+			mPartSelectionWidget->ToggleColorLocked();
+			UpdatePartsColor();
 		}
 		break;
 
@@ -480,8 +480,8 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 		swTogglePreference(swGetPreferences().mAllowLOD, SW_PROFILE_ALLOW_LOD);
 		break;
 
-	case SW_VIEW_TOGGLE_HIGHLIGHT_NEW_PIECES:
-		swTogglePreference(swGetPreferences().mHighlightNewPieces, SW_PROFILE_HIGHLIGHT_NEW_PIECES);
+	case SW_VIEW_TOGGLE_HIGHLIGHT_NEW_PARTS:
+		swTogglePreference(swGetPreferences().mHighlightNewParts, SW_PROFILE_HIGHLIGHT_NEW_PARTS);
 		break;
 
 	case SW_VIEW_TOGGLE_GRID_STUDS:
@@ -580,8 +580,8 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 		ToggleConditionalLines(swRenderTarget::Preview);
 		break;
 
-	case SW_VIEW_TOGGLE_PIECES_SYNCHRONIZED_RENDERING:
-		ToggleSyncRendering(swRenderTarget::Pieces);
+	case SW_VIEW_TOGGLE_PARTS_SYNCHRONIZED_RENDERING:
+		ToggleSyncRendering(swRenderTarget::Parts);
 		break;
 
 	case SW_VIEW_TOGGLE_MINIFIGURE_BUILDER_SYNCHRONIZED_RENDERING:
@@ -608,30 +608,30 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 		ToggleConditionalLines(swRenderTarget::MinifigureBuilder);
 		break;
 
-	case SW_VIEW_PIECES_TOGGLE_SNAP_TO_TILES:
-		swGetPreferences().mPiecesSnapToTiles = !swGetPreferences().mPiecesSnapToTiles;
-		swSetProfileInteger(SW_PROFILE_PIECES_SNAP_TO_TILES, swGetPreferences().mPiecesSnapToTiles);
-		SnapPiecesDock();
+	case SW_VIEW_PARTS_TOGGLE_SNAP_TO_TILES:
+		swGetPreferences().mPartsSnapToTiles = !swGetPreferences().mPartsSnapToTiles;
+		swSetProfileInteger(SW_PROFILE_PARTS_SNAP_TO_TILES, swGetPreferences().mPartsSnapToTiles);
+		SnapPartsDock();
 		break;
 
-	case SW_VIEW_PIECES_SHADING_WIREFRAME:
-		SetTargetShadingMode(swRenderTarget::Pieces, swShadingMode::Wireframe);
+	case SW_VIEW_PARTS_SHADING_WIREFRAME:
+		SetTargetShadingMode(swRenderTarget::Parts, swShadingMode::Wireframe);
 		break;
 
-	case SW_VIEW_PIECES_SHADING_FLAT:
-		SetTargetShadingMode(swRenderTarget::Pieces, swShadingMode::Flat);
+	case SW_VIEW_PARTS_SHADING_FLAT:
+		SetTargetShadingMode(swRenderTarget::Parts, swShadingMode::Flat);
 		break;
 
-	case SW_VIEW_PIECES_SHADING_DEFAULT_LIGHTS:
-		SetTargetShadingMode(swRenderTarget::Pieces, swShadingMode::DefaultLights);
+	case SW_VIEW_PARTS_SHADING_DEFAULT_LIGHTS:
+		SetTargetShadingMode(swRenderTarget::Parts, swShadingMode::DefaultLights);
 		break;
 
-	case SW_VIEW_TOGGLE_PIECES_EDGE_LINES:
-		ToggleEdgeLines(swRenderTarget::Pieces);
+	case SW_VIEW_TOGGLE_PARTS_EDGE_LINES:
+		ToggleEdgeLines(swRenderTarget::Parts);
 		break;
 
-	case SW_VIEW_TOGGLE_PIECES_CONDITIONAL_LINES:
-		ToggleConditionalLines(swRenderTarget::Pieces);
+	case SW_VIEW_TOGGLE_PARTS_CONDITIONAL_LINES:
+		ToggleConditionalLines(swRenderTarget::Parts);
 		break;
 
 	case SW_VIEW_TOGGLE_PREVIEW_VIEW_SPHERE:
@@ -642,8 +642,8 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 		TogglePreviewAxisIcon();
 		break;
 
-	case SW_FILE_TOGGLE_LOAD_PIECES_BEFORE_SHOWING:
-		ToggleLoadPiecesBeforeShowing();
+	case SW_FILE_TOGGLE_LOAD_PARTS_BEFORE_SHOWING:
+		ToggleLoadPartsBeforeShowing();
 		break;
 
 	case SW_VIEW_PREVIEW_TOGGLE_SQUARE:
@@ -651,212 +651,212 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 			mPreviewWidget->SetSquareViewport(!swGetPreferences().mPreviewSquareViewport);
 		break;
 
-	case SW_PIECE_INSERT:
+	case SW_PART_INSERT:
 		if (ActiveModel)
-			ActiveModel->AddPiece(nullptr, SW_PIECE_SECTION_INVALID);
+			ActiveModel->AddPart(nullptr, SW_PART_SECTION_INVALID);
 		break;
 
-	case SW_PIECE_TOGGLE_FIRST_AT_ORIGIN:
-		ToggleFirstPieceAtOrigin();
+	case SW_PART_TOGGLE_FIRST_AT_ORIGIN:
+		ToggleFirstPartAtOrigin();
 		break;
 
-	case SW_PIECE_DELETE:
+	case SW_PART_DELETE:
 		if (ActiveModel)
 			ActiveModel->DeleteSelectedObjects();
 		break;
 
-	case SW_PIECE_DUPLICATE:
+	case SW_PART_DUPLICATE:
 		if (ActiveModel)
-			ActiveModel->DuplicateSelectedPieces();
+			ActiveModel->DuplicateSelectedParts();
 		break;
 
-	case SW_PIECE_PAINT_SELECTED:
+	case SW_PART_PAINT_SELECTED:
 		if (ActiveModel)
-			ActiveModel->PaintSelectedPieces();
+			ActiveModel->PaintSelectedParts();
 		break;
 
-	case SW_PIECE_RESET_PIVOT_POINT:
+	case SW_PART_RESET_PIVOT_POINT:
 		if (ActiveModel)
-			ActiveModel->ResetSelectedPiecesPivotPoint();
+			ActiveModel->ResetSelectedPartsPivotPoint();
 		break;
 
-	case SW_PIECE_REMOVE_KEY_FRAMES:
+	case SW_PART_REMOVE_KEY_FRAMES:
 		if (ActiveModel)
 			ActiveModel->RemoveSelectedObjectsKeyFrames();
 		break;
 
-	case SW_PIECE_CONTROL_POINT_INSERT:
+	case SW_PART_CONTROL_POINT_INSERT:
 		if (ActiveModel)
 			ActiveModel->InsertControlPoint();
 		break;
 
-	case SW_PIECE_CONTROL_POINT_REMOVE:
+	case SW_PART_CONTROL_POINT_REMOVE:
 		if (ActiveModel)
 			ActiveModel->RemoveFocusedControlPoint();
 		break;
 
-	case SW_PIECE_TRAIN_TRACK_FOCUS_NEXT:
+	case SW_PART_TRAIN_TRACK_FOCUS_NEXT:
 		if (ActiveModel)
 			ActiveModel->FocusNextTrainTrack();
 		break;
 
-	case SW_PIECE_TRAIN_TRACK_FOCUS_PREVIOUS:
+	case SW_PART_TRAIN_TRACK_FOCUS_PREVIOUS:
 		if (ActiveModel)
 			ActiveModel->FocusPreviousTrainTrack();
 		break;
 
-	case SW_PIECE_TRAIN_TRACK_ROTATE:
+	case SW_PART_TRAIN_TRACK_ROTATE:
 		if (ActiveModel)
 			ActiveModel->RotateFocusedTrainTrack(1);
 		break;
 
-	case SW_PIECE_MOVE_PLUS_X:
+	case SW_PART_MOVE_PLUS_X:
 		if (ActiveModel)
 			ActiveModel->MoveSelectedObjects(ActiveView->GetMoveDirection(swVector3(swMaximum(GetMoveXYSnap(), 0.1f), 0.0f, 0.0f)), swModelTransformFlag::Relative | swModelTransformFlag::Checkpoint | swModelTransformFlag::FirstMove, swModelHistoryEditMerge::KeyboardMove);
 		break;
 
-	case SW_PIECE_MOVE_MINUS_X:
+	case SW_PART_MOVE_MINUS_X:
 		if (ActiveModel)
 			ActiveModel->MoveSelectedObjects(ActiveView->GetMoveDirection(swVector3(-swMaximum(GetMoveXYSnap(), 0.1f), 0.0f, 0.0f)), swModelTransformFlag::Relative | swModelTransformFlag::Checkpoint | swModelTransformFlag::FirstMove, swModelHistoryEditMerge::KeyboardMove);
 		break;
 
-	case SW_PIECE_MOVE_PLUS_Y:
+	case SW_PART_MOVE_PLUS_Y:
 		if (ActiveModel)
 			ActiveModel->MoveSelectedObjects(ActiveView->GetMoveDirection(swVector3(0.0f, swMaximum(GetMoveXYSnap(), 0.1f), 0.0f)), swModelTransformFlag::Relative | swModelTransformFlag::Checkpoint | swModelTransformFlag::FirstMove, swModelHistoryEditMerge::KeyboardMove);
 		break;
 
-	case SW_PIECE_MOVE_MINUS_Y:
+	case SW_PART_MOVE_MINUS_Y:
 		if (ActiveModel)
 			ActiveModel->MoveSelectedObjects(ActiveView->GetMoveDirection(swVector3(0.0f, -swMaximum(GetMoveXYSnap(), 0.1f), 0.0f)), swModelTransformFlag::Relative | swModelTransformFlag::Checkpoint | swModelTransformFlag::FirstMove, swModelHistoryEditMerge::KeyboardMove);
 		break;
 
-	case SW_PIECE_MOVE_PLUS_Z:
+	case SW_PART_MOVE_PLUS_Z:
 		if (ActiveModel)
 			ActiveModel->MoveSelectedObjects(ActiveView->GetMoveDirection(swVector3(0.0f, 0.0f, swMaximum(GetMoveZSnap(), 0.1f))), swModelTransformFlag::Relative | swModelTransformFlag::Checkpoint | swModelTransformFlag::FirstMove, swModelHistoryEditMerge::KeyboardMove);
 		break;
 
-	case SW_PIECE_MOVE_MINUS_Z:
+	case SW_PART_MOVE_MINUS_Z:
 		if (ActiveModel)
 			ActiveModel->MoveSelectedObjects(ActiveView->GetMoveDirection(swVector3(0.0f, 0.0f, -swMaximum(GetMoveZSnap(), 0.1f))), swModelTransformFlag::Relative | swModelTransformFlag::Checkpoint | swModelTransformFlag::FirstMove, swModelHistoryEditMerge::KeyboardMove);
 		break;
 
-	case SW_PIECE_ROTATE_PLUS_X:
+	case SW_PART_ROTATE_PLUS_X:
 		if (ActiveModel)
 			ActiveModel->RotateSelectedObjects(ActiveView->GetMoveDirection(swVector3(swMaximum(GetAngleSnap(), 1.0f), 0.0f, 0.0f)), swModelTransformFlag::Relative | swModelTransformFlag::Checkpoint, swModelHistoryEditMerge::KeyboardRotate);
 		break;
 
-	case SW_PIECE_ROTATE_MINUS_X:
+	case SW_PART_ROTATE_MINUS_X:
 		if (ActiveModel)
 			ActiveModel->RotateSelectedObjects(ActiveView->GetMoveDirection(swVector3(-swMaximum(GetAngleSnap(), 1.0f), 0.0f, 0.0f)), swModelTransformFlag::Relative | swModelTransformFlag::Checkpoint, swModelHistoryEditMerge::KeyboardRotate);
 		break;
 
-	case SW_PIECE_ROTATE_PLUS_Y:
+	case SW_PART_ROTATE_PLUS_Y:
 		if (ActiveModel)
 			ActiveModel->RotateSelectedObjects(ActiveView->GetMoveDirection(swVector3(0.0f, swMaximum(GetAngleSnap(), 1.0f), 0.0f)), swModelTransformFlag::Relative | swModelTransformFlag::Checkpoint, swModelHistoryEditMerge::KeyboardRotate);
 		break;
 
-	case SW_PIECE_ROTATE_MINUS_Y:
+	case SW_PART_ROTATE_MINUS_Y:
 		if (ActiveModel)
 			ActiveModel->RotateSelectedObjects(ActiveView->GetMoveDirection(swVector3(0.0f, -swMaximum(GetAngleSnap(), 1.0f), 0.0f)), swModelTransformFlag::Relative | swModelTransformFlag::Checkpoint, swModelHistoryEditMerge::KeyboardRotate);
 		break;
 
-	case SW_PIECE_ROTATE_PLUS_Z:
+	case SW_PART_ROTATE_PLUS_Z:
 		if (ActiveModel)
 			ActiveModel->RotateSelectedObjects(ActiveView->GetMoveDirection(swVector3(0.0f, 0.0f, swMaximum(GetAngleSnap(), 1.0f))), swModelTransformFlag::Relative | swModelTransformFlag::Checkpoint, swModelHistoryEditMerge::KeyboardRotate);
 		break;
 
-	case SW_PIECE_ROTATE_MINUS_Z:
+	case SW_PART_ROTATE_MINUS_Z:
 		if (ActiveModel)
 			ActiveModel->RotateSelectedObjects(ActiveView->GetMoveDirection(swVector3(0.0f, 0.0f, -swMaximum(GetAngleSnap(), 1.0f))), swModelTransformFlag::Relative | swModelTransformFlag::Checkpoint, swModelHistoryEditMerge::KeyboardRotate);
 		break;
 
-	case SW_PIECE_MINIFIGURE_BUILDER:
+	case SW_PART_MINIFIGURE_BUILDER:
 		mMinifigureBuilderToolBar->show();
 		mMinifigureBuilderToolBar->raise();
 		break;
 
-	case SW_PIECE_ARRAY:
+	case SW_PART_ARRAY:
 		if (ActiveModel)
 			ActiveModel->ShowArrayDialog();
 		break;
 
-	case SW_PIECE_VIEW_SELECTED_MODEL:
+	case SW_PART_VIEW_SELECTED_MODEL:
 		SetModelFromSelection();
 		break;
 
-	case SW_PIECE_MOVE_SELECTION_TO_MODEL:
+	case SW_PART_MOVE_SELECTION_TO_MODEL:
 		if (ActiveModel)
 			ActiveModel->MoveSelectionToModel(swGetActiveProject()->CreateNewModel(false));
 		break;
 
-	case SW_PIECE_INLINE_SELECTED_MODELS:
+	case SW_PART_INLINE_SELECTED_MODELS:
 		if (ActiveModel)
 			ActiveModel->InlineSelectedModels();
 		break;
 
-	case SW_PIECE_EDIT_END_SUBMODEL:
+	case SW_PART_EDIT_END_SUBMODEL:
 		if (ActiveView)
 			ActiveView->SetTopSubmodelActive();
 		break;
 
-	case SW_PIECE_EDIT_SELECTED_SUBMODEL:
+	case SW_PART_EDIT_SELECTED_SUBMODEL:
 		if (ActiveView)
 			ActiveView->SetSelectedSubmodelActive();
 		break;
 
-	case SW_PIECE_GROUP:
+	case SW_PART_GROUP:
 		if (ActiveModel)
 			ActiveModel->GroupSelection();
 		break;
 
-	case SW_PIECE_UNGROUP:
+	case SW_PART_UNGROUP:
 		if (ActiveModel)
 			ActiveModel->UngroupSelection();
 		break;
 
-	case SW_PIECE_GROUP_ADD:
+	case SW_PART_GROUP_ADD:
 		if (ActiveModel)
-			ActiveModel->AddSelectedPiecesToGroup();
+			ActiveModel->AddSelectedPartsToGroup();
 		break;
 
-	case SW_PIECE_GROUP_REMOVE:
+	case SW_PART_GROUP_REMOVE:
 		if (ActiveModel)
-			ActiveModel->RemoveFocusPieceFromGroup();
+			ActiveModel->RemoveFocusPartFromGroup();
 		break;
 
-	case SW_PIECE_GROUP_EDIT:
+	case SW_PART_GROUP_EDIT:
 		if (ActiveModel)
 			ActiveModel->ShowEditGroupsDialog();
 		break;
 
-	case SW_PIECE_HIDE_SELECTED:
+	case SW_PART_HIDE_SELECTED:
 		if (ActiveModel)
-			ActiveModel->HideSelectedPieces();
+			ActiveModel->HideSelectedParts();
 		break;
 
-	case SW_PIECE_HIDE_UNSELECTED:
+	case SW_PART_HIDE_UNSELECTED:
 		if (ActiveModel)
-			ActiveModel->HideUnselectedPieces();
+			ActiveModel->HideUnselectedParts();
 		break;
 
-	case SW_PIECE_UNHIDE_SELECTED:
+	case SW_PART_UNHIDE_SELECTED:
 		if (ActiveModel)
-			ActiveModel->UnhideSelectedPieces();
+			ActiveModel->UnhideSelectedParts();
 		break;
 
-	case SW_PIECE_UNHIDE_ALL:
+	case SW_PART_UNHIDE_ALL:
 		if (ActiveModel)
-			ActiveModel->UnhideAllPieces();
+			ActiveModel->UnhideAllParts();
 		break;
 
-	case SW_PIECE_SHOW_EARLIER:
+	case SW_PART_SHOW_EARLIER:
 		if (ActiveModel)
-			ActiveModel->ShowSelectedPiecesEarlier();
+			ActiveModel->ShowSelectedPartsEarlier();
 		break;
 
-	case SW_PIECE_SHOW_LATER:
+	case SW_PART_SHOW_LATER:
 		if (ActiveModel)
-			ActiveModel->ShowSelectedPiecesLater();
+			ActiveModel->ShowSelectedPartsLater();
 		break;
 
 	case SW_VIEW_PREFERENCES:

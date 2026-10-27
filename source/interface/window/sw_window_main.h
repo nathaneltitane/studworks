@@ -7,10 +7,10 @@
 #include "sw_commands.h"
 #include "sw_model.h"
 
-class swPieceSelectionWidget;
+class swPartSelectionWidget;
 class swInstructionsDialog;
 class swPreviewDockWidget;
-class PiecePreview;
+class PartPreview;
 class swColorList;
 class swPropertiesWidget;
 class swTimelineWidget;
@@ -149,9 +149,9 @@ public:
 		return mSelectionMode;
 	}
 
-	const swPieceDataReference& GetInsertPieceData() const
+	const swPartDataReference& GetInsertPartData() const
 	{
-		return mInsertPieceData;
+		return mInsertPartData;
 	}
 
 	swView* GetActiveView() const
@@ -169,9 +169,9 @@ public:
 		return CurrentTab ? CurrentTab->GetModel() : nullptr;
 	}
 
-	swPieceSelectionWidget* GetPieceSelectionWidget() const
+	swPartSelectionWidget* GetPartSelectionWidget() const
 	{
-		return mPieceSelectionWidget;
+		return mPartSelectionWidget;
 	}
 
 	swPreviewDockWidget* GetPreviewWidget() const
@@ -215,11 +215,11 @@ public:
 	void SetTool(swTool Tool);
 	void SetTransformType(swTransformType TransformType);
 	void SetColorIndex(int ColorIndex);
-	void ToggleFirstPieceAtOrigin();
+	void ToggleFirstPartAtOrigin();
 	int GetInsertColorIndex() const;
 	void SetLastInsertedColorIndex(int ColorIndex);
 	void SetInsertColorMode(swInsertColorMode InsertColorMode);
-	void UpdatePiecesColor();
+	void UpdatePartsColor();
 	void ColorOptionsMenuAboutToShow();
 	void SetMoveSnapEnabled(bool Enabled);
 	void SetAngleSnapEnabled(bool Enabled);
@@ -249,8 +249,8 @@ public:
 	QAction* AddMenuCommand(QMenu* Menu, const QString& Text, swCommandId CommandId, bool Checked);
 	void TogglePreviewViewSphere();
 	void TogglePreviewAxisIcon();
-	void UpdatePiecesRendering();
-	void ToggleLoadPiecesBeforeShowing();
+	void UpdatePartsRendering();
+	void ToggleLoadPartsBeforeShowing();
 
 	void NewProject();
 	bool OpenProject(const QString& FileName);
@@ -295,7 +295,7 @@ public:
 	std::optional<swVector3> GetTransformAmount();
 
 	bool eventFilter(QObject* Object, QEvent* Event) override;
-	void SnapPiecesDock();
+	void SnapPartsDock();
 
 	int mColorIndex;
 	int mLastInsertedColorIndex = -1;
@@ -310,9 +310,9 @@ public:
 public slots:
 	void ProjectFileChanged(const QString& Path);
 	void ModelViewOptionsMenuAboutToShow();
-	void PreviewPiece(swPieceData* PieceData, int ColorCode, bool ShowPreview);
+	void PreviewPart(swPartData* PartData, int ColorCode, bool ShowPreview);
 	void TogglePreviewWidget(bool Visible);
-	void SetInsertPieceData(swPieceData* PieceData);
+	void SetInsertPartData(swPartData* PartData);
 
 protected slots:
 	void FileMenuAboutToShow();
@@ -328,7 +328,7 @@ protected slots:
 	void ClipboardChanged();
 	void ActionTriggered();
 	void ColorChanged(int ColorIndex);
-	void PieceListPicked(swPieceData* PieceData);
+	void PartListPicked(swPartData* PartData);
 	void ColorButtonClicked();
 	void EnableWindowFlags(bool);
 
@@ -392,7 +392,7 @@ protected:
 	bool mOrbitSnapEnabled = false;
 	bool mRelativeTransform = true;
 	bool mLocalTransform = false;
-	swPieceDataReference mInsertPieceData;
+	swPartDataReference mInsertPartData;
 	swSelectionMode mSelectionMode;
 	int mMousePressTabIndex = -1;
 
@@ -404,16 +404,16 @@ protected:
 	QToolBar* mTimeToolBar = nullptr;
 	QDockWidget* mPreviewToolBar = nullptr;
 	QDockWidget* mTerminalToolBar = nullptr;
-	QDockWidget* mPiecesToolBar = nullptr;
+	QDockWidget* mPartsToolBar = nullptr;
 	QPointer<swInstructionsDialog> mInstructionsDialog;
-	bool mPiecesSnapPending = false;
-	bool mPiecesSnapRetried = false;
+	bool mPartsSnapPending = false;
+	bool mPartsSnapRetried = false;
 	QDockWidget* mColorsToolBar = nullptr;
 	QDockWidget* mPropertiesToolBar = nullptr;
 	QDockWidget* mTimelineToolBar = nullptr;
 	QDockWidget* mMinifigureBuilderToolBar = nullptr;
 
-	swPieceSelectionWidget* mPieceSelectionWidget = nullptr;
+	swPartSelectionWidget* mPartSelectionWidget = nullptr;
 	swColorList* mColorList = nullptr;
 	QToolButton* mColorButton = nullptr;
 	swPropertiesWidget* mPropertiesWidget = nullptr;
@@ -430,7 +430,7 @@ protected:
 	swSpinnerWidget* mStatusLoadSpinner = nullptr;
 	QLabel* mStatusLoadFailureLabel = nullptr;
 	const Project* mStatusProject = nullptr;
-	std::unordered_set<const swPieceData*> mStatusRequiredAssets;
+	std::unordered_set<const swPartData*> mStatusRequiredAssets;
 	bool mAssetUpdateScheduled = false;
 
 	QMenu* mTransformMenu = nullptr;

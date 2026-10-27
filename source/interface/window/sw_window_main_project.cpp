@@ -2,7 +2,7 @@
 #include "sw_window_main.h"
 #include "sw_widget_builder_minifigure.h"
 #include "sw_widget_spin_box_double.h"
-#include "sw_widget_selection_piece.h"
+#include "sw_widget_selection_part.h"
 #ifdef SW_ENABLE_TERMINAL
 #include "sw_widget_terminal.h"
 #endif
@@ -21,10 +21,10 @@
 #include "sw_profile.h"
 #include "sw_view.h"
 #include "sw_project.h"
-#include "sw_object_piece.h"
+#include "sw_object_part.h"
 #include "sw_object_camera.h"
 #include "sw_group.h"
-#include "sw_data_piece.h"
+#include "sw_data_part.h"
 #include "sw_library.h"
 #include "sw_colors.h"
 #include "sw_widget_preview.h"
@@ -197,8 +197,8 @@ bool swMainWindow::OpenProjectFile(const QString& FileName)
 	{
 		gApplication->SetProject(NewProject);
 
-		// Show the model complete instead of drawing pieces as they finish loading.
-		if (swGetPreferences().mLoadPiecesBeforeShowing)
+		// Show the model complete instead of drawing parts as they finish loading.
+		if (swGetPreferences().mLoadPartsBeforeShowing)
 		{
 			QApplication::setOverrideCursor(Qt::WaitCursor);
 			NewProject->GetMainModel()->WaitForAssets();
@@ -212,7 +212,7 @@ bool swMainWindow::OpenProjectFile(const QString& FileName)
 	}
 
 	delete NewProject;
-	swGetPiecesLibrary()->RemoveTemporaryPieceData();
+	swGetPartsLibrary()->RemoveTemporaryPartData();
 	return false;
 }
 
@@ -284,7 +284,7 @@ void swMainWindow::ImportLDD()
 	else
 	{
 		delete NewProject;
-		swGetPiecesLibrary()->RemoveTemporaryPieceData();
+		swGetPartsLibrary()->RemoveTemporaryPartData();
 	}
 }
 
@@ -379,10 +379,10 @@ bool swMainWindow::SetModelFromFocus()
 {
 	swObject* FocusObject = GetActiveModel()->GetFocusObject();
 
-	if (!FocusObject || !FocusObject->IsPiece())
+	if (!FocusObject || !FocusObject->IsPart())
 		return false;
 
-	swModel* Model = ((swPiece*)FocusObject)->mPieceData->GetModel();
+	swModel* Model = ((swPart*)FocusObject)->mPartData->GetModel();
 
 	if (Model)
 	{

@@ -32,8 +32,8 @@ swHTMLDialog::swHTMLDialog(QWidget* Parent, swHTMLExportOptions* Options)
 	ui->indexPage->setChecked(mOptions->SinglePage);
 	ui->stepWidth->setText(swFormatIntegerLocalized(mOptions->StepImagesWidth, ui->stepWidth->validator()->locale()));
 	ui->stepHeight->setText(swFormatIntegerLocalized(mOptions->StepImagesHeight, ui->stepHeight->validator()->locale()));
-	ui->partsAfterEachStep->setChecked(mOptions->PiecesListStep);
-	ui->partsAtTheEnd->setChecked(mOptions->PiecesListEnd);
+	ui->partsAfterEachStep->setChecked(mOptions->PartsListStep);
+	ui->partsAtTheEnd->setChecked(mOptions->PartsListEnd);
 }
 
 swHTMLDialog::~swHTMLDialog()
@@ -77,8 +77,8 @@ void swHTMLDialog::accept()
 	mOptions->IndexPage = ui->indexPage->isChecked();
 	mOptions->StepImagesWidth = Width;
 	mOptions->StepImagesHeight = Height;
-	mOptions->PiecesListStep = ui->partsAfterEachStep->isChecked();
-	mOptions->PiecesListEnd = ui->partsAtTheEnd->isChecked();
+	mOptions->PartsListStep = ui->partsAfterEachStep->isChecked();
+	mOptions->PartsListEnd = ui->partsAtTheEnd->isChecked();
 
 	QDialog::accept();
 }

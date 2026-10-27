@@ -223,7 +223,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="369"/>
-        <source>Edit.SelectPiece</source>
+        <source>Edit.SelectPart</source>
         <translation>Правка.Выбрать деталь</translation>
     </message>
     <message>
@@ -233,7 +233,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="385"/>
-        <source>Edit.SelectPieceColor</source>
+        <source>Edit.SelectPartColor</source>
         <translation>Правка.Выбрать цвет детали</translation>
     </message>
     <message>
@@ -1008,22 +1008,22 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1577"/>
-        <source>Piece.InsertColor.Current</source>
+        <source>Part.InsertColor.Current</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1585"/>
-        <source>Piece.InsertColor.Selected</source>
+        <source>Part.InsertColor.Selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1593"/>
-        <source>Piece.InsertColor.LastInserted</source>
+        <source>Part.InsertColor.LastInserted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1601"/>
-        <source>View.Pieces.ToggleLockColor</source>
+        <source>View.Parts.ToggleLockColor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1048,7 +1048,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1641"/>
-        <source>View.ToggleHighlightNewPieces</source>
+        <source>View.ToggleHighlightNewParts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1173,32 +1173,32 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1841"/>
-        <source>View.Pieces.ToggleSyncRendering</source>
+        <source>View.Parts.ToggleSyncRendering</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1849"/>
-        <source>View.Pieces.Shade.Wireframe</source>
+        <source>View.Parts.Shade.Wireframe</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1857"/>
-        <source>View.Pieces.Shade.Flat</source>
+        <source>View.Parts.Shade.Flat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1865"/>
-        <source>View.Pieces.Shade.DefaultLights</source>
+        <source>View.Parts.Shade.DefaultLights</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1873"/>
-        <source>View.Pieces.ToggleEdgeLines</source>
+        <source>View.Parts.ToggleEdgeLines</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1881"/>
-        <source>View.Pieces.ToggleConditionalLines</source>
+        <source>View.Parts.ToggleConditionalLines</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1233,7 +1233,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1937"/>
-        <source>View.Pieces.ToggleSnapToTiles</source>
+        <source>View.Parts.ToggleSnapToTiles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1248,7 +1248,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1961"/>
-        <source>File.ToggleLoadPiecesBeforeShowing</source>
+        <source>File.ToggleLoadPartsBeforeShowing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1258,219 +1258,219 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1977"/>
-        <source>Piece.Insert</source>
+        <source>Part.Insert</source>
         <translation>Деталь.Вставить</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1985"/>
-        <source>Piece.ToggleFirstPieceAtOrigin</source>
+        <source>Part.ToggleFirstPartAtOrigin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1993"/>
-        <source>Piece.Delete</source>
+        <source>Part.Delete</source>
         <translation>Деталь.Удалить</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2001"/>
-        <source>Piece.Duplicate</source>
+        <source>Part.Duplicate</source>
         <translation>Деталь.Дублировать</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2009"/>
-        <source>Piece.PaintSelected</source>
+        <source>Part.PaintSelected</source>
         <translation>Дублировать.Выбрать цвет</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2017"/>
-        <source>Piece.ResetPivotPoint</source>
+        <source>Part.ResetPivotPoint</source>
         <translation>Деталь.Сброс точки вращения</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2025"/>
-        <source>Piece.RemoveKeyFrames</source>
+        <source>Part.RemoveKeyFrames</source>
         <translation>Деталь.Удалить ключевые кадры</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2033"/>
-        <source>Piece.ControlPoint.Insert</source>
+        <source>Part.ControlPoint.Insert</source>
         <translation>Деталь.Контрольная точка.Вставка</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2041"/>
-        <source>Piece.ControlPoint.Remove</source>
+        <source>Part.ControlPoint.Remove</source>
         <translation>Деталь.Контрольная точка.Удаление</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2049"/>
-        <source>Piece.TrainTrack.FocusNext</source>
+        <source>Part.TrainTrack.FocusNext</source>
         <translatorcomment>Technical identifier or nonlinguistic text; intentionally retained unchanged.</translatorcomment>
-        <translation type="unfinished">Piece.TrainTrack.FocusNext</translation>
+        <translation type="unfinished">Part.TrainTrack.FocusNext</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2057"/>
-        <source>Piece.TrainTrack.FocusPrevious</source>
+        <source>Part.TrainTrack.FocusPrevious</source>
         <translatorcomment>Technical identifier or nonlinguistic text; intentionally retained unchanged.</translatorcomment>
-        <translation type="unfinished">Piece.TrainTrack.FocusPrevious</translation>
+        <translation type="unfinished">Part.TrainTrack.FocusPrevious</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2065"/>
-        <source>Piece.TrainTrack.Rotate</source>
+        <source>Part.TrainTrack.Rotate</source>
         <translatorcomment>Technical identifier or nonlinguistic text; intentionally retained unchanged.</translatorcomment>
-        <translation type="unfinished">Piece.TrainTrack.Rotate</translation>
+        <translation type="unfinished">Part.TrainTrack.Rotate</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2073"/>
-        <source>Piece.Move.PlusX</source>
+        <source>Part.Move.PlusX</source>
         <translation>Деталь.Переместить.Плюс X</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2081"/>
-        <source>Piece.Move.MinusX</source>
+        <source>Part.Move.MinusX</source>
         <translation>Деталь.Переместить.Минус X</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2089"/>
-        <source>Piece.Move.PlusY</source>
+        <source>Part.Move.PlusY</source>
         <translation>Деталь.Переместить.Плюс Y</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2097"/>
-        <source>Piece.Move.MinusY</source>
+        <source>Part.Move.MinusY</source>
         <translation>Деталь.Переместить.Минус Y</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2105"/>
-        <source>Piece.Move.PlusZ</source>
+        <source>Part.Move.PlusZ</source>
         <translation>Деталь.Переместить.Плюс Z</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2113"/>
-        <source>Piece.Move.MinusZ</source>
+        <source>Part.Move.MinusZ</source>
         <translation>Деталь.Переместить.Минус Z</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2121"/>
-        <source>Piece.Rotate.PlusX</source>
+        <source>Part.Rotate.PlusX</source>
         <translation>Деталь.Вращение.Плюс X</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2129"/>
-        <source>Piece.Rotate.MinusX</source>
+        <source>Part.Rotate.MinusX</source>
         <translation>Деталь.Вращение.Минус X</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2137"/>
-        <source>Piece.Rotate.PlusY</source>
+        <source>Part.Rotate.PlusY</source>
         <translation>Деталь.Вращение.Плюс Y</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2145"/>
-        <source>Piece.Rotate.MinusY</source>
+        <source>Part.Rotate.MinusY</source>
         <translation>Деталь.Вращение.Минус Y</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2153"/>
-        <source>Piece.Rotate.PlusZ</source>
+        <source>Part.Rotate.PlusZ</source>
         <translation>Деталь.Вращение.Плюс Z</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2161"/>
-        <source>Piece.Rotate.MinusZ</source>
+        <source>Part.Rotate.MinusZ</source>
         <translation>Деталь.Вращение.Минус Z</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2169"/>
-        <source>Piece.MinifigureBuilder</source>
+        <source>Part.MinifigureBuilder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Piece.MinifigWizard</source>
+        <source>Part.MinifigWizard</source>
         <translation type="vanished">Деталь.Мастер Minifig</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2177"/>
-        <source>Piece.Array</source>
+        <source>Part.Array</source>
         <translation>Деталь.Массив</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2185"/>
-        <source>Piece.ViewSelectedModel</source>
+        <source>Part.ViewSelectedModel</source>
         <translation>Деталь.Просмотр выбранной модели</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2193"/>
-        <source>Piece.MoveSelectionToModel</source>
+        <source>Part.MoveSelectionToModel</source>
         <translation>Деталь.Переместить выбор в модель</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2201"/>
-        <source>Piece.InlineSelectedModels</source>
+        <source>Part.InlineSelectedModels</source>
         <translation>Деталь.Вложить выбранные модели</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2209"/>
-        <source>Piece.EditSelectedSubmodel</source>
+        <source>Part.EditSelectedSubmodel</source>
         <translation>Деталь.Изменить выбранную подмодель</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2217"/>
-        <source>Piece.EditEndSubmodel</source>
+        <source>Part.EditEndSubmodel</source>
         <translation>Деталь.Завершить изменение подмодели</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2225"/>
-        <source>Piece.Group</source>
+        <source>Part.Group</source>
         <translation>Деталь.Группировать</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2233"/>
-        <source>Piece.Ungroup</source>
+        <source>Part.Ungroup</source>
         <translation>Деталь.Разгруппировать</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2241"/>
-        <source>Piece.GroupAdd</source>
+        <source>Part.GroupAdd</source>
         <translation>Деталь.Добавить в группу</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2249"/>
-        <source>Piece.GroupRemove</source>
+        <source>Part.GroupRemove</source>
         <translation>Деталь.Удалить из группы</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2257"/>
-        <source>Piece.GroupEdit</source>
+        <source>Part.GroupEdit</source>
         <translation>Деталь.Изменить группу</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2265"/>
-        <source>Piece.HideSelected</source>
+        <source>Part.HideSelected</source>
         <translation>Деталь.Скрыть выбранные</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2273"/>
-        <source>Piece.HideUnselected</source>
+        <source>Part.HideUnselected</source>
         <translation>Деталь.Скрыть невыбранные</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2281"/>
-        <source>Piece.UnhideSelected</source>
+        <source>Part.UnhideSelected</source>
         <translation>Деталь.Показать выбранные</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2289"/>
-        <source>Piece.UnhideAll</source>
+        <source>Part.UnhideAll</source>
         <translation>Деталь.Показать все</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2297"/>
-        <source>Piece.ShowEarlier</source>
+        <source>Part.ShowEarlier</source>
         <translation>Деталь.Показать раньше</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2305"/>
-        <source>Piece.ShowLater</source>
+        <source>Part.ShowLater</source>
         <translation>Деталь.Показать позже</translation>
     </message>
     <message>
@@ -1733,13 +1733,13 @@
     <name>Checkpoint</name>
     <message>
         <location filename="../../source/core/sw_object.cpp" line="21"/>
-        <source>Change Piece</source>
+        <source>Change Part</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Изменить деталь</translation>
     </message>
     <message>
         <location filename="../../source/core/sw_object.cpp" line="24"/>
-        <source>Change Piece Color</source>
+        <source>Change Part Color</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Изменить цвет детали</translation>
     </message>
@@ -2195,7 +2195,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="370"/>
-        <source>Piece Selection</source>
+        <source>Part Selection</source>
         <translation>Выбор по детали</translation>
     </message>
     <message>
@@ -2205,7 +2205,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="386"/>
-        <source>Piece and Color Selection</source>
+        <source>Part and Color Selection</source>
         <translation>Выбор по детали и цвету</translation>
     </message>
     <message>
@@ -2756,7 +2756,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1298"/>
-        <source>Pieces</source>
+        <source>Parts</source>
         <translation>Детали</translation>
     </message>
     <message>
@@ -2936,7 +2936,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1586"/>
-        <source>Insert with Selected Piece Color</source>
+        <source>Insert with Selected Part Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2946,7 +2946,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1602"/>
-        <source>Lock Pieces Color</source>
+        <source>Lock Parts Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2971,7 +2971,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1642"/>
-        <source>Highlight New Pieces</source>
+        <source>Highlight New Parts</source>
         <translation type="unfinished">Подсвечивать новые детали</translation>
     </message>
     <message>
@@ -3116,32 +3116,32 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1842"/>
-        <source>Pieces Use Model View Settings</source>
+        <source>Parts Use Model View Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1850"/>
-        <source>Pieces Wireframe</source>
+        <source>Parts Wireframe</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1858"/>
-        <source>Pieces Flat Shading</source>
+        <source>Parts Flat Shading</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1866"/>
-        <source>Pieces Default Lights</source>
+        <source>Parts Default Lights</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1874"/>
-        <source>Pieces Edge Lines</source>
+        <source>Parts Edge Lines</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1882"/>
-        <source>Pieces Conditional Lines</source>
+        <source>Parts Conditional Lines</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3191,7 +3191,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1962"/>
-        <source>Load All Pieces Before Showing</source>
+        <source>Load All Parts Before Showing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3206,7 +3206,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1986"/>
-        <source>Insert First Piece at Origin</source>
+        <source>Insert First Part at Origin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3691,7 +3691,7 @@
     <name>Mouse</name>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2749"/>
-        <source>NewPiece</source>
+        <source>NewPart</source>
         <translation>Новая деталь</translation>
     </message>
     <message>
@@ -3818,7 +3818,7 @@
         <translation type="unfinished">Подмодель с именем «%1» уже существует. Введите уникальное имя.</translation>
     </message>
     <message>
-        <source>A piece named &apos;%1&apos; already exists in this project. Please enter a unique name.</source>
+        <source>A part named &apos;%1&apos; already exists in this project. Please enter a unique name.</source>
         <oldsource>A piece named &apos;%1&apos; already exists in this project, please enter a unique name.</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">Деталь с именем &apos;%1&apos; уже существует в этом проекте, введите уникальное имя.</translation>
@@ -3829,7 +3829,7 @@
         <translation>Новая подмодель</translation>
     </message>
     <message>
-        <source>A piece named &apos;%1&apos; already exists in this project.</source>
+        <source>A part named &apos;%1&apos; already exists in this project.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">Часть с именем &apos;%1&apos; уже существует в этом проекте.</translation>
     </message>
@@ -3911,7 +3911,7 @@ File format is not recognized.</source>
         <translation type="obsolete">Оба проекта содержат разные встроенные данные с именем &apos;%1&apos;. Переименуйте один перед объединением.</translation>
     </message>
     <message>
-        <source>Both projects contain different pieces named &apos;%1&apos;. Rename one before merging.</source>
+        <source>Both projects contain different parts named &apos;%1&apos;. Rename one before merging.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">Оба проекта содержат разные части под названием &apos;%1&apos;. Переименуйте один перед объединением.</translation>
     </message>
@@ -3942,7 +3942,7 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/core/sw_project.cpp" line="283"/>
-        <source>A piece named &apos;%1&apos; already exists in this model. Please enter a unique name.</source>
+        <source>A part named &apos;%1&apos; already exists in this model. Please enter a unique name.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3957,7 +3957,7 @@ File format is not recognized.</source>
         <location filename="../../source/core/sw_project.cpp" line="367"/>
         <location filename="../../source/core/sw_project.cpp" line="394"/>
         <location filename="../../source/core/sw_project.cpp" line="451"/>
-        <source>A piece named &apos;%1&apos; already exists in this model.</source>
+        <source>A part named &apos;%1&apos; already exists in this model.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3976,7 +3976,7 @@ File format is not recognized.</source>
     <message>
         <location filename="../../source/core/sw_project.cpp" line="1524"/>
         <location filename="../../source/core/sw_project.cpp" line="1536"/>
-        <source>Both models contain different pieces named &apos;%1&apos;. Rename one before merging.</source>
+        <source>Both models contain different parts named &apos;%1&apos;. Rename one before merging.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4084,7 +4084,7 @@ File format is not recognized.</source>
         <location filename="../../source/core/sw_project_export.cpp" line="1099"/>
         <location filename="../../source/core/sw_project_export.cpp" line="1136"/>
         <location filename="../../source/core/sw_project_export.cpp" line="1211"/>
-        <source>Pieces Used</source>
+        <source>Parts Used</source>
         <translation type="unfinished">Использующиеся детали</translation>
     </message>
     <message>
@@ -4111,7 +4111,7 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/core/sw_project_export.cpp" line="1151"/>
-        <source>Pieces used by %1</source>
+        <source>Parts used by %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4343,13 +4343,13 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="77"/>
-        <source>Add Piece Gap</source>
+        <source>Add Part Gap</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Добавить зазор между частями</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="77"/>
-        <source>Add a small space between each piece</source>
+        <source>Add a small space between each part</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Добавьте небольшое пространство между каждой частью</translation>
     </message>
@@ -4380,19 +4380,19 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="159"/>
-        <source>Adds a keyframe that shows the piece at the moment in the timeline</source>
+        <source>Adds a keyframe that shows the part at the moment in the timeline</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Добавляет ключевой кадр, который показывает фрагмент на временной шкале в данный момент.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="107"/>
-        <source>Amount of space between each piece (default 0.2mm)</source>
+        <source>Amount of space between each part (default 0.2mm)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Расстояние между каждой частью (по умолчанию 0,2 мм)</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="199"/>
-        <source>Apply import scaling to mesh - Recommended for rendering, Apply import scaling to object - Recommended for piece editing</source>
+        <source>Apply import scaling to mesh - Recommended for rendering, Apply import scaling to object - Recommended for part editing</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Применить масштабирование импорта к сетке — рекомендуется для рендеринга. Применить масштабирование импорта к объекту — рекомендуется для редактирования фрагментов.</translation>
     </message>
@@ -4430,7 +4430,7 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="139"/>
-        <source>Bevel edges. Can cause some pieces to render incorrectly.</source>
+        <source>Bevel edges. Can cause some parts to render incorrectly.</source>
         <oldsource>Bevel edges. Can cause some pieces to render incorrectly</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Скошенные края. Может привести к неправильному рендерингу некоторых фрагментов</translation>
@@ -4610,7 +4610,7 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="114"/>
-        <source>Flex Pieces Source</source>
+        <source>Flex Parts Source</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Источник гибких частей</translation>
     </message>
@@ -4641,13 +4641,13 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="67"/>
-        <source>Full directory path to stud logo primitives - if stud logo enabled, specify if unofficial pieces not used or not using default bundled in add-on</source>
+        <source>Full directory path to stud logo primitives - if stud logo enabled, specify if unofficial parts not used or not using default bundled in add-on</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Полный путь к каталогу к примитивам логотипа шипа — если логотип шипа включен, укажите, не используются ли неофициальные элементы или не используются ли они по умолчанию, включенные в надстройку.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="65"/>
-        <source>Full directory path to the LDraw pieces library (download from https://library.ldraw.org)</source>
+        <source>Full directory path to the LDraw parts library (download from https://library.ldraw.org)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Полный путь к библиотеке частей LDraw (загрузка с https://library.ldraw.org)</translation>
     </message>
@@ -4677,15 +4677,15 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="69"/>
-        <source>Full file path to the Stud.io LDraw Custom Pieces</source>
+        <source>Full file path to the Stud.io LDraw Custom Parts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Полный путь к файлу Stud.io LDraw Custom Pieces</translation>
+        <translation type="unfinished">Полный путь к файлу Stud.io LDraw Custom Parts</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="68"/>
-        <source>Full file path to the Stud.io LDraw Pieces Library (download from https://www.bricklink.com/v3/studio/download.page)</source>
+        <source>Full file path to the Stud.io LDraw Parts Library (download from https://www.bricklink.com/v3/studio/download.page)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Полный путь к библиотеке Stud.io LDraw Pieces (скачать с https://www.bricklink.com/v3/studio/download.page))</translation>
+        <translation type="unfinished">Полный путь к библиотеке Stud.io LDraw Parts (скачать с https://www.bricklink.com/v3/studio/download.page))</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="155"/>
@@ -4707,20 +4707,20 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="154"/>
-        <source>Hides all pieces in the timeline up to where this command is encountered</source>
+        <source>Hides all parts in the timeline up to where this command is encountered</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Скрывает все фрагменты временной шкалы до того места, где встречается эта команда.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="199"/>
-        <source>How to Scale Pieces</source>
+        <source>How to Scale Parts</source>
         <oldsource>How To Scale Pieces</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Как масштабировать детали</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="87"/>
-        <source>Identical pieces (of the same type and color) share the same mesh</source>
+        <source>Identical parts (of the same type and color) share the same mesh</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Идентичные части (одного типа и цвета) имеют одну и ту же сетку.</translation>
     </message>
@@ -4778,7 +4778,7 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="82"/>
-        <source>In Scene Outline, all pieces are placed directly below the root - there&apos;s no tree of submodels</source>
+        <source>In Scene Outline, all parts are placed directly below the root - there&apos;s no tree of submodels</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">В Scene Outline все части располагаются непосредственно под корнем — дерева подмоделей нет.</translation>
     </message>
@@ -4815,7 +4815,7 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="87"/>
-        <source>Link Like Pieces</source>
+        <source>Link Like Parts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Связать как кусочки</translation>
     </message>
@@ -4980,7 +4980,7 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="88"/>
-        <source>Pieces of minifigs are automatically parented to each other in a hierarchy</source>
+        <source>Parts of minifigs are automatically parented to each other in a hierarchy</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Части минифигурок автоматически связываются друг с другом в иерархии.</translation>
     </message>
@@ -5012,7 +5012,7 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="167"/>
-        <source>Prefer Unofficial Pieces</source>
+        <source>Prefer Unofficial Parts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Предпочитаю неофициальные произведения</translation>
     </message>
@@ -5121,7 +5121,7 @@ File format is not recognized.</source>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="118"/>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="198"/>
-        <source>Resolution of piece primitives, i.e., how much geometry they have</source>
+        <source>Resolution of part primitives, i.e., how much geometry they have</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Разрешение кусочных примитивов, т. е. сколько у них геометрии.</translation>
     </message>
@@ -5164,7 +5164,7 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="188"/>
-        <source>Scale individual pieces by this much to create the gap</source>
+        <source>Scale individual parts by this much to create the gap</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Масштабируйте отдельные части на эту величину, чтобы создать зазор.</translation>
     </message>
@@ -5177,13 +5177,13 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="166"/>
-        <source>Search for pieces in Stud.io library first</source>
+        <source>Search for parts in Stud.io library first</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Сначала выполните поиск фрагментов в библиотеке Stud.io.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="167"/>
-        <source>Search for unofficial pieces first</source>
+        <source>Search for unofficial parts first</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Сначала поищите неофициальные произведения</translation>
     </message>
@@ -5219,7 +5219,7 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="106"/>
-        <source>Sets the default piece color using LDraw color code</source>
+        <source>Sets the default part color using LDraw color code</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Устанавливает цвет детали по умолчанию, используя цветовой код LDraw.</translation>
     </message>
@@ -5276,20 +5276,20 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="210"/>
-        <source>Smooth piece faces with edge split modifier|Auto-smooth piece faces|Split during initial mesh processing</source>
+        <source>Smooth part faces with edge split modifier|Auto-smooth part faces|Split during initial mesh processing</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Сглаженные грани детали с модификатором разделения кромок|Автоматическое сглаживание граней детали|Разделение во время начальной обработки сетки</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="119"/>
-        <source>Some older LDraw pieces have faces with ambiguous normals. This specifies what to do with them.</source>
+        <source>Some older LDraw parts have faces with ambiguous normals. This specifies what to do with them.</source>
         <oldsource>Some older LDraw pieces have faces with ambiguous normals, this specifies what to do with them</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Некоторые старые части LDraw имеют лица с неоднозначными нормалями, это определяет, что с ними делать.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="114"/>
-        <source>Source used to create flexible pieces - string, hoses, etc. (LDCad, LSynth, or both)</source>
+        <source>Source used to create flexible parts - string, hoses, etc. (LDCad, LSynth, or both)</source>
         <oldsource>Source used to create flexible pieces - string, hoses etc. (LDCad, LSynth or both</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Источник, используемый для создания гибких деталей — струн, шлангов и т. д. (LDCad, LSynth или оба</translation>
@@ -5337,13 +5337,13 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="100"/>
-        <source>Specify whether to use pieces from the LDraw unofficial pieces library path</source>
+        <source>Specify whether to use parts from the LDraw unofficial parts library path</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Укажите, следует ли использовать фрагменты из неофициального пути библиотеки фрагментов LDraw.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="177"/>
-        <source>Split shortcut pieces into their constituent pieces as if they were models</source>
+        <source>Split shortcut parts into their constituent parts as if they were models</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Разделите детали ярлыка на составные части, как если бы они были моделями.</translation>
     </message>
@@ -5367,7 +5367,7 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="69"/>
-        <source>Stud.io Custom Pieces Path</source>
+        <source>Stud.io Custom Parts Path</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Путь к пользовательским элементам Stud.io</translation>
     </message>
@@ -5455,19 +5455,19 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="100"/>
-        <source>Use Unofficial Pieces</source>
+        <source>Use Unofficial Parts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Используйте неофициальные произведения</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="200"/>
-        <source>Use either autosmooth or an edge split modifier to smooth piece faces</source>
+        <source>Use either autosmooth or an edge split modifier to smooth part faces</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Используйте модификатор autosmooth или модификатор разделения кромок, чтобы сгладить грани детали.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences_blender.cpp" line="175"/>
-        <source>Use flat or smooth shading for piece faces</source>
+        <source>Use flat or smooth shading for part faces</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Используйте плоскую или плавную штриховку для граней деталей.</translation>
     </message>
@@ -5539,7 +5539,7 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_page.cpp" line="273"/>
-        <source>Create Pieces List</source>
+        <source>Create Parts List</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Создать список деталей</translation>
     </message>
@@ -5592,7 +5592,7 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="82"/>
-        <source>Import all pieces from an official set</source>
+        <source>Import all parts from an official set</source>
         <translation>Импортировать все детали из официального набора</translation>
     </message>
     <message>
@@ -5612,12 +5612,12 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="114"/>
-        <source>Export a list of pieces used in BrickLink XML format</source>
+        <source>Export a list of parts used in BrickLink XML format</source>
         <translation>Экспортировать список деталей, использующихся в формате BrickLink XML</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="122"/>
-        <source>Export a list of pieces used in comma delimited file format</source>
+        <source>Export a list of parts used in comma delimited file format</source>
         <translation>Экспортировать список деталей в формате файла с разделением запятыми</translation>
     </message>
     <message>
@@ -5683,7 +5683,7 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="331"/>
-        <source>Select all pieces in the model</source>
+        <source>Select all parts in the model</source>
         <translation>Выбрать все детали модели</translation>
     </message>
     <message>
@@ -5734,37 +5734,37 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="275"/>
-        <source>Find piece</source>
+        <source>Find part</source>
         <translation>Найти деталь</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="283"/>
-        <source>Find next piece</source>
+        <source>Find next part</source>
         <translation>Найти следующую деталь</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="291"/>
-        <source>Find previous piece</source>
+        <source>Find previous part</source>
         <translation>Найти предыдущую деталь</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="299"/>
-        <source>Find all pieces that match the search criteria</source>
+        <source>Find all parts that match the search criteria</source>
         <translation>Найти все детали, совпадающие с условиями поиска</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="307"/>
-        <source>Replace piece</source>
+        <source>Replace part</source>
         <translation>Заменить деталь</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="315"/>
-        <source>Replace next piece</source>
+        <source>Replace next part</source>
         <translation>Заменить следующую деталь</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="323"/>
-        <source>Replace all pieces that match the search criteria</source>
+        <source>Replace all parts that match the search criteria</source>
         <translation>Заменить все детали, совпадающие с условиями поиска</translation>
     </message>
     <message>
@@ -5775,22 +5775,22 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="363"/>
-        <source>Select one piece at a time</source>
+        <source>Select one part at a time</source>
         <translation>Выбрать одну деталь за раз</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="371"/>
-        <source>Select all pieces of the same type</source>
+        <source>Select all parts of the same type</source>
         <translation>Выбрать все детали одного типа</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="379"/>
-        <source>Select all pieces of the same color</source>
+        <source>Select all parts of the same color</source>
         <translation>Выбрать все детали одного цвета</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="387"/>
-        <source>Select all pieces of the same type and color</source>
+        <source>Select all parts of the same type and color</source>
         <translation>Выбрать все детали одного типа и цвета</translation>
     </message>
     <message>
@@ -5810,17 +5810,17 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="419"/>
-        <source>Rotate selected pieces separately</source>
+        <source>Rotate selected parts separately</source>
         <translation>Вращать выбранные детали отдельно</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="427"/>
-        <source>Rotate selected pieces together</source>
+        <source>Rotate selected parts together</source>
         <translation>Вращать выбранные детали вместе</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="435"/>
-        <source>Toggle rotating selected pieces separately</source>
+        <source>Toggle rotating selected parts separately</source>
         <translation>Переключить вращение выбранных деталей отдельно</translation>
     </message>
     <message>
@@ -6009,7 +6009,7 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="755"/>
-        <source>Add new pieces to the model</source>
+        <source>Add new parts to the model</source>
         <translation>Добавить в модель новые детали</translation>
     </message>
     <message>
@@ -6060,7 +6060,7 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="819"/>
-        <source>Rotate selected pieces</source>
+        <source>Rotate selected parts</source>
         <translation>Вращать выбранные детали</translation>
     </message>
     <message>
@@ -6070,12 +6070,12 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="835"/>
-        <source>Change piece color</source>
+        <source>Change part color</source>
         <translation>Изменить цвет детали</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="843"/>
-        <source>Get piece color</source>
+        <source>Get part color</source>
         <translation>Получить цвет детали</translation>
     </message>
     <message>
@@ -6124,7 +6124,7 @@ File format is not recognized.</source>
         <translation>Уменьшить</translation>
     </message>
     <message>
-        <source>Fit all pieces in the current view (hold the CTRL key down to zoom all views)</source>
+        <source>Fit all parts in the current view (hold the CTRL key down to zoom all views)</source>
         <translation type="vanished">Вписать все детали в текущий вид (удерживайте клавишу CTRL для масштабирования всех видов)</translation>
     </message>
     <message>
@@ -6151,13 +6151,13 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="923"/>
-        <source>Fit all pieces in the current view</source>
+        <source>Fit all parts in the current view</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Показать все детали в текущем виде</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="931"/>
-        <source>Rotate view so selected pieces are at center</source>
+        <source>Rotate view so selected parts are at center</source>
         <translation>Вращать вид для помещения выбранных деталей в центре</translation>
     </message>
     <message>
@@ -6330,7 +6330,7 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1299"/>
-        <source>Toggle the Pieces Toolbar</source>
+        <source>Toggle the Parts Toolbar</source>
         <translation>Переключить отображение панели инструментов «Детали»</translation>
     </message>
     <message>
@@ -6505,22 +6505,22 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1579"/>
-        <source>Insert new pieces with the current color</source>
+        <source>Insert new parts with the current color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1587"/>
-        <source>Insert new pieces with the color of the selected piece</source>
+        <source>Insert new parts with the color of the selected part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1595"/>
-        <source>Insert new pieces with the color of the last inserted piece</source>
+        <source>Insert new parts with the color of the last inserted part</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1603"/>
-        <source>Toggle keeping the pieces list in a fixed color instead of following the insert color</source>
+        <source>Toggle keeping the parts list in a fixed color instead of following the insert color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6535,17 +6535,17 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1627"/>
-        <source>Toggle moving pieces along fixed model axes instead of view-relative directions</source>
+        <source>Toggle moving parts along fixed model axes instead of view-relative directions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1635"/>
-        <source>Toggle using simpler meshes for distant pieces</source>
+        <source>Toggle using simpler meshes for distant parts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1643"/>
-        <source>Toggle highlighting pieces added in the current step</source>
+        <source>Toggle highlighting parts added in the current step</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6565,17 +6565,17 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1675"/>
-        <source>Toggle automatically computing piece edge colors</source>
+        <source>Toggle automatically computing part edge colors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1683"/>
-        <source>Highlight selected and new pieces with outlines</source>
+        <source>Highlight selected and new parts with outlines</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1691"/>
-        <source>Highlight selected and new pieces with tinted faces and colored edges</source>
+        <source>Highlight selected and new parts with tinted faces and colored edges</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6640,62 +6640,62 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1795"/>
-        <source>Toggle using the model view rendering settings for the pieces preview</source>
+        <source>Toggle using the model view rendering settings for the parts preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1803"/>
-        <source>Display the pieces preview as wireframe</source>
+        <source>Display the parts preview as wireframe</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1811"/>
-        <source>Display the pieces preview without any shading or lights</source>
+        <source>Display the parts preview without any shading or lights</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1819"/>
-        <source>Display the pieces preview with the default lights</source>
+        <source>Display the parts preview with the default lights</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1827"/>
-        <source>Toggle edge lines in the pieces preview</source>
+        <source>Toggle edge lines in the parts preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1835"/>
-        <source>Toggle conditional lines in the pieces preview</source>
+        <source>Toggle conditional lines in the parts preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1843"/>
-        <source>Toggle using the model view rendering settings for the pieces list</source>
+        <source>Toggle using the model view rendering settings for the parts list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1851"/>
-        <source>Display the pieces list as wireframe</source>
+        <source>Display the parts list as wireframe</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1859"/>
-        <source>Display the pieces list without any shading or lights</source>
+        <source>Display the parts list without any shading or lights</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1867"/>
-        <source>Display the pieces list with the default lights</source>
+        <source>Display the parts list with the default lights</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1875"/>
-        <source>Toggle edge lines in the pieces list</source>
+        <source>Toggle edge lines in the parts list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1883"/>
-        <source>Toggle conditional lines in the pieces list</source>
+        <source>Toggle conditional lines in the parts list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6730,37 +6730,37 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1939"/>
-        <source>Toggle snapping the pieces panel width to whole thumbnail tiles and the categories to the longest name</source>
+        <source>Toggle snapping the parts panel width to whole thumbnail tiles and the categories to the longest name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1947"/>
-        <source>Toggle the view sphere in the pieces preview</source>
+        <source>Toggle the view sphere in the parts preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1955"/>
-        <source>Toggle the axis icon in the pieces preview</source>
+        <source>Toggle the axis icon in the parts preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1963"/>
-        <source>Toggle waiting for every piece to load before showing a model</source>
+        <source>Toggle waiting for every part to load before showing a model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1971"/>
-        <source>Keep the piece preview at a 1:1 ratio</source>
+        <source>Keep the part preview at a 1:1 ratio</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1979"/>
-        <source>Add a new piece to the model</source>
+        <source>Add a new part to the model</source>
         <translation>Добавить новую деталь к модели</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1987"/>
-        <source>Toggle placing the first piece of an empty model at 0, 0, 0</source>
+        <source>Toggle placing the first part of an empty model at 0, 0, 0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6770,22 +6770,22 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2003"/>
-        <source>Create a copy of the selected pieces</source>
+        <source>Create a copy of the selected parts</source>
         <translation>Создать копию выбранных деталей</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2011"/>
-        <source>Change the color of the selected pieces</source>
+        <source>Change the color of the selected parts</source>
         <translation>Изменить цвет выбранных деталей</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2019"/>
-        <source>Reset the pivot point of the selected pieces to their origin</source>
+        <source>Reset the pivot point of the selected parts to their origin</source>
         <translation>Сбросить точку поворота выбранных деталей на исходную</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2027"/>
-        <source>Remove all keyframes from the selected pieces</source>
+        <source>Remove all keyframes from the selected parts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6804,7 +6804,7 @@ File format is not recognized.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Remove all key frames from the selected pieces</source>
+        <source>Remove all key frames from the selected parts</source>
         <translation type="vanished">Удалить все ключевые кадры у выбранных деталей</translation>
     </message>
     <message>
@@ -6892,17 +6892,17 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2179"/>
-        <source>Make copies of the selected pieces</source>
+        <source>Make copies of the selected parts</source>
         <translation>Сделать копии выбранных деталей</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2187"/>
-        <source>Open the model referenced by the selected piece in a new tab</source>
+        <source>Open the model referenced by the selected part in a new tab</source>
         <translation>Открыть модель в новой вкладке по ссылке из выбранной детали</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2195"/>
-        <source>Move the selected pieces to a new model and replace them with a reference to the model</source>
+        <source>Move the selected parts to a new model and replace them with a reference to the model</source>
         <translation>Переместить выбранные детали в новую модель и заменить их ссылкой на модель</translation>
     </message>
     <message>
@@ -6922,7 +6922,7 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2227"/>
-        <source>Group selected pieces together</source>
+        <source>Group selected parts together</source>
         <translation>Группировать выбранные детали вместе</translation>
     </message>
     <message>
@@ -6932,12 +6932,12 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2243"/>
-        <source>Add focused piece to selected group</source>
+        <source>Add focused part to selected group</source>
         <translation>Добавить выделенную деталь в выбранную группу</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2251"/>
-        <source>Remove focused piece from group</source>
+        <source>Remove focused part from group</source>
         <translation>Удалить выделенную деталь из группы</translation>
     </message>
     <message>
@@ -6967,12 +6967,12 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2299"/>
-        <source>Show selected pieces one step earlier</source>
+        <source>Show selected parts one step earlier</source>
         <translation>Показать выбранные детали на один шаг раньше</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2307"/>
-        <source>Show selected pieces one step later</source>
+        <source>Show selected parts one step later</source>
         <translation>Показать выбранные детали на один шаг позже</translation>
     </message>
     <message>
@@ -7049,7 +7049,7 @@ File format is not recognized.</source>
         <translation type="vanished">Открыть форму отчёта об ошибке StudWorks в веб-браузере по умолчанию</translation>
     </message>
     <message>
-        <source>Check if a newer StudWorks version or pieces library has been released</source>
+        <source>Check if a newer StudWorks version or parts library has been released</source>
         <translation type="vanished">Проверить наличие новой версии StudWorks или библиотеки деталей</translation>
     </message>
     <message>
@@ -7059,17 +7059,17 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2715"/>
-        <source>Move the selected pieces into this step</source>
+        <source>Move the selected parts into this step</source>
         <translation>Переместить выбранные детали на этот шаг</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2723"/>
-        <source>Move the selected pieces into a new step before this</source>
+        <source>Move the selected parts into a new step before this</source>
         <translation>Переместить выбранные детали на новый шаг перед этим шагом</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2731"/>
-        <source>Move the selected pieces into a new step after this</source>
+        <source>Move the selected parts into a new step after this</source>
         <translation>Переместить выбранные детали на новый шаг после этого шага</translation>
     </message>
     <message>
@@ -7162,7 +7162,7 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="756"/>
-        <source>&lt;p&gt;&lt;b&gt;Insert Piece Tool&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a piece in the Pieces dock and a color in Colors, then use this tool in the model view to place the piece. Movement snapping controls placement increments. Use the preview to check placement before inserting the piece.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Insert Part Tool&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a part in the Parts dock and a color in Colors, then use this tool in the model view to place the part. Movement snapping controls placement increments. Use the preview to check placement before inserting the part.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Инструмент «Вставить деталь»&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Выберите деталь в доке «Детали» и цвет в разделе «Цвета», затем используйте этот инструмент на виде модели, чтобы разместить деталь. Привязка движения контролирует шаг размещения. Используйте предварительный просмотр, чтобы проверить размещение перед вставкой детали.&lt;/p&gt;</translation>
     </message>
@@ -7198,7 +7198,7 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="804"/>
-        <source>&lt;p&gt;&lt;b&gt;Select Tool&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Pick objects in the model view or drag a selection rectangle. Selection Mode controls whether matching piece types or colors are included. The focused object provides the reference for relative transforms.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Select Tool&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Pick objects in the model view or drag a selection rectangle. Selection Mode controls whether matching part types or colors are included. The focused object provides the reference for relative transforms.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Инструмент выбора&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Выберите объекты на виде модели или перетащите прямоугольник выделения. Режим выбора определяет, будут ли включены соответствующие типы или цвета частей. Объект в фокусе предоставляет ссылку для относительных преобразований.&lt;/p&gt;</translation>
     </message>
@@ -7210,7 +7210,7 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="820"/>
-        <source>&lt;p&gt;&lt;b&gt;Rotate Tool&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select objects, then drag a rotation handle in the model view. Rotation Snap sets the angle increments. Transform Options chooses relative or model axes and whether pieces rotate together or separately.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Rotate Tool&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select objects, then drag a rotation handle in the model view. Rotation Snap sets the angle increments. Transform Options chooses relative or model axes and whether parts rotate together or separately.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Инструмент поворота&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Выберите объекты, затем перетащите маркер вращения в виде модели. Привязка вращения устанавливает приращение угла. Параметры преобразования выбирают относительные оси или оси модели, а также то, будут ли части вращаться вместе или по отдельности.&lt;/p&gt;</translation>
     </message>
@@ -7222,19 +7222,19 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="836"/>
-        <source>&lt;p&gt;&lt;b&gt;Paint Tool&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose the replacement color in the Colors dock, then click pieces in the model view to recolor them. To recolor the current selection together, use the color button above the swatches.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Paint Tool&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose the replacement color in the Colors dock, then click parts in the model view to recolor them. To recolor the current selection together, use the color button above the swatches.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Инструмент «Рисование»&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Выберите заменяющий цвет на панели «Цвета», затем щелкните детали на виде модели, чтобы перекрасить их. Чтобы одновременно перекрасить текущий выделенный деталь, используйте кнопку цвета над образцами.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="844"/>
-        <source>&lt;p&gt;&lt;b&gt;Color Picker Tool&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Click a piece in the model view to make its color the current color. You can then use that color for insertion or painting; sampling it does not recolor the piece.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Color Picker Tool&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Click a part in the model view to make its color the current color. You can then use that color for insertion or painting; sampling it does not recolor the part.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Инструмент выбора цвета&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Щелкните деталь на виде модели, чтобы сделать его цвет текущим. Затем вы можете использовать этот цвет для вставки или рисования; выборка не меняет цвет детали.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="852"/>
-        <source>&lt;p&gt;&lt;b&gt;Zoom Tool&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Drag in the model view to move the viewpoint closer to or farther from the model. This changes the view rather than resizing pieces. Use Zoom Region to frame a particular area.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Zoom Tool&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Drag in the model view to move the viewpoint closer to or farther from the model. This changes the view rather than resizing parts. Use Zoom Region to frame a particular area.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Инструмент масштабирования&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Перетащите вид модели, чтобы переместить точку обзора ближе или дальше от модели. Это меняет вид, а не изменяет размер частей. Используйте масштабирование области, чтобы выделить определенную область.&lt;/p&gt;</translation>
     </message>
@@ -7246,13 +7246,13 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="868"/>
-        <source>&lt;p&gt;&lt;b&gt;Orbit Tool&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Drag to orbit the view around its center and inspect the model from another direction. This rotates the viewpoint rather than the selected pieces; use Rotate for object edits.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Orbit Tool&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Drag to orbit the view around its center and inspect the model from another direction. This rotates the viewpoint rather than the selected parts; use Rotate for object edits.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Инструмент «Орбита»&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Перетащите объект, чтобы вращать вид вокруг его центра, и осмотрите модель с другого направления. Это вращает точку обзора, а не выбранные части; используйте «Поворот» для редактирования объектов.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="876"/>
-        <source>&lt;p&gt;&lt;b&gt;Roll Tool&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Drag to turn the view around its viewing axis, tilting what appears upright on screen. Model pieces keep their positions and orientations.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Roll Tool&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Drag to turn the view around its viewing axis, tilting what appears upright on screen. Model parts keep their positions and orientations.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Инструмент «Вращение»&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Перетащите, чтобы повернуть вид вокруг оси просмотра, наклоняя то, что отображается на экране вертикально. Детали модели сохраняют свое положение и ориентацию.&lt;/p&gt;</translation>
     </message>
@@ -7264,19 +7264,19 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1180"/>
-        <source>&lt;p&gt;&lt;b&gt;First Step&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Display the model at its first building step. Step navigation changes which pieces are visible; it does not move pieces to a different step.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;First Step&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Display the model at its first building step. Step navigation changes which parts are visible; it does not move parts to a different step.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Первый шаг&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Отобразите модель на первом этапе ее построения. Пошаговая навигация меняет видимые части; он не перемещает фигуры на другой шаг.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1188"/>
-        <source>&lt;p&gt;&lt;b&gt;Previous Step&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Display the model one building step earlier. Pieces introduced in later steps are hidden so you can inspect the earlier stage of construction.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Previous Step&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Display the model one building step earlier. Parts introduced in later steps are hidden so you can inspect the earlier stage of construction.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Предыдущий шаг&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Отобразите модель на один шаг раньше. Детали, представленные на более поздних этапах, скрыты, поэтому вы можете просмотреть более раннюю стадию строительства.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1196"/>
-        <source>&lt;p&gt;&lt;b&gt;Next Step&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Display the next building step to reveal the next stage of the model. Use the Timeline to change which step introduces a piece.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Next Step&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Display the next building step to reveal the next stage of the model. Use the Timeline to change which step introduces a part.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Следующий шаг&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Отображение следующего шага построения, чтобы показать следующий этап модели. Используйте временную шкалу, чтобы изменить этап, на котором начинается деталь.&lt;/p&gt;</translation>
     </message>
@@ -7288,33 +7288,33 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1236"/>
-        <source>&lt;p&gt;&lt;b&gt;Add Keys&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Enable this when an edit should create a new animation key at the current step. For example, moving a piece at a later step can give it a different position there. The diamond controls in Properties show and toggle keys for individual properties.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Add Keys&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Enable this when an edit should create a new animation key at the current step. For example, moving a part at a later step can give it a different position there. The diamond controls in Properties show and toggle keys for individual properties.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Добавить ключи&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Включите этот параметр, если при редактировании на текущем этапе должен быть создан новый ключ анимации. Например, перемещение фигуры на более позднем этапе может изменить ее положение. Ромбовидные элементы управления в свойствах отображают и переключают клавиши для отдельных свойств.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1396"/>
-        <source>&lt;p&gt;&lt;b&gt;Standard Lighting&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Light pieces drawn with the Default Lights shading mode using one light above the camera with a soft highlight. This is the classic look.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Standard Lighting&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Light parts drawn with the Default Lights shading mode using one light above the camera with a soft highlight. This is the classic look.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1404"/>
-        <source>&lt;p&gt;&lt;b&gt;Studio Lighting&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Light pieces drawn with the Default Lights shading mode using a key light, a fill light from the camera and a rim light that brightens silhouette edges, for a softer, more photographic look.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Studio Lighting&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Light parts drawn with the Default Lights shading mode using a key light, a fill light from the camera and a rim light that brightens silhouette edges, for a softer, more photographic look.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1412"/>
-        <source>&lt;p&gt;&lt;b&gt;Matte Lighting&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Light pieces drawn with the Default Lights shading mode without specular highlights, so colors stay flat and true while surfaces keep their shading.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Matte Lighting&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Light parts drawn with the Default Lights shading mode without specular highlights, so colors stay flat and true while surfaces keep their shading.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1420"/>
-        <source>&lt;p&gt;&lt;b&gt;Toon Lighting&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Light pieces drawn with the Default Lights shading mode in a few flat brightness bands with a sharp highlight, for a cartoon look that pairs well with edge lines.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Toon Lighting&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Light parts drawn with the Default Lights shading mode in a few flat brightness bands with a sharp highlight, for a cartoon look that pairs well with edge lines.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1500"/>
-        <source>&lt;p&gt;&lt;b&gt;Normal to Face&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Click a face of any piece, including pieces inside submodels, to point the camera straight at it. The model is not changed. Press Esc to cancel.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Normal to Face&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Click a face of any part, including parts inside submodels, to point the camera straight at it. The model is not changed. Press Esc to cancel.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7647,7 +7647,7 @@ It is built on LeoCAD by Leonardo Zide and released under the GNU General Public
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="892"/>
-        <source>  -l, --libpath &lt;path&gt;: Set the Pieces Library location to path.
+        <source>  -l, --libpath &lt;path&gt;: Set the Parts Library location to path.
 </source>
         <translation>  -l, --libpath &lt;path&gt;: Указать путь к библиотеке деталей.
 </translation>
@@ -7756,14 +7756,14 @@ It is built on LeoCAD by Leonardo Zide and released under the GNU General Public
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="907"/>
-        <source>  --fade-steps: Render pieces from prior steps faded.
+        <source>  --fade-steps: Render parts from prior steps faded.
 </source>
         <translation>  --fade-steps: Отображать детали из предыдущих шагов с затуханием.
 </translation>
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="908"/>
-        <source>  --no-fade-steps: Do not render pieces from prior steps faded.
+        <source>  --no-fade-steps: Do not render parts from prior steps faded.
 </source>
         <translation>  --no-fade-steps: Не отображать детали из предыдущих шагов с затуханием.
 </translation>
@@ -7776,14 +7776,14 @@ It is built on LeoCAD by Leonardo Zide and released under the GNU General Public
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="910"/>
-        <source>  --highlight: Highlight pieces in the steps they appear.
+        <source>  --highlight: Highlight parts in the steps they appear.
 </source>
         <translation>  --highlight: Подсвечивать детали в тех шагах, в которых они появляются.
 </translation>
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="911"/>
-        <source>  --no-highlight: Do not highlight pieces in the steps they appear.
+        <source>  --no-highlight: Do not highlight parts in the steps they appear.
 </source>
         <translation>  --no-highlight: Не подсвечивать детали в тех шагах, в которых они появляются.
 </translation>
@@ -7843,28 +7843,28 @@ It is built on LeoCAD by Leonardo Zide and released under the GNU General Public
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="922"/>
-        <source>  -nbec, --disable-black-edge-color: Disable high contrast edge color for black pieces.
+        <source>  -nbec, --disable-black-edge-color: Disable high contrast edge color for black parts.
 </source>
         <translation>  -nbec, --disable-black-edge-color: Отключить высококнтрастный цвет кромки для чёрных деталей.
 </translation>
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="923"/>
-        <source>  -bec, --black-edge-color &lt;#AARRGGBB&gt;: High contrast edge color for black pieces.
+        <source>  -bec, --black-edge-color &lt;#AARRGGBB&gt;: High contrast edge color for black parts.
 </source>
         <translation>  -bec, --black-edge-color &lt;#AARRGGBB&gt;: Высококнтрастный цвет кромки для чёрных деталей.
 </translation>
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="924"/>
-        <source>  -ndec, --disable-dark-edge-color: Disable high contrast edge color for dark color pieces.
+        <source>  -ndec, --disable-dark-edge-color: Disable high contrast edge color for dark color parts.
 </source>
         <translation>  -ndec, --disable-dark-edge-color: Отключить высококонтрастный цвет кромки для тёмных деталей.
 </translation>
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="925"/>
-        <source>  -dec, --dark-edge-color &lt;#AARRGGBB&gt;: High contrast edge color for dark color pieces.
+        <source>  -dec, --dark-edge-color &lt;#AARRGGBB&gt;: High contrast edge color for dark color parts.
 </source>
         <translation>  -dec, --dark-edge-color &lt;#AARRGGBB&gt;: Высококонтрастный цвет кромки для тёмных деталей.
 </translation>
@@ -7911,7 +7911,7 @@ It is built on LeoCAD by Leonardo Zide and released under the GNU General Public
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="932"/>
-        <source>  -csv, --export-csv &lt;outfile.csv&gt;: Export the list of pieces used in CSV format.
+        <source>  -csv, --export-csv &lt;outfile.csv&gt;: Export the list of parts used in CSV format.
 </source>
         <oldsource>  -csv, --export-csv &lt;outfile.csv&gt;: Export the list of pieces used in csv format.
 </oldsource>
@@ -8011,14 +8011,14 @@ It is built on LeoCAD by Leonardo Zide and released under the GNU General Public
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="1113"/>
-        <source>StudWorks could not find a compatible Pieces Library so only a small number of pieces will be available.
+        <source>StudWorks could not find a compatible Parts Library so only a small number of parts will be available.
 
 Please visit https://library.ldraw.org for information on how to download and install a library.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="1115"/>
-        <source>StudWorks could not load Pieces Library.
+        <source>StudWorks could not load Parts Library.
 
 Please visit https://library.ldraw.org for information on how to download and install a library.</source>
         <translation type="unfinished"></translation>
@@ -8036,7 +8036,7 @@ Please visit https://library.ldraw.org for information on how to download and in
 </translation>
     </message>
     <message>
-        <source>StudWorks could not find a compatible Pieces Library so only a small number of pieces will be available.
+        <source>StudWorks could not find a compatible Parts Library so only a small number of parts will be available.
 
 Please visit https://github.com/nathaneltitane/studworks for information on how to download and install a library.</source>
         <translation type="vanished">StudWorks не смог найти совместимую библиотеку деталей, в связи с будет доступно чем лишь небольшое число деталей.
@@ -8044,7 +8044,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 Информация по загрузке и установке библиотеки доступна на https://github.com/nathaneltitane/studworks.</translation>
     </message>
     <message>
-        <source>StudWorks could not load Pieces Library.
+        <source>StudWorks could not load Parts Library.
 
 Please visit https://github.com/nathaneltitane/studworks for information on how to download and install a library.</source>
         <translation type="vanished">StudWorks не смог загрузить библиотеку деталей.
@@ -8071,14 +8071,14 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="909"/>
-        <source>  --fade-steps-color &lt;#AARRGGBB&gt;: Rendering color for prior step pieces.
+        <source>  --fade-steps-color &lt;#AARRGGBB&gt;: Rendering color for prior step parts.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --fade-steps-color &lt;#AARRGGBB&gt;: Отрисовка цвета для частей предыдущего шага.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="912"/>
-        <source>  --highlight-color &lt;#AARRGGBB&gt;: Rendering color for highlighted pieces.
+        <source>  --highlight-color &lt;#AARRGGBB&gt;: Rendering color for highlighted parts.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --highlight-color &lt;#AARRGGBB&gt;: Цвет рендеринга выделенных частей.</translation>
@@ -8140,7 +8140,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="1118"/>
-        <source>Load Pieces Library</source>
+        <source>Load Parts Library</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Загрузить библиотеку деталей</translation>
     </message>
@@ -8185,7 +8185,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     <name>swArrayDialog</name>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Array&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Create repeated copies of the selected pieces using up to three array dimensions. Each row defines a count, an offset, and a rotation increment.&lt;/p&gt;&lt;p&gt;Counts include the original selection. For example, counts of 3, 2, and 1 create five new copies of each selected piece. Set an offset or rotation to keep copies from overlapping.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Array&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Create repeated copies of the selected parts using up to three array dimensions. Each row defines a count, an offset, and a rotation increment.&lt;/p&gt;&lt;p&gt;Counts include the original selection. For example, counts of 3, 2, and 1 create five new copies of each selected part. Set an offset or rotation to keep copies from overlapping.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Массив&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Создавайте повторяющиеся копии выбранных деталей, используя до трех измерений массива. Каждая строка определяет счетчик, смещение и приращение поворота.&lt;/p&gt;&lt;p&gt;Счетчики включают исходный выбор. Например, при счете 3, 2 и 1 создается пять новых копий каждого выбранного детали. Задайте смещение или поворот, чтобы копии не перекрывались.&lt;/p&gt;</translation>
     </message>
@@ -8362,7 +8362,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_array.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Rotations&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Each row sets the rotation increment around the X, Y, and Z model axes, in degrees, for its array dimension. Rotations from all three dimensions are added, then applied in X, Y, Z order before the offset.&lt;/p&gt;&lt;p&gt;Copies rotate around the focused piece origin, or the selection center when no piece has focus. Negative values reverse the rotation.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Rotations&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Each row sets the rotation increment around the X, Y, and Z model axes, in degrees, for its array dimension. Rotations from all three dimensions are added, then applied in X, Y, Z order before the offset.&lt;/p&gt;&lt;p&gt;Copies rotate around the focused part origin, or the selection center when no part has focus. Negative values reverse the rotation.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Повороты&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Каждая строка задает приращение поворота вокруг осей модели X, Y и Z в градусах для измерения ее массива. Повороты всех трех измерений добавляются, а затем применяются в порядке X, Y, Z перед смещением.&lt;/p&gt;&lt;p&gt;Копии вращаются вокруг начала координат детали в фокусе или центра выделения, если ни одна деталь не находится в фокусе. Отрицательные значения обращают вращение.&lt;/p&gt;</translation>
     </message>
@@ -8500,7 +8500,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/library/sw_loader_asset.cpp" line="609"/>
-        <source>Could not load piece &apos;%1&apos;.</source>
+        <source>Could not load part &apos;%1&apos;.</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Не удалось загрузить деталь &apos;%1&apos;.</translation>
     </message>
@@ -8551,7 +8551,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">Задайте классификацию значения светлых и тёмных цветов - например, синевато-тёмно-серый (72) будет считаться светлым при значении 0.39.</translation>
     </message>
     <message>
-        <source>Set to specify amount of edge color tint or shade from the saturation adjusted piece color</source>
+        <source>Set to specify amount of edge color tint or shade from the saturation adjusted part color</source>
         <translation type="vanished">Задайте оттенок цвета кромки или затенения от цвета детали с коррекцией насыщенности</translation>
     </message>
     <message>
@@ -8566,17 +8566,17 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_color_edge.cpp" line="124"/>
-        <source>Pieces Edge Color:</source>
+        <source>Parts Edge Color:</source>
         <translation>Цвет кромки детали:</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_color_edge.cpp" line="142"/>
-        <source>Black Pieces Edge Color:</source>
+        <source>Black Parts Edge Color:</source>
         <translation>Цвет кромки чёрных деталей:</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_color_edge.cpp" line="160"/>
-        <source>Dark Pieces Edge Color:</source>
+        <source>Dark Parts Edge Color:</source>
         <translation>Цвет кромки тёмных деталей:</translation>
     </message>
     <message>
@@ -8586,12 +8586,12 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_color_edge.cpp" line="265"/>
-        <source>Select Piece Edge Color</source>
+        <source>Select Part Edge Color</source>
         <translation>Выберите цвет кромки детали</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_color_edge.cpp" line="274"/>
-        <source>Automate edge color appears to be enabled.&lt;br&gt;Black pieces edge color will not be accessible.&lt;br&gt;Do you want to continue?</source>
+        <source>Automate edge color appears to be enabled.&lt;br&gt;Black parts edge color will not be accessible.&lt;br&gt;Do you want to continue?</source>
         <translation>По-видимому, включена автонастройка цвета кромки.&lt;br&gt;Цвет кромки чёрных деталей будет недоступен.&lt;br&gt;Продолжить?</translation>
     </message>
     <message>
@@ -8602,13 +8602,13 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_color_edge.cpp" line="23"/>
-        <source>&lt;p&gt;&lt;b&gt;High Contrast Edge Colors&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose custom stud and edge colors for high contrast stud styles. Enable an override with its checkbox, then choose its color. Light/Dark Value sets the threshold for dark-piece edge colors. Automated edge colors take precedence over the piece edge overrides.&lt;/p&gt;&lt;p&gt;Choose OK to return changes to Preferences, then choose OK in Preferences to keep them. Cancel discards changes in this dialog. Reset restores an individual control&apos;s default.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;High Contrast Edge Colors&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose custom stud and edge colors for high contrast stud styles. Enable an override with its checkbox, then choose its color. Light/Dark Value sets the threshold for dark-part edge colors. Automated edge colors take precedence over the part edge overrides.&lt;/p&gt;&lt;p&gt;Choose OK to return changes to Preferences, then choose OK in Preferences to keep them. Cancel discards changes in this dialog. Reset restores an individual control&apos;s default.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Высококонтрастные цвета кромок&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Выберите собственные цвета заклепок и кромок для создания высококонтрастных стилей заклепок. Включите переопределение, установив соответствующий флажок, затем выберите его цвет. Значение «Светлый/Темный» устанавливает порог для темных цветов края детали. Автоматизированные цвета кромок имеют приоритет над переопределениями кромок детали.&lt;/p&gt;&lt;p&gt;Нажмите «ОК», чтобы вернуть изменения в «Настройки», затем нажмите «ОК» в настройках, чтобы сохранить их. Отмена отменяет изменения в этом диалоговом окне. Сброс восстанавливает настройки по умолчанию для отдельного элемента управления.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_color_edge.cpp" line="24"/>
-        <source>&lt;p&gt;&lt;b&gt;Automated Edge Colors&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Adjust the contrast and saturation used to calculate piece edge colors. Both controls range from 0.00 to 1.00. Reset restores a control to 0.50.&lt;/p&gt;&lt;p&gt;Choose OK to return changes to Preferences, then choose OK in Preferences to keep them. Cancel discards changes in this dialog.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Automated Edge Colors&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Adjust the contrast and saturation used to calculate part edge colors. Both controls range from 0.00 to 1.00. Reset restores a control to 0.50.&lt;/p&gt;&lt;p&gt;Choose OK to return changes to Preferences, then choose OK in Preferences to keep them. Cancel discards changes in this dialog.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Автоматические цвета кромок&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Отрегулируйте контрастность и насыщенность, используемые для расчета цветов кромок деталей. Оба элемента управления находятся в диапазоне от 0,00 до 1,00. Сброс восстанавливает значение элемента управления до 0,50.&lt;/p&gt;&lt;p&gt;Выберите «ОК», чтобы вернуть изменения в настройки, затем нажмите «ОК» в настройках, чтобы сохранить их. Отмена отменяет изменения в этом диалоговом окне.&lt;/p&gt;</translation>
     </message>
@@ -8620,7 +8620,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_color_edge.cpp" line="44"/>
-        <source>&lt;p&gt;&lt;b&gt;Edge Contrast&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Adjust the contrast used by automated edge colors to distinguish edges from piece surfaces. The range is 0.00 to 1.00; Reset restores 0.50.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Edge Contrast&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Adjust the contrast used by automated edge colors to distinguish edges from part surfaces. The range is 0.00 to 1.00; Reset restores 0.50.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Контраст кромок&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Отрегулируйте контрастность, используемую автоматическими цветами кромок, чтобы отличать кромки от поверхностей детали. Диапазон: от 0,00 до 1,00; Сброс восстанавливает 0,50.&lt;/p&gt;</translation>
     </message>
@@ -8644,13 +8644,13 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_color_edge.cpp" line="72"/>
-        <source>&lt;p&gt;&lt;b&gt;Light/Dark Value&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Classify piece colors by brightness to choose which pieces receive the dark-piece edge override. Colors below the threshold are treated as dark. A separate enabled black-piece override takes priority for black pieces. The range is 0.00 to 1.00; Reset restores 0.50.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Light/Dark Value&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Classify part colors by brightness to choose which parts receive the dark-part edge override. Colors below the threshold are treated as dark. A separate enabled black-part override takes priority for black parts. The range is 0.00 to 1.00; Reset restores 0.50.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Значение светлого/темного&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Классифицируйте цвета частей по яркости, чтобы выбрать, какие части получат переопределение края темной части. Цвета ниже порога считаются темными. Отдельно включенное переопределение черных фигур имеет приоритет для черных фигур. Диапазон: от 0,00 до 1,00; Сброс восстанавливает 0,50.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_color_edge.cpp" line="73"/>
-        <source>&lt;p&gt;&lt;b&gt;Edge Saturation&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Adjust the tint or shade used to calculate automated edge colors from piece colors. The range is 0.00 to 1.00; Reset restores 0.50.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Edge Saturation&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Adjust the tint or shade used to calculate automated edge colors from part colors. The range is 0.00 to 1.00; Reset restores 0.50.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Насыщенность кромок&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Отрегулируйте оттенок или оттенок, используемый для автоматического расчета цветов кромок на основе цветов деталей. Диапазон: от 0,00 до 1,00; Сброс восстанавливает 0,50.&lt;/p&gt;</translation>
     </message>
@@ -8686,25 +8686,25 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_color_edge.cpp" line="193"/>
-        <source>Enable a custom edge color for pieces not covered by the black or dark overrides. Automated edge colors take precedence.</source>
+        <source>Enable a custom edge color for parts not covered by the black or dark overrides. Automated edge colors take precedence.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Включите пользовательский цвет края для частей, не покрытых черным или темным переопределением. Автоматизированные цвета краев имеют приоритет.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_color_edge.cpp" line="195"/>
-        <source>Enable a custom edge color for black pieces. This override takes priority over the dark-piece and general edge colors. Automated edge colors take precedence.</source>
+        <source>Enable a custom edge color for black parts. This override takes priority over the dark-part and general edge colors. Automated edge colors take precedence.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Включите собственный цвет края для черных фигур. Это переопределение имеет приоритет над цветами темных фигур и общими цветами кромок. Автоматизированные цвета краев имеют приоритет.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_color_edge.cpp" line="197"/>
-        <source>Enable a custom edge color for pieces below the light/dark threshold, except black pieces with their own enabled override. Automated edge colors take precedence.</source>
+        <source>Enable a custom edge color for parts below the light/dark threshold, except black parts with their own enabled override. Automated edge colors take precedence.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Включите собственный цвет края для фигур ниже порога светлого/темного, за исключением черных фигур с собственным включенным переопределением. Автоматизированные цвета краев имеют приоритет.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_color_edge.cpp" line="287"/>
-        <source>Automate edge color appears to be enabled.&lt;br&gt;Dark pieces edge color will not be accessible.&lt;br&gt;Do you want to continue?</source>
+        <source>Automate edge color appears to be enabled.&lt;br&gt;Dark parts edge color will not be accessible.&lt;br&gt;Do you want to continue?</source>
         <translation>По-видимому, включена автонастройка цвета кромки.&lt;br&gt;Цвет кромки тёмных деталей будет недоступен.&lt;br&gt;Продолжить?</translation>
     </message>
     <message>
@@ -9779,7 +9779,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     <name>swCategoryDialog</name>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_category.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Piece Category&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Name a category and enter the expression used to find its pieces in the library. Both fields are required. Choose OK to return the category changes to Preferences, then choose OK in Preferences to keep them. Cancel discards edits in this dialog.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Keyword Syntax&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Expressions match text in library piece descriptions, ignoring case.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;tt&gt;Brick&lt;/tt&gt;: match this text anywhere in the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^Brick&lt;/tt&gt;: match Brick as a whole word.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;%Brick&lt;/tt&gt;: match Brick at the beginning of the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^%Brick&lt;/tt&gt;: require both a whole word and the beginning of the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A | B&lt;/tt&gt;: match either expression.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A &amp;amp; B&lt;/tt&gt;: match both expressions.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;!A&lt;/tt&gt;: exclude descriptions matching A.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;(A | B)&lt;/tt&gt;: group expressions.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Put spaces around &lt;tt&gt;|&lt;/tt&gt; and &lt;tt&gt;&amp;amp;&lt;/tt&gt;. Use parentheses when combining operators.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Examples&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;tt&gt;^%Brick | ^%Plate&lt;/tt&gt; matches descriptions beginning with the word Brick or Plate.&lt;br&gt;&lt;tt&gt;(^%Brick | ^%Plate) &amp;amp; !Pattern&lt;/tt&gt; also excludes descriptions containing Pattern.&lt;/p&gt;&lt;p&gt;Use the language of the library descriptions for search terms; do not translate the syntax symbols.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Part Category&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Name a category and enter the expression used to find its parts in the library. Both fields are required. Choose OK to return the category changes to Preferences, then choose OK in Preferences to keep them. Cancel discards edits in this dialog.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Keyword Syntax&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Expressions match text in library part descriptions, ignoring case.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;tt&gt;Brick&lt;/tt&gt;: match this text anywhere in the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^Brick&lt;/tt&gt;: match Brick as a whole word.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;%Brick&lt;/tt&gt;: match Brick at the beginning of the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^%Brick&lt;/tt&gt;: require both a whole word and the beginning of the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A | B&lt;/tt&gt;: match either expression.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A &amp;amp; B&lt;/tt&gt;: match both expressions.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;!A&lt;/tt&gt;: exclude descriptions matching A.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;(A | B)&lt;/tt&gt;: group expressions.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Put spaces around &lt;tt&gt;|&lt;/tt&gt; and &lt;tt&gt;&amp;amp;&lt;/tt&gt;. Use parentheses when combining operators.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Examples&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;tt&gt;^%Brick | ^%Plate&lt;/tt&gt; matches descriptions beginning with the word Brick or Plate.&lt;br&gt;&lt;tt&gt;(^%Brick | ^%Plate) &amp;amp; !Pattern&lt;/tt&gt; also excludes descriptions containing Pattern.&lt;/p&gt;&lt;p&gt;Use the language of the library descriptions for search terms; do not translate the syntax symbols.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Категория деталей&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Задайте имя категории и выражение для поиска её деталей в библиотеке. Оба поля обязательны. Нажмите OK, чтобы перенести изменения в Параметры, затем OK в Параметрах, чтобы сохранить их. Отмена отклоняет изменения в этом диалоге.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Синтаксис ключевых слов&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Выражения ищут текст в описаниях деталей библиотеки без учёта регистра.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;tt&gt;Brick&lt;/tt&gt;: ищет этот текст в любом месте описания.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^Brick&lt;/tt&gt;: ищет Brick как целое слово.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;%Brick&lt;/tt&gt;: ищет Brick в начале описания.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^%Brick&lt;/tt&gt;: требует целое слово в начале описания.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A | B&lt;/tt&gt;: ищет совпадение хотя бы с одним выражением.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A &amp;amp; B&lt;/tt&gt;: ищет совпадение с обоими выражениями.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;!A&lt;/tt&gt;: исключает описания, соответствующие A.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;(A | B)&lt;/tt&gt;: группирует выражения.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Ставьте пробелы вокруг &lt;tt&gt;|&lt;/tt&gt; и &lt;tt&gt;&amp;amp;&lt;/tt&gt;. При сочетании операторов используйте скобки.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Примеры&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;tt&gt;^%Brick | ^%Plate&lt;/tt&gt; находит описания, начинающиеся со слова Brick или Plate.&lt;br&gt;&lt;tt&gt;(^%Brick | ^%Plate) &amp;amp; !Pattern&lt;/tt&gt; также исключает описания, содержащие Pattern.&lt;/p&gt;&lt;p&gt;Используйте язык описаний библиотеки для поисковых слов; не переводите символы синтаксиса.&lt;/p&gt;</translation>
     </message>
@@ -9790,7 +9790,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_category.ui"/>
-        <source>Enter the category name shown in the piece browser.</source>
+        <source>Enter the category name shown in the part browser.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Введите имя категории, отображаемое в браузере деталей.</translation>
     </message>
@@ -9801,13 +9801,13 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_category.ui"/>
-        <source>Enter an expression that matches piece descriptions.</source>
+        <source>Enter an expression that matches part descriptions.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Введите выражение, соответствующее описаниям частей.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_category.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Keyword Syntax&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Expressions match text in library piece descriptions, ignoring case.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;tt&gt;Brick&lt;/tt&gt;: match this text anywhere in the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^Brick&lt;/tt&gt;: match Brick as a whole word.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;%Brick&lt;/tt&gt;: match Brick at the beginning of the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^%Brick&lt;/tt&gt;: require both a whole word and the beginning of the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A | B&lt;/tt&gt;: match either expression.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A &amp;amp; B&lt;/tt&gt;: match both expressions.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;!A&lt;/tt&gt;: exclude descriptions matching A.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;(A | B)&lt;/tt&gt;: group expressions.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Put spaces around &lt;tt&gt;|&lt;/tt&gt; and &lt;tt&gt;&amp;amp;&lt;/tt&gt;. Use parentheses when combining operators.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Examples&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;tt&gt;^%Brick | ^%Plate&lt;/tt&gt; matches descriptions beginning with the word Brick or Plate.&lt;br&gt;&lt;tt&gt;(^%Brick | ^%Plate) &amp;amp; !Pattern&lt;/tt&gt; also excludes descriptions containing Pattern.&lt;/p&gt;&lt;p&gt;Use the language of the library descriptions for search terms; do not translate the syntax symbols.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Keyword Syntax&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Expressions match text in library part descriptions, ignoring case.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;tt&gt;Brick&lt;/tt&gt;: match this text anywhere in the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^Brick&lt;/tt&gt;: match Brick as a whole word.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;%Brick&lt;/tt&gt;: match Brick at the beginning of the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^%Brick&lt;/tt&gt;: require both a whole word and the beginning of the description.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A | B&lt;/tt&gt;: match either expression.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A &amp;amp; B&lt;/tt&gt;: match both expressions.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;!A&lt;/tt&gt;: exclude descriptions matching A.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;(A | B)&lt;/tt&gt;: group expressions.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Put spaces around &lt;tt&gt;|&lt;/tt&gt; and &lt;tt&gt;&amp;amp;&lt;/tt&gt;. Use parentheses when combining operators.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Examples&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;tt&gt;^%Brick | ^%Plate&lt;/tt&gt; matches descriptions beginning with the word Brick or Plate.&lt;br&gt;&lt;tt&gt;(^%Brick | ^%Plate) &amp;amp; !Pattern&lt;/tt&gt; also excludes descriptions containing Pattern.&lt;/p&gt;&lt;p&gt;Use the language of the library descriptions for search terms; do not translate the syntax symbols.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Синтаксис ключевых слов&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Выражения ищут текст в описаниях деталей библиотеки без учёта регистра.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;tt&gt;Brick&lt;/tt&gt;: ищет этот текст в любом месте описания.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^Brick&lt;/tt&gt;: ищет Brick как целое слово.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;%Brick&lt;/tt&gt;: ищет Brick в начале описания.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;^%Brick&lt;/tt&gt;: требует целое слово в начале описания.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A | B&lt;/tt&gt;: ищет совпадение хотя бы с одним выражением.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;A &amp;amp; B&lt;/tt&gt;: ищет совпадение с обоими выражениями.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;!A&lt;/tt&gt;: исключает описания, соответствующие A.&lt;/li&gt;&lt;li&gt;&lt;tt&gt;(A | B)&lt;/tt&gt;: группирует выражения.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Ставьте пробелы вокруг &lt;tt&gt;|&lt;/tt&gt; и &lt;tt&gt;&amp;amp;&lt;/tt&gt;. При сочетании операторов используйте скобки.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Примеры&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;tt&gt;^%Brick | ^%Plate&lt;/tt&gt; находит описания, начинающиеся со слова Brick или Plate.&lt;br&gt;&lt;tt&gt;(^%Brick | ^%Plate) &amp;amp; !Pattern&lt;/tt&gt; также исключает описания, содержащие Pattern.&lt;/p&gt;&lt;p&gt;Используйте язык описаний библиотеки для поисковых слов; не переводите символы синтаксиса.&lt;/p&gt;</translation>
     </message>
@@ -9937,7 +9937,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     <name>swEditGroupsDialog</name>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_groups_edit.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Edit Groups&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Reorganize the model&apos;s pieces and groups in the tree. Drag pieces or groups into a group, or to the top level to remove them from a parent group. Double-click a group name to rename it.&lt;/p&gt;&lt;p&gt;New Group creates a group inside the selected group, or beside an ungrouped piece. Choose OK to apply the hierarchy, or Cancel to discard the changes. Empty groups are removed when changes are applied.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Edit Groups&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Reorganize the model&apos;s parts and groups in the tree. Drag parts or groups into a group, or to the top level to remove them from a parent group. Double-click a group name to rename it.&lt;/p&gt;&lt;p&gt;New Group creates a group inside the selected group, or beside an ungrouped part. Choose OK to apply the hierarchy, or Cancel to discard the changes. Empty groups are removed when changes are applied.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Редактировать группы&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Реорганизовать части и группы модели в дереве. Перетащите детали или группы в группу или на верхний уровень, чтобы удалить их из родительской группы. Дважды щелкните имя группы, чтобы переименовать ее.&lt;/p&gt;&lt;p&gt;Новая группа создает группу внутри выбранной группы или рядом с несгруппированным деталью. Выберите «ОК», чтобы применить иерархию, или «Отмена», чтобы отменить изменения. Пустые группы удаляются при применении изменений.&lt;/p&gt;</translation>
     </message>
@@ -9948,7 +9948,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_groups_edit.ui"/>
-        <source>Drag pieces and groups to reorganize them; double-click a group name to rename it.</source>
+        <source>Drag parts and groups to reorganize them; double-click a group name to rename it.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Перетаскивайте детали и группы, чтобы реорганизовать их; дважды щелкните имя группы, чтобы переименовать ее.</translation>
     </message>
@@ -9960,7 +9960,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_groups_edit.ui"/>
-        <source>Piece and Group Hierarchy</source>
+        <source>Part and Group Hierarchy</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Иерархия частей и групп</translation>
     </message>
@@ -9982,7 +9982,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_groups_edit.cpp" line="48"/>
-        <source>&lt;p&gt;&lt;b&gt;New Group&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select a group to create a subgroup inside it. If a piece is selected, the new group is created beside that piece. With no selection, the new group is created at the top level. Rename the new group by editing its name, then drag pieces into it.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;New Group&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select a group to create a subgroup inside it. If a part is selected, the new group is created beside that part. With no selection, the new group is created at the top level. Rename the new group by editing its name, then drag parts into it.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Новая группа&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Выберите группу, чтобы создать внутри нее подгруппу. Если деталь выбран, новая группа создается рядом с этим деталью. Если выбор не выбран, новая группа создается на верхнем уровне. Переименуйте новую группу, отредактировав ее имя, а затем перетащите в нее детали.&lt;/p&gt;</translation>
     </message>
@@ -10011,7 +10011,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_find_replace.cpp" line="30"/>
-        <source>Search Piece</source>
+        <source>Search Part</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Поиск детали</translation>
     </message>
@@ -10028,7 +10028,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_find_replace.cpp" line="64"/>
-        <source>Replacement Piece</source>
+        <source>Replacement Part</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Деталь для замены</translation>
     </message>
@@ -10049,7 +10049,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     <name>swGroupDialog</name>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_group.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Group Pieces&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Name a new group for the selected pieces so you can select and move them together. Choose OK to create it, or Cancel to leave the groups unchanged.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Group Parts&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Name a new group for the selected parts so you can select and move them together. Choose OK to create it, or Cancel to leave the groups unchanged.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Группировать детали&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Назовите новую группу для выбранных деталей, чтобы их можно было выбирать и перемещать вместе. Нажмите «ОК», чтобы создать ее, или «Отмена», чтобы оставить группы без изменений.&lt;/p&gt;</translation>
     </message>
@@ -10066,7 +10066,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_group.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Group Name&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a name that is not already used by another group in this model. The new group contains the selected pieces and their existing groups.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Group Name&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a name that is not already used by another group in this model. The new group contains the selected parts and their existing groups.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Имя группы&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Выберите имя, которое еще не используется другой группой в этой модели. Новая группа содержит выбранные детали и их существующие группы.&lt;/p&gt;</translation>
     </message>
@@ -10091,7 +10091,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     <name>swHTMLDialog</name>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Export HTML&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Create browser-viewable building instructions and PNG images in the output folder. Choose which models to include, how to organize the step pages, and where to show pieces lists.&lt;/p&gt;&lt;p&gt;Keep the generated HTML and image files together when copying or sharing the instructions.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Export HTML&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Create browser-viewable building instructions and PNG images in the output folder. Choose which models to include, how to organize the step pages, and where to show parts lists.&lt;/p&gt;&lt;p&gt;Keep the generated HTML and image files together when copying or sharing the instructions.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Экспорт HTML&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Создайте инструкции по сборке, доступные для просмотра в браузере, и изображения PNG в выходной папке. Выберите, какие модели включить, как организовать страницы шагов и где показывать списки частей.&lt;/p&gt;&lt;p&gt;Сохраняйте сгенерированные файлы HTML и изображения вместе при копировании или совместном использовании инструкций.&lt;/p&gt;</translation>
     </message>
@@ -10266,19 +10266,19 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Pieces List&lt;/b&gt;&lt;/p&gt;&lt;p&gt;After each step shows the pieces added in that step. At the end shows the complete model inventory after the instructions. You can enable either option, both, or neither.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Parts List&lt;/b&gt;&lt;/p&gt;&lt;p&gt;After each step shows the parts added in that step. At the end shows the complete model inventory after the instructions. You can enable either option, both, or neither.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Список частей&lt;/b&gt;&lt;/p&gt;&lt;p&gt;После каждого шага отображаются части, добавленные на этом шаге. В конце показан полный перечень моделей после инструкций. Вы можете включить любую опцию, обе или ни одну.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
-        <source>Include a complete pieces list after each model&apos;s instructions.</source>
+        <source>Include a complete parts list after each model&apos;s instructions.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Включите полный список деталей после инструкций к каждой модели.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
-        <source>Include a list of the pieces added in each step.</source>
+        <source>Include a list of the parts added in each step.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Включите список частей, добавленных на каждом этапе.</translation>
     </message>
@@ -10288,7 +10288,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_html.ui"/>
-        <source>Pieces List</source>
+        <source>Parts List</source>
         <translation>Список деталей</translation>
     </message>
     <message>
@@ -10563,7 +10563,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">Показывать номер шага</translation>
     </message>
     <message>
-        <source>Show Pieces List</source>
+        <source>Show Parts List</source>
         <translation type="vanished">Показывать список деталей</translation>
     </message>
     <message>
@@ -10900,7 +10900,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_placement.cpp" line="42"/>
-        <source>&lt;p&gt;&lt;b&gt;Placement&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select an element on the page to place, move or lock it. Place the selected page element on a predefined area: the step model, step number, pieces list, cover model, cover title, cover author or bill of materials. Step elements are placed in the part of the page their step gets from the split, or outside the other step element. Placements apply to all pages.&lt;/p&gt;&lt;p&gt;Every element can also be dragged on the page, it keeps its distance from its placement. A locked element keeps its position whatever its placement and is not dragged.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Placement&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select an element on the page to place, move or lock it. Place the selected page element on a predefined area: the step model, step number, parts list, cover model, cover title, cover author or bill of materials. Step elements are placed in the part of the page their step gets from the split, or outside the other step element. Placements apply to all pages.&lt;/p&gt;&lt;p&gt;Every element can also be dragged on the page, it keeps its distance from its placement. A locked element keeps its position whatever its placement and is not dragged.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -10948,7 +10948,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_placement.cpp" line="306"/>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_placement.cpp" line="344"/>
-        <source>Pieces List</source>
+        <source>Parts List</source>
         <translation type="unfinished">Список деталей</translation>
     </message>
     <message>
@@ -11175,15 +11175,15 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">Выберите цвет фона шага</translation>
     </message>
     <message>
-        <source>Select Pieces List Background Color</source>
+        <source>Select Parts List Background Color</source>
         <translation type="vanished">Выберите цвет фона списка деталей</translation>
     </message>
     <message>
-        <source>Select Pieces List Border Color</source>
+        <source>Select Parts List Border Color</source>
         <translation type="vanished">Выберите цвет границы списка деталей</translation>
     </message>
     <message>
-        <source>Select Pieces List Text Color</source>
+        <source>Select Parts List Text Color</source>
         <translation type="vanished">Выберите цвет текста списка деталей</translation>
     </message>
     <message>
@@ -11191,12 +11191,12 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">Выберите шрифт номера шага</translation>
     </message>
     <message>
-        <source>Select Pieces List Font</source>
+        <source>Select Parts List Font</source>
         <translation type="vanished">Выберите шрифт списка деталей</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="125"/>
-        <source>&lt;p&gt;&lt;b&gt;Properties&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Edit how the instruction pages look. With nothing selected on the page every section is shown, select a step, its number or its pieces list to show only their settings. Changes apply to all pages.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Properties&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Edit how the instruction pages look. With nothing selected on the page every section is shown, select a step, its number or its parts list to show only their settings. Changes apply to all pages.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -11461,7 +11461,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="304"/>
-        <source>&lt;p&gt;&lt;b&gt;Bill of Materials&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The last page, listing every piece of the model. It uses the Pieces List settings.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Bill of Materials&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The last page, listing every part of the model. It uses the Parts List settings.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -11471,7 +11471,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="307"/>
-        <source>End the instructions with a page listing every piece of the model.</source>
+        <source>End the instructions with a page listing every part of the model.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -11709,37 +11709,37 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="445"/>
-        <source>&lt;p&gt;&lt;b&gt;Pieces List&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The list of pieces added in each step. The bill of materials uses the same settings.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Parts List&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The list of parts added in each step. The bill of materials uses the same settings.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="448"/>
-        <source>Show Pieces List</source>
+        <source>Show Parts List</source>
         <translation type="unfinished">Показывать список деталей</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="448"/>
-        <source>Show the pieces added in each step next to its number.</source>
+        <source>Show the parts added in each step next to its number.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="449"/>
-        <source>Show Piece Counts</source>
+        <source>Show Part Counts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="449"/>
-        <source>Show how many of each piece are needed.</source>
+        <source>Show how many of each part are needed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="453"/>
-        <source>Pieces List Order</source>
+        <source>Parts List Order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="453"/>
-        <source>Order of the pieces in the list.</source>
+        <source>Order of the parts in the list.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -11759,42 +11759,42 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="455"/>
-        <source>Pieces List Font</source>
+        <source>Parts List Font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="455"/>
-        <source>Font of the piece counts.</source>
+        <source>Font of the part counts.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="457"/>
-        <source>Pieces List Text Color</source>
+        <source>Parts List Text Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="457"/>
-        <source>Color of the piece counts.</source>
+        <source>Color of the part counts.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="459"/>
-        <source>Pieces List Background</source>
+        <source>Parts List Background</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="459"/>
-        <source>Color filling the pieces list.</source>
+        <source>Color filling the parts list.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="461"/>
-        <source>Pieces List Border Color</source>
+        <source>Parts List Border Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="461"/>
-        <source>Color of the line around the pieces list.</source>
+        <source>Color of the line around the parts list.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -11804,7 +11804,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="463"/>
-        <source>Width of the line around the pieces list, 0 draws no line.</source>
+        <source>Width of the line around the parts list, 0 draws no line.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -11814,7 +11814,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="465"/>
-        <source>Size each piece is drawn at, larger thumbnails show larger pieces.</source>
+        <source>Size each part is drawn at, larger thumbnails show larger parts.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -11824,7 +11824,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="467"/>
-        <source>Color behind each piece and its count, transparent draws none.</source>
+        <source>Color behind each part and its count, transparent draws none.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -11859,7 +11859,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="445"/>
-        <source>Pieces List</source>
+        <source>Parts List</source>
         <translation type="unfinished">Список деталей</translation>
     </message>
     <message>
@@ -11871,7 +11871,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">Свойства номера шага</translation>
     </message>
     <message>
-        <source>Pieces List Properties</source>
+        <source>Parts List Properties</source>
         <translation type="vanished">Свойства списка деталей</translation>
     </message>
 </context>
@@ -12012,7 +12012,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="446"/>
-        <source>&amp;Piece</source>
+        <source>&amp;Part</source>
         <translation>&amp;Деталь</translation>
     </message>
     <message>
@@ -12037,7 +12037,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="527"/>
-        <source>Choose which related pieces are included when selecting a piece.</source>
+        <source>Choose which related parts are included when selecting a part.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Выберите, какие связанные части будут включены при выборе части.</translation>
     </message>
@@ -12048,7 +12048,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="541"/>
-        <source>Choose coordinate axes and whether selected pieces rotate together.</source>
+        <source>Choose coordinate axes and whether selected parts rotate together.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Выберите оси координат и вращайтесь ли выбранные части вместе.</translation>
     </message>
@@ -12121,13 +12121,13 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="528"/>
-        <source>&lt;p&gt;&lt;b&gt;Selection Mode&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose the rule applied when you pick a piece in the model view. Single selects that piece; the other modes include matching piece types, matching colors, or both. For example, color selection lets you pick matching red pieces without selecting each one separately.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Selection Mode&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose the rule applied when you pick a part in the model view. Single selects that part; the other modes include matching part types, matching colors, or both. For example, color selection lets you pick matching red parts without selecting each one separately.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Режим выбора&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Выберите правило, которое будет применяться при выборе детали на виде модели. Single выбирает эту деталь; другие режимы включают соответствие типов фигур, совпадение цветов или и то, и другое. Например, выбор цвета позволяет выбирать одинаковые красные части, не выбирая каждую отдельно.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="542"/>
-        <source>&lt;p&gt;&lt;b&gt;Transform Options&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose the axes and pivot used for interactive transforms. Relative Transforms uses the focused object&apos;s orientation, so movement along X follows that object&apos;s local X axis. Absolute Transforms uses the model axes. Rotate Together rotates the selection around a shared pivot; Rotate Separately rotates each piece around its own origin.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Transform Options&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose the axes and pivot used for interactive transforms. Relative Transforms uses the focused object&apos;s orientation, so movement along X follows that object&apos;s local X axis. Absolute Transforms uses the model axes. Rotate Together rotates the selection around a shared pivot; Rotate Separately rotates each part around its own origin.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Параметры преобразования&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Выберите оси и поворот, используемые для интерактивных преобразований. Относительные преобразования используют ориентацию сфокусированного объекта, поэтому движение вдоль X следует за локальной осью X этого объекта. Absolute Transforms использует оси модели. «Повернуть вместе» вращает выделение вокруг общей точки поворота; Повернуть отдельно. Поворачивает каждую часть вокруг начала координат.&lt;/p&gt;</translation>
     </message>
@@ -12145,24 +12145,24 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="604"/>
-        <source>&lt;p&gt;&lt;b&gt;Time Toolbar&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The arrow buttons move through building steps so you can inspect how the model is assembled. They do not change the step assigned to a piece; use the Timeline for that. Add Keys controls whether edits create animation keys at the current step, allowing properties such as position to vary between steps.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Time Toolbar&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The arrow buttons move through building steps so you can inspect how the model is assembled. They do not change the step assigned to a part; use the Timeline for that. Add Keys controls whether edits create animation keys at the current step, allowing properties such as position to vary between steps.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Панель инструментов «Время»&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Кнопки со стрелками позволяют перемещаться по этапам сборки, чтобы вы могли проверить, как собирается модель. Они не меняют шаг, назначенный пьесе; используйте для этого временную шкалу. «Добавить ключи» определяет, будут ли изменения создавать ключи анимации на текущем этапе, позволяя таким свойствам, как положение, меняться между шагами.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="613"/>
-        <source>&lt;p&gt;&lt;b&gt;Tools Toolbar&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a tool, then use it in the model view. Insertion tools create pieces, lights, or cameras. Editing tools select, transform, remove, or recolor objects. Navigation tools change the viewpoint without changing model geometry. Mouse assignments can be customized in Preferences.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Tools Toolbar&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a tool, then use it in the model view. Insertion tools create parts, lights, or cameras. Editing tools select, transform, remove, or recolor objects. Navigation tools change the viewpoint without changing model geometry. Mouse assignments can be customized in Preferences.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Панель инструментов «Инструменты»&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Выберите инструмент и используйте его в представлении модели. Инструменты вставки создают детали, источники света или камеры. Инструменты редактирования позволяют выбирать, трансформировать, удалять или перекрашивать объекты. Инструменты навигации изменяют точку обзора без изменения геометрии модели. Назначения мыши можно настроить в настройках.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="654"/>
-        <source>Pieces</source>
+        <source>Parts</source>
         <translation>Детали</translation>
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="657"/>
-        <source>&lt;p&gt;&lt;b&gt;Pieces&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a category or palette and filter its pieces. Selecting a piece prepares it for insertion; drag it into the model view to place it. Double-click a piece to open its preview. Options controls filtering, thumbnails, and list display.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Parts&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a category or palette and filter its parts. Selecting a part prepares it for insertion; drag it into the model view to place it. Double-click a part to open its preview. Options controls filtering, thumbnails, and list display.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Детали&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Выберите категорию или палитру и отфильтруйте их детали. Выбор детали подготавливает его к вставке; перетащите его на вид модели, чтобы разместить. Дважды щелкните деталь, чтобы открыть его предварительный просмотр. Параметры управляют фильтрацией, миниатюрами и отображением списка.&lt;/p&gt;</translation>
     </message>
@@ -12173,13 +12173,13 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="669"/>
-        <source>&lt;p&gt;&lt;b&gt;Colors&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose the current LDraw color from the swatches. This color is used when inserting or painting pieces. To recolor selected pieces, use the color button above the swatches. Hover over a swatch for its name and color code.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Colors&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose the current LDraw color from the swatches. This color is used when inserting or painting parts. To recolor selected parts, use the color button above the swatches. Hover over a swatch for its name and color code.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Цвета&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Выберите текущий цвет LDraw из образцов. Этот цвет используется при вставке или покраске деталей. Чтобы перекрасить выбранные детали, используйте кнопку цвета над образцами. Наведите указатель мыши на образец, чтобы узнать его название и цветовой код.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="685"/>
-        <source>Apply the current color to selected pieces.</source>
+        <source>Apply the current color to selected parts.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Примените текущий цвет к выбранным частям.</translation>
     </message>
@@ -12191,7 +12191,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="687"/>
-        <source>&lt;p&gt;&lt;b&gt;Change Selection Color&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Apply the current color to selected pieces. Choosing a swatch sets the current color; this button applies that color to the selection.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Change Selection Color&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Apply the current color to selected parts. Choosing a swatch sets the current color; this button applies that color to the selection.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Изменить цвет выделения&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Применить текущий цвет к выделенным деталям. Выбор образца устанавливает текущий цвет; эта кнопка применяет этот цвет к выделению.&lt;/p&gt;</translation>
     </message>
@@ -12208,7 +12208,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="722"/>
-        <source>&lt;p&gt;&lt;b&gt;Properties&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Edit properties of the focused object or selection. Available fields depend on whether you select pieces, a camera, or a light. Expand a section to see its fields. Keyframe controls mark properties at the current building step.&lt;/p&gt;&lt;p&gt;The transform fields at the bottom apply an X/Y/Z translation or rotation using the chosen transform mode. Press Enter to apply the values.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Properties&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Edit properties of the focused object or selection. Available fields depend on whether you select parts, a camera, or a light. Expand a section to see its fields. Keyframe controls mark properties at the current building step.&lt;/p&gt;&lt;p&gt;The transform fields at the bottom apply an X/Y/Z translation or rotation using the chosen transform mode. Press Enter to apply the values.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Свойства&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Отредактируйте свойства выделенного объекта или выделения. Доступные поля зависят от того, выбираете ли вы фигуры, камеру или свет. Разверните раздел, чтобы увидеть его поля. Элементы управления ключевыми кадрами отмечают свойства на текущем этапе построения.&lt;/p&gt;&lt;p&gt;Поля преобразования внизу применяют перемещение или вращение по осям X/Y/Z с использованием выбранного режима преобразования. Нажмите Enter, чтобы применить значения.&lt;/p&gt;</translation>
     </message>
@@ -12262,7 +12262,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="697"/>
-        <source>Choose how inserted pieces are colored.</source>
+        <source>Choose how inserted parts are colored.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -12312,7 +12312,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="830"/>
-        <source>&lt;p&gt;&lt;b&gt;Timeline&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select a step to make it current, or select piece rows to select those pieces in the model. Drag pieces between steps or reorder them within a step. Right-click for step insertion, removal, movement, and visibility commands.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Timeline&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select a step to make it current, or select part rows to select those parts in the model. Drag parts between steps or reorder them within a step. Right-click for step insertion, removal, movement, and visibility commands.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Временная шкала&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Выберите шаг, чтобы сделать его текущим, или выберите строки деталей, чтобы выбрать эти детали в модели. Перетаскивайте детали между шагами или меняйте их порядок внутри шага. Щелкните правой кнопкой мыши для команд вставки, удаления, перемещения и видимости шага.&lt;/p&gt;</translation>
     </message>
@@ -12323,7 +12323,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_interface.cpp" line="851"/>
-        <source>&lt;p&gt;&lt;b&gt;Minifigure Builder&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose the pieces, colors and pose of a minifigure, then add it to the current model. The panel keeps its settings so you can add several variations.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Minifigure Builder&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose the parts, colors and pose of a minifigure, then add it to the current model. The panel keeps its settings so you can add several variations.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -12344,7 +12344,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main.cpp" line="170"/>
-        <source>&lt;p&gt;&lt;b&gt;Preview&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Inspect a piece without placing it in the model. Double-click a piece in the Pieces dock to preview it. Lock Preview keeps the current preview when the source selection changes; unlock it to allow updates.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Preview&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Inspect a part without placing it in the model. Double-click a part in the Parts dock to preview it. Lock Preview keeps the current preview when the source selection changes; unlock it to allow updates.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Предварительный просмотр&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Осмотрите деталь, не помещая ее в модель. Дважды щелкните деталь в панели «Детали», чтобы просмотреть его. Блокировка предварительного просмотра сохраняет текущий предварительный просмотр при изменении выбора источника; разблокируйте его, чтобы разрешить обновления.&lt;/p&gt;</translation>
     </message>
@@ -12356,7 +12356,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main.cpp" line="315"/>
-        <source>Could not load piece.</source>
+        <source>Could not load part.</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Не удалось загрузить деталь.</translation>
     </message>
@@ -12368,19 +12368,19 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main.cpp" line="351"/>
-        <source>Regenerating synthesized piece geometry.</source>
+        <source>Regenerating synthesized part geometry.</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Повторное создание геометрии синтезированных деталей.</translation>
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main.cpp" line="353"/>
-        <source>Loading model pieces (%1 / %2).</source>
+        <source>Loading model parts (%1 / %2).</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Загрузка деталей модели (%1 / %2).</translation>
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main.cpp" line="360"/>
-        <source>The model could not be fully loaded. Some pieces may be missing.
+        <source>The model could not be fully loaded. Some parts may be missing.
 
 %1</source>
         <oldsource>The model could not be fully loaded, some pieces may be missing.
@@ -12615,7 +12615,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_view.cpp" line="382"/>
-        <source>Insert First Piece at Origin</source>
+        <source>Insert First Part at Origin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -12630,17 +12630,17 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main.cpp" line="766"/>
-        <source>Selected Piece Color</source>
+        <source>Selected Part Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main.cpp" line="767"/>
-        <source>Last Inserted Piece Color</source>
+        <source>Last Inserted Part Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main.cpp" line="769"/>
-        <source>Lock Pieces Color</source>
+        <source>Lock Parts Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -12684,7 +12684,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_update.cpp" line="158"/>
-        <source>Piece</source>
+        <source>Part</source>
         <translation type="unfinished">Деталь</translation>
     </message>
     <message>
@@ -12906,85 +12906,85 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation>Сохранить изменения в «%1»?</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main.h" line="126"/>
-        <location filename="../../source/interface/window/sw_window_main.h" line="132"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="125"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="131"/>
         <source>0</source>
         <translation>8x {0?}</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main.h" line="126"/>
-        <location filename="../../source/interface/window/sw_window_main.h" line="132"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="125"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="131"/>
         <source>1/20S</source>
         <translation>8x {1/20S?}</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main.h" line="126"/>
-        <location filename="../../source/interface/window/sw_window_main.h" line="132"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="125"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="131"/>
         <source>1/4S</source>
         <translation>8x {1/4S?}</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main.h" line="126"/>
-        <location filename="../../source/interface/window/sw_window_main.h" line="132"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="125"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="131"/>
         <source>1F</source>
         <translation>8x {1F?}</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main.h" line="126"/>
-        <location filename="../../source/interface/window/sw_window_main.h" line="132"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="125"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="131"/>
         <source>1/2S</source>
         <translation>8x {1/2S?}</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main.h" line="126"/>
-        <location filename="../../source/interface/window/sw_window_main.h" line="132"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="125"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="131"/>
         <source>1S</source>
         <translation>1Ш</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main.h" line="126"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="125"/>
         <source>2S</source>
         <translation>2Ш</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main.h" line="126"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="125"/>
         <source>3S</source>
         <translation>3Ш</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main.h" line="126"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="125"/>
         <source>4S</source>
         <translation>4Ш</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main.h" line="126"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="125"/>
         <source>8S</source>
         <translation>8Ш</translation>
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main.cpp" line="793"/>
-        <location filename="../../source/interface/window/sw_window_main.h" line="127"/>
-        <location filename="../../source/interface/window/sw_window_main.h" line="133"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="126"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="132"/>
         <source>None</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main.h" line="132"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="131"/>
         <source>1B</source>
         <translation>1К</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main.h" line="132"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="131"/>
         <source>2B</source>
         <translation>2К</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main.h" line="132"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="131"/>
         <source>4B</source>
         <translation>4К</translation>
     </message>
     <message>
-        <location filename="../../source/interface/window/sw_window_main.h" line="132"/>
+        <location filename="../../source/interface/window/sw_window_main.h" line="131"/>
         <source>8B</source>
         <translation>8К</translation>
     </message>
@@ -13020,7 +13020,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 <context>
     <name>swMinifigureBuilderWidget</name>
     <message>
-        <source>&lt;p&gt;&lt;b&gt;Minifig Wizard&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Build a minifigure by choosing its pieces, colors, and pose. The preview updates as you make changes. Choose OK to insert the minifigure into the current model, or Cancel to close without inserting it.&lt;/p&gt;&lt;p&gt;Templates let you reuse a configuration. Saved, deleted, and imported templates are retained even if you cancel the wizard.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Minifig Wizard&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Build a minifigure by choosing its parts, colors, and pose. The preview updates as you make changes. Choose OK to insert the minifigure into the current model, or Cancel to close without inserting it.&lt;/p&gt;&lt;p&gt;Templates let you reuse a configuration. Saved, deleted, and imported templates are retained even if you cancel the wizard.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">&lt;p&gt;&lt;b&gt;Мастер минифигурок&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Создайте минифигурку, выбирая ее части, цвета и позу. Предварительный просмотр обновляется по мере внесения изменений. Нажмите «ОК», чтобы вставить минифигурку в текущую модель, или «Отмена», чтобы закрыть ее без вставки.&lt;/p&gt;&lt;p&gt;Шаблоны позволяют повторно использовать конфигурацию. Сохраненные, удаленные и импортированные шаблоны сохраняются, даже если вы отмените работу мастера.&lt;/p&gt;</translation>
     </message>
@@ -13029,12 +13029,12 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">Мастер Minifig</translation>
     </message>
     <message>
-        <source>&lt;p&gt;&lt;b&gt;Minifigure Pieces&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Each section has a piece selector and a color button. Some sections also have a rotation control in degrees. Choose None in a piece selector to omit that piece.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Minifigure Parts&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Each section has a part selector and a color button. Some sections also have a rotation control in degrees. Choose None in a part selector to omit that part.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">&lt;p&gt;&lt;b&gt;Части минифигурок&lt;/b&gt;&lt;/p&gt;&lt;p&gt;В каждом разделе есть переключатель деталей и кнопка цвета. В некоторых разделах также имеется регулировка поворота в градусах. Выберите «Нет» в селекторе деталей, чтобы пропустить эту деталь.&lt;/p&gt;</translation>
     </message>
     <message>
-        <source>&lt;p&gt;&lt;b&gt;Templates&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Load a saved configuration of pieces, colors, and angles, or save the current configuration under a name. Choosing another template replaces the current preview configuration.&lt;/p&gt;&lt;p&gt;Changes to the preview are not saved as a template until you use Save. Template operations are retained when the wizard closes, including after Cancel.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Templates&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Load a saved configuration of parts, colors, and angles, or save the current configuration under a name. Choosing another template replaces the current preview configuration.&lt;/p&gt;&lt;p&gt;Changes to the preview are not saved as a template until you use Save. Template operations are retained when the wizard closes, including after Cancel.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">&lt;p&gt;&lt;b&gt;Шаблоны&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Загрузите сохраненную конфигурацию деталей, цветов и углов или сохраните текущую конфигурацию под именем. Выбор другого шаблона заменяет текущую конфигурацию предварительного просмотра.&lt;/p&gt;&lt;p&gt;Изменения предварительного просмотра не сохраняются как шаблон, пока вы не нажмете «Сохранить». Операции с шаблоном сохраняются после закрытия мастера, в том числе после отмены.&lt;/p&gt;</translation>
     </message>
@@ -13045,7 +13045,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_builder_minifigure.ui"/>
-        <source>Load a saved configuration of pieces, colors, and angles.</source>
+        <source>Load a saved configuration of parts, colors, and angles.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Загрузите сохраненную конфигурацию деталей, цветов и углов.</translation>
     </message>
@@ -13063,7 +13063,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_builder_minifigure.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Save Template&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Enter a name for the current pieces, colors, and pose. Reusing an existing name asks before replacing that template. The Default template cannot be overwritten.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Save Template&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Enter a name for the current parts, colors, and pose. Reusing an existing name asks before replacing that template. The Default template cannot be overwritten.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Сохранить шаблон&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Введите имя текущих фигур, цвета и позу. Повторное использование существующего имени запрашивается перед заменой этого шаблона. Шаблон по умолчанию нельзя перезаписать.&lt;/p&gt;</translation>
     </message>
@@ -13080,7 +13080,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_builder_minifigure.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Delete Template&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Remove the selected named template after confirmation. This does not remove pieces from the preview or an existing model. The Default template cannot be deleted.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Delete Template&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Remove the selected named template after confirmation. This does not remove parts from the preview or an existing model. The Default template cannot be deleted.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Удалить шаблон&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Удалить выбранный именованный шаблон после подтверждения. При этом части из предварительного просмотра или существующей модели не удаляются. Шаблон по умолчанию удалить невозможно.&lt;/p&gt;</translation>
     </message>
@@ -13227,13 +13227,13 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_builder_minifigure.cpp" line="53"/>
-        <source>%1 piece</source>
+        <source>%1 part</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 шт.</translation>
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_builder_minifigure.cpp" line="54"/>
-        <source>&lt;p&gt;&lt;b&gt;Choose Piece&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a piece for this section of the minifigure. Select None to omit it, the selector then shows the name of the section. The preview updates when you select a different piece.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Choose Part&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a part for this section of the minifigure. Select None to omit it, the selector then shows the name of the section. The preview updates when you select a different part.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -13243,7 +13243,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_builder_minifigure.cpp" line="130"/>
-        <source>&lt;p&gt;&lt;b&gt;Minifigure Builder Preview&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Check the assembled minifigure as you change pieces, colors, or angles. Choose Add to Model to add it to the current model.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Minifigure Builder Preview&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Check the assembled minifigure as you change parts, colors, or angles. Choose Add to Model to add it to the current model.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -13268,7 +13268,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_builder_minifigure.cpp" line="252"/>
-        <source>Choose the piece for %1, or None to omit it.</source>
+        <source>Choose the part for %1, or None to omit it.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Выберите деталь для %1 или «Нет», чтобы пропустить её.</translation>
     </message>
@@ -13285,7 +13285,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&lt;p&gt;&lt;b&gt;Choose Piece&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a piece for this section of the minifigure. Select None to omit it. The preview updates when you select a different piece.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Choose Part&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a part for this section of the minifigure. Select None to omit it. The preview updates when you select a different part.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">&lt;p&gt;&lt;b&gt;Выберите деталь&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Выберите деталь для этой части минифигурки. Выберите «Нет», чтобы пропустить его. Предварительный просмотр обновляется при выборе другого детали.&lt;/p&gt;</translation>
     </message>
@@ -13303,7 +13303,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_builder_minifigure.cpp" line="63"/>
-        <source>&lt;p&gt;&lt;b&gt;Choose Color&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Change the color of this minifigure piece. The preview updates immediately, and saving a template includes the chosen color.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Choose Color&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Change the color of this minifigure part. The preview updates immediately, and saving a template includes the chosen color.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Выберите цвет&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Измените цвет этой детали минифигурки. Предварительный просмотр немедленно обновится, а при сохранении шаблона будет выбран выбранный цвет.&lt;/p&gt;</translation>
     </message>
@@ -13321,7 +13321,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_builder_minifigure.cpp" line="78"/>
-        <source>&lt;p&gt;&lt;b&gt;Rotation&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Adjust this piece&apos;s angle to pose the minifigure. Values range from -360 to 360 degrees. The available rotation depends on the selected minifigure section.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Rotation&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Adjust this part&apos;s angle to pose the minifigure. Values range from -360 to 360 degrees. The available rotation depends on the selected minifigure section.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Поворот&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Отрегулируйте угол этой детали, чтобы расположить минифигурку. Значения варьируются от -360 до 360 градусов. Доступное вращение зависит от выбранного раздела минифигурок.&lt;/p&gt;</translation>
     </message>
@@ -13332,12 +13332,12 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_builder_minifigure.cpp" line="129"/>
-        <source>Preview of the chosen pieces, colors, and pose.</source>
+        <source>Preview of the chosen parts, colors, and pose.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Предварительный просмотр выбранных фигур, цветов и позы.</translation>
     </message>
     <message>
-        <source>&lt;p&gt;&lt;b&gt;Minifigure Preview&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Check the assembled minifigure as you change pieces, colors, or angles. Choose OK to add this configuration to the current model.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Minifigure Preview&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Check the assembled minifigure as you change parts, colors, or angles. Choose OK to add this configuration to the current model.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">&lt;p&gt;&lt;b&gt;Предварительный просмотр минифигурки&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Проверяйте собранную минифигурку, меняя детали, цвета и углы. Нажмите «ОК», чтобы добавить эту конфигурацию к текущей модели.&lt;/p&gt;</translation>
     </message>
@@ -13428,7 +13428,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_builder_minifigure.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Minifigure Builder&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Build a minifigure by choosing its pieces, colors, and pose. The preview updates as you make changes. Choose Add to Model to insert the minifigure into the current model.&lt;/p&gt;&lt;p&gt;Templates let you reuse a configuration. Saved, deleted, and imported templates are kept as soon as you change them.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Minifigure Builder&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Build a minifigure by choosing its parts, colors, and pose. The preview updates as you make changes. Choose Add to Model to insert the minifigure into the current model.&lt;/p&gt;&lt;p&gt;Templates let you reuse a configuration. Saved, deleted, and imported templates are kept as soon as you change them.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -13438,12 +13438,12 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_builder_minifigure.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Minifigure Pieces&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Each section has a piece selector and a color button. Some sections also have a rotation control in degrees. Choose None in a piece selector to omit that piece, the selector then shows the name of the section.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Minifigure Parts&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Each section has a part selector and a color button. Some sections also have a rotation control in degrees. Choose None in a part selector to omit that part, the selector then shows the name of the section.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_builder_minifigure.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Templates&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Load a saved configuration of pieces, colors, and angles, or save the current configuration under a name. Choosing another template replaces the current preview configuration.&lt;/p&gt;&lt;p&gt;Changes to the preview are not saved as a template until you use Save. Saved, deleted and imported templates are kept right away.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Templates&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Load a saved configuration of parts, colors, and angles, or save the current configuration under a name. Choosing another template replaces the current preview configuration.&lt;/p&gt;&lt;p&gt;Changes to the preview are not saved as a template until you use Save. Saved, deleted and imported templates are kept right away.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -13462,7 +13462,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">Вставка</translation>
     </message>
     <message>
-        <source>Duplicating Pieces</source>
+        <source>Duplicating Parts</source>
         <translation type="vanished">Дублирование деталей</translation>
     </message>
     <message>
@@ -13499,7 +13499,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <location filename="../../source/core/sw_model_clipboard.cpp" line="175"/>
         <location filename="../../source/core/sw_model_group.cpp" line="73"/>
         <location filename="../../source/core/sw_model_group.cpp" line="110"/>
-        <source>No pieces selected.</source>
+        <source>No parts selected.</source>
         <translation>Детали не выбраны.</translation>
     </message>
     <message>
@@ -13515,7 +13515,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">Изменение состава групп</translation>
     </message>
     <message>
-        <source>Adding Piece</source>
+        <source>Adding Part</source>
         <translation type="vanished">Добавление детали</translation>
     </message>
     <message>
@@ -13568,11 +13568,11 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">Установка детали</translation>
     </message>
     <message>
-        <source>Showing Pieces</source>
+        <source>Showing Parts</source>
         <translation type="vanished">Показ деталей</translation>
     </message>
     <message>
-        <source>Hiding Pieces</source>
+        <source>Hiding Parts</source>
         <translation type="vanished">Скрытие деталей</translation>
     </message>
     <message>
@@ -13636,18 +13636,18 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/core/sw_model.cpp" line="361"/>
-        <source>Loading pieces...</source>
+        <source>Loading parts...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/core/sw_model.cpp" line="395"/>
-        <source>Could not load all required pieces.</source>
+        <source>Could not load all required parts.</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Не удалось загрузить все необходимые детали.</translation>
     </message>
     <message>
         <location filename="../../source/core/sw_model.cpp" line="406"/>
-        <source>Could not generate geometry for piece &apos;%1&apos;.</source>
+        <source>Could not generate geometry for part &apos;%1&apos;.</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Не удалось создать геометрию детали &apos;%1&apos;.</translation>
     </message>
@@ -13677,7 +13677,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/core/sw_model_clipboard.cpp" line="175"/>
-        <source>Duplicate Pieces</source>
+        <source>Duplicate Parts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Дублирующиеся части</translation>
     </message>
@@ -13698,19 +13698,19 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <location filename="../../source/core/sw_model_render.cpp" line="399"/>
         <location filename="../../source/core/sw_model_render.cpp" line="408"/>
         <location filename="../../source/core/sw_model_render.cpp" line="461"/>
-        <source>Could not allocate the pieces list image.</source>
+        <source>Could not allocate the parts list image.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Не удалось выделить изображение списка частей.</translation>
     </message>
     <message>
         <location filename="../../source/core/sw_model_render.cpp" line="267"/>
-        <source>Could not create the pieces list framebuffer.</source>
+        <source>Could not create the parts list framebuffer.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Не удалось создать фреймбуфер списка частей.</translation>
     </message>
     <message>
         <location filename="../../source/core/sw_model_render.cpp" line="348"/>
-        <source>Could not read the pieces list image.</source>
+        <source>Could not read the parts list image.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Не удалось прочитать изображение списка частей.</translation>
     </message>
@@ -13773,7 +13773,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     <message>
         <location filename="../../source/core/sw_model_edit.cpp" line="207"/>
         <location filename="../../source/core/sw_model_tool.cpp" line="235"/>
-        <source>Add Piece</source>
+        <source>Add Part</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Добавить кусок</translation>
     </message>
@@ -13866,7 +13866,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/core/sw_model_edit.cpp" line="685"/>
-        <source>Show Pieces</source>
+        <source>Show Parts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Показать пьесы</translation>
     </message>
@@ -13934,14 +13934,14 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     <message>
         <location filename="../../source/core/sw_model_selection.cpp" line="821"/>
         <location filename="../../source/core/sw_model_selection.cpp" line="852"/>
-        <source>Hide Pieces</source>
+        <source>Hide Parts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Скрыть фрагменты</translation>
     </message>
     <message>
         <location filename="../../source/core/sw_model_selection.cpp" line="883"/>
         <location filename="../../source/core/sw_model_selection.cpp" line="914"/>
-        <source>Unhide Pieces</source>
+        <source>Unhide Parts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Показать фрагменты</translation>
     </message>
@@ -14012,7 +14012,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <location filename="../../source/core/sw_model.cpp" line="723"/>
         <location filename="../../source/core/sw_model.cpp" line="734"/>
         <location filename="../../source/core/sw_model.cpp" line="793"/>
-        <source>Piece Array</source>
+        <source>Part Array</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Кусочный массив</translation>
     </message>
@@ -14048,7 +14048,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/core/sw_model.cpp" line="734"/>
-        <source>Array only has 1 element or less. No pieces added.</source>
+        <source>Array only has 1 element or less. No parts added.</source>
         <oldsource>Array only has 1 element or less, no pieces added.</oldsource>
         <translation type="unfinished">Массив содержит только 1 элемент или меньше, детали не добавлены.</translation>
     </message>
@@ -14066,7 +14066,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message numerus="yes">
         <location filename="../../source/core/sw_model_selection.cpp" line="1037"/>
-        <source>Replace Pieces</source>
+        <source>Replace Parts</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">
             <numerusform>Заменить деталь</numerusform>
@@ -14582,146 +14582,146 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
 </context>
 <context>
-    <name>swPiecePaletteDialog</name>
+    <name>swPartPaletteDialog</name>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Piece Palettes&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Organize reusable collections of pieces in the piece browser. Create, rename, delete, import, or reorder palettes, then choose OK to apply the changes. Cancel discards these palette changes.&lt;/p&gt;&lt;p&gt;Palettes organize piece choices; they do not change pieces already placed in a model.&lt;/p&gt;</source>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
+        <source>&lt;p&gt;&lt;b&gt;Part Palettes&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Organize reusable collections of parts in the part browser. Create, rename, delete, import, or reorder palettes, then choose OK to apply the changes. Cancel discards these palette changes.&lt;/p&gt;&lt;p&gt;Palettes organize part choices; they do not change parts already placed in a model.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Палитры частей&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Упорядочивайте многоразовые коллекции частей в браузере частей. Создайте, переименуйте, удалите, импортируйте или измените порядок палитр, затем нажмите «ОК», чтобы применить изменения. Отмена отменяет эти изменения палитры.&lt;/p&gt;&lt;p&gt;Палитры упорядочивают выбор частей; они не заменяют детали, уже помещенные в модель.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
-        <source>Piece Palettes</source>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
+        <source>Part Palettes</source>
         <translation>Наборы деталей</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
         <source>Select the palette to rename, delete, or move.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Выберите палитру, которую требуется переименовать, удалить или переместить.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Palette List&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select a palette before using Rename, Delete, Move Up, or Move Down. The list order determines the palette order in the piece browser.&lt;/p&gt;</source>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
+        <source>&lt;p&gt;&lt;b&gt;Palette List&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select a palette before using Rename, Delete, Move Up, or Move Down. The list order determines the palette order in the part browser.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Список палитр&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Выберите палитру перед использованием функций «Переименовать», «Удалить», «Переместить вверх» или «Переместить вниз». Порядок списка определяет порядок палитр в браузере деталей.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
-        <source>Create a new empty piece palette.</source>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
+        <source>Create a new empty part palette.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Создайте новую пустую палитру частей.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
         <source>New...</source>
         <translation>Создать…</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
         <source>Remove the selected palette after confirmation.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Удалите выбранную палитру после подтверждения.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Delete Palette&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Remove the selected palette and its list of piece choices. Library pieces and pieces already used in models are not deleted. At least one palette must remain.&lt;/p&gt;</source>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
+        <source>&lt;p&gt;&lt;b&gt;Delete Palette&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Remove the selected palette and its list of part choices. Library parts and parts already used in models are not deleted. At least one palette must remain.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Удалить палитру&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Удалить выбранную палитру и ее список вариантов деталей. Части библиотеки и части, уже используемые в моделях, не удаляются. Должна остаться хотя бы одна палитра.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
         <source>Delete...</source>
         <translation>Удалить…</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
         <source>Change the name of the selected palette.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Измените имя выбранной палитры.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
         <source>Rename...</source>
         <translation>Переименовать…</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
         <source>Create a palette from an online set inventory.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Создайте палитру из онлайн-инвентаря.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Import Palette&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Open Import Set Inventory to search for a set and download its inventory. The new palette uses the set description as its name.&lt;/p&gt;&lt;p&gt;The palette stores piece IDs; inventory colors and quantities are not stored. An internet connection is required.&lt;/p&gt;</source>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
+        <source>&lt;p&gt;&lt;b&gt;Import Palette&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Open Import Set Inventory to search for a set and download its inventory. The new palette uses the set description as its name.&lt;/p&gt;&lt;p&gt;The palette stores part IDs; inventory colors and quantities are not stored. An internet connection is required.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Палитра импорта&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Откройте инвентарь импорта набора, чтобы найти набор и загрузить его инвентарь. В качестве имени новая палитра использует описание набора.&lt;/p&gt;&lt;p&gt;Палитра хранит идентификаторы частей; Цвета и количества инвентаря не сохраняются. Требуется подключение к Интернету.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
         <source>Import...</source>
         <translation>Импортировать…</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
         <source>Move the selected palette one position earlier in the list.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Переместить выбранную палитру на одну позицию раньше в списке.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
         <source>Move Up</source>
         <translation>Переместить вверх</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
         <source>Move the selected palette one position later in the list.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Переместите выбранную палитру на одну позицию позже в списке.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.ui"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.ui"/>
         <source>Move Down</source>
         <translation>Переместить вниз</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.cpp" line="79"/>
-        <source>New Piece Palette</source>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.cpp" line="79"/>
+        <source>New Part Palette</source>
         <translation>Новый набор деталей</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.cpp" line="79"/>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.cpp" line="118"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.cpp" line="79"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.cpp" line="118"/>
         <source>Palette Name:</source>
         <translation>Имя набора:</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.cpp" line="98"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.cpp" line="98"/>
         <source>Are you sure you want to delete the palette &apos;%1&apos;?</source>
         <translation>Удалить набор «%1»?</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.cpp" line="99"/>
-        <source>Delete Piece Palette</source>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.cpp" line="99"/>
+        <source>Delete Part Palette</source>
         <translation>Удалить набор деталей</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_palette_piece.cpp" line="118"/>
-        <source>Rename Piece Palette</source>
+        <location filename="../../source/interface/dialogs/sw_dialog_palette_part.cpp" line="118"/>
+        <source>Rename Part Palette</source>
         <translation>Переименовать набор деталей</translation>
     </message>
 </context>
 <context>
-    <name>swPieceSelectionListModel</name>
+    <name>swPartSelectionListModel</name>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="375"/>
-        <source>Could not load piece &apos;%1&apos;.</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="375"/>
+        <source>Could not load part &apos;%1&apos;.</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Не удалось загрузить деталь &apos;%1&apos;.</translation>
     </message>
 </context>
 <context>
-    <name>swPieceSelectionListView</name>
+    <name>swPartSelectionListView</name>
     <message>
         <source>No Icons</source>
         <translation type="vanished">Без іконок</translation>
@@ -14743,7 +14743,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">Дуже великі іконки</translation>
     </message>
     <message>
-        <source>Show Piece Names</source>
+        <source>Show Part Names</source>
         <translation type="vanished">Показувати назви блоків</translation>
     </message>
     <message>
@@ -14759,53 +14759,53 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">Зафіксувати колір попереднього перегляду</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="624"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="624"/>
         <source>Add to Palette</source>
         <translation>Добавить к набору</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="635"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="635"/>
         <source>None</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="639"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="639"/>
         <source>Remove from Palette</source>
         <translation>Удалить из набора</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="645"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="645"/>
         <source>Open Submodel</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Открыть подмодель</translation>
     </message>
 </context>
 <context>
-    <name>swPieceSelectionPopup</name>
+    <name>swPartSelectionPopup</name>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece_popup.cpp" line="10"/>
-        <source>Choose Piece</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part_popup.cpp" line="10"/>
+        <source>Choose Part</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Выбрать кусок</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece_popup.cpp" line="11"/>
-        <source>&lt;p&gt;&lt;b&gt;Choose Piece&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select a piece, then choose OK or double-click it to use it. Cancel keeps the original choice. Filter the list to find a piece; Options controls matching and list display. When None is available, select it to omit the piece.&lt;/p&gt;</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part_popup.cpp" line="11"/>
+        <source>&lt;p&gt;&lt;b&gt;Choose Part&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select a part, then choose OK or double-click it to use it. Cancel keeps the original choice. Filter the list to find a part; Options controls matching and list display. When None is available, select it to omit the part.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Выбрать деталь&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Выберите деталь, затем нажмите «ОК» или дважды щелкните его, чтобы использовать. Отмена сохраняет первоначальный выбор. Отфильтруйте список, чтобы найти кусок; Параметры управляют сопоставлением и отображением списка. Если доступно значение «Нет», выберите его, чтобы пропустить деталь.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
-    <name>swPieceSelectionWidget</name>
+    <name>swPartSelectionWidget</name>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1028"/>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1029"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1028"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1029"/>
         <source>Filter Categories</source>
         <translation>Категории фильтра</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1036"/>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1457"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1036"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1457"/>
         <source>Match Case</source>
         <translation>Учитывать регистр</translation>
     </message>
@@ -14818,153 +14818,153 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">Параметры</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1376"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1376"/>
         <source>Edit Palettes...</source>
         <translation>Изменить наборы…</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1405"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1405"/>
         <source>Icons</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Иконки</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1409"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1409"/>
         <source>No Icons</source>
         <translation>Без значков</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1414"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1414"/>
         <source>Small Icons</source>
         <translation>Маленькие значки</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1419"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1419"/>
         <source>Medium Icons</source>
         <translation>Средние значки</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1424"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1424"/>
         <source>Large Icons</source>
         <translation>Большие значки</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1429"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1429"/>
         <source>Extra Large Icons</source>
         <translation>Очень большие значки</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1444"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1444"/>
         <source>Lock Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Цвет блокировки</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1451"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1451"/>
         <source>Filter</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Фильтр</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1453"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1453"/>
         <source>Regular Expression</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Регулярное выражение</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1463"/>
-        <source>Piece ID</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1463"/>
+        <source>Part ID</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Идентификатор детали</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1468"/>
-        <source>Piece Description</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1468"/>
+        <source>Part Description</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Описание изделия</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1385"/>
-        <source>Show Piece Names</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1385"/>
+        <source>Show Part Names</source>
         <translation>Показывать имена деталей</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1030"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1030"/>
         <source>Filter category names to narrow the category list.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Отфильтруйте названия категорий, чтобы сузить список категорий.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1045"/>
-        <source>Piece Categories</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1045"/>
+        <source>Part Categories</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Категории деталей</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1046"/>
-        <source>Choose a category or palette to display its pieces.</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1046"/>
+        <source>Choose a category or palette to display its parts.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Выберите категорию или палитру для отображения ее частей.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1062"/>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1063"/>
-        <source>Filter Pieces</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1062"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1063"/>
+        <source>Filter Parts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Части фильтра</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1064"/>
-        <source>Filter the displayed pieces using the matching options.</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1064"/>
+        <source>Filter the displayed parts using the matching options.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Отфильтруйте отображаемые детали, используя соответствующие параметры.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1069"/>
-        <source>Configure piece filtering and list display.</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1069"/>
+        <source>Configure part filtering and list display.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Настройте фильтрацию деталей и отображение списка.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1069"/>
-        <source>Piece List Options</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1069"/>
+        <source>Part List Options</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Параметры списка предметов</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1073"/>
-        <source>Available Pieces</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1073"/>
+        <source>Available Parts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Доступные части</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1074"/>
-        <source>Select a piece from the filtered list.</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1074"/>
+        <source>Select a part from the filtered list.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Выберите деталь из отфильтрованного списка.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1390"/>
-        <source>Show Decorated Pieces</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1390"/>
+        <source>Show Decorated Parts</source>
         <translation>Показывать декоративные детали</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1394"/>
-        <source>Show Piece Aliases</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1394"/>
+        <source>Show Part Aliases</source>
         <translation>Показывать псевдонимы деталей</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1399"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1399"/>
         <source>Snap Panel Width to Tiles</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1438"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1438"/>
         <source>List Mode</source>
         <translation>Режим списка</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1475"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1475"/>
         <source>Rendering</source>
         <translation type="unfinished">Отображение</translation>
     </message>
@@ -14973,17 +14973,17 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">Заблокировать цвет предпросмотра</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1516"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1516"/>
         <source>Favorites</source>
         <translation>Избранное</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1649"/>
-        <source>All Pieces</source>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1649"/>
+        <source>All Parts</source>
         <translation>Все детали</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1655"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1655"/>
         <source>In Use</source>
         <translation>Используется</translation>
     </message>
@@ -14992,13 +14992,13 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">Використані блоки</translation>
     </message>
     <message>
-        <location filename="../../source/interface/widgets/sw_widget_selection_piece.cpp" line="1661"/>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1661"/>
         <source>Submodels</source>
         <translation>Подмодели</translation>
     </message>
 </context>
 <context>
-    <name>swPiecesLibrary</name>
+    <name>swPartsLibrary</name>
     <message>
         <source>External project include cycle at &apos;%1&apos;.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -15011,7 +15011,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/library/sw_library.cpp" line="233"/>
-        <source>Could not find piece &apos;%1&apos;.</source>
+        <source>Could not find part &apos;%1&apos;.</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Не удалось найти деталь &apos;%1&apos;.</translation>
     </message>
@@ -15084,12 +15084,12 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/library/sw_library.cpp" line="1021"/>
-        <source>Loading Pieces Library</source>
+        <source>Loading Parts Library</source>
         <translation>Загрузка библиотеки деталей</translation>
     </message>
     <message>
         <location filename="../../source/library/sw_library.cpp" line="1551"/>
-        <source>Could not generate geometry for piece &apos;%1&apos;.</source>
+        <source>Could not generate geometry for part &apos;%1&apos;.</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Не удалось создать геометрию детали &apos;%1&apos;.</translation>
     </message>
@@ -15111,13 +15111,13 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/library/sw_library.cpp" line="1755"/>
-        <source>Could not load piece &apos;%1&apos;.</source>
+        <source>Could not load part &apos;%1&apos;.</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Не удалось загрузить деталь &apos;%1&apos;.</translation>
     </message>
     <message>
         <location filename="../../source/library/sw_library.cpp" line="1768"/>
-        <source>Could not prepare piece &apos;%1&apos; for rendering.</source>
+        <source>Could not prepare part &apos;%1&apos; for rendering.</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Не удалось подготовить деталь &apos;%1&apos; к визуализации.</translation>
     </message>
@@ -15386,7 +15386,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Pieces Library:</source>
+        <source>Parts Library:</source>
         <translation>Библиотека деталей:</translation>
     </message>
     <message>
@@ -15409,7 +15409,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Set the distance in LDraw units at which simpler piece meshes are used.</source>
+        <source>Set the distance in LDraw units at which simpler part meshes are used.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Установите расстояние в единицах LDraw, на котором используются более простые деталей сетки.</translation>
     </message>
@@ -15478,7 +15478,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Preferences&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Configure the application, display, colors, piece categories, and keyboard and mouse shortcuts. Choose OK to save the changes or Cancel to discard edits in Preferences. Language, piece-library, and antialiasing changes may require restarting StudWorks.&lt;/p&gt;&lt;p&gt;Export buttons write files immediately. Blender add-on settings have their own Apply action and can configure Blender before you close Preferences.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Preferences&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Configure the application, display, colors, part categories, and keyboard and mouse shortcuts. Choose OK to save the changes or Cancel to discard edits in Preferences. Language, part-library, and antialiasing changes may require restarting StudWorks.&lt;/p&gt;&lt;p&gt;Export buttons write files immediately. Blender add-on settings have their own Apply action and can configure Blender before you close Preferences.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Настройки&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Настройте приложение, отображение, цвета, категории предметов, а также сочетания клавиш и мыши. Выберите «ОК», чтобы сохранить изменения, или «Отмена», чтобы отменить изменения в настройках. Изменения языка, библиотеки частей и сглаживания могут потребовать перезапуска StudWorks.&lt;/p&gt;&lt;p&gt;Кнопки экспорта записывают файлы немедленно. Настройки надстройки Blender имеют собственное действие «Применить» и позволяют настроить Blender перед закрытием настроек.&lt;/p&gt;</translation>
     </message>
@@ -15506,7 +15506,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="obsolete">Проверьте наличие обновлений</translation>
     </message>
     <message>
-        <source>Choose how often to check automatically for application and piece-library updates.</source>
+        <source>Choose how often to check automatically for application and part-library updates.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">Выберите, как часто следует автоматически проверять наличие обновлений приложений и отдельных библиотек.</translation>
     </message>
@@ -15536,7 +15536,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Move pieces along fixed model axes instead of view-relative directions.</source>
+        <source>Move parts along fixed model axes instead of view-relative directions.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Перемещайте детали по фиксированным осям модели, а не по направлениям относительно вида.</translation>
     </message>
@@ -15548,25 +15548,25 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose a piece-library folder or supported archive to load after restarting StudWorks.</source>
+        <source>Choose a part-library folder or supported archive to load after restarting StudWorks.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Выберите папку с деталями библиотеки или поддерживаемый архив для загрузки после перезапуска StudWorks.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Pieces Library</source>
+        <source>Parts Library</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Библиотека пьес</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose a piece-library folder.</source>
+        <source>Choose a part-library folder.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Выберите папку с деталями библиотеки.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose a piece-library ZIP or BIN archive.</source>
+        <source>Choose a part-library ZIP or BIN archive.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Выберите деталь библиотеки ZIP или BIN-архив.</translation>
     </message>
@@ -15660,7 +15660,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose the tint used for pieces from previous steps.</source>
+        <source>Choose the tint used for parts from previous steps.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Выберите оттенок, используемый для деталей из предыдущих шагов.</translation>
     </message>
@@ -15672,37 +15672,37 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose how piece surfaces and edges are drawn in model views.</source>
+        <source>Choose how part surfaces and edges are drawn in model views.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Выберите способ рисования поверхностей и кромок детали на видах модели.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Use simpler meshes for distant pieces to improve display performance.</source>
+        <source>Use simpler meshes for distant parts to improve display performance.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Используйте более простые сетки для удаленных частей, чтобы улучшить производительность отображения.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Tint pieces from previous building steps with the chosen fade color.</source>
+        <source>Tint parts from previous building steps with the chosen fade color.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Окрасьте детали, полученные на предыдущих этапах сборки, выбранным цветом затемнения.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Highlight pieces introduced in the current building step.</source>
+        <source>Highlight parts introduced in the current building step.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Выделите детали, представленные на текущем этапе сборки.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>New Piece Highlight Color</source>
+        <source>New Part Highlight Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Цвет выделения новой детали</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose the highlight color for pieces in the current step.</source>
+        <source>Choose the highlight color for parts in the current step.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Выберите цвет выделения для частей на текущем шаге.</translation>
     </message>
@@ -15730,7 +15730,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="obsolete">&lt;p&gt;&lt;b&gt;Визуализация выделения&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Контур рисует контур и слабую заливку цветом выделения поверх скрытых частей. Face Tint использует тонированные грани и цветные края. В системах без поддержки контуров используется Face Tint.&lt;/p&gt;</translation>
     </message>
     <message>
-        <source>Choose how selected pieces are highlighted.</source>
+        <source>Choose how selected parts are highlighted.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">Выберите, как будут выделены выбранные детали.</translation>
     </message>
@@ -15777,7 +15777,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Draw conditional lines where needed to show curved piece surfaces.</source>
+        <source>Draw conditional lines where needed to show curved part surfaces.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Нарисуйте условные линии там, где необходимо показать изогнутые поверхности детали.</translation>
     </message>
@@ -15795,13 +15795,13 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Draw the edge lines defined by each piece.</source>
+        <source>Draw the edge lines defined by each part.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Нарисуйте линии края, определенные каждой деталью.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Calculate edge colors from piece colors instead of using their defined edge colors.</source>
+        <source>Calculate edge colors from part colors instead of using their defined edge colors.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Вычисляйте цвета кромок на основе цветов деталей вместо использования определенных для них цветов кромок.</translation>
     </message>
@@ -15812,7 +15812,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;View Preferences&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose navigation aids for model views and the piece preview, and configure the base grid. Locations select the corner where each navigation aid appears.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;View Preferences&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose navigation aids for model views and the part preview, and configure the base grid. Locations select the corner where each navigation aid appears.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Настройки просмотра&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Выберите средства навигации для видов модели и предварительного просмотра детали, а также настройте базовую сетку. Местоположение: выберите угол, в котором отображается каждое навигационное средство.&lt;/p&gt;</translation>
     </message>
@@ -15920,29 +15920,29 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="unfinished">Покажите позиции шпилек на базовой сетке.</translation>
     </message>
     <message>
-        <source>Piece Preview</source>
+        <source>Part Preview</source>
         <translation type="vanished">Предпросмотр детали</translation>
     </message>
     <message>
-        <source>Show the model-axis indicator in the piece preview.</source>
+        <source>Show the model-axis indicator in the part preview.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">Покажите индикатор оси модели в предварительном просмотре детали.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose the corner for the piece-preview navigation sphere.</source>
+        <source>Choose the corner for the part-preview navigation sphere.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Выберите угол сферы навигации для предварительного просмотра детали.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose the piece-preview navigation sphere size, or disable it.</source>
+        <source>Choose the part-preview navigation sphere size, or disable it.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Выберите размер сферы навигации для предварительного просмотра или отключите его.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Display Colors&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose colors for the background, objects, grid, and interface. These settings control the display; they do not change the LDraw colors assigned to model pieces.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Display Colors&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose colors for the background, objects, grid, and interface. These settings control the display; they do not change the LDraw colors assigned to model parts.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Цвета дисплея&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Выберите цвета фона, объектов, сетки и интерфейса. Эти настройки управляют отображением; они не меняют цвета LDraw, назначенные частям модели.&lt;/p&gt;</translation>
     </message>
@@ -16183,7 +16183,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Highlight New Pieces</source>
+        <source>Highlight New Parts</source>
         <translation>Подсвечивать новые детали</translation>
     </message>
     <message>
@@ -16210,7 +16210,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="unfinished">Blender LDraw Рендеринг:</translation>
     </message>
     <message>
-        <source>Controls how selected pieces are rendered, the options are:
+        <source>Controls how selected parts are rendered, the options are:
 - Outline with a faint selection-colored fill for obscured portions
 - Face tint and colored edges.
 Unsupported video cards use face tint and colored edges.</source>
@@ -16406,7 +16406,7 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Piece Categories&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Create, edit, reorder, or import categories for the piece browser. The right-hand list shows pieces matching the selected category. Imported and edited categories are saved when you choose OK in Preferences; Export writes the current list immediately.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Part Categories&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Create, edit, reorder, or import categories for the part browser. The right-hand list shows parts matching the selected category. Imported and edited categories are saved when you choose OK in Preferences; Export writes the current list immediately.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Категории частей&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Создавайте, редактируйте, изменяйте порядок или импортируйте категории для браузера частей. В правом списке показаны детали, соответствующие выбранной категории. Импортированные и отредактированные категории сохраняются, когда вы нажимаете «ОК» в настройках; Экспорт немедленно записывает текущий список.&lt;/p&gt;</translation>
     </message>
@@ -16417,12 +16417,12 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Pieces Library Categories</source>
+        <source>Parts Library Categories</source>
         <translation>Категории библиотеки деталей</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Piece Categories</source>
+        <source>Part Categories</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Категории деталей</translation>
     </message>
@@ -16434,13 +16434,13 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Matching Pieces</source>
+        <source>Matching Parts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Соответствующие части</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>View the library pieces matching the selected category.</source>
+        <source>View the library parts matching the selected category.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Просмотрите элементы библиотеки, соответствующие выбранной категории.</translation>
     </message>
@@ -16793,12 +16793,12 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="662"/>
-        <source>Select Pieces Library Folder</source>
+        <source>Select Parts Library Folder</source>
         <translation>Выберите папку библиотеки деталей</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="670"/>
-        <source>Select Pieces Library Archive</source>
+        <source>Select Parts Library Archive</source>
         <translation>Выберите архив библиотеки деталей</translation>
     </message>
     <message>
@@ -17211,12 +17211,12 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Highlight Style&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose how selected pieces and pieces added in the current step are highlighted in the viewport. Outline uses fading outlines in the selection, focus, or new-piece highlight color. Selected pieces also receive a faint fill over obscured portions. Tint and Edges uses tinted faces and colored edges for selection, and colored edges for new pieces.&lt;/p&gt;&lt;p&gt;New-piece highlighting requires Highlight New Pieces. Wireframe views, image exports, and systems without outline support use Tint and Edges.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Highlight Style&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose how selected parts and parts added in the current step are highlighted in the viewport. Outline uses fading outlines in the selection, focus, or new-part highlight color. Selected parts also receive a faint fill over obscured portions. Tint and Edges uses tinted faces and colored edges for selection, and colored edges for new parts.&lt;/p&gt;&lt;p&gt;New-part highlighting requires Highlight New Parts. Wireframe views, image exports, and systems without outline support use Tint and Edges.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose how selected pieces and new pieces are highlighted in the viewport.</source>
+        <source>Choose how selected parts and new parts are highlighted in the viewport.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17276,12 +17276,12 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Wait until every piece of a model is loaded before showing it, instead of showing pieces as they load.</source>
+        <source>Wait until every part of a model is loaded before showing it, instead of showing parts as they load.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Load All Pieces Before Showing a Model</source>
+        <source>Load All Parts Before Showing a Model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17296,7 +17296,7 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose the color given to newly inserted pieces: the current color, the color of the selected piece, or the color of the last inserted piece.</source>
+        <source>Choose the color given to newly inserted parts: the current color, the color of the selected part, or the color of the last inserted part.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17316,22 +17316,22 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Selected piece color</source>
+        <source>Selected part color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Last inserted piece color</source>
+        <source>Last inserted part color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Place the first piece of an empty model at 0, 0, 0 instead of where it is dropped.</source>
+        <source>Place the first part of an empty model at 0, 0, 0 instead of where it is dropped.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Insert First Piece at Origin</source>
+        <source>Insert First Part at Origin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17346,7 +17346,7 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose how the Default Lights shading mode lights pieces in every view: Standard uses one light with a soft highlight, Studio adds fill and rim lights, Matte drops the highlights and Toon uses flat cel shading bands.</source>
+        <source>Choose how the Default Lights shading mode lights parts in every view: Standard uses one light with a soft highlight, Studio adds fill and rim lights, Matte drops the highlights and Toon uses flat cel shading bands.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17451,12 +17451,12 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Pieces</source>
+        <source>Parts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Use the model view rendering settings for the pieces list and parts list images.</source>
+        <source>Use the model view rendering settings for the parts list and parts list images.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17466,37 +17466,37 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose how pieces are drawn in the pieces list and parts list images.</source>
+        <source>Choose how parts are drawn in the parts list and parts list images.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Pieces Shading Mode</source>
+        <source>Parts Shading Mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Draw edge lines on pieces in the pieces list and parts list images.</source>
+        <source>Draw edge lines on parts in the parts list and parts list images.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Draw conditional lines on pieces in the pieces list and parts list images.</source>
+        <source>Draw conditional lines on parts in the parts list and parts list images.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Set the line width used in the pieces list and parts list images.</source>
+        <source>Set the line width used in the parts list and parts list images.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Pieces Line Width</source>
+        <source>Parts Line Width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Snap the width of the docked pieces panel to whole thumbnail tiles after resizing it, and the categories to the longest category name when docked on top or bottom.</source>
+        <source>Snap the width of the docked parts panel to whole thumbnail tiles after resizing it, and the categories to the longest category name when docked on top or bottom.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17506,12 +17506,12 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Pieces Preview</source>
+        <source>Parts Preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Keep the piece preview square, with a 1:1 width to height ratio, whatever the panel size.</source>
+        <source>Keep the part preview square, with a 1:1 width to height ratio, whatever the panel size.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17521,17 +17521,17 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Show the model-axis indicator in the pieces preview.</source>
+        <source>Show the model-axis indicator in the parts preview.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Use the model view rendering settings for the pieces preview.</source>
+        <source>Use the model view rendering settings for the parts preview.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose how pieces are drawn in the pieces preview.</source>
+        <source>Choose how parts are drawn in the parts preview.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17541,17 +17541,17 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Draw edge lines on pieces in the pieces preview.</source>
+        <source>Draw edge lines on parts in the parts preview.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Draw conditional lines on pieces in the pieces preview.</source>
+        <source>Draw conditional lines on parts in the parts preview.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Set the line width used in the pieces preview.</source>
+        <source>Set the line width used in the parts preview.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17571,7 +17571,7 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose how pieces are drawn in the minifigure builder preview.</source>
+        <source>Choose how parts are drawn in the minifigure builder preview.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17581,12 +17581,12 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Draw edge lines on pieces in the minifigure builder preview.</source>
+        <source>Draw edge lines on parts in the minifigure builder preview.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Draw conditional lines on pieces in the minifigure builder preview.</source>
+        <source>Draw conditional lines on parts in the minifigure builder preview.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17656,7 +17656,7 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose the thickness of the outline drawn around selected pieces and new pieces.</source>
+        <source>Choose the thickness of the outline drawn around selected parts and new parts.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17676,7 +17676,7 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Set the contrast between automated edge colors and piece surfaces from 0.00 to 1.00 (default 0.50).</source>
+        <source>Set the contrast between automated edge colors and part surfaces from 0.00 to 1.00 (default 0.50).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17774,13 +17774,13 @@ Unsupported video cards use face tint and colored edges.</source>
     <name>swPreviewDockWidget</name>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="69"/>
-        <source>Piece Preview</source>
+        <source>Part Preview</source>
         <translatorcomment>Translation reused from another context; requires human review.</translatorcomment>
         <translation type="unfinished">Предпросмотр детали</translation>
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="70"/>
-        <source>Inspect the previewed piece without placing it in the model.</source>
+        <source>Inspect the previewed part without placing it in the model.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Осмотрите предварительно просмотренную деталь, не помещая ее в модель.</translation>
     </message>
@@ -17792,7 +17792,7 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="75"/>
-        <source>&lt;p&gt;&lt;b&gt;Lock Preview&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Keep the current piece in the preview while you browse other pieces. Unlock Preview allows the display to update again. An empty preview cannot be locked.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Lock Preview&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Keep the current part in the preview while you browse other parts. Unlock Preview allows the display to update again. An empty preview cannot be locked.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Заблокировать предварительный просмотр&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Сохраняйте текущую деталь в предварительном просмотре, пока вы просматриваете другие детали. Разблокировка предварительного просмотра позволяет снова обновить отображение. Пустой предварительный просмотр невозможно заблокировать.&lt;/p&gt;</translation>
     </message>
@@ -17803,12 +17803,12 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="117"/>
-        <source>Configure the pieces preview.</source>
+        <source>Configure the parts preview.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="117"/>
-        <source>Pieces Preview Options</source>
+        <source>Parts Preview Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17869,7 +17869,7 @@ Unsupported video cards use face tint and colored edges.</source>
 <context>
     <name>swPropertiesDialog</name>
     <message>
-        <source>&lt;p&gt;&lt;b&gt;Model Properties&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Edit the current model&apos;s author, description, and comments on the Summary tab. Measurements and Pieces Used provide read-only information. Choose OK to apply the metadata changes, or Cancel to discard them.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Model Properties&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Edit the current model&apos;s author, description, and comments on the Summary tab. Measurements and Parts Used provide read-only information. Choose OK to apply the metadata changes, or Cancel to discard them.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">&lt;p&gt;&lt;b&gt;Свойства модели&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Отредактируйте автора, описание и комментарии текущей модели на вкладке «Сводка». Используемые измерения и детали предоставляют информацию только для чтения. Нажмите «ОК», чтобы применить изменения метаданных, или «Отмена», чтобы отменить их.&lt;/p&gt;</translation>
     </message>
@@ -17929,7 +17929,7 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Model Measurements&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The dimensions of the model&apos;s bounding box are shown in centimeters, inches, and LDraw units (LDU). The values are read-only and include pieces across all steps.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Model Measurements&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The dimensions of the model&apos;s bounding box are shown in centimeters, inches, and LDraw units (LDU). The values are read-only and include parts across all steps.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Размеры модели&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Размеры ограничивающей рамки модели показаны в сантиметрах, дюймах и единицах LDraw (LDU). Значения доступны только для чтения и включают детали на всех этапах.&lt;/p&gt;</translation>
     </message>
@@ -17946,12 +17946,12 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
-        <source>View piece quantities by color; click a column heading to sort.</source>
+        <source>View part quantities by color; click a column heading to sort.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Просмотр количества штук по цвету; щелкните заголовок столбца для сортировки.</translation>
     </message>
     <message>
-        <source>&lt;p&gt;&lt;b&gt;Pieces Used&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The table counts pieces across all steps, including pieces inside submodels. Color columns show quantities, and totals summarize each piece, each color, and the whole model. Click a column heading to sort. The piece-name column stays visible while you scroll horizontally. Counts cannot be edited here.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Parts Used&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The table counts parts across all steps, including parts inside submodels. Color columns show quantities, and totals summarize each part, each color, and the whole model. Click a column heading to sort. The part-name column stays visible while you scroll horizontally. Counts cannot be edited here.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">&lt;p&gt;&lt;b&gt;Использованные детали&lt;/b&gt;&lt;/p&gt;&lt;p&gt;В таблице подсчитываются детали на всех этапах, включая детали внутри подмоделей. Столбцы цветов показывают количество, а итоговые суммы суммируют каждую деталь, каждый цвет и всю модель. Щелкните заголовок столбца для сортировки. Столбец с названием детали остается видимым при горизонтальной прокрутке. Здесь нельзя редактировать количество.&lt;/p&gt;</translation>
     </message>
@@ -17988,7 +17988,7 @@ Unsupported video cards use face tint and colored edges.</source>
         <translation type="vanished">Встановити типовими властивостями для нових проектів</translation>
     </message>
     <message>
-        <source>Pieces Used</source>
+        <source>Parts Used</source>
         <translation type="vanished">Использующиеся детали</translation>
     </message>
     <message>
@@ -18021,7 +18021,7 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.cpp" line="316"/>
-        <source>Piece</source>
+        <source>Part</source>
         <translation>Деталь</translation>
     </message>
     <message>
@@ -18032,7 +18032,7 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.cpp" line="430"/>
-        <source>Unique pieces: %1 - Total pieces: %2</source>
+        <source>Unique parts: %1 - Total parts: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -18079,7 +18079,7 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Model Properties&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Edit the current model&apos;s author, description, and comments on the Summary tab. Measurements and Pieces provide read-only information. Choose OK to apply the metadata changes, or Cancel to discard them.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Model Properties&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Edit the current model&apos;s author, description, and comments on the Summary tab. Measurements and Parts provide read-only information. Choose OK to apply the metadata changes, or Cancel to discard them.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -18090,27 +18090,27 @@ Unsupported video cards use face tint and colored edges.</source>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.cpp" line="463"/>
-        <source>Pieces</source>
+        <source>Parts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Pieces&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The table counts pieces across all steps, including pieces inside submodels. The first column shows a thumbnail of each piece in its most used color, and the ID column shows its number. Color columns show quantities, and totals summarize each piece, each color, and the whole model. Click a column heading to sort. The thumbnail, ID and piece-name columns stay visible while you scroll horizontally. Counts cannot be edited here.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Parts&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The table counts parts across all steps, including parts inside submodels. The first column shows a thumbnail of each part in its most used color, and the ID column shows its number. Color columns show quantities, and totals summarize each part, each color, and the whole model. Click a column heading to sort. The thumbnail, ID and part-name columns stay visible while you scroll horizontally. Counts cannot be edited here.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
-        <source>Unique pieces count each piece and color combination once; total pieces count every piece in the model.</source>
+        <source>Unique parts count each part and color combination once; total parts count every part in the model.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
-        <source>Save this model&apos;s piece list as a BrickLink wanted list.</source>
+        <source>Save this model&apos;s part list as a BrickLink wanted list.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Export BrickLink&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Saves the pieces listed in this table as a BrickLink XML wanted list, the same format as File &amp;gt; Export &amp;gt; BrickLink. Only the model shown in this dialog and its submodels are included.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Export BrickLink&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Saves the parts listed in this table as a BrickLink XML wanted list, the same format as File &amp;gt; Export &amp;gt; BrickLink. Only the model shown in this dialog and its submodels are included.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -18120,12 +18120,12 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
-        <source>Save this model&apos;s piece list as a CSV spreadsheet.</source>
+        <source>Save this model&apos;s part list as a CSV spreadsheet.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Export CSV&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Saves the pieces listed in this table as comma separated values with name, color, quantity, ID and color code, the same format as File &amp;gt; Export &amp;gt; CSV. Only the model shown in this dialog and its submodels are included.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Export CSV&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Saves the parts listed in this table as comma separated values with name, color, quantity, ID and color code, the same format as File &amp;gt; Export &amp;gt; CSV. Only the model shown in this dialog and its submodels are included.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -18195,7 +18195,7 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="913"/>
-        <source>Multiple Pieces</source>
+        <source>Multiple Parts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Несколько частей</translation>
     </message>
@@ -18203,7 +18203,7 @@ Unsupported video cards use face tint and colored edges.</source>
         <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="917"/>
         <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1357"/>
         <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1359"/>
-        <source>Piece</source>
+        <source>Part</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">Деталь</translation>
     </message>
@@ -18239,7 +18239,7 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1359"/>
-        <source>Piece ID</source>
+        <source>Part ID</source>
         <oldsource>Piece Id</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Идентификатор фрагмента</translation>
@@ -18254,7 +18254,7 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1360"/>
-        <source>Piece color</source>
+        <source>Part color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Цвет детали</translation>
     </message>
@@ -18264,7 +18264,7 @@ Unsupported video cards use face tint and colored edges.</source>
         <translation type="obsolete">Показывать</translation>
     </message>
     <message>
-        <source>Step when piece is added to the model</source>
+        <source>Step when part is added to the model</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">Шаг добавления детали в модель</translation>
     </message>
@@ -18274,7 +18274,7 @@ Unsupported video cards use face tint and colored edges.</source>
         <translation type="obsolete">Скрывать</translation>
     </message>
     <message>
-        <source>Step when piece is hidden</source>
+        <source>Step when part is hidden</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">Шаг, когда деталь скрыта</translation>
     </message>
@@ -18479,7 +18479,7 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1364"/>
-        <source>Added in Step: Step when the piece is added to the model</source>
+        <source>Added in Step: Step when the part is added to the model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -18489,7 +18489,7 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_properties.cpp" line="1365"/>
-        <source>Removed in Step: Step when the piece is removed from the model, leave empty to keep it until the end</source>
+        <source>Removed in Step: Step when the part is removed from the model, leave empty to keep it until the end</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -18819,7 +18819,7 @@ Unsupported video cards use face tint and colored edges.</source>
         <translation type="vanished">Назва</translation>
     </message>
     <message>
-        <source>Piece ID</source>
+        <source>Part ID</source>
         <translation type="vanished">ID блока</translation>
     </message>
     <message>
@@ -18929,7 +18929,7 @@ Unsupported video cards use face tint and colored edges.</source>
         <translation type="vanished">Цвет</translation>
     </message>
     <message>
-        <source>Piece</source>
+        <source>Part</source>
         <translation type="vanished">Деталь</translation>
     </message>
     <message>
@@ -19480,7 +19480,7 @@ Unsupported video cards use face tint and colored edges.</source>
     <name>swSelectDialog</name>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_select.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Select Objects&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Use the checkboxes to choose visible pieces, cameras, and lights in the current model. Choose OK to replace the current selection with the checked objects, or Cancel to keep the current selection.&lt;/p&gt;&lt;p&gt;Pieces in the same top-level group are selected together. All, None, and Invert change the checkboxes in this dialog.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Select Objects&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Use the checkboxes to choose visible parts, cameras, and lights in the current model. Choose OK to replace the current selection with the checked objects, or Cancel to keep the current selection.&lt;/p&gt;&lt;p&gt;Parts in the same top-level group are selected together. All, None, and Invert change the checkboxes in this dialog.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Выбрать объекты&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Используйте флажки, чтобы выбрать видимые части, камеры и источники света в текущей модели. Нажмите «ОК», чтобы заменить текущий выбор отмеченными объектами, или «Отмена», чтобы сохранить текущий выбор.&lt;/p&gt;&lt;p&gt;Детали в одной группе верхнего уровня выбираются вместе. Все, Нет и Инвертировать изменяют флажки в этом диалоговом окне.&lt;/p&gt;</translation>
     </message>
@@ -19497,7 +19497,7 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_select.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Object List&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The list includes pieces visible in the current step and visible cameras and lights. Expand groups to see their pieces. Checking or clearing a grouped piece applies the same state to all pieces in its top-level group.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Object List&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The list includes parts visible in the current step and visible cameras and lights. Expand groups to see their parts. Checking or clearing a grouped part applies the same state to all parts in its top-level group.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Список объектов&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Список включает в себя части, видимые на текущем шаге, а также видимые камеры и источники света. Разверните группы, чтобы увидеть их детали. Проверка или очистка сгруппированного детали применяет одно и то же состояние ко всем деталям в группе верхнего уровня.&lt;/p&gt;</translation>
     </message>
@@ -19590,7 +19590,7 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_database_sets.ui"/>
-        <source>Select a set to download its piece inventory.</source>
+        <source>Select a set to download its part inventory.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Выберите набор, чтобы загрузить список его частей.</translation>
     </message>
@@ -19602,7 +19602,7 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_database_sets.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Search Results&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Results show the set number, name, release year, and piece count. Select the desired set and choose OK, or double-click its row, to download its inventory.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Search Results&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Results show the set number, name, release year, and part count. Select the desired set and choose OK, or double-click its row, to download its inventory.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">&lt;p&gt;&lt;b&gt;Результаты поиска&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Результаты показывают номер набора, название, год выпуска и количество штук. Выберите нужный набор и нажмите «ОК» или дважды щелкните его строку, чтобы загрузить его инвентарь.&lt;/p&gt;</translation>
     </message>
@@ -19623,7 +19623,7 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_database_sets.ui"/>
-        <source>Pieces</source>
+        <source>Parts</source>
         <translation>Деталей</translation>
     </message>
     <message>
@@ -19784,13 +19784,13 @@ Enter your Rebrickable API key, available for free from your account settings at
     <name>swTimelineWidget</name>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_timeline.cpp" line="11"/>
-        <source>Building Steps and Pieces</source>
+        <source>Building Steps and Parts</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Шаги и детали сборки</translation>
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_timeline.cpp" line="12"/>
-        <source>Select steps or pieces; drag pieces to reorder them or change their building step.</source>
+        <source>Select steps or parts; drag parts to reorder them or change their building step.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Выберите шаги или детали; перетаскивайте части, чтобы изменить их порядок или изменить шаг их построения.</translation>
     </message>
@@ -19833,7 +19833,7 @@ Enter your Rebrickable API key, available for free from your account settings at
 <context>
     <name>swUpdateDialog</name>
     <message>
-        <source>&lt;p&gt;&lt;b&gt;Check for Updates&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Check online for a newer StudWorks version and, when an official library is loaded, new pieces. The result appears in this dialog. An internet connection is required.&lt;/p&gt;&lt;p&gt;Use the download link to open the release page in your browser. This dialog does not install updates. Ignore suppresses automatic notifications for this update information; a manual update check still shows the result. Close dismisses the dialog.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Check for Updates&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Check online for a newer StudWorks version and, when an official library is loaded, new parts. The result appears in this dialog. An internet connection is required.&lt;/p&gt;&lt;p&gt;Use the download link to open the release page in your browser. This dialog does not install updates. Ignore suppresses automatic notifications for this update information; a manual update check still shows the result. Close dismisses the dialog.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">&lt;p&gt;&lt;b&gt;Проверка обновлений&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Проверяйте в Интернете наличие более новых версий StudWorks и, когда официальная библиотека загружается, новых деталей. Результат появится в этом диалоговом окне. Требуется подключение к Интернету.&lt;/p&gt;&lt;p&gt;Используйте ссылку для скачивания, чтобы открыть страницу выпуска в браузере. Этот диалог не устанавливает обновления. Игнорировать подавляет автоматические уведомления об этой информации об обновлении; проверка обновлений вручную по-прежнему показывает результат. Закрыть закрывает диалоговое окно.&lt;/p&gt;</translation>
     </message>
@@ -19869,11 +19869,11 @@ Enter your Rebrickable API key, available for free from your account settings at
         <translation type="vanished">&lt;p&gt;Используется последняя версия StudWorks.&lt;/p&gt;</translation>
     </message>
     <message>
-        <source>&lt;p&gt;There are new pieces available.&lt;/p&gt;</source>
+        <source>&lt;p&gt;There are new parts available.&lt;/p&gt;</source>
         <translation type="vanished">&lt;p&gt;Доступны новые детали.&lt;/p&gt;</translation>
     </message>
     <message>
-        <source>&lt;p&gt;There are no new pieces available at this time.&lt;/p&gt;</source>
+        <source>&lt;p&gt;There are no new parts available at this time.&lt;/p&gt;</source>
         <translation type="vanished">&lt;p&gt;В данный момент новые детали недоступны.&lt;/p&gt;</translation>
     </message>
     <message>

@@ -122,7 +122,7 @@ swInstructionsPropertiesWidget::swInstructionsPropertiesWidget(QWidget* Parent, 
 	: QDockWidget(Parent), mInstructions(Instructions)
 {
 	setWindowTitle(tr("Properties"));
-	setWhatsThis(tr("<p><b>Properties</b></p><p>Edit how the instruction pages look. With nothing selected on the page every section is shown, select a step, its number or its pieces list to show only their settings. Changes apply to all pages.</p>"));
+	setWhatsThis(tr("<p><b>Properties</b></p><p>Edit how the instruction pages look. With nothing selected on the page every section is shown, select a step, its number or its parts list to show only their settings. Changes apply to all pages.</p>"));
 	swSetupWidgetHelp(this, nullptr);
 
 	QWidget* CentralWidget = new QWidget(this);
@@ -301,10 +301,10 @@ void swInstructionsPropertiesWidget::CreateWidgets()
 	CreateColorEditor(swInstructionsPropertyType::CoverTitleColor, tr("Cover Title Color"), tr("Color of the model title and author."));
 	AddEditorRow(CategoryIndex::Cover, swInstructionsPropertyType::CoverTitleColor);
 
-	AddCategory(CategoryIndex::BillOfMaterials, tr("Bill of Materials"), tr("<p><b>Bill of Materials</b></p><p>The last page, listing every piece of the model. It uses the Pieces List settings.</p>"));
+	AddCategory(CategoryIndex::BillOfMaterials, tr("Bill of Materials"), tr("<p><b>Bill of Materials</b></p><p>The last page, listing every part of the model. It uses the Parts List settings.</p>"));
 
 	AddRow(CategoryIndex::BillOfMaterials, {
-		CreateToggleEditor(swInstructionsPropertyType::ShowBillOfMaterials, tr("Show Bill of Materials"), tr("End the instructions with a page listing every piece of the model."))
+		CreateToggleEditor(swInstructionsPropertyType::ShowBillOfMaterials, tr("Show Bill of Materials"), tr("End the instructions with a page listing every part of the model."))
 	});
 
 	AddRow(CategoryIndex::BillOfMaterials, {
@@ -442,30 +442,30 @@ void swInstructionsPropertiesWidget::CreateWidgets()
 	CreateColorEditor(swInstructionsPropertyType::StepBackgroundColor, tr("Step Background"), tr("Color filling the area of each step, transparent shows the page background."));
 	AddEditorRow(CategoryIndex::Step, swInstructionsPropertyType::StepBackgroundColor);
 
-	AddCategory(CategoryIndex::PiecesList, tr("Pieces List"), tr("<p><b>Pieces List</b></p><p>The list of pieces added in each step. The bill of materials uses the same settings.</p>"));
+	AddCategory(CategoryIndex::PartsList, tr("Parts List"), tr("<p><b>Parts List</b></p><p>The list of parts added in each step. The bill of materials uses the same settings.</p>"));
 
-	AddRow(CategoryIndex::PiecesList, {
-		CreateToggleEditor(swInstructionsPropertyType::ShowStepPLI, tr("Show Pieces List"), tr("Show the pieces added in each step next to its number.")),
-		CreateToggleEditor(swInstructionsPropertyType::PLIShowCounts, tr("Show Piece Counts"), tr("Show how many of each piece are needed."))
+	AddRow(CategoryIndex::PartsList, {
+		CreateToggleEditor(swInstructionsPropertyType::ShowStepPLI, tr("Show Parts List"), tr("Show the parts added in each step next to its number.")),
+		CreateToggleEditor(swInstructionsPropertyType::PLIShowCounts, tr("Show Part Counts"), tr("Show how many of each part are needed."))
 	});
 
-	// the choices follow the order of swPiecesListSort
-	CreateChoiceEditor(swInstructionsPropertyType::PLISortOrder, tr("Pieces List Order"), tr("Order of the pieces in the list."), { tr("Sort by Color"), tr("Sort by Name"), tr("Sort by Part ID") });
-	AddEditorRow(CategoryIndex::PiecesList, swInstructionsPropertyType::PLISortOrder);
-	CreateFontEditor(swInstructionsPropertyType::PLIFont, tr("Pieces List Font"), tr("Font of the piece counts."));
-	AddEditorRow(CategoryIndex::PiecesList, swInstructionsPropertyType::PLIFont);
-	CreateColorEditor(swInstructionsPropertyType::PLITextColor, tr("Pieces List Text Color"), tr("Color of the piece counts."));
-	AddEditorRow(CategoryIndex::PiecesList, swInstructionsPropertyType::PLITextColor);
-	CreateColorEditor(swInstructionsPropertyType::PLIBackgroundColor, tr("Pieces List Background"), tr("Color filling the pieces list."));
-	AddEditorRow(CategoryIndex::PiecesList, swInstructionsPropertyType::PLIBackgroundColor);
-	CreateColorEditor(swInstructionsPropertyType::PLIBorderColor, tr("Pieces List Border Color"), tr("Color of the line around the pieces list."));
-	AddEditorRow(CategoryIndex::PiecesList, swInstructionsPropertyType::PLIBorderColor);
-	CreateLengthEditor(swInstructionsPropertyType::PLIBorderWidth, tr("Border Width"), tr("Width of the line around the pieces list, 0 draws no line."), 0, 20);
-	AddEditorRow(CategoryIndex::PiecesList, swInstructionsPropertyType::PLIBorderWidth);
-	CreateLengthEditor(swInstructionsPropertyType::PLIThumbnailSize, tr("Thumbnail Size"), tr("Size each piece is drawn at, larger thumbnails show larger pieces."), 32, 512);
-	AddEditorRow(CategoryIndex::PiecesList, swInstructionsPropertyType::PLIThumbnailSize);
-	CreateColorEditor(swInstructionsPropertyType::PLIThumbnailBackgroundColor, tr("Thumbnail Background"), tr("Color behind each piece and its count, transparent draws none."));
-	AddEditorRow(CategoryIndex::PiecesList, swInstructionsPropertyType::PLIThumbnailBackgroundColor);
+	// the choices follow the order of swPartsListSort
+	CreateChoiceEditor(swInstructionsPropertyType::PLISortOrder, tr("Parts List Order"), tr("Order of the parts in the list."), { tr("Sort by Color"), tr("Sort by Name"), tr("Sort by Part ID") });
+	AddEditorRow(CategoryIndex::PartsList, swInstructionsPropertyType::PLISortOrder);
+	CreateFontEditor(swInstructionsPropertyType::PLIFont, tr("Parts List Font"), tr("Font of the part counts."));
+	AddEditorRow(CategoryIndex::PartsList, swInstructionsPropertyType::PLIFont);
+	CreateColorEditor(swInstructionsPropertyType::PLITextColor, tr("Parts List Text Color"), tr("Color of the part counts."));
+	AddEditorRow(CategoryIndex::PartsList, swInstructionsPropertyType::PLITextColor);
+	CreateColorEditor(swInstructionsPropertyType::PLIBackgroundColor, tr("Parts List Background"), tr("Color filling the parts list."));
+	AddEditorRow(CategoryIndex::PartsList, swInstructionsPropertyType::PLIBackgroundColor);
+	CreateColorEditor(swInstructionsPropertyType::PLIBorderColor, tr("Parts List Border Color"), tr("Color of the line around the parts list."));
+	AddEditorRow(CategoryIndex::PartsList, swInstructionsPropertyType::PLIBorderColor);
+	CreateLengthEditor(swInstructionsPropertyType::PLIBorderWidth, tr("Border Width"), tr("Width of the line around the parts list, 0 draws no line."), 0, 20);
+	AddEditorRow(CategoryIndex::PartsList, swInstructionsPropertyType::PLIBorderWidth);
+	CreateLengthEditor(swInstructionsPropertyType::PLIThumbnailSize, tr("Thumbnail Size"), tr("Size each part is drawn at, larger thumbnails show larger parts."), 32, 512);
+	AddEditorRow(CategoryIndex::PartsList, swInstructionsPropertyType::PLIThumbnailSize);
+	CreateColorEditor(swInstructionsPropertyType::PLIThumbnailBackgroundColor, tr("Thumbnail Background"), tr("Color behind each part and its count, transparent draws none."));
+	AddEditorRow(CategoryIndex::PartsList, swInstructionsPropertyType::PLIThumbnailBackgroundColor);
 
 	// the thumbnail settings belong to all pages or only to the current one
 	mThumbnailPageButton = new QToolButton(this);
@@ -479,7 +479,7 @@ void swInstructionsPropertiesWidget::CreateWidgets()
 
 	connect(mThumbnailPageButton, &QToolButton::toggled, this, &swInstructionsPropertiesWidget::SetThumbnailPageScope);
 
-	AddRow(CategoryIndex::PiecesList, { mThumbnailPageButton });
+	AddRow(CategoryIndex::PartsList, { mThumbnailPageButton });
 
 	// the labels share one width so the inputs line up across the categories
 	int LabelWidth = 0;
@@ -792,11 +792,11 @@ void swInstructionsPropertiesWidget::SelectionChanged(QGraphicsItem* FocusItem)
 		Model = NumberItem->GetModel();
 		Step = NumberItem->GetStep();
 	}
-	else if (swInstructionsPiecesListItem* PiecesItem = dynamic_cast<swInstructionsPiecesListItem*>(FocusItem))
+	else if (swInstructionsPartsListItem* PartsItem = dynamic_cast<swInstructionsPartsListItem*>(FocusItem))
 	{
-		Focus = FocusType::PiecesList;
-		Model = PiecesItem->GetModel();
-		Step = PiecesItem->GetStep();
+		Focus = FocusType::PartsList;
+		Model = PartsItem->GetModel();
+		Step = PartsItem->GetStep();
 	}
 	else if (dynamic_cast<swInstructionsPageNumberItem*>(FocusItem))
 		Focus = FocusType::PageNumber;
@@ -1089,21 +1089,21 @@ void swInstructionsPropertiesWidget::UpdateCategories()
 			Visible[static_cast<int>(CategoryIndex::Page)] = PageType == swInstructionsPageType::Steps || PageType == swInstructionsPageType::Blank;
 			Visible[static_cast<int>(CategoryIndex::PageNumber)] = PageType != swInstructionsPageType::Cover;
 			Visible[static_cast<int>(CategoryIndex::Step)] = PageType == swInstructionsPageType::Steps;
-			Visible[static_cast<int>(CategoryIndex::PiecesList)] = PageType == swInstructionsPageType::Steps || PageType == swInstructionsPageType::BillOfMaterials;
+			Visible[static_cast<int>(CategoryIndex::PartsList)] = PageType == swInstructionsPageType::Steps || PageType == swInstructionsPageType::BillOfMaterials;
 		}
 		break;
 
 	case FocusType::StepImage:
 		Visible[static_cast<int>(CategoryIndex::Step)] = true;
-		Visible[static_cast<int>(CategoryIndex::PiecesList)] = true;
+		Visible[static_cast<int>(CategoryIndex::PartsList)] = true;
 		break;
 
 	case FocusType::StepNumber:
 		Visible[static_cast<int>(CategoryIndex::Step)] = true;
 		break;
 
-	case FocusType::PiecesList:
-		Visible[static_cast<int>(CategoryIndex::PiecesList)] = true;
+	case FocusType::PartsList:
+		Visible[static_cast<int>(CategoryIndex::PartsList)] = true;
 		break;
 
 	case FocusType::PageNumber:

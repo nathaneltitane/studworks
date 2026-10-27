@@ -1,7 +1,7 @@
 #include "sw_global.h"
 #include "sw_application.h"
 #include "sw_profile.h"
-#include "sw_data_piece.h"
+#include "sw_data_part.h"
 #include "sw_migration.h"
 #include <QApplication>
 #include <locale.h>
@@ -168,7 +168,7 @@ int main(int argc, char *argv[])
 	if (Translator.load("studworks_" + Locale.name(), ":/resources/translations"))
 		Application.installTranslator(&Translator);
 
-	qRegisterMetaType<swPieceData*>("swPieceData*");
+	qRegisterMetaType<swPartData*>("swPartData*");
 	qRegisterMetaType<QList<int> >("QList<int>");
 	qRegisterMetaType<swVector3>("swVector3");
 #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))

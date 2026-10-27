@@ -34,8 +34,8 @@ protected:
 		swVector4 Color;
 	};
 
-	void DrawTrainTrack(swPiece* Piece, swContext* Context, swTrackTool TrackTool, quint32 TrackToolSection);
-	std::tuple<swTrackTool, quint32, float> UpdateSelectMoveTrainTrack(swPiece* Piece, float OverlayScale, const swVector3& Start, const swVector3& End) const;
+	void DrawTrainTrack(swPart* Part, swContext* Context, swTrackTool TrackTool, quint32 TrackToolSection);
+	std::tuple<swTrackTool, quint32, float> UpdateSelectMoveTrainTrack(swPart* Part, float OverlayScale, const swVector3& Start, const swVector3& End) const;
 
 	static bool IsTrackToolAllowed(swTrackTool TrackTool, quint32 AllowedTransforms);
 	bool GetRotationWorldMatrix(swMatrix44& WorldMatrix) const;

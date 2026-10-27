@@ -149,7 +149,7 @@ bool swSaveCategories(QTextStream& Stream, const std::vector<swLibraryCategory>&
 	return true;
 }
 
-bool swMatchCategory(const char* PieceName, const char* Expression)
+bool swMatchCategory(const char* PartName, const char* Expression)
 {
 	// Check if we need to split the test expression.
 	const char* p = Expression;
@@ -158,7 +158,7 @@ bool swMatchCategory(const char* PieceName, const char* Expression)
 	{
 		if (*p == '!')
 		{
-			return !swMatchCategory(PieceName, p + 1);
+			return !swMatchCategory(PartName, p + 1);
 		}
 		else if (*p == '(')
 		{
@@ -188,9 +188,9 @@ bool swMatchCategory(const char* PieceName, const char* Expression)
 			std::string RightStr(p + 1);
 
 			if (*p == '|')
-				return swMatchCategory(PieceName, LeftStr.c_str()) || swMatchCategory(PieceName, RightStr.c_str());
+				return swMatchCategory(PartName, LeftStr.c_str()) || swMatchCategory(PartName, RightStr.c_str());
 			else
-				return swMatchCategory(PieceName, LeftStr.c_str()) && swMatchCategory(PieceName, RightStr.c_str());
+				return swMatchCategory(PartName, LeftStr.c_str()) && swMatchCategory(PartName, RightStr.c_str());
 		}
 
 		p++;
@@ -221,7 +221,7 @@ bool swMatchCategory(const char* PieceName, const char* Expression)
 				while (c);
 
 				std::string SubExpression(Start + 1, p - Start - 2);
-				return swMatchCategory(PieceName, SubExpression.c_str());
+				return swMatchCategory(PartName, SubExpression.c_str());
 			}
 
 			p++;
@@ -261,14 +261,14 @@ bool swMatchCategory(const char* PieceName, const char* Expression)
 	if (!Word[0])
 		return false;
 
-	const char* Result = swstrcasestr(PieceName, Word);
+	const char* Result = swstrcasestr(PartName, Word);
 
 	if (!Result)
 		return false;
 
-	if (Begin && (Result != PieceName))
+	if (Begin && (Result != PartName))
 	{
-		if ((Result != PieceName + 1) || ((Result[-1] != '_') && (Result[-1] != '~')))
+		if ((Result != PartName + 1) || ((Result[-1] != '_') && (Result[-1] != '~')))
 			return false;
 	}
 
@@ -279,10 +279,10 @@ bool swMatchCategory(const char* PieceName, const char* Expression)
 		if ((End != 0) && (End != ' '))
 			return false;
 
-		if ((Result != PieceName) && ((Result[-1] == '_') || (Result[-1] == '~')))
+		if ((Result != PartName) && ((Result[-1] == '_') || (Result[-1] == '~')))
 			Result--;
 
-		if ((Result != PieceName) && (Result[-1] != ' '))
+		if ((Result != PartName) && (Result[-1] != ' '))
 			return false;
 	}
 

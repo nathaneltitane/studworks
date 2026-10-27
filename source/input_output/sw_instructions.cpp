@@ -2,8 +2,8 @@
 #include "sw_instructions.h"
 #include "sw_project.h"
 #include "sw_model.h"
-#include "sw_object_piece.h"
-#include "sw_data_piece.h"
+#include "sw_object_part.h"
+#include "sw_data_part.h"
 #include "sw_profile.h"
 
 const float swInstructions::mDisplayDPI = 72.0f;
@@ -100,7 +100,7 @@ void swInstructions::SetDefaultProperties()
 	mStepProperties[static_cast<int>(swInstructionsPropertyType::PLIBorderColor)].Value = SW_RGBA(0, 0, 0, 255);
 	mStepProperties[static_cast<int>(swInstructionsPropertyType::PLIBorderWidth)].Value = 0;
 	mStepProperties[static_cast<int>(swInstructionsPropertyType::PLIShowCounts)].Value = true;
-	mStepProperties[static_cast<int>(swInstructionsPropertyType::PLISortOrder)].Value = static_cast<int>(swPiecesListSort::Color);
+	mStepProperties[static_cast<int>(swInstructionsPropertyType::PLISortOrder)].Value = static_cast<int>(swPartsListSort::Color);
 	mStepProperties[static_cast<int>(swInstructionsPropertyType::ShowStepDividers)].Value = true;
 	mStepProperties[static_cast<int>(swInstructionsPropertyType::StepDividerColor)].Value = SW_RGBA(0, 0, 0, 255);
 	mStepProperties[static_cast<int>(swInstructionsPropertyType::StepDividerWidth)].Value = 2;
@@ -854,11 +854,11 @@ void swInstructions::AddDefaultPages(swModel* Model, std::vector<const swModel*>
 	{
 		std::set<swModel*> StepSubModels;
 
-		for (const std::unique_ptr<swPiece>& Piece : Model->GetPieces())
+		for (const std::unique_ptr<swPart>& Part : Model->GetParts())
 		{
-			if (!Piece->IsHidden() && Piece->GetStepShow() == Step && Piece->mPieceData->IsModel())
+			if (!Part->IsHidden() && Part->GetStepShow() == Step && Part->mPartData->IsModel())
 			{
-				swModel* SubModel = Piece->mPieceData->GetModel();
+				swModel* SubModel = Part->mPartData->GetModel();
 
 				if (std::find(AddedModels.begin(), AddedModels.end(), SubModel) == AddedModels.end())
 					StepSubModels.insert(SubModel);

@@ -1,4 +1,4 @@
-# Models, pieces, cameras, lights, groups, history and math.
+# Models, parts, cameras, lights, groups, history and math.
 
 INCLUDEPATH += $$PWD
 
@@ -18,7 +18,7 @@ SOURCES += \
 	$$PWD/sw_object.cpp \
 	$$PWD/sw_object_camera.cpp \
 	$$PWD/sw_object_light.cpp \
-	$$PWD/sw_object_piece.cpp \
+	$$PWD/sw_object_part.cpp \
 	$$PWD/sw_object_property.cpp \
 	$$PWD/sw_project.cpp \
 	$$PWD/sw_project_export.cpp \
@@ -36,7 +36,7 @@ HEADERS += \
 	$$PWD/sw_object_camera.h \
 	$$PWD/sw_object_history.h \
 	$$PWD/sw_object_light.h \
-	$$PWD/sw_object_piece.h \
+	$$PWD/sw_object_part.h \
 	$$PWD/sw_object_property.h \
 	$$PWD/sw_project.h \
 	$$PWD/sw_result.h \

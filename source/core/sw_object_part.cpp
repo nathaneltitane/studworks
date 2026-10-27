@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdio.h>
 #include <math.h>
-#include "sw_data_piece.h"
-#include "sw_object_piece.h"
+#include "sw_data_part.h"
+#include "sw_object_part.h"
 #include "sw_group.h"
 #include "sw_file.h"
 #include "sw_application.h"
@@ -18,31 +18,31 @@
 #include "sw_string.h"
 #include "sw_model.h"
 
-constexpr float SW_PIECE_CONTROL_POINT_SIZE = 10.0f;
+constexpr float SW_PART_CONTROL_POINT_SIZE = 10.0f;
 
-swPiece::swPiece()
-    : swObject(swObjectType::Piece)
+swPart::swPart()
+    : swObject(swObjectType::Part)
 {
 }
 
-swPiece::swPiece(swPieceData* PieceData)
-	: swPiece(swPieceDataReference(PieceData))
+swPart::swPart(swPartData* PartData)
+	: swPart(swPartDataReference(PartData))
 {
 }
 
-swPiece::swPiece(swPieceDataReference PieceDataRef)
-	: swObject(swObjectType::Piece)
+swPart::swPart(swPartDataReference PartDataRef)
+	: swObject(swObjectType::Part)
 {
-	SetPieceData(std::move(PieceDataRef), QString(), true, true);
+	SetPartData(std::move(PartDataRef), QString(), true, true);
 	mColorIndex = gDefaultColor;
 	mColorCode = 16;
 	mPivotMatrix = swMatrix44Identity();
 }
 
-swPiece::swPiece(const swPiece& Other)
-	: swObject(swObjectType::Piece)
+swPart::swPart(const swPart& Other)
+	: swObject(swObjectType::Part)
 {
-	SetPieceData(Other.mPieceData, Other.mID, true, false);
+	SetPartData(Other.mPartData, Other.mID, true, false);
 	mHidden = Other.mHidden;
 	mSelected = Other.mSelected;
 	mColorIndex = Other.mColorIndex;
@@ -61,24 +61,24 @@ swPiece::swPiece(const swPiece& Other)
 	UpdateMesh();
 }
 
-swPiece::~swPiece()
+swPart::~swPart()
 {
-	swGetPiecesLibrary()->CancelSynthMesh(this);
+	swGetPartsLibrary()->CancelSynthMesh(this);
 
-	if (mPieceData)
+	if (mPartData)
 	{
-		swPiecesLibrary* Library = swGetPiecesLibrary();
-		mPieceData.Reset();
+		swPartsLibrary* Library = swGetPartsLibrary();
+		mPartData.Reset();
 		Library->NotifyAssetStatusChanged();
 	}
 
 	delete mMesh;
 }
 
-void swPiece::SetPieceData(swPieceDataReference PieceDataRef, const QString& ID, bool Wait, bool UpdateSynthInfo)
+void swPart::SetPartData(swPartDataReference PartDataRef, const QString& ID, bool Wait, bool UpdateSynthInfo)
 {
-	swPiecesLibrary* Library = swGetPiecesLibrary();
-	const bool DataChanged = mPieceData != PieceDataRef;
+	swPartsLibrary* Library = swGetPartsLibrary();
+	const bool DataChanged = mPartData != PartDataRef;
 
 	if (DataChanged || UpdateSynthInfo)
 		Library->CancelSynthMesh(this);
@@ -89,20 +89,20 @@ void swPiece::SetPieceData(swPieceDataReference PieceDataRef, const QString& ID,
 		mMesh = nullptr;
 	}
 
-	swPieceDataReference PreviousData(std::move(mPieceData));
-	mPieceData = std::move(PieceDataRef);
-	if (mPieceData)
+	swPartDataReference PreviousData(std::move(mPartData));
+	mPartData = std::move(PartDataRef);
+	if (mPartData)
 	{
 		if (Wait)
-			Library->WaitForPieceData(mPieceData);
+			Library->WaitForPartData(mPartData);
 		else
-			Library->RequestPieceDataLoad(mPieceData.Get(), swLoadPriority::Normal);
+			Library->RequestPartDataLoad(mPartData.Get(), swLoadPriority::Normal);
 	}
 
 	if (!ID.isEmpty())
 		mID = ID;
-	else if (mPieceData)
-		mID = mPieceData->mFileName;
+	else if (mPartData)
+		mID = mPartData->mFileName;
 	else
 		mID.clear();
 
@@ -110,7 +110,7 @@ void swPiece::SetPieceData(swPieceDataReference PieceDataRef, const QString& ID,
 	{
 		mControlPoints.clear();
 
-		const swSynthesisInformation* SynthInfo = mPieceData ? mPieceData->GetSynthInfo() : nullptr;
+		const swSynthesisInformation* SynthInfo = mPartData ? mPartData->GetSynthInfo() : nullptr;
 
 		if (SynthInfo)
 			SynthInfo->GetDefaultControlPoints(mControlPoints);
@@ -125,22 +125,22 @@ void swPiece::SetPieceData(swPieceDataReference PieceDataRef, const QString& ID,
 	Library->NotifyAssetStatusChanged();
 }
 
-bool swPiece::SetPieceId(swPieceData* PieceData)
+bool swPart::SetPartId(swPartData* PartData)
 {
-	if (mPieceData == PieceData)
+	if (mPartData == PartData)
 		return false;
 
-	SetPieceData(swPieceDataReference(PieceData), QString(), true, true);
+	SetPartData(swPartDataReference(PartData), QString(), true, true);
 
 	return true;
 }
 
-void swPiece::UpdateID()
+void swPart::UpdateID()
 {
-	mID = mPieceData->mFileName;
+	mID = mPartData->mFileName;
 }
 
-void swPiece::SaveLDraw(QTextStream& Stream) const
+void swPart::SaveLDraw(QTextStream& Stream) const
 {
 	const QLatin1String LineEnding("\r\n");
 
@@ -177,7 +177,7 @@ void swPiece::SaveLDraw(QTextStream& Stream) const
 	Stream << mID << LineEnding;
 }
 
-bool swPiece::ParseLDrawLine(QTextStream& Stream)
+bool swPart::ParseLDrawLine(QTextStream& Stream)
 {
 	while (!Stream.atEnd())
 	{
@@ -209,7 +209,7 @@ bool swPiece::ParseLDrawLine(QTextStream& Stream)
 	return false;
 }
 
-bool swPiece::FileLoad(swFile& file, Project* Project)
+bool swPart::FileLoad(swFile& file, Project* Project)
 {
 	quint8 version, ch;
 
@@ -334,17 +334,17 @@ bool swPiece::FileLoad(swFile& file, Project* Project)
 	}
 
 	// Common to all versions.
-	char name[SW_PIECE_NAME_LENGTH];
+	char name[SW_PART_NAME_LENGTH];
 	if (version < 10)
 	{
-		memset(name, 0, SW_PIECE_NAME_LENGTH);
+		memset(name, 0, SW_PART_NAME_LENGTH);
 		file.ReadBuffer(name, 9);
 	}
 	else
-		file.ReadBuffer(name, SW_PIECE_NAME_LENGTH);
+		file.ReadBuffer(name, SW_PART_NAME_LENGTH);
 	swstrcat(name, ".dat");
 
-	SetPieceData(swGetPiecesLibrary()->AcquirePieceData(name, Project, true, false), QString(), true, true);
+	SetPartData(swGetPartsLibrary()->AcquirePartData(name, Project, true, false), QString(), true, true);
 
 	// 11 (0.77)
 	if (version < 11)
@@ -418,7 +418,7 @@ bool swPiece::FileLoad(swFile& file, Project* Project)
 	return true;
 }
 
-void swPiece::Initialize(const swMatrix44& WorldMatrix, swStep Step)
+void swPart::Initialize(const swMatrix44& WorldMatrix, swStep Step)
 {
 	mStepShow = Step;
 
@@ -428,7 +428,7 @@ void swPiece::Initialize(const swMatrix44& WorldMatrix, swStep Step)
 	UpdatePosition(Step);
 }
 
-void swPiece::InsertTime(swStep Start, swStep Time)
+void swPart::InsertTime(swStep Start, swStep Time)
 {
 	if (mStepShow >= Start)
 	{
@@ -461,7 +461,7 @@ void swPiece::InsertTime(swStep Start, swStep Time)
 	mRotation.InsertTime(Start, Time);
 }
 
-void swPiece::RemoveTime(swStep Start, swStep Time)
+void swPart::RemoveTime(swStep Start, swStep Time)
 {
 	if (mStepShow >= Start)
 	{
@@ -494,23 +494,23 @@ void swPiece::RemoveTime(swStep Start, swStep Time)
 	mRotation.RemoveTime(Start, Time);
 }
 
-void swPiece::RayTest(swObjectRayTest& ObjectRayTest) const
+void swPart::RayTest(swObjectRayTest& ObjectRayTest) const
 {
 	const swMatrix44 InverseWorldMatrix = swMatrix44AffineInverse(mModelWorld);
 	const swVector3 Start = swMultiply31(ObjectRayTest.Start, InverseWorldMatrix);
 	const swVector3 End = swMultiply31(ObjectRayTest.End, InverseWorldMatrix);
 
-	if (MinIntersectDist(Start, End, ObjectRayTest.Distance, ObjectRayTest.PieceRayTest))
+	if (MinIntersectDist(Start, End, ObjectRayTest.Distance, ObjectRayTest.PartRayTest))
 	{
-		ObjectRayTest.ObjectSection.Object = const_cast<swPiece*>(this);
-		ObjectRayTest.ObjectSection.Section = SW_PIECE_SECTION_POSITION;
-		ObjectRayTest.PieceRayTest.Transform = swMultiply(ObjectRayTest.PieceRayTest.Transform, mModelWorld);
+		ObjectRayTest.ObjectSection.Object = const_cast<swPart*>(this);
+		ObjectRayTest.ObjectSection.Section = SW_PART_SECTION_POSITION;
+		ObjectRayTest.PartRayTest.Transform = swMultiply(ObjectRayTest.PartRayTest.Transform, mModelWorld);
 	}
 
-	if (mPieceData->GetSynthInfo() && AreControlPointsVisible())
+	if (mPartData->GetSynthInfo() && AreControlPointsVisible())
 	{
-		const swVector3 Min(-SW_PIECE_CONTROL_POINT_SIZE, -SW_PIECE_CONTROL_POINT_SIZE, -SW_PIECE_CONTROL_POINT_SIZE);
-		const swVector3 Max(SW_PIECE_CONTROL_POINT_SIZE, SW_PIECE_CONTROL_POINT_SIZE, SW_PIECE_CONTROL_POINT_SIZE);
+		const swVector3 Min(-SW_PART_CONTROL_POINT_SIZE, -SW_PART_CONTROL_POINT_SIZE, -SW_PART_CONTROL_POINT_SIZE);
+		const swVector3 Max(SW_PART_CONTROL_POINT_SIZE, SW_PART_CONTROL_POINT_SIZE, SW_PART_CONTROL_POINT_SIZE);
 
 		for (quint32 ControlPointIndex = 0; ControlPointIndex < mControlPoints.size(); ControlPointIndex++)
 		{
@@ -523,43 +523,43 @@ void swPiece::RayTest(swObjectRayTest& ObjectRayTest) const
 
 			if (swBoundingBoxRayIntersectDistance(Min, Max, PointStart, PointEnd, &Distance, nullptr, &Plane))
 			{
-				ObjectRayTest.ObjectSection.Object = const_cast<swPiece*>(this);
-				ObjectRayTest.ObjectSection.Section = SW_PIECE_SECTION_CONTROL_POINT_FIRST + ControlPointIndex;
+				ObjectRayTest.ObjectSection.Object = const_cast<swPart*>(this);
+				ObjectRayTest.ObjectSection.Section = SW_PART_SECTION_CONTROL_POINT_FIRST + ControlPointIndex;
 				ObjectRayTest.Distance = Distance;
-				ObjectRayTest.PieceRayTest.Plane = Plane;
+				ObjectRayTest.PartRayTest.Plane = Plane;
 			}
 		}
 	}
 }
 
-bool swPiece::MinIntersectDist(const swVector3& Start, const swVector3& End, float& MinDistance, swPieceRayTest& PieceRayTest) const
+bool swPart::MinIntersectDist(const swVector3& Start, const swVector3& End, float& MinDistance, swPartRayTest& PartRayTest) const
 {
 	swMesh* Mesh = GetDisplayMesh();
 
-	if (!Mesh || mPieceData->IsLoading())
-		return mPieceData->MinIntersectDist(Start, End, MinDistance, PieceRayTest);
+	if (!Mesh || mPartData->IsLoading())
+		return mPartData->MinIntersectDist(Start, End, MinDistance, PartRayTest);
 
-	if (!Mesh->MinIntersectDist(Start, End, MinDistance, PieceRayTest.Plane, PieceRayTest.Normal))
+	if (!Mesh->MinIntersectDist(Start, End, MinDistance, PartRayTest.Plane, PartRayTest.Normal))
 		return false;
 
-	PieceRayTest.PieceData = mPieceData.Get();
-	PieceRayTest.Transform = swMatrix44Identity();
+	PartRayTest.PartData = mPartData.Get();
+	PartRayTest.Transform = swMatrix44Identity();
 
 	return true;
 }
 
-void swPiece::BoxTest(swObjectBoxTest& ObjectBoxTest) const
+void swPart::BoxTest(swObjectBoxTest& ObjectBoxTest) const
 {
 	if (IntersectsPlanes(mModelWorld, ObjectBoxTest.Planes))
-		ObjectBoxTest.Objects.emplace_back(const_cast<swPiece*>(this));
+		ObjectBoxTest.Objects.emplace_back(const_cast<swPart*>(this));
 }
 
-bool swPiece::IntersectsPlanes(const swMatrix44& WorldMatrix, const swVector4 Planes[6]) const
+bool swPart::IntersectsPlanes(const swMatrix44& WorldMatrix, const swVector4 Planes[6]) const
 {
 	swMesh* Mesh = GetDisplayMesh();
 
-	if (!Mesh || mPieceData->IsLoading())
-		return mPieceData->BoxTest(WorldMatrix, Planes);
+	if (!Mesh || mPartData->IsLoading())
+		return mPartData->BoxTest(WorldMatrix, Planes);
 
 	const swMatrix44 InverseWorldMatrix = swMatrix44AffineInverse(WorldMatrix);
 	swVector4 LocalPlanes[6];
@@ -597,7 +597,7 @@ bool swPiece::IntersectsPlanes(const swMatrix44& WorldMatrix, const swVector4 Pl
 	return Mesh->IntersectsPlanes(LocalPlanes);
 }
 
-void swPiece::DrawInterface(swContext* Context, const swScene& Scene) const
+void swPart::DrawInterface(swContext* Context, const swScene& Scene) const
 {
 	const swPreferences& Preferences = swGetPreferences();
 	const float LineWidth = Preferences.mLineWidth;
@@ -648,7 +648,7 @@ void swPiece::DrawInterface(swContext* Context, const swScene& Scene) const
 	Context->SetMaterial(swMaterialType::UnlitColor);
 	Context->SetWorldMatrix(WorldMatrix);
 
-	if (IsFocused(SW_PIECE_SECTION_POSITION))
+	if (IsFocused(SW_PART_SECTION_POSITION))
 	{
 		const swVector4 FocusedColor = swVector4FromColor(Preferences.mObjectFocusedColor);
 		Context->SetColor(FocusedColor);
@@ -690,11 +690,11 @@ void swPiece::DrawInterface(swContext* Context, const swScene& Scene) const
 		Context->DrawIndexedPrimitives(GL_LINES, 24, GL_UNSIGNED_SHORT, 0);
 	}
 
-	if (mPieceData->GetSynthInfo())
+	if (mPartData->GetSynthInfo())
 		DrawSynthInterface(Context, WorldMatrix);
 }
 
-void swPiece::DrawSynthInterface(swContext* Context, const swMatrix44& WorldMatrix) const
+void swPart::DrawSynthInterface(swContext* Context, const swMatrix44& WorldMatrix) const
 {
 	if (mControlPoints.empty() || !AreControlPointsVisible())
 		return;
@@ -702,8 +702,8 @@ void swPiece::DrawSynthInterface(swContext* Context, const swMatrix44& WorldMatr
 	float Verts[8 * 3];
 	float* CurVert = Verts;
 
-	swVector3 CubeMin(-SW_PIECE_CONTROL_POINT_SIZE, -SW_PIECE_CONTROL_POINT_SIZE, -SW_PIECE_CONTROL_POINT_SIZE);
-	swVector3 CubeMax(SW_PIECE_CONTROL_POINT_SIZE, SW_PIECE_CONTROL_POINT_SIZE, SW_PIECE_CONTROL_POINT_SIZE);
+	swVector3 CubeMin(-SW_PART_CONTROL_POINT_SIZE, -SW_PART_CONTROL_POINT_SIZE, -SW_PART_CONTROL_POINT_SIZE);
+	swVector3 CubeMax(SW_PART_CONTROL_POINT_SIZE, SW_PART_CONTROL_POINT_SIZE, SW_PART_CONTROL_POINT_SIZE);
 
 	*CurVert++ = CubeMin[0]; *CurVert++ = CubeMin[1]; *CurVert++ = CubeMin[2];
 	*CurVert++ = CubeMin[0]; *CurVert++ = CubeMax[1]; *CurVert++ = CubeMin[2];
@@ -735,7 +735,7 @@ void swPiece::DrawSynthInterface(swContext* Context, const swMatrix44& WorldMatr
 		Context->SetVertexFormatPosition(3);
 		Context->SetIndexBufferPointer(Indices);
 
-		if (IsFocused(SW_PIECE_SECTION_CONTROL_POINT_FIRST + ControlPointIndex))
+		if (IsFocused(SW_PART_SECTION_CONTROL_POINT_FIRST + ControlPointIndex))
 			Context->SetColor(ControlPointFocusedColor);
 		else
 			Context->SetColor(ControlPointColor);
@@ -747,18 +747,18 @@ void swPiece::DrawSynthInterface(swContext* Context, const swMatrix44& WorldMatr
 	Context->EnableColorBlend(false);
 }
 
-QVariant swPiece::GetPropertyValue(swObjectPropertyId PropertyId) const
+QVariant swPart::GetPropertyValue(swObjectPropertyId PropertyId) const
 {
 	switch (PropertyId)
 	{
-	case swObjectPropertyId::PieceId:
-		return QVariant::fromValue<void*>(mPieceData.Get());
+	case swObjectPropertyId::PartId:
+		return QVariant::fromValue<void*>(mPartData.Get());
 
-	case swObjectPropertyId::PieceColor:
+	case swObjectPropertyId::PartColor:
 		return GetColorIndex();
 
-	case swObjectPropertyId::PieceStepShow:
-	case swObjectPropertyId::PieceStepHide:
+	case swObjectPropertyId::PartStepShow:
+	case swObjectPropertyId::PartStepHide:
 	case swObjectPropertyId::CameraName:
 	case swObjectPropertyId::CameraProjection:
 	case swObjectPropertyId::CameraFOV:
@@ -804,21 +804,21 @@ QVariant swPiece::GetPropertyValue(swObjectPropertyId PropertyId) const
 	return QVariant();
 }
 
-bool swPiece::SetPropertyValue(swObjectPropertyId PropertyId, swStep Step, bool AddKey, QVariant Value)
+bool swPart::SetPropertyValue(swObjectPropertyId PropertyId, swStep Step, bool AddKey, QVariant Value)
 {
 	Q_UNUSED(Step);
 	Q_UNUSED(AddKey);
 
 	switch (PropertyId)
 	{
-	case swObjectPropertyId::PieceId:
-		return SetPieceId(static_cast<swPieceData*>(Value.value<void*>()));
+	case swObjectPropertyId::PartId:
+		return SetPartId(static_cast<swPartData*>(Value.value<void*>()));
 
-	case swObjectPropertyId::PieceColor:
+	case swObjectPropertyId::PartColor:
 		return SetColorIndex(Value.toInt());
 
-	case swObjectPropertyId::PieceStepShow:
-	case swObjectPropertyId::PieceStepHide:
+	case swObjectPropertyId::PartStepShow:
+	case swObjectPropertyId::PartStepHide:
 	case swObjectPropertyId::CameraName:
 	case swObjectPropertyId::CameraProjection:
 	case swObjectPropertyId::CameraFOV:
@@ -864,7 +864,7 @@ bool swPiece::SetPropertyValue(swObjectPropertyId PropertyId, swStep Step, bool 
 	return false;
 }
 
-swStep swPiece::GetLastStep() const
+swStep swPart::GetLastStep() const
 {
 	swStep Step = std::max({ mStepShow, mPosition.GetLastKeyFrame(), mRotation.GetLastKeyFrame() });
 
@@ -874,14 +874,14 @@ swStep swPiece::GetLastStep() const
 	return Step;
 }
 
-bool swPiece::HasKeyFrame(swObjectPropertyId PropertyId, swStep Time) const
+bool swPart::HasKeyFrame(swObjectPropertyId PropertyId, swStep Time) const
 {
 	switch (PropertyId)
 	{
-	case swObjectPropertyId::PieceId:
-	case swObjectPropertyId::PieceColor:
-	case swObjectPropertyId::PieceStepShow:
-	case swObjectPropertyId::PieceStepHide:
+	case swObjectPropertyId::PartId:
+	case swObjectPropertyId::PartColor:
+	case swObjectPropertyId::PartStepShow:
+	case swObjectPropertyId::PartStepHide:
 	case swObjectPropertyId::CameraName:
 	case swObjectPropertyId::CameraProjection:
 	case swObjectPropertyId::CameraFOV:
@@ -933,14 +933,14 @@ bool swPiece::HasKeyFrame(swObjectPropertyId PropertyId, swStep Time) const
 	return false;
 }
 
-bool swPiece::SetKeyFrame(swObjectPropertyId PropertyId, swStep Time, bool KeyFrame)
+bool swPart::SetKeyFrame(swObjectPropertyId PropertyId, swStep Time, bool KeyFrame)
 {
 	switch (PropertyId)
 	{
-	case swObjectPropertyId::PieceId:
-	case swObjectPropertyId::PieceColor:
-	case swObjectPropertyId::PieceStepShow:
-	case swObjectPropertyId::PieceStepHide:
+	case swObjectPropertyId::PartId:
+	case swObjectPropertyId::PartColor:
+	case swObjectPropertyId::PartStepShow:
+	case swObjectPropertyId::PartStepHide:
 	case swObjectPropertyId::CameraName:
 	case swObjectPropertyId::CameraProjection:
 	case swObjectPropertyId::CameraFOV:
@@ -992,20 +992,20 @@ bool swPiece::SetKeyFrame(swObjectPropertyId PropertyId, swStep Time, bool KeyFr
 	return false;
 }
 
-void swPiece::RemoveKeyFrames()
+void swPart::RemoveKeyFrames()
 {
 	mPosition.RemoveAllKeys();
 	mRotation.RemoveAllKeys();
 }
 
-swPieceHistoryState swPiece::GetHistoryState() const
+swPartHistoryState swPart::GetHistoryState() const
 {
-	swPieceHistoryState State;
+	swPartHistoryState State;
 
 	State.Id = mId;
 	State.Hidden = mHidden;
 	State.FileLine = mFileLine;
-	State.PieceId = mID;
+	State.PartId = mID;
 	State.GroupId = mGroup ? static_cast<uint32_t>(mGroup->GetId()) : SW_GROUP_ID_INVALID;
 	State.ColorIndex = mColorIndex;
 	State.ColorCode = mColorCode;
@@ -1020,12 +1020,12 @@ swPieceHistoryState swPiece::GetHistoryState() const
 	return State;
 }
 
-void swPiece::SetHistoryState(const swPieceHistoryState& State, Project* Project, swGroup* Group)
+void swPart::SetHistoryState(const swPartHistoryState& State, Project* Project, swGroup* Group)
 {
 	mId = State.Id;
 	mHidden = State.Hidden;
 	mFileLine = State.FileLine;
-	mID = State.PieceId;
+	mID = State.PartId;
 	mGroup = Group;
 	mColorIndex = State.ColorIndex;
 	mColorCode = State.ColorCode;
@@ -1037,15 +1037,15 @@ void swPiece::SetHistoryState(const swPieceHistoryState& State, Project* Project
 	mPosition = State.Position;
 	mRotation = State.Rotation;
 
-	swPieceDataReference RestoredData = swGetPiecesLibrary()->AcquirePieceData(mID.toLatin1(), Project, true, true);
+	swPartDataReference RestoredData = swGetPartsLibrary()->AcquirePartData(mID.toLatin1(), Project, true, true);
 
-	if (mPieceData != RestoredData)
+	if (mPartData != RestoredData)
 	{
-		const bool NewPiece = !mPieceData;
+		const bool NewPart = !mPartData;
 
-		SetPieceData(std::move(RestoredData), mID, true, false);
+		SetPartData(std::move(RestoredData), mID, true, false);
 
-		if (NewPiece)
+		if (NewPart)
 			UpdateMesh();
 	}
 	else
@@ -1054,7 +1054,7 @@ void swPiece::SetHistoryState(const swPieceHistoryState& State, Project* Project
 	//	std::vector<bool> mTrainTrackConnections;
 }
 
-void swPiece::AddMainModelRenderMeshes(swScene* Scene, bool Highlight, bool Fade) const
+void swPart::AddMainModelRenderMeshes(swScene* Scene, bool Highlight, bool Fade) const
 {
 	swRenderMeshState RenderMeshState = swRenderMeshState::Default;
 	bool ParentActive = false;
@@ -1067,7 +1067,7 @@ void swPiece::AddMainModelRenderMeshes(swScene* Scene, bool Highlight, bool Fade
 
 	if (Scene->GetDrawInterface())
 	{
-		const swPiece* ActiveSubmodelInstance = Scene->GetActiveSubmodelInstance();
+		const swPart* ActiveSubmodelInstance = Scene->GetActiveSubmodelInstance();
 
 		if (!ActiveSubmodelInstance)
 			RenderMeshState = IsFocused() ? swRenderMeshState::Focused : (IsSelected() ? swRenderMeshState::Selected : RenderMeshState);
@@ -1077,7 +1077,7 @@ void swPiece::AddMainModelRenderMeshes(swScene* Scene, bool Highlight, bool Fade
 			RenderMeshState = swRenderMeshState::Faded;
 	}
 
-	if (mPieceData->GetSynthInfo() && !HasGeneratedMesh() && Scene->GetRequireGeneratedMeshes())
+	if (mPartData->GetSynthInfo() && !HasGeneratedMesh() && Scene->GetRequireGeneratedMeshes())
 	{
 		Scene->MarkMissingAssets();
 		return;
@@ -1085,30 +1085,30 @@ void swPiece::AddMainModelRenderMeshes(swScene* Scene, bool Highlight, bool Fade
 
 	if (mSynthPending && Scene->GetRequireCompleteAssets())
 		Scene->MarkMissingAssets();
-	else if (swMesh* Mesh = GetDisplayMesh(); Mesh && !mPieceData->IsLoading())
+	else if (swMesh* Mesh = GetDisplayMesh(); Mesh && !mPartData->IsLoading())
 		Scene->AddMesh(Mesh, mModelWorld, mColorIndex, RenderMeshState);
 	else
-		mPieceData->AddRenderMeshes(Scene, mModelWorld, mColorIndex, RenderMeshState, ParentActive);
+		mPartData->AddRenderMeshes(Scene, mModelWorld, mColorIndex, RenderMeshState, ParentActive);
 
 	if (RenderMeshState == swRenderMeshState::Focused || RenderMeshState == swRenderMeshState::Selected)
 		Scene->AddInterfaceObject(this);
 }
 
-void swPiece::AddSubModelRenderMeshes(swScene* Scene, const swMatrix44& WorldMatrix, int DefaultColorIndex, swRenderMeshState RenderMeshState, bool ParentActive) const
+void swPart::AddSubModelRenderMeshes(swScene* Scene, const swMatrix44& WorldMatrix, int DefaultColorIndex, swRenderMeshState RenderMeshState, bool ParentActive) const
 {
 	int ColorIndex = mColorIndex;
 
 	if (ColorIndex == gDefaultColor)
 		ColorIndex = DefaultColorIndex;
 
-	const swPiece* ActiveSubmodelInstance = Scene->GetActiveSubmodelInstance();
+	const swPart* ActiveSubmodelInstance = Scene->GetActiveSubmodelInstance();
 
 	if (ActiveSubmodelInstance == this)
 		RenderMeshState = swRenderMeshState::Default;
 	else if (ParentActive)
 		RenderMeshState = IsFocused() ? swRenderMeshState::Focused : (IsSelected() ? swRenderMeshState::Selected : swRenderMeshState::Default);
 
-	if (mPieceData->GetSynthInfo() && !HasGeneratedMesh() && Scene->GetRequireGeneratedMeshes())
+	if (mPartData->GetSynthInfo() && !HasGeneratedMesh() && Scene->GetRequireGeneratedMeshes())
 	{
 		Scene->MarkMissingAssets();
 		return;
@@ -1116,23 +1116,23 @@ void swPiece::AddSubModelRenderMeshes(swScene* Scene, const swMatrix44& WorldMat
 
 	if (mSynthPending && Scene->GetRequireCompleteAssets())
 		Scene->MarkMissingAssets();
-	else if (swMesh* Mesh = GetDisplayMesh(); Mesh && !mPieceData->IsLoading())
+	else if (swMesh* Mesh = GetDisplayMesh(); Mesh && !mPartData->IsLoading())
 		Scene->AddMesh(Mesh, swMultiply(mModelWorld, WorldMatrix), ColorIndex, RenderMeshState);
 	else
-		mPieceData->AddRenderMeshes(Scene, swMultiply(mModelWorld, WorldMatrix), ColorIndex, RenderMeshState, ActiveSubmodelInstance == this);
+		mPartData->AddRenderMeshes(Scene, swMultiply(mModelWorld, WorldMatrix), ColorIndex, RenderMeshState, ActiveSubmodelInstance == this);
 
 	if (ParentActive && (RenderMeshState == swRenderMeshState::Focused || RenderMeshState == swRenderMeshState::Selected))
 		Scene->AddInterfaceObject(this);
 }
 
-void swPiece::SubModelCompareBoundingBox(const swMatrix44& WorldMatrix, swVector3& Min, swVector3& Max) const
+void swPart::SubModelCompareBoundingBox(const swMatrix44& WorldMatrix, swVector3& Min, swVector3& Max) const
 {
 	const swMatrix44 ModelWorldMatrix = swMultiply(mModelWorld, WorldMatrix);
 	swMesh* Mesh = GetDisplayMesh();
 
-	if (!Mesh || mPieceData->IsLoading())
+	if (!Mesh || mPartData->IsLoading())
 	{
-		mPieceData->CompareBoundingBox(ModelWorldMatrix, Min, Max);
+		mPartData->CompareBoundingBox(ModelWorldMatrix, Min, Max);
 		return;
 	}
 
@@ -1147,15 +1147,15 @@ void swPiece::SubModelCompareBoundingBox(const swMatrix44& WorldMatrix, swVector
 	}
 }
 
-void swPiece::SubModelAddBoundingBoxPoints(const swMatrix44& WorldMatrix, std::vector<swVector3>& Points, swGeometryBoundsMode Mode) const
+void swPart::SubModelAddBoundingBoxPoints(const swMatrix44& WorldMatrix, std::vector<swVector3>& Points, swGeometryBoundsMode Mode) const
 {
-	if (Mode == swGeometryBoundsMode::AvailableOnly && mPieceData->GetSynthInfo() && !HasGeneratedMesh())
+	if (Mode == swGeometryBoundsMode::AvailableOnly && mPartData->GetSynthInfo() && !HasGeneratedMesh())
 		return;
 
 	swMesh* Mesh = GetDisplayMesh();
 
-	if (!Mesh || mPieceData->IsLoading())
-		mPieceData->AddSubModelBoundingBoxPoints(swMultiply(mModelWorld, WorldMatrix), Points, Mode);
+	if (!Mesh || mPartData->IsLoading())
+		mPartData->AddSubModelBoundingBoxPoints(swMultiply(mModelWorld, WorldMatrix), Points, Mode);
 	else
 	{
 		swVector3 BoxPoints[8];
@@ -1168,11 +1168,11 @@ void swPiece::SubModelAddBoundingBoxPoints(const swMatrix44& WorldMatrix, std::v
 	}
 }
 
-void swPiece::MoveSelected(swStep Step, bool AddKey, const swVector3& Distance)
+void swPart::MoveSelected(swStep Step, bool AddKey, const swVector3& Distance)
 {
 	const quint32 Section = GetFocusSection();
 
-	if (Section == SW_PIECE_SECTION_POSITION || Section == SW_PIECE_SECTION_INVALID)
+	if (Section == SW_PART_SECTION_POSITION || Section == SW_PART_SECTION_INVALID)
 	{
 		const swVector3 Position = mModelWorld.GetTranslation() + Distance;
 
@@ -1180,9 +1180,9 @@ void swPiece::MoveSelected(swStep Step, bool AddKey, const swVector3& Distance)
 
 		mModelWorld.SetTranslation(Position);
 	}
-	else if (Section >= SW_PIECE_SECTION_CONTROL_POINT_FIRST)
+	else if (Section >= SW_PART_SECTION_CONTROL_POINT_FIRST)
 	{
-		const quint32 ControlPointIndex = Section - SW_PIECE_SECTION_CONTROL_POINT_FIRST;
+		const quint32 ControlPointIndex = Section - SW_PART_SECTION_CONTROL_POINT_FIRST;
 
 		if (ControlPointIndex < mControlPoints.size())
 		{
@@ -1196,11 +1196,11 @@ void swPiece::MoveSelected(swStep Step, bool AddKey, const swVector3& Distance)
 	}
 }
 
-void swPiece::Rotate(swStep Step, bool AddKey, const swMatrix33& RotationMatrix, const swVector3& Center, const swMatrix33& RotationFrame)
+void swPart::Rotate(swStep Step, bool AddKey, const swMatrix33& RotationMatrix, const swVector3& Center, const swMatrix33& RotationFrame)
 {
 	const quint32 Section = GetFocusSection();
 
-	if (Section == SW_PIECE_SECTION_POSITION || Section == SW_PIECE_SECTION_INVALID)
+	if (Section == SW_PART_SECTION_POSITION || Section == SW_PART_SECTION_INVALID)
 	{
 		swVector3 Distance = mModelWorld.GetTranslation() - Center;
 		const swMatrix33 LocalToWorldMatrix = swMatrix33(mModelWorld);
@@ -1218,18 +1218,18 @@ void swPiece::Rotate(swStep Step, bool AddKey, const swMatrix33& RotationMatrix,
 		SetPosition(Center + Distance, Step, AddKey);
 		SetRotation(NewLocalToWorldMatrix, Step, AddKey);
 	}
-	else if (Section >= SW_PIECE_SECTION_CONTROL_POINT_FIRST)
+	else if (Section >= SW_PART_SECTION_CONTROL_POINT_FIRST)
 	{
-		const quint32 ControlPointIndex = Section - SW_PIECE_SECTION_CONTROL_POINT_FIRST;
+		const quint32 ControlPointIndex = Section - SW_PART_SECTION_CONTROL_POINT_FIRST;
 
 		if (ControlPointIndex < mControlPoints.size())
 		{
 			swMatrix44& Transform = mControlPoints[ControlPointIndex].Transform;
-			const swMatrix33 PieceWorldMatrix(mModelWorld);
-			const swMatrix33 LocalToWorldMatrix = swMultiply(swMatrix33(Transform), PieceWorldMatrix);
+			const swMatrix33 PartWorldMatrix(mModelWorld);
+			const swMatrix33 LocalToWorldMatrix = swMultiply(swMatrix33(Transform), PartWorldMatrix);
 
 			const swMatrix33 LocalToFocusMatrix = swMultiply(LocalToWorldMatrix, RotationFrame);
-			swMatrix33 NewLocalToWorldMatrix = swMultiply(swMultiply(LocalToFocusMatrix, RotationMatrix), swMatrix33AffineInverse(PieceWorldMatrix));
+			swMatrix33 NewLocalToWorldMatrix = swMultiply(swMultiply(LocalToFocusMatrix, RotationMatrix), swMatrix33AffineInverse(PartWorldMatrix));
 
 			NewLocalToWorldMatrix.Orthonormalize();
 			Transform = swMatrix44(NewLocalToWorldMatrix, Transform.GetTranslation());
@@ -1239,18 +1239,18 @@ void swPiece::Rotate(swStep Step, bool AddKey, const swMatrix33& RotationMatrix,
 	}
 }
 
-void swPiece::MovePivotPoint(const swVector3& Distance)
+void swPart::MovePivotPoint(const swVector3& Distance)
 {
-	if (!IsFocused(SW_PIECE_SECTION_POSITION))
+	if (!IsFocused(SW_PART_SECTION_POSITION))
 		return;
 
 	mPivotMatrix.SetTranslation(mPivotMatrix.GetTranslation() + swMultiply30(Distance, swMatrix44AffineInverse(mModelWorld)));
 	mPivotPointValid = true;
 }
 
-void swPiece::RotatePivotPoint(const swMatrix33& RotationMatrix)
+void swPart::RotatePivotPoint(const swMatrix33& RotationMatrix)
 {
-	if (!IsFocused(SW_PIECE_SECTION_POSITION))
+	if (!IsFocused(SW_PART_SECTION_POSITION))
 		return;
 
 	swMatrix33 NewPivotRotationMatrix = swMultiply(RotationMatrix, swMatrix33(mPivotMatrix));
@@ -1260,14 +1260,14 @@ void swPiece::RotatePivotPoint(const swMatrix33& RotationMatrix)
 	mPivotPointValid = true;
 }
 
-quint32 swPiece::GetAllowedTransforms() const
+quint32 swPart::GetAllowedTransforms() const
 {
 	const quint32 Section = GetFocusSection();
 
-	if (Section == SW_PIECE_SECTION_POSITION || Section == SW_PIECE_SECTION_INVALID)
+	if (Section == SW_PART_SECTION_POSITION || Section == SW_PART_SECTION_INVALID)
 		return SW_OBJECT_TRANSFORM_MOVE_XYZ | SW_OBJECT_TRANSFORM_ROTATE_XYZ;
 
-	const swSynthesisInformation* SynthInfo = mPieceData->GetSynthInfo();
+	const swSynthesisInformation* SynthInfo = mPartData->GetSynthInfo();
 
 	if (SynthInfo)
 	{
@@ -1284,9 +1284,9 @@ quint32 swPiece::GetAllowedTransforms() const
 	return 0;
 }
 
-swVector3 swPiece::GetSectionPosition(quint32 Section) const
+swVector3 swPart::GetSectionPosition(quint32 Section) const
 {
-	if (Section == SW_PIECE_SECTION_POSITION)
+	if (Section == SW_PART_SECTION_POSITION)
 	{
 		if (mPivotPointValid)
 			return swMultiply(mPivotMatrix, mModelWorld).GetTranslation();
@@ -1294,11 +1294,11 @@ swVector3 swPiece::GetSectionPosition(quint32 Section) const
 			return mModelWorld.GetTranslation();
 	}
 
-	if (mPieceData->GetSynthInfo())
+	if (mPartData->GetSynthInfo())
 	{
-		if (Section >= SW_PIECE_SECTION_CONTROL_POINT_FIRST)
+		if (Section >= SW_PART_SECTION_CONTROL_POINT_FIRST)
 		{
-			const quint32 ControlPointIndex = Section - SW_PIECE_SECTION_CONTROL_POINT_FIRST;
+			const quint32 ControlPointIndex = Section - SW_PART_SECTION_CONTROL_POINT_FIRST;
 
 			if (ControlPointIndex < mControlPoints.size())
 			{
@@ -1308,12 +1308,12 @@ swVector3 swPiece::GetSectionPosition(quint32 Section) const
 		}
 	}
 
-	if (mPieceData->GetTrainTrackInfo())
+	if (mPartData->GetTrainTrackInfo())
 	{
-		if (Section >= SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST)
+		if (Section >= SW_PART_SECTION_TRAIN_TRACK_CONNECTION_FIRST)
 		{
-			const quint32 ConnectionIndex = Section - SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST;
-			const std::vector<swTrainTrackConnection>& Connections = mPieceData->GetTrainTrackInfo()->GetConnections();
+			const quint32 ConnectionIndex = Section - SW_PART_SECTION_TRAIN_TRACK_CONNECTION_FIRST;
+			const std::vector<swTrainTrackConnection>& Connections = mPartData->GetTrainTrackInfo()->GetConnections();
 
 			if (ConnectionIndex < Connections.size())
 			{
@@ -1326,20 +1326,20 @@ swVector3 swPiece::GetSectionPosition(quint32 Section) const
 	return swVector3(0.0f, 0.0f, 0.0f);
 }
 
-swVector3 swPiece::GetRotationCenter() const
+swVector3 swPart::GetRotationCenter() const
 {
 	const quint32 Section = GetFocusSection();
 
-	if (Section == SW_PIECE_SECTION_POSITION || Section == SW_PIECE_SECTION_INVALID)
+	if (Section == SW_PART_SECTION_POSITION || Section == SW_PART_SECTION_INVALID)
 	{
 		if (mPivotPointValid)
 			return swMultiply31(mPivotMatrix.GetTranslation(), mModelWorld);
 	}
-	else if (mPieceData->GetSynthInfo())
+	else if (mPartData->GetSynthInfo())
 	{
-		if (Section >= SW_PIECE_SECTION_CONTROL_POINT_FIRST)
+		if (Section >= SW_PART_SECTION_CONTROL_POINT_FIRST)
 		{
-			const quint32 ControlPointIndex = Section - SW_PIECE_SECTION_CONTROL_POINT_FIRST;
+			const quint32 ControlPointIndex = Section - SW_PART_SECTION_CONTROL_POINT_FIRST;
 
 			if (ControlPointIndex < mControlPoints.size())
 			{
@@ -1348,12 +1348,12 @@ swVector3 swPiece::GetRotationCenter() const
 			}
 		}
 	}
-	else if (mPieceData->GetTrainTrackInfo())
+	else if (mPartData->GetTrainTrackInfo())
 	{
-		if (Section >= SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST)
+		if (Section >= SW_PART_SECTION_TRAIN_TRACK_CONNECTION_FIRST)
 		{
-			const quint32 ConnectionIndex = Section - SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST;
-			const std::vector<swTrainTrackConnection>& Connections = mPieceData->GetTrainTrackInfo()->GetConnections();
+			const quint32 ConnectionIndex = Section - SW_PART_SECTION_TRAIN_TRACK_CONNECTION_FIRST;
+			const std::vector<swTrainTrackConnection>& Connections = mPartData->GetTrainTrackInfo()->GetConnections();
 
 			if (ConnectionIndex < Connections.size())
 			{
@@ -1366,22 +1366,22 @@ swVector3 swPiece::GetRotationCenter() const
 	return mModelWorld.GetTranslation();
 }
 
-swMatrix33 swPiece::GetRelativeRotation() const
+swMatrix33 swPart::GetRelativeRotation() const
 {
 	const quint32 Section = GetFocusSection();
 
-	if (Section == SW_PIECE_SECTION_POSITION || Section == SW_PIECE_SECTION_INVALID)
+	if (Section == SW_PART_SECTION_POSITION || Section == SW_PART_SECTION_INVALID)
 	{
 		if (mPivotPointValid)
 			return swMatrix33(swMultiply(mModelWorld, mPivotMatrix));
 		else
 			return swMatrix33(mModelWorld);
 	}
-	else if (mPieceData->GetSynthInfo())
+	else if (mPartData->GetSynthInfo())
 	{
-		if (Section >= SW_PIECE_SECTION_CONTROL_POINT_FIRST)
+		if (Section >= SW_PART_SECTION_CONTROL_POINT_FIRST)
 		{
-			const quint32 ControlPointIndex = Section - SW_PIECE_SECTION_CONTROL_POINT_FIRST;
+			const quint32 ControlPointIndex = Section - SW_PART_SECTION_CONTROL_POINT_FIRST;
 
 			if (ControlPointIndex < mControlPoints.size())
 			{
@@ -1390,12 +1390,12 @@ swMatrix33 swPiece::GetRelativeRotation() const
 			}
 		}
 	}
-	else if (mPieceData->GetTrainTrackInfo())
+	else if (mPartData->GetTrainTrackInfo())
 	{
-		if (Section >= SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST)
+		if (Section >= SW_PART_SECTION_TRAIN_TRACK_CONNECTION_FIRST)
 		{
-			const quint32 ConnectionIndex = Section - SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST;
-			const std::vector<swTrainTrackConnection>& Connections = mPieceData->GetTrainTrackInfo()->GetConnections();
+			const quint32 ConnectionIndex = Section - SW_PART_SECTION_TRAIN_TRACK_CONNECTION_FIRST;
+			const std::vector<swTrainTrackConnection>& Connections = mPartData->GetTrainTrackInfo()->GetConnections();
 
 			if (ConnectionIndex < Connections.size())
 			{
@@ -1408,22 +1408,22 @@ swMatrix33 swPiece::GetRelativeRotation() const
 	return swMatrix33Identity();
 }
 
-bool swPiece::CanAddControlPoint() const
+bool swPart::CanAddControlPoint() const
 {
 	if (mControlPoints.size() >= SW_MAXIMUM_CONTROL_POINTS)
 		return false;
 
-	const swSynthesisInformation* SynthInfo = mPieceData->GetSynthInfo();
+	const swSynthesisInformation* SynthInfo = mPartData->GetSynthInfo();
 	return SynthInfo && SynthInfo->CanAddControlPoints();
 }
 
-bool swPiece::CanRemoveControlPoint() const
+bool swPart::CanRemoveControlPoint() const
 {
 	const quint32 Section = GetFocusSection();
-	return Section >= SW_PIECE_SECTION_CONTROL_POINT_FIRST && Section <= SW_PIECE_SECTION_CONTROL_POINT_LAST && mControlPoints.size() > 2;
+	return Section >= SW_PART_SECTION_CONTROL_POINT_FIRST && Section <= SW_PART_SECTION_CONTROL_POINT_LAST && mControlPoints.size() > 2;
 }
 
-bool swPiece::InsertControlPoint(const swVector3& WorldStart, const swVector3& WorldEnd)
+bool swPart::InsertControlPoint(const swVector3& WorldStart, const swVector3& WorldEnd)
 {
 	if (!CanAddControlPoint())
 		return false;
@@ -1432,13 +1432,13 @@ bool swPiece::InsertControlPoint(const swVector3& WorldStart, const swVector3& W
 	const swVector3 Start = swMultiply31(WorldStart, InverseWorldMatrix);
 	const swVector3 End = swMultiply31(WorldEnd, InverseWorldMatrix);
 
-	const swSynthesisInformation* SynthInfo = mPieceData->GetSynthInfo();
+	const swSynthesisInformation* SynthInfo = mPartData->GetSynthInfo();
 	const int ControlPointIndex = SynthInfo->InsertControlPoint(mControlPoints, Start, End);
 
 	if (ControlPointIndex)
 	{
 		SetFocused(GetFocusSection(), false);
-		SetFocused(SW_PIECE_SECTION_CONTROL_POINT_FIRST + ControlPointIndex, true);
+		SetFocused(SW_PART_SECTION_CONTROL_POINT_FIRST + ControlPointIndex, true);
 		UpdateMesh();
 		return true;
 	}
@@ -1446,20 +1446,20 @@ bool swPiece::InsertControlPoint(const swVector3& WorldStart, const swVector3& W
 	return false;
 }
 
-bool swPiece::RemoveFocusedControlPoint()
+bool swPart::RemoveFocusedControlPoint()
 {
 	quint32 Section = GetFocusSection();
 
-	if (Section < SW_PIECE_SECTION_CONTROL_POINT_FIRST)
+	if (Section < SW_PART_SECTION_CONTROL_POINT_FIRST)
 		return false;
 
-	const quint32 ControlPointIndex = Section - SW_PIECE_SECTION_CONTROL_POINT_FIRST;
+	const quint32 ControlPointIndex = Section - SW_PART_SECTION_CONTROL_POINT_FIRST;
 
 	if (ControlPointIndex >= mControlPoints.size() || mControlPoints.size() <= 2)
 		return false;
 
 	SetFocused(GetFocusSection(), false);
-	SetFocused(SW_PIECE_SECTION_POSITION, true);
+	SetFocused(SW_PART_SECTION_POSITION, true);
 	mControlPoints.erase(mControlPoints.begin() + ControlPointIndex);
 
 	UpdateMesh();
@@ -1467,9 +1467,9 @@ bool swPiece::RemoveFocusedControlPoint()
 	return true;
 }
 
-void swPiece::VerifyControlPoints(std::vector<swPieceControlPoint>& ControlPoints) const
+void swPart::VerifyControlPoints(std::vector<swPartControlPoint>& ControlPoints) const
 {
-	const swSynthesisInformation* SynthInfo = mPieceData->GetSynthInfo();
+	const swSynthesisInformation* SynthInfo = mPartData->GetSynthInfo();
 
 	if (!SynthInfo)
 	{
@@ -1484,22 +1484,22 @@ void swPiece::VerifyControlPoints(std::vector<swPieceControlPoint>& ControlPoint
 	}
 }
 
-QString swPiece::GetName() const
+QString swPart::GetName() const
 {
-	return QString::fromLatin1(mPieceData->m_strDescription);
+	return QString::fromLatin1(mPartData->m_strDescription);
 }
 
-bool swPiece::IsVisible(swStep Step) const
+bool swPart::IsVisible(swStep Step) const
 {
 	return !mHidden && (mStepShow <= Step) && (mStepHide > Step || mStepHide == SW_STEP_MAXIMUM);
 }
 
-bool swPiece::IsVisibleInSubModel() const
+bool swPart::IsVisibleInSubModel() const
 {
 	return (mStepHide == SW_STEP_MAXIMUM) && !mHidden;
 }
 
-void swPiece::GetModelPieces(const swMatrix44& WorldMatrix, int DefaultColorIndex, std::vector<swModelPiecesEntry>& ModelPieces) const
+void swPart::GetModelParts(const swMatrix44& WorldMatrix, int DefaultColorIndex, std::vector<swModelPartsEntry>& ModelParts) const
 {
 	if (!IsVisibleInSubModel())
 		return;
@@ -1509,28 +1509,28 @@ void swPiece::GetModelPieces(const swMatrix44& WorldMatrix, int DefaultColorInde
 	if (ColorIndex == gDefaultColor)
 		ColorIndex = DefaultColorIndex;
 
-	if (!mMesh || mPieceData->mState != swAssetState::Loaded)
-		mPieceData->GetModelPieces(swMultiply(mModelWorld, WorldMatrix), ColorIndex, ModelPieces);
+	if (!mMesh || mPartData->mState != swAssetState::Loaded)
+		mPartData->GetModelParts(swMultiply(mModelWorld, WorldMatrix), ColorIndex, ModelParts);
 	else
-		ModelPieces.emplace_back(swModelPiecesEntry{ swMultiply(mModelWorld, WorldMatrix), mPieceData.Get(), mMesh, ColorIndex });
+		ModelParts.emplace_back(swModelPartsEntry{ swMultiply(mModelWorld, WorldMatrix), mPartData.Get(), mMesh, ColorIndex });
 }
 
-const swBoundingBox& swPiece::GetBoundingBox() const
+const swBoundingBox& swPart::GetBoundingBox() const
 {
 	swMesh* Mesh = GetDisplayMesh();
 
-	if (!Mesh || mPieceData->IsLoading())
-		return mPieceData->GetBoundingBox();
+	if (!Mesh || mPartData->IsLoading())
+		return mPartData->GetBoundingBox();
 	else
 		return Mesh->mBoundingBox;
 }
 
-void swPiece::CompareBoundingBox(swVector3& Min, swVector3& Max) const
+void swPart::CompareBoundingBox(swVector3& Min, swVector3& Max) const
 {
 	swMesh* Mesh = GetDisplayMesh();
 
-	if (!Mesh || mPieceData->IsLoading())
-		mPieceData->CompareBoundingBox(mModelWorld, Min, Max);
+	if (!Mesh || mPartData->IsLoading())
+		mPartData->CompareBoundingBox(mModelWorld, Min, Max);
 	else
 	{
 		swVector3 Points[8];
@@ -1547,12 +1547,12 @@ void swPiece::CompareBoundingBox(swVector3& Min, swVector3& Max) const
 	}
 }
 
-swGroup* swPiece::GetTopGroup()
+swGroup* swPart::GetTopGroup()
 {
 	return mGroup ? mGroup->GetTopGroup() : nullptr;
 }
 
-void swPiece::UpdatePosition(swStep Step)
+void swPart::UpdatePosition(swStep Step)
 {
 	mPosition.Update(Step);
 	mRotation.Update(Step);
@@ -1560,42 +1560,42 @@ void swPiece::UpdatePosition(swStep Step)
 	mModelWorld = swMatrix44(mRotation, mPosition);
 }
 
-void swPiece::UpdateMesh()
+void swPart::UpdateMesh()
 {
-	mSynthPending = mPieceData && mPieceData->GetSynthInfo();
+	mSynthPending = mPartData && mPartData->GetSynthInfo();
 
 	if (mSynthPending)
-		swGetPiecesLibrary()->RequestSynthMesh(this);
+		swGetPartsLibrary()->RequestSynthMesh(this);
 	else
 	{
 		delete mMesh;
 		mMesh = nullptr;
-		swGetPiecesLibrary()->CancelSynthMesh(this);
+		swGetPartsLibrary()->CancelSynthMesh(this);
 	}
 }
 
-swMesh* swPiece::GetDisplayMesh() const
+swMesh* swPart::GetDisplayMesh() const
 {
-	if (!mPieceData || mPieceData->mState != swAssetState::Loaded)
+	if (!mPartData || mPartData->mState != swAssetState::Loaded)
 		return nullptr;
 
 	if (mMesh)
 		return mMesh;
 
-	if (mSynthPending && mPieceData && mPieceData->GetSynthInfo())
-		return swGetPiecesLibrary()->GetLoadingMesh();
+	if (mSynthPending && mPartData && mPartData->GetSynthInfo())
+		return swGetPartsLibrary()->GetLoadingMesh();
 
 	return nullptr;
 }
 
-void swPiece::SetGeneratedMesh(swMesh* Mesh)
+void swPart::SetGeneratedMesh(swMesh* Mesh)
 {
 	delete mMesh;
 	mMesh = Mesh;
 	mSynthPending = false;
 }
 
-void swPiece::RefreshGeneratedMesh()
+void swPart::RefreshGeneratedMesh()
 {
 	delete mMesh;
 	mMesh = nullptr;

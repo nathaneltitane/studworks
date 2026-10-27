@@ -2,7 +2,7 @@
 #include "sw_math.h"
 #include "sw_mesh.h"
 #include "sw_colors.h"
-#include "sw_data_piece.h"
+#include "sw_data_part.h"
 #include "sw_string.h"
 #include "sw_library.h"
 #include "sw_application.h"
@@ -12,14 +12,14 @@
 #include "sw_synthesis.h"
 #include "sw_track_train.h"
 
-swPieceData::swPieceData(bool IsLibraryPiece)
-	: mIsLibraryPiece(IsLibraryPiece)
+swPartData::swPartData(bool IsLibraryPart)
+	: mIsLibraryPart(IsLibraryPart)
 {
 	mZipFileType = swZipFileType::Count;
 	SetLoadingBoundingBox();
 }
 
-bool swPieceData::HasDecorationDescription(const char* Description)
+bool swPartData::HasDecorationDescription(const char* Description)
 {
 	// Assemblies and intrinsically printed parts may have no pattern suffix.
 	std::string PreviousWord;
@@ -59,18 +59,18 @@ bool swPieceData::HasDecorationDescription(const char* Description)
 	return false;
 }
 
-std::vector<std::string> swPieceData::Classify(std::string_view Name)
+std::vector<std::string> swPartData::Classify(std::string_view Name)
 {
 	mPatternParentId.clear();
 	mFlags = Flags();
 
-	if (!IsLibraryPiece())
+	if (!IsLibraryPart())
 		return std::vector<std::string>();
 
 	if (m_strDescription[0] == '=')
 		mFlags |= Flag::Alias;
 	else if (m_strDescription[0] == '~')
-		mFlags |= Flag::SubPiece;
+		mFlags |= Flag::SubPart;
 
 	if (HasDecorationDescription(m_strDescription))
 		mFlags |= Flag::Decorated;
@@ -109,11 +109,11 @@ std::vector<std::string> swPieceData::Classify(std::string_view Name)
 	return ParentIds;
 }
 
-bool swPieceData::InitializeFromCache(const CacheData& CacheData)
+bool swPartData::InitializeFromCache(const CacheData& CacheData)
 {
-	const int KnownFlags = static_cast<int>(Flag::Decorated) | static_cast<int>(Flag::Alias) | static_cast<int>(Flag::SubPiece);
+	const int KnownFlags = static_cast<int>(Flag::Decorated) | static_cast<int>(Flag::Alias) | static_cast<int>(Flag::SubPart);
 
-	if (CacheData.Description.size() >= sizeof(m_strDescription) || CacheData.PatternParentId.size() >= SW_PIECE_NAME_LENGTH || (CacheData.Flags & ~KnownFlags) != 0)
+	if (CacheData.Description.size() >= sizeof(m_strDescription) || CacheData.PatternParentId.size() >= SW_PART_NAME_LENGTH || (CacheData.Flags & ~KnownFlags) != 0)
 		return false;
 
 	swstrcpy(m_strDescription, CacheData.Description.c_str());
@@ -123,12 +123,12 @@ bool swPieceData::InitializeFromCache(const CacheData& CacheData)
 	return true;
 }
 
-swPieceData::CacheData swPieceData::GetCacheData() const
+swPartData::CacheData swPartData::GetCacheData() const
 {
 	return { m_strDescription, mPatternParentId, static_cast<quint8>(static_cast<int>(mFlags)) };
 }
 
-void swPieceData::SetAliasTarget(const swPieceData* Target)
+void swPartData::SetAliasTarget(const swPartData* Target)
 {
 	if (!IsAlias())
 		return;
@@ -137,45 +137,45 @@ void swPieceData::SetAliasTarget(const swPieceData* Target)
 	mFlags.setFlag(Flag::Decorated, HasDecorationDescription(m_strDescription) || (Target && Target->IsDecorated()));
 }
 
-void swPieceData::SetLoadingBoundingBox()
+void swPartData::SetLoadingBoundingBox()
 {
 	// Keep these bounds in sync with swMesh::CreateBox().
 	mBoundingBox.Min = swVector3(-10.0f, -10.0f, -24.0f);
 	mBoundingBox.Max = swVector3(10.0f, 10.0f, 4.0f);
 }
 
-swPieceData::~swPieceData()
+swPartData::~swPartData()
 {
 	delete mTrainTrackInfo;
 
 	Unload();
 }
 
-void swPieceData::SetSynthInfo(swSynthesisInformation* SynthInfo)
+void swPartData::SetSynthInfo(swSynthesisInformation* SynthInfo)
 {
 	mSynthInfo.reset(SynthInfo);
 }
 
-void swPieceData::SetMesh(swMesh* Mesh)
+void swPartData::SetMesh(swMesh* Mesh)
 {
 	mBoundingBox = Mesh->mBoundingBox;
 	ReleaseMesh();
 	mMesh = Mesh;
 }
 
-swMesh* swPieceData::GetDisplayMesh() const
+swMesh* swPartData::GetDisplayMesh() const
 {
 	if (mState == swAssetState::Loaded)
 		return mMesh;
 
 	if ((IsLoading() || mState == swAssetState::Failed) &&
 		((!IsModel() && !IsProject()) || (IsModel() && mModel->HasDirectGeometry())))
-		return swGetPiecesLibrary()->GetLoadingMesh();
+		return swGetPartsLibrary()->GetLoadingMesh();
 
 	return nullptr;
 }
 
-void swPieceData::SetFailed(QString Error)
+void swPartData::SetFailed(QString Error)
 {
 	ReleaseMesh();
 	if (!IsModel() && !IsProject())
@@ -192,13 +192,13 @@ void swPieceData::SetFailed(QString Error)
 		}
 	}
 
-	swGetPiecesLibrary()->SetPieceDataLoadError(this, std::move(Error));
+	swGetPartsLibrary()->SetPartDataLoadError(this, std::move(Error));
 }
 
-void swPieceData::DetachContainer()
+void swPartData::DetachContainer()
 {
 	Project* PreviousProject = IsProject() ? mProject : nullptr;
-	mType = Type::Piece;
+	mType = Type::Part;
 	mModel = nullptr;
 	mProject = nullptr;
 	swstrcpy(m_strDescription, mFileName);
@@ -208,12 +208,12 @@ void swPieceData::DetachContainer()
 	SetLoadingBoundingBox();
 }
 
-void swPieceData::SetModel(swModel* Model)
+void swPartData::SetModel(swModel* Model)
 {
 	if (mModel != Model)
 	{
 		// A submodel can take the name of a local external project. Keep this
-		// swPieceData so existing placements continue to refer to the same name.
+		// swPartData so existing placements continue to refer to the same name.
 		Project* PreviousProject = IsProject() ? mProject : nullptr;
 		mType = Type::Model;
 		mModel = Model;
@@ -222,7 +222,7 @@ void swPieceData::SetModel(swModel* Model)
 		delete mMesh;
 		mMesh = nullptr;
 		mState = swAssetState::Unloaded;
-		swGetPiecesLibrary()->ClearPieceDataLoadError(this);
+		swGetPartsLibrary()->ClearPartDataLoadError(this);
 	}
 
 	const QByteArray Name = Model->GetProperties().mFileName.toLatin1();
@@ -230,11 +230,11 @@ void swPieceData::SetModel(swModel* Model)
 	swstrcpy(m_strDescription, Name.constData());
 }
 
-void swPieceData::CreateProject(Project* NewProject, const char* PieceName)
+void swPartData::CreateProject(Project* NewProject, const char* PartName)
 {
 	if (mProject != NewProject)
 	{
-		swGetPiecesLibrary()->ClearPieceDataLoadError(this);
+		swGetPartsLibrary()->ClearPartDataLoadError(this);
 		Project* PreviousProject = IsProject() ? mProject : nullptr;
 		mType = Type::Project;
 		mModel = nullptr;
@@ -244,26 +244,26 @@ void swPieceData::CreateProject(Project* NewProject, const char* PieceName)
 		delete PreviousProject;
 	}
 
-	swstrcpy(mFileName, PieceName);
+	swstrcpy(mFileName, PartName);
 	swstrcpy(m_strDescription, NewProject->GetFileName().toLatin1().data());
 }
 
-bool swPieceData::IsProjectPiece() const
+bool swPartData::IsProjectPart() const
 {
 	if (mProject)
 		return !strcmp(m_strDescription, mProject->GetFileName().toLatin1().data());
 	return false;
 }
 
-bool swPieceData::GetPieceWorldMatrix(swPiece* Piece, swMatrix44& WorldMatrix) const
+bool swPartData::GetPartWorldMatrix(swPart* Part, swMatrix44& WorldMatrix) const
 {
 	if (IsModel())
-		return mModel->GetPieceWorldMatrix(Piece, WorldMatrix);
+		return mModel->GetPartWorldMatrix(Part, WorldMatrix);
 
 	return false;
 }
 
-bool swPieceData::IncludesModel(const swModel* Model) const
+bool swPartData::IncludesModel(const swModel* Model) const
 {
 	if (IsModel())
 	{
@@ -276,13 +276,13 @@ bool swPieceData::IncludesModel(const swModel* Model) const
 	return false;
 }
 
-void swPieceData::CreatePiece(const char* Name)
+void swPartData::CreatePart(const char* Name)
 {
 	swstrcpy(mFileName, Name);
 	swstrcpy(m_strDescription, Name);
 }
 
-void swPieceData::ReleaseMesh()
+void swPartData::ReleaseMesh()
 {
 	if (mMesh)
 	{
@@ -291,9 +291,9 @@ void swPieceData::ReleaseMesh()
 	}
 }
 
-void swPieceData::Unload()
+void swPartData::Unload()
 {
-	swGetPiecesLibrary()->ClearPieceDataLoadError(this);
+	swGetPartsLibrary()->ClearPartDataLoadError(this);
 
 	ReleaseMesh();
 	mState = swAssetState::Unloaded;
@@ -304,12 +304,12 @@ void swPieceData::Unload()
 	mProject = nullptr;
 }
 
-bool swPieceData::MinIntersectDist(const swVector3& Start, const swVector3& End, float& MinDistance, swPieceRayTest& PieceRayTest) const
+bool swPartData::MinIntersectDist(const swVector3& Start, const swVector3& End, float& MinDistance, swPartRayTest& PartRayTest) const
 {
 	bool Intersect = false;
 	swMesh* Mesh = GetDisplayMesh();
 
-	if (Mesh == swGetPiecesLibrary()->GetLoadingMesh() || IsModel() || IsProject())
+	if (Mesh == swGetPartsLibrary()->GetLoadingMesh() || IsModel() || IsProject())
 	{
 		float Distance;
 		swVector3 Plane;
@@ -317,32 +317,32 @@ bool swPieceData::MinIntersectDist(const swVector3& Start, const swVector3& End,
 		if (!swBoundingBoxRayIntersectDistance(mBoundingBox.Min, mBoundingBox.Max, Start, End, &Distance, nullptr, &Plane) || (Distance >= MinDistance))
 			return false;
 
-		if (Mesh == swGetPiecesLibrary()->GetLoadingMesh() && !IsModel() && !IsProject())
+		if (Mesh == swGetPartsLibrary()->GetLoadingMesh() && !IsModel() && !IsProject())
 		{
-			PieceRayTest.PieceData = this;
-			PieceRayTest.Transform = swMatrix44Identity();
+			PartRayTest.PartData = this;
+			PartRayTest.Transform = swMatrix44Identity();
 			MinDistance = Distance;
-			PieceRayTest.Plane = Plane;
-			PieceRayTest.Normal = Plane;
+			PartRayTest.Plane = Plane;
+			PartRayTest.Normal = Plane;
 			return true;
 		}
 
 		if (IsModel())
-			Intersect |= mModel->SubModelMinIntersectDist(Start, End, MinDistance, PieceRayTest);
+			Intersect |= mModel->SubModelMinIntersectDist(Start, End, MinDistance, PartRayTest);
 		else if (IsProject())
 		{
 			const swModel* const Model = mProject->GetMainModel();
-			if (Model && Model->GetPieceData())
-				Intersect |= Model->GetPieceData()->MinIntersectDist(Start, End, MinDistance, PieceRayTest);
+			if (Model && Model->GetPartData())
+				Intersect |= Model->GetPartData()->MinIntersectDist(Start, End, MinDistance, PartRayTest);
 		}
 	}
 
 	if (Mesh)
 	{
-		if (Mesh->MinIntersectDist(Start, End, MinDistance, PieceRayTest.Plane, PieceRayTest.Normal))
+		if (Mesh->MinIntersectDist(Start, End, MinDistance, PartRayTest.Plane, PartRayTest.Normal))
 		{
-			PieceRayTest.PieceData = this;
-			PieceRayTest.Transform = swMatrix44Identity();
+			PartRayTest.PartData = this;
+			PartRayTest.Transform = swMatrix44Identity();
 			Intersect = true;
 		}
 	}
@@ -350,7 +350,7 @@ bool swPieceData::MinIntersectDist(const swVector3& Start, const swVector3& End,
 	return Intersect;
 }
 
-bool swPieceData::BoxTest(const swMatrix44& WorldMatrix, const swVector4 WorldPlanes[6]) const
+bool swPartData::BoxTest(const swMatrix44& WorldMatrix, const swVector4 WorldPlanes[6]) const
 {
 	swMatrix44 InverseWorldMatrix = swMatrix44AffineInverse(WorldMatrix);
 
@@ -404,13 +404,13 @@ bool swPieceData::BoxTest(const swMatrix44& WorldMatrix, const swVector4 WorldPl
 	else if (IsProject())
 	{
 		const swModel* const Model = mProject->GetMainModel();
-		return Model && Model->GetPieceData() ? Model->GetPieceData()->BoxTest(swMatrix44Identity(), LocalPlanes) : false;
+		return Model && Model->GetPartData() ? Model->GetPartData()->BoxTest(swMatrix44Identity(), LocalPlanes) : false;
 	}
 
 	return false;
 }
 
-void swPieceData::ZoomExtents(float FoV, float AspectRatio, swMatrix44& ProjectionMatrix, swMatrix44& ViewMatrix) const
+void swPartData::ZoomExtents(float FoV, float AspectRatio, swMatrix44& ProjectionMatrix, swMatrix44& ViewMatrix) const
 {
 	swVector3 Points[8];
 	swGetBoxCorners(mBoundingBox, Points);
@@ -426,7 +426,7 @@ void swPieceData::ZoomExtents(float FoV, float AspectRatio, swMatrix44& Projecti
 	ProjectionMatrix = swMatrix44Perspective(FoV, AspectRatio, 1.0f, FarDistance);
 }
 
-void swPieceData::AddRenderMesh(swScene& Scene)
+void swPartData::AddRenderMesh(swScene& Scene)
 {
 	if (mState != swAssetState::Loaded)
 	{
@@ -439,7 +439,7 @@ void swPieceData::AddRenderMesh(swScene& Scene)
 		Scene.AddMesh(mMesh, swMatrix44Identity(), gDefaultColor, swRenderMeshState::Default);
 }
 
-void swPieceData::AddRenderMeshes(swScene* Scene, const swMatrix44& WorldMatrix, int ColorIndex, swRenderMeshState RenderMeshState, bool ParentActive) const
+void swPartData::AddRenderMeshes(swScene* Scene, const swMatrix44& WorldMatrix, int ColorIndex, swRenderMeshState RenderMeshState, bool ParentActive) const
 {
 	if (mState != swAssetState::Loaded)
 	{
@@ -456,50 +456,50 @@ void swPieceData::AddRenderMeshes(swScene* Scene, const swMatrix44& WorldMatrix,
 	else if (IsProject())
 	{
 		const swModel* const Model = mProject->GetMainModel();
-		if (Model && Model->GetPieceData())
-			Model->GetPieceData()->AddRenderMeshes(Scene, WorldMatrix, ColorIndex, RenderMeshState, ParentActive);
+		if (Model && Model->GetPartData())
+			Model->GetPartData()->AddRenderMeshes(Scene, WorldMatrix, ColorIndex, RenderMeshState, ParentActive);
 	}
 }
 
-void swPieceData::GetPiecesList(int DefaultColorIndex, bool ScanSubModels, bool AddSubModels, swPiecesList& PiecesList) const
+void swPartData::GetPartsList(int DefaultColorIndex, bool ScanSubModels, bool AddSubModels, swPartsList& PartsList) const
 {
 	if (IsModel())
 	{
 		if (ScanSubModels)
-			mModel->GetPiecesList(DefaultColorIndex, ScanSubModels, AddSubModels, PiecesList);
+			mModel->GetPartsList(DefaultColorIndex, ScanSubModels, AddSubModels, PartsList);
 
 		if (AddSubModels)
-			PiecesList[this][DefaultColorIndex]++;
+			PartsList[this][DefaultColorIndex]++;
 	}
-	else if (IsProject() && !IsProjectPiece())
+	else if (IsProject() && !IsProjectPart())
 	{
 		const swModel* const Model = mProject->GetMainModel();
 		if (Model)
-			Model->GetPiecesList(DefaultColorIndex, ScanSubModels, AddSubModels, PiecesList);
+			Model->GetPartsList(DefaultColorIndex, ScanSubModels, AddSubModels, PartsList);
 	}
 	else
-		PiecesList[this][DefaultColorIndex]++;
+		PartsList[this][DefaultColorIndex]++;
 }
 
-void swPieceData::GetModelPieces(const swMatrix44& WorldMatrix, int DefaultColorIndex, std::vector<swModelPiecesEntry>& ModelPieces) const
+void swPartData::GetModelParts(const swMatrix44& WorldMatrix, int DefaultColorIndex, std::vector<swModelPartsEntry>& ModelParts) const
 {
 	if (IsModel())
 	{
-		mModel->GetModelPieces(WorldMatrix, DefaultColorIndex, ModelPieces);
+		mModel->GetModelParts(WorldMatrix, DefaultColorIndex, ModelParts);
 		return;
 	}
 	else if (IsProject())
 	{
 		const swModel* const Model = mProject->GetMainModel();
 		if (Model)
-			Model->GetModelPieces(WorldMatrix, DefaultColorIndex, ModelPieces);
+			Model->GetModelParts(WorldMatrix, DefaultColorIndex, ModelParts);
 		return;
 	}
 
-	ModelPieces.emplace_back(swModelPiecesEntry{ WorldMatrix, this, nullptr, DefaultColorIndex });
+	ModelParts.emplace_back(swModelPartsEntry{ WorldMatrix, this, nullptr, DefaultColorIndex });
 }
 
-void swPieceData::CompareBoundingBox(const swMatrix44& WorldMatrix, swVector3& Min, swVector3& Max) const
+void swPartData::CompareBoundingBox(const swMatrix44& WorldMatrix, swVector3& Min, swVector3& Max) const
 {
 	if (!IsModel())
 	{
@@ -524,7 +524,7 @@ void swPieceData::CompareBoundingBox(const swMatrix44& WorldMatrix, swVector3& M
 	}
 }
 
-void swPieceData::AddSubModelBoundingBoxPoints(const swMatrix44& WorldMatrix, std::vector<swVector3>& Points, swGeometryBoundsMode Mode) const
+void swPartData::AddSubModelBoundingBoxPoints(const swMatrix44& WorldMatrix, std::vector<swVector3>& Points, swGeometryBoundsMode Mode) const
 {
 	if (Mode == swGeometryBoundsMode::AvailableOnly)
 	{
@@ -564,10 +564,10 @@ void swPieceData::AddSubModelBoundingBoxPoints(const swMatrix44& WorldMatrix, st
 	}
 }
 
-void swPieceData::UpdateBoundingBox(std::vector<swModel*>& UpdatedModels)
+void swPartData::UpdateBoundingBox(std::vector<swModel*>& UpdatedModels)
 {
 	if (IsModel())
-		mModel->UpdatePieceData(UpdatedModels);
+		mModel->UpdatePartData(UpdatedModels);
 	else if (IsProject())
-		mProject->UpdatePieceData(this);
+		mProject->UpdatePartData(this);
 }

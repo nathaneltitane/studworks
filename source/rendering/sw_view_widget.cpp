@@ -524,7 +524,7 @@ void swViewWidget::dragEnterEvent(QDragEnterEvent* DragEnterEvent)
 	if (MimeData->hasFormat("application/vnd.studworks-part"))
 	{
 		DragEnterEvent->acceptProposedAction();
-		mView->BeginDrag(swDragState::Piece);
+		mView->BeginDrag(swDragState::Part);
 		return;
 	}
 	else if (MimeData->hasFormat("application/vnd.studworks-color"))

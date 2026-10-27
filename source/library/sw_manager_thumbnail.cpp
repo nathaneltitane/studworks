@@ -1,19 +1,19 @@
 #include "sw_global.h"
 #include "sw_manager_thumbnail.h"
 #include "sw_library.h"
-#include "sw_data_piece.h"
+#include "sw_data_part.h"
 #include "sw_view.h"
 #include "sw_model.h"
-#include "sw_object_piece.h"
+#include "sw_object_part.h"
 #include "sw_project.h"
 #include "sw_object_camera.h"
 
-swThumbnailManager::swThumbnailManager(swPiecesLibrary* Library)
+swThumbnailManager::swThumbnailManager(swPartsLibrary* Library)
 	: QObject(Library), mLibrary(Library)
 {
-	connect(mLibrary, &swPiecesLibrary::PieceLoaded, this, &swThumbnailManager::PieceLoaded);
-	connect(mLibrary, &swPiecesLibrary::PieceLoadFailed, this, &swThumbnailManager::PieceLoadFailed);
-	connect(mLibrary, &swPiecesLibrary::GeneratedMeshSettled, this, &swThumbnailManager::GeneratedMeshSettled);
+	connect(mLibrary, &swPartsLibrary::PartLoaded, this, &swThumbnailManager::PartLoaded);
+	connect(mLibrary, &swPartsLibrary::PartLoadFailed, this, &swThumbnailManager::PartLoadFailed);
+	connect(mLibrary, &swPartsLibrary::GeneratedMeshSettled, this, &swThumbnailManager::GeneratedMeshSettled);
 }
 
 swThumbnailManager::~swThumbnailManager()
@@ -30,20 +30,20 @@ void swThumbnailManager::Clear()
 	mThumbnails.clear();
 }
 
-void swThumbnailManager::RefreshPieces(const std::vector<swPieceData*>& ChangedPieces)
+void swThumbnailManager::RefreshParts(const std::vector<swPartData*>& ChangedParts)
 {
-	const std::unordered_set<swPieceData*> Changed(ChangedPieces.begin(), ChangedPieces.end());
-	std::vector<swPieceThumbnailId> ThumbnailIds;
+	const std::unordered_set<swPartData*> Changed(ChangedParts.begin(), ChangedParts.end());
+	std::vector<swPartThumbnailId> ThumbnailIds;
 
-	for (std::map<swPieceThumbnailId, swPieceThumbnail>::value_type& Entry : mThumbnails)
+	for (std::map<swPartThumbnailId, swPartThumbnail>::value_type& Entry : mThumbnails)
 	{
-		const swPieceThumbnail& Thumbnail = Entry.second;
-		const bool RequiredChanged = std::any_of(Thumbnail.RequiredPieceData.begin(), Thumbnail.RequiredPieceData.end(), [&Changed](const swPieceDataReference& RequiredData)
+		const swPartThumbnail& Thumbnail = Entry.second;
+		const bool RequiredChanged = std::any_of(Thumbnail.RequiredPartData.begin(), Thumbnail.RequiredPartData.end(), [&Changed](const swPartDataReference& RequiredData)
 		{
 			return Changed.find(RequiredData.Get()) != Changed.end();
 		});
 
-		if (Changed.find(Thumbnail.PieceData) == Changed.end() && !RequiredChanged)
+		if (Changed.find(Thumbnail.PartData) == Changed.end() && !RequiredChanged)
 			continue;
 
 		Entry.second.Pixmap = QPixmap();
@@ -51,29 +51,29 @@ void swThumbnailManager::RefreshPieces(const std::vector<swPieceData*>& ChangedP
 		ThumbnailIds.push_back(Entry.first);
 	}
 
-	for (swPieceThumbnailId ThumbnailId : ThumbnailIds)
+	for (swPartThumbnailId ThumbnailId : ThumbnailIds)
 	{
-		const std::map<swPieceThumbnailId, swPieceThumbnail>::iterator It = mThumbnails.find(ThumbnailId);
+		const std::map<swPartThumbnailId, swPartThumbnail>::iterator It = mThumbnails.find(ThumbnailId);
 
 		if (It != mThumbnails.end())
 			UpdateThumbnail(ThumbnailId, It->second);
 	}
 }
 
-std::pair<swPieceThumbnailId, QPixmap> swThumbnailManager::RequestThumbnail(swPieceData* PieceData, int ColorIndex, int Size, float DeviceScale)
+std::pair<swPartThumbnailId, QPixmap> swThumbnailManager::RequestThumbnail(swPartData* PartData, int ColorIndex, int Size, float DeviceScale)
 {
 	for (auto &[ThumbnailId, Thumbnail] : mThumbnails)
-		if (Thumbnail.PieceData == PieceData && Thumbnail.ColorIndex == ColorIndex && Thumbnail.Size == Size && Thumbnail.DeviceScale == DeviceScale)
+		if (Thumbnail.PartData == PartData && Thumbnail.ColorIndex == ColorIndex && Thumbnail.Size == Size && Thumbnail.DeviceScale == DeviceScale)
 		{
 			Thumbnail.ReferenceCount++;
 
 			return { ThumbnailId, Thumbnail.Pixmap };
 		}
 
-	swPieceThumbnailId ThumbnailId = static_cast<swPieceThumbnailId>(mNextThumbnailId++);
-	swPieceThumbnail& Thumbnail = mThumbnails[ThumbnailId];
+	swPartThumbnailId ThumbnailId = static_cast<swPartThumbnailId>(mNextThumbnailId++);
+	swPartThumbnail& Thumbnail = mThumbnails[ThumbnailId];
 
-	Thumbnail.PieceData = PieceData;
+	Thumbnail.PartData = PartData;
 	Thumbnail.ColorIndex = ColorIndex;
 	Thumbnail.Size = Size;
 	Thumbnail.DeviceScale = DeviceScale;
@@ -84,14 +84,14 @@ std::pair<swPieceThumbnailId, QPixmap> swThumbnailManager::RequestThumbnail(swPi
 	return { ThumbnailId, Thumbnail.Pixmap };
 }
 
-void swThumbnailManager::ReleaseThumbnail(swPieceThumbnailId ThumbnailId)
+void swThumbnailManager::ReleaseThumbnail(swPartThumbnailId ThumbnailId)
 {
 	auto ThumbnailIt = mThumbnails.find(ThumbnailId);
 
 	if (ThumbnailIt == mThumbnails.end())
 		return;
 
-	swPieceThumbnail& Thumbnail = ThumbnailIt->second;
+	swPartThumbnail& Thumbnail = ThumbnailIt->second;
 
 	Thumbnail.ReferenceCount--;
 
@@ -103,24 +103,24 @@ void swThumbnailManager::ReleaseThumbnail(swPieceThumbnailId ThumbnailId)
 	}
 }
 
-void swThumbnailManager::RefreshRequiredPieces(swPieceThumbnail& Thumbnail)
+void swThumbnailManager::RefreshRequiredParts(swPartThumbnail& Thumbnail)
 {
-	std::vector<swPieceData*> Required{ Thumbnail.PieceData };
+	std::vector<swPartData*> Required{ Thumbnail.PartData };
 
-	if (Thumbnail.PieceData->IsModel())
+	if (Thumbnail.PartData->IsModel())
 	{
-		std::vector<swPieceDataReference> ModelPieceData = Thumbnail.PieceData->GetModel()->GetRequiredPieceData();
-		for (const swPieceDataReference& ModelData : ModelPieceData)
+		std::vector<swPartDataReference> ModelPartData = Thumbnail.PartData->GetModel()->GetRequiredPartData();
+		for (const swPartDataReference& ModelData : ModelPartData)
 			Required.push_back(ModelData.Get());
 	}
-	else if (Thumbnail.PieceData->IsProject())
+	else if (Thumbnail.PartData->IsProject())
 	{
-		const swModel* Model = Thumbnail.PieceData->GetProject()->GetMainModel();
+		const swModel* Model = Thumbnail.PartData->GetProject()->GetMainModel();
 
 		if (Model)
 		{
-			std::vector<swPieceDataReference> ModelPieceData = Model->GetRequiredPieceData();
-			for (const swPieceDataReference& ModelData : ModelPieceData)
+			std::vector<swPartDataReference> ModelPartData = Model->GetRequiredPartData();
+			for (const swPartDataReference& ModelData : ModelPartData)
 				Required.push_back(ModelData.Get());
 		}
 	}
@@ -128,37 +128,37 @@ void swThumbnailManager::RefreshRequiredPieces(swPieceThumbnail& Thumbnail)
 	std::sort(Required.begin(), Required.end());
 	Required.erase(std::unique(Required.begin(), Required.end()), Required.end());
 
-	std::unordered_map<swPieceData*, size_t> Previous;
+	std::unordered_map<swPartData*, size_t> Previous;
 
-	for (size_t Index = 0; Index < Thumbnail.RequiredPieceData.size(); Index++)
-		Previous.emplace(Thumbnail.RequiredPieceData[Index].Get(), Index);
+	for (size_t Index = 0; Index < Thumbnail.RequiredPartData.size(); Index++)
+		Previous.emplace(Thumbnail.RequiredPartData[Index].Get(), Index);
 
-	std::vector<swPieceDataReference> RequiredPieceData;
-	RequiredPieceData.reserve(Required.size());
+	std::vector<swPartDataReference> RequiredPartData;
+	RequiredPartData.reserve(Required.size());
 
-	for (swPieceData* PieceData : Required)
+	for (swPartData* PartData : Required)
 	{
-		const auto It = Previous.find(PieceData);
+		const auto It = Previous.find(PartData);
 
 		if (It != Previous.end())
-			RequiredPieceData.push_back(std::move(Thumbnail.RequiredPieceData[It->second]));
+			RequiredPartData.push_back(std::move(Thumbnail.RequiredPartData[It->second]));
 		else
 		{
-			RequiredPieceData.emplace_back(PieceData);
-			mLibrary->RequestPieceDataLoad(PieceData, swLoadPriority::Low);
+			RequiredPartData.emplace_back(PartData);
+			mLibrary->RequestPartDataLoad(PartData, swLoadPriority::Low);
 		}
 	}
 
-	Thumbnail.RequiredPieceData = std::move(RequiredPieceData);
+	Thumbnail.RequiredPartData = std::move(RequiredPartData);
 }
 
-void swThumbnailManager::UpdateThumbnail(swPieceThumbnailId ThumbnailId, swPieceThumbnail& Thumbnail)
+void swThumbnailManager::UpdateThumbnail(swPartThumbnailId ThumbnailId, swPartThumbnail& Thumbnail)
 {
-	RefreshRequiredPieces(Thumbnail);
+	RefreshRequiredParts(Thumbnail);
 
 	bool Pending = false;
 
-	for (const swPieceDataReference& RequiredData : Thumbnail.RequiredPieceData)
+	for (const swPartDataReference& RequiredData : Thumbnail.RequiredPartData)
 	{
 		if (RequiredData->mState == swAssetState::Failed || RequiredData->mState == swAssetState::Unloaded)
 		{
@@ -173,29 +173,29 @@ void swThumbnailManager::UpdateThumbnail(swPieceThumbnailId ThumbnailId, swPiece
 	if (Pending)
 		return;
 
-	if (Thumbnail.PieceData->IsModel())
+	if (Thumbnail.PartData->IsModel())
 	{
 		std::vector<swModel*> UpdatedModels;
-		Thumbnail.PieceData->GetModel()->UpdatePieceData(UpdatedModels);
+		Thumbnail.PartData->GetModel()->UpdatePartData(UpdatedModels);
 	}
-	else if (Thumbnail.PieceData->IsProject())
-		Thumbnail.PieceData->GetProject()->UpdatePieceData(Thumbnail.PieceData);
+	else if (Thumbnail.PartData->IsProject())
+		Thumbnail.PartData->GetProject()->UpdatePartData(Thumbnail.PartData);
 
 	DrawThumbnail(ThumbnailId, Thumbnail);
 }
 
-void swThumbnailManager::PieceLoaded(swPieceData* PieceData)
+void swThumbnailManager::PartLoaded(swPartData* PartData)
 {
-	std::vector<swPieceThumbnailId> Ready;
+	std::vector<swPartThumbnailId> Ready;
 
 	for (const auto& [ThumbnailId, Thumbnail] : mThumbnails)
-		if (Thumbnail.Pixmap.isNull() && std::any_of(Thumbnail.RequiredPieceData.begin(), Thumbnail.RequiredPieceData.end(), [PieceData](const swPieceDataReference& RequiredData)
+		if (Thumbnail.Pixmap.isNull() && std::any_of(Thumbnail.RequiredPartData.begin(), Thumbnail.RequiredPartData.end(), [PartData](const swPartDataReference& RequiredData)
 		{
-			return RequiredData == PieceData;
+			return RequiredData == PartData;
 		}))
 			Ready.push_back(ThumbnailId);
 
-	for (swPieceThumbnailId ThumbnailId : Ready)
+	for (swPartThumbnailId ThumbnailId : Ready)
 	{
 		const auto It = mThumbnails.find(ThumbnailId);
 
@@ -204,18 +204,18 @@ void swThumbnailManager::PieceLoaded(swPieceData* PieceData)
 	}
 }
 
-void swThumbnailManager::PieceLoadFailed(swPieceData* PieceData)
+void swThumbnailManager::PartLoadFailed(swPartData* PartData)
 {
-	std::vector<swPieceThumbnailId> Failed;
+	std::vector<swPartThumbnailId> Failed;
 
 	for (const auto& [ThumbnailId, Thumbnail] : mThumbnails)
-		if (Thumbnail.Pixmap.isNull() && std::any_of(Thumbnail.RequiredPieceData.begin(), Thumbnail.RequiredPieceData.end(), [PieceData](const swPieceDataReference& RequiredData)
+		if (Thumbnail.Pixmap.isNull() && std::any_of(Thumbnail.RequiredPartData.begin(), Thumbnail.RequiredPartData.end(), [PartData](const swPartDataReference& RequiredData)
 		{
-			return RequiredData == PieceData;
+			return RequiredData == PartData;
 		}))
 			Failed.push_back(ThumbnailId);
 
-	for (swPieceThumbnailId ThumbnailId : Failed)
+	for (swPartThumbnailId ThumbnailId : Failed)
 	{
 		const auto It = mThumbnails.find(ThumbnailId);
 
@@ -224,16 +224,16 @@ void swThumbnailManager::PieceLoadFailed(swPieceData* PieceData)
 	}
 }
 
-void swThumbnailManager::GeneratedMeshSettled(swPieceData*)
+void swThumbnailManager::GeneratedMeshSettled(swPartData*)
 {
-	std::vector<swPieceThumbnailId> Ready;
+	std::vector<swPartThumbnailId> Ready;
 
-	for (const std::map<swPieceThumbnailId, std::unique_ptr<swModel>>::value_type& Entry : mPendingGeneratedModels)
+	for (const std::map<swPartThumbnailId, std::unique_ptr<swModel>>::value_type& Entry : mPendingGeneratedModels)
 	{
 		bool Pending = false;
 
-		for (const swPiece* Piece : Entry.second->GetRequiredSynthPieces())
-			if (Piece->IsGeneratedMeshPending())
+		for (const swPart* Part : Entry.second->GetRequiredSynthParts())
+			if (Part->IsGeneratedMeshPending())
 			{
 				Pending = true;
 				break;
@@ -243,9 +243,9 @@ void swThumbnailManager::GeneratedMeshSettled(swPieceData*)
 			Ready.push_back(Entry.first);
 	}
 
-	for (swPieceThumbnailId ThumbnailId : Ready)
+	for (swPartThumbnailId ThumbnailId : Ready)
 	{
-		const std::map<swPieceThumbnailId, swPieceThumbnail>::iterator It = mThumbnails.find(ThumbnailId);
+		const std::map<swPartThumbnailId, swPartThumbnail>::iterator It = mThumbnails.find(ThumbnailId);
 
 		if (It != mThumbnails.end())
 			UpdateThumbnail(It->first, It->second);
@@ -262,15 +262,15 @@ void swThumbnailManager::SchedulePendingThumbnails()
 	QTimer::singleShot(0, this, [this]()
 	{
 		mRetryScheduled = false;
-		std::vector<swPieceThumbnailId> Pending;
+		std::vector<swPartThumbnailId> Pending;
 
-		for (const std::map<swPieceThumbnailId, swPieceThumbnail>::value_type& Entry : mThumbnails)
+		for (const std::map<swPartThumbnailId, swPartThumbnail>::value_type& Entry : mThumbnails)
 			if (Entry.second.Pixmap.isNull())
 				Pending.push_back(Entry.first);
 
-		for (swPieceThumbnailId ThumbnailId : Pending)
+		for (swPartThumbnailId ThumbnailId : Pending)
 		{
-			const std::map<swPieceThumbnailId, swPieceThumbnail>::iterator It = mThumbnails.find(ThumbnailId);
+			const std::map<swPartThumbnailId, swPartThumbnail>::iterator It = mThumbnails.find(ThumbnailId);
 
 			if (It != mThumbnails.end() && It->second.Pixmap.isNull())
 				UpdateThumbnail(It->first, It->second);
@@ -278,7 +278,7 @@ void swThumbnailManager::SchedulePendingThumbnails()
 	});
 }
 
-void swThumbnailManager::DrawFailedThumbnail(swPieceThumbnailId ThumbnailId, swPieceThumbnail& Thumbnail)
+void swThumbnailManager::DrawFailedThumbnail(swPartThumbnailId ThumbnailId, swPartThumbnail& Thumbnail)
 {
 	mPendingGeneratedModels.erase(ThumbnailId);
 
@@ -301,21 +301,21 @@ void swThumbnailManager::DrawFailedThumbnail(swPieceThumbnailId ThumbnailId, swP
 
 	Thumbnail.Pixmap.setDevicePixelRatio(Thumbnail.DeviceScale);
 
-	Thumbnail.RequiredPieceData.clear();
+	Thumbnail.RequiredPartData.clear();
 
 	emit ThumbnailReady(ThumbnailId, Thumbnail.Pixmap);
 	SchedulePendingThumbnails();
 }
 
-void swThumbnailManager::DrawThumbnail(swPieceThumbnailId ThumbnailId, swPieceThumbnail& Thumbnail)
+void swThumbnailManager::DrawThumbnail(swPartThumbnailId ThumbnailId, swPartThumbnail& Thumbnail)
 {
-	const std::map<swPieceThumbnailId, std::unique_ptr<swModel>>::iterator PendingIt = mPendingGeneratedModels.find(ThumbnailId);
-	const bool ReuseGeneratedPiece = PendingIt != mPendingGeneratedModels.end();
+	const std::map<swPartThumbnailId, std::unique_ptr<swModel>>::iterator PendingIt = mPendingGeneratedModels.find(ThumbnailId);
+	const bool ReuseGeneratedPart = PendingIt != mPendingGeneratedModels.end();
 
-	if (ReuseGeneratedPiece)
+	if (ReuseGeneratedPart)
 	{
-		for (const swPiece* Piece : PendingIt->second->GetRequiredSynthPieces())
-			if (Piece->IsGeneratedMeshPending())
+		for (const swPart* Part : PendingIt->second->GetRequiredSynthParts())
+			if (Part->IsGeneratedMeshPending())
 				return;
 
 		mView.reset();
@@ -333,7 +333,7 @@ void swThumbnailManager::DrawThumbnail(swPieceThumbnailId ThumbnailId, swPieceTh
 	{
 		if (!mModel)
 			mModel = std::unique_ptr<swModel>(new swModel(QString(), nullptr, true));
-		mView = std::unique_ptr<swView>(new swView(swViewType::PiecesList, mModel.get()));
+		mView = std::unique_ptr<swView>(new swView(swViewType::PartsList, mModel.get()));
 
 		mView->SetOffscreenContext();
 		mView->MakeCurrent();
@@ -353,22 +353,22 @@ void swThumbnailManager::DrawThumbnail(swPieceThumbnailId ThumbnailId, swPieceTh
 	const uint BackgroundColor = QApplication::palette().color(QPalette::Base).rgba();
 	mView->SetBackgroundColorOverride(SW_RGBA(qRed(BackgroundColor), qGreen(BackgroundColor), qBlue(BackgroundColor), 0));
 
-	swPieceData* PieceData = Thumbnail.PieceData;
+	swPartData* PartData = Thumbnail.PartData;
 
-	if (!ReuseGeneratedPiece)
+	if (!ReuseGeneratedPart)
 	{
-		mModel->SetPreviewPieceData(PieceData, Thumbnail.ColorIndex);
+		mModel->SetPreviewPartData(PartData, Thumbnail.ColorIndex);
 
-		bool GeneratedPiecePending = false;
+		bool GeneratedPartPending = false;
 
-		for (const swPiece* Piece : mModel->GetRequiredSynthPieces())
-			if (Piece->IsGeneratedMeshPending())
+		for (const swPart* Part : mModel->GetRequiredSynthParts())
+			if (Part->IsGeneratedMeshPending())
 			{
-				GeneratedPiecePending = true;
+				GeneratedPartPending = true;
 				break;
 			}
 
-		if (GeneratedPiecePending)
+		if (GeneratedPartPending)
 		{
 			mView->UnbindRenderFramebuffer();
 			mView.reset();
@@ -377,7 +377,7 @@ void swThumbnailManager::DrawThumbnail(swPieceThumbnailId ThumbnailId, swPieceTh
 		}
 	}
 
-	const swVector3 Center = (PieceData->GetBoundingBox().Min + PieceData->GetBoundingBox().Max) / 2.0f;
+	const swVector3 Center = (PartData->GetBoundingBox().Min + PartData->GetBoundingBox().Max) / 2.0f;
 	const swVector3 Position = Center + swVector3(100.0f, -100.0f, 75.0f);
 
 	mView->GetCamera()->SetViewpoint(Position, Center, swVector3(0, 0, 1));
@@ -390,9 +390,9 @@ void swThumbnailManager::DrawThumbnail(swPieceThumbnailId ThumbnailId, swPieceTh
 
 	if (mView->HasMissingAssets())
 	{
-		RefreshRequiredPieces(Thumbnail);
+		RefreshRequiredParts(Thumbnail);
 
-		for (const swPieceDataReference& RequiredData : Thumbnail.RequiredPieceData)
+		for (const swPartDataReference& RequiredData : Thumbnail.RequiredPartData)
 			if (RequiredData->IsLoading())
 				return;
 
@@ -410,9 +410,9 @@ void swThumbnailManager::DrawThumbnail(swPieceThumbnailId ThumbnailId, swPieceTh
 
 	const char* IconName = nullptr;
 
-	if (PieceData->GetSynthInfo())
+	if (PartData->GetSynthInfo())
 		IconName = ":/resources/interface/widgets/png/32/thumbnail_flexible_32.png";
-	else if (PieceData->GetTrainTrackInfo())
+	else if (PartData->GetTrainTrackInfo())
 		IconName = ":/resources/interface/widgets/png/32/thumbnail_track_train_32.png";
 
 	if (IconName)
@@ -448,7 +448,7 @@ void swThumbnailManager::DrawThumbnail(swPieceThumbnailId ThumbnailId, swPieceTh
 
 	Thumbnail.Pixmap = QPixmap::fromImage(Image).scaled(ScaledSize, ScaledSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
-	Thumbnail.RequiredPieceData.clear();
+	Thumbnail.RequiredPartData.clear();
 
 	emit ThumbnailReady(ThumbnailId, Thumbnail.Pixmap);
 	SchedulePendingThumbnails();

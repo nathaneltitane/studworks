@@ -60,7 +60,7 @@ protected:
 		PageLayout,
 		Page,
 		Step,
-		PiecesList,
+		PartsList,
 		PageNumber,
 		Count
 	};
@@ -79,7 +79,7 @@ protected:
 		None,
 		StepImage,
 		StepNumber,
-		PiecesList,
+		PartsList,
 		PageNumber
 	};
 

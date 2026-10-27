@@ -2,7 +2,7 @@
 #include "sw_window_main.h"
 #include "sw_widget_builder_minifigure.h"
 #include "sw_widget_spin_box_double.h"
-#include "sw_widget_selection_piece.h"
+#include "sw_widget_selection_part.h"
 #ifdef SW_ENABLE_TERMINAL
 #include "sw_widget_terminal.h"
 #endif
@@ -21,10 +21,10 @@
 #include "sw_profile.h"
 #include "sw_view.h"
 #include "sw_project.h"
-#include "sw_object_piece.h"
+#include "sw_object_part.h"
 #include "sw_object_camera.h"
 #include "sw_group.h"
-#include "sw_data_piece.h"
+#include "sw_data_part.h"
 #include "sw_library.h"
 #include "sw_colors.h"
 #include "sw_widget_preview.h"
@@ -64,10 +64,10 @@ swMainWindow::swMainWindow()
 
 swMainWindow::~swMainWindow()
 {
-	swPiecesLibrary* Library = swGetPiecesLibrary();
+	swPartsLibrary* Library = swGetPartsLibrary();
 	disconnect(Library, nullptr, this, nullptr);
 
-	mInsertPieceData.Reset();
+	mInsertPartData.Reset();
 
 	for (size_t FileIndex = 0; FileIndex < mRecentFiles.size(); FileIndex++)
 		swSetProfileString((SW_PROFILE_KEY)(SW_PROFILE_RECENT_FILE1 + FileIndex), mRecentFiles[FileIndex]);
@@ -86,12 +86,12 @@ swView* swMainWindow::CreateView(swModel* Model)
 	return NewView;
 }
 
-void swMainWindow::PreviewPiece(swPieceData* PieceData, int ColorCode, bool ShowPreview)
+void swMainWindow::PreviewPart(swPartData* PartData, int ColorCode, bool ShowPreview)
 {
 	if (ShowPreview)
 		mPreviewToolBar->show();
 
-	mPreviewWidget->SetCurrentPiece(PieceData, ColorCode);
+	mPreviewWidget->SetCurrentPart(PartData, ColorCode);
 }
 
 void swMainWindow::CreateTerminalWidget()
@@ -127,35 +127,35 @@ void swMainWindow::UpdateTerminalDirectory(bool Force)
 #endif
 }
 
-void swMainWindow::SnapPiecesDock()
+void swMainWindow::SnapPartsDock()
 {
-	if (!swGetPreferences().mPiecesSnapToTiles || !mPiecesToolBar || mPiecesToolBar->isFloating() || !mPieceSelectionWidget)
+	if (!swGetPreferences().mPartsSnapToTiles || !mPartsToolBar || mPartsToolBar->isFloating() || !mPartSelectionWidget)
 		return;
 
-	const Qt::DockWidgetArea Area = dockWidgetArea(mPiecesToolBar);
+	const Qt::DockWidgetArea Area = dockWidgetArea(mPartsToolBar);
 
 	if (Area != Qt::LeftDockWidgetArea && Area != Qt::RightDockWidgetArea)
 	{
-		mPieceSelectionWidget->SnapCategoriesWidth();
+		mPartSelectionWidget->SnapCategoriesWidth();
 		return;
 	}
 
-	const int Delta = mPieceSelectionWidget->GetTileSnapDelta();
+	const int Delta = mPartSelectionWidget->GetTileSnapDelta();
 
 	if (!Delta)
 		return;
 
-	resizeDocks({ mPiecesToolBar }, { mPiecesToolBar->width() + Delta }, Qt::Horizontal);
+	resizeDocks({ mPartsToolBar }, { mPartsToolBar->width() + Delta }, Qt::Horizontal);
 
 	// Check once more after the tiles are laid out again in case the view wraps differently than measured.
-	if (!mPiecesSnapRetried)
+	if (!mPartsSnapRetried)
 	{
-		mPiecesSnapRetried = true;
+		mPartsSnapRetried = true;
 
 		QTimer::singleShot(0, this, [this]()
 		{
-			SnapPiecesDock();
-			mPiecesSnapRetried = false;
+			SnapPartsDock();
+			mPartsSnapRetried = false;
 		});
 	}
 }
@@ -167,7 +167,7 @@ void swMainWindow::CreatePreviewWidget()
 	mPreviewToolBar = new QDockWidget(tr("Preview"), this);
 	mPreviewToolBar->setWindowTitle(tr("Preview"));
 	mPreviewToolBar->setObjectName("PreviewToolBar");
-	mPreviewToolBar->setWhatsThis(tr("<p><b>Preview</b></p><p>Inspect a piece without placing it in the model. Double-click a piece in the Pieces dock to preview it. Lock Preview keeps the current preview when the source selection changes; unlock it to allow updates.</p>"));
+	mPreviewToolBar->setWhatsThis(tr("<p><b>Preview</b></p><p>Inspect a part without placing it in the model. Double-click a part in the Parts dock to preview it. Lock Preview keeps the current preview when the source selection changes; unlock it to allow updates.</p>"));
 	swSetupWidgetHelp(mPreviewToolBar, nullptr);
 	mPreviewToolBar->setWidget(mPreviewWidget);
 	addDockWidget(Qt::RightDockWidgetArea, mPreviewToolBar);
@@ -177,13 +177,13 @@ void swMainWindow::CreatePreviewWidget()
 
 bool swMainWindow::eventFilter(QObject* Object, QEvent* Event)
 {
-	// Resizing the pieces panel by hand snaps it to whole tiles once the mouse is released.
-	if (Object == mPiecesToolBar && Event->type() == QEvent::Resize && QApplication::mouseButtons() != Qt::NoButton)
-		mPiecesSnapPending = true;
-	else if (Event->type() == QEvent::MouseButtonRelease && mPiecesSnapPending)
+	// Resizing the parts panel by hand snaps it to whole tiles once the mouse is released.
+	if (Object == mPartsToolBar && Event->type() == QEvent::Resize && QApplication::mouseButtons() != Qt::NoButton)
+		mPartsSnapPending = true;
+	else if (Event->type() == QEvent::MouseButtonRelease && mPartsSnapPending)
 	{
-		mPiecesSnapPending = false;
-		QTimer::singleShot(0, this, &swMainWindow::SnapPiecesDock);
+		mPartsSnapPending = false;
+		QTimer::singleShot(0, this, &swMainWindow::SnapPartsDock);
 	}
 
 	QTabBar* TabBar = mModelTabWidget ? mModelTabWidget->tabBar() : nullptr;
@@ -276,20 +276,20 @@ void swMainWindow::UpdateAssets()
 	std::vector<swModel*> UpdatedModels;
 
 	for (const std::unique_ptr<swModel>& Model : Project->GetModels())
-		Model->UpdatePieceData(UpdatedModels);
+		Model->UpdatePartData(UpdatedModels);
 
 	UpdateTimeline(false, true);
 
 	swView::UpdateProjectViews(Project);
 
-	const std::vector<swPieceDataReference> RequiredPieceData = Project->GetRequiredPieceData();
-	const std::vector<swPiece*> GeneratedPieces = Project->GetRequiredSynthPieces();
+	const std::vector<swPartDataReference> RequiredPartData = Project->GetRequiredPartData();
+	const std::vector<swPart*> GeneratedParts = Project->GetRequiredSynthParts();
 
 	mStatusRequiredAssets.clear();
-	for (const swPieceDataReference& RequiredData : RequiredPieceData)
+	for (const swPartDataReference& RequiredData : RequiredPartData)
 		mStatusRequiredAssets.insert(RequiredData.Get());
 
-	int PendingPieces = 0;
+	int PendingParts = 0;
 	int PendingSynths = 0;
 	int Failed = 0;
 	QString FailureDetails;
@@ -302,36 +302,36 @@ void swMainWindow::UpdateAssets()
 		FailureDetails += Warning;
 	}
 
-	for (const swPieceDataReference& RequiredData : RequiredPieceData)
+	for (const swPartDataReference& RequiredData : RequiredPartData)
 	{
-		const swPieceData* PieceData = RequiredData.Get();
-		if (PieceData->mState == swAssetState::Failed)
+		const swPartData* PartData = RequiredData.Get();
+		if (PartData->mState == swAssetState::Failed)
 		{
 			Failed++;
 
-			QString Error = swGetPiecesLibrary()->GetPieceDataLoadError(PieceData);
+			QString Error = swGetPartsLibrary()->GetPartDataLoadError(PartData);
 
 			if (Error.isEmpty())
-				Error = tr("Could not load piece.");
+				Error = tr("Could not load part.");
 
 			if (!FailureDetails.isEmpty())
 				FailureDetails += QLatin1Char('\n');
 
-			FailureDetails += QStringLiteral("'%1': %2").arg(QString::fromLatin1(PieceData->mFileName), Error);
+			FailureDetails += QStringLiteral("'%1': %2").arg(QString::fromLatin1(PartData->mFileName), Error);
 		}
-		else if (PieceData->mState != swAssetState::Loaded)
-			PendingPieces++;
+		else if (PartData->mState != swAssetState::Loaded)
+			PendingParts++;
 	}
 
-	for (const swPiece* Piece : GeneratedPieces)
+	for (const swPart* Part : GeneratedParts)
 	{
-		if (Piece->IsGeneratedMeshPending())
+		if (Part->IsGeneratedMeshPending())
 			PendingSynths++;
-		else if (!Piece->HasGeneratedMesh())
+		else if (!Part->HasGeneratedMesh())
 		{
 			Failed++;
 
-			QString Error = swGetPiecesLibrary()->GetSynthMeshError(Piece);
+			QString Error = swGetPartsLibrary()->GetSynthMeshError(Part);
 
 			if (Error.isEmpty())
 				Error = tr("Could not generate geometry.");
@@ -339,25 +339,25 @@ void swMainWindow::UpdateAssets()
 			if (!FailureDetails.isEmpty())
 				FailureDetails += QLatin1Char('\n');
 
-			FailureDetails += QStringLiteral("'%1': %2").arg(QString::fromLatin1(Piece->mPieceData->mFileName), Error);
+			FailureDetails += QStringLiteral("'%1': %2").arg(QString::fromLatin1(Part->mPartData->mFileName), Error);
 		}
 	}
 
-	const int Total = static_cast<int>(RequiredPieceData.size() + GeneratedPieces.size());
-	const int Pending = PendingPieces + PendingSynths;
+	const int Total = static_cast<int>(RequiredPartData.size() + GeneratedParts.size());
+	const int Pending = PendingParts + PendingSynths;
 	QString LoadingText;
 
-	if (!PendingPieces && PendingSynths)
-		LoadingText = tr("Regenerating synthesized piece geometry.");
+	if (!PendingParts && PendingSynths)
+		LoadingText = tr("Regenerating synthesized part geometry.");
 	else
-		LoadingText = tr("Loading model pieces (%1 / %2).").arg(Total - Pending - Failed).arg(Total);
+		LoadingText = tr("Loading model parts (%1 / %2).").arg(Total - Pending - Failed).arg(Total);
 
 	mStatusLoadSpinner->setToolTip(LoadingText);
 	mStatusLoadSpinner->setAccessibleDescription(LoadingText);
 
 	if (!FailureDetails.isEmpty())
 	{
-		QString FailureText = tr("The model could not be fully loaded. Some pieces may be missing.\n\n%1").arg(FailureDetails);
+		QString FailureText = tr("The model could not be fully loaded. Some parts may be missing.\n\n%1").arg(FailureDetails);
 
 		mStatusLoadFailureLabel->setToolTip(FailureText);
 		mStatusLoadFailureLabel->setAccessibleDescription(FailureText);
@@ -383,7 +383,7 @@ void swMainWindow::closeEvent(QCloseEvent* Event)
 		Settings.beginGroup("MainWindow");
 		Settings.setValue("Geometry", saveGeometry());
 		Settings.setValue("State", saveState());
-		mPieceSelectionWidget->SaveState(Settings);
+		mPartSelectionWidget->SaveState(Settings);
 		Settings.endGroup();
 
 		gApplication->SaveTabLayout();
@@ -413,7 +413,7 @@ QMenu* swMainWindow::createPopupMenu()
 
 	UpdateDockWidgetActions();
 
-	Menu->addAction(mActions[SW_VIEW_TOOLBAR_PIECES]);
+	Menu->addAction(mActions[SW_VIEW_TOOLBAR_PARTS]);
 	Menu->addAction(mActions[SW_VIEW_TOOLBAR_COLORS]);
 	Menu->addAction(mActions[SW_VIEW_TOOLBAR_PROPERTIES]);
 	Menu->addAction(mActions[SW_VIEW_TOOLBAR_TIMELINE]);
@@ -430,7 +430,7 @@ QMenu* swMainWindow::createPopupMenu()
 
 void swMainWindow::UpdateDockWidgetActions()
 {
-	mActions[SW_VIEW_TOOLBAR_PIECES]->setChecked(mPiecesToolBar->isVisible());
+	mActions[SW_VIEW_TOOLBAR_PARTS]->setChecked(mPartsToolBar->isVisible());
 	mActions[SW_VIEW_TOOLBAR_COLORS]->setChecked(mColorsToolBar->isVisible());
 	mActions[SW_VIEW_TOOLBAR_PROPERTIES]->setChecked(mPropertiesToolBar->isVisible());
 	mActions[SW_VIEW_TOOLBAR_TIMELINE]->setChecked(mTimelineToolBar->isVisible());
@@ -544,14 +544,14 @@ void swMainWindow::ColorChanged(int ColorIndex)
 	SetColorIndex(ColorIndex);
 }
 
-void swMainWindow::PieceListPicked(swPieceData* PieceData)
+void swMainWindow::PartListPicked(swPartData* PartData)
 {
-	if (!PieceData)
+	if (!PartData)
 		return;
 
-	quint32 ColorCode = swGetColorCode(mPieceSelectionWidget->GetColorIndex());
+	quint32 ColorCode = swGetColorCode(mPartSelectionWidget->GetColorIndex());
 
-	PreviewPiece(PieceData, ColorCode, true);
+	PreviewPart(PartData, ColorCode, true);
 }
 
 void swMainWindow::ColorButtonClicked()
@@ -559,7 +559,7 @@ void swMainWindow::ColorButtonClicked()
 	swModel* ActiveModel = GetActiveModel();
 
 	if (ActiveModel)
-		ActiveModel->PaintSelectedPieces();
+		ActiveModel->PaintSelectedParts();
 }
 
 void swMainWindow::ShowAboutDialog()
@@ -663,7 +663,7 @@ void swMainWindow::ShowSelectDialog()
 	if (!ActiveModel)
 		return;
 
-	if (ActiveModel->GetPieces().empty() && ActiveModel->GetCameras().empty() && ActiveModel->GetLights().empty())
+	if (ActiveModel->GetParts().empty() && ActiveModel->GetCameras().empty() && ActiveModel->GetLights().empty())
 	{
 		QMessageBox::information(this, tr("Select Objects"), tr("Nothing to select."));
 		return;
@@ -683,12 +683,12 @@ void swMainWindow::ShowResultError(const swResult<void>& Result, const QString& 
 		QMessageBox::warning(this, Title, Result.error());
 }
 
-void swMainWindow::ToggleFirstPieceAtOrigin()
+void swMainWindow::ToggleFirstPartAtOrigin()
 {
-	swGetPreferences().mFirstPieceAtOrigin = !swGetPreferences().mFirstPieceAtOrigin;
-	swSetProfileInteger(SW_PROFILE_FIRST_PIECE_AT_ORIGIN, swGetPreferences().mFirstPieceAtOrigin);
+	swGetPreferences().mFirstPartAtOrigin = !swGetPreferences().mFirstPartAtOrigin;
+	swSetProfileInteger(SW_PROFILE_FIRST_PART_AT_ORIGIN, swGetPreferences().mFirstPartAtOrigin);
 
-	mActions[SW_PIECE_TOGGLE_FIRST_AT_ORIGIN]->setChecked(swGetPreferences().mFirstPieceAtOrigin);
+	mActions[SW_PART_TOGGLE_FIRST_AT_ORIGIN]->setChecked(swGetPreferences().mFirstPartAtOrigin);
 }
 
 void swMainWindow::SetColorIndex(int ColorIndex)
@@ -698,7 +698,7 @@ void swMainWindow::SetColorIndex(int ColorIndex)
 	// Picking a color explicitly also becomes the color to insert next.
 	mLastInsertedColorIndex = ColorIndex;
 
-	UpdatePiecesColor();
+	UpdatePartsColor();
 	UpdateColor();
 }
 
@@ -709,8 +709,8 @@ int swMainWindow::GetInsertColorIndex() const
 	case swInsertColorMode::CurrentColor:
 		break;
 
-	case swInsertColorMode::SelectedPieceColor:
-		// Selecting a piece already made its color the current color.
+	case swInsertColorMode::SelectedPartColor:
+		// Selecting a part already made its color the current color.
 		break;
 
 	case swInsertColorMode::LastInsertedColor:
@@ -726,7 +726,7 @@ void swMainWindow::SetLastInsertedColorIndex(int ColorIndex)
 {
 	mLastInsertedColorIndex = ColorIndex;
 
-	UpdatePiecesColor();
+	UpdatePartsColor();
 }
 
 void swMainWindow::SetInsertColorMode(swInsertColorMode InsertColorMode)
@@ -734,7 +734,7 @@ void swMainWindow::SetInsertColorMode(swInsertColorMode InsertColorMode)
 	swGetPreferences().mInsertColorMode = InsertColorMode;
 	swSetProfileInteger(SW_PROFILE_INSERT_COLOR_MODE, static_cast<int>(InsertColorMode));
 
-	UpdatePiecesColor();
+	UpdatePartsColor();
 }
 
 void swMainWindow::ColorOptionsMenuAboutToShow()
@@ -762,18 +762,18 @@ void swMainWindow::ColorOptionsMenuAboutToShow()
 
 	QMenu* InsertMenu = Menu->addMenu(tr("Insert Color"));
 	QActionGroup* InsertGroup = new QActionGroup(InsertMenu);
-	InsertGroup->addAction(AddCommand(InsertMenu, tr("Current Color"), SW_PIECE_INSERT_COLOR_CURRENT, InsertColorMode == swInsertColorMode::CurrentColor));
-	InsertGroup->addAction(AddCommand(InsertMenu, tr("Selected Piece Color"), SW_PIECE_INSERT_COLOR_SELECTED, InsertColorMode == swInsertColorMode::SelectedPieceColor));
-	InsertGroup->addAction(AddCommand(InsertMenu, tr("Last Inserted Piece Color"), SW_PIECE_INSERT_COLOR_LAST_INSERTED, InsertColorMode == swInsertColorMode::LastInsertedColor));
+	InsertGroup->addAction(AddCommand(InsertMenu, tr("Current Color"), SW_PART_INSERT_COLOR_CURRENT, InsertColorMode == swInsertColorMode::CurrentColor));
+	InsertGroup->addAction(AddCommand(InsertMenu, tr("Selected Part Color"), SW_PART_INSERT_COLOR_SELECTED, InsertColorMode == swInsertColorMode::SelectedPartColor));
+	InsertGroup->addAction(AddCommand(InsertMenu, tr("Last Inserted Part Color"), SW_PART_INSERT_COLOR_LAST_INSERTED, InsertColorMode == swInsertColorMode::LastInsertedColor));
 
-	AddCommand(Menu, tr("Lock Pieces Color"), SW_VIEW_PIECES_TOGGLE_LOCK_COLOR, mPieceSelectionWidget && mPieceSelectionWidget->IsColorLocked());
+	AddCommand(Menu, tr("Lock Parts Color"), SW_VIEW_PARTS_TOGGLE_LOCK_COLOR, mPartSelectionWidget && mPartSelectionWidget->IsColorLocked());
 }
 
-void swMainWindow::UpdatePiecesColor()
+void swMainWindow::UpdatePartsColor()
 {
-	// The pieces list shows the color new pieces will be inserted with, unless its color is locked.
-	if (mPieceSelectionWidget)
-		mPieceSelectionWidget->SetColorIndex(GetInsertColorIndex());
+	// The parts list shows the color new parts will be inserted with, unless its color is locked.
+	if (mPartSelectionWidget)
+		mPartSelectionWidget->SetColorIndex(GetInsertColorIndex());
 }
 
 void swMainWindow::SetMoveSnapEnabled(bool Enabled)
@@ -868,12 +868,12 @@ void swMainWindow::SetTransformType(swTransformType TransformType)
 	mActions[SW_EDIT_TRANSFORM]->setIcon(swCreateInterfaceIcon("toolbars/standard", IconNames[TransformIndex]));
 }
 
-void swMainWindow::SetInsertPieceData(swPieceData* PieceData)
+void swMainWindow::SetInsertPartData(swPartData* PartData)
 {
-	mInsertPieceData = swPieceDataReference(PieceData);
+	mInsertPartData = swPartDataReference(PartData);
 
-	if (mInsertPieceData)
-		swGetPiecesLibrary()->RequestPieceDataLoad(mInsertPieceData.Get(), swLoadPriority::Normal);
+	if (mInsertPartData)
+		swGetPartsLibrary()->RequestPartDataLoad(mInsertPartData.Get(), swLoadPriority::Normal);
 }
 
 std::optional<swVector3> swMainWindow::GetTransformAmount()

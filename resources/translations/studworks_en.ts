@@ -43,10 +43,10 @@
     <name>swModel</name>
     <message numerus="yes">
         <location filename="../../source/core/sw_model_selection.cpp" line="1037"/>
-        <source>Replace Pieces</source>
+        <source>Replace Parts</source>
         <translation>
-            <numerusform>Replace Piece</numerusform>
-            <numerusform>Replace Pieces</numerusform>
+            <numerusform>Replace Part</numerusform>
+            <numerusform>Replace Parts</numerusform>
         </translation>
     </message>
 </context>

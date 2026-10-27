@@ -4,14 +4,14 @@
 #include "sw_view_widget.h"
 #include "sw_widget_picker_color.h"
 #include "sw_builder_minifigure.h"
-#include "sw_data_piece.h"
+#include "sw_data_part.h"
 #include "sw_library.h"
 #include "sw_view.h"
 #include "sw_model.h"
 #include "sw_object_camera.h"
 #include "sw_widget_spin_box_double.h"
 #include "sw_window_utilities.h"
-#include "sw_widget_selection_piece_popup.h"
+#include "sw_widget_selection_part_popup.h"
 #include "sw_window_main.h"
 
 swMinifigureBuilderWidget::swMinifigureBuilderWidget(QWidget* Parent)
@@ -45,22 +45,22 @@ swMinifigureBuilderWidget::swMinifigureBuilderWidget(QWidget* Parent)
 
 	for (int ItemIndex = 0; ItemIndex < SW_MINIFIGURE_ITEM_COUNT; ItemIndex++)
 	{
-		swElidableToolButton* PieceButton = new swElidableToolButton(this);
-		mPieceButtons[ItemIndex] = PieceButton;
-		PieceButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-		PieceButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
-		PieceButton->setObjectName(QString("MinifigureBuilderPiece%1").arg(ItemIndex));
-		PieceButton->setAccessibleName(tr("%1 piece").arg(Labels[ItemIndex]));
-		PieceButton->setWhatsThis(tr("<p><b>Choose Piece</b></p><p>Choose a piece for this section of the minifigure. Select None to omit it, the selector then shows the name of the section. The preview updates when you select a different piece.</p>"));
+		swElidableToolButton* PartButton = new swElidableToolButton(this);
+		mPartButtons[ItemIndex] = PartButton;
+		PartButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+		PartButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
+		PartButton->setObjectName(QString("MinifigureBuilderPart%1").arg(ItemIndex));
+		PartButton->setAccessibleName(tr("%1 part").arg(Labels[ItemIndex]));
+		PartButton->setWhatsThis(tr("<p><b>Choose Part</b></p><p>Choose a part for this section of the minifigure. Select None to omit it, the selector then shows the name of the section. The preview updates when you select a different part.</p>"));
 
-		connect(PieceButton, &QToolButton::clicked, this, &swMinifigureBuilderWidget::PieceButtonClicked);
+		connect(PartButton, &QToolButton::clicked, this, &swMinifigureBuilderWidget::PartButtonClicked);
 
 		swColorPicker* ColorPicker = new swColorPicker(this);
 		mColorPickers[ItemIndex] = ColorPicker;
 		ColorPicker->setObjectName(QString("MinifigureBuilderColor%1").arg(ItemIndex));
 		ColorPicker->setAccessibleName(tr("%1 color").arg(Labels[ItemIndex]));
 		ColorPicker->setToolTip(tr("Choose the color for %1.").arg(Labels[ItemIndex]));
-		ColorPicker->setWhatsThis(tr("<p><b>Choose Color</b></p><p>Change the color of this minifigure piece. The preview updates immediately, and saving a template includes the chosen color.</p>"));
+		ColorPicker->setWhatsThis(tr("<p><b>Choose Color</b></p><p>Change the color of this minifigure part. The preview updates immediately, and saving a template includes the chosen color.</p>"));
 
 		connect(ColorPicker, &swColorPicker::ColorChanged, this, &swMinifigureBuilderWidget::ColorChanged);
 
@@ -75,16 +75,16 @@ swMinifigureBuilderWidget::swMinifigureBuilderWidget(QWidget* Parent)
 			SpinBox->setObjectName(QString("MinifigureBuilderRotation%1").arg(ItemIndex));
 			SpinBox->setAccessibleName(tr("%1 rotation").arg(Labels[ItemIndex]));
 			SpinBox->setToolTip(tr("Rotate %1, in degrees (-360 to 360).").arg(Labels[ItemIndex]));
-			SpinBox->setWhatsThis(tr("<p><b>Rotation</b></p><p>Adjust this piece's angle to pose the minifigure. Values range from -360 to 360 degrees. The available rotation depends on the selected minifigure section.</p>"));
+			SpinBox->setWhatsThis(tr("<p><b>Rotation</b></p><p>Adjust this part's angle to pose the minifigure. Values range from -360 to 360 degrees. The available rotation depends on the selected minifigure section.</p>"));
 
 			connect(SpinBox, QOverload<double>::of(&swDoubleSpinBox::valueChanged), this, &swMinifigureBuilderWidget::AngleChanged);
 		}
 
 		// Each section is [Color] [Selection] [Angle], the selection takes the space left over and names the section when empty.
-		auto AddRow = [MinifigureBuilderLayout, PieceButton, ColorPicker, SpinBox](int& Row, int Column, int ColumnCount)
+		auto AddRow = [MinifigureBuilderLayout, PartButton, ColorPicker, SpinBox](int& Row, int Column, int ColumnCount)
 		{
 			MinifigureBuilderLayout->addWidget(ColorPicker, Row, Column);
-			MinifigureBuilderLayout->addWidget(PieceButton, Row, Column + 1, 1, SpinBox ? ColumnCount - 2 : ColumnCount - 1);
+			MinifigureBuilderLayout->addWidget(PartButton, Row, Column + 1, 1, SpinBox ? ColumnCount - 2 : ColumnCount - 1);
 
 			if (SpinBox)
 				MinifigureBuilderLayout->addWidget(SpinBox, Row, Column + ColumnCount - 1);
@@ -97,7 +97,7 @@ swMinifigureBuilderWidget::swMinifigureBuilderWidget(QWidget* Parent)
 			// the neck shares the top row with the options button in the top right corner
 			MinifigureBuilderLayout->addWidget(ColorPicker, 0, 0);
 			NeckLayout = new QHBoxLayout();
-			NeckLayout->addWidget(PieceButton);
+			NeckLayout->addWidget(PartButton);
 			MinifigureBuilderLayout->addLayout(NeckLayout, 0, 1, 1, 6);
 		}
 		else if (IsLeft[ItemIndex])
@@ -126,8 +126,8 @@ swMinifigureBuilderWidget::swMinifigureBuilderWidget(QWidget* Parent)
 
 	swViewWidget* ViewWidget = new swViewWidget(nullptr, mView);
 	ViewWidget->setAccessibleName(tr("Minifigure Builder Preview"));
-	ViewWidget->setToolTip(tr("Preview of the chosen pieces, colors, and pose."));
-	ViewWidget->setWhatsThis(tr("<p><b>Minifigure Builder Preview</b></p><p>Check the assembled minifigure as you change pieces, colors, or angles. Choose Add to Model to add it to the current model.</p>"));
+	ViewWidget->setToolTip(tr("Preview of the chosen parts, colors, and pose."));
+	ViewWidget->setWhatsThis(tr("<p><b>Minifigure Builder Preview</b></p><p>Check the assembled minifigure as you change parts, colors, or angles. Choose Add to Model to add it to the current model.</p>"));
 	ViewWidget->setMinimumWidth(100);
 	ViewWidget->installEventFilter(this);
 	PreviewLayout->addWidget(ViewWidget);
@@ -140,7 +140,7 @@ swMinifigureBuilderWidget::swMinifigureBuilderWidget(QWidget* Parent)
 
 	for (int ItemIndex = 0; ItemIndex < SW_MINIFIGURE_ITEM_COUNT; ItemIndex++)
 	{
-		UpdatePieceButton(ItemIndex);
+		UpdatePartButton(ItemIndex);
 
 		swColorPicker* ColorPicker = mColorPickers[ItemIndex];
 		QSignalBlocker ColorPickerBlocker(ColorPicker);
@@ -223,33 +223,33 @@ bool swMinifigureBuilderWidget::eventFilter(QObject* Object, QEvent* Event)
 
 void swMinifigureBuilderWidget::FitPreview()
 {
-	// The whole figure stays in view, whatever pieces and angles are chosen.
+	// The whole figure stays in view, whatever parts and angles are chosen.
 	mView->ZoomExtents(swGeometryBoundsMode::IncludeFallback, false);
 	mView->Redraw();
 }
 
-void swMinifigureBuilderWidget::UpdatePieceButton(int ItemIndex)
+void swMinifigureBuilderWidget::UpdatePartButton(int ItemIndex)
 {
-	QToolButton* PieceButton = mPieceButtons[ItemIndex];
-	const swPieceData* PieceData = mMinifigureBuilder->mMinifigure.PieceData[ItemIndex].Get();
+	QToolButton* PartButton = mPartButtons[ItemIndex];
+	const swPartData* PartData = mMinifigureBuilder->mMinifigure.PartData[ItemIndex].Get();
 	QString Description;
 
-	for (const swMinifigurePieceInformation& PieceInfo : mMinifigureBuilder->mSettings[ItemIndex])
+	for (const swMinifigurePartInformation& PartInfo : mMinifigureBuilder->mSettings[ItemIndex])
 	{
-		if (PieceData && PieceInfo.PieceData == PieceData)
+		if (PartData && PartInfo.PartData == PartData)
 		{
-			Description = PieceInfo.Description;
+			Description = PartInfo.Description;
 			break;
 		}
 	}
 
-	// An empty section shows its name like a placeholder, a chosen piece shows its full name in the tool tip.
-	QPalette Palette = PieceButton->palette();
+	// An empty section shows its name like a placeholder, a chosen part shows its full name in the tool tip.
+	QPalette Palette = PartButton->palette();
 	Palette.setColor(QPalette::ButtonText, Description.isEmpty() ? palette().color(QPalette::PlaceholderText) : palette().color(QPalette::ButtonText));
-	PieceButton->setPalette(Palette);
+	PartButton->setPalette(Palette);
 
-	PieceButton->setText(Description.isEmpty() ? mSectionNames[ItemIndex] : Description);
-	PieceButton->setToolTip(Description.isEmpty() ? tr("Choose the piece for %1, or None to omit it.").arg(mSectionNames[ItemIndex]) : tr("%1: %2").arg(mSectionNames[ItemIndex], Description));
+	PartButton->setText(Description.isEmpty() ? mSectionNames[ItemIndex] : Description);
+	PartButton->setToolTip(Description.isEmpty() ? tr("Choose the part for %1, or None to omit it.").arg(mSectionNames[ItemIndex]) : tr("%1: %2").arg(mSectionNames[ItemIndex], Description));
 }
 
 void swMinifigureBuilderWidget::OptionsMenuAboutToShow()
@@ -323,21 +323,21 @@ void swMinifigureBuilderWidget::TemplateComboBoxCurrentTextChanged(const QString
 
 	mMinifigureBuilder->LoadTemplate(TemplateName);
 
-	for (int PieceIdx = 0; PieceIdx < SW_MINIFIGURE_ITEM_COUNT; PieceIdx++)
+	for (int PartIdx = 0; PartIdx < SW_MINIFIGURE_ITEM_COUNT; PartIdx++)
 	{
-		UpdatePieceButton(PieceIdx);
+		UpdatePartButton(PartIdx);
 
-		QSignalBlocker ColorBlocker(mColorPickers[PieceIdx]);
+		QSignalBlocker ColorBlocker(mColorPickers[PartIdx]);
 
-		mColorPickers[PieceIdx]->SetCurrentColorCode(Template.ColorCodes[PieceIdx]);
+		mColorPickers[PartIdx]->SetCurrentColorCode(Template.ColorCodes[PartIdx]);
 
-		swDoubleSpinBox* AngleSpinBox = mSpinBoxes[PieceIdx];
+		swDoubleSpinBox* AngleSpinBox = mSpinBoxes[PartIdx];
 
 		if (AngleSpinBox)
 		{
 			QSignalBlocker AngleBlocker(AngleSpinBox);
 
-			AngleSpinBox->SetValue(Template.Angles[PieceIdx]);
+			AngleSpinBox->SetValue(Template.Angles[PartIdx]);
 		}
 	}
 
@@ -376,7 +376,7 @@ void swMinifigureBuilderWidget::TemplateSaveButtonClicked()
 
 	for (int ItemIndex = 0; ItemIndex < SW_MINIFIGURE_ITEM_COUNT; ItemIndex++)
 	{
-		Template.Pieces[ItemIndex] = mMinifigureBuilder->mSettings[ItemIndex][mMinifigureBuilder->GetSelectionIndex(ItemIndex)].PieceData->mFileName;
+		Template.Parts[ItemIndex] = mMinifigureBuilder->mSettings[ItemIndex][mMinifigureBuilder->GetSelectionIndex(ItemIndex)].PartData->mFileName;
 		Template.ColorCodes[ItemIndex] = mColorPickers[ItemIndex]->GetCurrentColorCode();
 		QDoubleSpinBox* AngleSpinBox = mSpinBoxes[ItemIndex];
 		Template.Angles[ItemIndex] = AngleSpinBox ? AngleSpinBox->value() : 0.0f;
@@ -457,48 +457,48 @@ void swMinifigureBuilderWidget::SetCurrentTemplateModified()
 		mCurrentTemplateModified = true;
 }
 
-void swMinifigureBuilderWidget::PieceButtonClicked()
+void swMinifigureBuilderWidget::PartButtonClicked()
 {
-	QToolButton* PieceButton = qobject_cast<QToolButton*>(sender());
+	QToolButton* PartButton = qobject_cast<QToolButton*>(sender());
 
-	if (!PieceButton)
+	if (!PartButton)
 		return;
 
-	std::array<QToolButton*, SW_MINIFIGURE_ITEM_COUNT>::iterator Search = std::find(mPieceButtons.begin(), mPieceButtons.end(), PieceButton);
+	std::array<QToolButton*, SW_MINIFIGURE_ITEM_COUNT>::iterator Search = std::find(mPartButtons.begin(), mPartButtons.end(), PartButton);
 
-	if (Search == mPieceButtons.end())
+	if (Search == mPartButtons.end())
 		return;
 
-	int ItemIndex = static_cast<int>(std::distance(mPieceButtons.begin(), Search));
-	swPieceData* CurrentPieceData = mMinifigureBuilder->mMinifigure.PieceData[ItemIndex].Get();
+	int ItemIndex = static_cast<int>(std::distance(mPartButtons.begin(), Search));
+	swPartData* CurrentPartData = mMinifigureBuilder->mMinifigure.PartData[ItemIndex].Get();
 
-	QPoint Position = PieceButton->mapToGlobal(PieceButton->rect().bottomLeft());
-	std::vector<std::pair<swPieceData*, std::string>> Pieces;
+	QPoint Position = PartButton->mapToGlobal(PartButton->rect().bottomLeft());
+	std::vector<std::pair<swPartData*, std::string>> Parts;
 
-	Pieces.reserve(mMinifigureBuilder->mSettings[ItemIndex].size());
-	Pieces.emplace_back(nullptr, tr("None").toStdString());
+	Parts.reserve(mMinifigureBuilder->mSettings[ItemIndex].size());
+	Parts.emplace_back(nullptr, tr("None").toStdString());
 
-	for (const swMinifigurePieceInformation& Setting : mMinifigureBuilder->mSettings[ItemIndex])
-		if (Setting.PieceData)
-			Pieces.emplace_back(Setting.PieceData, Setting.Description);
+	for (const swMinifigurePartInformation& Setting : mMinifigureBuilder->mSettings[ItemIndex])
+		if (Setting.PartData)
+			Parts.emplace_back(Setting.PartData, Setting.Description);
 
 	int ColorIndex = mMinifigureBuilder->mMinifigure.ColorIndices[ItemIndex];
 
-	std::optional<swPieceData*> Result = swShowPieceSelectionPopup(CurrentPieceData, Pieces, ColorIndex, PieceButton, Position);
+	std::optional<swPartData*> Result = swShowPartSelectionPopup(CurrentPartData, Parts, ColorIndex, PartButton, Position);
 
 	if (!Result.has_value())
 		return;
 
-	swPieceData* NewPiece = Result.value();
+	swPartData* NewPart = Result.value();
 
 	SetCurrentTemplateModified();
 	UpdateTemplateCombo();
 
 	mView->MakeCurrent();
-	mMinifigureBuilder->SetPieceData(ItemIndex, NewPiece);
+	mMinifigureBuilder->SetPartData(ItemIndex, NewPart);
 	FitPreview();
 
-	UpdatePieceButton(ItemIndex);
+	UpdatePartButton(ItemIndex);
 }
 
 void swMinifigureBuilderWidget::ColorChanged(int Index)

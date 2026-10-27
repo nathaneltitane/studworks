@@ -1,7 +1,7 @@
 #include "sw_global.h"
 #include "sw_model.h"
 #include "sw_model_history.h"
-#include "sw_object_piece.h"
+#include "sw_object_part.h"
 #include "sw_object_camera.h"
 #include "sw_object_light.h"
 #include "sw_group.h"
@@ -12,7 +12,7 @@
 #include "sw_scene.h"
 #include "sw_track_train.h"
 #include "sw_file.h"
-#include "sw_data_piece.h"
+#include "sw_data_part.h"
 #include "sw_view.h"
 #include "sw_builder_minifigure.h"
 #include "sw_dialog_array.h"
@@ -27,13 +27,13 @@
 
 void swModel::Merge(std::unique_ptr<swModel> Other)
 {
-	for (std::unique_ptr<swPiece>& Piece : Other->mPieces)
+	for (std::unique_ptr<swPart>& Part : Other->mParts)
 	{
-		Piece->SetFileLine(-1);
-		AddPiece(Piece.release());
+		Part->SetFileLine(-1);
+		AddPart(Part.release());
 	}
 
-	Other->mPieces.clear();
+	Other->mParts.clear();
 
 	for (std::unique_ptr<swCamera>& Camera : Other->mCameras)
 	{
@@ -124,27 +124,27 @@ swResult<void> swModel::Paste(bool PasteToCurrentStep)
 	if (!Model)
 		return swResult<void>();
 
-	const std::vector<std::unique_ptr<swPiece>>& PastedPieces = Model->mPieces;
+	const std::vector<std::unique_ptr<swPart>>& PastedParts = Model->mParts;
 	std::vector<swObject*> SelectedObjects;
-	SelectedObjects.reserve(PastedPieces.size());
+	SelectedObjects.reserve(PastedParts.size());
 
-	for (const std::unique_ptr<swPiece>& Piece : PastedPieces)
+	for (const std::unique_ptr<swPart>& Part : PastedParts)
 	{
-		Piece->SetFileLine(-1);
+		Part->SetFileLine(-1);
 
 		if (PasteToCurrentStep)
 		{
-			Piece->SetStepShow(mCurrentStep);
-			SelectedObjects.emplace_back(Piece.get());
+			Part->SetStepShow(mCurrentStep);
+			SelectedObjects.emplace_back(Part.get());
 		}
 		else
 		{
-			if (Piece->GetStepShow() <= mCurrentStep)
-				SelectedObjects.emplace_back(Piece.get());
+			if (Part->GetStepShow() <= mCurrentStep)
+				SelectedObjects.emplace_back(Part.get());
 		}
 	}
 
-	if (PastedPieces.empty())
+	if (PastedParts.empty())
 		return swResult<void>();
 
 	BeginHistorySequence();
@@ -157,7 +157,7 @@ swResult<void> swModel::Paste(bool PasteToCurrentStep)
 	EndEditHistory();
 
 	if (SelectedObjects.size() == 1)
-		SetSelectionAndFocus(std::vector<swObject*>(), SelectedObjects.front(), SW_PIECE_SECTION_POSITION, swSelectionMode::Single);
+		SetSelectionAndFocus(std::vector<swObject*>(), SelectedObjects.front(), SW_PART_SECTION_POSITION, swSelectionMode::Single);
 	else
 		SetSelectionAndFocus(SelectedObjects, nullptr, 0, swSelectionMode::Single);
 
@@ -168,19 +168,19 @@ swResult<void> swModel::Paste(bool PasteToCurrentStep)
 	return swResult<void>();
 }
 
-void swModel::DuplicateSelectedPieces()
+void swModel::DuplicateSelectedParts()
 {
-	if (!AnyPiecesSelected())
+	if (!AnyPartsSelected())
 	{
-		QMessageBox::information(gMainWindow, tr("Duplicate Pieces"), tr("No pieces selected."));
+		QMessageBox::information(gMainWindow, tr("Duplicate Parts"), tr("No parts selected."));
 		return;
 	}
 
 	BeginHistorySequence();
 	BeginEditHistory();
 
-	std::vector<swObject*> NewPieces;
-	swPiece* Focus = nullptr;
+	std::vector<swObject*> NewParts;
+	swPart* Focus = nullptr;
 	std::map<swGroup*, swGroup*> GroupMap;
 
 	std::function<swGroup*(swGroup*)> GetNewGroup = [this, &GroupMap, &GetNewGroup](swGroup* Group)
@@ -212,38 +212,38 @@ void swModel::DuplicateSelectedPieces()
 		}
 	};
 
-	for (size_t PieceIndex = 0; PieceIndex < mPieces.size(); PieceIndex++)
+	for (size_t PartIndex = 0; PartIndex < mParts.size(); PartIndex++)
 	{
-		const swPiece* Piece = mPieces[PieceIndex].get();
+		const swPart* Part = mParts[PartIndex].get();
 
-		if (!Piece->IsSelected())
+		if (!Part->IsSelected())
 			continue;
 
-		swPiece* NewPiece = new swPiece(*Piece);
-		NewPiece->UpdatePosition(mCurrentStep);
-		NewPieces.emplace_back(NewPiece);
+		swPart* NewPart = new swPart(*Part);
+		NewPart->UpdatePosition(mCurrentStep);
+		NewParts.emplace_back(NewPart);
 
-		if (Piece->IsFocused())
-			Focus = NewPiece;
+		if (Part->IsFocused())
+			Focus = NewPart;
 
-		PieceIndex++;
-		AddPiece(std::unique_ptr<swPiece>(NewPiece), PieceIndex);
+		PartIndex++;
+		AddPart(std::unique_ptr<swPart>(NewPart), PartIndex);
 
-		swGroup* Group = Piece->GetGroup();
+		swGroup* Group = Part->GetGroup();
 		if (Group)
-			NewPiece->SetGroup(GetNewGroup(Group));
+			NewPart->SetGroup(GetNewGroup(Group));
 	}
 
 	EndEditHistory();
 
-	SetSelectionAndFocus(NewPieces, Focus, SW_PIECE_SECTION_POSITION, swSelectionMode::Single);
+	SetSelectionAndFocus(NewParts, Focus, SW_PART_SECTION_POSITION, swSelectionMode::Single);
 
 	EndHistorySequence(tr("Duplicate"));
 
 	gMainWindow->UpdateTimeline(false, false);
 }
 
-void swModel::PaintSelectedPieces()
+void swModel::PaintSelectedParts()
 {
-	SetSelectedPiecesColorIndex(gMainWindow->mColorIndex);
+	SetSelectedPartsColorIndex(gMainWindow->mColorIndex);
 }

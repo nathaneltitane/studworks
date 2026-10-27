@@ -3,13 +3,13 @@
 #include "sw_library.h"
 #include "sw_application.h"
 #include "sw_window_main.h"
-#include "sw_object_piece.h"
+#include "sw_object_part.h"
 #include "sw_file.h"
 #include <QDomDocument>
 
 static bool swLoadLDrawXML(std::map<int, int>& MaterialTable, std::map<int, std::string>& BrickTable, std::map<std::string, std::pair<swVector3, swVector4>>& TransformTable)
 {
-	QFile File(swGetPiecesLibrary()->GetLibraryFilePath(QLatin1String("ldraw.xml")));
+	QFile File(swGetPartsLibrary()->GetLibraryFilePath(QLatin1String("ldraw.xml")));
 	QByteArray Data;
 
 	if (File.open(QIODevice::ReadOnly))
@@ -73,7 +73,7 @@ static bool swLoadLDrawXML(std::map<int, int>& MaterialTable, std::map<int, std:
 	return true;
 }
 
-bool swImportLXFMLFile(const QString& FileData, Project* Project, std::vector<swPiece*>& Pieces, std::vector<std::vector<swPiece*>>& Groups)
+bool swImportLXFMLFile(const QString& FileData, Project* Project, std::vector<swPart*>& Parts, std::vector<std::vector<swPart*>>& Groups)
 {
 	std::map<int, int> MaterialTable;
 	std::map<int, std::string> BrickTable;
@@ -101,7 +101,7 @@ bool swImportLXFMLFile(const QString& FileData, Project* Project, std::vector<sw
 			if (BrickElement.tagName() != QLatin1String("Brick"))
 				continue;
 
-			int NumBrickPieces = 0;
+			int NumBrickParts = 0;
 
 			for (QDomNode PartNode = BrickElement.firstChild(); !PartNode.isNull(); PartNode = PartNode.nextSibling())
 			{
@@ -151,13 +151,13 @@ bool swImportLXFMLFile(const QString& FileData, Project* Project, std::vector<sw
 				QString LegoID = PartElement.attribute(QLatin1String("designID"));
 				int Material = PartElement.attribute(QLatin1String("materials")).split(',').first().toInt();
 
-				swPieceDataReference PieceData;
+				swPartDataReference PartData;
 				const auto BrickIt = BrickTable.find(LegoID.toInt());
 
 				if (BrickIt != BrickTable.end())
-					PieceData = swGetPiecesLibrary()->AcquirePieceData(BrickIt->second.c_str(), Project, true, false);
+					PartData = swGetPartsLibrary()->AcquirePartData(BrickIt->second.c_str(), Project, true, false);
 				else
-					PieceData = swGetPiecesLibrary()->AcquirePieceData(LegoID.toLatin1() + ".dat", Project, true, false);
+					PartData = swGetPartsLibrary()->AcquirePartData(LegoID.toLatin1() + ".dat", Project, true, false);
 
 				const auto ColorIt = MaterialTable.find(Material);
 				int ColorCode = 16;
@@ -180,19 +180,19 @@ bool swImportLXFMLFile(const QString& FileData, Project* Project, std::vector<sw
 				WorldMatrix = swMatrix44(swVector4(WorldMatrix[0][0], -WorldMatrix[0][1], -WorldMatrix[0][2], 0.0f), swVector4(-WorldMatrix[1][0], WorldMatrix[1][1], WorldMatrix[1][2], 0.0f),
 										 swVector4(-WorldMatrix[2][0], WorldMatrix[2][1], WorldMatrix[2][2], 0.0f), swVector4(WorldMatrix[3][0] * 25.0f, -WorldMatrix[3][1] * 25.0f, -WorldMatrix[3][2] * 25.0f, 1.0f));
 
-				swPiece* Piece = new swPiece(nullptr);
-				Piece->SetPieceData(std::move(PieceData), QString(), false, true);
-				Piece->Initialize(swMatrix44LDrawToStudWorks(WorldMatrix), 1);
-				Piece->SetColorCode(ColorCode);
-				Pieces.push_back(Piece);
-				NumBrickPieces++;
+				swPart* Part = new swPart(nullptr);
+				Part->SetPartData(std::move(PartData), QString(), false, true);
+				Part->Initialize(swMatrix44LDrawToStudWorks(WorldMatrix), 1);
+				Part->SetColorCode(ColorCode);
+				Parts.push_back(Part);
+				NumBrickParts++;
 			}
 
-			if (NumBrickPieces > 1)
+			if (NumBrickParts > 1)
 			{
-				std::vector<swPiece*> Group;
-				for (size_t PieceIdx = Pieces.size() - NumBrickPieces; PieceIdx < Pieces.size(); PieceIdx++)
-					Group.push_back(Pieces[PieceIdx]);
+				std::vector<swPart*> Group;
+				for (size_t PartIdx = Parts.size() - NumBrickParts; PartIdx < Parts.size(); PartIdx++)
+					Group.push_back(Parts[PartIdx]);
 				Groups.push_back(Group);
 			}
 		}

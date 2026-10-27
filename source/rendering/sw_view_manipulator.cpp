@@ -4,9 +4,9 @@
 #include "sw_view.h"
 #include "sw_model.h"
 #include "sw_object.h"
-#include "sw_object_piece.h"
+#include "sw_object_part.h"
 #include "sw_object_camera.h"
-#include "sw_data_piece.h"
+#include "sw_data_part.h"
 #include "sw_synthesis.h"
 #include "sw_track_train.h"
 #include "sw_window_main.h"
@@ -326,7 +326,7 @@ void swViewManipulator::DrawSelectMove(swTrackButton TrackButton, swTrackTool Tr
 	swMatrix33 RelativeRotation;
 	swModel* ActiveModel = mView->GetActiveModel();
 	ActiveModel->GetMoveRotateTransform(OverlayCenter, RelativeRotation);
-	bool AnyPiecesSelected = ActiveModel->AnyPiecesSelected();
+	bool AnyPartsSelected = ActiveModel->AnyPartsSelected();
 	swObject* Focus = ActiveModel->GetFocusObject();
 
 	swMatrix44 WorldMatrix = swMatrix44(RelativeRotation, OverlayCenter);
@@ -391,7 +391,7 @@ void swViewManipulator::DrawSelectMove(swTrackButton TrackButton, swTrackTool Tr
 		}
 	}
 
-	if (gMainWindow->GetTool() == swTool::Select && TrackButton == swTrackButton::None && AnyPiecesSelected)
+	if (gMainWindow->GetTool() == swTool::Select && TrackButton == swTrackButton::None && AnyPartsSelected)
 	{
 		if (AllowedTransforms & SW_OBJECT_TRANSFORM_ROTATE_X)
 		{
@@ -440,15 +440,15 @@ void swViewManipulator::DrawSelectMove(swTrackButton TrackButton, swTrackTool Tr
 		Context->EnableColorBlend(false);
 	}
 
-	if (Focus && Focus->IsPiece())
+	if (Focus && Focus->IsPart())
 	{
-		swPiece* Piece = (swPiece*)Focus;
-		quint32 Section = Piece->GetFocusSection();
+		swPart* Part = (swPart*)Focus;
+		quint32 Section = Part->GetFocusSection();
 
-		if (Section >= SW_PIECE_SECTION_CONTROL_POINT_FIRST && Section <= SW_PIECE_SECTION_CONTROL_POINT_LAST && Piece->mPieceData->GetSynthInfo() && Piece->mPieceData->GetSynthInfo()->IsCurve())
+		if (Section >= SW_PART_SECTION_CONTROL_POINT_FIRST && Section <= SW_PART_SECTION_CONTROL_POINT_LAST && Part->mPartData->GetSynthInfo() && Part->mPartData->GetSynthInfo()->IsCurve())
 		{
-			int ControlPointIndex = Section - SW_PIECE_SECTION_CONTROL_POINT_FIRST;
-			float Strength = Piece->GetControlPoints()[ControlPointIndex].Scale;
+			int ControlPointIndex = Section - SW_PART_SECTION_CONTROL_POINT_FIRST;
+			float Strength = Part->GetControlPoints()[ControlPointIndex].Scale;
 			const float ScaleStart = 2.0f;
 			float Length = ScaleStart + Strength / OverlayScale;
 			const float OverlayScaleInnerRadius = 0.075f;
@@ -499,9 +499,9 @@ void swViewManipulator::DrawSelectMove(swTrackButton TrackButton, swTrackTool Tr
 			Context->DrawPrimitives(GL_TRIANGLE_STRIP, 2, 18);
 			Context->DrawPrimitives(GL_TRIANGLE_STRIP, 20, 18);
 		}
-		else if (Piece->mPieceData->GetTrainTrackInfo() && TrackButton == swTrackButton::None)
+		else if (Part->mPartData->GetTrainTrackInfo() && TrackButton == swTrackButton::None)
 		{
-			DrawTrainTrack(Piece, Context, TrackTool, TrackToolSection);
+			DrawTrainTrack(Part, Context, TrackTool, TrackToolSection);
 		}
 	}
 
@@ -522,15 +522,15 @@ void swViewManipulator::DrawSelectMove(swTrackButton TrackButton, swTrackTool Tr
 	Context->EnableDepthTest(true);
 }
 
-void swViewManipulator::DrawTrainTrack(swPiece* Piece, swContext* Context, swTrackTool TrackTool, quint32 TrackToolSection)
+void swViewManipulator::DrawTrainTrack(swPart* Part, swContext* Context, swTrackTool TrackTool, quint32 TrackToolSection)
 {
 	const swPreferences& Preferences = swGetPreferences();
 	const swVector4 TrainTrackColor = swVector4FromColor(Preferences.mControlPointColor);
 
-	if (Piece->GetFocusSection() >= SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST)
+	if (Part->GetFocusSection() >= SW_PART_SECTION_TRAIN_TRACK_CONNECTION_FIRST)
 	{
-		quint32 ConnectionIndex = Piece->GetFocusSection() - SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST;
-		bool CanAdd = !Piece->IsTrainTrackConnected(ConnectionIndex);
+		quint32 ConnectionIndex = Part->GetFocusSection() - SW_PART_SECTION_TRAIN_TRACK_CONNECTION_FIRST;
+		bool CanAdd = !Part->IsTrainTrackConnected(ConnectionIndex);
 
 		Context->SetColor(TrainTrackColor);
 
@@ -574,15 +574,15 @@ void swViewManipulator::DrawTrainTrack(swPiece* Piece, swContext* Context, swTra
 	}
 	else
 	{
-		const swTrainTrackInformation* TrainTrackInfo = Piece->mPieceData->GetTrainTrackInfo();
+		const swTrainTrackInformation* TrainTrackInfo = Part->mPartData->GetTrainTrackInfo();
 		const std::vector<swTrainTrackConnection>& Connections = TrainTrackInfo->GetConnections();
 
 		for (quint32 ConnectionIndex = 0; ConnectionIndex < Connections.size(); ConnectionIndex++)
 		{
-			if (Piece->IsTrainTrackConnected(ConnectionIndex))
+			if (Part->IsTrainTrackConnected(ConnectionIndex))
 				continue;
 
-			swMatrix44 WorldMatrix = swMultiply(Connections[ConnectionIndex].Transform, Piece->mModelWorld);
+			swMatrix44 WorldMatrix = swMultiply(Connections[ConnectionIndex].Transform, Part->mModelWorld);
 			swModel* ActiveModel = mView->GetActiveModel();
 
 			if (ActiveModel != mView->GetModel())
@@ -593,7 +593,7 @@ void swViewManipulator::DrawTrainTrack(swPiece* Piece, swContext* Context, swTra
 
 			Context->SetWorldMatrix(WorldMatrix);
 
-			if (TrackToolSection == SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST + ConnectionIndex && TrackTool != swTrackTool::SelectTrainTrack)
+			if (TrackToolSection == SW_PART_SECTION_TRAIN_TRACK_CONNECTION_FIRST + ConnectionIndex && TrackTool != swTrackTool::SelectTrainTrack)
 				Context->SetColor(0.8f, 0.8f, 0.0f, 1.0f);
 			else
 				Context->SetColor(TrainTrackColor);
@@ -605,12 +605,12 @@ void swViewManipulator::DrawTrainTrack(swPiece* Piece, swContext* Context, swTra
 	const swVector4 ConnectionColor = swVector4FromColor(Preferences.mControlPointColor);
 	const swVector4 ConnectionFocusedColor = swVector4FromColor(Preferences.mControlPointFocusedColor);
 
-	const swTrainTrackInformation* TrainTrackInfo = Piece->mPieceData->GetTrainTrackInfo();
+	const swTrainTrackInformation* TrainTrackInfo = Part->mPartData->GetTrainTrackInfo();
 	const std::vector<swTrainTrackConnection>& Connections = TrainTrackInfo->GetConnections();
 
 	for (quint32 ConnectionIndex = 0; ConnectionIndex < Connections.size(); ConnectionIndex++)
 	{
-		swMatrix44 WorldMatrix = swMultiply(Connections[ConnectionIndex].Transform, Piece->mModelWorld);
+		swMatrix44 WorldMatrix = swMultiply(Connections[ConnectionIndex].Transform, Part->mModelWorld);
 		swModel* ActiveModel = mView->GetActiveModel();
 
 		if (ActiveModel != mView->GetModel())
@@ -621,9 +621,9 @@ void swViewManipulator::DrawTrainTrack(swPiece* Piece, swContext* Context, swTra
 
 		Context->SetWorldMatrix(WorldMatrix);
 
-		if (Piece->IsFocused(SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST + ConnectionIndex))
+		if (Part->IsFocused(SW_PART_SECTION_TRAIN_TRACK_CONNECTION_FIRST + ConnectionIndex))
 			Context->SetColor(ConnectionFocusedColor);
-		else if (TrackToolSection == SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST + ConnectionIndex && TrackTool == swTrackTool::SelectTrainTrack)
+		else if (TrackToolSection == SW_PART_SECTION_TRAIN_TRACK_CONNECTION_FIRST + ConnectionIndex && TrackTool == swTrackTool::SelectTrainTrack)
 			Context->SetColor(0.8f, 0.8f, 0.0f, 1.0f);
 		else
 			Context->SetColor(ConnectionColor);
@@ -1266,16 +1266,16 @@ std::pair<swTrackTool, quint32> swViewManipulator::UpdateSelectMove(swTrackButto
 	swObject* Focus = ActiveModel->GetFocusObject();
 	int ControlPointIndex = -1;
 
-	if (Focus && Focus->IsPiece())
+	if (Focus && Focus->IsPart())
 	{
-		swPiece* Piece = (swPiece*)Focus;
+		swPart* Part = (swPart*)Focus;
 
-		if (Piece->mPieceData->GetSynthInfo())
+		if (Part->mPartData->GetSynthInfo())
 		{
-			quint32 Section = Piece->GetFocusSection();
+			quint32 Section = Part->GetFocusSection();
 
-			if (Section >= SW_PIECE_SECTION_CONTROL_POINT_FIRST && Section <= SW_PIECE_SECTION_CONTROL_POINT_LAST)
-				ControlPointIndex = Section - SW_PIECE_SECTION_CONTROL_POINT_FIRST;
+			if (Section >= SW_PART_SECTION_CONTROL_POINT_FIRST && Section <= SW_PART_SECTION_CONTROL_POINT_LAST)
+				ControlPointIndex = Section - SW_PART_SECTION_CONTROL_POINT_FIRST;
 		}
 	}
 
@@ -1310,7 +1310,7 @@ std::pair<swTrackTool, quint32> swViewManipulator::UpdateSelectMove(swTrackButto
 			}
 		}
 
-		if (CurrentTool == swTool::Select && Proj1 > OverlayRotateArrowStart && Proj1 < OverlayRotateArrowEnd && Proj2 > OverlayRotateArrowStart && Proj2 < OverlayRotateArrowEnd && ActiveModel->AnyPiecesSelected())
+		if (CurrentTool == swTool::Select && Proj1 > OverlayRotateArrowStart && Proj1 < OverlayRotateArrowEnd && Proj2 > OverlayRotateArrowStart && Proj2 < OverlayRotateArrowEnd && ActiveModel->AnyPartsSelected())
 		{
 			swTrackTool PlaneModes[] = { swTrackTool::RotateX, swTrackTool::RotateY, swTrackTool::RotateZ };
 
@@ -1343,11 +1343,11 @@ std::pair<swTrackTool, quint32> swViewManipulator::UpdateSelectMove(swTrackButto
 			}
 		}
 
-		swPiece* Piece = (swPiece*)Focus;
+		swPart* Part = (swPart*)Focus;
 
-		if (ControlPointIndex != -1 && Piece->mPieceData->GetSynthInfo()->IsCurve())
+		if (ControlPointIndex != -1 && Part->mPartData->GetSynthInfo()->IsCurve())
 		{
-			float Strength = Piece->GetControlPoints()[ControlPointIndex].Scale;
+			float Strength = Part->GetControlPoints()[ControlPointIndex].Scale;
 			const float ScaleStart = (2.0f - OverlayScaleRadius) * OverlayScale + Strength;
 			const float ScaleEnd = (2.0f + OverlayScaleRadius) * OverlayScale + Strength;
 
@@ -1392,9 +1392,9 @@ std::pair<swTrackTool, quint32> swViewManipulator::UpdateSelectMove(swTrackButto
 		}
 	}
 
-	if (CurrentTool == swTool::Select && Focus && Focus->IsPiece() && TrackButton == swTrackButton::None)
+	if (CurrentTool == swTool::Select && Focus && Focus->IsPart() && TrackButton == swTrackButton::None)
 	{
-		auto [TrainTrackTool, TrainTrackSection, TrainDistance] = UpdateSelectMoveTrainTrack((swPiece*)Focus, OverlayScale, Start, End);
+		auto [TrainTrackTool, TrainTrackSection, TrainDistance] = UpdateSelectMoveTrainTrack((swPart*)Focus, OverlayScale, Start, End);
 
 		if (TrainDistance < ClosestIntersectionDistance)
 		{
@@ -1406,13 +1406,13 @@ std::pair<swTrackTool, quint32> swViewManipulator::UpdateSelectMove(swTrackButto
 	return { NewTrackTool, NewTrackSection };
 }
 
-std::tuple<swTrackTool, quint32, float> swViewManipulator::UpdateSelectMoveTrainTrack(swPiece* Piece, float OverlayScale, const swVector3& Start, const swVector3& End) const
+std::tuple<swTrackTool, quint32, float> swViewManipulator::UpdateSelectMoveTrainTrack(swPart* Part, float OverlayScale, const swVector3& Start, const swVector3& End) const
 {
 	swTrackTool NewTrackTool = swTrackTool::Select;
 	quint32 NewTrackSection = ~0U;
 	float ClosestIntersectionDistance = FLT_MAX;
 
-	const swTrainTrackInformation* TrainTrackInfo = Piece->mPieceData->GetTrainTrackInfo();
+	const swTrainTrackInformation* TrainTrackInfo = Part->mPartData->GetTrainTrackInfo();
 
 	if (!TrainTrackInfo)
 		return { NewTrackTool, NewTrackSection, ClosestIntersectionDistance };
@@ -1439,7 +1439,7 @@ std::tuple<swTrackTool, quint32, float> swViewManipulator::UpdateSelectMoveTrain
 
 	for (quint32 ConnectionIndex = 0; ConnectionIndex < Connections.size(); ConnectionIndex++)
 	{
-		swMatrix44 WorldMatrix = swMultiply(Connections[ConnectionIndex].Transform, Piece->mModelWorld);
+		swMatrix44 WorldMatrix = swMultiply(Connections[ConnectionIndex].Transform, Part->mModelWorld);
 		swModel* ActiveModel = mView->GetActiveModel();
 
 		if (ActiveModel != mView->GetModel())
@@ -1451,34 +1451,34 @@ std::tuple<swTrackTool, quint32, float> swViewManipulator::UpdateSelectMoveTrain
 		swVector3 LocalStart = swMultiply31(Start, InverseWorldMatrix);
 		swVector3 LocalEnd = swMultiply31(End, InverseWorldMatrix);
 
-		if (!Piece->IsTrainTrackConnected(ConnectionIndex))
+		if (!Part->IsTrainTrackConnected(ConnectionIndex))
 		{
 			if (MinIntersectDist(mTrainTrackInsertIndexStart, mTrainTrackInsertIndexCount, LocalStart, LocalEnd))
 			{
 				NewTrackTool = swTrackTool::InsertTrainTrack;
-				NewTrackSection = SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST + ConnectionIndex;
+				NewTrackSection = SW_PART_SECTION_TRAIN_TRACK_CONNECTION_FIRST + ConnectionIndex;
 			}
 		}
 
-		if (Piece->GetFocusSection() >= SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST && ConnectionIndex == Piece->GetFocusSection() - SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST)
+		if (Part->GetFocusSection() >= SW_PART_SECTION_TRAIN_TRACK_CONNECTION_FIRST && ConnectionIndex == Part->GetFocusSection() - SW_PART_SECTION_TRAIN_TRACK_CONNECTION_FIRST)
 		{
 			if (MinIntersectDist(mTrainTrackRotateIndexStart, mTrainTrackRotateIndexCount, LocalStart, LocalEnd))
 			{
 				NewTrackTool = swTrackTool::RotateTrainTrackRight;
-				NewTrackSection = SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST + ConnectionIndex;
+				NewTrackSection = SW_PART_SECTION_TRAIN_TRACK_CONNECTION_FIRST + ConnectionIndex;
 			}
 
 			if (MinIntersectDist(mTrainTrackRotateIndexStart + mTrainTrackRotateIndexCount, mTrainTrackRotateIndexCount, LocalStart, LocalEnd))
 			{
 				NewTrackTool = swTrackTool::RotateTrainTrackLeft;
-				NewTrackSection = SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST + ConnectionIndex;
+				NewTrackSection = SW_PART_SECTION_TRAIN_TRACK_CONNECTION_FIRST + ConnectionIndex;
 			}
 		}
 
 		if (MinIntersectDist(mTrainTrackConnectionIndexStart, mTrainTrackConnectionIndexCount, LocalStart, LocalEnd))
 		{
 			NewTrackTool = swTrackTool::SelectTrainTrack;
-			NewTrackSection = SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST + ConnectionIndex;
+			NewTrackSection = SW_PART_SECTION_TRAIN_TRACK_CONNECTION_FIRST + ConnectionIndex;
 		}
 	}
 

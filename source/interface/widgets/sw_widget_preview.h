@@ -12,13 +12,13 @@ class swPreviewDockWidget : public QWidget
 public:
 	explicit swPreviewDockWidget(QWidget* Parent);
 
-	bool SetCurrentPiece(swPieceData* PieceData, int ColorCode);
+	bool SetCurrentPart(swPartData* PartData, int ColorCode);
 	void ClearPreview();
 	void UpdatePreview();
 	void RefreshDescription();
 	void RefreshModel(const swModel* Model);
-	void RefreshAfterAssetChange(const std::vector<swPieceData*>& ChangedPieces);
-	void RebindPieceData(swPieceData* Previous, swPieceData* Replacement);
+	void RefreshAfterAssetChange(const std::vector<swPartData*>& ChangedParts);
+	void RebindPartData(swPartData* Previous, swPartData* Replacement);
 	void SetSquareViewport(bool SquareViewport);
 	void UpdateSquareViewport();
 
@@ -59,7 +59,7 @@ public:
 	void ClearPreview();
 	void UpdatePreview();
 	void RefreshDescription();
-	bool SetCurrentPiece(swPieceData* PieceData, int ColorCode);
+	bool SetCurrentPart(swPartData* PartData, int ColorCode);
 
 protected:
 	std::unique_ptr<Project> mLoader;

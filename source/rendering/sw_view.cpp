@@ -7,8 +7,8 @@
 #include "sw_object_camera.h"
 #include "sw_texture_font.h"
 #include "sw_texture.h"
-#include "sw_object_piece.h"
-#include "sw_data_piece.h"
+#include "sw_object_part.h"
+#include "sw_data_part.h"
 #include "sw_track_train.h"
 #include "sw_scene.h"
 #include "sw_context.h"
@@ -17,7 +17,7 @@
 #include "sw_widget_find_replace.h"
 #include "sw_library.h"
 #include "sw_window_utilities.h"
-#include "sw_widget_selection_piece_popup.h"
+#include "sw_widget_selection_part_popup.h"
 
 swFindReplaceParameters swView::mFindReplaceParams;
 QPointer<swFindReplaceWidget> swView::mFindWidget;
@@ -145,15 +145,15 @@ void swView::SetMouseModifiers(Qt::KeyboardModifiers MouseModifiers)
 
 swModel* swView::GetActiveModel() const
 {
-	return !mActiveSubmodelInstance ? mModel : mActiveSubmodelInstance->mPieceData->GetModel();
+	return !mActiveSubmodelInstance ? mModel : mActiveSubmodelInstance->mPartData->GetModel();
 }
 
 std::vector<swModel*> swView::GetModelEditingPath() const
 {
 	std::vector<swModel*> Models = { mModel };
 
-	for (const swPiece* Piece : mSubmodelEditingPath)
-		Models.push_back(Piece->mPieceData->GetModel());
+	for (const swPart* Part : mSubmodelEditingPath)
+		Models.push_back(Part->mPartData->GetModel());
 
 	return Models;
 }
@@ -163,10 +163,10 @@ void swView::RestoreModelEditingContext()
 	mModel->SetActive(true);
 	mActiveSubmodelTransform = swMatrix44Identity();
 
-	for (swPiece* Piece : mSubmodelEditingPath)
+	for (swPart* Part : mSubmodelEditingPath)
 	{
-		mActiveSubmodelTransform = swMultiply(Piece->mModelWorld, mActiveSubmodelTransform);
-		Piece->mPieceData->GetModel()->SetActive(true);
+		mActiveSubmodelTransform = swMultiply(Part->mModelWorld, mActiveSubmodelTransform);
+		Part->mPartData->GetModel()->SetActive(true);
 	}
 }
 
@@ -184,7 +184,7 @@ void swView::SetSubmodelActive(size_t Depth)
 
 	std::vector<swModel*> UpdatedModels;
 	for (size_t Index = EditingModels.size(); Index > Depth + 1; Index--)
-		EditingModels[Index - 1]->UpdatePieceData(UpdatedModels);
+		EditingModels[Index - 1]->UpdatePartData(UpdatedModels);
 
 	mSubmodelEditingPath.resize(Depth);
 	mActiveSubmodelInstance = nullptr;
@@ -206,19 +206,19 @@ void swView::SetSelectedSubmodelActive()
 	swModel* ActiveModel = GetActiveModel();
 	swObject* Object = ActiveModel->GetFocusObject();
 
-	if (!Object || !Object->IsPiece())
+	if (!Object || !Object->IsPart())
 		return;
 
-	swPiece* Piece = (swPiece*)Object;
+	swPart* Part = (swPart*)Object;
 
-	if (!Piece->mPieceData->IsModel())
+	if (!Part->mPartData->IsModel())
 		return;
 
 	// Keep ancestor models at their chosen steps so the selected instance stays in place.
-	mSubmodelEditingPath.push_back(Piece);
-	mActiveSubmodelInstance = Piece;
+	mSubmodelEditingPath.push_back(Part);
+	mActiveSubmodelInstance = Part;
 
-	ActiveModel = mActiveSubmodelInstance->mPieceData->GetModel();
+	ActiveModel = mActiveSubmodelInstance->mPartData->GetModel();
 	ActiveModel->SetTemporaryStep(ActiveModel->GetLastStep());
 	RestoreModelEditingContext();
 
@@ -347,23 +347,23 @@ void swView::ShowTrainTrackPopup()
 	swModel* ActiveModel = GetActiveModel();
 	swObject* Focus = ActiveModel->GetFocusObject();
 
-	if (!Focus || !Focus->IsPiece())
+	if (!Focus || !Focus->IsPart())
 		return;
 
-	swPiece* Piece = (swPiece*)Focus;
-	const swTrainTrackInformation* TrainTrackInfo = Piece->mPieceData->GetTrainTrackInfo();
+	swPart* Part = (swPart*)Focus;
+	const swTrainTrackInformation* TrainTrackInfo = Part->mPartData->GetTrainTrackInfo();
 
 	if (!TrainTrackInfo)
 		return;
 
-	if (mTrackToolSection < SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST)
+	if (mTrackToolSection < SW_PART_SECTION_TRAIN_TRACK_CONNECTION_FIRST)
 		return;
 
-	int ConnectionIndex = mTrackToolSection - SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST;
+	int ConnectionIndex = mTrackToolSection - SW_PART_SECTION_TRAIN_TRACK_CONNECTION_FIRST;
 	const swTrainTrackConnectionType& ConnectionType = TrainTrackInfo->GetConnections()[ConnectionIndex].Type;
-	std::vector<swPieceData*> TrainTrackPieces = swGetPiecesLibrary()->GetVisibleTrainTrackPieces(ConnectionType);
+	std::vector<swPartData*> TrainTrackParts = swGetPartsLibrary()->GetVisibleTrainTrackParts(ConnectionType);
 
-	auto PieceSortFunc = [](const swPieceData* a, const swPieceData* b)
+	auto PartSortFunc = [](const swPartData* a, const swPartData* b)
 	{
 		if (!a)
 			return true;
@@ -374,24 +374,24 @@ void swView::ShowTrainTrackPopup()
 		return strcmp(a->m_strDescription, b->m_strDescription) < 0;
 	};
 
-	std::sort(TrainTrackPieces.begin(), TrainTrackPieces.end(), PieceSortFunc);
+	std::sort(TrainTrackParts.begin(), TrainTrackParts.end(), PartSortFunc);
 
-	std::vector<std::pair<swPieceData*, std::string>> Pieces;
+	std::vector<std::pair<swPartData*, std::string>> Parts;
 
-	Pieces.reserve(TrainTrackPieces.size());
+	Parts.reserve(TrainTrackParts.size());
 
-	for (swPieceData* PieceData : TrainTrackPieces)
-		Pieces.emplace_back(PieceData, std::string());
+	for (swPartData* PartData : TrainTrackParts)
+		Parts.emplace_back(PartData, std::string());
 
-	std::optional<swPieceData*> Result = swShowPieceSelectionPopup(nullptr, Pieces, gMainWindow->GetInsertColorIndex(), mWidget, QCursor::pos());
-	swPieceData* PieceData = Result.has_value() ? Result.value() : nullptr;
+	std::optional<swPartData*> Result = swShowPartSelectionPopup(nullptr, Parts, gMainWindow->GetInsertColorIndex(), mWidget, QCursor::pos());
+	swPartData* PartData = Result.has_value() ? Result.value() : nullptr;
 
-	if (PieceData)
+	if (PartData)
 	{
-		Piece = ActiveModel->AddPiece(PieceData, mTrackToolSection);
+		Part = ActiveModel->AddPart(PartData, mTrackToolSection);
 
-		if (Piece)
-			ActiveModel->UpdateTrainTrackConnections(Piece, false);
+		if (Part)
+			ActiveModel->UpdateTrainTrackConnections(Part, false);
 	}
 
 	mWidget->UpdateMousePosition();
@@ -410,20 +410,20 @@ void swView::ShowContextMenu() const
 	Popup->addAction(Actions[SW_EDIT_COPY]);
 	Popup->addAction(Actions[SW_EDIT_PASTE]);
 	Popup->addAction(Actions[SW_EDIT_PASTE_STEPS]);
-	Popup->addAction(Actions[SW_PIECE_DUPLICATE]);
+	Popup->addAction(Actions[SW_PART_DUPLICATE]);
 
 	Popup->addSeparator();
 
-	Popup->addAction(Actions[SW_PIECE_CONTROL_POINT_INSERT]);
-	Popup->addAction(Actions[SW_PIECE_CONTROL_POINT_REMOVE]);
+	Popup->addAction(Actions[SW_PART_CONTROL_POINT_INSERT]);
+	Popup->addAction(Actions[SW_PART_CONTROL_POINT_REMOVE]);
 
 	Popup->addSeparator();
 
-	Popup->addAction(Actions[SW_PIECE_EDIT_SELECTED_SUBMODEL]);
-	Popup->addAction(Actions[SW_PIECE_EDIT_END_SUBMODEL]);
-	Popup->addAction(Actions[SW_PIECE_VIEW_SELECTED_MODEL]);
-	Popup->addAction(Actions[SW_PIECE_INLINE_SELECTED_MODELS]);
-	Popup->addAction(Actions[SW_PIECE_MOVE_SELECTION_TO_MODEL]);
+	Popup->addAction(Actions[SW_PART_EDIT_SELECTED_SUBMODEL]);
+	Popup->addAction(Actions[SW_PART_EDIT_END_SUBMODEL]);
+	Popup->addAction(Actions[SW_PART_VIEW_SELECTED_MODEL]);
+	Popup->addAction(Actions[SW_PART_INLINE_SELECTED_MODELS]);
+	Popup->addAction(Actions[SW_PART_MOVE_SELECTION_TO_MODEL]);
 
 	Popup->addSeparator();
 
@@ -475,14 +475,14 @@ swVector3 swView::GetMoveDirection(const swVector3& Direction) const
 	// projecting them, so relative transforms do not rotate the mapping again.
 	swMatrix33 LocalToWorld = GetActiveModel()->GetRelativeRotation();
 
-	// Separate transforms always use each piece's axes. Use the focused piece
+	// Separate transforms always use each part's axes. Use the focused part
 	// as the reference for the shared keyboard direction.
 	if (gMainWindow->GetSeparateTransform())
 	{
 		swObject* Focus = GetActiveModel()->GetFocusObject();
 
-		if (Focus && Focus->IsPiece())
-			LocalToWorld = static_cast<swPiece*>(Focus)->GetRelativeRotation();
+		if (Focus && Focus->IsPart())
+			LocalToWorld = static_cast<swPart*>(Focus)->GetRelativeRotation();
 	}
 
 	if (mActiveSubmodelInstance)
@@ -535,80 +535,80 @@ swVector3 swView::GetMoveDirection(const swVector3& Direction) const
 	return BestRight * Direction.y - BestUp * Direction.x + swVector3(0.0f, 0.0f, Direction.z);
 }
 
-void swView::UpdatePiecePreview()
+void swView::UpdatePartPreview()
 {
-	const swPieceDataReference PreviewPieceData(gMainWindow->GetInsertPieceData());
-	std::vector<swInsertPieceInformation> InsertPieceInfo;
+	const swPartDataReference PreviewPartData(gMainWindow->GetInsertPartData());
+	std::vector<swInsertPartInformation> InsertPartInfo;
 	bool IsConnection;
 
-	if (PreviewPieceData)
+	if (PreviewPartData)
 	{
-		std::tie(InsertPieceInfo, IsConnection) = GetMouseInsertPieceInfo(false, true, PreviewPieceData, nullptr);
+		std::tie(InsertPartInfo, IsConnection) = GetMouseInsertPartInfo(false, true, PreviewPartData, nullptr);
 	}
 
-	GetActiveModel()->SetPreviewInsertPieceInfo(std::move(InsertPieceInfo));
+	GetActiveModel()->SetPreviewInsertPartInfo(std::move(InsertPartInfo));
 }
 
-std::pair<std::vector<swInsertPieceInformation>, bool> swView::GetMouseInsertPieceInfo(bool IgnoreSelected, bool AllowNewPieces, const swPieceDataReference& PieceData, swPiece* MovingPiece) const
+std::pair<std::vector<swInsertPartInformation>, bool> swView::GetMouseInsertPartInfo(bool IgnoreSelected, bool AllowNewParts, const swPartDataReference& PartData, swPart* MovingPart) const
 {
 	swModel* ActiveModel = GetActiveModel();
 
-	swGetPiecesLibrary()->EnsurePieceDataAssetsReady(PieceData);
+	swGetPartsLibrary()->EnsurePartDataAssetsReady(PartData);
 
-	if (MovingPiece && PieceData->GetSynthInfo())
-		swGetPiecesLibrary()->WaitForSynthMeshes({ MovingPiece });
+	if (MovingPart && PartData->GetSynthInfo())
+		swGetPartsLibrary()->WaitForSynthMeshes({ MovingPart });
 
-	// The first piece of an empty model goes to the origin when enabled.
-	if (!MovingPiece && swGetPreferences().mFirstPieceAtOrigin && ActiveModel->GetPieces().empty())
-		return { { swInsertPieceInformation{ PieceData.Get(), swMatrix44Identity(), gMainWindow->GetInsertColorIndex() } }, false };
+	// The first part of an empty model goes to the origin when enabled.
+	if (!MovingPart && swGetPreferences().mFirstPartAtOrigin && ActiveModel->GetParts().empty())
+		return { { swInsertPartInformation{ PartData.Get(), swMatrix44Identity(), gMainWindow->GetInsertColorIndex() } }, false };
 
 	swObjectRayTest ObjectRayTest = RayTest(true, IgnoreSelected);
 
-	// Settling a hit's geometry can reveal another pending piece behind it, so pick again until the hit is stable.
+	// Settling a hit's geometry can reveal another pending part behind it, so pick again until the hit is stable.
 	while (ObjectRayTest.ObjectSection.Object)
 	{
-		swPiece* MousePiece = reinterpret_cast<swPiece*>(ObjectRayTest.ObjectSection.Object);
-		swPieceData* MousePieceData = MousePiece->mPieceData.Get();
-		const bool Retest = MousePieceData->mState != swAssetState::Loaded || MousePieceData->IsModel() || MousePieceData->IsProject() || MousePiece->IsGeneratedMeshPending();
+		swPart* MousePart = reinterpret_cast<swPart*>(ObjectRayTest.ObjectSection.Object);
+		swPartData* MousePartData = MousePart->mPartData.Get();
+		const bool Retest = MousePartData->mState != swAssetState::Loaded || MousePartData->IsModel() || MousePartData->IsProject() || MousePart->IsGeneratedMeshPending();
 
-		swGetPiecesLibrary()->EnsurePieceDataAssetsReady(MousePiece->mPieceData);
+		swGetPartsLibrary()->EnsurePartDataAssetsReady(MousePart->mPartData);
 
-		if (MousePieceData->GetSynthInfo())
-			swGetPiecesLibrary()->WaitForSynthMeshes({ MousePiece });
+		if (MousePartData->GetSynthInfo())
+			swGetPartsLibrary()->WaitForSynthMeshes({ MousePart });
 
 		if (!Retest)
 			break;
 
 		swObjectRayTest ReadyRayTest = RayTest(true, IgnoreSelected);
-		const bool SamePiece = ReadyRayTest.ObjectSection.Object == ObjectRayTest.ObjectSection.Object;
+		const bool SamePart = ReadyRayTest.ObjectSection.Object == ObjectRayTest.ObjectSection.Object;
 		ObjectRayTest = ReadyRayTest;
 
-		if (SamePiece)
+		if (SamePart)
 			break;
 	}
 
-	const swBoundingBox& BoundingBox = MovingPiece ? MovingPiece->GetBoundingBox() : PieceData->GetBoundingBox();
+	const swBoundingBox& BoundingBox = MovingPart ? MovingPart->GetBoundingBox() : PartData->GetBoundingBox();
 
 	if (ObjectRayTest.ObjectSection.Object)
 	{
-		swPiece* MousePiece = reinterpret_cast<swPiece*>(ObjectRayTest.ObjectSection.Object);
-		swTrainTrackInformation* RayTrackInfo = MousePiece->mPieceData->GetTrainTrackInfo();
-		swTrainTrackInformation* InfoTrackInfo = PieceData->GetTrainTrackInfo();
+		swPart* MousePart = reinterpret_cast<swPart*>(ObjectRayTest.ObjectSection.Object);
+		swTrainTrackInformation* RayTrackInfo = MousePart->mPartData->GetTrainTrackInfo();
+		swTrainTrackInformation* InfoTrackInfo = PartData->GetTrainTrackInfo();
 
 		if (RayTrackInfo && InfoTrackInfo)
 		{
-			ActiveModel->UpdateTrainTrackConnections(MousePiece, IgnoreSelected);
+			ActiveModel->UpdateTrainTrackConnections(MousePart, IgnoreSelected);
 
 			swVector3 ClosestPoint = ObjectRayTest.Start + swNormalize(ObjectRayTest.End - ObjectRayTest.Start) * ObjectRayTest.Distance;
-			quint32 FocusSection = MousePiece->GetFocusSection();
+			quint32 FocusSection = MousePart->GetFocusSection();
 
-			std::vector<swInsertPieceInformation> TrainTracks = swTrainTrackInformation::GetInsertPieceInfo(MousePiece, PieceData.Get(), MovingPiece, gMainWindow->GetInsertColorIndex(), FocusSection, AllowNewPieces, ClosestPoint);
+			std::vector<swInsertPartInformation> TrainTracks = swTrainTrackInformation::GetInsertPartInfo(MousePart, PartData.Get(), MovingPart, gMainWindow->GetInsertColorIndex(), FocusSection, AllowNewParts, ClosestPoint);
 
 			if (!TrainTracks.empty())
 				return { TrainTracks, true };
 		}
 
-		swVector3 Position = ObjectRayTest.PieceRayTest.Plane;
+		swVector3 Position = ObjectRayTest.PartRayTest.Plane;
 
 		if (Position.x > 0.0f)
 			Position.x += fabsf(BoundingBox.Min.x);
@@ -624,14 +624,14 @@ std::pair<std::vector<swInsertPieceInformation>, bool> swView::GetMouseInsertPie
 			Position.z -= fabsf(BoundingBox.Max.z);
 
 		if (gMainWindow->GetRelativeTransform())
-			Position = swMultiply31(ActiveModel->SnapPosition(Position), ObjectRayTest.PieceRayTest.Transform);
+			Position = swMultiply31(ActiveModel->SnapPosition(Position), ObjectRayTest.PartRayTest.Transform);
 		else
-			Position = ActiveModel->SnapPosition(swMultiply31(Position, ObjectRayTest.PieceRayTest.Transform));
+			Position = ActiveModel->SnapPosition(swMultiply31(Position, ObjectRayTest.PartRayTest.Transform));
 
-		swMatrix44 WorldMatrix = ObjectRayTest.PieceRayTest.Transform;
+		swMatrix44 WorldMatrix = ObjectRayTest.PartRayTest.Transform;
 		WorldMatrix.SetTranslation(Position);
 
-		return { { swInsertPieceInformation{ PieceData.Get(), WorldMatrix, gMainWindow->GetInsertColorIndex() } }, false };
+		return { { swInsertPartInformation{ PartData.Get(), WorldMatrix, gMainWindow->GetInsertColorIndex() } }, false };
 	}
 
 	std::array<swVector3, 2> ClickPoints = {{ swVector3((float)mMouseX, (float)mMouseY, 0.0f), swVector3((float)mMouseX, (float)mMouseY, 1.0f) }};
@@ -650,7 +650,7 @@ std::pair<std::vector<swInsertPieceInformation>, bool> swView::GetMouseInsertPie
 	if (swLineSegmentPlaneIntersection(&Intersection, ClickPoints[0], ClickPoints[1], swVector4(0, 0, 1, BoundingBox.Min.z)))
 	{
 		Intersection = ActiveModel->SnapPosition(Intersection);
-		return { { swInsertPieceInformation{ PieceData.Get(), swMatrix44Translation(Intersection), gMainWindow->GetInsertColorIndex() } }, false };
+		return { { swInsertPartInformation{ PartData.Get(), swMatrix44Translation(Intersection), gMainWindow->GetInsertColorIndex() } }, false };
 	}
 
 	swVector3 Position;
@@ -663,10 +663,10 @@ std::pair<std::vector<swInsertPieceInformation>, bool> swView::GetMouseInsertPie
 	if (swLineSegmentPlaneIntersection(&Intersection, ClickPoints[0], ClickPoints[1], swVector4(FrontVector, -swDot(FrontVector, Position))))
 	{
 		Intersection = ActiveModel->SnapPosition(Intersection);
-		return { { swInsertPieceInformation{ PieceData.Get(), swMatrix44Translation(Intersection), gMainWindow->GetInsertColorIndex() } }, false };
+		return { { swInsertPartInformation{ PartData.Get(), swMatrix44Translation(Intersection), gMainWindow->GetInsertColorIndex() } }, false };
 	}
 
-	return { { swInsertPieceInformation{ PieceData.Get(), swMatrix44Translation(UnprojectPoint(swVector3((float)mMouseX, (float)mMouseY, 0.9f))), gMainWindow->GetInsertColorIndex() } }, false };
+	return { { swInsertPartInformation{ PartData.Get(), swMatrix44Translation(UnprojectPoint(swVector3((float)mMouseX, (float)mMouseY, 0.9f))), gMainWindow->GetInsertColorIndex() } }, false };
 }
 
 swVector3 swView::GetCameraLightInsertPosition() const
@@ -687,7 +687,7 @@ swVector3 swView::GetCameraLightInsertPosition() const
 	swVector3 Min, Max;
 	swVector3 Center;
 
-	if (ActiveModel->GetVisiblePiecesBoundingBox(Min, Max))
+	if (ActiveModel->GetVisiblePartsBoundingBox(Min, Max))
 		Center = (Min + Max) / 2.0f;
 	else
 		Center = swVector3(0.0f, 0.0f, 0.0f);
@@ -709,7 +709,7 @@ void swView::GetRayUnderPointer(swVector3& Start, swVector3& End) const
 	End = StartEnd[1];
 }
 
-swObjectRayTest swView::RayTest(bool PiecesOnly, bool IgnoreSelected) const
+swObjectRayTest swView::RayTest(bool PartsOnly, bool IgnoreSelected) const
 {
 	swVector3 StartEnd[2] =
 	{
@@ -721,7 +721,7 @@ swObjectRayTest swView::RayTest(bool PiecesOnly, bool IgnoreSelected) const
 
 	swObjectRayTest ObjectRayTest;
 
-	ObjectRayTest.PiecesOnly = PiecesOnly;
+	ObjectRayTest.PartsOnly = PartsOnly;
 	ObjectRayTest.IgnoreSelected = IgnoreSelected;
 	ObjectRayTest.ViewCamera = mCamera;
 	ObjectRayTest.Start = StartEnd[0];
@@ -742,9 +742,9 @@ swObjectRayTest swView::RayTest(bool PiecesOnly, bool IgnoreSelected) const
 	return ObjectRayTest;
 }
 
-swObjectSection swView::FindObjectUnderPointer(bool PiecesOnly, bool IgnoreSelected) const
+swObjectSection swView::FindObjectUnderPointer(bool PartsOnly, bool IgnoreSelected) const
 {
-	return RayTest(PiecesOnly, IgnoreSelected).ObjectSection;
+	return RayTest(PartsOnly, IgnoreSelected).ObjectSection;
 }
 
 std::vector<swObject*> swView::FindObjectsInBox(float x1, float y1, float x2, float y2) const
@@ -896,8 +896,8 @@ void swView::EndDrag(bool Accept)
 		case swDragState::None:
 			break;
 
-		case swDragState::Piece:
-			ActiveModel->InsertPieceToolClicked();
+		case swDragState::Part:
+			ActiveModel->InsertPartToolClicked();
 			break;
 
 		case swDragState::Color:
@@ -909,7 +909,7 @@ void swView::EndDrag(bool Accept)
 	mDragState = swDragState::None;
 	UpdateTrackTool();
 
-	ActiveModel->SetPreviewInsertPieceInfo(std::vector<swInsertPieceInformation>());
+	ActiveModel->SetPreviewInsertPartInfo(std::vector<swInsertPartInformation>());
 	ActiveModel->UpdateAllViews();
 }
 
@@ -1419,9 +1419,9 @@ void swView::PickFaceNormal()
 
 	if (ObjectRayTest.ObjectSection.Object)
 	{
-		// The hit triangle normal is in the space of the innermost piece, so bring it to the view.
+		// The hit triangle normal is in the space of the innermost part, so bring it to the view.
 		swVector3 Point = ObjectRayTest.Start + swNormalize(ObjectRayTest.End - ObjectRayTest.Start) * ObjectRayTest.Distance;
-		swVector3 Normal = swNormalize(swMultiply30(ObjectRayTest.PieceRayTest.Normal, ObjectRayTest.PieceRayTest.Transform));
+		swVector3 Normal = swNormalize(swMultiply30(ObjectRayTest.PartRayTest.Normal, ObjectRayTest.PartRayTest.Transform));
 
 		if (swDot(Normal, ObjectRayTest.Start - Point) < 0.0f)
 			Normal = -Normal;
@@ -1506,7 +1506,7 @@ void swView::UpdateTrackTool()
 	int x = mMouseX;
 	int y = mMouseY;
 	bool Redraw = false;
-	mMouseDownPiece = nullptr;
+	mMouseDownPart = nullptr;
 	mTrackToolFromOverlay = false;
 	swModel* ActiveModel = GetActiveModel();
 
@@ -1548,11 +1548,11 @@ void swView::UpdateTrackTool()
 				swObjectSection ObjectSection = FindObjectUnderPointer(false, false);
 				swObject* Object = ObjectSection.Object;
 
-				if (Object && Object->IsPiece() && ObjectSection.Section == SW_PIECE_SECTION_POSITION && Object->IsSelected())
+				if (Object && Object->IsPart() && ObjectSection.Section == SW_PART_SECTION_POSITION && Object->IsSelected())
 				{
-					swPiece* Piece = (swPiece*)Object;
-					mMouseDownTransform = Piece->mModelWorld;
-					mMouseDownPiece = Piece;
+					swPart* Part = (swPart*)Object;
+					mMouseDownTransform = Part->mModelWorld;
+					mMouseDownPart = Part;
 					NewTrackTool = swTrackTool::MoveXYZ;
 				}
 			}
@@ -1645,7 +1645,7 @@ void swView::UpdateTrackTool()
 	case swDragState::None:
 		break;
 
-	case swDragState::Piece:
+	case swDragState::Part:
 		NewTrackTool = swTrackTool::Insert;
 		Redraw = true;
 		break;
@@ -1966,9 +1966,9 @@ void swView::OnButtonDown(swTrackButton TrackButton)
 
 	case swTrackTool::Insert:
 		{
-			UpdatePiecePreview();
+			UpdatePartPreview();
 
-			if (!ActiveModel->InsertPieceToolClicked())
+			if (!ActiveModel->InsertPartToolClicked())
 				break;
 
 			if ((mMouseModifiers & Qt::ControlModifier) == 0)
@@ -2068,16 +2068,16 @@ void swView::OnButtonDown(swTrackButton TrackButton)
 		{
 			swObject* Focus = ActiveModel->GetFocusObject();
 
-			if (!Focus || !Focus->IsPiece())
+			if (!Focus || !Focus->IsPart())
 				break;
 
-			swPiece* Piece = (swPiece*)Focus;
-			const swTrainTrackInformation* TrainTrackInfo = Piece->mPieceData->GetTrainTrackInfo();
+			swPart* Part = (swPart*)Focus;
+			const swTrainTrackInformation* TrainTrackInfo = Part->mPartData->GetTrainTrackInfo();
 
 			if (!TrainTrackInfo)
 				break;
 
-			if (mTrackToolSection < SW_PIECE_SECTION_TRAIN_TRACK_CONNECTION_FIRST)
+			if (mTrackToolSection < SW_PART_SECTION_TRAIN_TRACK_CONNECTION_FIRST)
 				break;
 
 			swObjectSection ObjectSection;
@@ -2091,7 +2091,7 @@ void swView::OnButtonDown(swTrackButton TrackButton)
 
 	case swTrackTool::ScalePlus:
 	case swTrackTool::ScaleMinus:
-		if (ActiveModel->AnyPiecesSelected())
+		if (ActiveModel->AnyPartsSelected())
 			StartTracking(TrackButton);
 		break;
 
@@ -2284,7 +2284,7 @@ void swView::OnMouseMove()
 
 		if (mTrackTool == swTrackTool::Insert)
 		{
-			UpdatePiecePreview();
+			UpdatePartPreview();
 			ActiveModel->UpdateAllViews();
 		}
 
@@ -2394,16 +2394,16 @@ void swView::OnMouseMove()
 					}
 				}
 			}
-			else if (mTrackTool == swTrackTool::MoveXYZ && mMouseDownPiece)
+			else if (mTrackTool == swTrackTool::MoveXYZ && mMouseDownPart)
 			{
-				if (mMouseDownPiece->mPieceData->GetTrainTrackInfo())
-					ActiveModel->UpdateSelectedPiecesTrainTrackConnections();
+				if (mMouseDownPart->mPartData->GetTrainTrackInfo())
+					ActiveModel->UpdateSelectedPartsTrainTrackConnections();
 
-				auto [PieceInfoTransforms, IsConnection] = GetMouseInsertPieceInfo(true, false, mMouseDownPiece->mPieceData, mMouseDownPiece);
+				auto [PartInfoTransforms, IsConnection] = GetMouseInsertPartInfo(true, false, mMouseDownPart->mPartData, mMouseDownPart);
 
-				if (!PieceInfoTransforms.empty())
+				if (!PartInfoTransforms.empty())
 				{
-					ActiveModel->UpdateFreeMoveTool(mMouseDownPiece, mMouseDownTransform, PieceInfoTransforms.back().Transform, IsConnection, mTrackButton != swTrackButton::Left);
+					ActiveModel->UpdateFreeMoveTool(mMouseDownPart, mMouseDownTransform, PartInfoTransforms.back().Transform, IsConnection, mTrackButton != swTrackButton::Left);
 				}
 			}
 			else if (mTrackTool == swTrackTool::ScalePlus || mTrackTool == swTrackTool::ScaleMinus)
@@ -2420,18 +2420,18 @@ void swView::OnMouseMove()
 				swClosestPointsBetweenLines(Center, Center + Direction, CurrentStart, CurrentEnd, &Intersection, nullptr);
 
 				swObject* Focus = ActiveModel->GetFocusObject();
-				if (Focus && Focus->IsPiece())
+				if (Focus && Focus->IsPart())
 				{
-					swPiece* Piece = (swPiece*)Focus;
-					quint32 Section = Piece->GetFocusSection();
+					swPart* Part = (swPart*)Focus;
+					quint32 Section = Part->GetFocusSection();
 
-					if (Section >= SW_PIECE_SECTION_CONTROL_POINT_FIRST && Section <= SW_PIECE_SECTION_CONTROL_POINT_LAST)
+					if (Section >= SW_PART_SECTION_CONTROL_POINT_FIRST && Section <= SW_PART_SECTION_CONTROL_POINT_LAST)
 					{
 						const float ScaleMax = 200.0f;
 						const float OverlayScale = GetOverlayScale();
 						const float ScaleStart = 2.0f * OverlayScale;
 
-						swVector3 Position = Piece->GetSectionPosition(Section);
+						swVector3 Position = Part->GetSectionPosition(Section);
 						swVector3 Start = Position + Direction * ScaleStart;
 
 						float Distance = swLength(Intersection - Start);
@@ -2678,7 +2678,7 @@ void swView::OnMouseLeave()
 		swModel* ActiveModel = GetActiveModel();
 
 		if (ActiveModel)
-			ActiveModel->SetPreviewInsertPieceInfo(std::vector<swInsertPieceInformation>());
+			ActiveModel->SetPreviewInsertPartInfo(std::vector<swInsertPartInformation>());
 	}
 }
 

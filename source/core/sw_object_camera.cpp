@@ -659,10 +659,10 @@ QVariant swCamera::GetPropertyValue(swObjectPropertyId PropertyId) const
 {
 	switch (PropertyId)
 	{
-	case swObjectPropertyId::PieceId:
-	case swObjectPropertyId::PieceColor:
-	case swObjectPropertyId::PieceStepShow:
-	case swObjectPropertyId::PieceStepHide:
+	case swObjectPropertyId::PartId:
+	case swObjectPropertyId::PartColor:
+	case swObjectPropertyId::PartStepShow:
+	case swObjectPropertyId::PartStepHide:
 		break;
 
 	case swObjectPropertyId::CameraName:
@@ -721,10 +721,10 @@ bool swCamera::SetPropertyValue(swObjectPropertyId PropertyId, swStep Step, bool
 
 	switch (PropertyId)
 	{
-	case swObjectPropertyId::PieceId:
-	case swObjectPropertyId::PieceColor:
-	case swObjectPropertyId::PieceStepShow:
-	case swObjectPropertyId::PieceStepHide:
+	case swObjectPropertyId::PartId:
+	case swObjectPropertyId::PartColor:
+	case swObjectPropertyId::PartStepShow:
+	case swObjectPropertyId::PartStepHide:
 		break;
 
 	case swObjectPropertyId::CameraName:
@@ -791,10 +791,10 @@ bool swCamera::HasKeyFrame(swObjectPropertyId PropertyId, swStep Time) const
 {
 	switch (PropertyId)
 	{
-	case swObjectPropertyId::PieceId:
-	case swObjectPropertyId::PieceColor:
-	case swObjectPropertyId::PieceStepShow:
-	case swObjectPropertyId::PieceStepHide:
+	case swObjectPropertyId::PartId:
+	case swObjectPropertyId::PartColor:
+	case swObjectPropertyId::PartStepShow:
+	case swObjectPropertyId::PartStepHide:
 	case swObjectPropertyId::CameraName:
 	case swObjectPropertyId::CameraProjection:
 	case swObjectPropertyId::CameraFOV:
@@ -852,10 +852,10 @@ bool swCamera::SetKeyFrame(swObjectPropertyId PropertyId, swStep Time, bool KeyF
 {
 	switch (PropertyId)
 	{
-	case swObjectPropertyId::PieceId:
-	case swObjectPropertyId::PieceColor:
-	case swObjectPropertyId::PieceStepShow:
-	case swObjectPropertyId::PieceStepHide:
+	case swObjectPropertyId::PartId:
+	case swObjectPropertyId::PartColor:
+	case swObjectPropertyId::PartStepShow:
+	case swObjectPropertyId::PartStepHide:
 	case swObjectPropertyId::CameraName:
 	case swObjectPropertyId::CameraProjection:
 	case swObjectPropertyId::CameraFOV:
@@ -966,7 +966,7 @@ void swCamera::RayTest(swObjectRayTest& ObjectRayTest) const
 		ObjectRayTest.ObjectSection.Object = const_cast<swCamera*>(this);
 		ObjectRayTest.ObjectSection.Section = SW_CAMERA_SECTION_POSITION;
 		ObjectRayTest.Distance = Distance;
-		ObjectRayTest.PieceRayTest.Plane = Plane;
+		ObjectRayTest.PartRayTest.Plane = Plane;
 	}
 
 	Min = swVector3(-SW_CAMERA_TARGET_EDGE, -SW_CAMERA_TARGET_EDGE, -SW_CAMERA_TARGET_EDGE);
@@ -983,7 +983,7 @@ void swCamera::RayTest(swObjectRayTest& ObjectRayTest) const
 		ObjectRayTest.ObjectSection.Object = const_cast<swCamera*>(this);
 		ObjectRayTest.ObjectSection.Section = SW_CAMERA_SECTION_TARGET;
 		ObjectRayTest.Distance = Distance;
-		ObjectRayTest.PieceRayTest.Plane = Plane;
+		ObjectRayTest.PartRayTest.Plane = Plane;
 	}
 
 	const swMatrix44 ViewWorld = swMatrix44AffineInverse(mWorldView);
@@ -1000,7 +1000,7 @@ void swCamera::RayTest(swObjectRayTest& ObjectRayTest) const
 		ObjectRayTest.ObjectSection.Object = const_cast<swCamera*>(this);
 		ObjectRayTest.ObjectSection.Section = SW_CAMERA_SECTION_UP_VECTOR;
 		ObjectRayTest.Distance = Distance;
-		ObjectRayTest.PieceRayTest.Plane = Plane;
+		ObjectRayTest.PartRayTest.Plane = Plane;
 	}
 }
 

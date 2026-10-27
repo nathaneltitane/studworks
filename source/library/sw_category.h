@@ -18,4 +18,4 @@ bool swLoadCategories(const QByteArray& Buffer, std::vector<swLibraryCategory>& 
 bool swSaveCategories(const QString& FileName, const std::vector<swLibraryCategory>& Categories);
 bool swSaveCategories(QTextStream& Stream, const std::vector<swLibraryCategory>& Categories);
 
-bool swMatchCategory(const char* PieceName, const char* Expression);
+bool swMatchCategory(const char* PartName, const char* Expression);

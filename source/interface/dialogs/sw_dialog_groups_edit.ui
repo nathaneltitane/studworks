@@ -3,7 +3,7 @@
  <class>swEditGroupsDialog</class>
  <widget class="QDialog" name="swEditGroupsDialog">
   <property name="whatsThis">
-   <string>&lt;p&gt;&lt;b&gt;Edit Groups&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Reorganize the model's pieces and groups in the tree. Drag pieces or groups into a group, or to the top level to remove them from a parent group. Double-click a group name to rename it.&lt;/p&gt;&lt;p&gt;New Group creates a group inside the selected group, or beside an ungrouped piece. Choose OK to apply the hierarchy, or Cancel to discard the changes. Empty groups are removed when changes are applied.&lt;/p&gt;</string>
+   <string>&lt;p&gt;&lt;b&gt;Edit Groups&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Reorganize the model's parts and groups in the tree. Drag parts or groups into a group, or to the top level to remove them from a parent group. Double-click a group name to rename it.&lt;/p&gt;&lt;p&gt;New Group creates a group inside the selected group, or beside an ungrouped part. Choose OK to apply the hierarchy, or Cancel to discard the changes. Empty groups are removed when changes are applied.&lt;/p&gt;</string>
   </property>
   <property name="geometry">
    <rect>
@@ -20,13 +20,13 @@
    <item>
     <widget class="QTreeWidget" name="treeWidget">
      <property name="toolTip">
-      <string>Drag pieces and groups to reorganize them; double-click a group name to rename it.</string>
+      <string>Drag parts and groups to reorganize them; double-click a group name to rename it.</string>
      </property>
      <property name="whatsThis">
       <string>&lt;p&gt;&lt;b&gt;Group Hierarchy&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Drop an item onto a group to make it a member of that group. Move it to the top level to remove its parent group. Only group names can be edited; names must be unique and nonempty.&lt;/p&gt;</string>
      </property>
      <property name="accessibleName">
-      <string>Piece and Group Hierarchy</string>
+      <string>Part and Group Hierarchy</string>
      </property>
      <property name="editTriggers">
       <set>QAbstractItemView::EditTrigger::DoubleClicked|QAbstractItemView::EditTrigger::EditKeyPressed|QAbstractItemView::EditTrigger::SelectedClicked</set>

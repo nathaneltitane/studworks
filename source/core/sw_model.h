@@ -19,18 +19,18 @@ enum class swImageBackground
 	Opaque
 };
 
-enum class swPiecesListSort
+enum class swPartsListSort
 {
 	Color,
 	Name,
-	PieceId
+	PartId
 };
 
 enum class swCameraProjection;
 struct swSetInventoryItem;
 struct swModelHistoryEditState;
 struct swGroupHistoryState;
-struct swPieceHistoryState;
+struct swPartHistoryState;
 struct swCameraHistoryState;
 struct swLightHistoryState;
 template<typename StateType> struct swObjectHistory;
@@ -40,29 +40,29 @@ class swModelHistoryEdit;
 class swModelHistoryProperties;
 enum class swModelHistoryEditMerge;
 
-#define SW_SELECTION_NO_PIECES                0x0001 // No pieces in model
-#define SW_SELECTION_PIECE                    0x0002 // At least 1 piece selected
+#define SW_SELECTION_NO_PARTS                0x0001 // No parts in model
+#define SW_SELECTION_PART                    0x0002 // At least 1 part selected
 #define SW_SELECTION_CAMERA                   0x0004 // At least 1 camera selected
 #define SW_SELECTION_LIGHT                    0x0008 // At least 1 light selected
 #define SW_SELECTION_SELECTED                 0x0010 // At least 1 object selected
-#define SW_SELECTION_UNSELECTED               0x0020 // At least 1 piece unselected
-#define SW_SELECTION_HIDDEN                   0x0040 // At least one piece hidden
-#define SW_SELECTION_HIDDEN_SELECTED          0x0080 // At least one piece selected is hidden
-#define SW_SELECTION_VISIBLE_SELECTED         0x0100 // At least one piece selected is not hidden
-#define SW_SELECTION_GROUPED                  0x0200 // At least one piece selected is grouped
-#define SW_SELECTION_FOCUS_GROUPED            0x0400 // Focused piece is grouped
+#define SW_SELECTION_UNSELECTED               0x0020 // At least 1 part unselected
+#define SW_SELECTION_HIDDEN                   0x0040 // At least one part hidden
+#define SW_SELECTION_HIDDEN_SELECTED          0x0080 // At least one part selected is hidden
+#define SW_SELECTION_VISIBLE_SELECTED         0x0100 // At least one part selected is not hidden
+#define SW_SELECTION_GROUPED                  0x0200 // At least one part selected is grouped
+#define SW_SELECTION_FOCUS_GROUPED            0x0400 // Focused part is grouped
 #define SW_SELECTION_CAN_GROUP                0x0800 // Can make a new group
 #define SW_SELECTION_MODEL_SELECTED           0x1000 // At least one model reference is selected
-#define SW_SELECTION_CAN_ADD_CONTROL_POINT    0x2000 // Can add control points to focused piece
-#define SW_SELECTION_CAN_REMOVE_CONTROL_POINT 0x4000 // Can remove control points from focused piece
-#define SW_SELECTION_TRAIN_TRACK_VISIBLE      0x8000 // Focused piece has train track connections
+#define SW_SELECTION_CAN_ADD_CONTROL_POINT    0x2000 // Can add control points to focused part
+#define SW_SELECTION_CAN_REMOVE_CONTROL_POINT 0x4000 // Can remove control points from focused part
+#define SW_SELECTION_TRAIN_TRACK_VISIBLE      0x8000 // Focused part has train track connections
 
 enum class swSelectionMode
 {
 	Single,
-	Piece,
+	Part,
 	Color,
-	PieceColor
+	PartColor
 };
 
 enum class swTransformType
@@ -87,29 +87,29 @@ enum class swModelTransformFlag
 Q_DECLARE_FLAGS(swModelTransformFlags, swModelTransformFlag)
 Q_DECLARE_OPERATORS_FOR_FLAGS(swModelTransformFlags)
 
-struct swInsertPieceInformation
+struct swInsertPartInformation
 {
-	swPieceData* PieceData;
+	swPartData* PartData;
 	swMatrix44 Transform;
 	int ColorIndex;
 };
 
-// Stored insertion previews own their definitions; swInsertPieceInformation remains borrowed.
-struct swPreviewInsertPieceInformation
+// Stored insertion previews own their definitions; swInsertPartInformation remains borrowed.
+struct swPreviewInsertPartInformation
 {
-	explicit swPreviewInsertPieceInformation(const swInsertPieceInformation& Info)
-		: PieceData(Info.PieceData), Transform(Info.Transform), ColorIndex(Info.ColorIndex)
+	explicit swPreviewInsertPartInformation(const swInsertPartInformation& Info)
+		: PartData(Info.PartData), Transform(Info.Transform), ColorIndex(Info.ColorIndex)
 	{
 	}
 
-	swPieceDataReference PieceData;
+	swPartDataReference PartData;
 	swMatrix44 Transform;
 	int ColorIndex;
 };
 
-struct swModelPieceRename
+struct swModelPartRename
 {
-	swPieceData* PieceData;
+	swPartData* PartData;
 	QString OldName;
 	QString NewName;
 };
@@ -241,27 +241,27 @@ public:
 	bool IsModified() const;
 	void SetSaved();
 
-	bool GetPieceWorldMatrix(swPiece* Piece, swMatrix44& ParentWorldMatrix) const;
+	bool GetPartWorldMatrix(swPart* Part, swMatrix44& ParentWorldMatrix) const;
 	bool IncludesModel(const swModel* Model) const;
-	void CreatePieceData(Project* Project);
-	bool RebindPieceData(swPieceData* Previous, swPieceData* Replacement);
-	void UpdatePieceData(std::vector<swModel*>& UpdatedModels);
+	void CreatePartData(Project* Project);
+	bool RebindPartData(swPartData* Previous, swPartData* Replacement);
+	void UpdatePartData(std::vector<swModel*>& UpdatedModels);
 	void QueueMeshBuild();
 	void UpdateAllViews() const;
 	void RefreshPreview() const;
-	std::vector<swPieceDataReference> GetRequiredPieceData() const;
-	std::vector<swPiece*> GetRequiredSynthPieces() const;
+	std::vector<swPartDataReference> GetRequiredPartData() const;
+	std::vector<swPart*> GetRequiredSynthParts() const;
 	void WaitForAssets() const;
 	swResult<void> EnsureAssetsReady() const;
 
-	swPieceData* GetPieceData() const
+	swPartData* GetPartData() const
 	{
-		return mPieceData.Get();
+		return mPartData.Get();
 	}
 
-	const std::vector<std::unique_ptr<swPiece>>& GetPieces() const
+	const std::vector<std::unique_ptr<swPart>>& GetParts() const
 	{
-		return mPieces;
+		return mParts;
 	}
 
 	const std::vector<std::unique_ptr<swCamera>>& GetCameras() const
@@ -345,21 +345,21 @@ public:
 	void LoadEditHistoryState(const swModelHistoryEditState& HistoryState);
 	void LoadModelPropertiesState(const swModelProperties& ModelProperties);
 
-	swPiece* AddPiece(swPieceData* PieceData, quint32 Section);
-	void AddPiece(std::unique_ptr<swPiece> Piece, size_t PieceIndex);
+	swPart* AddPart(swPartData* PartData, quint32 Section);
+	void AddPart(std::unique_ptr<swPart> Part, size_t PartIndex);
 	void DeleteSelectedObjects();
-	void ResetSelectedPiecesPivotPoint();
+	void ResetSelectedPartsPivotPoint();
 	void RemoveSelectedObjectsKeyFrames();
 	void InsertControlPoint();
 	void RemoveFocusedControlPoint();
 	void FocusNextTrainTrack();
 	void FocusPreviousTrainTrack();
 	void RotateFocusedTrainTrack(int Direction);
-	void ShowSelectedPiecesEarlier();
-	void ShowSelectedPiecesLater();
-	void InsertStepAndMoveSelectedPieces(swStep Step);
-	void SetPieceSteps(const std::vector<std::pair<swPiece*, swStep>>& PieceSteps);
-	void RenamePieces(const std::vector<swModelPieceRename>& Renames);
+	void ShowSelectedPartsEarlier();
+	void ShowSelectedPartsLater();
+	void InsertStepAndMoveSelectedParts(swStep Step);
+	void SetPartSteps(const std::vector<std::pair<swPart*, swStep>>& PartSteps);
+	void RenameParts(const std::vector<swModelPartRename>& Renames);
 
 	void MoveSelectionToModel(swModel* Model);
 	void InlineSelectedModels();
@@ -369,8 +369,8 @@ public:
 	void RemoveGroup(swGroup* Group);
 	void GroupSelection();
 	void UngroupSelection();
-	void AddSelectedPiecesToGroup();
-	void RemoveFocusPieceFromGroup();
+	void AddSelectedPartsToGroup();
+	void RemoveFocusPartFromGroup();
 	void ShowEditGroupsDialog();
 
 	void SaveLDraw(QTextStream& Stream, bool SelectedOnly, swStep LastStep) const;
@@ -381,74 +381,74 @@ public:
 	void Merge(std::unique_ptr<swModel> Other);
 
 	void SetMinifigure(const swMinifigure& Minifigure);
-	void SetPreviewPieceData(swPieceData* PieceData, int ColorIndex);
+	void SetPreviewPartData(swPartData* PartData, int ColorIndex);
 
 	swResult<void> Cut();
 	swResult<void> Copy();
 	swResult<void> Paste(bool PasteToCurrentStep);
-	void DuplicateSelectedPieces();
-	void PaintSelectedPieces();
-	void UpdateTrainTrackConnections(swPiece* TrackPiece, bool IgnoreSelected) const;
-	void UpdateSelectedPiecesTrainTrackConnections();
-	void SetPreviewInsertPieceInfo(std::vector<swInsertPieceInformation>&& PreviewInsertPieceInfo);
+	void DuplicateSelectedParts();
+	void PaintSelectedParts();
+	void UpdateTrainTrackConnections(swPart* TrackPart, bool IgnoreSelected) const;
+	void UpdateSelectedPartsTrainTrackConnections();
+	void SetPreviewInsertPartInfo(std::vector<swInsertPartInformation>&& PreviewInsertPartInfo);
 
-	const std::vector<swPreviewInsertPieceInformation>& GetPreviewInsertPieceInfo() const
+	const std::vector<swPreviewInsertPartInformation>& GetPreviewInsertPartInfo() const
 	{
-		return mPreviewInsertPieceInfo;
+		return mPreviewInsertPartInfo;
 	}
 
 	void GetScene(swScene* Scene, const swCamera* ViewCamera, bool AllowHighlight, bool AllowFade) const;
 	void AddSubModelRenderMeshes(swScene* Scene, const swMatrix44& WorldMatrix, int DefaultColorIndex, swRenderMeshState RenderMeshState, bool ParentActive) const;
 	QImage GetStepImage(bool Zoom, int Width, int Height, swStep Step);
 	// Empty inventory succeeds with a null image; rendering failures return an error.
-	swResult<QImage> GetPiecesListImage(int MaxWidth, int ThumbnailSize, swStep Step, quint32 BackgroundColor, quint32 ThumbnailBackgroundColor, QFont Font, QColor TextColor, bool KeepMissingPieces, bool ShowCounts = true, swPiecesListSort Sort = swPiecesListSort::Color) const;
+	swResult<QImage> GetPartsListImage(int MaxWidth, int ThumbnailSize, swStep Step, quint32 BackgroundColor, quint32 ThumbnailBackgroundColor, QFont Font, QColor TextColor, bool KeepMissingParts, bool ShowCounts = true, swPartsListSort Sort = swPartsListSort::Color) const;
 	swResult<void> SaveStepImages(const QString& BaseName, bool AddStepSuffix, bool Zoom, int Width, int Height, swStep Start, swStep End, swImageBackground Background);
 
 	void RayTest(swObjectRayTest& ObjectRayTest) const;
 	void BoxTest(swObjectBoxTest& ObjectBoxTest) const;
-	bool SubModelMinIntersectDist(const swVector3& WorldStart, const swVector3& WorldEnd, float& MinDistance, swPieceRayTest& PieceRayTest) const;
+	bool SubModelMinIntersectDist(const swVector3& WorldStart, const swVector3& WorldEnd, float& MinDistance, swPartRayTest& PartRayTest) const;
 	bool SubModelBoxTest(const swVector4 Planes[6]) const;
 	void SubModelCompareBoundingBox(const swMatrix44& WorldMatrix, swVector3& Min, swVector3& Max) const;
 	void SubModelAddBoundingBoxPoints(const swMatrix44& WorldMatrix, std::vector<swVector3>& Points, swGeometryBoundsMode Mode) const;
 
-	bool HasPieces() const
+	bool HasParts() const
 	{
-		return !mPieces.empty();
+		return !mParts.empty();
 	}
 
-	bool AnyPiecesSelected() const;
+	bool AnyPartsSelected() const;
 	bool AnyObjectsSelected() const;
 	swModel* GetFirstSelectedSubmodel() const;
 	void GetSubModels(std::set<swModel*>& SubModels) const;
 	bool GetMoveRotateTransform(swVector3& Center, swMatrix33& RelativeRotation) const;
 	bool CanRotateSelection() const;
-	bool GetPieceFocusOrSelectionCenter(swVector3& Center) const;
+	bool GetPartFocusOrSelectionCenter(swVector3& Center) const;
 	swVector3 GetSelectionOrModelCenter() const;
 	bool GetFocusPosition(swVector3& Position) const;
 	swObject* GetFocusObject() const;
 	bool GetSelectionCenter(swVector3& Center) const;
-	swBoundingBox GetAllPiecesBoundingBox() const;
-	bool GetVisiblePiecesBoundingBox(swVector3& Min, swVector3& Max) const;
-	std::vector<swVector3> GetPiecesBoundingBoxPoints(swGeometryBoundsMode Mode) const;
-	void GetPiecesList(int DefaultColorIndex, bool ScanSubModels, bool AddSubModels, swPiecesList& PiecesList) const;
-	void GetPiecesListForStep(swStep Step, int DefaultColorIndex, swPiecesList& PiecesList, bool Cumulative) const;
-	void GetModelPieces(const swMatrix44& WorldMatrix, int DefaultColorIndex, std::vector<swModelPiecesEntry>& ModelPieces) const;
+	swBoundingBox GetAllPartsBoundingBox() const;
+	bool GetVisiblePartsBoundingBox(swVector3& Min, swVector3& Max) const;
+	std::vector<swVector3> GetPartsBoundingBoxPoints(swGeometryBoundsMode Mode) const;
+	void GetPartsList(int DefaultColorIndex, bool ScanSubModels, bool AddSubModels, swPartsList& PartsList) const;
+	void GetPartsListForStep(swStep Step, int DefaultColorIndex, swPartsList& PartsList, bool Cumulative) const;
+	void GetModelParts(const swMatrix44& WorldMatrix, int DefaultColorIndex, std::vector<swModelPartsEntry>& ModelParts) const;
 	void GetSelectionInformation(int* Flags, std::vector<swObject*>& Selection, swObject** Focus) const;
 
 	void ClearSelectionAction();
 	void SetSelectionAndFocusAction(const std::vector<swObject*>& Selection, swObject* Focus, quint32 Section, swSelectionMode SelectionMode);
 	void FocusOrDeselectObjectAction(swObject* Object, uint32_t Section, swSelectionMode SelectionMode);
-	void SelectAllPiecesAction();
-	void InvertPieceSelectionAction();
+	void SelectAllPartsAction();
+	void InvertPartSelectionAction();
 	void AddToSelectionAction(const std::vector<swObject*>& Objects);
 	void RemoveFromSelectionAction(const std::vector<swObject*>& Objects);
 
-	void HideSelectedPieces();
-	void HideUnselectedPieces();
-	void UnhideSelectedPieces();
-	void UnhideAllPieces();
+	void HideSelectedParts();
+	void HideUnselectedParts();
+	void UnhideSelectedParts();
+	void UnhideAllParts();
 
-	void FindReplacePiece(bool SearchForward, bool FindAll, bool Replace);
+	void FindReplacePart(bool SearchForward, bool FindAll, bool Replace);
 
 	void UndoAction();
 	void RedoAction();
@@ -475,11 +475,11 @@ public:
 
 	void BeginMouseTool(swTool Tool, swView* View);
 	void EndMouseTool(swTool Tool, swView* View, bool Accept);
-	bool InsertPieceToolClicked();
+	bool InsertPartToolClicked();
 	void InsertCameraToolClicked(const swVector3& Position);
 	void InsertLightToolClicked(const swVector3& Position, swLightType LightType);
 	void UpdateMoveTool(const swVector3& Distance, bool AllowRelative, bool AlternateButtonDrag);
-	void UpdateFreeMoveTool(swPiece* MousePiece, const swMatrix44& StartTransform, const swMatrix44& NewTransform, bool IsConnection, bool AlternateButtonDrag);
+	void UpdateFreeMoveTool(swPart* MousePart, const swMatrix44& StartTransform, const swMatrix44& NewTransform, bool IsConnection, bool AlternateButtonDrag);
 	void UpdateRotateTool(const swVector3& Axis, float Angle, bool AlternateButtonDrag, bool Relative);
 	void UpdateRotateTool(const swMatrix33& RotationMatrix, bool AlternateButtonDrag, bool Relative);
 	void UpdateScaleTool(const float Scale);
@@ -501,15 +501,15 @@ public:
 		MoveSelectedObjects(Distance, Distance, Flags, ModelHistoryEditMerge);
 	}
 
-	void MoveSelectedObjects(const swVector3& PieceDistance, const swVector3& ObjectDistance, swModelTransformFlags Flags, swModelHistoryEditMerge ModelHistoryEditMerge);
+	void MoveSelectedObjects(const swVector3& PartDistance, const swVector3& ObjectDistance, swModelTransformFlags Flags, swModelHistoryEditMerge ModelHistoryEditMerge);
 	void RotateSelectedObjects(const swVector3& Angles, swModelTransformFlags Flags, swModelHistoryEditMerge ModelHistoryEditMerge);
 	void RotateSelectedObjects(const swMatrix33& RotationMatrix, swModelTransformFlags Flags, swModelHistoryEditMerge ModelHistoryEditMerge);
-	void ScaleSelectedPieces(const float Scale);
+	void ScaleSelectedParts(const float Scale);
 	void TransformSelectedObjects(swTransformType TransformType, const swVector3& Transform);
 	void SetObjectsKeyFrame(const std::vector<swObject*>& Objects, swObjectPropertyId PropertyId, bool KeyFrame);
-	void SetSelectedPiecesColorIndex(int ColorIndex);
-	void SetSelectedPiecesStepShow(swStep Step);
-	void SetSelectedPiecesStepHide(swStep Step);
+	void SetSelectedPartsColorIndex(int ColorIndex);
+	void SetSelectedPartsStepShow(swStep Step);
+	void SetSelectedPartsStepHide(swStep Step);
 
 	void SetObjectsProperty(const std::vector<swObject*>& Objects, swObjectPropertyId PropertyId, QVariant Value);
 	void BeginPropertyEdit(swObjectPropertyId PropertyId);
@@ -528,7 +528,7 @@ protected:
 	void DeleteModel();
 
 	std::unordered_map<uint32_t, swGroup*> RestoreGroups(const swObjectHistory<swGroupHistoryState>& History);
-	void RestorePieces(const swObjectHistory<swPieceHistoryState>& History, const std::unordered_map<uint32_t, swGroup*>& GroupsById);
+	void RestoreParts(const swObjectHistory<swPartHistoryState>& History, const std::unordered_map<uint32_t, swGroup*>& GroupsById);
 	void RestoreCameras(const swObjectHistory<swCameraHistoryState>& History);
 	void RestoreLights(const swObjectHistory<swLightHistoryState>& History);
 
@@ -536,8 +536,8 @@ protected:
 	void ClearSelection();
 	void SetFocus(swObject* FocusObject, uint32_t FocusSection, swSelectionMode SelectionMode);
 	void SetSelectionAndFocus(const std::vector<swObject*>& Objects, swObject* FocusObject, uint32_t FocusSection, swSelectionMode SelectionMode);
-	void SelectAllPieces();
-	void InvertPieceSelection();
+	void SelectAllParts();
+	void InvertPartSelection();
 	void AddToSelection(const std::vector<swObject*>& Objects);
 	void RemoveFromSelection(const std::vector<swObject*>& Objects);
 	void BeginEditHistory();
@@ -558,13 +558,13 @@ protected:
 	bool RemoveSelectedObjects();
 	void RemoveCameraFromViews(swCamera* Camera);
 
-	std::vector<swObject*> GetSelectionModePieces(swSelectionMode SelectionMode, const swPiece* SelectedPiece) const;
+	std::vector<swObject*> GetSelectionModeParts(swSelectionMode SelectionMode, const swPart* SelectedPart) const;
 	void DeselectAllObjects();
 	void SetFocusedObject(swObject* FocusObject, uint32_t FocusSection, swSelectionMode SelectionMode);
 	void SetObjectsSelected(const std::vector<swObject*>& Objects, bool Selected);
 	void SelectGroup(swGroup* TopGroup, bool Select);
 
-	size_t AddPiece(swPiece* Piece);
+	size_t AddPart(swPart* Part);
 	void InsertStep(swStep Step);
 
 	swPOVRayOptions mPOVRayOptions;
@@ -574,7 +574,7 @@ protected:
 	// Their order and the current-directory preference are saved with the model.
 	std::vector<QString> mAssetSourceDirectories;
 	bool mPreferCurrentAssetDirectory = true;
-	swPieceDataReference mPieceData;
+	swPartDataReference mPartData;
 
 	bool mIsPreview;
 	bool mActive;
@@ -585,9 +585,9 @@ protected:
 	bool mMouseToolMovePositionValid = false;
 	bool mMouseToolMoveUsesFocus = false;
 	bool mMouseToolFirstMove;
-	std::vector<swPreviewInsertPieceInformation> mPreviewInsertPieceInfo;
+	std::vector<swPreviewInsertPartInformation> mPreviewInsertPartInfo;
 
-	std::vector<std::unique_ptr<swPiece>> mPieces;
+	std::vector<std::unique_ptr<swPart>> mParts;
 	std::vector<std::unique_ptr<swCamera>> mCameras;
 	std::vector<std::unique_ptr<swLight>> mLights;
 	std::vector<std::unique_ptr<swGroup>> mGroups;

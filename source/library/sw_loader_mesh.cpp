@@ -1355,7 +1355,7 @@ bool swMeshLoader::ReadMeshData(swFile& File, const swMatrix44& CurrentTransform
 	const size_t TextureStackStart = mTextureStack.size();
 	bool InvertNext = false;
 	bool WindingCCW = !InvertWinding;
-	swPiecesLibrary* Library = swGetPiecesLibrary();
+	swPartsLibrary* Library = swGetPartsLibrary();
 	const bool Optimize = mFlags.testFlag(swMeshLoaderFlag::Optimize);
 
 	while (File.ReadLine(Buffer, sizeof(Buffer)))
@@ -1666,7 +1666,7 @@ bool swMeshLoader::ReadMeshData(swFile& File, const swMatrix44& CurrentTransform
 			}
 			else
 			{
-				const swResult<std::unique_ptr<swFile>> IncludeFile = Library->OpenPieceDataFile(FileName);
+				const swResult<std::unique_ptr<swFile>> IncludeFile = Library->OpenPartDataFile(FileName);
 
 				if (IncludeFile)
 					IncludeLoaded = ReadMeshData(*IncludeFile.value(), IncludeTransform, ColorCode, Mirror ^ InvertNext, MeshDataType);

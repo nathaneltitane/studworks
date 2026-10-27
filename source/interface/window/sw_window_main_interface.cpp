@@ -2,7 +2,7 @@
 #include "sw_window_main.h"
 #include "sw_widget_builder_minifigure.h"
 #include "sw_widget_spin_box_double.h"
-#include "sw_widget_selection_piece.h"
+#include "sw_widget_selection_part.h"
 #ifdef SW_ENABLE_TERMINAL
 #include "sw_widget_terminal.h"
 #endif
@@ -22,10 +22,10 @@
 #include "sw_profile.h"
 #include "sw_view.h"
 #include "sw_project.h"
-#include "sw_object_piece.h"
+#include "sw_object_part.h"
 #include "sw_object_camera.h"
 #include "sw_group.h"
-#include "sw_data_piece.h"
+#include "sw_data_part.h"
 #include "sw_library.h"
 #include "sw_colors.h"
 #include "sw_widget_preview.h"
@@ -102,7 +102,7 @@ void swMainWindow::CreateWidgets()
 	move(QPoint(200, 200));
 	restoreGeometry(Settings.value("Geometry").toByteArray());
 	restoreState(Settings.value("State").toByteArray());
-	mPieceSelectionWidget->LoadState(Settings);
+	mPartSelectionWidget->LoadState(Settings);
 	Settings.endGroup();
 }
 
@@ -179,7 +179,7 @@ void swMainWindow::CreateActions()
 	mActions[SW_VIEW_TIME_ADD_KEYS]->setCheckable(true);
 	mActions[SW_VIEW_STEP_VIEW_TOGGLE_FOLLOW]->setCheckable(true);
 	mActions[SW_VIEW_STEP_VIEW_TOGGLE_FOLLOW]->setChecked(swGetPreferences().mFollowStepViews);
-	mActions[SW_PIECE_TOGGLE_FIRST_AT_ORIGIN]->setCheckable(true);
+	mActions[SW_PART_TOGGLE_FIRST_AT_ORIGIN]->setCheckable(true);
 
 	for (int ActionIndex = SW_VIEW_TOOLBAR_FIRST; ActionIndex <= SW_VIEW_TOOLBAR_LAST; ActionIndex++)
 		mActions[ActionIndex]->setCheckable(true);
@@ -417,7 +417,7 @@ void swMainWindow::CreateMenus()
 	QMenu* ViewMenu = menuBar()->addMenu(tr("&View"));
 	QMenu* ToolBarsMenu = ViewMenu->addMenu(tr("T&oolbars"));
 	connect(ToolBarsMenu, &QMenu::aboutToShow, this, &swMainWindow::UpdateDockWidgetActions);
-	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_PIECES]);
+	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_PARTS]);
 	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_COLORS]);
 	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_PROPERTIES]);
 	ToolBarsMenu->addAction(mActions[SW_VIEW_TOOLBAR_TIMELINE]);
@@ -443,26 +443,26 @@ void swMainWindow::CreateMenus()
 	ViewMenu->addSeparator();
 	ViewMenu->addAction(mActions[SW_VIEW_FULL_SCREEN]);
 
-	QMenu* PieceMenu = menuBar()->addMenu(tr("&Piece"));
-	PieceMenu->addAction(mActions[SW_PIECE_INSERT]);
-	PieceMenu->addAction(mActions[SW_PIECE_DELETE]);
-	PieceMenu->addAction(mActions[SW_PIECE_DUPLICATE]);
-	PieceMenu->addSeparator();
-	PieceMenu->addAction(mActions[SW_PIECE_PAINT_SELECTED]);
-	PieceMenu->addAction(mActions[SW_PIECE_ARRAY]);
-	PieceMenu->addAction(mActions[SW_PIECE_RESET_PIVOT_POINT]);
-	PieceMenu->addAction(mActions[SW_PIECE_REMOVE_KEY_FRAMES]);
-	PieceMenu->addSeparator();
-	PieceMenu->addAction(mActions[SW_PIECE_GROUP]);
-	PieceMenu->addAction(mActions[SW_PIECE_UNGROUP]);
-	PieceMenu->addAction(mActions[SW_PIECE_GROUP_REMOVE]);
-	PieceMenu->addAction(mActions[SW_PIECE_GROUP_ADD]);
-	PieceMenu->addAction(mActions[SW_PIECE_GROUP_EDIT]);
-	PieceMenu->addSeparator();
-	PieceMenu->addAction(mActions[SW_PIECE_HIDE_SELECTED]);
-	PieceMenu->addAction(mActions[SW_PIECE_HIDE_UNSELECTED]);
-	PieceMenu->addAction(mActions[SW_PIECE_UNHIDE_SELECTED]);
-	PieceMenu->addAction(mActions[SW_PIECE_UNHIDE_ALL]);
+	QMenu* PartMenu = menuBar()->addMenu(tr("&Part"));
+	PartMenu->addAction(mActions[SW_PART_INSERT]);
+	PartMenu->addAction(mActions[SW_PART_DELETE]);
+	PartMenu->addAction(mActions[SW_PART_DUPLICATE]);
+	PartMenu->addSeparator();
+	PartMenu->addAction(mActions[SW_PART_PAINT_SELECTED]);
+	PartMenu->addAction(mActions[SW_PART_ARRAY]);
+	PartMenu->addAction(mActions[SW_PART_RESET_PIVOT_POINT]);
+	PartMenu->addAction(mActions[SW_PART_REMOVE_KEY_FRAMES]);
+	PartMenu->addSeparator();
+	PartMenu->addAction(mActions[SW_PART_GROUP]);
+	PartMenu->addAction(mActions[SW_PART_UNGROUP]);
+	PartMenu->addAction(mActions[SW_PART_GROUP_REMOVE]);
+	PartMenu->addAction(mActions[SW_PART_GROUP_ADD]);
+	PartMenu->addAction(mActions[SW_PART_GROUP_EDIT]);
+	PartMenu->addSeparator();
+	PartMenu->addAction(mActions[SW_PART_HIDE_SELECTED]);
+	PartMenu->addAction(mActions[SW_PART_HIDE_UNSELECTED]);
+	PartMenu->addAction(mActions[SW_PART_UNHIDE_SELECTED]);
+	PartMenu->addAction(mActions[SW_PART_UNHIDE_ALL]);
 
 	QMenu* StepMenu = menuBar()->addMenu(tr("&Steps"));
 	StepMenu->addAction(mActions[SW_VIEW_TIME_FIRST]);
@@ -475,16 +475,16 @@ void swMainWindow::CreateMenus()
 	StepMenu->addAction(mActions[SW_VIEW_TIME_DELETE]);
 
 	QMenu* ModelMenu = menuBar()->addMenu(tr("&Models"));
-	ModelMenu->addAction(mActions[SW_PIECE_MINIFIGURE_BUILDER]);
+	ModelMenu->addAction(mActions[SW_PART_MINIFIGURE_BUILDER]);
 	ModelMenu->addSeparator();
 	ModelMenu->addAction(mActions[SW_MODEL_NEW]);
 	ModelMenu->addAction(mActions[SW_MODEL_LIST]);
 	ModelMenu->addSeparator();
-	ModelMenu->addAction(mActions[SW_PIECE_EDIT_SELECTED_SUBMODEL]);
-	ModelMenu->addAction(mActions[SW_PIECE_EDIT_END_SUBMODEL]);
-	ModelMenu->addAction(mActions[SW_PIECE_VIEW_SELECTED_MODEL]);
-	ModelMenu->addAction(mActions[SW_PIECE_INLINE_SELECTED_MODELS]);
-	ModelMenu->addAction(mActions[SW_PIECE_MOVE_SELECTION_TO_MODEL]);
+	ModelMenu->addAction(mActions[SW_PART_EDIT_SELECTED_SUBMODEL]);
+	ModelMenu->addAction(mActions[SW_PART_EDIT_END_SUBMODEL]);
+	ModelMenu->addAction(mActions[SW_PART_VIEW_SELECTED_MODEL]);
+	ModelMenu->addAction(mActions[SW_PART_INLINE_SELECTED_MODELS]);
+	ModelMenu->addAction(mActions[SW_PART_MOVE_SELECTION_TO_MODEL]);
 	ModelMenu->addSeparator();
 	for (int ModelIdx = SW_MODEL_FIRST; ModelIdx <= SW_MODEL_LAST; ModelIdx++)
 		ModelMenu->addAction(mActions[ModelIdx]);
@@ -524,8 +524,8 @@ void swMainWindow::CreateToolBars()
 
 	QAction* SelectionModeAction = new QAction(tr("Selection Mode"), this);
 	SelectionModeAction->setStatusTip(tr("Change selection mode"));
-	SelectionModeAction->setToolTip(tr("Choose which related pieces are included when selecting a piece."));
-	SelectionModeAction->setWhatsThis(tr("<p><b>Selection Mode</b></p><p>Choose the rule applied when you pick a piece in the model view. Single selects that piece; the other modes include matching piece types, matching colors, or both. For example, color selection lets you pick matching red pieces without selecting each one separately.</p>"));
+	SelectionModeAction->setToolTip(tr("Choose which related parts are included when selecting a part."));
+	SelectionModeAction->setWhatsThis(tr("<p><b>Selection Mode</b></p><p>Choose the rule applied when you pick a part in the model view. Single selects that part; the other modes include matching part types, matching colors, or both. For example, color selection lets you pick matching red parts without selecting each one separately.</p>"));
 	SelectionModeAction->setIcon(swCreateInterfaceIcon("toolbars/tools", "action_select"));
 	SelectionModeAction->setMenu(mSelectionModeMenu);
 
@@ -538,8 +538,8 @@ void swMainWindow::CreateToolBars()
 
 	QAction* TransformAction = new QAction(tr("Transform"), this);
 	TransformAction->setStatusTip(tr("Transform Options"));
-	TransformAction->setToolTip(tr("Choose coordinate axes and whether selected pieces rotate together."));
-	TransformAction->setWhatsThis(tr("<p><b>Transform Options</b></p><p>Choose the axes and pivot used for interactive transforms. Relative Transforms uses the focused object's orientation, so movement along X follows that object's local X axis. Absolute Transforms uses the model axes. Rotate Together rotates the selection around a shared pivot; Rotate Separately rotates each piece around its own origin.</p>"));
+	TransformAction->setToolTip(tr("Choose coordinate axes and whether selected parts rotate together."));
+	TransformAction->setWhatsThis(tr("<p><b>Transform Options</b></p><p>Choose the axes and pivot used for interactive transforms. Relative Transforms uses the focused object's orientation, so movement along X follows that object's local X axis. Absolute Transforms uses the model axes. Rotate Together rotates the selection around a shared pivot; Rotate Separately rotates each part around its own origin.</p>"));
 	TransformAction->setIcon(swCreateInterfaceIcon("toolbars/standard", "transform_translation_relative"));
 	TransformAction->setMenu(mTransformMenu);
 
@@ -601,7 +601,7 @@ void swMainWindow::CreateToolBars()
 
 	mTimeToolBar = addToolBar(tr("Time"));
 	mTimeToolBar->setObjectName("TimeToolbar");
-	mTimeToolBar->setWhatsThis(tr("<p><b>Time Toolbar</b></p><p>The arrow buttons move through building steps so you can inspect how the model is assembled. They do not change the step assigned to a piece; use the Timeline for that. Add Keys controls whether edits create animation keys at the current step, allowing properties such as position to vary between steps.</p>"));
+	mTimeToolBar->setWhatsThis(tr("<p><b>Time Toolbar</b></p><p>The arrow buttons move through building steps so you can inspect how the model is assembled. They do not change the step assigned to a part; use the Timeline for that. Add Keys controls whether edits create animation keys at the current step, allowing properties such as position to vary between steps.</p>"));
 	mTimeToolBar->addAction(mActions[SW_VIEW_TIME_FIRST]);
 	mTimeToolBar->addAction(mActions[SW_VIEW_TIME_PREVIOUS]);
 	mTimeToolBar->addAction(mActions[SW_VIEW_TIME_NEXT]);
@@ -610,7 +610,7 @@ void swMainWindow::CreateToolBars()
 
 	mToolsToolBar = addToolBar(tr("Tools"));
 	mToolsToolBar->setObjectName("ToolsToolbar");
-	mToolsToolBar->setWhatsThis(tr("<p><b>Tools Toolbar</b></p><p>Choose a tool, then use it in the model view. Insertion tools create pieces, lights, or cameras. Editing tools select, transform, remove, or recolor objects. Navigation tools change the viewpoint without changing model geometry. Mouse assignments can be customized in Preferences.</p>"));
+	mToolsToolBar->setWhatsThis(tr("<p><b>Tools Toolbar</b></p><p>Choose a tool, then use it in the model view. Insertion tools create parts, lights, or cameras. Editing tools select, transform, remove, or recolor objects. Navigation tools change the viewpoint without changing model geometry. Mouse assignments can be customized in Preferences.</p>"));
 	insertToolBarBreak(mToolsToolBar);
 	mToolsToolBar->addAction(mActions[SW_EDIT_ACTION_INSERT]);
 	mToolsToolBar->addAction(mActions[SW_EDIT_ACTION_POINT_LIGHT]);
@@ -651,22 +651,22 @@ void swMainWindow::CreateToolBars()
 	}
 
 
-	mPiecesToolBar = new QDockWidget(tr("Pieces"), this);
-	mPiecesToolBar->installEventFilter(this);
-	mPiecesToolBar->setObjectName("PiecesToolbar");
-	mPiecesToolBar->setWhatsThis(tr("<p><b>Pieces</b></p><p>Choose a category or palette and filter its pieces. Selecting a piece prepares it for insertion; drag it into the model view to place it. Double-click a piece to open its preview. Options controls filtering, thumbnails, and list display.</p>"));
-	swSetupWidgetHelp(mPiecesToolBar, nullptr);
-	mPieceSelectionWidget = new swPieceSelectionWidget(false, mPiecesToolBar);
-	mPiecesToolBar->setWidget(mPieceSelectionWidget);
-	addDockWidget(Qt::RightDockWidgetArea, mPiecesToolBar);
+	mPartsToolBar = new QDockWidget(tr("Parts"), this);
+	mPartsToolBar->installEventFilter(this);
+	mPartsToolBar->setObjectName("PartsToolbar");
+	mPartsToolBar->setWhatsThis(tr("<p><b>Parts</b></p><p>Choose a category or palette and filter its parts. Selecting a part prepares it for insertion; drag it into the model view to place it. Double-click a part to open its preview. Options controls filtering, thumbnails, and list display.</p>"));
+	swSetupWidgetHelp(mPartsToolBar, nullptr);
+	mPartSelectionWidget = new swPartSelectionWidget(false, mPartsToolBar);
+	mPartsToolBar->setWidget(mPartSelectionWidget);
+	addDockWidget(Qt::RightDockWidgetArea, mPartsToolBar);
 
-	connect(mPiecesToolBar, &QDockWidget::dockLocationChanged, mPieceSelectionWidget, &swPieceSelectionWidget::DockLocationChanged);
-	connect(mPieceSelectionWidget, &swPieceSelectionWidget::PiecePicked, this, &swMainWindow::PieceListPicked);
-	connect(mPieceSelectionWidget, &swPieceSelectionWidget::CurrentPieceChanged, this, &swMainWindow::SetInsertPieceData);
+	connect(mPartsToolBar, &QDockWidget::dockLocationChanged, mPartSelectionWidget, &swPartSelectionWidget::DockLocationChanged);
+	connect(mPartSelectionWidget, &swPartSelectionWidget::PartPicked, this, &swMainWindow::PartListPicked);
+	connect(mPartSelectionWidget, &swPartSelectionWidget::CurrentPartChanged, this, &swMainWindow::SetInsertPartData);
 
 	mColorsToolBar = new QDockWidget(tr("Colors"), this);
 	mColorsToolBar->setObjectName("ColorsToolbar");
-	mColorsToolBar->setWhatsThis(tr("<p><b>Colors</b></p><p>Choose the current LDraw color from the swatches. This color is used when inserting or painting pieces. To recolor selected pieces, use the color button above the swatches. Hover over a swatch for its name and color code.</p>"));
+	mColorsToolBar->setWhatsThis(tr("<p><b>Colors</b></p><p>Choose the current LDraw color from the swatches. This color is used when inserting or painting parts. To recolor selected parts, use the color button above the swatches. Hover over a swatch for its name and color code.</p>"));
 	swSetupWidgetHelp(mColorsToolBar, nullptr);
 	mColorsToolBar->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
@@ -682,9 +682,9 @@ void swMainWindow::CreateToolBars()
 
 	mColorButton = new QToolButton(ColorWidget);
 	mColorButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-	mColorButton->setToolTip(tr("Apply the current color to selected pieces."));
+	mColorButton->setToolTip(tr("Apply the current color to selected parts."));
 	mColorButton->setAccessibleName(tr("Change Selection Color"));
-	mColorButton->setWhatsThis(tr("<p><b>Change Selection Color</b></p><p>Apply the current color to selected pieces. Choosing a swatch sets the current color; this button applies that color to the selection.</p>"));
+	mColorButton->setWhatsThis(tr("<p><b>Change Selection Color</b></p><p>Apply the current color to selected parts. Choosing a swatch sets the current color; this button applies that color to the selection.</p>"));
 	swAddPanelRowWidget(ColorRow, mColorButton);
 	swSetupPanelButton(mColorButton);
 
@@ -694,7 +694,7 @@ void swMainWindow::CreateToolBars()
 	connect(mColorButton, &QToolButton::clicked, this, &swMainWindow::ColorButtonClicked);
 
 	QMenu* ColorOptionsMenu = new QMenu(ColorRow);
-	swAddPanelOptionsButton(ColorRow, ColorOptionsMenu, tr("Choose how inserted pieces are colored."), tr("Color Options"));
+	swAddPanelOptionsButton(ColorRow, ColorOptionsMenu, tr("Choose how inserted parts are colored."), tr("Color Options"));
 	connect(ColorOptionsMenu, &QMenu::aboutToShow, this, &swMainWindow::ColorOptionsMenuAboutToShow);
 
 	ColorLayout->addWidget(mColorList);
@@ -719,7 +719,7 @@ void swMainWindow::CreateToolBars()
 
 	mPropertiesToolBar = new QDockWidget(tr("Properties"), this);
 	mPropertiesToolBar->setObjectName("PropertiesToolbar");
-	mPropertiesToolBar->setWhatsThis(tr("<p><b>Properties</b></p><p>Edit properties of the focused object or selection. Available fields depend on whether you select pieces, a camera, or a light. Expand a section to see its fields. Keyframe controls mark properties at the current building step.</p><p>The transform fields at the bottom apply an X/Y/Z translation or rotation using the chosen transform mode. Press Enter to apply the values.</p>"));
+	mPropertiesToolBar->setWhatsThis(tr("<p><b>Properties</b></p><p>Edit properties of the focused object or selection. Available fields depend on whether you select parts, a camera, or a light. Expand a section to see its fields. Keyframe controls mark properties at the current building step.</p><p>The transform fields at the bottom apply an X/Y/Z translation or rotation using the chosen transform mode. Press Enter to apply the values.</p>"));
 	swSetupWidgetHelp(mPropertiesToolBar, nullptr);
 
 	QWidget* PropertiesWidget = new QWidget(mPropertiesToolBar);
@@ -827,13 +827,13 @@ void swMainWindow::CreateToolBars()
 
 	mTimelineToolBar = new QDockWidget(tr("Timeline"), this);
 	mTimelineToolBar->setObjectName("TimelineToolbar");
-	mTimelineToolBar->setWhatsThis(tr("<p><b>Timeline</b></p><p>Select a step to make it current, or select piece rows to select those pieces in the model. Drag pieces between steps or reorder them within a step. Right-click for step insertion, removal, movement, and visibility commands.</p>"));
+	mTimelineToolBar->setWhatsThis(tr("<p><b>Timeline</b></p><p>Select a step to make it current, or select part rows to select those parts in the model. Drag parts between steps or reorder them within a step. Right-click for step insertion, removal, movement, and visibility commands.</p>"));
 	swSetupWidgetHelp(mTimelineToolBar, nullptr);
 	mTimelineToolBar->setAcceptDrops(true);
 
 	mTimelineWidget = new swTimelineWidget(mTimelineToolBar);
 
-	// The steps of the selected piece are edited below the timeline.
+	// The steps of the selected part are edited below the timeline.
 	QWidget* TimelinePanel = new QWidget(mTimelineToolBar);
 	QVBoxLayout* TimelineLayout = new QVBoxLayout(TimelinePanel);
 	TimelineLayout->addWidget(mTimelineWidget);
@@ -845,10 +845,10 @@ void swMainWindow::CreateToolBars()
 	CreatePreviewWidget();
 	CreateTerminalWidget();
 
-	// the minifigure builder panel is filled when first shown, once the pieces library is loaded
+	// the minifigure builder panel is filled when first shown, once the parts library is loaded
 	mMinifigureBuilderToolBar = new QDockWidget(tr("Minifigure Builder"), this);
 	mMinifigureBuilderToolBar->setObjectName("MinifigToolbar");
-	mMinifigureBuilderToolBar->setWhatsThis(tr("<p><b>Minifigure Builder</b></p><p>Choose the pieces, colors and pose of a minifigure, then add it to the current model. The panel keeps its settings so you can add several variations.</p>"));
+	mMinifigureBuilderToolBar->setWhatsThis(tr("<p><b>Minifigure Builder</b></p><p>Choose the parts, colors and pose of a minifigure, then add it to the current model. The panel keeps its settings so you can add several variations.</p>"));
 	swSetupWidgetHelp(mMinifigureBuilderToolBar, nullptr);
 	addDockWidget(Qt::RightDockWidgetArea, mMinifigureBuilderToolBar);
 	mMinifigureBuilderToolBar->hide();
@@ -864,18 +864,18 @@ void swMainWindow::CreateToolBars()
 		}
 	});
 
-	tabifyDockWidget(mPiecesToolBar, mPropertiesToolBar);
+	tabifyDockWidget(mPartsToolBar, mPropertiesToolBar);
 	tabifyDockWidget(mPropertiesToolBar, mTimelineToolBar);
 	tabifyDockWidget(mTimelineToolBar, mPreviewToolBar);
 	tabifyDockWidget(mPreviewToolBar, mMinifigureBuilderToolBar);
 
 	connect(mPropertiesToolBar, &QDockWidget::topLevelChanged, this, &swMainWindow::EnableWindowFlags);
 	connect(mTimelineToolBar, &QDockWidget::topLevelChanged, this, &swMainWindow::EnableWindowFlags);
-	connect(mPiecesToolBar, &QDockWidget::topLevelChanged, this, &swMainWindow::EnableWindowFlags);
+	connect(mPartsToolBar, &QDockWidget::topLevelChanged, this, &swMainWindow::EnableWindowFlags);
 	connect(mColorsToolBar, &QDockWidget::topLevelChanged, this, &swMainWindow::EnableWindowFlags);
 	connect(mMinifigureBuilderToolBar, &QDockWidget::topLevelChanged, this, &swMainWindow::EnableWindowFlags);
 
-	mPiecesToolBar->raise();
+	mPartsToolBar->raise();
 }
 
 void swMainWindow::CreateStatusBar()
@@ -913,16 +913,16 @@ void swMainWindow::CreateStatusBar()
 	mStatusTimeLabel = new QLabel();
 	StatusBar->addPermanentWidget(mStatusTimeLabel);
 
-	swPiecesLibrary* Library = swGetPiecesLibrary();
-	connect(Library, &swPiecesLibrary::AssetStatusChanged, this, &swMainWindow::ScheduleAssetUpdate);
-	connect(Library, &swPiecesLibrary::PieceLoaded, this, [this](swPieceData* PieceData)
+	swPartsLibrary* Library = swGetPartsLibrary();
+	connect(Library, &swPartsLibrary::AssetStatusChanged, this, &swMainWindow::ScheduleAssetUpdate);
+	connect(Library, &swPartsLibrary::PartLoaded, this, [this](swPartData* PartData)
 	{
-		if (mStatusRequiredAssets.find(PieceData) != mStatusRequiredAssets.end())
+		if (mStatusRequiredAssets.find(PartData) != mStatusRequiredAssets.end())
 			ScheduleAssetUpdate();
 	});
-	connect(Library, &swPiecesLibrary::PieceLoadFailed, this, [this](swPieceData* PieceData, const QString&)
+	connect(Library, &swPartsLibrary::PartLoadFailed, this, [this](swPartData* PartData, const QString&)
 	{
-		if (mStatusRequiredAssets.find(PieceData) != mStatusRequiredAssets.end())
+		if (mStatusRequiredAssets.find(PartData) != mStatusRequiredAssets.end())
 			ScheduleAssetUpdate();
 	});
 }

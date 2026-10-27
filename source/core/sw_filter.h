@@ -19,12 +19,12 @@ protected:
 		OrNot
 	};
 
-	struct FilterPiece
+	struct FilterPart
 	{
 		FilterOp Op;
 		bool Wildcard;
 		std::string String;
 	};
 
-	std::vector<FilterPiece> mFilterPieces;
+	std::vector<FilterPart> mFilterParts;
 };

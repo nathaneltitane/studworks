@@ -5,7 +5,7 @@
 
 enum class swObjectType
 {
-	Piece,
+	Part,
 	Camera,
 	Light
 };
@@ -18,9 +18,9 @@ struct swObjectSection
 	quint32 Section = 0;
 };
 
-struct swPieceRayTest
+struct swPartRayTest
 {
-	const swPieceData* PieceData = nullptr;
+	const swPartData* PartData = nullptr;
 	swMatrix44 Transform;
 	swVector3 Plane;
 	swVector3 Normal = swVector3(0.0f, 0.0f, 1.0f);
@@ -29,13 +29,13 @@ struct swPieceRayTest
 struct swObjectRayTest
 {
 	swCamera* ViewCamera;
-	bool PiecesOnly;
+	bool PartsOnly;
 	bool IgnoreSelected;
 	swVector3 Start;
 	swVector3 End;
 	float Distance = FLT_MAX;
 	swObjectSection ObjectSection;
-	swPieceRayTest PieceRayTest;
+	swPartRayTest PartRayTest;
 };
 
 struct swObjectBoxTest
@@ -72,9 +72,9 @@ public:
 	swObject& operator=(swObject&&) = delete;
 
 public:
-	bool IsPiece() const
+	bool IsPart() const
 	{
-		return mObjectType == swObjectType::Piece;
+		return mObjectType == swObjectType::Part;
 	}
 
 	bool IsCamera() const

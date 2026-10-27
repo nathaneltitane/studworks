@@ -33,7 +33,7 @@ protected:
 	void UpdateCurrentStepItem();
 
 	QMap<int, QIcon> mIcons;
-	QMap<swPiece*, QTreeWidgetItem*> mItems;
+	QMap<swPart*, QTreeWidgetItem*> mItems;
 	QTreeWidgetItem* mCurrentStepItem;
 	bool mIgnoreUpdates;
 };

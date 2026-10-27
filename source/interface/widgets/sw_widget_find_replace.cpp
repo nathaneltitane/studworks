@@ -2,9 +2,9 @@
 #include "sw_widget_find_replace.h"
 #include "sw_widget_picker_color.h"
 #include "sw_window_main.h"
-#include "sw_widget_selection_piece_popup.h"
-#include "sw_data_piece.h"
-#include "sw_object_piece.h"
+#include "sw_widget_selection_part_popup.h"
+#include "sw_data_part.h"
+#include "sw_object_part.h"
 #include "sw_model.h"
 #include "sw_view.h"
 #include "sw_window_utilities.h"
@@ -26,11 +26,11 @@ swFindReplaceWidget::swFindReplaceWidget(QWidget* Parent, swModel* Model, bool R
 	FindColorPicker->setToolTip(tr("Search Color"));
 	Layout->addWidget(FindColorPicker, 0, 1);
 
-	mFindPieceComboBox = new QComboBox(this);
-	mFindPieceComboBox->setToolTip(tr("Search Piece"));
-	mFindPieceComboBox->setEditable(true);
-	mFindPieceComboBox->setInsertPolicy(QComboBox::NoInsert);
-	Layout->addWidget(mFindPieceComboBox, 0, 2);
+	mFindPartComboBox = new QComboBox(this);
+	mFindPartComboBox->setToolTip(tr("Search Part"));
+	mFindPartComboBox->setEditable(true);
+	mFindPartComboBox->setInsertPolicy(QComboBox::NoInsert);
+	Layout->addWidget(mFindPartComboBox, 0, 2);
 
 	QToolButton* FindNextButton = new QToolButton(this);
 	FindNextButton->setAutoRaise(false);
@@ -43,9 +43,9 @@ swFindReplaceWidget::swFindReplaceWidget(QWidget* Parent, swModel* Model, bool R
 	Layout->addWidget(FindAllButton, 0, 4);
 
 	connect(FindColorPicker, &swColorPicker::ColorChanged, this, &swFindReplaceWidget::FindColorIndexChanged);
-	connect(mFindPieceComboBox->lineEdit(), &QLineEdit::returnPressed, gMainWindow->mActions[SW_EDIT_FIND_NEXT], &QAction::trigger);
-	connect(mFindPieceComboBox->lineEdit(), &QLineEdit::textEdited, this, &swFindReplaceWidget::FindTextEdited);
-	connect(mFindPieceComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated), this, &swFindReplaceWidget::FindActivated);
+	connect(mFindPartComboBox->lineEdit(), &QLineEdit::returnPressed, gMainWindow->mActions[SW_EDIT_FIND_NEXT], &QAction::trigger);
+	connect(mFindPartComboBox->lineEdit(), &QLineEdit::textEdited, this, &swFindReplaceWidget::FindTextEdited);
+	connect(mFindPartComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated), this, &swFindReplaceWidget::FindActivated);
 
 	swColorPicker* ReplaceColorPicker = nullptr;
 
@@ -60,18 +60,18 @@ swFindReplaceWidget::swFindReplaceWidget(QWidget* Parent, swModel* Model, bool R
 		QPixmap Pixmap(1, 1);
 		Pixmap.fill(QColor::fromRgba64(0, 0, 0, 0));
 
-		mReplacePieceButton = new swElidableToolButton(this);
-		mReplacePieceButton->setToolTip(tr("Replacement Piece"));
+		mReplacePartButton = new swElidableToolButton(this);
+		mReplacePartButton->setToolTip(tr("Replacement Part"));
 
-		QSizePolicy PieceButtonSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-		PieceButtonSizePolicy.setHorizontalStretch(2);
-		PieceButtonSizePolicy.setVerticalStretch(0);
-		mReplacePieceButton->setSizePolicy(PieceButtonSizePolicy);
+		QSizePolicy PartButtonSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+		PartButtonSizePolicy.setHorizontalStretch(2);
+		PartButtonSizePolicy.setVerticalStretch(0);
+		mReplacePartButton->setSizePolicy(PartButtonSizePolicy);
 
-		mReplacePieceButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-		mReplacePieceButton->setIcon(Pixmap);
+		mReplacePartButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+		mReplacePartButton->setIcon(Pixmap);
 
-		Layout->addWidget(mReplacePieceButton, 1, 2);
+		Layout->addWidget(mReplacePartButton, 1, 2);
 
 		QToolButton* ReplaceNextButton = new QToolButton(this);
 		ReplaceNextButton->setAutoRaise(false);
@@ -84,10 +84,10 @@ swFindReplaceWidget::swFindReplaceWidget(QWidget* Parent, swModel* Model, bool R
 		Layout->addWidget(ReplaceAllButton, 1, 4);
 
 		connect(ReplaceColorPicker, &swColorPicker::ColorChanged, this, &swFindReplaceWidget::ReplaceColorIndexChanged);
-		connect(mReplacePieceButton, &swElidableToolButton::clicked, this, &swFindReplaceWidget::ReplaceButtonClicked);
+		connect(mReplacePartButton, &swElidableToolButton::clicked, this, &swFindReplaceWidget::ReplaceButtonClicked);
 
 		ReplaceColorPicker->SetCurrentColor(swGetColorIndex(SW_COLOR_NO_COLOR));
-		mReplacePieceButton->setText(tr("None"));
+		mReplacePartButton->setText(tr("None"));
 	}
 
 	QToolButton* CloseButton = new QToolButton(this);
@@ -98,33 +98,33 @@ swFindReplaceWidget::swFindReplaceWidget(QWidget* Parent, swModel* Model, bool R
 
 	connect(CloseButton, &QToolButton::clicked, this, &QObject::deleteLater);
 
-	swPiecesList PiecesList;
-	Model->GetPiecesList(gDefaultColor, false, true, PiecesList);
+	swPartsList PartsList;
+	Model->GetPartsList(gDefaultColor, false, true, PartsList);
 
-	for (const auto& PieceIt : PiecesList)
-		mFindPieceComboBox->addItem(QString::fromLatin1(PieceIt.first->m_strDescription), QVariant::fromValue((void*)PieceIt.first));
-	mFindPieceComboBox->model()->sort(0);
+	for (const auto& PartIt : PartsList)
+		mFindPartComboBox->addItem(QString::fromLatin1(PartIt.first->m_strDescription), QVariant::fromValue((void*)PartIt.first));
+	mFindPartComboBox->model()->sort(0);
 
-	swPiece* Focus = dynamic_cast<swPiece*>(Model->GetFocusObject());
+	swPart* Focus = dynamic_cast<swPart*>(Model->GetFocusObject());
 
 	if (Focus)
 	{
 		swFindReplaceParameters& Params = swView::GetFindReplaceParams();
 
-		Params.FindPieceData = Focus->mPieceData.Get();
+		Params.FindPartData = Focus->mPartData.Get();
 		Params.FindColorIndex = Focus->GetColorIndex();
 
 		FindColorPicker->SetCurrentColor(Params.FindColorIndex);
-		mFindPieceComboBox->setCurrentIndex(mFindPieceComboBox->findData(QVariant::fromValue((void*)Params.FindPieceData)));
+		mFindPartComboBox->setCurrentIndex(mFindPartComboBox->findData(QVariant::fromValue((void*)Params.FindPartData)));
 
 	}
 	else
 	{
 		FindColorPicker->SetCurrentColor(swGetColorIndex(SW_COLOR_NO_COLOR));
-		mFindPieceComboBox->setEditText(QString());
+		mFindPartComboBox->setEditText(QString());
 	}
 
-	mFindPieceComboBox->setFocus();
+	mFindPartComboBox->setFocus();
 	adjustSize();
 	show();
 }
@@ -141,7 +141,7 @@ void swFindReplaceWidget::FindTextEdited(const QString& Text)
 	swFindReplaceParameters& Params = swView::GetFindReplaceParams();
 
 	Params.FindString = Text;
-	Params.FindPieceData = nullptr;
+	Params.FindPartData = nullptr;
 }
 
 void swFindReplaceWidget::FindActivated(int Index)
@@ -149,7 +149,7 @@ void swFindReplaceWidget::FindActivated(int Index)
 	swFindReplaceParameters& Params = swView::GetFindReplaceParams();
 
 	Params.FindString.clear();
-	Params.FindPieceData = (swPieceData*)mFindPieceComboBox->itemData(Index).value<void*>();
+	Params.FindPartData = (swPartData*)mFindPartComboBox->itemData(Index).value<void*>();
 }
 
 void swFindReplaceWidget::ReplaceColorIndexChanged(int ColorIndex)
@@ -163,12 +163,12 @@ void swFindReplaceWidget::ReplaceButtonClicked()
 {
 	swFindReplaceParameters& Params = swView::GetFindReplaceParams();
 
-	std::optional<swPieceData*> Result = swShowPieceSelectionPopup(Params.ReplacePieceData, std::vector<std::pair<swPieceData*, std::string>>(),
-                gDefaultColor, mReplacePieceButton, mReplacePieceButton->mapToGlobal(mReplacePieceButton->rect().bottomLeft()));
+	std::optional<swPartData*> Result = swShowPartSelectionPopup(Params.ReplacePartData, std::vector<std::pair<swPartData*, std::string>>(),
+                gDefaultColor, mReplacePartButton, mReplacePartButton->mapToGlobal(mReplacePartButton->rect().bottomLeft()));
 
 	if (!Result.has_value())
 		return;
 
-	Params.ReplacePieceData = Result.value();
-	mReplacePieceButton->setText(Result.value()->m_strDescription);
+	Params.ReplacePartData = Result.value();
+	mReplacePartButton->setText(Result.value()->m_strDescription);
 }

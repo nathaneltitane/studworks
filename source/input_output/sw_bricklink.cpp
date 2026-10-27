@@ -4,14 +4,14 @@
 #include "sw_library.h"
 #include "sw_application.h"
 #include "sw_string.h"
-#include "sw_data_piece.h"
+#include "sw_data_part.h"
 #include "sw_colors.h"
 
 static QJsonDocument swLoadBrickLinkMapping()
 {
 	std::map<std::string, std::string> Remapping;
 
-	QFile File(swGetPiecesLibrary()->GetLibraryFilePath(QLatin1String("ldraw2bl.txt")));
+	QFile File(swGetPartsLibrary()->GetLibraryFilePath(QLatin1String("ldraw2bl.txt")));
 	QByteArray Data;
 
 	if (File.open(QIODevice::ReadOnly))
@@ -60,7 +60,7 @@ public:
 	int mCount;
 };
 
-swResult<void> swExportBrickLink(const QString& SaveFileName, const swPiecesList& PartsList)
+swResult<void> swExportBrickLink(const QString& SaveFileName, const swPartsList& PartsList)
 {
 	QJsonDocument Document = swLoadBrickLinkMapping();
 	QJsonObject Root = Document.object();
@@ -79,12 +79,12 @@ swResult<void> swExportBrickLink(const QString& SaveFileName, const swPiecesList
 
 	for (const auto& PartIt : PartsList)
 	{
-		const swPieceData* PieceData = PartIt.first;
+		const swPartData* PartData = PartIt.first;
 
 		for (const auto& ColorIt : PartIt.second)
 		{
-			char FileName[SW_PIECE_NAME_LENGTH];
-			swstrcpy(FileName, PieceData->mFileName);
+			char FileName[SW_PART_NAME_LENGTH];
+			swstrcpy(FileName, PartData->mFileName);
 			char* Ext = strchr(FileName, '.');
 			if (Ext)
 				*Ext = 0;

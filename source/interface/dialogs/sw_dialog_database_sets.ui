@@ -50,13 +50,13 @@
    <item>
     <widget class="QTreeWidget" name="SetsTree">
      <property name="toolTip">
-      <string>Select a set to download its piece inventory.</string>
+      <string>Select a set to download its part inventory.</string>
      </property>
      <property name="accessibleName">
       <string>Set Search Results</string>
      </property>
      <property name="whatsThis">
-      <string>&lt;p&gt;&lt;b&gt;Search Results&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Results show the set number, name, release year, and piece count. Select the desired set and choose OK, or double-click its row, to download its inventory.&lt;/p&gt;</string>
+      <string>&lt;p&gt;&lt;b&gt;Search Results&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Results show the set number, name, release year, and part count. Select the desired set and choose OK, or double-click its row, to download its inventory.&lt;/p&gt;</string>
      </property>
      <property name="rootIsDecorated">
       <bool>false</bool>
@@ -87,7 +87,7 @@
      </column>
      <column>
       <property name="text">
-       <string>Pieces</string>
+       <string>Parts</string>
       </property>
      </column>
     </widget>

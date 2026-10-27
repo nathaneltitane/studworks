@@ -17,10 +17,10 @@ public:
 	virtual void LoadStartState(swModel* Model) const = 0;
 	virtual void LoadEndState(swModel* Model) const = 0;
 	virtual bool StateChanged() const = 0;
-	virtual void RenamePieces(const std::vector<swModelPieceRename>& Renames, const swPieceData* ModelPieceData)
+	virtual void RenameParts(const std::vector<swModelPartRename>& Renames, const swPartData* ModelPartData)
 	{
 		Q_UNUSED(Renames);
-		Q_UNUSED(ModelPieceData);
+		Q_UNUSED(ModelPartData);
 	}
 
 	virtual bool CanMergeWith(const swModelHistory* Other) const
@@ -38,7 +38,7 @@ public:
 
 struct swModelHistorySelectState
 {
-	std::vector<bool> PieceSelection;
+	std::vector<bool> PartSelection;
 	std::vector<bool> CameraSelection;
 	std::vector<bool> LightSelection;
 	size_t FocusIndex = SIZE_MAX;
@@ -47,7 +47,7 @@ struct swModelHistorySelectState
 
 	bool operator!=(const swModelHistorySelectState& Other) const
 	{
-		return PieceSelection != Other.PieceSelection || CameraSelection != Other.CameraSelection || LightSelection != Other.LightSelection ||
+		return PartSelection != Other.PartSelection || CameraSelection != Other.CameraSelection || LightSelection != Other.LightSelection ||
 			FocusIndex != Other.FocusIndex || FocusSection != Other.FocusSection || FocusObjectType != Other.FocusObjectType;
 	}
 };
@@ -73,20 +73,20 @@ protected:
 };
 
 struct swGroupHistoryState;
-struct swPieceHistoryState;
+struct swPartHistoryState;
 struct swCameraHistoryState;
 struct swLightHistoryState;
 
 struct swModelHistoryEditState
 {
 	swObjectHistory<swGroupHistoryState> Groups;
-	swObjectHistory<swPieceHistoryState> Pieces;
+	swObjectHistory<swPartHistoryState> Parts;
 	swObjectHistory<swCameraHistoryState> Cameras;
 	swObjectHistory<swLightHistoryState> Lights;
 
 	bool IsEmpty() const
 	{
-		return Groups.IsEmpty() && Pieces.IsEmpty() && Cameras.IsEmpty() && Lights.IsEmpty();
+		return Groups.IsEmpty() && Parts.IsEmpty() && Cameras.IsEmpty() && Lights.IsEmpty();
 	}
 };
 
@@ -126,7 +126,7 @@ public:
 	void LoadStartState(swModel* Model) const override;
 	void LoadEndState(swModel* Model) const override;
 	bool StateChanged() const override;
-	void RenamePieces(const std::vector<swModelPieceRename>& Renames, const swPieceData* ModelPieceData) override;
+	void RenameParts(const std::vector<swModelPartRename>& Renames, const swPartData* ModelPartData) override;
 
 	bool CanMergeWith(const swModelHistory* Other) const override;
 	void MergeWith(swModelHistory* Other) override;
@@ -151,7 +151,7 @@ public:
 	void LoadStartState(swModel* Model) const override;
 	void LoadEndState(swModel* Model) const override;
 	bool StateChanged() const override;
-	void RenamePieces(const std::vector<swModelPieceRename>& Renames, const swPieceData* ModelPieceData) override;
+	void RenameParts(const std::vector<swModelPartRename>& Renames, const swPartData* ModelPartData) override;
 
 protected:
 	static void SaveState(swModelProperties& State, const swModel* Model);

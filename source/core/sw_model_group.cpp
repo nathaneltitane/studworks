@@ -1,7 +1,7 @@
 #include "sw_global.h"
 #include "sw_model.h"
 #include "sw_model_history.h"
-#include "sw_object_piece.h"
+#include "sw_object_part.h"
 #include "sw_object_camera.h"
 #include "sw_object_light.h"
 #include "sw_group.h"
@@ -12,7 +12,7 @@
 #include "sw_scene.h"
 #include "sw_track_train.h"
 #include "sw_file.h"
-#include "sw_data_piece.h"
+#include "sw_data_part.h"
 #include "sw_view.h"
 #include "sw_builder_minifigure.h"
 #include "sw_dialog_array.h"
@@ -68,9 +68,9 @@ void swModel::RemoveGroup(swGroup* Group)
 
 void swModel::GroupSelection()
 {
-	if (!AnyPiecesSelected())
+	if (!AnyPartsSelected())
 	{
-		QMessageBox::information(gMainWindow, tr("Group Selection"), tr("No pieces selected."));
+		QMessageBox::information(gMainWindow, tr("Group Selection"), tr("No parts selected."));
 		return;
 	}
 
@@ -84,14 +84,14 @@ void swModel::GroupSelection()
 
 	swGroup* NewGroup = GetGroup(Dialog.mName, true);
 
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
+	for (const std::unique_ptr<swPart>& Part : mParts)
 	{
-		if (Piece->IsSelected())
+		if (Part->IsSelected())
 		{
-			swGroup* Group = Piece->GetTopGroup();
+			swGroup* Group = Part->GetTopGroup();
 
 			if (!Group)
-				Piece->SetGroup(NewGroup);
+				Part->SetGroup(NewGroup);
 			else if (Group != NewGroup)
 				Group->mGroup = NewGroup;
 		}
@@ -105,9 +105,9 @@ void swModel::GroupSelection()
 
 void swModel::UngroupSelection()
 {
-	if (!AnyPiecesSelected())
+	if (!AnyPartsSelected())
 	{
-		QMessageBox::information(gMainWindow, tr("Ungroup Selection"), tr("No pieces selected."));
+		QMessageBox::information(gMainWindow, tr("Ungroup Selection"), tr("No parts selected."));
 		return;
 	}
 
@@ -116,11 +116,11 @@ void swModel::UngroupSelection()
 	BeginHistorySequence();
 	BeginEditHistory();
 
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
+	for (const std::unique_ptr<swPart>& Part : mParts)
 	{
-		if (Piece->IsSelected())
+		if (Part->IsSelected())
 		{
-			swGroup* Group = Piece->GetTopGroup();
+			swGroup* Group = Part->GetTopGroup();
 
 			if (SelectedGroups.insert(Group).second)
 			{
@@ -146,12 +146,12 @@ void swModel::UngroupSelection()
 		return;
 	}
 
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
+	for (const std::unique_ptr<swPart>& Part : mParts)
 	{
-		swGroup* Group = Piece->GetGroup();
+		swGroup* Group = Part->GetGroup();
 
 		if (SelectedGroups.find(Group) != SelectedGroups.end())
-			Piece->SetGroup(nullptr);
+			Part->SetGroup(nullptr);
 	}
 
 	for (const std::unique_ptr<swGroup>& Group : mGroups)
@@ -169,15 +169,15 @@ void swModel::UngroupSelection()
 	gMainWindow->UpdateSelectedObjects(true);
 }
 
-void swModel::AddSelectedPiecesToGroup()
+void swModel::AddSelectedPartsToGroup()
 {
 	swGroup* Group = nullptr;
 
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
+	for (const std::unique_ptr<swPart>& Part : mParts)
 	{
-		if (Piece->IsSelected())
+		if (Part->IsSelected())
 		{
-			Group = Piece->GetTopGroup();
+			Group = Part->GetTopGroup();
 			if (Group)
 				break;
 		}
@@ -189,11 +189,11 @@ void swModel::AddSelectedPiecesToGroup()
 	BeginHistorySequence();
 	BeginEditHistory();
 
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
+	for (const std::unique_ptr<swPart>& Part : mParts)
 	{
-		if (Piece->IsFocused())
+		if (Part->IsFocused())
 		{
-			Piece->SetGroup(Group);
+			Part->SetGroup(Group);
 			break;
 		}
 	}
@@ -206,18 +206,18 @@ void swModel::AddSelectedPiecesToGroup()
 	gMainWindow->UpdateSelectedObjects(false);
 }
 
-void swModel::RemoveFocusPieceFromGroup()
+void swModel::RemoveFocusPartFromGroup()
 {
 	bool Modified = false;
 
 	BeginHistorySequence();
 	BeginEditHistory();
 
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
+	for (const std::unique_ptr<swPart>& Part : mParts)
 	{
-		if (Piece->IsFocused())
+		if (Part->IsFocused())
 		{
-			Piece->SetGroup(nullptr);
+			Part->SetGroup(nullptr);
 
 			Modified = true;
 
@@ -264,8 +264,8 @@ void swModel::ShowEditGroupsDialog()
 		for (const swEditGroupsDialog::GroupInfo& ChildGroupInfo : GroupInfo.ChildGroups)
 			UpdateGroups(ChildGroupInfo, Group);
 
-		for (swPiece* Piece : GroupInfo.ChildPieces)
-			Piece->SetGroup(Group);
+		for (swPart* Part : GroupInfo.ChildParts)
+			Part->SetGroup(Group);
 	};
 
 	swEditGroupsDialog::GroupInfo GroupInfo = Dialog.GetGroups();
@@ -273,8 +273,8 @@ void swModel::ShowEditGroupsDialog()
 	for (const swEditGroupsDialog::GroupInfo& ChildGroupInfo : GroupInfo.ChildGroups)
 		UpdateGroups(ChildGroupInfo, nullptr);
 
-	for (swPiece* Piece : GroupInfo.ChildPieces)
-		Piece->SetGroup(nullptr);
+	for (swPart* Part : GroupInfo.ChildParts)
+		Part->SetGroup(nullptr);
 
 	RemoveEmptyGroups();
 
@@ -316,8 +316,8 @@ void swModel::RemoveEmptyGroups()
 			swGroup* Group = GroupIt->get();
 			int Ref = 0;
 
-			for (const std::unique_ptr<swPiece>& Piece : mPieces)
-				if (Piece->GetGroup() == Group)
+			for (const std::unique_ptr<swPart>& Part : mParts)
+				if (Part->GetGroup() == Group)
 					Ref++;
 
 			for (size_t ParentIdx = 0; ParentIdx < mGroups.size(); ParentIdx++)
@@ -332,11 +332,11 @@ void swModel::RemoveEmptyGroups()
 
 			if (Ref != 0)
 			{
-				for (const std::unique_ptr<swPiece>& Piece : mPieces)
+				for (const std::unique_ptr<swPart>& Part : mParts)
 				{
-					if (Piece->GetGroup() == Group)
+					if (Part->GetGroup() == Group)
 					{
-						Piece->SetGroup(Group->mGroup);
+						Part->SetGroup(Group->mGroup);
 						break;
 					}
 				}

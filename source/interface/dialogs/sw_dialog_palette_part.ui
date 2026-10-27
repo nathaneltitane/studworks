@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>swPiecePaletteDialog</class>
- <widget class="QDialog" name="swPiecePaletteDialog">
+ <class>swPartPaletteDialog</class>
+ <widget class="QDialog" name="swPartPaletteDialog">
   <property name="whatsThis">
-   <string>&lt;p&gt;&lt;b&gt;Piece Palettes&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Organize reusable collections of pieces in the piece browser. Create, rename, delete, import, or reorder palettes, then choose OK to apply the changes. Cancel discards these palette changes.&lt;/p&gt;&lt;p&gt;Palettes organize piece choices; they do not change pieces already placed in a model.&lt;/p&gt;</string>
+   <string>&lt;p&gt;&lt;b&gt;Part Palettes&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Organize reusable collections of parts in the part browser. Create, rename, delete, import, or reorder palettes, then choose OK to apply the changes. Cancel discards these palette changes.&lt;/p&gt;&lt;p&gt;Palettes organize part choices; they do not change parts already placed in a model.&lt;/p&gt;</string>
   </property>
   <property name="geometry">
    <rect>
@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Piece Palettes</string>
+   <string>Part Palettes</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
@@ -25,10 +25,10 @@
         <string>Select the palette to rename, delete, or move.</string>
        </property>
        <property name="accessibleName">
-        <string>Piece Palettes</string>
+        <string>Part Palettes</string>
        </property>
        <property name="whatsThis">
-        <string>&lt;p&gt;&lt;b&gt;Palette List&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select a palette before using Rename, Delete, Move Up, or Move Down. The list order determines the palette order in the piece browser.&lt;/p&gt;</string>
+        <string>&lt;p&gt;&lt;b&gt;Palette List&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Select a palette before using Rename, Delete, Move Up, or Move Down. The list order determines the palette order in the part browser.&lt;/p&gt;</string>
        </property>
       </widget>
      </item>
@@ -37,7 +37,7 @@
        <item>
         <widget class="QPushButton" name="NewButton">
          <property name="toolTip">
-          <string>Create a new empty piece palette.</string>
+          <string>Create a new empty part palette.</string>
          </property>
          <property name="text">
           <string>New...</string>
@@ -50,7 +50,7 @@
           <string>Remove the selected palette after confirmation.</string>
          </property>
          <property name="whatsThis">
-          <string>&lt;p&gt;&lt;b&gt;Delete Palette&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Remove the selected palette and its list of piece choices. Library pieces and pieces already used in models are not deleted. At least one palette must remain.&lt;/p&gt;</string>
+          <string>&lt;p&gt;&lt;b&gt;Delete Palette&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Remove the selected palette and its list of part choices. Library parts and parts already used in models are not deleted. At least one palette must remain.&lt;/p&gt;</string>
          </property>
          <property name="text">
           <string>Delete...</string>
@@ -73,7 +73,7 @@
           <string>Create a palette from an online set inventory.</string>
          </property>
          <property name="whatsThis">
-          <string>&lt;p&gt;&lt;b&gt;Import Palette&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Open Import Set Inventory to search for a set and download its inventory. The new palette uses the set description as its name.&lt;/p&gt;&lt;p&gt;The palette stores piece IDs; inventory colors and quantities are not stored. An internet connection is required.&lt;/p&gt;</string>
+          <string>&lt;p&gt;&lt;b&gt;Import Palette&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Open Import Set Inventory to search for a set and download its inventory. The new palette uses the set description as its name.&lt;/p&gt;&lt;p&gt;The palette stores part IDs; inventory colors and quantities are not stored. An internet connection is required.&lt;/p&gt;</string>
          </property>
          <property name="text">
           <string>Import...</string>
@@ -143,7 +143,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>swPiecePaletteDialog</receiver>
+   <receiver>swPartPaletteDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -159,7 +159,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>swPiecePaletteDialog</receiver>
+   <receiver>swPartPaletteDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

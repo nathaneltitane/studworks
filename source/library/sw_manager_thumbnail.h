@@ -2,18 +2,18 @@
 
 #include "sw_types_asset.h"
 
-struct swPieceThumbnail
+struct swPartThumbnail
 {
 	QPixmap Pixmap;
-	swPieceData* PieceData;
-	std::vector<swPieceDataReference> RequiredPieceData;
+	swPartData* PartData;
+	std::vector<swPartDataReference> RequiredPartData;
 	int ColorIndex;
 	int Size;
 	float DeviceScale;
 	int ReferenceCount;
 };
 
-enum class swPieceThumbnailId : uint32_t
+enum class swPartThumbnailId : uint32_t
 {
 	Invalid = 0
 };
@@ -23,35 +23,35 @@ class swThumbnailManager : public QObject
 	Q_OBJECT
 
 public:
-	swThumbnailManager(swPiecesLibrary* Library);
+	swThumbnailManager(swPartsLibrary* Library);
 	~swThumbnailManager();
 
-	std::pair<swPieceThumbnailId, QPixmap> RequestThumbnail(swPieceData* PieceData, int ColorIndex, int Size, float DeviceScale);
-	void ReleaseThumbnail(swPieceThumbnailId ThumbnailId);
+	std::pair<swPartThumbnailId, QPixmap> RequestThumbnail(swPartData* PartData, int ColorIndex, int Size, float DeviceScale);
+	void ReleaseThumbnail(swPartThumbnailId ThumbnailId);
 	void Clear();
-	void RefreshPieces(const std::vector<swPieceData*>& ChangedPieces);
+	void RefreshParts(const std::vector<swPartData*>& ChangedParts);
 
 signals:
-	void ThumbnailReady(swPieceThumbnailId ThumbnailId, QPixmap Pixmap);
+	void ThumbnailReady(swPartThumbnailId ThumbnailId, QPixmap Pixmap);
 
 protected slots:
-	void PieceLoaded(swPieceData* PieceData);
-	void PieceLoadFailed(swPieceData* PieceData);
-	void GeneratedMeshSettled(swPieceData* PieceData);
+	void PartLoaded(swPartData* PartData);
+	void PartLoadFailed(swPartData* PartData);
+	void GeneratedMeshSettled(swPartData* PartData);
 
 protected:
-	void RefreshRequiredPieces(swPieceThumbnail& Thumbnail);
-	void UpdateThumbnail(swPieceThumbnailId ThumbnailId, swPieceThumbnail& Thumbnail);
-	void DrawThumbnail(swPieceThumbnailId ThumbnailId, swPieceThumbnail& Thumbnail);
-	void DrawFailedThumbnail(swPieceThumbnailId ThumbnailId, swPieceThumbnail& Thumbnail);
+	void RefreshRequiredParts(swPartThumbnail& Thumbnail);
+	void UpdateThumbnail(swPartThumbnailId ThumbnailId, swPartThumbnail& Thumbnail);
+	void DrawThumbnail(swPartThumbnailId ThumbnailId, swPartThumbnail& Thumbnail);
+	void DrawFailedThumbnail(swPartThumbnailId ThumbnailId, swPartThumbnail& Thumbnail);
 	void SchedulePendingThumbnails();
 
-	swPiecesLibrary* mLibrary = nullptr;
-	std::map<swPieceThumbnailId, swPieceThumbnail> mThumbnails;
+	swPartsLibrary* mLibrary = nullptr;
+	std::map<swPartThumbnailId, swPartThumbnail> mThumbnails;
 	int mNextThumbnailId = 1;
 
 	std::unique_ptr<swView> mView;
 	std::unique_ptr<swModel> mModel;
-	std::map<swPieceThumbnailId, std::unique_ptr<swModel>> mPendingGeneratedModels;
+	std::map<swPartThumbnailId, std::unique_ptr<swModel>> mPendingGeneratedModels;
 	bool mRetryScheduled = false;
 };

@@ -7,7 +7,7 @@
 #include "sw_application.h"
 #include "sw_window_utilities.h"
 #include "sw_extensions_opengl.h"
-#include "sw_data_piece.h"
+#include "sw_data_part.h"
 #include "sw_dialog_color_edge.h"
 #include "sw_dialog_preferences_blender.h"
 #include "sw_window_main.h"
@@ -145,8 +145,8 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	ui->Language->addItem("\u7b80\u4f53\u4e2d\u6587");
 	ui->Language->addItem("\u7e41\u9ad4\u4e2d\u6587");
 
-	connect(ui->partsLibraryBrowse, &QPushButton::clicked, this, &swPreferencesDialog::PiecesLibraryBrowseClicked);
-	connect(ui->partsArchiveBrowse, &QPushButton::clicked, this, &swPreferencesDialog::PiecesArchiveBrowseClicked);
+	connect(ui->partsLibraryBrowse, &QPushButton::clicked, this, &swPreferencesDialog::PartsLibraryBrowseClicked);
+	connect(ui->partsArchiveBrowse, &QPushButton::clicked, this, &swPreferencesDialog::PartsArchiveBrowseClicked);
 	connect(ui->ColorConfigBrowseButton, &QPushButton::clicked, this, &swPreferencesDialog::ColorConfigBrowseButtonClicked);
 	connect(ui->MinifigureBuilderSettingsBrowseButton, &QPushButton::clicked, this, &swPreferencesDialog::MinifigureBuilderSettingsBrowseButtonClicked);
 	connect(ui->povrayExecutableBrowse, &QPushButton::clicked, this, &swPreferencesDialog::PovrayExecutableBrowseClicked);
@@ -162,7 +162,7 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	connect(ui->ConditionalLinesCheckBox, &QCheckBox::toggled, this, &swPreferencesDialog::ConditionalLinesCheckBoxToggled);
 	connect(ui->LineWidthSlider, QOverload<int>::of(&QSlider::valueChanged), this, &swPreferencesDialog::LineWidthSliderValueChanged);
 
-	for (swRenderTarget Target : { swRenderTarget::Preview, swRenderTarget::Pieces, swRenderTarget::MinifigureBuilder })
+	for (swRenderTarget Target : { swRenderTarget::Preview, swRenderTarget::Parts, swRenderTarget::MinifigureBuilder })
 	{
 		const swRenderTargetWidgets Widgets = GetRenderTargetWidgets(Target);
 
@@ -174,7 +174,7 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 
 	connect(ui->MeshLODSlider, QOverload<int>::of(&QSlider::valueChanged), this, &swPreferencesDialog::MeshLODSliderValueChanged);
 	connect(ui->FadeSteps, &QCheckBox::toggled, this, &swPreferencesDialog::FadeStepsToggled);
-	connect(ui->HighlightNewPieces, &QCheckBox::toggled, this, &swPreferencesDialog::HighlightNewPiecesToggled);
+	connect(ui->HighlightNewParts, &QCheckBox::toggled, this, &swPreferencesDialog::HighlightNewPartsToggled);
 	connect(ui->gridStuds, &QCheckBox::toggled, this, &swPreferencesDialog::GridStudsToggled);
 	connect(ui->gridLines, &QCheckBox::toggled, this, &swPreferencesDialog::GridLinesToggled);
 	connect(ui->ViewSphereSizeCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &swPreferencesDialog::ViewSphereSizeComboCurrentIndexChanged);
@@ -207,7 +207,7 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	connect(ui->MarqueeFillColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
 	connect(ui->OverlayColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
 	connect(ui->FadeStepsColor, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
-	connect(ui->HighlightNewPiecesColor, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->HighlightNewPartsColor, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
 	connect(ui->gridStudColor, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
 	connect(ui->gridLineColor, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
 	connect(ui->ViewSphereColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
@@ -222,7 +222,7 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	connect(ui->LightColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
 	connect(ui->ControlPointColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
 	connect(ui->ControlPointFocusedColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
-	connect(ui->categoriesTree, &QTreeWidget::itemSelectionChanged, this, &swPreferencesDialog::UpdatePieces);
+	connect(ui->categoriesTree, &QTreeWidget::itemSelectionChanged, this, &swPreferencesDialog::UpdateParts);
 	connect(ui->categoriesTree->model(), &QAbstractItemModel::rowsInserted, this, &swPreferencesDialog::CategoriesDropped);
 	ui->shortcutEdit->installEventFilter(this);
 	ui->MouseShortcutEdit->installEventFilter(this);
@@ -258,14 +258,14 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	ui->fixedDirectionKeys->setChecked(mOptions->Preferences.mFixedAxes);
 	ui->autoLoadMostRecent->setChecked(mOptions->Preferences.mAutoLoadMostRecent);
 	ui->RestoreTabLayout->setChecked(mOptions->Preferences.mRestoreTabLayout);
-	ui->FirstPieceAtOrigin->setChecked(mOptions->Preferences.mFirstPieceAtOrigin);
-	ui->PiecesSnapToTiles->setChecked(mOptions->Preferences.mPiecesSnapToTiles);
+	ui->FirstPartAtOrigin->setChecked(mOptions->Preferences.mFirstPartAtOrigin);
+	ui->PartsSnapToTiles->setChecked(mOptions->Preferences.mPartsSnapToTiles);
 	ui->InsertColorMode->setCurrentIndex(static_cast<int>(mOptions->Preferences.mInsertColorMode));
 	ui->WatchFileChanges->setChecked(mOptions->Preferences.mWatchFileChanges);
-	ui->LoadPiecesBeforeShowing->setChecked(mOptions->Preferences.mLoadPiecesBeforeShowing);
+	ui->LoadPartsBeforeShowing->setChecked(mOptions->Preferences.mLoadPartsBeforeShowing);
 	ui->AutomateEdgeColor->setChecked(mOptions->Preferences.mAutomateEdgeColor);
-	const int EdgeContrast = qRound(mOptions->Preferences.mPieceEdgeContrast * 100.0f);
-	const int EdgeSaturation = qRound(mOptions->Preferences.mPieceColorValueLDIndex * 100.0f);
+	const int EdgeContrast = qRound(mOptions->Preferences.mPartEdgeContrast * 100.0f);
+	const int EdgeSaturation = qRound(mOptions->Preferences.mPartColorValueLDIndex * 100.0f);
 	ui->EdgeContrastSlider->setValue(EdgeContrast);
 	ui->EdgeSaturationSlider->setValue(EdgeSaturation);
 
@@ -302,7 +302,7 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	ui->LineWidthSlider->setRange(0, (mLineWidthRange[1] - mLineWidthRange[0]) / mLineWidthGranularity);
 	ui->LineWidthSlider->setValue((mOptions->Preferences.mLineWidth - mLineWidthRange[0]) / mLineWidthGranularity);
 
-	for (swRenderTarget Target : { swRenderTarget::Preview, swRenderTarget::Pieces, swRenderTarget::MinifigureBuilder })
+	for (swRenderTarget Target : { swRenderTarget::Preview, swRenderTarget::Parts, swRenderTarget::MinifigureBuilder })
 	{
 		const swRenderTargetWidgets Widgets = GetRenderTargetWidgets(Target);
 		const swTargetRenderSettings& TargetSettings = mOptions->Preferences.GetTargetRenderSettings(Target);
@@ -321,7 +321,7 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	ui->MeshLODSlider->setValue(mOptions->Preferences.mMeshLODDistance / mMeshLODMultiplier);
 
 	ui->FadeSteps->setChecked(mOptions->Preferences.mFadeSteps);
-	ui->HighlightNewPieces->setChecked(mOptions->Preferences.mHighlightNewPieces);
+	ui->HighlightNewParts->setChecked(mOptions->Preferences.mHighlightNewParts);
 	ui->gridStuds->setChecked(mOptions->Preferences.mDrawGridStuds);
 	ui->gridLines->setChecked(mOptions->Preferences.mDrawGridLines);
 	ui->gridLineSpacing->setValidator(new QIntValidator(1, SW_MAXIMUM_GRID_LINE_SPACING, ui->gridLineSpacing));
@@ -403,7 +403,7 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 		ui->LightingStyleLabel->setEnabled(false);
 		ui->LightingStyle->setToolTip(Message);
 
-		for (swRenderTarget Target : { swRenderTarget::Preview, swRenderTarget::Pieces, swRenderTarget::MinifigureBuilder })
+		for (swRenderTarget Target : { swRenderTarget::Preview, swRenderTarget::Parts, swRenderTarget::MinifigureBuilder })
 		{
 			QComboBox* TargetShadingMode = GetRenderTargetWidgets(Target).ShadingMode;
 			QStandardItemModel* TargetShadingModel = qobject_cast<QStandardItemModel*>(TargetShadingMode->model());
@@ -484,7 +484,7 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	SetButtonPixmap(mOptions->Preferences.mActiveViewColor, ui->ActiveViewColorButton);
 	SetButtonPixmap(mOptions->Preferences.mInactiveViewColor, ui->InactiveViewColorButton);
 	SetButtonPixmap(mOptions->Preferences.mFadeStepsColor, ui->FadeStepsColor);
-	SetButtonPixmap(mOptions->Preferences.mHighlightNewPiecesColor, ui->HighlightNewPiecesColor);
+	SetButtonPixmap(mOptions->Preferences.mHighlightNewPartsColor, ui->HighlightNewPartsColor);
 	SetButtonPixmap(mOptions->Preferences.mGridStudColor, ui->gridStudColor);
 	SetButtonPixmap(mOptions->Preferences.mGridLineColor, ui->gridLineColor);
 	SetButtonPixmap(mOptions->Preferences.mViewSphereColor, ui->ViewSphereColorButton);
@@ -509,7 +509,7 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	RenderTargetChanged();
 	MeshLODSliderValueChanged();
 	FadeStepsToggled();
-	HighlightNewPiecesToggled();
+	HighlightNewPartsToggled();
 	GridStudsToggled();
 	GridLinesToggled();
 	ViewSphereSizeComboCurrentIndexChanged(ui->ViewSphereSizeCombo->currentIndex());
@@ -566,11 +566,11 @@ void swPreferencesDialog::accept()
 	mOptions->Preferences.mFixedAxes = ui->fixedDirectionKeys->isChecked();
 	mOptions->Preferences.mAutoLoadMostRecent = ui->autoLoadMostRecent->isChecked();
 	mOptions->Preferences.mRestoreTabLayout = ui->RestoreTabLayout->isChecked();
-	mOptions->Preferences.mFirstPieceAtOrigin = ui->FirstPieceAtOrigin->isChecked();
-	mOptions->Preferences.mPiecesSnapToTiles = ui->PiecesSnapToTiles->isChecked();
+	mOptions->Preferences.mFirstPartAtOrigin = ui->FirstPartAtOrigin->isChecked();
+	mOptions->Preferences.mPartsSnapToTiles = ui->PartsSnapToTiles->isChecked();
 	mOptions->Preferences.mInsertColorMode = static_cast<swInsertColorMode>(ui->InsertColorMode->currentIndex());
 	mOptions->Preferences.mWatchFileChanges = ui->WatchFileChanges->isChecked();
-	mOptions->Preferences.mLoadPiecesBeforeShowing = ui->LoadPiecesBeforeShowing->isChecked();
+	mOptions->Preferences.mLoadPartsBeforeShowing = ui->LoadPartsBeforeShowing->isChecked();
 
 	if (!ui->antiAliasing->isChecked())
 		mOptions->AASamples = 1;
@@ -585,7 +585,7 @@ void swPreferencesDialog::accept()
 	mOptions->Preferences.mDrawConditionalLines = ui->ConditionalLinesCheckBox->isChecked();
 	mOptions->Preferences.mLineWidth = mLineWidthRange[0] + static_cast<float>(ui->LineWidthSlider->value()) * mLineWidthGranularity;
 
-	for (swRenderTarget Target : { swRenderTarget::Preview, swRenderTarget::Pieces, swRenderTarget::MinifigureBuilder })
+	for (swRenderTarget Target : { swRenderTarget::Preview, swRenderTarget::Parts, swRenderTarget::MinifigureBuilder })
 	{
 		const swRenderTargetWidgets Widgets = GetRenderTargetWidgets(Target);
 		swTargetRenderSettings& TargetSettings = mOptions->Preferences.GetTargetRenderSettings(Target);
@@ -600,7 +600,7 @@ void swPreferencesDialog::accept()
 	mOptions->Preferences.mAllowLOD = ui->MeshLOD->isChecked();
 	mOptions->Preferences.mMeshLODDistance = ui->MeshLODSlider->value() * mMeshLODMultiplier;
 	mOptions->Preferences.mFadeSteps = ui->FadeSteps->isChecked();
-	mOptions->Preferences.mHighlightNewPieces = ui->HighlightNewPieces->isChecked();
+	mOptions->Preferences.mHighlightNewParts = ui->HighlightNewParts->isChecked();
 
 	mOptions->Preferences.mDrawGridStuds = ui->gridStuds->isChecked();
 	mOptions->Preferences.mDrawGridLines = ui->gridLines->isChecked();
@@ -657,17 +657,17 @@ void swPreferencesDialog::accept()
 	QDialog::accept();
 }
 
-void swPreferencesDialog::PiecesLibraryBrowseClicked()
+void swPreferencesDialog::PartsLibraryBrowseClicked()
 {
-	QString Result = QFileDialog::getExistingDirectory(this, tr("Select Pieces Library Folder"), ui->partsLibrary->text());
+	QString Result = QFileDialog::getExistingDirectory(this, tr("Select Parts Library Folder"), ui->partsLibrary->text());
 
 	if (!Result.isEmpty())
 		ui->partsLibrary->setText(QDir::toNativeSeparators(Result));
 }
 
-void swPreferencesDialog::PiecesArchiveBrowseClicked()
+void swPreferencesDialog::PartsArchiveBrowseClicked()
 {
-	QString Result = QFileDialog::getOpenFileName(this, tr("Select Pieces Library Archive"), ui->partsLibrary->text(), tr("Supported Archives (*.zip *.bin);;All Files (*.*)"));
+	QString Result = QFileDialog::getOpenFileName(this, tr("Select Parts Library Archive"), ui->partsLibrary->text(), tr("Supported Archives (*.zip *.bin);;All Files (*.*)"));
 
 	if (!Result.isEmpty())
 		ui->partsLibrary->setText(QDir::toNativeSeparators(Result));
@@ -789,9 +789,9 @@ void swPreferencesDialog::ColorButtonClicked()
 		Title = tr("Select Fade Color");
 		DialogOptions = QColorDialog::ShowAlphaChannel;
 	}
-	else if (Button == ui->HighlightNewPiecesColor)
+	else if (Button == ui->HighlightNewPartsColor)
 	{
-		Color = &mOptions->Preferences.mHighlightNewPiecesColor;
+		Color = &mOptions->Preferences.mHighlightNewPartsColor;
 		Title = tr("Select Highlight Color");
 		DialogOptions = QColorDialog::ShowAlphaChannel;
 	}
@@ -918,15 +918,15 @@ swPreferencesDialog::swRenderTargetWidgets swPreferencesDialog::GetRenderTargetW
 	if (Target == swRenderTarget::MinifigureBuilder)
 		return { ui->MinifigureBuilderSyncRendering, ui->MinifigureBuilderShadingModeLabel, ui->MinifigureBuilderShadingMode, ui->MinifigureBuilderEdgeLines, ui->MinifigureBuilderConditionalLines, ui->MinifigureBuilderLineWidthTitle, ui->MinifigureBuilderLineWidthSlider, ui->MinifigureBuilderLineWidthLabel };
 
-	if (Target == swRenderTarget::Pieces)
-		return { ui->PiecesSyncRendering, ui->PiecesShadingModeLabel, ui->PiecesShadingMode, ui->PiecesEdgeLines, ui->PiecesConditionalLines, ui->PiecesLineWidthTitle, ui->PiecesLineWidthSlider, ui->PiecesLineWidthLabel };
+	if (Target == swRenderTarget::Parts)
+		return { ui->PartsSyncRendering, ui->PartsShadingModeLabel, ui->PartsShadingMode, ui->PartsEdgeLines, ui->PartsConditionalLines, ui->PartsLineWidthTitle, ui->PartsLineWidthSlider, ui->PartsLineWidthLabel };
 
 	return { ui->PreviewSyncRendering, ui->PreviewShadingModeLabel, ui->PreviewShadingMode, ui->PreviewEdgeLines, ui->PreviewConditionalLines, ui->PreviewLineWidthTitle, ui->PreviewLineWidthSlider, ui->PreviewLineWidthLabel };
 }
 
 void swPreferencesDialog::RenderTargetChanged()
 {
-	for (swRenderTarget Target : { swRenderTarget::Preview, swRenderTarget::Pieces, swRenderTarget::MinifigureBuilder })
+	for (swRenderTarget Target : { swRenderTarget::Preview, swRenderTarget::Parts, swRenderTarget::MinifigureBuilder })
 	{
 		const swRenderTargetWidgets Widgets = GetRenderTargetWidgets(Target);
 		const bool Enable = !Widgets.SyncRendering->isChecked();
@@ -956,9 +956,9 @@ void swPreferencesDialog::FadeStepsToggled()
 	ui->FadeStepsColor->setEnabled(ui->FadeSteps->isChecked());
 }
 
-void swPreferencesDialog::HighlightNewPiecesToggled()
+void swPreferencesDialog::HighlightNewPartsToggled()
 {
-	ui->HighlightNewPiecesColor->setEnabled(ui->HighlightNewPieces->isChecked());
+	ui->HighlightNewPartsColor->setEnabled(ui->HighlightNewParts->isChecked());
 }
 
 void swPreferencesDialog::GridStudsToggled()
@@ -997,11 +997,11 @@ void swPreferencesDialog::AutomateEdgeColorToggled()
 
 void swPreferencesDialog::EdgeColorSliderValueChanged()
 {
-	mOptions->Preferences.mPieceEdgeContrast = static_cast<float>(ui->EdgeContrastSlider->value()) * 0.01f;
-	mOptions->Preferences.mPieceColorValueLDIndex = static_cast<float>(ui->EdgeSaturationSlider->value()) * 0.01f;
+	mOptions->Preferences.mPartEdgeContrast = static_cast<float>(ui->EdgeContrastSlider->value()) * 0.01f;
+	mOptions->Preferences.mPartColorValueLDIndex = static_cast<float>(ui->EdgeSaturationSlider->value()) * 0.01f;
 
-	ui->EdgeContrastLabel->setText(swFormatDoubleLocalized(mOptions->Preferences.mPieceEdgeContrast, locale(), 'f', 2));
-	ui->EdgeSaturationLabel->setText(swFormatDoubleLocalized(mOptions->Preferences.mPieceColorValueLDIndex, locale(), 'f', 2));
+	ui->EdgeContrastLabel->setText(swFormatDoubleLocalized(mOptions->Preferences.mPartEdgeContrast, locale(), 'f', 2));
+	ui->EdgeSaturationLabel->setText(swFormatDoubleLocalized(mOptions->Preferences.mPartColorValueLDIndex, locale(), 'f', 2));
 }
 
 void swPreferencesDialog::StudStyleComboCurrentIndexChanged(int Index)
@@ -1017,17 +1017,17 @@ void swPreferencesDialog::AutomateEdgeColor()
 	{
 		mOptions->Preferences.mStudCylinderColorEnabled = Dialog.mStudCylinderColorEnabled;
 		mOptions->Preferences.mStudCylinderColor = Dialog.mStudCylinderColor;
-		mOptions->Preferences.mPieceEdgeColorEnabled = Dialog.mPieceEdgeColorEnabled;
-		mOptions->Preferences.mPieceEdgeColor = Dialog.mPieceEdgeColor;
+		mOptions->Preferences.mPartEdgeColorEnabled = Dialog.mPartEdgeColorEnabled;
+		mOptions->Preferences.mPartEdgeColor = Dialog.mPartEdgeColor;
 		mOptions->Preferences.mBlackEdgeColorEnabled = Dialog.mBlackEdgeColorEnabled;
 		mOptions->Preferences.mBlackEdgeColor = Dialog.mBlackEdgeColor;
 		mOptions->Preferences.mDarkEdgeColorEnabled = Dialog.mDarkEdgeColorEnabled;
 		mOptions->Preferences.mDarkEdgeColor = Dialog.mDarkEdgeColor;
-		mOptions->Preferences.mPieceEdgeContrast = Dialog.mPieceEdgeContrast;
-		mOptions->Preferences.mPieceColorValueLDIndex = Dialog.mPieceColorValueLDIndex;
+		mOptions->Preferences.mPartEdgeContrast = Dialog.mPartEdgeContrast;
+		mOptions->Preferences.mPartColorValueLDIndex = Dialog.mPartColorValueLDIndex;
 
 		// The light/dark value is the same setting as the edge saturation.
-		ui->EdgeSaturationSlider->setValue(qRound(mOptions->Preferences.mPieceColorValueLDIndex * 100.0f));
+		ui->EdgeSaturationSlider->setValue(qRound(mOptions->Preferences.mPartColorValueLDIndex * 100.0f));
 	}
 }
 
@@ -1054,9 +1054,9 @@ void swPreferencesDialog::UpdateCategories()
 	connect(ui->categoriesTree->model(), &QAbstractItemModel::rowsInserted, this, &swPreferencesDialog::CategoriesDropped);
 }
 
-void swPreferencesDialog::UpdatePieces()
+void swPreferencesDialog::UpdateParts()
 {
-	swPiecesLibrary* Library = swGetPiecesLibrary();
+	swPartsLibrary* Library = swGetPartsLibrary();
 	QTreeWidget* Tree = ui->partsTree;
 
 	Tree->clear();
@@ -1071,32 +1071,32 @@ void swPreferencesDialog::UpdatePieces()
 
 	if (CategoryIndex != -1)
 	{
-		std::vector<swPieceData*> SinglePieces, GroupedPieces;
+		std::vector<swPartData*> SingleParts, GroupedParts;
 
-		Library->GetCategoryEntries(mOptions->Categories[CategoryIndex].Keywords.constData(), false, SinglePieces, GroupedPieces);
+		Library->GetCategoryEntries(mOptions->Categories[CategoryIndex].Keywords.constData(), false, SingleParts, GroupedParts);
 
-		for (swPieceData* PieceData : SinglePieces)
+		for (swPartData* PartData : SingleParts)
 		{
-			QStringList RowList(PieceData->m_strDescription);
-			RowList.append(PieceData->mFileName);
+			QStringList RowList(PartData->m_strDescription);
+			RowList.append(PartData->mFileName);
 
 			new QTreeWidgetItem(Tree, RowList);
 		}
 	}
 	else
 	{
-		for (swPieceData* PieceData : Library->GetPieces())
+		for (swPartData* PartData : Library->GetParts())
 		{
 			for (CategoryIndex = 0; CategoryIndex < static_cast<int>(mOptions->Categories.size()); CategoryIndex++)
 			{
-				if (Library->PieceDataInCategory(PieceData, mOptions->Categories[CategoryIndex].Keywords.constData()))
+				if (Library->PartDataInCategory(PartData, mOptions->Categories[CategoryIndex].Keywords.constData()))
 					break;
 			}
 
 			if (CategoryIndex == static_cast<int>(mOptions->Categories.size()))
 			{
-				QStringList RowList(PieceData->m_strDescription);
-				RowList.append(PieceData->mFileName);
+				QStringList RowList(PartData->m_strDescription);
+				RowList.append(PartData->mFileName);
 
 				new QTreeWidgetItem(Tree, RowList);
 			}

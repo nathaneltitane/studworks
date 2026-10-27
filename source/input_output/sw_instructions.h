@@ -110,7 +110,7 @@ enum class swInstructionsPlacementAnchor
 {
 	Area,
 	StepNumber,
-	PiecesList
+	PartsList
 };
 
 // placements are cells of a grid around the anchor, numbered row by row, its inner cells lie inside the anchor
@@ -163,7 +163,7 @@ enum class swInstructionsPlacementElement
 {
 	None,
 	StepNumber,
-	PiecesList,
+	PartsList,
 	CoverTitle,
 	CoverAuthor,
 	BillOfMaterials,

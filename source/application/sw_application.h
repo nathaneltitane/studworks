@@ -3,7 +3,7 @@
 #include "sw_math.h"
 
 class Project;
-class swPiecesLibrary;
+class swPartsLibrary;
 enum class swViewSphereLocation;
 
 enum class swShadingMode
@@ -41,7 +41,7 @@ enum class swHighlightRenderMode
 enum class swInsertColorMode
 {
 	CurrentColor,
-	SelectedPieceColor,
+	SelectedPartColor,
 	LastInsertedColor
 };
 
@@ -65,7 +65,7 @@ enum class swRenderTarget
 {
 	ModelView,
 	Preview,
-	Pieces,
+	Parts,
 	MinifigureBuilder
 };
 
@@ -85,7 +85,7 @@ public:
 	void LoadRenderTarget(swRenderTarget Target);
 	void SaveRenderTarget(swRenderTarget Target) const;
 
-	// The pieces preview and the pieces list use their own settings unless they are synced with the model views.
+	// The parts preview and the parts list use their own settings unless they are synced with the model views.
 	swRenderSettings GetRenderSettings(swRenderTarget Target) const
 	{
 		if (Target != swRenderTarget::ModelView)
@@ -101,12 +101,12 @@ public:
 
 	swTargetRenderSettings& GetTargetRenderSettings(swRenderTarget Target)
 	{
-		return Target == swRenderTarget::Pieces ? mPiecesRendering : Target == swRenderTarget::MinifigureBuilder ? mMinifigureBuilderRendering : mPreviewRendering;
+		return Target == swRenderTarget::Parts ? mPartsRendering : Target == swRenderTarget::MinifigureBuilder ? mMinifigureBuilderRendering : mPreviewRendering;
 	}
 
 	const swTargetRenderSettings& GetTargetRenderSettings(swRenderTarget Target) const
 	{
-		return Target == swRenderTarget::Pieces ? mPiecesRendering : Target == swRenderTarget::MinifigureBuilder ? mMinifigureBuilderRendering : mPreviewRendering;
+		return Target == swRenderTarget::Parts ? mPartsRendering : Target == swRenderTarget::MinifigureBuilder ? mMinifigureBuilderRendering : mPreviewRendering;
 	}
 
 	int mMouseSensitivity;
@@ -130,13 +130,13 @@ public:
 	float mLineWidth;
 	bool mAllowLOD;
 	swTargetRenderSettings mPreviewRendering;
-	swTargetRenderSettings mPiecesRendering;
+	swTargetRenderSettings mPartsRendering;
 	swTargetRenderSettings mMinifigureBuilderRendering;
 	float mMeshLODDistance;
 	bool mFadeSteps;
 	quint32 mFadeStepsColor;
-	bool mHighlightNewPieces;
-	quint32 mHighlightNewPiecesColor;
+	bool mHighlightNewParts;
+	quint32 mHighlightNewPartsColor;
 	bool mGridEnabled = true;
 	bool mDrawGridStuds;
 	quint32 mGridStudColor;
@@ -159,12 +159,12 @@ public:
 	quint32 mAxisZColor;
 	bool mAutoLoadMostRecent;
 	bool mRestoreTabLayout;
-	bool mFirstPieceAtOrigin;
-	bool mPiecesSnapToTiles;
+	bool mFirstPartAtOrigin;
+	bool mPartsSnapToTiles;
 	bool mTerminalFollowModel;
 	swInsertColorMode mInsertColorMode;
 	bool mWatchFileChanges;
-	bool mLoadPiecesBeforeShowing;
+	bool mLoadPartsBeforeShowing;
 	swColorTheme mColorTheme;
 	quint32 mObjectSelectedColor;
 	quint32 mObjectFocusedColor;
@@ -182,14 +182,14 @@ public:
 
 	bool mStudCylinderColorEnabled;
 	quint32 mStudCylinderColor;
-	bool mPieceEdgeColorEnabled;
-	quint32 mPieceEdgeColor;
+	bool mPartEdgeColorEnabled;
+	quint32 mPartEdgeColor;
 	bool mBlackEdgeColorEnabled;
 	quint32 mBlackEdgeColor;
 	bool mDarkEdgeColorEnabled;
 	quint32 mDarkEdgeColor;
-	float mPieceEdgeContrast;
-	float mPieceColorValueLDIndex;
+	float mPartEdgeContrast;
+	float mPartColorValueLDIndex;
 	bool  mAutomateEdgeColor;
 };
 
@@ -225,14 +225,14 @@ struct swCommandLineOptions
 	swVector3 CameraPosition[3];
 	swVector2 CameraLatLon;
 	float FoV;
-	float PieceEdgeContrast;
-	float PieceColorValueLDIndex;
+	float PartEdgeContrast;
+	float PartColorValueLDIndex;
 	swVector2 ZPlanes;
 	swViewpoint Viewpoint;
 	bool StudCylinderColorEnabled;
 	quint32 StudCylinderColor;
-	bool PieceEdgeColorEnabled;
-	quint32 PieceEdgeColor;
+	bool PartEdgeColorEnabled;
+	quint32 PartEdgeColor;
 	bool BlackEdgeColorEnabled;
 	quint32 BlackEdgeColor;
 	bool DarkEdgeColorEnabled;
@@ -285,13 +285,13 @@ public:
 	void ShowPreferencesDialog();
 	void SaveTabLayout() const;
 
-	bool LoadPiecesLibrary(const QList<QPair<QString, bool>>& LibraryPaths, bool OnlyUsePaths, swStudStyle StudStyle, bool StudCylinderColorEnabled);
+	bool LoadPartsLibrary(const QList<QPair<QString, bool>>& LibraryPaths, bool OnlyUsePaths, swStudStyle StudStyle, bool StudCylinderColorEnabled);
 
 	void SetClipboard(const QByteArray& Clipboard);
 	void ExportClipboard(const QByteArray& Clipboard);
 
 	Project* mProject = nullptr;
-	swPiecesLibrary* mLibrary = nullptr;
+	swPartsLibrary* mLibrary = nullptr;
 	swPreferences mPreferences;
 	QByteArray mClipboard;
 
@@ -309,7 +309,7 @@ protected:
 
 extern swApplication* gApplication;
 
-inline swPiecesLibrary* swGetPiecesLibrary()
+inline swPartsLibrary* swGetPartsLibrary()
 {
 	return gApplication->mLibrary;
 }

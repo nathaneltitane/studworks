@@ -12,18 +12,18 @@ completed stages or superseded proposals as future requirements.
 
 Opening a model still parses its file on the UI thread, but does not wait for
 every referenced mesh or texture. Unavailable geometry initially draws as cubes;
-pieces appear incrementally once their meshes **and textures** are ready.
+parts appear incrementally once their meshes **and textures** are ready.
 Already-loaded shared assets can appear immediately. A disk cache hit still
 requires worker loading and any texture dependencies; it is not a UI-thread fast
 path and receives no special queue priority.
 
-The status-bar spinner is visible while the active project has pending pieces
+The status-bar spinner is visible while the active project has pending parts
 or generated meshes. Its tooltip reports loading counts, or regeneration when
-only synth work remains. Counts describe unique required `swPieceData` identities
-plus generated piece instances, not the number of placed bricks or global jobs.
+only synth work remains. Counts describe unique required `swPartData` identities
+plus generated part instances, not the number of placed bricks or global jobs.
 Requirements include all project models and their nested dependencies, not just
 the visible step. The spinner hides immediately when work settles; there is no
-"all pieces loaded" message. A separate failure indicator retains error details
+"all parts loaded" message. A separate failure indicator retains error details
 until the project's failures disappear or the project changes.
 
 Views redraw and update bounds as results arrive, but keep the user's camera.
@@ -61,10 +61,10 @@ new evidence and update this record with any agreed change.
 
 | Decision | Rationale and alternatives set aside |
 | --- | --- |
-| Keep identity registries in the library-owned piece/texture managers; the library coordinates sources, lifetimes and shared buffers, and its loader owns pending work. | One registry and one completion path avoid competing lifetime/readiness authorities. Do not create a second asset registry in the loader. |
+| Keep identity registries in the library-owned part/texture managers; the library coordinates sources, lifetimes and shared buffers, and its loader owns pending work. | One registry and one completion path avoid competing lifetime/readiness authorities. Do not create a second asset registry in the loader. |
 | Use the existing Qt worker pool and shared offscreen GL context, with UI-thread publication. | Reuses existing infrastructure and keeps model mutation, color registration, upload, and rendering sequential. Do not publish assets from workers or introduce a separate renderer/context for loading. |
 | Use promotion-only priorities and existing reference counts. | Models open at their last step; precise consumer demotion added bookkeeping for little demonstrated benefit. Per-consumer pointer maps, step-based priorities, outgoing-project demotion, and scoped priority removal were deliberately set aside. Accept briefly elevated work after a requesting view closes. |
-| Treat missing geometry as `Failed`; keep structural type and library membership separate. | A separate Placeholder/Missing type or readiness value duplicates failure state. Cubes are shared display fallbacks, not stored asset meshes. Library membership is established explicitly by the `swPieceData` constructor. |
+| Treat missing geometry as `Failed`; keep structural type and library membership separate. | A separate Placeholder/Missing type or readiness value duplicates failure state. Cubes are shared display fallbacks, not stored asset meshes. Library membership is established explicitly by the `swPartData` constructor. |
 | Require all includes and textures for successful asset loading; never cache an erroneous mesh as successful. | Partial private builds must not masquerade as ready assets. Permissive output is a caller policy that omits failed assets, not relaxed loader success criteria. |
 | Allow model outputs to save available geometry after waiting. | Geometry exports, HTML, images, instructions, and printing do not reject the whole operation because an asset failed. Actual rendering/file failures remain errors. Strict previews and thumbnail fallback rules remain separate. |
 | Keep missing HTML parts-list entries with empty thumbnails and quantities. | Missing geometry must not erase the inventory entry or substitute a loading cube. Instruction parts lists currently omit unavailable thumbnails. |
@@ -76,19 +76,19 @@ new evidence and update this record with any agreed change.
 
 | Owner | Responsibility | Source |
 | --- | --- | --- |
-| `swPiecesLibrary` | Acquisition/lifetime facade, source discovery, texture file indexes, archives, primitive and mesh caches, settings, shared mesh buffers, and loader coordination. Owns the piece and texture managers and supplies archive readers. | [sw_library.h](../source/library/sw_library.h), [sw_library.cpp](../source/library/sw_library.cpp) |
-| `swPieceManager` | Piece creation/reuse, library/local registrations and project indexes, normalization/renaming, references, zero-reference unload/deletion, temporary cleanup, sparse errors, synchronized registry access, ordered teardown, borrowed snapshots and copied include-source metadata. No source discovery or scheduling. | [sw_manager_piece.h](../source/library/sw_manager_piece.h), [sw_manager_piece.cpp](../source/library/sw_manager_piece.cpp) |
+| `swPartsLibrary` | Acquisition/lifetime facade, source discovery, texture file indexes, archives, primitive and mesh caches, settings, shared mesh buffers, and loader coordination. Owns the part and texture managers and supplies archive readers. | [sw_library.h](../source/library/sw_library.h), [sw_library.cpp](../source/library/sw_library.cpp) |
+| `swPartManager` | Part creation/reuse, library/local registrations and project indexes, normalization/renaming, references, zero-reference unload/deletion, temporary cleanup, sparse errors, synchronized registry access, ordered teardown, borrowed snapshots and copied include-source metadata. No source discovery or scheduling. | [sw_manager_part.h](../source/library/sw_manager_part.h), [sw_manager_part.cpp](../source/library/sw_manager_part.cpp) |
 | `swTextureManager` | Texture identities and references, snapshots, and private CPU decoding of resolved sources. | [sw_manager_texture.h](../source/library/sw_manager_texture.h), [sw_manager_texture.cpp](../source/library/sw_manager_texture.cpp) |
 | `swAssetLoader` | Pending requests, worker scheduling, private results, texture upload, publication, cancellation, readiness waits, and deferred settlement notifications. | [sw_loader_asset.h](../source/library/sw_loader_asset.h), [sw_loader_asset.cpp](../source/library/sw_loader_asset.cpp) |
-| `swPieceData` / `swTexture` | Published geometry or texture data, readiness state, and asset metadata. | [sw_data_piece.h](../source/library/sw_data_piece.h), [sw_texture.h](../source/library/sw_texture.h) |
-| Projects, models, and views | Project-local names, required-asset traversal, generated-piece ownership, bounds, fallback display, cameras, and redraws. | [sw_project.cpp](../source/core/sw_project.cpp), [sw_model.cpp](../source/core/sw_model.cpp), [sw_object_piece.cpp](../source/core/sw_object_piece.cpp) |
+| `swPartData` / `swTexture` | Published geometry or texture data, readiness state, and asset metadata. | [sw_data_part.h](../source/library/sw_data_part.h), [sw_texture.h](../source/library/sw_texture.h) |
+| Projects, models, and views | Project-local names, required-asset traversal, generated-part ownership, bounds, fallback display, cameras, and redraws. | [sw_project.cpp](../source/core/sw_project.cpp), [sw_model.cpp](../source/core/sw_model.cpp), [sw_object_part.cpp](../source/core/sw_object_part.cpp) |
 
 The library owns the loader. Call library entry points from the UI thread for
 asset acquisition, release, scheduling, waiting, and invalidation. Workers use
 source snapshots and the library's build services; they do not consult the
 active project or publish into live models.
 
-The piece manager owns library and local registrations and their lifetime policy.
+The part manager owns library and local registrations and their lifetime policy.
 It creates/reuses identities, maintains name and project indexes, normalizes and
 renames names, changes reference counts, and unloads or deletes identities at zero.
 Library discovery supplies source metadata; the library still resolves external
@@ -117,7 +117,7 @@ guarantees. Borrowed snapshots do not retain identities, and ordered library
 snapshots preserve description-cache compatibility. Manager `Clear()` destroys
 external projects before remaining local and shared identities, removing
 registrations before destruction can reenter. The library drains workers first
-and keeps texture resources and archives alive until piece teardown completes.
+and keeps texture resources and archives alive until part teardown completes.
 
 The texture manager is owned by the library and owns the only texture registry.
 `AcquireTexture()` resolves embedded data, project-directory files, and
@@ -136,9 +136,9 @@ waits through decoding and upload. Texture requests,
 priority promotion, cancellation, upload/retries, and part dependency settlement
 remain in `swAssetLoader`; its requests retain `swTextureReference` handles, explicitly
 reset on the UI thread before worker-shared request storage can be destroyed.
-Shared readiness, priority, file-source and piece-source snapshots, build results, and `swTextureLoadError` live in `sw_types_asset.h`. Stud-style and
+Shared readiness, priority, file-source and part-source snapshots, build results, and `swTextureLoadError` live in `sw_types_asset.h`. Stud-style and
 archive-type enums remain in `sw_library.h` and are forward-declared by the shared
-header; the piece snapshot constructor supplies their defaults out of line.
+header; the part snapshot constructor supplies their defaults out of line.
 `swTexture::mSource` stores the source identity; copies for workers do not snapshot
 file contents. Texture names, project directories, and temporary flags remain separate.
 Loader dependency requests receive the resolved source explicitly. Direct library
@@ -154,11 +154,11 @@ manager stores no file-reader callback or library instance.
 Success returns an owned `swFile` positioned at zero: disk sources retain
 an open `swDiskFile`, archive entries and decoded embedded data use `swMemoryFile`.
 Opening never searches for another source or parses its contents.
-`OpenPieceDataFile()` and `OpenPrimitiveFile()` return the same owning result for
-includes and use `OpenFile()` for disk/archive access. Piece include lookup keeps
+`OpenPartDataFile()` and `OpenPrimitiveFile()` return the same owning result for
+includes and use `OpenFile()` for disk/archive access. Part include lookup keeps
 its registered-source precedence and official-first fallback search; each result
 has a separate cursor. The mesh loader consumes the file directly and decides
-whether a missing include is fatal from `RequireAllIncludes`. Directory piece
+whether a missing include is fatal from `RequireAllIncludes`. Directory part
 building still retries unofficial geometry after an official open or parse failure. Failures carry
 an error; the caller retains the result while consuming the file. Archive access
 is unlocked before image decoding, and returned memory files are independent of
@@ -196,14 +196,14 @@ clearing stale details when none are supplied. Decoding and upload failures use
 the same setter. It retains decoded pixels for bounded upload
 retries; terminal request handling explicitly discards them when required.
 
-`FindPieceData(Name, Project)` returns a borrowed registered identity from
+`FindPartData(Name, Project)` returns a borrowed registered identity from
 the supplied project's name index or the shared library registry. It does no file
 I/O, creates no identities, and acquires no reference.
-`AcquirePieceData(Name, Project, CreateMissing, SearchProjectFolder)` resolves
-or creates an identity and returns one scoped `swPieceDataReference`, without ensuring mesh
+`AcquirePartData(Name, Project, CreateMissing, SearchProjectFolder)` resolves
+or creates an identity and returns one scoped `swPartDataReference`, without ensuring mesh
 readiness. It may load an external project beside the current project; creating a
-missing identity records `Failed`. `swPieceDataReference(Piece)` retains an
-existing borrowed identity, and accepts null. `AcquireModelPieceData()` returns
+missing identity records `Failed`. `swPartDataReference(Part)` retains an
+existing borrowed identity, and accepts null. `AcquireModelPartData()` returns
 one scoped reference for the model to adopt using `Release()`.
 Library membership is independent of readiness and
 Part/Model/Project type. Project-local names cannot replace another project's
@@ -212,9 +212,9 @@ texture search directories are snapshotted before dispatch.
 
 ### Project-local identities and source paths
 
-`Project::mPieceIndex` maps normalized local filenames to borrowed `swPieceData`
+`Project::mPartIndex` maps normalized local filenames to borrowed `swPartData`
 pointers. "Project-local names" means lookup visibility, not object ownership:
-the piece manager tracks local identities separately in `mProjectPieces`, and reference
+the part manager tracks local identities separately in `mProjectParts`, and reference
 counts govern their lifetime. Models know their owning project from construction;
 temporary models can have no project. Do not use the active project implicitly
 when resolving a candidate project, external file, or preview.
@@ -265,7 +265,7 @@ events.
 
 ```mermaid
 flowchart LR
-    subgraph Part["swPieceData readiness (library)"]
+    subgraph Part["swPartData readiness (library)"]
         U[Unloaded] --> L[Loading]
         L --> R[Loaded]
         L --> F[Failed]
@@ -281,28 +281,28 @@ flowchart LR
     end
 ```
 
-The library owns `swPieceData` readiness. `Loading` covers queued work, worker execution,
+The library owns `swPartData` readiness. `Loading` covers queued work, worker execution,
 and texture dependencies; callers do not observe the loader's scheduling states.
-The loader never writes `swPieceData::mState`: the library marks accepted loads,
+The loader never writes `swPartData::mState`: the library marks accepted loads,
 publishes success or failure, and resets current cancellations to `Unloaded`.
 Disposal of an obsolete request never changes a replacement's readiness.
-`swPieceData` initializes readiness and maintains it during structural operations
+`swPartData` initializes readiness and maintains it during structural operations
 such as unloading or model/project reassignment.
 
 The diagram shows the normal paths. Parsing or synth generation and geometry
 conversion run consecutively in one worker job. Intermediate `swLibraryMeshData`
-stays local to the library's `BuildPieceData()` or the synth definition's `BuildMesh()`;
+stays local to the library's `BuildPartData()` or the synth definition's `BuildMesh()`;
 both return a private converted mesh for UI-thread finalization.
 Invalidation or unloading resets readiness; cancellation and stale-result disposal
 also have finished request states, independent of the published asset state.
-Requests live only in the piece, texture, and synth maps. The UI thread scans
+Requests live only in the part, texture, and synth maps. The UI thread scans
 entries whose scheduling state is `Queued`, marks the selected request
 `AwaitingCompletion`, and starts one QtConcurrent job for that request. Workers
 only build their assigned request and hand back a completion. UI-thread
 completion processing moves the request to `AwaitingPublication`, covering texture
 dependencies and upload retries. Completed requests leave the maps with state `Succeeded`, `Failed`, or `Cancelled`.
 Request identity and shutdown state reject stale worker results. Invalidation marks
-deferred piece notifications `Cancelled` to suppress delivery. Synth workers retain
+deferred part notifications `Cancelled` to suppress delivery. Synth workers retain
 a separate cooperative cancellation token.
 
 A part becomes `Loaded` after its private mesh is committed and all declared
@@ -318,29 +318,29 @@ three times, with 50 ms and 200 ms delays; decoding failures settle immediately.
 Loader-decoded textures receive `SW_TEXTURE_MIPMAPS`.
 
 Textures use the same `Unloaded`, `Loading`, `Loaded`, and `Failed` readiness states
-as pieces. `Loading` spans queueing, decoding, upload, and retries; detailed progress
+as parts. `Loading` spans queueing, decoding, upload, and retries; detailed progress
 and retry deadlines live in the request. Image storage indicates whether decoded
 pixels are available for upload. Upload retries retain `Loading` readiness and
 pixels. An upload failure becomes terminal `Failed` readiness only after retries
 are exhausted.
 
 The loader rejects stale completions and settles dependencies before asking the
-library to publish piece or synth meshes and their diagnostics. It also passes
+library to publish part or synth meshes and their diagnostics. It also passes
 decoded texture pixels or decode failures to the library for publication; texture
 upload scheduling and retries remain in the loader. Request states, cleanup, and
 deferred notification scheduling belong to the loader.
 
-**Container readiness is not recursive readiness.** A Project `swPieceData`, or a
+**Container readiness is not recursive readiness.** A Project `swPartData`, or a
 Model without direct geometry, can be `Loaded` while its children are pending
 or failed. Models with directly embedded geometry have their own mesh request.
-Use `swModel::GetRequiredPieceData()` and `GetRequiredSynthPieces()` for recursive
+Use `swModel::GetRequiredPartData()` and `GetRequiredSynthParts()` for recursive
 requirements, including nested and external models, with cycle protection.
 
 ### Diagnostics and retries
 
-Part error text lives in the piece manager's sparse `mPieceDataLoadErrors` map, queried
-through `GetPieceDataLoadError()`, rather than an empty string in every library part.
-`swPieceData::Unload()` clears its sparse error through the existing library facade
+Part error text lives in the part manager's sparse `mPartDataLoadErrors` map, queried
+through `GetPartDataLoadError()`, rather than an empty string in every library part.
+`swPartData::Unload()` clears its sparse error through the existing library facade
 before releasing resources, so manager deletion and direct unload cannot leave a
 stale error for a retained or recycled identity.
 Synth error text lives in the library's live-instance registry and is available
@@ -367,10 +367,10 @@ caller omits unavailable geometry, while the loading indicator exposes errors.
 The loader implementation follows this lifecycle: request acquisition and queueing,
 UI-thread scheduling in `DispatchJobs()`, one worker build per request, then
 UI-thread `ProcessCompletions()` dispatch to
-`ProcessPieceCompletion()`, `ProcessSynthCompletion()`, or `ProcessTextureCompletion()`, dependency settlement
+`ProcessPartCompletion()`, `ProcessSynthCompletion()`, or `ProcessTextureCompletion()`, dependency settlement
 and publication, then deferred notifications. Readiness waits follow these paths;
 invalidation, pause/resume, and shutdown are grouped at the end of the file.
-Piece and synth handlers share mesh color finalization and texture dependency checks,
+Part and synth handlers share mesh color finalization and texture dependency checks,
 while keeping their distinct ownership and publication rules explicit.
 
 ```mermaid
@@ -379,8 +379,8 @@ sequenceDiagram
     participant Library as Library
     participant Loader as Loader / UI thread
     participant Worker as Qt worker
-    Caller->>Library: AcquirePieceData(...) returns scoped consumer reference
-    Caller->>Library: RequestPieceDataLoad(PieceData, LoadPriority)
+    Caller->>Library: AcquirePartData(...) returns scoped consumer reference
+    Caller->>Library: RequestPartDataLoad(PartData, LoadPriority)
     Library->>Loader: Queue/promote
     Loader->>Worker: Immutable source snapshot
     Worker->>Worker: Parse/generate and convert, or read cached mesh
@@ -398,7 +398,7 @@ conversion. Both paths use the same dependency and publication rules. Cache
 reads and mesh deserialization run in the library's worker build service; cache
 bytes stay local, and the result records whether it came from cache. Private mesh
 sections store color codes in `ColorIndex` until finalization converts them to
-indices. Fresh pieces, synths, and cached meshes all use
+indices. Fresh parts, synths, and cached meshes all use
 `FinalizeSections()` on the UI thread to resolve color indices, refresh
 solid/translucent/default flags, and sort sections using the current palette.
 Workers build geometry without reading global colors or keeping palette snapshots.
@@ -430,7 +430,7 @@ buffer upload is not part of asset readiness.
 
 ## References, cancellation, and generated geometry
 
-`swPieceDataReference` and `swTextureReference` alias the shared `swAssetReference<T>` template in
+`swPartDataReference` and `swTextureReference` alias the shared `swAssetReference<T>` template in
 `sw_types_asset.h`. Both are copyable scoped references.
 Construction from a borrowed pointer and copying acquire one reference; moving
 transfers the reference without retaining it. Assignment retains the new identity
@@ -446,35 +446,35 @@ Use `Get()` when passing a borrowed pointer to an API.
 Textures have no borrowed lookup: `AcquireTexture()` reuses or creates the identity
 for a source and returns a scoped reference without loading. `RequestTextureLoad()` only schedules work; `WaitForTexture()` explicitly
 waits through decoding and upload and accepts `const swTextureReference&`, matching
-the piece wait API. Both require the caller to retain the texture.
+the part wait API. Both require the caller to retain the texture.
 Mesh texture sections own `swTextureReference` handles, so section copies retain and
 moves transfer ownership. The library's add/release primitives are internal to
 scoped reference management.
 
-`swPiece::SetPieceData()` accepts an `swPieceDataReference` by value, adopts that
+`swPart::SetPartData()` accepts an `swPartDataReference` by value, adopts that
 reference, and releases the previous identity. Passing an lvalue copies and retains;
 passing a moved handle transfers the reference. Its raw-pointer constructor is a
-borrowing convenience that acquires its own reference. Placed pieces and models
+borrowing convenience that acquires its own reference. Placed parts and models
 store their definition handles directly, as do the current selection, minifig
 parts, and thumbnail dependencies. Stored insertion previews use owning
-`swPreviewInsertPieceInformation` entries, while transient `swInsertPieceInformation` queries
+`swPreviewInsertPartInformation` entries, while transient `swInsertPartInformation` queries
 remain borrowed. Project-remapping owners also retain scoped references.
-`AddPieceDataReference()` is the internal retain primitive used by the scoped reference.
+`AddPartDataReference()` is the internal retain primitive used by the scoped reference.
 
-`RequestPieceDataLoad()` starts or promotes work without acquiring a
+`RequestPartDataLoad()` starts or promotes work without acquiring a
 consumer reference, and returns immediately for every priority, including Blocking.
 Repeated requests add no consumer references. Callers retain the identity while
-they need it. Use `WaitForPieceData()` or `EnsurePieceDataAssetsReady()`
+they need it. Use `WaitForPartData()` or `EnsurePartDataAssetsReady()`
 for synchronous loading. Both wait APIs take handles by const reference without acquiring consumer
 references. Callers retain every required identity and its owner throughout the
-wait. `swModel::GetRequiredPieceData()` and its project counterpart return
+wait. `swModel::GetRequiredPartData()` and its project counterpart return
 owning handle vectors, deduplicated by identity; releasing a result releases its
 snapshot references.
 
-A part request owns an additional in-flight `swPieceDataReference`; synth notifications also
+A part request owns an additional in-flight `swPartDataReference`; synth notifications also
 own a scoped definition reference.
 `HasOtherReferences()` reports whether a nonempty handle shares its asset with
-another reference. Piece/synth notification and texture request checks interpret
+another reference. Part/synth notification and texture request checks interpret
 those other references as consumers because the request or notification owns one
 hold. The query runs on the UI thread and acquires no reference. Request handles are explicitly reset at the
 UI-thread completion, cancellation, and notification boundaries, before shared
@@ -484,11 +484,11 @@ cannot destroy an asset still used by another instance or pending work. On the
 last consumer release, queued work is removed; running ordinary part work is
 allowed to finish and its result is discarded if no consumer survives. Successful
 or failed publication keeps the request's hold through deferred notification,
-then releases it. Library piece identities can remain in the library after their
+then releases it. Library part identities can remain in the library after their
 geometry unloads; unreferenced local leaf identities can be deleted. Model and
 external-project containers have their own teardown rules.
 
-The piece manager unregisters identities before deleting them. `swPieceData::Unload()`
+The part manager unregisters identities before deleting them. `swPartData::Unload()`
 clears its sparse error and resources: it releases its mesh and owned external project,
 detaches its borrowed model pointer, and resets readiness and bounds. It never
 unregisters or deletes itself; the destructor uses the same resource cleanup.
@@ -501,21 +501,21 @@ without releasing another mesh's texture. Failed assets remain terminal while
 retained; drawing does not retry them. Explicit invalidation or unloading can
 permit a later request.
 
-Synth meshes are **per `swPiece` instance**, separate from the shared library
+Synth meshes are **per `swPart` instance**, separate from the shared library
 mesh. The library's `RequestSynthMesh()` copies control points and retains the shared
-synth definition, passing both snapshots and the base `swPieceData` identity to the loader.
-The loader treats `swPiece` pointers as identities without reading instance fields.
+synth definition, passing both snapshots and the base `swPartData` identity to the loader.
+The loader treats `swPart` pointers as identities without reading instance fields.
 The library tracks live synth instances, including completed and failed generations,
 so settings changes can refresh them. Instances unregister before destruction.
 The library retains settled generation errors; the loader owns pending
 requests and their in-progress errors.
-Replacing or deleting the piece cancels its old request; workers
+Replacing or deleting the part cancels its old request; workers
 check an atomic cancellation flag and stale results cannot replace newer meshes.
 Initial generation displays a cube. Control-point edits retain the previous
 generated mesh until replacement settles; that older mesh does not satisfy a
-wait for the new generation. Settlement holds the base `swPieceData` through its
+wait for the new generation. Settlement holds the base `swPartData` through its
 deferred notification. See [sw_synthesis.cpp](../source/library/sw_synthesis.cpp) and
-[sw_object_piece.cpp](../source/core/sw_object_piece.cpp).
+[sw_object_part.cpp](../source/core/sw_object_part.cpp).
 
 Interactive fallback rendering, bounds, ray/box picking, and selection outlines
 use the same displayed geometry and keep the original instance identity. A
@@ -523,18 +523,18 @@ model's unavailable direct geometry can display a local cube while its children
 remain independently visible/selectable. Failed containers retain their
 structure; deleting a model or external project detaches its pointers explicitly.
 Undo restores external references using project-folder lookup, not only the
-library registry. Placeholder appearance must never change piece type or asset
+library registry. Placeholder appearance must never change part type or asset
 ownership.
 
 ## Scheduling and waits
 
 Priorities only promote: `Low < Normal < Blocking`. Ordinary thumbnail
-requests start Low; asynchronous model pieces and generated meshes start
+requests start Low; asynchronous model parts and generated meshes start
 Normal, regardless of step. Synchronous waits promote their required requests
 and pending texture dependencies to Blocking. The same `swLoadPriority` enum
-is used at the loading entry point and throughout the scheduler. `RequestPieceDataLoad()`
+is used at the loading entry point and throughout the scheduler. `RequestPartDataLoad()`
 only starts or promotes work and never waits, even with Blocking priority. Call
-`WaitForPieceData()` or `EnsurePieceDataAssetsReady()` for synchronous loading.
+`WaitForPartData()` or `EnsurePartDataAssetsReady()` for synchronous loading.
 The library prepares readiness and starts unloaded requirements before delegating waits. Internal queueing
 uses priority solely to rank work and does not wait. Shared textures retain the highest
 promotion received from any parent or direct wait. There is no consumer identity
@@ -552,7 +552,7 @@ Blocking, with oldest work winning ties. Completion processing uses promoted
 priorities. Acquiring a pending asset
 shares its request rather than submitting another build.
 
-`WaitForPieceData()` starts or promotes loading as needed, then waits for the supplied
+`WaitForPartData()` starts or promotes loading as needed, then waits for the supplied
 identities, not the entire library. It returns false for failed or cancelled
 requirements and does not expand model containers itself. Callers retain every
 required identity through the wait; it does not acquire consumer references.
@@ -561,7 +561,7 @@ promotes and waits for queued generations of the specified instances; callers
 start generations with `RequestSynthMesh()`. The loader retains the requests present
 at wait entry and reports their outcomes; the library combines those outcomes with
 final asset readiness, including assets with no pending request. Synth fallback
-error text is produced by library publication. `swPieceData` pointers are identities
+error text is produced by library publication. `swPartData` pointers are identities
 to the loader; it does not read their fields or call their methods.
 The loader's `WaitForTexture()` starts
 or promotes decoding as needed and waits through upload and retries.
@@ -574,22 +574,22 @@ adds strict failure reporting. During shutdown, the loader's private
 
 | Need | API and lifetime contract |
 | --- | --- |
-| Find a registered identity | `FindPieceData(Name, Project)`. Borrowed lookup only, with no I/O or creation. |
-| Resolve or create a piece identity | `AcquirePieceData(Name, Project, CreateMissing, SearchProjectFolder)` returns a scoped reference without ensuring mesh readiness. |
-| Start ordinary asynchronous work | Retain the identity, then call `RequestPieceDataLoad()` with `swLoadPriority::Low` for background work or `Normal` for model/view work. Existing owners need no extra reference for another request. |
-| Retain and synchronously load one identity | Keep an `swPieceDataReference` from `AcquirePieceData()`, then call `WaitForPieceData(PieceDataRef)` and check its return value. |
-| Retain without starting work | `swPieceDataReference(Piece)` or `swTextureReference(Texture)` returns a scoped reference to an existing identity. This does not make the asset ready. |
-| Wait for an explicit part set | `WaitForPieceData(PieceDataRefs)` (use `WaitForPieceData(PieceDataRef)` for one identity), check the boolean for strict consumers. Retain every identity and its owner throughout the wait; this call acquires no consumer references. |
-| Wait for one identity and its container geometry | `EnsurePieceDataAssetsReady()` settles the identity, then delegates recursive children, synths, and bounds to the model/project API. Retain the identity and its owner throughout. |
-| Wait for a model, including nested synths | `WaitForAssets()` for permissive output; `EnsureAssetsReady()` for strict preview-style failure reporting. Keep the model and its pieces alive throughout. |
-| Replace/wait for generated geometry | `RequestSynthMesh()` / `WaitForSynthMeshes()`. Supply live `swPiece` instances; a shared part mesh or a retained previous generated mesh is not readiness for the replacement. |
+| Find a registered identity | `FindPartData(Name, Project)`. Borrowed lookup only, with no I/O or creation. |
+| Resolve or create a part identity | `AcquirePartData(Name, Project, CreateMissing, SearchProjectFolder)` returns a scoped reference without ensuring mesh readiness. |
+| Start ordinary asynchronous work | Retain the identity, then call `RequestPartDataLoad()` with `swLoadPriority::Low` for background work or `Normal` for model/view work. Existing owners need no extra reference for another request. |
+| Retain and synchronously load one identity | Keep an `swPartDataReference` from `AcquirePartData()`, then call `WaitForPartData(PartDataRef)` and check its return value. |
+| Retain without starting work | `swPartDataReference(Part)` or `swTextureReference(Texture)` returns a scoped reference to an existing identity. This does not make the asset ready. |
+| Wait for an explicit part set | `WaitForPartData(PartDataRefs)` (use `WaitForPartData(PartDataRef)` for one identity), check the boolean for strict consumers. Retain every identity and its owner throughout the wait; this call acquires no consumer references. |
+| Wait for one identity and its container geometry | `EnsurePartDataAssetsReady()` settles the identity, then delegates recursive children, synths, and bounds to the model/project API. Retain the identity and its owner throughout. |
+| Wait for a model, including nested synths | `WaitForAssets()` for permissive output; `EnsureAssetsReady()` for strict preview-style failure reporting. Keep the model and its parts alive throughout. |
+| Replace/wait for generated geometry | `RequestSynthMesh()` / `WaitForSynthMeshes()`. Supply live `swPart` instances; a shared part mesh or a retained previous generated mesh is not readiness for the replacement. |
 | Acquire a texture directly | Keep an `swTextureReference` from `AcquireTexture()`. Use `RequestTextureLoad()` to start asynchronous work or `WaitForTexture()` to ensure readiness. Acquisition alone does not decode or upload. |
 
 Scoped waits may process unrelated completions while pumping publication, but
 their completion condition depends only on the requested assets. They cannot
 preempt a worker already parsing, converting, or decoding another asset. Waiting
-on a single container `swPieceData` is insufficient for a submodel preview: collect
-its recursive pieces and per-instance synths, or use the model-level API.
+on a single container `swPartData` is insufficient for a submodel preview: collect
+its recursive parts and per-instance synths, or use the model-level API.
 
 ## Caller policies
 
@@ -605,12 +605,12 @@ its recursive pieces and per-instance synths, or use the model-level API.
 | Model save, CSV, BrickLink inventory | Save references or inventory data without requiring successful geometry loading. |
 
 Insertion waits for the candidate's recursive requirements before computing its
-placement. Stacking and mouse placement also wait for the existing piece whose
+placement. Stacking and mouse placement also wait for the existing part whose
 geometry determines the position, including its current synth generation. Mouse
 placement repeats picking after pending geometry settles. A failed candidate
 replaces the previous insertion preview with the selected identity's fallback
 box so a later click inserts the current selection.
-Free dragging existing pieces also settles the moving piece and hit geometry,
+Free dragging existing parts also settles the moving part and hit geometry,
 including current synth generations, and repeats picking before placement. If
 loading fails, both dragging and insertion use the available or fallback
 geometry rather than rejecting placement.
@@ -630,11 +630,11 @@ uses these exclusion rules without making missing assets an operation-wide error
 Do not infer readiness from a successfully allocated framebuffer or a nonempty
 image: it may still contain only the available portion of a model.
 
-Thumbnail identity is based on `swPieceData`, not just its filename. Pending
+Thumbnail identity is based on `swPartData`, not just its filename. Pending
 thumbnails retain recursive requirements and receive settlement notifications.
 Category resets release thumbnail IDs before repopulating the list. The submodel
 category excludes models that include the active model, preventing recursive
-insertion. `swThumbnailManager::RefreshPieces()` refreshes affected identities
+insertion. `swThumbnailManager::RefreshParts()` refreshes affected identities
 and requirements after Save As remapping; preserve that refresh when changing
 sources without changing pointers. The preview dock's `RefreshModel()` checks
 its recursive requirements and respects its lock; it refreshes a displayed
@@ -653,7 +653,7 @@ success and failure; texture upload preserves the previous context/surface.
 `Project::GetModelParts()` is the settled, flattened geometry list used by 3D
 exporters. Entries carry an explicit mesh for generated or directly embedded
 geometry, including root geometry; exporters must prefer that mesh over the
-shared `swPieceData` mesh. Failed entries and unfinished/failed synth replacements
+shared `swPartData` mesh. Failed entries and unfinished/failed synth replacements
 are filtered out. A retained editing mesh is not exported as the new generation.
 This list is separate from `GetPartsList()` inventory traversal: changing export
 collection must not remove missing references from inventories or turn direct
@@ -676,7 +676,7 @@ old-only queued work, and preserves shared asset identities and requests. Neithe
 path demotes request priorities.
 
 Pending jobs remain marked `Queued` in their request maps while paused;
-`mPaused` prevents dispatch. Resume refreshes queued piece source snapshots before
+`mPaused` prevents dispatch. Resume refreshes queued part source snapshots before
 dispatching jobs again.
 
 The library constructor receives the effective startup stud settings; application
@@ -750,7 +750,7 @@ suite.
   avoid lost wakeups. Do not hold library locks needed by workers while draining.
 - Preserve in-flight holds through stale-result disposal and deferred notification.
   Validate request identity and cancellation before publishing; deleting an owner must
-  not let a worker or callback access that deleted model/piece.
+  not let a worker or callback access that deleted model/part.
 - Preserve unresolved dependency names and diagnostics through caches. A failed
   include/texture must never be treated as successful partial asset loading.
 - Distinguish container state, library mesh readiness, and per-instance synth

@@ -6,13 +6,13 @@
 #include "sw_commands.h"
 #include "sw_result.h"
 
-struct swInsertPieceInformation;
+struct swInsertPartInformation;
 enum class swCameraProjection;
 
 enum class swDragState
 {
 	None,
-	Piece,
+	Part,
 	Color
 };
 
@@ -105,16 +105,16 @@ enum class swViewType
 	View,
 	Preview,
 	MinifigureBuilder,
-	PiecesList,
+	PartsList,
 	Count
 };
 
 struct swFindReplaceParameters
 {
-	swPieceData* FindPieceData = nullptr;
+	swPartData* FindPartData = nullptr;
 	QString FindString;
 	int FindColorIndex = 0;
-	swPieceData* ReplacePieceData = nullptr;
+	swPartData* ReplacePartData = nullptr;
 	int ReplaceColorIndex = 0;
 };
 
@@ -307,12 +307,12 @@ public:
 	float GetUIScale() const;
 	float GetOverlayScale() const;
 	swVector3 GetMoveDirection(const swVector3& Direction) const;
-	void UpdatePiecePreview();
-	std::pair<std::vector<swInsertPieceInformation>, bool> GetMouseInsertPieceInfo(bool IgnoreSelected, bool AllowNewPieces, const swPieceDataReference& PieceData, swPiece* MovingPiece) const;
+	void UpdatePartPreview();
+	std::pair<std::vector<swInsertPartInformation>, bool> GetMouseInsertPartInfo(bool IgnoreSelected, bool AllowNewParts, const swPartDataReference& PartData, swPart* MovingPart) const;
 	swVector3 GetCameraLightInsertPosition() const;
 	void GetRayUnderPointer(swVector3& Start, swVector3& End) const;
-	swObjectRayTest RayTest(bool PiecesOnly, bool IgnoreSelected) const;
-	swObjectSection FindObjectUnderPointer(bool PiecesOnly, bool IgnoreSelected) const;
+	swObjectRayTest RayTest(bool PartsOnly, bool IgnoreSelected) const;
+	swObjectSection FindObjectUnderPointer(bool PartsOnly, bool IgnoreSelected) const;
 	std::vector<swObject*> FindObjectsInBox(float x1, float y1, float x2, float y2) const;
 
 	swVector3 ProjectPoint(const swVector3& Point) const;
@@ -395,7 +395,7 @@ protected:
 	bool mTrackToolFromOverlay;
 	quint32 mTrackToolSection = ~0U;
 	swMatrix44 mMouseDownTransform;
-	swPiece* mMouseDownPiece = nullptr;
+	swPart* mMouseDownPart = nullptr;
 	int mPanX = 0;
 	int mPanY = 0;
 
@@ -414,9 +414,9 @@ protected:
 	std::unique_ptr<swViewSphere> mViewSphere;
 
 	swModel* mModel = nullptr;
-	swPiece* mActiveSubmodelInstance = nullptr;
+	swPart* mActiveSubmodelInstance = nullptr;
 	swMatrix44 mActiveSubmodelTransform;
-	std::vector<swPiece*> mSubmodelEditingPath;
+	std::vector<swPart*> mSubmodelEditingPath;
 
 	swCamera* mCamera = nullptr;
 

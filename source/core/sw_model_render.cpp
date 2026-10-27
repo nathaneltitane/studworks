@@ -1,7 +1,7 @@
 #include "sw_global.h"
 #include "sw_model.h"
 #include "sw_model_history.h"
-#include "sw_object_piece.h"
+#include "sw_object_part.h"
 #include "sw_object_camera.h"
 #include "sw_object_light.h"
 #include "sw_group.h"
@@ -12,7 +12,7 @@
 #include "sw_scene.h"
 #include "sw_track_train.h"
 #include "sw_file.h"
-#include "sw_data_piece.h"
+#include "sw_data_part.h"
 #include "sw_view.h"
 #include "sw_builder_minifigure.h"
 #include "sw_dialog_array.h"
@@ -27,27 +27,27 @@
 
 void swModel::GetScene(swScene* Scene, const swCamera* ViewCamera, bool AllowHighlight, bool AllowFade) const
 {
-	if (mPieceData)
-		mPieceData->AddRenderMesh(*Scene);
+	if (mPartData)
+		mPartData->AddRenderMesh(*Scene);
 
-	swPiece* FocusPiece = nullptr;
+	swPart* FocusPart = nullptr;
 
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
+	for (const std::unique_ptr<swPart>& Part : mParts)
 	{
-		if (Piece->IsSelected() || Piece->IsVisible(mCurrentStep))
+		if (Part->IsSelected() || Part->IsVisible(mCurrentStep))
 		{
-			if (Piece->IsFocused())
-				FocusPiece = Piece.get();
+			if (Part->IsFocused())
+				FocusPart = Part.get();
 
-			const swStep StepShow = Piece->GetStepShow();
-			Piece->AddMainModelRenderMeshes(Scene, AllowHighlight && StepShow == mCurrentStep, AllowFade && StepShow < mCurrentStep);
+			const swStep StepShow = Part->GetStepShow();
+			Part->AddMainModelRenderMeshes(Scene, AllowHighlight && StepShow == mCurrentStep, AllowFade && StepShow < mCurrentStep);
 		}
 	}
 
 	if (Scene->GetDrawInterface() && !Scene->GetActiveSubmodelInstance())
 	{
-		if (FocusPiece)
-			UpdateTrainTrackConnections(FocusPiece, false);
+		if (FocusPart)
+			UpdateTrainTrackConnections(FocusPart, false);
 
 		for (const std::unique_ptr<swCamera>& Camera : mCameras)
 			if (Camera.get() != ViewCamera && Camera->IsVisible())
@@ -60,8 +60,8 @@ void swModel::GetScene(swScene* Scene, const swCamera* ViewCamera, bool AllowHig
 
 	if (Scene->GetDrawInsertPreview())
 	{
-		for (const swPreviewInsertPieceInformation& PreviewPieceInfoTransform : mPreviewInsertPieceInfo)
-			PreviewPieceInfoTransform.PieceData->AddRenderMeshes(Scene, PreviewPieceInfoTransform.Transform, PreviewPieceInfoTransform.ColorIndex, swRenderMeshState::Preview, false);
+		for (const swPreviewInsertPartInformation& PreviewPartInfoTransform : mPreviewInsertPartInfo)
+			PreviewPartInfoTransform.PartData->AddRenderMeshes(Scene, PreviewPartInfoTransform.Transform, PreviewPartInfoTransform.ColorIndex, swRenderMeshState::Preview, false);
 	}
 }
 
@@ -69,23 +69,23 @@ void swModel::AddSubModelRenderMeshes(swScene* Scene, const swMatrix44& WorldMat
 {
 	const bool Editing = ParentActive || Scene->IsModelEditing(this);
 
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
+	for (const std::unique_ptr<swPart>& Part : mParts)
 	{
-		const bool Visible = Editing ? (Piece->IsSelected() || Piece->IsVisible(mCurrentStep)) : Piece->IsVisibleInSubModel();
+		const bool Visible = Editing ? (Part->IsSelected() || Part->IsVisible(mCurrentStep)) : Part->IsVisibleInSubModel();
 
 		if (Visible)
 		{
-			if (Piece->IsFocused())
-				UpdateTrainTrackConnections(Piece.get(), false);
+			if (Part->IsFocused())
+				UpdateTrainTrackConnections(Part.get(), false);
 
-			Piece->AddSubModelRenderMeshes(Scene, WorldMatrix, DefaultColorIndex, RenderMeshState, ParentActive);
+			Part->AddSubModelRenderMeshes(Scene, WorldMatrix, DefaultColorIndex, RenderMeshState, ParentActive);
 		}
 	}
 
 	if (Scene->GetDrawInsertPreview())
 	{
-		for (const swPreviewInsertPieceInformation& PreviewPieceInfoTransform : mPreviewInsertPieceInfo)
-			PreviewPieceInfoTransform.PieceData->AddRenderMeshes(Scene, swMultiply(PreviewPieceInfoTransform.Transform, WorldMatrix), PreviewPieceInfoTransform.ColorIndex, swRenderMeshState::Preview, false);
+		for (const swPreviewInsertPartInformation& PreviewPartInfoTransform : mPreviewInsertPartInfo)
+			PreviewPartInfoTransform.PartData->AddRenderMeshes(Scene, swMultiply(PreviewPartInfoTransform.Transform, WorldMatrix), PreviewPartInfoTransform.ColorIndex, swRenderMeshState::Preview, false);
 	}
 }
 
@@ -172,46 +172,46 @@ swResult<QImage> swModel::RenderStepImageWithReadyAssets(bool Zoom, int Width, i
 	return Image;
 }
 
-swResult<QImage> swModel::GetPiecesListImage(int MaxWidth, int RequestedThumbnailSize, swStep Step, quint32 BackgroundColor, quint32 ThumbnailBackgroundColor, QFont Font, QColor TextColor, bool KeepMissingPieces, bool ShowCounts, swPiecesListSort Sort) const
+swResult<QImage> swModel::GetPartsListImage(int MaxWidth, int RequestedThumbnailSize, swStep Step, quint32 BackgroundColor, quint32 ThumbnailBackgroundColor, QFont Font, QColor TextColor, bool KeepMissingParts, bool ShowCounts, swPartsListSort Sort) const
 {
 	swScopedGLContextState GLState;
 
 	WaitForAssets();
 
-	swPiecesList PiecesList;
+	swPartsList PartsList;
 
 	if (Step == 0)
-		GetPiecesList(gDefaultColor, true, false, PiecesList);
+		GetPartsList(gDefaultColor, true, false, PartsList);
 	else
-		GetPiecesListForStep(Step, gDefaultColor, PiecesList, false);
+		GetPartsListForStep(Step, gDefaultColor, PartsList, false);
 
-	if (PiecesList.empty())
+	if (PartsList.empty())
 		return QImage();
 
-	struct swPiecesListImage
+	struct swPartsListImage
 	{
 		QImage Thumbnail;
-		const swPieceData* PieceData;
+		const swPartData* PartData;
 		int ColorIndex;
 		int Count;
 		QRect Bounds;
 		QPoint Position;
 	};
 
-	std::vector<swPiecesListImage> Images;
+	std::vector<swPartsListImage> Images;
 
-	for (const auto& PieceIt : PiecesList)
+	for (const auto& PartIt : PartsList)
 	{
-		const swPieceData* PieceData = PieceIt.first;
+		const swPartData* PartData = PartIt.first;
 
-		if (!KeepMissingPieces && !PieceData->IsModel() && !PieceData->IsProject() && (PieceData->mState != swAssetState::Loaded || !PieceData->GetMesh()))
+		if (!KeepMissingParts && !PartData->IsModel() && !PartData->IsProject() && (PartData->mState != swAssetState::Loaded || !PartData->GetMesh()))
 			continue;
 
-		for (const auto& ColorIt : PieceIt.second)
+		for (const auto& ColorIt : PartIt.second)
 		{
-			Images.push_back(swPiecesListImage());
-			swPiecesListImage& Image = Images.back();
-			Image.PieceData = PieceIt.first;
+			Images.push_back(swPartsListImage());
+			swPartsListImage& Image = Images.back();
+			Image.PartData = PartIt.first;
 			Image.ColorIndex = ColorIt.first;
 			Image.Count = ColorIt.second;
 		}
@@ -222,26 +222,26 @@ swResult<QImage> swModel::GetPiecesListImage(int MaxWidth, int RequestedThumbnai
 		QImage Image(1, 1, QImage::Format_ARGB32);
 
 		if (Image.isNull())
-			return swUnexpected(tr("Could not allocate the pieces list image."));
+			return swUnexpected(tr("Could not allocate the parts list image."));
 
 		Image.fill(swQColorFromRGBA(BackgroundColor));
 		return Image;
 	}
 
-	auto ImageCompare = [Sort](const swPiecesListImage& Image1, const swPiecesListImage& Image2)
+	auto ImageCompare = [Sort](const swPartsListImage& Image1, const swPartsListImage& Image2)
 	{
 		switch (Sort)
 		{
-		case swPiecesListSort::Color:
+		case swPartsListSort::Color:
 			break;
 
-		case swPiecesListSort::Name:
-			if (int Compare = strcmp(Image1.PieceData->m_strDescription, Image2.PieceData->m_strDescription))
+		case swPartsListSort::Name:
+			if (int Compare = strcmp(Image1.PartData->m_strDescription, Image2.PartData->m_strDescription))
 				return Compare < 0;
 			return Image1.ColorIndex < Image2.ColorIndex;
 
-		case swPiecesListSort::PieceId:
-			if (int Compare = strcmp(Image1.PieceData->mFileName, Image2.PieceData->mFileName))
+		case swPartsListSort::PartId:
+			if (int Compare = strcmp(Image1.PartData->mFileName, Image2.PartData->mFileName))
 				return Compare < 0;
 			return Image1.ColorIndex < Image2.ColorIndex;
 		}
@@ -249,12 +249,12 @@ swResult<QImage> swModel::GetPiecesListImage(int MaxWidth, int RequestedThumbnai
 		if (Image1.ColorIndex != Image2.ColorIndex)
 			return Image1.ColorIndex < Image2.ColorIndex;
 
-		return strcmp(Image1.PieceData->m_strDescription, Image2.PieceData->m_strDescription) < 0;
+		return strcmp(Image1.PartData->m_strDescription, Image2.PartData->m_strDescription) < 0;
 	};
 
 	std::sort(Images.begin(), Images.end(), ImageCompare);
 
-	swView View(swViewType::PiecesList, nullptr);
+	swView View(swViewType::PartsList, nullptr);
 	View.SetOffscreenContext();
 	View.MakeCurrent();
 	swContext* Context = View.mContext;
@@ -264,7 +264,7 @@ swResult<QImage> swModel::GetPiecesListImage(int MaxWidth, int RequestedThumbnai
 	View.SetSize(ThumbnailSize, ThumbnailSize);
 
 	if (!View.BeginRenderToImage(ThumbnailSize, ThumbnailSize))
-		return swUnexpected(tr("Could not create the pieces list framebuffer."));
+		return swUnexpected(tr("Could not create the parts list framebuffer."));
 
 	float OrthoSize = 200.0f;
 
@@ -274,10 +274,10 @@ swResult<QImage> swModel::GetPiecesListImage(int MaxWidth, int RequestedThumbnai
 
 	float ExtraPixels = 0.0f;
 
-	for (const swPiecesListImage& Image : Images)
+	for (const swPartsListImage& Image : Images)
 	{
-		const swPieceData* PieceData = Image.PieceData;
-		const swBoundingBox& BoundingBox = PieceData->GetBoundingBox();
+		const swPartData* PartData = Image.PartData;
+		const swBoundingBox& BoundingBox = PartData->GetBoundingBox();
 
 		swVector3 Points[8];
 		swGetBoxCorners(BoundingBox.Min, BoundingBox.Max, Points);
@@ -305,14 +305,14 @@ swResult<QImage> swModel::GetPiecesListImage(int MaxWidth, int RequestedThumbnai
 
 	bool RenderFailed = false;
 
-	for (swPiecesListImage& Image : Images)
+	for (swPartsListImage& Image : Images)
 	{
 		View.BindRenderFramebuffer();
 		Context->ClearColorAndDepth(swVector4(swVector3FromColor(BackgroundColor), 0.0f));
 
 		swScene Scene;
 
-		const swRenderSettings RenderSettings = swGetPreferences().GetRenderSettings(swRenderTarget::Pieces);
+		const swRenderSettings RenderSettings = swGetPreferences().GetRenderSettings(swRenderTarget::Parts);
 		swShadingMode ShadingMode = RenderSettings.ShadingMode;
 		if (ShadingMode == swShadingMode::Wireframe)
 			ShadingMode = swShadingMode::Flat;
@@ -324,7 +324,7 @@ swResult<QImage> swModel::GetPiecesListImage(int MaxWidth, int RequestedThumbnai
 		Scene.SetAllowLOD(false);
 		Scene.Begin(ViewMatrix);
 
-		Image.PieceData->AddRenderMeshes(&Scene, swMatrix44Identity(), Image.ColorIndex, swRenderMeshState::Default, true);
+		Image.PartData->AddRenderMeshes(&Scene, swMatrix44Identity(), Image.ColorIndex, swRenderMeshState::Default, true);
 
 		Scene.End();
 
@@ -345,9 +345,9 @@ swResult<QImage> swModel::GetPiecesListImage(int MaxWidth, int RequestedThumbnai
 	Context->ClearResources();
 
 	if (RenderFailed)
-		return swUnexpected(tr("Could not read the pieces list image."));
+		return swUnexpected(tr("Could not read the parts list image."));
 
-	auto CalculateImageBounds = [](swPiecesListImage& Image)
+	auto CalculateImageBounds = [](swPartsListImage& Image)
 	{
 		const QImage& Thumbnail = Image.Thumbnail;
 		const int Width = Thumbnail.width();
@@ -377,15 +377,15 @@ swResult<QImage> swModel::GetPiecesListImage(int MaxWidth, int RequestedThumbnai
 
 	QtConcurrent::blockingMap(Images, CalculateImageBounds);
 
-	if (KeepMissingPieces)
+	if (KeepMissingParts)
 	{
-		for (swPiecesListImage& Image : Images)
+		for (swPartsListImage& Image : Images)
 			if (Image.Bounds.isEmpty())
 				Image.Bounds = QRect(0, 0, qMin(64, ThumbnailSize), qMin(64, ThumbnailSize));
 	}
 	else
 	{
-		Images.erase(std::remove_if(Images.begin(), Images.end(), [](const swPiecesListImage& Image)
+		Images.erase(std::remove_if(Images.begin(), Images.end(), [](const swPartsListImage& Image)
 		{
 			return Image.Bounds.isEmpty();
 		}), Images.end());
@@ -396,7 +396,7 @@ swResult<QImage> swModel::GetPiecesListImage(int MaxWidth, int RequestedThumbnai
 		QImage Image(1, 1, QImage::Format_ARGB32);
 
 		if (Image.isNull())
-			return swUnexpected(tr("Could not allocate the pieces list image."));
+			return swUnexpected(tr("Could not allocate the parts list image."));
 
 		Image.fill(swQColorFromRGBA(BackgroundColor));
 		return Image;
@@ -405,7 +405,7 @@ swResult<QImage> swModel::GetPiecesListImage(int MaxWidth, int RequestedThumbnai
 	QImage DummyImage(16, 16, QImage::Format_ARGB32);
 
 	if (DummyImage.isNull())
-		return swUnexpected(tr("Could not allocate the pieces list image."));
+		return swUnexpected(tr("Could not allocate the parts list image."));
 
 	QPainter DummyPainter(&DummyImage);
 
@@ -416,7 +416,7 @@ swResult<QImage> swModel::GetPiecesListImage(int MaxWidth, int RequestedThumbnai
 	int CurrentHeight = 0;
 	int ImageWidth = MaxWidth;
 
-	for (const swPiecesListImage& Image : Images)
+	for (const swPartsListImage& Image : Images)
 		CurrentHeight = qMax(Image.Bounds.height() + Ascent, CurrentHeight);
 
 	for (;;)
@@ -428,7 +428,7 @@ swResult<QImage> swModel::GetPiecesListImage(int MaxWidth, int RequestedThumbnai
 		constexpr int Spacing = 20;
 		int NextHeightIncrease = INT_MAX;
 
-		for (swPiecesListImage& Image : Images)
+		for (swPartsListImage& Image : Images)
 		{
 			if (CurrentY + Image.Bounds.height() + Ascent > CurrentHeight)
 			{
@@ -458,7 +458,7 @@ swResult<QImage> swModel::GetPiecesListImage(int MaxWidth, int RequestedThumbnai
 	QImage PainterImage(ImageWidth + 40, CurrentHeight + 40, QImage::Format_ARGB32);
 
 	if (PainterImage.isNull())
-		return swUnexpected(tr("Could not allocate the pieces list image."));
+		return swUnexpected(tr("Could not allocate the parts list image."));
 
 	PainterImage.fill(swQColorFromRGBA(BackgroundColor));
 
@@ -466,11 +466,11 @@ swResult<QImage> swModel::GetPiecesListImage(int MaxWidth, int RequestedThumbnai
 	Painter.setFont(Font);
 	Painter.setPen(TextColor);
 
-	for (const swPiecesListImage& Image : Images)
+	for (const swPartsListImage& Image : Images)
 	{
 		const QPoint Position = Image.Position + QPoint(20, 20);
 
-		// the thumbnail background holds the piece and its count, it stays inside the spacing between pieces
+		// the thumbnail background holds the part and its count, it stays inside the spacing between parts
 		if (qAlpha(ThumbnailBackgroundColor))
 			Painter.fillRect(QRect(Position, Image.Bounds.size() + QSize(0, Ascent)).adjusted(-6, -6, 6, 6), swQColorFromRGBA(ThumbnailBackgroundColor));
 

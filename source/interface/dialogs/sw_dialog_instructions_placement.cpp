@@ -39,7 +39,7 @@ swInstructionsPlacementWidget::swInstructionsPlacementWidget(QWidget* Parent, sw
 	: QDockWidget(Parent), mInstructions(Instructions)
 {
 	setWindowTitle(tr("Placement"));
-	setWhatsThis(tr("<p><b>Placement</b></p><p>Select an element on the page to place, move or lock it. Place the selected page element on a predefined area: the step model, step number, pieces list, cover model, cover title, cover author or bill of materials. Step elements are placed in the part of the page their step gets from the split, or outside the other step element. Placements apply to all pages.</p><p>Every element can also be dragged on the page, it keeps its distance from its placement. A locked element keeps its position whatever its placement and is not dragged.</p>"));
+	setWhatsThis(tr("<p><b>Placement</b></p><p>Select an element on the page to place, move or lock it. Place the selected page element on a predefined area: the step model, step number, parts list, cover model, cover title, cover author or bill of materials. Step elements are placed in the part of the page their step gets from the split, or outside the other step element. Placements apply to all pages.</p><p>Every element can also be dragged on the page, it keeps its distance from its placement. A locked element keeps its position whatever its placement and is not dragged.</p>"));
 	swSetupWidgetHelp(this, nullptr);
 
 	QWidget* CentralWidget = new QWidget(this);
@@ -180,7 +180,7 @@ swInstructionsPropertyType swInstructionsPlacementWidget::GetPlacementType() con
 	case swInstructionsPlacementElement::StepNumber:
 		return swInstructionsPropertyType::StepNumberPlacement;
 
-	case swInstructionsPlacementElement::PiecesList:
+	case swInstructionsPlacementElement::PartsList:
 		return swInstructionsPropertyType::PLIPlacement;
 
 	case swInstructionsPlacementElement::CoverTitle:
@@ -215,7 +215,7 @@ swInstructionsPropertyType swInstructionsPlacementWidget::GetAnchorType() const
 	case swInstructionsPlacementElement::StepNumber:
 		return swInstructionsPropertyType::StepNumberAnchor;
 
-	case swInstructionsPlacementElement::PiecesList:
+	case swInstructionsPlacementElement::PartsList:
 		return swInstructionsPropertyType::PLIAnchor;
 
 	case swInstructionsPlacementElement::CoverTitle:
@@ -302,8 +302,8 @@ void swInstructionsPlacementWidget::UpdateWidget()
 		mElementLabel->setText(tr("Step Number"));
 		break;
 
-	case swInstructionsPlacementElement::PiecesList:
-		mElementLabel->setText(tr("Pieces List"));
+	case swInstructionsPlacementElement::PartsList:
+		mElementLabel->setText(tr("Parts List"));
 		break;
 
 	case swInstructionsPlacementElement::CoverTitle:
@@ -341,8 +341,8 @@ void swInstructionsPlacementWidget::UpdateWidget()
 		mAnchorComboBox->addItem(tr("Page Area"), static_cast<int>(swInstructionsPlacementAnchor::Area));
 
 		if (mElement == swInstructionsPlacementElement::StepNumber)
-			mAnchorComboBox->addItem(tr("Pieces List"), static_cast<int>(swInstructionsPlacementAnchor::PiecesList));
-		else if (mElement == swInstructionsPlacementElement::PiecesList)
+			mAnchorComboBox->addItem(tr("Parts List"), static_cast<int>(swInstructionsPlacementAnchor::PartsList));
+		else if (mElement == swInstructionsPlacementElement::PartsList)
 			mAnchorComboBox->addItem(tr("Step Number"), static_cast<int>(swInstructionsPlacementAnchor::StepNumber));
 
 		const swInstructionsPropertyType AnchorType = GetAnchorType();

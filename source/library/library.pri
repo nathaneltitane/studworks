@@ -5,12 +5,12 @@ INCLUDEPATH += $$PWD
 SOURCES += \
 	$$PWD/sw_category.cpp \
 	$$PWD/sw_colors.cpp \
-	$$PWD/sw_data_piece.cpp \
+	$$PWD/sw_data_part.cpp \
 	$$PWD/sw_file_zip.cpp \
 	$$PWD/sw_library.cpp \
 	$$PWD/sw_loader_asset.cpp \
 	$$PWD/sw_loader_mesh.cpp \
-	$$PWD/sw_manager_piece.cpp \
+	$$PWD/sw_manager_part.cpp \
 	$$PWD/sw_manager_texture.cpp \
 	$$PWD/sw_manager_thumbnail.cpp \
 	$$PWD/sw_mesh.cpp \
@@ -21,12 +21,12 @@ SOURCES += \
 HEADERS += \
 	$$PWD/sw_category.h \
 	$$PWD/sw_colors.h \
-	$$PWD/sw_data_piece.h \
+	$$PWD/sw_data_part.h \
 	$$PWD/sw_file_zip.h \
 	$$PWD/sw_library.h \
 	$$PWD/sw_loader_asset.h \
 	$$PWD/sw_loader_mesh.h \
-	$$PWD/sw_manager_piece.h \
+	$$PWD/sw_manager_part.h \
 	$$PWD/sw_manager_texture.h \
 	$$PWD/sw_manager_thumbnail.h \
 	$$PWD/sw_mesh.h \

@@ -6,7 +6,7 @@
 #include "sw_project.h"
 #include "sw_window_main.h"
 #include "sw_dialog_preferences.h"
-#include "sw_widget_selection_piece.h"
+#include "sw_widget_selection_part.h"
 #include "sw_shortcuts.h"
 #include "sw_view.h"
 #include "sw_object_camera.h"
@@ -45,14 +45,14 @@ void swPreferences::LoadDefaults()
 	mDrawConditionalLines = swGetProfileInteger(SW_PROFILE_DRAW_CONDITIONAL_LINES);
 	mLineWidth = swGetProfileFloat(SW_PROFILE_LINE_WIDTH);
 	LoadRenderTarget(swRenderTarget::Preview);
-	LoadRenderTarget(swRenderTarget::Pieces);
+	LoadRenderTarget(swRenderTarget::Parts);
 	LoadRenderTarget(swRenderTarget::MinifigureBuilder);
 	mAllowLOD = swGetProfileInteger(SW_PROFILE_ALLOW_LOD);
 	mMeshLODDistance = swGetProfileFloat(SW_PROFILE_LOD_DISTANCE);
 	mFadeSteps = swGetProfileInteger(SW_PROFILE_FADE_STEPS);
 	mFadeStepsColor = swGetProfileUnsignedInteger(SW_PROFILE_FADE_STEPS_COLOR);
-	mHighlightNewPieces = swGetProfileInteger(SW_PROFILE_HIGHLIGHT_NEW_PIECES);
-	mHighlightNewPiecesColor = swGetProfileUnsignedInteger(SW_PROFILE_HIGHLIGHT_NEW_PIECES_COLOR);
+	mHighlightNewParts = swGetProfileInteger(SW_PROFILE_HIGHLIGHT_NEW_PARTS);
+	mHighlightNewPartsColor = swGetProfileUnsignedInteger(SW_PROFILE_HIGHLIGHT_NEW_PARTS_COLOR);
 	mDrawGridStuds = swGetProfileInteger(SW_PROFILE_GRID_STUDS);
 	mGridStudColor = swGetProfileUnsignedInteger(SW_PROFILE_GRID_STUD_COLOR);
 	mDrawGridLines = swGetProfileInteger(SW_PROFILE_GRID_LINES);
@@ -73,12 +73,12 @@ void swPreferences::LoadDefaults()
 	mAxisZColor = swGetProfileUnsignedInteger(SW_PROFILE_AXIS_Z_COLOR);
 	mAutoLoadMostRecent = swGetProfileInteger(SW_PROFILE_AUTO_LOAD_MOST_RECENT);
 	mRestoreTabLayout = swGetProfileInteger(SW_PROFILE_RESTORE_TAB_LAYOUT);
-	mFirstPieceAtOrigin = swGetProfileInteger(SW_PROFILE_FIRST_PIECE_AT_ORIGIN);
-	mPiecesSnapToTiles = swGetProfileInteger(SW_PROFILE_PIECES_SNAP_TO_TILES);
+	mFirstPartAtOrigin = swGetProfileInteger(SW_PROFILE_FIRST_PART_AT_ORIGIN);
+	mPartsSnapToTiles = swGetProfileInteger(SW_PROFILE_PARTS_SNAP_TO_TILES);
 	mTerminalFollowModel = swGetProfileInteger(SW_PROFILE_TERMINAL_FOLLOW_MODEL);
 	mInsertColorMode = static_cast<swInsertColorMode>(qBound(0, swGetProfileInteger(SW_PROFILE_INSERT_COLOR_MODE), static_cast<int>(swInsertColorMode::LastInsertedColor)));
 	mWatchFileChanges = swGetProfileInteger(SW_PROFILE_WATCH_FILE_CHANGES);
-	mLoadPiecesBeforeShowing = swGetProfileInteger(SW_PROFILE_LOAD_PIECES_BEFORE_SHOWING);
+	mLoadPartsBeforeShowing = swGetProfileInteger(SW_PROFILE_LOAD_PARTS_BEFORE_SHOWING);
 	mColorTheme = swGetProfileColorTheme();
 	mPreviewViewSphereEnabled = swGetProfileInteger(SW_PROFILE_PREVIEW_VIEW_SPHERE_ENABLED);
 	mPreviewViewSphereSize = swGetProfileInteger(SW_PROFILE_PREVIEW_VIEW_SPHERE_SIZE);
@@ -87,14 +87,14 @@ void swPreferences::LoadDefaults()
 	mPreviewSquareViewport = swGetProfileInteger(SW_PROFILE_PREVIEW_SQUARE_VIEWPORT);
 	mStudCylinderColorEnabled = swGetProfileInteger(SW_PROFILE_STUD_CYLINDER_COLOR_ENABLED);
 	mStudCylinderColor = swGetProfileUnsignedInteger(SW_PROFILE_STUD_CYLINDER_COLOR);
-	mPieceEdgeColorEnabled = swGetProfileInteger(SW_PROFILE_PIECE_EDGE_COLOR_ENABLED);
-	mPieceEdgeColor = swGetProfileUnsignedInteger(SW_PROFILE_PIECE_EDGE_COLOR);
+	mPartEdgeColorEnabled = swGetProfileInteger(SW_PROFILE_PART_EDGE_COLOR_ENABLED);
+	mPartEdgeColor = swGetProfileUnsignedInteger(SW_PROFILE_PART_EDGE_COLOR);
 	mBlackEdgeColorEnabled = swGetProfileInteger(SW_PROFILE_BLACK_EDGE_COLOR_ENABLED);
 	mBlackEdgeColor = swGetProfileUnsignedInteger(SW_PROFILE_BLACK_EDGE_COLOR);
 	mDarkEdgeColorEnabled = swGetProfileInteger(SW_PROFILE_DARK_EDGE_COLOR_ENABLED);
 	mDarkEdgeColor = swGetProfileUnsignedInteger(SW_PROFILE_DARK_EDGE_COLOR);
-	mPieceEdgeContrast = swGetProfileFloat(SW_PROFILE_PIECE_EDGE_CONTRAST);
-	mPieceColorValueLDIndex = swGetProfileFloat(SW_PROFILE_PIECE_COLOR_VALUE_LD_INDEX);
+	mPartEdgeContrast = swGetProfileFloat(SW_PROFILE_PART_EDGE_CONTRAST);
+	mPartColorValueLDIndex = swGetProfileFloat(SW_PROFILE_PART_COLOR_VALUE_LD_INDEX);
 	mAutomateEdgeColor = swGetProfileInteger(SW_PROFILE_AUTOMATE_EDGE_COLOR);
 	mObjectSelectedColor = swGetProfileUnsignedInteger(SW_PROFILE_OBJECT_SELECTED_COLOR);
 	mObjectFocusedColor = swGetProfileUnsignedInteger(SW_PROFILE_OBJECT_FOCUSED_COLOR);
@@ -127,14 +127,14 @@ void swPreferences::SaveDefaults()
 	swSetProfileInteger(SW_PROFILE_DRAW_CONDITIONAL_LINES, mDrawConditionalLines);
 	swSetProfileFloat(SW_PROFILE_LINE_WIDTH, mLineWidth);
 	SaveRenderTarget(swRenderTarget::Preview);
-	SaveRenderTarget(swRenderTarget::Pieces);
+	SaveRenderTarget(swRenderTarget::Parts);
 	SaveRenderTarget(swRenderTarget::MinifigureBuilder);
 	swSetProfileInteger(SW_PROFILE_ALLOW_LOD, mAllowLOD);
 	swSetProfileFloat(SW_PROFILE_LOD_DISTANCE, mMeshLODDistance);
 	swSetProfileInteger(SW_PROFILE_FADE_STEPS, mFadeSteps);
 	swSetProfileUnsignedInteger(SW_PROFILE_FADE_STEPS_COLOR, mFadeStepsColor);
-	swSetProfileInteger(SW_PROFILE_HIGHLIGHT_NEW_PIECES, mHighlightNewPieces);
-	swSetProfileUnsignedInteger(SW_PROFILE_HIGHLIGHT_NEW_PIECES_COLOR, mHighlightNewPiecesColor);
+	swSetProfileInteger(SW_PROFILE_HIGHLIGHT_NEW_PARTS, mHighlightNewParts);
+	swSetProfileUnsignedInteger(SW_PROFILE_HIGHLIGHT_NEW_PARTS_COLOR, mHighlightNewPartsColor);
 	swSetProfileInteger(SW_PROFILE_GRID_STUDS, mDrawGridStuds);
 	swSetProfileUnsignedInteger(SW_PROFILE_GRID_STUD_COLOR, mGridStudColor);
 	swSetProfileInteger(SW_PROFILE_GRID_LINES, mDrawGridLines);
@@ -155,12 +155,12 @@ void swPreferences::SaveDefaults()
 	swSetProfileUnsignedInteger(SW_PROFILE_AXIS_Z_COLOR, mAxisZColor);
 	swSetProfileInteger(SW_PROFILE_AUTO_LOAD_MOST_RECENT, mAutoLoadMostRecent);
 	swSetProfileInteger(SW_PROFILE_RESTORE_TAB_LAYOUT, mRestoreTabLayout);
-	swSetProfileInteger(SW_PROFILE_FIRST_PIECE_AT_ORIGIN, mFirstPieceAtOrigin);
-	swSetProfileInteger(SW_PROFILE_PIECES_SNAP_TO_TILES, mPiecesSnapToTiles);
+	swSetProfileInteger(SW_PROFILE_FIRST_PART_AT_ORIGIN, mFirstPartAtOrigin);
+	swSetProfileInteger(SW_PROFILE_PARTS_SNAP_TO_TILES, mPartsSnapToTiles);
 	swSetProfileInteger(SW_PROFILE_TERMINAL_FOLLOW_MODEL, mTerminalFollowModel);
 	swSetProfileInteger(SW_PROFILE_INSERT_COLOR_MODE, static_cast<int>(mInsertColorMode));
 	swSetProfileInteger(SW_PROFILE_WATCH_FILE_CHANGES, mWatchFileChanges);
-	swSetProfileInteger(SW_PROFILE_LOAD_PIECES_BEFORE_SHOWING, mLoadPiecesBeforeShowing);
+	swSetProfileInteger(SW_PROFILE_LOAD_PARTS_BEFORE_SHOWING, mLoadPartsBeforeShowing);
 	swSetProfileColorTheme(mColorTheme);
 	swSetProfileInteger(SW_PROFILE_PREVIEW_VIEW_SPHERE_ENABLED, mPreviewViewSphereEnabled);
 	swSetProfileInteger(SW_PROFILE_PREVIEW_VIEW_SPHERE_SIZE, mPreviewViewSphereSize);
@@ -169,14 +169,14 @@ void swPreferences::SaveDefaults()
 	swSetProfileInteger(SW_PROFILE_PREVIEW_SQUARE_VIEWPORT, mPreviewSquareViewport);
 	swSetProfileInteger(SW_PROFILE_STUD_CYLINDER_COLOR_ENABLED, mStudCylinderColorEnabled);
 	swSetProfileUnsignedInteger(SW_PROFILE_STUD_CYLINDER_COLOR, mStudCylinderColor);
-	swSetProfileInteger(SW_PROFILE_PIECE_EDGE_COLOR_ENABLED, mPieceEdgeColorEnabled);
-	swSetProfileUnsignedInteger(SW_PROFILE_PIECE_EDGE_COLOR, mPieceEdgeColor);
+	swSetProfileInteger(SW_PROFILE_PART_EDGE_COLOR_ENABLED, mPartEdgeColorEnabled);
+	swSetProfileUnsignedInteger(SW_PROFILE_PART_EDGE_COLOR, mPartEdgeColor);
 	swSetProfileInteger(SW_PROFILE_BLACK_EDGE_COLOR_ENABLED, mBlackEdgeColorEnabled);
 	swSetProfileUnsignedInteger(SW_PROFILE_BLACK_EDGE_COLOR, mBlackEdgeColor);
 	swSetProfileInteger(SW_PROFILE_DARK_EDGE_COLOR_ENABLED, mDarkEdgeColorEnabled);
 	swSetProfileUnsignedInteger(SW_PROFILE_DARK_EDGE_COLOR, mDarkEdgeColor);
-	swSetProfileFloat(SW_PROFILE_PIECE_EDGE_CONTRAST, mPieceEdgeContrast);
-	swSetProfileFloat(SW_PROFILE_PIECE_COLOR_VALUE_LD_INDEX, mPieceColorValueLDIndex);
+	swSetProfileFloat(SW_PROFILE_PART_EDGE_CONTRAST, mPartEdgeContrast);
+	swSetProfileFloat(SW_PROFILE_PART_COLOR_VALUE_LD_INDEX, mPartColorValueLDIndex);
 	swSetProfileInteger(SW_PROFILE_AUTOMATE_EDGE_COLOR, mAutomateEdgeColor);
 	swSetProfileUnsignedInteger(SW_PROFILE_OBJECT_SELECTED_COLOR, mObjectSelectedColor);
 	swSetProfileUnsignedInteger(SW_PROFILE_OBJECT_FOCUSED_COLOR, mObjectFocusedColor);
@@ -200,8 +200,8 @@ static swRenderTargetProfileKeys swGetRenderTargetProfileKeys(swRenderTarget Tar
 	if (Target == swRenderTarget::MinifigureBuilder)
 		return { SW_PROFILE_MINIFIGURE_BUILDER_SYNCHRONIZED_RENDERING, SW_PROFILE_MINIFIGURE_BUILDER_SHADING_MODE, SW_PROFILE_MINIFIGURE_BUILDER_DRAW_EDGE_LINES, SW_PROFILE_MINIFIGURE_BUILDER_DRAW_CONDITIONAL_LINES, SW_PROFILE_MINIFIGURE_BUILDER_LINE_WIDTH };
 
-	if (Target == swRenderTarget::Pieces)
-		return { SW_PROFILE_PIECES_SYNCHRONIZED_RENDERING, SW_PROFILE_PIECES_SHADING_MODE, SW_PROFILE_PIECES_DRAW_EDGE_LINES, SW_PROFILE_PIECES_DRAW_CONDITIONAL_LINES, SW_PROFILE_PIECES_LINE_WIDTH };
+	if (Target == swRenderTarget::Parts)
+		return { SW_PROFILE_PARTS_SYNCHRONIZED_RENDERING, SW_PROFILE_PARTS_SHADING_MODE, SW_PROFILE_PARTS_DRAW_EDGE_LINES, SW_PROFILE_PARTS_DRAW_CONDITIONAL_LINES, SW_PROFILE_PARTS_LINE_WIDTH };
 
 	return { SW_PROFILE_PREVIEW_SYNCHRONIZED_RENDERING, SW_PROFILE_PREVIEW_SHADING_MODE, SW_PROFILE_PREVIEW_DRAW_EDGE_LINES, SW_PROFILE_PREVIEW_DRAW_CONDITIONAL_LINES, SW_PROFILE_PREVIEW_LINE_WIDTH };
 }
@@ -398,7 +398,7 @@ void swApplication::SetProject(Project* Project)
 		gMainWindow->ScheduleAssetUpdate();
 
 	Project->SetActiveModel(0, true);
-	swGetPiecesLibrary()->RemoveTemporaryPieceData();
+	swGetPartsLibrary()->RemoveTemporaryPartData();
 
 	if (mProject && !mProject->GetFileName().isEmpty() && mPreferences.mRestoreTabLayout)
 	{
@@ -426,10 +426,10 @@ void swApplication::ExportClipboard(const QByteArray& Clipboard)
 	SetClipboard(Clipboard);
 }
 
-bool swApplication::LoadPiecesLibrary(const QList<QPair<QString, bool>>& LibraryPaths, bool OnlyUsePaths, swStudStyle StudStyle, bool StudCylinderColorEnabled)
+bool swApplication::LoadPartsLibrary(const QList<QPair<QString, bool>>& LibraryPaths, bool OnlyUsePaths, swStudStyle StudStyle, bool StudCylinderColorEnabled)
 {
 	if (mLibrary == nullptr)
-		mLibrary = new swPiecesLibrary(StudStyle, StudCylinderColorEnabled);
+		mLibrary = new swPartsLibrary(StudStyle, StudCylinderColorEnabled);
 
 	const bool ShowProgress = gMainWindow != nullptr;
 
@@ -440,7 +440,7 @@ bool swApplication::LoadPiecesLibrary(const QList<QPair<QString, bool>>& Library
 		if (EnvPath && EnvPath[0])
 			return mLibrary->Load(EnvPath, ShowProgress, false);
 
-		QString CustomPath = swGetProfileString(SW_PROFILE_PIECES_LIBRARY);
+		QString CustomPath = swGetProfileString(SW_PROFILE_PARTS_LIBRARY);
 
 		if (!CustomPath.isEmpty())
 			return mLibrary->Load(CustomPath, ShowProgress, false);
@@ -461,7 +461,7 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 	swCommandLineOptions Options;
 
 	Options.FadeSteps = Preferences.mFadeSteps;
-	Options.ImageHighlight = Preferences.mHighlightNewPieces;
+	Options.ImageHighlight = Preferences.mHighlightNewParts;
 	Options.ImageWidth = swGetProfileInteger(SW_PROFILE_IMAGE_WIDTH);
 	Options.ImageHeight = swGetProfileInteger(SW_PROFILE_IMAGE_HEIGHT);
 	Options.ShadingMode = Preferences.mShadingMode;
@@ -479,17 +479,17 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 	Options.ZPlanes = swVector2(0.0f, 0.0f);
 	Options.Viewpoint = swViewpoint::Count;
 	Options.FadeStepsColor = Preferences.mFadeStepsColor;
-	Options.HighlightColor = Preferences.mHighlightNewPiecesColor;
+	Options.HighlightColor = Preferences.mHighlightNewPartsColor;
 	Options.StudCylinderColorEnabled = Preferences.mStudCylinderColorEnabled;
 	Options.StudCylinderColor = Preferences.mStudCylinderColor;
-	Options.PieceEdgeColorEnabled = Preferences.mPieceEdgeColorEnabled;
-	Options.PieceEdgeColor = Preferences.mPieceEdgeColor;
+	Options.PartEdgeColorEnabled = Preferences.mPartEdgeColorEnabled;
+	Options.PartEdgeColor = Preferences.mPartEdgeColor;
 	Options.BlackEdgeColorEnabled = Preferences.mBlackEdgeColorEnabled;
 	Options.BlackEdgeColor = Preferences.mBlackEdgeColor;
 	Options.DarkEdgeColorEnabled = Preferences.mDarkEdgeColorEnabled;
 	Options.DarkEdgeColor = Preferences.mDarkEdgeColor;
-	Options.PieceEdgeContrast = Preferences.mPieceEdgeContrast;
-	Options.PieceColorValueLDIndex = Preferences.mPieceColorValueLDIndex;
+	Options.PartEdgeContrast = Preferences.mPartEdgeContrast;
+	Options.PartColorValueLDIndex = Preferences.mPartColorValueLDIndex;
 	Options.AutomateEdgeColor = Preferences.mAutomateEdgeColor;
 
 	QStringList Arguments = arguments();
@@ -754,9 +754,9 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 		else if (Option == QLatin1String("-scc") || Option == QLatin1String("--stud-cylinder-color"))
 			ParseColor(Options.StudCylinderColor);
 		else if (Option == QLatin1String("-nec") || Option == QLatin1String("--disable-edge-color"))
-			Options.PieceEdgeColorEnabled = false;
+			Options.PartEdgeColorEnabled = false;
 		else if (Option == QLatin1String("-ec") || Option == QLatin1String("--edge-color"))
-			ParseColor(Options.PieceEdgeColor);
+			ParseColor(Options.PartEdgeColor);
 		else if (Option == QLatin1String("-nbec") || Option == QLatin1String("--disable-black-edge-color"))
 			Options.BlackEdgeColorEnabled = false;
 		else if (Option == QLatin1String("-bec") || Option == QLatin1String("--black-edge-color"))
@@ -768,9 +768,9 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 		else if (Option == QLatin1String("-aec") || Option == QLatin1String("--automate-edge-color"))
 			Options.AutomateEdgeColor = true;
 		else if (Option == QLatin1String("-cc") || Option == QLatin1String("--color-contrast"))
-			ParseFloat(Options.PieceEdgeContrast, 0.0f, 1.0f);
+			ParseFloat(Options.PartEdgeContrast, 0.0f, 1.0f);
 		else if (Option == QLatin1String("-ldv") || Option == QLatin1String("--light-dark-value"))
-			ParseFloat(Options.PieceColorValueLDIndex, 0.0f, 1.0f);
+			ParseFloat(Options.PartColorValueLDIndex, 0.0f, 1.0f);
 		else if (Option == QLatin1String("--fade-steps"))
 			Options.FadeSteps = true;
 		else if (Option == QLatin1String("--no-fade-steps"))
@@ -889,7 +889,7 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 		{
 			Options.StdOut += tr("Usage: studworks [options] [file]\n");
 			Options.StdOut += tr("  [options] can be:\n");
-			Options.StdOut += tr("  -l, --libpath <path>: Set the Pieces Library location to path.\n");
+			Options.StdOut += tr("  -l, --libpath <path>: Set the Parts Library location to path.\n");
 			Options.StdOut += tr("  -i, --image <outfile.ext>: Save a picture in the format specified by ext and exit.\n");
 			Options.StdOut += tr("  -w, --width <width>: Set the picture width.\n");
 			Options.StdOut += tr("  -h, --height <height>: Set the picture height.\n");
@@ -904,12 +904,12 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 			Options.StdOut += tr("  --orthographic: Render images using an orthographic projection.\n");
 			Options.StdOut += tr("  --fov <degrees>: Set the vertical field of view used to render images (< 180).\n");
 			Options.StdOut += tr("  --zplanes <near> <far>: Set the near and far clipping planes used to render images (1 <= <near> < <far>).\n");
-			Options.StdOut += tr("  --fade-steps: Render pieces from prior steps faded.\n");
-			Options.StdOut += tr("  --no-fade-steps: Do not render pieces from prior steps faded.\n");
-			Options.StdOut += tr("  --fade-steps-color <#AARRGGBB>: Rendering color for prior step pieces.\n");
-			Options.StdOut += tr("  --highlight: Highlight pieces in the steps they appear.\n");
-			Options.StdOut += tr("  --no-highlight: Do not highlight pieces in the steps they appear.\n");
-			Options.StdOut += tr("  --highlight-color <#AARRGGBB>: Rendering color for highlighted pieces.\n");
+			Options.StdOut += tr("  --fade-steps: Render parts from prior steps faded.\n");
+			Options.StdOut += tr("  --no-fade-steps: Do not render parts from prior steps faded.\n");
+			Options.StdOut += tr("  --fade-steps-color <#AARRGGBB>: Rendering color for prior step parts.\n");
+			Options.StdOut += tr("  --highlight: Highlight parts in the steps they appear.\n");
+			Options.StdOut += tr("  --no-highlight: Do not highlight parts in the steps they appear.\n");
+			Options.StdOut += tr("  --highlight-color <#AARRGGBB>: Rendering color for highlighted parts.\n");
 			Options.StdOut += tr("  --shading <mode>: Select shading mode for rendering (wireframe, flat, default, full).\n");
 			Options.StdOut += tr("  --lighting <style>: Select the lighting style of the default shading (standard, studio, matte, toon).\n");
 			Options.StdOut += tr("  --line-width <width>: Set the width of the edge lines.\n");
@@ -919,17 +919,17 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 			Options.StdOut += tr("  -scc, --stud-cylinder-color <#AARRGGBB>: High contrast stud cylinder color.\n");
 			Options.StdOut += tr("  -nec, --disable-edge-color: Disable high contrast edge color.\n");
 			Options.StdOut += tr("  -ec, --edge-color <#AARRGGBB>: High contrast edge color.\n");
-			Options.StdOut += tr("  -nbec, --disable-black-edge-color: Disable high contrast edge color for black pieces.\n");
-			Options.StdOut += tr("  -bec, --black-edge-color <#AARRGGBB>: High contrast edge color for black pieces.\n");
-			Options.StdOut += tr("  -ndec, --disable-dark-edge-color: Disable high contrast edge color for dark color pieces.\n");
-			Options.StdOut += tr("  -dec, --dark-edge-color <#AARRGGBB>: High contrast edge color for dark color pieces.\n");
+			Options.StdOut += tr("  -nbec, --disable-black-edge-color: Disable high contrast edge color for black parts.\n");
+			Options.StdOut += tr("  -bec, --black-edge-color <#AARRGGBB>: High contrast edge color for black parts.\n");
+			Options.StdOut += tr("  -ndec, --disable-dark-edge-color: Disable high contrast edge color for dark color parts.\n");
+			Options.StdOut += tr("  -dec, --dark-edge-color <#AARRGGBB>: High contrast edge color for dark color parts.\n");
 			Options.StdOut += tr("  -aec, --automate-edge-color: Enable automatically adjusted edge colors.\n");
 			Options.StdOut += tr("  -cc, --color-contrast <contrast>: Color contrast value between 0.0 and 1.0.\n");
 			Options.StdOut += tr("  -ldv, --light-dark-value <value>: Light/Dark color value between 0.0 and 1.0.\n");
 			Options.StdOut += tr("  -obj, --export-wavefront <outfile.obj>: Export the model to Wavefront OBJ format.\n");
 			Options.StdOut += tr("  -3ds, --export-3ds <outfile.3ds>: Export the model to 3D Studio 3DS format.\n");
 			Options.StdOut += tr("  -dae, --export-collada <outfile.dae>: Export the model to COLLADA DAE format.\n");
-			Options.StdOut += tr("  -csv, --export-csv <outfile.csv>: Export the list of pieces used in CSV format.\n");
+			Options.StdOut += tr("  -csv, --export-csv <outfile.csv>: Export the list of parts used in CSV format.\n");
 			Options.StdOut += tr("  -html, --export-html <folder>: Create an HTML page for the model.\n");
 			Options.StdOut += tr("  -v, --version: Output version information and exit.\n");
 			Options.StdOut += tr("  -?, --help: Display this help message and exit.\n");
@@ -952,11 +952,11 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 	{
 		QString const Message = tr("Automate edge color is required for the '%1' option but is not enabled.\n");
 
-		if (Options.PieceEdgeContrast != Preferences.mPieceEdgeContrast)
-			Options.StdErr += Message.arg(QString("--color-contrast %1").arg(Options.PieceEdgeContrast));
+		if (Options.PartEdgeContrast != Preferences.mPartEdgeContrast)
+			Options.StdErr += Message.arg(QString("--color-contrast %1").arg(Options.PartEdgeContrast));
 
-		if (Options.PieceColorValueLDIndex != Preferences.mPieceColorValueLDIndex)
-			Options.StdErr += Message.arg(QString("--light-dark-value %1").arg(Options.PieceColorValueLDIndex));
+		if (Options.PartColorValueLDIndex != Preferences.mPartColorValueLDIndex)
+			Options.StdErr += Message.arg(QString("--light-dark-value %1").arg(Options.PartColorValueLDIndex));
 	}
 
 	if (!swIsHighContrast(Options.StudStyle) && !swIsHighContrast(swGetProfileStudStyle()))
@@ -969,11 +969,11 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 		if (Options.StudCylinderColor != Preferences.mStudCylinderColor)
 			Options.StdErr += Message.arg(QString("--stud-cylinder-color %1").arg(Options.StudCylinderColor));
 
-		if (Options.PieceEdgeColorEnabled != Preferences.mPieceEdgeColorEnabled)
+		if (Options.PartEdgeColorEnabled != Preferences.mPartEdgeColorEnabled)
 			Options.StdErr += Message.arg(QLatin1String("--disable-edge-color"));
 
-		if (Options.PieceEdgeColor != Preferences.mPieceEdgeColor)
-			Options.StdErr += Message.arg(QString("--edge-color %1").arg(Options.PieceEdgeColor));
+		if (Options.PartEdgeColor != Preferences.mPartEdgeColor)
+			Options.StdErr += Message.arg(QString("--edge-color %1").arg(Options.PartEdgeColor));
 
 		if (Options.BlackEdgeColorEnabled != Preferences.mBlackEdgeColorEnabled)
 			Options.StdErr += Message.arg(QLatin1String("--disable-black-edge-color"));
@@ -1095,27 +1095,27 @@ swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 	mPreferences.mLineWidth = Options.LineWidth;
 	mPreferences.mStudCylinderColorEnabled = Options.StudCylinderColorEnabled;
 	mPreferences.mStudCylinderColor = Options.StudCylinderColor;
-	mPreferences.mPieceEdgeColorEnabled = Options.PieceEdgeColorEnabled;
-	mPreferences.mPieceEdgeColor = Options.PieceEdgeColor;
+	mPreferences.mPartEdgeColorEnabled = Options.PartEdgeColorEnabled;
+	mPreferences.mPartEdgeColor = Options.PartEdgeColor;
 	mPreferences.mBlackEdgeColorEnabled = Options.BlackEdgeColorEnabled;
 	mPreferences.mBlackEdgeColor = Options.BlackEdgeColor;
 	mPreferences.mDarkEdgeColorEnabled = Options.DarkEdgeColorEnabled;
 	mPreferences.mDarkEdgeColor = Options.DarkEdgeColor;
-	mPreferences.mPieceEdgeContrast = Options.PieceEdgeContrast;
-	mPreferences.mPieceColorValueLDIndex = Options.PieceColorValueLDIndex;
+	mPreferences.mPartEdgeContrast = Options.PartEdgeContrast;
+	mPreferences.mPartColorValueLDIndex = Options.PartColorValueLDIndex;
 	mPreferences.mAutomateEdgeColor = Options.AutomateEdgeColor;
 
-	if (!LoadPiecesLibrary(Options.LibraryPaths.isEmpty() ? LibraryPaths : Options.LibraryPaths, !Options.LibraryPaths.isEmpty(), Options.StudStyle, Options.StudCylinderColorEnabled))
+	if (!LoadPartsLibrary(Options.LibraryPaths.isEmpty() ? LibraryPaths : Options.LibraryPaths, !Options.LibraryPaths.isEmpty(), Options.StudStyle, Options.StudCylinderColorEnabled))
 	{
 		QString Message;
 
-		if (mLibrary->LoadBuiltinPieceLibrary())
-			Message = tr("StudWorks could not find a compatible Pieces Library so only a small number of pieces will be available.\n\nPlease visit https://library.ldraw.org for information on how to download and install a library.");
+		if (mLibrary->LoadBuiltinPartLibrary())
+			Message = tr("StudWorks could not find a compatible Parts Library so only a small number of parts will be available.\n\nPlease visit https://library.ldraw.org for information on how to download and install a library.");
 		else
-			Message = tr("StudWorks could not load Pieces Library.\n\nPlease visit https://library.ldraw.org for information on how to download and install a library.");
+			Message = tr("StudWorks could not load Parts Library.\n\nPlease visit https://library.ldraw.org for information on how to download and install a library.");
 
 		if (gMainWindow)
-			QMessageBox::warning(gMainWindow, tr("Load Pieces Library"), Message);
+			QMessageBox::warning(gMainWindow, tr("Load Parts Library"), Message);
 		else
 		{
 			StdErr << Message << "\n";
@@ -1253,9 +1253,9 @@ swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 			mPreferences.mFadeSteps = Options.FadeSteps;
 			if (Options.SetFadeStepsColor)
 				mPreferences.mFadeStepsColor = Options.FadeStepsColor;
-			mPreferences.mHighlightNewPieces = Options.ImageHighlight;
+			mPreferences.mHighlightNewParts = Options.ImageHighlight;
 			if (Options.SetHighlightColor)
-				mPreferences.mHighlightNewPiecesColor = Options.HighlightColor;
+				mPreferences.mHighlightNewPartsColor = Options.HighlightColor;
 
 			ActiveModel->WaitForAssets();
 
@@ -1443,7 +1443,7 @@ swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 	if (!SaveAndExit)
 	{
 		gMainWindow->SetColorIndex(swGetColorIndex(7));
-		gMainWindow->GetPieceSelectionWidget()->SetDefaultPiece();
+		gMainWindow->GetPartSelectionWidget()->SetDefaultPart();
 
 #ifdef Q_OS_IOS
 		const swResult<void> RendererResult = swContext::InitializeRenderer(true);
@@ -1491,11 +1491,11 @@ void swApplication::ShowPreferencesDialog()
 {
 	swPreferencesDialogOptions Options;
 	int CurrentAASamples = swGetProfileInteger(SW_PROFILE_ANTIALIASING_SAMPLES);
-	swStudStyle CurrentStudStyle = swGetPiecesLibrary()->GetStudStyle();
+	swStudStyle CurrentStudStyle = swGetPartsLibrary()->GetStudStyle();
 
 	Options.Preferences = mPreferences;
 
-	Options.LibraryPath = swGetProfileString(SW_PROFILE_PIECES_LIBRARY);
+	Options.LibraryPath = swGetProfileString(SW_PROFILE_PARTS_LIBRARY);
 	Options.MinifigureBuilderSettingsPath = swGetProfileString(SW_PROFILE_MINIFIGURE_BUILDER_SETTINGS);
 	Options.ColorConfigPath = swGetProfileString(SW_PROFILE_COLOR_CONFIGURATION);
 	Options.POVRayPath = swGetProfileString(SW_PROFILE_POVRAY_PATH);
@@ -1522,27 +1522,27 @@ void swApplication::ShowPreferencesDialog()
 		return;
 
 	bool LanguageChanged = Options.Language != swGetProfileString(SW_PROFILE_LANGUAGE);
-	bool LibraryChanged = Options.LibraryPath != swGetProfileString(SW_PROFILE_PIECES_LIBRARY);
+	bool LibraryChanged = Options.LibraryPath != swGetProfileString(SW_PROFILE_PARTS_LIBRARY);
 	bool ColorConfigChanged = Options.ColorConfigPath != swGetProfileString(SW_PROFILE_COLOR_CONFIGURATION);
 	bool AAChanged = CurrentAASamples != Options.AASamples;
 	bool StudStyleChanged = CurrentStudStyle != Options.StudStyle;
 	bool StudCylinderColorEnabledChanged = Options.Preferences.mStudCylinderColorEnabled != mPreferences.mStudCylinderColorEnabled;
 	bool EdgeColorSettingsChanged = Options.Preferences.mAutomateEdgeColor != mPreferences.mAutomateEdgeColor;
-	EdgeColorSettingsChanged |= Options.Preferences.mPieceEdgeContrast != mPreferences.mPieceEdgeContrast;
-	EdgeColorSettingsChanged |= Options.Preferences.mPieceColorValueLDIndex != mPreferences.mPieceColorValueLDIndex;
+	EdgeColorSettingsChanged |= Options.Preferences.mPartEdgeContrast != mPreferences.mPartEdgeContrast;
+	EdgeColorSettingsChanged |= Options.Preferences.mPartColorValueLDIndex != mPreferences.mPartColorValueLDIndex;
 	EdgeColorSettingsChanged |= Options.Preferences.mStudCylinderColorEnabled != mPreferences.mStudCylinderColorEnabled;
 	EdgeColorSettingsChanged |= Options.Preferences.mStudCylinderColor != mPreferences.mStudCylinderColor;
-	EdgeColorSettingsChanged |= Options.Preferences.mPieceEdgeColorEnabled != mPreferences.mPieceEdgeColorEnabled;
-	EdgeColorSettingsChanged |= Options.Preferences.mPieceEdgeColor != mPreferences.mPieceEdgeColor;
+	EdgeColorSettingsChanged |= Options.Preferences.mPartEdgeColorEnabled != mPreferences.mPartEdgeColorEnabled;
+	EdgeColorSettingsChanged |= Options.Preferences.mPartEdgeColor != mPreferences.mPartEdgeColor;
 	EdgeColorSettingsChanged |= Options.Preferences.mBlackEdgeColorEnabled != mPreferences.mBlackEdgeColorEnabled;
 	EdgeColorSettingsChanged |= Options.Preferences.mBlackEdgeColor != mPreferences.mBlackEdgeColor;
 	EdgeColorSettingsChanged |= Options.Preferences.mDarkEdgeColorEnabled != mPreferences.mDarkEdgeColorEnabled;
 	EdgeColorSettingsChanged |= Options.Preferences.mDarkEdgeColor != mPreferences.mDarkEdgeColor;
 	bool WatchFileChangesChanged = Options.Preferences.mWatchFileChanges != mPreferences.mWatchFileChanges;
-	const swRenderSettings OldPiecesRendering = mPreferences.GetRenderSettings(swRenderTarget::Pieces);
-	const swRenderSettings NewPiecesRendering = Options.Preferences.GetRenderSettings(swRenderTarget::Pieces);
-	const bool PiecesRenderingChanged = OldPiecesRendering.ShadingMode != NewPiecesRendering.ShadingMode || OldPiecesRendering.DrawEdgeLines != NewPiecesRendering.DrawEdgeLines ||
-		OldPiecesRendering.DrawConditionalLines != NewPiecesRendering.DrawConditionalLines || OldPiecesRendering.LineWidth != NewPiecesRendering.LineWidth ||
+	const swRenderSettings OldPartsRendering = mPreferences.GetRenderSettings(swRenderTarget::Parts);
+	const swRenderSettings NewPartsRendering = Options.Preferences.GetRenderSettings(swRenderTarget::Parts);
+	const bool PartsRenderingChanged = OldPartsRendering.ShadingMode != NewPartsRendering.ShadingMode || OldPartsRendering.DrawEdgeLines != NewPartsRendering.DrawEdgeLines ||
+		OldPartsRendering.DrawConditionalLines != NewPartsRendering.DrawConditionalLines || OldPartsRendering.LineWidth != NewPartsRendering.LineWidth ||
 		Options.Preferences.mLightingStyle != mPreferences.mLightingStyle;
 
 
@@ -1553,13 +1553,13 @@ void swApplication::ShowPreferencesDialog()
 
 	if (WatchFileChangesChanged && mProject)
 		mProject->UpdateFileWatcher();
-	if (PiecesRenderingChanged && gMainWindow && gMainWindow->GetPieceSelectionWidget())
-		gMainWindow->GetPieceSelectionWidget()->UpdateThumbnails();
+	if (PartsRenderingChanged && gMainWindow && gMainWindow->GetPartSelectionWidget())
+		gMainWindow->GetPartSelectionWidget()->UpdateThumbnails();
 	if (gMainWindow && gMainWindow->GetPreviewWidget())
 		gMainWindow->GetPreviewWidget()->UpdateSquareViewport();
 
 	swSetProfileString(SW_PROFILE_DEFAULT_AUTHOR_NAME, Options.DefaultAuthor);
-	swSetProfileString(SW_PROFILE_PIECES_LIBRARY, Options.LibraryPath);
+	swSetProfileString(SW_PROFILE_PARTS_LIBRARY, Options.LibraryPath);
 	swSetProfileString(SW_PROFILE_MINIFIGURE_BUILDER_SETTINGS, Options.MinifigureBuilderSettingsPath);
 	swSetProfileString(SW_PROFILE_POVRAY_PATH, Options.POVRayPath);
 	swSetProfileString(SW_PROFILE_POVRAY_LGEO_PATH, Options.LGEOPath);
@@ -1612,9 +1612,9 @@ void swApplication::ShowPreferencesDialog()
 		swSetProfileString(SW_PROFILE_COLOR_CONFIGURATION, Options.ColorConfigPath);
 
 	if (StudStyleChanged || StudCylinderColorEnabledChanged)
-		swGetPiecesLibrary()->UpdateStudStyleAndColors(Options.StudStyle, Options.Preferences.mStudCylinderColorEnabled);
+		swGetPartsLibrary()->UpdateStudStyleAndColors(Options.StudStyle, Options.Preferences.mStudCylinderColorEnabled);
 	else if (ColorConfigChanged || EdgeColorSettingsChanged)
-		swGetPiecesLibrary()->LoadColors();
+		swGetPartsLibrary()->LoadColors();
 
 	gMainWindow->SetShadingMode(Options.Preferences.mShadingMode);
 	swView::UpdateAllViews();

@@ -1,13 +1,13 @@
 #pragma once
 
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
-using swPieceManagerMutex = QRecursiveMutex;
+using swPartManagerMutex = QRecursiveMutex;
 #else
 // Use recursive QMutex for Qt 5 compatibility.
-class swPieceManagerMutex : public QMutex
+class swPartManagerMutex : public QMutex
 {
 public:
-	swPieceManagerMutex()
+	swPartManagerMutex()
 		: QMutex(QMutex::Recursive)
 	{
 	}
@@ -16,23 +16,23 @@ public:
 
 enum class swZipFileType;
 
-// Creates and indexes piece identities and manages their references and lifetime.
+// Creates and indexes part identities and manages their references and lifetime.
 // The library handles source resolution, loading and cancellation.
 // Mutations and borrowed identities belong to the UI thread. Workers may copy
 // file metadata and access sparse errors; registry locking ends before teardown.
-class swPieceManager
+class swPartManager
 {
 public:
-	swPieceManager() = default;
-	~swPieceManager();
+	swPartManager() = default;
+	~swPartManager();
 
-	swPieceManager(const swPieceManager&) = delete;
-	swPieceManager(swPieceManager&&) = delete;
-	swPieceManager& operator=(const swPieceManager&) = delete;
-	swPieceManager& operator=(swPieceManager&&) = delete;
+	swPartManager(const swPartManager&) = delete;
+	swPartManager(swPartManager&&) = delete;
+	swPartManager& operator=(const swPartManager&) = delete;
+	swPartManager& operator=(swPartManager&&) = delete;
 
-	// Normalizes case and slashes, preserving the piece name length limit.
-	static std::string NormalizePieceDataName(const char* PieceName);
+	// Normalizes case and slashes, preserving the part name length limit.
+	static std::string NormalizePartDataName(const char* PartName);
 
 	// Deletes all managed identities, regardless of reference count.
 	// Drain workers and release consumers before calling; the library must remain alive.
@@ -40,56 +40,56 @@ public:
 
 	// Returns a borrowed project identity, falling back to the library. No creation or acquisition.
 	// A null owner searches only the shared library registry.
-	swPieceData* FindPieceData(const std::string& Name, Project* OwnerProject) const;
+	swPartData* FindPartData(const std::string& Name, Project* OwnerProject) const;
 
 	// Creates a library identity with a discovery index key and source filename.
 	// The returned identity is registered with zero references; source metadata is supplied by the library.
-	swPieceData* CreateLibraryPieceData(const std::string& Name, const char* FileName);
+	swPartData* CreateLibraryPartData(const std::string& Name, const char* FileName);
 
 	// Creates a non-library identity, registered locally or in the shared registry when ownerless.
 	// Returns a borrowed identity with zero references. The caller supplies missing/external state.
-	swPieceData* CreatePieceData(const char* PieceName, Project* OwnerProject);
+	swPartData* CreatePartData(const char* PartName, Project* OwnerProject);
 
 	// Creates or reuses a local identity and acquires one reference for the model.
 	// The library adopts the reference and invalidates reused data after this returns.
-	swPieceData* AcquireModelPieceData(const char* PieceName, Project* OwnerProject, bool& Reused);
+	swPartData* AcquireModelPartData(const char* PartName, Project* OwnerProject, bool& Reused);
 
 	// Renames the identity and its index key, rejecting collisions in the same scope.
-	bool RenameModelPieceData(swPieceData* PieceData, const char* NewName);
+	bool RenameModelPartData(swPartData* PartData, const char* NewName);
 
 	// Keeps an identity alive for another owner. Never starts loading.
-	void AddPieceDataReference(swPieceData* PieceData);
+	void AddPartDataReference(swPartData* PartData);
 
 	// Releases one reference, unloading library parts or deleting non-library identities at zero.
 	// Returns the remaining count; zero may mean the pointer was deleted. Already-zero is a no-op.
-	int ReleasePieceData(swPieceData* PieceData);
+	int ReleasePartData(swPartData* PartData);
 
 	// Sparse errors are independently synchronized and cleared before resource teardown.
-	void SetPieceDataLoadError(const swPieceData* PieceData, QString Error);
-	QString GetPieceDataLoadError(const swPieceData* PieceData) const;
-	void ClearPieceDataLoadError(const swPieceData* PieceData);
+	void SetPartDataLoadError(const swPartData* PartData, QString Error);
+	QString GetPartDataLoadError(const swPartData* PartData) const;
+	void ClearPartDataLoadError(const swPartData* PartData);
 
 	// Removes unreferenced non-library identities without changing library-part eviction policy.
-	void RemoveTemporaryPieceData();
+	void RemoveTemporaryPartData();
 
 	// Detaches the project's borrowed index and deletes its unreferenced local identities.
-	void ReleaseProjectPieceData(Project* OwnerProject);
+	void ReleaseProjectPartData(Project* OwnerProject);
 
 	// Transfers registrations and borrowed indexes, preserving destination name collisions.
 	// Deletes transferred identities that have no references.
-	void TransferProjectPieceData(Project* Source, Project* Destination);
+	void TransferProjectPartData(Project* Source, Project* Destination);
 
 	// Returns the number of library registrations, including projectless missing identities.
-	size_t GetLibraryPieceDataCount() const;
+	size_t GetLibraryPartDataCount() const;
 
 	// Returns the library index key for an identity, or an empty string if not registered there.
-	std::string GetLibraryPieceDataName(const swPieceData* PieceData) const;
+	std::string GetLibraryPartDataName(const swPartData* PartData) const;
 
 	// Returns a borrowed snapshot in library name order. Caller prevents identity teardown.
-	std::vector<swPieceData*> GetLibraryPieceData() const;
+	std::vector<swPartData*> GetLibraryPartData() const;
 
 	// Returns a borrowed snapshot of library and local identities. Caller prevents identity teardown.
-	std::vector<swPieceData*> GetAllPieceData() const;
+	std::vector<swPartData*> GetAllPartData() const;
 
 	struct FileInfo
 	{
@@ -100,32 +100,32 @@ public:
 
 	// Copies library file metadata under the registry lock, or returns no value if missing.
 	// Workers use the copy after unlocking instead of accessing the registered identity.
-	std::optional<FileInfo> GetPieceDataFileInfo(const std::string& Name) const;
+	std::optional<FileInfo> GetPartDataFileInfo(const std::string& Name) const;
 
 private:
 	// Register a newly created identity without changing its reference count.
-	void RegisterLibraryPieceData(const std::string& Name, swPieceData* PieceData);
+	void RegisterLibraryPartData(const std::string& Name, swPartData* PartData);
 
 	// Also updates the owning project's borrowed name index.
-	void RegisterProjectPieceData(Project* OwnerProject, const std::string& Name, swPieceData* PieceData);
+	void RegisterProjectPartData(Project* OwnerProject, const std::string& Name, swPartData* PartData);
 
 	// Removes registry and borrowed project entries before destruction can reenter.
-	void UnregisterPieceData(swPieceData* PieceData);
+	void UnregisterPartData(swPartData* PartData);
 
 	// Unregisters and deletes a non-library identity or an identity being cleared.
-	void RemovePieceData(swPieceData* PieceData);
+	void RemovePartData(swPartData* PartData);
 
 	// Keeps library identities registered; deletes non-library identities.
-	void UnloadPieceData(swPieceData* PieceData);
+	void UnloadPartData(swPartData* PartData);
 
 	// Recursive for compound operations that reuse registry helpers. Never held during deletion.
-	mutable swPieceManagerMutex mMutex;
-	std::map<std::string, swPieceData*> mPieces;
+	mutable swPartManagerMutex mMutex;
+	std::map<std::string, swPartData*> mParts;
 
 	// An owner may be null after its project is destroyed while references remain.
-	std::unordered_map<swPieceData*, Project*> mProjectPieces;
+	std::unordered_map<swPartData*, Project*> mProjectParts;
 
 	// No error lock is held while unloading or deleting identities.
 	mutable QMutex mErrorMutex;
-	std::unordered_map<const swPieceData*, QString> mPieceDataLoadErrors;
+	std::unordered_map<const swPartData*, QString> mPartDataLoadErrors;
 };

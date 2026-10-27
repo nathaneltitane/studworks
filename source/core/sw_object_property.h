@@ -2,10 +2,10 @@
 
 enum class swObjectPropertyId
 {
-	PieceId,
-	PieceColor,
-	PieceStepShow,
-	PieceStepHide,
+	PartId,
+	PartColor,
+	PartStepShow,
+	PartStepHide,
 	CameraName,
 	CameraProjection,
 	CameraFOV,
@@ -50,8 +50,8 @@ enum class swObjectPropertyId
 enum class swFloatPropertySnap
 {
 	Auto,
-	PiecePositionXY,
-	PiecePositionZ,
+	PartPositionXY,
+	PartPositionZ,
 	Position,
 	Rotation
 };

@@ -68,26 +68,26 @@ std::vector<swSetInventoryItem> swSetsDatabaseDialog::GetSetInventory() const
 
 	QJsonDocument Document = QJsonDocument::fromJson(mInventory);
 	QJsonObject Root = Document.object();
-	const QJsonArray Pieces = Root["results"].toArray();
+	const QJsonArray Parts = Root["results"].toArray();
 
-	for (const QJsonValue& Piece : Pieces)
+	for (const QJsonValue& Part : Parts)
 	{
-		QJsonObject PieceObject = Piece.toObject();
-		QByteArray PieceID = PieceObject["part"].toObject()["part_num"].toString().toLatin1();
-		QJsonArray PieceIDArray = PieceObject["part"].toObject()["external_ids"].toObject()["LDraw"].toArray();
+		QJsonObject PartObject = Part.toObject();
+		QByteArray PartID = PartObject["part"].toObject()["part_num"].toString().toLatin1();
+		QJsonArray PartIDArray = PartObject["part"].toObject()["external_ids"].toObject()["LDraw"].toArray();
 
-		if (!PieceIDArray.isEmpty())
-			PieceID = PieceIDArray.first().toString().toLatin1();
+		if (!PartIDArray.isEmpty())
+			PartID = PartIDArray.first().toString().toLatin1();
 
-		int Quantity = PieceObject["quantity"].toInt();
+		int Quantity = PartObject["quantity"].toInt();
 		int ColorCode = 16;
 
-		QJsonArray ColorArray = PieceObject["color"].toObject()["external_ids"].toObject()["LDraw"].toObject()["ext_ids"].toArray();
+		QJsonArray ColorArray = PartObject["color"].toObject()["external_ids"].toObject()["LDraw"].toObject()["ext_ids"].toArray();
 
 		if (!ColorArray.isEmpty())
 			ColorCode = ColorArray.first().toInt();
 
-		Inventory.push_back({ PieceID, Quantity, ColorCode });
+		Inventory.push_back({ PartID, Quantity, ColorCode });
 	}
 
 	return Inventory;

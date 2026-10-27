@@ -30,11 +30,11 @@ void swDoubleSpinBox::SetSnap(swFloatPropertySnap Snap)
 		setSingleStep(10.0);
 		break;
 
-	case swFloatPropertySnap::PiecePositionXY:
+	case swFloatPropertySnap::PartPositionXY:
 		setSingleStep(gMainWindow->GetMoveXYSnap());
 		break;
 
-	case swFloatPropertySnap::PiecePositionZ:
+	case swFloatPropertySnap::PartPositionZ:
 		setSingleStep(gMainWindow->GetMoveZSnap());
 		break;
 

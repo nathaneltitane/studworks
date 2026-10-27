@@ -48,11 +48,11 @@ void swLadderWidget::CalculateSteps(swFloatPropertySnap Snap)
 		}
 		break;
 
-	case swFloatPropertySnap::PiecePositionXY:
+	case swFloatPropertySnap::PartPositionXY:
 		mSteps = { 80.0, 40.0, 24.0, 20.0, 10.0, 8.0, 1.0 };
 		break;
 
-	case swFloatPropertySnap::PiecePositionZ:
+	case swFloatPropertySnap::PartPositionZ:
 		mSteps = { 192.0, 96.0, 48.0, 24.0, 10.0, 8.0, 1.0 };
 		break;
 

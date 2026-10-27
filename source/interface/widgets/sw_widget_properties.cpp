@@ -3,15 +3,15 @@
 #include "sw_widget_keyframe.h"
 #include "sw_widget_spin_box_double.h"
 #include "sw_object.h"
-#include "sw_object_piece.h"
+#include "sw_object_part.h"
 #include "sw_object_camera.h"
 #include "sw_object_light.h"
-#include "sw_data_piece.h"
+#include "sw_data_part.h"
 #include "sw_window_main.h"
 #include "sw_widget_collapsible.h"
 #include "sw_widget_picker_color.h"
 #include "sw_window_utilities.h"
-#include "sw_widget_selection_piece_popup.h"
+#include "sw_widget_selection_part_popup.h"
 #include "sw_model_history.h"
 
 swPropertiesWidget::swPropertiesWidget(QWidget* Parent)
@@ -33,7 +33,7 @@ swPropertiesWidget::swPropertiesWidget(QWidget* Parent)
 		}
 	}
 
-	SetLayoutMode(LayoutMode::Piece);
+	SetLayoutMode(LayoutMode::Part);
 	setEnabled(false);
 }
 
@@ -283,7 +283,7 @@ void swPropertiesWidget::ChangeFloatValue(swObjectPropertyId PropertyId, float V
 	if (!Model)
 		return;
 
-	swPiece* Piece = dynamic_cast<swPiece*>(mFocusObject);
+	swPart* Part = dynamic_cast<swPart*>(mFocusObject);
 	swCamera* Camera = dynamic_cast<swCamera*>(mFocusObject);
 	swLight* Light = dynamic_cast<swLight*>(mFocusObject);
 
@@ -313,8 +313,8 @@ void swPropertiesWidget::ChangeFloatValue(swObjectPropertyId PropertyId, float V
 
 		if (mLastRotation)
 			InitialRotation = mLastRotation.value();
-		else if (Piece)
-			InitialRotation = swMatrix44ToEulerAngles(Piece->mModelWorld) * SW_RADIANS_TO_DEGREES;
+		else if (Part)
+			InitialRotation = swMatrix44ToEulerAngles(Part->mModelWorld) * SW_RADIANS_TO_DEGREES;
 		else if (Light)
 			InitialRotation = swMatrix44ToEulerAngles(Light->GetWorldMatrix()) * SW_RADIANS_TO_DEGREES;
 
@@ -460,10 +460,10 @@ void swPropertiesWidget::UpdateFloat(swObjectPropertyId PropertyId, float Value)
 
 		switch (PropertyId)
 		{
-		case swObjectPropertyId::PieceId:
-		case swObjectPropertyId::PieceColor:
-		case swObjectPropertyId::PieceStepShow:
-		case swObjectPropertyId::PieceStepHide:
+		case swObjectPropertyId::PartId:
+		case swObjectPropertyId::PartColor:
+		case swObjectPropertyId::PartStepShow:
+		case swObjectPropertyId::PartStepHide:
 		case swObjectPropertyId::CameraName:
 		case swObjectPropertyId::CameraProjection:
 			break;
@@ -516,11 +516,11 @@ void swPropertiesWidget::UpdateFloat(swObjectPropertyId PropertyId, float Value)
 
 		case swObjectPropertyId::ObjectPositionX:
 		case swObjectPropertyId::ObjectPositionY:
-			Widget->SetSnap(mLayoutMode == LayoutMode::Piece ? swFloatPropertySnap::PiecePositionXY : swFloatPropertySnap::Position);
+			Widget->SetSnap(mLayoutMode == LayoutMode::Part ? swFloatPropertySnap::PartPositionXY : swFloatPropertySnap::Position);
 			break;
 
 		case swObjectPropertyId::ObjectPositionZ:
-			Widget->SetSnap(mLayoutMode == LayoutMode::Piece ? swFloatPropertySnap::PiecePositionZ : swFloatPropertySnap::Position);
+			Widget->SetSnap(mLayoutMode == LayoutMode::Part ? swFloatPropertySnap::PartPositionZ : swFloatPropertySnap::Position);
 			break;
 
 		case swObjectPropertyId::ObjectRotationX:
@@ -607,18 +607,18 @@ void swPropertiesWidget::StepNumberChanged()
 
 	bool Ok = true;
 	QString Text = Widget->text();
-	swStep Step = Text.isEmpty() && PropertyId == swObjectPropertyId::PieceStepHide ? SW_STEP_MAXIMUM : Widget->validator()->locale().toUInt(Text, &Ok);
+	swStep Step = Text.isEmpty() && PropertyId == swObjectPropertyId::PartStepHide ? SW_STEP_MAXIMUM : Widget->validator()->locale().toUInt(Text, &Ok);
 
 	if (!Ok || !Widget->hasAcceptableInput())
 		return;
 
-	if (PropertyId == swObjectPropertyId::PieceStepShow)
+	if (PropertyId == swObjectPropertyId::PartStepShow)
 	{
-		Model->SetSelectedPiecesStepShow(Step);
+		Model->SetSelectedPartsStepShow(Step);
 	}
-	else if (PropertyId == swObjectPropertyId::PieceStepHide)
+	else if (PropertyId == swObjectPropertyId::PartStepHide)
 	{
-		Model->SetSelectedPiecesStepHide(Step);
+		Model->SetSelectedPartsStepHide(Step);
 	}
 }
 
@@ -630,7 +630,7 @@ void swPropertiesWidget::UpdateStepNumber(swObjectPropertyId PropertyId, swStep 
 	{
 		QSignalBlocker Blocker(Widget);
 
-		Widget->setValidator(new swStepValidator(Min, Max, PropertyId == swObjectPropertyId::PieceStepHide, Widget));
+		Widget->setValidator(new swStepValidator(Min, Max, PropertyId == swObjectPropertyId::PartStepHide, Widget));
 		Widget->setText(Step == SW_STEP_MAXIMUM ? QString() : swFormatIntegerLocalized(Step, Widget->validator()->locale()));
 	}
 
@@ -799,7 +799,7 @@ void swPropertiesWidget::UpdateColor(swObjectPropertyId PropertyId)
 
 	QColor Color = Partial ? QColor(128, 128, 128) : swQColorFromVector3(Value.value<swVector3>());
 
-	// The color shows in the light block so the name stays centered like the piece color.
+	// The color shows in the light block so the name stays centered like the part color.
 	mIdentityBlocks[static_cast<int>(IdentityIndex::Light)].Color = Color;
 	UpdateIdentityBlock(mIdentityBlocks[static_cast<int>(IdentityIndex::Light)]);
 
@@ -809,7 +809,7 @@ void swPropertiesWidget::UpdateColor(swObjectPropertyId PropertyId)
 }
 
 
-void swPropertiesWidget::PieceColorChanged(int ColorIndex)
+void swPropertiesWidget::PartColorChanged(int ColorIndex)
 {
 	swColorPickerPopup* Popup = qobject_cast<swColorPickerPopup*>(sender());
 	QMenu* Menu = qobject_cast<QMenu*>(Popup->parent());
@@ -829,7 +829,7 @@ void swPropertiesWidget::PieceColorChanged(int ColorIndex)
 	Model->SetObjectsProperty(mFocusObject ? std::vector<swObject*>{ mFocusObject } : mSelection, PropertyId, ColorIndex);
 }
 
-void swPropertiesWidget::PieceColorButtonClicked()
+void swPropertiesWidget::PartColorButtonClicked()
 {
 	QToolButton* ColorButton = qobject_cast<QToolButton*>(sender());
 	swObjectPropertyId PropertyId = GetEditorWidgetPropertyId(ColorButton);
@@ -851,14 +851,14 @@ void swPropertiesWidget::PieceColorButtonClicked()
 	Action->setDefaultWidget(Popup);
 	Menu->addAction(Action);
 
-	connect(Popup, &swColorPickerPopup::Selected, this, &swPropertiesWidget::PieceColorChanged);
+	connect(Popup, &swColorPickerPopup::Selected, this, &swPropertiesWidget::PartColorChanged);
 
 	Menu->exec(ColorButton->mapToGlobal(ColorButton->rect().bottomLeft()));
 
 	delete Menu;
 }
 
-void swPropertiesWidget::UpdatePieceColor(swObjectPropertyId PropertyId)
+void swPropertiesWidget::UpdatePartColor(swObjectPropertyId PropertyId)
 {
 	QToolButton* ColorButton = qobject_cast<QToolButton*>(mPropertyWidgets[static_cast<int>(PropertyId)].Editor);
 
@@ -874,8 +874,8 @@ void swPropertiesWidget::UpdatePieceColor(swObjectPropertyId PropertyId)
 	// With nothing selected the button only names what it edits.
 	if (!mFocusObject && mSelection.empty())
 	{
-		mIdentityBlocks[static_cast<int>(IdentityIndex::Piece)].Color = QColor();
-		UpdateIdentityBlock(mIdentityBlocks[static_cast<int>(IdentityIndex::Piece)]);
+		mIdentityBlocks[static_cast<int>(IdentityIndex::Part)].Color = QColor();
+		UpdateIdentityBlock(mIdentityBlocks[static_cast<int>(IdentityIndex::Part)]);
 
 		ColorButton->setText(tr("Color"));
 		UpdateKeyFrameWidget(PropertyId);
@@ -885,8 +885,8 @@ void swPropertiesWidget::UpdatePieceColor(swObjectPropertyId PropertyId)
 	const int ColorIndex = Value.toInt();
 	QColor Color = Partial ? QColor(128, 128, 128) : QColor::fromRgbF(gColorList[ColorIndex].Value[0], gColorList[ColorIndex].Value[1], gColorList[ColorIndex].Value[2]);
 	// The color shows in the swatch button so the name stays centered.
-	mIdentityBlocks[static_cast<int>(IdentityIndex::Piece)].Color = Color;
-	UpdateIdentityBlock(mIdentityBlocks[static_cast<int>(IdentityIndex::Piece)]);
+	mIdentityBlocks[static_cast<int>(IdentityIndex::Part)].Color = Color;
+	UpdateIdentityBlock(mIdentityBlocks[static_cast<int>(IdentityIndex::Part)]);
 
 	ColorButton->setText(Partial ? tr("Multiple Colors") : gColorList[ColorIndex].Name);
 
@@ -894,37 +894,37 @@ void swPropertiesWidget::UpdatePieceColor(swObjectPropertyId PropertyId)
 }
 
 
-void swPropertiesWidget::UpdatePieceId(swObjectPropertyId PropertyId)
+void swPropertiesWidget::UpdatePartId(swObjectPropertyId PropertyId)
 {
-	swElidableToolButton* PieceIdButton = qobject_cast<swElidableToolButton*>(mPropertyWidgets[static_cast<int>(PropertyId)].Editor);
+	swElidableToolButton* PartIdButton = qobject_cast<swElidableToolButton*>(mPropertyWidgets[static_cast<int>(PropertyId)].Editor);
 
-	if (!PieceIdButton)
+	if (!PartIdButton)
 		return;
 
-	QSignalBlocker Blocker(PieceIdButton);
+	QSignalBlocker Blocker(PartIdButton);
 	QVariant Value;
 	bool Partial;
 
 	std::tie(Value, Partial) = GetUpdateValue(PropertyId);
 
-	swPieceData* PieceData = static_cast<swPieceData*>(Value.value<void*>());
+	swPartData* PartData = static_cast<swPartData*>(Value.value<void*>());
 
 	if (Partial)
-		PieceIdButton->setText(tr("Multiple Pieces"));
-	else if (PieceData)
-		PieceIdButton->setText(PieceData->m_strDescription);
+		PartIdButton->setText(tr("Multiple Parts"));
+	else if (PartData)
+		PartIdButton->setText(PartData->m_strDescription);
 	else
-		PieceIdButton->setText(tr("Piece"));
+		PartIdButton->setText(tr("Part"));
 
 	UpdateKeyFrameWidget(PropertyId);
 }
 
-void swPropertiesWidget::PieceIdButtonClicked()
+void swPropertiesWidget::PartIdButtonClicked()
 {
-	QToolButton* PieceIdButton = qobject_cast<QToolButton*>(sender());
-	swObjectPropertyId PropertyId = GetEditorWidgetPropertyId(PieceIdButton);
+	QToolButton* PartIdButton = qobject_cast<QToolButton*>(sender());
+	swObjectPropertyId PropertyId = GetEditorWidgetPropertyId(PartIdButton);
 
-	if (!PieceIdButton)
+	if (!PartIdButton)
 		return;
 
 	QVariant Value;
@@ -932,23 +932,23 @@ void swPropertiesWidget::PieceIdButtonClicked()
 
 	std::tie(Value, Partial) = GetUpdateValue(PropertyId);
 
-	swPieceData* PieceData = Partial ? nullptr : static_cast<swPieceData*>(Value.value<void*>());
+	swPartData* PartData = Partial ? nullptr : static_cast<swPartData*>(Value.value<void*>());
 
-	std::tie(Value, Partial) = GetUpdateValue(swObjectPropertyId::PieceColor);
+	std::tie(Value, Partial) = GetUpdateValue(swObjectPropertyId::PartColor);
 
 	int ColorIndex = Partial ? gDefaultColor : Value.toInt();
 
-	std::optional<swPieceData*> Result = swShowPieceSelectionPopup(PieceData, std::vector<std::pair<swPieceData*, std::string>>(), ColorIndex, PieceIdButton, PieceIdButton->mapToGlobal(PieceIdButton->rect().bottomLeft()));
+	std::optional<swPartData*> Result = swShowPartSelectionPopup(PartData, std::vector<std::pair<swPartData*, std::string>>(), ColorIndex, PartIdButton, PartIdButton->mapToGlobal(PartIdButton->rect().bottomLeft()));
 
 	if (Result.has_value())
 	{
 		swModel* Model = gMainWindow->GetActiveModel();
-		PieceData = Result.value();
+		PartData = Result.value();
 
-		if (!Model || !PieceData)
+		if (!Model || !PartData)
 			return;
 
-		Model->SetObjectsProperty(mFocusObject ? std::vector<swObject*>{ mFocusObject } : mSelection, PropertyId, QVariant::fromValue<void*>(PieceData));
+		Model->SetObjectsProperty(mFocusObject ? std::vector<swObject*>{ mFocusObject } : mSelection, PropertyId, QVariant::fromValue<void*>(PartData));
 	}
 }
 
@@ -1156,8 +1156,8 @@ QLineEdit* swPropertiesWidget::CreateStepNumberEditor(swObjectPropertyId Propert
 
 	connect(Widget, &QLineEdit::editingFinished, this, &swPropertiesWidget::StepNumberChanged);
 
-	// An empty removal step keeps the piece for the rest of the model.
-	if (PropertyId == swObjectPropertyId::PieceStepHide)
+	// An empty removal step keeps the part for the rest of the model.
+	if (PropertyId == swObjectPropertyId::PartStepHide)
 		Widget->setPlaceholderText(tr("Never"));
 
 	return Widget;
@@ -1217,7 +1217,7 @@ QToolButton* swPropertiesWidget::CreateToggleEditor(swObjectPropertyId PropertyI
 	return Widget;
 }
 
-QToolButton* swPropertiesWidget::CreatePieceIdEditor(swObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip)
+QToolButton* swPropertiesWidget::CreatePartIdEditor(swObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip)
 {
 	swElidableToolButton* Widget = new swElidableToolButton(this);
 	RegisterEditor(PropertyId, Widget, Name, ToolTip);
@@ -1225,12 +1225,12 @@ QToolButton* swPropertiesWidget::CreatePieceIdEditor(swObjectPropertyId Property
 	swSetupPanelButton(Widget);
 	Widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-	connect(Widget, &QToolButton::clicked, this, &swPropertiesWidget::PieceIdButtonClicked);
+	connect(Widget, &QToolButton::clicked, this, &swPropertiesWidget::PartIdButtonClicked);
 
 	return Widget;
 }
 
-QToolButton* swPropertiesWidget::CreatePieceColorEditor(swObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip)
+QToolButton* swPropertiesWidget::CreatePartColorEditor(swObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip)
 {
 	QToolButton* Widget = new QToolButton(this);
 	RegisterEditor(PropertyId, Widget, Name, ToolTip);
@@ -1238,7 +1238,7 @@ QToolButton* swPropertiesWidget::CreatePieceColorEditor(swObjectPropertyId Prope
 	swSetupPanelButton(Widget);
 	Widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-	connect(Widget, &QToolButton::clicked, this, &swPropertiesWidget::PieceColorButtonClicked);
+	connect(Widget, &QToolButton::clicked, this, &swPropertiesWidget::PartColorButtonClicked);
 
 	return Widget;
 }
@@ -1325,7 +1325,7 @@ void swPropertiesWidget::AddIdentityRow(IdentityIndex Index, QWidget* Editor, sw
 	}
 
 	// Objects with a color open the same color choice from the block.
-	if (PropertyId == swObjectPropertyId::PieceColor || PropertyId == swObjectPropertyId::LightColor)
+	if (PropertyId == swObjectPropertyId::PartColor || PropertyId == swObjectPropertyId::LightColor)
 	{
 		Block.Swatch->setAttribute(Qt::WA_TransparentForMouseEvents, false);
 		Block.Swatch->setToolTip(Editor->toolTip());
@@ -1354,15 +1354,15 @@ void swPropertiesWidget::CreateWidgets()
 	QVBoxLayout* StepRowsLayout = new QVBoxLayout(mStepRows);
 	StepRowsLayout->setContentsMargins(0, 0, 0, 0);
 
-	AddCategory(CategoryIndex::Piece, tr("Piece"), false);
+	AddCategory(CategoryIndex::Part, tr("Part"), false);
 
-	AddIdentityRow(IdentityIndex::Piece, CreatePieceIdEditor(swObjectPropertyId::PieceId, tr("Piece"), tr("Piece ID")));
-	AddIdentityRow(IdentityIndex::Piece, CreatePieceColorEditor(swObjectPropertyId::PieceColor, tr("Color"), tr("Piece color")));
+	AddIdentityRow(IdentityIndex::Part, CreatePartIdEditor(swObjectPropertyId::PartId, tr("Part"), tr("Part ID")));
+	AddIdentityRow(IdentityIndex::Part, CreatePartColorEditor(swObjectPropertyId::PartColor, tr("Color"), tr("Part color")));
 
 	AddValueRow(mStepRows, tr("S"), tr("Steps"),
 	{
-		{ CreateStepNumberEditor(swObjectPropertyId::PieceStepShow, tr("Added in Step"), tr("Added in Step: Step when the piece is added to the model")) },
-		{ CreateStepNumberEditor(swObjectPropertyId::PieceStepHide, tr("Removed in Step"), tr("Removed in Step: Step when the piece is removed from the model, leave empty to keep it until the end")) }
+		{ CreateStepNumberEditor(swObjectPropertyId::PartStepShow, tr("Added in Step"), tr("Added in Step: Step when the part is added to the model")) },
+		{ CreateStepNumberEditor(swObjectPropertyId::PartStepHide, tr("Removed in Step"), tr("Removed in Step: Step when the part is removed from the model, leave empty to keep it until the end")) }
 	});
 
 	AddCategory(CategoryIndex::Camera, tr("Camera"), false);
@@ -1465,17 +1465,17 @@ void swPropertiesWidget::SetLayoutMode(LayoutMode Mode)
 		return;
 
 	mLayoutMode = Mode;
-	const bool IsPiece = (mLayoutMode == LayoutMode::Piece);
+	const bool IsPart = (mLayoutMode == LayoutMode::Part);
 	const bool IsCamera = (mLayoutMode == LayoutMode::Camera);
 	const bool IsLight = (mLayoutMode == LayoutMode::Light);
 
-	SetCategoryVisible(CategoryIndex::Piece, IsPiece);
+	SetCategoryVisible(CategoryIndex::Part, IsPart);
 	SetCategoryVisible(CategoryIndex::Camera, IsCamera);
 	SetCategoryVisible(CategoryIndex::CameraTransform, IsCamera);
 	SetCategoryVisible(CategoryIndex::Light, IsLight);
 	SetCategoryVisible(CategoryIndex::LightBlender, IsLight);
 	SetCategoryVisible(CategoryIndex::LightPOVRay, IsLight);
-	SetCategoryVisible(CategoryIndex::ObjectTransform, IsPiece || IsLight);
+	SetCategoryVisible(CategoryIndex::ObjectTransform, IsPart || IsLight);
 
 	for (IdentityBlock& Block : mIdentityBlocks)
 		UpdateIdentityBlock(Block);
@@ -1505,21 +1505,21 @@ void swPropertiesWidget::SetCategoryVisible(CategoryIndex Index, bool Visible)
 
 void swPropertiesWidget::SetEmpty()
 {
-	// Keep the piece rows on screen, disabled, so the panel keeps its height.
-	SetPiece({}, nullptr);
+	// Keep the part rows on screen, disabled, so the panel keeps its height.
+	SetPart({}, nullptr);
 	setEnabled(false);
 
 	mFocusObject = nullptr;
 	mSelection.clear();
 }
 
-void swPropertiesWidget::SetPiece(const std::vector<swObject*>& Selection, swObject* Focus)
+void swPropertiesWidget::SetPart(const std::vector<swObject*>& Selection, swObject* Focus)
 {
-	SetLayoutMode(LayoutMode::Piece);
+	SetLayoutMode(LayoutMode::Part);
 
-	swPiece* Piece = dynamic_cast<swPiece*>(Focus);
+	swPart* Part = dynamic_cast<swPart*>(Focus);
 	mSelection = Selection;
-	mFocusObject = Piece;
+	mFocusObject = Part;
 
 	swVector3 Position;
 	swMatrix33 RelativeRotation;
@@ -1536,8 +1536,8 @@ void swPropertiesWidget::SetPiece(const std::vector<swObject*>& Selection, swObj
 
 	swVector3 Rotation;
 
-	if (Piece)
-		Rotation = swMatrix44ToEulerAngles(Piece->mModelWorld) * SW_RADIANS_TO_DEGREES;
+	if (Part)
+		Rotation = swMatrix44ToEulerAngles(Part->mModelWorld) * SW_RADIANS_TO_DEGREES;
 	else
 		Rotation = swVector3(0.0f, 0.0f, 0.0f);
 
@@ -1548,44 +1548,44 @@ void swPropertiesWidget::SetPiece(const std::vector<swObject*>& Selection, swObj
 	swStep StepShow = 1;
 	swStep StepHide = SW_STEP_MAXIMUM;
 
-	if (Piece)
+	if (Part)
 	{
-		StepShow = Piece->GetStepShow();
-		StepHide = Piece->GetStepHide();
+		StepShow = Part->GetStepShow();
+		StepHide = Part->GetStepHide();
 	}
 	else
 	{
-		bool FirstPiece = true;
+		bool FirstPart = true;
 
 		for (swObject* Object : Selection)
 		{
-			if (!Object->IsPiece())
+			if (!Object->IsPart())
 				continue;
 
-			swPiece* SelectedPiece = (swPiece*)Object;
+			swPart* SelectedPart = (swPart*)Object;
 
-			if (FirstPiece)
+			if (FirstPart)
 			{
-				StepShow = SelectedPiece->GetStepShow();
-				StepHide = SelectedPiece->GetStepHide();
+				StepShow = SelectedPart->GetStepShow();
+				StepHide = SelectedPart->GetStepHide();
 
-				FirstPiece = false;
+				FirstPart = false;
 			}
 			else
 			{
-				if (SelectedPiece->GetStepShow() != StepShow)
+				if (SelectedPart->GetStepShow() != StepShow)
 					StepShow = 0;
 
-				if (SelectedPiece->GetStepHide() != StepHide)
+				if (SelectedPart->GetStepHide() != StepHide)
 					StepHide = 0;
 			}
 		}
 	}
 
-	UpdatePieceId(swObjectPropertyId::PieceId);
-	UpdatePieceColor(swObjectPropertyId::PieceColor);
-	UpdateStepNumber(swObjectPropertyId::PieceStepShow, StepShow ? StepShow : SW_STEP_MAXIMUM, 1, StepHide - 1);
-	UpdateStepNumber(swObjectPropertyId::PieceStepHide, StepHide ? StepHide : SW_STEP_MAXIMUM, StepShow + 1, SW_STEP_MAXIMUM);
+	UpdatePartId(swObjectPropertyId::PartId);
+	UpdatePartColor(swObjectPropertyId::PartColor);
+	UpdateStepNumber(swObjectPropertyId::PartStepShow, StepShow ? StepShow : SW_STEP_MAXIMUM, 1, StepHide - 1);
+	UpdateStepNumber(swObjectPropertyId::PartStepHide, StepHide ? StepHide : SW_STEP_MAXIMUM, StepShow + 1, SW_STEP_MAXIMUM);
 }
 
 void swPropertiesWidget::SetCamera(const std::vector<swObject*>& Selection, swObject* Focus)
@@ -1795,8 +1795,8 @@ void swPropertiesWidget::Update(const std::vector<swObject*>& Selection, swObjec
 	{
 		switch (Focus->GetType())
 		{
-		case swObjectType::Piece:
-			Mode = LayoutMode::Piece;
+		case swObjectType::Part:
+			Mode = LayoutMode::Part;
 			break;
 
 		case swObjectType::Camera:
@@ -1814,10 +1814,10 @@ void swPropertiesWidget::Update(const std::vector<swObject*>& Selection, swObjec
 		{
 			switch (Selection[ObjectIdx]->GetType())
 			{
-			case swObjectType::Piece:
+			case swObjectType::Part:
 				if (Mode == LayoutMode::Empty)
-					Mode = LayoutMode::Piece;
-				else if (Mode != LayoutMode::Piece)
+					Mode = LayoutMode::Part;
+				else if (Mode != LayoutMode::Part)
 				{
 					Mode = LayoutMode::Multiple;
 					ObjectIdx = Selection.size();
@@ -1855,8 +1855,8 @@ void swPropertiesWidget::Update(const std::vector<swObject*>& Selection, swObjec
 		SetEmpty();
 		break;
 
-	case LayoutMode::Piece:
-		SetPiece(Selection, Focus);
+	case LayoutMode::Part:
+		SetPart(Selection, Focus);
 		break;
 
 	case LayoutMode::Camera:

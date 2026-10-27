@@ -51,7 +51,7 @@ swInstructionsDialog::swInstructionsDialog(QWidget* Parent, Project* Project)
 	connect(mPageListWidget->mThumbnailsWidget, &QListWidget::currentRowChanged, this, &swInstructionsDialog::CurrentThumbnailChanged);
 	UpdatePageList();
 
-	// the pages panel snaps to its longest page name like the categories of the pieces panel
+	// the pages panel snaps to its longest page name like the categories of the parts panel
 	mPageListWidget->installEventFilter(this);
 	installEventFilter(this);
 	connect(mPageListWidget, &QDockWidget::dockLocationChanged, this, [this]()

@@ -1,7 +1,7 @@
 #include "sw_global.h"
 #include "sw_scene.h"
 #include "sw_context.h"
-#include "sw_data_piece.h"
+#include "sw_data_part.h"
 #include "sw_texture.h"
 #include "sw_library.h"
 #include "sw_application.h"
@@ -29,9 +29,9 @@ void swScene::Begin(const swMatrix44& ViewMatrix)
 	mInterfaceObjects.clear();
 
 	const swPreferences& Preferences = swGetPreferences();
-	mHighlightColor = swVector4FromColor(Preferences.mHighlightNewPiecesColor);
+	mHighlightColor = swVector4FromColor(Preferences.mHighlightNewPartsColor);
 	mFadeColor = swVector4FromColor(Preferences.mFadeStepsColor);
-	mHasFadedPieces = false;
+	mHasFadedParts = false;
 	mTranslucentFade = mFadeColor.w != 1.0f;
 }
 
@@ -75,7 +75,7 @@ void swScene::AddMesh(swMesh* Mesh, const swMatrix44& WorldMatrix, int ColorInde
 	const bool ForceTranslucent = (mTranslucentFade && State == swRenderMeshState::Faded);
 	const bool Translucent = swIsColorTranslucent(ColorIndex) || ForceTranslucent;
 	const swMeshFlags Flags = Mesh->mFlags;
-	mHasFadedPieces |= State == swRenderMeshState::Faded;
+	mHasFadedParts |= State == swRenderMeshState::Faded;
 
 	if ((Flags & (swMeshFlag::HasSolid | swMeshFlag::HasLines)) || ((Flags & swMeshFlag::HasDefault) && !Translucent))
 		mOpaqueMeshes.emplace_back(static_cast<int>(mRenderMeshes.size()) - 1);
@@ -436,7 +436,7 @@ void swScene::DrawTranslucentMeshes(swContext* Context, bool DrawLit, bool DrawF
 void swScene::Draw(swContext* Context, const std::function<void()>& PreTranslucentCallback) const
 {
 	// TODO: find a better place for these updates
-	swGetPiecesLibrary()->UpdateBuffers(Context);
+	swGetPartsLibrary()->UpdateBuffers(Context);
 
 	Context->SetViewMatrix(mViewMatrix);
 	Context->SetLightingStyle(mLightingStyle);
@@ -463,7 +463,7 @@ void swScene::Draw(swContext* Context, const std::function<void()>& PreTransluce
 	{
 		const int SolidPrimitiveTypes = SW_MESH_TRIANGLES | SW_MESH_TEXTURED_TRIANGLES | (DrawLines ? SW_MESH_LINES : 0);
 
-		if (mTranslucentFade && mHasFadedPieces)
+		if (mTranslucentFade && mHasFadedParts)
 		{
 			DrawOpaqueMeshes(Context, false, SolidPrimitiveTypes, false, true);
 
@@ -495,7 +495,7 @@ void swScene::Draw(swContext* Context, const std::function<void()>& PreTransluce
 	}
 	else
 	{
-		if (mTranslucentFade && mHasFadedPieces)
+		if (mTranslucentFade && mHasFadedParts)
 		{
 			DrawOpaqueMeshes(Context, true, SW_MESH_TRIANGLES | SW_MESH_TEXTURED_TRIANGLES, false, true);
 
@@ -547,7 +547,7 @@ bool swScene::HasSelectedMeshes() const
 bool swScene::CanReuseSceneDepth() const
 {
 	// Faded depth prepasses and insertion previews should not obscure selection.
-	if (mTranslucentFade && mHasFadedPieces)
+	if (mTranslucentFade && mHasFadedParts)
 		return false;
 
 	return std::none_of(mRenderMeshes.begin(), mRenderMeshes.end(), [](const swRenderMesh& Mesh)

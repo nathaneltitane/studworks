@@ -7,7 +7,7 @@ void swTests::LastKeyFrameTracksTimeEdits()
 	swObjectProperty<float> Position(0.0f);
 	QCOMPARE(Position.GetLastKeyFrame(), swStep(0));
 
-	// Animation can extend past the step that introduces the piece.
+	// Animation can extend past the step that introduces the part.
 	QVERIFY(Position.ChangeKey(0.0f, 1, true));
 	QVERIFY(Position.ChangeKey(200.0f, 2, true));
 	QCOMPARE(Position.GetLastKeyFrame(), swStep(2));

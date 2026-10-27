@@ -3,7 +3,7 @@
 #include "sw_application.h"
 #include "sw_library.h"
 #include "sw_model.h"
-#include "sw_data_piece.h"
+#include "sw_data_part.h"
 #include "sw_string.h"
 #include <QPrintDialog>
 
@@ -545,64 +545,64 @@ bool swTreeWidgetColumnStretcher::eventFilter(QObject* Object, QEvent* Event)
 	return false;
 }
 
-swPieceIdStringModel::swPieceIdStringModel(swModel* Model, QObject* Parent)
+swPartIdStringModel::swPartIdStringModel(swModel* Model, QObject* Parent)
 	: QAbstractListModel(Parent)
 {
-	swPiecesLibrary* Library = swGetPiecesLibrary();
-	mSortedPieces = Library->GetPieces();
+	swPartsLibrary* Library = swGetPartsLibrary();
+	mSortedParts = Library->GetParts();
 
-	mSortedPieces.erase(std::remove_if(mSortedPieces.begin(), mSortedPieces.end(), [Model](swPieceData* PieceData)
+	mSortedParts.erase(std::remove_if(mSortedParts.begin(), mSortedParts.end(), [Model](swPartData* PartData)
 	{
-		return PieceData->IsModel() && PieceData->GetModel()->IncludesModel(Model);
-	}), mSortedPieces.end());
+		return PartData->IsModel() && PartData->GetModel()->IncludesModel(Model);
+	}), mSortedParts.end());
 
-	auto PieceCompare = [](swPieceData* PieceData1, swPieceData* PieceData2)
+	auto PartCompare = [](swPartData* PartData1, swPartData* PartData2)
 	{
-		return strcmp(PieceData1->m_strDescription, PieceData2->m_strDescription) < 0;
+		return strcmp(PartData1->m_strDescription, PartData2->m_strDescription) < 0;
 	};
 
-	std::sort(mSortedPieces.begin(), mSortedPieces.end(), PieceCompare);
+	std::sort(mSortedParts.begin(), mSortedParts.end(), PartCompare);
 }
 
-QModelIndex swPieceIdStringModel::Index(swPieceData* PieceData) const
+QModelIndex swPartIdStringModel::Index(swPartData* PartData) const
 {
-	for (size_t PieceDataIndex = 0; PieceDataIndex < mSortedPieces.size(); PieceDataIndex++)
-		if (mSortedPieces[PieceDataIndex] == PieceData)
-			return index(static_cast<int>(PieceDataIndex), 0);
+	for (size_t PartDataIndex = 0; PartDataIndex < mSortedParts.size(); PartDataIndex++)
+		if (mSortedParts[PartDataIndex] == PartData)
+			return index(static_cast<int>(PartDataIndex), 0);
 
 	return QModelIndex();
 }
 
-std::vector<bool> swPieceIdStringModel::GetFilteredRows(const QString& FilterText) const
+std::vector<bool> swPartIdStringModel::GetFilteredRows(const QString& FilterText) const
 {
 	const std::string Text = FilterText.toStdString();
-	std::vector<bool> FilteredRows(mSortedPieces.size());
+	std::vector<bool> FilteredRows(mSortedParts.size());
 
-	for (size_t PieceDataIndex = 0; PieceDataIndex < mSortedPieces.size(); PieceDataIndex++)
+	for (size_t PartDataIndex = 0; PartDataIndex < mSortedParts.size(); PartDataIndex++)
 	{
-		const swPieceData* PieceData = mSortedPieces[PieceDataIndex];
+		const swPartData* PartData = mSortedParts[PartDataIndex];
 
-		FilteredRows[PieceDataIndex] = (swstrcasestr(PieceData->m_strDescription, Text.c_str()) || swstrcasestr(PieceData->mFileName, Text.c_str()));
+		FilteredRows[PartDataIndex] = (swstrcasestr(PartData->m_strDescription, Text.c_str()) || swstrcasestr(PartData->mFileName, Text.c_str()));
 	}
 
 	return FilteredRows;
 }
 
-int swPieceIdStringModel::rowCount(const QModelIndex& Parent) const
+int swPartIdStringModel::rowCount(const QModelIndex& Parent) const
 {
 	Q_UNUSED(Parent);
 
-	return static_cast<int>(mSortedPieces.size());
+	return static_cast<int>(mSortedParts.size());
 }
 
-QVariant swPieceIdStringModel::data(const QModelIndex& Index, int Role) const
+QVariant swPartIdStringModel::data(const QModelIndex& Index, int Role) const
 {
-	if (Index.row() < static_cast<int>(mSortedPieces.size()))
+	if (Index.row() < static_cast<int>(mSortedParts.size()))
 	{
 		if (Role == Qt::DisplayRole)
-			return QString::fromLatin1(mSortedPieces[Index.row()]->m_strDescription);
+			return QString::fromLatin1(mSortedParts[Index.row()]->m_strDescription);
 		else if (Role == Qt::UserRole)
-			return QVariant::fromValue(reinterpret_cast<void*>(mSortedPieces[Index.row()]));
+			return QVariant::fromValue(reinterpret_cast<void*>(mSortedParts[Index.row()]));
 	}
 
 	return QVariant();

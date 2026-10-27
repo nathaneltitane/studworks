@@ -17,14 +17,14 @@ QString swObject::GetCheckpointString(swObjectPropertyId PropertyId)
 {
 	switch (PropertyId)
 	{
-	case swObjectPropertyId::PieceId:
-		return QT_TRANSLATE_NOOP("Checkpoint", "Change Piece");
+	case swObjectPropertyId::PartId:
+		return QT_TRANSLATE_NOOP("Checkpoint", "Change Part");
 
-	case swObjectPropertyId::PieceColor:
-		return QT_TRANSLATE_NOOP("Checkpoint", "Change Piece Color");
+	case swObjectPropertyId::PartColor:
+		return QT_TRANSLATE_NOOP("Checkpoint", "Change Part Color");
 
-	case swObjectPropertyId::PieceStepShow:
-	case swObjectPropertyId::PieceStepHide:
+	case swObjectPropertyId::PartStepShow:
+	case swObjectPropertyId::PartStepHide:
 		break;
 
 	case swObjectPropertyId::CameraName:

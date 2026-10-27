@@ -36,7 +36,7 @@ class swScene
 public:
 	swScene();
 
-	void SetActiveSubmodelInstance(swPiece* ActiveSubmodelInstance, const swMatrix44& ActiveSubmodelTransform, const std::vector<swModel*>& ModelEditingPath)
+	void SetActiveSubmodelInstance(swPart* ActiveSubmodelInstance, const swMatrix44& ActiveSubmodelTransform, const std::vector<swModel*>& ModelEditingPath)
 	{
 		mActiveSubmodelInstance = ActiveSubmodelInstance;
 		mActiveSubmodelTransform = ActiveSubmodelTransform;
@@ -48,7 +48,7 @@ public:
 		return mDrawInterface && mActiveSubmodelInstance && std::find(mModelEditingPath.begin(), mModelEditingPath.end(), Model) != mModelEditingPath.end();
 	}
 
-	swPiece* GetActiveSubmodelInstance() const
+	swPart* GetActiveSubmodelInstance() const
 	{
 		return mActiveSubmodelInstance;
 	}
@@ -183,7 +183,7 @@ protected:
 
 	swMatrix44 mViewMatrix;
 	swMatrix44 mActiveSubmodelTransform;
-	swPiece* mActiveSubmodelInstance = nullptr;
+	swPart* mActiveSubmodelInstance = nullptr;
 	std::vector<swModel*> mModelEditingPath;
 	swShadingMode mShadingMode;
 	swLightingStyle mLightingStyle;
@@ -201,7 +201,7 @@ protected:
 
 	swVector4 mFadeColor;
 	swVector4 mHighlightColor;
-	bool mHasFadedPieces = false;
+	bool mHasFadedParts = false;
 	bool mTranslucentFade = false;
 
 	std::vector<swRenderMesh> mRenderMeshes;

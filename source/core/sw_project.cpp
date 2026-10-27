@@ -2,8 +2,8 @@
 #include "sw_math.h"
 #include "sw_mesh.h"
 #include "sw_widget_preview.h"
-#include "sw_object_piece.h"
-#include "sw_data_piece.h"
+#include "sw_object_part.h"
+#include "sw_data_part.h"
 #include "sw_object_camera.h"
 #include "sw_project.h"
 #include "sw_instructions.h"
@@ -27,7 +27,7 @@ Project::Project(bool IsPreview)
 {
 	mModified = false;
 	mActiveModel = new swModel(tr(mIsPreview ? "Preview.ldr" : "New Model.ldr"), this, mIsPreview);
-	mActiveModel->CreatePieceData(this);
+	mActiveModel->CreatePartData(this);
 	mActiveModel->SetSaved();
 	mModels.emplace_back(mActiveModel);
 
@@ -50,54 +50,54 @@ Project::Project(bool IsPreview)
 Project::~Project()
 {
 	mModels.clear();
-	swGetPiecesLibrary()->ReleaseProjectPieceData(this);
+	swGetPartsLibrary()->ReleaseProjectPartData(this);
 }
 
-swPieceData* Project::FindPieceData(const std::string& Name) const
+swPartData* Project::FindPartData(const std::string& Name) const
 {
-	const std::map<std::string, swPieceData*>::const_iterator It = mPieceIndex.find(Name);
+	const std::map<std::string, swPartData*>::const_iterator It = mPartIndex.find(Name);
 
-	return It == mPieceIndex.end() ? nullptr : It->second;
+	return It == mPartIndex.end() ? nullptr : It->second;
 }
 
-void Project::RegisterPieceData(const std::string& Name, swPieceData* PieceData)
+void Project::RegisterPartData(const std::string& Name, swPartData* PartData)
 {
-	mPieceIndex[Name] = PieceData;
+	mPartIndex[Name] = PartData;
 }
 
-void Project::UnregisterPieceData(swPieceData* PieceData)
+void Project::UnregisterPartData(swPartData* PartData)
 {
-	for (std::map<std::string, swPieceData*>::iterator It = mPieceIndex.begin(); It != mPieceIndex.end();)
+	for (std::map<std::string, swPartData*>::iterator It = mPartIndex.begin(); It != mPartIndex.end();)
 	{
-		if (It->second == PieceData)
-			It = mPieceIndex.erase(It);
+		if (It->second == PartData)
+			It = mPartIndex.erase(It);
 		else
 			It++;
 	}
 }
 
-void Project::ClearPieceDataIndex()
+void Project::ClearPartDataIndex()
 {
-	mPieceIndex.clear();
+	mPartIndex.clear();
 }
 
-void Project::TransferPieceDataIndexTo(Project* Destination)
+void Project::TransferPartDataIndexTo(Project* Destination)
 {
-	for (const std::map<std::string, swPieceData*>::value_type& Entry : mPieceIndex)
+	for (const std::map<std::string, swPartData*>::value_type& Entry : mPartIndex)
 	{
-		if (!Destination->FindPieceData(Entry.first))
-			Destination->RegisterPieceData(Entry.first, Entry.second);
+		if (!Destination->FindPartData(Entry.first))
+			Destination->RegisterPartData(Entry.first, Entry.second);
 	}
 
-	mPieceIndex.clear();
+	mPartIndex.clear();
 }
 
-bool Project::CanShareMergePieceData(const swPieceData* Existing, const swPieceData* Incoming)
+bool Project::CanShareMergePartData(const swPartData* Existing, const swPartData* Incoming)
 {
 	if (Existing == Incoming)
 		return true;
 
-	if (Existing->IsLibraryPiece() || Incoming->IsLibraryPiece() || Existing->IsModel() || Incoming->IsModel())
+	if (Existing->IsLibraryPart() || Incoming->IsLibraryPart() || Existing->IsModel() || Incoming->IsModel())
 		return false;
 
 	// The callers have already matched filenames. Two missing part references
@@ -181,7 +181,7 @@ void Project::SetActiveModel(swModel* ActiveModel, bool UpdateInterface)
 		std::vector<swModel*> UpdatedModels;
 		UpdatedModels.reserve(mModels.size());
 		for (const std::unique_ptr<swModel> &Model : mModels)
-			Model->UpdatePieceData(UpdatedModels);
+			Model->UpdatePartData(UpdatedModels);
 	}
 
 	mActiveModel = ActiveModel;
@@ -273,14 +273,14 @@ QString Project::GetNewModelName(QWidget* ParentWidget, const QString& DialogTit
 
 		if (!CurrentName.isEmpty())
 		{
-			const std::string PieceName = swPiecesLibrary::NormalizePieceDataName(Name.toLatin1().constData());
-			swPieceData* ExistingPiece = FindPieceData(PieceName);
+			const std::string PartName = swPartsLibrary::NormalizePartDataName(Name.toLatin1().constData());
+			swPartData* ExistingPart = FindPartData(PartName);
 			swModel* CurrentModel = GetModel(CurrentName);
 
-			if (ExistingPiece && (!CurrentModel || ExistingPiece != CurrentModel->GetPieceData()) &&
-				(!ExistingPiece->IsModel() || ExistingModels.contains(Name, Qt::CaseInsensitive)))
+			if (ExistingPart && (!CurrentModel || ExistingPart != CurrentModel->GetPartData()) &&
+				(!ExistingPart->IsModel() || ExistingModels.contains(Name, Qt::CaseInsensitive)))
 			{
-				QMessageBox::information(ParentWidget, DialogTitle, tr("A piece named '%1' already exists in this model. Please enter a unique name.").arg(Name));
+				QMessageBox::information(ParentWidget, DialogTitle, tr("A part named '%1' already exists in this model. Please enter a unique name.").arg(Name));
 				continue;
 			}
 		}
@@ -305,7 +305,7 @@ swModel* Project::CreateNewModel(bool ShowModel)
 
 	mModified = true;
 	swModel* Model = new swModel(Name, this, false);
-	Model->CreatePieceData(this);
+	Model->CreatePartData(this);
 	Model->SetSaved();
 	mModels.emplace_back(Model);
 
@@ -336,9 +336,9 @@ void Project::ShowModelListDialog()
 
 	std::vector<std::unique_ptr<swModel>> NewModels;
 	std::vector<swModelListDialogEntry> Results = Dialog.GetResults();
-	std::vector<std::pair<swPieceData*, swPieceData*>> Replacements;
+	std::vector<std::pair<swPartData*, swPartData*>> Replacements;
 	std::vector<swModel*> ChangedModels;
-	std::vector<swModelPieceRename> Renames;
+	std::vector<swModelPartRename> Renames;
 	std::set<std::string> FinalNames;
 	int ModelIndex = Dialog.GetActiveModelIndex();
 
@@ -360,25 +360,25 @@ void Project::ShowModelListDialog()
 	// Validate the final names before changing any model or index entry.
 	for (const swModelListDialogEntry& Entry : Results)
 	{
-		const std::string Name = swPiecesLibrary::NormalizePieceDataName(Entry.Name.toLatin1().constData());
+		const std::string Name = swPartsLibrary::NormalizePartDataName(Entry.Name.toLatin1().constData());
 
 		if (!FinalNames.insert(Name).second)
 		{
-			QMessageBox::information(gMainWindow, tr("Submodels"), tr("A piece named '%1' already exists in this model.").arg(Entry.Name));
+			QMessageBox::information(gMainWindow, tr("Submodels"), tr("A part named '%1' already exists in this model.").arg(Entry.Name));
 			return;
 		}
 
 		if (!Entry.ExistingModel || Entry.ExistingModel->GetFileName() == Entry.Name)
 			continue;
 
-		swPieceData* Occupant = FindPieceData(Name);
+		swPartData* Occupant = FindPartData(Name);
 
-		if (!Occupant || Occupant == Entry.ExistingModel->GetPieceData())
+		if (!Occupant || Occupant == Entry.ExistingModel->GetPartData())
 			continue;
 
 		const bool Vacated = std::any_of(mModels.begin(), mModels.end(), [&Results, Occupant, &Name](const std::unique_ptr<swModel>& OldModel)
 		{
-			if (OldModel->GetPieceData() != Occupant)
+			if (OldModel->GetPartData() != Occupant)
 				return false;
 
 			const std::vector<swModelListDialogEntry>::const_iterator Result = std::find_if(Results.begin(), Results.end(), [OldModel = OldModel.get()](const swModelListDialogEntry& CheckEntry)
@@ -386,12 +386,12 @@ void Project::ShowModelListDialog()
 				return CheckEntry.ExistingModel == OldModel;
 			});
 
-			return Result == Results.end() || swPiecesLibrary::NormalizePieceDataName(Result->Name.toLatin1().constData()) != Name;
+			return Result == Results.end() || swPartsLibrary::NormalizePartDataName(Result->Name.toLatin1().constData()) != Name;
 		});
 
 		if (!Vacated)
 		{
-			QMessageBox::information(gMainWindow, tr("Submodels"), tr("A piece named '%1' already exists in this model.").arg(Entry.Name));
+			QMessageBox::information(gMainWindow, tr("Submodels"), tr("A part named '%1' already exists in this model.").arg(Entry.Name));
 			return;
 		}
 	}
@@ -408,28 +408,28 @@ void Project::ShowModelListDialog()
 		if (Kept != Results.end())
 		{
 			if (Kept->Name != Model->GetFileName())
-				UnregisterPieceData(Model->GetPieceData());
+				UnregisterPartData(Model->GetPartData());
 
 			continue;
 		}
 
-		const std::string OldName = swPiecesLibrary::NormalizePieceDataName(Model->GetFileName().toLatin1().constData());
+		const std::string OldName = swPartsLibrary::NormalizePartDataName(Model->GetFileName().toLatin1().constData());
 
 		for (const swModelListDialogEntry& Entry : Results)
 		{
-			if (swPiecesLibrary::NormalizePieceDataName(Entry.Name.toLatin1().constData()) != OldName)
+			if (swPartsLibrary::NormalizePartDataName(Entry.Name.toLatin1().constData()) != OldName)
 				continue;
 
-			// A new model can reuse this swPieceData. A renamed model keeps its own
-			// swPieceData, so references to the deleted model are rebound below.
-			swGetPiecesLibrary()->InvalidatePieceDataLoad(OldModel->GetPieceData());
-			OldModel->GetPieceData()->DetachContainer();
-			OldModel->GetPieceData()->SetFailed(tr("Model '%1' was deleted.").arg(Model->GetFileName()));
+			// A new model can reuse this swPartData. A renamed model keeps its own
+			// swPartData, so references to the deleted model are rebound below.
+			swGetPartsLibrary()->InvalidatePartDataLoad(OldModel->GetPartData());
+			OldModel->GetPartData()->DetachContainer();
+			OldModel->GetPartData()->SetFailed(tr("Model '%1' was deleted.").arg(Model->GetFileName()));
 
 			if (Entry.ExistingModel)
 			{
-				UnregisterPieceData(OldModel->GetPieceData());
-				Replacements.emplace_back(OldModel->GetPieceData(), Entry.ExistingModel->GetPieceData());
+				UnregisterPartData(OldModel->GetPartData());
+				Replacements.emplace_back(OldModel->GetPartData(), Entry.ExistingModel->GetPartData());
 			}
 
 			break;
@@ -446,14 +446,14 @@ void Project::ShowModelListDialog()
 
 		const QString OldName = Model->GetFileName();
 
-		if (!swGetPiecesLibrary()->RenameModelPieceData(Model->GetPieceData(), Entry.Name.toLatin1().constData()))
+		if (!swGetPartsLibrary()->RenameModelPartData(Model->GetPartData(), Entry.Name.toLatin1().constData()))
 		{
-			QMessageBox::information(gMainWindow, tr("Submodels"), tr("A piece named '%1' already exists in this model.").arg(Entry.Name));
+			QMessageBox::information(gMainWindow, tr("Submodels"), tr("A part named '%1' already exists in this model.").arg(Entry.Name));
 			return;
 		}
 
 		Model->SetFileName(Entry.Name);
-		Renames.push_back({ Model->GetPieceData(), OldName, Entry.Name });
+		Renames.push_back({ Model->GetPartData(), OldName, Entry.Name });
 
 		mModified = true;
 	}
@@ -461,7 +461,7 @@ void Project::ShowModelListDialog()
 	// Apply original-to-final names together so a later rename cannot rewrite
 	// an earlier rename's history snapshots a second time.
 	for (const std::unique_ptr<swModel>& Model : mModels)
-		Model->RenamePieces(Renames);
+		Model->RenameParts(Renames);
 
 	for (const swModelListDialogEntry& Entry : Results)
 	{
@@ -492,7 +492,7 @@ void Project::ShowModelListDialog()
 				Model->SetFileName(Entry.Name);
 			}
 
-			Model->CreatePieceData(this);
+			Model->CreatePartData(this);
 			Model->SetSaved();
 
 			mModified = true;
@@ -500,18 +500,18 @@ void Project::ShowModelListDialog()
 		NewModels.emplace_back(Model);
 	}
 
-	for (const std::pair<swPieceData*, swPieceData*>& Replacement : Replacements)
+	for (const std::pair<swPartData*, swPartData*>& Replacement : Replacements)
 	{
 		for (const std::unique_ptr<swModel>& Model : NewModels)
 		{
-			if (Model->RebindPieceData(Replacement.first, Replacement.second) && std::find(ChangedModels.begin(), ChangedModels.end(), Model.get()) == ChangedModels.end())
+			if (Model->RebindPartData(Replacement.first, Replacement.second) && std::find(ChangedModels.begin(), ChangedModels.end(), Model.get()) == ChangedModels.end())
 				ChangedModels.push_back(Model.get());
 		}
 
-		if (gMainWindow->GetInsertPieceData() == Replacement.first)
-			gMainWindow->SetInsertPieceData(Replacement.second);
+		if (gMainWindow->GetInsertPartData() == Replacement.first)
+			gMainWindow->SetInsertPartData(Replacement.second);
 
-		gMainWindow->GetPreviewWidget()->RebindPieceData(Replacement.first, Replacement.second);
+		gMainWindow->GetPreviewWidget()->RebindPartData(Replacement.first, Replacement.second);
 	}
 
 	for (std::unique_ptr<swModel>& Model : mModels)
@@ -819,12 +819,12 @@ void Project::LoadLDrawDocument(const QByteArray& FileData, const Project* Refer
 
 		if (ReuseExistingModels && ReferenceProject && !Models.empty())
 		{
-			const std::string Name = swPiecesLibrary::NormalizePieceDataName(Block.FileName.toLatin1().constData());
-			swPieceData* ExistingPieceData = ReferenceProject->FindPieceData(Name);
+			const std::string Name = swPartsLibrary::NormalizePartDataName(Block.FileName.toLatin1().constData());
+			swPartData* ExistingPartData = ReferenceProject->FindPartData(Name);
 
-			if (ExistingPieceData && (ExistingPieceData->IsModel() || ExistingPieceData->IsProject()))
+			if (ExistingPartData && (ExistingPartData->IsModel() || ExistingPartData->IsProject()))
 			{
-				RegisterPieceData(Name, ExistingPieceData);
+				RegisterPartData(Name, ExistingPartData);
 				continue;
 			}
 		}
@@ -832,16 +832,16 @@ void Project::LoadLDrawDocument(const QByteArray& FileData, const Project* Refer
 		std::unique_ptr<swModel> Model(new swModel(Block.FileName, this, mIsPreview));
 		Models.emplace_back(&Block, Model.get());
 		mModels.emplace_back(std::move(Model));
-		mModels.back()->CreatePieceData(this);
+		mModels.back()->CreatePartData(this);
 		mDocumentBlocks[Block.LayoutIndex].Model = mModels.back().get();
 		mDocumentBlocks[Block.LayoutIndex].OriginalName = Block.FileName;
 	}
 
-	// Legacy clipboard references can use destination pieces when no definition was copied.
+	// Legacy clipboard references can use destination parts when no definition was copied.
 	if (ReferenceProject)
-		for (const auto& [Name, PieceData] : ReferenceProject->mPieceIndex)
-			if (!FindPieceData(Name))
-				RegisterPieceData(Name, PieceData);
+		for (const auto& [Name, PartData] : ReferenceProject->mPartIndex)
+			if (!FindPartData(Name))
+				RegisterPartData(Name, PartData);
 
 	// Every model and asset is registered before geometry resolves references.
 	for (const std::pair<const ModelBlock*, swModel*>& Entry : Models)
@@ -994,14 +994,14 @@ std::vector<QString> Project::GetLoadWarningDetails() const
 		}
 
 		for (const std::unique_ptr<swModel>& Model : Current->mModels)
-			for (const std::unique_ptr<swPiece>& Piece : Model->GetPieces())
+			for (const std::unique_ptr<swPart>& Part : Model->GetParts())
 			{
-				const swPieceData* PieceData = Piece->mPieceData.Get();
+				const swPartData* PartData = Part->mPartData.Get();
 
-				if (!PieceData || !PieceData->IsProject())
+				if (!PartData || !PartData->IsProject())
 					continue;
 
-				const Project* Referenced = PieceData->GetProject();
+				const Project* Referenced = PartData->GetProject();
 
 				if (Referenced && SeenProjects.insert(Referenced).second)
 					Projects.push_back(Referenced);
@@ -1040,7 +1040,7 @@ bool Project::Load(const QString& FileName, bool ShowErrors)
 	mLoadWarnings.clear();
 	mEmbeddedData.clear();
 	mEmbeddedDataIndex.clear();
-	swGetPiecesLibrary()->ReleaseProjectPieceData(this);
+	swGetPartsLibrary()->ReleaseProjectPartData(this);
 	SetFileName(FileName);
 	QFileInfo FileInfo(FileName);
 	QString Extension = FileInfo.suffix().toLower();
@@ -1077,7 +1077,7 @@ bool Project::Load(const QString& FileName, bool ShowErrors)
 		if (Model->LoadBinary(&MemFile))
 		{
 			mModels.emplace_back(Model);
-			Model->CreatePieceData(this);
+			Model->CreatePartData(this);
 			Model->SetSaved();
 		}
 		else
@@ -1100,11 +1100,11 @@ bool Project::Load(const QString& FileName, bool ShowErrors)
 			QString ModelName = FileInfo.fileName();
 			int Suffix = 2;
 
-			while (!swGetPiecesLibrary()->RenameModelPieceData(Model->GetPieceData(), ModelName.toLatin1().constData()))
+			while (!swGetPartsLibrary()->RenameModelPartData(Model->GetPartData(), ModelName.toLatin1().constData()))
 			{
 				const QString FileExtension = FileInfo.suffix().isEmpty() ? QString() : QLatin1Char('.') + FileInfo.suffix();
 				const QString NameSuffix = QLatin1Char(' ') + QString::number(Suffix++) + FileExtension;
-				const int BaseLength = SW_PIECE_NAME_LENGTH - 1 - NameSuffix.length();
+				const int BaseLength = SW_PART_NAME_LENGTH - 1 - NameSuffix.length();
 				ModelName = FileInfo.completeBaseName().left(BaseLength) + NameSuffix;
 			}
 
@@ -1119,15 +1119,15 @@ bool Project::Load(const QString& FileName, bool ShowErrors)
 	{
 		if (mIsPreview)
 		{
-			swPieceData* PieceData = Model->GetPieceData();
+			swPartData* PartData = Model->GetPartData();
 
-			PieceData->ReleaseMesh();
-			swGetPiecesLibrary()->InvalidatePieceDataLoad(PieceData);
+			PartData->ReleaseMesh();
+			swGetPartsLibrary()->InvalidatePartDataLoad(PartData);
 		}
 		else
 		{
 			if (mDeferModelMeshRequests)
-				swGetPiecesLibrary()->InvalidatePieceDataLoad(Model->GetPieceData());
+				swGetPartsLibrary()->InvalidatePartDataLoad(Model->GetPartData());
 
 			Model->QueueMeshBuild();
 		}
@@ -1136,7 +1136,7 @@ bool Project::Load(const QString& FileName, bool ShowErrors)
 	if (!mIsPreview)
 	{
 		for (const std::unique_ptr<swModel>& Model : mModels)
-			Model->UpdatePieceData(UpdatedModels);
+			Model->UpdatePartData(UpdatedModels);
 	}
 
 	mModified = false;
@@ -1211,49 +1211,49 @@ swResult<void> Project::Save(const QString& FileName)
 
 	if (DirectoryChanged)
 	{
-		swPiecesLibrary* Library = swGetPiecesLibrary();
-		std::vector<swPieceDataReference> LocalPieceData;
-		std::vector<swPieceData*> ChangedPieces;
+		swPartsLibrary* Library = swGetPartsLibrary();
+		std::vector<swPartDataReference> LocalPartData;
+		std::vector<swPartData*> ChangedParts;
 
-		for (const std::map<std::string, swPieceData*>::value_type& Entry : mPieceIndex)
+		for (const std::map<std::string, swPartData*>::value_type& Entry : mPartIndex)
 		{
-			swPieceData* PieceData = Entry.second;
+			swPartData* PartData = Entry.second;
 
-			if (PieceData->IsModel())
+			if (PartData->IsModel())
 				continue;
 
-			LocalPieceData.push_back(swPieceDataReference(PieceData));
+			LocalPartData.push_back(swPartDataReference(PartData));
 		}
 
-		for (const swPieceDataReference& LocalData : LocalPieceData)
-			if (Library->RemapProjectPieceData(LocalData.Get(), DestinationDirectory, mIsPreview))
-				ChangedPieces.push_back(LocalData.Get());
+		for (const swPartDataReference& LocalData : LocalPartData)
+			if (Library->RemapProjectPartData(LocalData.Get(), DestinationDirectory, mIsPreview))
+				ChangedParts.push_back(LocalData.Get());
 
 		for (const std::unique_ptr<swModel>& Model : mModels)
 		{
 			if (!Model->HasDirectGeometry())
 				continue;
 
-			Library->InvalidatePieceDataLoad(Model->GetPieceData());
+			Library->InvalidatePartDataLoad(Model->GetPartData());
 			Model->QueueMeshBuild();
-			ChangedPieces.push_back(Model->GetPieceData());
+			ChangedParts.push_back(Model->GetPartData());
 		}
 
-		if (!ChangedPieces.empty())
+		if (!ChangedParts.empty())
 		{
 			std::vector<swModel*> UpdatedModels;
 
 			for (const std::unique_ptr<swModel>& Model : mModels)
 			{
-				Model->UpdatePieceData(UpdatedModels);
-				ChangedPieces.push_back(Model->GetPieceData());
+				Model->UpdatePartData(UpdatedModels);
+				ChangedParts.push_back(Model->GetPartData());
 			}
 
-			Library->GetThumbnailManager()->RefreshPieces(ChangedPieces);
+			Library->GetThumbnailManager()->RefreshParts(ChangedParts);
 			swView::UpdateProjectViews(this);
 
 			if (!mIsPreview && gMainWindow && gMainWindow->GetPreviewWidget())
-				gMainWindow->GetPreviewWidget()->RefreshAfterAssetChange(ChangedPieces);
+				gMainWindow->GetPreviewWidget()->RefreshAfterAssetChange(ChangedParts);
 		}
 
 	}
@@ -1379,7 +1379,7 @@ std::vector<QString> Project::GetMergedAssetDirectories(const swModel* Model) co
 
 swResult<void> Project::ValidateMergedTextureBindings(const Project& Source, const std::map<QString, std::shared_ptr<const swEmbeddedData>>& MergedData, const swModel* ClipboardRoot) const
 {
-	swPiecesLibrary* Library = swGetPiecesLibrary();
+	swPartsLibrary* Library = swGetPartsLibrary();
 
 	for (const std::unique_ptr<swModel>& Model : Source.mModels)
 	{
@@ -1388,7 +1388,7 @@ swResult<void> Project::ValidateMergedTextureBindings(const Project& Source, con
 
 		std::vector<std::string> References = swMeshLoader::GetTextureReferences(SerializeModelText(Model.get(), false, 0));
 
-		if (const swMesh* Mesh = Model->GetPieceData()->GetMesh())
+		if (const swMesh* Mesh = Model->GetPartData()->GetMesh())
 			for (const swMeshLod& Lod : Mesh->mLods)
 				for (int SectionIndex = 0; SectionIndex < Lod.NumSections; SectionIndex++)
 					if (!Lod.Sections[SectionIndex].TextureName.isEmpty())
@@ -1429,8 +1429,8 @@ swResult<void> Project::Merge(const std::vector<Project*>& Sources)
 
 swResult<void> Project::MergeInternal(const std::vector<Project*>& Sources, const swModel* ClipboardRoot)
 {
-	swPiecesLibrary* Library = swGetPiecesLibrary();
-	std::map<std::string, swPieceData*> NonModelPieces;
+	swPartsLibrary* Library = swGetPartsLibrary();
+	std::map<std::string, swPartData*> NonModelParts;
 	std::set<std::string> DestinationModelNames;
 	std::set<std::string> OriginalModelNames;
 	std::set<std::string> PlannedModelNames;
@@ -1473,28 +1473,28 @@ swResult<void> Project::MergeInternal(const std::vector<Project*>& Sources, cons
 	}
 
 
-	for (const std::map<std::string, swPieceData*>::value_type& Entry : mPieceIndex)
+	for (const std::map<std::string, swPartData*>::value_type& Entry : mPartIndex)
 	{
 		if (Entry.second->IsModel())
 			DestinationModelNames.insert(Entry.first);
 		else
-			NonModelPieces.emplace(Entry.first, Entry.second);
+			NonModelParts.emplace(Entry.first, Entry.second);
 	}
 
 	for (const std::unique_ptr<swModel>& Model : mModels)
 	{
-		DestinationModelNames.insert(swPiecesLibrary::NormalizePieceDataName(Model->GetFileName().toLatin1().constData()));
+		DestinationModelNames.insert(swPartsLibrary::NormalizePartDataName(Model->GetFileName().toLatin1().constData()));
 
-		for (const std::unique_ptr<swPiece>& Piece : Model->GetPieces())
+		for (const std::unique_ptr<swPart>& Part : Model->GetParts())
 		{
-			if (Piece->mPieceData && !Piece->mPieceData->IsModel())
-				NonModelPieces.emplace(swPiecesLibrary::NormalizePieceDataName(Piece->GetID().toLatin1().constData()), Piece->mPieceData.Get());
+			if (Part->mPartData && !Part->mPartData->IsModel())
+				NonModelParts.emplace(swPartsLibrary::NormalizePartDataName(Part->GetID().toLatin1().constData()), Part->mPartData.Get());
 		}
 	}
 
-	const auto RegisterSourcePiece = [&NonModelPieces, &DestinationModelNames, &ConflictName](const std::string& Name, swPieceData* PieceData)
+	const auto RegisterSourcePart = [&NonModelParts, &DestinationModelNames, &ConflictName](const std::string& Name, swPartData* PartData)
 	{
-		if (!PieceData || PieceData->IsModel())
+		if (!PartData || PartData->IsModel())
 			return true;
 
 		if (DestinationModelNames.find(Name) != DestinationModelNames.end())
@@ -1503,42 +1503,42 @@ swResult<void> Project::MergeInternal(const std::vector<Project*>& Sources, cons
 			return false;
 		}
 
-		const std::map<std::string, swPieceData*>::const_iterator Existing = NonModelPieces.find(Name);
+		const std::map<std::string, swPartData*>::const_iterator Existing = NonModelParts.find(Name);
 
-		if (Existing != NonModelPieces.end() && !CanShareMergePieceData(Existing->second, PieceData))
+		if (Existing != NonModelParts.end() && !CanShareMergePartData(Existing->second, PartData))
 		{
 			ConflictName = QString::fromStdString(Name);
 			return false;
 		}
 
-		NonModelPieces.emplace(Name, PieceData);
+		NonModelParts.emplace(Name, PartData);
 		return true;
 	};
 
-	// Validate the identities behind every piece name before changing any project.
+	// Validate the identities behind every part name before changing any project.
 	for (Project* Source : Sources)
 	{
-		for (const std::map<std::string, swPieceData*>::value_type& Entry : Source->mPieceIndex)
+		for (const std::map<std::string, swPartData*>::value_type& Entry : Source->mPartIndex)
 		{
-			if (!RegisterSourcePiece(Entry.first, Entry.second))
-				return swUnexpected(tr("Both models contain different pieces named '%1'. Rename one before merging.").arg(ConflictName));
+			if (!RegisterSourcePart(Entry.first, Entry.second))
+				return swUnexpected(tr("Both models contain different parts named '%1'. Rename one before merging.").arg(ConflictName));
 		}
 
 		for (const std::unique_ptr<swModel>& Model : Source->mModels)
 		{
-			OriginalModelNames.insert(swPiecesLibrary::NormalizePieceDataName(Model->GetFileName().toLatin1().constData()));
+			OriginalModelNames.insert(swPartsLibrary::NormalizePartDataName(Model->GetFileName().toLatin1().constData()));
 
-			for (const std::unique_ptr<swPiece>& Piece : Model->GetPieces())
+			for (const std::unique_ptr<swPart>& Part : Model->GetParts())
 			{
-				const std::string Name = swPiecesLibrary::NormalizePieceDataName(Piece->GetID().toLatin1().constData());
+				const std::string Name = swPartsLibrary::NormalizePartDataName(Part->GetID().toLatin1().constData());
 
-				if (!RegisterSourcePiece(Name, Piece->mPieceData.Get()))
-					return swUnexpected(tr("Both models contain different pieces named '%1'. Rename one before merging.").arg(ConflictName));
+				if (!RegisterSourcePart(Name, Part->mPartData.Get()))
+					return swUnexpected(tr("Both models contain different parts named '%1'. Rename one before merging.").arg(ConflictName));
 			}
 		}
 	}
 
-	// Pick final model names against the complete set of incoming piece names.
+	// Pick final model names against the complete set of incoming part names.
 	for (Project* Source : Sources)
 	{
 		for (const std::unique_ptr<swModel>& Model : Source->mModels)
@@ -1549,11 +1549,11 @@ swResult<void> Project::MergeInternal(const std::vector<Project*>& Sources, cons
 
 			for (;;)
 			{
-				const std::string Name = swPiecesLibrary::NormalizePieceDataName(FinalName.toLatin1().constData());
+				const std::string Name = swPartsLibrary::NormalizePartDataName(FinalName.toLatin1().constData());
 				const bool ReservedOriginal = FinalName != OriginalName && OriginalModelNames.find(Name) != OriginalModelNames.end();
-				const bool Duplicate = DestinationModelNames.find(Name) != DestinationModelNames.end() || NonModelPieces.find(Name) != NonModelPieces.end() ||
+				const bool Duplicate = DestinationModelNames.find(Name) != DestinationModelNames.end() || NonModelParts.find(Name) != NonModelParts.end() ||
 					PlannedModelNames.find(Name) != PlannedModelNames.end() || ReservedOriginal ||
-					Library->FindPieceData(FinalName.toLatin1().constData(), nullptr) != nullptr;
+					Library->FindPartData(FinalName.toLatin1().constData(), nullptr) != nullptr;
 
 				if (!Duplicate)
 				{
@@ -1564,7 +1564,7 @@ swResult<void> Project::MergeInternal(const std::vector<Project*>& Sources, cons
 
 				RenameIndex++;
 				const QString Prefix = RenameIndex == 1 ? tr("Merged ") : tr("Merged %1 ").arg(RenameIndex);
-				FinalName = QString::fromLatin1((Prefix + OriginalName).toLatin1().left(SW_PIECE_NAME_LENGTH - 1));
+				FinalName = QString::fromLatin1((Prefix + OriginalName).toLatin1().left(SW_PART_NAME_LENGTH - 1));
 			}
 		}
 	}
@@ -1578,10 +1578,10 @@ swResult<void> Project::MergeInternal(const std::vector<Project*>& Sources, cons
 		if (Planned.FinalName == Planned.Model->GetFileName())
 			continue;
 
-		if (!Library->RenameModelPieceData(Planned.Model->GetPieceData(), Planned.FinalName.toLatin1().constData()))
+		if (!Library->RenameModelPartData(Planned.Model->GetPartData(), Planned.FinalName.toLatin1().constData()))
 		{
 			for (std::vector<const ModelPlan*>::reverse_iterator It = AppliedRenames.rbegin(); It != AppliedRenames.rend(); It++)
-				Library->RenameModelPieceData((*It)->Model->GetPieceData(), (*It)->Model->GetFileName().toLatin1().constData());
+				Library->RenameModelPartData((*It)->Model->GetPartData(), (*It)->Model->GetFileName().toLatin1().constData());
 
 			return swUnexpected(tr("Could not reserve submodel name '%1'.").arg(Planned.FinalName));
 		}
@@ -1595,26 +1595,26 @@ swResult<void> Project::MergeInternal(const std::vector<Project*>& Sources, cons
 
 	for (Project* Source : Sources)
 	{
-		std::vector<swModelPieceRename> Renames;
+		std::vector<swModelPartRename> Renames;
 		std::vector<swModel*> ImportedModels;
 
 		for (const std::unique_ptr<swModel>& Model : Source->mModels)
 		{
-			for (const std::unique_ptr<swPiece>& Piece : Model->GetPieces())
+			for (const std::unique_ptr<swPart>& Part : Model->GetParts())
 			{
-				swPieceData* Incoming = Piece->mPieceData.Get();
+				swPartData* Incoming = Part->mPartData.Get();
 
 				if (!Incoming || Incoming->IsModel())
 					continue;
 
-				const std::string Name = swPiecesLibrary::NormalizePieceDataName(Piece->GetID().toLatin1().constData());
-				swPieceData* Existing = FindPieceData(Name);
+				const std::string Name = swPartsLibrary::NormalizePartDataName(Part->GetID().toLatin1().constData());
+				swPartData* Existing = FindPartData(Name);
 
-				if (!Existing || Existing == Incoming || !CanShareMergePieceData(Existing, Incoming))
+				if (!Existing || Existing == Incoming || !CanShareMergePartData(Existing, Incoming))
 					continue;
 
-				const QString PieceId = Piece->GetID();
-				Piece->SetPieceData(swPieceDataReference(Existing), PieceId, false, false);
+				const QString PartId = Part->GetID();
+				Part->SetPartData(swPartDataReference(Existing), PartId, false, false);
 			}
 		}
 
@@ -1624,7 +1624,7 @@ swResult<void> Project::MergeInternal(const std::vector<Project*>& Sources, cons
 
 			if (Planned.FinalName != Model->GetFileName())
 			{
-				Renames.push_back({ Model->GetPieceData(), Model->GetFileName(), Planned.FinalName });
+				Renames.push_back({ Model->GetPartData(), Model->GetFileName(), Planned.FinalName });
 				Model->SetFileName(Planned.FinalName);
 			}
 
@@ -1635,9 +1635,9 @@ swResult<void> Project::MergeInternal(const std::vector<Project*>& Sources, cons
 
 		// Only incoming histories used these original names for the incoming models.
 		for (swModel* Model : ImportedModels)
-			Model->RenamePieces(Renames);
+			Model->RenameParts(Renames);
 
-		Library->TransferProjectPieceData(Source, this);
+		Library->TransferProjectPartData(Source, this);
 		Source->mModels.clear();
 		mEmbeddedData.insert(mEmbeddedData.end(), Source->mEmbeddedData.begin(), Source->mEmbeddedData.end());
 		mDocumentBlocks.insert(mDocumentBlocks.end(), Source->mDocumentBlocks.begin(), Source->mDocumentBlocks.end());
@@ -1682,13 +1682,13 @@ bool Project::ImportLDD(const QString& FileName)
 	mModels.emplace_back(std::move(NewModel));
 
 	for (const std::unique_ptr<swModel>& Model : mModels)
-		Model->CreatePieceData(this);
+		Model->CreatePartData(this);
 
 	std::vector<swModel*> UpdatedModels;
 	UpdatedModels.reserve(mModels.size());
 
 	for (const std::unique_ptr<swModel>& Model : mModels)
-		Model->UpdatePieceData(UpdatedModels);
+		Model->UpdatePartData(UpdatedModels);
 
 	mModified = false;
 
@@ -1715,25 +1715,25 @@ bool Project::ImportInventory(const std::vector<swSetInventoryItem>& SetInventor
 	mModels.emplace_back(std::move(NewModel));
 
 	for (const std::unique_ptr<swModel>& Model : mModels)
-		Model->CreatePieceData(this);
+		Model->CreatePartData(this);
 
 	std::vector<swModel*> UpdatedModels;
 	UpdatedModels.reserve(mModels.size());
 
 	for (const std::unique_ptr<swModel>& Model : mModels)
-		Model->UpdatePieceData(UpdatedModels);
+		Model->UpdatePartData(UpdatedModels);
 
 	mModified = false;
 
 	return true;
 }
 
-std::vector<swModelPiecesEntry> Project::GetModelPieces()
+std::vector<swModelPartsEntry> Project::GetModelParts()
 {
-	std::vector<swModelPiecesEntry> ModelPieces;
+	std::vector<swModelPartsEntry> ModelParts;
 
 	if (mModels.empty())
-		return ModelPieces;
+		return ModelParts;
 
 	mModels[0]->WaitForAssets();
 
@@ -1758,46 +1758,46 @@ std::vector<swModelPiecesEntry> Project::GetModelPieces()
 		Model->CalculateStep(SW_STEP_MAXIMUM);
 	}
 
-	mModels[0]->GetModelPieces(swMatrix44Identity(), gDefaultColor, ModelPieces);
+	mModels[0]->GetModelParts(swMatrix44Identity(), gDefaultColor, ModelParts);
 
-	ModelPieces.erase(std::remove_if(ModelPieces.begin(), ModelPieces.end(), [](const swModelPiecesEntry& ModelPiece)
+	ModelParts.erase(std::remove_if(ModelParts.begin(), ModelParts.end(), [](const swModelPartsEntry& ModelPart)
 	{
-		return ModelPiece.PieceData->mState != swAssetState::Loaded ||
-			(ModelPiece.PieceData->GetSynthInfo() && !ModelPiece.Mesh) ||
-			(!ModelPiece.Mesh && !ModelPiece.PieceData->GetMesh());
-	}), ModelPieces.end());
+		return ModelPart.PartData->mState != swAssetState::Loaded ||
+			(ModelPart.PartData->GetSynthInfo() && !ModelPart.Mesh) ||
+			(!ModelPart.Mesh && !ModelPart.PartData->GetMesh());
+	}), ModelParts.end());
 
-	return ModelPieces;
+	return ModelParts;
 }
 
-std::vector<swPieceDataReference> Project::GetRequiredPieceData() const
+std::vector<swPartDataReference> Project::GetRequiredPartData() const
 {
-	std::vector<swPieceDataReference> RequiredPieceData;
+	std::vector<swPartDataReference> RequiredPartData;
 
 	for (const std::unique_ptr<swModel>& Model : mModels)
 	{
-		std::vector<swPieceDataReference> ModelPieceData = Model->GetRequiredPieceData();
-		RequiredPieceData.insert(RequiredPieceData.end(), ModelPieceData.begin(), ModelPieceData.end());
+		std::vector<swPartDataReference> ModelPartData = Model->GetRequiredPartData();
+		RequiredPartData.insert(RequiredPartData.end(), ModelPartData.begin(), ModelPartData.end());
 	}
 
-	std::sort(RequiredPieceData.begin(), RequiredPieceData.end());
-	RequiredPieceData.erase(std::unique(RequiredPieceData.begin(), RequiredPieceData.end()), RequiredPieceData.end());
+	std::sort(RequiredPartData.begin(), RequiredPartData.end());
+	RequiredPartData.erase(std::unique(RequiredPartData.begin(), RequiredPartData.end()), RequiredPartData.end());
 
-	return RequiredPieceData;
+	return RequiredPartData;
 }
 
-std::vector<swPiece*> Project::GetRequiredSynthPieces() const
+std::vector<swPart*> Project::GetRequiredSynthParts() const
 {
-	std::vector<swPiece*> Required;
-	std::unordered_set<swPiece*> Seen;
+	std::vector<swPart*> Required;
+	std::unordered_set<swPart*> Seen;
 
 	for (const std::unique_ptr<swModel>& Model : mModels)
 	{
-		const std::vector<swPiece*> ModelRequired = Model->GetRequiredSynthPieces();
+		const std::vector<swPart*> ModelRequired = Model->GetRequiredSynthParts();
 
-		for (swPiece* Piece : ModelRequired)
-			if (Seen.insert(Piece).second)
-				Required.push_back(Piece);
+		for (swPart* Part : ModelRequired)
+			if (Seen.insert(Part).second)
+				Required.push_back(Part);
 	}
 
 	return Required;
@@ -1840,22 +1840,22 @@ swResult<QByteArray> Project::SerializeModel(const swModel* Root, bool SelectedO
 		Names.emplace(Key, Model);
 		Models.push_back({ Model, Name, FilterSelection });
 
-		for (const std::unique_ptr<swPiece>& Piece : Model->GetPieces())
+		for (const std::unique_ptr<swPart>& Part : Model->GetParts())
 		{
-			if ((FilterSelection && !Piece->IsSelected()) || (LastStep && Piece->GetStepShow() > LastStep))
+			if ((FilterSelection && !Part->IsSelected()) || (LastStep && Part->GetStepShow() > LastStep))
 				continue;
 
-			const swPieceData* PieceData = Piece->mPieceData.Get();
+			const swPartData* PartData = Part->mPartData.Get();
 			const swModel* Child = nullptr;
 
-			if (PieceData && PieceData->IsModel())
-				Child = PieceData->GetModel();
-			else if (PieceData && PieceData->IsProject())
-				Child = PieceData->GetProject()->GetMainModel();
+			if (PartData && PartData->IsModel())
+				Child = PartData->GetModel();
+			else if (PartData && PartData->IsProject())
+				Child = PartData->GetProject()->GetMainModel();
 
 			if (Child)
 			{
-				const swResult<void> Result = Collect(Child, Piece->GetID(), false);
+				const swResult<void> Result = Collect(Child, Part->GetID(), false);
 
 				if (!Result)
 					return Result;
@@ -1972,7 +1972,7 @@ swResult<swModel*> Project::ImportClipboard(const QByteArray& FileData)
 {
 	Project Source(mIsPreview);
 	Source.mModels.clear();
-	swGetPiecesLibrary()->ReleaseProjectPieceData(&Source);
+	swGetPartsLibrary()->ReleaseProjectPartData(&Source);
 	Source.SetDeferModelMeshRequests(true);
 	Source.mFileName = mFileName;
 	const QByteArray Marker("0 !STUDWORKS CLIPBOARD PROJECT ");
@@ -1988,7 +1988,7 @@ swResult<swModel*> Project::ImportClipboard(const QByteArray& FileData)
 	for (const std::unique_ptr<swModel>& Model : Source.mModels)
 		Model->QueueMeshBuild();
 
-	if (Root->GetPieces().empty())
+	if (Root->GetParts().empty())
 		return static_cast<swModel*>(nullptr);
 
 	if (SameProject)
@@ -1999,9 +1999,9 @@ swResult<swModel*> Project::ImportClipboard(const QByteArray& FileData)
 			if (!Reachable.insert(Model).second)
 				return;
 
-			for (const std::unique_ptr<swPiece>& Piece : Model->GetPieces())
-				if (Piece->mPieceData->IsModel() && Piece->mPieceData->GetModel()->GetProject() == &Source)
-					Collect(Piece->mPieceData->GetModel());
+			for (const std::unique_ptr<swPart>& Part : Model->GetParts())
+				if (Part->mPartData->IsModel() && Part->mPartData->GetModel()->GetProject() == &Source)
+					Collect(Part->mPartData->GetModel());
 		};
 		Collect(Root);
 
@@ -2061,15 +2061,15 @@ swInstructions* Project::GetInstructions()
 	return mInstructions.get();
 }
 
-void Project::UpdatePieceData(swPieceData* PieceData) const
+void Project::UpdatePartData(swPartData* PartData) const
 {
 	if (!mModels.empty())
 	{
 		std::vector<swModel*> UpdatedModels;
-		mModels[0]->UpdatePieceData(UpdatedModels);
+		mModels[0]->UpdatePartData(UpdatedModels);
 
-		swBoundingBox BoundingBox = mModels[0]->GetPieceData()->GetBoundingBox();
-		PieceData->SetBoundingBox(BoundingBox.Min, BoundingBox.Max);
+		swBoundingBox BoundingBox = mModels[0]->GetPartData()->GetBoundingBox();
+		PartData->SetBoundingBox(BoundingBox.Min, BoundingBox.Max);
 	}
 }
 

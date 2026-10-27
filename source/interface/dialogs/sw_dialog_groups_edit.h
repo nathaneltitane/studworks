@@ -17,7 +17,7 @@ public:
 		QString Name;
 		swGroup* Group;
 		std::vector<GroupInfo> ChildGroups;
-		std::vector<swPiece*> ChildPieces;
+		std::vector<swPart*> ChildParts;
 	};
 
 	GroupInfo GetGroups() const;
@@ -29,7 +29,7 @@ protected slots:
 protected:
 	enum
 	{
-		PieceRole = Qt::UserRole,
+		PartRole = Qt::UserRole,
 		GroupRole
 	};
 

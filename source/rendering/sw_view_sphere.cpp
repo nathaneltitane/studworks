@@ -40,7 +40,7 @@ void swViewSphere::UpdateSettings()
 		break;
 
 	case swViewType::MinifigureBuilder:
-	case swViewType::PiecesList:
+	case swViewType::PartsList:
 	case swViewType::Count:
 		break;
 	}

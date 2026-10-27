@@ -7,8 +7,8 @@
 #include "sw_object_camera.h"
 #include "sw_texture_font.h"
 #include "sw_texture.h"
-#include "sw_object_piece.h"
-#include "sw_data_piece.h"
+#include "sw_object_part.h"
+#include "sw_data_part.h"
 #include "sw_track_train.h"
 #include "sw_scene.h"
 #include "sw_context.h"
@@ -45,8 +45,8 @@ void swView::OnDraw()
 
 	swRenderTarget RenderTarget = swRenderTarget::ModelView;
 
-	if (mViewType == swViewType::PiecesList)
-		RenderTarget = swRenderTarget::Pieces;
+	if (mViewType == swViewType::PartsList)
+		RenderTarget = swRenderTarget::Parts;
 	else if (mViewType == swViewType::Preview)
 		RenderTarget = swRenderTarget::Preview;
 	else if (mViewType == swViewType::MinifigureBuilder)
@@ -62,7 +62,7 @@ void swView::OnDraw()
 	mScene->SetLineSettings(RenderSettings.DrawEdgeLines, RenderSettings.DrawConditionalLines, RenderSettings.LineWidth);
 	mScene->SetAllowLOD(Preferences.mAllowLOD && mWidget != nullptr);
 	mScene->SetRequireCompleteAssets(static_cast<bool>(mRenderFramebuffer));
-	mScene->SetRequireGeneratedMeshes(mRenderFramebuffer && mViewType != swViewType::PiecesList);
+	mScene->SetRequireGeneratedMeshes(mRenderFramebuffer && mViewType != swViewType::PartsList);
 	mScene->SetLODDistance(Preferences.mMeshLODDistance);
 
 	mScene->Begin(mCamera->mWorldView);
@@ -73,7 +73,7 @@ void swView::OnDraw()
 	bool DrawInsertPreview = DrawInterface && std::any_of(mViews.begin(), mViews.end(), [](swView* View){ return View->mTrackTool == swTrackTool::Insert; });
 	mScene->SetDrawInsertPreview(DrawInsertPreview);
 	
-	mModel->GetScene(mScene.get(), mCamera, Preferences.mHighlightNewPieces, Preferences.mFadeSteps && mViewType == swViewType::View);
+	mModel->GetScene(mScene.get(), mCamera, Preferences.mHighlightNewParts, Preferences.mFadeSteps && mViewType == swViewType::View);
 
 	mScene->End();
 
@@ -366,7 +366,7 @@ void swView::DrawAxes() const
 			break;
 
 		case swViewType::MinifigureBuilder:
-		case swViewType::PiecesList:
+		case swViewType::PartsList:
 		case swViewType::Count:
 			return;
 	}
@@ -631,18 +631,18 @@ void swView::DrawGrid()
 	int MinX, MaxX, MinY, MaxY;
 	swVector3 Min(FLT_MAX, FLT_MAX, FLT_MAX), Max(-FLT_MAX, -FLT_MAX, -FLT_MAX);
 
-	bool GridSizeValid = mModel->GetVisiblePiecesBoundingBox(Min, Max);
+	bool GridSizeValid = mModel->GetVisiblePartsBoundingBox(Min, Max);
 	bool DrawInsertPreview = std::any_of(mViews.begin(), mViews.end(), [](swView* View){ return View->mTrackTool == swTrackTool::Insert; });
 
 	if (DrawInsertPreview)
 	{
 		const swModel* PreviewModel = GetActiveModel();
 
-		for (const swPreviewInsertPieceInformation& PreviewInsertPieceInfo : PreviewModel->GetPreviewInsertPieceInfo())
+		for (const swPreviewInsertPartInformation& PreviewInsertPartInfo : PreviewModel->GetPreviewInsertPartInfo())
 		{
 			swVector3 Points[8];
-			swGetBoxCorners(PreviewInsertPieceInfo.PieceData->GetBoundingBox(), Points);
-			swMatrix44 PreviewTransform = PreviewInsertPieceInfo.Transform;
+			swGetBoxCorners(PreviewInsertPartInfo.PartData->GetBoundingBox(), Points);
+			swMatrix44 PreviewTransform = PreviewInsertPartInfo.Transform;
 
 			if (PreviewModel != mModel)
 				PreviewTransform = swMultiply(PreviewTransform, mActiveSubmodelTransform);

@@ -1,15 +1,15 @@
 #include "sw_global.h"
 #include "sw_widget_timeline.h"
 #include "sw_model.h"
-#include "sw_object_piece.h"
-#include "sw_data_piece.h"
+#include "sw_object_part.h"
+#include "sw_data_part.h"
 #include "sw_window_main.h"
 
 swTimelineWidget::swTimelineWidget(QWidget* Parent)
 	: QTreeWidget(Parent)
 {
-	setAccessibleName(tr("Building Steps and Pieces"));
-	setToolTip(tr("Select steps or pieces; drag pieces to reorder them or change their building step."));
+	setAccessibleName(tr("Building Steps and Parts"));
+	setToolTip(tr("Select steps or parts; drag parts to reorder them or change their building step."));
 	mCurrentStepItem = nullptr;
 	mIgnoreUpdates = false;
 
@@ -55,15 +55,15 @@ void swTimelineWidget::CustomMenuRequested(QPoint Pos)
 
 	swObject* FocusObject = gMainWindow->GetActiveModel()->GetFocusObject();
 
-	if (FocusObject && FocusObject->IsPiece())
+	if (FocusObject && FocusObject->IsPart())
 	{
-		swPiece* Piece = (swPiece*)FocusObject;
+		swPart* Part = (swPart*)FocusObject;
 
-		if (Piece->mPieceData->IsModel())
+		if (Part->mPartData->IsModel())
 		{
-			Menu->addAction(gMainWindow->mActions[SW_PIECE_EDIT_SELECTED_SUBMODEL]);
-			Menu->addAction(gMainWindow->mActions[SW_PIECE_VIEW_SELECTED_MODEL]);
-			Menu->addAction(gMainWindow->mActions[SW_PIECE_INLINE_SELECTED_MODELS]);
+			Menu->addAction(gMainWindow->mActions[SW_PART_EDIT_SELECTED_SUBMODEL]);
+			Menu->addAction(gMainWindow->mActions[SW_PART_VIEW_SELECTED_MODEL]);
+			Menu->addAction(gMainWindow->mActions[SW_PART_INLINE_SELECTED_MODELS]);
 			Menu->addSeparator();
 		}
 	}
@@ -86,10 +86,10 @@ void swTimelineWidget::CustomMenuRequested(QPoint Pos)
 
 	Menu->addSeparator();
 
-	Menu->addAction(gMainWindow->mActions[SW_PIECE_HIDE_SELECTED]);
-	Menu->addAction(gMainWindow->mActions[SW_PIECE_HIDE_UNSELECTED]);
-	Menu->addAction(gMainWindow->mActions[SW_PIECE_UNHIDE_SELECTED]);
-	Menu->addAction(gMainWindow->mActions[SW_PIECE_UNHIDE_ALL]);
+	Menu->addAction(gMainWindow->mActions[SW_PART_HIDE_SELECTED]);
+	Menu->addAction(gMainWindow->mActions[SW_PART_HIDE_UNSELECTED]);
+	Menu->addAction(gMainWindow->mActions[SW_PART_UNHIDE_SELECTED]);
+	Menu->addAction(gMainWindow->mActions[SW_PART_UNHIDE_ALL]);
 
 	Menu->exec(viewport()->mapToGlobal(Pos));
 	delete Menu;
@@ -120,7 +120,7 @@ void swTimelineWidget::Update(bool Clear, bool UpdateItems)
 		clear();
 	}
 
-	// Step view rows are rebuilt after the piece rows.
+	// Step view rows are rebuilt after the part rows.
 	for (int TopLevelItemIdx = 0; TopLevelItemIdx < topLevelItemCount(); TopLevelItemIdx++)
 	{
 		QTreeWidgetItem* StepItem = topLevelItem(TopLevelItemIdx);
@@ -131,7 +131,7 @@ void swTimelineWidget::Update(bool Clear, bool UpdateItems)
 	}
 
 	swStep LastStep = Model->GetLastStep();
-	if (Model->HasPieces())
+	if (Model->HasParts())
 		LastStep++;
 	LastStep  = swMaximum(LastStep, Model->GetCurrentStep());
 
@@ -141,10 +141,10 @@ void swTimelineWidget::Update(bool Clear, bool UpdateItems)
 
 		while (StepItem->childCount())
 		{
-			QTreeWidgetItem* PieceItem = StepItem->child(0);
-			swPiece* Piece = (swPiece*)PieceItem->data(0, Qt::UserRole).value<uintptr_t>();
-			mItems.remove(Piece);
-			delete PieceItem;
+			QTreeWidgetItem* PartItem = StepItem->child(0);
+			swPart* Part = (swPart*)PartItem->data(0, Qt::UserRole).value<uintptr_t>();
+			mItems.remove(Part);
+			delete PartItem;
 		}
 
 		if (mCurrentStepItem == StepItem)
@@ -161,78 +161,78 @@ void swTimelineWidget::Update(bool Clear, bool UpdateItems)
 		StepItem->setExpanded(true);
 	}
 
-	const std::vector<std::unique_ptr<swPiece>>& Pieces = Model->GetPieces();
+	const std::vector<std::unique_ptr<swPart>>& Parts = Model->GetParts();
 	QTreeWidgetItem* StepItem = nullptr;
-	int PieceItemIndex = 0;
+	int PartItemIndex = 0;
 	swStep Step = 0;
 
-	for (const std::unique_ptr<swPiece>& Piece : Pieces)
+	for (const std::unique_ptr<swPart>& Part : Parts)
 	{
-		while (Step != Piece->GetStepShow())
+		while (Step != Part->GetStepShow())
 		{
 			if (StepItem)
 			{
-				while (PieceItemIndex < StepItem->childCount())
+				while (PartItemIndex < StepItem->childCount())
 				{
-					QTreeWidgetItem* PieceItem = StepItem->child(PieceItemIndex);
-					swPiece* RemovePiece = (swPiece*)PieceItem->data(0, Qt::UserRole).value<uintptr_t>();
-					auto RemoveIt = std::find_if(Pieces.begin(), Pieces.end(), [RemovePiece](const std::unique_ptr<swPiece>& CheckPiece){ return CheckPiece.get() == RemovePiece; });
+					QTreeWidgetItem* PartItem = StepItem->child(PartItemIndex);
+					swPart* RemovePart = (swPart*)PartItem->data(0, Qt::UserRole).value<uintptr_t>();
+					auto RemoveIt = std::find_if(Parts.begin(), Parts.end(), [RemovePart](const std::unique_ptr<swPart>& CheckPart){ return CheckPart.get() == RemovePart; });
 
-					if (RemoveIt == Pieces.end())
+					if (RemoveIt == Parts.end())
 					{
-						mItems.remove(RemovePiece);
-						delete PieceItem;
+						mItems.remove(RemovePart);
+						delete PartItem;
 					}
 					else
 					{
-						PieceItem->parent()->removeChild(PieceItem);
-						topLevelItem(RemovePiece->GetStepShow() - 1)->addChild(PieceItem);
+						PartItem->parent()->removeChild(PartItem);
+						topLevelItem(RemovePart->GetStepShow() - 1)->addChild(PartItem);
 					}
 				}
 			}
 
 			Step++;
 			StepItem = topLevelItem(Step - 1);
-			PieceItemIndex = 0;
+			PartItemIndex = 0;
 		}
 
-		QTreeWidgetItem* PieceItem = mItems.value(Piece.get());
+		QTreeWidgetItem* PartItem = mItems.value(Part.get());
 		bool UpdateItem = UpdateItems;
 
 		if (StepItem)
 		{
-			if (!PieceItem)
+			if (!PartItem)
 			{
-				PieceItem = new QTreeWidgetItem();
-				PieceItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled);
-				PieceItem->setData(0, Qt::UserRole, QVariant::fromValue<uintptr_t>((uintptr_t)Piece.get()));
-				StepItem->insertChild(PieceItemIndex, PieceItem);
-				mItems[Piece.get()] = PieceItem;
+				PartItem = new QTreeWidgetItem();
+				PartItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled);
+				PartItem->setData(0, Qt::UserRole, QVariant::fromValue<uintptr_t>((uintptr_t)Part.get()));
+				StepItem->insertChild(PartItemIndex, PartItem);
+				mItems[Part.get()] = PartItem;
 
 				UpdateItem = true;
 			}
 			else
 			{
-				if (PieceItemIndex >= StepItem->childCount() || PieceItem != StepItem->child(PieceItemIndex))
+				if (PartItemIndex >= StepItem->childCount() || PartItem != StepItem->child(PartItemIndex))
 				{
-					QTreeWidgetItem* PieceParent = PieceItem->parent();
+					QTreeWidgetItem* PartParent = PartItem->parent();
 
-					if (PieceParent)
-						PieceParent->removeChild(PieceItem);
+					if (PartParent)
+						PartParent->removeChild(PartItem);
 
-					StepItem->insertChild(PieceItemIndex, PieceItem);
+					StepItem->insertChild(PartItemIndex, PartItem);
 				}
 			}
 		}
 
 		if (UpdateItem)
 		{
-			PieceItem->setText(0, Piece->mPieceData->m_strDescription);
+			PartItem->setText(0, Part->mPartData->m_strDescription);
 
-			int ColorIndex = Piece->GetColorIndex();
+			int ColorIndex = Part->GetColorIndex();
 			if (!mIcons.contains(ColorIndex))
 			{
-				int Size = rowHeight(indexFromItem(PieceItem));
+				int Size = rowHeight(indexFromItem(PartItem));
 
 				QImage Image(Size, Size, QImage::Format_ARGB32);
 				Image.fill(0);
@@ -245,20 +245,20 @@ void swTimelineWidget::Update(bool Clear, bool UpdateItems)
 				mIcons[ColorIndex] = QIcon(QPixmap::fromImage(Image));
 			}
 
-			PieceItem->setIcon(0, mIcons[ColorIndex]);
+			PartItem->setIcon(0, mIcons[ColorIndex]);
 
 			QColor Color = palette().text().color();
 
-			if (Piece->mPieceData->mState == swAssetState::Failed)
+			if (Part->mPartData->mState == swAssetState::Failed)
 				Color = QColor(208, 0, 0);
-			else if (Piece->IsHidden())
+			else if (Part->IsHidden())
 				Color.setAlpha(128);
 
-			PieceItem->setForeground(0, Color);
+			PartItem->setForeground(0, Color);
 		}
 
-		PieceItem->setSelected(Piece->IsSelected());
-		PieceItemIndex++;
+		PartItem->setSelected(Part->IsSelected());
+		PartItemIndex++;
 	}
 
 	if (Step == 0)
@@ -269,18 +269,18 @@ void swTimelineWidget::Update(bool Clear, bool UpdateItems)
 
 	while (Step <= LastStep && StepItem)
 	{
-		while (PieceItemIndex < StepItem->childCount())
+		while (PartItemIndex < StepItem->childCount())
 		{
-			QTreeWidgetItem* PieceItem = StepItem->child(PieceItemIndex);
-			swPiece* RemovePiece = (swPiece*)PieceItem->data(0, Qt::UserRole).value<uintptr_t>();
+			QTreeWidgetItem* PartItem = StepItem->child(PartItemIndex);
+			swPart* RemovePart = (swPart*)PartItem->data(0, Qt::UserRole).value<uintptr_t>();
 
-			mItems.remove(RemovePiece);
-			delete PieceItem;
+			mItems.remove(RemovePart);
+			delete PartItem;
 		}
 
 		Step++;
 		StepItem = topLevelItem(Step - 1);
-		PieceItemIndex = 0;
+		PartItemIndex = 0;
 	}
 
 	// A step view is its own row closing the step, like the ROTSTEP line that ends it.
@@ -353,14 +353,14 @@ void swTimelineWidget::UpdateSelection()
 	{
 		QTreeWidgetItem* StepItem = topLevelItem(TopLevelItemIdx);
 
-		for (int PieceItemIdx = 0; PieceItemIdx < StepItem->childCount(); PieceItemIdx++)
+		for (int PartItemIdx = 0; PartItemIdx < StepItem->childCount(); PartItemIdx++)
 		{
-			QTreeWidgetItem* PieceItem = StepItem->child(PieceItemIdx);
-			swPiece* Piece = (swPiece*)PieceItem->data(0, Qt::UserRole).value<uintptr_t>();
+			QTreeWidgetItem* PartItem = StepItem->child(PartItemIdx);
+			swPart* Part = (swPart*)PartItem->data(0, Qt::UserRole).value<uintptr_t>();
 
-			if (Piece && Piece->IsSelected())
+			if (Part && Part->IsSelected())
 			{
-				QModelIndex Index = indexFromItem(PieceItem);
+				QModelIndex Index = indexFromItem(PartItem);
 				ItemSelection.select(Index, Index);
 			}
 		}
@@ -445,14 +445,14 @@ void swTimelineWidget::MoveSelection()
 
 	const QList<QTreeWidgetItem*> SelectedItems = selectedItems();
 
-	for (QTreeWidgetItem* PieceItem : SelectedItems)
+	for (QTreeWidgetItem* PartItem : SelectedItems)
 	{
-		QTreeWidgetItem* Parent = PieceItem->parent();
+		QTreeWidgetItem* Parent = PartItem->parent();
 
 		if (!Parent)
 			continue;
 
-		int ChildIndex = Parent->indexOfChild(PieceItem);
+		int ChildIndex = Parent->indexOfChild(PartItem);
 		CurrentItem->addChild(Parent->takeChild(ChildIndex));
 	}
 
@@ -483,7 +483,7 @@ void swTimelineWidget::MoveSelectionBefore()
 
 	swModel* Model = gMainWindow->GetActiveModel();
 
-	Model->InsertStepAndMoveSelectedPieces(Step);
+	Model->InsertStepAndMoveSelectedParts(Step);
 
 	if (Step > static_cast<int>(Model->GetCurrentStep()))
 		Model->SetCurrentStep(Step);
@@ -508,7 +508,7 @@ void swTimelineWidget::MoveSelectionAfter()
 
 	swModel* Model = gMainWindow->GetActiveModel();
 
-	Model->InsertStepAndMoveSelectedPieces(Step);
+	Model->InsertStepAndMoveSelectedParts(Step);
 
 	if (Step > static_cast<int>(Model->GetCurrentStep()))
 		Model->SetCurrentStep(Step);
@@ -546,21 +546,21 @@ void swTimelineWidget::ItemSelectionChanged()
 	swStep LastStep = 1;
 	const QList<QTreeWidgetItem*> SelectedItems = selectedItems();
 
-	for (QTreeWidgetItem* PieceItem : SelectedItems)
+	for (QTreeWidgetItem* PartItem : SelectedItems)
 	{
-		swPiece* Piece = (swPiece*)PieceItem->data(0, Qt::UserRole).value<uintptr_t>();
-		if (Piece)
+		swPart* Part = (swPart*)PartItem->data(0, Qt::UserRole).value<uintptr_t>();
+		if (Part)
 		{
-			LastStep = swMaximum(LastStep, Piece->GetStepShow());
-			Selection.emplace_back(Piece);
+			LastStep = swMaximum(LastStep, Part->GetStepShow());
+			Selection.emplace_back(Part);
 		}
 	}
 
-	swPiece* CurrentPiece = nullptr;
+	swPart* CurrentPart = nullptr;
 	QTreeWidgetItem* CurrentItem = currentItem();
 
 	if (CurrentItem && CurrentItem->isSelected())
-		CurrentPiece = (swPiece*)CurrentItem->data(0, Qt::UserRole).value<uintptr_t>();
+		CurrentPart = (swPart*)CurrentItem->data(0, Qt::UserRole).value<uintptr_t>();
 
 	bool Blocked = blockSignals(true);
 	mIgnoreUpdates = true;
@@ -572,7 +572,7 @@ void swTimelineWidget::ItemSelectionChanged()
 		UpdateCurrentStepItem();
 	}
 
-	Model->SetSelectionAndFocusAction(Selection, CurrentPiece, SW_PIECE_SECTION_POSITION, swSelectionMode::Single);
+	Model->SetSelectionAndFocusAction(Selection, CurrentPart, SW_PART_SECTION_POSITION, swSelectionMode::Single);
 
 	mIgnoreUpdates = false;
 	blockSignals(Blocked);
@@ -651,40 +651,40 @@ void swTimelineWidget::PreviewSelection(QTreeWidgetItem* CurrentItem)
 	if (!CurrentItem)
 		return;
 
-	swPiece* Piece = (swPiece*)CurrentItem->data(0, Qt::UserRole).value<uintptr_t>();
+	swPart* Part = (swPart*)CurrentItem->data(0, Qt::UserRole).value<uintptr_t>();
 
-	if (!Piece)
+	if (!Part)
 		return;
 
-	swPieceData* PieceData = Piece->mPieceData.Get();
+	swPartData* PartData = Part->mPartData.Get();
 
-	if (!PieceData)
+	if (!PartData)
 		return;
 
-	gMainWindow->PreviewPiece(PieceData, Piece->GetColorCode(), false);
+	gMainWindow->PreviewPart(PartData, Part->GetColorCode(), false);
 }
 
 void swTimelineWidget::UpdateModel()
 {
-	std::vector<std::pair<swPiece*, swStep>> PieceSteps;
+	std::vector<std::pair<swPart*, swStep>> PartSteps;
 
 	for (int TopLevelItemIdx = 0; TopLevelItemIdx < topLevelItemCount(); TopLevelItemIdx++)
 	{
 		QTreeWidgetItem* StepItem = topLevelItem(TopLevelItemIdx);
 
-		for (int PieceItemIdx = 0; PieceItemIdx < StepItem->childCount(); PieceItemIdx++)
+		for (int PartItemIdx = 0; PartItemIdx < StepItem->childCount(); PartItemIdx++)
 		{
-			QTreeWidgetItem* PieceItem = StepItem->child(PieceItemIdx);
-			swPiece* Piece = (swPiece*)PieceItem->data(0, Qt::UserRole).value<uintptr_t>();
+			QTreeWidgetItem* PartItem = StepItem->child(PartItemIdx);
+			swPart* Part = (swPart*)PartItem->data(0, Qt::UserRole).value<uintptr_t>();
 
-			if (!Piece)
+			if (!Part)
 				continue;
 
-			PieceSteps.emplace_back(std::pair<swPiece*, swStep>(Piece, TopLevelItemIdx + 1));
+			PartSteps.emplace_back(std::pair<swPart*, swStep>(Part, TopLevelItemIdx + 1));
 		}
 	}
 
 	mIgnoreUpdates = true;
-	gMainWindow->GetActiveModel()->SetPieceSteps(PieceSteps);
+	gMainWindow->GetActiveModel()->SetPartSteps(PartSteps);
 	mIgnoreUpdates = false;
 }

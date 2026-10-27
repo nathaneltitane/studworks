@@ -25,8 +25,8 @@ public:
 	bool IndexPage;
 	int StepImagesWidth;
 	int StepImagesHeight;
-	bool PiecesListStep;
-	bool PiecesListEnd;
+	bool PartsListStep;
+	bool PartsListEnd;
 };
 
 struct swImageDialogOptions
@@ -40,7 +40,7 @@ struct swImageDialogOptions
 
 struct swSetInventoryItem
 {
-	QByteArray PieceID;
+	QByteArray PartID;
 	int Quantity;
 	int ColorCode;
 };
@@ -82,11 +82,11 @@ public:
 
 	std::shared_ptr<const swEmbeddedData> FindEmbeddedData(const QString& FileName) const;
 	swModel* GetModel(const QString& FileName) const;
-	swPieceData* FindPieceData(const std::string& Name) const;
-	void RegisterPieceData(const std::string& Name, swPieceData* PieceData);
-	void UnregisterPieceData(swPieceData* PieceData);
-	void ClearPieceDataIndex();
-	void TransferPieceDataIndexTo(Project* Destination);
+	swPartData* FindPartData(const std::string& Name) const;
+	void RegisterPartData(const std::string& Name, swPartData* PartData);
+	void UnregisterPartData(swPartData* PartData);
+	void ClearPartDataIndex();
+	void TransferPartDataIndexTo(Project* Destination);
 
 	swModel* GetActiveModel() const
 	{
@@ -145,8 +145,8 @@ public:
 	bool ImportInventory(const std::vector<swSetInventoryItem>& SetInventory, const QString& Name, const QString& Description);
 
 	swResult<void> SaveImage(const swImageDialogOptions& Options);
-	std::vector<swPieceDataReference> GetRequiredPieceData() const;
-	std::vector<swPiece*> GetRequiredSynthPieces() const;
+	std::vector<swPartDataReference> GetRequiredPartData() const;
+	std::vector<swPart*> GetRequiredSynthParts() const;
 	swResult<void> EnsureAssetsReady() const;
 	swResult<void> ExportCurrentStep(const QString& FileName);
 	swResult<QByteArray> SerializeModel(const swModel* Model, bool SelectedOnly, swStep LastStep) const;
@@ -161,7 +161,7 @@ public:
 	swResult<void> ExportPOVRay(const QString& FileName);
 	swResult<void> ExportWavefront(const QString& FileName);
 
-	void UpdatePieceData(swPieceData* PieceData) const;
+	void UpdatePartData(swPartData* PartData) const;
 
 private:
 	struct LoadWarning
@@ -202,10 +202,10 @@ private:
 	static QString MakeUniqueExportIdentifier(const QString& BaseName, std::set<QString>& UsedNames, const QString& ReservedSuffix);
 
 protected:
-	static bool CanShareMergePieceData(const swPieceData* Existing, const swPieceData* Incoming);
+	static bool CanShareMergePartData(const swPartData* Existing, const swPartData* Incoming);
 	QString GetExportFileName(const QString& FileName, const QString& DefaultExtension, const QString& DialogTitle, const QString& DialogFilter) const;
 
-	std::vector<swModelPiecesEntry> GetModelPieces();
+	std::vector<swModelPartsEntry> GetModelParts();
 	void SetFileName(const QString& FileName);
 
 	QUuid mClipboardIdentity = QUuid::createUuid();
@@ -227,9 +227,9 @@ protected:
 	// First definition wins; retain duplicate blocks in mEmbeddedData for saving.
 	std::map<QString, std::shared_ptr<const swEmbeddedData>> mEmbeddedDataIndex;
 	std::vector<std::unique_ptr<swModel>> mModels;
-	// Maps normalized local filenames to swPieceData objects visible in this project.
-	// This map does not own them; swPiecesLibrary tracks and deletes them.
-	std::map<std::string, swPieceData*> mPieceIndex;
+	// Maps normalized local filenames to swPartData objects visible in this project.
+	// This map does not own them; swPartsLibrary tracks and deletes them.
+	std::map<std::string, swPartData*> mPartIndex;
 	swModel* mActiveModel;
 	std::unique_ptr<swInstructions> mInstructions;
 
@@ -242,4 +242,4 @@ inline swModel* swGetActiveModel()
 	return Project ? Project->GetActiveModel() : nullptr;
 }
 
-swResult<void> swExportCSV(const QString& FileName, const swPiecesList& PiecesList);
+swResult<void> swExportCSV(const QString& FileName, const swPartsList& PartsList);

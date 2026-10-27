@@ -641,7 +641,7 @@ bool swMesh::FileSave(swMemoryFile& File)
 
 int swMesh::GetLodIndex(float Distance) const
 {
-	if (swGetPiecesLibrary()->GetStudStyle() != swStudStyle::Plain) // todo: support low lod studs
+	if (swGetPartsLibrary()->GetStudStyle() != swStudStyle::Plain) // todo: support low lod studs
 		return SW_MESH_LOD_HIGH;
 
 	if (mLods[SW_MESH_LOD_LOW].NumSections && (Distance > mRadius))

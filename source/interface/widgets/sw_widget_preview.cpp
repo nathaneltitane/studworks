@@ -1,7 +1,7 @@
 #include "sw_global.h"
 #include "sw_widget_preview.h"
-#include "sw_data_piece.h"
-#include "sw_object_piece.h"
+#include "sw_data_part.h"
+#include "sw_object_part.h"
 #include "sw_project.h"
 #include "sw_model.h"
 #include "sw_library.h"
@@ -66,13 +66,13 @@ swPreviewDockWidget::swPreviewDockWidget(QWidget* Parent)
 
 	// the preview blends into its panel without a viewport border
 	mPreview->SetDrawViewportBorder(false);
-	mViewWidget->setAccessibleName(tr("Piece Preview"));
-	mViewWidget->setToolTip(tr("Inspect the previewed piece without placing it in the model."));
+	mViewWidget->setAccessibleName(tr("Part Preview"));
+	mViewWidget->setToolTip(tr("Inspect the previewed part without placing it in the model."));
 	// Small enough to stack with other panels, the header rows and a few rows of view stay visible.
 	setMinimumSize(200, 4 * swGetPanelButtonSize().height());
 
 	mLockAction = new QAction(tr("Lock Preview"), this);
-	mLockAction->setWhatsThis(tr("<p><b>Lock Preview</b></p><p>Keep the current piece in the preview while you browse other pieces. Unlock Preview allows the display to update again. An empty preview cannot be locked.</p>"));
+	mLockAction->setWhatsThis(tr("<p><b>Lock Preview</b></p><p>Keep the current part in the preview while you browse other parts. Unlock Preview allows the display to update again. An empty preview cannot be locked.</p>"));
 	mLockAction->setCheckable(true);
 	mLockAction->setChecked(false);
 	mLockAction->setShortcut(tr("Ctrl+L"));
@@ -83,24 +83,24 @@ swPreviewDockWidget::swPreviewDockWidget(QWidget* Parent)
 	mLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	swSetupPanelEdit(mLabel);
 
-	swPiecesLibrary* Library = swGetPiecesLibrary();
-	connect(Library, &swPiecesLibrary::PieceLoaded, this, [this](swPieceData*)
+	swPartsLibrary* Library = swGetPartsLibrary();
+	connect(Library, &swPartsLibrary::PartLoaded, this, [this](swPartData*)
 	{
 		if (mAssetRefreshPending)
 			RefreshPendingAssets();
 	});
-	connect(Library, &swPiecesLibrary::PieceLoadFailed, this, [this](swPieceData*, const QString&)
+	connect(Library, &swPartsLibrary::PartLoadFailed, this, [this](swPartData*, const QString&)
 	{
 		if (mAssetRefreshPending)
 			RefreshPendingAssets();
 	});
-	connect(Library, &swPiecesLibrary::GeneratedMeshSettled, this, [this](swPieceData*)
+	connect(Library, &swPartsLibrary::GeneratedMeshSettled, this, [this](swPartData*)
 	{
 		if (mAssetRefreshPending)
 			RefreshPendingAssets();
 	});
 
-	// The button row, the name of the previewed piece and the view are stacked like the other panels.
+	// The button row, the name of the previewed part and the view are stacked like the other panels.
 	QVBoxLayout* Layout = new QVBoxLayout(this);
 
 	QWidget* ButtonRow = swCreatePanelRow(this);
@@ -114,7 +114,7 @@ swPreviewDockWidget::swPreviewDockWidget(QWidget* Parent)
 	LockButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
 	QMenu* OptionsMenu = new QMenu(this);
-	swAddPanelOptionsButton(ButtonRow, OptionsMenu, tr("Configure the pieces preview."), tr("Pieces Preview Options"));
+	swAddPanelOptionsButton(ButtonRow, OptionsMenu, tr("Configure the parts preview."), tr("Parts Preview Options"));
 	connect(OptionsMenu, &QMenu::aboutToShow, this, &swPreviewDockWidget::OptionsMenuAboutToShow);
 
 	Layout->addWidget(mLabel);
@@ -174,7 +174,7 @@ bool swPreviewDockWidget::eventFilter(QObject* Object, QEvent* Event)
 	return QWidget::eventFilter(Object, Event);
 }
 
-bool swPreviewDockWidget::SetCurrentPiece(swPieceData* PieceData, int ColorCode)
+bool swPreviewDockWidget::SetCurrentPart(swPartData* PartData, int ColorCode)
 {
 	if (mLockAction->isChecked())
 		return true;
@@ -183,7 +183,7 @@ bool swPreviewDockWidget::SetCurrentPiece(swPieceData* PieceData, int ColorCode)
 	mRefitAfterAssetLoad = true;
 	mLabel->SetName(tr("Loading..."));
 
-	if (mPreview->SetCurrentPiece(PieceData, ColorCode))
+	if (mPreview->SetCurrentPart(PartData, ColorCode))
 	{
 		RefreshPendingAssets();
 		return true;
@@ -214,9 +214,9 @@ void swPreviewDockWidget::RefreshModel(const swModel* Model)
 	if (mLockAction->isChecked() || mRefreshingModel)
 		return;
 
-	const std::vector<swPieceDataReference> RequiredPieceData = mPreview->GetModel()->GetRequiredPieceData();
+	const std::vector<swPartDataReference> RequiredPartData = mPreview->GetModel()->GetRequiredPartData();
 
-	if (std::find(RequiredPieceData.begin(), RequiredPieceData.end(), Model->GetPieceData()) == RequiredPieceData.end())
+	if (std::find(RequiredPartData.begin(), RequiredPartData.end(), Model->GetPartData()) == RequiredPartData.end())
 		return;
 
 	mRefreshingModel = true;
@@ -224,40 +224,40 @@ void swPreviewDockWidget::RefreshModel(const swModel* Model)
 	if (!mAssetRefreshPending)
 		mRefitAfterAssetLoad = false;
 
-	swPiecesLibrary* Library = swGetPiecesLibrary();
+	swPartsLibrary* Library = swGetPartsLibrary();
 
-	for (const swPieceDataReference& RequiredData : RequiredPieceData)
+	for (const swPartDataReference& RequiredData : RequiredPartData)
 	{
 		if (RequiredData->mState != swAssetState::Unloaded)
 			continue;
 
-		Library->RequestPieceDataLoad(RequiredData.Get(), swLoadPriority::Normal);
+		Library->RequestPartDataLoad(RequiredData.Get(), swLoadPriority::Normal);
 	}
 
 	std::vector<swModel*> UpdatedModels;
-	mPreview->GetModel()->UpdatePieceData(UpdatedModels);
+	mPreview->GetModel()->UpdatePartData(UpdatedModels);
 
 	RefreshPendingAssets();
 
 	mRefreshingModel = false;
 }
 
-void swPreviewDockWidget::RefreshAfterAssetChange(const std::vector<swPieceData*>& ChangedPieces)
+void swPreviewDockWidget::RefreshAfterAssetChange(const std::vector<swPartData*>& ChangedParts)
 {
-	if (mPreview->GetModel()->GetPieces().empty())
+	if (mPreview->GetModel()->GetParts().empty())
 		return;
 
-	const std::vector<swPieceDataReference> RequiredPieceData = mPreview->GetModel()->GetRequiredPieceData();
-	bool Affected = std::any_of(RequiredPieceData.begin(), RequiredPieceData.end(), [&ChangedPieces](const swPieceDataReference& RequiredData)
+	const std::vector<swPartDataReference> RequiredPartData = mPreview->GetModel()->GetRequiredPartData();
+	bool Affected = std::any_of(RequiredPartData.begin(), RequiredPartData.end(), [&ChangedParts](const swPartDataReference& RequiredData)
 	{
-		return std::find(ChangedPieces.begin(), ChangedPieces.end(), RequiredData) != ChangedPieces.end();
+		return std::find(ChangedParts.begin(), ChangedParts.end(), RequiredData) != ChangedParts.end();
 	});
 
 	if (!Affected)
 	{
-		for (const std::unique_ptr<swPiece>& Piece : mPreview->GetModel()->GetPieces())
+		for (const std::unique_ptr<swPart>& Part : mPreview->GetModel()->GetParts())
 		{
-			if (std::find(ChangedPieces.begin(), ChangedPieces.end(), Piece->mPieceData) != ChangedPieces.end())
+			if (std::find(ChangedParts.begin(), ChangedParts.end(), Part->mPartData) != ChangedParts.end())
 			{
 				Affected = true;
 				break;
@@ -273,9 +273,9 @@ void swPreviewDockWidget::RefreshAfterAssetChange(const std::vector<swPieceData*
 
 void swPreviewDockWidget::RefreshPendingAssets()
 {
-	const std::vector<swPieceDataReference> RequiredPieceData = mPreview->GetModel()->GetRequiredPieceData();
+	const std::vector<swPartDataReference> RequiredPartData = mPreview->GetModel()->GetRequiredPartData();
 
-	for (const swPieceDataReference& RequiredData : RequiredPieceData)
+	for (const swPartDataReference& RequiredData : RequiredPartData)
 	{
 		if (RequiredData->mState == swAssetState::Failed || RequiredData->mState == swAssetState::Unloaded)
 		{
@@ -294,9 +294,9 @@ void swPreviewDockWidget::RefreshPendingAssets()
 		}
 	}
 
-	for (const swPiece* Piece : mPreview->GetModel()->GetRequiredSynthPieces())
+	for (const swPart* Part : mPreview->GetModel()->GetRequiredSynthParts())
 	{
-		if (Piece->IsGeneratedMeshPending())
+		if (Part->IsGeneratedMeshPending())
 		{
 			mAssetRefreshPending = true;
 			mViewWidget->hide();
@@ -304,7 +304,7 @@ void swPreviewDockWidget::RefreshPendingAssets()
 			return;
 		}
 
-		if (!Piece->HasGeneratedMesh())
+		if (!Part->HasGeneratedMesh())
 		{
 			mAssetRefreshPending = false;
 			mViewWidget->hide();
@@ -324,15 +324,15 @@ void swPreviewDockWidget::RefreshPendingAssets()
 	mLabel->SetName(mPreview->GetDescription());
 }
 
-void swPreviewDockWidget::RebindPieceData(swPieceData* Previous, swPieceData* Replacement)
+void swPreviewDockWidget::RebindPartData(swPartData* Previous, swPartData* Replacement)
 {
 	int ColorCode = -1;
 
-	for (const std::unique_ptr<swPiece>& Piece : mPreview->GetModel()->GetPieces())
+	for (const std::unique_ptr<swPart>& Part : mPreview->GetModel()->GetParts())
 	{
-		if (Piece->mPieceData == Previous)
+		if (Part->mPartData == Previous)
 		{
-			ColorCode = Piece->GetColorCode();
+			ColorCode = Part->GetColorCode();
 			break;
 		}
 	}
@@ -343,7 +343,7 @@ void swPreviewDockWidget::RebindPieceData(swPieceData* Previous, swPieceData* Re
 	mAssetRefreshPending = false;
 	mRefitAfterAssetLoad = true;
 
-	if (mPreview->SetCurrentPiece(Replacement, ColorCode))
+	if (mPreview->SetCurrentPart(Replacement, ColorCode))
 		RefreshPendingAssets();
 	else
 	{
@@ -357,7 +357,7 @@ void swPreviewDockWidget::ClearPreview()
 	mAssetRefreshPending = false;
 	mRefitAfterAssetLoad = true;
 	mViewWidget->show();
-	if (mPreview->GetModel()->GetPieces().size())
+	if (mPreview->GetModel()->GetParts().size())
 		mPreview->ClearPreview();
 
 	mLabel->SetName(QString());
@@ -367,7 +367,7 @@ void swPreviewDockWidget::SetPreviewLock()
 {
 	bool Locked = mLockAction->isChecked();
 
-	if (Locked && mPreview->GetModel()->GetPieces().empty())
+	if (Locked && mPreview->GetModel()->GetParts().empty())
 	{
 		mLockAction->setChecked(false);
 		return;
@@ -389,19 +389,19 @@ swPreview::swPreview()
 	mModel = mLoader->GetActiveModel();
 }
 
-bool swPreview::SetCurrentPiece(swPieceData* PieceData, int ColorCode)
+bool swPreview::SetCurrentPart(swPartData* PartData, int ColorCode)
 {
-	if (!PieceData)
+	if (!PartData)
 	{
 		ClearPreview();
 		return false;
 	}
 
-	for (const std::unique_ptr<swPiece>& ModelPiece : mModel->GetPieces())
+	for (const std::unique_ptr<swPart>& ModelPart : mModel->GetParts())
 	{
-		if (PieceData == ModelPiece->mPieceData)
+		if (PartData == ModelPart->mPartData)
 		{
-			int ModelColorCode = ModelPiece->GetColorCode();
+			int ModelColorCode = ModelPart->GetColorCode();
 
 			if (ModelColorCode == ColorCode)
 			{
@@ -411,15 +411,15 @@ bool swPreview::SetCurrentPiece(swPieceData* PieceData, int ColorCode)
 		}
 	}
 
-	swPiecesLibrary* Library = swGetPiecesLibrary();
-	const swPieceDataReference PieceDataRef(PieceData);
+	swPartsLibrary* Library = swGetPartsLibrary();
+	const swPartDataReference PartDataRef(PartData);
 
-	bool Ready = Library->WaitForPieceData(PieceDataRef);
+	bool Ready = Library->WaitForPartData(PartDataRef);
 
-	if (Ready && PieceData->IsModel())
-		Ready = static_cast<bool>(PieceData->GetModel()->EnsureAssetsReady());
-	else if (Ready && PieceData->IsProject())
-		Ready = static_cast<bool>(PieceData->GetProject()->EnsureAssetsReady());
+	if (Ready && PartData->IsModel())
+		Ready = static_cast<bool>(PartData->GetModel()->EnsureAssetsReady());
+	else if (Ready && PartData->IsProject())
+		Ready = static_cast<bool>(PartData->GetProject()->EnsureAssetsReady());
 
 	if (!Ready)
 	{
@@ -428,16 +428,16 @@ bool swPreview::SetCurrentPiece(swPieceData* PieceData, int ColorCode)
 		return false;
 	}
 
-	mIsModel = PieceData->IsModel();
-	mDescription = PieceData->m_strDescription;
+	mIsModel = PartData->IsModel();
+	mDescription = PartData->m_strDescription;
 
-	mModel->SelectAllPiecesAction();
+	mModel->SelectAllPartsAction();
 	mModel->DeleteSelectedObjects();
-	mModel->SetPreviewPieceData(PieceData, swGetColorIndex(ColorCode));
+	mModel->SetPreviewPartData(PartData, swGetColorIndex(ColorCode));
 
 	std::vector<swModel*> UpdatedModels;
 
-	mModel->UpdatePieceData(UpdatedModels);
+	mModel->UpdatePartData(UpdatedModels);
 
 	ZoomExtents(swGeometryBoundsMode::IncludeFallback, true);
 
@@ -452,44 +452,44 @@ void swPreview::ClearPreview()
 	mLoader->SetActiveModel(0, false);
 	mModel = mLoader->GetActiveModel();
 
-	swPiecesLibrary* Library = swGetPiecesLibrary();
+	swPartsLibrary* Library = swGetPartsLibrary();
 
-	Library->RemoveTemporaryPieceData();
+	Library->RemoveTemporaryPartData();
 	Redraw();
 }
 
 void swPreview::UpdatePreview()
 {
-	swPieceData* PieceData = nullptr;
+	swPartData* PartData = nullptr;
 	int ColorCode = -1;
 
-	for (const std::unique_ptr<swPiece>& ModelPiece : mModel->GetPieces())
+	for (const std::unique_ptr<swPart>& ModelPart : mModel->GetParts())
 	{
-		if (ModelPiece->mPieceData)
+		if (ModelPart->mPartData)
 		{
-			PieceData = ModelPiece->mPieceData.Get();
-			ColorCode = ModelPiece->GetColorCode();
+			PartData = ModelPart->mPartData.Get();
+			ColorCode = ModelPart->GetColorCode();
 			break;
 		}
 	}
 
-	swPieceDataReference PreviousPieceData(PieceData);
+	swPartDataReference PreviousPartData(PartData);
 
 	ClearPreview();
 
-	if (PieceData && ColorCode > -1)
-		SetCurrentPiece(PieceData, ColorCode);
+	if (PartData && ColorCode > -1)
+		SetCurrentPart(PartData, ColorCode);
 
 }
 
 void swPreview::RefreshDescription()
 {
-	for (const std::unique_ptr<swPiece>& Piece : mModel->GetPieces())
+	for (const std::unique_ptr<swPart>& Part : mModel->GetParts())
 	{
-		if (!Piece->mPieceData)
+		if (!Part->mPartData)
 			continue;
 
-		mDescription = QString::fromLatin1(Piece->mPieceData->m_strDescription);
+		mDescription = QString::fromLatin1(Part->mPartData->m_strDescription);
 		return;
 	}
 

@@ -3,41 +3,41 @@
 #include "sw_library.h"
 #include "sw_application.h"
 #include "sw_mesh.h"
-#include "sw_data_piece.h"
+#include "sw_data_part.h"
 #include "sw_texture.h"
 
 template<>
-void swAssetReference<swPieceData>::Retain(swPieceData* Asset, swPiecesLibrary* Library)
+void swAssetReference<swPartData>::Retain(swPartData* Asset, swPartsLibrary* Library)
 {
-	Library->AddPieceDataReference(Asset);
+	Library->AddPartDataReference(Asset);
 }
 
 template<>
-void swAssetReference<swPieceData>::Release(swPieceData* Asset, swPiecesLibrary* Library)
+void swAssetReference<swPartData>::Release(swPartData* Asset, swPartsLibrary* Library)
 {
-	Library->ReleasePieceData(Asset);
+	Library->ReleasePartData(Asset);
 }
 
 template<>
-void swAssetReference<swTexture>::Retain(swTexture* Asset, swPiecesLibrary* Library)
+void swAssetReference<swTexture>::Retain(swTexture* Asset, swPartsLibrary* Library)
 {
 	Library->AddTextureReference(Asset);
 }
 
 template<>
-void swAssetReference<swTexture>::Release(swTexture* Asset, swPiecesLibrary* Library)
+void swAssetReference<swTexture>::Release(swTexture* Asset, swPartsLibrary* Library)
 {
 	Library->ReleaseTexture(Asset);
 }
 
 template<typename T>
 swAssetReference<T>::swAssetReference(T* Asset)
-	: swAssetReference(Asset, Asset ? swGetPiecesLibrary() : nullptr)
+	: swAssetReference(Asset, Asset ? swGetPartsLibrary() : nullptr)
 {
 }
 
 template<typename T>
-swAssetReference<T>::swAssetReference(T* Asset, swPiecesLibrary* Library)
+swAssetReference<T>::swAssetReference(T* Asset, swPartsLibrary* Library)
 	: mAsset(Asset), mLibrary(Library)
 {
 	if (mAsset)
@@ -123,7 +123,7 @@ void swAssetReference<T>::Swap(swAssetReference& OtherRef) noexcept
 }
 
 template<typename T>
-swAssetReference<T> swAssetReference<T>::Adopt(T* Asset, swPiecesLibrary* Library)
+swAssetReference<T> swAssetReference<T>::Adopt(T* Asset, swPartsLibrary* Library)
 {
 	Q_ASSERT(!Asset || (Library && QThread::currentThread() == Library->thread()));
 
@@ -133,17 +133,17 @@ swAssetReference<T> swAssetReference<T>::Adopt(T* Asset, swPiecesLibrary* Librar
 	return AssetRef;
 }
 
-template class swAssetReference<swPieceData>;
+template class swAssetReference<swPartData>;
 template class swAssetReference<swTexture>;
 
-swPieceSourceSnapshot::swPieceSourceSnapshot()
+swPartSourceSnapshot::swPartSourceSnapshot()
 	: ZipFileType(swZipFileType::Count), StudStyle(swStudStyle::Plain)
 {
 }
 
-swPieceBuildResult::swPieceBuildResult() = default;
-swPieceBuildResult::~swPieceBuildResult() = default;
-swPieceBuildResult::swPieceBuildResult(swPieceBuildResult&&) noexcept = default;
-swPieceBuildResult& swPieceBuildResult::operator=(swPieceBuildResult&&) noexcept = default;
+swPartBuildResult::swPartBuildResult() = default;
+swPartBuildResult::~swPartBuildResult() = default;
+swPartBuildResult::swPartBuildResult(swPartBuildResult&&) noexcept = default;
+swPartBuildResult& swPartBuildResult::operator=(swPartBuildResult&&) noexcept = default;
 
 swTextureBuildResult::~swTextureBuildResult() = default;

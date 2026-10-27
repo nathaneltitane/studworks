@@ -1,7 +1,7 @@
 #include "sw_global.h"
 #include "sw_model.h"
 #include "sw_model_history.h"
-#include "sw_object_piece.h"
+#include "sw_object_part.h"
 #include "sw_object_camera.h"
 #include "sw_object_light.h"
 #include "sw_group.h"
@@ -12,7 +12,7 @@
 #include "sw_scene.h"
 #include "sw_track_train.h"
 #include "sw_file.h"
-#include "sw_data_piece.h"
+#include "sw_data_part.h"
 #include "sw_view.h"
 #include "sw_builder_minifigure.h"
 #include "sw_dialog_array.h"
@@ -214,12 +214,12 @@ void swModel::SaveLDraw(QTextStream& Stream, bool SelectedOnly, swStep LastStep)
 	int AddedSteps = 0;
 	bool SavedStep = false;
 
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
+	for (const std::unique_ptr<swPart>& Part : mParts)
 	{
-		if (SelectedOnly && !Piece->IsSelected())
+		if (SelectedOnly && !Part->IsSelected())
 			continue;
 
-		while (Piece->GetFileLine() > CurrentLine && CurrentLine < mFileLines.size())
+		while (Part->GetFileLine() > CurrentLine && CurrentLine < mFileLines.size())
 		{
 			QString Line = mFileLines[CurrentLine];
 			QTextStream LineStream(&Line, QIODevice::ReadOnly);
@@ -235,7 +235,7 @@ void swModel::SaveLDraw(QTextStream& Stream, bool SelectedOnly, swStep LastStep)
 
 				if (Token == QLatin1String("STEP"))
 				{
-					if (Piece->GetStepShow() > Step)
+					if (Part->GetStepShow() > Step)
 					{
 						if (LastStep && Step >= LastStep)
 						{
@@ -260,35 +260,35 @@ void swModel::SaveLDraw(QTextStream& Stream, bool SelectedOnly, swStep LastStep)
 			CurrentLine++;
 		}
 
-		if (SavedStep || (LastStep && Piece->GetStepShow() > LastStep))
+		if (SavedStep || (LastStep && Part->GetStepShow() > LastStep))
 			break;
 
-		while (Piece->GetStepShow() > Step)
+		while (Part->GetStepShow() > Step)
 		{
 			Stream << swGetStepEndLine(mProperties, Step);
 			AddedSteps++;
 			Step++;
 		}
 
-		swGroup* PieceGroup = Piece->GetGroup();
+		swGroup* PartGroup = Part->GetGroup();
 
-		if (PieceGroup)
+		if (PartGroup)
 		{
-			if (CurrentGroups.empty() || (!CurrentGroups.empty() && PieceGroup != CurrentGroups[CurrentGroups.size() - 1]))
+			if (CurrentGroups.empty() || (!CurrentGroups.empty() && PartGroup != CurrentGroups[CurrentGroups.size() - 1]))
 			{
-				std::deque<swGroup*> PieceParents;
+				std::deque<swGroup*> PartParents;
 
-				for (swGroup* Group = PieceGroup; Group; Group = Group->mGroup)
-					PieceParents.push_front(Group);
+				for (swGroup* Group = PartGroup; Group; Group = Group->mGroup)
+					PartParents.push_front(Group);
 
-				std::deque<swGroup*>::iterator ParentsToAdd = PieceParents.begin();
+				std::deque<swGroup*>::iterator ParentsToAdd = PartParents.begin();
 
 				while (!CurrentGroups.empty())
 				{
 					swGroup* Group = CurrentGroups.back();
-					const std::deque<swGroup*>::iterator ParentFound = std::find(PieceParents.begin(), PieceParents.end(), Group);
+					const std::deque<swGroup*>::iterator ParentFound = std::find(PartParents.begin(), PartParents.end(), Group);
 
-					if (ParentFound == PieceParents.end())
+					if (ParentFound == PartParents.end())
 					{
 						CurrentGroups.pop_back();
 						Stream << QLatin1String("0 !LEOCAD GROUP END\r\n");
@@ -300,7 +300,7 @@ void swModel::SaveLDraw(QTextStream& Stream, bool SelectedOnly, swStep LastStep)
 					}
 				}
 
-				for (std::deque<swGroup*>::iterator ParentIt = ParentsToAdd; ParentIt != PieceParents.end(); ParentIt++)
+				for (std::deque<swGroup*>::iterator ParentIt = ParentsToAdd; ParentIt != PartParents.end(); ParentIt++)
 				{
 					swGroup* Group = *ParentIt;
 					CurrentGroups.emplace_back(Group);
@@ -317,12 +317,12 @@ void swModel::SaveLDraw(QTextStream& Stream, bool SelectedOnly, swStep LastStep)
 			}
 		}
 
-		if (Piece->mPieceData->GetSynthInfo())
+		if (Part->mPartData->GetSynthInfo())
 		{
 			Stream << QLatin1String("0 !LEOCAD SYNTH BEGIN\r\n");
 
-			const std::vector<swPieceControlPoint>& ControlPoints = Piece->GetControlPoints();
-			for (const swPieceControlPoint& ControlPoint : ControlPoints)
+			const std::vector<swPartControlPoint>& ControlPoints = Part->GetControlPoints();
+			for (const swPartControlPoint& ControlPoint : ControlPoints)
 			{
 				Stream << QLatin1String("0 !LEOCAD SYNTH CONTROL_POINT");
 
@@ -336,9 +336,9 @@ void swModel::SaveLDraw(QTextStream& Stream, bool SelectedOnly, swStep LastStep)
 			}
 		}
 
-		Piece->SaveLDraw(Stream);
+		Part->SaveLDraw(Stream);
 
-		if (Piece->mPieceData->GetSynthInfo())
+		if (Part->mPartData->GetSynthInfo())
 			Stream << QLatin1String("0 !LEOCAD SYNTH END\r\n");
 	}
 
@@ -395,13 +395,13 @@ void swModel::SaveLDraw(QTextStream& Stream, bool SelectedOnly, swStep LastStep)
 
 void swModel::LoadLDraw(QIODevice& Device, Project* Project)
 {
-	swPiece* Piece = nullptr;
+	swPart* Part = nullptr;
 	swCamera* Camera = nullptr;
 	swLight* Light = nullptr;
 	std::vector<swGroup*> CurrentGroups;
-	std::vector<swPieceControlPoint> ControlPoints;
+	std::vector<swPartControlPoint> ControlPoints;
 	int CurrentStep = 1;
-	swPiecesLibrary* Library = swGetPiecesLibrary();
+	swPartsLibrary* Library = swGetPartsLibrary();
 	mHasDirectGeometry = false;
 
 	mProperties.mAuthor.clear();
@@ -480,8 +480,8 @@ void swModel::LoadLDraw(QIODevice& Device, Project* Project)
 					OriginalLine = QLatin1String(OriginalLine.endsWith(QLatin1String("\r\n")) ? "0 STEP\r\n" : "0 STEP\n");
 				}
 
-				delete Piece;
-				Piece = nullptr;
+				delete Part;
+				Part = nullptr;
 				CurrentStep++;
 				mFileLines.append(OriginalLine);
 				continue;
@@ -534,10 +534,10 @@ void swModel::LoadLDraw(QIODevice& Device, Project* Project)
 			}
 			else if (Token == QLatin1String("PIECE"))
 			{
-				if (!Piece)
-					Piece = new swPiece(nullptr);
+				if (!Part)
+					Part = new swPart(nullptr);
 
-				Piece->ParseLDrawLine(LineStream);
+				Part->ParseLDrawLine(LineStream);
 			}
 			else if (Token == QLatin1String("CAMERA"))
 			{
@@ -605,10 +605,10 @@ void swModel::LoadLDraw(QIODevice& Device, Project* Project)
 					for (int TokenIdx = 0; TokenIdx < 13; TokenIdx++)
 						LineStream >> Numbers[TokenIdx];
 
-					swPieceControlPoint& PieceControlPoint = ControlPoints.emplace_back();
-					PieceControlPoint.Transform = swMatrix44(swVector4(Numbers[3], Numbers[9], -Numbers[6], 0.0f), swVector4(Numbers[5], Numbers[11], -Numbers[8], 0.0f),
+					swPartControlPoint& PartControlPoint = ControlPoints.emplace_back();
+					PartControlPoint.Transform = swMatrix44(swVector4(Numbers[3], Numbers[9], -Numbers[6], 0.0f), swVector4(Numbers[5], Numbers[11], -Numbers[8], 0.0f),
 					                                         swVector4(-Numbers[4], -Numbers[10], Numbers[7], 0.0f), swVector4(Numbers[0], Numbers[2], -Numbers[1], 1.0f));
-					PieceControlPoint.Scale = Numbers[12];
+					PartControlPoint.Scale = Numbers[12];
 				}
 			}
 
@@ -627,12 +627,12 @@ void swModel::LoadLDraw(QIODevice& Device, Project* Project)
 			swMatrix44 IncludeTransform(swVector4(IncludeMatrix[3], IncludeMatrix[6], IncludeMatrix[9], 0.0f), swVector4(IncludeMatrix[4], IncludeMatrix[7], IncludeMatrix[10], 0.0f),
 										swVector4(IncludeMatrix[5], IncludeMatrix[8], IncludeMatrix[11], 0.0f), swVector4(IncludeMatrix[0], IncludeMatrix[1], IncludeMatrix[2], 1.0f));
 
-			QString PieceId = LineStream.readAll().trimmed();
+			QString PartId = LineStream.readAll().trimmed();
 
-			if (PieceId.isEmpty())
+			if (PartId.isEmpty())
 				continue;
 
-			QByteArray CleanId = PieceId.toLatin1().toUpper().replace('\\', '/');
+			QByteArray CleanId = PartId.toLatin1().toUpper().replace('\\', '/');
 
 			if (Library->FindPrimitive(CleanId.constData()))
 			{
@@ -641,36 +641,36 @@ void swModel::LoadLDraw(QIODevice& Device, Project* Project)
 			}
 			else
 			{
-				if (!Piece)
-					Piece = new swPiece(nullptr);
+				if (!Part)
+					Part = new swPart(nullptr);
 
 				if (!CurrentGroups.empty())
-					Piece->SetGroup(CurrentGroups[CurrentGroups.size() - 1]);
+					Part->SetGroup(CurrentGroups[CurrentGroups.size() - 1]);
 
-				swPieceDataReference PieceData = Library->AcquirePieceData(PieceId.toLatin1().constData(), Project, true, true);
+				swPartDataReference PartData = Library->AcquirePartData(PartId.toLatin1().constData(), Project, true, true);
 
 				const float* Matrix = IncludeTransform.GetFloats();
 				const swMatrix44 Transform(swVector4(Matrix[0], Matrix[2], -Matrix[1], 0.0f), swVector4(Matrix[8], Matrix[10], -Matrix[9], 0.0f),
 									       swVector4(-Matrix[4], -Matrix[6], Matrix[5], 0.0f), swVector4(Matrix[12], Matrix[14], -Matrix[13], 1.0f));
 
-				Piece->SetFileLine(mFileLines.size());
-				Piece->SetPieceData(std::move(PieceData), PieceId, false, false);
-				Piece->Initialize(Transform, CurrentStep);
-				Piece->SetColorCode(ColorCode);
-				Piece->VerifyControlPoints(ControlPoints);
-				Piece->SetControlPoints(ControlPoints);
+				Part->SetFileLine(mFileLines.size());
+				Part->SetPartData(std::move(PartData), PartId, false, false);
+				Part->Initialize(Transform, CurrentStep);
+				Part->SetColorCode(ColorCode);
+				Part->VerifyControlPoints(ControlPoints);
+				Part->SetControlPoints(ControlPoints);
 				ControlPoints.clear();
 
-				if (Piece->mPieceData->IsModel() && Piece->mPieceData->GetModel()->IncludesModel(this))
+				if (Part->mPartData->IsModel() && Part->mPartData->GetModel()->IncludesModel(this))
 				{
-					Project->AddLoadWarning(tr("Model '%1': reference to '%2' was ignored because it would create a circular reference.").arg(GetFileName(), PieceId));
-					delete Piece;
-					Piece = nullptr;
+					Project->AddLoadWarning(tr("Model '%1': reference to '%2' was ignored because it would create a circular reference.").arg(GetFileName(), PartId));
+					delete Part;
+					Part = nullptr;
 					continue;
 				}
 
-				AddPiece(Piece);
-				Piece = nullptr;
+				AddPart(Part);
+				Part = nullptr;
 			}
 		}
 		else
@@ -688,7 +688,7 @@ void swModel::LoadLDraw(QIODevice& Device, Project* Project)
 	mCurrentStep = CurrentStep;
 	CalculateStep(mCurrentStep);
 
-	delete Piece;
+	delete Part;
 	delete Camera;
 	delete Light;
 }
@@ -739,21 +739,21 @@ bool swModel::LoadBinary(swFile* file)
 		file->ReadU32();//m_nScene
 
 	file->ReadS32(&count, 1);
-	swPiecesLibrary* Library = swGetPiecesLibrary();
+	swPartsLibrary* Library = swGetPartsLibrary();
 
-	const size_t FirstNewPiece = mPieces.size();
+	const size_t FirstNewPart = mParts.size();
 
 	while (count--)
 	{
 		if (fv > 0.4f)
 		{
-			swPiece* pPiece = new swPiece(nullptr);
-			pPiece->FileLoad(*file, mProject);
-			AddPiece(pPiece);
+			swPart* pPart = new swPart(nullptr);
+			pPart->FileLoad(*file, mProject);
+			AddPart(pPart);
 		}
 		else
 		{
-			char name[SW_PIECE_NAME_LENGTH];
+			char name[SW_PART_NAME_LENGTH];
 			swVector3 pos, rot;
 			quint8 color, step, group;
 
@@ -769,13 +769,13 @@ bool swModel::LoadBinary(swFile* file)
 			swMatrix44 WorldMatrix = swMultiply(swMatrix44RotationZ(rot[2] * SW_DEGREES_TO_RADIANS), swMultiply(swMatrix44RotationY(rot[1] * SW_DEGREES_TO_RADIANS), swMatrix44RotationX(rot[0] * SW_DEGREES_TO_RADIANS)));
 			WorldMatrix.SetTranslation(pos);
 
-			swPiece* pPiece = new swPiece(Library->AcquirePieceData(name, mProject, true, false));
+			swPart* pPart = new swPart(Library->AcquirePartData(name, mProject, true, false));
 
-			pPiece->Initialize(WorldMatrix, step);
-			pPiece->SetColorCode(swGetColorCodeFromOriginalColor(color));
-			AddPiece(pPiece);
+			pPart->Initialize(WorldMatrix, step);
+			pPart->SetColorCode(swGetColorCodeFromOriginalColor(color));
+			AddPart(pPart);
 
-//			pPiece->SetGroup((swGroup*)group);
+//			pPart->SetGroup((swGroup*)group);
 		}
 	}
 
@@ -859,17 +859,17 @@ bool swModel::LoadBinary(swFile* file)
 			Group->mGroup = mGroups[NumGroups + i].get();
 		}
 
-		for (size_t PieceIndex = FirstNewPiece; PieceIndex < mPieces.size(); PieceIndex++)
+		for (size_t PartIndex = FirstNewPart; PartIndex < mParts.size(); PartIndex++)
 		{
-			swPiece* Piece = mPieces[PieceIndex].get();
+			swPart* Part = mParts[PartIndex].get();
 
-			i = (qint32)(quintptr)(Piece->GetGroup());
-			Piece->SetGroup(nullptr);
+			i = (qint32)(quintptr)(Part->GetGroup());
+			Part->SetGroup(nullptr);
 
 			if (i > 0xFFFF || i == -1)
 				continue;
 
-			Piece->SetGroup(mGroups[NumGroups + i].get());
+			Part->SetGroup(mGroups[NumGroups + i].get());
 		}
 
 		RemoveEmptyGroups();
@@ -939,20 +939,20 @@ bool swModel::LoadBinary(swFile* file)
 
 bool swModel::LoadLDD(const QString& FileData)
 {
-	std::vector<swPiece*> Pieces;
-	std::vector<std::vector<swPiece*>> Groups;
+	std::vector<swPart*> Parts;
+	std::vector<std::vector<swPart*>> Groups;
 
-	if (!swImportLXFMLFile(FileData, mProject, Pieces, Groups))
+	if (!swImportLXFMLFile(FileData, mProject, Parts, Groups))
 		return false;
 
-	for (swPiece* Piece : Pieces)
-		AddPiece(Piece);
+	for (swPart* Part : Parts)
+		AddPart(Part);
 
-	for (const std::vector<swPiece*>& Group : Groups)
+	for (const std::vector<swPart*>& Group : Groups)
 	{
 		swGroup* NewGroup = AddGroup(tr("Group "), nullptr);
-		for (swPiece* Piece : Group)
-			Piece->SetGroup(NewGroup);
+		for (swPart* Part : Group)
+			Part->SetGroup(NewGroup);
 	}
 
 	CalculateStep(mCurrentStep);
@@ -962,34 +962,34 @@ bool swModel::LoadLDD(const QString& FileData)
 
 bool swModel::LoadInventory(const std::vector<swSetInventoryItem>& SetInventory)
 {
-	swPiecesLibrary* Library = swGetPiecesLibrary();
+	swPartsLibrary* Library = swGetPartsLibrary();
 
 	for (const swSetInventoryItem& SetInventoryItem : SetInventory)
 	{
-		const swPieceDataReference PieceData = Library->AcquirePieceData(SetInventoryItem.PieceID + ".dat", mProject, true, false);
+		const swPartDataReference PartData = Library->AcquirePartData(SetInventoryItem.PartID + ".dat", mProject, true, false);
 		int Quantity = SetInventoryItem.Quantity;
 
 		while (Quantity--)
 		{
-			swPiece* Piece = new swPiece(nullptr);
-			Piece->SetPieceData(PieceData, QString(), false, true);
-			Piece->Initialize(swMatrix44Identity(), 1);
-			Piece->SetColorCode(SetInventoryItem.ColorCode);
-			AddPiece(Piece);
+			swPart* Part = new swPart(nullptr);
+			Part->SetPartData(PartData, QString(), false, true);
+			Part->Initialize(swMatrix44Identity(), 1);
+			Part->SetColorCode(SetInventoryItem.ColorCode);
+			AddPart(Part);
 		}
 	}
 
-	if (mPieces.empty())
+	if (mParts.empty())
 		return false;
 
-	std::vector<swPieceDataReference> RequiredPieceData;
+	std::vector<swPartDataReference> RequiredPartData;
 
-	RequiredPieceData.reserve(mPieces.size());
+	RequiredPartData.reserve(mParts.size());
 
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
-		RequiredPieceData.push_back(Piece->mPieceData);
+	for (const std::unique_ptr<swPart>& Part : mParts)
+		RequiredPartData.push_back(Part->mPartData);
 
-	if (!Library->WaitForPieceData(RequiredPieceData))
+	if (!Library->WaitForPartData(RequiredPartData))
 		return false;
 
 	auto RoundBounds = [](float& Value)
@@ -1002,27 +1002,27 @@ bool swModel::LoadInventory(const std::vector<swSetInventoryItem>& SetInventory)
 	float CurrentY = 0.0f;
 	float ColumnWidth = 0.0f;
 
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
+	for (const std::unique_ptr<swPart>& Part : mParts)
 	{
-		swBoundingBox BoundingBox = Piece->mPieceData->GetBoundingBox();
+		swBoundingBox BoundingBox = Part->mPartData->GetBoundingBox();
 		RoundBounds(BoundingBox.Min.x);
 		RoundBounds(BoundingBox.Min.y);
 		RoundBounds(BoundingBox.Max.x);
 		RoundBounds(BoundingBox.Max.y);
 
-		const float PieceWidth = BoundingBox.Max.x - BoundingBox.Min.x;
-		const float PieceHeight = BoundingBox.Max.y - BoundingBox.Min.y;
+		const float PartWidth = BoundingBox.Max.x - BoundingBox.Min.x;
+		const float PartHeight = BoundingBox.Max.y - BoundingBox.Min.y;
 
-		if (CurrentY + PieceHeight > TargetHeight)
+		if (CurrentY + PartHeight > TargetHeight)
 		{
 			CurrentY = 0.0f;
 			CurrentX += ColumnWidth;
 			ColumnWidth = 0.0f;
 		}
 
-		Piece->SetPosition(swVector3(CurrentX + PieceWidth / 2.0f, CurrentY + PieceHeight / 2.0f, 0.0f), 1, false);
-		CurrentY += PieceHeight;
-		ColumnWidth = qMax(ColumnWidth, PieceWidth);
+		Part->SetPosition(swVector3(CurrentX + PartWidth / 2.0f, CurrentY + PartHeight / 2.0f, 0.0f), 1, false);
+		CurrentY += PartHeight;
+		ColumnWidth = qMax(ColumnWidth, PartWidth);
 	}
 
 	CalculateStep(mCurrentStep);

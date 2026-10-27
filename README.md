@@ -28,7 +28,7 @@ Useful? Star the repository - it helps others find it.
 - Instructions: Print panel inside the instructions window replaces the print dialog and print preview, the window opens maximized
 - Preferences: label and control columns lined up on every page, mouse shortcuts recorded by clicking, mouse tools grouped like the keyboard commands
 - Menus: new Steps menu, Instructions and Properties in the File menu, Image under Export, Preferences at the bottom of the Edit menu
-- Pieces panel snaps its categories to the longest name when docked on top or bottom
+- Parts panel snaps its categories to the longest name when docked on top or bottom
 - Terminal panel: 'Open Model Folder' button
 - Traditional Chinese, Russian and Ukrainian added to the language choices
 - About dialog shows the LEGO® trademark notice
@@ -40,24 +40,24 @@ Useful? Star the repository - it helps others find it.
 - Settings, part palettes and minifigure templates are copied from LeoCAD on the first start
 - Models keep LeoCAD's file format and open in either program
 - Set inventories use your own free Rebrickable API key, asked for once
-- Light and camera properties follow the piece layout: named rows, values with their names and units, one keyframe per value
+- Light and camera properties follow the part layout: named rows, values with their names and units, one keyframe per value
 
 2026-10-25 ↴
 
 - Default names use a three digit number and no number sign: 'Group 001', 'Minifigure 001', 'Submodel 001.ldr', 'Camera 001', 'Spot Light 001'
 - Duplicated submodels take the next free number instead of 'Copy of': 'Car.ldr' becomes 'Car 001.ldr'
 - Panels share one look: headers, buttons, text boxes and spacing follow the options (gear) button
-- Properties: piece, color, position, rotation and transform rows below the list - color swatch spans the piece and color rows
-- Timeline: steps a piece is added and removed in, edited below the timeline - an empty removal step reads 'Never'
+- Properties: part, color, position, rotation and transform rows below the list - color swatch spans the part and color rows
+- Timeline: steps a part is added and removed in, edited below the timeline - an empty removal step reads 'Never'
 - Model tabs fully outlined and lined up with the view options button
 
 2026-10-24 ↴
 
 - Instructions: paper and screen presets, metric or imperial units and margins, orientation-based step order
 - Instructions: cover page, bill of materials, blank page breaks, step dividers, document font and full page background
-- Instructions: steps per page set for each page, pieces list counts, sort order and border
+- Instructions: steps per page set for each page, parts list counts, sort order and border
 - Minifigure Builder panel: build a minifigure, dock the builder and add several variations to the model
-- Piece preview: optional square viewport that sizes the panel to fit
+- Part preview: optional square viewport that sizes the panel to fit
 - Models menu: 'Configure Minifigure...', Preferences and Instructions moved to the Edit menu
 
 ---
@@ -73,28 +73,28 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
   - Uniform panel headers, buttons and text boxes, all sized from the options (gear) button
   - Collapsible color groups, square color tiles and a color options menu
   - Properties panel with compact position, rotation and transform rows and a spanning color swatch
-  - Dockable Minifigure Builder panel, optional embedded terminal panel and a square piece preview
+  - Dockable Minifigure Builder panel, optional embedded terminal panel and a square part preview
   - Panels dock side by side in any area
-  - Pieces panel snaps to whole thumbnail tiles and its categories to the longest name
+  - Parts panel snaps to whole thumbnail tiles and its categories to the longest name
   - Theme-aware Blender icons and cursors, with axis cursors for moving and rotating
 
 - **Modeling** ↴
   - MLCad ROTSTEP step views shown and edited in the Timeline
   - Vertical XZ and YZ height grids, custom rotation snap angle and camera orbit snapping
-  - Normal to Face view command, first piece at the origin option
-  - Insert color options and the selected piece color as the current color
-  - Separate rendering settings for the model view, piece preview and pieces list
+  - Normal to Face view command, first part at the origin option
+  - Insert color options and the selected part color as the current color
+  - Separate rendering settings for the model view, part preview and parts list
   - Standard, Studio, Matte and Toon lighting styles and an adjustable selection outline width
 
 - **Instructions** ↴
   - Page setup with paper and screen presets, units, margins and orientation
   - Cover page, bill of materials, blank page breaks and per page step layouts
-  - Step dividers, document font, pieces list options and full page backgrounds
+  - Step dividers, document font, parts list options and full page backgrounds
   - Placement panel to place, drag and lock every page element, with a snapping page grid
   - Page numbers, colors and fonts for every element and a built-in Print panel
 
 - **Models** ↴
-  - Model properties with piece IDs, thumbnails, counts and BrickLink or CSV export
+  - Model properties with part IDs, thumbnails, counts and BrickLink or CSV export
   - Consistent default names and numbered duplicates
 
 ---

@@ -79,7 +79,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "File.Import.Inventory"),
 		QT_TRANSLATE_NOOP("Menu", "Set &Inventory..."),
-		QT_TRANSLATE_NOOP("Status", "Import all pieces from an official set"),
+		QT_TRANSLATE_NOOP("Status", "Import all parts from an official set"),
 		"",
 		""
 	},
@@ -111,7 +111,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "File.Export.BrickLink"),
 		QT_TRANSLATE_NOOP("Menu", "&BrickLink..."),
-		QT_TRANSLATE_NOOP("Status", "Export a list of pieces used in BrickLink XML format"),
+		QT_TRANSLATE_NOOP("Status", "Export a list of parts used in BrickLink XML format"),
 		"",
 		""
 	},
@@ -119,7 +119,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "File.Export.CSV"),
 		QT_TRANSLATE_NOOP("Menu", "&CSV..."),
-		QT_TRANSLATE_NOOP("Status", "Export a list of pieces used in comma delimited file format"),
+		QT_TRANSLATE_NOOP("Status", "Export a list of parts used in comma delimited file format"),
 		"",
 		""
 	},
@@ -272,7 +272,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Find"),
 		QT_TRANSLATE_NOOP("Menu", "&Find"),
-		QT_TRANSLATE_NOOP("Status", "Find piece"),
+		QT_TRANSLATE_NOOP("Status", "Find part"),
 		"",
 		"Ctrl+F"
 	},
@@ -280,7 +280,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.FindNext"),
 		QT_TRANSLATE_NOOP("Menu", "Find Ne&xt"),
-		QT_TRANSLATE_NOOP("Status", "Find next piece"),
+		QT_TRANSLATE_NOOP("Status", "Find next part"),
 		"",
 		"F3"
 	},
@@ -288,7 +288,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.FindPrevious"),
 		QT_TRANSLATE_NOOP("Menu", "Find Pre&vious"),
-		QT_TRANSLATE_NOOP("Status", "Find previous piece"),
+		QT_TRANSLATE_NOOP("Status", "Find previous part"),
 		"",
 		"Shift+F3"
 	},
@@ -296,7 +296,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.FindAll"),
 		QT_TRANSLATE_NOOP("Menu", "Find All"),
-		QT_TRANSLATE_NOOP("Status", "Find all pieces that match the search criteria"),
+		QT_TRANSLATE_NOOP("Status", "Find all parts that match the search criteria"),
 		"",
 		""
 	},
@@ -304,7 +304,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Replace"),
 		QT_TRANSLATE_NOOP("Menu", "&Replace"),
-		QT_TRANSLATE_NOOP("Status", "Replace piece"),
+		QT_TRANSLATE_NOOP("Status", "Replace part"),
 		"",
 		""
 	},
@@ -312,7 +312,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.ReplaceNext"),
 		QT_TRANSLATE_NOOP("Menu", "Replace Next"),
-		QT_TRANSLATE_NOOP("Status", "Replace next piece"),
+		QT_TRANSLATE_NOOP("Status", "Replace next part"),
 		"",
 		""
 	},
@@ -320,7 +320,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.ReplaceAll"),
 		QT_TRANSLATE_NOOP("Menu", "Replace All"),
-		QT_TRANSLATE_NOOP("Status", "Replace all pieces that match the search criteria"),
+		QT_TRANSLATE_NOOP("Status", "Replace all parts that match the search criteria"),
 		"",
 		""
 	},
@@ -328,7 +328,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SelectAll"),
 		QT_TRANSLATE_NOOP("Menu", "Select &All"),
-		QT_TRANSLATE_NOOP("Status", "Select all pieces in the model"),
+		QT_TRANSLATE_NOOP("Status", "Select all parts in the model"),
 		"",
 		"Ctrl+A"
 	},
@@ -360,15 +360,15 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SelectSingle"),
 		QT_TRANSLATE_NOOP("Menu", "Single Selection"),
-		QT_TRANSLATE_NOOP("Status", "Select one piece at a time"),
+		QT_TRANSLATE_NOOP("Status", "Select one part at a time"),
 		"",
 		""
 	},
-	// SW_EDIT_SELECT_PIECE
+	// SW_EDIT_SELECT_PART
 	{
-		QT_TRANSLATE_NOOP("Action", "Edit.SelectPiece"),
-		QT_TRANSLATE_NOOP("Menu", "Piece Selection"),
-		QT_TRANSLATE_NOOP("Status", "Select all pieces of the same type"),
+		QT_TRANSLATE_NOOP("Action", "Edit.SelectPart"),
+		QT_TRANSLATE_NOOP("Menu", "Part Selection"),
+		QT_TRANSLATE_NOOP("Status", "Select all parts of the same type"),
 		"",
 		""
 	},
@@ -376,15 +376,15 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SelectColor"),
 		QT_TRANSLATE_NOOP("Menu", "Color Selection"),
-		QT_TRANSLATE_NOOP("Status", "Select all pieces of the same color"),
+		QT_TRANSLATE_NOOP("Status", "Select all parts of the same color"),
 		"",
 		""
 	},
-	// SW_EDIT_SELECT_PIECE_COLOR
+	// SW_EDIT_SELECT_PART_COLOR
 	{
-		QT_TRANSLATE_NOOP("Action", "Edit.SelectPieceColor"),
-		QT_TRANSLATE_NOOP("Menu", "Piece and Color Selection"),
-		QT_TRANSLATE_NOOP("Status", "Select all pieces of the same type and color"),
+		QT_TRANSLATE_NOOP("Action", "Edit.SelectPartColor"),
+		QT_TRANSLATE_NOOP("Menu", "Part and Color Selection"),
+		QT_TRANSLATE_NOOP("Status", "Select all parts of the same type and color"),
 		"",
 		""
 	},
@@ -416,7 +416,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.TransformSeparately"),
 		QT_TRANSLATE_NOOP("Menu", "Rotate Separately"),
-		QT_TRANSLATE_NOOP("Status", "Rotate selected pieces separately"),
+		QT_TRANSLATE_NOOP("Status", "Rotate selected parts separately"),
 		"",
 		""
 	},
@@ -424,7 +424,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.TransformTogether"),
 		QT_TRANSLATE_NOOP("Menu", "Rotate Together"),
-		QT_TRANSLATE_NOOP("Status", "Rotate selected pieces together"),
+		QT_TRANSLATE_NOOP("Status", "Rotate selected parts together"),
 		"",
 		""
 	},
@@ -432,7 +432,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.TransformToggleSeparate"),
 		QT_TRANSLATE_NOOP("Menu", "Toggle Separate Transforms"),
-		QT_TRANSLATE_NOOP("Status", "Toggle rotating selected pieces separately"),
+		QT_TRANSLATE_NOOP("Status", "Toggle rotating selected parts separately"),
 		"",
 		""
 	},
@@ -752,8 +752,8 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Tool.Insert"),
 		QT_TRANSLATE_NOOP("Menu", "Insert"),
-		QT_TRANSLATE_NOOP("Status", "Add new pieces to the model"),
-		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Insert Piece Tool</b></p><p>Choose a piece in the Pieces dock and a color in Colors, then use this tool in the model view to place the piece. Movement snapping controls placement increments. Use the preview to check placement before inserting the piece.</p>"),
+		QT_TRANSLATE_NOOP("Status", "Add new parts to the model"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Insert Part Tool</b></p><p>Choose a part in the Parts dock and a color in Colors, then use this tool in the model view to place the part. Movement snapping controls placement increments. Use the preview to check placement before inserting the part.</p>"),
 		""
 	},
 	// SW_EDIT_ACTION_POINT_LIGHT
@@ -801,7 +801,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("Action", "Edit.Tool.Select"),
 		QT_TRANSLATE_NOOP("Menu", "Select"),
 		QT_TRANSLATE_NOOP("Status", "Select objects (hold the CTRL key down or drag the mouse to select multiple objects)"),
-		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Select Tool</b></p><p>Pick objects in the model view or drag a selection rectangle. Selection Mode controls whether matching piece types or colors are included. The focused object provides the reference for relative transforms.</p>"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Select Tool</b></p><p>Pick objects in the model view or drag a selection rectangle. Selection Mode controls whether matching part types or colors are included. The focused object provides the reference for relative transforms.</p>"),
 		""
 	},
 	// SW_EDIT_ACTION_MOVE
@@ -816,8 +816,8 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Tool.Rotate"),
 		QT_TRANSLATE_NOOP("Menu", "Rotate"),
-		QT_TRANSLATE_NOOP("Status", "Rotate selected pieces"),
-		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Rotate Tool</b></p><p>Select objects, then drag a rotation handle in the model view. Rotation Snap sets the angle increments. Transform Options chooses relative or model axes and whether pieces rotate together or separately.</p>"),
+		QT_TRANSLATE_NOOP("Status", "Rotate selected parts"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Rotate Tool</b></p><p>Select objects, then drag a rotation handle in the model view. Rotation Snap sets the angle increments. Transform Options chooses relative or model axes and whether parts rotate together or separately.</p>"),
 		""
 	},
 	// SW_EDIT_ACTION_DELETE
@@ -832,16 +832,16 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Tool.Paint"),
 		QT_TRANSLATE_NOOP("Menu", "Paint"),
-		QT_TRANSLATE_NOOP("Status", "Change piece color"),
-		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Paint Tool</b></p><p>Choose the replacement color in the Colors dock, then click pieces in the model view to recolor them. To recolor the current selection together, use the color button above the swatches.</p>"),
+		QT_TRANSLATE_NOOP("Status", "Change part color"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Paint Tool</b></p><p>Choose the replacement color in the Colors dock, then click parts in the model view to recolor them. To recolor the current selection together, use the color button above the swatches.</p>"),
 		""
 	},
 	// SW_EDIT_ACTION_COLOR_PICKER
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Tool.ColorPicker"),
 		QT_TRANSLATE_NOOP("Menu", "Color Picker"),
-		QT_TRANSLATE_NOOP("Status", "Get piece color"),
-		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Color Picker Tool</b></p><p>Click a piece in the model view to make its color the current color. You can then use that color for insertion or painting; sampling it does not recolor the piece.</p>"),
+		QT_TRANSLATE_NOOP("Status", "Get part color"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Color Picker Tool</b></p><p>Click a part in the model view to make its color the current color. You can then use that color for insertion or painting; sampling it does not recolor the part.</p>"),
 		""
 	},
 	// SW_EDIT_ACTION_ZOOM
@@ -849,7 +849,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("Action", "Edit.Tool.Zoom"),
 		QT_TRANSLATE_NOOP("Menu", "Zoom"),
 		QT_TRANSLATE_NOOP("Status", "Zoom in or out"),
-		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Zoom Tool</b></p><p>Drag in the model view to move the viewpoint closer to or farther from the model. This changes the view rather than resizing pieces. Use Zoom Region to frame a particular area.</p>"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Zoom Tool</b></p><p>Drag in the model view to move the viewpoint closer to or farther from the model. This changes the view rather than resizing parts. Use Zoom Region to frame a particular area.</p>"),
 		""
 	},
 	// SW_EDIT_ACTION_PAN
@@ -865,7 +865,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("Action", "Edit.Tool.RotateView"),
 		QT_TRANSLATE_NOOP("Menu", "Rotate View"),
 		QT_TRANSLATE_NOOP("Status", "Rotate the current view"),
-		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Orbit Tool</b></p><p>Drag to orbit the view around its center and inspect the model from another direction. This rotates the viewpoint rather than the selected pieces; use Rotate for object edits.</p>"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Orbit Tool</b></p><p>Drag to orbit the view around its center and inspect the model from another direction. This rotates the viewpoint rather than the selected parts; use Rotate for object edits.</p>"),
 		""
 	},
 	// SW_EDIT_ACTION_ROLL
@@ -873,7 +873,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("Action", "Edit.Tool.Roll"),
 		QT_TRANSLATE_NOOP("Menu", "Roll"),
 		QT_TRANSLATE_NOOP("Status", "Roll the current view"),
-		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Roll Tool</b></p><p>Drag to turn the view around its viewing axis, tilting what appears upright on screen. Model pieces keep their positions and orientations.</p>"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Roll Tool</b></p><p>Drag to turn the view around its viewing axis, tilting what appears upright on screen. Model parts keep their positions and orientations.</p>"),
 		""
 	},
 	// SW_EDIT_ACTION_ZOOM_REGION
@@ -920,7 +920,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "View.ZoomExtents"),
 		QT_TRANSLATE_NOOP("Menu", "Zoom E&xtents"),
-		QT_TRANSLATE_NOOP("Status", "Fit all pieces in the current view"),
+		QT_TRANSLATE_NOOP("Status", "Fit all parts in the current view"),
 		"",
 		""
 	},
@@ -928,7 +928,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "View.LookAt"),
 		QT_TRANSLATE_NOOP("Menu", "Look At"),
-		QT_TRANSLATE_NOOP("Status", "Rotate view so selected pieces are at center"),
+		QT_TRANSLATE_NOOP("Status", "Rotate view so selected parts are at center"),
 		"",
 		""
 	},
@@ -1177,7 +1177,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("Action", "View.Time.First"),
 		QT_TRANSLATE_NOOP("Menu", "First"),
 		QT_TRANSLATE_NOOP("Status", "Go to the first step of the model"),
-		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>First Step</b></p><p>Display the model at its first building step. Step navigation changes which pieces are visible; it does not move pieces to a different step.</p>"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>First Step</b></p><p>Display the model at its first building step. Step navigation changes which parts are visible; it does not move parts to a different step.</p>"),
 		"Alt+Up"
 	},
 	// SW_VIEW_TIME_PREVIOUS
@@ -1185,7 +1185,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("Action", "View.Time.Previous"),
 		QT_TRANSLATE_NOOP("Menu", "Previous"),
 		QT_TRANSLATE_NOOP("Status", "Go to the previous step"),
-		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Previous Step</b></p><p>Display the model one building step earlier. Pieces introduced in later steps are hidden so you can inspect the earlier stage of construction.</p>"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Previous Step</b></p><p>Display the model one building step earlier. Parts introduced in later steps are hidden so you can inspect the earlier stage of construction.</p>"),
 		"Alt+Left"
 	},
 	// SW_VIEW_TIME_NEXT
@@ -1193,7 +1193,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("Action", "View.Time.Next"),
 		QT_TRANSLATE_NOOP("Menu", "Next"),
 		QT_TRANSLATE_NOOP("Status", "Go to the next step"),
-		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Next Step</b></p><p>Display the next building step to reveal the next stage of the model. Use the Timeline to change which step introduces a piece.</p>"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Next Step</b></p><p>Display the next building step to reveal the next stage of the model. Use the Timeline to change which step introduces a part.</p>"),
 		"Alt+Right"
 	},
 	// SW_VIEW_TIME_LAST
@@ -1233,7 +1233,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("Action", "View.Time.AddKeys"),
 		QT_TRANSLATE_NOOP("Menu", "Add Keys"),
 		QT_TRANSLATE_NOOP("Status", "Toggle adding new animation keys"),
-		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Add Keys</b></p><p>Enable this when an edit should create a new animation key at the current step. For example, moving a piece at a later step can give it a different position there. The diamond controls in Properties show and toggle keys for individual properties.</p>"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Add Keys</b></p><p>Enable this when an edit should create a new animation key at the current step. For example, moving a part at a later step can give it a different position there. The diamond controls in Properties show and toggle keys for individual properties.</p>"),
 		""
 	},
 	// SW_VIEW_SPLIT_HORIZONTAL
@@ -1292,11 +1292,11 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
-	// SW_VIEW_TOOLBAR_PIECES
+	// SW_VIEW_TOOLBAR_PARTS
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Toolbars.Parts"),
-		QT_TRANSLATE_NOOP("Menu", "Pieces"),
-		QT_TRANSLATE_NOOP("Status", "Toggle the Pieces Toolbar"),
+		QT_TRANSLATE_NOOP("Menu", "Parts"),
+		QT_TRANSLATE_NOOP("Status", "Toggle the Parts Toolbar"),
 		"",
 		""
 	},
@@ -1393,7 +1393,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("Action", "View.Lighting.Standard"),
 		QT_TRANSLATE_NOOP("Menu", "&Standard Lighting"),
 		QT_TRANSLATE_NOOP("Status", "Use a single light with soft highlights for the default lights"),
-		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Standard Lighting</b></p><p>Light pieces drawn with the Default Lights shading mode using one light above the camera with a soft highlight. This is the classic look.</p>"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Standard Lighting</b></p><p>Light parts drawn with the Default Lights shading mode using one light above the camera with a soft highlight. This is the classic look.</p>"),
 		""
 	},
 	// SW_VIEW_LIGHTING_STUDIO
@@ -1401,7 +1401,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("Action", "View.Lighting.Studio"),
 		QT_TRANSLATE_NOOP("Menu", "St&udio Lighting"),
 		QT_TRANSLATE_NOOP("Status", "Use key, fill and rim lights for the default lights"),
-		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Studio Lighting</b></p><p>Light pieces drawn with the Default Lights shading mode using a key light, a fill light from the camera and a rim light that brightens silhouette edges, for a softer, more photographic look.</p>"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Studio Lighting</b></p><p>Light parts drawn with the Default Lights shading mode using a key light, a fill light from the camera and a rim light that brightens silhouette edges, for a softer, more photographic look.</p>"),
 		""
 	},
 	// SW_VIEW_LIGHTING_MATTE
@@ -1409,7 +1409,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("Action", "View.Lighting.Matte"),
 		QT_TRANSLATE_NOOP("Menu", "&Matte Lighting"),
 		QT_TRANSLATE_NOOP("Status", "Use the default lights without highlights"),
-		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Matte Lighting</b></p><p>Light pieces drawn with the Default Lights shading mode without specular highlights, so colors stay flat and true while surfaces keep their shading.</p>"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Matte Lighting</b></p><p>Light parts drawn with the Default Lights shading mode without specular highlights, so colors stay flat and true while surfaces keep their shading.</p>"),
 		""
 	},
 	// SW_VIEW_LIGHTING_TOON
@@ -1417,7 +1417,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("Action", "View.Lighting.Toon"),
 		QT_TRANSLATE_NOOP("Menu", "&Toon Lighting"),
 		QT_TRANSLATE_NOOP("Status", "Use banded cel shading for the default lights"),
-		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Toon Lighting</b></p><p>Light pieces drawn with the Default Lights shading mode in a few flat brightness bands with a sharp highlight, for a cartoon look that pairs well with edge lines.</p>"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Toon Lighting</b></p><p>Light parts drawn with the Default Lights shading mode in a few flat brightness bands with a sharp highlight, for a cartoon look that pairs well with edge lines.</p>"),
 		""
 	},
 	// SW_VIEW_PROJECTION_PERSPECTIVE
@@ -1497,7 +1497,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("Action", "View.NormalToFace"),
 		QT_TRANSLATE_NOOP("Menu", "Normal to Face"),
 		QT_TRANSLATE_NOOP("Status", "Click a face to align the view straight on to it"),
-		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Normal to Face</b></p><p>Click a face of any piece, including pieces inside submodels, to point the camera straight at it. The model is not changed. Press Esc to cancel.</p>"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Normal to Face</b></p><p>Click a face of any part, including parts inside submodels, to point the camera straight at it. The model is not changed. Press Esc to cancel.</p>"),
 		""
 	},
 	// SW_VIEW_GRID_TOGGLE_HEIGHT_XZ
@@ -1572,35 +1572,35 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
-	// SW_PIECE_INSERT_COLOR_CURRENT
+	// SW_PART_INSERT_COLOR_CURRENT
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.InsertColor.Current"),
+		QT_TRANSLATE_NOOP("Action", "Part.InsertColor.Current"),
 		QT_TRANSLATE_NOOP("Menu", "Insert with Current Color"),
-		QT_TRANSLATE_NOOP("Status", "Insert new pieces with the current color"),
+		QT_TRANSLATE_NOOP("Status", "Insert new parts with the current color"),
 		"",
 		""
 	},
-	// SW_PIECE_INSERT_COLOR_SELECTED
+	// SW_PART_INSERT_COLOR_SELECTED
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.InsertColor.Selected"),
-		QT_TRANSLATE_NOOP("Menu", "Insert with Selected Piece Color"),
-		QT_TRANSLATE_NOOP("Status", "Insert new pieces with the color of the selected piece"),
+		QT_TRANSLATE_NOOP("Action", "Part.InsertColor.Selected"),
+		QT_TRANSLATE_NOOP("Menu", "Insert with Selected Part Color"),
+		QT_TRANSLATE_NOOP("Status", "Insert new parts with the color of the selected part"),
 		"",
 		""
 	},
-	// SW_PIECE_INSERT_COLOR_LAST_INSERTED
+	// SW_PART_INSERT_COLOR_LAST_INSERTED
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.InsertColor.LastInserted"),
+		QT_TRANSLATE_NOOP("Action", "Part.InsertColor.LastInserted"),
 		QT_TRANSLATE_NOOP("Menu", "Insert with Last Inserted Color"),
-		QT_TRANSLATE_NOOP("Status", "Insert new pieces with the color of the last inserted piece"),
+		QT_TRANSLATE_NOOP("Status", "Insert new parts with the color of the last inserted part"),
 		"",
 		""
 	},
-	// SW_VIEW_PIECES_TOGGLE_LOCK_COLOR
+	// SW_VIEW_PARTS_TOGGLE_LOCK_COLOR
 	{
-		QT_TRANSLATE_NOOP("Action", "View.Pieces.ToggleLockColor"),
-		QT_TRANSLATE_NOOP("Menu", "Lock Pieces Color"),
-		QT_TRANSLATE_NOOP("Status", "Toggle keeping the pieces list in a fixed color instead of following the insert color"),
+		QT_TRANSLATE_NOOP("Action", "View.Parts.ToggleLockColor"),
+		QT_TRANSLATE_NOOP("Menu", "Lock Parts Color"),
+		QT_TRANSLATE_NOOP("Status", "Toggle keeping the parts list in a fixed color instead of following the insert color"),
 		"",
 		""
 	},
@@ -1624,7 +1624,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.ToggleFixedDirectionKeys"),
 		QT_TRANSLATE_NOOP("Menu", "Fixed Direction Keys"),
-		QT_TRANSLATE_NOOP("Status", "Toggle moving pieces along fixed model axes instead of view-relative directions"),
+		QT_TRANSLATE_NOOP("Status", "Toggle moving parts along fixed model axes instead of view-relative directions"),
 		"",
 		""
 	},
@@ -1632,15 +1632,15 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "View.ToggleMeshLOD"),
 		QT_TRANSLATE_NOOP("Menu", "Mesh LOD"),
-		QT_TRANSLATE_NOOP("Status", "Toggle using simpler meshes for distant pieces"),
+		QT_TRANSLATE_NOOP("Status", "Toggle using simpler meshes for distant parts"),
 		"",
 		""
 	},
-	// SW_VIEW_TOGGLE_HIGHLIGHT_NEW_PIECES
+	// SW_VIEW_TOGGLE_HIGHLIGHT_NEW_PARTS
 	{
-		QT_TRANSLATE_NOOP("Action", "View.ToggleHighlightNewPieces"),
-		QT_TRANSLATE_NOOP("Menu", "Highlight New Pieces"),
-		QT_TRANSLATE_NOOP("Status", "Toggle highlighting pieces added in the current step"),
+		QT_TRANSLATE_NOOP("Action", "View.ToggleHighlightNewParts"),
+		QT_TRANSLATE_NOOP("Menu", "Highlight New Parts"),
+		QT_TRANSLATE_NOOP("Status", "Toggle highlighting parts added in the current step"),
 		"",
 		""
 	},
@@ -1672,7 +1672,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "View.ToggleAutomateEdgeColor"),
 		QT_TRANSLATE_NOOP("Menu", "Automate Edge Color"),
-		QT_TRANSLATE_NOOP("Status", "Toggle automatically computing piece edge colors"),
+		QT_TRANSLATE_NOOP("Status", "Toggle automatically computing part edge colors"),
 		"",
 		""
 	},
@@ -1680,7 +1680,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "View.HighlightStyle.Outline"),
 		QT_TRANSLATE_NOOP("Menu", "Outline Highlight"),
-		QT_TRANSLATE_NOOP("Status", "Highlight selected and new pieces with outlines"),
+		QT_TRANSLATE_NOOP("Status", "Highlight selected and new parts with outlines"),
 		"",
 		""
 	},
@@ -1688,7 +1688,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "View.HighlightStyle.TintAndEdges"),
 		QT_TRANSLATE_NOOP("Menu", "Tint and Edges Highlight"),
-		QT_TRANSLATE_NOOP("Status", "Highlight selected and new pieces with tinted faces and colored edges"),
+		QT_TRANSLATE_NOOP("Status", "Highlight selected and new parts with tinted faces and colored edges"),
 		"",
 		""
 	},
@@ -1792,7 +1792,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Preview.ToggleSyncRendering"),
 		QT_TRANSLATE_NOOP("Menu", "Preview Uses Model View Settings"),
-		QT_TRANSLATE_NOOP("Status", "Toggle using the model view rendering settings for the pieces preview"),
+		QT_TRANSLATE_NOOP("Status", "Toggle using the model view rendering settings for the parts preview"),
 		"",
 		""
 	},
@@ -1800,7 +1800,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Preview.Shade.Wireframe"),
 		QT_TRANSLATE_NOOP("Menu", "Preview Wireframe"),
-		QT_TRANSLATE_NOOP("Status", "Display the pieces preview as wireframe"),
+		QT_TRANSLATE_NOOP("Status", "Display the parts preview as wireframe"),
 		"",
 		""
 	},
@@ -1808,7 +1808,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Preview.Shade.Flat"),
 		QT_TRANSLATE_NOOP("Menu", "Preview Flat Shading"),
-		QT_TRANSLATE_NOOP("Status", "Display the pieces preview without any shading or lights"),
+		QT_TRANSLATE_NOOP("Status", "Display the parts preview without any shading or lights"),
 		"",
 		""
 	},
@@ -1816,7 +1816,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Preview.Shade.DefaultLights"),
 		QT_TRANSLATE_NOOP("Menu", "Preview Default Lights"),
-		QT_TRANSLATE_NOOP("Status", "Display the pieces preview with the default lights"),
+		QT_TRANSLATE_NOOP("Status", "Display the parts preview with the default lights"),
 		"",
 		""
 	},
@@ -1824,7 +1824,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Preview.ToggleEdgeLines"),
 		QT_TRANSLATE_NOOP("Menu", "Preview Edge Lines"),
-		QT_TRANSLATE_NOOP("Status", "Toggle edge lines in the pieces preview"),
+		QT_TRANSLATE_NOOP("Status", "Toggle edge lines in the parts preview"),
 		"",
 		""
 	},
@@ -1832,55 +1832,55 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Preview.ToggleConditionalLines"),
 		QT_TRANSLATE_NOOP("Menu", "Preview Conditional Lines"),
-		QT_TRANSLATE_NOOP("Status", "Toggle conditional lines in the pieces preview"),
+		QT_TRANSLATE_NOOP("Status", "Toggle conditional lines in the parts preview"),
 		"",
 		""
 	},
-	// SW_VIEW_TOGGLE_PIECES_SYNCHRONIZED_RENDERING
+	// SW_VIEW_TOGGLE_PARTS_SYNCHRONIZED_RENDERING
 	{
-		QT_TRANSLATE_NOOP("Action", "View.Pieces.ToggleSyncRendering"),
-		QT_TRANSLATE_NOOP("Menu", "Pieces Use Model View Settings"),
-		QT_TRANSLATE_NOOP("Status", "Toggle using the model view rendering settings for the pieces list"),
+		QT_TRANSLATE_NOOP("Action", "View.Parts.ToggleSyncRendering"),
+		QT_TRANSLATE_NOOP("Menu", "Parts Use Model View Settings"),
+		QT_TRANSLATE_NOOP("Status", "Toggle using the model view rendering settings for the parts list"),
 		"",
 		""
 	},
-	// SW_VIEW_PIECES_SHADING_WIREFRAME
+	// SW_VIEW_PARTS_SHADING_WIREFRAME
 	{
-		QT_TRANSLATE_NOOP("Action", "View.Pieces.Shade.Wireframe"),
-		QT_TRANSLATE_NOOP("Menu", "Pieces Wireframe"),
-		QT_TRANSLATE_NOOP("Status", "Display the pieces list as wireframe"),
+		QT_TRANSLATE_NOOP("Action", "View.Parts.Shade.Wireframe"),
+		QT_TRANSLATE_NOOP("Menu", "Parts Wireframe"),
+		QT_TRANSLATE_NOOP("Status", "Display the parts list as wireframe"),
 		"",
 		""
 	},
-	// SW_VIEW_PIECES_SHADING_FLAT
+	// SW_VIEW_PARTS_SHADING_FLAT
 	{
-		QT_TRANSLATE_NOOP("Action", "View.Pieces.Shade.Flat"),
-		QT_TRANSLATE_NOOP("Menu", "Pieces Flat Shading"),
-		QT_TRANSLATE_NOOP("Status", "Display the pieces list without any shading or lights"),
+		QT_TRANSLATE_NOOP("Action", "View.Parts.Shade.Flat"),
+		QT_TRANSLATE_NOOP("Menu", "Parts Flat Shading"),
+		QT_TRANSLATE_NOOP("Status", "Display the parts list without any shading or lights"),
 		"",
 		""
 	},
-	// SW_VIEW_PIECES_SHADING_DEFAULT_LIGHTS
+	// SW_VIEW_PARTS_SHADING_DEFAULT_LIGHTS
 	{
-		QT_TRANSLATE_NOOP("Action", "View.Pieces.Shade.DefaultLights"),
-		QT_TRANSLATE_NOOP("Menu", "Pieces Default Lights"),
-		QT_TRANSLATE_NOOP("Status", "Display the pieces list with the default lights"),
+		QT_TRANSLATE_NOOP("Action", "View.Parts.Shade.DefaultLights"),
+		QT_TRANSLATE_NOOP("Menu", "Parts Default Lights"),
+		QT_TRANSLATE_NOOP("Status", "Display the parts list with the default lights"),
 		"",
 		""
 	},
-	// SW_VIEW_TOGGLE_PIECES_EDGE_LINES
+	// SW_VIEW_TOGGLE_PARTS_EDGE_LINES
 	{
-		QT_TRANSLATE_NOOP("Action", "View.Pieces.ToggleEdgeLines"),
-		QT_TRANSLATE_NOOP("Menu", "Pieces Edge Lines"),
-		QT_TRANSLATE_NOOP("Status", "Toggle edge lines in the pieces list"),
+		QT_TRANSLATE_NOOP("Action", "View.Parts.ToggleEdgeLines"),
+		QT_TRANSLATE_NOOP("Menu", "Parts Edge Lines"),
+		QT_TRANSLATE_NOOP("Status", "Toggle edge lines in the parts list"),
 		"",
 		""
 	},
-	// SW_VIEW_TOGGLE_PIECES_CONDITIONAL_LINES
+	// SW_VIEW_TOGGLE_PARTS_CONDITIONAL_LINES
 	{
-		QT_TRANSLATE_NOOP("Action", "View.Pieces.ToggleConditionalLines"),
-		QT_TRANSLATE_NOOP("Menu", "Pieces Conditional Lines"),
-		QT_TRANSLATE_NOOP("Status", "Toggle conditional lines in the pieces list"),
+		QT_TRANSLATE_NOOP("Action", "View.Parts.ToggleConditionalLines"),
+		QT_TRANSLATE_NOOP("Menu", "Parts Conditional Lines"),
+		QT_TRANSLATE_NOOP("Status", "Toggle conditional lines in the parts list"),
 		"",
 		""
 	},
@@ -1932,11 +1932,11 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
-	// SW_VIEW_PIECES_TOGGLE_SNAP_TO_TILES
+	// SW_VIEW_PARTS_TOGGLE_SNAP_TO_TILES
 	{
-		QT_TRANSLATE_NOOP("Action", "View.Pieces.ToggleSnapToTiles"),
+		QT_TRANSLATE_NOOP("Action", "View.Parts.ToggleSnapToTiles"),
 		QT_TRANSLATE_NOOP("Menu", "Snap Panel Width to Tiles"),
-		QT_TRANSLATE_NOOP("Status", "Toggle snapping the pieces panel width to whole thumbnail tiles and the categories to the longest name"),
+		QT_TRANSLATE_NOOP("Status", "Toggle snapping the parts panel width to whole thumbnail tiles and the categories to the longest name"),
 		"",
 		""
 	},
@@ -1944,7 +1944,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Preview.ToggleViewSphere"),
 		QT_TRANSLATE_NOOP("Menu", "Preview View Sphere"),
-		QT_TRANSLATE_NOOP("Status", "Toggle the view sphere in the pieces preview"),
+		QT_TRANSLATE_NOOP("Status", "Toggle the view sphere in the parts preview"),
 		"",
 		""
 	},
@@ -1952,15 +1952,15 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Preview.ToggleAxisIcon"),
 		QT_TRANSLATE_NOOP("Menu", "Preview Axis Icon"),
-		QT_TRANSLATE_NOOP("Status", "Toggle the axis icon in the pieces preview"),
+		QT_TRANSLATE_NOOP("Status", "Toggle the axis icon in the parts preview"),
 		"",
 		""
 	},
-	// SW_FILE_TOGGLE_LOAD_PIECES_BEFORE_SHOWING
+	// SW_FILE_TOGGLE_LOAD_PARTS_BEFORE_SHOWING
 	{
-		QT_TRANSLATE_NOOP("Action", "File.ToggleLoadPiecesBeforeShowing"),
-		QT_TRANSLATE_NOOP("Menu", "Load All Pieces Before Showing"),
-		QT_TRANSLATE_NOOP("Status", "Toggle waiting for every piece to load before showing a model"),
+		QT_TRANSLATE_NOOP("Action", "File.ToggleLoadPartsBeforeShowing"),
+		QT_TRANSLATE_NOOP("Menu", "Load All Parts Before Showing"),
+		QT_TRANSLATE_NOOP("Status", "Toggle waiting for every part to load before showing a model"),
 		"",
 		""
 	},
@@ -1968,343 +1968,343 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Preview.ToggleSquareViewport"),
 		QT_TRANSLATE_NOOP("Menu", "Square Viewport"),
-		QT_TRANSLATE_NOOP("Status", "Keep the piece preview at a 1:1 ratio"),
+		QT_TRANSLATE_NOOP("Status", "Keep the part preview at a 1:1 ratio"),
 		"",
 		""
 	},
-	// SW_PIECE_INSERT
+	// SW_PART_INSERT
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.Insert"),
+		QT_TRANSLATE_NOOP("Action", "Part.Insert"),
 		QT_TRANSLATE_NOOP("Menu", "&Insert"),
-		QT_TRANSLATE_NOOP("Status", "Add a new piece to the model"),
+		QT_TRANSLATE_NOOP("Status", "Add a new part to the model"),
 		"",
 		"Insert"
 	},
-	// SW_PIECE_TOGGLE_FIRST_AT_ORIGIN
+	// SW_PART_TOGGLE_FIRST_AT_ORIGIN
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.ToggleFirstPieceAtOrigin"),
-		QT_TRANSLATE_NOOP("Menu", "Insert First Piece at Origin"),
-		QT_TRANSLATE_NOOP("Status", "Toggle placing the first piece of an empty model at 0, 0, 0"),
+		QT_TRANSLATE_NOOP("Action", "Part.ToggleFirstPartAtOrigin"),
+		QT_TRANSLATE_NOOP("Menu", "Insert First Part at Origin"),
+		QT_TRANSLATE_NOOP("Status", "Toggle placing the first part of an empty model at 0, 0, 0"),
 		"",
 		""
 	},
-	// SW_PIECE_DELETE
+	// SW_PART_DELETE
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.Delete"),
+		QT_TRANSLATE_NOOP("Action", "Part.Delete"),
 		QT_TRANSLATE_NOOP("Menu", "&Delete"),
 		QT_TRANSLATE_NOOP("Status", "Delete selected objects"),
 		"",
 		"Delete"
 	},
-	// SW_PIECE_DUPLICATE
+	// SW_PART_DUPLICATE
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.Duplicate"),
+		QT_TRANSLATE_NOOP("Action", "Part.Duplicate"),
 		QT_TRANSLATE_NOOP("Menu", "&Duplicate"),
-		QT_TRANSLATE_NOOP("Status", "Create a copy of the selected pieces"),
+		QT_TRANSLATE_NOOP("Status", "Create a copy of the selected parts"),
 		"",
 		"Ctrl+D"
 	},
-	// SW_PIECE_PAINT_SELECTED
+	// SW_PART_PAINT_SELECTED
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.PaintSelected"),
+		QT_TRANSLATE_NOOP("Action", "Part.PaintSelected"),
 		QT_TRANSLATE_NOOP("Menu", "&Paint Selected"),
-		QT_TRANSLATE_NOOP("Status", "Change the color of the selected pieces"),
+		QT_TRANSLATE_NOOP("Status", "Change the color of the selected parts"),
 		"",
 		""
 	},
-	// SW_PIECE_RESET_PIVOT_POINT
+	// SW_PART_RESET_PIVOT_POINT
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.ResetPivotPoint"),
+		QT_TRANSLATE_NOOP("Action", "Part.ResetPivotPoint"),
 		QT_TRANSLATE_NOOP("Menu", "Reset &Pivot Point"),
-		QT_TRANSLATE_NOOP("Status", "Reset the pivot point of the selected pieces to their origin"),
+		QT_TRANSLATE_NOOP("Status", "Reset the pivot point of the selected parts to their origin"),
 		"",
 		""
 	},
-	// SW_PIECE_REMOVE_KEY_FRAMES
+	// SW_PART_REMOVE_KEY_FRAMES
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.RemoveKeyFrames"),
+		QT_TRANSLATE_NOOP("Action", "Part.RemoveKeyFrames"),
 		QT_TRANSLATE_NOOP("Menu", "Remove &Keyframes"),
-		QT_TRANSLATE_NOOP("Status", "Remove all keyframes from the selected pieces"),
+		QT_TRANSLATE_NOOP("Status", "Remove all keyframes from the selected parts"),
 		"",
 		""
 	},
-	// SW_PIECE_CONTROL_POINT_INSERT
+	// SW_PART_CONTROL_POINT_INSERT
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.ControlPoint.Insert"),
+		QT_TRANSLATE_NOOP("Action", "Part.ControlPoint.Insert"),
 		QT_TRANSLATE_NOOP("Menu", "Insert Control Point"),
 		QT_TRANSLATE_NOOP("Status", "Insert a new control point"),
 		"",
 		""
 	},
-	// SW_PIECE_CONTROL_POINT_REMOVE
+	// SW_PART_CONTROL_POINT_REMOVE
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.ControlPoint.Remove"),
+		QT_TRANSLATE_NOOP("Action", "Part.ControlPoint.Remove"),
 		QT_TRANSLATE_NOOP("Menu", "Remove Control Point"),
 		QT_TRANSLATE_NOOP("Status", "Remove the selected control point"),
 		"",
 		""
 	},
-	// SW_PIECE_TRAIN_TRACK_FOCUS_NEXT
+	// SW_PART_TRAIN_TRACK_FOCUS_NEXT
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.TrainTrack.FocusNext"),
+		QT_TRANSLATE_NOOP("Action", "Part.TrainTrack.FocusNext"),
 		QT_TRANSLATE_NOOP("Menu", "Focus Next Connection"),
 		QT_TRANSLATE_NOOP("Status", "Focus the next connection of the currently selected track"),
 		"",
 		""
 	},
-	// SW_PIECE_TRAIN_TRACK_FOCUS_PREVIOUS
+	// SW_PART_TRAIN_TRACK_FOCUS_PREVIOUS
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.TrainTrack.FocusPrevious"),
+		QT_TRANSLATE_NOOP("Action", "Part.TrainTrack.FocusPrevious"),
 		QT_TRANSLATE_NOOP("Menu", "Focus Previous Connection"),
 		QT_TRANSLATE_NOOP("Status", "Focus the previous connection of the currently selected track"),
 		"",
 		""
 	},
-	// SW_PIECE_TRAIN_TRACK_ROTATE
+	// SW_PART_TRAIN_TRACK_ROTATE
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.TrainTrack.Rotate"),
+		QT_TRANSLATE_NOOP("Action", "Part.TrainTrack.Rotate"),
 		QT_TRANSLATE_NOOP("Menu", "Rotate Train Track"),
 		QT_TRANSLATE_NOOP("Status", "Rotate the focused train track around its last connection"),
 		"",
 		""
 	},
-	// SW_PIECE_MOVE_PLUS_X
+	// SW_PART_MOVE_PLUS_X
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.Move.PlusX"),
+		QT_TRANSLATE_NOOP("Action", "Part.Move.PlusX"),
 		QT_TRANSLATE_NOOP("Menu", "Move +X"),
 		QT_TRANSLATE_NOOP("Status", "Move selected objects along the X axis"),
 		"",
 		"Down"
 	},
-	// SW_PIECE_MOVE_MINUS_X
+	// SW_PART_MOVE_MINUS_X
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.Move.MinusX"),
+		QT_TRANSLATE_NOOP("Action", "Part.Move.MinusX"),
 		QT_TRANSLATE_NOOP("Menu", "Move -X"),
 		QT_TRANSLATE_NOOP("Status", "Move selected objects along the X axis"),
 		"",
 		"Up"
 	},
-	// SW_PIECE_MOVE_PLUS_Y
+	// SW_PART_MOVE_PLUS_Y
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.Move.PlusY"),
+		QT_TRANSLATE_NOOP("Action", "Part.Move.PlusY"),
 		QT_TRANSLATE_NOOP("Menu", "Move +Y"),
 		QT_TRANSLATE_NOOP("Status", "Move selected objects along the Y axis"),
 		"",
 		"Right"
 	},
-	// SW_PIECE_MOVE_MINUS_Y
+	// SW_PART_MOVE_MINUS_Y
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.Move.MinusY"),
+		QT_TRANSLATE_NOOP("Action", "Part.Move.MinusY"),
 		QT_TRANSLATE_NOOP("Menu", "Move -Y"),
 		QT_TRANSLATE_NOOP("Status", "Move selected objects along the Y axis"),
 		"",
 		"Left"
 	},
-	// SW_PIECE_MOVE_PLUS_Z
+	// SW_PART_MOVE_PLUS_Z
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.Move.PlusZ"),
+		QT_TRANSLATE_NOOP("Action", "Part.Move.PlusZ"),
 		QT_TRANSLATE_NOOP("Menu", "Move +Z"),
 		QT_TRANSLATE_NOOP("Status", "Move selected objects along the Z axis"),
 		"",
 		"PgUp"
 	},
-	// SW_PIECE_MOVE_MINUS_Z
+	// SW_PART_MOVE_MINUS_Z
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.Move.MinusZ"),
+		QT_TRANSLATE_NOOP("Action", "Part.Move.MinusZ"),
 		QT_TRANSLATE_NOOP("Menu", "Move -Z"),
 		QT_TRANSLATE_NOOP("Status", "Move selected objects along the Z axis"),
 		"",
 		"PgDown"
 	},
-	// SW_PIECE_ROTATE_PLUS_X
+	// SW_PART_ROTATE_PLUS_X
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.Rotate.PlusX"),
+		QT_TRANSLATE_NOOP("Action", "Part.Rotate.PlusX"),
 		QT_TRANSLATE_NOOP("Menu", "Rotate +X"),
 		QT_TRANSLATE_NOOP("Status", "Rotate selected objects around the X axis"),
 		"",
 		"Shift+Down"
 	},
-	// SW_PIECE_ROTATE_MINUS_X
+	// SW_PART_ROTATE_MINUS_X
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.Rotate.MinusX"),
+		QT_TRANSLATE_NOOP("Action", "Part.Rotate.MinusX"),
 		QT_TRANSLATE_NOOP("Menu", "Rotate -X"),
 		QT_TRANSLATE_NOOP("Status", "Rotate selected objects around the X axis"),
 		"",
 		"Shift+Up"
 	},
-	// SW_PIECE_ROTATE_PLUS_Y
+	// SW_PART_ROTATE_PLUS_Y
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.Rotate.PlusY"),
+		QT_TRANSLATE_NOOP("Action", "Part.Rotate.PlusY"),
 		QT_TRANSLATE_NOOP("Menu", "Rotate +Y"),
 		QT_TRANSLATE_NOOP("Status", "Rotate selected objects around the Y axis"),
 		"",
 		"Shift+Right"
 	},
-	// SW_PIECE_ROTATE_MINUS_Y
+	// SW_PART_ROTATE_MINUS_Y
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.Rotate.MinusY"),
+		QT_TRANSLATE_NOOP("Action", "Part.Rotate.MinusY"),
 		QT_TRANSLATE_NOOP("Menu", "Rotate -Y"),
 		QT_TRANSLATE_NOOP("Status", "Rotate selected objects around the Y axis"),
 		"",
 		"Shift+Left"
 	},
-	// SW_PIECE_ROTATE_PLUS_Z
+	// SW_PART_ROTATE_PLUS_Z
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.Rotate.PlusZ"),
+		QT_TRANSLATE_NOOP("Action", "Part.Rotate.PlusZ"),
 		QT_TRANSLATE_NOOP("Menu", "Rotate +Z"),
 		QT_TRANSLATE_NOOP("Status", "Rotate selected objects around the Z axis"),
 		"",
 		"Shift+PgUp"
 	},
-	// SW_PIECE_ROTATE_MINUS_Z
+	// SW_PART_ROTATE_MINUS_Z
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.Rotate.MinusZ"),
+		QT_TRANSLATE_NOOP("Action", "Part.Rotate.MinusZ"),
 		QT_TRANSLATE_NOOP("Menu", "Rotate -Z"),
 		QT_TRANSLATE_NOOP("Status", "Rotate selected objects around the Z axis"),
 		"",
 		"Shift+PgDown"
 	},
-	// SW_PIECE_MINIFIGURE_BUILDER
+	// SW_PART_MINIFIGURE_BUILDER
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.MinifigureBuilder"),
+		QT_TRANSLATE_NOOP("Action", "Part.MinifigureBuilder"),
 		QT_TRANSLATE_NOOP("Menu", "&Minifigure Builder"),
 		QT_TRANSLATE_NOOP("Status", "Show the Minifigure Builder panel to build a minifigure and add it to the model"),
 		"",
 		""
 	},
-	// SW_PIECE_ARRAY
+	// SW_PART_ARRAY
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.Array"),
+		QT_TRANSLATE_NOOP("Action", "Part.Array"),
 		QT_TRANSLATE_NOOP("Menu", "A&rray..."),
-		QT_TRANSLATE_NOOP("Status", "Make copies of the selected pieces"),
+		QT_TRANSLATE_NOOP("Status", "Make copies of the selected parts"),
 		"",
 		""
 	},
-	//  SW_PIECE_VIEW_SELECTED_MODEL
+	//  SW_PART_VIEW_SELECTED_MODEL
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.ViewSelectedModel"),
+		QT_TRANSLATE_NOOP("Action", "Part.ViewSelectedModel"),
 		QT_TRANSLATE_NOOP("Menu", "Open Selected Model"),
-		QT_TRANSLATE_NOOP("Status", "Open the model referenced by the selected piece in a new tab"),
+		QT_TRANSLATE_NOOP("Status", "Open the model referenced by the selected part in a new tab"),
 		"",
 		""
 	},
-	// SW_PIECE_MOVE_SELECTION_TO_MODEL
+	// SW_PART_MOVE_SELECTION_TO_MODEL
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.MoveSelectionToModel"),
+		QT_TRANSLATE_NOOP("Action", "Part.MoveSelectionToModel"),
 		QT_TRANSLATE_NOOP("Menu", "Move to New Model..."),
-		QT_TRANSLATE_NOOP("Status", "Move the selected pieces to a new model and replace them with a reference to the model"),
+		QT_TRANSLATE_NOOP("Status", "Move the selected parts to a new model and replace them with a reference to the model"),
 		"",
 		""
 	},
-	// SW_PIECE_INLINE_SELECTED_MODELS
+	// SW_PART_INLINE_SELECTED_MODELS
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.InlineSelectedModels"),
+		QT_TRANSLATE_NOOP("Action", "Part.InlineSelectedModels"),
 		QT_TRANSLATE_NOOP("Menu", "Inline Selected Models"),
 		QT_TRANSLATE_NOOP("Status", "Insert the contents of the selected model references into the current model"),
 		"",
 		""
 	},
-	// SW_PIECE_EDIT_SELECTED_SUBMODEL
+	// SW_PART_EDIT_SELECTED_SUBMODEL
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.EditSelectedSubmodel"),
+		QT_TRANSLATE_NOOP("Action", "Part.EditSelectedSubmodel"),
 		QT_TRANSLATE_NOOP("Menu", "Edit Selected Submodel"),
 		QT_TRANSLATE_NOOP("Status", "Edit the currently selected submodel in-place"),
 		"",
 		""
 	},
-	// SW_PIECE_EDIT_END_SUBMODEL
+	// SW_PART_EDIT_END_SUBMODEL
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.EditEndSubmodel"),
+		QT_TRANSLATE_NOOP("Action", "Part.EditEndSubmodel"),
 		QT_TRANSLATE_NOOP("Menu", "End Submodel Editing"),
 		QT_TRANSLATE_NOOP("Status", "End in-place submodel editing"),
 		"",
 		""
 	},
-	// SW_PIECE_GROUP
+	// SW_PART_GROUP
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.Group"),
+		QT_TRANSLATE_NOOP("Action", "Part.Group"),
 		QT_TRANSLATE_NOOP("Menu", "&Group..."),
-		QT_TRANSLATE_NOOP("Status", "Group selected pieces together"),
+		QT_TRANSLATE_NOOP("Status", "Group selected parts together"),
 		"",
 		"Ctrl+G"
 	},
-	// SW_PIECE_UNGROUP
+	// SW_PART_UNGROUP
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.Ungroup"),
+		QT_TRANSLATE_NOOP("Action", "Part.Ungroup"),
 		QT_TRANSLATE_NOOP("Menu", "&Ungroup"),
 		QT_TRANSLATE_NOOP("Status", "Ungroup selected group"),
 		"",
 		"Ctrl+U"
 	},
-	// SW_PIECE_GROUP_ADD
+	// SW_PART_GROUP_ADD
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.GroupAdd"),
+		QT_TRANSLATE_NOOP("Action", "Part.GroupAdd"),
 		QT_TRANSLATE_NOOP("Menu", "&Add to Group"),
-		QT_TRANSLATE_NOOP("Status", "Add focused piece to selected group"),
+		QT_TRANSLATE_NOOP("Status", "Add focused part to selected group"),
 		"",
 		""
 	},
-	// SW_PIECE_GROUP_REMOVE
+	// SW_PART_GROUP_REMOVE
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.GroupRemove"),
+		QT_TRANSLATE_NOOP("Action", "Part.GroupRemove"),
 		QT_TRANSLATE_NOOP("Menu", "Re&move from Group"),
-		QT_TRANSLATE_NOOP("Status", "Remove focused piece from group"),
+		QT_TRANSLATE_NOOP("Status", "Remove focused part from group"),
 		"",
 		""
 	},
-	// SW_PIECE_GROUP_EDIT
+	// SW_PART_GROUP_EDIT
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.GroupEdit"),
+		QT_TRANSLATE_NOOP("Action", "Part.GroupEdit"),
 		QT_TRANSLATE_NOOP("Menu", "&Edit Groups..."),
 		QT_TRANSLATE_NOOP("Status", "Edit groups"),
 		"",
 		""
 	},
-	// SW_PIECE_HIDE_SELECTED
+	// SW_PART_HIDE_SELECTED
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.HideSelected"),
+		QT_TRANSLATE_NOOP("Action", "Part.HideSelected"),
 		QT_TRANSLATE_NOOP("Menu", "&Hide Selected"),
 		QT_TRANSLATE_NOOP("Status", "Hide selected objects"),
 		"",
 		"Ctrl+H"
 	},
-	// SW_PIECE_HIDE_UNSELECTED
+	// SW_PART_HIDE_UNSELECTED
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.HideUnselected"),
+		QT_TRANSLATE_NOOP("Action", "Part.HideUnselected"),
 		QT_TRANSLATE_NOOP("Menu", "Hide &Unselected"),
 		QT_TRANSLATE_NOOP("Status", "Hide objects that are not selected"),
 		"",
 		""
 	},
-	// SW_PIECE_UNHIDE_SELECTED
+	// SW_PART_UNHIDE_SELECTED
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.UnhideSelected"),
+		QT_TRANSLATE_NOOP("Action", "Part.UnhideSelected"),
 		QT_TRANSLATE_NOOP("Menu", "&Unhide Selected"),
 		QT_TRANSLATE_NOOP("Status", "Show hidden objects that are selected"),
 		"",
 		""
 	},
-	// SW_PIECE_UNHIDE_ALL
+	// SW_PART_UNHIDE_ALL
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.UnhideAll"),
+		QT_TRANSLATE_NOOP("Action", "Part.UnhideAll"),
 		QT_TRANSLATE_NOOP("Menu", "U&nhide All"),
 		QT_TRANSLATE_NOOP("Status", "Show all hidden objects"),
 		"",
 		""
 	},
-	// SW_PIECE_SHOW_EARLIER
+	// SW_PART_SHOW_EARLIER
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.ShowEarlier"),
+		QT_TRANSLATE_NOOP("Action", "Part.ShowEarlier"),
 		QT_TRANSLATE_NOOP("Menu", "Show Earlier"),
-		QT_TRANSLATE_NOOP("Status", "Show selected pieces one step earlier"),
+		QT_TRANSLATE_NOOP("Status", "Show selected parts one step earlier"),
 		"",
 		""
 	},
-	// SW_PIECE_SHOW_LATER
+	// SW_PART_SHOW_LATER
 	{
-		QT_TRANSLATE_NOOP("Action", "Piece.ShowLater"),
+		QT_TRANSLATE_NOOP("Action", "Part.ShowLater"),
 		QT_TRANSLATE_NOOP("Menu", "Show Later"),
-		QT_TRANSLATE_NOOP("Status", "Show selected pieces one step later"),
+		QT_TRANSLATE_NOOP("Status", "Show selected parts one step later"),
 		"",
 		""
 	},
@@ -2712,7 +2712,7 @@ const swCommand gCommands[] =
 	{
 		"",
 		QT_TRANSLATE_NOOP("Menu", "Move Selection Here"),
-		QT_TRANSLATE_NOOP("Status", "Move the selected pieces into this step"),
+		QT_TRANSLATE_NOOP("Status", "Move the selected parts into this step"),
 		"",
 		""
 	},
@@ -2720,7 +2720,7 @@ const swCommand gCommands[] =
 	{
 		"",
 		QT_TRANSLATE_NOOP("Menu", "Move Selection Before"),
-		QT_TRANSLATE_NOOP("Status", "Move the selected pieces into a new step before this"),
+		QT_TRANSLATE_NOOP("Status", "Move the selected parts into a new step before this"),
 		"",
 		""
 	},
@@ -2728,7 +2728,7 @@ const swCommand gCommands[] =
 	{
 		"",
 		QT_TRANSLATE_NOOP("Menu", "Move Selection After"),
-		QT_TRANSLATE_NOOP("Status", "Move the selected pieces into a new step after this"),
+		QT_TRANSLATE_NOOP("Status", "Move the selected parts into a new step after this"),
 		"",
 		""
 	},
@@ -2746,7 +2746,7 @@ SW_ARRAY_SIZE_CHECK(gCommands, SW_COMMAND_COUNT);
 
 const char* gToolNames[] =
 {
-	QT_TRANSLATE_NOOP("Mouse", "NewPiece"),            // swTool::Insert
+	QT_TRANSLATE_NOOP("Mouse", "NewPart"),            // swTool::Insert
 	QT_TRANSLATE_NOOP("Mouse", "NewPointLight"),       // swTool::PointLight
 	QT_TRANSLATE_NOOP("Mouse", "NewSpotLight"),        // swTool::SpotLight
 	QT_TRANSLATE_NOOP("Mouse", "NewDirectionalLight"), // swTool::DirectionalLight

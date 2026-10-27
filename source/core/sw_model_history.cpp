@@ -1,13 +1,13 @@
 #include "sw_global.h"
 #include "sw_model_history.h"
 #include "sw_model.h"
-#include "sw_object_piece.h"
+#include "sw_object_part.h"
 #include "sw_object_camera.h"
 #include "sw_object_light.h"
 #include "sw_group.h"
 #include "sw_project.h"
 #include "sw_window_main.h"
-#include "sw_data_piece.h"
+#include "sw_data_part.h"
 #include "sw_view.h"
 #include "sw_widget_preview.h"
 
@@ -40,23 +40,23 @@ void swModelHistorySelect::SaveState(swModelHistorySelectState& State, const swM
 {
 	State = swModelHistorySelectState();
 
-	const std::vector<std::unique_ptr<swPiece>>& Pieces = Model->GetPieces();
-	State.PieceSelection.resize(Pieces.size(), false);
+	const std::vector<std::unique_ptr<swPart>>& Parts = Model->GetParts();
+	State.PartSelection.resize(Parts.size(), false);
 
-	for (size_t PieceIndex = 0; PieceIndex < Pieces.size(); PieceIndex++)
+	for (size_t PartIndex = 0; PartIndex < Parts.size(); PartIndex++)
 	{
-		swPiece* Piece = Pieces[PieceIndex].get();
+		swPart* Part = Parts[PartIndex].get();
 
-		if (!Piece->IsSelected())
+		if (!Part->IsSelected())
 			continue;
 
-		State.PieceSelection[PieceIndex] = true;
+		State.PartSelection[PartIndex] = true;
 
-		if (Piece->IsFocused())
+		if (Part->IsFocused())
 		{
-			State.FocusIndex = PieceIndex;
-			State.FocusSection = Piece->GetFocusSection();
-			State.FocusObjectType = swObjectType::Piece;
+			State.FocusIndex = PartIndex;
+			State.FocusSection = Part->GetFocusSection();
+			State.FocusObjectType = swObjectType::Part;
 		}
 	}
 
@@ -103,23 +103,23 @@ void swModelHistorySelect::SaveState(swModelHistorySelectState& State, const swM
 
 void swModelHistorySelect::LoadState(const swModelHistorySelectState& State, swModel* Model)
 {
-	const std::vector<std::unique_ptr<swPiece>>& Pieces = Model->GetPieces();
+	const std::vector<std::unique_ptr<swPart>>& Parts = Model->GetParts();
 	const std::vector<std::unique_ptr<swCamera>>& Cameras = Model->GetCameras();
 	const std::vector<std::unique_ptr<swLight>>& Lights = Model->GetLights();
 
-	if (Pieces.size() != State.PieceSelection.size() || Cameras.size() != State.CameraSelection.size() || Lights.size() != State.LightSelection.size())
+	if (Parts.size() != State.PartSelection.size() || Cameras.size() != State.CameraSelection.size() || Lights.size() != State.LightSelection.size())
 		return;
 
-	for (size_t PieceIndex = 0; PieceIndex < Pieces.size(); PieceIndex++)
+	for (size_t PartIndex = 0; PartIndex < Parts.size(); PartIndex++)
 	{
-		swPiece* Piece = Pieces[PieceIndex].get();
+		swPart* Part = Parts[PartIndex].get();
 
-		Piece->SetSelected(State.PieceSelection[PieceIndex]);
+		Part->SetSelected(State.PartSelection[PartIndex]);
 
-		if (State.FocusObjectType == swObjectType::Piece && State.FocusIndex == PieceIndex)
-			Piece->SetFocused(State.FocusSection, true);
+		if (State.FocusObjectType == swObjectType::Part && State.FocusIndex == PartIndex)
+			Part->SetFocused(State.FocusSection, true);
 		else
-			Piece->SetFocused(State.FocusSection, false);
+			Part->SetFocused(State.FocusSection, false);
 	}
 
 	for (size_t CameraIndex = 0; CameraIndex < Cameras.size(); CameraIndex++)
@@ -159,7 +159,7 @@ swModelHistoryEdit::~swModelHistoryEdit()
 void swModelHistoryEdit::SaveState(swModelHistoryEditState& State, const swModel* Model)
 {
 	State.Groups.Save(Model->GetGroups());
-	State.Pieces.Save(Model->GetPieces());
+	State.Parts.Save(Model->GetParts());
 	State.Cameras.Save(Model->GetCameras());
 	State.Lights.Save(Model->GetLights());
 }
@@ -179,7 +179,7 @@ void swModelHistoryEdit::SaveEndState(const swModel* Model)
 	SaveState(mEndState, Model);
 
 	swObjectHistory<swGroupHistoryState>::Compact(mStartState.Groups, mEndState.Groups);
-	swObjectHistory<swPieceHistoryState>::Compact(mStartState.Pieces, mEndState.Pieces);
+	swObjectHistory<swPartHistoryState>::Compact(mStartState.Parts, mEndState.Parts);
 	swObjectHistory<swCameraHistoryState>::Compact(mStartState.Cameras, mEndState.Cameras);
 	swObjectHistory<swLightHistoryState>::Compact(mStartState.Lights, mEndState.Lights);
 }
@@ -199,27 +199,27 @@ bool swModelHistoryEdit::StateChanged() const
 	return !mStartState.IsEmpty() || !mEndState.IsEmpty();
 }
 
-void swModelHistoryEdit::RenamePieces(const std::vector<swModelPieceRename>& Renames, const swPieceData* ModelPieceData)
+void swModelHistoryEdit::RenameParts(const std::vector<swModelPartRename>& Renames, const swPartData* ModelPartData)
 {
-	Q_UNUSED(ModelPieceData);
+	Q_UNUSED(ModelPartData);
 
-	auto RenamePieceIds = [&Renames](swModelHistoryEditState& State)
+	auto RenamePartIds = [&Renames](swModelHistoryEditState& State)
 	{
-		for (swPieceHistoryState& Piece : State.Pieces.States)
+		for (swPartHistoryState& Part : State.Parts.States)
 		{
-			for (const swModelPieceRename& Rename : Renames)
+			for (const swModelPartRename& Rename : Renames)
 			{
-				if (Piece.PieceId.compare(Rename.OldName, Qt::CaseInsensitive) != 0)
+				if (Part.PartId.compare(Rename.OldName, Qt::CaseInsensitive) != 0)
 					continue;
 
-				Piece.PieceId = Rename.NewName;
+				Part.PartId = Rename.NewName;
 				break;
 			}
 		}
 	};
 
-	RenamePieceIds(mStartState);
-	RenamePieceIds(mEndState);
+	RenamePartIds(mStartState);
+	RenamePartIds(mEndState);
 }
 
 bool swModelHistoryEdit::CanMergeWith(const swModelHistory* Other) const
@@ -237,7 +237,7 @@ void swModelHistoryEdit::MergeWith(swModelHistory* Other)
 		return;
 
 	swObjectHistory<swGroupHistoryState>::Merge(mStartState.Groups, mEndState.Groups, OtherModelHistoryEdit->mStartState.Groups, OtherModelHistoryEdit->mEndState.Groups);
-	swObjectHistory<swPieceHistoryState>::Merge(mStartState.Pieces, mEndState.Pieces, OtherModelHistoryEdit->mStartState.Pieces, OtherModelHistoryEdit->mEndState.Pieces);
+	swObjectHistory<swPartHistoryState>::Merge(mStartState.Parts, mEndState.Parts, OtherModelHistoryEdit->mStartState.Parts, OtherModelHistoryEdit->mEndState.Parts);
 	swObjectHistory<swCameraHistoryState>::Merge(mStartState.Cameras, mEndState.Cameras, OtherModelHistoryEdit->mStartState.Cameras, OtherModelHistoryEdit->mEndState.Cameras);
 	swObjectHistory<swLightHistoryState>::Merge(mStartState.Lights, mEndState.Lights, OtherModelHistoryEdit->mStartState.Lights, OtherModelHistoryEdit->mEndState.Lights);
 }
@@ -267,13 +267,13 @@ bool swModelHistoryProperties::StateChanged() const
 	return mStartState != mEndState;
 }
 
-void swModelHistoryProperties::RenamePieces(const std::vector<swModelPieceRename>& Renames, const swPieceData* ModelPieceData)
+void swModelHistoryProperties::RenameParts(const std::vector<swModelPartRename>& Renames, const swPartData* ModelPartData)
 {
-	auto RenameModel = [&Renames, ModelPieceData](swModelProperties& Properties)
+	auto RenameModel = [&Renames, ModelPartData](swModelProperties& Properties)
 	{
-		for (const swModelPieceRename& Rename : Renames)
+		for (const swModelPartRename& Rename : Renames)
 		{
-			if (Rename.PieceData != ModelPieceData || Properties.mFileName.compare(Rename.OldName, Qt::CaseInsensitive) != 0)
+			if (Rename.PartData != ModelPartData || Properties.mFileName.compare(Rename.OldName, Qt::CaseInsensitive) != 0)
 				continue;
 
 			if (Properties.mModelName == Properties.mFileName)
@@ -301,7 +301,7 @@ void swModelHistoryProperties::LoadState(const swModelProperties& State, swModel
 void swModel::LoadEditHistoryState(const swModelHistoryEditState& HistoryState)
 {
 	const std::unordered_map<uint32_t, swGroup*> GroupsById = RestoreGroups(HistoryState.Groups);
-	RestorePieces(HistoryState.Pieces, GroupsById);
+	RestoreParts(HistoryState.Parts, GroupsById);
 	RestoreCameras(HistoryState.Cameras);
 	RestoreLights(HistoryState.Lights);
 }
@@ -323,25 +323,25 @@ std::unordered_map<uint32_t, swGroup*> swModel::RestoreGroups(const swObjectHist
 	return GroupsById;
 }
 
-void swModel::RestorePieces(const swObjectHistory<swPieceHistoryState>& History, const std::unordered_map<uint32_t, swGroup*>& GroupsById)
+void swModel::RestoreParts(const swObjectHistory<swPartHistoryState>& History, const std::unordered_map<uint32_t, swGroup*>& GroupsById)
 {
-	const std::unordered_map<uint32_t, swPiece*> PiecesById = History.RestoreObjects(mPieces);
+	const std::unordered_map<uint32_t, swPart*> PartsById = History.RestoreObjects(mParts);
 
-	for (const swPieceHistoryState& State : History.States)
+	for (const swPartHistoryState& State : History.States)
 	{
-		const auto Piece = PiecesById.find(static_cast<uint32_t>(State.Id));
+		const auto Part = PartsById.find(static_cast<uint32_t>(State.Id));
 		const auto Group = GroupsById.find(State.GroupId);
 
-		if (Piece != PiecesById.end())
-			Piece->second->SetHistoryState(State, mProject, Group != GroupsById.end() ? Group->second : nullptr);
+		if (Part != PartsById.end())
+			Part->second->SetHistoryState(State, mProject, Group != GroupsById.end() ? Group->second : nullptr);
 	}
 
 	// Model-list changes are not undoable, but older edit states can still name
 	// a submodel that was replaced. Do not restore references that now recurse.
-	mPieces.erase(std::remove_if(mPieces.begin(), mPieces.end(), [this](const std::unique_ptr<swPiece>& Piece)
+	mParts.erase(std::remove_if(mParts.begin(), mParts.end(), [this](const std::unique_ptr<swPart>& Part)
 	{
-		return Piece->mPieceData && Piece->mPieceData->IncludesModel(this);
-	}), mPieces.end());
+		return Part->mPartData && Part->mPartData->IncludesModel(this);
+	}), mParts.end());
 }
 
 void swModel::RestoreCameras(const swObjectHistory<swCameraHistoryState>& History)

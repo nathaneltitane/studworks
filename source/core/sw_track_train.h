@@ -2,10 +2,10 @@
 
 #include "sw_math.h"
 
-class swPiece;
-class swPiecesLibrary;
-class swPieceData;
-struct swInsertPieceInformation;
+class swPart;
+class swPartsLibrary;
+class swPartData;
+struct swInsertPartInformation;
 
 enum class swTrainTrackConnectionSleeper
 {
@@ -44,28 +44,28 @@ public:
 		return mVisible;
 	}
 
-	static void Initialize(swPiecesLibrary* Library);
-	static std::vector<swInsertPieceInformation> GetInsertPieceInfo(swPiece* CurrentPiece, swPieceData* PieceData, swPiece* MovingPiece, int ColorIndex, quint32 PreferredSection, bool AllowNewPieces, std::optional<swVector3> ClosestPoint);
-	static std::optional<swMatrix44> GetConnectionTransform(swPieceData* CurrentPieceData, const swMatrix44& CurrentTransform, quint32 CurrentConnectionIndex, swPieceData* PieceData, quint32 NewConnectionIndex);
-	static std::optional<swMatrix44> CalculateTransformToConnection(const swMatrix44& ConnectionTransform, swPieceData* PieceData, quint32 ConnectionIndex);
-	static int GetPieceConnectionIndex(const swPiece* Piece1, int ConnectionIndex1, const swPiece* Piece2);
+	static void Initialize(swPartsLibrary* Library);
+	static std::vector<swInsertPartInformation> GetInsertPartInfo(swPart* CurrentPart, swPartData* PartData, swPart* MovingPart, int ColorIndex, quint32 PreferredSection, bool AllowNewParts, std::optional<swVector3> ClosestPoint);
+	static std::optional<swMatrix44> GetConnectionTransform(swPartData* CurrentPartData, const swMatrix44& CurrentTransform, quint32 CurrentConnectionIndex, swPartData* PartData, quint32 NewConnectionIndex);
+	static std::optional<swMatrix44> CalculateTransformToConnection(const swMatrix44& ConnectionTransform, swPartData* PartData, quint32 ConnectionIndex);
+	static int GetPartConnectionIndex(const swPart* Part1, int ConnectionIndex1, const swPart* Part2);
 
 	const std::vector<swTrainTrackConnection>& GetConnections() const
 	{
 		return mConnections;
 	}
 
-	bool CanConnectTo(const swTrainTrackConnectionType& ConnectionType, bool AllowNewPieces) const
+	bool CanConnectTo(const swTrainTrackConnectionType& ConnectionType, bool AllowNewParts) const
 	{
 		for (const swTrainTrackConnection& Connection : mConnections)
-			if (AreConnectionsCompatible(Connection.Type, ConnectionType, AllowNewPieces))
+			if (AreConnectionsCompatible(Connection.Type, ConnectionType, AllowNewParts))
 				return true;
 
 		return false;
 	}
 
 protected:
-	static bool AreConnectionsCompatible(const swTrainTrackConnectionType& a, const swTrainTrackConnectionType& b, bool AllowNewPieces)
+	static bool AreConnectionsCompatible(const swTrainTrackConnectionType& a, const swTrainTrackConnectionType& b, bool AllowNewParts)
 	{
 		if (a.Group != b.Group)
 			return false;
@@ -79,7 +79,7 @@ protected:
 			return b.Sleeper == swTrainTrackConnectionSleeper::NeedsSleeper;
 
 		case swTrainTrackConnectionSleeper::NeedsSleeper:
-			return b.Sleeper == swTrainTrackConnectionSleeper::HasSleeper || (AllowNewPieces && b.Sleeper == swTrainTrackConnectionSleeper::NeedsSleeper);
+			return b.Sleeper == swTrainTrackConnectionSleeper::HasSleeper || (AllowNewParts && b.Sleeper == swTrainTrackConnectionSleeper::NeedsSleeper);
 		}
 
 		return false;
@@ -89,5 +89,5 @@ protected:
 	int mColorCode = 16;
 	bool mVisible = false;
 
-	static std::map<size_t, swPieceData*> mSleepers;
+	static std::map<size_t, swPartData*> mSleepers;
 };

@@ -1,7 +1,7 @@
 #include "sw_global.h"
 #include "sw_model.h"
 #include "sw_model_history.h"
-#include "sw_object_piece.h"
+#include "sw_object_part.h"
 #include "sw_object_camera.h"
 #include "sw_object_light.h"
 #include "sw_group.h"
@@ -12,7 +12,7 @@
 #include "sw_scene.h"
 #include "sw_track_train.h"
 #include "sw_file.h"
-#include "sw_data_piece.h"
+#include "sw_data_part.h"
 #include "sw_view.h"
 #include "sw_builder_minifigure.h"
 #include "sw_dialog_array.h"
@@ -27,11 +27,11 @@
 
 void swModel::RayTest(swObjectRayTest& ObjectRayTest) const
 {
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
-		if ((Piece->IsSelected() || Piece->IsVisible(mCurrentStep)) && (!ObjectRayTest.IgnoreSelected || !Piece->IsSelected()))
-			Piece->RayTest(ObjectRayTest);
+	for (const std::unique_ptr<swPart>& Part : mParts)
+		if ((Part->IsSelected() || Part->IsVisible(mCurrentStep)) && (!ObjectRayTest.IgnoreSelected || !Part->IsSelected()))
+			Part->RayTest(ObjectRayTest);
 
-	if (ObjectRayTest.PiecesOnly)
+	if (ObjectRayTest.PartsOnly)
 		return;
 
 	for (const std::unique_ptr<swCamera>& Camera : mCameras)
@@ -45,9 +45,9 @@ void swModel::RayTest(swObjectRayTest& ObjectRayTest) const
 
 void swModel::BoxTest(swObjectBoxTest& ObjectBoxTest) const
 {
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
-		if (Piece->IsSelected() || Piece->IsVisible(mCurrentStep))
-			Piece->BoxTest(ObjectBoxTest);
+	for (const std::unique_ptr<swPart>& Part : mParts)
+		if (Part->IsSelected() || Part->IsVisible(mCurrentStep))
+			Part->BoxTest(ObjectBoxTest);
 
 	for (const std::unique_ptr<swCamera>& Camera : mCameras)
 		if (Camera.get() != ObjectBoxTest.ViewCamera && Camera->IsVisible())
@@ -58,22 +58,22 @@ void swModel::BoxTest(swObjectBoxTest& ObjectBoxTest) const
 			Light->BoxTest(ObjectBoxTest);
 }
 
-bool swModel::SubModelMinIntersectDist(const swVector3& WorldStart, const swVector3& WorldEnd, float& MinDistance, swPieceRayTest& PieceRayTest) const
+bool swModel::SubModelMinIntersectDist(const swVector3& WorldStart, const swVector3& WorldEnd, float& MinDistance, swPartRayTest& PartRayTest) const
 {
 	bool MinIntersect = false;
 
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
+	for (const std::unique_ptr<swPart>& Part : mParts)
 	{
-		const swMatrix44 InverseWorldMatrix = swMatrix44AffineInverse(Piece->mModelWorld);
+		const swMatrix44 InverseWorldMatrix = swMatrix44AffineInverse(Part->mModelWorld);
 		const swVector3 Start = swMultiply31(WorldStart, InverseWorldMatrix);
 		const swVector3 End = swMultiply31(WorldEnd, InverseWorldMatrix);
 
-		if (Piece->IsVisibleInSubModel())
+		if (Part->IsVisibleInSubModel())
 		{
-			if (Piece->MinIntersectDist(Start, End, MinDistance, PieceRayTest))
+			if (Part->MinIntersectDist(Start, End, MinDistance, PartRayTest))
 			{
 				MinIntersect = true;
-				PieceRayTest.Transform = swMultiply(PieceRayTest.Transform, Piece->mModelWorld);
+				PartRayTest.Transform = swMultiply(PartRayTest.Transform, Part->mModelWorld);
 			}
 		}
 	}
@@ -83,8 +83,8 @@ bool swModel::SubModelMinIntersectDist(const swVector3& WorldStart, const swVect
 
 bool swModel::SubModelBoxTest(const swVector4 Planes[6]) const
 {
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
-		if (Piece->IsVisibleInSubModel() && Piece->IntersectsPlanes(Piece->mModelWorld, Planes))
+	for (const std::unique_ptr<swPart>& Part : mParts)
+		if (Part->IsVisibleInSubModel() && Part->IntersectsPlanes(Part->mModelWorld, Planes))
 			return true;
 
 	return false;
@@ -92,7 +92,7 @@ bool swModel::SubModelBoxTest(const swVector4 Planes[6]) const
 
 void swModel::SubModelCompareBoundingBox(const swMatrix44& WorldMatrix, swVector3& Min, swVector3& Max) const
 {
-	const swMesh* Mesh = mPieceData ? mPieceData->GetDisplayMesh() : nullptr;
+	const swMesh* Mesh = mPartData ? mPartData->GetDisplayMesh() : nullptr;
 
 	if (Mesh)
 	{
@@ -107,16 +107,16 @@ void swModel::SubModelCompareBoundingBox(const swMatrix44& WorldMatrix, swVector
 		}
 	}
 
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
-		if (Piece->IsVisibleInSubModel())
-			Piece->SubModelCompareBoundingBox(WorldMatrix, Min, Max);
+	for (const std::unique_ptr<swPart>& Part : mParts)
+		if (Part->IsVisibleInSubModel())
+			Part->SubModelCompareBoundingBox(WorldMatrix, Min, Max);
 }
 
 void swModel::SubModelAddBoundingBoxPoints(const swMatrix44& WorldMatrix, std::vector<swVector3>& Points, swGeometryBoundsMode Mode) const
 {
-	const swMesh* Mesh = mPieceData ? mPieceData->GetDisplayMesh() : nullptr;
+	const swMesh* Mesh = mPartData ? mPartData->GetDisplayMesh() : nullptr;
 
-	if (Mode == swGeometryBoundsMode::AvailableOnly && mPieceData && mPieceData->mState != swAssetState::Loaded)
+	if (Mode == swGeometryBoundsMode::AvailableOnly && mPartData && mPartData->mState != swAssetState::Loaded)
 		Mesh = nullptr;
 
 	if (Mesh)
@@ -128,9 +128,9 @@ void swModel::SubModelAddBoundingBoxPoints(const swMatrix44& WorldMatrix, std::v
 			Points.emplace_back(swMultiply31(Corner, WorldMatrix));
 	}
 
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
-		if (Piece->IsVisibleInSubModel())
-			Piece->SubModelAddBoundingBoxPoints(WorldMatrix, Points, Mode);
+	for (const std::unique_ptr<swPart>& Part : mParts)
+		if (Part->IsVisibleInSubModel())
+			Part->SubModelAddBoundingBoxPoints(WorldMatrix, Points, Mode);
 }
 
 void swModel::AddSelectionHistory(std::function<void()> Callback)
@@ -167,23 +167,23 @@ void swModel::SetSelectionAndFocus(const std::vector<swObject*>& Objects, swObje
 	});
 }
 
-void swModel::SelectAllPieces()
+void swModel::SelectAllParts()
 {
 	AddSelectionHistory([this]()
 	{
-		for (const std::unique_ptr<swPiece>& Piece : mPieces)
-			if (Piece->IsVisible(mCurrentStep))
-				Piece->SetSelected(true);
+		for (const std::unique_ptr<swPart>& Part : mParts)
+			if (Part->IsVisible(mCurrentStep))
+				Part->SetSelected(true);
 	});
 }
 
-void swModel::InvertPieceSelection()
+void swModel::InvertPartSelection()
 {
 	AddSelectionHistory([this]()
 	{
-		for (const std::unique_ptr<swPiece>& Piece : mPieces)
-			if (Piece->IsSelected() || Piece->IsVisible(mCurrentStep))
-				Piece->SetSelected(!Piece->IsSelected());
+		for (const std::unique_ptr<swPart>& Part : mParts)
+			if (Part->IsSelected() || Part->IsVisible(mCurrentStep))
+				Part->SetSelected(!Part->IsSelected());
 	});
 }
 
@@ -197,10 +197,10 @@ void swModel::RemoveFromSelection(const std::vector<swObject*>& Objects)
 	AddSelectionHistory([this, &Objects](){ SetObjectsSelected(Objects, false); });
 }
 
-bool swModel::AnyPiecesSelected() const
+bool swModel::AnyPartsSelected() const
 {
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
-		if (Piece->IsSelected())
+	for (const std::unique_ptr<swPart>& Part : mParts)
+		if (Part->IsSelected())
 			return true;
 
 	return false;
@@ -208,8 +208,8 @@ bool swModel::AnyPiecesSelected() const
 
 bool swModel::AnyObjectsSelected() const
 {
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
-		if (Piece->IsSelected())
+	for (const std::unique_ptr<swPart>& Part : mParts)
+		if (Part->IsSelected())
 			return true;
 
 	for (const std::unique_ptr<swCamera>& Camera : mCameras)
@@ -225,9 +225,9 @@ bool swModel::AnyObjectsSelected() const
 
 swObject* swModel::GetFocusObject() const
 {
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
-		if (Piece->IsFocused())
-			return Piece.get();
+	for (const std::unique_ptr<swPart>& Part : mParts)
+		if (Part->IsFocused())
+			return Part.get();
 
 	for (const std::unique_ptr<swCamera>& Camera : mCameras)
 		if (Camera->IsFocused())
@@ -242,20 +242,20 @@ swObject* swModel::GetFocusObject() const
 
 swModel* swModel::GetFirstSelectedSubmodel() const
 {
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
-		if (Piece->IsSelected() && Piece->mPieceData->IsModel())
-			return Piece->mPieceData->GetModel();
+	for (const std::unique_ptr<swPart>& Part : mParts)
+		if (Part->IsSelected() && Part->mPartData->IsModel())
+			return Part->mPartData->GetModel();
 
 	return nullptr;
 }
 
 void swModel::GetSubModels(std::set<swModel*>& SubModels) const
 {
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
+	for (const std::unique_ptr<swPart>& Part : mParts)
 	{
-		if (Piece->mPieceData->IsModel())
+		if (Part->mPartData->IsModel())
 		{
-			swModel* SubModel = Piece->mPieceData->GetModel();
+			swModel* SubModel = Part->mPartData->GetModel();
 
 			SubModels.insert(SubModel);
 		}
@@ -270,19 +270,19 @@ bool swModel::GetMoveRotateTransform(swVector3& Center, swMatrix33& RelativeRota
 	Center = swVector3(0.0f, 0.0f, 0.0f);
 	RelativeRotation = swMatrix33Identity();
 
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
+	for (const std::unique_ptr<swPart>& Part : mParts)
 	{
-		if (!Piece->IsSelected())
+		if (!Part->IsSelected())
 			continue;
 
-		if (Piece->IsFocused() && Relative)
+		if (Part->IsFocused() && Relative)
 		{
-			Center = Piece->GetRotationCenter();
-			RelativeRotation = Piece->GetRelativeRotation();
+			Center = Part->GetRotationCenter();
+			RelativeRotation = Part->GetRelativeRotation();
 			return true;
 		}
 
-		Center += Piece->mModelWorld.GetTranslation();
+		Center += Part->mModelWorld.GetTranslation();
 		NumSelected++;
 	}
 
@@ -294,7 +294,7 @@ bool swModel::GetMoveRotateTransform(swVector3& Center, swMatrix33& RelativeRota
 		if (Camera->IsFocused() && Relative)
 		{
 			Center = Camera->GetSectionPosition(Camera->GetFocusSection());
-//			RelativeRotation = Piece->GetRelativeRotation();
+//			RelativeRotation = Part->GetRelativeRotation();
 			return true;
 		}
 
@@ -340,13 +340,13 @@ bool swModel::CanRotateSelection() const
 
 	GetSelectionInformation(&Flags, Selection, &Focus);
 
-	if (Flags & SW_SELECTION_PIECE)
+	if (Flags & SW_SELECTION_PART)
 	{
 		if ((Flags & (SW_SELECTION_CAMERA | SW_SELECTION_LIGHT)) == 0)
 			return true;
 	}
 
-	if ((Flags & (SW_SELECTION_PIECE | SW_SELECTION_CAMERA)) == 0)
+	if ((Flags & (SW_SELECTION_PART | SW_SELECTION_CAMERA)) == 0)
 	{
 		if (Focus && Focus->IsLight())
 		{
@@ -359,24 +359,24 @@ bool swModel::CanRotateSelection() const
 	return false;
 }
 
-bool swModel::GetPieceFocusOrSelectionCenter(swVector3& Center) const
+bool swModel::GetPartFocusOrSelectionCenter(swVector3& Center) const
 {
 	swVector3 Min(FLT_MAX, FLT_MAX, FLT_MAX), Max(-FLT_MAX, -FLT_MAX, -FLT_MAX);
-	swPiece* Selected = nullptr;
+	swPart* Selected = nullptr;
 	int NumSelected = 0;
 
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
+	for (const std::unique_ptr<swPart>& Part : mParts)
 	{
-		if (Piece->IsFocused())
+		if (Part->IsFocused())
 		{
-			Center = Piece->mModelWorld.GetTranslation();
+			Center = Part->mModelWorld.GetTranslation();
 			return true;
 		}
 
-		if (Piece->IsSelected())
+		if (Part->IsSelected())
 		{
-			Piece->CompareBoundingBox(Min, Max);
-			Selected = Piece.get();
+			Part->CompareBoundingBox(Min, Max);
+			Selected = Part.get();
 			NumSelected++;
 		}
 	}
@@ -399,7 +399,7 @@ swVector3 swModel::GetSelectionOrModelCenter() const
 	{
 		swVector3 Min(FLT_MAX, FLT_MAX, FLT_MAX), Max(-FLT_MAX, -FLT_MAX, -FLT_MAX);
 
-		if (GetVisiblePiecesBoundingBox(Min, Max))
+		if (GetVisiblePartsBoundingBox(Min, Max))
 			Center = (Min + Max) / 2.0f;
 		else
 			Center = swVector3(0.0f, 0.0f, 0.0f);
@@ -427,21 +427,21 @@ bool swModel::GetFocusPosition(swVector3& Position) const
 bool swModel::GetSelectionCenter(swVector3& Center) const
 {
 	swVector3 Min(FLT_MAX, FLT_MAX, FLT_MAX), Max(-FLT_MAX, -FLT_MAX, -FLT_MAX);
-	swPiece* SelectedPiece = nullptr;
-	bool SinglePieceSelected = true;
+	swPart* SelectedPart = nullptr;
+	bool SinglePartSelected = true;
 	bool Selected = false;
 
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
+	for (const std::unique_ptr<swPart>& Part : mParts)
 	{
-		if (Piece->IsSelected())
+		if (Part->IsSelected())
 		{
-			Piece->CompareBoundingBox(Min, Max);
+			Part->CompareBoundingBox(Min, Max);
 			Selected = true;
 
-			if (!SelectedPiece)
-				SelectedPiece = Piece.get();
+			if (!SelectedPart)
+				SelectedPart = Part.get();
 			else
-				SinglePieceSelected = false;
+				SinglePartSelected = false;
 		}
 	}
 
@@ -451,7 +451,7 @@ bool swModel::GetSelectionCenter(swVector3& Center) const
 		{
 			Camera->CompareBoundingBox(Min, Max);
 			Selected = true;
-			SinglePieceSelected = false;
+			SinglePartSelected = false;
 		}
 	}
 
@@ -461,12 +461,12 @@ bool swModel::GetSelectionCenter(swVector3& Center) const
 		{
 			Light->CompareBoundingBox(Min, Max);
 			Selected = true;
-			SinglePieceSelected = false;
+			SinglePartSelected = false;
 		}
 	}
 
-	if (SelectedPiece && SinglePieceSelected)
-		Center = SelectedPiece->GetSectionPosition(SW_PIECE_SECTION_POSITION);
+	if (SelectedPart && SinglePartSelected)
+		Center = SelectedPart->GetSectionPosition(SW_PART_SECTION_POSITION);
 	else if (Selected)
 		Center = (Min + Max) / 2.0f;
 	else
@@ -475,17 +475,17 @@ bool swModel::GetSelectionCenter(swVector3& Center) const
 	return Selected;
 }
 
-swBoundingBox swModel::GetAllPiecesBoundingBox() const
+swBoundingBox swModel::GetAllPartsBoundingBox() const
 {
 	swBoundingBox Box;
 
-	if (!mPieces.empty())
+	if (!mParts.empty())
 	{
 		Box.Min = swVector3(FLT_MAX, FLT_MAX, FLT_MAX);
 		Box.Max = swVector3(-FLT_MAX, -FLT_MAX, -FLT_MAX);
 
-		for (const std::unique_ptr<swPiece>& Piece : mPieces)
-			Piece->CompareBoundingBox(Box.Min, Box.Max);
+		for (const std::unique_ptr<swPart>& Part : mParts)
+			Part->CompareBoundingBox(Box.Min, Box.Max);
 	}
 	else
 		Box.Min = Box.Max = swVector3(0.0f, 0.0f, 0.0f);
@@ -493,17 +493,17 @@ swBoundingBox swModel::GetAllPiecesBoundingBox() const
 	return Box;
 }
 
-bool swModel::GetVisiblePiecesBoundingBox(swVector3& Min, swVector3& Max) const
+bool swModel::GetVisiblePartsBoundingBox(swVector3& Min, swVector3& Max) const
 {
 	bool Valid = false;
 	Min = swVector3(FLT_MAX, FLT_MAX, FLT_MAX);
 	Max = swVector3(-FLT_MAX, -FLT_MAX, -FLT_MAX);
 
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
+	for (const std::unique_ptr<swPart>& Part : mParts)
 	{
-		if (Piece->IsSelected() || Piece->IsVisible(mCurrentStep))
+		if (Part->IsSelected() || Part->IsVisible(mCurrentStep))
 		{
-			Piece->CompareBoundingBox(Min, Max);
+			Part->CompareBoundingBox(Min, Max);
 			Valid = true;
 		}
 	}
@@ -511,12 +511,12 @@ bool swModel::GetVisiblePiecesBoundingBox(swVector3& Min, swVector3& Max) const
 	return Valid;
 }
 
-std::vector<swVector3> swModel::GetPiecesBoundingBoxPoints(swGeometryBoundsMode Mode) const
+std::vector<swVector3> swModel::GetPartsBoundingBoxPoints(swGeometryBoundsMode Mode) const
 {
 	std::vector<swVector3> Points;
-	const swMesh* Mesh = mPieceData ? mPieceData->GetDisplayMesh() : nullptr;
+	const swMesh* Mesh = mPartData ? mPartData->GetDisplayMesh() : nullptr;
 
-	if (Mode == swGeometryBoundsMode::AvailableOnly && mPieceData && mPieceData->mState != swAssetState::Loaded)
+	if (Mode == swGeometryBoundsMode::AvailableOnly && mPartData && mPartData->mState != swAssetState::Loaded)
 		Mesh = nullptr;
 
 	if (Mesh)
@@ -528,9 +528,9 @@ std::vector<swVector3> swModel::GetPiecesBoundingBoxPoints(swGeometryBoundsMode 
 			Points.emplace_back(Point);
 	}
 
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
-		if (Piece->IsSelected() || Piece->IsVisible(mCurrentStep))
-			Piece->SubModelAddBoundingBoxPoints(swMatrix44Identity(), Points, Mode);
+	for (const std::unique_ptr<swPart>& Part : mParts)
+		if (Part->IsSelected() || Part->IsVisible(mCurrentStep))
+			Part->SubModelAddBoundingBoxPoints(swMatrix44Identity(), Points, Mode);
 
 	return Points;
 }
@@ -540,56 +540,56 @@ void swModel::GetSelectionInformation(int* Flags, std::vector<swObject*>& Select
 	*Flags = 0;
 	*Focus = nullptr;
 
-	if (mPieces.empty())
-		*Flags |= SW_SELECTION_NO_PIECES;
+	if (mParts.empty())
+		*Flags |= SW_SELECTION_NO_PARTS;
 	else
 	{
 		swGroup* Group = nullptr;
 		bool First = true;
 
-		for (const std::unique_ptr<swPiece>& Piece : mPieces)
+		for (const std::unique_ptr<swPart>& Part : mParts)
 		{
-			if (Piece->IsSelected())
+			if (Part->IsSelected())
 			{
-				Selection.emplace_back(Piece.get());
+				Selection.emplace_back(Part.get());
 
-				if (Piece->IsFocused())
-					*Focus = Piece.get();
+				if (Part->IsFocused())
+					*Focus = Part.get();
 
-				if (Piece->mPieceData->IsModel())
+				if (Part->mPartData->IsModel())
 					*Flags |= SW_SELECTION_MODEL_SELECTED;
 
-				if (Piece->IsHidden())
+				if (Part->IsHidden())
 					*Flags |= SW_SELECTION_HIDDEN | SW_SELECTION_HIDDEN_SELECTED;
 				else
 					*Flags |= SW_SELECTION_VISIBLE_SELECTED;
 
-				*Flags |= SW_SELECTION_PIECE | SW_SELECTION_SELECTED;
+				*Flags |= SW_SELECTION_PART | SW_SELECTION_SELECTED;
 
-				if (Piece->AreTrainTrackConnectionsVisible())
+				if (Part->AreTrainTrackConnectionsVisible())
 					*Flags |= SW_SELECTION_TRAIN_TRACK_VISIBLE;
 
-				if (Piece->CanAddControlPoint())
+				if (Part->CanAddControlPoint())
 					*Flags |= SW_SELECTION_CAN_ADD_CONTROL_POINT;
 
-				if (Piece->CanRemoveControlPoint())
+				if (Part->CanRemoveControlPoint())
 					*Flags |= SW_SELECTION_CAN_REMOVE_CONTROL_POINT;
 
-				if (Piece->GetGroup() != nullptr)
+				if (Part->GetGroup() != nullptr)
 				{
 					*Flags |= SW_SELECTION_GROUPED;
-					if (Piece->IsFocused())
+					if (Part->IsFocused())
 						*Flags |= SW_SELECTION_FOCUS_GROUPED;
 				}
 
 				if (First)
 				{
-					Group = Piece->GetGroup();
+					Group = Part->GetGroup();
 					First = false;
 				}
 				else
 				{
-					if (Group != Piece->GetGroup())
+					if (Group != Part->GetGroup())
 						*Flags |= SW_SELECTION_CAN_GROUP;
 					else
 						if (Group == nullptr)
@@ -600,7 +600,7 @@ void swModel::GetSelectionInformation(int* Flags, std::vector<swObject*>& Select
 			{
 				*Flags |= SW_SELECTION_UNSELECTED;
 
-				if (Piece->IsHidden())
+				if (Part->IsHidden())
 					*Flags |= SW_SELECTION_HIDDEN;
 			}
 		}
@@ -651,7 +651,7 @@ void swModel::FocusOrDeselectObjectAction(swObject* Object, uint32_t Section, sw
 
 	if (Object)
 	{
-		if (Object->IsFocused(Section) || (Object->IsPiece() && Object->IsSelected()))
+		if (Object->IsFocused(Section) || (Object->IsPart() && Object->IsSelected()))
 			RemoveFromSelection({ Object });
 		else
 			SetFocus(Object, Section, SelectionMode);
@@ -664,17 +664,17 @@ void swModel::FocusOrDeselectObjectAction(swObject* Object, uint32_t Section, sw
 	EndHistorySequence(tr("Selection"));
 }
 
-void swModel::SelectAllPiecesAction()
+void swModel::SelectAllPartsAction()
 {
 	BeginHistorySequence();
-	SelectAllPieces();
+	SelectAllParts();
 	EndHistorySequence(tr("Selection"));
 }
 
-void swModel::InvertPieceSelectionAction()
+void swModel::InvertPartSelectionAction()
 {
 	BeginHistorySequence();
-	InvertPieceSelection();
+	InvertPartSelection();
 	EndHistorySequence(tr("Selection"));
 }
 
@@ -692,43 +692,43 @@ void swModel::RemoveFromSelectionAction(const std::vector<swObject*>& Objects)
 	EndHistorySequence(tr("Selection"));
 }
 
-std::vector<swObject*> swModel::GetSelectionModePieces(swSelectionMode SelectionMode, const swPiece* SelectedPiece) const
+std::vector<swObject*> swModel::GetSelectionModeParts(swSelectionMode SelectionMode, const swPart* SelectedPart) const
 {
-	const swPieceData* PieceData = SelectedPiece->mPieceData.Get();
-	const int ColorIndex = SelectedPiece->GetColorIndex();
-	std::vector<swObject*> Pieces;
+	const swPartData* PartData = SelectedPart->mPartData.Get();
+	const int ColorIndex = SelectedPart->GetColorIndex();
+	std::vector<swObject*> Parts;
 
 	switch (SelectionMode)
 	{
 	case swSelectionMode::Single:
 		break;
 
-	case swSelectionMode::Piece:
-		for (const std::unique_ptr<swPiece>& Piece : mPieces)
-			if (Piece->IsVisible(mCurrentStep) && Piece->mPieceData == PieceData && Piece.get() != SelectedPiece)
-				Pieces.emplace_back(Piece.get());
+	case swSelectionMode::Part:
+		for (const std::unique_ptr<swPart>& Part : mParts)
+			if (Part->IsVisible(mCurrentStep) && Part->mPartData == PartData && Part.get() != SelectedPart)
+				Parts.emplace_back(Part.get());
 		break;
 
 	case swSelectionMode::Color:
-		for (const std::unique_ptr<swPiece>& Piece : mPieces)
-			if (Piece->IsVisible(mCurrentStep) && Piece->GetColorIndex() == ColorIndex && Piece.get() != SelectedPiece)
-				Pieces.emplace_back(Piece.get());
+		for (const std::unique_ptr<swPart>& Part : mParts)
+			if (Part->IsVisible(mCurrentStep) && Part->GetColorIndex() == ColorIndex && Part.get() != SelectedPart)
+				Parts.emplace_back(Part.get());
 		break;
 
-	case swSelectionMode::PieceColor:
-		for (const std::unique_ptr<swPiece>& Piece : mPieces)
-			if (Piece->IsVisible(mCurrentStep) && Piece->mPieceData == PieceData && Piece->GetColorIndex() == ColorIndex && Piece.get() != SelectedPiece)
-				Pieces.emplace_back(Piece.get());
+	case swSelectionMode::PartColor:
+		for (const std::unique_ptr<swPart>& Part : mParts)
+			if (Part->IsVisible(mCurrentStep) && Part->mPartData == PartData && Part->GetColorIndex() == ColorIndex && Part.get() != SelectedPart)
+				Parts.emplace_back(Part.get());
 		break;
 	}
 
-	return Pieces;
+	return Parts;
 }
 
 void swModel::DeselectAllObjects()
 {
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
-		Piece->SetSelected(false);
+	for (const std::unique_ptr<swPart>& Part : mParts)
+		Part->SetSelected(false);
 
 	for (const std::unique_ptr<swCamera>& Camera : mCameras)
 		Camera->SetSelected(false);
@@ -746,16 +746,16 @@ void swModel::SetFocusedObject(swObject* FocusObject, uint32_t FocusSection, swS
 
 	if (FocusObject)
 	{
-		swPiece* Piece = dynamic_cast<swPiece*>(FocusObject);
+		swPart* Part = dynamic_cast<swPart*>(FocusObject);
 
-		if (Piece)
+		if (Part)
 		{
-			if (!Piece->IsSelected())
-				SetObjectsSelected({ Piece }, true);
+			if (!Part->IsSelected())
+				SetObjectsSelected({ Part }, true);
 
-			std::vector<swObject*> Pieces = GetSelectionModePieces(SelectionMode, Piece);
+			std::vector<swObject*> Parts = GetSelectionModeParts(SelectionMode, Part);
 
-			SetObjectsSelected(Pieces, true);
+			SetObjectsSelected(Parts, true);
 		}
 
 		FocusObject->SetFocused(FocusSection, true);
@@ -771,11 +771,11 @@ void swModel::SetObjectsSelected(const std::vector<swObject*>& Objects, bool Sel
 
 		Object->SetSelected(Selected);
 
-		if (Object->IsPiece())
+		if (Object->IsPart())
 		{
-			swPiece* Piece = dynamic_cast<swPiece*>(Object);
+			swPart* Part = dynamic_cast<swPart*>(Object);
 
-			SelectGroup(Piece->GetTopGroup(), Selected);
+			SelectGroup(Part->GetTopGroup(), Selected);
 		}
 	}
 }
@@ -785,23 +785,23 @@ void swModel::SelectGroup(swGroup* TopGroup, bool Select)
 	if (!TopGroup)
 		return;
 
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
-		if (!Piece->IsSelected() && (Piece->GetTopGroup() == TopGroup))
-			Piece->SetSelected(Select);
+	for (const std::unique_ptr<swPart>& Part : mParts)
+		if (!Part->IsSelected() && (Part->GetTopGroup() == TopGroup))
+			Part->SetSelected(Select);
 }
 
-void swModel::HideSelectedPieces()
+void swModel::HideSelectedParts()
 {
 	BeginHistorySequence();
 	BeginEditHistory();
 
 	bool Modified = false;
 
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
+	for (const std::unique_ptr<swPart>& Part : mParts)
 	{
-		if (Piece->IsSelected() && !Piece->IsHidden())
+		if (Part->IsSelected() && !Part->IsHidden())
 		{
-			Piece->SetHidden(true);
+			Part->SetHidden(true);
 
 			Modified = true;
 		}
@@ -818,24 +818,24 @@ void swModel::HideSelectedPieces()
 
 	ClearSelection();
 
-	EndHistorySequence(tr("Hide Pieces"));
+	EndHistorySequence(tr("Hide Parts"));
 
 	gMainWindow->UpdateTimeline(false, true);
 	gMainWindow->UpdateSelectedObjects(true);
 }
 
-void swModel::HideUnselectedPieces()
+void swModel::HideUnselectedParts()
 {
 	BeginHistorySequence();
 	BeginEditHistory();
 
 	bool Modified = false;
 
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
+	for (const std::unique_ptr<swPart>& Part : mParts)
 	{
-		if (!Piece->IsSelected() && !Piece->IsHidden())
+		if (!Part->IsSelected() && !Part->IsHidden())
 		{
-			Piece->SetHidden(true);
+			Part->SetHidden(true);
 
 			Modified = true;
 		}
@@ -849,24 +849,24 @@ void swModel::HideUnselectedPieces()
 	}
 
 	EndEditHistory();
-	EndHistorySequence(tr("Hide Pieces"));
+	EndHistorySequence(tr("Hide Parts"));
 
 	gMainWindow->UpdateTimeline(false, true);
 	gMainWindow->UpdateSelectedObjects(true);
 }
 
-void swModel::UnhideSelectedPieces()
+void swModel::UnhideSelectedParts()
 {
 	BeginHistorySequence();
 	BeginEditHistory();
 
 	bool Modified = false;
 
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
+	for (const std::unique_ptr<swPart>& Part : mParts)
 	{
-		if (Piece->IsSelected() && Piece->IsHidden())
+		if (Part->IsSelected() && Part->IsHidden())
 		{
-			Piece->SetHidden(false);
+			Part->SetHidden(false);
 
 			Modified = true;
 		}
@@ -880,24 +880,24 @@ void swModel::UnhideSelectedPieces()
 	}
 
 	EndEditHistory();
-	EndHistorySequence(tr("Unhide Pieces"));
+	EndHistorySequence(tr("Unhide Parts"));
 
 	gMainWindow->UpdateTimeline(false, true);
 	gMainWindow->UpdateSelectedObjects(true);
 }
 
-void swModel::UnhideAllPieces()
+void swModel::UnhideAllParts()
 {
 	BeginHistorySequence();
 	BeginEditHistory();
 
 	bool Modified = false;
 
-	for (const std::unique_ptr<swPiece>& Piece : mPieces)
+	for (const std::unique_ptr<swPart>& Part : mParts)
 	{
-		if (Piece->IsHidden())
+		if (Part->IsHidden())
 		{
-			Piece->SetHidden(false);
+			Part->SetHidden(false);
 
 			Modified = true;
 		}
@@ -911,46 +911,46 @@ void swModel::UnhideAllPieces()
 	}
 
 	EndEditHistory();
-	EndHistorySequence(tr("Unhide Pieces"));
+	EndHistorySequence(tr("Unhide Parts"));
 
 	gMainWindow->UpdateTimeline(false, true);
 	gMainWindow->UpdateSelectedObjects(true);
 }
 
-void swModel::FindReplacePiece(bool SearchForward, bool FindAll, bool Replace)
+void swModel::FindReplacePart(bool SearchForward, bool FindAll, bool Replace)
 {
-	if (mPieces.empty())
+	if (mParts.empty())
 		return;
 
 	const swFindReplaceParameters& Params = swView::GetFindReplaceParams();
 
-	const bool ReplacePieceData = Replace && Params.ReplacePieceData;
+	const bool ReplacePartData = Replace && Params.ReplacePartData;
 	const bool ReplaceColor = Replace && swGetColorCode(Params.ReplaceColorIndex) != SW_COLOR_NO_COLOR;
 
 	// Check if we are supposed to actually replace something
-	const bool Replacing = (ReplaceColor || ReplacePieceData);
+	const bool Replacing = (ReplaceColor || ReplacePartData);
 
-	auto PieceMatches = [&Params](const swPiece* Piece)
+	auto PartMatches = [&Params](const swPart* Part)
 	{
-		if (Params.FindPieceData && Params.FindPieceData != Piece->mPieceData)
+		if (Params.FindPartData && Params.FindPartData != Part->mPartData)
 			return false;
 
-		if (!Params.FindString.isEmpty() && !swstrcasestr(Piece->mPieceData->m_strDescription, Params.FindString.toLatin1()))
+		if (!Params.FindString.isEmpty() && !swstrcasestr(Part->mPartData->m_strDescription, Params.FindString.toLatin1()))
 			return false;
 
-		return (swGetColorCode(Params.FindColorIndex) == SW_COLOR_NO_COLOR) || (Piece->GetColorIndex() == Params.FindColorIndex);
+		return (swGetColorCode(Params.FindColorIndex) == SW_COLOR_NO_COLOR) || (Part->GetColorIndex() == Params.FindColorIndex);
 	};
 
-	auto ReplacePiece = [&Params, ReplacePieceData, ReplaceColor](swPiece* Piece)
+	auto ReplacePart = [&Params, ReplacePartData, ReplaceColor](swPart* Part)
 	{
 		if (ReplaceColor)
-			Piece->SetColorIndex(Params.ReplaceColorIndex);
+			Part->SetColorIndex(Params.ReplaceColorIndex);
 
-		if (ReplacePieceData)
-			Piece->SetPieceData(swPieceDataReference(Params.ReplacePieceData), QString(), true, true);
+		if (ReplacePartData)
+			Part->SetPartData(swPartDataReference(Params.ReplacePartData), QString(), true, true);
 	};
 
-	size_t StartIndex = mPieces.size() - 1;
+	size_t StartIndex = mParts.size() - 1;
 	int ReplacedCount = 0;
 
 	BeginHistorySequence();
@@ -958,30 +958,30 @@ void swModel::FindReplacePiece(bool SearchForward, bool FindAll, bool Replace)
 
 	if (!FindAll)
 	{
-		// We have to find the currently focused piece, in order to find next/prev match and (optionally) to replace it
-		swPiece* const FocusedPiece = dynamic_cast<swPiece*>(GetFocusObject());
+		// We have to find the currently focused part, in order to find next/prev match and (optionally) to replace it
+		swPart* const FocusedPart = dynamic_cast<swPart*>(GetFocusObject());
 
-		if (FocusedPiece)
+		if (FocusedPart)
 		{
-			for (size_t PieceIndex = 0; PieceIndex < mPieces.size(); PieceIndex++)
+			for (size_t PartIndex = 0; PartIndex < mParts.size(); PartIndex++)
 			{
-				if (FocusedPiece == mPieces[PieceIndex].get())
+				if (FocusedPart == mParts[PartIndex].get())
 				{
-					StartIndex = PieceIndex;
+					StartIndex = PartIndex;
 					break;
 				}
 			}
 
-			if (Replacing && PieceMatches(FocusedPiece))
+			if (Replacing && PartMatches(FocusedPart))
 			{
-				ReplacePiece(FocusedPiece);
+				ReplacePart(FocusedPart);
 				ReplacedCount++;
 			}
 		}
 	}
 
 	size_t CurrentIndex = StartIndex;
-	swPiece* Focus = nullptr;
+	swPart* Focus = nullptr;
 	std::vector<swObject*> Selection;
 
 	for (;;)
@@ -990,27 +990,27 @@ void swModel::FindReplacePiece(bool SearchForward, bool FindAll, bool Replace)
 		{
 			CurrentIndex++;
 
-			if (CurrentIndex >= mPieces.size())
+			if (CurrentIndex >= mParts.size())
 				CurrentIndex = 0;
 		}
 		else
 		{
 			if (CurrentIndex == 0)
-				CurrentIndex = mPieces.size();
+				CurrentIndex = mParts.size();
 
 			CurrentIndex--;
 		}
 
-		swPiece* Current = mPieces[CurrentIndex].get();
+		swPart* Current = mParts[CurrentIndex].get();
 
-		if (Current->IsVisible(mCurrentStep) && PieceMatches(Current))
+		if (Current->IsVisible(mCurrentStep) && PartMatches(Current))
 		{
 			if (FindAll)
 			{
 				Selection.emplace_back(Current);
 				if (Replacing)
 				{
-					ReplacePiece(Current);
+					ReplacePart(Current);
 					ReplacedCount++;
 				}
 			}
@@ -1030,11 +1030,11 @@ void swModel::FindReplacePiece(bool SearchForward, bool FindAll, bool Replace)
 	if (FindAll)
 		SetSelectionAndFocus(Selection, nullptr, 0, swSelectionMode::Single);
 	else
-		SetSelectionAndFocus(std::vector<swObject*>(), Focus, SW_PIECE_SECTION_POSITION, swSelectionMode::Single);
+		SetSelectionAndFocus(std::vector<swObject*>(), Focus, SW_PART_SECTION_POSITION, swSelectionMode::Single);
 
 	if (ReplacedCount)
 	{
-		EndHistorySequence(tr("Replace Pieces", nullptr, ReplacedCount));
+		EndHistorySequence(tr("Replace Parts", nullptr, ReplacedCount));
 
 		gMainWindow->UpdateSelectedObjects(false);
 		gMainWindow->UpdateTimeline(false, true);

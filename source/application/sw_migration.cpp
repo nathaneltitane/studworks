@@ -46,65 +46,59 @@ static void swMigrateEarlierSettings()
 	Settings.sync();
 }
 
+static QString swRenamePieceName(QString Name)
+{
+	return Name.replace(QLatin1String("Pieces"), QLatin1String("Parts")).replace(QLatin1String("Piece"), QLatin1String("Part"));
+}
+
 static void swMigrateRenamedKeys()
 {
-	// Keys renamed from parts to pieces keep their stored value, a key already stored under its new name wins.
-	constexpr const char* RenamedKeys[][2] =
-	{
-		{ "MainWindow/PartSelectionSplitter", "MainWindow/PieceSelectionSplitter" },
-		{ "Settings/HighlightNewParts", "Settings/HighlightNewPieces" },
-		{ "Settings/HighlightNewPartsColor", "Settings/HighlightNewPiecesColor" },
-		{ "Settings/PartColorValueLDIndex", "Settings/PieceColorValueLDIndex" },
-		{ "Settings/PartEdgeColor", "Settings/PieceEdgeColor" },
-		{ "Settings/PartEdgeColorEnabled", "Settings/PieceEdgeColorEnabled" },
-		{ "Settings/PartEdgeContrast", "Settings/PieceEdgeContrast" },
-		{ "Settings/PartPalettes", "Settings/PiecePalettes" },
-		{ "Settings/PartsDrawConditionalLines", "Settings/PiecesDrawConditionalLines" },
-		{ "Settings/PartsDrawEdgeLines", "Settings/PiecesDrawEdgeLines" },
-		{ "Settings/PartsLibrary", "Settings/PiecesLibrary" },
-		{ "Settings/PartsLineWidth", "Settings/PiecesLineWidth" },
-		{ "Settings/PartsListAliases", "Settings/PiecesListAliases" },
-		{ "Settings/PartsListCaseSensitiveFilter", "Settings/PiecesListCaseSensitiveFilter" },
-		{ "Settings/PartsListColorLocked", "Settings/PiecesListColorLocked" },
-		{ "Settings/PartsListDecorated", "Settings/PiecesListDecorated" },
-		{ "Settings/PartsListFileNameFilter", "Settings/PiecesListFileNameFilter" },
-		{ "Settings/PartsListFixedColor", "Settings/PiecesListFixedColor" },
-		{ "Settings/PartsListIcons", "Settings/PiecesListIcons" },
-		{ "Settings/PartsListListMode", "Settings/PiecesListListMode" },
-		{ "Settings/PartsListNames", "Settings/PiecesListNames" },
-		{ "Settings/PartsListPartDescriptionFilter", "Settings/PiecesListPieceDescriptionFilter" },
-		{ "Settings/PartsListPartFilter", "Settings/PiecesListPieceFilter" },
-		{ "Settings/PartsPopupAliases", "Settings/PiecesPopupAliases" },
-		{ "Settings/PartsPopupDecorated", "Settings/PiecesPopupDecorated" },
-		{ "Settings/PartsPopupIcons", "Settings/PiecesPopupIcons" },
-		{ "Settings/PartsPopupListMode", "Settings/PiecesPopupListMode" },
-		{ "Settings/PartsPopupNames", "Settings/PiecesPopupNames" },
-		{ "Settings/PartsShadingMode", "Settings/PiecesShadingMode" },
-		{ "Settings/PartsSyncRendering", "Settings/PiecesSyncRendering" },
-		{ "Settings/mPartColorValueLDIndex", "Settings/PieceColorValueLDIndex" }
-	};
-
+	// Keys named after pieces take their part names, their values are newer than any left under the part name.
 	QSettings Settings;
 
-	for (const auto& [OldKey, NewKey] : RenamedKeys)
+	for (const QString& Key : Settings.allKeys())
 	{
-		if (!Settings.contains(OldKey))
+		if (!Key.contains(QLatin1String("Piece")))
 			continue;
 
-		if (!Settings.contains(NewKey))
-			Settings.setValue(NewKey, Settings.value(OldKey));
-
-		Settings.remove(OldKey);
+		Settings.setValue(swRenamePieceName(Key), Settings.value(Key));
+		Settings.remove(Key);
 	}
 
+	Settings.remove(QLatin1String("Settings/mPartColorValueLDIndex"));
 	Settings.sync();
 }
 
-static QByteArray swSerializeName(const char* Name)
+static void swMigrateRenamedShortcuts()
+{
+	// Keyboard shortcuts are stored by command name, renamed commands keep their keys.
+	QSettings Settings;
+	const QString Key = QLatin1String("Settings/Shortcuts");
+	const QString OldShortcuts = QString::fromUtf8(Settings.value(Key).toByteArray());
+	QStringList Lines = OldShortcuts.split(QLatin1Char('\n'));
+
+	for (QString& Line : Lines)
+	{
+		const qsizetype Equals = Line.indexOf(QLatin1Char('='));
+
+		if (Equals != -1)
+			Line = swRenamePieceName(Line.left(Equals)) + Line.mid(Equals);
+	}
+
+	const QString Shortcuts = Lines.join(QLatin1Char('\n'));
+
+	if (Shortcuts == OldShortcuts)
+		return;
+
+	Settings.setValue(Key, Shortcuts.toUtf8());
+	Settings.sync();
+}
+
+static QByteArray swSerializeName(const QString& Name)
 {
 	QByteArray Data;
 	QDataStream Stream(&Data, QIODevice::WriteOnly);
-	Stream << QString::fromLatin1(Name);
+	Stream << Name;
 
 	return Data;
 }
@@ -112,9 +106,9 @@ static QByteArray swSerializeName(const char* Name)
 static void swMigrateRenamedToolbars()
 {
 	// Toolbars are restored by name, the stored window layout takes the new names so they keep their place.
-	constexpr const char* RenamedToolbars[][2] =
+	const QString RenamedToolbars[][2] =
 	{
-		{ "PartsToolbar", "PiecesToolbar" }
+		{ QLatin1String("PiecesToolbar"), QLatin1String("PartsToolbar") }
 	};
 
 	QSettings Settings;
@@ -140,5 +134,6 @@ void swMigrateSettings()
 
 	swMigrateEarlierSettings();
 	swMigrateRenamedKeys();
+	swMigrateRenamedShortcuts();
 	swMigrateRenamedToolbars();
 }

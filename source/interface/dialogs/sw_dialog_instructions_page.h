@@ -147,10 +147,10 @@ protected:
 	swInstructions* mInstructions = nullptr;
 };
 
-class swInstructionsPiecesListItem : public swInstructionsPaddedItem<QGraphicsPixmapItem>
+class swInstructionsPartsListItem : public swInstructionsPaddedItem<QGraphicsPixmapItem>
 {
 public:
-	swInstructionsPiecesListItem(QGraphicsItem* Parent, swInstructions* Instructions, swModel* Model, swStep Step);
+	swInstructionsPartsListItem(QGraphicsItem* Parent, swInstructions* Instructions, swModel* Model, swStep Step);
 
 	swModel* GetModel() const
 	{

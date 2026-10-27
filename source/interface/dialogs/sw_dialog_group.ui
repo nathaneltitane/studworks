@@ -3,7 +3,7 @@
  <class>swGroupDialog</class>
  <widget class="QDialog" name="swGroupDialog">
   <property name="whatsThis">
-   <string>&lt;p&gt;&lt;b&gt;Group Pieces&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Name a new group for the selected pieces so you can select and move them together. Choose OK to create it, or Cancel to leave the groups unchanged.&lt;/p&gt;</string>
+   <string>&lt;p&gt;&lt;b&gt;Group Parts&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Name a new group for the selected parts so you can select and move them together. Choose OK to create it, or Cancel to leave the groups unchanged.&lt;/p&gt;</string>
   </property>
   <property name="geometry">
    <rect>
@@ -25,7 +25,7 @@
         <string>Enter a unique, nonempty name for the new group.</string>
        </property>
        <property name="whatsThis">
-        <string>&lt;p&gt;&lt;b&gt;Group Name&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a name that is not already used by another group in this model. The new group contains the selected pieces and their existing groups.&lt;/p&gt;</string>
+        <string>&lt;p&gt;&lt;b&gt;Group Name&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a name that is not already used by another group in this model. The new group contains the selected parts and their existing groups.&lt;/p&gt;</string>
        </property>
        <property name="text">
         <string>Name</string>
@@ -41,7 +41,7 @@
         <string>Enter a unique, nonempty name for the new group.</string>
        </property>
        <property name="whatsThis">
-        <string>&lt;p&gt;&lt;b&gt;Group Name&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a name that is not already used by another group in this model. The new group contains the selected pieces and their existing groups.&lt;/p&gt;</string>
+        <string>&lt;p&gt;&lt;b&gt;Group Name&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a name that is not already used by another group in this model. The new group contains the selected parts and their existing groups.&lt;/p&gt;</string>
        </property>
       </widget>
      </item>

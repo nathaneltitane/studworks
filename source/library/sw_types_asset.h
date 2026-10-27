@@ -1,8 +1,8 @@
 #pragma once
 
-class swPieceData;
+class swPartData;
 class swTexture;
-class swPiecesLibrary;
+class swPartsLibrary;
 class swMesh;
 struct swEmbeddedData;
 enum class swStudStyle;
@@ -10,7 +10,7 @@ enum class swZipFileType;
 
 // Scoped asset reference. Construction from a borrowed pointer and copying retain;
 // moving transfers ownership. Use and destroy on the UI thread before library unload.
-// Ownership operations are instantiated for piece definitions and textures in the cpp.
+// Ownership operations are instantiated for part definitions and textures in the cpp.
 template<typename T>
 class swAssetReference
 {
@@ -87,19 +87,19 @@ public:
 	void Swap(swAssetReference& OtherRef) noexcept;
 
 private:
-	friend class swPiecesLibrary;
+	friend class swPartsLibrary;
 
-	swAssetReference(T* Asset, swPiecesLibrary* Library);
+	swAssetReference(T* Asset, swPartsLibrary* Library);
 	// The library uses this only for a reference it has already acquired.
-	static swAssetReference Adopt(T* Asset, swPiecesLibrary* Library);
-	static void Retain(T* Asset, swPiecesLibrary* Library);
-	static void Release(T* Asset, swPiecesLibrary* Library);
+	static swAssetReference Adopt(T* Asset, swPartsLibrary* Library);
+	static void Retain(T* Asset, swPartsLibrary* Library);
+	static void Release(T* Asset, swPartsLibrary* Library);
 
 	T* mAsset = nullptr;
-	swPiecesLibrary* mLibrary = nullptr;
+	swPartsLibrary* mLibrary = nullptr;
 };
 
-using swPieceDataReference = swAssetReference<swPieceData>;
+using swPartDataReference = swAssetReference<swPartData>;
 using swTextureReference = swAssetReference<swTexture>;
 
 // Asset readiness; detailed scheduling progress belongs to loader requests.
@@ -150,9 +150,9 @@ enum class swTextureLoadError
 };
 
 // Copied on the UI thread so workers do not consult live models or project lookup.
-struct swPieceSourceSnapshot
+struct swPartSourceSnapshot
 {
-	swPieceSourceSnapshot();
+	swPartSourceSnapshot();
 
 	QString FileName;
 	QString LibraryDirectory;
@@ -168,15 +168,15 @@ struct swPieceSourceSnapshot
 };
 
 // Private worker output; meshes and dependencies are published only on the UI thread.
-struct swPieceBuildResult
+struct swPartBuildResult
 {
-	swPieceBuildResult();
-	~swPieceBuildResult();
+	swPartBuildResult();
+	~swPartBuildResult();
 
-	swPieceBuildResult(swPieceBuildResult&&) noexcept;
-	swPieceBuildResult& operator=(swPieceBuildResult&&) noexcept;
-	swPieceBuildResult(const swPieceBuildResult&) = delete;
-	swPieceBuildResult& operator=(const swPieceBuildResult&) = delete;
+	swPartBuildResult(swPartBuildResult&&) noexcept;
+	swPartBuildResult& operator=(swPartBuildResult&&) noexcept;
+	swPartBuildResult(const swPartBuildResult&) = delete;
+	swPartBuildResult& operator=(const swPartBuildResult&) = delete;
 
 	std::unique_ptr<swMesh> Mesh;
 	bool FromCache = false;

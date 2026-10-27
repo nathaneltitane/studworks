@@ -5,7 +5,7 @@
 #include "sw_file.h"
 #include "sw_loader_mesh.h"
 #include "sw_mesh.h"
-#include "sw_data_piece.h"
+#include "sw_data_part.h"
 #include <locale.h>
 
 class swSynthesisInformationCurved : public swSynthesisInformation
@@ -13,13 +13,13 @@ class swSynthesisInformationCurved : public swSynthesisInformation
 public:
 	swSynthesisInformationCurved(float Length, float DefaultScale, int NumSections, bool RigidEdges);
 
-	void GetDefaultControlPoints(std::vector<swPieceControlPoint>& ControlPoints) const override;
-	void VerifyControlPoints(std::vector<swPieceControlPoint>& ControlPoints) const override;
+	void GetDefaultControlPoints(std::vector<swPartControlPoint>& ControlPoints) const override;
+	void VerifyControlPoints(std::vector<swPartControlPoint>& ControlPoints) const override;
 
 protected:
 	float GetSectionTwist(const swMatrix44& StartTransform, const swMatrix44& EndTransform) const;
-	void CalculateSections(const std::vector<swPieceControlPoint>& ControlPoints, std::vector<swMatrix44>& Sections, SectionCallbackFunc SectionCallback, const std::atomic_bool* Cancelled) const override;
-	static void AddTubePieces(swLibraryMeshData& MeshData, const std::vector<swMatrix44>& Sections, float Radius, bool IsInner, const std::atomic_bool* Cancelled);
+	void CalculateSections(const std::vector<swPartControlPoint>& ControlPoints, std::vector<swMatrix44>& Sections, SectionCallbackFunc SectionCallback, const std::atomic_bool* Cancelled) const override;
+	static void AddTubeParts(swLibraryMeshData& MeshData, const std::vector<swMatrix44>& Sections, float Radius, bool IsInner, const std::atomic_bool* Cancelled);
 
 	struct swSynthesisComponent
 	{
@@ -39,12 +39,12 @@ protected:
 class swSynthesisInformationFlexibleHose : public swSynthesisInformationCurved
 {
 public:
-	swSynthesisInformationFlexibleHose(float Length, int NumSections, const char* EdgePiece2);
+	swSynthesisInformationFlexibleHose(float Length, int NumSections, const char* EdgePart2);
 
 protected:
-	void AddPieces(swMemoryFile& File, swLibraryMeshData& MeshData, const std::vector<swMatrix44>& Sections, const std::atomic_bool* Cancelled) const override;
+	void AddParts(swMemoryFile& File, swLibraryMeshData& MeshData, const std::vector<swMatrix44>& Sections, const std::atomic_bool* Cancelled) const override;
 
-	const char* mEdgePiece2;
+	const char* mEdgePart2;
 };
 
 class swSynthesisInformationFlexSystemHose : public swSynthesisInformationCurved
@@ -52,21 +52,21 @@ class swSynthesisInformationFlexSystemHose : public swSynthesisInformationCurved
 public:
 	swSynthesisInformationFlexSystemHose(float Length, int NumSections);
 
-	void GetDefaultControlPoints(std::vector<swPieceControlPoint>& ControlPoints) const override;
+	void GetDefaultControlPoints(std::vector<swPartControlPoint>& ControlPoints) const override;
 
 protected:
-	void AddPieces(swMemoryFile& File, swLibraryMeshData& MeshData, const std::vector<swMatrix44>& Sections, const std::atomic_bool* Cancelled) const override;
+	void AddParts(swMemoryFile& File, swLibraryMeshData& MeshData, const std::vector<swMatrix44>& Sections, const std::atomic_bool* Cancelled) const override;
 };
 
 class swSynthesisInformationPneumaticTube : public swSynthesisInformationCurved
 {
 public:
-	swSynthesisInformationPneumaticTube(float Length, int NumSections, const char* EndPiece);
+	swSynthesisInformationPneumaticTube(float Length, int NumSections, const char* EndPart);
 
 protected:
-	void AddPieces(swMemoryFile& File, swLibraryMeshData& MeshData, const std::vector<swMatrix44>& Sections, const std::atomic_bool* Cancelled) const override;
+	void AddParts(swMemoryFile& File, swLibraryMeshData& MeshData, const std::vector<swMatrix44>& Sections, const std::atomic_bool* Cancelled) const override;
 
-	const char* mEndPiece;
+	const char* mEndPart;
 };
 
 class swSynthesisInformationRibbedHose : public swSynthesisInformationCurved
@@ -75,7 +75,7 @@ public:
 	swSynthesisInformationRibbedHose(float Length, int NumSections);
 
 protected:
-	void AddPieces(swMemoryFile& File, swLibraryMeshData& MeshData, const std::vector<swMatrix44>& Sections, const std::atomic_bool* Cancelled) const override;
+	void AddParts(swMemoryFile& File, swLibraryMeshData& MeshData, const std::vector<swMatrix44>& Sections, const std::atomic_bool* Cancelled) const override;
 };
 
 class swSynthesisInformationFlexibleAxle : public swSynthesisInformationCurved
@@ -84,7 +84,7 @@ public:
 	swSynthesisInformationFlexibleAxle(float Length, int NumSections);
 
 protected:
-	void AddPieces(swMemoryFile& File, swLibraryMeshData& MeshData, const std::vector<swMatrix44>& Sections, const std::atomic_bool* Cancelled) const override;
+	void AddParts(swMemoryFile& File, swLibraryMeshData& MeshData, const std::vector<swMatrix44>& Sections, const std::atomic_bool* Cancelled) const override;
 };
 
 class swSynthesisInformationBraidedString : public swSynthesisInformationCurved
@@ -93,8 +93,8 @@ public:
 	swSynthesisInformationBraidedString(float Length, int NumSections);
 
 protected:
-	void CalculateSections(const std::vector<swPieceControlPoint>& ControlPoints, std::vector<swMatrix44>& Sections, SectionCallbackFunc SectionCallback, const std::atomic_bool* Cancelled) const override;
-	void AddPieces(swMemoryFile& File, swLibraryMeshData& MeshData, const std::vector<swMatrix44>& Sections, const std::atomic_bool* Cancelled) const override;
+	void CalculateSections(const std::vector<swPartControlPoint>& ControlPoints, std::vector<swMatrix44>& Sections, SectionCallbackFunc SectionCallback, const std::atomic_bool* Cancelled) const override;
+	void AddParts(swMemoryFile& File, swLibraryMeshData& MeshData, const std::vector<swMatrix44>& Sections, const std::atomic_bool* Cancelled) const override;
 };
 
 class swSynthesisInformationStraight : public swSynthesisInformation
@@ -102,68 +102,68 @@ class swSynthesisInformationStraight : public swSynthesisInformation
 public:
 	explicit swSynthesisInformationStraight(float Length);
 
-	void VerifyControlPoints(std::vector<swPieceControlPoint>& ControlPoints) const override;
+	void VerifyControlPoints(std::vector<swPartControlPoint>& ControlPoints) const override;
 
 protected:
-	void CalculateSections(const std::vector<swPieceControlPoint>& ControlPoints, std::vector<swMatrix44>& Sections, SectionCallbackFunc SectionCallback, const std::atomic_bool* Cancelled) const override;
+	void CalculateSections(const std::vector<swPartControlPoint>& ControlPoints, std::vector<swMatrix44>& Sections, SectionCallbackFunc SectionCallback, const std::atomic_bool* Cancelled) const override;
 };
 
 class swSynthesisInformationShockAbsorber : public swSynthesisInformationStraight
 {
 public:
-	explicit swSynthesisInformationShockAbsorber(const char* SpringPiece);
+	explicit swSynthesisInformationShockAbsorber(const char* SpringPart);
 
-	void GetDefaultControlPoints(std::vector<swPieceControlPoint>& ControlPoints) const override;
+	void GetDefaultControlPoints(std::vector<swPartControlPoint>& ControlPoints) const override;
 
 protected:
-	void AddPieces(swMemoryFile& File, swLibraryMeshData& MeshData, const std::vector<swMatrix44>& Sections, const std::atomic_bool* Cancelled) const override;
+	void AddParts(swMemoryFile& File, swLibraryMeshData& MeshData, const std::vector<swMatrix44>& Sections, const std::atomic_bool* Cancelled) const override;
 
-	const char* mSpringPiece;
+	const char* mSpringPart;
 };
 
 class swSynthesisInformationActuator : public swSynthesisInformationStraight
 {
 public:
-	explicit swSynthesisInformationActuator(const char* BodyPiece, const char* PistonPiece, const char* AxlePiece, float Length, float AxleOffset);
+	explicit swSynthesisInformationActuator(const char* BodyPart, const char* PistonPart, const char* AxlePart, float Length, float AxleOffset);
 
-	void GetDefaultControlPoints(std::vector<swPieceControlPoint>& ControlPoints) const override;
+	void GetDefaultControlPoints(std::vector<swPartControlPoint>& ControlPoints) const override;
 
 protected:
-	void AddPieces(swMemoryFile& File, swLibraryMeshData& MeshData, const std::vector<swMatrix44>& Sections, const std::atomic_bool* Cancelled) const override;
+	void AddParts(swMemoryFile& File, swLibraryMeshData& MeshData, const std::vector<swMatrix44>& Sections, const std::atomic_bool* Cancelled) const override;
 
-	const char* mBodyPiece;
-	const char* mPistonPiece;
-	const char* mAxlePiece;
+	const char* mBodyPart;
+	const char* mPistonPart;
+	const char* mAxlePart;
 	float mAxleOffset;
 };
 
 class swSynthesisInformationUniversalJoint : public swSynthesisInformation
 {
 public:
-	swSynthesisInformationUniversalJoint(float Length, float EndOffset, const char* EndPiece, const char* CenterPiece);
+	swSynthesisInformationUniversalJoint(float Length, float EndOffset, const char* EndPart, const char* CenterPart);
 
-	void GetDefaultControlPoints(std::vector<swPieceControlPoint>& ControlPoints) const override;
-	void VerifyControlPoints(std::vector<swPieceControlPoint>& ControlPoints) const override;
+	void GetDefaultControlPoints(std::vector<swPartControlPoint>& ControlPoints) const override;
+	void VerifyControlPoints(std::vector<swPartControlPoint>& ControlPoints) const override;
 
 protected:
-	void CalculateSections(const std::vector<swPieceControlPoint>& ControlPoints, std::vector<swMatrix44>& Sections, SectionCallbackFunc SectionCallback, const std::atomic_bool* Cancelled) const override;
-	void AddPieces(swMemoryFile& File, swLibraryMeshData& MeshData, const std::vector<swMatrix44>& Sections, const std::atomic_bool* Cancelled) const override;
+	void CalculateSections(const std::vector<swPartControlPoint>& ControlPoints, std::vector<swMatrix44>& Sections, SectionCallbackFunc SectionCallback, const std::atomic_bool* Cancelled) const override;
+	void AddParts(swMemoryFile& File, swLibraryMeshData& MeshData, const std::vector<swMatrix44>& Sections, const std::atomic_bool* Cancelled) const override;
 
 	float mEndOffset;
-	const char* mEndPiece;
-	const char* mCenterPiece;
+	const char* mEndPart;
+	const char* mCenterPart;
 };
 
 void swSynthesisInitialize()
 {
-	swPiecesLibrary* Library = swGetPiecesLibrary();
+	swPartsLibrary* Library = swGetPartsLibrary();
 
 	static const struct
 	{
-		char PieceID[16];
+		char PartID[16];
 		float Length;
 		int NumSections;
-		char EdgePiece2[8];
+		char EdgePart2[8];
 	}
 	FlexibleHoses[] =
 	{
@@ -173,15 +173,15 @@ void swSynthesisInitialize()
 
 	for (const auto& HoseInfo: FlexibleHoses)
 	{
-		swPieceData* PieceData = Library->FindPieceData(HoseInfo.PieceID, nullptr);
+		swPartData* PartData = Library->FindPartData(HoseInfo.PartID, nullptr);
 
-		if (PieceData)
-			PieceData->SetSynthInfo(new swSynthesisInformationFlexibleHose(HoseInfo.Length, HoseInfo.NumSections, HoseInfo.EdgePiece2));
+		if (PartData)
+			PartData->SetSynthInfo(new swSynthesisInformationFlexibleHose(HoseInfo.Length, HoseInfo.NumSections, HoseInfo.EdgePart2));
 	}
 
 	static const struct
 	{
-		char PieceID[16];
+		char PartID[16];
 		float Length;
 		int NumSections;
 	}
@@ -224,15 +224,15 @@ void swSynthesisInitialize()
 
 	for (const auto& HoseInfo: FlexSystemHoses)
 	{
-		swPieceData* PieceData = Library->FindPieceData(HoseInfo.PieceID, nullptr);
+		swPartData* PartData = Library->FindPartData(HoseInfo.PartID, nullptr);
 
-		if (PieceData)
-			PieceData->SetSynthInfo(new swSynthesisInformationFlexSystemHose(HoseInfo.Length, HoseInfo.NumSections));
+		if (PartData)
+			PartData->SetSynthInfo(new swSynthesisInformationFlexSystemHose(HoseInfo.Length, HoseInfo.NumSections));
 	}
 
 	static const struct
 	{
-		char PieceID[16];
+		char PartID[16];
 		float Length;
 		int NumSections;
 	}
@@ -272,24 +272,24 @@ void swSynthesisInitialize()
 
 	for (const auto& TubeInfo: PneumaticTubes)
 	{
-		swPieceData* PieceData = Library->FindPieceData(TubeInfo.PieceID, nullptr);
+		swPartData* PartData = Library->FindPartData(TubeInfo.PartID, nullptr);
 
-		if (PieceData)
-			PieceData->SetSynthInfo(new swSynthesisInformationPneumaticTube(TubeInfo.Length, TubeInfo.NumSections, "71533k02.dat"));
+		if (PartData)
+			PartData->SetSynthInfo(new swSynthesisInformationPneumaticTube(TubeInfo.Length, TubeInfo.NumSections, "71533k02.dat"));
 
 		auto RegularInfo = TubeInfo;
-		RegularInfo.PieceID[7] = '2';
+		RegularInfo.PartID[7] = '2';
 		RegularInfo.Length -= 40.0f;
 
-		PieceData = Library->FindPieceData(RegularInfo.PieceID, nullptr);
+		PartData = Library->FindPartData(RegularInfo.PartID, nullptr);
 
-		if (PieceData)
-			PieceData->SetSynthInfo(new swSynthesisInformationPneumaticTube(RegularInfo.Length, RegularInfo.NumSections, "71533k01.dat"));
+		if (PartData)
+			PartData->SetSynthInfo(new swSynthesisInformationPneumaticTube(RegularInfo.Length, RegularInfo.NumSections, "71533k01.dat"));
 	}
 
 	static const struct
 	{
-		char PieceID[16];
+		char PartID[16];
 		float Length;
 		int NumSections;
 	}
@@ -318,15 +318,15 @@ void swSynthesisInitialize()
 
 	for (const auto& HoseInfo: RibbedHoses)
 	{
-		swPieceData* PieceData = Library->FindPieceData(HoseInfo.PieceID, nullptr);
+		swPartData* PartData = Library->FindPartData(HoseInfo.PartID, nullptr);
 
-		if (PieceData)
-			PieceData->SetSynthInfo(new swSynthesisInformationRibbedHose(HoseInfo.Length, HoseInfo.NumSections));
+		if (PartData)
+			PartData->SetSynthInfo(new swSynthesisInformationRibbedHose(HoseInfo.Length, HoseInfo.NumSections));
 	}
 
 	static const struct
 	{
-		char PieceID[16];
+		char PartID[16];
 		float Length;
 		int NumSections;
 	}
@@ -343,15 +343,15 @@ void swSynthesisInitialize()
 
 	for (const auto& AxleInfo: FlexibleAxles)
 	{
-		swPieceData* PieceData = Library->FindPieceData(AxleInfo.PieceID, nullptr);
+		swPartData* PartData = Library->FindPartData(AxleInfo.PartID, nullptr);
 
-		if (PieceData)
-			PieceData->SetSynthInfo(new swSynthesisInformationFlexibleAxle(AxleInfo.Length, AxleInfo.NumSections));
+		if (PartData)
+			PartData->SetSynthInfo(new swSynthesisInformationFlexibleAxle(AxleInfo.Length, AxleInfo.NumSections));
 	}
 
 	static const struct
 	{
-		char PieceID[16];
+		char PartID[16];
 		float Length;
 		int NumSections;
 	}
@@ -364,16 +364,16 @@ void swSynthesisInitialize()
 
 	for (const auto& StringInfo: BraidedStrings)
 	{
-		swPieceData* PieceData = Library->FindPieceData(StringInfo.PieceID, nullptr);
+		swPartData* PartData = Library->FindPartData(StringInfo.PartID, nullptr);
 
-		if (PieceData)
-			PieceData->SetSynthInfo(new swSynthesisInformationBraidedString(StringInfo.Length, StringInfo.NumSections));
+		if (PartData)
+			PartData->SetSynthInfo(new swSynthesisInformationBraidedString(StringInfo.Length, StringInfo.NumSections));
 	}
 
 	static const struct
 	{
-		char PieceID[16];
-		char SpringPiece[16];
+		char PartID[16];
+		char SpringPart[16];
 	}
 	ShockAbsorbers[] =
 	{
@@ -385,18 +385,18 @@ void swSynthesisInitialize()
 
 	for (const auto& AbsorberInfo: ShockAbsorbers)
 	{
-		swPieceData* PieceData = Library->FindPieceData(AbsorberInfo.PieceID, nullptr);
+		swPartData* PartData = Library->FindPartData(AbsorberInfo.PartID, nullptr);
 
-		if (PieceData)
-			PieceData->SetSynthInfo(new swSynthesisInformationShockAbsorber(AbsorberInfo.SpringPiece));
+		if (PartData)
+			PartData->SetSynthInfo(new swSynthesisInformationShockAbsorber(AbsorberInfo.SpringPart));
 	}
 
 	static const struct
 	{
-		char PieceID[16];
-		char BodyPiece[16];
-		char PistonPiece[16];
-		char AxlePiece[16];
+		char PartID[16];
+		char BodyPart[16];
+		char PistonPart[16];
+		char AxlePart[16];
 		float Length;
 		float AxleOffset;
 	}
@@ -414,20 +414,20 @@ void swSynthesisInitialize()
 
 	for (const auto& ActuatorInfo: Actuators)
 	{
-		swPieceData* PieceData = Library->FindPieceData(ActuatorInfo.PieceID, nullptr);
+		swPartData* PartData = Library->FindPartData(ActuatorInfo.PartID, nullptr);
 
-		if (PieceData)
-			PieceData->SetSynthInfo(new swSynthesisInformationActuator(ActuatorInfo.BodyPiece, ActuatorInfo.PistonPiece,
-					ActuatorInfo.AxlePiece, ActuatorInfo.Length, ActuatorInfo.AxleOffset));
+		if (PartData)
+			PartData->SetSynthInfo(new swSynthesisInformationActuator(ActuatorInfo.BodyPart, ActuatorInfo.PistonPart,
+					ActuatorInfo.AxlePart, ActuatorInfo.Length, ActuatorInfo.AxleOffset));
 	}
 
 	static const struct
 	{
-		char PieceID[16];
+		char PartID[16];
 		float Length;
 		float EndOffset;
-		char EndPiece[16];
-		char CenterPiece[16];
+		char EndPart[16];
+		char CenterPart[16];
 	}
 	UniversalJoints[] =
 	{
@@ -439,10 +439,10 @@ void swSynthesisInitialize()
 
 	for (const auto& JointInfo: UniversalJoints)
 	{
-		swPieceData* PieceData = Library->FindPieceData(JointInfo.PieceID, nullptr);
+		swPartData* PartData = Library->FindPartData(JointInfo.PartID, nullptr);
 
-		if (PieceData)
-			PieceData->SetSynthInfo(new swSynthesisInformationUniversalJoint(JointInfo.Length, JointInfo.EndOffset, JointInfo.EndPiece, JointInfo.CenterPiece));
+		if (PartData)
+			PartData->SetSynthInfo(new swSynthesisInformationUniversalJoint(JointInfo.Length, JointInfo.EndOffset, JointInfo.EndPart, JointInfo.CenterPart));
 	}
 
 //	"758C01" // Hose Flexible  12L
@@ -463,9 +463,9 @@ swSynthesisInformationCurved::swSynthesisInformationCurved(float Length, float D
 	mEnd.Transform = swMatrix44(swMatrix33(swVector3(0.0f, 0.0f, 1.0f), swVector3(1.0f, 0.0f, 0.0f), swVector3(0.0f, 1.0f, 0.0f)), swVector3(0.0f, 0.0f, 0.0f));
 }
 
-swSynthesisInformationFlexibleHose::swSynthesisInformationFlexibleHose(float Length, int NumSections, const char* EdgePiece2)
+swSynthesisInformationFlexibleHose::swSynthesisInformationFlexibleHose(float Length, int NumSections, const char* EdgePart2)
 	: swSynthesisInformationCurved(Length, 12.f, NumSections, true),
-	mEdgePiece2(EdgePiece2)
+	mEdgePart2(EdgePart2)
 {
 	mStart.Length = 5.0f;
 	mMiddle.Length = 2.56f;
@@ -483,9 +483,9 @@ swSynthesisInformationFlexSystemHose::swSynthesisInformationFlexSystemHose(float
 	mEnd.Length = 1.0f;
 }
 
-swSynthesisInformationPneumaticTube::swSynthesisInformationPneumaticTube(float Length, int NumSections, const char* EndPiece)
+swSynthesisInformationPneumaticTube::swSynthesisInformationPneumaticTube(float Length, int NumSections, const char* EndPart)
 	: swSynthesisInformationCurved(Length, 12.f, NumSections, true),
-	mEndPiece(EndPiece)
+	mEndPart(EndPart)
 {
 	mStart.Length = 0.0f;
 	mMiddle.Length = mLength / NumSections;
@@ -524,23 +524,23 @@ swSynthesisInformationStraight::swSynthesisInformationStraight(float Length)
 	mUnidirectional = true;
 }
 
-swSynthesisInformationShockAbsorber::swSynthesisInformationShockAbsorber(const char* SpringPiece)
-	: swSynthesisInformationStraight(110.00f), mSpringPiece(SpringPiece)
+swSynthesisInformationShockAbsorber::swSynthesisInformationShockAbsorber(const char* SpringPart)
+	: swSynthesisInformationStraight(110.00f), mSpringPart(SpringPart)
 {
 }
 
-swSynthesisInformationActuator::swSynthesisInformationActuator(const char* BodyPiece, const char* PistonPiece, const char* AxlePiece, float Length, float AxleOffset)
-	: swSynthesisInformationStraight(Length), mBodyPiece(BodyPiece), mPistonPiece(PistonPiece), mAxlePiece(AxlePiece), mAxleOffset(AxleOffset)
+swSynthesisInformationActuator::swSynthesisInformationActuator(const char* BodyPart, const char* PistonPart, const char* AxlePart, float Length, float AxleOffset)
+	: swSynthesisInformationStraight(Length), mBodyPart(BodyPart), mPistonPart(PistonPart), mAxlePart(AxlePart), mAxleOffset(AxleOffset)
 {
 }
 
-swSynthesisInformationUniversalJoint::swSynthesisInformationUniversalJoint(float Length, float EndOffset, const char* EndPiece, const char* CenterPiece)
-	: swSynthesisInformation(Length), mEndOffset(EndOffset), mEndPiece(EndPiece), mCenterPiece(CenterPiece)
+swSynthesisInformationUniversalJoint::swSynthesisInformationUniversalJoint(float Length, float EndOffset, const char* EndPart, const char* CenterPart)
+	: swSynthesisInformation(Length), mEndOffset(EndOffset), mEndPart(EndPart), mCenterPart(CenterPart)
 {
 	mNondirectional = true;
 }
 
-void swSynthesisInformationCurved::GetDefaultControlPoints(std::vector<swPieceControlPoint>& ControlPoints) const
+void swSynthesisInformationCurved::GetDefaultControlPoints(std::vector<swPartControlPoint>& ControlPoints) const
 {
 	ControlPoints.resize(2);
 
@@ -554,13 +554,13 @@ void swSynthesisInformationCurved::GetDefaultControlPoints(std::vector<swPieceCo
 	ControlPoints[1].Scale = Scale;
 }
 
-void swSynthesisInformationCurved::VerifyControlPoints(std::vector<swPieceControlPoint>& ControlPoints) const
+void swSynthesisInformationCurved::VerifyControlPoints(std::vector<swPartControlPoint>& ControlPoints) const
 {
 	if (ControlPoints.size() < 2)
 		GetDefaultControlPoints(ControlPoints);
 }
 
-void swSynthesisInformationFlexSystemHose::GetDefaultControlPoints(std::vector<swPieceControlPoint>& ControlPoints) const
+void swSynthesisInformationFlexSystemHose::GetDefaultControlPoints(std::vector<swPartControlPoint>& ControlPoints) const
 {
 	swSynthesisInformationCurved::GetDefaultControlPoints(ControlPoints);
 
@@ -568,7 +568,7 @@ void swSynthesisInformationFlexSystemHose::GetDefaultControlPoints(std::vector<s
 	ControlPoints[1].Transform = swMatrix44Translation(swVector3(0.0f, 0.0f, 0.0f));
 }
 
-void swSynthesisInformationStraight::VerifyControlPoints(std::vector<swPieceControlPoint>& ControlPoints) const
+void swSynthesisInformationStraight::VerifyControlPoints(std::vector<swPartControlPoint>& ControlPoints) const
 {
 	if (ControlPoints.size() < 2)
 		GetDefaultControlPoints(ControlPoints);
@@ -576,7 +576,7 @@ void swSynthesisInformationStraight::VerifyControlPoints(std::vector<swPieceCont
 		ControlPoints.resize(2);
 }
 
-void swSynthesisInformationShockAbsorber::GetDefaultControlPoints(std::vector<swPieceControlPoint>& ControlPoints) const
+void swSynthesisInformationShockAbsorber::GetDefaultControlPoints(std::vector<swPartControlPoint>& ControlPoints) const
 {
 	ControlPoints.resize(2);
 
@@ -587,7 +587,7 @@ void swSynthesisInformationShockAbsorber::GetDefaultControlPoints(std::vector<sw
 	ControlPoints[1].Scale = 1.0f;
 }
 
-void swSynthesisInformationActuator::GetDefaultControlPoints(std::vector<swPieceControlPoint>& ControlPoints) const
+void swSynthesisInformationActuator::GetDefaultControlPoints(std::vector<swPartControlPoint>& ControlPoints) const
 {
 	ControlPoints.resize(2);
 
@@ -598,7 +598,7 @@ void swSynthesisInformationActuator::GetDefaultControlPoints(std::vector<swPiece
 	ControlPoints[1].Scale = 1.0f;
 }
 
-void swSynthesisInformationUniversalJoint::GetDefaultControlPoints(std::vector<swPieceControlPoint>& ControlPoints) const
+void swSynthesisInformationUniversalJoint::GetDefaultControlPoints(std::vector<swPartControlPoint>& ControlPoints) const
 {
 	ControlPoints.resize(1);
 	float HalfLength = mLength / 2;
@@ -607,7 +607,7 @@ void swSynthesisInformationUniversalJoint::GetDefaultControlPoints(std::vector<s
 	ControlPoints[0].Scale = 1.0f;
 }
 
-void swSynthesisInformationUniversalJoint::VerifyControlPoints(std::vector<swPieceControlPoint>& ControlPoints) const
+void swSynthesisInformationUniversalJoint::VerifyControlPoints(std::vector<swPartControlPoint>& ControlPoints) const
 {
 	if (ControlPoints.empty())
 		GetDefaultControlPoints(ControlPoints);
@@ -660,7 +660,7 @@ float swSynthesisInformationCurved::GetSectionTwist(const swMatrix44& StartTrans
 	return 0.0f;
 }
 
-void swSynthesisInformationCurved::CalculateSections(const std::vector<swPieceControlPoint>& ControlPoints, std::vector<swMatrix44>& Sections, SectionCallbackFunc SectionCallback, const std::atomic_bool* Cancelled) const
+void swSynthesisInformationCurved::CalculateSections(const std::vector<swPartControlPoint>& ControlPoints, std::vector<swMatrix44>& Sections, SectionCallbackFunc SectionCallback, const std::atomic_bool* Cancelled) const
 {
 	if (ControlPoints.empty())
 		return;
@@ -802,7 +802,7 @@ void swSynthesisInformationCurved::CalculateSections(const std::vector<swPieceCo
 	}
 }
 
-void swSynthesisInformationBraidedString::CalculateSections(const std::vector<swPieceControlPoint>& ControlPoints, std::vector<swMatrix44>& Sections, SectionCallbackFunc SectionCallback, const std::atomic_bool* Cancelled) const
+void swSynthesisInformationBraidedString::CalculateSections(const std::vector<swPartControlPoint>& ControlPoints, std::vector<swMatrix44>& Sections, SectionCallbackFunc SectionCallback, const std::atomic_bool* Cancelled) const
 {
 	if (ControlPoints.empty())
 		return;
@@ -944,7 +944,7 @@ void swSynthesisInformationBraidedString::CalculateSections(const std::vector<sw
 	}
 }
 
-void swSynthesisInformationStraight::CalculateSections(const std::vector<swPieceControlPoint>& ControlPoints, std::vector<swMatrix44>& Sections, SectionCallbackFunc SectionCallback, const std::atomic_bool* Cancelled) const
+void swSynthesisInformationStraight::CalculateSections(const std::vector<swPartControlPoint>& ControlPoints, std::vector<swMatrix44>& Sections, SectionCallbackFunc SectionCallback, const std::atomic_bool* Cancelled) const
 {
 	for (quint32 ControlPointIndex = 0; ControlPointIndex < ControlPoints.size(); ControlPointIndex++)
 	{
@@ -959,7 +959,7 @@ void swSynthesisInformationStraight::CalculateSections(const std::vector<swPiece
 	}
 }
 
-void swSynthesisInformationUniversalJoint::CalculateSections(const std::vector<swPieceControlPoint>& ControlPoints, std::vector<swMatrix44>& Sections, SectionCallbackFunc SectionCallback, const std::atomic_bool* Cancelled) const
+void swSynthesisInformationUniversalJoint::CalculateSections(const std::vector<swPartControlPoint>& ControlPoints, std::vector<swMatrix44>& Sections, SectionCallbackFunc SectionCallback, const std::atomic_bool* Cancelled) const
 {
 	for (quint32 ControlPointIndex = 0; ControlPointIndex < ControlPoints.size(); ControlPointIndex++)
 	{
@@ -974,13 +974,13 @@ void swSynthesisInformationUniversalJoint::CalculateSections(const std::vector<s
 	}
 }
 
-void swSynthesisInformationFlexibleHose::AddPieces(swMemoryFile& File, swLibraryMeshData&, const std::vector<swMatrix44>& Sections, const std::atomic_bool* Cancelled) const
+void swSynthesisInformationFlexibleHose::AddParts(swMemoryFile& File, swLibraryMeshData&, const std::vector<swMatrix44>& Sections, const std::atomic_bool* Cancelled) const
 {
 	if (Sections.empty())
 		return;
 
 	char Line[256];
-	const int NumEdgePieces = 2;
+	const int NumEdgeParts = 2;
 
 	const swMatrix33 EdgeTransforms[2] =
 	{
@@ -988,19 +988,19 @@ void swSynthesisInformationFlexibleHose::AddPieces(swMemoryFile& File, swLibrary
 		swMatrix33(swVector3(0.0f, 0.0f, -1.0f), swVector3(0.0f,  1.0f, 0.0f), swVector3(1.0f, 0.0f, 0.0f))
 	};
 
-	const char* EdgePieces[2] =
+	const char* EdgeParts[2] =
 	{
-		"755.dat", mEdgePiece2
+		"755.dat", mEdgePart2
 	};
 
-	for (int PieceIdx = 0; PieceIdx < NumEdgePieces; PieceIdx++)
+	for (int PartIdx = 0; PartIdx < NumEdgeParts; PartIdx++)
 	{
 		const int SectionIndex = 0;
-		swMatrix33 Transform(swMultiply(swMultiply(EdgeTransforms[PieceIdx], swMatrix33Scale(swVector3(1.0f, -1.0f, 1.0f))), swMatrix33(Sections[SectionIndex])));
+		swMatrix33 Transform(swMultiply(swMultiply(EdgeTransforms[PartIdx], swMatrix33Scale(swVector3(1.0f, -1.0f, 1.0f))), swMatrix33(Sections[SectionIndex])));
 		swVector3 Offset = swMultiply31(swVector3(0.0f, -5.0f, 0.0f), Sections[SectionIndex]);
 
 		snprintf(Line, sizeof(Line), "1 16 %f %f %f %f %f %f %f %f %f %f %f %f %s\n", Offset[0], Offset[1], Offset[2], Transform[0][0], Transform[1][0], Transform[2][0],
-		         Transform[0][1], Transform[1][1], Transform[2][1], Transform[0][2], Transform[1][2], Transform[2][2], EdgePieces[PieceIdx]);
+		         Transform[0][1], Transform[1][1], Transform[2][1], Transform[0][2], Transform[1][2], Transform[2][2], EdgeParts[PartIdx]);
 
 		File.WriteBuffer(Line, strlen(Line));
 	}
@@ -1020,28 +1020,28 @@ void swSynthesisInformationFlexibleHose::AddPieces(swMemoryFile& File, swLibrary
 		else
 			Transform = swMultiply(swMatrix33(swVector3(0.0f, 0.0f, -1.0f), swVector3(0.0f,  1.0f, 0.0f), swVector3( 1.0f, 0.0f, 0.0f)), Transform);
 
-		const char* Piece = SectionIndex != Sections.size() / 2 ? "754.dat" : "756.dat";
+		const char* Part = SectionIndex != Sections.size() / 2 ? "754.dat" : "756.dat";
 
 		snprintf(Line, sizeof(Line), "1 16 %f %f %f %f %f %f %f %f %f %f %f %f %s\n", Offset[0], Offset[1], Offset[2], Transform[0][0], Transform[1][0], Transform[2][0],
-		         Transform[0][1], Transform[1][1], Transform[2][1], Transform[0][2], Transform[1][2], Transform[2][2], Piece);
+		         Transform[0][1], Transform[1][1], Transform[2][1], Transform[0][2], Transform[1][2], Transform[2][2], Part);
 
 		File.WriteBuffer(Line, strlen(Line));
 	}
 
-	for (int PieceIdx = 0; PieceIdx < NumEdgePieces; PieceIdx++)
+	for (int PartIdx = 0; PartIdx < NumEdgeParts; PartIdx++)
 	{
 		const size_t SectionIndex = Sections.size() - 1;
-		swMatrix33 Transform(swMultiply(EdgeTransforms[PieceIdx], swMatrix33(Sections[SectionIndex])));
+		swMatrix33 Transform(swMultiply(EdgeTransforms[PartIdx], swMatrix33(Sections[SectionIndex])));
 		swVector3 Offset = swMultiply31(swVector3(0.0f, 5.0f - 2.56f, 0.0f), Sections[SectionIndex]);
 
 		snprintf(Line, sizeof(Line), "1 16 %f %f %f %f %f %f %f %f %f %f %f %f %s\n", Offset[0], Offset[1], Offset[2], Transform[0][0], Transform[1][0], Transform[2][0],
-		         Transform[0][1], Transform[1][1], Transform[2][1], Transform[0][2], Transform[1][2], Transform[2][2], EdgePieces[PieceIdx]);
+		         Transform[0][1], Transform[1][1], Transform[2][1], Transform[0][2], Transform[1][2], Transform[2][2], EdgeParts[PartIdx]);
 
 		File.WriteBuffer(Line, strlen(Line));
 	}
 }
 
-void swSynthesisInformationCurved::AddTubePieces(swLibraryMeshData& MeshData, const std::vector<swMatrix44>& Sections, float Radius, bool IsInner, const std::atomic_bool* Cancelled)
+void swSynthesisInformationCurved::AddTubeParts(swLibraryMeshData& MeshData, const std::vector<swMatrix44>& Sections, float Radius, bool IsInner, const std::atomic_bool* Cancelled)
 {
 	// a unit circle
 	static const swVector3 Vertices[16] =
@@ -1121,7 +1121,7 @@ void swSynthesisInformationCurved::AddTubePieces(swLibraryMeshData& MeshData, co
 	}
 }
 
-void swSynthesisInformationFlexSystemHose::AddPieces(swMemoryFile& File, swLibraryMeshData& MeshData, const std::vector<swMatrix44>& Sections, const std::atomic_bool* Cancelled) const
+void swSynthesisInformationFlexSystemHose::AddParts(swMemoryFile& File, swLibraryMeshData& MeshData, const std::vector<swMatrix44>& Sections, const std::atomic_bool* Cancelled) const
 {
 	if (Sections.empty())
 		return;
@@ -1150,14 +1150,14 @@ void swSynthesisInformationFlexSystemHose::AddPieces(swMemoryFile& File, swLibra
 		File.WriteBuffer(Line, strlen(Line));
 	}
 
-	AddTubePieces(MeshData, Sections, 4.0f, false, Cancelled);
+	AddTubeParts(MeshData, Sections, 4.0f, false, Cancelled);
 	if (Cancelled && Cancelled->load(std::memory_order_relaxed))
 		return;
 
-	AddTubePieces(MeshData, Sections, 2.0f, true, Cancelled);
+	AddTubeParts(MeshData, Sections, 2.0f, true, Cancelled);
 }
 
-void swSynthesisInformationPneumaticTube::AddPieces(swMemoryFile& File, swLibraryMeshData& MeshData, const std::vector<swMatrix44>& Sections, const std::atomic_bool* Cancelled) const
+void swSynthesisInformationPneumaticTube::AddParts(swMemoryFile& File, swLibraryMeshData& MeshData, const std::vector<swMatrix44>& Sections, const std::atomic_bool* Cancelled) const
 {
 	if (Sections.empty())
 		return;
@@ -1171,7 +1171,7 @@ void swSynthesisInformationPneumaticTube::AddPieces(swMemoryFile& File, swLibrar
 		swVector3 Offset = swMultiply31(swVector3(0.0f, 0.0f, 0.0f), Sections[SectionIndex]);
 
 		snprintf(Line, sizeof(Line), "1 16 %f %f %f %f %f %f %f %f %f %f %f %f %s\n", Offset[0], Offset[1], Offset[2], Transform[0][0], Transform[1][0], Transform[2][0],
-		         Transform[0][1], Transform[1][1], Transform[2][1], Transform[0][2], Transform[1][2], Transform[2][2], mEndPiece);
+		         Transform[0][1], Transform[1][1], Transform[2][1], Transform[0][2], Transform[1][2], Transform[2][2], mEndPart);
 
 		File.WriteBuffer(Line, strlen(Line));
 	}
@@ -1183,19 +1183,19 @@ void swSynthesisInformationPneumaticTube::AddPieces(swMemoryFile& File, swLibrar
 		swVector3 Offset = swMultiply31(swVector3(0.0f, 0.0f, 0.0f), Sections[SectionIndex]);
 
 		snprintf(Line, sizeof(Line), "1 16 %f %f %f %f %f %f %f %f %f %f %f %f %s\n", Offset[0], Offset[1], Offset[2], Transform[0][0], Transform[1][0], Transform[2][0],
-		         Transform[0][1], Transform[1][1], Transform[2][1], Transform[0][2], Transform[1][2], Transform[2][2], mEndPiece);
+		         Transform[0][1], Transform[1][1], Transform[2][1], Transform[0][2], Transform[1][2], Transform[2][2], mEndPart);
 
 		File.WriteBuffer(Line, strlen(Line));
 	}
 
-	AddTubePieces(MeshData, Sections, 5.0f, false, Cancelled);
+	AddTubeParts(MeshData, Sections, 5.0f, false, Cancelled);
 	if (Cancelled && Cancelled->load(std::memory_order_relaxed))
 		return;
 
-	AddTubePieces(MeshData, Sections, 3.0f, true, Cancelled);
+	AddTubeParts(MeshData, Sections, 3.0f, true, Cancelled);
 }
 
-void swSynthesisInformationRibbedHose::AddPieces(swMemoryFile& File, swLibraryMeshData&, const std::vector<swMatrix44>& Sections, const std::atomic_bool* Cancelled) const
+void swSynthesisInformationRibbedHose::AddParts(swMemoryFile& File, swLibraryMeshData&, const std::vector<swMatrix44>& Sections, const std::atomic_bool* Cancelled) const
 {
 	if (Sections.empty())
 		return;
@@ -1238,13 +1238,13 @@ void swSynthesisInformationRibbedHose::AddPieces(swMemoryFile& File, swLibraryMe
 	}
 }
 
-void swSynthesisInformationFlexibleAxle::AddPieces(swMemoryFile& File, swLibraryMeshData& MeshData, const std::vector<swMatrix44>& Sections, const std::atomic_bool* Cancelled) const
+void swSynthesisInformationFlexibleAxle::AddParts(swMemoryFile& File, swLibraryMeshData& MeshData, const std::vector<swMatrix44>& Sections, const std::atomic_bool* Cancelled) const
 {
 	if (Sections.empty())
 		return;
 
 	char Line[256];
-	const int NumEdgePieces = 6;
+	const int NumEdgeParts = 6;
 
 	swMatrix33 EdgeTransforms[6] =
 	{
@@ -1256,31 +1256,31 @@ void swSynthesisInformationFlexibleAxle::AddPieces(swMemoryFile& File, swLibrary
 		swMatrix33(swVector3( 0.0f, 1.0f, 0.0f), swVector3(1.0f,  0.0f, 0.0f), swVector3(0.0f, 0.0f, -1.0f)),
 	};
 
-	const char* EdgePieces[6] =
+	const char* EdgeParts[6] =
 	{
 		"stud3a.dat", "s/faxle1.dat", "s/faxle2.dat", "s/faxle3.dat", "s/faxle4.dat", "s/faxle5.dat"
 	};
 
-	for (int PieceIdx = 0; PieceIdx < NumEdgePieces; PieceIdx++)
+	for (int PartIdx = 0; PartIdx < NumEdgeParts; PartIdx++)
 	{
 		const int SectionIndex = 0;
-		swMatrix33 Transform(swMultiply(swMultiply(EdgeTransforms[PieceIdx], swMatrix33Scale(swVector3(1.0f, -1.0f, 1.0f))), swMatrix33(Sections[SectionIndex])));
-		swVector3 Offset = swMultiply31(swVector3(0.0f, -4.0f * (5 - PieceIdx), 0.0f), Sections[SectionIndex]);
+		swMatrix33 Transform(swMultiply(swMultiply(EdgeTransforms[PartIdx], swMatrix33Scale(swVector3(1.0f, -1.0f, 1.0f))), swMatrix33(Sections[SectionIndex])));
+		swVector3 Offset = swMultiply31(swVector3(0.0f, -4.0f * (5 - PartIdx), 0.0f), Sections[SectionIndex]);
 
 		snprintf(Line, sizeof(Line), "1 16 %f %f %f %f %f %f %f %f %f %f %f %f %s\n", Offset[0], Offset[1], Offset[2], Transform[0][0], Transform[1][0], Transform[2][0],
-		         Transform[0][1], Transform[1][1], Transform[2][1], Transform[0][2], Transform[1][2], Transform[2][2], EdgePieces[PieceIdx]);
+		         Transform[0][1], Transform[1][1], Transform[2][1], Transform[0][2], Transform[1][2], Transform[2][2], EdgeParts[PartIdx]);
 
 		File.WriteBuffer(Line, strlen(Line));
 	}
 
-	for (int PieceIdx = 0; PieceIdx < NumEdgePieces; PieceIdx++)
+	for (int PartIdx = 0; PartIdx < NumEdgeParts; PartIdx++)
 	{
 		const size_t SectionIndex = Sections.size() - 1;
-		swMatrix33 Transform(swMultiply(EdgeTransforms[PieceIdx], swMatrix33(Sections[SectionIndex])));
-		swVector3 Offset = swMultiply31(swVector3(0.0f, 4.0f * (5 - PieceIdx), 0.0f), Sections[SectionIndex]);
+		swMatrix33 Transform(swMultiply(EdgeTransforms[PartIdx], swMatrix33(Sections[SectionIndex])));
+		swVector3 Offset = swMultiply31(swVector3(0.0f, 4.0f * (5 - PartIdx), 0.0f), Sections[SectionIndex]);
 
 		snprintf(Line, sizeof(Line), "1 16 %f %f %f %f %f %f %f %f %f %f %f %f %s\n", Offset[0], Offset[1], Offset[2], Transform[0][0], Transform[1][0], Transform[2][0],
-		         Transform[0][1], Transform[1][1], Transform[2][1], Transform[0][2], Transform[1][2], Transform[2][2], EdgePieces[PieceIdx]);
+		         Transform[0][1], Transform[1][1], Transform[2][1], Transform[0][2], Transform[1][2], Transform[2][2], EdgeParts[PartIdx]);
 
 		File.WriteBuffer(Line, strlen(Line));
 	}
@@ -1380,7 +1380,7 @@ void swSynthesisInformationFlexibleAxle::AddPieces(swMemoryFile& File, swLibrary
 	}
 }
 
-void swSynthesisInformationBraidedString::AddPieces(swMemoryFile& File, swLibraryMeshData& MeshData, const std::vector<swMatrix44>& SectionsIn, const std::atomic_bool* Cancelled) const
+void swSynthesisInformationBraidedString::AddParts(swMemoryFile& File, swLibraryMeshData& MeshData, const std::vector<swMatrix44>& SectionsIn, const std::atomic_bool* Cancelled) const
 {
 	if (Cancelled && Cancelled->load(std::memory_order_relaxed))
 		return;
@@ -1525,7 +1525,7 @@ void swSynthesisInformationBraidedString::AddPieces(swMemoryFile& File, swLibrar
 	}
 }
 
-void swSynthesisInformationShockAbsorber::AddPieces(swMemoryFile& File, swLibraryMeshData&, const std::vector<swMatrix44>& Sections, const std::atomic_bool*) const
+void swSynthesisInformationShockAbsorber::AddParts(swMemoryFile& File, swLibraryMeshData&, const std::vector<swMatrix44>& Sections, const std::atomic_bool*) const
 {
 	char Line[256];
 	swVector3 Offset;
@@ -1542,29 +1542,29 @@ void swSynthesisInformationShockAbsorber::AddPieces(swMemoryFile& File, swLibrar
 	float Scale = (Distance - 66.0f) / 44.0f;
 
 	Offset = Sections[0].GetTranslation();
-	snprintf(Line, sizeof(Line), "1 494 %f %f %f 1 0 0 0 %f 0 0 0 1 %s\n", Offset[0], Offset[1] - 10 - 44.0f * Scale, Offset[2], Scale, mSpringPiece);
+	snprintf(Line, sizeof(Line), "1 494 %f %f %f 1 0 0 0 %f 0 0 0 1 %s\n", Offset[0], Offset[1] - 10 - 44.0f * Scale, Offset[2], Scale, mSpringPart);
 	File.WriteBuffer(Line, strlen(Line));
 }
 
-void swSynthesisInformationActuator::AddPieces(swMemoryFile& File, swLibraryMeshData&, const std::vector<swMatrix44>& Sections, const std::atomic_bool*) const
+void swSynthesisInformationActuator::AddParts(swMemoryFile& File, swLibraryMeshData&, const std::vector<swMatrix44>& Sections, const std::atomic_bool*) const
 {
 	char Line[256];
 	swVector3 Offset;
 
 	Offset = Sections[0].GetTranslation();
-	snprintf(Line, sizeof(Line), "1 16 %f %f %f 1 0 0 0 1 0 0 0 1 %s\n", Offset[0], Offset[1], Offset[2], mBodyPiece);
+	snprintf(Line, sizeof(Line), "1 16 %f %f %f 1 0 0 0 1 0 0 0 1 %s\n", Offset[0], Offset[1], Offset[2], mBodyPart);
 	File.WriteBuffer(Line, strlen(Line));
 
 	Offset = swMultiply(Sections[0], swMatrix44Translation(swVector3(0.0f, 0.0f, mAxleOffset))).GetTranslation();
-	snprintf(Line, sizeof(Line), "1 25 %f %f %f 0 1 0 -1 0 0 0 0 1 %s\n", Offset[0], Offset[1], Offset[2], mAxlePiece);
+	snprintf(Line, sizeof(Line), "1 25 %f %f %f 0 1 0 -1 0 0 0 0 1 %s\n", Offset[0], Offset[1], Offset[2], mAxlePart);
 	File.WriteBuffer(Line, strlen(Line));
 
 	Offset = Sections[1].GetTranslation();
-	snprintf(Line, sizeof(Line), "1 72 %f %f %f 1 0 0 0 1 0 0 0 1 %s\n", Offset[0], Offset[1], Offset[2], mPistonPiece);
+	snprintf(Line, sizeof(Line), "1 72 %f %f %f 1 0 0 0 1 0 0 0 1 %s\n", Offset[0], Offset[1], Offset[2], mPistonPart);
 	File.WriteBuffer(Line, strlen(Line));
 }
 
-void swSynthesisInformationUniversalJoint::AddPieces(swMemoryFile& File, swLibraryMeshData&, const std::vector<swMatrix44>& Sections, const std::atomic_bool*) const
+void swSynthesisInformationUniversalJoint::AddParts(swMemoryFile& File, swLibraryMeshData&, const std::vector<swMatrix44>& Sections, const std::atomic_bool*) const
 {
 	char Line[256];
 	swVector3 Offset = Sections[0].GetTranslation();
@@ -1574,7 +1574,7 @@ void swSynthesisInformationUniversalJoint::AddPieces(swMemoryFile& File, swLibra
 	swMatrix44 Transform = swMatrix44StudWorksToLDraw(Rotation);
 
 	snprintf(Line, sizeof(Line), "1 16 0 0 0 %f %f %f %f %f %f %f %f %f %s\n", Transform[0][0], Transform[1][0], Transform[2][0],
-	         Transform[0][1], Transform[1][1], Transform[2][1], Transform[0][2], Transform[1][2], Transform[2][2], mCenterPiece);
+	         Transform[0][1], Transform[1][1], Transform[2][1], Transform[0][2], Transform[1][2], Transform[2][2], mCenterPart);
 	File.WriteBuffer(Line, strlen(Line));
 
 	Angle = atan2f(Offset.y, hypotf(Offset.x, Offset.z));
@@ -1582,17 +1582,17 @@ void swSynthesisInformationUniversalJoint::AddPieces(swMemoryFile& File, swLibra
 	Transform = swMultiply(swMatrix44Translation(swVector3(0.0f, 0.0f, mEndOffset)), swMatrix44StudWorksToLDraw(Rotation));
 
 	snprintf(Line, sizeof(Line), "1 16 %f %f %f %f %f %f %f %f %f %f %f %f %s\n", Transform[3][0], Transform[3][1], Transform[3][2],
-	         Transform[0][0], Transform[1][0], Transform[2][0], Transform[0][1], Transform[1][1], Transform[2][1], Transform[0][2], Transform[1][2], Transform[2][2], mEndPiece);
+	         Transform[0][0], Transform[1][0], Transform[2][0], Transform[0][1], Transform[1][1], Transform[2][1], Transform[0][2], Transform[1][2], Transform[2][2], mEndPart);
 	File.WriteBuffer(Line, strlen(Line));
 
 	Rotation = swMatrix44FromEulerAngles(swVector3(0.0f, SW_PI/2, SW_PI));
 	Transform = swMatrix44StudWorksToLDraw(swMultiply(swMatrix44Translation(swVector3(0.0f, mEndOffset, 0.0f)), Rotation));
 	snprintf(Line, sizeof(Line), "1 16 %f %f %f %f %f %f %f %f %f %f %f %f %s\n", Transform[3][0], Transform[3][1], Transform[3][2],
-	         Transform[0][0], Transform[1][0], Transform[2][0], Transform[0][1], Transform[1][1], -Transform[2][1], Transform[0][2], Transform[1][2], Transform[2][2], mEndPiece);
+	         Transform[0][0], Transform[1][0], Transform[2][0], Transform[0][1], Transform[1][1], -Transform[2][1], Transform[0][2], Transform[1][2], Transform[2][2], mEndPart);
 	File.WriteBuffer(Line, strlen(Line));
 }
 
-std::unique_ptr<swMesh> swSynthesisInformation::BuildMesh(const std::vector<swPieceControlPoint>& ControlPoints, const std::atomic_bool& Cancelled) const
+std::unique_ptr<swMesh> swSynthesisInformation::BuildMesh(const std::vector<swPartControlPoint>& ControlPoints, const std::atomic_bool& Cancelled) const
 {
 	if (Cancelled.load(std::memory_order_relaxed))
 		return nullptr;
@@ -1607,7 +1607,7 @@ std::unique_ptr<swMesh> swSynthesisInformation::BuildMesh(const std::vector<swPi
 	swLibraryMeshData MeshData;
 	swMemoryFile File; // todo: rewrite this to pass the parts directly
 
-	AddPieces(File, MeshData, Sections, &Cancelled);
+	AddParts(File, MeshData, Sections, &Cancelled);
 
 	if (Cancelled.load(std::memory_order_relaxed))
 		return nullptr;
@@ -1624,7 +1624,7 @@ std::unique_ptr<swMesh> swSynthesisInformation::BuildMesh(const std::vector<swPi
 	return nullptr;
 }
 
-int swSynthesisInformation::InsertControlPoint(std::vector<swPieceControlPoint>& ControlPoints, const swVector3& Start, const swVector3& End) const
+int swSynthesisInformation::InsertControlPoint(std::vector<swPartControlPoint>& ControlPoints, const swVector3& Start, const swVector3& End) const
 {
 	std::vector<swMatrix44> Sections;
 
@@ -1649,12 +1649,12 @@ int swSynthesisInformation::InsertControlPoint(std::vector<swPieceControlPoint>&
 
 	if (BestSegment != UINT32_MAX)
 	{
-		swPieceControlPoint ControlPoint = ControlPoints[BestSegment];
+		swPartControlPoint ControlPoint = ControlPoints[BestSegment];
 		ControlPoint.Transform.SetTranslation(BestPosition);
 
 		if (BestSegment != ControlPoints.size() - 1)
 		{
-			swPieceControlPoint NextControlPoint = ControlPoints[BestSegment + 1];
+			swPartControlPoint NextControlPoint = ControlPoints[BestSegment + 1];
 			ControlPoint.Scale = ControlPoint.Scale * (1.0f - BestTime) + NextControlPoint.Scale * BestTime;
 		}
 

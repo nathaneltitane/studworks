@@ -2,7 +2,7 @@
 #include "sw_window_main.h"
 #include "sw_widget_builder_minifigure.h"
 #include "sw_widget_spin_box_double.h"
-#include "sw_widget_selection_piece.h"
+#include "sw_widget_selection_part.h"
 #ifdef SW_ENABLE_TERMINAL
 #include "sw_widget_terminal.h"
 #endif
@@ -21,10 +21,10 @@
 #include "sw_profile.h"
 #include "sw_view.h"
 #include "sw_project.h"
-#include "sw_object_piece.h"
+#include "sw_object_part.h"
 #include "sw_object_camera.h"
 #include "sw_group.h"
-#include "sw_data_piece.h"
+#include "sw_data_part.h"
 #include "sw_library.h"
 #include "sw_colors.h"
 #include "sw_widget_preview.h"
@@ -44,7 +44,7 @@ void swMainWindow::SetShadingMode(swShadingMode ShadingMode)
 
 	UpdateShadingMode();
 
-	UpdatePiecesRendering();
+	UpdatePartsRendering();
 }
 
 void swMainWindow::SetLightingStyle(swLightingStyle LightingStyle)
@@ -54,7 +54,7 @@ void swMainWindow::SetLightingStyle(swLightingStyle LightingStyle)
 
 	UpdateShadingMode();
 
-	UpdatePiecesRendering();
+	UpdatePartsRendering();
 }
 
 void swMainWindow::SetSelectionMode(swSelectionMode SelectionMode)
@@ -87,10 +87,10 @@ void swMainWindow::ToggleGrid()
 	swView::UpdateAllViews();
 }
 
-void swMainWindow::ToggleLoadPiecesBeforeShowing()
+void swMainWindow::ToggleLoadPartsBeforeShowing()
 {
-	swGetPreferences().mLoadPiecesBeforeShowing = !swGetPreferences().mLoadPiecesBeforeShowing;
-	swSetProfileInteger(SW_PROFILE_LOAD_PIECES_BEFORE_SHOWING, swGetPreferences().mLoadPiecesBeforeShowing);
+	swGetPreferences().mLoadPartsBeforeShowing = !swGetPreferences().mLoadPartsBeforeShowing;
+	swSetProfileInteger(SW_PROFILE_LOAD_PARTS_BEFORE_SHOWING, swGetPreferences().mLoadPartsBeforeShowing);
 }
 
 void swMainWindow::SetHighlightRenderMode(swHighlightRenderMode HighlightRenderMode)
@@ -116,14 +116,14 @@ void swMainWindow::ToggleAutomateEdgeColor()
 	swGetPreferences().mAutomateEdgeColor = !swGetPreferences().mAutomateEdgeColor;
 	swSetProfileInteger(SW_PROFILE_AUTOMATE_EDGE_COLOR, swGetPreferences().mAutomateEdgeColor);
 
-	swGetPiecesLibrary()->LoadColors();
+	swGetPartsLibrary()->LoadColors();
 	swView::UpdateAllViews();
 }
 
 void swMainWindow::SetStudStyle(swStudStyle StudStyle)
 {
 	swSetProfileStudStyle(StudStyle);
-	swGetPiecesLibrary()->UpdateStudStyleAndColors(StudStyle, swGetPreferences().mStudCylinderColorEnabled);
+	swGetPartsLibrary()->UpdateStudStyleAndColors(StudStyle, swGetPreferences().mStudCylinderColorEnabled);
 
 	swView::UpdateAllViews();
 }
@@ -245,7 +245,7 @@ void swMainWindow::ToggleEdgeLines(swRenderTarget Target)
 		Preferences.SaveRenderTarget(Target);
 	}
 
-	UpdatePiecesRendering();
+	UpdatePartsRendering();
 }
 
 void swMainWindow::ToggleConditionalLines(swRenderTarget Target)
@@ -267,7 +267,7 @@ void swMainWindow::ToggleConditionalLines(swRenderTarget Target)
 		Preferences.SaveRenderTarget(Target);
 	}
 
-	UpdatePiecesRendering();
+	UpdatePartsRendering();
 }
 
 void swMainWindow::ToggleSyncRendering(swRenderTarget Target)
@@ -278,7 +278,7 @@ void swMainWindow::ToggleSyncRendering(swRenderTarget Target)
 	TargetSettings.SyncRendering = !TargetSettings.SyncRendering;
 	Preferences.SaveRenderTarget(Target);
 
-	UpdatePiecesRendering();
+	UpdatePartsRendering();
 }
 
 void swMainWindow::SetTargetShadingMode(swRenderTarget Target, swShadingMode ShadingMode)
@@ -291,7 +291,7 @@ void swMainWindow::SetTargetShadingMode(swRenderTarget Target, swShadingMode Sha
 	TargetSettings.SyncRendering = false;
 	Preferences.SaveRenderTarget(Target);
 
-	UpdatePiecesRendering();
+	UpdatePartsRendering();
 }
 
 QAction* swMainWindow::AddMenuCommand(QMenu* Menu, const QString& Text, swCommandId CommandId, bool Checked)
@@ -338,8 +338,8 @@ void swMainWindow::AddRenderTargetActions(QMenu* Menu, swRenderTarget Target)
 		Commands = { SW_VIEW_TOGGLE_MINIFIGURE_BUILDER_SYNCHRONIZED_RENDERING, SW_VIEW_MINIFIGURE_BUILDER_SHADING_WIREFRAME, SW_VIEW_MINIFIGURE_BUILDER_SHADING_FLAT, SW_VIEW_MINIFIGURE_BUILDER_SHADING_DEFAULT_LIGHTS, SW_VIEW_TOGGLE_MINIFIGURE_BUILDER_EDGE_LINES, SW_VIEW_TOGGLE_MINIFIGURE_BUILDER_CONDITIONAL_LINES };
 		break;
 
-	case swRenderTarget::Pieces:
-		Commands = { SW_VIEW_TOGGLE_PIECES_SYNCHRONIZED_RENDERING, SW_VIEW_PIECES_SHADING_WIREFRAME, SW_VIEW_PIECES_SHADING_FLAT, SW_VIEW_PIECES_SHADING_DEFAULT_LIGHTS, SW_VIEW_TOGGLE_PIECES_EDGE_LINES, SW_VIEW_TOGGLE_PIECES_CONDITIONAL_LINES };
+	case swRenderTarget::Parts:
+		Commands = { SW_VIEW_TOGGLE_PARTS_SYNCHRONIZED_RENDERING, SW_VIEW_PARTS_SHADING_WIREFRAME, SW_VIEW_PARTS_SHADING_FLAT, SW_VIEW_PARTS_SHADING_DEFAULT_LIGHTS, SW_VIEW_TOGGLE_PARTS_EDGE_LINES, SW_VIEW_TOGGLE_PARTS_CONDITIONAL_LINES };
 		break;
 	}
 
@@ -379,7 +379,7 @@ void swMainWindow::ModelViewOptionsMenuAboutToShow()
 	const swPreferences& Preferences = swGetPreferences();
 
 	AddMenuCommand(Menu, tr("Fade Previous Steps"), SW_VIEW_FADE_PREVIOUS_STEPS, Preferences.mFadeSteps);
-	AddMenuCommand(Menu, tr("Insert First Piece at Origin"), SW_PIECE_TOGGLE_FIRST_AT_ORIGIN, Preferences.mFirstPieceAtOrigin);
+	AddMenuCommand(Menu, tr("Insert First Part at Origin"), SW_PART_TOGGLE_FIRST_AT_ORIGIN, Preferences.mFirstPartAtOrigin);
 
 	Menu->addSeparator();
 
@@ -411,12 +411,12 @@ void swMainWindow::TogglePreviewAxisIcon()
 	swView::UpdateAllViews();
 }
 
-void swMainWindow::UpdatePiecesRendering()
+void swMainWindow::UpdatePartsRendering()
 {
 	swView::UpdateAllViews();
 
-	if (mPieceSelectionWidget)
-		mPieceSelectionWidget->UpdateThumbnails();
+	if (mPartSelectionWidget)
+		mPartSelectionWidget->UpdateThumbnails();
 }
 
 QByteArray swMainWindow::GetTabLayout()
@@ -566,7 +566,7 @@ void swMainWindow::RestoreTabLayout(const QByteArray& TabLayout)
 							Camera->SetUpVector(UpVector, 1, false);
 						}
 						Camera->UpdatePosition(1);
-						Camera->ExpandFarPlane(CurrentView->GetModel()->GetPiecesBoundingBoxPoints(swGeometryBoundsMode::IncludeFallback));
+						Camera->ExpandFarPlane(CurrentView->GetModel()->GetPartsBoundingBoxPoints(swGeometryBoundsMode::IncludeFallback));
 					}
 				}
 				else

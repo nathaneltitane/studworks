@@ -58,8 +58,8 @@ public slots:
 	void accept() override;
 
 private slots:
-	void PiecesLibraryBrowseClicked();
-	void PiecesArchiveBrowseClicked();
+	void PartsLibraryBrowseClicked();
+	void PartsArchiveBrowseClicked();
 	void ColorConfigBrowseButtonClicked();
 	void MinifigureBuilderSettingsBrowseButtonClicked();
 	void PovrayExecutableBrowseClicked();
@@ -78,12 +78,12 @@ private slots:
 	void RenderTargetChanged();
 	void MeshLODSliderValueChanged();
 	void FadeStepsToggled();
-	void HighlightNewPiecesToggled();
+	void HighlightNewPartsToggled();
 	void GridStudsToggled();
 	void GridLinesToggled();
 	void ViewSphereSizeComboCurrentIndexChanged(int Index);
 	void PreviewViewSphereSizeComboCurrentIndexChanged(int Index);
-	void UpdatePieces();
+	void UpdateParts();
 	void CategoriesDropped(const QModelIndex& Parent, int First, int Last);
 	void NewCategoryClicked();
 	void EditCategoryClicked();

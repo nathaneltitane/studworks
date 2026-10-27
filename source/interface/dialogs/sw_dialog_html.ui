@@ -3,7 +3,7 @@
  <class>swHTMLDialog</class>
  <widget class="QDialog" name="swHTMLDialog">
   <property name="whatsThis">
-   <string>&lt;p&gt;&lt;b&gt;Export HTML&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Create browser-viewable building instructions and PNG images in the output folder. Choose which models to include, how to organize the step pages, and where to show pieces lists.&lt;/p&gt;&lt;p&gt;Keep the generated HTML and image files together when copying or sharing the instructions.&lt;/p&gt;</string>
+   <string>&lt;p&gt;&lt;b&gt;Export HTML&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Create browser-viewable building instructions and PNG images in the output folder. Choose which models to include, how to organize the step pages, and where to show parts lists.&lt;/p&gt;&lt;p&gt;Keep the generated HTML and image files together when copying or sharing the instructions.&lt;/p&gt;</string>
   </property>
   <property name="geometry">
    <rect>
@@ -233,16 +233,16 @@
    <item>
     <widget class="QGroupBox" name="groupBox_2">
      <property name="whatsThis">
-      <string>&lt;p&gt;&lt;b&gt;Pieces List&lt;/b&gt;&lt;/p&gt;&lt;p&gt;After each step shows the pieces added in that step. At the end shows the complete model inventory after the instructions. You can enable either option, both, or neither.&lt;/p&gt;</string>
+      <string>&lt;p&gt;&lt;b&gt;Parts List&lt;/b&gt;&lt;/p&gt;&lt;p&gt;After each step shows the parts added in that step. At the end shows the complete model inventory after the instructions. You can enable either option, both, or neither.&lt;/p&gt;</string>
      </property>
      <property name="title">
-      <string>Pieces List</string>
+      <string>Parts List</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_4">
       <item>
        <widget class="QCheckBox" name="partsAtTheEnd">
         <property name="toolTip">
-         <string>Include a complete pieces list after each model's instructions.</string>
+         <string>Include a complete parts list after each model's instructions.</string>
         </property>
         <property name="text">
          <string>At the end</string>
@@ -252,7 +252,7 @@
       <item>
        <widget class="QCheckBox" name="partsAfterEachStep">
         <property name="toolTip">
-         <string>Include a list of the pieces added in each step.</string>
+         <string>Include a list of the parts added in each step.</string>
         </property>
         <property name="text">
          <string>After each step</string>

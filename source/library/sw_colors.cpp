@@ -29,12 +29,12 @@ static void swAdjustStudStyleColors(std::vector<swColor>& Colors, swStudStyle St
 	if (!Preferences.mAutomateEdgeColor && !swIsHighContrast(StudStyle))
 		return;
 
-	const swVector4 Edge = swVector4FromColor(Preferences.mPieceEdgeColor);
+	const swVector4 Edge = swVector4FromColor(Preferences.mPartEdgeColor);
 	const swVector4 DarkEdge = swVector4FromColor(Preferences.mDarkEdgeColor);
 	const swVector4 BlackEdge = swVector4FromColor(Preferences.mBlackEdgeColor);
 
-	const float ContrastControl = Preferences.mPieceEdgeContrast;
-	const float LightDarkControl = Preferences.mAutomateEdgeColor ? Preferences.mPieceColorValueLDIndex : SW_SRGB_TO_LINEAR(Preferences.mPieceColorValueLDIndex);
+	const float ContrastControl = Preferences.mPartEdgeContrast;
+	const float LightDarkControl = Preferences.mAutomateEdgeColor ? Preferences.mPartColorValueLDIndex : SW_SRGB_TO_LINEAR(Preferences.mPartColorValueLDIndex);
 
 	for (swColor& Color : Colors)
 	{
@@ -59,7 +59,7 @@ static void swAdjustStudStyleColors(std::vector<swColor>& Colors, swStudStyle St
 				Color.Edge = BlackEdge;
 			else if (Preferences.mDarkEdgeColorEnabled && ValueLuminescence < LightDarkControl)
 				Color.Edge = DarkEdge;
-			else if (Preferences.mPieceEdgeColorEnabled)
+			else if (Preferences.mPartEdgeColorEnabled)
 				Color.Edge = Edge;
 		}
 	}
@@ -298,7 +298,7 @@ bool swLoadColorFile(swFile& File, swStudStyle StudStyle)
 		StudCylinderColor.Rubber = false;
 		StudCylinderColor.Group = SW_COLOR_GROUP_COUNT;
 		StudCylinderColor.Value = swVector4FromColor(Preferences.mStudCylinderColor);
-		StudCylinderColor.Edge = swVector4FromColor(Preferences.mPieceEdgeColor);
+		StudCylinderColor.Edge = swVector4FromColor(Preferences.mPartEdgeColor);
 		swstrcpy(StudCylinderColor.Name, "Stud Cylinder Color");
 		swstrcpy(StudCylinderColor.SafeName, "Stud_Cylinder_Color");
 

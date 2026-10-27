@@ -25,16 +25,16 @@ enum SW_MINIFIGURE_TYPES
 	SW_MINIFIGURE_ITEM_COUNT
 };
 
-struct swMinifigurePieceInformation
+struct swMinifigurePartInformation
 {
 	char Description[128];
-	swPieceData* PieceData;
+	swPartData* PartData;
 	swMatrix44 Offset;
 };
 
 struct swMinifigure
 {
-	swPieceDataReference PieceData[SW_MINIFIGURE_ITEM_COUNT];
+	swPartDataReference PartData[SW_MINIFIGURE_ITEM_COUNT];
 	int ColorIndices[SW_MINIFIGURE_ITEM_COUNT];
 	float Angles[SW_MINIFIGURE_ITEM_COUNT];
 	swMatrix44 Matrices[SW_MINIFIGURE_ITEM_COUNT];
@@ -42,7 +42,7 @@ struct swMinifigure
 
 struct swMinifigureTemplate
 {
-	QString Pieces[SW_MINIFIGURE_ITEM_COUNT];
+	QString Parts[SW_MINIFIGURE_ITEM_COUNT];
 	int ColorCodes[SW_MINIFIGURE_ITEM_COUNT];
 	float Angles[SW_MINIFIGURE_ITEM_COUNT];
 };
@@ -78,11 +78,11 @@ public:
 
 	void Calculate();
 	int GetSelectionIndex(int Type) const;
-	void SetPieceData(int Type, swPieceData* PieceData);
+	void SetPartData(int Type, swPartData* PartData);
 	void SetColorIndex(int Type, int ColorIndex);
 	void SetAngle(int Type, float Angle);
 
-	std::vector<swMinifigurePieceInformation> mSettings[SW_MINIFIGURE_ITEM_COUNT];
+	std::vector<swMinifigurePartInformation> mSettings[SW_MINIFIGURE_ITEM_COUNT];
 
 	swMinifigure mMinifigure;
 

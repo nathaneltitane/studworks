@@ -830,7 +830,7 @@ void swContext::DrawOutline(QOpenGLFramebufferObject& FullFramebuffer, QOpenGLFr
 	const swPreferences& Preferences = swGetPreferences();
 
 	SetOutlineParams(swVector4(1.0f / FullFramebuffer.width(), 1.0f / FullFramebuffer.height(), static_cast<float>(Preferences.mSelectionOutlineWidth) * DeviceScale, 0.3f),
-		swVector4FromColor(Preferences.mObjectSelectedColor), swVector4FromColor(Preferences.mObjectFocusedColor), swVector4FromColor(Preferences.mHighlightNewPiecesColor));
+		swVector4FromColor(Preferences.mObjectSelectedColor), swVector4FromColor(Preferences.mObjectFocusedColor), swVector4FromColor(Preferences.mHighlightNewPartsColor));
 
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, VisibleFramebuffer.texture());
@@ -1560,7 +1560,7 @@ void swContext::BindMesh(const swMesh* Mesh)
 {
 	if (Mesh->mVertexCacheOffset != -1)
 	{
-		const auto [VertexBuffer, IndexBuffer] = swGetPiecesLibrary()->GetBuffers();
+		const auto [VertexBuffer, IndexBuffer] = swGetPartsLibrary()->GetBuffers();
 		const GLuint VertexBufferObject = VertexBuffer.Object;
 		const GLuint IndexBufferObject = IndexBuffer.Object;
 
