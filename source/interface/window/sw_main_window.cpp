@@ -166,15 +166,9 @@ void swMainWindow::CreateActions()
 	mActions[SW_FILE_OPEN]->setToolTip(tr("Open Model"));
 	mActions[SW_FILE_SAVE]->setToolTip(tr("Save Model"));
 
-	QIcon FileNewIcon;
-	FileNewIcon.addFile(":/resources/interface/toolbars/standard/file_new.png");
-	FileNewIcon.addFile(":/resources/interface/toolbars/standard/file_new_16.png");
-	mActions[SW_FILE_NEW]->setIcon(FileNewIcon);
+	mActions[SW_FILE_NEW]->setIcon(swCreateInterfaceIcon("toolbars/standard", "file_new"));
 
-	QIcon FileSaveIcon;
-	FileSaveIcon.addFile(":/resources/interface/toolbars/standard/file_save.png");
-	FileSaveIcon.addFile(":/resources/interface/toolbars/standard/file_save_16.png");
-	mActions[SW_FILE_SAVE]->setIcon(FileSaveIcon);
+	mActions[SW_FILE_SAVE]->setIcon(swCreateInterfaceIcon("toolbars/standard", "file_tick"));
 
 	QIcon FileOpenIcon = swCreateInterfaceIcon("toolbars/standard", "file_folder");
 	mActions[SW_FILE_OPEN]->setIcon(FileOpenIcon);
@@ -191,15 +185,9 @@ void swMainWindow::CreateActions()
 	FilePrintPreviewIcon.addFile(":/resources/interface/menus/file_print_preview_16.png");
 	mActions[SW_FILE_PRINT_PREVIEW]->setIcon(FilePrintPreviewIcon);
 
-	QIcon EditUndoIcon;
-	EditUndoIcon.addFile(":/resources/interface/toolbars/standard/edit_undo.png");
-	EditUndoIcon.addFile(":/resources/interface/toolbars/standard/edit_undo_16.png");
-	mActions[SW_EDIT_UNDO]->setIcon(EditUndoIcon);
+	mActions[SW_EDIT_UNDO]->setIcon(swCreateInterfaceIcon("toolbars/standard", "loop_back"));
 
-	QIcon EditRedoIcon;
-	EditRedoIcon.addFile(":/resources/interface/toolbars/standard/edit_redo.png");
-	EditRedoIcon.addFile(":/resources/interface/toolbars/standard/edit_redo_16.png");
-	mActions[SW_EDIT_REDO]->setIcon(EditRedoIcon);
+	mActions[SW_EDIT_REDO]->setIcon(swCreateInterfaceIcon("toolbars/standard", "loop_forwards"));
 
 	QIcon EditCutIcon;
 	EditCutIcon.addFile(":/resources/interface/menus/edit_cut.png");
@@ -216,70 +204,31 @@ void swMainWindow::CreateActions()
 	EditPasteIcon.addFile(":/resources/interface/menus/edit_paste_16.png");
 	mActions[SW_EDIT_PASTE]->setIcon(EditPasteIcon);
 
-	QIcon EditActionInsertIcon;
-	EditActionInsertIcon.addFile(":/resources/interface/toolbars/tools/action_insert.png");
-	EditActionInsertIcon.addFile(":/resources/interface/toolbars/tools/action_insert_16.png");
-	mActions[SW_EDIT_ACTION_INSERT]->setIcon(EditActionInsertIcon);
+	mActions[SW_EDIT_ACTION_INSERT]->setIcon(swCreateInterfaceIcon("toolbars/tools", "plus"));
 
-	QIcon EditActionLightIcon;
-	EditActionLightIcon.addFile(":/resources/interface/toolbars/tools/action_light.png");
-	EditActionLightIcon.addFile(":/resources/interface/toolbars/tools/action_light_16.png");
-	mActions[SW_EDIT_ACTION_POINT_LIGHT]->setIcon(EditActionLightIcon);
+	mActions[SW_EDIT_ACTION_POINT_LIGHT]->setIcon(swCreateInterfaceIcon("toolbars/tools", "light_point"));
 
-	QIcon EditActionSpotLightIcon;
-	EditActionSpotLightIcon.addFile(":/resources/interface/toolbars/tools/action_spotlight.png");
-	EditActionSpotLightIcon.addFile(":/resources/interface/toolbars/tools/action_spotlight_16.png");
-	mActions[SW_EDIT_ACTION_SPOTLIGHT]->setIcon(EditActionSpotLightIcon);
+	mActions[SW_EDIT_ACTION_SPOTLIGHT]->setIcon(swCreateInterfaceIcon("toolbars/tools", "light_spot"));
 
-	QIcon EditActionSunlightIcon;
-	EditActionSunlightIcon.addFile(":/resources/interface/toolbars/tools/action_sunlight.png");
-	EditActionSunlightIcon.addFile(":/resources/interface/toolbars/tools/action_sunlight_16.png");
-	mActions[SW_EDIT_ACTION_DIRECTIONAL_LIGHT]->setIcon(EditActionSunlightIcon);
+	mActions[SW_EDIT_ACTION_DIRECTIONAL_LIGHT]->setIcon(swCreateInterfaceIcon("toolbars/tools", "light_sun"));
 
-	QIcon EditActionArealightIcon;
-	EditActionArealightIcon.addFile(":/resources/interface/toolbars/tools/action_arealight.png");
-	EditActionArealightIcon.addFile(":/resources/interface/toolbars/tools/action_arealight_16.png");
-	mActions[SW_EDIT_ACTION_AREA_LIGHT]->setIcon(EditActionArealightIcon);
+	mActions[SW_EDIT_ACTION_AREA_LIGHT]->setIcon(swCreateInterfaceIcon("toolbars/tools", "light_area"));
 
-	QIcon EditActionSelectIcon;
-	EditActionSelectIcon.addFile(":/resources/interface/toolbars/tools/action_select.png");
-	EditActionSelectIcon.addFile(":/resources/interface/toolbars/tools/action_select_16.png");
-	mActions[SW_EDIT_ACTION_SELECT]->setIcon(EditActionSelectIcon);
+	mActions[SW_EDIT_ACTION_SELECT]->setIcon(swCreateInterfaceIcon("toolbars/tools", "restrict_select_off"));
 
-	QIcon EditActionMoveIcon;
-	EditActionMoveIcon.addFile(":/resources/interface/toolbars/tools/action_move.png");
-	EditActionMoveIcon.addFile(":/resources/interface/toolbars/tools/action_move_16.png");
-	mActions[SW_EDIT_ACTION_MOVE]->setIcon(EditActionMoveIcon);
+	mActions[SW_EDIT_ACTION_MOVE]->setIcon(swCreateInterfaceIcon("toolbars/tools", "empty_arrows"));
 
-	QIcon EditActionRotateIcon;
-	EditActionRotateIcon.addFile(":/resources/interface/toolbars/tools/action_rotate.png");
-	EditActionRotateIcon.addFile(":/resources/interface/toolbars/tools/action_rotate_16.png");
-	mActions[SW_EDIT_ACTION_ROTATE]->setIcon(EditActionRotateIcon);
+	mActions[SW_EDIT_ACTION_ROTATE]->setIcon(swCreateInterfaceIcon("toolbars/tools", "gesture_rotate"));
 
-	QIcon EditActionDeleteIcon;
-	EditActionDeleteIcon.addFile(":/resources/interface/toolbars/tools/action_delete.png");
-	EditActionDeleteIcon.addFile(":/resources/interface/toolbars/tools/action_delete_16.png");
-	mActions[SW_EDIT_ACTION_DELETE]->setIcon(EditActionDeleteIcon);
+	mActions[SW_EDIT_ACTION_DELETE]->setIcon(swCreateInterfaceIcon("toolbars/tools", "trash"));
 
-	QIcon EditActionPaintIcon;
-	EditActionPaintIcon.addFile(":/resources/interface/toolbars/tools/action_paint.png");
-	EditActionPaintIcon.addFile(":/resources/interface/toolbars/tools/action_paint_16.png");
-	mActions[SW_EDIT_ACTION_PAINT]->setIcon(EditActionPaintIcon);
+	mActions[SW_EDIT_ACTION_PAINT]->setIcon(swCreateInterfaceIcon("toolbars/tools", "brush_data"));
 
-	QIcon EditActionColorPickerIcon;
-	EditActionColorPickerIcon.addFile(":/resources/interface/toolbars/tools/action_color_picker.png");
-	EditActionColorPickerIcon.addFile(":/resources/interface/toolbars/tools/action_color_picker_16.png");
-	mActions[SW_EDIT_ACTION_COLOR_PICKER]->setIcon(EditActionColorPickerIcon);
+	mActions[SW_EDIT_ACTION_COLOR_PICKER]->setIcon(swCreateInterfaceIcon("toolbars/tools", "eyedropper"));
 
-	QIcon EditActionZoomIcon;
-	EditActionZoomIcon.addFile(":/resources/interface/toolbars/tools/action_zoom.png");
-	EditActionZoomIcon.addFile(":/resources/interface/toolbars/tools/action_zoom_16.png");
-	mActions[SW_EDIT_ACTION_ZOOM]->setIcon(EditActionZoomIcon);
+	mActions[SW_EDIT_ACTION_ZOOM]->setIcon(swCreateInterfaceIcon("toolbars/tools", "view_zoom"));
 
-	QIcon EditActionPanIcon;
-	EditActionPanIcon.addFile(":/resources/interface/toolbars/tools/action_pan.png");
-	EditActionPanIcon.addFile(":/resources/interface/toolbars/tools/action_pan_16.png");
-	mActions[SW_EDIT_ACTION_PAN]->setIcon(EditActionPanIcon);
+	mActions[SW_EDIT_ACTION_PAN]->setIcon(swCreateInterfaceIcon("toolbars/tools", "view_pan"));
 
 	QIcon FileRenderPOVRayIcon;
 	FileRenderPOVRayIcon.addFile(":/resources/interface/menus/file_render_povray.png");
@@ -296,10 +245,10 @@ void swMainWindow::CreateActions()
 	FileOpenInBlenderIcon.addFile(":/resources/interface/menus/file_render_open_in_blender_16.png");
 	mActions[SW_FILE_RENDER_OPEN_IN_BLENDER]->setIcon(FileOpenInBlenderIcon);
 
-	mActions[SW_EDIT_ACTION_CAMERA]->setIcon(QIcon(":/resources/interface/toolbars/tools/action_camera.png"));
-	mActions[SW_EDIT_ACTION_ROTATE_VIEW]->setIcon(QIcon(":/resources/interface/toolbars/tools/action_rotate_view.png"));
-	mActions[SW_EDIT_ACTION_ROLL]->setIcon(QIcon(":/resources/interface/toolbars/tools/action_roll.png"));
-	mActions[SW_EDIT_ACTION_ZOOM_REGION]->setIcon(QIcon(":/resources/interface/toolbars/tools/action_zoom_region.png"));
+	mActions[SW_EDIT_ACTION_CAMERA]->setIcon(swCreateInterfaceIcon("toolbars/tools", "camera_data"));
+	mActions[SW_EDIT_ACTION_ROTATE_VIEW]->setIcon(swCreateInterfaceIcon("toolbars/tools", "orientation_gimbal"));
+	mActions[SW_EDIT_ACTION_ROLL]->setIcon(swCreateInterfaceIcon("toolbars/tools", "file_refresh"));
+	mActions[SW_EDIT_ACTION_ZOOM_REGION]->setIcon(swCreateInterfaceIcon("toolbars/tools", "view_zoom_region"));
 	mActions[SW_EDIT_FIND]->setIcon(QIcon(":/resources/interface/menus/edit_find.png"));
 	mActions[SW_EDIT_FIND_NEXT]->setIcon(QIcon(":/resources/interface/menus/edit_find_next.png"));
 	mActions[SW_EDIT_FIND_PREVIOUS]->setIcon(QIcon(":/resources/interface/menus/edit_find_previous.png"));
@@ -313,11 +262,11 @@ void swMainWindow::CreateActions()
 	mActions[SW_VIEW_ZOOM_IN]->setIcon(QIcon(":/resources/interface/menus/view_zoomin.png"));
 	mActions[SW_VIEW_ZOOM_OUT]->setIcon(QIcon(":/resources/interface/menus/view_zoomout.png"));
 	mActions[SW_VIEW_ZOOM_EXTENTS]->setIcon(QIcon(":/resources/interface/menus/view_zoomextents.png"));
-	mActions[SW_VIEW_TIME_FIRST]->setIcon(QIcon(":/resources/interface/toolbars/time/time_first.png"));
-	mActions[SW_VIEW_TIME_PREVIOUS]->setIcon(QIcon(":/resources/interface/toolbars/time/time_previous.png"));
-	mActions[SW_VIEW_TIME_NEXT]->setIcon(QIcon(":/resources/interface/toolbars/time/time_next.png"));
-	mActions[SW_VIEW_TIME_LAST]->setIcon(QIcon(":/resources/interface/toolbars/time/time_last.png"));
-	mActions[SW_VIEW_TIME_ADD_KEYS]->setIcon(QIcon(":/resources/interface/toolbars/time/time_add_keys.png"));
+	mActions[SW_VIEW_TIME_FIRST]->setIcon(swCreateInterfaceIcon("toolbars/time", "rewind"));
+	mActions[SW_VIEW_TIME_PREVIOUS]->setIcon(swCreateInterfaceIcon("toolbars/time", "frame_previous"));
+	mActions[SW_VIEW_TIME_NEXT]->setIcon(swCreateInterfaceIcon("toolbars/time", "frame_next"));
+	mActions[SW_VIEW_TIME_LAST]->setIcon(swCreateInterfaceIcon("toolbars/time", "fast_forward"));
+	mActions[SW_VIEW_TIME_ADD_KEYS]->setIcon(swCreateInterfaceIcon("toolbars/time", "key_highlighted"));
 	mActions[SW_HELP_HOME_PAGE]->setIcon(QIcon(":/resources/interface/menus/help_homepage.png"));
 
 	mActions[SW_EDIT_SNAP_MOVE_TOGGLE]->setCheckable(true);
@@ -673,7 +622,7 @@ void swMainWindow::CreateToolBars()
 	SelectionModeAction->setStatusTip(tr("Change selection mode"));
 	SelectionModeAction->setToolTip(tr("Choose which related pieces are included when selecting a piece."));
 	SelectionModeAction->setWhatsThis(tr("<p><b>Selection Mode</b></p><p>Choose the rule applied when you pick a piece in the model view. Single selects that piece; the other modes include matching piece types, matching colors, or both. For example, color selection lets you pick matching red pieces without selecting each one separately.</p>"));
-	SelectionModeAction->setIcon(QIcon(":/resources/interface/toolbars/tools/action_select.png"));
+	SelectionModeAction->setIcon(swCreateInterfaceIcon("toolbars/tools", "restrict_select_off"));
 	SelectionModeAction->setMenu(mSelectionModeMenu);
 
 	mTransformMenu = new QMenu(tr("Transform"), this);
@@ -687,7 +636,7 @@ void swMainWindow::CreateToolBars()
 	TransformAction->setStatusTip(tr("Transform Options"));
 	TransformAction->setToolTip(tr("Choose coordinate axes and whether selected pieces rotate together."));
 	TransformAction->setWhatsThis(tr("<p><b>Transform Options</b></p><p>Choose the axes and pivot used for interactive transforms. Relative Transforms uses the focused object's orientation, so movement along X follows that object's local X axis. Absolute Transforms uses the model axes. Rotate Together rotates the selection around a shared pivot; Rotate Separately rotates each piece around its own origin.</p>"));
-	TransformAction->setIcon(QIcon(":/resources/interface/toolbars/standard/edit_transform_relative.png"));
+	TransformAction->setIcon(swCreateInterfaceIcon("toolbars/standard", "orientation_local"));
 	TransformAction->setMenu(mTransformMenu);
 
 	QMenu* SnapXYMenu = new QMenu(tr("Snap XY"), this);
@@ -708,7 +657,7 @@ void swMainWindow::CreateToolBars()
 	MoveAction->setStatusTip(tr("Snap translations to fixed intervals"));
 	MoveAction->setToolTip(tr("Choose movement snapping intervals for XY and Z."));
 	MoveAction->setWhatsThis(tr("<p><b>Movement Snap</b></p><p>Choose how far objects move in each snapped increment. XY controls movement across the base plane; Z controls vertical movement, so they can use different intervals. Turn snapping off for free placement, then enable it again when you need consistent spacing.</p>"));
-	MoveAction->setIcon(QIcon(":/resources/interface/toolbars/standard/edit_snap_move.png"));
+	MoveAction->setIcon(swCreateInterfaceIcon("toolbars/standard", "snap_increment"));
 	MoveAction->setMenu(SnapMenu);
 
 	QMenu* SnapAngleMenu = new QMenu(tr("Snap Angle Menu"), this);
@@ -723,7 +672,7 @@ void swMainWindow::CreateToolBars()
 	AngleAction->setStatusTip(tr("Snap rotations to fixed intervals"));
 	AngleAction->setToolTip(tr("Choose the rotation snapping interval."));
 	AngleAction->setWhatsThis(tr("<p><b>Rotation Snap</b></p><p>Choose an angle increment for interactive rotation. For example, a 90-degree increment is useful for quarter turns, while smaller increments allow finer alignment. Turn snapping off for free rotation without fixed angle increments.</p>"));
-	AngleAction->setIcon(QIcon(":/resources/interface/toolbars/standard/edit_snap_angle.png"));
+	AngleAction->setIcon(swCreateInterfaceIcon("toolbars/standard", "driver_rotational_difference"));
 	AngleAction->setMenu(SnapAngleMenu);
 
 	mStandardToolBar = addToolBar(tr("Standard"));
@@ -2687,17 +2636,17 @@ void swMainWindow::SetTransformType(swTransformType TransformType)
 
 	constexpr const char* IconNames[] =
 	{
-		":/resources/interface/toolbars/standard/edit_transform_absolute_translation.png",
-		":/resources/interface/toolbars/standard/edit_transform_relative_translation.png",
-		":/resources/interface/toolbars/standard/edit_transform_absolute_rotation.png",
-		":/resources/interface/toolbars/standard/edit_transform_relative_rotation.png"
+		"orientation_global",
+		"orientation_local",
+		"orientation_gimbal",
+		"constraint_rotation_like"
 	};
 
 	SW_ARRAY_SIZE_CHECK(IconNames, swTransformType::Count);
 
 	int TransformIndex = static_cast<int>(TransformType);
 	mActions[SW_EDIT_TRANSFORM_ABSOLUTE_TRANSLATION + TransformIndex]->setChecked(true);
-	mActions[SW_EDIT_TRANSFORM]->setIcon(QIcon(IconNames[TransformIndex]));
+	mActions[SW_EDIT_TRANSFORM]->setIcon(swCreateInterfaceIcon("toolbars/standard", IconNames[TransformIndex]));
 }
 
 void swMainWindow::SetInsertPieceData(swPieceData* PieceData)

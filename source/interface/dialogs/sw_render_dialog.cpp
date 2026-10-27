@@ -126,8 +126,13 @@ swRenderDialog::swRenderDialog(QWidget* Parent, swRenderDialogMode RenderDialogM
 		}
 		else
 		{
-			QImage Image(QPixmap(":/resources/interface/dialogs/file_render_blender_logo_1280x720.png").toImage());
-			Image = Image.convertToFormat(QImage::Format_ARGB32_Premultiplied);
+			// placeholder with the blender logo centered on a transparent 16:9 frame
+			QImage Image(1280, 720, QImage::Format_ARGB32_Premultiplied);
+			Image.fill(Qt::transparent);
+			QPainter Painter(&Image);
+			Painter.setRenderHint(QPainter::SmoothPixmapTransform);
+			swCreateInterfaceIcon("dialogs", "blender").paint(&Painter, QRect(440, 160, 400, 400));
+			Painter.end();
 			ui->preview->SetImage(Image);
 		}
 	}

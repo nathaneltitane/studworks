@@ -2365,18 +2365,18 @@ swCursor swView::GetCursor() const
 		swCursor::AreaLight,        // swTrackTool::AreaLight
 		swCursor::Camera,           // swTrackTool::Camera
 		swCursor::Select,           // swTrackTool::Select
-		swCursor::Default,          // swTrackTool::MoveX
-		swCursor::Default,          // swTrackTool::MoveY
-		swCursor::Default,          // swTrackTool::MoveZ
-		swCursor::Default,          // swTrackTool::MoveXY
-		swCursor::Default,          // swTrackTool::MoveXZ
-		swCursor::Default,          // swTrackTool::MoveYZ
-		swCursor::Default,          // swTrackTool::MoveXYZ
-		swCursor::Default,          // swTrackTool::RotateX
-		swCursor::Default,          // swTrackTool::RotateY
-		swCursor::Default,          // swTrackTool::RotateZ
-		swCursor::Default,          // swTrackTool::RotateTrackBall
-		swCursor::Default,          // swTrackTool::RotateCamera
+		swCursor::MoveAxisX,        // swTrackTool::MoveX
+		swCursor::MoveAxisY,        // swTrackTool::MoveY
+		swCursor::MoveAxisZ,        // swTrackTool::MoveZ
+		swCursor::Move,             // swTrackTool::MoveXY
+		swCursor::Move,             // swTrackTool::MoveXZ
+		swCursor::Move,             // swTrackTool::MoveYZ
+		swCursor::Move,             // swTrackTool::MoveXYZ
+		swCursor::RotateAxisX,      // swTrackTool::RotateX
+		swCursor::RotateAxisY,      // swTrackTool::RotateY
+		swCursor::RotateAxisZ,      // swTrackTool::RotateZ
+		swCursor::Rotate,           // swTrackTool::RotateTrackBall
+		swCursor::Rotate,           // swTrackTool::RotateCamera
 		swCursor::Select,           // swTrackTool::RotateTrainTrackRight
 		swCursor::Select,           // swTrackTool::RotateTrainTrackLeft
 		swCursor::Select,           // swTrackTool::InsertTrainTrack
@@ -2403,6 +2403,53 @@ swCursor swView::GetCursor() const
 	return swCursor::Select;
 }
 
+// Cursors draw the white Blender icons with a black outline so they stay visible on any background.
+static QPixmap swCreateCursorPixmap(const QString& Name, const QString& Badge)
+{
+	QImage Glyph(32, 32, QImage::Format_ARGB32_Premultiplied);
+	Glyph.fill(Qt::transparent);
+
+	QImage Icon(QString::fromLatin1(":/resources/interface/cursors/png/24/%1_24.png").arg(Name));
+
+	QPainter Painter(&Glyph);
+
+	// the arrow tip sits in the top left corner and leaves the bottom right for the badge
+	if (Name == QLatin1String("restrict_select_off"))
+		Painter.drawImage(-1, -3, Icon);
+	else
+		Painter.drawImage(4, 4, Icon);
+
+	if (!Badge.isEmpty())
+		Painter.drawImage(15, 15, QImage(QString::fromLatin1(":/resources/interface/cursors/png/16/%1_16.png").arg(Badge)));
+
+	Painter.end();
+
+	QImage Image(32, 32, QImage::Format_ARGB32_Premultiplied);
+	Image.fill(Qt::transparent);
+
+	for (int Y = 0; Y < 32; Y++)
+	{
+		QRgb* Line = reinterpret_cast<QRgb*>(Image.scanLine(Y));
+
+		for (int X = 0; X < 32; X++)
+		{
+			int Alpha = 0;
+
+			for (int OffsetY = qMax(Y - 1, 0); OffsetY <= qMin(Y + 1, 31); OffsetY++)
+				for (int OffsetX = qMax(X - 1, 0); OffsetX <= qMin(X + 1, 31); OffsetX++)
+					Alpha = qMax(Alpha, qAlpha(Glyph.pixel(OffsetX, OffsetY)));
+
+			Line[X] = qRgba(0, 0, 0, Alpha);
+		}
+	}
+
+	Painter.begin(&Image);
+	Painter.drawImage(0, 0, Glyph);
+	Painter.end();
+
+	return QPixmap::fromImage(Image);
+}
+
 void swView::SetCursor(swCursor CursorType)
 {
 	if (mCursor == CursorType)
@@ -2412,33 +2459,40 @@ void swView::SetCursor(swCursor CursorType)
 	{
 		int x, y;
 		const char* Name;
+		const char* Badge;
 	};
 
 	constexpr swCursorInformation Cursors[] =
 	{
-		{  0,  0, "" },                                                   // swCursor::Hidden
-		{  0,  0, "" },                                                   // swCursor::Default
-		{  8,  3, ":/resources/interface/cursors/cursor_insert" },        // swCursor::Brick
-		{ 15, 15, ":/resources/interface/cursors/cursor_light" },         // swCursor::PointLight
-		{  7, 10, ":/resources/interface/cursors/cursor_spotlight" },     // swCursor::SpotLight
-		{ 15, 15, ":/resources/interface/cursors/cursor_sunlight" },      // swCursor::DirectionalLight
-		{ 15, 15, ":/resources/interface/cursors/cursor_arealight" },     // swCursor::AreaLight
-		{ 15,  9, ":/resources/interface/cursors/cursor_camera" },        // swCursor::Camera
-		{  0,  2, ":/resources/interface/cursors/cursor_select" },        // swCursor::Select
-		{  0,  2, ":/resources/interface/cursors/cursor_select_add" },    // swCursor::SelectAdd
-		{  0,  2, ":/resources/interface/cursors/cursor_select_remove" }, // swCursor::SelectRemove
-		{ 15, 15, ":/resources/interface/cursors/cursor_move" },          // swCursor::Move
-		{ 15, 15, ":/resources/interface/cursors/cursor_rotate" },        // swCursor::Rotate
-		{ 15, 15, ":/resources/interface/cursors/cursor_rotatex" },       // swCursor::RotateX
-		{ 15, 15, ":/resources/interface/cursors/cursor_rotatey" },       // swCursor::RotateY
-		{  0, 10, ":/resources/interface/cursors/cursor_delete" },        // swCursor::Delete
-		{ 14, 14, ":/resources/interface/cursors/cursor_paint" },         // swCursor::Paint
-		{  1, 13, ":/resources/interface/cursors/cursor_color_picker" },  // swCursor::ColorPicker
-		{ 15, 15, ":/resources/interface/cursors/cursor_zoom" },          // swCursor::Zoom
-		{  9,  9, ":/resources/interface/cursors/cursor_zoom_region" },   // swCursor::ZoomRegion
-		{ 15, 15, ":/resources/interface/cursors/cursor_pan" },           // swCursor::Pan
-		{ 15, 15, ":/resources/interface/cursors/cursor_roll" },          // swCursor::Roll
-		{ 15, 15, ":/resources/interface/cursors/cursor_rotate_view" },   // swCursor::RotateView
+		{  0,  0, "", "" },                          // swCursor::Hidden
+		{  0,  0, "", "" },                          // swCursor::Default
+		{ 16, 16, "mesh_cube", "" },                 // swCursor::Brick
+		{ 16, 16, "light_point", "" },               // swCursor::PointLight
+		{ 16, 16, "light_spot", "" },                // swCursor::SpotLight
+		{ 16, 16, "light_sun", "" },                 // swCursor::DirectionalLight
+		{ 16, 16, "light_area", "" },                // swCursor::AreaLight
+		{ 16, 16, "camera_data", "" },               // swCursor::Camera
+		{  1,  1, "restrict_select_off", "" },       // swCursor::Select
+		{  1,  1, "restrict_select_off", "add" },    // swCursor::SelectAdd
+		{  1,  1, "restrict_select_off", "remove" }, // swCursor::SelectRemove
+		{ 16, 16, "gesture_pan", "" },               // swCursor::Move
+		{ 16, 16, "gesture_pan_x", "" },             // swCursor::MoveAxisX
+		{ 16, 16, "gesture_pan_y", "" },             // swCursor::MoveAxisY
+		{ 16, 16, "gesture_pan_z", "" },             // swCursor::MoveAxisZ
+		{ 16, 16, "gesture_rotate", "" },            // swCursor::Rotate
+		{ 16, 16, "gesture_rotate_x", "" },          // swCursor::RotateAxisX
+		{ 16, 16, "gesture_rotate_y", "" },          // swCursor::RotateAxisY
+		{ 16, 16, "gesture_rotate_z", "" },          // swCursor::RotateAxisZ
+		{ 16, 16, "arrow_left_right", "" },          // swCursor::RotateX
+		{ 16, 16, "arrow_up_down", "" },             // swCursor::RotateY
+		{ 16, 16, "trash", "" },                     // swCursor::Delete
+		{ 14, 25, "brush_data", "" },                // swCursor::Paint
+		{  6, 24, "eyedropper", "" },                // swCursor::ColorPicker
+		{ 13, 14, "view_zoom", "" },                 // swCursor::Zoom
+		{ 12, 12, "view_zoom_region", "" },          // swCursor::ZoomRegion
+		{ 16, 16, "view_pan", "" },                  // swCursor::Pan
+		{ 16, 16, "file_refresh", "" },              // swCursor::Roll
+		{ 16, 16, "orientation_gimbal", "" },        // swCursor::RotateView
 	};
 
 	SW_ARRAY_SIZE_CHECK(Cursors, swCursor::Count);
@@ -2456,7 +2510,7 @@ void swView::SetCursor(swCursor CursorType)
 	else if (CursorType >= swCursor::First && CursorType < swCursor::Count)
 	{
 		const swCursorInformation& Cursor = Cursors[static_cast<int>(CursorType)];
-		mWidget->setCursor(QCursor(QPixmap(Cursor.Name), Cursor.x, Cursor.y));
+		mWidget->setCursor(QCursor(swCreateCursorPixmap(Cursor.Name, Cursor.Badge), Cursor.x, Cursor.y));
 		mCursor = CursorType;
 	}
 	else

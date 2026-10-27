@@ -1,71 +1,40 @@
 <RCC>
     <qresource prefix="/">
-        <file>resources/interface/toolbars/tools/action_arealight_16.png</file>
-        <file>resources/interface/toolbars/tools/action_delete_16.png</file>
-        <file>resources/interface/toolbars/tools/action_insert_16.png</file>
-        <file>resources/interface/toolbars/tools/action_light_16.png</file>
-        <file>resources/interface/toolbars/tools/action_move_16.png</file>
-        <file>resources/interface/toolbars/tools/action_paint_16.png</file>
-        <file>resources/interface/toolbars/tools/action_pan_16.png</file>
-        <file>resources/interface/toolbars/tools/action_rotate_16.png</file>
-        <file>resources/interface/toolbars/tools/action_select_16.png</file>
-        <file>resources/interface/toolbars/tools/action_spotlight_16.png</file>
-        <file>resources/interface/toolbars/tools/action_sunlight_16.png</file>
-        <file>resources/interface/toolbars/tools/action_zoom_16.png</file>
         <file>resources/interface/menus/edit_copy_16.png</file>
         <file>resources/interface/menus/edit_cut_16.png</file>
         <file>resources/interface/menus/edit_paste_16.png</file>
-        <file>resources/interface/toolbars/standard/edit_redo_16.png</file>
-        <file>resources/interface/toolbars/standard/edit_undo_16.png</file>
-        <file>resources/interface/toolbars/standard/file_new_16.png</file>
         <file>resources/interface/menus/file_print_16.png</file>
         <file>resources/interface/menus/file_print_preview_16.png</file>
         <file>resources/interface/menus/file_render_blender_16.png</file>
         <file>resources/interface/menus/file_render_open_in_blender_16.png</file>
         <file>resources/interface/menus/file_render_povray_16.png</file>
-        <file>resources/interface/toolbars/standard/file_save_16.png</file>
-        <file>resources/interface/toolbars/tools/action_arealight.png</file>
-        <file>resources/interface/toolbars/tools/action_camera.png</file>
-        <file>resources/interface/toolbars/tools/action_color_picker.png</file>
-        <file>resources/interface/toolbars/tools/action_color_picker_16.png</file>
-        <file>resources/interface/toolbars/tools/action_delete.png</file>
-        <file>resources/interface/toolbars/tools/action_insert.png</file>
-        <file>resources/interface/toolbars/tools/action_light.png</file>
-        <file>resources/interface/toolbars/tools/action_move.png</file>
-        <file>resources/interface/toolbars/tools/action_next.png</file>
-        <file>resources/interface/toolbars/tools/action_paint.png</file>
-        <file>resources/interface/toolbars/tools/action_pan.png</file>
-        <file>resources/interface/toolbars/tools/action_previous.png</file>
-        <file>resources/interface/toolbars/tools/action_roll.png</file>
-        <file>resources/interface/toolbars/tools/action_rotate.png</file>
-        <file>resources/interface/toolbars/tools/action_rotate_view.png</file>
-        <file>resources/interface/toolbars/tools/action_select.png</file>
-        <file>resources/interface/toolbars/tools/action_spotlight.png</file>
-        <file>resources/interface/toolbars/tools/action_sunlight.png</file>
-        <file>resources/interface/toolbars/tools/action_zoom.png</file>
-        <file>resources/interface/toolbars/tools/action_zoom_extents.png</file>
-        <file>resources/interface/toolbars/tools/action_zoom_region.png</file>
-        <file>resources/interface/cursors/cursor_arealight.png</file>
-        <file>resources/interface/cursors/cursor_camera.png</file>
-        <file>resources/interface/cursors/cursor_color_picker.png</file>
-        <file>resources/interface/cursors/cursor_delete.png</file>
-        <file>resources/interface/cursors/cursor_insert.png</file>
-        <file>resources/interface/cursors/cursor_light.png</file>
-        <file>resources/interface/cursors/cursor_move.png</file>
-        <file>resources/interface/cursors/cursor_paint.png</file>
-        <file>resources/interface/cursors/cursor_pan.png</file>
-        <file>resources/interface/cursors/cursor_roll.png</file>
-        <file>resources/interface/cursors/cursor_rotate.png</file>
-        <file>resources/interface/cursors/cursor_rotatex.png</file>
-        <file>resources/interface/cursors/cursor_rotatey.png</file>
-        <file>resources/interface/cursors/cursor_rotate_view.png</file>
-        <file>resources/interface/cursors/cursor_select.png</file>
-        <file>resources/interface/cursors/cursor_select_add.png</file>
-        <file>resources/interface/cursors/cursor_select_remove.png</file>
-        <file>resources/interface/cursors/cursor_spotlight.png</file>
-        <file>resources/interface/cursors/cursor_sunlight.png</file>
-        <file>resources/interface/cursors/cursor_zoom.png</file>
-        <file>resources/interface/cursors/cursor_zoom_region.png</file>
+        <file>resources/interface/cursors/png/16/add_16.png</file>
+        <file>resources/interface/cursors/png/16/remove_16.png</file>
+        <file>resources/interface/cursors/png/24/arrow_left_right_24.png</file>
+        <file>resources/interface/cursors/png/24/arrow_up_down_24.png</file>
+        <file>resources/interface/cursors/png/24/brush_data_24.png</file>
+        <file>resources/interface/cursors/png/24/camera_data_24.png</file>
+        <file>resources/interface/cursors/png/24/eyedropper_24.png</file>
+        <file>resources/interface/cursors/png/24/file_refresh_24.png</file>
+        <file>resources/interface/cursors/png/24/gesture_pan_24.png</file>
+        <file>resources/interface/cursors/png/24/gesture_pan_x_24.png</file>
+        <file>resources/interface/cursors/png/24/gesture_pan_y_24.png</file>
+        <file>resources/interface/cursors/png/24/gesture_pan_z_24.png</file>
+        <file>resources/interface/cursors/png/24/gesture_rotate_24.png</file>
+        <file>resources/interface/cursors/png/24/gesture_rotate_x_24.png</file>
+        <file>resources/interface/cursors/png/24/gesture_rotate_y_24.png</file>
+        <file>resources/interface/cursors/png/24/gesture_rotate_z_24.png</file>
+        <file>resources/interface/cursors/png/24/light_area_24.png</file>
+        <file>resources/interface/cursors/png/24/light_point_24.png</file>
+        <file>resources/interface/cursors/png/24/light_spot_24.png</file>
+        <file>resources/interface/cursors/png/24/light_sun_24.png</file>
+        <file>resources/interface/cursors/png/24/mesh_cube_24.png</file>
+        <file>resources/interface/cursors/png/24/orientation_gimbal_24.png</file>
+        <file>resources/interface/cursors/png/24/restrict_select_off_24.png</file>
+        <file>resources/interface/cursors/png/24/trash_24.png</file>
+        <file>resources/interface/cursors/png/24/view_pan_24.png</file>
+        <file>resources/interface/cursors/png/24/view_zoom_24.png</file>
+        <file>resources/interface/cursors/png/24/view_zoom_region_24.png</file>
         <file>resources/interface/menus/edit_copy.png</file>
         <file>resources/interface/menus/edit_cut.png</file>
         <file>resources/interface/menus/edit_find.png</file>
@@ -75,45 +44,28 @@
         <file>resources/interface/menus/edit_replace_next.png</file>
         <file>resources/interface/menus/edit_replace_all.png</file>
         <file>resources/interface/menus/edit_paste.png</file>
-        <file>resources/interface/toolbars/standard/edit_redo.png</file>
-        <file>resources/interface/toolbars/standard/edit_snap_angle.png</file>
-        <file>resources/interface/toolbars/standard/edit_snap_move.png</file>
-        <file>resources/interface/toolbars/standard/edit_undo.png</file>
-        <file>resources/interface/toolbars/standard/file_new.png</file>
         <file>resources/interface/menus/file_print.png</file>
         <file>resources/interface/menus/file_print_preview.png</file>
         <file>resources/interface/menus/file_render_blender.png</file>
-        <file>resources/interface/dialogs/file_render_blender_logo_1280x720.png</file>
         <file>resources/interface/menus/file_render_open_in_blender.png</file>
         <file>resources/interface/menus/file_render_povray.png</file>
-        <file>resources/interface/toolbars/standard/file_save.png</file>
-        <file>resources/interface/toolbars/time/time_first.png</file>
-        <file>resources/interface/toolbars/time/time_last.png</file>
-        <file>resources/interface/toolbars/time/time_next.png</file>
-        <file>resources/interface/toolbars/time/time_previous.png</file>
-        <file>resources/interface/toolbars/time/time_stop.png</file>
         <file alias="resources/studworks.png">resources/icons/64x64/apps/studworks.png</file>
         <file>resources/interface/menus/help_homepage.png</file>
         <file>resources/interface/menus/view_zoomextents.png</file>
         <file>resources/interface/menus/view_split_horizontal.png</file>
         <file>resources/interface/menus/view_split_vertical.png</file>
         <file>resources/interface/menus/file_picture.png</file>
-        <file>resources/interface/toolbars/standard/edit_transform_relative.png</file>
-        <file>resources/interface/toolbars/standard/edit_transform_absolute_rotation.png</file>
-        <file>resources/interface/toolbars/standard/edit_transform_absolute_translation.png</file>
-        <file>resources/interface/toolbars/standard/edit_transform_relative_rotation.png</file>
-        <file>resources/interface/toolbars/standard/edit_transform_relative_translation.png</file>
         <file>resources/interface/menus/piece_show_earlier.png</file>
         <file>resources/interface/menus/piece_show_later.png</file>
-        <file>resources/interface/toolbars/time/time_add_keys.png</file>
+        <file>resources/interface/dialogs/png/16/blender_16.png</file>
+        <file>resources/interface/dialogs/png/24/blender_24.png</file>
+        <file>resources/interface/dialogs/png/32/blender_32.png</file>
+        <file>resources/interface/dialogs/png/48/blender_48.png</file>
+        <file>resources/interface/dialogs/png/512/blender_512.png</file>
         <file>resources/interface/dialogs/png/16/file_archive_16.png</file>
         <file>resources/interface/dialogs/png/24/file_archive_24.png</file>
         <file>resources/interface/dialogs/png/32/file_archive_32.png</file>
         <file>resources/interface/dialogs/png/48/file_archive_48.png</file>
-        <file>resources/interface/toolbars/standard/png/16/file_folder_16.png</file>
-        <file>resources/interface/toolbars/standard/png/24/file_folder_24.png</file>
-        <file>resources/interface/toolbars/standard/png/32/file_folder_32.png</file>
-        <file>resources/interface/toolbars/standard/png/48/file_folder_48.png</file>
         <file>resources/interface/widgets/png/16/flexible_16.png</file>
         <file>resources/interface/widgets/png/24/flexible_24.png</file>
         <file>resources/interface/widgets/png/32/flexible_32.png</file>
@@ -134,6 +86,138 @@
         <file>resources/interface/widgets/png/24/status_warning_filled_24.png</file>
         <file>resources/interface/widgets/png/32/status_warning_filled_32.png</file>
         <file>resources/interface/widgets/png/48/status_warning_filled_48.png</file>
+        <file>resources/interface/toolbars/standard/png/16/constraint_rotation_like_16.png</file>
+        <file>resources/interface/toolbars/standard/png/24/constraint_rotation_like_24.png</file>
+        <file>resources/interface/toolbars/standard/png/32/constraint_rotation_like_32.png</file>
+        <file>resources/interface/toolbars/standard/png/48/constraint_rotation_like_48.png</file>
+        <file>resources/interface/toolbars/standard/png/16/driver_rotational_difference_16.png</file>
+        <file>resources/interface/toolbars/standard/png/24/driver_rotational_difference_24.png</file>
+        <file>resources/interface/toolbars/standard/png/32/driver_rotational_difference_32.png</file>
+        <file>resources/interface/toolbars/standard/png/48/driver_rotational_difference_48.png</file>
+        <file>resources/interface/toolbars/standard/png/16/file_folder_16.png</file>
+        <file>resources/interface/toolbars/standard/png/24/file_folder_24.png</file>
+        <file>resources/interface/toolbars/standard/png/32/file_folder_32.png</file>
+        <file>resources/interface/toolbars/standard/png/48/file_folder_48.png</file>
+        <file>resources/interface/toolbars/standard/png/16/file_new_16.png</file>
+        <file>resources/interface/toolbars/standard/png/24/file_new_24.png</file>
+        <file>resources/interface/toolbars/standard/png/32/file_new_32.png</file>
+        <file>resources/interface/toolbars/standard/png/48/file_new_48.png</file>
+        <file>resources/interface/toolbars/standard/png/16/file_tick_16.png</file>
+        <file>resources/interface/toolbars/standard/png/24/file_tick_24.png</file>
+        <file>resources/interface/toolbars/standard/png/32/file_tick_32.png</file>
+        <file>resources/interface/toolbars/standard/png/48/file_tick_48.png</file>
+        <file>resources/interface/toolbars/standard/png/16/loop_back_16.png</file>
+        <file>resources/interface/toolbars/standard/png/24/loop_back_24.png</file>
+        <file>resources/interface/toolbars/standard/png/32/loop_back_32.png</file>
+        <file>resources/interface/toolbars/standard/png/48/loop_back_48.png</file>
+        <file>resources/interface/toolbars/standard/png/16/loop_forwards_16.png</file>
+        <file>resources/interface/toolbars/standard/png/24/loop_forwards_24.png</file>
+        <file>resources/interface/toolbars/standard/png/32/loop_forwards_32.png</file>
+        <file>resources/interface/toolbars/standard/png/48/loop_forwards_48.png</file>
+        <file>resources/interface/toolbars/standard/png/16/orientation_gimbal_16.png</file>
+        <file>resources/interface/toolbars/standard/png/24/orientation_gimbal_24.png</file>
+        <file>resources/interface/toolbars/standard/png/32/orientation_gimbal_32.png</file>
+        <file>resources/interface/toolbars/standard/png/48/orientation_gimbal_48.png</file>
+        <file>resources/interface/toolbars/standard/png/16/orientation_global_16.png</file>
+        <file>resources/interface/toolbars/standard/png/24/orientation_global_24.png</file>
+        <file>resources/interface/toolbars/standard/png/32/orientation_global_32.png</file>
+        <file>resources/interface/toolbars/standard/png/48/orientation_global_48.png</file>
+        <file>resources/interface/toolbars/standard/png/16/orientation_local_16.png</file>
+        <file>resources/interface/toolbars/standard/png/24/orientation_local_24.png</file>
+        <file>resources/interface/toolbars/standard/png/32/orientation_local_32.png</file>
+        <file>resources/interface/toolbars/standard/png/48/orientation_local_48.png</file>
+        <file>resources/interface/toolbars/standard/png/16/snap_increment_16.png</file>
+        <file>resources/interface/toolbars/standard/png/24/snap_increment_24.png</file>
+        <file>resources/interface/toolbars/standard/png/32/snap_increment_32.png</file>
+        <file>resources/interface/toolbars/standard/png/48/snap_increment_48.png</file>
+        <file>resources/interface/toolbars/tools/png/16/brush_data_16.png</file>
+        <file>resources/interface/toolbars/tools/png/24/brush_data_24.png</file>
+        <file>resources/interface/toolbars/tools/png/32/brush_data_32.png</file>
+        <file>resources/interface/toolbars/tools/png/48/brush_data_48.png</file>
+        <file>resources/interface/toolbars/tools/png/16/camera_data_16.png</file>
+        <file>resources/interface/toolbars/tools/png/24/camera_data_24.png</file>
+        <file>resources/interface/toolbars/tools/png/32/camera_data_32.png</file>
+        <file>resources/interface/toolbars/tools/png/48/camera_data_48.png</file>
+        <file>resources/interface/toolbars/tools/png/16/empty_arrows_16.png</file>
+        <file>resources/interface/toolbars/tools/png/24/empty_arrows_24.png</file>
+        <file>resources/interface/toolbars/tools/png/32/empty_arrows_32.png</file>
+        <file>resources/interface/toolbars/tools/png/48/empty_arrows_48.png</file>
+        <file>resources/interface/toolbars/tools/png/16/eyedropper_16.png</file>
+        <file>resources/interface/toolbars/tools/png/24/eyedropper_24.png</file>
+        <file>resources/interface/toolbars/tools/png/32/eyedropper_32.png</file>
+        <file>resources/interface/toolbars/tools/png/48/eyedropper_48.png</file>
+        <file>resources/interface/toolbars/tools/png/16/file_refresh_16.png</file>
+        <file>resources/interface/toolbars/tools/png/24/file_refresh_24.png</file>
+        <file>resources/interface/toolbars/tools/png/32/file_refresh_32.png</file>
+        <file>resources/interface/toolbars/tools/png/48/file_refresh_48.png</file>
+        <file>resources/interface/toolbars/tools/png/16/gesture_rotate_16.png</file>
+        <file>resources/interface/toolbars/tools/png/24/gesture_rotate_24.png</file>
+        <file>resources/interface/toolbars/tools/png/32/gesture_rotate_32.png</file>
+        <file>resources/interface/toolbars/tools/png/48/gesture_rotate_48.png</file>
+        <file>resources/interface/toolbars/tools/png/16/light_area_16.png</file>
+        <file>resources/interface/toolbars/tools/png/24/light_area_24.png</file>
+        <file>resources/interface/toolbars/tools/png/32/light_area_32.png</file>
+        <file>resources/interface/toolbars/tools/png/48/light_area_48.png</file>
+        <file>resources/interface/toolbars/tools/png/16/light_point_16.png</file>
+        <file>resources/interface/toolbars/tools/png/24/light_point_24.png</file>
+        <file>resources/interface/toolbars/tools/png/32/light_point_32.png</file>
+        <file>resources/interface/toolbars/tools/png/48/light_point_48.png</file>
+        <file>resources/interface/toolbars/tools/png/16/light_spot_16.png</file>
+        <file>resources/interface/toolbars/tools/png/24/light_spot_24.png</file>
+        <file>resources/interface/toolbars/tools/png/32/light_spot_32.png</file>
+        <file>resources/interface/toolbars/tools/png/48/light_spot_48.png</file>
+        <file>resources/interface/toolbars/tools/png/16/light_sun_16.png</file>
+        <file>resources/interface/toolbars/tools/png/24/light_sun_24.png</file>
+        <file>resources/interface/toolbars/tools/png/32/light_sun_32.png</file>
+        <file>resources/interface/toolbars/tools/png/48/light_sun_48.png</file>
+        <file>resources/interface/toolbars/tools/png/16/orientation_gimbal_16.png</file>
+        <file>resources/interface/toolbars/tools/png/24/orientation_gimbal_24.png</file>
+        <file>resources/interface/toolbars/tools/png/32/orientation_gimbal_32.png</file>
+        <file>resources/interface/toolbars/tools/png/48/orientation_gimbal_48.png</file>
+        <file>resources/interface/toolbars/tools/png/16/plus_16.png</file>
+        <file>resources/interface/toolbars/tools/png/24/plus_24.png</file>
+        <file>resources/interface/toolbars/tools/png/32/plus_32.png</file>
+        <file>resources/interface/toolbars/tools/png/48/plus_48.png</file>
+        <file>resources/interface/toolbars/tools/png/16/restrict_select_off_16.png</file>
+        <file>resources/interface/toolbars/tools/png/24/restrict_select_off_24.png</file>
+        <file>resources/interface/toolbars/tools/png/32/restrict_select_off_32.png</file>
+        <file>resources/interface/toolbars/tools/png/48/restrict_select_off_48.png</file>
+        <file>resources/interface/toolbars/tools/png/16/trash_16.png</file>
+        <file>resources/interface/toolbars/tools/png/24/trash_24.png</file>
+        <file>resources/interface/toolbars/tools/png/32/trash_32.png</file>
+        <file>resources/interface/toolbars/tools/png/48/trash_48.png</file>
+        <file>resources/interface/toolbars/tools/png/16/view_pan_16.png</file>
+        <file>resources/interface/toolbars/tools/png/24/view_pan_24.png</file>
+        <file>resources/interface/toolbars/tools/png/32/view_pan_32.png</file>
+        <file>resources/interface/toolbars/tools/png/48/view_pan_48.png</file>
+        <file>resources/interface/toolbars/tools/png/16/view_zoom_16.png</file>
+        <file>resources/interface/toolbars/tools/png/24/view_zoom_24.png</file>
+        <file>resources/interface/toolbars/tools/png/32/view_zoom_32.png</file>
+        <file>resources/interface/toolbars/tools/png/48/view_zoom_48.png</file>
+        <file>resources/interface/toolbars/tools/png/16/view_zoom_region_16.png</file>
+        <file>resources/interface/toolbars/tools/png/24/view_zoom_region_24.png</file>
+        <file>resources/interface/toolbars/tools/png/32/view_zoom_region_32.png</file>
+        <file>resources/interface/toolbars/tools/png/48/view_zoom_region_48.png</file>
+        <file>resources/interface/toolbars/time/png/16/fast_forward_16.png</file>
+        <file>resources/interface/toolbars/time/png/24/fast_forward_24.png</file>
+        <file>resources/interface/toolbars/time/png/32/fast_forward_32.png</file>
+        <file>resources/interface/toolbars/time/png/48/fast_forward_48.png</file>
+        <file>resources/interface/toolbars/time/png/16/frame_next_16.png</file>
+        <file>resources/interface/toolbars/time/png/24/frame_next_24.png</file>
+        <file>resources/interface/toolbars/time/png/32/frame_next_32.png</file>
+        <file>resources/interface/toolbars/time/png/48/frame_next_48.png</file>
+        <file>resources/interface/toolbars/time/png/16/frame_previous_16.png</file>
+        <file>resources/interface/toolbars/time/png/24/frame_previous_24.png</file>
+        <file>resources/interface/toolbars/time/png/32/frame_previous_32.png</file>
+        <file>resources/interface/toolbars/time/png/48/frame_previous_48.png</file>
+        <file>resources/interface/toolbars/time/png/16/key_highlighted_16.png</file>
+        <file>resources/interface/toolbars/time/png/24/key_highlighted_24.png</file>
+        <file>resources/interface/toolbars/time/png/32/key_highlighted_32.png</file>
+        <file>resources/interface/toolbars/time/png/48/key_highlighted_48.png</file>
+        <file>resources/interface/toolbars/time/png/16/rewind_16.png</file>
+        <file>resources/interface/toolbars/time/png/24/rewind_24.png</file>
+        <file>resources/interface/toolbars/time/png/32/rewind_32.png</file>
+        <file>resources/interface/toolbars/time/png/48/rewind_48.png</file>
         <file>resources/data/library.zip</file>
         <file>resources/data/studlogo1.zip</file>
         <file>resources/data/studlogo2.zip</file>

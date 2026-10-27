@@ -76,8 +76,8 @@ QToolButton* swAddPanelActionButton(QWidget* Row, QAction* Action);
 QToolButton* swAddPanelOptionsButton(QWidget* Row, QMenu* Menu, const QString& ToolTip, const QString& AccessibleName);
 
 // Interface icons are white on transparent and drawn in the palette text color, so they follow theme changes.
-// Each folder keeps the Blender layout, png/<size>/<name>_<size>.png, for every size in SW_INTERFACE_ICON_SIZES.
-constexpr int SW_INTERFACE_ICON_SIZES[] = { 16, 24, 32, 48 };
+// Each folder keeps the Blender layout, png/<size>/<name>_<size>.png, for 16 to 48 and larger sizes only where an image needs them.
+constexpr int SW_INTERFACE_ICON_SIZES[] = { 16, 24, 32, 48, 64, 128, 256, 512 };
 
 class swInterfaceIconEngine : public QIconEngine
 {
