@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# refresh the translation catalogs from the source strings
+# usage: tools/sw_language_update [language]
+
+set -e
+
+directory_source="$(cd "${BASH_SOURCE[0]%/*}/.." && pwd)"
+directory_translations="${directory_source}/resources/translations"
+
+language="${1:-*}"
+
+tool_update="$(command -v lupdate || command -v lupdate-qt5)"
+
+cd "${directory_source}"
+
+for file_catalog in "${directory_translations}"/studworks_${language}.ts
+do
+	if [ ! -f "${file_catalog}" ]
+	then
+		printf "%s\n" "language not found: ${1}"
+		exit 1
+	fi
+
+	# english keeps plural forms only
+	if [ "${file_catalog##*/}" = "studworks_en.ts" ]
+	then
+		"${tool_update}" -pluralonly studworks.pro -ts "${file_catalog}"
+	else
+		"${tool_update}" -no-ui-lines studworks.pro -ts "${file_catalog}"
+	fi
+done
