@@ -3324,7 +3324,7 @@ void swMainWindow::ImportLDD()
 	if (!SaveProjectIfModified())
 		return;
 
-	QString LoadFileName = QFileDialog::getOpenFileName(this, tr("Import"), QString(), tr("LEGO Digital Designer Files (*.lxf);;All Files (*.*)"));
+	QString LoadFileName = QFileDialog::getOpenFileName(this, tr("Import"), QString(), tr("LEGO® Digital Designer Files (*.lxf);;All Files (*.*)"));
 	if (LoadFileName.isEmpty())
 		return;
 

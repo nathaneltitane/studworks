@@ -111,7 +111,7 @@ SectionEnd
 
   ;Language strings
   LangString DESC_SecStudWorks ${LANG_ENGLISH} "Application Files (required)"
-  LangString DESC_SecLibrary ${LANG_ENGLISH} "Library of parts that represent those produced by the LEGO company and created by the LDraw community"
+  LangString DESC_SecLibrary ${LANG_ENGLISH} "Library of parts that represent those produced by the LEGO® company and created by the LDraw community"
 
   ;Assign language strings to sections
   !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN

@@ -70,8 +70,8 @@ const swCommand gCommands[] =
 	// SW_FILE_IMPORT_LDD
 	{
 		QT_TRANSLATE_NOOP("Action", "File.Import.LDD"),
-		QT_TRANSLATE_NOOP("Menu", "&LEGO Digital Designer..."),
-		QT_TRANSLATE_NOOP("Status", "Import a file in LEGO Digital Designer LXF format"),
+		QT_TRANSLATE_NOOP("Menu", "&LEGO® Digital Designer..."),
+		QT_TRANSLATE_NOOP("Status", "Import a file in LEGO® Digital Designer LXF format"),
 		"",
 		""
 	},

@@ -36,5 +36,5 @@ povray
 uic_wrapper.bat
 /packaging/*.exe
 appdir
-StudWorks-Windows*.exe
+studworks-windows*.exe
 *.snap

@@ -2388,9 +2388,9 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="73"/>
-        <source>&amp;LEGO Digital Designer...</source>
+        <source>&amp;LEGO® Digital Designer...</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Designer Digital &amp;LEGO...</translation>
+        <translation type="unfinished">Designer Digital &amp;LEGO®...</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="81"/>
@@ -5331,7 +5331,7 @@ O formato do ficheiro não é reconhecido.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="128"/>
-        <source>Photorealistic|LEGO Instructions</source>
+        <source>Photorealistic|LEGO® Instructions</source>
         <oldsource>Photo Realistic|Lego Instructions</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Foto realista|Lego Instruções</translation>
@@ -5617,9 +5617,9 @@ O formato do ficheiro não é reconhecido.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="101"/>
-        <source>Shows the LEGO logo on each stud (at the expense of some extra geometry and import time)</source>
+        <source>Shows the LEGO® logo on each stud (at the expense of some extra geometry and import time)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Mostra o logótipo LEGO em cada pino (à custa de alguma geometria extra e tempo de importação)</translation>
+        <translation type="unfinished">Mostra o logótipo LEGO® em cada pino (à custa de alguma geometria extra e tempo de importação)</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="98"/>
@@ -6142,9 +6142,9 @@ O formato do ficheiro não é reconhecido.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="74"/>
-        <source>Import a file in LEGO Digital Designer LXF format</source>
+        <source>Import a file in LEGO® Digital Designer LXF format</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Importe um ficheiro no formato LEGO Digital Designer LXF</translation>
+        <translation type="unfinished">Importe um ficheiro no formato LEGO® Digital Designer LXF</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="82"/>
@@ -7811,8 +7811,8 @@ O formato do ficheiro não é reconhecido.</translation>
         <translation>StudWorks Versão 0.00.0</translation>
     </message>
     <message>
-        <source>StudWorks is a free application for creating virtual LEGO models.</source>
-        <translation type="vanished">StudWorks é um programa libre para criar modelos LEGO virtuais.</translation>
+        <source>StudWorks is a free application for creating virtual LEGO® models.</source>
+        <translation type="vanished">StudWorks é um programa libre para criar modelos LEGO® virtuais.</translation>
     </message>
     <message>
         <source>Open the StudWorks website in your browser.</source>
@@ -7938,7 +7938,7 @@ Anisotrópico: %4</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_about_dialog.ui"/>
-        <source>StudWorks is a free CAD program for creating virtual LEGO models with the LDraw parts library.
+        <source>StudWorks is a free CAD program for creating virtual LEGO® models with the LDraw parts library.
 It is built on LeoCAD by Leonardo Zide and released under the GNU General Public License version 2.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8055,10 +8055,10 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="929"/>
-        <source>  -ss, --stud-style &lt;style&gt;: Set the stud style (0=No style, 1=LDraw single wire, 2=LDraw double wire, 3=LDraw raised floating, 4=LDraw raised rounded, 5=LDraw subtle rounded, 6=LEGO no logo, 7=LEGO single wire).
+        <source>  -ss, --stud-style &lt;style&gt;: Set the stud style (0=No style, 1=LDraw single wire, 2=LDraw double wire, 3=LDraw raised floating, 4=LDraw raised rounded, 5=LDraw subtle rounded, 6=LEGO® no logo, 7=LEGO® single wire).
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">  -ss, --stud-style &lt;style&gt;: Defina o estilo do pino (0 = Sem estilo, 1 = LDraw fio único, 2 = LDraw fio duplo, 3 = LDraw flutuante elevado, 4 = LDraw arredondado elevado, 5 = LDraw arredondado subtil, 6 = LEGO sem logótipo, 7=LEGO fio único).</translation>
+        <translation type="unfinished">  -ss, --stud-style &lt;style&gt;: Defina o estilo do pino (0 = Sem estilo, 1 = LDraw fio único, 2 = LDraw fio duplo, 3 = LDraw flutuante elevado, 4 = LDraw arredondado elevado, 5 = LDraw arredondado subtil, 6 = LEGO® sem logótipo, 7=LEGO® fio único).</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="939"/>
@@ -12328,9 +12328,9 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
     </message>
     <message>
         <location filename="../../source/interface/window/sw_main_window.cpp" line="3459"/>
-        <source>LEGO Digital Designer Files (*.lxf);;All Files (*.*)</source>
+        <source>LEGO® Digital Designer Files (*.lxf);;All Files (*.*)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">LEGO Ficheiros do Digital Designer (*.lxf);;Todos os ficheiros (*.*)</translation>
+        <translation type="unfinished">LEGO® Ficheiros do Digital Designer (*.lxf);;Todos os ficheiros (*.*)</translation>
     </message>
     <message>
         <source>StudWorks</source>

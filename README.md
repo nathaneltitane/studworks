@@ -105,7 +105,7 @@ StudWorks is based on [LeoCAD](https://github.com/leozide/leocad) by Leonardo Zi
 
 StudWorks is free software released under the GNU General Public License version 2, the same license as LeoCAD - see 'documentation/COPYING.txt'.
 
-LEGO® is a trademark of the LEGO Group, which does not sponsor, authorize or endorse this project.
+LEGO® is a trademark of the LEGO® Group, which does not sponsor, authorize or endorse this project.
 
 ### Repositories:
 

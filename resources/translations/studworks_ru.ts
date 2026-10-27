@@ -1976,8 +1976,8 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="73"/>
-        <source>&amp;LEGO Digital Designer...</source>
-        <translation>&amp;LEGO Digital Designer…</translation>
+        <source>&amp;LEGO® Digital Designer...</source>
+        <translation>&amp;LEGO® Digital Designer…</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="81"/>
@@ -4934,7 +4934,7 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="128"/>
-        <source>Photorealistic|LEGO Instructions</source>
+        <source>Photorealistic|LEGO® Instructions</source>
         <oldsource>Photo Realistic|Lego Instructions</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Фотореалистичный|Lego Инструкции</translation>
@@ -5220,9 +5220,9 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="101"/>
-        <source>Shows the LEGO logo on each stud (at the expense of some extra geometry and import time)</source>
+        <source>Shows the LEGO® logo on each stud (at the expense of some extra geometry and import time)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Показывает логотип LEGO на каждой шпильке (за счет некоторой дополнительной геометрии и времени импорта).</translation>
+        <translation type="unfinished">Показывает логотип LEGO® на каждой шпильке (за счет некоторой дополнительной геометрии и времени импорта).</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="98"/>
@@ -5556,8 +5556,8 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="74"/>
-        <source>Import a file in LEGO Digital Designer LXF format</source>
-        <translation>Импортировать файл в формате LEGO Digital Designer LXF</translation>
+        <source>Import a file in LEGO® Digital Designer LXF format</source>
+        <translation>Импортировать файл в формате LEGO® Digital Designer LXF</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="82"/>
@@ -7303,8 +7303,8 @@ File format is not recognized.</source>
         <translation>StudWorks, версия 0.00.0</translation>
     </message>
     <message>
-        <source>StudWorks is a free application for creating virtual LEGO models.</source>
-        <translation type="vanished">StudWorks — это свободное приложение для создания виртуальных моделей LEGO.</translation>
+        <source>StudWorks is a free application for creating virtual LEGO® models.</source>
+        <translation type="vanished">StudWorks — это свободное приложение для создания виртуальных моделей LEGO®.</translation>
     </message>
     <message>
         <source>Open the StudWorks website in your browser.</source>
@@ -7459,7 +7459,7 @@ GL_EXT_texture_filter_anisotropic extension: %5
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_about_dialog.ui"/>
-        <source>StudWorks is a free CAD program for creating virtual LEGO models with the LDraw parts library.
+        <source>StudWorks is a free CAD program for creating virtual LEGO® models with the LDraw parts library.
 It is built on LeoCAD by Leonardo Zide and released under the GNU General Public License version 2.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7654,9 +7654,9 @@ It is built on LeoCAD by Leonardo Zide and released under the GNU General Public
 </translation>
     </message>
     <message>
-        <source>  -ss, --stud-style &lt;id&gt;: Set the stud style 0=No style, 1=LDraw single wire, 2=LDraw double wire, 3=LDraw raised floating, 4=LDraw raised rounded, 5=LDraw subtle rounded, 6=LEGO no logo, 7=LEGO single wire.
+        <source>  -ss, --stud-style &lt;id&gt;: Set the stud style 0=No style, 1=LDraw single wire, 2=LDraw double wire, 3=LDraw raised floating, 4=LDraw raised rounded, 5=LDraw subtle rounded, 6=LEGO® no logo, 7=LEGO® single wire.
 </source>
-        <translation type="vanished">  -ss, --stud-style &lt;id&gt;: Указать стиль шипа 0=Без стиля, 1=LDraw одной линией, 2=LDraw двойной линией, 3=LDraw объёмно без скругления, 4=LDraw объёмно со скруглением, 5=LDraw уплощённо со скруглением, 6=LEGO без логотипа, 7=LEGO одной линией.
+        <translation type="vanished">  -ss, --stud-style &lt;id&gt;: Указать стиль шипа 0=Без стиля, 1=LDraw одной линией, 2=LDraw двойной линией, 3=LDraw объёмно без скругления, 4=LDraw объёмно со скруглением, 5=LDraw уплощённо со скруглением, 6=LEGO® без логотипа, 7=LEGO® одной линией.
 </translation>
     </message>
     <message>
@@ -8058,10 +8058,10 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="929"/>
-        <source>  -ss, --stud-style &lt;style&gt;: Set the stud style (0=No style, 1=LDraw single wire, 2=LDraw double wire, 3=LDraw raised floating, 4=LDraw raised rounded, 5=LDraw subtle rounded, 6=LEGO no logo, 7=LEGO single wire).
+        <source>  -ss, --stud-style &lt;style&gt;: Set the stud style (0=No style, 1=LDraw single wire, 2=LDraw double wire, 3=LDraw raised floating, 4=LDraw raised rounded, 5=LDraw subtle rounded, 6=LEGO® no logo, 7=LEGO® single wire).
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">  -ss, --stud-style &lt;style&gt;: Установите стиль шпильки (0=Нет стиля, 1=LDraw одиночный провод, 2=LDraw двойной провод, 3=LDraw приподнятый плавающий, 4=LDraw приподнятый закругленный, 5=LDraw тонкий закругленный, 6=LEGO без логотипа, 7=LEGO один провод).</translation>
+        <translation type="unfinished">  -ss, --stud-style &lt;style&gt;: Установите стиль шпильки (0=Нет стиля, 1=LDraw одиночный провод, 2=LDraw двойной провод, 3=LDraw приподнятый плавающий, 4=LDraw приподнятый закругленный, 5=LDraw тонкий закругленный, 6=LEGO® без логотипа, 7=LEGO® один провод).</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="939"/>
@@ -11856,8 +11856,8 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/window/sw_main_window.cpp" line="3459"/>
-        <source>LEGO Digital Designer Files (*.lxf);;All Files (*.*)</source>
-        <translation>Файлы LEGO Diginal Designer (*.lxf);;Все файлы (*.*)</translation>
+        <source>LEGO® Digital Designer Files (*.lxf);;All Files (*.*)</source>
+        <translation>Файлы LEGO® Diginal Designer (*.lxf);;Все файлы (*.*)</translation>
     </message>
     <message>
         <location filename="../../source/interface/window/sw_main_window.cpp" line="3510"/>

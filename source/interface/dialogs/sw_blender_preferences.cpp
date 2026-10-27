@@ -98,7 +98,7 @@ swBlenderPreferences::BlenderSettings  swBlenderPreferences::mDefaultSettings [N
 	/*22   LBL_SMOOTH_SHADING        */ {"smoothshading",                  "1",        QT_TRANSLATE_NOOP("QObject", "Smooth Shading"),         QT_TRANSLATE_NOOP("QObject", "Smooth faces and add an edge-split modifier (recommended)")},
 	/*23   LBL_TRANSPARENT_BACKGROUND*/ {"transparentbackground",          "0",        QT_TRANSLATE_NOOP("QObject", "Transparent Background"), QT_TRANSLATE_NOOP("QObject", "Specify whether to render a background (affects the photorealistic look only)")},
 	/*24   LBL_UNOFFICIAL_PARTS      */ {"useunofficialparts",             "1",        QT_TRANSLATE_NOOP("QObject", "Use Unofficial Pieces"),   QT_TRANSLATE_NOOP("QObject", "Specify whether to use pieces from the LDraw unofficial pieces library path")},
-	/*25   LBL_USE_LOGO_STUDS        */ {"uselogostuds",                   "1",        QT_TRANSLATE_NOOP("QObject", "Use Logo Studs"),         QT_TRANSLATE_NOOP("QObject", "Shows the LEGO logo on each stud (at the expense of some extra geometry and import time)")},
+	/*25   LBL_USE_LOGO_STUDS        */ {"uselogostuds",                   "1",        QT_TRANSLATE_NOOP("QObject", "Use Logo Studs"),         QT_TRANSLATE_NOOP("QObject", "Shows the LEGO® logo on each stud (at the expense of some extra geometry and import time)")},
 	/*26   LBL_VERBOSE               */ {"verbose",                        "1",        QT_TRANSLATE_NOOP("QObject", "Verbose Output"),         QT_TRANSLATE_NOOP("QObject", "Output all messages while working, else only show warnings and errors")},
 
 	/*27/0 LBL_BEVEL_WIDTH           */ {"bevelwidth",                     "0.5",      QT_TRANSLATE_NOOP("QObject", "Bevel Width"),            QT_TRANSLATE_NOOP("QObject", "Width of the beveled edges")},
@@ -125,7 +125,7 @@ swBlenderPreferences::ComboItems  swBlenderPreferences::mComboItems [NUM_COMBO_I
 	/* 00 LBL_COLOUR_SCHEME            */ {"lgeo|ldraw|alt|custom",  QT_TRANSLATE_NOOP("QObject", "Realistic Colors|Original LDraw Colors|Alternate LDraw Colors|Custom Colors")},
 	/* 01 LBL_FLEX_PARTS_SOURCE (t/f)  */ {"1|0|1",                  QT_TRANSLATE_NOOP("QObject", "LSynth|LDCad|LDCad and LSynth")},
 	/* 02 LBL_LOGO_STUD_VERSION        */ {"4|3|5",                  QT_TRANSLATE_NOOP("QObject", "Rounded (4)|Flattened (3)|Subtle Rounded (5)")},
-	/* 03 LBL_LOOK                     */ {"normal|instructions",    QT_TRANSLATE_NOOP("QObject", "Photorealistic|LEGO Instructions")},
+	/* 03 LBL_LOOK                     */ {"normal|instructions",    QT_TRANSLATE_NOOP("QObject", "Photorealistic|LEGO® Instructions")},
 	/* 04 LBL_POSITION_OBJECT (t/f)    */ {"1|0",                    QT_TRANSLATE_NOOP("QObject", "Centered at Origin on Ground|Centered at Origin")},
 	/* 05 LBL_RESOLUTION               */ {"Standard|High|Low",      QT_TRANSLATE_NOOP("QObject", "Standard Primitives|High Resolution Primitives|Low Resolution Primitives")},
 	/* 06 LBL_RESOLVE_NORMALS          */ {"guess|double",           QT_TRANSLATE_NOOP("QObject", "Recalculate Normals|Two Faces Back to Back")}
@@ -3233,8 +3233,8 @@ void swBlenderPreferences::LoadDefaultParameters(QByteArray& Buffer, int Which)
 	# - light_brick
 
 	# LGEO CUSTOM COLOURS
-	# LGEO is a parts library for rendering LEGO using the POV-Ray
-	# rendering software. This is the list of LEGO colours suitable
+	# LGEO is a parts library for rendering LEGO® using the POV-Ray
+	# rendering software. This is the list of LEGO® colours suitable
 	# for realistic rendering extracted from the LGEO file 'lg_color.inc'.
 	# When the 'Colour Scheme' option is set to 'Realistic', the standard
 	# LDraw colours RGB value is overwritten with the values defined here.
@@ -3523,8 +3523,8 @@ bool swBlenderPreferences::ExportParameterFile()
 		Stream << "" << LineEnding;
 		Stream << "" << LineEnding;
 		Stream << "# LGEO CUSTOM COLOURS" << LineEnding;
-		Stream << "# LGEO is a parts library for rendering LEGO using the POV-Ray" << LineEnding;
-		Stream << "# rendering software. This is the list of LEGO colours suitable" << LineEnding;
+		Stream << "# LGEO is a parts library for rendering LEGO® using the POV-Ray" << LineEnding;
+		Stream << "# rendering software. This is the list of LEGO® colours suitable" << LineEnding;
 		Stream << "# for realistic rendering extracted from the LGEO file 'lg_color.inc'." << LineEnding;
 		Stream << "# When the 'Colour Scheme' option is set to 'Realistic', the standard" << LineEnding;
 		Stream << "# LDraw colours RGB value is overwritten with the values defined here." << LineEnding;

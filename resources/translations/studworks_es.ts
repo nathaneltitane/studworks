@@ -2094,8 +2094,8 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="73"/>
-        <source>&amp;LEGO Digital Designer...</source>
-        <translation>&amp;LEGO Digital Designer...</translation>
+        <source>&amp;LEGO® Digital Designer...</source>
+        <translation>&amp;LEGO® Digital Designer...</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="81"/>
@@ -4975,7 +4975,7 @@ Formato de archivo no reconocido.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="128"/>
-        <source>Photorealistic|LEGO Instructions</source>
+        <source>Photorealistic|LEGO® Instructions</source>
         <oldsource>Photo Realistic|Lego Instructions</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Foto realista|Instrucciones de Lego</translation>
@@ -5261,9 +5261,9 @@ Formato de archivo no reconocido.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="101"/>
-        <source>Shows the LEGO logo on each stud (at the expense of some extra geometry and import time)</source>
+        <source>Shows the LEGO® logo on each stud (at the expense of some extra geometry and import time)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Muestra el logotipo LEGO en cada viga (a expensas de algo de geometría adicional y tiempo de importación)</translation>
+        <translation type="unfinished">Muestra el logotipo LEGO® en cada viga (a expensas de algo de geometría adicional y tiempo de importación)</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="98"/>
@@ -5793,8 +5793,8 @@ Formato de archivo no reconocido.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="74"/>
-        <source>Import a file in LEGO Digital Designer LXF format</source>
-        <translation>Importar un archivo en formato LXF de LEGO-Digital Designer</translation>
+        <source>Import a file in LEGO® Digital Designer LXF format</source>
+        <translation>Importar un archivo en formato LXF de LEGO®-Digital Designer</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="82"/>
@@ -7372,8 +7372,8 @@ Formato de archivo no reconocido.</translation>
         <translation>StudWorks Version 0.00.0</translation>
     </message>
     <message>
-        <source>StudWorks is a free application for creating virtual LEGO models.</source>
-        <translation type="vanished">StudWorks es un programa libre para crear modelos virtuales de LEGO.</translation>
+        <source>StudWorks is a free application for creating virtual LEGO® models.</source>
+        <translation type="vanished">StudWorks es un programa libre para crear modelos virtuales de LEGO®.</translation>
     </message>
     <message>
         <source>Open the StudWorks website in your browser.</source>
@@ -7534,7 +7534,7 @@ Anisotropic: %5
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_about_dialog.ui"/>
-        <source>StudWorks is a free CAD program for creating virtual LEGO models with the LDraw parts library.
+        <source>StudWorks is a free CAD program for creating virtual LEGO® models with the LDraw parts library.
 It is built on LeoCAD by Leonardo Zide and released under the GNU General Public License version 2.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7662,10 +7662,10 @@ Por favor, visita https://github.com/nathaneltitane/studworks para saber cómo d
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="929"/>
-        <source>  -ss, --stud-style &lt;style&gt;: Set the stud style (0=No style, 1=LDraw single wire, 2=LDraw double wire, 3=LDraw raised floating, 4=LDraw raised rounded, 5=LDraw subtle rounded, 6=LEGO no logo, 7=LEGO single wire).
+        <source>  -ss, --stud-style &lt;style&gt;: Set the stud style (0=No style, 1=LDraw single wire, 2=LDraw double wire, 3=LDraw raised floating, 4=LDraw raised rounded, 5=LDraw subtle rounded, 6=LEGO® no logo, 7=LEGO® single wire).
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">  -ss, --stud-style &lt;style&gt;: establece el estilo del perno (0=Sin estilo, 1=LDraw cable simple, 2=LDraw cable doble, 3=LDraw flotante elevado, 4=LDraw redondeado elevado, 5=LDraw redondeado sutil, 6=LEGO no logotipo, 7=LEGO cable único).</translation>
+        <translation type="unfinished">  -ss, --stud-style &lt;style&gt;: establece el estilo del perno (0=Sin estilo, 1=LDraw cable simple, 2=LDraw cable doble, 3=LDraw flotante elevado, 4=LDraw redondeado elevado, 5=LDraw redondeado sutil, 6=LEGO® no logotipo, 7=LEGO® cable único).</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="939"/>
@@ -7803,9 +7803,9 @@ Por favor, visita https://github.com/nathaneltitane/studworks para saber cómo d
 </translation>
     </message>
     <message>
-        <source>  -ss, --stud-style &lt;id&gt;: Set the stud style 0=No style, 1=LDraw single wire, 2=LDraw double wire, 3=LDraw raised floating, 4=LDraw raised rounded, 5=LDraw subtle rounded, 6=LEGO no logo, 7=LEGO single wire.
+        <source>  -ss, --stud-style &lt;id&gt;: Set the stud style 0=No style, 1=LDraw single wire, 2=LDraw double wire, 3=LDraw raised floating, 4=LDraw raised rounded, 5=LDraw subtle rounded, 6=LEGO® no logo, 7=LEGO® single wire.
 </source>
-        <translation type="vanished">  -ss, --stud-style &lt;id&gt;: Establece el estilo de tetón 0=plano, 1=trazo único de LDraw, 2=trazo doble de LDraw, 3=flotante elevado de LDraw, 4=redondo elevado de LDraw, 5=rondeado suavo de LDraw, 6=LEGO sin logo, 7=LEGO trazo único.
+        <translation type="vanished">  -ss, --stud-style &lt;id&gt;: Establece el estilo de tetón 0=plano, 1=trazo único de LDraw, 2=trazo doble de LDraw, 3=flotante elevado de LDraw, 4=redondo elevado de LDraw, 5=rondeado suavo de LDraw, 6=LEGO® sin logo, 7=LEGO® trazo único.
 </translation>
     </message>
     <message>
@@ -11839,8 +11839,8 @@ Por favor, visita https://github.com/nathaneltitane/studworks para saber cómo d
     </message>
     <message>
         <location filename="../../source/interface/window/sw_main_window.cpp" line="3459"/>
-        <source>LEGO Digital Designer Files (*.lxf);;All Files (*.*)</source>
-        <translation>Archivos LEGO Diginal Designer (*.lxf);;Todos los archivos (*.*)</translation>
+        <source>LEGO® Digital Designer Files (*.lxf);;All Files (*.*)</source>
+        <translation>Archivos LEGO® Diginal Designer (*.lxf);;Todos los archivos (*.*)</translation>
     </message>
     <message>
         <location filename="../../source/interface/window/sw_main_window.cpp" line="3002"/>

@@ -1,12 +1,12 @@
 [Desktop Entry]
 Version=1.0
 Name=StudWorks
-Comment=Create virtual LEGO models
-Comment[eo]=Kreu virtualajn LEGO-ajn modelojn
-Comment[it]=Crea modelli LEGO virtuali
-Comment[nb]=Lag virtuelle LEGO-modeller
-Comment[pt_BR]=Criar modelos virtuais de LEGO
-Comment[de]=Erstelle virtuelle Lego Modelle
+Comment=Create virtual LEGO® models
+Comment[eo]=Kreu virtualajn LEGO®-ajn modelojn
+Comment[it]=Crea modelli LEGO® virtuali
+Comment[nb]=Lag virtuelle LEGO®-modeller
+Comment[pt_BR]=Criar modelos virtuais de LEGO®
+Comment[de]=Erstelle virtuelle LEGO® Modelle
 Exec=studworks %f
 Terminal=false
 Type=Application

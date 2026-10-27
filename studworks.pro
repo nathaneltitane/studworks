@@ -30,16 +30,23 @@ qtHaveModule(KParts):isEmpty(BUNDLE_LIBRARIES) {
 
 CONFIG += precompile_header incremental c++17 force_debug_info
 
+# version from the release date in sw_global.h
+VERSION_LINES = $$cat($$PWD/source/application/sw_global.h, lines)
+VERSION_TEXT = $$find(VERSION_LINES, SW_VERSION_TEXT)
+VERSION_TEXT = $$replace(VERSION_TEXT, ".*\"([0-9-]+)\".*", \\1)
+VERSION_PARTS = $$split(VERSION_TEXT, -)
+VERSION_RC = $$num_add($$member(VERSION_PARTS, 0), 0),$$num_add($$member(VERSION_PARTS, 1), 0),$$num_add($$member(VERSION_PARTS, 2), 0),0
+DESCRIPTION_TEXT = StudWorks
+
 win32 {
 	DEFINES += NOMINMAX
-	RC_ICONS = resources/studworks.ico
-	VERSION = 26.9.0.0
-	QMAKE_TARGET_COMPANY = StudWorks
-	QMAKE_TARGET_DESCRIPTION = StudWorks
-	QMAKE_TARGET_COPYRIGHT = "Copyright (C) Leonardo Zide, Nathanel Titane and contributors"
-	QMAKE_TARGET_PRODUCT = StudWorks
-	RC_CODEPAGE = 1252
-	RC_LANG = 0x0409
+	ICON_FILE = $$PWD/resources/studworks.ico
+
+	# the resource file carries the release date as its version text
+	version_rc.input = $$PWD/platform/studworks.rc.in
+	version_rc.output = $$OUT_PWD/studworks.rc
+	QMAKE_SUBSTITUTES += version_rc
+	RC_FILE = $$OUT_PWD/studworks.rc
 
 	LIBS += -lwininet
 }
@@ -83,8 +90,7 @@ APPVEYOR_REPO_COMMIT = $$(APPVEYOR_REPO_COMMIT)
 !isEmpty(APPVEYOR_REPO_COMMIT) {
 	isEmpty(APPVEYOR_REPO_TAG) {
 		DEFINES += "SW_CONTINUOUS_BUILD=$$system(git rev-parse --short HEAD)"
-		VERSION = 0.0.0.1
-		QMAKE_TARGET_DESCRIPTION = "StudWorks Continuous Build $$system(git rev-parse --short HEAD)"
+		DESCRIPTION_TEXT = "StudWorks Continuous Build $$system(git rev-parse --short HEAD)"
 	}
 }
 

@@ -2025,9 +2025,9 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="73"/>
-        <source>&amp;LEGO Digital Designer...</source>
+        <source>&amp;LEGO® Digital Designer...</source>
         <translatorcomment>TODO</translatorcomment>
-        <translation>&amp;LEGO Digital Designer...</translation>
+        <translation>&amp;LEGO® Digital Designer...</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="81"/>
@@ -5052,7 +5052,7 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="128"/>
-        <source>Photorealistic|LEGO Instructions</source>
+        <source>Photorealistic|LEGO® Instructions</source>
         <oldsource>Photo Realistic|Lego Instructions</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Photo Realistic|Lego Návod</translation>
@@ -5338,9 +5338,9 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="101"/>
-        <source>Shows the LEGO logo on each stud (at the expense of some extra geometry and import time)</source>
+        <source>Shows the LEGO® logo on each stud (at the expense of some extra geometry and import time)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Zobrazuje logo LEGO na každém čepu (na úkor určité geometrie navíc a času importu)</translation>
+        <translation type="unfinished">Zobrazuje logo LEGO® na každém čepu (na úkor určité geometrie navíc a času importu)</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="98"/>
@@ -5674,8 +5674,8 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="74"/>
-        <source>Import a file in LEGO Digital Designer LXF format</source>
-        <translation>Importovat soubor ve formátu LEGO Digital Designer LXF</translation>
+        <source>Import a file in LEGO® Digital Designer LXF format</source>
+        <translation>Importovat soubor ve formátu LEGO® Digital Designer LXF</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="82"/>
@@ -7479,8 +7479,8 @@ Formát souboru není rozpoznán.</translation>
         <translation>StudWorks verze 0.00.0</translation>
     </message>
     <message>
-        <source>StudWorks is a free application for creating virtual LEGO models.</source>
-        <translation type="vanished">StudWorks je bezplatná aplikace pro vytváření návrhů LEGO modelů.</translation>
+        <source>StudWorks is a free application for creating virtual LEGO® models.</source>
+        <translation type="vanished">StudWorks je bezplatná aplikace pro vytváření návrhů LEGO® modelů.</translation>
     </message>
     <message>
         <source>Open the StudWorks website in your browser.</source>
@@ -7621,7 +7621,7 @@ GL_EXT_texture_filter_anisotropic rozšíření: %5
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_about_dialog.ui"/>
-        <source>StudWorks is a free CAD program for creating virtual LEGO models with the LDraw parts library.
+        <source>StudWorks is a free CAD program for creating virtual LEGO® models with the LDraw parts library.
 It is built on LeoCAD by Leonardo Zide and released under the GNU General Public License version 2.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8146,10 +8146,10 @@ Informace o tom, jak stáhnout a nainstalovat knihovnu, naleznete na adrese http
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="929"/>
-        <source>  -ss, --stud-style &lt;style&gt;: Set the stud style (0=No style, 1=LDraw single wire, 2=LDraw double wire, 3=LDraw raised floating, 4=LDraw raised rounded, 5=LDraw subtle rounded, 6=LEGO no logo, 7=LEGO single wire).
+        <source>  -ss, --stud-style &lt;style&gt;: Set the stud style (0=No style, 1=LDraw single wire, 2=LDraw double wire, 3=LDraw raised floating, 4=LDraw raised rounded, 5=LDraw subtle rounded, 6=LEGO® no logo, 7=LEGO® single wire).
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">  -ss, --stud-style &lt;style&gt;: Nastavte styl čepu (0=Žádný styl, 1=LDraw jeden vodič, 2=LDraw dvojitý drát, 3=LDraw zvednutý plovoucí, 4=LDraw zvednutý zaoblený, 5=LDraw jemně zaoblené, 6=LEGO bez loga, 7=LEGO jednoduchý vodič).
+        <translation type="unfinished">  -ss, --stud-style &lt;style&gt;: Nastavte styl čepu (0=Žádný styl, 1=LDraw jeden vodič, 2=LDraw dvojitý drát, 3=LDraw zvednutý plovoucí, 4=LDraw zvednutý zaoblený, 5=LDraw jemně zaoblené, 6=LEGO® bez loga, 7=LEGO® jednoduchý vodič).
 </translation>
     </message>
     <message>
@@ -12003,8 +12003,8 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/window/sw_main_window.cpp" line="3459"/>
-        <source>LEGO Digital Designer Files (*.lxf);;All Files (*.*)</source>
-        <translation>LEGO Diginal Designer soubory (*.lxf);;všechny soubory (*.*)</translation>
+        <source>LEGO® Digital Designer Files (*.lxf);;All Files (*.*)</source>
+        <translation>LEGO® Diginal Designer soubory (*.lxf);;všechny soubory (*.*)</translation>
     </message>
     <message>
         <location filename="../../source/interface/window/sw_main_window.cpp" line="3510"/>

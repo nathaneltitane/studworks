@@ -42,18 +42,18 @@ for:
     - copy packaging\studworks.nsi .
     - copy packaging\setup.ico .
     - 'copy "%VCINSTALLDIR%Redist\MSVC\v143\vc_redist.x64.exe" appdir\vc_redist.x64.exe'
-    - '"C:\Program Files (x86)\NSIS\makensis.exe" /V4 /DX64 "/XOutFile StudWorks-Windows-%VERSION%-x64.exe" studworks.nsi'
+    - '"C:\Program Files (x86)\NSIS\makensis.exe" /V4 /DX64 "/XOutFile studworks-windows-%VERSION%-x64.exe" studworks.nsi'
     - set TRAVIS_TAG=%APPVEYOR_REPO_TAG_NAME%
     - set TRAVIS_REPO_SLUG=%APPVEYOR_REPO_NAME%
     - set TRAVIS_COMMIT=%APPVEYOR_REPO_COMMIT%
     - set UPLOADTOOL_ISPRERELEASE=1
     - appveyor DownloadFile https://github.com/probonopd/uploadtool/raw/master/upload.sh
-    - if not defined APPVEYOR_PULL_REQUEST_NUMBER (bash upload.sh StudWorks*.exe)
+    - if not defined APPVEYOR_PULL_REQUEST_NUMBER (bash upload.sh studworks*.exe)
 
     artifacts:
     - path: symbols.zip
       name: symbols
-    - path: StudWorks-Windows-$(VERSION)-x64.exe
+    - path: studworks-windows-$(VERSION)-x64.exe
       name: studworks
       
   -
@@ -89,14 +89,14 @@ for:
       - ./linuxdeployqt*.AppImage --appimage-extract
       - export PATH=$(readlink -f ./squashfs-root/usr/bin/):$PATH
       - ./squashfs-root/usr/bin/appimagetool AppDir/
-      - mv ./StudWorks-$VERSION-x86_64.AppImage ./StudWorks-Linux-$VERSION-x86_64.AppImage 
+      - mv ./StudWorks-$VERSION-x86_64.AppImage ./studworks-linux-$VERSION-x86_64.appimage 
       - 'curl -s -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/nathaneltitane/studworks/commits/main -o repo.txt'
       - 'export REMOTE=$(grep -Po ''(?<=: \")(([a-z0-9])\w+)(?=\")'' -m 1 repo.txt)'
       - export LOCAL=$(git rev-parse HEAD)
       - export UPLOADTOOL_ISPRERELEASE=1
       - if [[ "$REMOTE" != "$LOCAL" ]]; then echo "Build no longer current. $REMOTE vs $LOCAL - aborting upload."; exit 0; fi;
       - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
-      - bash upload.sh StudWorks*.AppImage*
+      - bash upload.sh studworks*.appimage*
 
   -
     matrix:
@@ -120,11 +120,11 @@ for:
       - cd build/release
       - '[[ "$(grep -m 1 SW_VERSION_TEXT ../../source/application/sw_global.h)" =~ \"([0-9-]+)\" ]] && export VERSION="${BASH_REMATCH[1]}"'
       - macdeployqt StudWorks.app -dmg
-      - mv StudWorks.dmg StudWorks-macOS-$VERSION-universal.dmg
+      - mv StudWorks.dmg studworks-macos-$VERSION-universal.dmg
       - 'curl -s -H "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/nathaneltitane/studworks/commits/main -o repo.txt' 
       - "export REMOTE=$(awk -F'\"' '/\"sha\"[[:space:]]*:/ { print $(NF-1); exit }' repo.txt)"
       - export LOCAL=$(git rev-parse HEAD)
       - export UPLOADTOOL_ISPRERELEASE=1
       - if [[ "$REMOTE" != "$LOCAL" ]]; then echo "Build no longer current. $REMOTE vs $LOCAL - aborting upload."; exit 0; fi;
       - appveyor DownloadFile https://github.com/probonopd/uploadtool/raw/master/upload.sh
-      - bash upload.sh StudWorks*.dmg*
+      - bash upload.sh studworks*.dmg*

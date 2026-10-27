@@ -1,0 +1,31 @@
+#include <windows.h>
+
+IDI_ICON1 ICON \"$$ICON_FILE\"
+
+VS_VERSION_INFO VERSIONINFO
+	FILEVERSION $$VERSION_RC
+	PRODUCTVERSION $$VERSION_RC
+	FILEFLAGSMASK 0x3fL
+	FILEFLAGS 0x0L
+	FILEOS VOS_NT_WINDOWS32
+	FILETYPE VFT_APP
+	FILESUBTYPE 0x0L
+	BEGIN
+		BLOCK \"StringFileInfo\"
+		BEGIN
+			BLOCK \"040904e4\"
+			BEGIN
+				VALUE \"CompanyName\", \"StudWorks\0\"
+				VALUE \"FileDescription\", \"$$DESCRIPTION_TEXT\0\"
+				VALUE \"FileVersion\", \"$$VERSION_TEXT\0\"
+				VALUE \"LegalCopyright\", \"Copyright (C) Leonardo Zide, Nathanel Titane and contributors\0\"
+				VALUE \"OriginalFilename\", \"StudWorks.exe\0\"
+				VALUE \"ProductName\", \"StudWorks\0\"
+				VALUE \"ProductVersion\", \"$$VERSION_TEXT\0\"
+			END
+		END
+		BLOCK \"VarFileInfo\"
+		BEGIN
+			VALUE \"Translation\", 0x0409, 1252
+		END
+	END

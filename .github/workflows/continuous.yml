@@ -61,7 +61,7 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v7
       with:
-        name: test-results-${{ runner.os }}-${{ steps.version.outputs.text }}-${{ runner.arch }}
+        name: test-results-linux-${{ steps.version.outputs.text }}-x64
         path: build/tests/test-results.xml
         if-no-files-found: ignore
 
@@ -109,6 +109,50 @@ jobs:
       with:
         name: studworks-deb-${{ steps.version.outputs.text }}-${{ matrix.architecture }}
         path: build/deb/studworks_*.deb
+
+  build-rpm:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        - runner: ubuntu-22.04
+          architecture: x86_64
+        - runner: ubuntu-22.04-arm
+          architecture: aarch64
+    runs-on: ${{ matrix.runner }}
+    steps:
+    - uses: actions/checkout@v7
+    - name: Read version
+      id: version
+      shell: bash
+      run: |
+        [[ "$(grep -m 1 SW_VERSION_TEXT source/application/sw_global.h)" =~ \"([0-9-]+)\" ]]
+        echo "text=${BASH_REMATCH[1]}" >> "$GITHUB_OUTPUT"
+    - name: Cache Library
+      uses: actions/cache@v6
+      id: cache-library
+      with:
+        path: library.bin
+        key: library-complete
+    - name: Download Library
+      if: steps.cache-library.outputs.cache-hit != 'true'
+      run: wget https://library.ldraw.org/library/updates/complete.zip -O library.bin
+    - name: Build package
+      run: |
+        docker run --rm -v "$PWD:/src" rockylinux:9 bash -c 'dnf install -y -q epel-release && dnf install -y -q qt5-qtbase-devel qt5-linguist qt5-qtsvg qt5-qtimageformats gcc-c++ make rpm-build zlib-devel findutils && bash /src/packaging/rpm.sh /src/build/rpm'
+        sudo chown -R "$(id -u):$(id -g)" build
+    - name: Test package
+      run: |
+        for image in rockylinux:9 fedora:latest
+        do
+          docker run --rm -v "$PWD/build/rpm:/rpm" "$image" sh -c 'dnf install -y -q /rpm/studworks-*.rpm && QT_QPA_PLATFORM=offscreen studworks --version && test -s /opt/studworks/share/studworks/library.bin'
+        done
+        docker run --rm -v "$PWD/build/rpm:/rpm" opensuse/tumbleweed sh -c 'zypper --non-interactive install --allow-unsigned-rpm /rpm/studworks-*.rpm > /dev/null && QT_QPA_PLATFORM=offscreen studworks --version && test -s /opt/studworks/share/studworks/library.bin'
+    - name: Upload package
+      uses: actions/upload-artifact@v7
+      with:
+        name: studworks-rpm-${{ steps.version.outputs.text }}-${{ matrix.architecture }}
+        path: build/rpm/studworks-*.rpm
 
   build-macos:
     runs-on: macos-latest
@@ -171,7 +215,7 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v7
       with:
-        name: test-results-${{ runner.os }}-${{ steps.version.outputs.text }}-${{ runner.arch }}
+        name: test-results-macos-${{ steps.version.outputs.text }}-arm64
         path: build/tests/test-results.xml
         if-no-files-found: ignore
 
@@ -239,6 +283,6 @@ jobs:
       if: always()
       uses: actions/upload-artifact@v7
       with:
-        name: test-results-${{ runner.os }}-${{ steps.version.outputs.text }}-${{ runner.arch }}
+        name: test-results-windows-${{ steps.version.outputs.text }}-x64
         path: build/tests/test-results.xml
         if-no-files-found: ignore

@@ -66,9 +66,6 @@ typedef quint32 swStep;
 #define SW_STEP_MAXIMUM 0xffffffff
 
 // Version number.
-#define SW_VERSION_MAJOR 26
-#define SW_VERSION_MINOR 9
-#define SW_VERSION_PATCH 0
 #define SW_VERSION_TEXT "2026-10-26"
 
 // Forward declarations.

@@ -2365,8 +2365,8 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="73"/>
-        <source>&amp;LEGO Digital Designer...</source>
-        <translation>&amp;LEGO Digital Designer...</translation>
+        <source>&amp;LEGO® Digital Designer...</source>
+        <translation>&amp;LEGO® Digital Designer...</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="81"/>
@@ -5296,7 +5296,7 @@ Dateiformat wird nicht erkannt.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="128"/>
-        <source>Photorealistic|LEGO Instructions</source>
+        <source>Photorealistic|LEGO® Instructions</source>
         <oldsource>Photo Realistic|Lego Instructions</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Fotorealistische|Lego Anleitung</translation>
@@ -5582,9 +5582,9 @@ Dateiformat wird nicht erkannt.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="101"/>
-        <source>Shows the LEGO logo on each stud (at the expense of some extra geometry and import time)</source>
+        <source>Shows the LEGO® logo on each stud (at the expense of some extra geometry and import time)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Zeigt das LEGO-Logo auf jedem Bolzen an (auf Kosten einiger zusätzlicher Geometrie und Importzeit)</translation>
+        <translation type="unfinished">Zeigt das LEGO®-Logo auf jedem Bolzen an (auf Kosten einiger zusätzlicher Geometrie und Importzeit)</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="98"/>
@@ -6114,8 +6114,8 @@ Dateiformat wird nicht erkannt.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="74"/>
-        <source>Import a file in LEGO Digital Designer LXF format</source>
-        <translation>Import aus einer LEGO Digital Designer LXF Datei</translation>
+        <source>Import a file in LEGO® Digital Designer LXF format</source>
+        <translation>Import aus einer LEGO® Digital Designer LXF Datei</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="82"/>
@@ -7726,8 +7726,8 @@ Dateiformat wird nicht erkannt.</translation>
         <translation>StudWorks Version 0.00.0</translation>
     </message>
     <message>
-        <source>StudWorks is a free application for creating virtual LEGO models.</source>
-        <translation type="vanished">StudWorks ist eine freie Anwendung zur Gestaltung virtueller LEGO Modelle.</translation>
+        <source>StudWorks is a free application for creating virtual LEGO® models.</source>
+        <translation type="vanished">StudWorks ist eine freie Anwendung zur Gestaltung virtueller LEGO® Modelle.</translation>
     </message>
     <message>
         <source>Open the StudWorks website in your browser.</source>
@@ -7867,7 +7867,7 @@ Anisotrop: %4</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_about_dialog.ui"/>
-        <source>StudWorks is a free CAD program for creating virtual LEGO models with the LDraw parts library.
+        <source>StudWorks is a free CAD program for creating virtual LEGO® models with the LDraw parts library.
 It is built on LeoCAD by Leonardo Zide and released under the GNU General Public License version 2.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7984,10 +7984,10 @@ Bitte lesen sie unter https://github.com/nathaneltitane/studworks nach wie man e
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="929"/>
-        <source>  -ss, --stud-style &lt;style&gt;: Set the stud style (0=No style, 1=LDraw single wire, 2=LDraw double wire, 3=LDraw raised floating, 4=LDraw raised rounded, 5=LDraw subtle rounded, 6=LEGO no logo, 7=LEGO single wire).
+        <source>  -ss, --stud-style &lt;style&gt;: Set the stud style (0=No style, 1=LDraw single wire, 2=LDraw double wire, 3=LDraw raised floating, 4=LDraw raised rounded, 5=LDraw subtle rounded, 6=LEGO® no logo, 7=LEGO® single wire).
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">  -ss, --stud-style &lt;style&gt;: Stellen Sie den Bolzenstil ein (0 = Kein Stil, 1 = LDraw Einzeldraht, 2 = LDraw Doppeldraht, 3 = LDraw erhaben schwebend, 4 = LDraw erhaben abgerundet, 5 = LDraw dezent abgerundet, 6 = LEGO kein Logo, 7=LEGO Einzeldraht).</translation>
+        <translation type="unfinished">  -ss, --stud-style &lt;style&gt;: Stellen Sie den Bolzenstil ein (0 = Kein Stil, 1 = LDraw Einzeldraht, 2 = LDraw Doppeldraht, 3 = LDraw erhaben schwebend, 4 = LDraw erhaben abgerundet, 5 = LDraw dezent abgerundet, 6 = LEGO® kein Logo, 7=LEGO® Einzeldraht).</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="939"/>
@@ -12045,8 +12045,8 @@ Bitte lesen sie unter https://github.com/nathaneltitane/studworks nach wie man e
     </message>
     <message>
         <location filename="../../source/interface/window/sw_main_window.cpp" line="3459"/>
-        <source>LEGO Digital Designer Files (*.lxf);;All Files (*.*)</source>
-        <translation>LEGO Diginal Designer Dateien (*.lxf);;Alle Dateien (*.*)</translation>
+        <source>LEGO® Digital Designer Files (*.lxf);;All Files (*.*)</source>
+        <translation>LEGO® Diginal Designer Dateien (*.lxf);;Alle Dateien (*.*)</translation>
     </message>
     <message>
         <location filename="../../source/interface/window/sw_main_window.cpp" line="642"/>

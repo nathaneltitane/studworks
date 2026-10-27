@@ -2138,8 +2138,8 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="73"/>
-        <source>&amp;LEGO Digital Designer...</source>
-        <translation>LEGO Digital Designer...</translation>
+        <source>&amp;LEGO® Digital Designer...</source>
+        <translation>LEGO® Digital Designer...</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="81"/>
@@ -4968,7 +4968,7 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="128"/>
-        <source>Photorealistic|LEGO Instructions</source>
+        <source>Photorealistic|LEGO® Instructions</source>
         <oldsource>Photo Realistic|Lego Instructions</oldsource>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">照片逼真|Lego 說明</translation>
@@ -5254,9 +5254,9 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="101"/>
-        <source>Shows the LEGO logo on each stud (at the expense of some extra geometry and import time)</source>
+        <source>Shows the LEGO® logo on each stud (at the expense of some extra geometry and import time)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">在每個螺柱上顯示 LEGO 徽標（以一些額外的幾何形狀和導入時間為代價）</translation>
+        <translation type="unfinished">在每個螺柱上顯示 LEGO® 徽標（以一些額外的幾何形狀和導入時間為代價）</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_blender_preferences.cpp" line="98"/>
@@ -5774,8 +5774,8 @@ File format is not recognized.</source>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="74"/>
-        <source>Import a file in LEGO Digital Designer LXF format</source>
-        <translation>導入 LEGO Digital Designer LXF 格式檔案</translation>
+        <source>Import a file in LEGO® Digital Designer LXF format</source>
+        <translation>導入 LEGO® Digital Designer LXF 格式檔案</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="82"/>
@@ -7361,7 +7361,7 @@ File format is not recognized.</source>
         <translation>StudWorks 版本 0.00.0</translation>
     </message>
     <message>
-        <source>StudWorks is a free application for creating virtual LEGO models.</source>
+        <source>StudWorks is a free application for creating virtual LEGO® models.</source>
         <translation type="vanished">StudWorks 是一個用於創建虛擬樂高模型的免費應用程序。</translation>
     </message>
     <message>
@@ -7501,7 +7501,7 @@ Anisotropic: %5
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_about_dialog.ui"/>
-        <source>StudWorks is a free CAD program for creating virtual LEGO models with the LDraw parts library.
+        <source>StudWorks is a free CAD program for creating virtual LEGO® models with the LDraw parts library.
 It is built on LeoCAD by Leonardo Zide and released under the GNU General Public License version 2.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7794,10 +7794,10 @@ It is built on LeoCAD by Leonardo Zide and released under the GNU General Public
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="929"/>
-        <source>  -ss, --stud-style &lt;style&gt;: Set the stud style (0=No style, 1=LDraw single wire, 2=LDraw double wire, 3=LDraw raised floating, 4=LDraw raised rounded, 5=LDraw subtle rounded, 6=LEGO no logo, 7=LEGO single wire).
+        <source>  -ss, --stud-style &lt;style&gt;: Set the stud style (0=No style, 1=LDraw single wire, 2=LDraw double wire, 3=LDraw raised floating, 4=LDraw raised rounded, 5=LDraw subtle rounded, 6=LEGO® no logo, 7=LEGO® single wire).
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">  -ss, --stud-style &lt;style&gt;：設置螺柱樣式（0=無樣式，1=LDraw單線，2=LDraw雙線，3=LDraw凸起浮動，4=LDraw凸起圓形，5=LDraw微妙圓形，6=LEGO無標誌，7=LEGO單線).</translation>
+        <translation type="unfinished">  -ss, --stud-style &lt;style&gt;：設置螺柱樣式（0=無樣式，1=LDraw單線，2=LDraw雙線，3=LDraw凸起浮動，4=LDraw凸起圓形，5=LDraw微妙圓形，6=LEGO®無標誌，7=LEGO®單線).</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="930"/>
@@ -8181,8 +8181,8 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="vanished">  -c, --camera &lt;相機&gt;: 設置活動相機。</translation>
     </message>
     <message>
-        <source>  -ss, --stud-style &lt;id&gt;: Set the stud style 0=No style, 1=LDraw single wire, 2=LDraw double wire, 3=LDraw raised floating, 4=LDraw raised rounded, 5=LDraw subtle rounded, 6=LEGO no logo, 7=LEGO single wire.</source>
-        <translation type="vanished">  -ss, --stud-style &lt;id&gt;: 設置凸點樣式 0=無樣式, 1=LDraw 單線, 2=LDraw 雙線, 3=LDraw 凸起漂浮, 4=LDraw 凸起圓角, 5=LDraw 精細圓角, 6=LEGO 無標誌, 7=LEGO 單線。</translation>
+        <source>  -ss, --stud-style &lt;id&gt;: Set the stud style 0=No style, 1=LDraw single wire, 2=LDraw double wire, 3=LDraw raised floating, 4=LDraw raised rounded, 5=LDraw subtle rounded, 6=LEGO® no logo, 7=LEGO® single wire.</source>
+        <translation type="vanished">  -ss, --stud-style &lt;id&gt;: 設置凸點樣式 0=無樣式, 1=LDraw 單線, 2=LDraw 雙線, 3=LDraw 凸起漂浮, 4=LDraw 凸起圓角, 5=LDraw 精細圓角, 6=LEGO® 無標誌, 7=LEGO® 單線。</translation>
     </message>
     <message>
         <source>  --viewpoint &lt;front|back|left|right|top|bottom|home&gt;: Set the viewpoint.</source>
@@ -12108,8 +12108,8 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/window/sw_main_window.cpp" line="3459"/>
-        <source>LEGO Digital Designer Files (*.lxf);;All Files (*.*)</source>
-        <translation>LEGO Digital Designer 檔案 (*.lxf);;所有檔案 (*.*)</translation>
+        <source>LEGO® Digital Designer Files (*.lxf);;All Files (*.*)</source>
+        <translation>LEGO® Digital Designer 檔案 (*.lxf);;所有檔案 (*.*)</translation>
     </message>
     <message>
         <source>StudWorks</source>

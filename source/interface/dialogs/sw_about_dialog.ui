@@ -52,8 +52,18 @@
          <item>
           <widget class="QLabel" name="label_4">
            <property name="text">
-            <string>StudWorks is a free CAD program for creating virtual LEGO models with the LDraw parts library.
+            <string>StudWorks is a free CAD program for creating virtual LEGO® models with the LDraw parts library.
 It is built on LeoCAD by Leonardo Zide and released under the GNU General Public License version 2.</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="disclaimer">
+           <property name="text">
+            <string>LEGO® is a trademark of the LEGO® Group, which does not sponsor, authorize or endorse this project.</string>
            </property>
            <property name="wordWrap">
             <bool>true</bool>

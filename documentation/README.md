@@ -1,6 +1,6 @@
 # About StudWorks
 
-StudWorks is a free CAD program for creating virtual LEGO(R) models with the
+StudWorks is a free CAD program for creating virtual LEGO® models with the
 LDraw parts library, built on LeoCAD. It is released under the GNU General
 Public License version 2 and runs on Linux, Windows and macOS.
 
@@ -38,5 +38,4 @@ OpenGL for hardware accelerated rendering.
 
 # Legal Disclaimer
 
-LEGO(R) is a trademark of the LEGO Group of companies which does not sponsor,
-authorize or endorse this software.
+LEGO® is a trademark of the LEGO® Group, which does not sponsor, authorize or endorse this project.
