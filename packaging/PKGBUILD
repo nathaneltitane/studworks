@@ -35,9 +35,9 @@ package() {
   mkdir -p ${pkgdir}/usr/bin
   mkdir -p ${pkgdir}/usr/share/studworks
   install -m 755 build/release/studworks ${pkgdir}/usr/bin
-  install -m 644 documentation/README.md  ${pkgdir}/usr/share/studworks/README.md
+  install -m 644 README.md               ${pkgdir}/usr/share/studworks/README.md
   install -m 644 documentation/CREDITS.txt ${pkgdir}/usr/share/studworks/CREDITS.txt
-  install -m 644 documentation/COPYING.txt ${pkgdir}/usr/share/studworks/COPYING.txt
+  install -m 644 LICENSE.md              ${pkgdir}/usr/share/studworks/LICENSE.md
   mkdir -p ${pkgdir}/usr/share/mime/packages/
   mkdir -p ${pkgdir}/usr/share/applications/
   mkdir -p ${pkgdir}/usr/share/icons/hicolor/scalable/mimetypes

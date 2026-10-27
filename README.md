@@ -130,7 +130,7 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
     ```
 
   - Run ↴
-    - Start 'build/release/studworks' and point Preferences to an [LDraw parts library](https://library.ldraw.org/updates?latest) if none is found.
+    - Start 'build/release/studworks' and point Preferences to an [LDraw parts library](https://library.ldraw.org/updates?latest) or set 'STUDWORKS_LIB' if none is found - up to date video card drivers are recommended for the OpenGL rendering.
 
   - Package ↴
     - Run 'packaging/deb.sh' on Debian or Ubuntu, 'packaging/rpm.sh' on an RPM distribution or 'packaging/appimage.sh' on any Linux, with an optional build directory - all three download the parts library when it is missing.
@@ -143,7 +143,7 @@ StudWorks is based on [LeoCAD](https://github.com/leozide/leocad) by Leonardo Zi
 
 ### License:
 
-StudWorks is free software released under the GNU General Public License version 2, the same license as LeoCAD - see 'documentation/COPYING.txt'.
+StudWorks is free software released under the GNU General Public License version 2, the same license as LeoCAD - see 'LICENSE.md'.
 
 LEGO® is a trademark of the LEGO® Group, which does not sponsor, authorize or endorse this project.
 

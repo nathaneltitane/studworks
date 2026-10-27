@@ -29,7 +29,7 @@ directory_build="$(cd "${directory_build}" && pwd)"
 directory_package="$(mktemp -d "${directory_build}/package.XXXXXX")"
 
 cp "${directory_source}/build/release/StudWorks.exe" "${directory_package}/"
-cp "${directory_source}/documentation/README.md" "${directory_package}/readme.txt"
+cp "${directory_source}/README.md" "${directory_package}/readme.txt"
 
 for file_extra in library.bin povconsole32-sse2.exe
 do

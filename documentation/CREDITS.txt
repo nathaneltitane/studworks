@@ -1,6 +1,6 @@
 StudWorks is based on LeoCAD (https://github.com/leozide/leocad) by Leonardo Zide
 and its contributors, released under the GNU General Public License version 2,
-see COPYING.txt.
+see LICENSE.md.
 
 The following people have contributed to LeoCAD:
 

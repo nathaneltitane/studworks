@@ -129,7 +129,7 @@ unix:!macx {
 
 	target.path = $$BIN_DIR
 	docs.path = $$DOCS_DIR
-	docs.files = documentation/README.md documentation/CREDITS.txt documentation/COPYING.txt
+	docs.files = README.md LICENSE.md documentation/CREDITS.txt
 	man.path = $$MAN_DIR
 	man.files = documentation/studworks.1
 	desktop.path = $$DESKTOP_DIR
