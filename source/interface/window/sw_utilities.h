@@ -286,4 +286,5 @@ protected:
 	void Close();
 
 	QColorDialog* mColorDialog = nullptr;
+	bool mTransparentStart = false;
 };

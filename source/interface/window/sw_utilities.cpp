@@ -617,6 +617,21 @@ swColorDialogPopup::swColorDialogPopup(const QColor& InitialColor, bool ShowAlph
 	mColorDialog->setOptions(QColorDialog::DontUseNativeDialog | QColorDialog::NoButtons);
 	mColorDialog->setOption(QColorDialog::ShowAlphaChannel, ShowAlphaChannel);
 
+	// a color picked from a transparent start becomes opaque, the alpha channel can still make it transparent
+	mTransparentStart = ShowAlphaChannel && InitialColor.alpha() == 0;
+
+	QObject::connect(mColorDialog, &QColorDialog::currentColorChanged, this, [this](const QColor& Color)
+	{
+		if (!mTransparentStart || Color.alpha() != 0)
+			return;
+
+		mTransparentStart = false;
+
+		QColor OpaqueColor(Color);
+		OpaqueColor.setAlpha(255);
+		mColorDialog->setCurrentColor(OpaqueColor);
+	});
+
 	Layout->addWidget(mColorDialog);
 	mColorDialog->setAccessibleName(tr("Custom Color"));
 	mColorDialog->setToolTip(tr("Choose a color or enter its component values."));
