@@ -279,6 +279,10 @@ void swView::OnDraw()
 	Redraw();
 #endif
 
+	// the status bar follows the orientation of the view in focus
+	if (gMainWindow && mLastFocusedView == this && !mContext->IsOffscreen())
+		gMainWindow->UpdateViewOrientation(mCamera);
+
 	mContext->ClearResources();
 }
 
@@ -385,75 +389,151 @@ void swView::DrawAxes() const
 		quint32 Color;
 	};
 
-	const quint32 Red = Preferences.mAxisXColor;
-	const quint32 Green = Preferences.mAxisYColor;
-	const quint32 Blue = Preferences.mAxisZColor;
-
-	const swAxisVertex Verts[30] =
-	{
-		{  0.00f,  0.00f,  0.00f, Red }, { 20.00f,  0.00f,  0.00f, Red }, { 12.00f,  3.00f,  0.00f, Red }, { 12.00f,  2.12f,  2.12f, Red }, { 12.00f,  0.00f,  3.00f, Red },
-		{ 12.00f, -2.12f,  2.12f, Red }, { 12.00f, -3.00f,  0.00f, Red }, { 12.00f, -2.12f, -2.12f, Red }, { 12.00f,  0.00f, -3.00f, Red }, { 12.00f,  2.12f, -2.12f, Red },
-		{  0.00f,  0.00f,  0.00f, Green }, {  0.00f, 20.00f,  0.00f, Green }, {  3.00f, 12.00f,  0.00f, Green }, {  2.12f, 12.00f,  2.12f, Green }, {  0.00f, 12.00f,  3.00f, Green },
-		{ -2.12f, 12.00f,  2.12f, Green }, { -3.00f, 12.00f,  0.00f, Green }, { -2.12f, 12.00f, -2.12f, Green }, {  0.00f, 12.00f, -3.00f, Green }, {  2.12f, 12.00f, -2.12f, Green },
-		{  0.00f,  0.00f,  0.00f, Blue }, {  0.00f,  0.00f, 20.00f, Blue }, {  0.00f,  3.00f, 12.00f, Blue }, {  2.12f,  2.12f, 12.00f, Blue }, {  3.00f,  0.00f, 12.00f, Blue },
-		{  2.12f, -2.12f, 12.00f, Blue }, {  0.00f, -3.00f, 12.00f, Blue }, { -2.12f, -2.12f, 12.00f, Blue }, { -3.00f,  0.00f, 12.00f, Blue }, { -2.12f,  2.12f, 12.00f, Blue }
-	};
-
-	const GLushort Indices[78] =
-	{
-		 0,  1, 10, 11, 20, 21,
-		 1,  2,  3,  1,  3,  4,  1,  4,  5,  1,  5,  6,  1,  6,  7,  1,  7,  8,  1,  8,  9,  1,  9,  2,
-		11, 12, 13, 11, 13, 14, 11, 14, 15, 11, 15, 16, 11, 16, 17, 11, 17, 18, 11, 18, 19, 11, 19, 12,
-		21, 22, 23, 21, 23, 24, 21, 24, 25, 21, 25, 26, 21, 26, 27, 21, 27, 28, 21, 28, 29, 21, 29, 22
-	};
-
-	// the arrows span half the icon size from the origin
+	// the arrows reach the view cube faces and the labels sit past them inside the shared corner box
 	const float IconSize = static_cast<float>(mViewType == swViewType::Preview ? Preferences.mPreviewAxisIconSize : Preferences.mAxisIconSize);
-	const float ArrowLength = IconSize / 2.0f;
-	const float NearOffset = ArrowLength + 12.0f;
-	const float FarOffset = ArrowLength + 16.0f;
+	const float FaceDistance = IconSize / 2.0f * SW_VIEW_CUBE_HALF_SIZE / SW_VIEW_CUBE_BOUNDARY;
+	const float LabelGap = 2.0f + IconSize / 24.0f;
+	const float LabelDistance = qMin(FaceDistance + LabelGap, IconSize / 2.0f - 8.0f);
+	const float ArrowLength = Preferences.mAxisIconLabels ? qMin(FaceDistance, LabelDistance - LabelGap) : FaceDistance;
 
-	swMatrix44 TranslationMatrix;
-	float Scale = GetUIScale();
+	// whole pixel lines whose tip is three times their width like the instructions pointers
+	const float LineWidth = qMax(1.0f, roundf(IconSize / 48.0f));
+	const float TipLength = 3.0f * LineWidth;
+	const float TipRadius = 0.4f * TipLength;
 
-	switch (Preferences.mAxisIconLocation)
+	// each arrow is a line from the origin and a capped cone at its tip with the negative arrows after the positive ones
+	constexpr int ConeSegments = 24;
+	constexpr int AxisVertexCount = ConeSegments + 3;
+	constexpr int ArrowCountMax = 6;
+	constexpr int ConeIndexCount = ConeSegments * 6;
+	const int ArrowCount = Preferences.mAxisIconNegative ? ArrowCountMax : 3;
+	const int LineIndexCount = ArrowCount * 2;
+	const quint32 Colors[ArrowCountMax] = { Preferences.mAxisXColor, Preferences.mAxisYColor, Preferences.mAxisZColor, Preferences.mAxisXNegativeColor, Preferences.mAxisYNegativeColor, Preferences.mAxisZNegativeColor };
+
+	swAxisVertex Verts[AxisVertexCount * ArrowCountMax];
+	GLushort Indices[(2 + ConeIndexCount) * ArrowCountMax];
+	GLushort* ConeIndex = Indices + LineIndexCount;
+
+	for (int Arrow = 0; Arrow < ArrowCount; Arrow++)
 	{
-	default:
-	case swAxisIconLocation::BottomLeft:
-		TranslationMatrix = swMatrix44Translation(swVector3(NearOffset, NearOffset, 0.0f) / Scale);
-		break;
+		swAxisVertex* AxisVerts = Verts + Arrow * AxisVertexCount;
+		const GLushort Base = static_cast<GLushort>(Arrow * AxisVertexCount);
+		const int Axis = Arrow % 3;
+		const float Sign = Arrow < 3 ? 1.0f : -1.0f;
+		const int Side1 = (Axis + 1) % 3, Side2 = (Axis + 2) % 3;
+		float Point[3] = { 0.0f, 0.0f, 0.0f };
 
-	case swAxisIconLocation::BottomRight:
-		TranslationMatrix = swMatrix44Translation(swVector3(mWidth - FarOffset, NearOffset, 0.0f) / Scale);
-		break;
+		auto SetVertex = [&](int Index)
+		{
+			AxisVerts[Index] = { Point[0], Point[1], Point[2], Colors[Arrow] };
+		};
 
-	case swAxisIconLocation::TopLeft:
-		TranslationMatrix = swMatrix44Translation(swVector3(NearOffset, mHeight - FarOffset, 0.0f) / Scale);
-		break;
+		SetVertex(0);
+		Point[Axis] = Sign * ArrowLength;
+		SetVertex(1);
+		Point[Axis] = Sign * (ArrowLength - TipLength);
+		SetVertex(2);
 
-	case swAxisIconLocation::TopRight:
-		TranslationMatrix = swMatrix44Translation(swVector3(mWidth - FarOffset, mHeight - FarOffset, 0.0f) / Scale);
-		break;
+		for (int Segment = 0; Segment < ConeSegments; Segment++)
+		{
+			const float Angle = Segment * 2.0f * SW_PI / ConeSegments;
+			Point[Side1] = TipRadius * cosf(Angle);
+			Point[Side2] = TipRadius * sinf(Angle);
+			SetVertex(3 + Segment);
+
+			const GLushort Ring = Base + 3 + Segment;
+			const GLushort NextRing = Base + 3 + (Segment + 1) % ConeSegments;
+			*ConeIndex++ = Base + 1; *ConeIndex++ = Ring; *ConeIndex++ = NextRing;
+			*ConeIndex++ = Base + 2; *ConeIndex++ = NextRing; *ConeIndex++ = Ring;
+		}
+
+		Indices[Arrow * 2] = Base;
+		// the line stops at the cone base so it never blunts the tip
+		Indices[Arrow * 2 + 1] = Base + 2;
 	}
+
+	// the box sits in the view corner like the view cube viewport
+	const float Offset = roundf(IconSize / 2.0f);
+	const float Scale = GetUIScale();
+	const float Width = mWidth / Scale;
+	const float Height = mHeight / Scale;
+	const bool Left = Preferences.mAxisIconLocation == swAxisIconLocation::BottomLeft || Preferences.mAxisIconLocation == swAxisIconLocation::TopLeft;
+	const bool Bottom = Preferences.mAxisIconLocation == swAxisIconLocation::BottomLeft || Preferences.mAxisIconLocation == swAxisIconLocation::BottomRight;
+	const swMatrix44 TranslationMatrix = swMatrix44Translation(swVector3(Left ? Offset : Width - Offset, Bottom ? Offset : Height - Offset, 0.0f));
 
 	swMatrix44 WorldViewMatrix = mCamera->mWorldView;
 	WorldViewMatrix.SetTranslation(swVector3(0, 0, 0));
 
-	mContext->SetLineWidth(qMax(1.0f, IconSize / 48.0f));
-	mContext->SetMaterial(swMaterialType::UnlitVertexColor);
-	mContext->SetWorldMatrix(swMatrix44Scale(swVector3(ArrowLength / 20.0f, ArrowLength / 20.0f, ArrowLength / 20.0f)));
+	mContext->SetWorldMatrix(swMatrix44Identity());
 	mContext->SetViewMatrix(swMultiply(WorldViewMatrix, TranslationMatrix));
-	mContext->SetProjectionMatrix(swMatrix44Orthographic(0, mWidth / Scale, 0, mHeight / Scale, -IconSize, IconSize));
+	mContext->SetProjectionMatrix(swMatrix44Orthographic(0, Width, 0, Height, -IconSize, IconSize));
 
+	// the view cube wireframe gives the axis the same box as the cube
+	if (Preferences.mAxisIconCubeOutline)
+	{
+		// the outer line edge meets the view cube black border so both keep the same clearance from the view edges
+		const float Outer = FaceDistance * (1.005f + 2.0f / (IconSize * Scale)) - 0.5f / Scale;
+		// each corner has a vertex per axis that sits on the face of that axis like the view cube chamfers
+		const float Inner = Outer * (SW_VIEW_CUBE_HALF_SIZE - SW_VIEW_CUBE_CHAMFER) / SW_VIEW_CUBE_HALF_SIZE;
+		float BoxVerts[8 * 3 * 3];
+		GLushort BoxIndices[48 * 2];
+		GLushort* BoxIndex = BoxIndices;
+
+		for (int Corner = 0; Corner < 8; Corner++)
+		{
+			for (int Axis = 0; Axis < 3; Axis++)
+			{
+				for (int Coordinate = 0; Coordinate < 3; Coordinate++)
+				{
+					const float Sign = (Corner & (1 << Coordinate)) ? 1.0f : -1.0f;
+					BoxVerts[(Corner * 3 + Axis) * 3 + Coordinate] = Sign * (Coordinate == Axis ? Outer : Inner);
+				}
+
+				// the corner triangle edge and the face square edges toward the neighbor corners
+				*BoxIndex++ = static_cast<GLushort>(Corner * 3 + Axis);
+				*BoxIndex++ = static_cast<GLushort>(Corner * 3 + (Axis + 1) % 3);
+
+				for (int Neighbor = 0; Neighbor < 3; Neighbor++)
+				{
+					const int NeighborCorner = Corner ^ (1 << Neighbor);
+
+					if (Neighbor != Axis && Corner < NeighborCorner)
+					{
+						*BoxIndex++ = static_cast<GLushort>(Corner * 3 + Axis);
+						*BoxIndex++ = static_cast<GLushort>(NeighborCorner * 3 + Axis);
+					}
+				}
+			}
+		}
+
+		swVector4 OutlineColor = swVector4FromColor(Preferences.mViewCubeTextColor);
+		OutlineColor.w = swOverlayAlpha(Preferences.mAxisIconCubeOutlineAlpha);
+
+		mContext->SetMaterial(swMaterialType::UnlitColor);
+		mContext->SetColor(OutlineColor);
+		mContext->EnableColorBlend(true);
+		mContext->SetLineWidth(Scale);
+		mContext->SetVertexBufferPointer(BoxVerts);
+		mContext->SetVertexFormatPosition(3);
+		mContext->SetIndexBufferPointer(BoxIndices);
+		// the outline stays behind the axis even where its front edges cross it
+		mContext->SetDepthWrite(false);
+		mContext->DrawIndexedPrimitives(GL_LINES, static_cast<GLsizei>(BoxIndex - BoxIndices), GL_UNSIGNED_SHORT, 0);
+		mContext->SetDepthWrite(true);
+		mContext->EnableColorBlend(false);
+	}
+
+	mContext->SetLineWidth(LineWidth * Scale);
+	mContext->SetMaterial(swMaterialType::UnlitVertexColor);
 	mContext->SetVertexBufferPointer(Verts);
 	mContext->SetVertexFormat(0, 3, 0, 0, 4, false);
 	mContext->SetIndexBufferPointer(Indices);
 
-	mContext->DrawIndexedPrimitives(GL_LINES, 6, GL_UNSIGNED_SHORT, 0);
+	mContext->DrawIndexedPrimitives(GL_LINES, LineIndexCount, GL_UNSIGNED_SHORT, 0);
 	mContext->SetLineWidth(1.0f);
-	mContext->DrawIndexedPrimitives(GL_TRIANGLES, 72, GL_UNSIGNED_SHORT, 6 * 2);
+	mContext->DrawIndexedPrimitives(GL_TRIANGLES, ConeIndexCount * ArrowCount, GL_UNSIGNED_SHORT, LineIndexCount * 2);
 
-	if (!gTexFont.IsLoaded())
+	if (!Preferences.mAxisIconLabels || !gTexFont.IsLoaded())
 		return;
 
 	mContext->SetMaterial(swMaterialType::TextSDF);
@@ -463,18 +543,19 @@ void swView::DrawAxes() const
 	mContext->EnableColorBlend(true);
 
 	float TextBuffer[6 * 5 * 3];
-	swVector3 PosX = swMultiply30(swVector3(ArrowLength + 5.0f, 0.0f, 0.0f), WorldViewMatrix);
+	swVector3 PosX = swMultiply30(swVector3(LabelDistance, 0.0f, 0.0f), WorldViewMatrix);
 	gTexFont.GetGlyphTriangles(PosX.x, PosX.y, PosX.z, 'X', TextBuffer);
-	swVector3 PosY = swMultiply30(swVector3(0.0f, ArrowLength + 5.0f, 0.0f), WorldViewMatrix);
+	swVector3 PosY = swMultiply30(swVector3(0.0f, LabelDistance, 0.0f), WorldViewMatrix);
 	gTexFont.GetGlyphTriangles(PosY.x, PosY.y, PosY.z, 'Y', TextBuffer + 5 * 6);
-	swVector3 PosZ = swMultiply30(swVector3(0.0f, 0.0f, ArrowLength + 5.0f), WorldViewMatrix);
+	swVector3 PosZ = swMultiply30(swVector3(0.0f, 0.0f, LabelDistance), WorldViewMatrix);
 	gTexFont.GetGlyphTriangles(PosZ.x, PosZ.y, PosZ.z, 'Z', TextBuffer + 5 * 6 * 2);
 
 	mContext->SetVertexBufferPointer(TextBuffer);
 	mContext->SetVertexFormat(0, 3, 0, 2, 0, false);
 
+	// the labels sit on the view background so they need no halo
 	mContext->SetColor(swVector4FromColor(swGetPreferences().mTextColor));
-	mContext->SetTextHaloColor(swVector4FromColor(swGetPreferences().mTextHaloColor));
+	mContext->SetTextHaloColor(swVector4(0.0f, 0.0f, 0.0f, 0.0f));
 	mContext->DrawPrimitives(GL_TRIANGLES, 0, 6 * 3);
 
 	mContext->EnableColorBlend(false);
@@ -648,9 +729,8 @@ void swView::DrawCutaway() const
 
 	mContext->EnableColorBlend(true);
 	mContext->SetDepthWrite(false);
-	// the shade stays between 90% and 99% transparent
 	swVector4 ShadeColor = swVector4FromColor(swGetPreferences().mCutawayShadeColor);
-	ShadeColor.w = (100 - qBound(90, swGetPreferences().mCutawayShadeTransparency, 99)) / 100.0f;
+	ShadeColor.w = swOverlayAlpha(swGetPreferences().mCutawayShadeAlpha);
 	mContext->SetColor(ShadeColor);
 	mContext->SetVertexBufferPointer(ShadeVerts.data());
 	mContext->SetVertexFormatPosition(3);
@@ -928,6 +1008,11 @@ void swView::DrawRotateViewOverlay()
 	mContext->EnableDepthTest(true);
 }
 
+// the base grid studs are two rings marking the outer and inner diameter of a real stud
+constexpr float SW_GRID_STUD_RADII[] = { 6.0f, 4.0f };
+constexpr int SW_GRID_STUD_RINGS = 2;
+constexpr int SW_GRID_STUD_SEGMENTS = 24;
+
 void swView::DrawGrid()
 {
 	const swPreferences& Preferences = swGetPreferences();
@@ -939,7 +1024,7 @@ void swView::DrawGrid()
 		return;
 
 	const int Spacing = swMaximum(Preferences.mGridLineSpacing, 1);
-	int MinX, MaxX, MinY, MaxY;
+	int MinX, MaxX, MinY, MaxY, MinZ, MaxZ;
 	swVector3 Min(FLT_MAX, FLT_MAX, FLT_MAX), Max(-FLT_MAX, -FLT_MAX, -FLT_MAX);
 
 	bool GridSizeValid = mModel->GetVisiblePartsBoundingBox(Min, Max);
@@ -970,29 +1055,30 @@ void swView::DrawGrid()
 		}
 	}
 
-	if (GridSizeValid && std::isfinite(Min[0]) && std::isfinite(Min[1]) && std::isfinite(Max[0]) && std::isfinite(Max[1]))
+	// use to size one grid axis in cells around the model with a cell of margin and the smallest extent as a floor
+	const auto GetGridExtent = [GridSizeValid, &Min, &Max, Spacing](int Axis, int Extent, int& Low, int& High)
 	{
+		Low = -Extent;
+		High = Extent;
+
+		if (!GridSizeValid || !std::isfinite(Min[Axis]) || !std::isfinite(Max[Axis]))
+			return;
+
 		// Bound grid coordinates before converting to integers, keeping the vertex buffer below 1 MB.
 		constexpr float MaxGridExtent = 10000.0f;
 		const float GridSpacing = 20.0f * Spacing;
 
-		MinX = static_cast<int>(floorf(swClamp(Min[0] / GridSpacing, -MaxGridExtent + 1.0f, MaxGridExtent - 1.0f))) - 1;
-		MinY = static_cast<int>(floorf(swClamp(Min[1] / GridSpacing, -MaxGridExtent + 1.0f, MaxGridExtent - 1.0f))) - 1;
-		MaxX = static_cast<int>(ceilf(swClamp(Max[0] / GridSpacing, -MaxGridExtent + 1.0f, MaxGridExtent - 1.0f))) + 1;
-		MaxY = static_cast<int>(ceilf(swClamp(Max[1] / GridSpacing, -MaxGridExtent + 1.0f, MaxGridExtent - 1.0f))) + 1;
+		Low = swMinimum(static_cast<int>(floorf(swClamp(Min[Axis] / GridSpacing, -MaxGridExtent + 1.0f, MaxGridExtent - 1.0f))) - 1, -Extent);
+		High = swMaximum(static_cast<int>(ceilf(swClamp(Max[Axis] / GridSpacing, -MaxGridExtent + 1.0f, MaxGridExtent - 1.0f))) + 1, Extent);
+	};
 
-		MinX = swMinimum(MinX, -2);
-		MinY = swMinimum(MinY, -2);
-		MaxX = swMaximum(MaxX, 2);
-		MaxY = swMaximum(MaxY, 2);
-	}
-	else
-	{
-		MinX = -2;
-		MinY = -2;
-		MaxX = 2;
-		MaxY = 2;
-	}
+	GetGridExtent(0, 2, MinX, MaxX);
+	GetGridExtent(1, 2, MinY, MaxY);
+	GetGridExtent(2, 2, MinZ, MaxZ);
+
+	// the height grids stand on the base grid unless the model reaches below it
+	if (!GridSizeValid || !std::isfinite(Min[2]) || Min[2] >= 0.0f)
+		MinZ = 0;
 
 	if (!mGridBuffer.IsValid() || MinX != mGridSettings[0] || MinY != mGridSettings[1] || MaxX != mGridSettings[2] || MaxY != mGridSettings[3] ||
 	    Spacing != mGridSettings[4] || (Preferences.mDrawGridStuds ? 1 : 0) != mGridSettings[5] || (Preferences.mDrawGridLines ? 1 : 0) != mGridSettings[6])
@@ -1000,7 +1086,7 @@ void swView::DrawGrid()
 		int VertexBufferSize = 0;
 
 		if (Preferences.mDrawGridStuds)
-			VertexBufferSize += 4 * 5 * sizeof(float);
+			VertexBufferSize += (MaxX - MinX) * Spacing * SW_GRID_STUD_RINGS * SW_GRID_STUD_SEGMENTS * 2 * 3 * sizeof(float);
 
 		if (Preferences.mDrawGridLines)
 			VertexBufferSize += 2 * (MaxX - MinX + MaxY - MinY + 2) * 3 * sizeof(float);
@@ -1016,39 +1102,28 @@ void swView::DrawGrid()
 
             float* CurVert = Verts;
 
+            // one row of stud outlines drawn once per row of studs
             if (Preferences.mDrawGridStuds)
             {
-                float Left = MinX * 20.0f * Spacing;
-                float Right = MaxX * 20.0f * Spacing;
-                float Top = MinY * 20.0f * Spacing;
-                float Bottom = MaxY * 20.0f * Spacing;
-                float Z = 0;
-                float U = (MaxX - MinX) * static_cast<float>(Spacing);
-                float V = (MaxY - MinY) * static_cast<float>(Spacing);
+                for (int Stud = MinX * Spacing; Stud < MaxX * Spacing; Stud++)
+                {
+                    const float CenterX = Stud * 20.0f + 10.0f;
 
-                *CurVert++ = Left;
-                *CurVert++ = Top;
-                *CurVert++ = Z;
-                *CurVert++ = 0.0f;
-                *CurVert++ = V;
+                    for (const float Radius : SW_GRID_STUD_RADII)
+                    {
+                        for (int Segment = 0; Segment < SW_GRID_STUD_SEGMENTS; Segment++)
+                        {
+                            for (int Side = 0; Side < 2; Side++)
+                            {
+                                const float Angle = (Segment + Side) * 2.0f * SW_PI / SW_GRID_STUD_SEGMENTS;
 
-                *CurVert++ = Right;
-                *CurVert++ = Top;
-                *CurVert++ = Z;
-                *CurVert++ = U;
-                *CurVert++ = V;
-
-                *CurVert++ = Left;
-                *CurVert++ = Bottom;
-                *CurVert++ = Z;
-                *CurVert++ = 0.0f;
-                *CurVert++ = 0.0f;
-
-                *CurVert++ = Right;
-                *CurVert++ = Bottom;
-                *CurVert++ = Z;
-                *CurVert++ = U;
-                *CurVert++ = 0.0f;
+                                *CurVert++ = CenterX + cosf(Angle) * Radius;
+                                *CurVert++ = sinf(Angle) * Radius;
+                                *CurVert++ = 0.0f;
+                            }
+                        }
+                    }
+                }
             }
 
             if (Preferences.mDrawGridLines)
@@ -1096,20 +1171,27 @@ void swView::DrawGrid()
 
 	if (Preferences.mDrawGridStuds)
 	{
-		mContext->BindTexture2D(gGridTexture);
+		const int StudVertCount = (MaxX - MinX) * Spacing * SW_GRID_STUD_RINGS * SW_GRID_STUD_SEGMENTS * 2;
+
 		mContext->SetDepthWrite(false);
 		mContext->EnableColorBlend(true);
 
-		mContext->SetMaterial(swMaterialType::UnlitTextureModulate);
+		mContext->SetLineWidth(1.0f);
+		mContext->SetMaterial(swMaterialType::UnlitColor);
 		mContext->SetColor(swVector4FromColor(Preferences.mGridStudColor));
+		mContext->SetVertexFormat(0, 3, 0, 0, 0, false);
 
-		mContext->SetVertexFormat(0, 3, 0, 2, 0, false);
-		mContext->DrawPrimitives(GL_TRIANGLE_STRIP, 0, 4);
+		for (int Stud = MinY * Spacing; Stud < MaxY * Spacing; Stud++)
+		{
+			mContext->SetWorldMatrix(swMatrix44Translation(swVector3(0.0f, Stud * 20.0f + 10.0f, 0.0f)));
+			mContext->DrawPrimitives(GL_LINES, 0, StudVertCount);
+		}
 
+		mContext->SetWorldMatrix(swMatrix44Identity());
 		mContext->EnableColorBlend(false);
 		mContext->SetDepthWrite(true);
 
-		BufferOffset = 4 * 5 * sizeof(float);
+		BufferOffset = StudVertCount * 3 * sizeof(float);
 	}
 
 	if (Preferences.mDrawGridLines)
@@ -1130,12 +1212,39 @@ void swView::DrawGrid()
 		quint32 Color;
 	};
 
-	// z axis lines reach as high as the height grids
+	// the height grids and z axis lines follow the model like the base grid with a line every plate height
 	constexpr float PlateHeight = 8.0f;
-	const int PlateCount = swMaximum(static_cast<int>(ceilf((GridSizeValid && std::isfinite(Max[2]) ? Max[2] : 0.0f) / PlateHeight)) + 3, 9);
-	const float Top = PlateCount * PlateHeight;
+	const int PlateMin = static_cast<int>(floorf(MinZ * 20.0f * Spacing / PlateHeight));
+	const int PlateMax = static_cast<int>(ceilf(MaxZ * 20.0f * Spacing / PlateHeight));
+	const float Bottom = PlateMin * PlateHeight;
+	const float Top = PlateMax * PlateHeight;
 	const bool DrawGridHeight = Preferences.mDrawGridHeightXZ || Preferences.mDrawGridHeightYZ;
 	std::vector<swGridVertex> AxisVerts;
+
+	// use to add an axis line whose negative half takes the negative axis color when that option is on
+	const auto AddAxisLine = [&AxisVerts, &Preferences](const swVector3& Start, const swVector3& End, int Axis)
+	{
+		const quint32 Colors[3] = { Preferences.mAxisXColor, Preferences.mAxisYColor, Preferences.mAxisZColor };
+		const quint32 NegativeColors[3] = { Preferences.mAxisXNegativeColor, Preferences.mAxisYNegativeColor, Preferences.mAxisZNegativeColor };
+
+		if (!Preferences.mDrawGridNegativeAxes || Start[Axis] >= 0.0f)
+		{
+			AxisVerts.push_back({ Start.x, Start.y, Start.z, Colors[Axis] });
+			AxisVerts.push_back({ End.x, End.y, End.z, Colors[Axis] });
+			return;
+		}
+
+		swVector3 Origin = Start;
+		Origin[Axis] = 0.0f;
+		AxisVerts.push_back({ Start.x, Start.y, Start.z, NegativeColors[Axis] });
+		AxisVerts.push_back({ Origin.x, Origin.y, Origin.z, NegativeColors[Axis] });
+
+		if (End[Axis] > 0.0f)
+		{
+			AxisVerts.push_back({ Origin.x, Origin.y, Origin.z, Colors[Axis] });
+			AxisVerts.push_back({ End.x, End.y, End.z, Colors[Axis] });
+		}
+	};
 
 	if (DrawGridHeight)
 	{
@@ -1156,21 +1265,18 @@ void swView::DrawGrid()
 
 			for (int Step = MinX; Step <= MaxX; Step++)
 			{
-				Lines.emplace_back(Step * LineSpacing, Y, 0.0f);
+				Lines.emplace_back(Step * LineSpacing, Y, Bottom);
 				Lines.emplace_back(Step * LineSpacing, Y, Top);
 			}
 
-			for (int Plate = 1; Plate <= PlateCount; Plate++)
+			for (int Plate = PlateMin; Plate <= PlateMax; Plate++)
 			{
 				Lines.emplace_back(Left, Y, Plate * PlateHeight);
 				Lines.emplace_back(Right, Y, Plate * PlateHeight);
 			}
 
 			if (Preferences.mDrawGridAxisZ)
-			{
-				AxisVerts.push_back({ 0.0f, Y, 0.0f, Preferences.mAxisZColor });
-				AxisVerts.push_back({ 0.0f, Y, Top, Preferences.mAxisZColor });
-			}
+				AddAxisLine(swVector3(0.0f, Y, Bottom), swVector3(0.0f, Y, Top), 2);
 		}
 
 		if (Preferences.mDrawGridHeightYZ)
@@ -1179,11 +1285,11 @@ void swView::DrawGrid()
 
 			for (int Step = MinY; Step <= MaxY; Step++)
 			{
-				Lines.emplace_back(X, Step * LineSpacing, 0.0f);
+				Lines.emplace_back(X, Step * LineSpacing, Bottom);
 				Lines.emplace_back(X, Step * LineSpacing, Top);
 			}
 
-			for (int Plate = 1; Plate <= PlateCount; Plate++)
+			for (int Plate = PlateMin; Plate <= PlateMax; Plate++)
 			{
 				Lines.emplace_back(X, Front, Plate * PlateHeight);
 				Lines.emplace_back(X, Back, Plate * PlateHeight);
@@ -1191,10 +1297,7 @@ void swView::DrawGrid()
 
 			// skip the z axis line the xz grid already drew at the origin
 			if (Preferences.mDrawGridAxisZ && (BehindModel || !Preferences.mDrawGridHeightXZ))
-			{
-				AxisVerts.push_back({ X, 0.0f, 0.0f, Preferences.mAxisZColor });
-				AxisVerts.push_back({ X, 0.0f, Top, Preferences.mAxisZColor });
-			}
+				AddAxisLine(swVector3(X, 0.0f, Bottom), swVector3(X, 0.0f, Top), 2);
 		}
 
 		mContext->SetLineWidth(1.0f);
@@ -1210,24 +1313,19 @@ void swView::DrawGrid()
 		const float Scale = 20.0f * Spacing;
 
 		if (Preferences.mDrawGridAxisY)
-		{
-			AxisVerts.push_back({ 0.0f, MinY * Scale, 0.0f, Preferences.mAxisYColor });
-			AxisVerts.push_back({ 0.0f, MaxY * Scale, 0.0f, Preferences.mAxisYColor });
-		}
+			AddAxisLine(swVector3(0.0f, MinY * Scale, 0.0f), swVector3(0.0f, MaxY * Scale, 0.0f), 1);
 
 		if (Preferences.mDrawGridAxisX)
-		{
-			AxisVerts.push_back({ MinX * Scale, 0.0f, 0.0f, Preferences.mAxisXColor });
-			AxisVerts.push_back({ MaxX * Scale, 0.0f, 0.0f, Preferences.mAxisXColor });
-		}
+			AddAxisLine(swVector3(MinX * Scale, 0.0f, 0.0f), swVector3(MaxX * Scale, 0.0f, 0.0f), 0);
 
 		// the height grids carry their own z axis lines
 		if (Preferences.mDrawGridAxisZ && !DrawGridHeight)
-		{
-			AxisVerts.push_back({ 0.0f, 0.0f, 0.0f, Preferences.mAxisZColor });
-			AxisVerts.push_back({ 0.0f, 0.0f, Top, Preferences.mAxisZColor });
-		}
+			AddAxisLine(swVector3(0.0f, 0.0f, Bottom), swVector3(0.0f, 0.0f, Top), 2);
 	}
+
+	// the negative z axis reaches below the base grid as far as the positive one reaches above it unless the model sets its depth
+	if (Preferences.mDrawGridNegativeAxes && Preferences.mDrawGridAxisZ && Bottom >= 0.0f && (Preferences.mDrawGridOrigin || DrawGridHeight))
+		AddAxisLine(swVector3(0.0f, 0.0f, -Top), swVector3(0.0f, 0.0f, 0.0f), 2);
 
 	if (!AxisVerts.empty())
 	{

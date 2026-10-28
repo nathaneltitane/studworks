@@ -13855,7 +13855,7 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_update.cpp" line="257"/>
-        <source>- Move XY: %1 Z: %2 - Axes: %3 - Rotate: %4 / %5 -</source>
+        <source>Move XY: %1 Z: %2 - Axes: %3 - Rotate: %4 / %5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -14157,6 +14157,54 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <translation type="unfinished">
             <numerusform>已合并 %n 个子模型。</numerusform>
         </translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/window/sw_window_main_update.cpp"/>
+        <source>View: %1 deg. Lat. / %2 deg. Lon. / %3</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">视图：纬度 %1 度 / 经度 %2 度 / %3</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/window/sw_window_main_update.cpp"/>
+        <source>Perspective</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">透视</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/window/sw_window_main_update.cpp"/>
+        <source>Orthographic</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">正交</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/window/sw_window_main_interface.cpp"/>
+        <source>Selection</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">选择</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/window/sw_window_main_interface.cpp"/>
+        <source>View Orientation</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">视图方向</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/window/sw_window_main_interface.cpp"/>
+        <source>Position</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">位置</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/window/sw_window_main_interface.cpp"/>
+        <source>Snap and Transform</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">吸附与变换</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/window/sw_window_main_interface.cpp"/>
+        <source>Step</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">步骤</translation>
     </message>
 </context>
 <context>
@@ -16543,12 +16591,6 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Set the distance in LDraw units at which simpler part meshes are used.</source>
-        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">设置使用更简单的零件网格的 LDraw 单位距离。</translation>
-    </message>
-    <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Stud Style</source>
         <translation>凸点样式</translation>
     </message>
@@ -17014,6 +17056,18 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <source>Choose the corner for the model-axis indicator.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">选择模型轴指示器的角点。</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Show the X, Y and Z labels on the model-axis indicator.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">在模型坐标轴指示器上显示 X、Y 和 Z 标签。</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Draw the view cube outline around the model-axis indicator with the axis origin at its center.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">在模型坐标轴指示器周围绘制视图立方体轮廓，坐标轴原点位于其中心。</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
@@ -19053,21 +19107,6 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose how see-through the cutaway faces are, from 90% to 99%.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Shade Transparency</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Cutaway Shade Transparency</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Turntable</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19255,6 +19294,144 @@ Unsupported video cards use face tint and colored edges.</source>
         <source>Minifigure Builder</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Labels</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">标签</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Cube Outline</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">立方体轮廓</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Negative Axes</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">负轴</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Show the negative X, Y and Z axes on the model-axis indicator in their own colors.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">在模型坐标轴指示器上以各自的颜色显示负 X、Y 和 Z 轴。</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Choose the negative X axis color used by the axis icon.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">选择坐标轴图标使用的负 X 轴颜色。</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Negative X Axis Color</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">负 X 轴颜色</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp"/>
+        <source>Select Negative X Axis Color</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">选择负 X 轴颜色</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Choose the negative Y axis color used by the axis icon.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">选择坐标轴图标使用的负 Y 轴颜色。</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Negative Y Axis Color</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">负 Y 轴颜色</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp"/>
+        <source>Select Negative Y Axis Color</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">选择负 Y 轴颜色</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Choose the negative Z axis color used by the axis icon.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">选择坐标轴图标使用的负 Z 轴颜色。</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Negative Z Axis Color</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">负 Z 轴颜色</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp"/>
+        <source>Select Negative Z Axis Color</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">选择负 Z 轴颜色</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Shade Alpha</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">阴影 Alpha</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Cutaway Shade Alpha</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">剖切阴影 Alpha</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Choose how opaque the light shade on the cutaway faces is, from 0 to 1.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">选择剖切面上浅色阴影的不透明程度，范围为 0 到 1。</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Outline Alpha</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">轮廓 Alpha</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Axis Icon Cube Outline Alpha</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">坐标轴图标立方体轮廓 Alpha</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Choose how opaque the axis icon cube outline is, from 0 to 1.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">选择坐标轴图标立方体轮廓的不透明程度，范围为 0 到 1。</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Draw Negative Axes</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">绘制负轴</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Draw the negative halves of the axis lines in the negative axis colors, with the Z line reaching below the base grid.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">以负轴颜色绘制轴线的负半部分，Z 轴线延伸到基础网格下方。</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp"/>
+        <source>%1 ldu</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">%1 ldu</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Set the distance from the camera in LDraw units (ldu, 20 ldu per stud) beyond which parts draw simpler studs.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">设置与相机的距离（LDraw 单位 ldu，每个凸点 20 ldu），超过该距离的零件绘制更简单的凸点。</translation>
+    </message>
 </context>
 <context>
     <name>swPreviewDockWidget</name>
@@ -19432,9 +19609,9 @@ Unsupported video cards use face tint and colored edges.</source>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Model Measurements&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The dimensions of the model&apos;s bounding box are shown in centimeters, inches, and LDraw units (LDU). The values are read-only and include parts across all steps.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Model Measurements&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The dimensions of the model&apos;s bounding box are shown in centimeters, inches, and LDraw units (ldu). The values are read-only and include parts across all steps.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">&lt;p&gt;&lt;b&gt;模型测量&lt;/b&gt;&lt;/p&gt;&lt;p&gt;模型边界框的尺寸以厘米、英寸和 LDraw 单位 (LDU) 为单位显示。这些值是只读的，包含所有步骤中的零件。&lt;/p&gt;</translation>
+        <translation type="unfinished">&lt;p&gt;&lt;b&gt;模型测量&lt;/b&gt;&lt;/p&gt;&lt;p&gt;模型边界框的尺寸以厘米、英寸和 LDraw 单位 (ldu) 为单位显示。这些值是只读的，包含所有步骤中的零件。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
@@ -19490,14 +19667,14 @@ Unsupported video cards use face tint and colored edges.</source>
     <message>
         <source>%1 x %2 x %3 cm
 %4 x %5 x %6 inches
-%7 x %8 x %9 LDU</source>
+%7 x %8 x %9 ldu</source>
         <translation type="vanished">%1 x %2 x %3 厘米
 %4 x %5 x %6 英寸
-%7 x %8 x %9 LDU</translation>
+%7 x %8 x %9 ldu</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.cpp" line="295"/>
-        <source>Metric: %1 x %2 x %3 cm - Imperial: %4 x %5 x %6 inches - LDraw: %7 x %8 x %9 LDU</source>
+        <source>Metric: %1 x %2 x %3 cm - Imperial: %4 x %5 x %6 inches - LDraw: %7 x %8 x %9 ldu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

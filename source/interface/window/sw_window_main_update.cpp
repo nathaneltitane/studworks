@@ -169,8 +169,52 @@ void swMainWindow::UpdateSelectedObjects(bool SelectionChanged)
 		Object = tr("Origin");
 
 	QString Label = tr("%1 X: %2 Y: %3 Z: %4");
-	Label = Label.arg(Object, QLocale::system().toString(Position[0], 'f', 2), QLocale::system().toString(Position[1], 'f', 2), QLocale::system().toString(Position[2], 'f', 2));
-	mStatusPositionLabel->setText(Label);
+	mStatusPositionText = Label.arg(Object, QLocale::system().toString(Position[0], 'f', 2), QLocale::system().toString(Position[1], 'f', 2), QLocale::system().toString(Position[2], 'f', 2));
+	UpdateStatusSegments();
+}
+
+// use to show the status bar segments turned on in its context menu with a dash between each
+void swMainWindow::UpdateStatusSegments()
+{
+	mStatusBarLabel->setVisible(mStatusSegments & SW_STATUS_SEGMENT_SELECTION);
+
+	const std::pair<QLabel*, std::pair<int, const QString*>> Segments[] =
+	{
+		{ mStatusViewLabel, { SW_STATUS_SEGMENT_VIEW, &mStatusViewText } },
+		{ mStatusPositionLabel, { SW_STATUS_SEGMENT_POSITION, &mStatusPositionText } },
+		{ mStatusSnapLabel, { SW_STATUS_SEGMENT_SNAP, &mStatusSnapText } },
+		{ mStatusTimeLabel, { SW_STATUS_SEGMENT_STEP, &mStatusTimeText } }
+	};
+
+	bool SegmentFirst = true;
+
+	for (const auto& Segment : Segments)
+	{
+		const bool Visible = (mStatusSegments & Segment.second.first) && !Segment.second.second->isEmpty();
+		Segment.first->setVisible(Visible);
+
+		if (!Visible)
+			continue;
+
+		Segment.first->setText(SegmentFirst ? *Segment.second.second : QLatin1String("- ") + *Segment.second.second);
+		SegmentFirst = false;
+	}
+}
+
+// use to show the active view orientation and projection ahead of the focus position
+void swMainWindow::UpdateViewOrientation(const swCamera* Camera)
+{
+	float Latitude, Longitude, Distance;
+	Camera->GetAngles(Latitude, Longitude, Distance);
+
+	const QString Projection = Camera->GetProjection() == swCameraProjection::Orthographic ? tr("Orthographic") : tr("Perspective");
+	const QString Text = tr("View: %1 deg. Lat. / %2 deg. Lon. / %3").arg(QLocale::system().toString(Latitude, 'f', 1), QLocale::system().toString(Longitude, 'f', 1), Projection);
+
+	if (Text == mStatusViewText)
+		return;
+
+	mStatusViewText = Text;
+	UpdateStatusSegments();
 }
 
 void swMainWindow::UpdateTimeline(bool Clear, bool UpdateItems)
@@ -204,7 +248,8 @@ void swMainWindow::UpdateCurrentStep()
 	mActions[SW_VIEW_TIME_NEXT]->setEnabled(CurrentStep < SW_STEP_MAXIMUM);
 	mActions[SW_VIEW_TIME_LAST]->setEnabled(CurrentStep != LastStep);
 
-	mStatusTimeLabel->setText(QString(tr("Step %1")).arg(swFormatIntegerLocalized(CurrentStep, locale())));
+	mStatusTimeText = QString(tr("Step %1")).arg(swFormatIntegerLocalized(CurrentStep, locale()));
+	UpdateStatusSegments();
 }
 
 void swMainWindow::SetAddKeys(bool AddKeys)
@@ -254,7 +299,8 @@ void swMainWindow::UpdateSnap()
 	const QString Angle = GetAngleSnap() != 0.0f ? tr("%1 deg.").arg(swFormatDoubleLocalized(GetAngleSnap(), locale(), 'g', 6)) : tr("free");
 	const QString Pivot = GetSeparateTransform() ? tr("separately") : tr("together");
 
-	mStatusSnapLabel->setText(tr("- Move XY: %1 Z: %2 - Axes: %3 - Rotate: %4 / %5 -").arg(MoveXY, MoveZ, Axes, Angle, Pivot));
+	mStatusSnapText = tr("Move XY: %1 Z: %2 - Axes: %3 - Rotate: %4 / %5").arg(MoveXY, MoveZ, Axes, Angle, Pivot);
+	UpdateStatusSegments();
 	mStatusSnapLabel->setToolTip(tr("Movement snap, rotation snap, transform axes and rotation pivot. Change them with the last buttons of the standard toolbar."));
 }
 

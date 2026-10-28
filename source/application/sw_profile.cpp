@@ -74,14 +74,18 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Settings", "TurntableTurnTime", 30),                                                   // SW_PROFILE_TURNTABLE_TURN_TIME
 	swProfileEntry("Settings", "TurntableAxis", static_cast<int>(swTurntableAxis::Z)),                     // SW_PROFILE_TURNTABLE_AXIS
 	swProfileEntry("Settings", "DrawAxesLocation", static_cast<int>(swAxisIconLocation::BottomLeft)),      // SW_PROFILE_DRAW_AXES_LOCATION
-	swProfileEntry("Settings", "AxisIconSize", 48),                                                       // SW_PROFILE_AXIS_ICON_SIZE
+	swProfileEntry("Settings", "AxisIconSize", 96),                                                       // SW_PROFILE_AXIS_ICON_SIZE
+	swProfileEntry("Settings", "AxisIconLabels", 1),                                                      // SW_PROFILE_AXIS_ICON_LABELS
+	swProfileEntry("Settings", "AxisIconNegative", 0),                                                    // SW_PROFILE_AXIS_ICON_NEGATIVE
+	swProfileEntry("Settings", "AxisIconCubeOutline", 0),                                                 // SW_PROFILE_AXIS_ICON_CUBE_OUTLINE
+	swProfileEntry("Settings", "AxisIconCubeOutlineAlpha", 50),                                     // SW_PROFILE_AXIS_ICON_CUBE_OUTLINE_ALPHA
 	swProfileEntry("Settings", "TextColor", SW_RGBA(214, 220, 227, 255)),                                  // SW_PROFILE_TEXT_COLOR
 	swProfileEntry("Settings", "TextHaloColor", SW_RGBA(17, 19, 24, 160)),                                // SW_PROFILE_TEXT_HALO_COLOR
 	swProfileEntry("Settings", "MarqueeBorderColor", SW_RGBA(64, 64, 255, 255)),                           // SW_PROFILE_MARQUEE_BORDER_COLOR
 	swProfileEntry("Settings", "MarqueeFillColor", SW_RGBA(64, 64, 255, 64)),                              // SW_PROFILE_MARQUEE_FILL_COLOR
 	swProfileEntry("Settings", "OverlayColor", SW_RGBA(0, 0, 0, 255)),                                     // SW_PROFILE_OVERLAY_COLOR
 	swProfileEntry("Settings", "CutawayShadeColor", SW_RGB(255, 255, 255)),                                // SW_PROFILE_CUTAWAY_SHADE_COLOR
-	swProfileEntry("Settings", "CutawayShadeTransparency", 95),                                            // SW_PROFILE_CUTAWAY_SHADE_TRANSPARENCY
+	swProfileEntry("Settings", "CutawayShadeAlpha", 50),                                             // SW_PROFILE_CUTAWAY_SHADE_ALPHA
 	swProfileEntry("Settings", "ActiveViewColor", SW_RGBA(41, 128, 185, 255)),                             // SW_PROFILE_ACTIVE_VIEW_COLOR
 	swProfileEntry("Settings", "InactiveViewColor", SW_RGBA(69, 69, 69, 255)),                             // SW_PROFILE_INACTIVE_VIEW_COLOR
 	swProfileEntry("Settings", "DrawEdgeLines", 1),                                                        // SW_PROFILE_DRAW_EDGE_LINES
@@ -102,6 +106,7 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Settings", "GridLineSpacing", 5),                                                      // SW_PROFILE_GRID_LINE_SPACING
 	swProfileEntry("Settings", "GridLineColor", SW_RGBA(24, 24, 24, 255)),                                 // SW_PROFILE_GRID_LINE_COLOR
 	swProfileEntry("Settings", "GridOrigin", 0),                                                           // SW_PROFILE_GRID_ORIGIN
+	swProfileEntry("Settings", "GridNegativeAxes", 1),                                                     // SW_PROFILE_GRID_NEGATIVE_AXES
 	swProfileEntry("Settings", "GridHeightXZ", 0),                                                         // SW_PROFILE_GRID_HEIGHT_XZ
 	swProfileEntry("Settings", "GridHeightYZ", 0),                                                         // SW_PROFILE_GRID_HEIGHT_YZ
 	swProfileEntry("Settings", "GridHeightBehindModel", 0),                                                // SW_PROFILE_GRID_HEIGHT_BEHIND_MODEL
@@ -118,6 +123,9 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Settings", "AxisXColor", SW_RGBA(200, 40, 60, 255)),                                   // SW_PROFILE_AXIS_X_COLOR
 	swProfileEntry("Settings", "AxisYColor", SW_RGBA(100, 200, 20, 255)),                                  // SW_PROFILE_AXIS_Y_COLOR
 	swProfileEntry("Settings", "AxisZColor", SW_RGBA(40, 60, 230, 255)),                                   // SW_PROFILE_AXIS_Z_COLOR
+	swProfileEntry("Settings", "AxisXNegativeColor", SW_RGBA(150, 62, 72, 255)),                          // SW_PROFILE_AXIS_X_NEGATIVE_COLOR
+	swProfileEntry("Settings", "AxisYNegativeColor", SW_RGBA(96, 150, 50, 255)),                          // SW_PROFILE_AXIS_Y_NEGATIVE_COLOR
+	swProfileEntry("Settings", "AxisZNegativeColor", SW_RGBA(62, 74, 168, 255)),                          // SW_PROFILE_AXIS_Z_NEGATIVE_COLOR
 	swProfileEntry("Settings", "ObjectSelectedColor", static_cast<uint>(SW_RGBA(229, 76, 102, 255))),      // SW_PROFILE_OBJECT_SELECTED_COLOR
 	swProfileEntry("Settings", "ObjectFocusedColor", static_cast<uint>(SW_RGBA(102, 76, 229, 255))),       // SW_PROFILE_OBJECT_FOCUSED_COLOR
 	swProfileEntry("Settings", "CameraColor", static_cast<uint>(SW_RGBA(128, 204, 128, 255))),             // SW_PROFILE_CAMERA_COLOR
@@ -143,6 +151,7 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Settings", "RestoreTabLayout", true),                                      // SW_PROFILE_RESTORE_TAB_LAYOUT
 	swProfileEntry("Settings", "AngleSnapCustom", 7.5f),                                       // SW_PROFILE_ANGLE_SNAP_CUSTOM
 	swProfileEntry("Settings", "OrbitSnap", false),                                            // SW_PROFILE_ORBIT_SNAP
+	swProfileEntry("Settings", "StatusBarSegments", 31),                                       // SW_PROFILE_STATUS_BAR_SEGMENTS
 	swProfileEntry("Settings", "FirstPartAtOrigin", false),                                   // SW_PROFILE_FIRST_PART_AT_ORIGIN
 	swProfileEntry("Settings", "TerminalFollowModel", true),                                   // SW_PROFILE_TERMINAL_FOLLOW_MODEL
 	swProfileEntry("Settings", "InsertColorMode", 0),                                          // SW_PROFILE_INSERT_COLOR_MODE
@@ -198,7 +207,7 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Settings", "PreviewViewCubeSize", 64),                                        // SW_PROFILE_PREVIEW_VIEW_CUBE_SIZE
 	swProfileEntry("Settings", "PreviewViewCubeLocation", (int)swViewCubeLocation::TopRight),   // SW_PROFILE_PREVIEW_VIEW_CUBE_LOCATION
 	swProfileEntry("Settings", "DrawPreviewAxis", 0),                                             // SW_PROFILE_PREVIEW_DRAW_AXES
-	swProfileEntry("Settings", "PreviewAxisIconSize", 48),                                         // SW_PROFILE_PREVIEW_AXIS_ICON_SIZE
+	swProfileEntry("Settings", "PreviewAxisIconSize", 64),                                         // SW_PROFILE_PREVIEW_AXIS_ICON_SIZE
 
 	swProfileEntry("Settings", "StudCylinderColorEnabled", true),                              // SW_PROFILE_STUD_CYLINDER_COLOR_ENABLED
 	swProfileEntry("Settings", "StudCylinderColor", SW_RGBA(27, 42, 52, 255)),                 // SW_PROFILE_STUD_CYLINDER_COLOR

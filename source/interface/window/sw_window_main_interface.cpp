@@ -915,6 +915,9 @@ void swMainWindow::CreateStatusBar()
 	StatusBar->addPermanentWidget(mStatusLoadFailureLabel);
 	mStatusLoadFailureLabel->hide();
 
+	mStatusViewLabel = new QLabel();
+	StatusBar->addPermanentWidget(mStatusViewLabel);
+
 	mStatusPositionLabel = new QLabel();
 	StatusBar->addPermanentWidget(mStatusPositionLabel);
 
@@ -923,6 +926,40 @@ void swMainWindow::CreateStatusBar()
 
 	mStatusTimeLabel = new QLabel();
 	StatusBar->addPermanentWidget(mStatusTimeLabel);
+
+	// a right click toggles each segment of the status bar
+	mStatusSegments = swGetProfileInteger(SW_PROFILE_STATUS_BAR_SEGMENTS);
+	StatusBar->setContextMenuPolicy(Qt::CustomContextMenu);
+
+	connect(StatusBar, &QWidget::customContextMenuRequested, this, [this, StatusBar](const QPoint& Position)
+	{
+		const std::pair<int, QString> Segments[] =
+		{
+			{ SW_STATUS_SEGMENT_SELECTION, tr("Selection") },
+			{ SW_STATUS_SEGMENT_VIEW, tr("View Orientation") },
+			{ SW_STATUS_SEGMENT_POSITION, tr("Position") },
+			{ SW_STATUS_SEGMENT_SNAP, tr("Snap and Transform") },
+			{ SW_STATUS_SEGMENT_STEP, tr("Step") }
+		};
+
+		QMenu Menu(StatusBar);
+
+		for (const std::pair<int, QString>& Segment : Segments)
+		{
+			QAction* Action = Menu.addAction(Segment.second);
+			Action->setCheckable(true);
+			Action->setChecked(mStatusSegments & Segment.first);
+
+			connect(Action, &QAction::toggled, this, [this, Segment](bool Checked)
+			{
+				mStatusSegments = Checked ? mStatusSegments | Segment.first : mStatusSegments & ~Segment.first;
+				swSetProfileInteger(SW_PROFILE_STATUS_BAR_SEGMENTS, mStatusSegments);
+				UpdateStatusSegments();
+			});
+		}
+
+		Menu.exec(StatusBar->mapToGlobal(Position));
+	});
 
 	swPartsLibrary* Library = swGetPartsLibrary();
 	connect(Library, &swPartsLibrary::AssetStatusChanged, this, &swMainWindow::ScheduleAssetUpdate);

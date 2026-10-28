@@ -28,7 +28,6 @@ public:
 	swTexture& operator=(const swTexture&) = delete;
 	swTexture& operator=(swTexture&&) = delete;
 
-	void CreateGridTexture();
 	static QImage PrepareImage(QImage Image);
 
 	void SetImage(QImage Image, int Flags);
@@ -121,4 +120,3 @@ protected:
 	Q_DECLARE_TR_FUNCTIONS(swTexture)
 };
 
-extern swTexture* gGridTexture;

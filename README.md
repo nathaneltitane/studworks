@@ -20,7 +20,7 @@ Useful? Star the repository - it helps others find it.
 
 - Cutaway: cut into the model around a clicked face to see inside it, with a cube, sphere or cylinder shaped cut - from View > Cutaway, the model is never changed
 - Cutaway: click for the default size or drag to size it, move and resize it with the gizmo knobs, push in and pull out by one plate, Esc leaves it
-- Cutaway: faces lined with a light shade, its color and 90% to 99% transparency set in Preferences
+- Cutaway: faces lined with a light shade, its color and alpha set in Preferences, the alpha reads 0 to 1 over 95% to 85% transparency so the shade never disappears
 - Cutaway: cut parts show solid surfaces in their own color where the cut passes through them, like a sawn brick instead of a hollow shell
 - Projection: new model views and tabs open with the last chosen projection, set in Preferences to change only the active view or all model views at once
 - Instructions: Model Projection in the Document settings renders the step and cover models in perspective or orthographic, whatever the model view shows
@@ -41,7 +41,8 @@ Useful? Star the repository - it helps others find it.
 - Instructions: pointers from an element border to a part, step, notice or other element - eight anchors or the nearest, line or callout wedge, arrowhead or dot tip
 - Instructions: settings, page layouts, notices and pointers saved in the model file as '!SW INSTRUCTION' meta commands
 - View cube: the view sphere is now a cube with chamfered edges and corners - click any of its 6 faces, 12 edges or 8 corners for that view, with sharper labels
-- Sizes: view cube, axis icon and part thumbnails each come in Extra Small to Extra Large on a 16px baseline - view cube 48 to 192, axis icon and thumbnails 32 to 128, with older saved sizes moved to the nearest one
+- Sizes: view cube, axis icon and part thumbnails each come in Extra Small to Extra Large on a 16px baseline - view cube and axis icon 48 to 192, thumbnails 32 to 128, with older saved sizes moved to the nearest one
+- Axis icon: its own Preferences group with size, location, X, Y and Z labels, optional negative axes in their own duller colors set under Colors, and a chamfered view cube wireframe around the axis whose alpha reads 0 to 1 over the same range as the cutaway shade, the icon keeps the same clearance from the view edges as the view cube at each size with the labels kept inside it
 - Command line: import and export the settings, keyboard shortcuts, mouse shortcuts and part categories without opening a window - '--import-settings', '--export-settings', '--import-keyboard-shortcuts', '--export-keyboard-shortcuts', '--import-mouse-shortcuts', '--export-mouse-shortcuts', '--import-categories', '--export-categories'
 - Command line: '--help', '--version' and the import and export options run without a display
 - Code: views, preferences, the parts library and projects split into smaller files by task - camera, input, categories, shortcuts, cache, loading, file and import - with no change in behavior
@@ -171,7 +172,8 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
 
 - **Modeling** ↴
   - MLCad ROTSTEP step views shown and edited in the Timeline
-  - Vertical XZ and YZ height grids with their own z axis lines, grid origin z axis line, toggles for each x, y and z axis line, custom rotation snap angle and camera orbit snapping
+  - Vertical XZ and YZ height grids with their own z axis lines, sized with the base grid around the model on all three axes, grid origin z axis line, toggles for each x, y and z axis line, optional negative axis halves in the negative axis colors, custom rotation snap angle and camera orbit snapping
+  - Status bar view orientation in latitude and longitude with the projection, ahead of the focus position, and a right click menu showing or hiding each status bar segment
   - Normal to Face view command, first part at the origin option
   - Insert color options and the selected part color as the current color
   - Separate rendering settings for the model view, preview and parts list

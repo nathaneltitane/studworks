@@ -13477,7 +13477,7 @@ Por favor, visita https://github.com/nathaneltitane/studworks para saber cómo d
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_update.cpp" line="257"/>
-        <source>- Move XY: %1 Z: %2 - Axes: %3 - Rotate: %4 / %5 -</source>
+        <source>Move XY: %1 Z: %2 - Axes: %3 - Rotate: %4 / %5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -13981,6 +13981,54 @@ Por favor, visita https://github.com/nathaneltitane/studworks para saber cómo d
             <numerusform>Se ha fusionado %n submodelo.</numerusform>
             <numerusform>Se han fusionado %n submodelos.</numerusform>
         </translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/window/sw_window_main_update.cpp"/>
+        <source>View: %1 deg. Lat. / %2 deg. Lon. / %3</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Vista: %1 grados Lat. / %2 grados Lon. / %3</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/window/sw_window_main_update.cpp"/>
+        <source>Perspective</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Perspectiva</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/window/sw_window_main_update.cpp"/>
+        <source>Orthographic</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Ortográfica</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/window/sw_window_main_interface.cpp"/>
+        <source>Selection</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Selección</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/window/sw_window_main_interface.cpp"/>
+        <source>View Orientation</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Orientación de la vista</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/window/sw_window_main_interface.cpp"/>
+        <source>Position</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Posición</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/window/sw_window_main_interface.cpp"/>
+        <source>Snap and Transform</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Ajuste y transformación</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/window/sw_window_main_interface.cpp"/>
+        <source>Step</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Paso</translation>
     </message>
 </context>
 <context>
@@ -16655,6 +16703,18 @@ Por favor, visita https://github.com/nathaneltitane/studworks para saber cómo d
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Show the X, Y and Z labels on the model-axis indicator.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Mostrar las etiquetas X, Y y Z en el indicador de ejes del modelo.</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Draw the view cube outline around the model-axis indicator with the axis origin at its center.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Dibujar el contorno del cubo de vista alrededor del indicador de ejes del modelo, con el origen de los ejes en su centro.</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Show base-grid lines at the specified spacing.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Muestra las líneas de la cuadrícula base con el espaciado especificado.</translation>
@@ -17327,12 +17387,6 @@ Por favor, visita https://github.com/nathaneltitane/studworks para saber cómo d
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Custom Paths</source>
         <translation>Rutas personalizadas</translation>
-    </message>
-    <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Set the distance in LDraw units at which simpler part meshes are used.</source>
-        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Establezca la distancia en unidades LDraw en las que se utilizan mallas de piezas más simples.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
@@ -18953,21 +19007,6 @@ Las tarjetas de video no compatibles usan tinte frontal y bordes coloreados.</tr
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose how see-through the cutaway faces are, from 90% to 99%.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Shade Transparency</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Cutaway Shade Transparency</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Turntable</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19154,6 +19193,144 @@ Las tarjetas de video no compatibles usan tinte frontal y bordes coloreados.</tr
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Minifigure Builder</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Labels</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Etiquetas</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Cube Outline</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Contorno del cubo</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Negative Axes</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Ejes negativos</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Show the negative X, Y and Z axes on the model-axis indicator in their own colors.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Mostrar los ejes X, Y y Z negativos en el indicador de ejes del modelo con sus propios colores.</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Choose the negative X axis color used by the axis icon.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Elija el color del eje X negativo usado por el icono de ejes.</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Negative X Axis Color</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Color del eje X negativo</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp"/>
+        <source>Select Negative X Axis Color</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Seleccionar el color del eje X negativo</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Choose the negative Y axis color used by the axis icon.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Elija el color del eje Y negativo usado por el icono de ejes.</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Negative Y Axis Color</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Color del eje Y negativo</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp"/>
+        <source>Select Negative Y Axis Color</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Seleccionar el color del eje Y negativo</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Choose the negative Z axis color used by the axis icon.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Elija el color del eje Z negativo usado por el icono de ejes.</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Negative Z Axis Color</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Color del eje Z negativo</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp"/>
+        <source>Select Negative Z Axis Color</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Seleccionar el color del eje Z negativo</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Shade Alpha</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Alfa del sombreado</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Cutaway Shade Alpha</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Alfa del sombreado del corte</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Choose how opaque the light shade on the cutaway faces is, from 0 to 1.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Elija qué tan opaco es el sombreado claro en las caras del corte, de 0 a 1.</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Outline Alpha</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Alfa del contorno</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Axis Icon Cube Outline Alpha</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Alfa del contorno del cubo del icono de ejes</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Choose how opaque the axis icon cube outline is, from 0 to 1.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Elija qué tan opaco es el contorno del cubo del icono de ejes, de 0 a 1.</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Draw Negative Axes</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Dibujar ejes negativos</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Draw the negative halves of the axis lines in the negative axis colors, with the Z line reaching below the base grid.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Dibuja las mitades negativas de las líneas de eje con los colores de los ejes negativos, con la línea Z extendiéndose por debajo de la cuadrícula base.</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp"/>
+        <source>%1 ldu</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">%1 ldu</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Set the distance from the camera in LDraw units (ldu, 20 ldu per stud) beyond which parts draw simpler studs.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Establece la distancia a la cámara en unidades LDraw (ldu, 20 ldu por espiga) a partir de la cual las piezas dibujan espigas más simples.</translation>
     </message>
 </context>
 <context>
@@ -19348,9 +19525,9 @@ Las tarjetas de video no compatibles usan tinte frontal y bordes coloreados.</tr
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Model Measurements&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The dimensions of the model&apos;s bounding box are shown in centimeters, inches, and LDraw units (LDU). The values are read-only and include parts across all steps.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Model Measurements&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The dimensions of the model&apos;s bounding box are shown in centimeters, inches, and LDraw units (ldu). The values are read-only and include parts across all steps.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">&lt;p&gt;&lt;b&gt;Medidas del modelo&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Las dimensiones del cuadro delimitador del modelo se muestran en centímetros, pulgadas y unidades LDraw (LDU). Los valores son de solo lectura e incluyen partes de todos los pasos.&lt;/p&gt;</translation>
+        <translation type="unfinished">&lt;p&gt;&lt;b&gt;Medidas del modelo&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Las dimensiones del cuadro delimitador del modelo se muestran en centímetros, pulgadas y unidades LDraw (ldu). Los valores son de solo lectura e incluyen partes de todos los pasos.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
@@ -19418,14 +19595,14 @@ Las tarjetas de video no compatibles usan tinte frontal y bordes coloreados.</tr
     <message>
         <source>%1 x %2 x %3 cm
 %4 x %5 x %6 inches
-%7 x %8 x %9 LDU</source>
+%7 x %8 x %9 ldu</source>
         <translation type="vanished">%1 x %2 x %3 cm
 %4 x %5 x %6 pulgadas
-%7 x %8 x %9 LDU</translation>
+%7 x %8 x %9 ldu</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.cpp" line="295"/>
-        <source>Metric: %1 x %2 x %3 cm - Imperial: %4 x %5 x %6 inches - LDraw: %7 x %8 x %9 LDU</source>
+        <source>Metric: %1 x %2 x %3 cm - Imperial: %4 x %5 x %6 inches - LDraw: %7 x %8 x %9 ldu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

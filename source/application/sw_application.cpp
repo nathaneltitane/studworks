@@ -41,13 +41,17 @@ void swPreferences::LoadDefaults()
 	mTurntableAxis = static_cast<swTurntableAxis>(qBound(0, swGetProfileInteger(SW_PROFILE_TURNTABLE_AXIS), static_cast<int>(swTurntableAxis::Z)));
 	mAxisIconLocation = swGetProfileAxisIconLocation();
 	mAxisIconSize = swSnapSize(swGetProfileInteger(SW_PROFILE_AXIS_ICON_SIZE), SW_AXIS_ICON_SIZES);
+	mAxisIconLabels = swGetProfileInteger(SW_PROFILE_AXIS_ICON_LABELS);
+	mAxisIconNegative = swGetProfileInteger(SW_PROFILE_AXIS_ICON_NEGATIVE);
+	mAxisIconCubeOutline = swGetProfileInteger(SW_PROFILE_AXIS_ICON_CUBE_OUTLINE);
+	mAxisIconCubeOutlineAlpha = swGetProfileInteger(SW_PROFILE_AXIS_ICON_CUBE_OUTLINE_ALPHA);
 	mTextColor = swGetProfileUnsignedInteger(SW_PROFILE_TEXT_COLOR);
 	mTextHaloColor = swGetProfileUnsignedInteger(SW_PROFILE_TEXT_HALO_COLOR);
 	mMarqueeBorderColor = swGetProfileUnsignedInteger(SW_PROFILE_MARQUEE_BORDER_COLOR);
 	mMarqueeFillColor = swGetProfileUnsignedInteger(SW_PROFILE_MARQUEE_FILL_COLOR);
 	mOverlayColor = swGetProfileUnsignedInteger(SW_PROFILE_OVERLAY_COLOR);
 	mCutawayShadeColor = swGetProfileUnsignedInteger(SW_PROFILE_CUTAWAY_SHADE_COLOR);
-	mCutawayShadeTransparency = swGetProfileInteger(SW_PROFILE_CUTAWAY_SHADE_TRANSPARENCY);
+	mCutawayShadeAlpha = swGetProfileInteger(SW_PROFILE_CUTAWAY_SHADE_ALPHA);
 	mActiveViewColor = swGetProfileUnsignedInteger(SW_PROFILE_ACTIVE_VIEW_COLOR);
 	mInactiveViewColor = swGetProfileUnsignedInteger(SW_PROFILE_INACTIVE_VIEW_COLOR);
 	mDrawEdgeLines = swGetProfileInteger(SW_PROFILE_DRAW_EDGE_LINES);
@@ -68,6 +72,7 @@ void swPreferences::LoadDefaults()
 	mGridLineSpacing = swGetProfileInteger(SW_PROFILE_GRID_LINE_SPACING);
 	mGridLineColor = swGetProfileUnsignedInteger(SW_PROFILE_GRID_LINE_COLOR);
 	mDrawGridOrigin = swGetProfileInteger(SW_PROFILE_GRID_ORIGIN);
+	mDrawGridNegativeAxes = swGetProfileInteger(SW_PROFILE_GRID_NEGATIVE_AXES);
 	mDrawGridHeightXZ = swGetProfileInteger(SW_PROFILE_GRID_HEIGHT_XZ);
 	mDrawGridHeightYZ = swGetProfileInteger(SW_PROFILE_GRID_HEIGHT_YZ);
 	mGridHeightBehindModel = swGetProfileInteger(SW_PROFILE_GRID_HEIGHT_BEHIND_MODEL);
@@ -83,6 +88,9 @@ void swPreferences::LoadDefaults()
 	mAxisXColor = swGetProfileUnsignedInteger(SW_PROFILE_AXIS_X_COLOR);
 	mAxisYColor = swGetProfileUnsignedInteger(SW_PROFILE_AXIS_Y_COLOR);
 	mAxisZColor = swGetProfileUnsignedInteger(SW_PROFILE_AXIS_Z_COLOR);
+	mAxisXNegativeColor = swGetProfileUnsignedInteger(SW_PROFILE_AXIS_X_NEGATIVE_COLOR);
+	mAxisYNegativeColor = swGetProfileUnsignedInteger(SW_PROFILE_AXIS_Y_NEGATIVE_COLOR);
+	mAxisZNegativeColor = swGetProfileUnsignedInteger(SW_PROFILE_AXIS_Z_NEGATIVE_COLOR);
 	mAutoLoadMostRecent = swGetProfileInteger(SW_PROFILE_AUTO_LOAD_MOST_RECENT);
 	mRestoreTabLayout = swGetProfileInteger(SW_PROFILE_RESTORE_TAB_LAYOUT);
 	mFirstPartAtOrigin = swGetProfileInteger(SW_PROFILE_FIRST_PART_AT_ORIGIN);
@@ -136,6 +144,10 @@ void swPreferences::SaveDefaults()
 	swSetProfileInteger(SW_PROFILE_TURNTABLE_AXIS, static_cast<int>(mTurntableAxis));
 	swSetProfileAxisIconLocation(mAxisIconLocation);
 	swSetProfileInteger(SW_PROFILE_AXIS_ICON_SIZE, mAxisIconSize);
+	swSetProfileInteger(SW_PROFILE_AXIS_ICON_LABELS, mAxisIconLabels);
+	swSetProfileInteger(SW_PROFILE_AXIS_ICON_NEGATIVE, mAxisIconNegative);
+	swSetProfileInteger(SW_PROFILE_AXIS_ICON_CUBE_OUTLINE, mAxisIconCubeOutline);
+	swSetProfileInteger(SW_PROFILE_AXIS_ICON_CUBE_OUTLINE_ALPHA, mAxisIconCubeOutlineAlpha);
 	swSetProfileUnsignedInteger(SW_PROFILE_TEXT_COLOR, mTextColor);
 	swSetProfileUnsignedInteger(SW_PROFILE_TEXT_HALO_COLOR, mTextHaloColor);
 	swSetProfileUnsignedInteger(SW_PROFILE_BACKGROUND_COLOR, mBackgroundSolidColor);
@@ -143,7 +155,7 @@ void swPreferences::SaveDefaults()
 	swSetProfileUnsignedInteger(SW_PROFILE_MARQUEE_FILL_COLOR, mMarqueeFillColor);
 	swSetProfileUnsignedInteger(SW_PROFILE_OVERLAY_COLOR, mOverlayColor);
 	swSetProfileUnsignedInteger(SW_PROFILE_CUTAWAY_SHADE_COLOR, mCutawayShadeColor);
-	swSetProfileInteger(SW_PROFILE_CUTAWAY_SHADE_TRANSPARENCY, mCutawayShadeTransparency);
+	swSetProfileInteger(SW_PROFILE_CUTAWAY_SHADE_ALPHA, mCutawayShadeAlpha);
 	swSetProfileUnsignedInteger(SW_PROFILE_ACTIVE_VIEW_COLOR, mActiveViewColor);
 	swSetProfileUnsignedInteger(SW_PROFILE_INACTIVE_VIEW_COLOR, mInactiveViewColor);
 	swSetProfileInteger(SW_PROFILE_DRAW_EDGE_LINES, mDrawEdgeLines);
@@ -164,6 +176,7 @@ void swPreferences::SaveDefaults()
 	swSetProfileInteger(SW_PROFILE_GRID_LINE_SPACING, mGridLineSpacing);
 	swSetProfileUnsignedInteger(SW_PROFILE_GRID_LINE_COLOR, mGridLineColor);
 	swSetProfileInteger(SW_PROFILE_GRID_ORIGIN, mDrawGridOrigin);
+	swSetProfileInteger(SW_PROFILE_GRID_NEGATIVE_AXES, mDrawGridNegativeAxes);
 	swSetProfileInteger(SW_PROFILE_GRID_HEIGHT_XZ, mDrawGridHeightXZ);
 	swSetProfileInteger(SW_PROFILE_GRID_HEIGHT_YZ, mDrawGridHeightYZ);
 	swSetProfileInteger(SW_PROFILE_GRID_HEIGHT_BEHIND_MODEL, mGridHeightBehindModel);
@@ -179,6 +192,9 @@ void swPreferences::SaveDefaults()
 	swSetProfileUnsignedInteger(SW_PROFILE_AXIS_X_COLOR, mAxisXColor);
 	swSetProfileUnsignedInteger(SW_PROFILE_AXIS_Y_COLOR, mAxisYColor);
 	swSetProfileUnsignedInteger(SW_PROFILE_AXIS_Z_COLOR, mAxisZColor);
+	swSetProfileUnsignedInteger(SW_PROFILE_AXIS_X_NEGATIVE_COLOR, mAxisXNegativeColor);
+	swSetProfileUnsignedInteger(SW_PROFILE_AXIS_Y_NEGATIVE_COLOR, mAxisYNegativeColor);
+	swSetProfileUnsignedInteger(SW_PROFILE_AXIS_Z_NEGATIVE_COLOR, mAxisZNegativeColor);
 	swSetProfileInteger(SW_PROFILE_AUTO_LOAD_MOST_RECENT, mAutoLoadMostRecent);
 	swSetProfileInteger(SW_PROFILE_RESTORE_TAB_LAYOUT, mRestoreTabLayout);
 	swSetProfileInteger(SW_PROFILE_FIRST_PART_AT_ORIGIN, mFirstPartAtOrigin);

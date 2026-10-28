@@ -13692,7 +13692,7 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_update.cpp" line="257"/>
-        <source>- Move XY: %1 Z: %2 - Axes: %3 - Rotate: %4 / %5 -</source>
+        <source>Move XY: %1 Z: %2 - Axes: %3 - Rotate: %4 / %5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -14056,6 +14056,54 @@ Please visit https://library.ldraw.org for information on how to download and in
             <numerusform>Sloučeny %n podmodely.</numerusform>
             <numerusform>Sloučeno %n podmodelů.</numerusform>
         </translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/window/sw_window_main_update.cpp"/>
+        <source>View: %1 deg. Lat. / %2 deg. Lon. / %3</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Pohled: %1 st. š. / %2 st. d. / %3</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/window/sw_window_main_update.cpp"/>
+        <source>Perspective</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Perspektiva</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/window/sw_window_main_update.cpp"/>
+        <source>Orthographic</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Ortografická</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/window/sw_window_main_interface.cpp"/>
+        <source>Selection</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Výběr</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/window/sw_window_main_interface.cpp"/>
+        <source>View Orientation</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Orientace pohledu</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/window/sw_window_main_interface.cpp"/>
+        <source>Position</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Poloha</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/window/sw_window_main_interface.cpp"/>
+        <source>Snap and Transform</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Přichycení a transformace</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/window/sw_window_main_interface.cpp"/>
+        <source>Step</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Krok</translation>
     </message>
 </context>
 <context>
@@ -16530,12 +16578,6 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Set the distance in LDraw units at which simpler part meshes are used.</source>
-        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Nastavte vzdálenost v jednotkách LDraw, při které se používají jednodušší sítě dílů.</translation>
-    </message>
-    <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Plain</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Prostý</translation>
@@ -17001,6 +17043,18 @@ Please visit https://library.ldraw.org for information on how to download and in
         <source>Choose the corner for the model-axis indicator.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Vyberte roh pro indikátor osy modelu.</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Show the X, Y and Z labels on the model-axis indicator.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Zobrazit popisky X, Y a Z na indikátoru os modelu.</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Draw the view cube outline around the model-axis indicator with the axis origin at its center.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Kreslit obrys krychle pohledu kolem indikátoru os modelu s počátkem os v jeho středu.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
@@ -19072,21 +19126,6 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose how see-through the cutaway faces are, from 90% to 99%.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Shade Transparency</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Cutaway Shade Transparency</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Turntable</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19274,6 +19313,144 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
         <source>Minifigure Builder</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Labels</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Popisky</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Cube Outline</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Obrys krychle</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Negative Axes</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Záporné osy</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Show the negative X, Y and Z axes on the model-axis indicator in their own colors.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Zobrazit záporné osy X, Y a Z na indikátoru os modelu ve vlastních barvách.</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Choose the negative X axis color used by the axis icon.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Zvolte barvu záporné osy X používanou ikonou os.</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Negative X Axis Color</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Barva záporné osy X</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp"/>
+        <source>Select Negative X Axis Color</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Vybrat barvu záporné osy X</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Choose the negative Y axis color used by the axis icon.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Zvolte barvu záporné osy Y používanou ikonou os.</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Negative Y Axis Color</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Barva záporné osy Y</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp"/>
+        <source>Select Negative Y Axis Color</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Vybrat barvu záporné osy Y</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Choose the negative Z axis color used by the axis icon.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Zvolte barvu záporné osy Z používanou ikonou os.</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Negative Z Axis Color</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Barva záporné osy Z</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp"/>
+        <source>Select Negative Z Axis Color</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Vybrat barvu záporné osy Z</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Shade Alpha</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Alfa stínování</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Cutaway Shade Alpha</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Alfa stínování řezu</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Choose how opaque the light shade on the cutaway faces is, from 0 to 1.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Zvolte, jak neprůhledné je světlé stínování na plochách řezu, od 0 do 1.</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Outline Alpha</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Alfa obrysu</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Axis Icon Cube Outline Alpha</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Alfa obrysu krychle ikony os</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Choose how opaque the axis icon cube outline is, from 0 to 1.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Zvolte, jak neprůhledný je obrys krychle ikony os, od 0 do 1.</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Draw Negative Axes</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Kreslit záporné osy</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Draw the negative halves of the axis lines in the negative axis colors, with the Z line reaching below the base grid.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Kreslí záporné poloviny čar os barvami záporných os, přičemž čára Z sahá pod základní mřížku.</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp"/>
+        <source>%1 ldu</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">%1 ldu</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Set the distance from the camera in LDraw units (ldu, 20 ldu per stud) beyond which parts draw simpler studs.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Nastaví vzdálenost od kamery v jednotkách LDraw (ldu, 20 ldu na výstupek), za kterou díly kreslí jednodušší výstupky.</translation>
+    </message>
 </context>
 <context>
     <name>swPreviewDockWidget</name>
@@ -19459,9 +19636,9 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
-        <source>&lt;p&gt;&lt;b&gt;Model Measurements&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The dimensions of the model&apos;s bounding box are shown in centimeters, inches, and LDraw units (LDU). The values are read-only and include parts across all steps.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;b&gt;Model Measurements&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The dimensions of the model&apos;s bounding box are shown in centimeters, inches, and LDraw units (ldu). The values are read-only and include parts across all steps.&lt;/p&gt;</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">&lt;p&gt;&lt;b&gt;Měry modelu&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Rozměry ohraničovacího rámečku modelu jsou uvedeny v centimetrech, palcích a jednotkách LDraw (LDU). Hodnoty jsou pouze pro čtení a zahrnují části ve všech krocích.&lt;/p&gt;</translation>
+        <translation type="unfinished">&lt;p&gt;&lt;b&gt;Měry modelu&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Rozměry ohraničovacího rámečku modelu jsou uvedeny v centimetrech, palcích a jednotkách LDraw (ldu). Hodnoty jsou pouze pro čtení a zahrnují části ve všech krocích.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.ui"/>
@@ -19531,15 +19708,15 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     <message>
         <source>%1 x %2 x %3 cm
 %4 x %5 x %6 inches
-%7 x %8 x %9 LDU</source>
+%7 x %8 x %9 ldu</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">%1 x %2 x %3 cm
 %4 x %5 x %6 palce
-%7 x %8 x %9 LDU</translation>
+%7 x %8 x %9 ldu</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_properties.cpp" line="295"/>
-        <source>Metric: %1 x %2 x %3 cm - Imperial: %4 x %5 x %6 inches - LDraw: %7 x %8 x %9 LDU</source>
+        <source>Metric: %1 x %2 x %3 cm - Imperial: %4 x %5 x %6 inches - LDraw: %7 x %8 x %9 ldu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

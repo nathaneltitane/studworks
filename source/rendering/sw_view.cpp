@@ -243,17 +243,11 @@ void swView::SetSelectedSubmodelActive()
 void swView::CreateResources(swContext* Context)
 {
 	Q_UNUSED(Context);
-
-	gGridTexture = new swTexture;
-	gGridTexture->CreateGridTexture();
 }
 
 void swView::DestroyResources(swContext* Context)
 {
 	Q_UNUSED(Context);
-
-	delete gGridTexture;
-	gGridTexture = nullptr;
 }
 
 void swView::RemoveCamera()

@@ -106,7 +106,8 @@ private slots:
 	void EdgeLinesToggled();
 	void ConditionalLinesCheckBoxToggled();
 	void LineWidthSliderValueChanged();
-	void CutawayShadeTransparencyChanged();
+	void AxisIconCubeOutlineAlphaChanged();
+	void CutawayShadeAlphaChanged();
 	void RenderTargetChanged();
 	void MeshLODSliderValueChanged();
 	void FadeStepsToggled();

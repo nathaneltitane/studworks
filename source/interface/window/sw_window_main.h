@@ -20,6 +20,16 @@ class swDoubleSpinBox;
 class swSpinnerWidget;
 enum class swRenderDialogMode;
 
+// the status bar segments the context menu shows or hides, stored as one bit each
+enum swStatusSegment : int
+{
+	SW_STATUS_SEGMENT_SELECTION = 1 << 0,
+	SW_STATUS_SEGMENT_VIEW = 1 << 1,
+	SW_STATUS_SEGMENT_POSITION = 1 << 2,
+	SW_STATUS_SEGMENT_SNAP = 1 << 3,
+	SW_STATUS_SEGMENT_STEP = 1 << 4
+};
+
 class swModelTabWidget : public QWidget
 {
 	Q_OBJECT
@@ -281,6 +291,8 @@ public:
 	void ToggleFullScreen();
 
 	void UpdateSelectedObjects(bool SelectionChanged);
+	void UpdateViewOrientation(const swCamera* Camera);
+	void UpdateStatusSegments();
 	void UpdateTimeline(bool Clear, bool UpdateItems);
 	void UpdatePaste(bool Enabled);
 	void UpdateCurrentStep();
@@ -452,7 +464,13 @@ protected:
 	bool mPreviewFromSelection = false;
 
 	swElidedLabel* mStatusBarLabel = nullptr;
+	QLabel* mStatusViewLabel = nullptr;
 	QLabel* mStatusPositionLabel = nullptr;
+	QString mStatusViewText;
+	QString mStatusPositionText;
+	QString mStatusSnapText;
+	QString mStatusTimeText;
+	int mStatusSegments = SW_STATUS_SEGMENT_SELECTION | SW_STATUS_SEGMENT_VIEW | SW_STATUS_SEGMENT_POSITION | SW_STATUS_SEGMENT_SNAP | SW_STATUS_SEGMENT_STEP;
 	QLabel* mStatusSnapLabel = nullptr;
 	QLabel* mStatusTimeLabel = nullptr;
 	swSpinnerWidget* mStatusLoadSpinner = nullptr;

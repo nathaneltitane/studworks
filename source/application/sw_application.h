@@ -35,7 +35,14 @@ enum class swColorTheme
 
 // sizes from extra small to extra large on a 16px baseline
 constexpr std::array<int, 5> SW_VIEW_CUBE_SIZES = { 48, 64, 96, 128, 192 };
-constexpr std::array<int, 5> SW_AXIS_ICON_SIZES = { 32, 48, 64, 96, 128 };
+constexpr std::array<int, 5> SW_AXIS_ICON_SIZES = SW_VIEW_CUBE_SIZES;
+// the view cube and axis icon share a corner box whose half spans the boundary and the cube faces sit at the half size
+constexpr float SW_VIEW_CUBE_BOUNDARY = 1.25f;
+constexpr float SW_VIEW_CUBE_HALF_SIZE = 0.8f;
+constexpr float SW_VIEW_CUBE_CHAMFER = 0.22f;
+// the alpha settings read 0 to 1 over a base range of 95% to 85% transparency so an overlay never disappears
+constexpr float SW_OVERLAY_ALPHA_MIN = 0.05f;
+constexpr float SW_OVERLAY_ALPHA_MAX = 0.15f;
 constexpr std::array<int, 5> SW_PART_ICON_SIZES = { 32, 48, 64, 96, 128 };
 
 // use to snap a stored size to the nearest listed size
@@ -58,6 +65,12 @@ inline int swSizeIndex(int Size, const std::array<int, 5>& Sizes)
 			return static_cast<int>(Index) + 1;
 
 	return 0;
+}
+
+// use to turn a 0 to 100 alpha setting into the overlay alpha
+inline float swOverlayAlpha(int Alpha)
+{
+	return SW_OVERLAY_ALPHA_MIN + (SW_OVERLAY_ALPHA_MAX - SW_OVERLAY_ALPHA_MIN) * (Alpha < 0 ? 0 : Alpha > 100 ? 100 : Alpha) / 100.0f;
 }
 
 enum class swHighlightRenderMode
@@ -167,13 +180,17 @@ public:
 	swTurntableAxis mTurntableAxis;
 	swAxisIconLocation mAxisIconLocation;
 	int mAxisIconSize;
+	bool mAxisIconLabels;
+	bool mAxisIconNegative;
+	bool mAxisIconCubeOutline;
+	int mAxisIconCubeOutlineAlpha;
 	quint32 mTextColor;
 	quint32 mTextHaloColor;
 	quint32 mMarqueeBorderColor;
 	quint32 mMarqueeFillColor;
 	quint32 mOverlayColor;
 	quint32 mCutawayShadeColor;
-	int mCutawayShadeTransparency;
+	int mCutawayShadeAlpha;
 	quint32 mActiveViewColor;
 	quint32 mInactiveViewColor;
 	bool mDrawEdgeLines;
@@ -195,6 +212,7 @@ public:
 	int mGridLineSpacing;
 	quint32 mGridLineColor;
 	bool mDrawGridOrigin;
+	bool mDrawGridNegativeAxes;
 	bool mDrawGridHeightXZ;
 	bool mDrawGridHeightYZ;
 	bool mGridHeightBehindModel;
@@ -211,6 +229,9 @@ public:
 	quint32 mAxisXColor;
 	quint32 mAxisYColor;
 	quint32 mAxisZColor;
+	quint32 mAxisXNegativeColor;
+	quint32 mAxisYNegativeColor;
+	quint32 mAxisZNegativeColor;
 	bool mAutoLoadMostRecent;
 	bool mRestoreTabLayout;
 	bool mFirstPartAtOrigin;

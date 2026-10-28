@@ -291,7 +291,7 @@ swPropertiesDialog::swPropertiesDialog(QWidget* Parent, swPropertiesDialogOption
 	ui->CommentsEdit->setText(mOptions->Properties.mComments);
 
 	const swVector3 Dimensions = Options->BoundingBox.Max - Options->BoundingBox.Min;
-	QString Format = tr("Metric: %1 x %2 x %3 cm - Imperial: %4 x %5 x %6 inches - LDraw: %7 x %8 x %9 LDU");
+	QString Format = tr("Metric: %1 x %2 x %3 cm - Imperial: %4 x %5 x %6 inches - LDraw: %7 x %8 x %9 ldu");
 	QString Measurements = Format.arg(swFormatDoubleLocalized(Dimensions.x * 0.04, locale(), 'f', 2), swFormatDoubleLocalized(Dimensions.y * 0.04, locale(), 'f', 2), swFormatDoubleLocalized(Dimensions.z * 0.04, locale(), 'f', 2),
 	                                  swFormatDoubleLocalized(Dimensions.x / 64.0, locale(), 'f', 2), swFormatDoubleLocalized(Dimensions.y / 64.0, locale(), 'f', 2), swFormatDoubleLocalized(Dimensions.z / 64.0, locale(), 'f', 2),
 	                                  swFormatDoubleLocalized(Dimensions.x, locale(), 'f', 2), swFormatDoubleLocalized(Dimensions.y, locale(), 'f', 2), swFormatDoubleLocalized(Dimensions.z, locale(), 'f', 2));

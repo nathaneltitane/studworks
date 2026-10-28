@@ -552,7 +552,7 @@
              <string>Mesh Detail Distance</string>
             </property>
             <property name="toolTip">
-             <string>Set the distance in LDraw units at which simpler part meshes are used.</string>
+             <string>Set the distance from the camera in LDraw units (ldu, 20 ldu per stud) beyond which parts draw simpler studs.</string>
             </property>
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
@@ -1241,7 +1241,72 @@
             </item>
            </widget>
           </item>
-          <item row="2" column="0">
+          <item row="2" column="0" colspan="2">
+           <widget class="QCheckBox" name="FollowStepViewsCheckBox">
+            <property name="toolTip">
+             <string>Turn the view to each step's view rotation (MLCAD ROTSTEP) when changing steps.</string>
+            </property>
+            <property name="text">
+             <string>Follow Step Views</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="ProjectionScopeLabel">
+            <property name="toolTip">
+             <string>Choose whether a projection change applies to the active view only or to all model views.</string>
+            </property>
+            <property name="buddy">
+             <cstring>ProjectionScopeCombo</cstring>
+            </property>
+            <property name="text">
+             <string>&amp;Projection</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QComboBox" name="ProjectionScopeCombo">
+            <property name="accessibleName">
+             <string>Projection Scope</string>
+            </property>
+            <property name="toolTip">
+             <string>Choose whether a projection change applies to the active view only or to all model views, new views always open with the last chosen projection.</string>
+            </property>
+            <item>
+             <property name="text">
+              <string>Per View</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>All Views</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <spacer name="horizontalSpacer_7">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="AxisIconGroup">
+         <property name="title">
+          <string>Axis Icon</string>
+         </property>
+         <layout class="QGridLayout" name="AxisIconLayout">
+          <item row="0" column="0">
            <widget class="QLabel" name="AxisIconSizeLabel">
             <property name="toolTip">
              <string>Choose the model-axis indicator size in model views, or disable it.</string>
@@ -1250,11 +1315,11 @@
              <cstring>AxisIconSizeCombo</cstring>
             </property>
             <property name="text">
-             <string>Axis Icon</string>
+             <string>Size</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
+          <item row="0" column="1" colspan="2">
            <widget class="QComboBox" name="AxisIconSizeCombo">
             <property name="accessibleName">
              <string>Axis Icon</string>
@@ -1294,7 +1359,7 @@
             </item>
            </widget>
           </item>
-          <item row="3" column="0">
+          <item row="1" column="0">
            <widget class="QLabel" name="AxisIconLocationLabel">
             <property name="toolTip">
              <string>Choose the corner for the model-axis indicator.</string>
@@ -1303,11 +1368,11 @@
              <cstring>AxisIconLocationCombo</cstring>
             </property>
             <property name="text">
-             <string>Axis Icon Location</string>
+             <string>Location</string>
             </property>
            </widget>
           </item>
-          <item row="3" column="1">
+          <item row="1" column="1" colspan="2">
            <widget class="QComboBox" name="AxisIconLocationCombo">
             <property name="accessibleName">
              <string>Location</string>
@@ -1337,61 +1402,89 @@
             </item>
            </widget>
           </item>
-          <item row="4" column="0" colspan="2">
-           <widget class="QCheckBox" name="FollowStepViewsCheckBox">
+          <item row="2" column="0" colspan="3">
+           <widget class="QCheckBox" name="AxisIconLabelsCheckBox">
             <property name="toolTip">
-             <string>Turn the view to each step's view rotation (MLCAD ROTSTEP) when changing steps.</string>
+             <string>Show the X, Y and Z labels on the model-axis indicator.</string>
             </property>
             <property name="text">
-             <string>Follow Step Views</string>
+             <string>Labels</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0" colspan="3">
+           <widget class="QCheckBox" name="AxisIconNegativeCheckBox">
+            <property name="toolTip">
+             <string>Show the negative X, Y and Z axes on the model-axis indicator in their own colors.</string>
+            </property>
+            <property name="text">
+             <string>Negative Axes</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0" colspan="3">
+           <widget class="QCheckBox" name="AxisIconCubeOutlineCheckBox">
+            <property name="toolTip">
+             <string>Draw the view cube outline around the model-axis indicator with the axis origin at its center.</string>
+            </property>
+            <property name="text">
+             <string>Cube Outline</string>
             </property>
            </widget>
           </item>
           <item row="5" column="0">
-           <widget class="QLabel" name="ProjectionScopeLabel">
+           <widget class="QLabel" name="AxisIconCubeOutlineAlphaLabel">
             <property name="toolTip">
-             <string>Choose whether a projection change applies to the active view only or to all model views.</string>
+             <string>Choose how opaque the axis icon cube outline is, from 0 to 1.</string>
             </property>
             <property name="buddy">
-             <cstring>ProjectionScopeCombo</cstring>
+             <cstring>AxisIconCubeOutlineAlphaSlider</cstring>
             </property>
             <property name="text">
-             <string>&amp;Projection</string>
+             <string>Outline Alpha</string>
             </property>
            </widget>
           </item>
           <item row="5" column="1">
-           <widget class="QComboBox" name="ProjectionScopeCombo">
+           <widget class="QSlider" name="AxisIconCubeOutlineAlphaSlider">
             <property name="accessibleName">
-             <string>Projection Scope</string>
+             <string>Axis Icon Cube Outline Alpha</string>
             </property>
             <property name="toolTip">
-             <string>Choose whether a projection change applies to the active view only or to all model views, new views always open with the last chosen projection.</string>
+             <string>Choose how opaque the axis icon cube outline is, from 0 to 1.</string>
             </property>
-            <item>
-             <property name="text">
-              <string>Per View</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>All Views</string>
-             </property>
-            </item>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimum">
+             <number>0</number>
+            </property>
+            <property name="maximum">
+             <number>100</number>
+            </property>
+            <property name="pageStep">
+             <number>10</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="tickPosition">
+             <enum>QSlider::TickPosition::NoTicks</enum>
+            </property>
            </widget>
           </item>
-          <item row="0" column="2">
-           <spacer name="horizontalSpacer_7">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+          <item row="5" column="2">
+           <widget class="QLabel" name="AxisIconCubeOutlineAlphaValueLabel">
+            <property name="toolTip">
+             <string>Choose how opaque the axis icon cube outline is, from 0 to 1.</string>
             </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
+            <property name="text">
+             <string notr="true">0.50</string>
             </property>
-           </spacer>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -1458,25 +1551,25 @@
            </widget>
           </item>
           <item row="2" column="0">
-           <widget class="QLabel" name="CutawayShadeTransparencyLabel">
+           <widget class="QLabel" name="CutawayShadeAlphaLabel">
             <property name="toolTip">
-             <string>Choose how see-through the cutaway faces are, from 90% to 99%.</string>
+             <string>Choose how opaque the light shade on the cutaway faces is, from 0 to 1.</string>
             </property>
             <property name="buddy">
-             <cstring>CutawayShadeTransparencySlider</cstring>
+             <cstring>CutawayShadeAlphaSlider</cstring>
             </property>
             <property name="text">
-             <string>Shade Transparency</string>
+             <string>Shade Alpha</string>
             </property>
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QSlider" name="CutawayShadeTransparencySlider">
+           <widget class="QSlider" name="CutawayShadeAlphaSlider">
             <property name="accessibleName">
-             <string>Cutaway Shade Transparency</string>
+             <string>Cutaway Shade Alpha</string>
             </property>
             <property name="toolTip">
-             <string>Choose how see-through the cutaway faces are, from 90% to 99%.</string>
+             <string>Choose how opaque the light shade on the cutaway faces is, from 0 to 1.</string>
             </property>
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -1485,13 +1578,13 @@
              </sizepolicy>
             </property>
             <property name="minimum">
-             <number>90</number>
+             <number>0</number>
             </property>
             <property name="maximum">
-             <number>99</number>
+             <number>100</number>
             </property>
             <property name="pageStep">
-             <number>1</number>
+             <number>10</number>
             </property>
             <property name="orientation">
              <enum>Qt::Orientation::Horizontal</enum>
@@ -1502,12 +1595,12 @@
            </widget>
           </item>
           <item row="2" column="2">
-           <widget class="QLabel" name="CutawayShadeTransparencyValueLabel">
+           <widget class="QLabel" name="CutawayShadeAlphaValueLabel">
             <property name="toolTip">
-             <string>Choose how see-through the cutaway faces are, from 90% to 99%.</string>
+             <string>Choose how opaque the light shade on the cutaway faces is, from 0 to 1.</string>
             </property>
             <property name="text">
-             <string notr="true">95%</string>
+             <string notr="true">0.50</string>
             </property>
            </widget>
           </item>
@@ -1730,6 +1823,16 @@
             </property>
             <property name="text">
              <string>Draw Z Axis Line</string>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="0" colspan="3">
+           <widget class="QCheckBox" name="GridNegativeAxesCheckBox">
+            <property name="toolTip">
+             <string>Draw the negative halves of the axis lines in the negative axis colors, with the Z line reaching below the base grid.</string>
+            </property>
+            <property name="text">
+             <string>Draw Negative Axes</string>
             </property>
            </widget>
           </item>
@@ -2995,6 +3098,84 @@
             </property>
            </widget>
           </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="AxisXNegativeColorLabel">
+            <property name="toolTip">
+             <string>Choose the negative X axis color used by the axis icon.</string>
+            </property>
+            <property name="buddy">
+             <cstring>AxisXNegativeColorButton</cstring>
+            </property>
+            <property name="text">
+             <string notr="true">-X</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QToolButton" name="AxisXNegativeColorButton">
+            <property name="accessibleName">
+             <string>Negative X Axis Color</string>
+            </property>
+            <property name="toolTip">
+             <string>Choose the negative X axis color used by the axis icon.</string>
+            </property>
+            <property name="text">
+             <string />
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="AxisYNegativeColorLabel">
+            <property name="toolTip">
+             <string>Choose the negative Y axis color used by the axis icon.</string>
+            </property>
+            <property name="buddy">
+             <cstring>AxisYNegativeColorButton</cstring>
+            </property>
+            <property name="text">
+             <string notr="true">-Y</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QToolButton" name="AxisYNegativeColorButton">
+            <property name="accessibleName">
+             <string>Negative Y Axis Color</string>
+            </property>
+            <property name="toolTip">
+             <string>Choose the negative Y axis color used by the axis icon.</string>
+            </property>
+            <property name="text">
+             <string />
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="AxisZNegativeColorLabel">
+            <property name="toolTip">
+             <string>Choose the negative Z axis color used by the axis icon.</string>
+            </property>
+            <property name="buddy">
+             <cstring>AxisZNegativeColorButton</cstring>
+            </property>
+            <property name="text">
+             <string notr="true">-Z</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QToolButton" name="AxisZNegativeColorButton">
+            <property name="accessibleName">
+             <string>Negative Z Axis Color</string>
+            </property>
+            <property name="toolTip">
+             <string>Choose the negative Z axis color used by the axis icon.</string>
+            </property>
+            <property name="text">
+             <string />
+            </property>
+           </widget>
+          </item>
           <item row="0" column="2">
            <spacer name="AxisXSpacer">
             <property name="orientation">
@@ -3669,13 +3850,17 @@
   <tabstop>BlenderAddonSettingsButton</tabstop>
   <tabstop>ViewCubeSizeCombo</tabstop>
   <tabstop>ViewCubeLocationCombo</tabstop>
-  <tabstop>AxisIconSizeCombo</tabstop>
-  <tabstop>AxisIconLocationCombo</tabstop>
   <tabstop>FollowStepViewsCheckBox</tabstop>
   <tabstop>ProjectionScopeCombo</tabstop>
+  <tabstop>AxisIconSizeCombo</tabstop>
+  <tabstop>AxisIconLocationCombo</tabstop>
+  <tabstop>AxisIconLabelsCheckBox</tabstop>
+  <tabstop>AxisIconNegativeCheckBox</tabstop>
+  <tabstop>AxisIconCubeOutlineCheckBox</tabstop>
+  <tabstop>AxisIconCubeOutlineAlphaSlider</tabstop>
   <tabstop>CutawaySizeSpinBox</tabstop>
   <tabstop>CutawayShadeColorButton</tabstop>
-  <tabstop>CutawayShadeTransparencySlider</tabstop>
+  <tabstop>CutawayShadeAlphaSlider</tabstop>
   <tabstop>TurntableIdleDurationSpinBox</tabstop>
   <tabstop>TurntableTurnTimeSpinBox</tabstop>
   <tabstop>TurntableAxisCombo</tabstop>
@@ -3689,6 +3874,7 @@
   <tabstop>GridAxisXCheckBox</tabstop>
   <tabstop>GridAxisYCheckBox</tabstop>
   <tabstop>GridAxisZCheckBox</tabstop>
+  <tabstop>GridNegativeAxesCheckBox</tabstop>
   <tabstop>PartsSyncRendering</tabstop>
   <tabstop>PartsShadingMode</tabstop>
   <tabstop>PartsEdgeLines</tabstop>
@@ -3725,6 +3911,9 @@
   <tabstop>AxisXColorButton</tabstop>
   <tabstop>AxisYColorButton</tabstop>
   <tabstop>AxisZColorButton</tabstop>
+  <tabstop>AxisXNegativeColorButton</tabstop>
+  <tabstop>AxisYNegativeColorButton</tabstop>
+  <tabstop>AxisZNegativeColorButton</tabstop>
   <tabstop>categoriesTree</tabstop>
   <tabstop>partsTree</tabstop>
   <tabstop>importCategories</tabstop>

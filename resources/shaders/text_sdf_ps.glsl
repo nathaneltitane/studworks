@@ -7,10 +7,10 @@ uniform sampler2D Texture;
 
 void main()
 {
-	// The atlas stores a signed distance centered at 0.5. Derivatives keep the
-	// edge smooth at every UI scale; the outer threshold is a fixed one-pixel halo.
+	// The atlas stores a signed distance centered at 0.5. Half the derivative gives
+	// a one-pixel edge at every UI scale; the outer threshold is a fixed one-pixel halo.
 	SW_SHADER_PRECISION float Distance = texture2D(Texture, PixelTexCoord).a;
-	SW_SHADER_PRECISION float Edge = max(fwidth(Distance), 0.003);
+	SW_SHADER_PRECISION float Edge = max(0.5 * fwidth(Distance), 0.003);
 	SW_SHADER_PRECISION float Fill = smoothstep(0.5 - Edge, 0.5 + Edge, Distance);
 	SW_SHADER_PRECISION float Outline = smoothstep(0.375 - Edge, 0.375 + Edge, Distance);
 	SW_SHADER_PRECISION float Luminance = dot(MaterialColor.rgb, vec3(0.2126, 0.7152, 0.0722));

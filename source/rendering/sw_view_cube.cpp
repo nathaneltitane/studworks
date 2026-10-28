@@ -12,8 +12,8 @@ swVertexBuffer swViewCube::mVertexBuffer;
 swIndexBuffer swViewCube::mIndexBuffer;
 int swViewCube::mIndexCount;
 swViewCube::swViewCubeFacet swViewCube::mFacets[swViewCube::mFacetCount];
-const float swViewCube::mHalfSize = 0.8f;
-const float swViewCube::mChamfer = 0.22f;
+const float swViewCube::mHalfSize = SW_VIEW_CUBE_HALF_SIZE;
+const float swViewCube::mChamfer = SW_VIEW_CUBE_CHAMFER;
 
 // use to get the outward direction of a facet from its view flags
 static swVector3 swGetFacetNormal(const std::bitset<6>& Flags)
@@ -74,7 +74,7 @@ swMatrix44 swViewCube::GetViewMatrix() const
 
 swMatrix44 swViewCube::GetProjectionMatrix() const
 {
-	return swMatrix44Orthographic(-1.25f, 1.25f, -1.25f, 1.25f, -1.25f, 1.25f);
+	return swMatrix44Orthographic(-SW_VIEW_CUBE_BOUNDARY, SW_VIEW_CUBE_BOUNDARY, -SW_VIEW_CUBE_BOUNDARY, SW_VIEW_CUBE_BOUNDARY, -SW_VIEW_CUBE_BOUNDARY, SW_VIEW_CUBE_BOUNDARY);
 }
 
 void swViewCube::CreateResources(swContext* Context)

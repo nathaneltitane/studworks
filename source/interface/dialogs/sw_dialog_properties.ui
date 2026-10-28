@@ -111,7 +111,7 @@
           <string>Overall model dimensions along the X, Y, and Z axes.</string>
          </property>
          <property name="whatsThis">
-          <string>&lt;p&gt;&lt;b&gt;Model Measurements&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The dimensions of the model's bounding box are shown in centimeters, inches, and LDraw units (LDU). The values are read-only and include parts across all steps.&lt;/p&gt;</string>
+          <string>&lt;p&gt;&lt;b&gt;Model Measurements&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The dimensions of the model's bounding box are shown in centimeters, inches, and LDraw units (ldu). The values are read-only and include parts across all steps.&lt;/p&gt;</string>
          </property>
          <property name="text">
           <string>Measurements</string>
@@ -124,7 +124,7 @@
           <string>Overall model dimensions along the X, Y, and Z axes.</string>
          </property>
          <property name="whatsThis">
-          <string>&lt;p&gt;&lt;b&gt;Model Measurements&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The dimensions of the model's bounding box are shown in centimeters, inches, and LDraw units (LDU). The values are read-only and include parts across all steps.&lt;/p&gt;</string>
+          <string>&lt;p&gt;&lt;b&gt;Model Measurements&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The dimensions of the model's bounding box are shown in centimeters, inches, and LDraw units (ldu). The values are read-only and include parts across all steps.&lt;/p&gt;</string>
          </property>
          <property name="accessibleName">
           <string>Model Measurements</string>

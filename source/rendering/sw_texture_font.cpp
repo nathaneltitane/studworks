@@ -278,9 +278,11 @@ void swTextureFont::GetGlyphTriangles(float Left, float Top, float Z, int Glyph,
 {
 	Left -= mGlyphs[Glyph].Width / 2.0f;
 	Top += mFontHeight / 2.0f;
-	const float GlyphLeft = Left + mGlyphs[Glyph].Offset;
+
+	// whole pixels keep the atlas texels aligned with the screen
+	const float GlyphLeft = floorf(Left + mGlyphs[Glyph].Offset + 0.5f);
 	const float GlyphRight = GlyphLeft + mGlyphs[Glyph].RenderWidth;
-	const float GlyphTop = Top - mGlyphs[Glyph].Offset;
+	const float GlyphTop = floorf(Top - mGlyphs[Glyph].Offset + 0.5f);
 	const float GlyphBottom = GlyphTop - mGlyphs[Glyph].RenderHeight;
 
 	*Buffer++ = GlyphLeft;

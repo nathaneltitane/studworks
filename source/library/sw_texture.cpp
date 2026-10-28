@@ -3,8 +3,6 @@
 #include "sw_context.h"
 #include "sw_extensions_opengl.h"
 
-swTexture* gGridTexture;
-
 swTexture::swTexture(int Flags)
     : mFlags(Flags)
 {
@@ -13,126 +11,6 @@ swTexture::swTexture(int Flags)
 swTexture::~swTexture()
 {
 	Unload();
-}
-
-void swTexture::CreateGridTexture()
-{
-	constexpr int NumLevels = 9;
-	mImages.resize(NumLevels);
-	const QImage* Previous = nullptr;
-
-	for (int ImageLevel = 0; ImageLevel < NumLevels; ImageLevel++)
-	{
-		QImage& GridImage = mImages[ImageLevel];
-		const int GridSize = 256 >> ImageLevel;
-		GridImage = QImage(GridSize, GridSize, QImage::Format_Alpha8);
-
-		if (Previous)
-		{
-			for (int y = 0; y < GridSize - 1; y++)
-			{
-				for (int x = 0; x < GridSize - 1; x++)
-				{
-					const quint8 a = Previous->constScanLine(y * 2)[x * 2] > 64 ? 255 : 0;
-					const quint8 b = Previous->constScanLine(y * 2)[x * 2 + 1] > 64 ? 255 : 0;
-					const quint8 c = Previous->constScanLine(y * 2 + 1)[x * 2] > 64 ? 255 : 0;
-					const quint8 d = Previous->constScanLine(y * 2 + 1)[x * 2 + 1] > 64 ? 255 : 0;
-					GridImage.scanLine(y)[x] = (a + b + c + d) / 4;
-				}
-
-				int x = GridSize - 1;
-				const quint8 a = Previous->constScanLine(y * 2)[x * 2];
-				const quint8 c = Previous->constScanLine(y * 2 + 1)[x * 2];
-				GridImage.scanLine(y)[x] = (a + c) / 2;
-			}
-
-			int y = GridSize - 1;
-			for (int x = 0; x < GridSize - 1; x++)
-			{
-				const quint8 a = Previous->constScanLine(y * 2)[x * 2];
-				const quint8 b = Previous->constScanLine(y * 2)[x * 2 + 1];
-				GridImage.scanLine(y)[x] = (a + b) / 2;
-			}
-
-			int x = GridSize - 1;
-			GridImage.scanLine(y)[x] = Previous->constScanLine(y)[x];
-		}
-		else
-		{
-			const float Radius1 = (80 >> ImageLevel) * (80 >> ImageLevel);
-			const float Radius2 = (72 >> ImageLevel) * (72 >> ImageLevel);
-			quint8* TempBuffer = new quint8[GridSize * GridSize];
-
-			for (int y = 0; y < GridSize; y++)
-			{
-				quint8* Pixel = TempBuffer + y * GridSize;
-				memset(Pixel, 0, GridSize);
-
-				const float y2 = (y - GridSize / 2) * (y - GridSize / 2);
-
-				if (Radius1 <= y2)
-					continue;
-
-				if (Radius2 <= y2)
-				{
-					const int x1 = sqrtf(Radius1 - y2);
-
-					for (int x = GridSize / 2 - x1; x < GridSize / 2 + x1; x++)
-						Pixel[x] = 255;
-				}
-				else
-				{
-					const int x1 = sqrtf(Radius1 - y2);
-					const int x2 = sqrtf(Radius2 - y2);
-
-					for (int x = GridSize / 2 - x1; x < GridSize / 2 - x2; x++)
-						Pixel[x] = 255;
-
-					for (int x = GridSize / 2 + x2; x < GridSize / 2 + x1; x++)
-						Pixel[x] = 255;
-				}
-			}
-
-			for (int y = 0; y < GridSize - 1; y++)
-			{
-				for (int x = 0; x < GridSize - 1; x++)
-				{
-					const quint8 a = TempBuffer[x + y * GridSize];
-					const quint8 b = TempBuffer[x + 1 + y * GridSize];
-					const quint8 c = TempBuffer[x + (y + 1) * GridSize];
-					const quint8 d = TempBuffer[x + 1 + (y + 1) * GridSize];
-					GridImage.scanLine(y)[x] = (a + b + c + d) / 4;
-				}
-
-				int x = GridSize - 1;
-				const quint8 a = TempBuffer[x + y * GridSize];
-				const quint8 c = TempBuffer[x + (y + 1) * GridSize];
-				GridImage.scanLine(y)[x] = (a + c) / 2;
-			}
-
-			int y = GridSize - 1;
-			for (int x = 0; x < GridSize - 1; x++)
-			{
-				const quint8 a = TempBuffer[x + y * GridSize];
-				const quint8 b = TempBuffer[x + 1 + y * GridSize];
-				GridImage.scanLine(y)[x] = (a + b) / 2;
-			}
-
-			int x = GridSize - 1;
-			GridImage.scanLine(y)[x] = TempBuffer[x + y * GridSize];
-			delete[] TempBuffer;
-		}
-
-		Previous = &GridImage;
-	}
-
-	mRefCount = 1;
-	mFlags = SW_TEXTURE_WRAP_U | SW_TEXTURE_WRAP_V | SW_TEXTURE_MIPMAPS | SW_TEXTURE_ANISOTROPIC;
-	mState = swAssetState::Loading;
-
-	swContext* Context = swContext::GetGlobalOffscreenContext();
-	Context->MakeCurrent();
-	Upload(Context);
 }
 
 QImage swTexture::PrepareImage(QImage Image)
