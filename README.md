@@ -95,6 +95,37 @@ It keeps LeoCAD's file format, so models open in either program, and copies LeoC
 
 Everything LeoCAD does, StudWorks does too - with a reworked interface and a set of modeling and instructions features on top:
 
+![Main window](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/interface-main-window.png)
+
+- **Interface** ↴
+  - File, Edit, View, Part, Steps, Models and Help menus, with clean labels and unique mnemonics
+  - View menu with Toolbars, Viewpoints, Cutaway, Cameras, Projection and Shading submenus
+  - Options (gear) menus on the model view and every panel for grids, preview, parts and colors
+  - Theme-aware toolbar icons redrawn from the Blender icon set
+  - Preferences pages with lined up label and control columns: General, Rendering, Views, Colors, Instructions, Categories, Keyboard and Mouse
+
+  ![Toolbars](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/interface-toolbars.png)
+
+  <details>
+  <summary>Menus</summary>
+
+  ![Menus](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/interface-menus.png)
+
+  ![View submenus](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/interface-menu-view.png)
+
+  ![Options menus](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/interface-menu-options.png)
+
+  </details>
+
+  <details>
+  <summary>Preferences and About</summary>
+
+  ![Preferences](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/preferences.png)
+
+  ![About](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/about.png)
+
+  </details>
+
 - **Panels** ↴
   - Uniform panel headers, buttons and text boxes, all sized from the options (gear) button
   - Collapsible color groups, square color tiles and a color options menu
@@ -104,6 +135,8 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
   - Parts panel snaps to whole thumbnail tiles and rows, docked or floating, and its categories to the longest name
   - Part categories turned on and off with a checkbox
   - Theme-aware Blender icons and cursors, with axis cursors for moving and rotating
+
+  ![Preview, Parts, Minifigure Builder, Timeline, Colors and Properties panels](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/panels.png)
 
 - **Modeling** ↴
   - MLCad ROTSTEP step views shown and edited in the Timeline
@@ -116,6 +149,16 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
   - Idle turntable showing the model full screen
   - Perspective or orthographic projection for the active view or all views at once
 
+  ![Cube, sphere and cylinder cutaways](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/modeling-cutaway.png)
+
+  ![Standard, Studio, Matte and Toon lighting](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/modeling-lighting.png)
+
+  ![XZ and YZ height grids](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/modeling-height-grids.png)
+
+  ![Perspective and orthographic projection](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/modeling-projection.png)
+
+  ![Idle turntable](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/modeling-turntable.png)
+
 - **Instructions** ↴
   - Page setup with paper and screen presets, units, margins and orientation
   - Cover page, bill of materials, blank page breaks and per page step layouts
@@ -126,9 +169,17 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
   - Notices and pointers to emphasize parts, steps and notices
   - Instructions saved in the model file
 
+  ![Cover page, step page and bill of materials](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/instructions-pages.png)
+
+  ![Instructions window](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/instructions-window.png)
+
+  ![Properties, Grid, Placement, Print and Editor panels](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/instructions-panels.png)
+
 - **Models** ↴
   - Model properties with part IDs, thumbnails, counts and BrickLink or CSV export
   - Consistent default names and numbered duplicates
+
+  ![Model properties and submodels](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/models.png)
 
 ---
 
