@@ -1580,6 +1580,26 @@
            </widget>
           </item>
           <item row="6" column="0" colspan="3">
+           <widget class="QCheckBox" name="GridAxisXCheckBox">
+            <property name="toolTip">
+             <string>Draw the x axis line at the grid origin.</string>
+            </property>
+            <property name="text">
+             <string>Draw X Axis Line</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0" colspan="3">
+           <widget class="QCheckBox" name="GridAxisYCheckBox">
+            <property name="toolTip">
+             <string>Draw the y axis line at the grid origin.</string>
+            </property>
+            <property name="text">
+             <string>Draw Y Axis Line</string>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="0" colspan="3">
            <widget class="QCheckBox" name="GridAxisZCheckBox">
             <property name="toolTip">
              <string>Draw the z axis line at the grid origin, or along the height grids when they are shown.</string>
@@ -3487,6 +3507,8 @@
   <tabstop>GridHeightXZCheckBox</tabstop>
   <tabstop>GridHeightYZCheckBox</tabstop>
   <tabstop>GridHeightBehindCheckBox</tabstop>
+  <tabstop>GridAxisXCheckBox</tabstop>
+  <tabstop>GridAxisYCheckBox</tabstop>
   <tabstop>GridAxisZCheckBox</tabstop>
   <tabstop>PartsSyncRendering</tabstop>
   <tabstop>PartsShadingMode</tabstop>

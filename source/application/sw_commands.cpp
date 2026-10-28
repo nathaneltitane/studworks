@@ -1596,6 +1596,22 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+	// SW_VIEW_GRID_TOGGLE_AXIS_X
+	{
+		QT_TRANSLATE_NOOP("Action", "View.Grid.ToggleAxisX"),
+		QT_TRANSLATE_NOOP("Menu", "X Axis Line"),
+		QT_TRANSLATE_NOOP("Status", "Toggle the x axis line on the grid origin"),
+		"",
+		""
+	},
+	// SW_VIEW_GRID_TOGGLE_AXIS_Y
+	{
+		QT_TRANSLATE_NOOP("Action", "View.Grid.ToggleAxisY"),
+		QT_TRANSLATE_NOOP("Menu", "Y Axis Line"),
+		QT_TRANSLATE_NOOP("Status", "Toggle the y axis line on the grid origin"),
+		"",
+		""
+	},
 	// SW_VIEW_GRID_TOGGLE_AXIS_Z
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Grid.ToggleAxisZ"),

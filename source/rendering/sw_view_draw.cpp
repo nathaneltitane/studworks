@@ -1201,10 +1201,17 @@ void swView::DrawGrid()
 	{
 		const float Scale = 20.0f * Spacing;
 
-		AxisVerts.push_back({ 0.0f, MinY * Scale, 0.0f, Preferences.mAxisYColor });
-		AxisVerts.push_back({ 0.0f, MaxY * Scale, 0.0f, Preferences.mAxisYColor });
-		AxisVerts.push_back({ MinX * Scale, 0.0f, 0.0f, Preferences.mAxisXColor });
-		AxisVerts.push_back({ MaxX * Scale, 0.0f, 0.0f, Preferences.mAxisXColor });
+		if (Preferences.mDrawGridAxisY)
+		{
+			AxisVerts.push_back({ 0.0f, MinY * Scale, 0.0f, Preferences.mAxisYColor });
+			AxisVerts.push_back({ 0.0f, MaxY * Scale, 0.0f, Preferences.mAxisYColor });
+		}
+
+		if (Preferences.mDrawGridAxisX)
+		{
+			AxisVerts.push_back({ MinX * Scale, 0.0f, 0.0f, Preferences.mAxisXColor });
+			AxisVerts.push_back({ MaxX * Scale, 0.0f, 0.0f, Preferences.mAxisXColor });
+		}
 
 		// the height grids carry their own z axis lines
 		if (Preferences.mDrawGridAxisZ && !DrawGridHeight)

@@ -471,6 +471,18 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 		swView::UpdateAllViews();
 		break;
 
+	case SW_VIEW_GRID_TOGGLE_AXIS_X:
+		swGetPreferences().mDrawGridAxisX = !swGetPreferences().mDrawGridAxisX;
+		swSetProfileInteger(SW_PROFILE_GRID_AXIS_X, swGetPreferences().mDrawGridAxisX);
+		swView::UpdateAllViews();
+		break;
+
+	case SW_VIEW_GRID_TOGGLE_AXIS_Y:
+		swGetPreferences().mDrawGridAxisY = !swGetPreferences().mDrawGridAxisY;
+		swSetProfileInteger(SW_PROFILE_GRID_AXIS_Y, swGetPreferences().mDrawGridAxisY);
+		swView::UpdateAllViews();
+		break;
+
 	case SW_VIEW_GRID_TOGGLE_AXIS_Z:
 		swGetPreferences().mDrawGridAxisZ = !swGetPreferences().mDrawGridAxisZ;
 		swSetProfileInteger(SW_PROFILE_GRID_AXIS_Z, swGetPreferences().mDrawGridAxisZ);

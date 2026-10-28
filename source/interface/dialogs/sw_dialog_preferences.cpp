@@ -497,6 +497,8 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	ui->GridHeightXZCheckBox->setChecked(mOptions->Preferences.mDrawGridHeightXZ);
 	ui->GridHeightYZCheckBox->setChecked(mOptions->Preferences.mDrawGridHeightYZ);
 	ui->GridHeightBehindCheckBox->setChecked(mOptions->Preferences.mGridHeightBehindModel);
+	ui->GridAxisXCheckBox->setChecked(mOptions->Preferences.mDrawGridAxisX);
+	ui->GridAxisYCheckBox->setChecked(mOptions->Preferences.mDrawGridAxisY);
 	ui->GridAxisZCheckBox->setChecked(mOptions->Preferences.mDrawGridAxisZ);
 	ui->AxisIconCheckBox->setChecked(mOptions->Preferences.mDrawAxes);
 	ui->FollowStepViewsCheckBox->setChecked(mOptions->Preferences.mFollowStepViews);
@@ -804,6 +806,8 @@ void swPreferencesDialog::accept()
 	mOptions->Preferences.mDrawGridHeightXZ = ui->GridHeightXZCheckBox->isChecked();
 	mOptions->Preferences.mDrawGridHeightYZ = ui->GridHeightYZCheckBox->isChecked();
 	mOptions->Preferences.mGridHeightBehindModel = ui->GridHeightBehindCheckBox->isChecked();
+	mOptions->Preferences.mDrawGridAxisX = ui->GridAxisXCheckBox->isChecked();
+	mOptions->Preferences.mDrawGridAxisY = ui->GridAxisYCheckBox->isChecked();
 	mOptions->Preferences.mDrawGridAxisZ = ui->GridAxisZCheckBox->isChecked();
 
 	mOptions->Preferences.mDrawAxes = ui->AxisIconCheckBox->isChecked();
