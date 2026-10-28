@@ -471,6 +471,12 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 		swView::UpdateAllViews();
 		break;
 
+	case SW_VIEW_GRID_TOGGLE_AXIS_Z:
+		swGetPreferences().mDrawGridAxisZ = !swGetPreferences().mDrawGridAxisZ;
+		swSetProfileInteger(SW_PROFILE_GRID_AXIS_Z, swGetPreferences().mDrawGridAxisZ);
+		swView::UpdateAllViews();
+		break;
+
 	case SW_VIEW_TERMINAL_TOGGLE_FOLLOW_MODEL:
 		swGetPreferences().mTerminalFollowModel = !swGetPreferences().mTerminalFollowModel;
 		swSetProfileInteger(SW_PROFILE_TERMINAL_FOLLOW_MODEL, swGetPreferences().mTerminalFollowModel);

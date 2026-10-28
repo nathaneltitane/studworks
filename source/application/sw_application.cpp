@@ -67,6 +67,7 @@ void swPreferences::LoadDefaults()
 	mDrawGridHeightXZ = swGetProfileInteger(SW_PROFILE_GRID_HEIGHT_XZ);
 	mDrawGridHeightYZ = swGetProfileInteger(SW_PROFILE_GRID_HEIGHT_YZ);
 	mGridHeightBehindModel = swGetProfileInteger(SW_PROFILE_GRID_HEIGHT_BEHIND_MODEL);
+	mDrawGridAxisZ = swGetProfileInteger(SW_PROFILE_GRID_AXIS_Z);
 	mViewSphereEnabled = swGetProfileInteger(SW_PROFILE_VIEW_SPHERE_ENABLED);
 	mViewSphereLocation = swGetProfileViewSphereLocation();
 	mViewSphereSize = swGetProfileInteger(SW_PROFILE_VIEW_SPHERE_SIZE);
@@ -156,6 +157,7 @@ void swPreferences::SaveDefaults()
 	swSetProfileInteger(SW_PROFILE_GRID_HEIGHT_XZ, mDrawGridHeightXZ);
 	swSetProfileInteger(SW_PROFILE_GRID_HEIGHT_YZ, mDrawGridHeightYZ);
 	swSetProfileInteger(SW_PROFILE_GRID_HEIGHT_BEHIND_MODEL, mGridHeightBehindModel);
+	swSetProfileInteger(SW_PROFILE_GRID_AXIS_Z, mDrawGridAxisZ);
 	swSetProfileInteger(SW_PROFILE_VIEW_SPHERE_ENABLED, mViewSphereEnabled);
 	swSetProfileViewSphereLocation(mViewSphereLocation);
 	swSetProfileInteger(SW_PROFILE_VIEW_SPHERE_SIZE, mViewSphereSize);

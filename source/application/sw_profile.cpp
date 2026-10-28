@@ -102,6 +102,7 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Settings", "GridHeightXZ", 0),                                                         // SW_PROFILE_GRID_HEIGHT_XZ
 	swProfileEntry("Settings", "GridHeightYZ", 0),                                                         // SW_PROFILE_GRID_HEIGHT_YZ
 	swProfileEntry("Settings", "GridHeightBehindModel", 0),                                                // SW_PROFILE_GRID_HEIGHT_BEHIND_MODEL
+	swProfileEntry("Settings", "GridAxisZ", 1),                                                            // SW_PROFILE_GRID_AXIS_Z
 	swProfileEntry("Settings", "AASamples", 1),                                                            // SW_PROFILE_ANTIALIASING_SAMPLES
 	swProfileEntry("Settings", "ViewSphereEnabled", 1),                                                    // SW_PROFILE_VIEW_SPHERE_ENABLED
 	swProfileEntry("Settings", "ViewSphereLocation", (int)swViewSphereLocation::TopRight),                 // SW_PROFILE_VIEW_SPHERE_LOCATION

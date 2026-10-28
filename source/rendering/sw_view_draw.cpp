@@ -1158,8 +1158,11 @@ void swView::DrawGrid()
 				Lines.emplace_back(Right, Y, Plate * PlateHeight);
 			}
 
-			AxisVerts.push_back({ 0.0f, Y, 0.0f, Preferences.mAxisZColor });
-			AxisVerts.push_back({ 0.0f, Y, Top, Preferences.mAxisZColor });
+			if (Preferences.mDrawGridAxisZ)
+			{
+				AxisVerts.push_back({ 0.0f, Y, 0.0f, Preferences.mAxisZColor });
+				AxisVerts.push_back({ 0.0f, Y, Top, Preferences.mAxisZColor });
+			}
 		}
 
 		if (Preferences.mDrawGridHeightYZ)
@@ -1179,7 +1182,7 @@ void swView::DrawGrid()
 			}
 
 			// skip the z axis line the xz grid already drew at the origin
-			if (BehindModel || !Preferences.mDrawGridHeightXZ)
+			if (Preferences.mDrawGridAxisZ && (BehindModel || !Preferences.mDrawGridHeightXZ))
 			{
 				AxisVerts.push_back({ X, 0.0f, 0.0f, Preferences.mAxisZColor });
 				AxisVerts.push_back({ X, 0.0f, Top, Preferences.mAxisZColor });
@@ -1204,7 +1207,7 @@ void swView::DrawGrid()
 		AxisVerts.push_back({ MaxX * Scale, 0.0f, 0.0f, Preferences.mAxisXColor });
 
 		// the height grids carry their own z axis lines
-		if (!DrawGridHeight)
+		if (Preferences.mDrawGridAxisZ && !DrawGridHeight)
 		{
 			AxisVerts.push_back({ 0.0f, 0.0f, 0.0f, Preferences.mAxisZColor });
 			AxisVerts.push_back({ 0.0f, 0.0f, Top, Preferences.mAxisZColor });

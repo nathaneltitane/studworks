@@ -481,6 +481,7 @@ void swMainWindow::ModelViewOptionsMenuAboutToShow()
 	AddMenuCommand(Menu, tr("XZ Height Grid"), SW_VIEW_GRID_TOGGLE_HEIGHT_XZ, Preferences.mDrawGridHeightXZ);
 	AddMenuCommand(Menu, tr("YZ Height Grid"), SW_VIEW_GRID_TOGGLE_HEIGHT_YZ, Preferences.mDrawGridHeightYZ);
 	AddMenuCommand(Menu, tr("Height Grids Behind Model"), SW_VIEW_GRID_TOGGLE_HEIGHT_BEHIND, Preferences.mGridHeightBehindModel);
+	AddMenuCommand(Menu, tr("Z Axis Lines"), SW_VIEW_GRID_TOGGLE_AXIS_Z, Preferences.mDrawGridAxisZ);
 
 	Menu->addSeparator();
 
