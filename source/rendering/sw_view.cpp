@@ -1191,9 +1191,27 @@ void swView::Zoom(float Amount)
 		ActiveModel->Zoom(mCamera, Amount);
 }
 
+// use to resize the view, a fit asked for before it had a size is done now
+void swView::SetSize(int Width, int Height)
+{
+	mWidth = Width;
+	mHeight = Height;
+
+	if (mZoomExtentsPending && mWidth > 1 && mHeight > 1)
+	{
+		mZoomExtentsPending = false;
+		ZoomExtents(mZoomExtentsMode, mZoomExtentsFarPlane);
+	}
+}
+
 void swView::ZoomExtents(swGeometryBoundsMode Mode, bool AdjustFarPlane)
 {
 	swModel* ActiveModel = GetActiveModel();
+
+	// a view without its size yet fits again once it has one
+	mZoomExtentsPending = mWidth <= 1 || mHeight <= 1;
+	mZoomExtentsMode = Mode;
+	mZoomExtentsFarPlane = AdjustFarPlane;
 
 	if (ActiveModel)
 	{

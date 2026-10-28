@@ -161,9 +161,9 @@ swMinifigureBuilderWidget::swMinifigureBuilderWidget(QWidget* Parent)
 	ui->TemplateComboBox->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
 	ui->TemplateComboBox->setMinimumContentsLength(8);
 
-	// The template buttons and Add to Model share a row below the selector and split its width.
+	// The template buttons sit in pairs below the selector with Add to Model across the last row, so the panel can shrink.
 	QWidget* TemplateButtons = new QWidget(this);
-	QHBoxLayout* TemplateButtonsLayout = new QHBoxLayout(TemplateButtons);
+	QGridLayout* TemplateButtonsLayout = new QGridLayout(TemplateButtons);
 	TemplateButtonsLayout->setContentsMargins(0, 0, 0, 0);
 	ui->verticalLayout->insertWidget(ui->verticalLayout->indexOf(ui->TemplateGroup) + 1, TemplateButtons);
 
@@ -175,9 +175,15 @@ swMinifigureBuilderWidget::swMinifigureBuilderWidget(QWidget* Parent)
 	connect(AddButton, &QToolButton::clicked, this, &swMinifigureBuilderWidget::AddToModel);
 	RowButtons.push_back(AddButton);
 
-	for (QToolButton* Button : RowButtons)
+	for (int ButtonIndex = 0; ButtonIndex < static_cast<int>(RowButtons.size()); ButtonIndex++)
 	{
-		TemplateButtonsLayout->addWidget(Button);
+		QToolButton* Button = RowButtons[ButtonIndex];
+
+		if (Button == AddButton)
+			TemplateButtonsLayout->addWidget(Button, ButtonIndex / 2, 0, 1, 2);
+		else
+			TemplateButtonsLayout->addWidget(Button, ButtonIndex / 2, ButtonIndex % 2);
+
 		Button->setToolButtonStyle(Qt::ToolButtonTextOnly);
 		swSetupPanelButton(Button);
 		Button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);

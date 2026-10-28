@@ -172,11 +172,7 @@ public:
 		return mHeight;
 	}
 
-	void SetSize(int Width, int Height)
-	{
-		mWidth = Width;
-		mHeight = Height;
-	}
+	void SetSize(int Width, int Height);
 
 	swViewWidget* GetWidget() const
 	{
@@ -382,6 +378,9 @@ protected:
 	swViewWidget* mWidget = nullptr;
 	int mWidth = 1;
 	int mHeight = 1;
+	bool mZoomExtentsPending = false;
+	swGeometryBoundsMode mZoomExtentsMode = {};
+	bool mZoomExtentsFarPlane = false;
 	swViewType mViewType;
 
 	int mMouseX = 0;

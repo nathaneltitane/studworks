@@ -30,6 +30,9 @@ Useful? Star the repository - it helps others find it.
 - Part categories: turn each category on or off with its checkbox, sub parts and aliases are no longer listed
 - Preview: 'Keep Last Selection' keeps showing the last selected part
 - Minifigure Builder: no longer crashes at startup when the parts library cannot be loaded
+- Panels: the right column shrinks again, value fields without limits no longer size for the largest possible number
+- Minifigure Builder: the template buttons sit in pairs with Add to Model below, so the panel can shrink
+- Views: a model opened at startup fits the view instead of running past its edges
 - Instructions: padding, margin, border and background for every page element, the background fills the whole box
 - Instructions: notices, free text added to any page with a right-click
 - Instructions: pointers from an element border to a part, step, notice or other element - eight anchors or the nearest, line or callout wedge, arrowhead or dot tip

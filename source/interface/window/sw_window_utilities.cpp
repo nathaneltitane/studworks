@@ -517,6 +517,12 @@ void swUpdatePanelSpinBoxWidth(QAbstractSpinBox* SpinBox)
 	if (Value.size() < 4)
 		Value = QLatin1String("-000");
 
+	// unbounded ranges size for a typical value so the panel can still shrink
+	const bool Unbounded = Value.size() > 8;
+
+	if (Unbounded)
+		Value = QLatin1String("-0000.00");
+
 	QStyleOptionSpinBox Option;
 	Option.initFrom(SpinBox);
 	Option.rect = QRect(QPoint(0, 0), SpinBox->sizeHint());
@@ -527,7 +533,8 @@ void swUpdatePanelSpinBoxWidth(QAbstractSpinBox* SpinBox)
 	const int Decoration = Option.rect.width() - EditRect.width();
 
 	// the style sizes the box for its limits too, the larger width keeps the text clear of the arrows, a shared column keeps its width
-	const int Width = qMax(SpinBox->fontMetrics().horizontalAdvance(Prefix + Value + Suffix) + Decoration, SpinBox->sizeHint().width());
+	const int TextWidth = SpinBox->fontMetrics().horizontalAdvance(Prefix + Value + Suffix) + Decoration;
+	const int Width = Unbounded ? TextWidth : qMax(TextWidth, SpinBox->sizeHint().width());
 	SpinBox->setMinimumWidth(qMax(Width, SpinBox->property("swColumnWidth").toInt()));
 }
 
