@@ -176,7 +176,7 @@ static void swAlignPreferencesColumns(QTabWidget* TabWidget)
 				for (int TrailingColumn = Column + ColumnSpan; TrailingColumn <= LastColumn; TrailingColumn++)
 					if (QLayoutItem* Trailing = GridLayout->itemAtPosition(Row, TrailingColumn))
 						if (qobject_cast<QLabel*>(Trailing->widget()))
-							TrailingWidth = qMax(TrailingWidth, Trailing->widget()->sizeHint().width());
+							TrailingWidth = qMax(TrailingWidth, qMax(Trailing->widget()->sizeHint().width(), Trailing->widget()->minimumWidth()));
 			}
 
 			// every control spans to the right edge, a value, unit or button after it sits at the edge
@@ -484,6 +484,10 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	ui->MeshLODSlider->setRange(0, 1500.0f / mMeshLODMultiplier);
 	ui->MeshLODSlider->setValue(mOptions->Preferences.mMeshLODDistance / mMeshLODMultiplier);
 
+	// the value label holds the widest distance so the slider never moves as the value changes
+	const QString MeshLODWidest = tr("%1 ldu").arg(swFormatIntegerLocalized(static_cast<int>(ui->MeshLODSlider->maximum() * mMeshLODMultiplier), locale()));
+	ui->MeshLODLabel->setMinimumWidth(ui->MeshLODLabel->fontMetrics().horizontalAdvance(MeshLODWidest) + 2 * ui->MeshLODLabel->margin());
+
 	ui->FadeSteps->setChecked(mOptions->Preferences.mFadeSteps);
 	ui->HighlightNewParts->setChecked(mOptions->Preferences.mHighlightNewParts);
 	ui->gridStuds->setChecked(mOptions->Preferences.mDrawGridStuds);
@@ -710,6 +714,9 @@ void swPreferencesDialog::showEvent(QShowEvent* Event)
 
 	// the controls only report their full width once shown, the columns line up after that
 	swAlignPreferencesColumns(ui->tabWidget);
+
+	// the distance digits grow to the left so the ldu unit stays put next to the slider
+	ui->MeshLODLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 }
 
 void swPreferencesDialog::accept()

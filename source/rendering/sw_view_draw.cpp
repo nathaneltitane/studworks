@@ -102,6 +102,7 @@ void swView::OnDraw()
 			mContext->SetViewport(0, 0, mWidth, mHeight);
 
 			int CurrentTileWidth, CurrentTileHeight;
+			swMatrix44 ProjectionMatrix;
 
 			if (!mRenderImage.isNull() && (TotalTileRows > 1 || TotalTileColumns > 1))
 			{
@@ -118,7 +119,7 @@ void swView::OnDraw()
 				DrawBackground();
 
 				mContext->SetViewport(0, 0, CurrentTileWidth, CurrentTileHeight);
-				mContext->SetProjectionMatrix(GetTileProjectionMatrix(CurrentTileRow, CurrentTileColumn, CurrentTileWidth, CurrentTileHeight));
+				ProjectionMatrix = GetTileProjectionMatrix(CurrentTileRow, CurrentTileColumn, CurrentTileWidth, CurrentTileHeight);
 			}
 			else
 			{
@@ -127,12 +128,16 @@ void swView::OnDraw()
 
 				DrawBackground();
 
-				mContext->SetProjectionMatrix(GetProjectionMatrix());
+				ProjectionMatrix = GetProjectionMatrix();
 			}
+
+			mContext->SetProjectionMatrix(ProjectionMatrix);
 
 			mContext->SetLineWidth(RenderSettings.LineWidth * mLineWidthScale);
 
-			const bool OutlineEnabled = DrawInterface && !mRenderFramebuffer && mRenderImage.isNull() &&
+			// step images outline the parts new to their step like the model view
+			const bool OutlineImage = mViewType == swViewType::View && mRenderFramebuffer && !mRenderImage.isNull() && mScene->HasHighlightedMeshes();
+			const bool OutlineEnabled = ((DrawInterface && !mRenderFramebuffer && mRenderImage.isNull()) || OutlineImage) &&
 				ShadingMode != swShadingMode::Wireframe && Preferences.mHighlightRenderMode == swHighlightRenderMode::Outline &&
 				(mScene->HasSelectedMeshes() || mScene->HasHighlightedMeshes()) && PrepareOutlineFramebuffers();
 			
@@ -149,7 +154,7 @@ void swView::OnDraw()
 			});
 
 			if (OutlineEnabled && OutlineMasksReady)
-				mContext->DrawOutline(*mOutlineFullFramebuffer, *mOutlineVisibleFramebuffer, mWidget->GetDeviceScale());
+				mContext->DrawOutline(*mOutlineFullFramebuffer, *mOutlineVisibleFramebuffer, mWidget ? mWidget->GetDeviceScale() : mLineWidthScale);
 
 			if (OutlineEnabled && !OutlineMasksReady)
 			{
@@ -157,7 +162,7 @@ void swView::OnDraw()
 				
 				DrawBackground();
 				
-				mContext->SetProjectionMatrix(GetProjectionMatrix());
+				mContext->SetProjectionMatrix(ProjectionMatrix);
 				
 				mScene->Draw(mContext, [this]() { DrawGrid(); });
 			}
