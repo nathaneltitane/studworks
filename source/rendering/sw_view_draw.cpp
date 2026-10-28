@@ -1116,17 +1116,27 @@ void swView::DrawGrid()
 		mContext->DrawPrimitives(GL_LINES, 0, NumVerts);
 	}
 
-	if (Preferences.mDrawGridHeightXZ || Preferences.mDrawGridHeightYZ)
+	struct swGridVertex
+	{
+		float x, y, z;
+		quint32 Color;
+	};
+
+	// z axis lines reach as high as the height grids
+	constexpr float PlateHeight = 8.0f;
+	const int PlateCount = swMaximum(static_cast<int>(ceilf((GridSizeValid && std::isfinite(Max[2]) ? Max[2] : 0.0f) / PlateHeight)) + 3, 9);
+	const float Top = PlateCount * PlateHeight;
+	const bool DrawGridHeight = Preferences.mDrawGridHeightXZ || Preferences.mDrawGridHeightYZ;
+	std::vector<swGridVertex> AxisVerts;
+
+	if (DrawGridHeight)
 	{
 		// Vertical grids through the origin axes, or behind the model, with a line every plate height.
-		constexpr float PlateHeight = 8.0f;
 		const float LineSpacing = 20.0f * Spacing;
 		const float Left = MinX * LineSpacing;
 		const float Right = MaxX * LineSpacing;
 		const float Front = MinY * LineSpacing;
 		const float Back = MaxY * LineSpacing;
-		const int PlateCount = swMaximum(static_cast<int>(ceilf((GridSizeValid && std::isfinite(Max[2]) ? Max[2] : 0.0f) / PlateHeight)) + 3, 9);
-		const float Top = PlateCount * PlateHeight;
 		const swVector3 CameraPosition = mCamera->mPosition;
 		const bool BehindModel = Preferences.mGridHeightBehindModel;
 
@@ -1147,6 +1157,9 @@ void swView::DrawGrid()
 				Lines.emplace_back(Left, Y, Plate * PlateHeight);
 				Lines.emplace_back(Right, Y, Plate * PlateHeight);
 			}
+
+			AxisVerts.push_back({ 0.0f, Y, 0.0f, Preferences.mAxisZColor });
+			AxisVerts.push_back({ 0.0f, Y, Top, Preferences.mAxisZColor });
 		}
 
 		if (Preferences.mDrawGridHeightYZ)
@@ -1164,6 +1177,13 @@ void swView::DrawGrid()
 				Lines.emplace_back(X, Front, Plate * PlateHeight);
 				Lines.emplace_back(X, Back, Plate * PlateHeight);
 			}
+
+			// skip the z axis line the xz grid already drew at the origin
+			if (BehindModel || !Preferences.mDrawGridHeightXZ)
+			{
+				AxisVerts.push_back({ X, 0.0f, 0.0f, Preferences.mAxisZColor });
+				AxisVerts.push_back({ X, 0.0f, Top, Preferences.mAxisZColor });
+			}
 		}
 
 		mContext->SetLineWidth(1.0f);
@@ -1176,25 +1196,27 @@ void swView::DrawGrid()
 
 	if (Preferences.mDrawGridOrigin)
 	{
-		struct swGridVertex
-		{
-			float x, y;
-			quint32 Color;
-		};
-
-		const quint32 Red = Preferences.mAxisXColor;
-		const quint32 Green = Preferences.mAxisYColor;
 		const float Scale = 20.0f * Spacing;
 
-		const swGridVertex Verts[4] =
+		AxisVerts.push_back({ 0.0f, MinY * Scale, 0.0f, Preferences.mAxisYColor });
+		AxisVerts.push_back({ 0.0f, MaxY * Scale, 0.0f, Preferences.mAxisYColor });
+		AxisVerts.push_back({ MinX * Scale, 0.0f, 0.0f, Preferences.mAxisXColor });
+		AxisVerts.push_back({ MaxX * Scale, 0.0f, 0.0f, Preferences.mAxisXColor });
+
+		// the height grids carry their own z axis lines
+		if (!DrawGridHeight)
 		{
-			{ 0.0f, MinY * Scale, Green }, { 0.0f, MaxY * Scale, Green }, { MinX * Scale, 0.0f, Red }, { MaxX * Scale, 0.0f, Red }
-		};
+			AxisVerts.push_back({ 0.0f, 0.0f, 0.0f, Preferences.mAxisZColor });
+			AxisVerts.push_back({ 0.0f, 0.0f, Top, Preferences.mAxisZColor });
+		}
+	}
 
+	if (!AxisVerts.empty())
+	{
 		mContext->SetMaterial(swMaterialType::UnlitVertexColor);
-		mContext->SetVertexBufferPointer(Verts);
-		mContext->SetVertexFormat(0, 2, 0, 0, 4, false);
+		mContext->SetVertexBufferPointer(AxisVerts.data());
+		mContext->SetVertexFormat(0, 3, 0, 0, 4, false);
 
-		mContext->DrawPrimitives(GL_LINES, 0, 4);
+		mContext->DrawPrimitives(GL_LINES, 0, static_cast<int>(AxisVerts.size()));
 	}
 }

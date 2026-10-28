@@ -103,7 +103,7 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
 
 - **Modeling** ↴
   - MLCad ROTSTEP step views shown and edited in the Timeline
-  - Vertical XZ and YZ height grids, custom rotation snap angle and camera orbit snapping
+  - Vertical XZ and YZ height grids with their own z axis lines, grid origin z axis line, custom rotation snap angle and camera orbit snapping
   - Normal to Face view command, first part at the origin option
   - Insert color options and the selected part color as the current color
   - Separate rendering settings for the model view, preview and parts list
