@@ -41,7 +41,7 @@ Useful? Star the repository - it helps others find it.
 2026-10-27 ↴
 
 - Packages: .deb, .rpm and AppImage for x86_64 and arm64, Windows installer and universal macOS disk image, all with Qt and the parts library included
-- Releases published on GitHub for every date version, plus a continuous build of the latest changes
+- One release on GitHub, rebuilt from every change and tagged with its date version
 - Versions follow the release date everywhere: 'studworks-2026-10-27-x86_64.rpm', the About dialog and the Windows file version
 - Lighting styles for the default shading: Standard, Studio, Matte and Toon - also from the command line with '--lighting'
 - Selection outline width, set in Preferences or with 'Increase Outline Width' and 'Decrease Outline Width'
