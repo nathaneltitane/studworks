@@ -37,6 +37,20 @@
 
 #define SW_TAB_LAYOUT_VERSION 0x0002
 
+// use to give a new view its final size so its first fit is the one shown
+static void swLayoutNewView(QTabWidget* ModelTabWidget, QWidget* TabWidget, swViewWidget* ViewWidget)
+{
+	QStackedWidget* TabStack = ModelTabWidget->findChild<QStackedWidget*>(QString(), Qt::FindDirectChildrenOnly);
+
+	if (TabStack)
+		TabWidget->setGeometry(TabStack->rect());
+
+	TabWidget->layout()->activate();
+
+	const float Scale = ViewWidget->GetDeviceScale();
+	ViewWidget->GetView()->SetSize(ViewWidget->width() * Scale, ViewWidget->height() * Scale);
+}
+
 void swMainWindow::SetShadingMode(swShadingMode ShadingMode)
 {
 	swGetPreferences().mShadingMode = ShadingMode;
@@ -687,6 +701,7 @@ void swMainWindow::SetCurrentModelTab(swModel* Model, bool AdjustFarPlane)
 
 	ViewWidget->show();
 	ViewWidget->setFocus();
+	swLayoutNewView(mModelTabWidget, TabWidget, ViewWidget);
 	NewView->ZoomExtents(swGeometryBoundsMode::IncludeFallback, AdjustFarPlane);
 }
 
@@ -846,6 +861,7 @@ void swMainWindow::ResetViews()
 
 	QLayout* TabLayout = TabWidget->layout();
 	QWidget* TopWidget = TabLayout->itemAt(0)->widget();
+	TopWidget->hide();
 	TopWidget->deleteLater();
 
 	swView* NewView = CreateView(TabWidget->GetModel());
@@ -854,5 +870,6 @@ void swMainWindow::ResetViews()
 
 	ViewWidget->show();
 	ViewWidget->setFocus();
+	swLayoutNewView(mModelTabWidget, TabWidget, ViewWidget);
 	NewView->ZoomExtents(swGeometryBoundsMode::IncludeFallback, true);
 }

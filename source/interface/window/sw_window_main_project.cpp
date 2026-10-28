@@ -247,15 +247,15 @@ bool swMainWindow::OpenProjectFile(const QString& FileName)
 		if (NewProject->HasLeoCADMetaCommands() && MigrateMetaCommands(FileName))
 			NewProject->MigrateMetaCommands();
 
-		gApplication->SetProject(NewProject);
-
-		// Show the model complete instead of drawing parts as they finish loading.
+		// Show the model complete instead of drawing parts as they finish loading, its view then fits the loaded parts once.
 		if (swGetPreferences().mLoadPartsBeforeShowing)
 		{
 			QApplication::setOverrideCursor(Qt::WaitCursor);
 			NewProject->GetMainModel()->WaitForAssets();
 			QApplication::restoreOverrideCursor();
 		}
+
+		gApplication->SetProject(NewProject);
 
 		AddRecentFile(FileName);
 		swView::UpdateProjectViews(NewProject);
