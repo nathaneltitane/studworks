@@ -18,7 +18,7 @@ Useful? Star the repository - it helps others find it.
 
 2026-10-28 ↴
 
-- Cutaway: cut into the model around a clicked face to see inside it, with a cube, sphere or cylinder shaped cut - from View > Viewpoints > Cutaway, the model is never changed
+- Cutaway: cut into the model around a clicked face to see inside it, with a cube, sphere or cylinder shaped cut - from View > Cutaway, the model is never changed
 - Cutaway: click for the default size or drag to size it, move and resize it with the gizmo knobs, push in and pull out by one plate, Esc leaves it
 - Cutaway: faces lined with a light shade, its color and 90% to 99% transparency set in Preferences
 - Turntable: after an idle time the model turns full screen in perspective around the Z axis on the background color, any input ends it

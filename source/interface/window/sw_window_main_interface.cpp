@@ -295,7 +295,7 @@ void swMainWindow::CreateMenus()
 
 	connect(mCameraMenu, &QMenu::aboutToShow, this, &swMainWindow::CameraMenuAboutToShow);
 
-	mViewpointMenu = new QMenu(tr("&Viewpoints"), this);
+	mViewpointMenu = new QMenu(tr("View&points"), this);
 	mViewpointMenu->addAction(mActions[SW_VIEW_VIEWPOINT_FRONT]);
 	mViewpointMenu->addAction(mActions[SW_VIEW_VIEWPOINT_BACK]);
 	mViewpointMenu->addAction(mActions[SW_VIEW_VIEWPOINT_LEFT]);
@@ -321,7 +321,6 @@ void swMainWindow::CreateMenus()
 
 	mViewpointMenu->addSeparator();
 	mViewpointMenu->addAction(mActions[SW_VIEW_NORMAL_TO_FACE]);
-	mViewpointMenu->addMenu(mCutawayMenu);
 
 	mProjectionMenu = new QMenu(tr("Projection"), this);
 	mProjectionMenu->addAction(mActions[SW_VIEW_PROJECTION_PERSPECTIVE]);
@@ -329,7 +328,7 @@ void swMainWindow::CreateMenus()
 
 	connect(mProjectionMenu, &QMenu::aboutToShow, this, &swMainWindow::ProjectionMenuAboutToShow);
 
-	mShadingMenu = new QMenu(tr("Sh&ading"), this);
+	mShadingMenu = new QMenu(tr("&Shading"), this);
 	mShadingMenu->addAction(mActions[SW_VIEW_SHADING_WIREFRAME]);
 	mShadingMenu->addAction(mActions[SW_VIEW_SHADING_FLAT]);
 	mShadingMenu->addAction(mActions[SW_VIEW_SHADING_DEFAULT_LIGHTS]);
@@ -443,6 +442,7 @@ void swMainWindow::CreateMenus()
 	ViewMenu->addAction(mActions[SW_VIEW_ZOOM_EXTENTS]);
 	ViewMenu->addAction(mActions[SW_VIEW_LOOK_AT]);
 	ViewMenu->addMenu(mViewpointMenu);
+	ViewMenu->addMenu(mCutawayMenu);
 	ViewMenu->addMenu(mCameraMenu);
 	ViewMenu->addMenu(mProjectionMenu);
 	ViewMenu->addMenu(mShadingMenu);
