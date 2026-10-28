@@ -51,52 +51,52 @@ swInstructionsPlacementWidget::swInstructionsPlacementWidget(QWidget* Parent, sw
 	mElementLabel->setWordWrap(true);
 	Layout->addWidget(mElementLabel);
 
-	QWidget* AnchorRow = swCreatePanelRow(CentralWidget);
-	Layout->addWidget(AnchorRow);
+	QLabel* AnchorLabel = new QLabel(tr("Relative To"), CentralWidget);
+	Layout->addWidget(AnchorLabel);
 
-	QLabel* AnchorLabel = new QLabel(tr("Relative To"), AnchorRow);
-	AnchorRow->layout()->addWidget(AnchorLabel);
+	// the anchor buttons are stacked on the left, the placement grid takes the right side level with the first button
+	QHBoxLayout* PlacementLayout = new QHBoxLayout();
+	Layout->addLayout(PlacementLayout);
 
-	mAnchorComboBox = new QComboBox(AnchorRow);
-	mAnchorComboBox->setToolTip(tr("Choose what the element is placed against."));
-	mAnchorComboBox->setWhatsThis(mAnchorComboBox->toolTip());
-	mAnchorComboBox->setAccessibleName(tr("Relative To"));
-	swSetupPanelEdit(mAnchorComboBox);
-	mAnchorComboBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	static_cast<QHBoxLayout*>(AnchorRow->layout())->addWidget(mAnchorComboBox, 1);
+	QVBoxLayout* ButtonsLayout = new QVBoxLayout();
+	ButtonsLayout->setSpacing(CentralWidget->style()->pixelMetric(QStyle::PM_LayoutVerticalSpacing));
+	PlacementLayout->addLayout(ButtonsLayout, 1);
 
-	AnchorLabel->setBuddy(mAnchorComboBox);
-
-	connect(mAnchorComboBox, qOverload<int>(&QComboBox::currentIndexChanged), this, &swInstructionsPlacementWidget::AnchorChanged);
-
-	// the grid shows the anchor in its middle, its inner buttons place inside it and its outer ring outside
-	mGridWidget = new QWidget(CentralWidget);
-	QGridLayout* GridLayout = new QGridLayout(mGridWidget);
-	GridLayout->setContentsMargins(0, 0, 0, 0);
-	Layout->addWidget(mGridWidget, 0, Qt::AlignHCenter);
-
-	for (int Placement = 0; Placement < SW_PLACEMENT_COUNT; Placement++)
+	// one button per anchor, the selections are anchors while several elements are selected, the others are disabled
+	const std::pair<int, QString> AnchorNames[] =
 	{
-		const QString Name = tr(swPlacementNames[Placement]);
+		{ static_cast<int>(swInstructionsPlacementAnchor::Area), tr("Page Area") },
+		{ static_cast<int>(swInstructionsPlacementAnchor::StepNumber), tr("Step Number") },
+		{ static_cast<int>(swInstructionsPlacementAnchor::PartsList), tr("Parts List") },
+		{ SW_ANCHOR_FIRST_SELECTION, tr("First Selection") },
+		{ SW_ANCHOR_LAST_SELECTION, tr("Last Selection") }
+	};
 
-		QToolButton* Button = new QToolButton(mGridWidget);
-		Button->setIcon(CreatePlacementIcon(Placement, palette()));
+	mAnchorGroup = new QButtonGroup(this);
+	mAnchorGroup->setExclusive(true);
+
+	for (const std::pair<int, QString>& AnchorName : AnchorNames)
+	{
+		QToolButton* Button = new QToolButton(CentralWidget);
+		Button->setText(AnchorName.second);
 		Button->setCheckable(true);
-		Button->setToolTip(tr("Place the element: %1.").arg(Name));
+		Button->setToolButtonStyle(Qt::ToolButtonTextOnly);
+		Button->setToolTip(tr("Place the element against the %1.").arg(AnchorName.second.toLower()));
 		Button->setWhatsThis(Button->toolTip());
-		Button->setAccessibleName(Name);
+		Button->setAccessibleName(AnchorName.second);
 		swSetupPanelButton(Button);
-		GridLayout->addWidget(Button, Placement / SW_PLACEMENT_GRID_SIZE, Placement % SW_PLACEMENT_GRID_SIZE);
-		mPlacementButtons[Placement] = Button;
-
-		connect(Button, &QToolButton::clicked, this, [this, Placement]()
-		{
-			PlacementClicked(Placement);
-		});
+		Button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+		ButtonsLayout->addWidget(Button);
+		mAnchorGroup->addButton(Button, AnchorName.first);
 	}
 
+	AnchorLabel->setBuddy(mAnchorGroup->button(0));
+
+	connect(mAnchorGroup, &QButtonGroup::idClicked, this, &swInstructionsPlacementWidget::AnchorClicked);
+
+	ButtonsLayout->addStretch(1);
+
 	QWidget* ResetRow = swCreatePanelRow(CentralWidget);
-	Layout->addWidget(ResetRow);
 
 	mResetPositionButton = new QToolButton(ResetRow);
 	mResetPositionButton->setText(tr("Reset Position"));
@@ -118,6 +118,34 @@ swInstructionsPlacementWidget::swInstructionsPlacementWidget(QWidget* Parent, sw
 	swSetupPanelButton(mLockButton);
 	mLockButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	static_cast<QHBoxLayout*>(ResetRow->layout())->addWidget(mLockButton, 1);
+
+	// the grid shows the anchor in its middle, its inner buttons place inside it and its outer ring outside
+	mGridWidget = new QWidget(CentralWidget);
+	QGridLayout* GridLayout = new QGridLayout(mGridWidget);
+	GridLayout->setContentsMargins(0, 0, 0, 0);
+	PlacementLayout->addWidget(mGridWidget, 0, Qt::AlignRight | Qt::AlignTop);
+
+	for (int Placement = 0; Placement < SW_PLACEMENT_COUNT; Placement++)
+	{
+		const QString Name = tr(swPlacementNames[Placement]);
+
+		QToolButton* Button = new QToolButton(mGridWidget);
+		Button->setIcon(CreatePlacementIcon(Placement, palette()));
+		Button->setCheckable(true);
+		Button->setToolTip(tr("Place the element: %1.").arg(Name));
+		Button->setWhatsThis(Button->toolTip());
+		Button->setAccessibleName(Name);
+		swSetupPanelButton(Button);
+		GridLayout->addWidget(Button, Placement / SW_PLACEMENT_GRID_SIZE, Placement % SW_PLACEMENT_GRID_SIZE);
+		mPlacementButtons[Placement] = Button;
+
+		connect(Button, &QToolButton::clicked, this, [this, Placement]()
+		{
+			PlacementClicked(Placement);
+		});
+	}
+
+	Layout->addWidget(ResetRow);
 
 	connect(mResetPositionButton, &QToolButton::clicked, this, &swInstructionsPlacementWidget::ResetPositionClicked);
 	connect(mLockButton, &QToolButton::toggled, this, &swInstructionsPlacementWidget::LockClicked);
@@ -153,8 +181,12 @@ QIcon swInstructionsPlacementWidget::CreatePlacementIcon(int Placement, const QP
 	return QIcon(Pixmap);
 }
 
-void swInstructionsPlacementWidget::SelectionChanged(QGraphicsItem* FocusItem)
+void swInstructionsPlacementWidget::SelectionChanged(QGraphicsItem* FocusItem, int SelectionCount)
 {
+	// several elements are placed against one of them instead of their own placements
+	const bool SelectionModeChanged = (SelectionCount > 1) != (mSelectionCount > 1) || (SelectionCount > 1 && SelectionCount != mSelectionCount);
+	mSelectionCount = SelectionCount;
+
 	swInstructionsElementKey Key;
 	swGetElementKey(FocusItem, Key);
 
@@ -165,7 +197,7 @@ void swInstructionsPlacementWidget::SelectionChanged(QGraphicsItem* FocusItem)
 		mPlacementPosition = FocusItem->data(SW_PLACEMENT_POSITION_DATA).toPointF();
 	}
 
-	if (Key == mElementKey)
+	if (Key == mElementKey && !SelectionModeChanged)
 		return;
 
 	mElementKey = Key;
@@ -245,15 +277,20 @@ bool swInstructionsPlacementWidget::IsInsideAnchor() const
 	return static_cast<swInstructionsPlacementAnchor>(mInstructions->GetIntProperty(AnchorType, nullptr, 0)) == swInstructionsPlacementAnchor::Area;
 }
 
-void swInstructionsPlacementWidget::AnchorChanged(int Index)
+void swInstructionsPlacementWidget::AnchorClicked(int Anchor)
 {
+	if (mSelectionCount > 1)
+	{
+		mLastSelection = Anchor == SW_ANCHOR_LAST_SELECTION;
+		return;
+	}
+
 	const swInstructionsPropertyType AnchorType = GetAnchorType();
 
-	if (AnchorType == swInstructionsPropertyType::Count || Index < 0)
+	if (AnchorType == swInstructionsPropertyType::Count)
 		return;
 
 	// the placement moves inside the area or outside the element so it stays valid for the new anchor
-	const int Anchor = mAnchorComboBox->itemData(Index).toInt();
 	const swInstructionsPropertyType PlacementType = GetPlacementType();
 	const int Placement = swGetValidPlacement(mInstructions->GetIntProperty(PlacementType, nullptr, 0), static_cast<swInstructionsPlacementAnchor>(Anchor) == swInstructionsPlacementAnchor::Area);
 
@@ -263,6 +300,13 @@ void swInstructionsPlacementWidget::AnchorChanged(int Index)
 
 void swInstructionsPlacementWidget::PlacementClicked(int Placement)
 {
+	if (mSelectionCount > 1)
+	{
+		emit AlignSelection(Placement, mLastSelection);
+		UpdateWidget();
+		return;
+	}
+
 	const swInstructionsPropertyType PlacementType = GetPlacementType();
 
 	// the element leaves the position it was dragged to
@@ -288,6 +332,32 @@ void swInstructionsPlacementWidget::LockClicked(bool Locked)
 
 void swInstructionsPlacementWidget::UpdateWidget()
 {
+	// the other selected elements are placed against the first or the last one selected
+	if (mSelectionCount > 1)
+	{
+		mElementLabel->setText(tr("%1 Elements Selected").arg(mSelectionCount));
+		mResetPositionButton->setEnabled(false);
+
+		{
+			QSignalBlocker Blocker(mLockButton);
+			mLockButton->setEnabled(false);
+			mLockButton->setChecked(false);
+		}
+
+		for (QAbstractButton* Button : mAnchorGroup->buttons())
+			Button->setEnabled(mAnchorGroup->id(Button) >= SW_ANCHOR_FIRST_SELECTION);
+
+		mAnchorGroup->button(mLastSelection ? SW_ANCHOR_LAST_SELECTION : SW_ANCHOR_FIRST_SELECTION)->setChecked(true);
+
+		for (QToolButton* Button : mPlacementButtons)
+		{
+			Button->setEnabled(true);
+			Button->setChecked(false);
+		}
+
+		return;
+	}
+
 	// a locked element keeps its position, it is neither placed nor dragged
 	const bool Locked = mInstructions->IsElementLocked(mElementKey);
 	const bool Active = GetPlacementType() != swInstructionsPropertyType::Count && !Locked;
@@ -351,21 +421,24 @@ void swInstructionsPlacementWidget::UpdateWidget()
 	}
 
 	{
-		QSignalBlocker Blocker(mAnchorComboBox);
-		mAnchorComboBox->clear();
-		mAnchorComboBox->addItem(tr("Page Area"), static_cast<int>(swInstructionsPlacementAnchor::Area));
-
-		if (mElement == swInstructionsPlacementElement::StepNumber)
-			mAnchorComboBox->addItem(tr("Parts List"), static_cast<int>(swInstructionsPlacementAnchor::PartsList));
-		else if (mElement == swInstructionsPlacementElement::PartsList)
-			mAnchorComboBox->addItem(tr("Step Number"), static_cast<int>(swInstructionsPlacementAnchor::StepNumber));
-
+		// the page area and the other step element are the anchors of a single element
 		const swInstructionsPropertyType AnchorType = GetAnchorType();
+		int Anchor = static_cast<int>(swInstructionsPlacementAnchor::Area);
 
 		if (AnchorType != swInstructionsPropertyType::Count)
-			mAnchorComboBox->setCurrentIndex(qMax(mAnchorComboBox->findData(mInstructions->GetIntProperty(AnchorType, nullptr, 0)), 0));
+			Anchor = mInstructions->GetIntProperty(AnchorType, nullptr, 0);
 
-		mAnchorComboBox->setEnabled(Active && mAnchorComboBox->count() > 1);
+		const int OtherAnchor = static_cast<int>(mElement == swInstructionsPlacementElement::StepNumber ? swInstructionsPlacementAnchor::PartsList : swInstructionsPlacementAnchor::StepNumber);
+		const bool StepElement = mElement == swInstructionsPlacementElement::StepNumber || mElement == swInstructionsPlacementElement::PartsList;
+
+		for (QAbstractButton* Button : mAnchorGroup->buttons())
+		{
+			const int ButtonAnchor = mAnchorGroup->id(Button);
+			Button->setEnabled(Active && StepElement && (ButtonAnchor == static_cast<int>(swInstructionsPlacementAnchor::Area) || ButtonAnchor == OtherAnchor));
+		}
+
+		if (QAbstractButton* Button = mAnchorGroup->button(Anchor))
+			Button->setChecked(true);
 	}
 
 	const bool Inside = IsInsideAnchor();

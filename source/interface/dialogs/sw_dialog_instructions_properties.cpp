@@ -38,9 +38,24 @@ void swSetupLengthSpinBox(QDoubleSpinBox* SpinBox, swInstructionsPageUnits Units
 	if (Step * 10.0 > (Maximum - Minimum) / Scale)
 		Step = 1.0 / Scale;
 
-	SpinBox->setDecimals(Decimals);
-	SpinBox->setSingleStep(Step);
-	SpinBox->setRange(Minimum / Scale, Maximum / Scale);
+	// unchanged settings are left alone, setting them rewrites the text being typed
+	if (SpinBox->decimals() != Decimals)
+		SpinBox->setDecimals(Decimals);
+
+	if (!qFuzzyCompare(SpinBox->singleStep(), Step))
+		SpinBox->setSingleStep(Step);
+
+	if (!qFuzzyCompare(SpinBox->minimum() + 1.0, Minimum / Scale + 1.0) || !qFuzzyCompare(SpinBox->maximum() + 1.0, Maximum / Scale + 1.0))
+		SpinBox->setRange(Minimum / Scale, Maximum / Scale);
+
+	// the maximum follows the value so the limit is known before typing
+	const QString Suffix = QString(" / %1").arg(SpinBox->textFromValue(SpinBox->maximum()));
+
+	if (SpinBox->suffix() != Suffix)
+	{
+		SpinBox->setSuffix(Suffix);
+		swUpdatePanelSpinBoxWidth(SpinBox);
+	}
 }
 
 swInstructionsUnitButton::swInstructionsUnitButton(QWidget* Parent, const QString& Name)
@@ -141,6 +156,12 @@ swInstructionsPropertiesWidget::swInstructionsPropertiesWidget(QWidget* Parent, 
 	PageSetupAction->setToolTip(tr("Choose the page size, orientation and margins"));
 	connect(PageSetupAction, &QAction::triggered, this, &swInstructionsPropertiesWidget::ShowPageSetupDialog);
 
+	QAction* ShowMarginsAction = OptionsMenu->addAction(tr("Show Margins"));
+	ShowMarginsAction->setToolTip(tr("Outline the page margins on screen, they are never printed"));
+	ShowMarginsAction->setCheckable(true);
+	ShowMarginsAction->setChecked(mInstructions->IsMarginsShown());
+	connect(ShowMarginsAction, &QAction::toggled, mInstructions, &swInstructions::SetShowMargins);
+
 	OptionsMenu->addSeparator();
 
 	// the document units replace the units of every value while they are used
@@ -176,12 +197,14 @@ swInstructionsPropertiesWidget::swInstructionsPropertiesWidget(QWidget* Parent, 
 		mInstructions->SetDefaultInt(swInstructionsPropertyType::DocumentUnits, Action->data().toInt());
 	});
 
-	connect(OptionsMenu, &QMenu::aboutToShow, this, [this, DocumentUnitsAction, DocumentUnitsMenu, DocumentUnitsGroup]()
+	connect(OptionsMenu, &QMenu::aboutToShow, this, [this, ShowMarginsAction, DocumentUnitsAction, DocumentUnitsMenu, DocumentUnitsGroup]()
 	{
 		const bool UseDocumentUnits = mInstructions->GetBoolProperty(swInstructionsPropertyType::UseDocumentUnits, nullptr, 0);
 		const int Units = mInstructions->GetIntProperty(swInstructionsPropertyType::DocumentUnits, nullptr, 0);
 		QSignalBlocker Blocker(DocumentUnitsAction);
+		QSignalBlocker MarginsBlocker(ShowMarginsAction);
 
+		ShowMarginsAction->setChecked(mInstructions->IsMarginsShown());
 		DocumentUnitsAction->setChecked(UseDocumentUnits);
 		DocumentUnitsMenu->setEnabled(UseDocumentUnits);
 
@@ -312,7 +335,7 @@ void swInstructionsPropertiesWidget::CreateWidgets()
 		CreateToggleEditor(swInstructionsPropertyType::ShowBillOfMaterialsBlankPage, tr("Blank Page Before Bill of Materials"), tr("Precede the bill of materials with a blank page."))
 	});
 
-	CreateColorEditor(swInstructionsPropertyType::BillOfMaterialsBackgroundColor, tr("Bill of Materials Background"), tr("Color filling the whole bill of materials page, margins included."));
+	CreateColorEditor(swInstructionsPropertyType::BillOfMaterialsBackgroundColor, tr("BOM Background"), tr("Color filling the whole bill of materials page, margins included."));
 	AddEditorRow(CategoryIndex::BillOfMaterials, swInstructionsPropertyType::BillOfMaterialsBackgroundColor);
 
 	AddCategory(CategoryIndex::Page, tr("Page"), tr("<p><b>Page</b></p><p>The background of the step and blank pages. It applies to all these pages, or only to the current page when it has its own. The cover and the bill of materials have their own backgrounds.</p>"));
@@ -369,6 +392,7 @@ void swInstructionsPropertiesWidget::CreateWidgets()
 	{
 		QSpinBox* SpinBox = new QSpinBox(this);
 		SpinBox->setRange(1, 10);
+		SpinBox->setSuffix(QString(" / %1").arg(SpinBox->maximum()));
 		SpinBox->setToolTip(ToolTip);
 		SpinBox->setWhatsThis(ToolTip);
 		SpinBox->setAccessibleName(Name);
@@ -412,7 +436,7 @@ void swInstructionsPropertiesWidget::CreateWidgets()
 
 	CreateColorEditor(swInstructionsPropertyType::StepDividerColor, tr("Divider Color"), tr("Color of the lines between steps."));
 	AddEditorRow(CategoryIndex::PageLayout, swInstructionsPropertyType::StepDividerColor);
-	CreateLengthEditor(swInstructionsPropertyType::StepDividerWidth, tr("Divider Width"), tr("Width of the lines between steps."), 1, 20);
+	CreateLengthEditor(swInstructionsPropertyType::StepDividerWidth, tr("Divider Width"), tr("Width of the lines between steps."), 1, 72, 0.1);
 	AddEditorRow(CategoryIndex::PageLayout, swInstructionsPropertyType::StepDividerWidth);
 
 	AddCategory(CategoryIndex::PageNumber, tr("Page Number"), tr("<p><b>Page Number</b></p><p>The number of each page, the cover and blank pages are not numbered unless all pages are. Drag it or use the Placement panel to move it on all pages.</p>"));
@@ -453,6 +477,11 @@ void swInstructionsPropertiesWidget::CreateWidgets()
 	// the choices follow the order of swPartsListSort
 	CreateChoiceEditor(swInstructionsPropertyType::PLISortOrder, tr("Parts List Order"), tr("Order of the parts in the list."), { tr("Sort by Color"), tr("Sort by Name"), tr("Sort by Part ID") });
 	AddEditorRow(CategoryIndex::PartsList, swInstructionsPropertyType::PLISortOrder);
+	// the choices follow the order of swPartsListLayout and swPartsListAlignment, the edges are named after the layout
+	CreateChoiceEditor(swInstructionsPropertyType::PLILayout, tr("Parts List Layout"), tr("Line the parts up in rows or in columns."), { tr("Rows"), tr("Columns") });
+	AddEditorRow(CategoryIndex::PartsList, swInstructionsPropertyType::PLILayout);
+	CreateChoiceEditor(swInstructionsPropertyType::PLIAlignment, tr("Line Reference"), tr("Thumbnail edge the parts line up on."), { tr("Top"), tr("Middle"), tr("Bottom") });
+	AddEditorRow(CategoryIndex::PartsList, swInstructionsPropertyType::PLIAlignment);
 	CreateFontEditor(swInstructionsPropertyType::PLIFont, tr("Parts List Font"), tr("Font of the part counts."));
 	AddEditorRow(CategoryIndex::PartsList, swInstructionsPropertyType::PLIFont);
 	CreateColorEditor(swInstructionsPropertyType::PLITextColor, tr("Parts List Text Color"), tr("Color of the part counts."));
@@ -492,9 +521,10 @@ void swInstructionsPropertiesWidget::CreateWidgets()
 	AddEditorRow(CategoryIndex::Pointer, swInstructionsPropertyType::PointerTip);
 	CreateColorEditor(swInstructionsPropertyType::PointerColor, tr("Pointer Color"), tr("Color of the pointers."));
 	AddEditorRow(CategoryIndex::Pointer, swInstructionsPropertyType::PointerColor);
-	CreateLengthEditor(swInstructionsPropertyType::PointerWidth, tr("Pointer Width"), tr("Width of the pointer lines."), 1, 20);
+	// the lowest values follow the border of the element and three times the pointer width
+	CreateLengthEditor(swInstructionsPropertyType::PointerWidth, tr("Pointer Width"), tr("Width of the pointer lines, Border follows the border of the element."), 0, 72, 0.1)->setSpecialValueText(tr("Border"));
 	AddEditorRow(CategoryIndex::Pointer, swInstructionsPropertyType::PointerWidth);
-	CreateLengthEditor(swInstructionsPropertyType::PointerTipSize, tr("Tip Size"), tr("Size of the arrowheads and dots, and width of the wedges at the element."), 4, 72);
+	CreateLengthEditor(swInstructionsPropertyType::PointerTipSize, tr("Tip Size"), tr("Size of the arrowheads and dots, and width of the wedges at the element, never less than three times the pointer width."), 0, 288, 0.5)->setSpecialValueText(tr("Automatic"));
 	AddEditorRow(CategoryIndex::Pointer, swInstructionsPropertyType::PointerTipSize);
 
 	AddCategory(CategoryIndex::Box, tr("Box"), tr("<p><b>Box</b></p><p>The space and border around each element. The margin keeps other elements away, the padding keeps the border away from the content and the background fills all of it, margin and padding included. Pointers leave the border. Choose the element to edit, selecting an element on the page chooses it.</p>"));
@@ -519,11 +549,11 @@ void swInstructionsPropertiesWidget::CreateWidgets()
 		const swInstructionsBoxTypes BoxTypes = swGetBoxTypes(static_cast<swInstructionsBoxElement>(ElementIndex));
 		std::vector<QWidget*>& Rows = mBoxRows[ElementIndex];
 
-		CreateLengthEditor(BoxTypes.Margin, tr("Margin"), tr("Space outside the border, filled with the background."), 0, 72);
+		CreateLengthEditor(BoxTypes.Margin, tr("Margin"), tr("Space outside the border, filled with the background."), 0, 288, 0.5);
 		Rows.push_back(AddEditorRow(CategoryIndex::Box, BoxTypes.Margin)->parentWidget());
-		CreateLengthEditor(BoxTypes.Padding, tr("Padding"), tr("Space between the border and the content, filled with the background."), 0, 72);
+		CreateLengthEditor(BoxTypes.Padding, tr("Padding"), tr("Space between the border and the content, filled with the background."), 0, 288, 0.5);
 		Rows.push_back(AddEditorRow(CategoryIndex::Box, BoxTypes.Padding)->parentWidget());
-		CreateLengthEditor(BoxTypes.BorderWidth, tr("Border Width"), tr("Width of the line around the element, 0 draws no line."), 0, 20);
+		CreateLengthEditor(BoxTypes.BorderWidth, tr("Border Width"), tr("Width of the line around the element, 0 draws no line."), 0, 72, 0.1);
 		Rows.push_back(AddEditorRow(CategoryIndex::Box, BoxTypes.BorderWidth)->parentWidget());
 		CreateColorEditor(BoxTypes.BorderColor, tr("Border Color"), tr("Color of the line around the element."));
 		Rows.push_back(AddEditorRow(CategoryIndex::Box, BoxTypes.BorderColor)->parentWidget());
@@ -570,7 +600,10 @@ QWidget* swInstructionsPropertiesWidget::AddRow(CategoryIndex Index, const std::
 	{
 		Editor->setParent(Row);
 		Editor->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-		Editor->setMinimumWidth(0);
+
+		// spin boxes keep the width of their largest value so the limit is never cut off
+		if (!qobject_cast<QAbstractSpinBox*>(Editor))
+			Editor->setMinimumWidth(0);
 		static_cast<QHBoxLayout*>(Row->layout())->addWidget(Editor, 1);
 	}
 
@@ -647,7 +680,18 @@ QToolButton* swInstructionsPropertiesWidget::CreateToggleEditor(swInstructionsPr
 	return Button;
 }
 
-QDoubleSpinBox* swInstructionsPropertiesWidget::CreateLengthEditor(swInstructionsPropertyType Type, const QString& Name, const QString& ToolTip, int Minimum, int Maximum)
+// use to get the largest value of an editor, a share of the shorter page side when set
+double swInstructionsPropertiesWidget::GetEditorMaximum(const EditorWidgets& Editor) const
+{
+	if (Editor.PageFraction <= 0.0)
+		return Editor.Maximum;
+
+	const swInstructionsPageSetup& PageSetup = mInstructions->mPageSetup;
+
+	return qMax<double>(Editor.Minimum + 1, qFloor(qMin(PageSetup.Width, PageSetup.Height) * Editor.PageFraction));
+}
+
+QDoubleSpinBox* swInstructionsPropertiesWidget::CreateLengthEditor(swInstructionsPropertyType Type, const QString& Name, const QString& ToolTip, int Minimum, int Maximum, double PageFraction)
 {
 	// lengths are stored in points and shown in the page units
 	QDoubleSpinBox* SpinBox = new swInstructionsLengthSpinBox(this);
@@ -656,9 +700,10 @@ QDoubleSpinBox* swInstructionsPropertiesWidget::CreateLengthEditor(swInstruction
 	EditorWidgets& Editors = mEditors[static_cast<int>(Type)];
 	Editors.Minimum = Minimum;
 	Editors.Maximum = Maximum;
+	Editors.PageFraction = PageFraction;
 
 	Editors.UnitButton = new swInstructionsUnitButton(this, Name);
-	swSetupLengthSpinBox(SpinBox, mInstructions->GetPageUnits(), Minimum, Maximum);
+	swSetupLengthSpinBox(SpinBox, mInstructions->GetPageUnits(), Minimum, GetEditorMaximum(Editors));
 
 	// the value applies once typed, each change rebuilds the pages
 	SpinBox->setKeyboardTracking(false);
@@ -975,7 +1020,7 @@ void swInstructionsPropertiesWidget::UpdateEditors()
 				const swInstructionsPageUnits Units = GetEditorUnits(Type);
 				QSignalBlocker SpinBoxBlocker(SpinBox);
 
-				swSetupLengthSpinBox(SpinBox, Units, Editor.Minimum, Editor.Maximum);
+				swSetupLengthSpinBox(SpinBox, Units, Editor.Minimum, GetEditorMaximum(Editor));
 				Editor.UnitButton->UpdateUnits(mInstructions);
 
 				const double Value = GetIntValue(Type) / swGetPageUnitScale(Units);
@@ -1009,7 +1054,8 @@ void swInstructionsPropertiesWidget::UpdateEditors()
 				qobject_cast<QToolButton*>(Editor.Widget)->setText(Font.family());
 				swSetupLengthSpinBox(Editor.SizeSpinBox, Units, Editor.Minimum, Editor.Maximum);
 				Editor.UnitButton->UpdateUnits(mInstructions);
-				Editor.SizeSpinBox->setValue(Font.pointSizeF() / swGetPageUnitScale(Units));
+				if (!qFuzzyCompare(Editor.SizeSpinBox->value() * swGetPageUnitScale(Units), Font.pointSizeF()))
+					Editor.SizeSpinBox->setValue(Font.pointSizeF() / swGetPageUnitScale(Units));
 			}
 			break;
 		}
@@ -1056,6 +1102,14 @@ void swInstructionsPropertiesWidget::UpdateEditors()
 	SetEnabled(swInstructionsPropertyType::StepNumberFont, !UseDocumentFont && ShowStepNumber);
 	SetEnabled(swInstructionsPropertyType::StepNumberColor, ShowStepNumber);
 	SetEnabled(swInstructionsPropertyType::PLIFont, !UseDocumentFont);
+
+	// rows line up on a horizontal edge, columns on a vertical one
+	QComboBox* AlignmentComboBox = qobject_cast<QComboBox*>(mEditors[static_cast<int>(swInstructionsPropertyType::PLIAlignment)].Widget);
+	const bool Columns = mInstructions->GetIntProperty(swInstructionsPropertyType::PLILayout, mModel, mStep) == static_cast<int>(swPartsListLayout::Columns);
+	const QStringList AlignmentNames = Columns ? QStringList{ tr("Left"), tr("Center"), tr("Right") } : QStringList{ tr("Top"), tr("Middle"), tr("Bottom") };
+
+	for (int Index = 0; Index < AlignmentNames.size(); Index++)
+		AlignmentComboBox->setItemText(Index, AlignmentNames[Index]);
 	SetEnabled(swInstructionsPropertyType::NoticeFont, !UseDocumentFont);
 	SetEnabled(swInstructionsPropertyType::StepDividerColor, ShowStepDividers);
 

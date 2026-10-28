@@ -23,4 +23,5 @@ protected:
 	QPointer<KParts::ReadOnlyPart> mPart;
 	QVBoxLayout* mLayout = nullptr;
 	QString mDirectory;
+	bool mClickFocused = false;
 };

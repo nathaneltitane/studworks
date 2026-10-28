@@ -1007,7 +1007,7 @@ swResult<void> Project::ExportHTML(const swHTMLExportOptions& Options)
 		if (PartsList.empty())
 			return swResult<void>();
 
-		const swResult<QImage> Image = Model->GetPartsListImage(1024, 512, Step, SW_RGBA(255, 255, 255, 0), SW_RGBA(255, 255, 255, 0), QFont("Arial", 16, QFont::Bold), Qt::black, true);
+		const swResult<QImage> Image = Model->GetPartsListImage(1024, 512, Step, SW_RGBA(255, 255, 255, 0), SW_RGBA(255, 255, 255, 0), QFont("Arial", 16), Qt::black, true);
 
 		if (!Image)
 			return swUnexpected(Image.error());

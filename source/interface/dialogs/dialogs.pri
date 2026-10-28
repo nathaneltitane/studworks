@@ -15,6 +15,7 @@ SOURCES += \
 	$$PWD/sw_dialog_instructions.cpp \
 	$$PWD/sw_dialog_instructions_page.cpp \
 	$$PWD/sw_dialog_instructions_placement.cpp \
+	$$PWD/sw_dialog_instructions_editor.cpp \
 	$$PWD/sw_dialog_instructions_print.cpp \
 	$$PWD/sw_dialog_instructions_properties.cpp \
 	$$PWD/sw_dialog_list_model.cpp \
@@ -39,6 +40,7 @@ HEADERS += \
 	$$PWD/sw_dialog_instructions.h \
 	$$PWD/sw_dialog_instructions_page.h \
 	$$PWD/sw_dialog_instructions_placement.h \
+	$$PWD/sw_dialog_instructions_editor.h \
 	$$PWD/sw_dialog_instructions_print.h \
 	$$PWD/sw_dialog_instructions_properties.h \
 	$$PWD/sw_dialog_list_model.h \

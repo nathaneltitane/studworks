@@ -33,6 +33,34 @@ protected:
 	bool eventFilter(QObject* Object, QEvent* Event) override;
 };
 
+// Keeps every interface of the application readable: spin boxes fit their values, scrolled rows are never cut and floating panels fit their contents.
+class swInterfaceFitFilter : public QObject
+{
+public:
+	explicit swInterfaceFitFilter(QObject* Parent)
+		: QObject(Parent)
+	{
+	}
+
+protected:
+	bool eventFilter(QObject* Object, QEvent* Event) override;
+};
+
+// Draws dropdown values centered like the button labels of every interface.
+class swInterfaceStyle : public QProxyStyle
+{
+public:
+	explicit swInterfaceStyle(QStyle* Style)
+		: QProxyStyle(Style)
+	{
+	}
+
+	void drawControl(ControlElement Element, const QStyleOption* Option, QPainter* Painter, const QWidget* Widget) const override;
+};
+
+// Fits a floating panel to its contents, a panel docked at the top or bottom keeps the width of its rows.
+void swFitFloatingDock(QDockWidget* DockWidget);
+
 // Keeps a panel exactly as tall as its contents, updated whenever its layout changes.
 void swFitHeightToContents(QWidget* Widget);
 
@@ -69,6 +97,7 @@ int swGetLayoutSpacing(const QWidget* Widget, Qt::Orientation Orientation);
 void swSetupPanelButton(QToolButton* Button);
 void swSetupPanelEdit(QWidget* Edit);
 void swSetupPanelSpinBox(QAbstractSpinBox* SpinBox);
+void swUpdatePanelSpinBoxWidth(QAbstractSpinBox* SpinBox);
 QWidget* swCreatePanelRow(QWidget* Parent);
 void swAddPanelRowWidget(QWidget* Row, QWidget* Widget);
 void swAddPanelRowStretch(QWidget* Row);

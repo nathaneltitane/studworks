@@ -172,8 +172,22 @@ swResult<QImage> swModel::RenderStepImageWithReadyAssets(bool Zoom, int Width, i
 	return Image;
 }
 
-swResult<QImage> swModel::GetPartsListImage(int MaxWidth, int RequestedThumbnailSize, swStep Step, quint32 BackgroundColor, quint32 ThumbnailBackgroundColor, QFont Font, QColor TextColor, bool KeepMissingParts, bool ShowCounts, swPartsListSort Sort) const
+swResult<QImage> swModel::GetPartsListImage(int MaxWidth, int RequestedThumbnailSize, swStep Step, quint32 BackgroundColor, quint32 ThumbnailBackgroundColor, QFont Font, QColor TextColor, bool KeepMissingParts, bool ShowCounts, swPartsListSort Sort, swPartsListLayout Layout, swPartsListAlignment Alignment, int MaxHeight, float Scale) const
 {
+	// the scale renders a sharper image of the same layout, every size in pixels follows it
+	auto Scaled = [Scale](int Size)
+	{
+		return qRound(Size * Scale);
+	};
+
+	MaxWidth = Scaled(MaxWidth);
+	MaxHeight = MaxHeight < INT_MAX / 8 ? Scaled(MaxHeight) : INT_MAX;
+
+	if (Font.pointSizeF() > 0.0)
+		Font.setPointSizeF(Font.pointSizeF() * Scale);
+	else if (Font.pixelSize() > 0)
+		Font.setPixelSize(Scaled(Font.pixelSize()));
+
 	swScopedGLContextState GLState;
 
 	WaitForAssets();
@@ -196,6 +210,8 @@ swResult<QImage> swModel::GetPartsListImage(int MaxWidth, int RequestedThumbnail
 		int Count;
 		QRect Bounds;
 		QPoint Position;
+		QPoint TextPosition;
+		int CellWidth;
 	};
 
 	std::vector<swPartsListImage> Images;
@@ -259,7 +275,7 @@ swResult<QImage> swModel::GetPartsListImage(int MaxWidth, int RequestedThumbnail
 	View.MakeCurrent();
 	swContext* Context = View.mContext;
 	// a thumbnail wider than the list could never be laid out
-	const int ThumbnailSize = qBound(16, RequestedThumbnailSize, qMax(qMin(MaxWidth, 512), 16));
+	const int ThumbnailSize = qBound(Scaled(16), Scaled(RequestedThumbnailSize), qMax(qMin(MaxWidth, Scaled(512)), Scaled(16)));
 
 	View.SetSize(ThumbnailSize, ThumbnailSize);
 
@@ -319,7 +335,7 @@ swResult<QImage> swModel::GetPartsListImage(int MaxWidth, int RequestedThumbnail
 
 		Scene.SetShadingMode(ShadingMode);
 		Scene.SetLightingStyle(swGetPreferences().mLightingStyle);
-		Scene.SetLineSettings(RenderSettings.DrawEdgeLines, RenderSettings.DrawConditionalLines, RenderSettings.LineWidth);
+		Scene.SetLineSettings(RenderSettings.DrawEdgeLines, RenderSettings.DrawConditionalLines, RenderSettings.LineWidth * Scale);
 		Scene.SetRequireCompleteAssets(true);
 		Scene.SetAllowLOD(false);
 		Scene.Begin(ViewMatrix);
@@ -328,7 +344,7 @@ swResult<QImage> swModel::GetPartsListImage(int MaxWidth, int RequestedThumbnail
 
 		Scene.End();
 
-		Context->SetLineWidth(RenderSettings.LineWidth);
+		Context->SetLineWidth(RenderSettings.LineWidth * Scale);
 		Scene.Draw(Context, {});
 
 		View.UnbindRenderFramebuffer();
@@ -381,7 +397,7 @@ swResult<QImage> swModel::GetPartsListImage(int MaxWidth, int RequestedThumbnail
 	{
 		for (swPartsListImage& Image : Images)
 			if (Image.Bounds.isEmpty())
-				Image.Bounds = QRect(0, 0, qMin(64, ThumbnailSize), qMin(64, ThumbnailSize));
+				Image.Bounds = QRect(0, 0, qMin(Scaled(64), ThumbnailSize), qMin(Scaled(64), ThumbnailSize));
 	}
 	else
 	{
@@ -413,49 +429,117 @@ swResult<QImage> swModel::GetPartsListImage(int MaxWidth, int RequestedThumbnail
 	QFontMetrics FontMetrics = DummyPainter.fontMetrics();
 	const int Ascent = ShowCounts ? FontMetrics.ascent() : 0;
 
-	int CurrentHeight = 0;
-	int ImageWidth = MaxWidth;
+	const int Spacing = Scaled(20);
 
-	for (const swPartsListImage& Image : Images)
-		CurrentHeight = qMax(Image.Bounds.height() + Ascent, CurrentHeight);
+	// a part takes the width of its thumbnail or of its count, whichever is wider
+	for (swPartsListImage& Image : Images)
+		Image.CellWidth = qMax(Image.Bounds.width(), ShowCounts ? FontMetrics.horizontalAdvance(QString::number(Image.Count) + 'x') : 0);
 
-	for (;;)
+	// use to place a part inside the space left beside the reference edge
+	auto GetAlignmentOffset = [Alignment](int Space)
 	{
-		int CurrentWidth = 0;
+		switch (Alignment)
+		{
+		case swPartsListAlignment::Start:
+			break;
+
+		case swPartsListAlignment::Center:
+			return Space / 2;
+
+		case swPartsListAlignment::End:
+			return Space;
+		}
+
+		return 0;
+	};
+
+	int ImageWidth = 0;
+	int CurrentHeight = 0;
+
+	if (Layout == swPartsListLayout::Rows)
+	{
+		// the rows fill the width, the parts of a row line up on the chosen edge and their counts share one line below
+		size_t RowStart = 0;
+
+		while (RowStart < Images.size())
+		{
+			size_t RowEnd = RowStart;
+			int RowWidth = 0;
+			int RowHeight = 0;
+
+			while (RowEnd < Images.size())
+			{
+				const int Width = RowWidth + (RowEnd > RowStart ? Spacing : 0) + Images[RowEnd].CellWidth;
+
+				if (RowEnd > RowStart && Width > MaxWidth)
+					break;
+
+				RowWidth = Width;
+				RowHeight = qMax(RowHeight, Images[RowEnd].Bounds.height());
+				RowEnd++;
+			}
+
+			int CurrentX = 0;
+
+			for (size_t ImageIndex = RowStart; ImageIndex < RowEnd; ImageIndex++)
+			{
+				swPartsListImage& Image = Images[ImageIndex];
+
+				Image.Position = QPoint(CurrentX, CurrentHeight + GetAlignmentOffset(RowHeight - Image.Bounds.height()));
+				Image.TextPosition = QPoint(CurrentX, CurrentHeight + RowHeight + Ascent);
+				CurrentX += Image.CellWidth + Spacing;
+			}
+
+			ImageWidth = qMax(ImageWidth, RowWidth);
+			CurrentHeight += RowHeight + Ascent + Spacing;
+			RowStart = RowEnd;
+		}
+
+		CurrentHeight -= Spacing;
+	}
+	else
+	{
+		// the columns fill the height from top to bottom, the parts of a column line up on the chosen edge
+		std::vector<int> Columns(Images.size());
+		std::vector<int> ColumnWidths;
 		int CurrentX = 0;
 		int CurrentY = 0;
 		int ColumnWidth = 0;
-		constexpr int Spacing = 20;
-		int NextHeightIncrease = INT_MAX;
 
-		for (swPartsListImage& Image : Images)
+		for (size_t ImageIndex = 0; ImageIndex < Images.size(); ImageIndex++)
 		{
-			if (CurrentY + Image.Bounds.height() + Ascent > CurrentHeight)
-			{
-				const int NeededSpace = Image.Bounds.height() + Ascent - (CurrentHeight - CurrentY);
-				NextHeightIncrease = qMin(NeededSpace, NextHeightIncrease);
+			swPartsListImage& Image = Images[ImageIndex];
+			const int Height = Image.Bounds.height() + Ascent;
 
-				CurrentY = 0;
+			if (CurrentY && CurrentY + Height > MaxHeight)
+			{
+				ColumnWidths.push_back(ColumnWidth);
 				CurrentX += ColumnWidth + Spacing;
+				CurrentY = 0;
 				ColumnWidth = 0;
 			}
 
 			Image.Position = QPoint(CurrentX, CurrentY);
-			CurrentY += Image.Bounds.height() + Ascent + Spacing;
-			CurrentWidth = qMax(CurrentWidth, CurrentX + Image.Bounds.width());
-			ColumnWidth = qMax(ColumnWidth, Image.Bounds.width());
+			Columns[ImageIndex] = static_cast<int>(ColumnWidths.size());
+			CurrentHeight = qMax(CurrentHeight, CurrentY + Height);
+			CurrentY += Height + Spacing;
+			ColumnWidth = qMax(ColumnWidth, Image.CellWidth);
 		}
 
-		if (CurrentWidth <= MaxWidth)
+		ColumnWidths.push_back(ColumnWidth);
+		ImageWidth = CurrentX + ColumnWidth;
+
+		for (size_t ImageIndex = 0; ImageIndex < Images.size(); ImageIndex++)
 		{
-			ImageWidth = CurrentWidth;
-			break;
-		}
+			swPartsListImage& Image = Images[ImageIndex];
+			const int ColumnWidth = ColumnWidths[Columns[ImageIndex]];
 
-		CurrentHeight += NextHeightIncrease;
+			Image.Position.rx() += GetAlignmentOffset(ColumnWidth - Image.CellWidth);
+			Image.TextPosition = QPoint(Image.Position.x(), Image.Position.y() + Image.Bounds.height() + Ascent);
+		}
 	}
 
-	QImage PainterImage(ImageWidth + 40, CurrentHeight + 40, QImage::Format_ARGB32);
+	QImage PainterImage(ImageWidth + Scaled(40), CurrentHeight + Scaled(40), QImage::Format_ARGB32);
 
 	if (PainterImage.isNull())
 		return swUnexpected(tr("Could not allocate the parts list image."));
@@ -466,21 +550,31 @@ swResult<QImage> swModel::GetPartsListImage(int MaxWidth, int RequestedThumbnail
 	Painter.setFont(Font);
 	Painter.setPen(TextColor);
 
+	const QPoint Padding(Scaled(20), Scaled(20));
+
 	for (const swPartsListImage& Image : Images)
 	{
-		const QPoint Position = Image.Position + QPoint(20, 20);
+		const QPoint Position = Image.Position + Padding;
+		const QPoint TextPosition = Image.TextPosition + Padding;
+		const QString Text = QString::number(Image.Count) + 'x';
+		const int TextWidth = ShowCounts ? FontMetrics.horizontalAdvance(Text) : 0;
+
+		// the thumbnail and its count line up on the same edge inside the width of the part
+		const int ThumbnailX = Position.x() + GetAlignmentOffset(Image.CellWidth - Image.Bounds.width()) * (Layout == swPartsListLayout::Columns);
+		const int TextX = Position.x() + GetAlignmentOffset(Image.CellWidth - TextWidth) * (Layout == swPartsListLayout::Columns);
 
 		// the thumbnail background holds the part and its count, it stays inside the spacing between parts
 		if (qAlpha(ThumbnailBackgroundColor))
-			Painter.fillRect(QRect(Position, Image.Bounds.size() + QSize(0, Ascent)).adjusted(-6, -6, 6, 6), swQColorFromRGBA(ThumbnailBackgroundColor));
+			Painter.fillRect(QRect(Position.x(), Position.y(), Image.CellWidth, TextPosition.y() - Position.y()).adjusted(-Scaled(6), -Scaled(6), Scaled(6), Scaled(6)), swQColorFromRGBA(ThumbnailBackgroundColor));
 
-		Painter.drawImage(Position, Image.Thumbnail, Image.Bounds);
+		Painter.drawImage(QPoint(ThumbnailX, Position.y()), Image.Thumbnail, Image.Bounds);
 
 		if (ShowCounts)
-			Painter.drawText(QPoint(Position.x(), Position.y() + Image.Bounds.height() + Ascent), QString::number(Image.Count) + 'x');
+			Painter.drawText(QPoint(TextX, TextPosition.y()), Text);
 	}
 
 	Painter.end();
+	PainterImage.setDevicePixelRatio(Scale);
 
 	return PainterImage;
 }

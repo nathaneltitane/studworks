@@ -1048,6 +1048,38 @@ bool Project::Load(const QString& FileName, bool ShowErrors)
 		return false;
 	}
 
+	return LoadDocument(FileData, FileName, ShowErrors);
+}
+
+bool Project::LoadText(const QByteArray& FileData, const QString& FileName, const QString& ModelName)
+{
+	// an unsaved project names its model like the one the text replaces
+	if (!LoadDocument(FileData, FileName.isEmpty() ? ModelName : FileName, false))
+		return false;
+
+	SetFileName(FileName);
+
+	// the file on disk stays what the watcher compares with, the text is an unsaved change
+	if (!mIsPreview && !FileName.isEmpty())
+	{
+		const FileState State = ReadFileState(FileName);
+
+		mFileHash = State.Hash;
+		mFileExists = State.Exists;
+		mFileReadable = State.Readable;
+	}
+
+	mModified = true;
+
+	return true;
+}
+
+bool Project::LoadDocument(const QByteArray& FileData, const QString& FileName, bool ShowErrors)
+{
+	QWidget *parent = nullptr;
+	if (!mIsPreview)
+		parent = gMainWindow;
+
 	mModels.clear();
 	mDocumentBlocks.clear();
 	mLoadWarnings.clear();
@@ -2078,6 +2110,19 @@ swInstructions* Project::GetInstructions()
 	mInstructions = std::unique_ptr<swInstructions>(new swInstructions(this));
 
 	return mInstructions.get();
+}
+
+std::unique_ptr<swInstructions> Project::TakeInstructions()
+{
+	return std::move(mInstructions);
+}
+
+void Project::SetInstructions(std::unique_ptr<swInstructions> Instructions)
+{
+	mInstructions = std::move(Instructions);
+
+	if (mInstructions)
+		mInstructions->SetProject(this);
 }
 
 void Project::UpdatePartData(swPartData* PartData) const

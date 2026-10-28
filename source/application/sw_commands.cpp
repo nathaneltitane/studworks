@@ -170,7 +170,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("Menu", "Instr&uctions..."),
 		QT_TRANSLATE_NOOP("Status", "Configure instructions layout"),
 		"",
-		""
+		"Ctrl+Shift+U"
 	},
 	// SW_FILE_PRINT
 	{

@@ -84,6 +84,14 @@ static void swPlaceElement(QGraphicsItem* Item, const swInstructions* Instructio
 		Item->setPos(Position + Instructions->GetElementOffset(Key));
 }
 
+// use to get how many pixels each page point renders at, images of small pages stay sharp when zoomed
+static qreal swGetRenderScale(const swInstructions* Instructions)
+{
+	const swInstructionsPageSetup& PageSetup = Instructions->mPageSetup;
+
+	return qMax(1.0, SW_INSTRUCTIONS_RENDER_SIZE / qMax<qreal>(qMax(PageSetup.Width, PageSetup.Height), 1.0));
+}
+
 // use to crop a rendered image to its visible pixels so it can be placed like any other element
 static QImage swCropImage(const QImage& Image, QPoint& Offset)
 {
@@ -176,7 +184,13 @@ void swInstructionsStepImageItem::Update()
 	// the step background lies behind the image, the model is rendered alone and cropped to be placed
 	const QColor BackgroundColor = mInstructions->GetColorProperty(swInstructionsPropertyType::StepBackgroundColor, mModel, mStep);
 	View.SetBackgroundColorOverride(SW_RGBA(BackgroundColor.red(), BackgroundColor.green(), BackgroundColor.blue(), 0));
-	View.SetSize(mWidth, mHeight);
+
+	// the image renders larger than its place on the page and is drawn back at the page size
+	const qreal Scale = swGetRenderScale(mInstructions);
+	const int Width = qRound(mWidth * Scale);
+	const int Height = qRound(mHeight * Scale);
+	View.SetSize(Width, Height);
+	View.SetLineWidthScale(Scale);
 
 	// Work on a copy of the main view camera, fitting the image must not move a model camera.
 	View.SetCamera(View.GetCamera(), true);
@@ -197,14 +211,16 @@ void swInstructionsStepImageItem::Update()
 	}
 
 	QPoint CropOffset;
-	setPixmap(QPixmap::fromImage(swCropImage(Images.front(), CropOffset)));
+	QImage Image = swCropImage(Images.front(), CropOffset);
+	Image.setDevicePixelRatio(Scale);
+	setPixmap(QPixmap::fromImage(Image));
 
 	// the parts shown at the step are projected like the image so pointers can find and follow them
-	View.SetSize(mWidth, mHeight);
+	View.SetSize(Width, Height);
 
 	const swStep CurrentStep = mModel->GetCurrentStep();
 	const qreal Inset = mBoxStyle.GetInset();
-	const QPointF Origin(Inset - CropOffset.x(), Inset - CropOffset.y());
+	const QPointF Origin(Inset - CropOffset.x() / Scale, Inset - CropOffset.y() / Scale);
 	const std::vector<std::unique_ptr<swPart>>& Parts = mModel->GetParts();
 
 	mModel->SetTemporaryStep(mStep);
@@ -228,7 +244,7 @@ void swInstructionsStepImageItem::Update()
 		for (const swVector3& Corner : Corners)
 		{
 			const swVector3 Point = View.ProjectPoint(Corner);
-			const QPointF ImagePoint = Origin + QPointF(Point.x, mHeight - Point.y);
+			const QPointF ImagePoint = Origin + QPointF(Point.x, Height - Point.y) / Scale;
 
 			Rect = Rect.isNull() ? QRectF(ImagePoint, QSizeF(0.0, 0.0)) : Rect.united(QRectF(ImagePoint, QSizeF(0.0, 0.0)));
 		}
@@ -236,7 +252,7 @@ void swInstructionsStepImageItem::Update()
 		Rect = Rect.normalized();
 
 		const swVector3 Center = View.ProjectPoint((Min + Max) * 0.5f);
-		mPartRegions.push_back({ static_cast<int>(PartIndex), Rect, Origin + QPointF(Center.x, mHeight - Center.y) });
+		mPartRegions.push_back({ static_cast<int>(PartIndex), Rect, Origin + QPointF(Center.x, Height - Center.y) / Scale });
 	}
 
 	mModel->SetTemporaryStep(CurrentStep);
@@ -390,10 +406,12 @@ void swInstructionsPartsListItem::Update()
 	QColor TextColor = mInstructions->GetColorProperty(swInstructionsPropertyType::PLITextColor, mModel, mStep);
 	const bool ShowCounts = mInstructions->GetBoolProperty(swInstructionsPropertyType::PLIShowCounts, mModel, mStep);
 	const swPartsListSort Sort = static_cast<swPartsListSort>(mInstructions->GetIntProperty(swInstructionsPropertyType::PLISortOrder, mModel, mStep));
+	const swPartsListLayout Layout = static_cast<swPartsListLayout>(mInstructions->GetIntProperty(swInstructionsPropertyType::PLILayout, mModel, mStep));
+	const swPartsListAlignment Alignment = static_cast<swPartsListAlignment>(mInstructions->GetIntProperty(swInstructionsPropertyType::PLIAlignment, mModel, mStep));
 	const int ThumbnailSize = mInstructions->GetIntProperty(swInstructionsPropertyType::PLIThumbnailSize, mModel, mStep);
 	const QColor ThumbnailBackgroundColor = mInstructions->GetColorProperty(swInstructionsPropertyType::PLIThumbnailBackgroundColor, mModel, mStep);
 
-	const swResult<QImage> PartsImage = mModel->GetPartsListImage(mMaxWidth, ThumbnailSize, mBillOfMaterials ? 0 : mStep, swRGBAFromQColor(BackgroundColor), swRGBAFromQColor(ThumbnailBackgroundColor), Font, TextColor, false, ShowCounts, Sort);
+	const swResult<QImage> PartsImage = mModel->GetPartsListImage(mMaxWidth, ThumbnailSize, mBillOfMaterials ? 0 : mStep, swRGBAFromQColor(BackgroundColor), swRGBAFromQColor(ThumbnailBackgroundColor), Font, TextColor, false, ShowCounts, Sort, Layout, Alignment, mMaxHeight, swGetRenderScale(mInstructions));
 
 	if (!PartsImage)
 	{
@@ -536,8 +554,16 @@ swInstructionsPointerItem::swInstructionsPointerItem(QGraphicsItem* Parent, swIn
 	mStyle = static_cast<swInstructionsPointerStyle>(Style);
 	mTip = static_cast<swInstructionsPointerTip>(Tip);
 	mColor = mInstructions->GetColorProperty(swInstructionsPropertyType::PointerColor, nullptr, 0);
-	mWidth = qMax(mInstructions->GetIntProperty(swInstructionsPropertyType::PointerWidth, nullptr, 0), 1);
-	mTipSize = qMax(mInstructions->GetIntProperty(swInstructionsPropertyType::PointerTipSize, nullptr, 0), 1);
+
+	// the body follows the border of its element unless given its own width
+	const swInstructionsBoxBase* Box = dynamic_cast<const swInstructionsBoxBase*>(mSource);
+	const int Width = mInstructions->GetIntProperty(swInstructionsPropertyType::PointerWidth, nullptr, 0);
+
+	mSourceBorderWidth = Box ? Box->GetBorderWidth() : 0.0;
+	mWidth = Width > 0 ? Width : qMax(mSourceBorderWidth, 2.0);
+
+	// the tip is always at least three times the body
+	mTipSize = qMax<qreal>(mInstructions->GetIntProperty(swInstructionsPropertyType::PointerTipSize, nullptr, 0), 3.0 * mWidth);
 
 	UpdateGeometry();
 }
@@ -573,6 +599,10 @@ void swInstructionsPointerItem::UpdateGeometry()
 			TipPosition = QPointF(qBound(TargetRect.left(), Center.x(), TargetRect.right()), qBound(TargetRect.top(), Center.y(), TargetRect.bottom()));
 	}
 
+	// the pointer leaves the middle of the border so its body lines up with the border sides
+	const qreal BorderHalf = mSourceBorderWidth / 2.0;
+	const QRectF AnchorRect = SourceRect.adjusted(BorderHalf, BorderHalf, -BorderHalf, -BorderHalf);
+
 	// an automatic anchor is the one nearest to the tip
 	int Anchor = mPointer.Anchor;
 
@@ -582,7 +612,7 @@ void swInstructionsPointerItem::UpdateGeometry()
 
 		for (int Index = 0; Index < SW_POINTER_ANCHOR_COUNT; Index++)
 		{
-			const qreal Distance = QLineF(swGetPointerAnchor(SourceRect, Index), TipPosition).length();
+			const qreal Distance = QLineF(swGetPointerAnchor(AnchorRect, Index), TipPosition).length();
 
 			if (Index == 0 || Distance < AnchorDistance)
 			{
@@ -593,12 +623,14 @@ void swInstructionsPointerItem::UpdateGeometry()
 	}
 
 	prepareGeometryChange();
-	mBasePosition = swGetPointerAnchor(SourceRect, Anchor);
+	mSourceRect = SourceRect;
+	mAnchor = Anchor;
+	mBasePosition = swGetPointerAnchor(AnchorRect, Anchor);
 	mTipPosition = TipPosition;
 	update();
 }
 
-QPainterPath swInstructionsPointerItem::GetPath() const
+QPainterPath swInstructionsPointerItem::GetPath(const QRectF& SourceRect, qreal BorderWidth) const
 {
 	QPainterPath Path;
 	const QLineF Line(mBasePosition, mTipPosition);
@@ -611,14 +643,7 @@ QPainterPath swInstructionsPointerItem::GetPath() const
 
 	// the wedge narrows from the element border to the tip, the line is stroked
 	if (mStyle == swInstructionsPointerStyle::Wedge)
-	{
-		const qreal HalfWidth = mTipSize / 2.0;
-
-		Path.moveTo(mBasePosition + Normal * HalfWidth);
-		Path.lineTo(mTipPosition);
-		Path.lineTo(mBasePosition - Normal * HalfWidth);
-		Path.closeSubpath();
-	}
+		Path.addPath(GetWedgePath(SourceRect, BorderWidth));
 
 	if (mTip == swInstructionsPointerTip::Dot)
 		Path.addEllipse(mTipPosition, mTipSize / 2.0, mTipSize / 2.0);
@@ -636,9 +661,74 @@ QPainterPath swInstructionsPointerItem::GetPath() const
 	return Path;
 }
 
+// use to sit the wedge base on the outer edge of the box so its sides meet the border corners
+QPainterPath swInstructionsPointerItem::GetWedgePath(const QRectF& SourceRect, qreal BorderWidth) const
+{
+	const QRectF& Rect = SourceRect;
+	const QPointF Corners[4] = { Rect.topLeft(), Rect.topRight(), Rect.bottomRight(), Rect.bottomLeft() };
+	QPointF Start, End, Normal;
+
+	if (mAnchor % 2 == 0)
+	{
+		// a corner wedge runs along the side the tip is most beyond
+		const QPointF Corner = Corners[mAnchor / 2];
+		const qreal SignX = Corner.x() > Rect.center().x() ? 1.0 : -1.0;
+		const qreal SignY = Corner.y() > Rect.center().y() ? 1.0 : -1.0;
+		const bool Vertical = (mTipPosition.x() - Corner.x()) * SignX >= (mTipPosition.y() - Corner.y()) * SignY;
+		const qreal Length = qMin(mTipSize, Vertical ? Rect.height() : Rect.width());
+
+		Normal = Vertical ? QPointF(SignX, 0.0) : QPointF(0.0, SignY);
+		Start = Corner;
+		End = Corner - (Vertical ? QPointF(0.0, SignY) : QPointF(SignX, 0.0)) * Length;
+	}
+	else
+	{
+		// a side wedge is centered on the middle of its side
+		const QPointF Middle = swGetPointerAnchor(Rect, mAnchor);
+		const bool Vertical = mAnchor == 3 || mAnchor == 7;
+		const qreal HalfLength = qMin(mTipSize, Vertical ? Rect.height() : Rect.width()) / 2.0;
+		const QPointF Along = Vertical ? QPointF(0.0, HalfLength) : QPointF(HalfLength, 0.0);
+
+		Normal = Vertical ? QPointF(mAnchor == 3 ? 1.0 : -1.0, 0.0) : QPointF(0.0, mAnchor == 1 ? -1.0 : 1.0);
+		Start = Middle - Along;
+		End = Middle + Along;
+	}
+
+	// the base reaches through the border so no seam shows where they meet
+	const QPointF Inset = Normal * BorderWidth;
+	QPainterPath Path;
+
+	Path.moveTo(Start);
+	Path.lineTo(mTipPosition);
+	Path.lineTo(End);
+	Path.lineTo(End - Inset);
+	Path.lineTo(Start - Inset);
+	Path.closeSubpath();
+
+	return Path;
+}
+
+// use to keep the pointer out of the inside of its box
+QPainterPath swInstructionsPointerItem::GetClipPath(const QRectF& SourceRect, qreal BorderWidth) const
+{
+	const QRectF InnerRect = SourceRect.adjusted(BorderWidth, BorderWidth, -BorderWidth, -BorderWidth);
+	QPainterPath Path;
+
+	Path.addRect(boundingRect());
+
+	if (InnerRect.isValid())
+	{
+		QPainterPath InnerPath;
+		InnerPath.addRect(InnerRect);
+		Path = Path.subtracted(InnerPath);
+	}
+
+	return Path;
+}
+
 QRectF swInstructionsPointerItem::boundingRect() const
 {
-	const qreal Extent = qMax(mTipSize, mWidth) + 8.0;
+	const qreal Extent = qMax(mTipSize, mWidth) + mSourceBorderWidth + mWidth + 8.0;
 
 	return QRectF(mBasePosition, mTipPosition).normalized().adjusted(-Extent, -Extent, Extent, Extent);
 }
@@ -654,7 +744,7 @@ QPainterPath swInstructionsPointerItem::shape() const
 	Stroker.setWidth(qMax(mWidth, 8.0));
 
 	QPainterPath Shape = Stroker.createStroke(Path);
-	Shape.addPath(GetPath());
+	Shape.addPath(GetPath(mSourceRect, mSourceBorderWidth));
 	Shape.addEllipse(mTipPosition, qMax(mTipSize, 10.0), qMax(mTipSize, 10.0));
 
 	return Shape;
@@ -664,27 +754,41 @@ void swInstructionsPointerItem::paint(QPainter* Painter, const QStyleOptionGraph
 {
 	Q_UNUSED(Widget);
 
+	// the pointer meets the box border on the same device pixels the box draws it on
+	QRectF SourceRect = mSourceRect;
+	qreal BorderWidth = mSourceBorderWidth;
+	swSnapBorderRect(Painter->worldTransform(), SourceRect, BorderWidth);
+
 	Painter->save();
 	Painter->setRenderHint(QPainter::Antialiasing, true);
+	Painter->setClipPath(GetClipPath(SourceRect, BorderWidth));
 
-	if (mStyle == swInstructionsPointerStyle::Line)
+	const QLineF Line(mBasePosition, mTipPosition);
+
+	if (mStyle == swInstructionsPointerStyle::Line && Line.length() >= 0.5)
 	{
+		// the line leaves the middle of the snapped border and starts inside the box so it merges with it
+		const qreal BorderHalf = BorderWidth / 2.0;
+		const QPointF Base = swGetPointerAnchor(SourceRect.adjusted(BorderHalf, BorderHalf, -BorderHalf, -BorderHalf), mAnchor);
+		const QPointF Direction = (mTipPosition - Base) / QLineF(Base, mTipPosition).length();
+		const qreal Width = mWidth == mSourceBorderWidth ? BorderWidth : mWidth;
+
 		// the line stops at the arrowhead so its end stays sharp
 		QPointF LineEnd = mTipPosition;
-		const QLineF Line(mBasePosition, mTipPosition);
 
 		if (mTip == swInstructionsPointerTip::Arrowhead && Line.length() > mTipSize)
-			LineEnd = mTipPosition - (mTipPosition - mBasePosition) / Line.length() * (mTipSize * 0.5);
+			LineEnd = mTipPosition - Direction * (mTipSize * 0.5);
 
-		QPen Pen(mColor, mWidth);
+		QPen Pen(mColor, Width);
 		Pen.setCapStyle(Qt::FlatCap);
 		Painter->setPen(Pen);
-		Painter->drawLine(mBasePosition, LineEnd);
+		Painter->drawLine(Base - Direction * (BorderWidth + Width), LineEnd);
 	}
 
 	Painter->setPen(Qt::NoPen);
 	Painter->setBrush(mColor);
-	Painter->drawPath(GetPath());
+	Painter->drawPath(GetPath(SourceRect, BorderWidth));
+	Painter->setClipping(false);
 
 	if (Option->state & QStyle::State_Selected)
 	{
@@ -782,6 +886,7 @@ swInstructionsPageWidget::swInstructionsPageWidget(QWidget* Parent, swInstructio
 
 	connect(mInstructions, &swInstructions::StepSettingsChanged, this, &swInstructionsPageWidget::StepSettingsChanged);
 	connect(Scene, &QGraphicsScene::selectionChanged, this, &swInstructionsPageWidget::SelectionChanged);
+	connect(mPlacementWidget, &swInstructionsPlacementWidget::AlignSelection, this, &swInstructionsPageWidget::AlignSelection);
 
 	connect(mInstructions, &swInstructions::GridChanged, this, [this]()
 	{
@@ -831,19 +936,80 @@ void swInstructionsPageWidget::StepSettingsChanged(swModel* Model, swStep Step)
 
 void swInstructionsPageWidget::SelectionChanged()
 {
-	QGraphicsScene* Scene = qobject_cast<QGraphicsScene*>(sender());
+	// a rebuilt page selects its elements again, they keep the order they were first selected in
+	if (mRebuildingPage)
+		return;
+
 	QGraphicsItem* Focus = nullptr;
+	const QList<QGraphicsItem*> SelectedItems = scene()->selectedItems();
+	std::vector<swInstructionsElementKey> SelectedKeys;
 
-	if (Scene)
+	if (!SelectedItems.isEmpty())
+		Focus = SelectedItems.first();
+
+	for (const QGraphicsItem* Item : SelectedItems)
 	{
-		QList<QGraphicsItem*> SelectedItems = Scene->selectedItems();
+		swInstructionsElementKey Key;
 
-		if (!SelectedItems.isEmpty())
-			Focus = SelectedItems.first();
+		if (swGetElementKey(Item, Key) && std::get<0>(Key) != swInstructionsPlacementElement::Pointer)
+			SelectedKeys.push_back(Key);
 	}
 
+	mSelectionOrder.erase(std::remove_if(mSelectionOrder.begin(), mSelectionOrder.end(), [&SelectedKeys](const swInstructionsElementKey& Key)
+	{
+		return std::find(SelectedKeys.begin(), SelectedKeys.end(), Key) == SelectedKeys.end();
+	}), mSelectionOrder.end());
+
+	for (const swInstructionsElementKey& Key : SelectedKeys)
+		if (std::find(mSelectionOrder.begin(), mSelectionOrder.end(), Key) == mSelectionOrder.end())
+			mSelectionOrder.push_back(Key);
+
 	mPropertiesWidget->SelectionChanged(Focus);
-	mPlacementWidget->SelectionChanged(Focus);
+	mPlacementWidget->SelectionChanged(Focus, static_cast<int>(mSelectionOrder.size()));
+}
+
+// use to place the selected elements against the first or the last one selected, they move like a drag
+void swInstructionsPageWidget::AlignSelection(int Placement, bool LastSelection)
+{
+	if (mSelectionOrder.size() < 2)
+		return;
+
+	std::map<swInstructionsElementKey, QGraphicsItem*> ElementItems;
+	const QList<QGraphicsItem*> SelectedItems = scene()->selectedItems();
+
+	for (QGraphicsItem* Item : SelectedItems)
+	{
+		swInstructionsElementKey Key;
+
+		if (swGetElementKey(Item, Key))
+			ElementItems[Key] = Item;
+	}
+
+	const swInstructionsElementKey& ReferenceKey = LastSelection ? mSelectionOrder.back() : mSelectionOrder.front();
+	const auto ReferenceIt = ElementItems.find(ReferenceKey);
+
+	if (ReferenceIt == ElementItems.end())
+		return;
+
+	const QRectF ReferenceRect = ReferenceIt->second->sceneBoundingRect();
+	std::map<swInstructionsElementKey, QPointF> Offsets;
+
+	// locked elements keep their position
+	for (const swInstructionsElementKey& Key : mSelectionOrder)
+	{
+		const auto ItemIt = ElementItems.find(Key);
+
+		if (Key == ReferenceKey || ItemIt == ElementItems.end() || mInstructions->IsElementLocked(Key))
+			continue;
+
+		const QRectF ItemRect = ItemIt->second->sceneBoundingRect();
+		const QPointF Distance = swGetPlacementPosition(ReferenceRect, ItemRect.size(), Placement) - ItemRect.topLeft();
+
+		if (!Distance.isNull())
+			Offsets[Key] = mInstructions->GetElementOffset(Key) + Distance;
+	}
+
+	mInstructions->SetElementOffsets(Offsets);
 }
 
 // use to add the elements of the cover, the bill of materials or the steps of a page
@@ -971,7 +1137,8 @@ static void swAddPageContent(swInstructions* Instructions, const swInstructionsP
 	if (Page->Type == swInstructionsPageType::BillOfMaterials)
 	{
 		swInstructionsPartsListItem* PartsImageItem = new swInstructionsPartsListItem(PageItem, Instructions, Page->Model, 0);
-		PartsImageItem->SetBillOfMaterials(qMax(static_cast<int>(MarginsRect.width() - 2.0 * PartsImageItem->GetBoxStyle().GetInset()), 16));
+		const qreal Inset = 2.0 * PartsImageItem->GetBoxStyle().GetInset();
+		PartsImageItem->SetBillOfMaterials(qMax(static_cast<int>(MarginsRect.width() - Inset), 16), qMax(static_cast<int>(MarginsRect.height() - Inset), 16));
 		PartsImageItem->Update();
 
 		const int Placement = swGetValidPlacement(Instructions->GetIntProperty(swInstructionsPropertyType::BillOfMaterialsPlacement, Page->Model, 0), true);
@@ -1052,7 +1219,8 @@ static void swAddPageContent(swInstructions* Instructions, const swInstructionsP
 
 		// the parts list wraps at the width of its area
 		swInstructionsPartsListItem* PartsImageItem = new swInstructionsPartsListItem(StepAreaItem, Instructions, Step.Model, Step.Step);
-		PartsImageItem->SetMaxWidth(qMax(static_cast<int>(AreaRect.width() - 2.0 * PartsImageItem->GetBoxStyle().GetInset()), 16));
+		const qreal Inset = 2.0 * PartsImageItem->GetBoxStyle().GetInset();
+		PartsImageItem->SetMaxSize(qMax(static_cast<int>(AreaRect.width() - Inset), 16), qMax(static_cast<int>(AreaRect.height() - Inset), 16));
 		PartsImageItem->Update();
 
 		swInstructionsPlacementAnchor NumberAnchor = static_cast<swInstructionsPlacementAnchor>(Instructions->GetIntProperty(swInstructionsPropertyType::StepNumberAnchor, Step.Model, Step.Step));
@@ -1193,6 +1361,7 @@ void swInstructionsPageWidget::SetCurrentPage(const swInstructionsPage* Page)
 
 	mDragItems.clear();
 	mPage = Page;
+	mRebuildingPage = true;
 	swUpdateInstructionsPageScene(mInstructions, Page, Scene);
 	FitPage();
 
@@ -1203,9 +1372,6 @@ void swInstructionsPageWidget::SetCurrentPage(const swInstructionsPage* Page)
 		mPendingSelection.reset();
 	}
 
-	if (SelectedKeys.empty())
-		return;
-
 	const QList<QGraphicsItem*> Items = Scene->items();
 
 	for (QGraphicsItem* Item : Items)
@@ -1215,6 +1381,9 @@ void swInstructionsPageWidget::SetCurrentPage(const swInstructionsPage* Page)
 		if (swGetElementKey(Item, Key) && SelectedKeys.find(Key) != SelectedKeys.end())
 			Item->setSelected(true);
 	}
+
+	mRebuildingPage = false;
+	SelectionChanged();
 }
 
 void swInstructionsPageWidget::mousePressEvent(QMouseEvent* Event)
@@ -1453,7 +1622,29 @@ void swInstructionsPageWidget::drawForeground(QPainter* Painter, const QRectF& R
 {
 	QGraphicsView::drawForeground(Painter, Rect);
 
-	if (!mPage || !mInstructions->IsGridShown())
+	if (!mPage)
+		return;
+
+	// the margins are outlined with a dashed line on screen only
+	if (mInstructions->IsMarginsShown())
+	{
+		const swInstructionsPageSetup& PageSetup = mInstructions->mPageSetup;
+		const QRectF MarginsRect(PageSetup.MarginLeft, PageSetup.MarginTop, PageSetup.Width - PageSetup.MarginLeft - PageSetup.MarginRight, PageSetup.Height - PageSetup.MarginTop - PageSetup.MarginBottom);
+
+		QColor MarginColor = palette().color(QPalette::Highlight);
+		MarginColor.setAlpha(160);
+
+		QPen MarginPen(MarginColor, 0.0, Qt::DashLine);
+		MarginPen.setCosmetic(true);
+
+		Painter->save();
+		Painter->setPen(MarginPen);
+		Painter->setBrush(Qt::NoBrush);
+		Painter->drawRect(MarginsRect);
+		Painter->restore();
+	}
+
+	if (!mInstructions->IsGridShown())
 		return;
 
 	// the grid starts at the corner of its area and is only drawn on screen

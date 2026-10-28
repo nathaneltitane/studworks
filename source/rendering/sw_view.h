@@ -223,6 +223,12 @@ public:
 		mBackgroundColor = BackgroundColor;
 	}
 
+	// use to keep the lines as wide as at the normal size when rendering larger images
+	void SetLineWidthScale(float LineWidthScale)
+	{
+		mLineWidthScale = LineWidthScale;
+	}
+
 	swMatrix44 GetActiveSubmodelTransform() const
 	{
 		return mActiveSubmodelTransform;
@@ -406,6 +412,7 @@ protected:
 	QSize mOutlineAttemptSize;
 	QPointer<QOpenGLContext> mOutlineGLContext;
 	bool mOverrideBackgroundColor = false;
+	float mLineWidthScale = 1.0f;
 	bool mDrawViewportBorder = true;
 	quint32 mBackgroundColor = 0;
 

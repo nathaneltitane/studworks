@@ -77,7 +77,8 @@ bool swKeyboardShortcuts::Save(QTextStream& Stream)
 {
 	for (int CommandIdx = 0; CommandIdx < SW_COMMAND_COUNT; CommandIdx++)
 	{
-		if (mShortcuts[CommandIdx].isEmpty())
+		// cleared shortcuts are saved empty so their default stays off
+		if (mShortcuts[CommandIdx].isEmpty() && QString(gCommands[CommandIdx].DefaultShortcut).isEmpty())
 			continue;
 
 		Stream << gCommands[CommandIdx].ID << QLatin1String("=") << mShortcuts[CommandIdx] << QLatin1String("\n");
@@ -102,6 +103,9 @@ bool swKeyboardShortcuts::Load(const QString& FileName)
 
 bool swKeyboardShortcuts::Load(QTextStream& Stream)
 {
+	// commands missing from the saved shortcuts keep their default unless its key is taken
+	std::vector<bool> Saved(SW_COMMAND_COUNT, false);
+
 	for (int CommandIdx = 0; CommandIdx < SW_COMMAND_COUNT; CommandIdx++)
 		mShortcuts[CommandIdx].clear();
 
@@ -123,6 +127,21 @@ bool swKeyboardShortcuts::Load(QTextStream& Stream)
 			continue;
 
 		mShortcuts[CommandIdx] = Line.mid(Equals + 1);
+		Saved[CommandIdx] = true;
+	}
+
+	QStringList SavedKeys;
+
+	for (int CommandIdx = 0; CommandIdx < SW_COMMAND_COUNT; CommandIdx++)
+		if (!mShortcuts[CommandIdx].isEmpty())
+			SavedKeys << mShortcuts[CommandIdx];
+
+	for (int CommandIdx = 0; CommandIdx < SW_COMMAND_COUNT; CommandIdx++)
+	{
+		const QString DefaultShortcut = gCommands[CommandIdx].DefaultShortcut;
+
+		if (!Saved[CommandIdx] && !DefaultShortcut.isEmpty() && !SavedKeys.contains(DefaultShortcut))
+			mShortcuts[CommandIdx] = DefaultShortcut;
 	}
 
 	return true;

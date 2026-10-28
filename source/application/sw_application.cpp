@@ -278,6 +278,7 @@ swApplication::swApplication(int& Argc, char** Argv)
 	mPreferences.LoadDefaults();
 
 	installEventFilter(new swWindowGeometryFilter(this));
+	installEventFilter(new swInterfaceFitFilter(this));
 }
 
 swApplication::~swApplication()
@@ -289,8 +290,12 @@ void swApplication::UpdateStyle()
 {
 	if (mPreferences.mColorTheme == swColorTheme::Dark)
 	{
-		if (!QApplication::setStyle("fusion"))
+		QStyle* Style = QStyleFactory::create(QLatin1String("fusion"));
+
+		if (!Style)
 			return;
+
+		QApplication::setStyle(new swInterfaceStyle(Style));
 
 		QPalette Palette = QApplication::palette();
 
@@ -331,12 +336,16 @@ void swApplication::UpdateStyle()
 			qApp->setStyleSheet(Stylesheet);
 		}
 	}
-	else if (mCustomStyleApplied)
+	else if (mCustomStyleApplied || !dynamic_cast<swInterfaceStyle*>(QApplication::style()))
 	{
 		// Restore the desktop style and colors exactly as the system provided them.
-		QApplication::setStyle(mDefaultStyle);
-		QApplication::setPalette(mDefaultPalette);
-		qApp->setStyleSheet(QString());
+		QApplication::setStyle(new swInterfaceStyle(QStyleFactory::create(mDefaultStyle)));
+
+		if (mCustomStyleApplied)
+		{
+			QApplication::setPalette(mDefaultPalette);
+			qApp->setStyleSheet(QString());
+		}
 
 		mCustomStyleApplied = false;
 	}

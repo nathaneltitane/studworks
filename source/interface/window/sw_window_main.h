@@ -306,6 +306,7 @@ signals:
 
 public:
 	void CloseInstructionsDialog();
+	bool LoadProjectText(const QByteArray& FileData);
 
 public slots:
 	void ProjectFileChanged(const QString& Path);

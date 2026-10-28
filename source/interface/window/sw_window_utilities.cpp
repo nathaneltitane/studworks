@@ -75,6 +75,214 @@ bool swWindowGeometryFilter::eventFilter(QObject* Object, QEvent* Event)
 	return false;
 }
 
+// use to keep a scroll area that never scrolls sideways as wide as its rows
+static void swFitScrollAreaWidth(QScrollArea* ScrollArea)
+{
+	if (ScrollArea->widget())
+		ScrollArea->setMinimumWidth(ScrollArea->widget()->minimumSizeHint().width() + ScrollArea->verticalScrollBar()->sizeHint().width() + 2 * ScrollArea->frameWidth());
+}
+
+void swInterfaceStyle::drawControl(ControlElement Element, const QStyleOption* Option, QPainter* Painter, const QWidget* Widget) const
+{
+	const QStyleOptionComboBox* ComboBoxOption = qstyleoption_cast<const QStyleOptionComboBox*>(Option);
+
+	if (Element != CE_ComboBoxLabel || !ComboBoxOption || ComboBoxOption->editable)
+	{
+		QProxyStyle::drawControl(Element, Option, Painter, Widget);
+		return;
+	}
+
+	// the value and its icon sit in the middle of the box like a button label
+	const QRect EditRect = subControlRect(CC_ComboBox, ComboBoxOption, SC_ComboBoxEditField, Widget).adjusted(1, 0, -1, 0);
+	const QSize IconSize = ComboBoxOption->currentIcon.isNull() ? QSize() : ComboBoxOption->iconSize;
+	const int Spacing = IconSize.isEmpty() ? 0 : pixelMetric(PM_ButtonIconSize, Option, Widget) / 4;
+	const QString Text = ComboBoxOption->fontMetrics.elidedText(ComboBoxOption->currentText, Qt::ElideRight, EditRect.width() - IconSize.width() - Spacing);
+	const int Width = IconSize.width() + Spacing + ComboBoxOption->fontMetrics.horizontalAdvance(Text);
+	const int Left = EditRect.left() + qMax((EditRect.width() - Width) / 2, 0);
+
+	Painter->save();
+	Painter->setClipRect(EditRect);
+
+	if (!IconSize.isEmpty())
+	{
+		const QIcon::Mode Mode = (ComboBoxOption->state & State_Enabled) ? QIcon::Normal : QIcon::Disabled;
+		const QRect IconRect(Left, EditRect.top() + (EditRect.height() - IconSize.height()) / 2, IconSize.width(), IconSize.height());
+		ComboBoxOption->currentIcon.paint(Painter, IconRect, Qt::AlignCenter, Mode);
+	}
+
+	const QRect TextRect(Left + IconSize.width() + Spacing, EditRect.top(), EditRect.right() - Left - IconSize.width() - Spacing + 1, EditRect.height());
+	drawItemText(Painter, TextRect, Qt::AlignLeft | Qt::AlignVCenter, ComboBoxOption->palette, ComboBoxOption->state & State_Enabled, Text);
+
+	Painter->restore();
+}
+
+bool swInterfaceFitFilter::eventFilter(QObject* Object, QEvent* Event)
+{
+	if (!Object->isWidgetType())
+		return false;
+
+	const QEvent::Type Type = Event->type();
+
+	if (Type != QEvent::Polish && Type != QEvent::Show && Type != QEvent::FontChange && Type != QEvent::StyleChange && Type != QEvent::LayoutRequest)
+		return false;
+
+	QWidget* Widget = static_cast<QWidget*>(Object);
+
+	// spin boxes show their whole value and range beside the arrows
+	if (QAbstractSpinBox* SpinBox = qobject_cast<QAbstractSpinBox*>(Widget))
+	{
+		if (Type != QEvent::LayoutRequest)
+			swUpdatePanelSpinBoxWidth(SpinBox);
+
+		return false;
+	}
+
+	// rows of a scroll area without a sideways scroll bar are never cut
+	if (Type == QEvent::LayoutRequest)
+	{
+		QWidget* Viewport = Widget->parentWidget();
+		QScrollArea* ScrollArea = Viewport ? qobject_cast<QScrollArea*>(Viewport->parentWidget()) : nullptr;
+
+		if (ScrollArea && ScrollArea->widget() == Widget && ScrollArea->horizontalScrollBarPolicy() == Qt::ScrollBarAlwaysOff)
+			swFitScrollAreaWidth(ScrollArea);
+
+		return false;
+	}
+
+	if (QScrollArea* ScrollArea = qobject_cast<QScrollArea*>(Widget))
+	{
+		if (ScrollArea->horizontalScrollBarPolicy() == Qt::ScrollBarAlwaysOff)
+			swFitScrollAreaWidth(ScrollArea);
+
+		return false;
+	}
+
+	// panels of every window sit side by side, stacked or tabbed
+	if (QMainWindow* MainWindow = qobject_cast<QMainWindow*>(Widget))
+	{
+		if (Type == QEvent::Polish)
+			MainWindow->setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::AllowNestedDocks | QMainWindow::AllowTabbedDocks);
+
+		return false;
+	}
+
+	// floating panels fit their contents, docked panels follow the dock area
+	if (QDockWidget* DockWidget = qobject_cast<QDockWidget*>(Widget))
+	{
+		if (Type != QEvent::Polish || DockWidget->property("swFitFloating").toBool())
+			return false;
+
+		DockWidget->setProperty("swFitFloating", true);
+
+		auto FitDock = [DockWidget]()
+		{
+			QTimer::singleShot(0, DockWidget, [DockWidget]()
+			{
+				swFitFloatingDock(DockWidget);
+			});
+		};
+
+		QObject::connect(DockWidget, &QDockWidget::topLevelChanged, DockWidget, FitDock);
+		QObject::connect(DockWidget, &QDockWidget::dockLocationChanged, DockWidget, FitDock);
+
+		QTimer::singleShot(0, DockWidget, [DockWidget]()
+		{
+			swFitFloatingDock(DockWidget);
+		});
+	}
+
+	return false;
+}
+
+// use to tell lists, editors and views apart, they have no natural size
+static bool swIsViewDock(const QDockWidget* DockWidget)
+{
+	const QList<QWidget*> Children = DockWidget->findChildren<QWidget*>();
+
+	for (const QWidget* Child : Children)
+	{
+		// the lists of dropdowns are popups of their own, not part of the panel
+		if (Child->window() != DockWidget->window())
+			continue;
+
+		const QAbstractScrollArea* View = qobject_cast<const QAbstractScrollArea*>(Child);
+
+		if ((View && !qobject_cast<const QScrollArea*>(View)) || qobject_cast<const QOpenGLWidget*>(Child) || Child->inherits("QWindowContainer"))
+			return true;
+	}
+
+	return false;
+}
+
+void swFitFloatingDock(QDockWidget* DockWidget)
+{
+	DockWidget->setMinimumSize(0, 0);
+	DockWidget->setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
+
+	if (!DockWidget->isFloating())
+	{
+		// panels across the top or bottom keep the width of their widest rows instead of stretching them
+		const QMainWindow* MainWindow = qobject_cast<const QMainWindow*>(DockWidget->parentWidget());
+
+		if (!MainWindow)
+			return;
+
+		for (const Qt::DockWidgetArea Area : { Qt::TopDockWidgetArea, Qt::BottomDockWidgetArea })
+		{
+			std::vector<QDockWidget*> AreaDockWidgets;
+			int Width = 0;
+
+			for (QDockWidget* AreaDockWidget : MainWindow->findChildren<QDockWidget*>(QString(), Qt::FindDirectChildrenOnly))
+			{
+				if (AreaDockWidget->isFloating() || MainWindow->dockWidgetArea(AreaDockWidget) != Area || swIsViewDock(AreaDockWidget))
+					continue;
+
+				AreaDockWidget->setMaximumWidth(QWIDGETSIZE_MAX);
+				AreaDockWidgets.push_back(AreaDockWidget);
+				Width = qMax(Width, AreaDockWidget->minimumSizeHint().width());
+			}
+
+			for (QDockWidget* AreaDockWidget : AreaDockWidgets)
+				AreaDockWidget->setMaximumWidth(Width);
+		}
+
+		return;
+	}
+
+	// lists, editors and views keep their least size and stay resizable
+	if (swIsViewDock(DockWidget))
+	{
+		DockWidget->setMinimumSize(DockWidget->minimumSizeHint());
+		return;
+	}
+
+	// the rows of a scrolled panel are measured inside it, the screen bounds the height
+	int Height = DockWidget->sizeHint().height();
+	int Width = DockWidget->minimumSizeHint().width();
+	const QList<QScrollArea*> ScrollAreas = DockWidget->findChildren<QScrollArea*>();
+
+	for (const QScrollArea* ScrollArea : ScrollAreas)
+		if (ScrollArea->widget())
+			Height += qMax(ScrollArea->widget()->sizeHint().height() - ScrollArea->sizeHint().height() + 2 * ScrollArea->frameWidth(), 0);
+
+	if (const QScreen* Screen = DockWidget->screen())
+	{
+		const int ScreenHeight = Screen->availableGeometry().height() - DockWidget->frameGeometry().height() + DockWidget->height();
+
+		// a panel cut by the screen scrolls, its scroll bar widens it
+		if (Height > ScreenHeight)
+		{
+			Height = ScreenHeight;
+
+			for (const QScrollArea* ScrollArea : ScrollAreas)
+				if (ScrollArea->widget())
+					Width += qMax(ScrollArea->widget()->minimumSizeHint().width() + ScrollArea->verticalScrollBar()->sizeHint().width() + 2 * ScrollArea->frameWidth() - ScrollArea->minimumSizeHint().expandedTo(ScrollArea->minimumSize()).width(), 0);
+		}
+	}
+
+	DockWidget->setFixedSize(Width, qMax(Height, DockWidget->minimumSizeHint().height()));
+}
+
 class swFitHeightFilter : public QObject
 {
 public:
@@ -217,21 +425,73 @@ void swSetupPanelEdit(QWidget* Edit)
 	Edit->setFixedHeight(swGetPanelButtonSize().height());
 }
 
+// use to select the whole value on a click anywhere in a spin box so typing replaces it
+class swSpinBoxSelectFilter : public QObject
+{
+public:
+	using QObject::QObject;
+
+	bool eventFilter(QObject* Object, QEvent* Event) override
+	{
+		QLineEdit* LineEdit = qobject_cast<QLineEdit*>(Object);
+
+		if (LineEdit && Event->type() == QEvent::MouseButtonRelease && static_cast<QMouseEvent*>(Event)->button() == Qt::LeftButton && !LineEdit->hasSelectedText())
+		{
+			// a dragged selection stays, a click inside an old selection clears it after the release
+			QAbstractSpinBox* SpinBox = static_cast<QAbstractSpinBox*>(parent());
+			SpinBox->selectAll();
+
+			QTimer::singleShot(0, LineEdit, [LineEdit, SpinBox]()
+			{
+				if (!LineEdit->hasSelectedText())
+					SpinBox->selectAll();
+			});
+		}
+
+		return QObject::eventFilter(Object, Event);
+	}
+};
+
 void swSetupPanelSpinBox(QAbstractSpinBox* SpinBox)
 {
-	// Spin boxes are wide enough for a short value with the name and unit shown in them.
-	QString Prefix, Suffix;
+	// the clicks go to the text inside the spin box
+	if (!SpinBox->property("SelectOnClick").toBool())
+	{
+		SpinBox->setProperty("SelectOnClick", true);
+		swSpinBoxSelectFilter* Filter = new swSpinBoxSelectFilter(SpinBox);
+
+		if (QLineEdit* LineEdit = SpinBox->findChild<QLineEdit*>(QString(), Qt::FindDirectChildrenOnly))
+			LineEdit->installEventFilter(Filter);
+	}
+
+	// Equal stretch gives the boxes of a row the same width whatever their text.
+	QSizePolicy SizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	SizePolicy.setHorizontalStretch(1);
+	SpinBox->setSizePolicy(SizePolicy);
+	swUpdatePanelSpinBoxWidth(SpinBox);
+	swSetupPanelEdit(SpinBox);
+}
+
+void swUpdatePanelSpinBoxWidth(QAbstractSpinBox* SpinBox)
+{
+	// Spin boxes are wide enough for their largest value with the name and unit shown in them.
+	QString Prefix, Suffix, Value = QLatin1String("-000");
 
 	if (const QDoubleSpinBox* DoubleSpinBox = qobject_cast<const QDoubleSpinBox*>(SpinBox))
 	{
 		Prefix = DoubleSpinBox->prefix();
 		Suffix = DoubleSpinBox->suffix();
+		Value = DoubleSpinBox->textFromValue(DoubleSpinBox->maximum());
 	}
 	else if (const QSpinBox* IntegerSpinBox = qobject_cast<const QSpinBox*>(SpinBox))
 	{
 		Prefix = IntegerSpinBox->prefix();
 		Suffix = IntegerSpinBox->suffix();
+		Value = QString::number(IntegerSpinBox->maximum());
 	}
+
+	if (Value.size() < 4)
+		Value = QLatin1String("-000");
 
 	QStyleOptionSpinBox Option;
 	Option.initFrom(SpinBox);
@@ -242,12 +502,8 @@ void swSetupPanelSpinBox(QAbstractSpinBox* SpinBox)
 	const QRect EditRect = SpinBox->style()->subControlRect(QStyle::CC_SpinBox, &Option, QStyle::SC_SpinBoxEditField, SpinBox);
 	const int Decoration = Option.rect.width() - EditRect.width();
 
-	// Equal stretch gives the boxes of a row the same width whatever their text.
-	QSizePolicy SizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	SizePolicy.setHorizontalStretch(1);
-	SpinBox->setSizePolicy(SizePolicy);
-	SpinBox->setMinimumWidth(SpinBox->fontMetrics().horizontalAdvance(Prefix + QLatin1String("-000") + Suffix) + Decoration);
-	swSetupPanelEdit(SpinBox);
+	// the style sizes the box for its limits too, the larger width keeps the text clear of the arrows
+	SpinBox->setMinimumWidth(qMax(SpinBox->fontMetrics().horizontalAdvance(Prefix + Value + Suffix) + Decoration, SpinBox->sizeHint().width()));
 }
 
 int swGetLayoutSpacing(const QWidget* Widget, Qt::Orientation Orientation)

@@ -120,6 +120,50 @@ void swMainWindow::ReloadProjectFile(const QString& FileName)
 	}
 }
 
+bool swMainWindow::LoadProjectText(const QByteArray& FileData)
+{
+	Project* CurrentProject = swGetActiveProject();
+	std::unique_ptr<Project> NewProject = std::make_unique<Project>();
+
+	if (!NewProject->LoadText(FileData, CurrentProject->GetFileName(), CurrentProject->GetMainModel()->GetProperties().mFileName))
+	{
+		QMessageBox::warning(mInstructionsDialog ? static_cast<QWidget*>(mInstructionsDialog) : this, tr("Editor"), tr("The text is not a model file."));
+		return false;
+	}
+
+	// the instructions window stays open and keeps its focus, its instructions move to the new project
+	QPointer<swInstructionsDialog> Dialog = mInstructionsDialog;
+	QPointer<QWidget> FocusWidget = QApplication::focusWidget();
+	std::unique_ptr<swInstructions> Instructions;
+
+	if (Dialog)
+		Instructions = CurrentProject->TakeInstructions();
+
+	mInstructionsDialog = nullptr;
+
+	QByteArray TabLayout = GetTabLayout();
+	gApplication->SetProject(NewProject.release());
+	RestoreTabLayout(TabLayout);
+	swView::UpdateAllViews();
+	UpdateTitle();
+
+	if (!Dialog)
+		return true;
+
+	Project* ActiveProject = swGetActiveProject();
+	mInstructionsDialog = Dialog;
+	Dialog->SetProject(ActiveProject);
+	ActiveProject->SetInstructions(std::move(Instructions));
+
+	Dialog->raise();
+	Dialog->activateWindow();
+
+	if (FocusWidget)
+		FocusWidget->setFocus();
+
+	return true;
+}
+
 void swMainWindow::AddRecentFile(const QString& FileName)
 {
 	QString SavedName = FileName;

@@ -379,6 +379,10 @@ void swMainWindow::closeEvent(QCloseEvent* Event)
 	{
 		Event->accept();
 
+		// the instructions panels are saved while they are still shown
+		if (mInstructionsDialog)
+			mInstructionsDialog->SaveLayout();
+
 		QSettings Settings;
 		Settings.beginGroup("MainWindow");
 		Settings.setValue("Geometry", saveGeometry());

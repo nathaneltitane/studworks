@@ -1,5 +1,6 @@
 #include "sw_global.h"
 #include "sw_dialog_instructions.h"
+#include "sw_dialog_instructions_editor.h"
 #include "sw_dialog_instructions_page.h"
 #include "sw_dialog_instructions_placement.h"
 #include "sw_dialog_instructions_print.h"
@@ -48,6 +49,18 @@ swInstructionsDialog::swInstructionsDialog(QWidget* Parent, Project* Project)
 	PrintAction->setToolTip(tr("Show or hide the Print panel to print the instruction pages"));
 	mPropertiesWidget->AddOptionsAction(PrintAction);
 
+	// the editor panel opens on demand below the page, wide enough for the lines of the file
+	mEditorWidget = new swInstructionsEditorWidget(this, mProject, mInstructions);
+	mEditorWidget->setObjectName("InstructionsEditor");
+	addDockWidget(Qt::BottomDockWidgetArea, mEditorWidget);
+	mEditorWidget->hide();
+
+	QAction* EditorAction = mEditorWidget->toggleViewAction();
+	EditorAction->setShortcut(QKeySequence(tr("Ctrl+Shift+E")));
+	addAction(EditorAction);
+	EditorAction->setToolTip(tr("Show or hide the Editor panel to inspect and edit the text of the model file"));
+	mPropertiesWidget->AddOptionsAction(EditorAction);
+
 	connect(mPageListWidget->mThumbnailsWidget, &QListWidget::currentRowChanged, this, &swInstructionsDialog::CurrentThumbnailChanged);
 	UpdatePageList();
 
@@ -62,6 +75,32 @@ swInstructionsDialog::swInstructionsDialog(QWidget* Parent, Project* Project)
 
 	connect(mInstructions, &swInstructions::PageSetupChanged, this, &swInstructionsDialog::PageSetupChanged);
 	connect(mInstructions, &swInstructions::PageLayoutChanged, this, &swInstructionsDialog::PageSetupChanged);
+
+	// the panels come back where they were left
+	QSettings Settings;
+	Settings.beginGroup("InstructionsWindow");
+	restoreState(Settings.value("State").toByteArray());
+	Settings.endGroup();
+
+	// the panels without a toggle are never lost to a layout saved while they were hidden
+	for (QDockWidget* DockWidget : { static_cast<QDockWidget*>(mPropertiesWidget), static_cast<QDockWidget*>(mPlacementWidget), static_cast<QDockWidget*>(mGridWidget), static_cast<QDockWidget*>(mPageListWidget) })
+		DockWidget->show();
+}
+
+// use to keep the panels where they are for the next time the window opens
+void swInstructionsDialog::SaveLayout()
+{
+	QSettings Settings;
+	Settings.beginGroup("InstructionsWindow");
+	Settings.setValue("State", saveState());
+	Settings.endGroup();
+}
+
+void swInstructionsDialog::closeEvent(QCloseEvent* Event)
+{
+	SaveLayout();
+
+	QMainWindow::closeEvent(Event);
 }
 
 void swInstructionsDialog::ShowPrintWidget()
@@ -135,6 +174,13 @@ void swInstructionsDialog::SnapPageListDock()
 	if (Area != Qt::LeftDockWidgetArea && Area != Qt::RightDockWidgetArea)
 		return;
 
+	// other panels in the same stack keep their own width
+	const QList<QDockWidget*> DockWidgets = findChildren<QDockWidget*>(QString(), Qt::FindDirectChildrenOnly);
+
+	for (QDockWidget* DockWidget : DockWidgets)
+		if (DockWidget != mPageListWidget && !DockWidget->isHidden() && !DockWidget->isFloating() && dockWidgetArea(DockWidget) == Area)
+			return;
+
 	// measure every page name, the list shows the longest one in full beside the scroll bar
 	QListWidget* ThumbnailsWidget = mPageListWidget->mThumbnailsWidget;
 	const int TextWidth = ThumbnailsWidget->sizeHintForColumn(0);
@@ -163,6 +209,17 @@ void swInstructionsDialog::ModelChanged()
 		mUpdatePending = false;
 		mInstructions->Update();
 	});
+
+	mEditorWidget->ScheduleUpdate();
+}
+
+void swInstructionsDialog::SetProject(Project* Project)
+{
+	mProject = Project;
+
+	// the window stays open, the instructions are handed to the loaded project after this
+	mPageWidget->scene()->clearSelection();
+	mEditorWidget->SetProject(Project);
 }
 
 void swInstructionsDialog::PageSetupChanged()

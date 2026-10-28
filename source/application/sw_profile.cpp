@@ -200,18 +200,23 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Settings", "PartColorValueLDIndex", 0.5f),                                // SW_PROFILE_PART_COLOR_VALUE_LD_INDEX
 	swProfileEntry("Settings", "AutomateEdgeColor", 0),                                        // SW_PROFILE_AUTOMATE_EDGE_COLOR
 
-	swProfileEntry("Instructions", "PageWidth", 612.0f),                                       // SW_PROFILE_INSTRUCTIONS_PAGE_WIDTH
-	swProfileEntry("Instructions", "PageHeight", 792.0f),                                      // SW_PROFILE_INSTRUCTIONS_PAGE_HEIGHT
+	swProfileEntry("Instructions", "PageWidth", 792.0f),                                       // SW_PROFILE_INSTRUCTIONS_PAGE_WIDTH
+	swProfileEntry("Instructions", "PageHeight", 612.0f),                                      // SW_PROFILE_INSTRUCTIONS_PAGE_HEIGHT
 	swProfileEntry("Instructions", "MarginLeft", 36.0f),                                       // SW_PROFILE_INSTRUCTIONS_MARGIN_LEFT
 	swProfileEntry("Instructions", "MarginRight", 36.0f),                                      // SW_PROFILE_INSTRUCTIONS_MARGIN_RIGHT
 	swProfileEntry("Instructions", "MarginTop", 36.0f),                                        // SW_PROFILE_INSTRUCTIONS_MARGIN_TOP
 	swProfileEntry("Instructions", "MarginBottom", 36.0f),                                     // SW_PROFILE_INSTRUCTIONS_MARGIN_BOTTOM
 	swProfileEntry("Instructions", "PageUnits", 3),                                            // SW_PROFILE_INSTRUCTIONS_PAGE_UNITS
 	swProfileEntry("Instructions", "MarginUnits", 3),                                          // SW_PROFILE_INSTRUCTIONS_MARGIN_UNITS
-	swProfileEntry("Instructions", "ShowGrid", 0),                                             // SW_PROFILE_INSTRUCTIONS_SHOW_GRID
-	swProfileEntry("Instructions", "SnapToGrid", 0),                                           // SW_PROFILE_INSTRUCTIONS_SNAP_TO_GRID
-	swProfileEntry("Instructions", "GridSize", 18.0f),                                         // SW_PROFILE_INSTRUCTIONS_GRID_SIZE
+	swProfileEntry("Instructions", "ShowGrid", 1),                                             // SW_PROFILE_INSTRUCTIONS_SHOW_GRID
+	swProfileEntry("Instructions", "SnapToGrid", 1),                                           // SW_PROFILE_INSTRUCTIONS_SNAP_TO_GRID
+	swProfileEntry("Instructions", "GridSize", 9.0f),                                          // SW_PROFILE_INSTRUCTIONS_GRID_SIZE
 	swProfileEntry("Instructions", "GridWithinMargins", 1),                                    // SW_PROFILE_INSTRUCTIONS_GRID_WITHIN_MARGINS
+	swProfileEntry("Instructions", "ShowMargins", 1),                                          // SW_PROFILE_INSTRUCTIONS_SHOW_MARGINS
+	swProfileEntry("Instructions", "EditorHighlight", 1),                                      // SW_PROFILE_INSTRUCTIONS_EDITOR_HIGHLIGHT
+	swProfileEntry("Instructions", "EditorNumbers", 1),                                        // SW_PROFILE_INSTRUCTIONS_EDITOR_NUMBERS
+	swProfileEntry("Instructions", "EditorWrap", 0),                                           // SW_PROFILE_INSTRUCTIONS_EDITOR_WRAP
+	swProfileEntry("Instructions", "EditorMarkers", 1),                                        // SW_PROFILE_INSTRUCTIONS_EDITOR_MARKERS
 	swProfileEntry("Settings", "PreviewSquareViewport", 0),                                    // SW_PROFILE_PREVIEW_SQUARE_VIEWPORT
 	swProfileEntry("Settings", "MinifigSyncRendering", 1),                                     // SW_PROFILE_MINIFIGURE_BUILDER_SYNCHRONIZED_RENDERING
 	swProfileEntry("Settings", "MinifigShadingMode", static_cast<int>(swShadingMode::DefaultLights)), // SW_PROFILE_MINIFIGURE_BUILDER_SHADING_MODE

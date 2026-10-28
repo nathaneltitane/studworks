@@ -44,7 +44,8 @@ static const QLatin1String gInstructionsPropertyNames[] =
 	QLatin1String("NOTICE_FONT"), QLatin1String("NOTICE_TEXT_COLOR"), QLatin1String("NOTICE_MARGIN"),
 	QLatin1String("NOTICE_PADDING"), QLatin1String("NOTICE_BORDER_WIDTH"), QLatin1String("NOTICE_BORDER_COLOR"),
 	QLatin1String("NOTICE_BACKGROUND_COLOR"), QLatin1String("POINTER_STYLE"), QLatin1String("POINTER_TIP"),
-	QLatin1String("POINTER_COLOR"), QLatin1String("POINTER_WIDTH"), QLatin1String("POINTER_TIP_SIZE")
+	QLatin1String("POINTER_COLOR"), QLatin1String("POINTER_WIDTH"), QLatin1String("POINTER_TIP_SIZE"),
+	QLatin1String("PARTS_LIST_LAYOUT"), QLatin1String("PARTS_LIST_ALIGNMENT")
 };
 
 static_assert(std::size(gInstructionsPropertyNames) == static_cast<size_t>(swInstructionsPropertyType::Count), "Missing property name");
@@ -498,8 +499,8 @@ swInstructions::swInstructions(Project* Project)
 
 	if (mPageSetup.Width < 1.0f || mPageSetup.Height < 1.0f || mPageSetup.MarginLeft + mPageSetup.MarginRight >= mPageSetup.Width || mPageSetup.MarginTop + mPageSetup.MarginBottom >= mPageSetup.Height)
 	{
-		mPageSetup.Width = 8.5f * mDisplayDPI;
-		mPageSetup.Height = 11.0f * mDisplayDPI;
+		mPageSetup.Width = 11.0f * mDisplayDPI;
+		mPageSetup.Height = 8.5f * mDisplayDPI;
 		mPageSetup.MarginLeft = 0.5 * mDisplayDPI;
 		mPageSetup.MarginRight = 0.5 * mDisplayDPI;
 		mPageSetup.MarginTop = 0.5 * mDisplayDPI;
@@ -514,6 +515,7 @@ swInstructions::swInstructions(Project* Project)
 	mSnapToGrid = swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_SNAP_TO_GRID) != 0;
 	mGridSize = qBound(SW_GRID_SIZE_MINIMUM, swGetProfileFloat(SW_PROFILE_INSTRUCTIONS_GRID_SIZE), SW_GRID_SIZE_MAXIMUM);
 	mGridWithinMargins = swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_GRID_WITHIN_MARGINS) != 0;
+	mShowMargins = swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_SHOW_MARGINS) != 0;
 
 	SetDefaultProperties();
 	mDefaultProperties = mStepProperties;
@@ -530,6 +532,43 @@ swInstructions::swInstructions(Project* Project)
 	connect(this, &swInstructions::PageLayoutChanged, this, &swInstructions::StoreCommandLines);
 	connect(this, &swInstructions::StepSettingsChanged, this, &swInstructions::StoreCommandLines);
 	connect(this, &swInstructions::UnitsChanged, this, &swInstructions::StoreCommandLines);
+}
+
+void swInstructions::SetProject(Project* Project)
+{
+	mProject = Project;
+
+	// the settings of the old project are dropped and the commands of the new one are read
+	mPages.clear();
+	mPageSettingsOverrides.clear();
+	mPagePropertyOverrides.clear();
+	mElementOffsets.clear();
+	mLockedPositions.clear();
+	mBlankPages.clear();
+	mNotices.clear();
+	mPointers.clear();
+	mModels.clear();
+	mNextNoticeId = 1;
+	mNextPointerId = 1;
+
+	mPageSettings.Rows = 1;
+	mPageSettings.Columns = 1;
+	mPageSettings.Direction = GetPageDirection();
+
+	SetDefaultProperties();
+	mDefaultProperties = mStepProperties;
+	LoadCommandLines();
+
+	CreatePages();
+
+	swModel* MainModel = mProject ? mProject->GetMainModel() : nullptr;
+
+	if (MainModel)
+		MainModel->SetInstructionLines(GetCommandLines());
+
+	emit UnitsChanged();
+	emit PageSetupChanged();
+	emit PageLayoutChanged();
 }
 
 void swInstructions::LoadCommandLines()
@@ -759,7 +798,7 @@ swInstructionsProperties swInstructions::CreateDefaultProperties()
 	Properties[static_cast<int>(swInstructionsPropertyType::StepNumberColor)].Value = SW_RGBA(0, 0, 0, 255);
 	Properties[static_cast<int>(swInstructionsPropertyType::StepBackgroundColor)].Value = SW_RGBA(255, 255, 255, 0);
 	Properties[static_cast<int>(swInstructionsPropertyType::PLIBackgroundColor)].Value = SW_RGBA(255, 255, 255, 255);
-	Properties[static_cast<int>(swInstructionsPropertyType::PLIFont)].Value = QFont("Arial", 16, QFont::Bold).toString();
+	Properties[static_cast<int>(swInstructionsPropertyType::PLIFont)].Value = QFont("Arial", 16).toString();
 	Properties[static_cast<int>(swInstructionsPropertyType::PLITextColor)].Value = SW_RGBA(0, 0, 0, 255);
 	Properties[static_cast<int>(swInstructionsPropertyType::PLIBorderColor)].Value = SW_RGBA(0, 0, 0, 255);
 	Properties[static_cast<int>(swInstructionsPropertyType::PLIBorderWidth)].Value = 0;
@@ -772,7 +811,7 @@ swInstructionsProperties swInstructions::CreateDefaultProperties()
 	Properties[static_cast<int>(swInstructionsPropertyType::UseDocumentFont)].Value = false;
 	Properties[static_cast<int>(swInstructionsPropertyType::DocumentFont)].Value = QFont("Arial", 16).toString();
 	Properties[static_cast<int>(swInstructionsPropertyType::ShowCoverPage)].Value = true;
-	Properties[static_cast<int>(swInstructionsPropertyType::CoverTitleFont)].Value = QFont("Arial", 48, QFont::Bold).toString();
+	Properties[static_cast<int>(swInstructionsPropertyType::CoverTitleFont)].Value = QFont("Arial", 48).toString();
 	Properties[static_cast<int>(swInstructionsPropertyType::CoverTitleColor)].Value = SW_RGBA(0, 0, 0, 255);
 	Properties[static_cast<int>(swInstructionsPropertyType::ShowCoverAuthor)].Value = true;
 	Properties[static_cast<int>(swInstructionsPropertyType::PageBackgroundColor)].Value = SW_RGBA(255, 255, 255, 255);
@@ -792,7 +831,7 @@ swInstructionsProperties swInstructions::CreateDefaultProperties()
 	Properties[static_cast<int>(swInstructionsPropertyType::ShowCoverBlankPage)].Value = true;
 	Properties[static_cast<int>(swInstructionsPropertyType::ShowBillOfMaterialsBlankPage)].Value = true;
 	Properties[static_cast<int>(swInstructionsPropertyType::UseDocumentUnits)].Value = false;
-	Properties[static_cast<int>(swInstructionsPropertyType::DocumentUnits)].Value = static_cast<int>(swInstructionsPageUnits::Millimeters);
+	Properties[static_cast<int>(swInstructionsPropertyType::DocumentUnits)].Value = static_cast<int>(swInstructionsPageUnits::Inches);
 	Properties[static_cast<int>(swInstructionsPropertyType::ShowPageNumber)].Value = true;
 	Properties[static_cast<int>(swInstructionsPropertyType::PageNumberFormat)].Value = static_cast<int>(swInstructionsPageNumberFormat::Number);
 	Properties[static_cast<int>(swInstructionsPropertyType::PageNumberFont)].Value = QFont("Arial", 16).toString();
@@ -824,10 +863,14 @@ swInstructionsProperties swInstructions::CreateDefaultProperties()
 	Properties[static_cast<int>(swInstructionsPropertyType::PointerStyle)].Value = static_cast<int>(swInstructionsPointerStyle::Line);
 	Properties[static_cast<int>(swInstructionsPropertyType::PointerTip)].Value = static_cast<int>(swInstructionsPointerTip::Arrowhead);
 	Properties[static_cast<int>(swInstructionsPropertyType::PointerColor)].Value = SW_RGBA(0, 0, 0, 255);
-	Properties[static_cast<int>(swInstructionsPropertyType::PointerWidth)].Value = 2;
-	Properties[static_cast<int>(swInstructionsPropertyType::PointerTipSize)].Value = 12;
+	// a pointer follows the border of its element and its tip is three times its width
+	Properties[static_cast<int>(swInstructionsPropertyType::PointerWidth)].Value = 0;
+	Properties[static_cast<int>(swInstructionsPropertyType::PointerTipSize)].Value = 0;
+	// the parts stand in rows on their bottom edge so the counts line up
+	Properties[static_cast<int>(swInstructionsPropertyType::PLILayout)].Value = static_cast<int>(swPartsListLayout::Rows);
+	Properties[static_cast<int>(swInstructionsPropertyType::PLIAlignment)].Value = static_cast<int>(swPartsListAlignment::End);
 
-	static_assert(static_cast<int>(swInstructionsPropertyType::Count) == 90, "Missing default property");
+	static_assert(static_cast<int>(swInstructionsPropertyType::Count) == 92, "Missing default property");
 
 	return Properties;
 }
@@ -1538,6 +1581,17 @@ void swInstructions::SetGridWithinMargins(bool WithinMargins)
 
 	mGridWithinMargins = WithinMargins;
 	swSetProfileInteger(SW_PROFILE_INSTRUCTIONS_GRID_WITHIN_MARGINS, mGridWithinMargins);
+
+	emit GridChanged();
+}
+
+void swInstructions::SetShowMargins(bool ShowMargins)
+{
+	if (mShowMargins == ShowMargins)
+		return;
+
+	mShowMargins = ShowMargins;
+	swSetProfileInteger(SW_PROFILE_INSTRUCTIONS_SHOW_MARGINS, mShowMargins);
 
 	emit GridChanged();
 }

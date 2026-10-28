@@ -132,6 +132,8 @@ public:
 	void UpdateFileWatcher();
 
 	swInstructions* GetInstructions();
+	std::unique_ptr<swInstructions> TakeInstructions();
+	void SetInstructions(std::unique_ptr<swInstructions> Instructions);
 
 	void SetActiveModel(swModel* Model, bool UpdateInterface);
 	void SetActiveModel(int ModelIndex, bool UpdateInterface);
@@ -142,6 +144,7 @@ public:
 	void ShowModelListDialog();
 
 	bool Load(const QString& FileName, bool ShowErrors);
+	bool LoadText(const QByteArray& FileData, const QString& FileName, const QString& ModelName);
 	void AddLoadWarning(const QString& Warning);
 	std::vector<QString> GetLoadWarningDetails() const;
 	swResult<void> Save(const QString& FileName);
@@ -199,6 +202,7 @@ private:
 	static bool SameEmbeddedData(const swEmbeddedData& First, const swEmbeddedData& Second);
 	static QString NormalizeEmbeddedDataName(const QString& FileName);
 	void LoadLDrawDocument(const QByteArray& FileData, const Project* ReferenceProject, bool ReuseExistingModels);
+	bool LoadDocument(const QByteArray& FileData, const QString& FileName, bool ShowErrors);
 	std::vector<QString> GetMergedAssetDirectories(const swModel* Model) const;
 	swResult<void> ValidateMergedTextureBindings(const Project& Source, const std::map<QString, std::shared_ptr<const swEmbeddedData>>& MergedData, const swModel* ClipboardRoot) const;
 	swResult<void> MergeInternal(const std::vector<Project*>& Sources, const swModel* ClipboardRoot);

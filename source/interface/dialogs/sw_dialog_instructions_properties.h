@@ -8,7 +8,15 @@ class swCollapsibleWidgetButton;
 class swInstructionsLengthSpinBox : public QDoubleSpinBox
 {
 public:
-	using QDoubleSpinBox::QDoubleSpinBox;
+	explicit swInstructionsLengthSpinBox(QWidget* Parent)
+		: QDoubleSpinBox(Parent)
+	{
+		// a typed value applies after a short pause, clicking the page does not take the focus
+		mApplyTimer.setSingleShot(true);
+		mApplyTimer.setInterval(750);
+		connect(&mApplyTimer, &QTimer::timeout, this, &QAbstractSpinBox::interpretText);
+		connect(lineEdit(), &QLineEdit::textEdited, &mApplyTimer, qOverload<>(&QTimer::start));
+	}
 
 	void stepBy(int Steps) override
 	{
@@ -18,6 +26,48 @@ public:
 
 		setValue((Base + Steps) * Step);
 	}
+
+	// numbers beyond the range stay while typing and are clamped once applied
+	QValidator::State validate(QString& Text, int& Position) const override
+	{
+		const QValidator::State State = QDoubleSpinBox::validate(Text, Position);
+
+		if (State != QValidator::Invalid)
+			return State;
+
+		bool Valid = false;
+		GetTypedValue(Text, Valid);
+
+		return Valid ? QValidator::Intermediate : QValidator::Invalid;
+	}
+
+	void fixup(QString& Text) const override
+	{
+		bool Valid = false;
+		const double Value = GetTypedValue(Text, Valid);
+
+		if (Valid)
+			Text = prefix() + textFromValue(qBound(minimum(), Value, maximum())) + suffix();
+		else
+			QDoubleSpinBox::fixup(Text);
+	}
+
+protected:
+	// use to read the typed number without the prefix and suffix
+	double GetTypedValue(const QString& Text, bool& Valid) const
+	{
+		QString Number = Text;
+
+		if (!prefix().isEmpty() && Number.startsWith(prefix()))
+			Number.remove(0, prefix().size());
+
+		if (!suffix().isEmpty() && Number.endsWith(suffix()))
+			Number.chop(suffix().size());
+
+		return locale().toDouble(Number.trimmed(), &Valid);
+	}
+
+	QTimer mApplyTimer;
 };
 
 // use to show the units of a length beside its input, pressing it overrides the page units for that input
@@ -108,6 +158,7 @@ protected:
 		QString Name;
 		int Minimum = 0;
 		int Maximum = 0;
+		double PageFraction = 0.0;
 	};
 
 	void ShowPageSetupDialog();
@@ -118,7 +169,8 @@ protected:
 	QLabel* AddEditorRow(CategoryIndex Index, swInstructionsPropertyType Type);
 	void RegisterEditor(swInstructionsPropertyType Type, EditorType Editor, QWidget* Widget, const QString& Name, const QString& ToolTip);
 	QToolButton* CreateToggleEditor(swInstructionsPropertyType Type, const QString& Name, const QString& ToolTip);
-	QDoubleSpinBox* CreateLengthEditor(swInstructionsPropertyType Type, const QString& Name, const QString& ToolTip, int Minimum, int Maximum);
+	QDoubleSpinBox* CreateLengthEditor(swInstructionsPropertyType Type, const QString& Name, const QString& ToolTip, int Minimum, int Maximum, double PageFraction = 0.0);
+	double GetEditorMaximum(const EditorWidgets& Editor) const;
 	QComboBox* CreateChoiceEditor(swInstructionsPropertyType Type, const QString& Name, const QString& ToolTip, const QStringList& Choices);
 	QToolButton* CreateColorEditor(swInstructionsPropertyType Type, const QString& Name, const QString& ToolTip);
 	QToolButton* CreateFontEditor(swInstructionsPropertyType Type, const QString& Name, const QString& ToolTip);

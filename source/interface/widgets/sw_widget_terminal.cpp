@@ -35,13 +35,48 @@ swTerminalWidget::swTerminalWidget(QWidget* Parent)
 
 bool swTerminalWidget::eventFilter(QObject* Object, QEvent* Event)
 {
-	if (Event->type() != QEvent::ShortcutOverride)
+	const QEvent::Type Type = Event->type();
+
+	if (Type != QEvent::ShortcutOverride && Type != QEvent::MouseButtonPress && Type != QEvent::FocusIn && Type != QEvent::FocusOut)
 		return false;
 
 	QWidget* Widget = qobject_cast<QWidget*>(Object);
 
 	if (!Widget || !isAncestorOf(Widget))
 		return false;
+
+	// the terminal takes the keys only after a click in it
+	if (Type == QEvent::MouseButtonPress)
+	{
+		mClickFocused = true;
+		return false;
+	}
+
+	if (Type == QEvent::FocusOut)
+	{
+		const Qt::FocusReason Reason = static_cast<QFocusEvent*>(Event)->reason();
+
+		if (Reason != Qt::ActiveWindowFocusReason && Reason != Qt::PopupFocusReason)
+			mClickFocused = false;
+
+		return false;
+	}
+
+	if (Type == QEvent::FocusIn)
+	{
+		if (!mClickFocused)
+		{
+			QPointer<QWidget> FocusWidget = Widget;
+
+			QTimer::singleShot(0, this, [FocusWidget]()
+			{
+				if (FocusWidget && FocusWidget->hasFocus())
+					FocusWidget->clearFocus();
+			});
+		}
+
+		return false;
+	}
 
 	// Keys typed in the terminal go to the shell instead of triggering StudWorks shortcuts.
 	QKeyEvent* KeyEvent = static_cast<QKeyEvent*>(Event);

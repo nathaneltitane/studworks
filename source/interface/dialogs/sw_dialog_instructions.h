@@ -3,6 +3,7 @@
 #include "sw_instructions.h"
 
 class swInstructionsGridWidget;
+class swInstructionsEditorWidget;
 class swInstructionsPageListWidget;
 class swInstructionsPageWidget;
 class swInstructionsPlacementWidget;
@@ -16,9 +17,14 @@ class swInstructionsDialog : public QMainWindow
 public:
 	swInstructionsDialog(QWidget* Parent, Project* Project);
 
+	void SaveLayout();
+
 public slots:
 	void ModelChanged();
 	void ShowPrintWidget();
+
+public:
+	void SetProject(Project* Project);
 
 protected slots:
 	void PageSetupChanged();
@@ -26,6 +32,7 @@ protected slots:
 
 protected:
 	bool eventFilter(QObject* Object, QEvent* Event) override;
+	void closeEvent(QCloseEvent* Event) override;
 	void UpdatePageList();
 	void SnapPageListDock();
 
@@ -42,4 +49,5 @@ protected:
 	swInstructionsPlacementWidget* mPlacementWidget = nullptr;
 	swInstructionsGridWidget* mGridWidget = nullptr;
 	swInstructionsPrintWidget* mPrintWidget = nullptr;
+	swInstructionsEditorWidget* mEditorWidget = nullptr;
 };

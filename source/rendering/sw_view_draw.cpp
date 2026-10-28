@@ -59,7 +59,7 @@ void swView::OnDraw()
 
 	mScene->SetShadingMode(ShadingMode);
 	mScene->SetLightingStyle(Preferences.mLightingStyle);
-	mScene->SetLineSettings(RenderSettings.DrawEdgeLines, RenderSettings.DrawConditionalLines, RenderSettings.LineWidth);
+	mScene->SetLineSettings(RenderSettings.DrawEdgeLines, RenderSettings.DrawConditionalLines, RenderSettings.LineWidth * mLineWidthScale);
 	mScene->SetAllowLOD(Preferences.mAllowLOD && mWidget != nullptr);
 	mScene->SetRequireCompleteAssets(static_cast<bool>(mRenderFramebuffer));
 	mScene->SetRequireGeneratedMeshes(mRenderFramebuffer && mViewType != swViewType::PartsList);
@@ -128,7 +128,7 @@ void swView::OnDraw()
 				mContext->SetProjectionMatrix(GetProjectionMatrix());
 			}
 
-			mContext->SetLineWidth(RenderSettings.LineWidth);
+			mContext->SetLineWidth(RenderSettings.LineWidth * mLineWidthScale);
 
 			const bool OutlineEnabled = DrawInterface && !mRenderFramebuffer && mRenderImage.isNull() &&
 				ShadingMode != swShadingMode::Wireframe && Preferences.mHighlightRenderMode == swHighlightRenderMode::Outline &&

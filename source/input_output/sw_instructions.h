@@ -139,6 +139,8 @@ enum class swInstructionsPropertyType
 	PointerColor,
 	PointerWidth,
 	PointerTipSize,
+	PLILayout,
+	PLIAlignment,
 	Count
 };
 
@@ -279,6 +281,9 @@ using swInstructionsElementKey = std::tuple<swInstructionsPlacementElement, swMo
 constexpr float SW_GRID_SIZE_MINIMUM = 2.0f;
 constexpr float SW_GRID_SIZE_MAXIMUM = 144.0f;
 
+// the longer page side renders at least this many pixels, 300 dpi on a letter page
+constexpr qreal SW_INSTRUCTIONS_RENDER_SIZE = 3300.0;
+
 struct swInstructionsProperty
 {
 	swInstructionsPropertyMode Mode = swInstructionsPropertyMode::NotSet;
@@ -368,6 +373,8 @@ class swInstructions : public QObject
 
 public:
 	swInstructions(Project* Project = nullptr);
+
+	void SetProject(Project* Project);
 
 	void SetDefaultPageSettings(const swInstructionsPageSettings& PageSettings);
 	swInstructionsPageSettings GetPageSettings(size_t PageIndex) const;
@@ -467,6 +474,13 @@ public:
 
 	QRectF GetGridRect() const;
 
+	// the margins are outlined on screen like the grid, they are never printed
+	bool IsMarginsShown() const
+	{
+		return mShowMargins;
+	}
+
+
 	// every length shown in the instructions uses the margin units of the page setup
 	swInstructionsPageUnits GetPageUnits() const;
 
@@ -477,6 +491,7 @@ public:
 	void SetSnapToGrid(bool SnapToGrid);
 	void SetGridSize(float GridSize);
 	void SetGridWithinMargins(bool WithinMargins);
+	void SetShowMargins(bool ShowMargins);
 
 //protected:
 	std::vector<swInstructionsPage> mPages;
@@ -522,10 +537,11 @@ protected:
 	void SetDefaultProperty(swInstructionsPropertyType Type, const QVariant& Value);
 
 	Project* mProject = nullptr;
-	bool mShowGrid = false;
-	bool mSnapToGrid = false;
+	bool mShowGrid = true;
+	bool mSnapToGrid = true;
 	bool mGridWithinMargins = true;
-	float mGridSize = 18.0f;
+	bool mShowMargins = true;
+	float mGridSize = 9.0f;
 	int mNextNoticeId = 1;
 	int mNextPointerId = 1;
 

@@ -5,6 +5,23 @@
 class swInstructionsPropertiesWidget;
 class swInstructionsPlacementWidget;
 
+// use to snap a border to whole device pixels so every side gets the same width
+inline void swSnapBorderRect(const QTransform& Transform, QRectF& Rect, qreal& BorderWidth)
+{
+	const qreal Scale = qAbs(Transform.m11());
+
+	if (Transform.isRotating() || !Transform.isInvertible() || Scale <= 0.0)
+		return;
+
+	const QRectF DeviceRect = Transform.mapRect(Rect);
+	const QRectF SnappedRect(QPointF(qRound(DeviceRect.left()), qRound(DeviceRect.top())), QPointF(qRound(DeviceRect.right()), qRound(DeviceRect.bottom())));
+
+	Rect = Transform.inverted().mapRect(SnappedRect);
+
+	if (BorderWidth > 0.0)
+		BorderWidth = qMax<qreal>(qRound(BorderWidth * Scale), 1.0) / Scale;
+}
+
 // pointers leave the border of any boxed element, whatever its content
 class swInstructionsBoxBase
 {
@@ -13,6 +30,9 @@ public:
 
 	// the outer edge of the border, inside the margin
 	virtual QRectF GetBorderRect() const = 0;
+
+	// the width of the border drawn inside that edge
+	virtual qreal GetBorderWidth() const = 0;
 };
 
 // the page elements are drawn in a box, the background fills the margin, border and padding around the content
@@ -47,6 +67,11 @@ public:
 		const QRectF BoxRect = boundingRect();
 
 		return BoxRect.adjusted(mBoxStyle.Margin, mBoxStyle.Margin, -mBoxStyle.Margin, -mBoxStyle.Margin);
+	}
+
+	qreal GetBorderWidth() const override
+	{
+		return mBoxStyle.BorderColor.alpha() ? mBoxStyle.BorderWidth : 0.0;
 	}
 
 	QRectF boundingRect() const override
@@ -108,14 +133,22 @@ public:
 
 		if (mBoxStyle.BorderWidth > 0.0 && mBoxStyle.BorderColor.alpha())
 		{
-			const qreal BorderInset = mBoxStyle.Margin + mBoxStyle.BorderWidth / 2.0;
-			QPen Pen(mBoxStyle.BorderColor, mBoxStyle.BorderWidth);
-			Pen.setJoinStyle(Qt::MiterJoin);
+			// the border is filled between its edges so every side has the same width at any zoom
+			QRectF OuterRect = GetBorderRect();
+			qreal BorderWidth = mBoxStyle.BorderWidth;
+			swSnapBorderRect(Painter->worldTransform(), OuterRect, BorderWidth);
+
+			const QRectF InnerRect = OuterRect.adjusted(BorderWidth, BorderWidth, -BorderWidth, -BorderWidth);
+			QPainterPath BorderPath;
+			BorderPath.setFillRule(Qt::OddEvenFill);
+			BorderPath.addRect(OuterRect);
+
+			if (InnerRect.isValid())
+				BorderPath.addRect(InnerRect);
 
 			Painter->save();
-			Painter->setPen(Pen);
-			Painter->setBrush(Qt::NoBrush);
-			Painter->drawRect(BoxRect.adjusted(BorderInset, BorderInset, -BorderInset, -BorderInset));
+			Painter->setRenderHint(QPainter::Antialiasing, true);
+			Painter->fillPath(BorderPath, mBoxStyle.BorderColor);
 			Painter->restore();
 		}
 
@@ -243,15 +276,16 @@ public:
 		return mStep;
 	}
 
-	void SetBillOfMaterials(int MaxWidth)
+	void SetBillOfMaterials(int MaxWidth, int MaxHeight)
 	{
 		mBillOfMaterials = true;
-		mMaxWidth = MaxWidth;
+		SetMaxSize(MaxWidth, MaxHeight);
 	}
 
-	void SetMaxWidth(int MaxWidth)
+	void SetMaxSize(int MaxWidth, int MaxHeight)
 	{
 		mMaxWidth = MaxWidth;
+		mMaxHeight = MaxHeight;
 	}
 
 	bool IsBillOfMaterials() const
@@ -269,6 +303,7 @@ protected:
 	swStep mStep = 1;
 	bool mBillOfMaterials = false;
 	int mMaxWidth = 300;
+	int mMaxHeight = 300;
 };
 
 class swInstructionsCoverTextItem : public swInstructionsBoxItem<QGraphicsTextItem>
@@ -334,7 +369,9 @@ protected:
 	void mousePressEvent(QGraphicsSceneMouseEvent* Event) override;
 	void mouseMoveEvent(QGraphicsSceneMouseEvent* Event) override;
 	void mouseReleaseEvent(QGraphicsSceneMouseEvent* Event) override;
-	QPainterPath GetPath() const;
+	QPainterPath GetPath(const QRectF& SourceRect, qreal BorderWidth) const;
+	QPainterPath GetWedgePath(const QRectF& SourceRect, qreal BorderWidth) const;
+	QPainterPath GetClipPath(const QRectF& SourceRect, qreal BorderWidth) const;
 
 	swInstructions* mInstructions = nullptr;
 	swInstructionsPointer mPointer;
@@ -347,6 +384,9 @@ protected:
 	qreal mTipSize = 12.0;
 	QPointF mBasePosition;
 	QPointF mTipPosition;
+	QRectF mSourceRect;
+	int mAnchor = 0;
+	qreal mSourceBorderWidth = 0.0;
 	bool mDraggingTip = false;
 };
 
@@ -361,6 +401,7 @@ public:
 
 protected:
 	void SelectElement(const swInstructionsElementKey& Key);
+	void AlignSelection(int Placement, bool LastSelection);
 	void resizeEvent(QResizeEvent* Event) override;
 	void mousePressEvent(QMouseEvent* Event) override;
 	void mouseReleaseEvent(QMouseEvent* Event) override;
@@ -380,6 +421,8 @@ protected:
 	const swInstructionsPage* mPage = nullptr;
 	std::vector<std::pair<QGraphicsItem*, QPointF>> mDragItems;
 	std::optional<swInstructionsElementKey> mPendingSelection;
+	std::vector<swInstructionsElementKey> mSelectionOrder;
+	bool mRebuildingPage = false;
 };
 
 class swInstructionsPageListWidget : public QDockWidget
