@@ -1615,8 +1615,8 @@ const swCommand gCommands[] =
 	// SW_VIEW_GRID_TOGGLE_AXIS_Z
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Grid.ToggleAxisZ"),
-		QT_TRANSLATE_NOOP("Menu", "Z Axis Lines"),
-		QT_TRANSLATE_NOOP("Status", "Toggle the z axis lines on the grid origin and the height grids"),
+		QT_TRANSLATE_NOOP("Menu", "Z Axis Line"),
+		QT_TRANSLATE_NOOP("Status", "Toggle the z axis line on the grid origin and the height grids"),
 		"",
 		""
 	},

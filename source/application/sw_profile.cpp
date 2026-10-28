@@ -68,9 +68,11 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Settings", "BackgroundColor", SW_RGB(49, 52, 55)),                                     // SW_PROFILE_BACKGROUND_COLOR
 	swProfileEntry("Settings", "DrawAxes", 0),                                                             // SW_PROFILE_DRAW_AXES
 	swProfileEntry("Settings", "FollowStepViews", 1),                                                      // SW_PROFILE_FOLLOW_STEP_VIEWS
+	swProfileEntry("Settings", "ProjectionScope", static_cast<int>(swProjectionScope::AllViews)),          // SW_PROFILE_PROJECTION_SCOPE
 	swProfileEntry("Settings", "CutawaySize", 4),                                                          // SW_PROFILE_CUTAWAY_SIZE
 	swProfileEntry("Settings", "TurntableIdleDuration", 300),                                                  // SW_PROFILE_TURNTABLE_IDLE_DURATION
 	swProfileEntry("Settings", "TurntableTurnTime", 30),                                                   // SW_PROFILE_TURNTABLE_TURN_TIME
+	swProfileEntry("Settings", "TurntableAxis", static_cast<int>(swTurntableAxis::Z)),                     // SW_PROFILE_TURNTABLE_AXIS
 	swProfileEntry("Settings", "DrawAxesLocation", static_cast<int>(swAxisIconLocation::BottomLeft)),      // SW_PROFILE_DRAW_AXES_LOCATION
 	swProfileEntry("Settings", "TextColor", SW_RGBA(214, 220, 227, 255)),                                  // SW_PROFILE_TEXT_COLOR
 	swProfileEntry("Settings", "TextHaloColor", SW_RGBA(17, 19, 24, 160)),                                // SW_PROFILE_TEXT_HALO_COLOR

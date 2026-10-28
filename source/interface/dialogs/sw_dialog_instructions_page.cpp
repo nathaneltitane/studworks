@@ -5,6 +5,7 @@
 #include "sw_project.h"
 #include "sw_model.h"
 #include "sw_object_part.h"
+#include "sw_object_camera.h"
 #include "sw_view.h"
 #include "sw_window_utilities.h"
 
@@ -194,6 +195,7 @@ void swInstructionsStepImageItem::Update()
 
 	// Work on a copy of the main view camera, fitting the image must not move a model camera.
 	View.SetCamera(View.GetCamera(), true);
+	View.GetCamera()->SetProjection(static_cast<swCameraProjection>(mInstructions->GetIntProperty(swInstructionsPropertyType::ModelProjection, mModel, mStep)));
 
 	// show each step from its rotation step view, like the model view does while stepping
 	View.ApplyStepView(mStep);

@@ -53,6 +53,21 @@ enum class swAxisIconLocation
 	BottomRight
 };
 
+// the axis the idle turntable turns the model around
+enum class swTurntableAxis
+{
+	X,
+	Y,
+	Z
+};
+
+// the views a projection change applies to
+enum class swProjectionScope
+{
+	PerView,
+	AllViews
+};
+
 struct swRenderSettings
 {
 	swShadingMode ShadingMode;
@@ -117,9 +132,11 @@ public:
 	quint32 mBackgroundSolidColor;
 	bool mDrawAxes;
 	bool mFollowStepViews;
+	swProjectionScope mProjectionScope;
 	int mCutawaySize;
 	int mTurntableIdleDuration;
 	int mTurntableTurnTime;
+	swTurntableAxis mTurntableAxis;
 	swAxisIconLocation mAxisIconLocation;
 	quint32 mTextColor;
 	quint32 mTextHaloColor;

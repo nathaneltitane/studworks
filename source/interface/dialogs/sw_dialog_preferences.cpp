@@ -502,12 +502,14 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	ui->GridAxisZCheckBox->setChecked(mOptions->Preferences.mDrawGridAxisZ);
 	ui->AxisIconCheckBox->setChecked(mOptions->Preferences.mDrawAxes);
 	ui->FollowStepViewsCheckBox->setChecked(mOptions->Preferences.mFollowStepViews);
+	ui->ProjectionScopeCombo->setCurrentIndex(static_cast<int>(mOptions->Preferences.mProjectionScope));
 	ui->CutawaySizeSpinBox->setValue(mOptions->Preferences.mCutawaySize);
 	UpdateStudSuffix(ui->CutawaySizeSpinBox);
 	ui->CutawayShadeTransparencySlider->setValue(mOptions->Preferences.mCutawayShadeTransparency);
 	CutawayShadeTransparencyChanged();
 	ui->TurntableIdleDurationSpinBox->setValue(mOptions->Preferences.mTurntableIdleDuration);
 	ui->TurntableTurnTimeSpinBox->setValue(mOptions->Preferences.mTurntableTurnTime);
+	ui->TurntableAxisCombo->setCurrentIndex(static_cast<int>(mOptions->Preferences.mTurntableAxis));
 
 	ui->AxisIconLocationCombo->setCurrentIndex((int)mOptions->Preferences.mAxisIconLocation);
 
@@ -812,10 +814,12 @@ void swPreferencesDialog::accept()
 
 	mOptions->Preferences.mDrawAxes = ui->AxisIconCheckBox->isChecked();
 	mOptions->Preferences.mFollowStepViews = ui->FollowStepViewsCheckBox->isChecked();
+	mOptions->Preferences.mProjectionScope = static_cast<swProjectionScope>(ui->ProjectionScopeCombo->currentIndex());
 	mOptions->Preferences.mCutawaySize = ui->CutawaySizeSpinBox->value();
 	mOptions->Preferences.mCutawayShadeTransparency = ui->CutawayShadeTransparencySlider->value();
 	mOptions->Preferences.mTurntableIdleDuration = ui->TurntableIdleDurationSpinBox->value();
 	mOptions->Preferences.mTurntableTurnTime = ui->TurntableTurnTimeSpinBox->value();
+	mOptions->Preferences.mTurntableAxis = static_cast<swTurntableAxis>(ui->TurntableAxisCombo->currentIndex());
 	mOptions->Preferences.mAxisIconLocation = (swAxisIconLocation)ui->AxisIconLocationCombo->currentIndex();
 	mOptions->Preferences.mViewSphereEnabled = ui->ViewSphereSizeCombo->currentIndex() > 0;
 	mOptions->Preferences.mViewSphereLocation = (swViewSphereLocation)ui->ViewSphereLocationCombo->currentIndex();

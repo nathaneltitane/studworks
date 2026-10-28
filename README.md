@@ -21,7 +21,10 @@ Useful? Star the repository - it helps others find it.
 - Cutaway: cut into the model around a clicked face to see inside it, with a cube, sphere or cylinder shaped cut - from View > Cutaway, the model is never changed
 - Cutaway: click for the default size or drag to size it, move and resize it with the gizmo knobs, push in and pull out by one plate, Esc leaves it
 - Cutaway: faces lined with a light shade, its color and 90% to 99% transparency set in Preferences
-- Turntable: after an idle time the model turns full screen in perspective around the Z axis on the background color, any input ends it
+- Cutaway: cut parts show solid surfaces in their own color where the cut passes through them, like a sawn brick instead of a hollow shell
+- Projection: new model views and tabs open with the last chosen projection, set in Preferences to change only the active view or all model views at once
+- Instructions: Model Projection in the Document settings renders the step and cover models in perspective or orthographic, whatever the model view shows
+- Turntable: after an idle time the model turns full screen in perspective around the X, Y or Z axis set in Preferences on the background color, any input ends it
 - Preferences: Views page grouped into Model, Cutaway, Turntable, Base Grid, Parts, Preview and Minifigure Builder without repeating View or Preview, every slider shows its value on its left and reaches the right edge
 - Preferences: units inside their boxes and named by the count (1 stud, 6 studs), turntable idle and turn durations in seconds, grid line spacing in a spin box
 - Preferences: the Files group sets the Author of new models, "Author" until it is set
@@ -108,13 +111,14 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
   - Insert color options and the selected part color as the current color
   - Separate rendering settings for the model view, preview and parts list
   - Standard, Studio, Matte and Toon lighting styles and an adjustable selection outline width
-  - Cube, sphere and cylinder cutaways to see inside a model, with a shaded cut and resize knobs
+  - Cube, sphere and cylinder cutaways to see inside a model, with solid cut surfaces, a shaded cut and resize knobs
   - Idle turntable showing the model full screen
+  - Perspective or orthographic projection for the active view or all views at once
 
 - **Instructions** ↴
   - Page setup with paper and screen presets, units, margins and orientation
   - Cover page, bill of materials, blank page breaks and per page step layouts
-  - Step dividers, document font, parts list options and full page backgrounds
+  - Step dividers, document font, model projection, parts list options and full page backgrounds
   - Placement panel to place, drag and lock every page element, with a snapping page grid
   - Page numbers, colors and fonts for every element and a built-in Print panel
   - Padding, margin, border and background for every page element

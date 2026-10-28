@@ -24,6 +24,7 @@ QPointer<swFindReplaceWidget> swView::mFindWidget;
 
 swView* swView::mLastFocusedView;
 std::vector<swView*> swView::mViews;
+swCameraProjection swView::mLastProjection = swCameraProjection::Perspective;
 
 swView::swView(swViewType ViewType, swModel* Model)
 	: mViewType(ViewType), mScene(new swScene()), mModel(Model)
@@ -47,6 +48,10 @@ swView::swView(swViewType ViewType, swModel* Model)
 		mCamera = new swCamera(true);
 		mCamera->SetViewpoint(swViewpoint::Home);
 	}
+
+	// new model views and tabs open with the last chosen projection
+	if (mViewType == swViewType::View && mCamera->IsSimple())
+		mCamera->SetProjection(mLastProjection);
 }
 
 swView::~swView()
@@ -1169,6 +1174,24 @@ void swView::SetCameraIndex(size_t CameraIndex)
 
 void swView::SetCameraProjection(swCameraProjection CameraProjection)
 {
+	if (mViewType == swViewType::View)
+	{
+		mLastProjection = CameraProjection;
+
+		// apply to every other model view when the projection is shared
+		if (swGetPreferences().mProjectionScope == swProjectionScope::AllViews)
+		{
+			for (swView* View : mViews)
+			{
+				if (View != this && View->mViewType == swViewType::View && View->mCamera->IsSimple())
+				{
+					View->mCamera->SetProjection(CameraProjection);
+					View->Redraw();
+				}
+			}
+		}
+	}
+
 	if (mCamera->IsSimple())
 	{
 		mCamera->SetProjection(CameraProjection);

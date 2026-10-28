@@ -432,6 +432,9 @@ protected:
 	swVector3 mTurntableCenter;
 	float mTurntableRadius = 0.0f;
 	float mTurntableStartAngle = 0.0f;
+	swVector3 mTurntableAxis;
+	swVector3 mTurntableSide;
+	swVector3 mTurntableFront;
 	QDockWidget* mColorsToolBar = nullptr;
 	QDockWidget* mPropertiesToolBar = nullptr;
 	QDockWidget* mTimelineToolBar = nullptr;

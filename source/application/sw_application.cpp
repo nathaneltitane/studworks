@@ -33,9 +33,11 @@ void swPreferences::LoadDefaults()
 	mBackgroundSolidColor = swGetProfileUnsignedInteger(SW_PROFILE_BACKGROUND_COLOR);
 	mDrawAxes = swGetProfileInteger(SW_PROFILE_DRAW_AXES);
 	mFollowStepViews = swGetProfileInteger(SW_PROFILE_FOLLOW_STEP_VIEWS);
+	mProjectionScope = static_cast<swProjectionScope>(qBound(0, swGetProfileInteger(SW_PROFILE_PROJECTION_SCOPE), static_cast<int>(swProjectionScope::AllViews)));
 	mCutawaySize = swGetProfileInteger(SW_PROFILE_CUTAWAY_SIZE);
 	mTurntableIdleDuration = swGetProfileInteger(SW_PROFILE_TURNTABLE_IDLE_DURATION);
 	mTurntableTurnTime = swGetProfileInteger(SW_PROFILE_TURNTABLE_TURN_TIME);
+	mTurntableAxis = static_cast<swTurntableAxis>(qBound(0, swGetProfileInteger(SW_PROFILE_TURNTABLE_AXIS), static_cast<int>(swTurntableAxis::Z)));
 	mAxisIconLocation = swGetProfileAxisIconLocation();
 	mTextColor = swGetProfileUnsignedInteger(SW_PROFILE_TEXT_COLOR);
 	mTextHaloColor = swGetProfileUnsignedInteger(SW_PROFILE_TEXT_HALO_COLOR);
@@ -124,9 +126,11 @@ void swPreferences::SaveDefaults()
 	swSetProfileInteger(SW_PROFILE_SELECTION_OUTLINE_WIDTH, mSelectionOutlineWidth);
 	swSetProfileInteger(SW_PROFILE_DRAW_AXES, mDrawAxes);
 	swSetProfileInteger(SW_PROFILE_FOLLOW_STEP_VIEWS, mFollowStepViews);
+	swSetProfileInteger(SW_PROFILE_PROJECTION_SCOPE, static_cast<int>(mProjectionScope));
 	swSetProfileInteger(SW_PROFILE_CUTAWAY_SIZE, mCutawaySize);
 	swSetProfileInteger(SW_PROFILE_TURNTABLE_IDLE_DURATION, mTurntableIdleDuration);
 	swSetProfileInteger(SW_PROFILE_TURNTABLE_TURN_TIME, mTurntableTurnTime);
+	swSetProfileInteger(SW_PROFILE_TURNTABLE_AXIS, static_cast<int>(mTurntableAxis));
 	swSetProfileAxisIconLocation(mAxisIconLocation);
 	swSetProfileUnsignedInteger(SW_PROFILE_TEXT_COLOR, mTextColor);
 	swSetProfileUnsignedInteger(SW_PROFILE_TEXT_HALO_COLOR, mTextHaloColor);

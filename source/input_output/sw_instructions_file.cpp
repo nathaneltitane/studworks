@@ -37,7 +37,8 @@ static const QLatin1String gInstructionsPropertyNames[] =
 	QLatin1String("NOTICE_PADDING"), QLatin1String("NOTICE_BORDER_WIDTH"), QLatin1String("NOTICE_BORDER_COLOR"),
 	QLatin1String("NOTICE_BACKGROUND_COLOR"), QLatin1String("POINTER_STYLE"), QLatin1String("POINTER_TIP"),
 	QLatin1String("POINTER_COLOR"), QLatin1String("POINTER_WIDTH"), QLatin1String("POINTER_TIP_SIZE"),
-	QLatin1String("PARTS_LIST_LAYOUT"), QLatin1String("PARTS_LIST_ALIGNMENT")
+	QLatin1String("PARTS_LIST_LAYOUT"), QLatin1String("PARTS_LIST_ALIGNMENT"),
+	QLatin1String("MODEL_PROJECTION")
 };
 
 static_assert(std::size(gInstructionsPropertyNames) == static_cast<size_t>(swInstructionsPropertyType::Count), "Missing property name");

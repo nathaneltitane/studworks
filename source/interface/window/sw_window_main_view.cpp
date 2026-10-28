@@ -64,9 +64,16 @@ void swMainWindow::StartTurntable()
 	mTurntableCenter = (Min + Max) * 0.5f;
 	mTurntableRadius = qMax(swLength(Max - Min) * 0.5f, 10.0f);
 
+	// the side and front axes follow the rotation axis in x y z order
+	const swVector3 Axes[3] = { swVector3(1.0f, 0.0f, 0.0f), swVector3(0.0f, 1.0f, 0.0f), swVector3(0.0f, 0.0f, 1.0f) };
+	const int AxisIndex = static_cast<int>(swGetPreferences().mTurntableAxis);
+	mTurntableAxis = Axes[AxisIndex];
+	mTurntableSide = Axes[(AxisIndex + 1) % 3];
+	mTurntableFront = Axes[(AxisIndex + 2) % 3];
+
 	// the turn starts from the side the active view looks at
 	const swVector3 Direction = ActiveView->GetCamera()->GetSectionPosition(SW_CAMERA_SECTION_POSITION) - mTurntableCenter;
-	mTurntableStartAngle = atan2f(Direction.y, Direction.x);
+	mTurntableStartAngle = atan2f(swDot(Direction, mTurntableFront), swDot(Direction, mTurntableSide));
 
 	swView* View = new swView(swViewType::Turntable, Model);
 	View->SetCamera(View->GetCamera(), true);
@@ -122,10 +129,14 @@ void swMainWindow::UpdateTurntable()
 	const float Turn = mTurntableClock.elapsed() / 1000.0f / qMax(swGetPreferences().mTurntableTurnTime, 1);
 	const float Angle = mTurntableStartAngle + Turn * 2.0f * SW_PI;
 	const float Latitude = 25.0f * SW_DEGREES_TO_RADIANS;
-	const swVector3 Position = mTurntableCenter + swVector3(cosf(Latitude) * cosf(Angle), cosf(Latitude) * sinf(Angle), sinf(Latitude)) * Distance;
+	const swVector3 Radial = mTurntableSide * cosf(Angle) + mTurntableFront * sinf(Angle);
+	const swVector3 Position = mTurntableCenter + (Radial * cosf(Latitude) + mTurntableAxis * sinf(Latitude)) * Distance;
+
+	// the z axis stands upright, the x and y axes lie across the screen and tumble the model
+	const swVector3 Up = mTurntableAxis.z > 0.0f ? mTurntableAxis : swCross(mTurntableAxis, Radial);
 
 	Camera->m_zFar = qMax(Camera->m_zFar, Distance + mTurntableRadius * 2.0f);
-	Camera->SetViewpoint(Position, mTurntableCenter, swVector3(0.0f, 0.0f, 1.0f));
+	Camera->SetViewpoint(Position, mTurntableCenter, Up);
 	View->Redraw();
 }
 
@@ -483,7 +494,7 @@ void swMainWindow::ModelViewOptionsMenuAboutToShow()
 	AddMenuCommand(Menu, tr("Height Grids Behind Model"), SW_VIEW_GRID_TOGGLE_HEIGHT_BEHIND, Preferences.mGridHeightBehindModel);
 	AddMenuCommand(Menu, tr("X Axis Line"), SW_VIEW_GRID_TOGGLE_AXIS_X, Preferences.mDrawGridAxisX);
 	AddMenuCommand(Menu, tr("Y Axis Line"), SW_VIEW_GRID_TOGGLE_AXIS_Y, Preferences.mDrawGridAxisY);
-	AddMenuCommand(Menu, tr("Z Axis Lines"), SW_VIEW_GRID_TOGGLE_AXIS_Z, Preferences.mDrawGridAxisZ);
+	AddMenuCommand(Menu, tr("Z Axis Line"), SW_VIEW_GRID_TOGGLE_AXIS_Z, Preferences.mDrawGridAxisZ);
 
 	Menu->addSeparator();
 

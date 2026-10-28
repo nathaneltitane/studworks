@@ -1294,6 +1294,39 @@
             </property>
            </widget>
           </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="ProjectionScopeLabel">
+            <property name="toolTip">
+             <string>Choose whether a projection change applies to the active view only or to all model views.</string>
+            </property>
+            <property name="buddy">
+             <cstring>ProjectionScopeCombo</cstring>
+            </property>
+            <property name="text">
+             <string>&amp;Projection</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QComboBox" name="ProjectionScopeCombo">
+            <property name="accessibleName">
+             <string>Projection Scope</string>
+            </property>
+            <property name="toolTip">
+             <string>Choose whether a projection change applies to the active view only or to all model views, new views always open with the last chosen projection.</string>
+            </property>
+            <item>
+             <property name="text">
+              <string>Per View</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>All Views</string>
+             </property>
+            </item>
+           </widget>
+          </item>
           <item row="0" column="2">
            <spacer name="horizontalSpacer_7">
             <property name="orientation">
@@ -1504,6 +1537,44 @@
             </property>
            </widget>
           </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="TurntableAxisLabel">
+            <property name="toolTip">
+             <string>Choose the axis the model turns around, the z axis turns it upright like a turntable.</string>
+            </property>
+            <property name="buddy">
+             <cstring>TurntableAxisCombo</cstring>
+            </property>
+            <property name="text">
+             <string>Rotation Axis</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QComboBox" name="TurntableAxisCombo">
+            <property name="accessibleName">
+             <string>Turntable Rotation Axis</string>
+            </property>
+            <property name="toolTip">
+             <string>Choose the axis the model turns around, the z axis turns it upright like a turntable.</string>
+            </property>
+            <item>
+             <property name="text">
+              <string>X Axis</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Y Axis</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Z Axis</string>
+             </property>
+            </item>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
@@ -1605,7 +1676,7 @@
              <string>Draw the z axis line at the grid origin, or along the height grids when they are shown.</string>
             </property>
             <property name="text">
-             <string>Draw Z Axis Lines</string>
+             <string>Draw Z Axis Line</string>
             </property>
            </widget>
           </item>
@@ -3495,11 +3566,13 @@
   <tabstop>AxisIconCheckBox</tabstop>
   <tabstop>AxisIconLocationCombo</tabstop>
   <tabstop>FollowStepViewsCheckBox</tabstop>
+  <tabstop>ProjectionScopeCombo</tabstop>
   <tabstop>CutawaySizeSpinBox</tabstop>
   <tabstop>CutawayShadeColorButton</tabstop>
   <tabstop>CutawayShadeTransparencySlider</tabstop>
   <tabstop>TurntableIdleDurationSpinBox</tabstop>
   <tabstop>TurntableTurnTimeSpinBox</tabstop>
+  <tabstop>TurntableAxisCombo</tabstop>
   <tabstop>gridStuds</tabstop>
   <tabstop>gridLines</tabstop>
   <tabstop>gridLineSpacing</tabstop>

@@ -141,6 +141,7 @@ enum class swInstructionsPropertyType
 	PointerTipSize,
 	PLILayout,
 	PLIAlignment,
+	ModelProjection,
 	Count
 };
 

@@ -266,7 +266,7 @@ swResult<void> swContext::CreateShaderPrograms()
 
 // lighting styles follow swLightingStyle: standard, studio, matte, toon
 "#define SW_PIXEL_FAKE_LIGHTING \\\n"
-"		SW_SHADER_PRECISION vec3 Normal = normalize(PixelNormal); \\\n"
+"		SW_SHADER_PRECISION vec3 Normal = normalize(dot(CapNormal, CapNormal) > 0.0 ? CapNormal : PixelNormal); \\\n"
 "		SW_SHADER_PRECISION vec3 LightDirection = normalize(PixelPosition - LightPosition); \\\n"
 "		SW_SHADER_PRECISION vec3 VertexToEye = normalize(EyePosition - PixelPosition); \\\n"
 "		SW_SHADER_PRECISION vec3 LightReflect = normalize(reflect(-LightDirection, Normal)); \\\n"
@@ -301,6 +301,59 @@ swResult<void> swContext::CreateShaderPrograms()
 "			(CutawayShape == 2 && dot(PixelCutaway, PixelCutaway) < 1.0) || \\\n"
 "			(CutawayShape == 3 && dot(PixelCutaway.xy, PixelCutaway.xy) < 1.0 && abs(PixelCutaway.z) < 1.0)) \\\n"
 "			discard;\n"
+
+// a back face seen through the cutaway is the inside of a solid part, so it is shaded as the cut surface
+"#define SW_PIXEL_CUTAWAY_CAP \\\n"
+"		SW_SHADER_PRECISION vec3 CapNormal = vec3(0.0, 0.0, 0.0); \\\n"
+"		gl_FragDepth = gl_FragCoord.z; \\\n"
+"		if (CutawayShape != 0) \\\n"
+"		{ \\\n"
+"			SW_SHADER_PRECISION vec3 CapToward = CutawayEye.w > 0.5 ? CutawayEye.xyz - PixelCutaway : CutawayEye.xyz; \\\n"
+"			SW_SHADER_PRECISION float CapLimit = CutawayEye.w > 0.5 ? 1.0 : 1.0e6; \\\n"
+"			if (dot((WorldCutawayMatrix * vec4(PixelNormal, 0.0)).xyz, CapToward) < 0.0) \\\n"
+"			{ \\\n"
+"				SW_SHADER_PRECISION vec3 CapStep = vec3(abs(CapToward.x) < 1.0e-6 ? 1.0e-6 : CapToward.x, abs(CapToward.y) < 1.0e-6 ? 1.0e-6 : CapToward.y, abs(CapToward.z) < 1.0e-6 ? 1.0e-6 : CapToward.z); \\\n"
+"				SW_SHADER_PRECISION vec3 CapNear = min((-1.0 - PixelCutaway) / CapStep, (1.0 - PixelCutaway) / CapStep); \\\n"
+"				SW_SHADER_PRECISION vec3 CapFar = max((-1.0 - PixelCutaway) / CapStep, (1.0 - PixelCutaway) / CapStep); \\\n"
+"				SW_SHADER_PRECISION float CapEnter = -1.0e6; \\\n"
+"				SW_SHADER_PRECISION float CapExit = 1.0e6; \\\n"
+"				SW_SHADER_PRECISION vec3 CapEnterNormal = vec3(0.0, 0.0, 0.0); \\\n"
+"				if (CutawayShape == 1) \\\n"
+"				{ \\\n"
+"					CapEnter = max(CapNear.x, max(CapNear.y, CapNear.z)); \\\n"
+"					CapExit = min(CapFar.x, min(CapFar.y, CapFar.z)); \\\n"
+"					CapEnterNormal = CapEnter == CapNear.x ? vec3(sign(CapToward.x), 0.0, 0.0) : (CapEnter == CapNear.y ? vec3(0.0, sign(CapToward.y), 0.0) : vec3(0.0, 0.0, sign(CapToward.z))); \\\n"
+"				} \\\n"
+"				else \\\n"
+"				{ \\\n"
+"					SW_SHADER_PRECISION vec3 CapRay = CutawayShape == 2 ? CapToward : vec3(CapToward.xy, 0.0); \\\n"
+"					SW_SHADER_PRECISION vec3 CapStart = CutawayShape == 2 ? PixelCutaway : vec3(PixelCutaway.xy, 0.0); \\\n"
+"					SW_SHADER_PRECISION float CapA = max(dot(CapRay, CapRay), 1.0e-12); \\\n"
+"					SW_SHADER_PRECISION float CapB = dot(CapStart, CapRay); \\\n"
+"					SW_SHADER_PRECISION float CapRoot = CapB * CapB - CapA * (dot(CapStart, CapStart) - 1.0); \\\n"
+"					if (CapRoot > 0.0) \\\n"
+"					{ \\\n"
+"						CapEnter = (-CapB - sqrt(CapRoot)) / CapA; \\\n"
+"						CapExit = (-CapB + sqrt(CapRoot)) / CapA; \\\n"
+"						CapEnterNormal = -(CapStart + CapRay * CapEnter); \\\n"
+"					} \\\n"
+"					else \\\n"
+"						CapExit = CapEnter; \\\n"
+"					if (CutawayShape == 3 && CapNear.z > CapEnter) \\\n"
+"					{ \\\n"
+"						CapEnter = CapNear.z; \\\n"
+"						CapEnterNormal = vec3(0.0, 0.0, sign(CapToward.z)); \\\n"
+"					} \\\n"
+"					if (CutawayShape == 3) \\\n"
+"						CapExit = min(CapExit, CapFar.z); \\\n"
+"				} \\\n"
+"				if (CapEnter < CapExit && CapEnter > 0.0 && CapEnter < CapLimit) \\\n"
+"				{ \\\n"
+"					CapNormal = (vec4(CapEnterNormal, 0.0) * WorldCutawayMatrix).xyz; \\\n"
+"					gl_FragDepth = gl_FragCoord.z - max(abs(dFdx(gl_FragCoord.z)), abs(dFdy(gl_FragCoord.z))) * 2.0 - 1.0e-5; \\\n"
+"				} \\\n"
+"			} \\\n"
+"		}\n"
 	};
 
 	const char* const VertexShaders[] =
@@ -504,6 +557,8 @@ swResult<void> swContext::CreateShaderPrograms()
 		mPrograms[MaterialType].LightingStyleLocation = glGetUniformLocation(Program, "LightingStyle");
 		mPrograms[MaterialType].CutawayShapeLocation = glGetUniformLocation(Program, "CutawayShape");
 		mPrograms[MaterialType].CutawayMatrixLocation = glGetUniformLocation(Program, "CutawayMatrix");
+		mPrograms[MaterialType].WorldCutawayMatrixLocation = glGetUniformLocation(Program, "WorldCutawayMatrix");
+		mPrograms[MaterialType].CutawayEyeLocation = glGetUniformLocation(Program, "CutawayEye");
 
 		const GLint TextureLocation = glGetUniformLocation(Program, "Texture");
 
@@ -1616,12 +1671,25 @@ void swContext::FlushState()
 	const swProgram& Program = mPrograms[static_cast<int>(mMaterialType)];
 
 	// the cutaway matrix maps the vertices of this mesh straight to the unit cube or sphere
-	if ((mCutawayDirty || mWorldMatrixDirty) && Program.CutawayShapeLocation != -1)
+	if ((mCutawayDirty || mWorldMatrixDirty || mViewMatrixDirty || mProjectionMatrixDirty) && Program.CutawayShapeLocation != -1)
 	{
 		glUniform1i(Program.CutawayShapeLocation, static_cast<GLint>(mCutawayShape));
 
 		if (Program.CutawayMatrixLocation != -1)
 			glUniformMatrix4fv(Program.CutawayMatrixLocation, 1, false, swMultiply(mWorldMatrix, mCutawayMatrix).GetFloats());
+
+		if (Program.WorldCutawayMatrixLocation != -1)
+			glUniformMatrix4fv(Program.WorldCutawayMatrixLocation, 1, false, mCutawayMatrix.GetFloats());
+
+		// the eye is a point for perspective views and a direction toward the viewer for orthographic ones
+		if (Program.CutawayEyeLocation != -1)
+		{
+			const swMatrix44 InverseViewMatrix = swMatrix44AffineInverse(mViewMatrix);
+			const bool Orthographic = mProjectionMatrix[2][3] == 0.0f;
+			const swVector4 CutawayEye = Orthographic ? swVector4(swMultiply30(swMultiply30(swVector3(0.0f, 0.0f, 1.0f), InverseViewMatrix), mCutawayMatrix), 0.0f) : swVector4(swMultiply31(InverseViewMatrix.GetTranslation(), mCutawayMatrix), 1.0f);
+
+			glUniform4fv(Program.CutawayEyeLocation, 1, CutawayEye.GetFloats());
+		}
 
 		mCutawayDirty = false;
 	}

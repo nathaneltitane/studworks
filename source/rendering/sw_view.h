@@ -470,4 +470,5 @@ protected:
 
 	static swView* mLastFocusedView;
 	static std::vector<swView*> mViews;
+	static swCameraProjection mLastProjection;
 };

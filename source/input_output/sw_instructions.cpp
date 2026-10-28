@@ -3,6 +3,7 @@
 #include "sw_project.h"
 #include "sw_model.h"
 #include "sw_object_part.h"
+#include "sw_object_camera.h"
 #include "sw_data_part.h"
 #include "sw_profile.h"
 #include "sw_window_main.h"
@@ -255,8 +256,10 @@ swInstructionsProperties swInstructions::CreateDefaultProperties()
 	// the parts stand in rows on their bottom edge so the counts line up
 	Properties[static_cast<int>(swInstructionsPropertyType::PLILayout)].Value = static_cast<int>(swPartsListLayout::Rows);
 	Properties[static_cast<int>(swInstructionsPropertyType::PLIAlignment)].Value = static_cast<int>(swPartsListAlignment::End);
+	// step and cover models render in perspective whatever the model view shows
+	Properties[static_cast<int>(swInstructionsPropertyType::ModelProjection)].Value = static_cast<int>(swCameraProjection::Perspective);
 
-	static_assert(static_cast<int>(swInstructionsPropertyType::Count) == 92, "Missing default property");
+	static_assert(static_cast<int>(swInstructionsPropertyType::Count) == 93, "Missing default property");
 
 	return Properties;
 }

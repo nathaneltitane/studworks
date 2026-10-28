@@ -45,7 +45,7 @@
           <string>Enter the author credited in this model.</string>
          </property>
          <property name="text">
-          <string>Author:</string>
+          <string>Author</string>
          </property>
         </widget>
        </item>
@@ -65,7 +65,7 @@
           <string>Enter a short description of this model.</string>
          </property>
          <property name="text">
-          <string>Description:</string>
+          <string>Description</string>
          </property>
         </widget>
        </item>
@@ -85,7 +85,7 @@
           <string>Enter plain-text notes to store with this model.</string>
          </property>
          <property name="text">
-          <string>Comments:</string>
+          <string>Comments</string>
          </property>
         </widget>
        </item>
@@ -114,7 +114,7 @@
           <string>&lt;p&gt;&lt;b&gt;Model Measurements&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The dimensions of the model's bounding box are shown in centimeters, inches, and LDraw units (LDU). The values are read-only and include parts across all steps.&lt;/p&gt;</string>
          </property>
          <property name="text">
-          <string>Measurements:</string>
+          <string>Measurements</string>
          </property>
         </widget>
        </item>

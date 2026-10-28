@@ -245,6 +245,15 @@ bool swMainWindow::eventFilter(QObject* Object, QEvent* Event)
 		QTimer::singleShot(0, this, &swMainWindow::SnapPartsDock);
 	}
 
+	// accelerators added by kde show as '&' in panel titles
+	if (Event->type() == QEvent::WindowTitleChange)
+	{
+		QDockWidget* DockWidget = qobject_cast<QDockWidget*>(Object);
+
+		if (DockWidget && DockWidget->windowTitle().contains('&'))
+			DockWidget->setWindowTitle(DockWidget->windowTitle().remove('&'));
+	}
+
 	QTabBar* TabBar = mModelTabWidget ? mModelTabWidget->tabBar() : nullptr;
 
 	if (TabBar && Object == TabBar)

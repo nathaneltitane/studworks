@@ -96,6 +96,8 @@ struct swProgram
 	GLint LightingStyleLocation;
 	GLint CutawayShapeLocation;
 	GLint CutawayMatrixLocation;
+	GLint WorldCutawayMatrixLocation;
+	GLint CutawayEyeLocation;
 };
 
 enum class swPolygonOffset

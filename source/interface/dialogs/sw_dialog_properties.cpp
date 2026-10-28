@@ -285,7 +285,6 @@ swPropertiesDialog::swPropertiesDialog(QWidget* Parent, swPropertiesDialogOption
 	swSetupDialogHelp(this, ui->buttonBox);
 
 	setWindowTitle(tr("%1 Properties").arg(mOptions->Properties.mFileName));
-	setWindowState(windowState() | Qt::WindowMaximized);
 
 	ui->DescriptionEdit->setText(mOptions->Properties.mDescription);
 	ui->AuthorEdit->setText(mOptions->Properties.mAuthor);

@@ -301,7 +301,7 @@ static const swDividerPreset swDividerPresets[] =
 
 void swInstructionsPropertiesWidget::CreateWidgets()
 {
-	AddCategory(CategoryIndex::Document, tr("Document"), tr("<p><b>Document</b></p><p>One font for all text of the instructions. The instructions settings, notices and pointers are saved in the model file, the page setup and grid in the preferences.</p>"));
+	AddCategory(CategoryIndex::Document, tr("Document"), tr("<p><b>Document</b></p><p>One font for all text of the instructions and the projection of the step and cover models. The instructions settings, notices and pointers are saved in the model file, the page setup and grid in the preferences.</p>"));
 
 	AddRow(CategoryIndex::Document, {
 		CreateToggleEditor(swInstructionsPropertyType::UseDocumentFont, tr("Use Document Font"), tr("Use one font for all text in the instructions."))
@@ -309,6 +309,9 @@ void swInstructionsPropertiesWidget::CreateWidgets()
 
 	CreateFontEditor(swInstructionsPropertyType::DocumentFont, tr("Document Font"), tr("Font of all text while the document font is used."));
 	AddEditorRow(CategoryIndex::Document, swInstructionsPropertyType::DocumentFont);
+
+	CreateChoiceEditor(swInstructionsPropertyType::ModelProjection, tr("Model Projection"), tr("Show the step and cover models in perspective or orthographic, whatever the model view shows."), { tr("Perspective"), tr("Orthographic") });
+	AddEditorRow(CategoryIndex::Document, swInstructionsPropertyType::ModelProjection);
 
 	AddCategory(CategoryIndex::Cover, tr("Cover Page"), tr("<p><b>Cover Page</b></p><p>The first page, showing the model title, its author and the finished model. The title comes from the model description, or its name when there is none, the author from the model properties.</p>"));
 
