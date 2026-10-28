@@ -40,6 +40,7 @@ Useful? Star the repository - it helps others find it.
 - Instructions: notices, free text added to any page with a right-click
 - Instructions: pointers from an element border to a part, step, notice or other element - eight anchors or the nearest, line or callout wedge, arrowhead or dot tip
 - Instructions: settings, page layouts, notices and pointers saved in the model file as '!SW INSTRUCTION' meta commands
+- Code: views, preferences, the parts library and projects split into smaller files by task - camera, input, categories, shortcuts, cache, loading, file and import - with no change in behavior
 
 2026-10-27 ↴
 

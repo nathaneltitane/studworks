@@ -8,6 +8,8 @@ SOURCES += \
 	$$PWD/sw_data_part.cpp \
 	$$PWD/sw_file_zip.cpp \
 	$$PWD/sw_library.cpp \
+	$$PWD/sw_library_cache.cpp \
+	$$PWD/sw_library_load.cpp \
 	$$PWD/sw_loader_asset.cpp \
 	$$PWD/sw_loader_mesh.cpp \
 	$$PWD/sw_manager_part.cpp \

@@ -22,6 +22,8 @@ SOURCES += \
 	$$PWD/sw_object_property.cpp \
 	$$PWD/sw_project.cpp \
 	$$PWD/sw_project_export.cpp \
+	$$PWD/sw_project_file.cpp \
+	$$PWD/sw_project_import.cpp \
 	$$PWD/sw_string.cpp \
 	$$PWD/sw_track_train.cpp
 
