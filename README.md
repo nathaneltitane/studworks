@@ -109,20 +109,39 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
   <details>
   <summary>Menus</summary>
 
-  ![Menus](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/interface-menus.png)
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/interface-menu-file.png" alt="File menu" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/interface-menu-edit.png" alt="Edit menu" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/interface-menu-view.png" alt="View menu" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/interface-menu-part.png" alt="Part menu" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/interface-menu-steps.png" alt="Steps menu" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/interface-menu-models.png" alt="Models menu" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/interface-menu-help.png" alt="Help menu" align="top">
 
-  ![View submenus](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/interface-menu-view.png)
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/interface-menu-view-viewpoints.png" alt="View Viewpoints submenu" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/interface-menu-view-cutaway.png" alt="View Cutaway submenu" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/interface-menu-view-projection.png" alt="View Projection submenu" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/interface-menu-view-shading.png" alt="View Shading submenu" align="top">
 
-  ![Options menus](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/interface-menu-options.png)
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/interface-menu-options-view-grids.png" alt="View options" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/interface-menu-options-preview.png" alt="Preview options" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/interface-menu-options-parts.png" alt="Parts options" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/interface-menu-options-colors.png" alt="Colors options" align="top">
 
   </details>
 
   <details>
   <summary>Preferences and About</summary>
 
-  ![Preferences](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/preferences.png)
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/preferences-general.png" alt="General preferences" width="24%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/preferences-rendering.png" alt="Rendering preferences" width="24%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/preferences-views.png" alt="Views preferences" width="24%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/preferences-colors.png" alt="Colors preferences" width="24%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/preferences-instructions.png" alt="Instructions preferences" width="24%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/preferences-categories.png" alt="Categories preferences" width="24%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/preferences-keyboard.png" alt="Keyboard preferences" width="24%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/preferences-mouse.png" alt="Mouse preferences" width="24%" align="top">
 
-  ![About](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/about.png)
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/about.png" alt="About" align="top">
 
   </details>
 
@@ -136,7 +155,12 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
   - Part categories turned on and off with a checkbox
   - Theme-aware Blender icons and cursors, with axis cursors for moving and rotating
 
-  ![Preview, Parts, Minifigure Builder, Timeline, Colors and Properties panels](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/panels.png)
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/panel-preview.png" alt="Preview panel" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/panel-parts.png" alt="Parts panel" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/panel-minifigure-builder.png" alt="Minifigure Builder panel" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/panel-timeline.png" alt="Timeline panel" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/panel-colors.png" alt="Colors panel" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/panel-properties.png" alt="Properties panel" align="top">
 
 - **Modeling** ↴
   - MLCad ROTSTEP step views shown and edited in the Timeline
@@ -149,15 +173,23 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
   - Idle turntable showing the model full screen
   - Perspective or orthographic projection for the active view or all views at once
 
-  ![Cube, sphere and cylinder cutaways](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/modeling-cutaway.png)
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/modeling-cutaway-cube.png" alt="Cube cutaway" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/modeling-cutaway-sphere.png" alt="Sphere cutaway" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/modeling-cutaway-cylinder.png" alt="Cylinder cutaway" width="32%" align="top">
 
-  ![Standard, Studio, Matte and Toon lighting](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/modeling-lighting.png)
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/modeling-lighting-standard.png" alt="Standard lighting" width="24%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/modeling-lighting-studio.png" alt="Studio lighting" width="24%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/modeling-lighting-matte.png" alt="Matte lighting" width="24%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/modeling-lighting-toon.png" alt="Toon lighting" width="24%" align="top">
 
   ![XZ and YZ height grids](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/modeling-height-grids.png)
 
-  ![Perspective and orthographic projection](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/modeling-projection.png)
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/modeling-projection-perspective.png" alt="Perspective projection" width="49%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/modeling-projection-orthographic.png" alt="Orthographic projection" width="49%" align="top">
 
-  ![Idle turntable](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/modeling-turntable.png)
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/modeling-turntable-a.png" alt="Idle turntable" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/modeling-turntable-b.png" alt="Idle turntable" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/modeling-turntable-c.png" alt="Idle turntable" width="32%" align="top">
 
 - **Instructions** ↴
   - Page setup with paper and screen presets, units, margins and orientation
@@ -169,17 +201,24 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
   - Notices and pointers to emphasize parts, steps and notices
   - Instructions saved in the model file
 
-  ![Cover page, step page and bill of materials](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/instructions-pages.png)
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/instructions-page-cover.png" alt="Cover page" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/instructions-page-step.png" alt="Step page" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/instructions-page-bill-of-materials.png" alt="Bill of materials" width="32%" align="top">
 
   ![Instructions window](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/instructions-window.png)
 
-  ![Properties, Grid, Placement, Print and Editor panels](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/instructions-panels.png)
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/instructions-panel-properties.png" alt="Properties panel" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/instructions-panel-grid-placement.png" alt="Grid and Placement panels" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/instructions-panel-print.png" alt="Print panel" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/instructions-panel-editor.png" alt="Editor panel" align="top">
 
 - **Models** ↴
   - Model properties with part IDs, thumbnails, counts and BrickLink or CSV export
   - Consistent default names and numbered duplicates
 
-  ![Model properties and submodels](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/models.png)
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/models-properties.png" alt="Model properties" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/models-properties-parts.png" alt="Model parts" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/models-submodels.png" alt="Submodels" width="32%" align="top">
 
 ---
 
