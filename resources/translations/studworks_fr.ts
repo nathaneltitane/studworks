@@ -17084,10 +17084,9 @@ SVP visitez https://github.com/nathaneltitane/studworks pour apprendre comment t
         <translation type="unfinished">Définissez le nom de l&apos;auteur utilisé pour les nouveaux modèles.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Default Author Name</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Nom de l&apos;auteur par défaut</translation>
+        <translation type="obsolete">Nom de l&apos;auteur par défaut</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
@@ -17377,10 +17376,9 @@ SVP visitez https://github.com/nathaneltitane/studworks pour apprendre comment t
         <translation type="unfinished">Vues</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Model Views</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Vues du modèle</translation>
+        <translation type="obsolete">Vues du modèle</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
@@ -19037,11 +19035,6 @@ Les cartes vidéo non prises en charge utilisent une teinte de visage et des bor
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Use Model View Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose how parts are drawn in the parts list and parts list images.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19093,11 +19086,6 @@ Les cartes vidéo non prises en charge utilisent une teinte de visage et des bor
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Preview Line Width</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Minifigure Builder Preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -19518,6 +19506,26 @@ Les cartes vidéo non prises en charge utilisent une teinte de visage et des bor
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Set the line width used in the preview.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Author</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Use Model Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Minifigure Builder</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

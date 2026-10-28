@@ -16621,10 +16621,9 @@ Please visit https://library.ldraw.org for information on how to download and in
         <translation type="unfinished">Nastavte jméno autora používané pro nové modely.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Default Author Name</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Výchozí jméno autora</translation>
+        <translation type="obsolete">Výchozí jméno autora</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
@@ -16914,10 +16913,9 @@ Please visit https://library.ldraw.org for information on how to download and in
         <translation type="unfinished">Pohledy</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Model Views</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Pohledy na model</translation>
+        <translation type="obsolete">Pohledy na model</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
@@ -18760,11 +18758,6 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Use Model View Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose how parts are drawn in the parts list and parts list images.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18816,11 +18809,6 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Preview Line Width</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Minifigure Builder Preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -19241,6 +19229,26 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Set the line width used in the preview.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Author</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Use Model Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Minifigure Builder</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

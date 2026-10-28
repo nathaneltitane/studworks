@@ -355,7 +355,7 @@
              <string>Set the author name used for new models.</string>
             </property>
             <property name="text">
-             <string>Default Author Name</string>
+             <string>Author</string>
             </property>
             <property name="buddy">
              <cstring>authorName</cstring>
@@ -365,7 +365,7 @@
           <item row="0" column="1">
            <widget class="QLineEdit" name="authorName">
             <property name="accessibleName">
-             <string>Default Author Name</string>
+             <string>Author</string>
             </property>
             <property name="toolTip">
              <string>Set the author name used for new models.</string>

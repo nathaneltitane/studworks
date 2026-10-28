@@ -24,7 +24,7 @@ Useful? Star the repository - it helps others find it.
 - Turntable: after an idle time the model turns full screen in perspective around the Z axis on the background color, any input ends it
 - Preferences: Views page grouped into Model, Cutaway, Turntable, Base Grid, Parts, Preview and Minifigure Builder without repeating View or Preview, every slider shows its value on its left and reaches the right edge
 - Preferences: units inside their boxes and named by the count (1 stud, 6 studs), turntable idle and turn durations in seconds, grid line spacing in a spin box
-- Preferences: the default author of new models is "Author" until it is set
+- Preferences: the Files group sets the Author of new models, "Author" until it is set
 - Preview: the panel, its options and its preferences are named Preview, since it shows models as well as parts
 - Parts panel: a floating panel ends on whole thumbnail or list rows and scrolls by whole rows, the bottom row is never cut
 - Part categories: turn each category on or off with its checkbox, sub parts and aliases are no longer listed

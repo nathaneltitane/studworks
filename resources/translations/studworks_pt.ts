@@ -16869,10 +16869,9 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="unfinished">Defina o nome do autor usado para novos modelos.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Default Author Name</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Nome do autor padrão</translation>
+        <translation type="obsolete">Nome do autor padrão</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
@@ -17162,10 +17161,9 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="unfinished">Visualizações</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Model Views</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Visualizações do modelo</translation>
+        <translation type="obsolete">Visualizações do modelo</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
@@ -19052,11 +19050,6 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Use Model View Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose how parts are drawn in the parts list and parts list images.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -19108,11 +19101,6 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Preview Line Width</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Minifigure Builder Preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -19533,6 +19521,26 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Set the line width used in the preview.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Author</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Use Model Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Minifigure Builder</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

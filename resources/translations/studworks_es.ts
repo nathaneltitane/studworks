@@ -16329,10 +16329,9 @@ Por favor, visita https://github.com/nathaneltitane/studworks para saber cómo d
         <translation type="unfinished">Establezca el nombre del autor utilizado para los nuevos modelos.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Default Author Name</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Nombre de autor predeterminado</translation>
+        <translation type="obsolete">Nombre de autor predeterminado</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
@@ -17375,9 +17374,8 @@ Por favor, visita https://github.com/nathaneltitane/studworks para saber cómo d
         <translation>Vistas</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Model Views</source>
-        <translation>Vistas de modelo</translation>
+        <translation type="vanished">Vistas de modelo</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
@@ -18641,11 +18639,6 @@ Las tarjetas de video no compatibles usan tinte frontal y bordes coloreados.</tr
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Use Model View Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Choose how parts are drawn in the parts list and parts list images.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -18697,11 +18690,6 @@ Las tarjetas de video no compatibles usan tinte frontal y bordes coloreados.</tr
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Preview Line Width</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Minifigure Builder Preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -19122,6 +19110,26 @@ Las tarjetas de video no compatibles usan tinte frontal y bordes coloreados.</tr
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Set the line width used in the preview.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Author</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Model</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Use Model Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Minifigure Builder</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
