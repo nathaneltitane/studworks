@@ -1133,7 +1133,7 @@
      </widget>
      <widget class="QWidget" name="tab">
       <property name="whatsThis">
-       <string>&lt;p&gt;&lt;b&gt;View Preferences&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose navigation aids for model views and the part preview, and configure the base grid. Locations select the corner where each navigation aid appears.&lt;/p&gt;</string>
+       <string>&lt;p&gt;&lt;b&gt;View Preferences&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose navigation aids for model views and the preview, the cutaway size and shade, the idle turntable, and the base grid. Locations select the corner where each navigation aid appears.&lt;/p&gt;</string>
       </property>
       <attribute name="title">
        <string>Views</string>
@@ -1142,7 +1142,7 @@
        <item>
         <widget class="QGroupBox" name="groupBox_6">
          <property name="title">
-          <string>Model Views</string>
+          <string>Model</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_3">
           <item row="0" column="0">
@@ -1311,31 +1311,208 @@
         </widget>
        </item>
        <item>
+        <widget class="QGroupBox" name="CutawayGroup">
+         <property name="title">
+          <string>Cutaway</string>
+         </property>
+         <layout class="QGridLayout" name="CutawayLayout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="CutawaySizeLabel">
+            <property name="toolTip">
+             <string>Choose how many studs across a cutaway is when placed with a click.</string>
+            </property>
+            <property name="buddy">
+             <cstring>CutawaySizeSpinBox</cstring>
+            </property>
+            <property name="text">
+             <string>Size</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1" colspan="2">
+           <widget class="QSpinBox" name="CutawaySizeSpinBox">
+            <property name="accessibleName">
+             <string>Cutaway Size</string>
+            </property>
+            <property name="toolTip">
+             <string>Choose how many studs across a cutaway is when placed with a click.</string>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>64</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="CutawayShadeColorLabel">
+            <property name="toolTip">
+             <string>Choose the color of the light shade on the cutaway faces.</string>
+            </property>
+            <property name="buddy">
+             <cstring>CutawayShadeColorButton</cstring>
+            </property>
+            <property name="text">
+             <string>Shade Color</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1" colspan="2">
+           <widget class="QToolButton" name="CutawayShadeColorButton">
+            <property name="accessibleName">
+             <string>Cutaway Shade Color</string>
+            </property>
+            <property name="toolTip">
+             <string>Choose the color of the light shade on the cutaway faces.</string>
+            </property>
+            <property name="text">
+             <string />
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="CutawayShadeTransparencyLabel">
+            <property name="toolTip">
+             <string>Choose how see-through the cutaway faces are, from 90% to 99%.</string>
+            </property>
+            <property name="buddy">
+             <cstring>CutawayShadeTransparencySlider</cstring>
+            </property>
+            <property name="text">
+             <string>Shade Transparency</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QSlider" name="CutawayShadeTransparencySlider">
+            <property name="accessibleName">
+             <string>Cutaway Shade Transparency</string>
+            </property>
+            <property name="toolTip">
+             <string>Choose how see-through the cutaway faces are, from 90% to 99%.</string>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimum">
+             <number>90</number>
+            </property>
+            <property name="maximum">
+             <number>99</number>
+            </property>
+            <property name="pageStep">
+             <number>1</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Orientation::Horizontal</enum>
+            </property>
+            <property name="tickPosition">
+             <enum>QSlider::TickPosition::NoTicks</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QLabel" name="CutawayShadeTransparencyValueLabel">
+            <property name="toolTip">
+             <string>Choose how see-through the cutaway faces are, from 90% to 99%.</string>
+            </property>
+            <property name="text">
+             <string notr="true">95%</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="TurntableGroup">
+         <property name="title">
+          <string>Turntable</string>
+         </property>
+         <layout class="QGridLayout" name="TurntableLayout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="TurntableIdleDurationLabel">
+            <property name="toolTip">
+             <string>Choose how long the application waits without input before the model turns full screen, or never.</string>
+            </property>
+            <property name="buddy">
+             <cstring>TurntableIdleDurationSpinBox</cstring>
+            </property>
+            <property name="text">
+             <string>Idle Duration</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QSpinBox" name="TurntableIdleDurationSpinBox">
+            <property name="accessibleName">
+             <string>Turntable Idle Duration</string>
+            </property>
+            <property name="toolTip">
+             <string>Choose how long the application waits without input before the model turns full screen, or never.</string>
+            </property>
+            <property name="specialValueText">
+             <string>Never</string>
+            </property>
+            <property name="suffix">
+             <string> s</string>
+            </property>
+            <property name="minimum">
+             <number>0</number>
+            </property>
+            <property name="maximum">
+             <number>7200</number>
+            </property>
+            <property name="singleStep">
+             <number>10</number>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="TurntableTurnTimeLabel">
+            <property name="toolTip">
+             <string>Choose how long the model takes for one full turn.</string>
+            </property>
+            <property name="buddy">
+             <cstring>TurntableTurnTimeSpinBox</cstring>
+            </property>
+            <property name="text">
+             <string>Turn Duration</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QSpinBox" name="TurntableTurnTimeSpinBox">
+            <property name="accessibleName">
+             <string>Turntable Turn Duration</string>
+            </property>
+            <property name="toolTip">
+             <string>Choose how long the model takes for one full turn.</string>
+            </property>
+            <property name="suffix">
+             <string> s</string>
+            </property>
+            <property name="minimum">
+             <number>5</number>
+            </property>
+            <property name="maximum">
+             <number>600</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
         <widget class="QGroupBox" name="groupBox_4">
          <property name="title">
           <string>Base Grid</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_2">
-          <item row="1" column="2">
-           <widget class="QLabel" name="label">
-            <property name="text">
-             <string>studs</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="3">
-           <spacer name="horizontalSpacer_5">
-            <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
           <item row="1" column="0">
            <widget class="QCheckBox" name="gridLines">
             <property name="toolTip">
@@ -1347,12 +1524,18 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QLineEdit" name="gridLineSpacing">
+           <widget class="QSpinBox" name="gridLineSpacing">
             <property name="accessibleName">
              <string>Grid Line Spacing</string>
             </property>
             <property name="toolTip">
              <string>Set base-grid line spacing in studs (1 to 10000).</string>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>10000</number>
             </property>
            </widget>
           </item>
@@ -1421,7 +1604,7 @@
              <string>Use the model view rendering settings for the parts list and parts list images.</string>
             </property>
             <property name="text">
-             <string>Use Model View Settings</string>
+             <string>Use Model Settings</string>
             </property>
            </widget>
           </item>
@@ -1545,13 +1728,13 @@
        <item>
         <widget class="QGroupBox" name="PreviewGroup">
          <property name="title">
-          <string>Parts Preview</string>
+          <string>Preview</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_6">
           <item row="0" column="0">
            <widget class="QLabel" name="label_8">
             <property name="toolTip">
-             <string>Choose the part-preview navigation sphere size, or disable it.</string>
+             <string>Choose the preview navigation sphere size, or disable it.</string>
             </property>
             <property name="buddy">
              <cstring>PreviewViewSphereSizeCombo</cstring>
@@ -1567,7 +1750,7 @@
              <string>View Sphere</string>
             </property>
             <property name="toolTip">
-             <string>Choose the part-preview navigation sphere size, or disable it.</string>
+             <string>Choose the preview navigation sphere size, or disable it.</string>
             </property>
             <item>
              <property name="text">
@@ -1594,7 +1777,7 @@
           <item row="1" column="0">
            <widget class="QLabel" name="PreviewViewSphereLocationLabel">
             <property name="toolTip">
-             <string>Choose the corner for the part-preview navigation sphere.</string>
+             <string>Choose the corner for the preview navigation sphere.</string>
             </property>
             <property name="buddy">
              <cstring>PreviewViewSphereLocationCombo</cstring>
@@ -1610,7 +1793,7 @@
              <string>Location</string>
             </property>
             <property name="toolTip">
-             <string>Choose the corner for the part-preview navigation sphere.</string>
+             <string>Choose the corner for the preview navigation sphere.</string>
             </property>
             <item>
              <property name="text">
@@ -1637,7 +1820,7 @@
           <item row="2" column="0" colspan="3">
            <widget class="QCheckBox" name="PreviewAxisIconCheckBox">
             <property name="toolTip">
-             <string>Show the model-axis indicator in the parts preview.</string>
+             <string>Show the model-axis indicator in the preview.</string>
             </property>
             <property name="text">
              <string>Axis Icon</string>
@@ -1647,7 +1830,7 @@
           <item row="3" column="0" colspan="3">
            <widget class="QCheckBox" name="PreviewSquareViewportCheckBox">
             <property name="toolTip">
-             <string>Keep the part preview square, with a 1:1 width to height ratio, whatever the panel size.</string>
+             <string>Keep the preview square, with a 1:1 width to height ratio, whatever the panel size.</string>
             </property>
             <property name="text">
              <string>Square Viewport</string>
@@ -1657,17 +1840,17 @@
           <item row="4" column="0" colspan="3">
            <widget class="QCheckBox" name="PreviewSyncRendering">
             <property name="toolTip">
-             <string>Use the model view rendering settings for the parts preview.</string>
+             <string>Use the model view rendering settings for the preview.</string>
             </property>
             <property name="text">
-             <string>Use Model View Settings</string>
+             <string>Use Model Settings</string>
             </property>
            </widget>
           </item>
           <item row="5" column="0">
            <widget class="QLabel" name="PreviewShadingModeLabel">
             <property name="toolTip">
-             <string>Choose how parts are drawn in the parts preview.</string>
+             <string>Choose how parts are drawn in the preview.</string>
             </property>
             <property name="text">
              <string>Shading Mode</string>
@@ -1683,7 +1866,7 @@
              <string>Preview Shading Mode</string>
             </property>
             <property name="toolTip">
-             <string>Choose how parts are drawn in the parts preview.</string>
+             <string>Choose how parts are drawn in the preview.</string>
             </property>
             <item>
              <property name="text">
@@ -1705,7 +1888,7 @@
           <item row="6" column="0" colspan="3">
            <widget class="QCheckBox" name="PreviewEdgeLines">
             <property name="toolTip">
-             <string>Draw edge lines on parts in the parts preview.</string>
+             <string>Draw edge lines on parts in the preview.</string>
             </property>
             <property name="text">
              <string>Edge Lines</string>
@@ -1715,7 +1898,7 @@
           <item row="7" column="0" colspan="3">
            <widget class="QCheckBox" name="PreviewConditionalLines">
             <property name="toolTip">
-             <string>Draw conditional lines on parts in the parts preview.</string>
+             <string>Draw conditional lines on parts in the preview.</string>
             </property>
             <property name="text">
              <string>Conditional Lines</string>
@@ -1725,7 +1908,7 @@
           <item row="8" column="0">
            <widget class="QLabel" name="PreviewLineWidthTitle">
             <property name="toolTip">
-             <string>Set the line width used in the parts preview.</string>
+             <string>Set the line width used in the preview.</string>
             </property>
             <property name="text">
              <string>Line Width</string>
@@ -1741,7 +1924,7 @@
              <string>Preview Line Width</string>
             </property>
             <property name="toolTip">
-             <string>Set the line width used in the parts preview.</string>
+             <string>Set the line width used in the preview.</string>
             </property>
             <property name="orientation">
              <enum>Qt::Orientation::Horizontal</enum>
@@ -1774,7 +1957,7 @@
 <item>
         <widget class="QGroupBox" name="MinifigureBuilderGroup">
          <property name="title">
-          <string>Minifigure Builder Preview</string>
+          <string>Minifigure Builder</string>
          </property>
          <layout class="QGridLayout" name="MinifigureBuilderLayout">
           <item row="0" column="0" colspan="3">
@@ -1783,7 +1966,7 @@
              <string>Use the model view rendering settings for the minifigure builder preview.</string>
             </property>
             <property name="text">
-             <string>Use Model View Settings</string>
+             <string>Use Model Settings</string>
             </property>
            </widget>
           </item>
@@ -2666,7 +2849,7 @@
               <string>Part Categories</string>
              </property>
              <property name="toolTip">
-              <string>Select a category to inspect or edit; drag categories to reorder them.</string>
+              <string>Select a category to inspect or edit; uncheck a category to hide it from the Parts panel; drag categories to reorder them.</string>
              </property>
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -3282,6 +3465,11 @@
   <tabstop>AxisIconCheckBox</tabstop>
   <tabstop>AxisIconLocationCombo</tabstop>
   <tabstop>FollowStepViewsCheckBox</tabstop>
+  <tabstop>CutawaySizeSpinBox</tabstop>
+  <tabstop>CutawayShadeColorButton</tabstop>
+  <tabstop>CutawayShadeTransparencySlider</tabstop>
+  <tabstop>TurntableIdleDurationSpinBox</tabstop>
+  <tabstop>TurntableTurnTimeSpinBox</tabstop>
   <tabstop>gridStuds</tabstop>
   <tabstop>gridLines</tabstop>
   <tabstop>gridLineSpacing</tabstop>

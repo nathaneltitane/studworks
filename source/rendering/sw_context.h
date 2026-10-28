@@ -74,6 +74,14 @@ enum class swProgramAttribute
 	ControlPoint4 = Color
 };
 
+enum class swCutawayShape
+{
+	None,
+	Cube,
+	Sphere,
+	Cylinder
+};
+
 struct swProgram
 {
 	GLuint Object;
@@ -86,6 +94,8 @@ struct swProgram
 	GLint OutlineParamsLocation;
 	GLint TextHaloColorLocation;
 	GLint LightingStyleLocation;
+	GLint CutawayShapeLocation;
+	GLint CutawayMatrixLocation;
 };
 
 enum class swPolygonOffset
@@ -238,6 +248,14 @@ public:
 		mLightingStyleDirty = true;
 	}
 
+	// use to hide the geometry inside a cube or sphere given by its world to unit matrix
+	void SetCutaway(swCutawayShape CutawayShape, const swMatrix44& CutawayMatrix)
+	{
+		mCutawayShape = CutawayShape;
+		mCutawayMatrix = CutawayMatrix;
+		mCutawayDirty = true;
+	}
+
 	void SetTextHaloColor(const swVector4& Color)
 	{
 		mTextHaloColor = Color;
@@ -335,6 +353,8 @@ protected:
 	swVector4 mHighlightParams[4];
 	swVector4 mOutlineParams[4];
 	swLightingStyle mLightingStyle;
+	swCutawayShape mCutawayShape;
+	swMatrix44 mCutawayMatrix;
 	bool mColorDirty;
 	bool mTextHaloColorDirty;
 	bool mWorldMatrixDirty;
@@ -344,6 +364,7 @@ protected:
 	bool mHighlightParamsDirty;
 	bool mOutlineParamsDirty;
 	bool mLightingStyleDirty;
+	bool mCutawayDirty;
 
 	static std::unique_ptr<QOpenGLContext> mOffscreenContext;
 	static std::unique_ptr<QOffscreenSurface> mOffscreenSurface;

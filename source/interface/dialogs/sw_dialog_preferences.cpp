@@ -211,11 +211,20 @@ static void swAlignPreferencesColumns(QTabWidget* TabWidget)
 				QHBoxLayout* RowLayout = new QHBoxLayout();
 				RowLayout->addWidget(Widget, 1);
 
+				// a slider shows its value on its left and runs to the right edge
+				const bool IsSlider = qobject_cast<QSlider*>(Widget) != nullptr;
+
 				for (QWidget* TrailingWidget : Trailing)
 				{
 					GridLayout->removeWidget(TrailingWidget);
 
-					if (qobject_cast<QLabel*>(TrailingWidget))
+					if (IsSlider && qobject_cast<QLabel*>(TrailingWidget))
+					{
+						TrailingWidget->setMinimumWidth(TrailingWidth);
+						static_cast<QLabel*>(TrailingWidget)->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+						RowLayout->insertWidget(RowLayout->indexOf(Widget), TrailingWidget, 0, Qt::AlignLeft | Qt::AlignVCenter);
+					}
+					else if (qobject_cast<QLabel*>(TrailingWidget))
 					{
 						TrailingWidget->setMinimumWidth(TrailingWidth);
 						static_cast<QLabel*>(TrailingWidget)->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
@@ -311,6 +320,11 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	connect(ui->edgeLines, &QCheckBox::toggled, this, &swPreferencesDialog::EdgeLinesToggled);
 	connect(ui->ConditionalLinesCheckBox, &QCheckBox::toggled, this, &swPreferencesDialog::ConditionalLinesCheckBoxToggled);
 	connect(ui->LineWidthSlider, QOverload<int>::of(&QSlider::valueChanged), this, &swPreferencesDialog::LineWidthSliderValueChanged);
+	connect(ui->CutawayShadeTransparencySlider, QOverload<int>::of(&QSlider::valueChanged), this, &swPreferencesDialog::CutawayShadeTransparencyChanged);
+
+	// stud counts read 1 stud and 6 studs inside their boxes
+	for (QSpinBox* SpinBox : { ui->CutawaySizeSpinBox, ui->gridLineSpacing })
+		connect(SpinBox, QOverload<int>::of(&QSpinBox::valueChanged), SpinBox, [SpinBox]() { UpdateStudSuffix(SpinBox); });
 
 	for (swRenderTarget Target : { swRenderTarget::Preview, swRenderTarget::Parts, swRenderTarget::MinifigureBuilder })
 	{
@@ -356,6 +370,7 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	connect(ui->MarqueeBorderColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
 	connect(ui->MarqueeFillColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
 	connect(ui->OverlayColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->CutawayShadeColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
 	connect(ui->FadeStepsColor, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
 	connect(ui->HighlightNewPartsColor, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
 	connect(ui->gridStudColor, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
@@ -373,6 +388,7 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	connect(ui->ControlPointColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
 	connect(ui->ControlPointFocusedColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
 	connect(ui->categoriesTree, &QTreeWidget::itemSelectionChanged, this, &swPreferencesDialog::UpdateParts);
+	connect(ui->categoriesTree, &QTreeWidget::itemChanged, this, &swPreferencesDialog::CategoryItemChanged);
 	connect(ui->categoriesTree->model(), &QAbstractItemModel::rowsInserted, this, &swPreferencesDialog::CategoriesDropped);
 	ui->shortcutEdit->installEventFilter(this);
 	ui->MouseShortcutEdit->installEventFilter(this);
@@ -475,14 +491,21 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	ui->HighlightNewParts->setChecked(mOptions->Preferences.mHighlightNewParts);
 	ui->gridStuds->setChecked(mOptions->Preferences.mDrawGridStuds);
 	ui->gridLines->setChecked(mOptions->Preferences.mDrawGridLines);
-	ui->gridLineSpacing->setValidator(new QIntValidator(1, SW_MAXIMUM_GRID_LINE_SPACING, ui->gridLineSpacing));
-	ui->gridLineSpacing->setText(swFormatIntegerLocalized(mOptions->Preferences.mGridLineSpacing, ui->gridLineSpacing->validator()->locale()));
+	ui->gridLineSpacing->setRange(1, SW_MAXIMUM_GRID_LINE_SPACING);
+	ui->gridLineSpacing->setValue(mOptions->Preferences.mGridLineSpacing);
+	UpdateStudSuffix(ui->gridLineSpacing);
 	ui->GridOriginCheckBox->setChecked(mOptions->Preferences.mDrawGridOrigin);
 	ui->GridHeightXZCheckBox->setChecked(mOptions->Preferences.mDrawGridHeightXZ);
 	ui->GridHeightYZCheckBox->setChecked(mOptions->Preferences.mDrawGridHeightYZ);
 	ui->GridHeightBehindCheckBox->setChecked(mOptions->Preferences.mGridHeightBehindModel);
 	ui->AxisIconCheckBox->setChecked(mOptions->Preferences.mDrawAxes);
 	ui->FollowStepViewsCheckBox->setChecked(mOptions->Preferences.mFollowStepViews);
+	ui->CutawaySizeSpinBox->setValue(mOptions->Preferences.mCutawaySize);
+	UpdateStudSuffix(ui->CutawaySizeSpinBox);
+	ui->CutawayShadeTransparencySlider->setValue(mOptions->Preferences.mCutawayShadeTransparency);
+	CutawayShadeTransparencyChanged();
+	ui->TurntableIdleDurationSpinBox->setValue(mOptions->Preferences.mTurntableIdleDuration);
+	ui->TurntableTurnTimeSpinBox->setValue(mOptions->Preferences.mTurntableTurnTime);
 
 	ui->AxisIconLocationCombo->setCurrentIndex((int)mOptions->Preferences.mAxisIconLocation);
 
@@ -631,6 +654,7 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	SetButtonPixmap(mOptions->Preferences.mMarqueeBorderColor, ui->MarqueeBorderColorButton);
 	SetButtonPixmap(mOptions->Preferences.mMarqueeFillColor, ui->MarqueeFillColorButton);
 	SetButtonPixmap(mOptions->Preferences.mOverlayColor, ui->OverlayColorButton);
+	SetButtonPixmap(mOptions->Preferences.mCutawayShadeColor | SW_RGBA(0, 0, 0, 255), ui->CutawayShadeColorButton);
 	SetButtonPixmap(mOptions->Preferences.mActiveViewColor, ui->ActiveViewColorButton);
 	SetButtonPixmap(mOptions->Preferences.mInactiveViewColor, ui->InactiveViewColorButton);
 	SetButtonPixmap(mOptions->Preferences.mFadeStepsColor, ui->FadeStepsColor);
@@ -673,6 +697,9 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	ui->splitter->setStretchFactor(1, 1);
 	connect(ui->tabWidget, &QTabWidget::currentChanged, this, &swPreferencesDialog::SnapCategoriesTree);
 
+	// dragging the splitter by hand snaps the categories back to the longest name once the mouse is released
+	ui->splitter->handle(1)->installEventFilter(this);
+
 	UpdateCommandList();
 	new swTreeWidgetColumnStretcher(ui->commandList, 0);
 	CommandChanged(nullptr);
@@ -713,13 +740,7 @@ void swPreferencesDialog::showEvent(QShowEvent* Event)
 
 void swPreferencesDialog::accept()
 {
-	bool Ok;
-	int GridLineSpacing = ui->gridLineSpacing->validator()->locale().toInt(ui->gridLineSpacing->text(), &Ok);
-	if (!Ok || !ui->gridLineSpacing->hasAcceptableInput())
-	{
-		QMessageBox::information(this, windowTitle(), tr("Grid spacing must be between 1 and %1 studs.").arg(QString::number(SW_MAXIMUM_GRID_LINE_SPACING)));
-		return;
-	}
+	const int GridLineSpacing = ui->gridLineSpacing->value();
 
 	mOptions->LibraryPath = ui->partsLibrary->text();
 	mOptions->MinifigureBuilderSettingsPath = ui->MinifigureBuilderSettingsEdit->text();
@@ -786,6 +807,10 @@ void swPreferencesDialog::accept()
 
 	mOptions->Preferences.mDrawAxes = ui->AxisIconCheckBox->isChecked();
 	mOptions->Preferences.mFollowStepViews = ui->FollowStepViewsCheckBox->isChecked();
+	mOptions->Preferences.mCutawaySize = ui->CutawaySizeSpinBox->value();
+	mOptions->Preferences.mCutawayShadeTransparency = ui->CutawayShadeTransparencySlider->value();
+	mOptions->Preferences.mTurntableIdleDuration = ui->TurntableIdleDurationSpinBox->value();
+	mOptions->Preferences.mTurntableTurnTime = ui->TurntableTurnTimeSpinBox->value();
 	mOptions->Preferences.mAxisIconLocation = (swAxisIconLocation)ui->AxisIconLocationCombo->currentIndex();
 	mOptions->Preferences.mViewSphereEnabled = ui->ViewSphereSizeCombo->currentIndex() > 0;
 	mOptions->Preferences.mViewSphereLocation = (swViewSphereLocation)ui->ViewSphereLocationCombo->currentIndex();
@@ -960,6 +985,11 @@ void swPreferencesDialog::ColorButtonClicked()
 		Color = &mOptions->Preferences.mOverlayColor;
 		Title = tr("Select Overlay Color");
 	}
+	else if (Button == ui->CutawayShadeColorButton)
+	{
+		Color = &mOptions->Preferences.mCutawayShadeColor;
+		Title = tr("Select Cutaway Shade Color");
+	}
 	else if (Button == ui->ActiveViewColorButton)
 	{
 		Color = &mOptions->Preferences.mActiveViewColor;
@@ -1088,6 +1118,19 @@ void swPreferencesDialog::ConditionalLinesCheckBoxToggled()
 
 	ui->LineWidthSlider->setEnabled(Enable);
 	ui->LineWidthLabel->setEnabled(Enable);
+}
+
+// use to name the stud unit after the count, singular for one stud
+void swPreferencesDialog::UpdateStudSuffix(QSpinBox* SpinBox)
+{
+	QString Text = tr("%n stud(s)", nullptr, SpinBox->value());
+	SpinBox->setSuffix(Text.remove(QString::number(SpinBox->value())));
+}
+
+// use to show the cutaway shade transparency beside its slider
+void swPreferencesDialog::CutawayShadeTransparencyChanged()
+{
+	ui->CutawayShadeTransparencyValueLabel->setText(locale().toString(ui->CutawayShadeTransparencySlider->value()) + locale().percent());
 }
 
 void swPreferencesDialog::LineWidthSliderValueChanged()
@@ -1227,7 +1270,8 @@ void swPreferencesDialog::UpdateCategories()
 	{
 		CategoryItem = new QTreeWidgetItem(CategoriesTree, QStringList(mOptions->Categories[CategoryIndex].Name));
 		CategoryItem->setData(0, CategoryRole, QVariant(CategoryIndex));
-		CategoryItem->setFlags(CategoryItem->flags() & ~Qt::ItemFlag::ItemIsDropEnabled);
+		CategoryItem->setFlags((CategoryItem->flags() | Qt::ItemFlag::ItemIsUserCheckable) & ~Qt::ItemFlag::ItemIsDropEnabled);
+		CategoryItem->setCheckState(0, mOptions->Categories[CategoryIndex].Enabled ? Qt::Checked : Qt::Unchecked);
 	}
 
 	CategoryItem = new QTreeWidgetItem(CategoriesTree, QStringList(tr("Unassigned")));
@@ -1295,6 +1339,10 @@ void swPreferencesDialog::UpdateParts()
 	{
 		for (swPartData* PartData : Library->GetParts())
 		{
+			// sub parts and aliases belong to no category
+			if (PartData->IsSubPart() || PartData->IsAlias())
+				continue;
+
 			for (CategoryIndex = 0; CategoryIndex < static_cast<int>(mOptions->Categories.size()); CategoryIndex++)
 			{
 				if (Library->PartDataInCategory(PartData, mOptions->Categories[CategoryIndex].Keywords.constData()))
@@ -1322,6 +1370,8 @@ void swPreferencesDialog::CategoriesDropped(const QModelIndex& Parent, int First
 	Q_UNUSED(Last);
 
 	std::vector<swLibraryCategory> Categories;
+	// renumbering the rows must not read as checkbox changes
+	QSignalBlocker Blocker(ui->categoriesTree);
 
 	for (int Row = 0; Row < ui->categoriesTree->topLevelItemCount(); Row++)
 	{
@@ -1338,6 +1388,25 @@ void swPreferencesDialog::CategoriesDropped(const QModelIndex& Parent, int First
 	mOptions->CategoriesModified = true;
 	mOptions->CategoriesDefault = false;
 	mOptions->Categories = std::move(Categories);
+}
+
+// use to enable or disable a category from its checkbox
+void swPreferencesDialog::CategoryItemChanged(QTreeWidgetItem* CategoryItem, int Column)
+{
+	const int CategoryIndex = CategoryItem->data(0, CategoryRole).toInt();
+
+	// items report changes while they are built, before they have a checkbox
+	if (Column != 0 || !CategoryItem->data(0, Qt::CheckStateRole).isValid() || CategoryIndex < 0 || CategoryIndex >= static_cast<int>(mOptions->Categories.size()))
+		return;
+
+	const bool Enabled = CategoryItem->checkState(0) == Qt::Checked;
+
+	if (mOptions->Categories[CategoryIndex].Enabled == Enabled)
+		return;
+
+	mOptions->CategoriesModified = true;
+	mOptions->CategoriesDefault = false;
+	mOptions->Categories[CategoryIndex].Enabled = Enabled;
 }
 
 void swPreferencesDialog::NewCategoryClicked()
@@ -1479,6 +1548,9 @@ static QString swGetMouseShortcutText(Qt::MouseButton Button, Qt::KeyboardModifi
 
 bool swPreferencesDialog::eventFilter(QObject* Object, QEvent* Event)
 {
+	if (Object == ui->splitter->handle(1) && Event->type() == QEvent::MouseButtonRelease)
+		QTimer::singleShot(0, this, &swPreferencesDialog::SnapCategoriesTree);
+
 	// The mouse sequence field records the button and modifiers it is clicked with.
 	if (Object == ui->MouseShortcutEdit)
 	{

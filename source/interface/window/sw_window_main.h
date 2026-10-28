@@ -8,6 +8,7 @@
 #include "sw_model.h"
 
 class swPartSelectionWidget;
+class swViewWidget;
 class swInstructionsDialog;
 class swPreviewDockWidget;
 class PartPreview;
@@ -189,6 +190,11 @@ public:
 		return mViewpointMenu;
 	}
 
+	QMenu* GetCutawayMenu() const
+	{
+		return mCutawayMenu;
+	}
+
 	QMenu* GetCameraMenu() const
 	{
 		return mCameraMenu;
@@ -296,6 +302,10 @@ public:
 
 	bool eventFilter(QObject* Object, QEvent* Event) override;
 	void SnapPartsDock();
+	void RestartIdleTimer();
+	void StartTurntable();
+	bool StopTurntable();
+	void UpdateTurntable();
 
 	int mColorIndex;
 	int mLastInsertedColorIndex = -1;
@@ -411,6 +421,15 @@ protected:
 	QPointer<swInstructionsDialog> mInstructionsDialog;
 	bool mPartsSnapPending = false;
 	bool mPartsSnapRetried = false;
+	QTimer mPartsSnapTimer;
+	QTimer mIdleTimer;
+	QTimer mTurntableTimer;
+	QElapsedTimer mTurntableClock;
+	QPoint mIdleCursorPosition;
+	swViewWidget* mTurntableWidget = nullptr;
+	swVector3 mTurntableCenter;
+	float mTurntableRadius = 0.0f;
+	float mTurntableStartAngle = 0.0f;
 	QDockWidget* mColorsToolBar = nullptr;
 	QDockWidget* mPropertiesToolBar = nullptr;
 	QDockWidget* mTimelineToolBar = nullptr;
@@ -425,6 +444,7 @@ protected:
 	swDoubleSpinBox* mTransformYEdit = nullptr;
 	swDoubleSpinBox* mTransformZEdit = nullptr;
 	swPreviewDockWidget* mPreviewWidget = nullptr;
+	bool mPreviewFromSelection = false;
 
 	swElidedLabel* mStatusBarLabel = nullptr;
 	QLabel* mStatusPositionLabel = nullptr;
@@ -439,6 +459,7 @@ protected:
 	QMenu* mTransformMenu = nullptr;
 	QMenu* mToolsMenu = nullptr;
 	QMenu* mViewpointMenu = nullptr;
+	QMenu* mCutawayMenu = nullptr;
 	QMenu* mCameraMenu = nullptr;
 	QMenu* mProjectionMenu = nullptr;
 	QMenu* mShadingMenu = nullptr;

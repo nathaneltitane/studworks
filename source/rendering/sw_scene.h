@@ -2,6 +2,7 @@
 
 #include "sw_mesh.h"
 
+enum class swCutawayShape;
 enum class swHighlightRenderMode;
 enum class swLightingStyle;
 
@@ -118,6 +119,12 @@ public:
 		mLightingStyle = LightingStyle;
 	}
 
+	void SetCutaway(swCutawayShape CutawayShape, const swMatrix44& CutawayMatrix)
+	{
+		mCutawayShape = CutawayShape;
+		mCutawayMatrix = CutawayMatrix;
+	}
+
 	void SetLineSettings(bool DrawEdgeLines, bool DrawConditionalLines, float LineWidth)
 	{
 		mDrawEdgeLines = DrawEdgeLines;
@@ -187,6 +194,8 @@ protected:
 	std::vector<swModel*> mModelEditingPath;
 	swShadingMode mShadingMode;
 	swLightingStyle mLightingStyle;
+	swCutawayShape mCutawayShape;
+	swMatrix44 mCutawayMatrix;
 	bool mDrawInterface = false;
 	swHighlightRenderMode mHighlightRenderMode;
 	bool mRequireCompleteAssets = false;

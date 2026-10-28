@@ -16,6 +16,12 @@ public:
 	void ClearPreview();
 	void UpdatePreview();
 	void RefreshDescription();
+
+	bool IsLocked() const
+	{
+		return mLockAction->isChecked();
+	}
+
 	void RefreshModel(const swModel* Model);
 	void RefreshAfterAssetChange(const std::vector<swPartData*>& ChangedParts);
 	void RebindPartData(swPartData* Previous, swPartData* Replacement);

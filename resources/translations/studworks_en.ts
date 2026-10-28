@@ -21,9 +21,44 @@
     </message>
 </context>
 <context>
+    <name>swInstructionsEditorWidget</name>
+    <message numerus="yes">
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_editor.cpp" line="783"/>
+        <source>And %n more.</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_editor.cpp" line="786"/>
+        <source>The text was not applied, %n line(s) are not valid LDraw syntax:</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_editor.cpp" line="941"/>
+        <source>%n Replaced</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_editor.cpp" line="984"/>
+        <source>%n Matches</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+</context>
+<context>
     <name>swMainWindow</name>
     <message numerus="yes">
-        <location filename="../../source/interface/window/sw_window_main_update.cpp" line="135"/>
+        <location filename="../../source/interface/window/sw_window_main_update.cpp" line="140"/>
         <source>%n objects selected</source>
         <translation>
             <numerusform>%n object selected</numerusform>
@@ -31,7 +66,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="293"/>
+        <location filename="../../source/interface/window/sw_window_main_project.cpp" line="342"/>
         <source>Merged %n submodels.</source>
         <translation>
             <numerusform>Merged %n submodel.</numerusform>
@@ -58,6 +93,17 @@
         <translation>
             <numerusform>Are you sure you want to delete %n submodel?</numerusform>
             <numerusform>Are you sure you want to delete %n submodels?</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
+    <name>swPreferencesDialog</name>
+    <message numerus="yes">
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1126"/>
+        <source>%n stud(s)</source>
+        <translation>
+            <numerusform>%n stud</numerusform>
+            <numerusform>%n studs</numerusform>
         </translation>
     </message>
 </context>

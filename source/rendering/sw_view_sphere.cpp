@@ -41,6 +41,7 @@ void swViewSphere::UpdateSettings()
 
 	case swViewType::MinifigureBuilder:
 	case swViewType::PartsList:
+	case swViewType::Turntable:
 	case swViewType::Count:
 		break;
 	}

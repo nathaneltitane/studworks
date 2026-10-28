@@ -120,6 +120,11 @@ void swMainWindow::UpdateSelectedObjects(bool SelectionChanged)
 
 		PreviewPart(Part->mPartData.Get(), ColorCode, false);
 	}
+	else if (mPreviewFromSelection && mPreviewWidget && !mPreviewWidget->IsLocked() && !swGetPreferences().mPreviewKeepSelection)
+	{
+		mPreviewWidget->ClearPreview();
+		mPreviewFromSelection = false;
+	}
 
 	QString Message;
 

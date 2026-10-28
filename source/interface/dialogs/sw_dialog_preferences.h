@@ -106,6 +106,7 @@ private slots:
 	void EdgeLinesToggled();
 	void ConditionalLinesCheckBoxToggled();
 	void LineWidthSliderValueChanged();
+	void CutawayShadeTransparencyChanged();
 	void RenderTargetChanged();
 	void MeshLODSliderValueChanged();
 	void FadeStepsToggled();
@@ -116,6 +117,7 @@ private slots:
 	void PreviewViewSphereSizeComboCurrentIndexChanged(int Index);
 	void UpdateParts();
 	void CategoriesDropped(const QModelIndex& Parent, int First, int Last);
+	void CategoryItemChanged(QTreeWidgetItem* CategoryItem, int Column);
 	void NewCategoryClicked();
 	void EditCategoryClicked();
 	void DeleteCategoryClicked();
@@ -146,6 +148,7 @@ private:
 	void UpdateMouseTree();
 	void UpdateMouseTreeItem(int ItemIndex);
 	QTreeWidgetItem* FindMouseTreeItem(int ItemIndex) const;
+	static void UpdateStudSuffix(QSpinBox* SpinBox);
 	void SetShortcutModified(QTreeWidgetItem* TreeItem, bool Modified);
 	void CreateInstructionsTab();
 	void UpdateInstructionsPage();

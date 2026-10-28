@@ -1500,6 +1500,78 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Normal to Face</b></p><p>Click a face of any part, including parts inside submodels, to point the camera straight at it. The model is not changed. Press Esc to cancel.</p>"),
 		""
 	},
+	// SW_VIEW_CUTAWAY_CUBE
+	{
+		QT_TRANSLATE_NOOP("Action", "View.Cutaway.Cube"),
+		QT_TRANSLATE_NOOP("Menu", "&Cube"),
+		QT_TRANSLATE_NOOP("Status", "Click a face to cut away a cube of the model around it"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Cube Cutaway</b></p><p>Click a face of any part to hide everything inside a cube centered on it, so you can see inside the model. Clicking empty space centers the cube on the view target. The model is not changed. Press Esc to cancel.</p>"),
+		""
+	},
+	// SW_VIEW_CUTAWAY_SPHERE
+	{
+		QT_TRANSLATE_NOOP("Action", "View.Cutaway.Sphere"),
+		QT_TRANSLATE_NOOP("Menu", "&Sphere"),
+		QT_TRANSLATE_NOOP("Status", "Click a face to cut away a sphere of the model around it"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Sphere Cutaway</b></p><p>Click a face of any part to hide everything inside a sphere centered on it, so you can see inside the model. Clicking empty space centers the sphere on the view target. The model is not changed. Press Esc to cancel.</p>"),
+		""
+	},
+	// SW_VIEW_CUTAWAY_CYLINDER
+	{
+		QT_TRANSLATE_NOOP("Action", "View.Cutaway.Cylinder"),
+		QT_TRANSLATE_NOOP("Menu", "C&ylinder"),
+		QT_TRANSLATE_NOOP("Status", "Click a face to drill a cylinder into the model through it"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Cylinder Cutaway</b></p><p>Click a face of any part to hide everything inside a cylinder centered on it, its axis running straight through the face, so you can see inside the model. Clicking empty space centers the cylinder on the view target. The model is not changed. Press Esc to cancel.</p>"),
+		""
+	},
+	// SW_VIEW_CUTAWAY_GROW
+	{
+		QT_TRANSLATE_NOOP("Action", "View.Cutaway.Grow"),
+		QT_TRANSLATE_NOOP("Menu", "&Grow"),
+		QT_TRANSLATE_NOOP("Status", "Make the cutaway larger"),
+		"",
+		""
+	},
+	// SW_VIEW_CUTAWAY_SHRINK
+	{
+		QT_TRANSLATE_NOOP("Action", "View.Cutaway.Shrink"),
+		QT_TRANSLATE_NOOP("Menu", "S&hrink"),
+		QT_TRANSLATE_NOOP("Status", "Make the cutaway smaller"),
+		"",
+		""
+	},
+	// SW_VIEW_CUTAWAY_PUSH_IN
+	{
+		QT_TRANSLATE_NOOP("Action", "View.Cutaway.PushIn"),
+		QT_TRANSLATE_NOOP("Menu", "Push &In"),
+		QT_TRANSLATE_NOOP("Status", "Move the cutaway one plate deeper into the model"),
+		"",
+		""
+	},
+	// SW_VIEW_CUTAWAY_PULL_OUT
+	{
+		QT_TRANSLATE_NOOP("Action", "View.Cutaway.PullOut"),
+		QT_TRANSLATE_NOOP("Menu", "Pull &Out"),
+		QT_TRANSLATE_NOOP("Status", "Move the cutaway one plate back out of the model"),
+		"",
+		""
+	},
+	// SW_VIEW_CUTAWAY_SHADE_COLOR
+	{
+		QT_TRANSLATE_NOOP("Action", "View.Cutaway.ShadeColor"),
+		QT_TRANSLATE_NOOP("Menu", "Sh&ade Color..."),
+		QT_TRANSLATE_NOOP("Status", "Choose the light shade on the cutaway faces"),
+		"",
+		""
+	},
+	// SW_VIEW_CUTAWAY_REMOVE
+	{
+		QT_TRANSLATE_NOOP("Action", "View.Cutaway.Remove"),
+		QT_TRANSLATE_NOOP("Menu", "&Remove"),
+		QT_TRANSLATE_NOOP("Status", "Show the whole model again, or press Esc with nothing selected"),
+		"",
+		""
+	},
 	// SW_VIEW_GRID_TOGGLE_HEIGHT_XZ
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Grid.ToggleHeightXZ"),
@@ -1792,7 +1864,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Preview.ToggleSyncRendering"),
 		QT_TRANSLATE_NOOP("Menu", "Preview Uses Model View Settings"),
-		QT_TRANSLATE_NOOP("Status", "Toggle using the model view rendering settings for the parts preview"),
+		QT_TRANSLATE_NOOP("Status", "Toggle using the model view rendering settings for the preview"),
 		"",
 		""
 	},
@@ -1800,7 +1872,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Preview.Shade.Wireframe"),
 		QT_TRANSLATE_NOOP("Menu", "Preview Wireframe"),
-		QT_TRANSLATE_NOOP("Status", "Display the parts preview as wireframe"),
+		QT_TRANSLATE_NOOP("Status", "Display the preview as wireframe"),
 		"",
 		""
 	},
@@ -1808,7 +1880,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Preview.Shade.Flat"),
 		QT_TRANSLATE_NOOP("Menu", "Preview Flat Shading"),
-		QT_TRANSLATE_NOOP("Status", "Display the parts preview without any shading or lights"),
+		QT_TRANSLATE_NOOP("Status", "Display the preview without any shading or lights"),
 		"",
 		""
 	},
@@ -1816,7 +1888,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Preview.Shade.DefaultLights"),
 		QT_TRANSLATE_NOOP("Menu", "Preview Default Lights"),
-		QT_TRANSLATE_NOOP("Status", "Display the parts preview with the default lights"),
+		QT_TRANSLATE_NOOP("Status", "Display the preview with the default lights"),
 		"",
 		""
 	},
@@ -1824,7 +1896,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Preview.ToggleEdgeLines"),
 		QT_TRANSLATE_NOOP("Menu", "Preview Edge Lines"),
-		QT_TRANSLATE_NOOP("Status", "Toggle edge lines in the parts preview"),
+		QT_TRANSLATE_NOOP("Status", "Toggle edge lines in the preview"),
 		"",
 		""
 	},
@@ -1832,7 +1904,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Preview.ToggleConditionalLines"),
 		QT_TRANSLATE_NOOP("Menu", "Preview Conditional Lines"),
-		QT_TRANSLATE_NOOP("Status", "Toggle conditional lines in the parts preview"),
+		QT_TRANSLATE_NOOP("Status", "Toggle conditional lines in the preview"),
 		"",
 		""
 	},
@@ -1944,7 +2016,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Preview.ToggleViewSphere"),
 		QT_TRANSLATE_NOOP("Menu", "Preview View Sphere"),
-		QT_TRANSLATE_NOOP("Status", "Toggle the view sphere in the parts preview"),
+		QT_TRANSLATE_NOOP("Status", "Toggle the view sphere in the preview"),
 		"",
 		""
 	},
@@ -1952,7 +2024,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Preview.ToggleAxisIcon"),
 		QT_TRANSLATE_NOOP("Menu", "Preview Axis Icon"),
-		QT_TRANSLATE_NOOP("Status", "Toggle the axis icon in the parts preview"),
+		QT_TRANSLATE_NOOP("Status", "Toggle the axis icon in the preview"),
 		"",
 		""
 	},
@@ -1968,7 +2040,15 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Preview.ToggleSquareViewport"),
 		QT_TRANSLATE_NOOP("Menu", "Square Viewport"),
-		QT_TRANSLATE_NOOP("Status", "Keep the part preview at a 1:1 ratio"),
+		QT_TRANSLATE_NOOP("Status", "Keep the preview at a 1:1 ratio"),
+		"",
+		""
+	},
+	// SW_VIEW_PREVIEW_TOGGLE_KEEP_SELECTION
+	{
+		QT_TRANSLATE_NOOP("Action", "View.Preview.ToggleKeepSelection"),
+		QT_TRANSLATE_NOOP("Menu", "Keep Last Selection"),
+		QT_TRANSLATE_NOOP("Status", "Keep showing the last selected part after the selection is cleared"),
 		"",
 		""
 	},

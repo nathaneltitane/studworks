@@ -2,11 +2,14 @@ SW_VERTEX_INPUT vec3 VertexPosition1;
 SW_VERTEX_INPUT vec3 VertexPosition2;
 SW_VERTEX_INPUT vec3 VertexPosition3;
 SW_VERTEX_INPUT vec3 VertexPosition4;
+SW_VERTEX_OUTPUT vec3 PixelCutaway;
 
 uniform mat4 WorldViewProjectionMatrix;
+uniform mat4 CutawayMatrix;
 
 void main()
 {
+	PixelCutaway = (CutawayMatrix * vec4(VertexPosition1, 1.0)).xyz;
 	vec4 p1 = WorldViewProjectionMatrix * vec4(VertexPosition1, 1.0);
 	vec4 p2 = WorldViewProjectionMatrix * vec4(VertexPosition2, 1.0);
 	vec4 p3 = WorldViewProjectionMatrix * vec4(VertexPosition3, 1.0);

@@ -33,12 +33,17 @@ void swPreferences::LoadDefaults()
 	mBackgroundSolidColor = swGetProfileUnsignedInteger(SW_PROFILE_BACKGROUND_COLOR);
 	mDrawAxes = swGetProfileInteger(SW_PROFILE_DRAW_AXES);
 	mFollowStepViews = swGetProfileInteger(SW_PROFILE_FOLLOW_STEP_VIEWS);
+	mCutawaySize = swGetProfileInteger(SW_PROFILE_CUTAWAY_SIZE);
+	mTurntableIdleDuration = swGetProfileInteger(SW_PROFILE_TURNTABLE_IDLE_DURATION);
+	mTurntableTurnTime = swGetProfileInteger(SW_PROFILE_TURNTABLE_TURN_TIME);
 	mAxisIconLocation = swGetProfileAxisIconLocation();
 	mTextColor = swGetProfileUnsignedInteger(SW_PROFILE_TEXT_COLOR);
 	mTextHaloColor = swGetProfileUnsignedInteger(SW_PROFILE_TEXT_HALO_COLOR);
 	mMarqueeBorderColor = swGetProfileUnsignedInteger(SW_PROFILE_MARQUEE_BORDER_COLOR);
 	mMarqueeFillColor = swGetProfileUnsignedInteger(SW_PROFILE_MARQUEE_FILL_COLOR);
 	mOverlayColor = swGetProfileUnsignedInteger(SW_PROFILE_OVERLAY_COLOR);
+	mCutawayShadeColor = swGetProfileUnsignedInteger(SW_PROFILE_CUTAWAY_SHADE_COLOR);
+	mCutawayShadeTransparency = swGetProfileInteger(SW_PROFILE_CUTAWAY_SHADE_TRANSPARENCY);
 	mActiveViewColor = swGetProfileUnsignedInteger(SW_PROFILE_ACTIVE_VIEW_COLOR);
 	mInactiveViewColor = swGetProfileUnsignedInteger(SW_PROFILE_INACTIVE_VIEW_COLOR);
 	mDrawEdgeLines = swGetProfileInteger(SW_PROFILE_DRAW_EDGE_LINES);
@@ -86,6 +91,7 @@ void swPreferences::LoadDefaults()
 	mPreviewViewSphereLocation = swGetProfilePreviewViewSphereLocation();
 	mDrawPreviewAxis = swGetProfileInteger(SW_PROFILE_PREVIEW_DRAW_AXES);
 	mPreviewSquareViewport = swGetProfileInteger(SW_PROFILE_PREVIEW_SQUARE_VIEWPORT);
+	mPreviewKeepSelection = swGetProfileInteger(SW_PROFILE_PREVIEW_KEEP_SELECTION);
 	mStudCylinderColorEnabled = swGetProfileInteger(SW_PROFILE_STUD_CYLINDER_COLOR_ENABLED);
 	mStudCylinderColor = swGetProfileUnsignedInteger(SW_PROFILE_STUD_CYLINDER_COLOR);
 	mPartEdgeColorEnabled = swGetProfileInteger(SW_PROFILE_PART_EDGE_COLOR_ENABLED);
@@ -115,6 +121,9 @@ void swPreferences::SaveDefaults()
 	swSetProfileInteger(SW_PROFILE_SELECTION_OUTLINE_WIDTH, mSelectionOutlineWidth);
 	swSetProfileInteger(SW_PROFILE_DRAW_AXES, mDrawAxes);
 	swSetProfileInteger(SW_PROFILE_FOLLOW_STEP_VIEWS, mFollowStepViews);
+	swSetProfileInteger(SW_PROFILE_CUTAWAY_SIZE, mCutawaySize);
+	swSetProfileInteger(SW_PROFILE_TURNTABLE_IDLE_DURATION, mTurntableIdleDuration);
+	swSetProfileInteger(SW_PROFILE_TURNTABLE_TURN_TIME, mTurntableTurnTime);
 	swSetProfileAxisIconLocation(mAxisIconLocation);
 	swSetProfileUnsignedInteger(SW_PROFILE_TEXT_COLOR, mTextColor);
 	swSetProfileUnsignedInteger(SW_PROFILE_TEXT_HALO_COLOR, mTextHaloColor);
@@ -122,6 +131,8 @@ void swPreferences::SaveDefaults()
 	swSetProfileUnsignedInteger(SW_PROFILE_MARQUEE_BORDER_COLOR, mMarqueeBorderColor);
 	swSetProfileUnsignedInteger(SW_PROFILE_MARQUEE_FILL_COLOR, mMarqueeFillColor);
 	swSetProfileUnsignedInteger(SW_PROFILE_OVERLAY_COLOR, mOverlayColor);
+	swSetProfileUnsignedInteger(SW_PROFILE_CUTAWAY_SHADE_COLOR, mCutawayShadeColor);
+	swSetProfileInteger(SW_PROFILE_CUTAWAY_SHADE_TRANSPARENCY, mCutawayShadeTransparency);
 	swSetProfileUnsignedInteger(SW_PROFILE_ACTIVE_VIEW_COLOR, mActiveViewColor);
 	swSetProfileUnsignedInteger(SW_PROFILE_INACTIVE_VIEW_COLOR, mInactiveViewColor);
 	swSetProfileInteger(SW_PROFILE_DRAW_EDGE_LINES, mDrawEdgeLines);
@@ -169,6 +180,7 @@ void swPreferences::SaveDefaults()
 	swSetProfilePreviewViewSphereLocation(mPreviewViewSphereLocation);
 	swSetProfileInteger(SW_PROFILE_PREVIEW_DRAW_AXES, mDrawPreviewAxis);
 	swSetProfileInteger(SW_PROFILE_PREVIEW_SQUARE_VIEWPORT, mPreviewSquareViewport);
+	swSetProfileInteger(SW_PROFILE_PREVIEW_KEEP_SELECTION, mPreviewKeepSelection);
 	swSetProfileInteger(SW_PROFILE_STUD_CYLINDER_COLOR_ENABLED, mStudCylinderColorEnabled);
 	swSetProfileUnsignedInteger(SW_PROFILE_STUD_CYLINDER_COLOR, mStudCylinderColor);
 	swSetProfileInteger(SW_PROFILE_PART_EDGE_COLOR_ENABLED, mPartEdgeColorEnabled);

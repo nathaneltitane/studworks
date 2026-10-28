@@ -68,12 +68,17 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Settings", "BackgroundColor", SW_RGB(49, 52, 55)),                                     // SW_PROFILE_BACKGROUND_COLOR
 	swProfileEntry("Settings", "DrawAxes", 0),                                                             // SW_PROFILE_DRAW_AXES
 	swProfileEntry("Settings", "FollowStepViews", 1),                                                      // SW_PROFILE_FOLLOW_STEP_VIEWS
+	swProfileEntry("Settings", "CutawaySize", 4),                                                          // SW_PROFILE_CUTAWAY_SIZE
+	swProfileEntry("Settings", "TurntableIdleDuration", 300),                                                  // SW_PROFILE_TURNTABLE_IDLE_DURATION
+	swProfileEntry("Settings", "TurntableTurnTime", 30),                                                   // SW_PROFILE_TURNTABLE_TURN_TIME
 	swProfileEntry("Settings", "DrawAxesLocation", static_cast<int>(swAxisIconLocation::BottomLeft)),      // SW_PROFILE_DRAW_AXES_LOCATION
 	swProfileEntry("Settings", "TextColor", SW_RGBA(214, 220, 227, 255)),                                  // SW_PROFILE_TEXT_COLOR
 	swProfileEntry("Settings", "TextHaloColor", SW_RGBA(17, 19, 24, 160)),                                // SW_PROFILE_TEXT_HALO_COLOR
 	swProfileEntry("Settings", "MarqueeBorderColor", SW_RGBA(64, 64, 255, 255)),                           // SW_PROFILE_MARQUEE_BORDER_COLOR
 	swProfileEntry("Settings", "MarqueeFillColor", SW_RGBA(64, 64, 255, 64)),                              // SW_PROFILE_MARQUEE_FILL_COLOR
 	swProfileEntry("Settings", "OverlayColor", SW_RGBA(0, 0, 0, 255)),                                     // SW_PROFILE_OVERLAY_COLOR
+	swProfileEntry("Settings", "CutawayShadeColor", SW_RGB(255, 255, 255)),                                // SW_PROFILE_CUTAWAY_SHADE_COLOR
+	swProfileEntry("Settings", "CutawayShadeTransparency", 95),                                            // SW_PROFILE_CUTAWAY_SHADE_TRANSPARENCY
 	swProfileEntry("Settings", "ActiveViewColor", SW_RGBA(41, 128, 185, 255)),                             // SW_PROFILE_ACTIVE_VIEW_COLOR
 	swProfileEntry("Settings", "InactiveViewColor", SW_RGBA(69, 69, 69, 255)),                             // SW_PROFILE_INACTIVE_VIEW_COLOR
 	swProfileEntry("Settings", "DrawEdgeLines", 1),                                                        // SW_PROFILE_DRAW_EDGE_LINES
@@ -161,7 +166,7 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Settings", "PartsListPartDescriptionFilter", 1),                         // SW_PROFILE_PARTS_LIST_PART_DESCRIPTION_FILTER
 	swProfileEntry("Settings", "StudStyle", static_cast<int>(swStudStyle::Plain)),                                                // SW_PROFILE_STUD_STYLE
 
-	swProfileEntry("Defaults", "Author", ""),                                                  // SW_PROFILE_DEFAULT_AUTHOR_NAME
+	swProfileEntry("Defaults", "Author", "Author"),                                            // SW_PROFILE_DEFAULT_AUTHOR_NAME
 	swProfileEntry("Defaults", "AmbientColor", SW_RGB(75, 75, 75)),                            // SW_PROFILE_DEFAULT_AMBIENT_COLOR
 
 	swProfileEntry("HTML", "Options", SW_HTML_SINGLE_PAGE),                                     // SW_PROFILE_HTML_OPTIONS
@@ -236,6 +241,7 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("InstructionsDefaults", "GridWithinMargins", 1),                            // SW_PROFILE_INSTRUCTIONS_DEFAULT_GRID_WITHIN_MARGINS
 	swProfileEntry("InstructionsDefaults", "GridDivisions", 8),                                // SW_PROFILE_INSTRUCTIONS_DEFAULT_GRID_DIVISIONS
 	swProfileEntry("Settings", "PreviewSquareViewport", 0),                                    // SW_PROFILE_PREVIEW_SQUARE_VIEWPORT
+	swProfileEntry("Settings", "PreviewKeepSelection", 0),                                     // SW_PROFILE_PREVIEW_KEEP_SELECTION
 	swProfileEntry("Settings", "MinifigSyncRendering", 1),                                     // SW_PROFILE_MINIFIGURE_BUILDER_SYNCHRONIZED_RENDERING
 	swProfileEntry("Settings", "MinifigShadingMode", static_cast<int>(swShadingMode::DefaultLights)), // SW_PROFILE_MINIFIGURE_BUILDER_SHADING_MODE
 	swProfileEntry("Settings", "MinifigDrawEdgeLines", 1),                                     // SW_PROFILE_MINIFIGURE_BUILDER_DRAW_EDGE_LINES

@@ -306,8 +306,22 @@ void swMainWindow::CreateMenus()
 	mViewpointMenu->addSeparator();
 	mViewpointMenu->addAction(mActions[SW_VIEW_STEP_VIEW_EDIT]);
 	mViewpointMenu->addAction(mActions[SW_VIEW_STEP_VIEW_TOGGLE_FOLLOW]);
+	mCutawayMenu = new QMenu(tr("&Cutaway"), this);
+	mCutawayMenu->addAction(mActions[SW_VIEW_CUTAWAY_CUBE]);
+	mCutawayMenu->addAction(mActions[SW_VIEW_CUTAWAY_SPHERE]);
+	mCutawayMenu->addAction(mActions[SW_VIEW_CUTAWAY_CYLINDER]);
+	mCutawayMenu->addSeparator();
+	mCutawayMenu->addAction(mActions[SW_VIEW_CUTAWAY_GROW]);
+	mCutawayMenu->addAction(mActions[SW_VIEW_CUTAWAY_SHRINK]);
+	mCutawayMenu->addAction(mActions[SW_VIEW_CUTAWAY_PUSH_IN]);
+	mCutawayMenu->addAction(mActions[SW_VIEW_CUTAWAY_PULL_OUT]);
+	mCutawayMenu->addSeparator();
+	mCutawayMenu->addAction(mActions[SW_VIEW_CUTAWAY_SHADE_COLOR]);
+	mCutawayMenu->addAction(mActions[SW_VIEW_CUTAWAY_REMOVE]);
+
 	mViewpointMenu->addSeparator();
 	mViewpointMenu->addAction(mActions[SW_VIEW_NORMAL_TO_FACE]);
+	mViewpointMenu->addMenu(mCutawayMenu);
 
 	mProjectionMenu = new QMenu(tr("Projection"), this);
 	mProjectionMenu->addAction(mActions[SW_VIEW_PROJECTION_PERSPECTIVE]);

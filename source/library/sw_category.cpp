@@ -116,7 +116,9 @@ bool swLoadCategories(const QByteArray& Buffer, std::vector<swLibraryCategory>& 
 
 		swLibraryCategory Category;
 
-		Category.Name = Name;
+		// disabled categories start with a hash
+		Category.Enabled = !Name.startsWith('#');
+		Category.Name = Category.Enabled ? Name : Name.mid(1);
 		Category.Keywords = Keywords.toLatin1();
 
 		Categories.emplace_back(std::move(Category));
@@ -142,7 +144,7 @@ bool swSaveCategories(QTextStream& Stream, const std::vector<swLibraryCategory>&
 	QString Format("%1=%2\r\n");
 
 	for (const swLibraryCategory& Category : Categories)
-		Stream << Format.arg(Category.Name, QString::fromLatin1(Category.Keywords));
+		Stream << Format.arg(Category.Enabled ? Category.Name : '#' + Category.Name, QString::fromLatin1(Category.Keywords));
 
 	Stream.flush();
 

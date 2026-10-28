@@ -103,6 +103,8 @@ swContext::swContext()
 	mOutlineParams[2] = swVector4(0.0f, 0.0f, 0.0f, 0.0f);
 	mOutlineParams[3] = swVector4(0.0f, 0.0f, 0.0f, 0.0f);
 	mLightingStyle = swLightingStyle::Standard;
+	mCutawayShape = swCutawayShape::None;
+	mCutawayMatrix = swMatrix44Identity();
 	mColorDirty = false;
 	mTextHaloColorDirty = false;
 	mWorldMatrixDirty = false;
@@ -111,6 +113,8 @@ swContext::swContext()
 	mViewProjectionMatrixDirty = false;
 	mHighlightParamsDirty = false;
 	mOutlineParamsDirty = false;
+	mLightingStyleDirty = false;
+	mCutawayDirty = false;
 
 	mMaterialType = swMaterialType::Count;
 }
@@ -290,6 +294,13 @@ swResult<void> swContext::CreateShaderPrograms()
 "		else \\\n"
 "			Specular = min(pow(Specular, 8.0), 1.0) * 0.25; \\\n"
 "		SW_SHADER_PRECISION vec3 SpecularColor = vec3(Specular + Rim, Specular + Rim, Specular + Rim);\n"
+
+// cutaway shapes follow swCutawayShape: none, cube, sphere
+"#define SW_PIXEL_CUTAWAY \\\n"
+"		if ((CutawayShape == 1 && max(abs(PixelCutaway.x), max(abs(PixelCutaway.y), abs(PixelCutaway.z))) < 1.0) || \\\n"
+"			(CutawayShape == 2 && dot(PixelCutaway, PixelCutaway) < 1.0) || \\\n"
+"			(CutawayShape == 3 && dot(PixelCutaway.xy, PixelCutaway.xy) < 1.0 && abs(PixelCutaway.z) < 1.0)) \\\n"
+"			discard;\n"
 	};
 
 	const char* const VertexShaders[] =
@@ -491,6 +502,8 @@ swResult<void> swContext::CreateShaderPrograms()
 		mPrograms[MaterialType].OutlineParamsLocation = glGetUniformLocation(Program, "OutlineParams");
 		mPrograms[MaterialType].TextHaloColorLocation = glGetUniformLocation(Program, "TextHaloColor");
 		mPrograms[MaterialType].LightingStyleLocation = glGetUniformLocation(Program, "LightingStyle");
+		mPrograms[MaterialType].CutawayShapeLocation = glGetUniformLocation(Program, "CutawayShape");
+		mPrograms[MaterialType].CutawayMatrixLocation = glGetUniformLocation(Program, "CutawayMatrix");
 
 		const GLint TextureLocation = glGetUniformLocation(Program, "Texture");
 
@@ -884,6 +897,7 @@ void swContext::SetMaterial(swMaterialType MaterialType)
 	mOutlineParamsDirty = true;
 	mTextHaloColorDirty = true;
 	mLightingStyleDirty = true;
+	mCutawayDirty = true;
 }
 
 void swContext::SetViewport(int x, int y, int Width, int Height)
@@ -1600,6 +1614,17 @@ void swContext::BindMesh(const swMesh* Mesh)
 void swContext::FlushState()
 {
 	const swProgram& Program = mPrograms[static_cast<int>(mMaterialType)];
+
+	// the cutaway matrix maps the vertices of this mesh straight to the unit cube or sphere
+	if ((mCutawayDirty || mWorldMatrixDirty) && Program.CutawayShapeLocation != -1)
+	{
+		glUniform1i(Program.CutawayShapeLocation, static_cast<GLint>(mCutawayShape));
+
+		if (Program.CutawayMatrixLocation != -1)
+			glUniformMatrix4fv(Program.CutawayMatrixLocation, 1, false, swMultiply(mWorldMatrix, mCutawayMatrix).GetFloats());
+
+		mCutawayDirty = false;
+	}
 
 	if (mWorldMatrixDirty || mViewMatrixDirty || mProjectionMatrixDirty)
 	{

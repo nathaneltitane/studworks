@@ -583,6 +583,7 @@ swPartSelectionListView::swPartSelectionListView(QWidget* Parent, swPartSelectio
 	else
 		connect(this, &QListView::doubleClicked, this, &swPartSelectionListView::DoubleClicked);
 	connect(this, &QListView::customContextMenuRequested, this, &swPartSelectionListView::CustomContextMenuRequested);
+	connect(verticalScrollBar(), &QScrollBar::valueChanged, this, &swPartSelectionListView::AlignScrollToRows);
 
 	connect(gApplication, &swApplication::RendererInitialized, this, &swPartSelectionListView::UpdateIconSize);
 
@@ -807,6 +808,14 @@ void swPartSelectionListView::ToggleListMode()
 {
 	mListModel->ToggleListMode();
 	UpdateItemGeometry();
+	SnapPanel();
+}
+
+// use to fit the parts panel to the new tiles or rows
+void swPartSelectionListView::SnapPanel()
+{
+	if (!mPartSelectionWidget->GetIsPopup())
+		QTimer::singleShot(0, gMainWindow, &swMainWindow::SnapPartsDock);
 }
 
 void swPartSelectionListView::ToggleFixedColor()
@@ -832,6 +841,7 @@ void swPartSelectionListView::SetIconSize(int Size)
 	mRequestedIconSize = Size;
 	swSetProfileInteger(mPartSelectionWidget->GetIsPopup() ? SW_PROFILE_PARTS_POPUP_ICONS : SW_PROFILE_PARTS_LIST_ICONS, Size);
 	UpdateIconSize();
+	SnapPanel();
 }
 
 void swPartSelectionListView::UpdateIconSize()
@@ -950,6 +960,73 @@ int swPartSelectionListView::GetTileSnapDelta() const
 
 	// Trim a small leftover, or widen to fit one more tile when most of one already fits.
 	return Leftover * 2 < Pitch ? -Leftover : Pitch - Leftover;
+}
+
+// use to measure the distance from one thumbnail or list row to the next
+int swPartSelectionListView::GetRowPitch() const
+{
+	if (model()->rowCount() < 1)
+		return 0;
+
+	// content rects ignore the scrolling
+	const QRect FirstRect = rectForIndex(model()->index(0, 0));
+
+	for (int Row = 1; Row < model()->rowCount(); Row++)
+	{
+		const QRect Rect = rectForIndex(model()->index(Row, 0));
+
+		if (Rect.top() != FirstRect.top())
+			return Rect.top() - FirstRect.top();
+	}
+
+	return FirstRect.height() + spacing();
+}
+
+// use to measure how far the view height is from showing whole thumbnail or list rows
+int swPartSelectionListView::GetRowSnapDelta() const
+{
+	const int Pitch = GetRowPitch();
+
+	if (Pitch <= 0)
+		return 0;
+
+	// the first row gives the top margin
+	const QRect FirstRect = rectForIndex(model()->index(0, 0));
+
+	// the space after the last whole row beyond a bottom margin matching the top one
+	const int Rows = qMax(1, (viewport()->height() - 2 * FirstRect.top()) / Pitch);
+	const int Leftover = viewport()->height() - 2 * FirstRect.top() - Rows * Pitch;
+
+	// trim a small leftover or grow to fit one more row when most of one already fits
+	return Leftover * 2 < Pitch ? -Leftover : Pitch - Leftover;
+}
+
+// use to scroll by whole rows so a snapped height never cuts the last row
+void swPartSelectionListView::updateGeometries()
+{
+	QListView::updateGeometries();
+
+	const int Pitch = GetRowPitch();
+
+	if (Pitch > 0 && !mPartSelectionWidget->GetIsPopup() && swGetPreferences().mPartsSnapToTiles)
+	{
+		verticalScrollBar()->setSingleStep(Pitch);
+		verticalScrollBar()->setPageStep(qMax(Pitch, viewport()->height() / Pitch * Pitch));
+	}
+}
+
+// use to keep the scrolling on a row edge, rounding the way it moved so the row asked for stays in view
+void swPartSelectionListView::AlignScrollToRows(int Value)
+{
+	const int Pitch = GetRowPitch();
+	const int LastValue = mLastScrollValue;
+	mLastScrollValue = Value;
+
+	if (Pitch <= 0 || Value % Pitch == 0 || Value == verticalScrollBar()->maximum() || mPartSelectionWidget->GetIsPopup() || !swGetPreferences().mPartsSnapToTiles)
+		return;
+
+	const int Aligned = Value > LastValue ? (Value / Pitch + 1) * Pitch : Value / Pitch * Pitch;
+	verticalScrollBar()->setValue(qMin(Aligned, verticalScrollBar()->maximum()));
 }
 
 QSize swPartSelectionListView::GetPreferredSize(int MaximumWidth) const
@@ -1211,12 +1288,8 @@ void swPartSelectionWidget::SnapCategories()
 
 void swPartSelectionWidget::SnapCategoriesWidth()
 {
-	QDockWidget* DockWidget = qobject_cast<QDockWidget*>(parent());
-
-	if (mIsPopup || !swGetPreferences().mPartsSnapToTiles || !DockWidget || DockWidget->isFloating())
-		return;
-
-	if ((mDockArea != Qt::TopDockWidgetArea && mDockArea != Qt::BottomDockWidgetArea) || mSplitter->orientation() != Qt::Horizontal || mSplitter->widget(0)->isHidden())
+	// docked at the top or bottom or floating wide, the categories sit beside the parts
+	if (mIsPopup || !swGetPreferences().mPartsSnapToTiles || mSplitter->orientation() != Qt::Horizontal || mSplitter->widget(0)->isHidden())
 		return;
 
 	// Measure every category, including the ones hidden by the filter, so filtering never changes the width.
@@ -1307,8 +1380,8 @@ void swPartSelectionWidget::resizeEvent(QResizeEvent* Event)
 			mSplitter->setOrientation(Qt::Vertical);
 	}
 
-	if (Event->size().height() != Event->oldSize().height())
-		QTimer::singleShot(0, this, &swPartSelectionWidget::SnapCategories);
+	// a floating panel can turn the categories beside or above the parts on any resize
+	QTimer::singleShot(0, this, &swPartSelectionWidget::SnapCategories);
 
 	QWidget::resizeEvent(Event);
 }
@@ -1722,6 +1795,9 @@ void swPartSelectionWidget::UpdateCategories()
 
 	for (int CategoryIdx = 0; CategoryIdx < static_cast<int>(gCategories.size()); CategoryIdx++)
 	{
+		if (!gCategories[CategoryIdx].Enabled)
+			continue;
+
 		QTreeWidgetItem* CategoryItem = new QTreeWidgetItem(mCategoriesWidget, QStringList(gCategories[CategoryIdx].Name));
 		CategoryItem->setData(0, static_cast<int>(swPartCategoryRole::Type), static_cast<int>(swPartCategoryType::Category));
 		CategoryItem->setData(0, static_cast<int>(swPartCategoryRole::Index), CategoryIdx);

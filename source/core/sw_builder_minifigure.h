@@ -78,6 +78,7 @@ public:
 
 	void Calculate();
 	int GetSelectionIndex(int Type) const;
+	swMatrix44 GetSelectionOffset(int Type) const;
 	void SetPartData(int Type, swPartData* PartData);
 	void SetColorIndex(int Type, int ColorIndex);
 	void SetAngle(int Type, float Angle);

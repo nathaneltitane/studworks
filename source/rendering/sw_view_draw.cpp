@@ -40,7 +40,8 @@ void swView::OnDraw()
 #endif
 
 	const swPreferences& Preferences = swGetPreferences();
-	const bool DrawOverlays = mWidget != nullptr;
+	// the turntable shows the bare model
+	const bool DrawOverlays = mWidget != nullptr && mViewType != swViewType::Turntable;
 	const bool DrawInterface = mWidget != nullptr && mViewType == swViewType::View;
 
 	swRenderTarget RenderTarget = swRenderTarget::ModelView;
@@ -64,6 +65,7 @@ void swView::OnDraw()
 	mScene->SetRequireCompleteAssets(static_cast<bool>(mRenderFramebuffer));
 	mScene->SetRequireGeneratedMeshes(mRenderFramebuffer && mViewType != swViewType::PartsList);
 	mScene->SetLODDistance(Preferences.mMeshLODDistance);
+	mScene->SetCutaway(mViewType == swViewType::View ? mCutawayShape : swCutawayShape::None, GetCutawayMatrix());
 
 	mScene->Begin(mCamera->mWorldView);
 
@@ -202,6 +204,9 @@ void swView::OnDraw()
 
 	if (DrawInterface)
 		mScene->DrawInterfaceObjects(mContext);
+
+	if (DrawInterface)
+		DrawCutaway();
 
 	if (DrawOverlays)
 		DrawAxes();
@@ -367,6 +372,7 @@ void swView::DrawAxes() const
 
 		case swViewType::MinifigureBuilder:
 		case swViewType::PartsList:
+		case swViewType::Turntable:
 		case swViewType::Count:
 			return;
 	}
@@ -464,6 +470,303 @@ void swView::DrawAxes() const
 	mContext->DrawPrimitives(GL_TRIANGLES, 0, 6 * 3);
 
 	mContext->EnableColorBlend(false);
+}
+
+// use to outline the cutaway so it can be placed against the model
+// use to fill a buffer with the triangles of the unit cube, sphere or cylinder
+static void swAddCutawayShapeTriangles(swCutawayShape CutawayShape, std::vector<float>& Verts)
+{
+	const int Segments = 32;
+	const int Rings = 16;
+
+	const auto AddVertex = [&Verts](const swVector3& Point)
+	{
+		Verts.push_back(Point.x);
+		Verts.push_back(Point.y);
+		Verts.push_back(Point.z);
+	};
+
+	const auto AddQuad = [&AddVertex](const swVector3& Point1, const swVector3& Point2, const swVector3& Point3, const swVector3& Point4)
+	{
+		AddVertex(Point1);
+		AddVertex(Point2);
+		AddVertex(Point3);
+		AddVertex(Point1);
+		AddVertex(Point3);
+		AddVertex(Point4);
+	};
+
+	if (CutawayShape == swCutawayShape::Cube)
+	{
+		const swVector3 Axes[3] = { swVector3(1.0f, 0.0f, 0.0f), swVector3(0.0f, 1.0f, 0.0f), swVector3(0.0f, 0.0f, 1.0f) };
+
+		for (int AxisIndex = 0; AxisIndex < 3; AxisIndex++)
+		{
+			const swVector3& Side = Axes[(AxisIndex + 1) % 3];
+			const swVector3& Up = Axes[(AxisIndex + 2) % 3];
+
+			for (float Face = -1.0f; Face <= 1.0f; Face += 2.0f)
+			{
+				const swVector3 Normal = Axes[AxisIndex] * Face;
+
+				AddQuad(Normal - Side - Up, Normal + Side - Up, Normal + Side + Up, Normal - Side + Up);
+			}
+		}
+	}
+	else if (CutawayShape == swCutawayShape::Sphere)
+	{
+		const auto SpherePoint = [](int Ring, int Segment)
+		{
+			const float Latitude = Ring * SW_PI / Rings - SW_PI / 2.0f;
+			const float Longitude = Segment * 2.0f * SW_PI / Segments;
+
+			return swVector3(cosf(Latitude) * cosf(Longitude), cosf(Latitude) * sinf(Longitude), sinf(Latitude));
+		};
+
+		for (int Ring = 0; Ring < Rings; Ring++)
+			for (int Segment = 0; Segment < Segments; Segment++)
+				AddQuad(SpherePoint(Ring, Segment), SpherePoint(Ring, Segment + 1), SpherePoint(Ring + 1, Segment + 1), SpherePoint(Ring + 1, Segment));
+	}
+	else if (CutawayShape == swCutawayShape::Cylinder)
+	{
+		const swVector3 Height(0.0f, 0.0f, 1.0f);
+
+		for (int Segment = 0; Segment < Segments; Segment++)
+		{
+			const float Angle1 = Segment * 2.0f * SW_PI / Segments;
+			const float Angle2 = (Segment + 1) * 2.0f * SW_PI / Segments;
+			const swVector3 Side1(cosf(Angle1), sinf(Angle1), 0.0f);
+			const swVector3 Side2(cosf(Angle2), sinf(Angle2), 0.0f);
+
+			AddQuad(Side1 - Height, Side2 - Height, Side2 + Height, Side1 + Height);
+			AddVertex(Height);
+			AddVertex(Side1 + Height);
+			AddVertex(Side2 + Height);
+			AddVertex(-Height);
+			AddVertex(Side2 - Height);
+			AddVertex(Side1 - Height);
+		}
+	}
+}
+
+void swView::DrawCutaway() const
+{
+	if (mViewType != swViewType::View || mCutawayShape == swCutawayShape::None)
+		return;
+
+	const int CircleSegments = 48;
+	float Verts[CircleSegments * 3 * 2 * 3];
+	int VertexCount = 0;
+
+	const auto AddVertex = [&Verts, &VertexCount](float x, float y, float z)
+	{
+		Verts[VertexCount * 3] = x;
+		Verts[VertexCount * 3 + 1] = y;
+		Verts[VertexCount * 3 + 2] = z;
+		VertexCount++;
+	};
+
+	if (mCutawayShape == swCutawayShape::Cube)
+	{
+		for (int AxisIndex = 0; AxisIndex < 3; AxisIndex++)
+		{
+			for (int Corner = 0; Corner < 4; Corner++)
+			{
+				float Start[3], End[3];
+
+				Start[AxisIndex] = -1.0f;
+				End[AxisIndex] = 1.0f;
+				Start[(AxisIndex + 1) % 3] = End[(AxisIndex + 1) % 3] = Corner & 1 ? 1.0f : -1.0f;
+				Start[(AxisIndex + 2) % 3] = End[(AxisIndex + 2) % 3] = Corner & 2 ? 1.0f : -1.0f;
+
+				AddVertex(Start[0], Start[1], Start[2]);
+				AddVertex(End[0], End[1], End[2]);
+			}
+		}
+	}
+	else if (mCutawayShape == swCutawayShape::Cylinder)
+	{
+		for (int Segment = 0; Segment < CircleSegments; Segment++)
+		{
+			const float Angle1 = Segment * 2.0f * SW_PI / CircleSegments;
+			const float Angle2 = (Segment + 1) * 2.0f * SW_PI / CircleSegments;
+
+			for (float Height = -1.0f; Height <= 1.0f; Height += 2.0f)
+			{
+				AddVertex(cosf(Angle1), sinf(Angle1), Height);
+				AddVertex(cosf(Angle2), sinf(Angle2), Height);
+			}
+
+			// four side lines join the end circles
+			if (Segment % (CircleSegments / 4) == 0)
+			{
+				AddVertex(cosf(Angle1), sinf(Angle1), -1.0f);
+				AddVertex(cosf(Angle1), sinf(Angle1), 1.0f);
+			}
+		}
+	}
+	else
+	{
+		for (int AxisIndex = 0; AxisIndex < 3; AxisIndex++)
+		{
+			for (int Segment = 0; Segment < CircleSegments; Segment++)
+			{
+				for (int Step = 0; Step < 2; Step++)
+				{
+					const float Angle = (Segment + Step) * 2.0f * SW_PI / CircleSegments;
+					float Point[3];
+
+					Point[AxisIndex] = 0.0f;
+					Point[(AxisIndex + 1) % 3] = cosf(Angle);
+					Point[(AxisIndex + 2) % 3] = sinf(Angle);
+
+					AddVertex(Point[0], Point[1], Point[2]);
+				}
+			}
+		}
+	}
+
+	const swMatrix44 WorldMatrix(swVector4(mCutawayShapeAxes[0] * mCutawaySize, 0.0f), swVector4(mCutawayShapeAxes[1] * mCutawaySize, 0.0f), swVector4(mCutawayShapeAxes[2] * mCutawaySize, 0.0f), swVector4(mCutawayCenter, 1.0f));
+
+	mContext->SetLineWidth(1.0f);
+	mContext->SetMaterial(swMaterialType::UnlitColor);
+	mContext->SetWorldMatrix(WorldMatrix);
+	mContext->SetViewMatrix(mCamera->mWorldView);
+	mContext->SetProjectionMatrix(GetProjectionMatrix());
+
+	// a very light shade on the faces shows where the cut runs through the model
+	std::vector<float> ShadeVerts;
+	swAddCutawayShapeTriangles(mCutawayShape, ShadeVerts);
+
+	mContext->EnableColorBlend(true);
+	mContext->SetDepthWrite(false);
+	// the shade stays between 90% and 99% transparent
+	swVector4 ShadeColor = swVector4FromColor(swGetPreferences().mCutawayShadeColor);
+	ShadeColor.w = (100 - qBound(90, swGetPreferences().mCutawayShadeTransparency, 99)) / 100.0f;
+	mContext->SetColor(ShadeColor);
+	mContext->SetVertexBufferPointer(ShadeVerts.data());
+	mContext->SetVertexFormatPosition(3);
+	mContext->DrawPrimitives(GL_TRIANGLES, 0, static_cast<int>(ShadeVerts.size() / 3));
+	mContext->SetDepthWrite(true);
+	mContext->EnableColorBlend(false);
+
+	mContext->EnableDepthTest(false);
+	mContext->SetColor(swVector4FromColor(swGetPreferences().mOverlayColor));
+
+	mContext->SetVertexBufferPointer(Verts);
+	mContext->SetVertexFormatPosition(3);
+	mContext->DrawPrimitives(GL_LINES, 0, VertexCount);
+
+	if (mWidget && mCutawayPickShape == swCutawayShape::None)
+	{
+		// the center handle is a small solid copy of the cutaway shape
+		const swPreferences& Preferences = swGetPreferences();
+		const float CenterSize = GetCutawayHandleLength() * 0.1f;
+		const int ActiveHandle = mCutawayDragHandle != -1 ? mCutawayDragHandle : mCutawayHoverHandle;
+
+		mContext->SetWorldMatrix(swMatrix44(swVector4(mCutawayShapeAxes[0] * CenterSize, 0.0f), swVector4(mCutawayShapeAxes[1] * CenterSize, 0.0f), swVector4(mCutawayShapeAxes[2] * CenterSize, 0.0f), swVector4(mCutawayCenter, 1.0f)));
+		mContext->SetColor(swVector4FromColor(ActiveHandle == 3 ? Preferences.mObjectFocusedColor : Preferences.mOverlayColor));
+		mContext->SetVertexBufferPointer(ShadeVerts.data());
+		mContext->SetVertexFormatPosition(3);
+		mContext->DrawPrimitives(GL_TRIANGLES, 0, static_cast<int>(ShadeVerts.size() / 3));
+
+		DrawCutawayGizmo();
+	}
+
+	mContext->EnableDepthTest(true);
+}
+
+// use to draw the arrows that move the cutaway and the knobs that resize it
+void swView::DrawCutawayGizmo() const
+{
+	const int ConeSegments = 12;
+	const float ConeStart = 0.75f;
+	const float ConeRadius = 0.08f;
+	const float BoxSize = 0.07f;
+	float Verts[(3 * 2 + 3 * ConeSegments * 3 + 36) * 3];
+	int VertexCount = 0;
+
+	const auto AddVertex = [&Verts, &VertexCount](const swVector3& Point)
+	{
+		Verts[VertexCount * 3] = Point.x;
+		Verts[VertexCount * 3 + 1] = Point.y;
+		Verts[VertexCount * 3 + 2] = Point.z;
+		VertexCount++;
+	};
+
+	const swVector3 Axes[3] = { swVector3(1.0f, 0.0f, 0.0f), swVector3(0.0f, 1.0f, 0.0f), swVector3(0.0f, 0.0f, 1.0f) };
+
+	for (int AxisIndex = 0; AxisIndex < 3; AxisIndex++)
+	{
+		AddVertex(swVector3(0.0f, 0.0f, 0.0f));
+		AddVertex(Axes[AxisIndex] * ConeStart);
+	}
+
+	for (int AxisIndex = 0; AxisIndex < 3; AxisIndex++)
+	{
+		const swVector3& Side = Axes[(AxisIndex + 1) % 3];
+		const swVector3& Up = Axes[(AxisIndex + 2) % 3];
+
+		for (int Segment = 0; Segment < ConeSegments; Segment++)
+		{
+			const float Angle1 = Segment * 2.0f * SW_PI / ConeSegments;
+			const float Angle2 = (Segment + 1) * 2.0f * SW_PI / ConeSegments;
+
+			AddVertex(Axes[AxisIndex]);
+			AddVertex(Axes[AxisIndex] * ConeStart + (Side * cosf(Angle1) + Up * sinf(Angle1)) * ConeRadius);
+			AddVertex(Axes[AxisIndex] * ConeStart + (Side * cosf(Angle2) + Up * sinf(Angle2)) * ConeRadius);
+		}
+	}
+
+	for (int AxisIndex = 0; AxisIndex < 3; AxisIndex++)
+	{
+		const swVector3& Side = Axes[(AxisIndex + 1) % 3];
+		const swVector3& Up = Axes[(AxisIndex + 2) % 3];
+
+		for (float Face = -1.0f; Face <= 1.0f; Face += 2.0f)
+		{
+			const swVector3 Normal = Axes[AxisIndex] * Face * BoxSize;
+			const swVector3 Corners[4] = { Normal + (-Side - Up) * BoxSize, Normal + (Side - Up) * BoxSize, Normal + (Side + Up) * BoxSize, Normal + (-Side + Up) * BoxSize };
+
+			AddVertex(Corners[0]);
+			AddVertex(Corners[1]);
+			AddVertex(Corners[2]);
+			AddVertex(Corners[0]);
+			AddVertex(Corners[2]);
+			AddVertex(Corners[3]);
+		}
+	}
+
+	const int BoxStart = 6 + 3 * ConeSegments * 3;
+
+	const swPreferences& Preferences = swGetPreferences();
+	const float HandleLength = GetCutawayHandleLength();
+	const swMatrix44 WorldMatrix(swVector4(mCutawayAxes[0] * HandleLength, 0.0f), swVector4(mCutawayAxes[1] * HandleLength, 0.0f), swVector4(mCutawayAxes[2] * HandleLength, 0.0f), swVector4(mCutawayCenter, 1.0f));
+	const int ActiveHandle = mCutawayDragHandle != -1 ? mCutawayDragHandle : mCutawayHoverHandle;
+	const quint32 AxisColors[3] = { Preferences.mAxisXColor, Preferences.mAxisYColor, Preferences.mAxisZColor };
+
+	mContext->SetLineWidth(2.0f * GetUIScale());
+	mContext->SetWorldMatrix(WorldMatrix);
+	mContext->SetVertexBufferPointer(Verts);
+	mContext->SetVertexFormatPosition(3);
+
+	for (int AxisIndex = 0; AxisIndex < 3; AxisIndex++)
+	{
+		mContext->SetColor(swVector4FromColor(ActiveHandle == AxisIndex ? Preferences.mObjectFocusedColor : AxisColors[AxisIndex]));
+		mContext->DrawPrimitives(GL_LINES, AxisIndex * 2, 2);
+		mContext->DrawPrimitives(GL_TRIANGLES, 6 + AxisIndex * ConeSegments * 3, ConeSegments * 3);
+	}
+
+	// the size knobs sit on the cutaway surface at the end of each axis
+	for (int AxisIndex = 0; AxisIndex < 3; AxisIndex++)
+	{
+		const swVector3 Knob = mCutawayCenter + mCutawayAxes[AxisIndex] * mCutawaySize;
+
+		mContext->SetWorldMatrix(swMatrix44(WorldMatrix[0], WorldMatrix[1], WorldMatrix[2], swVector4(Knob, 1.0f)));
+		mContext->SetColor(swVector4FromColor(ActiveHandle == 4 + AxisIndex ? Preferences.mObjectFocusedColor : AxisColors[AxisIndex]));
+		mContext->DrawPrimitives(GL_TRIANGLES, BoxStart, 36);
+	}
+	mContext->SetLineWidth(1.0f);
 }
 
 void swView::DrawSelectZoomRegionOverlay()

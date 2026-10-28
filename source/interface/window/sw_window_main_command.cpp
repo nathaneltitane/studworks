@@ -397,6 +397,62 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 			ActiveView->StartFaceNormalPick();
 		break;
 
+	case SW_VIEW_CUTAWAY_CUBE:
+		if (ActiveView)
+			ActiveView->StartCutawayPick(swCutawayShape::Cube);
+		break;
+
+	case SW_VIEW_CUTAWAY_SPHERE:
+		if (ActiveView)
+			ActiveView->StartCutawayPick(swCutawayShape::Sphere);
+		break;
+
+	case SW_VIEW_CUTAWAY_CYLINDER:
+		if (ActiveView)
+			ActiveView->StartCutawayPick(swCutawayShape::Cylinder);
+		break;
+
+	case SW_VIEW_CUTAWAY_GROW:
+		if (ActiveView)
+			ActiveView->ResizeCutaway(1.25f);
+		break;
+
+	case SW_VIEW_CUTAWAY_SHRINK:
+		if (ActiveView)
+			ActiveView->ResizeCutaway(0.8f);
+		break;
+
+	// one plate is 8 ldu
+	case SW_VIEW_CUTAWAY_PUSH_IN:
+		if (ActiveView)
+			ActiveView->MoveCutaway(8.0f);
+		break;
+
+	case SW_VIEW_CUTAWAY_PULL_OUT:
+		if (ActiveView)
+			ActiveView->MoveCutaway(-8.0f);
+		break;
+
+	case SW_VIEW_CUTAWAY_SHADE_COLOR:
+		{
+			quint32& ShadeColor = swGetPreferences().mCutawayShadeColor;
+			const QColor NewColor = QColorDialog::getColor(swQColorFromRGBA(ShadeColor | SW_RGBA(0, 0, 0, 255)), this, tr("Select Cutaway Shade Color"));
+
+			if (!NewColor.isValid())
+				break;
+
+			// the transparency is its own preference
+			ShadeColor = SW_RGB(NewColor.red(), NewColor.green(), NewColor.blue());
+			swSetProfileUnsignedInteger(SW_PROFILE_CUTAWAY_SHADE_COLOR, ShadeColor);
+			swView::UpdateAllViews();
+		}
+		break;
+
+	case SW_VIEW_CUTAWAY_REMOVE:
+		if (ActiveView)
+			ActiveView->RemoveCutaway();
+		break;
+
 	case SW_VIEW_GRID_TOGGLE_HEIGHT_XZ:
 		swGetPreferences().mDrawGridHeightXZ = !swGetPreferences().mDrawGridHeightXZ;
 		swSetProfileInteger(SW_PROFILE_GRID_HEIGHT_XZ, swGetPreferences().mDrawGridHeightXZ);
@@ -649,6 +705,12 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 	case SW_VIEW_PREVIEW_TOGGLE_SQUARE:
 		if (mPreviewWidget)
 			mPreviewWidget->SetSquareViewport(!swGetPreferences().mPreviewSquareViewport);
+		break;
+
+	case SW_VIEW_PREVIEW_TOGGLE_KEEP_SELECTION:
+		swGetPreferences().mPreviewKeepSelection = !swGetPreferences().mPreviewKeepSelection;
+		swSetProfileInteger(SW_PROFILE_PREVIEW_KEEP_SELECTION, swGetPreferences().mPreviewKeepSelection);
+		UpdateSelectedObjects(false);
 		break;
 
 	case SW_PART_INSERT:

@@ -324,11 +324,11 @@ void swMinifigureBuilder::Calculate()
 		Root = swMatrix44Translation(swVector3(0, 0, 74.0f));
 	else
 		Root = swMatrix44Translation(swVector3(0, 0, 72.0f));
-	Matrices[SW_MINIFIGURE_BODY] = swMultiply(mSettings[SW_MINIFIGURE_BODY][GetSelectionIndex(SW_MINIFIGURE_BODY)].Offset, Root);
+	Matrices[SW_MINIFIGURE_BODY] = swMultiply(GetSelectionOffset(SW_MINIFIGURE_BODY), Root);
 
 	if (PartData[SW_MINIFIGURE_NECK])
 	{
-		Matrices[SW_MINIFIGURE_NECK] = swMultiply(mSettings[SW_MINIFIGURE_NECK][GetSelectionIndex(SW_MINIFIGURE_NECK)].Offset, Root);
+		Matrices[SW_MINIFIGURE_NECK] = swMultiply(GetSelectionOffset(SW_MINIFIGURE_NECK), Root);
 		HeadOffset = 0.08f;
 	}
 
@@ -336,21 +336,21 @@ void swMinifigureBuilder::Calculate()
 	{
 		Mat = swMatrix44RotationZ(-SW_DEGREES_TO_RADIANS * Angles[SW_MINIFIGURE_HEAD]);
 		Mat.SetTranslation(swVector3(0.0f, 0.0f, 24.0f + HeadOffset));
-		Mat = swMultiply(mSettings[SW_MINIFIGURE_HEAD][GetSelectionIndex(SW_MINIFIGURE_HEAD)].Offset, Mat);
+		Mat = swMultiply(GetSelectionOffset(SW_MINIFIGURE_HEAD), Mat);
 		Matrices[SW_MINIFIGURE_HEAD] = swMultiply(Mat, Root);
 	}
 
 	if (PartData[SW_MINIFIGURE_HATS])
 	{
 		Mat = swMatrix44RotationZ(-SW_DEGREES_TO_RADIANS * Angles[SW_MINIFIGURE_HATS]);
-		Mat = swMultiply(mSettings[SW_MINIFIGURE_HATS][GetSelectionIndex(SW_MINIFIGURE_HATS)].Offset, Mat);
+		Mat = swMultiply(GetSelectionOffset(SW_MINIFIGURE_HATS), Mat);
 		Matrices[SW_MINIFIGURE_HATS] = swMultiply(Mat, Matrices[SW_MINIFIGURE_HEAD]);
 	}
 
 	if (PartData[SW_MINIFIGURE_HATS2])
 	{
 		Mat = swMatrix44RotationX(-SW_DEGREES_TO_RADIANS * Angles[SW_MINIFIGURE_HATS2]);
-		Mat = swMultiply(mSettings[SW_MINIFIGURE_HATS2][GetSelectionIndex(SW_MINIFIGURE_HATS2)].Offset, Mat);
+		Mat = swMultiply(GetSelectionOffset(SW_MINIFIGURE_HATS2), Mat);
 		Matrices[SW_MINIFIGURE_HATS2] = swMultiply(Mat, Matrices[SW_MINIFIGURE_HATS]);
 	}
 
@@ -364,7 +364,7 @@ void swMinifigureBuilder::Calculate()
 			Mat2 = swMatrix44RotationY(-SW_DEGREES_TO_RADIANS * 9.791f);
 		Mat2.SetTranslation(swVector3(15.552f, 0, -8.88f));
 
-		Mat = swMultiply(mSettings[SW_MINIFIGURE_RIGHT_ARM][GetSelectionIndex(SW_MINIFIGURE_RIGHT_ARM)].Offset, Mat);
+		Mat = swMultiply(GetSelectionOffset(SW_MINIFIGURE_RIGHT_ARM), Mat);
 		Mat = swMultiply(Mat, Mat2);
 		Matrices[SW_MINIFIGURE_RIGHT_ARM] = swMultiply(Mat, Root);
 	}
@@ -373,7 +373,7 @@ void swMinifigureBuilder::Calculate()
 	{
 		Mat = swMatrix44RotationY(-SW_DEGREES_TO_RADIANS * Angles[SW_MINIFIGURE_RIGHT_HAND]);
 		Mat2 = swMatrix44RotationX(SW_DEGREES_TO_RADIANS * 45);
-		Mat = swMultiply(mSettings[SW_MINIFIGURE_RIGHT_HAND][GetSelectionIndex(SW_MINIFIGURE_RIGHT_HAND)].Offset, Mat);
+		Mat = swMultiply(GetSelectionOffset(SW_MINIFIGURE_RIGHT_HAND), Mat);
 		Mat = swMultiply(Mat, Mat2);
 		Mat.SetTranslation(swVector3(5.0f, -10.0f, -19.0f));
 		Matrices[SW_MINIFIGURE_RIGHT_HAND] = swMultiply(Mat, Matrices[SW_MINIFIGURE_RIGHT_ARM]);
@@ -383,7 +383,7 @@ void swMinifigureBuilder::Calculate()
 	{
 		Mat = swMatrix44RotationZ(SW_DEGREES_TO_RADIANS * Angles[SW_MINIFIGURE_RIGHT_HAND_ACCESSORY]);
 		Mat.SetTranslation(swVector3(0, -9.25f, 0));
-		Mat = swMultiply(mSettings[SW_MINIFIGURE_RIGHT_HAND_ACCESSORY][GetSelectionIndex(SW_MINIFIGURE_RIGHT_HAND_ACCESSORY)].Offset, Mat);
+		Mat = swMultiply(GetSelectionOffset(SW_MINIFIGURE_RIGHT_HAND_ACCESSORY), Mat);
 		Mat = swMultiply(Mat, swMatrix44RotationX(SW_DEGREES_TO_RADIANS * 15.0f));
 		Matrices[SW_MINIFIGURE_RIGHT_HAND_ACCESSORY] = swMultiply(Mat, Matrices[SW_MINIFIGURE_RIGHT_HAND]);
 	}
@@ -398,7 +398,7 @@ void swMinifigureBuilder::Calculate()
 			Mat2 = swMatrix44RotationY(SW_DEGREES_TO_RADIANS * 9.791f);
 		Mat2.SetTranslation(swVector3(-15.552f, 0.0f, -8.88f));
 
-		Mat = swMultiply(mSettings[SW_MINIFIGURE_LEFT_ARM][GetSelectionIndex(SW_MINIFIGURE_LEFT_ARM)].Offset, Mat);
+		Mat = swMultiply(GetSelectionOffset(SW_MINIFIGURE_LEFT_ARM), Mat);
 		Mat = swMultiply(Mat, Mat2);
 		Matrices[SW_MINIFIGURE_LEFT_ARM] = swMultiply(Mat, Root);
 	}
@@ -407,7 +407,7 @@ void swMinifigureBuilder::Calculate()
 	{
 		Mat = swMatrix44RotationY(-SW_DEGREES_TO_RADIANS * Angles[SW_MINIFIGURE_LEFT_HAND]);
 		Mat2 = swMatrix44RotationX(SW_DEGREES_TO_RADIANS * 45);
-		Mat = swMultiply(mSettings[SW_MINIFIGURE_LEFT_HAND][GetSelectionIndex(SW_MINIFIGURE_LEFT_HAND)].Offset, Mat);
+		Mat = swMultiply(GetSelectionOffset(SW_MINIFIGURE_LEFT_HAND), Mat);
 		Mat = swMultiply(Mat, Mat2);
 		Mat.SetTranslation(swVector3(-5.0f, -10.0f, -19.0f));
 		Matrices[SW_MINIFIGURE_LEFT_HAND] = swMultiply(Mat, Matrices[SW_MINIFIGURE_LEFT_ARM]);
@@ -417,7 +417,7 @@ void swMinifigureBuilder::Calculate()
 	{
 		Mat = swMatrix44RotationZ(SW_DEGREES_TO_RADIANS * Angles[SW_MINIFIGURE_LEFT_HAND_ACCESSORY]);
 		Mat.SetTranslation(swVector3(0, -9.25f, 0));
-		Mat = swMultiply(mSettings[SW_MINIFIGURE_LEFT_HAND_ACCESSORY][GetSelectionIndex(SW_MINIFIGURE_LEFT_HAND_ACCESSORY)].Offset, Mat);
+		Mat = swMultiply(GetSelectionOffset(SW_MINIFIGURE_LEFT_HAND_ACCESSORY), Mat);
 		Mat = swMultiply(Mat, swMatrix44RotationX(SW_DEGREES_TO_RADIANS * 15.0f));
 		Matrices[SW_MINIFIGURE_LEFT_HAND_ACCESSORY] = swMultiply(Mat, Matrices[SW_MINIFIGURE_LEFT_HAND]);
 	}
@@ -426,7 +426,7 @@ void swMinifigureBuilder::Calculate()
 	{
 		Mat = swMatrix44Identity();
 		Mat.SetTranslation(swVector3(0, 0, -32.0f));
-		Mat = swMultiply(mSettings[SW_MINIFIGURE_BODY2][GetSelectionIndex(SW_MINIFIGURE_BODY2)].Offset, Mat);
+		Mat = swMultiply(GetSelectionOffset(SW_MINIFIGURE_BODY2), Mat);
 		Matrices[SW_MINIFIGURE_BODY2] = swMultiply(Mat, Root);
 	}
 
@@ -434,7 +434,7 @@ void swMinifigureBuilder::Calculate()
 	{
 		Mat = swMatrix44Identity();
 		Mat.SetTranslation(swVector3(0, 0, -32.0f));
-		Mat = swMultiply(mSettings[SW_MINIFIGURE_BODY3][GetSelectionIndex(SW_MINIFIGURE_BODY3)].Offset, Mat);
+		Mat = swMultiply(GetSelectionOffset(SW_MINIFIGURE_BODY3), Mat);
 		Matrices[SW_MINIFIGURE_BODY3] = swMultiply(Mat, Root);
 	}
 
@@ -442,7 +442,7 @@ void swMinifigureBuilder::Calculate()
 	{
 		Mat = swMatrix44RotationX(-SW_DEGREES_TO_RADIANS * Angles[SW_MINIFIGURE_RIGHT_LEG]);
 		Mat.SetTranslation(swVector3(0, 0, -44.0f));
-		Mat = swMultiply(mSettings[SW_MINIFIGURE_RIGHT_LEG][GetSelectionIndex(SW_MINIFIGURE_RIGHT_LEG)].Offset, Mat);
+		Mat = swMultiply(GetSelectionOffset(SW_MINIFIGURE_RIGHT_LEG), Mat);
 		Matrices[SW_MINIFIGURE_RIGHT_LEG] = swMultiply(Mat, Root);
 	}
 
@@ -450,7 +450,7 @@ void swMinifigureBuilder::Calculate()
 	{
 		const swVector3 Center(-10.0f, -1.0f, -28.0f);
 		Mat = swMatrix44RotationZ(SW_DEGREES_TO_RADIANS * Angles[SW_MINIFIGURE_RIGHT_LEG_ACCESSORY]);
-		Mat2 = mSettings[SW_MINIFIGURE_RIGHT_LEG_ACCESSORY][GetSelectionIndex(SW_MINIFIGURE_RIGHT_LEG_ACCESSORY)].Offset;
+		Mat2 = GetSelectionOffset(SW_MINIFIGURE_RIGHT_LEG_ACCESSORY);
 		Mat2.SetTranslation(swMultiply31(-Center, Mat2));
 		Mat = swMultiply(Mat2, Mat);
 		Mat.SetTranslation(swMultiply31(Center, Mat2));
@@ -461,7 +461,7 @@ void swMinifigureBuilder::Calculate()
 	{
 		Mat = swMatrix44RotationX(-SW_DEGREES_TO_RADIANS * Angles[SW_MINIFIGURE_LEFT_LEG]);
 		Mat.SetTranslation(swVector3(0, 0, -44.0f));
-		Mat = swMultiply(mSettings[SW_MINIFIGURE_LEFT_LEG][GetSelectionIndex(SW_MINIFIGURE_LEFT_LEG)].Offset, Mat);
+		Mat = swMultiply(GetSelectionOffset(SW_MINIFIGURE_LEFT_LEG), Mat);
 		Matrices[SW_MINIFIGURE_LEFT_LEG] = swMultiply(Mat, Root);
 	}
 
@@ -469,7 +469,7 @@ void swMinifigureBuilder::Calculate()
 	{
 		const swVector3 Center(10.0f, -1.0f, -28.0f);
 		Mat = swMatrix44RotationZ(SW_DEGREES_TO_RADIANS * Angles[SW_MINIFIGURE_LEFT_LEG_ACCESSORY]);
-		Mat2 = mSettings[SW_MINIFIGURE_LEFT_LEG_ACCESSORY][GetSelectionIndex(SW_MINIFIGURE_LEFT_LEG_ACCESSORY)].Offset;
+		Mat2 = GetSelectionOffset(SW_MINIFIGURE_LEFT_LEG_ACCESSORY);
 		Mat2.SetTranslation(swMultiply31(-Center, Mat2));
 		Mat = swMultiply(Mat2, Mat);
 		Mat.SetTranslation(swMultiply31(Center, Mat2));
@@ -488,6 +488,15 @@ int swMinifigureBuilder::GetSelectionIndex(int Type) const
 			return (int)Index;
 
 	return 0;
+}
+
+// use to get the offset of the selected part, none without a parts library
+swMatrix44 swMinifigureBuilder::GetSelectionOffset(int Type) const
+{
+	if (mSettings[Type].empty())
+		return swMatrix44Identity();
+
+	return mSettings[Type][GetSelectionIndex(Type)].Offset;
 }
 
 void swMinifigureBuilder::SetPartData(int Type, swPartData* PartData)

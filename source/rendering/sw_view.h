@@ -106,6 +106,7 @@ enum class swViewType
 	Preview,
 	MinifigureBuilder,
 	PartsList,
+	Turntable,
 	Count
 };
 
@@ -285,6 +286,15 @@ public:
 	void StopTracking(bool Accept);
 	void CancelTrackingOrClearSelectionAction();
 	void StartFaceNormalPick();
+	void StartCutawayPick(swCutawayShape CutawayShape);
+	void ResizeCutaway(float Scale);
+	void MoveCutaway(float Distance);
+	void RemoveCutaway();
+
+	bool HasCutaway() const
+	{
+		return mCutawayShape != swCutawayShape::None;
+	}
 
 	void SetViewpoint(swViewpoint Viewpoint);
 	void SetViewpoint(const swVector3& Position);
@@ -347,6 +357,8 @@ protected:
 	void DrawBackground() const;
 	void DrawViewport() const;
 	void DrawAxes() const;
+	void DrawCutaway() const;
+	void DrawCutawayGizmo() const;
 
 	void DrawSelectZoomRegionOverlay();
 	void DrawRotateViewOverlay();
@@ -396,6 +408,27 @@ protected:
 
 	void PickFaceNormal();
 	void StopFaceNormalPick();
+	void PickCutaway();
+	void StopCutawayPick();
+	swMatrix44 GetCutawayMatrix() const;
+	bool GetCutawayRange(const swVector3& Start, const swVector3& End, float& Entry, float& Exit) const;
+	float GetCutawayHandleLength() const;
+	int FindCutawayHandle() const;
+	void UpdateCutawayDrag();
+
+	swCutawayShape mCutawayPickShape = swCutawayShape::None;
+	swCutawayShape mCutawayShape = swCutawayShape::None;
+	swVector3 mCutawayCenter = swVector3(0.0f, 0.0f, 0.0f);
+	const swVector3 mCutawayAxes[3] = { swVector3(1.0f, 0.0f, 0.0f), swVector3(0.0f, 1.0f, 0.0f), swVector3(0.0f, 0.0f, 1.0f) };
+	swVector3 mCutawayShapeAxes[3] = { swVector3(1.0f, 0.0f, 0.0f), swVector3(0.0f, 1.0f, 0.0f), swVector3(0.0f, 0.0f, 1.0f) };
+	swVector3 mCutawayNormal = swVector3(0.0f, 0.0f, 1.0f);
+	float mCutawaySize = 40.0f;
+	int mCutawayHoverHandle = -1;
+	int mCutawayDragHandle = -1;
+	swVector3 mCutawayDragCenter = swVector3(0.0f, 0.0f, 0.0f);
+	int mCutawayDragMouseX = 0;
+	int mCutawayDragMouseY = 0;
+	float mCutawayDragSize = 40.0f;
 
 	swDragState mDragState;
 	bool mTrackToolFromOverlay;

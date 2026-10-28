@@ -59,6 +59,17 @@ swMainWindow::swMainWindow()
 	mGamepadTimer.start(33);
 #endif
 
+	// the window manager resizes a floating parts panel without mouse events, so snap once the resizing settles
+	mPartsSnapTimer.setSingleShot(true);
+	mPartsSnapTimer.setInterval(300);
+	connect(&mPartsSnapTimer, &QTimer::timeout, this, &swMainWindow::SnapPartsDock);
+
+	// the turntable starts once the input has been idle long enough
+	mIdleTimer.setSingleShot(true);
+	connect(&mIdleTimer, &QTimer::timeout, this, &swMainWindow::StartTurntable);
+	connect(&mTurntableTimer, &QTimer::timeout, this, &swMainWindow::UpdateTurntable);
+	RestartIdleTimer();
+
 	gMainWindow = this;
 }
 
@@ -69,10 +80,104 @@ swMainWindow::~swMainWindow()
 
 	mInsertPartData.Reset();
 
+	delete mTurntableWidget;
+
 	for (size_t FileIndex = 0; FileIndex < mRecentFiles.size(); FileIndex++)
 		swSetProfileString((SW_PROFILE_KEY)(SW_PROFILE_RECENT_FILE1 + FileIndex), mRecentFiles[FileIndex]);
 
 	gMainWindow = nullptr;
+}
+
+// use to restart the idle time that starts the turntable
+void swMainWindow::RestartIdleTimer()
+{
+	const int IdleTime = swGetPreferences().mTurntableIdleDuration;
+
+	if (IdleTime > 0 && !mTurntableWidget && QApplication::applicationState() == Qt::ApplicationActive)
+		mIdleTimer.start(IdleTime * 1000);
+	else
+		mIdleTimer.stop();
+}
+
+// use to show the model full screen turning around the z axis
+void swMainWindow::StartTurntable()
+{
+	swModel* Model = GetCurrentTabModel();
+	swView* ActiveView = GetActiveView();
+	swVector3 Min, Max;
+
+	if (mTurntableWidget || !Model || !ActiveView || QApplication::activeModalWidget() || QApplication::activePopupWidget() || QApplication::mouseButtons() != Qt::NoButton || !Model->GetVisiblePartsBoundingBox(Min, Max))
+	{
+		RestartIdleTimer();
+		return;
+	}
+
+	mTurntableCenter = (Min + Max) * 0.5f;
+	mTurntableRadius = qMax(swLength(Max - Min) * 0.5f, 10.0f);
+
+	// the turn starts from the side the active view looks at
+	const swVector3 Direction = ActiveView->GetCamera()->GetSectionPosition(SW_CAMERA_SECTION_POSITION) - mTurntableCenter;
+	mTurntableStartAngle = atan2f(Direction.y, Direction.x);
+
+	swView* View = new swView(swViewType::Turntable, Model);
+	View->SetCamera(View->GetCamera(), true);
+	View->GetCamera()->SetProjection(swCameraProjection::Perspective);
+
+	mTurntableWidget = new swViewWidget(nullptr, View);
+	mTurntableWidget->setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+	mTurntableWidget->setCursor(Qt::BlankCursor);
+	mTurntableWidget->setGeometry(screen()->geometry());
+
+	mIdleCursorPosition = QCursor::pos();
+	mTurntableClock.start();
+	UpdateTurntable();
+
+	mTurntableWidget->showFullScreen();
+	mTurntableTimer.start(16);
+}
+
+// use to close the turntable, true when it was showing
+bool swMainWindow::StopTurntable()
+{
+	if (!mTurntableWidget)
+		return false;
+
+	mTurntableTimer.stop();
+
+	// the closing input may still be on its way to the turntable window
+	mTurntableWidget->hide();
+	mTurntableWidget->deleteLater();
+	mTurntableWidget = nullptr;
+
+	activateWindow();
+	RestartIdleTimer();
+
+	return true;
+}
+
+// use to turn the turntable camera for the time shown so far
+void swMainWindow::UpdateTurntable()
+{
+	if (!mTurntableWidget)
+		return;
+
+	swView* View = mTurntableWidget->GetView();
+	swCamera* Camera = View->GetCamera();
+
+	// the distance keeps the model bounds inside the narrower field of view
+	const float Aspect = static_cast<float>(qMax(mTurntableWidget->width(), 1)) / qMax(mTurntableWidget->height(), 1);
+	const float HalfHeight = Camera->m_fovy * 0.5f * SW_DEGREES_TO_RADIANS;
+	const float HalfField = qMin(HalfHeight, atanf(tanf(HalfHeight) * Aspect));
+	const float Distance = mTurntableRadius / sinf(HalfField);
+
+	const float Turn = mTurntableClock.elapsed() / 1000.0f / qMax(swGetPreferences().mTurntableTurnTime, 1);
+	const float Angle = mTurntableStartAngle + Turn * 2.0f * SW_PI;
+	const float Latitude = 25.0f * SW_DEGREES_TO_RADIANS;
+	const swVector3 Position = mTurntableCenter + swVector3(cosf(Latitude) * cosf(Angle), cosf(Latitude) * sinf(Angle), sinf(Latitude)) * Distance;
+
+	Camera->m_zFar = qMax(Camera->m_zFar, Distance + mTurntableRadius * 2.0f);
+	Camera->SetViewpoint(Position, mTurntableCenter, swVector3(0.0f, 0.0f, 1.0f));
+	View->Redraw();
 }
 
 swView* swMainWindow::CreateView(swModel* Model)
@@ -91,6 +196,8 @@ void swMainWindow::PreviewPart(swPartData* PartData, int ColorCode, bool ShowPre
 	if (ShowPreview)
 		mPreviewToolBar->show();
 
+	// parts shown from the model selection are cleared again when the selection goes away
+	mPreviewFromSelection = !ShowPreview;
 	mPreviewWidget->SetCurrentPart(PartData, ColorCode);
 }
 
@@ -129,23 +236,28 @@ void swMainWindow::UpdateTerminalDirectory(bool Force)
 
 void swMainWindow::SnapPartsDock()
 {
-	if (!swGetPreferences().mPartsSnapToTiles || !mPartsToolBar || mPartsToolBar->isFloating() || !mPartSelectionWidget)
+	if (!swGetPreferences().mPartsSnapToTiles || !mPartsToolBar || !mPartSelectionWidget)
 		return;
 
 	const Qt::DockWidgetArea Area = dockWidgetArea(mPartsToolBar);
 
-	if (Area != Qt::LeftDockWidgetArea && Area != Qt::RightDockWidgetArea)
+	if (!mPartsToolBar->isFloating() && Area != Qt::LeftDockWidgetArea && Area != Qt::RightDockWidgetArea)
 	{
 		mPartSelectionWidget->SnapCategories();
 		return;
 	}
 
 	const int Delta = mPartSelectionWidget->GetTileSnapDelta();
+	// a floating panel also ends on whole thumbnail or list rows
+	const int RowDelta = mPartsToolBar->isFloating() ? mPartSelectionWidget->GetRowSnapDelta() : 0;
 
-	if (!Delta)
+	if (!Delta && !RowDelta)
 		return;
 
-	resizeDocks({ mPartsToolBar }, { mPartsToolBar->width() + Delta }, Qt::Horizontal);
+	if (mPartsToolBar->isFloating())
+		mPartsToolBar->resize(mPartsToolBar->width() + Delta, mPartsToolBar->height() + RowDelta);
+	else
+		resizeDocks({ mPartsToolBar }, { mPartsToolBar->width() + Delta }, Qt::Horizontal);
 
 	// Check once more after the tiles are laid out again in case the view wraps differently than measured.
 	if (!mPartsSnapRetried)
@@ -167,7 +279,7 @@ void swMainWindow::CreatePreviewWidget()
 	mPreviewToolBar = new QDockWidget(tr("Preview"), this);
 	mPreviewToolBar->setWindowTitle(tr("Preview"));
 	mPreviewToolBar->setObjectName("PreviewToolBar");
-	mPreviewToolBar->setWhatsThis(tr("<p><b>Preview</b></p><p>Inspect a part without placing it in the model. Double-click a part in the Parts dock to preview it. Lock Preview keeps the current preview when the source selection changes; unlock it to allow updates.</p>"));
+	mPreviewToolBar->setWhatsThis(tr("<p><b>Preview</b></p><p>Inspect a part or model without placing it in the model. Double-click a part in the Parts dock to preview it. Lock Preview keeps the current preview when the source selection changes; unlock it to allow updates.</p>"));
 	swSetupWidgetHelp(mPreviewToolBar, nullptr);
 	mPreviewToolBar->setWidget(mPreviewWidget);
 	addDockWidget(Qt::RightDockWidgetArea, mPreviewToolBar);
@@ -177,8 +289,47 @@ void swMainWindow::CreatePreviewWidget()
 
 bool swMainWindow::eventFilter(QObject* Object, QEvent* Event)
 {
+	// any input ends the turntable and restarts the idle time
+	switch (Event->type())
+	{
+	case QEvent::MouseMove:
+		if (QCursor::pos() == mIdleCursorPosition)
+			break;
+
+		mIdleCursorPosition = QCursor::pos();
+		StopTurntable();
+		RestartIdleTimer();
+		break;
+
+	case QEvent::KeyPress:
+	case QEvent::MouseButtonPress:
+	case QEvent::MouseButtonDblClick:
+	case QEvent::Wheel:
+	case QEvent::TouchBegin:
+	case QEvent::TabletPress:
+		RestartIdleTimer();
+
+		// the input that ends the turntable does nothing else
+		if (StopTurntable())
+			return true;
+		break;
+
+	case QEvent::ApplicationStateChange:
+		// showing the turntable window can briefly deactivate the application
+		if (QApplication::applicationState() != Qt::ApplicationActive && mTurntableWidget && mTurntableClock.elapsed() > 1000)
+			StopTurntable();
+
+		RestartIdleTimer();
+		break;
+
+	default:
+		break;
+	}
+
 	// Resizing the parts panel by hand snaps it to whole tiles once the mouse is released.
-	if (Object == mPartsToolBar && Event->type() == QEvent::Resize && QApplication::mouseButtons() != Qt::NoButton)
+	if (Object == mPartsToolBar && Event->type() == QEvent::Resize && mPartsToolBar->isFloating())
+		mPartsSnapTimer.start();
+	else if (Object == mPartsToolBar && Event->type() == QEvent::Resize && QApplication::mouseButtons() != Qt::NoButton)
 		mPartsSnapPending = true;
 	else if (Event->type() == QEvent::MouseButtonRelease && mPartsSnapPending)
 	{

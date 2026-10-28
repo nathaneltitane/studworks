@@ -55,8 +55,8 @@ swAutomateEdgeColorDialog::swAutomateEdgeColorDialog(QWidget* Parent, bool ShowH
 		connect(ResetPartEdgeContrastButton, &QToolButton::clicked, this, &swAutomateEdgeColorDialog::ResetSliderButtonClicked);
 
 		EdgeSettingsLayout->addWidget(PartEdgeContrastLabel,0,0);
-		EdgeSettingsLayout->addWidget(PartEdgeContrastSlider,0,1);
-		EdgeSettingsLayout->addWidget(PartEdgeContrast,0,2);
+		EdgeSettingsLayout->addWidget(PartEdgeContrastSlider,0,2);
+		EdgeSettingsLayout->addWidget(PartEdgeContrast,0,1);
 		EdgeSettingsLayout->addWidget(ResetPartEdgeContrastButton,0,3);
 	}
 
@@ -84,9 +84,12 @@ swAutomateEdgeColorDialog::swAutomateEdgeColorDialog(QWidget* Parent, bool ShowH
 	connect(ResetPartColorValueLDIndexButton, &QToolButton::clicked, this, &swAutomateEdgeColorDialog::ResetSliderButtonClicked);
 
 	EdgeSettingsLayout->addWidget(PartColorValueLDIndexLabel,LDIndexRow,0);
-	EdgeSettingsLayout->addWidget(PartColorValueLDIndexSlider,LDIndexRow,1);
-	EdgeSettingsLayout->addWidget(PartColorValueLDIndex,LDIndexRow,2);
+	EdgeSettingsLayout->addWidget(PartColorValueLDIndexSlider,LDIndexRow,2);
+	EdgeSettingsLayout->addWidget(PartColorValueLDIndex,LDIndexRow,1);
 	EdgeSettingsLayout->addWidget(ResetPartColorValueLDIndexButton,LDIndexRow,3);
+
+	// the sliders show their value on their left and take the free width
+	EdgeSettingsLayout->setColumnStretch(2, 1);
 
 	QGroupBox* HighContrastColorBox = new QGroupBox(tr("High Contrast"), this);
 	HighContrastColorBox->setVisible(ShowHighContrastDialog);

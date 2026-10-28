@@ -4,6 +4,7 @@ struct swLibraryCategory
 {
 	QString Name;
 	QByteArray Keywords;
+	bool Enabled = true;
 };
 
 extern std::vector<swLibraryCategory> gCategories;

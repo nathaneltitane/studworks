@@ -2277,11 +2277,12 @@ swResult<void> swPartsLibrary::LoadPrimitiveData(swLibraryPrimitive* Primitive)
 
 bool swPartsLibrary::PartDataInCategory(swPartData* PartData, const char* CategoryKeywords) const
 {
-	if (!PartData->IsLibraryPart())
+	// sub parts and aliases are never listed in a category
+	if (!PartData->IsLibraryPart() || PartData->IsSubPart() || PartData->IsAlias())
 		return false;
 
 	const char* PartName;
-	if (PartData->m_strDescription[0] == '~' || PartData->m_strDescription[0] == '_')
+	if (PartData->m_strDescription[0] == '_')
 		PartName = PartData->m_strDescription + 1;
 	else
 		PartName = PartData->m_strDescription;

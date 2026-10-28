@@ -66,13 +66,13 @@ swPreviewDockWidget::swPreviewDockWidget(QWidget* Parent)
 
 	// the preview blends into its panel without a viewport border
 	mPreview->SetDrawViewportBorder(false);
-	mViewWidget->setAccessibleName(tr("Part Preview"));
-	mViewWidget->setToolTip(tr("Inspect the previewed part without placing it in the model."));
+	mViewWidget->setAccessibleName(tr("Preview"));
+	mViewWidget->setToolTip(tr("Inspect the previewed part or model without placing it in the model."));
 	// Small enough to stack with other panels, the header rows and a few rows of view stay visible.
 	setMinimumSize(200, 4 * swGetPanelButtonSize().height());
 
 	mLockAction = new QAction(tr("Lock Preview"), this);
-	mLockAction->setWhatsThis(tr("<p><b>Lock Preview</b></p><p>Keep the current part in the preview while you browse other parts. Unlock Preview allows the display to update again. An empty preview cannot be locked.</p>"));
+	mLockAction->setWhatsThis(tr("<p><b>Lock Preview</b></p><p>Keep the current preview while you browse. Unlock Preview allows the display to update again. An empty preview cannot be locked.</p>"));
 	mLockAction->setCheckable(true);
 	mLockAction->setChecked(false);
 	mLockAction->setShortcut(tr("Ctrl+L"));
@@ -114,7 +114,7 @@ swPreviewDockWidget::swPreviewDockWidget(QWidget* Parent)
 	LockButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
 	QMenu* OptionsMenu = new QMenu(this);
-	swAddPanelOptionsButton(ButtonRow, OptionsMenu, tr("Configure the parts preview."), tr("Parts Preview Options"));
+	swAddPanelOptionsButton(ButtonRow, OptionsMenu, tr("Configure the preview."), tr("Preview Options"));
 	connect(OptionsMenu, &QMenu::aboutToShow, this, &swPreviewDockWidget::OptionsMenuAboutToShow);
 
 	Layout->addWidget(mLabel);
@@ -131,6 +131,7 @@ void swPreviewDockWidget::OptionsMenuAboutToShow()
 	gMainWindow->AddMenuCommand(Menu, tr("View Sphere"), SW_VIEW_TOGGLE_PREVIEW_VIEW_SPHERE, Preferences.mPreviewViewSphereEnabled);
 	gMainWindow->AddMenuCommand(Menu, tr("Axis Icon"), SW_VIEW_TOGGLE_PREVIEW_AXIS_ICON, Preferences.mDrawPreviewAxis);
 	gMainWindow->AddMenuCommand(Menu, tr("Square Viewport"), SW_VIEW_PREVIEW_TOGGLE_SQUARE, Preferences.mPreviewSquareViewport);
+	gMainWindow->AddMenuCommand(Menu, tr("Keep Last Selection"), SW_VIEW_PREVIEW_TOGGLE_KEEP_SELECTION, Preferences.mPreviewKeepSelection);
 
 	Menu->addSeparator();
 

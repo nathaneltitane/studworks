@@ -10,11 +10,30 @@ Useful? Star the repository - it helps others find it.
 
 ---
 
-[[ StudWorks // Project Page ]](https://github.com/nathaneltitane/studworks)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;[ Version // 2026-10-27 ]
+[[ StudWorks // Project Page ]](https://github.com/nathaneltitane/studworks)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;[ Version // 2026-10-28 ]
 
 ---
 
 ### NOTICE
+
+2026-10-28 ↴
+
+- Cutaway: hide a cube, sphere or cylinder of the model around a clicked face to see inside it - from the View menu, the model is never changed
+- Cutaway: click for the default size or drag to size it, move and resize it with the gizmo knobs, push in and pull out by one plate, Esc leaves it
+- Cutaway: faces lined with a light shade, its color and 90% to 99% transparency set in Preferences
+- Turntable: after an idle time the model turns full screen in perspective around the Z axis on the background color, any input ends it
+- Preferences: Views page grouped into Model, Cutaway, Turntable, Base Grid, Parts, Preview and Minifigure Builder without repeating View or Preview, every slider shows its value on its left and reaches the right edge
+- Preferences: units inside their boxes and named by the count (1 stud, 6 studs), turntable idle and turn durations in seconds, grid line spacing in a spin box
+- Preferences: the default author of new models is "Author" until it is set
+- Preview: the panel, its options and its preferences are named Preview, since it shows models as well as parts
+- Parts panel: a floating panel ends on whole thumbnail or list rows and scrolls by whole rows, the bottom row is never cut
+- Part categories: turn each category on or off with its checkbox, sub parts and aliases are no longer listed
+- Preview: 'Keep Last Selection' keeps showing the last selected part
+- Minifigure Builder: no longer crashes at startup when the parts library cannot be loaded
+- Instructions: padding, margin, border and background for every page element, the background fills the whole box
+- Instructions: notices, free text added to any page with a right-click
+- Instructions: pointers from an element border to a part, step, notice or other element - eight anchors or the nearest, line or callout wedge, arrowhead or dot tip
+- Instructions: settings, page layouts, notices and pointers saved in the model file as '!SW INSTRUCTION' meta commands
 
 2026-10-27 ↴
 
@@ -26,10 +45,6 @@ Useful? Star the repository - it helps others find it.
 - Cursors and toolbar icons redrawn from the Blender icon set, following the light or dark theme - move and rotate cursors show their axis
 - Instructions: place, drag and lock every page element, page grid with snapping, page numbers and colors and fonts for every element
 - Instructions: Print panel inside the instructions window replaces the print dialog and print preview, the window opens maximized
-- Instructions: padding, margin, border and background for every page element, the background fills the whole box
-- Instructions: notices, free text added to any page with a right-click
-- Instructions: pointers from an element border to a part, step, notice or other element - eight anchors or the nearest, line or callout wedge, arrowhead or dot tip
-- Instructions: settings, page layouts, notices and pointers saved in the model file as '!SW INSTRUCTION' meta commands
 - Preferences: label and control columns lined up on every page, mouse shortcuts recorded by clicking, mouse tools grouped like the keyboard commands
 - Menus: new Steps menu, Instructions and Properties in the File menu, Image under Export, Preferences at the bottom of the Edit menu
 - Parts panel snaps its categories to the longest name when docked on top or bottom
@@ -61,7 +76,7 @@ Useful? Star the repository - it helps others find it.
 - Instructions: cover page, bill of materials, blank page breaks, step dividers, document font and full page background
 - Instructions: steps per page set for each page, parts list counts, sort order and border
 - Minifigure Builder panel: build a minifigure, dock the builder and add several variations to the model
-- Part preview: optional square viewport that sizes the panel to fit
+- Preview: optional square viewport that sizes the panel to fit
 - Models menu: 'Configure Minifigure...', Preferences and Instructions moved to the Edit menu
 
 ---
@@ -77,9 +92,10 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
   - Uniform panel headers, buttons and text boxes, all sized from the options (gear) button
   - Collapsible color groups, square color tiles and a color options menu
   - Properties panel with compact position, rotation and transform rows and a spanning color swatch
-  - Dockable Minifigure Builder panel, optional embedded terminal panel and a square part preview
+  - Dockable Minifigure Builder panel, optional embedded terminal panel and a square preview
   - Panels dock side by side in any area
-  - Parts panel snaps to whole thumbnail tiles and its categories to the longest name
+  - Parts panel snaps to whole thumbnail tiles and rows, docked or floating, and its categories to the longest name
+  - Part categories turned on and off with a checkbox
   - Theme-aware Blender icons and cursors, with axis cursors for moving and rotating
 
 - **Modeling** ↴
@@ -87,8 +103,10 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
   - Vertical XZ and YZ height grids, custom rotation snap angle and camera orbit snapping
   - Normal to Face view command, first part at the origin option
   - Insert color options and the selected part color as the current color
-  - Separate rendering settings for the model view, part preview and parts list
+  - Separate rendering settings for the model view, preview and parts list
   - Standard, Studio, Matte and Toon lighting styles and an adjustable selection outline width
+  - Cube, sphere and cylinder cutaways to see inside a model, with a shaded cut and resize knobs
+  - Idle turntable showing the model full screen
 
 - **Instructions** ↴
   - Page setup with paper and screen presets, units, margins and orientation
@@ -113,11 +131,11 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
 
       | System | Package |
       | --- | --- |
-      | Debian, Ubuntu | studworks_2026-10-27_amd64.deb / arm64.deb |
-      | Fedora, Rocky Linux, RHEL, openSUSE | studworks-2026-10-27-x86_64.rpm / aarch64.rpm |
-      | Any Linux | studworks-linux-2026-10-27-x86_64.appimage / aarch64.appimage |
-      | Windows | studworks-windows-2026-10-27-x64.exe |
-      | macOS | studworks-macos-2026-10-27-universal.dmg |
+      | Debian, Ubuntu | studworks_2026-10-28_amd64.deb / arm64.deb |
+      | Fedora, Rocky Linux, RHEL, openSUSE | studworks-2026-10-28-x86_64.rpm / aarch64.rpm |
+      | Any Linux | studworks-linux-2026-10-28-x86_64.appimage / aarch64.appimage |
+      | Windows | studworks-windows-2026-10-28-x64.exe |
+      | macOS | studworks-macos-2026-10-28-universal.dmg |
 
     - The .deb and .rpm packages install to '/opt/studworks', the AppImage runs from anywhere after 'chmod +x' - all three carry their own Qt libraries and the LDraw parts library, and only need the base system libraries.
     - Linux packages are tested on Debian 12 and 13, Ubuntu 22.04 and 24.04, Rocky Linux 9, Fedora and openSUSE Tumbleweed.
@@ -186,7 +204,7 @@ LEGO® is a trademark of the LEGO® Group, which does not sponsor, authorize or 
 
 ---
 
-[[ StudWorks // Project Page ]](https://github.com/nathaneltitane/studworks)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;[ Version // 2026-10-27 ]
+[[ StudWorks // Project Page ]](https://github.com/nathaneltitane/studworks)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;[ Version // 2026-10-28 ]
 
 ---
 

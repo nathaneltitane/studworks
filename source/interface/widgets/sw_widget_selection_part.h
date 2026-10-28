@@ -205,6 +205,9 @@ public:
 	QSize GetCellSize() const;
 	QSize GetPreferredSize(int MaximumWidth) const;
 	int GetTileSnapDelta() const;
+	int GetRowSnapDelta() const;
+	int GetRowPitch() const;
+	void SnapPanel();
 
 	void SetCategory(swPartCategoryType Type, int Index);
 	void SetCustomParts(const std::vector<std::pair<swPartData*, std::string>>& Parts, int ColorIndex);
@@ -263,8 +266,11 @@ protected:
 	void UpdateItemGeometry();
 	void SetPartFilterType(swPartFilterType Option);
 	void keyPressEvent(QKeyEvent* KeyEvent) override;
+	void updateGeometries() override;
+	void AlignScrollToRows(int Value);
 
 	swPartSelectionListModel* mListModel = nullptr;
+	int mLastScrollValue = 0;
 	swPartSelectionWidget* mPartSelectionWidget = nullptr;
 	swPartData* mContextPartData = nullptr;
 	int mRequestedIconSize = NoIconSize;
@@ -301,6 +307,11 @@ public:
 	int GetTileSnapDelta() const
 	{
 		return mPartsWidget ? mPartsWidget->GetTileSnapDelta() : 0;
+	}
+
+	int GetRowSnapDelta() const
+	{
+		return mPartsWidget ? mPartsWidget->GetRowSnapDelta() : 0;
 	}
 
 	int GetColorIndex() const

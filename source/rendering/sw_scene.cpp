@@ -13,6 +13,8 @@ swScene::swScene()
 	mHighlightRenderMode = swHighlightRenderMode::Tint;
 	mShadingMode = swShadingMode::DefaultLights;
 	mLightingStyle = swLightingStyle::Standard;
+	mCutawayShape = swCutawayShape::None;
+	mCutawayMatrix = swMatrix44Identity();
 	mMeshLODDistance = 250.0f;
 }
 
@@ -440,6 +442,18 @@ void swScene::Draw(swContext* Context, const std::function<void()>& PreTransluce
 
 	Context->SetViewMatrix(mViewMatrix);
 	Context->SetLightingStyle(mLightingStyle);
+	Context->SetCutaway(mCutawayShape, mCutawayMatrix);
+
+	// the grid and outlines drawn between the passes are never cut away
+	const auto DrawPreTranslucent = [this, Context, &PreTranslucentCallback]()
+	{
+		if (!PreTranslucentCallback)
+			return;
+
+		Context->SetCutaway(swCutawayShape::None, mCutawayMatrix);
+		PreTranslucentCallback();
+		Context->SetCutaway(mCutawayShape, mCutawayMatrix);
+	};
 
 	const bool DrawLines = mDrawEdgeLines && mLineWidth > 0.0f;
 	const bool DrawConditional = mDrawConditionalLines && mLineWidth > 0.0f && swContext::SupportsMaterial(swMaterialType::UnlitColorConditional);
@@ -456,8 +470,7 @@ void swScene::Draw(swContext* Context, const std::function<void()>& PreTransluce
 		if (DrawConditional)
 			DrawOpaqueMeshes(Context, false, SW_MESH_CONDITIONAL_LINES, true, true);
 
-		if (PreTranslucentCallback)
-			PreTranslucentCallback();
+		DrawPreTranslucent();
 	}
 	else if (ShadingMode == swShadingMode::Flat)
 	{
@@ -467,8 +480,7 @@ void swScene::Draw(swContext* Context, const std::function<void()>& PreTransluce
 		{
 			DrawOpaqueMeshes(Context, false, SolidPrimitiveTypes, false, true);
 
-			if (PreTranslucentCallback)
-				PreTranslucentCallback();
+			DrawPreTranslucent();
 
 			DrawTranslucentMeshes(Context, false, true, true, false);
 
@@ -487,8 +499,7 @@ void swScene::Draw(swContext* Context, const std::function<void()>& PreTransluce
 			if (DrawConditional)
 				DrawOpaqueMeshes(Context, false, SW_MESH_CONDITIONAL_LINES, true, true);
 
-			if (PreTranslucentCallback)
-				PreTranslucentCallback();
+			DrawPreTranslucent();
 
 			DrawTranslucentMeshes(Context, false, false, true, true);
 		}
@@ -505,8 +516,7 @@ void swScene::Draw(swContext* Context, const std::function<void()>& PreTransluce
 			if (DrawConditional)
 				DrawOpaqueMeshes(Context, false, SW_MESH_CONDITIONAL_LINES, false, true);
 
-			if (PreTranslucentCallback)
-				PreTranslucentCallback();
+			DrawPreTranslucent();
 
 			DrawTranslucentMeshes(Context, false, true, true, false);
 
@@ -528,12 +538,13 @@ void swScene::Draw(swContext* Context, const std::function<void()>& PreTransluce
 
 			DrawOpaqueMeshes(Context, true, SW_MESH_TRIANGLES | SW_MESH_TEXTURED_TRIANGLES, true, true);
 
-			if (PreTranslucentCallback)
-				PreTranslucentCallback();
+			DrawPreTranslucent();
 
 			DrawTranslucentMeshes(Context, true, false, true, true);
 		}
 	}
+
+	Context->SetCutaway(swCutawayShape::None, mCutawayMatrix);
 }
 
 bool swScene::HasSelectedMeshes() const
@@ -584,6 +595,7 @@ void swScene::DrawOutlineGeometry(swContext* Context, swOutlineGeometry Geometry
 	Context->SetViewMatrix(mViewMatrix);
 	Context->SetMaterial(swMaterialType::UnlitColor);
 	Context->ClearTexture2D();
+	Context->SetCutaway(mCutawayShape, mCutawayMatrix);
 
 	for (const swRenderMesh& RenderMesh : mRenderMeshes)
 	{
@@ -627,6 +639,8 @@ void swScene::DrawOutlineGeometry(swContext* Context, swOutlineGeometry Geometry
 			Context->DrawIndexedPrimitives(GL_TRIANGLES, Section.DrawCount, Mesh->mIndexType, IndexOffset + Section.DrawOffset);
 		}
 	}
+
+	Context->SetCutaway(swCutawayShape::None, mCutawayMatrix);
 }
 
 void swScene::DrawInterfaceObjects(swContext* Context) const

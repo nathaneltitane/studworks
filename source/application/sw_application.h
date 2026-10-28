@@ -85,7 +85,7 @@ public:
 	void LoadRenderTarget(swRenderTarget Target);
 	void SaveRenderTarget(swRenderTarget Target) const;
 
-	// The parts preview and the parts list use their own settings unless they are synced with the model views.
+	// The preview and the parts list use their own settings unless they are synced with the model views.
 	swRenderSettings GetRenderSettings(swRenderTarget Target) const
 	{
 		if (Target != swRenderTarget::ModelView)
@@ -117,12 +117,17 @@ public:
 	quint32 mBackgroundSolidColor;
 	bool mDrawAxes;
 	bool mFollowStepViews;
+	int mCutawaySize;
+	int mTurntableIdleDuration;
+	int mTurntableTurnTime;
 	swAxisIconLocation mAxisIconLocation;
 	quint32 mTextColor;
 	quint32 mTextHaloColor;
 	quint32 mMarqueeBorderColor;
 	quint32 mMarqueeFillColor;
 	quint32 mOverlayColor;
+	quint32 mCutawayShadeColor;
+	int mCutawayShadeTransparency;
 	quint32 mActiveViewColor;
 	quint32 mInactiveViewColor;
 	bool mDrawEdgeLines;
@@ -180,6 +185,7 @@ public:
 	swViewSphereLocation mPreviewViewSphereLocation;
 	int mDrawPreviewAxis;
 	bool mPreviewSquareViewport;
+	bool mPreviewKeepSelection;
 
 	bool mStudCylinderColorEnabled;
 	quint32 mStudCylinderColor;
