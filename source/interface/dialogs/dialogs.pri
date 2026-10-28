@@ -22,6 +22,7 @@ SOURCES += \
 	$$PWD/sw_dialog_palette_part.cpp \
 	$$PWD/sw_dialog_preferences.cpp \
 	$$PWD/sw_dialog_preferences_blender.cpp \
+	$$PWD/sw_dialog_preferences_instructions.cpp \
 	$$PWD/sw_dialog_properties.cpp \
 	$$PWD/sw_dialog_render.cpp \
 	$$PWD/sw_dialog_select.cpp \

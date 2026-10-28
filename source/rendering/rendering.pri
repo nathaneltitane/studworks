@@ -9,6 +9,7 @@ SOURCES += \
 	$$PWD/sw_scene.cpp \
 	$$PWD/sw_texture_font.cpp \
 	$$PWD/sw_view.cpp \
+	$$PWD/sw_view_cutaway.cpp \
 	$$PWD/sw_view_draw.cpp \
 	$$PWD/sw_view_image.cpp \
 	$$PWD/sw_view_manipulator.cpp \

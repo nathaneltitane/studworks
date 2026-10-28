@@ -37,18 +37,96 @@
 
 #define SW_TAB_LAYOUT_VERSION 0x0002
 
-// use to give a new view its final size so its first fit is the one shown
-static void swLayoutNewView(QTabWidget* ModelTabWidget, QWidget* TabWidget, swViewWidget* ViewWidget)
+// use to restart the idle time that starts the turntable
+void swMainWindow::RestartIdleTimer()
 {
-	QStackedWidget* TabStack = ModelTabWidget->findChild<QStackedWidget*>(QString(), Qt::FindDirectChildrenOnly);
+	const int IdleTime = swGetPreferences().mTurntableIdleDuration;
 
-	if (TabStack)
-		TabWidget->setGeometry(TabStack->rect());
+	if (IdleTime > 0 && !mTurntableWidget && QApplication::applicationState() == Qt::ApplicationActive)
+		mIdleTimer.start(IdleTime * 1000);
+	else
+		mIdleTimer.stop();
+}
 
-	TabWidget->layout()->activate();
+// use to show the model full screen turning around the z axis
+void swMainWindow::StartTurntable()
+{
+	swModel* Model = GetCurrentTabModel();
+	swView* ActiveView = GetActiveView();
+	swVector3 Min, Max;
 
-	const float Scale = ViewWidget->GetDeviceScale();
-	ViewWidget->GetView()->SetSize(ViewWidget->width() * Scale, ViewWidget->height() * Scale);
+	if (mTurntableWidget || !Model || !ActiveView || QApplication::activeModalWidget() || QApplication::activePopupWidget() || QApplication::mouseButtons() != Qt::NoButton || !Model->GetVisiblePartsBoundingBox(Min, Max))
+	{
+		RestartIdleTimer();
+		return;
+	}
+
+	mTurntableCenter = (Min + Max) * 0.5f;
+	mTurntableRadius = qMax(swLength(Max - Min) * 0.5f, 10.0f);
+
+	// the turn starts from the side the active view looks at
+	const swVector3 Direction = ActiveView->GetCamera()->GetSectionPosition(SW_CAMERA_SECTION_POSITION) - mTurntableCenter;
+	mTurntableStartAngle = atan2f(Direction.y, Direction.x);
+
+	swView* View = new swView(swViewType::Turntable, Model);
+	View->SetCamera(View->GetCamera(), true);
+	View->GetCamera()->SetProjection(swCameraProjection::Perspective);
+
+	mTurntableWidget = new swViewWidget(nullptr, View);
+	mTurntableWidget->setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+	mTurntableWidget->setCursor(Qt::BlankCursor);
+	mTurntableWidget->setGeometry(screen()->geometry());
+
+	mIdleCursorPosition = QCursor::pos();
+	mTurntableClock.start();
+	UpdateTurntable();
+
+	mTurntableWidget->showFullScreen();
+	mTurntableTimer.start(16);
+}
+
+// use to close the turntable, true when it was showing
+bool swMainWindow::StopTurntable()
+{
+	if (!mTurntableWidget)
+		return false;
+
+	mTurntableTimer.stop();
+
+	// the closing input may still be on its way to the turntable window
+	mTurntableWidget->hide();
+	mTurntableWidget->deleteLater();
+	mTurntableWidget = nullptr;
+
+	activateWindow();
+	RestartIdleTimer();
+
+	return true;
+}
+
+// use to turn the turntable camera for the time shown so far
+void swMainWindow::UpdateTurntable()
+{
+	if (!mTurntableWidget)
+		return;
+
+	swView* View = mTurntableWidget->GetView();
+	swCamera* Camera = View->GetCamera();
+
+	// the distance keeps the model bounds inside the narrower field of view
+	const float Aspect = static_cast<float>(qMax(mTurntableWidget->width(), 1)) / qMax(mTurntableWidget->height(), 1);
+	const float HalfHeight = Camera->m_fovy * 0.5f * SW_DEGREES_TO_RADIANS;
+	const float HalfField = qMin(HalfHeight, atanf(tanf(HalfHeight) * Aspect));
+	const float Distance = mTurntableRadius / sinf(HalfField);
+
+	const float Turn = mTurntableClock.elapsed() / 1000.0f / qMax(swGetPreferences().mTurntableTurnTime, 1);
+	const float Angle = mTurntableStartAngle + Turn * 2.0f * SW_PI;
+	const float Latitude = 25.0f * SW_DEGREES_TO_RADIANS;
+	const swVector3 Position = mTurntableCenter + swVector3(cosf(Latitude) * cosf(Angle), cosf(Latitude) * sinf(Angle), sinf(Latitude)) * Distance;
+
+	Camera->m_zFar = qMax(Camera->m_zFar, Distance + mTurntableRadius * 2.0f);
+	Camera->SetViewpoint(Position, mTurntableCenter, swVector3(0.0f, 0.0f, 1.0f));
+	View->Redraw();
 }
 
 void swMainWindow::SetShadingMode(swShadingMode ShadingMode)
@@ -674,6 +752,20 @@ void swMainWindow::CloseCurrentModelTab()
 		NewProject();
 }
 
+// use to give a new view its final size so its first fit is the one shown
+void swMainWindow::LayoutNewView(QWidget* TabWidget, swViewWidget* ViewWidget)
+{
+	QStackedWidget* TabStack = mModelTabWidget->findChild<QStackedWidget*>(QString(), Qt::FindDirectChildrenOnly);
+
+	if (TabStack)
+		TabWidget->setGeometry(TabStack->rect());
+
+	TabWidget->layout()->activate();
+
+	const float Scale = ViewWidget->GetDeviceScale();
+	ViewWidget->GetView()->SetSize(ViewWidget->width() * Scale, ViewWidget->height() * Scale);
+}
+
 void swMainWindow::SetCurrentModelTab(swModel* Model, bool AdjustFarPlane)
 {
 	for (int TabIdx = 0; TabIdx < mModelTabWidget->count(); TabIdx++)
@@ -701,7 +793,7 @@ void swMainWindow::SetCurrentModelTab(swModel* Model, bool AdjustFarPlane)
 
 	ViewWidget->show();
 	ViewWidget->setFocus();
-	swLayoutNewView(mModelTabWidget, TabWidget, ViewWidget);
+	LayoutNewView(TabWidget, ViewWidget);
 	NewView->ZoomExtents(swGeometryBoundsMode::IncludeFallback, AdjustFarPlane);
 }
 
@@ -870,6 +962,6 @@ void swMainWindow::ResetViews()
 
 	ViewWidget->show();
 	ViewWidget->setFocus();
-	swLayoutNewView(mModelTabWidget, TabWidget, ViewWidget);
+	LayoutNewView(TabWidget, ViewWidget);
 	NewView->ZoomExtents(swGeometryBoundsMode::IncludeFallback, true);
 }

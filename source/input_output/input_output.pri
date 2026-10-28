@@ -8,6 +8,8 @@ SOURCES += \
 	$$PWD/sw_file.cpp \
 	$$PWD/sw_http.cpp \
 	$$PWD/sw_instructions.cpp \
+	$$PWD/sw_instructions_annotation.cpp \
+	$$PWD/sw_instructions_file.cpp \
 	$$PWD/sw_lxf.cpp
 
 HEADERS += \
