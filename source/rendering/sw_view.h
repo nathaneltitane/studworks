@@ -378,7 +378,8 @@ protected:
 	swViewWidget* mWidget = nullptr;
 	int mWidth = 1;
 	int mHeight = 1;
-	bool mZoomExtentsPending = false;
+	swCamera* mZoomExtentsCamera = nullptr;
+	swMatrix44 mZoomExtentsWorldView;
 	swGeometryBoundsMode mZoomExtentsMode = {};
 	bool mZoomExtentsFarPlane = false;
 	swViewType mViewType;

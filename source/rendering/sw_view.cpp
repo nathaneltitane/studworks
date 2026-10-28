@@ -1191,25 +1191,22 @@ void swView::Zoom(float Amount)
 		ActiveModel->Zoom(mCamera, Amount);
 }
 
-// use to resize the view, a fit asked for before it had a size is done now
+// use to resize the view, a fitted view stays fitted until its camera moves
 void swView::SetSize(int Width, int Height)
 {
+	const bool Resized = Width != mWidth || Height != mHeight;
+
 	mWidth = Width;
 	mHeight = Height;
 
-	if (mZoomExtentsPending && mWidth > 1 && mHeight > 1)
-	{
-		mZoomExtentsPending = false;
+	if (Resized && mWidth > 1 && mHeight > 1 && mCamera && mCamera->IsSimple() && mCamera == mZoomExtentsCamera && mCamera->mWorldView == mZoomExtentsWorldView)
 		ZoomExtents(mZoomExtentsMode, mZoomExtentsFarPlane);
-	}
 }
 
 void swView::ZoomExtents(swGeometryBoundsMode Mode, bool AdjustFarPlane)
 {
 	swModel* ActiveModel = GetActiveModel();
 
-	// a view without its size yet fits again once it has one
-	mZoomExtentsPending = mWidth <= 1 || mHeight <= 1;
 	mZoomExtentsMode = Mode;
 	mZoomExtentsFarPlane = AdjustFarPlane;
 
@@ -1219,6 +1216,12 @@ void swView::ZoomExtents(swGeometryBoundsMode Mode, bool AdjustFarPlane)
 
 		ActiveModel->ZoomExtents(mCamera, (float)mWidth / (float)mHeight, WorldMatrix, Mode, AdjustFarPlane);
 	}
+
+	// remember where the fit left the camera so a resize can fit it again
+	mZoomExtentsCamera = mCamera;
+
+	if (mCamera)
+		mZoomExtentsWorldView = mCamera->mWorldView;
 }
 
 void swView::ZoomExtentsAtStep(swStep Step, swGeometryBoundsMode Mode, bool AdjustFarPlane)
