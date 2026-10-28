@@ -275,9 +275,23 @@ struct swCommandLineOptions
 	QString SaveCOLLADAName;
 	QString SaveCSVName;
 	QString SaveHTMLName;
+	QString SettingsImportName;
+	QString SettingsExportName;
+	QString KeyboardShortcutsImportName;
+	QString KeyboardShortcutsExportName;
+	QString MouseShortcutsImportName;
+	QString MouseShortcutsExportName;
+	QString CategoriesImportName;
+	QString CategoriesExportName;
 	QList<QPair<QString, bool>> LibraryPaths;
 	QString StdOut;
 	QString StdErr;
+
+	// use to tell if the options only transfer settings to and from files
+	bool HasSettingsTransfer() const
+	{
+		return !SettingsImportName.isEmpty() || !SettingsExportName.isEmpty() || !KeyboardShortcutsImportName.isEmpty() || !KeyboardShortcutsExportName.isEmpty() || !MouseShortcutsImportName.isEmpty() || !MouseShortcutsExportName.isEmpty() || !CategoriesImportName.isEmpty() || !CategoriesExportName.isEmpty();
+	}
 };
 
 enum class swStartupMode

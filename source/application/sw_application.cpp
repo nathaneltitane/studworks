@@ -8,6 +8,7 @@
 #include "sw_dialog_preferences.h"
 #include "sw_widget_selection_part.h"
 #include "sw_shortcuts.h"
+#include "sw_category.h"
 #include "sw_view.h"
 #include "sw_object_camera.h"
 #include "sw_widget_preview.h"
@@ -912,6 +913,22 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 			Options.SaveHTML = true;
 			ParseString(Options.SaveHTMLName, false);
 		}
+		else if (Option == QLatin1String("--import-settings"))
+			ParseString(Options.SettingsImportName, true);
+		else if (Option == QLatin1String("--export-settings"))
+			ParseString(Options.SettingsExportName, true);
+		else if (Option == QLatin1String("--import-keyboard-shortcuts"))
+			ParseString(Options.KeyboardShortcutsImportName, true);
+		else if (Option == QLatin1String("--export-keyboard-shortcuts"))
+			ParseString(Options.KeyboardShortcutsExportName, true);
+		else if (Option == QLatin1String("--import-mouse-shortcuts"))
+			ParseString(Options.MouseShortcutsImportName, true);
+		else if (Option == QLatin1String("--export-mouse-shortcuts"))
+			ParseString(Options.MouseShortcutsExportName, true);
+		else if (Option == QLatin1String("--import-categories"))
+			ParseString(Options.CategoriesImportName, true);
+		else if (Option == QLatin1String("--export-categories"))
+			ParseString(Options.CategoriesExportName, true);
 		else if (Option == QLatin1String("-v") || Option == QLatin1String("--version"))
 		{
 			Options.StdOut += tr("StudWorks Version %1\n").arg(SW_VERSION_TEXT);
@@ -964,6 +981,14 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 			Options.StdOut += tr("  -dae, --export-collada <outfile.dae>: Export the model to COLLADA DAE format.\n");
 			Options.StdOut += tr("  -csv, --export-csv <outfile.csv>: Export the list of parts used in CSV format.\n");
 			Options.StdOut += tr("  -html, --export-html <folder>: Create an HTML page for the model.\n");
+			Options.StdOut += tr("  --import-settings <infile.ini>: Import the application settings and exit.\n");
+			Options.StdOut += tr("  --export-settings <outfile.ini>: Export the application settings and exit.\n");
+			Options.StdOut += tr("  --import-keyboard-shortcuts <infile.txt>: Import the keyboard shortcuts and exit.\n");
+			Options.StdOut += tr("  --export-keyboard-shortcuts <outfile.txt>: Export the keyboard shortcuts and exit.\n");
+			Options.StdOut += tr("  --import-mouse-shortcuts <infile.txt>: Import the mouse shortcuts and exit.\n");
+			Options.StdOut += tr("  --export-mouse-shortcuts <outfile.txt>: Export the mouse shortcuts and exit.\n");
+			Options.StdOut += tr("  --import-categories <infile.txt>: Import the part categories and exit.\n");
+			Options.StdOut += tr("  --export-categories <outfile.txt>: Export the part categories and exit.\n");
 			Options.StdOut += tr("  -v, --version: Output version information and exit.\n");
 			Options.StdOut += tr("  -?, --help: Display this help message and exit.\n");
 			Options.StdOut += QLatin1String("\n");
@@ -1060,6 +1085,110 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 	return Options;
 }
 
+// use to import and export settings without the interface
+static bool swTransferSettings(const swCommandLineOptions& Options, QTextStream& StdErr)
+{
+	bool TransferOK = true;
+
+	auto ReportError = [&StdErr, &TransferOK](const QString& Message)
+	{
+		StdErr << Message;
+		StdErr.flush();
+		TransferOK = false;
+	};
+
+	// imports run first so exports carry the imported values
+	if (!Options.SettingsImportName.isEmpty())
+	{
+		QSettings SettingsFile(Options.SettingsImportName, QSettings::IniFormat);
+
+		if (!QFileInfo(Options.SettingsImportName).isReadable() || SettingsFile.status() != QSettings::NoError)
+			ReportError(swApplication::tr("Error loading settings file '%1'.\n").arg(Options.SettingsImportName));
+		else
+		{
+			QSettings Settings;
+			const QStringList Keys = SettingsFile.allKeys();
+
+			for (const QString& Key : Keys)
+				Settings.setValue(Key, SettingsFile.value(Key));
+
+			Settings.sync();
+		}
+	}
+
+	if (!Options.KeyboardShortcutsImportName.isEmpty())
+	{
+		if (!gKeyboardShortcuts.Load(Options.KeyboardShortcutsImportName))
+			ReportError(swApplication::tr("Error loading keyboard shortcuts file '%1'.\n").arg(Options.KeyboardShortcutsImportName));
+		else
+			swSaveDefaultKeyboardShortcuts();
+	}
+
+	if (!Options.MouseShortcutsImportName.isEmpty())
+	{
+		if (!gMouseShortcuts.Load(Options.MouseShortcutsImportName))
+			ReportError(swApplication::tr("Error loading mouse shortcuts file '%1'.\n").arg(Options.MouseShortcutsImportName));
+		else
+			swSaveDefaultMouseShortcuts();
+	}
+
+	if (!Options.CategoriesImportName.isEmpty())
+	{
+		std::vector<swLibraryCategory> Categories;
+
+		if (!swLoadCategories(Options.CategoriesImportName, Categories) || Categories.empty())
+			ReportError(swApplication::tr("Error loading categories file '%1'.\n").arg(Options.CategoriesImportName));
+		else
+		{
+			gCategories = Categories;
+			swSaveDefaultCategories();
+		}
+	}
+
+	if (!Options.SettingsExportName.isEmpty())
+	{
+		QSettings Settings;
+		QSettings SettingsFile(Options.SettingsExportName, QSettings::IniFormat);
+		const QStringList Keys = Settings.allKeys();
+
+		SettingsFile.clear();
+
+		for (const QString& Key : Keys)
+			SettingsFile.setValue(Key, Settings.value(Key));
+
+		SettingsFile.sync();
+
+		if (SettingsFile.status() != QSettings::NoError)
+			ReportError(swApplication::tr("Error saving settings file '%1'.\n").arg(Options.SettingsExportName));
+	}
+
+	if (!Options.KeyboardShortcutsExportName.isEmpty())
+	{
+		swLoadDefaultKeyboardShortcuts();
+
+		if (!gKeyboardShortcuts.Save(Options.KeyboardShortcutsExportName))
+			ReportError(swApplication::tr("Error saving keyboard shortcuts file '%1'.\n").arg(Options.KeyboardShortcutsExportName));
+	}
+
+	if (!Options.MouseShortcutsExportName.isEmpty())
+	{
+		swLoadDefaultMouseShortcuts();
+
+		if (!gMouseShortcuts.Save(Options.MouseShortcutsExportName))
+			ReportError(swApplication::tr("Error saving mouse shortcuts file '%1'.\n").arg(Options.MouseShortcutsExportName));
+	}
+
+	if (!Options.CategoriesExportName.isEmpty())
+	{
+		swLoadDefaultCategories();
+
+		if (!swSaveCategories(Options.CategoriesExportName, gCategories))
+			ReportError(swApplication::tr("Error saving categories file '%1'.\n").arg(Options.CategoriesExportName));
+	}
+
+	return TransferOK;
+}
+
 swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& LibraryPaths)
 {
 	swCommandLineOptions Options = ParseCommandLineOptions();
@@ -1083,6 +1212,9 @@ swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 
 	if (Options.Exit)
 		return swStartupMode::Success;
+
+	if (Options.HasSettingsTransfer())
+		return swTransferSettings(Options, StdErr) ? swStartupMode::Success : swStartupMode::Error;
 
 	const bool SaveAndExit = (Options.SaveImage || Options.SaveWavefront || Options.Save3DS || Options.SaveCOLLADA || Options.SaveCSV || Options.SaveHTML);
 

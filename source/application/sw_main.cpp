@@ -120,6 +120,10 @@ static void swInitializeSurfaceFormat(int argc, char* argv[])
 		Format.setSamples(Options.AASamples);
 		QSurfaceFormat::setDefaultFormat(Format);
 	}
+
+	// text only runs need no display
+	if ((!Options.ParseOK || Options.Exit || Options.HasSettingsTransfer()) && qEnvironmentVariableIsEmpty("QT_QPA_PLATFORM"))
+		qputenv("QT_QPA_PLATFORM", "offscreen");
 }
 
 int main(int argc, char *argv[])
