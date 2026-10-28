@@ -2,6 +2,7 @@
 #include "sw_window_main.h"
 #include "sw_widget_builder_minifigure.h"
 #include "sw_widget_spin_box_double.h"
+#include "sw_widget_spin_box.h"
 #include "sw_widget_selection_part.h"
 #ifdef SW_ENABLE_TERMINAL
 #include "sw_widget_terminal.h"
@@ -253,15 +254,15 @@ void swMainWindow::ShowStepViewDialog()
 	ModeCombo->setToolTip(tr("How this step turns the view, saved as an MLCAD ROTSTEP line ending the step."));
 	Layout->addRow(tr("Rotation:"), ModeCombo);
 
-	QDoubleSpinBox* AngleEdits[3];
+	swRangeDoubleSpinBox* AngleEdits[3];
 	const QString AxisNames[3] = { tr("X:"), tr("Y:"), tr("Z:") };
 
 	for (int Axis = 0; Axis < 3; Axis++)
 	{
-		AngleEdits[Axis] = new QDoubleSpinBox(&Dialog);
+		AngleEdits[Axis] = new swRangeDoubleSpinBox(&Dialog);
 		AngleEdits[Axis]->setRange(-360.0, 360.0);
 		AngleEdits[Axis]->setDecimals(2);
-		AngleEdits[Axis]->setSuffix(tr(" deg."));
+		AngleEdits[Axis]->SetReference(tr(" deg."));
 		Layout->addRow(AxisNames[Axis], AngleEdits[Axis]);
 	}
 

@@ -2,6 +2,8 @@
 
 #include "sw_instructions.h"
 
+class swRangeSpinBox;
+
 // File printing and the instructions window print the same instruction pages.
 void swSetupInstructionsPrinter(swInstructions* Instructions, QPrinter* Printer);
 void swPrintInstructions(swInstructions* Instructions, QPrinter* Printer);
@@ -26,8 +28,8 @@ protected:
 	QComboBox* mPrinterComboBox = nullptr;
 	QWidget* mFileRow = nullptr;
 	QLineEdit* mFileEdit = nullptr;
-	QSpinBox* mFromSpinBox = nullptr;
-	QSpinBox* mToSpinBox = nullptr;
-	QSpinBox* mCopiesSpinBox = nullptr;
+	swRangeSpinBox* mFromSpinBox = nullptr;
+	swRangeSpinBox* mToSpinBox = nullptr;
+	swRangeSpinBox* mCopiesSpinBox = nullptr;
 	QToolButton* mCollateButton = nullptr;
 };

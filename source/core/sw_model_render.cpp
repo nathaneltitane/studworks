@@ -31,10 +31,12 @@ void swModel::GetScene(swScene* Scene, const swCamera* ViewCamera, bool AllowHig
 		mPartData->AddRenderMesh(*Scene);
 
 	swPart* FocusPart = nullptr;
+	// selected parts outside the step only show in the interactive view
+	const bool DrawSelected = Scene->GetDrawInterface();
 
 	for (const std::unique_ptr<swPart>& Part : mParts)
 	{
-		if (Part->IsSelected() || Part->IsVisible(mCurrentStep))
+		if ((DrawSelected && Part->IsSelected()) || Part->IsVisible(mCurrentStep))
 		{
 			if (Part->IsFocused())
 				FocusPart = Part.get();
@@ -71,7 +73,7 @@ void swModel::AddSubModelRenderMeshes(swScene* Scene, const swMatrix44& WorldMat
 
 	for (const std::unique_ptr<swPart>& Part : mParts)
 	{
-		const bool Visible = Editing ? (Part->IsSelected() || Part->IsVisible(mCurrentStep)) : Part->IsVisibleInSubModel();
+		const bool Visible = Editing ? ((Scene->GetDrawInterface() && Part->IsSelected()) || Part->IsVisible(mCurrentStep)) : Part->IsVisibleInSubModel();
 
 		if (Visible)
 		{

@@ -69,13 +69,19 @@ void swView::OnDraw()
 
 	mScene->Begin(mCamera->mWorldView);
 
+	if (mOverrideFadeSteps)
+		mScene->SetFadeColor(mFadeStepsColor);
+
+	if (mOverrideHighlightNewParts)
+		mScene->SetHighlightColor(mHighlightNewPartsColor);
+
 	mScene->SetActiveSubmodelInstance(mActiveSubmodelInstance, mActiveSubmodelTransform, GetModelEditingPath());
 	mScene->SetDrawInterface(DrawInterface);
 
 	bool DrawInsertPreview = DrawInterface && std::any_of(mViews.begin(), mViews.end(), [](swView* View){ return View->mTrackTool == swTrackTool::Insert; });
 	mScene->SetDrawInsertPreview(DrawInsertPreview);
 	
-	mModel->GetScene(mScene.get(), mCamera, Preferences.mHighlightNewParts, Preferences.mFadeSteps && mViewType == swViewType::View);
+	mModel->GetScene(mScene.get(), mCamera, mOverrideHighlightNewParts ? mHighlightNewParts : Preferences.mHighlightNewParts, (mOverrideFadeSteps ? mFadeSteps : Preferences.mFadeSteps) && mViewType == swViewType::View);
 
 	mScene->End();
 
@@ -154,7 +160,7 @@ void swView::OnDraw()
 			});
 
 			if (OutlineEnabled && OutlineMasksReady)
-				mContext->DrawOutline(*mOutlineFullFramebuffer, *mOutlineVisibleFramebuffer, mWidget ? mWidget->GetDeviceScale() : mLineWidthScale);
+				mContext->DrawOutline(*mOutlineFullFramebuffer, *mOutlineVisibleFramebuffer, mWidget ? mWidget->GetDeviceScale() : mLineWidthScale, mScene->GetHighlightColor());
 
 			if (OutlineEnabled && !OutlineMasksReady)
 			{

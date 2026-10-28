@@ -476,17 +476,22 @@ public:
 	}
 };
 
-void swSetupPanelSpinBox(QAbstractSpinBox* SpinBox)
+void swSetupSpinBoxSelection(QAbstractSpinBox* SpinBox)
 {
 	// the clicks go to the text inside the spin box
-	if (!SpinBox->property("SelectOnClick").toBool())
-	{
-		SpinBox->setProperty("SelectOnClick", true);
-		swSpinBoxSelectFilter* Filter = new swSpinBoxSelectFilter(SpinBox);
+	if (SpinBox->property("SelectOnClick").toBool())
+		return;
 
-		if (QLineEdit* LineEdit = SpinBox->findChild<QLineEdit*>(QString(), Qt::FindDirectChildrenOnly))
-			LineEdit->installEventFilter(Filter);
-	}
+	SpinBox->setProperty("SelectOnClick", true);
+	swSpinBoxSelectFilter* Filter = new swSpinBoxSelectFilter(SpinBox);
+
+	if (QLineEdit* LineEdit = SpinBox->findChild<QLineEdit*>(QString(), Qt::FindDirectChildrenOnly))
+		LineEdit->installEventFilter(Filter);
+}
+
+void swSetupPanelSpinBox(QAbstractSpinBox* SpinBox)
+{
+	swSetupSpinBoxSelection(SpinBox);
 
 	// Equal stretch gives the boxes of a row the same width whatever their text.
 	QSizePolicy SizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);

@@ -12862,6 +12862,54 @@ Please visit https://library.ldraw.org for information on how to download and in
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">Vlastnosti seznamu dílků</translation>
     </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="317"/>
+        <source>Fade Previous Steps</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Ztlumit předchozí kroky</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="317"/>
+        <source>Tint the parts added in earlier steps with the fade color.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Obarvit díly přidané v dřívějších krocích barvou ztlumení.</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="320"/>
+        <source>Fade Color</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Barva ztlumení</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="320"/>
+        <source>Color tinting the parts added in earlier steps, kept between 85 and 95 percent opaque.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Barva, kterou se obarví díly přidané v dřívějších krocích, udržovaná mezi 85 a 95 procenty krytí.</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="324"/>
+        <source>Highlight New Parts</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Zvýraznit nové díly</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="324"/>
+        <source>Outline the parts added in each step with the highlight color.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Obtáhnout díly přidané v každém kroku barvou zvýraznění.</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="327"/>
+        <source>Highlight Color</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Barva zvýraznění</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="327"/>
+        <source>Color of the outline around the parts added in each step, kept between 85 and 95 percent opaque.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Barva obrysu kolem dílů přidaných v každém kroku, udržovaná mezi 85 a 95 procenty krytí.</translation>
+    </message>
 </context>
 <context>
     <name>swInstructionsUnitButton</name>

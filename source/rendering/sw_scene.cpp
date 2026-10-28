@@ -31,8 +31,8 @@ void swScene::Begin(const swMatrix44& ViewMatrix)
 	mInterfaceObjects.clear();
 
 	const swPreferences& Preferences = swGetPreferences();
-	mHighlightColor = swVector4FromColor(Preferences.mHighlightNewPartsColor);
-	mFadeColor = swVector4FromColor(Preferences.mFadeStepsColor);
+	mHighlightColor = swVector4FromColor(swClampStepColorAlpha(Preferences.mHighlightNewPartsColor));
+	mFadeColor = swVector4FromColor(swClampStepColorAlpha(Preferences.mFadeStepsColor));
 	mHasFadedParts = false;
 	mTranslucentFade = mFadeColor.w != 1.0f;
 }

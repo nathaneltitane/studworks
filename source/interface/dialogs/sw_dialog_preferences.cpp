@@ -315,10 +315,6 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	connect(ui->AxisIconCubeOutlineAlphaSlider, QOverload<int>::of(&QSlider::valueChanged), this, &swPreferencesDialog::AxisIconCubeOutlineAlphaChanged);
 	connect(ui->AxisIconCubeOutlineCheckBox, &QCheckBox::toggled, this, [this]() { AxisIconSizeComboCurrentIndexChanged(ui->AxisIconSizeCombo->currentIndex()); });
 
-	// stud counts read 1 stud and 6 studs inside their boxes
-	for (QSpinBox* SpinBox : { ui->CutawaySizeSpinBox, ui->gridLineSpacing })
-		connect(SpinBox, QOverload<int>::of(&QSpinBox::valueChanged), SpinBox, [SpinBox]() { UpdateStudSuffix(SpinBox); });
-
 	for (swRenderTarget Target : { swRenderTarget::Preview, swRenderTarget::Parts, swRenderTarget::MinifigureBuilder })
 	{
 		const swRenderTargetWidgets Widgets = GetRenderTargetWidgets(Target);
@@ -510,7 +506,9 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	UpdateStudSuffix(ui->CutawaySizeSpinBox);
 	ui->CutawayShadeAlphaSlider->setValue(mOptions->Preferences.mCutawayShadeAlpha);
 	CutawayShadeAlphaChanged();
+	ui->TurntableIdleDurationSpinBox->SetReference(ui->TurntableIdleDurationSpinBox->suffix());
 	ui->TurntableIdleDurationSpinBox->setValue(mOptions->Preferences.mTurntableIdleDuration);
+	ui->TurntableTurnTimeSpinBox->SetReference(ui->TurntableTurnTimeSpinBox->suffix());
 	ui->TurntableTurnTimeSpinBox->setValue(mOptions->Preferences.mTurntableTurnTime);
 	ui->TurntableAxisCombo->setCurrentIndex(static_cast<int>(mOptions->Preferences.mTurntableAxis));
 
@@ -601,6 +599,7 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	ui->HighlightRenderModeLabel->setEnabled(OutlineSupported);
 
 	ui->SelectionOutlineWidth->setRange(SW_SELECTION_OUTLINE_WIDTH_MINIMUM, SW_SELECTION_OUTLINE_WIDTH_MAXIMUM);
+	ui->SelectionOutlineWidth->SetReference(ui->SelectionOutlineWidth->suffix());
 	ui->SelectionOutlineWidth->setValue(mOptions->Preferences.mSelectionOutlineWidth);
 
 	// The width only applies to the outline style.
@@ -1090,6 +1089,13 @@ void swPreferencesDialog::ColorButtonClicked()
 
 	*Color = SW_RGBA(NewColor.red(), NewColor.green(), NewColor.blue(), NewColor.alpha());
 
+	// the highlight and previous steps disappear when they are too transparent
+	if (Button == ui->HighlightNewPartsColor || Button == ui->FadeStepsColor)
+	{
+		*Color = swClampStepColorAlpha(*Color);
+		NewColor.setAlpha(SW_RGBA_ALPHA(*Color));
+	}
+
 	swUpdateColorButton((QToolButton*)Button, NewColor);
 }
 
@@ -1114,11 +1120,10 @@ void swPreferencesDialog::ConditionalLinesCheckBoxToggled()
 	ui->LineWidthLabel->setEnabled(Enable);
 }
 
-// use to name the stud unit after the count, singular for one stud
+// use to show the maximum stud count after the count
 void swPreferencesDialog::UpdateStudSuffix(QSpinBox* SpinBox)
 {
-	QString Text = tr("%n stud(s)", nullptr, SpinBox->value());
-	SpinBox->setSuffix(Text.remove(QString::number(SpinBox->value())));
+	SpinBox->setSuffix(QLatin1String(" / ") + tr("%n stud(s)", nullptr, SpinBox->maximum()));
 }
 
 // use to show the axis icon cube outline alpha beside its slider

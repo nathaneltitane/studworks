@@ -12976,6 +12976,54 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <source>Parts List Properties</source>
         <translation type="vanished">零件列表属性</translation>
     </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="317"/>
+        <source>Fade Previous Steps</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">淡化之前的步骤</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="317"/>
+        <source>Tint the parts added in earlier steps with the fade color.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">用淡化颜色为之前步骤中添加的零件着色。</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="320"/>
+        <source>Fade Color</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">淡化颜色</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="320"/>
+        <source>Color tinting the parts added in earlier steps, kept between 85 and 95 percent opaque.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">为之前步骤中添加的零件着色的颜色，不透明度保持在 85% 到 95% 之间。</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="324"/>
+        <source>Highlight New Parts</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">突出显示新零件</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="324"/>
+        <source>Outline the parts added in each step with the highlight color.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">用突出显示颜色勾勒每个步骤中添加的零件。</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="327"/>
+        <source>Highlight Color</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">突出显示颜色</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="327"/>
+        <source>Color of the outline around the parts added in each step, kept between 85 and 95 percent opaque.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">每个步骤中添加的零件周围轮廓的颜色，不透明度保持在 85% 到 95% 之间。</translation>
+    </message>
 </context>
 <context>
     <name>swInstructionsUnitButton</name>

@@ -258,8 +258,13 @@ swInstructionsProperties swInstructions::CreateDefaultProperties()
 	Properties[static_cast<int>(swInstructionsPropertyType::PLIAlignment)].Value = static_cast<int>(swPartsListAlignment::End);
 	// step and cover models render in perspective whatever the model view shows
 	Properties[static_cast<int>(swInstructionsPropertyType::ModelProjection)].Value = static_cast<int>(swCameraProjection::Perspective);
+	// the parts new to a step are outlined in a nearly opaque yellow
+	Properties[static_cast<int>(swInstructionsPropertyType::FadePreviousSteps)].Value = true;
+	Properties[static_cast<int>(swInstructionsPropertyType::FadeColor)].Value = SW_RGBA(128, 128, 128, 217);
+	Properties[static_cast<int>(swInstructionsPropertyType::HighlightNewParts)].Value = true;
+	Properties[static_cast<int>(swInstructionsPropertyType::HighlightColor)].Value = SW_RGBA(255, 242, 0, 230);
 
-	static_assert(static_cast<int>(swInstructionsPropertyType::Count) == 93, "Missing default property");
+	static_assert(static_cast<int>(swInstructionsPropertyType::Count) == 97, "Missing default property");
 
 	return Properties;
 }

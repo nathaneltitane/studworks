@@ -32,6 +32,7 @@ HEADERS += \
 	$$PWD/sw_widget_properties.h \
 	$$PWD/sw_widget_selection_part.h \
 	$$PWD/sw_widget_selection_part_popup.h \
+	$$PWD/sw_widget_spin_box.h \
 	$$PWD/sw_widget_spin_box_double.h \
 	$$PWD/sw_widget_spinner.h \
 	$$PWD/sw_widget_timeline.h

@@ -13360,6 +13360,54 @@ Please visit https://library.ldraw.org for information on how to download and in
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="obsolete">Властивості списку деталей</translation>
     </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="317"/>
+        <source>Fade Previous Steps</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Затінювати попередні кроки</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="317"/>
+        <source>Tint the parts added in earlier steps with the fade color.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Забарвлювати деталі, додані на попередніх кроках, кольором затінення.</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="320"/>
+        <source>Fade Color</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Колір затінення</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="320"/>
+        <source>Color tinting the parts added in earlier steps, kept between 85 and 95 percent opaque.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Колір забарвлення деталей, доданих на попередніх кроках, з непрозорістю від 85 до 95 відсотків.</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="324"/>
+        <source>Highlight New Parts</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Виділяти нові деталі</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="324"/>
+        <source>Outline the parts added in each step with the highlight color.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Обводити деталі, додані на кожному кроці, кольором виділення.</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="327"/>
+        <source>Highlight Color</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Колір виділення</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="327"/>
+        <source>Color of the outline around the parts added in each step, kept between 85 and 95 percent opaque.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Колір контуру навколо деталей, доданих на кожному кроці, з непрозорістю від 85 до 95 відсотків.</translation>
+    </message>
 </context>
 <context>
     <name>swInstructionsUnitButton</name>

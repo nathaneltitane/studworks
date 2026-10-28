@@ -1,15 +1,16 @@
 #pragma once
 
 #include "sw_instructions.h"
+#include "sw_widget_spin_box.h"
 
 class swCollapsibleWidgetButton;
 
 // the length arrows move to the next whole increment so converted lengths line up with the unit
-class swInstructionsLengthSpinBox : public QDoubleSpinBox
+class swInstructionsLengthSpinBox : public swRangeDoubleSpinBox
 {
 public:
 	explicit swInstructionsLengthSpinBox(QWidget* Parent)
-		: QDoubleSpinBox(Parent)
+		: swRangeDoubleSpinBox(Parent)
 	{
 		// a typed value applies after a short pause, clicking the page does not take the focus
 		mApplyTimer.setSingleShot(true);
@@ -27,46 +28,7 @@ public:
 		setValue((Base + Steps) * Step);
 	}
 
-	// numbers beyond the range stay while typing and are clamped once applied
-	QValidator::State validate(QString& Text, int& Position) const override
-	{
-		const QValidator::State State = QDoubleSpinBox::validate(Text, Position);
-
-		if (State != QValidator::Invalid)
-			return State;
-
-		bool Valid = false;
-		GetTypedValue(Text, Valid);
-
-		return Valid ? QValidator::Intermediate : QValidator::Invalid;
-	}
-
-	void fixup(QString& Text) const override
-	{
-		bool Valid = false;
-		const double Value = GetTypedValue(Text, Valid);
-
-		if (Valid)
-			Text = prefix() + textFromValue(qBound(minimum(), Value, maximum())) + suffix();
-		else
-			QDoubleSpinBox::fixup(Text);
-	}
-
 protected:
-	// use to read the typed number without the prefix and suffix
-	double GetTypedValue(const QString& Text, bool& Valid) const
-	{
-		QString Number = Text;
-
-		if (!prefix().isEmpty() && Number.startsWith(prefix()))
-			Number.remove(0, prefix().size());
-
-		if (!suffix().isEmpty() && Number.endsWith(suffix()))
-			Number.chop(suffix().size());
-
-		return locale().toDouble(Number.trimmed(), &Valid);
-	}
-
 	QTimer mApplyTimer;
 };
 

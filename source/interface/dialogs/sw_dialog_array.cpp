@@ -7,6 +7,11 @@ swArrayDialog::swArrayDialog(QWidget* Parent)
 	: QDialog(Parent), ui(new Ui::swArrayDialog)
 {
 	ui->setupUi(this);
+
+	// the counts show their maximum
+	for (swRangeSpinBox* SpinBox : { ui->count1, ui->count2, ui->count3 })
+		SpinBox->SetReference();
+
 	swSetupDialogHelp(this, ui->buttonBox);
 
 	ui->offset1x->setValidator(new QDoubleValidator(ui->offset1x));

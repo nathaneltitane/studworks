@@ -13188,6 +13188,54 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="obsolete">Propriedades da lista de peças</translation>
     </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="317"/>
+        <source>Fade Previous Steps</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Esmaecer passos anteriores</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="317"/>
+        <source>Tint the parts added in earlier steps with the fade color.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Tingir as peças adicionadas em passos anteriores com a cor de esmaecimento.</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="320"/>
+        <source>Fade Color</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Cor de esmaecimento</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="320"/>
+        <source>Color tinting the parts added in earlier steps, kept between 85 and 95 percent opaque.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Cor que tinge as peças adicionadas em passos anteriores, mantida entre 85 e 95 por cento de opacidade.</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="324"/>
+        <source>Highlight New Parts</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Destacar peças novas</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="324"/>
+        <source>Outline the parts added in each step with the highlight color.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Contornar as peças adicionadas em cada passo com a cor de destaque.</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="327"/>
+        <source>Highlight Color</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Cor de destaque</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="327"/>
+        <source>Color of the outline around the parts added in each step, kept between 85 and 95 percent opaque.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Cor do contorno em volta das peças adicionadas em cada passo, mantida entre 85 e 95 por cento de opacidade.</translation>
+    </message>
 </context>
 <context>
     <name>swInstructionsUnitButton</name>

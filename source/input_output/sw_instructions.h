@@ -142,6 +142,10 @@ enum class swInstructionsPropertyType
 	PLILayout,
 	PLIAlignment,
 	ModelProjection,
+	FadePreviousSteps,
+	FadeColor,
+	HighlightNewParts,
+	HighlightColor,
 	Count
 };
 

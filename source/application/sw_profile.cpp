@@ -58,9 +58,9 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Settings", "AllowLOD", true),                                                          // SW_PROFILE_ALLOW_LOD
 	swProfileEntry("Settings", "LODDistance", 750.0f),                                                     // SW_PROFILE_LOD_DISTANCE
 	swProfileEntry("Settings", "FadeSteps", false),                                                        // SW_PROFILE_FADE_STEPS
-	swProfileEntry("Settings", "FadeStepsColor", SW_RGBA(128, 128, 128, 128)),                             // SW_PROFILE_FADE_STEPS_COLOR
+	swProfileEntry("Settings", "FadeStepsColor", SW_RGBA(128, 128, 128, 217)),                             // SW_PROFILE_FADE_STEPS_COLOR
 	swProfileEntry("Settings", "HighlightNewParts", 0),                                                   // SW_PROFILE_HIGHLIGHT_NEW_PARTS
-	swProfileEntry("Settings", "HighlightNewPartsColor", SW_RGBA(255, 242, 0, 192)),                      // SW_PROFILE_HIGHLIGHT_NEW_PARTS_COLOR
+	swProfileEntry("Settings", "HighlightNewPartsColor", SW_RGBA(255, 242, 0, 230)),                      // SW_PROFILE_HIGHLIGHT_NEW_PARTS_COLOR
 	swProfileEntry("Settings", "ShadingMode", static_cast<int>(swShadingMode::DefaultLights)),             // SW_PROFILE_SHADING_MODE
 	swProfileEntry("Settings", "LightingStyle", static_cast<int>(swLightingStyle::Standard)),               // SW_PROFILE_LIGHTING_STYLE
 	swProfileEntry("Settings", "HighlightRenderMode", static_cast<int>(swHighlightRenderMode::Outline)),      // SW_PROFILE_HIGHLIGHT_RENDER_MODE

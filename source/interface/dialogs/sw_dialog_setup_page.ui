@@ -48,7 +48,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QDoubleSpinBox" name="WidthSpinBox"/>
+       <widget class="swRangeDoubleSpinBox" name="WidthSpinBox"/>
       </item>
       <item row="1" column="2">
        <widget class="QLabel" name="HeightLabel">
@@ -61,7 +61,7 @@
        </widget>
       </item>
       <item row="1" column="3">
-       <widget class="QDoubleSpinBox" name="HeightSpinBox"/>
+       <widget class="swRangeDoubleSpinBox" name="HeightSpinBox"/>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="UnitsLabel">
@@ -138,7 +138,7 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QDoubleSpinBox" name="LeftSpinBox"/>
+       <widget class="swRangeDoubleSpinBox" name="LeftSpinBox"/>
       </item>
       <item row="0" column="2">
        <widget class="QLabel" name="RightLabel">
@@ -151,7 +151,7 @@
        </widget>
       </item>
       <item row="0" column="3">
-       <widget class="QDoubleSpinBox" name="RightSpinBox"/>
+       <widget class="swRangeDoubleSpinBox" name="RightSpinBox"/>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="TopLabel">
@@ -164,7 +164,7 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QDoubleSpinBox" name="TopSpinBox"/>
+       <widget class="swRangeDoubleSpinBox" name="TopSpinBox"/>
       </item>
       <item row="1" column="2">
        <widget class="QLabel" name="BottomLabel">
@@ -177,7 +177,7 @@
        </widget>
       </item>
       <item row="1" column="3">
-       <widget class="QDoubleSpinBox" name="BottomSpinBox"/>
+       <widget class="swRangeDoubleSpinBox" name="BottomSpinBox"/>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="MarginUnitsLabel">
@@ -211,6 +211,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>swRangeDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>sw_widget_spin_box.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>PresetComboBox</tabstop>
   <tabstop>WidthSpinBox</tabstop>

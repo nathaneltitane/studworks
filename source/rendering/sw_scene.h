@@ -163,6 +163,22 @@ public:
 	void DrawSelectionMask(swContext* Context) const;
 	void DrawHighlightMask(swContext* Context) const;
 	void DrawOutlineOccluders(swContext* Context) const;
+	void SetHighlightColor(quint32 HighlightColor)
+	{
+		mHighlightColor = swVector4FromColor(swClampStepColorAlpha(HighlightColor));
+	}
+
+	void SetFadeColor(quint32 FadeColor)
+	{
+		mFadeColor = swVector4FromColor(swClampStepColorAlpha(FadeColor));
+		mTranslucentFade = mFadeColor.w != 1.0f;
+	}
+
+	const swVector4& GetHighlightColor() const
+	{
+		return mHighlightColor;
+	}
+
 	void SetHighlightRenderMode(swHighlightRenderMode HighlightRenderMode)
 	{
 		mHighlightRenderMode = HighlightRenderMode;

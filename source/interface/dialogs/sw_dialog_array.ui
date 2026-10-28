@@ -31,7 +31,7 @@
         <item row="0" column="0">
          <layout class="QGridLayout" name="gridLayout_9">
           <item row="2" column="0">
-           <widget class="QSpinBox" name="count3">
+           <widget class="swRangeSpinBox" name="count3">
             <property name="toolTip">
              <string>Number of positions in dimension 3, including the original.</string>
             </property>
@@ -47,7 +47,7 @@
            </widget>
           </item>
           <item row="0" column="0">
-           <widget class="QSpinBox" name="count1">
+           <widget class="swRangeSpinBox" name="count1">
             <property name="toolTip">
              <string>Number of positions in dimension 1, including the original.</string>
             </property>
@@ -63,7 +63,7 @@
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QSpinBox" name="count2">
+           <widget class="swRangeSpinBox" name="count2">
             <property name="toolTip">
              <string>Number of positions in dimension 2, including the original.</string>
             </property>
@@ -301,6 +301,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>swRangeSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>sw_widget_spin_box.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>count1</tabstop>
   <tabstop>offset1x</tabstop>

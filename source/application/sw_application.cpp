@@ -63,9 +63,9 @@ void swPreferences::LoadDefaults()
 	mAllowLOD = swGetProfileInteger(SW_PROFILE_ALLOW_LOD);
 	mMeshLODDistance = swGetProfileFloat(SW_PROFILE_LOD_DISTANCE);
 	mFadeSteps = swGetProfileInteger(SW_PROFILE_FADE_STEPS);
-	mFadeStepsColor = swGetProfileUnsignedInteger(SW_PROFILE_FADE_STEPS_COLOR);
+	mFadeStepsColor = swClampStepColorAlpha(swGetProfileUnsignedInteger(SW_PROFILE_FADE_STEPS_COLOR));
 	mHighlightNewParts = swGetProfileInteger(SW_PROFILE_HIGHLIGHT_NEW_PARTS);
-	mHighlightNewPartsColor = swGetProfileUnsignedInteger(SW_PROFILE_HIGHLIGHT_NEW_PARTS_COLOR);
+	mHighlightNewPartsColor = swClampStepColorAlpha(swGetProfileUnsignedInteger(SW_PROFILE_HIGHLIGHT_NEW_PARTS_COLOR));
 	mDrawGridStuds = swGetProfileInteger(SW_PROFILE_GRID_STUDS);
 	mGridStudColor = swGetProfileUnsignedInteger(SW_PROFILE_GRID_STUD_COLOR);
 	mDrawGridLines = swGetProfileInteger(SW_PROFILE_GRID_LINES);

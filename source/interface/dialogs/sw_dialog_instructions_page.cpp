@@ -44,26 +44,34 @@ bool swGetElementKey(const QGraphicsItem* Item, swInstructionsElementKey& Key)
 	return true;
 }
 
-// use to snap a dragged element to the page grid, the grid starts at the corner of its area
+// use to snap a dragged element to the page grid and keep every element within the page margins, the grid starts at the corner of its area
 static QVariant swSnapItemPosition(const QGraphicsItem* Item, const swInstructions* Instructions, const QVariant& Value)
 {
 	const QGraphicsScene* Scene = Item->scene();
-
-	// only dragging snaps, building the page keeps the exact placements
-	if (!Instructions->IsSnapToGrid() || !Scene || !Scene->mouseGrabberItem())
-		return Value;
-
 	const QGraphicsItem* Parent = Item->parentItem();
 	const QPointF Position = Value.toPointF();
-	const QPointF ScenePosition = Parent ? Parent->mapToScene(Position) : Position;
-	const QPointF Origin = Instructions->GetGridRect().topLeft();
-	const qreal GridSize = Instructions->GetGridSnapSize();
+	QPointF ScenePosition = Parent ? Parent->mapToScene(Position) : Position;
 
-	const QPointF Snapped = Origin + QPointF(qRound((ScenePosition.x() - Origin.x()) / GridSize) * GridSize, qRound((ScenePosition.y() - Origin.y()) / GridSize) * GridSize);
+	// only dragging snaps, building the page keeps the exact placements
+	if (Instructions->IsSnapToGrid() && Scene && Scene->mouseGrabberItem())
+	{
+		const QPointF Origin = Instructions->GetGridRect().topLeft();
+		const qreal GridSize = Instructions->GetGridSnapSize();
 
-	return Parent ? Parent->mapFromScene(Snapped) : Snapped;
+		ScenePosition = Origin + QPointF(qRound((ScenePosition.x() - Origin.x()) / GridSize) * GridSize, qRound((ScenePosition.y() - Origin.y()) / GridSize) * GridSize);
+	}
+
+	// an element larger than the margins keeps its top left corner on them
+	const swInstructionsPageSetup& PageSetup = Instructions->mPageSetup;
+	const QRectF ItemRect = Item->boundingRect();
+	const QPointF MarginsMin = QPointF(PageSetup.MarginLeft, PageSetup.MarginTop) - ItemRect.topLeft();
+	const QPointF MarginsMax = QPointF(PageSetup.Width - PageSetup.MarginRight, PageSetup.Height - PageSetup.MarginBottom) - ItemRect.bottomRight();
+
+	ScenePosition.setX(qMax(MarginsMin.x(), qMin(ScenePosition.x(), MarginsMax.x())));
+	ScenePosition.setY(qMax(MarginsMin.y(), qMin(ScenePosition.y(), MarginsMax.y())));
+
+	return Parent ? Parent->mapFromScene(ScenePosition) : ScenePosition;
 }
-
 
 // the movable elements are dragged on the page and snap to its grid
 constexpr QGraphicsItem::GraphicsItemFlags SW_MOVABLE_ITEM_FLAGS = QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsFocusable | QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemSendsGeometryChanges;
@@ -192,6 +200,15 @@ void swInstructionsStepImageItem::Update()
 	const int Height = qRound(mHeight * Scale);
 	View.SetSize(Width, Height);
 	View.SetLineWidthScale(Scale);
+
+	// the cover shows the finished model, the steps fade their earlier parts and outline their new parts
+	const bool FadeSteps = !mCoverImage && mInstructions->GetBoolProperty(swInstructionsPropertyType::FadePreviousSteps, mModel, mStep);
+	const QColor FadeColor = mInstructions->GetColorProperty(swInstructionsPropertyType::FadeColor, mModel, mStep);
+	View.SetFadeStepsOverride(FadeSteps, swRGBAFromQColor(FadeColor));
+
+	const bool HighlightNewParts = !mCoverImage && mInstructions->GetBoolProperty(swInstructionsPropertyType::HighlightNewParts, mModel, mStep);
+	const QColor HighlightColor = mInstructions->GetColorProperty(swInstructionsPropertyType::HighlightColor, mModel, mStep);
+	View.SetHighlightNewPartsOverride(HighlightNewParts, swRGBAFromQColor(HighlightColor));
 
 	// Work on a copy of the main view camera, fitting the image must not move a model camera.
 	View.SetCamera(View.GetCamera(), true);
@@ -1327,16 +1344,15 @@ void swUpdateInstructionsPageScene(swInstructions* Instructions, const swInstruc
 
 	QRectF MarginsRect(PageSetup.MarginLeft, PageSetup.MarginTop, PageSetup.Width - PageSetup.MarginLeft - PageSetup.MarginRight, PageSetup.Height - PageSetup.MarginTop - PageSetup.MarginBottom);
 
-	// pages with steps and the bill of materials are numbered unless all pages are, placed halfway into the margins so it stays clear of the steps
+	// pages with steps and the bill of materials are numbered unless all pages are, placed within the margins like every element
 	const bool PageHasContent = (Page->Type == swInstructionsPageType::Steps && !Page->Steps.empty()) || Page->Type == swInstructionsPageType::BillOfMaterials || Instructions->GetBoolProperty(swInstructionsPropertyType::ShowPageNumberAllPages, nullptr, 0);
 
 	if (PageHasContent && Instructions->GetBoolProperty(swInstructionsPropertyType::ShowPageNumber, nullptr, 0))
 	{
-		const QRectF NumberRect(PageSetup.MarginLeft / 2.0, PageSetup.MarginTop / 2.0, PageSetup.Width - (PageSetup.MarginLeft + PageSetup.MarginRight) / 2.0, PageSetup.Height - (PageSetup.MarginTop + PageSetup.MarginBottom) / 2.0);
 		swInstructionsPageNumberItem* PageNumberItem = new swInstructionsPageNumberItem(PageItem, Instructions, PageIndex);
 
 		const int Placement = swGetValidPlacement(Instructions->GetIntProperty(swInstructionsPropertyType::PageNumberPlacement, nullptr, 0), true);
-		swPlaceElement(PageNumberItem, Instructions, swGetPlacementPosition(NumberRect, PageNumberItem->boundingRect().size(), Placement));
+		swPlaceElement(PageNumberItem, Instructions, swGetPlacementPosition(MarginsRect, PageNumberItem->boundingRect().size(), Placement));
 	}
 
 	if (Page->Type != swInstructionsPageType::Blank)

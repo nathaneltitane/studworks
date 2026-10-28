@@ -12722,6 +12722,54 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
         <source>Parts List Properties</source>
         <translation type="vanished">Свойства списка деталей</translation>
     </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="317"/>
+        <source>Fade Previous Steps</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Затенять предыдущие шаги</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="317"/>
+        <source>Tint the parts added in earlier steps with the fade color.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Окрашивать детали, добавленные на предыдущих шагах, цветом затенения.</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="320"/>
+        <source>Fade Color</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Цвет затенения</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="320"/>
+        <source>Color tinting the parts added in earlier steps, kept between 85 and 95 percent opaque.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Цвет окраски деталей, добавленных на предыдущих шагах, с непрозрачностью от 85 до 95 процентов.</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="324"/>
+        <source>Highlight New Parts</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Выделять новые детали</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="324"/>
+        <source>Outline the parts added in each step with the highlight color.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Обводить детали, добавленные на каждом шаге, цветом выделения.</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="327"/>
+        <source>Highlight Color</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Цвет выделения</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_instructions_properties.cpp" line="327"/>
+        <source>Color of the outline around the parts added in each step, kept between 85 and 95 percent opaque.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Цвет контура вокруг деталей, добавленных на каждом шаге, с непрозрачностью от 85 до 95 процентов.</translation>
+    </message>
 </context>
 <context>
     <name>swInstructionsUnitButton</name>

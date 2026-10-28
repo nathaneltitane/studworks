@@ -313,6 +313,20 @@ void swInstructionsPropertiesWidget::CreateWidgets()
 	CreateChoiceEditor(swInstructionsPropertyType::ModelProjection, tr("Model Projection"), tr("Show the step and cover models in perspective or orthographic, whatever the model view shows."), { tr("Perspective"), tr("Orthographic") });
 	AddEditorRow(CategoryIndex::Document, swInstructionsPropertyType::ModelProjection);
 
+	AddRow(CategoryIndex::Document, {
+		CreateToggleEditor(swInstructionsPropertyType::FadePreviousSteps, tr("Fade Previous Steps"), tr("Tint the parts added in earlier steps with the fade color."))
+	});
+
+	CreateColorEditor(swInstructionsPropertyType::FadeColor, tr("Fade Color"), tr("Color tinting the parts added in earlier steps, kept between 85 and 95 percent opaque."));
+	AddEditorRow(CategoryIndex::Document, swInstructionsPropertyType::FadeColor);
+
+	AddRow(CategoryIndex::Document, {
+		CreateToggleEditor(swInstructionsPropertyType::HighlightNewParts, tr("Highlight New Parts"), tr("Outline the parts added in each step with the highlight color."))
+	});
+
+	CreateColorEditor(swInstructionsPropertyType::HighlightColor, tr("Highlight Color"), tr("Color of the outline around the parts added in each step, kept between 85 and 95 percent opaque."));
+	AddEditorRow(CategoryIndex::Document, swInstructionsPropertyType::HighlightColor);
+
 	AddCategory(CategoryIndex::Cover, tr("Cover Page"), tr("<p><b>Cover Page</b></p><p>The first page, showing the model title, its author and the finished model. The title comes from the model description, or its name when there is none, the author from the model properties.</p>"));
 
 	AddRow(CategoryIndex::Cover, {
@@ -397,9 +411,9 @@ void swInstructionsPropertiesWidget::CreateWidgets()
 
 	auto CreatePageLayoutSpinBox = [this](const QString& Name, const QString& ToolTip)
 	{
-		QSpinBox* SpinBox = new QSpinBox(this);
+		swRangeSpinBox* SpinBox = new swRangeSpinBox(this);
 		SpinBox->setRange(1, 10);
-		SpinBox->setSuffix(QString(" / %1").arg(SpinBox->maximum()));
+		SpinBox->SetReference();
 		SpinBox->setToolTip(ToolTip);
 		SpinBox->setWhatsThis(ToolTip);
 		SpinBox->setAccessibleName(Name);
@@ -800,7 +814,11 @@ void swInstructionsPropertiesWidget::ColorButtonClicked(swInstructionsPropertyTy
 	QToolButton* Button = qobject_cast<QToolButton*>(mEditors[static_cast<int>(Type)].Widget);
 
 	// backgrounds can be transparent so the picker edits the alpha channel too
-	const QColor SelectedColor = swPickColor(Button, GetColorValue(Type));
+	QColor SelectedColor = swPickColor(Button, GetColorValue(Type));
+
+	// the highlight and fade disappear when they are too transparent
+	if (SelectedColor.isValid() && (Type == swInstructionsPropertyType::HighlightColor || Type == swInstructionsPropertyType::FadeColor))
+		SelectedColor = swQColorFromRGBA(swClampStepColorAlpha(swRGBAFromQColor(SelectedColor)));
 
 	if (SelectedColor.isValid())
 		SetColorValue(Type, SelectedColor);

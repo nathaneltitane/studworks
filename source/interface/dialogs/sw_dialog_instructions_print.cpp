@@ -4,6 +4,7 @@
 #include "sw_project.h"
 #include "sw_model.h"
 #include "sw_window_utilities.h"
+#include "sw_widget_spin_box.h"
 #include <QPrinterInfo>
 
 swInstructionsPrintWidget::swInstructionsPrintWidget(QWidget* Parent, swInstructions* Instructions)
@@ -39,7 +40,7 @@ swInstructionsPrintWidget::swInstructionsPrintWidget(QWidget* Parent, swInstruct
 
 	auto CreateSpinBox = [SetupEdit](QWidget* Row, const QString& Name, const QString& ToolTip)
 	{
-		QSpinBox* SpinBox = new QSpinBox(Row);
+		swRangeSpinBox* SpinBox = new swRangeSpinBox(Row);
 		SetupEdit(SpinBox, Name, ToolTip);
 		swSetupPanelSpinBox(SpinBox);
 		static_cast<QHBoxLayout*>(Row->layout())->addWidget(SpinBox, 1);
@@ -93,6 +94,7 @@ swInstructionsPrintWidget::swInstructionsPrintWidget(QWidget* Parent, swInstruct
 
 	mCopiesSpinBox = CreateSpinBox(CopiesRow, tr("Copies"), tr("The number of copies to print."));
 	mCopiesSpinBox->setRange(1, 999);
+	mCopiesSpinBox->SetReference();
 	CopiesLabel->setBuddy(mCopiesSpinBox);
 
 	mCollateButton = new QToolButton(CopiesRow);
@@ -188,6 +190,8 @@ void swInstructionsPrintWidget::UpdatePages()
 
 	mFromSpinBox->setRange(1, PageCount);
 	mToSpinBox->setRange(1, PageCount);
+	mFromSpinBox->SetReference();
+	mToSpinBox->SetReference();
 
 	if (LastPage)
 		mToSpinBox->setValue(PageCount);

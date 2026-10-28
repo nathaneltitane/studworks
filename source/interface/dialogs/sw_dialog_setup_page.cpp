@@ -123,7 +123,7 @@ void swPageSetupDialog::accept()
 
 void swPageSetupDialog::UpdateSpinBoxes()
 {
-	auto SetValue = [](QDoubleSpinBox* SpinBox, swInstructionsPageUnits Units, float Points, float Minimum)
+	auto SetValue = [](swRangeDoubleSpinBox* SpinBox, swInstructionsPageUnits Units, float Points, float Minimum)
 	{
 		const float Scale = swGetPageUnitScale(Units);
 		const int Decimals = Units == swInstructionsPageUnits::Pixels ? 0 : Units == swInstructionsPageUnits::Millimeters ? 1 : 2;
@@ -131,8 +131,8 @@ void swPageSetupDialog::UpdateSpinBoxes()
 
 		QSignalBlocker Blocker(SpinBox);
 		SpinBox->setDecimals(Decimals);
-		SpinBox->setSuffix(Suffix);
 		SpinBox->setRange(Minimum / Scale, 100000.0 / Scale);
+		SpinBox->SetReference(Suffix);
 		SpinBox->setSingleStep(Decimals == 0 ? 10.0 : Decimals == 1 ? 1.0 : 0.1);
 		SpinBox->setValue(Points / Scale);
 	};

@@ -2,6 +2,7 @@
 #include "sw_widget_properties.h"
 #include "sw_widget_keyframe.h"
 #include "sw_widget_spin_box_double.h"
+#include "sw_widget_spin_box.h"
 #include "sw_object.h"
 #include "sw_object_part.h"
 #include "sw_object_camera.h"
@@ -1130,11 +1131,12 @@ swDoubleSpinBox* swPropertiesWidget::CreateFloatEditor(swObjectPropertyId Proper
 
 QSpinBox* swPropertiesWidget::CreateIntegerEditor(swObjectPropertyId PropertyId, const QString& Name, const QString& ToolTip, int Min, int Max)
 {
-	QSpinBox* Widget = new QSpinBox(this);
+	swRangeSpinBox* Widget = new swRangeSpinBox(this);
 	RegisterEditor(PropertyId, Widget, Name, ToolTip);
 
 	Widget->setRange(Min, Max);
 	Widget->setPrefix(Name + QLatin1Char(' '));
+	Widget->SetReference();
 	swSetupPanelSpinBox(Widget);
 
 	// Applied on every change like the other value boxes, so the arrows take effect at once.

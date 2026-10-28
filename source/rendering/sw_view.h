@@ -220,6 +220,22 @@ public:
 		mBackgroundColor = BackgroundColor;
 	}
 
+	// use to fade previous steps by the instructions settings instead of the preferences
+	void SetFadeStepsOverride(bool FadeSteps, quint32 FadeColor)
+	{
+		mOverrideFadeSteps = true;
+		mFadeSteps = FadeSteps;
+		mFadeStepsColor = FadeColor;
+	}
+
+	// use to highlight new parts by the instructions settings instead of the preferences
+	void SetHighlightNewPartsOverride(bool HighlightNewParts, quint32 HighlightColor)
+	{
+		mOverrideHighlightNewParts = true;
+		mHighlightNewParts = HighlightNewParts;
+		mHighlightNewPartsColor = HighlightColor;
+	}
+
 	// use to keep the lines as wide as at the normal size when rendering larger images
 	void SetLineWidthScale(float LineWidthScale)
 	{
@@ -447,6 +463,12 @@ protected:
 	QSize mOutlineAttemptSize;
 	QPointer<QOpenGLContext> mOutlineGLContext;
 	bool mOverrideBackgroundColor = false;
+	bool mOverrideFadeSteps = false;
+	bool mFadeSteps = false;
+	quint32 mFadeStepsColor = 0;
+	bool mOverrideHighlightNewParts = false;
+	bool mHighlightNewParts = false;
+	quint32 mHighlightNewPartsColor = 0;
 	float mLineWidthScale = 1.0f;
 	bool mDrawViewportBorder = true;
 	quint32 mBackgroundColor = 0;

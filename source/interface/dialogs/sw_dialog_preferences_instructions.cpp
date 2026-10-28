@@ -101,7 +101,7 @@ void swPreferencesDialog::CreateInstructionsTab()
 	mInstructionsSnapToGrid = CreateCheckBox(GridGroup, tr("Snap to Grid"), tr("Snap dragged elements to the grid of new instructions."), Instructions.SnapToGrid);
 	GridLayout->addRow(mInstructionsSnapToGrid);
 
-	mInstructionsGridSize = new QDoubleSpinBox(GridGroup);
+	mInstructionsGridSize = new swInstructionsLengthSpinBox(GridGroup);
 	mInstructionsGridSize->setToolTip(tr("Main unit of the grid drawn with the primary color, in the margin units of the default page setup."));
 	mInstructionsGridSize->setAccessibleName(tr("Grid Size"));
 	QLabel* GridSizeLabel = new QLabel(tr("Grid Size"), GridGroup);
@@ -109,7 +109,7 @@ void swPreferencesDialog::CreateInstructionsTab()
 	GridSizeLabel->setToolTip(mInstructionsGridSize->toolTip());
 	GridLayout->addRow(GridSizeLabel, mInstructionsGridSize);
 
-	mInstructionsGridDivisions = new QSpinBox(GridGroup);
+	mInstructionsGridDivisions = new swRangeSpinBox(GridGroup);
 	mInstructionsGridDivisions->setRange(1, SW_GRID_DIVISIONS_MAXIMUM);
 	mInstructionsGridDivisions->setPrefix(QLatin1String("1/"));
 	mInstructionsGridDivisions->setValue(Instructions.GridDivisions);

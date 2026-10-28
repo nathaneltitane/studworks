@@ -850,7 +850,7 @@
            </widget>
           </item>
           <item row="3" column="1">
-           <widget class="QSpinBox" name="SelectionOutlineWidth">
+           <widget class="swRangeSpinBox" name="SelectionOutlineWidth">
             <property name="accessibleName">
              <string>Outline Width</string>
             </property>
@@ -1509,7 +1509,7 @@
            </widget>
           </item>
           <item row="0" column="1" colspan="2">
-           <widget class="QSpinBox" name="CutawaySizeSpinBox">
+           <widget class="swRangeSpinBox" name="CutawaySizeSpinBox">
             <property name="accessibleName">
              <string>Cutaway Size</string>
             </property>
@@ -1627,7 +1627,7 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QSpinBox" name="TurntableIdleDurationSpinBox">
+           <widget class="swRangeSpinBox" name="TurntableIdleDurationSpinBox">
             <property name="accessibleName">
              <string>Turntable Idle Duration</string>
             </property>
@@ -1665,7 +1665,7 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QSpinBox" name="TurntableTurnTimeSpinBox">
+           <widget class="swRangeSpinBox" name="TurntableTurnTimeSpinBox">
             <property name="accessibleName">
              <string>Turntable Turn Duration</string>
             </property>
@@ -1741,7 +1741,7 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QSpinBox" name="gridLineSpacing">
+           <widget class="swRangeSpinBox" name="gridLineSpacing">
             <property name="accessibleName">
              <string>Grid Line Spacing</string>
             </property>
@@ -3803,6 +3803,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>swRangeSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>sw_widget_spin_box.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>tabWidget</tabstop>
   <tabstop>partsLibrary</tabstop>

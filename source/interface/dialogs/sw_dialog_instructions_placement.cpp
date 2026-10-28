@@ -545,7 +545,7 @@ swInstructionsGridWidget::swInstructionsGridWidget(QWidget* Parent, swInstructio
 	QLabel* GridDivisionsLabel = new QLabel(tr("Divisions"), GridDivisionsRow);
 	GridDivisionsRowLayout->addWidget(GridDivisionsLabel);
 
-	mGridDivisionsSpinBox = new QSpinBox(GridDivisionsRow);
+	mGridDivisionsSpinBox = new swRangeSpinBox(GridDivisionsRow);
 	mGridDivisionsSpinBox->setRange(1, SW_GRID_DIVISIONS_MAXIMUM);
 	mGridDivisionsSpinBox->setPrefix(QLatin1String("1/"));
 	mGridDivisionsSpinBox->setToolTip(tr("Split each grid unit into fractions drawn with the secondary color, dragged elements snap to the fractions."));
