@@ -126,6 +126,7 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
   <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/interface-menu-options-preview.png" alt="Preview options" align="top">
   <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/interface-menu-options-parts.png" alt="Parts options" align="top">
   <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/interface-menu-options-colors.png" alt="Colors options" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/interface-menu-options-minifigure-builder.png" alt="Minifigure Builder options" align="top">
 
   </details>
 
@@ -154,6 +155,8 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
   - Parts panel snaps to whole thumbnail tiles and rows, docked or floating, and its categories to the longest name
   - Part categories turned on and off with a checkbox
   - Theme-aware Blender icons and cursors, with axis cursors for moving and rotating
+
+  ![Selected part in the main window](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/interface-main-window-selection.png)
 
   <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/panel-preview.png" alt="Preview panel" align="top">
   <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/panel-parts.png" alt="Parts panel" align="top">
@@ -208,7 +211,8 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
   ![Instructions window](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/instructions-window.png)
 
   <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/instructions-panel-properties.png" alt="Properties panel" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/instructions-panel-grid-placement.png" alt="Grid and Placement panels" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/instructions-panel-grid.png" alt="Grid panel" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/instructions-panel-placement.png" alt="Placement panel" align="top">
   <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/instructions-panel-print.png" alt="Print panel" align="top">
   <img src="https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/instructions-panel-editor.png" alt="Editor panel" align="top">
 
