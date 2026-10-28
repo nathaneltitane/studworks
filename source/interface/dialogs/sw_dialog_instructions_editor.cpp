@@ -572,15 +572,15 @@ swInstructionsEditorWidget::swInstructionsEditorWidget(QWidget* Parent, Project*
 		QTextCursor Cursor = mTextEdit->textCursor();
 		Cursor.setPosition(Cursor.selectionStart());
 		mTextEdit->setTextCursor(Cursor);
-		FindText(false);
+		FindMatch(false);
 	});
 	connect(mFindEdit, &QLineEdit::returnPressed, this, [this]()
 	{
-		FindText(QApplication::keyboardModifiers() & Qt::ShiftModifier);
+		FindMatch(QApplication::keyboardModifiers() & Qt::ShiftModifier);
 	});
 	connect(mReplaceEdit, &QLineEdit::returnPressed, this, &swInstructionsEditorWidget::ReplaceClicked);
-	connect(PreviousButton, &QToolButton::clicked, this, [this]() { FindText(true); });
-	connect(NextButton, &QToolButton::clicked, this, [this]() { FindText(false); });
+	connect(PreviousButton, &QToolButton::clicked, this, [this]() { FindMatch(true); });
+	connect(NextButton, &QToolButton::clicked, this, [this]() { FindMatch(false); });
 	connect(ReplaceButton, &QToolButton::clicked, this, &swInstructionsEditorWidget::ReplaceClicked);
 	connect(ReplaceAllButton, &QToolButton::clicked, this, &swInstructionsEditorWidget::ReplaceAllClicked);
 
@@ -870,7 +870,7 @@ QTextDocument::FindFlags swInstructionsEditorWidget::GetFindFlags() const
 	return Flags;
 }
 
-void swInstructionsEditorWidget::FindText(bool Backward)
+void swInstructionsEditorWidget::FindMatch(bool Backward)
 {
 	const QString Text = mFindEdit->text();
 
@@ -911,7 +911,7 @@ void swInstructionsEditorWidget::ReplaceClicked()
 		mTextEdit->setTextCursor(Cursor);
 	}
 
-	FindText(false);
+	FindMatch(false);
 }
 
 void swInstructionsEditorWidget::ReplaceAllClicked()

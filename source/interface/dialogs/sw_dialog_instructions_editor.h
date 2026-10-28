@@ -33,7 +33,7 @@ protected:
 	void SetWrapEnabled(bool Enabled);
 	void SetMarkersEnabled(bool Enabled);
 	void SetFindVisible(bool Visible);
-	void FindText(bool Backward);
+	void FindMatch(bool Backward);
 	void ReplaceClicked();
 	void ReplaceAllClicked();
 	void UpdateMatches();
