@@ -453,7 +453,7 @@ protected:
 
 	std::unique_ptr<swScene> mScene;
 	std::unique_ptr<swViewManipulator> mViewManipulator;
-	std::unique_ptr<swViewSphere> mViewSphere;
+	std::unique_ptr<swViewCube> mViewCube;
 
 	swModel* mModel = nullptr;
 	swPart* mActiveSubmodelInstance = nullptr;

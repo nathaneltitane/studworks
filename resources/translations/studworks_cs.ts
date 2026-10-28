@@ -957,9 +957,9 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1441"/>
-        <source>View.ToggleViewSphere</source>
+        <source>View.ToggleViewCube</source>
         <translatorcomment>TODO - space betwen words?</translatorcomment>
-        <translation>Zobrazit.Přepnout sférické zobrazení</translation>
+        <translation>Zobrazit.Přepnout krychli pohledu</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1449"/>
@@ -1320,7 +1320,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2017"/>
-        <source>View.Preview.ToggleViewSphere</source>
+        <source>View.Preview.ToggleViewCube</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3001,9 +3001,9 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1442"/>
-        <source>View Sphere</source>
+        <source>View Cube</source>
         <translatorcomment>TODO - sphere?</translatorcomment>
-        <translation>Zobrazit sféru</translation>
+        <translation>Krychle pohledu</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1450"/>
@@ -3388,7 +3388,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2018"/>
-        <source>Preview View Sphere</source>
+        <source>Preview View Cube</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6707,8 +6707,8 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1443"/>
-        <source>Toggle the view sphere</source>
-        <translation>Přepnout sférické zobrazení</translation>
+        <source>Toggle the view cube</source>
+        <translation>Přepnout krychli pohledu</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1451"/>
@@ -7004,7 +7004,7 @@ Formát souboru není rozpoznán.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2019"/>
-        <source>Toggle the view sphere in the preview</source>
+        <source>Toggle the view cube in the preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -13550,8 +13550,8 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_view.cpp" line="386"/>
-        <source>View Sphere</source>
-        <translation type="unfinished">Zobrazit sféru</translation>
+        <source>View Cube</source>
+        <translation type="unfinished">Krychle pohledu</translation>
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_view.cpp" line="387"/>
@@ -15876,6 +15876,11 @@ Please visit https://library.ldraw.org for information on how to download and in
         <translation>Žádné ikony</translation>
     </message>
     <message>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp"/>
+        <source>Extra Small Icons</source>
+        <translation>Nejmenší ikony</translation>
+    </message>
+    <message>
         <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1532"/>
         <source>Small Icons</source>
         <translation>Malé ikony</translation>
@@ -16452,9 +16457,9 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>View Sphere</source>
+        <source>View Cube</source>
         <translatorcomment>TODO</translatorcomment>
-        <translation>Zobrazit sféru</translation>
+        <translation>Krychle pohledu</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
@@ -16475,6 +16480,26 @@ Please visit https://library.ldraw.org for information on how to download and in
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Large</source>
         <translation>Velké</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Extra Small</source>
+        <translation>Velmi malé</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Extra Large</source>
+        <translation>Velmi velké</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Choose the model-axis indicator size in model views, or disable it.</source>
+        <translation>Zvolte velikost indikátoru os modelu v zobrazeních modelu, nebo jej vypněte.</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Choose the model-axis indicator size in the preview, or disable it.</source>
+        <translation>Zvolte velikost indikátoru os modelu v náhledu, nebo jej vypněte.</translation>
     </message>
     <message>
         <source>Highlight Color:</source>
@@ -16918,10 +16943,9 @@ Please visit https://library.ldraw.org for information on how to download and in
         <translation type="obsolete">Pohledy na model</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Show the model-axis indicator in model views.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Zobrazit indikátor osy modelu v pohledech modelu.</translation>
+        <translation type="vanished">Zobrazit indikátor osy modelu v pohledech modelu.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
@@ -16931,20 +16955,20 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose the corner for the model-view navigation sphere.</source>
+        <source>Choose the corner for the model-view navigation cube.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Vyberte roh pro sféru navigace zobrazení modelu.</translation>
+        <translation type="unfinished">Vyberte roh pro navigační krychli zobrazení modelu.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose the model-view navigation sphere size, or disable it.</source>
+        <source>Choose the model-view navigation cube size, or disable it.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Vyberte velikost navigační koule zobrazení modelu nebo ji deaktivujte.</translation>
+        <translation type="unfinished">Vyberte velikost navigační krychle zobrazení modelu nebo ji deaktivujte.</translation>
     </message>
     <message>
-        <source>View Sphere:</source>
+        <source>View Cube:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="obsolete">Zobrazit sféru:</translation>
+        <translation type="obsolete">Krychle pohledu:</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
@@ -17023,14 +17047,14 @@ Please visit https://library.ldraw.org for information on how to download and in
         <translation type="obsolete">Zobrazit indikátor osy modelu v náhledu dílu.</translation>
     </message>
     <message>
-        <source>Choose the corner for the part-preview navigation sphere.</source>
+        <source>Choose the corner for the part-preview navigation cube.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="obsolete">Vyberte roh pro sféru navigace s náhledem části.</translation>
+        <translation type="obsolete">Vyberte roh pro navigační krychli s náhledem části.</translation>
     </message>
     <message>
-        <source>Choose the part-preview navigation sphere size, or disable it.</source>
+        <source>Choose the part-preview navigation cube size, or disable it.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="obsolete">Vyberte velikost navigační koule náhledu části nebo ji deaktivujte.</translation>
+        <translation type="obsolete">Vyberte velikost navigační krychle náhledu části nebo ji deaktivujte.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
@@ -17129,21 +17153,21 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose the display color for the navigation sphere.</source>
+        <source>Choose the display color for the navigation cube.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Vyberte barvu zobrazení pro navigační kouli.</translation>
+        <translation type="unfinished">Vyberte barvu zobrazení pro navigační krychli.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose the display color for navigation sphere text.</source>
+        <source>Choose the display color for navigation cube text.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Vyberte barvu zobrazení textu navigační koule.</translation>
+        <translation type="unfinished">Vyberte barvu zobrazení textu navigační krychle.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose the display color for the highlighted region of the navigation sphere.</source>
+        <source>Choose the display color for the highlighted region of the navigation cube.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Vyberte barvu zobrazení pro zvýrazněnou oblast navigační koule.</translation>
+        <translation type="unfinished">Vyberte barvu zobrazení pro zvýrazněnou oblast navigační krychle.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
@@ -17349,21 +17373,21 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>View Sphere Color</source>
+        <source>View Cube Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Zobrazit barvu koule</translation>
+        <translation type="unfinished">Zobrazit barvu krychle</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>View Sphere Text Color</source>
+        <source>View Cube Text Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Zobrazit barvu textu koule</translation>
+        <translation type="unfinished">Zobrazit barvu textu krychle</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>View Sphere Highlight Color</source>
+        <source>View Cube Highlight Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Zobrazit barvu zvýraznění koule</translation>
+        <translation type="unfinished">Zobrazit barvu zvýraznění krychle</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
@@ -18024,21 +18048,21 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1029"/>
-        <source>Select View Sphere Color</source>
+        <source>Select View Cube Color</source>
         <translatorcomment>TODO</translatorcomment>
-        <translation>Vyberte pohled dle barvy Sphere</translation>
+        <translation>Vyberte pohled dle barvy krychle</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1034"/>
-        <source>Select View Sphere Text Color</source>
+        <source>Select View Cube Text Color</source>
         <translatorcomment>TODO</translatorcomment>
-        <translation>Vyberte pohled dle barvy textu Sphere</translation>
+        <translation>Vyberte pohled dle barvy textu krychle</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1039"/>
-        <source>Select View Sphere Highlight Color</source>
+        <source>Select View Cube Highlight Color</source>
         <translatorcomment>TODO</translatorcomment>
-        <translation>Vyberte pohled dle barvy zvíraznění Sphere</translation>
+        <translation>Vyberte pohled dle barvy zvýraznění krychle</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1044"/>
@@ -18463,9 +18487,9 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="599"/>
-        <source>View sphere rendering is unavailable.</source>
+        <source>View cube rendering is unavailable.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Vykreslení koule pohledu není k dispozici.</translation>
+        <translation type="unfinished">Vykreslení krychle pohledu není k dispozici.</translation>
     </message>
     <message>
         <source>Outline rendering is unavailable. Face tint and colored edges will be used.</source>
@@ -19003,7 +19027,7 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>View Sphere Location</source>
+        <source>View Cube Location</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -19188,18 +19212,17 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose the preview navigation sphere size, or disable it.</source>
+        <source>Choose the preview navigation cube size, or disable it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose the corner for the preview navigation sphere.</source>
+        <source>Choose the corner for the preview navigation cube.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Show the model-axis indicator in the preview.</source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
@@ -19284,8 +19307,8 @@ Nepodporované grafické karty používají odstín obličeje a barevné okraje.
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="131"/>
-        <source>View Sphere</source>
-        <translation type="unfinished">Zobrazit sféru</translation>
+        <source>View Cube</source>
+        <translation type="unfinished">Krychle pohledu</translation>
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="132"/>

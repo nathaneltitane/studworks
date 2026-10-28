@@ -1074,9 +1074,9 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1441"/>
-        <source>View.ToggleViewSphere</source>
+        <source>View.ToggleViewCube</source>
         <translatorcomment>Technical identifier or nonlinguistic text; intentionally retained unchanged.</translatorcomment>
-        <translation type="unfinished">View.ToggleViewSphere</translation>
+        <translation type="unfinished">View.ToggleViewCube</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1449"/>
@@ -1438,7 +1438,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2017"/>
-        <source>View.Preview.ToggleViewSphere</source>
+        <source>View.Preview.ToggleViewCube</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3217,9 +3217,9 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1442"/>
-        <source>View Sphere</source>
+        <source>View Cube</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Voir la sphère</translation>
+        <translation type="unfinished">Voir le cube</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1450"/>
@@ -3600,7 +3600,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2018"/>
-        <source>Preview View Sphere</source>
+        <source>Preview View Cube</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6800,7 +6800,7 @@ Le format du fichier n&apos;est pas reconnu.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2019"/>
-        <source>Toggle the view sphere in the preview</source>
+        <source>Toggle the view cube in the preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7206,9 +7206,9 @@ Le format du fichier n&apos;est pas reconnu.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1443"/>
-        <source>Toggle the view sphere</source>
+        <source>Toggle the view cube</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Basculer la sphère de vue</translation>
+        <translation type="unfinished">Basculer le cube de vue</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1451"/>
@@ -13912,8 +13912,8 @@ SVP visitez https://github.com/nathaneltitane/studworks pour apprendre comment t
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_view.cpp" line="386"/>
-        <source>View Sphere</source>
-        <translation type="unfinished">Voir la sphère</translation>
+        <source>View Cube</source>
+        <translation type="unfinished">Voir le cube</translation>
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_view.cpp" line="387"/>
@@ -16168,6 +16168,11 @@ SVP visitez https://github.com/nathaneltitane/studworks pour apprendre comment t
         <translation type="unfinished">Aucune icône</translation>
     </message>
     <message>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp"/>
+        <source>Extra Small Icons</source>
+        <translation>Icônes extra petites</translation>
+    </message>
+    <message>
         <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1532"/>
         <source>Small Icons</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -16520,21 +16525,21 @@ SVP visitez https://github.com/nathaneltitane/studworks pour apprendre comment t
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>View Sphere Color</source>
+        <source>View Cube Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Afficher la couleur de la sphère</translation>
+        <translation type="unfinished">Afficher la couleur du cube</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>View Sphere Text Color</source>
+        <source>View Cube Text Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Afficher la couleur du texte de la sphère</translation>
+        <translation type="unfinished">Afficher la couleur du texte du cube</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>View Sphere Highlight Color</source>
+        <source>View Cube Highlight Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Afficher la couleur de surbrillance de la sphère</translation>
+        <translation type="unfinished">Afficher la couleur de surbrillance du cube</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
@@ -16844,9 +16849,9 @@ SVP visitez https://github.com/nathaneltitane/studworks pour apprendre comment t
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>View Sphere</source>
+        <source>View Cube</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Voir la sphère</translation>
+        <translation type="unfinished">Voir le cube</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
@@ -16871,6 +16876,26 @@ SVP visitez https://github.com/nathaneltitane/studworks pour apprendre comment t
         <source>Large</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Grand</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Extra Small</source>
+        <translation>Très petit</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Extra Large</source>
+        <translation>Très grand</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Choose the model-axis indicator size in model views, or disable it.</source>
+        <translation>Choisissez la taille de l&apos;indicateur d&apos;axes du modèle dans les vues du modèle, ou désactivez-le.</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Choose the model-axis indicator size in the preview, or disable it.</source>
+        <translation>Choisissez la taille de l&apos;indicateur d&apos;axes du modèle dans l&apos;aperçu, ou désactivez-le.</translation>
     </message>
     <message>
         <source>Highlight Color:</source>
@@ -17381,10 +17406,9 @@ SVP visitez https://github.com/nathaneltitane/studworks pour apprendre comment t
         <translation type="obsolete">Vues du modèle</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Show the model-axis indicator in model views.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Afficher l&apos;indicateur d&apos;axe du modèle dans les vues du modèle.</translation>
+        <translation type="vanished">Afficher l&apos;indicateur d&apos;axe du modèle dans les vues du modèle.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
@@ -17394,20 +17418,20 @@ SVP visitez https://github.com/nathaneltitane/studworks pour apprendre comment t
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose the corner for the model-view navigation sphere.</source>
+        <source>Choose the corner for the model-view navigation cube.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Choisissez le coin de la sphère de navigation de la vue modèle.</translation>
+        <translation type="unfinished">Choisissez le coin du cube de navigation de la vue modèle.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose the model-view navigation sphere size, or disable it.</source>
+        <source>Choose the model-view navigation cube size, or disable it.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Choisissez la taille de la sphère de navigation de la vue modèle ou désactivez-la.</translation>
+        <translation type="unfinished">Choisissez la taille du cube de navigation de la vue modèle ou désactivez-le.</translation>
     </message>
     <message>
-        <source>View Sphere:</source>
+        <source>View Cube:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="obsolete">Afficher la sphère&#xa0;:</translation>
+        <translation type="obsolete">Afficher le cube&#xa0;:</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
@@ -17490,14 +17514,14 @@ SVP visitez https://github.com/nathaneltitane/studworks pour apprendre comment t
         <translation type="obsolete">Affichez l&apos;indicateur d&apos;axe du modèle dans l&apos;aperçu de la pièce.</translation>
     </message>
     <message>
-        <source>Choose the corner for the part-preview navigation sphere.</source>
+        <source>Choose the corner for the part-preview navigation cube.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="obsolete">Choisissez le coin de la sphère de navigation d’aperçu des pièces.</translation>
+        <translation type="obsolete">Choisissez le coin du cube de navigation d’aperçu des pièces.</translation>
     </message>
     <message>
-        <source>Choose the part-preview navigation sphere size, or disable it.</source>
+        <source>Choose the part-preview navigation cube size, or disable it.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="obsolete">Choisissez la taille de la sphère de navigation d’aperçu des pièces ou désactivez-la.</translation>
+        <translation type="obsolete">Choisissez la taille du cube de navigation d’aperçu des pièces ou désactivez-le.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
@@ -17597,21 +17621,21 @@ SVP visitez https://github.com/nathaneltitane/studworks pour apprendre comment t
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose the display color for the navigation sphere.</source>
+        <source>Choose the display color for the navigation cube.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Choisissez la couleur d&apos;affichage de la sphère de navigation.</translation>
+        <translation type="unfinished">Choisissez la couleur d&apos;affichage du cube de navigation.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose the display color for navigation sphere text.</source>
+        <source>Choose the display color for navigation cube text.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Choisissez la couleur d&apos;affichage du texte de la sphère de navigation.</translation>
+        <translation type="unfinished">Choisissez la couleur d&apos;affichage du texte du cube de navigation.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose the display color for the highlighted region of the navigation sphere.</source>
+        <source>Choose the display color for the highlighted region of the navigation cube.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Choisissez la couleur d&apos;affichage de la région en surbrillance de la sphère de navigation.</translation>
+        <translation type="unfinished">Choisissez la couleur d&apos;affichage de la région en surbrillance du cube de navigation.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
@@ -18292,21 +18316,21 @@ Les cartes vidéo non prises en charge utilisent une teinte de visage et des bor
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1029"/>
-        <source>Select View Sphere Color</source>
+        <source>Select View Cube Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Sélectionnez Afficher la couleur de la sphère</translation>
+        <translation type="unfinished">Sélectionnez Afficher la couleur du cube</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1034"/>
-        <source>Select View Sphere Text Color</source>
+        <source>Select View Cube Text Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Sélectionnez la couleur du texte de la sphère d&apos;affichage</translation>
+        <translation type="unfinished">Sélectionnez la couleur du texte du cube d&apos;affichage</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1039"/>
-        <source>Select View Sphere Highlight Color</source>
+        <source>Select View Cube Highlight Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Sélectionnez la couleur de surbrillance de la sphère d&apos;affichage</translation>
+        <translation type="unfinished">Sélectionnez la couleur de surbrillance du cube d&apos;affichage</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1044"/>
@@ -18730,9 +18754,9 @@ Les cartes vidéo non prises en charge utilisent une teinte de visage et des bor
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="599"/>
-        <source>View sphere rendering is unavailable.</source>
+        <source>View cube rendering is unavailable.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Le rendu de la sphère de vue n&apos;est pas disponible.</translation>
+        <translation type="unfinished">Le rendu du cube de vue n&apos;est pas disponible.</translation>
     </message>
     <message>
         <source>Outline rendering is unavailable. Face tint and colored edges will be used.</source>
@@ -19280,7 +19304,7 @@ Les cartes vidéo non prises en charge utilisent une teinte de visage et des bor
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>View Sphere Location</source>
+        <source>View Cube Location</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -19465,18 +19489,17 @@ Les cartes vidéo non prises en charge utilisent une teinte de visage et des bor
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose the preview navigation sphere size, or disable it.</source>
+        <source>Choose the preview navigation cube size, or disable it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose the corner for the preview navigation sphere.</source>
+        <source>Choose the corner for the preview navigation cube.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Show the model-axis indicator in the preview.</source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
@@ -19561,8 +19584,8 @@ Les cartes vidéo non prises en charge utilisent une teinte de visage et des bor
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="131"/>
-        <source>View Sphere</source>
-        <translation type="unfinished">Voir la sphère</translation>
+        <source>View Cube</source>
+        <translation type="unfinished">Voir le cube</translation>
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="132"/>

@@ -8,7 +8,7 @@
 #include "sw_data_part.h"
 #include "sw_track_train.h"
 #include "sw_view_manipulator.h"
-#include "sw_view_sphere.h"
+#include "sw_view_cube.h"
 #include "sw_library.h"
 
 swVector3 swView::GetMoveDirection(const swVector3& Direction) const
@@ -1453,7 +1453,7 @@ void swView::OnLeftButtonDown()
 		return;
 	}
 
-	if (mViewSphere->OnLeftButtonDown())
+	if (mViewCube->OnLeftButtonDown())
 		return;
 
 	mCutawayDragHandle = FindCutawayHandle();
@@ -1493,7 +1493,7 @@ void swView::OnLeftButtonUp()
 
 	StopTracking(mTrackButton == swTrackButton::Left);
 
-	if (mViewSphere->OnLeftButtonUp())
+	if (mViewCube->OnLeftButtonUp())
 		return;
 }
 
@@ -1617,9 +1617,9 @@ void swView::OnMouseMove()
 		if (CutawayHandle != -1)
 			return;
 
-		if (mViewSphere->OnMouseMove())
+		if (mViewCube->OnMouseMove())
 		{
-			swTrackTool NewTrackTool = mViewSphere->IsDragging() ? swTrackTool::OrbitXY : swTrackTool::None;
+			swTrackTool NewTrackTool = mViewCube->IsDragging() ? swTrackTool::OrbitXY : swTrackTool::None;
 
 			if (NewTrackTool != mTrackTool)
 			{

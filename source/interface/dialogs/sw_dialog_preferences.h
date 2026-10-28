@@ -113,8 +113,9 @@ private slots:
 	void HighlightNewPartsToggled();
 	void GridStudsToggled();
 	void GridLinesToggled();
-	void ViewSphereSizeComboCurrentIndexChanged(int Index);
-	void PreviewViewSphereSizeComboCurrentIndexChanged(int Index);
+	void ViewCubeSizeComboCurrentIndexChanged(int Index);
+	void PreviewViewCubeSizeComboCurrentIndexChanged(int Index);
+	void AxisIconSizeComboCurrentIndexChanged(int Index);
 	void UpdateParts();
 	void CategoriesDropped(const QModelIndex& Parent, int First, int Last);
 	void CategoryItemChanged(QTreeWidgetItem* CategoryItem, int Column);

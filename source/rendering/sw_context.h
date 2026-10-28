@@ -54,7 +54,7 @@ enum class swMaterialType
 	TextSDF,
 	UnlitTextureDecal,
 	UnlitVertexColor,
-	UnlitViewSphere,
+	UnlitViewCube,
 	FakeLitColor,
 	FakeLitTextureDecal,
 	OutlineComposite,

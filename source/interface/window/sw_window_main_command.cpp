@@ -358,8 +358,8 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 			ActiveView->SetCameraProjection(swCameraProjection::Orthographic);
 		break;
 
-	case SW_VIEW_TOGGLE_VIEW_SPHERE:
-		ToggleViewSphere();
+	case SW_VIEW_TOGGLE_VIEW_CUBE:
+		ToggleViewCube();
 		break;
 
 	case SW_VIEW_TOGGLE_AXIS_ICON:
@@ -708,8 +708,8 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 		ToggleConditionalLines(swRenderTarget::Parts);
 		break;
 
-	case SW_VIEW_TOGGLE_PREVIEW_VIEW_SPHERE:
-		TogglePreviewViewSphere();
+	case SW_VIEW_TOGGLE_PREVIEW_VIEW_CUBE:
+		TogglePreviewViewCube();
 		break;
 
 	case SW_VIEW_TOGGLE_PREVIEW_AXIS_ICON:

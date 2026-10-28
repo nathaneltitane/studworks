@@ -1148,27 +1148,32 @@
           <item row="0" column="0">
            <widget class="QLabel" name="label_21">
             <property name="toolTip">
-             <string>Choose the model-view navigation sphere size, or disable it.</string>
+             <string>Choose the model-view navigation cube size, or disable it.</string>
             </property>
             <property name="buddy">
-             <cstring>ViewSphereSizeCombo</cstring>
+             <cstring>ViewCubeSizeCombo</cstring>
             </property>
             <property name="text">
-             <string>View Sphere</string>
+             <string>View Cube</string>
             </property>
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QComboBox" name="ViewSphereSizeCombo">
+           <widget class="QComboBox" name="ViewCubeSizeCombo">
             <property name="accessibleName">
-             <string>View Sphere</string>
+             <string>View Cube</string>
             </property>
             <property name="toolTip">
-             <string>Choose the model-view navigation sphere size, or disable it.</string>
+             <string>Choose the model-view navigation cube size, or disable it.</string>
             </property>
             <item>
              <property name="text">
               <string>Disabled</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Extra Small</string>
              </property>
             </item>
             <item>
@@ -1186,28 +1191,33 @@
               <string>Large</string>
              </property>
             </item>
+            <item>
+             <property name="text">
+              <string>Extra Large</string>
+             </property>
+            </item>
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QLabel" name="ViewSphereLocationLabel">
+           <widget class="QLabel" name="ViewCubeLocationLabel">
             <property name="toolTip">
-             <string>Choose the corner for the model-view navigation sphere.</string>
+             <string>Choose the corner for the model-view navigation cube.</string>
             </property>
             <property name="buddy">
-             <cstring>ViewSphereLocationCombo</cstring>
+             <cstring>ViewCubeLocationCombo</cstring>
             </property>
             <property name="text">
-             <string>View Sphere Location</string>
+             <string>View Cube Location</string>
             </property>
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QComboBox" name="ViewSphereLocationCombo">
+           <widget class="QComboBox" name="ViewCubeLocationCombo">
             <property name="accessibleName">
              <string>Location</string>
             </property>
             <property name="toolTip">
-             <string>Choose the corner for the model-view navigation sphere.</string>
+             <string>Choose the corner for the model-view navigation cube.</string>
             </property>
             <item>
              <property name="text">
@@ -1231,14 +1241,57 @@
             </item>
            </widget>
           </item>
-          <item row="2" column="0" colspan="2">
-           <widget class="QCheckBox" name="AxisIconCheckBox">
+          <item row="2" column="0">
+           <widget class="QLabel" name="AxisIconSizeLabel">
             <property name="toolTip">
-             <string>Show the model-axis indicator in model views.</string>
+             <string>Choose the model-axis indicator size in model views, or disable it.</string>
+            </property>
+            <property name="buddy">
+             <cstring>AxisIconSizeCombo</cstring>
             </property>
             <property name="text">
              <string>Axis Icon</string>
             </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QComboBox" name="AxisIconSizeCombo">
+            <property name="accessibleName">
+             <string>Axis Icon</string>
+            </property>
+            <property name="toolTip">
+             <string>Choose the model-axis indicator size in model views, or disable it.</string>
+            </property>
+            <item>
+             <property name="text">
+              <string>Disabled</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Extra Small</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Small</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Medium</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Large</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Extra Large</string>
+             </property>
+            </item>
            </widget>
           </item>
           <item row="3" column="0">
@@ -1835,27 +1888,32 @@
           <item row="0" column="0">
            <widget class="QLabel" name="label_8">
             <property name="toolTip">
-             <string>Choose the preview navigation sphere size, or disable it.</string>
+             <string>Choose the preview navigation cube size, or disable it.</string>
             </property>
             <property name="buddy">
-             <cstring>PreviewViewSphereSizeCombo</cstring>
+             <cstring>PreviewViewCubeSizeCombo</cstring>
             </property>
             <property name="text">
-             <string>View Sphere</string>
+             <string>View Cube</string>
             </property>
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QComboBox" name="PreviewViewSphereSizeCombo">
+           <widget class="QComboBox" name="PreviewViewCubeSizeCombo">
             <property name="accessibleName">
-             <string>View Sphere</string>
+             <string>View Cube</string>
             </property>
             <property name="toolTip">
-             <string>Choose the preview navigation sphere size, or disable it.</string>
+             <string>Choose the preview navigation cube size, or disable it.</string>
             </property>
             <item>
              <property name="text">
               <string>Disabled</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Extra Small</string>
              </property>
             </item>
             <item>
@@ -1873,28 +1931,33 @@
               <string>Large</string>
              </property>
             </item>
+            <item>
+             <property name="text">
+              <string>Extra Large</string>
+             </property>
+            </item>
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QLabel" name="PreviewViewSphereLocationLabel">
+           <widget class="QLabel" name="PreviewViewCubeLocationLabel">
             <property name="toolTip">
-             <string>Choose the corner for the preview navigation sphere.</string>
+             <string>Choose the corner for the preview navigation cube.</string>
             </property>
             <property name="buddy">
-             <cstring>PreviewViewSphereLocationCombo</cstring>
+             <cstring>PreviewViewCubeLocationCombo</cstring>
             </property>
             <property name="text">
-             <string>View Sphere Location</string>
+             <string>View Cube Location</string>
             </property>
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QComboBox" name="PreviewViewSphereLocationCombo">
+           <widget class="QComboBox" name="PreviewViewCubeLocationCombo">
             <property name="accessibleName">
              <string>Location</string>
             </property>
             <property name="toolTip">
-             <string>Choose the corner for the preview navigation sphere.</string>
+             <string>Choose the corner for the preview navigation cube.</string>
             </property>
             <item>
              <property name="text">
@@ -1918,14 +1981,57 @@
             </item>
            </widget>
           </item>
-          <item row="2" column="0" colspan="3">
-           <widget class="QCheckBox" name="PreviewAxisIconCheckBox">
+          <item row="2" column="0">
+           <widget class="QLabel" name="PreviewAxisIconSizeLabel">
             <property name="toolTip">
-             <string>Show the model-axis indicator in the preview.</string>
+             <string>Choose the model-axis indicator size in the preview, or disable it.</string>
+            </property>
+            <property name="buddy">
+             <cstring>PreviewAxisIconSizeCombo</cstring>
             </property>
             <property name="text">
              <string>Axis Icon</string>
             </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QComboBox" name="PreviewAxisIconSizeCombo">
+            <property name="accessibleName">
+             <string>Axis Icon</string>
+            </property>
+            <property name="toolTip">
+             <string>Choose the model-axis indicator size in the preview, or disable it.</string>
+            </property>
+            <item>
+             <property name="text">
+              <string>Disabled</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Extra Small</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Small</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Medium</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Large</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Extra Large</string>
+             </property>
+            </item>
            </widget>
           </item>
           <item row="3" column="0" colspan="3">
@@ -2708,16 +2814,16 @@
        <item row="4" column="0">
         <widget class="QGroupBox" name="groupBox_9">
          <property name="title">
-          <string>View Sphere</string>
+          <string>View Cube</string>
          </property>
          <layout class="QGridLayout" name="horizontalLayout_16">
           <item row="0" column="0">
            <widget class="QLabel" name="label_22">
             <property name="toolTip">
-             <string>Choose the display color for the navigation sphere.</string>
+             <string>Choose the display color for the navigation cube.</string>
             </property>
             <property name="buddy">
-             <cstring>ViewSphereColorButton</cstring>
+             <cstring>ViewCubeColorButton</cstring>
             </property>
             <property name="text">
              <string>Color</string>
@@ -2725,12 +2831,12 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QToolButton" name="ViewSphereColorButton">
+           <widget class="QToolButton" name="ViewCubeColorButton">
             <property name="accessibleName">
-             <string>View Sphere Color</string>
+             <string>View Cube Color</string>
             </property>
             <property name="toolTip">
-             <string>Choose the display color for the navigation sphere.</string>
+             <string>Choose the display color for the navigation cube.</string>
             </property>
             <property name="text">
              <string />
@@ -2740,10 +2846,10 @@
           <item row="1" column="0">
            <widget class="QLabel" name="label_23">
             <property name="toolTip">
-             <string>Choose the display color for navigation sphere text.</string>
+             <string>Choose the display color for navigation cube text.</string>
             </property>
             <property name="buddy">
-             <cstring>ViewSphereTextColorButton</cstring>
+             <cstring>ViewCubeTextColorButton</cstring>
             </property>
             <property name="text">
              <string>Text Color</string>
@@ -2751,12 +2857,12 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QToolButton" name="ViewSphereTextColorButton">
+           <widget class="QToolButton" name="ViewCubeTextColorButton">
             <property name="accessibleName">
-             <string>View Sphere Text Color</string>
+             <string>View Cube Text Color</string>
             </property>
             <property name="toolTip">
-             <string>Choose the display color for navigation sphere text.</string>
+             <string>Choose the display color for navigation cube text.</string>
             </property>
             <property name="text">
              <string />
@@ -2766,10 +2872,10 @@
           <item row="2" column="0">
            <widget class="QLabel" name="label_20">
             <property name="toolTip">
-             <string>Choose the display color for the highlighted region of the navigation sphere.</string>
+             <string>Choose the display color for the highlighted region of the navigation cube.</string>
             </property>
             <property name="buddy">
-             <cstring>ViewSphereHighlightColorButton</cstring>
+             <cstring>ViewCubeHighlightColorButton</cstring>
             </property>
             <property name="text">
              <string>Highlight Color</string>
@@ -2777,12 +2883,12 @@
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QToolButton" name="ViewSphereHighlightColorButton">
+           <widget class="QToolButton" name="ViewCubeHighlightColorButton">
             <property name="accessibleName">
-             <string>View Sphere Highlight Color</string>
+             <string>View Cube Highlight Color</string>
             </property>
             <property name="toolTip">
-             <string>Choose the display color for the highlighted region of the navigation sphere.</string>
+             <string>Choose the display color for the highlighted region of the navigation cube.</string>
             </property>
             <property name="text">
              <string />
@@ -3561,9 +3667,9 @@
   <tabstop>EdgeSaturationSlider</tabstop>
   <tabstop>LineWidthSlider</tabstop>
   <tabstop>BlenderAddonSettingsButton</tabstop>
-  <tabstop>ViewSphereSizeCombo</tabstop>
-  <tabstop>ViewSphereLocationCombo</tabstop>
-  <tabstop>AxisIconCheckBox</tabstop>
+  <tabstop>ViewCubeSizeCombo</tabstop>
+  <tabstop>ViewCubeLocationCombo</tabstop>
+  <tabstop>AxisIconSizeCombo</tabstop>
   <tabstop>AxisIconLocationCombo</tabstop>
   <tabstop>FollowStepViewsCheckBox</tabstop>
   <tabstop>ProjectionScopeCombo</tabstop>
@@ -3588,9 +3694,9 @@
   <tabstop>PartsEdgeLines</tabstop>
   <tabstop>PartsConditionalLines</tabstop>
   <tabstop>PartsLineWidthSlider</tabstop>
-  <tabstop>PreviewViewSphereSizeCombo</tabstop>
-  <tabstop>PreviewViewSphereLocationCombo</tabstop>
-  <tabstop>PreviewAxisIconCheckBox</tabstop>
+  <tabstop>PreviewViewCubeSizeCombo</tabstop>
+  <tabstop>PreviewViewCubeLocationCombo</tabstop>
+  <tabstop>PreviewAxisIconSizeCombo</tabstop>
   <tabstop>PreviewSyncRendering</tabstop>
   <tabstop>PreviewShadingMode</tabstop>
   <tabstop>PreviewEdgeLines</tabstop>
@@ -3613,9 +3719,9 @@
   <tabstop>OverlayColorButton</tabstop>
   <tabstop>gridLineColor</tabstop>
   <tabstop>gridStudColor</tabstop>
-  <tabstop>ViewSphereColorButton</tabstop>
-  <tabstop>ViewSphereTextColorButton</tabstop>
-  <tabstop>ViewSphereHighlightColorButton</tabstop>
+  <tabstop>ViewCubeColorButton</tabstop>
+  <tabstop>ViewCubeTextColorButton</tabstop>
+  <tabstop>ViewCubeHighlightColorButton</tabstop>
   <tabstop>AxisXColorButton</tabstop>
   <tabstop>AxisYColorButton</tabstop>
   <tabstop>AxisZColorButton</tabstop>

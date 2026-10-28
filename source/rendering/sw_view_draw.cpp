@@ -13,7 +13,7 @@
 #include "sw_scene.h"
 #include "sw_context.h"
 #include "sw_view_manipulator.h"
-#include "sw_view_sphere.h"
+#include "sw_view_cube.h"
 #include "sw_widget_find_replace.h"
 #include "sw_library.h"
 #include "sw_window_utilities.h"
@@ -230,7 +230,7 @@ void swView::OnDraw()
 
 	if (DrawOverlays)
 	{
-		mViewSphere->Draw();
+		mViewCube->Draw();
 
 		DrawViewport();
 	}
@@ -407,6 +407,12 @@ void swView::DrawAxes() const
 		21, 22, 23, 21, 23, 24, 21, 24, 25, 21, 25, 26, 21, 26, 27, 21, 27, 28, 21, 28, 29, 21, 29, 22
 	};
 
+	// the arrows span half the icon size from the origin
+	const float IconSize = static_cast<float>(mViewType == swViewType::Preview ? Preferences.mPreviewAxisIconSize : Preferences.mAxisIconSize);
+	const float ArrowLength = IconSize / 2.0f;
+	const float NearOffset = ArrowLength + 12.0f;
+	const float FarOffset = ArrowLength + 16.0f;
+
 	swMatrix44 TranslationMatrix;
 	float Scale = GetUIScale();
 
@@ -414,52 +420,54 @@ void swView::DrawAxes() const
 	{
 	default:
 	case swAxisIconLocation::BottomLeft:
-		TranslationMatrix = swMatrix44Translation(swVector3(32, 32, 0.0f) / Scale);
+		TranslationMatrix = swMatrix44Translation(swVector3(NearOffset, NearOffset, 0.0f) / Scale);
 		break;
 
 	case swAxisIconLocation::BottomRight:
-		TranslationMatrix = swMatrix44Translation(swVector3(mWidth - 36, 32, 0.0f) / Scale);
+		TranslationMatrix = swMatrix44Translation(swVector3(mWidth - FarOffset, NearOffset, 0.0f) / Scale);
 		break;
 
 	case swAxisIconLocation::TopLeft:
-		TranslationMatrix = swMatrix44Translation(swVector3(32, mHeight - 36, 0.0f) / Scale);
+		TranslationMatrix = swMatrix44Translation(swVector3(NearOffset, mHeight - FarOffset, 0.0f) / Scale);
 		break;
 
 	case swAxisIconLocation::TopRight:
-		TranslationMatrix = swMatrix44Translation(swVector3(mWidth - 36, mHeight - 36, 0.0f) / Scale);
+		TranslationMatrix = swMatrix44Translation(swVector3(mWidth - FarOffset, mHeight - FarOffset, 0.0f) / Scale);
 		break;
 	}
 
 	swMatrix44 WorldViewMatrix = mCamera->mWorldView;
 	WorldViewMatrix.SetTranslation(swVector3(0, 0, 0));
 
-	mContext->SetLineWidth(1.0f);
+	mContext->SetLineWidth(qMax(1.0f, IconSize / 48.0f));
 	mContext->SetMaterial(swMaterialType::UnlitVertexColor);
-	mContext->SetWorldMatrix(swMatrix44Identity());
+	mContext->SetWorldMatrix(swMatrix44Scale(swVector3(ArrowLength / 20.0f, ArrowLength / 20.0f, ArrowLength / 20.0f)));
 	mContext->SetViewMatrix(swMultiply(WorldViewMatrix, TranslationMatrix));
-	mContext->SetProjectionMatrix(swMatrix44Orthographic(0, mWidth / Scale, 0, mHeight / Scale, -50, 50));
+	mContext->SetProjectionMatrix(swMatrix44Orthographic(0, mWidth / Scale, 0, mHeight / Scale, -IconSize, IconSize));
 
 	mContext->SetVertexBufferPointer(Verts);
 	mContext->SetVertexFormat(0, 3, 0, 0, 4, false);
 	mContext->SetIndexBufferPointer(Indices);
 
 	mContext->DrawIndexedPrimitives(GL_LINES, 6, GL_UNSIGNED_SHORT, 0);
+	mContext->SetLineWidth(1.0f);
 	mContext->DrawIndexedPrimitives(GL_TRIANGLES, 72, GL_UNSIGNED_SHORT, 6 * 2);
 
 	if (!gTexFont.IsLoaded())
 		return;
 
 	mContext->SetMaterial(swMaterialType::TextSDF);
+	mContext->SetWorldMatrix(swMatrix44Identity());
 	mContext->SetViewMatrix(TranslationMatrix);
 	mContext->BindTexture2D(gTexFont.GetTexture());
 	mContext->EnableColorBlend(true);
 
 	float TextBuffer[6 * 5 * 3];
-	swVector3 PosX = swMultiply30(swVector3(25.0f, 0.0f, 0.0f), WorldViewMatrix);
+	swVector3 PosX = swMultiply30(swVector3(ArrowLength + 5.0f, 0.0f, 0.0f), WorldViewMatrix);
 	gTexFont.GetGlyphTriangles(PosX.x, PosX.y, PosX.z, 'X', TextBuffer);
-	swVector3 PosY = swMultiply30(swVector3(0.0f, 25.0f, 0.0f), WorldViewMatrix);
+	swVector3 PosY = swMultiply30(swVector3(0.0f, ArrowLength + 5.0f, 0.0f), WorldViewMatrix);
 	gTexFont.GetGlyphTriangles(PosY.x, PosY.y, PosY.z, 'Y', TextBuffer + 5 * 6);
-	swVector3 PosZ = swMultiply30(swVector3(0.0f, 0.0f, 25.0f), WorldViewMatrix);
+	swVector3 PosZ = swMultiply30(swVector3(0.0f, 0.0f, ArrowLength + 5.0f), WorldViewMatrix);
 	gTexFont.GetGlyphTriangles(PosZ.x, PosZ.y, PosZ.z, 'Z', TextBuffer + 5 * 6 * 2);
 
 	mContext->SetVertexBufferPointer(TextBuffer);

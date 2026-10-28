@@ -13,7 +13,7 @@
 #include "sw_scene.h"
 #include "sw_context.h"
 #include "sw_view_manipulator.h"
-#include "sw_view_sphere.h"
+#include "sw_view_cube.h"
 #include "sw_widget_find_replace.h"
 #include "sw_library.h"
 #include "sw_window_utilities.h"

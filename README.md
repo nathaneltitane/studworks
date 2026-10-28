@@ -40,6 +40,10 @@ Useful? Star the repository - it helps others find it.
 - Instructions: notices, free text added to any page with a right-click
 - Instructions: pointers from an element border to a part, step, notice or other element - eight anchors or the nearest, line or callout wedge, arrowhead or dot tip
 - Instructions: settings, page layouts, notices and pointers saved in the model file as '!SW INSTRUCTION' meta commands
+- View cube: the view sphere is now a cube with chamfered edges and corners - click any of its 6 faces, 12 edges or 8 corners for that view, with sharper labels
+- Sizes: view cube, axis icon and part thumbnails each come in Extra Small to Extra Large on a 16px baseline - view cube 48 to 192, axis icon and thumbnails 32 to 128, with older saved sizes moved to the nearest one
+- Command line: import and export the settings, keyboard shortcuts, mouse shortcuts and part categories without opening a window - '--import-settings', '--export-settings', '--import-keyboard-shortcuts', '--export-keyboard-shortcuts', '--import-mouse-shortcuts', '--export-mouse-shortcuts', '--import-categories', '--export-categories'
+- Command line: '--help', '--version' and the import and export options run without a display
 - Code: views, preferences, the parts library and projects split into smaller files by task - camera, input, categories, shortcuts, cache, loading, file and import - with no change in behavior
 
 2026-10-27 ↴

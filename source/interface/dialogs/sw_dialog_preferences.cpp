@@ -332,8 +332,9 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	connect(ui->HighlightNewParts, &QCheckBox::toggled, this, &swPreferencesDialog::HighlightNewPartsToggled);
 	connect(ui->gridStuds, &QCheckBox::toggled, this, &swPreferencesDialog::GridStudsToggled);
 	connect(ui->gridLines, &QCheckBox::toggled, this, &swPreferencesDialog::GridLinesToggled);
-	connect(ui->ViewSphereSizeCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &swPreferencesDialog::ViewSphereSizeComboCurrentIndexChanged);
-	connect(ui->PreviewViewSphereSizeCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &swPreferencesDialog::PreviewViewSphereSizeComboCurrentIndexChanged);
+	connect(ui->ViewCubeSizeCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &swPreferencesDialog::ViewCubeSizeComboCurrentIndexChanged);
+	connect(ui->PreviewViewCubeSizeCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &swPreferencesDialog::PreviewViewCubeSizeComboCurrentIndexChanged);
+	connect(ui->AxisIconSizeCombo, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &swPreferencesDialog::AxisIconSizeComboCurrentIndexChanged);
 	connect(ui->newCategory, &QPushButton::clicked, this, &swPreferencesDialog::NewCategoryClicked);
 	connect(ui->editCategory, &QPushButton::clicked, this, &swPreferencesDialog::EditCategoryClicked);
 	connect(ui->deleteCategory, &QPushButton::clicked, this, &swPreferencesDialog::DeleteCategoryClicked);
@@ -366,9 +367,9 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	connect(ui->HighlightNewPartsColor, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
 	connect(ui->gridStudColor, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
 	connect(ui->gridLineColor, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
-	connect(ui->ViewSphereColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
-	connect(ui->ViewSphereTextColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
-	connect(ui->ViewSphereHighlightColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->ViewCubeColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->ViewCubeTextColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->ViewCubeHighlightColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
 	connect(ui->AxisXColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
 	connect(ui->AxisYColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
 	connect(ui->AxisZColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
@@ -492,7 +493,7 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	ui->GridAxisXCheckBox->setChecked(mOptions->Preferences.mDrawGridAxisX);
 	ui->GridAxisYCheckBox->setChecked(mOptions->Preferences.mDrawGridAxisY);
 	ui->GridAxisZCheckBox->setChecked(mOptions->Preferences.mDrawGridAxisZ);
-	ui->AxisIconCheckBox->setChecked(mOptions->Preferences.mDrawAxes);
+	ui->AxisIconSizeCombo->setCurrentIndex(mOptions->Preferences.mDrawAxes ? swSizeIndex(mOptions->Preferences.mAxisIconSize, SW_AXIS_ICON_SIZES) : 0);
 	ui->FollowStepViewsCheckBox->setChecked(mOptions->Preferences.mFollowStepViews);
 	ui->ProjectionScopeCombo->setCurrentIndex(static_cast<int>(mOptions->Preferences.mProjectionScope));
 	ui->CutawaySizeSpinBox->setValue(mOptions->Preferences.mCutawaySize);
@@ -505,54 +506,16 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 
 	ui->AxisIconLocationCombo->setCurrentIndex((int)mOptions->Preferences.mAxisIconLocation);
 
-	ui->ViewSphereLocationCombo->setCurrentIndex((int)mOptions->Preferences.mViewSphereLocation);
+	ui->ViewCubeLocationCombo->setCurrentIndex((int)mOptions->Preferences.mViewCubeLocation);
 
-	if (mOptions->Preferences.mViewSphereEnabled)
-	{
-		switch (mOptions->Preferences.mViewSphereSize)
-		{
-		case 200:
-			ui->ViewSphereSizeCombo->setCurrentIndex(3);
-			break;
-		case 100:
-			ui->ViewSphereSizeCombo->setCurrentIndex(2);
-			break;
-		case 50:
-			ui->ViewSphereSizeCombo->setCurrentIndex(1);
-			break;
-		default:
-			ui->ViewSphereSizeCombo->setCurrentIndex(0);
-			break;
-		}
-	}
-	else
-		ui->ViewSphereSizeCombo->setCurrentIndex(0);
+	ui->ViewCubeSizeCombo->setCurrentIndex(mOptions->Preferences.mViewCubeEnabled ? swSizeIndex(mOptions->Preferences.mViewCubeSize, SW_VIEW_CUBE_SIZES) : 0);
 
-	ui->PreviewAxisIconCheckBox->setChecked(mOptions->Preferences.mDrawPreviewAxis);
+	ui->PreviewAxisIconSizeCombo->setCurrentIndex(mOptions->Preferences.mDrawPreviewAxis ? swSizeIndex(mOptions->Preferences.mPreviewAxisIconSize, SW_AXIS_ICON_SIZES) : 0);
 	ui->PreviewSquareViewportCheckBox->setChecked(mOptions->Preferences.mPreviewSquareViewport);
 
-	ui->PreviewViewSphereLocationCombo->setCurrentIndex((int)mOptions->Preferences.mPreviewViewSphereLocation);
+	ui->PreviewViewCubeLocationCombo->setCurrentIndex((int)mOptions->Preferences.mPreviewViewCubeLocation);
 
-	if (mOptions->Preferences.mPreviewViewSphereEnabled)
-	{
-		switch (mOptions->Preferences.mPreviewViewSphereSize)
-		{
-		case 100:
-			ui->PreviewViewSphereSizeCombo->setCurrentIndex(3);
-			break;
-		case 75:
-			ui->PreviewViewSphereSizeCombo->setCurrentIndex(2);
-			break;
-		case 50:
-			ui->PreviewViewSphereSizeCombo->setCurrentIndex(1);
-			break;
-		default:
-			ui->PreviewViewSphereSizeCombo->setCurrentIndex(0);
-			break;
-		}
-	}
-	else
-		ui->PreviewViewSphereSizeCombo->setCurrentIndex(0);
+	ui->PreviewViewCubeSizeCombo->setCurrentIndex(mOptions->Preferences.mPreviewViewCubeEnabled ? swSizeIndex(mOptions->Preferences.mPreviewViewCubeSize, SW_VIEW_CUBE_SIZES) : 0);
 
 	ui->studStyleCombo->setCurrentIndex(static_cast<int>(mOptions->StudStyle));
 
@@ -584,15 +547,15 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 		}
 	}
 
-	if (!swContext::SupportsMaterial(swMaterialType::UnlitViewSphere))
+	if (!swContext::SupportsMaterial(swMaterialType::UnlitViewCube))
 	{
 		const std::array<QWidget*, 7> Controls =
 		{
-			ui->ViewSphereSizeCombo, ui->ViewSphereLocationCombo,
-			ui->PreviewViewSphereSizeCombo, ui->PreviewViewSphereLocationCombo,
-			ui->ViewSphereColorButton, ui->ViewSphereTextColorButton, ui->ViewSphereHighlightColorButton
+			ui->ViewCubeSizeCombo, ui->ViewCubeLocationCombo,
+			ui->PreviewViewCubeSizeCombo, ui->PreviewViewCubeLocationCombo,
+			ui->ViewCubeColorButton, ui->ViewCubeTextColorButton, ui->ViewCubeHighlightColorButton
 		};
-		const QString Message = tr("View sphere rendering is unavailable.");
+		const QString Message = tr("View cube rendering is unavailable.");
 
 		for (QWidget* Control : Controls)
 		{
@@ -657,9 +620,9 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	SetButtonPixmap(mOptions->Preferences.mHighlightNewPartsColor, ui->HighlightNewPartsColor);
 	SetButtonPixmap(mOptions->Preferences.mGridStudColor, ui->gridStudColor);
 	SetButtonPixmap(mOptions->Preferences.mGridLineColor, ui->gridLineColor);
-	SetButtonPixmap(mOptions->Preferences.mViewSphereColor, ui->ViewSphereColorButton);
-	SetButtonPixmap(mOptions->Preferences.mViewSphereTextColor, ui->ViewSphereTextColorButton);
-	SetButtonPixmap(mOptions->Preferences.mViewSphereHighlightColor, ui->ViewSphereHighlightColorButton);
+	SetButtonPixmap(mOptions->Preferences.mViewCubeColor, ui->ViewCubeColorButton);
+	SetButtonPixmap(mOptions->Preferences.mViewCubeTextColor, ui->ViewCubeTextColorButton);
+	SetButtonPixmap(mOptions->Preferences.mViewCubeHighlightColor, ui->ViewCubeHighlightColorButton);
 	SetButtonPixmap(mOptions->Preferences.mAxisXColor, ui->AxisXColorButton);
 	SetButtonPixmap(mOptions->Preferences.mAxisYColor, ui->AxisYColorButton);
 	SetButtonPixmap(mOptions->Preferences.mAxisZColor, ui->AxisZColorButton);
@@ -682,8 +645,9 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	HighlightNewPartsToggled();
 	GridStudsToggled();
 	GridLinesToggled();
-	ViewSphereSizeComboCurrentIndexChanged(ui->ViewSphereSizeCombo->currentIndex());
-	PreviewViewSphereSizeComboCurrentIndexChanged(ui->PreviewViewSphereSizeCombo->currentIndex());
+	ViewCubeSizeComboCurrentIndexChanged(ui->ViewCubeSizeCombo->currentIndex());
+	PreviewViewCubeSizeComboCurrentIndexChanged(ui->PreviewViewCubeSizeCombo->currentIndex());
+	AxisIconSizeComboCurrentIndexChanged(ui->AxisIconSizeCombo->currentIndex());
 
 	UpdateCategories();
 	ui->categoriesTree->setCurrentItem(ui->categoriesTree->topLevelItem(0));
@@ -804,7 +768,11 @@ void swPreferencesDialog::accept()
 	mOptions->Preferences.mDrawGridAxisY = ui->GridAxisYCheckBox->isChecked();
 	mOptions->Preferences.mDrawGridAxisZ = ui->GridAxisZCheckBox->isChecked();
 
-	mOptions->Preferences.mDrawAxes = ui->AxisIconCheckBox->isChecked();
+	mOptions->Preferences.mDrawAxes = ui->AxisIconSizeCombo->currentIndex() > 0;
+
+	if (ui->AxisIconSizeCombo->currentIndex() > 0)
+		mOptions->Preferences.mAxisIconSize = SW_AXIS_ICON_SIZES[ui->AxisIconSizeCombo->currentIndex() - 1];
+
 	mOptions->Preferences.mFollowStepViews = ui->FollowStepViewsCheckBox->isChecked();
 	mOptions->Preferences.mProjectionScope = static_cast<swProjectionScope>(ui->ProjectionScopeCombo->currentIndex());
 	mOptions->Preferences.mCutawaySize = ui->CutawaySizeSpinBox->value();
@@ -813,21 +781,11 @@ void swPreferencesDialog::accept()
 	mOptions->Preferences.mTurntableTurnTime = ui->TurntableTurnTimeSpinBox->value();
 	mOptions->Preferences.mTurntableAxis = static_cast<swTurntableAxis>(ui->TurntableAxisCombo->currentIndex());
 	mOptions->Preferences.mAxisIconLocation = (swAxisIconLocation)ui->AxisIconLocationCombo->currentIndex();
-	mOptions->Preferences.mViewSphereEnabled = ui->ViewSphereSizeCombo->currentIndex() > 0;
-	mOptions->Preferences.mViewSphereLocation = (swViewSphereLocation)ui->ViewSphereLocationCombo->currentIndex();
+	mOptions->Preferences.mViewCubeEnabled = ui->ViewCubeSizeCombo->currentIndex() > 0;
+	mOptions->Preferences.mViewCubeLocation = (swViewCubeLocation)ui->ViewCubeLocationCombo->currentIndex();
 
-	switch (ui->ViewSphereSizeCombo->currentIndex())
-	{
-	case 3:
-		mOptions->Preferences.mViewSphereSize = 200;
-		break;
-	case 2:
-		mOptions->Preferences.mViewSphereSize = 100;
-		break;
-	case 1:
-		mOptions->Preferences.mViewSphereSize = 50;
-		break;
-	}
+	if (ui->ViewCubeSizeCombo->currentIndex() > 0)
+		mOptions->Preferences.mViewCubeSize = SW_VIEW_CUBE_SIZES[ui->ViewCubeSizeCombo->currentIndex() - 1];
 
 	mOptions->Preferences.mShadingMode = (swShadingMode)ui->ShadingMode->currentIndex();
 	mOptions->Preferences.mLightingStyle = static_cast<swLightingStyle>(ui->LightingStyle->currentIndex());
@@ -836,23 +794,17 @@ void swPreferencesDialog::accept()
 
 	mOptions->StudStyle = static_cast<swStudStyle>(ui->studStyleCombo->currentIndex());
 
-	mOptions->Preferences.mDrawPreviewAxis = ui->PreviewAxisIconCheckBox->isChecked();
-	mOptions->Preferences.mPreviewSquareViewport = ui->PreviewSquareViewportCheckBox->isChecked();
-	mOptions->Preferences.mPreviewViewSphereEnabled = ui->PreviewViewSphereSizeCombo->currentIndex() > 0;
-	mOptions->Preferences.mPreviewViewSphereLocation = (swViewSphereLocation)ui->PreviewViewSphereLocationCombo->currentIndex();
+	mOptions->Preferences.mDrawPreviewAxis = ui->PreviewAxisIconSizeCombo->currentIndex() > 0;
 
-	switch (ui->PreviewViewSphereSizeCombo->currentIndex())
-	{
-	case 3:
-		mOptions->Preferences.mPreviewViewSphereSize = 100;
-		break;
-	case 2:
-		mOptions->Preferences.mPreviewViewSphereSize = 75;
-		break;
-	case 1:
-		mOptions->Preferences.mPreviewViewSphereSize = 50;
-		break;
-	}
+	if (ui->PreviewAxisIconSizeCombo->currentIndex() > 0)
+		mOptions->Preferences.mPreviewAxisIconSize = SW_AXIS_ICON_SIZES[ui->PreviewAxisIconSizeCombo->currentIndex() - 1];
+
+	mOptions->Preferences.mPreviewSquareViewport = ui->PreviewSquareViewportCheckBox->isChecked();
+	mOptions->Preferences.mPreviewViewCubeEnabled = ui->PreviewViewCubeSizeCombo->currentIndex() > 0;
+	mOptions->Preferences.mPreviewViewCubeLocation = (swViewCubeLocation)ui->PreviewViewCubeLocationCombo->currentIndex();
+
+	if (ui->PreviewViewCubeSizeCombo->currentIndex() > 0)
+		mOptions->Preferences.mPreviewViewCubeSize = SW_VIEW_CUBE_SIZES[ui->PreviewViewCubeSizeCombo->currentIndex() - 1];
 
 	swInstructionsPreferences& Instructions = mOptions->Instructions;
 	Instructions.GridSize = static_cast<float>(mInstructionsGridSize->value()) * swGetPageUnitScale(static_cast<swInstructionsPageUnits>(Instructions.MarginUnits));
@@ -1024,20 +976,20 @@ void swPreferencesDialog::ColorButtonClicked()
 		Color = &mOptions->Preferences.mGridLineColor;
 		Title = tr("Select Grid Line Color");
 	}
-	else if (Button == ui->ViewSphereColorButton)
+	else if (Button == ui->ViewCubeColorButton)
 	{
-		Color = &mOptions->Preferences.mViewSphereColor;
-		Title = tr("Select View Sphere Color");
+		Color = &mOptions->Preferences.mViewCubeColor;
+		Title = tr("Select View Cube Color");
 	}
-	else if (Button == ui->ViewSphereTextColorButton)
+	else if (Button == ui->ViewCubeTextColorButton)
 	{
-		Color = &mOptions->Preferences.mViewSphereTextColor;
-		Title = tr("Select View Sphere Text Color");
+		Color = &mOptions->Preferences.mViewCubeTextColor;
+		Title = tr("Select View Cube Text Color");
 	}
-	else if (Button == ui->ViewSphereHighlightColorButton)
+	else if (Button == ui->ViewCubeHighlightColorButton)
 	{
-		Color = &mOptions->Preferences.mViewSphereHighlightColor;
-		Title = tr("Select View Sphere Highlight Color");
+		Color = &mOptions->Preferences.mViewCubeHighlightColor;
+		Title = tr("Select View Cube Highlight Color");
 	}
 	else if (Button == ui->AxisXColorButton)
 	{
@@ -1199,14 +1151,19 @@ void swPreferencesDialog::GridLinesToggled()
 	ui->gridLineSpacing->setEnabled(ui->gridLines->isChecked());
 }
 
-void swPreferencesDialog::PreviewViewSphereSizeComboCurrentIndexChanged(int Index)
+void swPreferencesDialog::PreviewViewCubeSizeComboCurrentIndexChanged(int Index)
 {
-	ui->PreviewViewSphereLocationCombo->setEnabled(Index != 0 && swContext::SupportsMaterial(swMaterialType::UnlitViewSphere));
+	ui->PreviewViewCubeLocationCombo->setEnabled(Index != 0 && swContext::SupportsMaterial(swMaterialType::UnlitViewCube));
 }
 
-void swPreferencesDialog::ViewSphereSizeComboCurrentIndexChanged(int Index)
+void swPreferencesDialog::ViewCubeSizeComboCurrentIndexChanged(int Index)
 {
-	ui->ViewSphereLocationCombo->setEnabled(Index != 0 && swContext::SupportsMaterial(swMaterialType::UnlitViewSphere));
+	ui->ViewCubeLocationCombo->setEnabled(Index != 0 && swContext::SupportsMaterial(swMaterialType::UnlitViewCube));
+}
+
+void swPreferencesDialog::AxisIconSizeComboCurrentIndexChanged(int Index)
+{
+	ui->AxisIconLocationCombo->setEnabled(Index != 0);
 }
 
 void swPreferencesDialog::AutomateEdgeColorToggled()

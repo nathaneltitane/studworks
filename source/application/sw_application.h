@@ -1,10 +1,11 @@
 #pragma once
 
 #include "sw_math.h"
+#include <array>
 
 class Project;
 class swPartsLibrary;
-enum class swViewSphereLocation;
+enum class swViewCubeLocation;
 
 enum class swShadingMode
 {
@@ -31,6 +32,33 @@ enum class swColorTheme
 // The outline shader samples at most 8 pixels around each pixel.
 #define SW_SELECTION_OUTLINE_WIDTH_MINIMUM 1
 #define SW_SELECTION_OUTLINE_WIDTH_MAXIMUM 8
+
+// sizes from extra small to extra large on a 16px baseline
+constexpr std::array<int, 5> SW_VIEW_CUBE_SIZES = { 48, 64, 96, 128, 192 };
+constexpr std::array<int, 5> SW_AXIS_ICON_SIZES = { 32, 48, 64, 96, 128 };
+constexpr std::array<int, 5> SW_PART_ICON_SIZES = { 32, 48, 64, 96, 128 };
+
+// use to snap a stored size to the nearest listed size
+inline int swSnapSize(int Size, const std::array<int, 5>& Sizes)
+{
+	int Nearest = Sizes[0];
+
+	for (int Listed : Sizes)
+		if (std::abs(Listed - Size) < std::abs(Nearest - Size))
+			Nearest = Listed;
+
+	return Nearest;
+}
+
+// use to find the combo index of a size, after the disabled entry
+inline int swSizeIndex(int Size, const std::array<int, 5>& Sizes)
+{
+	for (size_t Index = 0; Index < Sizes.size(); Index++)
+		if (Sizes[Index] == swSnapSize(Size, Sizes))
+			return static_cast<int>(Index) + 1;
+
+	return 0;
+}
 
 enum class swHighlightRenderMode
 {
@@ -138,6 +166,7 @@ public:
 	int mTurntableTurnTime;
 	swTurntableAxis mTurntableAxis;
 	swAxisIconLocation mAxisIconLocation;
+	int mAxisIconSize;
 	quint32 mTextColor;
 	quint32 mTextHaloColor;
 	quint32 mMarqueeBorderColor;
@@ -173,12 +202,12 @@ public:
 	bool mDrawGridAxisY;
 	bool mDrawGridAxisZ;
 	bool mFixedAxes;
-	bool mViewSphereEnabled;
-	swViewSphereLocation mViewSphereLocation;
-	int mViewSphereSize;
-	quint32 mViewSphereColor;
-	quint32 mViewSphereTextColor;
-	quint32 mViewSphereHighlightColor;
+	bool mViewCubeEnabled;
+	swViewCubeLocation mViewCubeLocation;
+	int mViewCubeSize;
+	quint32 mViewCubeColor;
+	quint32 mViewCubeTextColor;
+	quint32 mViewCubeHighlightColor;
 	quint32 mAxisXColor;
 	quint32 mAxisYColor;
 	quint32 mAxisZColor;
@@ -200,10 +229,11 @@ public:
 	quint32 mControlPointFocusedColor;
 
 
-	int mPreviewViewSphereEnabled;
-	int mPreviewViewSphereSize;
-	swViewSphereLocation mPreviewViewSphereLocation;
+	int mPreviewViewCubeEnabled;
+	int mPreviewViewCubeSize;
+	swViewCubeLocation mPreviewViewCubeLocation;
 	int mDrawPreviewAxis;
+	int mPreviewAxisIconSize;
 	bool mPreviewSquareViewport;
 	bool mPreviewKeepSelection;
 

@@ -588,6 +588,11 @@ swPartSelectionListView::swPartSelectionListView(QWidget* Parent, swPartSelectio
 	connect(gApplication, &swApplication::RendererInitialized, this, &swPartSelectionListView::UpdateIconSize);
 
 	mRequestedIconSize = swGetProfileInteger(mPartSelectionWidget->GetIsPopup() ? SW_PROFILE_PARTS_POPUP_ICONS : SW_PROFILE_PARTS_LIST_ICONS);
+
+	// older settings stored sizes off the 16px baseline
+	if (mRequestedIconSize != NoIconSize)
+		mRequestedIconSize = swSnapSize(mRequestedIconSize, SW_PART_ICON_SIZES);
+
 	UpdateIconSize();
 }
 
@@ -727,6 +732,11 @@ void swPartSelectionListView::SetCurrentPart(swPartData* PartData)
 void swPartSelectionListView::SetNoIcons()
 {
 	SetIconSize(NoIconSize);
+}
+
+void swPartSelectionListView::SetExtraSmallIcons()
+{
+	SetIconSize(ExtraSmallIconSize);
 }
 
 void swPartSelectionListView::SetSmallIcons()
@@ -1045,6 +1055,11 @@ QSize swPartSelectionListView::GetPreferredSize(int MaximumWidth) const
 	{
 		switch (mListModel->GetIconSize())
 		{
+		case ExtraSmallIconSize:
+			Columns = 12;
+			MaximumRows = 6;
+			break;
+
 		case SmallIconSize:
 			Columns = 9;
 			MaximumRows = 5;
@@ -1528,6 +1543,11 @@ void swPartSelectionWidget::OptionsMenuAboutToShow()
 		NoIcons->setCheckable(true);
 		NoIcons->setChecked(ListModel->GetIconSize() == swPartSelectionListView::NoIconSize);
 		IconGroup->addAction(NoIcons);
+
+		QAction* ExtraSmallIcons = IconMenu->addAction(tr("Extra Small Icons"), mPartsWidget, &swPartSelectionListView::SetExtraSmallIcons);
+		ExtraSmallIcons->setCheckable(true);
+		ExtraSmallIcons->setChecked(ListModel->GetIconSize() == swPartSelectionListView::ExtraSmallIconSize);
+		IconGroup->addAction(ExtraSmallIcons);
 
 		QAction* SmallIcons = IconMenu->addAction(tr("Small Icons"), mPartsWidget, &swPartSelectionListView::SetSmallIcons);
 		SmallIcons->setCheckable(true);

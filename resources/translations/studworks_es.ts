@@ -927,8 +927,8 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1441"/>
-        <source>View.ToggleViewSphere</source>
-        <translation>Ver.AlternarEsferaDeVista</translation>
+        <source>View.ToggleViewCube</source>
+        <translation>Ver.AlternarCuboDeVista</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1449"/>
@@ -1287,7 +1287,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2017"/>
-        <source>View.Preview.ToggleViewSphere</source>
+        <source>View.Preview.ToggleViewCube</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2893,8 +2893,8 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1442"/>
-        <source>View Sphere</source>
-        <translation>Ver esfera</translation>
+        <source>View Cube</source>
+        <translation>Ver cubo</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1450"/>
@@ -3273,7 +3273,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2018"/>
-        <source>Preview View Sphere</source>
+        <source>Preview View Cube</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6406,7 +6406,7 @@ Formato de archivo no reconocido.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="2019"/>
-        <source>Toggle the view sphere in the preview</source>
+        <source>Toggle the view cube in the preview</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6783,8 +6783,8 @@ Formato de archivo no reconocido.</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1443"/>
-        <source>Toggle the view sphere</source>
-        <translation>Alternar la esfera de la vista</translation>
+        <source>Toggle the view cube</source>
+        <translation>Alternar el cubo de la vista</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="1451"/>
@@ -13340,7 +13340,7 @@ Por favor, visita https://github.com/nathaneltitane/studworks para saber cómo d
     </message>
     <message>
         <location filename="../../source/interface/window/sw_window_main_view.cpp" line="386"/>
-        <source>View Sphere</source>
+        <source>View Cube</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -15816,6 +15816,11 @@ Por favor, visita https://github.com/nathaneltitane/studworks para saber cómo d
         <translation>Sin iconos</translation>
     </message>
     <message>
+        <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp"/>
+        <source>Extra Small Icons</source>
+        <translation>Iconos extra pequeños</translation>
+    </message>
+    <message>
         <location filename="../../source/interface/widgets/sw_widget_selection_part.cpp" line="1532"/>
         <source>Small Icons</source>
         <translation>Iconos pequeños</translation>
@@ -16273,8 +16278,8 @@ Por favor, visita https://github.com/nathaneltitane/studworks para saber cómo d
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>View Sphere</source>
-        <translation>Esfera</translation>
+        <source>View Cube</source>
+        <translation>Cubo</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
@@ -16620,22 +16625,21 @@ Por favor, visita https://github.com/nathaneltitane/studworks para saber cómo d
         <translation type="obsolete">&lt;p&gt;&lt;b&gt;Preferencias de vista&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Elija ayudas de navegación para las vistas del modelo y la vista previa de la pieza, y configure la cuadrícula base. Ubicaciones selecciona la esquina donde aparece cada ayuda a la navegación.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Show the model-axis indicator in model views.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Muestre el indicador del eje del modelo en las vistas del modelo.</translation>
+        <translation type="vanished">Muestre el indicador del eje del modelo en las vistas del modelo.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose the corner for the model-view navigation sphere.</source>
+        <source>Choose the corner for the model-view navigation cube.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Elija la esquina para la esfera de navegación de la vista del modelo.</translation>
+        <translation type="unfinished">Elija la esquina para el cubo de navegación de la vista del modelo.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose the model-view navigation sphere size, or disable it.</source>
+        <source>Choose the model-view navigation cube size, or disable it.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Elija el tamaño de la esfera de navegación de la vista del modelo o deshabilítelo.</translation>
+        <translation type="unfinished">Elija el tamaño del cubo de navegación de la vista del modelo o deshabilítelo.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
@@ -16684,14 +16688,14 @@ Por favor, visita https://github.com/nathaneltitane/studworks para saber cómo d
         <translation type="obsolete">Mostrar el indicador del eje del modelo en la vista previa de la pieza.</translation>
     </message>
     <message>
-        <source>Choose the corner for the part-preview navigation sphere.</source>
+        <source>Choose the corner for the part-preview navigation cube.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="obsolete">Elija la esquina para la esfera de navegación de vista previa de la pieza.</translation>
+        <translation type="obsolete">Elija la esquina para el cubo de navegación de vista previa de la pieza.</translation>
     </message>
     <message>
-        <source>Choose the part-preview navigation sphere size, or disable it.</source>
+        <source>Choose the part-preview navigation cube size, or disable it.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="obsolete">Elija el tamaño de la esfera de navegación de vista previa de la pieza o deshabilítelo.</translation>
+        <translation type="obsolete">Elija el tamaño del cubo de navegación de vista previa de la pieza o deshabilítelo.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
@@ -16785,21 +16789,21 @@ Por favor, visita https://github.com/nathaneltitane/studworks para saber cómo d
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose the display color for the navigation sphere.</source>
+        <source>Choose the display color for the navigation cube.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Elija el color de visualización de la esfera de navegación.</translation>
+        <translation type="unfinished">Elija el color de visualización del cubo de navegación.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose the display color for navigation sphere text.</source>
+        <source>Choose the display color for navigation cube text.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Elija el color de visualización para el texto de la esfera de navegación.</translation>
+        <translation type="unfinished">Elija el color de visualización para el texto del cubo de navegación.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose the display color for the highlighted region of the navigation sphere.</source>
+        <source>Choose the display color for the highlighted region of the navigation cube.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Elija el color de visualización para la región resaltada de la esfera de navegación.</translation>
+        <translation type="unfinished">Elija el color de visualización para la región resaltada del cubo de navegación.</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
@@ -17262,6 +17266,26 @@ Por favor, visita https://github.com/nathaneltitane/studworks para saber cómo d
         <translation>Grande</translation>
     </message>
     <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Extra Small</source>
+        <translation>Extra pequeña</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Extra Large</source>
+        <translation>Extra grande</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Choose the model-axis indicator size in model views, or disable it.</source>
+        <translation>Elija el tamaño del indicador de ejes del modelo en las vistas del modelo, o desactívelo.</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Choose the model-axis indicator size in the preview, or disable it.</source>
+        <translation>Elija el tamaño del indicador de ejes del modelo en la vista previa, o desactívelo.</translation>
+    </message>
+    <message>
         <source>Highlight Color:</source>
         <translation type="vanished">Color de resalte:</translation>
     </message>
@@ -17383,8 +17407,8 @@ Por favor, visita https://github.com/nathaneltitane/studworks para saber cómo d
         <translation>Icono de ejes</translation>
     </message>
     <message>
-        <source>View Sphere:</source>
-        <translation type="vanished">Ver esfera:</translation>
+        <source>View Cube:</source>
+        <translation type="vanished">Ver cubo:</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
@@ -17554,21 +17578,21 @@ Las tarjetas de video no compatibles usan tinte frontal y bordes coloreados.</tr
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>View Sphere Color</source>
+        <source>View Cube Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Ver color de esfera</translation>
+        <translation type="unfinished">Ver color de cubo</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>View Sphere Text Color</source>
+        <source>View Cube Text Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Ver color de texto de esfera</translation>
+        <translation type="unfinished">Ver color de texto de cubo</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>View Sphere Highlight Color</source>
+        <source>View Cube Highlight Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Ver color de resaltado de esfera</translation>
+        <translation type="unfinished">Ver color de resaltado de cubo</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
@@ -17911,18 +17935,18 @@ Las tarjetas de video no compatibles usan tinte frontal y bordes coloreados.</tr
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1029"/>
-        <source>Select View Sphere Color</source>
-        <translation>Seleccionar color de la esfera en las vistas</translation>
+        <source>Select View Cube Color</source>
+        <translation>Seleccionar color del cubo en las vistas</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1034"/>
-        <source>Select View Sphere Text Color</source>
-        <translation>Seleccionar color del texto de la esfera en las vistas</translation>
+        <source>Select View Cube Text Color</source>
+        <translation>Seleccionar color del texto del cubo en las vistas</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1039"/>
-        <source>Select View Sphere Highlight Color</source>
-        <translation>Seleccionar color de resalte de la esfera de la vista</translation>
+        <source>Select View Cube Highlight Color</source>
+        <translation>Seleccionar color de resalte del cubo de la vista</translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1044"/>
@@ -18339,9 +18363,9 @@ Las tarjetas de video no compatibles usan tinte frontal y bordes coloreados.</tr
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="599"/>
-        <source>View sphere rendering is unavailable.</source>
+        <source>View cube rendering is unavailable.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Ver renderizado de esfera no está disponible.</translation>
+        <translation type="unfinished">Ver renderizado de cubo no está disponible.</translation>
     </message>
     <message>
         <source>Outline rendering is unavailable. Face tint and colored edges will be used.</source>
@@ -18884,7 +18908,7 @@ Las tarjetas de video no compatibles usan tinte frontal y bordes coloreados.</tr
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>View Sphere Location</source>
+        <source>View Cube Location</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -19069,18 +19093,17 @@ Las tarjetas de video no compatibles usan tinte frontal y bordes coloreados.</tr
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose the preview navigation sphere size, or disable it.</source>
+        <source>Choose the preview navigation cube size, or disable it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Choose the corner for the preview navigation sphere.</source>
+        <source>Choose the corner for the preview navigation cube.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Show the model-axis indicator in the preview.</source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
@@ -19163,7 +19186,7 @@ Las tarjetas de video no compatibles usan tinte frontal y bordes coloreados.</tr
     </message>
     <message>
         <location filename="../../source/interface/widgets/sw_widget_preview.cpp" line="131"/>
-        <source>View Sphere</source>
+        <source>View Cube</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

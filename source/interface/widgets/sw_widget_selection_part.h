@@ -1,5 +1,6 @@
 #pragma once
 
+#include "sw_application.h"
 #include "sw_manager_thumbnail.h"
 
 class swPartSelectionListModel;
@@ -193,10 +194,11 @@ class swPartSelectionListView : public QListView
 
 public:
 	static constexpr int NoIconSize = 0;
-	static constexpr int SmallIconSize = 32;
-	static constexpr int MediumIconSize = 64;
-	static constexpr int LargeIconSize = 96;
-	static constexpr int ExtraLargeIconSize = 192;
+	static constexpr int ExtraSmallIconSize = SW_PART_ICON_SIZES[0];
+	static constexpr int SmallIconSize = SW_PART_ICON_SIZES[1];
+	static constexpr int MediumIconSize = SW_PART_ICON_SIZES[2];
+	static constexpr int LargeIconSize = SW_PART_ICON_SIZES[3];
+	static constexpr int ExtraLargeIconSize = SW_PART_ICON_SIZES[4];
 
 	swPartSelectionListView(QWidget* Parent, swPartSelectionWidget* PartSelectionWidget);
 
@@ -243,6 +245,7 @@ signals:
 public slots:
 	void CustomContextMenuRequested(QPoint Pos);
 	void SetNoIcons();
+	void SetExtraSmallIcons();
 	void SetSmallIcons();
 	void SetMediumIcons();
 	void SetLargeIcons();

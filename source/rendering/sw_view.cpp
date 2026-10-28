@@ -9,7 +9,7 @@
 #include "sw_track_train.h"
 #include "sw_scene.h"
 #include "sw_view_manipulator.h"
-#include "sw_view_sphere.h"
+#include "sw_view_cube.h"
 #include "sw_widget_find_replace.h"
 #include "sw_library.h"
 #include "sw_widget_selection_part_popup.h"
@@ -28,7 +28,7 @@ swView::swView(swViewType ViewType, swModel* Model)
 	mViews.push_back(this);
 
 	mViewManipulator = std::unique_ptr<swViewManipulator>(new swViewManipulator(this));
-	mViewSphere = std::unique_ptr<swViewSphere>(new swViewSphere(this));
+	mViewCube = std::unique_ptr<swViewCube>(new swViewCube(this));
 	memset(mGridSettings, 0, sizeof(mGridSettings));
 
 	mDragState = swDragState::None;

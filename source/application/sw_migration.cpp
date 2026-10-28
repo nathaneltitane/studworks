@@ -46,22 +46,22 @@ static void swMigrateEarlierSettings()
 	Settings.sync();
 }
 
-static QString swRenamePieceName(QString Name)
+QString swRenameStoredName(QString Name)
 {
-	return Name.replace(QLatin1String("Pieces"), QLatin1String("Parts")).replace(QLatin1String("Piece"), QLatin1String("Part"));
+	return Name.replace(QLatin1String("Pieces"), QLatin1String("Parts")).replace(QLatin1String("Piece"), QLatin1String("Part")).replace(QLatin1String("ViewSphere"), QLatin1String("ViewCube"));
 }
 
 static void swMigrateRenamedKeys()
 {
-	// Keys named after pieces take their part names, their values are newer than any left under the part name.
+	// Keys named after pieces or the view sphere take their part and view cube names, their values are newer than any left under the new name.
 	QSettings Settings;
 
 	for (const QString& Key : Settings.allKeys())
 	{
-		if (!Key.contains(QLatin1String("Piece")))
+		if (!Key.contains(QLatin1String("Piece")) && !Key.contains(QLatin1String("ViewSphere")))
 			continue;
 
-		Settings.setValue(swRenamePieceName(Key), Settings.value(Key));
+		Settings.setValue(swRenameStoredName(Key), Settings.value(Key));
 		Settings.remove(Key);
 	}
 
@@ -82,7 +82,7 @@ static void swMigrateRenamedShortcuts()
 		const qsizetype Equals = Line.indexOf(QLatin1Char('='));
 
 		if (Equals != -1)
-			Line = swRenamePieceName(Line.left(Equals)) + Line.mid(Equals);
+			Line = swRenameStoredName(Line.left(Equals)) + Line.mid(Equals);
 	}
 
 	const QString Shortcuts = Lines.join(QLatin1Char('\n'));

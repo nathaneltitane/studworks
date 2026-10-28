@@ -40,6 +40,7 @@ void swPreferences::LoadDefaults()
 	mTurntableTurnTime = swGetProfileInteger(SW_PROFILE_TURNTABLE_TURN_TIME);
 	mTurntableAxis = static_cast<swTurntableAxis>(qBound(0, swGetProfileInteger(SW_PROFILE_TURNTABLE_AXIS), static_cast<int>(swTurntableAxis::Z)));
 	mAxisIconLocation = swGetProfileAxisIconLocation();
+	mAxisIconSize = swSnapSize(swGetProfileInteger(SW_PROFILE_AXIS_ICON_SIZE), SW_AXIS_ICON_SIZES);
 	mTextColor = swGetProfileUnsignedInteger(SW_PROFILE_TEXT_COLOR);
 	mTextHaloColor = swGetProfileUnsignedInteger(SW_PROFILE_TEXT_HALO_COLOR);
 	mMarqueeBorderColor = swGetProfileUnsignedInteger(SW_PROFILE_MARQUEE_BORDER_COLOR);
@@ -73,12 +74,12 @@ void swPreferences::LoadDefaults()
 	mDrawGridAxisX = swGetProfileInteger(SW_PROFILE_GRID_AXIS_X);
 	mDrawGridAxisY = swGetProfileInteger(SW_PROFILE_GRID_AXIS_Y);
 	mDrawGridAxisZ = swGetProfileInteger(SW_PROFILE_GRID_AXIS_Z);
-	mViewSphereEnabled = swGetProfileInteger(SW_PROFILE_VIEW_SPHERE_ENABLED);
-	mViewSphereLocation = swGetProfileViewSphereLocation();
-	mViewSphereSize = swGetProfileInteger(SW_PROFILE_VIEW_SPHERE_SIZE);
-	mViewSphereColor = swGetProfileUnsignedInteger(SW_PROFILE_VIEW_SPHERE_COLOR);
-	mViewSphereTextColor = swGetProfileUnsignedInteger(SW_PROFILE_VIEW_SPHERE_TEXT_COLOR);
-	mViewSphereHighlightColor = swGetProfileUnsignedInteger(SW_PROFILE_VIEW_SPHERE_HIGHLIGHT_COLOR);
+	mViewCubeEnabled = swGetProfileInteger(SW_PROFILE_VIEW_CUBE_ENABLED);
+	mViewCubeLocation = swGetProfileViewCubeLocation();
+	mViewCubeSize = swSnapSize(swGetProfileInteger(SW_PROFILE_VIEW_CUBE_SIZE), SW_VIEW_CUBE_SIZES);
+	mViewCubeColor = swGetProfileUnsignedInteger(SW_PROFILE_VIEW_CUBE_COLOR);
+	mViewCubeTextColor = swGetProfileUnsignedInteger(SW_PROFILE_VIEW_CUBE_TEXT_COLOR);
+	mViewCubeHighlightColor = swGetProfileUnsignedInteger(SW_PROFILE_VIEW_CUBE_HIGHLIGHT_COLOR);
 	mAxisXColor = swGetProfileUnsignedInteger(SW_PROFILE_AXIS_X_COLOR);
 	mAxisYColor = swGetProfileUnsignedInteger(SW_PROFILE_AXIS_Y_COLOR);
 	mAxisZColor = swGetProfileUnsignedInteger(SW_PROFILE_AXIS_Z_COLOR);
@@ -92,10 +93,11 @@ void swPreferences::LoadDefaults()
 	mLoadPartsBeforeShowing = swGetProfileInteger(SW_PROFILE_LOAD_PARTS_BEFORE_SHOWING);
 	mMigrateMetaCommands = swGetProfileInteger(SW_PROFILE_MIGRATE_META_COMMANDS);
 	mColorTheme = swGetProfileColorTheme();
-	mPreviewViewSphereEnabled = swGetProfileInteger(SW_PROFILE_PREVIEW_VIEW_SPHERE_ENABLED);
-	mPreviewViewSphereSize = swGetProfileInteger(SW_PROFILE_PREVIEW_VIEW_SPHERE_SIZE);
-	mPreviewViewSphereLocation = swGetProfilePreviewViewSphereLocation();
+	mPreviewViewCubeEnabled = swGetProfileInteger(SW_PROFILE_PREVIEW_VIEW_CUBE_ENABLED);
+	mPreviewViewCubeSize = swSnapSize(swGetProfileInteger(SW_PROFILE_PREVIEW_VIEW_CUBE_SIZE), SW_VIEW_CUBE_SIZES);
+	mPreviewViewCubeLocation = swGetProfilePreviewViewCubeLocation();
 	mDrawPreviewAxis = swGetProfileInteger(SW_PROFILE_PREVIEW_DRAW_AXES);
+	mPreviewAxisIconSize = swSnapSize(swGetProfileInteger(SW_PROFILE_PREVIEW_AXIS_ICON_SIZE), SW_AXIS_ICON_SIZES);
 	mPreviewSquareViewport = swGetProfileInteger(SW_PROFILE_PREVIEW_SQUARE_VIEWPORT);
 	mPreviewKeepSelection = swGetProfileInteger(SW_PROFILE_PREVIEW_KEEP_SELECTION);
 	mStudCylinderColorEnabled = swGetProfileInteger(SW_PROFILE_STUD_CYLINDER_COLOR_ENABLED);
@@ -133,6 +135,7 @@ void swPreferences::SaveDefaults()
 	swSetProfileInteger(SW_PROFILE_TURNTABLE_TURN_TIME, mTurntableTurnTime);
 	swSetProfileInteger(SW_PROFILE_TURNTABLE_AXIS, static_cast<int>(mTurntableAxis));
 	swSetProfileAxisIconLocation(mAxisIconLocation);
+	swSetProfileInteger(SW_PROFILE_AXIS_ICON_SIZE, mAxisIconSize);
 	swSetProfileUnsignedInteger(SW_PROFILE_TEXT_COLOR, mTextColor);
 	swSetProfileUnsignedInteger(SW_PROFILE_TEXT_HALO_COLOR, mTextHaloColor);
 	swSetProfileUnsignedInteger(SW_PROFILE_BACKGROUND_COLOR, mBackgroundSolidColor);
@@ -167,12 +170,12 @@ void swPreferences::SaveDefaults()
 	swSetProfileInteger(SW_PROFILE_GRID_AXIS_X, mDrawGridAxisX);
 	swSetProfileInteger(SW_PROFILE_GRID_AXIS_Y, mDrawGridAxisY);
 	swSetProfileInteger(SW_PROFILE_GRID_AXIS_Z, mDrawGridAxisZ);
-	swSetProfileInteger(SW_PROFILE_VIEW_SPHERE_ENABLED, mViewSphereEnabled);
-	swSetProfileViewSphereLocation(mViewSphereLocation);
-	swSetProfileInteger(SW_PROFILE_VIEW_SPHERE_SIZE, mViewSphereSize);
-	swSetProfileUnsignedInteger(SW_PROFILE_VIEW_SPHERE_COLOR, mViewSphereColor);
-	swSetProfileUnsignedInteger(SW_PROFILE_VIEW_SPHERE_TEXT_COLOR, mViewSphereTextColor);
-	swSetProfileUnsignedInteger(SW_PROFILE_VIEW_SPHERE_HIGHLIGHT_COLOR, mViewSphereHighlightColor);
+	swSetProfileInteger(SW_PROFILE_VIEW_CUBE_ENABLED, mViewCubeEnabled);
+	swSetProfileViewCubeLocation(mViewCubeLocation);
+	swSetProfileInteger(SW_PROFILE_VIEW_CUBE_SIZE, mViewCubeSize);
+	swSetProfileUnsignedInteger(SW_PROFILE_VIEW_CUBE_COLOR, mViewCubeColor);
+	swSetProfileUnsignedInteger(SW_PROFILE_VIEW_CUBE_TEXT_COLOR, mViewCubeTextColor);
+	swSetProfileUnsignedInteger(SW_PROFILE_VIEW_CUBE_HIGHLIGHT_COLOR, mViewCubeHighlightColor);
 	swSetProfileUnsignedInteger(SW_PROFILE_AXIS_X_COLOR, mAxisXColor);
 	swSetProfileUnsignedInteger(SW_PROFILE_AXIS_Y_COLOR, mAxisYColor);
 	swSetProfileUnsignedInteger(SW_PROFILE_AXIS_Z_COLOR, mAxisZColor);
@@ -186,10 +189,11 @@ void swPreferences::SaveDefaults()
 	swSetProfileInteger(SW_PROFILE_LOAD_PARTS_BEFORE_SHOWING, mLoadPartsBeforeShowing);
 	swSetProfileInteger(SW_PROFILE_MIGRATE_META_COMMANDS, mMigrateMetaCommands);
 	swSetProfileColorTheme(mColorTheme);
-	swSetProfileInteger(SW_PROFILE_PREVIEW_VIEW_SPHERE_ENABLED, mPreviewViewSphereEnabled);
-	swSetProfileInteger(SW_PROFILE_PREVIEW_VIEW_SPHERE_SIZE, mPreviewViewSphereSize);
-	swSetProfilePreviewViewSphereLocation(mPreviewViewSphereLocation);
+	swSetProfileInteger(SW_PROFILE_PREVIEW_VIEW_CUBE_ENABLED, mPreviewViewCubeEnabled);
+	swSetProfileInteger(SW_PROFILE_PREVIEW_VIEW_CUBE_SIZE, mPreviewViewCubeSize);
+	swSetProfilePreviewViewCubeLocation(mPreviewViewCubeLocation);
 	swSetProfileInteger(SW_PROFILE_PREVIEW_DRAW_AXES, mDrawPreviewAxis);
+	swSetProfileInteger(SW_PROFILE_PREVIEW_AXIS_ICON_SIZE, mPreviewAxisIconSize);
 	swSetProfileInteger(SW_PROFILE_PREVIEW_SQUARE_VIEWPORT, mPreviewSquareViewport);
 	swSetProfileInteger(SW_PROFILE_PREVIEW_KEEP_SELECTION, mPreviewKeepSelection);
 	swSetProfileInteger(SW_PROFILE_STUD_CYLINDER_COLOR_ENABLED, mStudCylinderColorEnabled);
@@ -268,9 +272,9 @@ void swPreferences::SetInterfaceColors(swColorTheme ColorTheme)
 		mActiveViewColor = SW_RGBA(41, 128, 185, 255);
 		mGridStudColor = SW_RGBA(24, 24, 24, 192);
 		mGridLineColor = SW_RGBA(24, 24, 24, 255);
-		mViewSphereColor = SW_RGBA(27, 31, 36, 255);
-		mViewSphereTextColor = SW_RGBA(232, 237, 242, 255);
-		mViewSphereHighlightColor = SW_RGBA(41, 128, 185, 255);
+		mViewCubeColor = SW_RGBA(27, 31, 36, 255);
+		mViewCubeTextColor = SW_RGBA(232, 237, 242, 255);
+		mViewCubeHighlightColor = SW_RGBA(41, 128, 185, 255);
 	}
 	else
 	{
@@ -281,9 +285,9 @@ void swPreferences::SetInterfaceColors(swColorTheme ColorTheme)
 		mActiveViewColor = SW_RGBA(255, 0, 0, 255);
 		mGridStudColor = SW_RGBA(64, 64, 64, 192);
 		mGridLineColor = SW_RGBA(0, 0, 0, 255);
-		mViewSphereColor = SW_RGBA(248, 250, 252, 255);
-		mViewSphereTextColor = SW_RGBA(24, 33, 43, 255);
-		mViewSphereHighlightColor = SW_RGBA(41, 128, 185, 255);
+		mViewCubeColor = SW_RGBA(248, 250, 252, 255);
+		mViewCubeTextColor = SW_RGBA(24, 33, 43, 255);
+		mViewCubeHighlightColor = SW_RGBA(41, 128, 185, 255);
 	}
 }
 

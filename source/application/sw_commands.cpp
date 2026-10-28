@@ -1436,11 +1436,11 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
-	// SW_VIEW_TOGGLE_VIEW_SPHERE
+	// SW_VIEW_TOGGLE_VIEW_CUBE
 	{
-		QT_TRANSLATE_NOOP("Action", "View.ToggleViewSphere"),
-		QT_TRANSLATE_NOOP("Menu", "View Sphere"),
-		QT_TRANSLATE_NOOP("Status", "Toggle the view sphere"),
+		QT_TRANSLATE_NOOP("Action", "View.ToggleViewCube"),
+		QT_TRANSLATE_NOOP("Menu", "View Cube"),
+		QT_TRANSLATE_NOOP("Status", "Toggle the view cube"),
 		"",
 		""
 	},
@@ -2036,11 +2036,11 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
-	// SW_VIEW_TOGGLE_PREVIEW_VIEW_SPHERE
+	// SW_VIEW_TOGGLE_PREVIEW_VIEW_CUBE
 	{
-		QT_TRANSLATE_NOOP("Action", "View.Preview.ToggleViewSphere"),
-		QT_TRANSLATE_NOOP("Menu", "Preview View Sphere"),
-		QT_TRANSLATE_NOOP("Status", "Toggle the view sphere in the preview"),
+		QT_TRANSLATE_NOOP("Action", "View.Preview.ToggleViewCube"),
+		QT_TRANSLATE_NOOP("Menu", "Preview View Cube"),
+		QT_TRANSLATE_NOOP("Status", "Toggle the view cube in the preview"),
 		"",
 		""
 	},

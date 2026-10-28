@@ -238,7 +238,7 @@ public:
 	void SetShadingMode(swShadingMode ShadingMode);
 	void SetLightingStyle(swLightingStyle LightingStyle);
 	void SetSelectionMode(swSelectionMode SelectionMode);
-	void ToggleViewSphere();
+	void ToggleViewCube();
 	void ToggleAxisIcon();
 	void ToggleGrid();
 	void ToggleFadePreviousSteps();
@@ -253,7 +253,7 @@ public:
 	void SetTargetShadingMode(swRenderTarget Target, swShadingMode ShadingMode);
 	void AddRenderTargetActions(QMenu* Menu, swRenderTarget Target);
 	QAction* AddMenuCommand(QMenu* Menu, const QString& Text, swCommandId CommandId, bool Checked);
-	void TogglePreviewViewSphere();
+	void TogglePreviewViewCube();
 	void TogglePreviewAxisIcon();
 	void UpdatePartsRendering();
 	void ToggleLoadPartsBeforeShowing();

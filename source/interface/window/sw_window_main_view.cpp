@@ -167,10 +167,10 @@ void swMainWindow::SetSelectionMode(swSelectionMode SelectionMode)
 	UpdateSelectionMode();
 }
 
-void swMainWindow::ToggleViewSphere()
+void swMainWindow::ToggleViewCube()
 {
-	swGetPreferences().mViewSphereEnabled = !swGetPreferences().mViewSphereEnabled;
-	swSetProfileInteger(SW_PROFILE_VIEW_SPHERE_ENABLED, swGetPreferences().mViewSphereEnabled);
+	swGetPreferences().mViewCubeEnabled = !swGetPreferences().mViewCubeEnabled;
+	swSetProfileInteger(SW_PROFILE_VIEW_CUBE_ENABLED, swGetPreferences().mViewCubeEnabled);
 
 	swView::UpdateAllViews();
 }
@@ -486,7 +486,7 @@ void swMainWindow::ModelViewOptionsMenuAboutToShow()
 
 	Menu->addSeparator();
 
-	AddMenuCommand(Menu, tr("View Sphere"), SW_VIEW_TOGGLE_VIEW_SPHERE, Preferences.mViewSphereEnabled);
+	AddMenuCommand(Menu, tr("View Cube"), SW_VIEW_TOGGLE_VIEW_CUBE, Preferences.mViewCubeEnabled);
 	AddMenuCommand(Menu, tr("Axis Icon"), SW_VIEW_TOGGLE_AXIS_ICON, Preferences.mDrawAxes);
 	AddMenuCommand(Menu, tr("Base Grid"), SW_VIEW_TOGGLE_GRID, Preferences.mGridEnabled);
 	AddMenuCommand(Menu, tr("XZ Height Grid"), SW_VIEW_GRID_TOGGLE_HEIGHT_XZ, Preferences.mDrawGridHeightXZ);
@@ -501,10 +501,10 @@ void swMainWindow::ModelViewOptionsMenuAboutToShow()
 	AddRenderTargetActions(Menu, swRenderTarget::ModelView);
 }
 
-void swMainWindow::TogglePreviewViewSphere()
+void swMainWindow::TogglePreviewViewCube()
 {
-	swGetPreferences().mPreviewViewSphereEnabled = !swGetPreferences().mPreviewViewSphereEnabled;
-	swSetProfileInteger(SW_PROFILE_PREVIEW_VIEW_SPHERE_ENABLED, swGetPreferences().mPreviewViewSphereEnabled);
+	swGetPreferences().mPreviewViewCubeEnabled = !swGetPreferences().mPreviewViewCubeEnabled;
+	swSetProfileInteger(SW_PROFILE_PREVIEW_VIEW_CUBE_ENABLED, swGetPreferences().mPreviewViewCubeEnabled);
 
 	swView::UpdateAllViews();
 }

@@ -8,7 +8,7 @@
 #include "sw_library.h"
 #include "sw_texture_font.h"
 #include "sw_view.h"
-#include "sw_view_sphere.h"
+#include "sw_view_cube.h"
 #include "sw_view_manipulator.h"
 #include "sw_cache_string.h"
 #include "sw_scene.h"
@@ -168,8 +168,8 @@ swResult<void> swContext::InitializeRenderer(bool CreateRenderResources)
 	swView::CreateResources(Context);
 	swViewManipulator::CreateResources(Context);
 
-	if (SupportsMaterial(swMaterialType::UnlitViewSphere))
-		swViewSphere::CreateResources(Context);
+	if (SupportsMaterial(swMaterialType::UnlitViewCube))
+		swViewCube::CreateResources(Context);
 
 	mRenderResourcesCreated = true;
 
@@ -195,7 +195,7 @@ void swContext::ShutdownRenderer()
 		swView::DestroyResources(Context);
 		Context->DestroyResources();
 		swViewManipulator::DestroyResources(Context);
-		swViewSphere::DestroyResources(Context);
+		swViewCube::DestroyResources(Context);
 
 		mRenderResourcesCreated = false;
 	}
@@ -364,7 +364,7 @@ swResult<void> swContext::CreateShaderPrograms()
 		":/resources/shaders/unlit_texture_modulate_vs.glsl",  // TextSDF
 		":/resources/shaders/unlit_texture_decal_vs.glsl",     // UnlitTextureDecal
 		":/resources/shaders/unlit_vertex_color_vs.glsl",      // UnlitVertexColor
-		":/resources/shaders/unlit_view_sphere_vs.glsl",       // UnlitViewSphere
+		":/resources/shaders/unlit_view_cube_vs.glsl",       // UnlitViewCube
 		":/resources/shaders/fakelit_color_vs.glsl",           // FakeLitColor
 		":/resources/shaders/fakelit_texture_decal_vs.glsl",   // FakeLitTextureDecal
 		":/resources/shaders/unlit_texture_modulate_vs.glsl"   // OutlineComposite
@@ -380,7 +380,7 @@ swResult<void> swContext::CreateShaderPrograms()
 		":/resources/shaders/text_sdf_ps.glsl",                // TextSDF
 		":/resources/shaders/unlit_texture_decal_ps.glsl",     // UnlitTextureDecal
 		":/resources/shaders/unlit_vertex_color_ps.glsl",      // UnlitVertexColor
-		":/resources/shaders/unlit_view_sphere_ps.glsl",       // UnlitViewSphere
+		":/resources/shaders/unlit_view_cube_ps.glsl",       // UnlitViewCube
 		":/resources/shaders/fakelit_color_ps.glsl",           // FakeLitColor
 		":/resources/shaders/fakelit_texture_decal_ps.glsl",   // FakeLitTextureDecal
 		":/resources/shaders/outline_composite_ps.glsl"      // OutlineComposite
@@ -435,7 +435,7 @@ swResult<void> swContext::CreateShaderPrograms()
 		{
 		case swMaterialType::UnlitColorConditional:
 		case swMaterialType::TextSDF:
-		case swMaterialType::UnlitViewSphere:
+		case swMaterialType::UnlitViewCube:
 		case swMaterialType::FakeLitColor:
 		case swMaterialType::FakeLitTextureDecal:
 		case swMaterialType::OutlineComposite:

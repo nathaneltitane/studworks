@@ -3,7 +3,7 @@
 #include "sw_context.h"
 #include "sw_model.h"
 #include "sw_project.h"
-#include "sw_view_sphere.h"
+#include "sw_view_cube.h"
 #include "sw_dialog_render.h"
 #include "sw_library.h"
 #include "sw_widget_selection_part.h"
@@ -74,6 +74,7 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Settings", "TurntableTurnTime", 30),                                                   // SW_PROFILE_TURNTABLE_TURN_TIME
 	swProfileEntry("Settings", "TurntableAxis", static_cast<int>(swTurntableAxis::Z)),                     // SW_PROFILE_TURNTABLE_AXIS
 	swProfileEntry("Settings", "DrawAxesLocation", static_cast<int>(swAxisIconLocation::BottomLeft)),      // SW_PROFILE_DRAW_AXES_LOCATION
+	swProfileEntry("Settings", "AxisIconSize", 48),                                                       // SW_PROFILE_AXIS_ICON_SIZE
 	swProfileEntry("Settings", "TextColor", SW_RGBA(214, 220, 227, 255)),                                  // SW_PROFILE_TEXT_COLOR
 	swProfileEntry("Settings", "TextHaloColor", SW_RGBA(17, 19, 24, 160)),                                // SW_PROFILE_TEXT_HALO_COLOR
 	swProfileEntry("Settings", "MarqueeBorderColor", SW_RGBA(64, 64, 255, 255)),                           // SW_PROFILE_MARQUEE_BORDER_COLOR
@@ -108,12 +109,12 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Settings", "GridAxisY", 1),                                                            // SW_PROFILE_GRID_AXIS_Y
 	swProfileEntry("Settings", "GridAxisZ", 1),                                                            // SW_PROFILE_GRID_AXIS_Z
 	swProfileEntry("Settings", "AASamples", 1),                                                            // SW_PROFILE_ANTIALIASING_SAMPLES
-	swProfileEntry("Settings", "ViewSphereEnabled", 1),                                                    // SW_PROFILE_VIEW_SPHERE_ENABLED
-	swProfileEntry("Settings", "ViewSphereLocation", (int)swViewSphereLocation::TopRight),                 // SW_PROFILE_VIEW_SPHERE_LOCATION
-	swProfileEntry("Settings", "ViewSphereSize", 100),                                                     // SW_PROFILE_VIEW_SPHERE_SIZE
-	swProfileEntry("Settings", "ViewSphereColor", SW_RGBA(27, 31, 36, 255)),                               // SW_PROFILE_VIEW_SPHERE_COLOR
-	swProfileEntry("Settings", "ViewSphereTextColor", SW_RGBA(232, 237, 242, 255)),                        // SW_PROFILE_VIEW_SPHERE_TEXT_COLOR
-	swProfileEntry("Settings", "ViewSphereHighlightColor", SW_RGBA(41, 128, 185, 255)),                    // SW_PROFILE_VIEW_SPHERE_HIGHLIGHT_COLOR
+	swProfileEntry("Settings", "ViewCubeEnabled", 1),                                                      // SW_PROFILE_VIEW_CUBE_ENABLED
+	swProfileEntry("Settings", "ViewCubeLocation", (int)swViewCubeLocation::TopRight),                   // SW_PROFILE_VIEW_CUBE_LOCATION
+	swProfileEntry("Settings", "ViewCubeSize", 96),                                                       // SW_PROFILE_VIEW_CUBE_SIZE
+	swProfileEntry("Settings", "ViewCubeColor", SW_RGBA(27, 31, 36, 255)),                                 // SW_PROFILE_VIEW_CUBE_COLOR
+	swProfileEntry("Settings", "ViewCubeTextColor", SW_RGBA(232, 237, 242, 255)),                          // SW_PROFILE_VIEW_CUBE_TEXT_COLOR
+	swProfileEntry("Settings", "ViewCubeHighlightColor", SW_RGBA(41, 128, 185, 255)),                      // SW_PROFILE_VIEW_CUBE_HIGHLIGHT_COLOR
 	swProfileEntry("Settings", "AxisXColor", SW_RGBA(200, 40, 60, 255)),                                   // SW_PROFILE_AXIS_X_COLOR
 	swProfileEntry("Settings", "AxisYColor", SW_RGBA(100, 200, 20, 255)),                                  // SW_PROFILE_AXIS_Y_COLOR
 	swProfileEntry("Settings", "AxisZColor", SW_RGBA(40, 60, 230, 255)),                                   // SW_PROFILE_AXIS_Z_COLOR
@@ -193,10 +194,11 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Blender", "AddonVersionCheck", 1),                                         // SW_PROFILE_BLENDER_ADDON_VERSION_CHECK
 	swProfileEntry("Blender", "ImportModule", ""),                                             // SW_PROFILE_BLENDER_IMPORT_MODULE
 
-	swProfileEntry("Settings", "PreviewViewSphereEnabled", 0),                                    // SW_PROFILE_PREVIEW_VIEW_SPHERE_ENABLED
-	swProfileEntry("Settings", "PreviewViewSphereSize", 75),                                      // SW_PROFILE_PREVIEW_VIEW_SPHERE_SIZE
-	swProfileEntry("Settings", "PreviewViewSphereLocation", (int)swViewSphereLocation::TopRight), // SW_PROFILE_PREVIEW_VIEW_SPHERE_LOCATION
+	swProfileEntry("Settings", "PreviewViewCubeEnabled", 0),                                      // SW_PROFILE_PREVIEW_VIEW_CUBE_ENABLED
+	swProfileEntry("Settings", "PreviewViewCubeSize", 64),                                        // SW_PROFILE_PREVIEW_VIEW_CUBE_SIZE
+	swProfileEntry("Settings", "PreviewViewCubeLocation", (int)swViewCubeLocation::TopRight),   // SW_PROFILE_PREVIEW_VIEW_CUBE_LOCATION
 	swProfileEntry("Settings", "DrawPreviewAxis", 0),                                             // SW_PROFILE_PREVIEW_DRAW_AXES
+	swProfileEntry("Settings", "PreviewAxisIconSize", 48),                                         // SW_PROFILE_PREVIEW_AXIS_ICON_SIZE
 
 	swProfileEntry("Settings", "StudCylinderColorEnabled", true),                              // SW_PROFILE_STUD_CYLINDER_COLOR_ENABLED
 	swProfileEntry("Settings", "StudCylinderColor", SW_RGBA(27, 42, 52, 255)),                 // SW_PROFILE_STUD_CYLINDER_COLOR
@@ -470,12 +472,12 @@ constexpr swProfileEnumerationValue<swAxisIconLocation> AxisIconLocationValues[]
 	{ swAxisIconLocation::BottomRight, "BottomRight", 3 }
 };
 
-constexpr swProfileEnumerationValue<swViewSphereLocation> ViewSphereLocationValues[] =
+constexpr swProfileEnumerationValue<swViewCubeLocation> ViewCubeLocationValues[] =
 {
-	{ swViewSphereLocation::TopLeft, "TopLeft", 0 },
-	{ swViewSphereLocation::TopRight, "TopRight", 1 },
-	{ swViewSphereLocation::BottomLeft, "BottomLeft", 2 },
-	{ swViewSphereLocation::BottomRight, "BottomRight", 3 }
+	{ swViewCubeLocation::TopLeft, "TopLeft", 0 },
+	{ swViewCubeLocation::TopRight, "TopRight", 1 },
+	{ swViewCubeLocation::BottomLeft, "BottomLeft", 2 },
+	{ swViewCubeLocation::BottomRight, "BottomRight", 3 }
 };
 
 constexpr swProfileEnumerationValue<swColorTheme> ColorThemeValues[] =
@@ -590,14 +592,14 @@ void swSetProfileAxisIconLocation(swAxisIconLocation Value)
 	swWriteProfileEnumeration(SW_PROFILE_DRAW_AXES_LOCATION, Value, AxisIconLocationValues);
 }
 
-swViewSphereLocation swGetProfileViewSphereLocation()
+swViewCubeLocation swGetProfileViewCubeLocation()
 {
-	return swReadProfileEnumeration(SW_PROFILE_VIEW_SPHERE_LOCATION, ViewSphereLocationValues);
+	return swReadProfileEnumeration(SW_PROFILE_VIEW_CUBE_LOCATION, ViewCubeLocationValues);
 }
 
-void swSetProfileViewSphereLocation(swViewSphereLocation Value)
+void swSetProfileViewCubeLocation(swViewCubeLocation Value)
 {
-	swWriteProfileEnumeration(SW_PROFILE_VIEW_SPHERE_LOCATION, Value, ViewSphereLocationValues);
+	swWriteProfileEnumeration(SW_PROFILE_VIEW_CUBE_LOCATION, Value, ViewCubeLocationValues);
 }
 
 swColorTheme swGetProfileColorTheme()
@@ -640,12 +642,12 @@ void swSetProfileRenderQuality(swPOVRayRenderQuality Value)
 	swWriteProfileEnumeration(SW_PROFILE_RENDER_QUALITY, Value, RenderQualityValues);
 }
 
-swViewSphereLocation swGetProfilePreviewViewSphereLocation()
+swViewCubeLocation swGetProfilePreviewViewCubeLocation()
 {
-	return swReadProfileEnumeration(SW_PROFILE_PREVIEW_VIEW_SPHERE_LOCATION, ViewSphereLocationValues);
+	return swReadProfileEnumeration(SW_PROFILE_PREVIEW_VIEW_CUBE_LOCATION, ViewCubeLocationValues);
 }
 
-void swSetProfilePreviewViewSphereLocation(swViewSphereLocation Value)
+void swSetProfilePreviewViewCubeLocation(swViewCubeLocation Value)
 {
-	swWriteProfileEnumeration(SW_PROFILE_PREVIEW_VIEW_SPHERE_LOCATION, Value, ViewSphereLocationValues);
+	swWriteProfileEnumeration(SW_PROFILE_PREVIEW_VIEW_CUBE_LOCATION, Value, ViewCubeLocationValues);
 }

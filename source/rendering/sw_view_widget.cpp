@@ -12,7 +12,7 @@
 #include "sw_profile.h"
 #include "sw_widget_preview.h"
 #include "sw_window_utilities.h"
-#include "sw_view_sphere.h"
+#include "sw_view_cube.h"
 
 swViewWidget::swViewWidget(QWidget* Parent, swView* View)
 	: QOpenGLWidget(Parent), mView(View)
@@ -177,12 +177,12 @@ void swViewWidget::UpdateOverlayGeometry()
 	int Right = width() - 1;
 	const swPreferences& Preferences = swGetPreferences();
 
-	if (Preferences.mViewSphereEnabled && Preferences.mViewSphereSize > 0)
+	if (Preferences.mViewCubeEnabled && Preferences.mViewCubeSize > 0)
 	{
-		if (Preferences.mViewSphereLocation == swViewSphereLocation::TopLeft)
-			Left += Preferences.mViewSphereSize + 2;
-		else if (Preferences.mViewSphereLocation == swViewSphereLocation::TopRight)
-			Right -= Preferences.mViewSphereSize + 2;
+		if (Preferences.mViewCubeLocation == swViewCubeLocation::TopLeft)
+			Left += Preferences.mViewCubeSize + 2;
+		else if (Preferences.mViewCubeLocation == swViewCubeLocation::TopRight)
+			Right -= Preferences.mViewCubeSize + 2;
 	}
 
 	int PreferredWidth = 0;

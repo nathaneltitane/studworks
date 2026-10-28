@@ -1,6 +1,7 @@
 #include "sw_global.h"
 #include "sw_shortcuts.h"
 #include "sw_profile.h"
+#include "sw_migration.h"
 
 swKeyboardShortcuts gKeyboardShortcuts;
 swMouseShortcuts gMouseShortcuts;
@@ -116,7 +117,8 @@ bool swKeyboardShortcuts::Load(QTextStream& Stream)
 		if (Equals == -1)
 			continue;
 
-		QString Key = Line.left(Equals);
+		// older files name commands after pieces or the view sphere
+		const QString Key = swRenameStoredName(Line.left(Equals));
 
 		int CommandIdx;
 		for (CommandIdx = 0; CommandIdx < SW_COMMAND_COUNT; CommandIdx++)

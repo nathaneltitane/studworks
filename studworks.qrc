@@ -228,7 +228,7 @@
         <file>resources/shaders/text_sdf_ps.glsl</file>
         <file>resources/shaders/unlit_vertex_color_ps.glsl</file>
         <file>resources/shaders/unlit_vertex_color_vs.glsl</file>
-        <file>resources/shaders/unlit_view_sphere_ps.glsl</file>
-        <file>resources/shaders/unlit_view_sphere_vs.glsl</file>
+        <file>resources/shaders/unlit_view_cube_ps.glsl</file>
+        <file>resources/shaders/unlit_view_cube_vs.glsl</file>
     </qresource>
 </RCC>

@@ -114,7 +114,7 @@ struct swPartRayTest;
 class swTexture;
 class swScene;
 class swViewManipulator;
-class swViewSphere;
+class swViewCube;
 enum class swRenderMeshState : int;
 enum class swTrackTool;
 enum class swTrackButton;

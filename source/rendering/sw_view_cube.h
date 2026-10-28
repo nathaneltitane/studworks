@@ -4,7 +4,7 @@
 #include "sw_context.h"
 #include <bitset>
 
-enum class swViewSphereLocation
+enum class swViewCubeLocation
 {
 	TopLeft,
 	TopRight,
@@ -12,10 +12,10 @@ enum class swViewSphereLocation
 	BottomRight
 };
 
-class swViewSphere
+class swViewCube
 {
 public:
-	swViewSphere(swView* View);
+	swViewCube(swView* View);
 
 	void Draw();
 	bool OnMouseMove();
@@ -30,26 +30,39 @@ protected:
 	void UpdateSettings();
 	swMatrix44 GetViewMatrix() const;
 	swMatrix44 GetProjectionMatrix() const;
-	std::bitset<6> GetIntersectionFlags(swVector3& Intersection) const;
+	std::bitset<6> GetIntersectionFlags() const;
+	void DrawFacets(int FirstFacet, int FacetCount) const;
 
 	swView* const mView = nullptr;
 
 	int mSize = 1;
 	bool mEnabled = false;
-	swViewSphereLocation mLocation = swViewSphereLocation::TopRight;
+	swViewCubeLocation mLocation = swViewCubeLocation::TopRight;
 
 	int mMouseDownX = 0;
 	int mMouseDownY = 0;
 	bool mMouseDown = false;
 
-	swVector3 mIntersection;
 	std::bitset<6> mIntersectionFlags;
+
+	// faces, chamfered edges and chamfered corners, each one a view direction
+	struct swViewCubeFacet
+	{
+		std::bitset<6> Flags;
+		int IndexStart;
+		int IndexCount;
+	};
+
+	static constexpr int mFaceCount = 6;
+	static constexpr int mEdgeCount = 12;
+	static constexpr int mCornerCount = 8;
+	static constexpr int mFacetCount = mFaceCount + mEdgeCount + mCornerCount;
 
 	static swTexture* mTexture;
 	static swVertexBuffer mVertexBuffer;
 	static swIndexBuffer mIndexBuffer;
-	static int mSphereIndexCount;
-	static const float mRadius;
-	static const float mHighlightRadius;
-	static const int mSubdivisions;
+	static int mIndexCount;
+	static swViewCubeFacet mFacets[mFacetCount];
+	static const float mHalfSize;
+	static const float mChamfer;
 };

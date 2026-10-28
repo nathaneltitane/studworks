@@ -128,7 +128,7 @@ void swPreviewDockWidget::OptionsMenuAboutToShow()
 
 	const swPreferences& Preferences = swGetPreferences();
 
-	gMainWindow->AddMenuCommand(Menu, tr("View Sphere"), SW_VIEW_TOGGLE_PREVIEW_VIEW_SPHERE, Preferences.mPreviewViewSphereEnabled);
+	gMainWindow->AddMenuCommand(Menu, tr("View Cube"), SW_VIEW_TOGGLE_PREVIEW_VIEW_CUBE, Preferences.mPreviewViewCubeEnabled);
 	gMainWindow->AddMenuCommand(Menu, tr("Axis Icon"), SW_VIEW_TOGGLE_PREVIEW_AXIS_ICON, Preferences.mDrawPreviewAxis);
 	gMainWindow->AddMenuCommand(Menu, tr("Square Viewport"), SW_VIEW_PREVIEW_TOGGLE_SQUARE, Preferences.mPreviewSquareViewport);
 	gMainWindow->AddMenuCommand(Menu, tr("Keep Last Selection"), SW_VIEW_PREVIEW_TOGGLE_KEEP_SELECTION, Preferences.mPreviewKeepSelection);

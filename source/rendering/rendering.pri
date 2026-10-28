@@ -15,7 +15,7 @@ SOURCES += \
 	$$PWD/sw_view_image.cpp \
 	$$PWD/sw_view_input.cpp \
 	$$PWD/sw_view_manipulator.cpp \
-	$$PWD/sw_view_sphere.cpp \
+	$$PWD/sw_view_cube.cpp \
 	$$PWD/sw_view_widget.cpp
 
 HEADERS += \
@@ -26,5 +26,5 @@ HEADERS += \
 	$$PWD/sw_texture_font.h \
 	$$PWD/sw_view.h \
 	$$PWD/sw_view_manipulator.h \
-	$$PWD/sw_view_sphere.h \
+	$$PWD/sw_view_cube.h \
 	$$PWD/sw_view_widget.h

@@ -6,7 +6,7 @@ enum class swShadingMode;
 enum class swLightingStyle;
 enum class swHighlightRenderMode;
 enum class swAxisIconLocation;
-enum class swViewSphereLocation;
+enum class swViewCubeLocation;
 enum class swColorTheme;
 enum class swStudStyle;
 enum class swPartFilterType;
@@ -36,6 +36,7 @@ enum SW_PROFILE_KEY
 	SW_PROFILE_TURNTABLE_TURN_TIME,
 	SW_PROFILE_TURNTABLE_AXIS,
 	SW_PROFILE_DRAW_AXES_LOCATION,
+	SW_PROFILE_AXIS_ICON_SIZE,
 	SW_PROFILE_TEXT_COLOR,
 	SW_PROFILE_TEXT_HALO_COLOR,
 	SW_PROFILE_MARQUEE_BORDER_COLOR,
@@ -70,12 +71,12 @@ enum SW_PROFILE_KEY
 	SW_PROFILE_GRID_AXIS_Y,
 	SW_PROFILE_GRID_AXIS_Z,
 	SW_PROFILE_ANTIALIASING_SAMPLES,
-	SW_PROFILE_VIEW_SPHERE_ENABLED,
-	SW_PROFILE_VIEW_SPHERE_LOCATION,
-	SW_PROFILE_VIEW_SPHERE_SIZE,
-	SW_PROFILE_VIEW_SPHERE_COLOR,
-	SW_PROFILE_VIEW_SPHERE_TEXT_COLOR,
-	SW_PROFILE_VIEW_SPHERE_HIGHLIGHT_COLOR,
+	SW_PROFILE_VIEW_CUBE_ENABLED,
+	SW_PROFILE_VIEW_CUBE_LOCATION,
+	SW_PROFILE_VIEW_CUBE_SIZE,
+	SW_PROFILE_VIEW_CUBE_COLOR,
+	SW_PROFILE_VIEW_CUBE_TEXT_COLOR,
+	SW_PROFILE_VIEW_CUBE_HIGHLIGHT_COLOR,
 	SW_PROFILE_AXIS_X_COLOR,
 	SW_PROFILE_AXIS_Y_COLOR,
 	SW_PROFILE_AXIS_Z_COLOR,
@@ -154,10 +155,11 @@ enum SW_PROFILE_KEY
 	SW_PROFILE_BLENDER_ADDON_VERSION_CHECK,
 	SW_PROFILE_BLENDER_IMPORT_MODULE,
 
-	SW_PROFILE_PREVIEW_VIEW_SPHERE_ENABLED,
-	SW_PROFILE_PREVIEW_VIEW_SPHERE_SIZE,
-	SW_PROFILE_PREVIEW_VIEW_SPHERE_LOCATION,
+	SW_PROFILE_PREVIEW_VIEW_CUBE_ENABLED,
+	SW_PROFILE_PREVIEW_VIEW_CUBE_SIZE,
+	SW_PROFILE_PREVIEW_VIEW_CUBE_LOCATION,
 	SW_PROFILE_PREVIEW_DRAW_AXES,
+	SW_PROFILE_PREVIEW_AXIS_ICON_SIZE,
 
 	SW_PROFILE_STUD_CYLINDER_COLOR_ENABLED,
 	SW_PROFILE_STUD_CYLINDER_COLOR,
@@ -267,8 +269,8 @@ void swSetProfileHighlightRenderMode(swHighlightRenderMode Value);
 swAxisIconLocation swGetProfileAxisIconLocation();
 void swSetProfileAxisIconLocation(swAxisIconLocation Value);
 
-swViewSphereLocation swGetProfileViewSphereLocation();
-void swSetProfileViewSphereLocation(swViewSphereLocation Value);
+swViewCubeLocation swGetProfileViewCubeLocation();
+void swSetProfileViewCubeLocation(swViewCubeLocation Value);
 
 swColorTheme swGetProfileColorTheme();
 void swSetProfileColorTheme(swColorTheme Value);
@@ -282,5 +284,5 @@ void swSetProfilePartFilterType(swPartFilterType Value);
 swPOVRayRenderQuality swGetProfileRenderQuality();
 void swSetProfileRenderQuality(swPOVRayRenderQuality Value);
 
-swViewSphereLocation swGetProfilePreviewViewSphereLocation();
-void swSetProfilePreviewViewSphereLocation(swViewSphereLocation Value);
+swViewCubeLocation swGetProfilePreviewViewCubeLocation();
+void swSetProfilePreviewViewCubeLocation(swViewCubeLocation Value);
