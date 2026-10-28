@@ -479,25 +479,25 @@ swInstructionsEditorWidget::swInstructionsEditorWidget(QWidget* Parent, Project*
 	QMenu* OptionsMenu = new QMenu(OptionsRow);
 	swAddPanelOptionsButton(OptionsRow, OptionsMenu, tr("Configure the editor."), tr("Editor Options"));
 
-	QAction* HighlightAction = OptionsMenu->addAction(tr("&Syntax Highlighting"));
-	HighlightAction->setCheckable(true);
-	HighlightAction->setChecked(swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_EDITOR_HIGHLIGHT) != 0);
-	connect(HighlightAction, &QAction::toggled, this, &swInstructionsEditorWidget::SetHighlightEnabled);
+	mHighlightAction = OptionsMenu->addAction(tr("&Syntax Highlighting"));
+	mHighlightAction->setCheckable(true);
+	mHighlightAction->setChecked(swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_EDITOR_HIGHLIGHT) != 0);
+	connect(mHighlightAction, &QAction::toggled, this, &swInstructionsEditorWidget::SetHighlightEnabled);
 
-	QAction* NumbersAction = OptionsMenu->addAction(tr("Line &Numbers"));
-	NumbersAction->setCheckable(true);
-	NumbersAction->setChecked(swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_EDITOR_NUMBERS) != 0);
-	connect(NumbersAction, &QAction::toggled, this, &swInstructionsEditorWidget::SetNumbersEnabled);
+	mNumbersAction = OptionsMenu->addAction(tr("Line &Numbers"));
+	mNumbersAction->setCheckable(true);
+	mNumbersAction->setChecked(swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_EDITOR_NUMBERS) != 0);
+	connect(mNumbersAction, &QAction::toggled, this, &swInstructionsEditorWidget::SetNumbersEnabled);
 
-	QAction* WrapAction = OptionsMenu->addAction(tr("&Wrap Lines"));
-	WrapAction->setCheckable(true);
-	WrapAction->setChecked(swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_EDITOR_WRAP) != 0);
-	connect(WrapAction, &QAction::toggled, this, &swInstructionsEditorWidget::SetWrapEnabled);
+	mWrapAction = OptionsMenu->addAction(tr("&Wrap Lines"));
+	mWrapAction->setCheckable(true);
+	mWrapAction->setChecked(swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_EDITOR_WRAP) != 0);
+	connect(mWrapAction, &QAction::toggled, this, &swInstructionsEditorWidget::SetWrapEnabled);
 
-	QAction* MarkersAction = OptionsMenu->addAction(tr("Whitespace &Markers"));
-	MarkersAction->setCheckable(true);
-	MarkersAction->setChecked(swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_EDITOR_MARKERS) != 0);
-	connect(MarkersAction, &QAction::toggled, this, &swInstructionsEditorWidget::SetMarkersEnabled);
+	mMarkersAction = OptionsMenu->addAction(tr("Whitespace &Markers"));
+	mMarkersAction->setCheckable(true);
+	mMarkersAction->setChecked(swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_EDITOR_MARKERS) != 0);
+	connect(mMarkersAction, &QAction::toggled, this, &swInstructionsEditorWidget::SetMarkersEnabled);
 
 	OptionsMenu->addSeparator();
 
@@ -590,7 +590,7 @@ swInstructionsEditorWidget::swInstructionsEditorWidget(QWidget* Parent, Project*
 	// the text keeps its columns in a fixed font
 	mTextEdit = new swEditorTextEdit(CentralWidget);
 	mTextEdit->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
-	mTextEdit->setLineWrapMode(WrapAction->isChecked() ? QPlainTextEdit::WidgetWidth : QPlainTextEdit::NoWrap);
+	mTextEdit->setLineWrapMode(mWrapAction->isChecked() ? QPlainTextEdit::WidgetWidth : QPlainTextEdit::NoWrap);
 	mTextEdit->setToolTip(tr("Text of the model file."));
 	mTextEdit->setAccessibleName(tr("Editor"));
 	// the editor buttons sit below the text
@@ -598,12 +598,12 @@ swInstructionsEditorWidget::swInstructionsEditorWidget(QWidget* Parent, Project*
 	Layout->addWidget(mFindWidget);
 	Layout->addWidget(ButtonRow);
 
-	SetMarkersEnabled(MarkersAction->isChecked());
-	mTextEdit->SetLineNumbersVisible(NumbersAction->isChecked());
+	SetMarkersEnabled(mMarkersAction->isChecked());
+	mTextEdit->SetLineNumbersVisible(mNumbersAction->isChecked());
 
 	mHighlighter = new swLDrawHighlighter(this);
 
-	if (HighlightAction->isChecked())
+	if (mHighlightAction->isChecked())
 		mHighlighter->setDocument(mTextEdit->document());
 
 	connect(mApplyButton, &QToolButton::clicked, this, &swInstructionsEditorWidget::ApplyClicked);
@@ -792,6 +792,15 @@ void swInstructionsEditorWidget::RevertClicked()
 {
 	mTextEdit->document()->setModified(false);
 	UpdateText();
+}
+
+// use to follow the editor options stored by the preferences, each toggled action applies its option
+void swInstructionsEditorWidget::UpdateOptions()
+{
+	mHighlightAction->setChecked(swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_EDITOR_HIGHLIGHT) != 0);
+	mNumbersAction->setChecked(swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_EDITOR_NUMBERS) != 0);
+	mWrapAction->setChecked(swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_EDITOR_WRAP) != 0);
+	mMarkersAction->setChecked(swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_EDITOR_MARKERS) != 0);
 }
 
 void swInstructionsEditorWidget::SetHighlightEnabled(bool Enabled)

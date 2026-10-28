@@ -1513,6 +1513,7 @@ void swApplication::ShowPreferencesDialog()
 	Options.LGEOPath = swGetProfileString(SW_PROFILE_POVRAY_LGEO_PATH);
 	Options.DefaultAuthor = swGetProfileString(SW_PROFILE_DEFAULT_AUTHOR_NAME);
 	Options.Language = swGetProfileString(SW_PROFILE_LANGUAGE);
+	Options.Instructions.Load();
 
 	Options.AASamples = CurrentAASamples;
 	Options.StudStyle = CurrentStudStyle;
@@ -1577,6 +1578,10 @@ void swApplication::ShowPreferencesDialog()
 	swSetProfileString(SW_PROFILE_LANGUAGE, Options.Language);
 	swSetProfileInteger(SW_PROFILE_ANTIALIASING_SAMPLES, Options.AASamples);
 	swSetProfileStudStyle(Options.StudStyle);
+	Options.Instructions.Save();
+
+	if (gMainWindow)
+		gMainWindow->UpdateInstructionsOptions();
 
 	if (LanguageChanged || LibraryChanged || AAChanged)
 		QMessageBox::information(gMainWindow, tr("Preferences"), tr("Some changes will only take effect the next time you start StudWorks."));

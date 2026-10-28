@@ -280,6 +280,7 @@ using swInstructionsElementKey = std::tuple<swInstructionsPlacementElement, swMo
 // the grid size is stored in points and shown in the margin units
 constexpr float SW_GRID_SIZE_MINIMUM = 2.0f;
 constexpr float SW_GRID_SIZE_MAXIMUM = 144.0f;
+constexpr int SW_GRID_DIVISIONS_MAXIMUM = 64;
 
 // the longer page side renders at least this many pixels, 300 dpi on a letter page
 constexpr qreal SW_INSTRUCTIONS_RENDER_SIZE = 3300.0;
@@ -384,6 +385,8 @@ public:
 	void InsertBlankPage(size_t PageIndex);
 	void RemoveBlankPage(size_t PageIndex);
 	void SetPageSetup(const swInstructionsPageSetup& PageSetup);
+	void ResetPageSetup();
+	static void LoadDefaultPageSetup();
 	void Update();
 	swInstructionsDirection GetPageDirection() const;
 
@@ -466,6 +469,27 @@ public:
 		return mGridSize;
 	}
 
+	// the grid size is the main unit, its divisions split it into the fractions dragged elements snap to
+	int GetGridDivisions() const
+	{
+		return mGridDivisions;
+	}
+
+	float GetGridSnapSize() const
+	{
+		return mGridSize / mGridDivisions;
+	}
+
+	QColor GetGridPrimaryColor() const
+	{
+		return mGridPrimaryColor;
+	}
+
+	QColor GetGridSecondaryColor() const
+	{
+		return mGridSecondaryColor;
+	}
+
 	// the grid covers the area inside the margins or the full page, it starts at the margins or the page corner
 	bool IsGridWithinMargins() const
 	{
@@ -480,6 +504,11 @@ public:
 		return mShowMargins;
 	}
 
+	QColor GetMarginColor() const
+	{
+		return mMarginColor;
+	}
+
 
 	// every length shown in the instructions uses the margin units of the page setup
 	swInstructionsPageUnits GetPageUnits() const;
@@ -490,6 +519,11 @@ public:
 	void SetShowGrid(bool ShowGrid);
 	void SetSnapToGrid(bool SnapToGrid);
 	void SetGridSize(float GridSize);
+	void SetGridDivisions(int Divisions);
+	void SetGridPrimaryColor(const QColor& Color);
+	void SetGridSecondaryColor(const QColor& Color);
+	void SetMarginColor(const QColor& Color);
+	void UpdateColors();
 	void SetGridWithinMargins(bool WithinMargins);
 	void SetShowMargins(bool ShowMargins);
 
@@ -541,7 +575,11 @@ protected:
 	bool mSnapToGrid = true;
 	bool mGridWithinMargins = true;
 	bool mShowMargins = true;
-	float mGridSize = 9.0f;
+	float mGridSize = 72.0f;
+	int mGridDivisions = 8;
+	QColor mGridPrimaryColor;
+	QColor mGridSecondaryColor;
+	QColor mMarginColor;
 	int mNextNoticeId = 1;
 	int mNextPointerId = 1;
 

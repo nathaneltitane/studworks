@@ -45,7 +45,7 @@
              <string>Choose a part-library folder or supported archive to load after restarting StudWorks.</string>
             </property>
             <property name="text">
-             <string>Parts Library:</string>
+             <string>Parts Library</string>
             </property>
             <property name="buddy">
              <cstring>partsLibrary</cstring>
@@ -86,7 +86,7 @@
              <string>Choose a custom LDraw color configuration file, or leave empty to use the library colors.</string>
             </property>
             <property name="text">
-             <string>Color Configuration:</string>
+             <string>Color Configuration</string>
             </property>
             <property name="buddy">
              <cstring>ColorConfigEdit</cstring>
@@ -123,7 +123,7 @@
              <string>Choose a custom minifigure builder settings file, or leave empty to use the built-in choices.</string>
             </property>
             <property name="text">
-             <string>Minifigure Builder Settings:</string>
+             <string>Minifigure Builder Settings</string>
             </property>
             <property name="buddy">
              <cstring>MinifigureBuilderSettingsEdit</cstring>
@@ -160,7 +160,7 @@
              <string>Set the POV-Ray executable used for rendering.</string>
             </property>
             <property name="text">
-             <string>PO&amp;V-Ray Executable:</string>
+             <string>PO&amp;V-Ray Executable</string>
             </property>
             <property name="buddy">
              <cstring>povrayExecutable</cstring>
@@ -197,7 +197,7 @@
              <string>Set the LGEO library folder used by POV-Ray exports.</string>
             </property>
             <property name="text">
-             <string>&amp;LGEO Library:</string>
+             <string>&amp;LGEO Library</string>
             </property>
             <property name="buddy">
              <cstring>lgeoPath</cstring>
@@ -237,13 +237,46 @@
           <string>Application</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_4">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_25">
+            <property name="toolTip">
+             <string>Choose the interface theme and optionally reset its colors.</string>
+            </property>
+            <property name="text">
+             <string>Color Theme</string>
+            </property>
+            <property name="buddy">
+             <cstring>ColorTheme</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="ColorTheme">
+            <property name="accessibleName">
+             <string>Color Theme</string>
+            </property>
+            <property name="toolTip">
+             <string>Choose the interface theme and optionally reset its colors.</string>
+            </property>
+            <item>
+             <property name="text">
+              <string>Dark</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>System</string>
+             </property>
+            </item>
+           </widget>
+          </item>
           <item row="1" column="0">
            <widget class="QLabel" name="label_19">
             <property name="toolTip">
              <string>Choose the interface language used after restarting StudWorks.</string>
             </property>
             <property name="text">
-             <string>Language:</string>
+             <string>Language</string>
             </property>
             <property name="buddy">
              <cstring>Language</cstring>
@@ -278,43 +311,39 @@
             </property>
            </spacer>
           </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_25">
+         </layout>
+        </widget>
+       </item>
+       <item row="2" column="0" colspan="2">
+        <widget class="QGroupBox" name="StartupGroup">
+         <property name="title">
+          <string>Startup</string>
+         </property>
+         <layout class="QGridLayout" name="StartupLayout">
+          <item row="0" column="0" colspan="2">
+           <widget class="QCheckBox" name="autoLoadMostRecent">
             <property name="toolTip">
-             <string>Choose the interface theme and optionally reset its colors.</string>
+             <string>Open the most recently used file when StudWorks starts.</string>
             </property>
             <property name="text">
-             <string>Color Theme:</string>
-            </property>
-            <property name="buddy">
-             <cstring>ColorTheme</cstring>
+             <string>Open Most Recent File</string>
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
-           <widget class="QComboBox" name="ColorTheme">
-            <property name="accessibleName">
-             <string>Color Theme</string>
-            </property>
+          <item row="1" column="0" colspan="2">
+           <widget class="QCheckBox" name="RestoreTabLayout">
             <property name="toolTip">
-             <string>Choose the interface theme and optionally reset its colors.</string>
+             <string>Restore saved model tabs and view layouts when opening a model.</string>
             </property>
-            <item>
-             <property name="text">
-              <string>Dark</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>System</string>
-             </property>
-            </item>
+            <property name="text">
+             <string>Restore Tab Layout</string>
+            </property>
            </widget>
           </item>
          </layout>
         </widget>
        </item>
-       <item row="2" column="0" colspan="2">
+       <item row="3" column="0" colspan="2">
         <widget class="QGroupBox" name="FilesGroup">
          <property name="title">
           <string>Files</string>
@@ -326,7 +355,7 @@
              <string>Set the author name used for new models.</string>
             </property>
             <property name="text">
-             <string>Default Author Name:</string>
+             <string>Default Author Name</string>
             </property>
             <property name="buddy">
              <cstring>authorName</cstring>
@@ -344,26 +373,6 @@
            </widget>
           </item>
           <item row="1" column="0" colspan="2">
-           <widget class="QCheckBox" name="autoLoadMostRecent">
-            <property name="toolTip">
-             <string>Open the most recently used file when StudWorks starts.</string>
-            </property>
-            <property name="text">
-             <string>Open Most Recent File on Startup</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0" colspan="2">
-           <widget class="QCheckBox" name="RestoreTabLayout">
-            <property name="toolTip">
-             <string>Restore saved model tabs and view layouts when opening a model.</string>
-            </property>
-            <property name="text">
-             <string>Restore Tab Layout</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0" colspan="2">
            <widget class="QCheckBox" name="WatchFileChanges">
             <property name="toolTip">
              <string>Ask to reload the model when its file is changed by another application. Use File &gt; Reload to reload it manually.</string>
@@ -373,7 +382,7 @@
             </property>
            </widget>
           </item>
-          <item row="4" column="0" colspan="2">
+          <item row="2" column="0" colspan="2">
            <widget class="QCheckBox" name="LoadPartsBeforeShowing">
             <property name="toolTip">
              <string>Wait until every part of a model is loaded before showing it, instead of showing parts as they load.</string>
@@ -383,7 +392,7 @@
             </property>
            </widget>
           </item>
-          <item row="5" column="0" colspan="2">
+          <item row="3" column="0" colspan="2">
            <widget class="QCheckBox" name="MigrateMetaCommands">
             <property name="toolTip">
              <string>Convert the LeoCAD meta commands of opened models to StudWorks meta commands without asking. Migrated models are no longer read fully by LeoCAD.</string>
@@ -396,7 +405,7 @@
          </layout>
         </widget>
        </item>
-       <item row="3" column="0" colspan="2">
+       <item row="4" column="0" colspan="2">
         <widget class="QGroupBox" name="EditingGroup">
          <property name="title">
           <string>Editing</string>
@@ -412,20 +421,20 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
+          <item row="2" column="0">
            <widget class="QLabel" name="InsertColorModeLabel">
             <property name="toolTip">
              <string>Choose the color given to newly inserted parts: the current color, the color of the selected part, or the color of the last inserted part.</string>
             </property>
             <property name="text">
-             <string>Insert Color:</string>
+             <string>Insert Color</string>
             </property>
             <property name="buddy">
              <cstring>InsertColorMode</cstring>
             </property>
            </widget>
           </item>
-          <item row="1" column="1">
+          <item row="2" column="1">
            <widget class="QComboBox" name="InsertColorMode">
             <property name="accessibleName">
              <string>Insert Color</string>
@@ -450,7 +459,7 @@
             </item>
            </widget>
           </item>
-          <item row="2" column="0" colspan="2">
+          <item row="1" column="0" colspan="2">
            <widget class="QCheckBox" name="FirstPartAtOrigin">
             <property name="toolTip">
              <string>Place the first part of an empty model at 0, 0, 0 instead of where it is dropped.</string>
@@ -575,7 +584,7 @@
              <cstring>studStyleCombo</cstring>
             </property>
             <property name="text">
-             <string>Stud Style:</string>
+             <string>Stud Style</string>
             </property>
            </widget>
           </item>
@@ -648,7 +657,7 @@
              <cstring>ShadingMode</cstring>
             </property>
             <property name="text">
-             <string>Shading Mode:</string>
+             <string>Shading Mode</string>
             </property>
            </widget>
           </item>
@@ -686,7 +695,7 @@
              <cstring>LightingStyle</cstring>
             </property>
             <property name="text">
-             <string>Lighting Style:</string>
+             <string>Lighting Style</string>
             </property>
            </widget>
           </item>
@@ -797,7 +806,7 @@
              <string>Choose how selected parts and new parts are highlighted in the viewport.</string>
             </property>
             <property name="text">
-             <string>Highlight Style:</string>
+             <string>Highlight Style</string>
             </property>
             <property name="buddy">
              <cstring>HighlightRenderMode</cstring>
@@ -833,7 +842,7 @@
              <string>Choose the thickness of the outline drawn around selected parts and new parts.</string>
             </property>
             <property name="text">
-             <string>Outline Width:</string>
+             <string>Outline Width</string>
             </property>
             <property name="buddy">
              <cstring>SelectionOutlineWidth</cstring>
@@ -920,7 +929,7 @@
              <cstring>LineWidthSlider</cstring>
             </property>
             <property name="text">
-             <string>Line Width:</string>
+             <string>Line Width</string>
             </property>
            </widget>
           </item>
@@ -972,7 +981,7 @@
              <string>Set the contrast between automated edge colors and part surfaces from 0.00 to 1.00 (default 0.50).</string>
             </property>
             <property name="text">
-             <string>Edge Contrast:</string>
+             <string>Edge Contrast</string>
             </property>
             <property name="buddy">
              <cstring>EdgeContrastSlider</cstring>
@@ -1014,7 +1023,7 @@
              <string>Set the saturation of automated edge colors from 0.00 to 1.00 (default 0.50).</string>
             </property>
             <property name="text">
-             <string>Edge Saturation:</string>
+             <string>Edge Saturation</string>
             </property>
             <property name="buddy">
              <cstring>EdgeSaturationSlider</cstring>
@@ -1071,7 +1080,7 @@
              <cstring>BlenderAddonSettingsButton</cstring>
             </property>
             <property name="text">
-             <string>Blender LDraw Render:</string>
+             <string>Blender LDraw Render</string>
             </property>
            </widget>
           </item>
@@ -1145,7 +1154,7 @@
              <cstring>ViewSphereSizeCombo</cstring>
             </property>
             <property name="text">
-             <string>View Sphere:</string>
+             <string>View Sphere</string>
             </property>
            </widget>
           </item>
@@ -1188,7 +1197,7 @@
              <cstring>ViewSphereLocationCombo</cstring>
             </property>
             <property name="text">
-             <string>View Sphere Location:</string>
+             <string>View Sphere Location</string>
             </property>
            </widget>
           </item>
@@ -1241,7 +1250,7 @@
              <cstring>AxisIconLocationCombo</cstring>
             </property>
             <property name="text">
-             <string>Axis Icon Location:</string>
+             <string>Axis Icon Location</string>
             </property>
            </widget>
           </item>
@@ -1345,12 +1354,6 @@
             <property name="toolTip">
              <string>Set base-grid line spacing in studs (1 to 10000).</string>
             </property>
-            <property name="maximumSize">
-             <size>
-              <width>75</width>
-              <height>16777215</height>
-             </size>
-            </property>
            </widget>
           </item>
           <item row="2" column="0" colspan="3">
@@ -1428,7 +1431,7 @@
              <string>Choose how parts are drawn in the parts list and parts list images.</string>
             </property>
             <property name="text">
-             <string>Shading Mode:</string>
+             <string>Shading Mode</string>
             </property>
             <property name="buddy">
              <cstring>PartsShadingMode</cstring>
@@ -1486,7 +1489,7 @@
              <string>Set the line width used in the parts list and parts list images.</string>
             </property>
             <property name="text">
-             <string>Line Width:</string>
+             <string>Line Width</string>
             </property>
             <property name="buddy">
              <cstring>PartsLineWidthSlider</cstring>
@@ -1554,11 +1557,11 @@
              <cstring>PreviewViewSphereSizeCombo</cstring>
             </property>
             <property name="text">
-             <string>View Sphere:</string>
+             <string>View Sphere</string>
             </property>
            </widget>
           </item>
-          <item row="0" column="1" colspan="2">
+          <item row="0" column="1">
            <widget class="QComboBox" name="PreviewViewSphereSizeCombo">
             <property name="accessibleName">
              <string>View Sphere</string>
@@ -1597,11 +1600,11 @@
              <cstring>PreviewViewSphereLocationCombo</cstring>
             </property>
             <property name="text">
-             <string>View Sphere Location:</string>
+             <string>View Sphere Location</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="1" colspan="2">
+          <item row="1" column="1">
            <widget class="QComboBox" name="PreviewViewSphereLocationCombo">
             <property name="accessibleName">
              <string>Location</string>
@@ -1667,14 +1670,14 @@
              <string>Choose how parts are drawn in the parts preview.</string>
             </property>
             <property name="text">
-             <string>Shading Mode:</string>
+             <string>Shading Mode</string>
             </property>
             <property name="buddy">
              <cstring>PreviewShadingMode</cstring>
             </property>
            </widget>
           </item>
-          <item row="5" column="1" colspan="2">
+          <item row="5" column="1">
            <widget class="QComboBox" name="PreviewShadingMode">
             <property name="accessibleName">
              <string>Preview Shading Mode</string>
@@ -1725,7 +1728,7 @@
              <string>Set the line width used in the parts preview.</string>
             </property>
             <property name="text">
-             <string>Line Width:</string>
+             <string>Line Width</string>
             </property>
             <property name="buddy">
              <cstring>PreviewLineWidthSlider</cstring>
@@ -1790,14 +1793,14 @@
              <string>Choose how parts are drawn in the minifigure builder preview.</string>
             </property>
             <property name="text">
-             <string>Shading Mode:</string>
+             <string>Shading Mode</string>
             </property>
             <property name="buddy">
              <cstring>MinifigureBuilderShadingMode</cstring>
             </property>
            </widget>
           </item>
-          <item row="1" column="1" colspan="2">
+          <item row="1" column="1">
            <widget class="QComboBox" name="MinifigureBuilderShadingMode">
             <property name="accessibleName">
              <string>Minifigure Builder Shading Mode</string>
@@ -1848,7 +1851,7 @@
              <string>Set the line width used in the minifigure builder preview.</string>
             </property>
             <property name="text">
-             <string>Line Width:</string>
+             <string>Line Width</string>
             </property>
             <property name="buddy">
              <cstring>MinifigureBuilderLineWidthSlider</cstring>
@@ -1929,7 +1932,7 @@
              <cstring>BackgroundSolidColorButton</cstring>
             </property>
             <property name="text">
-             <string>Color:</string>
+             <string>Color</string>
             </property>
            </widget>
           </item>
@@ -1977,7 +1980,7 @@
              <cstring>ObjectSelectedColorButton</cstring>
             </property>
             <property name="text">
-             <string>Selected:</string>
+             <string>Selected</string>
             </property>
            </widget>
           </item>
@@ -2003,7 +2006,7 @@
              <cstring>ObjectFocusedColorButton</cstring>
             </property>
             <property name="text">
-             <string>Focused:</string>
+             <string>Focused</string>
             </property>
            </widget>
           </item>
@@ -2029,7 +2032,7 @@
              <cstring>CameraColorButton</cstring>
             </property>
             <property name="text">
-             <string>Camera:</string>
+             <string>Camera</string>
             </property>
            </widget>
           </item>
@@ -2055,7 +2058,7 @@
              <cstring>LightColorButton</cstring>
             </property>
             <property name="text">
-             <string>Light:</string>
+             <string>Light</string>
             </property>
            </widget>
           </item>
@@ -2081,7 +2084,7 @@
              <cstring>ControlPointColorButton</cstring>
             </property>
             <property name="text">
-             <string>Control Point:</string>
+             <string>Control Point</string>
             </property>
            </widget>
           </item>
@@ -2107,7 +2110,7 @@
              <cstring>ControlPointFocusedColorButton</cstring>
             </property>
             <property name="text">
-             <string>Control Point Focused:</string>
+             <string>Control Point Focused</string>
             </property>
            </widget>
           </item>
@@ -2155,7 +2158,7 @@
              <cstring>ActiveViewColorButton</cstring>
             </property>
             <property name="text">
-             <string>Active View Border:</string>
+             <string>Active View Border</string>
             </property>
            </widget>
           </item>
@@ -2181,7 +2184,7 @@
              <cstring>InactiveViewColorButton</cstring>
             </property>
             <property name="text">
-             <string>Inactive View Border:</string>
+             <string>Inactive View Border</string>
             </property>
            </widget>
           </item>
@@ -2207,7 +2210,7 @@
              <cstring>TextColorButton</cstring>
             </property>
             <property name="text">
-             <string>Text Color:</string>
+             <string>Text Color</string>
             </property>
            </widget>
           </item>
@@ -2233,7 +2236,7 @@
              <cstring>TextHaloColorButton</cstring>
             </property>
             <property name="text">
-             <string>Text Halo Color:</string>
+             <string>Text Halo Color</string>
             </property>
            </widget>
           </item>
@@ -2259,7 +2262,7 @@
              <cstring>MarqueeBorderColorButton</cstring>
             </property>
             <property name="text">
-             <string>Marquee Border:</string>
+             <string>Marquee Border</string>
             </property>
            </widget>
           </item>
@@ -2285,7 +2288,7 @@
              <cstring>MarqueeFillColorButton</cstring>
             </property>
             <property name="text">
-             <string>Marquee Fill:</string>
+             <string>Marquee Fill</string>
             </property>
            </widget>
           </item>
@@ -2311,7 +2314,7 @@
              <cstring>OverlayColorButton</cstring>
             </property>
             <property name="text">
-             <string>Overlay Color:</string>
+             <string>Overlay Color</string>
             </property>
            </widget>
           </item>
@@ -2359,7 +2362,7 @@
              <cstring>gridLineColor</cstring>
             </property>
             <property name="text">
-             <string>Lines:</string>
+             <string>Lines</string>
             </property>
            </widget>
           </item>
@@ -2385,7 +2388,7 @@
              <cstring>gridStudColor</cstring>
             </property>
             <property name="text">
-             <string>Studs:</string>
+             <string>Studs</string>
             </property>
            </widget>
           </item>
@@ -2433,7 +2436,7 @@
              <cstring>ViewSphereColorButton</cstring>
             </property>
             <property name="text">
-             <string>Color:</string>
+             <string>Color</string>
             </property>
            </widget>
           </item>
@@ -2459,7 +2462,7 @@
              <cstring>ViewSphereTextColorButton</cstring>
             </property>
             <property name="text">
-             <string>Text Color:</string>
+             <string>Text Color</string>
             </property>
            </widget>
           </item>
@@ -2485,7 +2488,7 @@
              <cstring>ViewSphereHighlightColorButton</cstring>
             </property>
             <property name="text">
-             <string>Highlight Color:</string>
+             <string>Highlight Color</string>
             </property>
            </widget>
           </item>
@@ -2533,7 +2536,7 @@
              <cstring>AxisXColorButton</cstring>
             </property>
             <property name="text">
-             <string>X:</string>
+             <string>X</string>
             </property>
            </widget>
           </item>
@@ -2559,7 +2562,7 @@
              <cstring>AxisYColorButton</cstring>
             </property>
             <property name="text">
-             <string>Y:</string>
+             <string>Y</string>
             </property>
            </widget>
           </item>
@@ -2585,7 +2588,7 @@
              <cstring>AxisZColorButton</cstring>
             </property>
             <property name="text">
-             <string>Z:</string>
+             <string>Z</string>
             </property>
            </widget>
           </item>
@@ -2644,7 +2647,7 @@
        <item>
         <widget class="QGroupBox" name="groupBox_3">
          <property name="title">
-          <string>Parts Library Categories</string>
+          <string>Part Categories</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_7">
           <item>
@@ -2743,6 +2746,12 @@
            <layout class="QHBoxLayout" name="horizontalLayout">
             <item>
              <widget class="QPushButton" name="importCategories">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>1</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="toolTip">
                <string>Replace the category list with categories from a text file.</string>
               </property>
@@ -2753,6 +2762,12 @@
             </item>
             <item>
              <widget class="QPushButton" name="exportCategories">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>1</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="toolTip">
                <string>Save the current category list to a text file immediately.</string>
               </property>
@@ -2763,6 +2778,12 @@
             </item>
             <item>
              <widget class="QPushButton" name="resetCategories">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>1</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="toolTip">
                <string>Restore the default category list after confirmation.</string>
               </property>
@@ -2772,71 +2793,54 @@
              </widget>
             </item>
             <item>
-             <spacer name="horizontalSpacer_4">
-              <property name="orientation">
-               <enum>Qt::Orientation::Horizontal</enum>
+             <widget class="QPushButton" name="newCategory">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>1</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
               </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
+              <property name="toolTip">
+               <string>Create a category with a name and a keyword expression.</string>
               </property>
-             </spacer>
+              <property name="text">
+               <string>New...</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="editCategory">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>1</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="toolTip">
+               <string>Edit the selected category name and keyword expression.</string>
+              </property>
+              <property name="text">
+               <string>Edit...</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="deleteCategory">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                <horstretch>1</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="toolTip">
+               <string>Remove the selected category after confirmation.</string>
+              </property>
+              <property name="text">
+               <string>Delete...</string>
+              </property>
+             </widget>
             </item>
            </layout>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="groupBox_2">
-         <property name="title">
-          <string>Category</string>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_7">
-          <item>
-           <widget class="QPushButton" name="newCategory">
-            <property name="toolTip">
-             <string>Create a category with a name and a keyword expression.</string>
-            </property>
-            <property name="text">
-             <string>New...</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="editCategory">
-            <property name="toolTip">
-             <string>Edit the selected category name and keyword expression.</string>
-            </property>
-            <property name="text">
-             <string>Edit...</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="deleteCategory">
-            <property name="toolTip">
-             <string>Remove the selected category after confirmation.</string>
-            </property>
-            <property name="text">
-             <string>Delete...</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="horizontalSpacer">
-            <property name="orientation">
-             <enum>Qt::Orientation::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
           </item>
          </layout>
         </widget>
@@ -2888,20 +2892,20 @@
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="KeyboardFilterEdit">
-                <property name="accessibleName">
-                 <string>Filter Commands</string>
-                </property>
-                <property name="toolTip">
-                 <string>Filter commands by name or shortcut.</string>
-                </property>
-                <property name="placeholderText">
-                 <string>Search shortcuts</string>
-                </property>
-               </widget>
-              </item>
-              <item>
                <layout class="QHBoxLayout" name="horizontalLayout_9">
+                <item>
+                 <widget class="QLineEdit" name="KeyboardFilterEdit">
+                  <property name="accessibleName">
+                   <string>Filter Commands</string>
+                  </property>
+                  <property name="toolTip">
+                   <string>Filter commands by name or shortcut.</string>
+                  </property>
+                  <property name="placeholderText">
+                   <string>Search shortcuts</string>
+                  </property>
+                 </widget>
+                </item>
                 <item>
                  <widget class="QPushButton" name="shortcutsImport">
                   <property name="toolTip">
@@ -2932,19 +2936,6 @@
                   </property>
                  </widget>
                 </item>
-                <item>
-                 <spacer name="horizontalSpacer_3">
-                  <property name="orientation">
-                   <enum>Qt::Orientation::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
                </layout>
               </item>
              </layout>
@@ -2960,23 +2951,10 @@
              </property>
              <layout class="QHBoxLayout" name="horizontalLayout_5">
               <item>
-               <widget class="QLabel" name="label_7">
-                <property name="whatsThis">
-                 <string>&lt;p&gt;&lt;b&gt;Key Sequence&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Click here and press the key combination you want to assign. Function keys, including F1, are recorded as shortcut candidates in this field. Use the Help button for guidance. Assign asks before replacing a shortcut already used by another command.&lt;/p&gt;</string>
-                </property>
-                <property name="toolTip">
-                 <string>Press the key combination to assign, then choose Assign.</string>
-                </property>
-                <property name="text">
-                 <string>Key Se&amp;quence:</string>
-                </property>
-                <property name="buddy">
-                 <cstring>shortcutEdit</cstring>
-                </property>
-               </widget>
-              </item>
-              <item>
                <widget class="QLineEdit" name="shortcutEdit">
+                <property name="placeholderText">
+                 <string>Key sequence</string>
+                </property>
                 <property name="accessibleName">
                  <string>Key Sequence</string>
                 </property>
@@ -3010,7 +2988,6 @@
               </item>
              </layout>
              <zorder>shortcutEdit</zorder>
-             <zorder>label_7</zorder>
              <zorder>shortcutAssign</zorder>
              <zorder>shortcutRemove</zorder>
             </widget>
@@ -3074,20 +3051,20 @@
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="MouseFilterEdit">
-                <property name="accessibleName">
-                 <string>Filter Tools</string>
-                </property>
-                <property name="toolTip">
-                 <string>Filter tools by name or shortcut.</string>
-                </property>
-                <property name="placeholderText">
-                 <string>Search shortcuts</string>
-                </property>
-               </widget>
-              </item>
-              <item>
                <layout class="QHBoxLayout" name="horizontalLayout_13">
+                <item>
+                 <widget class="QLineEdit" name="MouseFilterEdit">
+                  <property name="accessibleName">
+                   <string>Filter Tools</string>
+                  </property>
+                  <property name="toolTip">
+                   <string>Filter tools by name or shortcut.</string>
+                  </property>
+                  <property name="placeholderText">
+                   <string>Search shortcuts</string>
+                  </property>
+                 </widget>
+                </item>
                 <item>
                  <widget class="QPushButton" name="MouseImportButton">
                   <property name="toolTip">
@@ -3118,19 +3095,6 @@
                   </property>
                  </widget>
                 </item>
-                <item>
-                 <spacer name="horizontalSpacer_6">
-                  <property name="orientation">
-                   <enum>Qt::Orientation::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
                </layout>
               </item>
              </layout>
@@ -3147,23 +3111,10 @@
          </property>
          <layout class="QHBoxLayout" name="MouseShortcutLayout">
           <item>
-           <widget class="QLabel" name="MouseShortcutLabel">
-            <property name="whatsThis">
-             <string>&lt;p&gt;&lt;b&gt;Mouse Sequence&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Click here with the mouse button you want to assign while holding any Control, Alt or Shift modifiers. Assign makes it the primary shortcut of the selected tool and asks before replacing a shortcut already used by another tool.&lt;/p&gt;</string>
-            </property>
-            <property name="toolTip">
-             <string>Click here with the mouse button and modifier keys you want to assign, then choose Assign.</string>
-            </property>
-            <property name="text">
-             <string>Mouse Se&amp;quence:</string>
-            </property>
-            <property name="buddy">
-             <cstring>MouseShortcutEdit</cstring>
-            </property>
-           </widget>
-          </item>
-          <item>
            <widget class="QLineEdit" name="MouseShortcutEdit">
+            <property name="placeholderText">
+             <string>Mouse sequence</string>
+            </property>
             <property name="accessibleName">
              <string>Mouse Sequence</string>
             </property>
@@ -3216,7 +3167,7 @@
              <cstring>mouseSensitivity</cstring>
             </property>
             <property name="text">
-             <string>Mouse Sensitivity:</string>
+             <string>Mouse Sensitivity</string>
             </property>
            </widget>
           </item>
@@ -3296,15 +3247,15 @@
   <tabstop>lgeoPathBrowse</tabstop>
   <tabstop>ColorTheme</tabstop>
   <tabstop>Language</tabstop>
-  <tabstop>authorName</tabstop>
   <tabstop>autoLoadMostRecent</tabstop>
   <tabstop>RestoreTabLayout</tabstop>
+  <tabstop>authorName</tabstop>
   <tabstop>WatchFileChanges</tabstop>
   <tabstop>LoadPartsBeforeShowing</tabstop>
   <tabstop>MigrateMetaCommands</tabstop>
   <tabstop>fixedDirectionKeys</tabstop>
-  <tabstop>InsertColorMode</tabstop>
   <tabstop>FirstPartAtOrigin</tabstop>
+  <tabstop>InsertColorMode</tabstop>
   <tabstop>antiAliasing</tabstop>
   <tabstop>antiAliasingSamples</tabstop>
   <tabstop>MeshLOD</tabstop>

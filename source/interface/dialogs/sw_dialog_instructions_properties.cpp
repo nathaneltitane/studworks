@@ -156,6 +156,10 @@ swInstructionsPropertiesWidget::swInstructionsPropertiesWidget(QWidget* Parent, 
 	PageSetupAction->setToolTip(tr("Choose the page size, orientation and margins"));
 	connect(PageSetupAction, &QAction::triggered, this, &swInstructionsPropertiesWidget::ShowPageSetupDialog);
 
+	QAction* DefaultPageSetupAction = OptionsMenu->addAction(tr("Default Page Setup"));
+	DefaultPageSetupAction->setToolTip(tr("Load the default page size, orientation, margins, grid and units of the preferences"));
+	connect(DefaultPageSetupAction, &QAction::triggered, mInstructions, &swInstructions::ResetPageSetup);
+
 	QAction* ShowMarginsAction = OptionsMenu->addAction(tr("Show Margins"));
 	ShowMarginsAction->setToolTip(tr("Outline the page margins on screen, they are never printed"));
 	ShowMarginsAction->setCheckable(true);
@@ -791,24 +795,12 @@ QToolButton* swInstructionsPropertiesWidget::CreateFontEditor(swInstructionsProp
 void swInstructionsPropertiesWidget::ColorButtonClicked(swInstructionsPropertyType Type)
 {
 	QToolButton* Button = qobject_cast<QToolButton*>(mEditors[static_cast<int>(Type)].Widget);
-	const QColor Color = GetColorValue(Type);
 
 	// backgrounds can be transparent so the picker edits the alpha channel too
-	QMenu* Menu = new QMenu(Button);
-	QWidgetAction* Action = new QWidgetAction(Menu);
-	swColorDialogPopup* Popup = new swColorDialogPopup(Color, true, Menu);
-	Action->setDefaultWidget(Popup);
-	Menu->addAction(Action);
+	const QColor SelectedColor = swPickColor(Button, GetColorValue(Type));
 
-	connect(Popup, &swColorDialogPopup::ColorSelected, this, [this, Type](QColor SelectedColor)
-	{
-		if (SelectedColor.isValid())
-			SetColorValue(Type, SelectedColor);
-	});
-
-	Menu->exec(Button->mapToGlobal(Button->rect().bottomLeft()));
-
-	delete Menu;
+	if (SelectedColor.isValid())
+		SetColorValue(Type, SelectedColor);
 }
 
 void swInstructionsPropertiesWidget::FontButtonClicked(swInstructionsPropertyType Type)
@@ -828,26 +820,6 @@ void swInstructionsPropertiesWidget::SetCategoriesExpanded(bool Expanded)
 		Category.Button->SetExpanded(Expanded);
 
 	UpdateCategories();
-}
-
-QIcon swInstructionsPropertiesWidget::CreateColorIcon(const QColor& Color, int Size)
-{
-	QPixmap Pixmap(Size, Size);
-	QPainter Painter(&Pixmap);
-
-	// a checkerboard behind the color shows how transparent it is
-	const int CellSize = qMax(Size / 4, 2);
-
-	for (int Y = 0; Y < Size; Y += CellSize)
-		for (int X = 0; X < Size; X += CellSize)
-			Painter.fillRect(X, Y, CellSize, CellSize, ((X + Y) / CellSize) % 2 ? QColor(204, 204, 204) : QColor(255, 255, 255));
-
-	Painter.fillRect(Pixmap.rect(), Color);
-	Painter.setPen(QColor(128, 128, 128));
-	Painter.drawRect(Pixmap.rect().adjusted(0, 0, -1, -1));
-	Painter.end();
-
-	return QIcon(Pixmap);
 }
 
 void swInstructionsPropertiesWidget::AddOptionsAction(QAction* Action)
@@ -1037,10 +1009,7 @@ void swInstructionsPropertiesWidget::UpdateEditors()
 		case EditorType::Color:
 			{
 				QToolButton* Button = qobject_cast<QToolButton*>(Editor.Widget);
-				const QColor Color = GetColorValue(Type);
-
-				Button->setIcon(CreateColorIcon(Color, Button->iconSize().height()));
-				Button->setText(Color.alpha() ? Color.name().toUpper() : tr("Transparent"));
+				swUpdateColorButton(Button, GetColorValue(Type));
 			}
 			break;
 

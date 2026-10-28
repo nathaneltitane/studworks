@@ -200,7 +200,7 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Settings", "PartColorValueLDIndex", 0.5f),                                // SW_PROFILE_PART_COLOR_VALUE_LD_INDEX
 	swProfileEntry("Settings", "AutomateEdgeColor", 0),                                        // SW_PROFILE_AUTOMATE_EDGE_COLOR
 
-	swProfileEntry("Instructions", "PageWidth", 792.0f),                                       // SW_PROFILE_INSTRUCTIONS_PAGE_WIDTH
+	swProfileEntry("Instructions", "PageWidth", 1008.0f),                                      // SW_PROFILE_INSTRUCTIONS_PAGE_WIDTH
 	swProfileEntry("Instructions", "PageHeight", 612.0f),                                      // SW_PROFILE_INSTRUCTIONS_PAGE_HEIGHT
 	swProfileEntry("Instructions", "MarginLeft", 36.0f),                                       // SW_PROFILE_INSTRUCTIONS_MARGIN_LEFT
 	swProfileEntry("Instructions", "MarginRight", 36.0f),                                      // SW_PROFILE_INSTRUCTIONS_MARGIN_RIGHT
@@ -210,13 +210,31 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Instructions", "MarginUnits", 3),                                          // SW_PROFILE_INSTRUCTIONS_MARGIN_UNITS
 	swProfileEntry("Instructions", "ShowGrid", 1),                                             // SW_PROFILE_INSTRUCTIONS_SHOW_GRID
 	swProfileEntry("Instructions", "SnapToGrid", 1),                                           // SW_PROFILE_INSTRUCTIONS_SNAP_TO_GRID
-	swProfileEntry("Instructions", "GridSize", 9.0f),                                          // SW_PROFILE_INSTRUCTIONS_GRID_SIZE
+	swProfileEntry("Instructions", "GridSize", 72.0f),                                         // SW_PROFILE_INSTRUCTIONS_GRID_SIZE
 	swProfileEntry("Instructions", "GridWithinMargins", 1),                                    // SW_PROFILE_INSTRUCTIONS_GRID_WITHIN_MARGINS
 	swProfileEntry("Instructions", "ShowMargins", 1),                                          // SW_PROFILE_INSTRUCTIONS_SHOW_MARGINS
 	swProfileEntry("Instructions", "EditorHighlight", 1),                                      // SW_PROFILE_INSTRUCTIONS_EDITOR_HIGHLIGHT
 	swProfileEntry("Instructions", "EditorNumbers", 1),                                        // SW_PROFILE_INSTRUCTIONS_EDITOR_NUMBERS
 	swProfileEntry("Instructions", "EditorWrap", 0),                                           // SW_PROFILE_INSTRUCTIONS_EDITOR_WRAP
 	swProfileEntry("Instructions", "EditorMarkers", 1),                                        // SW_PROFILE_INSTRUCTIONS_EDITOR_MARKERS
+	swProfileEntry("Instructions", "NewModelDefaults", 1),                                     // SW_PROFILE_INSTRUCTIONS_NEW_MODEL_DEFAULTS
+	swProfileEntry("Instructions", "GridDivisions", 8),                                        // SW_PROFILE_INSTRUCTIONS_GRID_DIVISIONS
+	swProfileEntry("Instructions", "GridPrimaryColor", SW_RGBA(61, 174, 233, 110)),            // SW_PROFILE_INSTRUCTIONS_GRID_PRIMARY_COLOR
+	swProfileEntry("Instructions", "GridSecondaryColor", SW_RGBA(61, 174, 233, 40)),           // SW_PROFILE_INSTRUCTIONS_GRID_SECONDARY_COLOR
+	swProfileEntry("Instructions", "MarginColor", SW_RGBA(61, 174, 233, 160)),                 // SW_PROFILE_INSTRUCTIONS_MARGIN_COLOR
+	swProfileEntry("InstructionsDefaults", "PageWidth", 1008.0f),                              // SW_PROFILE_INSTRUCTIONS_DEFAULT_PAGE_WIDTH
+	swProfileEntry("InstructionsDefaults", "PageHeight", 612.0f),                              // SW_PROFILE_INSTRUCTIONS_DEFAULT_PAGE_HEIGHT
+	swProfileEntry("InstructionsDefaults", "MarginLeft", 36.0f),                               // SW_PROFILE_INSTRUCTIONS_DEFAULT_MARGIN_LEFT
+	swProfileEntry("InstructionsDefaults", "MarginRight", 36.0f),                              // SW_PROFILE_INSTRUCTIONS_DEFAULT_MARGIN_RIGHT
+	swProfileEntry("InstructionsDefaults", "MarginTop", 36.0f),                                // SW_PROFILE_INSTRUCTIONS_DEFAULT_MARGIN_TOP
+	swProfileEntry("InstructionsDefaults", "MarginBottom", 36.0f),                             // SW_PROFILE_INSTRUCTIONS_DEFAULT_MARGIN_BOTTOM
+	swProfileEntry("InstructionsDefaults", "PageUnits", 3),                                    // SW_PROFILE_INSTRUCTIONS_DEFAULT_PAGE_UNITS
+	swProfileEntry("InstructionsDefaults", "MarginUnits", 3),                                  // SW_PROFILE_INSTRUCTIONS_DEFAULT_MARGIN_UNITS
+	swProfileEntry("InstructionsDefaults", "ShowGrid", 1),                                     // SW_PROFILE_INSTRUCTIONS_DEFAULT_SHOW_GRID
+	swProfileEntry("InstructionsDefaults", "SnapToGrid", 1),                                   // SW_PROFILE_INSTRUCTIONS_DEFAULT_SNAP_TO_GRID
+	swProfileEntry("InstructionsDefaults", "GridSize", 72.0f),                                 // SW_PROFILE_INSTRUCTIONS_DEFAULT_GRID_SIZE
+	swProfileEntry("InstructionsDefaults", "GridWithinMargins", 1),                            // SW_PROFILE_INSTRUCTIONS_DEFAULT_GRID_WITHIN_MARGINS
+	swProfileEntry("InstructionsDefaults", "GridDivisions", 8),                                // SW_PROFILE_INSTRUCTIONS_DEFAULT_GRID_DIVISIONS
 	swProfileEntry("Settings", "PreviewSquareViewport", 0),                                    // SW_PROFILE_PREVIEW_SQUARE_VIEWPORT
 	swProfileEntry("Settings", "MinifigSyncRendering", 1),                                     // SW_PROFILE_MINIFIGURE_BUILDER_SYNCHRONIZED_RENDERING
 	swProfileEntry("Settings", "MinifigShadingMode", static_cast<int>(swShadingMode::DefaultLights)), // SW_PROFILE_MINIFIGURE_BUILDER_SHADING_MODE
@@ -238,6 +256,28 @@ void swRemoveProfileKey(SW_PROFILE_KEY Key)
 	QSettings Settings;
 
 	Settings.remove(QString("%1/%2").arg(Entry.mSection, Entry.mKey));
+}
+
+// use to get the value a key has before it is ever changed
+int swGetProfileDefaultInteger(SW_PROFILE_KEY Key)
+{
+	const int* DefaultInt = std::get_if<int>(&gProfileEntries[Key].mDefault);
+
+	return DefaultInt ? *DefaultInt : 0;
+}
+
+float swGetProfileDefaultFloat(SW_PROFILE_KEY Key)
+{
+	const float* DefaultFloat = std::get_if<float>(&gProfileEntries[Key].mDefault);
+
+	return DefaultFloat ? *DefaultFloat : 0.0f;
+}
+
+uint swGetProfileDefaultUnsignedInteger(SW_PROFILE_KEY Key)
+{
+	const uint* DefaultUInt = std::get_if<uint>(&gProfileEntries[Key].mDefault);
+
+	return DefaultUInt ? *DefaultUInt : 0;
 }
 
 int swGetProfileInteger(SW_PROFILE_KEY Key)

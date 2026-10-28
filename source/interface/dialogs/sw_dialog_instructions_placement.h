@@ -66,4 +66,8 @@ protected:
 	QDoubleSpinBox* mGridSizeSpinBox = nullptr;
 	swInstructionsUnitButton* mGridSizeUnitButton = nullptr;
 	QComboBox* mGridScopeComboBox = nullptr;
+	QSpinBox* mGridDivisionsSpinBox = nullptr;
+	QToolButton* mPrimaryColorButton = nullptr;
+	QToolButton* mSecondaryColorButton = nullptr;
+	QToolButton* mMarginColorButton = nullptr;
 };

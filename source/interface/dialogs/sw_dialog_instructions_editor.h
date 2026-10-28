@@ -15,6 +15,7 @@ public:
 
 	void SetProject(Project* Project);
 	void ScheduleUpdate();
+	void UpdateOptions();
 
 	int GetTextPosition() const;
 	int GetTextScroll() const;
@@ -47,6 +48,10 @@ protected:
 	QToolButton* mApplyButton = nullptr;
 	QToolButton* mRevertButton = nullptr;
 	QAction* mFindAction = nullptr;
+	QAction* mHighlightAction = nullptr;
+	QAction* mNumbersAction = nullptr;
+	QAction* mWrapAction = nullptr;
+	QAction* mMarkersAction = nullptr;
 	QWidget* mFindWidget = nullptr;
 	QLineEdit* mFindEdit = nullptr;
 	QLineEdit* mReplaceEdit = nullptr;

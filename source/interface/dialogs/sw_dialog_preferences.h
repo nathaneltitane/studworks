@@ -3,6 +3,32 @@
 #include "sw_application.h"
 #include "sw_shortcuts.h"
 #include "sw_category.h"
+#include "sw_instructions.h"
+
+// the default page setup and grid of new instructions and the options of the instructions window
+struct swInstructionsPreferences
+{
+	swInstructionsPageSetup PageSetup;
+	int PageUnits;
+	int MarginUnits;
+	bool ShowGrid;
+	bool SnapToGrid;
+	float GridSize;
+	int GridDivisions;
+	bool GridWithinMargins;
+	bool NewModelDefaults;
+	bool ShowMargins;
+	QColor GridPrimaryColor;
+	QColor GridSecondaryColor;
+	QColor MarginColor;
+	bool EditorHighlight;
+	bool EditorNumbers;
+	bool EditorWrap;
+	bool EditorMarkers;
+
+	void Load();
+	void Save() const;
+};
 
 struct swPreferencesDialogOptions
 {
@@ -15,6 +41,8 @@ struct swPreferencesDialogOptions
 	QString LGEOPath;
 	QString DefaultAuthor;
 	QString Language;
+
+	swInstructionsPreferences Instructions;
 
 	int AASamples;
 	swStudStyle StudStyle;
@@ -53,6 +81,9 @@ public:
 	};
 
 	bool eventFilter(QObject* Object, QEvent* Event) override;
+
+protected:
+	void showEvent(QShowEvent* Event) override;
 
 public slots:
 	void accept() override;
@@ -110,11 +141,30 @@ private:
 	Ui::swPreferencesDialog* ui;
 
 	void UpdateCategories();
+	void SnapCategoriesTree();
 	void UpdateCommandList();
 	void UpdateMouseTree();
 	void UpdateMouseTreeItem(int ItemIndex);
 	QTreeWidgetItem* FindMouseTreeItem(int ItemIndex) const;
 	void SetShortcutModified(QTreeWidgetItem* TreeItem, bool Modified);
+	void CreateInstructionsTab();
+	void UpdateInstructionsPage();
+
+	QPushButton* mInstructionsPageButton = nullptr;
+	QCheckBox* mInstructionsShowGrid = nullptr;
+	QCheckBox* mInstructionsSnapToGrid = nullptr;
+	QDoubleSpinBox* mInstructionsGridSize = nullptr;
+	QComboBox* mInstructionsGridScope = nullptr;
+	QSpinBox* mInstructionsGridDivisions = nullptr;
+	QToolButton* mInstructionsGridPrimaryColor = nullptr;
+	QToolButton* mInstructionsGridSecondaryColor = nullptr;
+	QToolButton* mInstructionsMarginColor = nullptr;
+	QCheckBox* mInstructionsNewModelDefaults = nullptr;
+	QCheckBox* mInstructionsShowMargins = nullptr;
+	QCheckBox* mInstructionsEditorHighlight = nullptr;
+	QCheckBox* mInstructionsEditorNumbers = nullptr;
+	QCheckBox* mInstructionsEditorWrap = nullptr;
+	QCheckBox* mInstructionsEditorMarkers = nullptr;
 
 	struct swRenderTargetWidgets
 	{

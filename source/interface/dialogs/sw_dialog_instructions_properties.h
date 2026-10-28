@@ -192,7 +192,6 @@ protected:
 	void UpdateCategories();
 	swInstructionsPageType GetPageType() const;
 
-	static QIcon CreateColorIcon(const QColor& Color, int Size);
 	static QIcon CreateDividerPresetIcon(int Rows, int Columns, const QPalette& Palette);
 
 	swInstructions* mInstructions = nullptr;

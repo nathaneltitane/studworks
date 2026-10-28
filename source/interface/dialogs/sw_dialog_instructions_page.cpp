@@ -56,7 +56,7 @@ static QVariant swSnapItemPosition(const QGraphicsItem* Item, const swInstructio
 	const QPointF Position = Value.toPointF();
 	const QPointF ScenePosition = Parent ? Parent->mapToScene(Position) : Position;
 	const QPointF Origin = Instructions->GetGridRect().topLeft();
-	const qreal GridSize = Instructions->GetGridSize();
+	const qreal GridSize = Instructions->GetGridSnapSize();
 
 	const QPointF Snapped = Origin + QPointF(qRound((ScenePosition.x() - Origin.x()) / GridSize) * GridSize, qRound((ScenePosition.y() - Origin.y()) / GridSize) * GridSize);
 
@@ -1631,10 +1631,7 @@ void swInstructionsPageWidget::drawForeground(QPainter* Painter, const QRectF& R
 		const swInstructionsPageSetup& PageSetup = mInstructions->mPageSetup;
 		const QRectF MarginsRect(PageSetup.MarginLeft, PageSetup.MarginTop, PageSetup.Width - PageSetup.MarginLeft - PageSetup.MarginRight, PageSetup.Height - PageSetup.MarginTop - PageSetup.MarginBottom);
 
-		QColor MarginColor = palette().color(QPalette::Highlight);
-		MarginColor.setAlpha(160);
-
-		QPen MarginPen(MarginColor, 0.0, Qt::DashLine);
+		QPen MarginPen(mInstructions->GetMarginColor(), 0.0, Qt::DashLine);
 		MarginPen.setCosmetic(true);
 
 		Painter->save();
@@ -1650,32 +1647,43 @@ void swInstructionsPageWidget::drawForeground(QPainter* Painter, const QRectF& R
 	// the grid starts at the corner of its area and is only drawn on screen
 	const QRectF GridRect = mInstructions->GetGridRect();
 	const QRectF PageRect = GridRect.intersected(Rect);
-	const qreal GridSize = mInstructions->GetGridSize();
+	const int Divisions = mInstructions->GetGridDivisions();
+	const qreal SnapSize = mInstructions->GetGridSnapSize();
 
 	if (PageRect.isEmpty())
 		return;
 
-	QColor LineColor = palette().color(QPalette::Highlight);
-	LineColor.setAlpha(70);
+	// every line is counted from the grid corner, each main unit line is primary and the fractions between are secondary
+	QVector<QLineF> PrimaryLines;
+	QVector<QLineF> SecondaryLines;
 
-	QPen Pen(LineColor, 0.0);
+	const int FirstColumn = static_cast<int>(std::ceil((PageRect.left() - GridRect.left()) / SnapSize - 0.001));
+	const int LastColumn = static_cast<int>(std::floor((PageRect.right() - GridRect.left()) / SnapSize + 0.001));
+	const int FirstRow = static_cast<int>(std::ceil((PageRect.top() - GridRect.top()) / SnapSize - 0.001));
+	const int LastRow = static_cast<int>(std::floor((PageRect.bottom() - GridRect.top()) / SnapSize + 0.001));
+
+	for (int Column = FirstColumn; Column <= LastColumn; Column++)
+	{
+		const qreal X = GridRect.left() + Column * SnapSize;
+		(Column % Divisions ? SecondaryLines : PrimaryLines).append(QLineF(X, PageRect.top(), X, PageRect.bottom()));
+	}
+
+	for (int Row = FirstRow; Row <= LastRow; Row++)
+	{
+		const qreal Y = GridRect.top() + Row * SnapSize;
+		(Row % Divisions ? SecondaryLines : PrimaryLines).append(QLineF(PageRect.left(), Y, PageRect.right(), Y));
+	}
+
+	QPen Pen(mInstructions->GetGridSecondaryColor(), 0.0);
 	Pen.setCosmetic(true);
 
 	Painter->save();
-	Painter->setPen(Pen);
 	Painter->setClipRect(PageRect);
-
-	const qreal FirstX = GridRect.left() + std::ceil((PageRect.left() - GridRect.left()) / GridSize) * GridSize;
-	const qreal FirstY = GridRect.top() + std::ceil((PageRect.top() - GridRect.top()) / GridSize) * GridSize;
-	QVector<QLineF> Lines;
-
-	for (qreal X = FirstX; X <= PageRect.right(); X += GridSize)
-		Lines.append(QLineF(X, PageRect.top(), X, PageRect.bottom()));
-
-	for (qreal Y = FirstY; Y <= PageRect.bottom(); Y += GridSize)
-		Lines.append(QLineF(PageRect.left(), Y, PageRect.right(), Y));
-
-	Painter->drawLines(Lines);
+	Painter->setPen(Pen);
+	Painter->drawLines(SecondaryLines);
+	Pen.setColor(mInstructions->GetGridPrimaryColor());
+	Painter->setPen(Pen);
+	Painter->drawLines(PrimaryLines);
 	Painter->restore();
 }
 

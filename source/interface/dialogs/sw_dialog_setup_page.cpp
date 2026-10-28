@@ -46,9 +46,13 @@ static const swPageSetupPreset gPageSetupPresets[] =
 	{ QT_TRANSLATE_NOOP("swPageSetupDialog", "4K UHD"), 3840.0f, 2160.0f, swInstructionsPageUnits::Pixels },
 };
 
-swPageSetupDialog::swPageSetupDialog(QWidget* Parent, swInstructionsPageSetup* PageSetup)
+swPageSetupDialog::swPageSetupDialog(QWidget* Parent, swInstructionsPageSetup* PageSetup, bool Defaults)
 	: QDialog(Parent), ui(new Ui::swPageSetupDialog), mPageSetup(PageSetup), mPoints(*PageSetup)
 {
+	// the preferences edit the default page setup with its own units
+	mUnitsKey = Defaults ? SW_PROFILE_INSTRUCTIONS_DEFAULT_PAGE_UNITS : SW_PROFILE_INSTRUCTIONS_PAGE_UNITS;
+	mMarginUnitsKey = Defaults ? SW_PROFILE_INSTRUCTIONS_DEFAULT_MARGIN_UNITS : SW_PROFILE_INSTRUCTIONS_MARGIN_UNITS;
+
 	ui->setupUi(this);
 
 	const QStringList UnitNames = QStringList() << tr("Pixels") << tr("Millimeters") << tr("Centimeters") << tr("Inches");
@@ -82,8 +86,8 @@ swPageSetupDialog::swPageSetupDialog(QWidget* Parent, swInstructionsPageSetup* P
 		return Units >= 0 && Units <= static_cast<int>(swInstructionsPageUnits::Inches) ? static_cast<swInstructionsPageUnits>(Units) : swInstructionsPageUnits::Inches;
 	};
 
-	mUnits = GetProfileUnits(SW_PROFILE_INSTRUCTIONS_PAGE_UNITS);
-	mMarginUnits = GetProfileUnits(SW_PROFILE_INSTRUCTIONS_MARGIN_UNITS);
+	mUnits = GetProfileUnits(mUnitsKey);
+	mMarginUnits = GetProfileUnits(mMarginUnitsKey);
 	ui->UnitsComboBox->setCurrentIndex(static_cast<int>(mUnits));
 	ui->MarginUnitsComboBox->setCurrentIndex(static_cast<int>(mMarginUnits));
 
@@ -111,8 +115,8 @@ void swPageSetupDialog::accept()
 	}
 
 	*mPageSetup = mPoints;
-	swSetProfileInteger(SW_PROFILE_INSTRUCTIONS_PAGE_UNITS, static_cast<int>(mUnits));
-	swSetProfileInteger(SW_PROFILE_INSTRUCTIONS_MARGIN_UNITS, static_cast<int>(mMarginUnits));
+	swSetProfileInteger(mUnitsKey, static_cast<int>(mUnits));
+	swSetProfileInteger(mMarginUnitsKey, static_cast<int>(mMarginUnits));
 
 	QDialog::accept();
 }

@@ -136,7 +136,7 @@ void swMainWindow::SnapPartsDock()
 
 	if (Area != Qt::LeftDockWidgetArea && Area != Qt::RightDockWidgetArea)
 	{
-		mPartSelectionWidget->SnapCategoriesWidth();
+		mPartSelectionWidget->SnapCategories();
 		return;
 	}
 
@@ -622,7 +622,18 @@ void swMainWindow::ShowInstructionsDialog()
 void swMainWindow::CloseInstructionsDialog()
 {
 	if (mInstructionsDialog)
+	{
+		// the panels are saved before the window goes with the old project
+		mInstructionsDialog->SaveLayout();
 		delete mInstructionsDialog;
+	}
+}
+
+// use to show the instructions options changed in the preferences in the open window
+void swMainWindow::UpdateInstructionsOptions()
+{
+	if (mInstructionsDialog)
+		mInstructionsDialog->UpdateOptions();
 }
 
 void swMainWindow::ShowPrintWidget()

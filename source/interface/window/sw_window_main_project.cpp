@@ -1,5 +1,6 @@
 #include "sw_global.h"
 #include "sw_window_main.h"
+#include "sw_instructions.h"
 #include "sw_widget_builder_minifigure.h"
 #include "sw_widget_spin_box_double.h"
 #include "sw_widget_selection_part.h"
@@ -194,6 +195,10 @@ void swMainWindow::NewProject()
 {
 	if (!SaveProjectIfModified())
 		return;
+
+	// new models start from the default page setup of the preferences when it is chosen
+	if (swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_NEW_MODEL_DEFAULTS))
+		swInstructions::LoadDefaultPageSetup();
 
 	Project* NewProject = new Project();
 	gApplication->SetProject(NewProject);

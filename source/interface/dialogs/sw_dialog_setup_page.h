@@ -1,6 +1,7 @@
 #pragma once
 
 #include "sw_instructions.h"
+#include "sw_profile.h"
 
 namespace Ui
 {
@@ -12,7 +13,7 @@ class swPageSetupDialog : public QDialog
 	Q_OBJECT
 
 public:
-	swPageSetupDialog(QWidget* Parent, swInstructionsPageSetup* PageSetup);
+	swPageSetupDialog(QWidget* Parent, swInstructionsPageSetup* PageSetup, bool Defaults = false);
 	~swPageSetupDialog();
 
 public slots:
@@ -35,4 +36,6 @@ private:
 	swInstructionsPageSetup mPoints;
 	swInstructionsPageUnits mUnits = swInstructionsPageUnits::Inches;
 	swInstructionsPageUnits mMarginUnits = swInstructionsPageUnits::Inches;
+	SW_PROFILE_KEY mUnitsKey;
+	SW_PROFILE_KEY mMarginUnitsKey;
 };

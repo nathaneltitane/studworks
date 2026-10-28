@@ -514,8 +514,12 @@ swInstructions::swInstructions(Project* Project)
 	mShowGrid = swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_SHOW_GRID) != 0;
 	mSnapToGrid = swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_SNAP_TO_GRID) != 0;
 	mGridSize = qBound(SW_GRID_SIZE_MINIMUM, swGetProfileFloat(SW_PROFILE_INSTRUCTIONS_GRID_SIZE), SW_GRID_SIZE_MAXIMUM);
+	mGridDivisions = qBound(1, swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_GRID_DIVISIONS), SW_GRID_DIVISIONS_MAXIMUM);
 	mGridWithinMargins = swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_GRID_WITHIN_MARGINS) != 0;
 	mShowMargins = swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_SHOW_MARGINS) != 0;
+	mGridPrimaryColor = swQColorFromRGBA(swGetProfileUnsignedInteger(SW_PROFILE_INSTRUCTIONS_GRID_PRIMARY_COLOR));
+	mGridSecondaryColor = swQColorFromRGBA(swGetProfileUnsignedInteger(SW_PROFILE_INSTRUCTIONS_GRID_SECONDARY_COLOR));
+	mMarginColor = swQColorFromRGBA(swGetProfileUnsignedInteger(SW_PROFILE_INSTRUCTIONS_MARGIN_COLOR));
 
 	SetDefaultProperties();
 	mDefaultProperties = mStepProperties;
@@ -830,8 +834,8 @@ swInstructionsProperties swInstructions::CreateDefaultProperties()
 	Properties[static_cast<int>(swInstructionsPropertyType::BillOfMaterialsBackgroundColor)].Value = SW_RGBA(255, 255, 255, 255);
 	Properties[static_cast<int>(swInstructionsPropertyType::ShowCoverBlankPage)].Value = true;
 	Properties[static_cast<int>(swInstructionsPropertyType::ShowBillOfMaterialsBlankPage)].Value = true;
-	Properties[static_cast<int>(swInstructionsPropertyType::UseDocumentUnits)].Value = false;
-	Properties[static_cast<int>(swInstructionsPropertyType::DocumentUnits)].Value = static_cast<int>(swInstructionsPageUnits::Inches);
+	Properties[static_cast<int>(swInstructionsPropertyType::UseDocumentUnits)].Value = true;
+	Properties[static_cast<int>(swInstructionsPropertyType::DocumentUnits)].Value = swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_PAGE_UNITS);
 	Properties[static_cast<int>(swInstructionsPropertyType::ShowPageNumber)].Value = true;
 	Properties[static_cast<int>(swInstructionsPropertyType::PageNumberFormat)].Value = static_cast<int>(swInstructionsPageNumberFormat::Number);
 	Properties[static_cast<int>(swInstructionsPropertyType::PageNumberFont)].Value = QFont("Arial", 16).toString();
@@ -1539,6 +1543,55 @@ void swInstructions::UnlockElement(const swInstructionsElementKey& Key, const QP
 	emit PageLayoutChanged();
 }
 
+// use to make the default page, grid and units of the preferences the current ones
+void swInstructions::LoadDefaultPageSetup()
+{
+	const std::pair<SW_PROFILE_KEY, SW_PROFILE_KEY> FloatKeys[] =
+	{
+		{ SW_PROFILE_INSTRUCTIONS_PAGE_WIDTH, SW_PROFILE_INSTRUCTIONS_DEFAULT_PAGE_WIDTH },
+		{ SW_PROFILE_INSTRUCTIONS_PAGE_HEIGHT, SW_PROFILE_INSTRUCTIONS_DEFAULT_PAGE_HEIGHT },
+		{ SW_PROFILE_INSTRUCTIONS_MARGIN_LEFT, SW_PROFILE_INSTRUCTIONS_DEFAULT_MARGIN_LEFT },
+		{ SW_PROFILE_INSTRUCTIONS_MARGIN_RIGHT, SW_PROFILE_INSTRUCTIONS_DEFAULT_MARGIN_RIGHT },
+		{ SW_PROFILE_INSTRUCTIONS_MARGIN_TOP, SW_PROFILE_INSTRUCTIONS_DEFAULT_MARGIN_TOP },
+		{ SW_PROFILE_INSTRUCTIONS_MARGIN_BOTTOM, SW_PROFILE_INSTRUCTIONS_DEFAULT_MARGIN_BOTTOM },
+		{ SW_PROFILE_INSTRUCTIONS_GRID_SIZE, SW_PROFILE_INSTRUCTIONS_DEFAULT_GRID_SIZE }
+	};
+
+	const std::pair<SW_PROFILE_KEY, SW_PROFILE_KEY> IntegerKeys[] =
+	{
+		{ SW_PROFILE_INSTRUCTIONS_PAGE_UNITS, SW_PROFILE_INSTRUCTIONS_DEFAULT_PAGE_UNITS },
+		{ SW_PROFILE_INSTRUCTIONS_MARGIN_UNITS, SW_PROFILE_INSTRUCTIONS_DEFAULT_MARGIN_UNITS },
+		{ SW_PROFILE_INSTRUCTIONS_SHOW_GRID, SW_PROFILE_INSTRUCTIONS_DEFAULT_SHOW_GRID },
+		{ SW_PROFILE_INSTRUCTIONS_SNAP_TO_GRID, SW_PROFILE_INSTRUCTIONS_DEFAULT_SNAP_TO_GRID },
+		{ SW_PROFILE_INSTRUCTIONS_GRID_WITHIN_MARGINS, SW_PROFILE_INSTRUCTIONS_DEFAULT_GRID_WITHIN_MARGINS },
+		{ SW_PROFILE_INSTRUCTIONS_GRID_DIVISIONS, SW_PROFILE_INSTRUCTIONS_DEFAULT_GRID_DIVISIONS }
+	};
+
+	for (const std::pair<SW_PROFILE_KEY, SW_PROFILE_KEY>& Keys : FloatKeys)
+		swSetProfileFloat(Keys.first, swGetProfileFloat(Keys.second));
+
+	for (const std::pair<SW_PROFILE_KEY, SW_PROFILE_KEY>& Keys : IntegerKeys)
+		swSetProfileInteger(Keys.first, swGetProfileInteger(Keys.second));
+}
+
+// use to bring back the default page, grid and units of the preferences
+void swInstructions::ResetPageSetup()
+{
+	LoadDefaultPageSetup();
+
+	SetShowGrid(swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_SHOW_GRID) != 0);
+	SetSnapToGrid(swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_SNAP_TO_GRID) != 0);
+	SetGridSize(swGetProfileFloat(SW_PROFILE_INSTRUCTIONS_GRID_SIZE));
+	SetGridDivisions(swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_GRID_DIVISIONS));
+	SetGridWithinMargins(swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_GRID_WITHIN_MARGINS) != 0);
+
+	// every value follows the units of the paper
+	SetDefaultInt(swInstructionsPropertyType::DocumentUnits, swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_PAGE_UNITS));
+	SetDefaultBool(swInstructionsPropertyType::UseDocumentUnits, true);
+
+	SetPageSetup({ swGetProfileFloat(SW_PROFILE_INSTRUCTIONS_PAGE_WIDTH), swGetProfileFloat(SW_PROFILE_INSTRUCTIONS_PAGE_HEIGHT), swGetProfileFloat(SW_PROFILE_INSTRUCTIONS_MARGIN_LEFT), swGetProfileFloat(SW_PROFILE_INSTRUCTIONS_MARGIN_RIGHT), swGetProfileFloat(SW_PROFILE_INSTRUCTIONS_MARGIN_TOP), swGetProfileFloat(SW_PROFILE_INSTRUCTIONS_MARGIN_BOTTOM) });
+}
+
 void swInstructions::SetShowGrid(bool ShowGrid)
 {
 	if (mShowGrid == ShowGrid)
@@ -1572,6 +1625,60 @@ void swInstructions::SetGridSize(float GridSize)
 	swSetProfileFloat(SW_PROFILE_INSTRUCTIONS_GRID_SIZE, mGridSize);
 
 	emit GridChanged();
+}
+
+void swInstructions::SetGridDivisions(int Divisions)
+{
+	Divisions = qBound(1, Divisions, SW_GRID_DIVISIONS_MAXIMUM);
+
+	if (mGridDivisions == Divisions)
+		return;
+
+	mGridDivisions = Divisions;
+	swSetProfileInteger(SW_PROFILE_INSTRUCTIONS_GRID_DIVISIONS, mGridDivisions);
+
+	emit GridChanged();
+}
+
+void swInstructions::SetGridPrimaryColor(const QColor& Color)
+{
+	if (mGridPrimaryColor == Color)
+		return;
+
+	mGridPrimaryColor = Color;
+	swSetProfileUnsignedInteger(SW_PROFILE_INSTRUCTIONS_GRID_PRIMARY_COLOR, swRGBAFromQColor(Color));
+
+	emit GridChanged();
+}
+
+void swInstructions::SetGridSecondaryColor(const QColor& Color)
+{
+	if (mGridSecondaryColor == Color)
+		return;
+
+	mGridSecondaryColor = Color;
+	swSetProfileUnsignedInteger(SW_PROFILE_INSTRUCTIONS_GRID_SECONDARY_COLOR, swRGBAFromQColor(Color));
+
+	emit GridChanged();
+}
+
+void swInstructions::SetMarginColor(const QColor& Color)
+{
+	if (mMarginColor == Color)
+		return;
+
+	mMarginColor = Color;
+	swSetProfileUnsignedInteger(SW_PROFILE_INSTRUCTIONS_MARGIN_COLOR, swRGBAFromQColor(Color));
+
+	emit GridChanged();
+}
+
+// use to follow the grid and margin colors stored by the preferences
+void swInstructions::UpdateColors()
+{
+	SetGridPrimaryColor(swQColorFromRGBA(swGetProfileUnsignedInteger(SW_PROFILE_INSTRUCTIONS_GRID_PRIMARY_COLOR)));
+	SetGridSecondaryColor(swQColorFromRGBA(swGetProfileUnsignedInteger(SW_PROFILE_INSTRUCTIONS_GRID_SECONDARY_COLOR)));
+	SetMarginColor(swQColorFromRGBA(swGetProfileUnsignedInteger(SW_PROFILE_INSTRUCTIONS_MARGIN_COLOR)));
 }
 
 void swInstructions::SetGridWithinMargins(bool WithinMargins)

@@ -116,6 +116,30 @@ void swInterfaceStyle::drawControl(ControlElement Element, const QStyleOption* O
 	Painter->restore();
 }
 
+QSize swInterfaceStyle::sizeFromContents(ContentsType Type, const QStyleOption* Option, const QSize& Size, const QWidget* Widget) const
+{
+	QSize Result = QProxyStyle::sizeFromContents(Type, Option, Size, Widget);
+
+	if (Type != CT_LineEdit && Type != CT_SpinBox && Type != CT_ComboBox)
+		return Result;
+
+	// the text field inside a spin box is measured by the spin box itself
+	if (Type == CT_LineEdit && Widget && qobject_cast<const QAbstractSpinBox*>(Widget->parentWidget()))
+		return Result;
+
+	// inputs are as tall as a standard button so they line up with the buttons beside them
+	QStyleOptionButton ButtonOption;
+	ButtonOption.QStyleOption::operator=(*Option);
+	ButtonOption.text = QLatin1String("X");
+
+	const QSize TextSize(ButtonOption.fontMetrics.horizontalAdvance(ButtonOption.text), ButtonOption.fontMetrics.height());
+	const int ButtonHeight = QProxyStyle::sizeFromContents(CT_PushButton, &ButtonOption, TextSize, nullptr).height();
+
+	Result.setHeight(qMax(Result.height(), ButtonHeight));
+
+	return Result;
+}
+
 bool swInterfaceFitFilter::eventFilter(QObject* Object, QEvent* Event)
 {
 	if (!Object->isWidgetType())
@@ -502,8 +526,9 @@ void swUpdatePanelSpinBoxWidth(QAbstractSpinBox* SpinBox)
 	const QRect EditRect = SpinBox->style()->subControlRect(QStyle::CC_SpinBox, &Option, QStyle::SC_SpinBoxEditField, SpinBox);
 	const int Decoration = Option.rect.width() - EditRect.width();
 
-	// the style sizes the box for its limits too, the larger width keeps the text clear of the arrows
-	SpinBox->setMinimumWidth(qMax(SpinBox->fontMetrics().horizontalAdvance(Prefix + Value + Suffix) + Decoration, SpinBox->sizeHint().width()));
+	// the style sizes the box for its limits too, the larger width keeps the text clear of the arrows, a shared column keeps its width
+	const int Width = qMax(SpinBox->fontMetrics().horizontalAdvance(Prefix + Value + Suffix) + Decoration, SpinBox->sizeHint().width());
+	SpinBox->setMinimumWidth(qMax(Width, SpinBox->property("swColumnWidth").toInt()));
 }
 
 int swGetLayoutSpacing(const QWidget* Widget, Qt::Orientation Orientation)
@@ -925,6 +950,54 @@ void swColorDialogPopup::Close()
 
 	if (Menu)
 		Menu->close();
+}
+
+// use to show a color as a square over a checkerboard that shows how transparent it is
+QIcon swCreateColorIcon(const QColor& Color, int Size)
+{
+	QPixmap Pixmap(Size, Size);
+	QPainter Painter(&Pixmap);
+
+	const int CellSize = qMax(Size / 4, 2);
+
+	for (int Y = 0; Y < Size; Y += CellSize)
+		for (int X = 0; X < Size; X += CellSize)
+			Painter.fillRect(X, Y, CellSize, CellSize, ((X + Y) / CellSize) % 2 ? QColor(204, 204, 204) : QColor(255, 255, 255));
+
+	Painter.fillRect(Pixmap.rect(), Color);
+	Painter.setPen(QColor(128, 128, 128));
+	Painter.drawRect(Pixmap.rect().adjusted(0, 0, -1, -1));
+	Painter.end();
+
+	return QIcon(Pixmap);
+}
+
+// use to show a color on a button with its swatch and its name
+void swUpdateColorButton(QToolButton* Button, const QColor& Color)
+{
+	Button->setIcon(swCreateColorIcon(Color, Button->iconSize().height()));
+	Button->setText(Color.alpha() ? Color.name().toUpper() : QCoreApplication::translate("swInstructionsPropertiesWidget", "Transparent"));
+}
+
+// use to pick a color with its alpha channel below a button, an invalid color means the pick was canceled
+QColor swPickColor(QToolButton* Button, const QColor& Color)
+{
+	QColor SelectedColor;
+
+	QMenu Menu(Button);
+	QWidgetAction* Action = new QWidgetAction(&Menu);
+	swColorDialogPopup* Popup = new swColorDialogPopup(Color, true, &Menu);
+	Action->setDefaultWidget(Popup);
+	Menu.addAction(Action);
+
+	QObject::connect(Popup, &swColorDialogPopup::ColorSelected, &Menu, [&SelectedColor](QColor PickedColor)
+	{
+		SelectedColor = PickedColor;
+	});
+
+	Menu.exec(Button->mapToGlobal(Button->rect().bottomLeft()));
+
+	return SelectedColor;
 }
 
 swInterfaceIconEngine::swInterfaceIconEngine(const QString& Folder, const QString& Name)

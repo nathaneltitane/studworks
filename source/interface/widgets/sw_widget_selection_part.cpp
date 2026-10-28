@@ -1100,7 +1100,7 @@ swPartSelectionWidget::swPartSelectionWidget(bool IsPopup, QWidget* Parent)
 bool swPartSelectionWidget::eventFilter(QObject* Object, QEvent* Event)
 {
 	if (Object == mSplitter->handle(1) && Event->type() == QEvent::MouseButtonRelease)
-		QTimer::singleShot(0, this, &swPartSelectionWidget::SnapCategoriesWidth);
+		QTimer::singleShot(0, this, &swPartSelectionWidget::SnapCategories);
 
 	return QWidget::eventFilter(Object, Event);
 }
@@ -1147,6 +1147,8 @@ void swPartSelectionWidget::LoadState(QSettings& Settings)
 	}
 
 	mSplitter->setSizes(Sizes);
+
+	QTimer::singleShot(0, this, &swPartSelectionWidget::SnapCategories);
 }
 
 void swPartSelectionWidget::SaveState(QSettings& Settings)
@@ -1201,6 +1203,12 @@ void swPartSelectionWidget::SetOrientation(Qt::Orientation Orientation)
 	mSplitter->setSizes(Sizes);
 }
 
+void swPartSelectionWidget::SnapCategories()
+{
+	SnapCategoriesWidth();
+	SnapCategoriesHeight();
+}
+
 void swPartSelectionWidget::SnapCategoriesWidth()
 {
 	QDockWidget* DockWidget = qobject_cast<QDockWidget*>(parent());
@@ -1241,6 +1249,40 @@ void swPartSelectionWidget::SnapCategoriesWidth()
 	mSplitter->setSizes({ Width, Length - Width });
 }
 
+void swPartSelectionWidget::SnapCategoriesHeight()
+{
+	if (mIsPopup || mSplitter->orientation() != Qt::Vertical || mSplitter->widget(0)->isHidden())
+		return;
+
+	// Measure the first shown row, the filter can hide the others.
+	int RowHeight = 0;
+
+	for (int Row = 0; Row < mCategoriesWidget->topLevelItemCount() && !RowHeight; Row++)
+		if (!mCategoriesWidget->topLevelItem(Row)->isHidden())
+			RowHeight = mCategoriesWidget->visualItemRect(mCategoriesWidget->topLevelItem(Row)).height();
+
+	QList<int> Sizes = mSplitter->sizes();
+
+	if (RowHeight <= 0 || Sizes.size() != 2)
+		return;
+
+	// The categories end on a whole row instead of cutting the last one.
+	const int ViewportHeight = mCategoriesWidget->viewport()->height();
+	const int Rows = qMax(1, (ViewportHeight + RowHeight / 2) / RowHeight);
+	int Height = Sizes[0] + Rows * RowHeight - ViewportHeight;
+
+	const int Length = Sizes[0] + Sizes[1];
+
+	if (Height > Length - mSplitter->widget(1)->minimumSizeHint().height())
+		Height -= RowHeight;
+
+	if (Height < mSplitter->widget(0)->minimumSizeHint().height())
+		Height += RowHeight;
+
+	if (Height != Sizes[0])
+		mSplitter->setSizes({ Height, Length - Height });
+}
+
 void swPartSelectionWidget::DockLocationChanged(Qt::DockWidgetArea Area)
 {
 	mDockArea = Area;
@@ -1250,7 +1292,7 @@ void swPartSelectionWidget::DockLocationChanged(Qt::DockWidgetArea Area)
 	else
 		mSplitter->setOrientation(Qt::Horizontal);
 
-	QTimer::singleShot(0, this, &swPartSelectionWidget::SnapCategoriesWidth);
+	QTimer::singleShot(0, this, &swPartSelectionWidget::SnapCategories);
 }
 
 void swPartSelectionWidget::resizeEvent(QResizeEvent* Event)
@@ -1264,6 +1306,9 @@ void swPartSelectionWidget::resizeEvent(QResizeEvent* Event)
 		else
 			mSplitter->setOrientation(Qt::Vertical);
 	}
+
+	if (Event->size().height() != Event->oldSize().height())
+		QTimer::singleShot(0, this, &swPartSelectionWidget::SnapCategories);
 
 	QWidget::resizeEvent(Event);
 }
@@ -1688,7 +1733,7 @@ void swPartSelectionWidget::UpdateCategories()
 	if (CurrentItem)
 		mCategoriesWidget->setCurrentItem(CurrentItem);
 
-	QTimer::singleShot(0, this, &swPartSelectionWidget::SnapCategoriesWidth);
+	QTimer::singleShot(0, this, &swPartSelectionWidget::SnapCategories);
 }
 
 void swPartSelectionWidget::UpdateModels()

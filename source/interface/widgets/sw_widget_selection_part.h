@@ -288,7 +288,7 @@ public:
 	void LoadState(QSettings& Settings);
 	void SaveState(QSettings& Settings);
 	void SetOrientation(Qt::Orientation Orientation);
-	void SnapCategoriesWidth();
+	void SnapCategories();
 	void SetCurrentPart(swPartData* PartData);
 	void SetCategory(swPartCategoryType Type, int Index);
 	void SetCustomParts(const std::vector<std::pair<swPartData*, std::string>>& Parts, int ColorIndex);
@@ -370,6 +370,8 @@ protected slots:
 protected:
 	void LoadPartPalettes();
 	void SavePartPalettes();
+	void SnapCategoriesWidth();
+	void SnapCategoriesHeight();
 
 	void resizeEvent(QResizeEvent* Event) override;
 	bool event(QEvent* Event) override;

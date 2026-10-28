@@ -8,6 +8,7 @@
 #include "sw_project.h"
 #include "sw_model.h"
 #include "sw_window_utilities.h"
+#include "sw_profile.h"
 
 swInstructionsDialog::swInstructionsDialog(QWidget* Parent, Project* Project)
 	: QMainWindow(Parent), mProject(Project)
@@ -94,6 +95,14 @@ void swInstructionsDialog::SaveLayout()
 	Settings.beginGroup("InstructionsWindow");
 	Settings.setValue("State", saveState());
 	Settings.endGroup();
+}
+
+// use to follow the options stored by the preferences
+void swInstructionsDialog::UpdateOptions()
+{
+	mInstructions->SetShowMargins(swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_SHOW_MARGINS) != 0);
+	mInstructions->UpdateColors();
+	mEditorWidget->UpdateOptions();
 }
 
 void swInstructionsDialog::closeEvent(QCloseEvent* Event)

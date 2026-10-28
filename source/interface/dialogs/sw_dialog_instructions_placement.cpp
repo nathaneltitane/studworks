@@ -145,6 +145,12 @@ swInstructionsPlacementWidget::swInstructionsPlacementWidget(QWidget* Parent, sw
 		});
 	}
 
+	// the reset button is as wide as the anchor column above it, the lock button as wide as the placement grid
+	PlacementLayout->setSpacing(ResetRow->layout()->spacing());
+	mLockButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+	mLockButton->setFixedWidth(mGridWidget->sizeHint().width());
+	static_cast<QHBoxLayout*>(ResetRow->layout())->setStretch(1, 0);
+
 	Layout->addWidget(ResetRow);
 
 	connect(mResetPositionButton, &QToolButton::clicked, this, &swInstructionsPlacementWidget::ResetPositionClicked);
@@ -462,7 +468,7 @@ swInstructionsGridWidget::swInstructionsGridWidget(QWidget* Parent, swInstructio
 	: QDockWidget(Parent), mInstructions(Instructions)
 {
 	setWindowTitle(tr("Grid"));
-	setWhatsThis(tr("<p><b>Grid</b></p><p>The page grid helps aligning dragged elements, it is never printed. Show it on screen, snap dragged elements to it, and choose its area and the distance between its lines.</p>"));
+	setWhatsThis(tr("<p><b>Grid</b></p><p>The page grid helps aligning dragged elements, it is never printed. Show it on screen, snap dragged elements to it, choose its area, the size of its main unit and the fractions it is split into, and the colors of its lines and of the margins.</p>"));
 	swSetupWidgetHelp(this, nullptr);
 
 	QWidget* CentralWidget = new QWidget(this);
@@ -524,7 +530,7 @@ swInstructionsGridWidget::swInstructionsGridWidget(QWidget* Parent, swInstructio
 	GridSizeRowLayout->addWidget(mGridSizeUnitButton);
 
 	mGridSizeSpinBox = new swInstructionsLengthSpinBox(GridSizeRow);
-	mGridSizeSpinBox->setToolTip(tr("Distance between the grid lines in the margin units of the page setup."));
+	mGridSizeSpinBox->setToolTip(tr("Main unit of the grid drawn with the primary color, in the margin units of the page setup."));
 	mGridSizeSpinBox->setWhatsThis(mGridSizeSpinBox->toolTip());
 	mGridSizeSpinBox->setAccessibleName(tr("Grid Size"));
 	swSetupPanelSpinBox(mGridSizeSpinBox);
@@ -532,10 +538,63 @@ swInstructionsGridWidget::swInstructionsGridWidget(QWidget* Parent, swInstructio
 	GridSizeRowLayout->addWidget(mGridSizeSpinBox, 1);
 	GridSizeLabel->setBuddy(mGridSizeSpinBox);
 
+	QWidget* GridDivisionsRow = swCreatePanelRow(CentralWidget);
+	QHBoxLayout* GridDivisionsRowLayout = static_cast<QHBoxLayout*>(GridDivisionsRow->layout());
+	Layout->addWidget(GridDivisionsRow);
+
+	QLabel* GridDivisionsLabel = new QLabel(tr("Divisions"), GridDivisionsRow);
+	GridDivisionsRowLayout->addWidget(GridDivisionsLabel);
+
+	mGridDivisionsSpinBox = new QSpinBox(GridDivisionsRow);
+	mGridDivisionsSpinBox->setRange(1, SW_GRID_DIVISIONS_MAXIMUM);
+	mGridDivisionsSpinBox->setPrefix(QLatin1String("1/"));
+	mGridDivisionsSpinBox->setToolTip(tr("Split each grid unit into fractions drawn with the secondary color, dragged elements snap to the fractions."));
+	mGridDivisionsSpinBox->setWhatsThis(mGridDivisionsSpinBox->toolTip());
+	mGridDivisionsSpinBox->setAccessibleName(tr("Divisions"));
+	swSetupPanelSpinBox(mGridDivisionsSpinBox);
+	mGridDivisionsSpinBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	GridDivisionsRowLayout->addWidget(mGridDivisionsSpinBox, 1);
+	GridDivisionsLabel->setBuddy(mGridDivisionsSpinBox);
+
+	// the grid and margin lines each take a color with its transparency
+	auto CreateColorRow = [CentralWidget, Layout](const QString& Name, const QString& ToolTip, QLabel*& Label)
+	{
+		QWidget* ColorRow = swCreatePanelRow(CentralWidget);
+		QHBoxLayout* ColorRowLayout = static_cast<QHBoxLayout*>(ColorRow->layout());
+		Layout->addWidget(ColorRow);
+
+		Label = new QLabel(Name, ColorRow);
+		ColorRowLayout->addWidget(Label);
+
+		QToolButton* Button = new QToolButton(ColorRow);
+		Button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+		Button->setToolTip(ToolTip);
+		Button->setWhatsThis(ToolTip);
+		Button->setAccessibleName(Name);
+		swSetupPanelButton(Button);
+		Button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+		ColorRowLayout->addWidget(Button, 1);
+		Label->setBuddy(Button);
+
+		return Button;
+	};
+
+	QLabel* PrimaryColorLabel = nullptr;
+	QLabel* SecondaryColorLabel = nullptr;
+	QLabel* MarginColorLabel = nullptr;
+	mPrimaryColorButton = CreateColorRow(tr("Primary Color"), tr("Color of the grid lines at every grid unit."), PrimaryColorLabel);
+	mSecondaryColorButton = CreateColorRow(tr("Secondary Color"), tr("Color of the grid lines at the fractions of a grid unit."), SecondaryColorLabel);
+	mMarginColorButton = CreateColorRow(tr("Margin Color"), tr("Color of the dashed outline of the page margins."), MarginColorLabel);
+
 	// the labels share one width so the inputs line up
-	const int LabelWidth = qMax(GridScopeLabel->sizeHint().width(), GridSizeLabel->sizeHint().width());
-	GridScopeLabel->setFixedWidth(LabelWidth);
-	GridSizeLabel->setFixedWidth(LabelWidth);
+	const QList<QLabel*> Labels = { GridScopeLabel, GridSizeLabel, GridDivisionsLabel, PrimaryColorLabel, SecondaryColorLabel, MarginColorLabel };
+	int LabelWidth = 0;
+
+	for (QLabel* Label : Labels)
+		LabelWidth = qMax(LabelWidth, Label->sizeHint().width());
+
+	for (QLabel* Label : Labels)
+		Label->setFixedWidth(LabelWidth);
 
 	connect(mShowGridButton, &QToolButton::toggled, mInstructions, &swInstructions::SetShowGrid);
 	connect(mSnapToGridButton, &QToolButton::toggled, mInstructions, &swInstructions::SetSnapToGrid);
@@ -545,6 +604,28 @@ swInstructionsGridWidget::swInstructionsGridWidget(QWidget* Parent, swInstructio
 	});
 	connect(mGridSizeSpinBox, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &swInstructionsGridWidget::GridSizeChanged);
 	connect(mGridSizeUnitButton, &swInstructionsUnitButton::UnitsChanged, this, &swInstructionsGridWidget::UpdateGrid);
+	connect(mGridDivisionsSpinBox, qOverload<int>(&QSpinBox::valueChanged), mInstructions, &swInstructions::SetGridDivisions);
+	connect(mPrimaryColorButton, &QToolButton::clicked, this, [this]()
+	{
+		const QColor Color = swPickColor(mPrimaryColorButton, mInstructions->GetGridPrimaryColor());
+
+		if (Color.isValid())
+			mInstructions->SetGridPrimaryColor(Color);
+	});
+	connect(mSecondaryColorButton, &QToolButton::clicked, this, [this]()
+	{
+		const QColor Color = swPickColor(mSecondaryColorButton, mInstructions->GetGridSecondaryColor());
+
+		if (Color.isValid())
+			mInstructions->SetGridSecondaryColor(Color);
+	});
+	connect(mMarginColorButton, &QToolButton::clicked, this, [this]()
+	{
+		const QColor Color = swPickColor(mMarginColorButton, mInstructions->GetMarginColor());
+
+		if (Color.isValid())
+			mInstructions->SetMarginColor(Color);
+	});
 
 	// the panel is exactly as tall as its rows wherever it is docked
 	swFitHeightToContents(CentralWidget);
@@ -563,6 +644,7 @@ void swInstructionsGridWidget::UpdateGrid()
 	QSignalBlocker SnapBlocker(mSnapToGridButton);
 	QSignalBlocker SizeBlocker(mGridSizeSpinBox);
 	QSignalBlocker ScopeBlocker(mGridScopeComboBox);
+	QSignalBlocker DivisionsBlocker(mGridDivisionsSpinBox);
 
 	mShowGridButton->setChecked(mInstructions->IsGridShown());
 	mSnapToGridButton->setChecked(mInstructions->IsSnapToGrid());
@@ -573,6 +655,11 @@ void swInstructionsGridWidget::UpdateGrid()
 	swSetupLengthSpinBox(mGridSizeSpinBox, Units, SW_GRID_SIZE_MINIMUM, SW_GRID_SIZE_MAXIMUM);
 	mGridSizeUnitButton->UpdateUnits(mInstructions);
 	mGridSizeSpinBox->setValue(mInstructions->GetGridSize() / swGetPageUnitScale(Units));
+	mGridDivisionsSpinBox->setValue(mInstructions->GetGridDivisions());
+
+	swUpdateColorButton(mPrimaryColorButton, mInstructions->GetGridPrimaryColor());
+	swUpdateColorButton(mSecondaryColorButton, mInstructions->GetGridSecondaryColor());
+	swUpdateColorButton(mMarginColorButton, mInstructions->GetMarginColor());
 }
 
 void swInstructionsGridWidget::GridSizeChanged(double Size)

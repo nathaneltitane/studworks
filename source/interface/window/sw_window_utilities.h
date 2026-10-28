@@ -56,6 +56,7 @@ public:
 	}
 
 	void drawControl(ControlElement Element, const QStyleOption* Option, QPainter* Painter, const QWidget* Widget) const override;
+	QSize sizeFromContents(ContentsType Type, const QStyleOption* Option, const QSize& Size, const QWidget* Widget) const override;
 };
 
 // Fits a floating panel to its contents, a panel docked at the top or bottom keeps the width of its rows.
@@ -125,6 +126,11 @@ protected:
 };
 
 QIcon swCreateInterfaceIcon(const QString& Folder, const QString& Name);
+
+// Color buttons show their color as a swatch beside its name and pick a new one below them.
+QIcon swCreateColorIcon(const QColor& Color, int Size);
+void swUpdateColorButton(QToolButton* Button, const QColor& Color);
+QColor swPickColor(QToolButton* Button, const QColor& Color);
 
 // ScreenPosition selects the monitor independently of the desired popup position.
 QPoint swGetPopupPosition(const QPoint& Position, const QSize& Size, const QPoint& ScreenPosition);

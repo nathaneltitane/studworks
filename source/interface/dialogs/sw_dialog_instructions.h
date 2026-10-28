@@ -18,6 +18,7 @@ public:
 	swInstructionsDialog(QWidget* Parent, Project* Project);
 
 	void SaveLayout();
+	void UpdateOptions();
 
 public slots:
 	void ModelChanged();

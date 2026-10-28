@@ -306,6 +306,7 @@ signals:
 
 public:
 	void CloseInstructionsDialog();
+	void UpdateInstructionsOptions();
 	bool LoadProjectText(const QByteArray& FileData);
 
 public slots:
