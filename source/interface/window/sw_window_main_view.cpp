@@ -35,7 +35,7 @@
 #include <QtGamepad/QGamepad>
 #endif
 
-#define SW_TAB_LAYOUT_VERSION 0x0001
+#define SW_TAB_LAYOUT_VERSION 0x0002
 
 void swMainWindow::SetShadingMode(swShadingMode ShadingMode)
 {
@@ -446,7 +446,15 @@ QByteArray swMainWindow::GetTabLayout()
 
 				const swCamera* Camera = CurrentView->GetCamera();
 
-				if (Camera->IsSimple())
+				// a view still on its fit is fitted again when restored
+				if (CurrentView->IsFitted())
+				{
+					DataStream << (qint32)2;
+					DataStream << Camera->m_fovy;
+					DataStream << Camera->m_zNear;
+					DataStream << Camera->m_zFar;
+				}
+				else if (Camera->IsSimple())
 				{
 					DataStream << (qint32)0;
 					DataStream << Camera->m_fovy;
@@ -567,6 +575,26 @@ void swMainWindow::RestoreTabLayout(const QByteArray& TabLayout)
 						}
 						Camera->UpdatePosition(1);
 						Camera->ExpandFarPlane(CurrentView->GetModel()->GetPartsBoundingBoxPoints(swGeometryBoundsMode::IncludeFallback));
+					}
+				}
+				else if (CameraType == 2)
+				{
+					float FoV, ZNear, ZFar;
+
+					DataStream >> FoV;
+					DataStream >> ZNear;
+					DataStream >> ZFar;
+
+					if (CurrentView && CurrentView->GetCamera()->IsSimple())
+					{
+						swCamera* Camera = CurrentView->GetCamera();
+						if (!std::isnan(FoV))
+							Camera->m_fovy = FoV;
+						if (!std::isnan(ZNear))
+							Camera->m_zNear = ZNear;
+						if (!std::isnan(ZFar))
+							Camera->m_zFar = ZFar;
+						CurrentView->ZoomExtents(swGeometryBoundsMode::IncludeFallback, true);
 					}
 				}
 				else

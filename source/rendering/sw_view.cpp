@@ -97,6 +97,19 @@ void swView::UpdateAllViews()
 		View->Redraw();
 }
 
+// use to fit views again once the parts they show have loaded
+void swView::UpdateFittedViews()
+{
+	for (swView* View : mViews)
+	{
+		if (!View->IsFitted())
+			continue;
+
+		View->ZoomExtents(View->mZoomExtentsMode, View->mZoomExtentsFarPlane);
+		View->Redraw();
+	}
+}
+
 void swView::MakeCurrent()
 {
 	mContext->MakeCurrent();
@@ -1199,8 +1212,14 @@ void swView::SetSize(int Width, int Height)
 	mWidth = Width;
 	mHeight = Height;
 
-	if (Resized && mWidth > 1 && mHeight > 1 && mCamera && mCamera->IsSimple() && mCamera == mZoomExtentsCamera && mCamera->mWorldView == mZoomExtentsWorldView)
+	if (Resized && mWidth > 1 && mHeight > 1 && IsFitted())
 		ZoomExtents(mZoomExtentsMode, mZoomExtentsFarPlane);
+}
+
+// use to check the camera is still where the last fit left it
+bool swView::IsFitted() const
+{
+	return mCamera && mCamera->IsSimple() && mCamera == mZoomExtentsCamera && mCamera->mWorldView == mZoomExtentsWorldView;
 }
 
 void swView::ZoomExtents(swGeometryBoundsMode Mode, bool AdjustFarPlane)

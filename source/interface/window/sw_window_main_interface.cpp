@@ -930,6 +930,18 @@ void swMainWindow::CreateStatusBar()
 	{
 		if (mStatusRequiredAssets.find(PartData) != mStatusRequiredAssets.end())
 			ScheduleAssetUpdate();
+
+		// views fitted before their parts loaded fit the loaded parts, once per burst of loads
+		if (mFitUpdatePending)
+			return;
+
+		mFitUpdatePending = true;
+
+		QTimer::singleShot(100, this, [this]()
+		{
+			mFitUpdatePending = false;
+			swView::UpdateFittedViews();
+		});
 	});
 	connect(Library, &swPartsLibrary::PartLoadFailed, this, [this](swPartData* PartData, const QString&)
 	{

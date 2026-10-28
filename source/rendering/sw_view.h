@@ -234,6 +234,7 @@ public:
 	static std::vector<swView*> GetModelViews(const swModel* Model);
 	static void UpdateProjectViews(const Project* Project);
 	static void UpdateAllViews();
+	static void UpdateFittedViews();
 
 	static void CreateResources(swContext* Context);
 	static void DestroyResources(swContext* Context);
@@ -309,6 +310,7 @@ public:
 	void MoveCamera(const swVector3& Direction);
 	void Zoom(float Amount);
 	void ZoomExtents(swGeometryBoundsMode Mode, bool AdjustFarPlane);
+	bool IsFitted() const;
 	void ZoomExtentsAtStep(swStep Step, swGeometryBoundsMode Mode, bool AdjustFarPlane);
 
 	void RemoveCamera();

@@ -420,6 +420,7 @@ protected:
 	QDockWidget* mPartsToolBar = nullptr;
 	QPointer<swInstructionsDialog> mInstructionsDialog;
 	bool mPartsSnapPending = false;
+	bool mFitUpdatePending = false;
 	bool mPartsSnapRetried = false;
 	QTimer mPartsSnapTimer;
 	QTimer mIdleTimer;
