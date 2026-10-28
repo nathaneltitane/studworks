@@ -409,14 +409,17 @@ jobs:
           fi
         done < README.md
         touch notes.md
-    - name: Publish continuous release
+    - name: Publish release
       run: |
-        gh release delete continuous --cleanup-tag --yes || true
-        gh release create continuous packages/* --prerelease --target "${GITHUB_SHA}" --title "StudWorks Continuous" --notes "Latest build of main from ${GITHUB_SHA::7}"
-    - name: Publish version release
-      run: |
-        # each date version is released once, from the first build that carries it
-        if ! gh release view "${{ steps.version.outputs.text }}" > /dev/null 2>&1
-        then
-          gh release create "${{ steps.version.outputs.text }}" packages/* --target "${GITHUB_SHA}" --title "StudWorks ${{ steps.version.outputs.text }}" --notes-file notes.md --latest
-        fi
+        # one release carries the latest build of main under its date version
+        gh release delete "${{ steps.version.outputs.text }}" --cleanup-tag --yes || true
+        gh release create "${{ steps.version.outputs.text }}" packages/* --target "${GITHUB_SHA}" --title "StudWorks ${{ steps.version.outputs.text }}" --notes-file notes.md --latest
+        # earlier date versions are removed with their tags
+        mapfile -t tags_release < <(gh release list --limit 100 --json tagName --jq '.[].tagName')
+        for tag_release in "${tags_release[@]}"
+        do
+          if [ "${tag_release}" != "${{ steps.version.outputs.text }}" ]
+          then
+            gh release delete "${tag_release}" --cleanup-tag --yes
+          fi
+        done

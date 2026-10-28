@@ -130,7 +130,7 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
 ### TL;DR
 
   - Install ↴
-    - Download a package from the [latest release](https://github.com/nathaneltitane/studworks/releases/latest), or from the [continuous build](https://github.com/nathaneltitane/studworks/releases/tag/continuous) for the latest changes - every package carries the date version of the release:
+    - Download a package from the [latest release](https://github.com/nathaneltitane/studworks/releases/latest), rebuilt from every change - every package carries the date version of the release:
 
       | System | Package |
       | --- | --- |
