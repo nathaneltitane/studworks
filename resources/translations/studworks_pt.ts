@@ -8231,6 +8231,12 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
         <translation type="unfinished">O ficheiro &apos;%1&apos; não é legível.</translation>
     </message>
     <message>
+        <location filename="../../source/application/sw_application.cpp" line="1458"/>
+        <source>The file &apos;%1&apos; has no parts to render.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">O arquivo &apos;%1&apos; não tem peças para renderizar.</translation>
+    </message>
+    <message>
         <location filename="../../source/application/sw_application.cpp" line="729"/>
         <source>Invalid parameter values specified for the &apos;%1&apos; option: limits are +/- 360.
 </source>
@@ -8452,6 +8458,14 @@ Veja https://github.com/nathaneltitane/studworks para saber como descarragar e i
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --orthographic: Renderize imagens utilizando uma projeção ortográfica.</translation>
+    </message>
+    <message>
+        <location filename="../../source/application/sw_application.cpp" line="977"/>
+        <source>  --transparent: Render images with a transparent background.
+</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">  --transparent: Renderizar imagens com um fundo transparente.
+</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="928"/>

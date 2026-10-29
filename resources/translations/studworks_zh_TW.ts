@@ -7782,6 +7782,12 @@ It is built on LeoCAD by Leonardo Zide and released under the GNU General Public
         <translation type="unfinished">檔案 &apos;%1&apos; 不可讀。</translation>
     </message>
     <message>
+        <location filename="../../source/application/sw_application.cpp" line="1458"/>
+        <source>The file &apos;%1&apos; has no parts to render.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">檔案「%1」中沒有可算繪的零件。</translation>
+    </message>
+    <message>
         <location filename="../../source/application/sw_application.cpp" line="729"/>
         <source>Invalid parameter values specified for the &apos;%1&apos; option: limits are +/- 360.
 </source>
@@ -7940,6 +7946,14 @@ It is built on LeoCAD by Leonardo Zide and released under the GNU General Public
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --orthographic：使用正交投影渲染圖像。</translation>
+    </message>
+    <message>
+        <location filename="../../source/application/sw_application.cpp" line="977"/>
+        <source>  --transparent: Render images with a transparent background.
+</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">  --transparent：以透明背景算繪影像。
+</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="928"/>

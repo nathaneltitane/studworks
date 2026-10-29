@@ -7740,6 +7740,12 @@ It is built on LeoCAD by Leonardo Zide and released under the GNU General Public
 </translation>
     </message>
     <message>
+        <location filename="../../source/application/sw_application.cpp" line="1458"/>
+        <source>The file &apos;%1&apos; has no parts to render.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">В файле &apos;%1&apos; нет деталей для отрисовки.</translation>
+    </message>
+    <message>
         <location filename="../../source/application/sw_application.cpp" line="729"/>
         <source>Invalid parameter values specified for the &apos;%1&apos; option: limits are +/- 360.
 </source>
@@ -7923,6 +7929,14 @@ It is built on LeoCAD by Leonardo Zide and released under the GNU General Public
         <source>  --orthographic: Render images using an orthographic projection.
 </source>
         <translation>  --orthographic: Отображать изображения в ортографической проекции.
+</translation>
+    </message>
+    <message>
+        <location filename="../../source/application/sw_application.cpp" line="977"/>
+        <source>  --transparent: Render images with a transparent background.
+</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">  --transparent: Отрисовывать изображения с прозрачным фоном.
 </translation>
     </message>
     <message>

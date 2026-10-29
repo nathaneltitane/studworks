@@ -51,6 +51,7 @@ protected:
 
 	void UpdateOverlayGeometry();
 	void UpdateModelEditingLabel();
+	static std::array<int, 4> GetOverlayCornerSizes();
 
 	std::unique_ptr<swView> mView;
 	QWidget* mOverlay = nullptr;
@@ -60,6 +61,7 @@ protected:
 	QToolButton* mEndEditingButton = nullptr;
 	QPointer<QWidget> mFindReplaceWidget;
 	QStringList mModelEditingNames;
+	std::array<int, 4> mOverlayCornerSizes = {};
 	QSize mPreferredSize;
 	int mWheelAccumulator = 0;
 };

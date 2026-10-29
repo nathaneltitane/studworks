@@ -7,6 +7,9 @@
 %global __provides_exclude_from ^/opt/studworks/.*$
 %global __requires_exclude ^(%{sw_bundled})
 
+# the kde thumbnail plugin only loads where kde already provides its frameworks
+%global __requires_exclude_from ^%{_libdir}/qt5/plugins/kf5/.*$
+
 Name: studworks
 Version: %{sw_version}
 Release: 1
@@ -31,5 +34,7 @@ cp -a %{sw_root}/. %{buildroot}/
 %{_datadir}/icons/hicolor/*/mimetypes/*
 %{_datadir}/mime/packages/studworks.xml
 %{_datadir}/metainfo/io.github.nathaneltitane.StudWorks.appdata.xml
+%{_datadir}/thumbnailers/studworks.thumbnailer
+%{?sw_thumbnailer}
 %{_datadir}/doc/studworks
 %{_mandir}/man1/studworks.1*

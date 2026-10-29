@@ -126,6 +126,7 @@ unix:!macx {
 	isEmpty(DESKTOP_DIR):DESKTOP_DIR = $$INSTALL_PREFIX/share/applications
 	isEmpty(MIME_DIR):MIME_DIR = $$INSTALL_PREFIX/share/mime/packages
 	isEmpty(APPDATA_DIR):APPDATA_DIR = $$INSTALL_PREFIX/share/metainfo
+	isEmpty(THUMBNAILER_DIR):THUMBNAILER_DIR = $$INSTALL_PREFIX/share/thumbnailers
 
 	target.path = $$BIN_DIR
 	docs.path = $$DOCS_DIR
@@ -148,8 +149,10 @@ unix:!macx {
 	mime.files = platform/studworks.xml
 	appdata.path = $$APPDATA_DIR
 	appdata.files = packaging/io.github.nathaneltitane.StudWorks.appdata.xml
+	thumbnailer.path = $$THUMBNAILER_DIR
+	thumbnailer.files = platform/studworks.thumbnailer
 
-	INSTALLS += target docs man desktop icons mime appdata
+	INSTALLS += target docs man desktop icons mime appdata thumbnailer
 
 	# the parts library is installed only when present, povray comes from the system
 	exists($$_PRO_FILE_PWD_/library.bin) {

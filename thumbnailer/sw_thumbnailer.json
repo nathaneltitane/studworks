@@ -1,0 +1,20 @@
+{
+	"CacheThumbnail": true,
+	"KPlugin": {
+		"Id": "studworksthumbnail",
+		"MimeTypes": [
+			"application/x-ldraw",
+			"application/x-multi-part-ldraw"
+		],
+		"Name": "LDraw Files",
+		"Name[cs]": "Soubory LDraw",
+		"Name[de]": "LDraw-Dateien",
+		"Name[es]": "Archivos LDraw",
+		"Name[fr]": "Fichiers LDraw",
+		"Name[pt]": "Arquivos LDraw",
+		"Name[ru]": "Файлы LDraw",
+		"Name[uk]": "Файли LDraw",
+		"Name[zh_CN]": "LDraw 文件",
+		"Name[zh_TW]": "LDraw 檔案"
+	}
+}

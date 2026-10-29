@@ -793,6 +793,8 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 		}
 		else if (Option == QLatin1String("--orthographic"))
 			Options.Orthographic = true;
+		else if (Option == QLatin1String("--transparent"))
+			Options.TransparentImage = true;
 		else if (Option == QLatin1String("--fov"))
 			Options.SetFoV = ParseFloat(Options.FoV, 1.0f, 180.0f);
 		else if (Option == QLatin1String("--zplanes"))
@@ -972,6 +974,7 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 			Options.StdOut += tr("  --camera-position <x> <y> <z> <tx> <ty> <tz> <ux> <uy> <uz>: Set the camera position, target and up vector.\n");
 			Options.StdOut += tr("  --camera-position-ldraw <x> <y> <z> <tx> <ty> <tz> <ux> <uy> <uz>: Set the camera position, target and up vector using LDraw coordinates.\n");
 			Options.StdOut += tr("  --orthographic: Render images using an orthographic projection.\n");
+			Options.StdOut += tr("  --transparent: Render images with a transparent background.\n");
 			Options.StdOut += tr("  --fov <degrees>: Set the vertical field of view used to render images (< 180).\n");
 			Options.StdOut += tr("  --zplanes <near> <far>: Set the near and far clipping planes used to render images (1 <= <near> < <far>).\n");
 			Options.StdOut += tr("  --fade-steps: Render parts from prior steps faded.\n");
@@ -1370,7 +1373,12 @@ swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 		}
 
 		if (Options.SaveImage)
+		{
 			ActiveView->SetSize(Options.ImageWidth, Options.ImageHeight);
+
+			if (Options.TransparentImage)
+				ActiveView->SetBackgroundColorOverride(SW_RGBA(0, 0, 0, 0));
+		}
 
 		if (ActiveView)
 		{
@@ -1443,6 +1451,14 @@ swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 				mPreferences.mHighlightNewPartsColor = Options.HighlightColor;
 
 			ActiveModel->WaitForAssets();
+
+			// a file without parts, like data sharing an ldraw extension, saves no blank picture
+			if (ActiveModel->GetPartsBoundingBoxPoints(swGeometryBoundsMode::AvailableOnly).empty())
+			{
+				StdErr << tr("The file '%1' has no parts to render.").arg(Options.ProjectName) << '\n';
+
+				return swStartupMode::Error;
+			}
 
 			const bool UsesCameraPosition = Options.SetCameraPosition && Options.Viewpoint == swViewpoint::Count && !Options.SetCameraAngles;
 

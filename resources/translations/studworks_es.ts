@@ -7827,6 +7827,12 @@ Por favor, visita https://github.com/nathaneltitane/studworks para saber cómo d
 </translation>
     </message>
     <message>
+        <location filename="../../source/application/sw_application.cpp" line="1458"/>
+        <source>The file &apos;%1&apos; has no parts to render.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">El archivo &apos;%1&apos; no tiene piezas para renderizar.</translation>
+    </message>
+    <message>
         <location filename="../../source/application/sw_application.cpp" line="729"/>
         <source>Invalid parameter values specified for the &apos;%1&apos; option: limits are +/- 360.
 </source>
@@ -8072,6 +8078,14 @@ Por favor, visita https://github.com/nathaneltitane/studworks para saber cómo d
         <source>  --orthographic: Render images using an orthographic projection.
 </source>
         <translation>  --orthographic: Renderiza imágenes usando una proyección ortogonal.
+</translation>
+    </message>
+    <message>
+        <location filename="../../source/application/sw_application.cpp" line="977"/>
+        <source>  --transparent: Render images with a transparent background.
+</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">  --transparent: Renderizar imágenes con un fondo transparente.
 </translation>
     </message>
     <message>

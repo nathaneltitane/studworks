@@ -28,6 +28,7 @@ protected slots:
 
 private:
 	void UpdateSpinBoxes();
+	void UpdateMargins();
 	void UpdatePreset();
 	void UpdateOrientation();
 

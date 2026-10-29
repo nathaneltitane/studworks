@@ -72,10 +72,27 @@ qmake "${directory_source}/studworks.pro" \
 	MAN_DIR=/usr/share/man/man1 \
 	DESKTOP_DIR=/usr/share/applications \
 	MIME_DIR=/usr/share/mime/packages \
-	APPDATA_DIR=/usr/share/metainfo
+	APPDATA_DIR=/usr/share/metainfo \
+	THUMBNAILER_DIR=/usr/share/thumbnailers
 
 make -j "$(nproc)"
 make install INSTALL_ROOT="${directory_package}"
+
+# kde thumbnail plugin, built against the system frameworks that load it
+if [ -f "$(qmake -query QT_INSTALL_ARCHDATA)/mkspecs/modules/qt_KIOGui.pri" ]
+then
+	mkdir -p "${directory_build}/thumbnailer"
+	cd "${directory_build}/thumbnailer"
+
+	qmake "${directory_source}/thumbnailer/thumbnailer.pro" \
+		CONFIG+=release CONFIG-=debug \
+		BIN_DIR="${directory_prefix}/bin"
+
+	make -j "$(nproc)"
+	make install INSTALL_ROOT="${directory_package}"
+
+	cd "${directory_build}"
+fi
 
 # copy qt plugins
 directory_plugins_qt="$(qmake -query QT_INSTALL_PLUGINS)"

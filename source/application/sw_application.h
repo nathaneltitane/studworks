@@ -284,6 +284,7 @@ struct swCommandLineOptions
 	bool SetCameraAngles = false;
 	bool SetCameraPosition = false;
 	bool Orthographic = false;
+	bool TransparentImage = false;
 	bool SetFoV = false;
 	bool SetZPlanes = false;
 	bool SetFadeStepsColor = false;

@@ -8386,6 +8386,12 @@ It is built on LeoCAD by Leonardo Zide and released under the GNU General Public
         <translation type="unfinished">Файл &apos;%1&apos; не читається.</translation>
     </message>
     <message>
+        <location filename="../../source/application/sw_application.cpp" line="1458"/>
+        <source>The file &apos;%1&apos; has no parts to render.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">У файлі &apos;%1&apos; немає деталей для відтворення.</translation>
+    </message>
+    <message>
         <location filename="../../source/application/sw_application.cpp" line="729"/>
         <source>Invalid parameter values specified for the &apos;%1&apos; option: limits are +/- 360.
 </source>
@@ -8544,6 +8550,14 @@ It is built on LeoCAD by Leonardo Zide and released under the GNU General Public
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --orthographic: візуалізація зображень за допомогою ортографічної проекції.</translation>
+    </message>
+    <message>
+        <location filename="../../source/application/sw_application.cpp" line="977"/>
+        <source>  --transparent: Render images with a transparent background.
+</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">  --transparent: Відтворювати зображення з прозорим тлом.
+</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="928"/>

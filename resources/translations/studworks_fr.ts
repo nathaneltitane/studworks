@@ -8228,6 +8228,12 @@ SVP visitez https://github.com/nathaneltitane/studworks pour apprendre comment t
         <translation type="unfinished">Le fichier &apos;%1&apos; n&apos;est pas lisible.</translation>
     </message>
     <message>
+        <location filename="../../source/application/sw_application.cpp" line="1458"/>
+        <source>The file &apos;%1&apos; has no parts to render.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Le fichier &apos;%1&apos; ne contient aucune pièce à rendre.</translation>
+    </message>
+    <message>
         <location filename="../../source/application/sw_application.cpp" line="729"/>
         <source>Invalid parameter values specified for the &apos;%1&apos; option: limits are +/- 360.
 </source>
@@ -8449,6 +8455,14 @@ SVP visitez https://github.com/nathaneltitane/studworks pour apprendre comment t
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --orthographic&#xa0;: rendu des images à l&apos;aide d&apos;une projection orthographique.</translation>
+    </message>
+    <message>
+        <location filename="../../source/application/sw_application.cpp" line="977"/>
+        <source>  --transparent: Render images with a transparent background.
+</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">  --transparent : rendu des images avec un arrière-plan transparent.
+</translation>
     </message>
     <message>
         <location filename="../../source/application/sw_application.cpp" line="928"/>

@@ -1028,10 +1028,12 @@ void swView::DrawGrid()
 {
 	const swPreferences& Preferences = swGetPreferences();
 
-	if (!Preferences.mDrawGridStuds && !Preferences.mDrawGridLines && !Preferences.mDrawGridOrigin && !Preferences.mDrawGridHeightXZ && !Preferences.mDrawGridHeightYZ)
-		return;
+	// the base grid toggle hides the grids only, the axis lines follow their own toggles
+	const bool DrawBaseGrid = Preferences.mGridEnabled && (Preferences.mDrawGridStuds || Preferences.mDrawGridLines);
+	const bool DrawGridHeight = Preferences.mGridEnabled && (Preferences.mDrawGridHeightXZ || Preferences.mDrawGridHeightYZ);
+	const bool DrawGridAxes = Preferences.mDrawGridOrigin && (Preferences.mDrawGridAxisX || Preferences.mDrawGridAxisY || Preferences.mDrawGridAxisZ);
 
-	if (!Preferences.mGridEnabled)
+	if (!DrawBaseGrid && !DrawGridHeight && !DrawGridAxes)
 		return;
 
 	const int Spacing = swMaximum(Preferences.mGridLineSpacing, 1);
@@ -1091,8 +1093,8 @@ void swView::DrawGrid()
 	if (!GridSizeValid || !std::isfinite(Min[2]) || Min[2] >= 0.0f)
 		MinZ = 0;
 
-	if (!mGridBuffer.IsValid() || MinX != mGridSettings[0] || MinY != mGridSettings[1] || MaxX != mGridSettings[2] || MaxY != mGridSettings[3] ||
-	    Spacing != mGridSettings[4] || (Preferences.mDrawGridStuds ? 1 : 0) != mGridSettings[5] || (Preferences.mDrawGridLines ? 1 : 0) != mGridSettings[6])
+	if (DrawBaseGrid && (!mGridBuffer.IsValid() || MinX != mGridSettings[0] || MinY != mGridSettings[1] || MaxX != mGridSettings[2] || MaxY != mGridSettings[3] ||
+	    Spacing != mGridSettings[4] || (Preferences.mDrawGridStuds ? 1 : 0) != mGridSettings[5] || (Preferences.mDrawGridLines ? 1 : 0) != mGridSettings[6]))
 	{
 		int VertexBufferSize = 0;
 
@@ -1177,10 +1179,12 @@ void swView::DrawGrid()
 	}
 
 	int BufferOffset = 0;
-	mContext->SetVertexBuffer(mGridBuffer);
 	mContext->SetWorldMatrix(swMatrix44Identity());
 
-	if (Preferences.mDrawGridStuds)
+	if (DrawBaseGrid)
+		mContext->SetVertexBuffer(mGridBuffer);
+
+	if (DrawBaseGrid && Preferences.mDrawGridStuds)
 	{
 		const int StudVertCount = (MaxX - MinX) * Spacing * SW_GRID_STUD_RINGS * SW_GRID_STUD_SEGMENTS * 2;
 
@@ -1205,7 +1209,7 @@ void swView::DrawGrid()
 		BufferOffset = StudVertCount * 3 * sizeof(float);
 	}
 
-	if (Preferences.mDrawGridLines)
+	if (DrawBaseGrid && Preferences.mDrawGridLines)
 	{
 		mContext->SetLineWidth(1.0f);
 		mContext->SetMaterial(swMaterialType::UnlitColor);
@@ -1229,7 +1233,6 @@ void swView::DrawGrid()
 	const int PlateMax = static_cast<int>(ceilf(MaxZ * 20.0f * Spacing / PlateHeight));
 	const float Bottom = PlateMin * PlateHeight;
 	const float Top = PlateMax * PlateHeight;
-	const bool DrawGridHeight = Preferences.mDrawGridHeightXZ || Preferences.mDrawGridHeightYZ;
 	std::vector<swGridVertex> AxisVerts;
 
 	// use to add an axis line whose negative half takes the negative axis color when that option is on
@@ -1340,6 +1343,7 @@ void swView::DrawGrid()
 
 	if (!AxisVerts.empty())
 	{
+		mContext->SetLineWidth(1.0f);
 		mContext->SetMaterial(swMaterialType::UnlitVertexColor);
 		mContext->SetVertexBufferPointer(AxisVerts.data());
 		mContext->SetVertexFormat(0, 3, 0, 0, 4, false);

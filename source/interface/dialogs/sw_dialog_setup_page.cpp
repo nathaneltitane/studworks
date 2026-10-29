@@ -77,8 +77,12 @@ swPageSetupDialog::swPageSetupDialog(QWidget* Parent, swInstructionsPageSetup* P
 		ui->PresetComboBox->addItem(tr("%1 (%2)").arg(tr(Preset.Name), Size), PresetIndex);
 	}
 
+	// values apply once typed so a partly typed page size does not clamp the margins
 	for (QDoubleSpinBox* SpinBox : { ui->WidthSpinBox, ui->HeightSpinBox, ui->LeftSpinBox, ui->RightSpinBox, ui->TopSpinBox, ui->BottomSpinBox })
+	{
+		SpinBox->setKeyboardTracking(false);
 		connect(SpinBox, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &swPageSetupDialog::SizeEdited);
+	}
 
 	auto GetProfileUnits = [](SW_PROFILE_KEY Key)
 	{
@@ -123,26 +127,61 @@ void swPageSetupDialog::accept()
 
 void swPageSetupDialog::UpdateSpinBoxes()
 {
-	auto SetValue = [](swRangeDoubleSpinBox* SpinBox, swInstructionsPageUnits Units, float Points, float Minimum)
+	auto SetUnits = [](swRangeDoubleSpinBox* SpinBox, swInstructionsPageUnits Units)
 	{
-		const float Scale = swGetPageUnitScale(Units);
 		const int Decimals = Units == swInstructionsPageUnits::Pixels ? 0 : Units == swInstructionsPageUnits::Millimeters ? 1 : 2;
-		const QString Suffix = QLatin1Char(' ') + swGetPageUnitSuffix(Units);
 
 		QSignalBlocker Blocker(SpinBox);
 		SpinBox->setDecimals(Decimals);
-		SpinBox->setRange(Minimum / Scale, 100000.0 / Scale);
-		SpinBox->SetReference(Suffix);
 		SpinBox->setSingleStep(Decimals == 0 ? 10.0 : Decimals == 1 ? 1.0 : 0.1);
+	};
+
+	auto SetSize = [](swRangeDoubleSpinBox* SpinBox, swInstructionsPageUnits Units, float Points)
+	{
+		const float Scale = swGetPageUnitScale(Units);
+
+		QSignalBlocker Blocker(SpinBox);
+		SpinBox->setRange(1.0 / Scale, 100000.0 / Scale);
+		SpinBox->setSuffix(QLatin1Char(' ') + swGetPageUnitSuffix(Units));
 		SpinBox->setValue(Points / Scale);
 	};
 
-	SetValue(ui->WidthSpinBox, mUnits, mPoints.Width, 1.0f);
-	SetValue(ui->HeightSpinBox, mUnits, mPoints.Height, 1.0f);
-	SetValue(ui->LeftSpinBox, mMarginUnits, mPoints.MarginLeft, 0.0f);
-	SetValue(ui->RightSpinBox, mMarginUnits, mPoints.MarginRight, 0.0f);
-	SetValue(ui->TopSpinBox, mMarginUnits, mPoints.MarginTop, 0.0f);
-	SetValue(ui->BottomSpinBox, mMarginUnits, mPoints.MarginBottom, 0.0f);
+	for (swRangeDoubleSpinBox* SpinBox : { ui->WidthSpinBox, ui->HeightSpinBox })
+		SetUnits(SpinBox, mUnits);
+
+	for (swRangeDoubleSpinBox* SpinBox : { ui->LeftSpinBox, ui->RightSpinBox, ui->TopSpinBox, ui->BottomSpinBox })
+		SetUnits(SpinBox, mMarginUnits);
+
+	SetSize(ui->WidthSpinBox, mUnits, mPoints.Width);
+	SetSize(ui->HeightSpinBox, mUnits, mPoints.Height);
+
+	UpdateMargins();
+}
+
+// use to cap each margin to the room left by the page size and the opposite margin
+void swPageSetupDialog::UpdateMargins()
+{
+	const float ContentMinimum = 1.0f;
+
+	mPoints.MarginLeft = qBound(0.0f, mPoints.MarginLeft, qMax(mPoints.Width - ContentMinimum, 0.0f));
+	mPoints.MarginRight = qBound(0.0f, mPoints.MarginRight, qMax(mPoints.Width - mPoints.MarginLeft - ContentMinimum, 0.0f));
+	mPoints.MarginTop = qBound(0.0f, mPoints.MarginTop, qMax(mPoints.Height - ContentMinimum, 0.0f));
+	mPoints.MarginBottom = qBound(0.0f, mPoints.MarginBottom, qMax(mPoints.Height - mPoints.MarginTop - ContentMinimum, 0.0f));
+
+	auto SetMargin = [this, ContentMinimum](swRangeDoubleSpinBox* SpinBox, float Points, float Room)
+	{
+		const float Scale = swGetPageUnitScale(mMarginUnits);
+
+		QSignalBlocker Blocker(SpinBox);
+		SpinBox->setRange(0.0, qMax(Room - ContentMinimum, 0.0f) / Scale);
+		SpinBox->SetReference(QLatin1Char(' ') + swGetPageUnitSuffix(mMarginUnits));
+		SpinBox->setValue(Points / Scale);
+	};
+
+	SetMargin(ui->LeftSpinBox, mPoints.MarginLeft, mPoints.Width - mPoints.MarginRight);
+	SetMargin(ui->RightSpinBox, mPoints.MarginRight, mPoints.Width - mPoints.MarginLeft);
+	SetMargin(ui->TopSpinBox, mPoints.MarginTop, mPoints.Height - mPoints.MarginBottom);
+	SetMargin(ui->BottomSpinBox, mPoints.MarginBottom, mPoints.Height - mPoints.MarginTop);
 }
 
 void swPageSetupDialog::UpdatePreset()
@@ -266,6 +305,7 @@ void swPageSetupDialog::SizeEdited()
 	mPoints.MarginTop = ui->TopSpinBox->value() * MarginScale;
 	mPoints.MarginBottom = ui->BottomSpinBox->value() * MarginScale;
 
+	UpdateMargins();
 	UpdatePreset();
 	UpdateOrientation();
 }

@@ -30,20 +30,22 @@ swViewWidget::swViewWidget(QWidget* Parent, swView* View)
 		mOverlay->setObjectName(QStringLiteral("ViewOverlay"));
 		mOverlayLayout = new QVBoxLayout(mOverlay);
 		mOverlayLayout->setContentsMargins(0, 0, 0, 0);
-		mOverlayLayout->setSpacing(2);
+		mOverlayLayout->setSpacing(style()->pixelMetric(QStyle::PM_LayoutVerticalSpacing));
 		mOverlayLayout->setSizeConstraint(QLayout::SetNoConstraint);
 		mOverlay->installEventFilter(this);
 
+		// the editing path floats over the view outlined and rounded like a panel button
+		const int ButtonHeight = swGetPanelButtonSize().height();
 		mModelEditingBar = new QWidget(mOverlay);
 		mModelEditingBar->setObjectName(QStringLiteral("ModelEditingBar"));
-		mModelEditingBar->setAutoFillBackground(true);
-		QPalette Palette = palette();
-		Palette.setColor(QPalette::Window, QApplication::palette().color(QPalette::Button));
-		mModelEditingBar->setPalette(Palette);
+		mModelEditingBar->setAttribute(Qt::WA_StyledBackground, true);
+		mModelEditingBar->setStyleSheet(QStringLiteral("#ModelEditingBar { background: palette(button); border: 1px solid palette(mid); border-radius: 3px; }"));
+		mModelEditingBar->setFixedHeight(ButtonHeight);
 		mModelEditingBar->setWhatsThis(tr("<p><b>In-place Editing</b></p><p>The path shows the model being edited inside this view. The last name is the current editing target. Choose an earlier name to edit that ancestor, or the close button to return to the tab's model.</p>"));
 
 		QHBoxLayout* EditingLayout = new QHBoxLayout(mModelEditingBar);
-		EditingLayout->setContentsMargins(5, 3, 5, 3);
+		EditingLayout->setContentsMargins(8, 1, 1, 1);
+		EditingLayout->setSpacing(4);
 
 		mModelEditingLabel = new QLabel(mModelEditingBar);
 		mModelEditingLabel->setObjectName(QStringLiteral("ModelEditingPath"));
@@ -57,7 +59,9 @@ swViewWidget::swViewWidget(QWidget* Parent, swView* View)
 		mEndEditingButton->setIcon(QIcon(":/stylesheet/close.svg"));
 		mEndEditingButton->setAccessibleName(tr("End Editing"));
 		mEndEditingButton->setToolTip(tr("Return to editing the tab's model."));
-		mEndEditingButton->setAutoRaise(false);
+		mEndEditingButton->setAutoRaise(true);
+		mEndEditingButton->setFocusPolicy(Qt::NoFocus);
+		mEndEditingButton->setFixedSize(ButtonHeight - 2, ButtonHeight - 2);
 		EditingLayout->addWidget(mEndEditingButton);
 		mOverlayLayout->addWidget(mModelEditingBar);
 
@@ -173,17 +177,15 @@ void swViewWidget::UpdateOverlayGeometry()
 	if (!Editing && !mFindReplaceWidget)
 		return;
 
-	int Left = 1;
-	int Right = width() - 1;
-	const swPreferences& Preferences = swGetPreferences();
-
-	if (Preferences.mViewCubeEnabled && Preferences.mViewCubeSize > 0)
-	{
-		if (Preferences.mViewCubeLocation == swViewCubeLocation::TopLeft)
-			Left += Preferences.mViewCubeSize + 2;
-		else if (Preferences.mViewCubeLocation == swViewCubeLocation::TopRight)
-			Right -= Preferences.mViewCubeSize + 2;
-	}
+	// the overlay keeps the standard layout margins from the view edges and the corner widgets
+	// it floats at the top unless the view cube or axis icon takes a top corner, then at the bottom
+	mOverlayCornerSizes = GetOverlayCornerSizes();
+	const bool OverlayBottom = mOverlayCornerSizes[0] || mOverlayCornerSizes[1];
+	const int CornerLeft = mOverlayCornerSizes[OverlayBottom ? 2 : 0];
+	const int CornerRight = mOverlayCornerSizes[OverlayBottom ? 3 : 1];
+	const int Margin = style()->pixelMetric(QStyle::PM_LayoutLeftMargin);
+	const int Left = Margin + CornerLeft;
+	const int Right = width() - Margin - CornerRight;
 
 	int PreferredWidth = 0;
 
@@ -197,7 +199,8 @@ void swViewWidget::UpdateOverlayGeometry()
 #else
 		PreferredWidth = Metrics.width(mModelEditingNames.join(QStringLiteral(" \u203a ")));
 #endif
-		PreferredWidth += mEndEditingButton->sizeHint().width() + mModelEditingBar->layout()->spacing() + 10;
+		const QMargins EditingMargins = mModelEditingBar->layout()->contentsMargins();
+		PreferredWidth += mEndEditingButton->width() + mModelEditingBar->layout()->spacing() + EditingMargins.left() + EditingMargins.right() + 2;
 	}
 
 	if (mFindReplaceWidget)
@@ -205,11 +208,33 @@ void swViewWidget::UpdateOverlayGeometry()
 
 	const int OverlayWidth = swClamp(PreferredWidth, 1, swMaximum(1, Right - Left));
 
-	mOverlay->setGeometry(Left, 1, OverlayWidth, mOverlayLayout->sizeHint().height());
+	const int OverlayHeight = mOverlayLayout->sizeHint().height();
+	mOverlay->setGeometry(Left, OverlayBottom ? height() - Margin - OverlayHeight : Margin, OverlayWidth, OverlayHeight);
 	mOverlayLayout->activate();
 	mModelEditingBar->layout()->activate();
 
 	UpdateModelEditingLabel();
+}
+
+// use to size the view cube and axis icon by corner in the order top left, top right, bottom left, bottom right
+std::array<int, 4> swViewWidget::GetOverlayCornerSizes()
+{
+	const swPreferences& Preferences = swGetPreferences();
+	std::array<int, 4> CornerSizes = {};
+
+	if (Preferences.mViewCubeEnabled && Preferences.mViewCubeSize > 0)
+	{
+		int& CornerSize = CornerSizes[static_cast<int>(Preferences.mViewCubeLocation)];
+		CornerSize = swMaximum(CornerSize, Preferences.mViewCubeSize);
+	}
+
+	if (Preferences.mDrawAxes && Preferences.mAxisIconSize > 0)
+	{
+		int& CornerSize = CornerSizes[static_cast<int>(Preferences.mAxisIconLocation)];
+		CornerSize = swMaximum(CornerSize, Preferences.mAxisIconSize);
+	}
+
+	return CornerSizes;
 }
 
 void swViewWidget::UpdateModelEditingLabel()
@@ -287,6 +312,10 @@ void swViewWidget::resizeGL(int Width, int Height)
 
 void swViewWidget::paintGL()
 {
+	// corner widget settings change without a resize, catch them on the next repaint
+	if (mOverlay && mOverlay->isVisible() && GetOverlayCornerSizes() != mOverlayCornerSizes)
+		UpdateOverlayGeometry();
+
 	mView->OnDraw();
 }
 

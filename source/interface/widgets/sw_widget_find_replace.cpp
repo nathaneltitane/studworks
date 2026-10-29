@@ -12,10 +12,10 @@
 swFindReplaceWidget::swFindReplaceWidget(QWidget* Parent, swModel* Model, bool Replace)
 	: QWidget(Parent)
 {
-	setAutoFillBackground(true);
-	QPalette Palette = palette();
-	Palette.setColor(QPalette::Window, QApplication::palette().color(QPalette::Button));
-	setPalette(Palette);
+	// the search bar floats over the view outlined and rounded like a panel button
+	setObjectName(QStringLiteral("FindReplaceBar"));
+	setAttribute(Qt::WA_StyledBackground, true);
+	setStyleSheet(QStringLiteral("#FindReplaceBar { background: palette(button); border: 1px solid palette(mid); border-radius: 3px; }"));
 
 	QGridLayout* Layout = new QGridLayout(this);
 	Layout->setContentsMargins(5, 5, 5, 5);
@@ -91,7 +91,7 @@ swFindReplaceWidget::swFindReplaceWidget(QWidget* Parent, swModel* Model, bool R
 	}
 
 	QToolButton* CloseButton = new QToolButton(this);
-	CloseButton->setAutoRaise(false);
+	CloseButton->setAutoRaise(true);
 	CloseButton->setIcon(QIcon(":/stylesheet/close.svg"));
 	CloseButton->setToolTip(tr("Close"));
 	Layout->addWidget(CloseButton, 0, 5);
