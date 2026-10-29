@@ -78,10 +78,11 @@ swRenderDialog::swRenderDialog(QWidget* Parent, swRenderDialogMode RenderDialogM
 	{
 		setWindowTitle(tr("POV-Ray Image Render"));
 
-		setWhatsThis(tr("<p><b>POV-Ray Image Render</b></p><p>Render the current model step using POV-Ray. Choose an output image, then use Settings to set its dimensions and quality. Select Render to start.</p><p>The preview is scaled to fit the dialog. View Log shows diagnostic output when available.</p>"));
+		setWhatsThis(tr("<p><b>POV-Ray Image Render</b></p><p>Render the current model step using POV-Ray. Choose the output image, its size and quality and the scene in the panels beside the preview, then select Render to start.</p><p>The preview is scaled to fit the window. View Log shows diagnostic output when available.</p>"));
 		mRenderButton->setToolTip(tr("Render the current model step with POV-Ray."));
-		mSettingsButton->setToolTip(tr("Set the POV-Ray image dimensions and render quality."));
-		mSettingsButton->setWhatsThis(tr("<p><b>POV-Ray Settings</b></p><p>Choose the image width and height in pixels and the rendering quality. Higher resolution and quality can increase rendering time.</p>"));
+		mSettingsButton->hide();
+
+		CreatePOVRayPanels();
 	}
 	else
 	{
@@ -139,6 +140,247 @@ swRenderDialog::swRenderDialog(QWidget* Parent, swRenderDialogMode RenderDialogM
 	connect(&mUpdateTimer, &QTimer::timeout, this, &swRenderDialog::Update);
 
 	mUpdateTimer.start(500);
+}
+
+// use to lay out the povray window like the instructions window with its settings in panels beside the preview
+void swRenderDialog::CreatePOVRayPanels()
+{
+	QMainWindow* PanelWindow = new QMainWindow(this);
+	PanelWindow->setWindowFlags(Qt::Widget);
+	PanelWindow->setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::AllowNestedDocks);
+
+	// the preview and its progress fill the middle of the window
+	QWidget* CentralWidget = new QWidget(PanelWindow);
+	QVBoxLayout* CentralLayout = new QVBoxLayout(CentralWidget);
+	CentralLayout->setContentsMargins(0, 0, 0, 0);
+	CentralLayout->addWidget(ui->preview, 1);
+	CentralLayout->addWidget(ui->RenderProgress);
+	PanelWindow->setCentralWidget(CentralWidget);
+	ui->MainLayout->addWidget(PanelWindow, 1);
+	ui->outputLabel->hide();
+
+	QList<QLabel*> Labels;
+
+	auto CreatePanel = [PanelWindow](const QString& Title, const QString& Name, const QString& WhatsThis)
+	{
+		QDockWidget* Panel = new QDockWidget(Title, PanelWindow);
+		Panel->setObjectName(Name);
+		Panel->setWhatsThis(WhatsThis);
+		Panel->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+
+		QWidget* Widget = new QWidget(Panel);
+		Panel->setWidget(Widget);
+		new QVBoxLayout(Widget);
+		PanelWindow->addDockWidget(Qt::RightDockWidgetArea, Panel);
+
+		return Widget;
+	};
+
+	auto CreateRow = [&Labels](QWidget* Panel, const QString& Name, QWidget* Control, const QString& ToolTip, const QString& WhatsThis)
+	{
+		QWidget* Row = swCreatePanelRow(Panel);
+		Panel->layout()->addWidget(Row);
+
+		QLabel* Label = new QLabel(Name, Row);
+		Label->setBuddy(Control);
+		Label->setToolTip(ToolTip);
+		Label->setWhatsThis(WhatsThis);
+		Labels.append(Label);
+		Row->layout()->addWidget(Label);
+
+		Control->setParent(Row);
+		Control->setToolTip(ToolTip);
+		Control->setWhatsThis(WhatsThis);
+		Control->setAccessibleName(Name);
+		Control->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+		swSetupPanelEdit(Control);
+		static_cast<QHBoxLayout*>(Row->layout())->addWidget(Control, 1);
+
+		return Row;
+	};
+
+	auto CreateComboBox = [](const QStringList& Items, int Index)
+	{
+		QComboBox* ComboBox = new QComboBox();
+		ComboBox->addItems(Items);
+		ComboBox->setCurrentIndex(std::clamp(Index, 0, static_cast<int>(Items.size()) - 1));
+
+		return ComboBox;
+	};
+
+	auto CreateSpinBox = [](int Value)
+	{
+		QSpinBox* SpinBox = new QSpinBox();
+		SpinBox->setRange(1, SW_MAXIMUM_IMAGE_DIMENSION);
+		SpinBox->setValue(Value);
+		SpinBox->setSuffix(tr(" px"));
+		swSetupPanelSpinBox(SpinBox);
+
+		return SpinBox;
+	};
+
+	QWidget* OutputPanel = CreatePanel(tr("Output"), "RenderOutput", tr("<p><b>Output</b></p><p>Choose where the rendered image is saved and its format, such as PNG, JPEG, or BMP.</p>"));
+
+	QWidget* FileRow = CreateRow(OutputPanel, tr("File"), ui->OutputEdit, ui->OutputEdit->toolTip(), ui->OutputEdit->whatsThis());
+	ui->OutputBrowseButton->setParent(FileRow);
+	swSetupPanelButton(ui->OutputBrowseButton);
+	FileRow->layout()->addWidget(ui->OutputBrowseButton);
+
+	QWidget* ImagePanel = CreatePanel(tr("Image"), "RenderImage", tr("<p><b>Image</b></p><p>Set the size of the rendered image in pixels and the rendering quality. Larger images and higher quality take longer to render.</p>"));
+
+	QSpinBox* WidthSpinBox = CreateSpinBox(mWidth);
+	CreateRow(ImagePanel, tr("Width"), WidthSpinBox, tr("Set the rendered image width in pixels (1 to 32768)."), QString());
+
+	QSpinBox* HeightSpinBox = CreateSpinBox(mHeight);
+	CreateRow(ImagePanel, tr("Height"), HeightSpinBox, tr("Set the rendered image height in pixels (1 to 32768)."), QString());
+
+	QComboBox* QualityComboBox = CreateComboBox({ tr("Low"), tr("Medium"), tr("High") }, static_cast<int>(mQuality));
+	CreateRow(ImagePanel, tr("Quality"), QualityComboBox, tr("Choose the rendering quality; higher quality can take longer."), tr("<p><b>Quality</b></p><p>Low uses POV-Ray's default quality without additional antialiasing options. Medium uses quality level 5 with antialiasing and fast radiosity. High uses quality level 11 with additional antialiasing settings and full radiosity.</p>"));
+
+	QWidget* ScenePanel = CreatePanel(tr("Scene"), "RenderScene", tr("<p><b>Scene</b></p><p>Set the lights, floor and surroundings the model is rendered in.</p>"));
+
+	QComboBox* LightRigComboBox = CreateComboBox({ tr("Standard"), tr("Studio"), tr("Matte") }, swGetProfileInteger(SW_PROFILE_RENDER_LIGHT_RIG));
+	CreateRow(ScenePanel, tr("Lights"), LightRigComboBox, tr("Choose the lights placed around models that have no lights of their own."), tr("<p><b>Lights</b></p><p>Standard uses four point lights with crisp shadows. Studio uses a large soft key light, a fill light and a rim light behind the model. Matte uses a wide overhead light and a shadowless light from the camera for even, soft lighting. Lights placed in the model replace these.</p>"));
+
+	QComboBox* FloorStyleComboBox = CreateComboBox({ tr("Plain"), tr("Shadow Catcher"), tr("Reflective"), tr("Cyclorama") }, swGetProfileInteger(SW_PROFILE_RENDER_FLOOR_STYLE));
+	CreateRow(ScenePanel, tr("Floor"), FloorStyleComboBox, tr("Choose how the floor under the model looks."), tr("<p><b>Floor</b></p><p>Plain uses the floor color of the model. Shadow Catcher takes the background color so only the shadows show. Reflective adds a glossy mirror finish. Cyclorama fades the floor into the background with distance for a seamless backdrop.</p>"));
+
+	QLineEdit* EnvironmentEdit = new QLineEdit();
+	EnvironmentEdit->setText(QDir::toNativeSeparators(swGetProfileString(SW_PROFILE_RENDER_ENVIRONMENT_IMAGE)));
+	EnvironmentEdit->setPlaceholderText(tr("Background Color"));
+	EnvironmentEdit->setClearButtonEnabled(true);
+	QWidget* EnvironmentRow = CreateRow(ScenePanel, tr("Environment"), EnvironmentEdit, tr("Choose a panoramic image that surrounds and lights the scene, or leave empty to use the background color."), tr("<p><b>Environment</b></p><p>Choose an equirectangular panorama, ideally an HDR or EXR image, that wraps around the scene as its sky and lights it through radiosity at Medium and High quality. Leave empty to use the background color.</p>"));
+
+	QToolButton* EnvironmentButton = new QToolButton(EnvironmentRow);
+	EnvironmentButton->setText(tr("..."));
+	EnvironmentButton->setToolTip(tr("Choose an environment image."));
+	EnvironmentButton->setWhatsThis(EnvironmentButton->toolTip());
+	EnvironmentButton->setAccessibleName(tr("Browse"));
+	swSetupPanelButton(EnvironmentButton);
+	EnvironmentRow->layout()->addWidget(EnvironmentButton);
+
+	QComboBox* BackgroundComboBox = CreateComboBox({ tr("Visible"), tr("Transparent") }, swGetProfileInteger(SW_PROFILE_RENDER_TRANSPARENT) ? 1 : 0);
+	CreateRow(ScenePanel, tr("Background"), BackgroundComboBox, tr("Choose whether the background and floor are rendered or left as transparent pixels for compositing."), QString());
+
+	// the panels end at their last row and the scene panel takes the remaining height
+	for (QWidget* Panel : { OutputPanel, ImagePanel })
+		static_cast<QVBoxLayout*>(Panel->layout())->addStretch(0);
+
+	static_cast<QVBoxLayout*>(ScenePanel->layout())->addStretch(1);
+
+	// the labels of all panels share one width so the inputs line up
+	int LabelWidth = 0;
+
+	for (QLabel* Label : Labels)
+		LabelWidth = std::max(LabelWidth, Label->sizeHint().width());
+
+	for (QLabel* Label : Labels)
+		Label->setFixedWidth(LabelWidth);
+
+	// changes are kept right away for the next render
+	connect(WidthSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int Value)
+	{
+		mWidth = Value;
+		swSetProfileInteger(SW_PROFILE_RENDER_WIDTH, Value);
+	});
+
+	connect(HeightSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int Value)
+	{
+		mHeight = Value;
+		swSetProfileInteger(SW_PROFILE_RENDER_HEIGHT, Value);
+	});
+
+	connect(QualityComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [this](int Index)
+	{
+		mQuality = static_cast<swPOVRayRenderQuality>(Index);
+		swSetProfileRenderQuality(mQuality);
+	});
+
+	connect(LightRigComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [](int Index)
+	{
+		swSetProfileInteger(SW_PROFILE_RENDER_LIGHT_RIG, Index);
+	});
+
+	connect(FloorStyleComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [](int Index)
+	{
+		swSetProfileInteger(SW_PROFILE_RENDER_FLOOR_STYLE, Index);
+	});
+
+	connect(BackgroundComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [](int Index)
+	{
+		swSetProfileInteger(SW_PROFILE_RENDER_TRANSPARENT, Index);
+	});
+
+	connect(EnvironmentEdit, &QLineEdit::textChanged, this, [](const QString& Text)
+	{
+		swSetProfileString(SW_PROFILE_RENDER_ENVIRONMENT_IMAGE, QDir::fromNativeSeparators(Text.trimmed()));
+	});
+
+	connect(EnvironmentButton, &QToolButton::clicked, this, [this, EnvironmentEdit]()
+	{
+		const QString FileName = QFileDialog::getOpenFileName(this, tr("Select Environment Image"), EnvironmentEdit->text(), tr("Environment Images (*.hdr *.exr *.png *.jpg *.jpeg *.tif *.tiff);;All Files (*.*)"));
+
+		if (!FileName.isEmpty())
+			EnvironmentEdit->setText(QDir::toNativeSeparators(FileName));
+	});
+
+	// the log sits below the preview like the terminal below the model and follows the renderer output
+	mLogPanel = new QDockWidget(tr("Log"), PanelWindow);
+	mLogPanel->setObjectName("RenderLog");
+	mLogPanel->setWhatsThis(tr("<p><b>Log</b></p><p>The output of the renderer, updated while it renders. Read it to investigate warnings or a failed render, select text and copy it with the standard keyboard shortcut when reporting a problem.</p>"));
+
+	mLogEdit = new QPlainTextEdit(mLogPanel);
+	mLogEdit->setReadOnly(true);
+	mLogEdit->setLineWrapMode(QPlainTextEdit::NoWrap);
+	mLogEdit->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
+	mLogEdit->setPlaceholderText(tr("The renderer output shows here once a render starts."));
+	mLogEdit->setAccessibleName(tr("Renderer Output"));
+	mLogEdit->setToolTip(tr("Read and copy renderer output and diagnostic messages."));
+	mLogEdit->setMinimumHeight(6 * QFontMetrics(mLogEdit->font()).height());
+	mLogPanel->setWidget(mLogEdit);
+
+	PanelWindow->setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
+	PanelWindow->addDockWidget(Qt::BottomDockWidgetArea, mLogPanel);
+	mLogPanel->hide();
+
+	// the log button shows and hides the log panel and stays checked while it is shown
+	mLogButton->setText(tr("Log"));
+	mLogButton->setCheckable(true);
+	mLogButton->setEnabled(true);
+	mLogButton->setToolTip(tr("Show or hide the Log panel with the renderer output."));
+	mLogButton->setWhatsThis(tr("<p><b>Log</b></p><p>Show or hide the Log panel below the preview with the renderer output and diagnostic messages.</p>"));
+
+	connect(mLogButton, &QPushButton::toggled, mLogPanel, &QDockWidget::setVisible);
+	connect(mLogPanel, &QDockWidget::visibilityChanged, this, [this](bool Visible)
+	{
+		if (mLogPanel->isHidden())
+			mLogButton->setChecked(false);
+		else if (Visible)
+		{
+			mLogButton->setChecked(true);
+			UpdateLogPanel();
+		}
+	});
+
+	// the panels are wide enough for a readable output path
+	PanelWindow->resizeDocks({ qobject_cast<QDockWidget*>(OutputPanel->parentWidget()) }, { 380 }, Qt::Horizontal);
+	resize(std::max(width(), 1100), std::max(height(), 640));
+}
+
+// use to fill the log panel with the renderer output written so far
+void swRenderDialog::UpdateLogPanel()
+{
+	if (!mLogPanel || mLogPanel->isHidden())
+		return;
+
+	QFile File(GetStdErrFileName());
+	const QString Text = File.open(QFile::ReadOnly | QFile::Text) ? QString::fromLocal8Bit(File.readAll()) : QString();
+
+	if (Text == mLogEdit->toPlainText())
+		return;
+
+	mLogEdit->setPlainText(Text);
+	mLogEdit->moveCursor(QTextCursor::End);
 }
 
 swRenderDialog::~swRenderDialog()
@@ -222,7 +464,10 @@ void swRenderDialog::RenderButtonClicked()
 		return;
 	}
 
-	mLogButton->setEnabled(false);
+	mLogButton->setEnabled(mLogPanel != nullptr);
+
+	if (mLogEdit)
+		mLogEdit->clear();
 
 	mPreviewWidth  = ui->preview->width();
 	mPreviewHeight = ui->preview->height();
@@ -271,6 +516,9 @@ void swRenderDialog::RenderPOVRay()
 	Arguments.append(QString::fromLatin1("+W%1").arg(QString::number(mWidth)));
 	Arguments.append(QString::fromLatin1("+H%1").arg(QString::number(mHeight)));
 	Arguments.append("-O-");
+
+	if (swGetProfileInteger(SW_PROFILE_RENDER_TRANSPARENT))
+		Arguments.append("+UA");
 
 #if SW_POVRAY_MEMORY_MAPPED_FILE
 	Arguments.append(QString::fromLatin1("+SM\"%1\"").arg(GetStdOutFileName()));
@@ -674,6 +922,8 @@ void swRenderDialog::Update()
 	if (!mProcess)
 		return;
 
+	UpdateLogPanel();
+
 	const bool ProcessFinished = mProcess->state() == QProcess::NotRunning;
 
 	if (mDialogMode == swRenderDialogMode::RenderPOVRay)
@@ -771,6 +1021,8 @@ void swRenderDialog::ShowResult()
 	bool Error;
 	const QString StdErrLog = ReadStdErr(Error);
 
+	UpdateLogPanel();
+
 	if (mProcess->exitStatus() != QProcess::NormalExit || mProcess->exitCode() != 0 || Error)
 	{
 		ui->RenderProgress->setRange(0, 1);
@@ -836,104 +1088,20 @@ void swRenderDialog::OutputBrowseButtonClicked()
 
 void swRenderDialog::SettingsButtonClicked()
 {
-	if (mDialogMode == swRenderDialogMode::RenderPOVRay)
-	{
-		QDialog Dialog(this);
+	swBlenderPreferencesDialog::GetBlenderPreferences(mWidth, mHeight, mScale, this);
 
-		Dialog.setWindowTitle(tr("POV-Ray Settings"));
-		Dialog.setWhatsThis(tr("<p><b>POV-Ray Settings</b></p><p>Set the output image dimensions and rendering quality. Width and height are in pixels, from 1 to 32768. Larger images and higher quality can take longer to render.</p><p>Choose OK to save these settings for subsequent renders, or Cancel to keep the previous settings. This dialog does not start rendering.</p>"));
-
-		QFormLayout* Layout = new QFormLayout(&Dialog);
-
-		QLineEdit* WidthEdit = new QLineEdit(&Dialog);
-		Layout->addRow(tr("Width:"), WidthEdit);
-
-		WidthEdit->setValidator(new QIntValidator(1, SW_MAXIMUM_IMAGE_DIMENSION, WidthEdit));
-		WidthEdit->setText(swFormatIntegerLocalized(mWidth, WidthEdit->validator()->locale()));
-		WidthEdit->setToolTip(tr("Set the rendered image width in pixels (1 to 32768)."));
-
-		QLineEdit* HeightEdit = new QLineEdit(&Dialog);
-		Layout->addRow(tr("Height:"), HeightEdit);
-
-		HeightEdit->setValidator(new QIntValidator(1, SW_MAXIMUM_IMAGE_DIMENSION, HeightEdit));
-		HeightEdit->setText(swFormatIntegerLocalized(mHeight, HeightEdit->validator()->locale()));
-		HeightEdit->setToolTip(tr("Set the rendered image height in pixels (1 to 32768)."));
-
-		QComboBox* QualityComboBox = new QComboBox(&Dialog);
-		Layout->addRow(tr("Quality:"), QualityComboBox);
-
-		QualityComboBox->addItems({ tr("Low"), tr("Medium"), tr("High") });
-		QualityComboBox->setCurrentIndex(static_cast<int>(mQuality));
-		QualityComboBox->setToolTip(tr("Choose the rendering quality; higher quality can take longer."));
-		QualityComboBox->setWhatsThis(tr("<p><b>Rendering Quality</b></p><p>Low uses POV-Ray's default quality without additional antialiasing options. Medium uses quality level 5 with antialiasing. High uses quality level 11 with additional antialiasing settings.</p>"));
-
-		for (QWidget* Control : { static_cast<QWidget*>(WidthEdit), static_cast<QWidget*>(HeightEdit), static_cast<QWidget*>(QualityComboBox) })
-		{
-			QLabel* Label = qobject_cast<QLabel*>(Layout->labelForField(Control));
-			Label->setBuddy(Control);
-			Label->setToolTip(Control->toolTip());
-			if (Control->whatsThis().isEmpty())
-				Control->setWhatsThis(Control->toolTip());
-			Label->setWhatsThis(Control->whatsThis());
-		}
-
-		QDialogButtonBox* ButtonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel | QDialogButtonBox::Help, Qt::Horizontal, &Dialog);
-		Layout->addRow(ButtonBox);
-		swSetupDialogHelp(&Dialog, ButtonBox);
-
-		QObject::connect(ButtonBox, &QDialogButtonBox::rejected, &Dialog, &QDialog::reject);
-		int Width = mWidth;
-		int Height = mHeight;
-
-		QObject::connect(ButtonBox, &QDialogButtonBox::accepted, &Dialog, [&Dialog, WidthEdit, HeightEdit, &Width, &Height]()
-		{
-			bool WidthOk, HeightOk;
-			const int NewWidth = WidthEdit->validator()->locale().toInt(WidthEdit->text(), &WidthOk);
-			const int NewHeight = HeightEdit->validator()->locale().toInt(HeightEdit->text(), &HeightOk);
-
-			if (!WidthOk || !WidthEdit->hasAcceptableInput())
-			{
-				QMessageBox::information(&Dialog, Dialog.windowTitle(), tr("Please enter a width between 1 and %1 pixels.").arg(QString::number(SW_MAXIMUM_IMAGE_DIMENSION)));
-				WidthEdit->setFocus();
-				return;
-			}
-
-			if (!HeightOk || !HeightEdit->hasAcceptableInput())
-			{
-				QMessageBox::information(&Dialog, Dialog.windowTitle(), tr("Please enter a height between 1 and %1 pixels.").arg(QString::number(SW_MAXIMUM_IMAGE_DIMENSION)));
-				HeightEdit->setFocus();
-				return;
-			}
-
-			Width = NewWidth;
-			Height = NewHeight;
-			Dialog.accept();
-		});
-
-		if (Dialog.exec() != QDialog::Accepted)
-			return;
-
-		mWidth = Width;
-		mHeight = Height;
-		mQuality = static_cast<swPOVRayRenderQuality>(QualityComboBox->currentIndex());
-
-		swSetProfileInteger(SW_PROFILE_RENDER_WIDTH, mWidth);
-		swSetProfileInteger(SW_PROFILE_RENDER_HEIGHT, mHeight);
-		swSetProfileRenderQuality(mQuality);
-	}
+	if (swGetProfileString(SW_PROFILE_BLENDER_IMPORT_MODULE).isEmpty())
+		mRenderButton->setToolTip(tr("Blender not configured. Use Settings to configure."));
 	else
-	{
-		swBlenderPreferencesDialog::GetBlenderPreferences(mWidth, mHeight, mScale, this);
-
-		if (swGetProfileString(SW_PROFILE_BLENDER_IMPORT_MODULE).isEmpty())
-			mRenderButton->setToolTip(tr("Blender not configured. Use Settings to configure."));
-		else
-			mRenderButton->setEnabled(true);
-	}
+		mRenderButton->setEnabled(true);
 }
 
 void swRenderDialog::LogButtonClicked()
 {
+	// the povray window shows its log in the log panel
+	if (mLogPanel)
+		return;
+
 	QFileInfo FileInfo;
 	QString Message ;
 

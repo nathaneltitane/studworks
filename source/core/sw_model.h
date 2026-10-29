@@ -213,9 +213,9 @@ public:
 	bool NoReflection = false;
 	bool NoShadow = false;
 	int FloorAxis = 1;
-	float FloorAmbient = 0.4f;
-	float FloorDiffuse = 0.4f;
-	swVector3 FloorColor = swVector3(0.8f,0.8f,0.8f);
+	std::optional<float> FloorAmbient;
+	std::optional<float> FloorDiffuse;
+	std::optional<swVector3> FloorColor;
 	QString HeaderIncludeFile;
 	QString FooterIncludeFile;
 };

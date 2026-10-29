@@ -7,6 +7,23 @@ enum class swPOVRayRenderQuality
 	High
 };
 
+enum class swPOVRayLightRig
+{
+	Standard,
+	Studio,
+	Matte,
+	Count
+};
+
+enum class swPOVRayFloorStyle
+{
+	Plain,
+	ShadowCatcher,
+	Reflective,
+	Cyclorama,
+	Count
+};
+
 enum class swRenderDialogMode
 {
 	RenderPOVRay,
@@ -83,6 +100,8 @@ protected:
 	QString GetStdOutFileName() const;
 	QString GetStdErrFileName() const;
 	QString GetPOVFileName() const;
+	void CreatePOVRayPanels();
+	void UpdateLogPanel();
 	QString ReadStdErr(bool& Error) const;
 	void RenderPOVRay();
 	void RenderBlender();
@@ -100,6 +119,8 @@ protected:
 	QPushButton* mRenderButton = nullptr;
 	QPushButton* mSettingsButton = nullptr;
 	QPushButton* mLogButton = nullptr;
+	QDockWidget* mLogPanel = nullptr;
+	QPlainTextEdit* mLogEdit = nullptr;
 	swRenderProcess* mProcess = nullptr;
 
 	int mWidth = 1280;

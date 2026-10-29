@@ -299,6 +299,8 @@ StudWorks is based on [LeoCAD](https://github.com/leozide/leocad) by Leonardo Zi
 
 Part connections come from the [LDCad shadow library](https://github.com/RolandMelkert/LDCadShadowLibrary) by Roland Melkert, made for [LDCad](https://www.melkert.net/LDCad) and released under the Creative Commons Attribution-ShareAlike 4.0 license - it is not bundled with StudWorks.
 
+POV-Ray renders can use the [LGEO library](https://github.com/jncraton/lgeo) by Lutz Uhlmann, high detail LEGO® part models for POV-Ray that may be redistributed freely - it is not bundled with StudWorks.
+
 ### License:
 
 StudWorks is free software released under the GNU General Public License version 3 - see 'LICENSE.md'.
@@ -312,6 +314,8 @@ LEGO® is a trademark of the LEGO® Group, which does not sponsor, authorize or 
 [LDraw](https://www.ldraw.org) for the parts library and file format.
 
 [LDCad Shadow Library](https://github.com/RolandMelkert/LDCadShadowLibrary) for the part connection shapes, from [LDCad](https://www.melkert.net/LDCad) by Roland Melkert.
+
+[LGEO](https://github.com/jncraton/lgeo) for the POV-Ray part models, by Lutz Uhlmann.
 
 ### Reports:
 

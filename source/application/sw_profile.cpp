@@ -198,6 +198,10 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Render", "Width", 1280),                                                   // SW_PROFILE_RENDER_WIDTH
 	swProfileEntry("Render", "Height", 720),                                                   // SW_PROFILE_RENDER_HEIGHT
 	swProfileEntry("Render", "Quality", (int)swPOVRayRenderQuality::High),                     // SW_PROFILE_RENDER_QUALITY
+	swProfileEntry("Render", "LightRig", (int)swPOVRayLightRig::Standard),                     // SW_PROFILE_RENDER_LIGHT_RIG
+	swProfileEntry("Render", "FloorStyle", (int)swPOVRayFloorStyle::Plain),                    // SW_PROFILE_RENDER_FLOOR_STYLE
+	swProfileEntry("Render", "EnvironmentImage", ""),                                          // SW_PROFILE_RENDER_ENVIRONMENT_IMAGE
+	swProfileEntry("Render", "Transparent", 0),                                                // SW_PROFILE_RENDER_TRANSPARENT
 
 	swProfileEntry("Blender", "Path", ""),                                                     // SW_PROFILE_BLENDER_PATH
 	swProfileEntry("Blender", "LDrawConfigPath", ""),                                          // SW_PROFILE_BLENDER_LDRAW_CONFIGURATION_PATH

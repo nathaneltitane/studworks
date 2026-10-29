@@ -137,11 +137,23 @@ void swPOVRayOptions::ParseLDrawLine(QTextStream& LineStream)
 			FloorAxis = 1; // y
 	}
 	else if (Token == QLatin1String("FLOOR_COLOR_RGB"))
-		LineStream >> FloorColor[0] >> FloorColor[1] >> FloorColor[2];
+	{
+		swVector3 Color;
+		LineStream >> Color[0] >> Color[1] >> Color[2];
+		FloorColor = Color;
+	}
 	else if (Token == QLatin1String("FLOOR_AMBIENT"))
-		LineStream >> FloorAmbient;
+	{
+		float Ambient;
+		LineStream >> Ambient;
+		FloorAmbient = Ambient;
+	}
 	else if (Token == QLatin1String("FLOOR_DIFFUSE"))
-		LineStream >> FloorDiffuse;
+	{
+		float Diffuse;
+		LineStream >> Diffuse;
+		FloorDiffuse = Diffuse;
+	}
 	else if (Token == QLatin1String("EXCLUDE_FLOOR"))
 		ExcludeFloor = true;
 	else if (Token == QLatin1String("EXCLUDE_BACKGROUND"))
@@ -163,12 +175,12 @@ void swPOVRayOptions::SaveLDraw(QTextStream& Stream) const
 		Stream << QLatin1String("0 !SW FOOTER_FILE_INCLUDE POV_RAY ") << QDir::toNativeSeparators(FooterIncludeFile) << LineEnding;
 	if (FloorAxis != 1)
 		Stream << QLatin1String("0 !SW FLOOR_AXIS POV_RAY ") << FloorAxis << LineEnding;
-	if (FloorColor != swVector3(0.8f,0.8f,0.8f))
-		Stream << QLatin1String("0 !SW FLOOR_COLOR_RGB POV_RAY ") << FloorColor[0] << ' ' << FloorColor[1] << ' ' << FloorColor[2] << LineEnding;
-	if (FloorAmbient != 0.4f)
-		Stream << QLatin1String("0 !SW FLOOR_AMBIENT POV_RAY ") << FloorAmbient << LineEnding;
-	if (FloorDiffuse != 0.4f)
-		Stream << QLatin1String("0 !SW FLOOR_DIFFUSE POV_RAY ") << FloorDiffuse << LineEnding;
+	if (FloorColor)
+		Stream << QLatin1String("0 !SW FLOOR_COLOR_RGB POV_RAY ") << (*FloorColor)[0] << ' ' << (*FloorColor)[1] << ' ' << (*FloorColor)[2] << LineEnding;
+	if (FloorAmbient)
+		Stream << QLatin1String("0 !SW FLOOR_AMBIENT POV_RAY ") << *FloorAmbient << LineEnding;
+	if (FloorDiffuse)
+		Stream << QLatin1String("0 !SW FLOOR_DIFFUSE POV_RAY ") << *FloorDiffuse << LineEnding;
 	if (ExcludeFloor)
 		Stream << QLatin1String("0 !SW EXCLUDE_FLOOR POV_RAY") << LineEnding;
 	if (ExcludeBackground)

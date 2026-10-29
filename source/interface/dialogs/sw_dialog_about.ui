@@ -54,7 +54,8 @@
            <property name="text">
             <string>StudWorks is a free CAD program for creating virtual LEGO® models with the LDraw parts library.
 It is built on LeoCAD by Leonardo Zide and released under the GNU General Public License version 3.
-Part connections use the LDCad shadow library by Roland Melkert.</string>
+Part connections use the LDCad shadow library by Roland Melkert.
+POV-Ray renders can use the LGEO part library by Lutz Uhlmann.</string>
            </property>
            <property name="wordWrap">
             <bool>true</bool>

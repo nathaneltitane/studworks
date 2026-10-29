@@ -15,6 +15,7 @@
 #include "sw_manager_thumbnail.h"
 #include "sw_application.h"
 #include "sw_profile.h"
+#include "sw_dialog_render.h"
 #include "sw_file.h"
 #include "sw_file_zip.h"
 #include "sw_dialog_list_model.h"
@@ -1268,7 +1269,6 @@ swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* Ex
 	swPartsLibrary* Library = swGetPartsLibrary();
 	std::map<const swPartData*, std::pair<char[SW_PART_NAME_LENGTH + 1], int>> PartTable;
 	size_t NumColors = gColorList.size();
-	std::vector<std::string> LgeoColorTable(NumColors);
 	std::vector<std::array<char, SW_MAXIMUM_COLOR_NAME + 3>> ColorTable(NumColors);
 
 	const std::vector<std::unique_ptr<swLight>>& Lights = mActiveModel->GetLights();
@@ -1330,41 +1330,22 @@ swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* Ex
 	float Radius = (Max - Center).Length() / 25.0f;
 	Center = swVector3(Center[1], Center[0], Center[2]) / 25.0f;
 
-	swVector3 FloorColor = POVRayOptions.FloorColor;
-	float FloorAmbient = POVRayOptions.FloorAmbient;
-	float FloorDiffuse = POVRayOptions.FloorDiffuse;
-	const char* FloorLocation;
-	const char* FloorAxis;
+	const bool AreaLights = std::any_of(Lights.begin(), Lights.end(), [](const std::unique_ptr<swLight>& Light) { return Light->GetLightType() == swLightType::Area; });
 
-	if (POVRayOptions.FloorAxis == 0)
-	{
-		FloorAxis = "x";
-		FloorLocation = "MaxX";
-	}
-	else if (POVRayOptions.FloorAxis == 1)
-	{
-		FloorAxis = "y";
-		FloorLocation = "MaxY";
-	}
-	else
-	{
-		FloorAxis = "z";
-		FloorLocation = "MaxZ";
-	}
+	// area lit scenes default to a brighter white floor unless the model sets its own
+	const swVector3 FloorColor = POVRayOptions.FloorColor.value_or(AreaLights ? swVector3(1.0f, 1.0f, 1.0f) : swVector3(0.8f, 0.8f, 0.8f));
+	const float FloorAmbient = POVRayOptions.FloorAmbient.value_or(AreaLights ? 0.0f : 0.4f);
+	const float FloorDiffuse = POVRayOptions.FloorDiffuse.value_or(AreaLights ? 0.9f : 0.4f);
 
-	for (const std::unique_ptr<swLight>& Light : Lights)
-	{
-		if (Light->GetLightType() == swLightType::Area)
-		{
-			if (FloorColor == swVector3(0.8f,0.8f,0.8f))
-				FloorColor = {1.0f,1.0f,1.0f};
-			if (FloorAmbient == 0.4f)
-				FloorAmbient = 0.0f;
-			if (FloorDiffuse == 0.4f)
-				FloorDiffuse = 0.9f;
-			break;
-		}
-	}
+	// ldraw x y z map to pov-ray y z x with the floor on the low side
+	const char* FloorAxis = POVRayOptions.FloorAxis == 0 ? "y" : POVRayOptions.FloorAxis == 2 ? "x" : "z";
+	const char* FloorLocation = POVRayOptions.FloorAxis == 0 ? "MinY" : POVRayOptions.FloorAxis == 2 ? "MinX" : "MinZ";
+
+	const int RenderQuality = static_cast<int>(swGetProfileRenderQuality());
+	const int LightRig = std::clamp(swGetProfileInteger(SW_PROFILE_RENDER_LIGHT_RIG), 0, static_cast<int>(swPOVRayLightRig::Count) - 1);
+	const int FloorStyle = std::clamp(swGetProfileInteger(SW_PROFILE_RENDER_FLOOR_STYLE), 0, static_cast<int>(swPOVRayFloorStyle::Count) - 1);
+	const QString EnvironmentImage = swGetProfileString(SW_PROFILE_RENDER_ENVIRONMENT_IMAGE);
+	const bool Transparent = swGetProfileInteger(SW_PROFILE_RENDER_TRANSPARENT) != 0;
 
 	if (!POVRayOptions.HeaderIncludeFile.isEmpty())
 	{
@@ -1384,7 +1365,7 @@ swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* Ex
 			"#ifndef (CenterZ) #declare CenterZ = %g; #end\n"
 			"#ifndef (Center) #declare Center = <CenterX,CenterY,CenterZ>; #end\n"
 			"#ifndef (Radius) #declare Radius = %g; #end\n",
-			Min[0], Min[1], Min[2], Max[0], -Max[1], Max[2], Center[0], Center[1], Center[2], Radius);
+			Min[1] / 25.0f, Min[0] / 25.0f, Min[2] / 25.0f, Max[1] / 25.0f, Max[0] / 25.0f, Max[2] / 25.0f, Center[0], Center[1], Center[2], Radius);
 	POVFile.WriteLine(Line);
 	snprintf(Line, sizeof(Line),
 			"#ifndef (CameraSky) #declare CameraSky = <%g,%g,%g>; #end\n"
@@ -1396,7 +1377,7 @@ swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* Ex
 	snprintf(Line, sizeof(Line),
 			"#ifndef (BackgroundColor) #declare BackgroundColor = <%1g, %1g, %1g>; #end\n"
 			"#ifndef (Background) #declare Background = %s; #end\n",
-			BackgroundColor[0], BackgroundColor[1], BackgroundColor[2], (POVRayOptions.ExcludeBackground ? "false" : "true"));
+			BackgroundColor[0], BackgroundColor[1], BackgroundColor[2], (POVRayOptions.ExcludeBackground || Transparent ? "false" : "true"));
 	POVFile.WriteLine(Line);
 	snprintf(Line, sizeof(Line),
 			"#ifndef (FloorAxis) #declare FloorAxis = %s; #end\n"
@@ -1404,9 +1385,28 @@ swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* Ex
 			"#ifndef (FloorColor) #declare FloorColor = <%1g, %1g, %1g>; #end\n"
 			"#ifndef (FloorAmbient) #declare FloorAmbient = %1g; #end\n"
 			"#ifndef (FloorDiffuse) #declare FloorDiffuse = %1g; #end\n"
-			"#ifndef (Floor) #declare Floor = %s; #end\n",
-			FloorAxis, FloorLocation, FloorColor[0], FloorColor[1], FloorColor[2], FloorAmbient, FloorDiffuse, (POVRayOptions.ExcludeFloor ? "false" : "true"));
+			"#ifndef (Floor) #declare Floor = %s; #end\n"
+			"#ifndef (FloorStyle) #declare FloorStyle = %i; #end\n",
+			FloorAxis, FloorLocation, FloorColor[0], FloorColor[1], FloorColor[2], FloorAmbient, FloorDiffuse, (POVRayOptions.ExcludeFloor || Transparent ? "false" : "true"), FloorStyle);
 	POVFile.WriteLine(Line);
+
+	// quality picks the radiosity preset and the area light sampling
+	POVFile.WriteLine(QString::fromLatin1(
+		"#ifndef (RenderQuality) #declare RenderQuality = %1; #end\n"
+		"#ifndef (Radiosity) #declare Radiosity = (RenderQuality > 0); #end\n"
+		"#ifndef (LightRig) #declare LightRig = %2; #end\n"
+		"#ifndef (AreaSamples) #declare AreaSamples = select(RenderQuality - 1, 2, 3, 5); #end\n\n"
+		"#if (Radiosity)\n"
+		"  global_settings {\n"
+		"    radiosity {\n"
+		"      #if (RenderQuality > 1)\n"
+		"        pretrace_start 0.08 pretrace_end 0.004 count 400 nearest_count 8 error_bound 0.5 recursion_limit 2 low_error_factor 0.5 gray_threshold 0 brightness 1\n"
+		"      #else\n"
+		"        pretrace_start 0.08 pretrace_end 0.02 count 60 nearest_count 5 error_bound 1.5 recursion_limit 1 low_error_factor 0.5 gray_threshold 0 brightness 1\n"
+		"      #end\n"
+		"    }\n"
+		"  }\n"
+		"#end\n\n").arg(RenderQuality).arg(LightRig).toLatin1().constData());
 	snprintf(Line, sizeof(Line),
 			"#ifndef (Ambient) #declare Ambient = 0.4; #end\n"
 			"#ifndef (Diffuse) #declare Diffuse = 0.4; #end\n"
@@ -1475,7 +1475,7 @@ swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* Ex
 			"      jitter\n"
 			"      #if (AreaCircle > 0 & AreaRows > 1 & AreaColumns > 1)\n"
 			"        circular \n"
-			"        #if (AreaWidth = AreaHeight & AreaRows = AreaColumns)\n"
+			"        #if (vlength(AreaWidth) = vlength(AreaHeight) & AreaRows = AreaColumns)\n"
 			"          orient\n"
 			"        #end\n"
 			"      #end\n"
@@ -1553,8 +1553,25 @@ swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* Ex
 		"#end\n"
 		"#end\n\n");
 
-	snprintf(Line, sizeof(Line), "#if (Background)\n  background {\n    color rgb BackgroundColor\n  }\n#end\n\n");
-	POVFile.WriteLine(Line);
+	// an environment image wraps the scene and lights it through radiosity
+	if (!EnvironmentImage.isEmpty())
+	{
+		const QString Suffix = QFileInfo(EnvironmentImage).suffix().toLower();
+		const QLatin1String ImageType = Suffix == QLatin1String("hdr") ? QLatin1String("hdr") : Suffix == QLatin1String("exr") ? QLatin1String("exr") : Suffix == QLatin1String("png") ? QLatin1String("png") : Suffix == QLatin1String("tif") || Suffix == QLatin1String("tiff") ? QLatin1String("tiff") : QLatin1String("jpeg");
+
+		POVFile.WriteLine(QString::fromLatin1(
+			"#ifndef (EnvironmentImage) #declare EnvironmentImage = \"%1\"; #end\n"
+			"#ifndef (EnvironmentRotation) #declare EnvironmentRotation = 0; #end\n"
+			"#ifndef (EnvironmentPower) #declare EnvironmentPower = 1; #end\n\n"
+			"#if (Background | Radiosity)\n"
+			"  sky_sphere {\n"
+			"    pigment { image_map { %2 EnvironmentImage map_type 1 interpolate 2 } rotate x * 90 rotate z * EnvironmentRotation }\n"
+			"    emission EnvironmentPower\n"
+			"  }\n"
+			"#end\n\n").arg(QDir::fromNativeSeparators(EnvironmentImage), ImageType).toUtf8().constData());
+	}
+	else
+		POVFile.WriteLine("#if (Background)\n  background {\n    color rgb BackgroundColor\n  }\n#end\n\n");
 
 	snprintf(Line, sizeof(Line), "#ifndef (Skip%s)\n  camera {\n    perspective\n    right x * image_width / image_height\n    sky CameraSky\n    location CameraLocation\n    look_at CameraTarget\n    angle CameraAngle * image_width / image_height\n  }\n#end\n\n",
 			(CameraName.isEmpty() ? "Camera" : CameraName.toLatin1().constData()));
@@ -1566,33 +1583,36 @@ swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* Ex
 	swLightType LightType = swLightType::Area;
 	float Power = 0.0f, FadeDistance = 0.0f, FadePower = 0.0f, SpotRadius = 0.0f, SpotFalloff = 0.0f, SpotTightness = 0.0f;
 
+	// models without lights get the chosen rig placed around the camera side of the model
 	if (Lights.empty())
 	{
-		const swVector3 LightTarget(0.0f, 0.0f, 0.0f), LightColor(1.0f, 1.0f, 1.0f);
-		swVector3 Location[4];
-
-		Location[0] = {0.0f * Radius + Center[0], -1.5f * Radius + Center[1], -1.5f * Radius + Center[2]};
-		Location[1] = {1.5f * Radius + Center[0], -1.0f * Radius + Center[1],  0.866026f * Radius + Center[2]};
-		Location[2] = {0.0f * Radius + Center[0], -2.0f * Radius + Center[1],  0.0f * Radius + Center[2]};
-		Location[3] = {2.0f * Radius + Center[0],  0.0f * Radius + Center[1], -2.0f * Radius + Center[2]};
-
-		for (int Idx = 0; Idx < 4; Idx++)
-		{
-			Power = Idx < 2 ? 0.75f : 0.5f;
-			snprintf(Line, sizeof(Line),
-					"#ifndef (SkipLight%i)\nWriteLight(%i, %i, <%g, %g, %g>, <%g, %g, %g>, <%g, %g, %g>, %g, %g, %g, %g, %g, %g, %i, <%g, %g, %g>, <%g, %g, %g>, %i, %i)\n#end\n\n",
-					Idx,
-					static_cast<int>(LightType),
-					Shadowless,
-					Location[Idx][0], Location[Idx][1], Location[Idx][2],
-					LightTarget[0], LightTarget[1], LightTarget[2],
-					LightColor[0], LightColor[1], LightColor[2],
-					Power,
-					FadeDistance, FadePower,
-					SpotRadius, SpotFalloff, SpotTightness,
-					AreaCircle, AreaX[0], AreaX[1], AreaX[2], AreaY[0], AreaY[1], AreaY[2], AreaGrid.x, AreaGrid.y);
-			POVFile.WriteLine(Line);
-		}
+		POVFile.WriteLine(
+			"#ifndef (SkipLightRig)\n"
+			"#local RigFront = <CameraLocation.x - CenterX, CameraLocation.y - CenterY, 0>;\n"
+			"#if (vlength(RigFront) < 0.001) #local RigFront = <0, -1, 0>; #end\n"
+			"#local RigFront = vnormalize(RigFront);\n"
+			"#local RigSide = vnormalize(vcross(z, RigFront));\n"
+			"#local RigSize = max(Radius, 0.5);\n\n"
+			"#macro RigAreaLight(Location, Power, Size, Shadowless)\n"
+			"  #local LightFront = vnormalize(Center - Location);\n"
+			"  #local LightSide = vnormalize(vcross(z, LightFront));\n"
+			"  #local LightUp = vcross(LightFront, LightSide);\n"
+			"  WriteLight(3, Shadowless, Location, Center, <1, 1, 1>, Power, 0, 0, 0, 0, 0, 1, LightSide * Size, LightUp * Size, AreaSamples, AreaSamples)\n"
+			"#end\n\n"
+			"#if (LightRig = 1)\n"
+			"  RigAreaLight(Center + (RigFront * 2 + RigSide * 1.6 + z * 2.2) * RigSize, 1.2, RigSize * 1.5, 0)\n"
+			"  RigAreaLight(Center + (RigFront * 2 - RigSide * 2.2 + z * 1) * RigSize, 0.5, RigSize * 2.5, 1)\n"
+			"  RigAreaLight(Center + (-RigFront * 2.5 + RigSide * 0.5 + z * 2.5) * RigSize, 0.8, RigSize, 0)\n"
+			"#elseif (LightRig = 2)\n"
+			"  RigAreaLight(Center + (RigFront * 0.5 + z * 4) * RigSize, 1.1, RigSize * 4, 0)\n"
+			"  WriteLight(0, 1, CameraLocation, Center, <1, 1, 1>, 0.6, 0, 0, 0, 0, 0, 0, x, y, 1, 1)\n"
+			"#else\n"
+			"  WriteLight(0, 0, Center + (RigFront * 1.5 + RigSide * 1.2 + z * 2) * RigSize, Center, <1, 1, 1>, 1, 0, 0, 0, 0, 0, 0, x, y, 1, 1)\n"
+			"  WriteLight(0, 0, Center + (RigFront * 1.5 - RigSide * 1.5 + z * 1) * RigSize, Center, <1, 1, 1>, 0.65, 0, 0, 0, 0, 0, 0, x, y, 1, 1)\n"
+			"  WriteLight(0, 0, Center + (-RigFront * 2 + RigSide * 0.5 + z * 2) * RigSize, Center, <1, 1, 1>, 0.6, 0, 0, 0, 0, 0, 0, x, y, 1, 1)\n"
+			"  WriteLight(0, 1, Center + z * 3 * RigSize, Center, <1, 1, 1>, 0.35, 0, 0, 0, 0, 0, 0, x, y, 1, 1)\n"
+			"#end\n"
+			"#end\n\n");
 	}
 	else
 	{
@@ -1700,33 +1720,10 @@ swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* Ex
 				}
 			}
 		}
-
-		swDiskFile LgeoColorFile(QFileInfo(QDir(LGEOPath), QLatin1String("lg_colors.lst")).absoluteFilePath());
-
-		if (!LgeoColorFile.Open(QIODevice::ReadOnly))
-			return swUnexpected(tr("Could not find LGEO files in folder '%1'.").arg(LGEOPath));
-
-		while (LgeoColorFile.ReadLine(Line, sizeof(Line)))
-		{
-			char Name[1024], Flags[1024];
-			int Code;
-
-			if (*Line == ';')
-				continue;
-
-			if (sscanf(Line,"%d%s%s", &Code, Name, Flags) != 3)
-				continue;
-
-			size_t ColorIndex = swGetColorIndex(Code);
-
-			if (ColorIndex >= NumColors)
-				continue;
-
-			LgeoColorTable[ColorIndex] = Name;
-		}
 	}
 
-	auto AddColorDefinition=[&ColorTable, &LgeoColorTable, &POVFile](int ColorIndex)
+	// lgeo parts only bring geometry, colors keep the gamma correct finishes below
+	auto AddColorDefinition=[&ColorTable, &POVFile](int ColorIndex)
 	{
 		if (ColorTable[ColorIndex][0])
 			return;
@@ -1734,59 +1731,49 @@ swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* Ex
 		const swColor* Color = &gColorList[ColorIndex];
 		QString Definition;
 
-		if (LgeoColorTable[ColorIndex].empty())
+		snprintf(ColorTable[ColorIndex].data(), ColorTable[ColorIndex].size(), "sw_%s", Color->SafeName);
+
+		const QString Name = QLatin1String(ColorTable[ColorIndex].data());
+		const QString Rgb = QString::fromLatin1("%1, %2, %3").arg(Color->Value[0]).arg(Color->Value[1]).arg(Color->Value[2]);
+		const float Filter = Color->Translucent ? 0.85f : 0.0f;
+		// nearly opaque colors like glow in the dark only let a little light through
+		const QString FilterValue = Color->Value[3] < 0.9f ? QString::fromLatin1("TransFilter") : QString::number(1.0f - Color->Value[3]);
+		const float Emission = qMin(Color->Luminance / 100.0f, 1.0f);
+		const QString Glow = QString::fromLatin1("Glow * %1").arg(Emission);
+		QString Texture, Surface;
+
+		if (Color->Finish == swColorFinish::Glitter || Color->Finish == swColorFinish::Speckle)
 		{
-			snprintf(ColorTable[ColorIndex].data(), ColorTable[ColorIndex].size(), "sw_%s", Color->SafeName);
+			const QString Flake = QString::fromLatin1("%1, %2, %3").arg(Color->MaterialValue[0]).arg(Color->MaterialValue[1]).arg(Color->MaterialValue[2]);
+			const float Size = Color->MaterialSize > 0.0f ? Color->MaterialSize : 1.0f;
+			const QString FilterName = Color->Translucent ? FilterValue : QLatin1String("0");
+			Surface = QString::fromLatin1("FlakeTexture(%1, %2, %3, %4, %5, %6)").arg(Rgb, FilterName).arg(Color->MaterialFraction).arg(Size).arg(Flake, Glow);
 
-			const QString Name = QLatin1String(ColorTable[ColorIndex].data());
-			const QString Rgb = QString::fromLatin1("%1, %2, %3").arg(Color->Value[0]).arg(Color->Value[1]).arg(Color->Value[2]);
-			const float Filter = Color->Translucent ? 0.85f : 0.0f;
-			// nearly opaque colors like glow in the dark only let a little light through
-			const QString FilterValue = Color->Value[3] < 0.9f ? QString::fromLatin1("TransFilter") : QString::number(1.0f - Color->Value[3]);
-			const float Emission = qMin(Color->Luminance / 100.0f, 1.0f);
-			const QString Glow = QString::fromLatin1("Glow * %1").arg(Emission);
-			QString Texture, Surface;
-
-			if (Color->Finish == swColorFinish::Glitter || Color->Finish == swColorFinish::Speckle)
-			{
-				const QString Flake = QString::fromLatin1("%1, %2, %3").arg(Color->MaterialValue[0]).arg(Color->MaterialValue[1]).arg(Color->MaterialValue[2]);
-				const float Size = Color->MaterialSize > 0.0f ? Color->MaterialSize : 1.0f;
-				const QString FilterName = Color->Translucent ? FilterValue : QLatin1String("0");
-				Surface = QString::fromLatin1("FlakeTexture(%1, %2, %3, %4, %5, %6)").arg(Rgb, FilterName).arg(Color->MaterialFraction).arg(Size).arg(Flake, Glow);
-
-				// decals can only layer over a plain texture so the flakes stay in the material
-				if (Color->Translucent)
-					Texture = QString::fromLatin1("TranslucentTexture(%1, %2, %3)").arg(Rgb, FilterValue, Glow);
-				else
-					Texture = QString::fromLatin1("OpaqueTexture(%1, %2)").arg(Rgb, Glow);
-			}
-			else if (Color->Translucent)
+			// decals can only layer over a plain texture so the flakes stay in the material
+			if (Color->Translucent)
 				Texture = QString::fromLatin1("TranslucentTexture(%1, %2, %3)").arg(Rgb, FilterValue, Glow);
-			else if (Color->Chrome)
-				Texture = QString::fromLatin1("ChromeTexture(%1, %2)").arg(Rgb, Glow);
-			else if (Color->Rubber)
-				Texture = QString::fromLatin1("RubberTexture(%1, %2)").arg(Rgb, Glow);
-			else if (Color->Finish == swColorFinish::Pearl)
-				Texture = QString::fromLatin1("PearlTexture(%1, %2)").arg(Rgb, Glow);
-			else if (Color->Finish == swColorFinish::Metal)
-				Texture = QString::fromLatin1("MetalTexture(%1, %2)").arg(Rgb, Glow);
 			else
 				Texture = QString::fromLatin1("OpaqueTexture(%1, %2)").arg(Rgb, Glow);
-
-			if (Surface.isEmpty())
-				Surface = Name + QLatin1String("_texture");
-
-			const QString Material = Filter > 0.0f ? QString::fromLatin1("TranslucentMaterial(%1, %2)").arg(Surface, Rgb) : QString::fromLatin1("OpaqueMaterial(%1)").arg(Surface);
-
-			Definition = QString::fromLatin1("#ifndef (%1_texture)\n#declare %1_texture = %2\n#end\n#ifndef (%1)\n#declare %1 = %3\n#end\n\n").arg(Name, Texture, Material);
 		}
+		else if (Color->Translucent)
+			Texture = QString::fromLatin1("TranslucentTexture(%1, %2, %3)").arg(Rgb, FilterValue, Glow);
+		else if (Color->Chrome)
+			Texture = QString::fromLatin1("ChromeTexture(%1, %2)").arg(Rgb, Glow);
+		else if (Color->Rubber)
+			Texture = QString::fromLatin1("RubberTexture(%1, %2)").arg(Rgb, Glow);
+		else if (Color->Finish == swColorFinish::Pearl)
+			Texture = QString::fromLatin1("PearlTexture(%1, %2)").arg(Rgb, Glow);
+		else if (Color->Finish == swColorFinish::Metal)
+			Texture = QString::fromLatin1("MetalTexture(%1, %2)").arg(Rgb, Glow);
 		else
-		{
-			snprintf(ColorTable[ColorIndex].data(), ColorTable[ColorIndex].size(), "LDXColor%i", Color->Code);
+			Texture = QString::fromLatin1("OpaqueTexture(%1, %2)").arg(Rgb, Glow);
 
-			Definition = QString::fromLatin1("#ifndef (LDXColor%1) // %2\n#declare LDXColor%1_texture = texture { %3 }\n#declare LDXColor%1 = material { texture { LDXColor%1_texture } }\n#end\n\n")
-					.arg(Color->Code).arg(QLatin1String(Color->Name), QString::fromStdString(LgeoColorTable[ColorIndex]));
-		}
+		if (Surface.isEmpty())
+			Surface = Name + QLatin1String("_texture");
+
+		const QString Material = Filter > 0.0f ? QString::fromLatin1("TranslucentMaterial(%1, %2)").arg(Surface, Rgb) : QString::fromLatin1("OpaqueMaterial(%1)").arg(Surface);
+
+		Definition = QString::fromLatin1("#ifndef (%1_texture)\n#declare %1_texture = %2\n#end\n#ifndef (%1)\n#declare %1 = %3\n#end\n\n").arg(Name, Texture, Material);
 
 		POVFile.WriteLine(Definition.toLatin1().constData());
 	};
@@ -2018,8 +2005,26 @@ swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* Ex
 		POVFile.WriteLine(Line);
 	}
 
-	snprintf(Line, sizeof(Line), "#if (Floor)\n  object {\n    plane { FloorAxis, FloorLocation hollow }\n    texture {\n      pigment { color srgb FloorColor }\n      finish { emission 0 ambient FloorAmbient diffuse FloorDiffuse }\n    }\n  }\n#end\n");
-	POVFile.WriteLine(Line);
+	// shadow catcher matches the background where lit, cyclorama fades into it with distance
+	POVFile.WriteLine(
+		"#if (Floor)\n"
+		"  #local FloorTexture = texture { pigment { srgb FloorColor } finish { emission 0 ambient FloorAmbient diffuse FloorDiffuse } }\n"
+		"  #local HorizonTexture = texture { pigment { rgb BackgroundColor } finish { emission 1 ambient 0 diffuse 0 } }\n"
+		"  object {\n"
+		"    plane { FloorAxis, FloorLocation hollow }\n"
+		"    #if (FloorStyle = 1)\n"
+		"      texture { pigment { rgb BackgroundColor } finish { emission 0.55 ambient 0 diffuse 0.5 } }\n"
+		"      no_reflection\n"
+		"    #elseif (FloorStyle = 2)\n"
+		"      texture { pigment { srgb FloorColor } finish { emission 0 ambient FloorAmbient diffuse FloorDiffuse specular 0.4 roughness 0.01 reflection { 0.05, 0.6 fresnel on } } }\n"
+		"      interior { ior 1.5 }\n"
+		"    #elseif (FloorStyle = 3)\n"
+		"      texture { spherical texture_map { [0 HorizonTexture] [0.6 FloorTexture] [1 FloorTexture] } scale Radius * 6 translate Center }\n"
+		"    #else\n"
+		"      texture { FloorTexture }\n"
+		"    #end\n"
+		"  }\n"
+		"#end\n");
 
 	if (!POVRayOptions.FooterIncludeFile.isEmpty())
 	{
