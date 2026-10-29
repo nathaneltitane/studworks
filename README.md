@@ -10,11 +10,22 @@ Useful? Star the repository - it helps others find it.
 
 ---
 
-[[ StudWorks // Project Page ]](https://github.com/nathaneltitane/studworks)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;[ Version // 2026-10-28 ]
+[[ StudWorks // Project Page ]](https://github.com/nathaneltitane/studworks)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;[ Version // 2026-10-29 ]
 
 ---
 
 ### NOTICE
+
+2026-10-29 ↴
+
+- File managers: LDraw model files show a thumbnail of the model, from a KDE thumbnail plugin or the desktop thumbnailer, rendered with the new '--transparent' command line option
+- Install: 'tools/studworks-install' builds and installs StudWorks without a package, with thumbnails, file types and associations, '~/.local' needs no superuser rights, run it again after 'git pull' to update
+- Instructions: step images outline the parts new to each step and fade the earlier ones, set by Fade Previous Steps and Highlight New Parts in the Document settings, their colors kept 85% to 95% opaque
+- Instructions: every page element stays within the page margins, page numbers included, and Page Setup margins are limited to the room the page size leaves
+- Value boxes: the maximum shows after the value (6 / 32 studs), any number can be typed and is brought into range once applied
+- Find and Replace: one bar that starts with its close button, a chevron shows or hides the replace row, long part names no longer stretch it
+- Views: the camera name and the editing path float over the view as bars with a close button, each model in the path is a button that goes back to it, and the bars only move when the view cube or axis icon is in the way
+- Icons and cursors drawn in code and sharp at any size, the base grid toggle hides only the grids and leaves the axis lines alone, the terminal panel sizes to whole rows and columns
 
 2026-10-28 ↴
 
@@ -239,11 +250,11 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
 
       | System | Package |
       | --- | --- |
-      | Debian, Ubuntu | studworks_2026-10-28_amd64.deb / arm64.deb |
-      | Fedora, Rocky Linux, RHEL, openSUSE | studworks-2026-10-28-x86_64.rpm / aarch64.rpm |
-      | Any Linux | studworks-linux-2026-10-28-x86_64.appimage / aarch64.appimage |
-      | Windows | studworks-windows-2026-10-28-x64.exe |
-      | macOS | studworks-macos-2026-10-28-universal.dmg |
+      | Debian, Ubuntu | studworks_2026-10-29_amd64.deb / arm64.deb |
+      | Fedora, Rocky Linux, RHEL, openSUSE | studworks-2026-10-29-x86_64.rpm / aarch64.rpm |
+      | Any Linux | studworks-linux-2026-10-29-x86_64.appimage / aarch64.appimage |
+      | Windows | studworks-windows-2026-10-29-x64.exe |
+      | macOS | studworks-macos-2026-10-29-universal.dmg |
 
     - The .deb and .rpm packages install to '/opt/studworks', the AppImage runs from anywhere after 'chmod +x' - all three carry their own Qt libraries and the LDraw parts library, and only need the base system libraries.
     - Linux packages are tested on Debian 12 and 13, Ubuntu 22.04 and 24.04, Rocky Linux 9, Fedora and openSUSE Tumbleweed.
@@ -323,7 +334,7 @@ LEGO® is a trademark of the LEGO® Group, which does not sponsor, authorize or 
 
 ---
 
-[[ StudWorks // Project Page ]](https://github.com/nathaneltitane/studworks)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;[ Version // 2026-10-28 ]
+[[ StudWorks // Project Page ]](https://github.com/nathaneltitane/studworks)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;[ Version // 2026-10-29 ]
 
 ---
 
