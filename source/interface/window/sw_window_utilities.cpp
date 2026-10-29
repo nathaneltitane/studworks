@@ -1532,8 +1532,9 @@ static void swDrawPaintedIcon(QPainter* Painter, swPaintedIcon Icon, const QSize
 
 	case swPaintedIcon::RenderPlaceholder:
 		Draw.Stroke(swCreateIconRect(3, 4, 21, 20, 2));
-		Draw.Fill(swCreateIconCircle(8.5, 9.5, 1.5));
-		Draw.Stroke(swCreateIconLine({ { 3, 18 }, { 9, 12 }, { 14, 17 }, { 16, 15 }, { 21, 20 } }));
+		Draw.Fill(swCreateIconCircle(8, 7.5, 1.5));
+		// the hills meet the straight sides above the rounded corners
+		Draw.Stroke(swCreateIconLine({ { 3, 16 }, { 8, 11 }, { 13, 16 }, { 16, 13 }, { 21, 18 } }));
 		break;
 
 	case swPaintedIcon::ThumbnailFlexible:
