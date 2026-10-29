@@ -282,6 +282,7 @@ struct swCommandLineOptions
 	bool SaveCOLLADA = false;
 	bool SaveCSV = false;
 	bool SaveHTML = false;
+	bool SavePOVRay = false;
 	bool SetCameraAngles = false;
 	bool SetCameraPosition = false;
 	bool Orthographic = false;
@@ -328,6 +329,7 @@ struct swCommandLineOptions
 	QString SaveCOLLADAName;
 	QString SaveCSVName;
 	QString SaveHTMLName;
+	QString SavePOVRayName;
 	QString SettingsImportName;
 	QString SettingsExportName;
 	QString KeyboardShortcutsImportName;

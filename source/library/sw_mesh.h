@@ -3,6 +3,9 @@
 #include "sw_math.h"
 #include "sw_types_asset.h"
 
+#define SW_MESH_POVRAY_PLAIN 0x01
+#define SW_MESH_POVRAY_DECALS 0x02
+
 enum swMeshPrimitiveType
 {
 	SW_MESH_LINES = 0x01,
@@ -93,8 +96,11 @@ public:
 	void FinalizeSections();
 
 	template<typename IndexType>
-	void ExportPOVRay(swFile& File, const char* MeshName, const char** ColorTable);
-	void ExportPOVRay(swFile& File, const char* MeshName, const char** ColorTable);
+	void ExportPOVRayTriangles(swFile& File, const swMeshSection* Section);
+	template<typename IndexType>
+	int ExportPOVRay(swFile& File, const char* MeshName, const char** ColorTable, const std::map<const swTexture*, QString>& TextureFiles);
+	// Writes the plain sections as sw_<name> and the textured ones as the sw_<name>_decals(BaseTexture) macro, returns SW_MESH_POVRAY_ flags.
+	int ExportPOVRay(swFile& File, const char* MeshName, const char** ColorTable, const std::map<const swTexture*, QString>& TextureFiles);
 
 	template<typename IndexType>
 	void ExportWavefrontIndices(swFile& File, int DefaultColorIndex, int VertexOffset);

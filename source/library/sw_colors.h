@@ -7,6 +7,16 @@
 #define SW_COLOR_NO_COLOR 0xffffffff
 #define SW_STUD_CYLINDER_COLOR_CODE 4242
 
+// Surface finish named by the ldconfig color definition.
+enum class swColorFinish
+{
+	Plain,
+	Pearl,
+	Metal,
+	Glitter,
+	Speckle
+};
+
 struct swColor
 {
 	quint32 Code;
@@ -15,6 +25,11 @@ struct swColor
 	bool Chrome = false;
 	bool Rubber = false;
 	bool Adjusted = false;
+	swColorFinish Finish = swColorFinish::Plain;
+	int Luminance = 0;
+	float MaterialFraction = 0.0f;
+	float MaterialSize = 0.0f;
+	swVector3 MaterialValue = swVector3(0.0f, 0.0f, 0.0f);
 	swVector4 Value;
 	swVector4 Edge;
 	char Name[SW_MAXIMUM_COLOR_NAME];

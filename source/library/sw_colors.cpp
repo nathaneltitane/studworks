@@ -88,6 +88,11 @@ static std::vector<swColor> swParseColorFile(swFile& File)
 		Color.Translucent = false;
 		Color.Chrome = false;
 		Color.Rubber = false;
+		Color.Finish = swColorFinish::Plain;
+		Color.Luminance = 0;
+		Color.MaterialFraction = 0.0f;
+		Color.MaterialSize = 0.0f;
+		Color.MaterialValue = swVector3(0.0f, 0.0f, 0.0f);
 		Color.Group = SW_COLOR_GROUP_SOLID;
 		Color.Value[0] = FLT_MAX;
 		Color.Value[1] = FLT_MAX;
@@ -169,14 +174,68 @@ static std::vector<swColor> swParseColorFile(swFile& File)
 				Color.Rubber = true;
 				Color.Group = SW_COLOR_GROUP_SPECIAL;
 			}
-			else if (!strcmp(Token, "PEARLESCENT") || !strcmp(Token, "MATTE_METALLIC") || !strcmp(Token, "MATTE_METALIC") || !strcmp(Token, "METAL") || !strcmp(Token, "LUMINANCE"))
+			else if (!strcmp(Token, "PEARLESCENT"))
 			{
+				Color.Finish = swColorFinish::Pearl;
+				Color.Group = SW_COLOR_GROUP_SPECIAL;
+			}
+			else if (!strcmp(Token, "MATTE_METALLIC") || !strcmp(Token, "MATTE_METALIC") || !strcmp(Token, "METAL"))
+			{
+				Color.Finish = swColorFinish::Metal;
+				Color.Group = SW_COLOR_GROUP_SPECIAL;
+			}
+			else if (!strcmp(Token, "LUMINANCE"))
+			{
+				GetToken(Ptr, Token);
+				Color.Luminance = atoi(Token);
 				Color.Group = SW_COLOR_GROUP_SPECIAL;
 			}
 			else if (!strcmp(Token, "MATERIAL"))
 			{
 				Color.Group = SW_COLOR_GROUP_SPECIAL;
-				break; // Material is always last so ignore it and the rest of the line.
+
+				// material is always last so the rest of the line holds its parameters
+				GetToken(Ptr, Token);
+				swstrupr(Token);
+
+				if (!strcmp(Token, "GLITTER"))
+					Color.Finish = swColorFinish::Glitter;
+				else if (!strcmp(Token, "SPECKLE"))
+					Color.Finish = swColorFinish::Speckle;
+				else
+					break;
+
+				Color.MaterialValue = swVector3(Color.Value[0], Color.Value[1], Color.Value[2]);
+
+				for (GetToken(Ptr, Token); Token[0]; GetToken(Ptr, Token))
+				{
+					swstrupr(Token);
+
+					if (!strcmp(Token, "VALUE"))
+					{
+						GetToken(Ptr, Token);
+						if (Token[0] == '#')
+							Token[0] = ' ';
+
+						int Value;
+						if (sscanf(Token, "%x", &Value) != 1)
+							Value = 0;
+
+						Color.MaterialValue = swVector3((float)((Value >> 16) & 0xff) / 255.0f, (float)((Value >> 8) & 0xff) / 255.0f, (float)(Value & 0xff) / 255.0f);
+					}
+					else if (!strcmp(Token, "FRACTION"))
+					{
+						GetToken(Ptr, Token);
+						Color.MaterialFraction = (float)atof(Token);
+					}
+					else if (!strcmp(Token, "SIZE") || !strcmp(Token, "MAXSIZE"))
+					{
+						GetToken(Ptr, Token);
+						Color.MaterialSize = qMax(Color.MaterialSize, (float)atof(Token));
+					}
+				}
+
+				break;
 			}
 		}
 

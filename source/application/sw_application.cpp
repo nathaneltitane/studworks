@@ -1098,6 +1098,11 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 			Options.SaveHTML = true;
 			ParseString(Options.SaveHTMLName, false);
 		}
+		else if (Option == QLatin1String("-pov") || Option == QLatin1String("--export-povray"))
+		{
+			Options.SavePOVRay = true;
+			ParseString(Options.SavePOVRayName, false);
+		}
 		else if (Option == QLatin1String("--import-settings"))
 			ParseString(Options.SettingsImportName, true);
 		else if (Option == QLatin1String("--export-settings"))
@@ -1169,6 +1174,7 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 			Options.StdOut += tr("  -dae, --export-collada <outfile.dae>: Export the model to COLLADA DAE format.\n");
 			Options.StdOut += tr("  -csv, --export-csv <outfile.csv>: Export the list of parts used in CSV format.\n");
 			Options.StdOut += tr("  -html, --export-html <folder>: Create an HTML page for the model.\n");
+			Options.StdOut += tr("  -pov, --export-povray <outfile.pov>: Export the model to POV-Ray format.\n");
 			Options.StdOut += tr("  --import-settings <infile.ini>: Import the application settings and exit.\n");
 			Options.StdOut += tr("  --export-settings <outfile.ini>: Export the application settings and exit.\n");
 			Options.StdOut += tr("  --import-keyboard-shortcuts <infile.txt>: Import the keyboard shortcuts and exit.\n");
@@ -1262,7 +1268,7 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 			Options.StdErr += tr("--camera-position is ignored when --camera-angles is set.\n");
 	}
 
-	const bool SaveAndExit = (Options.SaveImage || Options.SaveWavefront || Options.Save3DS || Options.SaveCOLLADA || Options.SaveCSV || Options.SaveHTML);
+	const bool SaveAndExit = (Options.SaveImage || Options.SaveWavefront || Options.Save3DS || Options.SaveCOLLADA || Options.SaveCSV || Options.SaveHTML || Options.SavePOVRay);
 
 	if (SaveAndExit && Options.ProjectName.isEmpty())
 	{
@@ -1404,7 +1410,7 @@ swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 	if (Options.HasSettingsTransfer())
 		return swTransferSettings(Options, StdErr) ? swStartupMode::Success : swStartupMode::Error;
 
-	const bool SaveAndExit = (Options.SaveImage || Options.SaveWavefront || Options.Save3DS || Options.SaveCOLLADA || Options.SaveCSV || Options.SaveHTML);
+	const bool SaveAndExit = (Options.SaveImage || Options.SaveWavefront || Options.Save3DS || Options.SaveCOLLADA || Options.SaveCSV || Options.SaveHTML || Options.SavePOVRay);
 
 #ifdef Q_OS_IOS
 	if (Options.SaveImage)
@@ -1415,7 +1421,7 @@ swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 #endif
 
 #ifndef Q_OS_IOS
-	const bool CreateRenderResources = !SaveAndExit || Options.SaveImage || Options.SaveHTML;
+	const bool CreateRenderResources = !SaveAndExit || Options.SaveImage || Options.SaveHTML || Options.SavePOVRay;
 	const swResult<void> RendererResult = swContext::InitializeRenderer(CreateRenderResources);
 
 	if (!RendererResult)
@@ -1529,7 +1535,7 @@ swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 
 		std::unique_ptr<swView> ActiveView;
 
-		if (Options.SaveImage)
+		if (Options.SaveImage || Options.SavePOVRay)
 		{
 			swModel* Model;
 
@@ -1552,7 +1558,7 @@ swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 			ActiveView->MakeCurrent();
 		}
 
-		if (Options.SaveImage)
+		if (ActiveView)
 		{
 			ActiveView->SetSize(Options.ImageWidth, Options.ImageHeight);
 
@@ -1661,6 +1667,37 @@ swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 				StdErr << ImagesSaved.error() << '\n';
 
 				return swStartupMode::Error;
+			}
+		}
+
+		if (Options.SavePOVRay)
+		{
+			swModel* ActiveModel = ActiveView->GetModel();
+			QString FileName = !Options.SavePOVRayName.isEmpty() ? Options.SavePOVRayName : Options.ProjectName;
+			const QString Extension = QFileInfo(FileName).suffix().toLower();
+
+			if (Extension.isEmpty())
+				FileName += QLatin1String(".pov");
+			else if (Extension != QLatin1String("pov"))
+				FileName = FileName.left(FileName.length() - Extension.length() - 1) + QLatin1String(".pov");
+
+			ActiveModel->WaitForAssets();
+
+			const bool UsesCameraPosition = Options.SetCameraPosition && Options.Viewpoint == swViewpoint::Count && !Options.SetCameraAngles;
+
+			if (Options.CameraName.isEmpty() && !UsesCameraPosition)
+				ActiveView->ZoomExtentsAtStep(ActiveModel->GetCurrentStep(), swGeometryBoundsMode::AvailableOnly, !Options.SetZPlanes);
+
+			swResult<void> ExportResult = mProject->ExportPOVRay(FileName, ActiveView->GetCamera());
+
+			if (ExportResult)
+				StdOut << tr("Saved '%1'.\n").arg(FileName);
+			else
+			{
+				OutputFailed = true;
+
+				if (!ExportResult.error().isEmpty())
+					StdErr << ExportResult.error() << '\n';
 			}
 		}
 

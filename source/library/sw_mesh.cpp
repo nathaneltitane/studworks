@@ -277,96 +277,125 @@ bool swMesh::IntersectsPlanes(const swVector4 (&Planes)[6])
 }
 
 template<typename IndexType>
-void swMesh::ExportPOVRay(swFile& File, const char* MeshName, const char** ColorTable)
+void swMesh::ExportPOVRayTriangles(swFile& File, const swMeshSection* Section)
 {
 	char Line[1024];
+	const IndexType* Indices = (IndexType*)mIndexData + Section->DrawOffset / sizeof(IndexType);
 
-	int NumSections = 0;
+	for (int Idx = 0; Idx < Section->DrawCount; Idx += 3)
+	{
+		swVector3 Positions[3];
+		swVector3 Normals[3];
+		swVector2 TexCoords[3];
+
+		for (int VertexIdx = 0; VertexIdx < 3; VertexIdx++)
+		{
+			if (Section->PrimitiveType == SW_MESH_TEXTURED_TRIANGLES)
+			{
+				const swVertexTextured& Vertex = GetTexturedVertexData()[Indices[Idx + VertexIdx]];
+				Positions[VertexIdx] = Vertex.Position / 25.0f;
+				Normals[VertexIdx] = swUnpackNormal(Vertex.Normal);
+				TexCoords[VertexIdx] = Vertex.TexCoord;
+			}
+			else
+			{
+				const swVertex& Vertex = GetVertexData()[Indices[Idx + VertexIdx]];
+				Positions[VertexIdx] = Vertex.Position / 25.0f;
+				Normals[VertexIdx] = swUnpackNormal(Vertex.Normal);
+			}
+		}
+
+		const swVector3* v = Positions;
+		const swVector3* n = Normals;
+		int Length = snprintf(Line, sizeof(Line), "  smooth_triangle { <%g, %g, %g>, <%g, %g, %g>, <%g, %g, %g>, <%g, %g, %g>, <%g, %g, %g>, <%g, %g, %g>",
+		                      -v[0].y, -v[0].x, v[0].z, -n[0].y, -n[0].x, n[0].z, -v[1].y, -v[1].x, v[1].z, -n[1].y, -n[1].x, n[1].z, -v[2].y, -v[2].x, v[2].z, -n[2].y, -n[2].x, n[2].z);
+
+		// image rows run top down while pov-ray uv space runs bottom up
+		if (Section->PrimitiveType == SW_MESH_TEXTURED_TRIANGLES)
+			Length += snprintf(Line + Length, sizeof(Line) - Length, " uv_vectors <%g, %g>, <%g, %g>, <%g, %g>",
+			                   TexCoords[0].x, 1.0f - TexCoords[0].y, TexCoords[1].x, 1.0f - TexCoords[1].y, TexCoords[2].x, 1.0f - TexCoords[2].y);
+
+		snprintf(Line + Length, sizeof(Line) - Length, " }\n");
+		File.WriteLine(Line);
+	}
+}
+
+template<typename IndexType>
+int swMesh::ExportPOVRay(swFile& File, const char* MeshName, const char** ColorTable, const std::map<const swTexture*, QString>& TextureFiles)
+{
+	char Line[1024];
+	std::vector<const swMeshSection*> PlainSections, DecalSections;
 
 	for (int SectionIdx = 0; SectionIdx < mLods[SW_MESH_LOD_HIGH].NumSections; SectionIdx++)
 	{
-		const swMeshSection* const Section = &mLods[SW_MESH_LOD_HIGH].Sections[SectionIdx];
+		const swMeshSection* Section = &mLods[SW_MESH_LOD_HIGH].Sections[SectionIdx];
 
-		if (Section->PrimitiveType == SW_MESH_TRIANGLES || Section->PrimitiveType == SW_MESH_TEXTURED_TRIANGLES)
-			NumSections++;
+		if (Section->PrimitiveType == SW_MESH_TEXTURED_TRIANGLES && TextureFiles.count(Section->Texture.Get()))
+			DecalSections.push_back(Section);
+		else if (Section->PrimitiveType == SW_MESH_TRIANGLES || Section->PrimitiveType == SW_MESH_TEXTURED_TRIANGLES)
+			PlainSections.push_back(Section);
 	}
 
-	if (NumSections > 1)
-		snprintf(Line, sizeof(Line), "#declare sw_%s = union {\n", MeshName);
-	else
-		snprintf(Line, sizeof(Line), "#declare sw_%s = mesh {\n", MeshName);
-	File.WriteLine(Line);
-
-	for (int SectionIdx = 0; SectionIdx < mLods[SW_MESH_LOD_HIGH].NumSections; SectionIdx++)
+	if (!PlainSections.empty())
 	{
-		swMeshSection* Section = &mLods[SW_MESH_LOD_HIGH].Sections[SectionIdx];
+		snprintf(Line, sizeof(Line), PlainSections.size() > 1 ? "#declare sw_%s = union {\n" : "#declare sw_%s = mesh {\n", MeshName);
+		File.WriteLine(Line);
 
-		if (Section->PrimitiveType == SW_MESH_TRIANGLES)
+		for (const swMeshSection* Section : PlainSections)
 		{
-			const swVertex* Verts = GetVertexData();
-			const IndexType* Indices = (IndexType*)mIndexData + Section->DrawOffset / sizeof(IndexType);
-
-			if (NumSections > 1)
+			if (PlainSections.size() > 1)
 				File.WriteLine(" mesh {\n");
 
-			for (int Idx = 0; Idx < Section->DrawCount; Idx += 3)
-			{
-				const swVector3 v1 = Verts[Indices[Idx]].Position / 25.0f;
-				const swVector3 v2 = Verts[Indices[Idx + 1]].Position / 25.0f;
-				const swVector3 v3 = Verts[Indices[Idx + 2]].Position / 25.0f;
-				const swVector3 n1 = swUnpackNormal(Verts[Indices[Idx]].Normal);
-				const swVector3 n2 = swUnpackNormal(Verts[Indices[Idx + 1]].Normal);
-				const swVector3 n3 = swUnpackNormal(Verts[Indices[Idx + 2]].Normal);
+			ExportPOVRayTriangles<IndexType>(File, Section);
 
-				snprintf(Line, sizeof(Line), "  smooth_triangle { <%g, %g, %g>, <%g, %g, %g>, <%g, %g, %g>, <%g, %g, %g>, <%g, %g, %g>, <%g, %g, %g> }\n",
-				         -v1.y, -v1.x, v1.z, -n1.y, -n1.x, n1.z, -v2.y, -v2.x, v2.z, -n2.y, -n2.x, n2.z, -v3.y, -v3.x, v3.z, -n3.y, -n3.x, n3.z);
+			if (Section->ColorIndex != gDefaultColor)
+			{
+				snprintf(Line, sizeof(Line), "  material { %s }\n", ColorTable[Section->ColorIndex]);
 				File.WriteLine(Line);
 			}
+
+			if (PlainSections.size() > 1)
+				File.WriteLine(" }\n");
 		}
-		else if (Section->PrimitiveType == SW_MESH_TEXTURED_TRIANGLES)
+
+		File.WriteLine("}\n\n");
+	}
+
+	// printed faces layer their image over the part color handed in by each instance
+	if (!DecalSections.empty())
+	{
+		snprintf(Line, sizeof(Line), "#macro sw_%s_decals(BaseTexture)\n%s", MeshName, DecalSections.size() > 1 ? "union {\n" : "");
+		File.WriteLine(Line);
+
+		for (const swMeshSection* Section : DecalSections)
 		{
-			const swVertexTextured* Verts = GetTexturedVertexData();
-			const IndexType* Indices = (IndexType*)mIndexData + Section->DrawOffset / sizeof(IndexType);
+			File.WriteLine(" mesh {\n");
+			ExportPOVRayTriangles<IndexType>(File, Section);
 
-			if (NumSections > 1)
-				File.WriteLine(" mesh {\n");
+			if (Section->ColorIndex != gDefaultColor)
+				snprintf(Line, sizeof(Line), "  texture { %s_texture }\n", ColorTable[Section->ColorIndex]);
+			else
+				snprintf(Line, sizeof(Line), "  texture { BaseTexture }\n");
 
-			for (int Idx = 0; Idx < Section->DrawCount; Idx += 3)
-			{
-				const swVector3 v1 = Verts[Indices[Idx]].Position / 25.0f;
-				const swVector3 v2 = Verts[Indices[Idx + 1]].Position / 25.0f;
-				const swVector3 v3 = Verts[Indices[Idx + 2]].Position / 25.0f;
-				const swVector3 n1 = swUnpackNormal(Verts[Indices[Idx]].Normal);
-				const swVector3 n2 = swUnpackNormal(Verts[Indices[Idx + 1]].Normal);
-				const swVector3 n3 = swUnpackNormal(Verts[Indices[Idx + 2]].Normal);
+			File.WriteLine(Line);
 
-				snprintf(Line, sizeof(Line), "  smooth_triangle { <%g, %g, %g>, <%g, %g, %g>, <%g, %g, %g>, <%g, %g, %g>, <%g, %g, %g>, <%g, %g, %g> }\n",
-				         -v1.y, -v1.x, v1.z, -n1.y, -n1.x, n1.z, -v2.y, -v2.x, v2.z, -n2.y, -n2.x, n2.z, -v3.y, -v3.x, v3.z, -n3.y, -n3.x, n3.z);
-				File.WriteLine(Line);
-			}
-		}
-		else
-			continue;
-
-		if (Section->ColorIndex != gDefaultColor)
-		{
-			snprintf(Line, sizeof(Line), "  material { texture { %s normal { bumps 0.1 scale 2 } } }", ColorTable[Section->ColorIndex]);
+			const QByteArray ImageFile = TextureFiles.at(Section->Texture.Get()).toUtf8();
+			snprintf(Line, sizeof(Line), "  texture { pigment { uv_mapping image_map { png \"%s\" once interpolate 2 } } finish { phong Phong phong_size PhongSize } }\n }\n", ImageFile.constData());
 			File.WriteLine(Line);
 		}
 
-		if (NumSections > 1)
-			File.WriteLine(" }\n");
+		File.WriteLine(DecalSections.size() > 1 ? "}\n#end\n\n" : "#end\n\n");
 	}
 
-	File.WriteLine("}\n\n");
+	return (PlainSections.empty() ? 0 : SW_MESH_POVRAY_PLAIN) | (DecalSections.empty() ? 0 : SW_MESH_POVRAY_DECALS);
 }
 
-void swMesh::ExportPOVRay(swFile& File, const char* MeshName, const char** ColorTable)
+int swMesh::ExportPOVRay(swFile& File, const char* MeshName, const char** ColorTable, const std::map<const swTexture*, QString>& TextureFiles)
 {
 	if (mIndexType == GL_UNSIGNED_SHORT)
-		ExportPOVRay<GLushort>(File, MeshName, ColorTable);
+		return ExportPOVRay<GLushort>(File, MeshName, ColorTable, TextureFiles);
 	else
-		ExportPOVRay<GLuint>(File, MeshName, ColorTable);
+		return ExportPOVRay<GLuint>(File, MeshName, ColorTable, TextureFiles);
 }
 
 template<typename IndexType>

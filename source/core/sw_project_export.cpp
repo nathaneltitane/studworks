@@ -1221,7 +1221,7 @@ swResult<void> Project::ExportHTML(const swHTMLExportOptions& Options)
 	return swResult<void>();
 }
 
-swResult<void> Project::ExportPOVRay(const QString& FileName)
+swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* ExportCamera)
 {
 	const std::vector<swModelPartsEntry> ModelParts = GetModelParts();
 
@@ -1271,8 +1271,8 @@ swResult<void> Project::ExportPOVRay(const QString& FileName)
 	std::vector<std::string> LgeoColorTable(NumColors);
 	std::vector<std::array<char, SW_MAXIMUM_COLOR_NAME + 3>> ColorTable(NumColors);
 
-	const std::vector<std::unique_ptr<swLight>>& Lights = gMainWindow->GetActiveModel()->GetLights();
-	const swCamera* Camera = gMainWindow->GetActiveView()->GetCamera();
+	const std::vector<std::unique_ptr<swLight>>& Lights = mActiveModel->GetLights();
+	const swCamera* Camera = ExportCamera ? ExportCamera : gMainWindow->GetActiveView()->GetCamera();
 	auto MakeIdentifier = [](const QString& Name, const QString& Fallback)
 	{
 		QString Identifier;
@@ -1300,7 +1300,6 @@ swResult<void> Project::ExportPOVRay(const QString& FileName)
 	const QString LGEOPath = swGetProfileString(SW_PROFILE_POVRAY_LGEO_PATH);
 	const bool UseLGEO = POVRayOptions.UseLGEO && !LGEOPath.isEmpty();
 	const int TopModelColorCode = 7;
-	QStringList ColorMacros, MaterialColors;
 
 	swVector3 Min(FLT_MAX, FLT_MAX, FLT_MAX);
 	swVector3 Max(-FLT_MAX, -FLT_MAX, -FLT_MAX);
@@ -1416,7 +1415,14 @@ swResult<void> Project::ExportPOVRay(const QString& FileName)
 			"#ifndef (PhongSize) #declare PhongSize = 40; #end\n"
 			"#ifndef (TransReflection) #declare TransReflection = 0.2; #end\n"
 			"#ifndef (TransFilter) #declare TransFilter = 0.85; #end\n"
-			"#ifndef (TransIoR) #declare TransIoR = 1.25; #end\n"
+			"#ifndef (ReflectionMax) #declare ReflectionMax = 0.5; #end\n"
+			"#ifndef (OpaqueIoR) #declare OpaqueIoR = 1.5; #end\n"
+			"#ifndef (TransIoR) #declare TransIoR = 1.5; #end\n"
+			"#ifndef (TransFade) #declare TransFade = 3; #end\n"
+			"#ifndef (PearlIridescence) #declare PearlIridescence = 0.12; #end\n"
+			"#ifndef (MetalReflection) #declare MetalReflection = 0.3; #end\n"
+			"#ifndef (FlakeReflection) #declare FlakeReflection = 0.6; #end\n"
+			"#ifndef (Glow) #declare Glow = 1; #end\n"
 			"#ifndef (RubberReflection) #declare RubberReflection = 0; #end\n"
 			"#ifndef (RubberPhong) #declare RubberPhong = 0.1; #end\n"
 			"#ifndef (RubberPhongS) #declare RubberPhongS = 10; #end\n"
@@ -1480,94 +1486,72 @@ swResult<void> Project::ExportPOVRay(const QString& FileName)
 			static_cast<int>(swLightType::Point), static_cast<int>(swLightType::Spot), static_cast<int>(swLightType::Directional), static_cast<int>(swLightType::Area));
 	POVFile.WriteLine(Line);
 
-	for (const swModelPartsEntry& ModelPart : ModelParts)
-	{
-		int ColorIdx = ModelPart.ColorIndex;
-
-		if (swIsColorTranslucent(ColorIdx))
-		{
-			if (!ColorMacros.contains("TranslucentColor"))
-			{
-				snprintf(Line, sizeof(Line),
-						"#ifndef (SkipTranslucentColorMacro)\n"
-						"#macro TranslucentColor(r, g, b, f)\n"
-						"  material {\n"
-						"    texture {\n"
-						"      pigment { srgbf <r,g,b,f> }\n"
-						"      finish { emission 0 ambient Ambient diffuse Diffuse }\n"
-						"      finish { phong Phong phong_size PhongSize reflection TransReflection }\n"
-						"      normal { TransNormal }\n"
-						"    }\n"
-						"    interior { ior TransIoR }\n"
-						"  }\n"
-						"#end\n"
-						"#end\n\n");
-				POVFile.WriteLine(Line);
-				ColorMacros.append("TranslucentColor");
-			}
-		}
-		else if (swIsColorChrome(ColorIdx))
-		{
-			if (!ColorMacros.contains("ChromeColor"))
-			{
-				snprintf(Line, sizeof(Line),
-						"#ifndef (SkipChromeColorMacro)\n"
-						"#macro ChromeColor(r, g, b)\n"
-						"#if (LgeoLibrary) material { #end\n"
-						"  texture {\n"
-						"    pigment { srgbf <r,g,b,0> }\n"
-						"    finish { emission 0 ambient Ambient diffuse Diffuse }\n"
-						"    finish { phong Phong phong_size PhongSize reflection ChromeReflection brilliance ChromeBrilliance metallic specular ChromeSpecular roughness ChromeRough }\n"
-						"  }\n"
-						"#if (LgeoLibrary) } #end\n"
-						"#end\n"
-						"#end\n\n");
-				POVFile.WriteLine(Line);
-				ColorMacros.append("ChromeColor");
-			}
-		}
-		else if (swIsColorRubber(ColorIdx))
-		{
-			if (!ColorMacros.contains("RubberColor"))
-			{
-				snprintf(Line, sizeof(Line),
-						"#ifndef (SkipRubberColorMacro)\n"
-						"#macro RubberColor(r, g, b)\n"
-						"#if (LgeoLibrary) material { #end\n"
-						"  texture {\n"
-						"    pigment { srgbf <r,g,b,0> }\n"
-						"    finish { emission 0 ambient Ambient diffuse Diffuse }\n"
-						"    finish { phong RubberPhong phong_size RubberPhongS reflection RubberReflection }\n"
-						"  }\n"
-						"#if (LgeoLibrary) } #end\n"
-						"#end\n"
-						"#end\n\n");
-				POVFile.WriteLine(Line);
-				ColorMacros.append("RubberColor");
-			}
-		}
-		else
-		{
-			if (!ColorMacros.contains("OpaqueColor"))
-			{
-				snprintf(Line, sizeof(Line),
-						"#ifndef (SkipOpaqueColorMacro)\n"
-						"#macro OpaqueColor(r, g, b)\n"
-						"#if (LgeoLibrary) material { #end\n"
-						"  texture {\n"
-						"    pigment { srgbf <r,g,b,0> }\n"
-						"    finish { emission 0 ambient Ambient diffuse Diffuse }\n"
-						"    finish { phong Phong phong_size PhongSize reflection Reflection }\n"
-						"    normal { OpaqueNormal }\n"
-						"  }\n"
-						"#if (LgeoLibrary) } #end\n"
-						"#end\n"
-						"#end\n\n");
-				POVFile.WriteLine(Line);
-				ColorMacros.append("OpaqueColor");
-			}
-		}
-	}
+	// every color finish is a texture macro wrapped in a material that carries its interior
+	POVFile.WriteLine(
+		"#ifndef (SkipColorMacros)\n"
+		"#macro OpaqueTexture(r, g, b, E)\n"
+		"  texture {\n"
+		"    pigment { srgb <r,g,b> }\n"
+		"    finish { emission E ambient Ambient diffuse Diffuse phong Phong phong_size PhongSize reflection { Reflection / 2, ReflectionMax fresnel on } conserve_energy }\n"
+		"    normal { OpaqueNormal }\n"
+		"  }\n"
+		"#end\n\n"
+		"#macro TranslucentTexture(r, g, b, f, E)\n"
+		"  texture {\n"
+		"    pigment { srgbf <r,g,b,f> }\n"
+		"    finish { emission E ambient Ambient diffuse Diffuse phong Phong phong_size PhongSize reflection { TransReflection / 4, 1 fresnel on } conserve_energy }\n"
+		"    normal { TransNormal }\n"
+		"  }\n"
+		"#end\n\n"
+		"#macro ChromeTexture(r, g, b, E)\n"
+		"  texture {\n"
+		"    pigment { srgb <r,g,b> }\n"
+		"    finish { emission E ambient Ambient diffuse Diffuse / 4 brilliance ChromeBrilliance metallic specular ChromeSpecular roughness ChromeRough reflection { ChromeReflection metallic } }\n"
+		"  }\n"
+		"#end\n\n"
+		"#macro PearlTexture(r, g, b, E)\n"
+		"  texture {\n"
+		"    pigment { srgb <r,g,b> }\n"
+		"    finish { emission E ambient Ambient diffuse Diffuse brilliance 2 phong Phong phong_size PhongSize / 2 reflection { Reflection / 2, ReflectionMax fresnel on } irid { PearlIridescence thickness 0.4 turbulence 0.5 } conserve_energy }\n"
+		"  }\n"
+		"#end\n\n"
+		"#macro MetalTexture(r, g, b, E)\n"
+		"  texture {\n"
+		"    pigment { srgb <r,g,b> }\n"
+		"    finish { emission E ambient Ambient diffuse Diffuse * 0.7 brilliance 3 metallic specular 0.6 roughness 0.03 reflection { MetalReflection metallic } }\n"
+		"    normal { granite 0.04 scale 0.02 }\n"
+		"  }\n"
+		"#end\n\n"
+		"#macro RubberTexture(r, g, b, E)\n"
+		"  texture {\n"
+		"    pigment { srgb <r,g,b> }\n"
+		"    finish { emission E ambient Ambient diffuse Diffuse phong RubberPhong phong_size RubberPhongS reflection RubberReflection }\n"
+		"  }\n"
+		"#end\n\n"
+		"#macro FlakeTexture(r, g, b, f, Fraction, Size, fr, fg, fb, E)\n"
+		"  #if (f > 0)\n"
+		"    #local Base = TranslucentTexture(r, g, b, f, E)\n"
+		"  #else\n"
+		"    #local Base = OpaqueTexture(r, g, b, E)\n"
+		"  #end\n"
+		"  #local Flake = texture {\n"
+		"    pigment { srgb <fr,fg,fb> }\n"
+		"    finish { emission E ambient Ambient diffuse Diffuse brilliance 4 metallic specular 0.9 roughness 0.005 reflection { FlakeReflection metallic } }\n"
+		"  }\n"
+		"  #local Edge = 1 - Fraction;\n"
+		"  texture {\n"
+		"    cells\n"
+		"    texture_map { [0 Base] [Edge Base] [Edge Flake] [1 Flake] }\n"
+		"    scale Size / 25\n"
+		"  }\n"
+		"#end\n\n"
+		"#macro OpaqueMaterial(T)\n"
+		"  material { texture { T } interior { ior OpaqueIoR } }\n"
+		"#end\n\n"
+		"#macro TranslucentMaterial(T, r, g, b)\n"
+		"  material { texture { T } interior { ior TransIoR fade_distance TransFade fade_power 1001 fade_color srgb <r,g,b> } }\n"
+		"#end\n"
+		"#end\n\n");
 
 	snprintf(Line, sizeof(Line), "#if (Background)\n  background {\n    color rgb BackgroundColor\n  }\n#end\n\n");
 	POVFile.WriteLine(Line);
@@ -1742,52 +1726,83 @@ swResult<void> Project::ExportPOVRay(const QString& FileName)
 		}
 	}
 
-	auto AddColorDefinition=[UseLGEO, &ColorTable, &LgeoColorTable, &MaterialColors, &Line, &POVFile](int ColorIndex)
+	auto AddColorDefinition=[&ColorTable, &LgeoColorTable, &POVFile](int ColorIndex)
 	{
-		if (!ColorTable[ColorIndex][0])
+		if (ColorTable[ColorIndex][0])
+			return;
+
+		const swColor* Color = &gColorList[ColorIndex];
+		QString Definition;
+
+		if (LgeoColorTable[ColorIndex].empty())
 		{
-			swColor* Color = &gColorList[ColorIndex];
+			snprintf(ColorTable[ColorIndex].data(), ColorTable[ColorIndex].size(), "sw_%s", Color->SafeName);
 
-			if (LgeoColorTable[ColorIndex].empty())
+			const QString Name = QLatin1String(ColorTable[ColorIndex].data());
+			const QString Rgb = QString::fromLatin1("%1, %2, %3").arg(Color->Value[0]).arg(Color->Value[1]).arg(Color->Value[2]);
+			const float Filter = Color->Translucent ? 0.85f : 0.0f;
+			// nearly opaque colors like glow in the dark only let a little light through
+			const QString FilterValue = Color->Value[3] < 0.9f ? QString::fromLatin1("TransFilter") : QString::number(1.0f - Color->Value[3]);
+			const float Emission = qMin(Color->Luminance / 100.0f, 1.0f);
+			const QString Glow = QString::fromLatin1("Glow * %1").arg(Emission);
+			QString Texture, Surface;
+
+			if (Color->Finish == swColorFinish::Glitter || Color->Finish == swColorFinish::Speckle)
 			{
-				snprintf(ColorTable[ColorIndex].data(), ColorTable[ColorIndex].size(), "sw_%s", Color->SafeName);
+				const QString Flake = QString::fromLatin1("%1, %2, %3").arg(Color->MaterialValue[0]).arg(Color->MaterialValue[1]).arg(Color->MaterialValue[2]);
+				const float Size = Color->MaterialSize > 0.0f ? Color->MaterialSize : 1.0f;
+				const QString FilterName = Color->Translucent ? FilterValue : QLatin1String("0");
+				Surface = QString::fromLatin1("FlakeTexture(%1, %2, %3, %4, %5, %6)").arg(Rgb, FilterName).arg(Color->MaterialFraction).arg(Size).arg(Flake, Glow);
 
-				if (swIsColorTranslucent(ColorIndex))
-				{
-					if (!UseLGEO && !MaterialColors.contains(ColorTable[ColorIndex].data()))
-						MaterialColors.append(ColorTable[ColorIndex].data());
-
-					snprintf(Line, sizeof(Line), "#ifndef (sw_%s)\n#declare sw_%s = TranslucentColor(%g, %g, %g, TransFilter)\n#end\n\n",
-							Color->SafeName, Color->SafeName, Color->Value[0], Color->Value[1], Color->Value[2]);
-				}
+				// decals can only layer over a plain texture so the flakes stay in the material
+				if (Color->Translucent)
+					Texture = QString::fromLatin1("TranslucentTexture(%1, %2, %3)").arg(Rgb, FilterValue, Glow);
 				else
-				{
-					const char* MacroName;
-
-					if (swIsColorChrome(ColorIndex))
-						MacroName = "Chrome";
-					else if (swIsColorRubber(ColorIndex))
-						MacroName = "Rubber";
-					else
-						MacroName = "Opaque";
-
-					snprintf(Line, sizeof(Line), "#ifndef (sw_%s)\n#declare sw_%s = %sColor(%g, %g, %g)\n#end\n\n", Color->SafeName, Color->SafeName, MacroName, Color->Value[0], Color->Value[1], Color->Value[2]);
-				}
+					Texture = QString::fromLatin1("OpaqueTexture(%1, %2)").arg(Rgb, Glow);
 			}
+			else if (Color->Translucent)
+				Texture = QString::fromLatin1("TranslucentTexture(%1, %2, %3)").arg(Rgb, FilterValue, Glow);
+			else if (Color->Chrome)
+				Texture = QString::fromLatin1("ChromeTexture(%1, %2)").arg(Rgb, Glow);
+			else if (Color->Rubber)
+				Texture = QString::fromLatin1("RubberTexture(%1, %2)").arg(Rgb, Glow);
+			else if (Color->Finish == swColorFinish::Pearl)
+				Texture = QString::fromLatin1("PearlTexture(%1, %2)").arg(Rgb, Glow);
+			else if (Color->Finish == swColorFinish::Metal)
+				Texture = QString::fromLatin1("MetalTexture(%1, %2)").arg(Rgb, Glow);
 			else
-			{
-				snprintf(ColorTable[ColorIndex].data(), ColorTable[ColorIndex].size(), "LDXColor%i", Color->Code);
+				Texture = QString::fromLatin1("OpaqueTexture(%1, %2)").arg(Rgb, Glow);
 
-				snprintf(Line, sizeof(Line), "#ifndef (LDXColor%i) // %s\n#declare LDXColor%i = material { texture { %s } }\n#end\n\n",
-						Color->Code, Color->Name, Color->Code, LgeoColorTable[ColorIndex].c_str());
-			}
+			if (Surface.isEmpty())
+				Surface = Name + QLatin1String("_texture");
 
-			POVFile.WriteLine(Line);
+			const QString Material = Filter > 0.0f ? QString::fromLatin1("TranslucentMaterial(%1, %2)").arg(Surface, Rgb) : QString::fromLatin1("OpaqueMaterial(%1)").arg(Surface);
+
+			Definition = QString::fromLatin1("#ifndef (%1_texture)\n#declare %1_texture = %2\n#end\n#ifndef (%1)\n#declare %1 = %3\n#end\n\n").arg(Name, Texture, Material);
 		}
+		else
+		{
+			snprintf(ColorTable[ColorIndex].data(), ColorTable[ColorIndex].size(), "LDXColor%i", Color->Code);
+
+			Definition = QString::fromLatin1("#ifndef (LDXColor%1) // %2\n#declare LDXColor%1_texture = texture { %3 }\n#declare LDXColor%1 = material { texture { LDXColor%1_texture } }\n#end\n\n")
+					.arg(Color->Code).arg(QLatin1String(Color->Name), QString::fromStdString(LgeoColorTable[ColorIndex]));
+		}
+
+		POVFile.WriteLine(Definition.toLatin1().constData());
 	};
 
 	for (const swModelPartsEntry& ModelPart : ModelParts)
+	{
 		AddColorDefinition(ModelPart.ColorIndex);
+
+		// colors fixed inside the part mesh need a declaration too
+		const swMesh* Mesh = ModelPart.Mesh ? ModelPart.Mesh : ModelPart.PartData->GetMesh();
+
+		if (Mesh)
+			for (int SectionIdx = 0; SectionIdx < Mesh->mLods[SW_MESH_LOD_HIGH].NumSections; SectionIdx++)
+				if (Mesh->mLods[SW_MESH_LOD_HIGH].Sections[SectionIdx].ColorIndex != gDefaultColor)
+					AddColorDefinition(Mesh->mLods[SW_MESH_LOD_HIGH].Sections[SectionIdx].ColorIndex);
+	}
 
 	AddColorDefinition(swGetColorIndex(TopModelColorCode));
 
@@ -1825,11 +1840,55 @@ swResult<void> Project::ExportPOVRay(const QString& FileName)
 	for (size_t ColorIdx = 0; ColorIdx < NumColors; ColorIdx++)
 		ColorTablePointer[ColorIdx] = ColorTable[ColorIdx].data();
 	std::map<const swMesh*, std::string> MeshNames;
+	std::map<const swMesh*, int> MeshFlags;
+	std::map<const swTexture*, QString> TextureFiles;
+	std::set<QString> UsedTextureFiles;
 	std::set<QString> UsedPovNames;
+	const QFileInfo SaveFileInfo(SaveFileName);
+	const QDir TextureDir(SaveFileInfo.absolutePath() + QLatin1Char('/') + SaveFileInfo.completeBaseName() + QLatin1String("_textures"));
+
+	// copy the images of printed parts next to the scene so pov-ray can map them
+	for (const swModelPartsEntry& ModelPart : ModelParts)
+	{
+		const swMesh* Mesh = ModelPart.Mesh ? ModelPart.Mesh : ModelPart.PartData->GetMesh();
+
+		if (!Mesh)
+			continue;
+
+		for (int SectionIdx = 0; SectionIdx < Mesh->mLods[SW_MESH_LOD_HIGH].NumSections; SectionIdx++)
+		{
+			const swMeshSection& Section = Mesh->mLods[SW_MESH_LOD_HIGH].Sections[SectionIdx];
+			const swTexture* Texture = Section.Texture.Get();
+
+			if (Section.PrimitiveType != SW_MESH_TEXTURED_TRIANGLES || !Texture || TextureFiles.count(Texture))
+				continue;
+
+			const QImage Image = QImage::fromData(Library->ReadTextureFile(Texture));
+
+			if (Image.isNull())
+				continue;
+
+			QString BaseName = QFileInfo(QString::fromLatin1(Texture->mName)).completeBaseName();
+			QString ImageName = BaseName + QLatin1String(".png");
+
+			for (int Suffix = 1; UsedTextureFiles.count(ImageName.toLower()); Suffix++)
+				ImageName = BaseName + QLatin1Char('_') + QString::number(Suffix) + QLatin1String(".png");
+
+			if (!TextureDir.mkpath(QLatin1String(".")) || !Image.save(TextureDir.filePath(ImageName), "PNG"))
+				continue;
+
+			UsedTextureFiles.insert(ImageName.toLower());
+			TextureFiles[Texture] = TextureDir.filePath(ImageName);
+		}
+	}
+
 	UsedPovNames.insert(TopModelName);
 
 	for (const swColor& Color : gColorList)
+	{
 		UsedPovNames.insert(QLatin1String("sw_") + QString::fromLatin1(Color.SafeName));
+		UsedPovNames.insert(QLatin1String("sw_") + QString::fromLatin1(Color.SafeName) + QLatin1String("_texture"));
+	}
 
 	for (const swModelPartsEntry& ModelPart : ModelParts)
 	{
@@ -1868,10 +1927,14 @@ swResult<void> Project::ExportPOVRay(const QString& FileName)
 		if (!Added)
 			continue;
 
-		Mesh->ExportPOVRay(POVFile, MeshName.c_str(), &ColorTablePointer[0]);
+		const int Flags = Mesh->ExportPOVRay(POVFile, MeshName.c_str(), &ColorTablePointer[0], TextureFiles);
+		MeshFlags[Mesh] = Flags;
 
-		snprintf(Line, sizeof(Line), "#declare sw_%s_clear = sw_%s\n\n", MeshName.c_str(), MeshName.c_str());
-		POVFile.WriteLine(Line);
+		if (Flags & SW_MESH_POVRAY_PLAIN)
+		{
+			snprintf(Line, sizeof(Line), "#declare sw_%s_clear = sw_%s\n\n", MeshName.c_str(), MeshName.c_str());
+			POVFile.WriteLine(Line);
+		}
 	}
 
 	if (!ModelParts.empty())
@@ -1880,16 +1943,29 @@ swResult<void> Project::ExportPOVRay(const QString& FileName)
 		POVFile.WriteLine(Line);
 	}
 
+	// a printed mesh joins its plain faces with the decal macro called for the instance color
+	auto InstanceObject = [&MeshFlags, &ColorTable](const char* Name, const char* Suffix, const swMesh* Mesh, int ColorIdx)
+	{
+		const std::map<const swMesh*, int>::const_iterator Flags = MeshFlags.find(Mesh);
+		const QByteArray Plain = QByteArray(Name) + Suffix;
+
+		if (Flags == MeshFlags.end() || !(Flags->second & SW_MESH_POVRAY_DECALS))
+			return Plain;
+
+		const QByteArray Decals = QByteArray(Name) + "_decals(" + ColorTable[ColorIdx].data() + "_texture)";
+
+		if (!(Flags->second & SW_MESH_POVRAY_PLAIN))
+			return QByteArray("union { ") + Decals + " }";
+
+		return QByteArray("union { object { ") + Plain + " } " + Decals + " }";
+	};
+
 	for (const swModelPartsEntry& ModelPart : ModelParts)
 	{
 		int ColorIdx = ModelPart.ColorIndex;
 		const char* Suffix = swIsColorTranslucent(ColorIdx) ? "_clear" : "";
 		const float* f = ModelPart.WorldMatrix.GetFloats();
-		char Modifier[32];
-		if (UseLGEO || MaterialColors.contains(ColorTable[ColorIdx].data()))
-			snprintf(Modifier, sizeof(Modifier), "material");
-		else
-			snprintf(Modifier, sizeof(Modifier), "texture");
+		const char* Modifier = "material";
 		if (!ModelPart.Mesh)
 		{
 			std::pair<char[SW_PART_NAME_LENGTH + 1], int>& Entry = PartTable[ModelPart.PartData];
@@ -1916,8 +1992,8 @@ swResult<void> Project::ExportPOVRay(const QString& FileName)
 				if (!ModelPart.PartData || !ModelPart.PartData->GetMesh())
 					continue;
 
-				snprintf(Line, sizeof(Line), "  object {\n    %s%s\n    %s { %s }\n    matrix <%g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g>\n  }\n",
-						Entry.first, Suffix, Modifier, ColorTable[ColorIdx].data(), -f[5], -f[4], -f[6], -f[1], -f[0], -f[2], f[9], f[8], f[10], f[13] / 25.0f, f[12] / 25.0f, f[14] / 25.0f);
+				snprintf(Line, sizeof(Line), "  object {\n    %s\n    %s { %s }\n    matrix <%g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g>\n  }\n",
+						InstanceObject(Entry.first, Suffix, ModelPart.PartData->GetMesh(), ColorIdx).constData(), Modifier, ColorTable[ColorIdx].data(), -f[5], -f[4], -f[6], -f[1], -f[0], -f[2], f[9], f[8], f[10], f[13] / 25.0f, f[12] / 25.0f, f[14] / 25.0f);
 
 			}
 		}
@@ -1925,8 +2001,8 @@ swResult<void> Project::ExportPOVRay(const QString& FileName)
 		{
 			const std::string& Name = MeshNames.at(ModelPart.Mesh);
 
-			snprintf(Line, sizeof(Line), "  object {\n    sw_%s%s\n    %s { %s }\n    matrix <%g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g>\n  }\n",
-					Name.c_str(), Suffix, Modifier, ColorTable[ColorIdx].data(), -f[5], -f[4], -f[6], -f[1], -f[0], -f[2], f[9], f[8], f[10], f[13] / 25.0f, f[12] / 25.0f, f[14] / 25.0f);
+			snprintf(Line, sizeof(Line), "  object {\n    %s\n    %s { %s }\n    matrix <%g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g, %g>\n  }\n",
+					InstanceObject(("sw_" + Name).c_str(), Suffix, ModelPart.Mesh, ColorIdx).constData(), Modifier, ColorTable[ColorIdx].data(), -f[5], -f[4], -f[6], -f[1], -f[0], -f[2], f[9], f[8], f[10], f[13] / 25.0f, f[12] / 25.0f, f[14] / 25.0f);
 		}
 
 		POVFile.WriteLine(Line);
@@ -1937,8 +2013,8 @@ swResult<void> Project::ExportPOVRay(const QString& FileName)
 		snprintf(Line, sizeof(Line), "\n  #if (ModelReflection = 0)\n    no_reflection\n  #end\n  #if (ModelShadow = 0)\n    no_shadow\n  #end\n}\n\n");
 		POVFile.WriteLine(Line);
 
-		snprintf(Line, sizeof(Line), "object {\n  %s\n  %s { %s }\n}\n\n",
-				TopModelName.toLatin1().constData(), (UseLGEO ? "material" : "texture"), ColorTable[swGetColorIndex(TopModelColorCode)].data());
+		snprintf(Line, sizeof(Line), "object {\n  %s\n  material { %s }\n}\n\n",
+				TopModelName.toLatin1().constData(), ColorTable[swGetColorIndex(TopModelColorCode)].data());
 		POVFile.WriteLine(Line);
 	}
 

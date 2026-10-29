@@ -480,6 +480,21 @@ swTextureBuildResult swPartsLibrary::BuildTextureData(const swFileSource& Source
 	return Result;
 }
 
+// use to read the original image file of a texture
+QByteArray swPartsLibrary::ReadTextureFile(const swTexture* Texture)
+{
+	const swResult<std::unique_ptr<swFile>> File = OpenFile(Texture->mSource);
+
+	if (!File)
+		return QByteArray();
+
+	swFile& Source = *File.value();
+	QByteArray Data(static_cast<int>(Source.GetLength()), Qt::Uninitialized);
+	Data.resize(static_cast<int>(Source.ReadBuffer(Data.data(), Data.size())));
+
+	return Data;
+}
+
 swResult<std::unique_ptr<swFile>> swPartsLibrary::OpenFile(const swFileSource& Source)
 {
 	if (Source.EmbeddedData)

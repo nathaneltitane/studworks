@@ -220,6 +220,9 @@ public:
 	swTextureReference AcquireTexture(const char* TextureName, Project* CurrentProject, bool SearchProjectFolder);
 	swTextureReference AcquireTexture(const char* TextureName, const std::vector<QString>& SearchDirectories, const std::map<QString, std::shared_ptr<const swEmbeddedData>>& EmbeddedData, swFileSource& Source);
 
+	// Reads the original image file of a texture, for exporters that copy it out.
+	QByteArray ReadTextureFile(const swTexture* Texture);
+
 	// Starts or promotes asynchronous loading; the caller retains the texture. Never waits.
 	void RequestTextureLoad(swTexture* Texture, swLoadPriority LoadPriority);
 
