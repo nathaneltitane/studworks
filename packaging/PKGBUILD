@@ -5,7 +5,7 @@ pkgrel=1
 pkgdesc="StudWorks is a CAD program for creating virtual LEGO® models."
 url="https://github.com/nathaneltitane/studworks"
 arch=('x86_64' 'i686')
-license=('GPL')
+license=('GPL-3.0-only')
 #Qt4.x
 depends=('qt4' 'libpng' 'libjpeg-turbo' 'mesa-libgl')
 #Qt5.x

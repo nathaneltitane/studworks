@@ -14,7 +14,7 @@ Name: studworks
 Version: %{sw_version}
 Release: 1
 Summary: Create virtual LEGO® models
-License: GPL-2.0-only
+License: GPL-3.0-only
 URL: https://github.com/nathaneltitane/studworks
 Packager: Nathanel Titane <nathanel.titane@gmail.com>
 Recommends: povray

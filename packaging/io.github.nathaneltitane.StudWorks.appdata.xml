@@ -2,12 +2,12 @@
 <component type="desktop-application">
 	<id>io.github.nathaneltitane.StudWorks</id>
 	<metadata_license>CC0-1.0</metadata_license>
-	<project_license>GPL-2.0</project_license>
+	<project_license>GPL-3.0-only</project_license>
 	<content_rating type="oars-1.1" />
 	<name>StudWorks</name>
 	<summary>Design virtual models you can build with LEGO® bricks</summary>
 	<description>
-		<p>StudWorks is a CAD program for creating virtual LEGO® models. It's available for free under the GNU Public License v2 and works on the Windows, Linux and macOS Operating Systems.</p>
+		<p>StudWorks is a CAD program for creating virtual LEGO® models. It's available for free under the GNU General Public License v3 and works on the Windows, Linux and macOS Operating Systems.</p>
 	</description>
 	<launchable type="desktop-id">studworks.desktop</launchable>
 	<url type="homepage">https://github.com/nathaneltitane/studworks/</url>

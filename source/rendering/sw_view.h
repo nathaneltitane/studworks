@@ -117,6 +117,7 @@ struct swFindReplaceParameters
 	int FindColorIndex = 0;
 	swPartData* ReplacePartData = nullptr;
 	int ReplaceColorIndex = 0;
+	bool ReplaceSubModels = false;
 };
 
 class swView : public QObject

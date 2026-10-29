@@ -8096,7 +8096,7 @@ Anisotrop: %4</translation>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_about.ui"/>
         <source>StudWorks is a free CAD program for creating virtual LEGO® models with the LDraw parts library.
-It is built on LeoCAD by Leonardo Zide and released under the GNU General Public License version 2.</source>
+It is built on LeoCAD by Leonardo Zide and released under the GNU General Public License version 3.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

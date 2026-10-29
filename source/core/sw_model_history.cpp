@@ -298,6 +298,80 @@ void swModelHistoryProperties::LoadState(const swModelProperties& State, swModel
 	Model->LoadModelPropertiesState(State);
 }
 
+swModelHistorySubModel::swModelHistorySubModel(const QString& SubModelName, std::unique_ptr<swModelHistoryEdit> SubModelEdit)
+	: mSubModelName(SubModelName), mSubModelEdit(std::move(SubModelEdit))
+{
+}
+
+void swModelHistorySubModel::SaveStartState(const swModel* Model)
+{
+	Q_UNUSED(Model);
+}
+
+void swModelHistorySubModel::SaveEndState(const swModel* Model)
+{
+	Q_UNUSED(Model);
+}
+
+swModel* swModelHistorySubModel::FindSubModel(const swModel* Model) const
+{
+	// the submodel is looked up by name so a deleted submodel is skipped
+	Project* const ModelProject = Model->GetProject();
+
+	return ModelProject ? ModelProject->GetModel(mSubModelName) : nullptr;
+}
+
+void swModelHistorySubModel::UpdateProjectModels(swModel* SubModel)
+{
+	SubModel->CalculateStep(SubModel->GetCurrentStep());
+
+	std::vector<swModel*> UpdatedModels;
+
+	for (const std::unique_ptr<swModel>& ProjectModel : SubModel->GetProject()->GetModels())
+		ProjectModel->UpdatePartData(UpdatedModels);
+}
+
+void swModelHistorySubModel::LoadStartState(swModel* Model) const
+{
+	swModel* const SubModel = FindSubModel(Model);
+
+	if (!SubModel)
+		return;
+
+	mSubModelEdit->LoadStartState(SubModel);
+	UpdateProjectModels(SubModel);
+}
+
+void swModelHistorySubModel::LoadEndState(swModel* Model) const
+{
+	swModel* const SubModel = FindSubModel(Model);
+
+	if (!SubModel)
+		return;
+
+	mSubModelEdit->LoadEndState(SubModel);
+	UpdateProjectModels(SubModel);
+}
+
+bool swModelHistorySubModel::StateChanged() const
+{
+	return mSubModelEdit->StateChanged();
+}
+
+void swModelHistorySubModel::RenameParts(const std::vector<swModelPartRename>& Renames, const swPartData* ModelPartData)
+{
+	mSubModelEdit->RenameParts(Renames, ModelPartData);
+
+	for (const swModelPartRename& Rename : Renames)
+	{
+		if (mSubModelName.compare(Rename.OldName, Qt::CaseInsensitive) != 0)
+			continue;
+
+		mSubModelName = Rename.NewName;
+		break;
+	}
+}
+
 void swModel::LoadEditHistoryState(const swModelHistoryEditState& HistoryState)
 {
 	const std::unordered_map<uint32_t, swGroup*> GroupsById = RestoreGroups(HistoryState.Groups);
@@ -467,7 +541,7 @@ void swModel::RunHistorySequence(const std::vector<std::unique_ptr<swModelHistor
 		{
 			SelectionChanged = true;
 		}
-		else if (dynamic_cast<const swModelHistoryEdit*>(ModelHistory))
+		else if (dynamic_cast<const swModelHistoryEdit*>(ModelHistory) || dynamic_cast<const swModelHistorySubModel*>(ModelHistory))
 		{
 			EditChanged = true;
 			SetCurrentStep(mCurrentStep);
@@ -523,7 +597,7 @@ void swModel::EndHistorySequence(const QString& Description)
 
 	for (const std::unique_ptr<swModelHistory>& ModelHistory : mHistorySequence)
 	{
-		if (dynamic_cast<const swModelHistoryEdit*>(ModelHistory.get()))
+		if (dynamic_cast<const swModelHistoryEdit*>(ModelHistory.get()) || dynamic_cast<const swModelHistorySubModel*>(ModelHistory.get()))
 		{
 			EditChanged = true;
 			break;

@@ -136,7 +136,18 @@ swFindReplaceWidget::swFindReplaceWidget(QWidget* Parent, swModel* Model, bool R
 		Layout->setColumnMinimumWidth(Column, ColumnWidth);
 	}
 
-	const QList<QWidget*> ReplaceControls = { ReplaceLabel, ReplaceColorPicker, mReplacePartButton, ReplaceNextButton, ReplaceAllButton };
+	// the submodel option sits under the replace row and spans it so its text leaves the columns as they are
+	QCheckBox* ReplaceSubModelsCheckBox = new QCheckBox(tr("Include Submodels"), this);
+	ReplaceSubModelsCheckBox->setToolTip(tr("Replace All also replaces the matching parts inside every submodel used by this model."));
+	ReplaceSubModelsCheckBox->setFocusPolicy(Qt::NoFocus);
+	Layout->addWidget(ReplaceSubModelsCheckBox, 2, 3, 1, 3);
+
+	connect(ReplaceSubModelsCheckBox, &QCheckBox::toggled, this, [](bool Checked)
+	{
+		swView::GetFindReplaceParams().ReplaceSubModels = Checked;
+	});
+
+	const QList<QWidget*> ReplaceControls = { ReplaceLabel, ReplaceColorPicker, mReplacePartButton, ReplaceNextButton, ReplaceAllButton, ReplaceSubModelsCheckBox };
 
 	// use to show the replace row with the same chevron as the collapsible sections
 	const auto SetReplaceVisible = [ReplaceToggleButton, ReplaceControls](bool Visible)

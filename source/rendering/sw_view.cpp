@@ -135,8 +135,13 @@ void swView::SetFocus(bool Focus)
 	{
 		if (mLastFocusedView != this)
 		{
-			delete mFindWidget;
-			mFindWidget = nullptr;
+			// only the bar of another view closes and only after its current event
+			if (mFindWidget && !mWidget->isAncestorOf(mFindWidget))
+			{
+				mFindWidget->hide();
+				mFindWidget->deleteLater();
+				mFindWidget = nullptr;
+			}
 
 			mLastFocusedView = this;
 		}

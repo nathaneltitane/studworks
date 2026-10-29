@@ -160,3 +160,25 @@ protected:
 	swModelProperties mStartState;
 	swModelProperties mEndState;
 };
+
+// use to keep the edit of a submodel inside the undo entry of the model that changed it
+class swModelHistorySubModel : public swModelHistory
+{
+public:
+	swModelHistorySubModel(const QString& SubModelName, std::unique_ptr<swModelHistoryEdit> SubModelEdit);
+	virtual ~swModelHistorySubModel() = default;
+
+	void SaveStartState(const swModel* Model) override;
+	void SaveEndState(const swModel* Model) override;
+	void LoadStartState(swModel* Model) const override;
+	void LoadEndState(swModel* Model) const override;
+	bool StateChanged() const override;
+	void RenameParts(const std::vector<swModelPartRename>& Renames, const swPartData* ModelPartData) override;
+
+protected:
+	swModel* FindSubModel(const swModel* Model) const;
+	static void UpdateProjectModels(swModel* SubModel);
+
+	QString mSubModelName;
+	std::unique_ptr<swModelHistoryEdit> mSubModelEdit;
+};

@@ -1085,6 +1085,7 @@ void swModel::FindReplacePart(bool SearchForward, bool FindAll, bool Replace)
 	}
 
 	size_t CurrentIndex = StartIndex;
+	int SubModelReplacedCount = 0;
 	swPart* Focus = nullptr;
 	std::vector<swObject*> Selection;
 
@@ -1131,10 +1132,64 @@ void swModel::FindReplacePart(bool SearchForward, bool FindAll, bool Replace)
 
 	EndEditHistory();
 
+	// replace all also reaches every submodel used below this one and keeps them all in this undo entry
+	if (FindAll && Replacing && Params.ReplaceSubModels)
+	{
+		std::vector<swModel*> SubModels;
+		std::set<swModel*> VisitedModels = { this };
+
+		for (size_t ModelIndex = 0; ModelIndex <= SubModels.size(); ModelIndex++)
+		{
+			std::set<swModel*> ChildModels;
+			(ModelIndex ? SubModels[ModelIndex - 1] : this)->GetSubModels(ChildModels);
+
+			for (swModel* ChildModel : ChildModels)
+				if (VisitedModels.insert(ChildModel).second)
+					SubModels.push_back(ChildModel);
+		}
+
+		for (swModel* SubModel : SubModels)
+		{
+			std::unique_ptr<swModelHistoryEdit> SubModelEdit = std::make_unique<swModelHistoryEdit>(swModelHistoryEditMergeKey{ swModelHistoryEditMerge::None, swObjectPropertyId::Count, SubModel->mCurrentStep, false });
+
+			SubModelEdit->SaveStartState(SubModel);
+
+			for (const std::unique_ptr<swPart>& Part : SubModel->mParts)
+			{
+				if (PartMatches(Part.get()))
+				{
+					ReplacePart(Part.get());
+					SubModelReplacedCount++;
+				}
+			}
+
+			SubModelEdit->SaveEndState(SubModel);
+
+			if (SubModelEdit->StateChanged())
+			{
+				SubModel->CalculateStep(SubModel->mCurrentStep);
+				mHistorySequence.emplace_back(std::make_unique<swModelHistorySubModel>(SubModel->GetFileName(), std::move(SubModelEdit)));
+			}
+		}
+
+		// the models above the replaced submodels take their new bounds
+		if (SubModelReplacedCount && mProject)
+		{
+			std::vector<swModel*> UpdatedModels;
+
+			for (const std::unique_ptr<swModel>& Model : mProject->GetModels())
+				Model->UpdatePartData(UpdatedModels);
+
+			gMainWindow->UpdateInUseCategory();
+		}
+	}
+
 	if (FindAll)
 		SetSelectionAndFocus(Selection, nullptr, 0, swSelectionMode::Single);
 	else
 		SetSelectionAndFocus(std::vector<swObject*>(), Focus, SW_PART_SECTION_POSITION, swSelectionMode::Single);
+
+	ReplacedCount += SubModelReplacedCount;
 
 	if (ReplacedCount)
 	{
