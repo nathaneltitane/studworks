@@ -279,45 +279,63 @@ bool swMesh::IntersectsPlanes(const swVector4 (&Planes)[6])
 template<typename IndexType>
 void swMesh::ExportPOVRayTriangles(swFile& File, const swMeshSection* Section)
 {
-	char Line[1024];
 	const IndexType* Indices = (IndexType*)mIndexData + Section->DrawOffset / sizeof(IndexType);
+	const bool Textured = Section->PrimitiveType == SW_MESH_TEXTURED_TRIANGLES;
+	std::map<IndexType, int> LocalIndices;
+	std::vector<IndexType> SourceIndices;
 
-	for (int Idx = 0; Idx < Section->DrawCount; Idx += 3)
+	// each section keeps only the vertices its faces use
+	for (int Idx = 0; Idx < Section->DrawCount; Idx++)
+		if (LocalIndices.emplace(Indices[Idx], static_cast<int>(SourceIndices.size())).second)
+			SourceIndices.push_back(Indices[Idx]);
+
+	auto WriteVectors = [&File](const char* Block, const QStringList& Values)
 	{
-		swVector3 Positions[3];
-		swVector3 Normals[3];
-		swVector2 TexCoords[3];
+		QString Text = QString::fromLatin1("  %1 { %2").arg(QLatin1String(Block)).arg(Values.size());
 
-		for (int VertexIdx = 0; VertexIdx < 3; VertexIdx++)
+		for (int Idx = 0; Idx < Values.size(); Idx++)
+			Text += (Idx % 4 ? QLatin1String(", ") : QLatin1String(",\n   ")) + Values[Idx];
+
+		Text += QLatin1String("\n  }\n");
+		File.WriteLine(Text.toLatin1().constData());
+	};
+
+	QStringList Positions, Normals, TexCoords, Faces;
+
+	for (IndexType SourceIndex : SourceIndices)
+	{
+		swVector3 Position, Normal;
+
+		if (Textured)
 		{
-			if (Section->PrimitiveType == SW_MESH_TEXTURED_TRIANGLES)
-			{
-				const swVertexTextured& Vertex = GetTexturedVertexData()[Indices[Idx + VertexIdx]];
-				Positions[VertexIdx] = Vertex.Position / 25.0f;
-				Normals[VertexIdx] = swUnpackNormal(Vertex.Normal);
-				TexCoords[VertexIdx] = Vertex.TexCoord;
-			}
-			else
-			{
-				const swVertex& Vertex = GetVertexData()[Indices[Idx + VertexIdx]];
-				Positions[VertexIdx] = Vertex.Position / 25.0f;
-				Normals[VertexIdx] = swUnpackNormal(Vertex.Normal);
-			}
+			const swVertexTextured& Vertex = GetTexturedVertexData()[SourceIndex];
+			Position = Vertex.Position / 25.0f;
+			Normal = swUnpackNormal(Vertex.Normal);
+
+			// image rows run top down while pov-ray uv space runs bottom up
+			TexCoords << QString::fromLatin1("<%1, %2>").arg(Vertex.TexCoord.x).arg(1.0f - Vertex.TexCoord.y);
+		}
+		else
+		{
+			const swVertex& Vertex = GetVertexData()[SourceIndex];
+			Position = Vertex.Position / 25.0f;
+			Normal = swUnpackNormal(Vertex.Normal);
 		}
 
-		const swVector3* v = Positions;
-		const swVector3* n = Normals;
-		int Length = snprintf(Line, sizeof(Line), "  smooth_triangle { <%g, %g, %g>, <%g, %g, %g>, <%g, %g, %g>, <%g, %g, %g>, <%g, %g, %g>, <%g, %g, %g>",
-		                      -v[0].y, -v[0].x, v[0].z, -n[0].y, -n[0].x, n[0].z, -v[1].y, -v[1].x, v[1].z, -n[1].y, -n[1].x, n[1].z, -v[2].y, -v[2].x, v[2].z, -n[2].y, -n[2].x, n[2].z);
-
-		// image rows run top down while pov-ray uv space runs bottom up
-		if (Section->PrimitiveType == SW_MESH_TEXTURED_TRIANGLES)
-			Length += snprintf(Line + Length, sizeof(Line) - Length, " uv_vectors <%g, %g>, <%g, %g>, <%g, %g>",
-			                   TexCoords[0].x, 1.0f - TexCoords[0].y, TexCoords[1].x, 1.0f - TexCoords[1].y, TexCoords[2].x, 1.0f - TexCoords[2].y);
-
-		snprintf(Line + Length, sizeof(Line) - Length, " }\n");
-		File.WriteLine(Line);
+		Positions << QString::fromLatin1("<%1, %2, %3>").arg(-Position.y).arg(-Position.x).arg(Position.z);
+		Normals << QString::fromLatin1("<%1, %2, %3>").arg(-Normal.y).arg(-Normal.x).arg(Normal.z);
 	}
+
+	for (int Idx = 0; Idx < Section->DrawCount; Idx += 3)
+		Faces << QString::fromLatin1("<%1, %2, %3>").arg(LocalIndices[Indices[Idx]]).arg(LocalIndices[Indices[Idx + 1]]).arg(LocalIndices[Indices[Idx + 2]]);
+
+	WriteVectors("vertex_vectors", Positions);
+	WriteVectors("normal_vectors", Normals);
+
+	if (Textured)
+		WriteVectors("uv_vectors", TexCoords);
+
+	WriteVectors("face_indices", Faces);
 }
 
 template<typename IndexType>
@@ -338,13 +356,13 @@ int swMesh::ExportPOVRay(swFile& File, const char* MeshName, const char** ColorT
 
 	if (!PlainSections.empty())
 	{
-		snprintf(Line, sizeof(Line), PlainSections.size() > 1 ? "#declare sw_%s = union {\n" : "#declare sw_%s = mesh {\n", MeshName);
+		snprintf(Line, sizeof(Line), PlainSections.size() > 1 ? "#declare sw_%s = union {\n" : "#declare sw_%s = mesh2 {\n", MeshName);
 		File.WriteLine(Line);
 
 		for (const swMeshSection* Section : PlainSections)
 		{
 			if (PlainSections.size() > 1)
-				File.WriteLine(" mesh {\n");
+				File.WriteLine(" mesh2 {\n");
 
 			ExportPOVRayTriangles<IndexType>(File, Section);
 
@@ -369,7 +387,7 @@ int swMesh::ExportPOVRay(swFile& File, const char* MeshName, const char** ColorT
 
 		for (const swMeshSection* Section : DecalSections)
 		{
-			File.WriteLine(" mesh {\n");
+			File.WriteLine(" mesh2 {\n");
 			ExportPOVRayTriangles<IndexType>(File, Section);
 
 			if (Section->ColorIndex != gDefaultColor)
