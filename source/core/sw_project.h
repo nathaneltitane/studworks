@@ -167,7 +167,7 @@ public:
 	swResult<void> ExportCOLLADA(const QString& FileName);
 	swResult<void> ExportCSV(const QString& FileName);
 	swResult<void> ExportHTML(const swHTMLExportOptions& Options);
-	swResult<void> ExportPOVRay(const QString& FileName, const swCamera* ExportCamera = nullptr);
+	swResult<void> ExportPOVRay(const QString& FileName, const swCamera* ExportCamera = nullptr, swStep Step = SW_STEP_MAXIMUM);
 	swResult<void> ExportWavefront(const QString& FileName);
 
 	void UpdatePartData(swPartData* PartData) const;
@@ -215,7 +215,7 @@ protected:
 	static bool CanShareMergePartData(const swPartData* Existing, const swPartData* Incoming);
 	QString GetExportFileName(const QString& FileName, const QString& DefaultExtension, const QString& DialogTitle, const QString& DialogFilter) const;
 
-	std::vector<swModelPartsEntry> GetModelParts();
+	std::vector<swModelPartsEntry> GetModelParts(swStep Step = SW_STEP_MAXIMUM);
 	void SetFileName(const QString& FileName);
 
 	QUuid mClipboardIdentity = QUuid::createUuid();

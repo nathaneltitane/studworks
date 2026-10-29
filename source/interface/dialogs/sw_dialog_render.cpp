@@ -6,6 +6,7 @@
 #include "sw_profile.h"
 #include "sw_dialog_preferences_blender.h"
 #include "sw_model.h"
+#include "sw_object_camera.h"
 #include "sw_window_utilities.h"
 
 #ifndef SW_DISABLE_RENDER_DIALOG
@@ -13,7 +14,7 @@
 #define SW_POVRAY_PREVIEW_WIDTH 768
 #define SW_POVRAY_PREVIEW_HEIGHT 432
 // raise to drop the panel layouts saved by older versions of the window
-#define SW_RENDER_WINDOW_STATE_VERSION 2
+#define SW_RENDER_WINDOW_STATE_VERSION 3
 #define SW_RENDER_PANEL_WIDTH 380
 #define SW_RENDER_LOG_HEIGHT 240
 #if defined(Q_OS_WIN) || defined(Q_OS_MACOS)
@@ -27,6 +28,79 @@ void swRenderPreviewWidget::resizeEvent(QResizeEvent* Event)
 	QWidget::resizeEvent(Event);
 }
 
+// use to find where the canvas lies in the preview
+QRect swRenderPreviewWidget::GetCanvasRect() const
+{
+	const QSize ImageSize = !mImage.isNull() ? mImage.size() : mCanvasSize;
+
+	if (ImageSize.isEmpty())
+		return QRect();
+
+	const int Margin = style()->pixelMetric(QStyle::PM_LayoutLeftMargin);
+	const QRect AreaRect = rect().adjusted(Margin, Margin, -Margin, -Margin);
+	QRect CanvasRect(QPoint(0, 0), ImageSize.scaled(AreaRect.size(), Qt::KeepAspectRatio));
+	CanvasRect.moveCenter(AreaRect.center());
+
+	return CanvasRect;
+}
+
+// use to turn a preview position into a fraction of the canvas
+QPointF swRenderPreviewWidget::GetCanvasPoint(const QPoint& Position) const
+{
+	const QRect CanvasRect = GetCanvasRect();
+
+	if (CanvasRect.isEmpty())
+		return QPointF();
+
+	return QPointF(std::clamp(qreal(Position.x() - CanvasRect.left()) / CanvasRect.width(), 0.0, 1.0), std::clamp(qreal(Position.y() - CanvasRect.top()) / CanvasRect.height(), 0.0, 1.0));
+}
+
+void swRenderPreviewWidget::mousePressEvent(QMouseEvent* MouseEvent)
+{
+	if (!mRegionMode || MouseEvent->button() != Qt::LeftButton || GetCanvasRect().isEmpty())
+	{
+		QWidget::mousePressEvent(MouseEvent);
+		return;
+	}
+
+	mRegionDragging = true;
+	mRegionStart = GetCanvasPoint(MouseEvent->pos());
+	mRegion = QRectF(mRegionStart, QSizeF());
+	update();
+}
+
+void swRenderPreviewWidget::mouseMoveEvent(QMouseEvent* MouseEvent)
+{
+	if (!mRegionDragging)
+	{
+		QWidget::mouseMoveEvent(MouseEvent);
+		return;
+	}
+
+	mRegion = QRectF(mRegionStart, GetCanvasPoint(MouseEvent->pos())).normalized();
+	update();
+}
+
+void swRenderPreviewWidget::mouseReleaseEvent(QMouseEvent* MouseEvent)
+{
+	if (!mRegionDragging || MouseEvent->button() != Qt::LeftButton)
+	{
+		QWidget::mouseReleaseEvent(MouseEvent);
+		return;
+	}
+
+	mRegionDragging = false;
+	mRegion = QRectF(mRegionStart, GetCanvasPoint(MouseEvent->pos())).normalized();
+
+	// a click without a drag keeps the whole image
+	if (mRegion.width() < 0.01 || mRegion.height() < 0.01)
+		mRegion = QRectF(0.0, 0.0, 1.0, 1.0);
+
+	update();
+
+	emit RegionChanged(mRegion);
+}
+
 void swRenderPreviewWidget::paintEvent(QPaintEvent* PaintEvent)
 {
 	Q_UNUSED(PaintEvent);
@@ -36,15 +110,10 @@ void swRenderPreviewWidget::paintEvent(QPaintEvent* PaintEvent)
 	// the canvas lies on the backdrop like the page of the instructions window
 	Painter.fillRect(rect(), palette().color(QPalette::Mid));
 
-	const QSize ImageSize = !mImage.isNull() ? mImage.size() : mCanvasSize;
+	const QRect CanvasRect = GetCanvasRect();
 
-	if (ImageSize.isEmpty())
+	if (CanvasRect.isEmpty())
 		return;
-
-	const int Margin = style()->pixelMetric(QStyle::PM_LayoutLeftMargin);
-	const QRect AreaRect = rect().adjusted(Margin, Margin, -Margin, -Margin);
-	QRect CanvasRect(QPoint(0, 0), ImageSize.scaled(AreaRect.size(), Qt::KeepAspectRatio));
-	CanvasRect.moveCenter(AreaRect.center());
 
 	// the empty canvas is a blank sheet like a new instructions page
 	Painter.fillRect(CanvasRect, Qt::white);
@@ -66,6 +135,22 @@ void swRenderPreviewWidget::paintEvent(QPaintEvent* PaintEvent)
 		QRect IconRect(0, 0, IconSize, IconSize);
 		IconRect.moveCenter(CanvasRect.center());
 		Painter.drawImage(IconRect, IconImage);
+	}
+
+	if (mRegionMode)
+	{
+		// the canvas outside the region is dimmed and the region outlined in the highlight color
+		const QRectF RegionRect(CanvasRect.left() + mRegion.left() * CanvasRect.width(), CanvasRect.top() + mRegion.top() * CanvasRect.height(), mRegion.width() * CanvasRect.width(), mRegion.height() * CanvasRect.height());
+		QPainterPath OutsidePath;
+		OutsidePath.addRect(CanvasRect);
+		OutsidePath.addRect(RegionRect);
+		Painter.fillPath(OutsidePath, QColor(0, 0, 0, 96));
+
+		QPen Pen(palette().color(QPalette::Highlight), 2);
+		Pen.setCosmetic(true);
+		Painter.setPen(Pen);
+		Painter.setBrush(Qt::NoBrush);
+		Painter.drawRect(RegionRect);
 	}
 }
 
@@ -266,6 +351,33 @@ void swRenderDialog::CreatePOVRayPanels()
 		return SpinBox;
 	};
 
+	QWidget* PresetsPanel = CreatePanel(tr("Presets"), "RenderPresets", tr("<p><b>Presets</b></p><p>Keep the image size, quality and scene settings under a name and bring them back with one choice. Save stores the current settings as a preset and Delete removes the chosen one.</p>"));
+
+	mPresetComboBox = new QComboBox();
+	CreateRow(PresetsPanel, tr("Preset"), mPresetComboBox, tr("Choose a preset to apply its image size, quality and scene settings."), QString());
+
+	// the preset buttons share the panel width like the template buttons of the minifigure panel
+	QWidget* PresetButtonRow = swCreatePanelRow(PresetsPanel);
+	PresetsPanel->layout()->addWidget(PresetButtonRow);
+
+	auto CreatePresetButton = [PresetButtonRow](const QString& Text, const QString& ToolTip)
+	{
+		QToolButton* Button = new QToolButton(PresetButtonRow);
+		Button->setText(Text);
+		Button->setToolTip(ToolTip);
+		Button->setWhatsThis(ToolTip);
+		Button->setToolButtonStyle(Qt::ToolButtonTextOnly);
+		swSetupPanelButton(Button);
+		Button->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+		Button->setMinimumWidth(0);
+		static_cast<QHBoxLayout*>(PresetButtonRow->layout())->addWidget(Button, 1);
+
+		return Button;
+	};
+
+	QToolButton* PresetSaveButton = CreatePresetButton(tr("Save..."), tr("Save the current image size, quality and scene settings as a preset."));
+	mPresetDeleteButton = CreatePresetButton(tr("Delete..."), tr("Delete the chosen preset."));
+
 	QWidget* OutputPanel = CreatePanel(tr("Output"), "RenderOutput", tr("<p><b>Output</b></p><p>Choose where the rendered image is saved and its format, such as PNG, JPEG, or BMP.</p>"));
 
 	QWidget* FileRow = CreateRow(OutputPanel, tr("File"), ui->OutputEdit, ui->OutputEdit->toolTip(), ui->OutputEdit->whatsThis());
@@ -275,24 +387,42 @@ void swRenderDialog::CreatePOVRayPanels()
 
 	QWidget* ImagePanel = CreatePanel(tr("Image"), "RenderImage", tr("<p><b>Image</b></p><p>Set the size of the rendered image in pixels and the rendering quality. Larger images and higher quality take longer to render.</p>"));
 
-	QSpinBox* WidthSpinBox = CreateSpinBox(mWidth);
+	mWidthSpinBox = CreateSpinBox(mWidth);
+	QSpinBox* WidthSpinBox = mWidthSpinBox;
 	CreateRow(ImagePanel, tr("Width"), WidthSpinBox, tr("Set the rendered image width in pixels (1 to 32768)."), QString());
 
-	QSpinBox* HeightSpinBox = CreateSpinBox(mHeight);
+	mHeightSpinBox = CreateSpinBox(mHeight);
+	QSpinBox* HeightSpinBox = mHeightSpinBox;
 	CreateRow(ImagePanel, tr("Height"), HeightSpinBox, tr("Set the rendered image height in pixels (1 to 32768)."), QString());
 
-	QComboBox* QualityComboBox = CreateComboBox({ tr("Low"), tr("Medium"), tr("High") }, static_cast<int>(mQuality));
+	mQualityComboBox = CreateComboBox({ tr("Low"), tr("Medium"), tr("High") }, static_cast<int>(mQuality));
+	QComboBox* QualityComboBox = mQualityComboBox;
 	CreateRow(ImagePanel, tr("Quality"), QualityComboBox, tr("Choose the rendering quality; higher quality can take longer."), tr("<p><b>Quality</b></p><p>Low uses POV-Ray's default quality without additional antialiasing options. Medium uses quality level 5 with antialiasing and fast radiosity. High uses quality level 11 with additional antialiasing settings and full radiosity.</p>"));
+
+	mAreaComboBox = CreateComboBox({ tr("Full Image"), tr("Region") }, swGetProfileInteger(SW_PROFILE_RENDER_AREA));
+	CreateRow(ImagePanel, tr("Area"), mAreaComboBox, tr("Choose whether the whole image is rendered or only a region drawn on the preview."), tr("<p><b>Area</b></p><p>Full Image renders the whole image. Region renders only the part outlined on the preview, drag on the preview to draw it. A region rendered at the size of the last image is placed into that image so a detail can be refined without rendering everything again.</p>"));
+
+	QWidget* BatchPanel = CreatePanel(tr("Batch"), "RenderBatch", tr("<p><b>Batch</b></p><p>Render several images in one go, one for each building step or each camera of the model. Each image is saved next to the output file with the step number or camera name added to its name.</p>"));
+
+	mStepsComboBox = CreateComboBox({ tr("Model"), tr("Current Step"), tr("All Steps") }, swGetProfileInteger(SW_PROFILE_RENDER_STEPS));
+	CreateRow(BatchPanel, tr("Steps"), mStepsComboBox, tr("Choose whether the finished model, the current step or every step is rendered."), tr("<p><b>Steps</b></p><p>Model renders the finished model. Current Step renders the model as built up to the step shown in the main window. All Steps renders one image for every step, numbered after the step.</p>"));
+
+	mCamerasComboBox = new QComboBox();
+	CreateRow(BatchPanel, tr("Cameras"), mCamerasComboBox, tr("Choose the view or a camera of the model to render from, or every camera."), tr("<p><b>Cameras</b></p><p>View renders from the view of the main window. A camera renders from that camera of the model. All Cameras renders one image for every camera, named after the camera.</p>"));
+	UpdateCameras();
 
 	QWidget* ScenePanel = CreatePanel(tr("Scene"), "RenderScene", tr("<p><b>Scene</b></p><p>Set the lights, floor and surroundings the model is rendered in.</p>"));
 
-	QComboBox* LightRigComboBox = CreateComboBox({ tr("Standard"), tr("Studio"), tr("Matte") }, swGetProfileInteger(SW_PROFILE_RENDER_LIGHT_RIG));
+	mLightRigComboBox = CreateComboBox({ tr("Standard"), tr("Studio"), tr("Matte") }, swGetProfileInteger(SW_PROFILE_RENDER_LIGHT_RIG));
+	QComboBox* LightRigComboBox = mLightRigComboBox;
 	CreateRow(ScenePanel, tr("Lights"), LightRigComboBox, tr("Choose the lights placed around models that have no lights of their own."), tr("<p><b>Lights</b></p><p>Standard uses four point lights with crisp shadows. Studio uses a large soft key light, a fill light and a rim light behind the model. Matte uses a wide overhead light and a shadowless light from the camera for even, soft lighting. Lights placed in the model replace these.</p>"));
 
-	QComboBox* FloorStyleComboBox = CreateComboBox({ tr("Plain"), tr("Shadow Catcher"), tr("Reflective"), tr("Cyclorama") }, swGetProfileInteger(SW_PROFILE_RENDER_FLOOR_STYLE));
+	mFloorStyleComboBox = CreateComboBox({ tr("Plain"), tr("Shadow Catcher"), tr("Reflective"), tr("Cyclorama") }, swGetProfileInteger(SW_PROFILE_RENDER_FLOOR_STYLE));
+	QComboBox* FloorStyleComboBox = mFloorStyleComboBox;
 	CreateRow(ScenePanel, tr("Floor"), FloorStyleComboBox, tr("Choose how the floor under the model looks."), tr("<p><b>Floor</b></p><p>Plain uses the floor color of the model. Shadow Catcher takes the background color so only the shadows show. Reflective adds a glossy mirror finish. Cyclorama fades the floor into the background with distance for a seamless backdrop.</p>"));
 
-	QLineEdit* EnvironmentEdit = new QLineEdit();
+	mEnvironmentEdit = new QLineEdit();
+	QLineEdit* EnvironmentEdit = mEnvironmentEdit;
 	EnvironmentEdit->setText(QDir::toNativeSeparators(swGetProfileString(SW_PROFILE_RENDER_ENVIRONMENT_IMAGE)));
 	EnvironmentEdit->setPlaceholderText(tr("Background Color"));
 	EnvironmentEdit->setClearButtonEnabled(true);
@@ -306,7 +436,8 @@ void swRenderDialog::CreatePOVRayPanels()
 	swSetupPanelButton(EnvironmentButton);
 	EnvironmentRow->layout()->addWidget(EnvironmentButton);
 
-	QComboBox* BackgroundComboBox = CreateComboBox({ tr("Visible"), tr("Transparent") }, swGetProfileInteger(SW_PROFILE_RENDER_TRANSPARENT) ? 1 : 0);
+	mBackgroundComboBox = CreateComboBox({ tr("Visible"), tr("Transparent") }, swGetProfileInteger(SW_PROFILE_RENDER_TRANSPARENT) ? 1 : 0);
+	QComboBox* BackgroundComboBox = mBackgroundComboBox;
 	CreateRow(ScenePanel, tr("Background"), BackgroundComboBox, tr("Choose whether the background and floor are rendered or left as transparent pixels for compositing."), QString());
 
 	QWidget* RenderPanel = CreatePanel(tr("Render"), "RenderRender", tr("<p><b>Render</b></p><p>Start the render and follow its progress. While rendering, Render becomes Cancel so you can stop it. Log shows the renderer output below the preview.</p>"));
@@ -389,6 +520,54 @@ void swRenderDialog::CreatePOVRayPanels()
 		swSetProfileString(SW_PROFILE_RENDER_ENVIRONMENT_IMAGE, QDir::fromNativeSeparators(Text.trimmed()));
 	});
 
+	// the preset shows custom once a setting no longer matches it
+	for (QSpinBox* SpinBox : { WidthSpinBox, HeightSpinBox })
+		connect(SpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &swRenderDialog::UpdatePresets);
+
+	for (QComboBox* ComboBox : { QualityComboBox, LightRigComboBox, FloorStyleComboBox, BackgroundComboBox })
+		connect(ComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &swRenderDialog::UpdatePresets);
+
+	connect(EnvironmentEdit, &QLineEdit::textChanged, this, &swRenderDialog::UpdatePresets);
+
+	connect(mPresetComboBox, QOverload<int>::of(&QComboBox::activated), this, [this](int Index)
+	{
+		ApplyPreset(mPresetComboBox->itemData(Index).toString());
+	});
+
+	connect(PresetSaveButton, &QToolButton::clicked, this, &swRenderDialog::SavePresetClicked);
+	connect(mPresetDeleteButton, &QToolButton::clicked, this, &swRenderDialog::DeletePresetClicked);
+
+	UpdatePresets();
+
+	// the region is drawn on the preview and kept with the area for the next render
+	const QStringList RegionValues = swGetProfileString(SW_PROFILE_RENDER_REGION).split(' ', Qt::SkipEmptyParts);
+
+	if (RegionValues.size() == 4)
+		ui->preview->SetRegion(QRectF(RegionValues[0].toDouble(), RegionValues[1].toDouble(), RegionValues[2].toDouble(), RegionValues[3].toDouble()) & QRectF(0.0, 0.0, 1.0, 1.0));
+
+	ui->preview->SetRegionMode(mAreaComboBox->currentIndex() == 1);
+
+	connect(mAreaComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [this](int Index)
+	{
+		swSetProfileInteger(SW_PROFILE_RENDER_AREA, Index);
+		ui->preview->SetRegionMode(Index == 1);
+	});
+
+	connect(ui->preview, &swRenderPreviewWidget::RegionChanged, this, [](const QRectF& Region)
+	{
+		swSetProfileString(SW_PROFILE_RENDER_REGION, QString("%1 %2 %3 %4").arg(Region.x()).arg(Region.y()).arg(Region.width()).arg(Region.height()));
+	});
+
+	connect(mStepsComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [](int Index)
+	{
+		swSetProfileInteger(SW_PROFILE_RENDER_STEPS, Index);
+	});
+
+	connect(mCamerasComboBox, QOverload<int>::of(&QComboBox::activated), this, [this](int Index)
+	{
+		swSetProfileString(SW_PROFILE_RENDER_CAMERAS, mCamerasComboBox->itemData(Index).toString());
+	});
+
 	connect(EnvironmentButton, &QToolButton::clicked, this, [this, EnvironmentEdit]()
 	{
 		const QString FileName = QFileDialog::getOpenFileName(this, tr("Select Environment Image"), EnvironmentEdit->text(), tr("Environment Images (*.hdr *.exr *.png *.jpg *.jpeg *.tif *.tiff);;All Files (*.*)"));
@@ -443,11 +622,14 @@ void swRenderDialog::CreatePOVRayPanels()
 		}
 	});
 
-	for (QWidget* Panel : { OutputPanel, ImagePanel, RenderPanel })
+	for (QWidget* Panel : { PresetsPanel, OutputPanel, ImagePanel, BatchPanel, RenderPanel })
 		Panel->setFixedHeight(Panel->sizeHint().height());
 
 	// panels moved to another area open at a usable size instead of collapsing to their least size
-	const QList<QDockWidget*> CompactPanels = { qobject_cast<QDockWidget*>(OutputPanel->parentWidget()), qobject_cast<QDockWidget*>(ImagePanel->parentWidget()), qobject_cast<QDockWidget*>(RenderPanel->parentWidget()) };
+	QList<QDockWidget*> CompactPanels;
+
+	for (QWidget* Panel : { PresetsPanel, OutputPanel, ImagePanel, BatchPanel, RenderPanel })
+		CompactPanels.append(qobject_cast<QDockWidget*>(Panel->parentWidget()));
 
 	auto FitPanels = [PanelWindow, CompactPanels]()
 	{
@@ -504,13 +686,186 @@ void swRenderDialog::CreatePOVRayPanels()
 	Settings.endGroup();
 
 	// the panels without a toggle are never lost to a layout saved while they were hidden
-	for (QWidget* Panel : { OutputPanel, ImagePanel, ScenePanel, RenderPanel })
+	for (QWidget* Panel : { PresetsPanel, OutputPanel, ImagePanel, BatchPanel, ScenePanel, RenderPanel })
 		Panel->parentWidget()->show();
 
 	mLogButton->setChecked(!mLogPanel->isHidden());
 
 	// a layout saved with squeezed panels opens at a usable size once the window is laid out
 	QTimer::singleShot(0, PanelWindow, FitPanels);
+}
+
+// use to list the settings a preset keeps in the order they are stored
+QStringList swRenderDialog::GetPresetValues() const
+{
+	return { QString::number(mWidthSpinBox->value()), QString::number(mHeightSpinBox->value()), QString::number(mQualityComboBox->currentIndex()), QString::number(mLightRigComboBox->currentIndex()), QString::number(mFloorStyleComboBox->currentIndex()), QString::number(mBackgroundComboBox->currentIndex()), QDir::fromNativeSeparators(mEnvironmentEdit->text().trimmed()) };
+}
+
+// use to set the controls to the settings of a stored preset
+void swRenderDialog::ApplyPreset(const QString& Preset)
+{
+	const QStringList Values = Preset.split('|');
+
+	if (Values.size() < 8)
+		return;
+
+	mPresetName = Values[0];
+
+	mWidthSpinBox->setValue(Values[1].toInt());
+	mHeightSpinBox->setValue(Values[2].toInt());
+	mQualityComboBox->setCurrentIndex(std::clamp(Values[3].toInt(), 0, mQualityComboBox->count() - 1));
+	mLightRigComboBox->setCurrentIndex(std::clamp(Values[4].toInt(), 0, mLightRigComboBox->count() - 1));
+	mFloorStyleComboBox->setCurrentIndex(std::clamp(Values[5].toInt(), 0, mFloorStyleComboBox->count() - 1));
+	mBackgroundComboBox->setCurrentIndex(std::clamp(Values[6].toInt(), 0, mBackgroundComboBox->count() - 1));
+	mEnvironmentEdit->setText(QDir::toNativeSeparators(Values.mid(7).join('|')));
+
+	UpdatePresets();
+}
+
+// use to fill the preset list and choose the preset matching the current settings
+void swRenderDialog::UpdatePresets()
+{
+	if (!mPresetComboBox)
+		return;
+
+	const QStringList Presets = swGetProfileStringList(SW_PROFILE_RENDER_PRESETS);
+	const QStringList Values = GetPresetValues();
+	int CurrentIndex = -1;
+
+	QSignalBlocker Blocker(mPresetComboBox);
+	mPresetComboBox->clear();
+
+	for (const QString& Preset : Presets)
+	{
+		const QStringList PresetValues = Preset.split('|');
+
+		if (PresetValues.size() < 8)
+			continue;
+
+		// presets with the same settings show the one last chosen or saved
+		if ((CurrentIndex == -1 || PresetValues[0] == mPresetName) && PresetValues.mid(1, 6) == Values.mid(0, 6) && PresetValues.mid(7).join('|') == Values[6])
+			CurrentIndex = mPresetComboBox->count();
+
+		mPresetComboBox->addItem(PresetValues[0], Preset);
+	}
+
+	// settings matching no preset show as custom at the top of the list
+	if (CurrentIndex == -1)
+	{
+		mPresetComboBox->insertItem(0, tr("Custom"));
+		CurrentIndex = 0;
+	}
+
+	mPresetComboBox->setCurrentIndex(CurrentIndex);
+	mPresetDeleteButton->setEnabled(!mPresetComboBox->itemData(CurrentIndex).toString().isEmpty());
+}
+
+// use to store the current settings as a named preset
+void swRenderDialog::SavePresetClicked()
+{
+	const QString CurrentName = mPresetComboBox->currentData().toString().isEmpty() ? QString() : mPresetComboBox->currentText();
+	bool Ok = false;
+	const QString Name = QInputDialog::getText(this, tr("Save Preset"), tr("Preset Name:"), QLineEdit::Normal, CurrentName, &Ok).trimmed().remove('|');
+
+	if (!Ok)
+		return;
+
+	if (Name.isEmpty())
+	{
+		QMessageBox::information(this, tr("Save Preset"), tr("Preset name cannot be empty."));
+		return;
+	}
+
+	QStringList Presets = swGetProfileStringList(SW_PROFILE_RENDER_PRESETS);
+	const QString Preset = QStringList({ Name }).join('|') + '|' + GetPresetValues().join('|');
+	int PresetIndex = -1;
+
+	for (int Index = 0; Index < Presets.size(); Index++)
+		if (Presets[Index].section('|', 0, 0) == Name)
+			PresetIndex = Index;
+
+	if (PresetIndex != -1)
+	{
+		if (QMessageBox::question(this, tr("Save Preset"), tr("A preset with the name '%1' already exists, do you want to overwrite it?").arg(Name), QMessageBox::Yes | QMessageBox::No) != QMessageBox::Yes)
+			return;
+
+		Presets[PresetIndex] = Preset;
+	}
+	else
+		Presets.append(Preset);
+
+	swSetProfileStringList(SW_PROFILE_RENDER_PRESETS, Presets);
+	mPresetName = Name;
+	UpdatePresets();
+}
+
+// use to remove the chosen preset
+void swRenderDialog::DeletePresetClicked()
+{
+	const QString Preset = mPresetComboBox->currentData().toString();
+
+	if (Preset.isEmpty())
+		return;
+
+	if (QMessageBox::question(this, tr("Delete Preset"), tr("Are you sure you want to delete the preset '%1'?").arg(mPresetComboBox->currentText()), QMessageBox::Yes | QMessageBox::No) != QMessageBox::Yes)
+		return;
+
+	QStringList Presets = swGetProfileStringList(SW_PROFILE_RENDER_PRESETS);
+	Presets.removeAll(Preset);
+	swSetProfileStringList(SW_PROFILE_RENDER_PRESETS, Presets);
+	UpdatePresets();
+}
+
+// use to list the view and the cameras of the model to render from
+void swRenderDialog::UpdateCameras()
+{
+	const QString CameraName = swGetProfileString(SW_PROFILE_RENDER_CAMERAS);
+	swModel* Model = swGetActiveModel();
+
+	mCamerasComboBox->clear();
+	mCamerasComboBox->addItem(tr("View"), QString());
+
+	if (Model && !Model->GetCameras().empty())
+	{
+		for (const std::unique_ptr<swCamera>& Camera : Model->GetCameras())
+			mCamerasComboBox->addItem(Camera->GetName(), Camera->GetName());
+
+		mCamerasComboBox->addItem(tr("All Cameras"), QString("*"));
+	}
+
+	mCamerasComboBox->setCurrentIndex(std::max(mCamerasComboBox->findData(CameraName), 0));
+}
+
+// use to find the region to render in pixels of the image
+QRect swRenderDialog::GetRegionRect() const
+{
+	if (!mAreaComboBox || mAreaComboBox->currentIndex() != 1)
+		return QRect();
+
+	const QRectF Region = ui->preview->GetRegion();
+	const int Left = std::clamp(qRound(Region.left() * mWidth), 0, mWidth - 2);
+	const int Top = std::clamp(qRound(Region.top() * mHeight), 0, mHeight - 2);
+	const int Right = std::clamp(qRound(Region.right() * mWidth), Left + 2, mWidth);
+	const int Bottom = std::clamp(qRound(Region.bottom() * mHeight), Top + 2, mHeight);
+	const QRect RegionRect(QPoint(Left, Top), QPoint(Right - 1, Bottom - 1));
+
+	// a region covering the whole image is a full render
+	return RegionRect == QRect(0, 0, mWidth, mHeight) ? QRect() : RegionRect;
+}
+
+// use to start the next image of a batch or end the batch after the last one
+void swRenderDialog::StartNextJob()
+{
+	if (mJobIndex >= mJobs.size())
+	{
+		mJobs.clear();
+		mJobIndex = 0;
+		ui->RenderProgress->setFormat("%p%");
+		return;
+	}
+
+	mRenderTime.start();
+	RenderPOVRay();
 }
 
 // use to fill the log panel with the renderer output written so far
@@ -600,6 +955,11 @@ bool swRenderDialog::PromptCancel()
 		mProcess->kill();
 	}
 
+	// cancelling stops the images of a batch still waiting too
+	mJobs.clear();
+	mJobIndex = 0;
+	ui->RenderProgress->setFormat("%p%");
+
 	CloseProcess();
 
 	if (mStdOutList.size())
@@ -629,10 +989,69 @@ void swRenderDialog::RenderButtonClicked()
 
 	mRenderTime.start();
 
-	if (mDialogMode == swRenderDialogMode::RenderPOVRay)
-		RenderPOVRay();
-	else
+	if (mDialogMode != swRenderDialogMode::RenderPOVRay)
+	{
 		RenderBlender();
+		return;
+	}
+
+	// the batch has one image for each chosen step and camera
+	const swModel* Model = swGetActiveProject()->GetModels()[0].get();
+	std::vector<swStep> Steps;
+
+	switch (mStepsComboBox->currentIndex())
+	{
+	case 1:
+		Steps.push_back(Model->GetCurrentStep());
+		break;
+
+	case 2:
+		for (swStep Step = 1; Step <= Model->GetLastStep(); Step++)
+			Steps.push_back(Step);
+		break;
+
+	default:
+		Steps.push_back(SW_STEP_MAXIMUM);
+		break;
+	}
+
+	QStringList CameraNames;
+	const QString CameraData = mCamerasComboBox->currentData().toString();
+
+	if (CameraData == QLatin1String("*"))
+	{
+		for (int Index = 1; Index < mCamerasComboBox->count() - 1; Index++)
+			CameraNames.append(mCamerasComboBox->itemData(Index).toString());
+	}
+	else
+		CameraNames.append(CameraData);
+
+	const QString OutputName = ui->OutputEdit->text();
+	const QFileInfo OutputInfo(OutputName);
+	const int StepDigits = std::max(2, static_cast<int>(QString::number(Model->GetLastStep()).size()));
+
+	mJobs.clear();
+	mJobIndex = 0;
+	mJobRegion = GetRegionRect();
+
+	for (swStep Step : Steps)
+	{
+		for (const QString& CameraName : CameraNames)
+		{
+			QString Suffix;
+
+			if (Steps.size() > 1)
+				Suffix += QString("-%1").arg(Step, StepDigits, 10, QLatin1Char('0'));
+
+			if (CameraNames.size() > 1)
+				Suffix += '-' + QString(CameraName).replace(QRegularExpression("[^\\w.-]+"), "_");
+
+			const QString FileName = OutputName.isEmpty() || Suffix.isEmpty() ? OutputName : QDir(OutputInfo.path()).filePath(OutputInfo.completeBaseName() + Suffix + (OutputInfo.suffix().isEmpty() ? QString() : '.' + OutputInfo.suffix()));
+			mJobs.push_back({ Step, CameraName, QDir::toNativeSeparators(FileName) });
+		}
+	}
+
+	StartNextJob();
 }
 
 void swRenderDialog::reject()
@@ -647,18 +1066,31 @@ void swRenderDialog::RenderPOVRay()
 
 	ui->preview->SetImage(QImage());
 	ui->RenderProgress->setValue(ui->RenderProgress->minimum());
-	ui->RenderProgress->setFormat(tr("Exporting Model"));
+	const swRenderJob& Job = mJobs[mJobIndex];
+	const QString JobFormat = mJobs.size() > 1 ? tr("Image %1 of %2").arg(mJobIndex + 1).arg(mJobs.size()) : QString();
+	ui->RenderProgress->setFormat(JobFormat.isEmpty() ? tr("Exporting Model") : tr("%1, Exporting Model").arg(JobFormat));
+
+	const swCamera* Camera = nullptr;
+	swModel* ActiveModel = swGetActiveModel();
+
+	if (!Job.CameraName.isEmpty() && ActiveModel)
+		for (const std::unique_ptr<swCamera>& ModelCamera : ActiveModel->GetCameras())
+			if (ModelCamera->GetName() == Job.CameraName)
+				Camera = ModelCamera.get();
 
 	QApplication::setOverrideCursor(Qt::WaitCursor);
 
-	swResult<void> ExportResult = swGetActiveProject()->ExportPOVRay(FileName);
+	swResult<void> ExportResult = swGetActiveProject()->ExportPOVRay(FileName, Camera, Job.Step);
 
 	QGuiApplication::restoreOverrideCursor();
 
-	ui->RenderProgress->setFormat("%p%");
+	ui->RenderProgress->setFormat(JobFormat.isEmpty() ? QString("%p%") : tr("%1, %p%").arg(JobFormat));
 
 	if (!ExportResult)
 	{
+		mJobs.clear();
+		mJobIndex = 0;
+
 		if (!ExportResult.error().isEmpty())
 			QMessageBox::warning(this, windowTitle(), ExportResult.error());
 
@@ -674,6 +1106,20 @@ void swRenderDialog::RenderPOVRay()
 
 	if (swGetProfileInteger(SW_PROFILE_RENDER_TRANSPARENT))
 		Arguments.append("+UA");
+
+	// the region is given in pixels counted from one and a start at the first pixel as the fraction zero
+	if (mJobRegion.isValid())
+	{
+		auto RegionStart = [](int Pixel)
+		{
+			return Pixel > 0 ? QString::number(Pixel + 1) : QString("0.0");
+		};
+
+		Arguments.append("+SC" + RegionStart(mJobRegion.left()));
+		Arguments.append("+EC" + QString::number(mJobRegion.right() + 1));
+		Arguments.append("+SR" + RegionStart(mJobRegion.top()));
+		Arguments.append("+ER" + QString::number(mJobRegion.bottom() + 1));
+	}
 
 #if SW_POVRAY_MEMORY_MAPPED_FILE
 	Arguments.append(QString::fromLatin1("+SM\"%1\"").arg(GetStdOutFileName()));
@@ -1168,6 +1614,12 @@ void swRenderDialog::Update()
 
 		ShowResult();
 		CloseProcess();
+
+		if (!mJobs.empty())
+		{
+			mJobIndex++;
+			StartNextJob();
+		}
 	}
 }
 
@@ -1182,6 +1634,9 @@ void swRenderDialog::ShowResult()
 	{
 		ui->RenderProgress->setRange(0, 1);
 		ui->RenderProgress->setValue(0);
+		mJobs.clear();
+		mJobIndex = 0;
+		ui->RenderProgress->setFormat("%p%");
 
 		const QString Body  = tr("An error occurred while rendering.");
 		swBlenderPreferences::ShowMessage(this, Body, windowTitle(), QString(), StdErrLog, 0, QMessageBox::Warning);
@@ -1193,10 +1648,42 @@ void swRenderDialog::ShowResult()
 	}
 
 	bool Success = false;
-	QString FileName = ui->OutputEdit->text();
+	QString FileName = mDialogMode == swRenderDialogMode::RenderPOVRay && mJobIndex < mJobs.size() ? mJobs[mJobIndex].FileName : ui->OutputEdit->text();
 
 	if (mDialogMode == swRenderDialogMode::RenderPOVRay)
 	{
+		if (mJobRegion.isValid() && !mImage.isNull())
+		{
+			// a region is placed into the image of the same size last saved under its file name
+			const QSize ImageSize(mWidth, mHeight);
+			QImage BaseImage = mResultFileName == FileName && mResultImage.size() == ImageSize ? mResultImage : QImage();
+
+			if (BaseImage.isNull() && !FileName.isEmpty())
+			{
+				QImageReader Reader(FileName);
+
+				if (Reader.size() == ImageSize)
+					BaseImage = Reader.read();
+			}
+
+			if (BaseImage.size() == ImageSize)
+			{
+				BaseImage = BaseImage.convertToFormat(QImage::Format_ARGB32);
+				QPainter Painter(&BaseImage);
+				Painter.setCompositionMode(QPainter::CompositionMode_Source);
+
+				if (mImage.size() == ImageSize)
+					Painter.drawImage(mJobRegion, mImage, mJobRegion);
+				else if (mImage.size() == mJobRegion.size())
+					Painter.drawImage(mJobRegion.topLeft(), mImage);
+
+				Painter.end();
+				mImage = BaseImage;
+			}
+		}
+
+		mResultImage = mImage;
+		mResultFileName = FileName;
 		ui->preview->SetImage(mImage.scaled(mPreviewWidth, mPreviewHeight, Qt::KeepAspectRatio, Qt::SmoothTransformation));
 
 		if (!FileName.isEmpty())
@@ -1228,7 +1715,11 @@ void swRenderDialog::ShowResult()
 	}
 
 	if (!Success)
+	{
+		mJobs.clear();
+		mJobIndex = 0;
 		QMessageBox::warning(this, windowTitle(), tr("Render failed."));
+	}
 
 	WriteStdOut();
 }

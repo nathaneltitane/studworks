@@ -80,14 +80,53 @@ public:
 		update();
 	}
 
+	// Shows the render region and lets it be drawn by dragging on the canvas.
+	void SetRegionMode(bool RegionMode)
+	{
+		mRegionMode = RegionMode;
+		setCursor(RegionMode ? Qt::CrossCursor : Qt::ArrowCursor);
+		update();
+	}
+
+	// Sets the render region as a fraction of the image.
+	void SetRegion(const QRectF& Region)
+	{
+		mRegion = Region;
+		update();
+	}
+
+	QRectF GetRegion() const
+	{
+		return mRegion;
+	}
+
+signals:
+	void RegionChanged(const QRectF& Region);
+
 protected:
 	void resizeEvent(QResizeEvent* Event) override;
 	void paintEvent(QPaintEvent* PaintEvent) override;
+	void mousePressEvent(QMouseEvent* MouseEvent) override;
+	void mouseMoveEvent(QMouseEvent* MouseEvent) override;
+	void mouseReleaseEvent(QMouseEvent* MouseEvent) override;
+	QRect GetCanvasRect() const;
+	QPointF GetCanvasPoint(const QPoint& Position) const;
 
 	QImage mImage;
 	QImage mScaledImage;
 	int mPlaceholderSize = 0;
 	QSize mCanvasSize;
+	bool mRegionMode = false;
+	bool mRegionDragging = false;
+	QPointF mRegionStart;
+	QRectF mRegion = QRectF(0.25, 0.25, 0.5, 0.5);
+};
+
+struct swRenderJob
+{
+	swStep Step;
+	QString CameraName;
+	QString FileName;
 };
 
 class swRenderDialog : public QDialog
@@ -124,6 +163,14 @@ protected:
 	void CloseProcess();
 	bool PromptCancel();
 	void ShowResult();
+	void StartNextJob();
+	QRect GetRegionRect() const;
+	QStringList GetPresetValues() const;
+	void ApplyPreset(const QString& Preset);
+	void UpdatePresets();
+	void SavePresetClicked();
+	void DeletePresetClicked();
+	void UpdateCameras();
 
 	QTimer mUpdateTimer;
 	QElapsedTimer mRenderTime;
@@ -139,6 +186,24 @@ protected:
 	QDockWidget* mLogPanel = nullptr;
 	QPlainTextEdit* mLogEdit = nullptr;
 	swRenderProcess* mProcess = nullptr;
+	QComboBox* mPresetComboBox = nullptr;
+	QAbstractButton* mPresetDeleteButton = nullptr;
+	QSpinBox* mWidthSpinBox = nullptr;
+	QSpinBox* mHeightSpinBox = nullptr;
+	QComboBox* mQualityComboBox = nullptr;
+	QComboBox* mLightRigComboBox = nullptr;
+	QComboBox* mFloorStyleComboBox = nullptr;
+	QComboBox* mBackgroundComboBox = nullptr;
+	QLineEdit* mEnvironmentEdit = nullptr;
+	QComboBox* mAreaComboBox = nullptr;
+	QComboBox* mStepsComboBox = nullptr;
+	QComboBox* mCamerasComboBox = nullptr;
+	std::vector<swRenderJob> mJobs;
+	size_t mJobIndex = 0;
+	QRect mJobRegion;
+	QImage mResultImage;
+	QString mResultFileName;
+	QString mPresetName;
 
 	int mWidth = 1280;
 	int mHeight = 720;

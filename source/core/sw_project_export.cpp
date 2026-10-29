@@ -1222,9 +1222,9 @@ swResult<void> Project::ExportHTML(const swHTMLExportOptions& Options)
 	return swResult<void>();
 }
 
-swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* ExportCamera)
+swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* ExportCamera, swStep Step)
 {
-	const std::vector<swModelPartsEntry> ModelParts = GetModelParts();
+	const std::vector<swModelPartsEntry> ModelParts = GetModelParts(Step);
 
 	QString SaveFileName = GetExportFileName(FileName, QLatin1String("pov"), tr("Export POV-Ray"), tr("POV-Ray Files (*.pov);;All Files (*.*)"));
 

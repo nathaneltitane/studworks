@@ -682,7 +682,7 @@ std::shared_ptr<const swEmbeddedData> Project::FindEmbeddedData(const QString& F
 	return Entry->second;
 }
 
-std::vector<swModelPartsEntry> Project::GetModelParts()
+std::vector<swModelPartsEntry> Project::GetModelParts(swStep Step)
 {
 	std::vector<swModelPartsEntry> ModelParts;
 
@@ -712,7 +712,17 @@ std::vector<swModelPartsEntry> Project::GetModelParts()
 		Model->CalculateStep(SW_STEP_MAXIMUM);
 	}
 
-	mModels[0]->GetModelParts(swMatrix44Identity(), gDefaultColor, ModelParts);
+	if (Step == SW_STEP_MAXIMUM)
+		mModels[0]->GetModelParts(swMatrix44Identity(), gDefaultColor, ModelParts);
+	else
+	{
+		// a step keeps the parts added up to it in their place at that step
+		mModels[0]->CalculateStep(Step);
+
+		for (const std::unique_ptr<swPart>& Part : mModels[0]->GetParts())
+			if (Part->IsVisible(Step))
+				Part->GetModelParts(swMatrix44Identity(), gDefaultColor, ModelParts);
+	}
 
 	ModelParts.erase(std::remove_if(ModelParts.begin(), ModelParts.end(), [](const swModelPartsEntry& ModelPart)
 	{
