@@ -19,9 +19,12 @@ protected:
 	void showEvent(QShowEvent* Event) override;
 	bool eventFilter(QObject* Object, QEvent* Event) override;
 	void OptionsMenuAboutToShow();
+	void SnapToCells();
 
 	QPointer<KParts::ReadOnlyPart> mPart;
+	QPointer<QWidget> mDisplay;
 	QVBoxLayout* mLayout = nullptr;
 	QString mDirectory;
 	bool mClickFocused = false;
+	bool mSnapPending = false;
 };

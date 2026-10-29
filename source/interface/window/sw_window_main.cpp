@@ -936,19 +936,19 @@ void swMainWindow::SetTransformType(swTransformType TransformType)
 
 	mTransformType = TransformType;
 
-	constexpr const char* IconNames[] =
+	constexpr swPaintedIcon IconNames[] =
 	{
-		"transform_translation_absolute",
-		"transform_translation_relative",
-		"transform_rotation_absolute",
-		"transform_rotation_relative"
+		swPaintedIcon::TransformTranslationAbsolute,
+		swPaintedIcon::TransformTranslationRelative,
+		swPaintedIcon::TransformRotationAbsolute,
+		swPaintedIcon::TransformRotationRelative
 	};
 
 	SW_ARRAY_SIZE_CHECK(IconNames, swTransformType::Count);
 
 	int TransformIndex = static_cast<int>(TransformType);
 	mActions[SW_EDIT_TRANSFORM_ABSOLUTE_TRANSLATION + TransformIndex]->setChecked(true);
-	mActions[SW_EDIT_TRANSFORM]->setIcon(swCreateInterfaceIcon("toolbars/standard", IconNames[TransformIndex]));
+	mActions[SW_EDIT_TRANSFORM]->setIcon(swCreatePaintedIcon(IconNames[TransformIndex]));
 }
 
 void swMainWindow::SetInsertPartData(swPartData* PartData)

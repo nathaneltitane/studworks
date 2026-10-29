@@ -54,7 +54,7 @@ Useful? Star the repository - it helps others find it.
 - Versions follow the release date everywhere: 'studworks-2026-10-27-x86_64.rpm', the About dialog and the Windows file version
 - Lighting styles for the default shading: Standard, Studio, Matte and Toon - also from the command line with '--lighting'
 - Selection outline width, set in Preferences or with 'Increase Outline Width' and 'Decrease Outline Width'
-- Cursors and toolbar icons redrawn from the Blender icon set, following the light or dark theme - move and rotate cursors show their axis
+- Cursors and toolbar icons drawn in code at any size, following the light or dark theme - move and rotate cursors show their axis
 - Instructions: place, drag and lock every page element, page grid with snapping, page numbers and colors and fonts for every element
 - Instructions: Print panel inside the instructions window replaces the print dialog and print preview, the window opens maximized
 - Preferences: label and control columns lined up on every page, mouse shortcuts recorded by clicking, mouse tools grouped like the keyboard commands
@@ -106,7 +106,7 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
   - File, Edit, View, Part, Steps, Models and Help menus, with clean labels and unique mnemonics
   - View menu with Toolbars, Viewpoints, Cutaway, Cameras, Projection and Shading submenus
   - Options (gear) menus on the model view and every panel for grids, preview, parts and colors
-  - Theme-aware toolbar icons redrawn from the Blender icon set
+  - Theme-aware toolbar icons drawn in code, sharp at any size
   - Preferences pages with lined up label and control columns: General, Rendering, Views, Colors, Instructions, Categories, Keyboard and Mouse
 
   ![Toolbars](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/interface-toolbars.png)
@@ -159,7 +159,7 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
   - Panels dock side by side in any area
   - Parts panel snaps to whole thumbnail tiles and rows, docked or floating, and its categories to the longest name
   - Part categories turned on and off with a checkbox
-  - Theme-aware Blender icons and cursors, with axis cursors for moving and rotating
+  - Theme-aware icons and cursors drawn in code, with axis cursors for moving and rotating
 
   ![Selected part in the main window](https://raw.githubusercontent.com/nathaneltitane/studworks/main/documentation/screenshots/interface-main-window-selection.png)
 
@@ -257,8 +257,8 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
 
     ```
     git clone https://github.com/nathaneltitane/studworks
-    mkdir studworks-build && cd studworks-build
-    qmake ../studworks/studworks.pro
+    cd studworks
+    qmake studworks.pro
     make -j"$(nproc)"
     ```
 

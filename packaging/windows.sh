@@ -5,7 +5,15 @@
 
 set -e
 
-directory_source="$(cd "${BASH_SOURCE[0]%/*}/.." && pwd)"
+directory_script="${BASH_SOURCE[0]%/*}"
+
+# run from its own directory
+if [ "${directory_script}" = "${BASH_SOURCE[0]}" ]
+then
+	directory_script="."
+fi
+
+directory_source="$(cd "${directory_script}/.." && pwd)"
 directory_build="${1:-${directory_source}/build/windows}"
 
 # version from the release date

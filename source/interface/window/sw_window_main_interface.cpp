@@ -73,7 +73,7 @@ void swMainWindow::CreateWidgets()
 	ModelViewCornerLayout->setContentsMargins(0, TabMargin, TabMargin, TabMargin);
 
 	QToolButton* ModelViewOptionsButton = new QToolButton(ModelViewCorner);
-	ModelViewOptionsButton->setIcon(swCreateInterfaceIcon("widgets", "button_options"));
+	ModelViewOptionsButton->setIcon(swCreatePaintedIcon(swPaintedIcon::Gear));
 	ModelViewOptionsButton->setToolTip(tr("Configure the model view display and rendering."));
 	ModelViewOptionsButton->setAccessibleName(tr("Model View Options"));
 	ModelViewOptionsButton->setPopupMode(QToolButton::InstantPopup);
@@ -121,54 +121,54 @@ void swMainWindow::CreateActions()
 	mActions[SW_FILE_OPEN]->setToolTip(tr("Open Model"));
 	mActions[SW_FILE_SAVE]->setToolTip(tr("Save Model"));
 
-	mActions[SW_FILE_NEW]->setIcon(swCreateInterfaceIcon("toolbars/standard", "file_new"));
+	mActions[SW_FILE_NEW]->setIcon(swCreatePaintedIcon(swPaintedIcon::FileNew));
 
-	mActions[SW_FILE_SAVE]->setIcon(swCreateInterfaceIcon("toolbars/standard", "file_save"));
+	mActions[SW_FILE_SAVE]->setIcon(swCreatePaintedIcon(swPaintedIcon::FileSave));
 
-	QIcon FileOpenIcon = swCreateInterfaceIcon("toolbars/standard", "file_open");
+	QIcon FileOpenIcon = swCreatePaintedIcon(swPaintedIcon::Folder);
 	mActions[SW_FILE_OPEN]->setIcon(FileOpenIcon);
 	mActions[SW_VIEW_TERMINAL_OPEN_MODEL_FOLDER]->setIcon(FileOpenIcon);
 	mActions[SW_VIEW_TERMINAL_OPEN_MODEL_FOLDER]->setToolTip(tr("Open Model Folder"));
 
-	mActions[SW_EDIT_UNDO]->setIcon(swCreateInterfaceIcon("toolbars/standard", "edit_undo"));
+	mActions[SW_EDIT_UNDO]->setIcon(swCreatePaintedIcon(swPaintedIcon::EditUndo));
 
-	mActions[SW_EDIT_REDO]->setIcon(swCreateInterfaceIcon("toolbars/standard", "edit_redo"));
+	mActions[SW_EDIT_REDO]->setIcon(swCreatePaintedIcon(swPaintedIcon::EditRedo));
 
-	mActions[SW_EDIT_ACTION_INSERT]->setIcon(swCreateInterfaceIcon("toolbars/tools", "action_insert"));
+	mActions[SW_EDIT_ACTION_INSERT]->setIcon(swCreatePaintedIcon(swPaintedIcon::ActionInsert));
 
-	mActions[SW_EDIT_ACTION_POINT_LIGHT]->setIcon(swCreateInterfaceIcon("toolbars/tools", "action_light_point"));
+	mActions[SW_EDIT_ACTION_POINT_LIGHT]->setIcon(swCreatePaintedIcon(swPaintedIcon::LightPoint));
 
-	mActions[SW_EDIT_ACTION_SPOTLIGHT]->setIcon(swCreateInterfaceIcon("toolbars/tools", "action_light_spot"));
+	mActions[SW_EDIT_ACTION_SPOTLIGHT]->setIcon(swCreatePaintedIcon(swPaintedIcon::LightSpot));
 
-	mActions[SW_EDIT_ACTION_DIRECTIONAL_LIGHT]->setIcon(swCreateInterfaceIcon("toolbars/tools", "action_light_directional"));
+	mActions[SW_EDIT_ACTION_DIRECTIONAL_LIGHT]->setIcon(swCreatePaintedIcon(swPaintedIcon::LightDirectional));
 
-	mActions[SW_EDIT_ACTION_AREA_LIGHT]->setIcon(swCreateInterfaceIcon("toolbars/tools", "action_light_area"));
+	mActions[SW_EDIT_ACTION_AREA_LIGHT]->setIcon(swCreatePaintedIcon(swPaintedIcon::LightArea));
 
-	mActions[SW_EDIT_ACTION_SELECT]->setIcon(swCreateInterfaceIcon("toolbars/tools", "action_select"));
+	mActions[SW_EDIT_ACTION_SELECT]->setIcon(swCreatePaintedIcon(swPaintedIcon::ActionSelect));
 
-	mActions[SW_EDIT_ACTION_MOVE]->setIcon(swCreateInterfaceIcon("toolbars/tools", "action_move"));
+	mActions[SW_EDIT_ACTION_MOVE]->setIcon(swCreatePaintedIcon(swPaintedIcon::ActionMove));
 
-	mActions[SW_EDIT_ACTION_ROTATE]->setIcon(swCreateInterfaceIcon("toolbars/tools", "action_rotate"));
+	mActions[SW_EDIT_ACTION_ROTATE]->setIcon(swCreatePaintedIcon(swPaintedIcon::ActionRotate));
 
-	mActions[SW_EDIT_ACTION_DELETE]->setIcon(swCreateInterfaceIcon("toolbars/tools", "action_delete"));
+	mActions[SW_EDIT_ACTION_DELETE]->setIcon(swCreatePaintedIcon(swPaintedIcon::ActionDelete));
 
-	mActions[SW_EDIT_ACTION_PAINT]->setIcon(swCreateInterfaceIcon("toolbars/tools", "action_paint"));
+	mActions[SW_EDIT_ACTION_PAINT]->setIcon(swCreatePaintedIcon(swPaintedIcon::ActionPaint));
 
-	mActions[SW_EDIT_ACTION_COLOR_PICKER]->setIcon(swCreateInterfaceIcon("toolbars/tools", "action_picker_color"));
+	mActions[SW_EDIT_ACTION_COLOR_PICKER]->setIcon(swCreatePaintedIcon(swPaintedIcon::ActionPickerColor));
 
-	mActions[SW_EDIT_ACTION_ZOOM]->setIcon(swCreateInterfaceIcon("toolbars/tools", "action_zoom"));
+	mActions[SW_EDIT_ACTION_ZOOM]->setIcon(swCreatePaintedIcon(swPaintedIcon::ActionZoom));
 
-	mActions[SW_EDIT_ACTION_PAN]->setIcon(swCreateInterfaceIcon("toolbars/tools", "action_pan"));
+	mActions[SW_EDIT_ACTION_PAN]->setIcon(swCreatePaintedIcon(swPaintedIcon::ActionPan));
 
-	mActions[SW_EDIT_ACTION_CAMERA]->setIcon(swCreateInterfaceIcon("toolbars/tools", "action_camera"));
-	mActions[SW_EDIT_ACTION_ROTATE_VIEW]->setIcon(swCreateInterfaceIcon("toolbars/tools", "action_view_rotate"));
-	mActions[SW_EDIT_ACTION_ROLL]->setIcon(swCreateInterfaceIcon("toolbars/tools", "action_roll"));
-	mActions[SW_EDIT_ACTION_ZOOM_REGION]->setIcon(swCreateInterfaceIcon("toolbars/tools", "action_zoom_region"));
-	mActions[SW_VIEW_TIME_FIRST]->setIcon(swCreateInterfaceIcon("toolbars/time", "time_first"));
-	mActions[SW_VIEW_TIME_PREVIOUS]->setIcon(swCreateInterfaceIcon("toolbars/time", "time_previous"));
-	mActions[SW_VIEW_TIME_NEXT]->setIcon(swCreateInterfaceIcon("toolbars/time", "time_next"));
-	mActions[SW_VIEW_TIME_LAST]->setIcon(swCreateInterfaceIcon("toolbars/time", "time_last"));
-	mActions[SW_VIEW_TIME_ADD_KEYS]->setIcon(swCreateInterfaceIcon("toolbars/time", "time_keys_add"));
+	mActions[SW_EDIT_ACTION_CAMERA]->setIcon(swCreatePaintedIcon(swPaintedIcon::ActionCamera));
+	mActions[SW_EDIT_ACTION_ROTATE_VIEW]->setIcon(swCreatePaintedIcon(swPaintedIcon::ActionViewRotate));
+	mActions[SW_EDIT_ACTION_ROLL]->setIcon(swCreatePaintedIcon(swPaintedIcon::ActionRoll));
+	mActions[SW_EDIT_ACTION_ZOOM_REGION]->setIcon(swCreatePaintedIcon(swPaintedIcon::ActionZoomRegion));
+	mActions[SW_VIEW_TIME_FIRST]->setIcon(swCreatePaintedIcon(swPaintedIcon::TimeFirst));
+	mActions[SW_VIEW_TIME_PREVIOUS]->setIcon(swCreatePaintedIcon(swPaintedIcon::TimePrevious));
+	mActions[SW_VIEW_TIME_NEXT]->setIcon(swCreatePaintedIcon(swPaintedIcon::TimeNext));
+	mActions[SW_VIEW_TIME_LAST]->setIcon(swCreatePaintedIcon(swPaintedIcon::TimeLast));
+	mActions[SW_VIEW_TIME_ADD_KEYS]->setIcon(swCreatePaintedIcon(swPaintedIcon::TimeKeysAdd));
 
 	mActions[SW_EDIT_SNAP_MOVE_TOGGLE]->setCheckable(true);
 	mActions[SW_EDIT_SNAP_ANGLE_TOGGLE]->setCheckable(true);
@@ -537,7 +537,7 @@ void swMainWindow::CreateToolBars()
 	SelectionModeAction->setStatusTip(tr("Change selection mode"));
 	SelectionModeAction->setToolTip(tr("Choose which related parts are included when selecting a part."));
 	SelectionModeAction->setWhatsThis(tr("<p><b>Selection Mode</b></p><p>Choose the rule applied when you pick a part in the model view. Single selects that part; the other modes include matching part types, matching colors, or both. For example, color selection lets you pick matching red parts without selecting each one separately.</p>"));
-	SelectionModeAction->setIcon(swCreateInterfaceIcon("toolbars/tools", "action_select"));
+	SelectionModeAction->setIcon(swCreatePaintedIcon(swPaintedIcon::ActionSelect));
 	SelectionModeAction->setMenu(mSelectionModeMenu);
 
 	mTransformMenu = new QMenu(tr("Transform"), this);
@@ -551,7 +551,7 @@ void swMainWindow::CreateToolBars()
 	TransformAction->setStatusTip(tr("Transform Options"));
 	TransformAction->setToolTip(tr("Choose coordinate axes and whether selected parts rotate together."));
 	TransformAction->setWhatsThis(tr("<p><b>Transform Options</b></p><p>Choose the axes and pivot used for interactive transforms. Relative Transforms uses the focused object's orientation, so movement along X follows that object's local X axis. Absolute Transforms uses the model axes. Rotate Together rotates the selection around a shared pivot; Rotate Separately rotates each part around its own origin.</p>"));
-	TransformAction->setIcon(swCreateInterfaceIcon("toolbars/standard", "transform_translation_relative"));
+	TransformAction->setIcon(swCreatePaintedIcon(swPaintedIcon::TransformTranslationRelative));
 	TransformAction->setMenu(mTransformMenu);
 
 	QMenu* SnapXYMenu = new QMenu(tr("Snap XY"), this);
@@ -572,7 +572,7 @@ void swMainWindow::CreateToolBars()
 	MoveAction->setStatusTip(tr("Snap translations to fixed intervals"));
 	MoveAction->setToolTip(tr("Choose movement snapping intervals for XY and Z."));
 	MoveAction->setWhatsThis(tr("<p><b>Movement Snap</b></p><p>Choose how far objects move in each snapped increment. XY controls movement across the base plane; Z controls vertical movement, so they can use different intervals. Turn snapping off for free placement, then enable it again when you need consistent spacing.</p>"));
-	MoveAction->setIcon(swCreateInterfaceIcon("toolbars/standard", "snap_move"));
+	MoveAction->setIcon(swCreatePaintedIcon(swPaintedIcon::SnapMove));
 	MoveAction->setMenu(SnapMenu);
 
 	QMenu* SnapAngleMenu = new QMenu(tr("Snap Angle Menu"), this);
@@ -587,7 +587,7 @@ void swMainWindow::CreateToolBars()
 	AngleAction->setStatusTip(tr("Snap rotations to fixed intervals"));
 	AngleAction->setToolTip(tr("Choose the rotation snapping interval."));
 	AngleAction->setWhatsThis(tr("<p><b>Rotation Snap</b></p><p>Choose an angle increment for interactive rotation. For example, a 90-degree increment is useful for quarter turns, while smaller increments allow finer alignment. Turn snapping off for free rotation without fixed angle increments.</p>"));
-	AngleAction->setIcon(swCreateInterfaceIcon("toolbars/standard", "snap_angle"));
+	AngleAction->setIcon(swCreatePaintedIcon(swPaintedIcon::SnapAngle));
 	AngleAction->setMenu(SnapAngleMenu);
 
 	mStandardToolBar = addToolBar(tr("Standard"));
@@ -907,7 +907,7 @@ void swMainWindow::CreateStatusBar()
 	mStatusLoadFailureLabel = new QLabel();
 	constexpr int WarningIconSize = 14;
 	const QSize WarningPixelSize = QSize(WarningIconSize, WarningIconSize) * devicePixelRatioF();
-	QPixmap WarningPixmap = swCreateInterfaceIcon("widgets", "status_warning").pixmap(WarningPixelSize);
+	QPixmap WarningPixmap = swCreatePaintedIcon(swPaintedIcon::StatusWarning).pixmap(WarningPixelSize);
 	WarningPixmap = WarningPixmap.scaled(WarningPixelSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 	WarningPixmap.setDevicePixelRatio(devicePixelRatioF());
 	mStatusLoadFailureLabel->setPixmap(WarningPixmap);

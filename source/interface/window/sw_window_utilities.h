@@ -106,27 +106,66 @@ void swAddPanelRowStretch(QWidget* Row);
 QToolButton* swAddPanelActionButton(QWidget* Row, QAction* Action);
 QToolButton* swAddPanelOptionsButton(QWidget* Row, QMenu* Menu, const QString& ToolTip, const QString& AccessibleName);
 
-// Interface icons are white on transparent and drawn in the palette text color, so they follow theme changes.
-// Each folder keeps the Blender layout, png/<size>/<name>_<size>.png, for 16 to 48 and larger sizes only where an image needs them.
-constexpr int SW_INTERFACE_ICON_SIZES[] = { 16, 24, 32, 48, 64, 128, 256, 512 };
-
-class swInterfaceIconEngine : public QIconEngine
+// Interface icons are painted from shapes on a 24 unit grid in the palette text color, so they stay sharp at any size and follow theme changes.
+enum class swPaintedIcon
 {
-public:
-	swInterfaceIconEngine(const QString& Folder, const QString& Name);
-
-	void paint(QPainter* Painter, const QRect& Rect, QIcon::Mode Mode, QIcon::State State) override;
-	QPixmap pixmap(const QSize& Size, QIcon::Mode Mode, QIcon::State State) override;
-	QSize actualSize(const QSize& Size, QIcon::Mode Mode, QIcon::State State) override;
-	QIconEngine* clone() const override;
-
-protected:
-	QString mFolder;
-	QString mName;
-	QIcon mIcon;
+	Gear,
+	Folder,
+	FileNew,
+	FileSave,
+	EditUndo,
+	EditRedo,
+	ActionInsert,
+	ActionSelect,
+	ActionMove,
+	ActionRotate,
+	ActionDelete,
+	ActionPaint,
+	ActionPickerColor,
+	ActionZoom,
+	ActionZoomRegion,
+	ActionPan,
+	ActionCamera,
+	ActionViewRotate,
+	ActionRoll,
+	LightPoint,
+	LightSpot,
+	LightDirectional,
+	LightArea,
+	TimeFirst,
+	TimePrevious,
+	TimeNext,
+	TimeLast,
+	TimeKeysAdd,
+	TransformTranslationAbsolute,
+	TransformTranslationRelative,
+	TransformRotationAbsolute,
+	TransformRotationRelative,
+	SnapMove,
+	SnapAngle,
+	StatusWarning,
+	FilterCase,
+	LibraryArchive,
+	RenderPlaceholder,
+	ThumbnailFlexible,
+	ThumbnailTrackTrain,
+	CursorBrick,
+	CursorMove,
+	CursorMoveAxisX,
+	CursorMoveAxisY,
+	CursorMoveAxisZ,
+	CursorRotateAxisX,
+	CursorRotateAxisY,
+	CursorRotateAxisZ,
+	CursorRotateX,
+	CursorRotateY,
+	BadgeAdd,
+	BadgeRemove,
+	Count
 };
 
-QIcon swCreateInterfaceIcon(const QString& Folder, const QString& Name);
+QIcon swCreatePaintedIcon(swPaintedIcon Icon);
+QImage swCreatePaintedIconImage(swPaintedIcon Icon, int Size, const QColor& Color);
 
 // Everything that opens or closes shows the chevron of the style, pointing down when open.
 QIcon swCreateDisclosureIcon(bool Expanded, const QPalette& Palette);

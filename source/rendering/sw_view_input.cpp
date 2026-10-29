@@ -10,6 +10,7 @@
 #include "sw_view_manipulator.h"
 #include "sw_view_cube.h"
 #include "sw_library.h"
+#include "sw_window_utilities.h"
 
 swVector3 swView::GetMoveDirection(const swVector3& Direction) const
 {
@@ -546,24 +547,22 @@ swCursor swView::GetCursor() const
 	return swCursor::Select;
 }
 
-// Cursors draw the white Blender icons with a black outline so they stay visible on any background.
-static QPixmap swCreateCursorPixmap(const QString& Name, const QString& Badge)
+// Cursors draw the painted icons in white with a black outline so they stay visible on any background.
+static QPixmap swCreateCursorPixmap(swPaintedIcon Icon, swPaintedIcon Badge)
 {
 	QImage Glyph(32, 32, QImage::Format_ARGB32_Premultiplied);
 	Glyph.fill(Qt::transparent);
 
-	QImage Icon(QString::fromLatin1(":/resources/interface/cursors/png/24/%1_24.png").arg(Name));
-
 	QPainter Painter(&Glyph);
 
 	// the arrow tip sits in the top left corner and leaves the bottom right for the badge
-	if (Name == QLatin1String("cursor_select"))
-		Painter.drawImage(-1, -3, Icon);
+	if (Icon == swPaintedIcon::ActionSelect)
+		Painter.drawImage(-2, -1, swCreatePaintedIconImage(Icon, 24, Qt::white));
 	else
-		Painter.drawImage(4, 4, Icon);
+		Painter.drawImage(4, 4, swCreatePaintedIconImage(Icon, 24, Qt::white));
 
-	if (!Badge.isEmpty())
-		Painter.drawImage(15, 15, QImage(QString::fromLatin1(":/resources/interface/cursors/png/16/%1_16.png").arg(Badge)));
+	if (Badge != swPaintedIcon::Count)
+		Painter.drawImage(15, 15, swCreatePaintedIconImage(Badge, 16, Qt::white));
 
 	Painter.end();
 
@@ -601,41 +600,42 @@ void swView::SetCursor(swCursor CursorType)
 	struct swCursorInformation
 	{
 		int x, y;
-		const char* Name;
-		const char* Badge;
+		swPaintedIcon Icon;
+		swPaintedIcon Badge;
 	};
 
+	// count stands for no icon or no badge
 	constexpr swCursorInformation Cursors[] =
 	{
-		{  0,  0, "", "" },                                  // swCursor::Hidden
-		{  0,  0, "", "" },                                  // swCursor::Default
-		{ 16, 16, "cursor_brick", "" },                      // swCursor::Brick
-		{ 16, 16, "cursor_light_point", "" },                // swCursor::PointLight
-		{ 16, 16, "cursor_light_spot", "" },                 // swCursor::SpotLight
-		{ 16, 16, "cursor_light_directional", "" },          // swCursor::DirectionalLight
-		{ 16, 16, "cursor_light_area", "" },                 // swCursor::AreaLight
-		{ 16, 16, "cursor_camera", "" },                     // swCursor::Camera
-		{  1,  1, "cursor_select", "" },                     // swCursor::Select
-		{  1,  1, "cursor_select", "cursor_select_add" },    // swCursor::SelectAdd
-		{  1,  1, "cursor_select", "cursor_select_remove" }, // swCursor::SelectRemove
-		{ 16, 16, "cursor_move", "" },                       // swCursor::Move
-		{ 16, 16, "cursor_move_axis_x", "" },                // swCursor::MoveAxisX
-		{ 16, 16, "cursor_move_axis_y", "" },                // swCursor::MoveAxisY
-		{ 16, 16, "cursor_move_axis_z", "" },                // swCursor::MoveAxisZ
-		{ 16, 16, "cursor_rotate", "" },                     // swCursor::Rotate
-		{ 16, 16, "cursor_rotate_axis_x", "" },              // swCursor::RotateAxisX
-		{ 16, 16, "cursor_rotate_axis_y", "" },              // swCursor::RotateAxisY
-		{ 16, 16, "cursor_rotate_axis_z", "" },              // swCursor::RotateAxisZ
-		{ 16, 16, "cursor_rotate_x", "" },                   // swCursor::RotateX
-		{ 16, 16, "cursor_rotate_y", "" },                   // swCursor::RotateY
-		{ 16, 16, "cursor_delete", "" },                     // swCursor::Delete
-		{ 14, 25, "cursor_paint", "" },                      // swCursor::Paint
-		{  6, 24, "cursor_picker_color", "" },               // swCursor::ColorPicker
-		{ 13, 14, "cursor_zoom", "" },                       // swCursor::Zoom
-		{ 12, 12, "cursor_zoom_region", "" },                // swCursor::ZoomRegion
-		{ 16, 16, "cursor_pan", "" },                        // swCursor::Pan
-		{ 16, 16, "cursor_roll", "" },                       // swCursor::Roll
-		{ 16, 16, "cursor_view_rotate", "" },                // swCursor::RotateView
+		{  0,  0, swPaintedIcon::Count, swPaintedIcon::Count },              // swCursor::Hidden
+		{  0,  0, swPaintedIcon::Count, swPaintedIcon::Count },              // swCursor::Default
+		{ 16, 16, swPaintedIcon::CursorBrick, swPaintedIcon::Count },        // swCursor::Brick
+		{ 16, 16, swPaintedIcon::LightPoint, swPaintedIcon::Count },         // swCursor::PointLight
+		{ 16, 16, swPaintedIcon::LightSpot, swPaintedIcon::Count },          // swCursor::SpotLight
+		{ 16, 16, swPaintedIcon::LightDirectional, swPaintedIcon::Count },   // swCursor::DirectionalLight
+		{ 16, 16, swPaintedIcon::LightArea, swPaintedIcon::Count },          // swCursor::AreaLight
+		{ 16, 16, swPaintedIcon::ActionCamera, swPaintedIcon::Count },       // swCursor::Camera
+		{  1,  1, swPaintedIcon::ActionSelect, swPaintedIcon::Count },       // swCursor::Select
+		{  1,  1, swPaintedIcon::ActionSelect, swPaintedIcon::BadgeAdd },    // swCursor::SelectAdd
+		{  1,  1, swPaintedIcon::ActionSelect, swPaintedIcon::BadgeRemove }, // swCursor::SelectRemove
+		{ 16, 16, swPaintedIcon::CursorMove, swPaintedIcon::Count },         // swCursor::Move
+		{ 16, 16, swPaintedIcon::CursorMoveAxisX, swPaintedIcon::Count },    // swCursor::MoveAxisX
+		{ 16, 16, swPaintedIcon::CursorMoveAxisY, swPaintedIcon::Count },    // swCursor::MoveAxisY
+		{ 16, 16, swPaintedIcon::CursorMoveAxisZ, swPaintedIcon::Count },    // swCursor::MoveAxisZ
+		{ 16, 16, swPaintedIcon::ActionRotate, swPaintedIcon::Count },       // swCursor::Rotate
+		{ 16, 16, swPaintedIcon::CursorRotateAxisX, swPaintedIcon::Count },  // swCursor::RotateAxisX
+		{ 16, 16, swPaintedIcon::CursorRotateAxisY, swPaintedIcon::Count },  // swCursor::RotateAxisY
+		{ 16, 16, swPaintedIcon::CursorRotateAxisZ, swPaintedIcon::Count },  // swCursor::RotateAxisZ
+		{ 16, 16, swPaintedIcon::CursorRotateX, swPaintedIcon::Count },      // swCursor::RotateX
+		{ 16, 16, swPaintedIcon::CursorRotateY, swPaintedIcon::Count },      // swCursor::RotateY
+		{ 16, 16, swPaintedIcon::ActionDelete, swPaintedIcon::Count },       // swCursor::Delete
+		{ 16, 25, swPaintedIcon::ActionPaint, swPaintedIcon::Count },        // swCursor::Paint
+		{  8, 24, swPaintedIcon::ActionPickerColor, swPaintedIcon::Count },  // swCursor::ColorPicker
+		{ 14, 14, swPaintedIcon::ActionZoom, swPaintedIcon::Count },         // swCursor::Zoom
+		{ 16, 16, swPaintedIcon::ActionZoomRegion, swPaintedIcon::Count },   // swCursor::ZoomRegion
+		{ 16, 16, swPaintedIcon::ActionPan, swPaintedIcon::Count },          // swCursor::Pan
+		{ 16, 16, swPaintedIcon::ActionRoll, swPaintedIcon::Count },         // swCursor::Roll
+		{ 16, 16, swPaintedIcon::ActionViewRotate, swPaintedIcon::Count },   // swCursor::RotateView
 	};
 
 	SW_ARRAY_SIZE_CHECK(Cursors, swCursor::Count);
@@ -653,7 +653,7 @@ void swView::SetCursor(swCursor CursorType)
 	else if (CursorType >= swCursor::First && CursorType < swCursor::Count)
 	{
 		const swCursorInformation& Cursor = Cursors[static_cast<int>(CursorType)];
-		mWidget->setCursor(QCursor(swCreateCursorPixmap(Cursor.Name, Cursor.Badge), Cursor.x, Cursor.y));
+		mWidget->setCursor(QCursor(swCreateCursorPixmap(Cursor.Icon, Cursor.Badge), Cursor.x, Cursor.y));
 		mCursor = CursorType;
 	}
 	else

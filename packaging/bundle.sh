@@ -3,7 +3,15 @@
 # stage a studworks tree that carries its own qt libraries, sourced by the package scripts
 # sets directory_root directory_package list_files and package_version
 
-directory_source="$(cd "${BASH_SOURCE[0]%/*}/.." && pwd)"
+directory_script="${BASH_SOURCE[0]%/*}"
+
+# run from its own directory
+if [ "${directory_script}" = "${BASH_SOURCE[0]}" ]
+then
+	directory_script="."
+fi
+
+directory_source="$(cd "${directory_script}/.." && pwd)"
 directory_prefix="/opt/studworks"
 
 file_library="https://library.ldraw.org/library/updates/complete.zip"

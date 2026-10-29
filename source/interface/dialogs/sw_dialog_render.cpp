@@ -126,12 +126,11 @@ swRenderDialog::swRenderDialog(QWidget* Parent, swRenderDialogMode RenderDialogM
 		}
 		else
 		{
-			// placeholder with the blender logo centered on a transparent 16:9 frame
+			// placeholder with the render picture centered on a transparent 16:9 frame
 			QImage Image(1280, 720, QImage::Format_ARGB32_Premultiplied);
 			Image.fill(Qt::transparent);
 			QPainter Painter(&Image);
-			Painter.setRenderHint(QPainter::SmoothPixmapTransform);
-			swCreateInterfaceIcon("dialogs", "render_placeholder").paint(&Painter, QRect(440, 160, 400, 400));
+			Painter.drawImage(440, 160, swCreatePaintedIconImage(swPaintedIcon::RenderPlaceholder, 400, palette().color(QPalette::WindowText)));
 			Painter.end();
 			ui->preview->SetImage(Image);
 		}

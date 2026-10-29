@@ -7,6 +7,7 @@
 #include "sw_object_part.h"
 #include "sw_project.h"
 #include "sw_object_camera.h"
+#include "sw_window_utilities.h"
 
 swThumbnailManager::swThumbnailManager(swPartsLibrary* Library)
 	: QObject(Library), mLibrary(Library)
@@ -408,37 +409,18 @@ void swThumbnailManager::DrawThumbnail(swPartThumbnailId ThumbnailId, swPartThum
 		return;
 	}
 
-	const char* IconName = nullptr;
+	// flexible parts and train tracks are marked in the top left corner in the text color
+	std::optional<swPaintedIcon> Icon;
 
 	if (PartData->GetSynthInfo())
-		IconName = ":/resources/interface/widgets/png/32/thumbnail_flexible_32.png";
+		Icon = swPaintedIcon::ThumbnailFlexible;
 	else if (PartData->GetTrainTrackInfo())
-		IconName = ":/resources/interface/widgets/png/32/thumbnail_track_train_32.png";
+		Icon = swPaintedIcon::ThumbnailTrackTrain;
 
-	if (IconName)
+	if (Icon.has_value())
 	{
 		QPainter Painter(&Image);
-		QImage Icon = QImage(IconName);
-		uchar* ImageBits = Icon.bits();
-		QRgb TextColor = QApplication::palette().color(QPalette::WindowText).rgba();
-		int Red = qRed(TextColor);
-		int Green = qGreen(TextColor);
-		int Blue = qBlue(TextColor);
-
-		for (int y = 0; y < Icon.height(); y++)
-		{
-			for (int x = 0; x < Icon.width(); x++)
-			{
-				QRgb& Pixel = ((QRgb*)ImageBits)[x];
-				Pixel = qRgba(Red, Green, Blue, qAlpha(Pixel));
-			}
-
-			ImageBits += Icon.bytesPerLine();
-		}
-
-		Painter.setRenderHint(QPainter::SmoothPixmapTransform);
-		Painter.scale(Thumbnail.DeviceScale, Thumbnail.DeviceScale);
-		Painter.drawImage(QPoint(0, 0), Icon);
+		Painter.drawImage(QPoint(0, 0), swCreatePaintedIconImage(Icon.value(), qRound(32 * Thumbnail.DeviceScale), QApplication::palette().color(QPalette::WindowText)));
 		Painter.end();
 	}
 

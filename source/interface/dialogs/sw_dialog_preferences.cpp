@@ -273,8 +273,8 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	ui->setupUi(this);
 	swSetupDialogHelp(this, ui->buttonBox);
 
-	ui->partsLibraryBrowse->setIcon(swCreateInterfaceIcon("toolbars/standard", "file_open"));
-	ui->partsArchiveBrowse->setIcon(swCreateInterfaceIcon("dialogs", "library_archive"));
+	ui->partsLibraryBrowse->setIcon(swCreatePaintedIcon(swPaintedIcon::Folder));
+	ui->partsArchiveBrowse->setIcon(swCreatePaintedIcon(swPaintedIcon::LibraryArchive));
 
 #if defined(Q_OS_WIN) || defined(Q_OS_MACOS)
 	ui->povrayLabel->hide();
