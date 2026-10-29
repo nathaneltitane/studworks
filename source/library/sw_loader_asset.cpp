@@ -1098,6 +1098,11 @@ void swAssetLoader::ResumeQueuedWork()
 		if (Entry.second->State == RequestState::Queued)
 			Entry.second->Source = mLibrary->SnapshotPartDataSource(Entry.second->PartData.Get());
 
+	// a reload may move texture sources
+	for (const TextureRequestMap::value_type& Entry : mTextureRequests)
+		if (Entry.second->State == RequestState::Queued)
+			Entry.second->Source = Entry.second->Texture->mSource;
+
 	mPaused = false;
 	DispatchJobs();
 }

@@ -66,7 +66,7 @@ Section "Application Files" SecStudWorks
 
   SetOutPath "$INSTDIR"
 
-  File /r /x library.bin "${DIRECTORY_PACKAGE}\*.*"
+  File /r "${DIRECTORY_PACKAGE}\*.*"
 
   ;Register file extension
   WriteRegStr HKCR ".lcd" "" "StudWorks.Project"
@@ -105,25 +105,15 @@ Section "Application Files" SecStudWorks
 
 SectionEnd
 
-Section "Parts Library" SecLibrary
-
-  SetOutPath "$INSTDIR"
-
-  File "${DIRECTORY_PACKAGE}\library.bin"
-
-SectionEnd
-
 ;--------------------------------
 ;Descriptions
 
   ;Language strings
   LangString DESC_SecStudWorks ${LANG_ENGLISH} "Application Files (required)"
-  LangString DESC_SecLibrary ${LANG_ENGLISH} "Library of parts that represent those produced by the LEGO® company and created by the LDraw community"
 
   ;Assign language strings to sections
   !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
     !insertmacro MUI_DESCRIPTION_TEXT ${SecStudWorks} $(DESC_SecStudWorks)
-    !insertmacro MUI_DESCRIPTION_TEXT ${SecLibrary} $(DESC_SecLibrary)
   !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 ;--------------------------------

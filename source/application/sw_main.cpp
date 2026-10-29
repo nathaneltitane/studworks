@@ -185,17 +185,9 @@ int main(int argc, char *argv[])
 #ifdef Q_OS_WIN
 	swRegisterShellFileTypes();
 	swSehInitialize();
-
-	LibraryPaths += qMakePair(QDir::cleanPath(QCoreApplication::applicationDirPath() + "/library.bin"), true);
 #endif
 
-#ifdef Q_OS_LINUX
-	LibraryPaths += qMakePair(QDir::cleanPath(QCoreApplication::applicationDirPath() + "/../share/studworks/library.bin"), true);
-#endif
-
-#ifdef Q_OS_MAC
-	LibraryPaths += qMakePair(QDir::cleanPath(QCoreApplication::applicationDirPath() + "/../../Contents/Resources/library.bin"), true);
-#endif
+	LibraryPaths += qMakePair(swApplication::GetDownloadLibraryPath(), true);
 
 #ifdef SW_LDRAW_LIBRARY_PATH
 	LibraryPaths += qMakePair(QString::fromLatin1(SW_LDRAW_LIBRARY_PATH), false);

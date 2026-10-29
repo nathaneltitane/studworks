@@ -35,6 +35,8 @@ struct swPreferencesDialogOptions
 	swPreferences Preferences;
 
 	QString LibraryPath;
+	QString UnofficialLibraryPath;
+	QString ShadowLibraryPath;
 	QString ColorConfigPath;
 	QString MinifigureBuilderSettingsPath;
 	QString POVRayPath;
@@ -91,6 +93,9 @@ public slots:
 private slots:
 	void PartsLibraryBrowseClicked();
 	void PartsArchiveBrowseClicked();
+	void UnofficialLibraryBrowseButtonClicked();
+	void ShadowLibraryBrowseButtonClicked();
+	void ShadowLibraryEnabledToggled(bool Checked);
 	void ColorConfigBrowseButtonClicked();
 	void MinifigureBuilderSettingsBrowseButtonClicked();
 	void PovrayExecutableBrowseClicked();

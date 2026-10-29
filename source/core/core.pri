@@ -4,6 +4,7 @@ INCLUDEPATH += $$PWD
 
 SOURCES += \
 	$$PWD/sw_builder_minifigure.cpp \
+	$$PWD/sw_connectivity.cpp \
 	$$PWD/sw_filter.cpp \
 	$$PWD/sw_group.cpp \
 	$$PWD/sw_model.cpp \
@@ -29,6 +30,7 @@ SOURCES += \
 
 HEADERS += \
 	$$PWD/sw_builder_minifigure.h \
+	$$PWD/sw_connectivity.h \
 	$$PWD/sw_filter.h \
 	$$PWD/sw_group.h \
 	$$PWD/sw_math.h \

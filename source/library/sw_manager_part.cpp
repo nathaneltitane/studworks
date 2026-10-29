@@ -55,6 +55,10 @@ void swPartManager::Clear()
 			PartData = mProjectParts.begin()->first;
 		else if (!mParts.empty())
 			PartData = mParts.begin()->second;
+		else if (!mDetachedParts.empty())
+			PartData = mDetachedParts.begin()->second;
+		else if (!mRetiredParts.empty())
+			PartData = *mRetiredParts.begin();
 
 		mMutex.unlock();
 
@@ -86,7 +90,17 @@ swPartData* swPartManager::CreateLibraryPartData(const std::string& Name, const 
 {
 	QMutexLocker Lock(&mMutex);
 
-	swPartData* PartData = new swPartData(true);
+	swPartData* PartData = nullptr;
+	const auto DetachedIt = mDetachedParts.find(Name);
+
+	// adopt the identity from before a reload
+	if (DetachedIt != mDetachedParts.end())
+	{
+		PartData = DetachedIt->second;
+		mDetachedParts.erase(DetachedIt);
+	}
+	else
+		PartData = new swPartData(true);
 
 	swstrcpy(PartData->mFileName, FileName);
 
@@ -185,6 +199,50 @@ void swPartManager::RemoveTemporaryPartData()
 	}
 }
 
+// use to drop names on reload
+void swPartManager::RetirePartData(swPartData* PartData)
+{
+	QMutexLocker Lock(&mMutex);
+
+	UnregisterPartData(PartData);
+	mRetiredParts.insert(PartData);
+}
+
+bool swPartManager::IsRetiredPartData(const swPartData* PartData) const
+{
+	QMutexLocker Lock(&mMutex);
+
+	return mRetiredParts.find(const_cast<swPartData*>(PartData)) != mRetiredParts.end();
+}
+
+// use to free names before a reload
+void swPartManager::DetachLibraryPartData()
+{
+	QMutexLocker Lock(&mMutex);
+
+	mDetachedParts.merge(mParts);
+	mParts.clear();
+}
+
+// use to drop parts a reload left behind
+std::vector<swPartData*> swPartManager::RetireDetachedPartData()
+{
+	QMutexLocker Lock(&mMutex);
+
+	std::vector<swPartData*> Detached;
+	Detached.reserve(mDetachedParts.size());
+
+	for (const auto& [Name, PartData] : mDetachedParts)
+	{
+		Detached.push_back(PartData);
+		mRetiredParts.insert(PartData);
+	}
+
+	mDetachedParts.clear();
+
+	return Detached;
+}
+
 void swPartManager::RemovePartData(swPartData* PartData)
 {
 	mMutex.lock();
@@ -216,6 +274,16 @@ void swPartManager::RegisterProjectPartData(Project* OwnerProject, const std::st
 
 void swPartManager::UnregisterPartData(swPartData* PartData)
 {
+	mRetiredParts.erase(PartData);
+
+	const auto DetachedIt = std::find_if(mDetachedParts.begin(), mDetachedParts.end(), [PartData](const auto& Entry)
+	{
+		return Entry.second == PartData;
+	});
+
+	if (DetachedIt != mDetachedParts.end())
+		mDetachedParts.erase(DetachedIt);
+
 	const auto Local = mProjectParts.find(PartData);
 
 	if (Local != mProjectParts.end())

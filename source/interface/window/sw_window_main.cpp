@@ -26,6 +26,7 @@
 #include "sw_group.h"
 #include "sw_data_part.h"
 #include "sw_library.h"
+#include "sw_library_shadow.h"
 #include "sw_colors.h"
 #include "sw_widget_preview.h"
 #include "sw_model_history.h"
@@ -772,6 +773,39 @@ void swMainWindow::ToggleFirstPartAtOrigin()
 	swSetProfileInteger(SW_PROFILE_FIRST_PART_AT_ORIGIN, swGetPreferences().mFirstPartAtOrigin);
 
 	mActions[SW_PART_TOGGLE_FIRST_AT_ORIGIN]->setChecked(swGetPreferences().mFirstPartAtOrigin);
+}
+
+void swMainWindow::ToggleShadowLibrary()
+{
+	swGetPreferences().mShadowLibraryEnabled = !swGetPreferences().mShadowLibraryEnabled;
+	swSetProfileInteger(SW_PROFILE_SHADOW_LIBRARY_ENABLED, swGetPreferences().mShadowLibraryEnabled);
+
+	UpdateShadowLibraryAction();
+}
+
+void swMainWindow::UpdateShadowLibraryAction()
+{
+	mActions[SW_EDIT_TOGGLE_SHADOW_LIBRARY]->setChecked(swGetPreferences().mShadowLibraryEnabled);
+	mActions[SW_EDIT_TOGGLE_SHADOW_LIBRARY]->setEnabled(swShadowLibrary::IsLoaded());
+
+	int Flags = 0;
+	std::vector<swObject*> Selection;
+	swObject* Focus = nullptr;
+	swModel* ActiveModel = GetActiveModel();
+
+	if (ActiveModel)
+		ActiveModel->GetSelectionInformation(&Flags, Selection, &Focus);
+
+	UpdateConnectedPartActions(Flags);
+}
+
+// use to gate connected part selection
+void swMainWindow::UpdateConnectedPartActions(int Flags)
+{
+	const bool Enabled = (Flags & SW_SELECTION_PART) && (Flags & SW_SELECTION_UNSELECTED) && swGetPreferences().mShadowLibraryEnabled && swShadowLibrary::IsLoaded();
+
+	mActions[SW_EDIT_SELECT_ADJACENT]->setEnabled(Enabled);
+	mActions[SW_EDIT_SELECT_CONNECTED]->setEnabled(Enabled);
 }
 
 void swMainWindow::SetColorIndex(int ColorIndex)

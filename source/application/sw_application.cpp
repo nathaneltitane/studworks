@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "sw_application.h"
 #include "sw_library.h"
+#include "sw_library_shadow.h"
 #include "sw_profile.h"
 #include "sw_project.h"
 #include "sw_window_main.h"
@@ -14,12 +15,15 @@
 #include "sw_widget_preview.h"
 #include "sw_colors.h"
 #include "sw_window_utilities.h"
+#include "sw_http.h"
 
 #ifdef Q_OS_WIN
 #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
 #include <QtPlatformHeaders\QWindowsWindowFunctions>
 #endif
 #endif
+
+#define SW_LIBRARY_DOWNLOAD_URL "https://library.ldraw.org/library/updates/complete.zip"
 
 swApplication* gApplication;
 
@@ -94,6 +98,7 @@ void swPreferences::LoadDefaults()
 	mAutoLoadMostRecent = swGetProfileInteger(SW_PROFILE_AUTO_LOAD_MOST_RECENT);
 	mRestoreTabLayout = swGetProfileInteger(SW_PROFILE_RESTORE_TAB_LAYOUT);
 	mFirstPartAtOrigin = swGetProfileInteger(SW_PROFILE_FIRST_PART_AT_ORIGIN);
+	mShadowLibraryEnabled = swGetProfileInteger(SW_PROFILE_SHADOW_LIBRARY_ENABLED);
 	mPartsSnapToTiles = swGetProfileInteger(SW_PROFILE_PARTS_SNAP_TO_TILES);
 	mTerminalFollowModel = swGetProfileInteger(SW_PROFILE_TERMINAL_FOLLOW_MODEL);
 	mInsertColorMode = static_cast<swInsertColorMode>(qBound(0, swGetProfileInteger(SW_PROFILE_INSERT_COLOR_MODE), static_cast<int>(swInsertColorMode::LastInsertedColor)));
@@ -198,6 +203,7 @@ void swPreferences::SaveDefaults()
 	swSetProfileInteger(SW_PROFILE_AUTO_LOAD_MOST_RECENT, mAutoLoadMostRecent);
 	swSetProfileInteger(SW_PROFILE_RESTORE_TAB_LAYOUT, mRestoreTabLayout);
 	swSetProfileInteger(SW_PROFILE_FIRST_PART_AT_ORIGIN, mFirstPartAtOrigin);
+	swSetProfileInteger(SW_PROFILE_SHADOW_LIBRARY_ENABLED, mShadowLibraryEnabled);
 	swSetProfileInteger(SW_PROFILE_PARTS_SNAP_TO_TILES, mPartsSnapToTiles);
 	swSetProfileInteger(SW_PROFILE_TERMINAL_FOLLOW_MODEL, mTerminalFollowModel);
 	swSetProfileInteger(SW_PROFILE_INSERT_COLOR_MODE, static_cast<int>(mInsertColorMode));
@@ -507,6 +513,159 @@ bool swApplication::LoadPartsLibrary(const QList<QPair<QString, bool>>& LibraryP
 	return false;
 }
 
+// use to name the library archive downloaded into the data folder
+QString swApplication::GetDownloadLibraryPath()
+{
+	return QDir::cleanPath(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "/complete.zip");
+}
+
+// use to download the library archive with a progress dialog
+bool swApplication::DownloadPartsLibrary(const QString& FileName)
+{
+	QProgressDialog ProgressDialog(tr("Downloading the LDraw parts library..."), tr("Cancel"), 0, 0, gMainWindow);
+	ProgressDialog.setWindowTitle(tr("Download Parts Library"));
+	ProgressDialog.setWindowModality(Qt::WindowModal);
+	ProgressDialog.setMinimumDuration(0);
+	ProgressDialog.setAutoClose(false);
+	ProgressDialog.setAutoReset(false);
+
+	// room for the full title
+	ProgressDialog.setMinimumWidth(ProgressDialog.fontMetrics().averageCharWidth() * 60);
+
+	swHttpManager HttpManager;
+	QEventLoop EventLoop;
+	swHttpReply* Reply = HttpManager.DownloadFile(QLatin1String(SW_LIBRARY_DOWNLOAD_URL));
+
+	connect(&HttpManager, &swHttpManager::DownloadFinished, &EventLoop, &QEventLoop::quit);
+	connect(&ProgressDialog, &QProgressDialog::canceled, &EventLoop, [Reply] { Reply->abort(); });
+
+#ifndef Q_OS_WIN
+	connect(Reply, &QNetworkReply::downloadProgress, &ProgressDialog, [&ProgressDialog](qint64 BytesReceived, qint64 BytesTotal)
+	{
+		if (BytesTotal <= 0)
+			return;
+
+		// kilobytes keep the range inside int
+		ProgressDialog.setMaximum(static_cast<int>(BytesTotal / 1024));
+		ProgressDialog.setValue(static_cast<int>(BytesReceived / 1024));
+	});
+#endif
+
+	ProgressDialog.show();
+	EventLoop.exec();
+	ProgressDialog.hide();
+
+	const bool Canceled = ProgressDialog.wasCanceled();
+	const bool Downloaded = !Canceled && !Reply->error();
+	const QByteArray Data = Downloaded ? Reply->readAll() : QByteArray();
+
+	Reply->deleteLater();
+
+	if (Canceled)
+		return false;
+
+	if (!Downloaded || Data.isEmpty())
+	{
+		QMessageBox::warning(gMainWindow, tr("Download Parts Library"), tr("Could not download the parts library from %1.").arg(QLatin1String(SW_LIBRARY_DOWNLOAD_URL)));
+		return false;
+	}
+
+	QDir().mkpath(QFileInfo(FileName).absolutePath());
+
+	QSaveFile File(FileName);
+
+	if (!File.open(QIODevice::WriteOnly) || File.write(Data) != Data.size() || !File.commit())
+	{
+		QMessageBox::warning(gMainWindow, tr("Download Parts Library"), tr("Could not save the parts library to '%1'.").arg(FileName));
+		return false;
+	}
+
+	return true;
+}
+
+// use to download or choose a library when none was found
+bool swApplication::SetupPartsLibrary()
+{
+	const QString DownloadPath = GetDownloadLibraryPath();
+	const QString Question = tr("StudWorks could not find an LDraw parts library.\n\nDownload the official library (about 140 MB) from library.ldraw.org into '%1'?").arg(QDir::toNativeSeparators(DownloadPath));
+
+	if (QMessageBox::question(gMainWindow, tr("Load Parts Library"), Question, QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes && DownloadPartsLibrary(DownloadPath))
+	{
+		if (mLibrary->Load(DownloadPath, true, true))
+			return true;
+
+		QMessageBox::warning(gMainWindow, tr("Load Parts Library"), tr("Could not open the parts library '%1'.").arg(DownloadPath));
+	}
+
+	for (;;)
+	{
+		const QString FileName = QFileDialog::getOpenFileName(gMainWindow, tr("Open Parts Library Archive"), QDir::homePath(), tr("Parts Library Archives (*.zip);;All Files (*.*)"));
+
+		if (FileName.isEmpty())
+			break;
+
+		if (mLibrary->Load(FileName, true, false))
+		{
+			swSetProfileString(SW_PROFILE_PARTS_LIBRARY, FileName);
+			return true;
+		}
+
+		QMessageBox::warning(gMainWindow, tr("Load Parts Library"), tr("Could not open the parts library '%1'.").arg(FileName));
+	}
+
+	QMessageBox::warning(gMainWindow, tr("Load Parts Library"), tr("No parts library was downloaded or set.\n\nDownload one from %1 and set it under Preferences \u203a Parts Library the next time StudWorks is started.").arg(QLatin1String(SW_LIBRARY_DOWNLOAD_URL)));
+
+	return false;
+}
+
+// use to reload the library in place
+bool swApplication::ReloadPartsLibrary(const QString& LibraryPath, bool OfficialLibrary)
+{
+	if (!mLibrary->Reload(LibraryPath, OfficialLibrary))
+		return false;
+
+	std::vector<Project*> Projects = mLibrary->GetExternalProjects();
+	Projects.insert(Projects.begin(), mProject);
+
+	std::vector<std::pair<swPartDataReference, swPartDataReference>> Replacements;
+
+	for (Project* CurrentProject : Projects)
+	{
+		std::vector<std::pair<swPartDataReference, swPartDataReference>> ProjectReplacements = mLibrary->RebindProjectPartData(CurrentProject);
+
+		if (ProjectReplacements.empty())
+			continue;
+
+		std::vector<swModel*> UpdatedModels;
+
+		for (const std::unique_ptr<swModel>& Model : CurrentProject->GetModels())
+			Model->UpdatePartData(UpdatedModels);
+
+		std::move(ProjectReplacements.begin(), ProjectReplacements.end(), std::back_inserter(Replacements));
+	}
+
+	if (!gMainWindow)
+		return true;
+
+	for (const std::pair<swPartDataReference, swPartDataReference>& Replacement : Replacements)
+	{
+		if (gMainWindow->GetInsertPartData() == Replacement.first)
+			gMainWindow->SetInsertPartData(Replacement.second.Get());
+
+		gMainWindow->GetPreviewWidget()->RebindPartData(Replacement.first.Get(), Replacement.second.Get());
+	}
+
+	// vanished insert part
+	if (gMainWindow->GetInsertPartData() && mLibrary->IsRetiredPartData(gMainWindow->GetInsertPartData().Get()))
+		gMainWindow->SetInsertPartData(nullptr);
+
+	gMainWindow->UpdateCategories();
+	gMainWindow->UpdateInUseCategory();
+	swView::UpdateProjectViews(mProject);
+
+	return true;
+}
+
 swCommandLineOptions swApplication::ParseCommandLineOptions()
 {
 	swPreferences Preferences;
@@ -721,6 +880,10 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 			if (ParseString(LibPath, true))
 				Options.LibraryPaths += QPair<QString, bool>(LibPath, false);
 		}
+		else if (Option == QLatin1String("--unofficial-library"))
+			ParseString(Options.UnofficialLibraryPath, true);
+		else if (Option == QLatin1String("--shadow-library"))
+			ParseString(Options.ShadowLibraryPath, true);
 		else if (Option == QLatin1String("-i") || Option == QLatin1String("--image"))
 		{
 			Options.SaveImage = true;
@@ -962,6 +1125,8 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 			Options.StdOut += tr("Usage: studworks [options] [file]\n");
 			Options.StdOut += tr("  [options] can be:\n");
 			Options.StdOut += tr("  -l, --libpath <path>: Set the Parts Library location to path.\n");
+			Options.StdOut += tr("  --unofficial-library <path>: Set the Unofficial Parts Library archive to path.\n");
+			Options.StdOut += tr("  --shadow-library <path>: Set the LDCad Shadow Library location to path.\n");
 			Options.StdOut += tr("  -i, --image <outfile.ext>: Save a picture in the format specified by ext and exit.\n");
 			Options.StdOut += tr("  -w, --width <width>: Set the picture width.\n");
 			Options.StdOut += tr("  -h, --height <height>: Set the picture height.\n");
@@ -1293,22 +1458,37 @@ swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 	mPreferences.mPartColorValueLDIndex = Options.PartColorValueLDIndex;
 	mPreferences.mAutomateEdgeColor = Options.AutomateEdgeColor;
 
+	const QString UnofficialLibraryPath = Options.UnofficialLibraryPath.isEmpty() ? swGetProfileString(SW_PROFILE_UNOFFICIAL_LIBRARY) : Options.UnofficialLibraryPath;
+
+	if (mLibrary == nullptr)
+		mLibrary = new swPartsLibrary(Options.StudStyle, Options.StudCylinderColorEnabled);
+
+	mLibrary->SetUnofficialArchivePath(UnofficialLibraryPath);
+
 	if (!LoadPartsLibrary(Options.LibraryPaths.isEmpty() ? LibraryPaths : Options.LibraryPaths, !Options.LibraryPaths.isEmpty(), Options.StudStyle, Options.StudCylinderColorEnabled))
 	{
-		QString Message;
-
-		if (mLibrary->LoadBuiltinPartLibrary())
-			Message = tr("StudWorks could not find a compatible Parts Library so only a small number of parts will be available.\n\nPlease visit https://library.ldraw.org for information on how to download and install a library.");
-		else
-			Message = tr("StudWorks could not load Parts Library.\n\nPlease visit https://library.ldraw.org for information on how to download and install a library.");
-
-		if (gMainWindow)
-			QMessageBox::warning(gMainWindow, tr("Load Parts Library"), Message);
-		else
+		if (!gMainWindow)
 		{
-			StdErr << Message << "\n";
+			StdErr << tr("StudWorks could not find an LDraw parts library.\n\nDownload one from %1 and pass it with --libpath.").arg(QLatin1String(SW_LIBRARY_DOWNLOAD_URL)) << "\n";
 			StdErr.flush();
+			mLibrary->LoadEmptyLibrary();
 		}
+		else if (!SetupPartsLibrary())
+			mLibrary->LoadEmptyLibrary();
+	}
+
+	if (!UnofficialLibraryPath.isEmpty() && !mLibrary->HasUnofficialArchive())
+	{
+		StdErr << tr("Could not open the unofficial library archive '%1'.").arg(UnofficialLibraryPath) << "\n";
+		StdErr.flush();
+	}
+
+	const QString ShadowLibraryPath = Options.ShadowLibraryPath.isEmpty() ? swGetProfileString(SW_PROFILE_SHADOW_LIBRARY) : Options.ShadowLibraryPath;
+
+	if (!ShadowLibraryPath.isEmpty() && !swShadowLibrary::SetPath(ShadowLibraryPath))
+	{
+		StdErr << tr("Could not find a shadow library in '%1'.").arg(ShadowLibraryPath) << "\n";
+		StdErr.flush();
 	}
 
 	if (!SaveAndExit)
@@ -1697,6 +1877,8 @@ void swApplication::ShowPreferencesDialog()
 	Options.Preferences = mPreferences;
 
 	Options.LibraryPath = swGetProfileString(SW_PROFILE_PARTS_LIBRARY);
+	Options.UnofficialLibraryPath = swGetProfileString(SW_PROFILE_UNOFFICIAL_LIBRARY);
+	Options.ShadowLibraryPath = swGetProfileString(SW_PROFILE_SHADOW_LIBRARY);
 	Options.MinifigureBuilderSettingsPath = swGetProfileString(SW_PROFILE_MINIFIGURE_BUILDER_SETTINGS);
 	Options.ColorConfigPath = swGetProfileString(SW_PROFILE_COLOR_CONFIGURATION);
 	Options.POVRayPath = swGetProfileString(SW_PROFILE_POVRAY_PATH);
@@ -1725,6 +1907,9 @@ void swApplication::ShowPreferencesDialog()
 
 	bool LanguageChanged = Options.Language != swGetProfileString(SW_PROFILE_LANGUAGE);
 	bool LibraryChanged = Options.LibraryPath != swGetProfileString(SW_PROFILE_PARTS_LIBRARY);
+	bool UnofficialLibraryChanged = Options.UnofficialLibraryPath != swGetProfileString(SW_PROFILE_UNOFFICIAL_LIBRARY);
+	bool ShadowLibraryChanged = Options.ShadowLibraryPath != swGetProfileString(SW_PROFILE_SHADOW_LIBRARY);
+	bool ShadowLibraryEnabledChanged = Options.Preferences.mShadowLibraryEnabled != mPreferences.mShadowLibraryEnabled;
 	bool ColorConfigChanged = Options.ColorConfigPath != swGetProfileString(SW_PROFILE_COLOR_CONFIGURATION);
 	bool AAChanged = CurrentAASamples != Options.AASamples;
 	bool StudStyleChanged = CurrentStudStyle != Options.StudStyle;
@@ -1762,6 +1947,8 @@ void swApplication::ShowPreferencesDialog()
 
 	swSetProfileString(SW_PROFILE_DEFAULT_AUTHOR_NAME, Options.DefaultAuthor);
 	swSetProfileString(SW_PROFILE_PARTS_LIBRARY, Options.LibraryPath);
+	swSetProfileString(SW_PROFILE_UNOFFICIAL_LIBRARY, Options.UnofficialLibraryPath);
+	swSetProfileString(SW_PROFILE_SHADOW_LIBRARY, Options.ShadowLibraryPath);
 	swSetProfileString(SW_PROFILE_MINIFIGURE_BUILDER_SETTINGS, Options.MinifigureBuilderSettingsPath);
 	swSetProfileString(SW_PROFILE_POVRAY_PATH, Options.POVRayPath);
 	swSetProfileString(SW_PROFILE_POVRAY_LGEO_PATH, Options.LGEOPath);
@@ -1772,6 +1959,46 @@ void swApplication::ShowPreferencesDialog()
 
 	if (gMainWindow)
 		gMainWindow->UpdateInstructionsOptions();
+
+	// libraries reload while running
+	if (LibraryChanged || UnofficialLibraryChanged)
+	{
+		const char* PathEnvironment = getenv("STUDWORKS_LIBRARY");
+		const bool LibraryOverridden = PathEnvironment && PathEnvironment[0];
+
+		mLibrary->SetUnofficialArchivePath(Options.UnofficialLibraryPath);
+
+		// default paths resolve at startup
+		if (LibraryChanged && (LibraryOverridden || Options.LibraryPath.isEmpty()))
+		{
+			if (UnofficialLibraryChanged && !ReloadPartsLibrary(mLibrary->GetLibraryPath(), mLibrary->IsOfficialLibrary()))
+				QMessageBox::warning(gMainWindow, tr("Load Parts Library"), tr("Could not reload the parts library '%1'.").arg(mLibrary->GetLibraryPath()));
+		}
+		else
+		{
+			const QString LibraryPath = LibraryChanged ? Options.LibraryPath : mLibrary->GetLibraryPath();
+			const bool OfficialLibrary = LibraryChanged ? false : mLibrary->IsOfficialLibrary();
+
+			if (!ReloadPartsLibrary(LibraryPath, OfficialLibrary))
+				QMessageBox::warning(gMainWindow, tr("Load Parts Library"), tr("Could not open the parts library '%1'.").arg(LibraryPath));
+
+			// the warning replaces the restart notice
+			LibraryChanged = false;
+		}
+
+		if (UnofficialLibraryChanged && !Options.UnofficialLibraryPath.isEmpty() && !mLibrary->HasUnofficialArchive())
+			QMessageBox::warning(gMainWindow, tr("Load Parts Library"), tr("Could not open the unofficial library archive '%1'.").arg(Options.UnofficialLibraryPath));
+	}
+
+	// shadow library reloads while running
+	if (ShadowLibraryChanged)
+	{
+		if (!swShadowLibrary::SetPath(Options.ShadowLibraryPath) && !Options.ShadowLibraryPath.isEmpty())
+			QMessageBox::warning(gMainWindow, tr("Load Part Connections"), tr("Could not find a shadow library in '%1'.").arg(Options.ShadowLibraryPath));
+	}
+
+	if ((ShadowLibraryChanged || ShadowLibraryEnabledChanged) && gMainWindow)
+		gMainWindow->UpdateShadowLibraryAction();
 
 	if (LanguageChanged || LibraryChanged || AAChanged)
 		QMessageBox::information(gMainWindow, tr("Preferences"), tr("Some changes will only take effect the next time you start StudWorks."));

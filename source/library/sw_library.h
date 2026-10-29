@@ -99,8 +99,48 @@ public:
 	// OfficialLibrary enables archive update checks; directories remain excluded.
 	bool Load(const QString& LibraryPath, bool ShowProgress, bool OfficialLibrary);
 
-	// Loads the bundled fallback library and its default settings.
-	bool LoadBuiltinPartLibrary();
+	// An empty path loads ldrawunf.zip next to an archive library or inside a folder library, any other path names the unofficial archive itself.
+	// Folder libraries add the archive parts their unofficial folder lacks.
+	void SetUnofficialArchivePath(const QString& Path)
+	{
+		mUnofficialArchivePath = Path;
+	}
+
+	bool HasUnofficialArchive() const
+	{
+		return mZipFiles[static_cast<int>(swZipFileType::Unofficial)] != nullptr;
+	}
+
+	// Opens an archive or folder library in place of the current one, keeping identities that still exist so open models stay bound.
+	// Vanished parts are retired as missing and loaded meshes are queued again. Returns false and keeps the current library if the path is not a library.
+	bool Reload(const QString& LibraryPath, bool OfficialLibrary);
+
+	const QString& GetLibraryPath() const
+	{
+		return mLibraryPath;
+	}
+
+	bool IsOfficialLibrary() const
+	{
+		return mOfficialLibrary;
+	}
+
+	bool IsArchiveLibrary() const
+	{
+		return mZipFiles[static_cast<int>(swZipFileType::Official)] != nullptr;
+	}
+
+	// Rebinds the project's models from retired library parts to missing parts and from missing parts to new library parts.
+	// Returns the previous and replacement identities.
+	std::vector<std::pair<swPartDataReference, swPartDataReference>> RebindProjectPartData(Project* Project);
+
+	// Returns the projects loaded from external model files referenced by open models.
+	std::vector<Project*> GetExternalProjects() const;
+
+	bool IsRetiredPartData(const swPartData* PartData) const;
+
+	// Leaves the library without parts and loads the default colors, categories and part rules.
+	void LoadEmptyLibrary();
 
 	// Resolves a file path relative to the library directory without opening it.
 	QString GetLibraryFilePath(const QString& FileName) const
@@ -316,6 +356,8 @@ protected:
 	// Initializes descriptions from source files and compatible description caches.
 	void ReadArchiveDescriptions(const QString& OfficialFileName, const QString& UnofficialFileName);
 	void ReadDirectoryDescriptions(const QFileInfoList (&FileLists)[static_cast<int>(swLibraryFolderType::Count)], bool ShowProgress);
+	void ReadUnofficialArchiveDescriptions(const QFileInfoList (&FileLists)[static_cast<int>(swLibraryFolderType::Count)]);
+	void ReadArchivePartDescription(swPartData* PartData, swMemoryFile& PartFile);
 
 	enum class CacheType : quint32
 	{
@@ -359,6 +401,9 @@ protected:
 	void ClassifyParts(const DirectoryFilePaths& FilePaths);
 	static std::string ReadAliasTarget(swFile& File);
 
+	// Returns ldrawunf.zip next to the archive library unless an unofficial archive path is set.
+	QString GetUnofficialArchiveFileName() const;
+
 	// Description cache strings are bounded to the part name/description length limit.
 	static bool ReadIndexString(swMemoryFile& File, std::string& String);
 	static bool WriteIndexString(swMemoryFile& File, const std::string& String);
@@ -368,6 +413,9 @@ protected:
 	std::unique_ptr<swZipFile> mZipFiles[static_cast<int>(swZipFileType::Count)];
 	std::vector<std::unique_ptr<swLibrarySource>> mSources;
 	bool mHasUnofficial;
+	QString mLibraryPath;
+	bool mOfficialLibrary = false;
+	QString mUnofficialArchivePath;
 
 	// Captured before unofficial additions/overrides; custom libraries skip update checks.
 	int mOfficialPartCount = 0;

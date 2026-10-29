@@ -235,6 +235,7 @@ public:
 	bool mAutoLoadMostRecent;
 	bool mRestoreTabLayout;
 	bool mFirstPartAtOrigin;
+	bool mShadowLibraryEnabled;
 	bool mPartsSnapToTiles;
 	bool mTerminalFollowModel;
 	swInsertColorMode mInsertColorMode;
@@ -336,6 +337,8 @@ struct swCommandLineOptions
 	QString CategoriesImportName;
 	QString CategoriesExportName;
 	QList<QPair<QString, bool>> LibraryPaths;
+	QString UnofficialLibraryPath;
+	QString ShadowLibraryPath;
 	QString StdOut;
 	QString StdErr;
 
@@ -379,6 +382,8 @@ public:
 	void SaveTabLayout() const;
 
 	bool LoadPartsLibrary(const QList<QPair<QString, bool>>& LibraryPaths, bool OnlyUsePaths, swStudStyle StudStyle, bool StudCylinderColorEnabled);
+	bool ReloadPartsLibrary(const QString& LibraryPath, bool OfficialLibrary);
+	static QString GetDownloadLibraryPath();
 
 	void SetClipboard(const QByteArray& Clipboard);
 	void ExportClipboard(const QByteArray& Clipboard);
@@ -392,6 +397,8 @@ signals:
 	void RendererInitialized();
 
 protected:
+	bool SetupPartsLibrary();
+	bool DownloadPartsLibrary(const QString& FileName);
 	void UpdateStyle();
 	QString GetTabLayoutKey() const;
 

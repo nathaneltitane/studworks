@@ -297,6 +297,9 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 
 	connect(ui->partsLibraryBrowse, &QPushButton::clicked, this, &swPreferencesDialog::PartsLibraryBrowseClicked);
 	connect(ui->partsArchiveBrowse, &QPushButton::clicked, this, &swPreferencesDialog::PartsArchiveBrowseClicked);
+	connect(ui->UnofficialLibraryBrowseButton, &QPushButton::clicked, this, &swPreferencesDialog::UnofficialLibraryBrowseButtonClicked);
+	connect(ui->ShadowLibraryEnabled, &QCheckBox::toggled, this, &swPreferencesDialog::ShadowLibraryEnabledToggled);
+	connect(ui->ShadowLibraryBrowseButton, &QPushButton::clicked, this, &swPreferencesDialog::ShadowLibraryBrowseButtonClicked);
 	connect(ui->ColorConfigBrowseButton, &QPushButton::clicked, this, &swPreferencesDialog::ColorConfigBrowseButtonClicked);
 	connect(ui->MinifigureBuilderSettingsBrowseButton, &QPushButton::clicked, this, &swPreferencesDialog::MinifigureBuilderSettingsBrowseButtonClicked);
 	connect(ui->povrayExecutableBrowse, &QPushButton::clicked, this, &swPreferencesDialog::PovrayExecutableBrowseClicked);
@@ -390,6 +393,10 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	connect(ui->HighContrastButton, &QToolButton::clicked, this, &swPreferencesDialog::AutomateEdgeColor);
 
 	ui->partsLibrary->setText(mOptions->LibraryPath);
+	ui->UnofficialLibraryEdit->setText(mOptions->UnofficialLibraryPath);
+	ui->ShadowLibraryEdit->setText(mOptions->ShadowLibraryPath);
+	ui->ShadowLibraryEnabled->setChecked(mOptions->Preferences.mShadowLibraryEnabled);
+	ShadowLibraryEnabledToggled(mOptions->Preferences.mShadowLibraryEnabled);
 	ui->ColorConfigEdit->setText(mOptions->ColorConfigPath);
 	ui->MinifigureBuilderSettingsEdit->setText(mOptions->MinifigureBuilderSettingsPath);
 	ui->povrayExecutable->setText(mOptions->POVRayPath);
@@ -723,6 +730,9 @@ void swPreferencesDialog::accept()
 	const int GridLineSpacing = ui->gridLineSpacing->value();
 
 	mOptions->LibraryPath = ui->partsLibrary->text();
+	mOptions->UnofficialLibraryPath = ui->UnofficialLibraryEdit->text();
+	mOptions->ShadowLibraryPath = ui->ShadowLibraryEdit->text();
+	mOptions->Preferences.mShadowLibraryEnabled = ui->ShadowLibraryEnabled->isChecked();
 	mOptions->MinifigureBuilderSettingsPath = ui->MinifigureBuilderSettingsEdit->text();
 	mOptions->ColorConfigPath = ui->ColorConfigEdit->text();
 	mOptions->POVRayPath = ui->povrayExecutable->text();
@@ -861,6 +871,28 @@ void swPreferencesDialog::PartsArchiveBrowseClicked()
 
 	if (!Result.isEmpty())
 		ui->partsLibrary->setText(QDir::toNativeSeparators(Result));
+}
+
+void swPreferencesDialog::UnofficialLibraryBrowseButtonClicked()
+{
+	QString Result = QFileDialog::getOpenFileName(this, tr("Select Unofficial Library Archive"), ui->UnofficialLibraryEdit->text(), tr("Supported Archives (*.zip);;All Files (*.*)"));
+
+	if (!Result.isEmpty())
+		ui->UnofficialLibraryEdit->setText(QDir::toNativeSeparators(Result));
+}
+
+void swPreferencesDialog::ShadowLibraryBrowseButtonClicked()
+{
+	QString Result = QFileDialog::getExistingDirectory(this, tr("Select Part Connections Folder"), ui->ShadowLibraryEdit->text());
+
+	if (!Result.isEmpty())
+		ui->ShadowLibraryEdit->setText(QDir::toNativeSeparators(Result));
+}
+
+void swPreferencesDialog::ShadowLibraryEnabledToggled(bool Checked)
+{
+	ui->ShadowLibraryEdit->setEnabled(Checked);
+	ui->ShadowLibraryBrowseButton->setEnabled(Checked);
 }
 
 void swPreferencesDialog::BlenderAddonSettingsButtonClicked()

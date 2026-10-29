@@ -443,48 +443,48 @@ swResult<std::unique_ptr<swFile>> swPartsLibrary::OpenPartDataFile(const char* P
 {
 	const std::optional<swPartManager::FileInfo> FileInfo = mPartManager->GetPartDataFileInfo(PartName);
 
-	if (mZipFiles[static_cast<int>(swZipFileType::Official)])
+	if (FileInfo && FileInfo->ZipFileType != swZipFileType::Count)
 	{
-		if (FileInfo && FileInfo->ZipFileType != swZipFileType::Count)
-		{
-			swFileSource Source;
-			Source.ArchiveType = static_cast<int>(FileInfo->ZipFileType);
-			Source.ArchiveIndex = FileInfo->ZipFileIndex;
-			return OpenFile(Source);
-		}
+		swFileSource Source;
+		Source.ArchiveType = static_cast<int>(FileInfo->ZipFileType);
+		Source.ArchiveIndex = FileInfo->ZipFileIndex;
+		return OpenFile(Source);
+	}
 
-		if (!FileInfo)
+	// use to find an included file in the open archives
+	const auto OpenArchiveFile = [this, PartName]() -> swResult<std::unique_ptr<swFile>>
+	{
+		for (const swZipFileType Type : { swZipFileType::Official, swZipFileType::Unofficial })
 		{
-			for (const swZipFileType Type : { swZipFileType::Official, swZipFileType::Unofficial })
+			const std::unique_ptr<swZipFile>& Archive = mZipFiles[static_cast<int>(Type)];
+
+			if (!Archive)
+				continue;
+
+			const QString Prefix = Type == swZipFileType::Official ? QStringLiteral("ldraw/") : QString();
+
+			for (const QString& Folder : { QStringLiteral("parts/"), QStringLiteral("p/") })
 			{
-				const std::unique_ptr<swZipFile>& Archive = mZipFiles[static_cast<int>(Type)];
+				const QByteArray FileName = (Prefix + Folder + QString::fromLatin1(PartName)).toLatin1();
+				const std::optional<quint32> FileIndex = Archive->FindFileIndex(FileName.constData());
 
-				if (!Archive)
+				if (!FileIndex)
 					continue;
 
-				const QString Prefix = Type == swZipFileType::Official ? QStringLiteral("ldraw/") : QString();
+				swFileSource Source;
+				Source.ArchiveType = static_cast<int>(Type);
+				Source.ArchiveIndex = *FileIndex;
 
-				for (const QString& Folder : { QStringLiteral("parts/"), QStringLiteral("p/") })
-				{
-					const QByteArray FileName = (Prefix + Folder + QString::fromLatin1(PartName)).toLatin1();
-
-					const std::optional<quint32> FileIndex = Archive->FindFileIndex(FileName.constData());
-
-					if (!FileIndex)
-						continue;
-
-					swFileSource Source;
-					Source.ArchiveType = static_cast<int>(Type);
-					Source.ArchiveIndex = *FileIndex;
-
-					if (swResult<std::unique_ptr<swFile>> File = OpenFile(Source))
-						return File;
-				}
+				if (swResult<std::unique_ptr<swFile>> File = OpenFile(Source))
+					return File;
 			}
-
-			return swUnexpected(tr("Could not open included file '%1'.").arg(QString::fromLatin1(PartName)));
 		}
-	}
+
+		return swUnexpected(tr("Could not open included file '%1'.").arg(QString::fromLatin1(PartName)));
+	};
+
+	if (mZipFiles[static_cast<int>(swZipFileType::Official)] && !FileInfo)
+		return OpenArchiveFile();
 
 	const QString Name = QString::fromLatin1(FileInfo ? FileInfo->FileName.c_str() : PartName);
 	std::vector<QString> Folders(1, QStringLiteral("parts/"));
@@ -519,6 +519,10 @@ swResult<std::unique_ptr<swFile>> swPartsLibrary::OpenPartDataFile(const char* P
 		}
 #endif
 	}
+
+	// folder libraries fall back to the unofficial archive
+	if (!FileInfo)
+		return OpenArchiveFile();
 
 	return swUnexpected(tr("Could not open included file '%1'.").arg(QString::fromLatin1(PartName)));
 }

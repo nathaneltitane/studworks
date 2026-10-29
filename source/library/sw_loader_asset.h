@@ -57,7 +57,7 @@ public:
 	// Discard meshes still awaiting textures so they can be rebuilt with the new settings.
 	void PauseQueuedWork();
 
-	// Refresh queued part source snapshots and resume dispatch with the current settings.
+	// Refresh queued part and texture source snapshots and resume dispatch with the current settings.
 	// Does not wait for pending work to finish.
 	void ResumeQueuedWork();
 

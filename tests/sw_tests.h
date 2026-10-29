@@ -16,4 +16,10 @@ private slots:
 	void CommandMetaReadsBothFormats();
 	void CommandMetaWritesBothFormats();
 	void CommandMetaRoundTripsModel();
+	void ShadowParsesLines();
+	void ShadowParsesIncludesAndClears();
+	void ShadowReadsSubFileReferences();
+	void ShadowScalesAndMirrorsSubFileShapes();
+	void ConnectivityFitsShapesAlongTheirAxis();
+	void ConnectivityConnectsSeatedShapes();
 };

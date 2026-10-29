@@ -14,8 +14,6 @@ fi
 directory_source="$(cd "${directory_script}/.." && pwd)"
 directory_prefix="/opt/studworks"
 
-file_library="https://library.ldraw.org/library/updates/complete.zip"
-
 # version from the release date
 while read -r line_header
 do
@@ -55,12 +53,6 @@ list_plugins=(
 	printsupport/libcupsprintersupport.so
 	platformthemes/libqxdgdesktopportal.so
 )
-
-# download parts library
-if [ ! -s "${directory_source}/library.bin" ]
-then
-	curl -fsSL "${file_library}" -o "${directory_source}/library.bin"
-fi
 
 # build and install
 mkdir -p "${directory_build}"

@@ -70,6 +70,10 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 		ReloadProject();
 		break;
 
+	case SW_FILE_RELOAD_LIBRARY:
+		ReloadPartsLibrary();
+		break;
+
 	case SW_FILE_TOGGLE_WATCH_FILE_CHANGES:
 		ToggleWatchFileChanges();
 		break;
@@ -231,6 +235,20 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 	case SW_EDIT_SELECT_INVERT:
 		if (ActiveModel)
 			ActiveModel->InvertPartSelectionAction();
+		break;
+
+	case SW_EDIT_SELECT_ADJACENT:
+		if (ActiveModel)
+			ActiveModel->SelectConnectedPartsAction(false);
+		break;
+
+	case SW_EDIT_SELECT_CONNECTED:
+		if (ActiveModel)
+			ActiveModel->SelectConnectedPartsAction(true);
+		break;
+
+	case SW_EDIT_TOGGLE_SHADOW_LIBRARY:
+		ToggleShadowLibrary();
 		break;
 
 	case SW_EDIT_SELECT_BY_NAME:

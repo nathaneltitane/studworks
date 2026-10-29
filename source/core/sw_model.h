@@ -5,6 +5,7 @@
 #include "sw_commands.h"
 #include "sw_object_property.h"
 #include "sw_result.h"
+#include "sw_connectivity.h"
 
 enum class swGeometryBoundsMode
 {
@@ -466,6 +467,7 @@ public:
 	void FocusOrDeselectObjectAction(swObject* Object, uint32_t Section, swSelectionMode SelectionMode);
 	void SelectAllPartsAction();
 	void InvertPartSelectionAction();
+	void SelectConnectedPartsAction(bool AllConnected);
 	void AddToSelectionAction(const std::vector<swObject*>& Objects);
 	void RemoveFromSelectionAction(const std::vector<swObject*>& Objects);
 
@@ -564,6 +566,8 @@ protected:
 	void SetSelectionAndFocus(const std::vector<swObject*>& Objects, swObject* FocusObject, uint32_t FocusSection, swSelectionMode SelectionMode);
 	void SelectAllParts();
 	void InvertPartSelection();
+	std::vector<swObject*> FindConnectedParts(bool AllConnected) const;
+	static void AddPartShapes(const swPart* Part, const swMatrix44& Transform, swConnectionShapes& Shapes);
 	void AddToSelection(const std::vector<swObject*>& Objects);
 	void RemoveFromSelection(const std::vector<swObject*>& Objects);
 	void BeginEditHistory();

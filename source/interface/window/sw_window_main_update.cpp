@@ -73,6 +73,7 @@ void swMainWindow::UpdateSelectedObjects(bool SelectionChanged)
 		mActions[SW_EDIT_REPLACE_NEXT]->setEnabled((Flags & SW_SELECTION_NO_PARTS) == 0);
 		mActions[SW_EDIT_REPLACE_ALL]->setEnabled((Flags & SW_SELECTION_NO_PARTS) == 0);
 		mActions[SW_EDIT_SELECT_INVERT]->setEnabled((Flags & SW_SELECTION_NO_PARTS) == 0);
+		UpdateConnectedPartActions(Flags);
 		mActions[SW_EDIT_SELECT_BY_NAME]->setEnabled((Flags & SW_SELECTION_NO_PARTS) == 0);
 		mActions[SW_EDIT_SELECT_NONE]->setEnabled(Flags & SW_SELECTION_SELECTED);
 		mActions[SW_EDIT_SELECT_ALL]->setEnabled(Flags & SW_SELECTION_UNSELECTED);

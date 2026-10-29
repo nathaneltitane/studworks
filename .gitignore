@@ -29,7 +29,6 @@ Debug*
 .DS_Store
 .qmake.stash
 Makefile
-library.bin
 studworks_plugin_import.cpp
 studworks_resource.*
 povray

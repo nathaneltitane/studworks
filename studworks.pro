@@ -103,13 +103,7 @@ RCC_DIR = $$DESTDIR/.qrc
 UI_DIR = $$DESTDIR/.ui
 
 win32 {
-	# the parts library and povray are copied beside the executable only when present
-	exists($$_PRO_FILE_PWD_/library.bin) {
-		library.files = $$_PRO_FILE_PWD_/library.bin
-		library.path = $$OUT_PWD/$$DESTDIR
-		COPIES += library
-	}
-
+	# povray is copied beside the executable only when present
 	exists($$_PRO_FILE_PWD_/povconsole32-sse2.exe) {
 		povray.files = $$_PRO_FILE_PWD_/povconsole32-sse2.exe
 		povray.path = $$OUT_PWD/$$DESTDIR
@@ -154,13 +148,6 @@ unix:!macx {
 
 	INSTALLS += target docs man desktop icons mime appdata thumbnailer
 
-	# the parts library is installed only when present, povray comes from the system
-	exists($$_PRO_FILE_PWD_/library.bin) {
-		library.path = $$INSTALL_PREFIX/share/studworks
-		library.files = $$_PRO_FILE_PWD_/library.bin
-		INSTALLS += library
-	}
-
 	# find the bundled qt libraries first
 	!isEmpty(BUNDLE_LIBRARIES) {
 		QMAKE_LFLAGS += -Wl,--disable-new-dtags
@@ -180,13 +167,7 @@ macx {
 	document_icon.path = Contents/Resources
 	QMAKE_BUNDLE_DATA += document_icon
 
-	# the parts library and povray are bundled only when present
-	exists($$_PRO_FILE_PWD_/library.bin) {
-		library.files += $$_PRO_FILE_PWD_/library.bin
-		library.path = Contents/Resources
-		QMAKE_BUNDLE_DATA += library
-	}
-
+	# povray is bundled only when present
 	exists($$_PRO_FILE_PWD_/povray) {
 		povray.files += $$_PRO_FILE_PWD_/povray
 		povray.path = Contents/MacOS

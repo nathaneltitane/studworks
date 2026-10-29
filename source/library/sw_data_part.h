@@ -53,10 +53,8 @@ public:
 		return mTrainTrackInfo;
 	}
 
-	void SetTrainTrackInfo(swTrainTrackInformation* TrainTrackInfo)
-	{
-		mTrainTrackInfo = TrainTrackInfo;
-	}
+	// Takes ownership and frees the previous information.
+	void SetTrainTrackInfo(swTrainTrackInformation* TrainTrackInfo);
 
 	swMesh* GetMesh() const
 	{

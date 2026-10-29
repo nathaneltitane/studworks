@@ -3,7 +3,7 @@
  <class>swPreferencesDialog</class>
  <widget class="QDialog" name="swPreferencesDialog">
   <property name="whatsThis">
-   <string>&lt;p&gt;&lt;b&gt;Preferences&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Configure the application, display, colors, part categories, and keyboard and mouse shortcuts. Choose OK to save the changes or Cancel to discard edits in Preferences. Language, part-library, and antialiasing changes may require restarting StudWorks.&lt;/p&gt;&lt;p&gt;Export buttons write files immediately. Blender add-on settings have their own Apply action and can configure Blender before you close Preferences.&lt;/p&gt;</string>
+   <string>&lt;p&gt;&lt;b&gt;Preferences&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Configure the application, display, colors, part categories, and keyboard and mouse shortcuts. Choose OK to save the changes or Cancel to discard edits in Preferences. Language and antialiasing changes, and clearing the parts library, require restarting StudWorks.&lt;/p&gt;&lt;p&gt;Export buttons write files immediately. Blender add-on settings have their own Apply action and can configure Blender before you close Preferences.&lt;/p&gt;</string>
   </property>
   <property name="geometry">
    <rect>
@@ -42,7 +42,7 @@
           <item row="0" column="0">
            <widget class="QLabel" name="label_5">
             <property name="toolTip">
-             <string>Choose a part-library folder or supported archive to load after restarting StudWorks.</string>
+             <string>Choose a part-library folder or supported archive. Leave it empty to use the default library after restarting StudWorks.</string>
             </property>
             <property name="text">
              <string>Parts Library</string>
@@ -60,7 +60,7 @@
                <string>Parts Library</string>
               </property>
               <property name="toolTip">
-               <string>Choose a part-library folder or supported archive to load after restarting StudWorks.</string>
+               <string>Choose a part-library folder or supported archive. Leave it empty to use the default library after restarting StudWorks.</string>
               </property>
              </widget>
             </item>
@@ -81,6 +81,93 @@
            </layout>
           </item>
           <item row="1" column="0">
+           <widget class="QLabel" name="UnofficialLibraryLabel">
+            <property name="toolTip">
+             <string>Choose the LDraw unofficial parts archive, or leave empty to use ldrawunf.zip next to an archive library or inside a folder library.</string>
+            </property>
+            <property name="text">
+             <string>Unofficial Library</string>
+            </property>
+            <property name="buddy">
+             <cstring>UnofficialLibraryEdit</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <layout class="QHBoxLayout" name="UnofficialLibraryLayout">
+            <item>
+             <widget class="QLineEdit" name="UnofficialLibraryEdit">
+              <property name="accessibleName">
+               <string>Unofficial Library</string>
+              </property>
+              <property name="toolTip">
+               <string>Choose the LDraw unofficial parts archive, or leave empty to use ldrawunf.zip next to an archive library or inside a folder library.</string>
+              </property>
+              <property name="placeholderText">
+               <string>ldrawunf.zip</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QToolButton" name="UnofficialLibraryBrowseButton">
+              <property name="toolTip">
+               <string>Choose an LDraw unofficial parts ZIP archive.</string>
+              </property>
+              <property name="text">
+               <string>...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="ShadowLibraryLabel">
+            <property name="toolTip">
+             <string>Choose the LDCad shadow library folder that describes how parts connect, used to select connected parts.</string>
+            </property>
+            <property name="text">
+             <string>Part Connections</string>
+            </property>
+            <property name="buddy">
+             <cstring>ShadowLibraryEdit</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <layout class="QHBoxLayout" name="ShadowLibraryLayout">
+            <item>
+             <widget class="QCheckBox" name="ShadowLibraryEnabled">
+              <property name="accessibleName">
+               <string>Use Part Connections</string>
+              </property>
+              <property name="toolTip">
+               <string>Turn part connections from the LDCad shadow library on or off.</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="ShadowLibraryEdit">
+              <property name="accessibleName">
+               <string>Part Connections</string>
+              </property>
+              <property name="toolTip">
+               <string>Choose the LDCad shadow library folder that describes how parts connect, used to select connected parts.</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QToolButton" name="ShadowLibraryBrowseButton">
+              <property name="toolTip">
+               <string>Choose an LDCad shadow library folder.</string>
+              </property>
+              <property name="text">
+               <string>...</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="3" column="0">
            <widget class="QLabel" name="label_17">
             <property name="toolTip">
              <string>Choose a custom LDraw color configuration file, or leave empty to use the library colors.</string>
@@ -93,7 +180,7 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="1">
+          <item row="3" column="1">
            <layout class="QHBoxLayout" name="ColorConfigLayout">
             <item>
              <widget class="QLineEdit" name="ColorConfigEdit">
@@ -117,7 +204,7 @@
             </item>
            </layout>
           </item>
-          <item row="2" column="0">
+          <item row="4" column="0">
            <widget class="QLabel" name="label_18">
             <property name="toolTip">
              <string>Choose a custom minifigure builder settings file, or leave empty to use the built-in choices.</string>
@@ -130,7 +217,7 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
+          <item row="4" column="1">
            <layout class="QHBoxLayout" name="MinifigureBuilderSettingsLayout">
             <item>
              <widget class="QLineEdit" name="MinifigureBuilderSettingsEdit">
@@ -154,7 +241,7 @@
             </item>
            </layout>
           </item>
-          <item row="3" column="0">
+          <item row="5" column="0">
            <widget class="QLabel" name="povrayLabel">
             <property name="toolTip">
              <string>Set the POV-Ray executable used for rendering.</string>
@@ -167,7 +254,7 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="1">
+          <item row="5" column="1">
            <layout class="QHBoxLayout" name="povrayLayout">
             <item>
              <widget class="QLineEdit" name="povrayExecutable">
@@ -191,7 +278,7 @@
             </item>
            </layout>
           </item>
-          <item row="4" column="0">
+          <item row="6" column="0">
            <widget class="QLabel" name="label_9">
             <property name="toolTip">
              <string>Set the LGEO library folder used by POV-Ray exports.</string>
@@ -204,7 +291,7 @@
             </property>
            </widget>
           </item>
-          <item row="4" column="1">
+          <item row="6" column="1">
            <layout class="QHBoxLayout" name="horizontalLayout_10">
             <item>
              <widget class="QLineEdit" name="lgeoPath">
@@ -3815,6 +3902,11 @@
   <tabstop>partsLibrary</tabstop>
   <tabstop>partsLibraryBrowse</tabstop>
   <tabstop>partsArchiveBrowse</tabstop>
+  <tabstop>UnofficialLibraryEdit</tabstop>
+  <tabstop>UnofficialLibraryBrowseButton</tabstop>
+  <tabstop>ShadowLibraryEnabled</tabstop>
+  <tabstop>ShadowLibraryEdit</tabstop>
+  <tabstop>ShadowLibraryBrowseButton</tabstop>
   <tabstop>ColorConfigEdit</tabstop>
   <tabstop>ColorConfigBrowseButton</tabstop>
   <tabstop>MinifigureBuilderSettingsEdit</tabstop>

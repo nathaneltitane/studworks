@@ -3,6 +3,7 @@
 #include "sw_file.h"
 #include "sw_string.h"
 #include "sw_texture.h"
+#include "sw_library.h"
 
 swTextureManager::~swTextureManager()
 {
@@ -17,6 +18,40 @@ void swTextureManager::Clear()
 		delete Texture;
 
 	mTextures.clear();
+}
+
+// use to drop library textures
+void swTextureManager::RetireLibraryTextures(const QString& LibraryDirectory)
+{
+	QMutexLocker Lock(&mMutex);
+
+	const QString CanonicalDirectory = QFileInfo(LibraryDirectory).canonicalFilePath();
+	const QString DirectoryPrefix = (CanonicalDirectory.isEmpty() ? QFileInfo(LibraryDirectory).absoluteFilePath() : CanonicalDirectory) + QLatin1Char('/');
+
+	for (std::vector<swTexture*>::iterator TextureIt = mTextures.begin(); TextureIt != mTextures.end();)
+	{
+		swTexture* Texture = *TextureIt;
+		const int ArchiveType = Texture->mSource.ArchiveType;
+		const bool Archive = ArchiveType == static_cast<int>(swZipFileType::Official) || ArchiveType == static_cast<int>(swZipFileType::Unofficial);
+
+		// folder textures live under the library
+		if (!Archive && (LibraryDirectory.isEmpty() || !Texture->mSource.FilePath.startsWith(DirectoryPrefix)))
+		{
+			++TextureIt;
+			continue;
+		}
+
+		Texture->mSource = swFileSource();
+		Texture->SetTemporary(true);
+
+		if (Texture->GetRefCount() == 0)
+		{
+			TextureIt = mTextures.erase(TextureIt);
+			delete Texture;
+		}
+		else
+			++TextureIt;
+	}
 }
 
 void swTextureManager::AddTextureReference(swTexture* Texture)

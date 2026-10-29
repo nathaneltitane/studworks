@@ -24,6 +24,10 @@ public:
 	// Returns nullptr for an invalid name or missing source.
 	swTexture* AcquireTexture(const char* Name, const swFileSource& Source, const QString& ProjectPath);
 
+	// Detaches textures read from library archives or the library folder so later requests load fresh copies.
+	// Unused ones are deleted now and the rest when their last reference is released.
+	void RetireLibraryTextures(const QString& LibraryDirectory);
+
 	// Keeps a texture alive for another owner.
 	void AddTextureReference(swTexture* Texture);
 

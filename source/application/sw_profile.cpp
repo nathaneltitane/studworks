@@ -137,6 +137,9 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Settings", "ColorTheme", static_cast<int>(swColorTheme::Dark)),            // SW_PROFILE_COLOR_THEME
 	swProfileEntry("Settings", "ProjectsPath", ""),                                            // SW_PROFILE_PROJECTS_PATH
 	swProfileEntry("Settings", "PartsLibrary", ""),                                           // SW_PROFILE_PARTS_LIBRARY
+	swProfileEntry("Settings", "UnofficialLibrary", ""),                                      // SW_PROFILE_UNOFFICIAL_LIBRARY
+	swProfileEntry("Settings", "ShadowLibrary", ""),                                          // SW_PROFILE_SHADOW_LIBRARY
+	swProfileEntry("Settings", "ShadowLibraryEnabled", true),                                 // SW_PROFILE_SHADOW_LIBRARY_ENABLED
 	swProfileEntry("Settings", "PartPalettes"),                                               // SW_PROFILE_PART_PALETTES
 	swProfileEntry("Settings", "MinifigSettings", ""),                                         // SW_PROFILE_MINIFIGURE_BUILDER_SETTINGS
 	swProfileEntry("Settings", "ColorConfig", ""),                                             // SW_PROFILE_COLOR_CONFIGURATION

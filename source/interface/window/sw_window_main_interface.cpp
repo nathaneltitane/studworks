@@ -177,6 +177,8 @@ void swMainWindow::CreateActions()
 	mActions[SW_VIEW_STEP_VIEW_TOGGLE_FOLLOW]->setCheckable(true);
 	mActions[SW_VIEW_STEP_VIEW_TOGGLE_FOLLOW]->setChecked(swGetPreferences().mFollowStepViews);
 	mActions[SW_PART_TOGGLE_FIRST_AT_ORIGIN]->setCheckable(true);
+	mActions[SW_EDIT_TOGGLE_SHADOW_LIBRARY]->setCheckable(true);
+	UpdateShadowLibraryAction();
 
 	for (int ActionIndex = SW_VIEW_TOOLBAR_FIRST; ActionIndex <= SW_VIEW_TOOLBAR_LAST; ActionIndex++)
 		mActions[ActionIndex]->setCheckable(true);
@@ -364,6 +366,7 @@ void swMainWindow::CreateMenus()
 	FileMenu->addAction(mActions[SW_FILE_OPEN]);
 	FileMenu->addAction(mActions[SW_FILE_MERGE]);
 	FileMenu->addAction(mActions[SW_FILE_RELOAD]);
+	FileMenu->addAction(mActions[SW_FILE_RELOAD_LIBRARY]);
 	FileMenu->addSeparator();
 	FileMenu->addAction(mActions[SW_FILE_SAVE]);
 	FileMenu->addAction(mActions[SW_FILE_SAVE_AS]);
@@ -381,7 +384,7 @@ void swMainWindow::CreateMenus()
 	ExportMenu->addAction(mActions[SW_FILE_EXPORT_WAVEFRONT]);
 	FileMenu->addSeparator();
 #ifndef SW_DISABLE_RENDER_DIALOG
-	QMenu* RenderMenu = FileMenu->addMenu(tr("&Render"));
+	QMenu* RenderMenu = FileMenu->addMenu(tr("Ren&der"));
 	RenderMenu->addAction(mActions[SW_FILE_RENDER_POVRAY]);
 	RenderMenu->addAction(mActions[SW_FILE_RENDER_BLENDER]);
 	RenderMenu->addAction(mActions[SW_FILE_RENDER_OPEN_IN_BLENDER]);
@@ -416,6 +419,8 @@ void swMainWindow::CreateMenus()
 	EditMenu->addAction(mActions[SW_EDIT_SELECT_ALL]);
 	EditMenu->addAction(mActions[SW_EDIT_SELECT_NONE]);
 	EditMenu->addAction(mActions[SW_EDIT_SELECT_INVERT]);
+	EditMenu->addAction(mActions[SW_EDIT_SELECT_ADJACENT]);
+	EditMenu->addAction(mActions[SW_EDIT_SELECT_CONNECTED]);
 	EditMenu->addAction(mActions[SW_EDIT_SELECT_BY_NAME]);
 	EditMenu->addMenu(mSelectionModeMenu);
 	EditMenu->addSeparator();

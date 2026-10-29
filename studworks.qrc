@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file alias="resources/studworks.png">resources/icons/64x64/apps/studworks.png</file>
-        <file>resources/data/library.zip</file>
         <file>resources/data/studlogo1.zip</file>
         <file>resources/data/studlogo2.zip</file>
         <file>resources/data/studlogo3.zip</file>

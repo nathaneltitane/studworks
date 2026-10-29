@@ -9,6 +9,7 @@
 #include "sw_window_main.h"
 #include "sw_profile.h"
 #include "sw_library.h"
+#include "sw_library_shadow.h"
 #include "sw_scene.h"
 #include "sw_track_train.h"
 #include "sw_file.h"
@@ -676,6 +677,109 @@ void swModel::InvertPartSelectionAction()
 	BeginHistorySequence();
 	InvertPartSelection();
 	EndHistorySequence(tr("Selection"));
+}
+
+void swModel::SelectConnectedPartsAction(bool AllConnected)
+{
+	const std::vector<swObject*> Connected = FindConnectedParts(AllConnected);
+
+	if (!Connected.empty())
+		AddToSelectionAction(Connected);
+}
+
+// use to find parts connected to the selection
+std::vector<swObject*> swModel::FindConnectedParts(bool AllConnected) const
+{
+	struct swConnectedPart
+	{
+		swPart* Part;
+		swBoundingBox Box;
+		swConnectionShapes Shapes;
+		bool Reached;
+	};
+
+	std::vector<swConnectedPart> ConnectedParts;
+	std::vector<size_t> Queue;
+
+	for (const std::unique_ptr<swPart>& Part : mParts)
+	{
+		if (!Part->IsSelected() && !Part->IsVisible(mCurrentStep))
+			continue;
+
+		swConnectionShapes Shapes;
+
+		AddPartShapes(Part.get(), swMatrix44Identity(), Shapes);
+
+		if (Shapes.empty())
+			continue;
+
+		swBoundingBox Box = { swVector3(FLT_MAX, FLT_MAX, FLT_MAX), swVector3(-FLT_MAX, -FLT_MAX, -FLT_MAX) };
+
+		for (const auto& [Cylinders, Transform] : Shapes)
+			swConnectivity::AddToBoundingBox(*Cylinders, Transform, Box);
+
+		ConnectedParts.push_back({ Part.get(), Box, std::move(Shapes), Part->IsSelected() });
+
+		if (ConnectedParts.back().Reached)
+			Queue.push_back(ConnectedParts.size() - 1);
+	}
+
+	// only compare shapes of nearby parts
+	const auto BoxesMeet = [](const swBoundingBox& a, const swBoundingBox& b)
+	{
+		const float Margin = 1.0f;
+
+		for (int Axis = 0; Axis < 3; Axis++)
+			if (a.Min[Axis] > b.Max[Axis] + Margin || b.Min[Axis] > a.Max[Axis] + Margin)
+				return false;
+
+		return true;
+	};
+
+	std::vector<swObject*> Found;
+
+	// breadth first from the selection
+	for (size_t QueueIndex = 0; QueueIndex < Queue.size(); QueueIndex++)
+	{
+		const swConnectedPart& From = ConnectedParts[Queue[QueueIndex]];
+
+		for (size_t PartIndex = 0; PartIndex < ConnectedParts.size(); PartIndex++)
+		{
+			swConnectedPart& To = ConnectedParts[PartIndex];
+
+			if (To.Reached || !BoxesMeet(From.Box, To.Box) || !swConnectivity::AreConnected(From.Shapes, To.Shapes))
+				continue;
+
+			To.Reached = true;
+			Found.push_back(To.Part);
+
+			if (AllConnected)
+				Queue.push_back(PartIndex);
+		}
+	}
+
+	return Found;
+}
+
+// use to collect placed part shapes
+void swModel::AddPartShapes(const swPart* Part, const swMatrix44& Transform, swConnectionShapes& Shapes)
+{
+	const swMatrix44 World = swMultiply(Part->mModelWorld, Transform);
+	const swPartData* PartData = Part->mPartData.Get();
+
+	if (!PartData->IsModel())
+	{
+		const std::vector<swConnectionCylinder>& Cylinders = swShadowLibrary::GetCylinders(PartData->mFileName);
+
+		if (!Cylinders.empty())
+			Shapes.emplace_back(&Cylinders, World);
+
+		return;
+	}
+
+	for (const std::unique_ptr<swPart>& SubModelPart : PartData->GetModel()->GetParts())
+		if (SubModelPart->IsVisibleInSubModel())
+			AddPartShapes(SubModelPart.get(), World, Shapes);
 }
 
 void swModel::AddToSelectionAction(const std::vector<swObject*>& Objects)

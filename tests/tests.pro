@@ -12,12 +12,18 @@ greaterThan(QT_MAJOR_VERSION, 5) {
 
 INCLUDEPATH += ../source/application ../source/core ../source/library ../source/rendering ../source/input_output ../source/interface/dialogs ../source/interface/widgets ../source/interface/window
 
-HEADERS += sw_tests.h
+HEADERS += \
+	../source/core/sw_connectivity.h \
+	../source/library/sw_parser_shadow.h \
+	sw_tests.h
 
 SOURCES += \
+	../source/core/sw_connectivity.cpp \
 	../source/core/sw_object_property.cpp \
 	../source/input_output/sw_command_meta.cpp \
+	../source/library/sw_parser_shadow.cpp \
 	sw_command_meta_test.cpp \
+	sw_connectivity_test.cpp \
 	sw_object_history_test.cpp \
 	sw_object_property_test.cpp \
 	main.cpp

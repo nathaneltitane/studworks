@@ -35,6 +35,14 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Reload Model</b></p><p>Read the current model file again from disk, replacing the model in StudWorks. If the model has unsaved changes, StudWorks asks before discarding them.</p>"),
 		""
 	},
+	// SW_FILE_RELOAD_LIBRARY
+	{
+		QT_TRANSLATE_NOOP("Action", "File.ReloadLibrary"),
+		QT_TRANSLATE_NOOP("Menu", "Reload &Library"),
+		QT_TRANSLATE_NOOP("Status", "Reload the parts library from disk"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Reload Library</b></p><p>Read the parts library and the unofficial library archive again from disk without restarting. Open models keep their parts, parts that no longer exist become missing parts, and new parts appear in the Parts panel.</p>"),
+		""
+	},
 	// SW_FILE_TOGGLE_WATCH_FILE_CHANGES
 	{
 		QT_TRANSLATE_NOOP("Action", "File.ToggleWatchFileChanges"),
@@ -303,7 +311,7 @@ const swCommand gCommands[] =
 	// SW_EDIT_REPLACE
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Replace"),
-		QT_TRANSLATE_NOOP("Menu", "&Replace"),
+		QT_TRANSLATE_NOOP("Menu", "Rep&lace"),
 		QT_TRANSLATE_NOOP("Status", "Replace part"),
 		"",
 		""
@@ -347,6 +355,30 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("Status", "Invert the current selection set"),
 		"",
 		"Ctrl+I"
+	},
+	// SW_EDIT_SELECT_ADJACENT
+	{
+		QT_TRANSLATE_NOOP("Action", "Edit.SelectAdjacent"),
+		QT_TRANSLATE_NOOP("Menu", "Select A&djacent Parts"),
+		QT_TRANSLATE_NOOP("Status", "Add the parts connected directly to the selected parts to the selection"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Select Adjacent Parts</b></p><p>Add every visible part connected directly to a selected part by a stud, anti stud, hole, axle or bar. Repeat to grow the selection one part further each time. Connections come from the LDCad shadow library set as Part Connections in Preferences, parts without shadow data never connect.</p>"),
+		""
+	},
+	// SW_EDIT_SELECT_CONNECTED
+	{
+		QT_TRANSLATE_NOOP("Action", "Edit.SelectConnected"),
+		QT_TRANSLATE_NOOP("Menu", "Select Conn&ected Parts"),
+		QT_TRANSLATE_NOOP("Status", "Add all parts connected to the selected parts to the selection"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Select Connected Parts</b></p><p>Add every visible part connected to a selected part, directly or through other parts, by a stud, anti stud, hole, axle or bar. Use it to pick up a whole assembly from one of its parts. Connections come from the LDCad shadow library set as Part Connections in Preferences, parts without shadow data never connect.</p>"),
+		""
+	},
+	// SW_EDIT_TOGGLE_SHADOW_LIBRARY
+	{
+		QT_TRANSLATE_NOOP("Action", "Edit.ToggleShadowLibrary"),
+		QT_TRANSLATE_NOOP("Menu", "Part Connections"),
+		QT_TRANSLATE_NOOP("Status", "Toggle finding connected parts with the LDCad shadow library"),
+		"",
+		""
 	},
 	// SW_EDIT_SELECT_BY_NAME
 	{
@@ -895,7 +927,7 @@ const swCommand gCommands[] =
 	// SW_VIEW_PREFERENCES
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Preferences"),
-		QT_TRANSLATE_NOOP("Menu", "P&references..."),
+		QT_TRANSLATE_NOOP("Menu", "Preference&s..."),
 		QT_TRANSLATE_NOOP("Status", "Change program settings"),
 		"",
 		""

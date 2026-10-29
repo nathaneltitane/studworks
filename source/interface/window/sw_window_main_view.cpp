@@ -1,5 +1,6 @@
 #include "sw_global.h"
 #include "sw_window_main.h"
+#include "sw_library_shadow.h"
 #include "sw_widget_builder_minifigure.h"
 #include "sw_widget_spin_box_double.h"
 #include "sw_widget_spin_box.h"
@@ -484,6 +485,7 @@ void swMainWindow::ModelViewOptionsMenuAboutToShow()
 
 	AddMenuCommand(Menu, tr("Fade Previous Steps"), SW_VIEW_FADE_PREVIOUS_STEPS, Preferences.mFadeSteps);
 	AddMenuCommand(Menu, tr("Insert First Part at Origin"), SW_PART_TOGGLE_FIRST_AT_ORIGIN, Preferences.mFirstPartAtOrigin);
+	AddMenuCommand(Menu, tr("Part Connections"), SW_EDIT_TOGGLE_SHADOW_LIBRARY, Preferences.mShadowLibraryEnabled)->setEnabled(swShadowLibrary::IsLoaded());
 
 	Menu->addSeparator();
 

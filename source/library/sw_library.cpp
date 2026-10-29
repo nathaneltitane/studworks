@@ -13,6 +13,7 @@
 #include "sw_synthesis.h"
 #include "sw_track_train.h"
 #include "sw_project.h"
+#include "sw_model.h"
 #include "sw_profile.h"
 #include "sw_view.h"
 #include "sw_string.h"
@@ -387,9 +388,23 @@ swFileSource swPartsLibrary::ResolveTextureSource(const char* TextureName, const
 
 		for (const QString& Folder : Folders)
 		{
-			if (ArchiveLibrary)
+			const bool Unofficial = Folder.startsWith(QLatin1String("unofficial/"));
+
+			if (!ArchiveLibrary)
 			{
-				const bool Unofficial = Folder.startsWith(QLatin1String("unofficial/"));
+				const QString EntryName = QDir::cleanPath(Folder + Candidate + QLatin1String(".png")).toUpper();
+				const auto Entry = mTextureDiskEntries.find(EntryName);
+
+				if (Entry != mTextureDiskEntries.end())
+				{
+					Source.FilePath = Entry->second;
+					break;
+				}
+			}
+
+			// folder libraries also read the unofficial archive
+			if (ArchiveLibrary || (Unofficial && mZipFiles[static_cast<int>(swZipFileType::Unofficial)]))
+			{
 				const int Type = static_cast<int>(Unofficial ? swZipFileType::Unofficial : swZipFileType::Official);
 				QString EntryName;
 
@@ -405,17 +420,6 @@ swFileSource swPartsLibrary::ResolveTextureSource(const char* TextureName, const
 				{
 					Source.ArchiveType = Type;
 					Source.ArchiveIndex = Entry->second;
-					break;
-				}
-			}
-			else
-			{
-				const QString EntryName = QDir::cleanPath(Folder + Candidate + QLatin1String(".png")).toUpper();
-				const auto Entry = mTextureDiskEntries.find(EntryName);
-
-				if (Entry != mTextureDiskEntries.end())
-				{
-					Source.FilePath = Entry->second;
 					break;
 				}
 			}
@@ -531,6 +535,9 @@ bool swPartsLibrary::Load(const QString& LibraryPath, bool ShowProgress, bool Of
 {
 	Unload();
 
+	mLibraryPath = LibraryPath;
+	mOfficialLibrary = OfficialLibrary;
+
 	if (OpenArchive(LibraryPath, swZipFileType::Official))
 	{
 		if (OfficialLibrary)
@@ -539,7 +546,7 @@ bool swPartsLibrary::Load(const QString& LibraryPath, bool ShowProgress, bool Of
 		LoadColors();
 
 		mLibraryDir = QFileInfo(LibraryPath).absoluteDir();
-		QString UnofficialFileName = mLibraryDir.absoluteFilePath(QLatin1String("ldrawunf.zip"));
+		QString UnofficialFileName = GetUnofficialArchiveFileName();
 
 		if (!OpenArchive(UnofficialFileName, swZipFileType::Unofficial))
 			UnofficialFileName.clear();
@@ -562,6 +569,201 @@ bool swPartsLibrary::Load(const QString& LibraryPath, bool ShowProgress, bool Of
 	swTrainTrackInformation::Initialize(this);
 
 	return true;
+}
+
+QString swPartsLibrary::GetUnofficialArchiveFileName() const
+{
+	return mUnofficialArchivePath.isEmpty() ? mLibraryDir.absoluteFilePath(QLatin1String("ldrawunf.zip")) : mUnofficialArchivePath;
+}
+
+// use to swap the library in place
+bool swPartsLibrary::Reload(const QString& LibraryPath, bool OfficialLibrary)
+{
+	Q_ASSERT(QThread::currentThread() == thread());
+
+	if (LibraryPath.isEmpty() || !mAssetLoader)
+		return false;
+
+	bool ArchiveLibrary = false;
+
+	// keep the library on a bad path
+	{
+		std::unique_ptr<swDiskFile> File(new swDiskFile(LibraryPath));
+		swZipFile ZipFile;
+
+		ArchiveLibrary = File->Open(QIODevice::ReadOnly) && ZipFile.OpenRead(std::move(File));
+	}
+
+	if (!ArchiveLibrary && QDir(QDir(LibraryPath).absoluteFilePath(QLatin1String("parts/")), QLatin1String("*.dat"), QDir::NoSort, QDir::Files | QDir::Hidden | QDir::Readable).isEmpty())
+		return false;
+
+	mAssetLoader->PauseQueuedWork();
+	mThumbnailManager->Clear();
+	mPartManager->RemoveTemporaryPartData();
+
+	// missing parts free their names
+	for (swPartData* PartData : mPartManager->GetLibraryPartData())
+	{
+		if (!PartData->IsLibraryPart())
+			mPartManager->RetirePartData(PartData);
+		else
+			PartData->SetZipFile(swZipFileType::Count, -1);
+	}
+
+	mPartManager->DetachLibraryPartData();
+	mTextureManager->RetireLibraryTextures(mZipFiles[static_cast<int>(swZipFileType::Official)] ? QString() : mLibraryDir.absolutePath());
+
+	for (std::map<QString, int>& Entries : mTextureArchiveEntries)
+		Entries.clear();
+
+	mTextureDiskEntries.clear();
+	mSources.clear();
+	mHasUnofficial = false;
+	mOfficialPartCount = 0;
+
+	for (std::unique_ptr<swZipFile>& ZipFile : mZipFiles)
+		ZipFile.reset();
+
+	mLibraryPath = LibraryPath;
+	mOfficialLibrary = OfficialLibrary;
+
+	if (ArchiveLibrary)
+	{
+		OpenArchive(LibraryPath, swZipFileType::Official);
+
+		if (OfficialLibrary)
+			mOfficialPartCount = static_cast<int>(mPartManager->GetLibraryPartDataCount());
+
+		mLibraryDir = QFileInfo(LibraryPath).absoluteDir();
+		QString UnofficialFileName = GetUnofficialArchiveFileName();
+
+		if (!OpenArchive(UnofficialFileName, swZipFileType::Unofficial))
+			UnofficialFileName.clear();
+
+		ReadArchiveDescriptions(LibraryPath, UnofficialFileName);
+	}
+	else
+	{
+		mLibraryDir.setPath(LibraryPath);
+		OpenDirectory(mLibraryDir, true);
+	}
+
+	LoadColors();
+	UpdateStudStyleSource();
+
+	// vanished parts become missing
+	for (swPartData* PartData : mPartManager->RetireDetachedPartData())
+	{
+		InvalidatePartDataLoad(PartData);
+		PartData->SetFailed(tr("Could not find part '%1'.").arg(QString::fromLatin1(PartData->mFileName)));
+	}
+
+	swSynthesisInitialize();
+	swTrainTrackInformation::Initialize(this);
+
+	// queue fresh meshes
+	for (swPartData* PartData : mPartManager->GetAllPartData())
+	{
+		if (PartData->IsModel())
+		{
+			if (PartData->mState == swAssetState::Loaded && PartData->GetModel()->HasDirectGeometry())
+				RebuildModelPartData(PartData);
+		}
+		else if (PartData->IsLibraryPart() && PartData->mState != swAssetState::Unloaded && !PartData->IsLoading())
+		{
+			PartData->Unload();
+
+			if (PartData->GetRefCount() > 0)
+				RequestPartDataLoad(PartData, swLoadPriority::Low);
+		}
+	}
+
+	mBuffersDirty = true;
+
+	std::vector<swPart*> SynthParts;
+	SynthParts.reserve(mSynthParts.size());
+
+	for (const auto& Entry : mSynthParts)
+		SynthParts.push_back(Entry.first);
+
+	for (swPart* Part : SynthParts)
+		Part->RefreshGeneratedMesh();
+
+	mAssetLoader->ResumeQueuedWork();
+	NotifyAssetStatusChanged();
+
+	return true;
+}
+
+std::vector<std::pair<swPartDataReference, swPartDataReference>> swPartsLibrary::RebindProjectPartData(Project* CurrentProject)
+{
+	Q_ASSERT(QThread::currentThread() == thread());
+
+	std::map<swPartData*, swPartDataReference> Resolved;
+	std::vector<std::pair<swPartDataReference, swPartDataReference>> Replacements;
+
+	for (const std::unique_ptr<swModel>& Model : CurrentProject->GetModels())
+	{
+		std::vector<swPartData*> ModelParts;
+
+		for (const std::unique_ptr<swPart>& Part : Model->GetParts())
+			if (std::find(ModelParts.begin(), ModelParts.end(), Part->mPartData.Get()) == ModelParts.end())
+				ModelParts.push_back(Part->mPartData.Get());
+
+		for (swPartData* PartData : ModelParts)
+		{
+			auto ResolvedIt = Resolved.find(PartData);
+
+			if (ResolvedIt == Resolved.end())
+			{
+				swPartDataReference Replacement;
+
+				if (PartData->IsLibraryPart())
+				{
+					if (mPartManager->IsRetiredPartData(PartData))
+						Replacement = AcquirePartData(PartData->mFileName, CurrentProject, true, true);
+				}
+				else if (!PartData->IsModel() && !PartData->IsProject())
+				{
+					swPartData* LibraryData = FindPartData(PartData->mFileName, nullptr);
+
+					if (LibraryData && LibraryData->IsLibraryPart())
+						Replacement = swPartDataReference(LibraryData);
+				}
+
+				ResolvedIt = Resolved.emplace(PartData, Replacement).first;
+
+				if (Replacement)
+					Replacements.emplace_back(swPartDataReference(PartData), Replacement);
+			}
+
+			if (ResolvedIt->second)
+				Model->RebindPartData(PartData, ResolvedIt->second.Get());
+		}
+	}
+
+	// promoted missing parts free their names
+	for (const std::pair<swPartDataReference, swPartDataReference>& Replacement : Replacements)
+		if (!Replacement.first->IsLibraryPart())
+			mPartManager->RetirePartData(Replacement.first.Get());
+
+	return Replacements;
+}
+
+std::vector<Project*> swPartsLibrary::GetExternalProjects() const
+{
+	std::vector<Project*> Projects;
+
+	for (swPartData* PartData : mPartManager->GetAllPartData())
+		if (PartData->IsProject())
+			Projects.push_back(PartData->GetProject());
+
+	return Projects;
+}
+
+bool swPartsLibrary::IsRetiredPartData(const swPartData* PartData) const
+{
+	return mPartManager->IsRetiredPartData(PartData);
 }
 
 void swPartsLibrary::LoadColors()
@@ -727,8 +929,8 @@ bool swPartsLibrary::OpenArchive(std::unique_ptr<swFile> File, swZipFileType Zip
 			{
 				swPartData* PartData = FindPartData(Name, nullptr);
 
-				// Unofficial additions must not replace registered official parts.
-				if (PartData && ZipFileType == swZipFileType::Unofficial && PartData->mZipFileType == swZipFileType::Official)
+				// Unofficial additions must not replace registered official or folder parts.
+				if (PartData && ZipFileType == swZipFileType::Unofficial && PartData->IsLibraryPart() && PartData->mZipFileType != swZipFileType::Unofficial)
 					continue;
 
 				if (!PartData)
@@ -837,6 +1039,13 @@ bool swPartsLibrary::OpenDirectory(const QDir& LibraryDir, bool ShowProgress)
 				mTextureDiskEntries.emplace(Name, FilePath);
 			}
 		}
+	}
+
+	// the unofficial archive adds the parts the folders lack
+	if (OpenArchive(GetUnofficialArchiveFileName(), swZipFileType::Unofficial))
+	{
+		mHasUnofficial = true;
+		ReadUnofficialArchiveDescriptions(FileLists);
 	}
 
 	return true;
@@ -1340,38 +1549,10 @@ std::string swPartsLibrary::GetPartId(const swPartData* PartData) const
 	return mPartManager->GetLibraryPartDataName(PartData);
 }
 
-bool swPartsLibrary::LoadBuiltinPartLibrary()
+// use to set up the defaults without a parts library
+void swPartsLibrary::LoadEmptyLibrary()
 {
-	std::unique_ptr<swDiskFile> File(new swDiskFile(":/resources/data/library.zip"));
-
-	if (!File->Open(QIODevice::ReadOnly) || !OpenArchive(std::move(File), swZipFileType::Official))
-		return false;
-
-	swMemoryFile PartFile;
-
-	for (swPartData* PartData : mPartManager->GetLibraryPartData())
-	{
-		mZipFiles[static_cast<int>(PartData->mZipFileType)]->ExtractFile(PartData->mZipFileIndex, PartFile, 256);
-		PartFile.Seek(0, SEEK_END);
-		PartFile.WriteU8(0);
-
-		char* Src = (char*)PartFile.mBuffer + 2;
-		char* Dst = PartData->m_strDescription;
-
-		for (;;)
-		{
-			if (*Src != '\r' && *Src != '\n' && *Src && Dst - PartData->m_strDescription < (int)sizeof(PartData->m_strDescription) - 1)
-			{
-				*Dst++ = *Src++;
-				continue;
-			}
-
-			*Dst = 0;
-			break;
-		}
-	}
-
-	ClassifyParts(DirectoryFilePaths());
+	Unload();
 
 	swLoadDefaultColors(mStudStyle);
 	UpdateLoadingMeshColors();
@@ -1379,6 +1560,4 @@ bool swPartsLibrary::LoadBuiltinPartLibrary()
 	swLoadDefaultCategories(true);
 	swSynthesisInitialize();
 	swTrainTrackInformation::Initialize(this);
-
-	return true;
 }

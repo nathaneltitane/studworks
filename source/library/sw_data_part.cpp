@@ -151,6 +151,12 @@ swPartData::~swPartData()
 	Unload();
 }
 
+void swPartData::SetTrainTrackInfo(swTrainTrackInformation* TrainTrackInfo)
+{
+	delete mTrainTrackInfo;
+	mTrainTrackInfo = TrainTrackInfo;
+}
+
 void swPartData::SetSynthInfo(swSynthesisInformation* SynthInfo)
 {
 	mSynthInfo.reset(SynthInfo);

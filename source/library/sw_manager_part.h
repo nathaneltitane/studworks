@@ -72,6 +72,17 @@ public:
 	// Removes unreferenced non-library identities without changing library-part eviction policy.
 	void RemoveTemporaryPartData();
 
+	// Removes the identity from every name index while existing holders keep it alive.
+	// Retired library identities stay allocated until Clear, so borrowed pointers remain valid.
+	void RetirePartData(swPartData* PartData);
+	bool IsRetiredPartData(const swPartData* PartData) const;
+
+	// Moves library identities out of the name index so a reload can adopt them by name.
+	void DetachLibraryPartData();
+
+	// Retires identities no reload adopted and returns them.
+	std::vector<swPartData*> RetireDetachedPartData();
+
 	// Detaches the project's borrowed index and deletes its unreferenced local identities.
 	void ReleaseProjectPartData(Project* OwnerProject);
 
@@ -124,6 +135,12 @@ private:
 
 	// An owner may be null after its project is destroyed while references remain.
 	std::unordered_map<swPartData*, Project*> mProjectParts;
+
+	// Identities replaced by a library reload, no longer found by name.
+	std::unordered_set<swPartData*> mRetiredParts;
+
+	// Library identities waiting for a reload to adopt them again.
+	std::map<std::string, swPartData*> mDetachedParts;
 
 	// No error lock is held while unloading or deleting identities.
 	mutable QMutex mErrorMutex;

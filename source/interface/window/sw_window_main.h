@@ -232,6 +232,8 @@ public:
 	void SetTransformType(swTransformType TransformType);
 	void SetColorIndex(int ColorIndex);
 	void ToggleFirstPartAtOrigin();
+	void ToggleShadowLibrary();
+	void UpdateShadowLibraryAction();
 	int GetInsertColorIndex() const;
 	void SetLastInsertedColorIndex(int ColorIndex);
 	void SetInsertColorMode(swInsertColorMode InsertColorMode);
@@ -277,6 +279,7 @@ public:
 	bool SaveProject(const QString& FileName);
 	bool SaveProjectIfModified();
 	void ReloadProject();
+	void ReloadPartsLibrary();
 	void ToggleWatchFileChanges();
 	void ReloadProjectFile(const QString& FileName);
 	bool SetModelFromFocus();
@@ -367,6 +370,7 @@ protected:
 	void CreateToolBars();
 	void CreateStatusBar();
 	void UpdateAssets();
+	void UpdateConnectedPartActions(int Flags);
 	swView* CreateView(swModel* Model);
 	void SetActiveView(swView* ActiveView);
 	void ToggleDockWidget(QWidget* DockWidget);

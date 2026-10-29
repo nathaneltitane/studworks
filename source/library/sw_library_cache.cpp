@@ -36,30 +36,62 @@ void swPartsLibrary::ReadArchiveDescriptions(const QString& OfficialFileName, co
 		swMemoryFile PartFile;
 
 		for (swPartData* PartData : mPartManager->GetLibraryPartData())
-		{
-			mZipFiles[static_cast<int>(PartData->mZipFileType)]->ExtractFile(PartData->mZipFileIndex, PartFile, 256);
-			PartFile.Seek(0, SEEK_END);
-			PartFile.WriteU8(0);
-
-			char* Src = (char*)PartFile.mBuffer + 2;
-			char* Dst = PartData->m_strDescription;
-
-			for (;;)
-			{
-				if (*Src != '\r' && *Src != '\n' && *Src && Dst - PartData->m_strDescription < (int)sizeof(PartData->m_strDescription) - 1)
-				{
-					*Dst++ = *Src++;
-					continue;
-				}
-
-				*Dst = 0;
-				break;
-			}
-		}
+			ReadArchivePartDescription(PartData, PartFile);
 
 		ClassifyParts(DirectoryFilePaths());
 		SaveArchiveCacheIndex(IndexFileName);
 	}
+}
+
+// use to read the description line of an archive part
+void swPartsLibrary::ReadArchivePartDescription(swPartData* PartData, swMemoryFile& PartFile)
+{
+	mZipFiles[static_cast<int>(PartData->mZipFileType)]->ExtractFile(PartData->mZipFileIndex, PartFile, 256);
+	PartFile.Seek(0, SEEK_END);
+	PartFile.WriteU8(0);
+
+	char* Src = (char*)PartFile.mBuffer + 2;
+	char* Dst = PartData->m_strDescription;
+
+	for (;;)
+	{
+		if (*Src != '\r' && *Src != '\n' && *Src && Dst - PartData->m_strDescription < (int)sizeof(PartData->m_strDescription) - 1)
+		{
+			*Dst++ = *Src++;
+			continue;
+		}
+
+		*Dst = 0;
+		break;
+	}
+}
+
+// use to describe and classify the unofficial archive parts of a folder library
+void swPartsLibrary::ReadUnofficialArchiveDescriptions(const QFileInfoList (&FileLists)[static_cast<int>(swLibraryFolderType::Count)])
+{
+	swMemoryFile PartFile;
+
+	for (swPartData* PartData : mPartManager->GetLibraryPartData())
+	{
+		if (PartData->mZipFileType == swZipFileType::Unofficial)
+			ReadArchivePartDescription(PartData, PartFile);
+	}
+
+	// folder aliases need their paths
+	DirectoryFilePaths FilePaths;
+
+	for (const QFileInfoList& FileList : FileLists)
+	{
+		for (const QFileInfo& FileInfo : FileList)
+		{
+			const swPartData* PartData = FindPartData(FileInfo.fileName().toLatin1().constData(), nullptr);
+
+			if (PartData && PartData->mZipFileType == swZipFileType::Count)
+				FilePaths.emplace(PartData, FileInfo.absoluteFilePath());
+		}
+	}
+
+	ClassifyParts(FilePaths);
 }
 
 void swPartsLibrary::ReadDirectoryDescriptions(const QFileInfoList (&FileLists)[static_cast<int>(swLibraryFolderType::Count)], bool ShowProgress)

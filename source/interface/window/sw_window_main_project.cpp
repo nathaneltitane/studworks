@@ -108,6 +108,16 @@ void swMainWindow::ReloadProject()
 	ReloadProjectFile(FileName);
 }
 
+// use to reread the library from disk
+void swMainWindow::ReloadPartsLibrary()
+{
+	swPartsLibrary* Library = swGetPartsLibrary();
+	const QString LibraryPath = Library->GetLibraryPath();
+
+	if (!gApplication->ReloadPartsLibrary(LibraryPath, Library->IsOfficialLibrary()))
+		QMessageBox::warning(this, tr("Reload Library"), tr("Could not open the parts library '%1'.").arg(QDir::toNativeSeparators(LibraryPath)));
+}
+
 void swMainWindow::ReloadProjectFile(const QString& FileName)
 {
 	std::unique_ptr<Project> NewProject = std::make_unique<Project>();
