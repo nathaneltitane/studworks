@@ -19,6 +19,8 @@ Useful? Star the repository - it helps others find it.
 2026-10-29 ↴
 
 - File managers: LDraw model files show a thumbnail of the model, from a KDE thumbnail plugin or the desktop thumbnailer, rendered with the new '--transparent' command line option
+- Select Connected Parts: selects every part joined to the selection, with the connection shapes of the [LDCad shadow library](https://github.com/RolandMelkert/LDCadShadowLibrary) by Roland Melkert, set and turned on or off under Preferences › Part Connections
+- Parts library: no longer bundled, the first start offers to download the official LDraw 'complete.zip' into the data folder or to choose an existing archive
 - Install: 'tools/studworks-install' builds and installs StudWorks without a package, with thumbnails, file types and associations, '~/.local' needs no superuser rights, run it again after 'git pull' to update
 - Instructions: step images outline the parts new to each step and fade the earlier ones, set by Fade Previous Steps and Highlight New Parts in the Document settings, their colors kept 85% to 95% opaque
 - Instructions: every page element stays within the page margins, page numbers included, and Page Setup margins are limited to the room the page size leaves
@@ -183,6 +185,7 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
 
 - **Modeling** ↴
   - MLCad ROTSTEP step views shown and edited in the Timeline
+  - Select Connected Parts, using the connection shapes of the [LDCad shadow library](https://github.com/RolandMelkert/LDCadShadowLibrary)
   - Vertical XZ and YZ height grids with their own z axis lines, sized with the base grid around the model on all three axes, grid origin z axis line, toggles for each x, y and z axis line, optional negative axis halves in the negative axis colors, custom rotation snap angle and camera orbit snapping
   - Status bar view orientation in latitude and longitude with the projection, ahead of the focus position, and a right click menu showing or hiding each status bar segment
   - Normal to Face view command, first part at the origin option
@@ -283,16 +286,18 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
     - Run it again after 'git pull' to update an install.
 
   - Run ↴
-    - Start 'build/release/studworks' and point Preferences to an [LDraw parts library](https://library.ldraw.org/updates?latest) or set 'STUDWORKS_LIBRARY' if none is found - up to date video card drivers are recommended for the OpenGL rendering.
+    - Start 'build/release/studworks' and let it download the [LDraw parts library](https://library.ldraw.org/updates?latest) on the first start, or point Preferences to one or set 'STUDWORKS_LIBRARY' - set Preferences › Part Connections to an [LDCad shadow library](https://github.com/RolandMelkert/LDCadShadowLibrary) folder to select connected parts - up to date video card drivers are recommended for the OpenGL rendering.
 
   - Package ↴
-    - Run 'packaging/deb.sh' on Debian or Ubuntu, 'packaging/rpm.sh' on an RPM distribution or 'packaging/appimage.sh' on any Linux, with an optional build directory - all three download the parts library when it is missing.
+    - Run 'packaging/deb.sh' on Debian or Ubuntu, 'packaging/rpm.sh' on an RPM distribution or 'packaging/appimage.sh' on any Linux, with an optional build directory - the parts library is downloaded on the first start.
 
 ---
 
 ### Credits:
 
 StudWorks is based on [LeoCAD](https://github.com/leozide/leocad) by Leonardo Zide and its contributors - see 'documentation/CREDITS.txt'.
+
+Part connections come from the [LDCad shadow library](https://github.com/RolandMelkert/LDCadShadowLibrary) by Roland Melkert, made for [LDCad](https://www.melkert.net/LDCad) and released under the Creative Commons Attribution-ShareAlike 4.0 license - it is not bundled with StudWorks.
 
 ### License:
 
@@ -305,6 +310,8 @@ LEGO® is a trademark of the LEGO® Group, which does not sponsor, authorize or 
 [LeoCAD](https://github.com/leozide/leocad) as the application on which StudWorks is built.
 
 [LDraw](https://www.ldraw.org) for the parts library and file format.
+
+[LDCad Shadow Library](https://github.com/RolandMelkert/LDCadShadowLibrary) for the part connection shapes, from [LDCad](https://www.melkert.net/LDCad) by Roland Melkert.
 
 ### Reports:
 
