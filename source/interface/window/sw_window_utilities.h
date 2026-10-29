@@ -310,6 +310,14 @@ public:
 		return Size;
 	}
 
+	// The button never gets narrower than a square browse button so its elided text stays readable.
+	QSize minimumSizeHint() const override
+	{
+		const int Height = QToolButton::sizeHint().height();
+
+		return QSize(Height, Height);
+	}
+
 protected:
 	void paintEvent(QPaintEvent*) override
 	{
