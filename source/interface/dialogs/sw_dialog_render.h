@@ -66,12 +66,28 @@ public:
 		update();
 	}
 
+	// Sets the size of the icon shown in the middle of the canvas until an image is rendered.
+	void SetPlaceholderSize(int Size)
+	{
+		mPlaceholderSize = Size;
+		update();
+	}
+
+	// Sets the image size the empty canvas is shaped after.
+	void SetCanvasSize(const QSize& Size)
+	{
+		mCanvasSize = Size;
+		update();
+	}
+
 protected:
 	void resizeEvent(QResizeEvent* Event) override;
 	void paintEvent(QPaintEvent* PaintEvent) override;
 
 	QImage mImage;
 	QImage mScaledImage;
+	int mPlaceholderSize = 0;
+	QSize mCanvasSize;
 };
 
 class swRenderDialog : public QDialog

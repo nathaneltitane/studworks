@@ -13,7 +13,7 @@
 #define SW_POVRAY_PREVIEW_WIDTH 768
 #define SW_POVRAY_PREVIEW_HEIGHT 432
 // raise to drop the panel layouts saved by older versions of the window
-#define SW_RENDER_WINDOW_STATE_VERSION 1
+#define SW_RENDER_WINDOW_STATE_VERSION 2
 #define SW_RENDER_PANEL_WIDTH 380
 #define SW_RENDER_LOG_HEIGHT 240
 #if defined(Q_OS_WIN) || defined(Q_OS_MACOS)
@@ -33,17 +33,40 @@ void swRenderPreviewWidget::paintEvent(QPaintEvent* PaintEvent)
 
 	QPainter Painter(this);
 
+	// the canvas lies on the backdrop like the page of the instructions window
+	Painter.fillRect(rect(), palette().color(QPalette::Mid));
+
+	const QSize ImageSize = !mImage.isNull() ? mImage.size() : mCanvasSize;
+
+	if (ImageSize.isEmpty())
+		return;
+
+	const int Margin = style()->pixelMetric(QStyle::PM_LayoutLeftMargin);
+	const QRect AreaRect = rect().adjusted(Margin, Margin, -Margin, -Margin);
+	QRect CanvasRect(QPoint(0, 0), ImageSize.scaled(AreaRect.size(), Qt::KeepAspectRatio));
+	CanvasRect.moveCenter(AreaRect.center());
+
+	// the empty canvas is a blank sheet like a new instructions page
+	Painter.fillRect(CanvasRect, Qt::white);
+
 	if (!mImage.isNull())
 	{
-		QSize Size = size();
+		if (mScaledImage.size() != CanvasRect.size())
+			mScaledImage = mImage.scaled(CanvasRect.size(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
-		if (mScaledImage.isNull())
-			mScaledImage = mImage.scaled(Size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-
-		Painter.drawImage((Size.width() - mScaledImage.width()) / 2, (Size.height() - mScaledImage.height()) / 2, mScaledImage);
+		Painter.drawImage(CanvasRect.topLeft(), mScaledImage);
 	}
-	else
-		Painter.fillRect(rect(), Qt::transparent);
+	else if (mPlaceholderSize > 0)
+	{
+		// the placeholder is painted at its own size so it stays sharp instead of scaled with the canvas
+		const int IconSize = qMin(mPlaceholderSize, qMin(CanvasRect.width(), CanvasRect.height()) / 2);
+		const qreal PixelRatio = devicePixelRatioF();
+		QImage IconImage = swCreatePaintedIconImage(swPaintedIcon::RenderPlaceholder, qRound(IconSize * PixelRatio), palette().color(QPalette::Mid));
+		IconImage.setDevicePixelRatio(PixelRatio);
+		QRect IconRect(0, 0, IconSize, IconSize);
+		IconRect.moveCenter(CanvasRect.center());
+		Painter.drawImage(IconRect, IconImage);
+	}
 }
 
 swRenderDialog::swRenderDialog(QWidget* Parent, swRenderDialogMode RenderDialogMode)
@@ -150,13 +173,9 @@ swRenderDialog::swRenderDialog(QWidget* Parent, swRenderDialogMode RenderDialogM
 
 	if (mDialogMode != swRenderDialogMode::OpenInBlender)
 	{
-		// placeholder with the render picture centered on a transparent 16:9 frame
-		QImage Image(1280, 720, QImage::Format_ARGB32_Premultiplied);
-		Image.fill(Qt::transparent);
-		QPainter Painter(&Image);
-		Painter.drawImage(440, 160, swCreatePaintedIconImage(swPaintedIcon::RenderPlaceholder, 400, palette().color(QPalette::WindowText)));
-		Painter.end();
-		ui->preview->SetImage(Image);
+		// the render picture at the largest icon size stands in the empty preview
+		ui->preview->SetPlaceholderSize(SW_PART_ICON_SIZES.back());
+		ui->preview->SetCanvasSize(QSize(mWidth, mHeight));
 	}
 
 	connect(&mUpdateTimer, &QTimer::timeout, this, &swRenderDialog::Update);
@@ -334,12 +353,14 @@ void swRenderDialog::CreatePOVRayPanels()
 	{
 		mWidth = Value;
 		swSetProfileInteger(SW_PROFILE_RENDER_WIDTH, Value);
+		ui->preview->SetCanvasSize(QSize(mWidth, mHeight));
 	});
 
 	connect(HeightSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int Value)
 	{
 		mHeight = Value;
 		swSetProfileInteger(SW_PROFILE_RENDER_HEIGHT, Value);
+		ui->preview->SetCanvasSize(QSize(mWidth, mHeight));
 	});
 
 	connect(QualityComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [this](int Index)
@@ -393,7 +414,15 @@ void swRenderDialog::CreatePOVRayPanels()
 	mLogPanel->setWidget(mLogEdit);
 
 	swSetupWidgetHelp(mLogPanel, nullptr);
+	// the log and render panels span the window edges and stay off the side columns
+	QDockWidget* RenderDock = qobject_cast<QDockWidget*>(RenderPanel->parentWidget());
+	PanelWindow->addDockWidget(Qt::BottomDockWidgetArea, RenderDock);
 	PanelWindow->addDockWidget(Qt::BottomDockWidgetArea, mLogPanel);
+	PanelWindow->splitDockWidget(mLogPanel, RenderDock, Qt::Vertical);
+
+	for (QDockWidget* EdgePanel : { RenderDock, mLogPanel })
+		EdgePanel->setAllowedAreas(Qt::TopDockWidgetArea | Qt::BottomDockWidgetArea);
+
 	mLogPanel->hide();
 
 	// the log button shows and hides the log panel and stays checked while it is shown
@@ -438,7 +467,7 @@ void swRenderDialog::CreatePOVRayPanels()
 
 			if ((Area == Qt::LeftDockWidgetArea || Area == Qt::RightDockWidgetArea) && AreaPanel->width() < SW_RENDER_PANEL_WIDTH)
 				SidePanels.append(AreaPanel);
-			else if ((Area == Qt::TopDockWidgetArea || Area == Qt::BottomDockWidgetArea) && AreaPanel->height() < SW_RENDER_LOG_HEIGHT)
+			else if ((Area == Qt::TopDockWidgetArea || Area == Qt::BottomDockWidgetArea) && AreaPanel->height() < SW_RENDER_LOG_HEIGHT && !CompactPanels.contains(AreaPanel))
 				EdgePanels.append(AreaPanel);
 		}
 
