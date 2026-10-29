@@ -41,8 +41,14 @@ IFS="|"
 text_bundled="${list_bundled[*]}"
 unset IFS
 
-# the kde thumbnail plugin is packaged only when it was built
+# the kde thumbnail plugin is defined only when built since rpm refuses empty macros
 file_thumbnailer="$(find "${directory_package}" -name studworksthumbnail.so -printf "/%P\n" -quit)"
+list_defines=()
+
+if [ -n "${file_thumbnailer}" ]
+then
+	list_defines+=(--define "sw_thumbnailer ${file_thumbnailer}")
+fi
 
 # rpm versions take no hyphens
 directory_rpm="${directory_build}/rpmbuild"
@@ -53,7 +59,7 @@ rpmbuild -bb "${directory_source}/packaging/studworks.spec" \
 	--define "sw_version ${package_version//-/}" \
 	--define "sw_root ${directory_package}" \
 	--define "sw_bundled ${text_bundled}" \
-	--define "sw_thumbnailer ${file_thumbnailer}"
+	"${list_defines[@]}"
 
 file_package="${directory_build}/studworks-${package_version}-${package_architecture}.rpm"
 
