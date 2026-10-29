@@ -67,14 +67,10 @@
             <item>
              <widget class="QToolButton" name="partsLibraryBrowse">
               <property name="toolTip">
-               <string>Choose a part-library folder.</string>
+               <string>Choose a part-library ZIP or BIN archive, or the LDConfig.ldr file of a part-library folder.</string>
               </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QToolButton" name="partsArchiveBrowse">
-              <property name="toolTip">
-               <string>Choose a part-library ZIP or BIN archive.</string>
+              <property name="text">
+               <string>...</string>
               </property>
              </widget>
             </item>
@@ -3910,7 +3906,6 @@
   <tabstop>tabWidget</tabstop>
   <tabstop>partsLibrary</tabstop>
   <tabstop>partsLibraryBrowse</tabstop>
-  <tabstop>partsArchiveBrowse</tabstop>
   <tabstop>UnofficialLibraryEdit</tabstop>
   <tabstop>UnofficialLibraryBrowseButton</tabstop>
   <tabstop>ShadowLibraryEnabled</tabstop>

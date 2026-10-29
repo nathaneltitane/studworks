@@ -92,7 +92,6 @@ public slots:
 
 private slots:
 	void PartsLibraryBrowseClicked();
-	void PartsArchiveBrowseClicked();
 	void UnofficialLibraryBrowseButtonClicked();
 	void ShadowLibraryBrowseButtonClicked();
 	void ShadowLibraryEnabledToggled(bool Checked);

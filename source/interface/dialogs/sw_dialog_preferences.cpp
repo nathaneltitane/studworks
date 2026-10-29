@@ -273,9 +273,6 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	ui->setupUi(this);
 	swSetupDialogHelp(this, ui->buttonBox);
 
-	ui->partsLibraryBrowse->setIcon(swCreatePaintedIcon(swPaintedIcon::Folder));
-	ui->partsArchiveBrowse->setIcon(swCreatePaintedIcon(swPaintedIcon::LibraryArchive));
-
 #if defined(Q_OS_WIN) || defined(Q_OS_MACOS)
 	ui->povrayLabel->hide();
 	ui->povrayExecutable->hide();
@@ -296,7 +293,6 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	ui->Language->addItem("\u7e41\u9ad4\u4e2d\u6587");
 
 	connect(ui->partsLibraryBrowse, &QPushButton::clicked, this, &swPreferencesDialog::PartsLibraryBrowseClicked);
-	connect(ui->partsArchiveBrowse, &QPushButton::clicked, this, &swPreferencesDialog::PartsArchiveBrowseClicked);
 	connect(ui->UnofficialLibraryBrowseButton, &QPushButton::clicked, this, &swPreferencesDialog::UnofficialLibraryBrowseButtonClicked);
 	connect(ui->ShadowLibraryEnabled, &QCheckBox::toggled, this, &swPreferencesDialog::ShadowLibraryEnabledToggled);
 	connect(ui->ShadowLibraryBrowseButton, &QPushButton::clicked, this, &swPreferencesDialog::ShadowLibraryBrowseButtonClicked);
@@ -711,13 +707,6 @@ void swPreferencesDialog::showEvent(QShowEvent* Event)
 	if (Event->spontaneous())
 		return;
 
-	// the browse buttons span the two parts library buttons so every path field ends at the same place
-	const int BrowseWidth = ui->partsLibraryBrowse->sizeHint().width() + ui->horizontalLayout_3->spacing() + ui->partsArchiveBrowse->sizeHint().width();
-
-	for (QToolButton* Button : ui->CustomPathsGroup->findChildren<QToolButton*>())
-		if (Button != ui->partsLibraryBrowse && Button != ui->partsArchiveBrowse)
-			Button->setFixedWidth(BrowseWidth);
-
 	// the controls only report their full width once shown, the columns line up after that
 	swAlignPreferencesColumns(ui->tabWidget);
 
@@ -857,20 +846,21 @@ void swPreferencesDialog::accept()
 	QDialog::accept();
 }
 
+// use to choose a parts library archive or a library folder through its ldconfig file
 void swPreferencesDialog::PartsLibraryBrowseClicked()
 {
-	QString Result = QFileDialog::getExistingDirectory(this, tr("Select Parts Library Folder"), ui->partsLibrary->text());
+	QString Result = QFileDialog::getOpenFileName(this, tr("Select Parts Library"), ui->partsLibrary->text(), tr("Parts Libraries (*.zip *.bin LDConfig.ldr ldconfig.ldr);;All Files (*.*)"));
 
-	if (!Result.isEmpty())
-		ui->partsLibrary->setText(QDir::toNativeSeparators(Result));
-}
+	if (Result.isEmpty())
+		return;
 
-void swPreferencesDialog::PartsArchiveBrowseClicked()
-{
-	QString Result = QFileDialog::getOpenFileName(this, tr("Select Parts Library Archive"), ui->partsLibrary->text(), tr("Supported Archives (*.zip *.bin);;All Files (*.*)"));
+	// the ldconfig file stands for the library folder holding it
+	const QFileInfo ResultInfo(Result);
 
-	if (!Result.isEmpty())
-		ui->partsLibrary->setText(QDir::toNativeSeparators(Result));
+	if (ResultInfo.fileName().compare(QLatin1String("ldconfig.ldr"), Qt::CaseInsensitive) == 0)
+		Result = ResultInfo.absolutePath();
+
+	ui->partsLibrary->setText(QDir::toNativeSeparators(Result));
 }
 
 void swPreferencesDialog::UnofficialLibraryBrowseButtonClicked()
