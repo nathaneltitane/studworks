@@ -2,9 +2,6 @@
 #include "sw_widget_collapsible.h"
 #include "sw_window_utilities.h"
 
-QImage swCollapsibleWidgetButton::mExpandedIcon;
-QImage swCollapsibleWidgetButton::mCollapsedIcon;
-
 swCollapsibleWidgetButton::swCollapsibleWidgetButton(const QString& Title, QWidget* Parent)
 	: QToolButton(Parent)
 {
@@ -54,40 +51,7 @@ void swCollapsibleWidgetButton::UpdateIcon()
 		return;
 	}
 
-	if (mExpanded)
-	{
-		if (mExpandedIcon.isNull())
-		{
-			QImage Image(16, 16, QImage::Format::Format_ARGB32);
-			Image.fill(QColor(0, 0, 0, 0));
-			uint Color = palette().color(QPalette::Text).rgba();
-
-			for (int y = 0; y < 8; y++)
-				for (int x = y; x < 8 - y; x++)
-					Image.setPixel(x + 4, y + 6, Color);
-
-			mExpandedIcon = Image;
-		}
-
-		setIcon(QPixmap::fromImage(mExpandedIcon));
-	}
-	else
-	{
-		if (mCollapsedIcon.isNull())
-		{
-			QImage Image(16, 16, QImage::Format::Format_ARGB32);
-			Image.fill(QColor(0, 0, 0, 0));
-			uint Color = palette().color(QPalette::Text).rgba();
-
-			for (int y = 0; y < 8; y++)
-				for (int x = y; x < 8 - y; x++)
-					Image.setPixel(y + 6, x + 4, Color);
-
-			mCollapsedIcon = Image;
-		}
-
-		setIcon(QPixmap::fromImage(mCollapsedIcon));
-	}
+	setIcon(swCreateDisclosureIcon(mExpanded, palette()));
 }
 
 void swCollapsibleWidgetButton::Clicked()

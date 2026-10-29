@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # compile the translation catalogs into qm files
-# usage: tools/sw_language_release [language]
+# usage: tools/studworks-language-release [language]
 
 set -e
 

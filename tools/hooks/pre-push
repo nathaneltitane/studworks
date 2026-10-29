@@ -124,11 +124,11 @@ fi
 
 if [ "${#lines_notice[@]}" = 0 ]
 then
-	printf "%s\n" "no notice written, run tools/sw_version_bump, write the notice and push again"
+	printf "%s\n" "no notice written, run tools/studworks-version-update, write the notice and push again"
 	exit 1
 fi
 
-tools/sw_version_bump "${version_today}" > /dev/null
+tools/studworks-version-update "${version_today}" > /dev/null
 
 # the notice lines go under the new heading
 mapfile -t lines_readme < README.md

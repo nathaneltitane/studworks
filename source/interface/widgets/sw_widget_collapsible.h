@@ -27,9 +27,6 @@ protected:
 
 	bool mExpanded = true;
 	bool mCollapsible = true;
-
-	static QImage mExpandedIcon;
-	static QImage mCollapsedIcon;
 };
 
 class swCollapsibleWidget : public QWidget

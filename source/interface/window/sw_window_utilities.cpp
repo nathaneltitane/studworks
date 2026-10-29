@@ -964,6 +964,24 @@ void swColorDialogPopup::Close()
 		Menu->close();
 }
 
+// use to draw the open or closed chevron of sections and the find bar like the tree branches
+QIcon swCreateDisclosureIcon(bool Expanded, const QPalette& Palette)
+{
+	QPixmap Pixmap(16, 16);
+	Pixmap.fill(Qt::transparent);
+
+	QStyleOption Option;
+	Option.rect = Pixmap.rect();
+	Option.palette = Palette;
+	Option.state = QStyle::State_Enabled;
+
+	QPainter Painter(&Pixmap);
+	QApplication::style()->drawPrimitive(Expanded ? QStyle::PE_IndicatorArrowDown : QStyle::PE_IndicatorArrowRight, &Option, &Painter);
+	Painter.end();
+
+	return QIcon(Pixmap);
+}
+
 // use to show a color as a square over a checkerboard that shows how transparent it is
 QIcon swCreateColorIcon(const QColor& Color, int Size)
 {

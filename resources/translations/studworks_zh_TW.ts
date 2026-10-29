@@ -10452,6 +10452,18 @@ Please visit https://github.com/nathaneltitane/studworks for information on how 
 <context>
     <name>swFindReplaceWidget</name>
     <message>
+        <location filename="../../source/interface/widgets/sw_widget_find_replace.cpp" line="38"/>
+        <source>Toggle Replace</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">切換取代</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/widgets/sw_widget_find_replace.cpp" line="37"/>
+        <source>Show or hide the replace options.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">顯示或隱藏取代選項。</translation>
+    </message>
+    <message>
         <location filename="../../source/interface/widgets/sw_widget_find_replace.cpp" line="23"/>
         <source>Find:</source>
         <translation>查找:</translation>
@@ -21701,6 +21713,24 @@ Enter your Rebrickable API key, available for free from your account settings at
 </context>
 <context>
     <name>swViewWidget</name>
+    <message>
+        <location filename="../../source/rendering/sw_view_widget.cpp" line="53"/>
+        <source>Stop looking through this camera.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">停止透過此相機檢視。</translation>
+    </message>
+    <message>
+        <location filename="../../source/rendering/sw_view_widget.cpp" line="52"/>
+        <source>Free Camera</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">自由相機</translation>
+    </message>
+    <message>
+        <location filename="../../source/rendering/sw_view_widget.cpp" line="166"/>
+        <source>Camera: %1</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">相機：%1</translation>
+    </message>
     <message>
         <location filename="../../source/rendering/sw_view_widget.cpp" line="43"/>
         <source>&lt;p&gt;&lt;b&gt;In-place Editing&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The path shows the model being edited inside this view. The last name is the current editing target. Choose an earlier name to edit that ancestor, or the close button to return to the tab&apos;s model.&lt;/p&gt;</source>

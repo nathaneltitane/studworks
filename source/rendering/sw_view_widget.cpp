@@ -13,6 +13,7 @@
 #include "sw_widget_preview.h"
 #include "sw_window_utilities.h"
 #include "sw_view_cube.h"
+#include "sw_object_camera.h"
 
 swViewWidget::swViewWidget(QWidget* Parent, swView* View)
 	: QOpenGLWidget(Parent), mView(View)
@@ -34,48 +35,63 @@ swViewWidget::swViewWidget(QWidget* Parent, swView* View)
 		mOverlayLayout->setSizeConstraint(QLayout::SetNoConstraint);
 		mOverlay->installEventFilter(this);
 
-		// the editing path floats over the view outlined and rounded like a panel button
+		// the camera name floats over the view laid out like the find and replace bar, each bar only as wide as its contents
 		const int ButtonHeight = swGetPanelButtonSize().height();
+		mCameraBar = new QWidget(mOverlay);
+		mCameraBar->setObjectName(QStringLiteral("CameraBar"));
+		mCameraBar->setAttribute(Qt::WA_StyledBackground, true);
+		mCameraBar->setStyleSheet(QStringLiteral("#CameraBar { background: palette(button); border: 1px solid palette(mid); border-radius: 3px; }"));
+		mCameraBar->setVisible(false);
+
+		QHBoxLayout* CameraLayout = new QHBoxLayout(mCameraBar);
+		CameraLayout->setContentsMargins(5, 5, 5, 5);
+
+		// the bar starts with its close button like the find and replace bar
+		QToolButton* CameraCloseButton = new QToolButton(mCameraBar);
+		CameraCloseButton->setIcon(QIcon(":/stylesheet/close.svg"));
+		CameraCloseButton->setAccessibleName(tr("Free Camera"));
+		CameraCloseButton->setToolTip(tr("Stop looking through this camera."));
+		CameraCloseButton->setAutoRaise(false);
+		CameraCloseButton->setFocusPolicy(Qt::NoFocus);
+		CameraCloseButton->setFixedSize(ButtonHeight, ButtonHeight);
+		CameraLayout->addWidget(CameraCloseButton);
+
+		mCameraLabel = new QLabel(mCameraBar);
+		mCameraLabel->setFixedHeight(ButtonHeight);
+		CameraLayout->addWidget(mCameraLabel);
+		mOverlayLayout->addWidget(mCameraBar, 0, Qt::AlignLeft);
+
+		connect(CameraCloseButton, &QToolButton::clicked, this, [this]()
+		{
+			setFocus(Qt::OtherFocusReason);
+			mView->RemoveCamera();
+			update();
+		});
+
+		// the editing path follows below it
 		mModelEditingBar = new QWidget(mOverlay);
 		mModelEditingBar->setObjectName(QStringLiteral("ModelEditingBar"));
 		mModelEditingBar->setAttribute(Qt::WA_StyledBackground, true);
 		mModelEditingBar->setStyleSheet(QStringLiteral("#ModelEditingBar { background: palette(button); border: 1px solid palette(mid); border-radius: 3px; }"));
-		mModelEditingBar->setFixedHeight(ButtonHeight);
 		mModelEditingBar->setWhatsThis(tr("<p><b>In-place Editing</b></p><p>The path shows the model being edited inside this view. The last name is the current editing target. Choose an earlier name to edit that ancestor, or the close button to return to the tab's model.</p>"));
 
 		QHBoxLayout* EditingLayout = new QHBoxLayout(mModelEditingBar);
-		EditingLayout->setContentsMargins(8, 1, 1, 1);
-		EditingLayout->setSpacing(4);
+		EditingLayout->setContentsMargins(5, 5, 5, 5);
 
-		mModelEditingLabel = new QLabel(mModelEditingBar);
-		mModelEditingLabel->setObjectName(QStringLiteral("ModelEditingPath"));
-		mModelEditingLabel->setTextFormat(Qt::RichText);
-		mModelEditingLabel->setTextInteractionFlags(Qt::LinksAccessibleByMouse | Qt::LinksAccessibleByKeyboard);
-		mModelEditingLabel->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
-		mModelEditingLabel->setMinimumWidth(0);
-		EditingLayout->addWidget(mModelEditingLabel, 1);
-
+		// the bar starts with its close button like the find and replace bar
 		mEndEditingButton = new QToolButton(mModelEditingBar);
 		mEndEditingButton->setIcon(QIcon(":/stylesheet/close.svg"));
 		mEndEditingButton->setAccessibleName(tr("End Editing"));
 		mEndEditingButton->setToolTip(tr("Return to editing the tab's model."));
-		mEndEditingButton->setAutoRaise(true);
+		mEndEditingButton->setAutoRaise(false);
 		mEndEditingButton->setFocusPolicy(Qt::NoFocus);
-		mEndEditingButton->setFixedSize(ButtonHeight - 2, ButtonHeight - 2);
+		mEndEditingButton->setFixedSize(ButtonHeight, ButtonHeight);
 		EditingLayout->addWidget(mEndEditingButton);
-		mOverlayLayout->addWidget(mModelEditingBar);
 
-		connect(mModelEditingLabel, &QLabel::linkActivated, this, [this](const QString& Link)
-		{
-			bool Valid;
-			const uint Depth = Link.toUInt(&Valid);
-
-			if (!Valid || Depth + 1 >= static_cast<uint>(mModelEditingNames.size()))
-				return;
-
-			setFocus(Qt::OtherFocusReason);
-			mView->SetSubmodelActive(Depth);
-		});
+		mModelEditingPathLayout = new QHBoxLayout();
+		mModelEditingPathLayout->setContentsMargins(0, 0, 0, 0);
+		EditingLayout->addLayout(mModelEditingPathLayout, 1);
+		mOverlayLayout->addWidget(mModelEditingBar, 0, Qt::AlignLeft);
 
 		connect(mEndEditingButton, &QToolButton::clicked, this, [this]()
 		{
@@ -130,7 +146,27 @@ void swViewWidget::SetView(swView* View)
 	}
 
 	mView = std::unique_ptr<swView>(View);
+	UpdateCameraName();
 	UpdateModelEditingPath();
+}
+
+// use to show the name of the camera the view looks through, free cameras have none
+void swViewWidget::UpdateCameraName()
+{
+	if (!mOverlay || !mView)
+		return;
+
+	const QString CameraName = mView->GetCamera()->GetName();
+
+	if (CameraName == mCameraName)
+		return;
+
+	mCameraName = CameraName;
+	mCameraLabel->setText(CameraName);
+	mCameraLabel->setAccessibleName(tr("Camera: %1").arg(CameraName));
+	mCameraBar->setVisible(!CameraName.isEmpty());
+
+	UpdateOverlayGeometry();
 }
 
 void swViewWidget::UpdateModelEditingPath()
@@ -146,10 +182,9 @@ void swViewWidget::UpdateModelEditingPath()
 	if (Names != mModelEditingNames)
 	{
 		mModelEditingNames = Names;
-		const QString Path = Names.join(QStringLiteral(" \u203a "));
-		mModelEditingLabel->setToolTip(Path);
-		mModelEditingLabel->setAccessibleName(tr("Editing model: %1").arg(Path));
+		mModelEditingBar->setAccessibleName(tr("Editing model: %1").arg(Names.join(QStringLiteral(" \u203a "))));
 		mModelEditingBar->setVisible(Names.size() > 1);
+		UpdateModelEditingButtons();
 	}
 
 	UpdateOverlayGeometry();
@@ -161,7 +196,7 @@ void swViewWidget::SetFindReplaceWidget(QWidget* Widget)
 		return;
 
 	mFindReplaceWidget = Widget;
-	mOverlayLayout->addWidget(Widget);
+	mOverlayLayout->addWidget(Widget, 0, Qt::AlignLeft);
 	UpdateOverlayGeometry();
 }
 
@@ -171,49 +206,67 @@ void swViewWidget::UpdateOverlayGeometry()
 		return;
 
 	const bool Editing = mModelEditingNames.size() > 1;
+	const bool Camera = !mCameraName.isEmpty();
 
-	mOverlay->setVisible(Editing || mFindReplaceWidget);
+	mOverlay->setVisible(Editing || Camera || mFindReplaceWidget);
 
-	if (!Editing && !mFindReplaceWidget)
+	if (!Editing && !Camera && !mFindReplaceWidget)
 		return;
-
-	// the overlay keeps the standard layout margins from the view edges and the corner widgets
-	// it floats at the top unless the view cube or axis icon takes a top corner, then at the bottom
-	mOverlayCornerSizes = GetOverlayCornerSizes();
-	const bool OverlayBottom = mOverlayCornerSizes[0] || mOverlayCornerSizes[1];
-	const int CornerLeft = mOverlayCornerSizes[OverlayBottom ? 2 : 0];
-	const int CornerRight = mOverlayCornerSizes[OverlayBottom ? 3 : 1];
-	const int Margin = style()->pixelMetric(QStyle::PM_LayoutLeftMargin);
-	const int Left = Margin + CornerLeft;
-	const int Right = width() - Margin - CornerRight;
 
 	int PreferredWidth = 0;
 
 	if (Editing)
-	{
-		QFont Font = mModelEditingLabel->font();
-		Font.setBold(true);
-		const QFontMetrics Metrics(Font);
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 11, 0))
-		PreferredWidth = Metrics.horizontalAdvance(mModelEditingNames.join(QStringLiteral(" \u203a ")));
-#else
-		PreferredWidth = Metrics.width(mModelEditingNames.join(QStringLiteral(" \u203a ")));
-#endif
-		const QMargins EditingMargins = mModelEditingBar->layout()->contentsMargins();
-		PreferredWidth += mEndEditingButton->width() + mModelEditingBar->layout()->spacing() + EditingMargins.left() + EditingMargins.right() + 2;
-	}
+		PreferredWidth = mModelEditingBar->sizeHint().width();
+
+	if (Camera)
+		PreferredWidth = swMaximum(PreferredWidth, mCameraBar->sizeHint().width());
 
 	if (mFindReplaceWidget)
 		PreferredWidth = swMaximum(PreferredWidth, mFindReplaceWidget->sizeHint().width());
 
-	const int OverlayWidth = swClamp(PreferredWidth, 1, swMaximum(1, Right - Left));
-
+	// the overlay keeps the standard layout margins from the view edges and the corner widgets
+	mOverlayCornerSizes = GetOverlayCornerSizes();
+	const int Margin = style()->pixelMetric(QStyle::PM_LayoutLeftMargin);
 	const int OverlayHeight = mOverlayLayout->sizeHint().height();
-	mOverlay->setGeometry(Left, OverlayBottom ? height() - Margin - OverlayHeight : Margin, OverlayWidth, OverlayHeight);
+	const int FullWidth = swClamp(PreferredWidth, 1, swMaximum(1, width() - 2 * Margin));
+	const int TopY = Margin;
+	const int BottomY = height() - Margin - OverlayHeight;
+
+	// use to check the overlay against the view cube and axis icon of one row, spaced by the margin
+	const auto IsRowFree = [this, Margin, OverlayHeight](int Y, int Left, int Width, int CornerLeft, int CornerRight)
+	{
+		const QRect OverlayRect(Left, Y, Width, OverlayHeight);
+		const int CornerY = Y == Margin ? 0 : height();
+		const QRect LeftRect(0, CornerY - (CornerY ? CornerLeft : 0), CornerLeft, CornerLeft);
+		const QRect RightRect(width() - CornerRight, CornerY - (CornerY ? CornerRight : 0), CornerRight, CornerRight);
+
+		return !(CornerLeft && OverlayRect.intersects(LeftRect.adjusted(0, 0, Margin, Margin))) && !(CornerRight && OverlayRect.intersects(RightRect.adjusted(-Margin, -Margin, 0, 0)));
+	};
+
+	// it stays at the top left and only moves when a corner widget is actually in its way, first to the bottom then beside the widgets
+	int OverlayX = Margin;
+	int OverlayY = TopY;
+	int OverlayWidth = FullWidth;
+
+	if (!IsRowFree(TopY, Margin, FullWidth, mOverlayCornerSizes[0], mOverlayCornerSizes[1]))
+	{
+		if (IsRowFree(BottomY, Margin, FullWidth, mOverlayCornerSizes[2], mOverlayCornerSizes[3]))
+			OverlayY = BottomY;
+		else
+		{
+			const bool OverlayBottom = mOverlayCornerSizes[2] + mOverlayCornerSizes[3] < mOverlayCornerSizes[0] + mOverlayCornerSizes[1];
+			const int CornerLeft = mOverlayCornerSizes[OverlayBottom ? 2 : 0];
+			const int CornerRight = mOverlayCornerSizes[OverlayBottom ? 3 : 1];
+
+			OverlayX = Margin + (CornerLeft ? CornerLeft + Margin : 0);
+			OverlayY = OverlayBottom ? BottomY : TopY;
+			OverlayWidth = swClamp(PreferredWidth, 1, swMaximum(1, width() - Margin - (CornerRight ? CornerRight + Margin : 0) - OverlayX));
+		}
+	}
+
+	mOverlay->setGeometry(OverlayX, OverlayY, OverlayWidth, OverlayHeight);
 	mOverlayLayout->activate();
 	mModelEditingBar->layout()->activate();
-
-	UpdateModelEditingLabel();
 }
 
 // use to size the view cube and axis icon by corner in the order top left, top right, bottom left, bottom right
@@ -237,42 +290,58 @@ std::array<int, 4> swViewWidget::GetOverlayCornerSizes()
 	return CornerSizes;
 }
 
-void swViewWidget::UpdateModelEditingLabel()
+// use to show each model of the editing path as a button, the earlier ones edit that ancestor again
+void swViewWidget::UpdateModelEditingButtons()
 {
+	// the clicked button may still be in its signal so the old entries go once it returns
+	while (QLayoutItem* Item = mModelEditingPathLayout->takeAt(0))
+	{
+		Item->widget()->hide();
+		Item->widget()->deleteLater();
+		delete Item;
+	}
+
 	if (mModelEditingNames.size() < 2)
 		return;
 
-	const QString Separator = QStringLiteral(" \u203a ");
-	QFont Font = mModelEditingLabel->font();
-	Font.setBold(true);
-	const QFontMetrics Metrics(Font);
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 11, 0))
-	const int SeparatorWidth = Metrics.horizontalAdvance(Separator);
-	const int PathWidth = Metrics.horizontalAdvance(mModelEditingNames.join(Separator));
-#else
-	const int SeparatorWidth = Metrics.width(Separator);
-	const int PathWidth = Metrics.width(mModelEditingNames.join(Separator));
-#endif
-	const int NameCount = static_cast<int>(mModelEditingNames.size());
-	const int NameWidth = swMaximum(0, (mModelEditingLabel->width() - SeparatorWidth * (NameCount - 1)) / NameCount);
-	QStringList Segments;
+	const int ButtonHeight = swGetPanelButtonSize().height();
+	const QPixmap Chevron = swCreateDisclosureIcon(false, mModelEditingBar->palette()).pixmap(16, 16);
 
 	for (int Index = 0; Index < mModelEditingNames.size(); Index++)
 	{
-		QString Name = mModelEditingNames[Index];
+		if (Index)
+		{
+			QLabel* ChevronLabel = new QLabel(mModelEditingBar);
+			ChevronLabel->setPixmap(Chevron);
+			mModelEditingPathLayout->addWidget(ChevronLabel);
+		}
 
-		if (PathWidth > mModelEditingLabel->width())
-			Name = Metrics.elidedText(Name, Qt::ElideMiddle, NameWidth);
+		swModelEditingButton* Button = new swModelEditingButton(mModelEditingBar);
+		Button->setText(mModelEditingNames[Index]);
+		Button->setToolTip(mModelEditingNames[Index]);
+		Button->setAutoRaise(false);
+		Button->setFocusPolicy(Qt::NoFocus);
+		Button->setFixedHeight(ButtonHeight);
+		mModelEditingPathLayout->addWidget(Button);
 
-		Name = Name.toHtmlEscaped();
-
+		// the current model is bold and the earlier ones return to that model
 		if (Index + 1 == mModelEditingNames.size())
-			Segments.append(QStringLiteral("<b>%1</b>").arg(Name));
-		else
-			Segments.append(QStringLiteral("<a href=\"%1\">%2</a>").arg(Index).arg(Name));
-	}
+		{
+			QFont Font = Button->font();
+			Font.setBold(true);
+			Button->setFont(Font);
+			continue;
+		}
 
-	mModelEditingLabel->setText(Segments.join(Separator));
+		connect(Button, &QToolButton::clicked, this, [this, Index]()
+		{
+			if (Index + 1 >= mModelEditingNames.size())
+				return;
+
+			setFocus(Qt::OtherFocusReason);
+			mView->SetSubmodelActive(Index);
+		});
+	}
 }
 
 bool swViewWidget::eventFilter(QObject* Object, QEvent* Event)
@@ -312,9 +381,11 @@ void swViewWidget::resizeGL(int Width, int Height)
 
 void swViewWidget::paintGL()
 {
-	// corner widget settings change without a resize, catch them on the next repaint
+	// corner widget settings and the viewed camera change without a resize, catch them on the next repaint
 	if (mOverlay && mOverlay->isVisible() && GetOverlayCornerSizes() != mOverlayCornerSizes)
 		UpdateOverlayGeometry();
+
+	UpdateCameraName();
 
 	mView->OnDraw();
 }

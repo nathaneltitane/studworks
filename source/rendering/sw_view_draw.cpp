@@ -348,7 +348,8 @@ void swView::DrawViewport() const
 		mContext->DrawPrimitives(GL_LINE_LOOP, 0, 4);
 	}
 
-	QString CameraName = mCamera->GetName();
+	// model views show the camera name in their overlay, the other views keep it in the corner
+	QString CameraName = mViewType == swViewType::View ? QString() : mCamera->GetName();
 
 	if (!CameraName.isEmpty() && gTexFont.IsLoaded())
 	{

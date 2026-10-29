@@ -10797,6 +10797,18 @@ Please visit https://library.ldraw.org for information on how to download and in
 <context>
     <name>swFindReplaceWidget</name>
     <message>
+        <location filename="../../source/interface/widgets/sw_widget_find_replace.cpp" line="38"/>
+        <source>Toggle Replace</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Перемкнути заміну</translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/widgets/sw_widget_find_replace.cpp" line="37"/>
+        <source>Show or hide the replace options.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Показати або приховати параметри заміни.</translation>
+    </message>
+    <message>
         <location filename="../../source/interface/widgets/sw_widget_find_replace.cpp" line="23"/>
         <source>Find:</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -22097,6 +22109,24 @@ Enter your Rebrickable API key, available for free from your account settings at
 </context>
 <context>
     <name>swViewWidget</name>
+    <message>
+        <location filename="../../source/rendering/sw_view_widget.cpp" line="53"/>
+        <source>Stop looking through this camera.</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Припинити дивитися через цю камеру.</translation>
+    </message>
+    <message>
+        <location filename="../../source/rendering/sw_view_widget.cpp" line="52"/>
+        <source>Free Camera</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Вільна камера</translation>
+    </message>
+    <message>
+        <location filename="../../source/rendering/sw_view_widget.cpp" line="166"/>
+        <source>Camera: %1</source>
+        <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
+        <translation type="unfinished">Камера: %1</translation>
+    </message>
     <message>
         <location filename="../../source/rendering/sw_view_widget.cpp" line="43"/>
         <source>&lt;p&gt;&lt;b&gt;In-place Editing&lt;/b&gt;&lt;/p&gt;&lt;p&gt;The path shows the model being edited inside this view. The last name is the current editing target. Choose an earlier name to edit that ancestor, or the close button to return to the tab&apos;s model.&lt;/p&gt;</source>

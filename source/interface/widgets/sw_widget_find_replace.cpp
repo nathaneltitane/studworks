@@ -17,86 +17,142 @@ swFindReplaceWidget::swFindReplaceWidget(QWidget* Parent, swModel* Model, bool R
 	setAttribute(Qt::WA_StyledBackground, true);
 	setStyleSheet(QStringLiteral("#FindReplaceBar { background: palette(button); border: 1px solid palette(mid); border-radius: 3px; }"));
 
+	// every control in the bar is as tall as a panel button and the action buttons fill their columns so both rows line up
+	const int ButtonHeight = swGetPanelButtonSize().height();
+	const auto SetupRowControl = [ButtonHeight](QWidget* Control)
+	{
+		Control->setFixedHeight(ButtonHeight);
+		Control->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	};
+
 	QGridLayout* Layout = new QGridLayout(this);
 	Layout->setContentsMargins(5, 5, 5, 5);
 
-	Layout->addWidget(new QLabel(tr("Find:")), 0, 0);
+	// the bar starts with its close button like the editing path
+	QToolButton* CloseButton = new QToolButton(this);
+	CloseButton->setAutoRaise(false);
+	CloseButton->setIcon(QIcon(":/stylesheet/close.svg"));
+	CloseButton->setToolTip(tr("Close"));
+	CloseButton->setFocusPolicy(Qt::NoFocus);
+	CloseButton->setFixedSize(ButtonHeight, ButtonHeight);
+	Layout->addWidget(CloseButton, 0, 0);
+
+	Layout->addWidget(new QLabel(tr("Find:")), 0, 1);
 
 	swColorPicker* FindColorPicker = new swColorPicker(this, true);
 	FindColorPicker->setToolTip(tr("Search Color"));
-	Layout->addWidget(FindColorPicker, 0, 1);
+	FindColorPicker->setFixedHeight(ButtonHeight);
+	Layout->addWidget(FindColorPicker, 0, 2);
 
 	mFindPartComboBox = new QComboBox(this);
 	mFindPartComboBox->setToolTip(tr("Search Part"));
 	mFindPartComboBox->setEditable(true);
 	mFindPartComboBox->setInsertPolicy(QComboBox::NoInsert);
-	Layout->addWidget(mFindPartComboBox, 0, 2);
+
+	// long part names would stretch the whole bar, the box keeps a steady width and the list shows them in full
+	mFindPartComboBox->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
+	mFindPartComboBox->setMinimumContentsLength(16);
+	mFindPartComboBox->lineEdit()->setPlaceholderText(tr("None"));
+
+	// the placeholder centers like the replacement part button while typed text stays left
+	QLineEdit* FindLineEdit = mFindPartComboBox->lineEdit();
+	const auto SetFindAlignment = [FindLineEdit](const QString& Text)
+	{
+		FindLineEdit->setAlignment(Text.isEmpty() ? Qt::AlignCenter : Qt::AlignLeft | Qt::AlignVCenter);
+	};
+
+	connect(FindLineEdit, &QLineEdit::textChanged, this, SetFindAlignment);
+	SetFindAlignment(FindLineEdit->text());
+	SetupRowControl(mFindPartComboBox);
+	Layout->addWidget(mFindPartComboBox, 0, 3);
 
 	QToolButton* FindNextButton = new QToolButton(this);
 	FindNextButton->setAutoRaise(false);
 	FindNextButton->setDefaultAction(gMainWindow->mActions[SW_EDIT_FIND_NEXT]);
-	Layout->addWidget(FindNextButton, 0, 3);
+	SetupRowControl(FindNextButton);
+	Layout->addWidget(FindNextButton, 0, 4);
 
 	QToolButton* FindAllButton = new QToolButton(this);
 	FindAllButton->setAutoRaise(false);
 	FindAllButton->setDefaultAction(gMainWindow->mActions[SW_EDIT_FIND_ALL]);
-	Layout->addWidget(FindAllButton, 0, 4);
+	SetupRowControl(FindAllButton);
+	Layout->addWidget(FindAllButton, 0, 5);
+
+	// the chevron at the end shows or hides the replace row so find and replace share one bar
+	QToolButton* ReplaceToggleButton = new QToolButton(this);
+	ReplaceToggleButton->setAutoRaise(false);
+	ReplaceToggleButton->setFocusPolicy(Qt::NoFocus);
+	ReplaceToggleButton->setFixedSize(ButtonHeight, ButtonHeight);
+	ReplaceToggleButton->setToolTip(tr("Show or hide the replace options."));
+	ReplaceToggleButton->setAccessibleName(tr("Toggle Replace"));
+	Layout->addWidget(ReplaceToggleButton, 0, 6);
 
 	connect(FindColorPicker, &swColorPicker::ColorChanged, this, &swFindReplaceWidget::FindColorIndexChanged);
 	connect(mFindPartComboBox->lineEdit(), &QLineEdit::returnPressed, gMainWindow->mActions[SW_EDIT_FIND_NEXT], &QAction::trigger);
 	connect(mFindPartComboBox->lineEdit(), &QLineEdit::textEdited, this, &swFindReplaceWidget::FindTextEdited);
 	connect(mFindPartComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated), this, &swFindReplaceWidget::FindActivated);
+	connect(CloseButton, &QToolButton::clicked, this, &QObject::deleteLater);
 
-	swColorPicker* ReplaceColorPicker = nullptr;
+	QLabel* ReplaceLabel = new QLabel(tr("Replace:"), this);
+	Layout->addWidget(ReplaceLabel, 1, 1);
 
-	if (Replace)
+	swColorPicker* ReplaceColorPicker = new swColorPicker(this, true);
+	ReplaceColorPicker->setToolTip(tr("Replacement Color"));
+	ReplaceColorPicker->setFixedHeight(ButtonHeight);
+	Layout->addWidget(ReplaceColorPicker, 1, 2);
+
+	mReplacePartButton = new swElidableToolButton(this);
+	mReplacePartButton->setToolTip(tr("Replacement Part"));
+	SetupRowControl(mReplacePartButton);
+	Layout->addWidget(mReplacePartButton, 1, 3);
+
+	QToolButton* ReplaceNextButton = new QToolButton(this);
+	ReplaceNextButton->setAutoRaise(false);
+	ReplaceNextButton->setDefaultAction(gMainWindow->mActions[SW_EDIT_REPLACE_NEXT]);
+	SetupRowControl(ReplaceNextButton);
+	Layout->addWidget(ReplaceNextButton, 1, 4);
+
+	QToolButton* ReplaceAllButton = new QToolButton(this);
+	ReplaceAllButton->setAutoRaise(false);
+	ReplaceAllButton->setDefaultAction(gMainWindow->mActions[SW_EDIT_REPLACE_ALL]);
+	SetupRowControl(ReplaceAllButton);
+	Layout->addWidget(ReplaceAllButton, 1, 5);
+
+	connect(ReplaceColorPicker, &swColorPicker::ColorChanged, this, &swFindReplaceWidget::ReplaceColorIndexChanged);
+	connect(mReplacePartButton, &swElidableToolButton::clicked, this, &swFindReplaceWidget::ReplaceButtonClicked);
+
+	ReplaceColorPicker->SetCurrentColor(swGetColorIndex(SW_COLOR_NO_COLOR));
+	mReplacePartButton->setText(tr("None"));
+
+	// columns keep the width of both rows so showing the replace row moves nothing
+	for (int Column = 0; Column < Layout->columnCount(); Column++)
 	{
-		Layout->addWidget(new QLabel(tr("Replace:")), 1, 0);
+		int ColumnWidth = 0;
 
-		ReplaceColorPicker = new swColorPicker(this, true);
-		ReplaceColorPicker->setToolTip(tr("Replacement Color"));
-		Layout->addWidget(ReplaceColorPicker, 1, 1);
+		for (int Row = 0; Row < Layout->rowCount(); Row++)
+			if (QLayoutItem* Item = Layout->itemAtPosition(Row, Column))
+				ColumnWidth = qMax(ColumnWidth, Item->widget()->sizeHint().width());
 
-		QPixmap Pixmap(1, 1);
-		Pixmap.fill(QColor::fromRgba64(0, 0, 0, 0));
-
-		mReplacePartButton = new swElidableToolButton(this);
-		mReplacePartButton->setToolTip(tr("Replacement Part"));
-
-		QSizePolicy PartButtonSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
-		PartButtonSizePolicy.setHorizontalStretch(2);
-		PartButtonSizePolicy.setVerticalStretch(0);
-		mReplacePartButton->setSizePolicy(PartButtonSizePolicy);
-
-		mReplacePartButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-		mReplacePartButton->setIcon(Pixmap);
-
-		Layout->addWidget(mReplacePartButton, 1, 2);
-
-		QToolButton* ReplaceNextButton = new QToolButton(this);
-		ReplaceNextButton->setAutoRaise(false);
-		ReplaceNextButton->setDefaultAction(gMainWindow->mActions[SW_EDIT_REPLACE_NEXT]);
-		Layout->addWidget(ReplaceNextButton, 1, 3);
-
-		QToolButton* ReplaceAllButton = new QToolButton(this);
-		ReplaceAllButton->setAutoRaise(false);
-		ReplaceAllButton->setDefaultAction(gMainWindow->mActions[SW_EDIT_REPLACE_ALL]);
-		Layout->addWidget(ReplaceAllButton, 1, 4);
-
-		connect(ReplaceColorPicker, &swColorPicker::ColorChanged, this, &swFindReplaceWidget::ReplaceColorIndexChanged);
-		connect(mReplacePartButton, &swElidableToolButton::clicked, this, &swFindReplaceWidget::ReplaceButtonClicked);
-
-		ReplaceColorPicker->SetCurrentColor(swGetColorIndex(SW_COLOR_NO_COLOR));
-		mReplacePartButton->setText(tr("None"));
+		Layout->setColumnMinimumWidth(Column, ColumnWidth);
 	}
 
-	QToolButton* CloseButton = new QToolButton(this);
-	CloseButton->setAutoRaise(true);
-	CloseButton->setIcon(QIcon(":/stylesheet/close.svg"));
-	CloseButton->setToolTip(tr("Close"));
-	Layout->addWidget(CloseButton, 0, 5);
+	const QList<QWidget*> ReplaceControls = { ReplaceLabel, ReplaceColorPicker, mReplacePartButton, ReplaceNextButton, ReplaceAllButton };
 
-	connect(CloseButton, &QToolButton::clicked, this, &QObject::deleteLater);
+	// use to show the replace row with the same chevron as the collapsible sections
+	const auto SetReplaceVisible = [ReplaceToggleButton, ReplaceControls](bool Visible)
+	{
+		ReplaceToggleButton->setIcon(swCreateDisclosureIcon(Visible, ReplaceToggleButton->palette()));
+
+		for (QWidget* Control : ReplaceControls)
+			Control->setVisible(Visible);
+	};
+
+	connect(ReplaceToggleButton, &QToolButton::clicked, this, [this, ReplaceLabel, SetReplaceVisible]()
+	{
+		SetReplaceVisible(!ReplaceLabel->isVisibleTo(this));
+	});
+
+	SetReplaceVisible(Replace);
 
 	swPartsList PartsList;
 	Model->GetPartsList(gDefaultColor, false, true, PartsList);
@@ -104,6 +160,7 @@ swFindReplaceWidget::swFindReplaceWidget(QWidget* Parent, swModel* Model, bool R
 	for (const auto& PartIt : PartsList)
 		mFindPartComboBox->addItem(QString::fromLatin1(PartIt.first->m_strDescription), QVariant::fromValue((void*)PartIt.first));
 	mFindPartComboBox->model()->sort(0);
+	mFindPartComboBox->view()->setMinimumWidth(mFindPartComboBox->view()->sizeHintForColumn(0) + mFindPartComboBox->view()->verticalScrollBar()->sizeHint().width());
 
 	swPart* Focus = dynamic_cast<swPart*>(Model->GetFocusObject());
 

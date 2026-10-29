@@ -128,6 +128,9 @@ protected:
 
 QIcon swCreateInterfaceIcon(const QString& Folder, const QString& Name);
 
+// Everything that opens or closes shows the chevron of the style, pointing down when open.
+QIcon swCreateDisclosureIcon(bool Expanded, const QPalette& Palette);
+
 // Color buttons show their color as a swatch beside its name and pick a new one below them.
 QIcon swCreateColorIcon(const QColor& Color, int Size);
 void swUpdateColorButton(QToolButton* Button, const QColor& Color);

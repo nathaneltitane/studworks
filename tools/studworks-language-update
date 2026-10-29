@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # refresh the translation catalogs from the source strings
-# usage: tools/sw_language_update [language]
+# usage: tools/studworks-language-update [language]
 
 set -e
 

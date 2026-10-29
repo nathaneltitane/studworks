@@ -24,7 +24,7 @@
 
 # Releases
 
-- The version is the release date. Move it with `tools/sw_version_bump`, and write the new README notice, the release notes come from it.
+- The version is the release date. Move it with `tools/studworks-version-update`, and write the new README notice, the release notes come from it.
 - Enable `tools/hooks/pre-push` with `git config core.hooksPath tools/hooks`. Once a version is released, a later push of code changes to main bumps it to the day's date, with a notice written by `claude -p`.
 
 # Dialog help and translations

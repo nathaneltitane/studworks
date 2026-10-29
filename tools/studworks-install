@@ -1,0 +1,142 @@
+#!/bin/bash
+
+# build and install studworks with its thumbnailer and file associations, without a package
+# usage: tools/studworks-install [prefix] [build directory]
+
+set -e
+
+directory_source="$(cd "${BASH_SOURCE[0]%/*}/.." && pwd)"
+directory_prefix="${1:-/usr/local}"
+directory_build="${2:-${directory_source}/build/install}"
+
+tool_qmake="$(command -v qmake || command -v qmake-qt5)"
+
+if [ -z "${tool_qmake}" ]
+then
+	printf "%s\n" "qmake not found"
+	exit 1
+fi
+
+# prefix from the closest existing directory
+directory_writable="${directory_prefix}"
+
+while [ ! -d "${directory_writable}" ]
+do
+	directory_writable="${directory_writable%/*}"
+	directory_writable="${directory_writable:-/}"
+done
+
+# use to run a command as superuser when the target is not writable
+run_install() {
+	local directory_target="${1}"
+
+	if [ -w "${directory_target}" ]
+	then
+		"${@:2}"
+	else
+		sudo "${@:2}"
+	fi
+}
+
+# build and install
+mkdir -p "${directory_build}"
+cd "${directory_build}"
+
+"${tool_qmake}" "${directory_source}/studworks.pro" \
+	CONFIG+=release CONFIG-=debug \
+	INSTALL_PREFIX="${directory_prefix}"
+
+make -j "$(nproc)"
+run_install "${directory_writable}" make install
+
+# kde thumbnail plugin
+directory_plugins="$("${tool_qmake}" -query QT_INSTALL_PLUGINS)"
+
+if [ -f "$("${tool_qmake}" -query QT_INSTALL_ARCHDATA)/mkspecs/modules/qt_KIOGui.pri" ]
+then
+	mkdir -p "${directory_build}/thumbnailer"
+	cd "${directory_build}/thumbnailer"
+
+	"${tool_qmake}" "${directory_source}/thumbnailer/thumbnailer.pro" \
+		CONFIG+=release CONFIG-=debug \
+		BIN_DIR="${directory_prefix}/bin"
+
+	# rebuild for the program path
+	make clean
+	make -j "$(nproc)"
+	run_install "${directory_plugins}" make install
+
+	cd "${directory_build}"
+else
+	printf "%s\n" "kde frameworks kio not found, thumbnail plugin skipped"
+fi
+
+directory_share="${directory_prefix}/share"
+file_program="${directory_prefix}/bin/studworks"
+
+# use to point an installed entry at the installed binary
+set_program() {
+	local file_target="${1}"
+	local lines_file
+	local index_line
+
+	mapfile -t lines_file < "${file_target}"
+
+	for index_line in "${!lines_file[@]}"
+	do
+		lines_file[index_line]="${lines_file[index_line]/#TryExec=studworks/TryExec=${file_program}}"
+		lines_file[index_line]="${lines_file[index_line]/#Exec=studworks /Exec=${file_program} }"
+		lines_file[index_line]="${lines_file[index_line]/ studworks / ${file_program} }"
+	done
+
+	printf "%s\n" "${lines_file[@]}" | run_install "${directory_writable}" tee "${file_target}" > /dev/null
+}
+
+# run without studworks on the path
+set_program "${directory_share}/applications/studworks.desktop"
+set_program "${directory_share}/thumbnailers/studworks.thumbnailer"
+
+# refresh desktop caches
+
+if [ -n "$(command -v update-mime-database)" ]
+then
+	run_install "${directory_writable}" update-mime-database "${directory_share}/mime"
+fi
+
+if [ -n "$(command -v update-desktop-database)" ]
+then
+	run_install "${directory_writable}" update-desktop-database "${directory_share}/applications"
+fi
+
+if [ -n "$(command -v gtk-update-icon-cache)" ]
+then
+	run_install "${directory_writable}" gtk-update-icon-cache -q -t "${directory_share}/icons/hicolor"
+fi
+
+# associate file types from the desktop file
+list_types=()
+
+while IFS= read -r line_desktop
+do
+	if [[ ${line_desktop} == MimeType=* ]]
+	then
+		IFS=";" read -r -a list_types <<< "${line_desktop#MimeType=}"
+	fi
+done < "${directory_source}/platform/studworks.desktop"
+
+if [ -n "$(command -v xdg-mime)" ] && [ "${#list_types[@]}" -gt 0 ]
+then
+	xdg-mime default studworks.desktop "${list_types[@]}"
+fi
+
+# refresh kde service cache
+for tool_sycoca in kbuildsycoca6 kbuildsycoca5
+do
+	if [ -n "$(command -v "${tool_sycoca}")" ]
+	then
+		"${tool_sycoca}" > /dev/null 2>&1
+		break
+	fi
+done
+
+printf "%s\n" "studworks installed to ${directory_prefix}"

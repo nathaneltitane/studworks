@@ -1,5 +1,24 @@
 #pragma once
 
+#include "sw_window_utilities.h"
+
+// use to elide a model of the editing path once the bar runs out of room while it still asks for its whole name
+class swModelEditingButton : public swElidableToolButton
+{
+public:
+	using swElidableToolButton::swElidableToolButton;
+
+	QSize sizeHint() const override
+	{
+		return QToolButton::sizeHint();
+	}
+
+	QSize minimumSizeHint() const override
+	{
+		return QSize(0, QToolButton::minimumSizeHint().height());
+	}
+};
+
 class swViewWidget : public QOpenGLWidget
 {
 	Q_OBJECT
@@ -50,14 +69,18 @@ protected:
 	void dropEvent(QDropEvent* DropEvent) override;
 
 	void UpdateOverlayGeometry();
-	void UpdateModelEditingLabel();
+	void UpdateModelEditingButtons();
+	void UpdateCameraName();
 	static std::array<int, 4> GetOverlayCornerSizes();
 
 	std::unique_ptr<swView> mView;
 	QWidget* mOverlay = nullptr;
 	QVBoxLayout* mOverlayLayout = nullptr;
+	QWidget* mCameraBar = nullptr;
+	QLabel* mCameraLabel = nullptr;
+	QString mCameraName;
 	QWidget* mModelEditingBar = nullptr;
-	QLabel* mModelEditingLabel = nullptr;
+	QHBoxLayout* mModelEditingPathLayout = nullptr;
 	QToolButton* mEndEditingButton = nullptr;
 	QPointer<QWidget> mFindReplaceWidget;
 	QStringList mModelEditingNames;

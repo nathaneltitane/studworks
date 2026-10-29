@@ -251,7 +251,7 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
 
   - Prepare ↴
     - Install a C++ compiler, Qt 5 (widgets, OpenGL, print support, network, xml and concurrent modules) and zlib development packages.
-    - Optional: KDE Frameworks KParts and Konsole for the embedded terminal panel.
+    - Optional: KDE Frameworks KParts and Konsole for the embedded terminal panel, KDE Frameworks KIO for the file manager thumbnails.
 
   - Build ↴
 
@@ -261,6 +261,15 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
     qmake ../studworks/studworks.pro
     make -j"$(nproc)"
     ```
+
+    - Or build and install without a package, with the thumbnail plugin, file types and associations registered - the prefix defaults to '/usr/local', '~/.local' installs everything but the KDE thumbnail plugin without superuser rights:
+
+    ```
+    git clone https://github.com/nathaneltitane/studworks
+    studworks/tools/studworks-install [prefix] [build directory]
+    ```
+
+    - Run it again after 'git pull' to update an install.
 
   - Run ↴
     - Start 'build/release/studworks' and point Preferences to an [LDraw parts library](https://library.ldraw.org/updates?latest) or set 'STUDWORKS_LIBRARY' if none is found - up to date video card drivers are recommended for the OpenGL rendering.
