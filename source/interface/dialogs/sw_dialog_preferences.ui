@@ -1232,6 +1232,71 @@
           <string>Model</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_3">
+          <item row="0" column="0" colspan="2">
+           <widget class="QCheckBox" name="FollowStepViewsCheckBox">
+            <property name="toolTip">
+             <string>Turn the view to each step's view rotation (MLCAD ROTSTEP) when changing steps.</string>
+            </property>
+            <property name="text">
+             <string>Follow Step Views</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="ProjectionScopeLabel">
+            <property name="toolTip">
+             <string>Choose whether a projection change applies to the active view only or to all model views.</string>
+            </property>
+            <property name="buddy">
+             <cstring>ProjectionScopeCombo</cstring>
+            </property>
+            <property name="text">
+             <string>&amp;Projection</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QComboBox" name="ProjectionScopeCombo">
+            <property name="accessibleName">
+             <string>Projection Scope</string>
+            </property>
+            <property name="toolTip">
+             <string>Choose whether a projection change applies to the active view only or to all model views, new views always open with the last chosen projection.</string>
+            </property>
+            <item>
+             <property name="text">
+              <string>Per View</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>All Views</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <spacer name="horizontalSpacer_7">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="ViewCubeGroup">
+         <property name="title">
+          <string>View Cube</string>
+         </property>
+         <layout class="QGridLayout" name="ViewCubeLayout">
           <item row="0" column="0">
            <widget class="QLabel" name="label_21">
             <property name="toolTip">
@@ -1241,7 +1306,7 @@
              <cstring>ViewCubeSizeCombo</cstring>
             </property>
             <property name="text">
-             <string>View Cube</string>
+             <string>Size</string>
             </property>
            </widget>
           </item>
@@ -1294,7 +1359,7 @@
              <cstring>ViewCubeLocationCombo</cstring>
             </property>
             <property name="text">
-             <string>View Cube Location</string>
+             <string>Location</string>
             </property>
            </widget>
           </item>
@@ -1327,62 +1392,6 @@
              </property>
             </item>
            </widget>
-          </item>
-          <item row="2" column="0" colspan="2">
-           <widget class="QCheckBox" name="FollowStepViewsCheckBox">
-            <property name="toolTip">
-             <string>Turn the view to each step's view rotation (MLCAD ROTSTEP) when changing steps.</string>
-            </property>
-            <property name="text">
-             <string>Follow Step Views</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="ProjectionScopeLabel">
-            <property name="toolTip">
-             <string>Choose whether a projection change applies to the active view only or to all model views.</string>
-            </property>
-            <property name="buddy">
-             <cstring>ProjectionScopeCombo</cstring>
-            </property>
-            <property name="text">
-             <string>&amp;Projection</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QComboBox" name="ProjectionScopeCombo">
-            <property name="accessibleName">
-             <string>Projection Scope</string>
-            </property>
-            <property name="toolTip">
-             <string>Choose whether a projection change applies to the active view only or to all model views, new views always open with the last chosen projection.</string>
-            </property>
-            <item>
-             <property name="text">
-              <string>Per View</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>All Views</string>
-             </property>
-            </item>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <spacer name="horizontalSpacer_7">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
           </item>
          </layout>
         </widget>
