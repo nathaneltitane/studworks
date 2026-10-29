@@ -419,22 +419,12 @@ void swRenderDialog::CreatePOVRayPanels()
 
 	// panels moved to another area open at a usable size instead of collapsing to their least size
 	const QList<QDockWidget*> CompactPanels = { qobject_cast<QDockWidget*>(OutputPanel->parentWidget()), qobject_cast<QDockWidget*>(ImagePanel->parentWidget()), qobject_cast<QDockWidget*>(RenderPanel->parentWidget()) };
-	const QList<QDockWidget*> StretchPanels = { qobject_cast<QDockWidget*>(ScenePanel->parentWidget()), mLogPanel };
 
-	auto FitPanels = [PanelWindow, CompactPanels, StretchPanels]()
+	auto FitPanels = [PanelWindow, CompactPanels]()
 	{
-		// the compact panels end at their last row when an area has a panel to take the remaining height
+		// the compact panels end at their last row wherever they are docked
 		for (QDockWidget* CompactPanel : CompactPanels)
-		{
-			const Qt::DockWidgetArea Area = PanelWindow->dockWidgetArea(CompactPanel);
-			bool Shared = false;
-
-			for (QDockWidget* StretchPanel : StretchPanels)
-				if (!StretchPanel->isFloating() && !StretchPanel->isHidden() && PanelWindow->dockWidgetArea(StretchPanel) == Area)
-					Shared = true;
-
-			CompactPanel->setMaximumHeight(Shared && !CompactPanel->isFloating() ? CompactPanel->sizeHint().height() : QWIDGETSIZE_MAX);
-		}
+			CompactPanel->setMaximumHeight(CompactPanel->isFloating() ? QWIDGETSIZE_MAX : CompactPanel->sizeHint().height());
 
 		// panels squeezed by a panel docked next to them get their usable size back too
 		QList<QDockWidget*> SidePanels, EdgePanels;
