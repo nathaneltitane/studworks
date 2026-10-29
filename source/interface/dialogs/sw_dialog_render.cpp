@@ -195,6 +195,9 @@ void swRenderDialog::CreatePOVRayPanels()
 
 		// a panel taller than its rows keeps them under its title
 		Panel->layout()->setAlignment(Widget, Qt::AlignTop);
+
+		// panels across the top or bottom span the window like the terminal, floating they keep the panel width
+		Panel->setProperty("swFloatingSize", QSize(SW_RENDER_PANEL_WIDTH, 0));
 		PanelWindow->addDockWidget(Qt::RightDockWidgetArea, Panel);
 		swSetupWidgetHelp(Panel, nullptr);
 
@@ -376,6 +379,7 @@ void swRenderDialog::CreatePOVRayPanels()
 	// the log sits below the preview like the terminal below the model and follows the renderer output
 	mLogPanel = new QDockWidget(tr("Log"), PanelWindow);
 	mLogPanel->setObjectName("RenderLog");
+	mLogPanel->setProperty("swFloatingSize", QSize(2 * SW_RENDER_PANEL_WIDTH, SW_RENDER_LOG_HEIGHT));
 	mLogPanel->setWhatsThis(tr("<p><b>Log</b></p><p>The output of the renderer, updated while it renders. Read it to investigate warnings or a failed render, select text and copy it with the standard keyboard shortcut when reporting a problem.</p>"));
 
 	mLogEdit = new QPlainTextEdit(mLogPanel);
@@ -429,7 +433,7 @@ void swRenderDialog::CreatePOVRayPanels()
 				if (!StretchPanel->isFloating() && !StretchPanel->isHidden() && PanelWindow->dockWidgetArea(StretchPanel) == Area)
 					Shared = true;
 
-			CompactPanel->setSizePolicy(QSizePolicy::Preferred, Shared ? QSizePolicy::Maximum : QSizePolicy::Preferred);
+			CompactPanel->setMaximumHeight(Shared && !CompactPanel->isFloating() ? CompactPanel->sizeHint().height() : QWIDGETSIZE_MAX);
 		}
 
 		// panels squeezed by a panel docked next to them get their usable size back too
@@ -457,9 +461,13 @@ void swRenderDialog::CreatePOVRayPanels()
 
 	for (QDockWidget* Panel : PanelWindow->findChildren<QDockWidget*>(QString(), Qt::FindDirectChildrenOnly))
 	{
+		// the panel sizes are set after the shared dock fitting has reset them
 		auto FitLater = [Panel, FitPanels]()
 		{
-			QTimer::singleShot(0, Panel, FitPanels);
+			QTimer::singleShot(0, Panel, [Panel, FitPanels]()
+			{
+				QTimer::singleShot(0, Panel, FitPanels);
+			});
 		};
 
 		connect(Panel, &QDockWidget::dockLocationChanged, Panel, FitLater);
