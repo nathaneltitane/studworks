@@ -12,6 +12,10 @@
 
 #define SW_POVRAY_PREVIEW_WIDTH 768
 #define SW_POVRAY_PREVIEW_HEIGHT 432
+// raise to drop the panel layouts saved by older versions of the window
+#define SW_RENDER_WINDOW_STATE_VERSION 1
+#define SW_RENDER_PANEL_WIDTH 380
+#define SW_RENDER_LOG_HEIGHT 240
 #if defined(Q_OS_WIN) || defined(Q_OS_MACOS)
 #define SW_POVRAY_MEMORY_MAPPED_FILE 1
 #endif
@@ -55,22 +59,39 @@ swRenderDialog::swRenderDialog(QWidget* Parent, swRenderDialogMode RenderDialogM
 
 	ui->OutputEdit->setText(swGetActiveProject()->GetImageFileName(false));
 
-	mRenderButton = new QPushButton(tr("Render"), ui->buttonBox);
-	ui->buttonBox->addButton(mRenderButton, QDialogButtonBox::ActionRole);
+	if (mDialogMode == swRenderDialogMode::RenderPOVRay)
+	{
+		// the povray window keeps its buttons in the render panel like the print panel of the instructions window
+		mRenderButton = new QToolButton(this);
+		mRenderButton->setText(tr("Render"));
+		mLogButton = new QToolButton(this);
+		mLogButton->setText(tr("Log"));
+	}
+	else
+	{
+		QPushButton* RenderButton = new QPushButton(tr("Render"), ui->buttonBox);
+		ui->buttonBox->addButton(RenderButton, QDialogButtonBox::ActionRole);
+		mRenderButton = RenderButton;
+	}
 
 	mSettingsButton = new QPushButton(tr("Settings..."), ui->buttonBox);
 	ui->buttonBox->addButton(mSettingsButton, QDialogButtonBox::ResetRole);
 
-	mLogButton = new QPushButton(tr("View Log..."), ui->buttonBox);
-	ui->buttonBox->addButton(mLogButton, QDialogButtonBox::ResetRole);
+	if (mDialogMode != swRenderDialogMode::RenderPOVRay)
+	{
+		QPushButton* LogButton = new QPushButton(tr("View Log..."), ui->buttonBox);
+		ui->buttonBox->addButton(LogButton, QDialogButtonBox::ResetRole);
+		mLogButton = LogButton;
+	}
+
 	mLogButton->setEnabled(false);
 	mLogButton->setToolTip(tr("Show the renderer output and diagnostic messages."));
 	mLogButton->setWhatsThis(tr("<p><b>View Log</b></p><p>Open the renderer output to investigate a failed render or warnings. This button becomes available when a log has been captured.</p>"));
 	mRenderButton->setWhatsThis(tr("<p><b>Render</b></p><p>Start the render using the current settings. While rendering, this button becomes Cancel so you can stop the operation.</p>"));
 
-	connect(mRenderButton, &QPushButton::clicked, this, &swRenderDialog::RenderButtonClicked);
+	connect(mRenderButton, &QAbstractButton::clicked, this, &swRenderDialog::RenderButtonClicked);
 	connect(mSettingsButton, &QPushButton::clicked, this, &swRenderDialog::SettingsButtonClicked);
-	connect(mLogButton, &QPushButton::clicked, this, &swRenderDialog::LogButtonClicked);
+	connect(mLogButton, &QAbstractButton::clicked, this, &swRenderDialog::LogButtonClicked);
 	connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &swRenderDialog::reject);
 	connect(ui->OutputBrowseButton, &QPushButton::clicked, this, &swRenderDialog::OutputBrowseButtonClicked);
 
@@ -80,7 +101,7 @@ swRenderDialog::swRenderDialog(QWidget* Parent, swRenderDialogMode RenderDialogM
 
 		setWhatsThis(tr("<p><b>POV-Ray Image Render</b></p><p>Render the current model step using POV-Ray. Choose the output image, its size and quality and the scene in the panels beside the preview, then select Render to start.</p><p>The preview is scaled to fit the window. View Log shows diagnostic output when available.</p>"));
 		mRenderButton->setToolTip(tr("Render the current model step with POV-Ray."));
-		mSettingsButton->hide();
+		ui->buttonBox->hide();
 
 		CreatePOVRayPanels();
 	}
@@ -125,16 +146,17 @@ swRenderDialog::swRenderDialog(QWidget* Parent, swRenderDialogMode RenderDialogM
 			setMinimumWidth(ui->preview->geometry().width());
 			ui->preview->hide();
 		}
-		else
-		{
-			// placeholder with the render picture centered on a transparent 16:9 frame
-			QImage Image(1280, 720, QImage::Format_ARGB32_Premultiplied);
-			Image.fill(Qt::transparent);
-			QPainter Painter(&Image);
-			Painter.drawImage(440, 160, swCreatePaintedIconImage(swPaintedIcon::RenderPlaceholder, 400, palette().color(QPalette::WindowText)));
-			Painter.end();
-			ui->preview->SetImage(Image);
-		}
+	}
+
+	if (mDialogMode != swRenderDialogMode::OpenInBlender)
+	{
+		// placeholder with the render picture centered on a transparent 16:9 frame
+		QImage Image(1280, 720, QImage::Format_ARGB32_Premultiplied);
+		Image.fill(Qt::transparent);
+		QPainter Painter(&Image);
+		Painter.drawImage(440, 160, swCreatePaintedIconImage(swPaintedIcon::RenderPlaceholder, 400, palette().color(QPalette::WindowText)));
+		Painter.end();
+		ui->preview->SetImage(Image);
 	}
 
 	connect(&mUpdateTimer, &QTimer::timeout, this, &swRenderDialog::Update);
@@ -149,14 +171,13 @@ void swRenderDialog::CreatePOVRayPanels()
 	PanelWindow->setWindowFlags(Qt::Widget);
 	PanelWindow->setDockOptions(QMainWindow::AnimatedDocks | QMainWindow::AllowNestedDocks);
 
-	// the preview and its progress fill the middle of the window
-	QWidget* CentralWidget = new QWidget(PanelWindow);
-	QVBoxLayout* CentralLayout = new QVBoxLayout(CentralWidget);
-	CentralLayout->setContentsMargins(0, 0, 0, 0);
-	CentralLayout->addWidget(ui->preview, 1);
-	CentralLayout->addWidget(ui->RenderProgress);
-	PanelWindow->setCentralWidget(CentralWidget);
+	mPanelWindow = PanelWindow;
+
+	// the preview fills the middle of the window like the pages of the instructions window
+	PanelWindow->setCentralWidget(ui->preview);
 	ui->MainLayout->addWidget(PanelWindow, 1);
+	ui->MainLayout->setContentsMargins(0, 0, 0, 0);
+	layout()->setContentsMargins(0, 0, 0, 0);
 	ui->outputLabel->hide();
 
 	QList<QLabel*> Labels;
@@ -171,7 +192,11 @@ void swRenderDialog::CreatePOVRayPanels()
 		QWidget* Widget = new QWidget(Panel);
 		Panel->setWidget(Widget);
 		new QVBoxLayout(Widget);
+
+		// a panel taller than its rows keeps them under its title
+		Panel->layout()->setAlignment(Widget, Qt::AlignTop);
 		PanelWindow->addDockWidget(Qt::RightDockWidgetArea, Panel);
+		swSetupWidgetHelp(Panel, nullptr);
 
 		return Widget;
 	};
@@ -262,10 +287,34 @@ void swRenderDialog::CreatePOVRayPanels()
 	QComboBox* BackgroundComboBox = CreateComboBox({ tr("Visible"), tr("Transparent") }, swGetProfileInteger(SW_PROFILE_RENDER_TRANSPARENT) ? 1 : 0);
 	CreateRow(ScenePanel, tr("Background"), BackgroundComboBox, tr("Choose whether the background and floor are rendered or left as transparent pixels for compositing."), QString());
 
-	// the panels end at their last row and the scene panel takes the remaining height
-	for (QWidget* Panel : { OutputPanel, ImagePanel })
-		static_cast<QVBoxLayout*>(Panel->layout())->addStretch(0);
+	QWidget* RenderPanel = CreatePanel(tr("Render"), "RenderRender", tr("<p><b>Render</b></p><p>Start the render and follow its progress. While rendering, Render becomes Cancel so you can stop it. Log shows the renderer output below the preview.</p>"));
 
+	QWidget* ProgressRow = swCreatePanelRow(RenderPanel);
+	RenderPanel->layout()->addWidget(ProgressRow);
+	ui->RenderProgress->setParent(ProgressRow);
+	ui->RenderProgress->setFixedHeight(swGetPanelButtonSize().height());
+	ProgressRow->layout()->addWidget(ui->RenderProgress);
+
+	// the render button spans the panel below its progress like print in the print panel
+	QWidget* ButtonRow = swCreatePanelRow(RenderPanel);
+	RenderPanel->layout()->addWidget(ButtonRow);
+
+	QToolButton* RenderButton = static_cast<QToolButton*>(mRenderButton);
+	RenderButton->setParent(ButtonRow);
+	RenderButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
+	RenderButton->setAccessibleName(tr("Render"));
+	swSetupPanelButton(RenderButton);
+	RenderButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	static_cast<QHBoxLayout*>(ButtonRow->layout())->addWidget(RenderButton, 1);
+
+	QToolButton* LogButton = static_cast<QToolButton*>(mLogButton);
+	LogButton->setParent(ButtonRow);
+	LogButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
+	LogButton->setAccessibleName(tr("Log"));
+	swSetupPanelButton(LogButton);
+	ButtonRow->layout()->addWidget(LogButton);
+
+	// the panels end at their last row and the scene panel takes the remaining height
 	static_cast<QVBoxLayout*>(ScenePanel->layout())->addStretch(1);
 
 	// the labels of all panels share one width so the inputs line up
@@ -339,18 +388,17 @@ void swRenderDialog::CreatePOVRayPanels()
 	mLogEdit->setMinimumHeight(6 * QFontMetrics(mLogEdit->font()).height());
 	mLogPanel->setWidget(mLogEdit);
 
-	PanelWindow->setCorner(Qt::BottomRightCorner, Qt::RightDockWidgetArea);
+	swSetupWidgetHelp(mLogPanel, nullptr);
 	PanelWindow->addDockWidget(Qt::BottomDockWidgetArea, mLogPanel);
 	mLogPanel->hide();
 
 	// the log button shows and hides the log panel and stays checked while it is shown
-	mLogButton->setText(tr("Log"));
 	mLogButton->setCheckable(true);
 	mLogButton->setEnabled(true);
 	mLogButton->setToolTip(tr("Show or hide the Log panel with the renderer output."));
 	mLogButton->setWhatsThis(tr("<p><b>Log</b></p><p>Show or hide the Log panel below the preview with the renderer output and diagnostic messages.</p>"));
 
-	connect(mLogButton, &QPushButton::toggled, mLogPanel, &QDockWidget::setVisible);
+	connect(mLogButton, &QAbstractButton::toggled, mLogPanel, &QDockWidget::setVisible);
 	connect(mLogPanel, &QDockWidget::visibilityChanged, this, [this](bool Visible)
 	{
 		if (mLogPanel->isHidden())
@@ -362,9 +410,80 @@ void swRenderDialog::CreatePOVRayPanels()
 		}
 	});
 
+	for (QWidget* Panel : { OutputPanel, ImagePanel, RenderPanel })
+		Panel->setFixedHeight(Panel->sizeHint().height());
+
+	// panels moved to another area open at a usable size instead of collapsing to their least size
+	const QList<QDockWidget*> CompactPanels = { qobject_cast<QDockWidget*>(OutputPanel->parentWidget()), qobject_cast<QDockWidget*>(ImagePanel->parentWidget()), qobject_cast<QDockWidget*>(RenderPanel->parentWidget()) };
+	const QList<QDockWidget*> StretchPanels = { qobject_cast<QDockWidget*>(ScenePanel->parentWidget()), mLogPanel };
+
+	auto FitPanels = [PanelWindow, CompactPanels, StretchPanels]()
+	{
+		// the compact panels end at their last row when an area has a panel to take the remaining height
+		for (QDockWidget* CompactPanel : CompactPanels)
+		{
+			const Qt::DockWidgetArea Area = PanelWindow->dockWidgetArea(CompactPanel);
+			bool Shared = false;
+
+			for (QDockWidget* StretchPanel : StretchPanels)
+				if (!StretchPanel->isFloating() && !StretchPanel->isHidden() && PanelWindow->dockWidgetArea(StretchPanel) == Area)
+					Shared = true;
+
+			CompactPanel->setSizePolicy(QSizePolicy::Preferred, Shared ? QSizePolicy::Maximum : QSizePolicy::Preferred);
+		}
+
+		// panels squeezed by a panel docked next to them get their usable size back too
+		QList<QDockWidget*> SidePanels, EdgePanels;
+
+		for (QDockWidget* AreaPanel : PanelWindow->findChildren<QDockWidget*>(QString(), Qt::FindDirectChildrenOnly))
+		{
+			if (AreaPanel->isFloating() || AreaPanel->isHidden())
+				continue;
+
+			const Qt::DockWidgetArea Area = PanelWindow->dockWidgetArea(AreaPanel);
+
+			if ((Area == Qt::LeftDockWidgetArea || Area == Qt::RightDockWidgetArea) && AreaPanel->width() < SW_RENDER_PANEL_WIDTH)
+				SidePanels.append(AreaPanel);
+			else if ((Area == Qt::TopDockWidgetArea || Area == Qt::BottomDockWidgetArea) && AreaPanel->height() < SW_RENDER_LOG_HEIGHT)
+				EdgePanels.append(AreaPanel);
+		}
+
+		if (!SidePanels.isEmpty())
+			PanelWindow->resizeDocks(SidePanels, QVector<int>(SidePanels.size(), SW_RENDER_PANEL_WIDTH).toList(), Qt::Horizontal);
+
+		if (!EdgePanels.isEmpty())
+			PanelWindow->resizeDocks(EdgePanels, QVector<int>(EdgePanels.size(), SW_RENDER_LOG_HEIGHT).toList(), Qt::Vertical);
+	};
+
+	for (QDockWidget* Panel : PanelWindow->findChildren<QDockWidget*>(QString(), Qt::FindDirectChildrenOnly))
+	{
+		auto FitLater = [Panel, FitPanels]()
+		{
+			QTimer::singleShot(0, Panel, FitPanels);
+		};
+
+		connect(Panel, &QDockWidget::dockLocationChanged, Panel, FitLater);
+		connect(Panel, &QDockWidget::visibilityChanged, Panel, FitLater);
+		connect(Panel, &QDockWidget::topLevelChanged, Panel, FitLater);
+	}
+
 	// the panels are wide enough for a readable output path
-	PanelWindow->resizeDocks({ qobject_cast<QDockWidget*>(OutputPanel->parentWidget()) }, { 380 }, Qt::Horizontal);
-	resize(std::max(width(), 1100), std::max(height(), 640));
+	PanelWindow->resizeDocks({ qobject_cast<QDockWidget*>(OutputPanel->parentWidget()) }, { SW_RENDER_PANEL_WIDTH }, Qt::Horizontal);
+
+	// the panels come back where they were left
+	QSettings Settings;
+	Settings.beginGroup("RenderWindow");
+	PanelWindow->restoreState(Settings.value("State").toByteArray(), SW_RENDER_WINDOW_STATE_VERSION);
+	Settings.endGroup();
+
+	// the panels without a toggle are never lost to a layout saved while they were hidden
+	for (QWidget* Panel : { OutputPanel, ImagePanel, ScenePanel, RenderPanel })
+		Panel->parentWidget()->show();
+
+	mLogButton->setChecked(!mLogPanel->isHidden());
+
+	// a layout saved with squeezed panels opens at a usable size once the window is laid out
+	QTimer::singleShot(0, PanelWindow, FitPanels);
 }
 
 // use to fill the log panel with the renderer output written so far
@@ -385,6 +504,15 @@ void swRenderDialog::UpdateLogPanel()
 
 swRenderDialog::~swRenderDialog()
 {
+	// the panels are kept where they are for the next time the window opens
+	if (mPanelWindow)
+	{
+		QSettings Settings;
+		Settings.beginGroup("RenderWindow");
+		Settings.setValue("State", mPanelWindow->saveState(SW_RENDER_WINDOW_STATE_VERSION));
+		Settings.endGroup();
+	}
+
 	delete ui;
 }
 

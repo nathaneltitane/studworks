@@ -664,6 +664,23 @@ void swMainWindow::ShowExportPOVRayDialog()
 void swMainWindow::ShowRenderDialog(swRenderDialogMode RenderDialogMode)
 {
 #ifndef SW_DISABLE_RENDER_DIALOG
+	// the povray window stays open beside the model like the instructions window and renders its current state
+	if (RenderDialogMode == swRenderDialogMode::RenderPOVRay)
+	{
+		if (mPOVRayDialog)
+		{
+			mPOVRayDialog->raise();
+			mPOVRayDialog->activateWindow();
+			return;
+		}
+
+		swRenderDialog* Dialog = new swRenderDialog(this, RenderDialogMode);
+		Dialog->setAttribute(Qt::WA_DeleteOnClose);
+		mPOVRayDialog = Dialog;
+		Dialog->showMaximized();
+		return;
+	}
+
 	swRenderDialog Dialog(this, RenderDialogMode);
 	Dialog.exec();
 #endif

@@ -10,6 +10,7 @@
 class swPartSelectionWidget;
 class swViewWidget;
 class swInstructionsDialog;
+class swRenderDialog;
 class swPreviewDockWidget;
 class PartPreview;
 class swColorList;
@@ -436,6 +437,7 @@ protected:
 	QDockWidget* mTerminalToolBar = nullptr;
 	QDockWidget* mPartsToolBar = nullptr;
 	QPointer<swInstructionsDialog> mInstructionsDialog;
+	QPointer<swRenderDialog> mPOVRayDialog;
 	bool mPartsSnapPending = false;
 	bool mFitUpdatePending = false;
 	bool mPartsSnapRetried = false;

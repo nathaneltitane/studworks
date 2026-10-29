@@ -116,9 +116,10 @@ protected:
 	QImage mImage;
 	QStringList mStdErrList;
 	QStringList mStdOutList;
-	QPushButton* mRenderButton = nullptr;
+	QAbstractButton* mRenderButton = nullptr;
 	QPushButton* mSettingsButton = nullptr;
-	QPushButton* mLogButton = nullptr;
+	QAbstractButton* mLogButton = nullptr;
+	QMainWindow* mPanelWindow = nullptr;
 	QDockWidget* mLogPanel = nullptr;
 	QPlainTextEdit* mLogEdit = nullptr;
 	swRenderProcess* mProcess = nullptr;

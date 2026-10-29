@@ -1371,8 +1371,11 @@ swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* Ex
 			"#ifndef (CameraSky) #declare CameraSky = <%g,%g,%g>; #end\n"
 			"#ifndef (CameraLocation) #declare CameraLocation = <%g, %g, %g>; #end\n"
 			"#ifndef (CameraTarget) #declare CameraTarget = <%g, %g, %g>; #end\n"
-			"#ifndef (CameraAngle) #declare CameraAngle = %g; #end\n",
-			Up[1], Up[0], Up[2], Position[1] / 25.0f, Position[0] / 25.0f, Position[2] / 25.0f, Target[1] / 25.0f, Target[0] / 25.0f, Target[2] / 25.0f, Camera->m_fovy);
+			"#ifndef (CameraAngle) #declare CameraAngle = %g; #end\n"
+			"#ifndef (CameraOrthographic) #declare CameraOrthographic = %s; #end\n"
+			"#ifndef (CameraHeight) #declare CameraHeight = %g; #end\n",
+			Up[1], Up[0], Up[2], Position[1] / 25.0f, Position[0] / 25.0f, Position[2] / 25.0f, Target[1] / 25.0f, Target[0] / 25.0f, Target[2] / 25.0f, Camera->m_fovy,
+			Camera->GetProjection() == swCameraProjection::Orthographic ? "true" : "false", Camera->GetOrthoHeight() / 25.0f);
 	POVFile.WriteLine(Line);
 	snprintf(Line, sizeof(Line),
 			"#ifndef (BackgroundColor) #declare BackgroundColor = <%1g, %1g, %1g>; #end\n"
@@ -1395,7 +1398,9 @@ swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* Ex
 		"#ifndef (RenderQuality) #declare RenderQuality = %1; #end\n"
 		"#ifndef (Radiosity) #declare Radiosity = (RenderQuality > 0); #end\n"
 		"#ifndef (LightRig) #declare LightRig = %2; #end\n"
-		"#ifndef (AreaSamples) #declare AreaSamples = select(RenderQuality - 1, 2, 3, 5); #end\n\n"
+		"#ifndef (AreaSamples) #declare AreaSamples = select(RenderQuality - 1, 2, 3, 5); #end\n"
+		"#ifndef (FocalBlur) #declare FocalBlur = (RenderQuality > 1 & !CameraOrthographic); #end\n"
+		"#ifndef (FocalAperture) #declare FocalAperture = vlength(CameraLocation - CameraTarget) * 0.01; #end\n\n"
 		"#if (Radiosity)\n"
 		"  global_settings {\n"
 		"    radiosity {\n"
@@ -1573,9 +1578,33 @@ swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* Ex
 	else
 		POVFile.WriteLine("#if (Background)\n  background {\n    color rgb BackgroundColor\n  }\n#end\n\n");
 
-	snprintf(Line, sizeof(Line), "#ifndef (Skip%s)\n  camera {\n    perspective\n    right x * image_width / image_height\n    sky CameraSky\n    location CameraLocation\n    look_at CameraTarget\n    angle CameraAngle * image_width / image_height\n  }\n#end\n\n",
-			(CameraName.isEmpty() ? "Camera" : CameraName.toLatin1().constData()));
-	POVFile.WriteLine(Line);
+	// orthographic views keep the visible height of the view, perspective views turn its vertical field of view into the horizontal angle povray uses
+	POVFile.WriteLine(QString(
+		"#ifndef (Skip%1)\n"
+		"  camera {\n"
+		"    #if (CameraOrthographic)\n"
+		"      orthographic\n"
+		"      right x * CameraHeight * image_width / image_height\n"
+		"      up y * CameraHeight\n"
+		"    #else\n"
+		"      perspective\n"
+		"      right x * image_width / image_height\n"
+		"    #end\n"
+		"    sky CameraSky\n"
+		"    location CameraLocation\n"
+		"    look_at CameraTarget\n"
+		"    #if (!CameraOrthographic)\n"
+		"      angle 2 * degrees(atan(tan(radians(CameraAngle) / 2) * image_width / image_height))\n"
+		"    #end\n"
+		"    #if (FocalBlur)\n"
+		"      aperture FocalAperture\n"
+		"      focal_point CameraTarget\n"
+		"      blur_samples 8, 64\n"
+		"      confidence 0.95\n"
+		"      variance 1 / 256\n"
+		"    #end\n"
+		"  }\n"
+		"#end\n\n").arg(CameraName.isEmpty() ? QLatin1String("Camera") : CameraName).toLatin1().constData());
 
 	swVector3 AreaX(1.0f, 0.0f, 0.0f), AreaY(0.0f, 1.0f, 0.0f);
 	swVector2i AreaGrid(1, 1);
