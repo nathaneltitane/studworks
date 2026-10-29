@@ -484,12 +484,7 @@ void swView::EndDrag(bool Accept)
 
 swCursor swView::GetCursor() const
 {
-	const swTool CurrentTool = GetCurrentTool();
-	const bool IsMoveTool = mTrackTool >= swTrackTool::MoveX && mTrackTool <= swTrackTool::MoveXYZ;
-
-	if (mTrackButton != swTrackButton::None && mTrackTool != swTrackTool::Paint && !IsMoveTool && CurrentTool != swTool::Rotate)
-		return swCursor::Hidden;
-
+	// the cursor of the tool stays visible while a mouse button drags it
 	if (mTrackTool == swTrackTool::Select)
 	{
 		if (mMouseModifiers & Qt::ControlModifier)

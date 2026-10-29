@@ -1380,10 +1380,12 @@ static void swDrawPaintedIcon(QPainter* Painter, swPaintedIcon Icon, const QSize
 
 		QPainterPath Palm;
 		Palm.moveTo(6, 13);
-		Palm.lineTo(19.5, 11);
-		Palm.lineTo(19.5, 15);
-		Palm.cubicTo(19.5, 19, 17, 21.5, 13, 21.5);
-		Palm.cubicTo(10, 21.5, 8, 20, 6, 17);
+		// the palm outline lines up with the outer edge of the little finger and runs straight down its side
+		Palm.lineTo(19, 11);
+		Palm.lineTo(19, 18);
+		Palm.cubicTo(19, 20, 18, 21, 16, 21);
+		Palm.lineTo(12, 21);
+		Palm.cubicTo(9.5, 21, 8, 19.5, 6, 17);
 		Palm.closeSubpath();
 		Draw.Fill(Palm);
 		break;
