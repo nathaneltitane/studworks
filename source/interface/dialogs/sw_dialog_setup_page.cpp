@@ -1,5 +1,6 @@
 #include "sw_global.h"
 #include "sw_dialog_setup_page.h"
+#include "sw_window_utilities.h"
 #include "ui_sw_dialog_setup_page.h"
 #include "sw_instructions.h"
 #include "sw_profile.h"
@@ -54,6 +55,7 @@ swPageSetupDialog::swPageSetupDialog(QWidget* Parent, swInstructionsPageSetup* P
 	mMarginUnitsKey = Defaults ? SW_PROFILE_INSTRUCTIONS_DEFAULT_MARGIN_UNITS : SW_PROFILE_INSTRUCTIONS_MARGIN_UNITS;
 
 	ui->setupUi(this);
+	swSetInputPrompt(this);
 
 	const QStringList UnitNames = QStringList() << tr("Pixels") << tr("Millimeters") << tr("Centimeters") << tr("Inches");
 	ui->UnitsComboBox->addItems(UnitNames);

@@ -65,6 +65,9 @@ void swFitFloatingDock(QDockWidget* DockWidget);
 // Keeps a panel exactly as tall as its contents, updated whenever its layout changes.
 void swFitHeightToContents(QWidget* Widget);
 
+// Marks a dialog as an input prompt: it wraps its contents, takes a width proportional to its height and cannot be resized.
+void swSetInputPrompt(QDialog* Dialog);
+
 // Shows a modal progress dialog for a blocking task once it lasts longer than a moment.
 class swBlockingProgress
 {

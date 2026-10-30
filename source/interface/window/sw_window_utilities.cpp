@@ -39,6 +39,22 @@ bool swWindowGeometryFilter::eventFilter(QObject* Object, QEvent* Event)
 	if (!Window->isWindow() || Window->property("swInitialGeometry").toBool())
 		return false;
 
+	// input prompts wrap their contents, a text editor prompt stays resizable
+	const QInputDialog* InputDialog = qobject_cast<QInputDialog*>(Window);
+
+	if (Window->property("swInputPrompt").toBool() || (InputDialog && !InputDialog->testOption(QInputDialog::UsePlainTextEditForTextInput)))
+	{
+		Window->setProperty("swInitialGeometry", true);
+
+		// four times as wide as tall up to 64 characters, wider only when the contents need it
+		const QSize ContentSize = Window->sizeHint().expandedTo(Window->minimumSizeHint());
+		const int ProportionalWidth = qMin(4 * ContentSize.height(), 64 * Window->fontMetrics().averageCharWidth());
+
+		Window->setFixedSize(qMax(ContentSize.width(), ProportionalWidth), ContentSize.height());
+
+		return false;
+	}
+
 	// Only dialogs and main windows, the standard Qt dialogs size themselves.
 	const bool IsDialog = qobject_cast<QDialog*>(Window) && !qobject_cast<QMessageBox*>(Window) && !qobject_cast<QInputDialog*>(Window) && !qobject_cast<QProgressDialog*>(Window) &&
 		!qobject_cast<QFileDialog*>(Window) && !qobject_cast<QColorDialog*>(Window) && !qobject_cast<QFontDialog*>(Window) && !qobject_cast<QPrintDialog*>(Window);
@@ -356,6 +372,11 @@ void swFitHeightToContents(QWidget* Widget)
 {
 	Widget->setFixedHeight(Widget->sizeHint().height());
 	Widget->installEventFilter(new swFitHeightFilter(Widget));
+}
+
+void swSetInputPrompt(QDialog* Dialog)
+{
+	Dialog->setProperty("swInputPrompt", true);
 }
 
 swBlockingProgress* swBlockingProgress::mActive = nullptr;

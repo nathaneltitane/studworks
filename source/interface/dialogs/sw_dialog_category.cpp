@@ -9,6 +9,7 @@ swCategoryDialog::swCategoryDialog(QWidget* Parent, swLibraryCategory* Options)
 {
 	ui->setupUi(this);
 	swSetupDialogHelp(this, ui->buttonBox);
+	swSetInputPrompt(this);
 
 	mOptions = Options;
 
