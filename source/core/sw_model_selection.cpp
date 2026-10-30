@@ -10,6 +10,7 @@
 #include "sw_profile.h"
 #include "sw_library.h"
 #include "sw_library_shadow.h"
+#include "sw_synthesis.h"
 #include "sw_scene.h"
 #include "sw_track_train.h"
 #include "sw_file.h"
@@ -780,6 +781,118 @@ void swModel::AddPartShapes(const swPart* Part, const swMatrix44& Transform, swC
 	for (const std::unique_ptr<swPart>& SubModelPart : PartData->GetModel()->GetParts())
 		if (SubModelPart->IsVisibleInSubModel())
 			AddPartShapes(SubModelPart.get(), World, Shapes);
+}
+
+// use to seat the end fitting of a flexible part on the nearest connection that takes it
+bool swModel::SnapControlPointToConnection(swPart* Part, quint32 ControlPointIndex) const
+{
+	const swSynthesisInformation* SynthInfo = Part->mPartData->GetSynthInfo();
+	std::vector<swPartControlPoint> ControlPoints = Part->GetControlPoints();
+
+	if (!SynthInfo || !SynthInfo->IsCurve() || !swShadowLibrary::IsLoaded() || ControlPoints.size() < 2)
+		return false;
+
+	if (ControlPointIndex != 0 && ControlPointIndex != ControlPoints.size() - 1)
+		return false;
+
+	const float SnapDistance = 12.0f;
+	const float FittingDistance = 8.0f;
+	const swMatrix44 ControlPointWorld = swMultiply(ControlPoints[ControlPointIndex].Transform, Part->mModelWorld);
+
+	// the connection shapes of the fitting parts at this end
+	std::vector<std::pair<const swConnectionCylinder*, swMatrix44>> Fittings;
+
+	for (const auto& [PartName, Transform] : SynthInfo->GetParts(ControlPoints))
+	{
+		const swMatrix44 PartWorld = swMultiply(swMatrix44LDrawToStudWorks(Transform), Part->mModelWorld);
+
+		if (swLength(PartWorld.GetTranslation() - ControlPointWorld.GetTranslation()) > FittingDistance)
+			continue;
+
+		for (const swConnectionCylinder& Cylinder : swShadowLibrary::GetCylinders(PartName.c_str()))
+			Fittings.emplace_back(&Cylinder, swMultiply(swMatrix44LDrawToStudWorks(Cylinder.Transform), PartWorld));
+	}
+
+	if (Fittings.empty())
+		return false;
+
+	float BestDistance = SnapDistance;
+	swMatrix44 BestFitting;
+	swMatrix44 BestTarget;
+
+	for (const std::unique_ptr<swPart>& OtherPart : mParts)
+	{
+		if (OtherPart.get() == Part || !OtherPart->IsVisible(mCurrentStep))
+			continue;
+
+		swConnectionShapes Shapes;
+		AddPartShapes(OtherPart.get(), swMatrix44Identity(), Shapes);
+
+		for (const auto& [Cylinders, Transform] : Shapes)
+		{
+			for (const swConnectionCylinder& Cylinder : *Cylinders)
+			{
+				const swMatrix44 Frame = swMultiply(swMatrix44LDrawToStudWorks(Cylinder.Transform), Transform);
+				const swVector3 Axis = swNormalize(swMultiply30(swVector3(0.0f, 0.0f, 1.0f), Frame));
+
+				for (const auto& [Fitting, FittingFrame] : Fittings)
+				{
+					if (!swConnectivity::AreCompatible(*Fitting, Cylinder))
+						continue;
+
+					// seat the male as deep as the female takes it, closest to their positions meeting
+					const bool IsMale = Fitting->Gender == swConnectionGender::Male;
+					const std::vector<std::pair<float, float>> InsertRanges = IsMale ? swConnectivity::GetInsertRanges(*Fitting, Cylinder) : swConnectivity::GetInsertRanges(Cylinder, *Fitting);
+
+					for (const std::pair<float, float>& Range : InsertRanges)
+					{
+						const float MaleOffset = swClamp(0.0f, Range.first, Range.second);
+						const swVector3 Position = Frame.GetTranslation() + Axis * (IsMale ? MaleOffset : -MaleOffset);
+						const float Distance = swLength(Position - FittingFrame.GetTranslation());
+
+						if (Distance < BestDistance)
+						{
+							BestDistance = Distance;
+							BestFitting = FittingFrame;
+							BestTarget = swMatrix44(swMatrix33(Frame), Position);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	if (BestDistance >= SnapDistance)
+		return false;
+
+	// turn the fitting the shortest way onto the connection axis and move it there
+	const swVector3 FittingAxis = swNormalize(swMultiply30(swVector3(0.0f, 0.0f, 1.0f), BestFitting));
+	const swVector3 TargetAxis = swNormalize(swMultiply30(swVector3(0.0f, 0.0f, 1.0f), BestTarget));
+	swMatrix33 Rotation = swMatrix33Identity();
+	swVector3 RotationAxis = swCross(FittingAxis, TargetAxis);
+	const float Angle = acosf(swClamp(swDot(FittingAxis, TargetAxis), -1.0f, 1.0f));
+
+	if (swLength(RotationAxis) < 1e-4f)
+		RotationAxis = swCross(FittingAxis, fabsf(FittingAxis[0]) < 0.9f ? swVector3(1.0f, 0.0f, 0.0f) : swVector3(0.0f, 1.0f, 0.0f));
+
+	if (Angle > 1e-4f)
+	{
+		RotationAxis = swNormalize(RotationAxis);
+		Rotation = swMatrix33FromAxisAngle(RotationAxis, Angle);
+
+		if (swDot(swMultiply(FittingAxis, Rotation), TargetAxis) < 0.99f)
+			Rotation = swMatrix33FromAxisAngle(RotationAxis, -Angle);
+	}
+
+	const swVector3 FittingPosition = BestFitting.GetTranslation();
+	const swMatrix33 ControlPointRotation = swMultiply(swMatrix33(ControlPointWorld), Rotation);
+	const swVector3 ControlPointPosition = swMultiply(ControlPointWorld.GetTranslation() - FittingPosition, Rotation) + BestTarget.GetTranslation();
+	const swMatrix44 NewControlPointWorld(ControlPointRotation, ControlPointPosition);
+
+	ControlPoints[ControlPointIndex].Transform = swMultiply(NewControlPointWorld, swMatrix44AffineInverse(Part->mModelWorld));
+	Part->SetControlPoints(ControlPoints);
+
+	return true;
 }
 
 void swModel::AddToSelectionAction(const std::vector<swObject*>& Objects)

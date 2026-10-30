@@ -321,4 +321,9 @@ protected:
 	std::vector<bool> mTrainTrackConnections;
 	swMesh* mMesh = nullptr;
 	bool mSynthPending = false;
+
+	// Path line drawn with the control points, kept until the control points change.
+	mutable std::vector<swPartControlPoint> mPathControlPoints;
+	mutable std::vector<swVector3> mPathPoints;
+	mutable size_t mPathReachedPointCount = 0;
 };

@@ -568,6 +568,8 @@ protected:
 	void InvertPartSelection();
 	std::vector<swObject*> FindConnectedParts(bool AllConnected) const;
 	static void AddPartShapes(const swPart* Part, const swMatrix44& Transform, swConnectionShapes& Shapes);
+	// Seats the fitting at a dropped end control point of a flexible part on the nearest connection that takes it.
+	bool SnapControlPointToConnection(swPart* Part, quint32 ControlPointIndex) const;
 	void AddToSelection(const std::vector<swObject*>& Objects);
 	void RemoveFromSelection(const std::vector<swObject*>& Objects);
 	void BeginEditHistory();

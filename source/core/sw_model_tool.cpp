@@ -149,6 +149,15 @@ void swModel::EndMouseTool(swTool Tool, swView* View, bool Accept)
 		break;
 
 	case swTool::Move:
+		if (swObject* Focus = GetFocusObject(); Focus && Focus->IsPart())
+		{
+			swPart* Part = (swPart*)Focus;
+			const quint32 Section = Part->GetFocusSection();
+
+			if (Section >= SW_PART_SECTION_CONTROL_POINT_FIRST && Section <= SW_PART_SECTION_CONTROL_POINT_LAST && SnapControlPointToConnection(Part, Section - SW_PART_SECTION_CONTROL_POINT_FIRST))
+				UpdateAllViews();
+		}
+
 		EndEditHistory();
 		EndHistorySequence(tr("Move"));
 		break;
