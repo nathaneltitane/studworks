@@ -640,7 +640,7 @@ pre {
 }
 </style>
 </head>
-<body id="top">
+<body>
 <svg width="0" height="0" style="position:absolute">
 	<symbol id="i-studworx" viewBox="0 0 270.93332 270.93334">
 		<g transform="translate(0,-161.53331)">
@@ -1005,7 +1005,7 @@ pre {
 	</symbol>
 </svg>
 
-<div class="landing">
+<div class="landing" id="top">
 	<div class="backdrop"></div>
 	<div class="landing-head">
 		<h1>StudWorx</h1>
@@ -2354,7 +2354,7 @@ const navObserver = new IntersectionObserver((items) => {
 	});
 }, { rootMargin: '-45% 0px -50% 0px' });
 
-document.querySelectorAll('.section').forEach((node) => navObserver.observe(node));
+document.querySelectorAll('.landing, .section').forEach((node) => navObserver.observe(node));
 
 // image viewer
 
