@@ -11,6 +11,10 @@ swGroupDialog::swGroupDialog(QWidget* Parent, const QString& Name, const std::ve
 	swSetupDialogHelp(this, ui->buttonBox);
 
 	ui->name->setText(Name);
+
+	// an input prompt keeps one size, as short as it fits and four times as wide
+	const int Height = sizeHint().height();
+	setFixedSize(qMax(sizeHint().width(), 4 * Height), Height);
 }
 
 swGroupDialog::~swGroupDialog()
