@@ -890,6 +890,11 @@ bool swModel::SnapControlPointToConnection(swPart* Part, quint32 ControlPointInd
 	const swMatrix44 NewControlPointWorld(ControlPointRotation, ControlPointPosition);
 
 	ControlPoints[ControlPointIndex].Transform = swMultiply(NewControlPointWorld, swMatrix44AffineInverse(Part->mModelWorld));
+
+	// a connection the part cannot reach without stretching stays free
+	if (!SynthInfo->IsReachable(ControlPoints))
+		return false;
+
 	Part->SetControlPoints(ControlPoints);
 
 	return true;

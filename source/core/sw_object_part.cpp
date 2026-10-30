@@ -1217,9 +1217,33 @@ void swPart::MoveSelected(swStep Step, bool AddKey, const swVector3& Distance)
 		if (ControlPointIndex < mControlPoints.size())
 		{
 			const swMatrix33 InverseWorldMatrix = swMatrix33AffineInverse(swMatrix33(mModelWorld));
+			const swSynthesisInformation* SynthInfo = mPartData->GetSynthInfo();
 			swMatrix44& Transform = mControlPoints[ControlPointIndex].Transform;
+			const swVector3 Position = Transform.GetTranslation();
+			const swVector3 LocalDistance = swMultiply(Distance, InverseWorldMatrix);
+			const bool WasReachable = !SynthInfo || SynthInfo->IsReachable(mControlPoints);
 
-			Transform.SetTranslation(Transform.GetTranslation() + swMultiply(Distance, InverseWorldMatrix));
+			Transform.SetTranslation(Position + LocalDistance);
+
+			// a real part does not stretch, stop the control point where the part runs out
+			if (WasReachable && !SynthInfo->IsReachable(mControlPoints))
+			{
+				float LowFactor = 0.0f;
+				float HighFactor = 1.0f;
+
+				for (int Iteration = 0; Iteration < 16; Iteration++)
+				{
+					const float MiddleFactor = (LowFactor + HighFactor) / 2.0f;
+					Transform.SetTranslation(Position + LocalDistance * MiddleFactor);
+
+					if (SynthInfo->IsReachable(mControlPoints))
+						LowFactor = MiddleFactor;
+					else
+						HighFactor = MiddleFactor;
+				}
+
+				Transform.SetTranslation(Position + LocalDistance * LowFactor);
+			}
 		}
 
 		UpdateMesh();
@@ -1262,7 +1286,16 @@ void swPart::Rotate(swStep Step, bool AddKey, const swMatrix33& RotationMatrix, 
 			swMatrix33 NewLocalToWorldMatrix = swMultiply(swMultiply(LocalToFocusMatrix, RotationMatrix), swMatrix33AffineInverse(PartWorldMatrix));
 
 			NewLocalToWorldMatrix.Orthonormalize();
+
+			const swSynthesisInformation* SynthInfo = mPartData->GetSynthInfo();
+			const swMatrix44 PreviousTransform = Transform;
+			const bool WasReachable = !SynthInfo || SynthInfo->IsReachable(mControlPoints);
+
 			Transform = swMatrix44(NewLocalToWorldMatrix, Transform.GetTranslation());
+
+			// keep a rotation that would pull the part past its length from happening
+			if (WasReachable && !SynthInfo->IsReachable(mControlPoints))
+				Transform = PreviousTransform;
 		}
 
 		UpdateMesh();

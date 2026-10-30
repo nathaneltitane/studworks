@@ -46,6 +46,12 @@ public:
 		Q_UNUSED(Section);
 		return Rotation;
 	}
+	// False when the control points are further apart than the part can reach without stretching.
+	virtual bool IsReachable(const std::vector<swPartControlPoint>& ControlPoints) const
+	{
+		Q_UNUSED(ControlPoints);
+		return true;
+	}
 	// The path the part follows in part space, the points before ReachedPointCount are covered by the part and the rest is too far for its length.
 	virtual void GetPath(const std::vector<swPartControlPoint>& ControlPoints, std::vector<swVector3>& Points, size_t& ReachedPointCount) const
 	{

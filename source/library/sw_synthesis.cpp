@@ -17,6 +17,7 @@ public:
 	void GetDefaultControlPoints(std::vector<swPartControlPoint>& ControlPoints) const override;
 	void VerifyControlPoints(std::vector<swPartControlPoint>& ControlPoints) const override;
 	swMatrix33 GetSectionControlPointRotation(const swMatrix44& Section, const swMatrix33& Rotation) const override;
+	bool IsReachable(const std::vector<swPartControlPoint>& ControlPoints) const override;
 	void GetPath(const std::vector<swPartControlPoint>& ControlPoints, std::vector<swVector3>& Points, size_t& ReachedPointCount) const override;
 
 protected:
@@ -703,6 +704,17 @@ float swSynthesisInformationCurved::GetNominalLength() const
 		NominalLength += GetSectionSpacing(SectionCount);
 
 	return NominalLength;
+}
+
+// use to check the part reaches every control point when its path runs straight between them
+bool swSynthesisInformationCurved::IsReachable(const std::vector<swPartControlPoint>& ControlPoints) const
+{
+	if (ControlPoints.size() < 2)
+		return true;
+
+	const std::vector<float> Scales(ControlPoints.size(), 0.0f);
+
+	return GetPathLength(ControlPoints, Scales, 2, nullptr) <= GetNominalLength();
 }
 
 // use to get the path line from the first to the last control point and how much of it the part covers
