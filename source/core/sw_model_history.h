@@ -39,6 +39,7 @@ public:
 struct swModelHistorySelectState
 {
 	std::vector<bool> PartSelection;
+	std::vector<uint32_t> PartSelectedSection;
 	std::vector<bool> CameraSelection;
 	std::vector<bool> LightSelection;
 	size_t FocusIndex = SIZE_MAX;
@@ -47,7 +48,7 @@ struct swModelHistorySelectState
 
 	bool operator!=(const swModelHistorySelectState& Other) const
 	{
-		return PartSelection != Other.PartSelection || CameraSelection != Other.CameraSelection || LightSelection != Other.LightSelection ||
+		return PartSelection != Other.PartSelection || PartSelectedSection != Other.PartSelectedSection || CameraSelection != Other.CameraSelection || LightSelection != Other.LightSelection ||
 			FocusIndex != Other.FocusIndex || FocusSection != Other.FocusSection || FocusObjectType != Other.FocusObjectType;
 	}
 };

@@ -104,6 +104,9 @@ public:
 
 	void SetSelected(bool Selected)
 	{
+		if (Selected != mSelected)
+			mSelectedSection = SW_OBJECT_SECTION_INVALID;
+
 		mSelected = Selected;
 
 		if (!Selected)
@@ -125,6 +128,7 @@ public:
 		if (Focused)
 		{
 			mFocusedSection = Section;
+			mSelectedSection = Section;
 			mSelected = true;
 		}
 		else
@@ -134,6 +138,23 @@ public:
 	quint32 GetFocusSection() const
 	{
 		return mFocusedSection;
+	}
+
+	// The section the object was last focused on, kept while it stays selected after the focus moves on.
+	quint32 GetSelectedSection() const
+	{
+		return mSelectedSection;
+	}
+
+	void SetSelectedSection(quint32 Section)
+	{
+		mSelectedSection = Section;
+	}
+
+	// The section a move or rotate of the selection applies to.
+	quint32 GetTransformSection() const
+	{
+		return IsFocused() ? mFocusedSection : mSelectedSection;
 	}
 
 	virtual void UpdatePosition(swStep Step) = 0;
@@ -158,6 +179,7 @@ protected:
 	bool mHidden = false;
 	bool mSelected = false;
 	quint32 mFocusedSection = SW_OBJECT_SECTION_INVALID;
+	quint32 mSelectedSection = SW_OBJECT_SECTION_INVALID;
 	swObjectId mId = static_cast<swObjectId>(0);
 
 	static swObjectId mNextId;

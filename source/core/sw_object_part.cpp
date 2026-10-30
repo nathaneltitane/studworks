@@ -1197,7 +1197,7 @@ void swPart::SubModelAddBoundingBoxPoints(const swMatrix44& WorldMatrix, std::ve
 
 void swPart::MoveSelected(swStep Step, bool AddKey, const swVector3& Distance)
 {
-	const quint32 Section = GetFocusSection();
+	const quint32 Section = GetTransformSection();
 
 	if (Section == SW_PART_SECTION_POSITION || Section == SW_PART_SECTION_INVALID)
 	{
@@ -1249,7 +1249,7 @@ void swPart::MoveSelected(swStep Step, bool AddKey, const swVector3& Distance)
 
 void swPart::Rotate(swStep Step, bool AddKey, const swMatrix33& RotationMatrix, const swVector3& Center, const swMatrix33& RotationFrame)
 {
-	const quint32 Section = GetFocusSection();
+	const quint32 Section = GetTransformSection();
 
 	if (Section == SW_PART_SECTION_POSITION || Section == SW_PART_SECTION_INVALID)
 	{
@@ -1284,11 +1284,16 @@ void swPart::Rotate(swStep Step, bool AddKey, const swMatrix33& RotationMatrix, 
 
 			NewLocalToWorldMatrix.Orthonormalize();
 
+			// a control point turned with other parts swings around their center too
+			const swVector3 WorldPosition = swMultiply31(Transform.GetTranslation(), mModelWorld);
+			const swVector3 Distance = swMultiply(swMultiply(WorldPosition - Center, swMatrix33AffineInverse(LocalToWorldMatrix)), swMultiply(LocalToFocusMatrix, RotationMatrix));
+			const swVector3 Position = swMultiply31(Center + Distance, swMatrix44AffineInverse(mModelWorld));
+
 			const swSynthesisInformation* SynthInfo = mPartData->GetSynthInfo();
 			const swMatrix44 PreviousTransform = Transform;
 			const bool WasReachable = !SynthInfo || SynthInfo->IsReachable(mControlPoints);
 
-			Transform = swMatrix44(NewLocalToWorldMatrix, Transform.GetTranslation());
+			Transform = swMatrix44(NewLocalToWorldMatrix, Position);
 
 			// keep a rotation that would pull the part past its length from happening
 			if (WasReachable && !SynthInfo->IsReachable(mControlPoints))

@@ -42,6 +42,7 @@ void swModelHistorySelect::SaveState(swModelHistorySelectState& State, const swM
 
 	const std::vector<std::unique_ptr<swPart>>& Parts = Model->GetParts();
 	State.PartSelection.resize(Parts.size(), false);
+	State.PartSelectedSection.resize(Parts.size(), SW_OBJECT_SECTION_INVALID);
 
 	for (size_t PartIndex = 0; PartIndex < Parts.size(); PartIndex++)
 	{
@@ -51,6 +52,7 @@ void swModelHistorySelect::SaveState(swModelHistorySelectState& State, const swM
 			continue;
 
 		State.PartSelection[PartIndex] = true;
+		State.PartSelectedSection[PartIndex] = Part->GetSelectedSection();
 
 		if (Part->IsFocused())
 		{
@@ -107,7 +109,7 @@ void swModelHistorySelect::LoadState(const swModelHistorySelectState& State, swM
 	const std::vector<std::unique_ptr<swCamera>>& Cameras = Model->GetCameras();
 	const std::vector<std::unique_ptr<swLight>>& Lights = Model->GetLights();
 
-	if (Parts.size() != State.PartSelection.size() || Cameras.size() != State.CameraSelection.size() || Lights.size() != State.LightSelection.size())
+	if (Parts.size() != State.PartSelection.size() || Parts.size() != State.PartSelectedSection.size() || Cameras.size() != State.CameraSelection.size() || Lights.size() != State.LightSelection.size())
 		return;
 
 	for (size_t PartIndex = 0; PartIndex < Parts.size(); PartIndex++)
@@ -120,6 +122,8 @@ void swModelHistorySelect::LoadState(const swModelHistorySelectState& State, swM
 			Part->SetFocused(State.FocusSection, true);
 		else
 			Part->SetFocused(State.FocusSection, false);
+
+		Part->SetSelectedSection(State.PartSelectedSection[PartIndex]);
 	}
 
 	for (size_t CameraIndex = 0; CameraIndex < Cameras.size(); CameraIndex++)

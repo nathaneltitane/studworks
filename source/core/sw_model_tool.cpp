@@ -613,8 +613,7 @@ void swModel::UpdatePanTool(swCamera* Camera, const swVector3& Distance)
 
 void swModel::UpdateOrbitTool(swCamera* Camera, float MouseX, float MouseY)
 {
-	swVector3 Center;
-	GetSelectionCenter(Center);
+	const swVector3 Center = GetSelectionOrModelCenter();
 
 	// With orbit snapping the camera turns in whole steps of the rotation snap angle.
 	const float OrbitSnap = gMainWindow->GetOrbitSnap() * SW_DEGREES_TO_RADIANS;
