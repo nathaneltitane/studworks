@@ -451,6 +451,9 @@ void swModel::SetActive(bool Active)
 {
 	CalculateStep(Active ? mCurrentStep : SW_STEP_MAXIMUM);
 	mActive = Active;
+
+	if (Active)
+		UpdateControlPointSeats();
 }
 
 void swModel::CalculateStep(swStep Step)
@@ -470,6 +473,7 @@ void swModel::SetCurrentStep(swStep Step)
 	const bool StepChanged = Step != mCurrentStep;
 	mCurrentStep = Step;
 	CalculateStep(Step);
+	UpdateControlPointSeats();
 
 	gMainWindow->UpdateTimeline(false, false);
 	gMainWindow->UpdateSelectedObjects(true);

@@ -378,6 +378,7 @@ void swModel::LoadEditHistoryState(const swModelHistoryEditState& HistoryState)
 	RestoreParts(HistoryState.Parts, GroupsById);
 	RestoreCameras(HistoryState.Cameras);
 	RestoreLights(HistoryState.Lights);
+	UpdateControlPointSeats();
 }
 
 std::unordered_map<uint32_t, swGroup*> swModel::RestoreGroups(const swObjectHistory<swGroupHistoryState>& History)
@@ -485,6 +486,7 @@ void swModel::EndEditHistory()
 		return;
 
 	ModelHistoryEdit->SaveEndState(this);
+	UpdateControlPointSeats();
 
 	if (!ModelHistoryEdit->StateChanged())
 		mHistorySequence.pop_back();

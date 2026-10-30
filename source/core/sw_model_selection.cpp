@@ -970,6 +970,33 @@ bool swModel::FindControlPointSeat(const swPart* Part, quint32 ControlPointIndex
 	return true;
 }
 
+// use to mark the end control points that already sit on a connection as seated
+void swModel::UpdateControlPointSeats()
+{
+	for (const std::unique_ptr<swPart>& Part : mParts)
+	{
+		const std::vector<swPartControlPoint> ControlPoints = Part->GetControlPoints();
+
+		if (ControlPoints.size() < 2)
+			continue;
+
+		Part->ClearControlPointSeats();
+
+		for (const quint32 ControlPointIndex : { 0u, static_cast<quint32>(ControlPoints.size() - 1) })
+		{
+			swMatrix44 SeatTransform;
+			swVector3 SurfacePosition, SurfaceNormal;
+
+			if (!FindControlPointSeat(Part.get(), ControlPointIndex, SeatTransform, &SurfacePosition, &SurfaceNormal))
+				continue;
+
+			// a free end near a connection stays free until it is dropped there
+			if (swLength(SeatTransform.GetTranslation() - ControlPoints[ControlPointIndex].Transform.GetTranslation()) < 0.1f)
+				Part->SetControlPointSeated(ControlPointIndex, SurfacePosition, SurfaceNormal);
+		}
+	}
+}
+
 void swModel::AddToSelectionAction(const std::vector<swObject*>& Objects)
 {
 	BeginHistorySequence();

@@ -579,6 +579,8 @@ protected:
 	// Finds where the fitting at an end control point would seat, in part space, false when no connection in reach takes it.
 	// The surface is the connection face in part space with its normal pointing out of the part it belongs to.
 	bool FindControlPointSeat(const swPart* Part, quint32 ControlPointIndex, swMatrix44& SeatTransform, swVector3* SurfacePosition = nullptr, swVector3* SurfaceNormal = nullptr) const;
+	// Marks the end control points of flexible parts that already sit on a connection as seated, after loading, edits and step changes.
+	void UpdateControlPointSeats();
 	void AddToSelection(const std::vector<swObject*>& Objects);
 	void RemoveFromSelection(const std::vector<swObject*>& Objects);
 	void BeginEditHistory();

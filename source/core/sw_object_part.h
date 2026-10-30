@@ -185,6 +185,10 @@ public:
 	// Remembers where an end control point sits on a connection, it shows seated until it or the part moves.
 	void SetControlPointSeated(quint32 ControlPointIndex, const swVector3& SurfacePosition, const swVector3& SurfaceNormal);
 	bool IsControlPointSeated(quint32 ControlPointIndex) const;
+	void ClearControlPointSeats()
+	{
+		mControlPointSeats.clear();
+	}
 	// Where a control point cube is drawn and picked in part space, a seated one rests flush on its connection surface.
 	swMatrix44 GetControlPointCubeTransform(quint32 ControlPointIndex) const;
 	// The end control point being dragged where dropping it would seat its fitting, -1 for none.
