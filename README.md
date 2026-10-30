@@ -218,10 +218,10 @@ Everything LeoCAD does, StudWorx does too - with a reworked interface and a set 
 
   ![POV-Ray render](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/rendering-povray.png)
 
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-lighting-standard.png" alt="Standard lighting" width="24%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-lighting-studio.png" alt="Studio lighting" width="24%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-lighting-matte.png" alt="Matte lighting" width="24%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-lighting-toon.png" alt="Toon lighting" width="24%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/rendering-lighting-standard.png" alt="Standard lighting" width="24%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/rendering-lighting-studio.png" alt="Studio lighting" width="24%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/rendering-lighting-matte.png" alt="Matte lighting" width="24%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/rendering-lighting-toon.png" alt="Toon lighting" width="24%" align="top">
 
 - **Modeling** ↴
   - Insert, delete, duplicate, paint, hide and group parts, with the first part at the origin as an option
@@ -250,21 +250,21 @@ Everything LeoCAD does, StudWorx does too - with a reworked interface and a set 
   - Base grid with studs, lines and origin lines, vertical XZ and YZ height grids sized around the model, and toggles for each X, Y and Z axis line
   - Idle turntable turning the model full screen around the X, Y or Z axis, any input ends it
 
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-view-cube.png" alt="View cube" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/views-cube.png" alt="View cube" align="top">
 
   <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/views-camera.png" alt="Camera bar" width="32%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-projection-perspective.png" alt="Perspective projection" width="32%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-projection-orthographic.png" alt="Orthographic projection" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/views-projection-perspective.png" alt="Perspective projection" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/views-projection-orthographic.png" alt="Orthographic projection" width="32%" align="top">
 
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-cutaway-cube.png" alt="Cube cutaway" width="32%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-cutaway-sphere.png" alt="Sphere cutaway" width="32%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-cutaway-cylinder.png" alt="Cylinder cutaway" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/views-cutaway-cube.png" alt="Cube cutaway" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/views-cutaway-sphere.png" alt="Sphere cutaway" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/views-cutaway-cylinder.png" alt="Cylinder cutaway" width="32%" align="top">
 
-  ![XZ and YZ height grids](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-height-grids.png)
+  ![XZ and YZ height grids](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/views-height-grids.png)
 
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-turntable-a.png" alt="Idle turntable" width="32%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-turntable-b.png" alt="Idle turntable" width="32%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-turntable-c.png" alt="Idle turntable" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/views-turntable-a.png" alt="Idle turntable" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/views-turntable-b.png" alt="Idle turntable" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/views-turntable-c.png" alt="Idle turntable" width="32%" align="top">
 
 - **Steps** ↴
   - Steps menu to go to the first, previous, next or last step and insert or remove steps
@@ -274,7 +274,7 @@ Everything LeoCAD does, StudWorx does too - with a reworked interface and a set 
   - Fade Previous Steps and Highlight New Parts in the model view and the instructions
 
   <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/interface-menu-steps.png" alt="Steps menu" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/panel-timeline.png" alt="Timeline panel" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/panels-timeline.png" alt="Timeline panel" align="top">
 
 - **Panels** ↴
   - Uniform panel headers, buttons and text boxes, all sized from the options (gear) button
@@ -286,13 +286,13 @@ Everything LeoCAD does, StudWorx does too - with a reworked interface and a set 
   - Preview panel for parts and models, with a square viewport and Keep Last Selection
   - Terminal panel sized to whole rows and columns, with Open Model Folder
 
-  ![Selected part in the main window](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/interface-main-window-selection.png)
+  ![Selected part in the main window](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/panels-main-window-selection.png)
 
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/panel-preview.png" alt="Preview panel" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/panel-parts.png" alt="Parts panel" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/panel-minifigure-builder.png" alt="Minifigure Builder panel" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/panel-colors.png" alt="Colors panel" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/panel-properties.png" alt="Properties panel" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/panels-preview.png" alt="Preview panel" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/panels-parts.png" alt="Parts panel" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/panels-minifigure-builder.png" alt="Minifigure Builder panel" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/panels-colors.png" alt="Colors panel" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/panels-properties.png" alt="Properties panel" align="top">
 
 - **Instructions** ↴
   - Page setup with paper and screen presets, metric or imperial units, margins and orientation
@@ -346,7 +346,7 @@ Everything LeoCAD does, StudWorx does too - with a reworked interface and a set 
   <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/preferences-keyboard.png" alt="Keyboard preferences" width="24%" align="top">
   <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/preferences-mouse.png" alt="Mouse preferences" width="24%" align="top">
 
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/about.png" alt="About" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/preferences-about.png" alt="About" align="top">
 
 ---
 
