@@ -249,6 +249,8 @@ public:
 	quint32 mLightColor;
 	quint32 mControlPointColor;
 	quint32 mControlPointFocusedColor;
+	quint32 mPathColor;
+	quint32 mPathOutOfReachColor;
 
 
 	int mPreviewViewCubeEnabled;

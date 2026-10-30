@@ -745,7 +745,7 @@ void swPart::DrawSynthInterface(swContext* Context, const swMatrix44& WorldMatri
 
 	Context->EnableCullFace(false);
 
-	// the path line shows through the part, past the part length it takes the control point color
+	// the path line shows through the part, past the part length it takes the out of reach color
 	if (mPathControlPoints != mControlPoints)
 	{
 		mPathControlPoints = mControlPoints;
@@ -760,13 +760,12 @@ void swPart::DrawSynthInterface(swContext* Context, const swMatrix44& WorldMatri
 		Context->EnableDepthTest(false);
 		Context->SetLineWidth(2.0f * Preferences.mLineWidth);
 
-		const swVector4 PathColor = swVector4FromColor(Preferences.mControlPointFocusedColor);
-		Context->SetColor(swVector4(PathColor[0], PathColor[1], PathColor[2], 1.0f));
+		Context->SetColor(swVector4FromColor(Preferences.mPathColor));
 		Context->DrawPrimitives(GL_LINE_STRIP, 0, static_cast<GLsizei>(mPathReachedPointCount));
 
 		if (mPathReachedPointCount < mPathPoints.size())
 		{
-			Context->SetColor(ControlPointColor);
+			Context->SetColor(swVector4FromColor(Preferences.mPathOutOfReachColor));
 			Context->DrawPrimitives(GL_LINE_STRIP, static_cast<GLint>(mPathReachedPointCount) - 1, static_cast<GLsizei>(mPathPoints.size() - mPathReachedPointCount + 1));
 		}
 

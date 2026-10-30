@@ -484,6 +484,7 @@ void swMainWindow::ModelViewOptionsMenuAboutToShow()
 	const swPreferences& Preferences = swGetPreferences();
 
 	AddMenuCommand(Menu, tr("Fade Previous Steps"), SW_VIEW_FADE_PREVIOUS_STEPS, Preferences.mFadeSteps);
+	AddMenuCommand(Menu, tr("Highlight New Parts"), SW_VIEW_TOGGLE_HIGHLIGHT_NEW_PARTS, Preferences.mHighlightNewParts);
 	AddMenuCommand(Menu, tr("Insert First Part at Origin"), SW_PART_TOGGLE_FIRST_AT_ORIGIN, Preferences.mFirstPartAtOrigin);
 	AddMenuCommand(Menu, tr("Part Connections"), SW_EDIT_TOGGLE_SHADOW_LIBRARY, Preferences.mShadowLibraryEnabled)->setEnabled(swShadowLibrary::IsLoaded());
 

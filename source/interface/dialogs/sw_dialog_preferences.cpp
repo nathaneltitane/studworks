@@ -379,6 +379,8 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	connect(ui->LightColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
 	connect(ui->ControlPointColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
 	connect(ui->ControlPointFocusedColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->PathColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->PathOutOfReachColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
 	connect(ui->categoriesTree, &QTreeWidget::itemSelectionChanged, this, &swPreferencesDialog::UpdateParts);
 	connect(ui->categoriesTree, &QTreeWidget::itemChanged, this, &swPreferencesDialog::CategoryItemChanged);
 	connect(ui->categoriesTree->model(), &QAbstractItemModel::rowsInserted, this, &swPreferencesDialog::CategoriesDropped);
@@ -652,6 +654,8 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	SetButtonPixmap(mOptions->Preferences.mLightColor, ui->LightColorButton);
 	SetButtonPixmap(mOptions->Preferences.mControlPointColor, ui->ControlPointColorButton);
 	SetButtonPixmap(mOptions->Preferences.mControlPointFocusedColor, ui->ControlPointFocusedColorButton);
+	SetButtonPixmap(mOptions->Preferences.mPathColor, ui->PathColorButton);
+	SetButtonPixmap(mOptions->Preferences.mPathOutOfReachColor, ui->PathOutOfReachColorButton);
 
 	StudStyleComboCurrentIndexChanged(ui->studStyleCombo->currentIndex());
 	AntiAliasingToggled();
@@ -1098,6 +1102,18 @@ void swPreferencesDialog::ColorButtonClicked()
 	{
 		Color = &mOptions->Preferences.mControlPointFocusedColor;
 		Title = tr("Select Control Point Focused Color");
+		DialogOptions = QColorDialog::ShowAlphaChannel;
+	}
+	else if (Button == ui->PathColorButton)
+	{
+		Color = &mOptions->Preferences.mPathColor;
+		Title = tr("Select Path Color");
+		DialogOptions = QColorDialog::ShowAlphaChannel;
+	}
+	else if (Button == ui->PathOutOfReachColorButton)
+	{
+		Color = &mOptions->Preferences.mPathOutOfReachColor;
+		Title = tr("Select Path Out of Reach Color");
 		DialogOptions = QColorDialog::ShowAlphaChannel;
 	}
 	else

@@ -132,6 +132,8 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Settings", "LightColor", static_cast<uint>(SW_RGBA(128, 204, 128, 255))),              // SW_PROFILE_LIGHT_COLOR
 	swProfileEntry("Settings", "ControlPointColor", static_cast<uint>(SW_RGBA(128, 204, 128, 128))),       // SW_PROFILE_CONTROL_POINT_COLOR
 	swProfileEntry("Settings", "ControlPointFocusedColor", static_cast<uint>(SW_RGBA(102, 76, 229, 128))), // SW_PROFILE_CONTROL_POINT_FOCUSED_COLOR
+	swProfileEntry("Settings", "PathColor", static_cast<uint>(SW_RGBA(102, 76, 229, 255))),               // SW_PROFILE_PATH_COLOR
+	swProfileEntry("Settings", "PathOutOfReachColor", static_cast<uint>(SW_RGBA(229, 76, 76, 255))),       // SW_PROFILE_PATH_OUT_OF_REACH_COLOR
 
 	swProfileEntry("Settings", "Language", ""),                                                // SW_PROFILE_LANGUAGE
 	swProfileEntry("Settings", "ColorTheme", static_cast<int>(swColorTheme::Dark)),            // SW_PROFILE_COLOR_THEME

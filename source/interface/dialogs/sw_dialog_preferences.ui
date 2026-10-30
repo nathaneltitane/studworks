@@ -2712,6 +2712,58 @@
             </property>
            </widget>
           </item>
+          <item row="6" column="0">
+           <widget class="QLabel" name="PathColorLabel">
+            <property name="toolTip">
+             <string>Choose the display color for the path line of a flexible part, along the length the part covers.</string>
+            </property>
+            <property name="buddy">
+             <cstring>PathColorButton</cstring>
+            </property>
+            <property name="text">
+             <string>Path</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
+           <widget class="QToolButton" name="PathColorButton">
+            <property name="accessibleName">
+             <string>Path Color</string>
+            </property>
+            <property name="toolTip">
+             <string>Choose the display color for the path line of a flexible part, along the length the part covers.</string>
+            </property>
+            <property name="text">
+             <string />
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0">
+           <widget class="QLabel" name="PathOutOfReachColorLabel">
+            <property name="toolTip">
+             <string>Choose the display color for the stretch of a flexible part path the part is too short to cover.</string>
+            </property>
+            <property name="buddy">
+             <cstring>PathOutOfReachColorButton</cstring>
+            </property>
+            <property name="text">
+             <string>Path Out of Reach</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="1">
+           <widget class="QToolButton" name="PathOutOfReachColorButton">
+            <property name="accessibleName">
+             <string>Path Out of Reach Color</string>
+            </property>
+            <property name="toolTip">
+             <string>Choose the display color for the stretch of a flexible part path the part is too short to cover.</string>
+            </property>
+            <property name="text">
+             <string />
+            </property>
+           </widget>
+          </item>
           <item row="0" column="2">
            <spacer name="horizontalSpacer_15">
             <property name="orientation">
@@ -3999,6 +4051,8 @@
   <tabstop>LightColorButton</tabstop>
   <tabstop>ControlPointColorButton</tabstop>
   <tabstop>ControlPointFocusedColorButton</tabstop>
+  <tabstop>PathColorButton</tabstop>
+  <tabstop>PathOutOfReachColorButton</tabstop>
   <tabstop>ActiveViewColorButton</tabstop>
   <tabstop>InactiveViewColorButton</tabstop>
   <tabstop>TextColorButton</tabstop>

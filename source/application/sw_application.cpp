@@ -132,6 +132,8 @@ void swPreferences::LoadDefaults()
 	mLightColor = swGetProfileUnsignedInteger(SW_PROFILE_LIGHT_COLOR);
 	mControlPointColor = swGetProfileUnsignedInteger(SW_PROFILE_CONTROL_POINT_COLOR);
 	mControlPointFocusedColor = swGetProfileUnsignedInteger(SW_PROFILE_CONTROL_POINT_FOCUSED_COLOR);
+	mPathColor = swGetProfileUnsignedInteger(SW_PROFILE_PATH_COLOR);
+	mPathOutOfReachColor = swGetProfileUnsignedInteger(SW_PROFILE_PATH_OUT_OF_REACH_COLOR);
 }
 
 void swPreferences::SaveDefaults()
@@ -237,6 +239,8 @@ void swPreferences::SaveDefaults()
 	swSetProfileUnsignedInteger(SW_PROFILE_LIGHT_COLOR, mLightColor);
 	swSetProfileUnsignedInteger(SW_PROFILE_CONTROL_POINT_COLOR, mControlPointColor);
 	swSetProfileUnsignedInteger(SW_PROFILE_CONTROL_POINT_FOCUSED_COLOR, mControlPointFocusedColor);
+	swSetProfileUnsignedInteger(SW_PROFILE_PATH_COLOR, mPathColor);
+	swSetProfileUnsignedInteger(SW_PROFILE_PATH_OUT_OF_REACH_COLOR, mPathOutOfReachColor);
 }
 
 struct swRenderTargetProfileKeys
