@@ -14,6 +14,9 @@ swFindReplaceWidget::swFindReplaceWidget(QWidget* Parent, swModel* Model, bool R
 {
 	// bar floats over the view
 	setObjectName(QStringLiteral("FindReplaceBar"));
+	setWhatsThis(tr("<p><b>Find and Replace</b></p><p>Find parts by color, part or both, then step through the matches or select them all. "
+		"Open the replace options to swap the color or part of the matches, one at a time or all at once.</p>"
+		"<p>Include Submodels makes Replace All change the matching parts inside every submodel used by this model too.</p>"));
 	setAttribute(Qt::WA_StyledBackground, true);
 	setStyleSheet(QStringLiteral("#FindReplaceBar { background: palette(button); border: 1px solid palette(mid); border-radius: 3px; }"));
 

@@ -13,9 +13,15 @@
   <property name="windowTitle">
    <string>Page Setup</string>
   </property>
+  <property name="whatsThis">
+   <string>&lt;p&gt;&lt;b&gt;Page Setup&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Set the size, orientation and margins of the instruction pages. The pages are laid out again when you click OK.&lt;/p&gt;</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QGroupBox" name="SizeGroup">
+     <property name="whatsThis">
+      <string>&lt;p&gt;&lt;b&gt;Page Size&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Choose a standard paper or screen size from Preset, or Custom to type a width and height. Units sets how the size is shown, and Portrait or Landscape turns the page on its side.&lt;/p&gt;</string>
+     </property>
      <property name="title">
       <string>Size</string>
      </property>
@@ -123,6 +129,9 @@
    </item>
    <item>
     <widget class="QGroupBox" name="MarginsGroup">
+     <property name="whatsThis">
+      <string>&lt;p&gt;&lt;b&gt;Page Margins&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Set the empty border kept on each side of the page. Step content, numbers and parts lists stay inside the margins. The margins must leave room for the page contents.&lt;/p&gt;</string>
+     </property>
      <property name="title">
       <string>Margins</string>
      </property>

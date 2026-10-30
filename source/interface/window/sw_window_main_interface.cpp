@@ -110,6 +110,15 @@ void swMainWindow::CreateActions()
 		Action->setStatusTip(qApp->translate("Status", gCommands[CommandIdx].StatusText));
 		if (gCommands[CommandIdx].WhatsThis[0])
 			Action->setWhatsThis(qApp->translate("WhatsThis", gCommands[CommandIdx].WhatsThis));
+		else if (gCommands[CommandIdx].StatusText[0])
+		{
+			// menu name and status text explain the rest
+			QString Title = Action->text().remove(QRegularExpression("&(?!&)")).remove("...");
+			QString Text = Action->statusTip();
+			if (!Text.endsWith('.'))
+				Text += '.';
+			Action->setWhatsThis(QString("<p><b>%1</b></p><p>%2</p>").arg(Title.toHtmlEscaped(), Text.toHtmlEscaped()));
+		}
 		connect(Action, &QAction::triggered, this, &swMainWindow::ActionTriggered);
 		addAction(Action);
 		mActions[CommandIdx] = Action;
