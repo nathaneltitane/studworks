@@ -37,3 +37,6 @@ uic_wrapper.bat
 appdir
 studworx-windows*.exe
 *.snap
+/tools/studworx-site-update
+/tools/site/
+/logo/
