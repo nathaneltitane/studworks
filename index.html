@@ -166,6 +166,14 @@ a:hover {
 	to { opacity: 1; }
 }
 
+/* version */
+
+.version {
+	margin: 0;
+	padding: 24px 20px 0 20px;
+	text-align: center;
+}
+
 /* sections */
 
 .section {
@@ -566,16 +574,20 @@ pre {
 }
 
 @media (max-width: 520px), (max-height: 560px) {
-	.landing { display: flex; flex-direction: column; padding: 0 0 90px 0; }
+	.landing { display: flex; flex-direction: column; padding: 0 0 80px 0; }
 	.landing-head, .landing-logo, .landing-foot { position: static; }
 	.landing-logo { width: min(56vw, 40vh, 260px); height: min(56vw, 40vh, 260px); margin: 24px auto; transform: none; animation-name: fade-reveal; }
-	.landing-foot { max-width: none; }
+	.landing-foot { max-width: none; margin-top: auto; }
 }
 
 @media (max-width: 520px) {
 	.gallery.two, .gallery.three, .gallery.four { grid-template-columns: 1fr; }
 	.points { grid-template-columns: 1fr; }
 	.section { padding: 50px 16px 16px 16px; }
+	.gallery.natural { flex-wrap: nowrap; gap: 16px; margin: 24px -16px; padding: 0 16px 10px 16px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 16px; scrollbar-width: none; }
+	.gallery.natural::-webkit-scrollbar { display: none; }
+	.gallery.natural figure { flex: none; max-width: 82%; scroll-snap-align: center; }
+	.gallery.natural .shot img { max-height: 440px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -953,9 +965,10 @@ pre {
 			<a class="button" href="#help">Help</a>
 		</div>
 		<h2 class="tagline">BUILD. DESIGN. CREATE.</h2>
-		<p>Version // 2026-10-30</p>
 	</div>
 </div>
+
+<p class="version">Version // 2026-10-30</p>
 
 <section id="interface" class="section reveal">
 	<header class="section-head">
@@ -974,7 +987,7 @@ pre {
 		<li><b>Options menus.</b> The gear button on the model view and on every panel opens the settings that belong to it: grids, preview, parts and colors.</li>
 		<li><b>Toolbars.</b> Standard, Tools and Time toolbars. Move and rotate cursors show the axis they work on.</li>
 		<li><b>Tabs, splits and status bar.</b> Open several models in tabs, split the view, go Full Screen, and read the view orientation, projection and focus position in the status bar. Right click the status bar to show or hide each segment.</li>
-		<li><b>What's This help.</b> Click the question mark in a title bar or choose Help > What's This, then click any control to read what it does. F1 explains the focused control. Every entry is listed in the Help index below.</li>
+		<li><b>Contextual help.</b> Choose Help > What's This? or click the question mark in a title bar, then click any control to read what it does. F1 explains the focused control, and every entry is listed in the Help index below.</li>
 		<li><b>Ten languages.</b> English, French, German, Spanish, Portuguese, Czech, Ukrainian, Russian, Simplified Chinese and Traditional Chinese.</li>
 	</ul>
 	<figure class="wide plain">
@@ -1648,7 +1661,7 @@ pre {
 		<svg class="icon big" aria-hidden="true"><use href="#i-purple"/></svg>
 		<h2>HELP // EVERY WHAT&#x27;S THIS ENTRY</h2>
 	</header>
-	<p class="lead">The same help the app shows from the What&#x27;s This button, F1 or Help &gt; What&#x27;s This: 457 entries for every menu command, panel and dialog. Search them, or pick an area.</p>
+	<p class="lead">The same help the app shows from Help &gt; What&#x27;s This?, the title bar question mark or F1: 457 entries for every menu command, panel and dialog. Search them, or pick an area.</p>
 	<div class="help-tools">
 		<input id="help-search" type="search" placeholder="Search help" aria-label="Search help">
 		<div id="help-groups" class="chips"></div>
@@ -1697,8 +1710,9 @@ studworx/tools/studworx-install [prefix] [build directory]</code></pre>
 
 <div class="copyright reveal">
 	<p>StudWorx is based on <a href="https://github.com/leozide/leocad">LeoCAD</a> by Leonardo Zide and its contributors. Parts come from the <a href="https://www.ldraw.org">LDraw</a> library, part connections from the <a href="https://github.com/RolandMelkert/LDCadShadowLibrary">LDCad shadow library</a> by Roland Melkert and POV-Ray parts from the <a href="https://github.com/jncraton/lgeo">LGEO library</a> by Lutz Uhlmann, neither bundled with StudWorx.</p>
-	<p>StudWorx is free software released under the GNU General Public License version 3. LEGO® is a trademark of the LEGO® Group, which does not sponsor, authorize or endorse this project.</p>
+	<p>StudWorx is free software released under the GNU General Public License version 3.</p>
 	<p><a href="https://github.com/nathaneltitane/studworx/issues">Submit a bug report or feature request</a> // <a href="https://mechablocks.com">MECHA // BLOCKS</a> // <a href="https://github.com/nathaneltitane">NATHANEL + TITANE</a></p>
+	<p>LEGO® is a trademark of the LEGO® Group, which does not sponsor, authorize or endorse this project.</p>
 </div>
 
 <nav id="footer" aria-label="Sections">
@@ -2225,7 +2239,7 @@ const revealObserver = new IntersectionObserver((items) => {
 			revealObserver.unobserve(item.target);
 		}
 	});
-}, { threshold: 0.05 });
+}, { threshold: 0 });
 
 document.querySelectorAll('.reveal').forEach((node) => revealObserver.observe(node));
 
