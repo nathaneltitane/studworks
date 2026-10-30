@@ -13,7 +13,7 @@
 Name: studworx
 Version: %{sw_version}
 Release: 1
-Summary: Create virtual LEGO® models
+Summary: LDraw / LEGO® model builder
 License: GPL-3.0-only
 URL: https://github.com/nathaneltitane/studworx
 Packager: Nathanel Titane <nathanel.titane@gmail.com>

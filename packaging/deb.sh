@@ -71,7 +71,7 @@ Recommends: povray
 Section: graphics
 Priority: optional
 Homepage: https://github.com/nathaneltitane/studworx
-Description: create virtual LEGO® models
+Description: LDraw / LEGO® model builder
  StudWorx is a CAD application for creating virtual LEGO® models with
  the LDraw parts library, which comes bundled with the package.
 CONTROL

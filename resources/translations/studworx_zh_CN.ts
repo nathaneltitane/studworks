@@ -7947,6 +7947,11 @@ Part connections use the LDCad shadow library by Roland Melkert.
 POV-Ray renders can use the LGEO part library by Lutz Uhlmann.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_about.ui"/>
+        <source>LDraw / LEGO® model builder - BUILD. DESIGN. CREATE.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>swApplication</name>

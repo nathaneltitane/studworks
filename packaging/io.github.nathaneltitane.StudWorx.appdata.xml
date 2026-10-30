@@ -5,7 +5,7 @@
 	<project_license>GPL-3.0-only</project_license>
 	<content_rating type="oars-1.1" />
 	<name>StudWorx</name>
-	<summary>Design virtual models you can build with LEGO® bricks</summary>
+	<summary>LDraw / LEGO® model builder</summary>
 	<description>
 		<p>StudWorx is a CAD program for creating virtual LEGO® models. It's available for free under the GNU General Public License v3 and works on the Windows, Linux and macOS Operating Systems.</p>
 	</description>

@@ -2,7 +2,7 @@
 pkgname=studworx
 pkgver=20261030
 pkgrel=1
-pkgdesc="StudWorx is a CAD program for creating virtual LEGO® models."
+pkgdesc="StudWorx: LDraw / LEGO® model builder"
 url="https://github.com/nathaneltitane/studworx"
 arch=('x86_64' 'i686')
 license=('GPL-3.0-only')

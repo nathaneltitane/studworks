@@ -1,5 +1,8 @@
 ![studworx](https://raw.githubusercontent.com/nathaneltitane/studworx/main/studworx.svg)
 
+**LDraw / LEGO® model builder**<br>
+BUILD. DESIGN. CREATE.
+
 [![Donate](https://img.shields.io/badge/Paypal-2f343f.svg?style=for-the-badge&logo=paypal&label=Donate)](https://www.paypal.com/donate?hosted_button_id=ZW3CDCANHJCWJ)<br>
 Show your appreciation with a PayPal donation!
 
@@ -19,6 +22,7 @@ Useful? Star the repository - it helps others find it.
   <details open>
   <summary>2026-10-30</summary>
 
+  - StudWorks is now StudWorx, the LDraw / LEGO® model builder - BUILD. DESIGN. CREATE. - at [studworx.app](https://studworx.app), settings and data carry over on the first start
   - Interface: built from standard Qt widgets throughout, panels, dialogs and windows follow the system style and theme, only the model views draw with OpenGL
   - Save Model Image: live preview of the saved image with step arrows, ratio presets from square to widescreen with Landscape and Portrait, a transparent background for PNG and GIF files, Save and Cancel in the File box and help from the title bar What's This button
   - Animated GIF: turntable animations from Save Model Image, a full turn or a back and forth angle range around the X, Y or Z axis, with frame count and duration, played live in the preview
@@ -140,7 +144,7 @@ Useful? Star the repository - it helps others find it.
 
 ### Welcome to [StudWorx](https://github.com/nathaneltitane/studworx)
 
-StudWorx is a free CAD program for creating virtual LEGO® models with the [LDraw](https://www.ldraw.org) parts library, built on [LeoCAD](https://github.com/leozide/leocad).
+StudWorx is a free LDraw / LEGO® model builder, a CAD program for creating virtual LEGO® models with the [LDraw](https://www.ldraw.org) parts library, built on [LeoCAD](https://github.com/leozide/leocad).
 It keeps LeoCAD's file format, so models open in either program, and copies LeoCAD's settings on the first start.
 
 Everything LeoCAD does, StudWorx does too - with a reworked interface and a set of modeling and instructions features on top:

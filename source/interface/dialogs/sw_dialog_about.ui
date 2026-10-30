@@ -50,6 +50,13 @@
           </widget>
          </item>
          <item>
+          <widget class="QLabel" name="tagline">
+           <property name="text">
+            <string>LDraw / LEGO® model builder - BUILD. DESIGN. CREATE.</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QLabel" name="label_4">
            <property name="text">
             <string>StudWorx is a free CAD program for creating virtual LEGO® models with the LDraw parts library.
