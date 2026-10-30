@@ -793,6 +793,11 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 			ActiveModel->RemoveFocusedControlPoint();
 		break;
 
+	case SW_PART_CONTROL_POINT_TANGENT:
+		if (ActiveModel)
+			ActiveModel->ToggleFocusedControlPointTangent();
+		break;
+
 	case SW_PART_TRAIN_TRACK_FOCUS_NEXT:
 		if (ActiveModel)
 			ActiveModel->FocusNextTrainTrack();

@@ -550,6 +550,31 @@ void swModel::RemoveFocusedControlPoint()
 	gMainWindow->UpdateSelectedObjects(true);
 }
 
+void swModel::ToggleFocusedControlPointTangent()
+{
+	swPart* Part = dynamic_cast<swPart*>(GetFocusObject());
+
+	if (!Part)
+		return;
+
+	BeginHistorySequence();
+	BeginEditHistory();
+
+	const bool Modified = Part->ToggleFocusedControlPointTangent();
+
+	if (!Modified)
+	{
+		DiscardHistorySequence();
+
+		return;
+	}
+
+	EndEditHistory();
+	EndHistorySequence(Part->IsControlPointTangentClamped() ? tr("Clamp Tangent") : tr("Release Tangent"));
+
+	gMainWindow->UpdateSelectedObjects(true);
+}
+
 void swModel::ShowSelectedPartsEarlier()
 {
 	BeginHistorySequence();

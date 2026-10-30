@@ -17,6 +17,7 @@ public:
 	void GetDefaultControlPoints(std::vector<swPartControlPoint>& ControlPoints) const override;
 	void VerifyControlPoints(std::vector<swPartControlPoint>& ControlPoints) const override;
 	swMatrix33 GetSectionControlPointRotation(const swMatrix44& Section, const swMatrix33& Rotation) const override;
+	void ClampControlPointTangents(std::vector<swPartControlPoint>& ControlPoints) const override;
 	bool IsReachable(const std::vector<swPartControlPoint>& ControlPoints) const override;
 	void GetPath(const std::vector<swPartControlPoint>& ControlPoints, std::vector<swVector3>& Points, size_t& ReachedPointCount) const override;
 
@@ -25,6 +26,7 @@ protected:
 	float GetSectionSpacing(size_t SectionCount) const;
 	float GetNominalLength() const;
 	float GetEndInset() const;
+	swVector3 GetControlPointTangent(const swMatrix44& Transform) const;
 	float GetHandleDirection(const std::vector<swPartControlPoint>& ControlPoints, quint32 ControlPointIndex) const;
 	void GetSegmentControlPoints(const std::vector<swPartControlPoint>& ControlPoints, const std::vector<float>& Scales, quint32 ControlPointIndex, swVector3 SegmentControlPoints[4], swMatrix44& StartTransform, swMatrix44& EndTransform) const;
 	float GetPathLength(const std::vector<swPartControlPoint>& ControlPoints, const std::vector<float>& Scales, int CurvePointCount, float* BendEnergy) const;
@@ -785,19 +787,77 @@ float swSynthesisInformationCurved::GetEndInset() const
 	return mLength - (mRigidEdges ? mStart.Length : 0.0f) - GetNominalLength();
 }
 
+// use to get the direction the path leaves a control point in part space
+swVector3 swSynthesisInformationCurved::GetControlPointTangent(const swMatrix44& Transform) const
+{
+	const swMatrix44 LDrawTransform = swMatrix44StudWorksToLDraw(Transform);
+	const swMatrix33 Rotation = swMultiply(swMultiply(swMatrix33(mStart.Transform), swMatrix33(LDrawTransform)), swMatrix33Scale(swVector3(1.0f, -1.0f, 1.0f)));
+	const swVector3 Tangent = swMultiply(swVector3(0.0f, 1.0f, 0.0f), Rotation);
+
+	return swVector3(Tangent[0], Tangent[2], -Tangent[1]);
+}
+
 // use to turn a middle control point along the way the path runs so it never folds back on itself
 float swSynthesisInformationCurved::GetHandleDirection(const std::vector<swPartControlPoint>& ControlPoints, quint32 ControlPointIndex) const
 {
 	if (ControlPointIndex == 0 || ControlPointIndex + 1 >= ControlPoints.size())
 		return 1.0f;
 
-	const swMatrix44 Transform = swMatrix44StudWorksToLDraw(ControlPoints[ControlPointIndex].Transform);
-	const swMatrix33 Rotation = swMultiply(swMultiply(swMatrix33(mStart.Transform), swMatrix33(Transform)), swMatrix33Scale(swVector3(1.0f, -1.0f, 1.0f)));
-	const swVector3 Tangent = swMultiply(swVector3(0.0f, 1.0f, 0.0f), Rotation);
 	const swVector3 Chord = ControlPoints[ControlPointIndex + 1].Transform.GetTranslation() - ControlPoints[ControlPointIndex - 1].Transform.GetTranslation();
-	const swVector3 LDrawChord(Chord[0], -Chord[2], Chord[1]);
 
-	return swDot(Tangent, LDrawChord) < 0.0f ? -1.0f : 1.0f;
+	return swDot(GetControlPointTangent(ControlPoints[ControlPointIndex].Transform), Chord) < 0.0f ? -1.0f : 1.0f;
+}
+
+// use to turn the clamped middle control points along the chord between their neighbors keeping their twist
+void swSynthesisInformationCurved::ClampControlPointTangents(std::vector<swPartControlPoint>& ControlPoints) const
+{
+	for (quint32 ControlPointIndex = 1; ControlPointIndex + 1 < ControlPoints.size(); ControlPointIndex++)
+	{
+		swPartControlPoint& ControlPoint = ControlPoints[ControlPointIndex];
+
+		if (!ControlPoint.TangentClamped)
+			continue;
+
+		const swVector3 Chord = ControlPoints[ControlPointIndex + 1].Transform.GetTranslation() - ControlPoints[ControlPointIndex - 1].Transform.GetTranslation();
+
+		if (swLength(Chord) < 0.001f)
+			continue;
+
+		const swVector3 Tangent = swNormalize(GetControlPointTangent(ControlPoint.Transform));
+		const swVector3 Target = swNormalize(Chord) * (swDot(Tangent, Chord) < 0.0f ? -1.0f : 1.0f);
+		const swVector3 Axis = swCross(Tangent, Target);
+		const float Cosine = swDot(Tangent, Target);
+
+		if (Cosine > 0.99999f)
+			continue;
+
+		// the shortest turn onto the chord, the side is picked by trying both since the rotation order depends on the frame
+		const swVector3 TurnAxis = swLength(Axis) > 0.0001f ? swNormalize(Axis) : swNormalize(swCross(Tangent, std::fabs(Tangent[0]) < 0.9f ? swVector3(1.0f, 0.0f, 0.0f) : swVector3(0.0f, 1.0f, 0.0f)));
+		const float Angle = std::acos(swMinimum(swMaximum(Cosine, -1.0f), 1.0f));
+		const swMatrix33 Rotation(ControlPoint.Transform);
+		const swVector3 Position = ControlPoint.Transform.GetTranslation();
+		swMatrix44 BestTransform = ControlPoint.Transform;
+		float BestCosine = Cosine;
+
+		for (const float Sign : { 1.0f, -1.0f })
+		{
+			const swMatrix33 Turn = swMatrix33FromAxisAngle(TurnAxis, Sign * Angle);
+
+			for (const swMatrix33& Candidate : { swMultiply(Rotation, Turn), swMultiply(Turn, Rotation) })
+			{
+				const swMatrix44 Transform(Candidate, Position);
+				const float CandidateCosine = swDot(swNormalize(GetControlPointTangent(Transform)), Target);
+
+				if (CandidateCosine > BestCosine)
+				{
+					BestCosine = CandidateCosine;
+					BestTransform = Transform;
+				}
+			}
+		}
+
+		ControlPoint.Transform = BestTransform;
+	}
 }
 
 // use to get the bezier points of a path segment with the given handle lengths
@@ -1988,6 +2048,7 @@ int swSynthesisInformation::InsertControlPoint(std::vector<swPartControlPoint>& 
 	if (BestSegment != UINT32_MAX)
 	{
 		swPartControlPoint ControlPoint = ControlPoints[BestSegment];
+		ControlPoint.TangentClamped = true;
 		ControlPoint.Transform = swMatrix44(GetSectionControlPointRotation(BestSection, swMatrix33(ControlPoint.Transform)), BestPosition);
 
 		if (BestSegment != ControlPoints.size() - 1)

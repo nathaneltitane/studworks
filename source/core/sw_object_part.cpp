@@ -1529,6 +1529,31 @@ bool swPart::RemoveFocusedControlPoint()
 	return true;
 }
 
+bool swPart::CanClampControlPointTangent() const
+{
+	const quint32 Section = GetFocusSection();
+
+	return Section > SW_PART_SECTION_CONTROL_POINT_FIRST && Section <= SW_PART_SECTION_CONTROL_POINT_LAST && Section - SW_PART_SECTION_CONTROL_POINT_FIRST + 1 < mControlPoints.size();
+}
+
+bool swPart::IsControlPointTangentClamped() const
+{
+	return CanClampControlPointTangent() && mControlPoints[GetFocusSection() - SW_PART_SECTION_CONTROL_POINT_FIRST].TangentClamped;
+}
+
+bool swPart::ToggleFocusedControlPointTangent()
+{
+	if (!CanClampControlPointTangent())
+		return false;
+
+	swPartControlPoint& ControlPoint = mControlPoints[GetFocusSection() - SW_PART_SECTION_CONTROL_POINT_FIRST];
+	ControlPoint.TangentClamped = !ControlPoint.TangentClamped;
+
+	UpdateMesh();
+
+	return true;
+}
+
 void swPart::VerifyControlPoints(std::vector<swPartControlPoint>& ControlPoints) const
 {
 	const swSynthesisInformation* SynthInfo = mPartData->GetSynthInfo();
@@ -1627,7 +1652,11 @@ void swPart::UpdateMesh()
 	mSynthPending = mPartData && mPartData->GetSynthInfo();
 
 	if (mSynthPending)
+	{
+		// clamped control points follow every change of their neighbors
+		mPartData->GetSynthInfo()->ClampControlPointTangents(mControlPoints);
 		swGetPartsLibrary()->RequestSynthMesh(this);
+	}
 	else
 	{
 		delete mMesh;

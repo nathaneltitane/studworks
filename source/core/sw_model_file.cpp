@@ -359,6 +359,9 @@ void swModel::SaveLDraw(QTextStream& Stream, bool SelectedOnly, swStep LastStep)
 				for (int NumberIdx = 0; NumberIdx < 13; NumberIdx++)
 					Stream << ' ' << swFormatValue(Numbers[NumberIdx], NumberIdx < 3 ? 4 : 6);
 
+				if (ControlPoint.TangentClamped)
+					Stream << QLatin1String(" TANGENT");
+
 				Stream << LineEnding;
 			}
 		}
@@ -641,6 +644,9 @@ void swModel::LoadLDraw(QIODevice& Device, Project* Project)
 					PartControlPoint.Transform = swMatrix44(swVector4(Numbers[3], Numbers[9], -Numbers[6], 0.0f), swVector4(Numbers[5], Numbers[11], -Numbers[8], 0.0f),
 					                                         swVector4(-Numbers[4], -Numbers[10], Numbers[7], 0.0f), swVector4(Numbers[0], Numbers[2], -Numbers[1], 1.0f));
 					PartControlPoint.Scale = Numbers[12];
+
+					LineStream >> Token;
+					PartControlPoint.TangentClamped = Token == QLatin1String("TANGENT");
 				}
 			}
 

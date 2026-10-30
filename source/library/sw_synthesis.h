@@ -46,6 +46,11 @@ public:
 		Q_UNUSED(Section);
 		return Rotation;
 	}
+	// Turns the clamped middle control points along the path between their neighbors, curves only.
+	virtual void ClampControlPointTangents(std::vector<swPartControlPoint>& ControlPoints) const
+	{
+		Q_UNUSED(ControlPoints);
+	}
 	// False when the control points are further apart than the part can reach without stretching.
 	virtual bool IsReachable(const std::vector<swPartControlPoint>& ControlPoints) const
 	{

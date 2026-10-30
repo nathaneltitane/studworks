@@ -343,29 +343,40 @@ void swView::ShowContextMenu() const
 	Popup->addAction(Actions[SW_EDIT_PASTE]);
 	Popup->addAction(Actions[SW_EDIT_PASTE_STEPS]);
 	Popup->addAction(Actions[SW_PART_DUPLICATE]);
+	Popup->addAction(Actions[SW_PART_DELETE]);
+
+	// control point actions only for a focused flexible part
+	const swModel* ActiveModel = GetActiveModel();
+	const swPart* FocusPart = ActiveModel ? dynamic_cast<const swPart*>(ActiveModel->GetFocusObject()) : nullptr;
+
+	if (FocusPart && FocusPart->mPartData && FocusPart->mPartData->GetSynthInfo())
+	{
+		Popup->addSeparator();
+
+		Popup->addAction(Actions[SW_PART_CONTROL_POINT_INSERT]);
+		Popup->addAction(Actions[SW_PART_CONTROL_POINT_REMOVE]);
+		Popup->addAction(Actions[SW_PART_CONTROL_POINT_TANGENT]);
+	}
 
 	Popup->addSeparator();
 
-	Popup->addAction(Actions[SW_PART_CONTROL_POINT_INSERT]);
-	Popup->addAction(Actions[SW_PART_CONTROL_POINT_REMOVE]);
-
-	Popup->addSeparator();
-
-	Popup->addAction(Actions[SW_PART_EDIT_SELECTED_SUBMODEL]);
-	Popup->addAction(Actions[SW_PART_EDIT_END_SUBMODEL]);
-	Popup->addAction(Actions[SW_PART_VIEW_SELECTED_MODEL]);
-	Popup->addAction(Actions[SW_PART_INLINE_SELECTED_MODELS]);
-	Popup->addAction(Actions[SW_PART_MOVE_SELECTION_TO_MODEL]);
-
-	Popup->addSeparator();
+	QMenu* SubmodelMenu = Popup->addMenu(tr("Submodel"));
+	SubmodelMenu->addAction(Actions[SW_PART_EDIT_SELECTED_SUBMODEL]);
+	SubmodelMenu->addAction(Actions[SW_PART_EDIT_END_SUBMODEL]);
+	SubmodelMenu->addAction(Actions[SW_PART_VIEW_SELECTED_MODEL]);
+	SubmodelMenu->addAction(Actions[SW_PART_INLINE_SELECTED_MODELS]);
+	SubmodelMenu->addAction(Actions[SW_PART_MOVE_SELECTION_TO_MODEL]);
 
 	Popup->addMenu(gMainWindow->GetToolsMenu());
+
+	Popup->addSeparator();
+
 	Popup->addAction(Actions[SW_VIEW_NORMAL_TO_FACE]);
-	Popup->addMenu(gMainWindow->GetCutawayMenu());
 	Popup->addMenu(gMainWindow->GetViewpointMenu());
 	Popup->addMenu(gMainWindow->GetCameraMenu());
 	Popup->addMenu(gMainWindow->GetProjectionMenu());
 	Popup->addMenu(gMainWindow->GetShadingMenu());
+	Popup->addMenu(gMainWindow->GetCutawayMenu());
 
 	Popup->addSeparator();
 

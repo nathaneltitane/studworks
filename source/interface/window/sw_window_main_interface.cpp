@@ -177,6 +177,7 @@ void swMainWindow::CreateActions()
 	mActions[SW_VIEW_STEP_VIEW_TOGGLE_FOLLOW]->setCheckable(true);
 	mActions[SW_VIEW_STEP_VIEW_TOGGLE_FOLLOW]->setChecked(swGetPreferences().mFollowStepViews);
 	mActions[SW_PART_TOGGLE_FIRST_AT_ORIGIN]->setCheckable(true);
+	mActions[SW_PART_CONTROL_POINT_TANGENT]->setCheckable(true);
 	mActions[SW_EDIT_TOGGLE_SHADOW_LIBRARY]->setCheckable(true);
 	UpdateShadowLibraryAction();
 

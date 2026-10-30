@@ -22,10 +22,12 @@ struct swPartControlPoint
 {
 	swMatrix44 Transform;
 	float Scale;
+	// A clamped middle control point turns along the path between its neighbors, a released one keeps its own rotation.
+	bool TangentClamped = false;
 
 	bool operator==(const swPartControlPoint& Other) const
 	{
-		return Transform == Other.Transform && Scale == Other.Scale;
+		return Transform == Other.Transform && Scale == Other.Scale && TangentClamped == Other.TangentClamped;
 	}
 };
 
@@ -176,9 +178,12 @@ public:
 
 	bool CanAddControlPoint() const;
 	bool CanRemoveControlPoint() const;
+	bool CanClampControlPointTangent() const;
+	bool IsControlPointTangentClamped() const;
 
 	bool InsertControlPoint(const swVector3& WorldStart, const swVector3& WorldEnd);
 	bool RemoveFocusedControlPoint();
+	bool ToggleFocusedControlPointTangent();
 	void VerifyControlPoints(std::vector<swPartControlPoint>& ControlPoints) const;
 	bool IsGeneratedMeshPending() const { return mSynthPending; }
 	// An older mesh may remain visible while its replacement is pending.

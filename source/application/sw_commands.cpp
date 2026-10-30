@@ -2180,6 +2180,14 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+	// SW_PART_CONTROL_POINT_TANGENT
+	{
+		QT_TRANSLATE_NOOP("Action", "Part.ControlPoint.Tangent"),
+		QT_TRANSLATE_NOOP("Menu", "Clamp Tangent"),
+		QT_TRANSLATE_NOOP("Status", "Turn the selected control point along the path, or release it to rotate it freely"),
+		"",
+		""
+	},
 	// SW_PART_TRAIN_TRACK_FOCUS_NEXT
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.TrainTrack.FocusNext"),

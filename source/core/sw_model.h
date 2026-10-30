@@ -72,6 +72,8 @@ enum class swModelHistoryEditMerge;
 #define SW_SELECTION_CAN_ADD_CONTROL_POINT    0x2000 // Can add control points to focused part
 #define SW_SELECTION_CAN_REMOVE_CONTROL_POINT 0x4000 // Can remove control points from focused part
 #define SW_SELECTION_TRAIN_TRACK_VISIBLE      0x8000 // Focused part has train track connections
+#define SW_SELECTION_CAN_CLAMP_TANGENT       0x10000 // Focused control point is a middle one
+#define SW_SELECTION_TANGENT_CLAMPED         0x20000 // Focused control point turns along the path
 
 enum class swSelectionMode
 {
@@ -379,6 +381,7 @@ public:
 	void RemoveSelectedObjectsKeyFrames();
 	void InsertControlPoint();
 	void RemoveFocusedControlPoint();
+	void ToggleFocusedControlPointTangent();
 	void FocusNextTrainTrack();
 	void FocusPreviousTrainTrack();
 	void RotateFocusedTrainTrack(int Direction);
