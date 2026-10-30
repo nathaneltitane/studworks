@@ -496,6 +496,33 @@ pre {
 	display: none;
 }
 
+/* footer ends point to the buttons out of view */
+
+.footer-start,
+.footer-end {
+	flex: none;
+	align-self: center;
+	width: 40px;
+	border: 10px solid transparent;
+	opacity: 0;
+	transition: opacity 0.25s ease;
+}
+
+.footer-start {
+	border-left-color: #000000;
+	transform: translateX(50%);
+}
+
+.footer-end {
+	border-right-color: #000000;
+	transform: translateX(-50%);
+}
+
+.footer-scroll .footer-start,
+.footer-scroll .footer-end {
+	opacity: 1;
+}
+
 /* footer edges fade the buttons scrolling under them */
 
 .footer-border {
@@ -1750,6 +1777,7 @@ studworx/tools/studworx-install [prefix] [build directory]</code></pre>
 	<div class="footer-border"></div>
 	<div class="footer">
 		<div class="footer-inner">
+			<span class="footer-start" aria-hidden="true"></span>
 			<a class="nav-button" href="#top"><svg class="icon" aria-hidden="true"><use href="#i-studworx"/></svg><span class="label">Home</span></a>
 			<a class="nav-button" href="#interface"><svg class="icon" aria-hidden="true"><use href="#i-console"/></svg><span class="label">Interface</span></a>
 			<a class="nav-button" href="#files"><svg class="icon" aria-hidden="true"><use href="#i-grey"/></svg><span class="label">Files</span></a>
@@ -1767,6 +1795,7 @@ studworx/tools/studworx-install [prefix] [build directory]</code></pre>
 			<a class="nav-button" href="https://github.com/nathaneltitane/studworx"><svg class="icon" aria-hidden="true"><use href="#i-black"/></svg><span class="label">GitHub</span></a>
 			<a class="nav-button" href="https://mechablocks.com"><svg class="icon" aria-hidden="true"><use href="#i-red"/></svg><span class="label">MechaBlocks</span></a>
 			<a class="nav-button" href="https://www.paypal.com/donate?hosted_button_id=ZW3CDCANHJCWJ"><svg class="icon" aria-hidden="true"><use href="#i-fuschia"/></svg><span class="label">Donate</span></a>
+			<span class="footer-end" aria-hidden="true"></span>
 		</div>
 	</div>
 </nav>
@@ -2288,6 +2317,16 @@ function navReveal(button) {
 
 	navFooter.scrollTo({ left: left - (navFooter.clientWidth - button.offsetWidth) / 2, behavior: 'smooth' });
 }
+
+// show the footer ends when the buttons do not all fit
+
+function navEnds() {
+	navFooter.classList.toggle('footer-scroll', navFooter.scrollWidth > navFooter.clientWidth + 1);
+}
+
+window.addEventListener('resize', navEnds);
+
+navEnds();
 
 // scroll the footer sideways with the mouse wheel
 
