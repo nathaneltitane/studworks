@@ -238,8 +238,8 @@ void swPartsTableWidget::scrollTo(const QModelIndex& Index, ScrollHint Hint)
 class swPartsTableWidgetItem : public QTableWidgetItem
 {
 public:
-	explicit swPartsTableWidgetItem(const QString& Text, int Type = QTableWidgetItem::Type)
-		: QTableWidgetItem(Text, Type)
+	explicit swPartsTableWidgetItem(const QString& Text, int TableItemType = QTableWidgetItem::Type)
+		: QTableWidgetItem(Text, TableItemType)
 	{
 		mLast = false;
 		setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);

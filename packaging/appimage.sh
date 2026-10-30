@@ -20,7 +20,8 @@ package_architecture="$(uname -m)"
 
 source "${directory_source}/packaging/bundle.sh"
 
-# lay out the appdir root
+# lay out the appdir root readable and enterable by every user
+chmod 755 "${directory_package}"
 cp "${directory_source}/packaging/AppRun" "${directory_package}/AppRun"
 chmod 755 "${directory_package}/AppRun"
 cp "${directory_source}/platform/studworks.desktop" "${directory_package}/studworks.desktop"

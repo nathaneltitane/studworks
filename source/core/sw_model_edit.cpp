@@ -443,6 +443,17 @@ void swModel::DeleteSelectedObjects()
 		return;
 	}
 
+	// a focused control point is removed on its own and never takes its part along
+	const swPart* FocusPart = dynamic_cast<swPart*>(GetFocusObject());
+	const quint32 FocusSection = FocusPart ? FocusPart->GetFocusSection() : SW_OBJECT_SECTION_INVALID;
+
+	if (FocusSection >= SW_PART_SECTION_CONTROL_POINT_FIRST && FocusSection <= SW_PART_SECTION_CONTROL_POINT_LAST)
+	{
+		RemoveFocusedControlPoint();
+
+		return;
+	}
+
 	BeginHistorySequence();
 	BeginEditHistory();
 

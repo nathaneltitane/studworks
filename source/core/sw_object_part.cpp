@@ -734,11 +734,13 @@ void swPart::DrawSynthInterface(swContext* Context, const swMatrix44& WorldMatri
 		Context->SetVertexFormatPosition(3);
 		Context->SetIndexBufferPointer(Indices);
 
-		// an end that sits on a connection, or would on release, takes the seated color
-		if (static_cast<int>(ControlPointIndex) == mControlPointSeatFound || IsControlPointSeated(ControlPointIndex))
+		// an end that would seat on release takes the seated color, a clicked one shows it is focused before showing its seat
+		if (static_cast<int>(ControlPointIndex) == mControlPointSeatFound)
 			Context->SetColor(ControlPointSeatedColor);
 		else if (IsFocused(SW_PART_SECTION_CONTROL_POINT_FIRST + ControlPointIndex))
 			Context->SetColor(ControlPointFocusedColor);
+		else if (IsControlPointSeated(ControlPointIndex))
+			Context->SetColor(ControlPointSeatedColor);
 		else
 			Context->SetColor(ControlPointColor);
 
@@ -1580,17 +1582,42 @@ swMatrix44 swPart::GetControlPointCubeTransform(quint32 ControlPointIndex) const
 	if (!Seat)
 		return Transform;
 
-	// how far the cube reaches along the surface normal from its center
-	float Extent = 0.0f;
+	// the cube side closest to the surface is turned onto it so a whole face rests flush
+	int NearestAxisIndex = 0;
+	float NearestCosine = 0.0f;
 
 	for (int AxisIndex = 0; AxisIndex < 3; AxisIndex++)
-		Extent += fabsf(swDot(swNormalize(swVector3(Transform[AxisIndex])), Seat->SurfaceNormal));
+	{
+		const float Cosine = swDot(swNormalize(swVector3(Transform[AxisIndex])), Seat->SurfaceNormal);
 
-	Extent *= SW_PART_CONTROL_POINT_SIZE;
+		if (fabsf(Cosine) > fabsf(NearestCosine))
+		{
+			NearestCosine = Cosine;
+			NearestAxisIndex = AxisIndex;
+		}
+	}
 
+	const swVector3 NearestAxis = swNormalize(swVector3(Transform[NearestAxisIndex])) * (NearestCosine < 0.0f ? -1.0f : 1.0f);
+	const swVector3 TurnAxis = swCross(NearestAxis, Seat->SurfaceNormal);
+	const float Angle = acosf(swClamp(swDot(NearestAxis, Seat->SurfaceNormal), -1.0f, 1.0f));
 	const swVector3 Position = Transform.GetTranslation();
+
+	if (Angle > 1e-4f && swLength(TurnAxis) > 1e-6f)
+	{
+		const swVector3 TurnNormal = swNormalize(TurnAxis);
+		swMatrix33 Turn = swMatrix33FromAxisAngle(TurnNormal, Angle);
+
+		if (swDot(swMultiply(NearestAxis, Turn), Seat->SurfaceNormal) < 0.999f)
+			Turn = swMatrix33FromAxisAngle(TurnNormal, -Angle);
+
+		swMatrix33 Rotation = swMultiply(swMatrix33(Transform), Turn);
+		Rotation.Orthonormalize();
+
+		Transform = swMatrix44(Rotation, Position);
+	}
+
 	const float Height = swDot(Position - Seat->SurfacePosition, Seat->SurfaceNormal);
-	Transform.SetTranslation(Position + Seat->SurfaceNormal * (Extent - Height));
+	Transform.SetTranslation(Position + Seat->SurfaceNormal * (SW_PART_CONTROL_POINT_SIZE - Height));
 
 	return Transform;
 }
