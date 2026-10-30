@@ -457,6 +457,8 @@ protected:
 	// The flexible part whose control point cube the pointer drags freely, and that control point section.
 	swPart* mMouseDownControlPointPart = nullptr;
 	quint32 mMouseDownControlPointSection = ~0U;
+	// Where the dragged control point was when the drag started.
+	swVector3 mMouseDownControlPointPosition;
 	int mPanX = 0;
 	int mPanY = 0;
 

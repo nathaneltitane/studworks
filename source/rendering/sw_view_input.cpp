@@ -1359,6 +1359,9 @@ void swView::OnButtonDown(swTrackButton TrackButton)
 			mMouseDownControlPointSection = Section;
 		}
 
+		if (mMouseDownControlPointPart)
+			mMouseDownControlPointPosition = mMouseDownControlPointPart->GetSectionPosition(mMouseDownControlPointSection);
+
 		if (ActiveModel->AnyObjectsSelected())
 			StartTracking(TrackButton);
 		break;
@@ -1766,15 +1769,47 @@ void swView::OnMouseMove()
 			}
 			else if (mTrackTool == swTrackTool::MoveXYZ && mMouseDownControlPointPart)
 			{
-				// the control point follows the pointer on the screen plane through it
-				const swVector3 PlaneNormal = swNormalize(MouseDownEnd - MouseDownStart);
-				const swVector4 Plane(PlaneNormal, -swDot(PlaneNormal, Center));
-				swVector3 Intersection, MoveStart;
+				// over a part the cube stacks flush on the face under the pointer like a dragged part
+				const swObjectRayTest SurfaceRayTest = RayTest(true, true);
 
-				if (swLineSegmentPlaneIntersection(&Intersection, CurrentStart, CurrentEnd, Plane) && swLineSegmentPlaneIntersection(&MoveStart, MouseDownStart, MouseDownEnd, Plane))
+				if (SurfaceRayTest.ObjectSection.Object)
 				{
-					const swVector3 Distance = swMultiply(Intersection - MoveStart, swMatrix33AffineInverse(swMatrix33(WorldMatrix)));
-					ActiveModel->UpdateMoveTool(Distance, true, mTrackButton != swTrackButton::Left);
+					const swMatrix44& SurfaceTransform = SurfaceRayTest.PartRayTest.Transform;
+					const swVector3 RayDirection = swNormalize(SurfaceRayTest.End - SurfaceRayTest.Start);
+					const swVector3& Face = SurfaceRayTest.PartRayTest.Plane;
+					swVector3 Position = swMultiply31(SurfaceRayTest.Start + RayDirection * SurfaceRayTest.Distance, swMatrix44AffineInverse(SurfaceTransform));
+
+					// the face the pointer hits sets one axis, the pointer sets the other two
+					for (int Axis = 0; Axis < 3; Axis++)
+					{
+						if (Face[Axis] > 0.0f)
+						{
+							Position[Axis] = Face[Axis] + SW_PART_CONTROL_POINT_SIZE;
+							break;
+						}
+						else if (Face[Axis] < 0.0f)
+						{
+							Position[Axis] = Face[Axis] - SW_PART_CONTROL_POINT_SIZE;
+							break;
+						}
+					}
+
+					if (gMainWindow->GetRelativeTransform())
+						Position = swMultiply31(ActiveModel->SnapPosition(Position), SurfaceTransform);
+					else
+						Position = ActiveModel->SnapPosition(swMultiply31(Position, SurfaceTransform));
+
+					ActiveModel->UpdateControlPointDragTool(mMouseDownControlPointPart, Position);
+				}
+				else
+				{
+					// elsewhere it follows the pointer on the screen plane through where it started
+					const swVector3 PlaneNormal = swNormalize(MouseDownEnd - MouseDownStart);
+					const swVector4 Plane(PlaneNormal, -swDot(PlaneNormal, mMouseDownControlPointPosition));
+					swVector3 Intersection, MoveStart;
+
+					if (swLineSegmentPlaneIntersection(&Intersection, CurrentStart, CurrentEnd, Plane) && swLineSegmentPlaneIntersection(&MoveStart, MouseDownStart, MouseDownEnd, Plane))
+						ActiveModel->UpdateControlPointDragTool(mMouseDownControlPointPart, mMouseDownControlPointPosition + Intersection - MoveStart);
 				}
 			}
 			else if (mTrackTool == swTrackTool::MoveXYZ && mMouseDownPart)

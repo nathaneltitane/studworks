@@ -9,6 +9,9 @@ class swPartData;
 
 #define SW_MAXIMUM_CONTROL_POINTS 1000
 
+// Half the edge of a control point cube.
+constexpr float SW_PART_CONTROL_POINT_SIZE = 10.0f;
+
 enum swPartSection : quint32
 {
 	SW_PART_SECTION_INVALID = SW_OBJECT_SECTION_INVALID,

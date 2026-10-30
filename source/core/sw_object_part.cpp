@@ -18,8 +18,6 @@
 #include "sw_string.h"
 #include "sw_model.h"
 
-constexpr float SW_PART_CONTROL_POINT_SIZE = 10.0f;
-
 swPart::swPart()
     : swObject(swObjectType::Part)
 {

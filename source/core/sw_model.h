@@ -514,6 +514,8 @@ public:
 	void InsertLightToolClicked(const swVector3& Position, swLightType LightType);
 	void UpdateMoveTool(const swVector3& Distance, bool AllowRelative, bool AlternateButtonDrag);
 	void UpdateFreeMoveTool(swPart* MousePart, const swMatrix44& StartTransform, const swMatrix44& NewTransform, bool IsConnection, bool AlternateButtonDrag);
+	// Moves the focused control point of a flexible part to a model position, pulled onto a connection close enough to seat it.
+	void UpdateControlPointDragTool(swPart* Part, const swVector3& Position);
 	void UpdateRotateTool(const swVector3& Axis, float Angle, bool AlternateButtonDrag, bool Relative);
 	void UpdateRotateTool(const swMatrix33& RotationMatrix, bool AlternateButtonDrag, bool Relative);
 	void UpdateScaleTool(const float Scale);

@@ -374,6 +374,36 @@ void swModel::UpdateMoveTool(const swVector3& Distance, bool AllowRelative, bool
 	UpdateAllViews();
 }
 
+// use to move a dragged control point cube to where the pointer lands
+void swModel::UpdateControlPointDragTool(swPart* Part, const swVector3& Position)
+{
+	const quint32 Section = Part->GetFocusSection();
+
+	if (Section < SW_PART_SECTION_CONTROL_POINT_FIRST || Section > SW_PART_SECTION_CONTROL_POINT_LAST)
+		return;
+
+	const quint32 ControlPointIndex = Section - SW_PART_SECTION_CONTROL_POINT_FIRST;
+
+	Part->MoveSelected(mCurrentStep, gMainWindow->GetAddKeys(), Position - Part->GetSectionPosition(Section));
+	Part->UpdatePosition(mCurrentStep);
+
+	// an end close enough to a connection is pulled onto it so it lines up while dragging
+	swMatrix44 SeatTransform;
+	const bool SeatFound = FindControlPointSeat(Part, ControlPointIndex, SeatTransform);
+
+	if (SeatFound)
+	{
+		Part->MoveSelected(mCurrentStep, gMainWindow->GetAddKeys(), swMultiply31(SeatTransform.GetTranslation(), Part->mModelWorld) - Part->GetSectionPosition(Section));
+		Part->UpdatePosition(mCurrentStep);
+	}
+
+	Part->SetControlPointSeatFound(SeatFound ? static_cast<int>(ControlPointIndex) : -1);
+	mMouseToolFirstMove = false;
+
+	gMainWindow->UpdateSelectedObjects(false);
+	UpdateAllViews();
+}
+
 void swModel::UpdateFreeMoveTool(swPart* MousePart, const swMatrix44& StartTransform, const swMatrix44& NewTransform, bool IsConnection, bool AlternateButtonDrag)
 {
 	swMatrix33 NewRotation = IsConnection ? swMatrix33(NewTransform) : swMatrix33(StartTransform);
