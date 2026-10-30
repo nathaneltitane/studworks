@@ -473,6 +473,7 @@ pre {
 	height: 80px;
 	background: #aaaaaa;
 	border-radius: 20px 20px 0 0;
+	overflow: hidden;
 	z-index: 20;
 	transform: translateY(80px);
 	animation: footer-reveal 0.75s ease 0.75s forwards;
@@ -493,6 +494,20 @@ pre {
 
 .footer::-webkit-scrollbar {
 	display: none;
+}
+
+/* footer edges fade the buttons scrolling under them */
+
+.footer-border {
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	border: 10px solid #aaaaaa;
+	border-top: 0;
+	border-bottom: 0;
+	border-radius: 20px 20px 0 0;
+	box-shadow: inset 5px 0 10px #aaaaaa, inset -5px 0 10px #aaaaaa;
+	pointer-events: none;
 }
 
 .footer-inner {
@@ -1732,6 +1747,7 @@ studworx/tools/studworx-install [prefix] [build directory]</code></pre>
 </div>
 
 <nav id="footer" aria-label="Sections">
+	<div class="footer-border"></div>
 	<div class="footer">
 		<div class="footer-inner">
 			<a class="nav-button" href="#top"><svg class="icon" aria-hidden="true"><use href="#i-studworx"/></svg><span class="label">Home</span></a>
@@ -2262,6 +2278,27 @@ document.querySelectorAll('.reveal').forEach((node) => revealObserver.observe(no
 
 // mark the footer button of the section in view
 
+const navFooter = document.querySelector('.footer');
+
+function navReveal(button) {
+	const left = button.offsetLeft - navFooter.offsetLeft;
+	const right = left + button.offsetWidth;
+
+	if (left >= navFooter.scrollLeft && right <= navFooter.scrollLeft + navFooter.clientWidth) return;
+
+	navFooter.scrollTo({ left: left - (navFooter.clientWidth - button.offsetWidth) / 2, behavior: 'smooth' });
+}
+
+// scroll the footer sideways with the mouse wheel
+
+navFooter.addEventListener('wheel', (event) => {
+	if (event.deltaY === 0 || navFooter.scrollWidth <= navFooter.clientWidth) return;
+
+	event.preventDefault();
+
+	navFooter.scrollLeft += event.deltaY;
+}, { passive: false });
+
 const navButtons = [...document.querySelectorAll('.nav-button[href^="#"]')];
 
 const navObserver = new IntersectionObserver((items) => {
@@ -2273,7 +2310,7 @@ const navObserver = new IntersectionObserver((items) => {
 
 			button.classList.toggle('current', current);
 
-			if (current) button.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+			if (current) navReveal(button);
 		});
 	});
 }, { rootMargin: '-45% 0px -50% 0px' });
