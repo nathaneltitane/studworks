@@ -795,6 +795,8 @@ void swView::UpdateTrackTool()
 	int y = mMouseY;
 	bool Redraw = false;
 	mMouseDownPart = nullptr;
+	mMouseDownControlPointPart = nullptr;
+	mMouseDownControlPointSection = ~0U;
 	mTrackToolFromOverlay = false;
 	swModel* ActiveModel = GetActiveModel();
 
@@ -831,17 +833,28 @@ void swView::UpdateTrackTool()
 			mTrackToolFromOverlay = NewTrackTool != swTrackTool::MoveXYZ && NewTrackTool != swTrackTool::Select;
 			Redraw = NewTrackTool != mTrackTool || NewTrackSection != mTrackToolSection;
 
-			if (CurrentTool == swTool::Select && NewTrackTool == swTrackTool::Select && mMouseModifiers == Qt::NoModifier)
+			if ((NewTrackTool == swTrackTool::Select || NewTrackTool == swTrackTool::MoveXYZ) && mMouseModifiers == Qt::NoModifier)
 			{
 				swObjectSection ObjectSection = FindObjectUnderPointer(false, false);
 				swObject* Object = ObjectSection.Object;
 
-				if (Object && Object->IsPart() && ObjectSection.Section == SW_PART_SECTION_POSITION && Object->IsSelected())
+				if (Object && Object->IsPart() && Object->IsSelected())
 				{
 					swPart* Part = (swPart*)Object;
-					mMouseDownTransform = Part->mModelWorld;
-					mMouseDownPart = Part;
-					NewTrackTool = swTrackTool::MoveXYZ;
+
+					if (CurrentTool == swTool::Select && NewTrackTool == swTrackTool::Select && ObjectSection.Section == SW_PART_SECTION_POSITION)
+					{
+						mMouseDownTransform = Part->mModelWorld;
+						mMouseDownPart = Part;
+						NewTrackTool = swTrackTool::MoveXYZ;
+					}
+					// a control point cube drags freely from anywhere inside it like a part
+					else if (ObjectSection.Section >= SW_PART_SECTION_CONTROL_POINT_FIRST && ObjectSection.Section <= SW_PART_SECTION_CONTROL_POINT_LAST)
+					{
+						mMouseDownControlPointPart = Part;
+						mMouseDownControlPointSection = ObjectSection.Section;
+						NewTrackTool = swTrackTool::MoveXYZ;
+					}
 				}
 			}
 		}
@@ -1334,6 +1347,18 @@ void swView::OnButtonDown(swTrackButton TrackButton)
 	case swTrackTool::MoveXZ:
 	case swTrackTool::MoveYZ:
 	case swTrackTool::MoveXYZ:
+		// grabbing a control point cube focuses it first
+		if (swPart* Part = mMouseDownControlPointPart; Part && (ActiveModel->GetFocusObject() != Part || Part->GetFocusSection() != mMouseDownControlPointSection))
+		{
+			const quint32 Section = mMouseDownControlPointSection;
+			ActiveModel->SetSelectionAndFocusAction(std::vector<swObject*>(), Part, Section, gMainWindow->GetSelectionMode());
+
+			// the focus change refreshes the track tool so the grab is restored
+			mTrackTool = swTrackTool::MoveXYZ;
+			mMouseDownControlPointPart = Part;
+			mMouseDownControlPointSection = Section;
+		}
+
 		if (ActiveModel->AnyObjectsSelected())
 			StartTracking(TrackButton);
 		break;
@@ -1737,6 +1762,19 @@ void swView::OnMouseMove()
 						Distance = swMultiply(Distance, swMatrix33AffineInverse(swMatrix33(WorldMatrix)));
 						ActiveModel->UpdateMoveTool(Distance, true, mTrackButton != swTrackButton::Left);
 					}
+				}
+			}
+			else if (mTrackTool == swTrackTool::MoveXYZ && mMouseDownControlPointPart)
+			{
+				// the control point follows the pointer on the screen plane through it
+				const swVector3 PlaneNormal = swNormalize(MouseDownEnd - MouseDownStart);
+				const swVector4 Plane(PlaneNormal, -swDot(PlaneNormal, Center));
+				swVector3 Intersection, MoveStart;
+
+				if (swLineSegmentPlaneIntersection(&Intersection, CurrentStart, CurrentEnd, Plane) && swLineSegmentPlaneIntersection(&MoveStart, MouseDownStart, MouseDownEnd, Plane))
+				{
+					const swVector3 Distance = swMultiply(Intersection - MoveStart, swMatrix33AffineInverse(swMatrix33(WorldMatrix)));
+					ActiveModel->UpdateMoveTool(Distance, true, mTrackButton != swTrackButton::Left);
 				}
 			}
 			else if (mTrackTool == swTrackTool::MoveXYZ && mMouseDownPart)

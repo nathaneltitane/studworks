@@ -20,6 +20,10 @@ public:
 	void ClampControlPointTangents(std::vector<swPartControlPoint>& ControlPoints) const override;
 	void AlignControlPointTangent(std::vector<swPartControlPoint>& ControlPoints, quint32 ControlPointIndex) const override;
 	void AlignControlPointDirection(std::vector<swPartControlPoint>& ControlPoints, quint32 ControlPointIndex, const swVector3& Direction) const override;
+	swVector3 GetControlPointDirection(const swMatrix44& Transform) const override
+	{
+		return GetControlPointTangent(Transform);
+	}
 	bool IsReachable(const std::vector<swPartControlPoint>& ControlPoints) const override;
 	void GetPath(const std::vector<swPartControlPoint>& ControlPoints, std::vector<swVector3>& Points, size_t& ReachedPointCount, std::vector<float>& HandleLengths) const override;
 	float GetSpreadForHandleLength(const std::vector<swPartControlPoint>& ControlPoints, quint32 ControlPointIndex, float HandleLength, float CurrentHandleLength) const override;

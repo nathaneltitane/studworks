@@ -842,31 +842,84 @@ bool swModel::FindControlPointSeat(const swPart* Part, quint32 ControlPointIndex
 	if (Fittings.empty())
 		return false;
 
-	// turn the fitting the shortest way onto the connection axis and move it there
-	auto GetSeatedControlPoint = [&ControlPointWorld](const swMatrix44& Fitting, const swMatrix44& Target)
+	// the connection frames of the fitting parts at this end for a set of control points, in world space
+	auto GetFittingFrames = [&](const std::vector<swPartControlPoint>& Points)
 	{
-		const swVector3 FittingAxis = swNormalize(swMultiply30(swVector3(0.0f, 0.0f, 1.0f), Fitting));
-		const swVector3 TargetAxis = swNormalize(swMultiply30(swVector3(0.0f, 0.0f, 1.0f), Target));
-		swMatrix33 Rotation = swMatrix33Identity();
-		swVector3 RotationAxis = swCross(FittingAxis, TargetAxis);
-		const float Angle = acosf(swClamp(swDot(FittingAxis, TargetAxis), -1.0f, 1.0f));
+		std::vector<swMatrix44> Frames;
+		const swVector3 Position = swMultiply31(Points[ControlPointIndex].Transform.GetTranslation(), Part->mModelWorld);
 
-		if (swLength(RotationAxis) < 1e-4f)
-			RotationAxis = swCross(FittingAxis, fabsf(FittingAxis[0]) < 0.9f ? swVector3(1.0f, 0.0f, 0.0f) : swVector3(0.0f, 1.0f, 0.0f));
-
-		if (Angle > 1e-4f)
+		for (const auto& [PartName, Transform] : SynthInfo->GetParts(Points))
 		{
-			RotationAxis = swNormalize(RotationAxis);
-			Rotation = swMatrix33FromAxisAngle(RotationAxis, Angle);
+			const swMatrix44 PartWorld = swMultiply(swMatrix44LDrawToStudWorks(Transform), Part->mModelWorld);
 
-			if (swDot(swMultiply(FittingAxis, Rotation), TargetAxis) < 0.99f)
-				Rotation = swMatrix33FromAxisAngle(RotationAxis, -Angle);
+			if (swLength(PartWorld.GetTranslation() - Position) > FittingDistance)
+				continue;
+
+			for (const swConnectionCylinder& Cylinder : swShadowLibrary::GetCylinders(PartName.c_str()))
+				Frames.emplace_back(swMultiply(swMatrix44LDrawToStudWorks(Cylinder.Transform), PartWorld));
 		}
 
-		const swMatrix33 ControlPointRotation = swMultiply(swMatrix33(ControlPointWorld), Rotation);
-		const swVector3 ControlPointPosition = swMultiply(ControlPointWorld.GetTranslation() - Fitting.GetTranslation(), Rotation) + Target.GetTranslation();
+		return Frames;
+	};
 
-		return swMatrix44(ControlPointRotation, ControlPointPosition);
+	// turn the path at the control point so the fitting lies along the connection axis and move it there, in part space
+	const swMatrix44 PartWorldInverse = swMatrix44AffineInverse(Part->mModelWorld);
+	const swMatrix44 ControlPointLocal = ControlPoints[ControlPointIndex].Transform;
+	const swVector3 PathDirection = swNormalize(SynthInfo->GetControlPointDirection(ControlPointLocal));
+
+	auto GetSeatedControlPoint = [&Part, &PartWorldInverse, &ControlPointLocal, &PathDirection, SynthInfo](const swMatrix44& Fitting, const swMatrix44& Target)
+	{
+		const swMatrix44 FittingLocal = swMultiply(Fitting, PartWorldInverse);
+		const swMatrix44 TargetLocal = swMultiply(Target, PartWorldInverse);
+		const swVector3 FittingAxis = swNormalize(swMultiply30(swVector3(0.0f, 0.0f, 1.0f), FittingLocal));
+		const swVector3 TargetAxis = swNormalize(swMultiply30(swVector3(0.0f, 0.0f, 1.0f), TargetLocal));
+
+		// the fitting lies along the path, so the path turns onto the connection axis the same way round
+		const swVector3 Direction = TargetAxis * (swDot(PathDirection, FittingAxis) < 0.0f ? -1.0f : 1.0f);
+		const swVector3 Axis = swCross(PathDirection, Direction);
+		const swVector3 TurnAxis = swLength(Axis) > 1e-4f ? swNormalize(Axis) : swNormalize(swCross(PathDirection, fabsf(PathDirection[0]) < 0.9f ? swVector3(1.0f, 0.0f, 0.0f) : swVector3(0.0f, 1.0f, 0.0f)));
+		const float Angle = acosf(swClamp(swDot(PathDirection, Direction), -1.0f, 1.0f));
+		const swMatrix33 Rotation(ControlPointLocal);
+		swMatrix33 BestRotation = Rotation;
+		float BestCosine = swDot(PathDirection, Direction);
+
+		// the turn order depends on the control point frame so every way is tried
+		if (Angle > 1e-4f)
+		{
+			for (const float Sign : { 1.0f, -1.0f })
+			{
+				const swMatrix33 Turn = swMatrix33FromAxisAngle(TurnAxis, Sign * Angle);
+
+				for (const swMatrix33& Candidate : { swMultiply(Rotation, Turn), swMultiply(Turn, Rotation) })
+				{
+					const float CandidateCosine = swDot(swNormalize(SynthInfo->GetControlPointDirection(swMatrix44(Candidate, ControlPointLocal.GetTranslation()))), Direction);
+
+					if (CandidateCosine > BestCosine)
+					{
+						BestCosine = CandidateCosine;
+						BestRotation = Candidate;
+					}
+				}
+			}
+		}
+
+		// the fitting offset turns with the fitting
+		swMatrix33 FittingTurn = swMatrix33Identity();
+		const swVector3 FittingTurnAxis = swCross(FittingAxis, TargetAxis);
+		const float FittingAngle = acosf(swClamp(swDot(FittingAxis, TargetAxis), -1.0f, 1.0f));
+
+		if (FittingAngle > 1e-4f)
+		{
+			const swVector3 TurnNormal = swLength(FittingTurnAxis) > 1e-4f ? swNormalize(FittingTurnAxis) : TurnAxis;
+			FittingTurn = swMatrix33FromAxisAngle(TurnNormal, FittingAngle);
+
+			if (swDot(swMultiply(FittingAxis, FittingTurn), TargetAxis) < 0.99f)
+				FittingTurn = swMatrix33FromAxisAngle(TurnNormal, -FittingAngle);
+		}
+
+		const swVector3 ControlPointPosition = swMultiply(ControlPointLocal.GetTranslation() - FittingLocal.GetTranslation(), FittingTurn) + TargetLocal.GetTranslation();
+
+		return swMultiply(swMatrix44(BestRotation, ControlPointPosition), Part->mModelWorld);
 	};
 
 	// every seat in reach by how far the control point moves to it, whatever way the connection faces
@@ -876,6 +929,8 @@ bool swModel::FindControlPointSeat(const swPart* Part, quint32 ControlPointIndex
 		swMatrix44 Transform;
 		swVector3 SurfacePosition;
 		swVector3 SurfaceNormal;
+		size_t FittingIndex;
+		swVector3 TargetPosition;
 	};
 
 	std::vector<swConnectionSeat> Seats;
@@ -907,8 +962,10 @@ bool swModel::FindControlPointSeat(const swPart* Part, quint32 ControlPointIndex
 				const swMatrix44 Frame = swMultiply(swMatrix44LDrawToStudWorks(Cylinder.Transform), Transform);
 				const swVector3 Axis = swNormalize(swMultiply30(swVector3(0.0f, 0.0f, 1.0f), Frame));
 
-				for (const auto& [Fitting, FittingFrame] : Fittings)
+				for (size_t FittingIndex = 0; FittingIndex < Fittings.size(); FittingIndex++)
 				{
+					const auto& [Fitting, FittingFrame] = Fittings[FittingIndex];
+
 					if (!swConnectivity::AreCompatible(*Fitting, Cylinder))
 						continue;
 
@@ -928,7 +985,7 @@ bool swModel::FindControlPointSeat(const swPart* Part, quint32 ControlPointIndex
 						const swVector3 Normal = swDot(Axis, Surface - PartCenter) < 0.0f ? -Axis : Axis;
 
 						if (Distance < SnapDistance)
-							Seats.push_back({ Distance, Seat, Surface, Normal });
+							Seats.push_back({ Distance, Seat, Surface, Normal, FittingIndex, Position });
 					}
 				}
 			}
@@ -943,19 +1000,33 @@ bool swModel::FindControlPointSeat(const swPart* Part, quint32 ControlPointIndex
 	// a connection the part cannot reach without stretching stays free
 	bool Seated = false;
 
-	const swMatrix44 InverseWorld = swMatrix44AffineInverse(Part->mModelWorld);
-
 	for (const swConnectionSeat& Seat : Seats)
 	{
-		ControlPoints[ControlPointIndex].Transform = swMultiply(Seat.Transform, InverseWorld);
+		ControlPoints[ControlPointIndex].Transform = swMultiply(Seat.Transform, PartWorldInverse);
+
+		// the fitting moves with the path, so the end is nudged until the fitting lands on the connection
+		for (int Pass = 0; Pass < 3; Pass++)
+		{
+			const std::vector<swMatrix44> FittingFrames = GetFittingFrames(ControlPoints);
+
+			if (Seat.FittingIndex >= FittingFrames.size())
+				break;
+
+			const swVector3 Offset = swMultiply30(Seat.TargetPosition - FittingFrames[Seat.FittingIndex].GetTranslation(), PartWorldInverse);
+
+			if (swLength(Offset) < 0.01f)
+				break;
+
+			ControlPoints[ControlPointIndex].Transform.SetTranslation(ControlPoints[ControlPointIndex].Transform.GetTranslation() + Offset);
+		}
 
 		if (SynthInfo->IsReachable(ControlPoints))
 		{
 			if (SurfacePosition)
-				*SurfacePosition = swMultiply31(Seat.SurfacePosition, InverseWorld);
+				*SurfacePosition = swMultiply31(Seat.SurfacePosition, PartWorldInverse);
 
 			if (SurfaceNormal)
-				*SurfaceNormal = swNormalize(swMultiply30(Seat.SurfaceNormal, InverseWorld));
+				*SurfaceNormal = swNormalize(swMultiply30(Seat.SurfaceNormal, PartWorldInverse));
 
 			Seated = true;
 			break;
@@ -968,6 +1039,45 @@ bool swModel::FindControlPointSeat(const swPart* Part, quint32 ControlPointIndex
 	SeatTransform = ControlPoints[ControlPointIndex].Transform;
 
 	return true;
+}
+
+// use to tell if an end control point sits on its seat and faces the same way
+bool swModel::IsControlPointOnSeat(const swMatrix44& ControlPointTransform, const swMatrix44& SeatTransform)
+{
+	if (swLength(SeatTransform.GetTranslation() - ControlPointTransform.GetTranslation()) > 0.1f)
+		return false;
+
+	const swVector3 ControlPointAxis = swNormalize(swMultiply30(swVector3(1.0f, 0.0f, 0.0f), ControlPointTransform));
+	const swVector3 SeatAxis = swNormalize(swMultiply30(swVector3(1.0f, 0.0f, 0.0f), SeatTransform));
+
+	return swDot(ControlPointAxis, SeatAxis) > 0.999f;
+}
+
+// use to seat the ends of moved flexible parts that landed on a connection
+void swModel::SnapSelectedControlPointsToConnections()
+{
+	for (const std::unique_ptr<swPart>& Part : mParts)
+	{
+		if (!Part->IsSelected())
+			continue;
+
+		const std::vector<swPartControlPoint> ControlPoints = Part->GetControlPoints();
+
+		if (ControlPoints.size() < 2)
+			continue;
+
+		for (const quint32 ControlPointIndex : { 0u, static_cast<quint32>(ControlPoints.size() - 1) })
+		{
+			swMatrix44 SeatTransform;
+
+			if (!FindControlPointSeat(Part.get(), ControlPointIndex, SeatTransform))
+				continue;
+
+			// only an end already on the spot of a connection turns onto it
+			if (swLength(SeatTransform.GetTranslation() - ControlPoints[ControlPointIndex].Transform.GetTranslation()) < 0.1f)
+				SnapControlPointToConnection(Part.get(), ControlPointIndex);
+		}
+	}
 }
 
 // use to mark the end control points that already sit on a connection as seated
@@ -991,7 +1101,7 @@ void swModel::UpdateControlPointSeats()
 				continue;
 
 			// a free end near a connection stays free until it is dropped there
-			if (swLength(SeatTransform.GetTranslation() - ControlPoints[ControlPointIndex].Transform.GetTranslation()) < 0.1f)
+			if (IsControlPointOnSeat(ControlPoints[ControlPointIndex].Transform, SeatTransform))
 				Part->SetControlPointSeated(ControlPointIndex, SurfacePosition, SurfaceNormal);
 		}
 	}

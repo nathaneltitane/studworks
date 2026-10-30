@@ -581,6 +581,10 @@ protected:
 	bool FindControlPointSeat(const swPart* Part, quint32 ControlPointIndex, swMatrix44& SeatTransform, swVector3* SurfacePosition = nullptr, swVector3* SurfaceNormal = nullptr) const;
 	// Marks the end control points of flexible parts that already sit on a connection as seated, after loading, edits and step changes.
 	void UpdateControlPointSeats();
+	// Turns the ends of the selected flexible parts that landed on a connection onto it, after the parts move or rotate.
+	void SnapSelectedControlPointsToConnections();
+	// Tells if an end control point sits on its seat facing along the connection, not only at its position.
+	static bool IsControlPointOnSeat(const swMatrix44& ControlPointTransform, const swMatrix44& SeatTransform);
 	void AddToSelection(const std::vector<swObject*>& Objects);
 	void RemoveFromSelection(const std::vector<swObject*>& Objects);
 	void BeginEditHistory();

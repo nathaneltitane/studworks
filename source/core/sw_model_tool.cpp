@@ -149,6 +149,9 @@ void swModel::EndMouseTool(swTool Tool, swView* View, bool Accept)
 		break;
 
 	case swTool::Move:
+	{
+		bool ControlPointMoved = false;
+
 		if (swObject* Focus = GetFocusObject(); Focus && Focus->IsPart())
 		{
 			swPart* Part = (swPart*)Focus;
@@ -159,15 +162,23 @@ void swModel::EndMouseTool(swTool Tool, swView* View, bool Accept)
 			if (Section >= SW_PART_SECTION_CONTROL_POINT_FIRST && Section <= SW_PART_SECTION_CONTROL_POINT_LAST)
 			{
 				SnapControlPointToConnection(Part, Section - SW_PART_SECTION_CONTROL_POINT_FIRST);
-				UpdateAllViews();
+				ControlPointMoved = true;
 			}
 		}
 
+		// whole flexible parts moved onto a connection turn their ends onto it
+		if (!ControlPointMoved)
+			SnapSelectedControlPointsToConnections();
+
+		UpdateAllViews();
 		EndEditHistory();
 		EndHistorySequence(tr("Move"));
 		break;
+	}
 
 	case swTool::Rotate:
+		SnapSelectedControlPointsToConnections();
+		UpdateAllViews();
 		EndEditHistory();
 		EndHistorySequence(tr("Rotate"));
 		break;

@@ -59,6 +59,11 @@ public:
 		Q_UNUSED(ControlPoints);
 		Q_UNUSED(ControlPointIndex);
 	}
+	// The part space direction the path leaves a control point along, curves only.
+	virtual swVector3 GetControlPointDirection(const swMatrix44& Transform) const
+	{
+		return swVector3(Transform[0][0], Transform[0][1], Transform[0][2]);
+	}
 	// Turns a control point so the path leaves it along a part space direction, curves only.
 	virtual void AlignControlPointDirection(std::vector<swPartControlPoint>& ControlPoints, quint32 ControlPointIndex, const swVector3& Direction) const
 	{
