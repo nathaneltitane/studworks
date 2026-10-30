@@ -51,6 +51,12 @@ public:
 	{
 		Q_UNUSED(ControlPoints);
 	}
+	// Turns one middle control point along the path between its neighbors once, curves only.
+	virtual void AlignControlPointTangent(std::vector<swPartControlPoint>& ControlPoints, quint32 ControlPointIndex) const
+	{
+		Q_UNUSED(ControlPoints);
+		Q_UNUSED(ControlPointIndex);
+	}
 	// False when the control points are further apart than the part can reach without stretching.
 	virtual bool IsReachable(const std::vector<swPartControlPoint>& ControlPoints) const
 	{

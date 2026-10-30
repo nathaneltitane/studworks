@@ -1554,6 +1554,22 @@ bool swPart::ToggleFocusedControlPointTangent()
 	return true;
 }
 
+bool swPart::AlignFocusedControlPointTangent()
+{
+	if (!CanClampControlPointTangent())
+		return false;
+
+	const std::vector<swPartControlPoint> ControlPoints = mControlPoints;
+	mPartData->GetSynthInfo()->AlignControlPointTangent(mControlPoints, GetFocusSection() - SW_PART_SECTION_CONTROL_POINT_FIRST);
+
+	if (mControlPoints == ControlPoints)
+		return false;
+
+	UpdateMesh();
+
+	return true;
+}
+
 void swPart::VerifyControlPoints(std::vector<swPartControlPoint>& ControlPoints) const
 {
 	const swSynthesisInformation* SynthInfo = mPartData->GetSynthInfo();

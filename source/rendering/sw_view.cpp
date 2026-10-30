@@ -355,6 +355,7 @@ void swView::ShowContextMenu() const
 
 		Popup->addAction(Actions[SW_PART_CONTROL_POINT_INSERT]);
 		Popup->addAction(Actions[SW_PART_CONTROL_POINT_REMOVE]);
+		Popup->addAction(Actions[SW_PART_CONTROL_POINT_ALIGN_TANGENT]);
 		Popup->addAction(Actions[SW_PART_CONTROL_POINT_TANGENT]);
 	}
 

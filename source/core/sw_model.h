@@ -382,6 +382,7 @@ public:
 	void InsertControlPoint();
 	void RemoveFocusedControlPoint();
 	void ToggleFocusedControlPointTangent();
+	void AlignFocusedControlPointTangent();
 	void FocusNextTrainTrack();
 	void FocusPreviousTrainTrack();
 	void RotateFocusedTrainTrack(int Direction);

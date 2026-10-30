@@ -184,6 +184,7 @@ public:
 	bool InsertControlPoint(const swVector3& WorldStart, const swVector3& WorldEnd);
 	bool RemoveFocusedControlPoint();
 	bool ToggleFocusedControlPointTangent();
+	bool AlignFocusedControlPointTangent();
 	void VerifyControlPoints(std::vector<swPartControlPoint>& ControlPoints) const;
 	bool IsGeneratedMeshPending() const { return mSynthPending; }
 	// An older mesh may remain visible while its replacement is pending.

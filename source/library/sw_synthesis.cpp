@@ -18,6 +18,7 @@ public:
 	void VerifyControlPoints(std::vector<swPartControlPoint>& ControlPoints) const override;
 	swMatrix33 GetSectionControlPointRotation(const swMatrix44& Section, const swMatrix33& Rotation) const override;
 	void ClampControlPointTangents(std::vector<swPartControlPoint>& ControlPoints) const override;
+	void AlignControlPointTangent(std::vector<swPartControlPoint>& ControlPoints, quint32 ControlPointIndex) const override;
 	bool IsReachable(const std::vector<swPartControlPoint>& ControlPoints) const override;
 	void GetPath(const std::vector<swPartControlPoint>& ControlPoints, std::vector<swVector3>& Points, size_t& ReachedPointCount) const override;
 
@@ -808,56 +809,60 @@ float swSynthesisInformationCurved::GetHandleDirection(const std::vector<swPartC
 	return swDot(GetControlPointTangent(ControlPoints[ControlPointIndex].Transform), Chord) < 0.0f ? -1.0f : 1.0f;
 }
 
-// use to turn the clamped middle control points along the chord between their neighbors keeping their twist
+// use to turn the clamped middle control points along the chord between their neighbors
 void swSynthesisInformationCurved::ClampControlPointTangents(std::vector<swPartControlPoint>& ControlPoints) const
 {
 	for (quint32 ControlPointIndex = 1; ControlPointIndex + 1 < ControlPoints.size(); ControlPointIndex++)
+		if (ControlPoints[ControlPointIndex].TangentClamped)
+			AlignControlPointTangent(ControlPoints, ControlPointIndex);
+}
+
+// use to turn a middle control point along the chord between its neighbors keeping its twist
+void swSynthesisInformationCurved::AlignControlPointTangent(std::vector<swPartControlPoint>& ControlPoints, quint32 ControlPointIndex) const
+{
+	if (ControlPointIndex == 0 || ControlPointIndex + 1 >= ControlPoints.size())
+		return;
+
+	swPartControlPoint& ControlPoint = ControlPoints[ControlPointIndex];
+	const swVector3 Chord = ControlPoints[ControlPointIndex + 1].Transform.GetTranslation() - ControlPoints[ControlPointIndex - 1].Transform.GetTranslation();
+
+	if (swLength(Chord) < 0.001f)
+		return;
+
+	const swVector3 Tangent = swNormalize(GetControlPointTangent(ControlPoint.Transform));
+	const swVector3 Target = swNormalize(Chord) * (swDot(Tangent, Chord) < 0.0f ? -1.0f : 1.0f);
+	const swVector3 Axis = swCross(Tangent, Target);
+	const float Cosine = swDot(Tangent, Target);
+
+	if (Cosine > 0.99999f)
+		return;
+
+	// the shortest turn onto the chord, the side is picked by trying both since the rotation order depends on the frame
+	const swVector3 TurnAxis = swLength(Axis) > 0.0001f ? swNormalize(Axis) : swNormalize(swCross(Tangent, std::fabs(Tangent[0]) < 0.9f ? swVector3(1.0f, 0.0f, 0.0f) : swVector3(0.0f, 1.0f, 0.0f)));
+	const float Angle = std::acos(swMinimum(swMaximum(Cosine, -1.0f), 1.0f));
+	const swMatrix33 Rotation(ControlPoint.Transform);
+	const swVector3 Position = ControlPoint.Transform.GetTranslation();
+	swMatrix44 BestTransform = ControlPoint.Transform;
+	float BestCosine = Cosine;
+
+	for (const float Sign : { 1.0f, -1.0f })
 	{
-		swPartControlPoint& ControlPoint = ControlPoints[ControlPointIndex];
+		const swMatrix33 Turn = swMatrix33FromAxisAngle(TurnAxis, Sign * Angle);
 
-		if (!ControlPoint.TangentClamped)
-			continue;
-
-		const swVector3 Chord = ControlPoints[ControlPointIndex + 1].Transform.GetTranslation() - ControlPoints[ControlPointIndex - 1].Transform.GetTranslation();
-
-		if (swLength(Chord) < 0.001f)
-			continue;
-
-		const swVector3 Tangent = swNormalize(GetControlPointTangent(ControlPoint.Transform));
-		const swVector3 Target = swNormalize(Chord) * (swDot(Tangent, Chord) < 0.0f ? -1.0f : 1.0f);
-		const swVector3 Axis = swCross(Tangent, Target);
-		const float Cosine = swDot(Tangent, Target);
-
-		if (Cosine > 0.99999f)
-			continue;
-
-		// the shortest turn onto the chord, the side is picked by trying both since the rotation order depends on the frame
-		const swVector3 TurnAxis = swLength(Axis) > 0.0001f ? swNormalize(Axis) : swNormalize(swCross(Tangent, std::fabs(Tangent[0]) < 0.9f ? swVector3(1.0f, 0.0f, 0.0f) : swVector3(0.0f, 1.0f, 0.0f)));
-		const float Angle = std::acos(swMinimum(swMaximum(Cosine, -1.0f), 1.0f));
-		const swMatrix33 Rotation(ControlPoint.Transform);
-		const swVector3 Position = ControlPoint.Transform.GetTranslation();
-		swMatrix44 BestTransform = ControlPoint.Transform;
-		float BestCosine = Cosine;
-
-		for (const float Sign : { 1.0f, -1.0f })
+		for (const swMatrix33& Candidate : { swMultiply(Rotation, Turn), swMultiply(Turn, Rotation) })
 		{
-			const swMatrix33 Turn = swMatrix33FromAxisAngle(TurnAxis, Sign * Angle);
+			const swMatrix44 Transform(Candidate, Position);
+			const float CandidateCosine = swDot(swNormalize(GetControlPointTangent(Transform)), Target);
 
-			for (const swMatrix33& Candidate : { swMultiply(Rotation, Turn), swMultiply(Turn, Rotation) })
+			if (CandidateCosine > BestCosine)
 			{
-				const swMatrix44 Transform(Candidate, Position);
-				const float CandidateCosine = swDot(swNormalize(GetControlPointTangent(Transform)), Target);
-
-				if (CandidateCosine > BestCosine)
-				{
-					BestCosine = CandidateCosine;
-					BestTransform = Transform;
-				}
+				BestCosine = CandidateCosine;
+				BestTransform = Transform;
 			}
 		}
-
-		ControlPoint.Transform = BestTransform;
 	}
+
+	ControlPoint.Transform = BestTransform;
 }
 
 // use to get the bezier points of a path segment with the given handle lengths

@@ -575,6 +575,31 @@ void swModel::ToggleFocusedControlPointTangent()
 	gMainWindow->UpdateSelectedObjects(true);
 }
 
+void swModel::AlignFocusedControlPointTangent()
+{
+	swPart* Part = dynamic_cast<swPart*>(GetFocusObject());
+
+	if (!Part)
+		return;
+
+	BeginHistorySequence();
+	BeginEditHistory();
+
+	const bool Modified = Part->AlignFocusedControlPointTangent();
+
+	if (!Modified)
+	{
+		DiscardHistorySequence();
+
+		return;
+	}
+
+	EndEditHistory();
+	EndHistorySequence(tr("Align to Tangent"));
+
+	gMainWindow->UpdateSelectedObjects(true);
+}
+
 void swModel::ShowSelectedPartsEarlier()
 {
 	BeginHistorySequence();

@@ -798,6 +798,11 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 			ActiveModel->ToggleFocusedControlPointTangent();
 		break;
 
+	case SW_PART_CONTROL_POINT_ALIGN_TANGENT:
+		if (ActiveModel)
+			ActiveModel->AlignFocusedControlPointTangent();
+		break;
+
 	case SW_PART_TRAIN_TRACK_FOCUS_NEXT:
 		if (ActiveModel)
 			ActiveModel->FocusNextTrainTrack();
