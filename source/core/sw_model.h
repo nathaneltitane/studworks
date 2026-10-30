@@ -514,7 +514,8 @@ public:
 	void InsertLightToolClicked(const swVector3& Position, swLightType LightType);
 	void UpdateMoveTool(const swVector3& Distance, bool AllowRelative, bool AlternateButtonDrag);
 	void UpdateFreeMoveTool(swPart* MousePart, const swMatrix44& StartTransform, const swMatrix44& NewTransform, bool IsConnection, bool AlternateButtonDrag);
-	// Moves the focused control point of a flexible part to a model position, pulled onto a connection close enough to seat it.
+
+	// Moves the focused control point.
 	void UpdateControlPointDragTool(swPart* Part, const swVector3& Position);
 	void UpdateRotateTool(const swVector3& Axis, float Angle, bool AlternateButtonDrag, bool Relative);
 	void UpdateRotateTool(const swMatrix33& RotationMatrix, bool AlternateButtonDrag, bool Relative);
@@ -583,9 +584,11 @@ protected:
 	bool FindControlPointSeat(const swPart* Part, quint32 ControlPointIndex, swMatrix44& SeatTransform, swVector3* SurfacePosition = nullptr, swVector3* SurfaceNormal = nullptr) const;
 	// Marks the end control points of flexible parts that already sit on a connection as seated, after loading, edits and step changes.
 	void UpdateControlPointSeats();
-	// Turns the ends of the selected flexible parts that landed on a connection onto it, after the parts move or rotate.
+
+	// Seats the ends of moved flexible parts.
 	void SnapSelectedControlPointsToConnections();
-	// Tells if an end control point sits on its seat facing along the connection, not only at its position.
+
+	// Tells if an end faces along its seat.
 	static bool IsControlPointOnSeat(const swMatrix44& ControlPointTransform, const swMatrix44& SeatTransform);
 	void AddToSelection(const std::vector<swObject*>& Objects);
 	void RemoveFromSelection(const std::vector<swObject*>& Objects);

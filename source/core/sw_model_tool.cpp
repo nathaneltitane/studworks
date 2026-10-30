@@ -166,7 +166,7 @@ void swModel::EndMouseTool(swTool Tool, swView* View, bool Accept)
 			}
 		}
 
-		// whole flexible parts moved onto a connection turn their ends onto it
+		// seat ends of moved flexible parts
 		if (!ControlPointMoved)
 			SnapSelectedControlPointsToConnections();
 
@@ -374,7 +374,7 @@ void swModel::UpdateMoveTool(const swVector3& Distance, bool AllowRelative, bool
 	UpdateAllViews();
 }
 
-// use to move a dragged control point cube to where the pointer lands
+// use to drag a control point cube
 void swModel::UpdateControlPointDragTool(swPart* Part, const swVector3& Position)
 {
 	const quint32 Section = Part->GetFocusSection();
@@ -387,7 +387,7 @@ void swModel::UpdateControlPointDragTool(swPart* Part, const swVector3& Position
 	Part->MoveSelected(mCurrentStep, gMainWindow->GetAddKeys(), Position - Part->GetSectionPosition(Section));
 	Part->UpdatePosition(mCurrentStep);
 
-	// an end close enough to a connection is pulled onto it so it lines up while dragging
+	// pull ends onto nearby connections
 	swMatrix44 SeatTransform;
 	const bool SeatFound = FindControlPointSeat(Part, ControlPointIndex, SeatTransform);
 

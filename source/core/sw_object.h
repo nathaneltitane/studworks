@@ -140,7 +140,7 @@ public:
 		return mFocusedSection;
 	}
 
-	// The section the object was last focused on, kept while it stays selected after the focus moves on.
+	// The section last focused while selected.
 	quint32 GetSelectedSection() const
 	{
 		return mSelectedSection;
@@ -151,7 +151,7 @@ public:
 		mSelectedSection = Section;
 	}
 
-	// The section a move or rotate of the selection applies to.
+	// The section moves and rotations apply to.
 	quint32 GetTransformSection() const
 	{
 		return IsFocused() ? mFocusedSection : mSelectedSection;

@@ -734,7 +734,7 @@ void swPart::DrawSynthInterface(swContext* Context, const swMatrix44& WorldMatri
 		Context->SetVertexFormatPosition(3);
 		Context->SetIndexBufferPointer(Indices);
 
-		// an end that would seat on release takes the seated color, a clicked one shows it is focused before showing its seat
+		// seating, focused, then seated color
 		if (static_cast<int>(ControlPointIndex) == mControlPointSeatFound)
 			Context->SetColor(ControlPointSeatedColor);
 		else if (IsFocused(SW_PART_SECTION_CONTROL_POINT_FIRST + ControlPointIndex))
@@ -1286,7 +1286,7 @@ void swPart::Rotate(swStep Step, bool AddKey, const swMatrix33& RotationMatrix, 
 
 			NewLocalToWorldMatrix.Orthonormalize();
 
-			// a control point turned with other parts swings around their center too
+			// swing around the selection center
 			const swVector3 WorldPosition = swMultiply31(Transform.GetTranslation(), mModelWorld);
 			const swVector3 Distance = swMultiply(swMultiply(WorldPosition - Center, swMatrix33AffineInverse(LocalToWorldMatrix)), swMultiply(LocalToFocusMatrix, RotationMatrix));
 			const swVector3 Position = swMultiply31(Center + Distance, swMatrix44AffineInverse(mModelWorld));
@@ -1582,7 +1582,7 @@ swMatrix44 swPart::GetControlPointCubeTransform(quint32 ControlPointIndex) const
 	if (!Seat)
 		return Transform;
 
-	// the cube side closest to the surface is turned onto it so a whole face rests flush
+	// turn the closest side flush
 	int NearestAxisIndex = 0;
 	float NearestCosine = 0.0f;
 

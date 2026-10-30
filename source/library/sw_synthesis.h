@@ -59,7 +59,8 @@ public:
 		Q_UNUSED(ControlPoints);
 		Q_UNUSED(ControlPointIndex);
 	}
-	// The part space direction the path leaves a control point along, curves only.
+
+	// The path direction at a control point.
 	virtual swVector3 GetControlPointDirection(const swMatrix44& Transform) const
 	{
 		return swVector3(Transform[0][0], Transform[0][1], Transform[0][2]);

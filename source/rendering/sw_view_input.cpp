@@ -848,9 +848,9 @@ void swView::UpdateTrackTool()
 						mMouseDownPart = Part;
 						NewTrackTool = swTrackTool::MoveXYZ;
 					}
-					// a control point cube drags freely from anywhere inside it like a part
 					else if (ObjectSection.Section >= SW_PART_SECTION_CONTROL_POINT_FIRST && ObjectSection.Section <= SW_PART_SECTION_CONTROL_POINT_LAST)
 					{
+						// drag a control point cube like a part
 						mMouseDownControlPointPart = Part;
 						mMouseDownControlPointSection = ObjectSection.Section;
 						NewTrackTool = swTrackTool::MoveXYZ;
@@ -1347,13 +1347,14 @@ void swView::OnButtonDown(swTrackButton TrackButton)
 	case swTrackTool::MoveXZ:
 	case swTrackTool::MoveYZ:
 	case swTrackTool::MoveXYZ:
-		// grabbing a control point cube focuses it first
+
+		// focus a grabbed control point cube
 		if (swPart* Part = mMouseDownControlPointPart; Part && (ActiveModel->GetFocusObject() != Part || Part->GetFocusSection() != mMouseDownControlPointSection))
 		{
 			const quint32 Section = mMouseDownControlPointSection;
 			ActiveModel->SetSelectionAndFocusAction(std::vector<swObject*>(), Part, Section, gMainWindow->GetSelectionMode());
 
-			// the focus change refreshes the track tool so the grab is restored
+			// restore the grab after the focus change
 			mTrackTool = swTrackTool::MoveXYZ;
 			mMouseDownControlPointPart = Part;
 			mMouseDownControlPointSection = Section;
@@ -1769,7 +1770,7 @@ void swView::OnMouseMove()
 			}
 			else if (mTrackTool == swTrackTool::MoveXYZ && mMouseDownControlPointPart)
 			{
-				// over a part the cube stacks flush on the face under the pointer like a dragged part
+				// stack flush on the part face
 				const swObjectRayTest SurfaceRayTest = RayTest(true, true);
 
 				if (SurfaceRayTest.ObjectSection.Object)
@@ -1779,7 +1780,7 @@ void swView::OnMouseMove()
 					const swVector3& Face = SurfaceRayTest.PartRayTest.Plane;
 					swVector3 Position = swMultiply31(SurfaceRayTest.Start + RayDirection * SurfaceRayTest.Distance, swMatrix44AffineInverse(SurfaceTransform));
 
-					// the face the pointer hits sets one axis, the pointer sets the other two
+					// the face sets one axis
 					for (int Axis = 0; Axis < 3; Axis++)
 					{
 						if (Face[Axis] > 0.0f)
@@ -1803,7 +1804,7 @@ void swView::OnMouseMove()
 				}
 				else
 				{
-					// elsewhere it follows the pointer on the screen plane through where it started
+					// follow the pointer on screen
 					const swVector3 PlaneNormal = swNormalize(MouseDownEnd - MouseDownStart);
 					const swVector4 Plane(PlaneNormal, -swDot(PlaneNormal, mMouseDownControlPointPosition));
 					swVector3 Intersection, MoveStart;

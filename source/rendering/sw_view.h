@@ -454,10 +454,12 @@ protected:
 	quint32 mTrackToolSection = ~0U;
 	swMatrix44 mMouseDownTransform;
 	swPart* mMouseDownPart = nullptr;
-	// The flexible part whose control point cube the pointer drags freely, and that control point section.
+
+	// The dragged control point cube.
 	swPart* mMouseDownControlPointPart = nullptr;
 	quint32 mMouseDownControlPointSection = ~0U;
-	// Where the dragged control point was when the drag started.
+
+	// The dragged control point start.
 	swVector3 mMouseDownControlPointPosition;
 	int mPanX = 0;
 	int mPanY = 0;

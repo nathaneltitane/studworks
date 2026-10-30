@@ -842,7 +842,7 @@ bool swModel::FindControlPointSeat(const swPart* Part, quint32 ControlPointIndex
 	if (Fittings.empty())
 		return false;
 
-	// the connection frames of the fitting parts at this end for a set of control points, in world space
+	// fitting connection frames in world space
 	auto GetFittingFrames = [&](const std::vector<swPartControlPoint>& Points)
 	{
 		std::vector<swMatrix44> Frames;
@@ -862,7 +862,7 @@ bool swModel::FindControlPointSeat(const swPart* Part, quint32 ControlPointIndex
 		return Frames;
 	};
 
-	// turn the path at the control point so the fitting lies along the connection axis and move it there, in part space
+	// turn the path onto the connection
 	const swMatrix44 PartWorldInverse = swMatrix44AffineInverse(Part->mModelWorld);
 	const swMatrix44 ControlPointLocal = ControlPoints[ControlPointIndex].Transform;
 	const swVector3 PathDirection = swNormalize(SynthInfo->GetControlPointDirection(ControlPointLocal));
@@ -874,7 +874,7 @@ bool swModel::FindControlPointSeat(const swPart* Part, quint32 ControlPointIndex
 		const swVector3 FittingAxis = swNormalize(swMultiply30(swVector3(0.0f, 0.0f, 1.0f), FittingLocal));
 		const swVector3 TargetAxis = swNormalize(swMultiply30(swVector3(0.0f, 0.0f, 1.0f), TargetLocal));
 
-		// the fitting lies along the path, so the path turns onto the connection axis the same way round
+		// path turns with the fitting
 		const swVector3 Direction = TargetAxis * (swDot(PathDirection, FittingAxis) < 0.0f ? -1.0f : 1.0f);
 		const swVector3 Axis = swCross(PathDirection, Direction);
 		const swVector3 TurnAxis = swLength(Axis) > 1e-4f ? swNormalize(Axis) : swNormalize(swCross(PathDirection, fabsf(PathDirection[0]) < 0.9f ? swVector3(1.0f, 0.0f, 0.0f) : swVector3(0.0f, 1.0f, 0.0f)));
@@ -883,7 +883,7 @@ bool swModel::FindControlPointSeat(const swPart* Part, quint32 ControlPointIndex
 		swMatrix33 BestRotation = Rotation;
 		float BestCosine = swDot(PathDirection, Direction);
 
-		// the turn order depends on the control point frame so every way is tried
+		// try every turn order
 		if (Angle > 1e-4f)
 		{
 			for (const float Sign : { 1.0f, -1.0f })
@@ -903,7 +903,7 @@ bool swModel::FindControlPointSeat(const swPart* Part, quint32 ControlPointIndex
 			}
 		}
 
-		// the fitting offset turns with the fitting
+		// turn the fitting offset
 		swMatrix33 FittingTurn = swMatrix33Identity();
 		const swVector3 FittingTurnAxis = swCross(FittingAxis, TargetAxis);
 		const float FittingAngle = acosf(swClamp(swDot(FittingAxis, TargetAxis), -1.0f, 1.0f));
@@ -1004,7 +1004,7 @@ bool swModel::FindControlPointSeat(const swPart* Part, quint32 ControlPointIndex
 	{
 		ControlPoints[ControlPointIndex].Transform = swMultiply(Seat.Transform, PartWorldInverse);
 
-		// the fitting moves with the path, so the end is nudged until the fitting lands on the connection
+		// nudge the end onto the connection
 		for (int Pass = 0; Pass < 3; Pass++)
 		{
 			const std::vector<swMatrix44> FittingFrames = GetFittingFrames(ControlPoints);
@@ -1041,7 +1041,7 @@ bool swModel::FindControlPointSeat(const swPart* Part, quint32 ControlPointIndex
 	return true;
 }
 
-// use to tell if an end control point sits on its seat and faces the same way
+// use to tell if an end faces its seat
 bool swModel::IsControlPointOnSeat(const swMatrix44& ControlPointTransform, const swMatrix44& SeatTransform)
 {
 	if (swLength(SeatTransform.GetTranslation() - ControlPointTransform.GetTranslation()) > 0.1f)
@@ -1053,7 +1053,7 @@ bool swModel::IsControlPointOnSeat(const swMatrix44& ControlPointTransform, cons
 	return swDot(ControlPointAxis, SeatAxis) > 0.999f;
 }
 
-// use to seat the ends of moved flexible parts that landed on a connection
+// use to seat ends of moved flexible parts
 void swModel::SnapSelectedControlPointsToConnections()
 {
 	for (const std::unique_ptr<swPart>& Part : mParts)
@@ -1073,7 +1073,7 @@ void swModel::SnapSelectedControlPointsToConnections()
 			if (!FindControlPointSeat(Part.get(), ControlPointIndex, SeatTransform))
 				continue;
 
-			// only an end already on the spot of a connection turns onto it
+			// only ends already on a connection
 			if (swLength(SeatTransform.GetTranslation() - ControlPoints[ControlPointIndex].Transform.GetTranslation()) < 0.1f)
 				SnapControlPointToConnection(Part.get(), ControlPointIndex);
 		}
