@@ -69,8 +69,14 @@ public:
 	}
 
 	static QString GetDefaultTemplateName();
+	static QString GetEmptyTemplateName();
+	static bool IsBuiltInTemplate(const QString& TemplateName);
 
 	void LoadTemplate(const QString& TemplateName);
+	void ApplyTemplate(const swMinifigureTemplate& Template);
+	swMinifigureTemplate GetCurrentTemplate() const;
+	void Randomize();
+	void ReloadSettings();
 	void SaveTemplate(const QString& TemplateName, const swMinifigureTemplate& Template);
 	void DeleteTemplate(const QString& TemplateName);
 	void AddTemplatesJson(const QByteArray& TemplateData);
@@ -90,6 +96,7 @@ public:
 protected:
 	void LoadSettings();
 	void ParseSettings(swFile& Settings);
+	void AddLibraryParts();
 
 	void LoadTemplates();
 	void SaveTemplates();

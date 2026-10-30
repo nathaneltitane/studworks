@@ -894,6 +894,15 @@ void swMainWindow::CreateToolBars()
 	mPartsToolBar->raise();
 }
 
+// use to refresh the builder parts from the library
+void swMainWindow::UpdateMinifigureBuilder()
+{
+	swMinifigureBuilderWidget* MinifigureBuilderWidget = qobject_cast<swMinifigureBuilderWidget*>(mMinifigureBuilderToolBar->widget());
+
+	if (MinifigureBuilderWidget)
+		MinifigureBuilderWidget->ReloadParts();
+}
+
 void swMainWindow::CreateStatusBar()
 {
 	QStatusBar* StatusBar = new QStatusBar(this);

@@ -139,16 +139,7 @@ swMinifigureBuilderWidget::swMinifigureBuilderWidget(QWidget* Parent)
 	mCurrentTemplateName = swMinifigureBuilder::GetDefaultTemplateName();
 	mMinifigureBuilder->LoadTemplate(mCurrentTemplateName);
 
-	for (int ItemIndex = 0; ItemIndex < SW_MINIFIGURE_ITEM_COUNT; ItemIndex++)
-	{
-		UpdatePartButton(ItemIndex);
-
-		swColorPicker* ColorPicker = mColorPickers[ItemIndex];
-		QSignalBlocker ColorPickerBlocker(ColorPicker);
-
-		ColorPicker->SetCurrentColor(mMinifigureBuilder->mMinifigure.ColorIndices[ItemIndex]);
-	}
-
+	UpdateControls();
 	UpdateTemplateCombo();
 
 	mMinifigureBuilder->Calculate();
@@ -170,6 +161,14 @@ swMinifigureBuilderWidget::swMinifigureBuilderWidget(QWidget* Parent)
 
 	std::vector<QToolButton*> RowButtons = { ui->TemplateSaveButton, ui->TemplateDeleteButton, ui->TemplateImportButton, ui->TemplateExportButton };
 
+	QToolButton* RandomizeButton = new QToolButton(TemplateButtons);
+	RandomizeButton->setText(tr("Randomize"));
+	RandomizeButton->setObjectName("MinifigureBuilderRandomize");
+	RandomizeButton->setToolTip(tr("Build a random minifigure from the library parts"));
+	RandomizeButton->setWhatsThis(tr("<p><b>Randomize</b></p><p>Build a random minifigure from the parts in the current library, with random colors. Choose it again for another one, or save the result as a template.</p>"));
+	connect(RandomizeButton, &QToolButton::clicked, this, &swMinifigureBuilderWidget::RandomizeButtonClicked);
+	RowButtons.push_back(RandomizeButton);
+
 	QToolButton* AddButton = new QToolButton(TemplateButtons);
 	AddButton->setText(tr("Add to Model"));
 	AddButton->setToolTip(tr("Add this minifigure to the current model"));
@@ -180,10 +179,7 @@ swMinifigureBuilderWidget::swMinifigureBuilderWidget(QWidget* Parent)
 	{
 		QToolButton* Button = RowButtons[ButtonIndex];
 
-		if (Button == AddButton)
-			TemplateButtonsLayout->addWidget(Button, ButtonIndex / 2, 0, 1, 2);
-		else
-			TemplateButtonsLayout->addWidget(Button, ButtonIndex / 2, ButtonIndex % 2);
+		TemplateButtonsLayout->addWidget(Button, ButtonIndex / 2, ButtonIndex % 2);
 
 		Button->setToolButtonStyle(Qt::ToolButtonTextOnly);
 		swSetupPanelButton(Button);
@@ -204,7 +200,7 @@ swMinifigureBuilderWidget::swMinifigureBuilderWidget(QWidget* Parent)
 	OptionsButton->setMenu(OptionsMenu);
 	connect(OptionsMenu, &QMenu::aboutToShow, this, &swMinifigureBuilderWidget::OptionsMenuAboutToShow);
 
-	connect(ui->TemplateComboBox, &QComboBox::currentTextChanged, this, &swMinifigureBuilderWidget::TemplateComboBoxCurrentTextChanged);
+	connect(ui->TemplateComboBox, QOverload<int>::of(&QComboBox::activated), this, &swMinifigureBuilderWidget::TemplateComboBoxActivated);
 	connect(ui->TemplateSaveButton, &QToolButton::clicked, this, &swMinifigureBuilderWidget::TemplateSaveButtonClicked);
 	connect(ui->TemplateDeleteButton, &QToolButton::clicked, this, &swMinifigureBuilderWidget::TemplateDeleteButtonClicked);
 	connect(ui->TemplateImportButton, &QToolButton::clicked, this, &swMinifigureBuilderWidget::TemplateImportButtonClicked);
@@ -250,12 +246,51 @@ void swMinifigureBuilderWidget::UpdatePartButton(int ItemIndex)
 		}
 	}
 
+	// parts outside the list show their own name
+	if (PartData && Description.isEmpty())
+		Description = PartData->m_strDescription;
+
 	// empty sections show their name
 	QPalette Palette = PartButton->palette();
 	Palette.setColor(QPalette::ButtonText, Description.isEmpty() ? palette().color(QPalette::PlaceholderText) : palette().color(QPalette::ButtonText));
 	PartButton->setPalette(Palette);
 
 	PartButton->setText(Description.isEmpty() ? mSectionNames[ItemIndex] : Description);
+}
+
+// use to show the builder minifigure in the controls
+void swMinifigureBuilderWidget::UpdateControls()
+{
+	const swMinifigure& Minifigure = mMinifigureBuilder->mMinifigure;
+
+	for (int ItemIndex = 0; ItemIndex < SW_MINIFIGURE_ITEM_COUNT; ItemIndex++)
+	{
+		UpdatePartButton(ItemIndex);
+
+		swColorPicker* ColorPicker = mColorPickers[ItemIndex];
+		QSignalBlocker ColorPickerBlocker(ColorPicker);
+
+		ColorPicker->SetCurrentColor(Minifigure.ColorIndices[ItemIndex]);
+
+		swDoubleSpinBox* AngleSpinBox = mSpinBoxes[ItemIndex];
+
+		if (AngleSpinBox)
+		{
+			QSignalBlocker AngleBlocker(AngleSpinBox);
+
+			AngleSpinBox->SetValue(Minifigure.Angles[ItemIndex]);
+		}
+	}
+}
+
+// use to rebuild the part lists after a library change
+void swMinifigureBuilderWidget::ReloadParts()
+{
+	mView->MakeCurrent();
+	mMinifigureBuilder->ReloadSettings();
+
+	UpdateControls();
+	FitPreview();
 }
 
 void swMinifigureBuilderWidget::OptionsMenuAboutToShow()
@@ -282,7 +317,7 @@ void swMinifigureBuilderWidget::UpdateTemplateCombo()
 
 	for (const auto& [Name, Template] : mMinifigureBuilder->GetTemplates())
 	{
-		if (Name == swMinifigureBuilder::GetDefaultTemplateName())
+		if (swMinifigureBuilder::IsBuiltInTemplate(Name))
 			continue;
 
 		if (mCurrentTemplateModified && Name == mCurrentTemplateName)
@@ -297,26 +332,29 @@ void swMinifigureBuilderWidget::UpdateTemplateCombo()
 	if (ui->TemplateComboBox->count())
 		ui->TemplateComboBox->insertSeparator(ui->TemplateComboBox->count());
 
-	// show the built in template as default
-	ui->TemplateComboBox->addItem(tr("Default Template"));
-
-	if (CurrentName == swMinifigureBuilder::GetDefaultTemplateName())
-		CurrentName = tr("Default Template");
+	// built in templates last
+	ui->TemplateComboBox->addItem(tr("Default Template"), swMinifigureBuilder::GetDefaultTemplateName());
+	ui->TemplateComboBox->addItem(tr("Empty Minifigure"), swMinifigureBuilder::GetEmptyTemplateName());
 
 	// show the selector placeholder
 	if (mCurrentTemplateName.isEmpty())
 		ui->TemplateComboBox->setCurrentIndex(-1);
+	else if (swMinifigureBuilder::IsBuiltInTemplate(mCurrentTemplateName))
+		ui->TemplateComboBox->setCurrentIndex(ui->TemplateComboBox->findData(mCurrentTemplateName));
 	else
 		ui->TemplateComboBox->setCurrentText(CurrentName);
 }
 
-void swMinifigureBuilderWidget::TemplateComboBoxCurrentTextChanged(const QString& DisplayName)
+void swMinifigureBuilderWidget::TemplateComboBoxActivated(int Index)
 {
-	const QString TemplateName = DisplayName == tr("Default Template") ? swMinifigureBuilder::GetDefaultTemplateName() : DisplayName;
-	const auto& Templates = mMinifigureBuilder->GetTemplates();
-	const auto& Position = Templates.find(TemplateName);
+	// picking the same entry again reloads it
+	const QVariant BuiltInName = ui->TemplateComboBox->itemData(Index);
+	QString TemplateName = BuiltInName.isValid() ? BuiltInName.toString() : ui->TemplateComboBox->itemText(Index);
 
-	if (Position == Templates.end())
+	if (mCurrentTemplateModified && TemplateName == mCurrentTemplateName + " *")
+		TemplateName = mCurrentTemplateName;
+
+	if (!mMinifigureBuilder->GetTemplates().count(TemplateName))
 		return;
 
 	mCurrentTemplateName = TemplateName;
@@ -324,30 +362,24 @@ void swMinifigureBuilderWidget::TemplateComboBoxCurrentTextChanged(const QString
 
 	UpdateTemplateCombo();
 
-	const swMinifigureTemplate& Template = Position->second;
-
 	mView->MakeCurrent();
-
 	mMinifigureBuilder->LoadTemplate(TemplateName);
 
-	for (int PartIdx = 0; PartIdx < SW_MINIFIGURE_ITEM_COUNT; PartIdx++)
-	{
-		UpdatePartButton(PartIdx);
+	UpdateControls();
+	FitPreview();
+}
 
-		QSignalBlocker ColorBlocker(mColorPickers[PartIdx]);
+void swMinifigureBuilderWidget::RandomizeButtonClicked()
+{
+	mCurrentTemplateName.clear();
+	mCurrentTemplateModified = false;
 
-		mColorPickers[PartIdx]->SetCurrentColorCode(Template.ColorCodes[PartIdx]);
+	UpdateTemplateCombo();
 
-		swDoubleSpinBox* AngleSpinBox = mSpinBoxes[PartIdx];
+	mView->MakeCurrent();
+	mMinifigureBuilder->Randomize();
 
-		if (AngleSpinBox)
-		{
-			QSignalBlocker AngleBlocker(AngleSpinBox);
-
-			AngleSpinBox->SetValue(Template.Angles[PartIdx]);
-		}
-	}
-
+	UpdateControls();
 	FitPreview();
 }
 
@@ -366,9 +398,9 @@ void swMinifigureBuilderWidget::TemplateSaveButtonClicked()
 		return;
 	}
 
-	if (TemplateName == swMinifigureBuilder::GetDefaultTemplateName())
+	if (swMinifigureBuilder::IsBuiltInTemplate(TemplateName))
 	{
-		QMessageBox::information(this, tr("Save Template"), tr("Cannot overwrite the default template."));
+		QMessageBox::information(this, tr("Save Template"), tr("Cannot overwrite a built in template."));
 		return;
 	}
 
@@ -379,17 +411,7 @@ void swMinifigureBuilderWidget::TemplateSaveButtonClicked()
 			return;
 	}
 
-	swMinifigureTemplate Template;
-
-	for (int ItemIndex = 0; ItemIndex < SW_MINIFIGURE_ITEM_COUNT; ItemIndex++)
-	{
-		Template.Parts[ItemIndex] = mMinifigureBuilder->mSettings[ItemIndex][mMinifigureBuilder->GetSelectionIndex(ItemIndex)].PartData->mFileName;
-		Template.ColorCodes[ItemIndex] = mColorPickers[ItemIndex]->GetCurrentColorCode();
-		QDoubleSpinBox* AngleSpinBox = mSpinBoxes[ItemIndex];
-		Template.Angles[ItemIndex] = AngleSpinBox ? AngleSpinBox->value() : 0.0f;
-	}
-
-	mMinifigureBuilder->SaveTemplate(TemplateName, Template);
+	mMinifigureBuilder->SaveTemplate(TemplateName, mMinifigureBuilder->GetCurrentTemplate());
 
 	mCurrentTemplateName = TemplateName;
 	mCurrentTemplateModified = false;
@@ -399,7 +421,7 @@ void swMinifigureBuilderWidget::TemplateSaveButtonClicked()
 
 void swMinifigureBuilderWidget::TemplateDeleteButtonClicked()
 {
-	if (mCurrentTemplateName.isEmpty() || mCurrentTemplateName == swMinifigureBuilder::GetDefaultTemplateName())
+	if (mCurrentTemplateName.isEmpty() || swMinifigureBuilder::IsBuiltInTemplate(mCurrentTemplateName))
 		return;
 
 	QString Template = mCurrentTemplateName;
@@ -458,7 +480,7 @@ void swMinifigureBuilderWidget::TemplateExportButtonClicked()
 
 void swMinifigureBuilderWidget::SetCurrentTemplateModified()
 {
-	if (mCurrentTemplateName == swMinifigureBuilder::GetDefaultTemplateName())
+	if (swMinifigureBuilder::IsBuiltInTemplate(mCurrentTemplateName))
 		mCurrentTemplateName.clear();
 	else
 		mCurrentTemplateModified = true;

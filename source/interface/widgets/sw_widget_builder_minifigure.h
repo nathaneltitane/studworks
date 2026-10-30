@@ -18,11 +18,14 @@ public:
 	explicit swMinifigureBuilderWidget(QWidget* Parent);
 	virtual ~swMinifigureBuilderWidget();
 
+	void ReloadParts();
+
 	swMinifigureBuilder* mMinifigureBuilder;
 
 protected slots:
 	void AddToModel();
-	void TemplateComboBoxCurrentTextChanged(const QString& TemplateName);
+	void TemplateComboBoxActivated(int Index);
+	void RandomizeButtonClicked();
 	void TemplateSaveButtonClicked();
 	void TemplateDeleteButtonClicked();
 	void TemplateImportButtonClicked();
@@ -35,6 +38,7 @@ protected:
 	bool eventFilter(QObject* Object, QEvent* Event) override;
 	void FitPreview();
 	void UpdatePartButton(int ItemIndex);
+	void UpdateControls();
 	void OptionsMenuAboutToShow();
 	void UpdateTemplateCombo();
 	void SetCurrentTemplateModified();

@@ -310,6 +310,7 @@ public:
 	void UpdateModels();
 	void UpdateInUseCategory();
 	void UpdateCategories();
+	void UpdateMinifigureBuilder();
 	void UpdateTitle();
 	void UpdateModified(bool Modified);
 	void UpdateShortcuts();

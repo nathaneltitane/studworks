@@ -21,7 +21,6 @@ Useful? Star the repository - it helps others find it.
   <details open>
   <summary>2026-10-30</summary>
 
-  - StudWorks is now StudWorx, the LDraw / LEGO® model builder - BUILD. DESIGN. CREATE. - at [studworx.app](https://studworx.app), settings and data carry over on the first start
   - Interface: built from standard Qt widgets throughout, panels, dialogs and windows follow the system style and theme, only the model views draw with OpenGL
   - Save Model Image: live preview of the saved image with step arrows, ratio presets from square to widescreen with Landscape and Portrait, a transparent background for PNG and GIF files, Save and Cancel in the File box and help from the title bar What's This button
   - Animated GIF: turntable animations from Save Model Image, a full turn or a back and forth angle range around the X, Y or Z axis, with frame count and duration, played live in the preview
@@ -151,11 +150,14 @@ Everything LeoCAD does, StudWorx does too - with a reworked interface and a set 
 ![Main window](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/interface-main-window.png)
 
 - **Interface** ↴
-  - File, Edit, View, Part, Steps, Models and Help menus, with clean labels and unique mnemonics
+  - Built from standard Qt widgets, panels, dialogs and windows follow the system style and light or dark theme, only the model views draw with OpenGL
+  - File, Edit, View, Part, Steps, Models and Help menus grouped by task, with clean labels and unique mnemonics
   - View menu with Toolbars, Viewpoints, Cutaway, Cameras, Projection and Shading submenus
   - Options (gear) menus on the model view and every panel for grids, preview, parts and colors
-  - Theme-aware toolbar icons drawn in code, sharp at any size
-  - Preferences pages with lined up label and control columns: General, Rendering, Views, Colors, Instructions, Categories, Keyboard and Mouse
+  - Standard, Tools and Time toolbars with icons and cursors drawn in code, sharp at any size, move and rotate cursors show their axis
+  - Model tabs, split views, Full Screen and a status bar with the view orientation, projection and focus position, each segment shown or hidden with a right click
+  - What's This help on every dialog and panel from the title bar button or Help menu
+  - English, French, German, Spanish, Portuguese, Czech, Ukrainian, Russian, Simplified Chinese and Traditional Chinese interface languages
 
   ![Toolbars](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/interface-toolbars.png)
 
@@ -183,81 +185,124 @@ Everything LeoCAD does, StudWorx does too - with a reworked interface and a set 
 
   </details>
 
-  <details>
-  <summary>Preferences and About</summary>
+- **Files** ↴
+  - LDraw models in '.ldr', '.mpd' and '.dat' files, in LeoCAD's file format so models open in either program
+  - New, Open, Merge, Save, Save As, Reload, Watch for File Changes and the four most recent files
+  - Import LEGO® Digital Designer models and set inventories, with your own free Rebrickable API key asked for once
+  - Export to 3D Studio, COLLADA, Wavefront, POV-Ray, HTML, BrickLink and CSV
+  - Print the current model view through the system print dialog, with a Preview button where the dialog allows it
+  - Model thumbnails in file managers, from a KDE thumbnail plugin or the desktop thumbnailer
+  - Parts library downloaded on the first start as the official LDraw 'complete.zip', or chosen from an existing archive, and reloaded from the File menu
+  - Command line rendering, '--transparent' images and POV-Ray renders, and settings, shortcuts and categories imported or exported without opening a window
 
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/preferences-general.png" alt="General preferences" width="24%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/preferences-rendering.png" alt="Rendering preferences" width="24%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/preferences-views.png" alt="Views preferences" width="24%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/preferences-colors.png" alt="Colors preferences" width="24%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/preferences-instructions.png" alt="Instructions preferences" width="24%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/preferences-categories.png" alt="Categories preferences" width="24%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/preferences-keyboard.png" alt="Keyboard preferences" width="24%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/preferences-mouse.png" alt="Mouse preferences" width="24%" align="top">
+- **Save Model Image** ↴
+  - Live preview of the saved image with step arrows, for one step or every step
+  - Ratio presets from square to widescreen in Landscape or Portrait, with any size typed in
+  - Transparent backgrounds for PNG and GIF files, View Color backgrounds saved opaque
+  - Fit Model and Fit Each Step keep every part inside the image with an adjustable margin
+  - Animated GIF turntables, a full turn or a back and forth angle range around the X, Y or Z axis, with frame count and duration, played live in the preview
+  - Turntables keep one steady zoom through the whole turn around the World Origin, Model Origin or Model Center
 
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/about.png" alt="About" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/save-model-image.png" alt="Save Model Image" width="49%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/save-model-image-gif.png" alt="Save Model Image animated GIF" width="49%" align="top">
 
-  </details>
+- **Rendering** ↴
+  - POV-Ray renders from the File menu, POV-Ray found on its own in the PATH, Flatpak or Snap and checked for version 3.7
+  - LGEO parts found beside the parts library or downloaded on request, with a Parts choice between LDraw and LGEO
+  - Blender renders and Open in Blender
+  - Standard, Studio, Matte and Toon lighting styles, also from the command line with '--lighting'
+  - Wireframe, flat shading, default lights, edge lines, conditional lines and mesh level of detail
+  - Plain, logo, high contrast and other stud styles, with automated edge colors
+  - Separate rendering settings for the model view, preview, parts list and Minifigure Builder
+  - Outline or tint and edges selection highlight with an adjustable outline width
 
-- **Panels** ↴
-  - Uniform panel headers, buttons and text boxes, all sized from the options (gear) button
-  - Collapsible color groups, square color tiles and a color options menu
-  - Properties panel with compact position, rotation and transform rows and a spanning color swatch
-  - Dockable Minifigure Builder panel, optional embedded terminal panel and a square preview
-  - Panels dock side by side in any area
-  - Parts panel snaps to whole thumbnail tiles and rows, docked or floating, and its categories to the longest name
-  - Part categories turned on and off with a checkbox
-  - Theme-aware icons and cursors drawn in code, with axis cursors for moving and rotating
-
-  ![Selected part in the main window](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/interface-main-window-selection.png)
-
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/panel-preview.png" alt="Preview panel" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/panel-parts.png" alt="Parts panel" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/panel-minifigure-builder.png" alt="Minifigure Builder panel" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/panel-timeline.png" alt="Timeline panel" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/panel-colors.png" alt="Colors panel" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/panel-properties.png" alt="Properties panel" align="top">
-
-- **Modeling** ↴
-  - MLCad ROTSTEP step views shown and edited in the Timeline
-  - Select Connected Parts, using the connection shapes of the [LDCad shadow library](https://github.com/RolandMelkert/LDCadShadowLibrary)
-  - Vertical XZ and YZ height grids with their own z axis lines, sized with the base grid around the model on all three axes, grid origin z axis line, toggles for each x, y and z axis line, optional negative axis halves in the negative axis colors, custom rotation snap angle and camera orbit snapping
-  - Status bar view orientation in latitude and longitude with the projection, ahead of the focus position, and a right click menu showing or hiding each status bar segment
-  - Normal to Face view command, first part at the origin option
-  - Insert color options and the selected part color as the current color
-  - Separate rendering settings for the model view, preview and parts list
-  - Standard, Studio, Matte and Toon lighting styles and an adjustable selection outline width
-  - Cube, sphere and cylinder cutaways to see inside a model, with solid cut surfaces, a shaded cut and resize knobs
-  - Idle turntable showing the model full screen
-  - Perspective or orthographic projection for the active view or all views at once
-
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-cutaway-cube.png" alt="Cube cutaway" width="32%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-cutaway-sphere.png" alt="Sphere cutaway" width="32%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-cutaway-cylinder.png" alt="Cylinder cutaway" width="32%" align="top">
+  ![POV-Ray render](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/rendering-povray.png)
 
   <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-lighting-standard.png" alt="Standard lighting" width="24%" align="top">
   <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-lighting-studio.png" alt="Studio lighting" width="24%" align="top">
   <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-lighting-matte.png" alt="Matte lighting" width="24%" align="top">
   <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-lighting-toon.png" alt="Toon lighting" width="24%" align="top">
 
-  ![XZ and YZ height grids](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-height-grids.png)
+- **Modeling** ↴
+  - Insert, delete, duplicate, paint, hide and group parts, with the first part at the origin as an option
+  - Insert with the current, selected part or last inserted color, or lock the parts color
+  - Move and rotate snapping in studs, flats, bricks and degrees with a custom rotation angle, relative or absolute transforms and separate or shared rotation
+  - Select All, None, Invert, Adjacent Parts, by Name, and by part, color or both
+  - Select Connected Parts, using the connection shapes of the [LDCad shadow library](https://github.com/RolandMelkert/LDCadShadowLibrary)
+  - Find and Replace bar by part and color, with Find All, Replace All and submodels included on request
+  - Array to repeat the selection along one, two or three axes
+  - Flex Path parts such as hoses and cables, bent with control points that stop at the part length
+  - Train track rotation, pivot point reset, keyframes and lights and cameras placed in the model
 
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-projection-perspective.png" alt="Perspective projection" width="49%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-projection-orthographic.png" alt="Orthographic projection" width="49%" align="top">
+  ![Find and Replace](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-find-replace.png)
+
+  ![Array](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-array.png)
+
+  ![Flex Path](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-flex-path.png)
+
+- **Views** ↴
+  - View cube with chamfered edges and corners, click any of its 6 faces, 12 edges or 8 corners for that view
+  - Axis icon with X, Y and Z labels and optional negative axes, view cube, axis icon and part thumbnails in Extra Small to Extra Large
+  - Front, Back, Top, Bottom, Left, Right and Home viewpoints, Zoom Extents, Look At and Normal to Face
+  - Perspective or orthographic projection for the active view or all views at once
+  - Cameras with a floating camera bar, camera orbit snapping and cameras numbered 'Camera 001'
+  - Cube, sphere and cylinder cutaways to see inside a model, with solid cut surfaces, a shaded cut, resize knobs and push in or pull out by one plate - the model is never changed
+  - Base grid with studs, lines and origin lines, vertical XZ and YZ height grids sized around the model, and toggles for each X, Y and Z axis line
+  - Idle turntable turning the model full screen around the X, Y or Z axis, any input ends it
+
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-view-cube.png" alt="View cube" align="top">
+
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/views-camera.png" alt="Camera bar" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-projection-perspective.png" alt="Perspective projection" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-projection-orthographic.png" alt="Orthographic projection" width="32%" align="top">
+
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-cutaway-cube.png" alt="Cube cutaway" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-cutaway-sphere.png" alt="Sphere cutaway" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-cutaway-cylinder.png" alt="Cylinder cutaway" width="32%" align="top">
+
+  ![XZ and YZ height grids](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-height-grids.png)
 
   <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-turntable-a.png" alt="Idle turntable" width="32%" align="top">
   <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-turntable-b.png" alt="Idle turntable" width="32%" align="top">
   <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-turntable-c.png" alt="Idle turntable" width="32%" align="top">
 
+- **Steps** ↴
+  - Steps menu to go to the first, previous, next or last step and insert or remove steps
+  - Timeline with the steps each part is added and removed in, an empty removal step reads 'Never'
+  - Move the selection to the current, previous or next step and paste with steps
+  - MLCad ROTSTEP step views shown, edited and followed in the Timeline
+  - Fade Previous Steps and Highlight New Parts in the model view and the instructions
+
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/interface-menu-steps.png" alt="Steps menu" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/panel-timeline.png" alt="Timeline panel" align="top">
+
+- **Panels** ↴
+  - Uniform panel headers, buttons and text boxes, all sized from the options (gear) button
+  - Panels dock side by side in any area
+  - Parts panel snaps to whole thumbnail tiles and rows, docked or floating, and its categories to the longest name
+  - Collapsible solid, translucent and special color groups with square color tiles
+  - Properties panel with compact position, rotation and transform rows and a spanning color swatch, lights and cameras with named rows and units
+  - Minifigure Builder panel to build a minifigure from templates and add several variations to the model
+  - Preview panel for parts and models, with a square viewport and Keep Last Selection
+  - Terminal panel sized to whole rows and columns, with Open Model Folder
+
+  ![Selected part in the main window](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/interface-main-window-selection.png)
+
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/panel-preview.png" alt="Preview panel" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/panel-parts.png" alt="Parts panel" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/panel-minifigure-builder.png" alt="Minifigure Builder panel" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/panel-colors.png" alt="Colors panel" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/panel-properties.png" alt="Properties panel" align="top">
+
 - **Instructions** ↴
-  - Page setup with paper and screen presets, units, margins and orientation
-  - Cover page, bill of materials, blank page breaks and per page step layouts
-  - Step dividers, document font, model projection, parts list options and full page backgrounds
-  - Placement panel to place, drag and lock every page element, with a snapping page grid
-  - Page numbers, colors and fonts for every element and a built-in Print panel
-  - Padding, margin, border and background for every page element
+  - Page setup with paper and screen presets, metric or imperial units, margins and orientation
+  - Cover page, bill of materials, blank page breaks and steps per page for each page
+  - Step dividers, document font, model projection, parts list counts, sort order and border, and full page backgrounds
+  - Step images outline the parts new to each step and fade the earlier ones
+  - Placement panel to place, drag and lock every page element within the page margins, with a snapping page grid
+  - Page numbers, colors, fonts, padding, margin, border and background for every page element
   - Notices and pointers to emphasize parts, steps and notices
-  - Instructions saved in the model file
+  - Built-in Print panel and a source editor, instructions saved in the model file as '!SW INSTRUCTION' meta commands
 
   <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/instructions-page-cover.png" alt="Cover page" width="32%" align="top">
   <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/instructions-page-step.png" alt="Step page" width="32%" align="top">
@@ -273,11 +318,35 @@ Everything LeoCAD does, StudWorx does too - with a reworked interface and a set 
 
 - **Models** ↴
   - Model properties with part IDs, thumbnails, counts and BrickLink or CSV export
-  - Consistent default names and numbered duplicates
+  - New Submodel, Submodels list, Open Selected Model, Inline Selected Models and Move to New Model
+  - Edit a submodel in place, with an editing path bar whose buttons go back to each model
+  - Consistent default names and numbered duplicates: 'Submodel 001.ldr', 'Car.ldr' becomes 'Car 001.ldr'
 
   <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/models-properties.png" alt="Model properties" width="32%" align="top">
   <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/models-properties-parts.png" alt="Model parts" width="32%" align="top">
   <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/models-submodels.png" alt="Submodels" width="32%" align="top">
+
+  ![Editing a submodel in place](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/models-in-place-editing.png)
+
+- **Preferences** ↴
+  - General, Rendering, Views, Colors, Instructions, Categories, Keyboard and Mouse pages with lined up label and control columns
+  - Reference Paths, the Author of new models, the parts library, LGEO and POV-Ray locations and the Blender add-on settings
+  - Views page grouped into Model, Cutaway, Turntable, Base Grid, Parts, Preview and Minifigure Builder, every slider showing its value
+  - Units inside their boxes and named by the count, value boxes show their maximum and bring any typed number into range
+  - Part categories turned on and off with a checkbox
+  - Keyboard shortcuts and mouse shortcuts recorded by clicking, all importable and exportable
+  - Settings, part palettes and minifigure templates copied from LeoCAD on the first start
+
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/preferences-general.png" alt="General preferences" width="24%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/preferences-rendering.png" alt="Rendering preferences" width="24%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/preferences-views.png" alt="Views preferences" width="24%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/preferences-colors.png" alt="Colors preferences" width="24%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/preferences-instructions.png" alt="Instructions preferences" width="24%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/preferences-categories.png" alt="Categories preferences" width="24%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/preferences-keyboard.png" alt="Keyboard preferences" width="24%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/preferences-mouse.png" alt="Mouse preferences" width="24%" align="top">
+
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/about.png" alt="About" align="top">
 
 ---
 

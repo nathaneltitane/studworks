@@ -643,6 +643,7 @@ bool swApplication::ReloadPartsLibrary(const QString& LibraryPath, bool Official
 
 	gMainWindow->UpdateCategories();
 	gMainWindow->UpdateInUseCategory();
+	gMainWindow->UpdateMinifigureBuilder();
 	swView::UpdateProjectViews(mProject);
 
 	return true;
