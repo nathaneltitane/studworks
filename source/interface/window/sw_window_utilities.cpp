@@ -448,6 +448,22 @@ QSize swGetPanelButtonSize()
 	return ButtonSize;
 }
 
+QSize swGetBrowseButtonSize()
+{
+	// the narrowest text button is a browse button like the ones in preferences
+	static QSize ButtonSize;
+
+	if (!ButtonSize.isValid())
+	{
+		QToolButton Button;
+
+		Button.setText(QLatin1String("..."));
+		ButtonSize = Button.sizeHint();
+	}
+
+	return ButtonSize;
+}
+
 void swSetupPanelButton(QToolButton* Button)
 {
 	// Panel buttons are outlined, icon buttons are as large as the gear and text buttons as tall.

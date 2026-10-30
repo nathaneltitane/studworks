@@ -94,6 +94,7 @@ protected:
 
 // Panel rows are plain widgets with a standard row layout, so every panel has the spacing of the minifigure builder panel.
 QSize swGetPanelButtonSize();
+QSize swGetBrowseButtonSize();
 int swGetLayoutSpacing(const QWidget* Widget, Qt::Orientation Orientation);
 void swSetupPanelButton(QToolButton* Button);
 void swSetupPanelEdit(QWidget* Edit);
@@ -310,10 +311,10 @@ public:
 		return Size;
 	}
 
-	// The button is never narrower than a square panel button like the gear.
+	// The button is never narrower than a browse button so it shows at least an ellipsis.
 	QSize minimumSizeHint() const override
 	{
-		return QSize(swGetPanelButtonSize().width(), QToolButton::sizeHint().height());
+		return QSize(swGetBrowseButtonSize().width(), QToolButton::sizeHint().height());
 	}
 
 protected:
