@@ -10,7 +10,7 @@ Useful? Star the repository - it helps others find it.
 
 ---
 
-[[ StudWorks // Project Page ]](https://github.com/nathaneltitane/studworks)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;[ Version // 2026-10-29 ]
+[[ StudWorks // Project Page ]](https://github.com/nathaneltitane/studworks)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;[ Version // 2026-10-30 ]
 
 ---
 
@@ -277,11 +277,11 @@ Everything LeoCAD does, StudWorks does too - with a reworked interface and a set
 
       | System | Package |
       | --- | --- |
-      | Debian, Ubuntu | studworks_2026-10-29_amd64.deb / arm64.deb |
-      | Fedora, Rocky Linux, RHEL, openSUSE | studworks-2026-10-29-x86_64.rpm / aarch64.rpm |
-      | Any Linux | studworks-linux-2026-10-29-x86_64.appimage / aarch64.appimage |
-      | Windows | studworks-windows-2026-10-29-x64.exe |
-      | macOS | studworks-macos-2026-10-29-universal.dmg |
+      | Debian, Ubuntu | studworks_2026-10-30_amd64.deb / arm64.deb |
+      | Fedora, Rocky Linux, RHEL, openSUSE | studworks-2026-10-30-x86_64.rpm / aarch64.rpm |
+      | Any Linux | studworks-linux-2026-10-30-x86_64.appimage / aarch64.appimage |
+      | Windows | studworks-windows-2026-10-30-x64.exe |
+      | macOS | studworks-macos-2026-10-30-universal.dmg |
 
     - The .deb and .rpm packages install to '/opt/studworks', the AppImage runs from anywhere after 'chmod +x' - all three carry their own Qt libraries and the LDraw parts library, and only need the base system libraries.
     - Linux packages are tested on Debian 12 and 13, Ubuntu 22.04 and 24.04, Rocky Linux 9, Fedora and openSUSE Tumbleweed.
@@ -369,7 +369,7 @@ LEGO® is a trademark of the LEGO® Group, which does not sponsor, authorize or 
 
 ---
 
-[[ StudWorks // Project Page ]](https://github.com/nathaneltitane/studworks)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;[ Version // 2026-10-29 ]
+[[ StudWorks // Project Page ]](https://github.com/nathaneltitane/studworks)&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;[ Version // 2026-10-30 ]
 
 ---
 

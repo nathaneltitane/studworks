@@ -25,7 +25,7 @@ If applicable, add screenshots to help explain your problem.
 
 **Version (please complete the following information):**
  - OS: [e.g. Windows 10, Ubuntu, macOS]
- - StudWorks Version [e.g. 2026-10-29]
+ - StudWorks Version [e.g. 2026-10-30]
 
 **Crash information:**
 Some versions of StudWorks will show a message that they saved a minidump file when they crash, if you see this message please attach the file.

@@ -1,7 +1,7 @@
 name: studworks
 base: core18
 adopt-info: studworks
-version: '2026-10-29'
+version: '2026-10-30'
 grade: stable
 confinement: strict
 
@@ -30,5 +30,5 @@ parts:
       - libqt5concurrent5
       - libqt5printsupport5
       - libqt5xml5
-    source: https://github.com/nathaneltitane/studworks/archive/refs/tags/2026-10-29.tar.gz
+    source: https://github.com/nathaneltitane/studworks/archive/refs/tags/2026-10-30.tar.gz
     parse-info: [usr/share/metainfo/io.github.nathaneltitane.StudWorks.appdata.xml]
