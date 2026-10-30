@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# build a studworks appimage that carries its own qt libraries
+# build a studworx appimage that carries its own qt libraries
 # usage: packaging/appimage.sh [build directory]
 
 set -e
@@ -24,9 +24,9 @@ source "${directory_source}/packaging/bundle.sh"
 chmod 755 "${directory_package}"
 cp "${directory_source}/packaging/AppRun" "${directory_package}/AppRun"
 chmod 755 "${directory_package}/AppRun"
-cp "${directory_source}/platform/studworks.desktop" "${directory_package}/studworks.desktop"
-cp "${directory_source}/resources/icons/256x256/apps/studworks.png" "${directory_package}/studworks.png"
-ln -sf studworks.png "${directory_package}/.DirIcon"
+cp "${directory_source}/platform/studworx.desktop" "${directory_package}/studworx.desktop"
+cp "${directory_source}/resources/icons/256x256/apps/studworx.png" "${directory_package}/studworx.png"
+ln -sf studworx.png "${directory_package}/.DirIcon"
 
 # download appimagetool
 file_tool="${directory_build}/appimagetool-${package_architecture}.AppImage"
@@ -37,7 +37,7 @@ then
 	chmod 755 "${file_tool}"
 fi
 
-file_package="${directory_build}/studworks-linux-${package_version}-${package_architecture}.appimage"
+file_package="${directory_build}/studworx-linux-${package_version}-${package_architecture}.appimage"
 
 ARCH="${package_architecture}" VERSION="${package_version}" APPIMAGE_EXTRACT_AND_RUN=1 "${file_tool}" --no-appstream "${directory_package}" "${file_package}"
 

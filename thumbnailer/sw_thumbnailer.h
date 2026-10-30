@@ -2,7 +2,7 @@
 
 #include <KIO/ThumbnailCreator>
 
-// use to show ldraw models and parts in kde file managers, rendered by the studworks command line
+// use to show ldraw models and parts in kde file managers, rendered by the studworx command line
 class swThumbnailCreator : public KIO::ThumbnailCreator
 {
 	Q_OBJECT

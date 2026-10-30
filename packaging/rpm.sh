@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# build a studworks rpm that carries its own qt libraries
+# build a studworx rpm that carries its own qt libraries
 # usage: packaging/rpm.sh [build directory]
 
 set -e
@@ -42,7 +42,7 @@ text_bundled="${list_bundled[*]}"
 unset IFS
 
 # the kde thumbnail plugin is defined only when built since rpm refuses empty macros
-file_thumbnailer="$(find "${directory_package}" -name studworksthumbnail.so -printf "/%P\n" -quit)"
+file_thumbnailer="$(find "${directory_package}" -name studworxthumbnail.so -printf "/%P\n" -quit)"
 list_defines=()
 
 if [ -n "${file_thumbnailer}" ]
@@ -54,15 +54,15 @@ fi
 directory_rpm="${directory_build}/rpmbuild"
 mkdir -p "${directory_rpm}"
 
-rpmbuild -bb "${directory_source}/packaging/studworks.spec" \
+rpmbuild -bb "${directory_source}/packaging/studworx.spec" \
 	--define "_topdir ${directory_rpm}" \
 	--define "sw_version ${package_version//-/}" \
 	--define "sw_root ${directory_package}" \
 	--define "sw_bundled ${text_bundled}" \
 	"${list_defines[@]}"
 
-file_package="${directory_build}/studworks-${package_version}-${package_architecture}.rpm"
+file_package="${directory_build}/studworx-${package_version}-${package_architecture}.rpm"
 
-mv "${directory_rpm}/RPMS/${package_architecture}/studworks-${package_version//-/}-1.${package_architecture}.rpm" "${file_package}"
+mv "${directory_rpm}/RPMS/${package_architecture}/studworx-${package_version//-/}-1.${package_architecture}.rpm" "${file_package}"
 
 printf "%s\n" "${file_package}"

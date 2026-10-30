@@ -39,7 +39,7 @@
 void swMainWindow::CreateWidgets()
 {
 	setAcceptDrops(true);
-	setWindowIcon(QIcon(":/resources/studworks.png"));
+	setWindowIcon(QIcon(":/resources/studworx.png"));
 	setWindowFilePath(QString());
 
 	CreateActions();

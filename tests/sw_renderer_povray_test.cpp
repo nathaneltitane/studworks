@@ -1,8 +1,8 @@
 #include "sw_global.h"
 #include "sw_tests.h"
 
-// Exports a one brick model with the StudWorks binary and renders it with POV-Ray, so a scene POV-Ray
-// cannot parse fails here. SW_TEST_BINARY is the studworks program and SW_TEST_LIBRARY an optional
+// Exports a one brick model with the StudWorx binary and renders it with POV-Ray, so a scene POV-Ray
+// cannot parse fails here. SW_TEST_BINARY is the studworx program and SW_TEST_LIBRARY an optional
 // parts library, without one the brick exports as a placeholder.
 void swTests::POVRayRendersExport()
 {

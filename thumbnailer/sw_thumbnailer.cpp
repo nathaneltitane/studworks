@@ -106,7 +106,7 @@ bool swThumbnailCreator::IsLDrawFile(const QString& FileName)
 	return LineCount > 0;
 }
 
-// use to find the studworks installed beside this plugin, then any on the path
+// use to find the studworx installed beside this plugin, then any on the path
 QString swThumbnailCreator::GetProgramPath()
 {
 	const QFileInfo Program(QStringLiteral(SW_THUMBNAILER_PROGRAM));
@@ -114,7 +114,7 @@ QString swThumbnailCreator::GetProgramPath()
 	if (Program.isExecutable())
 		return Program.filePath();
 
-	return QStandardPaths::findExecutable(QStringLiteral("studworks"));
+	return QStandardPaths::findExecutable(QStringLiteral("studworx"));
 }
 
 #include "sw_thumbnailer.moc"

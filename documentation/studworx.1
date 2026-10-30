@@ -1,17 +1,17 @@
-.TH STUDWORKS 1 "26 October 2026"
+.TH STUDWORX 1 "26 October 2026"
 .\" NAME should be all caps, SECTION should be 1-8, maybe w/ subsection
 .\" other params are allowed: see man(7), man(1)
 .SH NAME
-StudWorks \- CAD program for LEGO\(rg models.
+StudWorx \- CAD program for LEGO\(rg models.
 .SH SYNOPSIS
-\fIstudworks \fR[\fIOPTIONS\fR] [\fIINFILE\fR]
+\fIstudworx \fR[\fIOPTIONS\fR] [\fIINFILE\fR]
 .SH "DESCRIPTION"
-\fIStudWorks \fR is a CAD program for creating virtual LEGO\(rg models. It
+\fIStudWorx \fR is a CAD program for creating virtual LEGO\(rg models. It
 has an easy to use interface and includes thousands of different
 parts in its library.
 
 .SH OPTIONS
-Below is a summary of all of the options that \fIStudWorks\fR
+Below is a summary of all of the options that \fIStudWorx\fR
 accepts. Many options have two equivalent names, one of
 which is a single letter preceded by -, and the other of
 which is a long name preceded by --. Brackets ([ and ])
@@ -91,7 +91,7 @@ Set the camera angles in degrees around the model.
 
 .TP
 .BI "\-\-camera\-position " x " " y " " z "  " tx " " ty " " tz "  " ux " " uy " " uz
-Set the camera position, target and up vector using the \fIStudWorks\fR coordinate system.
+Set the camera position, target and up vector using the \fIStudWorx\fR coordinate system.
 
 .TP
 .BI "\-\-camera\-position-ldraw " x " " y " " z "  " tx " " ty " " tz "  " ux " " uy " " uz
@@ -254,29 +254,29 @@ Output version information and exit.
 Display a brief usage synopsis and exit.
 
 .SH ENVIRONMENT
-``STUDWORKS_LIBRARY'' may be set to the path of the parts library.
+``STUDWORX_LIBRARY'' may be set to the path of the parts library.
 
 .SH EXAMPLES
 .PP
- $ studworks car.lcd \-i car.png \-w 640 \-h 480
+ $ studworx car.lcd \-i car.png \-w 640 \-h 480
 .PP
-This will start StudWorks, load the file "car.lcd," create a png called
+This will start StudWorx, load the file "car.lcd," create a png called
 "car.png" with a resolution of 640x480 and exit when done.
 
 .SH FILES
 .TP
-.I ~/.config/StudWorks/StudWorks.conf
+.I ~/.config/StudWorx/StudWorx.conf
 User preferences file
 .TP
-.I ~/.local/share/StudWorks/StudWorks/complete.zip
+.I ~/.local/share/StudWorx/StudWorx/complete.zip
 Parts library downloaded on the first start
 
 .SH BUGS
-If you find any bugs please report them at https://github.com/nathaneltitane/studworks/issues
+If you find any bugs please report them at https://github.com/nathaneltitane/studworx/issues
 
 .SH AUTHOR
-\fIStudWorks \fRis based on LeoCAD, written by Leonardo Zide <leozide@gmail.com>.
-You can visit the StudWorks homepage at https://github.com/nathaneltitane/studworks/
+\fIStudWorx \fRis based on LeoCAD, written by Leonardo Zide <leozide@gmail.com>.
+You can visit the StudWorx homepage at https://github.com/nathaneltitane/studworx/
 
 Part connections come from the LDCad shadow library by Roland Melkert,
 https://github.com/RolandMelkert/LDCadShadowLibrary, made for LDCad,

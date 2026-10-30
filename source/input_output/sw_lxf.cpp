@@ -182,7 +182,7 @@ bool swImportLXFMLFile(const QString& FileData, Project* Project, std::vector<sw
 
 				swPart* Part = new swPart(nullptr);
 				Part->SetPartData(std::move(PartData), QString(), false, true);
-				Part->Initialize(swMatrix44LDrawToStudWorks(WorldMatrix), 1);
+				Part->Initialize(swMatrix44LDrawToStudWorx(WorldMatrix), 1);
 				Part->SetColorCode(ColorCode);
 				Parts.push_back(Part);
 				NumBrickParts++;

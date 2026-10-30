@@ -140,6 +140,8 @@ enum class swPaintedIcon
 	TimePrevious,
 	TimeNext,
 	TimeLast,
+	TimePlay,
+	TimePause,
 	TimeKeysAdd,
 	TransformTranslationAbsolute,
 	TransformTranslationRelative,

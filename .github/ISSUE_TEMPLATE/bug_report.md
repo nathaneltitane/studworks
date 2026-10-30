@@ -25,10 +25,10 @@ If applicable, add screenshots to help explain your problem.
 
 **Version (please complete the following information):**
  - OS: [e.g. Windows 10, Ubuntu, macOS]
- - StudWorks Version [e.g. 2026-10-30]
+ - StudWorx Version [e.g. 2026-10-30]
 
 **Crash information:**
-Some versions of StudWorks will show a message that they saved a minidump file when they crash, if you see this message please attach the file.
+Some versions of StudWorx will show a message that they saved a minidump file when they crash, if you see this message please attach the file.
 
 **Additional context**
 Add any other context about the problem here. If you're seeing a graphical issue, adding a screenshot of the About Dialog may help.

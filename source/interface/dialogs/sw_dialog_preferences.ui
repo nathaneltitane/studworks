@@ -3,7 +3,7 @@
  <class>swPreferencesDialog</class>
  <widget class="QDialog" name="swPreferencesDialog">
   <property name="whatsThis">
-   <string>&lt;p&gt;&lt;b&gt;Preferences&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Configure the application, display, colors, part categories, and keyboard and mouse shortcuts. Choose OK to save the changes or Cancel to discard edits in Preferences. Language and antialiasing changes, and clearing the parts library, require restarting StudWorks.&lt;/p&gt;&lt;p&gt;Export buttons write files immediately. Blender add-on settings have their own Apply action and can configure Blender before you close Preferences.&lt;/p&gt;</string>
+   <string>&lt;p&gt;&lt;b&gt;Preferences&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Configure the application, display, colors, part categories, and keyboard and mouse shortcuts. Choose OK to save the changes or Cancel to discard edits in Preferences. Language and antialiasing changes, and clearing the parts library, require restarting StudWorx.&lt;/p&gt;&lt;p&gt;Export buttons write files immediately. Blender add-on settings have their own Apply action and can configure Blender before you close Preferences.&lt;/p&gt;</string>
   </property>
   <property name="geometry">
    <rect>
@@ -42,7 +42,7 @@
           <item row="0" column="0">
            <widget class="QLabel" name="label_5">
             <property name="toolTip">
-             <string>Choose a part-library folder or supported archive. Leave it empty to use the default library after restarting StudWorks.</string>
+             <string>Choose a part-library folder or supported archive. Leave it empty to use the default library after restarting StudWorx.</string>
             </property>
             <property name="text">
              <string>Parts Library</string>
@@ -60,7 +60,7 @@
                <string>Parts Library</string>
               </property>
               <property name="toolTip">
-               <string>Choose a part-library folder or supported archive. Leave it empty to use the default library after restarting StudWorks.</string>
+               <string>Choose a part-library folder or supported archive. Leave it empty to use the default library after restarting StudWorx.</string>
               </property>
              </widget>
             </item>
@@ -356,7 +356,7 @@
           <item row="1" column="0">
            <widget class="QLabel" name="label_19">
             <property name="toolTip">
-             <string>Choose the interface language used after restarting StudWorks.</string>
+             <string>Choose the interface language used after restarting StudWorx.</string>
             </property>
             <property name="text">
              <string>Language</string>
@@ -372,7 +372,7 @@
              <string>Language</string>
             </property>
             <property name="toolTip">
-             <string>Choose the interface language used after restarting StudWorks.</string>
+             <string>Choose the interface language used after restarting StudWorx.</string>
             </property>
             <item>
              <property name="text">
@@ -406,7 +406,7 @@
           <item row="0" column="0" colspan="2">
            <widget class="QCheckBox" name="autoLoadMostRecent">
             <property name="toolTip">
-             <string>Open the most recently used file when StudWorks starts.</string>
+             <string>Open the most recently used file when StudWorx starts.</string>
             </property>
             <property name="text">
              <string>Open Most Recent File</string>
@@ -478,7 +478,7 @@
           <item row="3" column="0" colspan="2">
            <widget class="QCheckBox" name="MigrateMetaCommands">
             <property name="toolTip">
-             <string>Convert the LeoCAD meta commands of opened models to StudWorks meta commands without asking. Migrated models are no longer read fully by LeoCAD.</string>
+             <string>Convert the LeoCAD meta commands of opened models to StudWorx meta commands without asking. Migrated models are no longer read fully by LeoCAD.</string>
             </property>
             <property name="text">
              <string>Migrate LeoCAD Models Automatically</string>
@@ -662,7 +662,7 @@
           <item row="0" column="0">
            <widget class="QCheckBox" name="antiAliasing">
             <property name="toolTip">
-             <string>Smooth jagged edges in model views; changes require restarting StudWorks.</string>
+             <string>Smooth jagged edges in model views; changes require restarting StudWorx.</string>
             </property>
             <property name="text">
              <string>Anti-aliasing</string>
@@ -4252,7 +4252,7 @@
   <tabstop>mouseSensitivity</tabstop>
  </tabstops>
  <resources>
-  <include location="../../studworks.qrc"/>
+  <include location="../../studworx.qrc"/>
  </resources>
  <connections>
   <connection>

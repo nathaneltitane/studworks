@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # move the release date version to a new date, today by default
-# usage: tools/studworks-version-update [yyyy-mm-dd]
+# usage: tools/studworx-version-update [yyyy-mm-dd]
 
 set -e
 
@@ -115,9 +115,9 @@ replace_version README.md "*\[ Version // ${version_old} \]*" "${version_old}" "
 replace_version README.md "      | *${version_old}*" "${version_old}" "${version_new}"
 insert_version README.md "[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9] ↴" "${version_new} ↴" ""
 
-replace_version .github/ISSUE_TEMPLATE/bug_report.md "*StudWorks Version*" "${version_old}" "${version_new}"
+replace_version .github/ISSUE_TEMPLATE/bug_report.md "*StudWorx Version*" "${version_old}" "${version_new}"
 replace_version packaging/PKGBUILD "pkgver=*" "${version_compact_old}" "${version_compact_new}"
-insert_version packaging/io.github.nathaneltitane.StudWorks.appdata.xml "*<release version=*" $'\t\t'"<release version=\"${version_new}\" date=\"${version_new}\" />"
+insert_version packaging/io.github.nathaneltitane.StudWorx.appdata.xml "*<release version=*" $'\t\t'"<release version=\"${version_new}\" date=\"${version_new}\" />"
 replace_version platform/Info.plist "*<string>${version_old}</string>*" "${version_old}" "${version_new}"
 replace_version platform/Info.plist "*<string>${version_compact_old}</string>*" "${version_compact_old}" "${version_compact_new}"
 replace_version snapcraft.yaml "*${version_old}*" "${version_old}" "${version_new}"

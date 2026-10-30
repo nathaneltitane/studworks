@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # refresh the translation catalogs from the source strings
-# usage: tools/studworks-language-update [language]
+# usage: tools/studworx-language-update [language]
 
 set -e
 
@@ -22,7 +22,7 @@ tool_update="$(command -v lupdate || command -v lupdate-qt5)"
 
 cd "${directory_source}"
 
-for file_catalog in "${directory_translations}"/studworks_${language}.ts
+for file_catalog in "${directory_translations}"/studworx_${language}.ts
 do
 	if [ ! -f "${file_catalog}" ]
 	then
@@ -31,10 +31,10 @@ do
 	fi
 
 	# english keeps plural forms only
-	if [ "${file_catalog##*/}" = "studworks_en.ts" ]
+	if [ "${file_catalog##*/}" = "studworx_en.ts" ]
 	then
-		"${tool_update}" -pluralonly studworks.pro -ts "${file_catalog}"
+		"${tool_update}" -pluralonly studworx.pro -ts "${file_catalog}"
 	else
-		"${tool_update}" -no-ui-lines studworks.pro -ts "${file_catalog}"
+		"${tool_update}" -no-ui-lines studworx.pro -ts "${file_catalog}"
 	fi
 done

@@ -1,8 +1,8 @@
 # Meta Commands
 
-Meta commands are line type 0 lines of an LDraw file, written as `0 <COMMAND> <parameters>` with the command in capitals ([LDraw File Format](https://www.ldraw.org/article/218.html)). New official commands start with `!`, unofficial ones should start with `!` too and be based on the name of the program that defines them, so StudWorks writes its own commands under the `!SW` marker.
+Meta commands are line type 0 lines of an LDraw file, written as `0 <COMMAND> <parameters>` with the command in capitals ([LDraw File Format](https://www.ldraw.org/article/218.html)). New official commands start with `!`, unofficial ones should start with `!` too and be based on the name of the program that defines them, so StudWorx writes its own commands under the `!SW` marker.
 
-This list holds every meta command StudWorks handles, sorted by tool or context, official ones first. The handling column reads:
+This list holds every meta command StudWorx handles, sorted by tool or context, official ones first. The handling column reads:
 
 | Handling | Meaning |
 | --- | --- |
@@ -100,9 +100,9 @@ From the [BFC Language Extension](https://www.ldraw.org/article/415.html), read 
 | --- | --- | --- |
 | `0 !AVATAR CATEGORY "<category>"` | Keep | avatar parts, see [Avatar Library](https://www.ldraw.org/article/346.html) |
 
-## StudWorks
+## StudWorx
 
-StudWorks commands take the form `0 !SW <PROPERTY> <OBJECT> <arguments>`. An animated property writes one `<PROPERTY>_KEY` line per key, with the step before the values, as in `0 !SW POSITION_KEY CAMERA 3 0 -80 40`. Matrices are written as 9 numbers of a 3 by 3 rotation, positions and vectors as 3 numbers.
+StudWorx commands take the form `0 !SW <PROPERTY> <OBJECT> <arguments>`. An animated property writes one `<PROPERTY>_KEY` line per key, with the step before the values, as in `0 !SW POSITION_KEY CAMERA 3 0 -80 40`. Matrices are written as 9 numbers of a 3 by 3 rotation, positions and vectors as 3 numbers.
 
 ### Part
 
@@ -222,9 +222,9 @@ Flexible parts such as hoses and cables, built from control points.
 
 ## LeoCAD
 
-LeoCAD commands take the form `0 !LEOCAD <OBJECT> <PROPERTY> <arguments>`. They are read as the matching StudWorks commands. A model opened with them asks to migrate, a migrated model is saved with StudWorks commands and a kept model is saved with LeoCAD commands.
+LeoCAD commands take the form `0 !LEOCAD <OBJECT> <PROPERTY> <arguments>`. They are read as the matching StudWorx commands. A model opened with them asks to migrate, a migrated model is saved with StudWorx commands and a kept model is saved with LeoCAD commands.
 
-| LeoCAD | StudWorks |
+| LeoCAD | StudWorx |
 | --- | --- |
 | `0 !LEOCAD PIECE <PROPERTY>` | `0 !SW <PROPERTY> PART` |
 | `0 !LEOCAD <OBJECT> ROTATION`, `ROTATION_KEY` | `0 !SW ORIENTATION <OBJECT>`, `ORIENTATION_KEY` |
@@ -273,7 +273,7 @@ From the [list of known unofficial meta commands](https://wiki.ldraw.org/wiki/Li
 | `0 SYNTH SHOW`, `HIDE` | Keep | constraint visibility |
 | `0 SYNTHESIZED BEGIN`, `0 SYNTHESIZED END` | Keep | generated lines |
 
-The StudWorks `SYNTH_PATH` object is named apart from these commands, which describe a different format.
+The StudWorx `SYNTH_PATH` object is named apart from these commands, which describe a different format.
 
 ## L3P
 
@@ -292,7 +292,7 @@ The StudWorks `SYNTH_PATH` object is named apart from these commands, which desc
 
 ## Blender
 
-The Blender LDraw import add-on handles these commands when its options in Preferences ask for it. The step StudWorks hands to Blender is written with LeoCAD meta commands, the form the add-on reads cameras, lights and groups from.
+The Blender LDraw import add-on handles these commands when its options in Preferences ask for it. The step StudWorx hands to Blender is written with LeoCAD meta commands, the form the add-on reads cameras, lights and groups from.
 
 | Command | Option | Use |
 | --- | --- | --- |

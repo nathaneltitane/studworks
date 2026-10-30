@@ -284,8 +284,8 @@ bool swMainWindow::MigrateMetaCommands(const QString& FileName)
 	if (swGetPreferences().mMigrateMetaCommands)
 		return true;
 
-	QMessageBox MessageBox(QMessageBox::Question, tr("Migrate Model"), tr("'%1' uses LeoCAD meta commands. Do you want to migrate it to StudWorks meta commands?").arg(QFileInfo(FileName).fileName()), QMessageBox::NoButton, this);
-	MessageBox.setInformativeText(tr("A migrated model is saved with StudWorks meta commands, LeoCAD then ignores its cameras, lights, groups and part settings. A model kept as it is stays readable in LeoCAD."));
+	QMessageBox MessageBox(QMessageBox::Question, tr("Migrate Model"), tr("'%1' uses LeoCAD meta commands. Do you want to migrate it to StudWorx meta commands?").arg(QFileInfo(FileName).fileName()), QMessageBox::NoButton, this);
+	MessageBox.setInformativeText(tr("A migrated model is saved with StudWorx meta commands, LeoCAD then ignores its cameras, lights, groups and part settings. A model kept as it is stays readable in LeoCAD."));
 	QPushButton* MigrateButton = MessageBox.addButton(tr("Migrate"), QMessageBox::AcceptRole);
 	MessageBox.addButton(tr("Keep"), QMessageBox::RejectRole);
 	MessageBox.setDefaultButton(MigrateButton);

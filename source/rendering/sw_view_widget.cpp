@@ -621,13 +621,13 @@ void swViewWidget::dragEnterEvent(QDragEnterEvent* DragEnterEvent)
 {
 	const QMimeData* MimeData = DragEnterEvent->mimeData();
 
-	if (MimeData->hasFormat("application/vnd.studworks-part"))
+	if (MimeData->hasFormat("application/vnd.studworx-part"))
 	{
 		DragEnterEvent->acceptProposedAction();
 		mView->BeginDrag(swDragState::Part);
 		return;
 	}
-	else if (MimeData->hasFormat("application/vnd.studworks-color"))
+	else if (MimeData->hasFormat("application/vnd.studworx-color"))
 	{
 		DragEnterEvent->acceptProposedAction();
 		mView->BeginDrag(swDragState::Color);
@@ -647,7 +647,7 @@ void swViewWidget::dragMoveEvent(QDragMoveEvent* DragMoveEvent)
 {
 	const QMimeData* MimeData = DragMoveEvent->mimeData();
 
-	if (MimeData->hasFormat("application/vnd.studworks-part") || MimeData->hasFormat("application/vnd.studworks-color"))
+	if (MimeData->hasFormat("application/vnd.studworx-part") || MimeData->hasFormat("application/vnd.studworx-color"))
 	{
 		float DeviceScale = GetDeviceScale();
 
@@ -667,7 +667,7 @@ void swViewWidget::dropEvent(QDropEvent* DropEvent)
 {
 	const QMimeData* MimeData = DropEvent->mimeData();
 
-	if (MimeData->hasFormat("application/vnd.studworks-part") || MimeData->hasFormat("application/vnd.studworks-color"))
+	if (MimeData->hasFormat("application/vnd.studworx-part") || MimeData->hasFormat("application/vnd.studworx-color"))
 	{
 		mView->EndDrag(true);
 		window()->activateWindow();

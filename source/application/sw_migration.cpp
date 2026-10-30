@@ -16,6 +16,42 @@ static void swCopyFolder(const QString& Source, const QString& Destination)
 	}
 }
 
+// use to take over settings and data stored under an earlier name
+static bool swTakeOverSettings(const QString& EarlierOrganization, const QString& EarlierApplication, bool MoveData)
+{
+	QSettings Settings;
+
+	const QString OrganizationName = QCoreApplication::organizationName();
+	const QString ApplicationName = QCoreApplication::applicationName();
+	const QString DataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
+
+	QCoreApplication::setOrganizationName(EarlierOrganization);
+	QCoreApplication::setApplicationName(EarlierApplication);
+
+	QSettings OldSettings;
+	const QStringList OldKeys = OldSettings.allKeys();
+	const QString OldDataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
+
+	for (const QString& Key : OldKeys)
+		Settings.setValue(Key, OldSettings.value(Key));
+
+	QCoreApplication::setOrganizationName(OrganizationName);
+	QCoreApplication::setApplicationName(ApplicationName);
+
+	// move large libraries instead of copying them
+	if (QDir(OldDataPath).exists() && !QDir(DataPath).exists())
+	{
+		QDir().mkpath(QFileInfo(DataPath).absolutePath());
+
+		if (!MoveData || !QDir().rename(OldDataPath, DataPath))
+			swCopyFolder(OldDataPath, DataPath);
+	}
+
+	Settings.sync();
+
+	return !OldKeys.isEmpty();
+}
+
 static void swMigrateEarlierSettings()
 {
 	// take over earlier application settings once
@@ -24,26 +60,8 @@ static void swMigrateEarlierSettings()
 	if (!Settings.allKeys().isEmpty())
 		return;
 
-	const QString OrganizationName = QCoreApplication::organizationName();
-	const QString ApplicationName = QCoreApplication::applicationName();
-	const QString DataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
-
-	QCoreApplication::setOrganizationName(QLatin1String("LeoCAD Software"));
-	QCoreApplication::setApplicationName(QLatin1String("LeoCAD"));
-
-	QSettings OldSettings;
-	const QString OldDataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
-
-	for (const QString& Key : OldSettings.allKeys())
-		Settings.setValue(Key, OldSettings.value(Key));
-
-	QCoreApplication::setOrganizationName(OrganizationName);
-	QCoreApplication::setApplicationName(ApplicationName);
-
-	if (QDir(OldDataPath).exists() && !QDir(DataPath).exists())
-		swCopyFolder(OldDataPath, DataPath);
-
-	Settings.sync();
+	if (!swTakeOverSettings(QLatin1String("StudWorks"), QLatin1String("StudWorks"), true))
+		swTakeOverSettings(QLatin1String("LeoCAD Software"), QLatin1String("LeoCAD"), false);
 }
 
 QString swRenameStoredName(QString Name)

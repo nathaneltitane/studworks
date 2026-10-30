@@ -3,11 +3,11 @@ QT *= printsupport
 TEMPLATE = app
 
 lessThan(QT_MAJOR_VERSION, 5) {
-	error("StudWorks requires Qt5.4 or later.")
+	error("StudWorx requires Qt5.4 or later.")
 }
 
 equals(QT_MAJOR_VERSION, 5):lessThan(QT_MINOR_VERSION, 4) {
-	error("StudWorks requires Qt5.4 or later.")
+	error("StudWorx requires Qt5.4 or later.")
 }
 
 greaterThan(QT_MAJOR_VERSION, 5) {
@@ -39,13 +39,13 @@ VERSION_RC = $$num_add($$member(VERSION_PARTS, 0), 0),$$num_add($$member(VERSION
 
 win32 {
 	DEFINES += NOMINMAX
-	ICON_FILE = $$PWD/resources/studworks.ico
+	ICON_FILE = $$PWD/resources/studworx.ico
 
 	# the resource file carries the release date as its version text
-	version_rc.input = $$PWD/platform/studworks.rc.in
-	version_rc.output = $$OUT_PWD/studworks.rc
+	version_rc.input = $$PWD/platform/studworx.rc.in
+	version_rc.output = $$OUT_PWD/studworx.rc
 	QMAKE_SUBSTITUTES += version_rc
-	RC_FILE = $$OUT_PWD/studworks.rc
+	RC_FILE = $$OUT_PWD/studworx.rc
 
 	LIBS += -lwininet
 }
@@ -76,7 +76,7 @@ isEmpty(QMAKE_LRELEASE) {
 	}
 }
 
-TSFILES = resources/translations/studworks_cs.ts resources/translations/studworks_de.ts resources/translations/studworks_en.ts resources/translations/studworks_es.ts resources/translations/studworks_fr.ts resources/translations/studworks_pt.ts resources/translations/studworks_ru.ts resources/translations/studworks_uk.ts resources/translations/studworks_zh_CN.ts resources/translations/studworks_zh_TW.ts
+TSFILES = resources/translations/studworx_cs.ts resources/translations/studworx_de.ts resources/translations/studworx_en.ts resources/translations/studworx_es.ts resources/translations/studworx_fr.ts resources/translations/studworx_pt.ts resources/translations/studworx_ru.ts resources/translations/studworx_uk.ts resources/translations/studworx_zh_CN.ts resources/translations/studworx_zh_TW.ts
 lrelease.input = TSFILES
 lrelease.output = ${QMAKE_FILE_PATH}/${QMAKE_FILE_BASE}.qm
 lrelease.commands = $$QMAKE_LRELEASE -silent ${QMAKE_FILE_IN} -qm ${QMAKE_FILE_PATH}/${QMAKE_FILE_BASE}.qm
@@ -86,9 +86,9 @@ QMAKE_EXTRA_COMPILERS += lrelease
 system($$QMAKE_LRELEASE -silent $$TSFILES)
 
 unix:!macx {
-	TARGET = studworks
+	TARGET = studworx
 } else {
-	TARGET = StudWorks
+	TARGET = StudWorx
 }
 
 CONFIG(debug, debug|release) {
@@ -114,7 +114,7 @@ win32 {
 unix:!macx {
 	isEmpty(INSTALL_PREFIX):INSTALL_PREFIX = /usr
 	isEmpty(BIN_DIR):BIN_DIR = $$INSTALL_PREFIX/bin
-	isEmpty(DOCS_DIR):DOCS_DIR = $$INSTALL_PREFIX/share/doc/studworks
+	isEmpty(DOCS_DIR):DOCS_DIR = $$INSTALL_PREFIX/share/doc/studworx
 	isEmpty(ICON_DIR):ICON_DIR = $$INSTALL_PREFIX/share/icons
 	isEmpty(MAN_DIR):MAN_DIR = $$INSTALL_PREFIX/share/man/man1
 	isEmpty(DESKTOP_DIR):DESKTOP_DIR = $$INSTALL_PREFIX/share/applications
@@ -126,9 +126,9 @@ unix:!macx {
 	docs.path = $$DOCS_DIR
 	docs.files = README.md LICENSE.md documentation/CREDITS.txt
 	man.path = $$MAN_DIR
-	man.files = documentation/studworks.1
+	man.files = documentation/studworx.1
 	desktop.path = $$DESKTOP_DIR
-	desktop.files = platform/studworks.desktop
+	desktop.files = platform/studworx.desktop
 	icons.path = $$ICON_DIR/hicolor
 	icons.files += resources/icons/128x128
 	icons.files += resources/icons/16x16
@@ -140,11 +140,11 @@ unix:!macx {
 	icons.files += resources/icons/64x64
 	icons.files += resources/icons/scalable
 	mime.path = $$MIME_DIR
-	mime.files = platform/studworks.xml
+	mime.files = platform/studworx.xml
 	appdata.path = $$APPDATA_DIR
-	appdata.files = packaging/io.github.nathaneltitane.StudWorks.appdata.xml
+	appdata.files = packaging/io.github.nathaneltitane.StudWorx.appdata.xml
 	thumbnailer.path = $$THUMBNAILER_DIR
-	thumbnailer.files = platform/studworks.thumbnailer
+	thumbnailer.files = platform/studworx.thumbnailer
 
 	INSTALLS += target docs man desktop icons mime appdata thumbnailer
 
@@ -160,10 +160,10 @@ unix:!macx {
 }
 
 macx {
-	ICON = resources/studworks.icns
+	ICON = resources/studworx.icns
 	QMAKE_INFO_PLIST = platform/Info.plist
 
-	document_icon.files += $$_PRO_FILE_PWD_/resources/studworks_document.icns
+	document_icon.files += $$_PRO_FILE_PWD_/resources/studworx_document.icns
 	document_icon.path = Contents/Resources
 	QMAKE_BUNDLE_DATA += document_icon
 
@@ -188,8 +188,8 @@ include(source/input_output/input_output.pri)
 include(source/interface/interface.pri)
 
 OTHER_FILES +=
-RESOURCES += studworks.qrc resources/interface/stylesheet/stylesheet.qrc
+RESOURCES += studworx.qrc resources/interface/stylesheet/stylesheet.qrc
 
 !win32 {
-	TRANSLATIONS = resources/translations/studworks_cs.ts resources/translations/studworks_de.ts resources/translations/studworks_en.ts resources/translations/studworks_es.ts resources/translations/studworks_fr.ts resources/translations/studworks_pt.ts resources/translations/studworks_ru.ts resources/translations/studworks_uk.ts resources/translations/studworks_zh_CN.ts resources/translations/studworks_zh_TW.ts
+	TRANSLATIONS = resources/translations/studworx_cs.ts resources/translations/studworx_de.ts resources/translations/studworx_en.ts resources/translations/studworx_es.ts resources/translations/studworx_fr.ts resources/translations/studworx_pt.ts resources/translations/studworx_ru.ts resources/translations/studworx_uk.ts resources/translations/studworx_zh_CN.ts resources/translations/studworx_zh_TW.ts
 }

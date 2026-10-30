@@ -22,7 +22,7 @@ const auto SkipEmptyParts = QString::SplitBehavior::SkipEmptyParts;
 
 const QLatin1String LineEnding("\r\n");
 
-#define SW_PRODUCT_NAME_STRING                 "StudWorks"
+#define SW_PRODUCT_NAME_STRING                 "StudWorx"
 #define SW_BLENDER_ADDON                   "ImportLDraw"
 #define SW_BLENDER_ADDON_MM                "ImportLDrawMM"
 #define SW_BLENDER_ADDON_FILE              "LDrawBlenderRenderAddons.zip"
@@ -3631,7 +3631,7 @@ int swBlenderPreferences::ShowMessage(QWidget* Parent, const QString& Header,  c
 	Box.setWindowIcon(QIcon());
 	if (!Icon)
 	{
-		QPixmap Pixmap = QPixmap(":/resources/studworks.png");
+		QPixmap Pixmap = QPixmap(":/resources/studworx.png");
 		Box.setIconPixmap (Pixmap);
 	}
 	else

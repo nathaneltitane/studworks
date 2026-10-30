@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# build a studworks deb that carries its own qt libraries
+# build a studworx deb that carries its own qt libraries
 # usage: packaging/deb.sh [build directory]
 
 set -e
@@ -23,12 +23,12 @@ source "${directory_source}/packaging/bundle.sh"
 # depend on the system libraries the package links, the bundled ones resolve to the package itself
 directory_shlibs="$(mktemp -d "${directory_build}/shlibs.XXXXXX")"
 mkdir -p "${directory_shlibs}/debian"
-printf "%s\n" "Source: studworks" "" "Package: studworks" "Architecture: any" > "${directory_shlibs}/debian/control"
+printf "%s\n" "Source: studworx" "" "Package: studworx" "Architecture: any" > "${directory_shlibs}/debian/control"
 
 for file_library in "${directory_root}"/lib/*
 do
 	name_library="${file_library##*/}"
-	printf "%s %s studworks\n" "${name_library%%.so.*}" "${name_library#*.so.}" >> "${directory_shlibs}/debian/shlibs.local"
+	printf "%s %s studworx\n" "${name_library%%.so.*}" "${name_library#*.so.}" >> "${directory_shlibs}/debian/shlibs.local"
 done
 
 text_depends="$(cd "${directory_shlibs}" && dpkg-shlibdeps -O --ignore-missing-info -e "${list_files[@]}" 2> /dev/null)"
@@ -39,7 +39,7 @@ list_depends=()
 
 while read -r -d "," text_depend
 do
-	if [[ ${text_depend} != studworks* && ${text_depend} != qtbase-abi-* ]]
+	if [[ ${text_depend} != studworx* && ${text_depend} != qtbase-abi-* ]]
 	then
 		list_depends+=("${text_depend}")
 	fi
@@ -61,7 +61,7 @@ size_installed="${size_installed%%[[:space:]]*}"
 mkdir -p "${directory_package}/DEBIAN"
 
 cat > "${directory_package}/DEBIAN/control" << CONTROL
-Package: studworks
+Package: studworx
 Version: ${package_version}
 Architecture: ${package_architecture}
 Maintainer: Nathanel Titane <nathanel.titane@gmail.com>
@@ -70,13 +70,13 @@ Depends: ${text_depends}
 Recommends: povray
 Section: graphics
 Priority: optional
-Homepage: https://github.com/nathaneltitane/studworks
+Homepage: https://github.com/nathaneltitane/studworx
 Description: create virtual LEGO® models
- StudWorks is a CAD application for creating virtual LEGO® models with
+ StudWorx is a CAD application for creating virtual LEGO® models with
  the LDraw parts library, which comes bundled with the package.
 CONTROL
 
-file_package="${directory_build}/studworks_${package_version}_${package_architecture}.deb"
+file_package="${directory_build}/studworx_${package_version}_${package_architecture}.deb"
 chmod 755 "${directory_package}"
 
 dpkg-deb --root-owner-group --build "${directory_package}" "${file_package}"

@@ -1,4 +1,0 @@
-[Thumbnailer Entry]
-TryExec=studworks
-Exec=env QT_QPA_PLATFORM=offscreen studworks --transparent -w %s -h %s -i %o %i
-MimeType=application/x-ldraw;application/x-multi-part-ldraw;

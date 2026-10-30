@@ -1,5 +1,5 @@
 TEMPLATE = app
-TARGET = studworks_tests
+TARGET = studworx_tests
 
 CONFIG += console testcase c++17
 CONFIG -= app_bundle

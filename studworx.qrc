@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file alias="resources/studworks.png">resources/icons/64x64/apps/studworks.png</file>
+        <file alias="resources/studworx.png">resources/icons/64x64/apps/studworx.png</file>
         <file>resources/data/studlogo1.zip</file>
         <file>resources/data/studlogo2.zip</file>
         <file>resources/data/studlogo3.zip</file>
@@ -13,16 +13,16 @@
         <file>resources/data/ldraw.xml</file>
         <file>resources/data/ldraw2bl.txt</file>
         <file>resources/data/traintrack.json</file>
-        <file>resources/translations/studworks_cs.qm</file>
-        <file>resources/translations/studworks_de.qm</file>
-        <file>resources/translations/studworks_en.qm</file>
-        <file>resources/translations/studworks_es.qm</file>
-        <file>resources/translations/studworks_fr.qm</file>
-        <file>resources/translations/studworks_pt.qm</file>
-        <file>resources/translations/studworks_ru.qm</file>
-        <file>resources/translations/studworks_uk.qm</file>
-        <file>resources/translations/studworks_zh_CN.qm</file>
-        <file>resources/translations/studworks_zh_TW.qm</file>
+        <file>resources/translations/studworx_cs.qm</file>
+        <file>resources/translations/studworx_de.qm</file>
+        <file>resources/translations/studworx_en.qm</file>
+        <file>resources/translations/studworx_es.qm</file>
+        <file>resources/translations/studworx_fr.qm</file>
+        <file>resources/translations/studworx_pt.qm</file>
+        <file>resources/translations/studworx_ru.qm</file>
+        <file>resources/translations/studworx_uk.qm</file>
+        <file>resources/translations/studworx_zh_CN.qm</file>
+        <file>resources/translations/studworx_zh_TW.qm</file>
         <file>resources/shaders/fakelit_color_ps.glsl</file>
         <file>resources/shaders/fakelit_color_vs.glsl</file>
         <file>resources/shaders/fakelit_texture_decal_ps.glsl</file>

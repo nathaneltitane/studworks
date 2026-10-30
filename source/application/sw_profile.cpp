@@ -173,6 +173,15 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Settings", "ImageWidth", 1280),                                            // SW_PROFILE_IMAGE_WIDTH
 	swProfileEntry("Settings", "ImageHeight", 720),                                            // SW_PROFILE_IMAGE_HEIGHT
 	swProfileEntry("Settings", "ImageExtension", ".png"),                                      // SW_PROFILE_IMAGE_EXTENSION
+	swProfileEntry("Settings", "ImageFullTurn", true),                                         // SW_PROFILE_IMAGE_FULL_TURN
+	swProfileEntry("Settings", "ImageAngleStart", -45),                                        // SW_PROFILE_IMAGE_ANGLE_START
+	swProfileEntry("Settings", "ImageAngleEnd", 45),                                           // SW_PROFILE_IMAGE_ANGLE_END
+	swProfileEntry("Settings", "ImageFrames", 36),                                             // SW_PROFILE_IMAGE_FRAMES
+	swProfileEntry("Settings", "ImageDuration", 3.0f),                                         // SW_PROFILE_IMAGE_DURATION
+	swProfileEntry("Settings", "ImageFit", 1),                                                 // SW_PROFILE_IMAGE_FIT
+	swProfileEntry("Settings", "ImageCenter", 2),                                              // SW_PROFILE_IMAGE_CENTER
+	swProfileEntry("Settings", "ImageFitScope", 0),                                            // SW_PROFILE_IMAGE_FIT_SCOPE
+	swProfileEntry("Settings", "ImageMargin", 10),                                             // SW_PROFILE_IMAGE_MARGIN
 	swProfileEntry("Settings", "PartsListIcons", 64),                                         // SW_PROFILE_PARTS_LIST_ICONS
 	swProfileEntry("Settings", "PartsListNames", 1),                                          // SW_PROFILE_PARTS_LIST_NAMES
 	swProfileEntry("Settings", "PartsListFixedColor", static_cast<uint>(SW_COLOR_NO_COLOR)),                                    // SW_PROFILE_PARTS_LIST_COLOR

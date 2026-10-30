@@ -1,14 +1,14 @@
-name: studworks
+name: studworx
 base: core18
-adopt-info: studworks
+adopt-info: studworx
 version: '2026-10-30'
 grade: stable
 confinement: strict
 
 apps:
-  studworks:
-    common-id: io.github.nathaneltitane.StudWorks
-    command: studworks
+  studworx:
+    common-id: io.github.nathaneltitane.StudWorx
+    command: studworx
     plugs:
       - home
       - opengl
@@ -17,7 +17,7 @@ apps:
       - kde-neon
 
 parts:
-  studworks:
+  studworx:
     plugin: qmake
     build-packages:
       - qtbase5-dev
@@ -30,5 +30,5 @@ parts:
       - libqt5concurrent5
       - libqt5printsupport5
       - libqt5xml5
-    source: https://github.com/nathaneltitane/studworks/archive/refs/tags/2026-10-30.tar.gz
-    parse-info: [usr/share/metainfo/io.github.nathaneltitane.StudWorks.appdata.xml]
+    source: https://github.com/nathaneltitane/studworx/archive/refs/tags/2026-10-30.tar.gz
+    parse-info: [usr/share/metainfo/io.github.nathaneltitane.StudWorx.appdata.xml]

@@ -171,7 +171,7 @@ void swConnectivity::AddToBoundingBox(const std::vector<swConnectionCylinder>& C
 {
 	for (const swConnectionCylinder& Cylinder : Cylinders)
 	{
-		const swMatrix44 Frame = swMultiply(swMatrix44LDrawToStudWorks(Cylinder.Transform), Transform);
+		const swMatrix44 Frame = swMultiply(swMatrix44LDrawToStudWorx(Cylinder.Transform), Transform);
 		const swVector3 Axis = swNormalize(swMultiply30(swVector3(0.0f, 0.0f, 1.0f), Frame));
 		const swVector3 Radius(Cylinder.GetRadius(), Cylinder.GetRadius(), Cylinder.GetRadius());
 		const auto [Start, End] = Cylinder.GetExtent();
@@ -190,10 +190,10 @@ bool swConnectivity::AreConnected(const std::vector<swConnectionCylinder>& Cylin
 {
 	for (const swConnectionCylinder& Cylinder : Cylinders)
 	{
-		const swMatrix44 Frame = swMultiply(swMatrix44LDrawToStudWorks(Cylinder.Transform), Transform);
+		const swMatrix44 Frame = swMultiply(swMatrix44LDrawToStudWorx(Cylinder.Transform), Transform);
 
 		for (const swConnectionCylinder& OtherCylinder : OtherCylinders)
-			if (AreCompatible(Cylinder, OtherCylinder) && IsSeated(Cylinder, Frame, OtherCylinder, swMultiply(swMatrix44LDrawToStudWorks(OtherCylinder.Transform), OtherTransform)))
+			if (AreCompatible(Cylinder, OtherCylinder) && IsSeated(Cylinder, Frame, OtherCylinder, swMultiply(swMatrix44LDrawToStudWorx(OtherCylinder.Transform), OtherTransform)))
 				return true;
 	}
 

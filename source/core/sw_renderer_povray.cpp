@@ -300,7 +300,7 @@ QString swSetupLGEO(QWidget* Parent)
 {
 	const QString Title = QCoreApplication::translate("swRenderDialog", "LGEO Library");
 	const QString DownloadPath = swGetDownloadLGEOPath();
-	const QString Question = QCoreApplication::translate("swRenderDialog", "StudWorks could not find the LGEO part library.\n\nDownload it (about 7 MB) from %1 into '%2'?").arg(QLatin1String(SW_LGEO_PROJECT_URL), QDir::toNativeSeparators(DownloadPath));
+	const QString Question = QCoreApplication::translate("swRenderDialog", "StudWorx could not find the LGEO part library.\n\nDownload it (about 7 MB) from %1 into '%2'?").arg(QLatin1String(SW_LGEO_PROJECT_URL), QDir::toNativeSeparators(DownloadPath));
 
 	if (QMessageBox::question(Parent, Title, Question, QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
 	{
@@ -341,9 +341,9 @@ QString swSetupLGEO(QWidget* Parent)
 QString swGetPOVRayMissingMessage(const swPOVRayProgram& Program)
 {
 	if (!Program.Version.isEmpty())
-		return QCoreApplication::translate("swRenderDialog", "POV-Ray %1 at '%2' is too old, StudWorks needs POV-Ray 3.7 or newer.").arg(Program.Version, QDir::toNativeSeparators(Program.Path));
+		return QCoreApplication::translate("swRenderDialog", "POV-Ray %1 at '%2' is too old, StudWorx needs POV-Ray 3.7 or newer.").arg(Program.Version, QDir::toNativeSeparators(Program.Path));
 
-	return QCoreApplication::translate("swRenderDialog", "StudWorks could not find POV-Ray 3.7 or newer.");
+	return QCoreApplication::translate("swRenderDialog", "StudWorx could not find POV-Ray 3.7 or newer.");
 }
 
 // use to choose a povray program

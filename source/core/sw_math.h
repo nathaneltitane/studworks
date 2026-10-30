@@ -738,7 +738,7 @@ inline swVector3 swUnpackNormal(quint32 Packed)
 	return Normal;
 }
 
-inline swVector3 swVector3LDrawToStudWorks(const swVector3& Vector)
+inline swVector3 swVector3LDrawToStudWorx(const swVector3& Vector)
 {
 	return swVector3(Vector[0], Vector[2], -Vector[1]);
 }
@@ -1550,7 +1550,7 @@ inline swMatrix44 swMatrix44Inverse(const swMatrix44& m)
 #undef SWAP_ROWS
 }
 
-inline swMatrix44 swMatrix44StudWorksToLDraw(const swMatrix44& Matrix)
+inline swMatrix44 swMatrix44StudWorxToLDraw(const swMatrix44& Matrix)
 {
 	swMatrix44 m;
 
@@ -1562,7 +1562,7 @@ inline swMatrix44 swMatrix44StudWorksToLDraw(const swMatrix44& Matrix)
 	return m;
 }
 
-inline swMatrix44 swMatrix44LDrawToStudWorks(const swMatrix44& Matrix)
+inline swMatrix44 swMatrix44LDrawToStudWorx(const swMatrix44& Matrix)
 {
 	swMatrix44 m;
 

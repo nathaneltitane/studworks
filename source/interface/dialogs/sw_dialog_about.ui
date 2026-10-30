@@ -3,7 +3,7 @@
  <class>swAboutDialog</class>
  <widget class="QDialog" name="swAboutDialog">
   <property name="whatsThis">
-   <string>&lt;p&gt;&lt;b&gt;About StudWorks&lt;/b&gt;&lt;/p&gt;&lt;p&gt;View the StudWorks version and system information. The Qt and OpenGL details can help diagnose display problems. Select text in System Information to copy it when reporting a problem. The project page link opens in your browser.&lt;/p&gt;</string>
+   <string>&lt;p&gt;&lt;b&gt;About StudWorx&lt;/b&gt;&lt;/p&gt;&lt;p&gt;View the StudWorx version and system information. The Qt and OpenGL details can help diagnose display problems. Select text in System Information to copy it when reporting a problem. The project page link opens in your browser.&lt;/p&gt;</string>
   </property>
   <property name="geometry">
    <rect>
@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>About StudWorks</string>
+   <string>About StudWorx</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -27,7 +27,7 @@
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap resource="../../../studworks.qrc">:/resources/studworks.png</pixmap>
+          <pixmap resource="../../../studworx.qrc">:/resources/studworx.png</pixmap>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -42,17 +42,17 @@
          <item>
           <widget class="QLabel" name="version">
            <property name="toolTip">
-            <string>StudWorks version running on this computer.</string>
+            <string>StudWorx version running on this computer.</string>
            </property>
            <property name="text">
-            <string>StudWorks Version 0.00.0</string>
+            <string>StudWorx Version 0.00.0</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QLabel" name="label_4">
            <property name="text">
-            <string>StudWorks is a free CAD program for creating virtual LEGO® models with the LDraw parts library.
+            <string>StudWorx is a free CAD program for creating virtual LEGO® models with the LDraw parts library.
 It is built on LeoCAD by Leonardo Zide and released under the GNU General Public License version 3.
 Part connections use the LDCad shadow library by Roland Melkert.
 POV-Ray renders can use the LGEO part library by Lutz Uhlmann.</string>
@@ -75,10 +75,10 @@ POV-Ray renders can use the LGEO part library by Lutz Uhlmann.</string>
          <item>
           <widget class="QLabel" name="label_2">
            <property name="toolTip">
-            <string>Open the StudWorks project page in your browser.</string>
+            <string>Open the StudWorx project page in your browser.</string>
            </property>
            <property name="text">
-            <string notr="true">&lt;a href=&quot;https://github.com/nathaneltitane/studworks&quot;&gt;https://github.com/nathaneltitane/studworks&lt;/a&gt;</string>
+            <string notr="true">&lt;a href=&quot;https://github.com/nathaneltitane/studworx&quot;&gt;https://github.com/nathaneltitane/studworx&lt;/a&gt;</string>
            </property>
            <property name="openExternalLinks">
             <bool>true</bool>
@@ -135,7 +135,7 @@ POV-Ray renders can use the LGEO part library by Lutz Uhlmann.</string>
   </layout>
  </widget>
  <resources>
-  <include location="../../studworks.qrc"/>
+  <include location="../../studworx.qrc"/>
  </resources>
  <connections>
   <connection>

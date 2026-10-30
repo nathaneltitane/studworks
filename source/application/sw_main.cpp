@@ -60,11 +60,11 @@ static LONG WINAPI swSehHandler(PEXCEPTION_POINTERS ExceptionPointers)
 	if (WriteDump)
 	{
 		TCHAR Message[_MAX_PATH + 256];
-		lstrcpy(Message, TEXT("StudWorks just crashed. Crash information was saved to the file '"));
+		lstrcpy(Message, TEXT("StudWorx just crashed. Crash information was saved to the file '"));
 		lstrcat(Message, gMinidumpPath);
 		lstrcat(Message, TEXT("', please send it to the developers for debugging."));
 
-		MessageBox(nullptr, Message, TEXT("StudWorks"), MB_OK);
+		MessageBox(nullptr, Message, TEXT("StudWorx"), MB_OK);
 	}
 
 	return EXCEPTION_EXECUTE_HANDLER;
@@ -73,7 +73,7 @@ static LONG WINAPI swSehHandler(PEXCEPTION_POINTERS ExceptionPointers)
 static void swSehInitialize()
 {
 	if (GetTempPath(SW_ARRAY_COUNT(gMinidumpPath), gMinidumpPath))
-		lstrcat(gMinidumpPath, TEXT("studworks.dmp"));
+		lstrcat(gMinidumpPath, TEXT("studworx.dmp"));
 
 	SetUnhandledExceptionFilter(swSehHandler);
 }
@@ -87,24 +87,24 @@ static void swRegisterShellFileTypes()
 	if (GetShortPathName(LongModulePath, ModulePath, _MAX_PATH) == 0)
 		lstrcpy(ModulePath, LongModulePath);
 
-	if (RegSetValue(HKEY_CLASSES_ROOT, TEXT("StudWorks.Project"), REG_SZ, TEXT("StudWorks Model"), lstrlen(TEXT("StudWorks Model")) * sizeof(TCHAR)) != ERROR_SUCCESS)
+	if (RegSetValue(HKEY_CLASSES_ROOT, TEXT("StudWorx.Project"), REG_SZ, TEXT("StudWorx Model"), lstrlen(TEXT("StudWorx Model")) * sizeof(TCHAR)) != ERROR_SUCCESS)
 		return;
 
 	lstrcpy(Temp, ModulePath);
 	lstrcat(Temp, TEXT(",0"));
-	if (RegSetValue(HKEY_CLASSES_ROOT, TEXT("StudWorks.Project\\DefaultIcon"), REG_SZ, Temp, lstrlen(Temp) * sizeof(TCHAR)) != ERROR_SUCCESS)
+	if (RegSetValue(HKEY_CLASSES_ROOT, TEXT("StudWorx.Project\\DefaultIcon"), REG_SZ, Temp, lstrlen(Temp) * sizeof(TCHAR)) != ERROR_SUCCESS)
 		return;
 
 	lstrcpy(Temp, ModulePath);
 	lstrcat(Temp, TEXT(" \"%1\""));
-	if (RegSetValue(HKEY_CLASSES_ROOT, TEXT("StudWorks.Project\\shell\\open\\command"), REG_SZ, Temp, lstrlen(Temp) * sizeof(TCHAR)) != ERROR_SUCCESS)
+	if (RegSetValue(HKEY_CLASSES_ROOT, TEXT("StudWorx.Project\\shell\\open\\command"), REG_SZ, Temp, lstrlen(Temp) * sizeof(TCHAR)) != ERROR_SUCCESS)
 		return;
 
 	LONG Size = 2 * _MAX_PATH;
 	LONG Result = RegQueryValue(HKEY_CLASSES_ROOT, TEXT(".lcd"), Temp, &Size);
 
-	if (Result != ERROR_SUCCESS || !lstrlen(Temp) || lstrcmp(Temp, TEXT("StudWorks.Project")))
-		RegSetValue(HKEY_CLASSES_ROOT, TEXT(".lcd"), REG_SZ, TEXT("StudWorks.Project"), lstrlen(TEXT("StudWorks.Project")) * sizeof(TCHAR));
+	if (Result != ERROR_SUCCESS || !lstrlen(Temp) || lstrcmp(Temp, TEXT("StudWorx.Project")))
+		RegSetValue(HKEY_CLASSES_ROOT, TEXT(".lcd"), REG_SZ, TEXT("StudWorx.Project"), lstrlen(TEXT("StudWorx.Project")) * sizeof(TCHAR));
 }
 
 #endif
@@ -129,10 +129,10 @@ static void swInitializeSurfaceFormat(int argc, char* argv[])
 int main(int argc, char *argv[])
 {
 	QCoreApplication::setOrganizationDomain(QLatin1String("nathaneltitane.github.io"));
-	QCoreApplication::setOrganizationName(QLatin1String("StudWorks"));
-	QCoreApplication::setApplicationName(QLatin1String("StudWorks"));
+	QCoreApplication::setOrganizationName(QLatin1String("StudWorx"));
+	QCoreApplication::setApplicationName(QLatin1String("StudWorx"));
 	QCoreApplication::setApplicationVersion(QLatin1String(SW_VERSION_TEXT));
-	QGuiApplication::setDesktopFileName(QLatin1String("studworks"));
+	QGuiApplication::setDesktopFileName(QLatin1String("studworx"));
 
 	swMigrateSettings();
 	swInitializeSurfaceFormat(argc, argv);
@@ -165,11 +165,11 @@ int main(int argc, char *argv[])
 
 	// supply english plural forms
 	QTranslator EnglishTranslator;
-	if (EnglishTranslator.load("studworks_en", ":/resources/translations"))
+	if (EnglishTranslator.load("studworx_en", ":/resources/translations"))
 		Application.installTranslator(&EnglishTranslator);
 
 	QTranslator Translator;
-	if (Translator.load("studworks_" + Locale.name(), ":/resources/translations"))
+	if (Translator.load("studworx_" + Locale.name(), ":/resources/translations"))
 		Application.installTranslator(&Translator);
 
 	qRegisterMetaType<swPartData*>("swPartData*");

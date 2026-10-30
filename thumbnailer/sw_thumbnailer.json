@@ -1,7 +1,7 @@
 {
 	"CacheThumbnail": true,
 	"KPlugin": {
-		"Id": "studworksthumbnail",
+		"Id": "studworxthumbnail",
 		"MimeTypes": [
 			"application/x-ldraw",
 			"application/x-multi-part-ldraw"

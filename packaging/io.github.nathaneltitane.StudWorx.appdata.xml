@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-	<id>io.github.nathaneltitane.StudWorks</id>
+	<id>io.github.nathaneltitane.StudWorx</id>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0-only</project_license>
 	<content_rating type="oars-1.1" />
-	<name>StudWorks</name>
+	<name>StudWorx</name>
 	<summary>Design virtual models you can build with LEGO® bricks</summary>
 	<description>
-		<p>StudWorks is a CAD program for creating virtual LEGO® models. It's available for free under the GNU General Public License v3 and works on the Windows, Linux and macOS Operating Systems.</p>
+		<p>StudWorx is a CAD program for creating virtual LEGO® models. It's available for free under the GNU General Public License v3 and works on the Windows, Linux and macOS Operating Systems.</p>
 	</description>
-	<launchable type="desktop-id">studworks.desktop</launchable>
-	<url type="homepage">https://github.com/nathaneltitane/studworks/</url>
-	<url type="bugtracker">https://github.com/nathaneltitane/studworks/issues</url>
-	<developer id="org.studworks"><name>StudWorks.org</name></developer>
+	<launchable type="desktop-id">studworx.desktop</launchable>
+	<url type="homepage">https://github.com/nathaneltitane/studworx/</url>
+	<url type="bugtracker">https://github.com/nathaneltitane/studworx/issues</url>
+	<developer id="org.studworx"><name>StudWorx.org</name></developer>
 	<screenshots>
 		<screenshot type="default">
-			<image>https://github.com/nathaneltitane/studworks/towerbridge.png</image>
+			<image>https://github.com/nathaneltitane/studworx/towerbridge.png</image>
 		</screenshot>
 	</screenshots>
 	<provides>
-		<id>studworks.desktop</id>
+		<id>studworx.desktop</id>
 	</provides>
 	<releases>
 		<release version="2026-10-30" date="2026-10-30" />

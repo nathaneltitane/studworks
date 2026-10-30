@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# start the studworks binary inside the appimage
+# start the studworx binary inside the appimage
 file_here="$(readlink -f "${0}")"
 directory_here="${file_here%/*}"
 
-exec "${directory_here}/opt/studworks/bin/studworks" "${@}"
+exec "${directory_here}/opt/studworx/bin/studworx" "${@}"

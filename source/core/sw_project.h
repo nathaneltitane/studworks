@@ -31,6 +31,55 @@ public:
 	bool PartsListEnd;
 };
 
+// Turns the model around one axis in an animated GIF.
+struct swImageTurntable
+{
+	bool Enabled = false;
+	swTurntableAxis Axis = swTurntableAxis::Z;
+	bool FullTurn = true;
+	int AngleStart = -45;
+	int AngleEnd = 45;
+	int Frames = 36;
+	double Duration = 3.0;
+
+	// Angle sweeps go forward and back so the loop has no jump.
+	float GetFrameAngle(int Frame) const;
+
+	// Delays are in hundredths of a second and add up to the duration.
+	int GetFrameDelay(int Frame) const;
+};
+
+enum class swImageFit
+{
+	CurrentView,
+	FitModel,
+	FitEachStep
+};
+
+enum class swImageCenter
+{
+	WorldOrigin,
+	ModelOrigin,
+	ModelCenter
+};
+
+enum class swImageFitScope
+{
+	WholeModel,
+	ShownSteps
+};
+
+// Places the camera for saved images and the turntable orbit.
+struct swImageFraming
+{
+	swImageFit Fit = swImageFit::FitModel;
+	swImageCenter Center = swImageCenter::ModelCenter;
+	swImageFitScope Scope = swImageFitScope::WholeModel;
+
+	// Empty space around the model in percent of the image.
+	int Margin = 10;
+};
+
 struct swImageDialogOptions
 {
 	QString FilePath;
@@ -39,6 +88,8 @@ struct swImageDialogOptions
 	int Start;
 	int End;
 	swImageBackground Background;
+	swImageTurntable Turntable;
+	swImageFraming Framing;
 };
 
 struct swSetInventoryItem

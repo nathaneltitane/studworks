@@ -1192,11 +1192,11 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 		break;
 
 	case SW_HELP_HOME_PAGE:
-		QDesktopServices::openUrl(QUrl("https://github.com/nathaneltitane/studworks"));
+		QDesktopServices::openUrl(QUrl("https://github.com/nathaneltitane/studworx"));
 		break;
 
 	case SW_HELP_BUG_REPORT:
-		QDesktopServices::openUrl(QUrl("https://github.com/nathaneltitane/studworks/issues"));
+		QDesktopServices::openUrl(QUrl("https://github.com/nathaneltitane/studworx/issues"));
 		break;
 
 	case SW_HELP_ABOUT:

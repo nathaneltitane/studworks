@@ -2,10 +2,10 @@
 !include "FileFunc.nsh"
 
 ; The name of the installer
-Name "StudWorks"
+Name "StudWorx"
 
 ; The file to write
-;OutFile "studworks-setup.exe"
+;OutFile "studworx-setup.exe"
 
 ; Request application privileges for Windows Vista
 RequestExecutionLevel admin
@@ -14,11 +14,11 @@ RequestExecutionLevel admin
 Unicode True
 
 ; The default installation directory
-InstallDir $PROGRAMFILES64\StudWorks
+InstallDir $PROGRAMFILES64\StudWorx
 
 ; Registry key to check for directory (so if you install again, it will 
 ; overwrite the old one automatically)
-InstallDirRegKey HKLM "Software\StudWorks" "InstallFolder"
+InstallDirRegKey HKLM "Software\StudWorx" "InstallFolder"
   
 ;  Icon "setup.ico"
 
@@ -40,7 +40,7 @@ SetCompressor /SOLID lzma
 !insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
-!define MUI_FINISHPAGE_RUN "$INSTDIR\StudWorks.exe"
+!define MUI_FINISHPAGE_RUN "$INSTDIR\StudWorx.exe"
 !insertmacro MUI_PAGE_FINISH
   
 !insertmacro MUI_UNPAGE_WELCOME
@@ -53,7 +53,7 @@ SetCompressor /SOLID lzma
 
 ;Installer Sections
 
-Section "Application Files" SecStudWorks
+Section "Application Files" SecStudWorx
 
   SectionIn RO
   SetShellVarContext all
@@ -69,11 +69,11 @@ Section "Application Files" SecStudWorks
   File /r "${DIRECTORY_PACKAGE}\*.*"
 
   ;Register file extension
-  WriteRegStr HKCR ".lcd" "" "StudWorks.Project"
-  WriteRegStr HKCR "StudWorks.Project" "" "StudWorks Project"
-  WriteRegStr HKCR "StudWorks.Project\DefaultIcon" "" "$INSTDIR\StudWorks.exe,0"
-  WriteRegStr HKCR "StudWorks.Project\shell" "" "open"
-  WriteRegStr HKCR "StudWorks.Project\shell\open\command" "" '"$INSTDIR\StudWorks.exe" "%1"'
+  WriteRegStr HKCR ".lcd" "" "StudWorx.Project"
+  WriteRegStr HKCR "StudWorx.Project" "" "StudWorx Project"
+  WriteRegStr HKCR "StudWorx.Project\DefaultIcon" "" "$INSTDIR\StudWorx.exe,0"
+  WriteRegStr HKCR "StudWorx.Project\shell" "" "open"
+  WriteRegStr HKCR "StudWorx.Project\shell\open\command" "" '"$INSTDIR\StudWorx.exe" "%1"'
   System::Call 'shell32.dll::SHChangeNotify(i, i, i, i) v (0x08000000, 0, 0, 0)'
 
   IfFileExists "$INSTDIR\vc_redist.x64.exe" VcRedist64Exists PastVcRedist64Check
@@ -82,24 +82,24 @@ Section "Application Files" SecStudWorks
   PastVcRedist64Check:
 
   ;Store installation folder
-  WriteRegStr HKLM "Software\StudWorks" "InstallFolder" $INSTDIR
+  WriteRegStr HKLM "Software\StudWorx" "InstallFolder" $INSTDIR
   
-  CreateShortCut "$SMPROGRAMS\StudWorks.lnk" "$INSTDIR\StudWorks.exe"
+  CreateShortCut "$SMPROGRAMS\StudWorx.lnk" "$INSTDIR\StudWorx.exe"
 
   ;Create uninstaller
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\StudWorks" "DisplayName" "StudWorks"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\StudWorks" "DisplayVersion" $%VERSION%
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\StudWorks" "Publisher" "StudWorks.org"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\StudWorks" "DisplayIcon" '"$INSTDIR\StudWorks.exe"'
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\StudWorks" "UninstallString" '"$INSTDIR\Uninstall.exe"'
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\StudWorks" "URLUpdateInfo" "https://github.com/nathaneltitane/studworks"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\StudWorks" "URLInfoAbout" "https://github.com/nathaneltitane/studworks"
-  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\StudWorks" "NoModify" 1
-  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\StudWorks" "NoRepair" 1
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\StudWorx" "DisplayName" "StudWorx"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\StudWorx" "DisplayVersion" $%VERSION%
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\StudWorx" "Publisher" "StudWorx.org"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\StudWorx" "DisplayIcon" '"$INSTDIR\StudWorx.exe"'
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\StudWorx" "UninstallString" '"$INSTDIR\Uninstall.exe"'
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\StudWorx" "URLUpdateInfo" "https://github.com/nathaneltitane/studworx"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\StudWorx" "URLInfoAbout" "https://github.com/nathaneltitane/studworx"
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\StudWorx" "NoModify" 1
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\StudWorx" "NoRepair" 1
 
   ${GetSize} "$INSTDIR" "/S=0K" $0 $1 $2
   IntFmt $0 "0x%08X" $0
-  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\StudWorks" "EstimatedSize" "$0"
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\StudWorx" "EstimatedSize" "$0"
 
   WriteUninstaller "$INSTDIR\Uninstall.exe"
 
@@ -109,11 +109,11 @@ SectionEnd
 ;Descriptions
 
   ;Language strings
-  LangString DESC_SecStudWorks ${LANG_ENGLISH} "Application Files (required)"
+  LangString DESC_SecStudWorx ${LANG_ENGLISH} "Application Files (required)"
 
   ;Assign language strings to sections
   !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-    !insertmacro MUI_DESCRIPTION_TEXT ${SecStudWorks} $(DESC_SecStudWorks)
+    !insertmacro MUI_DESCRIPTION_TEXT ${SecStudWorx} $(DESC_SecStudWorx)
   !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 ;--------------------------------
@@ -123,7 +123,7 @@ Section "Uninstall"
 
   SetShellVarContext all
 
-  Delete "$SMPROGRAMS\StudWorks.lnk"
+  Delete "$SMPROGRAMS\StudWorx.lnk"
 
   ;Every file and folder the installer placed, listed at build time
   !include "uninstall.nsh"
@@ -132,11 +132,11 @@ Section "Uninstall"
   RMDir "$INSTDIR"
 
   DeleteRegKey HKCR ".lcd"
-  DeleteRegKey HKCR "StudWorks.Project"
+  DeleteRegKey HKCR "StudWorx.Project"
   System::Call 'shell32.dll::SHChangeNotify(i, i, i, i) v (0x08000000, 0, 0, 0)'
 
-  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\StudWorks"
-  DeleteRegKey HKLM "Software\StudWorks"
+  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\StudWorx"
+  DeleteRegKey HKLM "Software\StudWorx"
 
   ;Settings, parts cache and temporary files, kept when a new version replaces this one
   ${un.GetParameters} $R0
@@ -144,10 +144,10 @@ Section "Uninstall"
   ${un.GetOptions} $R0 "/KEEPSETTINGS" $R1
   IfErrors 0 PastSettings
     SetShellVarContext current
-    DeleteRegKey HKCU "Software\StudWorks"
-    RMDir /r "$LOCALAPPDATA\StudWorks"
-    RMDir /r "$APPDATA\StudWorks"
-    Delete "$TEMP\studworks-*"
+    DeleteRegKey HKCU "Software\StudWorx"
+    RMDir /r "$LOCALAPPDATA\StudWorx"
+    RMDir /r "$APPDATA\StudWorx"
+    Delete "$TEMP\studworx-*"
   PastSettings:
 
 SectionEnd

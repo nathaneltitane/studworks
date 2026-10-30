@@ -591,7 +591,7 @@ void swMainWindow::ModelTabChanged(int Index)
 
 void swMainWindow::ClipboardChanged()
 {
-	const QString MimeType = QLatin1String("application/vnd.studworks-clipboard");
+	const QString MimeType = QLatin1String("application/vnd.studworx-clipboard");
 	const QMimeData* MimeData = QApplication::clipboard()->mimeData();
 	QByteArray ClipboardData;
 
@@ -813,6 +813,16 @@ void swMainWindow::ShowImageDialog()
 	Options.End = Model->GetLastStep();
 	Options.FilePath = Project->GetImageFileName(false);
 	Options.Background = swImageBackground::Default;
+	Options.Turntable.Axis = swGetPreferences().mTurntableAxis;
+	Options.Turntable.FullTurn = swGetProfileInteger(SW_PROFILE_IMAGE_FULL_TURN);
+	Options.Turntable.AngleStart = swGetProfileInteger(SW_PROFILE_IMAGE_ANGLE_START);
+	Options.Turntable.AngleEnd = swGetProfileInteger(SW_PROFILE_IMAGE_ANGLE_END);
+	Options.Turntable.Frames = swGetProfileInteger(SW_PROFILE_IMAGE_FRAMES);
+	Options.Turntable.Duration = swGetProfileFloat(SW_PROFILE_IMAGE_DURATION);
+	Options.Framing.Fit = static_cast<swImageFit>(qBound(0, swGetProfileInteger(SW_PROFILE_IMAGE_FIT), 2));
+	Options.Framing.Center = static_cast<swImageCenter>(qBound(0, swGetProfileInteger(SW_PROFILE_IMAGE_CENTER), 2));
+	Options.Framing.Scope = static_cast<swImageFitScope>(qBound(0, swGetProfileInteger(SW_PROFILE_IMAGE_FIT_SCOPE), 1));
+	Options.Framing.Margin = swGetProfileInteger(SW_PROFILE_IMAGE_MARGIN);
 
 	swImageDialog Dialog(this, &Options, Model);
 
@@ -821,8 +831,19 @@ void swMainWindow::ShowImageDialog()
 
 	swSetProfileInteger(SW_PROFILE_IMAGE_WIDTH, Options.Width);
 	swSetProfileInteger(SW_PROFILE_IMAGE_HEIGHT, Options.Height);
+	swSetProfileInteger(SW_PROFILE_IMAGE_FULL_TURN, Options.Turntable.FullTurn);
+	swSetProfileInteger(SW_PROFILE_IMAGE_ANGLE_START, Options.Turntable.AngleStart);
+	swSetProfileInteger(SW_PROFILE_IMAGE_ANGLE_END, Options.Turntable.AngleEnd);
+	swSetProfileInteger(SW_PROFILE_IMAGE_FRAMES, Options.Turntable.Frames);
+	swSetProfileFloat(SW_PROFILE_IMAGE_DURATION, static_cast<float>(Options.Turntable.Duration));
+	swSetProfileInteger(SW_PROFILE_IMAGE_FIT, static_cast<int>(Options.Framing.Fit));
+	swSetProfileInteger(SW_PROFILE_IMAGE_CENTER, static_cast<int>(Options.Framing.Center));
+	swSetProfileInteger(SW_PROFILE_IMAGE_FIT_SCOPE, static_cast<int>(Options.Framing.Scope));
+	swSetProfileInteger(SW_PROFILE_IMAGE_MARGIN, Options.Framing.Margin);
 
+	QApplication::setOverrideCursor(Qt::WaitCursor);
 	const swResult<void> Saved = swGetActiveProject()->SaveImage(Options);
+	QApplication::restoreOverrideCursor();
 
 	if (!Saved)
 		QMessageBox::warning(this, tr("Save Image"), Saved.error());

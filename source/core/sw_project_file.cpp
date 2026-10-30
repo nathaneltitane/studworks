@@ -544,7 +544,7 @@ swResult<void> Project::Save(const QString& FileName)
 		Stream.flush();
 
 		if (Serialized && Stream.status() == QTextStream::Ok)
-			Bytes = swWriteCommandMeta(Bytes, mLeoCADMetaCommands ? swCommandMetaFormat::LeoCAD : swCommandMetaFormat::StudWorks);
+			Bytes = swWriteCommandMeta(Bytes, mLeoCADMetaCommands ? swCommandMetaFormat::LeoCAD : swCommandMetaFormat::StudWorx);
 
 		if (!Serialized || Stream.status() != QTextStream::Ok || File.write(Bytes) != Bytes.size())
 		{

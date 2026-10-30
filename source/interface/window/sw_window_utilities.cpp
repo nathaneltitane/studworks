@@ -1509,6 +1509,15 @@ static void swDrawPaintedIcon(QPainter* Painter, swPaintedIcon Icon, const QSize
 		Draw.Stroke(swCreateIconLine({ { 19, 5 }, { 19, 19 } }), 2.5);
 		break;
 
+	case swPaintedIcon::TimePlay:
+		Draw.Fill(swCreateIconLine({ { 7, 5 }, { 7, 19 }, { 18, 12 } }, true));
+		break;
+
+	case swPaintedIcon::TimePause:
+		Draw.Stroke(swCreateIconLine({ { 8, 5 }, { 8, 19 } }), 2.5);
+		Draw.Stroke(swCreateIconLine({ { 16, 5 }, { 16, 19 } }), 2.5);
+		break;
+
 	case swPaintedIcon::TimeKeysAdd:
 		Draw.Stroke(swCreateIconLine({ { 10, 8 }, { 16, 14 }, { 10, 20 }, { 4, 14 } }, true));
 		Draw.Stroke(swCreateIconLine({ { 18, 2 }, { 18, 9 } }));

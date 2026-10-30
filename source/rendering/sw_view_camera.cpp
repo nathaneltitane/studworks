@@ -122,7 +122,7 @@ static swMatrix44 swGetStepViewRotation(const swVector3& Angles)
 {
 	const swMatrix44 Rotation = swMultiply(swMultiply(swMatrix44RotationX(Angles.x * SW_DEGREES_TO_RADIANS), swMatrix44RotationY(Angles.y * SW_DEGREES_TO_RADIANS)), swMatrix44RotationZ(Angles.z * SW_DEGREES_TO_RADIANS));
 
-	return swMatrix44LDrawToStudWorks(Rotation);
+	return swMatrix44LDrawToStudWorx(Rotation);
 }
 
 static void swGetStepViewBase(swStepViewMode Mode, swVector3& Direction, swVector3& Up)
@@ -187,7 +187,7 @@ swVector3 swView::GetStepViewAngles() const
 	// frame against the front view
 	const swMatrix44 Base(swVector4(BaseRight, 0.0f), swVector4(BaseUp, 0.0f), swVector4(BaseDirection, 0.0f), swVector4(0.0f, 0.0f, 0.0f, 1.0f));
 	const swMatrix44 Current(swVector4(Right, 0.0f), swVector4(Up, 0.0f), swVector4(Direction, 0.0f), swVector4(0.0f, 0.0f, 0.0f, 1.0f));
-	const swMatrix44 Rotation = swMatrix44StudWorksToLDraw(swMultiply(swMatrix44Transpose(Current), Base));
+	const swMatrix44 Rotation = swMatrix44StudWorxToLDraw(swMultiply(swMatrix44Transpose(Current), Base));
 
 	float X, Y, Z;
 	const float SinY = swClamp(-Rotation[0][2], -1.0f, 1.0f);

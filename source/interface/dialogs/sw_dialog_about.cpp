@@ -13,7 +13,7 @@ swAboutDialog::swAboutDialog(QWidget* Parent)
 	ui->setupUi(this);
 	swSetupDialogHelp(this, ui->buttonBox);
 
-	ui->version->setText(tr("StudWorks Version %1").arg(QString::fromLatin1(SW_VERSION_TEXT)));
+	ui->version->setText(tr("StudWorx Version %1").arg(QString::fromLatin1(SW_VERSION_TEXT)));
 
 	swViewWidget* Widget = gMainWindow->GetActiveView()->GetWidget();
 	QOpenGLContext* Context = Widget->context();

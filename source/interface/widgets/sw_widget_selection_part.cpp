@@ -911,7 +911,7 @@ void swPartSelectionListView::startDrag(Qt::DropActions SupportedActions)
 	DataStream << QString(PartData->mFileName);
 
 	QMimeData* MimeData = new QMimeData;
-	MimeData->setData("application/vnd.studworks-part", ItemData);
+	MimeData->setData("application/vnd.studworx-part", ItemData);
 
 	QDrag* Drag = new QDrag(this);
 	Drag->setMimeData(MimeData);

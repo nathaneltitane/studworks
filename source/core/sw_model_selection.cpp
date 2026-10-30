@@ -831,13 +831,13 @@ bool swModel::FindControlPointSeat(const swPart* Part, quint32 ControlPointIndex
 
 	for (const auto& [PartName, Transform] : SynthInfo->GetParts(ControlPoints))
 	{
-		const swMatrix44 PartWorld = swMultiply(swMatrix44LDrawToStudWorks(Transform), Part->mModelWorld);
+		const swMatrix44 PartWorld = swMultiply(swMatrix44LDrawToStudWorx(Transform), Part->mModelWorld);
 
 		if (swLength(PartWorld.GetTranslation() - ControlPointWorld.GetTranslation()) > FittingDistance)
 			continue;
 
 		for (const swConnectionCylinder& Cylinder : swShadowLibrary::GetCylinders(PartName.c_str()))
-			Fittings.emplace_back(&Cylinder, swMultiply(swMatrix44LDrawToStudWorks(Cylinder.Transform), PartWorld));
+			Fittings.emplace_back(&Cylinder, swMultiply(swMatrix44LDrawToStudWorx(Cylinder.Transform), PartWorld));
 	}
 
 	if (Fittings.empty())
@@ -851,13 +851,13 @@ bool swModel::FindControlPointSeat(const swPart* Part, quint32 ControlPointIndex
 
 		for (const auto& [PartName, Transform] : SynthInfo->GetParts(Points))
 		{
-			const swMatrix44 PartWorld = swMultiply(swMatrix44LDrawToStudWorks(Transform), Part->mModelWorld);
+			const swMatrix44 PartWorld = swMultiply(swMatrix44LDrawToStudWorx(Transform), Part->mModelWorld);
 
 			if (swLength(PartWorld.GetTranslation() - Position) > FittingDistance)
 				continue;
 
 			for (const swConnectionCylinder& Cylinder : swShadowLibrary::GetCylinders(PartName.c_str()))
-				Frames.emplace_back(swMultiply(swMatrix44LDrawToStudWorks(Cylinder.Transform), PartWorld));
+				Frames.emplace_back(swMultiply(swMatrix44LDrawToStudWorx(Cylinder.Transform), PartWorld));
 		}
 
 		return Frames;
@@ -960,7 +960,7 @@ bool swModel::FindControlPointSeat(const swPart* Part, quint32 ControlPointIndex
 		{
 			for (const swConnectionCylinder& Cylinder : *Cylinders)
 			{
-				const swMatrix44 Frame = swMultiply(swMatrix44LDrawToStudWorks(Cylinder.Transform), Transform);
+				const swMatrix44 Frame = swMultiply(swMatrix44LDrawToStudWorx(Cylinder.Transform), Transform);
 				const swVector3 Axis = swNormalize(swMultiply30(swVector3(0.0f, 0.0f, 1.0f), Frame));
 
 				for (size_t FittingIndex = 0; FittingIndex < Fittings.size(); FittingIndex++)

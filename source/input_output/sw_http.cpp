@@ -21,7 +21,7 @@ void swHttpReply::run()
 
 	static_assert(sizeof(wchar_t) == sizeof(QChar), "Character size mismatch");
 
-	Session = InternetOpen(L"StudWorks", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
+	Session = InternetOpen(L"StudWorx", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
 
 	if (!Session)
 		return;

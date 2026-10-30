@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# stage a studworks tree that carries its own qt libraries, sourced by the package scripts
+# stage a studworx tree that carries its own qt libraries, sourced by the package scripts
 # sets directory_root directory_package list_files and package_version
 
 directory_script="${BASH_SOURCE[0]%/*}"
@@ -12,7 +12,7 @@ then
 fi
 
 directory_source="$(cd "${directory_script}/.." && pwd)"
-directory_prefix="/opt/studworks"
+directory_prefix="/opt/studworx"
 
 # version from the release date
 while read -r line_header
@@ -62,12 +62,12 @@ directory_root="${directory_package}${directory_prefix}"
 
 cd "${directory_build}"
 
-qmake "${directory_source}/studworks.pro" \
+qmake "${directory_source}/studworx.pro" \
 	CONFIG+=release CONFIG-=debug \
 	BUNDLE_LIBRARIES=1 \
 	INSTALL_PREFIX="${directory_prefix}" \
 	BIN_DIR="${directory_prefix}/bin" \
-	DOCS_DIR=/usr/share/doc/studworks \
+	DOCS_DIR=/usr/share/doc/studworx \
 	ICON_DIR=/usr/share/icons \
 	MAN_DIR=/usr/share/man/man1 \
 	DESKTOP_DIR=/usr/share/applications \
@@ -96,7 +96,7 @@ fi
 
 # copy qt plugins
 directory_plugins_qt="$(qmake -query QT_INSTALL_PLUGINS)"
-list_files=("${directory_root}/bin/studworks")
+list_files=("${directory_root}/bin/studworx")
 
 for plugin in "${list_plugins[@]}"
 do
@@ -184,4 +184,4 @@ fi
 
 # link the command
 mkdir -p "${directory_package}/usr/bin"
-ln -sf "../..${directory_prefix}/bin/studworks" "${directory_package}/usr/bin/studworks"
+ln -sf "../..${directory_prefix}/bin/studworx" "${directory_package}/usr/bin/studworx"

@@ -1,4 +1,4 @@
-name: StudWorks CI
+name: StudWorx CI
 
 on:
   pull_request:
@@ -88,13 +88,13 @@ jobs:
       run: |
         for image in debian:12 debian:13 ubuntu:22.04 ubuntu:24.04
         do
-          docker run --rm -v "$PWD/build/deb:/deb" "$image" sh -c 'apt-get update -qq && apt-get install -y -qq /deb/studworks_*.deb > /dev/null && QT_QPA_PLATFORM=offscreen studworks --version'
+          docker run --rm -v "$PWD/build/deb:/deb" "$image" sh -c 'apt-get update -qq && apt-get install -y -qq /deb/studworx_*.deb > /dev/null && QT_QPA_PLATFORM=offscreen studworx --version'
         done
     - name: Upload package
       uses: actions/upload-artifact@v7
       with:
-        name: studworks-deb-${{ steps.version.outputs.text }}-${{ matrix.architecture }}
-        path: build/deb/studworks_*.deb
+        name: studworx-deb-${{ steps.version.outputs.text }}-${{ matrix.architecture }}
+        path: build/deb/studworx_*.deb
 
   build-rpm:
     strategy:
@@ -122,14 +122,14 @@ jobs:
       run: |
         for image in rockylinux:9 fedora:latest
         do
-          docker run --rm -v "$PWD/build/rpm:/rpm" "$image" sh -c 'dnf install -y -q /rpm/studworks-*.rpm && QT_QPA_PLATFORM=offscreen studworks --version'
+          docker run --rm -v "$PWD/build/rpm:/rpm" "$image" sh -c 'dnf install -y -q /rpm/studworx-*.rpm && QT_QPA_PLATFORM=offscreen studworx --version'
         done
-        docker run --rm -v "$PWD/build/rpm:/rpm" opensuse/tumbleweed sh -c 'zypper --non-interactive install --allow-unsigned-rpm /rpm/studworks-*.rpm > /dev/null && QT_QPA_PLATFORM=offscreen studworks --version'
+        docker run --rm -v "$PWD/build/rpm:/rpm" opensuse/tumbleweed sh -c 'zypper --non-interactive install --allow-unsigned-rpm /rpm/studworx-*.rpm > /dev/null && QT_QPA_PLATFORM=offscreen studworx --version'
     - name: Upload package
       uses: actions/upload-artifact@v7
       with:
-        name: studworks-rpm-${{ steps.version.outputs.text }}-${{ matrix.architecture }}
-        path: build/rpm/studworks-*.rpm
+        name: studworx-rpm-${{ steps.version.outputs.text }}-${{ matrix.architecture }}
+        path: build/rpm/studworx-*.rpm
 
   build-appimage:
     strategy:
@@ -157,13 +157,13 @@ jobs:
       run: packaging/appimage.sh build/appimage
     - name: Test package
       run: |
-        docker run --rm -v "$PWD/build/appimage:/appimage" debian:12 sh -c 'apt-get update -qq && apt-get install -y -qq libgl1 libegl1 libfontconfig1 libglib2.0-0 libdbus-1-3 libcups2 > /dev/null && cd /tmp && /appimage/studworks-*.appimage --appimage-extract > /dev/null && QT_QPA_PLATFORM=offscreen squashfs-root/AppRun --version'
-        docker run --rm -v "$PWD/build/appimage:/appimage" fedora:latest sh -c 'dnf install -y -q mesa-libGL mesa-libEGL fontconfig glib2 dbus-libs cups-libs && cd /tmp && /appimage/studworks-*.appimage --appimage-extract > /dev/null && QT_QPA_PLATFORM=offscreen squashfs-root/AppRun --version'
+        docker run --rm -v "$PWD/build/appimage:/appimage" debian:12 sh -c 'apt-get update -qq && apt-get install -y -qq libgl1 libegl1 libfontconfig1 libglib2.0-0 libdbus-1-3 libcups2 > /dev/null && cd /tmp && /appimage/studworx-*.appimage --appimage-extract > /dev/null && QT_QPA_PLATFORM=offscreen squashfs-root/AppRun --version'
+        docker run --rm -v "$PWD/build/appimage:/appimage" fedora:latest sh -c 'dnf install -y -q mesa-libGL mesa-libEGL fontconfig glib2 dbus-libs cups-libs && cd /tmp && /appimage/studworx-*.appimage --appimage-extract > /dev/null && QT_QPA_PLATFORM=offscreen squashfs-root/AppRun --version'
     - name: Upload package
       uses: actions/upload-artifact@v7
       with:
-        name: studworks-appimage-${{ steps.version.outputs.text }}-${{ matrix.architecture }}
-        path: build/appimage/studworks-*.appimage
+        name: studworx-appimage-${{ steps.version.outputs.text }}-${{ matrix.architecture }}
+        path: build/appimage/studworx-*.appimage
 
   build-macos:
     runs-on: macos-latest
@@ -219,29 +219,29 @@ jobs:
     - name: Build package
       working-directory: build/release
       run: |
-        macdeployqt StudWorks.app
+        macdeployqt StudWorx.app
         # sign ad hoc so apple silicon starts the deployed bundle
-        if [ -f StudWorks.app/Contents/MacOS/povray ]
+        if [ -f StudWorx.app/Contents/MacOS/povray ]
         then
-          codesign --force --sign - StudWorks.app/Contents/MacOS/povray
+          codesign --force --sign - StudWorx.app/Contents/MacOS/povray
         fi
-        codesign --force --deep --sign - StudWorks.app
-        lipo -archs StudWorks.app/Contents/MacOS/StudWorks
+        codesign --force --deep --sign - StudWorx.app
+        lipo -archs StudWorx.app/Contents/MacOS/StudWorx
         # hdiutil fails now and then on the runners
         for attempt in 1 2 3 4 5
         do
-          if hdiutil create -volname StudWorks -srcfolder StudWorks.app -ov -format UDZO studworks-macos-${{ steps.version.outputs.text }}-universal.dmg
+          if hdiutil create -volname StudWorx -srcfolder StudWorx.app -ov -format UDZO studworx-macos-${{ steps.version.outputs.text }}-universal.dmg
           then
             break
           fi
           sleep 10
         done
-        test -s studworks-macos-${{ steps.version.outputs.text }}-universal.dmg
+        test -s studworx-macos-${{ steps.version.outputs.text }}-universal.dmg
     - name: Upload package
       uses: actions/upload-artifact@v7
       with:
-        name: studworks-macos-${{ steps.version.outputs.text }}-universal
-        path: build/release/studworks-macos-*.dmg
+        name: studworx-macos-${{ steps.version.outputs.text }}-universal
+        path: build/release/studworx-macos-*.dmg
 
   build-windows:
     runs-on: windows-2022
@@ -306,8 +306,8 @@ jobs:
     - name: Upload package
       uses: actions/upload-artifact@v7
       with:
-        name: studworks-windows-${{ steps.version.outputs.text }}-x64
-        path: build/windows/studworks-windows-*.exe
+        name: studworx-windows-${{ steps.version.outputs.text }}-x64
+        path: build/windows/studworx-windows-*.exe
 
   release:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -329,7 +329,7 @@ jobs:
     - name: Download packages
       uses: actions/download-artifact@v8
       with:
-        pattern: studworks-*
+        pattern: studworx-*
         path: packages
         merge-multiple: true
     - name: Write release notes
@@ -355,7 +355,7 @@ jobs:
       run: |
         # one release carries the latest build of main under its date version
         gh release delete "${{ steps.version.outputs.text }}" --cleanup-tag --yes || true
-        gh release create "${{ steps.version.outputs.text }}" packages/* --target "${GITHUB_SHA}" --title "StudWorks ${{ steps.version.outputs.text }}" --notes-file notes.md --latest
+        gh release create "${{ steps.version.outputs.text }}" packages/* --target "${GITHUB_SHA}" --title "StudWorx ${{ steps.version.outputs.text }}" --notes-file notes.md --latest
         # earlier date versions are removed with their tags
         mapfile -t tags_release < <(gh release list --limit 100 --json tagName --jq '.[].tagName')
         for tag_release in "${tags_release[@]}"

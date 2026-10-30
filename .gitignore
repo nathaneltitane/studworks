@@ -29,11 +29,11 @@ Debug*
 .DS_Store
 .qmake.stash
 Makefile
-studworks_plugin_import.cpp
-studworks_resource.*
+studworx_plugin_import.cpp
+studworx_resource.*
 povray
 uic_wrapper.bat
 /packaging/*.exe
 appdir
-studworks-windows*.exe
+studworx-windows*.exe
 *.snap

@@ -4,7 +4,7 @@
 
 enum class swCommandMetaFormat
 {
-	StudWorks,
+	StudWorx,
 	LeoCAD
 };
 

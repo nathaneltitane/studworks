@@ -870,8 +870,8 @@ swMesh* swLibraryMeshData::CreateMesh(const std::atomic_bool* Cancelled)
 
 			swVertex& DstVertex = *DstVerts++;
 
-			DstVertex.Position = swVector3LDrawToStudWorks(SrcVertex.Position);
-			DstVertex.Normal = swPackNormal(swVector3LDrawToStudWorks(SrcVertex.Normal));
+			DstVertex.Position = swVector3LDrawToStudWorx(SrcVertex.Position);
+			DstVertex.Normal = swPackNormal(swVector3LDrawToStudWorx(SrcVertex.Normal));
 		}
 	}
 
@@ -891,8 +891,8 @@ swMesh* swLibraryMeshData::CreateMesh(const std::atomic_bool* Cancelled)
 
 			swVertexTextured& DstVertex = *DstTexturedVerts++;
 
-			DstVertex.Position = swVector3LDrawToStudWorks(SrcVertex.Position);
-			DstVertex.Normal = swPackNormal(swVector3LDrawToStudWorks(SrcVertex.Normal));
+			DstVertex.Position = swVector3LDrawToStudWorx(SrcVertex.Position);
+			DstVertex.Normal = swPackNormal(swVector3LDrawToStudWorx(SrcVertex.Normal));
 			DstVertex.TexCoord = SrcVertex.TexCoords;
 		}
 	}
@@ -953,10 +953,10 @@ swMesh* swLibraryMeshData::CreateMesh(const std::atomic_bool* Cancelled)
 				{
 					const swMeshLoaderConditionalVertex& SrcVertex = Data.mConditionalVertices[Index];
 					swVertexConditional& DstVertex = ConditionalVertices[ConditionalOffset++];
-					DstVertex.Position1 = swVector3LDrawToStudWorks(SrcVertex.Position[0]);
-					DstVertex.Position2 = swVector3LDrawToStudWorks(SrcVertex.Position[1]);
-					DstVertex.Position3 = swVector3LDrawToStudWorks(SrcVertex.Position[2]);
-					DstVertex.Position4 = swVector3LDrawToStudWorks(SrcVertex.Position[3]);
+					DstVertex.Position1 = swVector3LDrawToStudWorx(SrcVertex.Position[0]);
+					DstVertex.Position2 = swVector3LDrawToStudWorx(SrcVertex.Position[1]);
+					DstVertex.Position3 = swVector3LDrawToStudWorx(SrcVertex.Position[2]);
+					DstVertex.Position4 = swVector3LDrawToStudWorx(SrcVertex.Position[3]);
 				}
 			}
 		};

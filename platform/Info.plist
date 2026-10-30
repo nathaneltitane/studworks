@@ -12,13 +12,13 @@
 				<string>lcd</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
-			<string>studworks_document.icns</string>
+			<string>studworx_document.icns</string>
 			<key>CFBundleTypeMIMETypes</key>
 			<array>
-				<string>application/vnd.studworks</string>
+				<string>application/vnd.studworx</string>
 			</array>
 			<key>CFBundleTypeName</key>
-			<string>StudWorks Project</string>
+			<string>StudWorx Project</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>LSTypeIsPackage</key>
@@ -34,7 +34,7 @@
 				<string>mpd</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
-			<string>studworks_document.icns</string>
+			<string>studworx_document.icns</string>
 			<key>CFBundleTypeMIMETypes</key>
 			<array>
 				<string>application/x-ldraw</string>
@@ -50,11 +50,11 @@
 		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
-	<string>StudWorks</string>
+	<string>StudWorx</string>
 	<key>CFBundleIconFile</key>
-	<string>studworks.icns</string>
+	<string>studworx.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>io.github.nathaneltitane.studworks</string>
+	<string>io.github.nathaneltitane.studworx</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
@@ -66,9 +66,9 @@
 	<key>CFBundleVersion</key>
 	<string>20261030</string>
 	<key>CFBundleDisplayName</key>
-	<string>StudWorks</string>
+	<string>StudWorx</string>
 	<key>CFBundleName</key>
-	<string>StudWorks</string>
+	<string>StudWorx</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 </dict>

@@ -416,7 +416,7 @@ void swRenderDialog::CreatePOVRayPanels()
 	QWidget* ScenePanel = CreatePanel(tr("Scene"), "RenderScene", tr("<p><b>Scene</b></p><p>Set the lights, floor and surroundings the model is rendered in.</p>"));
 
 	QComboBox* PartsComboBox = CreateComboBox({ tr("LDraw"), tr("LGEO") }, swGetProfileInteger(SW_PROFILE_RENDER_PARTS));
-	CreateRow(ScenePanel, tr("Parts"), PartsComboBox, tr("Choose whether the model is rendered with LDraw parts or the modeled LGEO parts."), tr("<p><b>Parts</b></p><p>LDraw renders the parts of the parts library. LGEO replaces the parts it has with the smooth modeled parts of the LGEO library by Lutz Uhlmann, StudWorks offers to download it the first time. Models that ask for LGEO in their file always use it.</p>"));
+	CreateRow(ScenePanel, tr("Parts"), PartsComboBox, tr("Choose whether the model is rendered with LDraw parts or the modeled LGEO parts."), tr("<p><b>Parts</b></p><p>LDraw renders the parts of the parts library. LGEO replaces the parts it has with the smooth modeled parts of the LGEO library by Lutz Uhlmann, StudWorx offers to download it the first time. Models that ask for LGEO in their file always use it.</p>"));
 
 	mLightRigComboBox = CreateComboBox({ tr("Standard"), tr("Studio"), tr("Matte") }, swGetProfileInteger(SW_PROFILE_RENDER_LIGHT_RIG));
 	QComboBox* LightRigComboBox = mLightRigComboBox;
@@ -911,21 +911,21 @@ swRenderDialog::~swRenderDialog()
 
 QString swRenderDialog::GetStdOutFileName() const
 {
-	QString LogFile = mDialogMode == swRenderDialogMode::RenderPOVRay ? QLatin1String("studworks-povray-render.out") : QLatin1String("studworks-blender-render.out");
+	QString LogFile = mDialogMode == swRenderDialogMode::RenderPOVRay ? QLatin1String("studworx-povray-render.out") : QLatin1String("studworx-blender-render.out");
 
 	return QDir(QDir::tempPath()).absoluteFilePath(LogFile);
 }
 
 QString swRenderDialog::GetStdErrFileName() const
 {
-	QString LogFile = mDialogMode == swRenderDialogMode::RenderPOVRay ? QLatin1String("studworks-povray-render.err") : QLatin1String("studworks-blender-render.err");
+	QString LogFile = mDialogMode == swRenderDialogMode::RenderPOVRay ? QLatin1String("studworx-povray-render.err") : QLatin1String("studworx-blender-render.err");
 
 	return QDir(QDir::tempPath()).absoluteFilePath(LogFile);
 }
 
 QString swRenderDialog::GetPOVFileName() const
 {
-	return QDir(QDir::tempPath()).absoluteFilePath("studworks-render.pov");
+	return QDir(QDir::tempPath()).absoluteFilePath("studworx-render.pov");
 }
 
 void swRenderDialog::CloseProcess()

@@ -96,7 +96,7 @@ done < README.md
 
 printf "%s\n" "version ${version_old} is released and code changed since, writing the ${version_today} notice"
 
-prompt_notice="Write the README release notice for StudWorks version ${version_today}, covering the changes since version ${version_old}.
+prompt_notice="Write the README release notice for StudWorx version ${version_today}, covering the changes since version ${version_old}.
 Read them with git log and git diff ${sha_release} HEAD, user facing changes only.
 Answer with 2 to 8 lines and nothing else, each line starting with '- ', short and plain, no final period, written like these lines of the previous notice:
 $(printf "%s\n" "${lines_example[@]}")
@@ -124,11 +124,11 @@ fi
 
 if [ "${#lines_notice[@]}" = 0 ]
 then
-	printf "%s\n" "no notice written, run tools/studworks-version-update, write the notice and push again"
+	printf "%s\n" "no notice written, run tools/studworx-version-update, write the notice and push again"
 	exit 1
 fi
 
-tools/studworks-version-update "${version_today}" > /dev/null
+tools/studworx-version-update "${version_today}" > /dev/null
 
 # the notice lines go under the new heading
 mapfile -t lines_readme < README.md

@@ -8,7 +8,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("Action", "File.New"),
 		QT_TRANSLATE_NOOP("Menu", "&New"),
 		QT_TRANSLATE_NOOP("Status", "Create a new model"),
-		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>New Model</b></p><p>Create a new, empty model. If the current model has unsaved changes, StudWorks asks whether to save them before replacing it.</p>"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>New Model</b></p><p>Create a new, empty model. If the current model has unsaved changes, StudWorx asks whether to save them before replacing it.</p>"),
 		"Ctrl+N"
 	},
 
@@ -35,7 +35,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("Action", "File.Reload"),
 		QT_TRANSLATE_NOOP("Menu", "&Reload"),
 		QT_TRANSLATE_NOOP("Status", "Reload the current model from disk"),
-		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Reload Model</b></p><p>Read the current model file again from disk, replacing the model in StudWorks. If the model has unsaved changes, StudWorks asks before discarding them.</p>"),
+		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Reload Model</b></p><p>Read the current model file again from disk, replacing the model in StudWorx. If the model has unsaved changes, StudWorx asks before discarding them.</p>"),
 		""
 	},
 
@@ -1951,7 +1951,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "File.ToggleOpenMostRecent"),
 		QT_TRANSLATE_NOOP("Menu", "Open Most Recent File on Startup"),
-		QT_TRANSLATE_NOOP("Status", "Toggle opening the most recently used file when StudWorks starts"),
+		QT_TRANSLATE_NOOP("Status", "Toggle opening the most recently used file when StudWorx starts"),
 		"",
 		""
 	},
@@ -3193,7 +3193,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "Help.HomePage"),
 		QT_TRANSLATE_NOOP("Menu", "&Home Page"),
-		QT_TRANSLATE_NOOP("Status", "Open StudWorks' home page on the internet using your default web browser"),
+		QT_TRANSLATE_NOOP("Status", "Open StudWorx' home page on the internet using your default web browser"),
 		"",
 		""
 	},
@@ -3202,7 +3202,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "Help.BugReport"),
 		QT_TRANSLATE_NOOP("Menu", "Report a &Bug"),
-		QT_TRANSLATE_NOOP("Status", "Open StudWorks' bug report form on your default web browser"),
+		QT_TRANSLATE_NOOP("Status", "Open StudWorx' bug report form on your default web browser"),
 		"",
 		""
 	},

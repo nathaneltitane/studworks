@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# build a studworks windows installer from a release build, run in git bash after nmake
+# build a studworx windows installer from a release build, run in git bash after nmake
 # usage: packaging/windows.sh [build directory]
 
 set -e
@@ -36,7 +36,7 @@ mkdir -p "${directory_build}"
 directory_build="$(cd "${directory_build}" && pwd)"
 directory_package="$(mktemp -d "${directory_build}/package.XXXXXX")"
 
-cp "${directory_source}/build/release/StudWorks.exe" "${directory_package}/"
+cp "${directory_source}/build/release/StudWorx.exe" "${directory_package}/"
 cp "${directory_source}/README.md" "${directory_package}/readme.txt"
 
 for file_extra in povconsole32-sse2.exe
@@ -47,7 +47,7 @@ do
 	fi
 done
 
-windeployqt --release "${directory_package}/StudWorks.exe"
+windeployqt --release "${directory_package}/StudWorx.exe"
 cp "$(cygpath -u "${VCToolsRedistDir}")vc_redist.x64.exe" "${directory_package}/"
 
 # list every staged file and folder for the uninstaller, contents before their folder
@@ -68,10 +68,10 @@ do
 done < <(find "${directory_package}" -mindepth 1 -depth)
 
 # build the installer
-cp "${directory_source}/packaging/studworks.nsi" "${directory_build}/"
+cp "${directory_source}/packaging/studworx.nsi" "${directory_build}/"
 
-file_package="${directory_build}/studworks-windows-${package_version}-x64.exe"
+file_package="${directory_build}/studworx-windows-${package_version}-x64.exe"
 
-(cd "${directory_build}" && VERSION="${package_version}" "/c/Program Files (x86)/NSIS/makensis.exe" -V4 "-DDIRECTORY_PACKAGE=${directory_package##*/}" "-XOutFile ${file_package##*/}" studworks.nsi)
+(cd "${directory_build}" && VERSION="${package_version}" "/c/Program Files (x86)/NSIS/makensis.exe" -V4 "-DDIRECTORY_PACKAGE=${directory_package##*/}" "-XOutFile ${file_package##*/}" studworx.nsi)
 
 printf "%s\n" "${file_package}"

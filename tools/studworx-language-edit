@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # open the translation catalogs in qt linguist
-# usage: tools/studworks-language-edit [language]
+# usage: tools/studworx-language-edit [language]
 
 set -e
 
@@ -20,7 +20,7 @@ language="${1:-*}"
 
 tool_edit="$(command -v linguist || command -v linguist-qt5)"
 
-list_catalogs=("${directory_translations}"/studworks_${language}.ts)
+list_catalogs=("${directory_translations}"/studworx_${language}.ts)
 
 if [ ! -f "${list_catalogs[0]}" ]
 then

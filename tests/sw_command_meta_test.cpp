@@ -30,7 +30,7 @@ void swTests::CommandMetaWritesBothFormats()
 		"0 !LEOCAD GROUP END\r\n"
 		"0 // comment\r\n"
 		"0 NOFILE";
-	const QByteArray StudWorks =
+	const QByteArray StudWorx =
 		"0 FILE main.ldr\r\n"
 		"0 !SW BEGIN GROUP Wall\r\n"
 		"  0 !SW PIVOT PART 1 0 0 0 1 0 0 0 1 0 0 0\r\n"
@@ -43,10 +43,10 @@ void swTests::CommandMetaWritesBothFormats()
 		"0 NOFILE";
 
 	QVERIFY(swHasLeoCADCommandMeta(LeoCAD));
-	QVERIFY(!swHasLeoCADCommandMeta(StudWorks));
-	QCOMPARE(swWriteCommandMeta(LeoCAD, swCommandMetaFormat::StudWorks), StudWorks);
-	QCOMPARE(swWriteCommandMeta(StudWorks, swCommandMetaFormat::LeoCAD), LeoCAD);
-	QCOMPARE(swWriteCommandMeta(StudWorks, swCommandMetaFormat::StudWorks), StudWorks);
+	QVERIFY(!swHasLeoCADCommandMeta(StudWorx));
+	QCOMPARE(swWriteCommandMeta(LeoCAD, swCommandMetaFormat::StudWorx), StudWorx);
+	QCOMPARE(swWriteCommandMeta(StudWorx, swCommandMetaFormat::LeoCAD), LeoCAD);
+	QCOMPARE(swWriteCommandMeta(StudWorx, swCommandMetaFormat::StudWorx), StudWorx);
 }
 
 void swTests::CommandMetaRoundTripsModel()
@@ -59,9 +59,9 @@ void swTests::CommandMetaRoundTripsModel()
 	QFile File(FileName);
 	QVERIFY(File.open(QIODevice::ReadOnly));
 	const QByteArray LeoCAD = File.readAll();
-	const QByteArray StudWorks = swWriteCommandMeta(LeoCAD, swCommandMetaFormat::StudWorks);
+	const QByteArray StudWorx = swWriteCommandMeta(LeoCAD, swCommandMetaFormat::StudWorx);
 
-	QVERIFY(!swHasLeoCADCommandMeta(StudWorks));
-	QCOMPARE(StudWorks.count("0 !SW "), LeoCAD.count("0 !LEOCAD "));
-	QCOMPARE(swWriteCommandMeta(StudWorks, swCommandMetaFormat::LeoCAD), LeoCAD);
+	QVERIFY(!swHasLeoCADCommandMeta(StudWorx));
+	QCOMPARE(StudWorx.count("0 !SW "), LeoCAD.count("0 !LEOCAD "));
+	QCOMPARE(swWriteCommandMeta(StudWorx, swCommandMetaFormat::LeoCAD), LeoCAD);
 }

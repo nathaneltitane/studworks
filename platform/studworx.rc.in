@@ -15,12 +15,12 @@ VS_VERSION_INFO VERSIONINFO
 		BEGIN
 			BLOCK \"040904e4\"
 			BEGIN
-				VALUE \"CompanyName\", \"StudWorks\0\"
-				VALUE \"FileDescription\", \"StudWorks\0\"
+				VALUE \"CompanyName\", \"StudWorx\0\"
+				VALUE \"FileDescription\", \"StudWorx\0\"
 				VALUE \"FileVersion\", \"$$VERSION_TEXT\0\"
 				VALUE \"LegalCopyright\", \"Copyright (C) Leonardo Zide, Nathanel Titane and contributors\0\"
-				VALUE \"OriginalFilename\", \"StudWorks.exe\0\"
-				VALUE \"ProductName\", \"StudWorks\0\"
+				VALUE \"OriginalFilename\", \"StudWorx.exe\0\"
+				VALUE \"ProductName\", \"StudWorx\0\"
 				VALUE \"ProductVersion\", \"$$VERSION_TEXT\0\"
 			END
 		END

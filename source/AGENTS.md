@@ -1,7 +1,7 @@
 # Code instructions
 
 - Use PascalCase for local variables, prefix class member variables with m and globals with g.
-- Keep the file lists in `studworks.pro` and the module `.pri` files alphabetically sorted within their existing groups.
+- Keep the file lists in `studworx.pro` and the module `.pri` files alphabetically sorted within their existing groups.
 - Name source files category first, then subject and qualifier: `sw_dialog_render`, `sw_widget_label_elided`, `sw_object_camera`.
 - Split a large class by feature into `sw_<class>_<area>.cpp` files that share its header, like `sw_model_selection.cpp` and `sw_window_main_command.cpp`.
 - Get Qt and std includes through the precompiled header, `sw_global.h`.
@@ -24,7 +24,7 @@
 
 # Releases
 
-- The version is the release date. Move it with `tools/studworks-version-update`, and write the new README notice, the release notes come from it.
+- The version is the release date. Move it with `tools/studworx-version-update`, and write the new README notice, the release notes come from it.
 - Enable `tools/hooks/pre-push` with `git config core.hooksPath tools/hooks`. Once a version is released, a later push of code changes to main bumps it to the day's date, with a notice written by `claude -p`.
 
 # Dialog help and translations

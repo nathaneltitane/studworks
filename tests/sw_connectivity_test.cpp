@@ -215,7 +215,7 @@ void swTests::ConnectivityConnectsSeatedShapes()
 	const auto At = [](float x, float y, float z, float Angle)
 	{
 		swMatrix44 Transform = swMatrix44RotationZ(Angle);
-		Transform.SetTranslation(swVector3LDrawToStudWorks(swVector3(x, y, z)));
+		Transform.SetTranslation(swVector3LDrawToStudWorx(swVector3(x, y, z)));
 		return Transform;
 	};
 	const std::tuple<const char*, swMatrix44, bool> Cases[] =
@@ -254,9 +254,9 @@ void swTests::ConnectivityConnectsSeatedShapes()
 	const std::vector<swConnectionCylinder> RoundPlate = MakePart({ "0 !LDCAD SNAP_CYL [gender=M] [caps=none] [secs=R 10 3   R 6 4] [slide=true] [pos=0 3 0]" });
 	const std::vector<swConnectionCylinder> RoundBrick = MakePart({ "0 !LDCAD SNAP_CYL [gender=F] [caps=none] [secs=R 6 20   R 4 8] [pos=0 24 0]" });
 
-	QVERIFY(swConnectivity::AreConnected(RoundPlate, swMatrix44Translation(swVector3LDrawToStudWorks(swVector3(0.0f, 24.0f, 0.0f))), RoundBrick, swMatrix44Identity()));
+	QVERIFY(swConnectivity::AreConnected(RoundPlate, swMatrix44Translation(swVector3LDrawToStudWorx(swVector3(0.0f, 24.0f, 0.0f))), RoundBrick, swMatrix44Identity()));
 	QVERIFY(!swConnectivity::AreConnected(RoundPlate, swMatrix44Identity(), RoundBrick, swMatrix44Identity()));
-	QVERIFY(!swConnectivity::AreConnected(RoundPlate, swMatrix44Translation(swVector3LDrawToStudWorks(swVector3(0.0f, 16.0f, 0.0f))), RoundBrick, swMatrix44Identity()));
+	QVERIFY(!swConnectivity::AreConnected(RoundPlate, swMatrix44Translation(swVector3LDrawToStudWorx(swVector3(0.0f, 16.0f, 0.0f))), RoundBrick, swMatrix44Identity()));
 
 	// A part made of several library parts connects through any one of them.
 	const swMatrix44 Away = swMatrix44Translation(swVector3(0.0f, 0.0f, 400.0f));

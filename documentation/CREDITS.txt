@@ -1,14 +1,14 @@
-StudWorks is based on LeoCAD (https://github.com/leozide/leocad) by Leonardo Zide
+StudWorx is based on LeoCAD (https://github.com/leozide/leocad) by Leonardo Zide
 and its contributors, released under the GNU General Public License version 2.
 
 Part connections come from the LDCad shadow library
 (https://github.com/RolandMelkert/LDCadShadowLibrary) by Roland Melkert, made for
 LDCad (https://www.melkert.net/LDCad) and released under the Creative Commons
-Attribution-ShareAlike 4.0 license. It is not bundled with StudWorks.
+Attribution-ShareAlike 4.0 license. It is not bundled with StudWorx.
 
 POV-Ray renders can use the LGEO library (https://github.com/jncraton/lgeo) by
 Lutz Uhlmann, high detail LEGO® part models for POV-Ray that may be redistributed
-freely. It is not bundled with StudWorks.
+freely. It is not bundled with StudWorx.
 
 The following people have contributed to LeoCAD:
 

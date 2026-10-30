@@ -334,7 +334,7 @@ void swPreferences::SetInterfaceColors(swColorTheme ColorTheme)
 swApplication::swApplication(int& Argc, char** Argv)
 	: QApplication(Argc, Argv)
 {
-	setApplicationDisplayName(QLatin1String("StudWorks"));
+	setApplicationDisplayName(QLatin1String("StudWorx"));
 
 	gApplication = this;
 	mDefaultStyle = style()->objectName();
@@ -499,7 +499,7 @@ void swApplication::ExportClipboard(const QByteArray& Clipboard)
 {
 	QMimeData* MimeData = new QMimeData();
 
-	MimeData->setData("application/vnd.studworks-clipboard", Clipboard);
+	MimeData->setData("application/vnd.studworx-clipboard", Clipboard);
 	QApplication::clipboard()->setMimeData(MimeData);
 
 	SetClipboard(Clipboard);
@@ -514,7 +514,7 @@ bool swApplication::LoadPartsLibrary(const QList<QPair<QString, bool>>& LibraryP
 
 	if (!OnlyUsePaths)
 	{
-		char* PathEnvironment = getenv("STUDWORKS_LIBRARY");
+		char* PathEnvironment = getenv("STUDWORX_LIBRARY");
 
 		if (PathEnvironment && PathEnvironment[0])
 			return mLibrary->Load(PathEnvironment, ShowProgress, false);
@@ -569,7 +569,7 @@ bool swApplication::DownloadPartsLibrary(const QString& FileName)
 bool swApplication::SetupPartsLibrary()
 {
 	const QString DownloadPath = GetDownloadLibraryPath();
-	const QString Question = tr("StudWorks could not find an LDraw parts library.\n\nDownload the official library (about 140 MB) from library.ldraw.org into '%1'?").arg(QDir::toNativeSeparators(DownloadPath));
+	const QString Question = tr("StudWorx could not find an LDraw parts library.\n\nDownload the official library (about 140 MB) from library.ldraw.org into '%1'?").arg(QDir::toNativeSeparators(DownloadPath));
 
 	if (QMessageBox::question(gMainWindow, tr("Load Parts Library"), Question, QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes && DownloadPartsLibrary(DownloadPath))
 	{
@@ -595,7 +595,7 @@ bool swApplication::SetupPartsLibrary()
 		QMessageBox::warning(gMainWindow, tr("Load Parts Library"), tr("Could not open the parts library '%1'.").arg(FileName));
 	}
 
-	QMessageBox::warning(gMainWindow, tr("Load Parts Library"), tr("No parts library was downloaded or set.\n\nDownload one from %1 and set it under Preferences \u203a Parts Library the next time StudWorks is started.").arg(QLatin1String(SW_LIBRARY_DOWNLOAD_URL)));
+	QMessageBox::warning(gMainWindow, tr("Load Parts Library"), tr("No parts library was downloaded or set.\n\nDownload one from %1 and set it under Preferences \u203a Parts Library the next time StudWorx is started.").arg(QLatin1String(SW_LIBRARY_DOWNLOAD_URL)));
 
 	return false;
 }
@@ -912,9 +912,9 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 			{
 				if (Option == QLatin1String("--camera-position-ldraw"))
 				{
-					Options.CameraPosition[0] = swVector3LDrawToStudWorks(Options.CameraPosition[0]);
-					Options.CameraPosition[1] = swVector3LDrawToStudWorks(Options.CameraPosition[1]);
-					Options.CameraPosition[2] = swVector3LDrawToStudWorks(Options.CameraPosition[2]);
+					Options.CameraPosition[0] = swVector3LDrawToStudWorx(Options.CameraPosition[0]);
+					Options.CameraPosition[1] = swVector3LDrawToStudWorx(Options.CameraPosition[1]);
+					Options.CameraPosition[2] = swVector3LDrawToStudWorx(Options.CameraPosition[2]);
 				}
 
 				swVector3 Front = Options.CameraPosition[1] - Options.CameraPosition[0];
@@ -1108,13 +1108,13 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 			ParseString(Options.CategoriesExportName, true);
 		else if (Option == QLatin1String("-v") || Option == QLatin1String("--version"))
 		{
-			Options.StdOut += tr("StudWorks Version %1\n").arg(SW_VERSION_TEXT);
+			Options.StdOut += tr("StudWorx Version %1\n").arg(SW_VERSION_TEXT);
 			Options.StdOut += tr("Compiled %1\n").arg(__DATE__);
 			Options.Exit = true;
 		}
 		else if (Option == QLatin1String("-?") || Option == QLatin1String("--help"))
 		{
-			Options.StdOut += tr("Usage: studworks [options] [file]\n");
+			Options.StdOut += tr("Usage: studworx [options] [file]\n");
 			Options.StdOut += tr("  [options] can be:\n");
 			Options.StdOut += tr("  -l, --libpath <path>: Set the Parts Library location to path.\n");
 			Options.StdOut += tr("  --unofficial-library <path>: Set the Unofficial Parts Library archive to path.\n");
@@ -1463,7 +1463,7 @@ swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 	{
 		if (!gMainWindow)
 		{
-			StdErr << tr("StudWorks could not find an LDraw parts library.\n\nDownload one from %1 and pass it with --libpath.").arg(QLatin1String(SW_LIBRARY_DOWNLOAD_URL)) << "\n";
+			StdErr << tr("StudWorx could not find an LDraw parts library.\n\nDownload one from %1 and pass it with --libpath.").arg(QLatin1String(SW_LIBRARY_DOWNLOAD_URL)) << "\n";
 			StdErr.flush();
 			mLibrary->LoadEmptyLibrary();
 		}
@@ -2086,7 +2086,7 @@ void swApplication::ShowPreferencesDialog()
 	// libraries reload while running
 	if (LibraryChanged || UnofficialLibraryChanged)
 	{
-		const char* PathEnvironment = getenv("STUDWORKS_LIBRARY");
+		const char* PathEnvironment = getenv("STUDWORX_LIBRARY");
 		const bool LibraryOverridden = PathEnvironment && PathEnvironment[0];
 
 		mLibrary->SetUnofficialArchivePath(Options.UnofficialLibraryPath);
@@ -2124,7 +2124,7 @@ void swApplication::ShowPreferencesDialog()
 		gMainWindow->UpdateShadowLibraryAction();
 
 	if (LanguageChanged || LibraryChanged || AAChanged)
-		QMessageBox::information(gMainWindow, tr("Preferences"), tr("Some changes will only take effect the next time you start StudWorks."));
+		QMessageBox::information(gMainWindow, tr("Preferences"), tr("Some changes will only take effect the next time you start StudWorx."));
 
 	if (Options.CategoriesModified)
 	{

@@ -688,7 +688,7 @@ swMatrix33 swSynthesisInformationCurved::GetSectionControlPointRotation(const sw
 	Q_UNUSED(Rotation);
 
 	const swMatrix33 LDrawRotation = swMultiply(swMultiply(swMatrix33Transpose(swMatrix33(mStart.Transform)), swMatrix33(Section)), swMatrix33Scale(swVector3(1.0f, -1.0f, 1.0f)));
-	return swMatrix33(swMatrix44LDrawToStudWorks(swMatrix44(LDrawRotation, swVector3(0.0f, 0.0f, 0.0f))));
+	return swMatrix33(swMatrix44LDrawToStudWorx(swMatrix44(LDrawRotation, swVector3(0.0f, 0.0f, 0.0f))));
 }
 
 // use to get the section gap length
@@ -800,7 +800,7 @@ float swSynthesisInformationCurved::GetEndInset() const
 // use to get the leaving direction
 swVector3 swSynthesisInformationCurved::GetControlPointTangent(const swMatrix44& Transform) const
 {
-	const swMatrix44 LDrawTransform = swMatrix44StudWorksToLDraw(Transform);
+	const swMatrix44 LDrawTransform = swMatrix44StudWorxToLDraw(Transform);
 	const swMatrix33 Rotation = swMultiply(swMultiply(swMatrix33(mStart.Transform), swMatrix33(LDrawTransform)), swMatrix33Scale(swVector3(1.0f, -1.0f, 1.0f)));
 	const swVector3 Tangent = swMultiply(swVector3(0.0f, 1.0f, 0.0f), Rotation);
 
@@ -883,8 +883,8 @@ void swSynthesisInformationCurved::AlignControlPointDirection(std::vector<swPart
 // use to get the segment curve points
 void swSynthesisInformationCurved::GetSegmentControlPoints(const std::vector<swPartControlPoint>& ControlPoints, const std::vector<float>& Scales, quint32 ControlPointIndex, swVector3 SegmentControlPoints[4], swMatrix44& StartTransform, swMatrix44& EndTransform) const
 {
-	StartTransform = swMatrix44StudWorksToLDraw(ControlPoints[ControlPointIndex].Transform);
-	EndTransform = swMatrix44StudWorksToLDraw(ControlPoints[ControlPointIndex + 1].Transform);
+	StartTransform = swMatrix44StudWorxToLDraw(ControlPoints[ControlPointIndex].Transform);
+	EndTransform = swMatrix44StudWorxToLDraw(ControlPoints[ControlPointIndex + 1].Transform);
 	StartTransform = swMatrix44(swMultiply(swMultiply(swMatrix33(mStart.Transform), swMatrix33(StartTransform)), swMatrix33Scale(swVector3(1.0f, -1.0f, 1.0f))), StartTransform.GetTranslation());
 	EndTransform = swMatrix44(swMultiply(swMultiply(swMatrix33(mEnd.Transform), swMatrix33(EndTransform)), swMatrix33Scale(swVector3(1.0f, -1.0f, 1.0f))), EndTransform.GetTranslation());
 
@@ -1224,7 +1224,7 @@ void swSynthesisInformationCurved::CalculateSections(const std::vector<swPartCon
 			return;
 
 		// rounding can leave the last short
-		swMatrix44 EndTransform = swMatrix44StudWorksToLDraw(ControlPoints.back().Transform);
+		swMatrix44 EndTransform = swMatrix44StudWorxToLDraw(ControlPoints.back().Transform);
 		EndTransform = swMatrix44(swMultiply(swMultiply(swMatrix33(mEnd.Transform), swMatrix33(EndTransform)), swMatrix33Scale(swVector3(1.0f, -1.0f, 1.0f))), EndTransform.GetTranslation());
 		swVector3 Position = swMultiply31(swVector3(0.0f, SectionLength - (ControlPoints.size() > 1 ? GetEndInset() : 0.0f), 0.0f), EndTransform);
 		EndTransform.SetTranslation(Position);
@@ -1251,8 +1251,8 @@ void swSynthesisInformationBraidedString::CalculateSections(const std::vector<sw
 
 		swVector3 SegmentControlPoints[4];
 
-		swMatrix44 StartTransform = swMatrix44StudWorksToLDraw(ControlPoints[ControlPointIndex].Transform);
-		swMatrix44 EndTransform = swMatrix44StudWorksToLDraw(ControlPoints[ControlPointIndex + 1].Transform);
+		swMatrix44 StartTransform = swMatrix44StudWorxToLDraw(ControlPoints[ControlPointIndex].Transform);
+		swMatrix44 EndTransform = swMatrix44StudWorxToLDraw(ControlPoints[ControlPointIndex + 1].Transform);
 		StartTransform = swMatrix44(swMultiply(swMultiply(swMatrix33(mStart.Transform), swMatrix33(StartTransform)), swMatrix33Scale(swVector3(1.0f, -1.0f, 1.0f))), StartTransform.GetTranslation());
 
 		if (ControlPointIndex == 0)
@@ -1360,7 +1360,7 @@ void swSynthesisInformationBraidedString::CalculateSections(const std::vector<sw
 		if (Cancelled && Cancelled->load(std::memory_order_relaxed))
 			return;
 
-		swMatrix44 EndTransform = swMatrix44StudWorksToLDraw(ControlPoints.back().Transform);
+		swMatrix44 EndTransform = swMatrix44StudWorxToLDraw(ControlPoints.back().Transform);
 		EndTransform = swMatrix44(swMultiply(swMultiply(swMatrix33(mEnd.Transform), swMatrix33(EndTransform)), swMatrix33Scale(swVector3(1.0f, -1.0f, 1.0f))), EndTransform.GetTranslation());
 		swVector3 Position = swMultiply31(swVector3(SectionLength, 0.0f, 0.0f), EndTransform);
 		EndTransform.SetTranslation(Position);
@@ -1386,7 +1386,7 @@ void swSynthesisInformationStraight::CalculateSections(const std::vector<swPartC
 		if (Cancelled && Cancelled->load(std::memory_order_relaxed))
 			return;
 
-		swMatrix44 Transform = swMatrix44StudWorksToLDraw(ControlPoints[ControlPointIndex].Transform);
+		swMatrix44 Transform = swMatrix44StudWorxToLDraw(ControlPoints[ControlPointIndex].Transform);
 		Sections.emplace_back(Transform);
 
 		if (SectionCallback)
@@ -1401,7 +1401,7 @@ void swSynthesisInformationUniversalJoint::CalculateSections(const std::vector<s
 		if (Cancelled && Cancelled->load(std::memory_order_relaxed))
 			return;
 
-		swMatrix44 Transform = swMatrix44StudWorksToLDraw(ControlPoints[ControlPointIndex].Transform);
+		swMatrix44 Transform = swMatrix44StudWorxToLDraw(ControlPoints[ControlPointIndex].Transform);
 		Sections.emplace_back(Transform);
 
 		if (SectionCallback)
@@ -2006,7 +2006,7 @@ void swSynthesisInformationUniversalJoint::AddParts(swMemoryFile& File, swLibrar
 
 	float Angle = atan2f(Offset.x, Offset.z);
 	swMatrix44 Rotation = swMatrix44RotationZ(Angle);
-	swMatrix44 Transform = swMatrix44StudWorksToLDraw(Rotation);
+	swMatrix44 Transform = swMatrix44StudWorxToLDraw(Rotation);
 
 	snprintf(Line, sizeof(Line), "1 16 0 0 0 %f %f %f %f %f %f %f %f %f %s\n", Transform[0][0], Transform[1][0], Transform[2][0],
 	         Transform[0][1], Transform[1][1], Transform[2][1], Transform[0][2], Transform[1][2], Transform[2][2], mCenterPart);
@@ -2014,14 +2014,14 @@ void swSynthesisInformationUniversalJoint::AddParts(swMemoryFile& File, swLibrar
 
 	Angle = atan2f(Offset.y, hypotf(Offset.x, Offset.z));
 	Rotation = swMultiply(Rotation, swMatrix44RotationX(Angle));
-	Transform = swMultiply(swMatrix44Translation(swVector3(0.0f, 0.0f, mEndOffset)), swMatrix44StudWorksToLDraw(Rotation));
+	Transform = swMultiply(swMatrix44Translation(swVector3(0.0f, 0.0f, mEndOffset)), swMatrix44StudWorxToLDraw(Rotation));
 
 	snprintf(Line, sizeof(Line), "1 16 %f %f %f %f %f %f %f %f %f %f %f %f %s\n", Transform[3][0], Transform[3][1], Transform[3][2],
 	         Transform[0][0], Transform[1][0], Transform[2][0], Transform[0][1], Transform[1][1], Transform[2][1], Transform[0][2], Transform[1][2], Transform[2][2], mEndPart);
 	File.WriteBuffer(Line, strlen(Line));
 
 	Rotation = swMatrix44FromEulerAngles(swVector3(0.0f, SW_PI/2, SW_PI));
-	Transform = swMatrix44StudWorksToLDraw(swMultiply(swMatrix44Translation(swVector3(0.0f, mEndOffset, 0.0f)), Rotation));
+	Transform = swMatrix44StudWorxToLDraw(swMultiply(swMatrix44Translation(swVector3(0.0f, mEndOffset, 0.0f)), Rotation));
 	snprintf(Line, sizeof(Line), "1 16 %f %f %f %f %f %f %f %f %f %f %f %f %s\n", Transform[3][0], Transform[3][1], Transform[3][2],
 	         Transform[0][0], Transform[1][0], Transform[2][0], Transform[0][1], Transform[1][1], -Transform[2][1], Transform[0][2], Transform[1][2], Transform[2][2], mEndPart);
 	File.WriteBuffer(Line, strlen(Line));
@@ -2101,13 +2101,13 @@ int swSynthesisInformation::InsertControlPoint(std::vector<swPartControlPoint>& 
 	CalculateSections(ControlPoints, Sections,
 		[&](const swVector3& CurvePoint, int SegmentIndex, float t)
 		{
-			float Distance = swRayPointDistance(swVector3LDrawToStudWorks(CurvePoint), Start, End);
+			float Distance = swRayPointDistance(swVector3LDrawToStudWorx(CurvePoint), Start, End);
 			if (Distance < BestDistance)
 			{
 				BestSegment = SegmentIndex;
 				BestTime = t;
 				BestDistance = Distance;
-				BestPosition = swVector3LDrawToStudWorks(CurvePoint);
+				BestPosition = swVector3LDrawToStudWorx(CurvePoint);
 				BestSection = Sections.back();
 			}
 		}, nullptr
@@ -2140,7 +2140,7 @@ void swSynthesisInformation::AddMiddleControlPoint(std::vector<swPartControlPoin
 	CalculateSections(ControlPoints, Sections,
 		[&](const swVector3& CurvePoint, quint32 SegmentIndex, float t)
 		{
-			const swVector3 Position = swVector3LDrawToStudWorks(CurvePoint);
+			const swVector3 Position = swVector3LDrawToStudWorx(CurvePoint);
 			const float Distance = Samples.empty() ? 0.0f : Samples.back().Distance + swLength(Position - Samples.back().Position);
 
 			Samples.push_back({ SegmentIndex, t, Position, Sections.back(), Distance });

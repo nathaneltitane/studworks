@@ -280,7 +280,7 @@ void swColorList::mouseMoveEvent(QMouseEvent* MouseEvent)
 		return;
 
 	QMimeData* MimeData = new QMimeData;
-	MimeData->setData("application/vnd.studworks-color", QString::number(mCells[mCurrentCell].ColorIndex).toLatin1());
+	MimeData->setData("application/vnd.studworx-color", QString::number(mCells[mCurrentCell].ColorIndex).toLatin1());
 
 	QDrag* Drag = new QDrag(this);
 	Drag->setMimeData(MimeData);

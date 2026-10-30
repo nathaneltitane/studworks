@@ -19,7 +19,7 @@ static const QLatin1String gCommandMetaObjects[] =
 	QLatin1String("POV_RAY"), QLatin1String("GROUP"), QLatin1String("SYNTH_PATH"), QLatin1String("CLIPBOARD"), QLatin1String("INSTRUCTION")
 };
 
-// studworks names and leocad names
+// studworx names and leocad names
 static const QLatin1String gCommandMetaNames[][2] =
 {
 	{ QLatin1String("PART"), QLatin1String("PIECE") },
@@ -89,8 +89,8 @@ static bool swParseCommandMeta(const QString& Line, swCommandMeta& Command)
 
 	if (Marker == gCommandMetaMarkerLeoCAD)
 	{
-		Command.Object = swRenameCommandMetaName(First, swCommandMetaFormat::StudWorks);
-		Command.Property = swRenameCommandMetaName(Second, swCommandMetaFormat::StudWorks);
+		Command.Object = swRenameCommandMetaName(First, swCommandMetaFormat::StudWorx);
+		Command.Property = swRenameCommandMetaName(Second, swCommandMetaFormat::StudWorx);
 		Command.LeoCAD = true;
 
 		return true;

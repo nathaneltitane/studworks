@@ -43,6 +43,8 @@ enum class swPartsListAlignment
 };
 
 enum class swCameraProjection;
+struct swImageTurntable;
+struct swImageFraming;
 struct swSetInventoryItem;
 struct swModelHistoryEditState;
 struct swGroupHistoryState;
@@ -438,6 +440,10 @@ public:
 	swResult<QImage> GetPartsListImage(int MaxWidth, int ThumbnailSize, swStep Step, quint32 BackgroundColor, quint32 ThumbnailBackgroundColor, QFont Font, QColor TextColor, bool KeepMissingParts, bool ShowCounts = true, swPartsListSort Sort = swPartsListSort::Color, swPartsListLayout Layout = swPartsListLayout::Rows, swPartsListAlignment Alignment = swPartsListAlignment::End, int MaxHeight = INT_MAX, float Scale = 1.0f) const;
 	swResult<void> SaveStepImages(const QString& BaseName, bool AddStepSuffix, bool Zoom, int Width, int Height, swStep Start, swStep End, swImageBackground Background);
 
+	// Frames turn the active view around the model center.
+	QImage GetFramedImage(int Width, int Height, swStep Step, swStep LastStep, swImageBackground Background, const swImageFraming& Framing, const swImageTurntable& Turntable, int Frame);
+	swResult<void> SaveFramedImages(const QString& BaseName, bool AddStepSuffix, int Width, int Height, swStep Start, swStep End, swImageBackground Background, const swImageFraming& Framing, const swImageTurntable& Turntable);
+
 	void RayTest(swObjectRayTest& ObjectRayTest) const;
 	void BoxTest(swObjectBoxTest& ObjectBoxTest) const;
 	bool SubModelMinIntersectDist(const swVector3& WorldStart, const swVector3& WorldEnd, float& MinDistance, swPartRayTest& PartRayTest) const;
@@ -562,6 +568,7 @@ public:
 
 protected:
 	swResult<QImage> RenderStepImageWithReadyAssets(bool Zoom, int Width, int Height, swStep Step, swCamera* OutputCamera, swImageBackground Background);
+	void SetImageCamera(swCamera* Camera, const swCamera* BaseCamera, const swImageFraming& Framing, const swImageTurntable& Turntable, int Frame, swStep Step, swStep LastStep, float Aspect) const;
 
 	void DeleteModel();
 

@@ -23,6 +23,7 @@
 #include "sw_lxf.h"
 #include "sw_widget_preview.h"
 #include "sw_string.h"
+#include "sw_file_gif.h"
 #include <locale.h>
 
 void swModel::GetScene(swScene* Scene, const swCamera* ViewCamera, bool AllowHighlight, bool AllowFade) const
@@ -627,6 +628,330 @@ swResult<void> swModel::SaveStepImages(const QString& BaseName, bool AddStepSuff
 
 		if (!Writer.write(Image.value()))
 			return swUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, Writer.errorString()));
+	}
+
+	return swResult<void>();
+}
+
+float swImageTurntable::GetFrameAngle(int Frame) const
+{
+	const float Phase = static_cast<float>(Frame) / qMax(Frames, 1);
+
+	if (FullTurn)
+		return Phase * 360.0f;
+
+	// out to the end and back
+	if (Phase <= 0.5f)
+		return AngleStart + (AngleEnd - AngleStart) * Phase * 2.0f;
+
+	return AngleEnd - (AngleEnd - AngleStart) * (Phase * 2.0f - 1.0f);
+}
+
+int swImageTurntable::GetFrameDelay(int Frame) const
+{
+	const double Total = Duration * 100.0 / qMax(Frames, 1);
+
+	return qRound(Total * (Frame + 1)) - qRound(Total * Frame);
+}
+
+// use to place the image camera
+void swModel::SetImageCamera(swCamera* Camera, const swCamera* BaseCamera, const swImageFraming& Framing, const swImageTurntable& Turntable, int Frame, swStep Step, swStep LastStep, float Aspect) const
+{
+	swStep FitStep = SW_STEP_MAXIMUM;
+
+	if (Framing.Fit == swImageFit::FitEachStep)
+		FitStep = Step;
+	else if (Framing.Scope == swImageFitScope::ShownSteps)
+		FitStep = LastStep;
+
+	std::vector<swVector3> Points;
+	swVector3 Min(FLT_MAX, FLT_MAX, FLT_MAX);
+	swVector3 Max(-FLT_MAX, -FLT_MAX, -FLT_MAX);
+
+	for (const std::unique_ptr<swPart>& Part : mParts)
+	{
+		if (!Part->IsVisible(FitStep))
+			continue;
+
+		swVector3 PartMin(FLT_MAX, FLT_MAX, FLT_MAX);
+		swVector3 PartMax(-FLT_MAX, -FLT_MAX, -FLT_MAX);
+
+		Part->CompareBoundingBox(PartMin, PartMax);
+
+		// corners of the part box
+		for (int Corner = 0; Corner < 8; Corner++)
+			Points.emplace_back(Corner & 1 ? PartMax.x : PartMin.x, Corner & 2 ? PartMax.y : PartMin.y, Corner & 4 ? PartMax.z : PartMin.z);
+
+		Min = swMinimum(Min, PartMin);
+		Max = swMaximum(Max, PartMax);
+	}
+
+	const swVector3 Position = BaseCamera->GetSectionPosition(SW_CAMERA_SECTION_POSITION);
+	const swVector3 Target = BaseCamera->GetSectionPosition(SW_CAMERA_SECTION_TARGET);
+	const swVector3 Up = BaseCamera->GetSectionPosition(SW_CAMERA_SECTION_UP_VECTOR) - Position;
+	swVector3 Center = Target;
+
+	if (Framing.Center == swImageCenter::WorldOrigin)
+		Center = swVector3(0.0f, 0.0f, 0.0f);
+	else if (!Points.empty() && Framing.Center == swImageCenter::ModelOrigin)
+		Center = swVector3((Min.x + Max.x) * 0.5f, (Min.y + Max.y) * 0.5f, Min.z);
+	else if (!Points.empty())
+		Center = (Min + Max) * 0.5f;
+
+	// axes in x y z order
+	const swVector3 Axes[3] = { swVector3(1.0f, 0.0f, 0.0f), swVector3(0.0f, 1.0f, 0.0f), swVector3(0.0f, 0.0f, 1.0f) };
+	const swVector3& Axis = Axes[static_cast<int>(Turntable.Axis)];
+
+	// use to turn a direction for an angle
+	auto GetRotation = [&Axis](float Angle)
+	{
+		return swMatrix33FromAxisAngle(Axis, -Angle * SW_DEGREES_TO_RADIANS);
+	};
+
+	const float FrameAngle = Turntable.Enabled ? Turntable.GetFrameAngle(Frame) : 0.0f;
+	const swMatrix33 Rotation = GetRotation(FrameAngle);
+
+	Camera->CopyPosition(BaseCamera);
+
+	if (Framing.Fit == swImageFit::CurrentView || Points.empty())
+	{
+		Camera->SetViewpoint(Center + swMultiply(Position - Center, Rotation), Center + swMultiply(Target - Center, Rotation), swMultiply(Up, Rotation));
+		return;
+	}
+
+	const swVector3 Front = swNormalize(Target - Position);
+	const float Fill = 1.0f - qBound(0, Framing.Margin, 50) / 100.0f;
+	const float TangentY = tanf(BaseCamera->m_fovy * 0.5f * SW_DEGREES_TO_RADIANS) * Fill;
+	const float TangentX = TangentY * Aspect;
+	const bool Orthographic = BaseCamera->GetProjection() == swCameraProjection::Orthographic;
+	float Distance = 0.0f;
+	float HalfHeight = 0.0f;
+
+	if (!Turntable.Enabled)
+	{
+		const swVector3 Side = swNormalize(swCross(Front, Up));
+		const swVector3 ViewUp = swCross(Side, Front);
+
+		// largest reach past each image edge
+		float EdgeRight = -FLT_MAX;
+		float EdgeLeft = -FLT_MAX;
+		float EdgeTop = -FLT_MAX;
+		float EdgeBottom = -FLT_MAX;
+		float DepthNear = FLT_MAX;
+
+		for (const swVector3& Point : Points)
+		{
+			const swVector3 Offset = Point - Center;
+			const float X = swDot(Offset, Side);
+			const float Y = swDot(Offset, ViewUp);
+			const float Z = swDot(Offset, Front);
+			const float SlopeX = Orthographic ? 0.0f : TangentX * Z;
+			const float SlopeY = Orthographic ? 0.0f : TangentY * Z;
+
+			EdgeRight = qMax(EdgeRight, X - SlopeX);
+			EdgeLeft = qMax(EdgeLeft, -X - SlopeX);
+			EdgeTop = qMax(EdgeTop, Y - SlopeY);
+			EdgeBottom = qMax(EdgeBottom, -Y - SlopeY);
+			DepthNear = qMin(DepthNear, Z);
+		}
+
+		// pan so both edges get the same space
+		float ShiftX = (EdgeRight - EdgeLeft) * 0.5f;
+		float ShiftY = (EdgeTop - EdgeBottom) * 0.5f;
+		const float SpanX = (EdgeRight + EdgeLeft) * 0.5f;
+		const float SpanY = (EdgeTop + EdgeBottom) * 0.5f;
+
+		if (Orthographic)
+		{
+			HalfHeight = qMax(SpanY, SpanX / Aspect) / Fill;
+			Distance = HalfHeight * 2.0f / (BaseCamera->m_fovy * SW_DEGREES_TO_RADIANS);
+		}
+		else
+			Distance = qMax(SpanX / TangentX, SpanY / TangentY);
+
+		// stay in front of the near plane
+		Distance = qMax(Distance, BaseCamera->m_zNear - DepthNear + 1.0f);
+
+		// use to center the projected parts along one axis
+		auto Balance = [&Points, &Center, &Front, Distance](const swVector3& Direction, float Shift)
+		{
+			float Low = Shift - Distance;
+			float High = Shift + Distance;
+
+			for (int Pass = 0; Pass < 32; Pass++)
+			{
+				const float Middle = (Low + High) * 0.5f;
+				float Positive = -FLT_MAX;
+				float Negative = -FLT_MAX;
+
+				for (const swVector3& Point : Points)
+				{
+					const swVector3 Offset = Point - Center;
+					const float Depth = swDot(Offset, Front) + Distance;
+					const float Along = swDot(Offset, Direction) - Middle;
+
+					Positive = qMax(Positive, Along / Depth);
+					Negative = qMax(Negative, -Along / Depth);
+				}
+
+				if (Positive > Negative)
+					Low = Middle;
+				else
+					High = Middle;
+			}
+
+			return (Low + High) * 0.5f;
+		};
+
+		// the looser axis shifts with the distance
+		if (!Orthographic)
+		{
+			ShiftX = Balance(Side, ShiftX);
+			ShiftY = Balance(ViewUp, ShiftY);
+		}
+
+		const swVector3 Shift = Side * ShiftX + ViewUp * ShiftY;
+
+		Camera->SetViewpoint(Center + Shift - Front * Distance, Center + Shift, Up);
+		return;
+	}
+
+	// one fit for every frame keeps the zoom steady
+	for (int FitFrame = 0; FitFrame < qMax(Turntable.Frames, 1); FitFrame++)
+	{
+		const swMatrix33 FitRotation = GetRotation(Turntable.GetFrameAngle(FitFrame));
+		const swVector3 FitFront = swMultiply(Front, FitRotation);
+		const swVector3 FitSide = swNormalize(swCross(FitFront, swMultiply(Up, FitRotation)));
+		const swVector3 FitUp = swCross(FitSide, FitFront);
+
+		for (const swVector3& Point : Points)
+		{
+			const swVector3 Offset = Point - Center;
+			const float X = fabsf(swDot(Offset, FitSide));
+			const float Y = fabsf(swDot(Offset, FitUp));
+			const float Z = swDot(Offset, FitFront);
+
+			if (Orthographic)
+				HalfHeight = qMax(HalfHeight, qMax(Y, X / Aspect) / Fill);
+			else
+				Distance = qMax(Distance, qMax(X / TangentX, Y / TangentY) - Z);
+
+			// stay in front of the near plane
+			Distance = qMax(Distance, BaseCamera->m_zNear - Z + 1.0f);
+		}
+	}
+
+	// orthographic size follows the distance
+	if (Orthographic)
+		Distance = qMax(Distance, HalfHeight * 2.0f / (BaseCamera->m_fovy * SW_DEGREES_TO_RADIANS));
+
+	const swVector3 FrameFront = swMultiply(Front, Rotation);
+
+	Camera->SetViewpoint(Center - FrameFront * Distance, Center, swMultiply(Up, Rotation));
+}
+
+QImage swModel::GetFramedImage(int Width, int Height, swStep Step, swStep LastStep, swImageBackground Background, const swImageFraming& Framing, const swImageTurntable& Turntable, int Frame)
+{
+	const swView* ActiveView = gMainWindow ? gMainWindow->GetActiveView() : nullptr;
+
+	if (!ActiveView)
+		return GetStepImage(false, Width, Height, Step, Background);
+
+	swScopedGLContextState GLState;
+
+	WaitForAssets();
+
+	swCamera Camera(true);
+	SetImageCamera(&Camera, ActiveView->GetCamera(), Framing, Turntable, Frame, Step, LastStep, static_cast<float>(Width) / Height);
+
+	const swResult<QImage> Image = RenderStepImageWithReadyAssets(false, Width, Height, Step, &Camera, Background);
+
+	if (!Image)
+		return QImage();
+
+	return Image.value();
+}
+
+swResult<void> swModel::SaveFramedImages(const QString& BaseName, bool AddStepSuffix, int Width, int Height, swStep Start, swStep End, swImageBackground Background, const swImageFraming& Framing, const swImageTurntable& Turntable)
+{
+	swScopedGLContextState GLState;
+
+	WaitForAssets();
+
+	std::unique_ptr<swView> OutputView;
+	const swCamera* BaseCamera = nullptr;
+
+	if (gMainWindow && gMainWindow->GetActiveView())
+		BaseCamera = gMainWindow->GetActiveView()->GetCamera();
+	else
+	{
+		const swStep CurrentStep = mCurrentStep;
+
+		OutputView = std::make_unique<swView>(swViewType::View, this);
+		OutputView->SetSize(Width, Height);
+		SetTemporaryStep(GetLastStep());
+		OutputView->ZoomExtents(swGeometryBoundsMode::AvailableOnly, true);
+		SetTemporaryStep(CurrentStep);
+
+		if (!mActive)
+			CalculateStep(SW_STEP_MAXIMUM);
+
+		BaseCamera = OutputView->GetCamera();
+	}
+
+	const bool Transparent = Background == swImageBackground::Transparent;
+	const float Aspect = static_cast<float>(Width) / Height;
+	swCamera Camera(true);
+
+	for (swStep Step = Start; Step <= End; Step++)
+	{
+		QString FileName;
+
+		if (AddStepSuffix)
+			FileName = BaseName.arg(Step, 2, 10, QLatin1Char('0'));
+		else
+			FileName = BaseName;
+
+		if (!Turntable.Enabled)
+		{
+			SetImageCamera(&Camera, BaseCamera, Framing, Turntable, 0, Step, End, Aspect);
+
+			const swResult<QImage> Image = RenderStepImageWithReadyAssets(false, Width, Height, Step, &Camera, Background);
+
+			if (!Image)
+				return swUnexpected(Image.error());
+
+			QImageWriter Writer(FileName);
+
+			if (Writer.format().isEmpty())
+				Writer.setFormat("png");
+
+			if (!Writer.write(Image.value()))
+				return swUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, Writer.errorString()));
+
+			continue;
+		}
+
+		swGifWriter Writer(FileName, QSize(Width, Height));
+
+		if (!Writer.Open())
+			return swUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, Writer.GetErrorString()));
+
+		for (int Frame = 0; Frame < Turntable.Frames; Frame++)
+		{
+			SetImageCamera(&Camera, BaseCamera, Framing, Turntable, Frame, Step, End, Aspect);
+
+			const swResult<QImage> Image = RenderStepImageWithReadyAssets(false, Width, Height, Step, &Camera, Background);
+
+			if (!Image)
+				return swUnexpected(Image.error());
+
+			if (!Writer.AddFrame(Image.value(), Turntable.GetFrameDelay(Frame), Transparent))
+				return swUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, Writer.GetErrorString()));
+		}
+
+		if (!Writer.Close())
+			return swUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, Writer.GetErrorString()));
 	}
 
 	return swResult<void>();

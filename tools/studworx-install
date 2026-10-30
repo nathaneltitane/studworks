@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# build and install studworks with its thumbnailer and file associations, without a package
-# usage: tools/studworks-install [prefix] [build directory]
+# build and install studworx with its thumbnailer and file associations, without a package
+# usage: tools/studworx-install [prefix] [build directory]
 
 set -e
 
@@ -50,7 +50,7 @@ run_install() {
 mkdir -p "${directory_build}"
 cd "${directory_build}"
 
-"${tool_qmake}" "${directory_source}/studworks.pro" \
+"${tool_qmake}" "${directory_source}/studworx.pro" \
 	CONFIG+=release CONFIG-=debug \
 	INSTALL_PREFIX="${directory_prefix}"
 
@@ -80,7 +80,7 @@ else
 fi
 
 directory_share="${directory_prefix}/share"
-file_program="${directory_prefix}/bin/studworks"
+file_program="${directory_prefix}/bin/studworx"
 
 # use to point an installed entry at the installed binary
 set_program() {
@@ -92,17 +92,17 @@ set_program() {
 
 	for index_line in "${!lines_file[@]}"
 	do
-		lines_file[index_line]="${lines_file[index_line]/#TryExec=studworks/TryExec=${file_program}}"
-		lines_file[index_line]="${lines_file[index_line]/#Exec=studworks /Exec=${file_program} }"
-		lines_file[index_line]="${lines_file[index_line]/ studworks / ${file_program} }"
+		lines_file[index_line]="${lines_file[index_line]/#TryExec=studworx/TryExec=${file_program}}"
+		lines_file[index_line]="${lines_file[index_line]/#Exec=studworx /Exec=${file_program} }"
+		lines_file[index_line]="${lines_file[index_line]/ studworx / ${file_program} }"
 	done
 
 	printf "%s\n" "${lines_file[@]}" | run_install "${directory_writable}" tee "${file_target}" > /dev/null
 }
 
-# run without studworks on the path
-set_program "${directory_share}/applications/studworks.desktop"
-set_program "${directory_share}/thumbnailers/studworks.thumbnailer"
+# run without studworx on the path
+set_program "${directory_share}/applications/studworx.desktop"
+set_program "${directory_share}/thumbnailers/studworx.thumbnailer"
 
 # refresh desktop caches
 
@@ -130,11 +130,11 @@ do
 	then
 		IFS=";" read -r -a list_types <<< "${line_desktop#MimeType=}"
 	fi
-done < "${directory_source}/platform/studworks.desktop"
+done < "${directory_source}/platform/studworx.desktop"
 
 if [ -n "$(command -v xdg-mime)" ] && [ "${#list_types[@]}" -gt 0 ]
 then
-	xdg-mime default studworks.desktop "${list_types[@]}"
+	xdg-mime default studworx.desktop "${list_types[@]}"
 fi
 
 # refresh kde service cache
@@ -147,4 +147,4 @@ do
 	fi
 done
 
-printf "%s\n" "studworks installed to ${directory_prefix}"
+printf "%s\n" "studworx installed to ${directory_prefix}"
