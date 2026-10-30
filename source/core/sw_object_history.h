@@ -1,7 +1,6 @@
 #pragma once
 
-// Object states are captured while an edit is in progress, then reduced to the
-// changed objects. Ordering is only retained for insertions, deletions or reordering.
+// Object states captured during an edit.
 template<typename StateType>
 struct swObjectHistory
 {
@@ -160,9 +159,11 @@ struct swObjectHistory
 			else if (StateIds.find(Id) != StateIds.end())
 				NewObjects.emplace_back(std::make_unique<ObjectType>());
 			else
-				continue; // A non-undoable model-list change may have removed it.
 
-			// New objects do not have their saved IDs until their state is restored.
+				// A model list change may have removed it.
+				continue;
+
+			// New objects get saved ids on restore.
 			ObjectsById.emplace(Id, NewObjects.back().get());
 		}
 

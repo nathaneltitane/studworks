@@ -213,7 +213,8 @@ bool swPart::FileLoad(swFile& file, Project* Project)
 
 	version = file.ReadU8();
 
-	if (version > 12) // file format of version 0.80
+	// file format of version 0.80
+	if (version > 12)
 		return false;
 
 	const float PositionScale = (version < 12) ? 25.0f : 1.0f;
@@ -331,7 +332,7 @@ bool swPart::FileLoad(swFile& file, Project* Project)
 		}
 	}
 
-	// Common to all versions.
+	// common to all versions
 	char name[SW_PART_NAME_LENGTH];
 	if (version < 10)
 	{
@@ -749,7 +750,7 @@ void swPart::DrawSynthInterface(swContext* Context, const swMatrix44& WorldMatri
 
 	Context->EnableCullFace(false);
 
-	// the path line shows through the part, past the part length it takes the out of reach color
+	// path line shows past the part length
 	UpdatePathCache();
 
 	if (mPathPoints.size() > 1)
@@ -1224,7 +1225,7 @@ void swPart::MoveSelected(swStep Step, bool AddKey, const swVector3& Distance)
 
 			Transform.SetTranslation(Position + LocalDistance);
 
-			// a real part does not stretch, stop the control point where the part runs out
+			// stop control points at the part length
 			if (WasReachable && !SynthInfo->IsReachable(mControlPoints))
 			{
 				float LowFactor = 0.0f;
@@ -1297,7 +1298,7 @@ void swPart::Rotate(swStep Step, bool AddKey, const swMatrix33& RotationMatrix, 
 
 			Transform = swMatrix44(NewLocalToWorldMatrix, Position);
 
-			// keep a rotation that would pull the part past its length from happening
+			// stop rotations past the part length
 			if (WasReachable && !SynthInfo->IsReachable(mControlPoints))
 				Transform = PreviousTransform;
 		}
@@ -1513,7 +1514,7 @@ bool swPart::InsertControlPoint(const swVector3& WorldStart, const swVector3& Wo
 	return false;
 }
 
-// use to give a newly inserted flexible part its middle control point
+// use to add the middle control point
 void swPart::AddInsertedControlPoints()
 {
 	if (!swGetPreferences().mFlexMiddleControlPoint || mControlPoints.size() != 2 || !CanAddControlPoint())
@@ -1523,7 +1524,7 @@ void swPart::AddInsertedControlPoints()
 	UpdateMesh();
 }
 
-// use to remember the world place an end control point was seated at and the surface it sits on
+// use to remember the seat of an end
 void swPart::SetControlPointSeated(quint32 ControlPointIndex, const swVector3& SurfacePosition, const swVector3& SurfaceNormal)
 {
 	if (ControlPointIndex >= mControlPoints.size())
@@ -1543,7 +1544,7 @@ void swPart::SetControlPointSeated(quint32 ControlPointIndex, const swVector3& S
 	mControlPointSeats.push_back(Seat);
 }
 
-// use to get the seat of an end control point that still sits where it was seated
+// use to get the seat of an end
 const swPart::swControlPointSeat* swPart::GetControlPointSeat(quint32 ControlPointIndex) const
 {
 	if (ControlPointIndex >= mControlPoints.size())
@@ -1573,7 +1574,7 @@ bool swPart::IsControlPointSeated(quint32 ControlPointIndex) const
 	return GetControlPointSeat(ControlPointIndex) != nullptr;
 }
 
-// use to move a seated control point cube out of its connection until its face rests on the surface
+// use to rest a seated cube on the surface
 swMatrix44 swPart::GetControlPointCubeTransform(quint32 ControlPointIndex) const
 {
 	swMatrix44 Transform = mControlPoints[ControlPointIndex].Transform;
@@ -1728,7 +1729,7 @@ bool swPart::AlignFocusedControlPointAxis(const swVector3& Axis)
 	const quint32 ControlPointIndex = GetFocusSection() - SW_PART_SECTION_CONTROL_POINT_FIRST;
 	const std::vector<swPartControlPoint> ControlPoints = mControlPoints;
 
-	// the axis is a model axis, control points live in part space
+	// model axis to part space
 	const swVector3 Direction = swMultiply(Axis, swMatrix33(swMatrix44AffineInverse(mModelWorld)));
 
 	mControlPoints[ControlPointIndex].TangentClamped = false;
@@ -1842,7 +1843,7 @@ void swPart::UpdateMesh()
 
 	if (mSynthPending)
 	{
-		// clamped control points follow every change of their neighbors
+		// clamped control points follow neighbors
 		mPartData->GetSynthInfo()->ClampControlPointTangents(mControlPoints);
 		swGetPartsLibrary()->RequestSynthMesh(this);
 	}

@@ -17,12 +17,10 @@ swVector3 swView::GetMoveDirection(const swVector3& Direction) const
 	if (swGetPreferences().mFixedAxes)
 		return Direction;
 
-	// Match the axes used by MoveSelectedObjects/RotateSelectedObjects before
-	// projecting them, so relative transforms do not rotate the mapping again.
+	// match the move and rotate axes
 	swMatrix33 LocalToWorld = GetActiveModel()->GetRelativeRotation();
 
-	// Separate transforms always use each part's axes. Use the focused part
-	// as the reference for the shared keyboard direction.
+	// separate transforms use the focus axes
 	if (gMainWindow->GetSeparateTransform())
 	{
 		swObject* Focus = GetActiveModel()->GetFocusObject();
@@ -36,8 +34,7 @@ swVector3 swView::GetMoveDirection(const swVector3& Direction) const
 
 	const swMatrix33 LocalToView = swMultiply(LocalToWorld, swMatrix33(mCamera->mWorldView));
 
-	// Choose distinct X/Y axes for screen right and up. Page Up/Down keep
-	// their Z direction regardless of the camera, including bottom views.
+	// distinct axes for right and up
 	float BestScore = -std::numeric_limits<float>::infinity();
 	float BestAway = -std::numeric_limits<float>::infinity();
 	swVector3 BestRight(1.0f, 0.0f, 0.0f);
@@ -63,8 +60,7 @@ swVector3 swView::GetMoveDirection(const swVector3& Direction) const
 					const float Score = swMultiply(Right, LocalToView).x + ViewUp.y;
 					const float Away = -ViewUp.z;
 
-					// In edge-on views, Up moves into the scene along the remaining
-					// horizontal axis. Retain the first frame on diagonal ties.
+					// edge on views move into the scene
 					if (Score > BestScore + SW_EPSILON || (fabsf(Score - BestScore) <= SW_EPSILON && Away > BestAway + SW_EPSILON))
 					{
 						BestScore = Score;
@@ -77,7 +73,7 @@ swVector3 swView::GetMoveDirection(const swVector3& Direction) const
 		}
 	}
 
-	// Default bindings are +X = Down, +Y = Right, +Z = Page Up.
+	// default bindings
 	return BestRight * Direction.y - BestUp * Direction.x + swVector3(0.0f, 0.0f, Direction.z);
 }
 
@@ -104,13 +100,13 @@ std::pair<std::vector<swInsertPartInformation>, bool> swView::GetMouseInsertPart
 	if (MovingPart && PartData->GetSynthInfo())
 		swGetPartsLibrary()->WaitForSynthMeshes({ MovingPart });
 
-	// The first part of an empty model goes to the origin when enabled.
+	// first part goes to the origin
 	if (!MovingPart && swGetPreferences().mFirstPartAtOrigin && ActiveModel->GetParts().empty())
 		return { { swInsertPartInformation{ PartData.Get(), swMatrix44Identity(), gMainWindow->GetInsertColorIndex() } }, false };
 
 	swObjectRayTest ObjectRayTest = RayTest(true, IgnoreSelected);
 
-	// Settling a hit's geometry can reveal another pending part behind it, so pick again until the hit is stable.
+	// settling can reveal another part
 	while (ObjectRayTest.ObjectSection.Object)
 	{
 		swPart* MousePart = reinterpret_cast<swPart*>(ObjectRayTest.ObjectSection.Object);
@@ -285,7 +281,7 @@ swObjectRayTest swView::RayTest(bool PartsOnly, bool IgnoreSelected) const
 
 	ActiveModel->RayTest(ObjectRayTest);
 
-	// a hit inside the cutaway is hidden, so test again from where the ray leaves it
+	// retest past the cutaway
 	float Entry, Exit;
 
 	if (ObjectRayTest.ObjectSection.Object && mCutawayShape != swCutawayShape::None && GetCutawayRange(StartEnd[0], StartEnd[1], Entry, Exit))
@@ -484,7 +480,7 @@ void swView::EndDrag(bool Accept)
 
 swCursor swView::GetCursor() const
 {
-	// the cursor of the tool stays visible while a mouse button drags it
+	// keep the cursor while dragging
 	if (mTrackTool == swTrackTool::Select)
 	{
 		if (mMouseModifiers & Qt::ControlModifier)
@@ -542,7 +538,7 @@ swCursor swView::GetCursor() const
 	return swCursor::Select;
 }
 
-// Cursors draw the painted icons in white with a black outline so they stay visible on any background.
+// white cursors with a black outline
 static QPixmap swCreateCursorPixmap(swPaintedIcon Icon, swPaintedIcon Badge)
 {
 	QImage Glyph(32, 32, QImage::Format_ARGB32_Premultiplied);
@@ -550,7 +546,7 @@ static QPixmap swCreateCursorPixmap(swPaintedIcon Icon, swPaintedIcon Badge)
 
 	QPainter Painter(&Glyph);
 
-	// the arrow tip sits in the top left corner and leaves the bottom right for the badge
+	// tip in the top left corner
 	if (Icon == swPaintedIcon::ActionSelect)
 		Painter.drawImage(-2, -1, swCreatePaintedIconImage(Icon, 24, Qt::white));
 	else
@@ -599,7 +595,7 @@ void swView::SetCursor(swCursor CursorType)
 		swPaintedIcon Badge;
 	};
 
-	// count stands for no icon or no badge
+	// count means none
 	constexpr swCursorInformation Cursors[] =
 	{
 		{  0,  0, swPaintedIcon::Count, swPaintedIcon::Count },              // swCursor::Hidden
@@ -660,7 +656,7 @@ void swView::SetCursor(swCursor CursorType)
 
 void swView::UpdateCursor()
 {
-	// Face picking keeps a crosshair until a face is clicked or picking is canceled.
+	// crosshair until a face is picked
 	if (mPickingFaceNormal || mCutawayPickShape != swCutawayShape::None)
 	{
 		mWidget->setCursor(Qt::CrossCursor);
@@ -707,7 +703,7 @@ void swView::PickFaceNormal()
 
 	if (ObjectRayTest.ObjectSection.Object)
 	{
-		// The hit triangle normal is in the space of the innermost part, so bring it to the view.
+		// normal from the innermost part
 		swVector3 Point = ObjectRayTest.Start + swNormalize(ObjectRayTest.End - ObjectRayTest.Start) * ObjectRayTest.Distance;
 		swVector3 Normal = swNormalize(swMultiply30(ObjectRayTest.PartRayTest.Normal, ObjectRayTest.PartRayTest.Transform));
 
@@ -850,7 +846,7 @@ void swView::UpdateTrackTool()
 					}
 					else if (ObjectSection.Section >= SW_PART_SECTION_CONTROL_POINT_FIRST && ObjectSection.Section <= SW_PART_SECTION_CONTROL_POINT_LAST)
 					{
-						// drag a control point cube like a part
+						// drag control points like parts
 						mMouseDownControlPointPart = Part;
 						mMouseDownControlPointSection = ObjectSection.Section;
 						NewTrackTool = swTrackTool::MoveXYZ;
@@ -1250,7 +1246,7 @@ void swView::CancelTrackingOrClearSelectionAction()
 	{
 		swModel* ActiveModel = GetActiveModel();
 
-		// with nothing selected esc leaves the cutaway
+		// esc leaves the cutaway
 		if (HasCutaway() && (!ActiveModel || !ActiveModel->AnyObjectsSelected()))
 			RemoveCutaway();
 		else if (ActiveModel)
@@ -1354,7 +1350,7 @@ void swView::OnButtonDown(swTrackButton TrackButton)
 			const quint32 Section = mMouseDownControlPointSection;
 			ActiveModel->SetSelectionAndFocusAction(std::vector<swObject*>(), Part, Section, gMainWindow->GetSelectionMode());
 
-			// restore the grab after the focus change
+			// restore the grab
 			mTrackTool = swTrackTool::MoveXYZ;
 			mMouseDownControlPointPart = Part;
 			mMouseDownControlPointSection = Section;
@@ -1492,7 +1488,7 @@ void swView::OnLeftButtonDown()
 		return;
 	}
 
-	// pick the tool with the modifiers held at the press
+	// pick the tool at the press
 	UpdateTrackTool();
 
 	swTrackTool OverrideTool = GetOverrideTrackTool(Qt::LeftButton);
@@ -1925,8 +1921,7 @@ void swView::OnMouseMove()
 				break;
 			}
 
-			// The rings rotate with the current gizmo frame, so derive the displayed
-			// axis from the current transform before determining its screen direction.
+			// rings follow the gizmo frame
 			swVector3 DisplayAxis = swNormalize(swMultiply30(Axis, WorldMatrix));
 			if (WorldMatrix.Determinant() < 0.0f)
 				DisplayAxis = -DisplayAxis;
@@ -2007,8 +2002,8 @@ void swView::OnMouseMove()
 
 			const swVector3 ScreenCenter = ProjectPoint(WorldMatrix.GetTranslation());
 			const float MouseAngle = atan2f((float)mMouseY - ScreenCenter[1], (float)mMouseX - ScreenCenter[0]);
-			// Unwrap each clockwise-positive pointer delta so full turns do not flip
-			// when the pointer crosses the opposite side of the ring.
+
+			// unwrap the pointer delta
 			float Angle = mCameraRotationLastMouseAngle - MouseAngle;
 
 			if (Angle > SW_PI)
@@ -2060,7 +2055,7 @@ void swView::OnMouseMove()
 		break;
 
 	case swTrackTool::OrbitY:
-		// The minifigure preview only turns around its vertical axis.
+		// turn only around the vertical axis
 		if (mViewType != swViewType::MinifigureBuilder)
 			ActiveModel->UpdateOrbitTool(mCamera, 0.0f, 0.1f * MouseSensitivity * (mMouseY - mMouseDownY));
 		break;
@@ -2068,7 +2063,7 @@ void swView::OnMouseMove()
 	case swTrackTool::OrbitXY:
 		ActiveModel->UpdateOrbitTool(mCamera, 0.1f * MouseSensitivity * (mMouseX - mMouseDownX), mViewType == swViewType::MinifigureBuilder ? 0.0f : 0.1f * MouseSensitivity * (mMouseY - mMouseDownY));
 
-		// Keep the whole minifigure in view while it turns.
+		// keep the minifigure in view
 		if (mViewType == swViewType::MinifigureBuilder)
 			ZoomExtents(swGeometryBoundsMode::IncludeFallback, false);
 		break;

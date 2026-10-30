@@ -285,7 +285,7 @@ void swLight::CompareBoundingBox(swVector3& Min, swVector3& Max)
 {
 	const swVector3 Point = mWorldMatrix.GetTranslation();
 
-	// TODO: this should check the entire mesh
+	// todo check the entire mesh
 
 	Min = swMinimum(Point, Min);
 	Max = swMaximum(Point, Max);
@@ -401,7 +401,7 @@ void swLight::BoxTest(swObjectBoxTest& ObjectBoxTest) const
 		LocalPlanes[PlaneIndex] = swVector4(PlaneNormal, ObjectBoxTest.Planes[PlaneIndex][3] - swDot3(InverseWorldMatrix[3], PlaneNormal));
 	}
 
-	// TODO: Check meshes after the bounding fox test.
+	// todo check meshes after the box test
 	if (mLightType == swLightType::Spot)
 	{
 		swVector3 Min(-SW_LIGHT_SPOT_CONE_RADIUS, -SW_LIGHT_SPOT_CONE_RADIUS, 0);

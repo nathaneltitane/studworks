@@ -25,7 +25,7 @@ void swPartSelectionItemDelegate::initStyleOption(QStyleOptionViewItem* Option, 
 	if (mListModel->GetIconSize())
 		Option->decorationSize = QSize(mListModel->GetIconSize(), mListModel->GetIconSize());
 
-	// Keep the rendered part colors when the style requests a selected icon.
+	// keep part colors when selected
 	const QPixmap Pixmap = qvariant_cast<QPixmap>(Index.data(Qt::DecorationRole));
 	if (!Pixmap.isNull())
 		Option->icon.addPixmap(Pixmap, QIcon::Selected);
@@ -577,7 +577,7 @@ swPartSelectionListView::swPartSelectionListView(QWidget* Parent, swPartSelectio
 	swPartSelectionItemDelegate* ItemDelegate = new swPartSelectionItemDelegate(this, mListModel);
 	setItemDelegate(ItemDelegate);
 
-	// the popup picks with a single click
+	// single click picks
 	if (mPartSelectionWidget && mPartSelectionWidget->GetIsPopup())
 		connect(this, &QListView::clicked, this, &swPartSelectionListView::DoubleClicked);
 	else
@@ -589,7 +589,7 @@ swPartSelectionListView::swPartSelectionListView(QWidget* Parent, swPartSelectio
 
 	mRequestedIconSize = swGetProfileInteger(mPartSelectionWidget->GetIsPopup() ? SW_PROFILE_PARTS_POPUP_ICONS : SW_PROFILE_PARTS_LIST_ICONS);
 
-	// older settings stored sizes off the 16px baseline
+	// migrate old 16px sizes
 	if (mRequestedIconSize != NoIconSize)
 		mRequestedIconSize = swSnapSize(mRequestedIconSize, SW_PART_ICON_SIZES);
 
@@ -821,7 +821,7 @@ void swPartSelectionListView::ToggleListMode()
 	SnapPanel();
 }
 
-// use to fit the parts panel to the new tiles or rows
+// use to fit the panel to the tiles
 void swPartSelectionListView::SnapPanel()
 {
 	if (!mPartSelectionWidget->GetIsPopup())
@@ -885,7 +885,7 @@ void swPartSelectionListView::UpdateItemGeometry()
 
 	if (mPartSelectionWidget->GetIsPopup())
 	{
-		// Invalidate the layout item caches through the picker splitter.
+		// invalidate the splitter layout caches
 		for (QWidget* Widget = parentWidget(); Widget; Widget = Widget->parentWidget())
 		{
 			Widget->updateGeometry();
@@ -938,7 +938,7 @@ QSize swPartSelectionListView::sizeHint() const
 
 int swPartSelectionListView::GetTileSnapDelta() const
 {
-	// Measure the laid out first row, so margins, spacing, scaling and the wrapping of the view are all included.
+	// measure the laid out first row
 	if (viewMode() != QListView::IconMode || model()->rowCount() < 1)
 		return 0;
 
@@ -946,7 +946,7 @@ int swPartSelectionListView::GetTileSnapDelta() const
 	const QRect SecondRect = model()->rowCount() > 1 ? visualRect(model()->index(1, 0)) : QRect();
 	const bool SingleColumn = !SecondRect.isValid() || SecondRect.top() != FirstRect.top();
 
-	// With a single column the tile width and spacing give the pitch, otherwise the distance between tiles does.
+	// get the tile pitch
 	const int Pitch = SingleColumn ? FirstRect.width() + spacing() : SecondRect.left() - FirstRect.left();
 
 	if (Pitch <= 0)
@@ -964,15 +964,14 @@ int swPartSelectionListView::GetTileSnapDelta() const
 		LastRect = Rect;
 	}
 
-	// The space after the last tile of the row, beyond a right margin matching the left one. The view only fits
-	// another tile with at least one pixel to spare, so the snapped width keeps that pixel.
+	// leftover space after the last tile
 	const int Leftover = viewport()->width() - (LastRect.left() + Pitch) - FirstRect.left() - 1;
 
-	// Trim a small leftover, or widen to fit one more tile when most of one already fits.
+	// trim or widen by one tile
 	return Leftover * 2 < Pitch ? -Leftover : Pitch - Leftover;
 }
 
-// use to measure the distance from one thumbnail or list row to the next
+// use to measure the row pitch
 int swPartSelectionListView::GetRowPitch() const
 {
 	if (model()->rowCount() < 1)
@@ -992,7 +991,7 @@ int swPartSelectionListView::GetRowPitch() const
 	return FirstRect.height() + spacing();
 }
 
-// use to measure how far the view height is from showing whole thumbnail or list rows
+// use to measure the row overflow
 int swPartSelectionListView::GetRowSnapDelta() const
 {
 	const int Pitch = GetRowPitch();
@@ -1000,18 +999,18 @@ int swPartSelectionListView::GetRowSnapDelta() const
 	if (Pitch <= 0)
 		return 0;
 
-	// the first row gives the top margin
+	// first row gives the top margin
 	const QRect FirstRect = rectForIndex(model()->index(0, 0));
 
-	// the space after the last whole row beyond a bottom margin matching the top one
+	// leftover space after the last row
 	const int Rows = qMax(1, (viewport()->height() - 2 * FirstRect.top()) / Pitch);
 	const int Leftover = viewport()->height() - 2 * FirstRect.top() - Rows * Pitch;
 
-	// trim a small leftover or grow to fit one more row when most of one already fits
+	// trim or grow by one row
 	return Leftover * 2 < Pitch ? -Leftover : Pitch - Leftover;
 }
 
-// use to scroll by whole rows so a snapped height never cuts the last row
+// use to scroll by whole rows
 void swPartSelectionListView::updateGeometries()
 {
 	QListView::updateGeometries();
@@ -1025,7 +1024,7 @@ void swPartSelectionListView::updateGeometries()
 	}
 }
 
-// use to keep the scrolling on a row edge, rounding the way it moved so the row asked for stays in view
+// use to keep scrolling on row edges
 void swPartSelectionListView::AlignScrollToRows(int Value)
 {
 	const int Pitch = GetRowPitch();
@@ -1103,12 +1102,12 @@ swPartSelectionWidget::swPartSelectionWidget(bool IsPopup, QWidget* Parent)
 	mSplitter->setOrientation(Qt::Vertical);
 	mSplitter->setChildrenCollapsible(false);
 
-	// The handle leaves the gap a standard layout leaves between rows, like everywhere else in the panels.
+	// handle uses the standard row gap
 	mSplitter->setHandleWidth(swGetLayoutSpacing(this, Qt::Vertical));
 
 	QWidget* CategoriesGroupWidget = new QWidget(mSplitter);
 
-	// Both halves sit in the splitter inside the panel layout, which provides the margins.
+	// panel layout gives the margins
 	QVBoxLayout* CategoriesLayout = new QVBoxLayout();
 	CategoriesLayout->setContentsMargins(0, 0, 0, 0);
 	CategoriesGroupWidget->setLayout(CategoriesLayout);
@@ -1185,7 +1184,7 @@ swPartSelectionWidget::swPartSelectionWidget(bool IsPopup, QWidget* Parent)
 	mSplitter->setStretchFactor(0, 0);
 	mSplitter->setStretchFactor(1, 1);
 
-	// Dragging the splitter by hand snaps the categories back to the longest name once the mouse is released.
+	// snap the categories on release
 	mSplitter->handle(1)->installEventFilter(this);
 }
 
@@ -1303,11 +1302,11 @@ void swPartSelectionWidget::SnapCategories()
 
 void swPartSelectionWidget::SnapCategoriesWidth()
 {
-	// docked at the top or bottom or floating wide, the categories sit beside the parts
+	// categories beside the parts
 	if (mIsPopup || !swGetPreferences().mPartsSnapToTiles || mSplitter->orientation() != Qt::Horizontal || mSplitter->widget(0)->isHidden())
 		return;
 
-	// Measure every category, including the ones hidden by the filter, so filtering never changes the width.
+	// measure every category
 	QStyleOptionViewItem Option;
 	Option.initFrom(mCategoriesWidget);
 	Option.widget = mCategoriesWidget;
@@ -1342,7 +1341,7 @@ void swPartSelectionWidget::SnapCategoriesHeight()
 	if (mIsPopup || mSplitter->orientation() != Qt::Vertical || mSplitter->widget(0)->isHidden())
 		return;
 
-	// Measure the first shown row, the filter can hide the others.
+	// measure the first shown row
 	int RowHeight = 0;
 
 	for (int Row = 0; Row < mCategoriesWidget->topLevelItemCount() && !RowHeight; Row++)
@@ -1354,7 +1353,7 @@ void swPartSelectionWidget::SnapCategoriesHeight()
 	if (RowHeight <= 0 || Sizes.size() != 2)
 		return;
 
-	// The categories end on a whole row instead of cutting the last one.
+	// end categories on a whole row
 	const int ViewportHeight = mCategoriesWidget->viewport()->height();
 	const int Rows = qMax(1, (ViewportHeight + RowHeight / 2) / RowHeight);
 	int Height = Sizes[0] + Rows * RowHeight - ViewportHeight;
@@ -1395,7 +1394,7 @@ void swPartSelectionWidget::resizeEvent(QResizeEvent* Event)
 			mSplitter->setOrientation(Qt::Vertical);
 	}
 
-	// a floating panel can turn the categories beside or above the parts on any resize
+	// floating panels can turn the categories
 	QTimer::singleShot(0, this, &swPartSelectionWidget::SnapCategories);
 
 	QWidget::resizeEvent(Event);

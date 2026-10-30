@@ -409,7 +409,7 @@ void swThumbnailManager::DrawThumbnail(swPartThumbnailId ThumbnailId, swPartThum
 		return;
 	}
 
-	// flexible parts and train tracks are marked in the top left corner in the text color
+	// mark flex parts and tracks
 	std::optional<swPaintedIcon> Icon;
 
 	if (PartData->GetSynthInfo())

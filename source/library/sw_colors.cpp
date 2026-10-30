@@ -194,7 +194,7 @@ static std::vector<swColor> swParseColorFile(swFile& File)
 			{
 				Color.Group = SW_COLOR_GROUP_SPECIAL;
 
-				// material is always last so the rest of the line holds its parameters
+				// material is always last
 				GetToken(Ptr, Token);
 				swstrupr(Token);
 

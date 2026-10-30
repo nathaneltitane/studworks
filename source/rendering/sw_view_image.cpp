@@ -151,7 +151,7 @@ bool swView::PrepareOutlineFramebuffers()
 {
 	QOpenGLContext* GLContext = mContext->GetGLContext();
 	
-	// Framebuffer objects are context-local under core/ARB OpenGL.
+	// framebuffers are context local
 	if (mOutlineGLContext != GLContext)
 	{
 		DestroyOutlineFramebuffers();

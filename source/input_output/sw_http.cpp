@@ -103,7 +103,7 @@ void swHttpManager::Finished(QNetworkReply* Reply)
 
 #endif
 
-// use to download a file while a progress dialog shows how far it got
+// use to download a file with progress
 std::optional<QByteArray> swDownloadWithProgress(QWidget* Parent, const QString& Url, const QString& Title, const QString& Label)
 {
 	QProgressDialog ProgressDialog(Label, QCoreApplication::translate("swHttpManager", "Cancel"), 0, 0, Parent);

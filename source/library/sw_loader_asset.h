@@ -4,70 +4,60 @@
 
 struct swPartControlPoint;
 
-// Owned by swPartsLibrary. Instance methods run on the UI thread and schedule private worker builds;
-// UI-thread completion processing resolves colors, uploads textures, and publishes meshes.
-// See documentation/asset-loading.md for readiness, ownership, and caller policies.
+// Loads parts, textures and generated meshes.
 class swAssetLoader : public QObject
 {
 public:
 	swAssetLoader(swPartsLibrary* Library);
 	~swAssetLoader() override;
 
-	// Queue or promote a part the library has marked Loading. Adds no consumer reference.
-	// Priority controls scheduling only; the library handles blocking waits and asset readiness.
+	// Queues or promotes a part load.
 	void RequestPartLoad(swPartData* PartData, swLoadPriority LoadPriority);
 
-	// Promote and wait for requests active at entry; false means a request failed or was cancelled.
-	// The library checks final asset readiness, including identities with no active request.
-	// Adds no consumer references and does not traverse container children or generated meshes.
-	// Progress receives the finished and total request counts while waiting.
+	// Waits for the active requests.
 	bool WaitForParts(const std::vector<swPartData*>& Parts, const std::function<void(int, int)>& Progress = nullptr);
 
-	// Called when the last consumer releases the part. Cancels queued work and reports it to the library;
-	// running work finishes privately and is discarded if the part is still unused.
+	// Cancels work for a released part.
 	void CancelPartLoad(swPartData* PartData);
 
-	// Discard pending load results and notifications after the library invalidates readiness.
-	// Asset meshes, readiness, and errors belong to the library.
+	// Discards pending load results.
 	void InvalidatePartLoad(swPartData* PartData);
 
-	// Build this instance's generated mesh from definition/control-point snapshots supplied by the library.
-	// Cancel any older request and keep the previous mesh visible while the replacement is built.
+	// Builds a generated mesh.
 	void RequestSynthMesh(swPart* Part, swPartData* PartData, std::shared_ptr<const swSynthesisInformation> SynthInfo, std::vector<swPartControlPoint> ControlPoints);
 
-	// Promote and wait for generations active at entry; false means a generation failed or was cancelled.
-	// The library checks final generated-mesh readiness. The caller keeps the instances alive through the wait.
+	// Waits for the active generations.
 	bool WaitForSynthMeshes(const std::vector<swPart*>& Parts);
 
-	// Cancel this instance's generation and suppress its deferred notifications.
-	// Running jobs stop cooperatively; any published mesh is kept.
+	// Cancels a generation.
 	void CancelSynthMesh(swPart* Part);
 
-	// Start or promote decoding as needed, then wait through upload and retries. The caller retains the texture.
+	// Decodes a texture and waits.
 	bool WaitForTexture(swTexture* Texture, swFileSource Source);
 
-	// Queue or promote decoding without waiting or acquiring a consumer reference.
+	// Queues a texture decode.
 	void RequestTextureLoad(swTexture* Texture, swFileSource Source, swLoadPriority LoadPriority);
 
-	// True while part, texture, or generated-mesh requests or worker completions remain unsettled.
-	// Includes paused work and upload retries; deferred notifications alone do not count.
+	// True while work is outstanding.
 	bool HasPendingWork();
 
-	// Pause dispatch and drain assigned jobs before shared library data changes.
-	// Discard meshes still awaiting textures so they can be rebuilt with the new settings.
+	// Pauses dispatch and drains jobs.
 	void PauseQueuedWork();
 
-	// Refresh queued part and texture source snapshots and resume dispatch with the current settings.
-	// Does not wait for pending work to finish.
+	// Refreshes snapshots and resumes dispatch.
 	void ResumeQueuedWork();
 
 private:
-	// UI-thread request lifecycle; synth workers use a separate cooperative cancellation token.
+	// Request lifecycle on the ui thread.
 	enum class RequestState
 	{
 		Queued,
-		AwaitingCompletion, // A worker job or its completion is outstanding.
-		AwaitingPublication, // UI-thread completion, texture dependencies, or upload retries.
+
+		// Worker job outstanding.
+		AwaitingCompletion,
+
+		// Completion, dependencies or retries.
+		AwaitingPublication,
 		Succeeded,
 		Failed,
 		Cancelled
@@ -85,9 +75,7 @@ private:
 		}
 	};
 
-	// Owns one definition reference through completion and deferred notification.
-	// Reset on the UI thread before worker-shared request storage can be destroyed.
-	// One worker job builds and converts geometry; textures settle before publication.
+	// Part load request.
 	struct PartRequest : RequestBase
 	{
 		swPartDataReference PartData;
@@ -98,8 +86,7 @@ private:
 		QString Error;
 	};
 
-	// Owns a texture reference through CPU decoding and UI-thread upload/retries.
-	// Reset on the UI thread before worker-shared request storage can be destroyed.
+	// Texture load request.
 	struct TextureRequest : RequestBase
 	{
 		swTextureReference Texture;
@@ -108,12 +95,13 @@ private:
 		qint64 RetryAt = 0;
 	};
 
-	// The instance cancels before destruction; workers use the copied definition/controls.
-	// Cancelled is also checked during expensive generation and conversion.
+	// Generated mesh request.
 	struct SynthRequest : RequestBase
 	{
 		swPart* Part;
-		swPartData* PartData; // Borrowed from the instance until cancellation or publication.
+
+		// Borrowed from the instance.
+		swPartData* PartData;
 		std::shared_ptr<const swSynthesisInformation> SynthInfo;
 		std::vector<swPartControlPoint> ControlPoints;
 		std::atomic_bool Cancelled = false;
@@ -125,7 +113,7 @@ private:
 	using TextureRequestMap = std::map<swTexture*, std::shared_ptr<TextureRequest>>;
 	using SynthRequestMap = std::map<swPart*, std::shared_ptr<SynthRequest>>;
 
-	// Workers hand off one private result here; no live asset is published by a worker.
+	// Private worker result.
 	struct Completion
 	{
 		std::shared_ptr<PartRequest> RequestedPart;
@@ -136,7 +124,7 @@ private:
 		std::unique_ptr<swMesh> SynthMesh;
 	};
 
-	// Retains the base identity; cancellation makes delivery safe after instance deletion.
+	// Retains the base identity.
 	struct SynthNotification
 	{
 		std::shared_ptr<SynthRequest> RequestedSynth;
@@ -146,11 +134,10 @@ private:
 	// Promote requests on the UI thread.
 	void PromotePartPriority(const std::shared_ptr<PartRequest>& RequestedPart, swLoadPriority LoadPriority);
 
-	// Fill available job slots using queued request priority and age.
+	// Fills free job slots.
 	void DispatchJobs();
 
-	// Process a bounded batch of results and upload retries, then start more jobs.
-	// Consumer signals remain deferred.
+	// Processes a batch of results.
 	void ProcessCompletions();
 
 	// Handle worker results on the UI thread.
@@ -158,37 +145,37 @@ private:
 	void ProcessSynthCompletion(Completion& Completed);
 	void ProcessTextureCompletion(Completion& Completed);
 
-	// Mesh texture dependencies: true means settled; failures are reported in Error.
+	// Settles mesh texture dependencies.
 	bool ResolveAndQueueMeshTextures(swMesh& Mesh, const swPartSourceSnapshot& Source, swLoadPriority LoadPriority, QString& Error);
 	static bool MeshTexturesSettled(const swMesh& Mesh, QString& Error);
 
-	// Texture upload, bounded retries, and dependency settlement.
+	// Uploads textures with retries.
 	void UploadTextureRequest(const std::shared_ptr<TextureRequest>& RequestedTexture);
 	void CompleteTextureRequest(const std::shared_ptr<TextureRequest>& RequestedTexture);
 
-	// Publish parts and generated meshes after their texture dependencies settle.
+	// Publishes meshes once textures settle.
 	void FinishPartsWithSettledTextures();
 	void FinishSynthsWithSettledTextures();
 	void CompletePartRequest(const std::shared_ptr<PartRequest>& RequestedPart);
 	void CompleteSynthRequest(const std::shared_ptr<SynthRequest>& RequestedSynth);
 
-	// Sleep until a worker completion arrives or the next texture upload retry is due.
+	// Sleeps until the next completion.
 	void WaitForCompletionOrRetry();
 
-	// Process completion events and deliver deferred consumer signals outside synchronous waits.
+	// Delivers deferred signals.
 	bool event(QEvent* Event) override;
 	void DispatchNotifications();
 
-	// Remove a request; outstanding worker completions retain their load hold.
+	// Removes a request.
 	void DiscardPartRequest(std::shared_ptr<PartRequest> Request);
 
-	// Drop queued texture work and upload retries that have no remaining consumers.
+	// Drops unused texture work.
 	void CancelUnusedTextureRequests();
 
-	// Drain pending work and join workers during shutdown; completion does not imply success.
+	// Drains and joins workers.
 	void WaitForAllWork();
 
-	// Stop dispatch, cancel pending work, join workers, and release loader-owned references.
+	// Stops and releases everything.
 	void Shutdown();
 
 	swPartsLibrary* const mLibrary;
@@ -198,9 +185,11 @@ private:
 	TextureRequestMap mTextureRequests;
 	SynthRequestMap mSynthRequests;
 
-	// UI-thread job bookkeeping; futures may include finished jobs awaiting cleanup.
+	// Job bookkeeping on the ui thread.
 	std::vector<QFuture<void>> mFutures;
-	int mActiveJobs = 0; // Includes completed jobs until the UI consumes their results.
+
+	// Includes completed jobs.
+	int mActiveJobs = 0;
 
 	// Temporarily suspend dispatch while shared library data changes.
 	bool mPaused = false;
@@ -208,14 +197,12 @@ private:
 	// Permanently stop accepting work and discard results during shutdown.
 	bool mStopping = false;
 
-	// Worker-to-UI result handoff; the mutex protects the completion queue.
-	// Workers wake synchronous UI waits when they enqueue a completion.
+	// Worker to ui result handoff.
 	QMutex mCompletionMutex;
 	QWaitCondition mCompletionReady;
 	std::deque<Completion> mCompletions;
 
-	// UI-thread only; public signals are deferred until outside synchronous waits.
-	// Retains each request and its definition reference through notification delivery.
+	// Deferred public signals.
 	std::deque<std::shared_ptr<PartRequest>> mPartNotifications;
 	std::deque<SynthNotification> mSynthNotifications;
 

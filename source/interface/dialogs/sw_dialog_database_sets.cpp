@@ -29,7 +29,7 @@ bool swSetsDatabaseDialog::EnsureApiKey()
 	if (!mApiKey.isEmpty())
 		return true;
 
-	// Set inventories come from Rebrickable, which needs a personal API key from the account settings.
+	// set inventories come from rebrickable
 	bool Ok = false;
 	const QString Key = QInputDialog::getText(this, tr("Rebrickable API Key"), tr("Set inventories are downloaded from Rebrickable.\nEnter your Rebrickable API key, available for free from your account settings at rebrickable.com:"), QLineEdit::Normal, QString(), &Ok).trimmed();
 

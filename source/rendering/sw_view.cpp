@@ -44,7 +44,7 @@ swView::swView(swViewType ViewType, swModel* Model)
 		mCamera->SetViewpoint(swViewpoint::Home);
 	}
 
-	// new model views and tabs open with the last chosen projection
+	// use the last chosen projection
 	if (mViewType == swViewType::View && mCamera->IsSimple())
 		mCamera->SetProjection(mLastProjection);
 }
@@ -97,7 +97,7 @@ void swView::UpdateAllViews()
 		View->Redraw();
 }
 
-// use to fit views again once the parts they show have loaded
+// use to refit views once loaded
 void swView::UpdateFittedViews()
 {
 	for (swView* View : mViews)
@@ -135,7 +135,7 @@ void swView::SetFocus(bool Focus)
 	{
 		if (mLastFocusedView != this)
 		{
-			// only the bar of another view closes and only after its current event
+			// close only the other bar later
 			if (mFindWidget && !mWidget->isAncestorOf(mFindWidget))
 			{
 				mFindWidget->hide();
@@ -232,7 +232,7 @@ void swView::SetSelectedSubmodelActive()
 	if (!Part->mPartData->IsModel())
 		return;
 
-	// Keep ancestor models at their chosen steps so the selected instance stays in place.
+	// keep ancestor models at their steps
 	mSubmodelEditingPath.push_back(Part);
 	mActiveSubmodelInstance = Part;
 
@@ -345,7 +345,7 @@ void swView::ShowContextMenu() const
 	Popup->addAction(Actions[SW_PART_DUPLICATE]);
 	Popup->addAction(Actions[SW_PART_DELETE]);
 
-	// control point actions only for a focused flexible part
+	// control points only on flex parts
 	const swModel* ActiveModel = GetActiveModel();
 	const swPart* FocusPart = ActiveModel ? dynamic_cast<const swPart*>(ActiveModel->GetFocusObject()) : nullptr;
 

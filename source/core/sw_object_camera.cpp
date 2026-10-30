@@ -35,7 +35,7 @@ swCamera::swCamera(bool Simple)
 swCamera::swCamera(bool Simple, const swVector3& Position, const swVector3& TargetPosition)
     : swObject(swObjectType::Camera), mSimple(Simple)
 {
-	// Fix the up vector
+	// fix the up vector
 	swVector3 UpVector(0, 0, 1), FrontVector(Position - TargetPosition), SideVector;
 	FrontVector.Normalize();
 	if (FrontVector == UpVector)
@@ -238,8 +238,7 @@ bool swCamera::ParseLDrawLine(QTextStream& Stream)
 	return false;
 }
 
-/////////////////////////////////////////////////////////////////////////////
-// Camera save/load
+// camera save and load
 
 bool swCamera::FileLoad(swFile& file)
 {
@@ -314,8 +313,11 @@ bool swCamera::FileLoad(swFile& file)
 			file.ReadDoubles(up, 3);
 			file.ReadU8(&step, 1);
 
-			file.ReadS32(); // snapshot
-			file.ReadS32(); // cam
+			// snapshot
+			file.ReadS32();
+
+			// cam
+			file.ReadS32();
 		}
 	}
 
@@ -374,6 +376,7 @@ bool swCamera::FileLoad(swFile& file)
 		qint32 user;
 
 		file.ReadU32(&show, 1);
+
 //		if (version > 2)
 		file.ReadS32(&user, 1);
 	}
@@ -392,7 +395,7 @@ void swCamera::CompareBoundingBox(swVector3& Min, swVector3& Max)
 	{
 		const swVector3& Point = Points[i];
 
-		// TODO: this should check the entire mesh
+		// todo check the entire mesh
 
 		Min = swMinimum(Point, Min);
 		Max = swMaximum(Point, Max);
@@ -1082,7 +1085,7 @@ void swCamera::ExpandFarPlane(const std::vector<swVector3>& Points)
 	for (const swVector3& Point : Points)
 		FarDistance = swMaximum(FarDistance, -swMultiply31(Point, mWorldView).z);
 
-	// Orthographic views use four times the camera's far plane.
+	// ortho views use four times the far plane
 	if (GetProjection() == swCameraProjection::Orthographic)
 		FarDistance /= 4.0f;
 
@@ -1141,7 +1144,7 @@ void swCamera::ZoomExtents(float AspectRatio, const swVector3& Center, const std
 		TargetPosition = Center;
 	}
 
-	// Back away a little so the fitted geometry never touches the view edges.
+	// back away from the view edges
 	Position = TargetPosition + (Position - TargetPosition) * 1.05f;
 
 	if (IsSimple())
@@ -1208,7 +1211,7 @@ void swCamera::Zoom(float Distance, swStep Step, bool AddKey)
 	FrontVector.Normalize();
 	FrontVector *= -5.0f * Distance;
 
-	// Don't zoom ortho in if it would cross the ortho focal plane.
+	// keep ortho zoom before the focal plane
 	if (GetProjection() == swCameraProjection::Orthographic)
 	{
 		if ((Distance > 0) && (swDot(mPosition + FrontVector - mTargetPosition, mPosition - mTargetPosition) <= 0))

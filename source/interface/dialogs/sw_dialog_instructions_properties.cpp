@@ -7,7 +7,7 @@
 #include "sw_widget_collapsible.h"
 #include "sw_window_utilities.h"
 
-// use to show a length stored in points in the page units, each step is a usual increment of the unit, the unit is shown beside the box
+// use to show a length in page units
 void swSetupLengthSpinBox(QDoubleSpinBox* SpinBox, swInstructionsPageUnits Units, double Minimum, double Maximum)
 {
 	const double Scale = swGetPageUnitScale(Units);
@@ -34,11 +34,11 @@ void swSetupLengthSpinBox(QDoubleSpinBox* SpinBox, swInstructionsPageUnits Units
 		break;
 	}
 
-	// short ranges like line widths step by one point
+	// short ranges step by one point
 	if (Step * 10.0 > (Maximum - Minimum) / Scale)
 		Step = 1.0 / Scale;
 
-	// unchanged settings are left alone, setting them rewrites the text being typed
+	// skip unchanged settings
 	if (SpinBox->decimals() != Decimals)
 		SpinBox->setDecimals(Decimals);
 
@@ -48,7 +48,7 @@ void swSetupLengthSpinBox(QDoubleSpinBox* SpinBox, swInstructionsPageUnits Units
 	if (!qFuzzyCompare(SpinBox->minimum() + 1.0, Minimum / Scale + 1.0) || !qFuzzyCompare(SpinBox->maximum() + 1.0, Maximum / Scale + 1.0))
 		SpinBox->setRange(Minimum / Scale, Maximum / Scale);
 
-	// the maximum follows the value so the limit is known before typing
+	// maximum follows the value
 	const QString Suffix = QString(" / %1").arg(SpinBox->textFromValue(SpinBox->maximum()));
 
 	if (SpinBox->suffix() != Suffix)
@@ -67,7 +67,7 @@ swInstructionsUnitButton::swInstructionsUnitButton(QWidget* Parent, const QStrin
 	setToolButtonStyle(Qt::ToolButtonTextOnly);
 	swSetupPanelButton(this);
 
-	// the button is square like the icon buttons of the panels
+	// square button like icon buttons
 	setFixedWidth(height());
 
 	connect(this, &QToolButton::clicked, this, &swInstructionsUnitButton::ShowUnitsMenu);
@@ -75,7 +75,7 @@ swInstructionsUnitButton::swInstructionsUnitButton(QWidget* Parent, const QStrin
 
 swInstructionsPageUnits swInstructionsUnitButton::GetUnits(const swInstructions* Instructions) const
 {
-	// the document units win over the units of this value, which win over the page units
+	// pick the units of a value
 	const std::optional<swInstructionsPageUnits> DocumentUnits = Instructions->GetDocumentUnits();
 
 	if (DocumentUnits)
@@ -168,7 +168,7 @@ swInstructionsPropertiesWidget::swInstructionsPropertiesWidget(QWidget* Parent, 
 
 	OptionsMenu->addSeparator();
 
-	// the document units replace the units of every value while they are used
+	// document units replace value units
 	QAction* DocumentUnitsAction = OptionsMenu->addAction(tr("Use Document Units"));
 	DocumentUnitsAction->setToolTip(tr("Show every value in the document units, the unit buttons of the values are disabled"));
 	DocumentUnitsAction->setCheckable(true);
@@ -240,7 +240,7 @@ swInstructionsPropertiesWidget::swInstructionsPropertiesWidget(QWidget* Parent, 
 	ResetAction->setToolTip(tr("Restore the default look of the instructions"));
 	connect(ResetAction, &QAction::triggered, mInstructions, &swInstructions::ResetProperties);
 
-	// the sections scroll when the panel is shorter than them
+	// scroll tall sections
 	QScrollArea* ScrollArea = new QScrollArea(CentralWidget);
 	ScrollArea->setWidgetResizable(true);
 	ScrollArea->setFrameShape(QFrame::NoFrame);
@@ -255,7 +255,7 @@ swInstructionsPropertiesWidget::swInstructionsPropertiesWidget(QWidget* Parent, 
 	SetBoxElement(mBoxElement);
 	mCategoriesLayout->addStretch(1);
 
-	// the panel is as wide as its widest row so the sections never scroll sideways
+	// fit the panel to its widest row
 	ScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	ScrollArea->setMinimumWidth(CategoriesWidget->minimumSizeHint().width() + ScrollArea->verticalScrollBar()->sizeHint().width());
 
@@ -278,7 +278,7 @@ void swInstructionsPropertiesWidget::ShowPageSetupDialog()
 	mInstructions->SetPageSetup(PageSetup);
 }
 
-// the presets split the page in halves, thirds or quarters, horizontal dividers stack rows and vertical dividers line up columns
+// split page presets
 struct swDividerPreset
 {
 	int Rows;
@@ -364,7 +364,7 @@ void swInstructionsPropertiesWidget::CreateWidgets()
 	CreateColorEditor(swInstructionsPropertyType::PageBackgroundColor, tr("Page Background"), tr("Color filling the whole page, margins included."));
 	AddEditorRow(CategoryIndex::Page, swInstructionsPropertyType::PageBackgroundColor);
 
-	// the background belongs to all pages or only to the current one
+	// background for all or current page
 	mBackgroundPageButton = new QToolButton(this);
 	mBackgroundPageButton->setText(tr("Background on This Page Only"));
 	mBackgroundPageButton->setCheckable(true);
@@ -467,7 +467,7 @@ void swInstructionsPropertiesWidget::CreateWidgets()
 		CreateToggleEditor(swInstructionsPropertyType::ShowPageNumberAllPages, tr("Number All Pages"), tr("Number every page, the cover and blank pages included."))
 	});
 
-	// the choices follow the order of swInstructionsPageNumberFormat
+	// choices follow the number formats
 	CreateChoiceEditor(swInstructionsPropertyType::PageNumberFormat, tr("Page Number Format"), tr("Show the page number alone or with the page count."), { tr("Page Number"), tr("Page Number / Page Count") });
 	AddEditorRow(CategoryIndex::PageNumber, swInstructionsPropertyType::PageNumberFormat);
 	CreateFontEditor(swInstructionsPropertyType::PageNumberFont, tr("Page Number Font"), tr("Font of the page numbers."));
@@ -495,10 +495,11 @@ void swInstructionsPropertiesWidget::CreateWidgets()
 		CreateToggleEditor(swInstructionsPropertyType::PLIShowCounts, tr("Show Part Counts"), tr("Show how many of each part are needed."))
 	});
 
-	// the choices follow the order of swPartsListSort
+	// choices follow the sort order
 	CreateChoiceEditor(swInstructionsPropertyType::PLISortOrder, tr("Parts List Order"), tr("Order of the parts in the list."), { tr("Sort by Color"), tr("Sort by Name"), tr("Sort by Part ID") });
 	AddEditorRow(CategoryIndex::PartsList, swInstructionsPropertyType::PLISortOrder);
-	// the choices follow the order of swPartsListLayout and swPartsListAlignment, the edges are named after the layout
+
+	// choices follow layout and alignment
 	CreateChoiceEditor(swInstructionsPropertyType::PLILayout, tr("Parts List Layout"), tr("Line the parts up in rows or in columns."), { tr("Rows"), tr("Columns") });
 	AddEditorRow(CategoryIndex::PartsList, swInstructionsPropertyType::PLILayout);
 	CreateChoiceEditor(swInstructionsPropertyType::PLIAlignment, tr("Line Reference"), tr("Thumbnail edge the parts line up on."), { tr("Top"), tr("Middle"), tr("Bottom") });
@@ -512,7 +513,7 @@ void swInstructionsPropertiesWidget::CreateWidgets()
 	CreateColorEditor(swInstructionsPropertyType::PLIThumbnailBackgroundColor, tr("Thumbnail Background"), tr("Color behind each part and its count, transparent draws none."));
 	AddEditorRow(CategoryIndex::PartsList, swInstructionsPropertyType::PLIThumbnailBackgroundColor);
 
-	// the thumbnail settings belong to all pages or only to the current one
+	// thumbnails for all or current page
 	mThumbnailPageButton = new QToolButton(this);
 	mThumbnailPageButton->setText(tr("Thumbnails on This Page Only"));
 	mThumbnailPageButton->setCheckable(true);
@@ -535,14 +536,15 @@ void swInstructionsPropertiesWidget::CreateWidgets()
 
 	AddCategory(CategoryIndex::Pointer, tr("Pointer"), tr("<p><b>Pointer</b></p><p>A pointer leaves the border of an element to point at a part, a step or a notice. Right-click an element and choose Add Pointer, then drag its tip onto a part of a step model, another element or any point of the page, the tip follows what it points at. Right-click a pointer to choose the anchor it leaves from, or its own style and tip.</p>"));
 
-	// the choices follow the order of swInstructionsPointerStyle and swInstructionsPointerTip
+	// choices follow pointer styles and tips
 	CreateChoiceEditor(swInstructionsPropertyType::PointerStyle, tr("Pointer Style"), tr("Draw pointers as a line or as a callout wedge narrowing to the tip."), { tr("Line"), tr("Callout Wedge") });
 	AddEditorRow(CategoryIndex::Pointer, swInstructionsPropertyType::PointerStyle);
 	CreateChoiceEditor(swInstructionsPropertyType::PointerTip, tr("Pointer Tip"), tr("End pointers with an arrowhead or a dot."), { tr("Arrowhead"), tr("Dot") });
 	AddEditorRow(CategoryIndex::Pointer, swInstructionsPropertyType::PointerTip);
 	CreateColorEditor(swInstructionsPropertyType::PointerColor, tr("Pointer Color"), tr("Color of the pointers."));
 	AddEditorRow(CategoryIndex::Pointer, swInstructionsPropertyType::PointerColor);
-	// the lowest values follow the border of the element and three times the pointer width
+
+	// lowest pointer values
 	CreateLengthEditor(swInstructionsPropertyType::PointerWidth, tr("Pointer Width"), tr("Width of the pointer lines, Border follows the border of the element."), 0, 72, 0.1)->setSpecialValueText(tr("Border"));
 	AddEditorRow(CategoryIndex::Pointer, swInstructionsPropertyType::PointerWidth);
 	CreateLengthEditor(swInstructionsPropertyType::PointerTipSize, tr("Tip Size"), tr("Size of the arrowheads and dots, and width of the wedges at the element, never less than three times the pointer width."), 0, 288, 0.5)->setSpecialValueText(tr("Automatic"));
@@ -550,7 +552,7 @@ void swInstructionsPropertiesWidget::CreateWidgets()
 
 	AddCategory(CategoryIndex::Box, tr("Box"), tr("<p><b>Box</b></p><p>The space and border around each element. The margin keeps other elements away, the padding keeps the border away from the content and the background fills all of it, margin and padding included. Pointers leave the border. Choose the element to edit, selecting an element on the page chooses it.</p>"));
 
-	// the choices follow the order of swInstructionsBoxElement
+	// choices follow the box elements
 	mBoxElementComboBox = new QComboBox(this);
 	mBoxElementComboBox->addItems({ tr("Step Model"), tr("Step Number"), tr("Parts List"), tr("Page Number"), tr("Cover Title"), tr("Cover Author"), tr("Cover Model"), tr("Notice") });
 	mBoxElementComboBox->setToolTip(tr("Choose the element whose box is edited, the parts list box is also the bill of materials box."));
@@ -582,7 +584,7 @@ void swInstructionsPropertiesWidget::CreateWidgets()
 		Rows.push_back(AddEditorRow(CategoryIndex::Box, BoxTypes.BackgroundColor)->parentWidget());
 	}
 
-	// the labels share one width so the inputs line up across the categories
+	// labels share one width
 	int LabelWidth = 0;
 
 	for (const QLabel* Label : mRowLabels)
@@ -616,13 +618,13 @@ QWidget* swInstructionsPropertiesWidget::AddRow(CategoryIndex Index, const std::
 	QWidget* Row = swCreatePanelRow(Rows);
 	Rows->layout()->addWidget(Row);
 
-	// the editors of a row share its width evenly
+	// editors share the row width
 	for (QWidget* Editor : Editors)
 	{
 		Editor->setParent(Row);
 		Editor->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-		// spin boxes keep the width of their largest value so the limit is never cut off
+		// spin boxes fit their largest value
 		if (!qobject_cast<QAbstractSpinBox*>(Editor))
 			Editor->setMinimumWidth(0);
 		static_cast<QHBoxLayout*>(Row->layout())->addWidget(Editor, 1);
@@ -633,7 +635,7 @@ QWidget* swInstructionsPropertiesWidget::AddRow(CategoryIndex Index, const std::
 
 QLabel* swInstructionsPropertiesWidget::AddLabeledRow(CategoryIndex Index, const QString& Name, QWidget* Editor)
 {
-	// the name sits beside the input so the input keeps its width for the value
+	// name beside the input
 	QWidget* Row = AddRow(Index, { Editor });
 	QLabel* Label = new QLabel(Name, Row);
 	Label->setBuddy(Editor);
@@ -647,7 +649,7 @@ QLabel* swInstructionsPropertiesWidget::AddEditorRow(CategoryIndex Index, swInst
 {
 	EditorWidgets& Editors = mEditors[static_cast<int>(Type)];
 
-	// the unit and the font size sit between the name and the input
+	// unit and font size before the input
 	std::vector<QWidget*> RowEditors;
 
 	if (Editors.SizeSpinBox)
@@ -701,7 +703,7 @@ QToolButton* swInstructionsPropertiesWidget::CreateToggleEditor(swInstructionsPr
 	return Button;
 }
 
-// use to get the largest value of an editor, a share of the shorter page side when set
+// use to get the largest value of an editor
 double swInstructionsPropertiesWidget::GetEditorMaximum(const EditorWidgets& Editor) const
 {
 	if (Editor.PageFraction <= 0.0)
@@ -714,7 +716,7 @@ double swInstructionsPropertiesWidget::GetEditorMaximum(const EditorWidgets& Edi
 
 QDoubleSpinBox* swInstructionsPropertiesWidget::CreateLengthEditor(swInstructionsPropertyType Type, const QString& Name, const QString& ToolTip, int Minimum, int Maximum, double PageFraction)
 {
-	// lengths are stored in points and shown in the page units
+	// lengths in points shown in page units
 	QDoubleSpinBox* SpinBox = new swInstructionsLengthSpinBox(this);
 	RegisterEditor(Type, EditorType::Length, SpinBox, Name, ToolTip);
 
@@ -726,7 +728,7 @@ QDoubleSpinBox* swInstructionsPropertiesWidget::CreateLengthEditor(swInstruction
 	Editors.UnitButton = new swInstructionsUnitButton(this, Name);
 	swSetupLengthSpinBox(SpinBox, mInstructions->GetPageUnits(), Minimum, GetEditorMaximum(Editors));
 
-	// the value applies once typed, each change rebuilds the pages
+	// apply and rebuild on typing
 	SpinBox->setKeyboardTracking(false);
 	swSetupPanelSpinBox(SpinBox);
 
@@ -745,7 +747,7 @@ QComboBox* swInstructionsPropertiesWidget::CreateChoiceEditor(swInstructionsProp
 	QComboBox* ComboBox = new QComboBox(this);
 	RegisterEditor(Type, EditorType::Choice, ComboBox, Name, ToolTip);
 
-	// the choices are in the order of the property values
+	// choices in property value order
 	ComboBox->addItems(Choices);
 	swSetupPanelEdit(ComboBox);
 
@@ -774,7 +776,7 @@ QToolButton* swInstructionsPropertiesWidget::CreateColorEditor(swInstructionsPro
 
 QToolButton* swInstructionsPropertiesWidget::CreateFontEditor(swInstructionsPropertyType Type, const QString& Name, const QString& ToolTip)
 {
-	// the size is typed in the page units like every length beside the button choosing the font
+	// size in page units
 	QToolButton* Button = new QToolButton(this);
 	RegisterEditor(Type, EditorType::Font, Button, Name, ToolTip);
 	Button->setToolButtonStyle(Qt::ToolButtonTextOnly);
@@ -813,10 +815,10 @@ void swInstructionsPropertiesWidget::ColorButtonClicked(swInstructionsPropertyTy
 {
 	QToolButton* Button = qobject_cast<QToolButton*>(mEditors[static_cast<int>(Type)].Widget);
 
-	// backgrounds can be transparent so the picker edits the alpha channel too
+	// edit the alpha of backgrounds
 	QColor SelectedColor = swPickColor(Button, GetColorValue(Type));
 
-	// the highlight and fade disappear when they are too transparent
+	// hide too transparent highlights
 	if (SelectedColor.isValid() && (Type == swInstructionsPropertyType::HighlightColor || Type == swInstructionsPropertyType::FadeColor))
 		SelectedColor = swQColorFromRGBA(swClampStepColorAlpha(swRGBAFromQColor(SelectedColor)));
 
@@ -845,7 +847,7 @@ void swInstructionsPropertiesWidget::SetCategoriesExpanded(bool Expanded)
 
 void swInstructionsPropertiesWidget::AddOptionsAction(QAction* Action)
 {
-	// actions fill the row beside the options button in place of the stretch
+	// actions fill the row beside options
 	QHBoxLayout* RowLayout = static_cast<QHBoxLayout*>(mOptionsRow->layout());
 	QToolButton* Button = new QToolButton(mOptionsRow);
 
@@ -863,7 +865,7 @@ void swInstructionsPropertiesWidget::AddOptionsAction(QAction* Action)
 
 void swInstructionsPropertiesWidget::SelectionChanged(QGraphicsItem* FocusItem)
 {
-	// only the kind and step of the item are kept, page rebuilds delete the items
+	// keep item kind and step only
 	FocusType Focus = FocusType::None;
 	swModel* Model = nullptr;
 	swStep Step = 1;
@@ -899,13 +901,13 @@ void swInstructionsPropertiesWidget::SelectionChanged(QGraphicsItem* FocusItem)
 	else if (dynamic_cast<swInstructionsPointerItem*>(FocusItem))
 		Focus = FocusType::Pointer;
 
-	// the model image of the cover and the list of the bill of materials have their own sections
+	// cover and materials own settings
 	if (Focus == FocusType::StepImage && dynamic_cast<swInstructionsStepImageItem*>(FocusItem)->IsCoverImage())
 		Focus = FocusType::CoverImage;
 	else if (Focus == FocusType::PartsList && dynamic_cast<swInstructionsPartsListItem*>(FocusItem)->IsBillOfMaterials())
 		Focus = FocusType::BillOfMaterials;
 
-	// the box section edits the selected element
+	// box section edits the selection
 	switch (Focus)
 	{
 	case FocusType::StepImage:
@@ -965,7 +967,7 @@ void swInstructionsPropertiesWidget::SetBoxElement(swInstructionsBoxElement Elem
 		mBoxElementComboBox->setCurrentIndex(static_cast<int>(Element));
 	}
 
-	// only the rows of the chosen element are shown
+	// show the chosen element rows
 	for (int ElementIndex = 0; ElementIndex < static_cast<int>(mBoxRows.size()); ElementIndex++)
 		for (QWidget* Row : mBoxRows[ElementIndex])
 			Row->setVisible(ElementIndex == static_cast<int>(Element));
@@ -975,7 +977,7 @@ void swInstructionsPropertiesWidget::SetCurrentPage(int PageIndex)
 {
 	mPageIndex = PageIndex;
 
-	// the page settings and the page layout show the current page
+	// show the current page
 	UpdateEditors();
 	UpdatePageLayout();
 	UpdateCategories();
@@ -1008,7 +1010,7 @@ void swInstructionsPropertiesWidget::UpdateEditors()
 
 		case EditorType::Length:
 			{
-				// the units follow the page setup unless overridden, an unchanged value leaves the text being typed alone
+				// units follow the page setup
 				QDoubleSpinBox* SpinBox = qobject_cast<QDoubleSpinBox*>(Editor.Widget);
 				const swInstructionsPageUnits Units = GetEditorUnits(Type);
 				QSignalBlocker SpinBoxBlocker(SpinBox);
@@ -1051,7 +1053,7 @@ void swInstructionsPropertiesWidget::UpdateEditors()
 		}
 	}
 
-	// settings without effect are disabled, the document font replaces every element font
+	// disable settings without effect
 	auto GetBool = [this](swInstructionsPropertyType Type)
 	{
 		return mInstructions->GetBoolProperty(Type, mModel, mStep);
@@ -1093,7 +1095,7 @@ void swInstructionsPropertiesWidget::UpdateEditors()
 	SetEnabled(swInstructionsPropertyType::StepNumberColor, ShowStepNumber);
 	SetEnabled(swInstructionsPropertyType::PLIFont, !UseDocumentFont);
 
-	// rows line up on a horizontal edge, columns on a vertical one
+	// rows on horizontal edges, columns vertical
 	QComboBox* AlignmentComboBox = qobject_cast<QComboBox*>(mEditors[static_cast<int>(swInstructionsPropertyType::PLIAlignment)].Widget);
 	const bool Columns = mInstructions->GetIntProperty(swInstructionsPropertyType::PLILayout, mModel, mStep) == static_cast<int>(swPartsListLayout::Columns);
 	const QStringList AlignmentNames = Columns ? QStringList{ tr("Left"), tr("Center"), tr("Right") } : QStringList{ tr("Top"), tr("Middle"), tr("Bottom") };
@@ -1129,7 +1131,7 @@ swInstructionsPageUnits swInstructionsPropertiesWidget::GetEditorUnits(swInstruc
 
 int swInstructionsPropertiesWidget::GetIntValue(swInstructionsPropertyType Type) const
 {
-	// page properties always show the current page, which may follow all pages
+	// show the current page properties
 	if (swInstructions::IsPageProperty(Type))
 		return mInstructions->GetPageIntProperty(mPageIndex, Type);
 
@@ -1172,13 +1174,13 @@ void swInstructionsPropertiesWidget::DividerPresetClicked(int Preset)
 
 	mInstructions->SetPageDividerPreset(mPageIndex, DividerPreset.Rows, DividerPreset.Columns);
 
-	// clicking the current preset changes nothing but unchecks its button
+	// uncheck the current preset
 	UpdatePageLayout();
 }
 
 QIcon swInstructionsPropertiesWidget::CreateDividerPresetIcon(int Rows, int Columns, const QPalette& Palette)
 {
-	// the outline is the page, the lines are its dividers
+	// outline the page and dividers
 	const int Size = 32;
 	const QRectF PageRect(6.0, 4.0, 20.0, 24.0);
 
@@ -1220,7 +1222,7 @@ void swInstructionsPropertiesWidget::UpdatePageLayout()
 	mRowsSpinBox->setValue(PageSettings.Rows);
 	mColumnsSpinBox->setValue(PageSettings.Columns);
 
-	// the preset matching the rows and columns of the page is checked
+	// check the matching preset
 	for (int Preset = 0; Preset < static_cast<int>(mDividerPresetButtons.size()); Preset++)
 		mDividerPresetButtons[Preset]->setChecked(swDividerPresets[Preset].Rows == PageSettings.Rows && swDividerPresets[Preset].Columns == PageSettings.Columns);
 }
@@ -1237,12 +1239,12 @@ void swInstructionsPropertiesWidget::UpdateCategories()
 {
 	std::array<bool, static_cast<int>(CategoryIndex::Count)> Visible = {};
 
-	// a selected item shows only its own settings, otherwise everything that applies to the page
+	// a selection shows its own settings
 	switch (mFocus)
 	{
 	case FocusType::None:
 		{
-			// the page type decides which page and step settings apply, the cover and bill of materials can always be switched on
+			// the page type picks the settings
 			const swInstructionsPageType PageType = GetPageType();
 
 			Visible[static_cast<int>(CategoryIndex::Document)] = true;

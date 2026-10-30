@@ -13,7 +13,7 @@ struct swPageSetupPreset
 	swInstructionsPageUnits Units;
 };
 
-// paper sizes are portrait and screen sizes landscape, the orientation buttons swap them
+// paper portrait, screens landscape
 static const swPageSetupPreset gPageSetupPresets[] =
 {
 	{ QT_TRANSLATE_NOOP("swPageSetupDialog", "A0"), 841.0f, 1189.0f, swInstructionsPageUnits::Millimeters },
@@ -50,7 +50,7 @@ static const swPageSetupPreset gPageSetupPresets[] =
 swPageSetupDialog::swPageSetupDialog(QWidget* Parent, swInstructionsPageSetup* PageSetup, bool Defaults)
 	: QDialog(Parent), ui(new Ui::swPageSetupDialog), mPageSetup(PageSetup), mPoints(*PageSetup)
 {
-	// the preferences edit the default page setup with its own units
+	// preferences use their own units
 	mUnitsKey = Defaults ? SW_PROFILE_INSTRUCTIONS_DEFAULT_PAGE_UNITS : SW_PROFILE_INSTRUCTIONS_PAGE_UNITS;
 	mMarginUnitsKey = Defaults ? SW_PROFILE_INSTRUCTIONS_DEFAULT_MARGIN_UNITS : SW_PROFILE_INSTRUCTIONS_MARGIN_UNITS;
 
@@ -79,7 +79,7 @@ swPageSetupDialog::swPageSetupDialog(QWidget* Parent, swInstructionsPageSetup* P
 		ui->PresetComboBox->addItem(tr("%1 (%2)").arg(tr(Preset.Name), Size), PresetIndex);
 	}
 
-	// values apply once typed so a partly typed page size does not clamp the margins
+	// apply values once typed
 	for (QDoubleSpinBox* SpinBox : { ui->WidthSpinBox, ui->HeightSpinBox, ui->LeftSpinBox, ui->RightSpinBox, ui->TopSpinBox, ui->BottomSpinBox })
 	{
 		SpinBox->setKeyboardTracking(false);
@@ -160,7 +160,7 @@ void swPageSetupDialog::UpdateSpinBoxes()
 	UpdateMargins();
 }
 
-// use to cap each margin to the room left by the page size and the opposite margin
+// use to cap each margin
 void swPageSetupDialog::UpdateMargins()
 {
 	const float ContentMinimum = 1.0f;
@@ -235,7 +235,7 @@ void swPageSetupDialog::PresetChanged(int Index)
 	const float Short = qMin(Preset.Width, Preset.Height) * Scale, Long = qMax(Preset.Width, Preset.Height) * Scale;
 	const bool SwitchUnits = (Preset.Units == swInstructionsPageUnits::Pixels) != (mUnits == swInstructionsPageUnits::Pixels);
 
-	// moving between paper and screen sizes starts from the preset's own orientation
+	// start from the preset orientation
 	if (SwitchUnits)
 	{
 		mPoints.Width = Preset.Width * Scale;
@@ -248,7 +248,7 @@ void swPageSetupDialog::PresetChanged(int Index)
 		mPoints.Height = Landscape ? Short : Long;
 	}
 
-	// metric presets use metric units and imperial presets inches, keeping centimeters if already chosen
+	// metric presets use metric units
 	auto GetPresetUnits = [&Preset](swInstructionsPageUnits Units)
 	{
 		if (Preset.Units == swInstructionsPageUnits::Millimeters && Units == swInstructionsPageUnits::Centimeters)

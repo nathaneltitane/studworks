@@ -38,9 +38,14 @@ struct swVertexConditional
 
 struct swMeshSection
 {
-	int ColorIndex; // Holds a color code until FinalizeSections() converts it to an index.
-	int DrawOffset; // Index-buffer byte offset, or first conditional vertex.
-	int DrawCount;  // Index count, or conditional vertex count.
+	// Color code until finalized.
+	int ColorIndex;
+
+	// Byte offset or first conditional vertex.
+	int DrawOffset;
+
+	// Index or conditional vertex count.
+	int DrawCount;
 	swMeshPrimitiveType PrimitiveType;
 	swTextureReference Texture;
 	QString TextureName;
@@ -63,12 +68,23 @@ enum
 
 enum class swMeshFlag
 {
-	HasDefault     = 0x01, // Mesh has triangles using the default color
-	HasSolid       = 0x02, // Mesh has triangles using a solid color
-	HasTranslucent = 0x04, // Mesh has triangles using a translucent color
-	HasLines       = 0x08, // Mesh has lines
-	HasTexture     = 0x10, // Mesh has sections using textures
-	HasStyleStud   = 0x20  // Mesh has a stud that can have a logo applied
+	// Triangles in the default color.
+	HasDefault     = 0x01,
+
+	// Triangles in a solid color.
+	HasSolid       = 0x02,
+
+	// Triangles in a translucent color.
+	HasTranslucent = 0x04,
+
+	// Has lines.
+	HasLines       = 0x08,
+
+	// Has textured sections.
+	HasTexture     = 0x10,
+
+	// Has a logo stud.
+	HasStyleStud   = 0x20
 };
 
 Q_DECLARE_FLAGS(swMeshFlags, swMeshFlag)
@@ -91,15 +107,15 @@ public:
 	bool FileLoad(swMemoryFile& File);
 	bool FileSave(swMemoryFile& File);
 
-	// Set colors and flags, then sort sections using the current palette on the UI thread.
-	// Converts stored color codes to indices once, before publishing the mesh.
+	// Sets colors and sorts sections.
 	void FinalizeSections();
 
 	template<typename IndexType>
 	void ExportPOVRayTriangles(swFile& File, const swMeshSection* Section);
 	template<typename IndexType>
 	int ExportPOVRay(swFile& File, const char* MeshName, const char** ColorTable, const std::map<const swTexture*, QString>& TextureFiles);
-	// Writes the plain sections as sw_<name> and the textured ones as the sw_<name>_decals(BaseTexture) macro, returns SW_MESH_POVRAY_ flags.
+
+	// Writes plain and textured sections.
 	int ExportPOVRay(swFile& File, const char* MeshName, const char** ColorTable, const std::map<const swTexture*, QString>& TextureFiles);
 
 	template<typename IndexType>

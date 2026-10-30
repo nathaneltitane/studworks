@@ -21,7 +21,7 @@ swPartData::swPartData(bool IsLibraryPart)
 
 bool swPartData::HasDecorationDescription(const char* Description)
 {
-	// Assemblies and intrinsically printed parts may have no pattern suffix.
+	// assemblies may lack a pattern suffix
 	std::string PreviousWord;
 	bool With = false;
 
@@ -91,7 +91,7 @@ std::vector<std::string> swPartData::Classify(std::string_view Name)
 
 	std::vector<std::string> ParentIds;
 
-	// P denotes a printed pattern; D denotes a sticker shortcut. Preserve base variants.
+	// p prints, d stickers
 	for (size_t Position = Stem.find_last_of("PD"); Position != std::string_view::npos; Position = Position ? Stem.find_last_of("PD", Position - 1) : std::string_view::npos)
 	{
 		if (Position == 0 || Position + 1 == Stem.size())
@@ -139,7 +139,7 @@ void swPartData::SetAliasTarget(const swPartData* Target)
 
 void swPartData::SetLoadingBoundingBox()
 {
-	// Keep these bounds in sync with swMesh::CreateBox().
+	// keep in sync with swMesh::CreateBox
 	mBoundingBox.Min = swVector3(-10.0f, -10.0f, -24.0f);
 	mBoundingBox.Max = swVector3(10.0f, 10.0f, 4.0f);
 }
@@ -218,8 +218,7 @@ void swPartData::SetModel(swModel* Model)
 {
 	if (mModel != Model)
 	{
-		// A submodel can take the name of a local external project. Keep this
-		// swPartData so existing placements continue to refer to the same name.
+		// submodels can take local project names
 		Project* PreviousProject = IsProject() ? mProject : nullptr;
 		mType = Type::Model;
 		mModel = Model;

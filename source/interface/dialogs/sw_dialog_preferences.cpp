@@ -14,7 +14,7 @@ static const char* gLanguageLocales[] =
 	"", "cs_CZ", "de_DE", "en_US", "fr_FR", "pt_PT", "es_ES", "ru_RU", "uk_UA", "zh_CN", "zh_TW"
 };
 
-// use to tell the controls that share the control column width, line edits stretch and plain buttons keep their size
+// use to tell control column widgets
 static bool swIsColumnControl(QWidget* Widget)
 {
 	if (QToolButton* Button = qobject_cast<QToolButton*>(Widget))
@@ -23,12 +23,12 @@ static bool swIsColumnControl(QWidget* Widget)
 	return qobject_cast<QComboBox*>(Widget) || qobject_cast<QAbstractSpinBox*>(Widget) || qobject_cast<QSlider*>(Widget);
 }
 
-// Lines up the label and control columns of all groups on all pages, so controls start at the same position on every tab.
+// line up label and control columns
 static void swAlignPreferencesColumns(QTabWidget* TabWidget)
 {
 	int LabelWidth = 0;
 
-	// the label column is shared by every page so switching tabs keeps the controls in place
+	// share the label column across pages
 	for (int PageIndex = 0; PageIndex < TabWidget->count(); PageIndex++)
 	{
 		for (QGroupBox* Group : TabWidget->widget(PageIndex)->findChildren<QGroupBox*>())
@@ -42,7 +42,7 @@ static void swAlignPreferencesColumns(QTabWidget* TabWidget)
 					if (Item && Item->widget())
 						LabelWidth = qMax(LabelWidth, Item->sizeHint().width());
 
-					// checkboxes spanning the row end before the controls start
+					// end spanning checkboxes before controls
 					Item = FormLayout->itemAt(Row, QFormLayout::SpanningRole);
 
 					if (Item && qobject_cast<QCheckBox*>(Item->widget()))
@@ -56,7 +56,7 @@ static void swAlignPreferencesColumns(QTabWidget* TabWidget)
 					int Row, Column, RowSpan, ColumnSpan;
 					GridLayout->getItemPosition(ItemIndex, &Row, &Column, &RowSpan, &ColumnSpan);
 
-					// checkboxes spanning the row end before the controls start
+					// end spanning checkboxes before controls
 					QWidget* Widget = GridLayout->itemAt(ItemIndex)->widget();
 
 					if (Column == 0 && Widget && (ColumnSpan == 1 || qobject_cast<QCheckBox*>(Widget)))
@@ -66,7 +66,7 @@ static void swAlignPreferencesColumns(QTabWidget* TabWidget)
 		}
 	}
 
-	// the longest label keeps the button spacing clear of its control on top of the layout spacing
+	// keep the longest label clear
 	LabelWidth += swGetLayoutSpacing(TabWidget, Qt::Horizontal);
 
 	for (int PageIndex = 0; PageIndex < TabWidget->count(); PageIndex++)
@@ -92,7 +92,7 @@ static void swAlignPreferencesColumns(QTabWidget* TabWidget)
 					Controls.append(Item->widget());
 				}
 
-				// the controls reach the right edge of their group like the path fields
+				// controls reach the right edge
 				FormLayout->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
 				FormLayouts.append(FormLayout);
 				continue;
@@ -103,7 +103,7 @@ static void swAlignPreferencesColumns(QTabWidget* TabWidget)
 			if (!GridLayout)
 				continue;
 
-			// groups of plain checkboxes keep their own layout, a checkbox beside a control is a label
+			// keep plain checkbox groups
 			bool HasLabels = false;
 
 			for (int ItemIndex = 0; ItemIndex < GridLayout->count(); ItemIndex++)
@@ -122,7 +122,7 @@ static void swAlignPreferencesColumns(QTabWidget* TabWidget)
 			if (!HasLabels)
 				continue;
 
-			// the spacers no longer push the controls away from the right edge
+			// stop spacers pushing controls
 			int LastColumn = 1;
 
 			for (int ItemIndex = 0; ItemIndex < GridLayout->count(); ItemIndex++)
@@ -165,7 +165,7 @@ static void swAlignPreferencesColumns(QTabWidget* TabWidget)
 				SpanControls.append(Widget);
 			}
 
-			// the values and units after the controls share a width so the sliders of a group end together
+			// share the value and unit width
 			int TrailingWidth = 0;
 
 			for (QWidget* Widget : SpanControls)
@@ -179,7 +179,7 @@ static void swAlignPreferencesColumns(QTabWidget* TabWidget)
 							TrailingWidth = qMax(TrailingWidth, qMax(Trailing->widget()->sizeHint().width(), Trailing->widget()->minimumWidth()));
 			}
 
-			// every control spans to the right edge, a value, unit or button after it sits at the edge
+			// controls span to the right edge
 			for (QWidget* Widget : SpanControls)
 			{
 				int Row, Column, RowSpan, ColumnSpan;
@@ -202,7 +202,7 @@ static void swAlignPreferencesColumns(QTabWidget* TabWidget)
 				QHBoxLayout* RowLayout = new QHBoxLayout();
 				RowLayout->addWidget(Widget, 1);
 
-				// a slider shows its value on its left and runs to the right edge
+				// slider value on the left
 				const bool IsSlider = qobject_cast<QSlider*>(Widget) != nullptr;
 
 				for (QWidget* TrailingWidget : Trailing)
@@ -234,14 +234,14 @@ static void swAlignPreferencesColumns(QTabWidget* TabWidget)
 		for (QWidget* Control : Controls)
 			ControlWidth = qMax(ControlWidth, Control->sizeHint().width());
 
-		// every control of the page is as wide as the widest one, whatever its size policy
+		// match the widest control
 		for (QWidget* Control : Controls)
 		{
 			Control->setProperty("swColumnWidth", ControlWidth);
 			Control->setMinimumWidth(ControlWidth);
 		}
 
-		// the other controls of the column, such as line edits and buttons, are never narrower
+		// never narrower column controls
 		for (QWidget* Control : FillControls)
 			Control->setMinimumWidth(ControlWidth);
 
@@ -250,7 +250,7 @@ static void swAlignPreferencesColumns(QTabWidget* TabWidget)
 			GridLayout->setColumnMinimumWidth(0, LabelWidth);
 			GridLayout->setColumnMinimumWidth(1, ControlWidth);
 
-			// only the control column grows so the controls reach the right edge of their group
+			// only the control column grows
 			for (int Column = 0; Column < GridLayout->columnCount(); Column++)
 				GridLayout->setColumnStretch(Column, Column == 1 ? 1 : 0);
 		}
@@ -490,7 +490,7 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	ui->MeshLODSlider->setRange(0, 1500.0f / mMeshLODMultiplier);
 	ui->MeshLODSlider->setValue(mOptions->Preferences.mMeshLODDistance / mMeshLODMultiplier);
 
-	// the value label holds the widest distance so the slider never moves as the value changes
+	// fit the value label to the widest
 	const QString MeshLODWidest = tr("%1 ldu").arg(swFormatIntegerLocalized(static_cast<int>(ui->MeshLODSlider->maximum() * mMeshLODMultiplier), locale()));
 	ui->MeshLODLabel->setMinimumWidth(ui->MeshLODLabel->fontMetrics().horizontalAdvance(MeshLODWidest) + 2 * ui->MeshLODLabel->margin());
 
@@ -612,7 +612,7 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	ui->SelectionOutlineWidth->SetReference(ui->SelectionOutlineWidth->suffix());
 	ui->SelectionOutlineWidth->setValue(mOptions->Preferences.mSelectionOutlineWidth);
 
-	// The width only applies to the outline style.
+	// width applies to outlines only
 	auto UpdateSelectionOutlineWidth = [this, OutlineSupported]()
 	{
 		const bool Enable = OutlineSupported && ui->HighlightRenderMode->currentIndex() == static_cast<int>(swHighlightRenderMode::Outline);
@@ -626,7 +626,7 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 
 	auto SetButtonPixmap = [](quint32 Color, QToolButton* Button)
 	{
-		// color buttons show their swatch beside its name like the instructions colors
+		// swatch beside the color name
 		Button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 		swUpdateColorButton(Button, QColor(SW_RGBA_RED(Color), SW_RGBA_GREEN(Color), SW_RGBA_BLUE(Color), SW_RGBA_ALPHA(Color)));
 	};
@@ -683,12 +683,12 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	UpdateCategories();
 	ui->categoriesTree->setCurrentItem(ui->categoriesTree->topLevelItem(0));
 
-	// the categories list keeps its snapped width when the dialog is resized, the parts list takes the rest
+	// keep the categories width on resize
 	ui->splitter->setStretchFactor(0, 0);
 	ui->splitter->setStretchFactor(1, 1);
 	connect(ui->tabWidget, &QTabWidget::currentChanged, this, &swPreferencesDialog::SnapCategoriesTree);
 
-	// dragging the splitter by hand snaps the categories back to the longest name once the mouse is released
+	// snap the categories back on release
 	ui->splitter->handle(1)->installEventFilter(this);
 
 	UpdateCommandList();
@@ -718,10 +718,10 @@ void swPreferencesDialog::showEvent(QShowEvent* Event)
 	if (Event->spontaneous())
 		return;
 
-	// the controls only report their full width once shown, the columns line up after that
+	// line up columns once shown
 	swAlignPreferencesColumns(ui->tabWidget);
 
-	// the distance digits grow to the left so the ldu unit stays put next to the slider
+	// grow digits to the left
 	ui->MeshLODLabel->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
 }
 
@@ -860,7 +860,7 @@ void swPreferencesDialog::accept()
 	QDialog::accept();
 }
 
-// use to choose a parts library archive or a library folder through its ldconfig file
+// use to choose a parts library
 void swPreferencesDialog::PartsLibraryBrowseClicked()
 {
 	QString Result = QFileDialog::getOpenFileName(this, tr("Select Parts Library"), ui->partsLibrary->text(), tr("Parts Libraries (*.zip *.bin LDConfig.ldr ldconfig.ldr);;All Files (*.*)"));
@@ -868,7 +868,7 @@ void swPreferencesDialog::PartsLibraryBrowseClicked()
 	if (Result.isEmpty())
 		return;
 
-	// the ldconfig file stands for the library folder holding it
+	// ldconfig stands for its folder
 	const QFileInfo ResultInfo(Result);
 
 	if (ResultInfo.fileName().compare(QLatin1String("ldconfig.ldr"), Qt::CaseInsensitive) == 0)
@@ -1149,7 +1149,7 @@ void swPreferencesDialog::ColorButtonClicked()
 
 	*Color = SW_RGBA(NewColor.red(), NewColor.green(), NewColor.blue(), NewColor.alpha());
 
-	// the highlight and previous steps disappear when they are too transparent
+	// hide too transparent highlights
 	if (Button == ui->HighlightNewPartsColor || Button == ui->FadeStepsColor)
 	{
 		*Color = swClampStepColorAlpha(*Color);
@@ -1180,19 +1180,19 @@ void swPreferencesDialog::ConditionalLinesCheckBoxToggled()
 	ui->LineWidthLabel->setEnabled(Enable);
 }
 
-// use to show the maximum stud count after the count
+// use to show the maximum stud count
 void swPreferencesDialog::UpdateStudSuffix(QSpinBox* SpinBox)
 {
 	SpinBox->setSuffix(QLatin1String(" / ") + tr("%n stud(s)", nullptr, SpinBox->maximum()));
 }
 
-// use to show the axis icon cube outline alpha beside its slider
+// use to show the cube outline alpha
 void swPreferencesDialog::AxisIconCubeOutlineAlphaChanged()
 {
 	ui->AxisIconCubeOutlineAlphaValueLabel->setText(locale().toString(ui->AxisIconCubeOutlineAlphaSlider->value() / 100.0, 'f', 2));
 }
 
-// use to show the cutaway shade alpha beside its slider
+// use to show the cutaway shade alpha
 void swPreferencesDialog::CutawayShadeAlphaChanged()
 {
 	ui->CutawayShadeAlphaValueLabel->setText(locale().toString(ui->CutawayShadeAlphaSlider->value() / 100.0, 'f', 2));
@@ -1328,7 +1328,7 @@ void swPreferencesDialog::AutomateEdgeColor()
 		mOptions->Preferences.mPartEdgeContrast = Dialog.mPartEdgeContrast;
 		mOptions->Preferences.mPartColorValueLDIndex = Dialog.mPartColorValueLDIndex;
 
-		// The light/dark value is the same setting as the edge saturation.
+		// light dark is the edge saturation
 		ui->EdgeSaturationSlider->setValue(qRound(mOptions->Preferences.mPartColorValueLDIndex * 100.0f));
 	}
 }

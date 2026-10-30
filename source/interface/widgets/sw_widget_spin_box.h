@@ -2,7 +2,7 @@
 
 #include "sw_window_utilities.h"
 
-// use to type any number into a spin box, numbers beyond the range stay while typing and are clamped once applied
+// Spin box that clamps once typed.
 template<typename SpinBoxType>
 class swRangeSpinBoxBase : public SpinBoxType
 {
@@ -13,7 +13,7 @@ public:
 		swSetupSpinBoxSelection(this);
 	}
 
-	// use to show the maximum after the value so the limit is known before typing
+	// Shows the maximum after the value.
 	void SetReference(const QString& Unit = QString())
 	{
 		this->setSuffix(QString(" / %1%2").arg(this->textFromValue(this->maximum()), Unit));
@@ -44,7 +44,7 @@ public:
 	}
 
 protected:
-	// use to read the typed number without the prefix and suffix
+	// Reads the typed number.
 	double GetTypedValue(const QString& Text, bool& Valid) const
 	{
 		QString Number = Text;

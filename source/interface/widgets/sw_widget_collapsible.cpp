@@ -44,7 +44,7 @@ void swCollapsibleWidgetButton::SetExpanded(bool Expanded)
 
 void swCollapsibleWidgetButton::UpdateIcon()
 {
-	// Fixed headers show no expand arrow.
+	// fixed headers have no arrow
 	if (!mCollapsible)
 	{
 		setIcon(QIcon());
@@ -69,6 +69,7 @@ swCollapsibleWidget::swCollapsibleWidget(const QString& Title, QWidget* Parent)
 	: QWidget(Parent)
 {
 	QVBoxLayout* Layout = new QVBoxLayout(this);
+
 //	Layout->setSpacing(0);
 	Layout->setContentsMargins(0, 0, 0, 0);
 

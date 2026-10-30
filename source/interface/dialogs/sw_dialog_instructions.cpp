@@ -38,19 +38,19 @@ swInstructionsDialog::swInstructionsDialog(QWidget* Parent, Project* Project)
 	mPageListWidget->setObjectName("InstructionsPageList");
 	addDockWidget(Qt::LeftDockWidgetArea, mPageListWidget);
 
-	// the print panel opens on demand below the grid like the minifigure builder, a panel of its own
+	// print panel opens below the grid
 	mPrintWidget = new swInstructionsPrintWidget(this, mInstructions);
 	mPrintWidget->setObjectName("InstructionsPrint");
 	addDockWidget(Qt::RightDockWidgetArea, mPrintWidget);
 	splitDockWidget(mGridWidget, mPrintWidget, Qt::Vertical);
 	mPrintWidget->hide();
 
-	// the print button shows and hides the print panel and stays checked while it is shown
+	// print button toggles the print panel
 	QAction* PrintAction = mPrintWidget->toggleViewAction();
 	PrintAction->setToolTip(tr("Show or hide the Print panel to print the instruction pages"));
 	mPropertiesWidget->AddOptionsAction(PrintAction);
 
-	// the editor panel opens on demand below the page, wide enough for the lines of the file
+	// editor panel opens below the page
 	mEditorWidget = new swInstructionsEditorWidget(this, mProject, mInstructions);
 	mEditorWidget->setObjectName("InstructionsEditor");
 	addDockWidget(Qt::BottomDockWidgetArea, mEditorWidget);
@@ -65,7 +65,7 @@ swInstructionsDialog::swInstructionsDialog(QWidget* Parent, Project* Project)
 	connect(mPageListWidget->mThumbnailsWidget, &QListWidget::currentRowChanged, this, &swInstructionsDialog::CurrentThumbnailChanged);
 	UpdatePageList();
 
-	// the pages panel snaps to its longest page name like the categories of the parts panel
+	// pages panel fits its longest name
 	mPageListWidget->installEventFilter(this);
 	installEventFilter(this);
 	connect(mPageListWidget, &QDockWidget::dockLocationChanged, this, [this]()
@@ -77,18 +77,18 @@ swInstructionsDialog::swInstructionsDialog(QWidget* Parent, Project* Project)
 	connect(mInstructions, &swInstructions::PageSetupChanged, this, &swInstructionsDialog::PageSetupChanged);
 	connect(mInstructions, &swInstructions::PageLayoutChanged, this, &swInstructionsDialog::PageSetupChanged);
 
-	// the panels come back where they were left
+	// restore the panel layout
 	QSettings Settings;
 	Settings.beginGroup("InstructionsWindow");
 	restoreState(Settings.value("State").toByteArray());
 	Settings.endGroup();
 
-	// the panels without a toggle are never lost to a layout saved while they were hidden
+	// keep untoggled panels visible
 	for (QDockWidget* DockWidget : { static_cast<QDockWidget*>(mPropertiesWidget), static_cast<QDockWidget*>(mPlacementWidget), static_cast<QDockWidget*>(mGridWidget), static_cast<QDockWidget*>(mPageListWidget) })
 		DockWidget->show();
 }
 
-// use to keep the panels where they are for the next time the window opens
+// use to save the panel layout
 void swInstructionsDialog::SaveLayout()
 {
 	QSettings Settings;
@@ -97,7 +97,7 @@ void swInstructionsDialog::SaveLayout()
 	Settings.endGroup();
 }
 
-// use to follow the options stored by the preferences
+// use to follow the preferences options
 void swInstructionsDialog::UpdateOptions()
 {
 	mInstructions->SetShowMargins(swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_SHOW_MARGINS) != 0);
@@ -123,7 +123,7 @@ void swInstructionsDialog::UpdatePageList()
 	QListWidget* ThumbnailsWidget = mPageListWidget->mThumbnailsWidget;
 	const int CurrentRow = qMax(ThumbnailsWidget->currentRow(), 0);
 
-	// rebuild the page list and keep showing a page, the old pages no longer exist
+	// rebuild the page list
 	QSignalBlocker Blocker(ThumbnailsWidget);
 	ThumbnailsWidget->clear();
 
@@ -161,7 +161,7 @@ void swInstructionsDialog::UpdatePageList()
 
 bool swInstructionsDialog::eventFilter(QObject* Object, QEvent* Event)
 {
-	// resizing the pages panel by hand snaps it back once the mouse is released
+	// snap the pages panel back on release
 	if (Object == mPageListWidget && Event->type() == QEvent::Resize && QApplication::mouseButtons() != Qt::NoButton)
 		mPageListSnapPending = true;
 	else if (Event->type() == QEvent::MouseButtonRelease && mPageListSnapPending)
@@ -183,14 +183,14 @@ void swInstructionsDialog::SnapPageListDock()
 	if (Area != Qt::LeftDockWidgetArea && Area != Qt::RightDockWidgetArea)
 		return;
 
-	// other panels in the same stack keep their own width
+	// other panels keep their width
 	const QList<QDockWidget*> DockWidgets = findChildren<QDockWidget*>(QString(), Qt::FindDirectChildrenOnly);
 
 	for (QDockWidget* DockWidget : DockWidgets)
 		if (DockWidget != mPageListWidget && !DockWidget->isHidden() && !DockWidget->isFloating() && dockWidgetArea(DockWidget) == Area)
 			return;
 
-	// measure every page name, the list shows the longest one in full beside the scroll bar
+	// measure every page name
 	QListWidget* ThumbnailsWidget = mPageListWidget->mThumbnailsWidget;
 	const int TextWidth = ThumbnailsWidget->sizeHintForColumn(0);
 
@@ -207,7 +207,7 @@ void swInstructionsDialog::SnapPageListDock()
 
 void swInstructionsDialog::ModelChanged()
 {
-	// Several edits in a row rebuild the pages once, after the current event.
+	// rebuild the pages once per event
 	if (mUpdatePending)
 		return;
 
@@ -226,7 +226,7 @@ void swInstructionsDialog::SetProject(Project* Project)
 {
 	mProject = Project;
 
-	// the window stays open, the instructions are handed to the loaded project after this
+	// hand the instructions to the project
 	mPageWidget->scene()->clearSelection();
 	mEditorWidget->SetProject(Project);
 }

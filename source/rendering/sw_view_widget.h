@@ -2,7 +2,7 @@
 
 #include "sw_window_utilities.h"
 
-// use to elide a model of the editing path once the bar runs out of room while it still asks for its whole name
+// Elides the editing path.
 class swModelEditingButton : public swElidableToolButton
 {
 public:

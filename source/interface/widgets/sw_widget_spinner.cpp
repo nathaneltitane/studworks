@@ -31,17 +31,23 @@ void swSpinnerWidget::paintEvent(QPaintEvent* Event)
 	QPainter Painter(this);
 	Painter.setRenderHint(QPainter::Antialiasing);
 	Painter.translate(width() / 2.0, height() / 2.0);
-	constexpr qreal SpinSpeed = 0.75; // Revolutions per second.
+
+	// revolutions per second
+	constexpr qreal SpinSpeed = 0.75;
 	Painter.rotate(mElapsed.isValid() ? mElapsed.elapsed() * 0.36 * SpinSpeed : 0.0);
 
 	const QRectF Orbit(-OrbitRadius, -OrbitRadius, 2.0 * OrbitRadius, 2.0 * OrbitRadius);
-	constexpr qreal TrailLength = 270.0; // Degrees behind the disc (0 to 360).
-	constexpr qreal FadeDecay = 5.0; // Positive values; larger values fade faster.
+
+	// trail degrees behind the disc
+	constexpr qreal TrailLength = 270.0;
+
+	// trail fade rate
+	constexpr qreal FadeDecay = 5.0;
 	constexpr int Segments = 120;
 	const qreal SegmentAngle = qBound(0.0, TrailLength, 360.0) / Segments;
 	const qreal TailOpacity = qExp(-FadeDecay);
 
-	// Paint the oldest end first, keeping the trail white and fading its opacity.
+	// paint the oldest end first
 	for (int Segment = Segments - 1; Segment >= 0 && SegmentAngle > 0.0; Segment--)
 	{
 		const qreal Age = static_cast<qreal>(Segment) / (Segments - 1);
@@ -54,5 +60,6 @@ void swSpinnerWidget::paintEvent(QPaintEvent* Event)
 
 	Painter.setPen(Qt::NoPen);
 	Painter.setBrush(Qt::white);
+
 //	Painter.drawEllipse(QPointF(OrbitRadius, 0.0), DiscRadius, DiscRadius);
 }

@@ -45,7 +45,7 @@ protected:
 
 	std::bitset<6> mIntersectionFlags;
 
-	// faces, chamfered edges and chamfered corners, each one a view direction
+	// Faces, edges and corners.
 	struct swViewCubeFacet
 	{
 		std::bitset<6> Flags;

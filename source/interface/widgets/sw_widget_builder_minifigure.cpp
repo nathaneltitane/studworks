@@ -17,12 +17,12 @@
 swMinifigureBuilderWidget::swMinifigureBuilderWidget(QWidget* Parent)
 	: QWidget(Parent), ui(new Ui::swMinifigureBuilderWidget)
 {
-	// The Minifigure Builder panel stays open and adds each minifigure to the current model, F1 help comes from the panel.
+	// the builder adds to the current model
 	ui->setupUi(this);
 
 	QGridLayout* MinifigureBuilderLayout = ui->MinifigureBuilderLayout;
 
-	// Extra height goes below the panel instead of between rows.
+	// extra height below the panel
 	MinifigureBuilderLayout->setContentsMargins(0, 0, 0, 0);
 	ui->verticalLayout->addStretch(1);
 
@@ -38,7 +38,7 @@ swMinifigureBuilderWidget::swMinifigureBuilderWidget(QWidget* Parent)
 
 	std::copy(std::begin(Labels), std::end(Labels), mSectionNames.begin());
 
-	// The neck spans the top, the other sections stack on both sides of the preview.
+	// neck on top, sections beside the preview
 	constexpr int FirstSideRow = 1;
 	int LeftRow = FirstSideRow, RightRow = FirstSideRow;
 	QHBoxLayout* NeckLayout = nullptr;
@@ -81,7 +81,7 @@ swMinifigureBuilderWidget::swMinifigureBuilderWidget(QWidget* Parent)
 			connect(SpinBox, QOverload<double>::of(&swDoubleSpinBox::valueChanged), this, &swMinifigureBuilderWidget::AngleChanged);
 		}
 
-		// Each section is [Color] [Selection] [Angle], the selection takes the space left over and names the section when empty.
+		// color, selection and angle per section
 		auto AddRow = [MinifigureBuilderLayout, PartButton, ColorPicker, SpinBox](int& Row, int Column, int ColumnCount)
 		{
 			MinifigureBuilderLayout->addWidget(ColorPicker, Row, Column);
@@ -95,7 +95,7 @@ swMinifigureBuilderWidget::swMinifigureBuilderWidget(QWidget* Parent)
 
 		if (ItemIndex == NeckIndex)
 		{
-			// the neck shares the top row with the options button in the top right corner
+			// neck beside the options button
 			MinifigureBuilderLayout->addWidget(ColorPicker, 0, 0);
 			NeckLayout = new QHBoxLayout();
 			NeckLayout->addWidget(PartButton);
@@ -111,7 +111,7 @@ swMinifigureBuilderWidget::swMinifigureBuilderWidget(QWidget* Parent)
 	MinifigureBuilderLayout->setColumnStretch(3, 1);
 	MinifigureBuilderLayout->setColumnStretch(5, 1);
 
-	// The preview is as tall as the stacked section rows beside it.
+	// preview as tall as the sections
 	QFrame* PreviewFrame = new QFrame(ui->widget);
 	PreviewFrame->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Ignored);
 	PreviewFrame->setFrameShape(QFrame::NoFrame);
@@ -158,11 +158,11 @@ swMinifigureBuilderWidget::swMinifigureBuilderWidget(QWidget* Parent)
 	ui->horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
 	ui->TemplateComboBox->setPlaceholderText(tr("Templates"));
 
-	// The template row uses the compact panel buttons so it fits beside Add to Model.
+	// compact template buttons
 	ui->TemplateComboBox->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
 	ui->TemplateComboBox->setMinimumContentsLength(8);
 
-	// The template buttons sit in pairs below the selector with Add to Model across the last row, so the panel can shrink.
+	// template buttons in pairs
 	QWidget* TemplateButtons = new QWidget(this);
 	QGridLayout* TemplateButtonsLayout = new QGridLayout(TemplateButtons);
 	TemplateButtonsLayout->setContentsMargins(0, 0, 0, 0);
@@ -191,7 +191,7 @@ swMinifigureBuilderWidget::swMinifigureBuilderWidget(QWidget* Parent)
 		Button->setMinimumWidth(0);
 	}
 
-	// The options button holds the preview rendering settings, like the other preview panels.
+	// options hold preview settings
 	QToolButton* OptionsButton = new QToolButton(this);
 	OptionsButton->setIcon(swCreatePaintedIcon(swPaintedIcon::Gear));
 	OptionsButton->setToolTip(tr("Configure the minifigure builder preview rendering."));
@@ -221,7 +221,7 @@ void swMinifigureBuilderWidget::AddToModel()
 
 bool swMinifigureBuilderWidget::eventFilter(QObject* Object, QEvent* Event)
 {
-	// Fit the figure again whenever the preview changes size so it is never cut off.
+	// refit the figure on resize
 	if (Object == mViewWidget && Event->type() == QEvent::Resize)
 		QTimer::singleShot(0, this, &swMinifigureBuilderWidget::FitPreview);
 
@@ -230,7 +230,7 @@ bool swMinifigureBuilderWidget::eventFilter(QObject* Object, QEvent* Event)
 
 void swMinifigureBuilderWidget::FitPreview()
 {
-	// The whole figure stays in view, whatever parts and angles are chosen.
+	// keep the whole figure in view
 	mView->ZoomExtents(swGeometryBoundsMode::IncludeFallback, false);
 	mView->Redraw();
 }
@@ -250,7 +250,7 @@ void swMinifigureBuilderWidget::UpdatePartButton(int ItemIndex)
 		}
 	}
 
-	// An empty section shows its name like a placeholder, an elided name shows in full as the tool tip.
+	// empty sections show their name
 	QPalette Palette = PartButton->palette();
 	Palette.setColor(QPalette::ButtonText, Description.isEmpty() ? palette().color(QPalette::PlaceholderText) : palette().color(QPalette::ButtonText));
 	PartButton->setPalette(Palette);
@@ -296,13 +296,14 @@ void swMinifigureBuilderWidget::UpdateTemplateCombo()
 
 	if (ui->TemplateComboBox->count())
 		ui->TemplateComboBox->insertSeparator(ui->TemplateComboBox->count());
-	// The built-in template keeps its stored name and is shown as Default Template.
+
+	// show the built in template as default
 	ui->TemplateComboBox->addItem(tr("Default Template"));
 
 	if (CurrentName == swMinifigureBuilder::GetDefaultTemplateName())
 		CurrentName = tr("Default Template");
 
-	// Without a current template the selector shows its name as a placeholder.
+	// show the selector placeholder
 	if (mCurrentTemplateName.isEmpty())
 		ui->TemplateComboBox->setCurrentIndex(-1);
 	else

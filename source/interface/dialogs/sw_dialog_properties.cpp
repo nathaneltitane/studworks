@@ -54,7 +54,7 @@ swPartsTableWidget::swPartsTableWidget(QWidget* Parent)
 
 void swPartsTableWidget::FreezePartColumns()
 {
-	// The thumbnail sits in a column of its own so copied cells only hold text.
+	// thumbnail in its own column
 	setItemDelegateForColumn(0, new swPartsThumbnailDelegate(this));
 	setColumnWidth(0, qMax(iconSize().width() + 8, horizontalHeader()->sectionSizeHint(0)));
 	setColumnWidth(1, qMax(sizeHintForColumn(1), horizontalHeader()->sectionSizeHint(1)));
@@ -63,7 +63,7 @@ void swPartsTableWidget::FreezePartColumns()
 		horizontalHeader()->setSectionResizeMode(Column, QHeaderView::Fixed);
 	setTextElideMode(Qt::ElideRight);
 
-	// Both views share the data and selection, so sorting and row highlights stay in sync.
+	// views share data and selection
 	mFrozenColumn = new swFrozenPartsView(this);
 	mFrozenColumn->setModel(model());
 	mFrozenColumn->setSelectionModel(selectionModel());
@@ -94,7 +94,7 @@ void swPartsTableWidget::FreezePartColumns()
 	for (int Row = 0; Row < rowCount(); Row++)
 		mFrozenColumn->setRowHeight(Row, rowHeight(Row));
 
-	// The total label spans the thumbnail, ID and part columns, the total row always sorts last.
+	// total row sorts last
 	if (rowCount() > 0)
 	{
 		setSpan(rowCount() - 1, 0, 1, 3);
@@ -140,7 +140,7 @@ bool swPartsTableWidget::eventFilter(QObject* Object, QEvent* Event)
 
 QItemSelectionModel::SelectionFlags swPartsTableWidget::TrackSelectionCommand(const QModelIndex& Index, const QEvent* Event, QItemSelectionModel::SelectionFlags Command) const
 {
-	// Qt keeps a separate range anchor in each view, even with a shared selection model.
+	// reset each view range anchor
 	mSelectionEnd = Index;
 	if (Command.testFlag(QItemSelectionModel::Current))
 	{
@@ -180,7 +180,7 @@ void swPartsTableWidget::UpdateFrozenGeometry()
 	if (!mFrozenColumn)
 		return;
 
-	// The part column always shows the full description.
+	// show the full part description
 	if (columnWidth(2) != mPartColumnWidth)
 		setColumnWidth(2, mPartColumnWidth);
 
@@ -200,7 +200,7 @@ void swPartsTableWidget::focusInEvent(QFocusEvent* Event)
 	const bool HasCurrent = currentIndex().isValid();
 	QTableWidget::focusInEvent(Event);
 
-	// Receiving focus should not mark the first cell before the user chooses a row.
+	// no first cell mark on focus
 	if (!HasCurrent)
 		selectionModel()->clearCurrentIndex();
 }
@@ -253,7 +253,7 @@ public:
 
 	bool operator<(const QTableWidgetItem& Other) const override
 	{
-		// Keep the total row at the bottom in both sort orders.
+		// keep the total row last
 		const bool Descending = tableWidget() && tableWidget()->horizontalHeader()->sortIndicatorOrder() == Qt::DescendingOrder;
 
 		if (mLast)
@@ -378,7 +378,7 @@ swPropertiesDialog::swPropertiesDialog(QWidget* Parent, swPropertiesDialogOption
 			Total += Count;
 		}
 
-		// The thumbnail shows the part in the color it is used the most.
+		// thumbnail in the most used color
 		auto [ThumbnailId, Thumbnail] = ThumbnailManager->RequestThumbnail(const_cast<swPartData*>(PartData), ThumbnailColor, ThumbnailSize, devicePixelRatioF());
 		mThumbnails.emplace_back(ThumbnailId, ThumbnailItem);
 

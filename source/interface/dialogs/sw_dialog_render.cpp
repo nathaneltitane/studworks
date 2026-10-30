@@ -14,7 +14,8 @@
 
 #define SW_POVRAY_PREVIEW_WIDTH 768
 #define SW_POVRAY_PREVIEW_HEIGHT 432
-// raise to drop the panel layouts saved by older versions of the window
+
+// raise to drop old panel layouts
 #define SW_RENDER_WINDOW_STATE_VERSION 3
 #define SW_RENDER_PANEL_WIDTH 380
 #define SW_RENDER_LOG_HEIGHT 240
@@ -29,7 +30,7 @@ void swRenderPreviewWidget::resizeEvent(QResizeEvent* Event)
 	QWidget::resizeEvent(Event);
 }
 
-// use to find where the canvas lies in the preview
+// use to find the canvas in the preview
 QRect swRenderPreviewWidget::GetCanvasRect() const
 {
 	const QSize ImageSize = !mImage.isNull() ? mImage.size() : mCanvasSize;
@@ -45,7 +46,7 @@ QRect swRenderPreviewWidget::GetCanvasRect() const
 	return CanvasRect;
 }
 
-// use to turn a preview position into a fraction of the canvas
+// use to get a canvas fraction
 QPointF swRenderPreviewWidget::GetCanvasPoint(const QPoint& Position) const
 {
 	const QRect CanvasRect = GetCanvasRect();
@@ -93,7 +94,7 @@ void swRenderPreviewWidget::mouseReleaseEvent(QMouseEvent* MouseEvent)
 	mRegionDragging = false;
 	mRegion = QRectF(mRegionStart, GetCanvasPoint(MouseEvent->pos())).normalized();
 
-	// a click without a drag keeps the whole image
+	// a click keeps the whole image
 	if (mRegion.width() < 0.01 || mRegion.height() < 0.01)
 		mRegion = QRectF(0.0, 0.0, 1.0, 1.0);
 
@@ -108,7 +109,7 @@ void swRenderPreviewWidget::paintEvent(QPaintEvent* PaintEvent)
 
 	QPainter Painter(this);
 
-	// the canvas lies on the backdrop like the page of the instructions window
+	// canvas on the backdrop
 	Painter.fillRect(rect(), palette().color(QPalette::Mid));
 
 	const QRect CanvasRect = GetCanvasRect();
@@ -116,7 +117,7 @@ void swRenderPreviewWidget::paintEvent(QPaintEvent* PaintEvent)
 	if (CanvasRect.isEmpty())
 		return;
 
-	// the empty canvas is a blank sheet like a new instructions page
+	// empty canvas is a blank sheet
 	Painter.fillRect(CanvasRect, Qt::white);
 
 	if (!mImage.isNull())
@@ -128,7 +129,7 @@ void swRenderPreviewWidget::paintEvent(QPaintEvent* PaintEvent)
 	}
 	else if (mPlaceholderSize > 0)
 	{
-		// the placeholder is painted at its own size so it stays sharp instead of scaled with the canvas
+		// paint the placeholder at its size
 		const int IconSize = qMin(mPlaceholderSize, qMin(CanvasRect.width(), CanvasRect.height()) / 2);
 		const qreal PixelRatio = devicePixelRatioF();
 		QImage IconImage = swCreatePaintedIconImage(swPaintedIcon::RenderPlaceholder, qRound(IconSize * PixelRatio), palette().color(QPalette::Mid));
@@ -140,7 +141,7 @@ void swRenderPreviewWidget::paintEvent(QPaintEvent* PaintEvent)
 
 	if (mRegionMode)
 	{
-		// the canvas outside the region is dimmed and the region outlined in the highlight color
+		// dim outside the region
 		const QRectF RegionRect(CanvasRect.left() + mRegion.left() * CanvasRect.width(), CanvasRect.top() + mRegion.top() * CanvasRect.height(), mRegion.width() * CanvasRect.width(), mRegion.height() * CanvasRect.height());
 		QPainterPath OutsidePath;
 		OutsidePath.addRect(CanvasRect);
@@ -170,7 +171,7 @@ swRenderDialog::swRenderDialog(QWidget* Parent, swRenderDialogMode RenderDialogM
 
 	if (mDialogMode == swRenderDialogMode::RenderPOVRay)
 	{
-		// the povray window keeps its buttons in the render panel like the print panel of the instructions window
+		// buttons in the render panel
 		mRenderButton = new QToolButton(this);
 		mRenderButton->setText(tr("Render"));
 		mLogButton = new QToolButton(this);
@@ -259,7 +260,7 @@ swRenderDialog::swRenderDialog(QWidget* Parent, swRenderDialogMode RenderDialogM
 
 	if (mDialogMode != swRenderDialogMode::OpenInBlender)
 	{
-		// the render picture at the largest icon size stands in the empty preview
+		// render icon in the empty preview
 		ui->preview->SetPlaceholderSize(SW_PART_ICON_SIZES.back());
 		ui->preview->SetCanvasSize(QSize(mWidth, mHeight));
 	}
@@ -269,7 +270,7 @@ swRenderDialog::swRenderDialog(QWidget* Parent, swRenderDialogMode RenderDialogM
 	mUpdateTimer.start(500);
 }
 
-// use to lay out the povray window like the instructions window with its settings in panels beside the preview
+// use to lay out the povray window
 void swRenderDialog::CreatePOVRayPanels()
 {
 	QMainWindow* PanelWindow = new QMainWindow(this);
@@ -278,7 +279,7 @@ void swRenderDialog::CreatePOVRayPanels()
 
 	mPanelWindow = PanelWindow;
 
-	// the preview fills the middle of the window like the pages of the instructions window
+	// preview fills the middle
 	PanelWindow->setCentralWidget(ui->preview);
 	ui->MainLayout->addWidget(PanelWindow, 1);
 	ui->MainLayout->setContentsMargins(0, 0, 0, 0);
@@ -298,10 +299,10 @@ void swRenderDialog::CreatePOVRayPanels()
 		Panel->setWidget(Widget);
 		new QVBoxLayout(Widget);
 
-		// a panel taller than its rows keeps them under its title
+		// keep rows under the title
 		Panel->layout()->setAlignment(Widget, Qt::AlignTop);
 
-		// panels across the top or bottom span the window like the terminal, floating they keep the panel width
+		// top and bottom panels span the window
 		Panel->setProperty("swFloatingSize", QSize(SW_RENDER_PANEL_WIDTH, 0));
 		PanelWindow->addDockWidget(Qt::RightDockWidgetArea, Panel);
 		swSetupWidgetHelp(Panel, nullptr);
@@ -357,7 +358,7 @@ void swRenderDialog::CreatePOVRayPanels()
 	mPresetComboBox = new QComboBox();
 	CreateRow(PresetsPanel, tr("Preset"), mPresetComboBox, tr("Choose a preset to apply its image size, quality and scene settings."), QString());
 
-	// the preset buttons share the panel width like the template buttons of the minifigure panel
+	// presets share the panel width
 	QWidget* PresetButtonRow = swCreatePanelRow(PresetsPanel);
 	PresetsPanel->layout()->addWidget(PresetButtonRow);
 
@@ -452,7 +453,7 @@ void swRenderDialog::CreatePOVRayPanels()
 	ui->RenderProgress->setFixedHeight(swGetPanelButtonSize().height());
 	ProgressRow->layout()->addWidget(ui->RenderProgress);
 
-	// the render button spans the panel below its progress like print in the print panel
+	// render button spans the panel
 	QWidget* ButtonRow = swCreatePanelRow(RenderPanel);
 	RenderPanel->layout()->addWidget(ButtonRow);
 
@@ -471,10 +472,10 @@ void swRenderDialog::CreatePOVRayPanels()
 	swSetupPanelButton(LogButton);
 	ButtonRow->layout()->addWidget(LogButton);
 
-	// the panels end at their last row and the scene panel takes the remaining height
+	// scene panel takes the rest
 	static_cast<QVBoxLayout*>(ScenePanel->layout())->addStretch(1);
 
-	// the labels of all panels share one width so the inputs line up
+	// labels share one width
 	int LabelWidth = 0;
 
 	for (QLabel* Label : Labels)
@@ -483,7 +484,7 @@ void swRenderDialog::CreatePOVRayPanels()
 	for (QLabel* Label : Labels)
 		Label->setFixedWidth(LabelWidth);
 
-	// changes are kept right away for the next render
+	// keep changes for the next render
 	connect(WidthSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int Value)
 	{
 		mWidth = Value;
@@ -529,7 +530,7 @@ void swRenderDialog::CreatePOVRayPanels()
 		swSetProfileString(SW_PROFILE_RENDER_ENVIRONMENT_IMAGE, QDir::fromNativeSeparators(Text.trimmed()));
 	});
 
-	// the preset shows custom once a setting no longer matches it
+	// show custom on a mismatch
 	for (QSpinBox* SpinBox : { WidthSpinBox, HeightSpinBox })
 		connect(SpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &swRenderDialog::UpdatePresets);
 
@@ -548,7 +549,7 @@ void swRenderDialog::CreatePOVRayPanels()
 
 	UpdatePresets();
 
-	// the region is drawn on the preview and kept with the area for the next render
+	// keep the drawn region
 	const QStringList RegionValues = swGetProfileString(SW_PROFILE_RENDER_REGION).split(' ', Qt::SkipEmptyParts);
 
 	if (RegionValues.size() == 4)
@@ -585,7 +586,7 @@ void swRenderDialog::CreatePOVRayPanels()
 			EnvironmentEdit->setText(QDir::toNativeSeparators(FileName));
 	});
 
-	// the log sits below the preview like the terminal below the model and follows the renderer output
+	// log below the preview
 	mLogPanel = new QDockWidget(tr("Log"), PanelWindow);
 	mLogPanel->setObjectName("RenderLog");
 	mLogPanel->setProperty("swFloatingSize", QSize(2 * SW_RENDER_PANEL_WIDTH, SW_RENDER_LOG_HEIGHT));
@@ -602,7 +603,8 @@ void swRenderDialog::CreatePOVRayPanels()
 	mLogPanel->setWidget(mLogEdit);
 
 	swSetupWidgetHelp(mLogPanel, nullptr);
-	// the log and render panels span the window edges and stay off the side columns
+
+	// log and render panels span the edges
 	QDockWidget* RenderDock = qobject_cast<QDockWidget*>(RenderPanel->parentWidget());
 	PanelWindow->addDockWidget(Qt::BottomDockWidgetArea, RenderDock);
 	PanelWindow->addDockWidget(Qt::BottomDockWidgetArea, mLogPanel);
@@ -613,7 +615,7 @@ void swRenderDialog::CreatePOVRayPanels()
 
 	mLogPanel->hide();
 
-	// the log button shows and hides the log panel and stays checked while it is shown
+	// log button toggles the log panel
 	mLogButton->setCheckable(true);
 	mLogButton->setEnabled(true);
 	mLogButton->setToolTip(tr("Show or hide the Log panel with the renderer output."));
@@ -634,7 +636,7 @@ void swRenderDialog::CreatePOVRayPanels()
 	for (QWidget* Panel : { PresetsPanel, OutputPanel, ImagePanel, BatchPanel, RenderPanel })
 		Panel->setFixedHeight(Panel->sizeHint().height());
 
-	// panels moved to another area open at a usable size instead of collapsing to their least size
+	// open moved panels at a usable size
 	QList<QDockWidget*> CompactPanels;
 
 	for (QWidget* Panel : { PresetsPanel, OutputPanel, ImagePanel, BatchPanel, RenderPanel })
@@ -642,11 +644,11 @@ void swRenderDialog::CreatePOVRayPanels()
 
 	auto FitPanels = [PanelWindow, CompactPanels]()
 	{
-		// the compact panels end at their last row wherever they are docked
+		// compact panels end at their last row
 		for (QDockWidget* CompactPanel : CompactPanels)
 			CompactPanel->setMaximumHeight(CompactPanel->isFloating() ? QWIDGETSIZE_MAX : CompactPanel->sizeHint().height());
 
-		// panels squeezed by a panel docked next to them get their usable size back too
+		// restore squeezed panel sizes
 		QList<QDockWidget*> SidePanels, EdgePanels;
 
 		for (QDockWidget* AreaPanel : PanelWindow->findChildren<QDockWidget*>(QString(), Qt::FindDirectChildrenOnly))
@@ -671,7 +673,7 @@ void swRenderDialog::CreatePOVRayPanels()
 
 	for (QDockWidget* Panel : PanelWindow->findChildren<QDockWidget*>(QString(), Qt::FindDirectChildrenOnly))
 	{
-		// the panel sizes are set after the shared dock fitting has reset them
+		// size panels after the dock fitting
 		auto FitLater = [Panel, FitPanels]()
 		{
 			QTimer::singleShot(0, Panel, [Panel, FitPanels]()
@@ -685,32 +687,32 @@ void swRenderDialog::CreatePOVRayPanels()
 		connect(Panel, &QDockWidget::topLevelChanged, Panel, FitLater);
 	}
 
-	// the panels are wide enough for a readable output path
+	// fit a readable output path
 	PanelWindow->resizeDocks({ qobject_cast<QDockWidget*>(OutputPanel->parentWidget()) }, { SW_RENDER_PANEL_WIDTH }, Qt::Horizontal);
 
-	// the panels come back where they were left
+	// restore the panel layout
 	QSettings Settings;
 	Settings.beginGroup("RenderWindow");
 	PanelWindow->restoreState(Settings.value("State").toByteArray(), SW_RENDER_WINDOW_STATE_VERSION);
 	Settings.endGroup();
 
-	// the panels without a toggle are never lost to a layout saved while they were hidden
+	// keep untoggled panels visible
 	for (QWidget* Panel : { PresetsPanel, OutputPanel, ImagePanel, BatchPanel, ScenePanel, RenderPanel })
 		Panel->parentWidget()->show();
 
 	mLogButton->setChecked(!mLogPanel->isHidden());
 
-	// a layout saved with squeezed panels opens at a usable size once the window is laid out
+	// restore squeezed saved layouts
 	QTimer::singleShot(0, PanelWindow, FitPanels);
 }
 
-// use to list the settings a preset keeps in the order they are stored
+// use to list preset settings
 QStringList swRenderDialog::GetPresetValues() const
 {
 	return { QString::number(mWidthSpinBox->value()), QString::number(mHeightSpinBox->value()), QString::number(mQualityComboBox->currentIndex()), QString::number(mLightRigComboBox->currentIndex()), QString::number(mFloorStyleComboBox->currentIndex()), QString::number(mBackgroundComboBox->currentIndex()), QDir::fromNativeSeparators(mEnvironmentEdit->text().trimmed()) };
 }
 
-// use to set the controls to the settings of a stored preset
+// use to apply a stored preset
 void swRenderDialog::ApplyPreset(const QString& Preset)
 {
 	const QStringList Values = Preset.split('|');
@@ -731,7 +733,7 @@ void swRenderDialog::ApplyPreset(const QString& Preset)
 	UpdatePresets();
 }
 
-// use to fill the preset list and choose the preset matching the current settings
+// use to fill the preset list
 void swRenderDialog::UpdatePresets()
 {
 	if (!mPresetComboBox)
@@ -751,14 +753,14 @@ void swRenderDialog::UpdatePresets()
 		if (PresetValues.size() < 8)
 			continue;
 
-		// presets with the same settings show the one last chosen or saved
+		// show the last chosen duplicate
 		if ((CurrentIndex == -1 || PresetValues[0] == mPresetName) && PresetValues.mid(1, 6) == Values.mid(0, 6) && PresetValues.mid(7).join('|') == Values[6])
 			CurrentIndex = mPresetComboBox->count();
 
 		mPresetComboBox->addItem(PresetValues[0], Preset);
 	}
 
-	// settings matching no preset show as custom at the top of the list
+	// unmatched settings show as custom
 	if (CurrentIndex == -1)
 	{
 		mPresetComboBox->insertItem(0, tr("Custom"));
@@ -769,7 +771,7 @@ void swRenderDialog::UpdatePresets()
 	mPresetDeleteButton->setEnabled(!mPresetComboBox->itemData(CurrentIndex).toString().isEmpty());
 }
 
-// use to store the current settings as a named preset
+// use to save a named preset
 void swRenderDialog::SavePresetClicked()
 {
 	const QString CurrentName = mPresetComboBox->currentData().toString().isEmpty() ? QString() : mPresetComboBox->currentText();
@@ -825,7 +827,7 @@ void swRenderDialog::DeletePresetClicked()
 	UpdatePresets();
 }
 
-// use to list the view and the cameras of the model to render from
+// use to list views and cameras
 void swRenderDialog::UpdateCameras()
 {
 	const QString CameraName = swGetProfileString(SW_PROFILE_RENDER_CAMERAS);
@@ -845,7 +847,7 @@ void swRenderDialog::UpdateCameras()
 	mCamerasComboBox->setCurrentIndex(std::max(mCamerasComboBox->findData(CameraName), 0));
 }
 
-// use to find the region to render in pixels of the image
+// use to get the region in pixels
 QRect swRenderDialog::GetRegionRect() const
 {
 	if (!mAreaComboBox || mAreaComboBox->currentIndex() != 1)
@@ -858,11 +860,11 @@ QRect swRenderDialog::GetRegionRect() const
 	const int Bottom = std::clamp(qRound(Region.bottom() * mHeight), Top + 2, mHeight);
 	const QRect RegionRect(QPoint(Left, Top), QPoint(Right - 1, Bottom - 1));
 
-	// a region covering the whole image is a full render
+	// a full region is a full render
 	return RegionRect == QRect(0, 0, mWidth, mHeight) ? QRect() : RegionRect;
 }
 
-// use to start the next image of a batch or end the batch after the last one
+// use to run the next batch image
 void swRenderDialog::StartNextJob()
 {
 	if (mJobIndex >= mJobs.size())
@@ -877,7 +879,7 @@ void swRenderDialog::StartNextJob()
 	RenderPOVRay();
 }
 
-// use to fill the log panel with the renderer output written so far
+// use to fill the log panel
 void swRenderDialog::UpdateLogPanel()
 {
 	if (!mLogPanel || mLogPanel->isHidden())
@@ -895,7 +897,7 @@ void swRenderDialog::UpdateLogPanel()
 
 swRenderDialog::~swRenderDialog()
 {
-	// the panels are kept where they are for the next time the window opens
+	// save the panel layout
 	if (mPanelWindow)
 	{
 		QSettings Settings;
@@ -964,7 +966,7 @@ bool swRenderDialog::PromptCancel()
 		mProcess->kill();
 	}
 
-	// cancelling stops the images of a batch still waiting too
+	// cancel waiting batch images
 	mJobs.clear();
 	mJobIndex = 0;
 	ui->RenderProgress->setFormat("%p%");
@@ -1004,7 +1006,7 @@ void swRenderDialog::RenderButtonClicked()
 		return;
 	}
 
-	// pov-ray and lgeo are set up before the first image like the parts library on the first start
+	// set up pov-ray and lgeo first
 	mPOVRayProgram = swFindPOVRay();
 
 	if (!mPOVRayProgram.Supported)
@@ -1026,7 +1028,7 @@ void swRenderDialog::RenderButtonClicked()
 		return;
 	}
 
-	// the batch has one image for each chosen step and camera
+	// one image per step and camera
 	const swModel* Model = swGetActiveProject()->GetModels()[0].get();
 	std::vector<swStep> Steps;
 
@@ -1138,7 +1140,7 @@ void swRenderDialog::RenderPOVRay()
 	if (swGetProfileInteger(SW_PROFILE_RENDER_TRANSPARENT))
 		Arguments.append("+UA");
 
-	// the region is given in pixels counted from one and a start at the first pixel as the fraction zero
+	// region in one based pixels
 	if (mJobRegion.isValid())
 	{
 		auto RegionStart = [](int Pixel)
@@ -1623,7 +1625,7 @@ void swRenderDialog::ShowResult()
 	{
 		if (mJobRegion.isValid() && !mImage.isNull())
 		{
-			// a region is placed into the image of the same size last saved under its file name
+			// place regions into the saved image
 			const QSize ImageSize(mWidth, mHeight);
 			QImage BaseImage = mResultFileName == FileName && mResultImage.size() == ImageSize ? mResultImage : QImage();
 
@@ -1713,7 +1715,7 @@ void swRenderDialog::SettingsButtonClicked()
 
 void swRenderDialog::LogButtonClicked()
 {
-	// the povray window shows its log in the log panel
+	// show the log in the log panel
 	if (mLogPanel)
 		return;
 

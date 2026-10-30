@@ -3,7 +3,7 @@
 #include "ui_sw_dialog_preferences.h"
 #include "sw_library.h"
 
-// Mouse shortcuts read like key sequences, with the button name after the modifiers.
+// mouse shortcuts read like keys
 static QString swGetMouseShortcutText(Qt::MouseButton Button, Qt::KeyboardModifiers Modifiers)
 {
 	QString Shortcut = QKeySequence(Modifiers).toString(QKeySequence::NativeText);
@@ -34,7 +34,7 @@ bool swPreferencesDialog::eventFilter(QObject* Object, QEvent* Event)
 	if (Object == ui->splitter->handle(1) && Event->type() == QEvent::MouseButtonRelease)
 		QTimer::singleShot(0, this, &swPreferencesDialog::SnapCategoriesTree);
 
-	// The mouse sequence field records the button and modifiers it is clicked with.
+	// record the clicked button
 	if (Object == ui->MouseShortcutEdit)
 	{
 		if (Event->type() == QEvent::MouseButtonPress || Event->type() == QEvent::MouseButtonDblClick)
@@ -197,7 +197,7 @@ void swPreferencesDialog::CommandChanged(QTreeWidgetItem* Current)
 	ui->shortcutEdit->setText(Key.toString(QKeySequence::NativeText));
 }
 
-// Shows the tree items whose text in any column contains the filter, with their categories.
+// filter the tree items
 static void swFilterShortcutTree(QTreeWidget* TreeWidget, const QString& Text)
 {
 	if (Text.isEmpty())
@@ -361,7 +361,7 @@ void swPreferencesDialog::ShortcutsResetClicked()
 	mOptions->KeyboardShortcutsDefault = true;
 }
 
-// The mouse tools show their menu names, grouped like the keyboard commands.
+// group mouse tools like commands
 static QString swGetToolText(int ToolIndex)
 {
 	return qApp->translate("Menu", gCommands[SW_EDIT_ACTION_FIRST + ToolIndex].MenuName).remove('&').remove(QLatin1String("..."));

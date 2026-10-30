@@ -162,7 +162,7 @@ protected:
 	swModelProperties mEndState;
 };
 
-// use to keep the edit of a submodel inside the undo entry of the model that changed it
+// Keeps submodel edits in one undo.
 class swModelHistorySubModel : public swModelHistory
 {
 public:

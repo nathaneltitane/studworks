@@ -10,7 +10,7 @@ enum class swInstructionsPageUnits
 	Inches
 };
 
-// use to get the points in one page unit and the unit suffix shown next to the values
+// Gets the points per page unit.
 float swGetPageUnitScale(swInstructionsPageUnits Units);
 QString swGetPageUnitSuffix(swInstructionsPageUnits Units);
 
@@ -58,7 +58,8 @@ enum class swInstructionsPropertyType
 	PLITextColor,
 	PLIBorderColor,
 	PLIBorderWidth,
-	// pli: spacing and margins, text alignment
+
+	// Parts list spacing and alignment.
 	PLIShowCounts,
 	PLISortOrder,
 	ShowStepDividers,
@@ -149,14 +150,14 @@ enum class swInstructionsPropertyType
 	Count
 };
 
-// the page number alone or with the page count
+// The page number with or without count.
 enum class swInstructionsPageNumberFormat
 {
 	Number,
 	NumberOfPages
 };
 
-// every page element is drawn in a box, the margin and padding surround its border and its background fills all of it
+// The box around every page element.
 enum class swInstructionsBoxElement
 {
 	StepImage,
@@ -179,7 +180,7 @@ struct swInstructionsBoxTypes
 	swInstructionsPropertyType BackgroundColor;
 };
 
-// use to get the properties of the box of an element, the parts list keeps its own border and background
+// Gets the box of an element.
 swInstructionsBoxTypes swGetBoxTypes(swInstructionsBoxElement Element);
 
 struct swInstructionsBoxStyle
@@ -190,14 +191,14 @@ struct swInstructionsBoxStyle
 	QColor BorderColor;
 	QColor BackgroundColor;
 
-	// the distance from the edge of the box to its content
+	// The box padding.
 	qreal GetInset() const
 	{
 		return Margin + BorderWidth + Padding;
 	}
 };
 
-// a pointer is a line or a callout wedge, ending in an arrowhead or a dot
+// A pointer line or callout.
 enum class swInstructionsPointerStyle
 {
 	Line,
@@ -210,7 +211,7 @@ enum class swInstructionsPointerTip
 	Dot
 };
 
-// what a step element is placed against, the area is the page or its part given to the step by the split
+// What a step element is placed against.
 enum class swInstructionsPlacementAnchor
 {
 	Area,
@@ -218,7 +219,7 @@ enum class swInstructionsPlacementAnchor
 	PartsList
 };
 
-// placements are cells of a grid around the anchor, numbered row by row, its inner cells lie inside the anchor
+// Placement cells around the anchor.
 constexpr int SW_PLACEMENT_GRID_SIZE = 5;
 constexpr int SW_PLACEMENT_COUNT = SW_PLACEMENT_GRID_SIZE * SW_PLACEMENT_GRID_SIZE;
 
@@ -230,7 +231,7 @@ inline bool swIsInsidePlacement(int Placement)
 	return Row > 0 && Row < SW_PLACEMENT_GRID_SIZE - 1 && Column > 0 && Column < SW_PLACEMENT_GRID_SIZE - 1;
 }
 
-// use to move a placement inside an area or outside an element, the nearest cell keeps its side
+// Moves a placement into an area.
 inline int swGetValidPlacement(int Placement, bool Inside)
 {
 	const int Last = SW_PLACEMENT_GRID_SIZE - 1;
@@ -254,7 +255,7 @@ inline int swGetValidPlacement(int Placement, bool Inside)
 			Row = Last;
 		else
 		{
-			// the center goes to the right of the element, aligned to its top
+			// Center goes right of the element.
 			Row = 1;
 			Column = Last;
 		}
@@ -263,7 +264,7 @@ inline int swGetValidPlacement(int Placement, bool Inside)
 	return Row * SW_PLACEMENT_GRID_SIZE + Column;
 }
 
-// the page elements that can be selected and moved, the placement panel places some of them
+// The selectable page elements.
 enum class swInstructionsPlacementElement
 {
 	None,
@@ -279,15 +280,15 @@ enum class swInstructionsPlacementElement
 	Pointer
 };
 
-// a moved element keeps its offset from its placement through page rebuilds
+// Moved elements keep their offset.
 using swInstructionsElementKey = std::tuple<swInstructionsPlacementElement, swModel*, swStep>;
 
-// the grid size is stored in points and shown in the margin units
+// The grid size in points.
 constexpr float SW_GRID_SIZE_MINIMUM = 2.0f;
 constexpr float SW_GRID_SIZE_MAXIMUM = 144.0f;
 constexpr int SW_GRID_DIVISIONS_MAXIMUM = 64;
 
-// the longer page side renders at least this many pixels, 300 dpi on a letter page
+// The minimum render size of a page.
 constexpr qreal SW_INSTRUCTIONS_RENDER_SIZE = 3300.0;
 
 struct swInstructionsProperty
@@ -317,10 +318,10 @@ enum class swInstructionsPageType
 
 using swInstructionsStepKey = std::pair<swModel*, swStep>;
 
-// notices and pointers belong to one page, found by its type, its first step and its rank among pages sharing them
+// The page notices and pointers belong to.
 using swInstructionsPageKey = std::tuple<swInstructionsPageType, swModel*, swStep, int>;
 
-// a notice is a free text box placed on a page
+// A free text box on a page.
 struct swInstructionsNotice
 {
 	int Id = 0;
@@ -329,7 +330,7 @@ struct swInstructionsNotice
 	QString Text;
 };
 
-// a pointer leaves the border of an element at one of its 8 anchors and points at a part, another element or a point of the page
+// A pointer from an element anchor.
 constexpr int SW_POINTER_ANCHOR_AUTO = -1;
 constexpr int SW_POINTER_ANCHOR_COUNT = 8;
 
@@ -351,7 +352,7 @@ struct swInstructionsPointer
 	int TargetPart = -1;
 	QPointF TipPosition;
 
-	// a pointer without its own style or tip follows the pointer properties
+	// Pointers default to the pointer properties.
 	int Style = -1;
 	int Tip = -1;
 };
@@ -370,7 +371,7 @@ struct swInstructionsModel
 	std::vector<swInstructionsProperties> StepProperties;
 };
 
-// the instructions are saved as meta commands of the main model, which names the models it refers to
+// The instructions are main model metas.
 void swRenameInstructionsModels(QStringList& CommandLines, const std::map<QString, QString>& Names);
 
 class swInstructions : public QObject
@@ -406,7 +407,7 @@ public:
 	void SetDefaultFont(swInstructionsPropertyType Type, const QFont& Font);
 	void ResetProperties();
 
-	// some properties can differ on a single page, the page keeps them through page layout changes
+	// Properties set on a single page.
 	static bool IsPageProperty(swInstructionsPropertyType Type);
 	bool HasPageProperty(size_t PageIndex, swInstructionsPropertyType Type) const;
 	void SetPageScope(size_t PageIndex, swInstructionsPropertyType Type, bool PageOnly);
@@ -415,7 +416,7 @@ public:
 	void SetPageInt(size_t PageIndex, swInstructionsPropertyType Type, int Value);
 	void SetPageColor(size_t PageIndex, swInstructionsPropertyType Type, const QColor& Color);
 
-	// the cover and the bill of materials have their own background, the other pages share one unless a page has its own
+	// Cover and parts list backgrounds.
 	QColor GetPageBackgroundColor(size_t PageIndex) const;
 
 	QPointF GetElementOffset(const swInstructionsElementKey& Key) const;
@@ -424,10 +425,10 @@ public:
 	void ResetElementOffset(const swInstructionsElementKey& Key);
 	void SetElementPlacement(swInstructionsPropertyType Type, int Placement, const swInstructionsElementKey& Key);
 
-	// the box of an element, the bill of materials uses the box of the parts list
+	// The box of an element.
 	swInstructionsBoxStyle GetBoxStyle(swInstructionsBoxElement Element, swModel* Model, swStep Step) const;
 
-	// notices and pointers stay on their page through page layout changes
+	// Notices and pointers stay on their page.
 	swInstructionsPageKey GetPageElementsKey(size_t PageIndex) const;
 
 	const std::vector<swInstructionsNotice>& GetNotices() const
@@ -452,13 +453,13 @@ public:
 	void SetPointerStyle(int Id, int Style, int Tip);
 	void RemovePointer(int Id);
 
-	// a locked element keeps its position on the page whatever its placement and is not dragged
+	// A locked element keeps its position.
 	bool IsElementLocked(const swInstructionsElementKey& Key) const;
 	QPointF GetLockedPosition(const swInstructionsElementKey& Key) const;
 	void LockElement(const swInstructionsElementKey& Key, const QPointF& Position);
 	void UnlockElement(const swInstructionsElementKey& Key, const QPointF& Offset);
 
-	// the page grid helps aligning elements on screen, it is never printed
+	// The page grid shows on screen only.
 	bool IsGridShown() const
 	{
 		return mShowGrid;
@@ -474,7 +475,7 @@ public:
 		return mGridSize;
 	}
 
-	// the grid size is the main unit, its divisions split it into the fractions dragged elements snap to
+	// The grid size and its divisions.
 	int GetGridDivisions() const
 	{
 		return mGridDivisions;
@@ -495,7 +496,7 @@ public:
 		return mGridSecondaryColor;
 	}
 
-	// the grid covers the area inside the margins or the full page, it starts at the margins or the page corner
+	// The area the grid covers.
 	bool IsGridWithinMargins() const
 	{
 		return mGridWithinMargins;
@@ -503,7 +504,7 @@ public:
 
 	QRectF GetGridRect() const;
 
-	// the margins are outlined on screen like the grid, they are never printed
+	// The margins show on screen only.
 	bool IsMarginsShown() const
 	{
 		return mShowMargins;
@@ -515,10 +516,10 @@ public:
 	}
 
 
-	// every length shown in the instructions uses the margin units of the page setup
+	// Lengths use the margin units.
 	swInstructionsPageUnits GetPageUnits() const;
 
-	// the document units replace the page units and every unit chosen for a single value
+	// The document units replace page units.
 	std::optional<swInstructionsPageUnits> GetDocumentUnits() const;
 
 	void SetShowGrid(bool ShowGrid);
@@ -590,7 +591,7 @@ protected:
 
 	static const float mDisplayDPI;
 
-	// the default blank pages after the cover and before the bill of materials are keyed apart from the steps
+	// Keys of the default blank pages.
 	static const swInstructionsStepKey mCoverBlankKey;
 	static const swInstructionsStepKey mBillOfMaterialsBlankKey;
 };

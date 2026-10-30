@@ -174,10 +174,7 @@ public:
 
 	float GetOrthoHeight() const
 	{
-		// Compute the FOV/plane intersection radius.
-		//                d               d
-		//   a = 2 atan(------) => ~ a = --- => d = af
-		//                2f              f
+		// Computes the fov plane radius.
 		const float f = (mPosition - mTargetPosition).Length();
 		return (m_fovy * f) * (SW_PI / 180.0f);
 	}

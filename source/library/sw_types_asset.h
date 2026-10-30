@@ -8,9 +8,7 @@ struct swEmbeddedData;
 enum class swStudStyle;
 enum class swZipFileType;
 
-// Scoped asset reference. Construction from a borrowed pointer and copying retain;
-// moving transfers ownership. Use and destroy on the UI thread before library unload.
-// Ownership operations are instantiated for part definitions and textures in the cpp.
+// Scoped asset reference.
 template<typename T>
 class swAssetReference
 {
@@ -79,7 +77,7 @@ public:
 		return !(Left == RightRef);
 	}
 
-	// True when nonempty and another reference exists. Query on the UI thread.
+	// True when shared with another reference.
 	bool HasOtherReferences() const;
 
 	void Reset();
@@ -90,7 +88,8 @@ private:
 	friend class swPartsLibrary;
 
 	swAssetReference(T* Asset, swPartsLibrary* Library);
-	// The library uses this only for a reference it has already acquired.
+
+	// Only for an acquired reference.
 	static swAssetReference Adopt(T* Asset, swPartsLibrary* Library);
 	static void Retain(T* Asset, swPartsLibrary* Library);
 	static void Release(T* Asset, swPartsLibrary* Library);
@@ -111,17 +110,20 @@ enum class swAssetState
 	Failed
 };
 
-// Scheduling urgency only. Use the library's wait APIs for synchronous loading.
-// Queued requests only promote and keep their priority until completion or cancellation.
+// Scheduling urgency only.
 enum class swLoadPriority
 {
-	Low,      // Background work, such as thumbnails and settings rebuilds.
-	Normal,   // Visible or interactive work.
-	Blocking  // Assets required by a synchronous operation.
+	// Background work.
+	Low,
+
+	// Visible or interactive work.
+	Normal,
+
+	// Synchronous work.
+	Blocking
 };
 
-// A resolved disk path, archive entry, or embedded file. Copying it does not
-// snapshot file contents; workers open their own file from the copied source.
+// A resolved file source.
 struct swFileSource
 {
 	bool operator==(const swFileSource& Other) const
@@ -149,7 +151,7 @@ enum class swTextureLoadError
 	UploadFailed
 };
 
-// Copied on the UI thread so workers do not consult live models or project lookup.
+// Ui thread snapshot for workers.
 struct swPartSourceSnapshot
 {
 	swPartSourceSnapshot();
@@ -167,7 +169,7 @@ struct swPartSourceSnapshot
 	bool StudCylinderColorEnabled = false;
 };
 
-// Private worker output; meshes and dependencies are published only on the UI thread.
+// Private worker output.
 struct swPartBuildResult
 {
 	swPartBuildResult();
@@ -184,7 +186,7 @@ struct swPartBuildResult
 	QString Error;
 };
 
-// Image pixels and any error produced while preparing a texture.
+// Image pixels and any error.
 struct swTextureBuildResult
 {
 	swTextureBuildResult() = default;

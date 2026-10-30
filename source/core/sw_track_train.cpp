@@ -6,14 +6,7 @@
 #include "sw_model.h"
 #include "sw_application.h"
 
-// todo:
-// when moving existing parts:
-//   need to check for parts intersecting instead of mouse intersection because it's hard to connect tracks
-//   look into the snapping that happens when there are no available connections
-//   fix comments in UpdateFreeMoveTool
-// hide some of the 12v tracks to avoid bloat
-// auto replace cross when going over a straight section
-// set focus connection after adding
+// todo test part intersections when moving
 
 std::map<size_t, swPartData*> swTrainTrackInformation::mSleepers;
 
@@ -295,6 +288,7 @@ std::optional<swMatrix44> swTrainTrackInformation::GetConnectionTransform(swPart
 //	{
 		Transform = swMatrix44AffineInverse(NewTrackInfo->mConnections[NewConnectionIndex].Transform);
 		Transform = swMultiply(Transform, swMatrix44RotationZ(SW_PI));
+
 //	}
 
 	Transform = swMultiply(Transform, CurrentTrackInfo->GetConnections()[CurrentConnectionIndex].Transform);
@@ -317,6 +311,7 @@ std::optional<swMatrix44> swTrainTrackInformation::CalculateTransformToConnectio
 //	else
 //	{
 		Transform = swMatrix44AffineInverse(TrackInfo->mConnections[ConnectionIndex].Transform);
+
 //		Transform = swMultiply(Transform, swMatrix44RotationZ(SW_PI));
 //	}
 

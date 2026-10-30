@@ -2,15 +2,15 @@
 
 #include "sw_parser_shadow.h"
 
-// The connection shapes of library parts, read from the LDCad shadow library and inherited from their sub-files.
+// Part connection shapes from the shadow library.
 class swShadowLibrary
 {
 public:
-	// An empty path, or one without a shadow library, leaves all parts without connection shapes.
+	// No shadow library means no shapes.
 	static bool SetPath(const QString& Path);
 	static bool IsLoaded();
 
-	// PartName is a library file name such as "3001.dat" or "s/3001s01.dat".
+	// Part name as a library file name.
 	static const std::vector<swConnectionCylinder>& GetCylinders(const char* PartName);
 
 private:

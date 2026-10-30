@@ -165,7 +165,7 @@ public:
 		mMeshLoader = MeshLoader;
 	}
 
-	// Build private geometry with color codes; the UI thread calls FinalizeSections().
+	// Builds private geometry with color codes.
 	swMesh* CreateMesh(const std::atomic_bool* Cancelled);
 	void AddVertices(swMeshDataType MeshDataType, size_t VertexCount, int* BaseVertex, swMeshLoaderVertex** VertexBuffer);
 	void AddIndices(swMeshDataType MeshDataType, swMeshPrimitiveType PrimitiveType, quint32 ColorCode, size_t IndexCount, quint32** IndexBuffer);

@@ -356,7 +356,7 @@ swFileSource swPartsLibrary::ResolveTextureSource(const char* TextureName, const
 	const QString Candidates[] = { QLatin1String("textures/") + Name, Name };
 	const QString Folders[] = { QStringLiteral("p/"), QStringLiteral("parts/"), QStringLiteral("models/"), QStringLiteral("unofficial/p/"), QStringLiteral("unofficial/parts/") };
 
-	// Complete the prefixed search before considering any unprefixed location.
+	// finish prefixed paths first
 	for (const QString& Candidate : Candidates)
 	{
 		QString EmbeddedName = Candidate + QLatin1String(".png");
@@ -402,7 +402,7 @@ swFileSource swPartsLibrary::ResolveTextureSource(const char* TextureName, const
 				}
 			}
 
-			// folder libraries also read the unofficial archive
+			// folders also read the unofficial archive
 			if (ArchiveLibrary || (Unofficial && mZipFiles[static_cast<int>(swZipFileType::Unofficial)]))
 			{
 				const int Type = static_cast<int>(Unofficial ? swZipFileType::Unofficial : swZipFileType::Official);
@@ -480,7 +480,7 @@ swTextureBuildResult swPartsLibrary::BuildTextureData(const swFileSource& Source
 	return Result;
 }
 
-// use to read the original image file of a texture
+// use to read a texture image file
 QByteArray swPartsLibrary::ReadTextureFile(const swTexture* Texture)
 {
 	const swResult<std::unique_ptr<swFile>> File = OpenFile(Texture->mSource);
@@ -532,8 +532,7 @@ swResult<std::unique_ptr<swFile>> swPartsLibrary::OpenFile(const swFileSource& S
 
 	std::unique_ptr<swMemoryFile> File(new swMemoryFile);
 
-	// Source archives are stable until workers are drained; extraction locks
-	// the selected archive internally without serializing unrelated archives.
+	// archives stay until workers drain
 	const std::unique_ptr<swZipFile>& Archive = mZipFiles[Source.ArchiveType];
 
 	if (!Archive || static_cast<size_t>(Source.ArchiveIndex) >= Archive->mFiles.size())
@@ -944,7 +943,7 @@ bool swPartsLibrary::OpenArchive(std::unique_ptr<swFile> File, swZipFileType Zip
 			{
 				swPartData* PartData = FindPartData(Name, nullptr);
 
-				// Unofficial additions must not replace registered official or folder parts.
+				// unofficial parts never replace official ones
 				if (PartData && ZipFileType == swZipFileType::Unofficial && PartData->IsLibraryPart() && PartData->mZipFileType != swZipFileType::Unofficial)
 					continue;
 
@@ -1038,7 +1037,7 @@ bool swPartsLibrary::OpenDirectory(const QDir& LibraryDir, bool ShowProgress)
 
 		mSources.emplace_back(std::move(Source));
 
-		// Index PNG paths once; UI-thread texture lookup must not enumerate library folders.
+		// index png paths once
 		const char* TextureDirectories[] = { "p/", "parts/", "models/" };
 
 		for (const char* TextureDirectory : TextureDirectories)
@@ -1056,7 +1055,7 @@ bool swPartsLibrary::OpenDirectory(const QDir& LibraryDir, bool ShowProgress)
 		}
 	}
 
-	// the unofficial archive adds the parts the folders lack
+	// unofficial archive fills the gaps
 	if (OpenArchive(GetUnofficialArchiveFileName(), swZipFileType::Unofficial))
 	{
 		mHasUnofficial = true;
@@ -1070,7 +1069,7 @@ void swPartsLibrary::ReleaseBuffers()
 {
 	mBuffersDirty = true;
 
-	// Library-only loading can finish without creating a renderer or shared buffers.
+	// library only loading needs no renderer
 	if (!mVertexBuffer.IsValid() && !mIndexBuffer.IsValid())
 		return;
 
@@ -1230,8 +1229,7 @@ void swPartsLibrary::UpdateStudStyleAndColors(swStudStyle StudStyle, bool StudCy
 	if (mStudStyle == StudStyle && mStudCylinderColorEnabled == StudCylinderColorEnabled)
 		return;
 
-	// Finish running workers before changing shared primitive data and colors.
-	// Queued requests resume with the new settings afterward.
+	// finish workers before shared changes
 	mAssetLoader->PauseQueuedWork();
 
 	mStudStyle = StudStyle;
@@ -1418,14 +1416,16 @@ swResult<void> swPartsLibrary::LoadPrimitiveData(swLibraryPrimitive* Primitive)
 
 	if (mZipFiles[static_cast<int>(swZipFileType::Official)] && Primitive->mStud && !Primitive->mStudStyle)
 	{
-		if (strncmp(Primitive->mName, "8/", 2)) // todo: low LOD for loose file libraries
+		// todo low lod for folder libraries
+		if (strncmp(Primitive->mName, "8/", 2))
 		{
 			char Name[SW_PART_NAME_LENGTH];
 			swstrcpy(Name, "8/");
 			swstrcat(Name, Primitive->mName);
 			swstrupr(Name);
 
-			LowPrimitive = FindPrimitive(Name); // todo: low primitives don't work with studlogo
+			// todo low primitives with studlogo
+			LowPrimitive = FindPrimitive(Name);
 		}
 	}
 
@@ -1459,7 +1459,7 @@ swResult<void> swPartsLibrary::LoadPrimitiveData(swLibraryPrimitive* Primitive)
 
 bool swPartsLibrary::PartDataInCategory(swPartData* PartData, const char* CategoryKeywords) const
 {
-	// sub parts and aliases are never listed in a category
+	// sub parts and aliases are unlisted
 	if (!PartData->IsLibraryPart() || PartData->IsSubPart() || PartData->IsAlias())
 		return false;
 
@@ -1494,14 +1494,14 @@ void swPartsLibrary::GetCategoryEntries(const char* CategoryKeywords, bool Group
 			continue;
 		}
 
-		// Check if it's a patterned part.
+		// patterned part
 		if (PartData->IsDecorated())
 		{
 			swPartData* Parent = FindPartData(PartData->GetPatternParentId().c_str(), nullptr);
 
 			if (Parent)
 			{
-				// Check if the parent was added as a single part.
+				// parent added as a single part
 				auto ParentIt = std::find(SingleParts.begin(), SingleParts.end(), Parent);
 
 				if (ParentIt != SingleParts.end())
@@ -1512,13 +1512,13 @@ void swPartsLibrary::GetCategoryEntries(const char* CategoryKeywords, bool Group
 			}
 			else
 			{
-				// Decorations without a plain parent remain individual entries.
+				// decorations without a parent stay separate
 				SingleParts.emplace_back(PartData);
 			}
 		}
 		else
 		{
-			// Check if this part has already been added to this category by one of its children.
+			// skip parts added by a child
 			if (std::find(GroupedParts.begin(), GroupedParts.end(), PartData) == GroupedParts.end())
 				SingleParts.emplace_back(PartData);
 		}
@@ -1564,7 +1564,7 @@ std::string swPartsLibrary::GetPartId(const swPartData* PartData) const
 	return mPartManager->GetLibraryPartDataName(PartData);
 }
 
-// use to set up the defaults without a parts library
+// use to set the defaults without a library
 void swPartsLibrary::LoadEmptyLibrary()
 {
 	Unload();

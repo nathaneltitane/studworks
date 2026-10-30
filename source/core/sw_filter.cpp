@@ -126,12 +126,15 @@ bool swFilter::Match(const char* String) const
 //
 bool swFilter::FastWildCompare(const char* Tame, const char* Wild)
 {
-    const char* WildSequence;  // Points to prospective wild string match after '*'
-    const char* TameSequence;  // Points to prospective tame string match
+    // wild string match after the star
+    const char* WildSequence;
+
+    // tame string match
+    const char* TameSequence;
 
 	auto NotEquals=[](char a, char b)
 	{
-			 // Lowercase the characters to be compared.
+			 // lowercase the compared characters
                 if (a >= 'A' && a <= 'Z')
                     a += ('a' - 'A');
 
@@ -141,11 +144,10 @@ bool swFilter::FastWildCompare(const char* Tame, const char* Wild)
 		return a != b;
 	};
 
-    // Find a first wildcard, if one exists, and the beginning of any
-    // prospectively matching sequence after it.
+    // find the first wildcard
     do
     {
-        // Check for the end from the start.  Get out fast, if possible.
+        // check for the end first
         if (!*Tame)
         {
             if (*Wild)
@@ -154,20 +156,23 @@ bool swFilter::FastWildCompare(const char* Tame, const char* Wild)
                 {
                     if (!(*Wild))
                     {
-                        return true;   // "ab" matches "ab*".
+                        // ab matches ab star
+                        return true;
                     }
                 }
 
-                return false;          // "abcd" doesn't match "abc".
+                // abcd does not match abc
+                return false;
             }
             else
             {
-                return true;           // "abc" matches "abc".
+                // abc matches abc
+                return true;
             }
         }
         else if (*Wild == '*')
         {
-            // Got wild: set up for the second loop and skip on down there.
+            // wildcard found, go to the second loop
             while (*(++Wild) == '*')
             {
                 continue;
@@ -175,41 +180,45 @@ bool swFilter::FastWildCompare(const char* Tame, const char* Wild)
 
             if (!*Wild)
             {
-                return true;           // "abc*" matches "abcd".
+                // abc star matches abcd
+                return true;
             }
 
-            // Search for the next prospective match.
+            // search for the next match
             if (*Wild != '?')
             {
                 while (NotEquals(*Wild, *Tame))
                 {
                     if (!*(++Tame))
                     {
-                        return false;  // "a*bc" doesn't match "ab".
+                        // a star bc does not match ab
+                        return false;
                     }
                 }
             }
 
-            // Keep fallback positions for retry in case of incomplete match.
+            // keep fallback positions
             WildSequence = Wild;
             TameSequence = Tame;
             break;
         }
         else if (NotEquals(*Wild, *Tame) && *Wild != '?')
         {
-            return false;              // "abc" doesn't match "abd".
+            // abc does not match abd
+            return false;
         }
 
-        ++Wild;                       // Everything's a match, so far.
+        // everything matches so far
+        ++Wild;
         ++Tame;
     } while (true);
 
-    // Find any further wildcards and any further matching sequences.
+    // find further wildcards and matches
     do
     {
         if (*Wild == '*')
         {
-            // Got wild again.
+            // wildcard found again
             while (*(++Wild) == '*')
             {
                 continue;
@@ -217,39 +226,43 @@ bool swFilter::FastWildCompare(const char* Tame, const char* Wild)
 
             if (!*Wild)
             {
-                return true;           // "ab*c*" matches "abcd".
+                // ab star c star matches abcd
+                return true;
             }
 
             if (!*Tame)
             {
-                return false;          // "*bcd*" doesn't match "abc".
+                // star bcd star does not match abc
+                return false;
             }
 
-            // Search for the next prospective match.
+            // search for the next match
             if (*Wild != '?')
             {
                 while (NotEquals(*Wild, *Tame))
                 {
                     if (!*(++Tame))
                     {
-                        return false;  // "a*b*c" doesn't match "ab".
+                        // a star b star c does not match ab
+                        return false;
                     }
                 }
             }
 
-            // Keep the new fallback positions.
+            // keep the new fallback positions
             WildSequence = Wild;
             TameSequence = Tame;
         }
         else if (NotEquals(*Wild, *Tame) && *Wild != '?')
         {
-            // The equivalent portion of the upper loop is really simple.
+            // same as the upper loop
             if (!*Tame)
             {
-                return false;          // "*bcd" doesn't match "abc".
+                // star bcd does not match abc
+                return false;
             }
 
-            // A fine time for questions.
+            // check the match
             while (*WildSequence == '?')
             {
                 ++WildSequence;
@@ -258,32 +271,36 @@ bool swFilter::FastWildCompare(const char* Tame, const char* Wild)
 
             Wild = WildSequence;
 
-            // Fall back, but never so far again.
+            // fall back once
             while (NotEquals(*Wild, *(++TameSequence)))
             {
                 if (!*TameSequence)
                 {
-                    return false;      // "*a*b" doesn't match "ac".
+                    // star a star b does not match ac
+                    return false;
                 }
             }
 
             Tame = TameSequence;
         }
 
-        // Another check for the end, at the end.
+        // check for the end again
         if (!*Tame)
         {
             if (!*Wild)
             {
-                return true;           // "*bc" matches "abc".
+                // star bc matches abc
+                return true;
             }
             else
             {
-                return false;          // "*bc" doesn't match "abcd".
+                // star bc does not match abcd
+                return false;
             }
         }
 
-        ++Wild;                       // Everything's still a match.
+        // everything still matches
+        ++Wild;
         ++Tame;
     } while (true);
 }

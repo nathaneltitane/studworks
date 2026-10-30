@@ -77,7 +77,7 @@ swResult<void> Project::ExportCurrentStep(const QString& FileName)
 	if (!Bytes)
 		return swUnexpected(Bytes.error());
 
-	// The Blender add-on reads LeoCAD meta commands.
+	// the blender add-on reads leocad metas
 	const QByteArray Output = swWriteCommandMeta(Bytes.value(), swCommandMetaFormat::LeoCAD);
 	QSaveFile File(FileName);
 
@@ -968,7 +968,7 @@ swResult<void> Project::ExportHTML(const swHTMLExportOptions& Options)
 			SafeName = SafeName.left(60) + '-' + QString::fromLatin1(Digest.left(16));
 		}
 
-		// Windows reserves device names even when a file has an extension.
+		// windows reserves device names
 		const QString UpperName = SafeName.toUpper();
 		const bool NumberedDevice = UpperName.size() == 4 && (UpperName.startsWith(QLatin1String("COM")) || UpperName.startsWith(QLatin1String("LPT"))) &&
 			UpperName[3] >= QLatin1Char('1') && UpperName[3] <= QLatin1Char('9');
@@ -1333,12 +1333,12 @@ swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* Ex
 
 	const bool AreaLights = std::any_of(Lights.begin(), Lights.end(), [](const std::unique_ptr<swLight>& Light) { return Light->GetLightType() == swLightType::Area; });
 
-	// area lit scenes default to a brighter white floor unless the model sets its own
+	// area lit scenes get a white floor
 	const swVector3 FloorColor = POVRayOptions.FloorColor.value_or(AreaLights ? swVector3(1.0f, 1.0f, 1.0f) : swVector3(0.8f, 0.8f, 0.8f));
 	const float FloorAmbient = POVRayOptions.FloorAmbient.value_or(AreaLights ? 0.0f : 0.4f);
 	const float FloorDiffuse = POVRayOptions.FloorDiffuse.value_or(AreaLights ? 0.9f : 0.4f);
 
-	// ldraw x y z map to pov-ray y z x with the floor on the low side
+	// ldraw xyz to pov-ray yzx
 	const char* FloorAxis = POVRayOptions.FloorAxis == 0 ? "y" : POVRayOptions.FloorAxis == 2 ? "x" : "z";
 	const char* FloorLocation = POVRayOptions.FloorAxis == 0 ? "MinY" : POVRayOptions.FloorAxis == 2 ? "MinX" : "MinZ";
 
@@ -1394,7 +1394,7 @@ swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* Ex
 			FloorAxis, FloorLocation, FloorColor[0], FloorColor[1], FloorColor[2], FloorAmbient, FloorDiffuse, (POVRayOptions.ExcludeFloor || Transparent ? "false" : "true"), FloorStyle);
 	POVFile.WriteLine(Line.toUtf8().constData());
 
-	// quality picks the radiosity preset and the area light sampling
+	// quality sets radiosity and light sampling
 	POVFile.WriteLine(QString::fromLatin1(
 		"#ifndef (RenderQuality) #declare RenderQuality = %1; #end\n"
 		"#ifndef (Radiosity) #declare Radiosity = (RenderQuality > 0); #end\n"
@@ -1492,7 +1492,7 @@ swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* Ex
 			static_cast<int>(swLightType::Point), static_cast<int>(swLightType::Spot), static_cast<int>(swLightType::Directional), static_cast<int>(swLightType::Area));
 	POVFile.WriteLine(Line.toUtf8().constData());
 
-	// every color finish is a texture macro wrapped in a material that carries its interior
+	// wrap color finishes in materials
 	POVFile.WriteLine(
 		"#ifndef (SkipColorMacros)\n"
 		"#macro OpaqueTexture(r, g, b, E)\n"
@@ -1559,7 +1559,7 @@ swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* Ex
 		"#end\n"
 		"#end\n\n");
 
-	// an environment image wraps the scene and lights it through radiosity
+	// an environment image lights the scene
 	if (!EnvironmentImage.isEmpty())
 	{
 		const QString Suffix = QFileInfo(EnvironmentImage).suffix().toLower();
@@ -1579,7 +1579,7 @@ swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* Ex
 	else
 		POVFile.WriteLine("#if (Background)\n  background {\n    color rgb BackgroundColor\n  }\n#end\n\n");
 
-	// orthographic views keep the visible height of the view, perspective views turn its vertical field of view into the horizontal angle povray uses
+	// match the view height or angle
 	POVFile.WriteLine(QString(
 		"#ifndef (Skip%1)\n"
 		"  camera {\n"
@@ -1613,7 +1613,7 @@ swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* Ex
 	swLightType LightType = swLightType::Area;
 	float Power = 0.0f, FadeDistance = 0.0f, FadePower = 0.0f, SpotRadius = 0.0f, SpotFalloff = 0.0f, SpotTightness = 0.0f;
 
-	// models without lights get the chosen rig placed around the camera side of the model
+	// place a light rig for unlit models
 	if (Lights.empty())
 	{
 		POVFile.WriteLine(
@@ -1745,14 +1745,14 @@ swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* Ex
 
 				if (Entry != PartTable.end() && Entry->second.first[0])
 				{
-					// The external include declares both the base object and its slope surface.
+					// declare the base object and slope
 					Entry->second.second |= LGEO_PART_SLOPE;
 				}
 			}
 		}
 	}
 
-	// lgeo parts only bring geometry, colors keep the gamma correct finishes below
+	// lgeo parts bring geometry only
 	auto AddColorDefinition=[&ColorTable, &POVFile](int ColorIndex)
 	{
 		if (ColorTable[ColorIndex][0])
@@ -1766,7 +1766,8 @@ swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* Ex
 		const QString Name = QLatin1String(ColorTable[ColorIndex].data());
 		const QString Rgb = QString::fromLatin1("%1, %2, %3").arg(Color->Value[0]).arg(Color->Value[1]).arg(Color->Value[2]);
 		const float Filter = Color->Translucent ? 0.85f : 0.0f;
-		// nearly opaque colors like glow in the dark only let a little light through
+
+		// nearly opaque colors pass little light
 		const QString FilterValue = Color->Value[3] < 0.9f ? QString::fromLatin1("TransFilter") : QString::number(1.0f - Color->Value[3]);
 		const float Emission = qMin(Color->Luminance / 100.0f, 1.0f);
 		const QString Glow = QString::fromLatin1("Glow * %1").arg(Emission);
@@ -1779,7 +1780,7 @@ swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* Ex
 			const QString FilterName = Color->Translucent ? FilterValue : QLatin1String("0");
 			Surface = QString::fromLatin1("FlakeTexture(%1, %2, %3, %4, %5, %6)").arg(Rgb, FilterName).arg(Color->MaterialFraction).arg(Size).arg(Flake, Glow);
 
-			// decals can only layer over a plain texture so the flakes stay in the material
+			// keep flakes in the material
 			if (Color->Translucent)
 				Texture = QString::fromLatin1("TranslucentTexture(%1, %2, %3)").arg(Rgb, FilterValue, Glow);
 			else
@@ -1812,7 +1813,7 @@ swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* Ex
 	{
 		AddColorDefinition(ModelPart.ColorIndex);
 
-		// colors fixed inside the part mesh need a declaration too
+		// declare colors fixed in the mesh
 		const swMesh* Mesh = ModelPart.Mesh ? ModelPart.Mesh : ModelPart.PartData->GetMesh();
 
 		if (Mesh)
@@ -1864,7 +1865,7 @@ swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* Ex
 	const QFileInfo SaveFileInfo(SaveFileName);
 	const QDir TextureDir(SaveFileInfo.absolutePath() + QLatin1Char('/') + SaveFileInfo.completeBaseName() + QLatin1String("_textures"));
 
-	// copy the images of printed parts next to the scene so pov-ray can map them
+	// copy printed part images
 	for (const swModelPartsEntry& ModelPart : ModelParts)
 	{
 		const swMesh* Mesh = ModelPart.Mesh ? ModelPart.Mesh : ModelPart.PartData->GetMesh();
@@ -1960,7 +1961,7 @@ swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* Ex
 		POVFile.WriteLine(Line.toUtf8().constData());
 	}
 
-	// a printed mesh joins its plain faces with the decal macro called for the instance color
+	// join plain faces with the decal macro
 	auto InstanceObject = [&MeshFlags, &ColorTable](const char* Name, const char* Suffix, const swMesh* Mesh, int ColorIdx)
 	{
 		const std::map<const swMesh*, int>::const_iterator Flags = MeshFlags.find(Mesh);
@@ -2035,7 +2036,7 @@ swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* Ex
 		POVFile.WriteLine(Line.toUtf8().constData());
 	}
 
-	// shadow catcher matches the background where lit, cyclorama fades into it with distance
+	// shadow catcher and cyclorama floors
 	POVFile.WriteLine(
 		"#if (Floor)\n"
 		"  #local FloorTexture = texture { pigment { srgb FloorColor } finish { emission 0 ambient FloorAmbient diffuse FloorDiffuse } }\n"

@@ -494,7 +494,9 @@ swBlenderPreferences::swBlenderPreferences(int Width, int Height, double Scale, 
 	{
 		mModulesBox->setEnabled(false);
 		mAddonUpdateButton->setEnabled(true);
-		mImportActBox->setChecked(true); // default addon module
+
+		// default addon module
+		mImportActBox->setChecked(true);
 	}
 	else
 	{
@@ -604,7 +606,7 @@ void swBlenderPreferences::InitPathsAndSettings()
 	if (!NumSettings())
 		LoadSettings();
 
-	// Paths
+	// paths
 	ClearGroupBox(mPathsBox);
 	mPathsBox = new QGroupBox(mContent);
 	mPathsBox->setTitle(tr("LDraw Import TN Add-on Paths"));
@@ -615,7 +617,8 @@ void swBlenderPreferences::InitPathsAndSettings()
 
 	for (int CtlIdx = 1/*skip blender executable*/; CtlIdx < NumPaths(); ++CtlIdx)
 	{
-		int ColumnIdx = CtlIdx - 1; // adjust for skipping first item - blender executable
+		// skip the blender executable item
+		int ColumnIdx = CtlIdx - 1;
 		bool IsVisible = CtlIdx != PATH_STUDIO_LDRAW;
 		QLabel* PathLabel = new QLabel(mBlenderPaths[CtlIdx].label, mPathsBox);
 		PathLabel->setToolTip(mBlenderPaths[CtlIdx].tooltip);
@@ -653,7 +656,7 @@ void swBlenderPreferences::InitPathsAndSettings()
 
 	mPathsBox->setEnabled(mConfigured);
 
-	// Settings
+	// settings
 	ClearGroupBox(mSettingsBox);
 	mSettingsBox = new QGroupBox(mContent);
 	mSettingsSubform = new QFormLayout(mSettingsBox);
@@ -761,7 +764,7 @@ void swBlenderPreferences::InitPathsAndSettingsMM()
 	if (!NumSettingsMM())
 		LoadSettings();
 
-	// Paths
+	// paths
 	ClearGroupBox(mPathsBox);
 	mPathsBox = new QGroupBox(mContent);
 	mPathsBox->setTitle(tr("LDraw Import MM Add-on Paths"));
@@ -772,7 +775,8 @@ void swBlenderPreferences::InitPathsAndSettingsMM()
 
 	for (int CtlIdx = 1/*skip blender executable*/; CtlIdx < NumPaths(); ++CtlIdx)
 	{
-		int ColumnIdx = CtlIdx - 1; // adjust for skipping first item - blender executable
+		// skip the blender executable item
+		int ColumnIdx = CtlIdx - 1;
 		bool IsVisible = CtlIdx != PATH_LSYNTH && CtlIdx != PATH_STUD_LOGO;
 		QLabel* PathLabel = new QLabel(mBlenderPaths[CtlIdx].label, mPathsBox);
 		PathLabel->setToolTip(mBlenderPaths[CtlIdx].tooltip);
@@ -810,7 +814,7 @@ void swBlenderPreferences::InitPathsAndSettingsMM()
 
 	mPathsBox->setEnabled(mConfigured);
 
-	// Settings
+	// settings
 	ClearGroupBox(mSettingsBox);
 	mSettingsBox = new QGroupBox(mContent);
 	mSettingsSubform = new QFormLayout(mSettingsBox);
@@ -1062,7 +1066,8 @@ void swBlenderPreferences::ConfigureBlenderAddon(bool TestBlender, bool AddonUpd
 						{
 							mBlenderVersion = mBlenderVersion.trimmed().prepend("v").append(")");
 							mBlenderVersionEdit->setText(mBlenderVersion);
-							// set default LDraw import module if not configured
+
+							// set the default ldraw import module
 							if (!mImportActBox->isChecked() && !mImportMMActBox->isChecked())
 								mImportActBox->setChecked(true);
 							Message = tr("Blender %1 process completed. Version: %2 validated.").arg(ProcessAction, mBlenderVersion);
@@ -1170,7 +1175,8 @@ void swBlenderPreferences::ConfigureBlenderAddon(bool TestBlender, bool AddonUpd
 
 			if (TestBlender)
 			{
-				const QString preferredImportModule = mImportActBox->isChecked() ? QString("TN") : mImportMMActBox->isChecked() ? QString("MM") : QString();  // disable all import modules
+				// disable all import modules
+				const QString preferredImportModule = mImportActBox->isChecked() ? QString("TN") : mImportMMActBox->isChecked() ? QString("MM") : QString();
 				swSetProfileString(SW_PROFILE_BLENDER_IMPORT_MODULE, preferredImportModule);
 			}
 			else
@@ -1380,7 +1386,9 @@ int swBlenderPreferences::GetBlenderAddon(const QString& BlenderDir)
 
 	using namespace std;
 	auto VersionStringCompare = [](string V1, string V2)
-	{   // Returns 1 if V2 is smaller, -1 if V1 is smaller, 0 if equal
+
+	// compare versions
+	{
 		int Vnum1 = 0, Vnum2 = 0;
 		for (quint32 i = 0, j = 0; (i < V1.length() || j < V2.length());)
 		{
@@ -1422,7 +1430,9 @@ int swBlenderPreferences::GetBlenderAddon(const QString& BlenderDir)
 		else
 		{
 			QMessageBox::warning(this, tr("Check for Blender Add-on Updates"), tr("Check latest add-on version failed."));
-			return true; // Reload existing archive
+
+			// reload the existing archive
+			return true;
 		}
 
 		QByteArray Ba;
@@ -1450,7 +1460,9 @@ int swBlenderPreferences::GetBlenderAddon(const QString& BlenderDir)
 			if (Ba.isEmpty())
 			{
 				QMessageBox::warning(this, tr("Update Blender Add-on"), tr("Cannot read add-on archive version file: '%1'.").arg(VersionFile));
-				return false; // Download new archive
+
+				// download a new archive
+				return false;
 			}
 		}
 		else
@@ -1459,7 +1471,9 @@ int swBlenderPreferences::GetBlenderAddon(const QString& BlenderDir)
 			if (!File.open(QIODevice::ReadOnly))
 			{
 				QMessageBox::warning(this, tr("Update Blender Add-on"), tr("Cannot read add-on version file: '%1'<br>%2.").arg(AddonVersionFile, File.errorString()));
-				return false; // Download new archive
+
+				// download a new archive
+				return false;
 			}
 			Ba = File.readAll();
 			File.close();
@@ -1479,12 +1493,15 @@ int swBlenderPreferences::GetBlenderAddon(const QString& BlenderDir)
 
 		if (!LocalVersion.isEmpty() && !OnlineVersion.isEmpty())
 		{
-			// localVersion is smaller than onlineVersion so prompt to download new archive
+			// prompt for the newer archive
 			if (VersionStringCompare(LocalVersion.toStdString(), OnlineVersion.toStdString()) < 0)
-				return false; // Download new archive
+
+				// download a new archive
+				return false;
 		}
 
-		return true; // Reload existing archive
+		// reload the existing archive
+		return true;
 	};
 
 	if (BlenderAddonValidated)
@@ -2172,9 +2189,9 @@ bool swBlenderPreferences::SettingsModified(bool Update, const QString& Module)
 						LblIdx++;
 				}
 			}
-			// lineedits
 			else if (LblIdx < LBL_CHOSEN_LOGO)
 			{
+				// lineedits
 				for (int CtlIdx = 0; CtlIdx < gAddonPreferences->mLineEditList.size(); CtlIdx++)
 				{
 					if (CtlIdx == CTL_RESOLUTION_WIDTH_EDIT)
@@ -2234,9 +2251,9 @@ bool swBlenderPreferences::SettingsModified(bool Update, const QString& Module)
 						LblIdx++;
 				}
 			}
-			// comboboxes
 			else
 			{
+				// comboboxes
 				for (int CtlIdx = 0; CtlIdx < gAddonPreferences->mComboBoxList.size(); CtlIdx++)
 				{
 					OldValue = mBlenderSettingsMM[LblIdx].value;
@@ -2267,9 +2284,9 @@ bool swBlenderPreferences::SettingsModified(bool Update, const QString& Module)
 						LblIdx++;
 				}
 			}
-			// lineedits
 			else if (LblIdx < LBL_COLOUR_SCHEME)
 			{
+				// lineedits
 				for (int CtlIdx = 0; CtlIdx < gAddonPreferences->mLineEditList.size(); CtlIdx++)
 				{
 					if (CtlIdx == CTL_IMAGE_WIDTH_EDIT)
@@ -2318,7 +2335,8 @@ bool swBlenderPreferences::SettingsModified(bool Update, const QString& Module)
 					{
 						if (CtlIdx == CTL_DEFAULT_COLOUR_EDIT)
 						{
-							_OldValue = swGetColorIndex(mBlenderSettings[LblIdx].value.toInt());  // colour code
+							// color code
+							_OldValue = swGetColorIndex(mBlenderSettings[LblIdx].value.toInt());
 							_Value = gAddonPreferences->mLineEditList[CtlIdx]->property("ColorIndex").toInt(&Ok);
 						}
 						else
@@ -2346,9 +2364,9 @@ bool swBlenderPreferences::SettingsModified(bool Update, const QString& Module)
 						LblIdx++;
 				}
 			}
-			// comboboxes
 			else
 			{
+				// comboboxes
 				for (int CtlIdx = 0; CtlIdx < gAddonPreferences->mComboBoxList.size(); CtlIdx++)
 				{
 					OldValue = mBlenderSettings[LblIdx].value;
@@ -2535,7 +2553,7 @@ QString swBlenderPreferences::TranslateDefaultText(const QString& Source)
 {
 	QString Text = QCoreApplication::translate("QObject", Source.toUtf8().constData());
 
-	// Default text uses %1 only for the product name; substitute after translation.
+	// substitute the product name after translation
 	if (Source.contains(QLatin1String("%1")))
 		Text = Text.arg(QLatin1String(SW_PRODUCT_NAME_STRING));
 
@@ -3064,8 +3082,7 @@ void swBlenderPreferences::SizeChanged(const QString&)
 			connect(mLineEditList[Width_Edit], &QLineEdit::textChanged, this, &swBlenderPreferences::SizeChanged);
 		}
 
-		// Change is provided here for consistency only as ImageWidth,
-		// ImageHeight, and RenderPercentage are passed at the render command
+		// keep for consistency
 		Change |= SettingsModified(false);
 		emit SettingChangedSig(Change);
 	}
@@ -3738,9 +3755,15 @@ bool swBlenderPreferences::ExtractAddon(const QString FileName, QString& Result)
 	{
 		HostFAT      = 0,
 		HostUnix     = 3,
-		HostHPFS     = 6,  // filesystem used by OS/2 (and NT 3.x)
-		HostNTFS     = 11, // filesystem used by Windows NT
-		HostVFAT     = 14, // filesystem used by Windows 95, NT
+
+		// os2 and nt 3 filesystem
+		HostHPFS     = 6,
+
+		// windows nt filesystem
+		HostNTFS     = 11,
+
+		// windows 95 and nt filesystem
+		HostVFAT     = 14,
 		HostOSX      = 19
 	};
 
@@ -3847,7 +3870,7 @@ bool swBlenderPreferences::ExtractAddon(const QString FileName, QString& Result)
 		if (!Ok || !(Ok = FileInfo.IsValid()))
 			break;
 
-		// Check the file path - if broken, convert separators, eat leading and trailing ones
+		// repair the file path separators
 		FileInfo.filePath = QDir::fromNativeSeparators(FileInfo.ZipInfo.file_name);
 		QString FilePathRef(FileInfo.filePath);
 		while (FilePathRef.startsWith(QLatin1Char('.')) || FilePathRef.startsWith(QLatin1Char('/')))

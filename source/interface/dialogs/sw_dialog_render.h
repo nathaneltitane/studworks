@@ -68,21 +68,21 @@ public:
 		update();
 	}
 
-	// Sets the size of the icon shown in the middle of the canvas until an image is rendered.
+	// Sets the empty canvas icon size.
 	void SetPlaceholderSize(int Size)
 	{
 		mPlaceholderSize = Size;
 		update();
 	}
 
-	// Sets the image size the empty canvas is shaped after.
+	// Sets the empty canvas image size.
 	void SetCanvasSize(const QSize& Size)
 	{
 		mCanvasSize = Size;
 		update();
 	}
 
-	// Shows the render region and lets it be drawn by dragging on the canvas.
+	// Shows and draws the render region.
 	void SetRegionMode(bool RegionMode)
 	{
 		mRegionMode = RegionMode;
@@ -90,7 +90,7 @@ public:
 		update();
 	}
 
-	// Sets the render region as a fraction of the image.
+	// Sets the render region fraction.
 	void SetRegion(const QRectF& Region)
 	{
 		mRegion = Region;

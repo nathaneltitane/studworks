@@ -39,14 +39,14 @@ bool swWindowGeometryFilter::eventFilter(QObject* Object, QEvent* Event)
 	if (!Window->isWindow() || Window->property("swInitialGeometry").toBool())
 		return false;
 
-	// input prompts wrap their contents, a text editor prompt stays resizable
+	// text editor prompts stay resizable
 	const QInputDialog* InputDialog = qobject_cast<QInputDialog*>(Window);
 
 	if (Window->property("swInputPrompt").toBool() || (InputDialog && !InputDialog->testOption(QInputDialog::UsePlainTextEditForTextInput)))
 	{
 		Window->setProperty("swInitialGeometry", true);
 
-		// four times as wide as tall up to 64 characters, wider only when the contents need it
+		// four by one up to 64 characters
 		const QSize ContentSize = Window->sizeHint().expandedTo(Window->minimumSizeHint());
 		const int ProportionalWidth = qMin(4 * ContentSize.height(), 64 * Window->fontMetrics().averageCharWidth());
 
@@ -55,7 +55,7 @@ bool swWindowGeometryFilter::eventFilter(QObject* Object, QEvent* Event)
 		return false;
 	}
 
-	// Only dialogs and main windows, the standard Qt dialogs size themselves.
+	// qt dialogs size themselves
 	const bool IsDialog = qobject_cast<QDialog*>(Window) && !qobject_cast<QMessageBox*>(Window) && !qobject_cast<QInputDialog*>(Window) && !qobject_cast<QProgressDialog*>(Window) &&
 		!qobject_cast<QFileDialog*>(Window) && !qobject_cast<QColorDialog*>(Window) && !qobject_cast<QFontDialog*>(Window) && !qobject_cast<QPrintDialog*>(Window);
 	const bool IsMainWindow = qobject_cast<QMainWindow*>(Window);
@@ -72,17 +72,17 @@ bool swWindowGeometryFilter::eventFilter(QObject* Object, QEvent* Event)
 	if (!Screen)
 		return false;
 
-	// A quarter of the available screen, never smaller than the contents need and never larger than the screen.
+	// a quarter of the screen
 	const QRect Available = Screen->availableGeometry();
 	const QSize MinimumSize = QSize(Available.width() / 4, Available.height() / 4).expandedTo(Window->minimumSizeHint()).boundedTo(Available.size());
 
-	// Every window keeps at least that quarter when resized, the main window restores the rest of its geometry itself.
+	// keep at least a quarter
 	Window->setMinimumSize(MinimumSize);
 
 	if (!IsDialog && !IsSecondaryWindow)
 		return false;
 
-	// only the size is set, the window manager places the window and applies its rules and tiling
+	// set only the size
 	QSize Size = MinimumSize.expandedTo(Window->sizeHint());
 	Size = Size.boundedTo(Available.size());
 
@@ -91,7 +91,7 @@ bool swWindowGeometryFilter::eventFilter(QObject* Object, QEvent* Event)
 	return false;
 }
 
-// use to keep a scroll area that never scrolls sideways as wide as its rows
+// use to fit a scroll area to its rows
 static void swFitScrollAreaWidth(QScrollArea* ScrollArea)
 {
 	if (ScrollArea->widget())
@@ -108,7 +108,7 @@ void swInterfaceStyle::drawControl(ControlElement Element, const QStyleOption* O
 		return;
 	}
 
-	// the value and its icon sit in the middle of the box like a button label
+	// center value and icon
 	const QRect EditRect = subControlRect(CC_ComboBox, ComboBoxOption, SC_ComboBoxEditField, Widget).adjusted(1, 0, -1, 0);
 	const QSize IconSize = ComboBoxOption->currentIcon.isNull() ? QSize() : ComboBoxOption->iconSize;
 	const int Spacing = IconSize.isEmpty() ? 0 : pixelMetric(PM_ButtonIconSize, Option, Widget) / 4;
@@ -139,11 +139,11 @@ QSize swInterfaceStyle::sizeFromContents(ContentsType Type, const QStyleOption* 
 	if (Type != CT_LineEdit && Type != CT_SpinBox && Type != CT_ComboBox)
 		return Result;
 
-	// the text field inside a spin box is measured by the spin box itself
+	// spin box measures its field
 	if (Type == CT_LineEdit && Widget && qobject_cast<const QAbstractSpinBox*>(Widget->parentWidget()))
 		return Result;
 
-	// inputs are as tall as a standard button so they line up with the buttons beside them
+	// inputs as tall as buttons
 	QStyleOptionButton ButtonOption;
 	ButtonOption.QStyleOption::operator=(*Option);
 	ButtonOption.text = QLatin1String("X");
@@ -168,7 +168,7 @@ bool swInterfaceFitFilter::eventFilter(QObject* Object, QEvent* Event)
 
 	QWidget* Widget = static_cast<QWidget*>(Object);
 
-	// spin boxes show their whole value and range beside the arrows
+	// show the whole spin box value
 	if (QAbstractSpinBox* SpinBox = qobject_cast<QAbstractSpinBox*>(Widget))
 	{
 		if (Type != QEvent::LayoutRequest)
@@ -177,7 +177,7 @@ bool swInterfaceFitFilter::eventFilter(QObject* Object, QEvent* Event)
 		return false;
 	}
 
-	// rows of a scroll area without a sideways scroll bar are never cut
+	// never cut unscrolled rows
 	if (Type == QEvent::LayoutRequest)
 	{
 		QWidget* Viewport = Widget->parentWidget();
@@ -197,7 +197,7 @@ bool swInterfaceFitFilter::eventFilter(QObject* Object, QEvent* Event)
 		return false;
 	}
 
-	// panels of every window sit side by side, stacked or tabbed
+	// panels side by side, stacked or tabbed
 	if (QMainWindow* MainWindow = qobject_cast<QMainWindow*>(Widget))
 	{
 		if (Type == QEvent::Polish)
@@ -206,10 +206,10 @@ bool swInterfaceFitFilter::eventFilter(QObject* Object, QEvent* Event)
 		return false;
 	}
 
-	// floating panels fit their contents, docked panels follow the dock area
+	// floating panels fit their contents
 	if (QDockWidget* DockWidget = qobject_cast<QDockWidget*>(Widget))
 	{
-		// panels with a floating size undock at that size before the window manager maps them
+		// undock at the floating size
 		if (Type == QEvent::Show)
 		{
 			const QSize FloatingSize = DockWidget->property("swFloatingSize").toSize();
@@ -247,14 +247,14 @@ bool swInterfaceFitFilter::eventFilter(QObject* Object, QEvent* Event)
 	return false;
 }
 
-// use to tell lists, editors and views apart, they have no natural size
+// use to tell sizeless widgets
 static bool swIsViewDock(const QDockWidget* DockWidget)
 {
 	const QList<QWidget*> Children = DockWidget->findChildren<QWidget*>();
 
 	for (const QWidget* Child : Children)
 	{
-		// the lists of dropdowns are popups of their own, not part of the panel
+		// dropdown lists are separate popups
 		if (Child->window() != DockWidget->window())
 			continue;
 
@@ -274,7 +274,7 @@ void swFitFloatingDock(QDockWidget* DockWidget)
 
 	if (!DockWidget->isFloating())
 	{
-		// panels across the top or bottom keep the width of their widest rows instead of stretching them
+		// keep the widest row width
 		const QMainWindow* MainWindow = qobject_cast<const QMainWindow*>(DockWidget->parentWidget());
 
 		if (!MainWindow)
@@ -287,7 +287,7 @@ void swFitFloatingDock(QDockWidget* DockWidget)
 
 			for (QDockWidget* AreaDockWidget : MainWindow->findChildren<QDockWidget*>(QString(), Qt::FindDirectChildrenOnly))
 			{
-				// panels with a floating size stretch like views
+				// floating size panels stretch
 				if (AreaDockWidget->isFloating() || MainWindow->dockWidgetArea(AreaDockWidget) != Area || swIsViewDock(AreaDockWidget) || AreaDockWidget->property("swFloatingSize").toSize().isValid())
 					continue;
 
@@ -303,7 +303,7 @@ void swFitFloatingDock(QDockWidget* DockWidget)
 		return;
 	}
 
-	// panels with a floating size stay resizable and float back at that size
+	// float back at the floating size
 	const QSize FloatingSize = DockWidget->property("swFloatingSize").toSize();
 
 	if (FloatingSize.isValid())
@@ -313,14 +313,14 @@ void swFitFloatingDock(QDockWidget* DockWidget)
 		return;
 	}
 
-	// lists, editors and views keep their least size and stay resizable
+	// keep the least size, stay resizable
 	if (swIsViewDock(DockWidget))
 	{
 		DockWidget->setMinimumSize(DockWidget->minimumSizeHint());
 		return;
 	}
 
-	// the rows of a scrolled panel are measured inside it, the screen bounds the height
+	// measure rows inside the scroll area
 	int Height = DockWidget->sizeHint().height();
 	int Width = DockWidget->minimumSizeHint().width();
 	const QList<QScrollArea*> ScrollAreas = DockWidget->findChildren<QScrollArea*>();
@@ -333,7 +333,7 @@ void swFitFloatingDock(QDockWidget* DockWidget)
 	{
 		const int ScreenHeight = Screen->availableGeometry().height() - DockWidget->frameGeometry().height() + DockWidget->height();
 
-		// a panel cut by the screen scrolls, its scroll bar widens it
+		// scroll a panel cut by the screen
 		if (Height > ScreenHeight)
 		{
 			Height = ScreenHeight;
@@ -384,7 +384,7 @@ swBlockingProgress* swBlockingProgress::mActive = nullptr;
 swBlockingProgress::swBlockingProgress(const QString& Title, const QString& Label, bool Cancelable)
 	: mTitle(Title), mLabel(Label), mCancelable(Cancelable)
 {
-	// A wait started while another one shows its progress is part of the same task.
+	// nested waits share one task
 	mNested = mActive != nullptr;
 
 	if (!mNested)
@@ -408,7 +408,7 @@ void swBlockingProgress::SetProgress(int Value, int Maximum)
 
 	if (!mDialog)
 	{
-		// Short tasks finish without a dialog flashing on screen.
+		// no dialog for short tasks
 		if (Value >= Maximum || mTimer.elapsed() < 400)
 			return;
 
@@ -435,7 +435,7 @@ void swBlockingProgress::SetProgress(int Value, int Maximum)
 		mUpdateTimer.invalidate();
 	}
 
-	// Updates are throttled, each one runs the event loop to repaint the dialog.
+	// throttle the repaint updates
 	if (mUpdateTimer.isValid() && mUpdateTimer.elapsed() < 50 && Value < Maximum)
 		return;
 
@@ -451,7 +451,7 @@ bool swBlockingProgress::IsCanceled() const
 
 QSize swGetPanelButtonSize()
 {
-	// Every panel button is sized after the options gear button of a panel toolbar.
+	// size buttons after the gear button
 	static QSize ButtonSize;
 
 	if (!ButtonSize.isValid())
@@ -471,7 +471,7 @@ QSize swGetPanelButtonSize()
 
 QSize swGetBrowseButtonSize()
 {
-	// the narrowest text button is a browse button like the ones in preferences
+	// narrowest text button is browse
 	static QSize ButtonSize;
 
 	if (!ButtonSize.isValid())
@@ -487,7 +487,7 @@ QSize swGetBrowseButtonSize()
 
 void swSetupPanelButton(QToolButton* Button)
 {
-	// Panel buttons are outlined, icon buttons are as large as the gear and text buttons as tall.
+	// outline panel buttons
 	const QSize ButtonSize = swGetPanelButtonSize();
 
 	Button->setAutoRaise(false);
@@ -506,11 +506,11 @@ void swSetupPanelButton(QToolButton* Button)
 
 void swSetupPanelEdit(QWidget* Edit)
 {
-	// Text boxes in panel toolbars are as tall as the buttons so the rows have even spacing.
+	// text boxes as tall as buttons
 	Edit->setFixedHeight(swGetPanelButtonSize().height());
 }
 
-// use to select the whole value on a click anywhere in a spin box so typing replaces it
+// use to select the value on click
 class swSpinBoxSelectFilter : public QObject
 {
 public:
@@ -522,7 +522,7 @@ public:
 
 		if (LineEdit && Event->type() == QEvent::MouseButtonRelease && static_cast<QMouseEvent*>(Event)->button() == Qt::LeftButton && !LineEdit->hasSelectedText())
 		{
-			// a dragged selection stays, a click inside an old selection clears it after the release
+			// keep a dragged selection
 			QAbstractSpinBox* SpinBox = static_cast<QAbstractSpinBox*>(parent());
 			SpinBox->selectAll();
 
@@ -539,7 +539,7 @@ public:
 
 void swSetupSpinBoxSelection(QAbstractSpinBox* SpinBox)
 {
-	// the clicks go to the text inside the spin box
+	// clicks go to the inner text
 	if (SpinBox->property("SelectOnClick").toBool())
 		return;
 
@@ -554,7 +554,7 @@ void swSetupPanelSpinBox(QAbstractSpinBox* SpinBox)
 {
 	swSetupSpinBoxSelection(SpinBox);
 
-	// Equal stretch gives the boxes of a row the same width whatever their text.
+	// equal stretch for equal widths
 	QSizePolicy SizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	SizePolicy.setHorizontalStretch(1);
 	SpinBox->setSizePolicy(SizePolicy);
@@ -564,7 +564,7 @@ void swSetupPanelSpinBox(QAbstractSpinBox* SpinBox)
 
 void swUpdatePanelSpinBoxWidth(QAbstractSpinBox* SpinBox)
 {
-	// Spin boxes are wide enough for their largest value with the name and unit shown in them.
+	// fit the largest value
 	QString Prefix, Suffix, Value = QLatin1String("-000");
 
 	if (const QDoubleSpinBox* DoubleSpinBox = qobject_cast<const QDoubleSpinBox*>(SpinBox))
@@ -583,7 +583,7 @@ void swUpdatePanelSpinBoxWidth(QAbstractSpinBox* SpinBox)
 	if (Value.size() < 4)
 		Value = QLatin1String("-000");
 
-	// unbounded ranges size for a typical value so the panel can still shrink
+	// size unbounded ranges for typical values
 	const bool Unbounded = Value.size() > 8;
 
 	if (Unbounded)
@@ -598,7 +598,7 @@ void swUpdatePanelSpinBoxWidth(QAbstractSpinBox* SpinBox)
 	const QRect EditRect = SpinBox->style()->subControlRect(QStyle::CC_SpinBox, &Option, QStyle::SC_SpinBoxEditField, SpinBox);
 	const int Decoration = Option.rect.width() - EditRect.width();
 
-	// the style sizes the box for its limits too, the larger width keeps the text clear of the arrows, a shared column keeps its width
+	// keep the larger width
 	const int TextWidth = SpinBox->fontMetrics().horizontalAdvance(Prefix + Value + Suffix) + Decoration;
 	const int Width = Unbounded ? TextWidth : qMax(TextWidth, SpinBox->sizeHint().width());
 	SpinBox->setMinimumWidth(qMax(Width, SpinBox->property("swColumnWidth").toInt()));
@@ -606,7 +606,7 @@ void swUpdatePanelSpinBoxWidth(QAbstractSpinBox* SpinBox)
 
 int swGetLayoutSpacing(const QWidget* Widget, Qt::Orientation Orientation)
 {
-	// The spacing a standard layout uses, for widgets that place their children themselves.
+	// standard layout spacing
 	QStyle* Style = Widget->style();
 	const int Spacing = Style->pixelMetric(Orientation == Qt::Vertical ? QStyle::PM_LayoutVerticalSpacing : QStyle::PM_LayoutHorizontalSpacing, nullptr, Widget);
 
@@ -615,7 +615,7 @@ int swGetLayoutSpacing(const QWidget* Widget, Qt::Orientation Orientation)
 
 QWidget* swCreatePanelRow(QWidget* Parent)
 {
-	// The row sits inside the panel layout, which provides the margins, the row keeps the standard spacing.
+	// panel layout gives the margins
 	QWidget* Row = new QWidget(Parent);
 	QHBoxLayout* Layout = new QHBoxLayout(Row);
 	Layout->setContentsMargins(0, 0, 0, 0);
@@ -682,12 +682,14 @@ void swSetupWidgetHelp(QWidget* Root, QDialogButtonBox* ButtonBox)
 	const auto HelpActivated = [Root, ShowHelp]()
 	{
 		QWidget* Focus = QApplication::focusWidget();
-		// Popup windows can share the shortcut scope across a QWidget window boundary.
+
+		// popups share the shortcut scope
 		ShowHelp(Focus ? Focus : Root);
 	};
 
 	QObject::connect(HelpShortcut, &QShortcut::activated, Root, HelpActivated);
-	// A chooser can overlap its owning dock's shortcut scope; both routes start at the focused control.
+
+	// choosers overlap the dock scope
 	QObject::connect(HelpShortcut, &QShortcut::activatedAmbiguously, Root, HelpActivated);
 }
 
@@ -839,7 +841,7 @@ bool swRunElevatedProcess(const LPCWSTR ExeName, const LPCWSTR Arguments, const 
 
 #endif
 
-// Resize all columns to content except for one stretching column. (taken from QT creator)
+// resize columns except the stretching one
 swTreeWidgetColumnStretcher::swTreeWidgetColumnStretcher(QTreeWidget* TreeWidget, int ColumnToStretch)
 	: QObject(TreeWidget->header()), mColumnToStretch(ColumnToStretch), mInteractiveResize(false), mStretchWidth(0)
 {
@@ -976,7 +978,7 @@ swColorDialogPopup::swColorDialogPopup(const QColor& InitialColor, bool ShowAlph
 	mColorDialog->setOptions(QColorDialog::DontUseNativeDialog | QColorDialog::NoButtons);
 	mColorDialog->setOption(QColorDialog::ShowAlphaChannel, ShowAlphaChannel);
 
-	// a color picked from a transparent start becomes opaque, the alpha channel can still make it transparent
+	// transparent start picks opaque
 	mTransparentStart = ShowAlphaChannel && InitialColor.alpha() == 0;
 
 	QObject::connect(mColorDialog, &QColorDialog::currentColorChanged, this, [this](const QColor& Color)
@@ -1025,7 +1027,7 @@ void swColorDialogPopup::Close()
 		Menu->close();
 }
 
-// use to draw the open or closed chevron of sections and the find bar like the tree branches
+// use to draw the section chevron
 QIcon swCreateDisclosureIcon(bool Expanded, const QPalette& Palette)
 {
 	QPixmap Pixmap(16, 16);
@@ -1043,7 +1045,7 @@ QIcon swCreateDisclosureIcon(bool Expanded, const QPalette& Palette)
 	return QIcon(Pixmap);
 }
 
-// use to show a color as a square over a checkerboard that shows how transparent it is
+// use to show a color swatch
 QIcon swCreateColorIcon(const QColor& Color, int Size)
 {
 	QPixmap Pixmap(Size, Size);
@@ -1063,14 +1065,14 @@ QIcon swCreateColorIcon(const QColor& Color, int Size)
 	return QIcon(Pixmap);
 }
 
-// use to show a color on a button with its swatch and its name
+// use to show a color button
 void swUpdateColorButton(QToolButton* Button, const QColor& Color)
 {
 	Button->setIcon(swCreateColorIcon(Color, Button->iconSize().height()));
 	Button->setText(Color.alpha() ? Color.name().toUpper() : QCoreApplication::translate("swInstructionsPropertiesWidget", "Transparent"));
 }
 
-// use to pick a color with its alpha channel below a button, an invalid color means the pick was canceled
+// use to pick a color with alpha
 QColor swPickColor(QToolButton* Button, const QColor& Color)
 {
 	QColor SelectedColor;
@@ -1091,7 +1093,7 @@ QColor swPickColor(QToolButton* Button, const QColor& Color)
 	return SelectedColor;
 }
 
-// use to color interface icons with the text of the current palette
+// use to color icons with the text
 static QColor swGetInterfaceIconColor(QIcon::Mode Mode)
 {
 	const QPalette Palette = QApplication::palette();
@@ -1112,7 +1114,7 @@ static QColor swGetInterfaceIconColor(QIcon::Mode Mode)
 	return Palette.color(QPalette::Active, QPalette::WindowText);
 }
 
-// use to lay out the gear of the options buttons on a 32 pixel grid, small sizes get fewer teeth to stay readable
+// use to lay out the options gear
 static QPainterPath swCreateGearPath(const QSizeF& Size)
 {
 	const qreal Extent = qMin(Size.width(), Size.height());
@@ -1145,7 +1147,7 @@ static QPainterPath swCreateGearPath(const QSizeF& Size)
 	return Path;
 }
 
-// use to lay out the folder of the open buttons on a 16 unit grid snapped to whole pixels
+// use to lay out the open folder
 static QPainterPath swCreateFolderPath(const QSizeF& Size)
 {
 	const qreal Extent = qMin(Size.width(), Size.height());
@@ -1162,7 +1164,7 @@ static QPainterPath swCreateFolderPath(const QSizeF& Size)
 	const qreal FrontTop = qMax(Snap(6), GapTop + 1.0);
 	const qreal Bottom = Snap(14);
 
-	// the tab and the back are split from the front by a gap
+	// gap between tab and front
 	QPainterPath Tab;
 	Tab.addRoundedRect(QRectF(Left, TabTop, TabRight - Left, GapTop - TabTop), Radius, Radius);
 
@@ -1175,7 +1177,7 @@ static QPainterPath swCreateFolderPath(const QSizeF& Size)
 	return Tab.united(Back).united(Front).translated(Origin);
 }
 
-// use to build an open line through points of the 24 unit icon grid
+// use to build an open line
 static QPainterPath swCreateIconLine(std::initializer_list<QPointF> Points, bool Closed = false)
 {
 	QPainterPath Path;
@@ -1205,7 +1207,7 @@ static QPainterPath swCreateIconRect(qreal Left, qreal Top, qreal Right, qreal B
 	return Path;
 }
 
-// use to point an open arrow head along a direction given in degrees clockwise from the right
+// use to point an open arrow head
 static QPainterPath swCreateIconArrowHead(const QPointF& Tip, qreal Direction, qreal Length = 4.0)
 {
 	const qreal Back = qDegreesToRadians(Direction + 180.0);
@@ -1224,7 +1226,7 @@ static QPainterPath swCreateIconArrow(const QPointF& Start, const QPointF& End, 
 	return Path;
 }
 
-// use to sweep an elliptic arc in degrees clockwise from the right, tilted around its center, with an optional arrow head at its end
+// use to sweep an elliptic arc
 static QPainterPath swCreateIconArc(qreal X, qreal Y, qreal RadiusX, qreal RadiusY, qreal Start, qreal Sweep, qreal Tilt = 0.0, qreal HeadLength = 0.0)
 {
 	QPainterPath Path;
@@ -1249,7 +1251,7 @@ static QPainterPath swCreateIconArc(qreal X, qreal Y, qreal RadiusX, qreal Radiu
 	return Transform.map(Path);
 }
 
-// use to draw the strokes, fills and cut outs of a painted icon in one color
+// use to draw a painted icon shape
 class swIconPainter
 {
 public:
@@ -1263,7 +1265,7 @@ public:
 		mPainter->strokePath(Path, QPen(mColor, Width, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 	}
 
-	// round joins soften the corners of filled shapes like the strokes
+	// round joins on filled shapes
 	void Fill(const QPainterPath& Path)
 	{
 		mPainter->fillPath(Path, mColor);
@@ -1289,7 +1291,7 @@ protected:
 	QColor mColor;
 };
 
-// use to draw a painted icon centered in a size, the drawings are laid out on a 24 unit grid with 2 unit strokes
+// use to draw a centered painted icon
 static void swDrawPaintedIcon(QPainter* Painter, swPaintedIcon Icon, const QSizeF& Size, const QColor& Color)
 {
 	Painter->save();
@@ -1417,7 +1419,8 @@ static void swDrawPaintedIcon(QPainter* Painter, swPaintedIcon Icon, const QSize
 
 		QPainterPath Palm;
 		Palm.moveTo(6, 13);
-		// the palm outline lines up with the outer edge of the little finger and runs straight down its side
+
+		// palm follows the little finger
 		Palm.lineTo(19, 11);
 		Palm.lineTo(19, 18);
 		Palm.cubicTo(19, 20, 18, 21, 16, 21);
@@ -1572,7 +1575,8 @@ static void swDrawPaintedIcon(QPainter* Painter, swPaintedIcon Icon, const QSize
 	case swPaintedIcon::RenderPlaceholder:
 		Draw.Stroke(swCreateIconRect(3, 4, 21, 20, 2));
 		Draw.Fill(swCreateIconCircle(8, 7.5, 1.5));
-		// the hills end on the inner side of the frame so their round caps stay within it
+
+		// hills end inside the frame
 		Draw.Stroke(swCreateIconLine({ { 4, 15 }, { 8, 11 }, { 13, 16 }, { 16, 13 }, { 20, 17 } }));
 		break;
 
@@ -1611,7 +1615,7 @@ static void swDrawPaintedIcon(QPainter* Painter, swPaintedIcon Icon, const QSize
 	case swPaintedIcon::CursorMoveAxisY:
 	case swPaintedIcon::CursorMoveAxisZ:
 	{
-		// the axes follow the gizmo on screen, x 18 degrees down to the right, y 18 degrees up to the right and z up
+		// axes follow the gizmo
 		const qreal Angle = Icon == swPaintedIcon::CursorMoveAxisX ? 18.0 : Icon == swPaintedIcon::CursorMoveAxisY ? -18.0 : -90.0;
 		const QPointF Direction = QPointF(qCos(qDegreesToRadians(Angle)), qSin(qDegreesToRadians(Angle))) * 9.0;
 
@@ -1640,7 +1644,7 @@ static void swDrawPaintedIcon(QPainter* Painter, swPaintedIcon Icon, const QSize
 		Path.addPath(swCreateIconArc(12, 24, 13, 13, -40, -100, 0, 3.5));
 		Path.translate(0, -1);
 
-		// the vertical turn is the horizontal one on its side
+		// vertical turn is the horizontal on its side
 		if (Icon == swPaintedIcon::CursorRotateY)
 			Path = QTransform(0, 1, 1, 0, 0, 0).map(Path);
 
@@ -1661,7 +1665,7 @@ static void swDrawPaintedIcon(QPainter* Painter, swPaintedIcon Icon, const QSize
 	Painter->restore();
 }
 
-// use to draw the interface icons painted from a shape at any size in the text color
+// use to draw the painted icons
 class swPaintedIconEngine : public QIconEngine
 {
 public:
@@ -1716,7 +1720,7 @@ QIcon swCreatePaintedIcon(swPaintedIcon Icon)
 	return QIcon(new swPaintedIconEngine(Icon));
 }
 
-// use to paint an icon into an image for cursors, thumbnails and previews
+// use to paint an icon into an image
 QImage swCreatePaintedIconImage(swPaintedIcon Icon, int Size, const QColor& Color)
 {
 	QImage Image(Size, Size, QImage::Format_ARGB32_Premultiplied);

@@ -117,7 +117,7 @@ void swView::SetViewpoint(const swVector3& Position)
 	Redraw();
 }
 
-// Step view angles rotate the model about the LDraw X, Y and Z axes, in that order.
+// step view angles about the ldraw axes
 static swMatrix44 swGetStepViewRotation(const swVector3& Angles)
 {
 	const swMatrix44 Rotation = swMultiply(swMultiply(swMatrix44RotationX(Angles.x * SW_DEGREES_TO_RADIANS), swMatrix44RotationY(Angles.y * SW_DEGREES_TO_RADIANS)), swMatrix44RotationZ(Angles.z * SW_DEGREES_TO_RADIANS));
@@ -127,7 +127,7 @@ static swMatrix44 swGetStepViewRotation(const swVector3& Angles)
 
 static void swGetStepViewBase(swStepViewMode Mode, swVector3& Direction, swVector3& Up)
 {
-	// Relative views start from the home view, absolute views from the front view.
+	// relative from home, absolute from front
 	if (Mode == swStepViewMode::Absolute)
 	{
 		Direction = swVector3(0.0f, -1.0f, 0.0f);
@@ -152,7 +152,7 @@ void swView::ApplyStepView(swStep Step)
 
 	const std::optional<swStepView> StepView = mModel->GetEffectiveStepView(Step);
 
-	// Steps without a view use the default view, but only in models that use step views.
+	// steps without a view use the default
 	if (!StepView)
 	{
 		if (!mModel->GetProperties().mStepViews.empty())
@@ -164,7 +164,7 @@ void swView::ApplyStepView(swStep Step)
 	swVector3 Direction, Up;
 	swGetStepViewBase(StepView->Mode, Direction, Up);
 
-	// Turning the model by the step rotation is the same as turning the camera the opposite way.
+	// model turn equals camera turn
 	const swMatrix44 Inverse = swMatrix44Transpose(swGetStepViewRotation(StepView->Angles));
 
 	Direction = swNormalize(swMultiply30(Direction, Inverse));
@@ -184,7 +184,7 @@ swVector3 swView::GetStepViewAngles() const
 	const swVector3 Up = swCross(Direction, Right);
 	const swVector3 BaseRight = swNormalize(swCross(BaseUp, BaseDirection));
 
-	// The camera frame expressed against the front view frame gives the model rotation.
+	// frame against the front view
 	const swMatrix44 Base(swVector4(BaseRight, 0.0f), swVector4(BaseUp, 0.0f), swVector4(BaseDirection, 0.0f), swVector4(0.0f, 0.0f, 0.0f, 1.0f));
 	const swMatrix44 Current(swVector4(Right, 0.0f), swVector4(Up, 0.0f), swVector4(Direction, 0.0f), swVector4(0.0f, 0.0f, 0.0f, 1.0f));
 	const swMatrix44 Rotation = swMatrix44StudWorksToLDraw(swMultiply(swMatrix44Transpose(Current), Base));
@@ -306,7 +306,7 @@ void swView::SetCameraProjection(swCameraProjection CameraProjection)
 	{
 		mLastProjection = CameraProjection;
 
-		// apply to every other model view when the projection is shared
+		// share the projection with the other views
 		if (swGetPreferences().mProjectionScope == swProjectionScope::AllViews)
 		{
 			for (swView* View : mViews)
@@ -355,7 +355,7 @@ void swView::Zoom(float Amount)
 		ActiveModel->Zoom(mCamera, Amount);
 }
 
-// use to resize the view, a fitted view stays fitted until its camera moves
+// use to resize the view
 void swView::SetSize(int Width, int Height)
 {
 	const bool Resized = Width != mWidth || Height != mHeight;
@@ -367,7 +367,7 @@ void swView::SetSize(int Width, int Height)
 		ZoomExtents(mZoomExtentsMode, mZoomExtentsFarPlane);
 }
 
-// use to check the camera is still where the last fit left it
+// use to check the view is still fitted
 bool swView::IsFitted() const
 {
 	return mCamera && mCamera->IsSimple() && mCamera == mZoomExtentsCamera && mCamera->mWorldView == mZoomExtentsWorldView;
@@ -387,7 +387,7 @@ void swView::ZoomExtents(swGeometryBoundsMode Mode, bool AdjustFarPlane)
 		ActiveModel->ZoomExtents(mCamera, (float)mWidth / (float)mHeight, WorldMatrix, Mode, AdjustFarPlane);
 	}
 
-	// remember where the fit left the camera so a resize can fit it again
+	// remember the fitted camera
 	mZoomExtentsCamera = mCamera;
 
 	if (mCamera)

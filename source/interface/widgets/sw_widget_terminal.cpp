@@ -28,7 +28,7 @@ swTerminalWidget::swTerminalWidget(QWidget* Parent)
 	swAddPanelOptionsButton(OptionsRow, OptionsMenu, tr("Configure the terminal."), tr("Terminal Options"));
 	connect(OptionsMenu, &QMenu::aboutToShow, this, &swTerminalWidget::OptionsMenuAboutToShow);
 
-	// a floating terminal floats back at its registered size of 121 columns by 25 rows
+	// float back at 121 by 25
 	const QSize FloatingSize(1007, 511);
 	Parent->setProperty("swFloatingSize", FloatingSize);
 
@@ -41,7 +41,7 @@ bool swTerminalWidget::eventFilter(QObject* Object, QEvent* Event)
 {
 	const QEvent::Type Type = Event->type();
 
-	// the panel snaps to whole rows and columns once the terminal is resized
+	// snap to whole cells on resize
 	if (Type == QEvent::Resize && Object == mDisplay && !mSnapPending)
 	{
 		mSnapPending = true;
@@ -58,7 +58,7 @@ bool swTerminalWidget::eventFilter(QObject* Object, QEvent* Event)
 	if (!Widget || !isAncestorOf(Widget))
 		return false;
 
-	// the terminal takes the keys only after a click in it
+	// keys only after a click
 	if (Type == QEvent::MouseButtonPress)
 	{
 		mClickFocused = true;
@@ -77,7 +77,7 @@ bool swTerminalWidget::eventFilter(QObject* Object, QEvent* Event)
 
 	if (Type == QEvent::FocusIn)
 	{
-		// a click moves the focus before the press itself arrives
+		// focus moves before the press
 		if (static_cast<QFocusEvent*>(Event)->reason() == Qt::MouseFocusReason)
 			mClickFocused = true;
 
@@ -95,7 +95,7 @@ bool swTerminalWidget::eventFilter(QObject* Object, QEvent* Event)
 		return false;
 	}
 
-	// Keys typed in the terminal go to the shell instead of triggering StudWorks shortcuts.
+	// keep keys from shortcuts
 	QKeyEvent* KeyEvent = static_cast<QKeyEvent*>(Event);
 	const QKeySequence KeySequence(static_cast<int>(KeyEvent->modifiers() & ~Qt::KeypadModifier) | KeyEvent->key());
 
@@ -113,7 +113,7 @@ bool swTerminalWidget::eventFilter(QObject* Object, QEvent* Event)
 
 void swTerminalWidget::showEvent(QShowEvent* Event)
 {
-	// The shell starts the first time the panel is shown.
+	// start the shell when first shown
 	if (!mPart)
 		CreateTerminal();
 
@@ -138,7 +138,7 @@ void swTerminalWidget::CreateTerminal()
 	if (!mPart)
 		return;
 
-	// the konsole part adds keyboard accelerators to the panel titles, which show as '&' when a panel floats
+	// drop konsole accelerators
 	const QList<QDockWidget*> DockWidgets = window()->findChildren<QDockWidget*>();
 
 	for (QDockWidget* DockWidget : DockWidgets)
@@ -156,14 +156,14 @@ void swTerminalWidget::CreateTerminal()
 		if (PartWidget->inherits("Konsole::TerminalDisplay"))
 			mDisplay = PartWidget;
 
-	// the terminal never gets shorter than four lines, konsole keeps a one pixel margin around them
+	// at least four lines tall
 	if (mDisplay)
 		mDisplay->setMinimumHeight(4 * QFontMetrics(mDisplay->font()).height() + 2);
 
 	if (TerminalInterface* Terminal = qobject_cast<TerminalInterface*>(mPart))
 		Terminal->showShellInDir(mDirectory);
 
-	// Start a new shell when the current one exits.
+	// restart the exited shell
 	connect(mPart, &QObject::destroyed, this, [this]()
 	{
 		if (isVisible())
@@ -171,7 +171,7 @@ void swTerminalWidget::CreateTerminal()
 	});
 }
 
-// use to fit the panel to whole rows and columns of the terminal, docked or floating
+// use to fit the panel to whole cells
 void swTerminalWidget::SnapToCells()
 {
 	mSnapPending = false;
@@ -182,7 +182,7 @@ void swTerminalWidget::SnapToCells()
 	if (!mDisplay || !MainWindow || !DockWidget->isVisible())
 		return;
 
-	// konsole keeps a one pixel margin around the cells and its scroll bar beside them
+	// add the margin and scroll bar
 	const QFontMetrics Metrics(mDisplay->font());
 	const QSize CellSize(Metrics.horizontalAdvance(QLatin1Char('M')), Metrics.height());
 	QSize CellsSize = mDisplay->contentsRect().size() - QSize(2, 2);
@@ -194,7 +194,7 @@ void swTerminalWidget::SnapToCells()
 	if (CellSize.isEmpty() || CellsSize.isEmpty())
 		return;
 
-	// use to round a length to the nearest whole number of cells
+	// use to round to whole cells
 	auto GetDelta = [](int Length, int Cell)
 	{
 		const int Excess = Length % Cell;
@@ -206,7 +206,7 @@ void swTerminalWidget::SnapToCells()
 
 	if (DockWidget->isFloating())
 	{
-		// the window manager resizes a floating terminal cell by cell
+		// resize floating cell by cell
 		DockWidget->setBaseSize(DockWidget->size() - CellsSize);
 		DockWidget->setSizeIncrement(CellSize);
 
@@ -218,7 +218,7 @@ void swTerminalWidget::SnapToCells()
 		DockWidget->setBaseSize(QSize());
 		DockWidget->setSizeIncrement(QSize());
 
-		// a docked terminal only snaps across its dock area since the length along it is shared
+		// snap only across the dock area
 		const Qt::DockWidgetArea Area = MainWindow->dockWidgetArea(DockWidget);
 
 		if ((Area == Qt::LeftDockWidgetArea || Area == Qt::RightDockWidgetArea) && Delta.width())

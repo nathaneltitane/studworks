@@ -102,7 +102,7 @@ swResult<void> Project::MergeInternal(const std::vector<Project*>& Sources, cons
 	std::vector<ModelPlan> PlannedModels;
 	std::map<QString, std::shared_ptr<const swEmbeddedData>> MergedData = mEmbeddedDataIndex;
 
-	// Validate every incoming asset before reserving names or moving models.
+	// validate incoming assets first
 	for (const Project* Source : Sources)
 	{
 		for (const auto& [Name, Data] : Source->mEmbeddedDataIndex)
@@ -172,7 +172,7 @@ swResult<void> Project::MergeInternal(const std::vector<Project*>& Sources, cons
 		return true;
 	};
 
-	// Validate the identities behind every part name before changing any project.
+	// validate part name identities first
 	for (Project* Source : Sources)
 	{
 		for (const std::map<std::string, swPartData*>::value_type& Entry : Source->mPartIndex)
@@ -195,7 +195,7 @@ swResult<void> Project::MergeInternal(const std::vector<Project*>& Sources, cons
 		}
 	}
 
-	// Pick final model names against the complete set of incoming part names.
+	// pick final model names
 	for (Project* Source : Sources)
 	{
 		for (const std::unique_ptr<swModel>& Model : Source->mModels)
@@ -226,8 +226,7 @@ swResult<void> Project::MergeInternal(const std::vector<Project*>& Sources, cons
 		}
 	}
 
-	// Reserve all planned names before moving models, so a failed reservation
-	// can be rolled back without leaving either project partly merged.
+	// reserve names before moving models
 	std::vector<const ModelPlan*> AppliedRenames;
 
 	for (const ModelPlan& Planned : PlannedModels)
@@ -290,7 +289,7 @@ swResult<void> Project::MergeInternal(const std::vector<Project*>& Sources, cons
 			mModels.emplace_back(std::move(Model));
 		}
 
-		// Only incoming histories used these original names for the incoming models.
+		// original names of incoming histories
 		for (swModel* Model : ImportedModels)
 			Model->RenameParts(Renames);
 
@@ -427,8 +426,7 @@ swResult<swModel*> Project::ImportClipboard(const QByteArray& FileData)
 			return Reachable.find(Model.get()) == Reachable.end();
 		}), Source.mModels.end());
 
-		// Live reused models already own their current assets. Keep snapshots only
-		// for definitions that were missing and therefore still need importing.
+		// keep snapshots of missing definitions
 		std::set<QString> Required;
 
 		for (const std::unique_ptr<swModel>& Model : Source.mModels)
@@ -456,7 +454,7 @@ swResult<swModel*> Project::ImportClipboard(const QByteArray& FileData)
 				++Entry;
 	}
 
-	// Clipboard formatting is generated; only retain the actual assets and submodels.
+	// keep only assets and submodels
 	Source.mDocumentBlocks.clear();
 	const swResult<void> Result = MergeInternal({ &Source }, Root);
 

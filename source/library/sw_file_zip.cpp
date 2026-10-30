@@ -152,32 +152,32 @@ quint64 swZipFile::SearchCentralDir64()
 	quint32 Number;
 	quint64 RelativeOffset;
 
-	// Signature.
+	// signature
 	if (mFile->ReadU32(&Number, 1) != 1)
 		return 0;
 
-	// Number of the disk with the start of the zip64 end of central directory.
+	// disk with the zip64 end record
 	if (mFile->ReadU32(&Number, 1) != 1)
 		return 0;
 
 	if (Number != 0)
 		return 0;
 
-	// Relative offset of the zip64 end of central directory record.
+	// zip64 end record offset
 	if (mFile->ReadU64(&RelativeOffset, 1) != 1)
 		return 0;
 
-	// Total number of disks.
+	// total number of disks
 	if (mFile->ReadU32(&Number, 1) != 1)
 		return 0;
 
 	if (Number != 0)
 		return 0;
 
-	// Go to end of central directory record.
+	// go to the end record
 	mFile->Seek(RelativeOffset, SEEK_SET);
 
-	// The signature.
+	// signature
 	if (mFile->ReadU32(&Number, 1) != 1)
 		return 0;
 
@@ -255,33 +255,33 @@ bool swZipFile::Open()
 
 		mZip64 = true;
 
-		// Skip signature, size and versions.
+		// skip signature, size and versions
 		mFile->Seek(CentralPos + 4 + 8 + 2 + 2, SEEK_SET);
 
-		// Number of this disk.
+		// number of this disk
 		if (mFile->ReadU32(&NumberDisk, 1) != 1)
 			return false;
 
-		// Number of the disk with the start of the central directory.
+		// disk with the central directory
 		if (mFile->ReadU32(&NumberDiskWithCD, 1) != 1)
 			return false;
 
-		// Total number of entries in the central directory on this disk.
+		// entries on this disk
 		if (mFile->ReadU64(&mNumEntries, 1) != 1)
 			return false;
 
-		// Total number of entries in the central directory.
+		// total entries
 		if (mFile->ReadU64(&NumberEntriesCD, 1) != 1)
 			return false;
 
 		if ((NumberEntriesCD != mNumEntries) || (NumberDiskWithCD != 0) || (NumberDisk != 0))
 			return false;
 
-		// Size of the central directory.
+		// central directory size
 		if (mFile->ReadU64(&mCentralDirSize, 1) != 1)
 			return false;
 
-		// Offset of start of central directory with respect to the starting disk number.
+		// central directory offset
 		if (mFile->ReadU64(&mCentralDirOffset, 1) != 1)
 			return false;
 
@@ -299,23 +299,23 @@ bool swZipFile::Open()
 
 		mZip64 = false;
 
-		// Skip signature.
+		// skip signature
 		mFile->Seek(CentralPos + 4, SEEK_SET);
 
-		// Number of this disk.
+		// number of this disk
 		if (mFile->ReadU16(&NumberDisk, 1) != 1)
 			return false;
 
-		// Number of the disk with the start of the central directory.
+		// disk with the central directory
 		if (mFile->ReadU16(&NumberDiskWithCD, 1) != 1)
 			return false;
 
-		// Total number of entries in the central dir on this disk.
+		// entries on this disk
 		if (mFile->ReadU16(&Number16, 1) != 1)
 			return false;
 		mNumEntries = Number16;
 
-		// Total number of entries in the central dir.
+		// total entries
 		if (mFile->ReadU16(&Number16, 1) != 1)
 			return false;
 		NumberEntriesCD = Number16;
@@ -323,12 +323,12 @@ bool swZipFile::Open()
 		if ((NumberEntriesCD != mNumEntries) || (NumberDiskWithCD != 0) || (NumberDisk != 0))
 			return false;
 
-		// Size of the central directory.
+		// central directory size
 		if (mFile->ReadU32(&Number32, 1) != 1)
 			return false;
 		mCentralDirSize = Number32;
 
-		// Offset of start of central directory with respect to the starting disk number.
+		// central directory offset
 		if (mFile->ReadU32(&Number32, 1) != 1)
 			return false;
 		mCentralDirOffset= Number32;
@@ -443,7 +443,7 @@ bool swZipFile::ReadCentralDir()
 				return false;
 		Seek -= SizeRead;
 /*
-		// Read extrafield
+		// read the extra field
 		if ((err==UNZ_OK) && (extraField!=nullptr))
 		{
 			ZPOS64_T uSizeRead ;
@@ -475,7 +475,7 @@ bool swZipFile::ReadCentralDir()
 		{
 			quint32 acc = 0;
 
-			// since lSeek now points to after the extra field we need to move back
+			// move back before the extra field
 			Seek -= FileInfo.size_file_extra;
 
 			if (Seek != 0)
@@ -494,7 +494,7 @@ bool swZipFile::ReadCentralDir()
 				if (mFile->ReadU16(&DataSize, 1) != 1)
 					return false;
 
-				// ZIP64 extra fields.
+				// zip64 extra fields
 				if (HeaderId == 0x0001)
 				{
 					if (FileInfo.uncompressed_size == (quint64)(unsigned long)-1)
@@ -511,14 +511,14 @@ bool swZipFile::ReadCentralDir()
 
 					if (FileInfo.offset_curfile == (quint64)-1)
 					{
-						// Relative Header offset.
+						// relative header offset
 						if (mFile->ReadU64(&FileInfo.offset_curfile, 1) != 1)
 							return false;
 					}
 
 					if (FileInfo.disk_num_start == (quint16)-1)
 					{
-						// Disk Start Number.
+						// disk start number
 						if (mFile->ReadU32(&Number32, 1) != 1)
 							return false;
 					}

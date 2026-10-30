@@ -60,12 +60,12 @@ swMainWindow::swMainWindow()
 	mGamepadTimer.start(33);
 #endif
 
-	// the window manager resizes a floating parts panel without mouse events, so snap once the resizing settles
+	// snap once resizing settles
 	mPartsSnapTimer.setSingleShot(true);
 	mPartsSnapTimer.setInterval(300);
 	connect(&mPartsSnapTimer, &QTimer::timeout, this, &swMainWindow::SnapPartsDock);
 
-	// the turntable starts once the input has been idle long enough
+	// turntable starts when idle
 	mIdleTimer.setSingleShot(true);
 	connect(&mIdleTimer, &QTimer::timeout, this, &swMainWindow::StartTurntable);
 	connect(&mTurntableTimer, &QTimer::timeout, this, &swMainWindow::UpdateTurntable);
@@ -105,7 +105,7 @@ void swMainWindow::PreviewPart(swPartData* PartData, int ColorCode, bool ShowPre
 	if (ShowPreview)
 		mPreviewToolBar->show();
 
-	// parts shown from the model selection are cleared again when the selection goes away
+	// clear parts shown from the selection
 	mPreviewFromSelection = !ShowPreview;
 	mPreviewWidget->SetCurrentPart(PartData, ColorCode);
 }
@@ -123,7 +123,8 @@ void swMainWindow::CreateTerminalWidget()
 
 	connect(mTerminalToolBar, &QDockWidget::topLevelChanged, this, &swMainWindow::EnableWindowFlags);
 #else
-	// Without KDE Frameworks there is no terminal to show.
+
+	// no terminal without kde frameworks
 	mActions[SW_VIEW_TOOLBAR_TERMINAL]->setVisible(false);
 	mActions[SW_VIEW_TERMINAL_TOGGLE_FOLLOW_MODEL]->setVisible(false);
 	mActions[SW_VIEW_TERMINAL_GO_TO_MODEL_FOLDER]->setVisible(false);
@@ -157,7 +158,8 @@ void swMainWindow::SnapPartsDock()
 	}
 
 	const int Delta = mPartSelectionWidget->GetTileSnapDelta();
-	// a floating panel also ends on whole thumbnail or list rows
+
+	// floating panels end on whole rows
 	const int RowDelta = mPartsToolBar->isFloating() ? mPartSelectionWidget->GetRowSnapDelta() : 0;
 
 	if (!Delta && !RowDelta)
@@ -168,7 +170,7 @@ void swMainWindow::SnapPartsDock()
 	else
 		resizeDocks({ mPartsToolBar }, { mPartsToolBar->width() + Delta }, Qt::Horizontal);
 
-	// Check once more after the tiles are laid out again in case the view wraps differently than measured.
+	// check again after relayout
 	if (!mPartsSnapRetried)
 	{
 		mPartsSnapRetried = true;
@@ -198,7 +200,7 @@ void swMainWindow::CreatePreviewWidget()
 
 bool swMainWindow::eventFilter(QObject* Object, QEvent* Event)
 {
-	// any input ends the turntable and restarts the idle time
+	// input ends the turntable
 	switch (Event->type())
 	{
 	case QEvent::MouseMove:
@@ -218,13 +220,13 @@ bool swMainWindow::eventFilter(QObject* Object, QEvent* Event)
 	case QEvent::TabletPress:
 		RestartIdleTimer();
 
-		// the input that ends the turntable does nothing else
+		// ending input does nothing else
 		if (StopTurntable())
 			return true;
 		break;
 
 	case QEvent::ApplicationStateChange:
-		// showing the turntable window can briefly deactivate the application
+		// ignore brief deactivation
 		if (QApplication::applicationState() != Qt::ApplicationActive && mTurntableWidget && mTurntableClock.elapsed() > 1000)
 			StopTurntable();
 
@@ -235,7 +237,7 @@ bool swMainWindow::eventFilter(QObject* Object, QEvent* Event)
 		break;
 	}
 
-	// Resizing the parts panel by hand snaps it to whole tiles once the mouse is released.
+	// snap to whole tiles on release
 	if (Object == mPartsToolBar && Event->type() == QEvent::Resize && mPartsToolBar->isFloating())
 		mPartsSnapTimer.start();
 	else if (Object == mPartsToolBar && Event->type() == QEvent::Resize && QApplication::mouseButtons() != Qt::NoButton)
@@ -246,7 +248,7 @@ bool swMainWindow::eventFilter(QObject* Object, QEvent* Event)
 		QTimer::singleShot(0, this, &swMainWindow::SnapPartsDock);
 	}
 
-	// accelerators added by kde show as '&' in panel titles
+	// drop kde accelerators
 	if (Event->type() == QEvent::WindowTitleChange)
 	{
 		QDockWidget* DockWidget = qobject_cast<QDockWidget*>(Object);
@@ -448,7 +450,7 @@ void swMainWindow::closeEvent(QCloseEvent* Event)
 	{
 		Event->accept();
 
-		// the instructions panels are saved while they are still shown
+		// save instructions panels while shown
 		if (mInstructionsDialog)
 			mInstructionsDialog->SaveLayout();
 
@@ -664,7 +666,8 @@ void swMainWindow::ShowExportPOVRayDialog()
 void swMainWindow::ShowRenderDialog(swRenderDialogMode RenderDialogMode)
 {
 #ifndef SW_DISABLE_RENDER_DIALOG
-	// the povray window stays open beside the model like the instructions window and renders its current state
+
+	// povray window stays open
 	if (RenderDialogMode == swRenderDialogMode::RenderPOVRay)
 	{
 		if (mPOVRayDialog)
@@ -690,7 +693,7 @@ void swMainWindow::ShowInstructionsDialog()
 {
 	swGetActiveProject()->GetMainModel()->WaitForAssets();
 
-	// The instructions window stays open beside the model and follows its changes.
+	// instructions window follows the model
 	if (mInstructionsDialog)
 	{
 		mInstructionsDialog->raise();
@@ -709,13 +712,13 @@ void swMainWindow::CloseInstructionsDialog()
 {
 	if (mInstructionsDialog)
 	{
-		// the panels are saved before the window goes with the old project
+		// save the panels first
 		mInstructionsDialog->SaveLayout();
 		delete mInstructionsDialog;
 	}
 }
 
-// use to show the instructions options changed in the preferences in the open window
+// use to apply the instructions preferences
 void swMainWindow::UpdateInstructionsOptions()
 {
 	if (mInstructionsDialog)
@@ -724,7 +727,7 @@ void swMainWindow::UpdateInstructionsOptions()
 
 void swMainWindow::ShowPrintWidget()
 {
-	// printing has one panel in the instructions window beside the pages it prints
+	// one print panel beside the pages
 	ShowInstructionsDialog();
 
 	if (mInstructionsDialog)
@@ -829,7 +832,7 @@ void swMainWindow::SetColorIndex(int ColorIndex)
 {
 	mColorIndex = ColorIndex;
 
-	// Picking a color explicitly also becomes the color to insert next.
+	// picked color becomes the insert color
 	mLastInsertedColorIndex = ColorIndex;
 
 	UpdatePartsColor();
@@ -844,7 +847,7 @@ int swMainWindow::GetInsertColorIndex() const
 		break;
 
 	case swInsertColorMode::SelectedPartColor:
-		// Selecting a part already made its color the current color.
+		// selected part set the color
 		break;
 
 	case swInsertColorMode::LastInsertedColor:
@@ -876,7 +879,7 @@ void swMainWindow::ColorOptionsMenuAboutToShow()
 	QMenu* Menu = qobject_cast<QMenu*>(sender());
 	Menu->clear();
 
-	// Each entry runs the matching command so keyboard shortcuts and the menu stay in sync.
+	// entries run the matching command
 	auto AddCommand = [this](QMenu* TargetMenu, const QString& Text, swCommandId CommandId, bool Checked)
 	{
 		QAction* Action = TargetMenu->addAction(Text, this, [this, CommandId]()
@@ -905,7 +908,7 @@ void swMainWindow::ColorOptionsMenuAboutToShow()
 
 void swMainWindow::UpdatePartsColor()
 {
-	// The parts list shows the color new parts will be inserted with, unless its color is locked.
+	// show the insert color unless locked
 	if (mPartSelectionWidget)
 		mPartSelectionWidget->SetColorIndex(GetInsertColorIndex());
 }
@@ -956,7 +959,7 @@ void swMainWindow::SetCustomAngleSnap()
 		return;
 	}
 
-	// Keep at most two decimals.
+	// keep at most two decimals
 	mAngleSnapCustom = static_cast<float>(qRound(Angle * 100.0) / 100.0);
 	swSetProfileFloat(SW_PROFILE_ANGLE_SNAP_CUSTOM, mAngleSnapCustom);
 
@@ -1028,8 +1031,7 @@ void swMainWindow::ToggleDockWidget(QWidget* DockWidget)
 
 void swMainWindow::ToggleFullScreen()
 {
-	// todo: hide toolbars and menu
-	// todo: create fullscreen toolbar or support esc key to go back
+	// todo fullscreen toolbar and esc key
 	if (isFullScreen())
 		showNormal();
 	else

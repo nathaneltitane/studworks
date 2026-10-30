@@ -33,9 +33,11 @@ public:
 	void SetImage(QImage Image, int Flags);
 	void SetImages(std::vector<QImage>&& Images, int Flags);
 	void DiscardDecodedImage();
-	// Records a failure without discarding pixels retained for upload retries.
+
+	// Records a failure, keeping the pixels.
 	void SetFailed(swTextureLoadError Error, QString Details);
-	// Failure details or a fallback message; empty unless loading has failed.
+
+	// Failure details, empty unless failed.
 	QString GetLoadError() const;
 	void Upload(swContext* Context);
 	void Unload();

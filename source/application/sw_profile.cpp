@@ -300,7 +300,7 @@ void swRemoveProfileKey(SW_PROFILE_KEY Key)
 	Settings.remove(QString("%1/%2").arg(Entry.mSection, Entry.mKey));
 }
 
-// use to get the value a key has before it is ever changed
+// use to get the default value of a key
 int swGetProfileDefaultInteger(SW_PROFILE_KEY Key)
 {
 	const int* DefaultInt = std::get_if<int>(&gProfileEntries[Key].mDefault);
@@ -470,7 +470,7 @@ struct swProfileEnumerationValue
 	int LegacyValue;
 };
 
-// Tokens and legacy numbers remain stable when enum members are reordered.
+// keep tokens stable across enum changes
 constexpr swProfileEnumerationValue<swShadingMode> ShadingModeValues[] =
 {
 	{ swShadingMode::Wireframe, "Wireframe", 0 },

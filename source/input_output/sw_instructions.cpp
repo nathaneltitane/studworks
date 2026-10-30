@@ -89,7 +89,7 @@ swInstructionsBoxTypes swGetBoxTypes(swInstructionsBoxElement Element)
 swInstructions::swInstructions(Project* Project)
 	: mProject(Project)
 {
-	// Page sizes are stored in points, 1/72 inch, which is also one pixel of the page scene.
+	// page sizes are in points
 	mPageSetup.Width = swGetProfileFloat(SW_PROFILE_INSTRUCTIONS_PAGE_WIDTH);
 	mPageSetup.Height = swGetProfileFloat(SW_PROFILE_INSTRUCTIONS_PAGE_HEIGHT);
 	mPageSetup.MarginLeft = swGetProfileFloat(SW_PROFILE_INSTRUCTIONS_MARGIN_LEFT);
@@ -127,7 +127,7 @@ swInstructions::swInstructions(Project* Project)
 
 	CreatePages();
 
-	// the main model keeps the commands as they are written so opening the instructions changes nothing
+	// keep main model commands as written
 	swModel* MainModel = mProject ? mProject->GetMainModel() : nullptr;
 
 	if (MainModel)
@@ -142,7 +142,7 @@ void swInstructions::SetProject(Project* Project)
 {
 	mProject = Project;
 
-	// the settings of the old project are dropped and the commands of the new one are read
+	// read the commands of the new project
 	mPages.clear();
 	mPageSettingsOverrides.clear();
 	mPagePropertyOverrides.clear();
@@ -226,7 +226,7 @@ swInstructionsProperties swInstructions::CreateDefaultProperties()
 	Properties[static_cast<int>(swInstructionsPropertyType::PageNumberPlacement)].Value = SW_PLACEMENT_COUNT - SW_PLACEMENT_GRID_SIZE - 2;
 	Properties[static_cast<int>(swInstructionsPropertyType::ShowPageNumberAllPages)].Value = false;
 
-	// the boxes keep the former spacing around the elements, without a border or a background
+	// boxes keep the former spacing
 	for (int Element = 0; Element < static_cast<int>(swInstructionsBoxElement::Count); Element++)
 	{
 		const swInstructionsBoxTypes BoxTypes = swGetBoxTypes(static_cast<swInstructionsBoxElement>(Element));
@@ -242,7 +242,7 @@ swInstructionsProperties swInstructions::CreateDefaultProperties()
 		Properties[static_cast<int>(BoxTypes.BackgroundColor)].Value = SW_RGBA(255, 255, 255, 0);
 	}
 
-	// a notice stands out from the page with its frame
+	// frame notices
 	Properties[static_cast<int>(swInstructionsPropertyType::NoticeFont)].Value = QFont("Arial", 16).toString();
 	Properties[static_cast<int>(swInstructionsPropertyType::NoticeTextColor)].Value = SW_RGBA(0, 0, 0, 255);
 	Properties[static_cast<int>(swInstructionsPropertyType::NoticeBorderWidth)].Value = 2;
@@ -250,15 +250,19 @@ swInstructionsProperties swInstructions::CreateDefaultProperties()
 	Properties[static_cast<int>(swInstructionsPropertyType::PointerStyle)].Value = static_cast<int>(swInstructionsPointerStyle::Line);
 	Properties[static_cast<int>(swInstructionsPropertyType::PointerTip)].Value = static_cast<int>(swInstructionsPointerTip::Arrowhead);
 	Properties[static_cast<int>(swInstructionsPropertyType::PointerColor)].Value = SW_RGBA(0, 0, 0, 255);
-	// a pointer follows the border of its element and its tip is three times its width
+
+	// pointers follow their element border
 	Properties[static_cast<int>(swInstructionsPropertyType::PointerWidth)].Value = 0;
 	Properties[static_cast<int>(swInstructionsPropertyType::PointerTipSize)].Value = 0;
-	// the parts stand in rows on their bottom edge so the counts line up
+
+	// parts stand in rows on their bottom
 	Properties[static_cast<int>(swInstructionsPropertyType::PLILayout)].Value = static_cast<int>(swPartsListLayout::Rows);
 	Properties[static_cast<int>(swInstructionsPropertyType::PLIAlignment)].Value = static_cast<int>(swPartsListAlignment::End);
-	// step and cover models render in perspective whatever the model view shows
+
+	// step models render in perspective
 	Properties[static_cast<int>(swInstructionsPropertyType::ModelProjection)].Value = static_cast<int>(swCameraProjection::Perspective);
-	// the parts new to a step are outlined in a nearly opaque yellow
+
+	// outline new parts in yellow
 	Properties[static_cast<int>(swInstructionsPropertyType::FadePreviousSteps)].Value = true;
 	Properties[static_cast<int>(swInstructionsPropertyType::FadeColor)].Value = SW_RGBA(128, 128, 128, 217);
 	Properties[static_cast<int>(swInstructionsPropertyType::HighlightNewParts)].Value = true;
@@ -276,7 +280,7 @@ void swInstructions::SetDefaultProperties()
 
 void swInstructions::ResetProperties()
 {
-	// only the defaults, page properties and moved elements are restored, the page layouts and blank pages stay
+	// restore defaults and moved elements
 	SetDefaultProperties();
 	mPagePropertyOverrides.clear();
 	mElementOffsets.clear();
@@ -299,13 +303,13 @@ void swInstructions::SetDefaultPageSettings(const swInstructionsPageSettings& Pa
 
 swInstructionsDirection swInstructions::GetPageDirection() const
 {
-	// landscape pages fill rows across first, portrait pages fill columns down first
+	// landscape fills rows, portrait columns
 	return mPageSetup.Width > mPageSetup.Height ? swInstructionsDirection::Horizontal : swInstructionsDirection::Vertical;
 }
 
 bool swInstructions::GetPageKey(size_t PageIndex, swInstructionsStepKey& Key) const
 {
-	// pages are found by their first step so their settings follow them when other pages change
+	// find pages by their first step
 	if (PageIndex >= mPages.size())
 	{
 		swModel* Model = mProject ? mProject->GetMainModel() : nullptr;
@@ -360,7 +364,7 @@ swInstructionsPageSettings swInstructions::GetPageSettings(size_t PageIndex) con
 
 void swInstructions::SetPageSettings(size_t PageIndex, int Rows, int Columns)
 {
-	// each page can hold its own number of steps, following pages flow on from it
+	// pages hold their own step count
 	if (PageIndex >= mPages.size() || mPages[PageIndex].Type != swInstructionsPageType::Steps)
 		return;
 
@@ -383,7 +387,7 @@ void swInstructions::SetPageSettings(size_t PageIndex, int Rows, int Columns)
 
 void swInstructions::SetPageDividerPreset(size_t PageIndex, int Rows, int Columns)
 {
-	// a split page shows its dividers, the preset changes both and rebuilds the pages once
+	// split pages show dividers
 	swInstructionsProperty& Dividers = mStepProperties[static_cast<int>(swInstructionsPropertyType::ShowStepDividers)];
 	const bool ShowDividers = Rows * Columns > 1 && !Dividers.Value.toBool();
 
@@ -405,14 +409,14 @@ void swInstructions::SetPageDividerPreset(size_t PageIndex, int Rows, int Column
 
 bool swInstructions::CanInsertBlankPage(size_t PageIndex) const
 {
-	// the default blank pages belong to no step, a blank page goes before the page that follows them
+	// default blank pages have no step
 	swInstructionsStepKey Key;
 	return GetPageKey(PageIndex, Key) && Key.first;
 }
 
 void swInstructions::InsertBlankPage(size_t PageIndex)
 {
-	// the blank page goes before the page at this index and stays with its first step
+	// insert the blank page before this index
 	swInstructionsStepKey Key;
 
 	if (!GetPageKey(PageIndex, Key) || !Key.first)
@@ -430,7 +434,7 @@ void swInstructions::RemoveBlankPage(size_t PageIndex)
 	if (PageIndex >= mPages.size() || mPages[PageIndex].Type != swInstructionsPageType::Blank)
 		return;
 
-	// a default blank page is removed by switching it off
+	// switch off default blank pages
 	const swInstructionsStepKey& BlankKey = mPages[PageIndex].BlankKey;
 
 	if (BlankKey == mCoverBlankKey)
@@ -499,7 +503,7 @@ QColor swInstructions::GetColorProperty(swInstructionsPropertyType Type, swModel
 
 QFont swInstructions::GetFontProperty(swInstructionsPropertyType Type, swModel* Model, swStep Step) const
 {
-	// the document font replaces every element font to keep the instructions uniform
+	// the document font replaces element fonts
 	if (Type != swInstructionsPropertyType::DocumentFont && GetBoolProperty(swInstructionsPropertyType::UseDocumentFont, Model, Step))
 		Type = swInstructionsPropertyType::DocumentFont;
 
@@ -516,7 +520,7 @@ bool swInstructions::IsPageProperty(swInstructionsPropertyType Type)
 
 bool swInstructions::GetStepPageIndex(swModel* Model, swStep Step, size_t& PageIndex) const
 {
-	// step 0 is the whole model, shown by its bill of materials
+	// step 0 is the whole model
 	for (size_t Index = 0; Index < mPages.size(); Index++)
 	{
 		const swInstructionsPage& Page = mPages[Index];
@@ -595,7 +599,7 @@ QColor swInstructions::GetPageBackgroundColor(size_t PageIndex) const
 
 void swInstructions::EmitPagePropertyChanged(swInstructionsPropertyType Type)
 {
-	// the background is drawn with the page, the thumbnails with their step
+	// draw the background with the page
 	if (Type == swInstructionsPropertyType::PageBackgroundColor)
 		emit PageLayoutChanged();
 	else
@@ -609,7 +613,7 @@ void swInstructions::SetPageScope(size_t PageIndex, swInstructionsPropertyType T
 	if (!IsPageProperty(Type) || PageIndex >= mPages.size() || !GetPageKey(PageIndex, Key) || HasPageProperty(PageIndex, Type) == PageOnly)
 		return;
 
-	// a page starts from the value of all pages and returns to it when it no longer has its own
+	// pages fall back to the all pages value
 	swInstructionsProperty& Property = mPagePropertyOverrides[Key][static_cast<int>(Type)];
 
 	if (PageOnly)
@@ -670,7 +674,7 @@ void swInstructions::SetElementOffsets(const std::map<swInstructionsElementKey, 
 	if (Offsets.empty())
 		return;
 
-	// an element moved back onto its placement no longer keeps an offset
+	// drop the offset when back on placement
 	for (const std::pair<const swInstructionsElementKey, QPointF>& Offset : Offsets)
 	{
 		if (Offset.second.isNull())
@@ -690,7 +694,7 @@ void swInstructions::ResetElementOffset(const swInstructionsElementKey& Key)
 
 void swInstructions::SetElementPlacement(swInstructionsPropertyType Type, int Placement, const swInstructionsElementKey& Key)
 {
-	// a placed element leaves the position it was moved to
+	// a placed element drops its moved position
 	const bool OffsetRemoved = mElementOffsets.erase(Key) > 0;
 
 	if (mStepProperties[static_cast<int>(Type)].Value == QVariant(Placement))
@@ -723,7 +727,7 @@ swInstructionsPageKey swInstructions::GetPageElementsKey(size_t PageIndex) const
 	if (PageIndex >= mPages.size())
 		return { swInstructionsPageType::Blank, nullptr, 0, -1 };
 
-	// pages sharing a type and a first step, like blank pages inserted together, are told apart by their rank
+	// tell pages apart by rank
 	auto GetBaseKey = [this](size_t Index)
 	{
 		const swInstructionsPage& Page = mPages[Index];
@@ -771,7 +775,7 @@ void swInstructions::UnlockElement(const swInstructionsElementKey& Key, const QP
 	if (!mLockedPositions.erase(Key))
 		return;
 
-	// the unlocked element stays where it was locked, as an offset from its placement
+	// keep the unlocked element in place
 	if (Offset.isNull())
 		mElementOffsets.erase(Key);
 	else
@@ -780,7 +784,7 @@ void swInstructions::UnlockElement(const swInstructionsElementKey& Key, const QP
 	emit PageLayoutChanged();
 }
 
-// use to make the default page, grid and units of the preferences the current ones
+// use to apply the preferences page defaults
 void swInstructions::LoadDefaultPageSetup()
 {
 	const std::pair<SW_PROFILE_KEY, SW_PROFILE_KEY> FloatKeys[] =
@@ -811,7 +815,7 @@ void swInstructions::LoadDefaultPageSetup()
 		swSetProfileInteger(Keys.first, swGetProfileInteger(Keys.second));
 }
 
-// use to bring back the default page, grid and units of the preferences
+// use to restore the preferences page defaults
 void swInstructions::ResetPageSetup()
 {
 	LoadDefaultPageSetup();
@@ -822,7 +826,7 @@ void swInstructions::ResetPageSetup()
 	SetGridDivisions(swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_GRID_DIVISIONS));
 	SetGridWithinMargins(swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_GRID_WITHIN_MARGINS) != 0);
 
-	// every value follows the units of the paper
+	// follow the paper units
 	SetDefaultInt(swInstructionsPropertyType::DocumentUnits, swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_PAGE_UNITS));
 	SetDefaultBool(swInstructionsPropertyType::UseDocumentUnits, true);
 
@@ -910,7 +914,7 @@ void swInstructions::SetMarginColor(const QColor& Color)
 	emit GridChanged();
 }
 
-// use to follow the grid and margin colors stored by the preferences
+// use to follow the preferences grid colors
 void swInstructions::UpdateColors()
 {
 	SetGridPrimaryColor(swQColorFromRGBA(swGetProfileUnsignedInteger(SW_PROFILE_INSTRUCTIONS_GRID_PRIMARY_COLOR)));
@@ -975,7 +979,7 @@ QVariant swInstructions::GetProperty(swInstructionsPropertyType Type, swModel* M
 {
 	size_t PageIndex;
 
-	// a page with its own value overrides every other value of its steps
+	// a page value overrides its steps
 	if (!mPagePropertyOverrides.empty() && IsPageProperty(Type) && GetStepPageIndex(Model, Step, PageIndex) && HasPageProperty(PageIndex, Type))
 		return GetPageProperty(PageIndex, Type);
 
@@ -1031,7 +1035,7 @@ void swInstructions::SetDefaultProperty(swInstructionsPropertyType Type, const Q
 
 	Property.Value = Value;
 
-	// dividers and the bill of materials change the page layout instead of a single step
+	// dividers and lists change the layout
 	switch (Type)
 	{
 	case swInstructionsPropertyType::ShowBillOfMaterials:
@@ -1180,7 +1184,7 @@ void swInstructions::AddDefaultPages(swModel* Model, std::vector<const swModel*>
 	swInstructionsPage Page;
 	int Row = 0, Column = 0;
 
-	// Models keep their step settings and gain entries for steps added since.
+	// add entries for new steps
 	std::vector<swInstructionsProperties>& StepProperties = mModels[Model].StepProperties;
 
 	if (StepProperties.size() < LastStep + 1)
@@ -1284,7 +1288,7 @@ void swInstructions::AddBlankPages(swInstructionsPage& Page, const swInstruction
 	if (!BlankCount)
 		return;
 
-	// a blank page breaks the flow, the steps before it end their page
+	// a blank page ends the page before it
 	if (!Page.Steps.empty())
 	{
 		mPages.emplace_back(std::move(Page));

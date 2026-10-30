@@ -153,7 +153,7 @@ bool swSaveCategories(QTextStream& Stream, const std::vector<swLibraryCategory>&
 
 bool swMatchCategory(const char* PartName, const char* Expression)
 {
-	// Check if we need to split the test expression.
+	// split the test expression
 	const char* p = Expression;
 
 	while (*p)
@@ -167,7 +167,7 @@ bool swMatchCategory(const char* PartName, const char* Expression)
 //			const char* Start = p;
 			int c = 0;
 
-			// Skip what's inside the parenthesis.
+			// skip the parenthesis contents
 			do
 			{
 				if (*p == '(')
@@ -175,7 +175,9 @@ bool swMatchCategory(const char* PartName, const char* Expression)
 				else if (*p == ')')
 						c--;
 				else if (*p == 0)
-					return false; // Mismatched parenthesis.
+
+					// mismatched parenthesis
+					return false;
 
 				p++;
 			}
@@ -208,7 +210,7 @@ bool swMatchCategory(const char* PartName, const char* Expression)
 				const char* Start = p;
 				int c = 0;
 
-				// Extract what's inside the parenthesis.
+				// extract the parenthesis contents
 				do
 				{
 					if (*p == '(')
@@ -216,7 +218,9 @@ bool swMatchCategory(const char* PartName, const char* Expression)
 					else if (*p == ')')
 							c--;
 					else if (*p == 0)
-						return false; // Mismatched parenthesis.
+
+						// mismatched parenthesis
+						return false;
 
 					p++;
 				}
@@ -238,13 +242,13 @@ bool swMatchCategory(const char* PartName, const char* Expression)
 	while (SearchEnd >= SearchStart && isspace(*SearchEnd))
 		SearchEnd--;
 
-	// Testing a simple case.
+	// simple case
 	std::string Search;
 	if (SearchStart != SearchEnd)
 		Search = std::string(SearchStart, SearchEnd - SearchStart + 1);
 	const char* Word = Search.c_str();
 
-	// Check for modifiers.
+	// check for modifiers
 	bool WholeWord = 0;
 	bool Begin = 0;
 

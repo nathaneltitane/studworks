@@ -29,23 +29,25 @@ enum class swColorTheme
 	System
 };
 
-// The outline shader samples at most 8 pixels around each pixel.
+// The outline shader samples up to 8 pixels.
 #define SW_SELECTION_OUTLINE_WIDTH_MINIMUM 1
 #define SW_SELECTION_OUTLINE_WIDTH_MAXIMUM 8
 
-// sizes from extra small to extra large on a 16px baseline
+// Sizes from extra small to extra large.
 constexpr std::array<int, 5> SW_VIEW_CUBE_SIZES = { 48, 64, 96, 128, 192 };
 constexpr std::array<int, 5> SW_AXIS_ICON_SIZES = SW_VIEW_CUBE_SIZES;
-// the view cube and axis icon share a corner box whose half spans the boundary and the cube faces sit at the half size
+
+// The view cube and axis icon corner box.
 constexpr float SW_VIEW_CUBE_BOUNDARY = 1.25f;
 constexpr float SW_VIEW_CUBE_HALF_SIZE = 0.8f;
 constexpr float SW_VIEW_CUBE_CHAMFER = 0.22f;
-// the alpha settings read 0 to 1 over a base range of 95% to 85% transparency so an overlay never disappears
+
+// The overlay alpha range.
 constexpr float SW_OVERLAY_ALPHA_MIN = 0.05f;
 constexpr float SW_OVERLAY_ALPHA_MAX = 0.15f;
 constexpr std::array<int, 5> SW_PART_ICON_SIZES = { 32, 48, 64, 96, 128 };
 
-// use to snap a stored size to the nearest listed size
+// Snaps a size to the list.
 inline int swSnapSize(int Size, const std::array<int, 5>& Sizes)
 {
 	int Nearest = Sizes[0];
@@ -57,7 +59,7 @@ inline int swSnapSize(int Size, const std::array<int, 5>& Sizes)
 	return Nearest;
 }
 
-// use to find the combo index of a size, after the disabled entry
+// Finds the combo index of a size.
 inline int swSizeIndex(int Size, const std::array<int, 5>& Sizes)
 {
 	for (size_t Index = 0; Index < Sizes.size(); Index++)
@@ -67,7 +69,7 @@ inline int swSizeIndex(int Size, const std::array<int, 5>& Sizes)
 	return 0;
 }
 
-// use to turn a 0 to 100 alpha setting into the overlay alpha
+// Gets the overlay alpha.
 inline float swOverlayAlpha(int Alpha)
 {
 	return SW_OVERLAY_ALPHA_MIN + (SW_OVERLAY_ALPHA_MAX - SW_OVERLAY_ALPHA_MIN) * (Alpha < 0 ? 0 : Alpha > 100 ? 100 : Alpha) / 100.0f;
@@ -100,7 +102,7 @@ enum class swAxisIconLocation
 	BottomRight
 };
 
-// the axis the idle turntable turns the model around
+// The idle turntable axis.
 enum class swTurntableAxis
 {
 	X,
@@ -108,7 +110,7 @@ enum class swTurntableAxis
 	Z
 };
 
-// the views a projection change applies to
+// The views a projection change applies to.
 enum class swProjectionScope
 {
 	PerView,
@@ -147,7 +149,7 @@ public:
 	void LoadRenderTarget(swRenderTarget Target);
 	void SaveRenderTarget(swRenderTarget Target) const;
 
-	// The preview and the parts list use their own settings unless they are synced with the model views.
+	// Preview and parts list settings.
 	swRenderSettings GetRenderSettings(swRenderTarget Target) const
 	{
 		if (Target != swRenderTarget::ModelView)
@@ -359,7 +361,7 @@ struct swCommandLineOptions
 	QString StdOut;
 	QString StdErr;
 
-	// use to tell if the options only transfer settings to and from files
+	// Tells if only settings transfer.
 	bool HasSettingsTransfer() const
 	{
 		return !SettingsImportName.isEmpty() || !SettingsExportName.isEmpty() || !KeyboardShortcutsImportName.isEmpty() || !KeyboardShortcutsExportName.isEmpty() || !MouseShortcutsImportName.isEmpty() || !MouseShortcutsExportName.isEmpty() || !CategoriesImportName.isEmpty() || !CategoriesExportName.isEmpty();

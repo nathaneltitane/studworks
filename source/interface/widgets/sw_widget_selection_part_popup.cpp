@@ -125,7 +125,7 @@ void swPartSelectionPopup::ResizeToContents()
 	updateGeometry();
 	UpdateHeightLimit();
 
-	// Refresh QMenu's cached widget action geometry as well as its own size.
+	// refresh the menu action geometry
 	for (QAction* Action : Menu->actions())
 	{
 		QWidgetAction* WidgetAction = qobject_cast<QWidgetAction*>(Action);

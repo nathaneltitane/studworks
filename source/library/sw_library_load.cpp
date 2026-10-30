@@ -374,7 +374,7 @@ swPartBuildResult swPartsLibrary::BuildPartData(const swPartSourceSnapshot& Sour
 			if (File)
 				Loaded = MeshLoader.LoadMesh(*File.value(), SW_MESH_DATA_SHARED);
 
-			// Directory loading retries unofficial geometry after an open or parse failure.
+			// retry unofficial geometry on failure
 			if (mHasUnofficial && !Loaded)
 			{
 				MeshData.Clear();
@@ -451,7 +451,7 @@ swResult<std::unique_ptr<swFile>> swPartsLibrary::OpenPartDataFile(const char* P
 		return OpenFile(Source);
 	}
 
-	// use to find an included file in the open archives
+	// use to find an include in the archives
 	const auto OpenArchiveFile = [this, PartName]() -> swResult<std::unique_ptr<swFile>>
 	{
 		for (const swZipFileType Type : { swZipFileType::Official, swZipFileType::Unofficial })
@@ -520,7 +520,7 @@ swResult<std::unique_ptr<swFile>> swPartsLibrary::OpenPartDataFile(const char* P
 #endif
 	}
 
-	// folder libraries fall back to the unofficial archive
+	// folders fall back to the unofficial archive
 	if (!FileInfo)
 		return OpenArchiveFile();
 

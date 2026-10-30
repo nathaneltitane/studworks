@@ -163,7 +163,7 @@ int main(int argc, char *argv[])
 		Application.installTranslator(&QtBaseTranslator);
 #endif
 
-	// Supply English plural forms when a locale has no translation for a numerus message.
+	// supply english plural forms
 	QTranslator EnglishTranslator;
 	if (EnglishTranslator.load("studworks_en", ":/resources/translations"))
 		Application.installTranslator(&EnglishTranslator);

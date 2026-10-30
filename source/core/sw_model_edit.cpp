@@ -871,7 +871,9 @@ void swModel::MoveSelectionToModel(swModel* Model)
 			Part->CompareBoundingBox(Min, Max);
 			mParts[PartIndex].release();
 			mParts.erase(mParts.begin() + PartIndex);
-			Part->SetGroup(nullptr); // todo: copy groups
+
+			// todo copy groups
+			Part->SetGroup(nullptr);
 			Parts.emplace_back(Part);
 			FirstStep = qMin(FirstStep, Part->GetStepShow());
 
@@ -951,7 +953,7 @@ void swModel::InlineSelectedModels()
 		{
 			swPart* NewPart = new swPart(nullptr);
 
-			// todo: recreate in groups in the current model
+			// todo recreate groups
 
 			int ColorIndex = ModelPart->GetColorIndex();
 

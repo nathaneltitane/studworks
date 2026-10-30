@@ -27,7 +27,7 @@ void swView::StopCutawayPick()
 	gMainWindow->statusBar()->clearMessage();
 }
 
-// use to center the cutaway on the clicked face with its depth along the face normal
+// use to center the cutaway on a face
 void swView::PickCutaway()
 {
 	const swObjectRayTest ObjectRayTest = RayTest(true, false);
@@ -49,10 +49,10 @@ void swView::PickCutaway()
 		}
 	}
 
-	// a click places the default size in studs across, one stud is 20 ldu
+	// click places the default size
 	mCutawaySize = swGetPreferences().mCutawaySize * 10.0f;
 
-	// the cutaway stays aligned to the world axes, the cylinder runs along the one closest to the face normal
+	// stay aligned to the world axes
 	int NormalAxis = 0;
 
 	for (int AxisIndex = 1; AxisIndex < 3; AxisIndex++)
@@ -68,7 +68,7 @@ void swView::PickCutaway()
 
 	StopCutawayPick();
 
-	// dragging on from the click draws the size
+	// dragging draws the size
 	mCutawayDragHandle = 7;
 	mCutawayDragCenter = mCutawayCenter;
 	mCutawayDragSize = mCutawaySize;
@@ -90,7 +90,7 @@ void swView::ResizeCutaway(float Scale)
 	Redraw();
 }
 
-// use to move the cutaway into the model by a positive distance or out of it by a negative one
+// use to move the cutaway in or out
 void swView::MoveCutaway(float Distance)
 {
 	if (mCutawayShape == swCutawayShape::None)
@@ -115,7 +115,7 @@ void swView::RemoveCutaway()
 	Redraw();
 }
 
-// use to keep the cutaway gizmo arrows about 100 pixels long at any zoom
+// use to keep the arrows 100 pixels long
 float swView::GetCutawayHandleLength() const
 {
 	swVector3 ScreenPosition = ProjectPoint(mCutawayCenter);
@@ -124,7 +124,7 @@ float swView::GetCutawayHandleLength() const
 	return swLength(UnprojectPoint(ScreenPosition) - mCutawayCenter) * 10.0f * GetUIScale();
 }
 
-// use to find the gizmo handle under the mouse, 0 to 2 for the axes, 3 for the center and 4 to 6 for the size knobs, 7 draws a new cutaway
+// use to find the handle under the mouse
 int swView::FindCutawayHandle() const
 {
 	if (mViewType != swViewType::View || mCutawayShape == swCutawayShape::None || mCutawayPickShape != swCutawayShape::None)
@@ -175,14 +175,14 @@ int swView::FindCutawayHandle() const
 	return Handle;
 }
 
-// use to move the cutaway with the arrows or the center and to resize it with the knobs
+// use to move or resize the cutaway
 void swView::UpdateCutawayDrag()
 {
 	const swVector3 Center = ProjectPoint(mCutawayDragCenter);
 
 	if (mCutawayDragHandle == 7)
 	{
-		// a drag of a few pixels still counts as a click with the default size
+		// small drags count as clicks
 		if (abs(mMouseX - mCutawayDragMouseX) + abs(mMouseY - mCutawayDragMouseY) < 4)
 			mCutawaySize = mCutawayDragSize;
 		else
@@ -203,7 +203,7 @@ void swView::UpdateCutawayDrag()
 		if (SegmentLength < 1e-6f)
 			return;
 
-		// the size steps by half a plate so the cut lines up with the bricks
+		// step by half a plate
 		const float Size = mCutawayDragSize + swDot(Offset, Segment) / SegmentLength;
 		mCutawaySize = qMax(roundf(Size / 4.0f) * 4.0f, 4.0f);
 	}
@@ -232,7 +232,7 @@ void swView::UpdateCutawayDrag()
 	Redraw();
 }
 
-// use to map world points to the unit cube or sphere of the cutaway
+// use to map to the unit cutaway
 swMatrix44 swView::GetCutawayMatrix() const
 {
 	const swVector3& AxisX = mCutawayShapeAxes[0];
@@ -244,7 +244,7 @@ swMatrix44 swView::GetCutawayMatrix() const
 		swVector4(-swDot(mCutawayCenter, AxisX) * Scale, -swDot(mCutawayCenter, AxisY) * Scale, -swDot(mCutawayCenter, AxisZ) * Scale, 1.0f));
 }
 
-// use to find the fractions of a world segment where it enters and leaves the cutaway
+// use to clip a segment to the cutaway
 bool swView::GetCutawayRange(const swVector3& Start, const swVector3& End, float& Entry, float& Exit) const
 {
 	const swMatrix44 CutawayMatrix = GetCutawayMatrix();
@@ -268,7 +268,7 @@ bool swView::GetCutawayRange(const swVector3& Start, const swVector3& End, float
 	Entry = -FLT_MAX;
 	Exit = FLT_MAX;
 
-	// the cylinder is a circle across x and y with the cube slab along z
+	// circle across x and y
 	if (mCutawayShape == swCutawayShape::Cylinder)
 	{
 		const float A = Direction.x * Direction.x + Direction.y * Direction.y;

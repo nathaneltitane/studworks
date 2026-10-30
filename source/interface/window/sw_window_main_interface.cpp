@@ -55,8 +55,7 @@ void swMainWindow::CreateWidgets()
 	mModelTabWidget->tabBar()->setContextMenuPolicy(Qt::CustomContextMenu);
 	setCentralWidget(mModelTabWidget);
 
-	// Model tabs and the view below them each get a complete outline so neither looks cut off.
-	// They are as tall as the panel buttons and centered in a bar as tall as the panel title bars.
+	// outline both tabs and view
 	const int TabHeight = swGetPanelButtonSize().height();
 	const int TitleBarHeight = mModelTabWidget->fontMetrics().height() + 2 * style()->pixelMetric(QStyle::PM_DockWidgetTitleMargin);
 	const int TabMargin = qMax((TitleBarHeight - TabHeight) / 2, 0);
@@ -67,7 +66,7 @@ void swMainWindow::CreateWidgets()
 		"QTabBar::tab:selected { background: palette(button); }"
 		"QTabBar::tab:!selected { background: palette(window); }").arg(TabHeight - 2).arg(TabMargin));
 
-	// The options button uses the same margins as the tabs so both line up in the tab bar.
+	// options button lines up with the tabs
 	QWidget* ModelViewCorner = new QWidget(mModelTabWidget);
 	QHBoxLayout* ModelViewCornerLayout = new QHBoxLayout(ModelViewCorner);
 	ModelViewCornerLayout->setContentsMargins(0, TabMargin, TabMargin, TabMargin);
@@ -516,7 +515,7 @@ void swMainWindow::CreateMenus()
 #endif
 	HelpMenu->addAction(mActions[SW_HELP_ABOUT]);
 
-	// The menu bar menus show text only, the toolbars keep the icons.
+	// menus show text only
 	std::function<void(QMenu*)> HideMenuIcons = [&HideMenuIcons](QMenu* Menu)
 	{
 		for (QAction* Action : Menu->actions())
@@ -705,7 +704,7 @@ void swMainWindow::CreateToolBars()
 	swAddPanelRowWidget(ColorRow, mColorButton);
 	swSetupPanelButton(mColorButton);
 
-	// Nothing else sits in the header, so the button reaches up to the options button.
+	// button reaches the options button
 	mColorButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
 	connect(mColorButton, &QToolButton::clicked, this, &swMainWindow::ColorButtonClicked);
@@ -717,10 +716,10 @@ void swMainWindow::CreateToolBars()
 	ColorLayout->addWidget(mColorList);
 	mColorList->setAccessibleName(tr("LDraw Colors"));
 
-	// The panel is always exactly as tall as the color button and the tiles.
+	// as tall as the button and tiles
 	connect(mColorList, &swColorList::HeightChanged, this, [this, ColorWidget, ColorLayout]()
 	{
-		// Recompute from the current rows, then let the dock follow so it grows and shrinks with the tiles.
+		// recompute and let the dock follow
 		ColorLayout->invalidate();
 		const int Height = ColorLayout->sizeHint().height();
 		const int TitleHeight = mColorsToolBar->height() - ColorWidget->height();
@@ -742,8 +741,7 @@ void swMainWindow::CreateToolBars()
 	QWidget* PropertiesWidget = new QWidget(mPropertiesToolBar);
 	QVBoxLayout* PropertiesLayout = new QVBoxLayout(PropertiesWidget);
 
-	// The rows naming the object come first, then the other values, then the position and rotation rows.
-	// The other values scroll only when the panel cannot get the height of all its rows, without a frame so they line up with the rows around them.
+	// identity, values, then transform
 	QScrollArea* PropertiesScrollArea = new QScrollArea(PropertiesWidget);
 	PropertiesScrollArea->setFrameShape(QFrame::NoFrame);
 	PropertiesScrollArea->setWidgetResizable(true);
@@ -755,7 +753,7 @@ void swMainWindow::CreateToolBars()
 
 	QWidget* TransformWidget = swCreatePanelRow(PropertiesWidget);
 
-	// A T names the row like the P and R buttons of the position and rotation rows.
+	// t names the transform row
 	QToolButton* TransformNameButton = new QToolButton(TransformWidget);
 	TransformNameButton->setText(tr("T"));
 	TransformNameButton->setToolTip(tr("Transform"));
@@ -765,7 +763,7 @@ void swMainWindow::CreateToolBars()
 	swSetupPanelButton(TransformNameButton);
 	TransformNameButton->setFixedSize(swGetPanelButtonSize());
 
-	// Transform values use the same spin boxes as the position and rotation rows.
+	// same spin boxes as the transform rows
 	mTransformXEdit = new swDoubleSpinBox(TransformWidget);
 	mTransformXEdit->setRange(-FLT_MAX, FLT_MAX);
 	mTransformXEdit->setAccessibleName(tr("Transform X"));
@@ -785,7 +783,7 @@ void swMainWindow::CreateToolBars()
 	swSetupPanelSpinBox(mTransformZEdit);
 	swAddPanelRowWidget(TransformWidget, mTransformZEdit);
 
-	// The transform mode button sits under the keyframe buttons and shows the current mode.
+	// transform mode button under keyframes
 	QToolButton* TransformButton = new QToolButton(TransformWidget);
 	TransformButton->setDefaultAction(mActions[SW_EDIT_TRANSFORM]);
 	TransformButton->setPopupMode(QToolButton::InstantPopup);
@@ -798,16 +796,15 @@ void swMainWindow::CreateToolBars()
 	PropertiesLayout->addWidget(mPropertiesWidget->GetTransformRowsWidget());
 	PropertiesLayout->addWidget(TransformWidget);
 
-	// The panel is as tall as the rows it shows, and shrinks with a scrolling grid when the panels around it need the room.
+	// as tall as the shown rows
 	auto UpdatePropertiesHeight = [this, PropertiesWidget, PropertiesLayout, PropertiesScrollArea, TransformWidget]()
 	{
-		// The scrolling rows are hidden when all shown properties are in the fixed rows.
+		// hide empty scrolling rows
 		const bool ShowList = mPropertiesWidget->HasVisibleRows();
 		const int ListHeight = ShowList ? mPropertiesWidget->sizeHint().height() : 0;
 		const int MinimumListHeight = qMin(ListHeight, swGetPanelButtonSize().height());
 
-		// The full height adds the layout margins and the standard spacing between the shown rows, measured
-		// without growing any widget so the window never grows on the way.
+		// add margins and row spacing
 		const QMargins Margins = PropertiesLayout->contentsMargins();
 		const int Spacing = swGetLayoutSpacing(PropertiesWidget, Qt::Vertical);
 		int PanelHeight = Margins.top() + Margins.bottom() + TransformWidget->sizeHint().height();
@@ -825,7 +822,7 @@ void swMainWindow::CreateToolBars()
 		PropertiesWidget->setMinimumHeight(PanelHeight - ListHeight + MinimumListHeight);
 		PropertiesWidget->setMaximumHeight(PanelHeight);
 
-		// A docked panel keeps its height when its rows change, so ask for all of it, the panels around it give up what they can spare.
+		// ask for the full height
 		if (!mPropertiesToolBar->isFloating() && mPropertiesToolBar->isVisible())
 			resizeDocks({ mPropertiesToolBar }, { PanelHeight + mPropertiesToolBar->height() - PropertiesWidget->height() }, Qt::Vertical);
 	};
@@ -850,7 +847,7 @@ void swMainWindow::CreateToolBars()
 
 	mTimelineWidget = new swTimelineWidget(mTimelineToolBar);
 
-	// The steps of the selected part are edited below the timeline.
+	// part steps below the timeline
 	QWidget* TimelinePanel = new QWidget(mTimelineToolBar);
 	QVBoxLayout* TimelineLayout = new QVBoxLayout(TimelinePanel);
 	TimelineLayout->addWidget(mTimelineWidget);
@@ -862,7 +859,7 @@ void swMainWindow::CreateToolBars()
 	CreatePreviewWidget();
 	CreateTerminalWidget();
 
-	// the minifigure builder panel is filled when first shown, once the parts library is loaded
+	// fill the builder when first shown
 	mMinifigureBuilderToolBar = new QDockWidget(tr("Minifigure Builder"), this);
 	mMinifigureBuilderToolBar->setObjectName("MinifigToolbar");
 	mMinifigureBuilderToolBar->setWhatsThis(tr("<p><b>Minifigure Builder</b></p><p>Choose the parts, colors and pose of a minifigure, then add it to the current model. The panel keeps its settings so you can add several variations.</p>"));
@@ -874,7 +871,7 @@ void swMainWindow::CreateToolBars()
 	{
 		if (Visible && !mMinifigureBuilderToolBar->widget())
 		{
-			// The panel is exactly as tall as the editor wherever it is docked.
+			// as tall as the editor
 			swMinifigureBuilderWidget* MinifigureBuilderWidget = new swMinifigureBuilderWidget(mMinifigureBuilderToolBar);
 			swFitHeightToContents(MinifigureBuilderWidget);
 			mMinifigureBuilderToolBar->setWidget(MinifigureBuilderWidget);
@@ -900,7 +897,7 @@ void swMainWindow::CreateStatusBar()
 	QStatusBar* StatusBar = new QStatusBar(this);
 	setStatusBar(StatusBar);
 
-	// Keep the rightmost item one standard spacing away from the window edge.
+	// keep the last item one spacing in
 	StatusBar->setContentsMargins(0, 0, swGetLayoutSpacing(StatusBar, Qt::Horizontal), 0);
 
 	mStatusBarLabel = new swElidedLabel();
@@ -933,7 +930,7 @@ void swMainWindow::CreateStatusBar()
 	mStatusTimeLabel = new QLabel();
 	StatusBar->addPermanentWidget(mStatusTimeLabel);
 
-	// a right click toggles each segment of the status bar
+	// right click toggles segments
 	mStatusSegments = swGetProfileInteger(SW_PROFILE_STATUS_BAR_SEGMENTS);
 	StatusBar->setContextMenuPolicy(Qt::CustomContextMenu);
 
@@ -974,7 +971,7 @@ void swMainWindow::CreateStatusBar()
 		if (mStatusRequiredAssets.find(PartData) != mStatusRequiredAssets.end())
 			ScheduleAssetUpdate();
 
-		// views fitted before their parts loaded fit the loaded parts, once per burst of loads
+		// refit views once per load burst
 		if (mFitUpdatePending)
 			return;
 

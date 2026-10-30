@@ -12,12 +12,12 @@
 swFindReplaceWidget::swFindReplaceWidget(QWidget* Parent, swModel* Model, bool Replace)
 	: QWidget(Parent)
 {
-	// the search bar floats over the view outlined and rounded like a panel button
+	// bar floats over the view
 	setObjectName(QStringLiteral("FindReplaceBar"));
 	setAttribute(Qt::WA_StyledBackground, true);
 	setStyleSheet(QStringLiteral("#FindReplaceBar { background: palette(button); border: 1px solid palette(mid); border-radius: 3px; }"));
 
-	// every control in the bar is as tall as a panel button and the action buttons fill their columns so both rows line up
+	// controls as tall as panel buttons
 	const int ButtonHeight = swGetPanelButtonSize().height();
 	const auto SetupRowControl = [ButtonHeight](QWidget* Control)
 	{
@@ -28,7 +28,7 @@ swFindReplaceWidget::swFindReplaceWidget(QWidget* Parent, swModel* Model, bool R
 	QGridLayout* Layout = new QGridLayout(this);
 	Layout->setContentsMargins(5, 5, 5, 5);
 
-	// the bar starts with its close button like the editing path
+	// close button first
 	QToolButton* CloseButton = new QToolButton(this);
 	CloseButton->setAutoRaise(false);
 	CloseButton->setIcon(QIcon(":/stylesheet/close.svg"));
@@ -49,12 +49,12 @@ swFindReplaceWidget::swFindReplaceWidget(QWidget* Parent, swModel* Model, bool R
 	mFindPartComboBox->setEditable(true);
 	mFindPartComboBox->setInsertPolicy(QComboBox::NoInsert);
 
-	// long part names would stretch the whole bar, the box keeps a steady width and the list shows them in full
+	// keep a steady box width
 	mFindPartComboBox->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLengthWithIcon);
 	mFindPartComboBox->setMinimumContentsLength(16);
 	mFindPartComboBox->lineEdit()->setPlaceholderText(tr("None"));
 
-	// the placeholder centers like the replacement part button while typed text stays left
+	// center the placeholder
 	QLineEdit* FindLineEdit = mFindPartComboBox->lineEdit();
 	const auto SetFindAlignment = [FindLineEdit](const QString& Text)
 	{
@@ -78,7 +78,7 @@ swFindReplaceWidget::swFindReplaceWidget(QWidget* Parent, swModel* Model, bool R
 	SetupRowControl(FindAllButton);
 	Layout->addWidget(FindAllButton, 0, 5);
 
-	// the chevron at the end shows or hides the replace row so find and replace share one bar
+	// chevron toggles the replace row
 	QToolButton* ReplaceToggleButton = new QToolButton(this);
 	ReplaceToggleButton->setAutoRaise(false);
 	ReplaceToggleButton->setFocusPolicy(Qt::NoFocus);
@@ -124,7 +124,7 @@ swFindReplaceWidget::swFindReplaceWidget(QWidget* Parent, swModel* Model, bool R
 	ReplaceColorPicker->SetCurrentColor(swGetColorIndex(SW_COLOR_NO_COLOR));
 	mReplacePartButton->setText(tr("None"));
 
-	// columns keep the width of both rows so showing the replace row moves nothing
+	// columns fit both rows
 	for (int Column = 0; Column < Layout->columnCount(); Column++)
 	{
 		int ColumnWidth = 0;
@@ -136,7 +136,7 @@ swFindReplaceWidget::swFindReplaceWidget(QWidget* Parent, swModel* Model, bool R
 		Layout->setColumnMinimumWidth(Column, ColumnWidth);
 	}
 
-	// the submodel option sits under the replace row and spans it so its text leaves the columns as they are
+	// submodel option spans the replace row
 	QCheckBox* ReplaceSubModelsCheckBox = new QCheckBox(tr("Include Submodels"), this);
 	ReplaceSubModelsCheckBox->setToolTip(tr("Replace All also replaces the matching parts inside every submodel used by this model."));
 	ReplaceSubModelsCheckBox->setFocusPolicy(Qt::NoFocus);
@@ -149,7 +149,7 @@ swFindReplaceWidget::swFindReplaceWidget(QWidget* Parent, swModel* Model, bool R
 
 	const QList<QWidget*> ReplaceControls = { ReplaceLabel, ReplaceColorPicker, mReplacePartButton, ReplaceNextButton, ReplaceAllButton, ReplaceSubModelsCheckBox };
 
-	// use to show the replace row with the same chevron as the collapsible sections
+	// use to toggle the replace row
 	const auto SetReplaceVisible = [ReplaceToggleButton, ReplaceControls](bool Visible)
 	{
 		ReplaceToggleButton->setIcon(swCreateDisclosureIcon(Visible, ReplaceToggleButton->palette()));

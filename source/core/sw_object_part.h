@@ -25,7 +25,8 @@ struct swPartControlPoint
 {
 	swMatrix44 Transform;
 	float Scale;
-	// A clamped middle control point turns along the path between its neighbors, a released one keeps its own rotation.
+
+	// Clamped middle points follow the path.
 	bool TangentClamped = false;
 
 	bool operator==(const swPartControlPoint& Other) const
@@ -133,7 +134,7 @@ public:
 		UpdateMesh();
 	}
 
-	// The handle length the path really uses at a control point, its spread weighed against the rest of the path.
+	// The handle length used at a control point.
 	float GetControlPointHandleLength(quint32 ControlPointIndex) const;
 	void SetControlPointHandleLength(quint32 ControlPointIndex, float HandleLength);
 
@@ -183,18 +184,22 @@ public:
 	bool IsControlPointTangentClamped() const;
 
 	bool InsertControlPoint(const swVector3& WorldStart, const swVector3& WorldEnd);
-	// Adds a control point halfway along a new flexible part when Preferences ask for one.
+
+	// Adds a middle control point when asked.
 	void AddInsertedControlPoints();
-	// Remembers where an end control point sits on a connection, it shows seated until it or the part moves.
+
+	// Remembers the seat of an end control point.
 	void SetControlPointSeated(quint32 ControlPointIndex, const swVector3& SurfacePosition, const swVector3& SurfaceNormal);
 	bool IsControlPointSeated(quint32 ControlPointIndex) const;
 	void ClearControlPointSeats()
 	{
 		mControlPointSeats.clear();
 	}
-	// Where a control point cube is drawn and picked in part space, a seated one rests flush on its connection surface.
+
+	// Where a control point cube is drawn.
 	swMatrix44 GetControlPointCubeTransform(quint32 ControlPointIndex) const;
-	// The end control point being dragged where dropping it would seat its fitting, -1 for none.
+
+	// The end dragged onto a seat or -1.
 	void SetControlPointSeatFound(int ControlPointIndex)
 	{
 		mControlPointSeatFound = ControlPointIndex;
@@ -206,7 +211,8 @@ public:
 	bool AlignFocusedControlPointAxis(const swVector3& Axis);
 	void VerifyControlPoints(std::vector<swPartControlPoint>& ControlPoints) const;
 	bool IsGeneratedMeshPending() const { return mSynthPending; }
-	// An older mesh may remain visible while its replacement is pending.
+
+	// An older mesh may show while pending.
 	bool HasGeneratedMesh() const { return mMesh != nullptr && !mSynthPending; }
 	void SetGeneratedMesh(swMesh* Mesh);
 	void RefreshGeneratedMesh();
@@ -348,7 +354,7 @@ protected:
 	swMesh* mMesh = nullptr;
 	bool mSynthPending = false;
 
-	// Path line drawn with the control points, kept until the control points change.
+	// The cached path line.
 	mutable std::vector<swPartControlPoint> mPathControlPoints;
 	mutable std::vector<swVector3> mPathPoints;
 	mutable size_t mPathReachedPointCount = 0;

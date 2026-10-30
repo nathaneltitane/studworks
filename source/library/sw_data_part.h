@@ -9,6 +9,7 @@ struct swModelPartsEntry
 {
 	swMatrix44 WorldMatrix;
 	const swPartData* PartData;
+
 	// Borrowed explicit mesh for generated/direct geometry; null uses PartData->GetMesh().
 	swMesh* Mesh;
 	int ColorIndex;
@@ -72,7 +73,8 @@ public:
 	}
 
 	void SetMesh(swMesh* Mesh);
-	// Interactive fallback geometry is never owned by this part or returned by GetMesh().
+
+	// Fallback geometry is never owned here.
 	swMesh* GetDisplayMesh() const;
 	void SetFailed(QString Error);
 	void ReleaseMesh();
@@ -127,15 +129,14 @@ public:
 		quint8 Flags;
 	};
 
-	// Restores or snapshots the description and classification as one cache record.
+	// Caches the description and classification.
 	bool InitializeFromCache(const CacheData& CacheData);
 	CacheData GetCacheData() const;
 
-	// Inherits the resolved target's decoration and parent without retaining the target.
+	// Inherits the target decoration and parent.
 	void SetAliasTarget(const swPartData* Target);
 
-	// Updates local flags from the normalized name and description, returning candidate parent IDs.
-	// Resolving those IDs and alias targets belongs to the library.
+	// Updates the flags from the name and description.
 	std::vector<std::string> Classify(std::string_view Name);
 
 	bool IsDecorated() const
@@ -148,7 +149,7 @@ public:
 		return mFlags.testFlag(Flag::Alias);
 	}
 
-	// Normalized undecorated library part ID; empty when no parent could be resolved.
+	// Undecorated parent part id.
 	const std::string& GetPatternParentId() const
 	{
 		return mPatternParentId;
@@ -211,7 +212,7 @@ protected:
 
 	void SetLoadingBoundingBox();
 
-	// Fixed at creation, independently of type and load state.
+	// Fixed at creation.
 	const bool mIsLibraryPart;
 	int mRefCount = 0;
 	Type mType = Type::Part;

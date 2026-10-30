@@ -53,7 +53,7 @@ void swInstructions::RemoveNotice(int Id)
 	if (mNotices.size() == NoticeCount)
 		return;
 
-	// the pointers of the notice go with it, the pointers at it keep pointing at where it was
+	// notice pointers move with it
 	mPointers.erase(std::remove_if(mPointers.begin(), mPointers.end(), [&Key](const swInstructionsPointer& Pointer)
 	{
 		return Pointer.Source == Key;

@@ -13,8 +13,11 @@ protected:
 	void hideEvent(QHideEvent* Event) override;
 
 private:
-	static constexpr qreal OrbitRadius = 7.0; // Logical pixels from the center.
-	static constexpr qreal DiscRadius = 3; // Logical pixels.
+	// Distance from the center.
+	static constexpr qreal OrbitRadius = 7.0;
+
+	// Size in logical pixels.
+	static constexpr qreal DiscRadius = 3;
 
 	QTimer mTimer;
 	QElapsedTimer mElapsed;

@@ -31,7 +31,7 @@ void swPreferencesDialog::UpdateCategories()
 	QTimer::singleShot(0, this, &swPreferencesDialog::SnapCategoriesTree);
 }
 
-// use to fit the categories list to its longest name beside the scroll bar
+// use to fit the categories list
 void swPreferencesDialog::SnapCategoriesTree()
 {
 	QTreeWidget* CategoriesTree = ui->categoriesTree;
@@ -87,7 +87,7 @@ void swPreferencesDialog::UpdateParts()
 	{
 		for (swPartData* PartData : Library->GetParts())
 		{
-			// sub parts and aliases belong to no category
+			// sub parts and aliases have no category
 			if (PartData->IsSubPart() || PartData->IsAlias())
 				continue;
 
@@ -118,7 +118,8 @@ void swPreferencesDialog::CategoriesDropped(const QModelIndex& Parent, int First
 	Q_UNUSED(Last);
 
 	std::vector<swLibraryCategory> Categories;
-	// renumbering the rows must not read as checkbox changes
+
+	// renumbering is no checkbox change
 	QSignalBlocker Blocker(ui->categoriesTree);
 
 	for (int Row = 0; Row < ui->categoriesTree->topLevelItemCount(); Row++)
@@ -138,12 +139,12 @@ void swPreferencesDialog::CategoriesDropped(const QModelIndex& Parent, int First
 	mOptions->Categories = std::move(Categories);
 }
 
-// use to enable or disable a category from its checkbox
+// use to toggle a category
 void swPreferencesDialog::CategoryItemChanged(QTreeWidgetItem* CategoryItem, int Column)
 {
 	const int CategoryIndex = CategoryItem->data(0, CategoryRole).toInt();
 
-	// items report changes while they are built, before they have a checkbox
+	// skip changes while building
 	if (Column != 0 || !CategoryItem->data(0, Qt::CheckStateRole).isValid() || CategoryIndex < 0 || CategoryIndex >= static_cast<int>(mOptions->Categories.size()))
 		return;
 

@@ -221,7 +221,7 @@ public:
 		mBackgroundColor = BackgroundColor;
 	}
 
-	// use to fade previous steps by the instructions settings instead of the preferences
+	// Use to fade steps by the instructions.
 	void SetFadeStepsOverride(bool FadeSteps, quint32 FadeColor)
 	{
 		mOverrideFadeSteps = true;
@@ -229,7 +229,7 @@ public:
 		mFadeStepsColor = FadeColor;
 	}
 
-	// use to highlight new parts by the instructions settings instead of the preferences
+	// Use to highlight by the instructions.
 	void SetHighlightNewPartsOverride(bool HighlightNewParts, quint32 HighlightColor)
 	{
 		mOverrideHighlightNewParts = true;
@@ -237,7 +237,7 @@ public:
 		mHighlightNewPartsColor = HighlightColor;
 	}
 
-	// use to keep the lines as wide as at the normal size when rendering larger images
+	// Use to keep line widths when enlarged.
 	void SetLineWidthScale(float LineWidthScale)
 	{
 		mLineWidthScale = LineWidthScale;

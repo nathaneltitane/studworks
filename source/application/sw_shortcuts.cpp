@@ -78,7 +78,7 @@ bool swKeyboardShortcuts::Save(QTextStream& Stream)
 {
 	for (int CommandIdx = 0; CommandIdx < SW_COMMAND_COUNT; CommandIdx++)
 	{
-		// cleared shortcuts are saved empty so their default stays off
+		// save cleared shortcuts empty
 		if (mShortcuts[CommandIdx].isEmpty() && QString(gCommands[CommandIdx].DefaultShortcut).isEmpty())
 			continue;
 
@@ -104,7 +104,7 @@ bool swKeyboardShortcuts::Load(const QString& FileName)
 
 bool swKeyboardShortcuts::Load(QTextStream& Stream)
 {
-	// commands missing from the saved shortcuts keep their default unless its key is taken
+	// keep defaults of unsaved commands
 	std::vector<bool> Saved(SW_COMMAND_COUNT, false);
 
 	for (int CommandIdx = 0; CommandIdx < SW_COMMAND_COUNT; CommandIdx++)
@@ -117,7 +117,7 @@ bool swKeyboardShortcuts::Load(QTextStream& Stream)
 		if (Equals == -1)
 			continue;
 
-		// older files name commands after pieces or the view sphere
+		// rename older piece and view sphere names
 		const QString Key = swRenameStoredName(Line.left(Equals));
 
 		int CommandIdx;

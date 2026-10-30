@@ -124,7 +124,7 @@ struct swVertexAttributeState
 	GLuint VertexBufferObject = 0;
 };
 
-// Restores caller state after temporary rendering, including a caller with no current context.
+// Restores the caller state.
 class swScopedGLContextState
 {
 public:
@@ -250,7 +250,7 @@ public:
 		mLightingStyleDirty = true;
 	}
 
-	// use to hide the geometry inside a cube or sphere given by its world to unit matrix
+	// Use to hide geometry inside the cutaway.
 	void SetCutaway(swCutawayShape CutawayShape, const swMatrix44& CutawayMatrix)
 	{
 		mCutawayShape = CutawayShape;

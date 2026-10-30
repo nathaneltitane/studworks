@@ -5,7 +5,7 @@ class swInstructions;
 class swLDrawHighlighter;
 class swEditorTextEdit;
 
-// the editor panel shows the text the project saves, applying an edited text loads the project from it
+// The editor panel shows the saved text.
 class swInstructionsEditorWidget : public QDockWidget
 {
 	Q_OBJECT

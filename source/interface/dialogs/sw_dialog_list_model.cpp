@@ -21,7 +21,7 @@ swModelListDialog::swModelListDialog(QWidget* Parent, const std::vector<std::uni
 	ui->setupUi(this);
 	swSetupDialogHelp(this, ui->buttonBox);
 
-	// The submodel list always spans the full height of the main window.
+	// the submodel list spans the window height
 	if (Parent)
 		resize(width(), Parent->window()->height());
 
@@ -270,7 +270,7 @@ void swModelListDialog::DuplicateModelClicked()
 		for (int ItemIdx = 0; ItemIdx < ui->ModelList->count(); ItemIdx++)
 			ModelNames.append(ui->ModelList->item(ItemIdx)->text());
 
-		// A copy keeps the name and takes the next free three digit number, Car.ldr becomes Car 001.ldr.
+		// copies take the next free number
 		QString BaseName = CurrentItem->text();
 		QString Extension;
 		const qsizetype ExtensionStart = BaseName.lastIndexOf(QLatin1Char('.'));

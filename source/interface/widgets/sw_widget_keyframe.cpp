@@ -22,7 +22,7 @@ void swKeyFrameWidget::paintEvent(QPaintEvent* PaintEvent)
 
 	QPainter Painter(this);
 
-	// Drawn as an outlined tool button the size of the panel options buttons, with the keyframe diamond as its icon.
+	// draw the keyframe button
 	QStyleOptionToolButton Option;
 	Option.initFrom(this);
 	Option.subControls = QStyle::SC_ToolButton;

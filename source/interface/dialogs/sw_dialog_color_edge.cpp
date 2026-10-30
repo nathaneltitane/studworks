@@ -88,7 +88,7 @@ swAutomateEdgeColorDialog::swAutomateEdgeColorDialog(QWidget* Parent, bool ShowH
 	EdgeSettingsLayout->addWidget(PartColorValueLDIndex,LDIndexRow,1);
 	EdgeSettingsLayout->addWidget(ResetPartColorValueLDIndexButton,LDIndexRow,3);
 
-	// the sliders show their value on their left and take the free width
+	// value on the left, slider takes the width
 	EdgeSettingsLayout->setColumnStretch(2, 1);
 
 	QGroupBox* HighContrastColorBox = new QGroupBox(tr("High Contrast"), this);

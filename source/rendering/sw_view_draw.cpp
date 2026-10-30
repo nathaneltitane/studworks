@@ -40,6 +40,7 @@ void swView::OnDraw()
 #endif
 
 	const swPreferences& Preferences = swGetPreferences();
+
 	// the turntable shows the bare model
 	const bool DrawOverlays = mWidget != nullptr && mViewType != swViewType::Turntable;
 	const bool DrawInterface = mWidget != nullptr && mViewType == swViewType::View;
@@ -141,7 +142,7 @@ void swView::OnDraw()
 
 			mContext->SetLineWidth(RenderSettings.LineWidth * mLineWidthScale);
 
-			// step images outline the parts new to their step like the model view
+			// outline the new parts
 			const bool OutlineImage = mViewType == swViewType::View && mRenderFramebuffer && !mRenderImage.isNull() && mScene->HasHighlightedMeshes();
 			const bool OutlineEnabled = ((DrawInterface && !mRenderFramebuffer && mRenderImage.isNull()) || OutlineImage) &&
 				ShadingMode != swShadingMode::Wireframe && Preferences.mHighlightRenderMode == swHighlightRenderMode::Outline &&
@@ -290,7 +291,7 @@ void swView::OnDraw()
 	Redraw();
 #endif
 
-	// the status bar follows the orientation of the view in focus
+	// status bar follows the focused view
 	if (gMainWindow && mLastFocusedView == this && !mContext->IsOffscreen())
 		gMainWindow->UpdateViewOrientation(mCamera);
 
@@ -348,7 +349,7 @@ void swView::DrawViewport() const
 		mContext->DrawPrimitives(GL_LINE_LOOP, 0, 4);
 	}
 
-	// model views show the camera name in their overlay, the other views keep it in the corner
+	// show the camera name in model views
 	QString CameraName = mViewType == swViewType::View ? QString() : mCamera->GetName();
 
 	if (!CameraName.isEmpty() && gTexFont.IsLoaded())
@@ -360,7 +361,7 @@ void swView::DrawViewport() const
 
 		mContext->EnableColorBlend(true);
 
-		// TODO: Make swTextureFont support Unicode camera names instead of converting them to Latin-1.
+		// todo unicode camera names
 		gTexFont.PrintText(mContext, 3.0f, (float)Height - 1.0f - 6.0f, 0.0f, CameraName.toLatin1().constData());
 
 		mContext->EnableColorBlend(false);
@@ -401,19 +402,19 @@ void swView::DrawAxes() const
 		quint32 Color;
 	};
 
-	// the arrows reach the view cube faces and the labels sit past them inside the shared corner box
+	// arrows reach the cube faces
 	const float IconSize = static_cast<float>(mViewType == swViewType::Preview ? Preferences.mPreviewAxisIconSize : Preferences.mAxisIconSize);
 	const float FaceDistance = IconSize / 2.0f * SW_VIEW_CUBE_HALF_SIZE / SW_VIEW_CUBE_BOUNDARY;
 	const float LabelGap = 2.0f + IconSize / 24.0f;
 	const float LabelDistance = qMin(FaceDistance + LabelGap, IconSize / 2.0f - 8.0f);
 	const float ArrowLength = Preferences.mAxisIconLabels ? qMin(FaceDistance, LabelDistance - LabelGap) : FaceDistance;
 
-	// whole pixel lines whose tip is three times their width like the instructions pointers
+	// tips three times the line width
 	const float LineWidth = qMax(1.0f, roundf(IconSize / 48.0f));
 	const float TipLength = 3.0f * LineWidth;
 	const float TipRadius = 0.4f * TipLength;
 
-	// each arrow is a line from the origin and a capped cone at its tip with the negative arrows after the positive ones
+	// line and capped cone
 	constexpr int ConeSegments = 24;
 	constexpr int AxisVertexCount = ConeSegments + 3;
 	constexpr int ArrowCountMax = 6;
@@ -460,11 +461,12 @@ void swView::DrawAxes() const
 		}
 
 		Indices[Arrow * 2] = Base;
-		// the line stops at the cone base so it never blunts the tip
+
+		// stop the line at the cone base
 		Indices[Arrow * 2 + 1] = Base + 2;
 	}
 
-	// the box sits in the view corner like the view cube viewport
+	// box in the view corner
 	const float Offset = roundf(IconSize / 2.0f);
 	const float Scale = GetUIScale();
 	const float Width = mWidth / Scale;
@@ -480,12 +482,13 @@ void swView::DrawAxes() const
 	mContext->SetViewMatrix(swMultiply(WorldViewMatrix, TranslationMatrix));
 	mContext->SetProjectionMatrix(swMatrix44Orthographic(0, Width, 0, Height, -IconSize, IconSize));
 
-	// the view cube wireframe gives the axis the same box as the cube
+	// same box as the cube
 	if (Preferences.mAxisIconCubeOutline)
 	{
-		// the outer line edge meets the view cube black border so both keep the same clearance from the view edges
+		// meet the cube border
 		const float Outer = FaceDistance * (1.005f + 2.0f / (IconSize * Scale)) - 0.5f / Scale;
-		// each corner has a vertex per axis that sits on the face of that axis like the view cube chamfers
+
+		// one vertex per axis
 		const float Inner = Outer * (SW_VIEW_CUBE_HALF_SIZE - SW_VIEW_CUBE_CHAMFER) / SW_VIEW_CUBE_HALF_SIZE;
 		float BoxVerts[8 * 3 * 3];
 		GLushort BoxIndices[48 * 2];
@@ -501,7 +504,7 @@ void swView::DrawAxes() const
 					BoxVerts[(Corner * 3 + Axis) * 3 + Coordinate] = Sign * (Coordinate == Axis ? Outer : Inner);
 				}
 
-				// the corner triangle edge and the face square edges toward the neighbor corners
+				// edges toward the neighbor corners
 				*BoxIndex++ = static_cast<GLushort>(Corner * 3 + Axis);
 				*BoxIndex++ = static_cast<GLushort>(Corner * 3 + (Axis + 1) % 3);
 
@@ -528,7 +531,8 @@ void swView::DrawAxes() const
 		mContext->SetVertexBufferPointer(BoxVerts);
 		mContext->SetVertexFormatPosition(3);
 		mContext->SetIndexBufferPointer(BoxIndices);
-		// the outline stays behind the axis even where its front edges cross it
+
+		// keep the outline behind the axis
 		mContext->SetDepthWrite(false);
 		mContext->DrawIndexedPrimitives(GL_LINES, static_cast<GLsizei>(BoxIndex - BoxIndices), GL_UNSIGNED_SHORT, 0);
 		mContext->SetDepthWrite(true);
@@ -565,7 +569,7 @@ void swView::DrawAxes() const
 	mContext->SetVertexBufferPointer(TextBuffer);
 	mContext->SetVertexFormat(0, 3, 0, 2, 0, false);
 
-	// the labels sit on the view background so they need no halo
+	// labels need no halo
 	mContext->SetColor(swVector4FromColor(swGetPreferences().mTextColor));
 	mContext->SetTextHaloColor(swVector4(0.0f, 0.0f, 0.0f, 0.0f));
 	mContext->DrawPrimitives(GL_TRIANGLES, 0, 6 * 3);
@@ -573,8 +577,7 @@ void swView::DrawAxes() const
 	mContext->EnableColorBlend(false);
 }
 
-// use to outline the cutaway so it can be placed against the model
-// use to fill a buffer with the triangles of the unit cube, sphere or cylinder
+// use to fill the cutaway shape triangles
 static void swAddCutawayShapeTriangles(swCutawayShape CutawayShape, std::vector<float>& Verts)
 {
 	const int Segments = 32;
@@ -698,7 +701,7 @@ void swView::DrawCutaway() const
 				AddVertex(cosf(Angle2), sinf(Angle2), Height);
 			}
 
-			// four side lines join the end circles
+			// side lines join the circles
 			if (Segment % (CircleSegments / 4) == 0)
 			{
 				AddVertex(cosf(Angle1), sinf(Angle1), -1.0f);
@@ -735,7 +738,7 @@ void swView::DrawCutaway() const
 	mContext->SetViewMatrix(mCamera->mWorldView);
 	mContext->SetProjectionMatrix(GetProjectionMatrix());
 
-	// a very light shade on the faces shows where the cut runs through the model
+	// light shade where the cut runs
 	std::vector<float> ShadeVerts;
 	swAddCutawayShapeTriangles(mCutawayShape, ShadeVerts);
 
@@ -759,7 +762,7 @@ void swView::DrawCutaway() const
 
 	if (mWidget && mCutawayPickShape == swCutawayShape::None)
 	{
-		// the center handle is a small solid copy of the cutaway shape
+		// small solid center handle
 		const swPreferences& Preferences = swGetPreferences();
 		const float CenterSize = GetCutawayHandleLength() * 0.1f;
 		const int ActiveHandle = mCutawayDragHandle != -1 ? mCutawayDragHandle : mCutawayHoverHandle;
@@ -776,7 +779,7 @@ void swView::DrawCutaway() const
 	mContext->EnableDepthTest(true);
 }
 
-// use to draw the arrows that move the cutaway and the knobs that resize it
+// use to draw the cutaway gizmo
 void swView::DrawCutawayGizmo() const
 {
 	const int ConeSegments = 12;
@@ -857,7 +860,7 @@ void swView::DrawCutawayGizmo() const
 		mContext->DrawPrimitives(GL_TRIANGLES, 6 + AxisIndex * ConeSegments * 3, ConeSegments * 3);
 	}
 
-	// the size knobs sit on the cutaway surface at the end of each axis
+	// size knobs at each axis end
 	for (int AxisIndex = 0; AxisIndex < 3; AxisIndex++)
 	{
 		const swVector3 Knob = mCutawayCenter + mCutawayAxes[AxisIndex] * mCutawaySize;
@@ -1020,7 +1023,7 @@ void swView::DrawRotateViewOverlay()
 	mContext->EnableDepthTest(true);
 }
 
-// the base grid studs are two rings marking the outer and inner diameter of a real stud
+// two rings per stud
 constexpr float SW_GRID_STUD_RADII[] = { 6.0f, 4.0f };
 constexpr int SW_GRID_STUD_RINGS = 2;
 constexpr int SW_GRID_STUD_SEGMENTS = 24;
@@ -1029,7 +1032,7 @@ void swView::DrawGrid()
 {
 	const swPreferences& Preferences = swGetPreferences();
 
-	// the base grid toggle hides the grids only, the axis lines follow their own toggles
+	// toggle hides the grids only
 	const bool DrawBaseGrid = Preferences.mGridEnabled && (Preferences.mDrawGridStuds || Preferences.mDrawGridLines);
 	const bool DrawGridHeight = Preferences.mGridEnabled && (Preferences.mDrawGridHeightXZ || Preferences.mDrawGridHeightYZ);
 	const bool DrawGridAxes = Preferences.mDrawGridOrigin && (Preferences.mDrawGridAxisX || Preferences.mDrawGridAxisY || Preferences.mDrawGridAxisZ);
@@ -1069,7 +1072,7 @@ void swView::DrawGrid()
 		}
 	}
 
-	// use to size one grid axis in cells around the model with a cell of margin and the smallest extent as a floor
+	// use to size a grid axis
 	const auto GetGridExtent = [GridSizeValid, &Min, &Max, Spacing](int Axis, int Extent, int& Low, int& High)
 	{
 		Low = -Extent;
@@ -1078,7 +1081,7 @@ void swView::DrawGrid()
 		if (!GridSizeValid || !std::isfinite(Min[Axis]) || !std::isfinite(Max[Axis]))
 			return;
 
-		// Bound grid coordinates before converting to integers, keeping the vertex buffer below 1 MB.
+		// bound before converting to integers
 		constexpr float MaxGridExtent = 10000.0f;
 		const float GridSpacing = 20.0f * Spacing;
 
@@ -1090,7 +1093,7 @@ void swView::DrawGrid()
 	GetGridExtent(1, 2, MinY, MaxY);
 	GetGridExtent(2, 2, MinZ, MaxZ);
 
-	// the height grids stand on the base grid unless the model reaches below it
+	// height grids stand on the base grid
 	if (!GridSizeValid || !std::isfinite(Min[2]) || Min[2] >= 0.0f)
 		MinZ = 0;
 
@@ -1116,7 +1119,7 @@ void swView::DrawGrid()
 
             float* CurVert = Verts;
 
-            // one row of stud outlines drawn once per row of studs
+            // one row of stud outlines
             if (Preferences.mDrawGridStuds)
             {
                 for (int Stud = MinX * Spacing; Stud < MaxX * Spacing; Stud++)
@@ -1228,7 +1231,7 @@ void swView::DrawGrid()
 		quint32 Color;
 	};
 
-	// the height grids and z axis lines follow the model like the base grid with a line every plate height
+	// height grids follow the model
 	constexpr float PlateHeight = 8.0f;
 	const int PlateMin = static_cast<int>(floorf(MinZ * 20.0f * Spacing / PlateHeight));
 	const int PlateMax = static_cast<int>(ceilf(MaxZ * 20.0f * Spacing / PlateHeight));
@@ -1236,7 +1239,7 @@ void swView::DrawGrid()
 	const float Top = PlateMax * PlateHeight;
 	std::vector<swGridVertex> AxisVerts;
 
-	// use to add an axis line whose negative half takes the negative axis color when that option is on
+	// use to add a two color axis line
 	const auto AddAxisLine = [&AxisVerts, &Preferences](const swVector3& Start, const swVector3& End, int Axis)
 	{
 		const quint32 Colors[3] = { Preferences.mAxisXColor, Preferences.mAxisYColor, Preferences.mAxisZColor };
@@ -1263,7 +1266,7 @@ void swView::DrawGrid()
 
 	if (DrawGridHeight)
 	{
-		// Vertical grids through the origin axes, or behind the model, with a line every plate height.
+		// vertical grids through or behind
 		const float LineSpacing = 20.0f * Spacing;
 		const float Left = MinX * LineSpacing;
 		const float Right = MaxX * LineSpacing;
@@ -1310,7 +1313,7 @@ void swView::DrawGrid()
 				Lines.emplace_back(X, Back, Plate * PlateHeight);
 			}
 
-			// skip the z axis line the xz grid already drew at the origin
+			// skip the drawn z axis line
 			if (Preferences.mDrawGridAxisZ && (BehindModel || !Preferences.mDrawGridHeightXZ))
 				AddAxisLine(swVector3(X, 0.0f, Bottom), swVector3(X, 0.0f, Top), 2);
 		}
@@ -1333,12 +1336,12 @@ void swView::DrawGrid()
 		if (Preferences.mDrawGridAxisX)
 			AddAxisLine(swVector3(MinX * Scale, 0.0f, 0.0f), swVector3(MaxX * Scale, 0.0f, 0.0f), 0);
 
-		// the height grids carry their own z axis lines
+		// height grids own their z lines
 		if (Preferences.mDrawGridAxisZ && !DrawGridHeight)
 			AddAxisLine(swVector3(0.0f, 0.0f, Bottom), swVector3(0.0f, 0.0f, Top), 2);
 	}
 
-	// the negative z axis reaches below the base grid as far as the positive one reaches above it unless the model sets its depth
+	// negative z reaches below the grid
 	if (Preferences.mDrawGridNegativeAxes && Preferences.mDrawGridAxisZ && Bottom >= 0.0f && (Preferences.mDrawGridOrigin || DrawGridHeight))
 		AddAxisLine(swVector3(0.0f, 0.0f, -Top), swVector3(0.0f, 0.0f, 0.0f), 2);
 

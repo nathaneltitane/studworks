@@ -35,7 +35,7 @@ bool swTextureFont::Initialize(swContext* Context)
 	QImage Image(mTextureWidth, mTextureHeight, QImage::Format_Alpha8);
 	Image.fill(0);
 
-	// Overlay text uses the interface font, rendered large for the distance field texture.
+	// overlay text in the interface font
 	QFont Font = QGuiApplication::font();
 	Font.setPixelSize(56);
 	Font.setStyleStrategy(QFont::PreferAntialias);
@@ -62,8 +62,7 @@ bool swTextureFont::Initialize(swContext* Context)
 			for (int x = 0; x < MaskWidth; x++)
 				Mask[y * MaskWidth + x] = GlyphImage.constScanLine(y)[x] >= 128;
 
-		// A two-pass chamfer transform is compact and sufficiently accurate for
-		// the small, padded glyph tiles. Distances are in high-resolution pixels.
+		// two pass chamfer transform
 		std::vector<int> ToInk(MaskWidth * TileHeight), ToOutside(MaskWidth * TileHeight);
 		for (int i = 0; i < MaskWidth * TileHeight; i++)
 		{
@@ -279,7 +278,7 @@ void swTextureFont::GetGlyphTriangles(float Left, float Top, float Z, int Glyph,
 	Left -= mGlyphs[Glyph].Width / 2.0f;
 	Top += mFontHeight / 2.0f;
 
-	// whole pixels keep the atlas texels aligned with the screen
+	// whole pixels align the texels
 	const float GlyphLeft = floorf(Left + mGlyphs[Glyph].Offset + 0.5f);
 	const float GlyphRight = GlyphLeft + mGlyphs[Glyph].RenderWidth;
 	const float GlyphTop = floorf(Top - mGlyphs[Glyph].Offset + 0.5f);

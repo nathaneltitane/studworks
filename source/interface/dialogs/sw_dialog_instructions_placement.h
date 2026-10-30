@@ -4,7 +4,7 @@
 
 class swInstructionsUnitButton;
 
-// the selection anchors follow the anchors of swInstructionsPlacementAnchor, they only exist in the panel
+// Selection anchors follow the anchor enum.
 constexpr int SW_ANCHOR_FIRST_SELECTION = 3;
 constexpr int SW_ANCHOR_LAST_SELECTION = 4;
 

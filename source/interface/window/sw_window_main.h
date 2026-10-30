@@ -21,7 +21,7 @@ class swDoubleSpinBox;
 class swSpinnerWidget;
 enum class swRenderDialogMode;
 
-// the status bar segments the context menu shows or hides, stored as one bit each
+// Shown status bar segments, one bit each.
 enum swStatusSegment : int
 {
 	SW_STATUS_SEGMENT_SELECTION = 1 << 0,

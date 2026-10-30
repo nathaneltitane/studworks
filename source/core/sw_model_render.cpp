@@ -31,7 +31,8 @@ void swModel::GetScene(swScene* Scene, const swCamera* ViewCamera, bool AllowHig
 		mPartData->AddRenderMesh(*Scene);
 
 	swPart* FocusPart = nullptr;
-	// selected parts outside the step only show in the interactive view
+
+	// selected parts outside the step
 	const bool DrawSelected = Scene->GetDrawInterface();
 
 	for (const std::unique_ptr<swPart>& Part : mParts)
@@ -176,7 +177,7 @@ swResult<QImage> swModel::RenderStepImageWithReadyAssets(bool Zoom, int Width, i
 
 swResult<QImage> swModel::GetPartsListImage(int MaxWidth, int RequestedThumbnailSize, swStep Step, quint32 BackgroundColor, quint32 ThumbnailBackgroundColor, QFont Font, QColor TextColor, bool KeepMissingParts, bool ShowCounts, swPartsListSort Sort, swPartsListLayout Layout, swPartsListAlignment Alignment, int MaxHeight, float Scale) const
 {
-	// the scale renders a sharper image of the same layout, every size in pixels follows it
+	// scale every pixel size
 	auto Scaled = [Scale](int Size)
 	{
 		return qRound(Size * Scale);
@@ -276,7 +277,8 @@ swResult<QImage> swModel::GetPartsListImage(int MaxWidth, int RequestedThumbnail
 	View.SetOffscreenContext();
 	View.MakeCurrent();
 	swContext* Context = View.mContext;
-	// a thumbnail wider than the list could never be laid out
+
+	// skip thumbnails wider than the list
 	const int ThumbnailSize = qBound(Scaled(16), Scaled(RequestedThumbnailSize), qMax(qMin(MaxWidth, Scaled(512)), Scaled(16)));
 
 	View.SetSize(ThumbnailSize, ThumbnailSize);
@@ -433,11 +435,11 @@ swResult<QImage> swModel::GetPartsListImage(int MaxWidth, int RequestedThumbnail
 
 	const int Spacing = Scaled(20);
 
-	// a part takes the width of its thumbnail or of its count, whichever is wider
+	// take the wider of thumbnail and count
 	for (swPartsListImage& Image : Images)
 		Image.CellWidth = qMax(Image.Bounds.width(), ShowCounts ? FontMetrics.horizontalAdvance(QString::number(Image.Count) + 'x') : 0);
 
-	// use to place a part inside the space left beside the reference edge
+	// use to place a part beside the edge
 	auto GetAlignmentOffset = [Alignment](int Space)
 	{
 		switch (Alignment)
@@ -460,7 +462,7 @@ swResult<QImage> swModel::GetPartsListImage(int MaxWidth, int RequestedThumbnail
 
 	if (Layout == swPartsListLayout::Rows)
 	{
-		// the rows fill the width, the parts of a row line up on the chosen edge and their counts share one line below
+		// fill rows across the width
 		size_t RowStart = 0;
 
 		while (RowStart < Images.size())
@@ -501,7 +503,7 @@ swResult<QImage> swModel::GetPartsListImage(int MaxWidth, int RequestedThumbnail
 	}
 	else
 	{
-		// the columns fill the height from top to bottom, the parts of a column line up on the chosen edge
+		// fill columns down the height
 		std::vector<int> Columns(Images.size());
 		std::vector<int> ColumnWidths;
 		int CurrentX = 0;
@@ -561,11 +563,11 @@ swResult<QImage> swModel::GetPartsListImage(int MaxWidth, int RequestedThumbnail
 		const QString Text = QString::number(Image.Count) + 'x';
 		const int TextWidth = ShowCounts ? FontMetrics.horizontalAdvance(Text) : 0;
 
-		// the thumbnail and its count line up on the same edge inside the width of the part
+		// line up thumbnail and count
 		const int ThumbnailX = Position.x() + GetAlignmentOffset(Image.CellWidth - Image.Bounds.width()) * (Layout == swPartsListLayout::Columns);
 		const int TextX = Position.x() + GetAlignmentOffset(Image.CellWidth - TextWidth) * (Layout == swPartsListLayout::Columns);
 
-		// the thumbnail background holds the part and its count, it stays inside the spacing between parts
+		// keep the background inside the spacing
 		if (qAlpha(ThumbnailBackgroundColor))
 			Painter.fillRect(QRect(Position.x(), Position.y(), Image.CellWidth, TextPosition.y() - Position.y()).adjusted(-Scaled(6), -Scaled(6), Scaled(6), Scaled(6)), swQColorFromRGBA(ThumbnailBackgroundColor));
 

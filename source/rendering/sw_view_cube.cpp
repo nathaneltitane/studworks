@@ -15,7 +15,7 @@ swViewCube::swViewCubeFacet swViewCube::mFacets[swViewCube::mFacetCount];
 const float swViewCube::mHalfSize = SW_VIEW_CUBE_HALF_SIZE;
 const float swViewCube::mChamfer = SW_VIEW_CUBE_CHAMFER;
 
-// use to get the outward direction of a facet from its view flags
+// use to get a facet direction
 static swVector3 swGetFacetNormal(const std::bitset<6>& Flags)
 {
 	swVector3 Normal(0.0f, 0.0f, 0.0f);
@@ -91,7 +91,8 @@ void swViewCube::CreateResources(swContext* Context)
 
 	QImage PainterImage(SourceCellSize, SourceCellSize, QImage::Format_ARGB32);
 	QPainter Painter;
-	// labels use the interface font rendered large and mipmapped so they stay sharp at any cube size
+
+	// mipmapped interface font labels
 	QFont Font = QGuiApplication::font();
 	Font.setPointSize(144);
 	QImage AtlasImage(AtlasWidth, AtlasHeight, QImage::Format_Alpha8);
@@ -100,7 +101,8 @@ void swViewCube::CreateResources(swContext* Context)
 	for (int ViewIdx = 0; ViewIdx < 6; ViewIdx++)
 	{
 		QFont LabelFont = Font;
-		// the shader shows the middle 80% of each cell, keep labels clear of its border
+
+		// keep labels inside the cell
 		constexpr int MaxLabelWidth = 360;
 		while (LabelFont.pointSize() > 1 && QFontMetrics(LabelFont).horizontalAdvance(ViewNames[ViewIdx]) > MaxLabelWidth)
 			LabelFont.setPointSize(LabelFont.pointSize() - 1);
@@ -113,7 +115,7 @@ void swViewCube::CreateResources(swContext* Context)
 		Painter.drawText(0, 0, PainterImage.width(), PainterImage.height(), Qt::AlignCenter, ViewNames[ViewIdx]);
 		Painter.end();
 
-		// keep the flipped middle band of each label as one atlas row
+		// keep each label in one atlas row
 		const int AtlasY = ViewIdx * CellHeight;
 		for (int y = 0; y < CellHeight; y++)
 		{
@@ -144,7 +146,7 @@ void swViewCube::CreateResources(swContext* Context)
 	std::vector<GLushort> Indices;
 	int FacetIdx = 0;
 
-	// use to add a flat facet as a triangle fan wound to face outward
+	// use to add a flat facet
 	auto AddFacet = [&](std::vector<swVector3> Positions, std::vector<swVector3> TexCoords, const std::bitset<6>& Flags)
 	{
 		const swVector3 Normal = swGetFacetNormal(Flags);
@@ -173,7 +175,7 @@ void swViewCube::CreateResources(swContext* Context)
 		FacetIdx++;
 	};
 
-	// faces carry their label, the face index picks its row in the atlas
+	// face index picks the atlas row
 	for (int FaceIdx = 0; FaceIdx < mFaceCount; FaceIdx++)
 	{
 		const swVector3 Normal = swMultiply31(swVector3(0.0f, 0.0f, 0.0f), Transforms[FaceIdx]);
@@ -295,10 +297,11 @@ void swViewCube::Draw()
 	const swVector4 TextColor = swVector4FromColor(Preferences.mViewCubeTextColor);
 	const swVector4 BackgroundColor = swVector4FromColor(Preferences.mViewCubeColor);
 	const swVector4 HighlightColor = swVector4FromColor(Preferences.mViewCubeHighlightColor);
-	// a negative radius turns the position based highlight of the shader off
+
+	// negative radius turns the highlight off
 	const swVector4 NoHighlight(0.0f, 0.0f, 0.0f, -1.0f);
 
-	// edges and corners are shaded toward the text color so the chamfers stand out
+	// shade edges toward the text
 	const swVector4 EdgeColor = BackgroundColor + (TextColor - BackgroundColor) * 0.14f;
 	const swVector4 CornerColor = BackgroundColor + (TextColor - BackgroundColor) * 0.28f;
 
@@ -435,7 +438,7 @@ std::bitset<6> swViewCube::GetIntersectionFlags() const
 
 	swUnprojectPoints(StartEnd, 2, GetViewMatrix(), GetProjectionMatrix(), Viewport);
 
-	// the cube is the inside of all facet planes, the ray enters through the plane it crosses last
+	// ray enters through the farthest plane
 	const swVector3 Direction = StartEnd[1] - StartEnd[0];
 	const float Inner = mHalfSize - mChamfer;
 	float EnterDistance = -FLT_MAX;

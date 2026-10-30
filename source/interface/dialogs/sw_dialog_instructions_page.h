@@ -5,7 +5,7 @@
 class swInstructionsPropertiesWidget;
 class swInstructionsPlacementWidget;
 
-// use to snap a border to whole device pixels so every side gets the same width
+// Snaps a border to device pixels.
 inline void swSnapBorderRect(const QTransform& Transform, QRectF& Rect, qreal& BorderWidth)
 {
 	const qreal Scale = qAbs(Transform.m11());
@@ -22,20 +22,20 @@ inline void swSnapBorderRect(const QTransform& Transform, QRectF& Rect, qreal& B
 		BorderWidth = qMax<qreal>(qRound(BorderWidth * Scale), 1.0) / Scale;
 }
 
-// pointers leave the border of any boxed element, whatever its content
+// Pointers leave any boxed element.
 class swInstructionsBoxBase
 {
 public:
 	virtual ~swInstructionsBoxBase() = default;
 
-	// the outer edge of the border, inside the margin
+	// The outer border edge.
 	virtual QRectF GetBorderRect() const = 0;
 
-	// the width of the border drawn inside that edge
+	// The border width.
 	virtual qreal GetBorderWidth() const = 0;
 };
 
-// the page elements are drawn in a box, the background fills the margin, border and padding around the content
+// The box around page elements.
 template <typename T>
 class swInstructionsBoxItem : public T, public swInstructionsBoxBase
 {
@@ -56,7 +56,7 @@ public:
 		return mBoxStyle;
 	}
 
-	// use when the content fills its own rect with the background, the box then fills only around it
+	// The content fills its own background.
 	void SetContentBackground(bool ContentBackground)
 	{
 		mContentBackground = ContentBackground;
@@ -122,7 +122,7 @@ public:
 			Painter->fillPath(BackgroundPath, mBoxStyle.BackgroundColor);
 		}
 
-		// the content is drawn inside the padding, the selection frames the whole box
+		// Content inside the padding.
 		QStyleOptionGraphicsItem ContentOption(*Option);
 		ContentOption.state &= ~(QStyle::State_Selected | QStyle::State_HasFocus);
 
@@ -133,7 +133,7 @@ public:
 
 		if (mBoxStyle.BorderWidth > 0.0 && mBoxStyle.BorderColor.alpha())
 		{
-			// the border is filled between its edges so every side has the same width at any zoom
+			// Equal border sides at any zoom.
 			QRectF OuterRect = GetBorderRect();
 			qreal BorderWidth = mBoxStyle.BorderWidth;
 			swSnapBorderRect(Painter->worldTransform(), OuterRect, BorderWidth);
@@ -156,7 +156,8 @@ public:
 			return;
 
 		Painter->save();
-		// the highlight stays visible on light pages with a dark interface theme
+
+		// A highlight visible on light pages.
 		QPen Pen(Option->palette.highlight(), 2.0, Qt::DashLine);
 		Pen.setCosmetic(true);
 
@@ -201,7 +202,7 @@ public:
 
 	void Update();
 
-	// use to find the part drawn at a point of the item and where a part is drawn, the parts are known by their index in the model
+	// Finds the part drawn at a point.
 	bool FindPart(const QPointF& Point, int& PartIndex) const;
 	bool GetPartPoint(int PartIndex, QPointF& Point) const;
 
@@ -249,7 +250,7 @@ protected:
 	swStep mStep = 1;
 };
 
-// one page number item per page, they share their placement and offset so all pages number alike
+// One page number item per page.
 class swInstructionsPageNumberItem : public swInstructionsBoxItem<QGraphicsSimpleTextItem>
 {
 public:
@@ -329,7 +330,7 @@ protected:
 	bool mAuthor = false;
 };
 
-// a notice is free text written on a page, it is moved and locked like the other elements
+// A free text notice on a page.
 class swInstructionsNoticeItem : public swInstructionsBoxItem<QGraphicsTextItem>
 {
 public:
@@ -348,7 +349,7 @@ protected:
 	int mId = 0;
 };
 
-// a pointer leaves an anchor of the border of its element, its tip follows the part or element it points at
+// A pointer from an element anchor.
 class swInstructionsPointerItem : public QGraphicsItem
 {
 public:
@@ -440,17 +441,17 @@ protected:
 	swInstructions* mInstructions;
 };
 
-// the position an element gets from its placement, before it is moved or locked
+// The position from the placement.
 constexpr int SW_PLACEMENT_POSITION_DATA = 0;
 
-// use to identify a page element across page rebuilds, which delete the items
+// Identifies a page element.
 bool swGetElementKey(const QGraphicsItem* Item, swInstructionsElementKey& Key);
 
-// use to get the anchors on the border of an element, clockwise from its top left corner
+// Gets the border anchors of an element.
 QPointF swGetPointerAnchor(const QRectF& BorderRect, int Anchor);
 
-// use to edit the text of a notice, an empty text keeps the notice
+// Edits the text of a notice.
 bool swEditNoticeText(QWidget* Parent, QString& Text, bool NewNotice);
 
-// use to fill a scene with the elements of a page
+// Fills a scene with page elements.
 void swUpdateInstructionsPageScene(swInstructions* Instructions, const swInstructionsPage* Page, QGraphicsScene* Scene);

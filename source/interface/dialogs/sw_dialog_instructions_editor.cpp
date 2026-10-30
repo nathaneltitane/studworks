@@ -8,15 +8,14 @@
 #include "sw_window_main.h"
 #include "sw_window_utilities.h"
 
-// use to find what is wrong with a line of an ldraw file
-// use to list the meta commands written after a line type of 0
+// use to check ldraw lines and metas
 static const QStringList& swGetLDrawMetaKeywords()
 {
 	static const QStringList Keywords = { "STEP", "FILE", "NOFILE", "BFC", "CLEAR", "PAUSE", "SAVE", "PRINT", "WRITE", "ROTSTEP", "Name:", "Author:" };
 	return Keywords;
 }
 
-// use to write the meta command of a line in capitals
+// use to capitalize the meta command
 static QString swGetLDrawMetaLine(const QString& Line)
 {
 	const QRegularExpression Expression(QLatin1String("^(\\s*0\\s+)(\\S+)"));
@@ -45,7 +44,7 @@ static QString swGetLDrawLineError(const QString& Line)
 	if (Tokens.isEmpty())
 		return QString();
 
-	// parameter count of each line type with the part file name last
+	// parameter count of each line type
 	static const int TypeTokenCounts[] = { 0, 15, 8, 11, 14, 14 };
 	bool Valid = false;
 	const int TypeNumber = Tokens[0].toInt(&Valid);
@@ -58,7 +57,7 @@ static QString swGetLDrawLineError(const QString& Line)
 
 	const int TokenCount = TypeTokenCounts[TypeNumber];
 
-	// part file names may hold spaces so a part line can be longer
+	// part file names may hold spaces
 	if (Tokens.size() < TokenCount || (TypeNumber != 1 && Tokens.size() > TokenCount))
 		return QObject::tr("A line of type %1 has %2 values instead of %3.").arg(TypeNumber).arg(Tokens.size()).arg(TokenCount);
 
@@ -80,7 +79,7 @@ static QString swGetLDrawLineError(const QString& Line)
 	return QString();
 }
 
-// colors ldraw lines by type and writes color codes in their own color
+// color ldraw lines by type
 class swLDrawHighlighter : public QSyntaxHighlighter
 {
 public:
@@ -105,7 +104,7 @@ protected:
 swLDrawHighlighter::swLDrawHighlighter(QObject* Parent)
 	: QSyntaxHighlighter(Parent)
 {
-	// light tints read on dark themes and deep hues on light themes
+	// tints for dark and light themes
 	const bool DarkTheme = gApplication && gApplication->IsDarkTheme();
 
 	mCommentFormat = CreateFormat(DarkTheme ? QColor(0x8a, 0x95, 0xa3) : QColor(0x6a, 0x73, 0x7d), false, true);
@@ -143,7 +142,7 @@ QTextCharFormat swLDrawHighlighter::GetColorCodeFormat(const QString& Code) cons
 
 	QColor Color;
 
-	// direct colors carry their rgb value and codes are looked up without adding them
+	// look up color codes without adding them
 	if ((Value & 0xff000000) == 0x02000000)
 		Color = QColor::fromRgb(Value & 0xffffff);
 	else
@@ -161,7 +160,7 @@ QTextCharFormat swLDrawHighlighter::GetColorCodeFormat(const QString& Code) cons
 	if (!Color.isValid())
 		return mNumberFormat;
 
-	// colors too close to the background are lifted or dimmed to stay readable
+	// keep colors readable on the background
 	const int BaseLightness = QApplication::palette().color(QPalette::Base).lightness();
 
 	if (qAbs(Color.lightness() - BaseLightness) < 80)
@@ -224,7 +223,7 @@ void swLDrawHighlighter::highlightBlock(const QString& Text)
 
 		const QString Command = GetToken(1);
 
-		// comments and embedded data are dimmed and metas show their command
+		// dim comments and embedded data
 		if (Command.startsWith(QLatin1String("//")))
 			SetRestFormat(1, mCommentFormat);
 		else if (Command == QLatin1String("!:"))
@@ -237,7 +236,7 @@ void swLDrawHighlighter::highlightBlock(const QString& Text)
 			SetRestFormat(2, mValueFormat);
 			SetTokenFormat(1, mKeywordFormat);
 
-			// program metas name their command after the program like 0 !SW PROP
+			// program metas name their command
 			if (Command.startsWith('!') && Tokens.size() > 2 && GetToken(2) == GetToken(2).toUpper() && GetToken(2).at(0).isLetter())
 				SetTokenFormat(2, mKeywordFormat);
 		}
@@ -247,7 +246,7 @@ void swLDrawHighlighter::highlightBlock(const QString& Text)
 		return;
 	}
 
-	// parameter count of each line type with the part file name last
+	// parameter count of each line type
 	static const size_t TypeTokenCounts[] = { 0, 15, 8, 11, 14, 14 };
 	bool Valid = false;
 	const int TypeNumber = Type.toInt(&Valid);
@@ -282,7 +281,7 @@ void swLDrawHighlighter::highlightBlock(const QString& Text)
 		setFormat(0, 1, mErrorFormat);
 }
 
-// the text edit numbers its lines and marks each line end with a return arrow
+// number lines and mark line ends
 class swEditorTextEdit : public QPlainTextEdit
 {
 public:
@@ -376,7 +375,7 @@ protected:
 		Painter.fillRect(Rect, palette().color(QPalette::Window));
 		Painter.setFont(font());
 
-		// the line of the cursor is numbered in the text color
+		// number the cursor line in text color
 		const int CursorBlock = textCursor().blockNumber();
 		const int Margin = QFontMetrics(font()).horizontalAdvance(QLatin1Char(' '));
 		const int Width = mLineNumberArea->width() - Margin;
@@ -421,11 +420,11 @@ protected:
 
 			const QTextLayout* Layout = Block.layout();
 
-			// an empty last line has no line end to mark
+			// an empty last line has no end
 			if (!Block.isVisible() || !Layout || !Layout->lineCount() || (!Block.next().isValid() && Block.length() <= 1))
 				continue;
 
-			// the arrow follows the last character of the last line
+			// arrow after the last character
 			const QTextLine Line = Layout->lineAt(Layout->lineCount() - 1);
 			const qreal X = Geometry.left() + Line.cursorToX(Block.length() - 1);
 			const qreal Y = Geometry.top() + Line.y() + Line.ascent();
@@ -471,7 +470,7 @@ swInstructionsEditorWidget::swInstructionsEditorWidget(QWidget* Parent, Project*
 	mApplyButton = CreateButton(ButtonRow, tr("Apply"), tr("Check the syntax of the edited text and load the model from it, the change is unsaved until the model is saved."));
 	mRevertButton = CreateButton(ButtonRow, tr("Revert"), tr("Discard the edits and show the text of the model again."));
 
-	// the options button sits at the top right like the other panels
+	// options button at the top right
 	QWidget* OptionsRow = swCreatePanelRow(CentralWidget);
 	swAddPanelRowStretch(OptionsRow);
 	Layout->addWidget(OptionsRow);
@@ -524,7 +523,7 @@ swInstructionsEditorWidget::swInstructionsEditorWidget(QWidget* Parent, Project*
 		UpdateMatches();
 	});
 
-	// the find and replace rows open on demand below the text
+	// find and replace rows below the text
 	mFindWidget = new QWidget(CentralWidget);
 	QVBoxLayout* FindLayout = new QVBoxLayout(mFindWidget);
 	FindLayout->setContentsMargins(0, 0, 0, 0);
@@ -568,7 +567,7 @@ swInstructionsEditorWidget::swInstructionsEditorWidget(QWidget* Parent, Project*
 
 	connect(mFindEdit, &QLineEdit::textChanged, this, [this]()
 	{
-		// typing finds the first match from the start of the selection
+		// find from the selection start
 		QTextCursor Cursor = mTextEdit->textCursor();
 		Cursor.setPosition(Cursor.selectionStart());
 		mTextEdit->setTextCursor(Cursor);
@@ -587,13 +586,14 @@ swInstructionsEditorWidget::swInstructionsEditorWidget(QWidget* Parent, Project*
 	QShortcut* CloseFindShortcut = new QShortcut(QKeySequence(Qt::Key_Escape), mFindWidget, nullptr, nullptr, Qt::WidgetWithChildrenShortcut);
 	connect(CloseFindShortcut, &QShortcut::activated, mFindAction, [this]() { mFindAction->setChecked(false); });
 
-	// the text keeps its columns in a fixed font
+	// fixed font keeps the columns
 	mTextEdit = new swEditorTextEdit(CentralWidget);
 	mTextEdit->setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
 	mTextEdit->setLineWrapMode(mWrapAction->isChecked() ? QPlainTextEdit::WidgetWidth : QPlainTextEdit::NoWrap);
 	mTextEdit->setToolTip(tr("Text of the model file."));
 	mTextEdit->setAccessibleName(tr("Editor"));
-	// the editor buttons sit below the text
+
+	// editor buttons below the text
 	Layout->addWidget(mTextEdit, 1);
 	Layout->addWidget(mFindWidget);
 	Layout->addWidget(ButtonRow);
@@ -608,7 +608,7 @@ swInstructionsEditorWidget::swInstructionsEditorWidget(QWidget* Parent, Project*
 
 	connect(mApplyButton, &QToolButton::clicked, this, &swInstructionsEditorWidget::ApplyClicked);
 
-	// the save shortcut applies the edited text and saves the model while the panel has the focus
+	// save shortcut applies and saves
 	QAction* SaveAction = new QAction(tr("Save"), this);
 	SaveAction->setShortcuts(gMainWindow->mActions[SW_FILE_SAVE]->shortcuts());
 	SaveAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
@@ -619,7 +619,7 @@ swInstructionsEditorWidget::swInstructionsEditorWidget(QWidget* Parent, Project*
 	connect(mTextEdit, &QPlainTextEdit::textChanged, this, &swInstructionsEditorWidget::UpdateMatches);
 	connect(mTextEdit, &QPlainTextEdit::cursorPositionChanged, this, &swInstructionsEditorWidget::UpdateMatches);
 
-	// the text follows the model and its instructions while it is shown
+	// follow the model while shown
 	connect(this, &QDockWidget::visibilityChanged, this, [this](bool Visible)
 	{
 		if (Visible)
@@ -636,14 +636,14 @@ void swInstructionsEditorWidget::SetProject(Project* Project)
 {
 	mProject = Project;
 
-	// the applied text is the text of the loaded project
+	// the applied text is the project text
 	mTextEdit->document()->setModified(false);
 	ScheduleUpdate();
 }
 
 void swInstructionsEditorWidget::ScheduleUpdate()
 {
-	// several changes in a row write the text once, after the current event
+	// write the text once per event
 	if (mUpdatePending)
 		return;
 
@@ -658,7 +658,7 @@ void swInstructionsEditorWidget::ScheduleUpdate()
 
 void swInstructionsEditorWidget::UpdateText()
 {
-	// edits not applied yet are kept, revert shows the model again
+	// revert shows the model again
 	if (!isVisible() || mTextEdit->document()->isModified())
 		return;
 
@@ -716,7 +716,7 @@ void swInstructionsEditorWidget::ApplyClicked()
 
 void swInstructionsEditorWidget::ApplyText(bool Save)
 {
-	// saving an unedited text saves the model as it is
+	// save an unedited text as is
 	if (!mTextEdit->document()->isModified())
 	{
 		if (Save)
@@ -728,7 +728,7 @@ void swInstructionsEditorWidget::ApplyText(bool Save)
 	if (!ValidateText())
 		return;
 
-	// meta commands are read in capitals only
+	// read metas in capitals only
 	QStringList Lines = mTextEdit->toPlainText().split('\n');
 
 	for (QString& Line : Lines)
@@ -739,7 +739,7 @@ void swInstructionsEditorWidget::ApplyText(bool Save)
 	Stream << Lines.join('\n');
 	Stream.flush();
 
-	// loading replaces the project so it runs once this event is done
+	// load after this event
 	QTimer::singleShot(0, gMainWindow, [Bytes, Save]()
 	{
 		if (gMainWindow->LoadProjectText(Bytes) && Save)
@@ -769,7 +769,7 @@ bool swInstructionsEditorWidget::ValidateText()
 	if (Errors.isEmpty())
 		return true;
 
-	// the first wrong line is selected and the message lists the first ten
+	// select the first wrong line
 	QTextCursor Cursor(mTextEdit->document()->findBlockByNumber(FirstErrorLine));
 	Cursor.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
 	mTextEdit->setTextCursor(Cursor);
@@ -794,7 +794,7 @@ void swInstructionsEditorWidget::RevertClicked()
 	UpdateText();
 }
 
-// use to follow the editor options stored by the preferences, each toggled action applies its option
+// use to follow the preferences editor options
 void swInstructionsEditorWidget::UpdateOptions()
 {
 	mHighlightAction->setChecked(swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_EDITOR_HIGHLIGHT) != 0);
@@ -825,7 +825,7 @@ void swInstructionsEditorWidget::SetMarkersEnabled(bool Enabled)
 {
 	swSetProfileInteger(SW_PROFILE_INSTRUCTIONS_EDITOR_MARKERS, Enabled);
 
-	// tabs and spaces show their markers and line ends show a return arrow
+	// show whitespace and line end markers
 	QTextDocument* Document = mTextEdit->document();
 	QTextOption Option = Document->defaultTextOption();
 	Option.setFlags(Enabled ? Option.flags() | QTextOption::ShowTabsAndSpaces : Option.flags() & ~QTextOption::ShowTabsAndSpaces);
@@ -846,7 +846,7 @@ void swInstructionsEditorWidget::SetFindVisible(bool Visible)
 		return;
 	}
 
-	// a selection on one line becomes the text to find
+	// find a one line selection
 	const QString Selection = mTextEdit->textCursor().selectedText();
 
 	if (!Selection.isEmpty() && !Selection.contains(QChar::ParagraphSeparator))
@@ -884,7 +884,7 @@ void swInstructionsEditorWidget::FindMatch(bool Backward)
 	const QTextDocument::FindFlags Flags = GetFindFlags() | (Backward ? QTextDocument::FindBackward : QTextDocument::FindFlags());
 	QTextCursor Cursor = Document->find(Text, mTextEdit->textCursor(), Flags);
 
-	// the search wraps around at the start and end of the text
+	// wrap the search around
 	if (Cursor.isNull())
 		Cursor = Document->find(Text, Backward ? Document->characterCount() - 1 : 0, Flags);
 
@@ -902,7 +902,7 @@ void swInstructionsEditorWidget::ReplaceClicked()
 	if (Text.isEmpty())
 		return;
 
-	// only a selection that is a match is replaced
+	// replace a matching selection only
 	const QTextCursor Match = mTextEdit->document()->find(Text, Cursor.selectionStart(), GetFindFlags());
 
 	if (Cursor.hasSelection() && Match.selectionStart() == Cursor.selectionStart() && Match.selectionEnd() == Cursor.selectionEnd())
@@ -921,7 +921,7 @@ void swInstructionsEditorWidget::ReplaceAllClicked()
 	if (Text.isEmpty())
 		return;
 
-	// every replacement is one step to undo
+	// undo each replacement
 	QTextDocument* Document = mTextEdit->document();
 	QTextCursor Cursor(Document);
 	int Count = 0;
@@ -956,7 +956,7 @@ void swInstructionsEditorWidget::UpdateMatches()
 		return;
 	}
 
-	// every match is marked and the label counts them
+	// mark and count every match
 	QTextDocument* Document = mTextEdit->document();
 	const QTextCursor Current = mTextEdit->textCursor();
 	QColor Color = palette().color(QPalette::Highlight);

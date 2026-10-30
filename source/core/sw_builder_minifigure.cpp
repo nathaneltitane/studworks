@@ -490,7 +490,7 @@ int swMinifigureBuilder::GetSelectionIndex(int Type) const
 	return 0;
 }
 
-// use to get the offset of the selected part, none without a parts library
+// use to get the selected part offset
 swMatrix44 swMinifigureBuilder::GetSelectionOffset(int Type) const
 {
 	if (mSettings[Type].empty())

@@ -108,7 +108,7 @@ void swMainWindow::ReloadProject()
 	ReloadProjectFile(FileName);
 }
 
-// use to reread the library from disk
+// use to reload the library
 void swMainWindow::ReloadPartsLibrary()
 {
 	swPartsLibrary* Library = swGetPartsLibrary();
@@ -142,7 +142,7 @@ bool swMainWindow::LoadProjectText(const QByteArray& FileData)
 		return false;
 	}
 
-	// the instructions window stays open and keeps its focus, its instructions move to the new project
+	// instructions window keeps its focus
 	QPointer<swInstructionsDialog> Dialog = mInstructionsDialog;
 	QPointer<QWidget> FocusWidget = QApplication::focusWidget();
 	std::unique_ptr<swInstructions> Instructions;
@@ -206,7 +206,7 @@ void swMainWindow::NewProject()
 	if (!SaveProjectIfModified())
 		return;
 
-	// new models start from the default page setup of the preferences when it is chosen
+	// start from the default page setup
 	if (swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_NEW_MODEL_DEFAULTS))
 		swInstructions::LoadDefaultPageSetup();
 
@@ -257,7 +257,7 @@ bool swMainWindow::OpenProjectFile(const QString& FileName)
 		if (NewProject->HasLeoCADMetaCommands() && MigrateMetaCommands(FileName))
 			NewProject->MigrateMetaCommands();
 
-		// Show the model complete instead of drawing parts as they finish loading, its view then fits the loaded parts once.
+		// show the model once complete
 		if (swGetPreferences().mLoadPartsBeforeShowing)
 		{
 			QApplication::setOverrideCursor(Qt::WaitCursor);
@@ -280,7 +280,7 @@ bool swMainWindow::OpenProjectFile(const QString& FileName)
 
 bool swMainWindow::MigrateMetaCommands(const QString& FileName)
 {
-	// The preference migrates without asking.
+	// migrate without asking
 	if (swGetPreferences().mMigrateMetaCommands)
 		return true;
 

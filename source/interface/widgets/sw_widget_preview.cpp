@@ -12,7 +12,7 @@
 #include "sw_profile.h"
 #include "sw_window_utilities.h"
 
-// a read-only box like the panel text boxes that shortens the name with an ellipsis to fit
+// read only box with elided name
 class swPreviewNameEdit : public QLineEdit
 {
 public:
@@ -58,17 +58,18 @@ swPreviewDockWidget::swPreviewDockWidget(QWidget* Parent)
 {
 	mPreview = new swPreview();
 
-	// the view sits in a container that can keep it square
+	// container keeps the view square
 	mViewContainer = new QWidget(this);
 	mViewContainer->installEventFilter(this);
 
 	mViewWidget = new swViewWidget(mViewContainer, mPreview);
 
-	// the preview blends into its panel without a viewport border
+	// no viewport border
 	mPreview->SetDrawViewportBorder(false);
 	mViewWidget->setAccessibleName(tr("Preview"));
 	mViewWidget->setToolTip(tr("Inspect the previewed part or model without placing it in the model."));
-	// Small enough to stack with other panels, the header rows and a few rows of view stay visible.
+
+	// small enough to stack panels
 	setMinimumSize(200, 4 * swGetPanelButtonSize().height());
 
 	mLockAction = new QAction(tr("Lock Preview"), this);
@@ -100,13 +101,13 @@ swPreviewDockWidget::swPreviewDockWidget(QWidget* Parent)
 			RefreshPendingAssets();
 	});
 
-	// The button row, the name of the previewed part and the view are stacked like the other panels.
+	// stack buttons, name and view
 	QVBoxLayout* Layout = new QVBoxLayout(this);
 
 	QWidget* ButtonRow = swCreatePanelRow(this);
 	Layout->addWidget(ButtonRow);
 
-	// Nothing else sits beside it, so the lock button reaches up to the options button.
+	// lock button reaches the options button
 	QToolButton* LockButton = swAddPanelActionButton(ButtonRow, mLockAction);
 	LockButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
 	LockButton->setWhatsThis(mLockAction->whatsThis());
@@ -155,7 +156,7 @@ void swPreviewDockWidget::UpdateSquareViewport()
 
 void swPreviewDockWidget::UpdateViewGeometry()
 {
-	// a square preview sizes the panel to fit, the height follows the width like the colors panel
+	// height follows the width
 	if (swGetPreferences().mPreviewSquareViewport)
 		setFixedHeight(height() - mViewContainer->height() + mViewContainer->width());
 	else

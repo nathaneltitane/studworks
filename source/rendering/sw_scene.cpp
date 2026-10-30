@@ -437,14 +437,14 @@ void swScene::DrawTranslucentMeshes(swContext* Context, bool DrawLit, bool DrawF
 
 void swScene::Draw(swContext* Context, const std::function<void()>& PreTranslucentCallback) const
 {
-	// TODO: find a better place for these updates
+	// todo move these updates
 	swGetPartsLibrary()->UpdateBuffers(Context);
 
 	Context->SetViewMatrix(mViewMatrix);
 	Context->SetLightingStyle(mLightingStyle);
 	Context->SetCutaway(mCutawayShape, mCutawayMatrix);
 
-	// the grid and outlines drawn between the passes are never cut away
+	// never cut the grid and outlines
 	const auto DrawPreTranslucent = [this, Context, &PreTranslucentCallback]()
 	{
 		if (!PreTranslucentCallback)
@@ -557,7 +557,7 @@ bool swScene::HasSelectedMeshes() const
 
 bool swScene::CanReuseSceneDepth() const
 {
-	// Faded depth prepasses and insertion previews should not obscure selection.
+	// keep the selection visible
 	if (mTranslucentFade && mHasFadedParts)
 		return false;
 

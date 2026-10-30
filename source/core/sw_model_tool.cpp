@@ -334,7 +334,7 @@ void swModel::UpdateMoveTool(const swVector3& Distance, bool AllowRelative, bool
 	swModelTransformFlags Flags = (AllowRelative ? swModelTransformFlag::Relative : swModelTransformFlag::None) | (AlternateButtonDrag ? swModelTransformFlag::RotatePivotPoint : swModelTransformFlag::None) | (mMouseToolFirstMove ? swModelTransformFlag::FirstMove : swModelTransformFlag::None);
 	MoveSelectedObjects(PartDistance, ObjectDistance, Flags, swModelHistoryEditMerge::None);
 
-	// a dragged end control point shows when dropping it would seat its fitting
+	// show a seat while dragging an end
 	if (swObject* Focus = GetFocusObject(); Focus && Focus->IsPart())
 	{
 		swPart* Part = (swPart*)Focus;
@@ -419,7 +419,8 @@ void swModel::UpdateFreeMoveTool(swPart* MousePart, const swMatrix44& StartTrans
 		swMatrix33 RelativeRotation = MousePart->GetRelativeRotation();
 
 		swMatrix33 WorldToFocusMatrix = swMatrix33AffineInverse(RelativeRotation);
-		// Rotate() expects the rotation in the focus frame.
+
+		// rotate in the focus frame
 		RotationMatrix = swMultiply(RelativeRotation, RotationMatrix);
 
 		int Flags;
@@ -615,7 +616,7 @@ void swModel::UpdateOrbitTool(swCamera* Camera, float MouseX, float MouseY)
 {
 	const swVector3 Center = GetSelectionOrModelCenter();
 
-	// With orbit snapping the camera turns in whole steps of the rotation snap angle.
+	// orbit snapping turns in whole steps
 	const float OrbitSnap = gMainWindow->GetOrbitSnap() * SW_DEGREES_TO_RADIANS;
 
 	if (OrbitSnap > 0.0f)

@@ -296,6 +296,7 @@ bool swModel::GetMoveRotateTransform(swVector3& Center, swMatrix33& RelativeRota
 		if (Camera->IsFocused() && Relative)
 		{
 			Center = Camera->GetSectionPosition(Camera->GetFocusSection());
+
 //			RelativeRotation = Part->GetRelativeRotation();
 			return true;
 		}
@@ -792,7 +793,7 @@ void swModel::AddPartShapes(const swPart* Part, const swMatrix44& Transform, swC
 			AddPartShapes(SubModelPart.get(), World, Shapes);
 }
 
-// use to seat the end fitting of a flexible part on the nearest connection that takes it
+// use to seat an end fitting
 bool swModel::SnapControlPointToConnection(swPart* Part, quint32 ControlPointIndex) const
 {
 	swMatrix44 SeatTransform;
@@ -809,7 +810,7 @@ bool swModel::SnapControlPointToConnection(swPart* Part, quint32 ControlPointInd
 	return true;
 }
 
-// use to find where the end fitting of a flexible part would seat, in part space
+// use to find the seat of an end fitting
 bool swModel::FindControlPointSeat(const swPart* Part, quint32 ControlPointIndex, swMatrix44& SeatTransform, swVector3* SurfacePosition, swVector3* SurfaceNormal) const
 {
 	const swSynthesisInformation* SynthInfo = Part->mPartData->GetSynthInfo();
@@ -825,7 +826,7 @@ bool swModel::FindControlPointSeat(const swPart* Part, quint32 ControlPointIndex
 	const float FittingDistance = 8.0f;
 	const swMatrix44 ControlPointWorld = swMultiply(ControlPoints[ControlPointIndex].Transform, Part->mModelWorld);
 
-	// the connection shapes of the fitting parts at this end
+	// fitting connection shapes at this end
 	std::vector<std::pair<const swConnectionCylinder*, swMatrix44>> Fittings;
 
 	for (const auto& [PartName, Transform] : SynthInfo->GetParts(ControlPoints))
@@ -922,7 +923,7 @@ bool swModel::FindControlPointSeat(const swPart* Part, quint32 ControlPointIndex
 		return swMultiply(swMatrix44(BestRotation, ControlPointPosition), Part->mModelWorld);
 	};
 
-	// every seat in reach by how far the control point moves to it, whatever way the connection faces
+	// every seat in reach by distance
 	struct swConnectionSeat
 	{
 		float Distance;
@@ -940,7 +941,7 @@ bool swModel::FindControlPointSeat(const swPart* Part, quint32 ControlPointIndex
 		if (OtherPart.get() == Part || !OtherPart->IsVisible(mCurrentStep))
 			continue;
 
-		// parts too far for any of their connections to reach are skipped
+		// skip parts out of reach
 		swVector3 Min(FLT_MAX, FLT_MAX, FLT_MAX), Max(-FLT_MAX, -FLT_MAX, -FLT_MAX);
 		OtherPart->CompareBoundingBox(Min, Max);
 
@@ -969,7 +970,7 @@ bool swModel::FindControlPointSeat(const swPart* Part, quint32 ControlPointIndex
 					if (!swConnectivity::AreCompatible(*Fitting, Cylinder))
 						continue;
 
-					// seat the male as deep as the female takes it, closest to their positions meeting
+					// seat the male as deep as it fits
 					const bool IsMale = Fitting->Gender == swConnectionGender::Male;
 					const std::vector<std::pair<float, float>> InsertRanges = IsMale ? swConnectivity::GetInsertRanges(*Fitting, Cylinder) : swConnectivity::GetInsertRanges(Cylinder, *Fitting);
 
@@ -980,7 +981,7 @@ bool swModel::FindControlPointSeat(const swPart* Part, quint32 ControlPointIndex
 						const swMatrix44 Seat = GetSeatedControlPoint(FittingFrame, swMatrix44(swMatrix33(Frame), Position));
 						const float Distance = swLength(Seat.GetTranslation() - ControlPointWorld.GetTranslation());
 
-						// the connection surface faces away from the part it belongs to
+						// the surface faces away from its part
 						const swVector3 Surface = Frame.GetTranslation();
 						const swVector3 Normal = swDot(Axis, Surface - PartCenter) < 0.0f ? -Axis : Axis;
 
@@ -997,7 +998,7 @@ bool swModel::FindControlPointSeat(const swPart* Part, quint32 ControlPointIndex
 		return First.Distance < Second.Distance;
 	});
 
-	// a connection the part cannot reach without stretching stays free
+	// leave unreachable connections free
 	bool Seated = false;
 
 	for (const swConnectionSeat& Seat : Seats)
@@ -1080,7 +1081,7 @@ void swModel::SnapSelectedControlPointsToConnections()
 	}
 }
 
-// use to mark the end control points that already sit on a connection as seated
+// use to mark seated end control points
 void swModel::UpdateControlPointSeats()
 {
 	for (const std::unique_ptr<swPart>& Part : mParts)
@@ -1100,7 +1101,7 @@ void swModel::UpdateControlPointSeats()
 			if (!FindControlPointSeat(Part.get(), ControlPointIndex, SeatTransform, &SurfacePosition, &SurfaceNormal))
 				continue;
 
-			// a free end near a connection stays free until it is dropped there
+			// free ends stay free until dropped
 			if (IsControlPointOnSeat(ControlPoints[ControlPointIndex].Transform, SeatTransform))
 				Part->SetControlPointSeated(ControlPointIndex, SurfacePosition, SurfaceNormal);
 		}
@@ -1356,7 +1357,7 @@ void swModel::FindReplacePart(bool SearchForward, bool FindAll, bool Replace)
 	const bool ReplacePartData = Replace && Params.ReplacePartData;
 	const bool ReplaceColor = Replace && swGetColorCode(Params.ReplaceColorIndex) != SW_COLOR_NO_COLOR;
 
-	// Check if we are supposed to actually replace something
+	// check for a replacement
 	const bool Replacing = (ReplaceColor || ReplacePartData);
 
 	auto PartMatches = [&Params](const swPart* Part)
@@ -1387,7 +1388,7 @@ void swModel::FindReplacePart(bool SearchForward, bool FindAll, bool Replace)
 
 	if (!FindAll)
 	{
-		// We have to find the currently focused part, in order to find next/prev match and (optionally) to replace it
+		// find the focused part
 		swPart* const FocusedPart = dynamic_cast<swPart*>(GetFocusObject());
 
 		if (FocusedPart)
@@ -1457,7 +1458,7 @@ void swModel::FindReplacePart(bool SearchForward, bool FindAll, bool Replace)
 
 	EndEditHistory();
 
-	// replace all also reaches every submodel used below this one and keeps them all in this undo entry
+	// replace all reaches every submodel
 	if (FindAll && Replacing && Params.ReplaceSubModels)
 	{
 		std::vector<swModel*> SubModels;
@@ -1497,7 +1498,7 @@ void swModel::FindReplacePart(bool SearchForward, bool FindAll, bool Replace)
 			}
 		}
 
-		// the models above the replaced submodels take their new bounds
+		// update the bounds of parent models
 		if (SubModelReplacedCount && mProject)
 		{
 			std::vector<swModel*> UpdatedModels;

@@ -147,7 +147,8 @@ static void swTestQuad(int (&TriangleIndices)[2][3], const swVector3 (&Vertices)
 	TriangleIndices[1][2] = QuadIndices[0];
 }
 
-constexpr float swDistanceEpsilon = 0.01f; // Maximum value for 50591.dat
+// maximum value for 50591.dat
+constexpr float swDistanceEpsilon = 0.01f;
 
 static bool swCompareVertices(const swVector3& Position1, const swVector3& Position2)
 {
@@ -915,8 +916,7 @@ swMesh* swLibraryMeshData::CreateMesh(const std::atomic_bool* Cancelled)
 		return nullptr;
 	}
 
-	// Pack each color/material group as high, shared, low. Either LOD then
-	// occupies one contiguous range without duplicating the shared vertices.
+	// pack each group high, shared, low
 	std::vector<swMeshLoaderFinalSection> ConditionalSections;
 	for (int LodIdx = 0; LodIdx < SW_MESH_LOD_COUNT; LodIdx++)
 		for (const swMeshLoaderFinalSection& Section : FinalSections[LodIdx])
@@ -1371,7 +1371,7 @@ bool swMeshLoader::ReadMeshData(swFile& File, const swMatrix44& CurrentTransform
 		if (sscanf(Line, "%d", &LineType) != 1)
 			continue;
 
-		// TEXMAP NEXT is ignored if the next non-blank line is type 0.
+		// skip texmap next before type 0
 		if (LineType == 0 && mTextureStack.size() > TextureStackStart && mTextureStack.back().Next)
 			mTextureStack.pop_back();
 
@@ -1591,6 +1591,7 @@ bool swMeshLoader::ReadMeshData(swFile& File, const swMatrix44& CurrentTransform
 				if (TextureMap->Fallback)
 					continue;
 			}
+
 //			else
 //			{
 //				if (!TextureMap->Fallback)
@@ -1634,7 +1635,7 @@ bool swMeshLoader::ReadMeshData(swFile& File, const swMatrix44& CurrentTransform
 
 			if (Primitive)
 			{
-				// Read shared loading state under the library's primitive lock.
+				// read state under the primitive lock
 				const swResult<void> Result = Library->LoadPrimitive(Primitive);
 
 				if (!Result)

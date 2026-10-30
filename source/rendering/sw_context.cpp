@@ -264,7 +264,7 @@ swResult<void> swContext::CreateShaderPrograms()
 "#define SW_SHADER_PRECISION mediump\n"
 #endif
 
-// lighting styles follow swLightingStyle: standard, studio, matte, toon
+// follows swLightingStyle
 "#define SW_PIXEL_FAKE_LIGHTING \\\n"
 "		SW_SHADER_PRECISION vec3 Normal = normalize(dot(CapNormal, CapNormal) > 0.0 ? CapNormal : PixelNormal); \\\n"
 "		SW_SHADER_PRECISION vec3 LightDirection = normalize(PixelPosition - LightPosition); \\\n"
@@ -295,14 +295,14 @@ swResult<void> swContext::CreateShaderPrograms()
 "			Specular = min(pow(Specular, 8.0), 1.0) * 0.25; \\\n"
 "		SW_SHADER_PRECISION vec3 SpecularColor = vec3(Specular + Rim, Specular + Rim, Specular + Rim);\n"
 
-// cutaway shapes follow swCutawayShape: none, cube, sphere
+// follows swCutawayShape
 "#define SW_PIXEL_CUTAWAY \\\n"
 "		if ((CutawayShape == 1 && max(abs(PixelCutaway.x), max(abs(PixelCutaway.y), abs(PixelCutaway.z))) < 1.0) || \\\n"
 "			(CutawayShape == 2 && dot(PixelCutaway, PixelCutaway) < 1.0) || \\\n"
 "			(CutawayShape == 3 && dot(PixelCutaway.xy, PixelCutaway.xy) < 1.0 && abs(PixelCutaway.z) < 1.0)) \\\n"
 "			discard;\n"
 
-// a back face seen through the cutaway is the inside of a solid part, so it is shaded as the cut surface
+// back faces show the solid inside
 "#define SW_PIXEL_CUTAWAY_CAP \\\n"
 "		SW_SHADER_PRECISION vec3 CapNormal = vec3(0.0, 0.0, 0.0); \\\n"
 "		gl_FragDepth = gl_FragCoord.z; \\\n"
@@ -751,7 +751,7 @@ std::unique_ptr<QOpenGLFramebufferObject> swContext::CreateFramebuffer(int Width
 
 bool swContext::TryShareDepthAttachment(GLuint SourceFramebuffer, QOpenGLFramebufferObject& TargetFramebuffer)
 {
-	// Share single-sample depth directly; other framebuffers use a depth prepass.
+	// share single sample depth directly
 	if (!SourceFramebuffer)
 		return false;
 
@@ -817,7 +817,7 @@ bool swContext::GenerateOutlineMasks(const swScene& Scene, QOpenGLFramebufferObj
 
 	if (Scene.HasHighlightedMeshes())
 	{
-		// Keep highlight coverage independent of selection, including when they overlap.
+		// keep highlight and selection apart
 		EnableDepthTest(false);
 		glColorMask(GL_FALSE, GL_FALSE, GL_TRUE, GL_FALSE);
 
@@ -946,7 +946,9 @@ void swContext::SetMaterial(swMaterialType MaterialType)
 
 	glUseProgram(mPrograms[static_cast<int>(MaterialType)].Object);
 	mColorDirty = true;
-	mWorldMatrixDirty = true; // todo: change dirty to a bitfield and set the lighting constants dirty here
+
+	// todo dirty bitfield for lighting
+	mWorldMatrixDirty = true;
 	mViewMatrixDirty = true;
 	mHighlightParamsDirty = true;
 	mOutlineParamsDirty = true;
@@ -1670,7 +1672,7 @@ void swContext::FlushState()
 {
 	const swProgram& Program = mPrograms[static_cast<int>(mMaterialType)];
 
-	// the cutaway matrix maps the vertices of this mesh straight to the unit cube or sphere
+	// map the mesh to the unit cutaway
 	if ((mCutawayDirty || mWorldMatrixDirty || mViewMatrixDirty || mProjectionMatrixDirty) && Program.CutawayShapeLocation != -1)
 	{
 		glUniform1i(Program.CutawayShapeLocation, static_cast<GLint>(mCutawayShape));
@@ -1681,7 +1683,7 @@ void swContext::FlushState()
 		if (Program.WorldCutawayMatrixLocation != -1)
 			glUniformMatrix4fv(Program.WorldCutawayMatrixLocation, 1, false, mCutawayMatrix.GetFloats());
 
-		// the eye is a point for perspective views and a direction toward the viewer for orthographic ones
+		// eye point or view direction
 		if (Program.CutawayEyeLocation != -1)
 		{
 			const swMatrix44 InverseViewMatrix = swMatrix44AffineInverse(mViewMatrix);

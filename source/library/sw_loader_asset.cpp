@@ -10,8 +10,7 @@
 
 constexpr QEvent::Type swAssetLoaderCompletionEvent = static_cast<QEvent::Type>(QEvent::User + 1);
 
-// Normal part flow: queue -> build and convert -> finalize sections -> settle textures -> publish -> notify.
-// Workers own private build data. Publication and deferred notifications stay on the UI thread.
+// normal part flow
 swAssetLoader::swAssetLoader(swPartsLibrary* Library)
 	: mLibrary(Library)
 {
@@ -153,7 +152,7 @@ void swAssetLoader::DispatchJobs()
 
 		const auto Score = [Now](const auto& Item)
 		{
-			// Each ten seconds of waiting promotes one priority level.
+			// waiting raises the priority
 			return qMin<qint64>(static_cast<qint64>(swLoadPriority::Blocking),
 				static_cast<qint64>(Item->LoadPriority) + qMax<qint64>(0, Now - Item->QueuedAt) / 10000);
 		};
@@ -233,7 +232,7 @@ void swAssetLoader::DispatchJobs()
 
 void swAssetLoader::ProcessCompletions()
 {
-	// Bounded UI-thread publication also runs during scoped waits, without public callbacks.
+	// publish during scoped waits too
 	Q_ASSERT(QThread::currentThread() == thread());
 
 	constexpr int MaxCompletionsPerPump = 16;
@@ -291,7 +290,7 @@ void swAssetLoader::ProcessCompletions()
 			continue;
 		}
 
-		// The build has finished; texture dependencies and retries use no job slot.
+		// finished builds free their slot
 		mActiveJobs--;
 
 		if (Completed.RequestedTexture)
@@ -358,7 +357,7 @@ void swAssetLoader::ProcessPartCompletion(Completion& Completed)
 		RequestedPart->SaveCache = !Completed.PartResult.FromCache;
 	}
 
-	// A private mesh cannot be published until all its declared textures settle.
+	// publish once textures settle
 	if (RequestedPart->StagedMesh)
 	{
 		const bool Ready = ResolveAndQueueMeshTextures(*RequestedPart->StagedMesh, RequestedPart->Source,
@@ -510,7 +509,7 @@ void swAssetLoader::UploadTextureRequest(const std::shared_ptr<TextureRequest>& 
 
 	if (!Texture->IsReady() && RequestedTexture->UploadAttempts < MaxUploadAttempts)
 	{
-		// Only the loader may retry. Keep dependent parts awaiting this texture.
+		// only the loader retries
 		Texture->mState = swAssetState::Loading;
 
 		const int Delay = RequestedTexture->UploadAttempts == 1 ? 50 : 200;
@@ -651,7 +650,7 @@ void swAssetLoader::CompleteSynthRequest(const std::shared_ptr<SynthRequest>& Re
 
 void swAssetLoader::DispatchNotifications()
 {
-	// Event-handler delivery avoids reentering consumers inside a synchronous readiness wait.
+	// defer delivery outside waits
 	Q_ASSERT(QThread::currentThread() == thread());
 
 	constexpr int MaxNotificationsPerPump = 32;
@@ -681,7 +680,7 @@ void swAssetLoader::DispatchNotifications()
 
 		if (!LoaderGuard || !LibraryGuard)
 		{
-			// Library teardown can delete the definition while delivering this callback.
+			// teardown can delete the definition
 			RequestedPart->PartData.Release();
 			return;
 		}
@@ -708,7 +707,7 @@ void swAssetLoader::DispatchNotifications()
 
 			if (!LoaderGuard || !LibraryGuard)
 			{
-				// Library teardown can delete the definition while delivering this callback.
+				// teardown can delete the definition
 				Notification.PartData.Release();
 				return;
 			}
@@ -751,7 +750,7 @@ void swAssetLoader::WaitForCompletionOrRetry()
 			EarliestRetry = RetryAt;
 	}
 
-	// Check and wait under the handoff mutex so a worker wakeup cannot be lost.
+	// wait under the handoff mutex
 	QMutexLocker CompletionLock(&mCompletionMutex);
 
 	if (!mCompletions.empty())
@@ -954,7 +953,7 @@ void swAssetLoader::InvalidatePartLoad(swPartData* PartData)
 
 void swAssetLoader::CancelPartLoad(swPartData* PartData)
 {
-	// Ordinary running builds finish privately; discard them if their last consumer is gone.
+	// discard builds without consumers
 	Q_ASSERT(QThread::currentThread() == thread());
 
 	const auto It = mPartRequests.find(PartData);
@@ -969,7 +968,7 @@ void swAssetLoader::CancelPartLoad(swPartData* PartData)
 
 void swAssetLoader::CancelSynthMesh(swPart* Part)
 {
-	// Remove queued work immediately; running synth builds notice cancellation cooperatively.
+	// remove queued work at once
 	Q_ASSERT(QThread::currentThread() == thread());
 
 	for (SynthNotification& Pending : mSynthNotifications)
@@ -1003,7 +1002,7 @@ void swAssetLoader::DiscardPartRequest(std::shared_ptr<PartRequest> Request)
 	Request->State = RequestState::Cancelled;
 	mPartRequests.erase(Request->PartData.Get());
 
-	// Running builds retain their hold until their stale completion arrives.
+	// running builds keep their hold
 	if (!HasOutstandingWork)
 	{
 		Request->StagedMesh.reset();
@@ -1023,7 +1022,7 @@ void swAssetLoader::CancelUnusedTextureRequests()
 	{
 		const std::shared_ptr<TextureRequest>& RequestedTexture = It->second;
 
-		// The request owns one reference; all others belong to consumers.
+		// the request owns one reference
 		if (RequestedTexture->State == RequestState::AwaitingCompletion || RequestedTexture->Texture.HasOtherReferences())
 		{
 			++It;
@@ -1051,7 +1050,7 @@ void swAssetLoader::PauseQueuedWork()
 {
 	Q_ASSERT(QThread::currentThread() == thread());
 
-	// Pending jobs stay queued until UI-thread dispatch resumes.
+	// keep jobs queued until dispatch resumes
 	mPaused = true;
 
 	for (;;)
@@ -1064,8 +1063,7 @@ void swAssetLoader::PauseQueuedWork()
 		WaitForCompletionOrRetry();
 	}
 
-	// A mesh awaiting textures was built with the previous stud settings.
-	// Rebuild it after the settings change instead of publishing stale geometry.
+	// rebuild meshes with old stud settings
 	for (const PartRequestMap::value_type& Entry : mPartRequests)
 	{
 		const std::shared_ptr<PartRequest>& RequestedPart = Entry.second;
@@ -1077,7 +1075,7 @@ void swAssetLoader::PauseQueuedWork()
 		RequestedPart->State = RequestState::Queued;
 	}
 
-	// Pending generated meshes are restarted after the new stud style is installed.
+	// restart generated meshes after the stud change
 	for (const SynthRequestMap::value_type& Entry : mSynthRequests)
 	{
 		const std::shared_ptr<SynthRequest>& RequestedSynth = Entry.second;
@@ -1109,7 +1107,7 @@ void swAssetLoader::ResumeQueuedWork()
 
 void swAssetLoader::Shutdown()
 {
-	// Shutdown/reload joins obsolete workers and releases holds without requiring GL success.
+	// join obsolete workers on shutdown
 	Q_ASSERT(QThread::currentThread() == thread());
 
 	const bool WasCancelled = mLibrary->mCancelLoading.exchange(true);

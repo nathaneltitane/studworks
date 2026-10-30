@@ -79,5 +79,5 @@ protected slots:
 
 #endif
 
-// Downloads a file with a progress dialog, nothing when canceled and an empty array when the download failed.
+// Downloads a file with a progress dialog.
 std::optional<QByteArray> swDownloadWithProgress(QWidget* Parent, const QString& Url, const QString& Title, const QString& Label);

@@ -115,7 +115,7 @@ swModel::~swModel()
 			if (!mIsPreview && gMainWindow && gMainWindow->GetInsertPartData() == mPartData)
 				gMainWindow->SetInsertPartData(nullptr);
 
-			// Keep the name indexed while placements still reference the deleted model.
+			// keep the name while placements use it
 			swGetPartsLibrary()->InvalidatePartDataLoad(mPartData.Get());
 			mPartData->DetachContainer();
 			mPartData->SetFailed(tr("Model '%1' was deleted.").arg(QString::fromLatin1(mPartData->mFileName)));
@@ -186,7 +186,7 @@ void swModel::DeleteModel()
 	{
 		std::vector<swView*> Views = swView::GetModelViews(this);
 
-		// TODO: this is only needed to avoid a dangling pointer during undo/redo if a camera is set to a view but we should find a better solution instead
+		// todo avoid the camera view pointer reset
 		for (swView* View : Views)
 		{
 			swCamera* ViewCamera = View->GetCamera();
@@ -222,15 +222,14 @@ void swModel::CreatePartData(Project* Project)
 
 	if (Reused)
 	{
-		// Reusing a referenced name can turn an existing placement into a cycle.
+		// a reused name can make a cycle
 		mParts.erase(std::remove_if(mParts.begin(), mParts.end(), [this](const std::unique_ptr<swPart>& Part)
 		{
 			return Part->mPartData && Part->mPartData->IncludesModel(this);
 		}), mParts.end());
 	}
 
-	// The model owns the reference acquired by AcquireModelPartData(), including while
-	// mesh requests are deferred until its source lines have been parsed.
+	// the model owns the part data reference
 	if (!Project->DefersModelMeshRequests())
 	{
 		if (mIsPreview)
@@ -367,7 +366,7 @@ void swModel::WaitForAssets() const
 
 	Library->WaitForSynthMeshes(GetRequiredSynthParts());
 
-	// Temporary minifigure and thumbnail models have no container part to update.
+	// temporary models have no container part
 	if (mPartData)
 	{
 		std::vector<swModel*> UpdatedModels;
@@ -478,7 +477,7 @@ void swModel::SetCurrentStep(swStep Step)
 	gMainWindow->UpdateTimeline(false, false);
 	gMainWindow->UpdateSelectedObjects(true);
 
-	// Only a step change turns the view, so edits within a step keep the camera where it is.
+	// only step changes turn the view
 	if (StepChanged && swGetPreferences().mFollowStepViews && !mIsPreview)
 		for (swView* View : swView::GetModelViews(this))
 			View->ApplyStepView();
@@ -572,7 +571,7 @@ std::optional<swStepView> swModel::GetEffectiveStepView(swStep Step) const
 {
 	std::optional<swStepView> Effective;
 
-	// A view set at the end of a step applies to that step and carries on until it is changed or ended.
+	// a step view lasts until changed
 	for (const std::pair<const swStep, swStepView>& StepView : mProperties.mStepViews)
 	{
 		if (StepView.first > Step)
@@ -606,7 +605,7 @@ void swModel::ShiftStepViews(swStep Step, int Offset)
 	swModelProperties Properties = mProperties;
 	std::map<swStep, swStepView> StepViews;
 
-	// Step views move with their steps; removing a step drops its view.
+	// step views follow their steps
 	for (const std::pair<const swStep, swStepView>& StepView : mProperties.mStepViews)
 	{
 		if (StepView.first < Step)

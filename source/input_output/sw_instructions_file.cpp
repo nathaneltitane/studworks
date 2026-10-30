@@ -4,7 +4,7 @@
 #include "sw_window_main.h"
 #include "sw_window_utilities.h"
 
-// the meta commands name the properties, elements and page types instead of numbering them
+// metas name properties instead of numbers
 static const QLatin1String gInstructionsPropertyNames[] =
 {
 	QLatin1String("SHOW_STEP_NUMBER"), QLatin1String("SHOW_STEP_PARTS_LIST"), QLatin1String("STEP_NUMBER_FONT"),
@@ -69,7 +69,7 @@ static const QLatin1String gInstructionsPointerTipNames[] =
 	QLatin1String("ARROWHEAD"), QLatin1String("DOT")
 };
 
-// a pointer without its own style or tip writes the default
+// default pointers write the default
 static const QLatin1String gInstructionsDefaultName("DEFAULT");
 static const QLatin1String gInstructionsAutoName("AUTO");
 
@@ -83,7 +83,7 @@ static int swFindInstructionsName(const QLatin1String (&Names)[Count], const QSt
 	return -1;
 }
 
-// use to keep free text on one line without breaking the quoted model names
+// use to keep free text on one line
 static QString swEscapeInstructionsText(const QString& Text)
 {
 	QString Escaped;
@@ -151,7 +151,7 @@ static QString swWriteInstructionsPoint(const QPointF& Point)
 	return swFormatValue(Point.x(), 2) + QLatin1Char(' ') + swFormatValue(Point.y(), 2);
 }
 
-// the type of the default value tells how a property is written, colors as #RRGGBBAA
+// the default type sets the format
 static QString swWriteInstructionsValue(const QVariant& Value, const QVariant& DefaultValue)
 {
 	switch (DefaultValue.userType())
@@ -173,7 +173,7 @@ static QString swWriteInstructionsValue(const QVariant& Value, const QVariant& D
 	}
 }
 
-// use to read the fields of an instructions meta command in order, a missing or wrong field makes it invalid
+// use to read the meta command fields
 class swInstructionsCommandReader
 {
 public:
@@ -266,7 +266,7 @@ public:
 		return qMax(Index, 0);
 	}
 
-	// the default and the automatic choice are written by name, the others by number
+	// write defaults by name, others by number
 	int ReadChoice(const QLatin1String& Name, int Value)
 	{
 		const QString Token = ReadToken();
@@ -369,7 +369,7 @@ protected:
 
 void swRenameInstructionsModels(QStringList& CommandLines, const std::map<QString, QString>& Names)
 {
-	// every quoted name is a model, free text escapes its quotes
+	// quoted names are models
 	for (QString& CommandLine : CommandLines)
 	{
 		QString Renamed;
@@ -413,7 +413,7 @@ void swInstructions::LoadCommandLines()
 	if (!MainModel)
 		return;
 
-	// a command naming a missing model or holding a wrong field is left out
+	// skip commands with missing models
 	for (const QString& CommandLine : MainModel->GetInstructionLines())
 	{
 		swInstructionsCommandReader Reader(CommandLine, mProject);
@@ -550,7 +550,7 @@ QStringList swInstructions::GetCommandLines() const
 {
 	QStringList CommandLines;
 
-	// only the properties changed from their defaults are written
+	// write changed properties only
 	for (int Type = 0; Type < static_cast<int>(swInstructionsPropertyType::Count); Type++)
 	{
 		const QVariant& DefaultValue = mDefaultProperties[Type].Value;

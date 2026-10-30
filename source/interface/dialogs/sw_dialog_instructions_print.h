@@ -4,11 +4,11 @@
 
 class swRangeSpinBox;
 
-// File printing and the instructions window print the same instruction pages.
+// File and window printing share pages.
 void swSetupInstructionsPrinter(swInstructions* Instructions, QPrinter* Printer);
 void swPrintInstructions(swInstructions* Instructions, QPrinter* Printer);
 
-// the print panel is the only print dialog of the application, the pages beside it are its preview
+// The only print dialog.
 class swInstructionsPrintWidget : public QDockWidget
 {
 	Q_OBJECT

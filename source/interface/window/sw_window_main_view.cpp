@@ -39,7 +39,7 @@
 
 #define SW_TAB_LAYOUT_VERSION 0x0002
 
-// use to restart the idle time that starts the turntable
+// use to restart the idle time
 void swMainWindow::RestartIdleTimer()
 {
 	const int IdleTime = swGetPreferences().mTurntableIdleDuration;
@@ -50,7 +50,7 @@ void swMainWindow::RestartIdleTimer()
 		mIdleTimer.stop();
 }
 
-// use to show the model full screen turning around the z axis
+// use to show the turntable
 void swMainWindow::StartTurntable()
 {
 	swModel* Model = GetCurrentTabModel();
@@ -66,14 +66,14 @@ void swMainWindow::StartTurntable()
 	mTurntableCenter = (Min + Max) * 0.5f;
 	mTurntableRadius = qMax(swLength(Max - Min) * 0.5f, 10.0f);
 
-	// the side and front axes follow the rotation axis in x y z order
+	// axes in x y z order
 	const swVector3 Axes[3] = { swVector3(1.0f, 0.0f, 0.0f), swVector3(0.0f, 1.0f, 0.0f), swVector3(0.0f, 0.0f, 1.0f) };
 	const int AxisIndex = static_cast<int>(swGetPreferences().mTurntableAxis);
 	mTurntableAxis = Axes[AxisIndex];
 	mTurntableSide = Axes[(AxisIndex + 1) % 3];
 	mTurntableFront = Axes[(AxisIndex + 2) % 3];
 
-	// the turn starts from the side the active view looks at
+	// start from the active view side
 	const swVector3 Direction = ActiveView->GetCamera()->GetSectionPosition(SW_CAMERA_SECTION_POSITION) - mTurntableCenter;
 	mTurntableStartAngle = atan2f(swDot(Direction, mTurntableFront), swDot(Direction, mTurntableSide));
 
@@ -94,7 +94,7 @@ void swMainWindow::StartTurntable()
 	mTurntableTimer.start(16);
 }
 
-// use to close the turntable, true when it was showing
+// use to close the turntable
 bool swMainWindow::StopTurntable()
 {
 	if (!mTurntableWidget)
@@ -102,7 +102,7 @@ bool swMainWindow::StopTurntable()
 
 	mTurntableTimer.stop();
 
-	// the closing input may still be on its way to the turntable window
+	// input may still reach the turntable
 	mTurntableWidget->hide();
 	mTurntableWidget->deleteLater();
 	mTurntableWidget = nullptr;
@@ -113,7 +113,7 @@ bool swMainWindow::StopTurntable()
 	return true;
 }
 
-// use to turn the turntable camera for the time shown so far
+// use to turn the turntable camera
 void swMainWindow::UpdateTurntable()
 {
 	if (!mTurntableWidget)
@@ -122,7 +122,7 @@ void swMainWindow::UpdateTurntable()
 	swView* View = mTurntableWidget->GetView();
 	swCamera* Camera = View->GetCamera();
 
-	// the distance keeps the model bounds inside the narrower field of view
+	// fit bounds in the narrower field
 	const float Aspect = static_cast<float>(qMax(mTurntableWidget->width(), 1)) / qMax(mTurntableWidget->height(), 1);
 	const float HalfHeight = Camera->m_fovy * 0.5f * SW_DEGREES_TO_RADIANS;
 	const float HalfField = qMin(HalfHeight, atanf(tanf(HalfHeight) * Aspect));
@@ -134,7 +134,7 @@ void swMainWindow::UpdateTurntable()
 	const swVector3 Radial = mTurntableSide * cosf(Angle) + mTurntableFront * sinf(Angle);
 	const swVector3 Position = mTurntableCenter + (Radial * cosf(Latitude) + mTurntableAxis * sinf(Latitude)) * Distance;
 
-	// the z axis stands upright, the x and y axes lie across the screen and tumble the model
+	// z stays upright
 	const swVector3 Up = mTurntableAxis.z > 0.0f ? mTurntableAxis : swCross(mTurntableAxis, Radial);
 
 	Camera->m_zFar = qMax(Camera->m_zFar, Distance + mTurntableRadius * 2.0f);
@@ -343,7 +343,7 @@ void swMainWindow::ToggleEdgeLines(swRenderTarget Target)
 	{
 		swTargetRenderSettings& TargetSettings = Preferences.GetTargetRenderSettings(Target);
 
-		// Changing a target setting stops following the model view settings.
+		// stop following the model view
 		TargetSettings.Settings = Preferences.GetRenderSettings(Target);
 		TargetSettings.Settings.DrawEdgeLines = !TargetSettings.Settings.DrawEdgeLines;
 		TargetSettings.SyncRendering = false;
@@ -401,7 +401,7 @@ void swMainWindow::SetTargetShadingMode(swRenderTarget Target, swShadingMode Sha
 
 QAction* swMainWindow::AddMenuCommand(QMenu* Menu, const QString& Text, swCommandId CommandId, bool Checked)
 {
-	// Menu entries run the matching command so keyboard shortcuts and menus stay in sync.
+	// entries run the matching command
 	QAction* Action = Menu->addAction(Text, this, [this, CommandId]()
 	{
 		HandleCommand(CommandId);
@@ -427,7 +427,7 @@ void swMainWindow::AddRenderTargetActions(QMenu* Menu, swRenderTarget Target)
 		swCommandId ConditionalLines;
 	};
 
-	// The model view commands, the other targets replace them with their own.
+	// model view commands by default
 	swRenderTargetCommands Commands = { SW_COMMAND_COUNT, SW_VIEW_SHADING_WIREFRAME, SW_VIEW_SHADING_FLAT, SW_VIEW_SHADING_DEFAULT_LIGHTS, SW_VIEW_TOGGLE_EDGE_LINES, SW_VIEW_TOGGLE_CONDITIONAL_LINES };
 
 	switch (Target)
@@ -451,7 +451,7 @@ void swMainWindow::AddRenderTargetActions(QMenu* Menu, swRenderTarget Target)
 	const swPreferences& Preferences = swGetPreferences();
 	const swRenderSettings RenderSettings = Preferences.GetRenderSettings(Target);
 
-	// The model views have no settings to follow.
+	// model views follow nothing
 	if (Target != swRenderTarget::ModelView)
 		AddMenuCommand(Menu, tr("Use Model View Settings"), Commands.SyncRendering, Preferences.GetTargetRenderSettings(Target).SyncRendering);
 
@@ -462,7 +462,7 @@ void swMainWindow::AddRenderTargetActions(QMenu* Menu, swRenderTarget Target)
 	ShadingGroup->addAction(AddMenuCommand(ShadingMenu, tr("Default Lights"), Commands.DefaultLights, RenderSettings.ShadingMode == swShadingMode::DefaultLights));
 	ShadingMenu->addSeparator();
 
-	// the lighting style is shared by every target
+	// lighting style is shared
 	const char* const LightingNames[] = { QT_TR_NOOP("Standard Lighting"), QT_TR_NOOP("Studio Lighting"), QT_TR_NOOP("Matte Lighting"), QT_TR_NOOP("Toon Lighting") };
 	QActionGroup* LightingGroup = new QActionGroup(ShadingMenu);
 
@@ -556,7 +556,7 @@ QByteArray swMainWindow::GetTabLayout()
 
 				const swCamera* Camera = CurrentView->GetCamera();
 
-				// a view still on its fit is fitted again when restored
+				// refit views still on their fit
 				if (CurrentView->IsFitted())
 				{
 					DataStream << (qint32)2;
@@ -770,7 +770,7 @@ void swMainWindow::CloseCurrentModelTab()
 		NewProject();
 }
 
-// use to give a new view its final size so its first fit is the one shown
+// use to size a new view first
 void swMainWindow::LayoutNewView(QWidget* TabWidget, swViewWidget* ViewWidget)
 {
 	QStackedWidget* TabStack = mModelTabWidget->findChild<QStackedWidget*>(QString(), Qt::FindDirectChildrenOnly);

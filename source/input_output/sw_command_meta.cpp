@@ -19,7 +19,7 @@ static const QLatin1String gCommandMetaObjects[] =
 	QLatin1String("POV_RAY"), QLatin1String("GROUP"), QLatin1String("SYNTH_PATH"), QLatin1String("CLIPBOARD"), QLatin1String("INSTRUCTION")
 };
 
-// StudWorks names and their LeoCAD names.
+// studworks names and leocad names
 static const QLatin1String gCommandMetaNames[][2] =
 {
 	{ QLatin1String("PART"), QLatin1String("PIECE") },
@@ -116,7 +116,7 @@ static QString swFormatCommandMeta(const swCommandMeta& Command, swCommandMetaFo
 
 QString swReadCommandMeta(const QString& Line)
 {
-	// The model reader takes the object first.
+	// the model reader takes the object first
 	swCommandMeta Command;
 
 	if (!swParseCommandMeta(Line, Command))

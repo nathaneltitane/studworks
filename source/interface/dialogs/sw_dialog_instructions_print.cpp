@@ -85,7 +85,7 @@ swInstructionsPrintWidget::swInstructionsPrintWidget(QWidget* Parent, swInstruct
 
 	mToSpinBox = CreateSpinBox(PagesRow, tr("Last Page"), tr("The last page to print."));
 
-	// the range starts as all pages, it ends on the last page
+	// range starts as all pages
 	mFromSpinBox->setRange(1, 1);
 	mToSpinBox->setRange(1, 1);
 
@@ -108,7 +108,7 @@ swInstructionsPrintWidget::swInstructionsPrintWidget(QWidget* Parent, swInstruct
 	swSetupPanelButton(mCollateButton);
 	CopiesRow->layout()->addWidget(mCollateButton);
 
-	// the print button spans the panel below its settings like add to model in the minifigure builder
+	// print button spans the panel
 	QWidget* PrintRow = swCreatePanelRow(CentralWidget);
 	Layout->addWidget(PrintRow);
 
@@ -122,7 +122,7 @@ swInstructionsPrintWidget::swInstructionsPrintWidget(QWidget* Parent, swInstruct
 	PrintButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	static_cast<QHBoxLayout*>(PrintRow->layout())->addWidget(PrintButton, 1);
 
-	// the labels share one width so the inputs line up
+	// labels share one width
 	const int LabelWidth = qMax(qMax(PrinterLabel->sizeHint().width(), FileLabel->sizeHint().width()), qMax(PagesLabel->sizeHint().width(), CopiesLabel->sizeHint().width()));
 	PrinterLabel->setFixedWidth(LabelWidth);
 	FileLabel->setFixedWidth(LabelWidth);
@@ -141,7 +141,7 @@ swInstructionsPrintWidget::swInstructionsPrintWidget(QWidget* Parent, swInstruct
 	});
 	connect(PrintButton, &QToolButton::clicked, this, &swInstructionsPrintWidget::Print);
 
-	// the printers are listed again whenever the panel opens so new printers show up
+	// list printers on open
 	connect(this, &QDockWidget::visibilityChanged, this, [this](bool Visible)
 	{
 		if (Visible)
@@ -151,7 +151,7 @@ swInstructionsPrintWidget::swInstructionsPrintWidget(QWidget* Parent, swInstruct
 	connect(mInstructions, &swInstructions::PageSetupChanged, this, &swInstructionsPrintWidget::UpdatePages);
 	connect(mInstructions, &swInstructions::PageLayoutChanged, this, &swInstructionsPrintWidget::UpdatePages);
 
-	// the panel is exactly as tall as its rows wherever it is docked
+	// fit the panel to its rows
 	swFitHeightToContents(CentralWidget);
 
 	UpdatePrinters();
@@ -162,7 +162,7 @@ void swInstructionsPrintWidget::UpdatePrinters()
 {
 	QSignalBlocker Blocker(mPrinterComboBox);
 
-	// the printer names are the item data, the pdf file has none
+	// printer names as item data
 	const QString CurrentPrinter = mPrinterComboBox->count() ? mPrinterComboBox->currentData().toString() : QPrinterInfo::defaultPrinterName();
 	const bool CurrentFile = mPrinterComboBox->count() && CurrentPrinter.isEmpty();
 
@@ -184,7 +184,7 @@ void swInstructionsPrintWidget::UpdatePages()
 	QSignalBlocker FromBlocker(mFromSpinBox);
 	QSignalBlocker ToBlocker(mToSpinBox);
 
-	// a range that ended on the last page keeps ending there when pages are added or removed
+	// keep a range ending on the last page
 	const int PageCount = qMax(static_cast<int>(mInstructions->mPages.size()), 1);
 	const bool LastPage = mToSpinBox->value() == mToSpinBox->maximum();
 
@@ -246,7 +246,7 @@ void swInstructionsPrintWidget::Print()
 #ifndef QT_NO_PRINTER
 static void swSetInstructionsPageLayout(swInstructions* Instructions, QPrinter* Printer)
 {
-	// Print on paper matching the page setup, the pages already include their margins.
+	// print on the page setup paper
 	const swInstructionsPageSetup& PageSetup = Instructions->mPageSetup;
 	const QSizeF PageSize(qMin(PageSetup.Width, PageSetup.Height), qMax(PageSetup.Width, PageSetup.Height));
 	const QPageLayout::Orientation Orientation = PageSetup.Width > PageSetup.Height ? QPageLayout::Landscape : QPageLayout::Portrait;
@@ -272,7 +272,7 @@ void swPrintInstructions(swInstructions* Instructions, QPrinter* Printer)
 
 	const int PageCount = static_cast<int>(Instructions->mPages.size());
 
-	// The print dialog resets the paper when printing to a file, a file always gets the page setup paper.
+	// files get the page setup paper
 	if (Printer->outputFormat() == QPrinter::PdfFormat)
 		swSetInstructionsPageLayout(Instructions, Printer);
 
@@ -309,7 +309,7 @@ void swPrintInstructions(swInstructions* Instructions, QPrinter* Printer)
 		Ascending = false;
 	}
 
-	// Pages keep their proportions on any paper, centered on a sheet filled with the page background.
+	// keep page proportions on any paper
 	const swInstructionsPageSetup& PageSetup = Instructions->mPageSetup;
 	const QRectF SheetRect(0.0, 0.0, Printer->width(), Printer->height());
 	const QSizeF PageSize = QSizeF(PageSetup.Width, PageSetup.Height).scaled(SheetRect.size(), Qt::KeepAspectRatio);
@@ -341,7 +341,7 @@ void swPrintInstructions(swInstructions* Instructions, QPrinter* Printer)
 					Printer->abort();
 					Painter.end();
 
-					// A canceled file would otherwise be left with only the pages printed so far.
+					// remove canceled files
 					if (Printer->outputFormat() == QPrinter::PdfFormat)
 						QFile::remove(Printer->outputFileName());
 

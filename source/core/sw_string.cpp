@@ -83,7 +83,7 @@ size_t swstrcat(char* dest, const char* source, size_t size)
 
 QString swFormatDefaultName(const QString& Prefix, int Number)
 {
-	// Default names are a word and a three digit number, such as Group 001.
+	// default names end in three digits
 	return Prefix + QString::number(Number).rightJustified(3, QLatin1Char('0'));
 }
 
@@ -92,7 +92,7 @@ int swGetDefaultNameNumber(const QString& Name, const QString& Prefix)
 	if (!Name.startsWith(Prefix))
 		return 0;
 
-	// Older default names put a number sign before the number.
+	// older names use a number sign
 	QString NumberString = Name.mid(Prefix.length());
 
 	if (NumberString.startsWith(QLatin1Char('#')))

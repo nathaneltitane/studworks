@@ -52,7 +52,7 @@ void swInstructionsPreferences::Save() const
 	swSetProfileInteger(SW_PROFILE_INSTRUCTIONS_EDITOR_MARKERS, EditorMarkers);
 }
 
-// use to build the instructions tab after the colors, its values are kept in the dialog options until they are accepted
+// use to build the instructions tab
 void swPreferencesDialog::CreateInstructionsTab()
 {
 	swInstructionsPreferences& Instructions = mOptions->Instructions;
@@ -75,7 +75,8 @@ void swPreferencesDialog::CreateInstructionsTab()
 	TabLayout->addRow(PageGroup);
 
 	QHBoxLayout* PageRowLayout = new QHBoxLayout();
-	// the button shows the default page setup and opens it
+
+	// button shows the default page setup
 	mInstructionsPageButton = new QPushButton(PageGroup);
 	mInstructionsPageButton->setToolTip(tr("Choose the default page size, orientation, margins and their units."));
 	mInstructionsPageButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -137,7 +138,7 @@ void swPreferencesDialog::CreateInstructionsTab()
 	mInstructionsShowMargins = CreateCheckBox(WindowGroup, tr("Show Margins"), tr("Outline the page margins on screen, they are never printed."), Instructions.ShowMargins);
 	WindowLayout->addRow(mInstructionsShowMargins);
 
-	// the line colors keep their transparency, they are picked below their button
+	// line colors keep transparency
 	auto CreateColorButton = [this, WindowLayout, WindowGroup](const QString& Name, const QString& ToolTip, QColor* Color)
 	{
 		QToolButton* Button = new QToolButton(WindowGroup);
@@ -188,7 +189,7 @@ void swPreferencesDialog::CreateInstructionsTab()
 	{
 		swInstructionsPreferences& Instructions = mOptions->Instructions;
 
-		// the dialog stores its units right away, they are kept with the other values until the preferences are accepted
+		// store units right away
 		const int PageUnits = swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_DEFAULT_PAGE_UNITS);
 		const int MarginUnits = swGetProfileInteger(SW_PROFILE_INSTRUCTIONS_DEFAULT_MARGIN_UNITS);
 		swSetProfileInteger(SW_PROFILE_INSTRUCTIONS_DEFAULT_PAGE_UNITS, Instructions.PageUnits);
@@ -237,7 +238,7 @@ void swPreferencesDialog::CreateInstructionsTab()
 	UpdateInstructionsPage();
 }
 
-// use to show the default page and the grid size in the units of the default page setup
+// use to show the default page units
 void swPreferencesDialog::UpdateInstructionsPage()
 {
 	const swInstructionsPreferences& Instructions = mOptions->Instructions;

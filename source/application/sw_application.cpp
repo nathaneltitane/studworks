@@ -383,6 +383,7 @@ void swApplication::UpdateStyle()
 		Palette.setColor(QPalette::Dark, QColor(35, 35, 35));
 		Palette.setColor(QPalette::Mid, QColor(50, 50, 50));
 		Palette.setColor(QPalette::Shadow, QColor(20, 20, 20));
+
 //		Palette.setColor(QPalette::Highlight, QColor(46, 108, 219));
 		Palette.setColor(QPalette::Highlight, QColor(41, 128, 185));
 		Palette.setColor(QPalette::HighlightedText, QColor(232, 232, 232));
@@ -405,7 +406,7 @@ void swApplication::UpdateStyle()
 	}
 	else if (mCustomStyleApplied || !dynamic_cast<swInterfaceStyle*>(QApplication::style()))
 	{
-		// Restore the desktop style and colors exactly as the system provided them.
+		// restore the system style and colors
 		QApplication::setStyle(new swInterfaceStyle(QStyleFactory::create(mDefaultStyle)));
 
 		if (mCustomStyleApplied)
@@ -461,7 +462,7 @@ void swApplication::SetProject(Project* Project)
 	{
 		gMainWindow->RemoveAllModelTabs();
 
-		// The instructions belong to the project being replaced.
+		// instructions belong to the replaced project
 		gMainWindow->CloseInstructionsDialog();
 
 		if (gMainWindow->GetPreviewWidget())
@@ -531,13 +532,13 @@ bool swApplication::LoadPartsLibrary(const QList<QPair<QString, bool>>& LibraryP
 	return false;
 }
 
-// use to name the library archive downloaded into the data folder
+// use to name the library archive
 QString swApplication::GetDownloadLibraryPath()
 {
 	return QDir::cleanPath(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + "/complete.zip");
 }
 
-// use to download the library archive with a progress dialog
+// use to download the library archive
 bool swApplication::DownloadPartsLibrary(const QString& FileName)
 {
 	const std::optional<QByteArray> Data = swDownloadWithProgress(gMainWindow, QLatin1String(SW_LIBRARY_DOWNLOAD_URL), tr("Download Parts Library"), tr("Downloading the LDraw parts library..."));
@@ -564,7 +565,7 @@ bool swApplication::DownloadPartsLibrary(const QString& FileName)
 	return true;
 }
 
-// use to download or choose a library when none was found
+// use to get a missing library
 bool swApplication::SetupPartsLibrary()
 {
 	const QString DownloadPath = GetDownloadLibraryPath();
@@ -599,7 +600,7 @@ bool swApplication::SetupPartsLibrary()
 	return false;
 }
 
-// use to reload the library in place
+// use to reload the library
 bool swApplication::ReloadPartsLibrary(const QString& LibraryPath, bool OfficialLibrary)
 {
 	if (!mLibrary->Reload(LibraryPath, OfficialLibrary))
@@ -1266,7 +1267,7 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 	return Options;
 }
 
-// use to import and export settings without the interface
+// use to transfer settings without the interface
 static bool swTransferSettings(const swCommandLineOptions& Options, QTextStream& StdErr)
 {
 	bool TransferOK = true;
@@ -1278,7 +1279,7 @@ static bool swTransferSettings(const swCommandLineOptions& Options, QTextStream&
 		TransferOK = false;
 	};
 
-	// imports run first so exports carry the imported values
+	// import before export
 	if (!Options.SettingsImportName.isEmpty())
 	{
 		QSettings SettingsFile(Options.SettingsImportName, QSettings::IniFormat);
@@ -1625,7 +1626,7 @@ swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 
 			ActiveModel->WaitForAssets();
 
-			// a file without parts, like data sharing an ldraw extension, saves no blank picture
+			// skip pictures of files without parts
 			if (ActiveModel->GetPartsBoundingBoxPoints(swGeometryBoundsMode::AvailableOnly).empty())
 			{
 				StdErr << tr("The file '%1' has no parts to render.").arg(Options.ProjectName) << '\n';
@@ -1762,7 +1763,7 @@ swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 					Process.setProcessChannelMode(QProcess::MergedChannels);
 					Process.start(Program.Path, Arguments);
 
-					// a render takes as long as it takes so only the start has a time limit
+					// only the render start is timed
 					if (!Process.waitForStarted() || !Process.waitForFinished(-1) || Process.exitStatus() != QProcess::NormalExit || Process.exitCode() != 0 || !QFileInfo::exists(FileName))
 					{
 						OutputFailed = true;
@@ -2056,7 +2057,7 @@ void swApplication::ShowPreferencesDialog()
 	if (WatchFileChangesChanged && mProject)
 		mProject->UpdateFileWatcher();
 
-	// flexible parts redraw their paths with the new spread
+	// redraw flexible part paths
 	if (FlexSpreadModeChanged && mProject)
 		for (const std::unique_ptr<swModel>& Model : mProject->GetModels())
 			for (const std::unique_ptr<swPart>& Part : Model->GetParts())
@@ -2162,7 +2163,7 @@ void swApplication::ShowPreferencesDialog()
 		}
 	}
 
-	// UpdateStudStyleAndColors() reloads colors too; both paths must see the newly selected config.
+	// both paths need the new config
 	if (ColorConfigChanged)
 		swSetProfileString(SW_PROFILE_COLOR_CONFIGURATION, Options.ColorConfigPath);
 

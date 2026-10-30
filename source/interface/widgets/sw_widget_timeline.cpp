@@ -44,7 +44,7 @@ swTimelineWidget::~swTimelineWidget()
 
 void swTimelineWidget::CustomMenuRequested(QPoint Pos)
 {
-	// Right-clicking a step view row makes its step current, so the step view entries act on it.
+	// right click makes the step current
 	QTreeWidgetItem* ClickedItem = itemAt(Pos);
 	const QVariant ViewStep = ClickedItem ? ClickedItem->data(0, Qt::UserRole + 1) : QVariant();
 
@@ -74,7 +74,7 @@ void swTimelineWidget::CustomMenuRequested(QPoint Pos)
 	Menu->addAction(gMainWindow->mActions[SW_TIMELINE_DELETE]);
 	Menu->addAction(gMainWindow->mActions[SW_VIEW_STEP_VIEW_EDIT]);
 
-	// Removing is only offered on a step view row.
+	// remove only on step view rows
 	if (ViewStep.isValid())
 		Menu->addAction(gMainWindow->mActions[SW_VIEW_STEP_VIEW_REMOVE]);
 
@@ -120,7 +120,7 @@ void swTimelineWidget::Update(bool Clear, bool UpdateItems)
 		clear();
 	}
 
-	// Step view rows are rebuilt after the part rows.
+	// step view rows after part rows
 	for (int TopLevelItemIdx = 0; TopLevelItemIdx < topLevelItemCount(); TopLevelItemIdx++)
 	{
 		QTreeWidgetItem* StepItem = topLevelItem(TopLevelItemIdx);
@@ -283,7 +283,7 @@ void swTimelineWidget::Update(bool Clear, bool UpdateItems)
 		PartItemIndex = 0;
 	}
 
-	// A step view is its own row closing the step, like the ROTSTEP line that ends it.
+	// step view row closes the step
 	const std::map<swStep, swStepView>& StepViews = Model->GetProperties().mStepViews;
 
 	for (const std::pair<const swStep, swStepView>& StepView : StepViews)

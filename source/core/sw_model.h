@@ -27,14 +27,14 @@ enum class swPartsListSort
 	PartId
 };
 
-// the parts line up in rows or in columns
+// The parts line up in rows or columns.
 enum class swPartsListLayout
 {
 	Rows,
 	Columns
 };
 
-// the thumbnail edge the parts line up on, top or left first
+// The edge the parts line up on.
 enum class swPartsListAlignment
 {
 	Start,
@@ -147,7 +147,7 @@ enum class swStepViewMode
 	End
 };
 
-// View rotation of a step, stored as an MLCAD 0 ROTSTEP line ending that step.
+// The view rotation of a step.
 struct swStepView
 {
 	swStepViewMode Mode = swStepViewMode::Relative;
@@ -330,7 +330,7 @@ public:
 		return mFileLines;
 	}
 
-	// the instructions meta commands of the model without their marker and object
+	// The instructions meta commands.
 	const QStringList& GetInstructionLines() const
 	{
 		return mInstructionLines;
@@ -433,7 +433,8 @@ public:
 	void GetScene(swScene* Scene, const swCamera* ViewCamera, bool AllowHighlight, bool AllowFade) const;
 	void AddSubModelRenderMeshes(swScene* Scene, const swMatrix44& WorldMatrix, int DefaultColorIndex, swRenderMeshState RenderMeshState, bool ParentActive) const;
 	QImage GetStepImage(bool Zoom, int Width, int Height, swStep Step);
-	// Empty inventory succeeds with a null image; rendering failures return an error.
+
+	// Empty inventories give a null image.
 	swResult<QImage> GetPartsListImage(int MaxWidth, int ThumbnailSize, swStep Step, quint32 BackgroundColor, quint32 ThumbnailBackgroundColor, QFont Font, QColor TextColor, bool KeepMissingParts, bool ShowCounts = true, swPartsListSort Sort = swPartsListSort::Color, swPartsListLayout Layout = swPartsListLayout::Rows, swPartsListAlignment Alignment = swPartsListAlignment::End, int MaxHeight = INT_MAX, float Scale = 1.0f) const;
 	swResult<void> SaveStepImages(const QString& BaseName, bool AddStepSuffix, bool Zoom, int Width, int Height, swStep Start, swStep End, swImageBackground Background);
 
@@ -577,12 +578,14 @@ protected:
 	void InvertPartSelection();
 	std::vector<swObject*> FindConnectedParts(bool AllConnected) const;
 	static void AddPartShapes(const swPart* Part, const swMatrix44& Transform, swConnectionShapes& Shapes);
-	// Seats the fitting at a dropped end control point of a flexible part on the nearest connection that takes it.
+
+	// Seats a dropped end on a connection.
 	bool SnapControlPointToConnection(swPart* Part, quint32 ControlPointIndex) const;
-	// Finds where the fitting at an end control point would seat, in part space, false when no connection in reach takes it.
-	// The surface is the connection face in part space with its normal pointing out of the part it belongs to.
+
+	// Finds the seat of an end control point.
 	bool FindControlPointSeat(const swPart* Part, quint32 ControlPointIndex, swMatrix44& SeatTransform, swVector3* SurfacePosition = nullptr, swVector3* SurfaceNormal = nullptr) const;
-	// Marks the end control points of flexible parts that already sit on a connection as seated, after loading, edits and step changes.
+
+	// Marks ends sitting on a connection.
 	void UpdateControlPointSeats();
 
 	// Seats the ends of moved flexible parts.
@@ -622,8 +625,8 @@ protected:
 	swPOVRayOptions mPOVRayOptions;
 	swModelProperties mProperties;
 	Project* mProject;
-	// Search roots retained when a model moves between project directories.
-	// Their order and the current-directory preference are saved with the model.
+
+	// Search roots kept across moves.
 	std::vector<QString> mAssetSourceDirectories;
 	bool mPreferCurrentAssetDirectory = true;
 	swPartDataReference mPartData;

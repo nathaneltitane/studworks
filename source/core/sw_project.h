@@ -159,7 +159,8 @@ public:
 	swResult<void> EnsureAssetsReady() const;
 	swResult<void> ExportCurrentStep(const QString& FileName);
 	swResult<QByteArray> SerializeModel(const swModel* Model, bool SelectedOnly, swStep LastStep) const;
-	// Caller owns the returned model; imported dependencies remain in this project.
+
+	// Caller owns the returned model.
 	swResult<swModel*> ImportClipboard(const QByteArray& FileData);
 	swResult<void> ExportModel(const QString& FileName, swModel* Model) const;
 	swResult<void> Export3DStudio(const QString& FileName);
@@ -220,9 +221,11 @@ protected:
 
 	QUuid mClipboardIdentity = QUuid::createUuid();
 	bool mIsPreview;
-	// External projects can parse their models before queuing direct meshes.
+
+	// External projects parse models first.
 	bool mDeferModelMeshRequests = false;
 	bool mModified;
+
 	// LeoCAD meta commands are kept until migrated.
 	bool mLeoCADMetaCommands = false;
 	QString mFileName;
@@ -236,11 +239,12 @@ protected:
 	std::vector<DocumentBlock> mDocumentBlocks;
 	std::vector<LoadWarning> mLoadWarnings;
 	std::vector<std::shared_ptr<const swEmbeddedData>> mEmbeddedData;
-	// First definition wins; retain duplicate blocks in mEmbeddedData for saving.
+
+	// The first definition wins.
 	std::map<QString, std::shared_ptr<const swEmbeddedData>> mEmbeddedDataIndex;
 	std::vector<std::unique_ptr<swModel>> mModels;
-	// Maps normalized local filenames to swPartData objects visible in this project.
-	// This map does not own them; swPartsLibrary tracks and deletes them.
+
+	// Local filenames to visible part data.
 	std::map<std::string, swPartData*> mPartIndex;
 	swModel* mActiveModel;
 	std::unique_ptr<swInstructions> mInstructions;

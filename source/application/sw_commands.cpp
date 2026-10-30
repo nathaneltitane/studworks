@@ -11,6 +11,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>New Model</b></p><p>Create a new, empty model. If the current model has unsaved changes, StudWorks asks whether to save them before replacing it.</p>"),
 		"Ctrl+N"
 	},
+
 	// SW_FILE_OPEN
 	{
 		QT_TRANSLATE_NOOP("Action", "File.Open"),
@@ -19,6 +20,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Open Model</b></p><p>Choose an existing model file to work on. If the current model has unsaved changes, save or discard those changes before opening the chosen file.</p>"),
 		"Ctrl+O"
 	},
+
 	// SW_FILE_MERGE
 	{
 		QT_TRANSLATE_NOOP("Action", "File.Merge"),
@@ -27,6 +29,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_FILE_RELOAD
 	{
 		QT_TRANSLATE_NOOP("Action", "File.Reload"),
@@ -35,6 +38,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Reload Model</b></p><p>Read the current model file again from disk, replacing the model in StudWorks. If the model has unsaved changes, StudWorks asks before discarding them.</p>"),
 		""
 	},
+
 	// SW_FILE_RELOAD_LIBRARY
 	{
 		QT_TRANSLATE_NOOP("Action", "File.ReloadLibrary"),
@@ -43,6 +47,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Reload Library</b></p><p>Read the parts library and the unofficial library archive again from disk without restarting. Open models keep their parts, parts that no longer exist become missing parts, and new parts appear in the Parts panel.</p>"),
 		""
 	},
+
 	// SW_FILE_TOGGLE_WATCH_FILE_CHANGES
 	{
 		QT_TRANSLATE_NOOP("Action", "File.ToggleWatchFileChanges"),
@@ -51,6 +56,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_FILE_SAVE
 	{
 		QT_TRANSLATE_NOOP("Action", "File.Save"),
@@ -59,6 +65,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Save Model</b></p><p>Save the model and its submodels to disk. The first save asks for a filename. Use Save As to save a separate copy under another name.</p>"),
 		"Ctrl+S"
 	},
+
 	// SW_FILE_SAVE_AS
 	{
 		QT_TRANSLATE_NOOP("Action", "File.SaveAs"),
@@ -67,6 +74,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_FILE_SAVE_IMAGE
 	{
 		QT_TRANSLATE_NOOP("Action", "File.SaveImage"),
@@ -75,6 +83,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_FILE_IMPORT_LDD
 	{
 		QT_TRANSLATE_NOOP("Action", "File.Import.LDD"),
@@ -83,6 +92,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_FILE_IMPORT_INVENTORY
 	{
 		QT_TRANSLATE_NOOP("Action", "File.Import.Inventory"),
@@ -91,6 +101,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_FILE_EXPORT_3DS
 	{
 		QT_TRANSLATE_NOOP("Action", "File.Export.3DS"),
@@ -99,6 +110,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_FILE_EXPORT_COLLADA
 	{
 		QT_TRANSLATE_NOOP("Action", "File.Export.COLLADA"),
@@ -107,6 +119,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_FILE_EXPORT_HTML
 	{
 		QT_TRANSLATE_NOOP("Action", "File.Export.HTML"),
@@ -115,6 +128,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_FILE_EXPORT_BRICKLINK
 	{
 		QT_TRANSLATE_NOOP("Action", "File.Export.BrickLink"),
@@ -123,6 +137,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_FILE_EXPORT_CSV
 	{
 		QT_TRANSLATE_NOOP("Action", "File.Export.CSV"),
@@ -131,6 +146,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_FILE_EXPORT_POVRAY
 	{
 		QT_TRANSLATE_NOOP("Action", "File.Export.POVRay"),
@@ -139,6 +155,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_FILE_EXPORT_WAVEFRONT
 	{
 		QT_TRANSLATE_NOOP("Action", "File.Export.Wavefront"),
@@ -147,6 +164,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_FILE_RENDER_POVRAY
 	{
 		QT_TRANSLATE_NOOP("Action", "File.Render.POVRay"),
@@ -155,6 +173,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_FILE_RENDER_BLENDER
 	{
 		QT_TRANSLATE_NOOP("Action", "File.Render.Blender"),
@@ -172,6 +191,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_FILE_INSTRUCTIONS
 	{
 		QT_TRANSLATE_NOOP("Action", "File.Instructions"),
@@ -180,6 +200,7 @@ const swCommand gCommands[] =
 		"",
 		"Ctrl+Shift+U"
 	},
+
 	// SW_FILE_PRINT
 	{
 		QT_TRANSLATE_NOOP("Action", "File.Print"),
@@ -188,6 +209,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_FILE_RECENT1
 	{
 		QT_TRANSLATE_NOOP("Action", "File.Recent1"),
@@ -196,6 +218,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_FILE_RECENT2
 	{
 		QT_TRANSLATE_NOOP("Action", "File.Recent2"),
@@ -204,6 +227,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_FILE_RECENT3
 	{
 		QT_TRANSLATE_NOOP("Action", "File.Recent3"),
@@ -212,6 +236,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_FILE_RECENT4
 	{
 		QT_TRANSLATE_NOOP("Action", "File.Recent4"),
@@ -220,6 +245,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_FILE_EXIT
 	{
 		QT_TRANSLATE_NOOP("Action", "File.Exit"),
@@ -228,6 +254,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_EDIT_UNDO
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Undo"),
@@ -236,6 +263,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Undo</b></p><p>Reverse the most recent model edit, such as inserting, moving, painting, or deleting an object. Repeat Undo to move backward through the edit history.</p>"),
 		"Ctrl+Z"
 	},
+
 	// SW_EDIT_REDO
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Redo"),
@@ -244,6 +272,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Redo</b></p><p>Reapply an edit that was reversed with Undo. Making a new edit after Undo replaces the redo history with the new sequence of edits.</p>"),
 		"Ctrl+Y"
 	},
+
 	// SW_EDIT_CUT
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Cut"),
@@ -252,6 +281,7 @@ const swCommand gCommands[] =
 		"",
 		"Ctrl+X"
 	},
+
 	// SW_EDIT_COPY
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Copy"),
@@ -260,6 +290,7 @@ const swCommand gCommands[] =
 		"",
 		"Ctrl+C"
 	},
+
 	// SW_EDIT_PASTE
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Paste"),
@@ -268,6 +299,7 @@ const swCommand gCommands[] =
 		"",
 		"Ctrl+V"
 	},
+
 	// SW_EDIT_PASTE_STEPS
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.PasteSteps"),
@@ -276,6 +308,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_EDIT_FIND
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Find"),
@@ -284,6 +317,7 @@ const swCommand gCommands[] =
 		"",
 		"Ctrl+F"
 	},
+
 	// SW_EDIT_FIND_NEXT
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.FindNext"),
@@ -292,6 +326,7 @@ const swCommand gCommands[] =
 		"",
 		"F3"
 	},
+
 	// SW_EDIT_FIND_PREVIOUS
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.FindPrevious"),
@@ -300,6 +335,7 @@ const swCommand gCommands[] =
 		"",
 		"Shift+F3"
 	},
+
 	// SW_EDIT_FIND_ALL
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.FindAll"),
@@ -308,6 +344,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_EDIT_REPLACE
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Replace"),
@@ -316,6 +353,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_EDIT_REPLACE_NEXT
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.ReplaceNext"),
@@ -324,6 +362,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_EDIT_REPLACE_ALL
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.ReplaceAll"),
@@ -332,6 +371,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_EDIT_SELECT_ALL
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SelectAll"),
@@ -340,6 +380,7 @@ const swCommand gCommands[] =
 		"",
 		"Ctrl+A"
 	},
+
 	// SW_EDIT_SELECT_NONE
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SelectNone"),
@@ -348,6 +389,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_EDIT_SELECT_INVERT
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SelectInvert"),
@@ -356,6 +398,7 @@ const swCommand gCommands[] =
 		"",
 		"Ctrl+I"
 	},
+
 	// SW_EDIT_SELECT_ADJACENT
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SelectAdjacent"),
@@ -364,6 +407,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Select Adjacent Parts</b></p><p>Add every visible part connected directly to a selected part by a stud, anti stud, hole, axle or bar. Repeat to grow the selection one part further each time. Connections come from the LDCad shadow library set as Part Connections in Preferences, parts without shadow data never connect.</p>"),
 		""
 	},
+
 	// SW_EDIT_SELECT_CONNECTED
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SelectConnected"),
@@ -372,6 +416,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Select Connected Parts</b></p><p>Add every visible part connected to a selected part, directly or through other parts, by a stud, anti stud, hole, axle or bar. Use it to pick up a whole assembly from one of its parts. Connections come from the LDCad shadow library set as Part Connections in Preferences, parts without shadow data never connect.</p>"),
 		""
 	},
+
 	// SW_EDIT_TOGGLE_SHADOW_LIBRARY
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.ToggleShadowLibrary"),
@@ -380,6 +425,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_EDIT_SELECT_BY_NAME
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SelectByName"),
@@ -388,6 +434,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_EDIT_SELECT_SINGLE
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SelectSingle"),
@@ -396,6 +443,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_EDIT_SELECT_PART
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SelectPart"),
@@ -404,6 +452,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_EDIT_SELECT_COLOR
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SelectColor"),
@@ -412,6 +461,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_EDIT_SELECT_PART_COLOR
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SelectPartColor"),
@@ -420,6 +470,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_EDIT_TRANSFORM_RELATIVE
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.TransformRelative"),
@@ -428,6 +479,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_EDIT_TRANSFORM_ABSOLUTE
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.TransformAbsolute"),
@@ -436,6 +488,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_EDIT_TRANSFORM_TOGGLE_RELATIVE
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.TransformToggleRelative"),
@@ -444,6 +497,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_EDIT_TRANSFORM_SEPARATELY
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.TransformSeparately"),
@@ -452,6 +506,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_EDIT_TRANSFORM_TOGETHER
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.TransformTogether"),
@@ -460,6 +515,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_EDIT_TRANSFORM_TOGGLE_SEPARATE
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.TransformToggleSeparate"),
@@ -468,6 +524,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_EDIT_SNAP_MOVE_TOGGLE
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Snap.Toggle"),
@@ -476,6 +533,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_EDIT_SNAP_MOVE_XY0
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapMove.XY0"),
@@ -484,6 +542,7 @@ const swCommand gCommands[] =
 		"",
 		"0"
 	},
+
 	// SW_EDIT_SNAP_MOVE_XY1
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapMove.XY1"),
@@ -492,6 +551,7 @@ const swCommand gCommands[] =
 		"",
 		"1"
 	},
+
 	// SW_EDIT_SNAP_MOVE_XY2
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapMove.XY2"),
@@ -500,6 +560,7 @@ const swCommand gCommands[] =
 		"",
 		"2"
 	},
+
 	// SW_EDIT_SNAP_MOVE_XY3
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapMove.XY3"),
@@ -508,6 +569,7 @@ const swCommand gCommands[] =
 		"",
 		"3"
 	},
+
 	// SW_EDIT_SNAP_MOVE_XY4
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapMove.XY4"),
@@ -516,6 +578,7 @@ const swCommand gCommands[] =
 		"",
 		"4"
 	},
+
 	// SW_EDIT_SNAP_MOVE_XY5
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapMove.XY5"),
@@ -524,6 +587,7 @@ const swCommand gCommands[] =
 		"",
 		"5"
 	},
+
 	// SW_EDIT_SNAP_MOVE_XY6
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapMove.XY6"),
@@ -532,6 +596,7 @@ const swCommand gCommands[] =
 		"",
 		"6"
 	},
+
 	// SW_EDIT_SNAP_MOVE_XY7
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapMove.XY7"),
@@ -540,6 +605,7 @@ const swCommand gCommands[] =
 		"",
 		"7"
 	},
+
 	// SW_EDIT_SNAP_MOVE_XY8
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapMove.XY8"),
@@ -548,6 +614,7 @@ const swCommand gCommands[] =
 		"",
 		"8"
 	},
+
 	// SW_EDIT_SNAP_MOVE_XY9
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapMove.XY9"),
@@ -556,6 +623,7 @@ const swCommand gCommands[] =
 		"",
 		"9"
 	},
+
 	// SW_EDIT_SNAP_MOVE_Z0
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapMove.Z0"),
@@ -564,6 +632,7 @@ const swCommand gCommands[] =
 		"",
 		"Ctrl+Shift+0"
 	},
+
 	// SW_EDIT_SNAP_MOVE_Z1
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapMove.Z1"),
@@ -572,6 +641,7 @@ const swCommand gCommands[] =
 		"",
 		"Ctrl+Shift+1"
 	},
+
 	// SW_EDIT_SNAP_MOVE_Z2
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapMove.Z2"),
@@ -580,6 +650,7 @@ const swCommand gCommands[] =
 		"",
 		"Ctrl+Shift+2"
 	},
+
 	// SW_EDIT_SNAP_MOVE_Z3
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapMove.Z3"),
@@ -588,6 +659,7 @@ const swCommand gCommands[] =
 		"",
 		"Ctrl+Shift+3"
 	},
+
 	// SW_EDIT_SNAP_MOVE_Z4
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapMove.Z4"),
@@ -596,6 +668,7 @@ const swCommand gCommands[] =
 		"",
 		"Ctrl+Shift+4"
 	},
+
 	// SW_EDIT_SNAP_MOVE_Z5
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapMove.Z5"),
@@ -604,6 +677,7 @@ const swCommand gCommands[] =
 		"",
 		"Ctrl+Shift+5"
 	},
+
 	// SW_EDIT_SNAP_MOVE_Z6
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapMove.Z6"),
@@ -612,6 +686,7 @@ const swCommand gCommands[] =
 		"",
 		"Ctrl+Shift+6"
 	},
+
 	// SW_EDIT_SNAP_MOVE_Z7
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapMove.Z7"),
@@ -620,6 +695,7 @@ const swCommand gCommands[] =
 		"",
 		"Ctrl+Shift+7"
 	},
+
 	// SW_EDIT_SNAP_MOVE_Z8
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapMove.Z8"),
@@ -628,6 +704,7 @@ const swCommand gCommands[] =
 		"",
 		"Ctrl+Shift+8"
 	},
+
 	// SW_EDIT_SNAP_MOVE_Z9
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapMove.Z9"),
@@ -636,6 +713,7 @@ const swCommand gCommands[] =
 		"",
 		"Ctrl+Shift+9"
 	},
+
 	// SW_EDIT_SNAP_ANGLE_TOGGLE
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapAngle.Toggle"),
@@ -644,6 +722,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_EDIT_SNAP_ANGLE0
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapAngle.Angle0"),
@@ -652,6 +731,7 @@ const swCommand gCommands[] =
 		"",
 		"Shift+0"
 	},
+
 	// SW_EDIT_SNAP_ANGLE1
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapAngle.Angle1"),
@@ -660,6 +740,7 @@ const swCommand gCommands[] =
 		"",
 		"Shift+1"
 	},
+
 	// SW_EDIT_SNAP_ANGLE2
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapAngle.Angle2"),
@@ -668,6 +749,7 @@ const swCommand gCommands[] =
 		"",
 		"Shift+2"
 	},
+
 	// SW_EDIT_SNAP_ANGLE3
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapAngle.Angle3"),
@@ -676,6 +758,7 @@ const swCommand gCommands[] =
 		"",
 		"Shift+3"
 	},
+
 	// SW_EDIT_SNAP_ANGLE4
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapAngle.Angle4"),
@@ -684,6 +767,7 @@ const swCommand gCommands[] =
 		"",
 		"Shift+4"
 	},
+
 	// SW_EDIT_SNAP_ANGLE5
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapAngle.Angle5"),
@@ -692,6 +776,7 @@ const swCommand gCommands[] =
 		"",
 		"Shift+5"
 	},
+
 	// SW_EDIT_SNAP_ANGLE6
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapAngle.Angle6"),
@@ -700,6 +785,7 @@ const swCommand gCommands[] =
 		"",
 		"Shift+6"
 	},
+
 	// SW_EDIT_SNAP_ANGLE7
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapAngle.Angle7"),
@@ -708,6 +794,7 @@ const swCommand gCommands[] =
 		"",
 		"Shift+7"
 	},
+
 	// SW_EDIT_SNAP_ANGLE8
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapAngle.Angle8"),
@@ -716,6 +803,7 @@ const swCommand gCommands[] =
 		"",
 		"Shift+8"
 	},
+
 	// SW_EDIT_SNAP_ANGLE9
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapAngle.Angle9"),
@@ -724,6 +812,7 @@ const swCommand gCommands[] =
 		"",
 		"Shift+9"
 	},
+
 	// SW_EDIT_SNAP_ANGLE_CUSTOM
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapAngle.Custom"),
@@ -732,6 +821,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_EDIT_SNAP_ORBIT_TOGGLE
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.SnapAngle.ToggleOrbit"),
@@ -740,6 +830,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_EDIT_TRANSFORM
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Transform"),
@@ -748,6 +839,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_EDIT_TRANSFORM_ABSOLUTE_TRANSLATION
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.TransformAbsoluteTranslation"),
@@ -756,6 +848,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_EDIT_TRANSFORM_RELATIVE_TRANSLATION
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.TransformRelativeTranslation"),
@@ -764,6 +857,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_EDIT_TRANSFORM_ABSOLUTE_ROTATION
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.TransformAbsoluteRotation"),
@@ -772,6 +866,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_EDIT_TRANSFORM_RELATIVE_ROTATION
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.TransformRelativeRotation"),
@@ -780,6 +875,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_EDIT_ACTION_INSERT
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Tool.Insert"),
@@ -788,6 +884,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Insert Part Tool</b></p><p>Choose a part in the Parts dock and a color in Colors, then use this tool in the model view to place the part. Movement snapping controls placement increments. Use the preview to check placement before inserting the part.</p>"),
 		""
 	},
+
 	// SW_EDIT_ACTION_POINT_LIGHT
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Tool.PointLight"),
@@ -796,6 +893,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Point Light Tool</b></p><p>Use the model view to place a light that emits in all directions from a point. Select the light afterward to edit its color, shadow settings, and renderer-specific power in Properties.</p>"),
 		""
 	},
+
 	// SW_EDIT_ACTION_SPOTLIGHT
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Tool.SpotLight"),
@@ -804,6 +902,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Spotlight Tool</b></p><p>Use the model view to create a directed cone of light. In Properties, adjust its position and target, cone angle, penumbra, and renderer-specific power.</p>"),
 		""
 	},
+
 	// SW_EDIT_ACTION_DIRECTIONAL_LIGHT
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Tool.DirectionalLight"),
@@ -812,6 +911,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Directional Light Tool</b></p><p>Create a light with parallel rays, such as sunlight. Its direction determines the illumination. Select it to adjust its transform, color, and renderer-specific settings in Properties.</p>"),
 		""
 	},
+
 	// SW_EDIT_ACTION_AREA_LIGHT
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Tool.AreaLight"),
@@ -820,6 +920,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Area Light Tool</b></p><p>Create a light that emits over an area. Select it to set the area shape and size in Properties, along with color and renderer-specific settings.</p>"),
 		""
 	},
+
 	// SW_EDIT_ACTION_CAMERA
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Tool.Camera"),
@@ -828,6 +929,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Camera Tool</b></p><p>Create a camera in the model view. Select the camera to edit its position, target, projection, and field of view in Properties. To look through the camera, choose it from View &gt; Cameras.</p>"),
 		""
 	},
+
 	// SW_EDIT_ACTION_SELECT
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Tool.Select"),
@@ -836,6 +938,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Select Tool</b></p><p>Pick objects in the model view or drag a selection rectangle. Selection Mode controls whether matching part types or colors are included. The focused object provides the reference for relative transforms.</p>"),
 		""
 	},
+
 	// SW_EDIT_ACTION_MOVE
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Tool.Move"),
@@ -844,6 +947,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Move Tool</b></p><p>Select the objects to move, then drag in the model view. Use the manipulator to constrain movement to an axis or plane. Movement Snap sets the increments, and Transform Options selects the coordinate reference.</p>"),
 		""
 	},
+
 	// SW_EDIT_ACTION_ROTATE
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Tool.Rotate"),
@@ -852,6 +956,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Rotate Tool</b></p><p>Select objects, then drag a rotation handle in the model view. Rotation Snap sets the angle increments. Transform Options chooses relative or model axes and whether parts rotate together or separately.</p>"),
 		""
 	},
+
 	// SW_EDIT_ACTION_DELETE
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Tool.Delete"),
@@ -860,6 +965,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Eraser Tool</b></p><p>Use this tool to remove objects by clicking them in the model view. This is different from deleting the current selection as a single command. Undo restores an object removed by the tool.</p>"),
 		""
 	},
+
 	// SW_EDIT_ACTION_PAINT
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Tool.Paint"),
@@ -868,6 +974,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Paint Tool</b></p><p>Choose the replacement color in the Colors dock, then click parts in the model view to recolor them. To recolor the current selection together, use the color button above the swatches.</p>"),
 		""
 	},
+
 	// SW_EDIT_ACTION_COLOR_PICKER
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Tool.ColorPicker"),
@@ -876,6 +983,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Color Picker Tool</b></p><p>Click a part in the model view to make its color the current color. You can then use that color for insertion or painting; sampling it does not recolor the part.</p>"),
 		""
 	},
+
 	// SW_EDIT_ACTION_ZOOM
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Tool.Zoom"),
@@ -884,6 +992,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Zoom Tool</b></p><p>Drag in the model view to move the viewpoint closer to or farther from the model. This changes the view rather than resizing parts. Use Zoom Region to frame a particular area.</p>"),
 		""
 	},
+
 	// SW_EDIT_ACTION_PAN
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Tool.Pan"),
@@ -892,6 +1001,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Pan Tool</b></p><p>Drag to shift the view sideways or vertically without moving the model. Use this to reposition the model on screen while keeping the viewing direction.</p>"),
 		""
 	},
+
 	// SW_EDIT_ACTION_ROTATE_VIEW
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Tool.RotateView"),
@@ -900,6 +1010,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Orbit Tool</b></p><p>Drag to orbit the view around its center and inspect the model from another direction. This rotates the viewpoint rather than the selected parts; use Rotate for object edits.</p>"),
 		""
 	},
+
 	// SW_EDIT_ACTION_ROLL
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Tool.Roll"),
@@ -908,6 +1019,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Roll Tool</b></p><p>Drag to turn the view around its viewing axis, tilting what appears upright on screen. Model parts keep their positions and orientations.</p>"),
 		""
 	},
+
 	// SW_EDIT_ACTION_ZOOM_REGION
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Tool.ZoomRegion"),
@@ -916,6 +1028,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Zoom Region Tool</b></p><p>Drag a rectangle around the area you want to inspect. The view zooms to frame that region without changing model geometry.</p>"),
 		""
 	},
+
 	// SW_EDIT_CANCEL
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.Cancel"),
@@ -924,6 +1037,7 @@ const swCommand gCommands[] =
 		"",
 		"Esc"
 	},
+
 	// SW_VIEW_PREFERENCES
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Preferences"),
@@ -932,6 +1046,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_ZOOM_IN
 	{
 		QT_TRANSLATE_NOOP("Action", "View.ZoomIn"),
@@ -940,6 +1055,7 @@ const swCommand gCommands[] =
 		"",
 		"+"
 	},
+
 	// SW_VIEW_ZOOM_OUT
 	{
 		QT_TRANSLATE_NOOP("Action", "View.ZoomOut"),
@@ -948,6 +1064,7 @@ const swCommand gCommands[] =
 		"",
 		"-"
 	},
+
 	// SW_VIEW_ZOOM_EXTENTS
 	{
 		QT_TRANSLATE_NOOP("Action", "View.ZoomExtents"),
@@ -956,6 +1073,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_LOOK_AT
 	{
 		QT_TRANSLATE_NOOP("Action", "View.LookAt"),
@@ -964,6 +1082,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_MOVE_FORWARD
 	{
 		QT_TRANSLATE_NOOP("Action", "View.MoveForward"),
@@ -972,6 +1091,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_MOVE_BACKWARD
 	{
 		QT_TRANSLATE_NOOP("Action", "View.MoveBackward"),
@@ -980,6 +1100,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_MOVE_LEFT
 	{
 		QT_TRANSLATE_NOOP("Action", "View.MoveLeft"),
@@ -988,6 +1109,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_MOVE_RIGHT
 	{
 		QT_TRANSLATE_NOOP("Action", "View.MoveRight"),
@@ -996,6 +1118,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_MOVE_UP
 	{
 		QT_TRANSLATE_NOOP("Action", "View.MoveUp"),
@@ -1004,6 +1127,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_MOVE_DOWN
 	{
 		QT_TRANSLATE_NOOP("Action", "View.MoveDown"),
@@ -1012,6 +1136,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_VIEWPOINT_FRONT
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Viewpoint.Front"),
@@ -1020,6 +1145,7 @@ const swCommand gCommands[] =
 		"",
 		"F"
 	},
+
 	// SW_VIEW_VIEWPOINT_BACK
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Viewpoint.Back"),
@@ -1028,6 +1154,7 @@ const swCommand gCommands[] =
 		"",
 		"B"
 	},
+
 	// SW_VIEW_VIEWPOINT_TOP
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Viewpoint.Top"),
@@ -1036,6 +1163,7 @@ const swCommand gCommands[] =
 		"",
 		"T"
 	},
+
 	// SW_VIEW_VIEWPOINT_BOTTOM
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Viewpoint.Bottom"),
@@ -1044,6 +1172,7 @@ const swCommand gCommands[] =
 		"",
 		"O"
 	},
+
 	// SW_VIEW_VIEWPOINT_LEFT
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Viewpoint.Left"),
@@ -1052,6 +1181,7 @@ const swCommand gCommands[] =
 		"",
 		"L"
 	},
+
 	// SW_VIEW_VIEWPOINT_RIGHT
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Viewpoint.Right"),
@@ -1060,6 +1190,7 @@ const swCommand gCommands[] =
 		"",
 		"R"
 	},
+
 	// SW_VIEW_VIEWPOINT_HOME
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Viewpoint.Home"),
@@ -1068,6 +1199,7 @@ const swCommand gCommands[] =
 		"",
 		"H"
 	},
+
 	// SW_VIEW_CAMERA_NONE
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Cameras.None"),
@@ -1076,6 +1208,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_CAMERA1
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Cameras.Camera01"),
@@ -1084,6 +1217,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_CAMERA2
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Cameras.Camera02"),
@@ -1092,6 +1226,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_CAMERA3
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Cameras.Camera03"),
@@ -1100,6 +1235,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_CAMERA4
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Cameras.Camera04"),
@@ -1108,6 +1244,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_CAMERA5
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Cameras.Camera05"),
@@ -1116,6 +1253,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_CAMERA6
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Cameras.Camera06"),
@@ -1124,6 +1262,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_CAMERA7
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Cameras.Camera07"),
@@ -1132,6 +1271,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_CAMERA8
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Cameras.Camera08"),
@@ -1140,6 +1280,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_CAMERA9
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Cameras.Camera09"),
@@ -1148,6 +1289,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_CAMERA10
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Cameras.Camera10"),
@@ -1156,6 +1298,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_CAMERA11
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Cameras.Camera11"),
@@ -1164,6 +1307,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_CAMERA12
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Cameras.Camera12"),
@@ -1172,6 +1316,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_CAMERA13
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Cameras.Camera13"),
@@ -1180,6 +1325,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_CAMERA14
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Cameras.Camera14"),
@@ -1188,6 +1334,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_CAMERA15
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Cameras.Camera15"),
@@ -1196,6 +1343,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_CAMERA16
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Cameras.Camera16"),
@@ -1204,6 +1352,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TIME_FIRST
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Time.First"),
@@ -1212,6 +1361,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>First Step</b></p><p>Display the model at its first building step. Step navigation changes which parts are visible; it does not move parts to a different step.</p>"),
 		"Alt+Up"
 	},
+
 	// SW_VIEW_TIME_PREVIOUS
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Time.Previous"),
@@ -1220,6 +1370,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Previous Step</b></p><p>Display the model one building step earlier. Parts introduced in later steps are hidden so you can inspect the earlier stage of construction.</p>"),
 		"Alt+Left"
 	},
+
 	// SW_VIEW_TIME_NEXT
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Time.Next"),
@@ -1228,6 +1379,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Next Step</b></p><p>Display the next building step to reveal the next stage of the model. Use the Timeline to change which step introduces a part.</p>"),
 		"Alt+Right"
 	},
+
 	// SW_VIEW_TIME_LAST
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Time.Last"),
@@ -1236,6 +1388,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Last Step</b></p><p>Display the last building step of the current model. Use this to return to the completed model after inspecting earlier steps.</p>"),
 		"Alt+Down"
 	},
+
 	// SW_VIEW_TIME_INSERT_BEFORE
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Time.InsertBefore"),
@@ -1244,6 +1397,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TIME_INSERT_AFTER
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Time.InsertAfter"),
@@ -1252,6 +1406,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TIME_DELETE
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Time.Delete"),
@@ -1260,6 +1415,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TIME_ADD_KEYS
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Time.AddKeys"),
@@ -1268,6 +1424,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Add Keys</b></p><p>Enable this when an edit should create a new animation key at the current step. For example, moving a part at a later step can give it a different position there. The diamond controls in Properties show and toggle keys for individual properties.</p>"),
 		""
 	},
+
 	// SW_VIEW_SPLIT_HORIZONTAL
 	{
 		QT_TRANSLATE_NOOP("Action", "View.SplitHorizontal"),
@@ -1276,6 +1433,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_SPLIT_VERTICAL
 	{
 		QT_TRANSLATE_NOOP("Action", "View.SplitVertical"),
@@ -1284,6 +1442,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_REMOVE_VIEW
 	{
 		QT_TRANSLATE_NOOP("Action", "View.RemoveView"),
@@ -1292,6 +1451,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_RESET_VIEWS
 	{
 		QT_TRANSLATE_NOOP("Action", "View.ResetViews"),
@@ -1300,6 +1460,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TOOLBAR_STANDARD
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Toolbars.Standard"),
@@ -1308,6 +1469,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TOOLBAR_TOOLS
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Toolbars.Tools"),
@@ -1316,6 +1478,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TOOLBAR_TIME
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Toolbars.Time"),
@@ -1324,6 +1487,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TOOLBAR_PARTS
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Toolbars.Parts"),
@@ -1332,6 +1496,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TOOLBAR_COLORS
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Toolbars.Colors"),
@@ -1340,6 +1505,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TOOLBAR_PROPERTIES
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Toolbars.Properties"),
@@ -1348,6 +1514,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TOOLBAR_TIMELINE
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Toolbars.Timeline"),
@@ -1356,6 +1523,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TOOLBAR_PREVIEW
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Toolbars.Preview"),
@@ -1364,6 +1532,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TOOLBAR_TERMINAL
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Toolbars.Terminal"),
@@ -1372,6 +1541,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TOOLBAR_MINIFIGURE_BUILDER
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Toolbars.MinifigureBuilder"),
@@ -1380,6 +1550,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_FULL_SCREEN
 	{
 		QT_TRANSLATE_NOOP("Action", "View.FullScreen"),
@@ -1388,6 +1559,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_CLOSE_CURRENT_TAB
 	{
 		QT_TRANSLATE_NOOP("Action", "View.CloseCurrentTab"),
@@ -1396,6 +1568,7 @@ const swCommand gCommands[] =
 		"",
 		"Ctrl+W"
 	},
+
 	// SW_VIEW_SHADE_WIREFRAME
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Shade.Wireframe"),
@@ -1404,6 +1577,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_SHADE_FLAT
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Shade.Flat"),
@@ -1412,6 +1586,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_SHADE_DEFAULT_LIGHTS
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Shade.DefaultLights"),
@@ -1420,6 +1595,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_LIGHTING_STANDARD
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Lighting.Standard"),
@@ -1428,6 +1604,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Standard Lighting</b></p><p>Light parts drawn with the Default Lights shading mode using one light above the camera with a soft highlight. This is the classic look.</p>"),
 		""
 	},
+
 	// SW_VIEW_LIGHTING_STUDIO
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Lighting.Studio"),
@@ -1436,6 +1613,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Studio Lighting</b></p><p>Light parts drawn with the Default Lights shading mode using a key light, a fill light from the camera and a rim light that brightens silhouette edges, for a softer, more photographic look.</p>"),
 		""
 	},
+
 	// SW_VIEW_LIGHTING_MATTE
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Lighting.Matte"),
@@ -1444,6 +1622,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Matte Lighting</b></p><p>Light parts drawn with the Default Lights shading mode without specular highlights, so colors stay flat and true while surfaces keep their shading.</p>"),
 		""
 	},
+
 	// SW_VIEW_LIGHTING_TOON
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Lighting.Toon"),
@@ -1452,6 +1631,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Toon Lighting</b></p><p>Light parts drawn with the Default Lights shading mode in a few flat brightness bands with a sharp highlight, for a cartoon look that pairs well with edge lines.</p>"),
 		""
 	},
+
 	// SW_VIEW_PROJECTION_PERSPECTIVE
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Projection.Perspective"),
@@ -1460,6 +1640,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_PROJECTION_ORTHOGRAPHIC
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Projection.Orthographic"),
@@ -1468,6 +1649,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TOGGLE_VIEW_CUBE
 	{
 		QT_TRANSLATE_NOOP("Action", "View.ToggleViewCube"),
@@ -1476,6 +1658,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TOGGLE_AXIS_ICON
 	{
 		QT_TRANSLATE_NOOP("Action", "View.ToggleAxisIcon"),
@@ -1484,6 +1667,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TOGGLE_GRID
 	{
 		QT_TRANSLATE_NOOP("Action", "View.ToggleGrid"),
@@ -1492,6 +1676,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_FADE_PREVIOUS_STEPS
 	{
 		QT_TRANSLATE_NOOP("Action", "View.FadePreviousSteps"),
@@ -1500,6 +1685,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_STEP_VIEW_EDIT
 	{
 		QT_TRANSLATE_NOOP("Action", "View.StepView.Edit"),
@@ -1508,6 +1694,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_STEP_VIEW_REMOVE
 	{
 		QT_TRANSLATE_NOOP("Action", "View.StepView.Remove"),
@@ -1516,6 +1703,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_STEP_VIEW_TOGGLE_FOLLOW
 	{
 		QT_TRANSLATE_NOOP("Action", "View.StepView.ToggleFollow"),
@@ -1524,6 +1712,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_NORMAL_TO_FACE
 	{
 		QT_TRANSLATE_NOOP("Action", "View.NormalToFace"),
@@ -1532,6 +1721,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Normal to Face</b></p><p>Click a face of any part, including parts inside submodels, to point the camera straight at it. The model is not changed. Press Esc to cancel.</p>"),
 		""
 	},
+
 	// SW_VIEW_CUTAWAY_CUBE
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Cutaway.Cube"),
@@ -1540,6 +1730,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Cube Cutaway</b></p><p>Click a face of any part to hide everything inside a cube centered on it, so you can see inside the model. Clicking empty space centers the cube on the view target. The model is not changed. Press Esc to cancel.</p>"),
 		""
 	},
+
 	// SW_VIEW_CUTAWAY_SPHERE
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Cutaway.Sphere"),
@@ -1548,6 +1739,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Sphere Cutaway</b></p><p>Click a face of any part to hide everything inside a sphere centered on it, so you can see inside the model. Clicking empty space centers the sphere on the view target. The model is not changed. Press Esc to cancel.</p>"),
 		""
 	},
+
 	// SW_VIEW_CUTAWAY_CYLINDER
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Cutaway.Cylinder"),
@@ -1556,6 +1748,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Cylinder Cutaway</b></p><p>Click a face of any part to hide everything inside a cylinder centered on it, its axis running straight through the face, so you can see inside the model. Clicking empty space centers the cylinder on the view target. The model is not changed. Press Esc to cancel.</p>"),
 		""
 	},
+
 	// SW_VIEW_CUTAWAY_GROW
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Cutaway.Grow"),
@@ -1564,6 +1757,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_CUTAWAY_SHRINK
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Cutaway.Shrink"),
@@ -1572,6 +1766,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_CUTAWAY_PUSH_IN
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Cutaway.PushIn"),
@@ -1580,6 +1775,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_CUTAWAY_PULL_OUT
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Cutaway.PullOut"),
@@ -1588,6 +1784,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_CUTAWAY_SHADE_COLOR
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Cutaway.ShadeColor"),
@@ -1596,6 +1793,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_CUTAWAY_REMOVE
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Cutaway.Remove"),
@@ -1604,6 +1802,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_GRID_TOGGLE_HEIGHT_XZ
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Grid.ToggleHeightXZ"),
@@ -1612,6 +1811,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_GRID_TOGGLE_HEIGHT_YZ
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Grid.ToggleHeightYZ"),
@@ -1620,6 +1820,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_GRID_TOGGLE_HEIGHT_BEHIND
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Grid.ToggleHeightBehindModel"),
@@ -1628,6 +1829,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_GRID_TOGGLE_AXIS_X
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Grid.ToggleAxisX"),
@@ -1636,6 +1838,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_GRID_TOGGLE_AXIS_Y
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Grid.ToggleAxisY"),
@@ -1644,6 +1847,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_GRID_TOGGLE_AXIS_Z
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Grid.ToggleAxisZ"),
@@ -1652,6 +1856,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TERMINAL_TOGGLE_FOLLOW_MODEL
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Terminal.ToggleFollowModel"),
@@ -1660,6 +1865,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TERMINAL_GO_TO_MODEL_FOLDER
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Terminal.GoToModelFolder"),
@@ -1668,6 +1874,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TERMINAL_OPEN_MODEL_FOLDER
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Terminal.OpenModelFolder"),
@@ -1676,6 +1883,7 @@ const swCommand gCommands[] =
 		QT_TRANSLATE_NOOP("WhatsThis", "<p><b>Open Model Folder</b></p><p>Open the folder of the current model in the file manager. The button is unavailable until the model is saved to a file.</p>"),
 		""
 	},
+
 	// SW_VIEW_COLORS_TOGGLE_SOLID
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Colors.ToggleSolid"),
@@ -1684,6 +1892,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_COLORS_TOGGLE_TRANSLUCENT
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Colors.ToggleTranslucent"),
@@ -1692,6 +1901,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_COLORS_TOGGLE_SPECIAL
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Colors.ToggleSpecial"),
@@ -1700,6 +1910,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_PART_INSERT_COLOR_CURRENT
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.InsertColor.Current"),
@@ -1708,6 +1919,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_PART_INSERT_COLOR_SELECTED
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.InsertColor.Selected"),
@@ -1716,6 +1928,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_PART_INSERT_COLOR_LAST_INSERTED
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.InsertColor.LastInserted"),
@@ -1724,6 +1937,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_PARTS_TOGGLE_LOCK_COLOR
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Parts.ToggleLockColor"),
@@ -1732,6 +1946,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_FILE_TOGGLE_OPEN_MOST_RECENT
 	{
 		QT_TRANSLATE_NOOP("Action", "File.ToggleOpenMostRecent"),
@@ -1740,6 +1955,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_FILE_TOGGLE_RESTORE_TAB_LAYOUT
 	{
 		QT_TRANSLATE_NOOP("Action", "File.ToggleRestoreTabLayout"),
@@ -1748,6 +1964,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_EDIT_TOGGLE_FIXED_DIRECTION_KEYS
 	{
 		QT_TRANSLATE_NOOP("Action", "Edit.ToggleFixedDirectionKeys"),
@@ -1756,6 +1973,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TOGGLE_MESH_LOD
 	{
 		QT_TRANSLATE_NOOP("Action", "View.ToggleMeshLOD"),
@@ -1764,6 +1982,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TOGGLE_HIGHLIGHT_NEW_PARTS
 	{
 		QT_TRANSLATE_NOOP("Action", "View.ToggleHighlightNewParts"),
@@ -1772,6 +1991,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TOGGLE_GRID_STUDS
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Grid.ToggleStuds"),
@@ -1780,6 +2000,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TOGGLE_GRID_LINES
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Grid.ToggleLines"),
@@ -1788,6 +2009,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TOGGLE_GRID_ORIGIN
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Grid.ToggleOrigin"),
@@ -1796,6 +2018,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TOGGLE_AUTOMATE_EDGE_COLOR
 	{
 		QT_TRANSLATE_NOOP("Action", "View.ToggleAutomateEdgeColor"),
@@ -1804,6 +2027,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_HIGHLIGHT_STYLE_OUTLINE
 	{
 		QT_TRANSLATE_NOOP("Action", "View.HighlightStyle.Outline"),
@@ -1812,6 +2036,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_HIGHLIGHT_STYLE_TINT
 	{
 		QT_TRANSLATE_NOOP("Action", "View.HighlightStyle.TintAndEdges"),
@@ -1820,6 +2045,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_SELECTION_OUTLINE_WIDTH_INCREASE
 	{
 		QT_TRANSLATE_NOOP("Action", "View.HighlightStyle.IncreaseOutlineWidth"),
@@ -1828,6 +2054,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_SELECTION_OUTLINE_WIDTH_DECREASE
 	{
 		QT_TRANSLATE_NOOP("Action", "View.HighlightStyle.DecreaseOutlineWidth"),
@@ -1836,6 +2063,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_STUD_STYLE_PLAIN
 	{
 		QT_TRANSLATE_NOOP("Action", "View.StudStyle.Plain"),
@@ -1844,6 +2072,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_STUD_STYLE_THIN_LINES_LOGO
 	{
 		QT_TRANSLATE_NOOP("Action", "View.StudStyle.ThinLinesLogo"),
@@ -1852,6 +2081,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_STUD_STYLE_OUTLINE_LOGO
 	{
 		QT_TRANSLATE_NOOP("Action", "View.StudStyle.OutlineLogo"),
@@ -1860,6 +2090,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_STUD_STYLE_SHARP_TOP_LOGO
 	{
 		QT_TRANSLATE_NOOP("Action", "View.StudStyle.SharpTopLogo"),
@@ -1868,6 +2099,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_STUD_STYLE_ROUNDED_TOP_LOGO
 	{
 		QT_TRANSLATE_NOOP("Action", "View.StudStyle.RoundedTopLogo"),
@@ -1876,6 +2108,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_STUD_STYLE_FLATTENED_LOGO
 	{
 		QT_TRANSLATE_NOOP("Action", "View.StudStyle.FlattenedLogo"),
@@ -1884,6 +2117,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_STUD_STYLE_HIGH_CONTRAST
 	{
 		QT_TRANSLATE_NOOP("Action", "View.StudStyle.HighContrast"),
@@ -1892,6 +2126,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_STUD_STYLE_HIGH_CONTRAST_LOGO
 	{
 		QT_TRANSLATE_NOOP("Action", "View.StudStyle.HighContrastLogo"),
@@ -1900,6 +2135,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TOGGLE_EDGE_LINES
 	{
 		QT_TRANSLATE_NOOP("Action", "View.ToggleEdgeLines"),
@@ -1908,6 +2144,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TOGGLE_CONDITIONAL_LINES
 	{
 		QT_TRANSLATE_NOOP("Action", "View.ToggleConditionalLines"),
@@ -1916,6 +2153,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TOGGLE_PREVIEW_SYNCHRONIZED_RENDERING
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Preview.ToggleSyncRendering"),
@@ -1924,6 +2162,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_PREVIEW_SHADING_WIREFRAME
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Preview.Shade.Wireframe"),
@@ -1932,6 +2171,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_PREVIEW_SHADING_FLAT
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Preview.Shade.Flat"),
@@ -1940,6 +2180,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_PREVIEW_SHADING_DEFAULT_LIGHTS
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Preview.Shade.DefaultLights"),
@@ -1948,6 +2189,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TOGGLE_PREVIEW_EDGE_LINES
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Preview.ToggleEdgeLines"),
@@ -1956,6 +2198,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TOGGLE_PREVIEW_CONDITIONAL_LINES
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Preview.ToggleConditionalLines"),
@@ -1964,6 +2207,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TOGGLE_PARTS_SYNCHRONIZED_RENDERING
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Parts.ToggleSyncRendering"),
@@ -1972,6 +2216,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_PARTS_SHADING_WIREFRAME
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Parts.Shade.Wireframe"),
@@ -1980,6 +2225,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_PARTS_SHADING_FLAT
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Parts.Shade.Flat"),
@@ -1988,6 +2234,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_PARTS_SHADING_DEFAULT_LIGHTS
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Parts.Shade.DefaultLights"),
@@ -1996,6 +2243,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TOGGLE_PARTS_EDGE_LINES
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Parts.ToggleEdgeLines"),
@@ -2004,6 +2252,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TOGGLE_PARTS_CONDITIONAL_LINES
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Parts.ToggleConditionalLines"),
@@ -2012,6 +2261,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TOGGLE_MINIFIGURE_BUILDER_SYNCHRONIZED_RENDERING
 	{
 		QT_TRANSLATE_NOOP("Action", "View.MinifigureBuilder.ToggleSyncRendering"),
@@ -2020,6 +2270,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_MINIFIGURE_BUILDER_SHADING_WIREFRAME
 	{
 		QT_TRANSLATE_NOOP("Action", "View.MinifigureBuilder.Shade.Wireframe"),
@@ -2028,6 +2279,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_MINIFIGURE_BUILDER_SHADING_FLAT
 	{
 		QT_TRANSLATE_NOOP("Action", "View.MinifigureBuilder.Shade.Flat"),
@@ -2036,6 +2288,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_MINIFIGURE_BUILDER_SHADING_DEFAULT_LIGHTS
 	{
 		QT_TRANSLATE_NOOP("Action", "View.MinifigureBuilder.Shade.DefaultLights"),
@@ -2044,6 +2297,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TOGGLE_MINIFIGURE_BUILDER_EDGE_LINES
 	{
 		QT_TRANSLATE_NOOP("Action", "View.MinifigureBuilder.ToggleEdgeLines"),
@@ -2052,6 +2306,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TOGGLE_MINIFIGURE_BUILDER_CONDITIONAL_LINES
 	{
 		QT_TRANSLATE_NOOP("Action", "View.MinifigureBuilder.ToggleConditionalLines"),
@@ -2060,6 +2315,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_PARTS_TOGGLE_SNAP_TO_TILES
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Parts.ToggleSnapToTiles"),
@@ -2068,6 +2324,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TOGGLE_PREVIEW_VIEW_CUBE
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Preview.ToggleViewCube"),
@@ -2076,6 +2333,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_TOGGLE_PREVIEW_AXIS_ICON
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Preview.ToggleAxisIcon"),
@@ -2084,6 +2342,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_FILE_TOGGLE_LOAD_PARTS_BEFORE_SHOWING
 	{
 		QT_TRANSLATE_NOOP("Action", "File.ToggleLoadPartsBeforeShowing"),
@@ -2092,6 +2351,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_PREVIEW_TOGGLE_SQUARE
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Preview.ToggleSquareViewport"),
@@ -2100,6 +2360,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_VIEW_PREVIEW_TOGGLE_KEEP_SELECTION
 	{
 		QT_TRANSLATE_NOOP("Action", "View.Preview.ToggleKeepSelection"),
@@ -2108,6 +2369,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_PART_INSERT
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.Insert"),
@@ -2116,6 +2378,7 @@ const swCommand gCommands[] =
 		"",
 		"Insert"
 	},
+
 	// SW_PART_TOGGLE_FIRST_AT_ORIGIN
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.ToggleFirstPartAtOrigin"),
@@ -2124,6 +2387,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_PART_DELETE
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.Delete"),
@@ -2132,6 +2396,7 @@ const swCommand gCommands[] =
 		"",
 		"Delete"
 	},
+
 	// SW_PART_DUPLICATE
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.Duplicate"),
@@ -2140,6 +2405,7 @@ const swCommand gCommands[] =
 		"",
 		"Ctrl+D"
 	},
+
 	// SW_PART_PAINT_SELECTED
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.PaintSelected"),
@@ -2148,6 +2414,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_PART_RESET_PIVOT_POINT
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.ResetPivotPoint"),
@@ -2156,6 +2423,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_PART_REMOVE_KEY_FRAMES
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.RemoveKeyFrames"),
@@ -2164,6 +2432,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_PART_CONTROL_POINT_INSERT
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.ControlPoint.Insert"),
@@ -2172,6 +2441,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_PART_CONTROL_POINT_REMOVE
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.ControlPoint.Remove"),
@@ -2180,6 +2450,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_PART_CONTROL_POINT_TANGENT
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.ControlPoint.Tangent"),
@@ -2188,6 +2459,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_PART_CONTROL_POINT_ALIGN_TANGENT
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.ControlPoint.AlignTangent"),
@@ -2196,6 +2468,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_PART_CONTROL_POINT_ALIGN_X
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.ControlPoint.AlignX"),
@@ -2204,6 +2477,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_PART_CONTROL_POINT_ALIGN_Y
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.ControlPoint.AlignY"),
@@ -2212,6 +2486,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_PART_CONTROL_POINT_ALIGN_Z
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.ControlPoint.AlignZ"),
@@ -2220,6 +2495,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_PART_TRAIN_TRACK_FOCUS_NEXT
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.TrainTrack.FocusNext"),
@@ -2228,6 +2504,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_PART_TRAIN_TRACK_FOCUS_PREVIOUS
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.TrainTrack.FocusPrevious"),
@@ -2236,6 +2513,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_PART_TRAIN_TRACK_ROTATE
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.TrainTrack.Rotate"),
@@ -2244,6 +2522,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_PART_MOVE_PLUS_X
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.Move.PlusX"),
@@ -2252,6 +2531,7 @@ const swCommand gCommands[] =
 		"",
 		"Down"
 	},
+
 	// SW_PART_MOVE_MINUS_X
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.Move.MinusX"),
@@ -2260,6 +2540,7 @@ const swCommand gCommands[] =
 		"",
 		"Up"
 	},
+
 	// SW_PART_MOVE_PLUS_Y
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.Move.PlusY"),
@@ -2268,6 +2549,7 @@ const swCommand gCommands[] =
 		"",
 		"Right"
 	},
+
 	// SW_PART_MOVE_MINUS_Y
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.Move.MinusY"),
@@ -2276,6 +2558,7 @@ const swCommand gCommands[] =
 		"",
 		"Left"
 	},
+
 	// SW_PART_MOVE_PLUS_Z
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.Move.PlusZ"),
@@ -2284,6 +2567,7 @@ const swCommand gCommands[] =
 		"",
 		"PgUp"
 	},
+
 	// SW_PART_MOVE_MINUS_Z
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.Move.MinusZ"),
@@ -2292,6 +2576,7 @@ const swCommand gCommands[] =
 		"",
 		"PgDown"
 	},
+
 	// SW_PART_ROTATE_PLUS_X
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.Rotate.PlusX"),
@@ -2300,6 +2585,7 @@ const swCommand gCommands[] =
 		"",
 		"Shift+Down"
 	},
+
 	// SW_PART_ROTATE_MINUS_X
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.Rotate.MinusX"),
@@ -2308,6 +2594,7 @@ const swCommand gCommands[] =
 		"",
 		"Shift+Up"
 	},
+
 	// SW_PART_ROTATE_PLUS_Y
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.Rotate.PlusY"),
@@ -2316,6 +2603,7 @@ const swCommand gCommands[] =
 		"",
 		"Shift+Right"
 	},
+
 	// SW_PART_ROTATE_MINUS_Y
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.Rotate.MinusY"),
@@ -2324,6 +2612,7 @@ const swCommand gCommands[] =
 		"",
 		"Shift+Left"
 	},
+
 	// SW_PART_ROTATE_PLUS_Z
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.Rotate.PlusZ"),
@@ -2332,6 +2621,7 @@ const swCommand gCommands[] =
 		"",
 		"Shift+PgUp"
 	},
+
 	// SW_PART_ROTATE_MINUS_Z
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.Rotate.MinusZ"),
@@ -2340,6 +2630,7 @@ const swCommand gCommands[] =
 		"",
 		"Shift+PgDown"
 	},
+
 	// SW_PART_MINIFIGURE_BUILDER
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.MinifigureBuilder"),
@@ -2348,6 +2639,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_PART_ARRAY
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.Array"),
@@ -2356,6 +2648,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	//  SW_PART_VIEW_SELECTED_MODEL
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.ViewSelectedModel"),
@@ -2364,6 +2657,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_PART_MOVE_SELECTION_TO_MODEL
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.MoveSelectionToModel"),
@@ -2372,6 +2666,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_PART_INLINE_SELECTED_MODELS
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.InlineSelectedModels"),
@@ -2380,6 +2675,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_PART_EDIT_SELECTED_SUBMODEL
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.EditSelectedSubmodel"),
@@ -2388,6 +2684,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_PART_EDIT_END_SUBMODEL
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.EditEndSubmodel"),
@@ -2396,6 +2693,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_PART_GROUP
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.Group"),
@@ -2404,6 +2702,7 @@ const swCommand gCommands[] =
 		"",
 		"Ctrl+G"
 	},
+
 	// SW_PART_UNGROUP
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.Ungroup"),
@@ -2412,6 +2711,7 @@ const swCommand gCommands[] =
 		"",
 		"Ctrl+U"
 	},
+
 	// SW_PART_GROUP_ADD
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.GroupAdd"),
@@ -2420,6 +2720,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_PART_GROUP_REMOVE
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.GroupRemove"),
@@ -2428,6 +2729,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_PART_GROUP_EDIT
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.GroupEdit"),
@@ -2436,6 +2738,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_PART_HIDE_SELECTED
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.HideSelected"),
@@ -2444,6 +2747,7 @@ const swCommand gCommands[] =
 		"",
 		"Ctrl+H"
 	},
+
 	// SW_PART_HIDE_UNSELECTED
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.HideUnselected"),
@@ -2452,6 +2756,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_PART_UNHIDE_SELECTED
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.UnhideSelected"),
@@ -2460,6 +2765,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_PART_UNHIDE_ALL
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.UnhideAll"),
@@ -2468,6 +2774,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_PART_SHOW_EARLIER
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.ShowEarlier"),
@@ -2476,6 +2783,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_PART_SHOW_LATER
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.ShowLater"),
@@ -2484,6 +2792,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_NEW
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.New"),
@@ -2492,6 +2801,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_PROPERTIES
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Properties"),
@@ -2500,6 +2810,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_LIST
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.List"),
@@ -2508,6 +2819,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_01
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model01"),
@@ -2516,6 +2828,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_02
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model02"),
@@ -2524,6 +2837,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_03
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model03"),
@@ -2532,6 +2846,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_04
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model04"),
@@ -2540,6 +2855,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_05
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model05"),
@@ -2548,6 +2864,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_06
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model06"),
@@ -2556,6 +2873,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_07
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model07"),
@@ -2564,6 +2882,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_08
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model08"),
@@ -2572,6 +2891,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_09
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model09"),
@@ -2580,6 +2900,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_10
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model10"),
@@ -2588,6 +2909,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_11
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model11"),
@@ -2596,6 +2918,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_12
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model12"),
@@ -2604,6 +2927,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_13
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model13"),
@@ -2612,6 +2936,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_14
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model14"),
@@ -2620,6 +2945,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_15
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model15"),
@@ -2628,6 +2954,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_16
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model16"),
@@ -2636,6 +2963,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_17
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model17"),
@@ -2644,6 +2972,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_18
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model18"),
@@ -2652,6 +2981,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_19
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model19"),
@@ -2660,6 +2990,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_20
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model20"),
@@ -2668,6 +2999,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_21
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model21"),
@@ -2676,6 +3008,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_22
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model22"),
@@ -2684,6 +3017,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_23
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model23"),
@@ -2692,6 +3026,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_24
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model24"),
@@ -2700,6 +3035,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_25
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model25"),
@@ -2708,6 +3044,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_26
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model26"),
@@ -2716,6 +3053,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_27
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model27"),
@@ -2724,6 +3062,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_28
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model28"),
@@ -2732,6 +3071,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_29
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model29"),
@@ -2740,6 +3080,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_30
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model30"),
@@ -2748,6 +3089,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_31
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model31"),
@@ -2756,6 +3098,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_32
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model32"),
@@ -2764,6 +3107,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_33
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model33"),
@@ -2772,6 +3116,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_34
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model34"),
@@ -2780,6 +3125,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_35
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model35"),
@@ -2788,6 +3134,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_36
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model36"),
@@ -2796,6 +3143,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_37
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model37"),
@@ -2804,6 +3152,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_38
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model38"),
@@ -2812,6 +3161,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_39
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model39"),
@@ -2820,6 +3170,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_MODEL_40
 	{
 		QT_TRANSLATE_NOOP("Action", "Model.Model40"),
@@ -2828,6 +3179,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_HELP_WHATS_THIS
 	{
 		QT_TRANSLATE_NOOP("Action", "Help.WhatsThis"),
@@ -2836,6 +3188,7 @@ const swCommand gCommands[] =
 		"",
 		"Shift+F1"
 	},
+
 	// SW_HELP_HOME_PAGE
 	{
 		QT_TRANSLATE_NOOP("Action", "Help.HomePage"),
@@ -2844,6 +3197,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_HELP_BUG_REPORT
 	{
 		QT_TRANSLATE_NOOP("Action", "Help.BugReport"),
@@ -2852,6 +3206,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_HELP_ABOUT
 	{
 		QT_TRANSLATE_NOOP("Action", "Help.About"),
@@ -2860,6 +3215,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_TIMELINE_INSERT_BEFORE
 	{
 		"",
@@ -2868,6 +3224,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_TIMELINE_INSERT_AFTER
 	{
 		"",
@@ -2876,6 +3233,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_TIMELINE_DELETE
 	{
 		"",
@@ -2884,6 +3242,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_TIMELINE_MOVE_SELECTION
 	{
 		"",
@@ -2892,6 +3251,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_TIMELINE_MOVE_SELECTION_BEFORE
 	{
 		"",
@@ -2900,6 +3260,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_TIMELINE_MOVE_SELECTION_AFTER
 	{
 		"",
@@ -2908,6 +3269,7 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+
 	// SW_TIMELINE_SET_CURRENT
 	{
 		"",

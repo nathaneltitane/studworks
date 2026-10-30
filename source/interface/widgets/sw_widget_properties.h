@@ -115,7 +115,7 @@ protected:
 		bool Visible = true;
 	};
 
-	// Full width rows naming the object, with a block spanning them on the left that shows the color when there is one.
+	// Identity rows with a color block.
 	struct IdentityBlock
 	{
 		std::vector<QWidget*> Slots;
@@ -123,7 +123,7 @@ protected:
 		QColor Color;
 	};
 
-	// An editor in a row, followed by the keyframe button of a property when it is keyed on its own or for the row.
+	// Editor with its keyframe button.
 	struct RowEditor
 	{
 		QWidget* Editor;

@@ -79,9 +79,7 @@ public:
 	QString mLoadError;
 };
 
-// Coordinates asset sources, loading, settings and shared render buffers.
-// Part/texture managers own identities and references; the loader owns pending work.
-// Acquisition, scheduling and publication run on the UI thread; workers use source snapshots.
+// Coordinates assets, loading and render buffers.
 class swPartsLibrary : public QObject
 {
 	Q_OBJECT
@@ -95,12 +93,10 @@ public:
 	swPartsLibrary& operator=(const swPartsLibrary&) = delete;
 	swPartsLibrary& operator=(swPartsLibrary&&) = delete;
 
-	// Replaces the current library with an archive or directory and initializes its metadata.
-	// OfficialLibrary enables archive update checks; directories remain excluded.
+	// Replaces the library and reads its metadata.
 	bool Load(const QString& LibraryPath, bool ShowProgress, bool OfficialLibrary);
 
-	// An empty path loads ldrawunf.zip next to an archive library or inside a folder library, any other path names the unofficial archive itself.
-	// Folder libraries add the archive parts their unofficial folder lacks.
+	// Empty path loads the unofficial archive.
 	void SetUnofficialArchivePath(const QString& Path)
 	{
 		mUnofficialArchivePath = Path;
@@ -111,8 +107,7 @@ public:
 		return mZipFiles[static_cast<int>(swZipFileType::Unofficial)] != nullptr;
 	}
 
-	// Opens an archive or folder library in place of the current one, keeping identities that still exist so open models stay bound.
-	// Vanished parts are retired as missing and loaded meshes are queued again. Returns false and keeps the current library if the path is not a library.
+	// Opens a library in place of the current one.
 	bool Reload(const QString& LibraryPath, bool OfficialLibrary);
 
 	const QString& GetLibraryPath() const
@@ -130,25 +125,24 @@ public:
 		return mZipFiles[static_cast<int>(swZipFileType::Official)] != nullptr;
 	}
 
-	// Rebinds the project's models from retired library parts to missing parts and from missing parts to new library parts.
-	// Returns the previous and replacement identities.
+	// Rebinds retired and missing parts.
 	std::vector<std::pair<swPartDataReference, swPartDataReference>> RebindProjectPartData(Project* Project);
 
-	// Returns the projects loaded from external model files referenced by open models.
+	// Returns the referenced external projects.
 	std::vector<Project*> GetExternalProjects() const;
 
 	bool IsRetiredPartData(const swPartData* PartData) const;
 
-	// Leaves the library without parts and loads the default colors, categories and part rules.
+	// Loads the defaults without parts.
 	void LoadEmptyLibrary();
 
-	// Resolves a file path relative to the library directory without opening it.
+	// Resolves a library relative path.
 	QString GetLibraryFilePath(const QString& FileName) const
 	{
 		return mLibraryDir.absoluteFilePath(FileName);
 	}
 
-	// Returns the official archive count for update checks, or zero for custom/directory libraries.
+	// Returns the official archive count.
 	int GetOfficialPartCount() const
 	{
 		return mOfficialPartCount;
@@ -162,53 +156,50 @@ public:
 		return mStudStyle;
 	}
 
-	// Drains running workers before changing settings; queues replacement meshes asynchronously.
+	// Drains workers before changing settings.
 	void UpdateStudStyleAndColors(swStudStyle StudStyle, bool StudCylinderColorEnabled);
 
-	// Normalizes case and slashes, preserving the part name length limit.
+	// Normalizes case and slashes.
 	static std::string NormalizePartDataName(const char* PartName);
 
-	// Returns a borrowed project identity, falling back to the library. No I/O or creation.
+	// Returns a borrowed project identity.
 	swPartData* FindPartData(const char* PartName, Project* Project);
 
-	// Resolves or creates an identity and returns one scoped reference; does not ensure readiness.
+	// Returns a scoped identity reference.
 	swPartDataReference AcquirePartData(const char* PartName, Project* Project, bool CreateMissing, bool SearchProjectFolder);
 
-	// Creates or reuses a local identity and returns one scoped reference for the model.
-	// Reused data is invalidated before returning.
+	// Returns a scoped local model identity.
 	swPartDataReference AcquireModelPartData(const char* PartName, Project* Project, bool& Reused);
 
-	// Renames the model identity and its index key, rejecting collisions in the same scope.
+	// Renames the model identity.
 	bool RenameModelPartData(swPartData* PartData, const char* NewName);
 
-	// Rechecks an external/missing identity against the project directory; returns whether it changed.
+	// Rechecks an external identity.
 	bool RemapProjectPartData(swPartData* PartData, const QString& ProjectDirectory, bool IsPreview);
 
 	// Removes unreferenced non-library identities.
 	void RemoveTemporaryPartData();
 
-	// Detaches the project's borrowed index and deletes its unreferenced local identities.
+	// Releases the project identities.
 	void ReleaseProjectPartData(Project* OwnerProject);
 
-	// Transfers registrations and borrowed indexes, preserving destination name collisions.
+	// Transfers registrations and indexes.
 	void TransferProjectPartData(Project* Source, Project* Destination);
 
-	// Starts or promotes asynchronous loading. Adds no consumer references and never waits.
-	// Priority controls scheduling only; the caller retains the identity while it needs the result.
+	// Starts loading without waiting.
 	void RequestPartDataLoad(swPartData* PartData, swLoadPriority LoadPriority);
 
-	// Starts or promotes loading, then waits. Adds no consumer references; false means failure/cancellation.
-	// Does not traverse container children or wait for per-instance synth geometry.
+	// Starts loading and waits.
 	bool WaitForPartData(const swPartDataReference& PartDataRef);
 	bool WaitForPartData(const std::vector<swPartDataReference>& PartDataRefs, const std::function<void(int, int)>& Progress = nullptr);
 
-	// Also settles container children/synths and updates bounds; the caller retains the identity.
+	// Settles children and bounds.
 	bool EnsurePartDataAssetsReady(const swPartDataReference& PartData);
 
-	// Obsoletes pending work and resets readiness without acquiring a reference.
+	// Resets pending work and readiness.
 	void InvalidatePartDataLoad(swPartData* PartData);
 
-	// Invalidates the model mesh, releases old geometry and requests an asynchronous rebuild.
+	// Rebuilds the model mesh.
 	void RebuildModelPartData(swPartData* PartData);
 
 	// Sparse diagnostics; an empty error does not imply readiness.
@@ -216,63 +207,61 @@ public:
 	QString GetPartDataLoadError(const swPartData* PartData) const;
 	void ClearPartDataLoadError(const swPartData* PartData);
 
-	// Resolves or creates a texture and returns one scoped reference without decoding or uploading.
+	// Returns a scoped texture reference.
 	swTextureReference AcquireTexture(const char* TextureName, Project* CurrentProject, bool SearchProjectFolder);
 	swTextureReference AcquireTexture(const char* TextureName, const std::vector<QString>& SearchDirectories, const std::map<QString, std::shared_ptr<const swEmbeddedData>>& EmbeddedData, swFileSource& Source);
 
-	// Reads the original image file of a texture, for exporters that copy it out.
+	// Reads a texture image file.
 	QByteArray ReadTextureFile(const swTexture* Texture);
 
-	// Starts or promotes asynchronous loading; the caller retains the texture. Never waits.
+	// Starts texture loading without waiting.
 	void RequestTextureLoad(swTexture* Texture, swLoadPriority LoadPriority);
 
-	// Starts or promotes loading, then waits for settlement; the caller retains the texture.
+	// Starts texture loading and waits.
 	bool WaitForTexture(const swTextureReference& TextureRef);
 
-	// Replaces pending generation for this instance; snapshots control points for workers.
+	// Replaces pending generation.
 	void RequestSynthMesh(swPart* Part);
 
 	// Cancels pending generation and removes the instance's diagnostic entry.
 	void CancelSynthMesh(swPart* Part);
 
-	// Promotes and waits for queued generations; false means missing or outdated generated geometry.
-	// Call RequestSynthMesh() to start a generation; keep the instances alive through the wait.
+	// Waits for queued generations.
 	bool WaitForSynthMeshes(const std::vector<swPart*>& Parts);
 
-	// Returns the last generation error; an empty error does not imply readiness.
+	// Returns the last generation error.
 	QString GetSynthMeshError(const swPart* Part) const;
 
-	// Returns a borrowed library snapshot in name order. Caller prevents identity teardown.
+	// Returns the parts in name order.
 	std::vector<swPartData*> GetParts() const;
 
 	// Matches library-part descriptions against category keywords.
 	bool PartDataInCategory(swPartData* PartData, const char* CategoryKeywords) const;
 
-	// Fills borrowed category entries, optionally grouping patterned parts under their parent.
+	// Fills the category entries.
 	void GetCategoryEntries(int CategoryIndex, bool GroupParts, std::vector<swPartData*>& SingleParts, std::vector<swPartData*>& GroupedParts);
 	void GetCategoryEntries(const char* CategoryKeywords, bool GroupParts, std::vector<swPartData*>& SingleParts, std::vector<swPartData*>& GroupedParts);
 
-	// Returns borrowed visible track parts compatible with the connection type.
+	// Returns compatible track parts.
 	std::vector<swPartData*> GetVisibleTrainTrackParts(const swTrainTrackConnectionType& ConnectionType) const;
 
-	// Resolves normalized library IDs, preserving input order and duplicates; missing IDs are skipped.
+	// Resolves library ids in order.
 	std::vector<swPartData*> GetPartsFromSet(const std::vector<std::string>& PartIds) const;
 
-	// Returns the library index key, or an empty string for an unregistered/local identity.
+	// Returns the library index key.
 	std::string GetPartId(const swPartData* PartData) const;
 
 	// Queries primitive sources; FindPrimitive() returns a borrowed entry.
 	swLibraryPrimitive* FindPrimitive(const char* Name) const;
 
-	// Loads shared primitive data, waiting for another worker when necessary.
+	// Loads shared primitive data.
 	swResult<void> LoadPrimitive(swLibraryPrimitive* Primitive);
 
-	// Opens an owned include on the reading thread, positioned at zero, or returns an error.
-	// Part lookup preserves official-first search order; callers decide whether missing includes are fatal.
+	// Opens an include on the reading thread.
 	swResult<std::unique_ptr<swFile>> OpenPrimitiveFile(const swLibraryPrimitive* Primitive);
 	swResult<std::unique_ptr<swFile>> OpenPartDataFile(const char* PartName);
 
-	// Worker builds poll this shutdown flag without consulting live UI state.
+	// Shutdown flag for worker builds.
 	bool ShouldCancelLoading() const
 	{
 		return mCancelLoading.load();
@@ -287,16 +276,16 @@ public:
 		return mThumbnailManager.get();
 	}
 
-	// Rebuilds shared mesh buffers when dirty, using the supplied render context.
+	// Rebuilds dirty mesh buffers.
 	void UpdateBuffers(swContext* Context);
 
-	// Returns borrowed read-only references to the shared vertex and index buffers.
+	// Returns the shared vertex and index buffers.
 	std::pair<const swVertexBuffer&, const swIndexBuffer&> GetBuffers() const
 	{
 		return { mVertexBuffer, mIndexBuffer };
 	}
 
-	// Returns the borrowed placeholder mesh for pending or failed part geometry.
+	// Returns the placeholder mesh.
 	swMesh* GetLoadingMesh() const;
 
 signals:
@@ -310,45 +299,41 @@ protected:
 	friend class swAssetLoader;
 	template<typename T> friend class swAssetReference;
 
-	// Drains the loader and clears parts before sources, textures and archives.
-	// Consumers must release references before teardown; the library remains alive during callbacks.
+	// Drains the loader and clears everything.
 	void Unload();
 
-	// Internal retain/release primitives for scoped references. Retaining never starts work.
-	// Part release also lets the loader cancel unused queued work.
+	// Retain and release for scoped references.
 	void AddPartDataReference(swPartData* PartData);
 	void ReleasePartData(swPartData* PartData);
 	void AddTextureReference(swTexture* Texture);
 	void ReleaseTexture(swTexture* Texture);
 
-	// Snapshots live part/model sources on the UI thread for a private worker build.
+	// Snapshots sources for a worker build.
 	swPartSourceSnapshot SnapshotPartDataSource(const swPartData* PartData) const;
 
-	// Returns a converted private mesh or an error without publishing asset state.
+	// Returns a converted private mesh.
 	swPartBuildResult BuildPartData(const swPartSourceSnapshot& Source);
 
-	// Saves geometry using the settings and cache location captured for the build.
+	// Saves geometry with the build settings.
 	void SaveBuiltPartDataCache(const swPartSourceSnapshot& Source, swMesh& Mesh);
 
 	// Returns private decoded pixels/errors without GL upload or publication.
 	swTextureBuildResult BuildTextureData(const swFileSource& Source);
 
-	// The loader calls this only when cancelling the current request, before releasing its hold.
+	// Called when cancelling the current request.
 	void PartDataLoadCancelled(swPartData* PartData);
 
-	// Publishes current results on the UI thread; the loader rejects stale requests first.
-	// A successful part result may have no mesh when its geometry is empty.
+	// Publishes current results.
 	bool PublishPartDataMesh(swPartData* PartData, std::unique_ptr<swMesh> Mesh, QString Error);
 	bool PublishSynthMesh(swPart* Part, std::unique_ptr<swMesh> Mesh, QString Error);
 
-	// Applies decoded pixels or a decode failure; upload scheduling and retries stay in the loader.
+	// Applies decoded pixels or a failure.
 	void PublishTexture(swTexture* Texture, swTextureBuildResult Result);
 
-	// Opens a resolved source on the reading thread, positioned at zero.
-	// Caller owns the file; archive replacement requires draining workers first.
+	// Opens a resolved source on the reading thread.
 	swResult<std::unique_ptr<swFile>> OpenFile(const swFileSource& Source);
 
-	// Loads an external project, rejecting recursive include cycles.
+	// Loads an external project without cycles.
 	swResult<Project*> LoadExternalProject(const QFileInfo& FileInfo, bool Preview, bool DeferModelMeshRequests);
 
 	// Discovers source entries before workers consume their metadata.
@@ -368,50 +353,48 @@ protected:
 		Directory = 0x0002
 	};
 
-	// Reads/writes Qt-compressed caches with version, size and payload checksum validation.
-	// Archive caches also validate source archive sizes and modification times.
+	// Reads and writes checked compressed caches.
 	bool ReadCacheFile(const QString& FileName, swMemoryFile& CacheFile, CacheType Type);
 	bool WriteCacheFile(const QString& FileName, const swMemoryFile& CacheFile, CacheType Type);
 
-	// Restores/saves descriptions and patterned parent IDs in library index order.
+	// Restores and saves the descriptions.
 	bool LoadCacheIndex(const QString& FileName);
 	bool SaveArchiveCacheIndex(const QString& FileName);
 
-	// Builds primitive data after dependency tracking selects this worker as its loader.
+	// Builds primitive data on its worker.
 	swResult<void> LoadPrimitiveData(swLibraryPrimitive* Primitive);
 
 	static bool IsStudPrimitive(const char* FileName);
 	static bool IsStudStylePrimitive(const char* FileName);
 	static qint32 MeshCacheSettingsKey(swStudStyle StudStyle, bool StudCylinderColorEnabled);
 
-	// Updates placeholder colors and the active stud-style source after settings change.
+	// Updates colors after settings change.
 	void UpdateLoadingMeshColors();
 	void UpdateStudStyleSource();
 
-	// Resolves embedded, project and library texture sources on the UI thread.
+	// Resolves texture sources on the ui thread.
 	static QString FindProjectTextureFile(const QString& ProjectPath, const QString& TextureName);
 	swFileSource ResolveTextureSource(const char* TextureName, const std::vector<QString>& SearchDirectories, const std::map<QString, std::shared_ptr<const swEmbeddedData>>& EmbeddedData, QString& ProjectPath);
 
-	// Defers repacking until work settles, then marks buffers dirty and refreshes views.
+	// Defers repacking until work settles.
 	void ScheduleBufferRepack();
 
 	void ReleaseBuffers();
 
 	using DirectoryFilePaths = std::unordered_map<const swPartData*, QString>;
 
-	// Classifies descriptions, decorations and alias parents after all parts are registered.
-	// Directory paths are temporary discovery metadata; archive entries use their stored indices.
+	// Classifies parts after reading.
 	void ClassifyParts(const DirectoryFilePaths& FilePaths);
 	static std::string ReadAliasTarget(swFile& File);
 
-	// Returns ldrawunf.zip next to the archive library unless an unofficial archive path is set.
+	// Returns the unofficial archive path.
 	QString GetUnofficialArchiveFileName() const;
 
-	// Description cache strings are bounded to the part name/description length limit.
+	// Bounded description cache strings.
 	static bool ReadIndexString(swMemoryFile& File, std::string& String);
 	static bool WriteIndexString(swMemoryFile& File, const std::string& String);
 
-	// Library directory, archive readers and primitive sources; workers drain before replacement or teardown.
+	// Library sources, drained before changes.
 	QDir mLibraryDir;
 	std::unique_ptr<swZipFile> mZipFiles[static_cast<int>(swZipFileType::Count)];
 	std::vector<std::unique_ptr<swLibrarySource>> mSources;
@@ -423,27 +406,26 @@ protected:
 	// Captured before unofficial additions/overrides; custom libraries skip update checks.
 	int mOfficialPartCount = 0;
 
-	// Settings captured by worker source snapshots and mesh cache keys.
+	// Settings captured for worker builds.
 	swStudStyle mStudStyle;
 	bool mStudCylinderColorEnabled;
 
-	// Identity managers and asynchronous services. Unload() clears them in dependency order.
+	// Identity managers and services.
 	std::unique_ptr<swPartManager> mPartManager;
 	std::unique_ptr<swTextureManager> mTextureManager;
 	std::unique_ptr<swAssetLoader> mAssetLoader;
 	std::unique_ptr<swThumbnailManager> mThumbnailManager;
 
-	// UI-thread live synth instances and their last generation errors (empty on success or retry).
-	// Instances unregister before destruction; the library does not own them.
+	// Live synth instances and their errors.
 	std::unordered_map<swPart*, QString> mSynthParts;
 
-	// Active dependency edges include both nested loads and waits on other workers.
+	// Active dependency edges.
 	QMutex mPrimitiveMutex;
 	QWaitCondition mPrimitiveLoaded;
 	std::unordered_map<QThread*, std::vector<swLibraryPrimitive*>> mPrimitiveLoadStacks;
 	std::unordered_map<swLibraryPrimitive*, swLibraryPrimitive*> mPrimitiveDependencies;
 
-	// Normalized texture names mapped to disk paths or archive entry indices.
+	// Texture names to their sources.
 	std::map<QString, QString> mTextureDiskEntries;
 	std::map<QString, int> mTextureArchiveEntries[static_cast<int>(swZipFileType::Count)];
 
@@ -451,7 +433,7 @@ protected:
 	QString mCachePath;
 	qint64 mArchiveCheckSum[4];
 
-	// Shared GPU buffers, placeholder geometry and deferred repacking state.
+	// Shared gpu buffers and repacking state.
 	swVertexBuffer mVertexBuffer;
 	swIndexBuffer mIndexBuffer;
 	bool mBuffersDirty;
@@ -459,6 +441,6 @@ protected:
 	bool mStreamingBuffersPending = false;
 	bool mBufferRepackScheduled = false;
 
-	// Shutdown flag polled by workers while the UI thread drains outstanding builds.
+	// Shutdown flag polled by workers.
 	std::atomic_bool mCancelLoading = false;
 };

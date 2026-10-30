@@ -89,8 +89,7 @@ bool Project::CanShareMergePartData(const swPartData* Existing, const swPartData
 	if (Existing->IsLibraryPart() || Incoming->IsLibraryPart() || Existing->IsModel() || Incoming->IsModel())
 		return false;
 
-	// The callers have already matched filenames. Two missing part references
-	// can share an identity, while failed library parts and models cannot.
+	// missing parts can share an identity
 	if (!Existing->IsProject() && !Incoming->IsProject())
 		return Existing->mState == swAssetState::Failed && Incoming->mState == swAssetState::Failed;
 
@@ -179,7 +178,7 @@ void Project::SetActiveModel(swModel* ActiveModel, bool UpdateInterface)
 	{
 		gMainWindow->SetCurrentModelTab(mActiveModel, true);
 
-		// Restore the current steps of the editing target and its surrounding ancestors.
+		// restore the current steps of the target
 		swView* EditingView = gMainWindow->GetActiveView();
 
 		if (EditingView)
@@ -346,7 +345,7 @@ void Project::ShowModelListDialog()
 			ModelIndex = 0;
 	}
 
-	// Validate the final names before changing any model or index entry.
+	// validate names before changes
 	for (const swModelListDialogEntry& Entry : Results)
 	{
 		const std::string Name = swPartsLibrary::NormalizePartDataName(Entry.Name.toLatin1().constData());
@@ -385,7 +384,7 @@ void Project::ShowModelListDialog()
 		}
 	}
 
-	// Free names being renamed or deleted before applying the new names.
+	// free renamed or deleted names
 	for (const std::unique_ptr<swModel>& OldModel : mModels)
 	{
 		const swModel* Model = OldModel.get();
@@ -409,8 +408,7 @@ void Project::ShowModelListDialog()
 			if (swPartsLibrary::NormalizePartDataName(Entry.Name.toLatin1().constData()) != OldName)
 				continue;
 
-			// A new model can reuse this swPartData. A renamed model keeps its own
-			// swPartData, so references to the deleted model are rebound below.
+			// rebind references to deleted models
 			swGetPartsLibrary()->InvalidatePartDataLoad(OldModel->GetPartData());
 			OldModel->GetPartData()->DetachContainer();
 			OldModel->GetPartData()->SetFailed(tr("Model '%1' was deleted.").arg(Model->GetFileName()));
@@ -425,7 +423,7 @@ void Project::ShowModelListDialog()
 		}
 	}
 
-	// Rename surviving models before loading any duplicates from them.
+	// rename models before loading duplicates
 	for (const swModelListDialogEntry& Entry : Results)
 	{
 		swModel* Model = Entry.ExistingModel;
@@ -447,12 +445,11 @@ void Project::ShowModelListDialog()
 		mModified = true;
 	}
 
-	// Apply original-to-final names together so a later rename cannot rewrite
-	// an earlier rename's history snapshots a second time.
+	// apply all renames together
 	for (const std::unique_ptr<swModel>& Model : mModels)
 		Model->RenameParts(Renames);
 
-	// The instructions name their models and stay with the main model.
+	// instructions stay with the main model
 	std::map<QString, QString> InstructionNames;
 
 	for (const swModelPartRename& Rename : Renames)
@@ -574,7 +571,7 @@ bool Project::HasFileChanged(const QString& Path)
 	if (State.Hash == mFileHash && State.Exists == mFileExists && State.Readable == mFileReadable)
 		return false;
 
-	// Remember the observed contents so duplicate events do not prompt again.
+	// remember contents against duplicate events
 	mFileHash = State.Hash;
 	mFileExists = State.Exists;
 	mFileReadable = State.Readable;
@@ -702,7 +699,7 @@ std::vector<swModelPartsEntry> Project::GetModelParts(swStep Step)
 		}
 	};
 
-	// Export completed geometry without changing which models are being edited.
+	// export geometry without changing edits
 	swScopedModelSteps ModelSteps;
 	ModelSteps.States.reserve(mModels.size());
 
@@ -716,7 +713,7 @@ std::vector<swModelPartsEntry> Project::GetModelParts(swStep Step)
 		mModels[0]->GetModelParts(swMatrix44Identity(), gDefaultColor, ModelParts);
 	else
 	{
-		// a step keeps the parts added up to it in their place at that step
+		// keep parts in place at their step
 		mModels[0]->CalculateStep(Step);
 
 		for (const std::unique_ptr<swPart>& Part : mModels[0]->GetParts())
@@ -817,7 +814,7 @@ void Project::MigrateMetaCommands()
 	mLeoCADMetaCommands = false;
 	mModified = true;
 
-	// Reserialize models instead of keeping their text.
+	// reserialize models
 	for (DocumentBlock& Block : mDocumentBlocks)
 		Block.Baseline.clear();
 }

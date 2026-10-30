@@ -18,7 +18,7 @@ static void swCopyFolder(const QString& Source, const QString& Destination)
 
 static void swMigrateEarlierSettings()
 {
-	// The first start takes over the settings and data stored under the earlier application name, later starts only use their own.
+	// take over earlier application settings once
 	QSettings Settings;
 
 	if (!Settings.allKeys().isEmpty())
@@ -53,7 +53,7 @@ QString swRenameStoredName(QString Name)
 
 static void swMigrateRenamedKeys()
 {
-	// Keys named after pieces or the view sphere take their part and view cube names, their values are newer than any left under the new name.
+	// rename piece and view sphere keys
 	QSettings Settings;
 
 	for (const QString& Key : Settings.allKeys())
@@ -71,7 +71,7 @@ static void swMigrateRenamedKeys()
 
 static void swMigrateRenamedShortcuts()
 {
-	// Keyboard shortcuts are stored by command name, renamed commands keep their keys.
+	// keep keys of renamed commands
 	QSettings Settings;
 	const QString Key = QLatin1String("Settings/Shortcuts");
 	const QString OldShortcuts = QString::fromUtf8(Settings.value(Key).toByteArray());
@@ -105,7 +105,7 @@ static QByteArray swSerializeName(const QString& Name)
 
 static void swMigrateRenamedToolbars()
 {
-	// Toolbars are restored by name, the stored window layout takes the new names so they keep their place.
+	// keep toolbar places under new names
 	const QString RenamedToolbars[][2] =
 	{
 		{ QLatin1String("PiecesToolbar"), QLatin1String("PartsToolbar") }
@@ -127,7 +127,7 @@ static void swMigrateRenamedToolbars()
 
 void swMigrateSettings()
 {
-	// Stored lists of numbers can only be read once their type is known, nothing has registered it this early.
+	// register stored number lists
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 	qRegisterMetaTypeStreamOperators<QList<int>>("QList<int>");
 #endif

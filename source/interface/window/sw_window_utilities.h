@@ -20,7 +20,7 @@ std::optional<float> swParseFloatLocalized(const QString& Value, QLocale Locale)
 void swSetupDialogHelp(QDialog* Dialog, QDialogButtonBox* ButtonBox);
 void swSetupWidgetHelp(QWidget* Root, QDialogButtonBox* ButtonBox);
 
-// Gives dialogs and windows a minimum of a quarter of the screen and a usable size the first time they are shown.
+// Gives windows a usable minimum size.
 class swWindowGeometryFilter : public QObject
 {
 public:
@@ -33,7 +33,7 @@ protected:
 	bool eventFilter(QObject* Object, QEvent* Event) override;
 };
 
-// Keeps every interface of the application readable: spin boxes fit their values, scrolled rows are never cut and floating panels fit their contents.
+// Keeps every interface readable.
 class swInterfaceFitFilter : public QObject
 {
 public:
@@ -46,7 +46,7 @@ protected:
 	bool eventFilter(QObject* Object, QEvent* Event) override;
 };
 
-// Draws dropdown values centered like the button labels of every interface.
+// Centers dropdown values.
 class swInterfaceStyle : public QProxyStyle
 {
 public:
@@ -59,16 +59,16 @@ public:
 	QSize sizeFromContents(ContentsType Type, const QStyleOption* Option, const QSize& Size, const QWidget* Widget) const override;
 };
 
-// Fits a floating panel to its contents, a panel docked at the top or bottom keeps the width of its rows.
+// Fits a floating panel to its contents.
 void swFitFloatingDock(QDockWidget* DockWidget);
 
-// Keeps a panel exactly as tall as its contents, updated whenever its layout changes.
+// Keeps a panel as tall as its contents.
 void swFitHeightToContents(QWidget* Widget);
 
-// Marks a dialog as an input prompt: it wraps its contents, takes a width proportional to its height and cannot be resized.
+// Marks a dialog as an input prompt.
 void swSetInputPrompt(QDialog* Dialog);
 
-// Shows a modal progress dialog for a blocking task once it lasts longer than a moment.
+// Shows progress for a long task.
 class swBlockingProgress
 {
 	Q_DECLARE_TR_FUNCTIONS(swBlockingProgress);
@@ -95,7 +95,7 @@ protected:
 	static swBlockingProgress* mActive;
 };
 
-// Panel rows are plain widgets with a standard row layout, so every panel has the spacing of the minifigure builder panel.
+// Panel rows share a standard layout.
 QSize swGetPanelButtonSize();
 QSize swGetBrowseButtonSize();
 int swGetLayoutSpacing(const QWidget* Widget, Qt::Orientation Orientation);
@@ -110,7 +110,7 @@ void swAddPanelRowStretch(QWidget* Row);
 QToolButton* swAddPanelActionButton(QWidget* Row, QAction* Action);
 QToolButton* swAddPanelOptionsButton(QWidget* Row, QMenu* Menu, const QString& ToolTip, const QString& AccessibleName);
 
-// Interface icons are painted from shapes on a 24 unit grid in the palette text color, so they stay sharp at any size and follow theme changes.
+// Icons are painted on a 24 unit grid.
 enum class swPaintedIcon
 {
 	Gear,
@@ -171,15 +171,15 @@ enum class swPaintedIcon
 QIcon swCreatePaintedIcon(swPaintedIcon Icon);
 QImage swCreatePaintedIconImage(swPaintedIcon Icon, int Size, const QColor& Color);
 
-// Everything that opens or closes shows the chevron of the style, pointing down when open.
+// Draws the style chevron.
 QIcon swCreateDisclosureIcon(bool Expanded, const QPalette& Palette);
 
-// Color buttons show their color as a swatch beside its name and pick a new one below them.
+// Color buttons show a swatch and name.
 QIcon swCreateColorIcon(const QColor& Color, int Size);
 void swUpdateColorButton(QToolButton* Button, const QColor& Color);
 QColor swPickColor(QToolButton* Button, const QColor& Color);
 
-// ScreenPosition selects the monitor independently of the desired popup position.
+// Screen position picks the monitor.
 QPoint swGetPopupPosition(const QPoint& Position, const QSize& Size, const QPoint& ScreenPosition);
 
 #ifdef Q_OS_WIN
@@ -314,14 +314,14 @@ public:
 		return Size;
 	}
 
-	// The button is never narrower than a browse button so it shows at least an ellipsis.
+	// Never narrower than a browse button.
 	QSize minimumSizeHint() const override
 	{
 		return QSize(swGetBrowseButtonSize().width(), QToolButton::sizeHint().height());
 	}
 
 protected:
-	// Text that keeps fewer characters than this when elided shows only an ellipsis.
+	// Shorter elided text shows an ellipsis.
 	static constexpr int SW_ELIDED_TEXT_MINIMUM = 6;
 
 	QString GetDisplayText() const
@@ -342,7 +342,7 @@ protected:
 		return ElidedText;
 	}
 
-	// An elided button shows its full text as the tool tip.
+	// Elided buttons show the full tool tip.
 	bool event(QEvent* Event) override
 	{
 		if (Event->type() == QEvent::ToolTip && GetDisplayText() != text())

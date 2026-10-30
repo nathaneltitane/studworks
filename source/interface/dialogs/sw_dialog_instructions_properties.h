@@ -5,14 +5,14 @@
 
 class swCollapsibleWidgetButton;
 
-// the length arrows move to the next whole increment so converted lengths line up with the unit
+// Length arrows step to whole increments.
 class swInstructionsLengthSpinBox : public swRangeDoubleSpinBox
 {
 public:
 	explicit swInstructionsLengthSpinBox(QWidget* Parent)
 		: swRangeDoubleSpinBox(Parent)
 	{
-		// a typed value applies after a short pause, clicking the page does not take the focus
+		// Typed values apply after a pause.
 		mApplyTimer.setSingleShot(true);
 		mApplyTimer.setInterval(750);
 		connect(&mApplyTimer, &QTimer::timeout, this, &QAbstractSpinBox::interpretText);
@@ -32,7 +32,7 @@ protected:
 	QTimer mApplyTimer;
 };
 
-// use to show the units of a length beside its input, pressing it overrides the page units for that input
+// Shows the units of a length.
 class swInstructionsUnitButton : public QToolButton
 {
 	Q_OBJECT
@@ -177,5 +177,5 @@ protected:
 	QVBoxLayout* mCategoriesLayout = nullptr;
 };
 
-// use to show a length stored in points in the page units
+// Shows a length in page units.
 void swSetupLengthSpinBox(QDoubleSpinBox* SpinBox, swInstructionsPageUnits Units, double Minimum, double Maximum);

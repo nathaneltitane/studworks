@@ -22,7 +22,7 @@ swColorPickerPopup::swColorPickerPopup(QWidget* Parent, int ColorIndex, bool All
 	connect(mColorList, &swColorList::ColorSelected, this, &swColorPickerPopup::ColorSelected);
 	layout->addWidget(mColorList);
 
-	// Resize the popup when the tiles need a different height, so none are cut off.
+	// fit the popup to the tiles
 	connect(mColorList, &swColorList::HeightChanged, this, [this]()
 	{
 		QTimer::singleShot(0, this, [this]()

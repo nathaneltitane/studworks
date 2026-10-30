@@ -7,7 +7,7 @@
 #include "sw_project.h"
 #include "sw_string.h"
 
-// Cache payloads use Qt compression with checksum validation.
+// compressed and checked cache payloads
 constexpr quint32 SW_LIBRARY_CACHE_VERSION = 0x0114;
 
 void swPartsLibrary::ReadArchiveDescriptions(const QString& OfficialFileName, const QString& UnofficialFileName)
@@ -43,7 +43,7 @@ void swPartsLibrary::ReadArchiveDescriptions(const QString& OfficialFileName, co
 	}
 }
 
-// use to read the description line of an archive part
+// use to read an archive part description
 void swPartsLibrary::ReadArchivePartDescription(swPartData* PartData, swMemoryFile& PartFile)
 {
 	mZipFiles[static_cast<int>(PartData->mZipFileType)]->ExtractFile(PartData->mZipFileIndex, PartFile, 256);
@@ -66,7 +66,7 @@ void swPartsLibrary::ReadArchivePartDescription(swPartData* PartData, swMemoryFi
 	}
 }
 
-// use to describe and classify the unofficial archive parts of a folder library
+// use to describe unofficial archive parts
 void swPartsLibrary::ReadUnofficialArchiveDescriptions(const QFileInfoList (&FileLists)[static_cast<int>(swLibraryFolderType::Count)])
 {
 	swMemoryFile PartFile;
@@ -161,7 +161,7 @@ void swPartsLibrary::ReadDirectoryDescriptions(const QFileInfoList (&FileLists)[
 		}
 	}
 
-	// Only process entries retained by the normalized registry after discovery.
+	// only entries kept by the registry
 	Jobs.erase(std::remove_if(Jobs.begin(), Jobs.end(), [this](const DescriptionJob& Job)
 	{
 		return FindPartData(Job.FileInfo.fileName().toLatin1().constData(), nullptr) != Job.PartData;
@@ -233,7 +233,7 @@ void swPartsLibrary::ReadDirectoryDescriptions(const QFileInfoList (&FileLists)[
 
 	ProgressDialog->deleteLater();
 
-	// A target's change, addition or removal can invalidate otherwise unchanged aliases.
+	// target changes invalidate aliases
 	const bool Modified = std::any_of(Jobs.begin(), Jobs.end(), [](const DescriptionJob& Job)
 	{
 		return Job.Modified;
@@ -393,7 +393,7 @@ std::string swPartsLibrary::ReadAliasTarget(swFile& File)
 		if (LineType == 0)
 			continue;
 
-		// Aliases contain exactly one reference and no direct geometry.
+		// aliases hold one reference only
 		if (LineType != 1 || !Target.empty())
 			return std::string();
 
@@ -507,7 +507,7 @@ void swPartsLibrary::ClassifyParts(const DirectoryFilePaths& FilePaths)
 			Current = TargetIt->second;
 		}
 
-		// Only the referencing alias inherits decoration from its target.
+		// only the alias inherits decoration
 		for (auto PartIt = Chain.rbegin(); PartIt != Chain.rend(); PartIt++)
 		{
 			swPartData* PartData = *PartIt;

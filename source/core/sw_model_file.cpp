@@ -26,7 +26,7 @@
 #include "sw_command_meta.h"
 #include <locale.h>
 
-// Meta commands reach the parsers object first.
+// the parsers object reads metas first
 static bool swIsMetaCommand(const QString& Token)
 {
 	return Token == QLatin1String("!SW");
@@ -134,7 +134,9 @@ void swPOVRayOptions::ParseLDrawLine(QTextStream& LineStream)
 	{
 		LineStream >> FloorAxis;
 		if (FloorAxis < 0 || FloorAxis > 2)
-			FloorAxis = 1; // y
+
+			// y
+			FloorAxis = 1;
 	}
 	else if (Token == QLatin1String("FLOOR_COLOR_RGB"))
 	{
@@ -486,7 +488,7 @@ void swModel::LoadLDraw(QIODevice& Device, Project* Project)
 
 			if (Token == QLatin1String("STEP") || Token == QLatin1String("ROTSTEP"))
 			{
-				// ROTSTEP ends the step like STEP and sets its view rotation.
+				// rotstep ends the step with a view
 				if (Token == QLatin1String("ROTSTEP"))
 				{
 					swStepView StepView;
@@ -762,7 +764,8 @@ bool swModel::LoadBinary(swFile* file)
 
 	file->ReadU32(&rgb, 1);
 
-	if (fv < 0.6f) // old view
+	// old view
+	if (fv < 0.6f)
 	{
 		double eye[3], target[3];
 		file->ReadDoubles(eye, 3);

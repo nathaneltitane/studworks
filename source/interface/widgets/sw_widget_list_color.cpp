@@ -37,7 +37,7 @@ void swColorList::UpdateCells()
 			ListGroup.Cells.emplace_back(mCells.size());
 		}
 
-		// Group headers use the same collapsible buttons as the properties panel.
+		// collapsible group headers
 		ListGroup.Button = new swCollapsibleWidgetButton(Group->Name, this);
 		ListGroup.Button->setToolTip(tr("Expand or collapse the %1 colors.").arg(Group->Name));
 
@@ -55,7 +55,7 @@ void swColorList::UpdateCells()
 		mGroups[SW_COLOR_GROUP_SPECIAL].Cells.emplace_back(mCells.size());
 	}
 
-	// Before the first layout the width is only a placeholder, so estimate with the hinted width.
+	// estimate with the hinted width
 	mPreferredHeight = GetHeightForWidth(isVisible() ? width() : sizeHint().width(), &mColumns, &mRows);
 }
 
@@ -67,7 +67,7 @@ int swColorList::GetHeightForWidth(int Width, int* Columns, int* Rows) const
 	for (size_t GroupIdx = 0; GroupIdx < mGroups.size(); GroupIdx++)
 		TextHeight += GetGroupHeaderHeight(mGroups[GroupIdx], GroupIdx == 0);
 
-	// Tiles are always square: the width sets the tile size and the rows set the height.
+	// square tiles
 	const int TargetCellSize = Metrics.height() * 3 / 2;
 	const int ColumnCount = qMax(5, Width / qMax(TargetCellSize, 1));
 	int RowCount = 0;
@@ -87,7 +87,7 @@ int swColorList::GetHeightForWidth(int Width, int* Columns, int* Rows) const
 
 int swColorList::GetGroupHeaderHeight(const swColorListGroup& Group, bool FirstGroup) const
 {
-	// Headers are spaced like the rows of a standard layout, above unless first and below unless collapsed.
+	// space headers like layout rows
 	const int Spacing = swGetLayoutSpacing(this, Qt::Vertical);
 	const int ButtonHeight = Group.Button ? Group.Button->sizeHint().height() : QFontMetrics(font()).height();
 
@@ -126,7 +126,7 @@ void swColorList::UpdateRects()
 			Group.Button->show();
 		}
 
-		// Collapsed groups keep their header but hide their tiles.
+		// collapsed groups hide their tiles
 		if (Group.Collapsed)
 		{
 			for (size_t ColorIdx = 0; ColorIdx < Group.Cells.size(); ColorIdx++)

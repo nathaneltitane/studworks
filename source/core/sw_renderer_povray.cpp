@@ -10,7 +10,7 @@
 #define SW_LGEO_DOWNLOAD_URL "https://github.com/jncraton/lgeo/archive/HEAD.zip"
 #define SW_LGEO_PROJECT_URL "https://github.com/jncraton/lgeo"
 
-// use to run a program with the environment every render uses
+// use to run a program for a render
 static QString swRunPOVRay(const QString& Path, const QStringList& Arguments, int& ExitCode)
 {
 	QProcess Process;
@@ -32,7 +32,7 @@ static QString swRunPOVRay(const QString& Path, const QStringList& Arguments, in
 	return QString::fromLocal8Bit(Process.readAll());
 }
 
-// use to read the version a program reports, cached for the session
+// use to read a program version
 swPOVRayProgram swGetPOVRayProgram(const QString& Path)
 {
 	static std::map<QString, swPOVRayProgram> Programs;
@@ -49,7 +49,8 @@ swPOVRayProgram swGetPOVRayProgram(const QString& Path)
 		return Cached->second;
 
 #if defined(Q_OS_WIN) || defined(Q_OS_MACOS)
-	// the bundled console program is the supported version
+
+	// the bundled console is supported
 	Program.Version = QLatin1String("3.7");
 	Program.VersionMajor = 3;
 	Program.VersionMinor = 7;
@@ -73,7 +74,7 @@ swPOVRayProgram swGetPOVRayProgram(const QString& Path)
 	return Program;
 }
 
-// use to list the places a povray program is installed
+// use to list installed povray programs
 static QStringList swGetPOVRayCandidates()
 {
 	QStringList Candidates;
@@ -91,7 +92,7 @@ static QStringList swGetPOVRayCandidates()
 	Candidates.append(QLatin1String("/usr/local/bin/povray"));
 	Candidates.append(QLatin1String("/snap/bin/povray"));
 
-	// flatpak exports one launcher per application named after its id
+	// one flatpak launcher per application
 	const QStringList FlatpakFolders = { QDir::homePath() + QLatin1String("/.local/share/flatpak/exports/bin"), QLatin1String("/var/lib/flatpak/exports/bin") };
 
 	for (const QString& Folder : FlatpakFolders)
@@ -106,7 +107,7 @@ static QStringList swGetPOVRayCandidates()
 	return Candidates;
 }
 
-// use to find a supported povray, an older one is returned when nothing newer exists
+// use to find a supported povray
 swPOVRayProgram swFindPOVRay()
 {
 	swPOVRayProgram Unsupported;
@@ -132,7 +133,7 @@ swPOVRayProgram swFindPOVRay()
 	return Unsupported;
 }
 
-// use to find the folder of the standard include files beside the program or in its share folder
+// use to find the include folder
 static QString swGetPOVRayIncludePath(const swPOVRayProgram& Program)
 {
 	const QString ProgramFolder = QFileInfo(Program.Path).absolutePath();
@@ -153,7 +154,7 @@ static QString swGetPOVRayIncludePath(const swPOVRayProgram& Program)
 	return QString();
 }
 
-// use to parse a scene that only includes colors.inc, cached for the session
+// use to test the include files
 bool swPOVRayHasIncludeFiles(const swPOVRayProgram& Program)
 {
 	static std::map<QString, bool> Results;
@@ -183,7 +184,7 @@ bool swPOVRayHasIncludeFiles(const swPOVRayProgram& Program)
 	if (!IncludePath.isEmpty())
 		Arguments.append(QLatin1String("+L") + IncludePath);
 
-	// only a missing colors.inc counts, a sandboxed program that cannot see the test file is given the benefit of the doubt
+	// only a missing colors.inc counts
 	int ExitCode = 0;
 	const QString Output = swRunPOVRay(Program.Path, Arguments, ExitCode);
 	const bool HasIncludeFiles = ExitCode == 0 || !Output.contains(QLatin1String("colors.inc"));
@@ -193,19 +194,19 @@ bool swPOVRayHasIncludeFiles(const swPOVRayProgram& Program)
 	return HasIncludeFiles;
 }
 
-// use to tell an lgeo library folder by its element list and definitions
+// use to tell an lgeo folder
 static bool swIsLGEOPath(const QString& Path)
 {
 	return !Path.isEmpty() && QFileInfo::exists(QDir(Path).filePath(QLatin1String("lg_elements.lst"))) && QFileInfo::exists(QDir(Path).filePath(QLatin1String("lg/lg_defs.inc")));
 }
 
-// use to name the lgeo folder downloaded into the data folder
+// use to name the lgeo folder
 static QString swGetDownloadLGEOPath()
 {
 	return QDir::cleanPath(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + QLatin1String("/lgeo"));
 }
 
-// use to find lgeo in preferences, beside the parts library or in the usual folders
+// use to find lgeo
 QString swFindLGEOPath()
 {
 	const QString Path = swGetProfileString(SW_PROFILE_POVRAY_LGEO_PATH);
@@ -248,7 +249,7 @@ QString swFindLGEOPath()
 	return QString();
 }
 
-// use to unpack the downloaded lgeo archive without its top folder
+// use to unpack the lgeo archive
 static bool swExtractLGEO(const QByteArray& Data, const QString& Path)
 {
 	std::unique_ptr<swMemoryFile> ArchiveFile = std::make_unique<swMemoryFile>();
@@ -294,7 +295,7 @@ static bool swExtractLGEO(const QByteArray& Data, const QString& Path)
 	return QDir().rename(TemporaryPath, Path);
 }
 
-// use to download lgeo or choose its folder when none was found
+// use to get a missing lgeo
 QString swSetupLGEO(QWidget* Parent)
 {
 	const QString Title = QCoreApplication::translate("swRenderDialog", "LGEO Library");
@@ -336,7 +337,7 @@ QString swSetupLGEO(QWidget* Parent)
 	return QString();
 }
 
-// use to tell why povray cannot be used and how to install it
+// use to explain a missing povray
 QString swGetPOVRayMissingMessage(const swPOVRayProgram& Program)
 {
 	if (!Program.Version.isEmpty())
@@ -345,7 +346,7 @@ QString swGetPOVRayMissingMessage(const swPOVRayProgram& Program)
 	return QCoreApplication::translate("swRenderDialog", "StudWorks could not find POV-Ray 3.7 or newer.");
 }
 
-// use to choose a povray program when none was found
+// use to choose a povray program
 swPOVRayProgram swSetupPOVRay(QWidget* Parent, const swPOVRayProgram& Found)
 {
 	const QString Title = QCoreApplication::translate("swRenderDialog", "POV-Ray");
@@ -386,7 +387,7 @@ swPOVRayProgram swSetupPOVRay(QWidget* Parent, const swPOVRayProgram& Found)
 	return swPOVRayProgram();
 }
 
-// use to build the arguments every render shares
+// use to build shared render arguments
 QStringList swGetPOVRayArguments(const swPOVRayProgram& Program, swPOVRayRenderQuality Quality, bool UseLGEO)
 {
 	QStringList Arguments;
@@ -440,7 +441,7 @@ QStringList swGetPOVRayArguments(const swPOVRayProgram& Program, swPOVRayRenderQ
 	return Arguments;
 }
 
-// use to keep the system configuration notice out of the log
+// use to keep the config notice out
 QStringList swGetPOVRayEnvironment()
 {
 	QStringList Environment = QProcess::systemEnvironment();

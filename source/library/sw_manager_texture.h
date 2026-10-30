@@ -2,8 +2,7 @@
 
 #include "sw_types_asset.h"
 
-// Creates and reuses textures, tracks their references, and prepares image data.
-// The asset loader handles scheduling, OpenGL uploads, and retries.
+// Creates and reuses textures.
 class swTextureManager
 {
 public:
@@ -15,34 +14,26 @@ public:
 	swTextureManager& operator=(const swTextureManager&) = delete;
 	swTextureManager& operator=(swTextureManager&&) = delete;
 
-	// Deletes all managed textures, regardless of reference count.
-	// Stop workers and release mesh references before calling.
+	// Deletes all textures.
 	void Clear();
 
-	// Returns an existing texture for this source or creates one.
-	// Call on the UI thread and release the returned reference when done.
-	// Returns nullptr for an invalid name or missing source.
+	// Returns or creates a texture.
 	swTexture* AcquireTexture(const char* Name, const swFileSource& Source, const QString& ProjectPath);
 
-	// Detaches textures read from library archives or the library folder so later requests load fresh copies.
-	// Unused ones are deleted now and the rest when their last reference is released.
+	// Detaches library textures.
 	void RetireLibraryTextures(const QString& LibraryDirectory);
 
 	// Keeps a texture alive for another owner.
 	void AddTextureReference(swTexture* Texture);
 
-	// Releases an owner's reference. Unloads unused textures and
-	// deletes temporary textures when their last reference is released.
+	// Releases an owner reference.
 	void ReleaseTexture(swTexture* Texture);
 
-	// Decodes and prepares image pixels for a later OpenGL upload.
-	// Preserves the file position. Workers must use separate file instances.
-	// Returns a DecodeFailed error if loading or preparation fails.
+	// Decodes image pixels for upload.
 	swTextureBuildResult BuildTextureData(swFile& File);
 
 private:
-	// Reads an image from the current file position without advancing it.
-	// Supports memory and disk files; returns DecodeFailed on failure.
+	// Reads an image without advancing.
 	swTextureBuildResult DecodeTextureData(swFile& File);
 
 	QMutex mMutex;

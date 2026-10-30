@@ -5,7 +5,7 @@
 #include "sw_category.h"
 #include "sw_instructions.h"
 
-// the default page setup and grid of new instructions and the options of the instructions window
+// The instructions preferences.
 struct swInstructionsPreferences
 {
 	swInstructionsPageSetup PageSetup;

@@ -319,7 +319,7 @@ void swModelHistorySubModel::SaveEndState(const swModel* Model)
 
 swModel* swModelHistorySubModel::FindSubModel(const swModel* Model) const
 {
-	// the submodel is looked up by name so a deleted submodel is skipped
+	// skip deleted submodels
 	Project* const ModelProject = Model->GetProject();
 
 	return ModelProject ? ModelProject->GetModel(mSubModelName) : nullptr;
@@ -389,7 +389,7 @@ std::unordered_map<uint32_t, swGroup*> swModel::RestoreGroups(const swObjectHist
 {
 	const std::unordered_map<uint32_t, swGroup*> GroupsById = History.RestoreObjects(mGroups);
 
-	// The lookup uses saved IDs, so a parent can be linked before its state is restored.
+	// link parents by saved ids
 	for (const swGroupHistoryState& State : History.States)
 	{
 		const auto Group = GroupsById.find(static_cast<uint32_t>(State.Id));
@@ -415,8 +415,7 @@ void swModel::RestoreParts(const swObjectHistory<swPartHistoryState>& History, c
 			Part->second->SetHistoryState(State, mProject, Group != GroupsById.end() ? Group->second : nullptr);
 	}
 
-	// Model-list changes are not undoable, but older edit states can still name
-	// a submodel that was replaced. Do not restore references that now recurse.
+	// never restore recursive references
 	mParts.erase(std::remove_if(mParts.begin(), mParts.end(), [this](const std::unique_ptr<swPart>& Part)
 	{
 		return Part->mPartData && Part->mPartData->IncludesModel(this);
@@ -501,7 +500,7 @@ void swModel::LoadModelPropertiesState(const swModelProperties& ModelProperties)
 	const bool StepViewsChanged = mProperties.mStepViews != ModelProperties.mStepViews;
 	mProperties = ModelProperties;
 
-	// Undo and redo of step views update the Timeline and turn the view again.
+	// update the timeline and view
 	if (StepViewsChanged && gMainWindow && !mIsPreview)
 	{
 		gMainWindow->UpdateTimeline(false, false);

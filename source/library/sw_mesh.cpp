@@ -284,7 +284,7 @@ void swMesh::ExportPOVRayTriangles(swFile& File, const swMeshSection* Section)
 	std::map<IndexType, int> LocalIndices;
 	std::vector<IndexType> SourceIndices;
 
-	// each section keeps only the vertices its faces use
+	// keep only used vertices
 	for (int Idx = 0; Idx < Section->DrawCount; Idx++)
 		if (LocalIndices.emplace(Indices[Idx], static_cast<int>(SourceIndices.size())).second)
 			SourceIndices.push_back(Indices[Idx]);
@@ -312,7 +312,7 @@ void swMesh::ExportPOVRayTriangles(swFile& File, const swMeshSection* Section)
 			Position = Vertex.Position / 25.0f;
 			Normal = swUnpackNormal(Vertex.Normal);
 
-			// image rows run top down while pov-ray uv space runs bottom up
+			// flip rows for pov-ray uv space
 			TexCoords << QString::fromLatin1("<%1, %2>").arg(Vertex.TexCoord.x).arg(1.0f - Vertex.TexCoord.y);
 		}
 		else
@@ -379,7 +379,7 @@ int swMesh::ExportPOVRay(swFile& File, const char* MeshName, const char** ColorT
 		File.WriteLine("}\n\n");
 	}
 
-	// printed faces layer their image over the part color handed in by each instance
+	// prints layer over the part color
 	if (!DecalSections.empty())
 	{
 		Line = QString::asprintf("#macro sw_%s_decals(BaseTexture)\n%s", MeshName, DecalSections.size() > 1 ? "union {\n" : "");
@@ -688,7 +688,8 @@ bool swMesh::FileSave(swMemoryFile& File)
 
 int swMesh::GetLodIndex(float Distance) const
 {
-	if (swGetPartsLibrary()->GetStudStyle() != swStudStyle::Plain) // todo: support low lod studs
+	// todo low lod studs
+	if (swGetPartsLibrary()->GetStudStyle() != swStudStyle::Plain)
 		return SW_MESH_LOD_HIGH;
 
 	if (mLods[SW_MESH_LOD_LOW].NumSections && (Distance > mRadius))

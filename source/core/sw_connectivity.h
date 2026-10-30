@@ -8,7 +8,7 @@ enum class swConnectionGender
 	Female
 };
 
-// Section shapes of the shadow library: round, axle, square and the two radius extensions.
+// Shadow library section shapes.
 enum class swConnectionShape
 {
 	Round,
@@ -25,7 +25,7 @@ struct swConnectionSection
 	float Length;
 };
 
-// The scaling of a sub-file a shape survives, it is dropped from other scaled sub-files.
+// The sub-file scaling a shape survives.
 enum class swConnectionScale
 {
 	None,
@@ -36,16 +36,21 @@ enum class swConnectionScale
 
 struct swConnectionCylinder
 {
-	swMatrix44 Transform; // In LDraw part coordinates, the shape runs along its -Y axis.
+	// The shape runs along -Y in part coordinates.
+	swMatrix44 Transform;
 	swConnectionGender Gender;
 	std::vector<swConnectionSection> Sections;
 	QString Id;
 	QString Group;
 	bool Center;
-	bool ClosedStart; // The end at the position, or the near end of a centered shape.
+
+	// The end at the position.
+	bool ClosedStart;
 	bool ClosedEnd;
 	swConnectionScale Scale;
-	bool InheritMirrored; // Mirrored shapes flip a radius axis, or are dropped with mirror=none.
+
+	// Mirroring flips a radius axis.
+	bool InheritMirrored;
 
 	float GetLength() const
 	{
@@ -67,7 +72,7 @@ struct swConnectionCylinder
 		return Radius;
 	}
 
-	// Start and end along the shape's axis, from its position.
+	// Start and end along the shape axis.
 	std::pair<float, float> GetExtent() const
 	{
 		const float Length = GetLength();
@@ -76,21 +81,23 @@ struct swConnectionCylinder
 	}
 };
 
-// The shapes of each library part of a model part, at that library part's transform.
+// The shapes of each library part.
 typedef std::vector<std::pair<const std::vector<swConnectionCylinder>*, swMatrix44>> swConnectionShapes;
 
-// How connection shapes fit together, wherever the shapes come from.
+// How connection shapes fit together.
 class swConnectivity
 {
 public:
 	static bool AreCompatible(const swConnectionCylinder& a, const swConnectionCylinder& b);
-	// Whether any of the shapes at Transform is seated in or on any of the other shapes at OtherTransform.
+
+	// Tells if any shapes are seated together.
 	static bool AreConnected(const std::vector<swConnectionCylinder>& Cylinders, const swMatrix44& Transform, const std::vector<swConnectionCylinder>& OtherCylinders, const swMatrix44& OtherTransform);
 	static bool AreConnected(const swConnectionShapes& Shapes, const swConnectionShapes& OtherShapes);
-	// Grows Box to hold the shapes at Transform, connected shapes have overlapping boxes.
+
+	// Grows Box to hold the shapes.
 	static void AddToBoundingBox(const std::vector<swConnectionCylinder>& Cylinders, const swMatrix44& Transform, swBoundingBox& Box);
 
-	// The ranges of offsets from the female's position at which a male shape running the same way fits.
+	// The offsets where a male shape fits.
 	static std::vector<std::pair<float, float>> GetInsertRanges(const swConnectionCylinder& Male, const swConnectionCylinder& Female);
 
 private:

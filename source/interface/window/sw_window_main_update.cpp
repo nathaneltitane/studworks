@@ -50,7 +50,7 @@ void swMainWindow::UpdateSelectedObjects(bool SelectionChanged)
 	{
 		mTimelineWidget->UpdateSelection();
 
-		// Selecting a part makes its color current; picking a color afterwards overrides it.
+		// picked color overrides the part color
 		if (swGetPreferences().mInsertColorMode == swInsertColorMode::SelectedPartColor)
 		{
 			swObject* SelectedPart = (Focus && Focus->IsPart()) ? Focus : nullptr;
@@ -108,7 +108,9 @@ void swMainWindow::UpdateSelectedObjects(bool SelectionChanged)
 		mActions[SW_PART_GROUP_ADD]->setEnabled((Flags & (SW_SELECTION_GROUPED | SW_SELECTION_FOCUS_GROUPED)) == SW_SELECTION_GROUPED);
 		mActions[SW_PART_GROUP_REMOVE]->setEnabled(Flags & SW_SELECTION_FOCUS_GROUPED);
 		mActions[SW_PART_GROUP_EDIT]->setEnabled((Flags & SW_SELECTION_NO_PARTS) == 0);
-		mActions[SW_PART_SHOW_EARLIER]->setEnabled(Flags & SW_SELECTION_PART); // FIXME: disable if current step is 1
+
+		// fixme disable on step 1
+		mActions[SW_PART_SHOW_EARLIER]->setEnabled(Flags & SW_SELECTION_PART);
 		mActions[SW_PART_SHOW_LATER]->setEnabled(Flags & SW_SELECTION_PART);
 		mActions[SW_TIMELINE_MOVE_SELECTION]->setEnabled(Flags & SW_SELECTION_PART);
 		mActions[SW_TIMELINE_MOVE_SELECTION_BEFORE]->setEnabled(Flags & SW_SELECTION_PART);
@@ -163,7 +165,7 @@ void swMainWindow::UpdateSelectedObjects(bool SelectionChanged)
 	if (ActiveModel)
 		ActiveModel->GetFocusPosition(Position);
 
-	// Name the focused object so the coordinates are clearly its position.
+	// name the focused object
 	QString Object;
 
 	if (Focus && Focus->IsPart())
@@ -180,7 +182,7 @@ void swMainWindow::UpdateSelectedObjects(bool SelectionChanged)
 	UpdateStatusSegments();
 }
 
-// use to show the status bar segments turned on in its context menu with a dash between each
+// use to show the chosen segments
 void swMainWindow::UpdateStatusSegments()
 {
 	mStatusBarLabel->setVisible(mStatusSegments & SW_STATUS_SEGMENT_SELECTION);
@@ -208,7 +210,7 @@ void swMainWindow::UpdateStatusSegments()
 	}
 }
 
-// use to show the active view orientation and projection ahead of the focus position
+// use to show the view orientation
 void swMainWindow::UpdateViewOrientation(const swCamera* Camera)
 {
 	float Latitude, Longitude, Distance;
@@ -293,7 +295,7 @@ void swMainWindow::UpdateSnap()
 	mActions[SW_EDIT_SNAP_ANGLE0 + mAngleSnapIndex]->setChecked(true);
 	mActions[SW_EDIT_SNAP_ORBIT_TOGGLE]->setChecked(mOrbitSnapEnabled);
 
-	// Spell out the transform and snap settings from the toolbar, using the same names as their menus.
+	// spell out transform and snap settings
 	auto MenuText = [this](int CommandId)
 	{
 		return mActions[CommandId]->text().remove(QLatin1Char('&'));
@@ -509,7 +511,7 @@ void swMainWindow::UpdateTitle()
 	setWindowModified(swGetActiveProject()->IsModified());
 	setWindowFilePath(swGetActiveProject()->GetTitle());
 
-	// An unsaved model has no folder to open.
+	// unsaved model has no folder
 	mActions[SW_VIEW_TERMINAL_OPEN_MODEL_FOLDER]->setEnabled(!swGetActiveProject()->GetFileName().isEmpty());
 
 	if (swGetPreferences().mTerminalFollowModel)

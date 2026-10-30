@@ -6,7 +6,7 @@
 
 swPartManager::~swPartManager()
 {
-	// Library teardown must unregister identities before destroying this registry.
+	// unregister before destroying
 	Q_ASSERT(mParts.empty() && mProjectParts.empty() && mPartDataLoadErrors.empty());
 }
 
@@ -29,7 +29,7 @@ std::string swPartManager::NormalizePartDataName(const char* PartName)
 
 void swPartManager::Clear()
 {
-	// Workers have drained. External project destruction may reenter through the facade.
+	// workers have drained
 	std::unordered_set<Project*> ExternalProjects;
 	mMutex.lock();
 
@@ -137,7 +137,7 @@ swPartData* swPartManager::AcquireModelPartData(const char* PartName, Project* O
 	if (!Reused)
 		PartData = CreatePartData(PartName, OwnerProject);
 
-	// Keep the identity alive through invalidation and adoption by the model.
+	// keep the identity alive
 	AddPartDataReference(PartData);
 
 	return PartData;
@@ -169,7 +169,7 @@ int swPartManager::ReleasePartData(swPartData* PartData)
 
 void swPartManager::RemoveTemporaryPartData()
 {
-	// Requery after each deletion, since external projects can release other identities.
+	// requery after each deletion
 	for (;;)
 	{
 		mMutex.lock();

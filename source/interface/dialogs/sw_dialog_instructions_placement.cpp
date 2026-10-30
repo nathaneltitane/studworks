@@ -5,7 +5,7 @@
 #include "sw_widget_collapsible.h"
 #include "sw_window_utilities.h"
 
-// the names follow the placement grid row by row, the inner cells lie inside the anchor
+// names follow the placement grid
 static const char* const swPlacementNames[SW_PLACEMENT_COUNT] =
 {
 	QT_TRANSLATE_NOOP("swInstructionsPlacementWidget", "Above, Outside Left"),
@@ -54,7 +54,7 @@ swInstructionsPlacementWidget::swInstructionsPlacementWidget(QWidget* Parent, sw
 	QLabel* AnchorLabel = new QLabel(tr("Relative To"), CentralWidget);
 	Layout->addWidget(AnchorLabel);
 
-	// the anchor buttons are stacked on the left, the placement grid takes the right side level with the first button
+	// anchor buttons left, grid right
 	QHBoxLayout* PlacementLayout = new QHBoxLayout();
 	Layout->addLayout(PlacementLayout);
 
@@ -62,7 +62,7 @@ swInstructionsPlacementWidget::swInstructionsPlacementWidget(QWidget* Parent, sw
 	ButtonsLayout->setSpacing(CentralWidget->style()->pixelMetric(QStyle::PM_LayoutVerticalSpacing));
 	PlacementLayout->addLayout(ButtonsLayout, 1);
 
-	// one button per anchor, the selections are anchors while several elements are selected, the others are disabled
+	// one button per anchor
 	const std::pair<int, QString> AnchorNames[] =
 	{
 		{ static_cast<int>(swInstructionsPlacementAnchor::Area), tr("Page Area") },
@@ -119,7 +119,7 @@ swInstructionsPlacementWidget::swInstructionsPlacementWidget(QWidget* Parent, sw
 	mLockButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	static_cast<QHBoxLayout*>(ResetRow->layout())->addWidget(mLockButton, 1);
 
-	// the grid shows the anchor in its middle, its inner buttons place inside it and its outer ring outside
+	// the anchor sits in the grid middle
 	mGridWidget = new QWidget(CentralWidget);
 	QGridLayout* GridLayout = new QGridLayout(mGridWidget);
 	GridLayout->setContentsMargins(0, 0, 0, 0);
@@ -145,7 +145,7 @@ swInstructionsPlacementWidget::swInstructionsPlacementWidget(QWidget* Parent, sw
 		});
 	}
 
-	// the reset button is as wide as the anchor column above it, the lock button as wide as the placement grid
+	// match the reset and lock widths
 	PlacementLayout->setSpacing(ResetRow->layout()->spacing());
 	mLockButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	mLockButton->setFixedWidth(mGridWidget->sizeHint().width());
@@ -157,7 +157,7 @@ swInstructionsPlacementWidget::swInstructionsPlacementWidget(QWidget* Parent, sw
 	connect(mLockButton, &QToolButton::toggled, this, &swInstructionsPlacementWidget::LockClicked);
 
 
-	// the panel is exactly as tall as its rows wherever it is docked
+	// fit the panel to its rows
 	swFitHeightToContents(CentralWidget);
 
 	connect(mInstructions, &swInstructions::PageLayoutChanged, this, &swInstructionsPlacementWidget::UpdateWidget);
@@ -167,7 +167,7 @@ swInstructionsPlacementWidget::swInstructionsPlacementWidget(QWidget* Parent, sw
 
 QIcon swInstructionsPlacementWidget::CreatePlacementIcon(int Placement, const QPalette& Palette)
 {
-	// the outline is the anchor, the block shows where the element goes
+	// outline the anchor, block the element
 	const int Size = 32;
 	const int Positions[SW_PLACEMENT_GRID_SIZE] = { 1, 9, 13, 17, 25 };
 	const int BlockSize = 6;
@@ -189,14 +189,14 @@ QIcon swInstructionsPlacementWidget::CreatePlacementIcon(int Placement, const QP
 
 void swInstructionsPlacementWidget::SelectionChanged(QGraphicsItem* FocusItem, int SelectionCount)
 {
-	// several elements are placed against one of them instead of their own placements
+	// align several elements to one
 	const bool SelectionModeChanged = (SelectionCount > 1) != (mSelectionCount > 1) || (SelectionCount > 1 && SelectionCount != mSelectionCount);
 	mSelectionCount = SelectionCount;
 
 	swInstructionsElementKey Key;
 	swGetElementKey(FocusItem, Key);
 
-	// the positions of the item are kept to lock or unlock it in place, page rebuilds delete the items
+	// keep item positions for locking
 	if (FocusItem)
 	{
 		mElementPosition = FocusItem->pos();
@@ -296,7 +296,7 @@ void swInstructionsPlacementWidget::AnchorClicked(int Anchor)
 	if (AnchorType == swInstructionsPropertyType::Count)
 		return;
 
-	// the placement moves inside the area or outside the element so it stays valid for the new anchor
+	// keep the placement valid
 	const swInstructionsPropertyType PlacementType = GetPlacementType();
 	const int Placement = swGetValidPlacement(mInstructions->GetIntProperty(PlacementType, nullptr, 0), static_cast<swInstructionsPlacementAnchor>(Anchor) == swInstructionsPlacementAnchor::Area);
 
@@ -315,11 +315,11 @@ void swInstructionsPlacementWidget::PlacementClicked(int Placement)
 
 	const swInstructionsPropertyType PlacementType = GetPlacementType();
 
-	// the element leaves the position it was dragged to
+	// drop the dragged position
 	if (PlacementType != swInstructionsPropertyType::Count)
 		mInstructions->SetElementPlacement(PlacementType, Placement, mElementKey);
 
-	// clicking the current placement changes nothing but unchecks its button
+	// uncheck the current placement
 	UpdateWidget();
 }
 
@@ -338,7 +338,7 @@ void swInstructionsPlacementWidget::LockClicked(bool Locked)
 
 void swInstructionsPlacementWidget::UpdateWidget()
 {
-	// the other selected elements are placed against the first or the last one selected
+	// place against the first or last
 	if (mSelectionCount > 1)
 	{
 		mElementLabel->setText(tr("%1 Elements Selected").arg(mSelectionCount));
@@ -364,11 +364,11 @@ void swInstructionsPlacementWidget::UpdateWidget()
 		return;
 	}
 
-	// a locked element keeps its position, it is neither placed nor dragged
+	// locked elements stay put
 	const bool Locked = mInstructions->IsElementLocked(mElementKey);
 	const bool Active = GetPlacementType() != swInstructionsPropertyType::Count && !Locked;
 
-	// a notice has no placement but returns to where it was added, a pointer follows its elements
+	// notices return to where added
 	const bool Movable = Active || (mElement == swInstructionsPlacementElement::Notice && !Locked);
 
 	mResetPositionButton->setEnabled(Movable && mInstructions->HasElementOffset(mElementKey));
@@ -427,7 +427,7 @@ void swInstructionsPlacementWidget::UpdateWidget()
 	}
 
 	{
-		// the page area and the other step element are the anchors of a single element
+		// anchors of a single element
 		const swInstructionsPropertyType AnchorType = GetAnchorType();
 		int Anchor = static_cast<int>(swInstructionsPlacementAnchor::Area);
 
@@ -454,7 +454,7 @@ void swInstructionsPlacementWidget::UpdateWidget()
 	if (Active)
 		CurrentPlacement = swGetValidPlacement(mInstructions->GetIntProperty(PlacementType, nullptr, 0), Inside);
 
-	// an area takes the inner placements, an element only the outer ring
+	// inner placements for areas
 	for (int Placement = 0; Placement < SW_PLACEMENT_COUNT; Placement++)
 	{
 		QToolButton* Button = mPlacementButtons[Placement];
@@ -476,7 +476,7 @@ swInstructionsGridWidget::swInstructionsGridWidget(QWidget* Parent, swInstructio
 
 	QVBoxLayout* Layout = new QVBoxLayout(CentralWidget);
 
-	// the grid settings apply to every element and need no selection
+	// grid settings need no selection
 	QWidget* GridRow = swCreatePanelRow(CentralWidget);
 	QHBoxLayout* GridRowLayout = static_cast<QHBoxLayout*>(GridRow->layout());
 	Layout->addWidget(GridRow);
@@ -500,7 +500,7 @@ swInstructionsGridWidget::swInstructionsGridWidget(QWidget* Parent, swInstructio
 	mShowGridButton = CreateGridButton(tr("Show Grid"), tr("Draw the page grid on screen, it is never printed."));
 	mSnapToGridButton = CreateGridButton(tr("Snap to Grid"), tr("Snap dragged elements to the page grid."));
 
-	// the grid area and size rows follow the toggles, each name beside its input
+	// grid rows follow the toggles
 	QWidget* GridScopeRow = swCreatePanelRow(CentralWidget);
 	QHBoxLayout* GridScopeRowLayout = static_cast<QHBoxLayout*>(GridScopeRow->layout());
 	Layout->addWidget(GridScopeRow);
@@ -556,7 +556,7 @@ swInstructionsGridWidget::swInstructionsGridWidget(QWidget* Parent, swInstructio
 	GridDivisionsRowLayout->addWidget(mGridDivisionsSpinBox, 1);
 	GridDivisionsLabel->setBuddy(mGridDivisionsSpinBox);
 
-	// the grid and margin lines each take a color with its transparency
+	// grid and margin colors
 	auto CreateColorRow = [CentralWidget, Layout](const QString& Name, const QString& ToolTip, QLabel*& Label)
 	{
 		QWidget* ColorRow = swCreatePanelRow(CentralWidget);
@@ -586,7 +586,7 @@ swInstructionsGridWidget::swInstructionsGridWidget(QWidget* Parent, swInstructio
 	mSecondaryColorButton = CreateColorRow(tr("Secondary Color"), tr("Color of the grid lines at the fractions of a grid unit."), SecondaryColorLabel);
 	mMarginColorButton = CreateColorRow(tr("Margin Color"), tr("Color of the dashed outline of the page margins."), MarginColorLabel);
 
-	// the labels share one width so the inputs line up
+	// labels share one width
 	const QList<QLabel*> Labels = { GridScopeLabel, GridSizeLabel, GridDivisionsLabel, PrimaryColorLabel, SecondaryColorLabel, MarginColorLabel };
 	int LabelWidth = 0;
 
@@ -627,7 +627,7 @@ swInstructionsGridWidget::swInstructionsGridWidget(QWidget* Parent, swInstructio
 			mInstructions->SetMarginColor(Color);
 	});
 
-	// the panel is exactly as tall as its rows wherever it is docked
+	// fit the panel to its rows
 	swFitHeightToContents(CentralWidget);
 
 	connect(mInstructions, &swInstructions::GridChanged, this, &swInstructionsGridWidget::UpdateGrid);

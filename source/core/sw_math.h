@@ -762,7 +762,7 @@ inline swVector4 swVector4FromColor(quint32 Color)
 	return v;
 }
 
-// use to keep the new part highlight and previous step colors visible, their alpha stays between 85 and 95 percent
+// Keeps highlight colors visible.
 inline quint32 swClampStepColorAlpha(quint32 Color)
 {
 	const int Alpha = qBound(217, static_cast<int>(SW_RGBA_ALPHA(Color)), 242);
@@ -1276,7 +1276,8 @@ inline swVector4 swMatrix44ToAxisAngle(const swMatrix44& m)
 	const float Cos = 0.5f * (Trace - 1.0f);
 	swVector4 rot;
 
-	rot[3] = acosf(swClamp(Cos, -1.0f, 1.0f));  // in [0,PI]
+	// In 0 to pi.
+	rot[3] = acosf(swClamp(Cos, -1.0f, 1.0f));
 
 	if (rot[3] > 0.01f)
 	{
@@ -1294,14 +1295,14 @@ inline swVector4 swMatrix44ToAxisAngle(const swMatrix44& m)
 		}
 		else
 		{
-			// angle is PI
+			// Angle is pi.
 			float HalfInverse;
 			if (Rows[0][0] >= Rows[1][1])
 			{
-				// r00 >= r11
+				// R00 at least r11.
 				if (Rows[0][0] >= Rows[2][2])
 				{
-					// r00 is maximum diagonal term
+					// R00 is the largest diagonal term.
 					rot[0] = 0.5f * sqrtf(Rows[0][0] - Rows[1][1] - Rows[2][2] + 1.0f);
 					HalfInverse = 0.5f / rot[0];
 					rot[1] = HalfInverse * Rows[1][0];
@@ -1309,7 +1310,7 @@ inline swVector4 swMatrix44ToAxisAngle(const swMatrix44& m)
 				}
 				else
 				{
-					// r22 is maximum diagonal term
+					// R22 is the largest diagonal term.
 					rot[2] = 0.5f * sqrtf(Rows[2][2] - Rows[0][0] - Rows[1][1] + 1.0f);
 					HalfInverse = 0.5f / rot[2];
 					rot[0] = HalfInverse * Rows[2][0];
@@ -1318,10 +1319,10 @@ inline swVector4 swMatrix44ToAxisAngle(const swMatrix44& m)
 			}
 			else
 			{
-				// r11 > r00
+				// R11 above r00.
 				if (Rows[1][1] >= Rows[2][2])
 				{
-					// r11 is maximum diagonal term
+					// R11 is the largest diagonal term.
 					rot[1] = 0.5f * sqrtf(Rows[1][1] - Rows[0][0] - Rows[2][2] + 1.0f);
 					HalfInverse  = 0.5f / rot[1];
 					rot[0] = HalfInverse * Rows[1][0];
@@ -1329,7 +1330,7 @@ inline swVector4 swMatrix44ToAxisAngle(const swMatrix44& m)
 				}
 				else
 				{
-					// r22 is maximum diagonal term
+					// R22 is the largest diagonal term.
 					rot[2] = 0.5f * sqrtf(Rows[2][2] - Rows[0][0] - Rows[1][1] + 1.0f);
 					HalfInverse = 0.5f / rot[2];
 					rot[0] = HalfInverse * Rows[2][0];
@@ -1340,7 +1341,7 @@ inline swVector4 swMatrix44ToAxisAngle(const swMatrix44& m)
 	}
 	else
 	{
-		// The angle is 0 and the matrix is the identity.
+		// Zero angle gives the identity.
 		rot[0] = 0.0f;
 		rot[1] = 0.0f;
 		rot[2] = 1.0f;
@@ -1455,13 +1456,14 @@ inline swMatrix44 swMatrix44Inverse(const swMatrix44& m)
 	r3[2] = MAT(m,3,2), r3[3] = MAT(m,3,3),
 	r3[7] = 1.0, r3[4] = r3[5] = r3[6] = 0.0;
 
-	// choose pivot - or die
+	// Choose the pivot or fail.
 	if (fabs(r3[0])>fabs(r2[0])) SWAP_ROWS(r3, r2);
 	if (fabs(r2[0])>fabs(r1[0])) SWAP_ROWS(r2, r1);
 	if (fabs(r1[0])>fabs(r0[0])) SWAP_ROWS(r1, r0);
+
 //	if (0.0 == r0[0])  return GL_FALSE;
 
-	// eliminate first variable
+	// Eliminate the first variable.
 	m1 = r1[0]/r0[0]; m2 = r2[0]/r0[0]; m3 = r3[0]/r0[0];
 	s = r0[1]; r1[1] -= m1 * s; r2[1] -= m2 * s; r3[1] -= m3 * s;
 	s = r0[2]; r1[2] -= m1 * s; r2[2] -= m2 * s; r3[2] -= m3 * s;
@@ -1475,12 +1477,13 @@ inline swMatrix44 swMatrix44Inverse(const swMatrix44& m)
 	s = r0[7];
 	if (s != 0.0) { r1[7] -= m1 * s; r2[7] -= m2 * s; r3[7] -= m3 * s; }
 
-	// choose pivot - or die
+	// Choose the pivot or fail.
 	if (fabs(r3[1])>fabs(r2[1])) SWAP_ROWS(r3, r2);
 	if (fabs(r2[1])>fabs(r1[1])) SWAP_ROWS(r2, r1);
+
 //	if (0.0 == r1[1])  return GL_FALSE;
 
-	// eliminate second variable
+	// Eliminate the second variable.
 	m2 = r2[1]/r1[1]; m3 = r3[1]/r1[1];
 	r2[2] -= m2 * r1[2]; r3[2] -= m3 * r1[2];
 	r2[3] -= m2 * r1[3]; r3[3] -= m3 * r1[3];
@@ -1489,11 +1492,12 @@ inline swMatrix44 swMatrix44Inverse(const swMatrix44& m)
 	s = r1[6]; if (0.0 != s) { r2[6] -= m2 * s; r3[6] -= m3 * s; }
 	s = r1[7]; if (0.0 != s) { r2[7] -= m2 * s; r3[7] -= m3 * s; }
 
-	// choose pivot - or die
+	// Choose the pivot or fail.
 	if (fabs(r3[2])>fabs(r2[2])) SWAP_ROWS(r3, r2);
+
 //	if (0.0 == r2[2])  return GL_FALSE;
 
-	// eliminate third variable
+	// Eliminate the third variable.
 	m3 = r3[2]/r2[2];
 	r3[3] -= m3 * r2[3], r3[4] -= m3 * r2[4],
 	r3[5] -= m3 * r2[5], r3[6] -= m3 * r2[6],
@@ -1502,10 +1506,12 @@ inline swMatrix44 swMatrix44Inverse(const swMatrix44& m)
 	// last check
 //	if (0.0 == r3[3]) return GL_FALSE;
 
-	s = 1.0f/r3[3];              // now back substitute row 3
+	// Back substitute row 3.
+	s = 1.0f/r3[3];
 	r3[4] *= s; r3[5] *= s; r3[6] *= s; r3[7] *= s;
 
-	m2 = r2[3];                 // now back substitute row 2
+	// Back substitute row 2.
+	m2 = r2[3];
 	s  = 1.0f/r2[2];
 	r2[4] = s * (r2[4] - r3[4] * m2), r2[5] = s * (r2[5] - r3[5] * m2),
 	r2[6] = s * (r2[6] - r3[6] * m2), r2[7] = s * (r2[7] - r3[7] * m2);
@@ -1516,7 +1522,8 @@ inline swMatrix44 swMatrix44Inverse(const swMatrix44& m)
 	r0[4] -= r3[4] * m0, r0[5] -= r3[5] * m0,
 	r0[6] -= r3[6] * m0, r0[7] -= r3[7] * m0;
 
-	m1 = r1[2];                 // now back substitute row 1
+	// Back substitute row 1.
+	m1 = r1[2];
 	s  = 1.0f/r1[1];
 	r1[4] = s * (r1[4] - r2[4] * m1), r1[5] = s * (r1[5] - r2[5] * m1),
 	r1[6] = s * (r1[6] - r2[6] * m1), r1[7] = s * (r1[7] - r2[7] * m1);
@@ -1524,7 +1531,8 @@ inline swMatrix44 swMatrix44Inverse(const swMatrix44& m)
 	r0[4] -= r2[4] * m0, r0[5] -= r2[5] * m0,
 	r0[6] -= r2[6] * m0, r0[7] -= r2[7] * m0;
 
-	m0 = r0[1];                 // now back substitute row 0
+	// Back substitute row 0.
+	m0 = r0[1];
 	s  = 1.0f/r0[0];
 	r0[4] = s * (r0[4] - r1[4] * m0), r0[5] = s * (r0[5] - r1[5] * m0),
 	r0[6] = s * (r0[6] - r1[6] * m0), r0[7] = s * (r0[7] - r1[7] * m0);
@@ -1900,7 +1908,7 @@ inline void swPolygonPlaneClip(swVector3* InPoints, int NumInPoints, swVector3* 
 			}
 			else
 			{
-				// Outside, inside.
+				// Outside to inside.
 				swLineSegmentPlaneIntersection(&i, *s, *p, Plane);
 
 				OutPoints[*NumOutPoints] = i;
@@ -1913,7 +1921,7 @@ inline void swPolygonPlaneClip(swVector3* InPoints, int NumInPoints, swVector3* 
 		{
 			if (swDot3(*s, Plane) + Plane[3] <= 0)
 			{
-				// Inside, outside.
+				// Inside to outside.
 				swLineSegmentPlaneIntersection(&i, *s, *p, Plane);
 
 				OutPoints[*NumOutPoints] = i;
@@ -1925,7 +1933,7 @@ inline void swPolygonPlaneClip(swVector3* InPoints, int NumInPoints, swVector3* 
 	}
 }
 
-// Return true if a polygon intersects a set of planes.
+// Tests a polygon against planes.
 inline bool swTriangleIntersectsPlanes(const swVector3& p1, const swVector3& p2, const swVector3& p3, const swVector4 (&Planes)[6])
 {
 	constexpr int NumPlanes = 6;
@@ -1933,7 +1941,7 @@ inline bool swTriangleIntersectsPlanes(const swVector3& p1, const swVector3& p2,
 	int Outcodes[3] = { 0, 0, 0 }, i;
 	constexpr int NumPoints = 3;
 
-	// First do the Cohen-Sutherland out code test for trivial rejects/accepts.
+	// Trivial out code test first.
 	for (i = 0; i < NumPoints; i++)
 	{
 		const swVector3 Pt(Points[i][0], Points[i][1], Points[i][2]);
@@ -1949,7 +1957,7 @@ inline bool swTriangleIntersectsPlanes(const swVector3& p1, const swVector3& p2,
 	if ((Outcodes[0] & Outcodes[1] & Outcodes[2]) != 0)
 		return false;
 
-	// If any vertex has an out code of all zeros then we intersect the volume.
+	// A zero out code vertex intersects.
 	if (!Outcodes[0] || !Outcodes[1] || !Outcodes[2])
 		return true;
 
@@ -1976,7 +1984,7 @@ inline bool swTriangleIntersectsPlanes(const swVector3& p1, const swVector3& p2,
 	return true;
 }
 
-// Return true if a ray intersects a bounding box, and calculates the distance from the start of the ray (adapted from Graphics Gems).
+// Intersects a ray with a box.
 inline bool swBoundingBoxRayIntersectDistance(const swVector3& Min, const swVector3& Max, const swVector3& Start, const swVector3& End, float* Dist, swVector3* Intersection, swVector3* Plane)
 {
 	bool MiddleQuadrant[3];
@@ -2032,7 +2040,7 @@ inline bool swBoundingBoxRayIntersectDistance(const swVector3& Min, const swVect
 			MaxT[i] = -1.0f;
 	}
 
-	// Get largest of the MaxT's for final choice of intersection.
+	// Take the largest max t.
 	int WhichPlane = 0;
 	for (i = 1; i < 3; i++)
 		if (MaxT[WhichPlane] < MaxT[i])
@@ -2259,7 +2267,7 @@ inline float swRayPointDistance(const swVector3& Point, const swVector3& Start, 
 	return swLength(Closest - Point);
 }
 
-// Returns true if the axis aligned box intersects the volume defined by planes.
+// Tests a box against planes.
 inline bool swBoundingBoxIntersectsVolume(const swVector3& Min, const swVector3& Max, const swVector4 (&Planes)[6])
 {
 	constexpr int NumPlanes = 6;
@@ -2365,7 +2373,9 @@ bool SphereIntersectsVolume(const Vector3& Center, float Radius, const Vector4* 
 inline swVector3 swRGBToHSL(const swVector3& rgb)
 {
 	int Mi;
-	float M, m, C, h, S, L; // h is H/60
+
+	// H is hue over 60.
+	float M, m, C, h, S, L;
 
 	Mi = (rgb[0] >= rgb[1]) ? 0 : 1;
 	Mi = (rgb[Mi] >= rgb[2]) ? Mi : 2;
@@ -2377,13 +2387,20 @@ inline swVector3 swRGBToHSL(const swVector3& rgb)
 	C = M - m;
 	L = (M + m) / 2.0f;
 
-	if (C < SW_RGB_EPSILON) // C == 0.0
+	// No chroma.
+	if (C < SW_RGB_EPSILON)
 		h = 0.0f;
-	else if (Mi == 0)       // M == R
+	else if (Mi == 0)
+
+		// Max is red.
 		h = 0.0f + (rgb[1] - rgb[2]) / C;
-	else if (Mi == 1)       // M == G
+	else if (Mi == 1)
+
+		// Max is green.
 		h = 2.0f + (rgb[2] - rgb[0]) / C;
-	else                    // M = B
+	else
+
+		// Max is blue.
 		h = 4.0f + (rgb[0] - rgb[1]) / C;
 
 	h = (h <  0.0) ? h + 6.0f : h;
@@ -2431,19 +2448,19 @@ inline swVector4 swAlgorithmicEdgeColor(const swVector3& Value, const float Valu
 	float y1, yt;
 	swVector3 hSL, rgb1, rgbf;
 
-	// Determine luma target
+	// Get the luma target.
 	if (EdgeLum < ValueLum)
 	{
-		// Light base color
+		// Light base color.
 		yt = ValueLum - Contrast * ValueLum;
 	}
 	else
 	{
-		// Dark base color
+		// Dark base color.
 		yt = ValueLum + Contrast * (1.0f - ValueLum);
 	}
 
-	// Get base color in hSL
+	// Get the base color in hsl.
 	hSL = swRGBToHSL(Value);
 
 	// Adjust saturation
@@ -2464,22 +2481,23 @@ inline swVector4 swAlgorithmicEdgeColor(const swVector3& Value, const float Valu
 //	{
 		// Desaturate
 		hSL[1] *= Saturation;
+
 //	}
 
-	// Adjusted color to RGB
+	// Adjusted color to rgb.
 	rgb1 = swHSLToRGB(swVector3(hSL[0], hSL[1], 0.5f));
 
-	// Fix adjusted color luma to target value
+	// Match the luma target.
 	y1 = swLuminescence(rgb1);
 
 	if (yt < y1)
 	{
-		// Make darker via scaling
+		// Darken by scaling.
 		rgbf = (yt/y1) * rgb1;
 	}
 	else
 	{
-		// Make lighter via scaling anti-color
+		// Lighten by scaling the inverse.
 		rgbf = swVector3(1.0f, 1.0f, 1.0f) - rgb1;
 		rgbf *= (1.0f - yt) / (1.0f - y1);
 		rgbf = swVector3(1.0f, 1.0f, 1.0f) - rgbf;

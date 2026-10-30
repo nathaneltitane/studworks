@@ -67,7 +67,7 @@ bool swPropertiesWidget::event(QEvent* Event)
 {
 	const bool Result = QWidget::event(Event);
 
-	// Shown rows changed, so the panel can be resized to fit them.
+	// fit the panel to the shown rows
 	if (Event->type() == QEvent::LayoutRequest)
 		emit LayoutChanged();
 
@@ -212,7 +212,7 @@ void swPropertiesWidget::UpdateBool(swObjectPropertyId PropertyId)
 
 	std::tie(Value, Partial) = GetUpdateValue(PropertyId);
 
-	// A toggle button has no third state, differing values are named instead.
+	// name differing toggle values
 	Button->setChecked(!Partial && Value.toBool());
 	Button->setText(Partial ? tr("%1: Multiple Values").arg(Button->accessibleName()) : Button->accessibleName());
 
@@ -553,7 +553,7 @@ void swPropertiesWidget::IntegerChanged()
 
 	swModel* Model = gMainWindow->GetActiveModel();
 
-	// The value below the range only stands for differing values.
+	// below range means differing values
 	if (!Model || (SpinBox->value() == SpinBox->minimum() && !SpinBox->specialValueText().isEmpty()))
 		return;
 
@@ -573,7 +573,7 @@ void swPropertiesWidget::UpdateInteger(swObjectPropertyId PropertyId)
 
 	std::tie(Value, Partial) = GetUpdateValue(PropertyId);
 
-	// Differing values show as text on a value below the range, which leaves the range when edited.
+	// show differing values as text
 	const int Minimum = SpinBox->specialValueText().isEmpty() ? SpinBox->minimum() : SpinBox->minimum() + 1;
 
 	if (Partial)
@@ -800,7 +800,7 @@ void swPropertiesWidget::UpdateColor(swObjectPropertyId PropertyId)
 
 	QColor Color = Partial ? QColor(128, 128, 128) : swQColorFromVector3(Value.value<swVector3>());
 
-	// The color shows in the light block so the name stays centered like the part color.
+	// color in the light block
 	mIdentityBlocks[static_cast<int>(IdentityIndex::Light)].Color = Color;
 	UpdateIdentityBlock(mIdentityBlocks[static_cast<int>(IdentityIndex::Light)]);
 
@@ -872,7 +872,7 @@ void swPropertiesWidget::UpdatePartColor(swObjectPropertyId PropertyId)
 
 	std::tie(Value, Partial) = GetUpdateValue(PropertyId);
 
-	// With nothing selected the button only names what it edits.
+	// no selection names the target
 	if (!mFocusObject && mSelection.empty())
 	{
 		mIdentityBlocks[static_cast<int>(IdentityIndex::Part)].Color = QColor();
@@ -885,7 +885,8 @@ void swPropertiesWidget::UpdatePartColor(swObjectPropertyId PropertyId)
 
 	const int ColorIndex = Value.toInt();
 	QColor Color = Partial ? QColor(128, 128, 128) : QColor::fromRgbF(gColorList[ColorIndex].Value[0], gColorList[ColorIndex].Value[1], gColorList[ColorIndex].Value[2]);
-	// The color shows in the swatch button so the name stays centered.
+
+	// color in the swatch button
 	mIdentityBlocks[static_cast<int>(IdentityIndex::Part)].Color = Color;
 	UpdateIdentityBlock(mIdentityBlocks[static_cast<int>(IdentityIndex::Part)]);
 
@@ -957,7 +958,7 @@ void swPropertiesWidget::PartIdButtonClicked()
 
 bool swPropertiesWidget::HasVisibleRows() const
 {
-	// Only the scrolling rows count, the identity and transform rows sit outside the list.
+	// count only the scrolling rows
 	for (int Index = 0; Index < mSettingsLayout->count(); Index++)
 	{
 		const QWidget* Widget = mSettingsLayout->itemAt(Index)->widget();
@@ -971,11 +972,11 @@ bool swPropertiesWidget::HasVisibleRows() const
 
 bool swPropertiesWidget::eventFilter(QObject* Object, QEvent* Event)
 {
-	// The identity and transform rows sit outside the list, so their changes also resize the panel.
+	// fixed rows also resize the panel
 	if ((Object == mIdentityRows || Object == mTransformRows) && Event->type() == QEvent::LayoutRequest)
 		emit LayoutChanged();
 
-	// The rows move as rows above them show or hide, the block follows the rows holding its slots.
+	// block follows its slot rows
 	for (IdentityBlock& Block : mIdentityBlocks)
 	{
 		if (std::find_if(Block.Slots.begin(), Block.Slots.end(), [Object](const QWidget* Slot) { return Slot->parentWidget() == Object; }) == Block.Slots.end())
@@ -1003,7 +1004,7 @@ void swPropertiesWidget::UpdateIdentityBlock(IdentityBlock& Block)
 	if (!Block.Swatch)
 		return;
 
-	// The block spans the shown identity rows, the color fills the button inside its border.
+	// block spans the identity rows
 	QWidget* FirstSlot = nullptr;
 	QWidget* LastSlot = nullptr;
 
@@ -1049,7 +1050,7 @@ void swPropertiesWidget::UpdateRowVisible(QWidget* Row)
 	if (!Row)
 		return;
 
-	// A row shows while any of its values is shown, a lone value fills the row.
+	// lone values fill the row
 	bool Visible = false;
 
 	for (const PropertyWidgets& Property : mPropertyWidgets)
@@ -1066,7 +1067,7 @@ void swPropertiesWidget::AddCategory(CategoryIndex Index, const QString& Title, 
 
 	mCurrentCategory->Title = Title;
 
-	// Only collapsible categories have a header, the title still names their properties for accessibility.
+	// title names hidden headers
 	if (!Collapsible)
 		return;
 
@@ -1109,7 +1110,7 @@ swDoubleSpinBox* swPropertiesWidget::CreateFloatEditor(swObjectPropertyId Proper
 
 	Widget->setRange(Min, Max);
 
-	// Single values carry their name and unit, the letter of a vector row names its boxes.
+	// letter names vector rows
 	if (ShowName)
 		Widget->setPrefix(Name + QLatin1Char(' '));
 
@@ -1139,7 +1140,7 @@ QSpinBox* swPropertiesWidget::CreateIntegerEditor(swObjectPropertyId PropertyId,
 	Widget->SetReference();
 	swSetupPanelSpinBox(Widget);
 
-	// Applied on every change like the other value boxes, so the arrows take effect at once.
+	// arrows apply at once
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 	connect(Widget, QOverload<int>::of(&QSpinBox::valueChanged), this, &swPropertiesWidget::IntegerChanged);
 #else
@@ -1158,7 +1159,7 @@ QLineEdit* swPropertiesWidget::CreateStepNumberEditor(swObjectPropertyId Propert
 
 	connect(Widget, &QLineEdit::editingFinished, this, &swPropertiesWidget::StepNumberChanged);
 
-	// An empty removal step keeps the part for the rest of the model.
+	// empty removal step keeps the part
 	if (PropertyId == swObjectPropertyId::PartStepHide)
 		Widget->setPlaceholderText(tr("Never"));
 
@@ -1247,7 +1248,7 @@ QToolButton* swPropertiesWidget::CreatePartColorEditor(swObjectPropertyId Proper
 
 QToolButton* swPropertiesWidget::CreateRowNameButton(QWidget* Row, const QString& Letter, const QString& Name)
 {
-	// A button with a letter for the row takes the place of the transform button so the boxes line up.
+	// row letter replaces the transform button
 	QToolButton* NameButton = new QToolButton(Row);
 	NameButton->setText(Letter);
 	NameButton->setToolTip(Name);
@@ -1282,7 +1283,7 @@ QWidget* swPropertiesWidget::AddValueRow(QWidget* Container, const QString& Lett
 
 void swPropertiesWidget::AddVectorRow(QWidget* Container, const std::array<swObjectPropertyId, 3>& PropertyIds, const QString& Letter, const QString& Name, const QString& ToolTip, bool SupportsKeyFrames, float Min, float Max)
 {
-	// The X, Y and Z values share a row with one keyframe since they are keyed together.
+	// keyed xyz share one row
 	const QString AxisNames[3] = { tr("X"), tr("Y"), tr("Z") };
 	std::vector<RowEditor> Editors;
 
@@ -1297,7 +1298,7 @@ void swPropertiesWidget::AddVectorRow(QWidget* Container, const std::array<swObj
 
 void swPropertiesWidget::AddIdentityRow(IdentityIndex Index, QWidget* Editor, swObjectPropertyId KeyFrameId)
 {
-	// A full width row without a name, the block on the left spans the slots of all the identity rows of the object.
+	// full width identity row
 	IdentityBlock& Block = mIdentityBlocks[static_cast<int>(Index)];
 	QWidget* Row = swCreatePanelRow(mIdentityRows);
 	mIdentityRows->layout()->addWidget(Row);
@@ -1319,14 +1320,14 @@ void swPropertiesWidget::AddIdentityRow(IdentityIndex Index, QWidget* Editor, sw
 
 	if (!Block.Swatch)
 	{
-		// Placed over the slots once the rows are laid out, hidden until then.
+		// hidden until the rows are laid out
 		Block.Swatch = new QToolButton(mIdentityRows);
 		Block.Swatch->setFocusPolicy(Qt::NoFocus);
 		Block.Swatch->setAttribute(Qt::WA_TransparentForMouseEvents);
 		Block.Swatch->hide();
 	}
 
-	// Objects with a color open the same color choice from the block.
+	// block opens the color choice
 	if (PropertyId == swObjectPropertyId::PartColor || PropertyId == swObjectPropertyId::LightColor)
 	{
 		Block.Swatch->setAttribute(Qt::WA_TransparentForMouseEvents, false);
@@ -1338,7 +1339,7 @@ void swPropertiesWidget::AddIdentityRow(IdentityIndex Index, QWidget* Editor, sw
 
 void swPropertiesWidget::CreateWidgets()
 {
-	// The rows sit in the panel layout, which provides the margins.
+	// panel layout gives the margins
 	mSettingsLayout = new QVBoxLayout(this);
 	mSettingsLayout->setContentsMargins(0, 0, 0, 0);
 
@@ -1507,7 +1508,7 @@ void swPropertiesWidget::SetCategoryVisible(CategoryIndex Index, bool Visible)
 
 void swPropertiesWidget::SetEmpty()
 {
-	// Keep the part rows on screen, disabled, so the panel keeps its height.
+	// keep disabled part rows shown
 	SetPart({}, nullptr);
 	setEnabled(false);
 
@@ -1752,7 +1753,7 @@ void swPropertiesWidget::SetLight(const std::vector<swObject*>& Selection, swObj
 	SetPropertyVisible(swObjectPropertyId::LightAreaSizeX, IsAreaLight);
 	SetPropertyVisible(swObjectPropertyId::LightAreaSizeY, IsAreaLight && !IsSquare);
 
-	// Square and disk shapes have a single size.
+	// square and disk have one size
 	if (swDoubleSpinBox* SizeXEditor = qobject_cast<swDoubleSpinBox*>(mPropertyWidgets[static_cast<int>(swObjectPropertyId::LightAreaSizeX)].Editor))
 		SizeXEditor->setPrefix(IsSquare ? tr("Size ") : tr("Size X "));
 
@@ -1787,7 +1788,7 @@ void swPropertiesWidget::Update(const std::vector<swObject*>& Selection, swObjec
 	mSelection.clear();
 	setEnabled(true);
 
-	// edit the whole selection when more than one object is selected
+	// edit the whole selection
 	if (Selection.size() > 1)
 		Focus = nullptr;
 

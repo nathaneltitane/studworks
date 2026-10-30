@@ -78,7 +78,7 @@ void Project::LoadLDrawDocument(const QByteArray& FileData, const Project* Refer
 
 		if (LineType == QLatin1String("0") && Meta == QLatin1String("FILE"))
 		{
-			// Preamble before an explicit first FILE is not part of that model.
+			// skip the preamble before the first file
 			FinishBlock(Pos, false);
 			Type = BlockType::Model;
 			BlockBegin = Pos;
@@ -86,7 +86,7 @@ void Project::LoadLDrawDocument(const QByteArray& FileData, const Project* Refer
 		}
 		else if (LineType == QLatin1String("0") && Meta == QLatin1String("!DATA"))
 		{
-			// Also accept a plain LDR model followed by embedded data.
+			// accept ldr models with embedded data
 			FinishBlock(Pos, HasImplicitGeometry);
 			Type = BlockType::Data;
 			BlockBegin = Pos;
@@ -124,7 +124,7 @@ void Project::LoadLDrawDocument(const QByteArray& FileData, const Project* Refer
 
 	FinishBlock(Buffer.pos(), true);
 
-	// Preserve the existing ability to open an empty ordinary LDraw document.
+	// open empty ldraw documents
 	if (ModelBlocks.empty() && mEmbeddedData.empty())
 		ModelBlocks.push_back({ QFileInfo(mFileName).fileName(), 0, 0, 0 });
 
@@ -165,13 +165,13 @@ void Project::LoadLDrawDocument(const QByteArray& FileData, const Project* Refer
 		mDocumentBlocks[Block.LayoutIndex].OriginalName = Block.FileName;
 	}
 
-	// Legacy clipboard references can use destination parts when no definition was copied.
+	// legacy clipboard references
 	if (ReferenceProject)
 		for (const auto& [Name, PartData] : ReferenceProject->mPartIndex)
 			if (!FindPartData(Name))
 				RegisterPartData(Name, PartData);
 
-	// Every model and asset is registered before geometry resolves references.
+	// register models and assets first
 	for (const std::pair<const ModelBlock*, swModel*>& Entry : Models)
 	{
 		QBuffer ModelBuffer;
@@ -368,13 +368,13 @@ bool Project::Load(const QString& FileName, bool ShowErrors)
 
 bool Project::LoadText(const QByteArray& FileData, const QString& FileName, const QString& ModelName)
 {
-	// an unsaved project names its model like the one the text replaces
+	// name unsaved projects like the old one
 	if (!LoadDocument(FileData, FileName.isEmpty() ? ModelName : FileName, false))
 		return false;
 
 	SetFileName(FileName);
 
-	// the file on disk stays what the watcher compares with, the text is an unsaved change
+	// the replaced text is an unsaved change
 	if (!mIsPreview && !FileName.isEmpty())
 	{
 		const FileState State = ReadFileState(FileName);
@@ -776,7 +776,7 @@ swResult<QByteArray> Project::SerializeModel(const swModel* Root, bool SelectedO
 	if (!Collected)
 		return swUnexpected(Collected.error());
 
-	// A complete model export can retain the original document layout too.
+	// keep the document layout on export
 	bool WholeProject = !SelectedOnly && !LastStep && Root == GetMainModel() && Models.size() == mModels.size();
 
 	for (const ExportEntry& Entry : Models)
