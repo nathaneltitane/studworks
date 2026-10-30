@@ -22,4 +22,5 @@ private slots:
 	void ShadowScalesAndMirrorsSubFileShapes();
 	void ConnectivityFitsShapesAlongTheirAxis();
 	void ConnectivityConnectsSeatedShapes();
+	void POVRayRendersExport();
 };

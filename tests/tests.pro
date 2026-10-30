@@ -26,4 +26,5 @@ SOURCES += \
 	sw_connectivity_test.cpp \
 	sw_object_history_test.cpp \
 	sw_object_property_test.cpp \
+	sw_renderer_povray_test.cpp \
 	main.cpp

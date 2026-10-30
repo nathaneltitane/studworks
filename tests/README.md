@@ -5,6 +5,9 @@ object history, property-key comparisons, and the final animation key after
 step insertion, removal, and key deletion, including 8,000 deterministic
 randomized undo/redo and merge transitions, and how the connection shapes of
 the LDCad shadow library are read and fit together, on made-up parts.
+With `SW_TEST_BINARY` set to a built `studworks`, a one brick model is exported
+to POV-Ray and rendered at 64 x 64 (skipped without POV-Ray, `SW_TEST_LIBRARY`
+sets an optional parts library).
 
 The executable creates a `QCoreApplication`; it does not open windows or require
 an OpenGL context, the parts library, or network access. It uses the same Qt

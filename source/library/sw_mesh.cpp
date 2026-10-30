@@ -341,7 +341,7 @@ void swMesh::ExportPOVRayTriangles(swFile& File, const swMeshSection* Section)
 template<typename IndexType>
 int swMesh::ExportPOVRay(swFile& File, const char* MeshName, const char** ColorTable, const std::map<const swTexture*, QString>& TextureFiles)
 {
-	char Line[1024];
+	QString Line;
 	std::vector<const swMeshSection*> PlainSections, DecalSections;
 
 	for (int SectionIdx = 0; SectionIdx < mLods[SW_MESH_LOD_HIGH].NumSections; SectionIdx++)
@@ -356,8 +356,8 @@ int swMesh::ExportPOVRay(swFile& File, const char* MeshName, const char** ColorT
 
 	if (!PlainSections.empty())
 	{
-		snprintf(Line, sizeof(Line), PlainSections.size() > 1 ? "#declare sw_%s = union {\n" : "#declare sw_%s = mesh2 {\n", MeshName);
-		File.WriteLine(Line);
+		Line = QString::asprintf(PlainSections.size() > 1 ? "#declare sw_%s = union {\n" : "#declare sw_%s = mesh2 {\n", MeshName);
+		File.WriteLine(Line.toUtf8().constData());
 
 		for (const swMeshSection* Section : PlainSections)
 		{
@@ -368,8 +368,8 @@ int swMesh::ExportPOVRay(swFile& File, const char* MeshName, const char** ColorT
 
 			if (Section->ColorIndex != gDefaultColor)
 			{
-				snprintf(Line, sizeof(Line), "  material { %s }\n", ColorTable[Section->ColorIndex]);
-				File.WriteLine(Line);
+				Line = QString::asprintf("  material { %s }\n", ColorTable[Section->ColorIndex]);
+				File.WriteLine(Line.toUtf8().constData());
 			}
 
 			if (PlainSections.size() > 1)
@@ -382,8 +382,8 @@ int swMesh::ExportPOVRay(swFile& File, const char* MeshName, const char** ColorT
 	// printed faces layer their image over the part color handed in by each instance
 	if (!DecalSections.empty())
 	{
-		snprintf(Line, sizeof(Line), "#macro sw_%s_decals(BaseTexture)\n%s", MeshName, DecalSections.size() > 1 ? "union {\n" : "");
-		File.WriteLine(Line);
+		Line = QString::asprintf("#macro sw_%s_decals(BaseTexture)\n%s", MeshName, DecalSections.size() > 1 ? "union {\n" : "");
+		File.WriteLine(Line.toUtf8().constData());
 
 		for (const swMeshSection* Section : DecalSections)
 		{
@@ -391,15 +391,15 @@ int swMesh::ExportPOVRay(swFile& File, const char* MeshName, const char** ColorT
 			ExportPOVRayTriangles<IndexType>(File, Section);
 
 			if (Section->ColorIndex != gDefaultColor)
-				snprintf(Line, sizeof(Line), "  texture { %s_texture }\n", ColorTable[Section->ColorIndex]);
+				Line = QString::asprintf("  texture { %s_texture }\n", ColorTable[Section->ColorIndex]);
 			else
-				snprintf(Line, sizeof(Line), "  texture { BaseTexture }\n");
+				Line = QString::asprintf("  texture { BaseTexture }\n");
 
-			File.WriteLine(Line);
+			File.WriteLine(Line.toUtf8().constData());
 
 			const QByteArray ImageFile = TextureFiles.at(Section->Texture.Get()).toUtf8();
-			snprintf(Line, sizeof(Line), "  texture { pigment { uv_mapping image_map { png \"%s\" once interpolate 2 } } finish { phong Phong phong_size PhongSize } }\n }\n", ImageFile.constData());
-			File.WriteLine(Line);
+			Line = QString::asprintf("  texture { pigment { uv_mapping image_map { png \"%s\" once interpolate 2 } } finish { phong Phong phong_size PhongSize } }\n }\n", ImageFile.constData());
+			File.WriteLine(Line.toUtf8().constData());
 		}
 
 		File.WriteLine(DecalSections.size() > 1 ? "}\n#end\n\n" : "#end\n\n");
