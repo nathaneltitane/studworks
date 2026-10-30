@@ -600,6 +600,31 @@ void swModel::AlignFocusedControlPointTangent()
 	gMainWindow->UpdateSelectedObjects(true);
 }
 
+void swModel::AlignFocusedControlPointAxis(const swVector3& Axis)
+{
+	swPart* Part = dynamic_cast<swPart*>(GetFocusObject());
+
+	if (!Part)
+		return;
+
+	BeginHistorySequence();
+	BeginEditHistory();
+
+	const bool Modified = Part->AlignFocusedControlPointAxis(Axis);
+
+	if (!Modified)
+	{
+		DiscardHistorySequence();
+
+		return;
+	}
+
+	EndEditHistory();
+	EndHistorySequence(tr("Align to Axis"));
+
+	gMainWindow->UpdateSelectedObjects(true);
+}
+
 void swModel::ShowSelectedPartsEarlier()
 {
 	BeginHistorySequence();

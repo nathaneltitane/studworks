@@ -2196,6 +2196,30 @@ const swCommand gCommands[] =
 		"",
 		""
 	},
+	// SW_PART_CONTROL_POINT_ALIGN_X
+	{
+		QT_TRANSLATE_NOOP("Action", "Part.ControlPoint.AlignX"),
+		QT_TRANSLATE_NOOP("Menu", "X Axis"),
+		QT_TRANSLATE_NOOP("Status", "Turn the selected control point along the X axis"),
+		"",
+		""
+	},
+	// SW_PART_CONTROL_POINT_ALIGN_Y
+	{
+		QT_TRANSLATE_NOOP("Action", "Part.ControlPoint.AlignY"),
+		QT_TRANSLATE_NOOP("Menu", "Y Axis"),
+		QT_TRANSLATE_NOOP("Status", "Turn the selected control point along the Y axis"),
+		"",
+		""
+	},
+	// SW_PART_CONTROL_POINT_ALIGN_Z
+	{
+		QT_TRANSLATE_NOOP("Action", "Part.ControlPoint.AlignZ"),
+		QT_TRANSLATE_NOOP("Menu", "Z Axis"),
+		QT_TRANSLATE_NOOP("Status", "Turn the selected control point along the Z axis"),
+		"",
+		""
+	},
 	// SW_PART_TRAIN_TRACK_FOCUS_NEXT
 	{
 		QT_TRANSLATE_NOOP("Action", "Part.TrainTrack.FocusNext"),

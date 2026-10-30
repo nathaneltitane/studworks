@@ -803,6 +803,21 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 			ActiveModel->AlignFocusedControlPointTangent();
 		break;
 
+	case SW_PART_CONTROL_POINT_ALIGN_X:
+		if (ActiveModel)
+			ActiveModel->AlignFocusedControlPointAxis(swVector3(1.0f, 0.0f, 0.0f));
+		break;
+
+	case SW_PART_CONTROL_POINT_ALIGN_Y:
+		if (ActiveModel)
+			ActiveModel->AlignFocusedControlPointAxis(swVector3(0.0f, 1.0f, 0.0f));
+		break;
+
+	case SW_PART_CONTROL_POINT_ALIGN_Z:
+		if (ActiveModel)
+			ActiveModel->AlignFocusedControlPointAxis(swVector3(0.0f, 0.0f, 1.0f));
+		break;
+
 	case SW_PART_TRAIN_TRACK_FOCUS_NEXT:
 		if (ActiveModel)
 			ActiveModel->FocusNextTrainTrack();

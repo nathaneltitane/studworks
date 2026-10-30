@@ -583,6 +583,9 @@ void swModel::GetSelectionInformation(int* Flags, std::vector<swObject*>& Select
 				if (Part->IsControlPointTangentClamped())
 					*Flags |= SW_SELECTION_TANGENT_CLAMPED;
 
+				if (Part->CanAlignControlPoint())
+					*Flags |= SW_SELECTION_CONTROL_POINT_FOCUSED;
+
 				if (Part->GetGroup() != nullptr)
 				{
 					*Flags |= SW_SELECTION_GROUPED;

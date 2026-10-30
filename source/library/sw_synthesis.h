@@ -57,6 +57,13 @@ public:
 		Q_UNUSED(ControlPoints);
 		Q_UNUSED(ControlPointIndex);
 	}
+	// Turns a control point so the path leaves it along a part space direction, curves only.
+	virtual void AlignControlPointDirection(std::vector<swPartControlPoint>& ControlPoints, quint32 ControlPointIndex, const swVector3& Direction) const
+	{
+		Q_UNUSED(ControlPoints);
+		Q_UNUSED(ControlPointIndex);
+		Q_UNUSED(Direction);
+	}
 	// False when the control points are further apart than the part can reach without stretching.
 	virtual bool IsReachable(const std::vector<swPartControlPoint>& ControlPoints) const
 	{

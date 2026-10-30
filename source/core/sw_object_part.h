@@ -185,6 +185,8 @@ public:
 	bool RemoveFocusedControlPoint();
 	bool ToggleFocusedControlPointTangent();
 	bool AlignFocusedControlPointTangent();
+	bool CanAlignControlPoint() const;
+	bool AlignFocusedControlPointAxis(const swVector3& Axis);
 	void VerifyControlPoints(std::vector<swPartControlPoint>& ControlPoints) const;
 	bool IsGeneratedMeshPending() const { return mSynthPending; }
 	// An older mesh may remain visible while its replacement is pending.

@@ -1570,6 +1570,35 @@ bool swPart::AlignFocusedControlPointTangent()
 	return true;
 }
 
+bool swPart::CanAlignControlPoint() const
+{
+	const quint32 Section = GetFocusSection();
+
+	return Section >= SW_PART_SECTION_CONTROL_POINT_FIRST && Section <= SW_PART_SECTION_CONTROL_POINT_LAST && Section - SW_PART_SECTION_CONTROL_POINT_FIRST < mControlPoints.size();
+}
+
+bool swPart::AlignFocusedControlPointAxis(const swVector3& Axis)
+{
+	if (!CanAlignControlPoint())
+		return false;
+
+	const quint32 ControlPointIndex = GetFocusSection() - SW_PART_SECTION_CONTROL_POINT_FIRST;
+	const std::vector<swPartControlPoint> ControlPoints = mControlPoints;
+
+	// the axis is a model axis, control points live in part space
+	const swVector3 Direction = swMultiply(Axis, swMatrix33(swMatrix44AffineInverse(mModelWorld)));
+
+	mControlPoints[ControlPointIndex].TangentClamped = false;
+	mPartData->GetSynthInfo()->AlignControlPointDirection(mControlPoints, ControlPointIndex, Direction);
+
+	if (mControlPoints == ControlPoints)
+		return false;
+
+	UpdateMesh();
+
+	return true;
+}
+
 void swPart::VerifyControlPoints(std::vector<swPartControlPoint>& ControlPoints) const
 {
 	const swSynthesisInformation* SynthInfo = mPartData->GetSynthInfo();

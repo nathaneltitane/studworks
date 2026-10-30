@@ -19,6 +19,7 @@ public:
 	swMatrix33 GetSectionControlPointRotation(const swMatrix44& Section, const swMatrix33& Rotation) const override;
 	void ClampControlPointTangents(std::vector<swPartControlPoint>& ControlPoints) const override;
 	void AlignControlPointTangent(std::vector<swPartControlPoint>& ControlPoints, quint32 ControlPointIndex) const override;
+	void AlignControlPointDirection(std::vector<swPartControlPoint>& ControlPoints, quint32 ControlPointIndex, const swVector3& Direction) const override;
 	bool IsReachable(const std::vector<swPartControlPoint>& ControlPoints) const override;
 	void GetPath(const std::vector<swPartControlPoint>& ControlPoints, std::vector<swVector3>& Points, size_t& ReachedPointCount) const override;
 
@@ -823,14 +824,20 @@ void swSynthesisInformationCurved::AlignControlPointTangent(std::vector<swPartCo
 	if (ControlPointIndex == 0 || ControlPointIndex + 1 >= ControlPoints.size())
 		return;
 
-	swPartControlPoint& ControlPoint = ControlPoints[ControlPointIndex];
 	const swVector3 Chord = ControlPoints[ControlPointIndex + 1].Transform.GetTranslation() - ControlPoints[ControlPointIndex - 1].Transform.GetTranslation();
 
-	if (swLength(Chord) < 0.001f)
+	AlignControlPointDirection(ControlPoints, ControlPointIndex, Chord);
+}
+
+// use to turn a control point so the path leaves it along a direction either way keeping its twist
+void swSynthesisInformationCurved::AlignControlPointDirection(std::vector<swPartControlPoint>& ControlPoints, quint32 ControlPointIndex, const swVector3& Direction) const
+{
+	if (ControlPointIndex >= ControlPoints.size() || swLength(Direction) < 0.001f)
 		return;
 
+	swPartControlPoint& ControlPoint = ControlPoints[ControlPointIndex];
 	const swVector3 Tangent = swNormalize(GetControlPointTangent(ControlPoint.Transform));
-	const swVector3 Target = swNormalize(Chord) * (swDot(Tangent, Chord) < 0.0f ? -1.0f : 1.0f);
+	const swVector3 Target = swNormalize(Direction) * (swDot(Tangent, Direction) < 0.0f ? -1.0f : 1.0f);
 	const swVector3 Axis = swCross(Tangent, Target);
 	const float Cosine = swDot(Tangent, Target);
 
@@ -2053,7 +2060,7 @@ int swSynthesisInformation::InsertControlPoint(std::vector<swPartControlPoint>& 
 	if (BestSegment != UINT32_MAX)
 	{
 		swPartControlPoint ControlPoint = ControlPoints[BestSegment];
-		ControlPoint.TangentClamped = true;
+		ControlPoint.TangentClamped = false;
 		ControlPoint.Transform = swMatrix44(GetSectionControlPointRotation(BestSection, swMatrix33(ControlPoint.Transform)), BestPosition);
 
 		if (BestSegment != ControlPoints.size() - 1)
@@ -2063,6 +2070,7 @@ int swSynthesisInformation::InsertControlPoint(std::vector<swPartControlPoint>& 
 		}
 
 		ControlPoints.insert(ControlPoints.begin() + BestSegment + 1, ControlPoint);
+		AlignControlPointTangent(ControlPoints, BestSegment + 1);
 	}
 
 	return BestSegment + 1;

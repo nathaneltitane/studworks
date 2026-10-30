@@ -356,6 +356,12 @@ void swView::ShowContextMenu() const
 		Popup->addAction(Actions[SW_PART_CONTROL_POINT_INSERT]);
 		Popup->addAction(Actions[SW_PART_CONTROL_POINT_REMOVE]);
 		Popup->addAction(Actions[SW_PART_CONTROL_POINT_ALIGN_TANGENT]);
+
+		QMenu* AxisMenu = Popup->addMenu(tr("Align to Axis"));
+		AxisMenu->addAction(Actions[SW_PART_CONTROL_POINT_ALIGN_X]);
+		AxisMenu->addAction(Actions[SW_PART_CONTROL_POINT_ALIGN_Y]);
+		AxisMenu->addAction(Actions[SW_PART_CONTROL_POINT_ALIGN_Z]);
+
 		Popup->addAction(Actions[SW_PART_CONTROL_POINT_TANGENT]);
 	}
 
