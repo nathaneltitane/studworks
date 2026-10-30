@@ -21,7 +21,8 @@ public:
 	void AlignControlPointTangent(std::vector<swPartControlPoint>& ControlPoints, quint32 ControlPointIndex) const override;
 	void AlignControlPointDirection(std::vector<swPartControlPoint>& ControlPoints, quint32 ControlPointIndex, const swVector3& Direction) const override;
 	bool IsReachable(const std::vector<swPartControlPoint>& ControlPoints) const override;
-	void GetPath(const std::vector<swPartControlPoint>& ControlPoints, std::vector<swVector3>& Points, size_t& ReachedPointCount) const override;
+	void GetPath(const std::vector<swPartControlPoint>& ControlPoints, std::vector<swVector3>& Points, size_t& ReachedPointCount, std::vector<float>& HandleLengths) const override;
+	float GetSpreadForHandleLength(const std::vector<swPartControlPoint>& ControlPoints, quint32 ControlPointIndex, float HandleLength, float CurrentHandleLength) const override;
 
 protected:
 	float GetSectionTwist(const swMatrix44& StartTransform, const swMatrix44& EndTransform) const;
@@ -34,6 +35,7 @@ protected:
 	float GetPathLength(const std::vector<swPartControlPoint>& ControlPoints, const std::vector<float>& Scales, int CurvePointCount, float* BendEnergy) const;
 	float FitPathLength(const std::vector<swPartControlPoint>& ControlPoints, std::vector<float>& Scales, float NominalLength, float* BendEnergy) const;
 	std::vector<float> GetFittedScales(const std::vector<swPartControlPoint>& ControlPoints, float NominalLength, const std::atomic_bool* Cancelled) const;
+	float GetSpreadWeight(float Spread) const;
 	void CalculateSections(const std::vector<swPartControlPoint>& ControlPoints, std::vector<swMatrix44>& Sections, SectionCallbackFunc SectionCallback, const std::atomic_bool* Cancelled) const override;
 	static void AddTubeParts(swLibraryMeshData& MeshData, const std::vector<swMatrix44>& Sections, float Radius, bool IsInner, const std::atomic_bool* Cancelled);
 
@@ -722,10 +724,11 @@ bool swSynthesisInformationCurved::IsReachable(const std::vector<swPartControlPo
 }
 
 // use to get the path line from the first to the last control point and how much of it the part covers
-void swSynthesisInformationCurved::GetPath(const std::vector<swPartControlPoint>& ControlPoints, std::vector<swVector3>& Points, size_t& ReachedPointCount) const
+void swSynthesisInformationCurved::GetPath(const std::vector<swPartControlPoint>& ControlPoints, std::vector<swVector3>& Points, size_t& ReachedPointCount, std::vector<float>& HandleLengths) const
 {
 	Points.clear();
 	ReachedPointCount = 0;
+	HandleLengths.clear();
 
 	if (ControlPoints.size() < 2)
 		return;
@@ -733,6 +736,7 @@ void swSynthesisInformationCurved::GetPath(const std::vector<swPartControlPoint>
 	const int NumPathPoints = 48;
 	const float NominalLength = GetNominalLength();
 	const std::vector<float> Scales = GetFittedScales(ControlPoints, NominalLength, nullptr);
+	HandleLengths = Scales;
 	float PathLength = 0.0f;
 	bool Reached = true;
 	swVector3 PreviousPosition;
@@ -987,13 +991,26 @@ float swSynthesisInformationCurved::FitPathLength(const std::vector<swPartContro
 	return GetPathLength(ControlPoints, Scales, NumFitPoints, BendEnergy);
 }
 
-// use to find the handle lengths that keep the part length and bend it the least like a real hose
+// use to get how much a spread widens its handle against the default, limited so a handle never kinks or loops the path
+float swSynthesisInformationCurved::GetSpreadWeight(float Spread) const
+{
+	return swClamp(Spread / swMaximum(mDefaultScale, 1.0f), 0.25f, 4.0f);
+}
+
+// use to get the handle lengths the path is drawn with: the spreads at the part length, then walked toward the least bending
 std::vector<float> swSynthesisInformationCurved::GetFittedScales(const std::vector<swPartControlPoint>& ControlPoints, float NominalLength, const std::atomic_bool* Cancelled) const
 {
+	// normal spread lets the least bending choose every handle, distributed weight lets the spreads pull on them
+	const bool DistributedSpread = swGetPreferences().mFlexSpreadMode == swFlexSpreadMode::DistributedWeight;
 	std::vector<float> Scales;
 
 	for (const swPartControlPoint& ControlPoint : ControlPoints)
-		Scales.emplace_back(swMaximum(ControlPoint.Scale, 1.0f));
+	{
+		if (DistributedSpread)
+			Scales.emplace_back(swMaximum(mDefaultScale, 1.0f) * GetSpreadWeight(ControlPoint.Scale));
+		else
+			Scales.emplace_back(swMaximum(ControlPoint.Scale, 1.0f));
+	}
 
 	if (ControlPoints.size() < 2 || NominalLength <= 0.0f)
 		return Scales;
@@ -1019,10 +1036,29 @@ std::vector<float> swSynthesisInformationCurved::GetFittedScales(const std::vect
 		return ChordScales;
 	}
 
-	float BestEnergy = 0.0f;
-	FitPathLength(ControlPoints, Scales, NominalLength, &BestEnergy);
+	float SpreadEnergy = 0.0f;
+	FitPathLength(ControlPoints, Scales, NominalLength, &SpreadEnergy);
+	const std::vector<float> SpreadScales = Scales;
 
-	// walk each handle up and down while the bending drops, with smaller steps each round
+	// the spreads pull on their handles but bending wins wherever they would kink the path
+	const float SpreadPull = DistributedSpread ? 0.5f * SpreadEnergy : 0.0f;
+
+	auto GetEnergy = [&](const std::vector<float>& TryScales, float BendEnergy)
+	{
+		float Pull = 0.0f;
+
+		for (size_t ScaleIndex = 0; ScaleIndex < TryScales.size(); ScaleIndex++)
+		{
+			const float Ratio = logf(swMaximum(TryScales[ScaleIndex], 0.001f) / swMaximum(SpreadScales[ScaleIndex], 0.001f));
+			Pull += Ratio * Ratio;
+		}
+
+		return BendEnergy + SpreadPull * Pull;
+	};
+
+	float BestEnergy = GetEnergy(Scales, SpreadEnergy);
+
+	// walk each handle up and down while the energy drops, with smaller steps each round
 	for (float StepFactor = 2.0f; StepFactor > 1.01f; StepFactor = sqrtf(StepFactor))
 	{
 		bool Improved = true;
@@ -1041,8 +1077,9 @@ std::vector<float> swSynthesisInformationCurved::GetFittedScales(const std::vect
 					std::vector<float> TryScales = Scales;
 					TryScales[ScaleIndex] *= Step;
 
-					float Energy = 0.0f;
-					FitPathLength(ControlPoints, TryScales, NominalLength, &Energy);
+					float BendEnergy = 0.0f;
+					FitPathLength(ControlPoints, TryScales, NominalLength, &BendEnergy);
+					const float Energy = GetEnergy(TryScales, BendEnergy);
 
 					if (Energy < BestEnergy * 0.999f)
 					{
@@ -1057,6 +1094,19 @@ std::vector<float> swSynthesisInformationCurved::GetFittedScales(const std::vect
 	}
 
 	return Scales;
+}
+
+// use to find the spread that moves a control point handle toward a length, called again on every drag step it settles on it
+float swSynthesisInformationCurved::GetSpreadForHandleLength(const std::vector<swPartControlPoint>& ControlPoints, quint32 ControlPointIndex, float HandleLength, float CurrentHandleLength) const
+{
+	const float DefaultScale = swMaximum(mDefaultScale, 1.0f);
+
+	if (swGetPreferences().mFlexSpreadMode != swFlexSpreadMode::DistributedWeight)
+		return swMaximum(HandleLength, 1.0f);
+
+	const float Spread = DefaultScale * GetSpreadWeight(ControlPoints[ControlPointIndex].Scale);
+
+	return swClamp(Spread * HandleLength / swMaximum(CurrentHandleLength, 0.01f), 0.25f * DefaultScale, 4.0f * DefaultScale);
 }
 
 void swSynthesisInformationCurved::CalculateSections(const std::vector<swPartControlPoint>& ControlPoints, std::vector<swMatrix44>& Sections, SectionCallbackFunc SectionCallback, const std::atomic_bool* Cancelled) const
@@ -2057,21 +2107,68 @@ int swSynthesisInformation::InsertControlPoint(std::vector<swPartControlPoint>& 
 		}, nullptr
 	);
 
-	if (BestSegment != UINT32_MAX)
+	if (BestSegment == UINT32_MAX)
+		return 0;
+
+	return InsertControlPointAt(ControlPoints, BestSegment, BestTime, BestPosition, BestSection);
+}
+
+// use to add a control point halfway along the path of a part that only has its two ends
+void swSynthesisInformation::AddMiddleControlPoint(std::vector<swPartControlPoint>& ControlPoints) const
+{
+	if (!mCurve || ControlPoints.size() != 2)
+		return;
+
+	struct swPathSample
 	{
-		swPartControlPoint ControlPoint = ControlPoints[BestSegment];
-		ControlPoint.TangentClamped = false;
-		ControlPoint.Transform = swMatrix44(GetSectionControlPointRotation(BestSection, swMatrix33(ControlPoint.Transform)), BestPosition);
+		quint32 SegmentIndex;
+		float Time;
+		swVector3 Position;
+		swMatrix44 Section;
+		float Distance;
+	};
 
-		if (BestSegment != ControlPoints.size() - 1)
+	std::vector<swMatrix44> Sections;
+	std::vector<swPathSample> Samples;
+
+	CalculateSections(ControlPoints, Sections,
+		[&](const swVector3& CurvePoint, quint32 SegmentIndex, float t)
 		{
-			swPartControlPoint NextControlPoint = ControlPoints[BestSegment + 1];
-			ControlPoint.Scale = ControlPoint.Scale * (1.0f - BestTime) + NextControlPoint.Scale * BestTime;
-		}
+			const swVector3 Position = swVector3LDrawToStudWorks(CurvePoint);
+			const float Distance = Samples.empty() ? 0.0f : Samples.back().Distance + swLength(Position - Samples.back().Position);
 
-		ControlPoints.insert(ControlPoints.begin() + BestSegment + 1, ControlPoint);
-		AlignControlPointTangent(ControlPoints, BestSegment + 1);
+			Samples.push_back({ SegmentIndex, t, Position, Sections.back(), Distance });
+		}, nullptr
+	);
+
+	if (Samples.size() < 3)
+		return;
+
+	const float HalfDistance = Samples.back().Distance / 2.0f;
+	size_t SampleIndex = 1;
+
+	while (SampleIndex + 2 < Samples.size() && Samples[SampleIndex].Distance < HalfDistance)
+		SampleIndex++;
+
+	const swPathSample& Sample = Samples[SampleIndex];
+	InsertControlPointAt(ControlPoints, Sample.SegmentIndex, Sample.Time, Sample.Position, Sample.Section);
+}
+
+// use to insert a control point on a path segment, released or clamped as set in preferences and turned along the path
+int swSynthesisInformation::InsertControlPointAt(std::vector<swPartControlPoint>& ControlPoints, quint32 SegmentIndex, float Time, const swVector3& Position, const swMatrix44& Section) const
+{
+	swPartControlPoint ControlPoint = ControlPoints[SegmentIndex];
+	ControlPoint.TangentClamped = swGetPreferences().mFlexClampNewControlPoints;
+	ControlPoint.Transform = swMatrix44(GetSectionControlPointRotation(Section, swMatrix33(ControlPoint.Transform)), Position);
+
+	if (SegmentIndex != ControlPoints.size() - 1)
+	{
+		const swPartControlPoint& NextControlPoint = ControlPoints[SegmentIndex + 1];
+		ControlPoint.Scale = ControlPoint.Scale * (1.0f - Time) + NextControlPoint.Scale * Time;
 	}
 
-	return BestSegment + 1;
+	ControlPoints.insert(ControlPoints.begin() + SegmentIndex + 1, ControlPoint);
+	AlignControlPointTangent(ControlPoints, SegmentIndex + 1);
+
+	return SegmentIndex + 1;
 }

@@ -154,8 +154,13 @@ void swModel::EndMouseTool(swTool Tool, swView* View, bool Accept)
 			swPart* Part = (swPart*)Focus;
 			const quint32 Section = Part->GetFocusSection();
 
-			if (Section >= SW_PART_SECTION_CONTROL_POINT_FIRST && Section <= SW_PART_SECTION_CONTROL_POINT_LAST && SnapControlPointToConnection(Part, Section - SW_PART_SECTION_CONTROL_POINT_FIRST))
+			Part->SetControlPointSeatFound(-1);
+
+			if (Section >= SW_PART_SECTION_CONTROL_POINT_FIRST && Section <= SW_PART_SECTION_CONTROL_POINT_LAST)
+			{
+				SnapControlPointToConnection(Part, Section - SW_PART_SECTION_CONTROL_POINT_FIRST);
 				UpdateAllViews();
+			}
 		}
 
 		EndEditHistory();
@@ -228,6 +233,7 @@ bool swModel::InsertPartToolClicked()
 
 		Part->Initialize(InsertPartInfo.Transform, mCurrentStep);
 		Part->SetColorIndex(InsertPartInfo.ColorIndex);
+		Part->AddInsertedControlPoints();
 		Part->UpdatePosition(mCurrentStep);
 
 		AddPart(Part);
@@ -316,6 +322,21 @@ void swModel::UpdateMoveTool(const swVector3& Distance, bool AllowRelative, bool
 
 	swModelTransformFlags Flags = (AllowRelative ? swModelTransformFlag::Relative : swModelTransformFlag::None) | (AlternateButtonDrag ? swModelTransformFlag::RotatePivotPoint : swModelTransformFlag::None) | (mMouseToolFirstMove ? swModelTransformFlag::FirstMove : swModelTransformFlag::None);
 	MoveSelectedObjects(PartDistance, ObjectDistance, Flags, swModelHistoryEditMerge::None);
+
+	// a dragged end control point shows when dropping it would seat its fitting
+	if (swObject* Focus = GetFocusObject(); Focus && Focus->IsPart())
+	{
+		swPart* Part = (swPart*)Focus;
+		const quint32 Section = Part->GetFocusSection();
+
+		if (Section >= SW_PART_SECTION_CONTROL_POINT_FIRST && Section <= SW_PART_SECTION_CONTROL_POINT_LAST)
+		{
+			const quint32 ControlPointIndex = Section - SW_PART_SECTION_CONTROL_POINT_FIRST;
+			swMatrix44 SeatTransform;
+
+			Part->SetControlPointSeatFound(FindControlPointSeat(Part, ControlPointIndex, SeatTransform) ? static_cast<int>(ControlPointIndex) : -1);
+		}
+	}
 
 	if (mMouseToolMovePositionValid)
 	{

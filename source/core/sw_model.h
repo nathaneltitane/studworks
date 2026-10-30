@@ -576,6 +576,9 @@ protected:
 	static void AddPartShapes(const swPart* Part, const swMatrix44& Transform, swConnectionShapes& Shapes);
 	// Seats the fitting at a dropped end control point of a flexible part on the nearest connection that takes it.
 	bool SnapControlPointToConnection(swPart* Part, quint32 ControlPointIndex) const;
+	// Finds where the fitting at an end control point would seat, in part space, false when no connection in reach takes it.
+	// The surface is the connection face in part space with its normal pointing out of the part it belongs to.
+	bool FindControlPointSeat(const swPart* Part, quint32 ControlPointIndex, swMatrix44& SeatTransform, swVector3* SurfacePosition = nullptr, swVector3* SurfaceNormal = nullptr) const;
 	void AddToSelection(const std::vector<swObject*>& Objects);
 	void RemoveFromSelection(const std::vector<swObject*>& Objects);
 	void BeginEditHistory();

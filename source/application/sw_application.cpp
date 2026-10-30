@@ -5,6 +5,8 @@
 #include "sw_library_shadow.h"
 #include "sw_profile.h"
 #include "sw_project.h"
+#include "sw_model.h"
+#include "sw_object_part.h"
 #include "sw_window_main.h"
 #include "sw_dialog_preferences.h"
 #include "sw_widget_selection_part.h"
@@ -104,6 +106,9 @@ void swPreferences::LoadDefaults()
 	mPartsSnapToTiles = swGetProfileInteger(SW_PROFILE_PARTS_SNAP_TO_TILES);
 	mTerminalFollowModel = swGetProfileInteger(SW_PROFILE_TERMINAL_FOLLOW_MODEL);
 	mInsertColorMode = static_cast<swInsertColorMode>(qBound(0, swGetProfileInteger(SW_PROFILE_INSERT_COLOR_MODE), static_cast<int>(swInsertColorMode::LastInsertedColor)));
+	mFlexSpreadMode = static_cast<swFlexSpreadMode>(qBound(0, swGetProfileInteger(SW_PROFILE_FLEX_SPREAD_MODE), static_cast<int>(swFlexSpreadMode::DistributedWeight)));
+	mFlexClampNewControlPoints = swGetProfileInteger(SW_PROFILE_FLEX_CLAMP_NEW_CONTROL_POINTS);
+	mFlexMiddleControlPoint = swGetProfileInteger(SW_PROFILE_FLEX_MIDDLE_CONTROL_POINT);
 	mWatchFileChanges = swGetProfileInteger(SW_PROFILE_WATCH_FILE_CHANGES);
 	mLoadPartsBeforeShowing = swGetProfileInteger(SW_PROFILE_LOAD_PARTS_BEFORE_SHOWING);
 	mMigrateMetaCommands = swGetProfileInteger(SW_PROFILE_MIGRATE_META_COMMANDS);
@@ -132,8 +137,10 @@ void swPreferences::LoadDefaults()
 	mLightColor = swGetProfileUnsignedInteger(SW_PROFILE_LIGHT_COLOR);
 	mControlPointColor = swGetProfileUnsignedInteger(SW_PROFILE_CONTROL_POINT_COLOR);
 	mControlPointFocusedColor = swGetProfileUnsignedInteger(SW_PROFILE_CONTROL_POINT_FOCUSED_COLOR);
+	mControlPointSeatedColor = swGetProfileUnsignedInteger(SW_PROFILE_CONTROL_POINT_SEATED_COLOR);
 	mPathColor = swGetProfileUnsignedInteger(SW_PROFILE_PATH_COLOR);
 	mPathOutOfReachColor = swGetProfileUnsignedInteger(SW_PROFILE_PATH_OUT_OF_REACH_COLOR);
+	mSpreadHandleColor = swGetProfileUnsignedInteger(SW_PROFILE_SPREAD_HANDLE_COLOR);
 }
 
 void swPreferences::SaveDefaults()
@@ -211,6 +218,9 @@ void swPreferences::SaveDefaults()
 	swSetProfileInteger(SW_PROFILE_PARTS_SNAP_TO_TILES, mPartsSnapToTiles);
 	swSetProfileInteger(SW_PROFILE_TERMINAL_FOLLOW_MODEL, mTerminalFollowModel);
 	swSetProfileInteger(SW_PROFILE_INSERT_COLOR_MODE, static_cast<int>(mInsertColorMode));
+	swSetProfileInteger(SW_PROFILE_FLEX_SPREAD_MODE, static_cast<int>(mFlexSpreadMode));
+	swSetProfileInteger(SW_PROFILE_FLEX_CLAMP_NEW_CONTROL_POINTS, mFlexClampNewControlPoints);
+	swSetProfileInteger(SW_PROFILE_FLEX_MIDDLE_CONTROL_POINT, mFlexMiddleControlPoint);
 	swSetProfileInteger(SW_PROFILE_WATCH_FILE_CHANGES, mWatchFileChanges);
 	swSetProfileInteger(SW_PROFILE_LOAD_PARTS_BEFORE_SHOWING, mLoadPartsBeforeShowing);
 	swSetProfileInteger(SW_PROFILE_MIGRATE_META_COMMANDS, mMigrateMetaCommands);
@@ -239,8 +249,10 @@ void swPreferences::SaveDefaults()
 	swSetProfileUnsignedInteger(SW_PROFILE_LIGHT_COLOR, mLightColor);
 	swSetProfileUnsignedInteger(SW_PROFILE_CONTROL_POINT_COLOR, mControlPointColor);
 	swSetProfileUnsignedInteger(SW_PROFILE_CONTROL_POINT_FOCUSED_COLOR, mControlPointFocusedColor);
+	swSetProfileUnsignedInteger(SW_PROFILE_CONTROL_POINT_SEATED_COLOR, mControlPointSeatedColor);
 	swSetProfileUnsignedInteger(SW_PROFILE_PATH_COLOR, mPathColor);
 	swSetProfileUnsignedInteger(SW_PROFILE_PATH_OUT_OF_REACH_COLOR, mPathOutOfReachColor);
+	swSetProfileUnsignedInteger(SW_PROFILE_SPREAD_HANDLE_COLOR, mSpreadHandleColor);
 }
 
 struct swRenderTargetProfileKeys
@@ -2028,6 +2040,7 @@ void swApplication::ShowPreferencesDialog()
 	EdgeColorSettingsChanged |= Options.Preferences.mDarkEdgeColorEnabled != mPreferences.mDarkEdgeColorEnabled;
 	EdgeColorSettingsChanged |= Options.Preferences.mDarkEdgeColor != mPreferences.mDarkEdgeColor;
 	bool WatchFileChangesChanged = Options.Preferences.mWatchFileChanges != mPreferences.mWatchFileChanges;
+	const bool FlexSpreadModeChanged = Options.Preferences.mFlexSpreadMode != mPreferences.mFlexSpreadMode;
 	const swRenderSettings OldPartsRendering = mPreferences.GetRenderSettings(swRenderTarget::Parts);
 	const swRenderSettings NewPartsRendering = Options.Preferences.GetRenderSettings(swRenderTarget::Parts);
 	const bool PartsRenderingChanged = OldPartsRendering.ShadingMode != NewPartsRendering.ShadingMode || OldPartsRendering.DrawEdgeLines != NewPartsRendering.DrawEdgeLines ||
@@ -2042,6 +2055,13 @@ void swApplication::ShowPreferencesDialog()
 
 	if (WatchFileChangesChanged && mProject)
 		mProject->UpdateFileWatcher();
+
+	// flexible parts redraw their paths with the new spread
+	if (FlexSpreadModeChanged && mProject)
+		for (const std::unique_ptr<swModel>& Model : mProject->GetModels())
+			for (const std::unique_ptr<swPart>& Part : Model->GetParts())
+				if (!Part->GetControlPoints().empty())
+					Part->SetControlPoints(Part->GetControlPoints());
 	if (PartsRenderingChanged && gMainWindow && gMainWindow->GetPartSelectionWidget())
 		gMainWindow->GetPartSelectionWidget()->UpdateThumbnails();
 	if (gMainWindow && gMainWindow->GetPreviewWidget())

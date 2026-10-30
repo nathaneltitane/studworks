@@ -514,7 +514,7 @@ void swPart::RayTest(swObjectRayTest& ObjectRayTest) const
 
 		for (quint32 ControlPointIndex = 0; ControlPointIndex < mControlPoints.size(); ControlPointIndex++)
 		{
-			const swMatrix44 InverseTransform = swMatrix44AffineInverse(mControlPoints[ControlPointIndex].Transform);
+			const swMatrix44 InverseTransform = swMatrix44AffineInverse(GetControlPointCubeTransform(ControlPointIndex));
 			const swVector3 PointStart = swMultiply31(Start, InverseTransform);
 			const swVector3 PointEnd = swMultiply31(End, InverseTransform);
 
@@ -726,16 +726,20 @@ void swPart::DrawSynthInterface(swContext* Context, const swMatrix44& WorldMatri
 	const swPreferences& Preferences = swGetPreferences();
 	const swVector4 ControlPointColor = swVector4FromColor(Preferences.mControlPointColor);
 	const swVector4 ControlPointFocusedColor = swVector4FromColor(Preferences.mControlPointFocusedColor);
+	const swVector4 ControlPointSeatedColor = swVector4FromColor(Preferences.mControlPointSeatedColor);
 
 	for (quint32 ControlPointIndex = 0; ControlPointIndex < mControlPoints.size(); ControlPointIndex++)
 	{
-		Context->SetWorldMatrix(swMultiply(mControlPoints[ControlPointIndex].Transform, WorldMatrix));
+		Context->SetWorldMatrix(swMultiply(GetControlPointCubeTransform(ControlPointIndex), WorldMatrix));
 
 		Context->SetVertexBufferPointer(Verts);
 		Context->SetVertexFormatPosition(3);
 		Context->SetIndexBufferPointer(Indices);
 
-		if (IsFocused(SW_PART_SECTION_CONTROL_POINT_FIRST + ControlPointIndex))
+		// an end that sits on a connection, or would on release, takes the seated color
+		if (static_cast<int>(ControlPointIndex) == mControlPointSeatFound || IsControlPointSeated(ControlPointIndex))
+			Context->SetColor(ControlPointSeatedColor);
+		else if (IsFocused(SW_PART_SECTION_CONTROL_POINT_FIRST + ControlPointIndex))
 			Context->SetColor(ControlPointFocusedColor);
 		else
 			Context->SetColor(ControlPointColor);
@@ -746,11 +750,7 @@ void swPart::DrawSynthInterface(swContext* Context, const swMatrix44& WorldMatri
 	Context->EnableCullFace(false);
 
 	// the path line shows through the part, past the part length it takes the out of reach color
-	if (mPathControlPoints != mControlPoints)
-	{
-		mPathControlPoints = mControlPoints;
-		mPartData->GetSynthInfo()->GetPath(mControlPoints, mPathPoints, mPathReachedPointCount);
-	}
+	UpdatePathCache();
 
 	if (mPathPoints.size() > 1)
 	{
@@ -1508,6 +1508,90 @@ bool swPart::InsertControlPoint(const swVector3& WorldStart, const swVector3& Wo
 	return false;
 }
 
+// use to give a newly inserted flexible part its middle control point
+void swPart::AddInsertedControlPoints()
+{
+	if (!swGetPreferences().mFlexMiddleControlPoint || mControlPoints.size() != 2 || !CanAddControlPoint())
+		return;
+
+	mPartData->GetSynthInfo()->AddMiddleControlPoint(mControlPoints);
+	UpdateMesh();
+}
+
+// use to remember the world place an end control point was seated at and the surface it sits on
+void swPart::SetControlPointSeated(quint32 ControlPointIndex, const swVector3& SurfacePosition, const swVector3& SurfaceNormal)
+{
+	if (ControlPointIndex >= mControlPoints.size())
+		return;
+
+	const swControlPointSeat Seat = { ControlPointIndex, swMultiply(mControlPoints[ControlPointIndex].Transform, mModelWorld), SurfacePosition, SurfaceNormal };
+
+	for (swControlPointSeat& OtherSeat : mControlPointSeats)
+	{
+		if (OtherSeat.ControlPointIndex == ControlPointIndex)
+		{
+			OtherSeat = Seat;
+			return;
+		}
+	}
+
+	mControlPointSeats.push_back(Seat);
+}
+
+// use to get the seat of an end control point that still sits where it was seated
+const swPart::swControlPointSeat* swPart::GetControlPointSeat(quint32 ControlPointIndex) const
+{
+	if (ControlPointIndex >= mControlPoints.size())
+		return nullptr;
+
+	const swMatrix44 WorldTransform = swMultiply(mControlPoints[ControlPointIndex].Transform, mModelWorld);
+
+	for (const swControlPointSeat& Seat : mControlPointSeats)
+	{
+		if (Seat.ControlPointIndex != ControlPointIndex)
+			continue;
+
+		const swVector3 Axis = swMultiply30(swVector3(0.0f, 0.0f, 1.0f), WorldTransform);
+		const swVector3 SeatAxis = swMultiply30(swVector3(0.0f, 0.0f, 1.0f), Seat.WorldTransform);
+
+		if (swLength(WorldTransform.GetTranslation() - Seat.WorldTransform.GetTranslation()) < 0.01f && swDot(Axis, SeatAxis) > 0.9999f)
+			return &Seat;
+
+		return nullptr;
+	}
+
+	return nullptr;
+}
+
+bool swPart::IsControlPointSeated(quint32 ControlPointIndex) const
+{
+	return GetControlPointSeat(ControlPointIndex) != nullptr;
+}
+
+// use to move a seated control point cube out of its connection until its face rests on the surface
+swMatrix44 swPart::GetControlPointCubeTransform(quint32 ControlPointIndex) const
+{
+	swMatrix44 Transform = mControlPoints[ControlPointIndex].Transform;
+	const swControlPointSeat* Seat = GetControlPointSeat(ControlPointIndex);
+
+	if (!Seat)
+		return Transform;
+
+	// how far the cube reaches along the surface normal from its center
+	float Extent = 0.0f;
+
+	for (int AxisIndex = 0; AxisIndex < 3; AxisIndex++)
+		Extent += fabsf(swDot(swNormalize(swVector3(Transform[AxisIndex])), Seat->SurfaceNormal));
+
+	Extent *= SW_PART_CONTROL_POINT_SIZE;
+
+	const swVector3 Position = Transform.GetTranslation();
+	const float Height = swDot(Position - Seat->SurfacePosition, Seat->SurfaceNormal);
+	Transform.SetTranslation(Position + Seat->SurfaceNormal * (Extent - Height));
+
+	return Transform;
+}
+
 bool swPart::RemoveFocusedControlPoint()
 {
 	quint32 Section = GetFocusSection();
@@ -1527,6 +1611,35 @@ bool swPart::RemoveFocusedControlPoint()
 	UpdateMesh();
 
 	return true;
+}
+
+void swPart::UpdatePathCache() const
+{
+	if (mPathControlPoints == mControlPoints || !mPartData || !mPartData->GetSynthInfo())
+		return;
+
+	mPathControlPoints = mControlPoints;
+	mPartData->GetSynthInfo()->GetPath(mControlPoints, mPathPoints, mPathReachedPointCount, mPathHandleLengths);
+}
+
+float swPart::GetControlPointHandleLength(quint32 ControlPointIndex) const
+{
+	UpdatePathCache();
+
+	if (ControlPointIndex < mPathHandleLengths.size())
+		return mPathHandleLengths[ControlPointIndex];
+
+	return ControlPointIndex < mControlPoints.size() ? mControlPoints[ControlPointIndex].Scale : 0.0f;
+}
+
+void swPart::SetControlPointHandleLength(quint32 ControlPointIndex, float HandleLength)
+{
+	if (ControlPointIndex >= mControlPoints.size() || !mPartData || !mPartData->GetSynthInfo())
+		return;
+
+	const float CurrentHandleLength = GetControlPointHandleLength(ControlPointIndex);
+	mControlPoints[ControlPointIndex].Scale = mPartData->GetSynthInfo()->GetSpreadForHandleLength(mControlPoints, ControlPointIndex, HandleLength, CurrentHandleLength);
+	UpdateMesh();
 }
 
 bool swPart::CanClampControlPointTangent() const
@@ -1695,6 +1808,7 @@ void swPart::UpdatePosition(swStep Step)
 void swPart::UpdateMesh()
 {
 	mSynthPending = mPartData && mPartData->GetSynthInfo();
+	mPathControlPoints.clear();
 
 	if (mSynthPending)
 	{

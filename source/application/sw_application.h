@@ -86,6 +86,12 @@ enum class swInsertColorMode
 	LastInsertedColor
 };
 
+enum class swFlexSpreadMode
+{
+	Normal,
+	DistributedWeight
+};
+
 enum class swAxisIconLocation
 {
 	TopLeft,
@@ -239,6 +245,9 @@ public:
 	bool mPartsSnapToTiles;
 	bool mTerminalFollowModel;
 	swInsertColorMode mInsertColorMode;
+	swFlexSpreadMode mFlexSpreadMode;
+	bool mFlexClampNewControlPoints;
+	bool mFlexMiddleControlPoint;
 	bool mWatchFileChanges;
 	bool mLoadPartsBeforeShowing;
 	bool mMigrateMetaCommands;
@@ -249,8 +258,10 @@ public:
 	quint32 mLightColor;
 	quint32 mControlPointColor;
 	quint32 mControlPointFocusedColor;
+	quint32 mControlPointSeatedColor;
 	quint32 mPathColor;
 	quint32 mPathOutOfReachColor;
+	quint32 mSpreadHandleColor;
 
 
 	int mPreviewViewCubeEnabled;

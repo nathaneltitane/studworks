@@ -378,6 +378,8 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	connect(ui->CameraColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
 	connect(ui->LightColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
 	connect(ui->ControlPointColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->ControlPointSeatedColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
+	connect(ui->SpreadHandleColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
 	connect(ui->ControlPointFocusedColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
 	connect(ui->PathColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
 	connect(ui->PathOutOfReachColorButton, &QToolButton::clicked, this, &swPreferencesDialog::ColorButtonClicked);
@@ -425,6 +427,9 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	ui->FirstPartAtOrigin->setChecked(mOptions->Preferences.mFirstPartAtOrigin);
 	ui->PartsSnapToTiles->setChecked(mOptions->Preferences.mPartsSnapToTiles);
 	ui->InsertColorMode->setCurrentIndex(static_cast<int>(mOptions->Preferences.mInsertColorMode));
+	ui->FlexSpreadMode->setCurrentIndex(static_cast<int>(mOptions->Preferences.mFlexSpreadMode));
+	ui->FlexClampNewControlPoints->setChecked(mOptions->Preferences.mFlexClampNewControlPoints);
+	ui->FlexMiddleControlPoint->setChecked(mOptions->Preferences.mFlexMiddleControlPoint);
 	ui->WatchFileChanges->setChecked(mOptions->Preferences.mWatchFileChanges);
 	ui->LoadPartsBeforeShowing->setChecked(mOptions->Preferences.mLoadPartsBeforeShowing);
 	ui->MigrateMetaCommands->setChecked(mOptions->Preferences.mMigrateMetaCommands);
@@ -654,6 +659,8 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	SetButtonPixmap(mOptions->Preferences.mLightColor, ui->LightColorButton);
 	SetButtonPixmap(mOptions->Preferences.mControlPointColor, ui->ControlPointColorButton);
 	SetButtonPixmap(mOptions->Preferences.mControlPointFocusedColor, ui->ControlPointFocusedColorButton);
+	SetButtonPixmap(mOptions->Preferences.mControlPointSeatedColor, ui->ControlPointSeatedColorButton);
+	SetButtonPixmap(mOptions->Preferences.mSpreadHandleColor, ui->SpreadHandleColorButton);
 	SetButtonPixmap(mOptions->Preferences.mPathColor, ui->PathColorButton);
 	SetButtonPixmap(mOptions->Preferences.mPathOutOfReachColor, ui->PathOutOfReachColorButton);
 
@@ -746,6 +753,9 @@ void swPreferencesDialog::accept()
 	mOptions->Preferences.mFirstPartAtOrigin = ui->FirstPartAtOrigin->isChecked();
 	mOptions->Preferences.mPartsSnapToTiles = ui->PartsSnapToTiles->isChecked();
 	mOptions->Preferences.mInsertColorMode = static_cast<swInsertColorMode>(ui->InsertColorMode->currentIndex());
+	mOptions->Preferences.mFlexSpreadMode = static_cast<swFlexSpreadMode>(ui->FlexSpreadMode->currentIndex());
+	mOptions->Preferences.mFlexClampNewControlPoints = ui->FlexClampNewControlPoints->isChecked();
+	mOptions->Preferences.mFlexMiddleControlPoint = ui->FlexMiddleControlPoint->isChecked();
 	mOptions->Preferences.mWatchFileChanges = ui->WatchFileChanges->isChecked();
 	mOptions->Preferences.mLoadPartsBeforeShowing = ui->LoadPartsBeforeShowing->isChecked();
 	mOptions->Preferences.mMigrateMetaCommands = ui->MigrateMetaCommands->isChecked();
@@ -1104,16 +1114,28 @@ void swPreferencesDialog::ColorButtonClicked()
 		Title = tr("Select Control Point Focused Color");
 		DialogOptions = QColorDialog::ShowAlphaChannel;
 	}
+	else if (Button == ui->ControlPointSeatedColorButton)
+	{
+		Color = &mOptions->Preferences.mControlPointSeatedColor;
+		Title = tr("Select Control Point Seated Color");
+		DialogOptions = QColorDialog::ShowAlphaChannel;
+	}
+	else if (Button == ui->SpreadHandleColorButton)
+	{
+		Color = &mOptions->Preferences.mSpreadHandleColor;
+		Title = tr("Select Flex Path Spread Handle Color");
+		DialogOptions = QColorDialog::ShowAlphaChannel;
+	}
 	else if (Button == ui->PathColorButton)
 	{
 		Color = &mOptions->Preferences.mPathColor;
-		Title = tr("Select Path Color");
+		Title = tr("Select Flex Path Color");
 		DialogOptions = QColorDialog::ShowAlphaChannel;
 	}
 	else if (Button == ui->PathOutOfReachColorButton)
 	{
 		Color = &mOptions->Preferences.mPathOutOfReachColor;
-		Title = tr("Select Path Out of Reach Color");
+		Title = tr("Select Flex Path Out of Reach Color");
 		DialogOptions = QColorDialog::ShowAlphaChannel;
 	}
 	else

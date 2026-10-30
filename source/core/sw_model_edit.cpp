@@ -146,6 +146,7 @@ swPart* swModel::AddPart(swPartData* PartData, quint32 Section)
 		Part = new swPart(PartData);
 		Part->Initialize(WorldMatrix, mCurrentStep);
 		Part->SetColorIndex(ColorIndex);
+		Part->AddInsertedControlPoints();
 		AddPart(Part);
 	};
 
@@ -1343,7 +1344,7 @@ void swModel::ScaleSelectedParts(const float Scale)
 	if (Section >= SW_PART_SECTION_CONTROL_POINT_FIRST && Section <= SW_PART_SECTION_CONTROL_POINT_LAST)
 	{
 		const int ControlPointIndex = Section - SW_PART_SECTION_CONTROL_POINT_FIRST;
-		Part->SetControlPointScale(ControlPointIndex, Scale);
+		Part->SetControlPointHandleLength(ControlPointIndex, Scale);
 	}
 }
 

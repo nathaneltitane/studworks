@@ -132,8 +132,10 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Settings", "LightColor", static_cast<uint>(SW_RGBA(128, 204, 128, 255))),              // SW_PROFILE_LIGHT_COLOR
 	swProfileEntry("Settings", "ControlPointColor", static_cast<uint>(SW_RGBA(128, 204, 128, 128))),       // SW_PROFILE_CONTROL_POINT_COLOR
 	swProfileEntry("Settings", "ControlPointFocusedColor", static_cast<uint>(SW_RGBA(102, 76, 229, 128))), // SW_PROFILE_CONTROL_POINT_FOCUSED_COLOR
+	swProfileEntry("Settings", "ControlPointSeatedColor", static_cast<uint>(SW_RGBA(255, 178, 0, 192))),   // SW_PROFILE_CONTROL_POINT_SEATED_COLOR
 	swProfileEntry("Settings", "PathColor", static_cast<uint>(SW_RGBA(102, 76, 229, 255))),               // SW_PROFILE_PATH_COLOR
 	swProfileEntry("Settings", "PathOutOfReachColor", static_cast<uint>(SW_RGBA(229, 76, 76, 255))),       // SW_PROFILE_PATH_OUT_OF_REACH_COLOR
+	swProfileEntry("Settings", "SpreadHandleColor", static_cast<uint>(SW_RGBA(0, 0, 204, 255))),           // SW_PROFILE_SPREAD_HANDLE_COLOR
 
 	swProfileEntry("Settings", "Language", ""),                                                // SW_PROFILE_LANGUAGE
 	swProfileEntry("Settings", "ColorTheme", static_cast<int>(swColorTheme::Dark)),            // SW_PROFILE_COLOR_THEME
@@ -160,6 +162,9 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Settings", "FirstPartAtOrigin", false),                                   // SW_PROFILE_FIRST_PART_AT_ORIGIN
 	swProfileEntry("Settings", "TerminalFollowModel", true),                                   // SW_PROFILE_TERMINAL_FOLLOW_MODEL
 	swProfileEntry("Settings", "InsertColorMode", 0),                                          // SW_PROFILE_INSERT_COLOR_MODE
+	swProfileEntry("Settings", "FlexSpreadMode", 1),                                           // SW_PROFILE_FLEX_SPREAD_MODE
+	swProfileEntry("Settings", "FlexClampNewControlPoints", false),                            // SW_PROFILE_FLEX_CLAMP_NEW_CONTROL_POINTS
+	swProfileEntry("Settings", "FlexMiddleControlPoint", false),                               // SW_PROFILE_FLEX_MIDDLE_CONTROL_POINT
 	swProfileEntry("Settings", "WatchFileChanges", true),                                      // SW_PROFILE_WATCH_FILE_CHANGES
 	swProfileEntry("Settings", "LoadPartsBeforeShowing", false),                              // SW_PROFILE_LOAD_PARTS_BEFORE_SHOWING
 	swProfileEntry("Settings", "MigrateMetaCommands", false),                                  // SW_PROFILE_MIGRATE_META_COMMANDS

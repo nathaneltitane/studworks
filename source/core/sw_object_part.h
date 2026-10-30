@@ -130,11 +130,9 @@ public:
 		UpdateMesh();
 	}
 
-	void SetControlPointScale(int ControlPointIndex, float Scale)
-	{
-		mControlPoints[ControlPointIndex].Scale = Scale;
-		UpdateMesh();
-	}
+	// The handle length the path really uses at a control point, its spread weighed against the rest of the path.
+	float GetControlPointHandleLength(quint32 ControlPointIndex) const;
+	void SetControlPointHandleLength(quint32 ControlPointIndex, float HandleLength);
 
 	bool IsTrainTrackConnected(int ConnectionIndex) const
 	{
@@ -182,6 +180,18 @@ public:
 	bool IsControlPointTangentClamped() const;
 
 	bool InsertControlPoint(const swVector3& WorldStart, const swVector3& WorldEnd);
+	// Adds a control point halfway along a new flexible part when Preferences ask for one.
+	void AddInsertedControlPoints();
+	// Remembers where an end control point sits on a connection, it shows seated until it or the part moves.
+	void SetControlPointSeated(quint32 ControlPointIndex, const swVector3& SurfacePosition, const swVector3& SurfaceNormal);
+	bool IsControlPointSeated(quint32 ControlPointIndex) const;
+	// Where a control point cube is drawn and picked in part space, a seated one rests flush on its connection surface.
+	swMatrix44 GetControlPointCubeTransform(quint32 ControlPointIndex) const;
+	// The end control point being dragged where dropping it would seat its fitting, -1 for none.
+	void SetControlPointSeatFound(int ControlPointIndex)
+	{
+		mControlPointSeatFound = ControlPointIndex;
+	}
 	bool RemoveFocusedControlPoint();
 	bool ToggleFocusedControlPointTangent();
 	bool AlignFocusedControlPointTangent();
@@ -296,6 +306,7 @@ public:
 
 protected:
 	void UpdateMesh();
+	void UpdatePathCache() const;
 	swMesh* GetDisplayMesh() const;
 
 	bool IsPivotPointVisible() const
@@ -334,4 +345,17 @@ protected:
 	mutable std::vector<swPartControlPoint> mPathControlPoints;
 	mutable std::vector<swVector3> mPathPoints;
 	mutable size_t mPathReachedPointCount = 0;
+	mutable std::vector<float> mPathHandleLengths;
+	struct swControlPointSeat
+	{
+		quint32 ControlPointIndex;
+		swMatrix44 WorldTransform;
+		swVector3 SurfacePosition;
+		swVector3 SurfaceNormal;
+	};
+
+	const swControlPointSeat* GetControlPointSeat(quint32 ControlPointIndex) const;
+
+	std::vector<swControlPointSeat> mControlPointSeats;
+	int mControlPointSeatFound = -1;
 };

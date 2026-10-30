@@ -795,6 +795,23 @@ void swModel::AddPartShapes(const swPart* Part, const swMatrix44& Transform, swC
 // use to seat the end fitting of a flexible part on the nearest connection that takes it
 bool swModel::SnapControlPointToConnection(swPart* Part, quint32 ControlPointIndex) const
 {
+	swMatrix44 SeatTransform;
+	swVector3 SurfacePosition, SurfaceNormal;
+
+	if (!FindControlPointSeat(Part, ControlPointIndex, SeatTransform, &SurfacePosition, &SurfaceNormal))
+		return false;
+
+	std::vector<swPartControlPoint> ControlPoints = Part->GetControlPoints();
+	ControlPoints[ControlPointIndex].Transform = SeatTransform;
+	Part->SetControlPoints(ControlPoints);
+	Part->SetControlPointSeated(ControlPointIndex, SurfacePosition, SurfaceNormal);
+
+	return true;
+}
+
+// use to find where the end fitting of a flexible part would seat, in part space
+bool swModel::FindControlPointSeat(const swPart* Part, quint32 ControlPointIndex, swMatrix44& SeatTransform, swVector3* SurfacePosition, swVector3* SurfaceNormal) const
+{
 	const swSynthesisInformation* SynthInfo = Part->mPartData->GetSynthInfo();
 	std::vector<swPartControlPoint> ControlPoints = Part->GetControlPoints();
 
@@ -853,12 +870,32 @@ bool swModel::SnapControlPointToConnection(swPart* Part, quint32 ControlPointInd
 	};
 
 	// every seat in reach by how far the control point moves to it, whatever way the connection faces
-	std::vector<std::pair<float, swMatrix44>> Seats;
+	struct swConnectionSeat
+	{
+		float Distance;
+		swMatrix44 Transform;
+		swVector3 SurfacePosition;
+		swVector3 SurfaceNormal;
+	};
+
+	std::vector<swConnectionSeat> Seats;
 
 	for (const std::unique_ptr<swPart>& OtherPart : mParts)
 	{
 		if (OtherPart.get() == Part || !OtherPart->IsVisible(mCurrentStep))
 			continue;
+
+		// parts too far for any of their connections to reach are skipped
+		swVector3 Min(FLT_MAX, FLT_MAX, FLT_MAX), Max(-FLT_MAX, -FLT_MAX, -FLT_MAX);
+		OtherPart->CompareBoundingBox(Min, Max);
+
+		const swVector3 Position = ControlPointWorld.GetTranslation();
+		const swVector3 Nearest(swClamp(Position.x, Min.x, Max.x), swClamp(Position.y, Min.y, Max.y), swClamp(Position.z, Min.z, Max.z));
+
+		if (Min.x <= Max.x && swLength(Position - Nearest) > SnapDistance + 2.0f * FittingDistance)
+			continue;
+
+		const swVector3 PartCenter = (Min + Max) * 0.5f;
 
 		swConnectionShapes Shapes;
 		AddPartShapes(OtherPart.get(), swMatrix44Identity(), Shapes);
@@ -886,28 +923,40 @@ bool swModel::SnapControlPointToConnection(swPart* Part, quint32 ControlPointInd
 						const swMatrix44 Seat = GetSeatedControlPoint(FittingFrame, swMatrix44(swMatrix33(Frame), Position));
 						const float Distance = swLength(Seat.GetTranslation() - ControlPointWorld.GetTranslation());
 
+						// the connection surface faces away from the part it belongs to
+						const swVector3 Surface = Frame.GetTranslation();
+						const swVector3 Normal = swDot(Axis, Surface - PartCenter) < 0.0f ? -Axis : Axis;
+
 						if (Distance < SnapDistance)
-							Seats.emplace_back(Distance, Seat);
+							Seats.push_back({ Distance, Seat, Surface, Normal });
 					}
 				}
 			}
 		}
 	}
 
-	std::sort(Seats.begin(), Seats.end(), [](const std::pair<float, swMatrix44>& First, const std::pair<float, swMatrix44>& Second)
+	std::sort(Seats.begin(), Seats.end(), [](const swConnectionSeat& First, const swConnectionSeat& Second)
 	{
-		return First.first < Second.first;
+		return First.Distance < Second.Distance;
 	});
 
 	// a connection the part cannot reach without stretching stays free
 	bool Seated = false;
 
-	for (const std::pair<float, swMatrix44>& Seat : Seats)
+	const swMatrix44 InverseWorld = swMatrix44AffineInverse(Part->mModelWorld);
+
+	for (const swConnectionSeat& Seat : Seats)
 	{
-		ControlPoints[ControlPointIndex].Transform = swMultiply(Seat.second, swMatrix44AffineInverse(Part->mModelWorld));
+		ControlPoints[ControlPointIndex].Transform = swMultiply(Seat.Transform, InverseWorld);
 
 		if (SynthInfo->IsReachable(ControlPoints))
 		{
+			if (SurfacePosition)
+				*SurfacePosition = swMultiply31(Seat.SurfacePosition, InverseWorld);
+
+			if (SurfaceNormal)
+				*SurfaceNormal = swNormalize(swMultiply30(Seat.SurfaceNormal, InverseWorld));
+
 			Seated = true;
 			break;
 		}
@@ -916,7 +965,7 @@ bool swModel::SnapControlPointToConnection(swPart* Part, quint32 ControlPointInd
 	if (!Seated)
 		return false;
 
-	Part->SetControlPoints(ControlPoints);
+	SeatTransform = ControlPoints[ControlPointIndex].Transform;
 
 	return true;
 }

@@ -448,7 +448,7 @@ void swViewManipulator::DrawSelectMove(swTrackButton TrackButton, swTrackTool Tr
 		if (Section >= SW_PART_SECTION_CONTROL_POINT_FIRST && Section <= SW_PART_SECTION_CONTROL_POINT_LAST && Part->mPartData->GetSynthInfo() && Part->mPartData->GetSynthInfo()->IsCurve())
 		{
 			int ControlPointIndex = Section - SW_PART_SECTION_CONTROL_POINT_FIRST;
-			float Strength = Part->GetControlPoints()[ControlPointIndex].Scale;
+			float Strength = Part->GetControlPointHandleLength(ControlPointIndex);
 			const float ScaleStart = 2.0f;
 			float Length = ScaleStart + Strength / OverlayScale;
 			const float OverlayScaleInnerRadius = 0.075f;
@@ -489,7 +489,7 @@ void swViewManipulator::DrawSelectMove(swTrackButton TrackButton, swTrackTool Tr
 			if (TrackTool == swTrackTool::ScalePlus || TrackTool == swTrackTool::ScaleMinus)
 				Context->SetColor(0.8f, 0.8f, 0.0f, 0.3f);
 			else
-				Context->SetColor(0.0f, 0.0f, 0.8f, 1.0f);
+				Context->SetColor(swVector4FromColor(swGetPreferences().mSpreadHandleColor));
 
 			Context->SetVertexBufferPointer(Verts);
 			Context->ClearIndexBuffer();
@@ -1347,7 +1347,7 @@ std::pair<swTrackTool, quint32> swViewManipulator::UpdateSelectMove(swTrackButto
 
 		if (ControlPointIndex != -1 && Part->mPartData->GetSynthInfo()->IsCurve())
 		{
-			float Strength = Part->GetControlPoints()[ControlPointIndex].Scale;
+			float Strength = Part->GetControlPointHandleLength(ControlPointIndex);
 			const float ScaleStart = (2.0f - OverlayScaleRadius) * OverlayScale + Strength;
 			const float ScaleEnd = (2.0f + OverlayScaleRadius) * OverlayScale + Strength;
 
