@@ -1,7 +1,6 @@
 ![studworx](https://raw.githubusercontent.com/nathaneltitane/studworx/main/studworx.svg)
 
-**LDraw / LEGO® model builder**<br>
-BUILD. DESIGN. CREATE.
+<p align="center"><b>LDraw / LEGO® model builder</b><br>BUILD. DESIGN. CREATE.</p>
 
 [![Donate](https://img.shields.io/badge/Paypal-2f343f.svg?style=for-the-badge&logo=paypal&label=Donate)](https://www.paypal.com/donate?hosted_button_id=ZW3CDCANHJCWJ)<br>
 Show your appreciation with a PayPal donation!
