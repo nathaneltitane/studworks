@@ -41,7 +41,7 @@ swFindReplaceWidget::swFindReplaceWidget(QWidget* Parent, swModel* Model, bool R
 
 	swColorPicker* FindColorPicker = new swColorPicker(this, true);
 	FindColorPicker->setToolTip(tr("Search Color"));
-	FindColorPicker->setFixedHeight(ButtonHeight);
+	FindColorPicker->setFixedSize(swGetPanelButtonSize());
 	Layout->addWidget(FindColorPicker, 0, 2);
 
 	mFindPartComboBox = new QComboBox(this);
@@ -98,7 +98,7 @@ swFindReplaceWidget::swFindReplaceWidget(QWidget* Parent, swModel* Model, bool R
 
 	swColorPicker* ReplaceColorPicker = new swColorPicker(this, true);
 	ReplaceColorPicker->setToolTip(tr("Replacement Color"));
-	ReplaceColorPicker->setFixedHeight(ButtonHeight);
+	ReplaceColorPicker->setFixedSize(swGetPanelButtonSize());
 	Layout->addWidget(ReplaceColorPicker, 1, 2);
 
 	mReplacePartButton = new swElidableToolButton(this);

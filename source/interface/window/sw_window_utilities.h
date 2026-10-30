@@ -310,18 +310,18 @@ public:
 		return Size;
 	}
 
-	// The button never gets narrower than a square browse button so its elided text stays readable.
+	// The button is never narrower than a square panel button like the gear.
 	QSize minimumSizeHint() const override
 	{
-		const int Height = QToolButton::sizeHint().height();
-
-		return QSize(Height, Height);
+		return QSize(swGetPanelButtonSize().width(), QToolButton::sizeHint().height());
 	}
 
 protected:
-	void paintEvent(QPaintEvent*) override
+	// Text that keeps fewer characters than this when elided shows only an ellipsis.
+	static constexpr int SW_ELIDED_TEXT_MINIMUM = 6;
+
+	QString GetDisplayText() const
 	{
-		QStylePainter Painter(this);
 		QStyleOptionToolButton Option;
 		initStyleOption(&Option);
 
@@ -332,7 +332,31 @@ protected:
 		QFontMetrics Metrics(font());
 		QString ElidedText = Metrics.elidedText(text(), Qt::ElideMiddle, Button.width());
 
-		Option.text = ElidedText;
+		if (ElidedText != text() && ElidedText.size() - 1 < SW_ELIDED_TEXT_MINIMUM)
+			return QLatin1String("...");
+
+		return ElidedText;
+	}
+
+	// An elided button shows its full text as the tool tip.
+	bool event(QEvent* Event) override
+	{
+		if (Event->type() == QEvent::ToolTip && GetDisplayText() != text())
+		{
+			QToolTip::showText(static_cast<QHelpEvent*>(Event)->globalPos(), text(), this);
+			return true;
+		}
+
+		return QToolButton::event(Event);
+	}
+
+	void paintEvent(QPaintEvent*) override
+	{
+		QStylePainter Painter(this);
+		QStyleOptionToolButton Option;
+		initStyleOption(&Option);
+
+		Option.text = GetDisplayText();
 		Painter.drawComplexControl(QStyle::CC_ToolButton, Option);
 	}
 };

@@ -60,6 +60,7 @@ swMinifigureBuilderWidget::swMinifigureBuilderWidget(QWidget* Parent)
 		ColorPicker->setObjectName(QString("MinifigureBuilderColor%1").arg(ItemIndex));
 		ColorPicker->setAccessibleName(tr("%1 color").arg(Labels[ItemIndex]));
 		ColorPicker->setToolTip(tr("Choose the color for %1.").arg(Labels[ItemIndex]));
+		ColorPicker->setFixedSize(swGetPanelButtonSize());
 		ColorPicker->setWhatsThis(tr("<p><b>Choose Color</b></p><p>Change the color of this minifigure part. The preview updates immediately, and saving a template includes the chosen color.</p>"));
 
 		connect(ColorPicker, &swColorPicker::ColorChanged, this, &swMinifigureBuilderWidget::ColorChanged);
@@ -249,13 +250,12 @@ void swMinifigureBuilderWidget::UpdatePartButton(int ItemIndex)
 		}
 	}
 
-	// An empty section shows its name like a placeholder, a chosen part shows its full name in the tool tip.
+	// An empty section shows its name like a placeholder, an elided name shows in full as the tool tip.
 	QPalette Palette = PartButton->palette();
 	Palette.setColor(QPalette::ButtonText, Description.isEmpty() ? palette().color(QPalette::PlaceholderText) : palette().color(QPalette::ButtonText));
 	PartButton->setPalette(Palette);
 
 	PartButton->setText(Description.isEmpty() ? mSectionNames[ItemIndex] : Description);
-	PartButton->setToolTip(Description.isEmpty() ? tr("Choose the part for %1, or None to omit it.").arg(mSectionNames[ItemIndex]) : tr("%1: %2").arg(mSectionNames[ItemIndex], Description));
 }
 
 void swMinifigureBuilderWidget::OptionsMenuAboutToShow()
