@@ -167,7 +167,7 @@ public:
 	swResult<void> ExportCOLLADA(const QString& FileName);
 	swResult<void> ExportCSV(const QString& FileName);
 	swResult<void> ExportHTML(const swHTMLExportOptions& Options);
-	swResult<void> ExportPOVRay(const QString& FileName, const swCamera* ExportCamera = nullptr, swStep Step = SW_STEP_MAXIMUM);
+	swResult<void> ExportPOVRay(const QString& FileName, const swCamera* ExportCamera = nullptr, swStep Step = SW_STEP_MAXIMUM, bool Transparent = false);
 	swResult<void> ExportWavefront(const QString& FileName);
 
 	void UpdatePartData(swPartData* PartData) const;

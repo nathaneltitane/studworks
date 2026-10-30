@@ -27,6 +27,7 @@ Useful? Star the repository - it helps others find it.
 - Value boxes: the maximum shows after the value (6 / 32 studs), any number can be typed and is brought into range once applied
 - Find and Replace: one bar that starts with its close button, a chevron shows or hides the replace row, long part names no longer stretch it
 - Views: the camera name and the editing path float over the view as bars with a close button, each model in the path is a button that goes back to it, and the bars only move when the view cube or axis icon is in the way
+- POV-Ray: found on its own in the PATH, Flatpak or Snap and checked for version 3.7, LGEO parts found beside the parts library or downloaded on request, both asked for like the parts library when missing, a Parts choice between LDraw and LGEO, and '--povray-render' renders a model to PNG from the command line
 - Icons and cursors drawn in code and sharp at any size, the base grid toggle hides only the grids and leaves the axis lines alone, the terminal panel sizes to whole rows and columns
 
 2026-10-28 ↴

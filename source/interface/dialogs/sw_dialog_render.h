@@ -1,5 +1,7 @@
 #pragma once
 
+#include "sw_renderer_povray.h"
+
 enum class swPOVRayRenderQuality
 {
 	Low,
@@ -208,6 +210,7 @@ protected:
 	int mWidth = 1280;
 	int mHeight = 720;
 	swPOVRayRenderQuality mQuality = swPOVRayRenderQuality::High;
+	swPOVRayProgram mPOVRayProgram;
 	int mPreviewWidth;
 	int mPreviewHeight;
 	swRenderDialogMode mDialogMode;

@@ -16,6 +16,8 @@
 #include "sw_colors.h"
 #include "sw_window_utilities.h"
 #include "sw_http.h"
+#include "sw_renderer_povray.h"
+#include "sw_dialog_render.h"
 
 #ifdef Q_OS_WIN
 #if (QT_VERSION < QT_VERSION_CHECK(6, 0, 0))
@@ -522,49 +524,12 @@ QString swApplication::GetDownloadLibraryPath()
 // use to download the library archive with a progress dialog
 bool swApplication::DownloadPartsLibrary(const QString& FileName)
 {
-	QProgressDialog ProgressDialog(tr("Downloading the LDraw parts library..."), tr("Cancel"), 0, 0, gMainWindow);
-	ProgressDialog.setWindowTitle(tr("Download Parts Library"));
-	ProgressDialog.setWindowModality(Qt::WindowModal);
-	ProgressDialog.setMinimumDuration(0);
-	ProgressDialog.setAutoClose(false);
-	ProgressDialog.setAutoReset(false);
+	const std::optional<QByteArray> Data = swDownloadWithProgress(gMainWindow, QLatin1String(SW_LIBRARY_DOWNLOAD_URL), tr("Download Parts Library"), tr("Downloading the LDraw parts library..."));
 
-	// room for the full title
-	ProgressDialog.setMinimumWidth(ProgressDialog.fontMetrics().averageCharWidth() * 60);
-
-	swHttpManager HttpManager;
-	QEventLoop EventLoop;
-	swHttpReply* Reply = HttpManager.DownloadFile(QLatin1String(SW_LIBRARY_DOWNLOAD_URL));
-
-	connect(&HttpManager, &swHttpManager::DownloadFinished, &EventLoop, &QEventLoop::quit);
-	connect(&ProgressDialog, &QProgressDialog::canceled, &EventLoop, [Reply] { Reply->abort(); });
-
-#ifndef Q_OS_WIN
-	connect(Reply, &QNetworkReply::downloadProgress, &ProgressDialog, [&ProgressDialog](qint64 BytesReceived, qint64 BytesTotal)
-	{
-		if (BytesTotal <= 0)
-			return;
-
-		// kilobytes keep the range inside int
-		ProgressDialog.setMaximum(static_cast<int>(BytesTotal / 1024));
-		ProgressDialog.setValue(static_cast<int>(BytesReceived / 1024));
-	});
-#endif
-
-	ProgressDialog.show();
-	EventLoop.exec();
-	ProgressDialog.hide();
-
-	const bool Canceled = ProgressDialog.wasCanceled();
-	const bool Downloaded = !Canceled && !Reply->error();
-	const QByteArray Data = Downloaded ? Reply->readAll() : QByteArray();
-
-	Reply->deleteLater();
-
-	if (Canceled)
+	if (!Data)
 		return false;
 
-	if (!Downloaded || Data.isEmpty())
+	if (Data->isEmpty())
 	{
 		QMessageBox::warning(gMainWindow, tr("Download Parts Library"), tr("Could not download the parts library from %1.").arg(QLatin1String(SW_LIBRARY_DOWNLOAD_URL)));
 		return false;
@@ -574,7 +539,7 @@ bool swApplication::DownloadPartsLibrary(const QString& FileName)
 
 	QSaveFile File(FileName);
 
-	if (!File.open(QIODevice::WriteOnly) || File.write(Data) != Data.size() || !File.commit())
+	if (!File.open(QIODevice::WriteOnly) || File.write(*Data) != Data->size() || !File.commit())
 	{
 		QMessageBox::warning(gMainWindow, tr("Download Parts Library"), tr("Could not save the parts library to '%1'.").arg(FileName));
 		return false;
@@ -1103,6 +1068,11 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 			Options.SavePOVRay = true;
 			ParseString(Options.SavePOVRayName, false);
 		}
+		else if (Option == QLatin1String("--povray-render"))
+		{
+			Options.RenderPOVRay = true;
+			ParseString(Options.RenderPOVRayName, false);
+		}
 		else if (Option == QLatin1String("--import-settings"))
 			ParseString(Options.SettingsImportName, true);
 		else if (Option == QLatin1String("--export-settings"))
@@ -1175,6 +1145,7 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 			Options.StdOut += tr("  -csv, --export-csv <outfile.csv>: Export the list of parts used in CSV format.\n");
 			Options.StdOut += tr("  -html, --export-html <folder>: Create an HTML page for the model.\n");
 			Options.StdOut += tr("  -pov, --export-povray <outfile.pov>: Export the model to POV-Ray format.\n");
+			Options.StdOut += tr("  --povray-render <outfile.png>: Render the model with POV-Ray using the POV-Ray window settings and the picture width and height.\n");
 			Options.StdOut += tr("  --import-settings <infile.ini>: Import the application settings and exit.\n");
 			Options.StdOut += tr("  --export-settings <outfile.ini>: Export the application settings and exit.\n");
 			Options.StdOut += tr("  --import-keyboard-shortcuts <infile.txt>: Import the keyboard shortcuts and exit.\n");
@@ -1268,7 +1239,7 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 			Options.StdErr += tr("--camera-position is ignored when --camera-angles is set.\n");
 	}
 
-	const bool SaveAndExit = (Options.SaveImage || Options.SaveWavefront || Options.Save3DS || Options.SaveCOLLADA || Options.SaveCSV || Options.SaveHTML || Options.SavePOVRay);
+	const bool SaveAndExit = (Options.SaveImage || Options.SaveWavefront || Options.Save3DS || Options.SaveCOLLADA || Options.SaveCSV || Options.SaveHTML || Options.SavePOVRay || Options.RenderPOVRay);
 
 	if (SaveAndExit && Options.ProjectName.isEmpty())
 	{
@@ -1410,7 +1381,7 @@ swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 	if (Options.HasSettingsTransfer())
 		return swTransferSettings(Options, StdErr) ? swStartupMode::Success : swStartupMode::Error;
 
-	const bool SaveAndExit = (Options.SaveImage || Options.SaveWavefront || Options.Save3DS || Options.SaveCOLLADA || Options.SaveCSV || Options.SaveHTML || Options.SavePOVRay);
+	const bool SaveAndExit = (Options.SaveImage || Options.SaveWavefront || Options.Save3DS || Options.SaveCOLLADA || Options.SaveCSV || Options.SaveHTML || Options.SavePOVRay || Options.RenderPOVRay);
 
 #ifdef Q_OS_IOS
 	if (Options.SaveImage)
@@ -1421,7 +1392,7 @@ swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 #endif
 
 #ifndef Q_OS_IOS
-	const bool CreateRenderResources = !SaveAndExit || Options.SaveImage || Options.SaveHTML || Options.SavePOVRay;
+	const bool CreateRenderResources = !SaveAndExit || Options.SaveImage || Options.SaveHTML || Options.SavePOVRay || Options.RenderPOVRay;
 	const swResult<void> RendererResult = swContext::InitializeRenderer(CreateRenderResources);
 
 	if (!RendererResult)
@@ -1535,7 +1506,7 @@ swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 
 		std::unique_ptr<swView> ActiveView;
 
-		if (Options.SaveImage || Options.SavePOVRay)
+		if (Options.SaveImage || Options.SavePOVRay || Options.RenderPOVRay)
 		{
 			swModel* Model;
 
@@ -1698,6 +1669,96 @@ swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 
 				if (!ExportResult.error().isEmpty())
 					StdErr << ExportResult.error() << '\n';
+			}
+		}
+
+		if (Options.RenderPOVRay)
+		{
+			swModel* ActiveModel = ActiveView->GetModel();
+			QString FileName = !Options.RenderPOVRayName.isEmpty() ? Options.RenderPOVRayName : Options.ProjectName;
+			const QString Extension = QFileInfo(FileName).suffix().toLower();
+
+			if (Extension.isEmpty())
+				FileName += QLatin1String(".png");
+			else if (Extension != QLatin1String("png"))
+				FileName = FileName.left(FileName.length() - Extension.length() - 1) + QLatin1String(".png");
+
+			const swPOVRayProgram Program = swFindPOVRay();
+			const bool UseLGEO = (ActiveModel->GetPOVRayOptions().UseLGEO || swGetProfileInteger(SW_PROFILE_RENDER_PARTS) == 1) && !swFindLGEOPath().isEmpty();
+			QTemporaryDir TemporaryDir;
+
+			if (!Program.Supported)
+			{
+				OutputFailed = true;
+				StdErr << swGetPOVRayMissingMessage(Program) << '\n';
+			}
+			else if (UseLGEO && !swPOVRayHasIncludeFiles(Program))
+			{
+				OutputFailed = true;
+				StdErr << tr("LGEO parts need the standard POV-Ray include files such as colors.inc, which POV-Ray %1 could not find.\n").arg(Program.Version);
+			}
+			else if (!TemporaryDir.isValid())
+			{
+				OutputFailed = true;
+				StdErr << tr("Error creating a temporary folder for the POV-Ray scene.\n");
+			}
+			else
+			{
+				const QString SceneName = TemporaryDir.filePath(QLatin1String("scene.pov"));
+
+				ActiveModel->WaitForAssets();
+
+				const bool UsesCameraPosition = Options.SetCameraPosition && Options.Viewpoint == swViewpoint::Count && !Options.SetCameraAngles;
+
+				if (Options.CameraName.isEmpty() && !UsesCameraPosition)
+					ActiveView->ZoomExtentsAtStep(ActiveModel->GetCurrentStep(), swGeometryBoundsMode::AvailableOnly, !Options.SetZPlanes);
+
+				swResult<void> ExportResult = mProject->ExportPOVRay(SceneName, ActiveView->GetCamera(), SW_STEP_MAXIMUM, Options.TransparentImage);
+
+				if (!ExportResult)
+				{
+					OutputFailed = true;
+
+					if (!ExportResult.error().isEmpty())
+						StdErr << ExportResult.error() << '\n';
+				}
+				else
+				{
+					QStringList Arguments;
+
+					Arguments.append(QString::fromLatin1("+I\"%1\"").arg(SceneName));
+					Arguments.append(QString::fromLatin1("+O\"%1\"").arg(QFileInfo(FileName).absoluteFilePath()));
+					Arguments.append(QString::fromLatin1("+W%1").arg(Options.ImageWidth));
+					Arguments.append(QString::fromLatin1("+H%1").arg(Options.ImageHeight));
+
+					if (Options.TransparentImage || swGetProfileInteger(SW_PROFILE_RENDER_TRANSPARENT))
+						Arguments.append("+UA");
+
+					Arguments.append(swGetPOVRayArguments(Program, swGetProfileRenderQuality(), UseLGEO));
+#ifndef Q_OS_LINUX
+					Arguments.append("+FN");
+					Arguments.append("-D");
+#endif
+
+					QProcess Process;
+
+					Process.setEnvironment(swGetPOVRayEnvironment());
+					Process.setProcessChannelMode(QProcess::MergedChannels);
+					Process.start(Program.Path, Arguments);
+
+					// a render takes as long as it takes so only the start has a time limit
+					if (!Process.waitForStarted() || !Process.waitForFinished(-1) || Process.exitStatus() != QProcess::NormalExit || Process.exitCode() != 0 || !QFileInfo::exists(FileName))
+					{
+						OutputFailed = true;
+						StdErr << tr("Error rendering '%1' with POV-Ray:\n").arg(FileName);
+
+						const QStringList OutputLines = QString::fromLocal8Bit(Process.readAll()).trimmed().split('\n');
+
+						StdErr << OutputLines.mid(std::max(0, static_cast<int>(OutputLines.size()) - 20)).join('\n') << '\n';
+					}
+					else
+						StdOut << tr("Saved '%1'.\n").arg(FileName);
+				}
 			}
 		}
 

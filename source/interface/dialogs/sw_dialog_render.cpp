@@ -8,6 +8,7 @@
 #include "sw_model.h"
 #include "sw_object_camera.h"
 #include "sw_window_utilities.h"
+#include "sw_renderer_povray.h"
 
 #ifndef SW_DISABLE_RENDER_DIALOG
 
@@ -413,6 +414,9 @@ void swRenderDialog::CreatePOVRayPanels()
 
 	QWidget* ScenePanel = CreatePanel(tr("Scene"), "RenderScene", tr("<p><b>Scene</b></p><p>Set the lights, floor and surroundings the model is rendered in.</p>"));
 
+	QComboBox* PartsComboBox = CreateComboBox({ tr("LDraw"), tr("LGEO") }, swGetProfileInteger(SW_PROFILE_RENDER_PARTS));
+	CreateRow(ScenePanel, tr("Parts"), PartsComboBox, tr("Choose whether the model is rendered with LDraw parts or the modeled LGEO parts."), tr("<p><b>Parts</b></p><p>LDraw renders the parts of the parts library. LGEO replaces the parts it has with the smooth modeled parts of the LGEO library by Lutz Uhlmann, StudWorks offers to download it the first time. Models that ask for LGEO in their file always use it.</p>"));
+
 	mLightRigComboBox = CreateComboBox({ tr("Standard"), tr("Studio"), tr("Matte") }, swGetProfileInteger(SW_PROFILE_RENDER_LIGHT_RIG));
 	QComboBox* LightRigComboBox = mLightRigComboBox;
 	CreateRow(ScenePanel, tr("Lights"), LightRigComboBox, tr("Choose the lights placed around models that have no lights of their own."), tr("<p><b>Lights</b></p><p>Standard uses four point lights with crisp shadows. Studio uses a large soft key light, a fill light and a rim light behind the model. Matte uses a wide overhead light and a shadowless light from the camera for even, soft lighting. Lights placed in the model replace these.</p>"));
@@ -498,6 +502,11 @@ void swRenderDialog::CreatePOVRayPanels()
 	{
 		mQuality = static_cast<swPOVRayRenderQuality>(Index);
 		swSetProfileRenderQuality(mQuality);
+	});
+
+	connect(PartsComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [](int Index)
+	{
+		swSetProfileInteger(SW_PROFILE_RENDER_PARTS, Index);
 	});
 
 	connect(LightRigComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [](int Index)
@@ -995,6 +1004,28 @@ void swRenderDialog::RenderButtonClicked()
 		return;
 	}
 
+	// pov-ray and lgeo are set up before the first image like the parts library on the first start
+	mPOVRayProgram = swFindPOVRay();
+
+	if (!mPOVRayProgram.Supported)
+	{
+		mPOVRayProgram = swSetupPOVRay(this, mPOVRayProgram);
+
+		if (!mPOVRayProgram.Supported)
+			return;
+	}
+
+	const bool UseLGEO = swGetActiveProject()->GetModels()[0]->GetPOVRayOptions().UseLGEO || swGetProfileInteger(SW_PROFILE_RENDER_PARTS) == 1;
+
+	if (UseLGEO && swFindLGEOPath().isEmpty())
+		swSetupLGEO(this);
+
+	if (UseLGEO && !swFindLGEOPath().isEmpty() && !swPOVRayHasIncludeFiles(mPOVRayProgram))
+	{
+		QMessageBox::warning(this, windowTitle(), tr("LGEO parts need the standard POV-Ray include files such as colors.inc, which POV-Ray %1 could not find.\n\nInstall the povray-includes package or the include files of your POV-Ray version, or choose LDraw parts in the Scene panel.").arg(mPOVRayProgram.Version));
+		return;
+	}
+
 	// the batch has one image for each chosen step and camera
 	const swModel* Model = swGetActiveProject()->GetModels()[0].get();
 	std::vector<swStep> Steps;
@@ -1125,78 +1156,16 @@ void swRenderDialog::RenderPOVRay()
 	Arguments.append(QString::fromLatin1("+SM\"%1\"").arg(GetStdOutFileName()));
 #endif
 
-	switch (mQuality)
-	{
-	case swPOVRayRenderQuality::High:
-		Arguments.append("+Q11");
-		Arguments.append("+R3");
-		Arguments.append("+A0.1");
-		Arguments.append("+J0.5");
-		break;
-
-	case swPOVRayRenderQuality::Medium:
-		Arguments.append("+Q5");
-		Arguments.append("+A0.1");
-		break;
-
-	case swPOVRayRenderQuality::Low:
-		break;
-	}
-
-	QString POVRayPath;
-
-#ifdef Q_OS_WIN
-	POVRayPath = QDir::cleanPath(QCoreApplication::applicationDirPath() + QLatin1String("/povconsole32-sse2.exe"));
-#endif
-
-#ifdef Q_OS_LINUX
-	POVRayPath = swGetProfileString(SW_PROFILE_POVRAY_PATH);
-	Arguments.append("+FN");
-	Arguments.append("-D");
-#endif
-
-#ifdef Q_OS_MACOS
-	POVRayPath = QDir::cleanPath(QCoreApplication::applicationDirPath() + QLatin1String("/povray"));
-#endif
-
-	const QString POVRayDir = QFileInfo(POVRayPath).absolutePath();
-	const QString IncludePath = QDir::cleanPath(POVRayDir + "/include");
-
-	if (QFileInfo::exists(IncludePath))
-		Arguments.append(QString("+L\"%1\"").arg(IncludePath));
-
-	const QString IniPath = QDir::cleanPath(POVRayDir + "/ini");
-
-	if (QFileInfo::exists(IniPath))
-		Arguments.append(QString("+L\"%1\"").arg(IniPath));
-
-	if (swGetActiveProject()->GetModels()[0]->GetPOVRayOptions().UseLGEO)
-	{
-		const QString LGEOPath = swGetProfileString(SW_PROFILE_POVRAY_LGEO_PATH);
-
-		if (QFileInfo::exists(LGEOPath))
-		{
-			const QString LgPath = QDir::cleanPath(LGEOPath + "/lg");
-			if (QFileInfo::exists(LgPath))
-				Arguments.append(QString("+L\"%1\"").arg(LgPath));
-			const QString ArPath = QDir::cleanPath(LGEOPath + "/ar");
-			if (QFileInfo::exists(ArPath))
-				Arguments.append(QString("+L\"%1\"").arg(ArPath));
-			const QString StlPath = QDir::cleanPath(LGEOPath + "/stl");
-			if (QFileInfo::exists(StlPath))
-				Arguments.append(QString("+L\"%1\"").arg(StlPath));
-		}
-	}
+	const bool UseLGEO = swGetActiveProject()->GetModels()[0]->GetPOVRayOptions().UseLGEO || swGetProfileInteger(SW_PROFILE_RENDER_PARTS) == 1;
+	Arguments.append(swGetPOVRayArguments(mPOVRayProgram, mQuality, UseLGEO));
 
 	swRenderProcess* Process = new swRenderProcess(this);
 #ifdef Q_OS_LINUX
 	connect(Process, &QProcess::readyReadStandardError, this, [this]() { bool Error; ReadStdErr(Error); });
 #endif
-	QStringList POVEnv = QProcess::systemEnvironment();
-	POVEnv.prepend("POV_IGNORE_SYSCONF_MSG=1");
-	Process->setEnvironment(POVEnv);
+	Process->setEnvironment(swGetPOVRayEnvironment());
 	Process->setStandardErrorFile(GetStdErrFileName());
-	Process->start(POVRayPath, Arguments);
+	Process->start(mPOVRayProgram.Path, Arguments);
 
 	mImage = QImage(mWidth, mHeight, QImage::Format_ARGB32);
 	mImage.fill(Qt::transparent);

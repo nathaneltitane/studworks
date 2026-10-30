@@ -207,6 +207,7 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Render", "Region", "0.25 0.25 0.5 0.5"),                                   // SW_PROFILE_RENDER_REGION
 	swProfileEntry("Render", "Steps", 0),                                                      // SW_PROFILE_RENDER_STEPS
 	swProfileEntry("Render", "Cameras", ""),                                                   // SW_PROFILE_RENDER_CAMERAS
+	swProfileEntry("Render", "Parts", 0),                                                      // SW_PROFILE_RENDER_PARTS
 
 	swProfileEntry("Blender", "Path", ""),                                                     // SW_PROFILE_BLENDER_PATH
 	swProfileEntry("Blender", "LDrawConfigPath", ""),                                          // SW_PROFILE_BLENDER_LDRAW_CONFIGURATION_PATH

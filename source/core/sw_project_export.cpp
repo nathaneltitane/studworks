@@ -1222,7 +1222,7 @@ swResult<void> Project::ExportHTML(const swHTMLExportOptions& Options)
 	return swResult<void>();
 }
 
-swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* ExportCamera, swStep Step)
+swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* ExportCamera, swStep Step, bool Transparent)
 {
 	const std::vector<swModelPartsEntry> ModelParts = GetModelParts(Step);
 
@@ -1297,8 +1297,9 @@ swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* Ex
 	const swVector3 BackgroundColor = swVector3FromColor(swGetPreferences().mBackgroundSolidColor);
 	const swPOVRayOptions& POVRayOptions = mModels[0]->GetPOVRayOptions();
 	const QString TopModelName = QLatin1String("SW_") + MakeExportNameFragment(QString(mModels[0]->GetFileName()));
-	const QString LGEOPath = swGetProfileString(SW_PROFILE_POVRAY_LGEO_PATH);
-	const bool UseLGEO = POVRayOptions.UseLGEO && !LGEOPath.isEmpty();
+	const bool WantsLGEO = POVRayOptions.UseLGEO || swGetProfileInteger(SW_PROFILE_RENDER_PARTS) == 1;
+	const QString LGEOPath = WantsLGEO ? swFindLGEOPath() : QString();
+	const bool UseLGEO = WantsLGEO && !LGEOPath.isEmpty();
 	const int TopModelColorCode = 7;
 
 	swVector3 Min(FLT_MAX, FLT_MAX, FLT_MAX);
@@ -1345,7 +1346,7 @@ swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* Ex
 	const int LightRig = std::clamp(swGetProfileInteger(SW_PROFILE_RENDER_LIGHT_RIG), 0, static_cast<int>(swPOVRayLightRig::Count) - 1);
 	const int FloorStyle = std::clamp(swGetProfileInteger(SW_PROFILE_RENDER_FLOOR_STYLE), 0, static_cast<int>(swPOVRayFloorStyle::Count) - 1);
 	const QString EnvironmentImage = swGetProfileString(SW_PROFILE_RENDER_ENVIRONMENT_IMAGE);
-	const bool Transparent = swGetProfileInteger(SW_PROFILE_RENDER_TRANSPARENT) != 0;
+	Transparent = Transparent || swGetProfileInteger(SW_PROFILE_RENDER_TRANSPARENT) != 0;
 
 	if (!POVRayOptions.HeaderIncludeFile.isEmpty())
 	{
@@ -1444,7 +1445,7 @@ swResult<void> Project::ExportPOVRay(const QString& FileName, const swCamera* Ex
 			"#ifndef (LgeoLibrary) #declare LgeoLibrary = %s; #end\n"
 			"#ifndef (ModelReflection) #declare ModelReflection = %i; #end\n"
 			"#ifndef (ModelShadow) #declare ModelShadow = %i; #end\n\n",
-			(POVRayOptions.UseLGEO ? "true" : "false"), (POVRayOptions.NoReflection ? 0 : 1), (POVRayOptions.NoShadow ? 0 : 1));
+			(UseLGEO ? "true" : "false"), (POVRayOptions.NoReflection ? 0 : 1), (POVRayOptions.NoShadow ? 0 : 1));
 	POVFile.WriteLine(Line);
 
 	snprintf(Line, sizeof(Line),
