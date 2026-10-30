@@ -191,6 +191,7 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Settings", "ImageNextStep", 0),                                            // SW_PROFILE_IMAGE_NEXT_STEP
 	swProfileEntry("Settings", "ImageNextStepTurns", 1),                                       // SW_PROFILE_IMAGE_NEXT_STEP_TURNS
 	swProfileEntry("Settings", "ImageNextStepSeconds", 2.0f),                                  // SW_PROFILE_IMAGE_NEXT_STEP_SECONDS
+	swProfileEntry("Settings", "ImageHoldLast", 1.0f),                                         // SW_PROFILE_IMAGE_HOLD_LAST
 	swProfileEntry("Settings", "PartsListIcons", 64),                                         // SW_PROFILE_PARTS_LIST_ICONS
 	swProfileEntry("Settings", "PartsListNames", 1),                                          // SW_PROFILE_PARTS_LIST_NAMES
 	swProfileEntry("Settings", "PartsListFixedColor", static_cast<uint>(SW_COLOR_NO_COLOR)),                                    // SW_PROFILE_PARTS_LIST_COLOR

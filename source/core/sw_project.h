@@ -59,6 +59,7 @@ struct swImageTurntable
 	swImageNextStep NextStep = swImageNextStep::Off;
 	int NextStepTurns = 1;
 	double NextStepSeconds = 2.0;
+	double HoldLast = 1.0;
 
 	// Steps play one per frame without turning.
 	bool IsTurning() const
@@ -84,8 +85,14 @@ struct swImageTurntable
 	// Angle sweeps go forward and back so the loop has no jump.
 	float GetFrameAngle(int Frame) const;
 
+	// Seconds the finished model stays before the loop restarts.
+	double GetHoldLast() const
+	{
+		return IsStepping() ? HoldLast : 0.0;
+	}
+
 	// Delays are in hundredths of a second and follow the frame rate.
-	int GetFrameDelay(int Frame) const;
+	int GetFrameDelay(int Frame, int FrameCount) const;
 };
 
 enum class swImageFit

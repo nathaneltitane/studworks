@@ -23,7 +23,8 @@ Useful? Star the repository - it helps others find it.
 
   - Interface: built from standard Qt widgets throughout, panels, dialogs and windows follow the system style and theme, only the model views draw with OpenGL
   - Save Model Image: live preview of the saved image with step arrows, ratio presets from square to widescreen with Landscape and Portrait, a transparent background for PNG and GIF files, Save and Cancel in the File box and help from the title bar What's This button
-  - Animated GIF: turntable animations from Save Model Image, a full turn or a back and forth angle range around the X, Y or Z axis, with frame count and duration, played live in the preview
+  - Animated GIF: turntable animations from Save Model Image, one or more full turns or back and forth swings around the X, Y or Z axis, with frames per turn, a frame rate and the duration shown, played live in the preview
+  - Animated steps: Steps plays the build one step per frame, Next Step moves on every few turns or seconds while the model turns, and Hold Last keeps the finished model on screen before the loop restarts, see the [Save Model Image guide](documentation/save-model-image.md)
   - Image framing: Fit Model and Fit Each Step keep every part inside the image with an adjustable margin, turntables keep one steady zoom through the whole turn around the World Origin, Model Origin or Model Center, and View Color backgrounds now save opaque
   - Print: File > Print prints the current model view through the system print dialog, with a Preview button where the dialog allows it
   - File menu: grouped by task, Print after Save As, Image beside Instructions and Render instead of under Export
@@ -201,13 +202,19 @@ Everything LeoCAD does, StudWorx does too - with a reworked interface and a set 
   - Transparent backgrounds for PNG and GIF files, View Color backgrounds saved opaque
   - Fit Model and Fit Each Step keep every part inside the image with an adjustable margin
   - Animated GIF turntables, one or more full turns or back and forth swings around the X, Y or Z axis, with frames per turn and a frame rate that set the duration, played live in the preview
-  - Animated steps for short instructions, one step per frame or a next step every few turns or seconds while the model turns
+  - Animated steps for short instructions, one step per frame or a next step every few turns or seconds while the model turns, holding the finished model before the loop restarts
   - Turntables keep one steady zoom through the whole turn around the World Origin, Model Origin or Model Center
+  - Every setting explained in the [Save Model Image guide](documentation/save-model-image.md)
 
   <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/save-model-image.png" alt="Save Model Image" width="49%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/save-model-image-gif.png" alt="Save Model Image animated GIF" width="49%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/save-model-image-gif.png" alt="Save Model Image turntable" width="49%" align="top">
 
-  ![Animated GIF](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/image-gif-animated.gif)
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/save-model-image-steps.png" alt="Save Model Image animated steps" width="49%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/save-model-image-next-step.png" alt="Save Model Image next step while turning" width="49%" align="top">
+
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/image-gif-animated.gif" alt="Animated GIF turntable" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/image-gif-steps.gif" alt="Animated GIF steps" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/image-gif-next-step.gif" alt="Animated GIF next step while turning" width="32%" align="top">
 
 - **Rendering** ↴
   - POV-Ray renders from the File menu, POV-Ray found on its own in the PATH, Flatpak or Snap and checked for version 3.7

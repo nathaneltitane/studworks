@@ -679,11 +679,16 @@ int swImageTurntable::GetFrameStep(int Frame) const
 	return Frame / GetStepFrames();
 }
 
-int swImageTurntable::GetFrameDelay(int Frame) const
+int swImageTurntable::GetFrameDelay(int Frame, int FrameCount) const
 {
 	const double Total = 100.0 / qMax(FrameRate, 0.1);
+	const int Delay = qRound(Total * (Frame + 1)) - qRound(Total * Frame);
 
-	return qRound(Total * (Frame + 1)) - qRound(Total * Frame);
+	// last frame holds the finished model
+	if (Frame == FrameCount - 1)
+		return Delay + qRound(GetHoldLast() * 100.0);
+
+	return Delay;
 }
 
 // use to place the image camera
@@ -956,7 +961,7 @@ swResult<void> swModel::SaveFramedImages(const QString& BaseName, bool AddStepSu
 			if (!Image)
 				return swUnexpected(Image.error());
 
-			if (!Writer.AddFrame(Image.value(), Turntable.GetFrameDelay(Frame), Transparent))
+			if (!Writer.AddFrame(Image.value(), Turntable.GetFrameDelay(Frame, FrameCount), Transparent))
 				return swUnexpected(tr("Error writing to file '%1':\n%2").arg(BaseName, Writer.GetErrorString()));
 		}
 
@@ -1009,7 +1014,7 @@ swResult<void> swModel::SaveFramedImages(const QString& BaseName, bool AddStepSu
 			if (!Image)
 				return swUnexpected(Image.error());
 
-			if (!Writer.AddFrame(Image.value(), Turntable.GetFrameDelay(Frame), Transparent))
+			if (!Writer.AddFrame(Image.value(), Turntable.GetFrameDelay(Frame, Turntable.GetFrameCount(1)), Transparent))
 				return swUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, Writer.GetErrorString()));
 		}
 

@@ -826,6 +826,7 @@ void swMainWindow::ShowImageDialog()
 	Options.Turntable.NextStep = static_cast<swImageNextStep>(qBound(0, swGetProfileInteger(SW_PROFILE_IMAGE_NEXT_STEP), 2));
 	Options.Turntable.NextStepTurns = swGetProfileInteger(SW_PROFILE_IMAGE_NEXT_STEP_TURNS);
 	Options.Turntable.NextStepSeconds = swGetProfileFloat(SW_PROFILE_IMAGE_NEXT_STEP_SECONDS);
+	Options.Turntable.HoldLast = swGetProfileFloat(SW_PROFILE_IMAGE_HOLD_LAST);
 	Options.Framing.Fit = static_cast<swImageFit>(qBound(0, swGetProfileInteger(SW_PROFILE_IMAGE_FIT), 2));
 	Options.Framing.Center = static_cast<swImageCenter>(qBound(0, swGetProfileInteger(SW_PROFILE_IMAGE_CENTER), 2));
 	Options.Framing.Scope = static_cast<swImageFitScope>(qBound(0, swGetProfileInteger(SW_PROFILE_IMAGE_FIT_SCOPE), 1));
@@ -852,6 +853,7 @@ void swMainWindow::ShowImageDialog()
 	swSetProfileInteger(SW_PROFILE_IMAGE_NEXT_STEP, static_cast<int>(Options.Turntable.NextStep));
 	swSetProfileInteger(SW_PROFILE_IMAGE_NEXT_STEP_TURNS, Options.Turntable.NextStepTurns);
 	swSetProfileFloat(SW_PROFILE_IMAGE_NEXT_STEP_SECONDS, static_cast<float>(Options.Turntable.NextStepSeconds));
+	swSetProfileFloat(SW_PROFILE_IMAGE_HOLD_LAST, static_cast<float>(Options.Turntable.HoldLast));
 	swSetProfileInteger(SW_PROFILE_IMAGE_FIT, static_cast<int>(Options.Framing.Fit));
 	swSetProfileInteger(SW_PROFILE_IMAGE_CENTER, static_cast<int>(Options.Framing.Center));
 	swSetProfileInteger(SW_PROFILE_IMAGE_FIT_SCOPE, static_cast<int>(Options.Framing.Scope));

@@ -285,7 +285,7 @@ swImageDialog::swImageDialog(QWidget* Parent, swImageDialogOptions* Options, swM
 
 	// animation group
 	QGroupBox* TurntableGroup = new QGroupBox(tr("Animation"), this);
-	TurntableGroup->setWhatsThis(tr("<p><b>Animation</b></p><p>Animated GIF saves a looping animation. The animation loops forever.</p><p>Turntable turns the model around one axis through the Framing center, starting from the current view. Full Turn makes seamless revolutions. Angle swings between two angles from the current view and back again. Turns sets how many revolutions or swings make up the loop, so complex builds can be shown from every side more than once.</p><p>Next Step moves through the steps chosen in the Steps group while the model turns, one step every few turns or seconds. The loop ends on the last step and starts again.</p><p>Steps plays the chosen steps one per frame, for short animated instructions.</p><p>Frames sets how many images make up one turn and Frame Rate how many play each second. Duration shows how long one loop plays.</p>"));
+	TurntableGroup->setWhatsThis(tr("<p><b>Animation</b></p><p>Animated GIF saves a looping animation. The animation loops forever.</p><p>Turntable turns the model around one axis through the Framing center, starting from the current view. Full Turn makes seamless revolutions. Angle swings between two angles from the current view and back again. Turns sets how many revolutions or swings make up the loop, so complex builds can be shown from every side more than once.</p><p>Next Step moves through the steps chosen in the Steps group while the model turns, one step every few turns or seconds. The loop ends on the last step and starts again.</p><p>Steps plays the chosen steps one per frame, for short animated instructions.</p><p>Frames sets how many images make up one turn and Frame Rate how many play each second. Hold Last keeps the finished model on screen before a loop through the steps restarts. Duration shows how long one loop plays.</p>"));
 
 	QGridLayout* TurntableLayout = new QGridLayout(TurntableGroup);
 	mGridLayouts.append(TurntableLayout);
@@ -407,12 +407,25 @@ swImageDialog::swImageDialog(QWidget* Parent, swImageDialogOptions* Options, swM
 	FrameRateLabel->setBuddy(mFrameRateSpinBox);
 	TurntableLayout->addWidget(mFrameRateSpinBox, 8, 1);
 
+	QLabel* HoldLastLabel = new QLabel(tr("Hol&d Last"), TurntableGroup);
+	TurntableLayout->addWidget(HoldLastLabel, 9, 0);
+
+	mHoldLastSpinBox = new swRangeDoubleSpinBox(TurntableGroup);
+	mHoldLastSpinBox->setRange(0.0, 10.0);
+	mHoldLastSpinBox->setDecimals(1);
+	mHoldLastSpinBox->setSingleStep(0.5);
+	mHoldLastSpinBox->setSuffix(tr(" s"));
+	mHoldLastSpinBox->setValue(Options->Turntable.HoldLast);
+	mHoldLastSpinBox->setToolTip(tr("Seconds the last step stays on screen before the loop restarts (0 to 10)."));
+	HoldLastLabel->setBuddy(mHoldLastSpinBox);
+	TurntableLayout->addWidget(mHoldLastSpinBox, 9, 1);
+
 	QLabel* DurationLabel = new QLabel(tr("Duration"), TurntableGroup);
-	TurntableLayout->addWidget(DurationLabel, 9, 0);
+	TurntableLayout->addWidget(DurationLabel, 10, 0);
 
 	mDurationLabel = new QLabel(TurntableGroup);
-	mDurationLabel->setToolTip(tr("Time one loop takes to play, from the frames and frame rate."));
-	TurntableLayout->addWidget(mDurationLabel, 9, 1);
+	mDurationLabel->setToolTip(tr("Time one loop takes to play, from the frames, frame rate and hold."));
+	TurntableLayout->addWidget(mDurationLabel, 10, 1);
 
 	// framing group
 	QGroupBox* FramingGroup = new QGroupBox(tr("Framing"), this);
@@ -532,6 +545,7 @@ swImageDialog::swImageDialog(QWidget* Parent, swImageDialogOptions* Options, swM
 		UpdateTurntable();
 	});
 	connect(mFrameRateSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &swImageDialog::UpdateTurntable);
+	connect(mHoldLastSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &swImageDialog::UpdateTurntable);
 
 	// step counts leave the turntable frames alone
 	connect(mFramesSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int Frames)
@@ -925,6 +939,7 @@ void swImageDialog::UpdateTurntable()
 	}
 
 	mFrameRateSpinBox->setEnabled(Animated);
+	mHoldLastSpinBox->setEnabled(Animated && (StepMotion || NextStep != swImageNextStep::Off));
 	mPlayButton->setVisible(Animated);
 
 	// steps give one frame each
@@ -965,7 +980,7 @@ void swImageDialog::UpdateTurntable()
 	}
 
 	mDurationLabel->setEnabled(Animated);
-	mDurationLabel->setText(tr("%1 s").arg(QLocale().toString(FrameCount / mFrameRateSpinBox->value(), 'f', 1)));
+	mDurationLabel->setText(tr("%1 s").arg(QLocale().toString(FrameCount / mFrameRateSpinBox->value() + Turntable.GetHoldLast(), 'f', 1)));
 
 	UpdateFraming();
 }
@@ -1013,6 +1028,7 @@ swImageTurntable swImageDialog::GetTurntable() const
 	Turntable.NextStep = GetNextStep();
 	Turntable.NextStepTurns = mNextStepTurns;
 	Turntable.NextStepSeconds = mNextStepSeconds;
+	Turntable.HoldLast = mHoldLastSpinBox->value();
 
 	return Turntable;
 }
@@ -1073,7 +1089,7 @@ void swImageDialog::RenderPreview()
 		ShowPreviewFrame();
 
 		if (mPlaying)
-			mAnimationTimer->start(GetTurntable().GetFrameDelay(mPreviewFrame) * 10);
+			mAnimationTimer->start(GetTurntable().GetFrameDelay(mPreviewFrame, mPreviewFrames.size()) * 10);
 
 		return;
 	}
@@ -1129,7 +1145,7 @@ void swImageDialog::AdvancePreviewFrame()
 	ShowPreviewFrame();
 
 	// frames may differ by a hundredth
-	mAnimationTimer->start(GetTurntable().GetFrameDelay(mPreviewFrame) * 10);
+	mAnimationTimer->start(GetTurntable().GetFrameDelay(mPreviewFrame, mPreviewFrames.size()) * 10);
 }
 
 void swImageDialog::SetPlaying(bool Playing)
@@ -1142,7 +1158,7 @@ void swImageDialog::SetPlaying(bool Playing)
 		mPlayButton->setToolTip(tr("Pause the animation."));
 
 		if (!mPreviewFrames.isEmpty())
-			mAnimationTimer->start(GetTurntable().GetFrameDelay(mPreviewFrame) * 10);
+			mAnimationTimer->start(GetTurntable().GetFrameDelay(mPreviewFrame, mPreviewFrames.size()) * 10);
 	}
 	else
 	{

@@ -90,6 +90,7 @@ protected:
 	swRangeSpinBox* mTurnsSpinBox = nullptr;
 	swRangeSpinBox* mFramesSpinBox = nullptr;
 	swRangeDoubleSpinBox* mFrameRateSpinBox = nullptr;
+	swRangeDoubleSpinBox* mHoldLastSpinBox = nullptr;
 	QLabel* mDurationLabel = nullptr;
 	int mTurntableFrames = 36;
 	int mTurns = 1;
