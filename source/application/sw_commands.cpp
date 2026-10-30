@@ -78,7 +78,7 @@ const swCommand gCommands[] =
 	// SW_FILE_SAVE_IMAGE
 	{
 		QT_TRANSLATE_NOOP("Action", "File.SaveImage"),
-		QT_TRANSLATE_NOOP("Menu", "&Image..."),
+		QT_TRANSLATE_NOOP("Menu", "Ima&ge..."),
 		QT_TRANSLATE_NOOP("Status", "Export an image of the current view"),
 		"",
 		""
@@ -205,7 +205,7 @@ const swCommand gCommands[] =
 	{
 		QT_TRANSLATE_NOOP("Action", "File.Print"),
 		QT_TRANSLATE_NOOP("Menu", "&Print..."),
-		QT_TRANSLATE_NOOP("Status", "Show the Print panel of the instructions window"),
+		QT_TRANSLATE_NOOP("Status", "Print the current model view"),
 		"",
 		""
 	},

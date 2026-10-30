@@ -2151,7 +2151,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="65"/>
-        <source>&amp;Image...</source>
+        <source>Ima&amp;ge...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17459,8 +17459,8 @@ Por favor, visita https://github.com/nathaneltitane/studworks para saber cómo d
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Custom Paths</source>
-        <translation>Rutas personalizadas</translation>
+        <source>Reference Paths</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>

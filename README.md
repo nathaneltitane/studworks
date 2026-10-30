@@ -19,6 +19,11 @@ Useful? Star the repository - it helps others find it.
   <details open>
   <summary>2026-10-29</summary>
 
+  - Interface: built from standard Qt widgets throughout, panels, dialogs and windows follow the system style and theme, only the model views draw with OpenGL
+  - Save Model Image: live preview of the saved image with step arrows, Match View and Keep Ratio for the size, a transparent background for PNG files, Save and Cancel in the File box and help from the title bar What's This button
+  - Print: File > Print prints the current model view through the system print dialog, with a Preview button where the dialog allows it
+  - File menu: grouped by task, Print after Save As, Image beside Instructions and Render instead of under Export
+  - Preferences: Custom Paths is now Reference Paths
   - File managers: LDraw model files show a thumbnail of the model, from a KDE thumbnail plugin or the desktop thumbnailer, rendered with the new '--transparent' command line option
   - Select Connected Parts: selects every part joined to the selection, with the connection shapes of the [LDCad shadow library](https://github.com/RolandMelkert/LDCadShadowLibrary) by Roland Melkert, set and turned on or off under Preferences › Part Connections
   - Parts library: no longer bundled, the first start offers to download the official LDraw 'complete.zip' into the data folder or to choose an existing archive

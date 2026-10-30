@@ -22,7 +22,6 @@ public:
 
 public slots:
 	void ModelChanged();
-	void ShowPrintWidget();
 
 public:
 	void SetProject(Project* Project);

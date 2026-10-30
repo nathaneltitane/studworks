@@ -143,7 +143,7 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 		break;
 
 	case SW_FILE_PRINT:
-		ShowPrintWidget();
+		ShowPrintDialog();
 		break;
 
 	case SW_FILE_RECENT1:

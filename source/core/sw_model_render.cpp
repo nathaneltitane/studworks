@@ -92,13 +92,13 @@ void swModel::AddSubModelRenderMeshes(swScene* Scene, const swMatrix44& WorldMat
 	}
 }
 
-QImage swModel::GetStepImage(bool Zoom, int Width, int Height, swStep Step)
+QImage swModel::GetStepImage(bool Zoom, int Width, int Height, swStep Step, swImageBackground Background)
 {
 	swScopedGLContextState GLState;
 
 	WaitForAssets();
 
-	const swResult<QImage> Image = RenderStepImageWithReadyAssets(Zoom, Width, Height, Step, nullptr, swImageBackground::Default);
+	const swResult<QImage> Image = RenderStepImageWithReadyAssets(Zoom, Width, Height, Step, nullptr, Background);
 
 	if (!Image)
 	{

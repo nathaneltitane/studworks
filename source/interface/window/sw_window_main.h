@@ -382,7 +382,8 @@ protected:
 	void ShowExportPOVRayDialog();
 	void ShowRenderDialog(swRenderDialogMode RenderDialogMode);
 	void ShowInstructionsDialog();
-	void ShowPrintWidget();
+	void ShowPrintDialog();
+	void PrintModelView(QPrinter* Printer);
 	void ShowImageDialog();
 	void ShowSelectDialog();
 	void ShowResultError(const swResult<void>& Result, const QString& Title);

@@ -4,6 +4,8 @@
 #include "sw_types_asset.h"
 #include "sw_result.h"
 
+enum class swImageBackground;
+
 #define SW_HTML_SINGLE_PAGE    0x01
 #define SW_HTML_INDEX         0x02
 #define SW_HTML_LIST_END       0x08
@@ -36,6 +38,7 @@ struct swImageDialogOptions
 	int Height;
 	int Start;
 	int End;
+	swImageBackground Background;
 };
 
 struct swSetInventoryItem

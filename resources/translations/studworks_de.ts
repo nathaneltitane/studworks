@@ -2422,7 +2422,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="65"/>
-        <source>&amp;Image...</source>
+        <source>Ima&amp;ge...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -17057,9 +17057,9 @@ Bitte lesen sie unter https://github.com/nathaneltitane/studworks nach wie man e
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Custom Paths</source>
+        <source>Reference Paths</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Benutzerdefinierte Pfade</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Parts Library:</source>

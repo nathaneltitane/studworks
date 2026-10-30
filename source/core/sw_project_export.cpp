@@ -2193,5 +2193,5 @@ swResult<void> Project::SaveImage(const swImageDialogOptions& Options)
 	if (Options.Start != Options.End)
 		FilePath = FilePath.insert(FilePath.length() - Extension.length() - 1, QLatin1String("%1"));
 
-	return mActiveModel->SaveStepImages(FilePath, Options.Start != Options.End, false, Options.Width, Options.Height, Options.Start, Options.End, swImageBackground::Default);
+	return mActiveModel->SaveStepImages(FilePath, Options.Start != Options.End, false, Options.Width, Options.Height, Options.Start, Options.End, Options.Background);
 }

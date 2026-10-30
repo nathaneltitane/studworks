@@ -34,9 +34,9 @@
         <enum>QFormLayout::FieldGrowthPolicy::ExpandingFieldsGrow</enum>
        </property>
        <item row="0" column="0" colspan="2">
-        <widget class="QGroupBox" name="CustomPathsGroup">
+        <widget class="QGroupBox" name="ReferencePathsGroup">
          <property name="title">
-          <string>Custom Paths</string>
+          <string>Reference Paths</string>
          </property>
          <layout class="QFormLayout" name="formLayout_2">
           <item row="0" column="0">

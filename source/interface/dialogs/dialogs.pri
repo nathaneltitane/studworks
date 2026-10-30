@@ -63,7 +63,6 @@ FORMS += \
 	$$PWD/sw_dialog_group.ui \
 	$$PWD/sw_dialog_groups_edit.ui \
 	$$PWD/sw_dialog_html.ui \
-	$$PWD/sw_dialog_image.ui \
 	$$PWD/sw_dialog_list_model.ui \
 	$$PWD/sw_dialog_palette_part.ui \
 	$$PWD/sw_dialog_preferences.ui \

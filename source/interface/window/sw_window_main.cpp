@@ -31,6 +31,7 @@
 #include "sw_widget_preview.h"
 #include "sw_model_history.h"
 #include "sw_widget_spinner.h"
+#include <QPrintPreviewDialog>
 
 #if SW_ENABLE_GAMEPAD
 #include <QtGamepad/QGamepad>
@@ -725,13 +726,79 @@ void swMainWindow::UpdateInstructionsOptions()
 		mInstructionsDialog->UpdateOptions();
 }
 
-void swMainWindow::ShowPrintWidget()
+// use to paint the active model view on a printer
+void swMainWindow::PrintModelView(QPrinter* Printer)
 {
-	// one print panel beside the pages
-	ShowInstructionsDialog();
+#ifndef QT_NO_PRINTER
+	swView* ActiveView = GetActiveView();
 
-	if (mInstructionsDialog)
-		mInstructionsDialog->ShowPrintWidget();
+	if (!ActiveView)
+		return;
+
+	// render at page resolution within the size limit
+	const QSize ViewSize(qMax(ActiveView->GetWidth(), 1), qMax(ActiveView->GetHeight(), 1));
+	const QSize PageSize = Printer->pageLayout().paintRectPixels(Printer->resolution()).size();
+	const QSize ImageSize = ViewSize.scaled(PageSize.boundedTo(QSize(4096, 4096)), Qt::KeepAspectRatio);
+
+	swModel* Model = ActiveView->GetActiveModel();
+	const QImage Image = Model->GetStepImage(false, ImageSize.width(), ImageSize.height(), Model->GetCurrentStep());
+
+	if (Image.isNull())
+		return;
+
+	QPainter Painter;
+
+	if (!Painter.begin(Printer))
+	{
+		QMessageBox::warning(this, tr("Print"), tr("Error starting the print job."));
+		return;
+	}
+
+	// center the image on the page
+	QRect Target(QPoint(), Image.size().scaled(Painter.viewport().size(), Qt::KeepAspectRatio));
+	Target.moveCenter(Painter.viewport().center());
+	Painter.drawImage(Target, Image);
+#endif
+}
+
+// use to print the active model view
+void swMainWindow::ShowPrintDialog()
+{
+#ifndef QT_NO_PRINTER
+	swView* ActiveView = GetActiveView();
+
+	if (!ActiveView)
+		return;
+
+	QPrinter Printer(QPrinter::HighResolution);
+
+	// view shape picks the orientation
+	Printer.setPageOrientation(ActiveView->GetWidth() > ActiveView->GetHeight() ? QPageLayout::Landscape : QPageLayout::Portrait);
+
+	QPrintDialog PrintDialog(&Printer, this);
+	PrintDialog.setOptions(QAbstractPrintDialog::PrintToFile | QAbstractPrintDialog::PrintShowPageSize);
+
+	// native dialogs have no button box
+	QDialogButtonBox* ButtonBox = PrintDialog.findChild<QDialogButtonBox*>();
+
+	if (ButtonBox)
+	{
+		QPushButton* PreviewButton = ButtonBox->addButton(tr("Preview..."), QDialogButtonBox::ActionRole);
+
+		connect(PreviewButton, &QPushButton::clicked, &PrintDialog, [this, &PrintDialog, &Printer]()
+		{
+			QPrintPreviewDialog PreviewDialog(&Printer, &PrintDialog);
+			connect(&PreviewDialog, &QPrintPreviewDialog::paintRequested, this, &swMainWindow::PrintModelView);
+
+			// printing from the preview ends the print dialog
+			if (PreviewDialog.exec() == QDialog::Accepted)
+				PrintDialog.reject();
+		});
+	}
+
+	if (PrintDialog.exec() == QDialog::Accepted)
+		PrintModelView(&Printer);
+#endif
 }
 
 void swMainWindow::ShowImageDialog()
@@ -745,8 +812,9 @@ void swMainWindow::ShowImageDialog()
 	Options.Start = Model->GetCurrentStep();
 	Options.End = Model->GetLastStep();
 	Options.FilePath = Project->GetImageFileName(false);
+	Options.Background = swImageBackground::Default;
 
-	swImageDialog Dialog(this, &Options);
+	swImageDialog Dialog(this, &Options, Model);
 
 	if (Dialog.exec() != QDialog::Accepted)
 		return;

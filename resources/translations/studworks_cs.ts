@@ -2840,7 +2840,7 @@
     </message>
     <message>
         <location filename="../../source/application/sw_commands.cpp" line="65"/>
-        <source>&amp;Image...</source>
+        <source>Ima&amp;ge...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -16389,8 +16389,8 @@ Please visit https://library.ldraw.org for information on how to download and in
     </message>
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>Custom Paths</source>
-        <translation>Vlastní cesty</translation>
+        <source>Reference Paths</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Parts Library:</source>

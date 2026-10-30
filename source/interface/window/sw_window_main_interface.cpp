@@ -364,12 +364,12 @@ void swMainWindow::CreateMenus()
 	connect(FileMenu, &QMenu::aboutToShow, this, &swMainWindow::FileMenuAboutToShow);
 	FileMenu->addAction(mActions[SW_FILE_NEW]);
 	FileMenu->addAction(mActions[SW_FILE_OPEN]);
-	FileMenu->addAction(mActions[SW_FILE_MERGE]);
-	FileMenu->addAction(mActions[SW_FILE_RELOAD]);
-	FileMenu->addAction(mActions[SW_FILE_RELOAD_LIBRARY]);
 	FileMenu->addSeparator();
 	FileMenu->addAction(mActions[SW_FILE_SAVE]);
 	FileMenu->addAction(mActions[SW_FILE_SAVE_AS]);
+	FileMenu->addAction(mActions[SW_FILE_PRINT]);
+	FileMenu->addSeparator();
+	FileMenu->addAction(mActions[SW_FILE_MERGE]);
 	QMenu* ImportMenu = FileMenu->addMenu(tr("&Import"));
 	ImportMenu->addAction(mActions[SW_FILE_IMPORT_LDD]);
 	ImportMenu->addAction(mActions[SW_FILE_IMPORT_INVENTORY]);
@@ -379,20 +379,22 @@ void swMainWindow::CreateMenus()
 	ExportMenu->addAction(mActions[SW_FILE_EXPORT_COLLADA]);
 	ExportMenu->addAction(mActions[SW_FILE_EXPORT_CSV]);
 	ExportMenu->addAction(mActions[SW_FILE_EXPORT_HTML]);
-	ExportMenu->addAction(mActions[SW_FILE_SAVE_IMAGE]);
 	ExportMenu->addAction(mActions[SW_FILE_EXPORT_POVRAY]);
 	ExportMenu->addAction(mActions[SW_FILE_EXPORT_WAVEFRONT]);
 	FileMenu->addSeparator();
+	FileMenu->addAction(mActions[SW_FILE_RELOAD]);
+	FileMenu->addAction(mActions[SW_FILE_RELOAD_LIBRARY]);
+	FileMenu->addSeparator();
+	FileMenu->addAction(mActions[SW_MODEL_PROPERTIES]);
+	FileMenu->addSeparator();
+	FileMenu->addAction(mActions[SW_FILE_SAVE_IMAGE]);
+	FileMenu->addAction(mActions[SW_FILE_INSTRUCTIONS]);
 #ifndef SW_DISABLE_RENDER_DIALOG
 	QMenu* RenderMenu = FileMenu->addMenu(tr("Ren&der"));
 	RenderMenu->addAction(mActions[SW_FILE_RENDER_POVRAY]);
 	RenderMenu->addAction(mActions[SW_FILE_RENDER_BLENDER]);
 	RenderMenu->addAction(mActions[SW_FILE_RENDER_OPEN_IN_BLENDER]);
 #endif
-	FileMenu->addAction(mActions[SW_FILE_PRINT]);
-	FileMenu->addSeparator();
-	FileMenu->addAction(mActions[SW_FILE_INSTRUCTIONS]);
-	FileMenu->addAction(mActions[SW_MODEL_PROPERTIES]);
 	FileMenu->addSeparator();
 	FileMenu->addAction(mActions[SW_FILE_RECENT1]);
 	FileMenu->addAction(mActions[SW_FILE_RECENT2]);

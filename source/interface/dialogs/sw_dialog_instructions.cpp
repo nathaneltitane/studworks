@@ -112,12 +112,6 @@ void swInstructionsDialog::closeEvent(QCloseEvent* Event)
 	QMainWindow::closeEvent(Event);
 }
 
-void swInstructionsDialog::ShowPrintWidget()
-{
-	mPrintWidget->show();
-	mPrintWidget->raise();
-}
-
 void swInstructionsDialog::UpdatePageList()
 {
 	QListWidget* ThumbnailsWidget = mPageListWidget->mThumbnailsWidget;
