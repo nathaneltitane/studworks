@@ -2190,8 +2190,11 @@ swResult<void> Project::SaveImage(const swImageDialogOptions& Options)
 	if (!Extension.isEmpty())
 		swSetProfileString(SW_PROFILE_IMAGE_EXTENSION, FilePath.right(Extension.length() + 1));
 
-	if (Options.Start != Options.End)
+	// step animations hold every step in one file
+	const bool StepFiles = Options.Start != Options.End && !Options.Turntable.IsStepping();
+
+	if (StepFiles)
 		FilePath = FilePath.insert(FilePath.length() - Extension.length() - 1, QLatin1String("%1"));
 
-	return mActiveModel->SaveFramedImages(FilePath, Options.Start != Options.End, Options.Width, Options.Height, Options.Start, Options.End, Options.Background, Options.Framing, Options.Turntable);
+	return mActiveModel->SaveFramedImages(FilePath, StepFiles, Options.Width, Options.Height, Options.Start, Options.End, Options.Background, Options.Framing, Options.Turntable);
 }

@@ -635,7 +635,9 @@ swResult<void> swModel::SaveStepImages(const QString& BaseName, bool AddStepSuff
 
 float swImageTurntable::GetFrameAngle(int Frame) const
 {
-	const float Phase = static_cast<float>(Frame) / qMax(Frames, 1);
+	// each turn is one revolution or one swing
+	const float Turn = static_cast<float>(Frame) / qMax(Frames, 1);
+	const float Phase = Turn - floorf(Turn);
 
 	if (FullTurn)
 		return Phase * 360.0f;
@@ -647,9 +649,39 @@ float swImageTurntable::GetFrameAngle(int Frame) const
 	return AngleEnd - (AngleEnd - AngleStart) * (Phase * 2.0f - 1.0f);
 }
 
+int swImageTurntable::GetStepFrames() const
+{
+	if (NextStep == swImageNextStep::Seconds)
+		return qMax(qRound(NextStepSeconds * FrameRate), 1);
+
+	return qMax(NextStepTurns, 1) * qMax(Frames, 1);
+}
+
+int swImageTurntable::GetFrameCount(int StepCount) const
+{
+	if (Motion == swImageMotion::Steps)
+		return qMax(StepCount, 1);
+
+	if (NextStep == swImageNextStep::Off)
+		return qMax(Turns, 1) * qMax(Frames, 1);
+
+	return qMax(StepCount, 1) * GetStepFrames();
+}
+
+int swImageTurntable::GetFrameStep(int Frame) const
+{
+	if (Motion == swImageMotion::Steps)
+		return Frame;
+
+	if (NextStep == swImageNextStep::Off)
+		return 0;
+
+	return Frame / GetStepFrames();
+}
+
 int swImageTurntable::GetFrameDelay(int Frame) const
 {
-	const double Total = Duration * 100.0 / qMax(Frames, 1);
+	const double Total = 100.0 / qMax(FrameRate, 0.1);
 
 	return qRound(Total * (Frame + 1)) - qRound(Total * Frame);
 }
@@ -708,7 +740,7 @@ void swModel::SetImageCamera(swCamera* Camera, const swCamera* BaseCamera, const
 		return swMatrix33FromAxisAngle(Axis, -Angle * SW_DEGREES_TO_RADIANS);
 	};
 
-	const float FrameAngle = Turntable.Enabled ? Turntable.GetFrameAngle(Frame) : 0.0f;
+	const float FrameAngle = Turntable.IsTurning() ? Turntable.GetFrameAngle(Frame) : 0.0f;
 	const swMatrix33 Rotation = GetRotation(FrameAngle);
 
 	Camera->CopyPosition(BaseCamera);
@@ -727,7 +759,7 @@ void swModel::SetImageCamera(swCamera* Camera, const swCamera* BaseCamera, const
 	float Distance = 0.0f;
 	float HalfHeight = 0.0f;
 
-	if (!Turntable.Enabled)
+	if (!Turntable.IsTurning())
 	{
 		const swVector3 Side = swNormalize(swCross(Front, Up));
 		const swVector3 ViewUp = swCross(Side, Front);
@@ -903,6 +935,37 @@ swResult<void> swModel::SaveFramedImages(const QString& BaseName, bool AddStepSu
 	const float Aspect = static_cast<float>(Width) / Height;
 	swCamera Camera(true);
 
+	// every step in a single file
+	if (Turntable.IsStepping())
+	{
+		swGifWriter Writer(BaseName, QSize(Width, Height));
+
+		if (!Writer.Open())
+			return swUnexpected(tr("Error writing to file '%1':\n%2").arg(BaseName, Writer.GetErrorString()));
+
+		const int FrameCount = Turntable.GetFrameCount(End - Start + 1);
+
+		for (int Frame = 0; Frame < FrameCount; Frame++)
+		{
+			const swStep Step = Start + Turntable.GetFrameStep(Frame);
+
+			SetImageCamera(&Camera, BaseCamera, Framing, Turntable, Frame, Step, End, Aspect);
+
+			const swResult<QImage> Image = RenderStepImageWithReadyAssets(false, Width, Height, Step, &Camera, Background);
+
+			if (!Image)
+				return swUnexpected(Image.error());
+
+			if (!Writer.AddFrame(Image.value(), Turntable.GetFrameDelay(Frame), Transparent))
+				return swUnexpected(tr("Error writing to file '%1':\n%2").arg(BaseName, Writer.GetErrorString()));
+		}
+
+		if (!Writer.Close())
+			return swUnexpected(tr("Error writing to file '%1':\n%2").arg(BaseName, Writer.GetErrorString()));
+
+		return swResult<void>();
+	}
+
 	for (swStep Step = Start; Step <= End; Step++)
 	{
 		QString FileName;
@@ -937,7 +1000,7 @@ swResult<void> swModel::SaveFramedImages(const QString& BaseName, bool AddStepSu
 		if (!Writer.Open())
 			return swUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, Writer.GetErrorString()));
 
-		for (int Frame = 0; Frame < Turntable.Frames; Frame++)
+		for (int Frame = 0; Frame < Turntable.GetFrameCount(1); Frame++)
 		{
 			SetImageCamera(&Camera, BaseCamera, Framing, Turntable, Frame, Step, End, Aspect);
 

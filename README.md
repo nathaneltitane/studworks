@@ -147,7 +147,7 @@ It keeps LeoCAD's file format, so models open in either program, and copies LeoC
 
 Everything LeoCAD does, StudWorx does too - with a reworked interface and a set of modeling and instructions features on top:
 
-![Main window](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/interface-main-window.png)
+![Main window](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/interface-main-window.png)
 
 - **Interface** ↴
   - Built from standard Qt widgets, panels, dialogs and windows follow the system style and light or dark theme, only the model views draw with OpenGL
@@ -159,29 +159,29 @@ Everything LeoCAD does, StudWorx does too - with a reworked interface and a set 
   - What's This help on every dialog and panel from the title bar button or Help menu
   - English, French, German, Spanish, Portuguese, Czech, Ukrainian, Russian, Simplified Chinese and Traditional Chinese interface languages
 
-  ![Toolbars](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/interface-toolbars.png)
+  ![Toolbars](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/interface-toolbars.png)
 
   <details>
   <summary>Menus</summary>
 
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/interface-menu-file.png" alt="File menu" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/interface-menu-edit.png" alt="Edit menu" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/interface-menu-view.png" alt="View menu" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/interface-menu-part.png" alt="Part menu" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/interface-menu-steps.png" alt="Steps menu" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/interface-menu-models.png" alt="Models menu" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/interface-menu-help.png" alt="Help menu" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/interface-menu-file.png" alt="File menu" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/interface-menu-edit.png" alt="Edit menu" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/interface-menu-view.png" alt="View menu" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/interface-menu-part.png" alt="Part menu" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/interface-menu-steps.png" alt="Steps menu" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/interface-menu-models.png" alt="Models menu" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/interface-menu-help.png" alt="Help menu" align="top">
 
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/interface-menu-view-viewpoints.png" alt="View Viewpoints submenu" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/interface-menu-view-cutaway.png" alt="View Cutaway submenu" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/interface-menu-view-projection.png" alt="View Projection submenu" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/interface-menu-view-shading.png" alt="View Shading submenu" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/interface-menu-view-viewpoints.png" alt="View Viewpoints submenu" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/interface-menu-view-cutaway.png" alt="View Cutaway submenu" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/interface-menu-view-projection.png" alt="View Projection submenu" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/interface-menu-view-shading.png" alt="View Shading submenu" align="top">
 
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/interface-menu-options-view-grids.png" alt="View options" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/interface-menu-options-preview.png" alt="Preview options" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/interface-menu-options-parts.png" alt="Parts options" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/interface-menu-options-colors.png" alt="Colors options" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/interface-menu-options-minifigure-builder.png" alt="Minifigure Builder options" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/interface-menu-options-view-grids.png" alt="View options" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/interface-menu-options-preview.png" alt="Preview options" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/interface-menu-options-parts.png" alt="Parts options" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/interface-menu-options-colors.png" alt="Colors options" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/interface-menu-options-minifigure-builder.png" alt="Minifigure Builder options" align="top">
 
   </details>
 
@@ -200,11 +200,14 @@ Everything LeoCAD does, StudWorx does too - with a reworked interface and a set 
   - Ratio presets from square to widescreen in Landscape or Portrait, with any size typed in
   - Transparent backgrounds for PNG and GIF files, View Color backgrounds saved opaque
   - Fit Model and Fit Each Step keep every part inside the image with an adjustable margin
-  - Animated GIF turntables, a full turn or a back and forth angle range around the X, Y or Z axis, with frame count and duration, played live in the preview
+  - Animated GIF turntables, one or more full turns or back and forth swings around the X, Y or Z axis, with frames per turn and a frame rate that set the duration, played live in the preview
+  - Animated steps for short instructions, one step per frame or a next step every few turns or seconds while the model turns
   - Turntables keep one steady zoom through the whole turn around the World Origin, Model Origin or Model Center
 
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/save-model-image.png" alt="Save Model Image" width="49%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/save-model-image-gif.png" alt="Save Model Image animated GIF" width="49%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/save-model-image.png" alt="Save Model Image" width="49%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/save-model-image-gif.png" alt="Save Model Image animated GIF" width="49%" align="top">
+
+  ![Animated GIF](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/image-gif-animated.gif)
 
 - **Rendering** ↴
   - POV-Ray renders from the File menu, POV-Ray found on its own in the PATH, Flatpak or Snap and checked for version 3.7
@@ -216,12 +219,12 @@ Everything LeoCAD does, StudWorx does too - with a reworked interface and a set 
   - Separate rendering settings for the model view, preview, parts list and Minifigure Builder
   - Outline or tint and edges selection highlight with an adjustable outline width
 
-  ![POV-Ray render](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/rendering-povray.png)
+  ![POV-Ray render](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/rendering-povray.png)
 
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/rendering-lighting-standard.png" alt="Standard lighting" width="24%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/rendering-lighting-studio.png" alt="Studio lighting" width="24%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/rendering-lighting-matte.png" alt="Matte lighting" width="24%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/rendering-lighting-toon.png" alt="Toon lighting" width="24%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/rendering-lighting-standard.png" alt="Standard lighting" width="24%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/rendering-lighting-studio.png" alt="Studio lighting" width="24%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/rendering-lighting-matte.png" alt="Matte lighting" width="24%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/rendering-lighting-toon.png" alt="Toon lighting" width="24%" align="top">
 
 - **Modeling** ↴
   - Insert, delete, duplicate, paint, hide and group parts, with the first part at the origin as an option
@@ -234,11 +237,11 @@ Everything LeoCAD does, StudWorx does too - with a reworked interface and a set 
   - Flex Path parts such as hoses and cables, bent with control points that stop at the part length
   - Train track rotation, pivot point reset, keyframes and lights and cameras placed in the model
 
-  ![Find and Replace](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-find-replace.png)
+  ![Find and Replace](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/modeling-find-replace.png)
 
-  ![Array](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-array.png)
+  ![Array](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/modeling-array.png)
 
-  ![Flex Path](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/modeling-flex-path.png)
+  ![Flex Path](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/modeling-flex-path.png)
 
 - **Views** ↴
   - View cube with chamfered edges and corners, click any of its 6 faces, 12 edges or 8 corners for that view
@@ -250,21 +253,21 @@ Everything LeoCAD does, StudWorx does too - with a reworked interface and a set 
   - Base grid with studs, lines and origin lines, vertical XZ and YZ height grids sized around the model, and toggles for each X, Y and Z axis line
   - Idle turntable turning the model full screen around the X, Y or Z axis, any input ends it
 
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/views-cube.png" alt="View cube" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/views-cube.png" alt="View cube" align="top">
 
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/views-camera.png" alt="Camera bar" width="32%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/views-projection-perspective.png" alt="Perspective projection" width="32%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/views-projection-orthographic.png" alt="Orthographic projection" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/views-camera.png" alt="Camera bar" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/views-projection-perspective.png" alt="Perspective projection" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/views-projection-orthographic.png" alt="Orthographic projection" width="32%" align="top">
 
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/views-cutaway-cube.png" alt="Cube cutaway" width="32%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/views-cutaway-sphere.png" alt="Sphere cutaway" width="32%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/views-cutaway-cylinder.png" alt="Cylinder cutaway" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/views-cutaway-cube.png" alt="Cube cutaway" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/views-cutaway-sphere.png" alt="Sphere cutaway" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/views-cutaway-cylinder.png" alt="Cylinder cutaway" width="32%" align="top">
 
-  ![XZ and YZ height grids](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/views-height-grids.png)
+  ![XZ and YZ height grids](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/views-height-grids.png)
 
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/views-turntable-a.png" alt="Idle turntable" width="32%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/views-turntable-b.png" alt="Idle turntable" width="32%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/views-turntable-c.png" alt="Idle turntable" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/views-turntable-a.png" alt="Idle turntable" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/views-turntable-b.png" alt="Idle turntable" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/views-turntable-c.png" alt="Idle turntable" width="32%" align="top">
 
 - **Steps** ↴
   - Steps menu to go to the first, previous, next or last step and insert or remove steps
@@ -273,8 +276,8 @@ Everything LeoCAD does, StudWorx does too - with a reworked interface and a set 
   - MLCad ROTSTEP step views shown, edited and followed in the Timeline
   - Fade Previous Steps and Highlight New Parts in the model view and the instructions
 
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/interface-menu-steps.png" alt="Steps menu" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/panels-timeline.png" alt="Timeline panel" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/interface-menu-steps.png" alt="Steps menu" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/panels-timeline.png" alt="Timeline panel" align="top">
 
 - **Panels** ↴
   - Uniform panel headers, buttons and text boxes, all sized from the options (gear) button
@@ -286,13 +289,13 @@ Everything LeoCAD does, StudWorx does too - with a reworked interface and a set 
   - Preview panel for parts and models, with a square viewport and Keep Last Selection
   - Terminal panel sized to whole rows and columns, with Open Model Folder
 
-  ![Selected part in the main window](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/panels-main-window-selection.png)
+  ![Selected part in the main window](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/panels-main-window-selection.png)
 
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/panels-preview.png" alt="Preview panel" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/panels-parts.png" alt="Parts panel" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/panels-minifigure-builder.png" alt="Minifigure Builder panel" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/panels-colors.png" alt="Colors panel" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/panels-properties.png" alt="Properties panel" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/panels-preview.png" alt="Preview panel" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/panels-parts.png" alt="Parts panel" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/panels-minifigure-builder.png" alt="Minifigure Builder panel" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/panels-colors.png" alt="Colors panel" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/panels-properties.png" alt="Properties panel" align="top">
 
 - **Instructions** ↴
   - Page setup with paper and screen presets, metric or imperial units, margins and orientation
@@ -304,17 +307,17 @@ Everything LeoCAD does, StudWorx does too - with a reworked interface and a set 
   - Notices and pointers to emphasize parts, steps and notices
   - Built-in Print panel and a source editor, instructions saved in the model file as '!SW INSTRUCTION' meta commands
 
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/instructions-page-cover.png" alt="Cover page" width="32%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/instructions-page-step.png" alt="Step page" width="32%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/instructions-page-bill-of-materials.png" alt="Bill of materials" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/instructions-page-cover.png" alt="Cover page" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/instructions-page-step.png" alt="Step page" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/instructions-page-bill-of-materials.png" alt="Bill of materials" width="32%" align="top">
 
-  ![Instructions window](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/instructions-window.png)
+  ![Instructions window](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/instructions-window.png)
 
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/instructions-panel-properties.png" alt="Properties panel" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/instructions-panel-grid.png" alt="Grid panel" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/instructions-panel-placement.png" alt="Placement panel" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/instructions-panel-print.png" alt="Print panel" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/instructions-panel-editor.png" alt="Editor panel" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/instructions-panel-properties.png" alt="Properties panel" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/instructions-panel-grid.png" alt="Grid panel" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/instructions-panel-placement.png" alt="Placement panel" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/instructions-panel-print.png" alt="Print panel" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/instructions-panel-editor.png" alt="Editor panel" align="top">
 
 - **Models** ↴
   - Model properties with part IDs, thumbnails, counts and BrickLink or CSV export
@@ -322,11 +325,11 @@ Everything LeoCAD does, StudWorx does too - with a reworked interface and a set 
   - Edit a submodel in place, with an editing path bar whose buttons go back to each model
   - Consistent default names and numbered duplicates: 'Submodel 001.ldr', 'Car.ldr' becomes 'Car 001.ldr'
 
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/models-properties.png" alt="Model properties" width="32%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/models-properties-parts.png" alt="Model parts" width="32%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/models-submodels.png" alt="Submodels" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/models-properties.png" alt="Model properties" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/models-properties-parts.png" alt="Model parts" width="32%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/models-submodels.png" alt="Submodels" width="32%" align="top">
 
-  ![Editing a submodel in place](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/models-in-place-editing.png)
+  ![Editing a submodel in place](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/models-in-place-editing.png)
 
 - **Preferences** ↴
   - General, Rendering, Views, Colors, Instructions, Categories, Keyboard and Mouse pages with lined up label and control columns
@@ -337,16 +340,16 @@ Everything LeoCAD does, StudWorx does too - with a reworked interface and a set 
   - Keyboard shortcuts and mouse shortcuts recorded by clicking, all importable and exportable
   - Settings, part palettes and minifigure templates copied from LeoCAD on the first start
 
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/preferences-general.png" alt="General preferences" width="24%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/preferences-rendering.png" alt="Rendering preferences" width="24%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/preferences-views.png" alt="Views preferences" width="24%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/preferences-colors.png" alt="Colors preferences" width="24%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/preferences-instructions.png" alt="Instructions preferences" width="24%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/preferences-categories.png" alt="Categories preferences" width="24%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/preferences-keyboard.png" alt="Keyboard preferences" width="24%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/preferences-mouse.png" alt="Mouse preferences" width="24%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/preferences-general.png" alt="General preferences" width="24%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/preferences-rendering.png" alt="Rendering preferences" width="24%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/preferences-views.png" alt="Views preferences" width="24%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/preferences-colors.png" alt="Colors preferences" width="24%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/preferences-instructions.png" alt="Instructions preferences" width="24%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/preferences-categories.png" alt="Categories preferences" width="24%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/preferences-keyboard.png" alt="Keyboard preferences" width="24%" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/preferences-mouse.png" alt="Mouse preferences" width="24%" align="top">
 
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/screenshots/preferences-about.png" alt="About" align="top">
+  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/preferences-about.png" alt="About" align="top">
 
 ---
 

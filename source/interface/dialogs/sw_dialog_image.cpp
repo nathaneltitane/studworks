@@ -137,7 +137,7 @@ swImageDialog::swImageDialog(QWidget* Parent, swImageDialogOptions* Options, swM
 	QVBoxLayout* SettingsLayout = new QVBoxLayout();
 	MainLayout->addLayout(SettingsLayout);
 
-	const QString FileHelp = tr("<p><b>File</b></p><p>Choose an output folder, file name, and image extension, such as .png, .jpg, .bmp, or .gif for an animated turntable.</p><p>When saving several steps, the step number is added before the extension. For example, 'model.png' becomes 'model01.png', 'model02.png', and so on.</p>");
+	const QString FileHelp = tr("<p><b>File</b></p><p>Choose an output folder, file name, and image extension, such as .png, .jpg, .bmp, or .gif for an animation.</p><p>When saving several steps, the step number is added before the extension. For example, 'model.png' becomes 'model01.png', 'model02.png', and so on.</p>");
 
 	QGroupBox* FileGroup = new QGroupBox(tr("File"), this);
 	FileGroup->setWhatsThis(FileHelp);
@@ -233,13 +233,12 @@ swImageDialog::swImageDialog(QWidget* Parent, swImageDialogOptions* Options, swM
 	OrientationLayout->addWidget(mPortraitButton, 1);
 
 	// pick the preset matching the size
-	const int LongSide = qMax(Options->Width, Options->Height);
-	const int ShortSide = qMax(qMin(Options->Width, Options->Height), 1);
 	mPortrait = Options->Height > Options->Width;
 
-	for (int ItemIndex = 3; ItemIndex < mRatioComboBox->count(); ItemIndex++)
+	// last ratio used
+	for (int ItemIndex = 0; ItemIndex < mRatioComboBox->count(); ItemIndex++)
 	{
-		if (qAbs(mRatioComboBox->itemData(ItemIndex).toDouble() - static_cast<double>(LongSide) / ShortSide) < 0.01)
+		if (!mRatioComboBox->itemData(ItemIndex).isNull() && qAbs(mRatioComboBox->itemData(ItemIndex).toDouble() - Options->Ratio) < 0.01)
 			mRatioComboBox->setCurrentIndex(ItemIndex);
 	}
 
@@ -252,15 +251,17 @@ swImageDialog::swImageDialog(QWidget* Parent, swImageDialogOptions* Options, swM
 
 	mCurrentRadio = new QRadioButton(tr("&Current Step"), StepsGroup);
 	mCurrentRadio->setToolTip(tr("Save only the current step."));
-	mCurrentRadio->setChecked(true);
+	mCurrentRadio->setChecked(Options->Steps == swImageSteps::Current);
 	StepsLayout->addWidget(mCurrentRadio, 0, 0, 1, 2);
 
 	mAllRadio = new QRadioButton(tr("&All Steps"), StepsGroup);
 	mAllRadio->setToolTip(tr("Save an image for every step in the active model."));
+	mAllRadio->setChecked(Options->Steps == swImageSteps::All);
 	StepsLayout->addWidget(mAllRadio, 1, 0, 1, 2);
 
 	mRangeRadio = new QRadioButton(tr("&Range"), StepsGroup);
 	mRangeRadio->setToolTip(tr("Save the steps between the first and last step, including both."));
+	mRangeRadio->setChecked(Options->Steps == swImageSteps::Range);
 	StepsLayout->addWidget(mRangeRadio, 2, 0);
 
 	QHBoxLayout* RangeLayout = new QHBoxLayout();
@@ -282,19 +283,30 @@ swImageDialog::swImageDialog(QWidget* Parent, swImageDialogOptions* Options, swM
 	mToSpinBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	RangeLayout->addWidget(mToSpinBox, 1);
 
-	// turntable group
-	QGroupBox* TurntableGroup = new QGroupBox(tr("Turntable"), this);
-	TurntableGroup->setWhatsThis(tr("<p><b>Turntable</b></p><p>Animated GIF saves the model turning around one axis through the Framing center, starting from the current view. The animation loops forever.</p><p>Full Turn makes one seamless revolution. Angle swings between two angles from the current view and back again.</p><p>Frames sets how many images make up the loop and Duration sets how long one loop plays.</p>"));
+	// animation group
+	QGroupBox* TurntableGroup = new QGroupBox(tr("Animation"), this);
+	TurntableGroup->setWhatsThis(tr("<p><b>Animation</b></p><p>Animated GIF saves a looping animation. The animation loops forever.</p><p>Turntable turns the model around one axis through the Framing center, starting from the current view. Full Turn makes seamless revolutions. Angle swings between two angles from the current view and back again. Turns sets how many revolutions or swings make up the loop, so complex builds can be shown from every side more than once.</p><p>Next Step moves through the steps chosen in the Steps group while the model turns, one step every few turns or seconds. The loop ends on the last step and starts again.</p><p>Steps plays the chosen steps one per frame, for short animated instructions.</p><p>Frames sets how many images make up one turn and Frame Rate how many play each second. Duration shows how long one loop plays.</p>"));
 
 	QGridLayout* TurntableLayout = new QGridLayout(TurntableGroup);
 	mGridLayouts.append(TurntableLayout);
 
 	mAnimatedCheckBox = new QCheckBox(tr("Animated &GIF"), TurntableGroup);
-	mAnimatedCheckBox->setToolTip(tr("Save a looping GIF of the model turning."));
+	mAnimatedCheckBox->setToolTip(tr("Save a looping GIF of the model turning or of the steps."));
 	TurntableLayout->addWidget(mAnimatedCheckBox, 0, 0, 1, 2);
 
+	QLabel* MotionLabel = new QLabel(tr("Motion"), TurntableGroup);
+	TurntableLayout->addWidget(MotionLabel, 1, 0);
+
+	mMotionComboBox = new QComboBox(TurntableGroup);
+	mMotionComboBox->setToolTip(tr("Turn the model or play the steps one per frame."));
+	mMotionComboBox->addItem(tr("Turntable"));
+	mMotionComboBox->addItem(tr("Steps"));
+	mMotionComboBox->setCurrentIndex(static_cast<int>(Options->Turntable.Motion));
+	MotionLabel->setBuddy(mMotionComboBox);
+	TurntableLayout->addWidget(mMotionComboBox, 1, 1);
+
 	QLabel* AxisLabel = new QLabel(tr("A&xis"), TurntableGroup);
-	TurntableLayout->addWidget(AxisLabel, 1, 0);
+	TurntableLayout->addWidget(AxisLabel, 2, 0);
 
 	mAxisComboBox = new QComboBox(TurntableGroup);
 	mAxisComboBox->setToolTip(tr("Axis the model turns around."));
@@ -303,20 +315,20 @@ swImageDialog::swImageDialog(QWidget* Parent, swImageDialogOptions* Options, swM
 	mAxisComboBox->addItem(QLatin1String("Z"));
 	mAxisComboBox->setCurrentIndex(static_cast<int>(Options->Turntable.Axis));
 	AxisLabel->setBuddy(mAxisComboBox);
-	TurntableLayout->addWidget(mAxisComboBox, 1, 1);
+	TurntableLayout->addWidget(mAxisComboBox, 2, 1);
 
 	mFullTurnRadio = new QRadioButton(tr("&Full Turn"), TurntableGroup);
 	mFullTurnRadio->setToolTip(tr("Turn the model once all the way around."));
 	mFullTurnRadio->setChecked(Options->Turntable.FullTurn);
-	TurntableLayout->addWidget(mFullTurnRadio, 2, 0, 1, 2);
+	TurntableLayout->addWidget(mFullTurnRadio, 3, 0, 1, 2);
 
 	mAngleRadio = new QRadioButton(tr("A&ngle"), TurntableGroup);
 	mAngleRadio->setToolTip(tr("Swing the model between two angles and back."));
 	mAngleRadio->setChecked(!Options->Turntable.FullTurn);
-	TurntableLayout->addWidget(mAngleRadio, 3, 0);
+	TurntableLayout->addWidget(mAngleRadio, 4, 0);
 
 	QHBoxLayout* AngleLayout = new QHBoxLayout();
-	TurntableLayout->addLayout(AngleLayout, 3, 1);
+	TurntableLayout->addLayout(AngleLayout, 4, 1);
 
 	mAngleStartSpinBox = new swRangeSpinBox(TurntableGroup);
 	mAngleStartSpinBox->setRange(-360, 360);
@@ -336,28 +348,71 @@ swImageDialog::swImageDialog(QWidget* Parent, swImageDialogOptions* Options, swM
 	mAngleEndSpinBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	AngleLayout->addWidget(mAngleEndSpinBox, 1);
 
+	QLabel* NextStepLabel = new QLabel(tr("Next Step"), TurntableGroup);
+	TurntableLayout->addWidget(NextStepLabel, 5, 0);
+
+	QHBoxLayout* NextStepLayout = new QHBoxLayout();
+	TurntableLayout->addLayout(NextStepLayout, 5, 1);
+
+	mNextStepComboBox = new QComboBox(TurntableGroup);
+	mNextStepComboBox->setToolTip(tr("Move to the next step while the model turns."));
+	mNextStepComboBox->addItem(tr("Off"));
+	mNextStepComboBox->addItem(tr("Turns"));
+	mNextStepComboBox->addItem(tr("Seconds"));
+	mNextStepComboBox->setCurrentIndex(static_cast<int>(Options->Turntable.NextStep));
+	mNextStepComboBox->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed);
+	NextStepLabel->setBuddy(mNextStepComboBox);
+	NextStepLayout->addWidget(mNextStepComboBox, 1);
+
+	mNextStepTurns = qBound(1, Options->Turntable.NextStepTurns, 10);
+	mNextStepSeconds = qBound(0.1, Options->Turntable.NextStepSeconds, 60.0);
+
+	mNextStepSpinBox = new swRangeDoubleSpinBox(TurntableGroup);
+	mNextStepSpinBox->setAccessibleName(tr("Next Step Interval"));
+	mNextStepSpinBox->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed);
+	NextStepLayout->addWidget(mNextStepSpinBox, 1);
+
+	QLabel* TurnsLabel = new QLabel(tr("T&urns"), TurntableGroup);
+	TurntableLayout->addWidget(TurnsLabel, 6, 0);
+
+	mTurnsSpinBox = new swRangeSpinBox(TurntableGroup);
+	mTurnsSpinBox->setRange(1, 10);
+	mTurns = qBound(1, Options->Turntable.Turns, 10);
+	mTurnsSpinBox->setValue(mTurns);
+	mTurnsSpinBox->setToolTip(tr("Number of revolutions or swings in one loop (1 to 10)."));
+	TurnsLabel->setBuddy(mTurnsSpinBox);
+	TurntableLayout->addWidget(mTurnsSpinBox, 6, 1);
+
 	QLabel* FramesLabel = new QLabel(tr("Fra&mes"), TurntableGroup);
-	TurntableLayout->addWidget(FramesLabel, 4, 0);
+	TurntableLayout->addWidget(FramesLabel, 7, 0);
+
+	mTurntableFrames = qBound(2, Options->Turntable.Frames, 360);
 
 	mFramesSpinBox = new swRangeSpinBox(TurntableGroup);
 	mFramesSpinBox->setRange(2, 360);
-	mFramesSpinBox->setValue(Options->Turntable.Frames);
-	mFramesSpinBox->setToolTip(tr("Number of images in one loop (2 to 360)."));
+	mFramesSpinBox->setValue(mTurntableFrames);
 	FramesLabel->setBuddy(mFramesSpinBox);
-	TurntableLayout->addWidget(mFramesSpinBox, 4, 1);
+	TurntableLayout->addWidget(mFramesSpinBox, 7, 1);
 
-	QLabel* DurationLabel = new QLabel(tr("&Duration"), TurntableGroup);
-	TurntableLayout->addWidget(DurationLabel, 5, 0);
+	QLabel* FrameRateLabel = new QLabel(tr("Frame Rate"), TurntableGroup);
+	TurntableLayout->addWidget(FrameRateLabel, 8, 0);
 
-	mDurationSpinBox = new swRangeDoubleSpinBox(TurntableGroup);
-	mDurationSpinBox->setRange(0.1, 60.0);
-	mDurationSpinBox->setDecimals(1);
-	mDurationSpinBox->setSingleStep(0.5);
-	mDurationSpinBox->setSuffix(tr(" s"));
-	mDurationSpinBox->setValue(Options->Turntable.Duration);
-	mDurationSpinBox->setToolTip(tr("Time one loop takes to play, in seconds."));
-	DurationLabel->setBuddy(mDurationSpinBox);
-	TurntableLayout->addWidget(mDurationSpinBox, 5, 1);
+	mFrameRateSpinBox = new swRangeDoubleSpinBox(TurntableGroup);
+	mFrameRateSpinBox->setRange(0.5, 50.0);
+	mFrameRateSpinBox->setDecimals(1);
+	mFrameRateSpinBox->setSingleStep(1.0);
+	mFrameRateSpinBox->setSuffix(tr(" fps"));
+	mFrameRateSpinBox->setValue(Options->Turntable.FrameRate);
+	mFrameRateSpinBox->setToolTip(tr("Frames shown each second (0.5 to 50)."));
+	FrameRateLabel->setBuddy(mFrameRateSpinBox);
+	TurntableLayout->addWidget(mFrameRateSpinBox, 8, 1);
+
+	QLabel* DurationLabel = new QLabel(tr("Duration"), TurntableGroup);
+	TurntableLayout->addWidget(DurationLabel, 9, 0);
+
+	mDurationLabel = new QLabel(TurntableGroup);
+	mDurationLabel->setToolTip(tr("Time one loop takes to play, from the frames and frame rate."));
+	TurntableLayout->addWidget(mDurationLabel, 9, 1);
 
 	// framing group
 	QGroupBox* FramingGroup = new QGroupBox(tr("Framing"), this);
@@ -422,6 +477,7 @@ swImageDialog::swImageDialog(QWidget* Parent, swImageDialogOptions* Options, swM
 	mViewColorRadio = new QRadioButton(tr("&View Color"), BackgroundGroup);
 	mViewColorRadio->setToolTip(tr("Fill the background with the view background."));
 	mViewColorRadio->setChecked(true);
+	mTransparentChosen = Options->Background == swImageBackground::Transparent;
 	BackgroundLayout->addWidget(mViewColorRadio, 0, 0, 1, 2);
 
 	mTransparentRadio = new QRadioButton(tr("&Transparent"), BackgroundGroup);
@@ -453,12 +509,38 @@ swImageDialog::swImageDialog(QWidget* Parent, swImageDialogOptions* Options, swM
 	connect(mAnimationTimer, &QTimer::timeout, this, &swImageDialog::AdvancePreviewFrame);
 	connect(mPlayButton, &QToolButton::clicked, this, [this]() { SetPlaying(!mPlaying); });
 	connect(mAnimatedCheckBox, &QCheckBox::toggled, this, &swImageDialog::AnimatedChanged);
+	connect(mMotionComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &swImageDialog::UpdateTurntable);
 	connect(mAxisComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &swImageDialog::UpdateTurntable);
 	connect(mFullTurnRadio, &QRadioButton::toggled, this, &swImageDialog::UpdateTurntable);
 	connect(mAngleStartSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &swImageDialog::UpdateTurntable);
 	connect(mAngleEndSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &swImageDialog::UpdateTurntable);
-	connect(mFramesSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &swImageDialog::UpdateTurntable);
-	connect(mDurationSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &swImageDialog::UpdateTurntable);
+	connect(mTurnsSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int Turns)
+	{
+		mTurns = Turns;
+		UpdateTurntable();
+	});
+	connect(mNextStepComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &swImageDialog::UpdateTurntable);
+
+	// each interval keeps its own value
+	connect(mNextStepSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, [this](double Interval)
+	{
+		if (GetNextStep() == swImageNextStep::Seconds)
+			mNextStepSeconds = Interval;
+		else
+			mNextStepTurns = qRound(Interval);
+
+		UpdateTurntable();
+	});
+	connect(mFrameRateSpinBox, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &swImageDialog::UpdateTurntable);
+
+	// step counts leave the turntable frames alone
+	connect(mFramesSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, [this](int Frames)
+	{
+		if (!IsStepMotion())
+			mTurntableFrames = Frames;
+
+		UpdateTurntable();
+	});
 	connect(mFitComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &swImageDialog::UpdateFraming);
 	connect(mCenterComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &swImageDialog::UpdateFraming);
 	connect(mMarginSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), this, &swImageDialog::UpdateFraming);
@@ -503,7 +585,7 @@ swImageDialog::swImageDialog(QWidget* Parent, swImageDialogOptions* Options, swM
 		mPreviewTimer->start();
 	};
 
-	UpdateOrientation();
+	RatioChanged();
 	UpdateBackground();
 	UpdateTurntable();
 	UpdateRange();
@@ -519,7 +601,36 @@ void swImageDialog::showEvent(QShowEvent* Event)
 	{
 		mColumnsAligned = true;
 		AlignColumns();
+		FitWindow();
 	}
+}
+
+// use to size the window around the preview
+void swImageDialog::FitWindow()
+{
+	QBoxLayout* MainLayout = qobject_cast<QBoxLayout*>(layout());
+	QFrame* PreviewFrame = qobject_cast<QFrame*>(mPreview->parentWidget());
+	QBoxLayout* PreviewLayout = qobject_cast<QBoxLayout*>(PreviewFrame->layout());
+	QLayout* SettingsLayout = MainLayout->itemAt(1)->layout();
+	QLayoutItem* CaptionItem = PreviewLayout->itemAt(1);
+
+	const QMargins MainMargins = MainLayout->contentsMargins();
+	const QMargins PreviewMargins = PreviewLayout->contentsMargins();
+	const int FrameWidth = PreviewFrame->frameWidth();
+
+	// no gap below the settings column
+	const int ColumnHeight = SettingsLayout->minimumSize().height();
+	const int PreviewHeight = ColumnHeight - 2 * FrameWidth - PreviewMargins.top() - PreviewMargins.bottom() - PreviewLayout->spacing() - CaptionItem->sizeHint().height();
+
+	const double Ratio = static_cast<double>(mWidthSpinBox->value()) / qMax(mHeightSpinBox->value(), 1);
+	const int PreviewWidth = qMax(qRound(PreviewHeight * Ratio), qMax(mPreview->minimumWidth(), CaptionItem->minimumSize().width()));
+	int Width = MainMargins.left() + PreviewWidth + 2 * FrameWidth + PreviewMargins.left() + PreviewMargins.right() + MainLayout->spacing() + SettingsLayout->sizeHint().width() + MainMargins.right();
+
+	// stay on the screen
+	if (const QScreen* Screen = screen())
+		Width = qMin(Width, Screen->availableGeometry().width());
+
+	resize(Width, ColumnHeight + MainMargins.top() + MainMargins.bottom());
 }
 
 // use to share the label column
@@ -561,6 +672,8 @@ void swImageDialog::accept()
 	mOptions->Height = mHeightSpinBox->value();
 	mOptions->Start = GetRangeStart();
 	mOptions->End = GetRangeEnd();
+	mOptions->Ratio = mRatioComboBox->currentData().toDouble();
+	mOptions->Steps = mAllRadio->isChecked() ? swImageSteps::All : mRangeRadio->isChecked() ? swImageSteps::Range : swImageSteps::Current;
 	mOptions->Background = mTransparentRadio->isChecked() ? swImageBackground::Transparent : swImageBackground::Opaque;
 	mOptions->Turntable = GetTurntable();
 	mOptions->Framing = GetFraming();
@@ -646,6 +759,9 @@ void swImageDialog::RatioChanged()
 
 	UpdateOrientation();
 	UpdatePreview();
+
+	if (mColumnsAligned)
+		FitWindow();
 }
 
 // use to turn the image on its side
@@ -665,6 +781,9 @@ void swImageDialog::SetPortrait(bool Portrait)
 
 	UpdateOrientation();
 	UpdatePreview();
+
+	if (mColumnsAligned)
+		FitWindow();
 }
 
 void swImageDialog::UpdateOrientation()
@@ -709,7 +828,11 @@ void swImageDialog::UpdateRange()
 
 	// preview within the range
 	mPreviewStep = qBound(GetRangeStart(), mPreviewStep, GetRangeEnd());
-	UpdatePreview();
+
+	if (GetTurntable().IsStepping())
+		UpdateTurntable();
+	else
+		UpdatePreview();
 }
 
 // use to match the settings to the file type
@@ -762,15 +885,87 @@ void swImageDialog::AnimatedChanged(bool Animated)
 void swImageDialog::UpdateTurntable()
 {
 	const bool Animated = mAnimatedCheckBox->isChecked();
+	const bool StepMotion = IsStepMotion();
+	const bool Turning = Animated && !StepMotion;
+	const swImageNextStep NextStep = GetNextStep();
 
-	mAxisComboBox->setEnabled(Animated);
-	mFullTurnRadio->setEnabled(Animated);
-	mAngleRadio->setEnabled(Animated);
-	mAngleStartSpinBox->setEnabled(Animated && mAngleRadio->isChecked());
-	mAngleEndSpinBox->setEnabled(Animated && mAngleRadio->isChecked());
-	mFramesSpinBox->setEnabled(Animated);
-	mDurationSpinBox->setEnabled(Animated);
+	mMotionComboBox->setEnabled(Animated);
+	mAxisComboBox->setEnabled(Turning);
+	mFullTurnRadio->setEnabled(Turning);
+	mAngleRadio->setEnabled(Turning);
+	mAngleStartSpinBox->setEnabled(Turning && mAngleRadio->isChecked());
+	mAngleEndSpinBox->setEnabled(Turning && mAngleRadio->isChecked());
+	mNextStepComboBox->setEnabled(Turning);
+	mNextStepSpinBox->setEnabled(Turning && NextStep != swImageNextStep::Off);
+	mTurnsSpinBox->setEnabled(Turning && NextStep == swImageNextStep::Off);
+	mFramesSpinBox->setEnabled(Turning);
+
+	// interval in turns or seconds
+	{
+		const QSignalBlocker Blocker(mNextStepSpinBox);
+
+		if (NextStep == swImageNextStep::Seconds)
+		{
+			mNextStepSpinBox->setDecimals(1);
+			mNextStepSpinBox->setRange(0.1, 60.0);
+			mNextStepSpinBox->setSingleStep(0.5);
+			mNextStepSpinBox->setSuffix(tr(" s"));
+			mNextStepSpinBox->setValue(mNextStepSeconds);
+			mNextStepSpinBox->setToolTip(tr("Seconds each step shows (0.1 to 60)."));
+		}
+		else
+		{
+			mNextStepSpinBox->setDecimals(0);
+			mNextStepSpinBox->setRange(1.0, 10.0);
+			mNextStepSpinBox->setSingleStep(1.0);
+			mNextStepSpinBox->setSuffix(QString());
+			mNextStepSpinBox->setValue(mNextStepTurns);
+			mNextStepSpinBox->setToolTip(tr("Turns each step shows (1 to 10)."));
+		}
+	}
+
+	mFrameRateSpinBox->setEnabled(Animated);
 	mPlayButton->setVisible(Animated);
+
+	// steps give one frame each
+	{
+		const QSignalBlocker Blocker(mFramesSpinBox);
+
+		if (StepMotion)
+		{
+			mFramesSpinBox->setRange(1, qMax(mLastStep, 1));
+			mFramesSpinBox->setValue(GetRangeEnd() - GetRangeStart() + 1);
+			mFramesSpinBox->setToolTip(tr("Steps play one per frame, set by the Steps group."));
+		}
+		else
+		{
+			mFramesSpinBox->setRange(2, 360);
+			mFramesSpinBox->setValue(mTurntableFrames);
+			mFramesSpinBox->setToolTip(tr("Number of images in one turn (2 to 360)."));
+		}
+	}
+
+	const swImageTurntable Turntable = GetTurntable();
+	const int FrameCount = Turntable.GetFrameCount(GetRangeEnd() - GetRangeStart() + 1);
+
+	// stepping sets the turn count
+	{
+		const QSignalBlocker Blocker(mTurnsSpinBox);
+
+		if (Turning && NextStep != swImageNextStep::Off)
+		{
+			mTurnsSpinBox->setRange(1, 100000);
+			mTurnsSpinBox->setValue(qMax(qRound(static_cast<double>(FrameCount) / mTurntableFrames), 1));
+		}
+		else
+		{
+			mTurnsSpinBox->setRange(1, 10);
+			mTurnsSpinBox->setValue(mTurns);
+		}
+	}
+
+	mDurationLabel->setEnabled(Animated);
+	mDurationLabel->setText(tr("%1 s").arg(QLocale().toString(FrameCount / mFrameRateSpinBox->value(), 'f', 1)));
 
 	UpdateFraming();
 }
@@ -781,9 +976,11 @@ void swImageDialog::UpdateFraming()
 	const bool Fit = Framing.Fit != swImageFit::CurrentView;
 
 	// settings without effect stay off
-	mCenterComboBox->setEnabled(mAnimatedCheckBox->isChecked());
+	const bool Turning = mAnimatedCheckBox->isChecked() && !IsStepMotion();
+
+	mCenterComboBox->setEnabled(Turning);
 	mMarginSpinBox->setEnabled(Fit);
-	mScopeComboBox->setEnabled(Framing.Fit == swImageFit::FitModel || (!Fit && mAnimatedCheckBox->isChecked() && Framing.Center != swImageCenter::WorldOrigin));
+	mScopeComboBox->setEnabled(Framing.Fit == swImageFit::FitModel || (!Fit && Turning && Framing.Center != swImageCenter::WorldOrigin));
 
 	UpdatePreview();
 }
@@ -805,14 +1002,29 @@ swImageTurntable swImageDialog::GetTurntable() const
 	swImageTurntable Turntable;
 
 	Turntable.Enabled = mAnimatedCheckBox->isChecked();
+	Turntable.Motion = static_cast<swImageMotion>(mMotionComboBox->currentIndex());
 	Turntable.Axis = static_cast<swTurntableAxis>(mAxisComboBox->currentIndex());
 	Turntable.FullTurn = mFullTurnRadio->isChecked();
 	Turntable.AngleStart = mAngleStartSpinBox->value();
 	Turntable.AngleEnd = mAngleEndSpinBox->value();
-	Turntable.Frames = mFramesSpinBox->value();
-	Turntable.Duration = mDurationSpinBox->value();
+	Turntable.Turns = mTurns;
+	Turntable.Frames = mTurntableFrames;
+	Turntable.FrameRate = mFrameRateSpinBox->value();
+	Turntable.NextStep = GetNextStep();
+	Turntable.NextStepTurns = mNextStepTurns;
+	Turntable.NextStepSeconds = mNextStepSeconds;
 
 	return Turntable;
+}
+
+swImageNextStep swImageDialog::GetNextStep() const
+{
+	return static_cast<swImageNextStep>(mNextStepComboBox->currentIndex());
+}
+
+bool swImageDialog::IsStepMotion() const
+{
+	return mAnimatedCheckBox->isChecked() && mMotionComboBox->currentIndex() == static_cast<int>(swImageMotion::Steps);
 }
 
 void swImageDialog::ShowPreviewStep(int Offset)
@@ -827,8 +1039,15 @@ void swImageDialog::UpdatePreview()
 	mNextButton->setEnabled(mPreviewStep < GetRangeEnd());
 	mStepLabel->setText(tr("Step %1 of %2").arg(mPreviewStep).arg(mLastStep));
 
+	const swImageTurntable Turntable = GetTurntable();
+	const int FrameCount = Turntable.GetFrameCount(GetRangeEnd() - GetRangeStart() + 1);
+
+	// playing steps pick their own
+	mPreviousButton->setVisible(!Turntable.IsStepping());
+	mNextButton->setVisible(!Turntable.IsStepping());
+
 	if (mAnimatedCheckBox->isChecked())
-		mSizeLabel->setText(QString::fromUtf8("%1 × %2 · %3").arg(mWidthSpinBox->value()).arg(mHeightSpinBox->value()).arg(tr("%1 frames").arg(mFramesSpinBox->value())));
+		mSizeLabel->setText(QString::fromUtf8("%1 × %2 · %3").arg(mWidthSpinBox->value()).arg(mHeightSpinBox->value()).arg(tr("%1 frames").arg(FrameCount)));
 	else
 		mSizeLabel->setText(QString::fromUtf8("%1 × %2").arg(mWidthSpinBox->value()).arg(mHeightSpinBox->value()));
 
@@ -849,7 +1068,7 @@ void swImageDialog::RenderPreview()
 
 	if (mAnimatedCheckBox->isChecked())
 	{
-		mPreviewFrames.resize(mFramesSpinBox->value());
+		mPreviewFrames.resize(GetTurntable().GetFrameCount(GetRangeEnd() - GetRangeStart() + 1));
 		mPreviewFrame = qBound(0, mPreviewFrame, mPreviewFrames.size() - 1);
 		ShowPreviewFrame();
 
@@ -886,11 +1105,19 @@ void swImageDialog::ShowPreviewFrame()
 		const QSize RenderSize = ImageSize.scaled(mPreview->size() * PixelRatio, Qt::KeepAspectRatio).expandedTo(QSize(1, 1));
 		const swImageBackground Background = mPreviewTransparent ? swImageBackground::Transparent : swImageBackground::Opaque;
 
-		Image = mModel->GetFramedImage(RenderSize.width(), RenderSize.height(), mPreviewStep, GetRangeEnd(), Background, GetFraming(), GetTurntable(), mPreviewFrame);
+		const swImageTurntable Turntable = GetTurntable();
+		const int Step = Turntable.IsStepping() ? GetRangeStart() + Turntable.GetFrameStep(mPreviewFrame) : mPreviewStep;
+
+		Image = mModel->GetFramedImage(RenderSize.width(), RenderSize.height(), Step, GetRangeEnd(), Background, GetFraming(), Turntable, mPreviewFrame);
 		Image.setDevicePixelRatio(PixelRatio);
 	}
 
 	mPreview->SetImage(Image, mPreviewTransparent);
+
+	const swImageTurntable Turntable = GetTurntable();
+
+	if (Turntable.IsStepping())
+		mStepLabel->setText(tr("Step %1 of %2").arg(GetRangeStart() + Turntable.GetFrameStep(mPreviewFrame)).arg(mLastStep));
 }
 
 void swImageDialog::AdvancePreviewFrame()

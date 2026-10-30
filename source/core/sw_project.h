@@ -31,21 +31,60 @@ public:
 	bool PartsListEnd;
 };
 
-// Turns the model around one axis in an animated GIF.
+enum class swImageMotion
+{
+	Turntable,
+	Steps
+};
+
+enum class swImageNextStep
+{
+	Off,
+	Turns,
+	Seconds
+};
+
+// Turns the model around one axis or plays the steps in an animated GIF.
 struct swImageTurntable
 {
 	bool Enabled = false;
+	swImageMotion Motion = swImageMotion::Turntable;
 	swTurntableAxis Axis = swTurntableAxis::Z;
 	bool FullTurn = true;
 	int AngleStart = -45;
 	int AngleEnd = 45;
+	int Turns = 1;
 	int Frames = 36;
-	double Duration = 3.0;
+	double FrameRate = 12.0;
+	swImageNextStep NextStep = swImageNextStep::Off;
+	int NextStepTurns = 1;
+	double NextStepSeconds = 2.0;
+
+	// Steps play one per frame without turning.
+	bool IsTurning() const
+	{
+		return Enabled && Motion == swImageMotion::Turntable;
+	}
+
+	// Steps share one file when the animation moves through them.
+	bool IsStepping() const
+	{
+		return Enabled && (Motion == swImageMotion::Steps || NextStep != swImageNextStep::Off);
+	}
+
+	// Frames each step shows while the model turns.
+	int GetStepFrames() const;
+
+	// Frames in one loop over every turn and step.
+	int GetFrameCount(int StepCount) const;
+
+	// Steps past the first shown on a frame.
+	int GetFrameStep(int Frame) const;
 
 	// Angle sweeps go forward and back so the loop has no jump.
 	float GetFrameAngle(int Frame) const;
 
-	// Delays are in hundredths of a second and add up to the duration.
+	// Delays are in hundredths of a second and follow the frame rate.
 	int GetFrameDelay(int Frame) const;
 };
 
@@ -80,6 +119,13 @@ struct swImageFraming
 	int Margin = 10;
 };
 
+enum class swImageSteps
+{
+	Current,
+	All,
+	Range
+};
+
 struct swImageDialogOptions
 {
 	QString FilePath;
@@ -87,6 +133,8 @@ struct swImageDialogOptions
 	int Height;
 	int Start;
 	int End;
+	double Ratio;
+	swImageSteps Steps;
 	swImageBackground Background;
 	swImageTurntable Turntable;
 	swImageFraming Framing;

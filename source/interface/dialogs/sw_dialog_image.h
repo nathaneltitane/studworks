@@ -23,6 +23,9 @@ protected:
 	// Shares one label column across the groups.
 	void AlignColumns();
 
+	// Sizes the window so the preview fits the settings column height.
+	void FitWindow();
+
 	void BrowseFile();
 	void WidthChanged(int Width);
 	void HeightChanged(int Height);
@@ -40,6 +43,8 @@ protected:
 	void AnimatedChanged(bool Animated);
 	void UpdateTurntable();
 	swImageTurntable GetTurntable() const;
+	bool IsStepMotion() const;
+	swImageNextStep GetNextStep() const;
 
 	// Camera fit and orbit center.
 	void UpdateFraming();
@@ -74,13 +79,22 @@ protected:
 	QRadioButton* mViewColorRadio = nullptr;
 	QRadioButton* mTransparentRadio = nullptr;
 	QCheckBox* mAnimatedCheckBox = nullptr;
+	QComboBox* mMotionComboBox = nullptr;
 	QComboBox* mAxisComboBox = nullptr;
 	QRadioButton* mFullTurnRadio = nullptr;
 	QRadioButton* mAngleRadio = nullptr;
 	swRangeSpinBox* mAngleStartSpinBox = nullptr;
 	swRangeSpinBox* mAngleEndSpinBox = nullptr;
+	QComboBox* mNextStepComboBox = nullptr;
+	swRangeDoubleSpinBox* mNextStepSpinBox = nullptr;
+	swRangeSpinBox* mTurnsSpinBox = nullptr;
 	swRangeSpinBox* mFramesSpinBox = nullptr;
-	swRangeDoubleSpinBox* mDurationSpinBox = nullptr;
+	swRangeDoubleSpinBox* mFrameRateSpinBox = nullptr;
+	QLabel* mDurationLabel = nullptr;
+	int mTurntableFrames = 36;
+	int mTurns = 1;
+	int mNextStepTurns = 1;
+	double mNextStepSeconds = 2.0;
 	QComboBox* mFitComboBox = nullptr;
 	QComboBox* mCenterComboBox = nullptr;
 	swRangeSpinBox* mMarginSpinBox = nullptr;
