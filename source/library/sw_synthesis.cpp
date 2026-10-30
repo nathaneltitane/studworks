@@ -18,6 +18,13 @@ public:
 
 protected:
 	float GetSectionTwist(const swMatrix44& StartTransform, const swMatrix44& EndTransform) const;
+	float GetSectionSpacing(size_t SectionCount) const;
+	float GetNominalLength() const;
+	float GetEndInset() const;
+	void GetSegmentControlPoints(const std::vector<swPartControlPoint>& ControlPoints, const std::vector<float>& Scales, quint32 ControlPointIndex, swVector3 SegmentControlPoints[4], swMatrix44& StartTransform, swMatrix44& EndTransform) const;
+	float GetPathLength(const std::vector<swPartControlPoint>& ControlPoints, const std::vector<float>& Scales, int CurvePointCount, float* BendEnergy) const;
+	float FitPathLength(const std::vector<swPartControlPoint>& ControlPoints, std::vector<float>& Scales, float NominalLength, float* BendEnergy) const;
+	std::vector<float> GetFittedScales(const std::vector<swPartControlPoint>& ControlPoints, float NominalLength, const std::atomic_bool* Cancelled) const;
 	void CalculateSections(const std::vector<swPartControlPoint>& ControlPoints, std::vector<swMatrix44>& Sections, SectionCallbackFunc SectionCallback, const std::atomic_bool* Cancelled) const override;
 	static void AddTubeParts(swLibraryMeshData& MeshData, const std::vector<swMatrix44>& Sections, float Radius, bool IsInner, const std::atomic_bool* Cancelled);
 
@@ -660,10 +667,238 @@ float swSynthesisInformationCurved::GetSectionTwist(const swMatrix44& StartTrans
 	return 0.0f;
 }
 
+// use to get the path length between a section and the next one
+float swSynthesisInformationCurved::GetSectionSpacing(size_t SectionCount) const
+{
+	float Spacing = mMiddle.Length;
+
+	if (mCenterLength != 0.0f && SectionCount == mSectionCount / 2 + 1)
+		Spacing = mCenterLength;
+
+	if (SectionCount == mSectionCount + 1 && !mRigidEdges)
+		Spacing += mEnd.Length;
+
+	return Spacing;
+}
+
+// use to get the path length the sections take up when laid out along the path
+float swSynthesisInformationCurved::GetNominalLength() const
+{
+	float NominalLength = mRigidEdges ? 0.0f : mStart.Length;
+
+	for (size_t SectionCount = 2; SectionCount <= mSectionCount + 1; SectionCount++)
+		NominalLength += GetSectionSpacing(SectionCount);
+
+	return NominalLength;
+}
+
+// use to get how far before the end control point the path stops so the end fitting sits on it like the start one
+float swSynthesisInformationCurved::GetEndInset() const
+{
+	return mLength - (mRigidEdges ? mStart.Length : 0.0f) - GetNominalLength();
+}
+
+// use to get the bezier points of a path segment with the given handle lengths
+void swSynthesisInformationCurved::GetSegmentControlPoints(const std::vector<swPartControlPoint>& ControlPoints, const std::vector<float>& Scales, quint32 ControlPointIndex, swVector3 SegmentControlPoints[4], swMatrix44& StartTransform, swMatrix44& EndTransform) const
+{
+	StartTransform = swMatrix44StudWorksToLDraw(ControlPoints[ControlPointIndex].Transform);
+	EndTransform = swMatrix44StudWorksToLDraw(ControlPoints[ControlPointIndex + 1].Transform);
+	StartTransform = swMatrix44(swMultiply(swMultiply(swMatrix33(mStart.Transform), swMatrix33(StartTransform)), swMatrix33Scale(swVector3(1.0f, -1.0f, 1.0f))), StartTransform.GetTranslation());
+	EndTransform = swMatrix44(swMultiply(swMultiply(swMatrix33(mEnd.Transform), swMatrix33(EndTransform)), swMatrix33Scale(swVector3(1.0f, -1.0f, 1.0f))), EndTransform.GetTranslation());
+
+	// rigid ends keep their fittings on the control points
+	if (ControlPointIndex == 0 && mRigidEdges)
+		StartTransform.SetTranslation(swMultiply31(swVector3(0.0f, mStart.Length, 0.0f), StartTransform));
+
+	if (ControlPointIndex + 2 == ControlPoints.size())
+		EndTransform.SetTranslation(swMultiply31(swVector3(0.0f, -GetEndInset(), 0.0f), EndTransform));
+
+	SegmentControlPoints[0] = StartTransform.GetTranslation();
+	SegmentControlPoints[1] = swMultiply31(swVector3(0.0f, Scales[ControlPointIndex], 0.0f), StartTransform);
+	SegmentControlPoints[2] = swMultiply31(swVector3(0.0f, -Scales[ControlPointIndex + 1], 0.0f), EndTransform);
+	SegmentControlPoints[3] = EndTransform.GetTranslation();
+}
+
+// use to measure the whole path and how much it bends
+float swSynthesisInformationCurved::GetPathLength(const std::vector<swPartControlPoint>& ControlPoints, const std::vector<float>& Scales, int CurvePointCount, float* BendEnergy) const
+{
+	float PathLength = 0.0f;
+	float Energy = 0.0f;
+	swVector3 PreviousDirection(0.0f, 0.0f, 0.0f);
+
+	for (quint32 ControlPointIndex = 0; ControlPointIndex + 1 < ControlPoints.size(); ControlPointIndex++)
+	{
+		swVector3 SegmentControlPoints[4];
+		swMatrix44 StartTransform, EndTransform;
+		GetSegmentControlPoints(ControlPoints, Scales, ControlPointIndex, SegmentControlPoints, StartTransform, EndTransform);
+
+		swVector3 PreviousPosition = SegmentControlPoints[0];
+
+		for (int PointIdx = 1; PointIdx < CurvePointCount; PointIdx++)
+		{
+			float t = (float)PointIdx / (float)(CurvePointCount - 1);
+			float it = 1.0f - t;
+
+			swVector3 Position = it * it * it * SegmentControlPoints[0] + it * it * 3.0f * t * SegmentControlPoints[1] + it * 3.0f * t * t * SegmentControlPoints[2] + t * t * t * SegmentControlPoints[3];
+			swVector3 Step = Position - PreviousPosition;
+			float StepLength = swLength(Step);
+
+			if (StepLength > 1e-4f)
+			{
+				swVector3 Direction = Step / StepLength;
+
+				// turning angle squared over the step length sums up the squared curvature
+				if (BendEnergy && swLength(PreviousDirection) > 0.0f)
+				{
+					float Angle = acosf(swClamp(swDot(Direction, PreviousDirection), -1.0f, 1.0f));
+					Energy += Angle * Angle / StepLength;
+				}
+
+				PreviousDirection = Direction;
+			}
+
+			PathLength += StepLength;
+			PreviousPosition = Position;
+		}
+	}
+
+	if (BendEnergy)
+		*BendEnergy = Energy;
+
+	return PathLength;
+}
+
+// use to scale all handles together until the path is as long as the part
+float swSynthesisInformationCurved::FitPathLength(const std::vector<swPartControlPoint>& ControlPoints, std::vector<float>& Scales, float NominalLength, float* BendEnergy) const
+{
+	const int NumFitPoints = 128;
+	std::vector<float> FitScales(Scales.size(), 0.0f);
+
+	// the ends are too far apart for the part, keep the handles and stretch it
+	if (GetPathLength(ControlPoints, FitScales, NumFitPoints, nullptr) >= NominalLength)
+		return GetPathLength(ControlPoints, Scales, NumFitPoints, BendEnergy);
+
+	float LowFactor = 0.0f;
+	float HighFactor = 1.0f;
+
+	auto GetScaledLength = [&](float Factor)
+	{
+		for (size_t ScaleIndex = 0; ScaleIndex < Scales.size(); ScaleIndex++)
+			FitScales[ScaleIndex] = Scales[ScaleIndex] * Factor;
+
+		return GetPathLength(ControlPoints, FitScales, NumFitPoints, nullptr);
+	};
+
+	while (GetScaledLength(HighFactor) < NominalLength && HighFactor < 65536.0f)
+	{
+		LowFactor = HighFactor;
+		HighFactor *= 2.0f;
+	}
+
+	for (int Iteration = 0; Iteration < 24; Iteration++)
+	{
+		float MiddleFactor = (LowFactor + HighFactor) / 2.0f;
+
+		if (GetScaledLength(MiddleFactor) < NominalLength)
+			LowFactor = MiddleFactor;
+		else
+			HighFactor = MiddleFactor;
+	}
+
+	const float Factor = (LowFactor + HighFactor) / 2.0f;
+
+	for (float& Scale : Scales)
+		Scale *= Factor;
+
+	return GetPathLength(ControlPoints, Scales, NumFitPoints, BendEnergy);
+}
+
+// use to find the handle lengths that keep the part length and bend it the least like a real hose
+std::vector<float> swSynthesisInformationCurved::GetFittedScales(const std::vector<swPartControlPoint>& ControlPoints, float NominalLength, const std::atomic_bool* Cancelled) const
+{
+	std::vector<float> Scales;
+
+	for (const swPartControlPoint& ControlPoint : ControlPoints)
+		Scales.emplace_back(swMaximum(ControlPoint.Scale, 1.0f));
+
+	if (ControlPoints.size() < 2 || NominalLength <= 0.0f)
+		return Scales;
+
+	// a part too short for its path is stretched along handles a third of the shorter chord beside each point
+	std::vector<float> ChordScales(Scales.size(), 0.0f);
+
+	if (GetPathLength(ControlPoints, ChordScales, 2, nullptr) >= NominalLength)
+	{
+		ChordScales.assign(Scales.size(), FLT_MAX);
+
+		for (quint32 ControlPointIndex = 0; ControlPointIndex + 1 < ControlPoints.size(); ControlPointIndex++)
+		{
+			swVector3 SegmentControlPoints[4];
+			swMatrix44 StartTransform, EndTransform;
+			GetSegmentControlPoints(ControlPoints, Scales, ControlPointIndex, SegmentControlPoints, StartTransform, EndTransform);
+
+			const float Chord = swLength(SegmentControlPoints[3] - SegmentControlPoints[0]) / 3.0f;
+			ChordScales[ControlPointIndex] = swMinimum(ChordScales[ControlPointIndex], Chord);
+			ChordScales[ControlPointIndex + 1] = swMinimum(ChordScales[ControlPointIndex + 1], Chord);
+		}
+
+		return ChordScales;
+	}
+
+	float BestEnergy = 0.0f;
+	FitPathLength(ControlPoints, Scales, NominalLength, &BestEnergy);
+
+	// walk each handle up and down while the bending drops, with smaller steps each round
+	for (float StepFactor = 2.0f; StepFactor > 1.01f; StepFactor = sqrtf(StepFactor))
+	{
+		bool Improved = true;
+
+		for (int Round = 0; Round < 16 && Improved; Round++)
+		{
+			Improved = false;
+
+			for (size_t ScaleIndex = 0; ScaleIndex < Scales.size(); ScaleIndex++)
+			{
+				if (Cancelled && Cancelled->load(std::memory_order_relaxed))
+					return Scales;
+
+				for (float Step : { StepFactor, 1.0f / StepFactor })
+				{
+					std::vector<float> TryScales = Scales;
+					TryScales[ScaleIndex] *= Step;
+
+					float Energy = 0.0f;
+					FitPathLength(ControlPoints, TryScales, NominalLength, &Energy);
+
+					if (Energy < BestEnergy * 0.999f)
+					{
+						BestEnergy = Energy;
+						Scales = TryScales;
+						Improved = true;
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	return Scales;
+}
+
 void swSynthesisInformationCurved::CalculateSections(const std::vector<swPartControlPoint>& ControlPoints, std::vector<swMatrix44>& Sections, SectionCallbackFunc SectionCallback, const std::atomic_bool* Cancelled) const
 {
 	if (ControlPoints.empty())
 		return;
+
+	const int NumCurvePoints = 4096;
+
+	const float NominalLength = GetNominalLength();
+	const std::vector<float> Scales = GetFittedScales(ControlPoints, NominalLength, Cancelled);
+	float SectionStretch = 1.0f;
+
+	// spread the sections over the actual path so the last one lands on the end point
+	if (ControlPoints.size() > 1 && NominalLength > 0.0f)
+		SectionStretch = GetPathLength(ControlPoints, Scales, NumCurvePoints, nullptr) / NominalLength;
 
 	float SectionLength = 0.0f;
 
@@ -673,32 +908,15 @@ void swSynthesisInformationCurved::CalculateSections(const std::vector<swPartCon
 			return;
 
 		swVector3 SegmentControlPoints[4];
-
-		swMatrix44 StartTransform = swMatrix44StudWorksToLDraw(ControlPoints[ControlPointIndex].Transform);
-		swMatrix44 EndTransform = swMatrix44StudWorksToLDraw(ControlPoints[ControlPointIndex + 1].Transform);
-		StartTransform = swMatrix44(swMultiply(swMultiply(swMatrix33(mStart.Transform), swMatrix33(StartTransform)), swMatrix33Scale(swVector3(1.0f, -1.0f, 1.0f))), StartTransform.GetTranslation());
+		swMatrix44 StartTransform, EndTransform;
+		GetSegmentControlPoints(ControlPoints, Scales, ControlPointIndex, SegmentControlPoints, StartTransform, EndTransform);
 
 		if (ControlPointIndex == 0)
 		{
-			if (mRigidEdges)
-			{
-				StartTransform.SetTranslation(swMultiply30(swVector3(0.0f, mStart.Length, 0.0f), StartTransform) + StartTransform.GetTranslation());
-				SectionLength = 0.0f;
-			}
-			else
-				SectionLength = mStart.Length;
-
+			SectionLength = mRigidEdges ? 0.0f : mStart.Length * SectionStretch;
 			Sections.emplace_back(StartTransform);
 		}
 
-		EndTransform = swMatrix44(swMultiply(swMultiply(swMatrix33(mEnd.Transform), swMatrix33(EndTransform)), swMatrix33Scale(swVector3(1.0f, -1.0f, 1.0f))), EndTransform.GetTranslation());
-
-		SegmentControlPoints[0] = StartTransform.GetTranslation();
-		SegmentControlPoints[1] = swMultiply31(swVector3(0.0f, ControlPoints[ControlPointIndex].Scale, 0.0f), StartTransform);
-		SegmentControlPoints[2] = swMultiply31(swVector3(0.0f, -ControlPoints[ControlPointIndex + 1].Scale, 0.0f), EndTransform);
-		SegmentControlPoints[3] = EndTransform.GetTranslation();
-
-		const int NumCurvePoints = 4096;
 		std::vector<swVector3> CurvePoints;
 		CurvePoints.reserve(NumCurvePoints);
 
@@ -768,13 +986,7 @@ void swSynthesisInformationCurved::CalculateSections(const std::vector<swPartCon
 			if (Sections.size() == mSectionCount + 2)
 				break;
 
-			if (mCenterLength != 0.0f && (Sections.size() == mSectionCount / 2 + 1))
-				SectionLength += mCenterLength;
-			else
-				SectionLength += mMiddle.Length;
-
-			if (Sections.size() == mSectionCount + 1 && !mRigidEdges)
-				SectionLength += mEnd.Length;
+			SectionLength += GetSectionSpacing(Sections.size()) * SectionStretch;
 		}
 	}
 
@@ -783,22 +995,17 @@ void swSynthesisInformationCurved::CalculateSections(const std::vector<swPartCon
 		if (Cancelled && Cancelled->load(std::memory_order_relaxed))
 			return;
 
+		// rounding can leave the last section a hair short of the end point
 		swMatrix44 EndTransform = swMatrix44StudWorksToLDraw(ControlPoints.back().Transform);
 		EndTransform = swMatrix44(swMultiply(swMultiply(swMatrix33(mEnd.Transform), swMatrix33(EndTransform)), swMatrix33Scale(swVector3(1.0f, -1.0f, 1.0f))), EndTransform.GetTranslation());
-		swVector3 Position = swMultiply31(swVector3(0.0f, SectionLength, 0.0f), EndTransform);
+		swVector3 Position = swMultiply31(swVector3(0.0f, SectionLength - (ControlPoints.size() > 1 ? GetEndInset() : 0.0f), 0.0f), EndTransform);
 		EndTransform.SetTranslation(Position);
 		Sections.emplace_back(EndTransform);
 
 		if (SectionCallback)
 			SectionCallback(Position, static_cast<quint32>(ControlPoints.size()) - 1, 1.0f);
 
-		if (mCenterLength != 0.0f && (Sections.size() == mSectionCount / 2 + 1))
-			SectionLength += mCenterLength;
-		else
-			SectionLength += mMiddle.Length;
-
-		if (Sections.size() == mSectionCount + 1 && !mRigidEdges)
-			SectionLength += mEnd.Length;
+		SectionLength += GetSectionSpacing(Sections.size()) * SectionStretch;
 	}
 }
 
