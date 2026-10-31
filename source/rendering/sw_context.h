@@ -310,6 +310,9 @@ public:
 
 	void BindMesh(const swMesh* Mesh);
 
+	// Use to find the triangles seen from any direction around the model.
+	std::vector<bool> FindVisibleTriangles(const std::vector<swVector3>& Positions, const std::vector<bool>& Translucent);
+
 protected:
 	static swResult<void> CreateOffscreenContext();
 	static void DestroyOffscreenContext();

@@ -501,6 +501,39 @@
             </property>
            </widget>
           </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="KMZGeometryLabel">
+            <property name="toolTip">
+             <string>Choose the KMZ geometry: visible surfaces only merges the parts into one mesh per color and drops the faces hidden from every direction, all parts keeps every part as in COLLADA exports.</string>
+            </property>
+            <property name="text">
+             <string>KMZ Geometry</string>
+            </property>
+            <property name="buddy">
+             <cstring>KMZGeometry</cstring>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QComboBox" name="KMZGeometry">
+            <property name="accessibleName">
+             <string>KMZ Geometry</string>
+            </property>
+            <property name="toolTip">
+             <string>Choose the KMZ geometry: visible surfaces only merges the parts into one mesh per color and drops the faces hidden from every direction, all parts keeps every part as in COLLADA exports.</string>
+            </property>
+            <item>
+             <property name="text">
+              <string>Visible surfaces only</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>All parts</string>
+             </property>
+            </item>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
@@ -4144,6 +4177,8 @@
   <tabstop>WatchFileChanges</tabstop>
   <tabstop>LoadPartsBeforeShowing</tabstop>
   <tabstop>MigrateMetaCommands</tabstop>
+  <tabstop>MarkColladaTransparency</tabstop>
+  <tabstop>KMZGeometry</tabstop>
   <tabstop>fixedDirectionKeys</tabstop>
   <tabstop>FirstPartAtOrigin</tabstop>
   <tabstop>InsertColorMode</tabstop>

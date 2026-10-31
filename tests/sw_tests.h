@@ -25,4 +25,6 @@ private slots:
 	void POVRayRendersExport();
 	void TranslucentImagesKeepColor_data();
 	void TranslucentImagesKeepColor();
+	void KMZKeepsVisibleSurfaces_data();
+	void KMZKeepsVisibleSurfaces();
 };

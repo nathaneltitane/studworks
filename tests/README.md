@@ -11,6 +11,9 @@ sets an optional parts library). The same binary saves a Trans-Clear model on
 transparent and opaque backgrounds, with and without multisampling, to check
 that translucent pixels keep their color and opaque images keep the background
 (rendered offscreen, or on the running display with `SW_TEST_NATIVE_DISPLAY=1`).
+It also exports a box hiding a smaller box to KMZ, to check the archive entries,
+fixed dates, and that visible surfaces only drops the hidden box while
+`--kmz-all-parts` keeps it.
 
 The executable creates a `QCoreApplication`; apart from the `SW_TEST_BINARY`
 checks it does not open windows or require an OpenGL context, the parts library, or network access. It uses the same Qt

@@ -434,6 +434,7 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	ui->LoadPartsBeforeShowing->setChecked(mOptions->Preferences.mLoadPartsBeforeShowing);
 	ui->MigrateMetaCommands->setChecked(mOptions->Preferences.mMigrateMetaCommands);
 	ui->MarkColladaTransparency->setChecked(mOptions->Preferences.mMarkColladaTransparency);
+	ui->KMZGeometry->setCurrentIndex(mOptions->Preferences.mKMZVisibleSurfaces ? 0 : 1);
 	ui->AutomateEdgeColor->setChecked(mOptions->Preferences.mAutomateEdgeColor);
 	const int EdgeContrast = qRound(mOptions->Preferences.mPartEdgeContrast * 100.0f);
 	const int EdgeSaturation = qRound(mOptions->Preferences.mPartColorValueLDIndex * 100.0f);
@@ -761,6 +762,7 @@ void swPreferencesDialog::accept()
 	mOptions->Preferences.mLoadPartsBeforeShowing = ui->LoadPartsBeforeShowing->isChecked();
 	mOptions->Preferences.mMigrateMetaCommands = ui->MigrateMetaCommands->isChecked();
 	mOptions->Preferences.mMarkColladaTransparency = ui->MarkColladaTransparency->isChecked();
+	mOptions->Preferences.mKMZVisibleSurfaces = ui->KMZGeometry->currentIndex() == 0;
 
 	if (!ui->antiAliasing->isChecked())
 		mOptions->AASamples = 1;

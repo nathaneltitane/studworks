@@ -160,15 +160,33 @@ void swMainWindow::UpdateSelectedObjects(bool SelectionChanged)
 
 	mStatusBarLabel->setText(Message);
 
+	UpdateStatusBarPosition();
+}
+
+// use to show the focus position or the part being placed
+void swMainWindow::UpdateStatusBarPosition()
+{
+	swModel* ActiveModel = GetActiveModel();
+	const swObject* Focus = ActiveModel ? ActiveModel->GetFocusObject() : nullptr;
 	swVector3 Position(0.0f, 0.0f, 0.0f);
+	bool Placing = false;
 
 	if (ActiveModel)
-		ActiveModel->GetFocusPosition(Position);
+	{
+		const std::vector<swPreviewInsertPartInformation>& PreviewParts = ActiveModel->GetPreviewInsertPartInfo();
+
+		Placing = !PreviewParts.empty();
+
+		if (Placing)
+			Position = PreviewParts.back().Transform.GetTranslation();
+		else
+			ActiveModel->GetFocusPosition(Position);
+	}
 
 	// name the focused object
 	QString Object;
 
-	if (Focus && Focus->IsPart())
+	if (Placing || (Focus && Focus->IsPart()))
 		Object = tr("Part");
 	else if (Focus && Focus->IsCamera())
 		Object = tr("Camera");

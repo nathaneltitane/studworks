@@ -169,6 +169,7 @@ static swProfileEntry gProfileEntries[SW_PROFILE_KEY_COUNT] =
 	swProfileEntry("Settings", "LoadPartsBeforeShowing", false),                              // SW_PROFILE_LOAD_PARTS_BEFORE_SHOWING
 	swProfileEntry("Settings", "MigrateMetaCommands", false),                                  // SW_PROFILE_MIGRATE_META_COMMANDS
 	swProfileEntry("Settings", "MarkColladaTransparency", true),                               // SW_PROFILE_MARK_COLLADA_TRANSPARENCY
+	swProfileEntry("Settings", "KMZVisibleSurfaces", true),                                    // SW_PROFILE_KMZ_VISIBLE_SURFACES
 	swProfileEntry("Settings", "AutosaveInterval", 10),                                        // SW_PROFILE_AUTO_SAVE_INTERVAL
 	swProfileEntry("Settings", "MouseSensitivity", 11),                                        // SW_PROFILE_MOUSE_SENSITIVITY
 	swProfileEntry("Settings", "ImageWidth", 1024),                                            // SW_PROFILE_IMAGE_WIDTH

@@ -129,6 +129,15 @@ const swCommand gCommands[] =
 		""
 	},
 
+	// SW_FILE_EXPORT_KMZ
+	{
+		QT_TRANSLATE_NOOP("Action", "File.Export.KMZ"),
+		QT_TRANSLATE_NOOP("Menu", "&KMZ..."),
+		QT_TRANSLATE_NOOP("Status", "Export the current model in KMZ format"),
+		"",
+		""
+	},
+
 	// SW_FILE_EXPORT_BRICKLINK
 	{
 		QT_TRANSLATE_NOOP("Action", "File.Export.BrickLink"),

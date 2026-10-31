@@ -388,6 +388,7 @@ void swMainWindow::CreateMenus()
 	ExportMenu->addAction(mActions[SW_FILE_EXPORT_COLLADA]);
 	ExportMenu->addAction(mActions[SW_FILE_EXPORT_CSV]);
 	ExportMenu->addAction(mActions[SW_FILE_EXPORT_HTML]);
+	ExportMenu->addAction(mActions[SW_FILE_EXPORT_KMZ]);
 	ExportMenu->addAction(mActions[SW_FILE_EXPORT_POVRAY]);
 	ExportMenu->addAction(mActions[SW_FILE_EXPORT_WAVEFRONT]);
 	FileMenu->addSeparator();

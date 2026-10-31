@@ -295,6 +295,7 @@ public:
 	void ToggleFullScreen();
 
 	void UpdateSelectedObjects(bool SelectionChanged);
+	void UpdateStatusBarPosition();
 	void UpdateViewOrientation(const swCamera* Camera);
 	void UpdateStatusSegments();
 	void UpdateTimeline(bool Clear, bool UpdateItems);

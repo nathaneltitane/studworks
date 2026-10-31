@@ -277,6 +277,7 @@ public:
 	swResult<void> ExportCOLLADA(const QString& FileName);
 	swResult<void> ExportCSV(const QString& FileName);
 	swResult<void> ExportHTML(const swHTMLExportOptions& Options);
+	swResult<void> ExportKMZ(const QString& FileName);
 	swResult<void> ExportPOVRay(const QString& FileName, const swCamera* ExportCamera = nullptr, swStep Step = SW_STEP_MAXIMUM, bool Transparent = false);
 	swResult<void> ExportWavefront(const QString& FileName);
 
@@ -318,6 +319,8 @@ private:
 	swResult<void> MergeInternal(const std::vector<Project*>& Sources, const swModel* ClipboardRoot);
 	static FileState ReadFileState(const QString& FileName);
 	bool HasFileChanged(const QString& Path);
+	swResult<void> WriteCOLLADA(QTextStream& Stream, const std::vector<swModelPartsEntry>& ModelParts, bool FixedDates, bool VisibleSurfaces);
+	swResult<void> WriteCOLLADASurfaces(QTextStream& Stream, const std::vector<swModelPartsEntry>& ModelParts, const std::vector<QString>& ColorIDs);
 	static QString MakeExportNameFragment(const QString& Name);
 	static QString MakeUniqueExportIdentifier(const QString& BaseName, std::set<QString>& UsedNames, const QString& ReservedSuffix);
 

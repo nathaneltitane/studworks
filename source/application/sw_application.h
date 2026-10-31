@@ -254,6 +254,7 @@ public:
 	bool mLoadPartsBeforeShowing;
 	bool mMigrateMetaCommands;
 	bool mMarkColladaTransparency;
+	bool mKMZVisibleSurfaces;
 	swColorTheme mColorTheme;
 	quint32 mObjectSelectedColor;
 	quint32 mObjectFocusedColor;
@@ -296,6 +297,8 @@ struct swCommandLineOptions
 	bool SaveWavefront = false;
 	bool Save3DS = false;
 	bool SaveCOLLADA = false;
+	bool SaveKMZ = false;
+	bool KMZAllParts = false;
 	bool SaveCSV = false;
 	bool SaveBrickLink = false;
 	bool SaveHTML = false;
@@ -345,6 +348,7 @@ struct swCommandLineOptions
 	QString SaveWavefrontName;
 	QString Save3DSName;
 	QString SaveCOLLADAName;
+	QString SaveKMZName;
 	QString SaveCSVName;
 	QString SaveBrickLinkName;
 	QString SaveHTMLName;
@@ -367,7 +371,7 @@ struct swCommandLineOptions
 	// Tells if only settings transfer.
 	bool HasSaveAndExit() const
 	{
-		return SaveImage || SaveWavefront || Save3DS || SaveCOLLADA || SaveCSV || SaveBrickLink || SaveHTML || SavePOVRay || RenderPOVRay;
+		return SaveImage || SaveWavefront || Save3DS || SaveCOLLADA || SaveKMZ || SaveCSV || SaveBrickLink || SaveHTML || SavePOVRay || RenderPOVRay;
 	}
 
 	bool HasSettingsTransfer() const

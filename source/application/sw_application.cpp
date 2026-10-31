@@ -113,6 +113,7 @@ void swPreferences::LoadDefaults()
 	mLoadPartsBeforeShowing = swGetProfileInteger(SW_PROFILE_LOAD_PARTS_BEFORE_SHOWING);
 	mMigrateMetaCommands = swGetProfileInteger(SW_PROFILE_MIGRATE_META_COMMANDS);
 	mMarkColladaTransparency = swGetProfileInteger(SW_PROFILE_MARK_COLLADA_TRANSPARENCY);
+	mKMZVisibleSurfaces = swGetProfileInteger(SW_PROFILE_KMZ_VISIBLE_SURFACES);
 	mColorTheme = swGetProfileColorTheme();
 	mPreviewViewCubeEnabled = swGetProfileInteger(SW_PROFILE_PREVIEW_VIEW_CUBE_ENABLED);
 	mPreviewViewCubeSize = swSnapSize(swGetProfileInteger(SW_PROFILE_PREVIEW_VIEW_CUBE_SIZE), SW_VIEW_CUBE_SIZES);
@@ -226,6 +227,7 @@ void swPreferences::SaveDefaults()
 	swSetProfileInteger(SW_PROFILE_LOAD_PARTS_BEFORE_SHOWING, mLoadPartsBeforeShowing);
 	swSetProfileInteger(SW_PROFILE_MIGRATE_META_COMMANDS, mMigrateMetaCommands);
 	swSetProfileInteger(SW_PROFILE_MARK_COLLADA_TRANSPARENCY, mMarkColladaTransparency);
+	swSetProfileInteger(SW_PROFILE_KMZ_VISIBLE_SURFACES, mKMZVisibleSurfaces);
 	swSetProfileColorTheme(mColorTheme);
 	swSetProfileInteger(SW_PROFILE_PREVIEW_VIEW_CUBE_ENABLED, mPreviewViewCubeEnabled);
 	swSetProfileInteger(SW_PROFILE_PREVIEW_VIEW_CUBE_SIZE, mPreviewViewCubeSize);
@@ -1073,6 +1075,13 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 			Options.SaveCOLLADA = true;
 			ParseString(Options.SaveCOLLADAName, false);
 		}
+		else if (Option == QLatin1String("-kmz") || Option == QLatin1String("--export-kmz"))
+		{
+			Options.SaveKMZ = true;
+			ParseString(Options.SaveKMZName, false);
+		}
+		else if (Option == QLatin1String("--kmz-all-parts"))
+			Options.KMZAllParts = true;
 		else if (Option == QLatin1String("-csv") || Option == QLatin1String("--export-csv"))
 		{
 			Options.SaveCSV = true;
@@ -1167,6 +1176,8 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 			Options.StdOut += tr("  -obj, --export-wavefront <outfile.obj>: Export the model to Wavefront OBJ format.\n");
 			Options.StdOut += tr("  -3ds, --export-3ds <outfile.3ds>: Export the model to 3D Studio 3DS format.\n");
 			Options.StdOut += tr("  -dae, --export-collada <outfile.dae>: Export the model to COLLADA DAE format.\n");
+			Options.StdOut += tr("  -kmz, --export-kmz <outfile.kmz>: Export the model to KMZ format.\n");
+			Options.StdOut += tr("  --kmz-all-parts: Keep hidden geometry and parts in KMZ exports.\n");
 			Options.StdOut += tr("  -csv, --export-csv <outfile.csv>: Export the list of parts used in CSV format.\n");
 			Options.StdOut += tr("  -bl, --export-bricklink <outfile.xml>: Export the list of parts used in BrickLink XML format.\n");
 			Options.StdOut += tr("  -html, --export-html <folder>: Create an HTML page for the model.\n");
@@ -1420,7 +1431,7 @@ swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 #endif
 
 #ifndef Q_OS_IOS
-	const bool CreateRenderResources = !SaveAndExit || Options.SaveImage || Options.SaveHTML || Options.SavePOVRay || Options.RenderPOVRay;
+	const bool CreateRenderResources = !SaveAndExit || Options.SaveImage || Options.SaveKMZ || Options.SaveHTML || Options.SavePOVRay || Options.RenderPOVRay;
 	const swResult<void> RendererResult = swContext::InitializeRenderer(CreateRenderResources);
 
 	if (!RendererResult)
@@ -1887,6 +1898,43 @@ swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 			}
 
 			swResult<void> ExportResult = mProject->ExportCOLLADA(FileName);
+
+			if (ExportResult)
+				StdOut << tr("Saved '%1'.\n").arg(FileName);
+			else
+			{
+				OutputFailed = true;
+
+				if (!ExportResult.error().isEmpty())
+					StdErr << ExportResult.error() << '\n';
+			}
+		}
+
+		if (Options.SaveKMZ)
+		{
+			QString FileName;
+
+			if (!Options.SaveKMZName.isEmpty())
+				FileName = Options.SaveKMZName;
+			else
+				FileName = Options.ProjectName;
+
+			QString Extension = QFileInfo(FileName).suffix().toLower();
+
+			if (Extension.isEmpty())
+			{
+				FileName += ".kmz";
+			}
+			else if (Extension != "kmz")
+			{
+				FileName = FileName.left(FileName.length() - Extension.length() - 1);
+				FileName += ".kmz";
+			}
+
+			if (Options.KMZAllParts)
+				mPreferences.mKMZVisibleSurfaces = false;
+
+			swResult<void> ExportResult = mProject->ExportKMZ(FileName);
 
 			if (ExportResult)
 				StdOut << tr("Saved '%1'.\n").arg(FileName);

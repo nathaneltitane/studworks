@@ -5,6 +5,7 @@ INCLUDEPATH += $$PWD
 SOURCES += \
 	$$PWD/sw_cache_string.cpp \
 	$$PWD/sw_context.cpp \
+	$$PWD/sw_context_visibility.cpp \
 	$$PWD/sw_extensions_opengl.cpp \
 	$$PWD/sw_scene.cpp \
 	$$PWD/sw_texture_font.cpp \

@@ -61,6 +61,119 @@ bool swZipFile::OpenWrite(const QString& FileName)
 	return true;
 }
 
+bool swZipFile::AddFile(const char* FileName, const QByteArray& Data, quint32 DosDate)
+{
+	if (!mFile)
+		return false;
+
+	z_stream Stream = {};
+
+	if (deflateInit2(&Stream, Z_BEST_COMPRESSION, Z_DEFLATED, -MAX_WBITS, DEF_MEM_LEVEL, Z_DEFAULT_STRATEGY) != Z_OK)
+		return false;
+
+	QByteArray Compressed(static_cast<int>(deflateBound(&Stream, static_cast<uLong>(Data.size()))), Qt::Uninitialized);
+
+	Stream.next_in = reinterpret_cast<Bytef*>(const_cast<char*>(Data.constData()));
+	Stream.avail_in = static_cast<uInt>(Data.size());
+	Stream.next_out = reinterpret_cast<Bytef*>(Compressed.data());
+	Stream.avail_out = static_cast<uInt>(Compressed.size());
+
+	const int Result = deflate(&Stream, Z_FINISH);
+	Compressed.resize(static_cast<int>(Stream.total_out));
+	deflateEnd(&Stream);
+
+	if (Result != Z_STREAM_END)
+		return false;
+
+	swZipFileInformation FileInfo = {};
+	const size_t NameLength = strlen(FileName);
+
+	if (NameLength >= sizeof(FileInfo.file_name))
+		return false;
+
+	memcpy(FileInfo.file_name, FileName, NameLength);
+	FileInfo.version = 20;
+	FileInfo.version_needed = 20;
+	FileInfo.compression_method = Z_DEFLATED;
+	FileInfo.dosDate = DosDate;
+	FileInfo.crc = crc32(0, reinterpret_cast<const Bytef*>(Data.constData()), static_cast<uInt>(Data.size()));
+	FileInfo.compressed_size = Compressed.size();
+	FileInfo.uncompressed_size = Data.size();
+	FileInfo.size_filename = static_cast<quint16>(NameLength);
+	FileInfo.offset_curfile = mFile->GetPosition();
+
+	// local file header
+	mFile->WriteU32(0x04034b50);
+	mFile->WriteU16(FileInfo.version_needed);
+	mFile->WriteU16(FileInfo.flag);
+	mFile->WriteU16(FileInfo.compression_method);
+	mFile->WriteU32(FileInfo.dosDate);
+	mFile->WriteU32(FileInfo.crc);
+	mFile->WriteU32(static_cast<quint32>(FileInfo.compressed_size));
+	mFile->WriteU32(static_cast<quint32>(FileInfo.uncompressed_size));
+	mFile->WriteU16(FileInfo.size_filename);
+	mFile->WriteU16(FileInfo.size_file_extra);
+
+	if (mFile->WriteBuffer(FileName, NameLength) != NameLength || mFile->WriteBuffer(Compressed.constData(), Compressed.size()) != static_cast<size_t>(Compressed.size()))
+		return false;
+
+	mFiles.push_back(FileInfo);
+	mModified = true;
+
+	return true;
+}
+
+bool swZipFile::CloseWrite()
+{
+	if (!mFile)
+		return false;
+
+	mCentralDirOffset = mFile->GetPosition();
+
+	for (const swZipFileInformation& FileInfo : mFiles)
+	{
+		// central directory header
+		mFile->WriteU32(0x02014b50);
+		mFile->WriteU16(FileInfo.version);
+		mFile->WriteU16(FileInfo.version_needed);
+		mFile->WriteU16(FileInfo.flag);
+		mFile->WriteU16(FileInfo.compression_method);
+		mFile->WriteU32(FileInfo.dosDate);
+		mFile->WriteU32(FileInfo.crc);
+		mFile->WriteU32(static_cast<quint32>(FileInfo.compressed_size));
+		mFile->WriteU32(static_cast<quint32>(FileInfo.uncompressed_size));
+		mFile->WriteU16(FileInfo.size_filename);
+		mFile->WriteU16(FileInfo.size_file_extra);
+		mFile->WriteU16(FileInfo.size_file_comment);
+		mFile->WriteU16(FileInfo.disk_num_start);
+		mFile->WriteU16(FileInfo.internal_fa);
+		mFile->WriteU32(FileInfo.external_fa);
+		mFile->WriteU32(static_cast<quint32>(FileInfo.offset_curfile));
+
+		if (mFile->WriteBuffer(FileInfo.file_name, FileInfo.size_filename) != FileInfo.size_filename)
+			return false;
+	}
+
+	mCentralDirSize = mFile->GetPosition() - mCentralDirOffset;
+	mNumEntries = mFiles.size();
+
+	// end of central directory record
+	mFile->WriteU32(0x06054b50);
+	mFile->WriteU16(quint16(0));
+	mFile->WriteU16(quint16(0));
+	mFile->WriteU16(static_cast<quint16>(mNumEntries));
+	mFile->WriteU16(static_cast<quint16>(mNumEntries));
+	mFile->WriteU32(static_cast<quint32>(mCentralDirSize));
+	mFile->WriteU32(static_cast<quint32>(mCentralDirOffset));
+	const size_t Written = mFile->WriteBuffer("\0\0", 2);
+
+	mFile->Close();
+	mFile = nullptr;
+	mModified = false;
+
+	return Written == 2;
+}
+
 quint64 swZipFile::SearchCentralDir()
 {
 	quint64 SizeFile, MaxBack, BackRead, PosFound;

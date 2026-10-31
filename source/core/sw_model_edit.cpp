@@ -431,6 +431,9 @@ void swModel::SetPreviewInsertPartInfo(std::vector<swInsertPartInformation>&& Pr
 	Library->WaitForPartData(RequiredPartData);
 	mPreviewInsertPartInfo = std::move(PreviewParts);
 
+	if (gMainWindow && gMainWindow->GetActiveModel() == this)
+		gMainWindow->UpdateStatusBarPosition();
+
 	UpdateAllViews();
 }
 

@@ -110,6 +110,10 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 		ShowHTMLDialog();
 		break;
 
+	case SW_FILE_EXPORT_KMZ:
+		ShowResultError(swGetActiveProject()->ExportKMZ(QString()), tr("Export KMZ"));
+		break;
+
 	case SW_FILE_EXPORT_BRICKLINK:
 		ShowResultError(swGetActiveProject()->ExportBrickLink(QString()), tr("Export BrickLink"));
 		break;

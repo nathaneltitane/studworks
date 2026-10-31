@@ -23,6 +23,7 @@
 #include "sw_bricklink.h"
 #include "sw_string.h"
 #include "sw_colors.h"
+#include "sw_context.h"
 
 
 swHTMLExportOptions::swHTMLExportOptions(const Project* Project)
@@ -600,12 +601,57 @@ swResult<void> Project::ExportCOLLADA(const QString& FileName)
 
 	QTextStream Stream(&File);
 
+	return WriteCOLLADA(Stream, ModelParts, false, false);
+}
+
+swResult<void> Project::ExportKMZ(const QString& FileName)
+{
+	const std::vector<swModelPartsEntry> ModelParts = GetModelParts();
+
+	if (ModelParts.empty())
+		return swUnexpected(tr("Nothing to export."));
+
+	QString SaveFileName = GetExportFileName(FileName, "kmz", tr("Export KMZ"), tr("KMZ Files (*.kmz);;All Files (*.*)"));
+
+	if (SaveFileName.isEmpty())
+		return swUnexpected(QString());
+
+	QByteArray COLLADA;
+	QBuffer Buffer(&COLLADA);
+	Buffer.open(QIODevice::WriteOnly);
+	QTextStream Stream(&Buffer);
+
+	swResult<void> Result = WriteCOLLADA(Stream, ModelParts, true, swGetPreferences().mKMZVisibleSurfaces);
+
+	if (!Result)
+		return Result;
+
+	Stream.flush();
+
+	// kml index pointing at the collada model - entries dated 2000-01-01 so exports repeat byte for byte
+	const QByteArray KML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<kml><Placemark><Model><Link><href>doc.dae</href></Link></Model></Placemark></kml>\n";
+	constexpr quint32 DosDate = ((2000 - 1980) << 25) | (1 << 21) | (1 << 16);
+	swZipFile ZipFile;
+
+	if (!ZipFile.OpenWrite(SaveFileName))
+		return swUnexpected(tr("Could not open file '%1' for writing.").arg(SaveFileName));
+
+	if (!ZipFile.AddFile("doc.kml", KML, DosDate) || !ZipFile.AddFile("doc.dae", COLLADA, DosDate) || !ZipFile.CloseWrite())
+		return swUnexpected(tr("Error writing to file '%1'.").arg(SaveFileName));
+
+	return swResult<void>();
+}
+
+swResult<void> Project::WriteCOLLADA(QTextStream& Stream, const std::vector<swModelPartsEntry>& ModelParts, bool FixedDates, bool VisibleSurfaces)
+{
+	const QString Date = FixedDates ? QStringLiteral("2000-01-01T00:00:00") : QDateTime::currentDateTime().toString(Qt::ISODate);
+
 	Stream << "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n";
 	Stream << "<COLLADA xmlns=\"http://www.collada.org/2005/11/COLLADASchema\" version=\"1.4.1\">\r\n";
 
 	Stream << "<asset>\r\n";
-	Stream << "\t<created>" << QDateTime::currentDateTime().toString(Qt::ISODate) << "</created>\r\n";
-	Stream << "\t<modified>" << QDateTime::currentDateTime().toString(Qt::ISODate) << "</modified>\r\n";
+	Stream << "\t<created>" << Date << "</created>\r\n";
+	Stream << "\t<modified>" << Date << "</modified>\r\n";
 	Stream << "<unit name=\"StudWorx\" meter=\"0.0004\" />\r\n";
 	Stream << "\t<up_axis>Z_UP</up_axis>\r\n";
 	Stream << "</asset>\r\n";
@@ -676,6 +722,10 @@ swResult<void> Project::ExportCOLLADA(const QString& FileName)
 	}
 
 	Stream << "</library_materials>\r\n";
+
+	if (VisibleSurfaces)
+		return WriteCOLLADASurfaces(Stream, ModelParts, ColorIDs);
+
 	Stream << "<library_geometries>\r\n";
 	std::map<const swMesh*, QString> MeshIDs;
 	std::set<QString> UsedMeshIDs;
@@ -871,6 +921,182 @@ swResult<void> Project::ExportCOLLADA(const QString& FileName)
 	Stream << "\t<instance_visual_scene url=\"#DefaultScene\"/>\r\n";
 	Stream << "</scene>\r\n";
 
+	Stream << "</COLLADA>\r\n";
+
+	return swResult<void>();
+}
+
+// Use to merge the parts into one mesh per color without the faces hidden from every direction.
+swResult<void> Project::WriteCOLLADASurfaces(QTextStream& Stream, const std::vector<swModelPartsEntry>& ModelParts, const std::vector<QString>& ColorIDs)
+{
+	std::vector<swVector3> Positions;
+	std::vector<swVector3> Normals;
+	std::vector<int> TriangleColors;
+	std::vector<bool> TriangleTranslucent;
+	std::vector<int> ColorOrder;
+
+	for (const swModelPartsEntry& ModelPart : ModelParts)
+	{
+		const swMesh* Mesh = !ModelPart.Mesh ? ModelPart.PartData->GetMesh() : ModelPart.Mesh;
+
+		if (!Mesh)
+			continue;
+
+		const swVertex* Verts = static_cast<const swVertex*>(Mesh->mVertexData);
+		const swVertexTextured* TexturedVerts = reinterpret_cast<const swVertexTextured*>(Verts + Mesh->mNumVertices);
+
+		for (int SectionIdx = 0; SectionIdx < Mesh->mLods[SW_MESH_LOD_HIGH].NumSections; SectionIdx++)
+		{
+			const swMeshSection* Section = &Mesh->mLods[SW_MESH_LOD_HIGH].Sections[SectionIdx];
+
+			if (Section->PrimitiveType != SW_MESH_TRIANGLES && Section->PrimitiveType != SW_MESH_TEXTURED_TRIANGLES)
+				continue;
+
+			const int ColorIndex = Section->ColorIndex == gDefaultColor ? ModelPart.ColorIndex : Section->ColorIndex;
+			const bool Translucent = swIsColorTranslucent(ColorIndex);
+
+			if (std::find(ColorOrder.begin(), ColorOrder.end(), ColorIndex) == ColorOrder.end())
+				ColorOrder.push_back(ColorIndex);
+
+			for (int Idx = 0; Idx < Section->DrawCount; Idx++)
+			{
+				const quint32 Index = Mesh->mIndexType == GL_UNSIGNED_SHORT ? ((const quint16*)Mesh->mIndexData)[Section->DrawOffset / sizeof(quint16) + Idx] : ((const quint32*)Mesh->mIndexData)[Section->DrawOffset / sizeof(quint32) + Idx];
+				const swVector3& Position = Section->PrimitiveType == SW_MESH_TRIANGLES ? Verts[Index].Position : TexturedVerts[Index].Position;
+				const quint32 Normal = Section->PrimitiveType == SW_MESH_TRIANGLES ? Verts[Index].Normal : TexturedVerts[Index].Normal;
+
+				Positions.push_back(swMultiply31(Position, ModelPart.WorldMatrix));
+				Normals.push_back(swNormalize(swMultiply30(swUnpackNormal(Normal), ModelPart.WorldMatrix)));
+			}
+
+			TriangleColors.insert(TriangleColors.end(), Section->DrawCount / 3, ColorIndex);
+			TriangleTranslucent.insert(TriangleTranslucent.end(), Section->DrawCount / 3, Translucent);
+		}
+	}
+
+	swContext* Context = swContext::GetGlobalOffscreenContext();
+
+	if (!Context)
+		return swUnexpected(tr("Could not create the OpenGL context."));
+
+	const std::vector<bool> Visible = Context->FindVisibleTriangles(Positions, TriangleTranslucent);
+
+	if (Visible.size() != TriangleColors.size())
+		return swUnexpected(tr("Could not find the visible surfaces."));
+
+	// fixed decimals - positions in hundredths and normals in thousandths
+	const auto FormatValue = [](qint64 Value, double Scale, int Decimals)
+	{
+		if (!Value)
+			return QStringLiteral("0");
+
+		QString Text = QString::number(Value / Scale, 'f', Decimals);
+
+		while (Text.endsWith(QLatin1Char('0')))
+			Text.chop(1);
+
+		if (Text.endsWith(QLatin1Char('.')))
+			Text.chop(1);
+
+		return Text;
+	};
+
+	QString Nodes;
+
+	Stream << "<library_geometries>\r\n";
+
+	for (size_t MaterialIndex = 0; MaterialIndex < ColorOrder.size(); MaterialIndex++)
+	{
+		const int ColorIndex = ColorOrder[MaterialIndex];
+		std::map<std::array<qint64, 6>, int> VertexIndices;
+		std::vector<std::array<qint64, 6>> VertexValues;
+		std::vector<int> Indices;
+
+		for (size_t TriangleIndex = 0; TriangleIndex < TriangleColors.size(); TriangleIndex++)
+		{
+			if (!Visible[TriangleIndex] || TriangleColors[TriangleIndex] != ColorIndex)
+				continue;
+
+			for (size_t Corner = TriangleIndex * 3; Corner < TriangleIndex * 3 + 3; Corner++)
+			{
+				const swVector3& Position = Positions[Corner];
+				const swVector3& Normal = Normals[Corner];
+				const std::array<qint64, 6> Key = { qRound64(Position.x * 100.0), qRound64(Position.y * 100.0), qRound64(Position.z * 100.0), qRound64(Normal.x * 1000.0), qRound64(Normal.y * 1000.0), qRound64(Normal.z * 1000.0) };
+				const auto Insert = VertexIndices.emplace(Key, static_cast<int>(VertexValues.size()));
+
+				if (Insert.second)
+					VertexValues.push_back(Key);
+
+				Indices.push_back(Insert.first->second);
+			}
+		}
+
+		if (Indices.empty())
+			continue;
+
+		const QString ID = QString("mesh-%1").arg(MaterialIndex);
+		const QString VertexCount = QString::number(VertexValues.size());
+
+		Stream << QString("\t<geometry id=\"%1\">\r\n").arg(ID);
+		Stream << "\t\t<mesh>\r\n";
+
+		for (int Source = 0; Source < 2; Source++)
+		{
+			const QString SourceID = ID + (Source ? QLatin1String("-normal") : QLatin1String("-pos"));
+
+			Stream << QString("\t\t\t<source id=\"%1\">\r\n").arg(SourceID);
+			Stream << QString("\t\t\t\t<float_array id=\"%1-array\" count=\"%2\">\r\n").arg(SourceID, QString::number(VertexValues.size() * 3));
+
+			for (const std::array<qint64, 6>& Values : VertexValues)
+			{
+				if (Source)
+					Stream << QString("\t\t\t\t\t%1 %2 %3\r\n").arg(FormatValue(Values[3], 1000.0, 3), FormatValue(Values[4], 1000.0, 3), FormatValue(Values[5], 1000.0, 3));
+				else
+					Stream << QString("\t\t\t\t\t%1 %2 %3\r\n").arg(FormatValue(Values[0], 100.0, 2), FormatValue(Values[1], 100.0, 2), FormatValue(Values[2], 100.0, 2));
+			}
+
+			Stream << "\t\t\t\t</float_array>\r\n";
+			Stream << "\t\t\t\t<technique_common>\r\n";
+			Stream << QString("\t\t\t\t\t<accessor source=\"#%1-array\" count=\"%2\" stride=\"3\">\r\n").arg(SourceID, VertexCount);
+			Stream << "\t\t\t\t\t\t<param name=\"X\" type=\"float\" />\r\n";
+			Stream << "\t\t\t\t\t\t<param name=\"Y\" type=\"float\" />\r\n";
+			Stream << "\t\t\t\t\t\t<param name=\"Z\" type=\"float\" />\r\n";
+			Stream << "\t\t\t\t\t</accessor>\r\n";
+			Stream << "\t\t\t\t</technique_common>\r\n";
+			Stream << "\t\t\t</source>\r\n";
+		}
+
+		Stream << QString("\t\t\t<vertices id=\"%1-vertices\">\r\n").arg(ID);
+		Stream << QString("\t\t\t\t<input semantic=\"POSITION\" source=\"#%1-pos\"/>\r\n").arg(ID);
+		Stream << "\t\t\t</vertices>\r\n";
+		Stream << QString("\t\t\t<triangles count=\"%1\" material=\"surface\">\r\n").arg(QString::number(Indices.size() / 3));
+		Stream << QString("\t\t\t<input semantic=\"VERTEX\" source=\"#%1-vertices\" offset=\"0\" />\r\n").arg(ID);
+		Stream << QString("\t\t\t<input semantic=\"NORMAL\" source=\"#%1-normal\" offset=\"0\" />\r\n").arg(ID);
+		Stream << "\t\t\t<p>\r\n";
+
+		for (size_t Idx = 0; Idx < Indices.size(); Idx += 3)
+			Stream << QString("\t\t\t\t %1 %2 %3\r\n").arg(QString::number(Indices[Idx]), QString::number(Indices[Idx + 1]), QString::number(Indices[Idx + 2]));
+
+		Stream << "\t\t\t\t</p>\r\n";
+		Stream << "\t\t\t</triangles>\r\n";
+		Stream << "\t\t</mesh>\r\n";
+		Stream << "\t</geometry>\r\n";
+
+		Nodes += "\t\t<node>\r\n";
+		Nodes += QString("\t\t\t<instance_geometry url=\"#%1\">\r\n").arg(ID);
+		Nodes += QString("\t\t\t\t<bind_material><technique_common><instance_material symbol=\"surface\" target=\"#%1-material\"/></technique_common></bind_material>\r\n").arg(ColorIDs[ColorIndex]);
+		Nodes += "\t\t\t</instance_geometry>\r\n";
+		Nodes += "\t\t</node>\r\n";
+	}
+
+	Stream << "</library_geometries>\r\n";
+	Stream << "<library_visual_scenes>\r\n";
+	Stream << "\t<visual_scene id=\"DefaultScene\">\r\n";
+	Stream << Nodes;
+	Stream << "\t</visual_scene>\r\n";
+	Stream << "</library_visual_scenes>\r\n";
+	Stream << "<scene>\r\n";
+	Stream << "\t<instance_visual_scene url=\"#DefaultScene\"/>\r\n";
+	Stream << "</scene>\r\n";
 	Stream << "</COLLADA>\r\n";
 
 	return swResult<void>();

@@ -97,6 +97,10 @@ public:
 	bool OpenRead(std::unique_ptr<swFile> File);
 	bool OpenWrite(const QString& FileName);
 
+	// Use to deflate a file into an archive opened for writing.
+	bool AddFile(const char* FileName, const QByteArray& Data, quint32 DosDate);
+	bool CloseWrite();
+
 	// Returns the first case-insensitive filename match in archive order.
 	std::optional<quint32> FindFileIndex(const char* FileName) const;
 
