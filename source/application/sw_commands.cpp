@@ -150,7 +150,7 @@ const swCommand gCommands[] =
 	// SW_FILE_EXPORT_CSV
 	{
 		QT_TRANSLATE_NOOP("Action", "File.Export.CSV"),
-		QT_TRANSLATE_NOOP("Menu", "&CSV..."),
+		QT_TRANSLATE_NOOP("Menu", "CS&V..."),
 		QT_TRANSLATE_NOOP("Status", "Export a list of parts used in comma delimited file format"),
 		"",
 		""
