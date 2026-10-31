@@ -381,6 +381,41 @@ pre {
 	overflow-x: auto;
 }
 
+/* scrollbars kept clear of the corner radii */
+
+.table::-webkit-scrollbar, pre::-webkit-scrollbar {
+	width: 6px;
+	height: 6px;
+}
+
+.table::-webkit-scrollbar-track, pre::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.table::-webkit-scrollbar-track:horizontal, pre::-webkit-scrollbar-track:horizontal {
+	margin: 0 20px;
+}
+
+.table::-webkit-scrollbar-track:vertical, pre::-webkit-scrollbar-track:vertical {
+	margin: 20px 0;
+}
+
+.table::-webkit-scrollbar-thumb, pre::-webkit-scrollbar-thumb {
+	background: #bbbbbb;
+	border-radius: 3px;
+}
+
+.table::-webkit-scrollbar-thumb:hover, pre::-webkit-scrollbar-thumb:hover {
+	background: #666666;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+	.table, pre {
+		scrollbar-width: thin;
+		scrollbar-color: #bbbbbb transparent;
+	}
+}
+
 /* help */
 
 .help-tools {
@@ -1421,26 +1456,12 @@ pre {
 		</button>
 		<figcaption>XZ and YZ height grids</figcaption>
 	</figure>
-	<div class="gallery three">
-		<figure>
-			<button class="shot" data-full="documentation/images/views-turntable-a.png" aria-label="Enlarge Idle turntable">
-				<img src="documentation/images/views-turntable-a.png" alt="Idle turntable" loading="lazy">
-			</button>
-			<figcaption>Idle turntable</figcaption>
-		</figure>
-		<figure>
-			<button class="shot" data-full="documentation/images/views-turntable-b.png" aria-label="Enlarge Idle turntable">
-				<img src="documentation/images/views-turntable-b.png" alt="Idle turntable" loading="lazy">
-			</button>
-			<figcaption>Idle turntable</figcaption>
-		</figure>
-		<figure>
-			<button class="shot" data-full="documentation/images/views-turntable-c.png" aria-label="Enlarge Idle turntable">
-				<img src="documentation/images/views-turntable-c.png" alt="Idle turntable" loading="lazy">
-			</button>
-			<figcaption>Idle turntable</figcaption>
-		</figure>
-	</div>
+	<figure class="wide">
+		<button class="shot" data-full="documentation/images/views-turntable.gif" aria-label="Enlarge Idle turntable">
+			<img src="documentation/images/views-turntable.gif" alt="Idle turntable" loading="lazy">
+		</button>
+		<figcaption>Idle turntable</figcaption>
+	</figure>
 </section>
 
 <section id="steps" class="section reveal">
