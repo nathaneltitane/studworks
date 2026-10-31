@@ -1605,8 +1605,7 @@ swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 				ImageBackground = swImageBackground::Opaque;
 			}
 
-			if (ImageBackground == swImageBackground::Transparent)
-				ActiveView->SetBackgroundColorOverride(SW_RGBA(0, 0, 0, 0));
+			ActiveView->SetBackgroundMode(ImageBackground == swImageBackground::Transparent ? swBackgroundMode::Transparent : swBackgroundMode::Opaque);
 
 			if (Options.ImageEnd < Options.ImageStart)
 				Options.ImageEnd = Options.ImageStart;

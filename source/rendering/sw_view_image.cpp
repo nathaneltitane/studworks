@@ -132,7 +132,7 @@ bool swView::BeginRenderToImage(int Width, int Height)
 
 	mWidth = TileWidth;
 	mHeight = TileHeight;
-	mRenderImage = QImage(Width, Height, QImage::Format_ARGB32);
+	mRenderImage = QImage(Width, Height, QImage::Format_ARGB32_Premultiplied);
 
 	QOpenGLFramebufferObjectFormat Format;
 	Format.setAttachment(QOpenGLFramebufferObject::Depth);

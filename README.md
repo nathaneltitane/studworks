@@ -27,6 +27,7 @@ Useful? Star the repository - it helps others find it.
   - Preferences: Custom Paths is now Reference Paths
   - Preferences: new Export group with Mark COLLADA Transparency, on by default, writes 'opaque="A_ONE"' on transparent colors so viewers that skip the COLLADA default show transparent parts translucent without an l2cu pass
   - Rotate tool: dragging empty space with a mouse shortcut orbits, pans or zooms the view again instead of being taken as a rotation handle (LeoCAD #1073)
+  - Translucent colors: Parts list icons, transparent images and instruction steps keep translucent parts their true color instead of darkened by the background, and transparent decals blend over their part color (LeoCAD #938)
   - Command line: '-bl', '--export-bricklink' writes the BrickLink XML inventory like '--export-csv'
   - Images: saved in the format of their extension, '.jpg', '.bmp' and '.gif' are no longer written as PNG, backgrounds are opaque unless '--transparent' is used with PNG or GIF, and '.gif' steps save one still frame per step
   - Command line: renders and exports run without a display on Linux, '--stud-style' help lists the current stud style names

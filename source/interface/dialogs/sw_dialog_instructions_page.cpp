@@ -193,7 +193,7 @@ void swInstructionsStepImageItem::Update()
 
 	// step background behind the image
 	const QColor BackgroundColor = mInstructions->GetColorProperty(swInstructionsPropertyType::StepBackgroundColor, mModel, mStep);
-	View.SetBackgroundColorOverride(SW_RGBA(BackgroundColor.red(), BackgroundColor.green(), BackgroundColor.blue(), 0));
+	View.SetBackgroundColor(SW_RGBA(BackgroundColor.red(), BackgroundColor.green(), BackgroundColor.blue(), 0));
 
 	// render large and draw at page size
 	const qreal Scale = swGetRenderScale(mInstructions);

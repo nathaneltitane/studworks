@@ -111,6 +111,14 @@ enum class swViewType
 	Count
 };
 
+enum class swBackgroundMode
+{
+	Default, // preferences onscreen and transparent offscreen
+	Transparent,
+	Opaque,
+	CustomColor
+};
+
 struct swFindReplaceParameters
 {
 	swPartData* FindPartData = nullptr;
@@ -216,10 +224,15 @@ public:
 		mDrawViewportBorder = DrawBorder;
 	}
 
-	void SetBackgroundColorOverride(quint32 BackgroundColor)
+	void SetBackgroundColor(quint32 BackgroundColor)
 	{
-		mOverrideBackgroundColor = true;
+		mBackgroundMode = swBackgroundMode::CustomColor;
 		mBackgroundColor = BackgroundColor;
+	}
+
+	void SetBackgroundMode(swBackgroundMode Mode)
+	{
+		mBackgroundMode = Mode;
 	}
 
 	// Use to fade steps by the instructions.
@@ -471,7 +484,7 @@ protected:
 	std::unique_ptr<QOpenGLFramebufferObject> mOutlineVisibleFramebuffer;
 	QSize mOutlineAttemptSize;
 	QPointer<QOpenGLContext> mOutlineGLContext;
-	bool mOverrideBackgroundColor = false;
+	swBackgroundMode mBackgroundMode = swBackgroundMode::Default;
 	bool mOverrideFadeSteps = false;
 	bool mFadeSteps = false;
 	quint32 mFadeStepsColor = 0;

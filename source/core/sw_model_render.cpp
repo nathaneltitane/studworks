@@ -121,8 +121,20 @@ swResult<QImage> swModel::RenderStepImageWithReadyAssets(bool Zoom, int Width, i
 
 	swView View(swViewType::View, this);
 
-	if (Background == swImageBackground::Transparent)
-		View.SetBackgroundColorOverride(SW_RGBA(0, 0, 0, 0));
+	switch (Background)
+	{
+	case swImageBackground::Default:
+		View.SetBackgroundMode(swBackgroundMode::Default);
+		break;
+
+	case swImageBackground::Transparent:
+		View.SetBackgroundMode(swBackgroundMode::Transparent);
+		break;
+
+	case swImageBackground::Opaque:
+		View.SetBackgroundMode(swBackgroundMode::Opaque);
+		break;
+	}
 
 	if (OutputCamera)
 		View.SetCamera(OutputCamera, true);
@@ -329,7 +341,7 @@ swResult<QImage> swModel::GetPartsListImage(int MaxWidth, int RequestedThumbnail
 	for (swPartsListImage& Image : Images)
 	{
 		View.BindRenderFramebuffer();
-		Context->ClearColorAndDepth(swVector4(swVector3FromColor(BackgroundColor), 0.0f));
+		Context->ClearColorAndDepth(swVector4(0.0f, 0.0f, 0.0f, 0.0f));
 
 		swScene Scene;
 

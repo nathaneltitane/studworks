@@ -19,6 +19,9 @@ void main()
 	SW_PIXEL_CUTAWAY_CAP
 	SW_PIXEL_FAKE_LIGHTING
 	SW_SHADER_PRECISION vec4 TexelColor = dot(CapNormal, CapNormal) > 0.0 ? vec4(0.0, 0.0, 0.0, 0.0) : texture2D(Texture, PixelTexCoord);
-	SW_SHADER_PRECISION vec3 DiffuseColor = mix(MaterialColor.rgb, TexelColor.rgb, TexelColor.a);
-	gl_FragColor = vec4(DiffuseColor * Diffuse + SpecularColor, max(TexelColor.a, MaterialColor.a));
+	SW_SHADER_PRECISION float Alpha = TexelColor.a + MaterialColor.a * (1.0 - TexelColor.a);
+	SW_SHADER_PRECISION vec3 DiffuseColor = TexelColor.rgb * TexelColor.a + MaterialColor.rgb * MaterialColor.a * (1.0 - TexelColor.a);
+	if (Alpha > 0.0)
+		DiffuseColor /= Alpha;
+	gl_FragColor = vec4(DiffuseColor * Diffuse + SpecularColor, Alpha);
 }

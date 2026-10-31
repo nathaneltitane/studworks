@@ -7,10 +7,13 @@ randomized undo/redo and merge transitions, and how the connection shapes of
 the LDCad shadow library are read and fit together, on made-up parts.
 With `SW_TEST_BINARY` set to a built `studworx`, a one brick model is exported
 to POV-Ray and rendered at 64 x 64 (skipped without POV-Ray, `SW_TEST_LIBRARY`
-sets an optional parts library).
+sets an optional parts library). The same binary saves a Trans-Clear model on
+transparent and opaque backgrounds, with and without multisampling, to check
+that translucent pixels keep their color and opaque images keep the background
+(rendered offscreen, or on the running display with `SW_TEST_NATIVE_DISPLAY=1`).
 
-The executable creates a `QCoreApplication`; it does not open windows or require
-an OpenGL context, the parts library, or network access. It uses the same Qt
+The executable creates a `QCoreApplication`; apart from the `SW_TEST_BINARY`
+checks it does not open windows or require an OpenGL context, the parts library, or network access. It uses the same Qt
 headers as the application, plus Qt Test, and supports Qt 5 and Qt 6.
 
 ## Build and run

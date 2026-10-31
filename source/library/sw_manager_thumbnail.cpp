@@ -351,8 +351,7 @@ void swThumbnailManager::DrawThumbnail(swPartThumbnailId ThumbnailId, swPartThum
 	mView->MakeCurrent();
 	mView->BindRenderFramebuffer();
 
-	const uint BackgroundColor = QApplication::palette().color(QPalette::Base).rgba();
-	mView->SetBackgroundColorOverride(SW_RGBA(qRed(BackgroundColor), qGreen(BackgroundColor), qBlue(BackgroundColor), 0));
+	mView->SetBackgroundMode(swBackgroundMode::Transparent);
 
 	swPartData* PartData = Thumbnail.PartData;
 

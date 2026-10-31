@@ -177,7 +177,7 @@ void swView::OnDraw()
 			if (!mRenderImage.isNull())
 			{
 				UnbindRenderFramebuffer();
-				QImage TileImage = GetRenderFramebufferImage();
+				QImage TileImage = GetRenderFramebufferImage().convertToFormat(QImage::Format_ARGB32_Premultiplied);
 				BindRenderFramebuffer();
 
 				if (TileImage.isNull())
@@ -305,17 +305,36 @@ bool swView::HasMissingAssets() const
 
 void swView::DrawBackground() const
 {
-	if (mOverrideBackgroundColor)
+	swBackgroundMode BackgroundMode = mBackgroundMode;
+
+	if (BackgroundMode == swBackgroundMode::Default)
+		BackgroundMode = mContext->IsOffscreen() ? swBackgroundMode::Transparent : swBackgroundMode::Opaque;
+
+	switch (BackgroundMode)
+	{
+	case swBackgroundMode::CustomColor:
 	{
 		swVector4 BackgroundColor(swVector4FromColor(mBackgroundColor));
+		BackgroundColor.x *= BackgroundColor.w;
+		BackgroundColor.y *= BackgroundColor.w;
+		BackgroundColor.z *= BackgroundColor.w;
 		mContext->ClearColorAndDepth(BackgroundColor);
 		return;
 	}
 
-	const swPreferences& Preferences = swGetPreferences();
-	float Alpha = mContext->IsOffscreen() ? 0.0f : 1.0f;
+	// framebuffer pixels are premultiplied
+	case swBackgroundMode::Transparent:
+		mContext->ClearColorAndDepth(swVector4(0.0f, 0.0f, 0.0f, 0.0f));
+		return;
 
-	swVector4 BackgroundColor(swVector3FromColor(Preferences.mBackgroundSolidColor), Alpha);
+	case swBackgroundMode::Default:
+	case swBackgroundMode::Opaque:
+		break;
+	}
+
+	const swPreferences& Preferences = swGetPreferences();
+
+	swVector4 BackgroundColor(swVector3FromColor(Preferences.mBackgroundSolidColor), 1.0f);
 	mContext->ClearColorAndDepth(BackgroundColor);
 }
 
