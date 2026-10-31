@@ -78,9 +78,9 @@ fi
 lines_example=()
 state_notice=0
 
-while IFS= read -r line_readme
+while IFS= read -r line_file
 do
-	if [[ ${line_readme} =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}\ ↴ ]]
+	if [[ ${line_file} =~ ^\ \ \<summary\>[0-9]{4}-[0-9]{2}-[0-9]{2}\</summary\>$ ]]
 	then
 		if [ "${state_notice}" = 1 ]
 		then
@@ -88,15 +88,15 @@ do
 		fi
 
 		state_notice=1
-	elif [ "${state_notice}" = 1 ] && [[ ${line_readme} == "- "* ]]
+	elif [ "${state_notice}" = 1 ] && [[ ${line_file} == "  - "* ]]
 	then
-		lines_example+=("${line_readme}")
+		lines_example+=("${line_file#  }")
 	fi
-done < README.md
+done < NOTICE.md
 
 printf "%s\n" "version ${version_old} is released and code changed since, writing the ${version_today} notice"
 
-prompt_notice="Write the README release notice for StudWorx version ${version_today}, covering the changes since version ${version_old}.
+prompt_notice="Write the release notice for StudWorx version ${version_today}, covering the changes since version ${version_old}.
 Read them with git log and git diff ${sha_release} HEAD, user facing changes only.
 Answer with 2 to 8 lines and nothing else, each line starting with '- ', short and plain, no final period, written like these lines of the previous notice:
 $(printf "%s\n" "${lines_example[@]}")
@@ -130,23 +130,23 @@ fi
 
 tools/studworx-version-update "${version_today}" > /dev/null
 
-# the notice lines go under the new heading
-mapfile -t lines_readme < README.md
+# the notice lines go under the new summary
+mapfile -t lines_file < NOTICE.md
 lines_result=()
 state_insert=0
 
-for line_readme in "${lines_readme[@]}"
+for line_file in "${lines_file[@]}"
 do
-	lines_result+=("${line_readme}")
+	lines_result+=("${line_file}")
 
-	if [ "${state_insert}" = 0 ] && [ "${line_readme}" = "${version_today} ↴" ]
+	if [ "${state_insert}" = 0 ] && [ "${line_file}" = "  <summary>${version_today}</summary>" ]
 	then
-		lines_result+=("" "${lines_notice[@]}")
+		lines_result+=("" "${lines_notice[@]/#/  }")
 		state_insert=1
 	fi
 done
 
-printf "%s\n" "${lines_result[@]}" > README.md
+printf "%s\n" "${lines_result[@]}" > NOTICE.md
 
 git commit --quiet --all --message "Code & Features Update"
 

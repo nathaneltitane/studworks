@@ -110,10 +110,9 @@ version_compact_new="${version_new//-/}"
 
 replace_version source/application/sw_global.h "*SW_VERSION_TEXT*" "${version_old}" "${version_new}"
 
-# the badges and the package table, the notices keep their own dates and the new one goes on top
-replace_version README.md "*\[ Version // ${version_old} \]*" "${version_old}" "${version_new}"
-replace_version README.md "      | *${version_old}*" "${version_old}" "${version_new}"
-insert_version README.md "[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9] ↴" "${version_new} ↴" ""
+# the notices keep their own dates and the new one goes on top open
+replace_version NOTICE.md "  <details open>" "<details open>" "<details>"
+insert_version NOTICE.md "  <details>" "  <details open>" "  <summary>${version_new}</summary>" "" "  </details>" ""
 
 replace_version .github/ISSUE_TEMPLATE/bug_report.md "*StudWorx Version*" "${version_old}" "${version_new}"
 replace_version packaging/PKGBUILD "pkgver=*" "${version_compact_old}" "${version_compact_new}"
@@ -122,4 +121,4 @@ replace_version platform/Info.plist "*<string>${version_old}</string>*" "${versi
 replace_version platform/Info.plist "*<string>${version_compact_old}</string>*" "${version_compact_old}" "${version_compact_new}"
 replace_version snapcraft.yaml "*${version_old}*" "${version_old}" "${version_new}"
 
-printf "%s\n" "version ${version_old} moved to ${version_new}, write its notice in README.md before pushing"
+printf "%s\n" "version ${version_old} moved to ${version_new}, write its notice in NOTICE.md before pushing"
