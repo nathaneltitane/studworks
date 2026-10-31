@@ -1,4 +1,4 @@
-.TH STUDWORX 1 "26 October 2026"
+.TH STUDWORX 1 "30 October 2026"
 .\" NAME should be all caps, SECTION should be 1-8, maybe w/ subsection
 .\" other params are allowed: see man(7), man(1)
 .SH NAME
@@ -231,6 +231,11 @@ Exports the model to COLLADA DAE format.
 Exports the list of parts used in CSV format.
 
 .TP
+\fB\-bl \fR[\fIoutfile.xml\fR],\ \fB\-\-export\-bricklink \fR[\fIoutfile.xml\fR]
+.br
+Exports the list of parts used in BrickLink XML format, ready for a BrickLink wanted list.
+
+.TP
 \fB\-html \fR[\fIpath\fR],\ \fB\-\-export\-html \fR[\fIpath\fR]
 .br
 Creates an HTML page for the model.
@@ -244,6 +249,46 @@ Exports the model to POV-Ray format.
 \fB\-\-povray\-render \fR[\fIoutfile.png\fR]
 .br
 Renders the model with POV-Ray 3.7 or newer into a PNG picture, using the POV-Ray window settings with the picture width, height and transparency from \fB\-w\fR, \fB\-h\fR and \fB\-\-transparent\fR. POV-Ray is found in the Preferences path, the PATH, Flatpak or Snap.
+
+.TP
+\fB\-\-import\-settings \fIinfile.ini
+.br
+Imports the application settings and exits.
+
+.TP
+\fB\-\-export\-settings \fIoutfile.ini
+.br
+Exports the application settings and exits.
+
+.TP
+\fB\-\-import\-keyboard\-shortcuts \fIinfile.txt
+.br
+Imports the keyboard shortcuts and exits.
+
+.TP
+\fB\-\-export\-keyboard\-shortcuts \fIoutfile.txt
+.br
+Exports the keyboard shortcuts and exits.
+
+.TP
+\fB\-\-import\-mouse\-shortcuts \fIinfile.txt
+.br
+Imports the mouse shortcuts and exits.
+
+.TP
+\fB\-\-export\-mouse\-shortcuts \fIoutfile.txt
+.br
+Exports the mouse shortcuts and exits.
+
+.TP
+\fB\-\-import\-categories \fIinfile.txt
+.br
+Imports the part categories and exits.
+
+.TP
+\fB\-\-export\-categories \fIoutfile.txt
+.br
+Exports the part categories and exits.
 
 .TP
 .BR \-v ",\ " \-\-version
