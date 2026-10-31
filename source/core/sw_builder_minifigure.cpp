@@ -32,7 +32,7 @@ const char* swMinifigureBuilder::mSectionNames[SW_MINIFIGURE_ITEM_COUNT] =
 
 // default minifigure colors and parts
 static const int gMinifigureDefaultColorCodes[SW_MINIFIGURE_ITEM_COUNT] = { 71, 7, 14, 7, 71, 0, 7, 71, 71, 14, 14, 7, 72, 0, 0, 7, 7 };
-static const char* const gMinifigureDefaultParts[SW_MINIFIGURE_ITEM_COUNT] = { "4485.dat", "", "3626c.dat", "", "973.dat", "3815.dat", "", "3819.dat", "3818.dat", "3820.dat", "3820.dat", "", "55299.dat", "3817.dat", "3816.dat", "", "" };
+static const char* const gMinifigureDefaultParts[SW_MINIFIGURE_ITEM_COUNT] = { "4485b.dat", "", "3626c.dat", "", "973.dat", "3815b.dat", "", "3819.dat", "3818.dat", "3820.dat", "3820.dat", "", "55299.dat", "3817c.dat", "3816c.dat", "", "" };
 
 swMinifigureBuilder::swMinifigureBuilder()
 	: mModel(new swModel(QString(), nullptr, false))

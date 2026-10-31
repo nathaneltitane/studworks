@@ -273,7 +273,7 @@ public:
 	swResult<swModel*> ImportClipboard(const QByteArray& FileData);
 	swResult<void> ExportModel(const QString& FileName, swModel* Model) const;
 	swResult<void> Export3DStudio(const QString& FileName);
-	swResult<void> ExportBrickLink();
+	swResult<void> ExportBrickLink(const QString& FileName);
 	swResult<void> ExportCOLLADA(const QString& FileName);
 	swResult<void> ExportCSV(const QString& FileName);
 	swResult<void> ExportHTML(const swHTMLExportOptions& Options);

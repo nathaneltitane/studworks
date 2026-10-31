@@ -8440,7 +8440,7 @@ Veja https://github.com/nathaneltitane/studworx para saber como descarragar e in
         <translation type="unfinished">O ficheiro &apos;%1&apos; não é legível.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1633"/>
+        <location filename="../../source/application/sw_application.cpp" line="1635"/>
         <source>The file &apos;%1&apos; has no parts to render.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">O arquivo &apos;%1&apos; não tem peças para renderizar.</translation>
@@ -8484,7 +8484,7 @@ Download the official library (about 140 MB) from library.ldraw.org into &apos;%
     <message>
         <location filename="../../source/application/sw_application.cpp" line="579"/>
         <location filename="../../source/application/sw_application.cpp" line="595"/>
-        <location filename="../../source/application/sw_application.cpp" line="2107"/>
+        <location filename="../../source/application/sw_application.cpp" line="2126"/>
         <source>Could not open the parts library &apos;%1&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9089,18 +9089,38 @@ Download one from %1 and set it under Preferences › Parts Library the next tim
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1407"/>
+        <location filename="../../source/application/sw_application.cpp" line="1409"/>
         <source>Command line image export is not supported on iOS.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">A exportação de imagens de linha de comandos não é compatível com o iOS.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1421"/>
-        <location filename="../../source/application/sw_application.cpp" line="1951"/>
+        <location filename="../../source/application/sw_application.cpp" line="1423"/>
+        <location filename="../../source/application/sw_application.cpp" line="1953"/>
         <source>Initialize Renderer</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Inicializar o renderizador</translation>
+    </message>
+    <message>
+        <location filename="../../source/application/sw_application.cpp" line="2118"/>
+        <source>Could not find a default parts library, &apos;%1&apos; stays in use until StudWorx starts again and offers to download one.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/application/sw_application.cpp" line="2145"/>
+        <source>The new language and antialiasing settings apply the next time you start StudWorx.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/application/sw_application.cpp" line="2147"/>
+        <source>The new language applies the next time you start StudWorx.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/application/sw_application.cpp" line="2149"/>
+        <source>The new antialiasing setting applies the next time you start StudWorx.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>StudWorx could not load Parts Library.
@@ -9115,89 +9135,91 @@ Veja https://github.com/nathaneltitane/studworx para saber como descarragar e in
         <location filename="../../source/application/sw_application.cpp" line="579"/>
         <location filename="../../source/application/sw_application.cpp" line="595"/>
         <location filename="../../source/application/sw_application.cpp" line="598"/>
-        <location filename="../../source/application/sw_application.cpp" line="2099"/>
-        <location filename="../../source/application/sw_application.cpp" line="2107"/>
-        <location filename="../../source/application/sw_application.cpp" line="2114"/>
+        <location filename="../../source/application/sw_application.cpp" line="2101"/>
+        <location filename="../../source/application/sw_application.cpp" line="2118"/>
+        <location filename="../../source/application/sw_application.cpp" line="2126"/>
+        <location filename="../../source/application/sw_application.cpp" line="2130"/>
         <source>Load Parts Library</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Carregar biblioteca de peças</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1467"/>
+        <location filename="../../source/application/sw_application.cpp" line="1469"/>
         <source>StudWorx could not find an LDraw parts library.
 
 Download one from %1 and pass it with --libpath.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1477"/>
-        <location filename="../../source/application/sw_application.cpp" line="2114"/>
+        <location filename="../../source/application/sw_application.cpp" line="1479"/>
+        <location filename="../../source/application/sw_application.cpp" line="2130"/>
         <source>Could not open the unofficial library archive &apos;%1&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1485"/>
-        <location filename="../../source/application/sw_application.cpp" line="2121"/>
+        <location filename="../../source/application/sw_application.cpp" line="1487"/>
+        <location filename="../../source/application/sw_application.cpp" line="2137"/>
         <source>Could not find a shadow library in &apos;%1&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1537"/>
+        <location filename="../../source/application/sw_application.cpp" line="1539"/>
         <source>Error: model &apos;%1&apos; does not exist.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Erro: o modelo &apos;%1&apos; não existe.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1649"/>
-        <location filename="../../source/application/sw_application.cpp" line="1683"/>
-        <location filename="../../source/application/sw_application.cpp" line="1778"/>
-        <location filename="../../source/application/sw_application.cpp" line="1807"/>
-        <location filename="../../source/application/sw_application.cpp" line="1841"/>
-        <location filename="../../source/application/sw_application.cpp" line="1875"/>
-        <location filename="../../source/application/sw_application.cpp" line="1909"/>
-        <location filename="../../source/application/sw_application.cpp" line="1929"/>
+        <location filename="../../source/application/sw_application.cpp" line="1651"/>
+        <location filename="../../source/application/sw_application.cpp" line="1685"/>
+        <location filename="../../source/application/sw_application.cpp" line="1780"/>
+        <location filename="../../source/application/sw_application.cpp" line="1809"/>
+        <location filename="../../source/application/sw_application.cpp" line="1843"/>
+        <location filename="../../source/application/sw_application.cpp" line="1877"/>
+        <location filename="../../source/application/sw_application.cpp" line="1911"/>
+        <location filename="../../source/application/sw_application.cpp" line="1931"/>
         <source>Saved &apos;%1&apos;.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Guardado &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1716"/>
+        <location filename="../../source/application/sw_application.cpp" line="1718"/>
         <source>LGEO parts need the standard POV-Ray include files such as colors.inc, which POV-Ray %1 could not find.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1721"/>
+        <location filename="../../source/application/sw_application.cpp" line="1723"/>
         <source>Error creating a temporary folder for the POV-Ray scene.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1771"/>
+        <location filename="../../source/application/sw_application.cpp" line="1773"/>
         <source>Error rendering &apos;%1&apos; with POV-Ray:
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="2099"/>
+        <location filename="../../source/application/sw_application.cpp" line="2101"/>
         <source>Could not reload the parts library &apos;%1&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="2121"/>
+        <location filename="../../source/application/sw_application.cpp" line="2137"/>
         <source>Load Part Connections</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="2128"/>
         <source>Some changes will only take effect the next time you start StudWorx.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">Algumas alterações só entrarão em vigor na próxima vez que iniciar o StudWorx.</translation>
+        <translation type="obsolete">Algumas alterações só entrarão em vigor na próxima vez que iniciar o StudWorx.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="2128"/>
+        <location filename="../../source/application/sw_application.cpp" line="2145"/>
+        <location filename="../../source/application/sw_application.cpp" line="2147"/>
+        <location filename="../../source/application/sw_application.cpp" line="2149"/>
         <source>Preferences</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">Preferências</translation>
@@ -20965,11 +20987,6 @@ As placas de vídeo não suportadas utilizam a tonalidade da face e bordas color
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Unofficial Library</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
-        <source>ldrawunf.zip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

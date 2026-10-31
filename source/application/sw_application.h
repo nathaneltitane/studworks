@@ -296,6 +296,7 @@ struct swCommandLineOptions
 	bool Save3DS = false;
 	bool SaveCOLLADA = false;
 	bool SaveCSV = false;
+	bool SaveBrickLink = false;
 	bool SaveHTML = false;
 	bool SavePOVRay = false;
 	bool RenderPOVRay = false;
@@ -344,6 +345,7 @@ struct swCommandLineOptions
 	QString Save3DSName;
 	QString SaveCOLLADAName;
 	QString SaveCSVName;
+	QString SaveBrickLinkName;
 	QString SaveHTMLName;
 	QString SavePOVRayName;
 	QString RenderPOVRayName;
@@ -421,6 +423,7 @@ protected:
 	void UpdateStyle();
 	QString GetTabLayoutKey() const;
 
+	QList<QPair<QString, bool>> mDefaultLibraryPaths;
 	QString mDefaultStyle;
 	QPalette mDefaultPalette;
 	bool mCustomStyleApplied = false;

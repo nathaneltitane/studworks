@@ -111,7 +111,7 @@ void swMainWindow::HandleCommand(swCommandId CommandId)
 		break;
 
 	case SW_FILE_EXPORT_BRICKLINK:
-		ShowResultError(swGetActiveProject()->ExportBrickLink(), tr("Export BrickLink"));
+		ShowResultError(swGetActiveProject()->ExportBrickLink(QString()), tr("Export BrickLink"));
 		break;
 
 	case SW_FILE_EXPORT_CSV:

@@ -1076,6 +1076,11 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 			Options.SaveCSV = true;
 			ParseString(Options.SaveCSVName, false);
 		}
+		else if (Option == QLatin1String("-bl") || Option == QLatin1String("--export-bricklink"))
+		{
+			Options.SaveBrickLink = true;
+			ParseString(Options.SaveBrickLinkName, false);
+		}
 		else if (Option == QLatin1String("-html") || Option == QLatin1String("--export-html"))
 		{
 			Options.SaveHTML = true;
@@ -1145,7 +1150,7 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 			Options.StdOut += tr("  --lighting <style>: Select the lighting style of the default shading (standard, studio, matte, toon).\n");
 			Options.StdOut += tr("  --line-width <width>: Set the width of the edge lines.\n");
 			Options.StdOut += tr("  --aa-samples <samples>: Anti-aliasing sample size (1, 2, 4, or 8).\n");
-			Options.StdOut += tr("  -ss, --stud-style <style>: Set the stud style (0=No style, 1=LDraw single wire, 2=LDraw double wire, 3=LDraw raised floating, 4=LDraw raised rounded, 5=LDraw subtle rounded, 6=LEGO® no logo, 7=LEGO® single wire).\n");
+			Options.StdOut += tr("  -ss, --stud-style <style>: Set the stud style (0=Plain, 1=Thin Lines Logo, 2=Outline Logo, 3=Sharp Top Logo, 4=Rounded Top Logo, 5=Flattened Logo, 6=High Contrast, 7=High Contrast with Logo).\n");
 			Options.StdOut += tr("  -nscc, --disable-stud-cylinder-color: Disable high contrast stud cylinder color.\n");
 			Options.StdOut += tr("  -scc, --stud-cylinder-color <#AARRGGBB>: High contrast stud cylinder color.\n");
 			Options.StdOut += tr("  -nec, --disable-edge-color: Disable high contrast edge color.\n");
@@ -1161,9 +1166,10 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 			Options.StdOut += tr("  -3ds, --export-3ds <outfile.3ds>: Export the model to 3D Studio 3DS format.\n");
 			Options.StdOut += tr("  -dae, --export-collada <outfile.dae>: Export the model to COLLADA DAE format.\n");
 			Options.StdOut += tr("  -csv, --export-csv <outfile.csv>: Export the list of parts used in CSV format.\n");
+			Options.StdOut += tr("  -bl, --export-bricklink <outfile.xml>: Export the list of parts used in BrickLink XML format.\n");
 			Options.StdOut += tr("  -html, --export-html <folder>: Create an HTML page for the model.\n");
 			Options.StdOut += tr("  -pov, --export-povray <outfile.pov>: Export the model to POV-Ray format.\n");
-			Options.StdOut += tr("  --povray-render <outfile.png>: Render the model with POV-Ray using the POV-Ray window settings and the picture width and height.\n");
+			Options.StdOut += tr("  --povray-render <outfile.png>: Render the model with POV-Ray using the POV-Ray window settings, the picture width and height, and the transparent background.\n");
 			Options.StdOut += tr("  --import-settings <infile.ini>: Import the application settings and exit.\n");
 			Options.StdOut += tr("  --export-settings <outfile.ini>: Export the application settings and exit.\n");
 			Options.StdOut += tr("  --import-keyboard-shortcuts <infile.txt>: Import the keyboard shortcuts and exit.\n");
@@ -1257,7 +1263,7 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 			Options.StdErr += tr("--camera-position is ignored when --camera-angles is set.\n");
 	}
 
-	const bool SaveAndExit = (Options.SaveImage || Options.SaveWavefront || Options.Save3DS || Options.SaveCOLLADA || Options.SaveCSV || Options.SaveHTML || Options.SavePOVRay || Options.RenderPOVRay);
+	const bool SaveAndExit = (Options.SaveImage || Options.SaveWavefront || Options.Save3DS || Options.SaveCOLLADA || Options.SaveCSV || Options.SaveBrickLink || Options.SaveHTML || Options.SavePOVRay || Options.RenderPOVRay);
 
 	if (SaveAndExit && Options.ProjectName.isEmpty())
 	{
@@ -1374,6 +1380,8 @@ static bool swTransferSettings(const swCommandLineOptions& Options, QTextStream&
 
 swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& LibraryPaths)
 {
+	mDefaultLibraryPaths = LibraryPaths;
+
 	swCommandLineOptions Options = ParseCommandLineOptions();
 	QTextStream StdErr(stderr, QIODevice::WriteOnly);
 	QTextStream StdOut(stdout, QIODevice::WriteOnly);
@@ -1399,7 +1407,7 @@ swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 	if (Options.HasSettingsTransfer())
 		return swTransferSettings(Options, StdErr) ? swStartupMode::Success : swStartupMode::Error;
 
-	const bool SaveAndExit = (Options.SaveImage || Options.SaveWavefront || Options.Save3DS || Options.SaveCOLLADA || Options.SaveCSV || Options.SaveHTML || Options.SavePOVRay || Options.RenderPOVRay);
+	const bool SaveAndExit = (Options.SaveImage || Options.SaveWavefront || Options.Save3DS || Options.SaveCOLLADA || Options.SaveCSV || Options.SaveBrickLink || Options.SaveHTML || Options.SavePOVRay || Options.RenderPOVRay);
 
 #ifdef Q_OS_IOS
 	if (Options.SaveImage)
@@ -1916,6 +1924,29 @@ swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 			}
 		}
 
+		if (Options.SaveBrickLink)
+		{
+			QString FileName = !Options.SaveBrickLinkName.isEmpty() ? Options.SaveBrickLinkName : Options.ProjectName;
+			const QString Extension = QFileInfo(FileName).suffix().toLower();
+
+			if (Extension.isEmpty())
+				FileName += QLatin1String(".xml");
+			else if (Extension != QLatin1String("xml"))
+				FileName = FileName.left(FileName.length() - Extension.length() - 1) + QLatin1String(".xml");
+
+			swResult<void> ExportResult = mProject->ExportBrickLink(FileName);
+
+			if (ExportResult)
+				StdOut << tr("Saved '%1'.\n").arg(FileName);
+			else
+			{
+				OutputFailed = true;
+
+				if (!ExportResult.error().isEmpty())
+					StdErr << ExportResult.error() << '\n';
+			}
+		}
+
 		if (Options.SaveHTML)
 		{
 			swHTMLExportOptions HTMLOptions(mProject);
@@ -2092,11 +2123,28 @@ void swApplication::ShowPreferencesDialog()
 
 		mLibrary->SetUnofficialArchivePath(Options.UnofficialLibraryPath);
 
-		// default paths resolve at startup
-		if (LibraryChanged && (LibraryOverridden || Options.LibraryPath.isEmpty()))
+		// the environment library stays in use
+		if (LibraryChanged && LibraryOverridden)
 		{
 			if (UnofficialLibraryChanged && !ReloadPartsLibrary(mLibrary->GetLibraryPath(), mLibrary->IsOfficialLibrary()))
 				QMessageBox::warning(gMainWindow, tr("Load Parts Library"), tr("Could not reload the parts library '%1'.").arg(mLibrary->GetLibraryPath()));
+		}
+		// an empty path falls back to the default libraries
+		else if (LibraryChanged && Options.LibraryPath.isEmpty())
+		{
+			bool LibraryLoaded = false;
+
+			for (const QPair<QString, bool>& LibraryPathEntry : mDefaultLibraryPaths)
+			{
+				if (ReloadPartsLibrary(LibraryPathEntry.first, LibraryPathEntry.second))
+				{
+					LibraryLoaded = true;
+					break;
+				}
+			}
+
+			if (!LibraryLoaded)
+				QMessageBox::warning(gMainWindow, tr("Load Parts Library"), tr("Could not find a default parts library, '%1' stays in use until StudWorx starts again and offers to download one.").arg(mLibrary->GetLibraryPath()));
 		}
 		else
 		{
@@ -2105,9 +2153,6 @@ void swApplication::ShowPreferencesDialog()
 
 			if (!ReloadPartsLibrary(LibraryPath, OfficialLibrary))
 				QMessageBox::warning(gMainWindow, tr("Load Parts Library"), tr("Could not open the parts library '%1'.").arg(LibraryPath));
-
-			// the warning replaces the restart notice
-			LibraryChanged = false;
 		}
 
 		if (UnofficialLibraryChanged && !Options.UnofficialLibraryPath.isEmpty() && !mLibrary->HasUnofficialArchive())
@@ -2124,8 +2169,13 @@ void swApplication::ShowPreferencesDialog()
 	if ((ShadowLibraryChanged || ShadowLibraryEnabledChanged) && gMainWindow)
 		gMainWindow->UpdateShadowLibraryAction();
 
-	if (LanguageChanged || LibraryChanged || AAChanged)
-		QMessageBox::information(gMainWindow, tr("Preferences"), tr("Some changes will only take effect the next time you start StudWorx."));
+	// name the settings that wait for a restart
+	if (LanguageChanged && AAChanged)
+		QMessageBox::information(gMainWindow, tr("Preferences"), tr("The new language and antialiasing settings apply the next time you start StudWorx."));
+	else if (LanguageChanged)
+		QMessageBox::information(gMainWindow, tr("Preferences"), tr("The new language applies the next time you start StudWorx."));
+	else if (AAChanged)
+		QMessageBox::information(gMainWindow, tr("Preferences"), tr("The new antialiasing setting applies the next time you start StudWorx."));
 
 	if (Options.CategoriesModified)
 	{

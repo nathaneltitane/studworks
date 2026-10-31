@@ -268,9 +268,7 @@ Everything LeoCAD does, StudWorx does too - with a reworked interface and a set 
 
   ![XZ and YZ height grids](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/views-height-grids.png)
 
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/views-turntable-a.png" alt="Idle turntable" width="32%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/views-turntable-b.png" alt="Idle turntable" width="32%" align="top">
-  <img src="https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/views-turntable-c.png" alt="Idle turntable" width="32%" align="top">
+  ![Idle turntable](https://raw.githubusercontent.com/nathaneltitane/studworx/main/documentation/images/views-turntable.gif)
 
 - **Steps** ↴
   - Steps menu to go to the first, previous, next or last step and insert or remove steps

@@ -99,9 +99,6 @@
               <property name="toolTip">
                <string>Choose the LDraw unofficial parts archive, or leave empty to use ldrawunf.zip next to an archive library or inside a folder library.</string>
               </property>
-              <property name="placeholderText">
-               <string>ldrawunf.zip</string>
-              </property>
              </widget>
             </item>
             <item>

@@ -566,7 +566,7 @@ swResult<void> Project::Export3DStudio(const QString& FileName)
 	return swResult<void>();
 }
 
-swResult<void> Project::ExportBrickLink()
+swResult<void> Project::ExportBrickLink(const QString& FileName)
 {
 	swPartsList PartsList;
 
@@ -576,7 +576,7 @@ swResult<void> Project::ExportBrickLink()
 	if (PartsList.empty())
 		return swUnexpected(tr("Nothing to export."));
 
-	QString SaveFileName = GetExportFileName(QString(), "xml", tr("Export BrickLink"), tr("XML Files (*.xml);;All Files (*.*)"));
+	QString SaveFileName = GetExportFileName(FileName, "xml", tr("Export BrickLink"), tr("XML Files (*.xml);;All Files (*.*)"));
 
 	if (SaveFileName.isEmpty())
 		return swUnexpected(QString());
