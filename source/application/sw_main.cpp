@@ -124,6 +124,23 @@ static void swInitializeSurfaceFormat(int argc, char* argv[])
 	// text only runs need no display
 	if ((!Options.ParseOK || Options.Exit || Options.HasSettingsTransfer()) && qEnvironmentVariableIsEmpty("QT_QPA_PLATFORM"))
 		qputenv("QT_QPA_PLATFORM", "offscreen");
+
+#ifdef Q_OS_LINUX
+	// save runs without a display render through egl on the drm device
+	if (Options.ParseOK && Options.HasSaveAndExit() && qEnvironmentVariableIsEmpty("QT_QPA_PLATFORM") && qEnvironmentVariableIsEmpty("DISPLAY") && qEnvironmentVariableIsEmpty("WAYLAND_DISPLAY"))
+	{
+		qputenv("QT_QPA_PLATFORM", "eglfs");
+		qputenv("QT_QPA_EGLFS_INTEGRATION", "none");
+		qputenv("QT_QPA_EGLFS_DISABLE_INPUT", "1");
+
+		if (qEnvironmentVariableIsEmpty("EGL_PLATFORM"))
+			qputenv("EGL_PLATFORM", "drm");
+
+		QSurfaceFormat Format = QSurfaceFormat::defaultFormat();
+		Format.setRenderableType(QSurfaceFormat::OpenGL);
+		QSurfaceFormat::setDefaultFormat(Format);
+	}
+#endif
 }
 
 int main(int argc, char *argv[])

@@ -25,6 +25,11 @@ Useful? Star the repository - it helps others find it.
   - Print: File > Print prints the current model view through the system print dialog, with a Preview button where the dialog allows it
   - File menu: grouped by task, Print after Save As, Image beside Instructions and Render instead of under Export
   - Preferences: Custom Paths is now Reference Paths
+  - Preferences: new Export group with Mark COLLADA Transparency, on by default, writes 'opaque="A_ONE"' on transparent colors so viewers that skip the COLLADA default show transparent parts translucent without an l2cu pass
+  - Rotate tool: dragging empty space with a mouse shortcut orbits, pans or zooms the view again instead of being taken as a rotation handle (LeoCAD #1073)
+  - Command line: '-bl', '--export-bricklink' writes the BrickLink XML inventory like '--export-csv'
+  - Images: saved in the format of their extension, '.jpg', '.bmp' and '.gif' are no longer written as PNG, backgrounds are opaque unless '--transparent' is used with PNG or GIF, and '.gif' steps save one still frame per step
+  - Command line: renders and exports run without a display on Linux, '--stud-style' help lists the current stud style names
 
   </details>
 
@@ -186,11 +191,11 @@ Everything LeoCAD does, StudWorx does too - with a reworked interface and a set 
   - LDraw models in '.ldr', '.mpd' and '.dat' files, in LeoCAD's file format so models open in either program
   - New, Open, Merge, Save, Save As, Reload, Watch for File Changes and the four most recent files
   - Import LEGO® Digital Designer models and set inventories, with your own free Rebrickable API key asked for once
-  - Export to 3D Studio, COLLADA, Wavefront, POV-Ray, HTML, BrickLink and CSV
+  - Export to 3D Studio, COLLADA, Wavefront, POV-Ray, HTML, BrickLink and CSV, COLLADA transparency marked for viewers that skip its default
   - Print the current model view through the system print dialog, with a Preview button where the dialog allows it
   - Model thumbnails in file managers, from a KDE thumbnail plugin or the desktop thumbnailer
   - Parts library downloaded on the first start as the official LDraw 'complete.zip', or chosen from an existing archive, and reloaded from the File menu
-  - Command line rendering, '--transparent' images and POV-Ray renders, and settings, shortcuts and categories imported or exported without opening a window
+  - Command line rendering without a display, '--transparent' images and POV-Ray renders, BrickLink and CSV inventories, and settings, shortcuts and categories imported or exported without opening a window
 
 - **Save Model Image** ↴
   - Live preview of the saved image with step arrows, for one step or every step
@@ -334,7 +339,7 @@ Everything LeoCAD does, StudWorx does too - with a reworked interface and a set 
 
 - **Preferences** ↴
   - General, Rendering, Views, Colors, Instructions, Categories, Keyboard and Mouse pages with lined up label and control columns
-  - Reference Paths, the Author of new models, the parts library, LGEO and POV-Ray locations and the Blender add-on settings
+  - Reference Paths, the Author of new models, COLLADA transparency marking, the parts library, LGEO and POV-Ray locations and the Blender add-on settings
   - Views page grouped into Model, Cutaway, Turntable, Base Grid, Parts, Preview and Minifigure Builder, every slider showing its value
   - Units inside their boxes and named by the count, value boxes show their maximum and bring any typed number into range
   - Part categories turned on and off with a checkbox

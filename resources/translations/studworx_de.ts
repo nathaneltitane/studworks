@@ -4403,7 +4403,7 @@ Dateiformat wird nicht erkannt.</translation>
     </message>
     <message>
         <location filename="../../source/core/sw_project_export.cpp" line="577"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="885"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="887"/>
         <source>Nothing to export.</source>
         <translation>Nichts zu exportieren.</translation>
     </message>
@@ -4557,10 +4557,10 @@ Dateiformat wird nicht erkannt.</translation>
     <message>
         <location filename="../../source/core/sw_project_export.cpp" line="195"/>
         <location filename="../../source/core/sw_project_export.cpp" line="599"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="901"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1237"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="2082"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="2095"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="903"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1239"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="2084"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="2097"/>
         <source>Could not open file &apos;%1&apos; for writing.</source>
         <translation>Konnte Datei » %1 « nicht zum Schreiben öffnen.</translation>
     </message>
@@ -4585,66 +4585,66 @@ Dateiformat wird nicht erkannt.</translation>
         <translation>COLLADA Dateien (*.dae);;Alle Dateien (*.*)</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="887"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="889"/>
         <source>Export CSV</source>
         <translation>Nach CSV exportieren</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="887"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="889"/>
         <source>CSV Files (*.csv);;All Files (*.*)</source>
         <translation>CSV Datei (*.csv);;Alle Dateien (*.*)</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="1036"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1038"/>
         <source>Created by %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="1059"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1097"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1189"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1061"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1099"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1191"/>
         <source>Instructions for %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="1064"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1100"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1120"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1212"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1066"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1102"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1122"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1214"/>
         <source>Step %1</source>
         <translation type="unfinished">Schritt %1</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="1103"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1140"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1215"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1105"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1142"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1217"/>
         <source>Parts Used</source>
         <translation type="unfinished">Verwendete Teile</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="1119"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1121"/>
         <source>%1 - Step %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="1132"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1163"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1134"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1165"/>
         <source>Previous</source>
         <translation type="unfinished">Vorheriger</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="1135"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1166"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1137"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1168"/>
         <source>Index</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="1138"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1140"/>
         <source>Next</source>
         <translation type="unfinished">Nächster</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="1155"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1157"/>
         <source>Parts used by %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4653,39 +4653,39 @@ Dateiformat wird nicht erkannt.</translation>
         <translation type="vanished">Fehler beim Erzeugen der Bilder.</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="1229"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1231"/>
         <source>Export POV-Ray</source>
         <translation>POV-Ray exportieren</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="1229"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1231"/>
         <source>POV-Ray Files (*.pov);;All Files (*.*)</source>
         <translation>POV-Ray Datei (*.pov);;Alle Dateien (*.*)</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="1705"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1707"/>
         <source>Could not find LGEO files in folder &apos;%1&apos;.</source>
         <translation>Konnte keine LGEO Dateien im Verzeichnis » %1 « finden.</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="2073"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="2075"/>
         <source>Export Wavefront</source>
         <translation>Nach Wavefront exportieren</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_project_export.cpp" line="2073"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="2075"/>
         <source>Wavefront Files (*.obj);;All Files (*.*)</source>
         <translation>Wavefront Dateien (*.obj);;Alle Dateien (*.*)</translation>
     </message>
     <message>
         <location filename="../../source/core/sw_project_export.cpp" line="85"/>
         <location filename="../../source/core/sw_project_export.cpp" line="101"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1021"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1055"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1093"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1115"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1151"/>
-        <location filename="../../source/core/sw_project_export.cpp" line="1185"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1023"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1057"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1095"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1117"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1153"/>
+        <location filename="../../source/core/sw_project_export.cpp" line="1187"/>
         <location filename="../../source/core/sw_project_file.cpp" line="537"/>
         <location filename="../../source/core/sw_project_file.cpp" line="553"/>
         <location filename="../../source/core/sw_project_file.cpp" line="564"/>
@@ -8334,206 +8334,211 @@ Please visit https://github.com/nathaneltitane/studworx for information on how t
 Bitte lesen sie unter https://github.com/nathaneltitane/studworx nach wie man eine Bibliothek herunterläd und installiert.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="714"/>
-        <location filename="../../source/application/sw_application.cpp" line="739"/>
-        <location filename="../../source/application/sw_application.cpp" line="762"/>
-        <location filename="../../source/application/sw_application.cpp" line="785"/>
-        <location filename="../../source/application/sw_application.cpp" line="795"/>
-        <location filename="../../source/application/sw_application.cpp" line="818"/>
-        <location filename="../../source/application/sw_application.cpp" line="843"/>
+        <location filename="../../source/application/sw_application.cpp" line="716"/>
+        <location filename="../../source/application/sw_application.cpp" line="741"/>
+        <location filename="../../source/application/sw_application.cpp" line="764"/>
+        <location filename="../../source/application/sw_application.cpp" line="787"/>
+        <location filename="../../source/application/sw_application.cpp" line="797"/>
+        <location filename="../../source/application/sw_application.cpp" line="820"/>
+        <location filename="../../source/application/sw_application.cpp" line="845"/>
         <source>Not enough parameters for the &apos;%1&apos; option.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Nicht genügend Parameter für die Option &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="736"/>
-        <location filename="../../source/application/sw_application.cpp" line="759"/>
-        <location filename="../../source/application/sw_application.cpp" line="782"/>
-        <location filename="../../source/application/sw_application.cpp" line="815"/>
-        <location filename="../../source/application/sw_application.cpp" line="840"/>
-        <location filename="../../source/application/sw_application.cpp" line="897"/>
-        <location filename="../../source/application/sw_application.cpp" line="1016"/>
-        <location filename="../../source/application/sw_application.cpp" line="1037"/>
-        <location filename="../../source/application/sw_application.cpp" line="1048"/>
+        <location filename="../../source/application/sw_application.cpp" line="738"/>
+        <location filename="../../source/application/sw_application.cpp" line="761"/>
+        <location filename="../../source/application/sw_application.cpp" line="784"/>
+        <location filename="../../source/application/sw_application.cpp" line="817"/>
+        <location filename="../../source/application/sw_application.cpp" line="842"/>
+        <location filename="../../source/application/sw_application.cpp" line="899"/>
+        <location filename="../../source/application/sw_application.cpp" line="1018"/>
+        <location filename="../../source/application/sw_application.cpp" line="1039"/>
+        <location filename="../../source/application/sw_application.cpp" line="1050"/>
         <source>Invalid parameter value specified for the &apos;%1&apos; option: &apos;%2&apos;.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ungültiger Parameterwert für die Option &apos;%1&apos; angegeben: &apos;%2&apos;.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="854"/>
+        <location filename="../../source/application/sw_application.cpp" line="856"/>
         <source>The file &apos;%1&apos; is not readable.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Die Datei &apos;%1&apos; ist nicht lesbar.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1635"/>
+        <location filename="../../source/application/sw_application.cpp" line="1651"/>
         <source>The file &apos;%1&apos; has no parts to render.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Die Datei &apos;%1&apos; enthält keine Teile zum Rendern.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="906"/>
+        <location filename="../../source/application/sw_application.cpp" line="908"/>
         <source>Invalid parameter values specified for the &apos;%1&apos; option: limits are +/- 360.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ungültige Parameterwerte für die Option &apos;%1&apos; angegeben: Grenzwerte liegen bei +/- 360.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="544"/>
-        <location filename="../../source/application/sw_application.cpp" line="551"/>
-        <location filename="../../source/application/sw_application.cpp" line="561"/>
+        <location filename="../../source/application/sw_application.cpp" line="546"/>
+        <location filename="../../source/application/sw_application.cpp" line="553"/>
+        <location filename="../../source/application/sw_application.cpp" line="563"/>
         <source>Download Parts Library</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="544"/>
+        <location filename="../../source/application/sw_application.cpp" line="546"/>
         <source>Downloading the LDraw parts library...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="551"/>
+        <location filename="../../source/application/sw_application.cpp" line="553"/>
         <source>Could not download the parts library from %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="561"/>
+        <location filename="../../source/application/sw_application.cpp" line="563"/>
         <source>Could not save the parts library to &apos;%1&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="572"/>
+        <location filename="../../source/application/sw_application.cpp" line="574"/>
         <source>StudWorx could not find an LDraw parts library.
 
 Download the official library (about 140 MB) from library.ldraw.org into &apos;%1&apos;?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="579"/>
-        <location filename="../../source/application/sw_application.cpp" line="595"/>
-        <location filename="../../source/application/sw_application.cpp" line="2126"/>
+        <location filename="../../source/application/sw_application.cpp" line="581"/>
+        <location filename="../../source/application/sw_application.cpp" line="597"/>
+        <location filename="../../source/application/sw_application.cpp" line="2165"/>
         <source>Could not open the parts library &apos;%1&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="584"/>
+        <location filename="../../source/application/sw_application.cpp" line="586"/>
         <source>Open Parts Library Archive</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="584"/>
+        <location filename="../../source/application/sw_application.cpp" line="586"/>
         <source>Parts Library Archives (*.zip);;All Files (*.*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="598"/>
+        <location filename="../../source/application/sw_application.cpp" line="600"/>
         <source>No parts library was downloaded or set.
 
 Download one from %1 and set it under Preferences › Parts Library the next time StudWorx is started.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="950"/>
+        <location filename="../../source/application/sw_application.cpp" line="952"/>
         <source>Invalid parameter values specified for the &apos;%1&apos; option: requirements are: 1 &lt;= &lt;near&gt; &lt; &lt;far&gt;.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Ungültige Parameterwerte für die Option &apos;%1&apos; angegeben: Anforderungen sind: 1 &lt;= &lt;near&gt; &lt; &lt;far&gt;.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1129"/>
+        <location filename="../../source/application/sw_application.cpp" line="1136"/>
         <source>  -c, --camera &lt;camera name&gt;: Set the active camera.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -c, --camera &lt;camera name&gt;: Aktive Kamera festlegen.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1130"/>
+        <location filename="../../source/application/sw_application.cpp" line="1137"/>
         <source>  --viewpoint &lt;viewpoint&gt;: Set the view to one of the preset viewpoints (front, back, left, right, top, bottom, home).
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --viewpoint &lt;viewpoint&gt;: Stellen Sie die Ansicht auf einen der voreingestellten Blickwinkel ein (vorne, hinten, links, rechts, oben, unten, Zuhause).</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1140"/>
+        <location filename="../../source/application/sw_application.cpp" line="1142"/>
+        <source>  --transparent: Render images with a transparent background (PNG and GIF only).
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/application/sw_application.cpp" line="1147"/>
         <source>  --fade-steps-color &lt;#AARRGGBB&gt;: Rendering color for prior step parts.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --fade-steps-color &lt;#AARRGGBB&gt;: Rendering-Farbe für vorherige Schrittteile.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1143"/>
+        <location filename="../../source/application/sw_application.cpp" line="1150"/>
         <source>  --highlight-color &lt;#AARRGGBB&gt;: Rendering color for highlighted parts.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --highlight-color &lt;#AARRGGBB&gt;: Rendering-Farbe für hervorgehobene Teile.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1144"/>
+        <location filename="../../source/application/sw_application.cpp" line="1151"/>
         <source>  --shading &lt;mode&gt;: Select shading mode for rendering (wireframe, flat, default, full).
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --shading &lt;mode&gt;: Schattierungsmodus für das Rendern auswählen (Drahtmodell, flach, Standard, vollständig).</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1147"/>
+        <location filename="../../source/application/sw_application.cpp" line="1154"/>
         <source>  --aa-samples &lt;samples&gt;: Anti-aliasing sample size (1, 2, 4, or 8).
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --aa-samples &lt;samples&gt;: Anti-Aliasing-Stichprobengröße (1, 2, 4 oder 8).</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1148"/>
         <source>  -ss, --stud-style &lt;style&gt;: Set the stud style (0=No style, 1=LDraw single wire, 2=LDraw double wire, 3=LDraw raised floating, 4=LDraw raised rounded, 5=LDraw subtle rounded, 6=LEGO® no logo, 7=LEGO® single wire).
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">  -ss, --stud-style &lt;style&gt;: Stellen Sie den Bolzenstil ein (0 = Kein Stil, 1 = LDraw Einzeldraht, 2 = LDraw Doppeldraht, 3 = LDraw erhaben schwebend, 4 = LDraw erhaben abgerundet, 5 = LDraw dezent abgerundet, 6 = LEGO® kein Logo, 7=LEGO® Einzeldraht).</translation>
+        <translation type="obsolete">  -ss, --stud-style &lt;style&gt;: Stellen Sie den Bolzenstil ein (0 = Kein Stil, 1 = LDraw Einzeldraht, 2 = LDraw Doppeldraht, 3 = LDraw erhaben schwebend, 4 = LDraw erhaben abgerundet, 5 = LDraw dezent abgerundet, 6 = LEGO® kein Logo, 7=LEGO® Einzeldraht).</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1158"/>
+        <location filename="../../source/application/sw_application.cpp" line="1165"/>
         <source>  -cc, --color-contrast &lt;contrast&gt;: Color contrast value between 0.0 and 1.0.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -cc, --color-contrast &lt;contrast&gt;: Farbkontrastwert zwischen 0,0 und 1,0.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1159"/>
+        <location filename="../../source/application/sw_application.cpp" line="1166"/>
         <source>  -ldv, --light-dark-value &lt;value&gt;: Light/Dark color value between 0.0 and 1.0.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -ldv, --light-dark-value &lt;value&gt;: Heller/Dunkel-Farbwert zwischen 0,0 und 1,0.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1205"/>
+        <location filename="../../source/application/sw_application.cpp" line="1213"/>
         <source>High contrast stud style is required for the &apos;%1&apos; option but is not enabled.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Für die Option &apos;%1&apos; ist ein Bolzenstil mit hohem Kontrast erforderlich, aber nicht aktiviert.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1194"/>
+        <location filename="../../source/application/sw_application.cpp" line="1202"/>
         <source>Automate edge color is required for the &apos;%1&apos; option but is not enabled.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Für die Option &apos;%1&apos; ist die automatische Kantenfarbe erforderlich, aber nicht aktiviert.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="925"/>
+        <location filename="../../source/application/sw_application.cpp" line="927"/>
         <source>The camera position is too close to the camera target of the &apos;%1&apos; option.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Die Kameraposition liegt zu nahe am Kameraziel der Option &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="930"/>
+        <location filename="../../source/application/sw_application.cpp" line="932"/>
         <source>Invalid up vector length specified for the &apos;%1&apos; option.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Für die Option &apos;%1&apos; wurde eine ungültige Aufwärtsvektorlänge angegeben.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="935"/>
+        <location filename="../../source/application/sw_application.cpp" line="937"/>
         <source>The up vector is parallel to the front vector specified for the &apos;%1&apos; option.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -8546,271 +8551,276 @@ Download one from %1 and set it under Preferences › Parts Library the next tim
         <translation type="obsolete">StudWorx Kontinuierlicher Build %1</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1112"/>
+        <location filename="../../source/application/sw_application.cpp" line="1119"/>
         <source>StudWorx Version %1
 </source>
         <translation type="unfinished">StudWorx Version %1
 </translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1113"/>
+        <location filename="../../source/application/sw_application.cpp" line="1120"/>
         <source>Compiled %1
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Kompiliert %1</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1118"/>
+        <location filename="../../source/application/sw_application.cpp" line="1125"/>
         <source>Usage: studworx [options] [file]
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Verwendung: studworx [Optionen] [Datei]</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1119"/>
+        <location filename="../../source/application/sw_application.cpp" line="1126"/>
         <source>  [options] can be:
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  [Optionen] können sein:</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1120"/>
+        <location filename="../../source/application/sw_application.cpp" line="1127"/>
         <source>  -l, --libpath &lt;path&gt;: Set the Parts Library location to path.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -l, --libpath &lt;path&gt;: Setzt den Speicherort der Stückbibliothek auf den Pfad.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1121"/>
+        <location filename="../../source/application/sw_application.cpp" line="1128"/>
         <source>  --unofficial-library &lt;path&gt;: Set the Unofficial Parts Library archive to path.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1122"/>
+        <location filename="../../source/application/sw_application.cpp" line="1129"/>
         <source>  --shadow-library &lt;path&gt;: Set the LDCad Shadow Library location to path.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1123"/>
+        <location filename="../../source/application/sw_application.cpp" line="1130"/>
         <source>  -i, --image &lt;outfile.ext&gt;: Save a picture in the format specified by ext and exit.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -i, --image &lt;outfile.ext&gt;: Speichern Sie ein Bild in dem von ext angegebenen Format und beenden Sie es.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1124"/>
+        <location filename="../../source/application/sw_application.cpp" line="1131"/>
         <source>  -w, --width &lt;width&gt;: Set the picture width.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -w, --width &lt;width&gt;: Legt die Bildbreite fest.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1125"/>
+        <location filename="../../source/application/sw_application.cpp" line="1132"/>
         <source>  -h, --height &lt;height&gt;: Set the picture height.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -h, --height &lt;height&gt;: Bildhöhe festlegen.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1126"/>
+        <location filename="../../source/application/sw_application.cpp" line="1133"/>
         <source>  -f, --from &lt;step&gt;: Set the first step to save pictures.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -f, --from &lt;step&gt;: Legen Sie den ersten Schritt zum Speichern von Bildern fest.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1127"/>
+        <location filename="../../source/application/sw_application.cpp" line="1134"/>
         <source>  -t, --to &lt;step&gt;: Set the last step to save pictures.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -t, --to &lt;step&gt;: Legt den letzten Schritt zum Speichern von Bildern fest.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1128"/>
+        <location filename="../../source/application/sw_application.cpp" line="1135"/>
         <source>  -s, --submodel &lt;submodel&gt;: Set the active submodel.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -s, --submodel &lt;submodel&gt;: Setzt das aktive Untermodell.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1131"/>
+        <location filename="../../source/application/sw_application.cpp" line="1138"/>
         <source>  --camera-angles &lt;latitude&gt; &lt;longitude&gt;: Set the camera angles in degrees around the model.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --camera-angles &lt;latitude&gt; &lt;longitude&gt;: Stellen Sie die Kamerawinkel in Grad um das Modell ein.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1132"/>
+        <location filename="../../source/application/sw_application.cpp" line="1139"/>
         <source>  --camera-position &lt;x&gt; &lt;y&gt; &lt;z&gt; &lt;tx&gt; &lt;ty&gt; &lt;tz&gt; &lt;ux&gt; &lt;uy&gt; &lt;uz&gt;: Set the camera position, target and up vector.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --camera-position &lt;x&gt; &lt;y&gt; &lt;z&gt; &lt;tx&gt; &lt;ty&gt; &lt;tz&gt; &lt;ux&gt; &lt;uy&gt; &lt;uz&gt;: Stellen Sie die Kameraposition, das Ziel und den Aufwärtsvektor ein.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1133"/>
+        <location filename="../../source/application/sw_application.cpp" line="1140"/>
         <source>  --camera-position-ldraw &lt;x&gt; &lt;y&gt; &lt;z&gt; &lt;tx&gt; &lt;ty&gt; &lt;tz&gt; &lt;ux&gt; &lt;uy&gt; &lt;uz&gt;: Set the camera position, target and up vector using LDraw coordinates.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --camera-position-ldraw &lt;x&gt; &lt;y&gt; &lt;z&gt; &lt;tx&gt; &lt;ty&gt; &lt;tz&gt; &lt;ux&gt; &lt;uy&gt; &lt;uz&gt;: Stellen Sie die Kameraposition, das Ziel und den Aufwärtsvektor mit LDraw ein. Koordinaten.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1134"/>
+        <location filename="../../source/application/sw_application.cpp" line="1141"/>
         <source>  --orthographic: Render images using an orthographic projection.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --orthographic: Bilder mithilfe einer orthografischen Projektion rendern.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1135"/>
         <source>  --transparent: Render images with a transparent background.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
-        <translation type="unfinished">  --transparent: Bilder mit transparentem Hintergrund rendern.
+        <translation type="obsolete">  --transparent: Bilder mit transparentem Hintergrund rendern.
 </translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1136"/>
+        <location filename="../../source/application/sw_application.cpp" line="1143"/>
         <source>  --fov &lt;degrees&gt;: Set the vertical field of view used to render images (&lt; 180).
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --fov &lt;degrees&gt;: Legen Sie das vertikale Sichtfeld fest, das zum Rendern von Bildern verwendet wird (&lt; 180).</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1137"/>
+        <location filename="../../source/application/sw_application.cpp" line="1144"/>
         <source>  --zplanes &lt;near&gt; &lt;far&gt;: Set the near and far clipping planes used to render images (1 &lt;= &lt;near&gt; &lt; &lt;far&gt;).
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --zplanes &lt;near&gt; &lt;far&gt;: Legen Sie die nahen und fernen Schnittebenen fest, die zum Rendern von Bildern verwendet werden (1 &lt;= &lt;near&gt; &lt; &lt;far&gt;).</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1138"/>
+        <location filename="../../source/application/sw_application.cpp" line="1145"/>
         <source>  --fade-steps: Render parts from prior steps faded.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --fade-steps: Renderteile aus vorherigen Schritten ausgeblendet.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1139"/>
+        <location filename="../../source/application/sw_application.cpp" line="1146"/>
         <source>  --no-fade-steps: Do not render parts from prior steps faded.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --no-fade-steps: Teile aus vorherigen Schritten werden nicht gerendert.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1141"/>
+        <location filename="../../source/application/sw_application.cpp" line="1148"/>
         <source>  --highlight: Highlight parts in the steps they appear.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --highlight: Markieren Sie Teile in den Schritten, in denen sie erscheinen.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1142"/>
+        <location filename="../../source/application/sw_application.cpp" line="1149"/>
         <source>  --no-highlight: Do not highlight parts in the steps they appear.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --no-highlight: Teile in den angezeigten Schritten nicht hervorheben.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1145"/>
+        <location filename="../../source/application/sw_application.cpp" line="1152"/>
         <source>  --lighting &lt;style&gt;: Select the lighting style of the default shading (standard, studio, matte, toon).
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1146"/>
+        <location filename="../../source/application/sw_application.cpp" line="1153"/>
         <source>  --line-width &lt;width&gt;: Set the width of the edge lines.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  --line-width &lt;width&gt;: Legen Sie die Breite der Kantenlinien fest.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1149"/>
+        <location filename="../../source/application/sw_application.cpp" line="1155"/>
+        <source>  -ss, --stud-style &lt;style&gt;: Set the stud style (0=Plain, 1=Thin Lines Logo, 2=Outline Logo, 3=Sharp Top Logo, 4=Rounded Top Logo, 5=Flattened Logo, 6=High Contrast, 7=High Contrast with Logo).
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/application/sw_application.cpp" line="1156"/>
         <source>  -nscc, --disable-stud-cylinder-color: Disable high contrast stud cylinder color.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -nscc, --disable-stud-cylinder-color: Deaktivieren Sie die Farbe des Bolzenzylinders mit hohem Kontrast.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1150"/>
+        <location filename="../../source/application/sw_application.cpp" line="1157"/>
         <source>  -scc, --stud-cylinder-color &lt;#AARRGGBB&gt;: High contrast stud cylinder color.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -scc, --stud-cylinder-color &lt;#AARRGGBB&gt;: Farbe des Bolzenzylinders mit hohem Kontrast.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1151"/>
+        <location filename="../../source/application/sw_application.cpp" line="1158"/>
         <source>  -nec, --disable-edge-color: Disable high contrast edge color.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -nec, --disable-edge-color: Kantenfarbe mit hohem Kontrast deaktivieren.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1152"/>
+        <location filename="../../source/application/sw_application.cpp" line="1159"/>
         <source>  -ec, --edge-color &lt;#AARRGGBB&gt;: High contrast edge color.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -ec, --edge-color &lt;#AARRGGBB&gt;: Kantenfarbe mit hohem Kontrast.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1153"/>
+        <location filename="../../source/application/sw_application.cpp" line="1160"/>
         <source>  -nbec, --disable-black-edge-color: Disable high contrast edge color for black parts.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -nbec, --disable-black-edge-color: Kantenfarbe mit hohem Kontrast für schwarze Teile deaktivieren.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1154"/>
+        <location filename="../../source/application/sw_application.cpp" line="1161"/>
         <source>  -bec, --black-edge-color &lt;#AARRGGBB&gt;: High contrast edge color for black parts.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -bec, --black-edge-color &lt;#AARRGGBB&gt;: Kantenfarbe mit hohem Kontrast für schwarze Teile.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1155"/>
+        <location filename="../../source/application/sw_application.cpp" line="1162"/>
         <source>  -ndec, --disable-dark-edge-color: Disable high contrast edge color for dark color parts.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -ndec, --disable-dark-edge-color: Kantenfarbe mit hohem Kontrast für dunkle Farbstücke deaktivieren.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1156"/>
+        <location filename="../../source/application/sw_application.cpp" line="1163"/>
         <source>  -dec, --dark-edge-color &lt;#AARRGGBB&gt;: High contrast edge color for dark color parts.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -dec, --dark-edge-color &lt;#AARRGGBB&gt;: Kantenfarbe mit hohem Kontrast für dunkle Farbstücke.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1157"/>
+        <location filename="../../source/application/sw_application.cpp" line="1164"/>
         <source>  -aec, --automate-edge-color: Enable automatically adjusted edge colors.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -aec, --automate-edge-color: Automatisch angepasste Kantenfarben aktivieren.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1160"/>
+        <location filename="../../source/application/sw_application.cpp" line="1167"/>
         <source>  -obj, --export-wavefront &lt;outfile.obj&gt;: Export the model to Wavefront OBJ format.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -obj, --export-wavefront &lt;outfile.obj&gt;: Exportieren Sie das Modell in das Wavefront OBJ-Format.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1161"/>
+        <location filename="../../source/application/sw_application.cpp" line="1168"/>
         <source>  -3ds, --export-3ds &lt;outfile.3ds&gt;: Export the model to 3D Studio 3DS format.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -3ds, --export-3ds &lt;outfile.3ds&gt;: Exportieren Sie das Modell in das 3D Studio 3DS-Format.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1162"/>
+        <location filename="../../source/application/sw_application.cpp" line="1169"/>
         <source>  -dae, --export-collada &lt;outfile.dae&gt;: Export the model to COLLADA DAE format.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -dae, --export-collada &lt;outfile.dae&gt;: Exportieren Sie das Modell in das COLLADA DAE-Format.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1163"/>
+        <location filename="../../source/application/sw_application.cpp" line="1170"/>
         <source>  -csv, --export-csv &lt;outfile.csv&gt;: Export the list of parts used in CSV format.
 </source>
         <oldsource>  -csv, --export-csv &lt;outfile.csv&gt;: Export the list of pieces used in csv format.
@@ -8819,235 +8829,241 @@ Download one from %1 and set it under Preferences › Parts Library the next tim
         <translation type="unfinished">  -csv, --export-csv &lt;outfile.csv&gt;: Exportieren Sie die Liste der verwendeten Teile im CSV-Format.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1164"/>
+        <location filename="../../source/application/sw_application.cpp" line="1171"/>
+        <source>  -bl, --export-bricklink &lt;outfile.xml&gt;: Export the list of parts used in BrickLink XML format.
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/application/sw_application.cpp" line="1172"/>
         <source>  -html, --export-html &lt;folder&gt;: Create an HTML page for the model.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -html, --export-html &lt;folder&gt;: Erstellen Sie eine HTML-Seite für das Modell.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1165"/>
+        <location filename="../../source/application/sw_application.cpp" line="1173"/>
         <source>  -pov, --export-povray &lt;outfile.pov&gt;: Export the model to POV-Ray format.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1166"/>
-        <source>  --povray-render &lt;outfile.png&gt;: Render the model with POV-Ray using the POV-Ray window settings and the picture width and height.
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../source/application/sw_application.cpp" line="1167"/>
+        <location filename="../../source/application/sw_application.cpp" line="1175"/>
         <source>  --import-settings &lt;infile.ini&gt;: Import the application settings and exit.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1168"/>
+        <location filename="../../source/application/sw_application.cpp" line="1176"/>
         <source>  --export-settings &lt;outfile.ini&gt;: Export the application settings and exit.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1169"/>
+        <location filename="../../source/application/sw_application.cpp" line="1177"/>
         <source>  --import-keyboard-shortcuts &lt;infile.txt&gt;: Import the keyboard shortcuts and exit.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1170"/>
+        <location filename="../../source/application/sw_application.cpp" line="1178"/>
         <source>  --export-keyboard-shortcuts &lt;outfile.txt&gt;: Export the keyboard shortcuts and exit.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1171"/>
+        <location filename="../../source/application/sw_application.cpp" line="1179"/>
         <source>  --import-mouse-shortcuts &lt;infile.txt&gt;: Import the mouse shortcuts and exit.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1172"/>
+        <location filename="../../source/application/sw_application.cpp" line="1180"/>
         <source>  --export-mouse-shortcuts &lt;outfile.txt&gt;: Export the mouse shortcuts and exit.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1173"/>
+        <location filename="../../source/application/sw_application.cpp" line="1181"/>
         <source>  --import-categories &lt;infile.txt&gt;: Import the part categories and exit.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1174"/>
+        <location filename="../../source/application/sw_application.cpp" line="1182"/>
         <source>  --export-categories &lt;outfile.txt&gt;: Export the part categories and exit.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1175"/>
+        <location filename="../../source/application/sw_application.cpp" line="1183"/>
         <source>  -v, --version: Output version information and exit.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -v, --version: Versionsinformationen ausgeben und beenden.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1176"/>
+        <location filename="../../source/application/sw_application.cpp" line="1184"/>
         <source>  -?, --help: Display this help message and exit.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">  -?, --help: Diese Hilfemeldung anzeigen und beenden.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1182"/>
+        <location filename="../../source/application/sw_application.cpp" line="1190"/>
         <source>Unknown option: &apos;%1&apos;.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Unbekannte Option: &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1189"/>
+        <location filename="../../source/application/sw_application.cpp" line="1197"/>
         <source>High contrast stud and edge color settings are ignored when -aec or --automate-edge-color is set.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Einstellungen für die Farbe von Bolzen und Kanten mit hohem Kontrast werden ignoriert, wenn -aec oder --automate-edge-color festgelegt ist.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1235"/>
+        <location filename="../../source/application/sw_application.cpp" line="1243"/>
         <source>--viewpoint is ignored when --camera is set.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">--viewpoint wird ignoriert, wenn --camera gesetzt ist.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1238"/>
+        <location filename="../../source/application/sw_application.cpp" line="1246"/>
         <source>--orthographic is ignored when --camera is set.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">--orthographic wird ignoriert, wenn --camera gesetzt ist.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1241"/>
+        <location filename="../../source/application/sw_application.cpp" line="1249"/>
         <source>--camera-angles is ignored when --camera is set.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">--camera-angles wird ignoriert, wenn --camera gesetzt ist.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1244"/>
+        <location filename="../../source/application/sw_application.cpp" line="1252"/>
         <source>--camera-position is ignored when --camera is set.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">--camera-position wird ignoriert, wenn --camera gesetzt ist.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1249"/>
+        <location filename="../../source/application/sw_application.cpp" line="1257"/>
         <source>--camera-angles is ignored when --viewpoint is set.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">--camera-angles wird ignoriert, wenn --viewpoint gesetzt ist.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1252"/>
+        <location filename="../../source/application/sw_application.cpp" line="1260"/>
         <source>--camera-position is ignored when --viewpoint is set.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">--camera-position wird ignoriert, wenn --viewpoint gesetzt ist.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1257"/>
+        <location filename="../../source/application/sw_application.cpp" line="1265"/>
         <source>--camera-position is ignored when --camera-angles is set.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">--camera-position wird ignoriert, wenn --camera-angles gesetzt ist.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1264"/>
+        <location filename="../../source/application/sw_application.cpp" line="1272"/>
         <source>No file name specified.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Kein Dateiname angegeben.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1289"/>
+        <location filename="../../source/application/sw_application.cpp" line="1297"/>
         <source>Error loading settings file &apos;%1&apos;.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1305"/>
+        <location filename="../../source/application/sw_application.cpp" line="1313"/>
         <source>Error loading keyboard shortcuts file &apos;%1&apos;.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1313"/>
+        <location filename="../../source/application/sw_application.cpp" line="1321"/>
         <source>Error loading mouse shortcuts file &apos;%1&apos;.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1323"/>
+        <location filename="../../source/application/sw_application.cpp" line="1331"/>
         <source>Error loading categories file &apos;%1&apos;.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1345"/>
+        <location filename="../../source/application/sw_application.cpp" line="1353"/>
         <source>Error saving settings file &apos;%1&apos;.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1353"/>
+        <location filename="../../source/application/sw_application.cpp" line="1361"/>
         <source>Error saving keyboard shortcuts file &apos;%1&apos;.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1361"/>
+        <location filename="../../source/application/sw_application.cpp" line="1369"/>
         <source>Error saving mouse shortcuts file &apos;%1&apos;.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1369"/>
+        <location filename="../../source/application/sw_application.cpp" line="1377"/>
         <source>Error saving categories file &apos;%1&apos;.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1409"/>
+        <location filename="../../source/application/sw_application.cpp" line="1417"/>
         <source>Command line image export is not supported on iOS.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Der Export von Befehlszeilenbildern wird unter iOS nicht unterstützt.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1423"/>
-        <location filename="../../source/application/sw_application.cpp" line="1953"/>
+        <location filename="../../source/application/sw_application.cpp" line="1431"/>
+        <location filename="../../source/application/sw_application.cpp" line="1992"/>
         <source>Initialize Renderer</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Renderer initialisieren</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="2118"/>
+        <location filename="../../source/application/sw_application.cpp" line="1604"/>
+        <source>--transparent is ignored for &apos;%1&apos; files: only PNG and GIF files keep transparency.
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/application/sw_application.cpp" line="2157"/>
         <source>Could not find a default parts library, &apos;%1&apos; stays in use until StudWorx starts again and offers to download one.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="2145"/>
+        <location filename="../../source/application/sw_application.cpp" line="2184"/>
         <source>The new language and antialiasing settings apply the next time you start StudWorx.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="2147"/>
+        <location filename="../../source/application/sw_application.cpp" line="2186"/>
         <source>The new language applies the next time you start StudWorx.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="2149"/>
+        <location filename="../../source/application/sw_application.cpp" line="2188"/>
         <source>The new antialiasing setting applies the next time you start StudWorx.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9060,83 +9076,90 @@ Please visit https://github.com/nathaneltitane/studworx for information on how t
 Bitte lesen sie unter https://github.com/nathaneltitane/studworx nach wie man eine Bibliothek herunterläd und installiert.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="574"/>
-        <location filename="../../source/application/sw_application.cpp" line="579"/>
-        <location filename="../../source/application/sw_application.cpp" line="595"/>
-        <location filename="../../source/application/sw_application.cpp" line="598"/>
-        <location filename="../../source/application/sw_application.cpp" line="2101"/>
-        <location filename="../../source/application/sw_application.cpp" line="2118"/>
-        <location filename="../../source/application/sw_application.cpp" line="2126"/>
-        <location filename="../../source/application/sw_application.cpp" line="2130"/>
+        <location filename="../../source/application/sw_application.cpp" line="576"/>
+        <location filename="../../source/application/sw_application.cpp" line="581"/>
+        <location filename="../../source/application/sw_application.cpp" line="597"/>
+        <location filename="../../source/application/sw_application.cpp" line="600"/>
+        <location filename="../../source/application/sw_application.cpp" line="2140"/>
+        <location filename="../../source/application/sw_application.cpp" line="2157"/>
+        <location filename="../../source/application/sw_application.cpp" line="2165"/>
+        <location filename="../../source/application/sw_application.cpp" line="2169"/>
         <source>Load Parts Library</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Teilebibliothek laden</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1469"/>
+        <location filename="../../source/application/sw_application.cpp" line="1174"/>
+        <source>  --povray-render &lt;outfile.png&gt;: Render the model with POV-Ray using the POV-Ray window settings, the picture width and height, and the transparent background.
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/application/sw_application.cpp" line="1477"/>
         <source>StudWorx could not find an LDraw parts library.
 
 Download one from %1 and pass it with --libpath.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1479"/>
-        <location filename="../../source/application/sw_application.cpp" line="2130"/>
+        <location filename="../../source/application/sw_application.cpp" line="1487"/>
+        <location filename="../../source/application/sw_application.cpp" line="2169"/>
         <source>Could not open the unofficial library archive &apos;%1&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1487"/>
-        <location filename="../../source/application/sw_application.cpp" line="2137"/>
+        <location filename="../../source/application/sw_application.cpp" line="1495"/>
+        <location filename="../../source/application/sw_application.cpp" line="2176"/>
         <source>Could not find a shadow library in &apos;%1&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1539"/>
+        <location filename="../../source/application/sw_application.cpp" line="1547"/>
         <source>Error: model &apos;%1&apos; does not exist.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Fehler: Modell &apos;%1&apos; existiert nicht.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1651"/>
-        <location filename="../../source/application/sw_application.cpp" line="1685"/>
-        <location filename="../../source/application/sw_application.cpp" line="1780"/>
-        <location filename="../../source/application/sw_application.cpp" line="1809"/>
-        <location filename="../../source/application/sw_application.cpp" line="1843"/>
-        <location filename="../../source/application/sw_application.cpp" line="1877"/>
-        <location filename="../../source/application/sw_application.cpp" line="1911"/>
-        <location filename="../../source/application/sw_application.cpp" line="1931"/>
+        <location filename="../../source/application/sw_application.cpp" line="1667"/>
+        <location filename="../../source/application/sw_application.cpp" line="1701"/>
+        <location filename="../../source/application/sw_application.cpp" line="1796"/>
+        <location filename="../../source/application/sw_application.cpp" line="1825"/>
+        <location filename="../../source/application/sw_application.cpp" line="1859"/>
+        <location filename="../../source/application/sw_application.cpp" line="1893"/>
+        <location filename="../../source/application/sw_application.cpp" line="1927"/>
+        <location filename="../../source/application/sw_application.cpp" line="1950"/>
+        <location filename="../../source/application/sw_application.cpp" line="1970"/>
         <source>Saved &apos;%1&apos;.
 </source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Gespeichert &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1718"/>
+        <location filename="../../source/application/sw_application.cpp" line="1734"/>
         <source>LGEO parts need the standard POV-Ray include files such as colors.inc, which POV-Ray %1 could not find.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1723"/>
+        <location filename="../../source/application/sw_application.cpp" line="1739"/>
         <source>Error creating a temporary folder for the POV-Ray scene.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="1773"/>
+        <location filename="../../source/application/sw_application.cpp" line="1789"/>
         <source>Error rendering &apos;%1&apos; with POV-Ray:
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="2101"/>
+        <location filename="../../source/application/sw_application.cpp" line="2140"/>
         <source>Could not reload the parts library &apos;%1&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="2137"/>
+        <location filename="../../source/application/sw_application.cpp" line="2176"/>
         <source>Load Part Connections</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9146,9 +9169,9 @@ Download one from %1 and pass it with --libpath.</source>
         <translation type="obsolete">Einige Änderungen werden erst beim nächsten Start von StudWorx wirksam.</translation>
     </message>
     <message>
-        <location filename="../../source/application/sw_application.cpp" line="2145"/>
-        <location filename="../../source/application/sw_application.cpp" line="2147"/>
-        <location filename="../../source/application/sw_application.cpp" line="2149"/>
+        <location filename="../../source/application/sw_application.cpp" line="2184"/>
+        <location filename="../../source/application/sw_application.cpp" line="2186"/>
+        <location filename="../../source/application/sw_application.cpp" line="2188"/>
         <source>Preferences</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">Einstellungen…</translation>
@@ -10889,31 +10912,31 @@ Download one from %1 and pass it with --libpath.</source>
         <translation type="unfinished">Der Kontext OpenGL konnte nicht erstellt werden.</translation>
     </message>
     <message>
-        <location filename="../../source/rendering/sw_context.cpp" line="227"/>
+        <location filename="../../source/rendering/sw_context.cpp" line="230"/>
         <source>Could not create the offscreen OpenGL surface.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Die Offscreen-Oberfläche OpenGL konnte nicht erstellt werden.</translation>
     </message>
     <message>
-        <location filename="../../source/rendering/sw_context.cpp" line="230"/>
+        <location filename="../../source/rendering/sw_context.cpp" line="232"/>
         <source>Could not make the offscreen OpenGL context current.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Der Offscreen-Kontext OpenGL konnte nicht aktuell gemacht werden.</translation>
     </message>
     <message>
-        <location filename="../../source/rendering/sw_context.cpp" line="396"/>
+        <location filename="../../source/rendering/sw_context.cpp" line="399"/>
         <source>Could not read shader %1: %2</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Shader %1 konnte nicht gelesen werden: %2</translation>
     </message>
     <message>
-        <location filename="../../source/rendering/sw_context.cpp" line="404"/>
+        <location filename="../../source/rendering/sw_context.cpp" line="407"/>
         <source>Could not create shader %1.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Der Shader %1 konnte nicht erstellt werden.</translation>
     </message>
     <message>
-        <location filename="../../source/rendering/sw_context.cpp" line="424"/>
+        <location filename="../../source/rendering/sw_context.cpp" line="427"/>
         <source>Could not compile shader %1:
 %2</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -10921,13 +10944,13 @@ Download one from %1 and pass it with --libpath.</source>
 %2 konnte nicht kompiliert werden.</translation>
     </message>
     <message>
-        <location filename="../../source/rendering/sw_context.cpp" line="490"/>
+        <location filename="../../source/rendering/sw_context.cpp" line="493"/>
         <source>Could not create the shader program for %1 and %2.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Das Shader-Programm für %1 und %2 konnte nicht erstellt werden.</translation>
     </message>
     <message>
-        <location filename="../../source/rendering/sw_context.cpp" line="536"/>
+        <location filename="../../source/rendering/sw_context.cpp" line="539"/>
         <source>Could not link the shader program for %1 and %2:
 %3</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
@@ -16007,14 +16030,14 @@ Download one from %1 and pass it with --libpath.</source>
         <translation type="vanished">Fehler</translation>
     </message>
     <message>
-        <location filename="../../source/core/sw_model_render.cpp" line="630"/>
-        <location filename="../../source/core/sw_model_render.cpp" line="949"/>
-        <location filename="../../source/core/sw_model_render.cpp" line="965"/>
-        <location filename="../../source/core/sw_model_render.cpp" line="969"/>
-        <location filename="../../source/core/sw_model_render.cpp" line="998"/>
-        <location filename="../../source/core/sw_model_render.cpp" line="1006"/>
-        <location filename="../../source/core/sw_model_render.cpp" line="1018"/>
-        <location filename="../../source/core/sw_model_render.cpp" line="1022"/>
+        <location filename="../../source/core/sw_model_render.cpp" line="631"/>
+        <location filename="../../source/core/sw_model_render.cpp" line="950"/>
+        <location filename="../../source/core/sw_model_render.cpp" line="966"/>
+        <location filename="../../source/core/sw_model_render.cpp" line="970"/>
+        <location filename="../../source/core/sw_model_render.cpp" line="1000"/>
+        <location filename="../../source/core/sw_model_render.cpp" line="1008"/>
+        <location filename="../../source/core/sw_model_render.cpp" line="1020"/>
+        <location filename="../../source/core/sw_model_render.cpp" line="1024"/>
         <source>Error writing to file &apos;%1&apos;:
 %2</source>
         <translation>Fehler beim Schreiben der Datei » %1 « :
@@ -19392,36 +19415,36 @@ Nicht unterstützte Grafikkarten verwenden Gesichtstönung und farbige Kanten.</
         <translation type="vanished">Wähle Teilebibliothek Archiv</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="919"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="921"/>
         <source>Select Color Configuration File</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Wählen Sie Farbkonfigurationsdatei</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="919"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="921"/>
         <source>Settings Files (*.ldr);;All Files (*.*)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Einstellungsdateien (*.ldr);;Alle Dateien (*.*)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="927"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="929"/>
         <source>Select Minifigure Builder Settings File</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Wählen Sie Minifig-Einstellungsdatei</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="927"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="929"/>
         <source>Settings Files (*.ini);;All Files (*.*)</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Einstellungsdateien (*.ini);;Alle Dateien (*.*)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="936"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="938"/>
         <source>Executable Files (*.exe);;All Files (*.*)</source>
         <translation>Asuführbare Dateien (*.exe);;Alle Dateien (*.*)</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="938"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="940"/>
         <source>All Files (*.*)</source>
         <translation>Alle Dateien (*.*)</translation>
     </message>
@@ -19430,24 +19453,24 @@ Nicht unterstützte Grafikkarten verwenden Gesichtstönung und farbige Kanten.</
         <translation type="vanished">Asuführbares POV-Ray öffnen</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="949"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="951"/>
         <source>Open LGEO Folder</source>
         <translation>LGEO Ordner öffnen</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="959"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="961"/>
         <source>Reset Colors</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Farben zurücksetzen</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="959"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="961"/>
         <source>Would you like to also reset the interface colors to match the color theme?</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Möchten Sie auch die Farben der Benutzeroberfläche zurücksetzen, um sie an das Farbthema anzupassen?</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="973"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="975"/>
         <source>Select Background Color</source>
         <translation type="unfinished">Hintergrundfarbe wählen</translation>
     </message>
@@ -19462,187 +19485,187 @@ Nicht unterstützte Grafikkarten verwenden Gesichtstönung und farbige Kanten.</
         <translation type="obsolete">Wählen Sie „Farbverlauf unten“ aus</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="866"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="868"/>
         <source>Select Parts Library</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="866"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="868"/>
         <source>Parts Libraries (*.zip *.bin LDConfig.ldr ldconfig.ldr);;All Files (*.*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="882"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="884"/>
         <source>Select Unofficial Library Archive</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="882"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="884"/>
         <source>Supported Archives (*.zip);;All Files (*.*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="890"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="892"/>
         <source>Select Part Connections Folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="978"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="980"/>
         <source>Select Text Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Wählen Sie Textfarbe</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="983"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="985"/>
         <source>Select Text Halo Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Wählen Sie Text-Halo-Farbe</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="989"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="991"/>
         <source>Select Marquee Border Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Wählen Sie die Farbe des Marquee-Rahmens aus</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="994"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="996"/>
         <source>Select Marquee Fill Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Wählen Sie die Füllfarbe des Auswahlrahmens aus</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1000"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1002"/>
         <source>Select Overlay Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Wählen Sie Overlay-Farbe</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1005"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1007"/>
         <source>Select Cutaway Shade Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1010"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1012"/>
         <source>Select Active View Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Wählen Sie die Farbe der aktiven Ansicht aus</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1015"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1017"/>
         <source>Select Inactive View Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Wählen Sie die Farbe der inaktiven Ansicht aus</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1020"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1022"/>
         <source>Select Fade Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Wählen Sie „Farbe ausblenden“.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1026"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1028"/>
         <source>Select Highlight Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Wählen Sie Hervorhebungsfarbe</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1032"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1034"/>
         <source>Select Grid Stud Color</source>
         <translation>Farbe der Noppen im Gitter wählen</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1038"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1040"/>
         <source>Select Grid Line Color</source>
         <translation>Farbe der Gitterlinien wählen</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1043"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1045"/>
         <source>Select View Cube Color</source>
         <translation>Wähle Ansichtswürfelfarbe</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1048"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1050"/>
         <source>Select View Cube Text Color</source>
         <translation>Wähle Ansichtswürfel Textfarbe</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1053"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1055"/>
         <source>Select View Cube Highlight Color</source>
         <translation>Wähle Ansichtswürfel Hervorhebungsfarbe</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1058"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1060"/>
         <source>Select X Axis Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1063"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1065"/>
         <source>Select Y Axis Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1068"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1070"/>
         <source>Select Z Axis Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1088"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1090"/>
         <source>Select Object Selected Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Wählen Sie die Farbe des ausgewählten Objekts aus</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1093"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1095"/>
         <source>Select Object Focused Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Wählen Sie „Objektfokussierte Farbe“.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1098"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1100"/>
         <source>Select Camera Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Wählen Sie Kamerafarbe</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1103"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1105"/>
         <source>Select Light Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Wählen Sie Lichtfarbe</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1108"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1110"/>
         <source>Select Control Point Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Wählen Sie Kontrollpunktfarbe</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1114"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1116"/>
         <source>Select Control Point Focused Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Wählen Sie „Kontrollpunkt-fokussierte Farbe“.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1120"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1122"/>
         <source>Select Control Point Seated Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1126"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1128"/>
         <source>Select Flex Path Spread Handle Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1132"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1134"/>
         <source>Select Flex Path Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1138"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1140"/>
         <source>Select Flex Path Out of Reach Color</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1186"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1188"/>
         <source>%n stud(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -20005,13 +20028,13 @@ Nicht unterstützte Grafikkarten verwenden Gesichtstönung und farbige Kanten.</
         <translation>Tastaturkürzel ändern</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="554"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="555"/>
         <source>Default Lights is unavailable. Flat shading is used instead.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Standardlichter sind nicht verfügbar. Stattdessen wird eine flache Schattierung verwendet.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="581"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="582"/>
         <source>View cube rendering is unavailable.</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Das Rendern des Ansichtswürfels ist nicht verfügbar.</translation>
@@ -20022,7 +20045,7 @@ Nicht unterstützte Grafikkarten verwenden Gesichtstönung und farbige Kanten.</
         <translation type="obsolete">Umriss-Rendering ist nicht verfügbar. Es werden Gesichtstönung und farbige Kanten verwendet.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="941"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="943"/>
         <source>Select POV-Ray Executable</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Wählen Sie die ausführbare Datei POV-Ray aus</translation>
@@ -20111,7 +20134,7 @@ Nicht unterstützte Grafikkarten verwenden Gesichtstönung und farbige Kanten.</
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="603"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="604"/>
         <source>Outline rendering is unavailable; the Tint and Edges style will be used.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -20822,7 +20845,7 @@ Nicht unterstützte Grafikkarten verwenden Gesichtstönung und farbige Kanten.</
         <translation type="unfinished">Negative X-Achsenfarbe</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1073"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1075"/>
         <source>Select Negative X Axis Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Negative X-Achsenfarbe auswählen</translation>
@@ -20840,7 +20863,7 @@ Nicht unterstützte Grafikkarten verwenden Gesichtstönung und farbige Kanten.</
         <translation type="unfinished">Negative Y-Achsenfarbe</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1078"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1080"/>
         <source>Select Negative Y Axis Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Negative Y-Achsenfarbe auswählen</translation>
@@ -20858,7 +20881,7 @@ Nicht unterstützte Grafikkarten verwenden Gesichtstönung und farbige Kanten.</
         <translation type="unfinished">Negative Z-Achsenfarbe</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1083"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1085"/>
         <source>Select Negative Z Axis Color</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">Negative Z-Achsenfarbe auswählen</translation>
@@ -20912,8 +20935,8 @@ Nicht unterstützte Grafikkarten verwenden Gesichtstönung und farbige Kanten.</
         <translation type="unfinished">Zeichnet die negativen Hälften der Achsenlinien in den Farben der negativen Achsen, wobei die Z-Linie unter das Grundraster reicht.</translation>
     </message>
     <message>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="494"/>
-        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1242"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="495"/>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.cpp" line="1244"/>
         <source>%1 ldu</source>
         <translatorcomment>Machine-translated draft (Google Translate); requires human review.</translatorcomment>
         <translation type="unfinished">%1 ldu</translation>
@@ -21172,6 +21195,21 @@ Nicht unterstützte Grafikkarten verwenden Gesichtstönung und farbige Kanten.</
     <message>
         <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
         <source>Flex Path Spread Handle Color</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Export</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Write opaque=&quot;A_ONE&quot; on COLLADA transparent colors so viewers that skip the COLLADA default show transparent parts translucent.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../source/interface/dialogs/sw_dialog_preferences.ui"/>
+        <source>Mark COLLADA Transparency</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -23844,16 +23882,16 @@ Enter your Rebrickable API key, available for free from your account settings at
         <translation type="obsolete">StudWorx</translation>
     </message>
     <message>
-        <location filename="../../source/rendering/sw_view_image.cpp" line="29"/>
-        <location filename="../../source/rendering/sw_view_image.cpp" line="63"/>
-        <location filename="../../source/rendering/sw_view_image.cpp" line="73"/>
+        <location filename="../../source/rendering/sw_view_image.cpp" line="31"/>
+        <location filename="../../source/rendering/sw_view_image.cpp" line="65"/>
+        <location filename="../../source/rendering/sw_view_image.cpp" line="75"/>
         <source>Error creating images.</source>
         <translatorcomment>Draft reused from an existing translation of this source text; requires review in this context.</translatorcomment>
         <translation type="unfinished">Fehler beim Bilder Erstellen.</translation>
     </message>
     <message>
-        <location filename="../../source/rendering/sw_view_image.cpp" line="29"/>
-        <location filename="../../source/rendering/sw_view_image.cpp" line="63"/>
+        <location filename="../../source/rendering/sw_view_image.cpp" line="31"/>
+        <location filename="../../source/rendering/sw_view_image.cpp" line="65"/>
         <source>Create Step Images</source>
         <translatorcomment>AI-generated translation draft; requires human review.</translatorcomment>
         <translation type="unfinished">Schrittbilder erstellen</translation>
@@ -23879,7 +23917,8 @@ Enter your Rebrickable API key, available for free from your account settings at
         <translation type="obsolete">Fehler</translation>
     </message>
     <message>
-        <location filename="../../source/rendering/sw_view_image.cpp" line="90"/>
+        <location filename="../../source/rendering/sw_view_image.cpp" line="100"/>
+        <location filename="../../source/rendering/sw_view_image.cpp" line="111"/>
         <source>Error writing to file &apos;%1&apos;:
 %2</source>
         <translation type="unfinished">Fehler beim Schreiben der Datei » %1 « :

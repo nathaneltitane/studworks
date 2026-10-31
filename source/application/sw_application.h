@@ -253,6 +253,7 @@ public:
 	bool mWatchFileChanges;
 	bool mLoadPartsBeforeShowing;
 	bool mMigrateMetaCommands;
+	bool mMarkColladaTransparency;
 	swColorTheme mColorTheme;
 	quint32 mObjectSelectedColor;
 	quint32 mObjectFocusedColor;
@@ -364,6 +365,11 @@ struct swCommandLineOptions
 	QString StdErr;
 
 	// Tells if only settings transfer.
+	bool HasSaveAndExit() const
+	{
+		return SaveImage || SaveWavefront || Save3DS || SaveCOLLADA || SaveCSV || SaveBrickLink || SaveHTML || SavePOVRay || RenderPOVRay;
+	}
+
 	bool HasSettingsTransfer() const
 	{
 		return !SettingsImportName.isEmpty() || !SettingsExportName.isEmpty() || !KeyboardShortcutsImportName.isEmpty() || !KeyboardShortcutsExportName.isEmpty() || !MouseShortcutsImportName.isEmpty() || !MouseShortcutsExportName.isEmpty() || !CategoriesImportName.isEmpty() || !CategoriesExportName.isEmpty();

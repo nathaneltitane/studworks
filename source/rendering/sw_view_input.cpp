@@ -859,7 +859,7 @@ void swView::UpdateTrackTool()
 	case swTool::Rotate:
 		{
 			NewTrackTool = mViewManipulator->UpdateRotate();
-			mTrackToolFromOverlay = NewTrackTool != swTrackTool::RotateTrackBall;
+			mTrackToolFromOverlay = NewTrackTool != swTrackTool::None && NewTrackTool != swTrackTool::RotateTrackBall;
 			Redraw = NewTrackTool != mTrackTool;
 		}
 		break;

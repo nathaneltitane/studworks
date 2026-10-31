@@ -8,6 +8,7 @@
 
 struct swInsertPartInformation;
 enum class swCameraProjection;
+enum class swImageBackground;
 
 enum class swDragState
 {
@@ -358,7 +359,7 @@ public:
 	void UnbindRenderFramebuffer();
 	QImage GetRenderFramebufferImage() const;
 	std::vector<QImage> GetStepImages(swStep Start, swStep End);
-	swResult<void> SaveStepImages(const QString& BaseName, bool AddStepSuffix, swStep Start, swStep End, std::function<void(const QString&)> ProgressCallback);
+	swResult<void> SaveStepImages(const QString& BaseName, bool AddStepSuffix, swStep Start, swStep End, swImageBackground Background, std::function<void(const QString&)> ProgressCallback);
 
 	swContext* mContext = nullptr;
 

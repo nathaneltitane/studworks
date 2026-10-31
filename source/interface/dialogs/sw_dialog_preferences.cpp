@@ -433,6 +433,7 @@ swPreferencesDialog::swPreferencesDialog(QWidget* Parent, swPreferencesDialogOpt
 	ui->WatchFileChanges->setChecked(mOptions->Preferences.mWatchFileChanges);
 	ui->LoadPartsBeforeShowing->setChecked(mOptions->Preferences.mLoadPartsBeforeShowing);
 	ui->MigrateMetaCommands->setChecked(mOptions->Preferences.mMigrateMetaCommands);
+	ui->MarkColladaTransparency->setChecked(mOptions->Preferences.mMarkColladaTransparency);
 	ui->AutomateEdgeColor->setChecked(mOptions->Preferences.mAutomateEdgeColor);
 	const int EdgeContrast = qRound(mOptions->Preferences.mPartEdgeContrast * 100.0f);
 	const int EdgeSaturation = qRound(mOptions->Preferences.mPartColorValueLDIndex * 100.0f);
@@ -759,6 +760,7 @@ void swPreferencesDialog::accept()
 	mOptions->Preferences.mWatchFileChanges = ui->WatchFileChanges->isChecked();
 	mOptions->Preferences.mLoadPartsBeforeShowing = ui->LoadPartsBeforeShowing->isChecked();
 	mOptions->Preferences.mMigrateMetaCommands = ui->MigrateMetaCommands->isChecked();
+	mOptions->Preferences.mMarkColladaTransparency = ui->MarkColladaTransparency->isChecked();
 
 	if (!ui->antiAliasing->isChecked())
 		mOptions->AASamples = 1;

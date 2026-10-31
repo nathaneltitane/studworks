@@ -17,6 +17,8 @@
 #include "sw_widget_find_replace.h"
 #include "sw_library.h"
 #include "sw_window_utilities.h"
+#include "sw_model.h"
+#include "sw_file_gif.h"
 
 std::vector<QImage> swView::GetStepImages(swStep Start, swStep End)
 {
@@ -65,12 +67,15 @@ std::vector<QImage> swView::GetStepImages(swStep Start, swStep End)
 	return Images;
 }
 
-swResult<void> swView::SaveStepImages(const QString& BaseName, bool AddStepSuffix, swStep Start, swStep End, std::function<void(const QString&)> ProgressCallback)
+swResult<void> swView::SaveStepImages(const QString& BaseName, bool AddStepSuffix, swStep Start, swStep End, swImageBackground Background, std::function<void(const QString&)> ProgressCallback)
 {
 	std::vector<QImage> Images = GetStepImages(Start, End);
 
 	if (Images.size() != static_cast<size_t>(End - Start + 1))
 		return swUnexpected(tr("Error creating images."));
+
+	const bool Transparent = Background == swImageBackground::Transparent;
+	const QByteArray Format = QFileInfo(BaseName).suffix().toLower().toLatin1();
 
 	for (swStep Step = Start; Step <= End; Step++)
 	{
@@ -81,13 +86,30 @@ swResult<void> swView::SaveStepImages(const QString& BaseName, bool AddStepSuffi
 		else
 			FileName = BaseName;
 
-		QImageWriter Writer(FileName);
+		QImage Image = Images[Step - Start];
 
-		if (Writer.format().isEmpty())
-			Writer.setFormat("png");
+		if (!Transparent)
+			Image = Image.convertToFormat(QImage::Format_RGB32);
 
-		if (!Writer.write(Images[Step - Start]))
-			return swUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, Writer.errorString()));
+		// one still frame for each gif file
+		if (Format == "gif")
+		{
+			swGifWriter Writer(FileName, Image.size());
+
+			if (!Writer.Open() || !Writer.AddFrame(Image, 0, Transparent) || !Writer.Close())
+				return swUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, Writer.GetErrorString()));
+		}
+		else
+		{
+			QImageWriter Writer(FileName);
+
+			// keep the format of the extension
+			if (!QImageWriter::supportedImageFormats().contains(Format))
+				Writer.setFormat("png");
+
+			if (!Writer.write(Image))
+				return swUnexpected(tr("Error writing to file '%1':\n%2").arg(FileName, Writer.errorString()));
+		}
 
 		if (ProgressCallback)
 			ProgressCallback(FileName);

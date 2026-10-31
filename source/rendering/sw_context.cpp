@@ -223,11 +223,14 @@ swResult<void> swContext::CreateOffscreenContext()
 
 	OffscreenSurface->create();
 
-	if (!OffscreenSurface->isValid())
-		return swUnexpected(QCoreApplication::translate("swContext", "Could not create the offscreen OpenGL surface."));
-
+	// surfaceless contexts render without a valid surface
 	if (!OffscreenContext->makeCurrent(OffscreenSurface.get()))
+	{
+		if (!OffscreenSurface->isValid())
+			return swUnexpected(QCoreApplication::translate("swContext", "Could not create the offscreen OpenGL surface."));
+
 		return swUnexpected(QCoreApplication::translate("swContext", "Could not make the offscreen OpenGL context current."));
+	}
 
 	mOffscreenContext = std::move(OffscreenContext);
 	mOffscreenSurface = std::move(OffscreenSurface);

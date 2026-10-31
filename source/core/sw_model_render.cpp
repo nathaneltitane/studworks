@@ -623,7 +623,8 @@ swResult<void> swModel::SaveStepImages(const QString& BaseName, bool AddStepSuff
 
 		QImageWriter Writer(FileName);
 
-		if (Writer.format().isEmpty())
+		// keep the format of the extension
+		if (!QImageWriter::supportedImageFormats().contains(QFileInfo(FileName).suffix().toLower().toLatin1()))
 			Writer.setFormat("png");
 
 		if (!Writer.write(Image.value()))
@@ -991,7 +992,8 @@ swResult<void> swModel::SaveFramedImages(const QString& BaseName, bool AddStepSu
 
 			QImageWriter Writer(FileName);
 
-			if (Writer.format().isEmpty())
+			// keep the format of the extension
+			if (!QImageWriter::supportedImageFormats().contains(QFileInfo(FileName).suffix().toLower().toLatin1()))
 				Writer.setFormat("png");
 
 			if (!Writer.write(Image.value()))

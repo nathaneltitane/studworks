@@ -624,6 +624,8 @@ swResult<void> Project::ExportCOLLADA(const QString& FileName)
 		ColorIDs[ColorIndex] = MakeUniqueExportIdentifier(Identifier, UsedColorIDs, QString());
 	}
 
+	const bool TransparentMarked = swGetPreferences().mMarkColladaTransparency;
+
 	Stream << "<library_effects>\r\n";
 
 	for (size_t ColorIndex = 0; ColorIndex < gColorList.size(); ColorIndex++)
@@ -650,7 +652,7 @@ swResult<void> Project::ExportCOLLADA(const QString& FileName)
 		Stream << "\t\t\t\t\t<shininess>\r\n";
 		Stream << "\t\t\t\t\t\t<float>20.0</float>\r\n";
 		Stream << "\t\t\t\t\t</shininess>\r\n";
-		Stream << "\t\t\t\t\t<transparent>\r\n";
+		Stream << (TransparentMarked ? "\t\t\t\t\t<transparent opaque=\"A_ONE\">\r\n" : "\t\t\t\t\t<transparent>\r\n");
 		Stream << QString("\t\t\t\t\t\t<color>%1 %2 %3 %4</color>\r\n").arg(QString::number(Color.Value[0]), QString::number(Color.Value[1]), QString::number(Color.Value[2]), QString::number(Color.Value[3]));
 		Stream << "\t\t\t\t\t</transparent>\r\n";
 		Stream << "\t\t\t\t\t<transparency>\r\n";

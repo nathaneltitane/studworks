@@ -112,6 +112,7 @@ void swPreferences::LoadDefaults()
 	mWatchFileChanges = swGetProfileInteger(SW_PROFILE_WATCH_FILE_CHANGES);
 	mLoadPartsBeforeShowing = swGetProfileInteger(SW_PROFILE_LOAD_PARTS_BEFORE_SHOWING);
 	mMigrateMetaCommands = swGetProfileInteger(SW_PROFILE_MIGRATE_META_COMMANDS);
+	mMarkColladaTransparency = swGetProfileInteger(SW_PROFILE_MARK_COLLADA_TRANSPARENCY);
 	mColorTheme = swGetProfileColorTheme();
 	mPreviewViewCubeEnabled = swGetProfileInteger(SW_PROFILE_PREVIEW_VIEW_CUBE_ENABLED);
 	mPreviewViewCubeSize = swSnapSize(swGetProfileInteger(SW_PROFILE_PREVIEW_VIEW_CUBE_SIZE), SW_VIEW_CUBE_SIZES);
@@ -224,6 +225,7 @@ void swPreferences::SaveDefaults()
 	swSetProfileInteger(SW_PROFILE_WATCH_FILE_CHANGES, mWatchFileChanges);
 	swSetProfileInteger(SW_PROFILE_LOAD_PARTS_BEFORE_SHOWING, mLoadPartsBeforeShowing);
 	swSetProfileInteger(SW_PROFILE_MIGRATE_META_COMMANDS, mMigrateMetaCommands);
+	swSetProfileInteger(SW_PROFILE_MARK_COLLADA_TRANSPARENCY, mMarkColladaTransparency);
 	swSetProfileColorTheme(mColorTheme);
 	swSetProfileInteger(SW_PROFILE_PREVIEW_VIEW_CUBE_ENABLED, mPreviewViewCubeEnabled);
 	swSetProfileInteger(SW_PROFILE_PREVIEW_VIEW_CUBE_SIZE, mPreviewViewCubeSize);
@@ -1137,7 +1139,7 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 			Options.StdOut += tr("  --camera-position <x> <y> <z> <tx> <ty> <tz> <ux> <uy> <uz>: Set the camera position, target and up vector.\n");
 			Options.StdOut += tr("  --camera-position-ldraw <x> <y> <z> <tx> <ty> <tz> <ux> <uy> <uz>: Set the camera position, target and up vector using LDraw coordinates.\n");
 			Options.StdOut += tr("  --orthographic: Render images using an orthographic projection.\n");
-			Options.StdOut += tr("  --transparent: Render images with a transparent background.\n");
+			Options.StdOut += tr("  --transparent: Render images with a transparent background (PNG and GIF only).\n");
 			Options.StdOut += tr("  --fov <degrees>: Set the vertical field of view used to render images (< 180).\n");
 			Options.StdOut += tr("  --zplanes <near> <far>: Set the near and far clipping planes used to render images (1 <= <near> < <far>).\n");
 			Options.StdOut += tr("  --fade-steps: Render parts from prior steps faded.\n");
@@ -1263,7 +1265,7 @@ swCommandLineOptions swApplication::ParseCommandLineOptions()
 			Options.StdErr += tr("--camera-position is ignored when --camera-angles is set.\n");
 	}
 
-	const bool SaveAndExit = (Options.SaveImage || Options.SaveWavefront || Options.Save3DS || Options.SaveCOLLADA || Options.SaveCSV || Options.SaveBrickLink || Options.SaveHTML || Options.SavePOVRay || Options.RenderPOVRay);
+	const bool SaveAndExit = Options.HasSaveAndExit();
 
 	if (SaveAndExit && Options.ProjectName.isEmpty())
 	{
@@ -1407,7 +1409,7 @@ swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 	if (Options.HasSettingsTransfer())
 		return swTransferSettings(Options, StdErr) ? swStartupMode::Success : swStartupMode::Error;
 
-	const bool SaveAndExit = (Options.SaveImage || Options.SaveWavefront || Options.Save3DS || Options.SaveCOLLADA || Options.SaveCSV || Options.SaveBrickLink || Options.SaveHTML || Options.SavePOVRay || Options.RenderPOVRay);
+	const bool SaveAndExit = Options.HasSaveAndExit();
 
 #ifdef Q_OS_IOS
 	if (Options.SaveImage)
@@ -1556,12 +1558,7 @@ swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 		}
 
 		if (ActiveView)
-		{
 			ActiveView->SetSize(Options.ImageWidth, Options.ImageHeight);
-
-			if (Options.TransparentImage)
-				ActiveView->SetBackgroundColorOverride(SW_RGBA(0, 0, 0, 0));
-		}
 
 		if (ActiveView)
 		{
@@ -1597,6 +1594,19 @@ swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 
 			if (Options.ImageName.isEmpty())
 				Options.ImageName = mProject->GetImageFileName(true);
+
+			const QString ImageSuffix = QFileInfo(Options.ImageName).suffix().toLower();
+			swImageBackground ImageBackground = Options.TransparentImage ? swImageBackground::Transparent : swImageBackground::Opaque;
+
+			// only png and gif files keep transparency
+			if (Options.TransparentImage && ImageSuffix != QLatin1String("png") && ImageSuffix != QLatin1String("gif"))
+			{
+				StdErr << tr("--transparent is ignored for '%1' files: only PNG and GIF files keep transparency.\n").arg(ImageSuffix);
+				ImageBackground = swImageBackground::Opaque;
+			}
+
+			if (ImageBackground == swImageBackground::Transparent)
+				ActiveView->SetBackgroundColorOverride(SW_RGBA(0, 0, 0, 0));
 
 			if (Options.ImageEnd < Options.ImageStart)
 				Options.ImageEnd = Options.ImageStart;
@@ -1657,7 +1667,7 @@ swStartupMode swApplication::Initialize(const QList<QPair<QString, bool>>& Libra
 				StdOut << tr("Saved '%1'.\n").arg(FileName);
 			};
 
-			const swResult<void> ImagesSaved = ActiveView->SaveStepImages(Frame, Options.ImageStart != Options.ImageEnd, Options.ImageStart, Options.ImageEnd, ProgressCallback);
+			const swResult<void> ImagesSaved = ActiveView->SaveStepImages(Frame, Options.ImageStart != Options.ImageEnd, Options.ImageStart, Options.ImageEnd, ImageBackground, ProgressCallback);
 
 			if (!ImagesSaved)
 			{

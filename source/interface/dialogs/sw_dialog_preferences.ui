@@ -486,6 +486,25 @@
         </widget>
        </item>
        <item row="4" column="0" colspan="2">
+        <widget class="QGroupBox" name="ExportGroup">
+         <property name="title">
+          <string>Export</string>
+         </property>
+         <layout class="QGridLayout" name="ExportLayout">
+          <item row="0" column="0" colspan="2">
+           <widget class="QCheckBox" name="MarkColladaTransparency">
+            <property name="toolTip">
+             <string>Write opaque="A_ONE" on COLLADA transparent colors so viewers that skip the COLLADA default show transparent parts translucent.</string>
+            </property>
+            <property name="text">
+             <string>Mark COLLADA Transparency</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="5" column="0" colspan="2">
         <widget class="QGroupBox" name="EditingGroup">
          <property name="title">
           <string>Editing</string>
@@ -565,7 +584,7 @@
          </layout>
         </widget>
        </item>
-       <item row="5" column="0" colspan="2">
+       <item row="6" column="0" colspan="2">
         <widget class="QGroupBox" name="FlexiblePartsGroup">
          <property name="title">
           <string>Flexible Parts</string>

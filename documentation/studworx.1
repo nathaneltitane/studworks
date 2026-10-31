@@ -42,8 +42,8 @@ Set the LDCad shadow library location, used to find connected parts.
 Saves a picture to \fIoutfile.ext \fR in the image format specified
 by \fIext\fR and exits. If outfile is not given then the program will
 use a name based on \fIinfile\fR. The file format is selected by \fIext\fR
-and can be gif, bmp, png or jpg (if \fIext\fR is not present then the
-default preferences format will be used).
+and can be png, jpg, bmp or gif, with one still GIF for each step (if \fIext\fR
+is not present then the default preferences format will be used).
 
 .TP
 \fB\-w \fIwidth\fR, \fB\-\-width \fIwidth
@@ -103,7 +103,8 @@ Use an orthographic projection.
 
 .TP
 .B \-\-transparent
-Render images with a transparent background.
+Render images with a transparent background. Only PNG and GIF files keep
+transparency, and GIF edges are hard; other formats are saved opaque with a warning.
 
 .TP
 .BI "\-\-fov " degrees
@@ -223,7 +224,7 @@ Exports the model to 3DS format.
 .TP
 \fB\-dae \fR[\fIoutfile.dae\fR],\ \fB\-\-export\-collada \fR[\fIoutfile.dae\fR]
 .br
-Exports the model to COLLADA DAE format.
+Exports the model to COLLADA DAE format. Transparent colors are written with opaque="A_ONE" while Mark COLLADA Transparency is on in Preferences.
 
 .TP
 \fB\-csv \fR[\fIoutfile.csv\fR],\ \fB\-\-export\-csv \fR[\fIoutfile.csv\fR]
@@ -300,6 +301,11 @@ Display a brief usage synopsis and exit.
 
 .SH ENVIRONMENT
 ``STUDWORX_LIBRARY'' may be set to the path of the parts library.
+.PP
+When neither ``DISPLAY'' nor ``WAYLAND_DISPLAY'' is set, the save and export
+options run without a display through the eglfs platform and EGL on the DRM
+device, with software rendering when the GPU is in use by another session.
+Set ``QT_QPA_PLATFORM'' to choose another platform.
 
 .SH EXAMPLES
 .PP
