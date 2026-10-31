@@ -102,6 +102,11 @@ bool swZipFile::AddFile(const char* FileName, const QByteArray& Data, quint32 Do
 	FileInfo.size_filename = static_cast<quint16>(NameLength);
 	FileInfo.offset_curfile = mFile->GetPosition();
 
+	// mark names beyond ascii as utf-8
+	for (size_t Index = 0; Index < NameLength; Index++)
+		if (static_cast<unsigned char>(FileName[Index]) >= 0x80)
+			FileInfo.flag = 0x800;
+
 	// local file header
 	mFile->WriteU32(0x04034b50);
 	mFile->WriteU16(FileInfo.version_needed);

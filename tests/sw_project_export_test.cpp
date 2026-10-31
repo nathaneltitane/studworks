@@ -4,12 +4,15 @@
 void swTests::KMZKeepsVisibleSurfaces_data()
 {
 	QTest::addColumn<bool>("AllParts");
-	QTest::newRow("visible-surfaces") << false;
-	QTest::newRow("all-parts") << true;
+	QTest::addColumn<QString>("ArchiveName");
+	QTest::addColumn<QString>("ModelName");
+	QTest::newRow("visible-surfaces") << false << "model.kmz" << "model.dae";
+	QTest::newRow("all-parts") << true << "spaced model.kmz" << "spaced_model.dae";
 }
 
 // Exports a red box around a hidden blue box to KMZ with the StudWorx binary. The archive must hold
-// the kml index and the COLLADA model with fixed dates, visible surfaces only must drop the blue box
+// the kml index and the COLLADA model named after the archive with spaces as underscores, both with
+// fixed dates, visible surfaces only must drop the blue box
 // and merge the red faces into one mesh, and --kmz-all-parts must keep both. SW_TEST_BINARY is the
 // studworx program, and SW_TEST_NATIVE_DISPLAY=1 renders on the running display instead of offscreen.
 void swTests::KMZKeepsVisibleSurfaces()
@@ -21,6 +24,8 @@ void swTests::KMZKeepsVisibleSurfaces()
 		QSKIP("SW_TEST_BINARY is not set");
 
 	QFETCH(bool, AllParts);
+	QFETCH(QString, ArchiveName);
+	QFETCH(QString, ModelName);
 
 	QTemporaryDir Folder;
 	QVERIFY(Folder.isValid());
@@ -55,7 +60,7 @@ void swTests::KMZKeepsVisibleSurfaces()
 	if (Environment.value("SW_TEST_NATIVE_DISPLAY") != QLatin1String("1"))
 		ExportEnvironment.insert("QT_QPA_PLATFORM", "offscreen");
 
-	const QString FileName = Folder.filePath("model.kmz");
+	const QString FileName = Folder.filePath(ArchiveName);
 	QStringList Arguments = { Model.fileName(), "-kmz", FileName };
 
 	if (AllParts)
@@ -108,10 +113,10 @@ void swTests::KMZKeepsVisibleSurfaces()
 		Offset = DataOffset + static_cast<int>(CompressedSize);
 	}
 
-	QCOMPARE(Names, QStringList({ "doc.kml", "doc.dae" }));
-	QCOMPARE(Files["doc.kml"], QByteArray("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<kml><Placemark><Model><Link><href>doc.dae</href></Link></Model></Placemark></kml>\n"));
+	QCOMPARE(Names, QStringList({ "doc.kml", ModelName }));
+	QCOMPARE(Files["doc.kml"], QByteArray("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<kml><Placemark><Model><Link><href>") + ModelName.toUtf8() + QByteArray("</href></Link></Model></Placemark></kml>\n"));
 
-	const QString COLLADA = QString::fromUtf8(Files["doc.dae"]);
+	const QString COLLADA = QString::fromUtf8(Files[ModelName]);
 	QVERIFY(COLLADA.contains("<created>2000-01-01T00:00:00</created>"));
 	QVERIFY(COLLADA.contains("<modified>2000-01-01T00:00:00</modified>"));
 	QVERIFY(COLLADA.contains("target=\"#Color_Red-material\""));

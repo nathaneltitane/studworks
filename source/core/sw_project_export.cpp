@@ -628,15 +628,18 @@ swResult<void> Project::ExportKMZ(const QString& FileName)
 
 	Stream.flush();
 
+	// collada entry named after the kmz file with spaces as underscores
+	const QString ModelFileName = QFileInfo(SaveFileName).completeBaseName().replace(QLatin1Char(' '), QLatin1Char('_')) + QLatin1String(".dae");
+
 	// kml index pointing at the collada model - entries dated 2000-01-01 so exports repeat byte for byte
-	const QByteArray KML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<kml><Placemark><Model><Link><href>doc.dae</href></Link></Model></Placemark></kml>\n";
+	const QByteArray KML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<kml><Placemark><Model><Link><href>" + ModelFileName.toHtmlEscaped().toUtf8() + "</href></Link></Model></Placemark></kml>\n";
 	constexpr quint32 DosDate = ((2000 - 1980) << 25) | (1 << 21) | (1 << 16);
 	swZipFile ZipFile;
 
 	if (!ZipFile.OpenWrite(SaveFileName))
 		return swUnexpected(tr("Could not open file '%1' for writing.").arg(SaveFileName));
 
-	if (!ZipFile.AddFile("doc.kml", KML, DosDate) || !ZipFile.AddFile("doc.dae", COLLADA, DosDate) || !ZipFile.CloseWrite())
+	if (!ZipFile.AddFile("doc.kml", KML, DosDate) || !ZipFile.AddFile(ModelFileName.toUtf8().constData(), COLLADA, DosDate) || !ZipFile.CloseWrite())
 		return swUnexpected(tr("Error writing to file '%1'.").arg(SaveFileName));
 
 	return swResult<void>();
